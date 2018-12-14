@@ -47,6 +47,7 @@ import org.talend.core.ILibraryManagerService;
 import org.talend.core.model.general.ILibrariesService;
 import org.talend.core.runtime.i18n.Messages;
 import org.talend.repository.ProjectManager;
+import org.talend.utils.files.FileUtils;
 import org.w3c.dom.Attr;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
@@ -56,9 +57,6 @@ import org.w3c.dom.NodeList;
 import org.xml.sax.ErrorHandler;
 import org.xml.sax.SAXException;
 import org.xml.sax.SAXParseException;
-
-import com.sun.org.apache.xml.internal.serialize.OutputFormat;
-import com.sun.org.apache.xml.internal.serialize.XMLSerializer;
 
 /**
  * created by wchen on 2013-3-27 Detailled comment
@@ -238,14 +236,15 @@ public class HadoopCustomLibrariesUtil {
 
             // save index
             if (document != null) {
-                XMLSerializer serializer = new XMLSerializer();
-                OutputFormat outputFormat = new OutputFormat();
-                outputFormat.setIndenting(true);
-                serializer.setOutputFormat(outputFormat);
+//                XMLSerializer serializer = new XMLSerializer();
+//                OutputFormat outputFormat = new OutputFormat();
+//                outputFormat.setIndenting(true);
+//                serializer.setOutputFormat(outputFormat);
 
                 output = new OutputStreamWriter(new FileOutputStream(indexFile), "UTF-8"); //$NON-NLS-1$
-                serializer.setOutputCharStream(output);
-                serializer.serialize(document);
+//                serializer.setOutputCharStream(output);
+//                serializer.serialize(document);
+                FileUtils.writeXMLFile(document, output);
                 toExport.put(indexFile.getAbsoluteFile(), new Path(indexFileName));
             }
         } finally {

@@ -9,7 +9,8 @@ Require-Bundle: org.eclipse.core.runtime,
  org.talend.core,
  org.talend.commons.ui,
  org.eclipse.ui.workbench,
- org.eclipse.jface
+ org.eclipse.jface,
+ org.talend.commons.runtime
 Eclipse-LazyStart: true
 Bundle-ClassPath: .
 Bundle-Vendor: .Talend SA.

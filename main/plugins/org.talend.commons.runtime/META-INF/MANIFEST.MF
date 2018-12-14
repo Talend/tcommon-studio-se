@@ -11,7 +11,6 @@ Require-Bundle: org.apache.log4j;visibility:=reexport,
  org.eclipse.core.runtime,
  org.eclipse.emf.ecore.xmi,
  org.talend.libraries.apache,
- org.apache.xerces,
  com.ibm.icu,
  org.apache.commons.io
 Export-Package: org.talend.commons,
@@ -61,3 +60,4 @@ Bundle-ClassPath: .,
 Bundle-Vendor: .Talend SA.
 Bundle-RequiredExecutionEnvironment: JavaSE-1.7
 Bundle-ActivationPolicy: lazy
+Import-Package: org.apache.xerces.jaxp

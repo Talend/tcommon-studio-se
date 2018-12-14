@@ -27,10 +27,9 @@ import javax.net.ssl.SSLSocketFactory;
 import org.apache.log4j.Logger;
 import org.talend.core.repository.i18n.Messages;
 
-import com.sun.net.ssl.KeyManagerFactory;
-import com.sun.net.ssl.SSLContext;
-import com.sun.net.ssl.TrustManager;
-import com.sun.net.ssl.internal.ssl.Provider;
+import javax.net.ssl.KeyManagerFactory;
+import javax.net.ssl.SSLContext;
+import javax.net.ssl.TrustManager;
 
 /**
  * This class is used for LDAP. <br/>
@@ -219,7 +218,7 @@ public class AdvancedSocketFactory extends SSLSocketFactory {
      */
     private void init(KeyStore ks, char password[]) {
         SSLContext ctx = null;
-        com.sun.net.ssl.KeyManager keyManagers[] = null;
+        javax.net.ssl.KeyManager keyManagers[] = null;
         TrustManager trustManagers[] = null;
         try {
             if (ks != null) {
@@ -238,6 +237,6 @@ public class AdvancedSocketFactory extends SSLSocketFactory {
     }
 
     static {
-        Security.addProvider(new Provider());
+        Security.addProvider(java.security.Security.getProvider("SUN"));
     }
 }

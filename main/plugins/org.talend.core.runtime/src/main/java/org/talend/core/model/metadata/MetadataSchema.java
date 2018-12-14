@@ -16,6 +16,7 @@ import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.OutputStreamWriter;
+import java.io.Writer;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.HashSet;
@@ -37,6 +38,7 @@ import org.talend.core.model.metadata.builder.connection.ConnectionFactory;
 import org.talend.core.model.metadata.builder.connection.SchemaTarget;
 import org.talend.core.model.metadata.types.PerlTypesManager;
 import org.talend.cwm.helper.TaggedValueHelper;
+import org.talend.utils.files.FileUtils;
 import org.w3c.dom.Attr;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
@@ -46,10 +48,8 @@ import org.w3c.dom.NodeList;
 import org.xml.sax.ErrorHandler;
 import org.xml.sax.SAXException;
 import org.xml.sax.SAXParseException;
-import orgomg.cwm.objectmodel.core.TaggedValue;
 
-import com.sun.org.apache.xml.internal.serialize.OutputFormat;
-import com.sun.org.apache.xml.internal.serialize.XMLSerializer;
+import orgomg.cwm.objectmodel.core.TaggedValue;
 
 /**
  * Metadata Schema.
@@ -671,9 +671,9 @@ public class MetadataSchema {
             }
 
             // use specific Xerces class to write DOM-data to a file:
-            XMLSerializer serializer = new XMLSerializer();
-            serializer.setOutputCharStream(new java.io.FileWriter(file));
-            serializer.serialize(document);
+            Writer writer = new java.io.FileWriter(file);
+            FileUtils.writeXMLFile(document, writer);
+            writer.close();
             return true;
         }
         return false;
@@ -862,10 +862,7 @@ public class MetadataSchema {
             return;
         }
         // use specific Xerces class to write DOM-data to a file:
-        XMLSerializer serializer = new XMLSerializer();
-        OutputFormat outputFormat = new OutputFormat();
-        outputFormat.setIndenting(true);
-        serializer.setOutputFormat(outputFormat);
+
 
         // java.io.FileWriter fileWriter = new java.io.FileWriter(file);
         // serializer.setOutputCharStream(fileWriter);
@@ -884,9 +881,7 @@ public class MetadataSchema {
         // fileWriter.close();
         // fileWriter = null;
         OutputStreamWriter output = new OutputStreamWriter(new FileOutputStream(file), "UTF-8"); //$NON-NLS-1$
-        serializer.setOutputCharStream(output);
-        serializer.serialize(document);
+        FileUtils.writeXMLFile(document, output);
         output.close();
-
     }
 }

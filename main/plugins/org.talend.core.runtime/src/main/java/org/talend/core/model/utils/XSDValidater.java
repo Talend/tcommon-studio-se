@@ -37,8 +37,6 @@ import org.w3c.dom.Document;
 import org.xml.sax.InputSource;
 import org.xml.sax.helpers.DefaultHandler;
 
-import com.sun.org.apache.xerces.internal.jaxp.DocumentBuilderFactoryImpl;
-
 /**
  * bqian Use xml xsd file to validate the xml file. <br/>
  * 
@@ -73,7 +71,7 @@ public class XSDValidater {
      */
     public void validateWithDom(Reader xsd, Reader xml) throws Exception {
         // Load up the document
-        DocumentBuilderFactory factory = new DocumentBuilderFactoryImpl();
+    	DocumentBuilderFactory factory = DocumentBuilderFactory.newDefaultInstance();
         factory.setNamespaceAware(true);
         // Set up an XML Schema validator, using the supplied schema
         Source schemaSource = new StreamSource(xsd);
