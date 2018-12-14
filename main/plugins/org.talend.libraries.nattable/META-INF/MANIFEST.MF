@@ -1,4 +1,5 @@
 Manifest-Version: 1.0
+Automatic-Module-Name: org.talend.libraries.nattable
 Bundle-ManifestVersion: 2
 Bundle-Name: Nattable
 Bundle-SymbolicName: org.talend.libraries.nattable;singleton:=true

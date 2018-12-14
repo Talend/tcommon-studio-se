@@ -1,4 +1,5 @@
 Manifest-Version: 1.0
+Automatic-Module-Name: org.talend.core.repository
 Bundle-ManifestVersion: 2
 Bundle-Name: Core Repository Plug-in
 Bundle-SymbolicName: org.talend.core.repository;singleton:=true
