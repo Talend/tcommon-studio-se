@@ -1031,14 +1031,14 @@ public class ExtractMetaDataUtils {
                     if (driverJarPathArg.contains(";")) {
                         String jars[] = driverJarPathArg.split(";");
                         for (String jar : jars) {
-                            String jarName = jar.split("/")[1]+".jar";
+                            String jarName = librairesManagerService.getJarNameFromMavenuri(driverJarPathArg);
                             if (!new File(getJavaLibPath() + jarName).exists()) {
                                 librairesManagerService.retrieve(jarName, getJavaLibPath(), new NullProgressMonitor());
                             }
                             jarPathList.add(getJavaLibPath() + jarName);
                         }
                     }else{
-                        String jarName = driverJarPathArg.split("/")[1]+".jar";
+                        String jarName = librairesManagerService.getJarNameFromMavenuri(driverJarPathArg);
                         if (!new File(getJavaLibPath() + jarName).exists()) {
                             librairesManagerService.retrieve(jarName, getJavaLibPath(), new NullProgressMonitor());
                         }

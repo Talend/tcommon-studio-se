@@ -1588,4 +1588,17 @@ public class LocalLibraryManager implements ILibraryManagerService, IChangedLibr
         jarList.clear();
     }
 
+    @Override
+    public String getJarNameFromMavenuri(String mavenURI) {
+        EMap<String, String> jarsToMavenuri = LibrariesIndexManager.getInstance().getMavenLibIndex().getJarsToRelativePath();
+        if(jarsToMavenuri.containsValue(mavenURI)){
+            for(String key : jarsToMavenuri.keySet()){
+                if(jarsToMavenuri.get(key).equals(mavenURI)){
+                    return key;
+                }
+            }
+        }
+        return null;
+    }
+
 }
