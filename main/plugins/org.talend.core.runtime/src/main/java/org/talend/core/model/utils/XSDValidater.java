@@ -71,7 +71,7 @@ public class XSDValidater {
      */
     public void validateWithDom(Reader xsd, Reader xml) throws Exception {
         // Load up the document
-    	DocumentBuilderFactory factory = DocumentBuilderFactory.newDefaultInstance();
+    	DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
         factory.setNamespaceAware(true);
         // Set up an XML Schema validator, using the supplied schema
         Source schemaSource = new StreamSource(xsd);
