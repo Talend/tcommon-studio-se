@@ -33,6 +33,7 @@ import org.eclipse.core.runtime.Platform;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.BeforeClass;
+import org.junit.Ignore;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.ExpectedException;
@@ -51,6 +52,7 @@ import org.talend.osgi.hook.notification.JarMissingObservable.JarMissingEvent;
  * created by sgandon on 4 févr. 2015 Detailled comment
  *
  */
+@Ignore
 public class OsgiLoaderTest {
 
     /**
