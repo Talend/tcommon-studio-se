@@ -366,7 +366,7 @@ public class ExtractManager {
                 if (tableName != null && tableName.contains("/")) {
                     tableName = tableName.replace("/", "");
                 }
-                fillSynonyms(metadataConnection, metadataColumns, table, tableName, dbMetaData);
+                fillSynonyms(metadataConnection, metadataColumns, table, tableName, newNode.getValue(), dbMetaData);
             } else {
                 EDatabaseTypeName currentEDatabaseType = EDatabaseTypeName.getTypeFromDbType(metadataConnection.getDbType());
                 metadataColumns = MetadataFillFactory.getDBInstance(currentEDatabaseType).fillColumns(table, metadataConnection,
@@ -451,7 +451,7 @@ public class ExtractManager {
      * @throws SQLException
      */
     protected void fillSynonyms(IMetadataConnection metadataConnection, List<TdColumn> metadataColumns, NamedColumnSet table,
-            String tableName, DatabaseMetaData dbMetaData) throws SQLException {
+            String tableName, String synonymName, DatabaseMetaData dbMetaData) throws SQLException {
         // nothing to do by default
     }
 

@@ -36,6 +36,7 @@ import org.talend.cwm.helper.ConnectionHelper;
 import org.talend.cwm.relational.TdColumn;
 import org.talend.metadata.managment.utils.ManagementTextUtils;
 import org.talend.utils.sql.metadata.constants.GetColumn;
+
 import orgomg.cwm.resource.relational.NamedColumnSet;
 
 /**
@@ -90,7 +91,7 @@ public class MSSQLExtractManager extends ExtractManager {
 
     @Override
     protected void fillSynonyms(IMetadataConnection metadataConnection, List<TdColumn> metadataColumns, NamedColumnSet table,
-            String tableName, DatabaseMetaData dbMetaData) throws SQLException {
+            String tableName, String synonymName, DatabaseMetaData dbMetaData) throws SQLException {
         if (metadataConnection == null || dbMetaData == null) {
             return;
         }
