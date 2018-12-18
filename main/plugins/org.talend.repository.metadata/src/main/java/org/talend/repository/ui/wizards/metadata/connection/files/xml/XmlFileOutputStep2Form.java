@@ -39,6 +39,7 @@ import org.eclipse.swt.SWT;
 import org.eclipse.swt.custom.SashForm;
 import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
+import org.eclipse.swt.events.SelectionListener;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Button;
@@ -150,7 +151,9 @@ public class XmlFileOutputStep2Form extends AbstractXmlFileStepForm {
     private MoveUpTreeNodeButton moveUpBtn;
 
     private MoveDownTreeNodeButton moveDown;
-
+    
+    private boolean flag = false;
+    
     public XmlFileOutputStep2Form(boolean creation, Composite parent, ConnectionItem connectionItem) {
         super(parent, connectionItem);
         this.creation = creation;
@@ -266,6 +269,20 @@ public class XmlFileOutputStep2Form extends AbstractXmlFileStepForm {
         column4.setWidth(100);
 
         tree.setHeaderVisible(true);
+        schemaViewer.getTable().getVerticalBar().addSelectionListener(new SelectionListener() {
+
+            public void widgetDefaultSelected(SelectionEvent event) {
+            }
+
+            public void widgetSelected(SelectionEvent event) {
+                int schemaViewerCount = schemaViewer.getTable().getItems().length;
+                if (!flag&&event.detail != SWT.END && schemaViewerCount == CoreUIPlugin.getDefault().getPreferenceStore()
+                        .getInt(ITalendCorePrefConstants.MAXIMUM_AMOUNT_OF_COLUMNS_FOR_XML) + 1) {
+                    flag = true;
+                    MessageDialog.openWarning(getShell(), "", Messages.getString("XmlFileOutputStep2Form.Error"));
+                }
+            }
+        });
         XmlFileTreeViewerProvider provider = new XmlFileTreeViewerProvider();
         xmlViewer.setLabelProvider(provider);
 
@@ -545,12 +562,6 @@ public class XmlFileOutputStep2Form extends AbstractXmlFileStepForm {
                 rootNum++;
             }
         }
-        int schemaViewerCount = schemaViewer.getTable().getItems().length;
-        if (schemaViewerCount == CoreUIPlugin.getDefault().getPreferenceStore()
-                .getInt(ITalendCorePrefConstants.MAXIMUM_AMOUNT_OF_COLUMNS_FOR_XML) + 1) {
-            msgError.append(Messages.getString("XmlFileOutputStep2Form.Error"));
-        }
-
         if (num != rootNum) {
             msgError.append("Require set as loop\n");
         }
@@ -985,6 +996,7 @@ public class XmlFileOutputStep2Form extends AbstractXmlFileStepForm {
             // if (!creation) {
             checkFieldsValue();
             // }
+            flag = false;
         }
     }
 
