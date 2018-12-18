@@ -76,6 +76,7 @@ import org.talend.core.runtime.maven.MavenArtifact;
 import org.talend.core.runtime.maven.MavenConstants;
 import org.talend.core.runtime.maven.MavenUrlHelper;
 import org.talend.core.runtime.services.IMavenUIService;
+import org.talend.core.utils.TalendQuoteUtils;
 import org.talend.designer.maven.utils.PomUtil;
 import org.talend.librariesmanager.maven.MavenArtifactsHandler;
 import org.talend.librariesmanager.model.ExtensionModuleManager;
@@ -1591,11 +1592,13 @@ public class LocalLibraryManager implements ILibraryManagerService, IChangedLibr
     @Override
     public String getJarNameFromMavenuri(String mavenURI) {
         EMap<String, String> jarsToMavenuri = LibrariesIndexManager.getInstance().getMavenLibIndex().getJarsToRelativePath();
-        if(jarsToMavenuri.containsValue(mavenURI)){
-            for(String key : jarsToMavenuri.keySet()){
-                if(jarsToMavenuri.get(key).equals(mavenURI)){
-                    return key;
-                }
+        for(String key : jarsToMavenuri.keySet()){
+            if(jarsToMavenuri.get(key) == null){
+                continue;
+            }
+            if(TalendQuoteUtils.removeQuotesIfExist(jarsToMavenuri.get(key)).
+                    equalsIgnoreCase(TalendQuoteUtils.removeQuotesIfExist(mavenURI))){
+                return key;
             }
         }
         return null;
