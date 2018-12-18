@@ -45,6 +45,7 @@ import org.talend.cwm.helper.ConnectionHelper;
 import org.talend.cwm.relational.TdColumn;
 import org.talend.metadata.managment.utils.ManagementTextUtils;
 import org.talend.utils.sql.metadata.constants.GetColumn;
+
 import orgomg.cwm.resource.relational.NamedColumnSet;
 import orgomg.cwm.resource.relational.Schema;
 
@@ -163,7 +164,7 @@ public class OracleExtractManager extends ExtractManager {
 
     @Override
     protected void fillSynonyms(IMetadataConnection metadataConnection, List<TdColumn> metadataColumns, NamedColumnSet table,
-            String tableName, DatabaseMetaData dbMetaData) throws SQLException {
+            String tableName, String synonymName, DatabaseMetaData dbMetaData) throws SQLException {
         if (metadataConnection == null || dbMetaData == null) {
             return;
         }
@@ -172,8 +173,8 @@ public class OracleExtractManager extends ExtractManager {
             // need to retrieve columns of synonym by useing sql rather than get them from jdbc metadata
             String synSQL = "SELECT all_tab_columns.*\n" + "FROM all_tab_columns\n" + "LEFT OUTER JOIN all_synonyms\n"
                     + "ON all_tab_columns.TABLE_NAME = all_synonyms.TABLE_NAME\n"
-                    + "AND ALL_SYNONYMS.TABLE_OWNER = all_tab_columns.OWNER\n" + "WHERE all_synonyms.TABLE_NAME =" + "\'"
-                    + tableName + "\'\n";
+                    + "AND ALL_SYNONYMS.TABLE_OWNER = all_tab_columns.OWNER\n" + "WHERE all_synonyms.SYNONYM_NAME  =" + "\'"
+                    + synonymName + "\'\n";
             // bug TDI-19382
             if (!("").equals(metadataConnection.getSchema())) {
                 synSQL += "and all_synonyms.OWNER =\'" + metadataConnection.getSchema() + "\'";
