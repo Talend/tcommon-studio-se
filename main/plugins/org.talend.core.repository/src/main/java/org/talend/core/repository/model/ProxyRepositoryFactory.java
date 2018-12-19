@@ -83,6 +83,7 @@ import org.talend.core.context.CommandLineContext;
 import org.talend.core.context.Context;
 import org.talend.core.context.RepositoryContext;
 import org.talend.core.exception.TalendInternalPersistenceException;
+import org.talend.core.hadoop.BigDataBasicUtil;
 import org.talend.core.model.general.ModuleNeeded;
 import org.talend.core.model.general.Project;
 import org.talend.core.model.metadata.MetadataTalendType;
@@ -1935,6 +1936,10 @@ public final class ProxyRepositoryFactory implements IProxyRepositoryFactory {
                 this.repositoryFactoryFromProvider.beforeLogon(project);
                 ProjectManager.getInstance().getBeforeLogonRecords().clear();
                 ProjectManager.getInstance().getUpdatedRemoteHandlerRecords().clear();
+
+                // init dynamic distirbution after `beforeLogon`, before loading libraries.
+                initDynamicDistribution(monitor);
+
                 // Check reference project setting problems
                 checkReferenceProjectsProblems(project);
                 if (isCancelled) {
@@ -2126,6 +2131,18 @@ public final class ProxyRepositoryFactory implements IProxyRepositoryFactory {
         } catch (RuntimeException e) {
             logOffProject();
             throw e;
+        }
+    }
+
+    private void initDynamicDistribution(IProgressMonitor monitor) {
+        try {
+            if (BigDataBasicUtil.isDynamicDistributionLoaded(monitor)) {
+                BigDataBasicUtil.reloadAllDynamicDistributions(monitor);
+            } else {
+                BigDataBasicUtil.loadDynamicDistribution(monitor);
+            }
+        } catch (Exception e) {
+            ExceptionHandler.process(e);
         }
     }
 
