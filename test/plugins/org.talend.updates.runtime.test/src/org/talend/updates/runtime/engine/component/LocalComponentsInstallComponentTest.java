@@ -245,7 +245,10 @@ public class LocalComponentsInstallComponentTest {
         ComponentIndexBean index = new ComponentIndexManager().create(testDataFile);
         Assert.assertNotNull(index);
 
-        final File installedFolder = new File(tmpFolder, "installed");
+        final File sharedFolder = new File(tmpFolder, "shared");
+        sharedFolder.mkdir();
+        final File target = new File(tmpFolder, testDataFile.getName());
+        FilesUtils.copyFile(testDataFile, target);
 
         try {
             LocalComponentsInstallComponent installComp = new LocalComponentsInstallComponentTestClass() {
@@ -264,7 +267,7 @@ public class LocalComponentsInstallComponentTest {
                         @Override
                         public void shareComponent(IProgressMonitor progress, File installedCompFile) {
 
-                            File sharedCompFile = new File(PathUtils.getComponentsSharedFolder(), installedCompFile.getName());
+                            File sharedCompFile = new File(sharedFolder, installedCompFile.getName());
                             try {
                                 FilesUtils.copyFile(installedCompFile, sharedCompFile);
                             } catch (IOException e) {
@@ -288,7 +291,6 @@ public class LocalComponentsInstallComponentTest {
             Assert.assertTrue(failedComponents.isEmpty());
 
             // move to shared
-            File sharedFolder = PathUtils.getComponentsSharedFolder();
             Assert.assertTrue(sharedFolder.exists());
 
             File sharedCompFile = new File(sharedFolder, testDataFile.getName());
