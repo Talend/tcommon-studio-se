@@ -39,7 +39,6 @@ import org.eclipse.swt.SWT;
 import org.eclipse.swt.custom.SashForm;
 import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
-import org.eclipse.swt.events.SelectionListener;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Button;
@@ -47,12 +46,15 @@ import org.eclipse.swt.widgets.Combo;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Group;
 import org.eclipse.swt.widgets.Item;
+import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Menu;
 import org.eclipse.swt.widgets.Table;
 import org.eclipse.swt.widgets.Text;
 import org.eclipse.swt.widgets.Tree;
 import org.eclipse.swt.widgets.TreeColumn;
 import org.eclipse.swt.widgets.TreeItem;
+import org.eclipse.ui.ISharedImages;
+import org.eclipse.ui.PlatformUI;
 import org.talend.commons.runtime.xml.XmlUtil;
 import org.talend.commons.ui.swt.drawing.link.IExtremityLink;
 import org.talend.commons.ui.swt.drawing.link.LinkDescriptor;
@@ -106,6 +108,10 @@ public class XmlFileOutputStep2Form extends AbstractXmlFileStepForm {
 
     private SashForm mainSashFormComposite;
 
+    protected Label statusLabel;
+
+    protected Label statusLabelWarn;
+
     private Button schemaButton;
 
     private ComboViewer rootComboViewer;
@@ -151,9 +157,7 @@ public class XmlFileOutputStep2Form extends AbstractXmlFileStepForm {
     private MoveUpTreeNodeButton moveUpBtn;
 
     private MoveDownTreeNodeButton moveDown;
-    
-    private boolean flag = false;
-    
+
     public XmlFileOutputStep2Form(boolean creation, Composite parent, ConnectionItem connectionItem) {
         super(parent, connectionItem);
         this.creation = creation;
@@ -173,6 +177,15 @@ public class XmlFileOutputStep2Form extends AbstractXmlFileStepForm {
         addSchemaViewer(mainSashFormComposite, 300, 100);
         addXmlFileViewer(mainSashFormComposite, 400, 100);
         mainSashFormComposite.setWeights(new int[] { 40, 60 });
+
+        Composite createGroup = Form.startNewGridLayout(this, 2, false, SWT.RIGHT, SWT.BOTTOM);
+        createGroup.setLayoutData(new GridData());
+        statusLabelWarn = new Label(createGroup, SWT.NONE);
+        statusLabelWarn.setImage(PlatformUI.getWorkbench().getSharedImages().getImage(ISharedImages.IMG_OBJS_WARN_TSK));
+        statusLabel = new Label(createGroup, SWT.NONE);
+        statusLabel.setText(Messages.getString("XmlFileOutputStep2Form.Error"));
+        statusLabel.setVisible(false);
+        statusLabelWarn.setVisible(false);
 
         linker = new XmlFileSchema2TreeLinker(mainSashFormComposite);
         linker.setForm(this);
@@ -269,20 +282,7 @@ public class XmlFileOutputStep2Form extends AbstractXmlFileStepForm {
         column4.setWidth(100);
 
         tree.setHeaderVisible(true);
-        schemaViewer.getTable().getVerticalBar().addSelectionListener(new SelectionListener() {
 
-            public void widgetDefaultSelected(SelectionEvent event) {
-            }
-
-            public void widgetSelected(SelectionEvent event) {
-                int schemaViewerCount = schemaViewer.getTable().getItems().length;
-                if (!flag&&event.detail != SWT.END && schemaViewerCount == CoreUIPlugin.getDefault().getPreferenceStore()
-                        .getInt(ITalendCorePrefConstants.MAXIMUM_AMOUNT_OF_COLUMNS_FOR_XML) + 1) {
-                    flag = true;
-                    MessageDialog.openWarning(getShell(), "", Messages.getString("XmlFileOutputStep2Form.Error"));
-                }
-            }
-        });
         XmlFileTreeViewerProvider provider = new XmlFileTreeViewerProvider();
         xmlViewer.setLabelProvider(provider);
 
@@ -548,6 +548,15 @@ public class XmlFileOutputStep2Form extends AbstractXmlFileStepForm {
 
     @Override
     protected boolean checkFieldsValue() {
+        int schemaViewerCount = schemaViewer.getTable().getItems().length;
+        if (schemaViewerCount == CoreUIPlugin.getDefault().getPreferenceStore()
+                .getInt(ITalendCorePrefConstants.MAXIMUM_AMOUNT_OF_COLUMNS_FOR_XML) + 1) {
+            statusLabel.setVisible(true);
+            statusLabelWarn.setVisible(true);
+        } else {
+            statusLabel.setVisible(false);
+            statusLabelWarn.setVisible(false);
+        }
         int num = 0, rootNum = 0;
         StringBuffer msgError = new StringBuffer();
         List<FOXTreeNode> onLoopNodes = new ArrayList<FOXTreeNode>();
@@ -996,7 +1005,6 @@ public class XmlFileOutputStep2Form extends AbstractXmlFileStepForm {
             // if (!creation) {
             checkFieldsValue();
             // }
-            flag = false;
         }
     }
 
