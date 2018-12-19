@@ -59,12 +59,14 @@ public class ServerSocketFreePortOpenerTest {
             if (serverSocket != null) {
                 int localPort = serverSocket.getLocalPort();
                 assertThat(localPort, is(freePort));
+                servers.add(serverSocket);
             }
 
             serverSocket = serverSocketFreePortOpener.openServerSocketFromRangePort(10000, freePort, true);
             if (serverSocket != null) {
                 int localPort = serverSocket.getLocalPort();
                 assertThat(localPort, is(freePort));
+                servers.add(serverSocket);
             }
 
             serverSocket = serverSocketFreePortOpener.openServerSocketFromRangePort(10000, 10000, false);
@@ -77,12 +79,14 @@ public class ServerSocketFreePortOpenerTest {
             if (serverSocket != null) {
                 int localPort = serverSocket.getLocalPort();
                 assertThat(localPort, is(freePort));
+                servers.add(serverSocket);
             }
 
             serverSocket = serverSocketFreePortOpener.openServerSocketFromRangePort(freePort, freePort, true);
             if (serverSocket != null) {
                 int localPort = serverSocket.getLocalPort();
                 assertThat(localPort, is(freePort));
+                servers.add(serverSocket);
             }
         } finally {
             closeServerSockets(servers);
@@ -124,6 +128,7 @@ public class ServerSocketFreePortOpenerTest {
             if (serverSocket != null) {
                 int localPort = serverSocket.getLocalPort();
                 assertThat(localPort, is(freePort));
+                servers.add(serverSocket);
             }
 
             serverSocketFreePortOpener = new ServerSocketFreePortOpener();
@@ -131,6 +136,7 @@ public class ServerSocketFreePortOpenerTest {
             if (serverSocket != null) {
                 int localPort = serverSocket.getLocalPort();
                 assertThat(localPort, is(freePort));
+                servers.add(serverSocket);
             }
 
             serverSocketFreePortOpener = new ServerSocketFreePortOpener();
@@ -146,6 +152,7 @@ public class ServerSocketFreePortOpenerTest {
             if (serverSocket != null) {
                 int localPort = serverSocket.getLocalPort();
                 assertThat(localPort, is(freePort));
+                servers.add(serverSocket);
             }
 
             serverSocketFreePortOpener = new ServerSocketFreePortOpener();
@@ -153,6 +160,7 @@ public class ServerSocketFreePortOpenerTest {
             if (serverSocket != null) {
                 int localPort = serverSocket.getLocalPort();
                 assertThat(localPort, is(freePort));
+                servers.add(serverSocket);
             }
         } finally {
             closeServerSockets(servers);
