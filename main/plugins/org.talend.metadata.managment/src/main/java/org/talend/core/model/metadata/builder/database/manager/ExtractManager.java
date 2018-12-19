@@ -362,11 +362,12 @@ public class ExtractManager {
 
             // StringUtils.trimToEmpty(name) is because bug 4547
             if (name != null && StringUtils.trimToEmpty(name).equals(ETableTypes.TABLETYPE_SYNONYM.getName())) {
-                String tableName = getTableNameBySynonyms(extractMeta.getConn(), newNode.getValue());
+                String nodeValue = newNode.getValue();
+                String tableName = getTableNameBySynonyms(extractMeta.getConn(), nodeValue);
                 if (tableName != null && tableName.contains("/")) {
                     tableName = tableName.replace("/", "");
                 }
-                fillSynonyms(metadataConnection, metadataColumns, table, tableName, newNode.getValue(), dbMetaData);
+                fillSynonyms(metadataConnection, metadataColumns, table, tableName, nodeValue, dbMetaData);
             } else {
                 EDatabaseTypeName currentEDatabaseType = EDatabaseTypeName.getTypeFromDbType(metadataConnection.getDbType());
                 metadataColumns = MetadataFillFactory.getDBInstance(currentEDatabaseType).fillColumns(table, metadataConnection,
