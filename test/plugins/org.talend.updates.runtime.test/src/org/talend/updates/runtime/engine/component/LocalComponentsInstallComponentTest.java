@@ -245,7 +245,9 @@ public class LocalComponentsInstallComponentTest {
         ComponentIndexBean index = new ComponentIndexManager().create(testDataFile);
         Assert.assertNotNull(index);
 
+        final File installedFolder = new File(tmpFolder, "installed");
         final File sharedFolder = new File(tmpFolder, "shared");
+        installedFolder.mkdir();
         sharedFolder.mkdir();
         final File target = new File(tmpFolder, testDataFile.getName());
         FilesUtils.copyFile(testDataFile, target);
