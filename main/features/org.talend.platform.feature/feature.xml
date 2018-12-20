@@ -54,9 +54,8 @@
     <import plugin="org.eclipse.ui.themes" version="0.0.0" match="greaterOrEqual"/>
     <import plugin="org.eclipse.ui.views" version="0.0.0" match="greaterOrEqual"/>
     <import plugin="org.eclipse.ui.views.properties.tabbed" version="0.0.0" match="greaterOrEqual"/>
-    <import plugin="org.eclipse.ui.win32" version="0.0.0" match="greaterOrEqual"/>
     <import plugin="org.eclipse.ui.workbench.texteditor" version="0.0.0" match="greaterOrEqual"/>
-  </requires>  
+  </requires>
   <plugin id="org.eclipse.compare.win32" os="win32" download-size="38" install-size="71" version="1.0.200.v20130514-1224" unpack="false"/>
   <plugin id="org.eclipse.core.filesystem.aix.ppc" os="aix" arch="ppc" download-size="9" install-size="17" version="1.1.0.v20140124-1940" fragment="true" unpack="false"/>
   <plugin id="org.eclipse.core.filesystem.aix.ppc64" os="aix" arch="ppc64" download-size="9" install-size="18" version="1.1.0.v20140124-1940" fragment="true" unpack="false"/>
@@ -79,5 +78,6 @@
   <plugin id="org.eclipse.equinox.security.macosx" os="macosx" download-size="16" install-size="58" version="1.100.200.v20130327-1442" fragment="true" unpack="false"/>
   <plugin id="org.eclipse.equinox.security.win32.x86" os="win32" arch="x86" download-size="22" install-size="47" version="1.0.300.v20130327-1442" fragment="true" unpack="false"/>
   <plugin id="org.eclipse.equinox.security.win32.x86_64" os="win32" arch="x86_64" download-size="34" install-size="65" version="1.0.100.v20130327-1442" fragment="true" unpack="false"/>
-  <plugin download-size="0" install-size="0" version="0.0.0" unpack="false" id="org.talend.platform.logging"/>
+  <plugin id="org.eclipse.ui.win32" os="win32" download-size="24" install-size="48" version="3.2.400.v20140423-2207" fragment="true" unpack="false"/>
+  <plugin id="org.talend.platform.logging" download-size="0" install-size="0" version="0.0.0" unpack="false"/>
 </feature>
