@@ -108,7 +108,7 @@ public class XmlFileOutputStep2Form extends AbstractXmlFileStepForm {
 
     private SashForm mainSashFormComposite;
 
-    protected Label statusLabel;
+    protected Label statusLabelWarnText;
 
     protected Label statusLabelWarn;
 
@@ -182,9 +182,9 @@ public class XmlFileOutputStep2Form extends AbstractXmlFileStepForm {
         createGroup.setLayoutData(new GridData());
         statusLabelWarn = new Label(createGroup, SWT.NONE);
         statusLabelWarn.setImage(PlatformUI.getWorkbench().getSharedImages().getImage(ISharedImages.IMG_OBJS_WARN_TSK));
-        statusLabel = new Label(createGroup, SWT.NONE);
-        statusLabel.setText(Messages.getString("XmlFileOutputStep2Form.Error"));
-        statusLabel.setVisible(false);
+        statusLabelWarnText = new Label(createGroup, SWT.NONE);
+        statusLabelWarnText.setText(Messages.getString("XmlFileOutputStep2Form.Error"));
+        statusLabelWarnText.setVisible(false);
         statusLabelWarn.setVisible(false);
 
         linker = new XmlFileSchema2TreeLinker(mainSashFormComposite);
@@ -551,10 +551,10 @@ public class XmlFileOutputStep2Form extends AbstractXmlFileStepForm {
         int schemaViewerCount = schemaViewer.getTable().getItems().length;
         if (schemaViewerCount == CoreUIPlugin.getDefault().getPreferenceStore()
                 .getInt(ITalendCorePrefConstants.MAXIMUM_AMOUNT_OF_COLUMNS_FOR_XML) + 1) {
-            statusLabel.setVisible(true);
+            statusLabelWarnText.setVisible(true);
             statusLabelWarn.setVisible(true);
         } else {
-            statusLabel.setVisible(false);
+            statusLabelWarnText.setVisible(false);
             statusLabelWarn.setVisible(false);
         }
         int num = 0, rootNum = 0;
