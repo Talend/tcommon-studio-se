@@ -93,7 +93,8 @@ public class ExtractMetaDataFromDataBase {
         MANAGED_TABLE("MANAGED_TABLE"), //$NON-NLS-1$ // for hive
         INDEX_TABLE("INDEX_TABLE"), //$NON-NLS-1$ // for hive
         VIRTUAL_VIEW("VIRTUAL_VIEW"), //$NON-NLS-1$ // for hive
-        SYSTEM_TABLE("SYSTEM TABLE"); //$NON-NLS-1$ //added for amazon redshift TDQ-11558 by msjian 
+        SYSTEM_TABLE("SYSTEM TABLE"), //$NON-NLS-1$ //added for amazon redshift TDQ-11558 by msjian
+        SYSTEM_VIEW("SYSTEM VIEW"); //$NON-NLS-1$ // for mysql
 
         private final String name;
 

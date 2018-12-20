@@ -244,6 +244,9 @@ public class ExtractManager {
             if (conn != null) {
                 catalog = conn.getCatalog();
             }
+            // Mysql For the system databases like mysql,information_schema retrieve schema/...is not working.
+            availableTableTypes.add(ETableTypes.SYSTEM_TABLE.getName());
+            availableTableTypes.add(ETableTypes.SYSTEM_VIEW.getName());
         }
         rsTables = dbMetaData.getTables(catalog, schema, null, availableTableTypes.toArray(new String[] {}));
         if (rsTables != null) {
@@ -319,10 +322,10 @@ public class ExtractManager {
             // if (tableType.startsWith("A")) {
             // System.out.println("AA");
             // }
-            if (ExtractManager.TABLETYPE_TABLE.equals(tableType)) {
+            if (ExtractManager.TABLETYPE_TABLE.equals(tableType) || ETableTypes.SYSTEM_TABLE.getName().equals(tableType)) {
                 tableType = ETableTypes.TABLETYPE_TABLE.getName();
             }
-            if (ExtractManager.TABLETYPE_VIEW.equals(tableType)) {
+            if (ExtractManager.TABLETYPE_VIEW.equals(tableType) || ETableTypes.SYSTEM_VIEW.getName().equals(tableType)) {
                 tableType = ETableTypes.TABLETYPE_VIEW.getName();
             }
 
