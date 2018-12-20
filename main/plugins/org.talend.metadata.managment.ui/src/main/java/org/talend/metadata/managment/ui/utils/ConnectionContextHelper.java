@@ -892,7 +892,7 @@ public final class ConnectionContextHelper {
                     ConnectionContextHelper.addContextVarForJob(process, contextItem, addedVars);
                 }
             } else {
-                showContextGroupDialog(process, contextItem, contextManager, addedVars);
+                showContextGroupDialog(process, contextItem, contextManager, addedVars, true);
             }
             isAddContext = true;
         }
@@ -900,7 +900,7 @@ public final class ConnectionContextHelper {
     }
 
     public static void showContextGroupDialog(IProcess2 process, ContextItem contextItem, IContextManager contextManager,
-            Set<String> addedVars) {
+            Set<String> addedVars, boolean isJobsettingContextModel) {
         // construct selectedContextItems
         List<ContextItem> selectedContextItems = new ArrayList<ContextItem>();
         selectedContextItems.add(contextItem);
@@ -914,7 +914,7 @@ public final class ConnectionContextHelper {
             curGroupSet.add(context.getName());
         }
         Set<String> contextGoupNameSet = new HashSet<String>();
-        if (!curGroupSet.containsAll(groupSet)) {
+        if (!curGroupSet.containsAll(groupSet) && isJobsettingContextModel) {
             // ask to copy all context group
             SelectRepositoryContextGroupDialog groupDialog = new SelectRepositoryContextGroupDialog(PlatformUI.getWorkbench()
                     .getDisplay().getActiveShell(), contextManager, new ContextManagerHelper(contextManager),
