@@ -54,13 +54,13 @@
 		<module>i18n/plugins/org.talend.model.migration.nl</module>
 		<module>i18n/plugins/org.talend.model.nl</module>
 		<module>i18n/plugins/org.talend.presentation.onboarding.nl</module>
-		<!--<module>i18n/plugins/org.talend.rcp.nl</module>-->
+		<module>i18n/plugins/org.talend.rcp.nl</module>
 		<module>i18n/plugins/org.talend.registration.nl</module>
 		<module>i18n/plugins/org.talend.repository.items.importexport.nl</module>
 		<module>i18n/plugins/org.talend.repository.items.importexport.ui.nl</module>
-		<!--<module>i18n/plugins/org.talend.repository.localprovider.nl</module>-->
-		<!--<module>i18n/plugins/org.talend.repository.mdm.nl</module>-->
-		<!--<module>i18n/plugins/org.talend.repository.metadata.nl</module>-->
+		<module>i18n/plugins/org.talend.repository.localprovider.nl</module>
+		<module>i18n/plugins/org.talend.repository.mdm.nl</module>
+		<module>i18n/plugins/org.talend.repository.metadata.nl</module>
 		<module>i18n/plugins/org.talend.repository.view.nl</module>
 		<module>i18n/plugins/org.talend.resources.nl</module>
 		<module>main/features/org.talend.commons.feature</module>
@@ -69,7 +69,7 @@
 		<module>main/features/org.talend.help.feature</module>
 		<module>main/features/org.talend.libraries.jdbc.feature</module>
 		<module>main/features/org.talend.model.migration.feature</module>
-		<!--<module>main/features/org.talend.rcp.feature</module>-->
+		<module>main/features/org.talend.rcp.feature</module>
 		<module>main/features/org.talend.update.p2.feature</module>
 		<module>main/features/org.talend.updates.feature</module>
 		<module>main/features/org.talend.utils.feature</module>
@@ -143,13 +143,13 @@
 		<module>main/plugins/org.talend.maven.resolver</module>
 		<module>main/plugins/org.talend.platform.logging</module>
 		<module>main/plugins/org.talend.presentation.onboarding</module>
-		<!--<module>main/plugins/org.talend.rcp</module>-->
+		<module>main/plugins/org.talend.rcp</module>
 		<module>main/plugins/org.talend.registration</module>
 		<module>main/plugins/org.talend.repository.items.importexport</module>
 		<module>main/plugins/org.talend.repository.items.importexport.ui</module>
-		<!--<module>main/plugins/org.talend.repository.localprovider</module>-->
-		<!--<module>main/plugins/org.talend.repository.mdm</module>-->
-		<!--<module>main/plugins/org.talend.repository.metadata</module>-->
+		<module>main/plugins/org.talend.repository.localprovider</module>
+		<module>main/plugins/org.talend.repository.mdm</module>
+		<module>main/plugins/org.talend.repository.metadata</module>
 		<module>main/plugins/org.talend.repository.view</module>
 		<module>main/plugins/org.talend.repository.view.example</module>
 		<module>main/plugins/org.talend.resources</module>
@@ -181,40 +181,15 @@
 		<module>test/plugins/org.talend.model.test</module>
 		<module>test/plugins/org.talend.repository.items.importexport.test</module>
 		<module>test/plugins/org.talend.repository.items.importexport.ui.test</module>
-		<!--<module>test/plugins/org.talend.repository.localprovider.test</module>-->
-		<!--<module>test/plugins/org.talend.repository.metadata.test</module>-->
+		<module>test/plugins/org.talend.repository.localprovider.test</module>
+		<module>test/plugins/org.talend.repository.metadata.test</module>
 		<module>test/plugins/org.talend.repository.view.test</module>
 		<module>test/plugins/org.talend.testutils</module>
 		<module>test/plugins/org.talend.updates.runtime.test</module>
-		<!--<module>test/plugins/org.talend.utils.test</module>-->
+		<module>test/plugins/org.talend.utils.test</module>
 		<module>test/plugins/org.talend.designer.maven.test</module>
 		<module>test/plugins/test.all.test.suite</module>
 		<module>test/plugins/org.talend.datatools.xml.test</module>
-
-        <!-- modules from other repositories -->
-        <!-- tdi-studio-se -->
-        <module>../tdi-studio-se/main/features/org.talend.tos.libraries.feature</module>
-        <module>../tdi-studio-se/main/plugins/org.talend.libraries.asm</module>
-        <module>../tdi-studio-se/main/plugins/org.talend.libraries.crm</module>
-        <module>../tdi-studio-se/main/plugins/org.talend.libraries.css</module>
-        <module>../tdi-studio-se/main/plugins/org.talend.libraries.custom</module>
-        <module>../tdi-studio-se/main/plugins/org.talend.libraries.ehcache</module>
-        <module>../tdi-studio-se/main/plugins/org.talend.libraries.excel</module>
-        <module>../tdi-studio-se/main/plugins/org.talend.libraries.groovy</module>
-        <module>../tdi-studio-se/main/plugins/org.talend.libraries.guava</module>
-        <module>../tdi-studio-se/main/plugins/org.talend.libraries.hadoop.mapr.5.0.0</module>
-        <module>../tdi-studio-se/main/plugins/org.talend.libraries.jax</module>
-        <module>../tdi-studio-se/main/plugins/org.talend.libraries.jetty</module>
-        <module>../tdi-studio-se/main/plugins/org.talend.libraries.mondrian</module>
-        <module>../tdi-studio-se/main/plugins/org.talend.libraries.palo</module>
-        <module>../tdi-studio-se/main/plugins/org.talend.libraries.salesforce</module>
-        <module>../tdi-studio-se/main/plugins/org.talend.libraries.servlet</module>
-        <module>../tdi-studio-se/main/plugins/org.talend.libraries.slf4j</module>
-        <module>../tdi-studio-se/main/plugins/org.talend.libraries.xml</module>
-        <module>../tdi-studio-se/main/plugins/org.talend.libraries.zmq</module>
-        
-        <!-- tbd-studio-se -->
-        <module>../tbd-studio-se/main/plugins/org.talend.libraries.zookeeper</module>
 	</modules>
 	<build>
 		<plugins>
