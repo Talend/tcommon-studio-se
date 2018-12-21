@@ -119,6 +119,9 @@ public class DatabaseTableFilterForm extends AbstractForm {
             getTableInfoParameters().changeType(ETableTypes.VIRTUAL_VIEW, viewCheck.getSelection());
         } else if (EDatabaseTypeName.SAPHana.getDisplayName().equals(metadataconnection.getDbType())) {
             getTableInfoParameters().changeType(ETableTypes.TABLETYPE_CALCULATION_VIEW, calculationViewCheck.getSelection());
+        } else if (EDatabaseTypeName.MYSQL.getDisplayName().equals(metadataconnection.getDbType())) {
+            getTableInfoParameters().changeType(ETableTypes.SYSTEM_TABLE, tableCheck.getSelection());
+            getTableInfoParameters().changeType(ETableTypes.SYSTEM_VIEW, viewCheck.getSelection());
         }
         // hide for the bug 7959
         if (isOracle()) {
@@ -426,6 +429,8 @@ public class DatabaseTableFilterForm extends AbstractForm {
                 if (EDatabaseTypeName.HIVE.getDisplayName().equals(metadataconnection.getDbType())) {
                     getTableInfoParameters().changeType(ETableTypes.MANAGED_TABLE, tableCheck.getSelection());
                     getTableInfoParameters().changeType(ETableTypes.INDEX_TABLE, tableCheck.getSelection());
+                } else if (EDatabaseTypeName.MYSQL.getDisplayName().equals(metadataconnection.getDbType())) {
+                    getTableInfoParameters().changeType(ETableTypes.SYSTEM_TABLE, tableCheck.getSelection());
                 }
             }
 
@@ -437,6 +442,9 @@ public class DatabaseTableFilterForm extends AbstractForm {
             public void widgetSelected(SelectionEvent e) {
                 getTableInfoParameters().changeType(ETableTypes.TABLETYPE_VIEW, viewCheck.getSelection());
                 getTableInfoParameters().changeType(ETableTypes.VIRTUAL_VIEW, viewCheck.getSelection());
+                if (EDatabaseTypeName.MYSQL.getDisplayName().equals(metadataconnection.getDbType())) {
+                    getTableInfoParameters().changeType(ETableTypes.SYSTEM_VIEW, viewCheck.getSelection());
+                }
             }
 
         });

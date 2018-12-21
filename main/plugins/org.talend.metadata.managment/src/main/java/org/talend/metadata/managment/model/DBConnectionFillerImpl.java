@@ -1030,9 +1030,11 @@ public class DBConnectionFillerImpl extends MetadataFillerImpl<DatabaseConnectio
                 if (ETableTypes.EXTERNAL_TABLE.getName().equals(temptableType)
                         || ETableTypes.MANAGED_TABLE.getName().equals(temptableType)
                         || ETableTypes.INDEX_TABLE.getName().equals(temptableType)
-                        || ETableTypes.TABLETYPE_BASE_TABLE.getName().equals(temptableType)) {
+                        || ETableTypes.TABLETYPE_BASE_TABLE.getName().equals(temptableType)
+                        || ETableTypes.SYSTEM_TABLE.getName().equals(temptableType)) {
                     metadatatable.setTableType(ETableTypes.TABLETYPE_TABLE.getName());
-                } else if (ETableTypes.VIRTUAL_VIEW.getName().equals(temptableType)) {
+                } else if (ETableTypes.VIRTUAL_VIEW.getName().equals(temptableType)
+                        || ETableTypes.SYSTEM_VIEW.getName().equals(temptableType)) {
                     metadatatable.setTableType(ETableTypes.TABLETYPE_VIEW.getName());
                 } else if (ETableTypes.TABLETYPE_CALCULATION_VIEW.getName().equals(temptableType)) {
                     String catalog = getStringFromResultSet(tables, GetTable.TABLE_CAT.name());
