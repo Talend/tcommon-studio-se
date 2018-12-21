@@ -349,6 +349,10 @@ public class DatabaseForm extends AbstractForm {
     private final String originalUischema;
 
     private final String originalURL;
+    
+    private final String orginalDBVersion;
+    
+    private final String originalPort;
 
     private final Boolean originalIsNeedReload;
 
@@ -558,6 +562,8 @@ public class DatabaseForm extends AbstractForm {
 
         originalUischema = metadataconnection.getUiSchema() == null ? "" : metadataconnection.getUiSchema();
         originalURL = metadataconnection.getUrl();
+        originalPort = metadataconnection.getPort() == null ? "" : metadataconnection.getPort();
+        orginalDBVersion = metadataconnection.getDbVersionString() == null ? "" : metadataconnection.getDbVersionString();
         originalIsNeedReload = ConnectionHelper.getIsConnNeedReload(getConnection());
 
         this.typeName = EDatabaseTypeName.getTypeFromDbType(metadataconnection.getDbType());
@@ -4710,7 +4716,6 @@ public class DatabaseForm extends AbstractForm {
                 }
             }
         });
-
         // Db version
         dbVersionCombo.addModifyListener(new ModifyListener() {
 
@@ -4719,14 +4724,17 @@ public class DatabaseForm extends AbstractForm {
                 if (!isContextMode()) {
                     EDatabaseVersion4Drivers version = EDatabaseVersion4Drivers.indexOfByVersionDisplay(dbVersionCombo.getText());
                     if (version != null) {
-                    	if(EDatabaseTypeName.SYBASEASE.getDisplayName().equals(getConnectionDBType())) {
-                    		if(version.getVersionValue().equals( EDatabaseVersion4Drivers.SYBASEIQ_16_SA.getVersionValue())) {
-                        		portText.setText(EDatabaseConnTemplate.SYBASEASE_16_SA.getDefaultPort());
-                        	}else {
-                        		portText.setText(EDatabaseConnTemplate.SYBASEASE.getDefaultPort());
-                        	}
-                    	}
-                    	
+                        if (EDatabaseTypeName.SYBASEASE.getDisplayName().equals(getConnectionDBType())) {
+                            if (version.getVersionValue().equals(orginalDBVersion) && StringUtils.isNotEmpty(originalPort)) {
+                                portText.setText(originalPort);
+                            } else if (version.getVersionValue()
+                                    .equals(EDatabaseVersion4Drivers.SYBASEIQ_16_SA.getVersionValue())) {
+                                portText.setText(EDatabaseConnTemplate.SYBASEASE_16_SA.getDefaultPort());
+                            } else {
+                                portText.setText(EDatabaseConnTemplate.SYBASEASE.getDefaultPort());
+                            }
+                        }
+                        
                         getConnection().setDbVersionString(version.getVersionValue());
                        
                     }
