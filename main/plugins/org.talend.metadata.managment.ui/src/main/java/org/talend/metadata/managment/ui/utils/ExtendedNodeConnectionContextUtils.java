@@ -112,6 +112,24 @@ public class ExtendedNodeConnectionContextUtils {
         GoogleRegion,
         GoogleJarsBucket,
         PathToGoogleCredentials,
+        
+        // Qubole
+        QuboleAPIToken,
+        QuboleCluster,
+        QuboleClusterLabel,
+        QuboleEndpoint,
+        QuboleEndpointUrl,
+        QuboleS3AccessKey,
+        QuboleS3SecretKey,
+        QuboleS3BucketName,
+        QuboleS3BucketKey,
+        QuboleS3Region,
+        
+        // DataBricks
+        DataBricksEndpoint,
+        DataBricksClusterId,
+        DataBricksToken,
+        DataBricksDBFSDepFolder
     }
 
     static List<IContextParameter> getContextVariables(final String prefixName, Connection conn, Set<IConnParamName> paramSet) {
