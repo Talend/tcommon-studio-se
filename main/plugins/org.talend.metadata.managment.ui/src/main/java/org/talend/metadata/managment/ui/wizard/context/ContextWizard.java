@@ -40,6 +40,8 @@ import org.talend.commons.ui.runtime.image.ECoreImage;
 import org.talend.commons.ui.runtime.image.ImageProvider;
 import org.talend.commons.ui.swt.dialogs.ErrorDialogWidthDetailArea;
 import org.talend.commons.utils.VersionUtils;
+import org.talend.core.GlobalServiceRegister;
+import org.talend.core.ITDQRepositoryService;
 import org.talend.core.context.Context;
 import org.talend.core.context.RepositoryContext;
 import org.talend.core.model.context.JobContextManager;
@@ -344,6 +346,18 @@ public class ContextWizard extends CheckLastVersionRepositoryWizard implements I
                 log.error(Messages.getString("CommonWizard.persistenceException") + "\n" + detailError); //$NON-NLS-1$ //$NON-NLS-2$
                 return false;
             }
+            // Refresh DQ view if it is on DQ perspective
+            ITDQRepositoryService tdqRepService = null;
+            if (GlobalServiceRegister.getDefault().isServiceRegistered(ITDQRepositoryService.class)) {
+                tdqRepService = (ITDQRepositoryService) GlobalServiceRegister.getDefault()
+                        .getService(ITDQRepositoryService.class);
+            }
+            if (tdqRepService != null) {
+                if (CoreRuntimePlugin.getInstance().isDataProfilePerspectiveSelected()) {
+                    tdqRepService.refresh(contextItem);
+                }
+            }
+
             return true;
         } else {
             return false;
