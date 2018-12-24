@@ -119,6 +119,7 @@ public enum EParameterFieldType {
     TACOKIT_INPUT_SCHEMA,
     TACOKIT_GUESS_SCHEMA,
     TACOKIT_BUTTON,
+    TACOKIT_SUGGESTABLE_TABLE,
     TACOKIT_VALUE_SELECTION;
 
     public String getName() {
