@@ -248,7 +248,10 @@ public class ItemCacheManager {
 
     public static JobletProcessItem getJobletProcessItem(String projectTechLabel, String jobletId, String version) {
         ProjectManager projectManager = ProjectManager.getInstance();
-        Project project = projectManager.getProjectFromProjectTechLabel(projectTechLabel);
+        Project project = null;
+        if (StringUtils.isNotBlank(projectTechLabel)) {
+            project = projectManager.getProjectFromProjectTechLabel(projectTechLabel);
+        }
         if (project == null) {
             project = projectManager.getCurrentProject();
         }
