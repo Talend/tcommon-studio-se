@@ -18,6 +18,7 @@ import org.talend.commons.runtime.model.repository.ERepositoryStatus;
 import org.talend.commons.ui.runtime.image.ECoreImage;
 import org.talend.commons.ui.runtime.image.ImageProvider;
 import org.talend.core.GlobalServiceRegister;
+import org.talend.core.database.conn.ConnParameterKeys;
 import org.talend.core.model.metadata.IMetadataTable;
 import org.talend.core.model.metadata.builder.connection.CDCConnection;
 import org.talend.core.model.metadata.builder.connection.DatabaseConnection;
@@ -37,6 +38,7 @@ import org.talend.core.model.repository.IRepositoryViewObject;
 import org.talend.core.repository.model.ProxyRepositoryFactory;
 import org.talend.core.repository.model.repositoryObject.MetadataColumnRepositoryObject;
 import org.talend.core.repository.model.repositoryObject.MetadataTableRepositoryObject;
+import org.talend.core.runtime.hd.hive.HiveMetadataHelper;
 import org.talend.core.runtime.services.IGenericDBService;
 import org.talend.repository.ProjectManager;
 import org.talend.repository.metadata.i18n.Messages;
@@ -271,6 +273,11 @@ public class CreateTableAction extends AbstractCreateTableAction {
                         || ERepositoryObjectType.METADATA_GENERIC_SCHEMA.equals(nodeType)
                         || ERepositoryObjectType.METADATA_LDAP_SCHEMA.equals(nodeType)) {
                     setText(CREATE_LABEL);
+                    // hive
+                    if (showIfSupportRetrieveSchema(node)) {
+                        setEnabled(false);
+                        return;
+                    }
                     collectChildNames(node);
                     if (isLastVersion(node)) {
                         setEnabled(true);
@@ -289,5 +296,22 @@ public class CreateTableAction extends AbstractCreateTableAction {
             return node.getChildren().get(0);
         }
         return node;
+    }
+
+    private boolean showIfSupportRetrieveSchema(RepositoryNode node) {
+        IRepositoryViewObject repositoryObject = node.getObject();
+        if (repositoryObject != null && repositoryObject.getProperty() != null) {
+            Item item = repositoryObject.getProperty().getItem();
+            if (item != null && item instanceof DatabaseConnectionItem) {
+                DatabaseConnectionItem connItem = (DatabaseConnectionItem) item;
+                DatabaseConnection connection = (DatabaseConnection) connItem.getConnection();
+                String distributionObj = connection.getParameters().get(ConnParameterKeys.CONN_PARA_KEY_HIVE_DISTRIBUTION);
+                String hiveVersion = connection.getParameters().get(ConnParameterKeys.CONN_PARA_KEY_HIVE_VERSION);
+                if (distributionObj != null && hiveVersion != null) {
+                    return HiveMetadataHelper.isHiveWizardCheckEnabled(distributionObj, hiveVersion, false);
+                }
+            }
+        }
+        return false;
     }
 }
