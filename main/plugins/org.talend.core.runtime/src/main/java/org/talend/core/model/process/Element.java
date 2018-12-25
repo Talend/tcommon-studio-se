@@ -187,8 +187,12 @@ public abstract class Element implements Cloneable, IElement {
 
     @Override
     public void setElementParameters(List<? extends IElementParameter> parameters) {
-        this.listParam.clear();
-        this.listParam.addAll(parameters);
+        listParam.removeListener(listenableListener);
+        listParam = new ListenableList<IElementParameter>(
+                new ArrayList<IElementParameter>());
+        listParam.addPostOperationListener(listenableListener);
+        listParam.clear();
+        listParam.addAll(parameters);
     }
 
     @Override
@@ -309,4 +313,13 @@ public abstract class Element implements Cloneable, IElement {
 
     }
 
+    /**
+     * <font color="red">Currently only used by junit</font>
+     * 
+     * @return
+     */
+    @Deprecated
+    protected Map<String, IElementParameter> getMapNameToParam() {
+        return mapNameToParam;
+    }
 }

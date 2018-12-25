@@ -12,6 +12,7 @@
 // ============================================================================
 package org.talend.core.model.utils;
 
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -26,9 +27,11 @@ import org.talend.core.model.process.IElementParameterDefaultValue;
  * created by ggu on Sep 2, 2014 Detailled comment
  *
  */
-class TestElementParameter implements IElementParameter {
+public class TestElementParameter implements IElementParameter {
 
     private Object value;
+
+    private String name;
 
     private String repositoryValue;
 
@@ -41,8 +44,7 @@ class TestElementParameter implements IElementParameter {
      */
     @Override
     public void setName(String s) {
-        // TODO Auto-generated method stub
-
+        name = s;
     }
 
     /*
@@ -118,8 +120,7 @@ class TestElementParameter implements IElementParameter {
      */
     @Override
     public String getName() {
-        // TODO Auto-generated method stub
-        return null;
+        return name;
     }
 
     /*
@@ -908,8 +909,7 @@ class TestElementParameter implements IElementParameter {
      */
     @Override
     public Map<String, IElementParameter> getChildParameters() {
-        // TODO Auto-generated method stub
-        return null;
+        return new HashMap<>();
     }
 
     /*

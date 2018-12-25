@@ -156,6 +156,12 @@ public class ItemCacheManager {
         return null;
     }
 
+    /**
+     * It would be better to use <b>getJobletProcessItem(Project project, String jobletId)</b>
+     * 
+     * @param jobletId
+     * @return
+     */
     public static JobletProcessItem getJobletProcessItem(String jobletId) {
         ProjectManager projectManager = ProjectManager.getInstance();
         JobletProcessItem jobletProcessItem = getJobletProcessItem(projectManager.getCurrentProject(), jobletId);
@@ -176,7 +182,7 @@ public class ItemCacheManager {
             return null;
         }
         if (version == null || LATEST_VERSION.equals(version)) {
-            return getJobletProcessItem(jobletId);
+            return getJobletProcessItem(project, jobletId);
         }
         JobletProcessItem selectedProcessItem = null;
 
@@ -198,9 +204,16 @@ public class ItemCacheManager {
         return null;
     }
 
-    public static JobletProcessItem getJobletProcessItem(String jobletId, String version) {
+    public static JobletProcessItem getJobletProcessItem(String projectTechLabel, String jobletId, String version) {
         ProjectManager projectManager = ProjectManager.getInstance();
-        JobletProcessItem jobletProcessItem = getJobletProcessItem(projectManager.getCurrentProject(), jobletId, version);
+        Project project = null;
+        if (StringUtils.isNotBlank(projectTechLabel)) {
+            project = projectManager.getProjectFromProjectTechLabel(projectTechLabel);
+        }
+        if (project == null) {
+            project = projectManager.getCurrentProject();
+        }
+        JobletProcessItem jobletProcessItem = getJobletProcessItem(project, jobletId, version);
 
         if (jobletProcessItem == null) {
             for (Project p : projectManager.getReferencedProjects()) {
