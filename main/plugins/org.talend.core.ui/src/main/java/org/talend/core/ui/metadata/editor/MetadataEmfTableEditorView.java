@@ -402,11 +402,26 @@ public class MetadataEmfTableEditorView extends AbstractMetadataTableEditorView<
 
             @Override
             public void set(MetadataColumn bean, String value) {
+                String oldSourceType = bean.getSourceType();
                 bean.setSourceType(value);
-                // String dbms = getCurrentDbms();
-                // if (dbms != null) {
-                // adaptLengthAndPrecision(bean, dbms);
-                // }
+                String dbms = getCurrentDbms();
+                if (showDbTypeColumn && dbms != null) {
+                    String oldTalendType = bean.getTalendType();
+                    String oldDefaultTalendType = null;
+                    if (!"".equals(oldTalendType)) {
+                        oldDefaultTalendType = TypesManager.getTalendTypeFromDBType(dbms, oldSourceType);
+                    }
+                    if (oldTalendType == null || oldTalendType.equals(oldDefaultTalendType) || "".equals(oldTalendType)) { //$NON-NLS-1$
+                        bean.setTalendType(TypesManager.getTalendTypeFromDBType(dbms, value));
+                    }
+                }
+                String typeLength = getCurrentTypeLength(bean.getTalendType());
+                if (typeLength != null && !typeLength.equals("")) { //$NON-NLS-1$
+                    bean.setLength(Integer.parseInt(typeLength));
+                }
+                if (currentBeanHasJavaDateType(bean) || isCurrentBeanHasType(bean, "id_Dynamic")) { //$NON-NLS-1$
+                    bean.setPattern(new JavaSimpleDateFormatProposalProvider().getProposals(null, 0)[0].getContent());
+                }
             }
 
         };

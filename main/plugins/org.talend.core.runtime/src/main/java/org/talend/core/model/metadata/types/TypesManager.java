@@ -77,6 +77,9 @@ public class TypesManager {
         return MetadataTalendType.getMappingTypeRetriever(dbms).getDefaultSelectedDbType(talendType);
     }
 
+    public static String getTalendTypeFromDBType(String dbms, String DBType) {
+        return MetadataTalendType.getMappingTypeRetriever(dbms).getDefaultSelectedTalendType(DBType);
+    }
     public static boolean checkDBType(String dbms, String talendType, String dbType) {
         MappingTypeRetriever mappingTypeRetriever = MetadataTalendType.getMappingTypeRetriever(dbms);
         return mappingTypeRetriever.isAdvicedTalendToDbType(talendType, dbType);
