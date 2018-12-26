@@ -698,7 +698,7 @@ public class RepoViewCommonNavigator extends CommonNavigator implements IReposit
 
     public void dragFinished() {
         this.setNoNeedUpdate(false);
-        refresh();
+        refresh(false, false);
         LocalSelectionTransfer.getTransfer().setSelection(null);
         LocalSelectionTransfer.getTransfer().setSelectionSetTime(0);
     }
@@ -720,7 +720,7 @@ public class RepoViewCommonNavigator extends CommonNavigator implements IReposit
 
     @Override
     public void refresh() {
-        this.refresh(false);
+        this.refresh(false, true);
     }
 
     /*
@@ -728,7 +728,7 @@ public class RepoViewCommonNavigator extends CommonNavigator implements IReposit
      * 
      * @see org.talend.core.ui.repository.views.IRepositoryView#refresh()
      */
-    public void refresh(final boolean needInitialize) {
+    public void refresh(final boolean needInitialize, final boolean needPopup) {
         /*
          * fix bug 4040. Sometimes Display.getCurrent.getActiveShell() get null result we not expect.
          */
@@ -796,38 +796,40 @@ public class RepoViewCommonNavigator extends CommonNavigator implements IReposit
         job.setPriority(Job.INTERACTIVE);
         job.schedule();
 
-        ProgressDialog dialog = new ProgressDialog(shell, 3000) {
+        if (needPopup) {
+            ProgressDialog dialog = new ProgressDialog(shell, 3000) {
 
-            @Override
-            public void run(IProgressMonitor monitor) throws InvocationTargetException, InterruptedException {
-                while (true) {
-                    if (job.getResult() != null) {
-                        return;
+                @Override
+                public void run(IProgressMonitor monitor) throws InvocationTargetException, InterruptedException {
+                    while (true) {
+                        if (job.getResult() != null) {
+                            return;
+                        }
+                        Thread.sleep(200);
                     }
-                    Thread.sleep(200);
                 }
-            }
 
-            @Override
-            protected ProgressMonitorDialog newProgressMonitorDialog(Shell shell) {
-                return null;
-            }
+                @Override
+                protected ProgressMonitorDialog newProgressMonitorDialog(Shell shell) {
+                    return null;
+                }
 
-            @Override
-            protected void openDialog(ProgressMonitorDialog dialog) {
-                ProgressManager.getInstance().showInDialog(shell, job);
-            }
+                @Override
+                protected void openDialog(ProgressMonitorDialog dialog) {
+                    ProgressManager.getInstance().showInDialog(shell, job);
+                }
 
-            @Override
-            protected void dialogRun(ProgressMonitorDialog dialog, IRunnableWithProgress op)
-                    throws InvocationTargetException, InterruptedException {
-                // nothing to do
+                @Override
+                protected void dialogRun(ProgressMonitorDialog dialog, IRunnableWithProgress op)
+                        throws InvocationTargetException, InterruptedException {
+                    // nothing to do
+                }
+            };
+            try {
+                dialog.executeProcess();
+            } catch (Exception e) {
+                ExceptionHandler.process(e);
             }
-        };
-        try {
-            dialog.executeProcess();
-        } catch (Exception e) {
-            ExceptionHandler.process(e);
         }
     }
 
@@ -845,7 +847,7 @@ public class RepoViewCommonNavigator extends CommonNavigator implements IReposit
     @Override
     public void refreshView() {
 
-        refresh(true);
+        refresh(true, true);
         refreshContentDescription();
 
         List<IProcess2> openedProcessList = RepositoryManagerHelper.getOpenedProcess(RepositoryUpdateManager.getEditors());
