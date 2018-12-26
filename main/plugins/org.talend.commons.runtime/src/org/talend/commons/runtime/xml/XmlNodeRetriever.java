@@ -30,6 +30,7 @@ import javax.xml.xpath.XPathConstants;
 import javax.xml.xpath.XPathExpression;
 import javax.xml.xpath.XPathExpressionException;
 import javax.xml.xpath.XPathFactory;
+import javax.xml.xpath.XPathFactoryConfigurationException;
 
 import org.apache.oro.text.regex.MalformedPatternException;
 import org.apache.oro.text.regex.Pattern;
@@ -38,6 +39,7 @@ import org.apache.oro.text.regex.Perl5Matcher;
 import org.apache.oro.text.regex.Perl5Substitution;
 import org.apache.oro.text.regex.Util;
 import org.talend.commons.exception.CommonExceptionHandler;
+import org.talend.commons.exception.ExceptionHandler;
 import org.talend.commons.i18n.internal.Messages;
 import org.w3c.dom.Attr;
 import org.w3c.dom.Document;
@@ -193,6 +195,11 @@ public class XmlNodeRetriever {
                 prefixHandler = new XPathPrefixHandler(document.getDocumentElement());
                 // Create XPath factory for selecting schema and validation roots
                 XPathFactory xpf = XPathFactory.newInstance();
+                try {
+                    xpf.setFeature(XMLConstants.FEATURE_SECURE_PROCESSING, true);
+                } catch (XPathFactoryConfigurationException e) {
+                    ExceptionHandler.process(e);
+                }
                 xpath = xpf.newXPath();
                 // xpath.setNamespaceContext(namespaceContext);
                 xpath.setNamespaceContext(prefixHandler.getNamespaceContext());
