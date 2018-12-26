@@ -52,8 +52,7 @@ public class HiveMetadataHelper {
             for (IHDistribution d : distributions) {
                 if (!d.useCustom()) {// custom should be add
                     String[] distributionVersionsDisplay = getDistributionVersionsDisplay(d.getName(), false);
-                    if (distributionVersionsDisplay == null || distributionVersionsDisplay.length == 0
-                            || isHiveWizardCheckEnabled(d.getName(), d.getDefaultVersion().getVersion(), false)) {
+                    if (distributionVersionsDisplay == null || distributionVersionsDisplay.length == 0) {
                         continue; // if no version support, ignore it.
                     }
                 }
