@@ -26,7 +26,8 @@ Export-Package:
  org.talend.utils.sugars,
  org.talend.utils.thread,
  org.talend.utils.time;uses:="org.apache.log4j",
- org.talend.utils.wsdl
+ org.talend.utils.wsdl,
+ org.talend.utils.xml
 Bundle-ClassPath: .
 Require-Bundle: org.apache.commons.lang,
  org.talend.libraries.apache;visibility:=reexport,

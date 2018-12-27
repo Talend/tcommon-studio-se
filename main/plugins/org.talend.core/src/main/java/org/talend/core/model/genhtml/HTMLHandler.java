@@ -27,12 +27,12 @@ import java.util.HashMap;
 import java.util.Map;
 
 import javax.xml.transform.Transformer;
-import javax.xml.transform.TransformerFactory;
 
 import org.apache.commons.collections.map.LRUMap;
 import org.apache.commons.io.FileUtils;
 import org.eclipse.core.runtime.Path;
 import org.talend.commons.exception.ExceptionHandler;
+import org.talend.utils.xml.XmlUtils;
 
 /**
  * This class is used for transfering XML file to HTML file.
@@ -41,9 +41,6 @@ import org.talend.commons.exception.ExceptionHandler;
  * 
  */
 public class HTMLHandler {
-
-    // create an instance of TransformerFactory
-    private static TransformerFactory transformerFactory = TransformerFactory.newInstance();
 
     private static Map<String, Transformer> transformerCache = new HashMap<String, Transformer>();
 
@@ -169,7 +166,7 @@ public class HTMLHandler {
             if (trans == null) {
                 File xsltFile = new File(xslFilePath);
                 javax.xml.transform.Source xsltSource = new javax.xml.transform.stream.StreamSource(xsltFile);
-                trans = transformerFactory.newTransformer(xsltSource);
+                trans = XmlUtils.getXmlSecureTransformerFactory().newTransformer(xsltSource);
                 // put transformer into cache
                 transformerCache.put(xslFilePath, trans);
             }

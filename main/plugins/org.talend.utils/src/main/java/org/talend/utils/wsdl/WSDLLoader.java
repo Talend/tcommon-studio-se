@@ -32,10 +32,10 @@ import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
 import javax.xml.transform.Result;
 import javax.xml.transform.Source;
-import javax.xml.transform.TransformerFactory;
 import javax.xml.transform.dom.DOMSource;
 import javax.xml.transform.stream.StreamResult;
 
+import org.talend.utils.xml.XmlUtils;
 import org.w3c.dom.Attr;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
@@ -126,7 +126,7 @@ public class WSDLLoader {
 			ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
 			Source xmlSource = new DOMSource(wsdlDocument);
 			Result outputTarget = new StreamResult(outputStream);
-			TransformerFactory.newInstance().newTransformer().transform(xmlSource, outputTarget);
+			XmlUtils.getXmlSecureTransform().transform(xmlSource, outputTarget);
 			wsdls.put(DEFAULT_FILENAME, new ByteArrayInputStream(outputStream.toByteArray()));
 
 			return wsdls;
