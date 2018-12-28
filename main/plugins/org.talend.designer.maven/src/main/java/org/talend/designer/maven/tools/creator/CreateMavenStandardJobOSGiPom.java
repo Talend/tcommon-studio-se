@@ -197,6 +197,11 @@ public class CreateMavenStandardJobOSGiPom extends CreateMavenJobPom {
         }
     }
 
+    @Override
+    protected void updateDependencySet(IFile assemblyFile) {
+        // nothing to do.
+    }
+
     /*
      * (non-Javadoc)
      * 
