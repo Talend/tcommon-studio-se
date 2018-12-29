@@ -16,22 +16,30 @@ import java.io.ByteArrayInputStream;
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
+import java.nio.file.Path;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.HashSet;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+import java.util.Map.Entry;
 import java.util.Properties;
 import java.util.Set;
 
 import org.apache.commons.lang3.StringEscapeUtils;
 import org.apache.commons.lang3.StringUtils;
+import org.apache.maven.artifact.repository.ArtifactRepository;
 import org.apache.maven.model.Activation;
 import org.apache.maven.model.Dependency;
 import org.apache.maven.model.Model;
 import org.apache.maven.model.Profile;
 import org.eclipse.core.resources.IFile;
 import org.eclipse.core.resources.IFolder;
+import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IProgressMonitor;
+import org.eclipse.m2e.core.MavenPlugin;
+import org.eclipse.m2e.core.embedder.IMaven;
 import org.talend.commons.exception.ExceptionHandler;
 import org.talend.commons.exception.PersistenceException;
 import org.talend.commons.utils.VersionUtils;
@@ -70,6 +78,8 @@ import org.talend.designer.runprocess.IRunProcessService;
 import org.talend.repository.ProjectManager;
 import org.talend.repository.model.RepositoryConstants;
 import org.talend.utils.io.FilesUtils;
+import org.w3c.dom.Document;
+import org.w3c.dom.Node;
 
 /**
  * created by ggu on 4 Feb 2015 Detailled comment
@@ -550,55 +560,42 @@ public class CreateMavenJobPom extends AbstractMavenProcessorPom {
         MavenTemplateManager.saveContent(infoFile, jobInfoContent, overwrite);
     }
 
-    public void updateDependencySet(IFile assemblyFile) {
-        final String SEPARATOR = System.getProperty("line.separator"); //$NON-NLS-1$
-
-        String talendlibIncludesTag = "<!--@TalendLibIncludes@-->"; //$NON-NLS-1$
-        String _3rdlibExcludesTag = "<!--@3rdPartyLibIncludes@-->"; //$NON-NLS-1$
-        String jobIncludesTag = "<!--@JobIncludes@-->"; //$NON-NLS-1$
-
-        StringBuilder talendlibIncludes = new StringBuilder();
-        StringBuilder _3rdPartylibExcludes = new StringBuilder();
-        StringBuilder jobIncludes = new StringBuilder();
-
-        Set<String> childrenCoordinate = new HashSet<>();
+    protected void updateDependencySet(IFile assemblyFile) {
+        Set<String> jobCoordinate = new HashSet<>();
         if (!hasLoopDependency()) {
             // add children jobs
             Set<JobInfo> childrenJobInfo = getJobProcessor().getBuildChildrenJobs();
             for (JobInfo jobInfo : childrenJobInfo) {
                 Property property = jobInfo.getProcessItem().getProperty();
-                String groupId = PomIdsHelper.getJobGroupId(property);
-                String artifactId = PomIdsHelper.getJobArtifactId(jobInfo);
-                String coordinate = groupId + ":" + artifactId; //$NON-NLS-1$
-                addItem(jobIncludes, coordinate, SEPARATOR);
-                childrenCoordinate.add(coordinate);
+                String coordinate = getCoordinate(PomIdsHelper.getJobGroupId(property), PomIdsHelper.getJobArtifactId(jobInfo),
+                        MavenConstants.PACKAGING_JAR, PomIdsHelper.getJobVersion(property));
+                jobCoordinate.add(coordinate);
             }
         }
 
         // add parent job
         Property parentProperty = this.getJobProcessor().getProperty();
-        String parentCoordinate = PomIdsHelper.getJobGroupId(parentProperty) + ":" //$NON-NLS-1$
-                + PomIdsHelper.getJobArtifactId(parentProperty);
-        addItem(jobIncludes, parentCoordinate, SEPARATOR);
+        String parentCoordinate = getCoordinate(PomIdsHelper.getJobGroupId(parentProperty),
+                PomIdsHelper.getJobArtifactId(parentProperty), MavenConstants.PACKAGING_JAR,
+                PomIdsHelper.getJobVersion(parentProperty));
+        jobCoordinate.add(parentCoordinate);
 
         // add talend libraries and codes
         Set<String> talendLibCoordinate = new HashSet<>();
         String projectTechName = ProjectManager.getInstance().getProject(parentProperty).getTechnicalLabel();
         String projectGroupId = PomIdsHelper.getProjectGroupId(projectTechName);
+
         // codes
         List<Dependency> dependencies = new ArrayList<>();
         addCodesDependencies(dependencies);
         for (Dependency dependency : dependencies) {
-            String dependencyGroupId = dependency.getGroupId();
-            String coordinate = dependencyGroupId + ":" + dependency.getArtifactId(); //$NON-NLS-1$
-            addItem(talendlibIncludes, coordinate, SEPARATOR);
-            talendLibCoordinate.add(coordinate);
+            talendLibCoordinate.add(getCoordinate(dependency));
         }
+
         // libraries
         dependencies.clear();
-        Set<ModuleNeeded> modules =
-                getJobProcessor().getNeededModules(
-                        TalendProcessOptionConstants.MODULES_WITH_JOBLET | TalendProcessOptionConstants.MODULES_EXCLUDE_SHADED);
+        Set<ModuleNeeded> modules = getJobProcessor().getNeededModules(
+                TalendProcessOptionConstants.MODULES_WITH_JOBLET | TalendProcessOptionConstants.MODULES_EXCLUDE_SHADED);
         for (ModuleNeeded module : modules) {
             String mavenUri = module.getMavenUri();
             Dependency dependency = PomUtil.createModuleDependency(mavenUri);
@@ -609,10 +606,9 @@ public class CreateMavenJobPom extends AbstractMavenProcessorPom {
                 continue;
             }
             String dependencyGroupId = dependency.getGroupId();
-            String coordinate = dependencyGroupId + ":" + dependency.getArtifactId(); //$NON-NLS-1$
-            if (!childrenCoordinate.contains(coordinate)) {
+            String coordinate = getCoordinate(dependency);
+            if (!jobCoordinate.contains(coordinate)) {
                 if (MavenConstants.DEFAULT_LIB_GROUP_ID.equals(dependencyGroupId)) {
-                    addItem(talendlibIncludes, coordinate, SEPARATOR);
                     talendLibCoordinate.add(coordinate);
                 }
             }
@@ -620,14 +616,15 @@ public class CreateMavenJobPom extends AbstractMavenProcessorPom {
 
         // add 3rd party libraries
         Set<String> _3rdDepLib = new HashSet<>();
+        Map<String, Set<Dependency>> duplicateLibs = new HashMap<>();
         for (Dependency dependency : dependencies) {
             if (MavenConstants.PACKAGING_POM.equals(dependency.getType())) {
                 continue;
             }
-            String coordinate = dependency.getGroupId() + ":" + dependency.getArtifactId(); //$NON-NLS-1$
-            if (!childrenCoordinate.contains(coordinate) && !talendLibCoordinate.contains(coordinate)) {
+            String coordinate = getCoordinate(dependency);
+            if (!jobCoordinate.contains(coordinate) && !talendLibCoordinate.contains(coordinate)) {
                 _3rdDepLib.add(coordinate);
-                addItem(_3rdPartylibExcludes, coordinate, SEPARATOR);
+                addToDuplicateLibs(duplicateLibs, dependency);
             }
         }
 
@@ -643,41 +640,154 @@ public class CreateMavenJobPom extends AbstractMavenProcessorPom {
                 continue;
             }
             MavenArtifact artifact = MavenUrlHelper.parseMvnUrl(moduleNeeded.getMavenUri());
-            String coordinate = artifact.getGroupId() + ":" + artifact.getArtifactId(); //$NON-NLS-1$
-            if (!childrenCoordinate.contains(coordinate) && !talendLibCoordinate.contains(coordinate)
+            String coordinate = getCoordinate(artifact.getGroupId(), artifact.getArtifactId(), artifact.getType(),
+                    artifact.getVersion());
+            if (!jobCoordinate.contains(coordinate) && !talendLibCoordinate.contains(coordinate)
                     && !_3rdDepLib.contains(coordinate)) {
                 if (MavenConstants.DEFAULT_LIB_GROUP_ID.equals(artifact.getGroupId())
                         || artifact.getGroupId().startsWith(projectGroupId)) {
-                    addItem(talendlibIncludes, coordinate, SEPARATOR);
+                    talendLibCoordinate.add(coordinate);
                 } else {
-                    addItem(_3rdPartylibExcludes, coordinate, SEPARATOR);
+                    _3rdDepLib.add(coordinate);
+                    Dependency dependency = PomUtil.createDependency(artifact.getGroupId(), artifact.getArtifactId(),
+                            artifact.getVersion(), artifact.getType(), artifact.getClassifier());
+                    addToDuplicateLibs(duplicateLibs, dependency);
                 }
             }
         }
 
-        if (_3rdPartylibExcludes.length() == 0) {
-            // if removed, it might add many unwanted dependencies to the libs folder. (or we should simply remove
-            // the full empty block of dependencySet)
-            addItem(_3rdPartylibExcludes, "null:null", SEPARATOR); //$NON-NLS-1$
+        Iterator<String> iterator = duplicateLibs.keySet().iterator();
+        while (iterator.hasNext()) {
+            String key = iterator.next();
+            Set<Dependency> dupDependencies = duplicateLibs.get(key);
+            if (dupDependencies.size() < 2) {
+                // remove non-duplicated dependencies
+                iterator.remove();
+            } else {
+                // remove duplicated dependencies from 3rd lib list
+                for (Dependency dependency : dupDependencies) {
+                    _3rdDepLib.remove(getCoordinate(dependency));
+                }
+            }
         }
 
-        String talendLibIncludesStr = StringUtils.removeEnd(talendlibIncludes.toString(), SEPARATOR);
-        String _3rdPartylibExcludesStr = StringUtils.removeEnd(_3rdPartylibExcludes.toString(), SEPARATOR);
-        String jobIncludesStr = StringUtils.removeEnd(jobIncludes.toString(), SEPARATOR);
-        String content = org.talend.commons.utils.io.FilesUtils.readFileContent(assemblyFile);
-        content = StringUtils.replaceEach(content, new String[] { talendlibIncludesTag, _3rdlibExcludesTag, jobIncludesTag },
-                new String[] { talendLibIncludesStr, _3rdPartylibExcludesStr, jobIncludesStr });
-        org.talend.commons.utils.io.FilesUtils.writeContentToFile(content, assemblyFile);
+        try {
+            Document document = PomUtil.loadAssemblyFile(null, assemblyFile);
+            // add talend libs & codes
+            setupDependencySetNode(document, talendLibCoordinate, "lib", "${artifact.artifactId}.${artifact.extension}", false);
+            // add 3rd party libs <dependencySet>
+            setupDependencySetNode(document, _3rdDepLib, "lib", null, false);
+            // add jobs
+            setupDependencySetNode(document, jobCoordinate, "${talend.job.name}",
+                    "${artifact.build.finalName}.${artifact.extension}", true);
+            // add duplicate dependencies if exists
+            setupFileNode(document, duplicateLibs);
+
+            PomUtil.saveAssemblyFile(assemblyFile, document);
+        } catch (Exception e) {
+            ExceptionHandler.process(e);
+        }
     }
 
-    private void addItem(StringBuilder builder, String coordinate, String separator) {
-        if (builder.length() > 0) {
-            builder.append("\t\t\t\t"); //$NON-NLS-1$
+    private String getCoordinate(Dependency dependency) {
+        return getCoordinate(dependency.getGroupId(), dependency.getArtifactId(), dependency.getType(), dependency.getVersion());
+    }
+
+    private String getCoordinate(String groupId, String artifactId, String type, String version) {
+        String separator = ":"; //$NON-NLS-1$
+        String coordinate = groupId + separator;
+        coordinate += artifactId + separator;
+        if (type != null) {
+            coordinate += type;
         }
-        builder.append("<include>"); //$NON-NLS-1$
-        builder.append(coordinate);
-        builder.append("</include>"); //$NON-NLS-1$
-        builder.append(separator);
+        if (version != null) {
+            coordinate += separator + version;
+        }
+        return coordinate;
+    }
+
+    private void addToDuplicateLibs(Map<String, Set<Dependency>> map, Dependency dependency) {
+        String coordinate = getCoordinate(dependency.getGroupId(), dependency.getArtifactId(), dependency.getType(), null);
+        if (!map.containsKey(coordinate)) {
+            Set<Dependency> set = new HashSet<>();
+            map.put(coordinate, set);
+        }
+        map.get(coordinate).add(dependency);
+    }
+
+    private void setupDependencySetNode(Document document, Set<String> libIncludes, String outputDir, String fileNameMapping,
+            boolean useProjectArtifact) {
+        if (libIncludes.isEmpty()) {
+            return;
+        }
+        Node dependencySetsNode = document.getElementsByTagName("dependencySets").item(0);
+        Node dependencySetNode = document.createElement("dependencySet");
+        dependencySetsNode.appendChild(dependencySetNode);
+
+        Node outputDirNode = document.createElement("outputDirectory");
+        outputDirNode.setTextContent(outputDir);
+        dependencySetNode.appendChild(outputDirNode);
+
+        Node includesNode = document.createElement("includes");
+        dependencySetNode.appendChild(includesNode);
+
+        for (String include : libIncludes) {
+            Node includeNode = document.createElement("include");
+            includeNode.setTextContent(include);
+            includesNode.appendChild(includeNode);
+        }
+
+        if (StringUtils.isNotBlank(fileNameMapping)) {
+            Node fileNameMappingNode = document.createElement("outputFileNameMapping");
+            fileNameMappingNode.setTextContent(fileNameMapping);
+            dependencySetNode.appendChild(fileNameMappingNode);
+        }
+
+        Node useProjectArtifactNode = document.createElement("useProjectArtifact");
+        useProjectArtifactNode.setTextContent(Boolean.toString(useProjectArtifact));
+        dependencySetNode.appendChild(useProjectArtifactNode);
+
+    }
+
+    private void setupFileNode(Document document, Map<String, Set<Dependency>> duplicateDependencies) {
+        if (duplicateDependencies.isEmpty()) {
+            return;
+        }
+        try {
+            IMaven maven = MavenPlugin.getMaven();
+            ArtifactRepository repository = maven.getLocalRepository();
+            Node filesNode = document.getElementsByTagName("files").item(0);
+            for (Entry<String, Set<Dependency>> entry : duplicateDependencies.entrySet()) {
+                Set<Dependency> dependencies = entry.getValue();
+                for (Dependency dependency : dependencies) {
+                    String sourceLocation = maven.getArtifactPath(repository, dependency.getGroupId(), dependency.getArtifactId(),
+                            dependency.getVersion(), dependency.getType(), dependency.getClassifier());
+                    Path path = new File(repository.getBasedir()).toPath().resolve(sourceLocation);
+                    sourceLocation = path.toString();
+                    String destName = path.getFileName().toString();
+                    Node fileNode = document.createElement("file");
+                    filesNode.appendChild(fileNode);
+
+                    Node sourcesNode = document.createElement("source");
+                    sourcesNode.setTextContent(sourceLocation);
+                    fileNode.appendChild(sourcesNode);
+
+                    Node outputDirNode = document.createElement("outputDirectory");
+                    outputDirNode.setTextContent("lib");
+                    fileNode.appendChild(outputDirNode);
+
+                    Node destNameNode = document.createElement("destName");
+                    destNameNode.setTextContent(destName);
+                    fileNode.appendChild(destNameNode);
+
+                    Node filteredNode = document.createElement("filtered");
+                    filteredNode.setTextContent(Boolean.TRUE.toString());
+                    fileNode.appendChild(filteredNode);
+                }
+            }
+        } catch (CoreException e) {
+            ExceptionHandler.process(e);
+        }
     }
 
 }
