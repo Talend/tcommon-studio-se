@@ -21,6 +21,7 @@ import org.apache.maven.model.Dependency;
 import org.apache.maven.model.Model;
 import org.apache.maven.model.Plugin;
 import org.apache.maven.model.PluginExecution;
+import org.apache.maven.model.Resource;
 import org.codehaus.plexus.util.xml.Xpp3Dom;
 import org.eclipse.core.resources.IFile;
 import org.eclipse.core.resources.IFolder;
@@ -170,9 +171,12 @@ public abstract class AbstractMavenProcessorPom extends CreateMavenBundleTemplat
             PomUtil.checkParent(model, this.getPomFile(), templateParameters);
             setupShade(model);
             if(jobProcessor.getArguments()!=null && jobProcessor.getArguments().containsKey("INCLUDE_EXT_RESOURCES")) {
-                org.apache.maven.model.Resource extRes = new  org.apache.maven.model.Resource();
+                Resource extRes = new Resource();
                 extRes.setDirectory("src/main/ext-resources");
                 model.getBuild().getResources().add(extRes);
+                Resource defaultRes = new Resource();
+                defaultRes.setDirectory("src/main/resources");
+                model.getBuild().getResources().add(defaultRes);
             }            
             addDependencies(model);
         }
