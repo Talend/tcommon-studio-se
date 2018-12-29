@@ -92,9 +92,13 @@ import org.talend.designer.maven.tools.ProcessorDependenciesManager;
 import org.talend.designer.runprocess.IProcessor;
 import org.talend.repository.ProjectManager;
 import org.w3c.dom.Attr;
+import org.w3c.dom.DOMImplementation;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.NamedNodeMap;
+import org.w3c.dom.ls.DOMImplementationLS;
+import org.w3c.dom.ls.LSOutput;
+import org.w3c.dom.ls.LSSerializer;
 import org.xml.sax.SAXException;
 
 /**
@@ -789,6 +793,21 @@ public class PomUtil {
                 } catch (IOException e) {
                     ExceptionHandler.process(e);
                 }
+            }
+        }
+    }
+
+    public static void saveAssemblyFile(IFile assemblyFile, Document document) throws IOException {
+        DOMImplementation implementation = document.getImplementation();
+        if (implementation.hasFeature("LS", "3.0")) { //$NON-NLS-1$ //$NON-NLS-2$
+            DOMImplementationLS implementationLS = (DOMImplementationLS) implementation.getFeature("LS", "3.0"); //$NON-NLS-1$ //$NON-NLS-2$
+            LSSerializer serializer = implementationLS.createLSSerializer();
+            serializer.getDomConfig().setParameter("format-pretty-print", true); //$NON-NLS-1$
+            try (FileWriter writer = new FileWriter(assemblyFile.getLocation().toFile())) {
+                LSOutput output = implementationLS.createLSOutput();
+                output.setEncoding("UTF-8"); //$NON-NLS-1$
+                output.setCharacterStream(writer);
+                serializer.write(document, output);
             }
         }
     }
