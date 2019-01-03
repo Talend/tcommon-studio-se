@@ -33,7 +33,7 @@ public class LastGenerationInfo {
 
     private HashMap<String, Set<ModuleNeeded>> modulesNeededWithSubjobPerJob;
     
-    private Set<ModuleNeeded> highPriorityModuleNeeded;
+    private HashMap<String, Set<ModuleNeeded>> highPriorityModuleNeeded;
 
     private HashMap<String, Set<String>> routinesNeededWithSubjobPerJob;
 
@@ -55,7 +55,7 @@ public class LastGenerationInfo {
         modulesNeededPerJob = new HashMap<String, Set<ModuleNeeded>>();
         contextPerJob = new HashMap<String, Set<String>>();
         modulesNeededWithSubjobPerJob = new HashMap<String, Set<ModuleNeeded>>();
-        highPriorityModuleNeeded = new LinkedHashSet<ModuleNeeded>();
+        highPriorityModuleNeeded = new HashMap<>();
         lastGeneratedjobs = new HashSet<JobInfo>();
         routinesNeededPerJob = new HashMap<String, Set<String>>();
         pigudfNeededPerJob = new HashMap<String, Set<String>>();
@@ -257,13 +257,29 @@ public class LastGenerationInfo {
         }
         return routinesNeededPerJob.get(key);
     }
-    
-    public Set<ModuleNeeded> getHighPriorityModuleNeeded() {
-        return highPriorityModuleNeeded;
+
+    public Set<ModuleNeeded> getHighPriorityModuleNeeded(String jobId, String jobVersion) {
+        String key = getProcessKey(jobId, jobVersion);
+        if (!highPriorityModuleNeeded.containsKey(key)) {
+            highPriorityModuleNeeded.put(key, new LinkedHashSet<>());
+        }
+        return highPriorityModuleNeeded.get(key);
     }
-    
-    public void setHighPriorityModuleNeeded(ModuleNeeded moduleNeeded) {
-        highPriorityModuleNeeded.add(moduleNeeded);
+
+    public void setHighPriorityModuleNeeded(String jobId, String jobVersion, Set<ModuleNeeded> moduleNeeded) {
+        String key = getProcessKey(jobId, jobVersion);
+        if (!highPriorityModuleNeeded.containsKey(key)) {
+            highPriorityModuleNeeded.put(key, new LinkedHashSet<>());
+        }
+        highPriorityModuleNeeded.get(key).addAll(moduleNeeded);
+    }
+
+    public void clearHighPriorityModuleNeeded() {
+        highPriorityModuleNeeded.clear();
+    }
+
+    private String getProcessKey(String jobId, String jobVersion) {
+        return jobId + "_" + jobVersion; //$NON-NLS-1$
     }
 
     /**

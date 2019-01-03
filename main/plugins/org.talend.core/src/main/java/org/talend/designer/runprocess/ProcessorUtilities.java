@@ -430,7 +430,7 @@ public class ProcessorUtilities {
 
             // this cache only keep the last main job's generation, so clear it since we regenerate a new job.
             LastGenerationInfo.getInstance().getLastGeneratedjobs().clear();
-            LastGenerationInfo.getInstance().getHighPriorityModuleNeeded().clear();
+            LastGenerationInfo.getInstance().clearHighPriorityModuleNeeded();
             retrievedJarsForCurrentBuild.clear();
 
             // if it's the father, reset the processMap to ensure to have a good
@@ -944,7 +944,7 @@ public class ProcessorUtilities {
 
                 // this cache only keep the last main job's generation, so clear it since we regenerate a new job.
                 LastGenerationInfo.getInstance().getLastGeneratedjobs().clear();
-                LastGenerationInfo.getInstance().getHighPriorityModuleNeeded().clear();
+                LastGenerationInfo.getInstance().clearHighPriorityModuleNeeded();
                 retrievedJarsForCurrentBuild.clear();
 
                 // if it's the father, reset the processMap to ensure to have a good
@@ -1446,6 +1446,11 @@ public class ProcessorUtilities {
         Set<String> subjobPigUDFModules = generationInfo.getPigudfNeededWithSubjobPerJob(subJobInfo.getJobId(),
                 subJobInfo.getJobVersion());
         generationInfo.getPigudfNeededWithSubjobPerJob(jobInfo.getJobId(), jobInfo.getJobVersion()).addAll(subjobPigUDFModules);
+
+        // tLibraryLoad modules
+        Set<ModuleNeeded> subjobHighPriorityModules = generationInfo.getHighPriorityModuleNeeded(subJobInfo.getJobId(),
+                subJobInfo.getJobVersion());
+        generationInfo.setHighPriorityModuleNeeded(jobInfo.getJobId(), jobInfo.getJobVersion(), subjobHighPriorityModules);
     }
 
     /**
