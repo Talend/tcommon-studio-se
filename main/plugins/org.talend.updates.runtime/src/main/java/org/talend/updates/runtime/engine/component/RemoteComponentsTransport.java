@@ -36,6 +36,7 @@ import org.osgi.framework.FrameworkUtil;
 import org.talend.commons.exception.ExceptionHandler;
 import org.talend.updates.runtime.engine.factory.NewComponentsInstallFactory;
 import org.talend.updates.runtime.i18n.Messages;
+import org.talend.utils.xml.XmlUtils;
 import org.w3c.dom.Document;
 import org.w3c.dom.NamedNodeMap;
 import org.w3c.dom.Node;
@@ -116,7 +117,7 @@ public class RemoteComponentsTransport {
                 throw new OperationCanceledException();
             }
 
-            DocumentBuilderFactory dbf = DocumentBuilderFactory.newInstance();
+            DocumentBuilderFactory dbf = XmlUtils.getSecureDocumentBuilderFactory(false);
             DocumentBuilder db = dbf.newDocumentBuilder();
             Document document = db.parse(compIndexFile);
             NodeList list = document.getElementsByTagName("component"); //$NON-NLS-1$

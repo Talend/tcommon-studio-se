@@ -41,6 +41,7 @@ import org.apache.oro.text.regex.Util;
 import org.talend.commons.exception.CommonExceptionHandler;
 import org.talend.commons.exception.ExceptionHandler;
 import org.talend.commons.i18n.internal.Messages;
+import org.talend.utils.xml.XmlUtils;
 import org.w3c.dom.Attr;
 import org.w3c.dom.Document;
 import org.w3c.dom.NamedNodeMap;
@@ -162,12 +163,12 @@ public class XmlNodeRetriever {
      * @param filePath2
      */
     private synchronized void initSource(String filePath) {
-        // Parse document containing schemas and validation roots
-        DocumentBuilderFactory dbf = DocumentBuilderFactory.newInstance();
-        DocumentBuilder db = null;
         File file = new File(filePath);
         InputSource inputSource = new InputSource(file.toURI().toASCIIString());
+        // Parse document containing schemas and validation roots
+        DocumentBuilder db = null;
         try {
+            DocumentBuilderFactory dbf = XmlUtils.getSecureDocumentBuilderFactory(false);
             dbf.setNamespaceAware(true);
             db = dbf.newDocumentBuilder();
             document = db.parse(inputSource);

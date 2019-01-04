@@ -464,7 +464,7 @@ public class WSDLLoader {
 
 	private static DocumentBuilder getDocumentBuilder() throws ParserConfigurationException {
 		if (documentBuilder == null) {
-			DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
+			DocumentBuilderFactory factory = XmlUtils.getSecureDocumentBuilderFactory(false);
 			factory.setValidating(false);
 			factory.setNamespaceAware(true);
 			documentBuilder = factory.newDocumentBuilder();

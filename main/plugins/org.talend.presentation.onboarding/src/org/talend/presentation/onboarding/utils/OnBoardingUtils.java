@@ -44,6 +44,7 @@ import org.talend.presentation.onboarding.ui.managers.OnBoardingResourceManager;
 import org.talend.presentation.onboarding.ui.runtimedata.OnBoardingJsonDoc;
 import org.talend.presentation.onboarding.ui.runtimedata.OnBoardingPerspectiveBean;
 import org.talend.presentation.onboarding.ui.runtimedata.OnBoardingRegistedResource;
+import org.talend.utils.xml.XmlUtils;
 import org.w3c.dom.Attr;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
@@ -255,7 +256,7 @@ public class OnBoardingUtils {
     public static Document convertStringToDocument(String htmlStr) {
         Document newDoc = null;
         try {
-            DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
+            DocumentBuilderFactory factory = XmlUtils.getSecureDocumentBuilderFactory();
             factory.setValidating(false);
             // if this is not set, Document.getElementsByTagNameNS() will fail.
             factory.setNamespaceAware(true);

@@ -34,6 +34,7 @@ import org.talend.core.model.metadata.builder.connection.MDMConnection;
 import org.talend.core.model.metadata.builder.connection.MetadataTable;
 import org.talend.metadata.managment.mdm.AbsMdmConnectionHelper;
 import org.talend.metadata.managment.mdm.S60MdmConnectionHelper;
+import org.talend.utils.xml.XmlUtils;
 import org.w3c.dom.Document;
 import org.xml.sax.InputSource;
 
@@ -62,7 +63,7 @@ public class MDMUtil {
      * @throws Exception
      */
     public static XSDSchema getXSDSchema(String schema) throws Exception {
-        DocumentBuilderFactory documentBuilderFactory = DocumentBuilderFactory.newInstance();
+        DocumentBuilderFactory documentBuilderFactory = XmlUtils.getSecureDocumentBuilderFactory(false);
         documentBuilderFactory.setNamespaceAware(true);
         documentBuilderFactory.setValidating(false);
         InputSource source = new InputSource(new StringReader(schema));

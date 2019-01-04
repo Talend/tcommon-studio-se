@@ -26,6 +26,7 @@ import java.util.List;
 import java.util.Set;
 
 import javax.xml.parsers.DocumentBuilderFactory;
+import javax.xml.parsers.ParserConfigurationException;
 
 import org.dom4j.Attribute;
 import org.dom4j.Document;
@@ -39,6 +40,7 @@ import org.talend.commons.utils.io.FilesUtils;
 import org.talend.commons.utils.workbench.resources.ResourceUtils;
 import org.talend.core.model.general.Project;
 import org.talend.repository.ProjectManager;
+import org.talend.utils.xml.XmlUtils;
 import org.xml.sax.EntityResolver;
 import org.xml.sax.InputSource;
 import org.xml.sax.SAXException;
@@ -71,13 +73,15 @@ public class CopyDeleteFileUtilForWizard {
             throw new PersistenceException(e);
         } catch (URISyntaxException e) {
             throw new PersistenceException(e);
+        } catch (ParserConfigurationException e) {
+            throw new PersistenceException(e);
         }
 
         return newFile;
     }
 
-    private static String copyNeededFiles(String fileName, String newPath) throws IOException, URISyntaxException {
-        DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
+    private static String copyNeededFiles(String fileName, String newPath) throws IOException, URISyntaxException, ParserConfigurationException {
+        DocumentBuilderFactory factory = XmlUtils.getSecureDocumentBuilderFactory(false);
         factory.setNamespaceAware(true);
         URI uri = null;
         File f = new File(fileName);

@@ -37,6 +37,7 @@ import org.talend.core.model.metadata.builder.connection.ConnectionFactory;
 import org.talend.core.model.metadata.builder.connection.SchemaTarget;
 import org.talend.core.model.metadata.types.PerlTypesManager;
 import org.talend.cwm.helper.TaggedValueHelper;
+import org.talend.utils.xml.XmlUtils;
 import org.w3c.dom.Attr;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
@@ -46,10 +47,11 @@ import org.w3c.dom.NodeList;
 import org.xml.sax.ErrorHandler;
 import org.xml.sax.SAXException;
 import org.xml.sax.SAXParseException;
-import orgomg.cwm.objectmodel.core.TaggedValue;
 
 import com.sun.org.apache.xml.internal.serialize.OutputFormat;
 import com.sun.org.apache.xml.internal.serialize.XMLSerializer;
+
+import orgomg.cwm.objectmodel.core.TaggedValue;
 
 /**
  * Metadata Schema.
@@ -280,7 +282,7 @@ public class MetadataSchema {
         final List<org.talend.core.model.metadata.builder.connection.MetadataColumn> listColumns = new ArrayList<org.talend.core.model.metadata.builder.connection.MetadataColumn>();
         String dbmsId = null;
         if (file != null) {
-            final DocumentBuilderFactory fabrique = DocumentBuilderFactory.newInstance();
+            final DocumentBuilderFactory fabrique = XmlUtils.getSecureDocumentBuilderFactory();
 
             final Bundle b = Platform.getBundle(CORE_RUNTIME_PLUGIN_ID);
             final URL url = FileLocator.toFileURL(FileLocator.find(b, new Path(SCHEMA_XSD), null));

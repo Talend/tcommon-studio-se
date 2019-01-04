@@ -598,7 +598,7 @@ public class PomUtil {
         ByteArrayOutputStream buf = new ByteArrayOutputStream();
         MavenPlugin.getMaven().writeModel(createModel(artifact), buf);
 
-        DocumentBuilderFactory documentBuilderFactory = DocumentBuilderFactory.newInstance();
+        DocumentBuilderFactory documentBuilderFactory = XmlUtils.getSecureDocumentBuilderFactory();
         documentBuilderFactory.setNamespaceAware(false);
         DocumentBuilder documentBuilder = documentBuilderFactory.newDocumentBuilder();
         Document document = documentBuilder.parse(new ByteArrayInputStream(buf.toByteArray()));
