@@ -70,7 +70,7 @@ public class ProjectDataJsonProvider {
 
     public static final int CONTENT_ALL = 15;
 
-    public static final String FAKE_TASK = "org.talend.repository.model.migration.CheckProductVersionMigrationTask";
+    public static final String FAKE_TASK = "org.talend.repository.model.migration.CheckProductVersionMigrationTask"; //$NON-NLS-1$
 
     public static String getRelationshipIndexPath() {
         StringBuilder strBuilder = new StringBuilder();
