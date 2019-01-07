@@ -417,46 +417,7 @@ public class ConfigModuleDialog extends TitleAreaDialog implements IConfigModule
 
             @Override
             public void modifyText(ModifyEvent e) {
-                String uri = findByURITxt.getText().trim();
-                boolean validateMvnURI = ModuleMavenURIUtils.validateMvnURI(uri);
-                if (!validateMvnURI) {
-                    setMessage(Messages.getString("InstallModuleDialog.error.findbyURI"), IMessageProvider.ERROR);
-                    useCustomBtn.setSelection(false);
-                    defaultUriTxt.setText("");
-                    customUriText.setText("");
-                    return;
-                }
-                ModuleNeeded testModule = new ModuleNeeded("", "", true, uri);
-                moduleName = testModule.getModuleName();
-                uri = testModule.getDefaultMavenURI();
-                ModuleNeeded found = null;
-                for (ModuleNeeded module : ModulesNeededProvider.getAllManagedModules()) {
-                    if (moduleName.equals(module.getModuleName())) {
-                        found = module;
-                        break;
-                    }
-                }
-                if (found != null) {
-                    String defualtURIFromModule = found.getDefaultMavenURI();
-                    String customURIFromModule = found.getCustomMavenUri();
-                    defaultUriTxt.setText(defualtURIFromModule);
-                    if (uri.equalsIgnoreCase(defualtURIFromModule) && customURIFromModule != null) {
-                        useCustomBtn.setSelection(false);
-                        customUriText.setText("");
-                        layoutWarningComposite(false, defaultUriTxt.getText().trim());
-                    } else if (!uri.equals(defualtURIFromModule)
-                            || (customURIFromModule != null && !customURIFromModule.equals(uri))) {
-                        customUriText.setText(uri);
-                        useCustomBtn.setSelection(true);
-                        layoutWarningComposite(false, defaultUriTxt.getText().trim());
-                    }
-                } else {
-                    setupMavenURIByModuleName(moduleName);
-                    if (!uri.equals(defaultUriTxt.getText())) {
-                        customUriText.setText(uri);
-                        useCustomBtn.setSelection(true);
-                    }
-                }
+                findByMvnURI();
                 checkInstallStatusErrorForFindExisting();
             }
         });
@@ -500,26 +461,52 @@ public class ConfigModuleDialog extends TitleAreaDialog implements IConfigModule
         if (enable) {
             useCustomBtn.setEnabled(false);
             customUriText.setEnabled(false);
+            findByMvnURI();
+            checkInstallStatusErrorForFindExisting();
 
-            String uri = findByURITxt.getText().trim();
-            boolean validateMvnURI = ModuleMavenURIUtils.validateMvnURI(uri);
-            if (!validateMvnURI) {
-                setMessage(Messages.getString("InstallModuleDialog.error.findbyURI"), IMessageProvider.ERROR);
-                useCustomBtn.setSelection(false);
-                defaultUriTxt.setText("");
-                customUriText.setText("");
-                return;
+        }
+    }
+
+    private void findByMvnURI() {
+        String uri = findByURITxt.getText().trim();
+        boolean validateMvnURI = ModuleMavenURIUtils.validateMvnURI(uri);
+        if (!validateMvnURI) {
+            setMessage(Messages.getString("InstallModuleDialog.error.findbyURI"), IMessageProvider.ERROR);
+            useCustomBtn.setSelection(false);
+            defaultUriTxt.setText("");
+            customUriText.setText("");
+            return;
+        }
+        String orignalUri = ModulesNeededProvider.getOrignalMvnURIIfCustom(uri);
+        ModuleNeeded testModule = new ModuleNeeded("", "", true, orignalUri);
+        moduleName = testModule.getModuleName();
+        // uri = testModule.getDefaultMavenURI();
+        ModuleNeeded found = null;
+        for (ModuleNeeded module : ModulesNeededProvider.getAllManagedModules()) {
+            if (moduleName.equals(module.getModuleName())) {
+                found = module;
+                break;
             }
-            moduleName = MavenUrlHelper.generateModuleNameByMavenURI(uri);
-            setupMavenURIByModuleName(moduleName);
-            // set current uri as new cusotm uri
-            if (!uri.equals(defaultUriTxt.getText().trim())) {
+        }
+        if (found != null) {
+            String defualtURIFromModule = found.getDefaultMavenURI();
+            String customURIFromModule = found.getCustomMavenUri();
+            defaultUriTxt.setText(defualtURIFromModule);
+            if (uri.equalsIgnoreCase(defualtURIFromModule) && customURIFromModule != null) {
+                useCustomBtn.setSelection(false);
+                customUriText.setText("");
+                layoutWarningComposite(false, defaultUriTxt.getText().trim());
+            } else if (!uri.equals(defualtURIFromModule) || (customURIFromModule != null && !customURIFromModule.equals(uri))) {
                 customUriText.setText(uri);
                 useCustomBtn.setSelection(true);
                 layoutWarningComposite(false, defaultUriTxt.getText().trim());
             }
-            checkInstallStatusErrorForFindExisting();
-
+        } else {
+            setupMavenURIByModuleName(moduleName);
+            if (!uri.equals(defaultUriTxt.getText())) {
+                customUriText.setText(uri);
+                useCustomBtn.setSelection(true);
+            }
         }
     }
 
