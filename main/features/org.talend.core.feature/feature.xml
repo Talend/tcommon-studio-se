@@ -34,13 +34,6 @@
     <import plugin="org.apache.commons.io" version="0.0.0" match="greaterOrEqual"/>
     <import plugin="org.apache.httpcomponents.httpclient" version="0.0.0" match="greaterOrEqual"/>
     <import plugin="org.apache.httpcomponents.httpcore" version="0.0.0" match="greaterOrEqual"/>
-    <import plugin="org.eclipse.aether.api" version="0.0.0" match="greaterOrEqual"/>
-    <import plugin="org.eclipse.aether.connector.basic" version="0.0.0" match="greaterOrEqual"/>
-    <import plugin="org.eclipse.aether.impl" version="0.0.0" match="greaterOrEqual"/>
-    <import plugin="org.eclipse.aether.spi" version="0.0.0" match="greaterOrEqual"/>
-    <import plugin="org.eclipse.aether.transport.file" version="0.0.0" match="greaterOrEqual"/>
-    <import plugin="org.eclipse.aether.transport.http" version="0.0.0" match="greaterOrEqual"/>
-    <import plugin="org.eclipse.aether.util" version="0.0.0" match="greaterOrEqual"/>
     <import plugin="org.eclipse.compare" version="0.0.0" match="greaterOrEqual"/>
     <import plugin="org.eclipse.compare.core" version="0.0.0" match="greaterOrEqual"/>
     <import plugin="org.ops4j.pax.url.mvn" version="0.0.0" match="greaterOrEqual"/>
