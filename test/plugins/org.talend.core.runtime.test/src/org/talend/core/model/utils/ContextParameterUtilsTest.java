@@ -107,6 +107,15 @@ public class ContextParameterUtilsTest {
         Assert.assertEquals("___",ContextParameterUtils.getVariableFromCode("context.___"));
         Assert.assertNull(ContextParameterUtils.getVariableFromCode("context.\n"));
         Assert.assertNull(ContextParameterUtils.getVariableFromCode("context.\0"));
+
+        Assert.assertEquals("汉语", ContextParameterUtils.getVariableFromCode("context.汉语"));
+        Assert.assertEquals("日本語", ContextParameterUtils.getVariableFromCode("context.日本語"));
+        Assert.assertEquals("Ελληνική", ContextParameterUtils.getVariableFromCode("context.Ελληνική"));
+        Assert.assertEquals("Français", ContextParameterUtils.getVariableFromCode("context.Français"));
+        Assert.assertEquals("Italiano", ContextParameterUtils.getVariableFromCode("context.Italiano"));
+        Assert.assertEquals("Podgląd", ContextParameterUtils.getVariableFromCode("context.Podgląd"));
+        Assert.assertEquals("Română", ContextParameterUtils.getVariableFromCode("context.Română"));
+        Assert.assertEquals("русский", ContextParameterUtils.getVariableFromCode("context.русский"));
     }
 
     @Test
@@ -126,6 +135,125 @@ public class ContextParameterUtilsTest {
         var = ContextParameterUtils.getVariableFromCode("context.abc-123");
         Assert.assertEquals("abc", var);
 
+        var = ContextParameterUtils.getVariableFromCode("context.マイSQL");
+        Assert.assertEquals("マイSQL", var);
+
+        var = ContextParameterUtils.getVariableFromCode("context.マイSQL_123");
+        Assert.assertEquals("マイSQL_123", var);
+
+        var = ContextParameterUtils.getVariableFromCode("context.マイSQL\t123");
+        Assert.assertEquals("マイSQL", var);
+
+        var = ContextParameterUtils.getVariableFromCode("context.マイSQL-123");
+        Assert.assertEquals("マイSQL", var);
+
+        var = ContextParameterUtils.getVariableFromCode("context.マイSQL 123");
+        Assert.assertEquals("マイSQL", var);
+
+        var = ContextParameterUtils.getVariableFromCode("context.汉语");
+        Assert.assertEquals("汉语", var);
+
+        var = ContextParameterUtils.getVariableFromCode("context.汉语 123");
+        Assert.assertEquals("汉语", var);
+
+        var = ContextParameterUtils.getVariableFromCode("context.汉语\t123");
+        Assert.assertEquals("汉语", var);
+
+        var = ContextParameterUtils.getVariableFromCode("context.汉语-123");
+        Assert.assertEquals("汉语", var);
+
+        var = ContextParameterUtils.getVariableFromCode("context.汉语_123");
+        Assert.assertEquals("汉语_123", var);
+
+        var = ContextParameterUtils.getVariableFromCode("context.Ελληνική");
+        Assert.assertEquals("Ελληνική", var);
+
+        var = ContextParameterUtils.getVariableFromCode("context.Ελληνική 123");
+        Assert.assertEquals("Ελληνική", var);
+
+        var = ContextParameterUtils.getVariableFromCode("context.Ελληνική\t123");
+        Assert.assertEquals("Ελληνική", var);
+
+        var = ContextParameterUtils.getVariableFromCode("context.Ελληνική-123");
+        Assert.assertEquals("Ελληνική", var);
+
+        var = ContextParameterUtils.getVariableFromCode("context.Ελληνική_123");
+        Assert.assertEquals("Ελληνική_123", var);
+
+        var = ContextParameterUtils.getVariableFromCode("context.Français");
+        Assert.assertEquals("Français", var);
+
+        var = ContextParameterUtils.getVariableFromCode("context.Français 123");
+        Assert.assertEquals("Français", var);
+
+        var = ContextParameterUtils.getVariableFromCode("context.Français\t123");
+        Assert.assertEquals("Français", var);
+
+        var = ContextParameterUtils.getVariableFromCode("context.Français-123");
+        Assert.assertEquals("Français", var);
+
+        var = ContextParameterUtils.getVariableFromCode("context.Français_123");
+        Assert.assertEquals("Français_123", var);
+
+        var = ContextParameterUtils.getVariableFromCode("context.Italiano");
+        Assert.assertEquals("Italiano", var);
+
+        var = ContextParameterUtils.getVariableFromCode("context.Italiano 123");
+        Assert.assertEquals("Italiano", var);
+
+        var = ContextParameterUtils.getVariableFromCode("context.Italiano\t123");
+        Assert.assertEquals("Italiano", var);
+
+        var = ContextParameterUtils.getVariableFromCode("context.Italiano-123");
+        Assert.assertEquals("Italiano", var);
+
+        var = ContextParameterUtils.getVariableFromCode("context.Italiano_123");
+        Assert.assertEquals("Italiano_123", var);
+
+        var = ContextParameterUtils.getVariableFromCode("context.Podgląd");
+        Assert.assertEquals("Podgląd", var);
+
+        var = ContextParameterUtils.getVariableFromCode("context.Podgląd 123");
+        Assert.assertEquals("Podgląd", var);
+
+        var = ContextParameterUtils.getVariableFromCode("context.Podgląd\t123");
+        Assert.assertEquals("Podgląd", var);
+
+        var = ContextParameterUtils.getVariableFromCode("context.Podgląd-123");
+        Assert.assertEquals("Podgląd", var);
+
+        var = ContextParameterUtils.getVariableFromCode("context.Podgląd_123");
+        Assert.assertEquals("Podgląd_123", var);
+
+        var = ContextParameterUtils.getVariableFromCode("context.Română");
+        Assert.assertEquals("Română", var);
+
+        var = ContextParameterUtils.getVariableFromCode("context.Română 123");
+        Assert.assertEquals("Română", var);
+
+        var = ContextParameterUtils.getVariableFromCode("context.Română\t123");
+        Assert.assertEquals("Română", var);
+
+        var = ContextParameterUtils.getVariableFromCode("context.Română-123");
+        Assert.assertEquals("Română", var);
+
+        var = ContextParameterUtils.getVariableFromCode("context.Română_123");
+        Assert.assertEquals("Română_123", var);
+
+        var = ContextParameterUtils.getVariableFromCode("context.русский");
+        Assert.assertEquals("русский", var);
+
+        var = ContextParameterUtils.getVariableFromCode("context.русский_123");
+        Assert.assertEquals("русский_123", var);
+
+        var = ContextParameterUtils.getVariableFromCode("context.русский 123");
+        Assert.assertEquals("русский", var);
+
+        var = ContextParameterUtils.getVariableFromCode("context.русский\t123");
+        Assert.assertEquals("русский", var);
+
+        var = ContextParameterUtils.getVariableFromCode("context.русский-123");
+        Assert.assertEquals("русский", var);
     }
 
     @Test

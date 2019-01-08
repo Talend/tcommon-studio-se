@@ -219,8 +219,8 @@ public final class XsdMetadataUtils {
                 }
             }
             if (node == null) {
-            	// no declaration in the present XSD
-            	return;
+                // no declaration in the present XSD
+                return;
             }
             node = populationUtil.getSchemaTree(xsdSchema, node);
             orderId = 1;
