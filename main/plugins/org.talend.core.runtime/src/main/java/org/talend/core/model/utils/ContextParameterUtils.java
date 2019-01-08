@@ -378,7 +378,7 @@ public final class ContextParameterUtils {
         String wordPattern = "\\b"; //$NON-NLS-1$
         pattern = wordPattern + replaceCharForRegex(prefix) + varPattern + wordPattern;
         if (pattern != null) {
-            Pattern regex = Pattern.compile(pattern, Pattern.CANON_EQ);
+            Pattern regex = Pattern.compile(pattern, Pattern.UNICODE_CHARACTER_CLASS);
             Matcher regexMatcher = regex.matcher(code);
             if (regexMatcher.find()) {
                 try {
@@ -595,7 +595,11 @@ public final class ContextParameterUtils {
             if (ContextUtils.isJavaKeyWords(name)) {
                 return false;
             }
-            return Pattern.matches(RepositoryConstants.CONTEXT_AND_VARIABLE_PATTERN, name);
+
+            Pattern regex = Pattern.compile(RepositoryConstants.CONTEXT_AND_VARIABLE_PATTERN, Pattern.UNICODE_CHARACTER_CLASS);
+            Matcher regexMatcher = regex.matcher(name);
+
+            return regexMatcher.matches();
         }
         return false;
     }
