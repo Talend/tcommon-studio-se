@@ -860,10 +860,6 @@ public class CreateMavenJobPom extends AbstractMavenProcessorPom {
                     Node destNameNode = document.createElement("destName");
                     destNameNode.setTextContent(destName);
                     fileNode.appendChild(destNameNode);
-
-                    Node filteredNode = document.createElement("filtered");
-                    filteredNode.setTextContent(Boolean.TRUE.toString());
-                    fileNode.appendChild(filteredNode);
                 }
             }
         } catch (CoreException e) {
