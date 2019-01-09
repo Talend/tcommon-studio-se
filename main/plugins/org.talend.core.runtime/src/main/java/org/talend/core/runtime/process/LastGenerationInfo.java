@@ -244,7 +244,7 @@ public class LastGenerationInfo {
     public Set<ModuleNeeded> getHighPriorityModuleNeeded(String jobId, String jobVersion) {
         String key = getProcessKey(jobId, jobVersion);
         if (!highPriorityModuleNeeded.containsKey(key)) {
-            highPriorityModuleNeeded.put(key, new LinkedHashSet<>());
+            highPriorityModuleNeeded.put(key, new LinkedHashSet<ModuleNeeded>());
         }
         return highPriorityModuleNeeded.get(key);
     }
@@ -252,7 +252,7 @@ public class LastGenerationInfo {
     public void setHighPriorityModuleNeeded(String jobId, String jobVersion, Set<ModuleNeeded> moduleNeeded) {
         String key = getProcessKey(jobId, jobVersion);
         if (!highPriorityModuleNeeded.containsKey(key)) {
-            highPriorityModuleNeeded.put(key, new LinkedHashSet<>());
+            highPriorityModuleNeeded.put(key, new LinkedHashSet<ModuleNeeded>());
         }
         highPriorityModuleNeeded.get(key).addAll(moduleNeeded);
     }
