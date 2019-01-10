@@ -41,11 +41,11 @@ import org.talend.core.model.process.EParameterFieldType;
 import org.talend.core.model.process.IContextParameter;
 import org.talend.core.model.process.IElementParameter;
 import org.talend.core.utils.TalendQuoteUtils;
+import org.talend.daikon.security.CryptoHelper;
 import org.talend.designer.core.model.utils.emf.talendfile.ContextParameterType;
 import org.talend.designer.core.model.utils.emf.talendfile.ElementParameterType;
 import org.talend.designer.core.model.utils.emf.talendfile.ElementValueType;
 import org.talend.repository.ProjectManager;
-import org.talend.utils.security.CryptoHelper;
 
 /**
  * cli class global comment. Detailled comment

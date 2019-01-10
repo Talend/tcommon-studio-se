@@ -23,4 +23,5 @@
   </requires>  
   <plugin id="org.talend.daikon" download-size="0" install-size="0" version="0.0.0" unpack="false"/>
   <plugin id="org.talend.utils" download-size="0" install-size="0" version="0.0.0" unpack="false"/>
+  <plugin id="org.talend.daikon.exception" download-size="0" install-size="0" version="0.0.0" unpack="false"/>
 </feature>
