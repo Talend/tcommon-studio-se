@@ -99,6 +99,8 @@ public class XSDValidater {
      */
     public void validateWithSax(Reader xsd, Reader xml) throws Exception {
         SAXParserFactory spf = SAXParserFactory.newInstance();
+        spf.setFeature(javax.xml.XMLConstants.FEATURE_SECURE_PROCESSING, Boolean.TRUE);
+        spf.setFeature("http://apache.org/xml/features/disallow-doctype-decl", true);
         SAXParser parser = null;
         spf.setNamespaceAware(true);
         SchemaFactory sf = SchemaFactory.newInstance(XMLConstants.W3C_XML_SCHEMA_NS_URI);

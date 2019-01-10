@@ -21,8 +21,10 @@ public class XMLHelper {
 	private XMLReader reader;
 
 	private XMLHelper() {
-		SAXParserFactory factory = SAXParserFactory.newInstance();
 	    try {
+			SAXParserFactory factory = SAXParserFactory.newInstance();
+			factory.setFeature(javax.xml.XMLConstants.FEATURE_SECURE_PROCESSING, Boolean.TRUE);
+			factory.setFeature("http://apache.org/xml/features/disallow-doctype-decl", true);
 			reader = factory.newSAXParser().getXMLReader();
 			reader.setErrorHandler(null);
 		} catch (SAXException e) {
