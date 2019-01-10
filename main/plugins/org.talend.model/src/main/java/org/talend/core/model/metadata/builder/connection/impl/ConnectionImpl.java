@@ -20,7 +20,7 @@ import org.eclipse.emf.ecore.util.InternalEList;
 import org.talend.core.model.metadata.builder.connection.Connection;
 import org.talend.core.model.metadata.builder.connection.ConnectionPackage;
 import org.talend.core.model.metadata.builder.connection.QueriesConnection;
-import org.talend.utils.security.CryptoHelper;
+import org.talend.daikon.security.CryptoHelper;
 import orgomg.cwm.foundation.softwaredeployment.Component;
 import orgomg.cwm.foundation.softwaredeployment.DataManager;
 import orgomg.cwm.foundation.softwaredeployment.DataProvider;

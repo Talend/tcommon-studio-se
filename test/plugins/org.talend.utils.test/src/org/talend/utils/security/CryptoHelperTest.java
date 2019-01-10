@@ -15,6 +15,7 @@ package org.talend.utils.security;
 import static org.junit.Assert.*;
 
 import org.junit.Test;
+import org.talend.daikon.security.CryptoHelper;
 
 /**
  * created by ggu on Aug 20, 2014 Detailled comment

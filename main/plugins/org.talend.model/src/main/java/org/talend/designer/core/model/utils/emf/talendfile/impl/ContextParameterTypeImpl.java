@@ -10,9 +10,9 @@ import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.impl.ENotificationImpl;
 import org.eclipse.emf.ecore.impl.EObjectImpl;
 import org.talend.commons.utils.PasswordEncryptUtil;
+import org.talend.daikon.security.CryptoHelper;
 import org.talend.designer.core.model.utils.emf.talendfile.ContextParameterType;
 import org.talend.designer.core.model.utils.emf.talendfile.TalendFilePackage;
-import org.talend.utils.security.CryptoHelper;
 
 /**
  * <!-- begin-user-doc --> An implementation of the model object '<em><b>Context Parameter Type</b></em>'. <!--

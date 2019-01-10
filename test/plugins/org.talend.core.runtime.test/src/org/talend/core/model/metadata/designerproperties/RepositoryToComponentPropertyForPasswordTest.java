@@ -5,7 +5,7 @@ import static org.junit.Assert.*;
 import org.junit.Test;
 import org.talend.core.model.metadata.builder.connection.ConnectionFactory;
 import org.talend.core.model.metadata.builder.connection.DatabaseConnection;
-import org.talend.utils.security.CryptoHelper;
+import org.talend.daikon.security.CryptoHelper;
 
 /**
  * created by ycbai on 2016年3月11日

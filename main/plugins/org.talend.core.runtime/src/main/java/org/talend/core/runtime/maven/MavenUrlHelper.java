@@ -19,7 +19,7 @@ import java.net.URLDecoder;
 import org.apache.commons.lang.StringUtils;
 import org.eclipse.core.runtime.Assert;
 import org.talend.commons.exception.ExceptionHandler;
-import org.talend.utils.security.CryptoHelper;
+import org.talend.daikon.security.CryptoHelper;
 
 /**
  * DOC ggu class global comment. Detailled comment
