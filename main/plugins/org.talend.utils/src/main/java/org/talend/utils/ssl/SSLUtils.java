@@ -49,7 +49,7 @@ public class SSLUtils {
 
     public static final String TAC_SSL_TRUSTSTORE_PASS = "tac.net.ssl.TrustStorePass"; //$NON-NLS-1$
 
-    public static final String TAC_SSL_HTTP_ENABLE_HOST_NAME_VERIFICATION = "tac.net.ssl.EnableHostNameVerification"; //$NON-NLS-1$
+    public static final String TAC_SSL_ENABLE_HOST_NAME_VERIFICATION = "tac.net.ssl.EnableHostNameVerification"; //$NON-NLS-1$
 
     public static final String TAC_SSL_FAIL_IF_NO_TRUSTSTORE = "tac.net.ssl.FailIfNoTruststore"; //$NON-NLS-1$
 
@@ -59,6 +59,7 @@ public class SSLUtils {
      * 
      * @param buffer
      * @param url
+     * 
      * @return
      * @throws AMCPluginException
      */
@@ -66,7 +67,7 @@ public class SSLUtils {
         BufferedReader in = null;
         if (("https").equals(url.getProtocol())) {
             boolean openHttpHostNameVerification = Boolean
-                    .parseBoolean(System.getProperty(TAC_SSL_HTTP_ENABLE_HOST_NAME_VERIFICATION));
+                    .parseBoolean(System.getProperty(TAC_SSL_ENABLE_HOST_NAME_VERIFICATION));
             final SSLSocketFactory socketFactory = getSSLContext(userDir).getSocketFactory();
             HttpsURLConnection httpsCon = (HttpsURLConnection) url.openConnection();
             httpsCon.setSSLSocketFactory(socketFactory);
