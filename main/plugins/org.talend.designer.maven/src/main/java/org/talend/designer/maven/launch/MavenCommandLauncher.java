@@ -51,6 +51,7 @@ import org.eclipse.m2e.core.project.ResolverConfiguration;
 import org.eclipse.m2e.internal.launch.MavenLaunchDelegate;
 import org.eclipse.m2e.internal.launch.MavenLaunchUtils;
 import org.eclipse.osgi.util.NLS;
+import org.eclipse.swt.widgets.Display;
 import org.talend.commons.CommonsPlugin;
 import org.talend.commons.exception.ExceptionHandler;
 import org.talend.commons.runtime.debug.TalendDebugHandler;
@@ -399,8 +400,15 @@ public abstract class MavenCommandLauncher {
         public void waitFinish(ILaunch launch) {
 
             try {
+                Display display = Display.getCurrent();
                 while (!launchFinished) {
-                    Thread.sleep(100);
+                    if (display != null) {
+                        if (!display.readAndDispatch()) {
+                            display.sleep();
+                        }
+                    } else {
+                        Thread.sleep(100);
+                    }
                     // if terminated also
                     if (launch.getProcesses() != null && launch.getProcesses().length > 0) {
                         if (launch.getProcesses()[0].isTerminated()) {
