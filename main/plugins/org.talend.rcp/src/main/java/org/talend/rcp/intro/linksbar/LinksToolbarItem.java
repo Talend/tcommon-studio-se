@@ -26,6 +26,7 @@ import org.eclipse.swt.widgets.Link;
 import org.eclipse.swt.widgets.Listener;
 import org.eclipse.swt.widgets.ToolBar;
 import org.eclipse.swt.widgets.ToolItem;
+import org.talend.commons.utils.network.NetworkUtil;
 import org.talend.core.GlobalServiceRegister;
 import org.talend.core.PluginChecker;
 import org.talend.core.model.utils.TalendPropertiesUtil;
@@ -136,7 +137,7 @@ public class LinksToolbarItem extends ContributionItem {
         });
 
         // 3. Link to Talend Exchange
-        if (PluginChecker.isExchangeSystemLoaded() && !TalendPropertiesUtil.isHideExchange()) {
+        if (PluginChecker.isExchangeSystemLoaded() && !TalendPropertiesUtil.isHideExchange() && NetworkUtil.isNetworkValid()) {
             Label exchangeLabel = new Label(composite, SWT.NONE);
 
             if (registry.get("exchange") == null) { //$NON-NLS-1$
