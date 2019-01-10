@@ -24,6 +24,7 @@ import java.util.List;
 import java.util.Properties;
 
 import org.apache.log4j.Logger;
+import org.talend.daikon.security.CryptoHelper;
 import org.talend.utils.sugars.ReturnCode;
 
 /**
