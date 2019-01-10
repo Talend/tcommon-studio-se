@@ -70,6 +70,7 @@ import org.talend.commons.exception.PersistenceException;
 import org.talend.commons.runtime.model.emf.provider.EmfResourcesFactoryReader;
 import org.talend.commons.runtime.model.emf.provider.ResourceOption;
 import org.talend.commons.runtime.model.repository.ERepositoryStatus;
+import org.talend.commons.utils.network.NetworkUtil;
 import org.talend.core.GlobalServiceRegister;
 import org.talend.core.PluginChecker;
 import org.talend.core.model.properties.Item;
@@ -514,7 +515,7 @@ public class ImportItemsWizardPage extends WizardPage {
     }
 
     protected boolean isEnableForExchange() {
-        return PluginChecker.isExchangeSystemLoaded() && !TalendPropertiesUtil.isHideExchange();
+        return PluginChecker.isExchangeSystemLoaded() && !TalendPropertiesUtil.isHideExchange() && NetworkUtil.isNetworkValid();
     }
 
     /**
