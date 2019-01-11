@@ -343,6 +343,12 @@ public abstract class MavenCommandLauncher {
             IPersistableSourceLocator locator = launchManager.newSourceLocator(type);
             locator.initializeDefaults(configuration);
             launch.setSourceLocator(locator);
+            if(configuration.getAttributes() != null){
+                Object dir = configuration.getAttributes().get("org.eclipse.jdt.launching.WORKING_DIRECTORY");//$NON-NLS-1$
+                if(dir != null){
+                    monitor.setTaskName((String)dir);
+                }
+            }
             mvld.launch(configuration, mode, launch, monitor);
             return launch;
         } finally {
