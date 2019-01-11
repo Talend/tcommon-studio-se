@@ -294,40 +294,6 @@ public class XmlFileOutputStep1Form extends AbstractXmlFileStepForm {
         fileContentText.setText("Filepath must be specified to show the Data file");
     }
 
-    // private void updateConnection(String text) {
-    // if (text == null || "".equals(text)) {
-    // return;
-    // }
-    //
-    // List<FOXTreeNode> rootFoxTreeNodes = null;
-    // if (treeNode == null) {
-    // rootFoxTreeNodes = TreeUtil.getFoxTreeNodes(text);
-    // } else {
-    // rootFoxTreeNodes = getCorrespondingFoxTreeNodes(treeNode, true);
-    // }
-    //
-    // if (rootFoxTreeNodes.size() == 0) {
-    // return;
-    // }
-    // if (ConnectionHelper.getTables(getConnection()).isEmpty()) {
-    // MetadataTable table = ConnectionFactory.eINSTANCE.createMetadataTable();
-    // RecordFile record = (RecordFile) ConnectionHelper.getPackage(getConnection().getName(), getConnection(),
-    // RecordFile.class);
-    // if (record != null) { // hywang
-    // PackageHelper.addMetadataTable(table, record);
-    // } else {
-    // RecordFile newrecord = RecordFactory.eINSTANCE.createRecordFile();
-    // newrecord.setName(connection.getName());
-    // ConnectionHelper.addPackage(newrecord, connection);
-    // PackageHelper.addMetadataTable(table, newrecord);
-    // }
-    // }
-    // EList schemaMetadataColumn = ConnectionHelper.getTables(getConnection()).toArray(new
-    // MetadataTable[0])[0].getColumns();
-    // schemaMetadataColumn.clear();
-    // initMetadataTable(rootFoxTreeNodes, schemaMetadataColumn);
-    // updateConnectionProperties(rootFoxTreeNodes.get(0));
-    // }
 
     @Override
     protected void addFieldsListeners() {

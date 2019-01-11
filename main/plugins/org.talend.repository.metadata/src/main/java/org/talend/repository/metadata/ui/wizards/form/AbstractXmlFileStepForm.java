@@ -125,11 +125,11 @@ public abstract class AbstractXmlFileStepForm extends AbstractXmlStepForm {
 
     }
 
-    protected void initMetadataTable(List<FOXTreeNode> list, EList columnList, boolean isEditor, int max) {
+    protected void initMetadataTable(List<FOXTreeNode> list, EList columnList, boolean isEditor, int maxLimit) {
         int maxColumnsNumber = CoreUIPlugin.getDefault().getPreferenceStore()
                 .getInt(ITalendCorePrefConstants.MAXIMUM_AMOUNT_OF_COLUMNS_FOR_XML);
         if (isEditor) {
-            maxColumnsNumber = max;
+            maxColumnsNumber = maxLimit;
         }
         for (FOXTreeNode node : list) {
             if (columnList.size() > maxColumnsNumber) {
@@ -182,7 +182,7 @@ public abstract class AbstractXmlFileStepForm extends AbstractXmlStepForm {
             }
             if (node.hasChildren()) {
                 List<FOXTreeNode> children = node.getChildren();
-                initMetadataTable(children, columnList, isEditor, max);
+                initMetadataTable(children, columnList, isEditor, maxLimit);
             }
         }
     }
