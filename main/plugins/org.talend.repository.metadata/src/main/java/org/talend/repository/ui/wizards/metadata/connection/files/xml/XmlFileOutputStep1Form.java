@@ -301,7 +301,7 @@ public class XmlFileOutputStep1Form extends AbstractXmlFileStepForm {
         fileContentText.setText("Filepath must be specified to show the Data file");
     }
 
-    protected void updateConnection(String text) {
+    private void updateConnection(String text) {
         if (text == null || "".equals(text)) {
             return;
         }
