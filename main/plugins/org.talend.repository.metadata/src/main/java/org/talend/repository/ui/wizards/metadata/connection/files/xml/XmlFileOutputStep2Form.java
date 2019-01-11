@@ -53,9 +53,9 @@ import org.eclipse.swt.widgets.Text;
 import org.eclipse.swt.widgets.Tree;
 import org.eclipse.swt.widgets.TreeColumn;
 import org.eclipse.swt.widgets.TreeItem;
-import org.eclipse.ui.ISharedImages;
-import org.eclipse.ui.PlatformUI;
 import org.talend.commons.runtime.xml.XmlUtil;
+import org.talend.commons.ui.runtime.image.EImage;
+import org.talend.commons.ui.runtime.image.ImageProvider;
 import org.talend.commons.ui.swt.drawing.link.IExtremityLink;
 import org.talend.commons.ui.swt.drawing.link.LinkDescriptor;
 import org.talend.commons.ui.swt.drawing.link.LinksManager;
@@ -63,7 +63,6 @@ import org.talend.commons.ui.swt.formtools.Form;
 import org.talend.core.model.metadata.IMetadataColumn;
 import org.talend.core.model.metadata.IMetadataTable;
 import org.talend.core.model.metadata.builder.ConvertionHelper;
-import org.talend.core.model.metadata.builder.connection.ConnectionFactory;
 import org.talend.core.model.metadata.builder.connection.MetadataColumn;
 import org.talend.core.model.metadata.builder.connection.MetadataTable;
 import org.talend.core.model.metadata.builder.connection.XMLFileNode;
@@ -72,7 +71,6 @@ import org.talend.core.model.properties.ConnectionItem;
 import org.talend.core.prefs.ITalendCorePrefConstants;
 import org.talend.core.ui.CoreUIPlugin;
 import org.talend.cwm.helper.ConnectionHelper;
-import org.talend.cwm.helper.PackageHelper;
 import org.talend.datatools.xml.utils.ATreeNode;
 import org.talend.metadata.managment.ui.wizard.metadata.xml.FoxNodeComboViewProvider;
 import org.talend.metadata.managment.ui.wizard.metadata.xml.node.Attribute;
@@ -103,9 +101,6 @@ import org.talend.repository.ui.wizards.metadata.connection.files.xml.view.XmlFi
 import org.talend.repository.ui.wizards.metadata.connection.files.xml.view.XmlFileTreeViewerProvider;
 import org.talend.repository.ui.wizards.metadata.connection.files.xml.view.XmlTree2SchemaLinker;
 
-import orgomg.cwm.resource.record.RecordFactory;
-import orgomg.cwm.resource.record.RecordFile;
-
 /**
  * wzhang class global comment. Detailled comment
  */
@@ -113,11 +108,15 @@ public class XmlFileOutputStep2Form extends AbstractXmlFileStepForm {
 
     private SashForm mainSashFormComposite;
 
-    protected Label statusLabelWarnText;
+    // protected Label statusLabelWarnText;
+    //
+    // protected Label statusLabelWarn;
 
-    protected Label statusLabelWarn;
+    protected Label limitLabel;
 
-    private Button schemaButton;
+    protected Text limitNumberText;
+
+    private Button schemaButton, schemaButtonRefresh;
 
     private ComboViewer rootComboViewer;
 
@@ -182,15 +181,6 @@ public class XmlFileOutputStep2Form extends AbstractXmlFileStepForm {
         addSchemaViewer(mainSashFormComposite, 300, 100);
         addXmlFileViewer(mainSashFormComposite, 400, 100);
         mainSashFormComposite.setWeights(new int[] { 40, 60 });
-
-        Composite createGroup = Form.startNewGridLayout(this, 2, false, SWT.RIGHT, SWT.BOTTOM);
-        createGroup.setLayoutData(new GridData());
-        statusLabelWarn = new Label(createGroup, SWT.NONE);
-        statusLabelWarn.setImage(PlatformUI.getWorkbench().getSharedImages().getImage(ISharedImages.IMG_OBJS_WARN_TSK));
-        statusLabelWarnText = new Label(createGroup, SWT.NONE);
-        statusLabelWarnText.setText(Messages.getString("XmlFileOutputStep2Form.Error"));
-        statusLabelWarnText.setVisible(false);
-        statusLabelWarn.setVisible(false);
 
         linker = new XmlFileSchema2TreeLinker(mainSashFormComposite);
         linker.setForm(this);
@@ -418,6 +408,22 @@ public class XmlFileOutputStep2Form extends AbstractXmlFileStepForm {
         schemaButton.setText("Schema Management");
         schemaButton.setToolTipText("You can add or edit schema and save in 'Schema List' viewer");
 
+        Composite createGroup = Form.startNewGridLayout(group, 3, false, SWT.RIGHT, SWT.BOTTOM);
+        createGroup.setLayoutData(new GridData());
+        limitLabel = new Label(createGroup, SWT.NONE);
+        limitLabel.setText("Field Limit");
+
+        limitNumberText = new Text(createGroup, SWT.BORDER);
+        GridData gd = new GridData(18, 12);
+        limitNumberText.setLayoutData(gd);
+        int maxColumnsNumber = CoreUIPlugin.getDefault().getPreferenceStore()
+                .getInt(ITalendCorePrefConstants.MAXIMUM_AMOUNT_OF_COLUMNS_FOR_XML);
+        limitNumberText.setText(String.valueOf(maxColumnsNumber));
+
+        schemaButtonRefresh = new Button(createGroup, SWT.PUSH);
+        schemaButtonRefresh.setImage(ImageProvider.getImage(EImage.REFRESH_ICON));
+        schemaButtonRefresh.setToolTipText(Messages.getString("XmlFileOutputStep2Form.refresh"));
+
         schemaViewer = new TableViewer(group);
         XmlFileTableViewerProvider provider = new XmlFileTableViewerProvider();
         schemaViewer.setContentProvider(provider);
@@ -481,7 +487,7 @@ public class XmlFileOutputStep2Form extends AbstractXmlFileStepForm {
                     EList schemaMetadataColumn = ConnectionHelper.getTables(getConnection()).toArray(new MetadataTable[0])[0]
                             .getColumns();
                     schemaMetadataColumn.clear();
-                    initMetadataTable(nodeList, schemaMetadataColumn);
+                    initMetadataTable(nodeList, schemaMetadataColumn, false, 0);
                 }
                 updateConnectionProperties(nodeList.get(0));
                 initXmlTreeData();
@@ -522,9 +528,61 @@ public class XmlFileOutputStep2Form extends AbstractXmlFileStepForm {
                     updateXmlTreeViewer(inputList);
                     redrawLinkers();
                     checkFieldsValue();
+                    if (schemaViewer.getTable().getItems().length > CoreUIPlugin.getDefault().getPreferenceStore()
+                            .getInt(ITalendCorePrefConstants.MAXIMUM_AMOUNT_OF_COLUMNS_FOR_XML) + 1) {
+                        limitNumberText.setText(String.valueOf(schemaViewer.getTable().getItems().length - 1));
+                    }
+                    String limitNumber = limitNumberText.getText();
+                    if ((!limitNumber.matches("\\d+")) || (Integer.valueOf(limitNumber) < 0)) {
+
+                    } else {
+                        Integer limitInt = Integer.valueOf(limitNumber);
+                        if (schemaViewer.getTable().getItems().length > limitInt) {
+                            limitNumberText.setText(String.valueOf(schemaViewer.getTable().getItems().length - 1));
+                        }
+                    }
+
                 }
             }
         });
+        schemaButtonRefresh.addSelectionListener(new SelectionAdapter() {
+            @Override
+            public void widgetSelected(SelectionEvent e) {
+                String limitNumber = limitNumberText.getText();
+                if ((!limitNumber.matches("\\d+")) || (Integer.valueOf(limitNumber) < 0)) {
+                    MessageDialog.openError(getShell(), "input error", "The format of input is error");
+                } else {
+                    Integer maxNumber = Integer.valueOf(limitNumber);
+                    int schemaViewerCount = schemaViewer.getTable().getItems().length;
+                    if (schemaViewerCount != maxNumber) {
+                        refreshSchema(maxNumber);
+                    }
+                }
+
+            }
+        });
+    }
+
+    private void refreshSchema(int inputNumber) {
+        int maxColumnsNumber = inputNumber;
+        EList schemaMetadataColumn = ConnectionHelper.getTables(getConnection()).toArray(new MetadataTable[0])[0]
+                .getColumns();
+        initMetadataTable(treeData, schemaMetadataColumn, true, maxColumnsNumber);
+        List<MetadataColumn> columnList = new ArrayList<MetadataColumn>();
+
+        for (int i = 0; i < maxColumnsNumber + 1 && i < schemaMetadataColumn.size(); i++) {
+            columnList.add((MetadataColumn) schemaMetadataColumn.get(i));
+        }
+        schemaMetadataColumn.clear();
+        schemaMetadataColumn.addAll(columnList);
+        updateXmlTreeViewer(columnList);
+        xmlViewer.setInput(treeData);
+        xmlViewer.expandToLevel(3);
+        schemaViewer.setInput(columnList);
+        schemaViewer.refresh();
+        linker.createLinks();
+        // redrawLinkers();
+        checkFieldsValue();
     }
 
     private void updateXmlTreeViewer(List<MetadataColumn> metaColumns) {
@@ -540,10 +598,14 @@ public class XmlFileOutputStep2Form extends AbstractXmlFileStepForm {
             IExtremityLink<Tree, Object> ex2 = linkDescriptor.getExtremity2();
             MetadataColumn metaColumn = (MetadataColumn) ex1.getDataItem();
             FOXTreeNode node = (FOXTreeNode) ex2.getDataItem();
-            if (!cloumnNames.contains(metaColumn.getName())) {
-                node.setColumn(null);
+            if (i < metaColumns.size()) {
+                if (!cloumnNames.contains(metaColumn.getName())) {
+                    node.setColumn(null);
+                } else {
+                    node.setColumn(ConvertionHelper.convertToIMetaDataColumn(metaColumn));
+                }
             } else {
-                node.setColumn(ConvertionHelper.convertToIMetaDataColumn(metaColumn));
+                node.setColumn(null);
             }
             node.setDataType(metaColumn.getTalendType());
         }
@@ -553,15 +615,6 @@ public class XmlFileOutputStep2Form extends AbstractXmlFileStepForm {
 
     @Override
     protected boolean checkFieldsValue() {
-        int schemaViewerCount = schemaViewer.getTable().getItems().length;
-        if (schemaViewerCount == CoreUIPlugin.getDefault().getPreferenceStore()
-                .getInt(ITalendCorePrefConstants.MAXIMUM_AMOUNT_OF_COLUMNS_FOR_XML) + 1) {
-            statusLabelWarnText.setVisible(true);
-            statusLabelWarn.setVisible(true);
-        } else {
-            statusLabelWarnText.setVisible(false);
-            statusLabelWarn.setVisible(false);
-        }
         int num = 0, rootNum = 0;
         StringBuffer msgError = new StringBuffer();
         List<FOXTreeNode> onLoopNodes = new ArrayList<FOXTreeNode>();
@@ -997,11 +1050,6 @@ public class XmlFileOutputStep2Form extends AbstractXmlFileStepForm {
     public void setVisible(boolean visible) {
         super.setVisible(visible);
         if (super.isVisible()) {
-            if (!creation) {
-                List<ATreeNode> rootNodes = ((XmlFileWizard) getPage().getWizard()).getRootNodes();
-                ATreeNode defaultRootNode = getDefaultRootNode(rootNodes);
-                updateConnection(getConnection().getXmlFilePath(), defaultRootNode);
-            }
             initXmlTreeData();
             initSchemaTable();
             boolean useXsd = isUseXsd();
@@ -1011,10 +1059,19 @@ public class XmlFileOutputStep2Form extends AbstractXmlFileStepForm {
             }
             xmlViewer.setInput(treeData);
             xmlViewer.expandToLevel(3);
-            redrawLinkers();
+            linker.createLinks();
             // if (!creation) {
             checkFieldsValue();
             // }
+            limitNumberText.setText(String.valueOf(CoreUIPlugin.getDefault().getPreferenceStore()
+                    .getInt(ITalendCorePrefConstants.MAXIMUM_AMOUNT_OF_COLUMNS_FOR_XML)));
+            if (!creation) {
+                if (schemaViewer.getTable().getItems().length > CoreUIPlugin.getDefault().getPreferenceStore()
+                        .getInt(ITalendCorePrefConstants.MAXIMUM_AMOUNT_OF_COLUMNS_FOR_XML) + 1) {
+                    limitNumberText.setText(String.valueOf(schemaViewer.getTable().getItems().length - 1));
+                }
+
+            }
         }
     }
 
