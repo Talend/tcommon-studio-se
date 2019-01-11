@@ -334,6 +334,7 @@ public class XmlFileOutputStep1Form extends AbstractXmlFileStepForm {
         initMetadataTable(rootFoxTreeNodes, schemaMetadataColumn, false, 0);
         updateConnectionProperties(rootFoxTreeNodes.get(0));
     }
+
     @Override
     protected void addFieldsListeners() {
         xmlXsdFilePath.addSelectionListener(new SelectionListener() {
