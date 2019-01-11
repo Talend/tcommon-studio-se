@@ -36,6 +36,7 @@ import org.apache.oro.text.regex.Perl5Matcher;
 import org.eclipse.core.resources.IProject;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Path;
+import org.eclipse.emf.common.util.EList;
 import org.eclipse.jface.dialogs.IDialogConstants;
 import org.eclipse.jface.viewers.TreeViewer;
 import org.eclipse.swt.SWT;
@@ -67,21 +68,27 @@ import org.talend.commons.utils.encoding.CharsetToolkit;
 import org.talend.commons.utils.workbench.resources.ResourceUtils;
 import org.talend.core.model.general.Project;
 import org.talend.core.model.metadata.EMetadataEncoding;
+import org.talend.core.model.metadata.builder.connection.ConnectionFactory;
 import org.talend.core.model.metadata.builder.connection.MetadataTable;
 import org.talend.core.model.properties.ConnectionItem;
 import org.talend.core.utils.TalendQuoteUtils;
 import org.talend.cwm.helper.ConnectionHelper;
+import org.talend.cwm.helper.PackageHelper;
 import org.talend.datatools.xml.utils.ATreeNode;
 import org.talend.datatools.xml.utils.XSDPopulationUtil2;
 import org.talend.datatools.xml.utils.XSDUtils;
 import org.talend.designer.core.model.utils.emf.talendfile.ContextType;
 import org.talend.metadata.managment.ui.dialog.RootNodeSelectDialog;
 import org.talend.metadata.managment.ui.utils.ConnectionContextHelper;
+import org.talend.metadata.managment.ui.wizard.metadata.xml.node.FOXTreeNode;
 import org.talend.metadata.managment.ui.wizard.metadata.xml.utils.StringUtil;
 import org.talend.metadata.managment.ui.wizard.metadata.xml.utils.TreeUtil;
 import org.talend.repository.ProjectManager;
 import org.talend.repository.metadata.i18n.Messages;
 import org.talend.repository.metadata.ui.wizards.form.AbstractXmlFileStepForm;
+
+import orgomg.cwm.resource.record.RecordFactory;
+import orgomg.cwm.resource.record.RecordFile;
 
 /**
  * wzhang class global comment. Detailled comment
@@ -294,7 +301,39 @@ public class XmlFileOutputStep1Form extends AbstractXmlFileStepForm {
         fileContentText.setText("Filepath must be specified to show the Data file");
     }
 
+    protected void updateConnection(String text) {
+        if (text == null || "".equals(text)) {
+            return;
+        }
 
+        List<FOXTreeNode> rootFoxTreeNodes = null;
+        if (treeNode == null) {
+            rootFoxTreeNodes = TreeUtil.getFoxTreeNodes(text);
+        } else {
+            rootFoxTreeNodes = getCorrespondingFoxTreeNodes(treeNode, true);
+        }
+
+        if (rootFoxTreeNodes.size() == 0) {
+            return;
+        }
+        if (ConnectionHelper.getTables(getConnection()).isEmpty()) {
+            MetadataTable table = ConnectionFactory.eINSTANCE.createMetadataTable();
+            RecordFile record = (RecordFile) ConnectionHelper.getPackage(getConnection().getName(), getConnection(),
+                    RecordFile.class);
+            if (record != null) { // hywang
+                PackageHelper.addMetadataTable(table, record);
+            } else {
+                RecordFile newrecord = RecordFactory.eINSTANCE.createRecordFile();
+                newrecord.setName(connection.getName());
+                ConnectionHelper.addPackage(newrecord, connection);
+                PackageHelper.addMetadataTable(table, newrecord);
+            }
+        }
+        EList schemaMetadataColumn = ConnectionHelper.getTables(getConnection()).toArray(new MetadataTable[0])[0].getColumns();
+        schemaMetadataColumn.clear();
+        initMetadataTable(rootFoxTreeNodes, schemaMetadataColumn, false, 0);
+        updateConnectionProperties(rootFoxTreeNodes.get(0));
+    }
     @Override
     protected void addFieldsListeners() {
         xmlXsdFilePath.addSelectionListener(new SelectionListener() {
@@ -345,7 +384,7 @@ public class XmlFileOutputStep1Form extends AbstractXmlFileStepForm {
                         treeNode = treeNodes.get(0);
                     }
 
-                    updateConnection(text, treeNode);
+                    updateConnection(text);
                 }
 
             }
@@ -510,7 +549,7 @@ public class XmlFileOutputStep1Form extends AbstractXmlFileStepForm {
                     if (treeNodes.size() > 0) {
                         treeNode = treeNodes.get(0);
                     }
-                    updateConnection(text, treeNode);
+                    updateConnection(text);
                 }
                 checkFieldsValue();
                 isModifing = true;
@@ -600,7 +639,7 @@ public class XmlFileOutputStep1Form extends AbstractXmlFileStepForm {
                     text = TalendQuoteUtils.removeQuotes(ConnectionContextHelper.getOriginalValue(contextType, text));
                 }
                 getConnection().setXmlFilePath(text);
-                updateConnection(text, treeNode);
+                updateConnection(text);
                 encodingCombo.setEnabled(true);
                 commonNodesLimitation.setEditable(true);
                 availableXmlTree.setEnabled(true);

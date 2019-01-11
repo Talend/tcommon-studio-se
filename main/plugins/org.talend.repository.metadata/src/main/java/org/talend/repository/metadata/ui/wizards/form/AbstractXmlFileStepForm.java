@@ -43,8 +43,6 @@ import org.talend.core.prefs.ITalendCorePrefConstants;
 import org.talend.core.ui.CoreUIPlugin;
 import org.talend.core.ui.metadata.editor.MetadataEmfTableEditor;
 import org.talend.core.utils.TalendQuoteUtils;
-import org.talend.cwm.helper.ConnectionHelper;
-import org.talend.cwm.helper.PackageHelper;
 import org.talend.datatools.xml.utils.ATreeNode;
 import org.talend.datatools.xml.utils.OdaException;
 import org.talend.datatools.xml.utils.XSDPopulationUtil2;
@@ -59,9 +57,6 @@ import org.talend.metadata.managment.ui.wizard.metadata.xml.utils.StringUtil;
 import org.talend.metadata.managment.ui.wizard.metadata.xml.utils.TreeUtil;
 import org.talend.repository.ProjectManager;
 import org.talend.repository.ui.wizards.metadata.connection.files.xml.XmlFileWizard;
-
-import orgomg.cwm.resource.record.RecordFactory;
-import orgomg.cwm.resource.record.RecordFile;
 
 /**
  * DOC cantoine class global comment. Detailled comment <br/>
@@ -493,39 +488,4 @@ public abstract class AbstractXmlFileStepForm extends AbstractXmlStepForm {
     public MetadataTable getMetadataOutputTable() {
         return null;
     }
-
-    protected void updateConnection(String text, ATreeNode treeNode) {
-        if (text == null || "".equals(text)) {
-            return;
-        }
-
-        List<FOXTreeNode> rootFoxTreeNodes = null;
-        if (treeNode == null) {
-            rootFoxTreeNodes = TreeUtil.getFoxTreeNodes(text);
-        } else {
-            rootFoxTreeNodes = getCorrespondingFoxTreeNodes(treeNode, true);
-        }
-
-        if (rootFoxTreeNodes.size() == 0) {
-            return;
-        }
-        if (ConnectionHelper.getTables(getConnection()).isEmpty()) {
-            MetadataTable table = ConnectionFactory.eINSTANCE.createMetadataTable();
-            RecordFile record = (RecordFile) ConnectionHelper.getPackage(getConnection().getName(), getConnection(),
-                    RecordFile.class);
-            if (record != null) { // hywang
-                PackageHelper.addMetadataTable(table, record);
-            } else {
-                RecordFile newrecord = RecordFactory.eINSTANCE.createRecordFile();
-                newrecord.setName(connection.getName());
-                ConnectionHelper.addPackage(newrecord, connection);
-                PackageHelper.addMetadataTable(table, newrecord);
-            }
-        }
-        EList schemaMetadataColumn = ConnectionHelper.getTables(getConnection()).toArray(new MetadataTable[0])[0].getColumns();
-        schemaMetadataColumn.clear();
-        initMetadataTable(rootFoxTreeNodes, schemaMetadataColumn, false, 0);
-        updateConnectionProperties(rootFoxTreeNodes.get(0));
-    }
-
 }
