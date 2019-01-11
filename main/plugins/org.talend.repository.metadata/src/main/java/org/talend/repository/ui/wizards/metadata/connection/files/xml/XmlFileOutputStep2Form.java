@@ -108,10 +108,6 @@ public class XmlFileOutputStep2Form extends AbstractXmlFileStepForm {
 
     private SashForm mainSashFormComposite;
 
-    // protected Label statusLabelWarnText;
-    //
-    // protected Label statusLabelWarn;
-
     protected Label limitLabel;
 
     protected Text limitNumberText;
