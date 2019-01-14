@@ -16,6 +16,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.eclipse.core.runtime.IStatus;
+import org.eclipse.draw2d.ColorConstants;
 import org.eclipse.emf.common.util.EList;
 import org.eclipse.jface.action.IAction;
 import org.eclipse.jface.action.IMenuListener;
@@ -23,6 +24,7 @@ import org.eclipse.jface.action.IMenuManager;
 import org.eclipse.jface.action.MenuManager;
 import org.eclipse.jface.action.Separator;
 import org.eclipse.jface.dialogs.MessageDialog;
+import org.eclipse.jface.layout.GridDataFactory;
 import org.eclipse.jface.viewers.CellEditor;
 import org.eclipse.jface.viewers.ComboViewer;
 import org.eclipse.jface.viewers.ICellEditorListener;
@@ -39,6 +41,8 @@ import org.eclipse.swt.SWT;
 import org.eclipse.swt.custom.SashForm;
 import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
+import org.eclipse.swt.events.VerifyEvent;
+import org.eclipse.swt.events.VerifyListener;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Button;
@@ -100,7 +104,6 @@ import org.talend.repository.ui.wizards.metadata.connection.files.xml.view.XmlFi
 import org.talend.repository.ui.wizards.metadata.connection.files.xml.view.XmlFileTableViewerProvider;
 import org.talend.repository.ui.wizards.metadata.connection.files.xml.view.XmlFileTreeViewerProvider;
 import org.talend.repository.ui.wizards.metadata.connection.files.xml.view.XmlTree2SchemaLinker;
-
 /**
  * wzhang class global comment. Detailled comment
  */
@@ -108,11 +111,11 @@ public class XmlFileOutputStep2Form extends AbstractXmlFileStepForm {
 
     private SashForm mainSashFormComposite;
 
-    protected Label limitLabel;
-
     protected Text limitNumberText;
 
-    private Button schemaButton, schemaButtonRefresh;
+    private Button schemaButton;
+
+    private Button schemaButtonRefresh;
 
     private ComboViewer rootComboViewer;
 
@@ -399,27 +402,32 @@ public class XmlFileOutputStep2Form extends AbstractXmlFileStepForm {
 
     private void addSchemaViewer(final Composite mainComposite, final int width, final int height) {
         final Group group = Form.createGroup(mainComposite, 1, "Linker Source", height);
-        // group.setBackgroundMode(SWT.INHERIT_FORCE);
-        schemaButton = new Button(group, SWT.PUSH);
+        Composite createGroup = new Composite(group, SWT.NONE);
+        GridLayout gridLayoutTop = new GridLayout(2, false);
+        gridLayoutTop.marginHeight = 0;
+        gridLayoutTop.marginBottom = 0;
+        gridLayoutTop.marginLeft = 0;
+        gridLayoutTop.marginRight = 0;
+        gridLayoutTop.marginTop = 0;
+        gridLayoutTop.marginWidth = 0;
+        createGroup.setLayout(gridLayoutTop);
+        createGroup.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
+        schemaButton = new Button(createGroup, SWT.PUSH);
         schemaButton.setText("Schema Management");
         schemaButton.setToolTipText("You can add or edit schema and save in 'Schema List' viewer");
-
-        Composite createGroup = Form.startNewGridLayout(group, 3, false, SWT.RIGHT, SWT.BOTTOM);
-        createGroup.setLayoutData(new GridData());
-        limitLabel = new Label(createGroup, SWT.NONE);
-        limitLabel.setText("Field Limit");
-
-        limitNumberText = new Text(createGroup, SWT.BORDER);
-        GridData gd = new GridData(18, 12);
-        limitNumberText.setLayoutData(gd);
-        int maxColumnsNumber = CoreUIPlugin.getDefault().getPreferenceStore()
-                .getInt(ITalendCorePrefConstants.MAXIMUM_AMOUNT_OF_COLUMNS_FOR_XML);
-        limitNumberText.setText(String.valueOf(maxColumnsNumber));
-
-        schemaButtonRefresh = new Button(createGroup, SWT.PUSH);
-        schemaButtonRefresh.setImage(ImageProvider.getImage(EImage.REFRESH_ICON));
-        schemaButtonRefresh.setToolTipText(Messages.getString("XmlFileOutputStep2Form.refresh"));
-
+        
+        Composite createGroupRight = new Composite(createGroup, SWT.NULL);
+        GridLayout gridLayoutRight = new GridLayout(3, false);
+        gridLayoutRight.marginHeight = 0;
+        gridLayoutRight.marginBottom = 0;
+        gridLayoutRight.marginLeft = 0;
+        gridLayoutRight.marginRight = 0;
+        gridLayoutRight.marginTop = 0;
+        gridLayoutRight.marginWidth = 0;
+        createGroupRight.setLayout(gridLayoutRight);
+        GridData gridDataRight = new GridData(SWT.END, SWT.BOTTOM, true, true);
+        createGroupRight.setLayoutData(gridDataRight);
+        createFileField(createGroupRight, "Field Limit:", 1, SWT.BORDER);
         schemaViewer = new TableViewer(group);
         XmlFileTableViewerProvider provider = new XmlFileTableViewerProvider();
         schemaViewer.setContentProvider(provider);
@@ -446,6 +454,34 @@ public class XmlFileOutputStep2Form extends AbstractXmlFileStepForm {
                 moveDown.getButton().setEnabled(false);
             }
         });
+    }
+
+    private void createFileField(final Composite composite, String string, int horizontalSpan,
+            int styleField) {
+        Label label = new Label(composite, SWT.LEFT);
+        label.setText(string);
+        GridDataFactory.swtDefaults().applyTo(label);
+
+        limitNumberText = new Text(composite, styleField);
+        limitNumberText.setBackground(ColorConstants.white);
+        limitNumberText.selectAll();
+        GridData gridData = new GridData(SWT.FILL, SWT.CENTER, true, false);
+        gridData.horizontalSpan = horizontalSpan;
+        limitNumberText.setLayoutData(gridData);
+        Composite compositeButton = new Composite(composite, SWT.NONE);
+        GridLayout gridLayout = new GridLayout();
+        gridLayout.marginHeight = 0;
+        gridLayout.marginBottom = 0;
+        gridLayout.marginLeft = 0;
+        gridLayout.marginRight = 0;
+        gridLayout.marginTop = 0;
+        gridLayout.marginWidth = 0;
+        compositeButton.setLayout(gridLayout);
+        compositeButton.setLayoutData(new GridData(SWT.LEFT, SWT.CENTER, false, false));
+        schemaButtonRefresh = new Button(compositeButton, SWT.PUSH);
+        GridDataFactory.swtDefaults().applyTo(schemaButtonRefresh);
+        schemaButtonRefresh.setImage(ImageProvider.getImage(EImage.REFRESH_ICON)); // $NON-NLS-1$
+        schemaButtonRefresh.setToolTipText(Messages.getString("XmlFileOutputStep2Form.refresh"));
     }
 
     private void fillContextMenu(IMenuManager manager) {
@@ -496,8 +532,27 @@ public class XmlFileOutputStep2Form extends AbstractXmlFileStepForm {
                 }
             }
         });
+
+        limitNumberText.addVerifyListener(new VerifyListener() {
+
+            @Override
+            public void verifyText(VerifyEvent e) {
+                checkInteger(limitNumberText, e);
+            }
+        });
     }
 
+    private void checkInteger(Text textCtrl, VerifyEvent e) {
+        if (e.character != 0 && e.keyCode != SWT.BS && e.keyCode != SWT.DEL && !Character.isDigit(e.character)) {
+            e.doit = false;
+        } else {
+            if (e.character == '0' && e.start == 0) {
+                e.doit = false;
+            } else {
+                e.doit = true;
+            }
+        }
+    }
     @Override
     protected void addUtilsButtonListeners() {
         schemaButton.addSelectionListener(new SelectionAdapter() {
