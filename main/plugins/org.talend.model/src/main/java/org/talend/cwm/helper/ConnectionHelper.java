@@ -72,7 +72,6 @@ public class ConnectionHelper {
     // MOD xqliu 2011-07-04 feature 22201
     // public static final String PASSPHRASE = "99ZwBDt1L9yMX2ApJx fnv94o99OeHbCGuIHTy22
     // V9O6cZ2i374fVjdV76VX9g49DG1r3n90hT5c1"; //$NON-NLS-1$
-    public static final String PASSPHRASE = ConnectionUtils.PASSPHRASE;
 
     // ~
 

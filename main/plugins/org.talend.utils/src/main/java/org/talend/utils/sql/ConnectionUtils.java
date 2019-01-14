@@ -24,7 +24,6 @@ import java.util.List;
 import java.util.Properties;
 
 import org.apache.log4j.Logger;
-import org.talend.utils.security.CryptoHelper;
 import org.talend.utils.sugars.ReturnCode;
 
 /**
@@ -33,8 +32,6 @@ import org.talend.utils.sugars.ReturnCode;
 public final class ConnectionUtils {
 
     private static Logger log = Logger.getLogger(ConnectionUtils.class);
-
-    public static final String PASSPHRASE = CryptoHelper.PASSPHRASE;
 
     private static List<String> sybaseDBProductsNames;
 
