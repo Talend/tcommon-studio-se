@@ -1108,26 +1108,31 @@ public final class ProxyRepositoryFactory implements IProxyRepositoryFactory {
      */
     @Override
     public List<IRepositoryViewObject> getAllVersion(String id) throws PersistenceException {
-        String projectLabel = ProcessUtils.getProjectLabelFromItemId(id);
+        String objId = id;
+        String projectLabel = ProcessUtils.getProjectLabelFromItemId(objId);
         Project project = projectManager.getCurrentProject();
-        if (projectLabel != null) {
-            project = projectManager.getProjectFromProjectTechLabel(projectLabel);
-            id = ProcessUtils.getPureItemId(id);
+        if (projectLabel != null) {   
+            Project tempProject = projectManager.getProjectFromProjectTechLabel(projectLabel);
+            objId = ProcessUtils.getPureItemId(objId);
+            if (tempProject != null) {
+                project = tempProject;
+            }
         }
-        List<IRepositoryViewObject> allVersion = getAllRefVersion(project, id);
+        List<IRepositoryViewObject> allVersion = getAllRefVersion(project, objId);
         return allVersion;
     }
 
     @Override
     public List<IRepositoryViewObject> getAllVersion(String id, String folderPath, ERepositoryObjectType type)
             throws PersistenceException {
-        String projectLabel = ProcessUtils.getProjectLabelFromItemId(id);
+        String objId = id;
+        String projectLabel = ProcessUtils.getProjectLabelFromItemId(objId);
         Project project = projectManager.getCurrentProject();
         if (projectLabel != null) {
             project = projectManager.getProjectFromProjectTechLabel(projectLabel);
-            id = ProcessUtils.getPureItemId(id);
+            objId = ProcessUtils.getPureItemId(objId);
         }
-        List<IRepositoryViewObject> allVersion = getAllRefVersion(project, id, folderPath, type);
+        List<IRepositoryViewObject> allVersion = getAllRefVersion(project, objId, folderPath, type);
         return allVersion;
     }
 
@@ -1191,26 +1196,30 @@ public final class ProxyRepositoryFactory implements IProxyRepositoryFactory {
 
     public IRepositoryViewObject getLastVersion(String id, String folderPath, ERepositoryObjectType type)
             throws PersistenceException {
-        String projectLabel = ProcessUtils.getProjectLabelFromItemId(id);
+        String objId = id;
+        String projectLabel = ProcessUtils.getProjectLabelFromItemId(objId);
         if (projectLabel != null) {
+            objId = ProcessUtils.getPureItemId(id);
             Project project = ProjectManager.getInstance().getProjectFromProjectTechLabel(projectLabel);
             if (project != null) {
-                return this.repositoryFactoryFromProvider.getLastVersion(project, ProcessUtils.getPureItemId(id), folderPath, type);
+                return this.repositoryFactoryFromProvider.getLastVersion(project, objId, folderPath, type);
             }
         }
-        return this.repositoryFactoryFromProvider.getLastVersion(projectManager.getCurrentProject(), id , folderPath, type);
+        return this.repositoryFactoryFromProvider.getLastVersion(projectManager.getCurrentProject(), objId , folderPath, type);
     }
 
     @Override
     public IRepositoryViewObject getLastVersion(String id) throws PersistenceException {
+        String objId = id;
         String projectLabel = ProcessUtils.getProjectLabelFromItemId(id);
         if (projectLabel != null) {
+            objId = ProcessUtils.getPureItemId(id);
             Project project = ProjectManager.getInstance().getProjectFromProjectTechLabel(projectLabel);
             if (project != null) {
-                return getLastVersion(project, ProcessUtils.getPureItemId(id));
+                return getLastVersion(project, objId);
             }
         }
-        IRepositoryViewObject lastRefVersion = getLastRefVersion(projectManager.getCurrentProject(), id);
+        IRepositoryViewObject lastRefVersion = getLastRefVersion(projectManager.getCurrentProject(), objId);
         return lastRefVersion;
     }
 

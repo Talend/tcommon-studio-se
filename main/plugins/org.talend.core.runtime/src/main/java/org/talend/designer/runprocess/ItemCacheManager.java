@@ -92,7 +92,8 @@ public class ItemCacheManager {
     }
 
     public static ProcessItem getProcessItem(String projectLabel, String processId, String version) {
-        if (ProjectManager.getInstance().getCurrentProject().getTechnicalLabel().equals(projectLabel)) {
+        if (ProjectManager.getInstance().getCurrentProject().getTechnicalLabel().equals(projectLabel)
+                || ProjectManager.getInstance().getProjectFromProjectTechLabel(projectLabel) == null) {
             return getProcessItem(ProjectManager.getInstance().getCurrentProject(), processId, version);
         } else {
             Project project = ProjectManager.getInstance().getProjectFromProjectTechLabel(projectLabel);
@@ -106,7 +107,8 @@ public class ItemCacheManager {
     public static ProcessItem getProcessItem(String processId, String version) {
         String[] parsedArray = parseProcessId(processId);
         ProcessItem refProcessItem = null;
-        if (StringUtils.isEmpty(parsedArray[0])) {
+        if (StringUtils.isEmpty(parsedArray[0])
+                || ProjectManager.getInstance().getProjectFromProjectTechLabel(parsedArray[0]) == null) {
             refProcessItem = getRefProcessItem(ProjectManager.getInstance().getCurrentProject(), parsedArray[1], version);
         } else {
             Project project = ProjectManager.getInstance().getProjectFromProjectTechLabel(parsedArray[0]);
