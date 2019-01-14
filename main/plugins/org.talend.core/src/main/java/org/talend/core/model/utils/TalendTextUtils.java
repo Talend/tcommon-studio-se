@@ -12,6 +12,7 @@
 // ============================================================================
 package org.talend.core.model.utils;
 
+import java.security.SecureRandom;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -496,7 +497,17 @@ public class TalendTextUtils {
     public static String hidePassword(final String password) {
 
         if (password == null) {
-            return PASS_COVER + PASS_COVER; // Means two quote
+            SecureRandom random = new SecureRandom();
+            int passWordLength = random.nextInt();
+            String passCover = PASS_COVER;
+            StringBuilder builder = new StringBuilder(passCover);
+
+            for(int i=0; i<passWordLength; i++)
+            {
+                builder.append(PASS_COVER);
+            }
+
+            return passCover;
         }
 
         if (ContextParameterUtils.containContextVariables(password)) {
