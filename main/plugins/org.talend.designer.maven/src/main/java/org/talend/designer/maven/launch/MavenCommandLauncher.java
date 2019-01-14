@@ -396,7 +396,7 @@ public abstract class MavenCommandLauncher {
             try {
                 Display display = Display.getCurrent();
                 while (!launchFinished) {
-                    if (display != null) {
+                    if (display != null && !CommonsPlugin.isHeadless()) {
                         if (!display.readAndDispatch()) {
                             display.sleep();
                         }
