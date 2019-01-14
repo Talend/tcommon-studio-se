@@ -32,7 +32,7 @@ public class IdGenerator {
     public static String getAsciiRandomString(int length) {
         Random random = new Random();
         int cnt = 0;
-        StringBuffer buffer = new StringBuffer();
+        StringBuilder buffer = new StringBuilder();
         char ch;
         int end = 'z' + 1;
         int start = ' ';
