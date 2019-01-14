@@ -15,6 +15,7 @@ package org.talend.core.ui.composite;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashSet;
+import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Set;
 
@@ -249,6 +250,21 @@ public class ElementsSelectionComposite<T> extends Composite {
     @SuppressWarnings("unchecked")
     public List<T> getSelectedElements() {
         Set<T> checkedElements = new HashSet<>();
+        // If using filter
+        for (Object obj : filteredCheckboxTree.getCheckedLeafNodes()) {
+            checkedElements.add((T) obj);
+        }
+        // If does not use filter
+        for (Object obj : viewer.getCheckedElements()) {
+            checkedElements.add((T) obj);
+        }
+
+        return new ArrayList<>(checkedElements);
+    }
+
+    @SuppressWarnings("unchecked")
+    public List<T> getSelectedElementsOrdered() {
+        Set<T> checkedElements = new LinkedHashSet<T>();
         // If using filter
         for (Object obj : filteredCheckboxTree.getCheckedLeafNodes()) {
             checkedElements.add((T) obj);
