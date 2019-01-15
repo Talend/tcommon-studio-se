@@ -427,7 +427,7 @@ public class XmlFileOutputStep2Form extends AbstractXmlFileStepForm {
         createGroupRight.setLayout(gridLayoutRight);
         GridData gridDataRight = new GridData(SWT.END, SWT.BOTTOM, true, true);
         createGroupRight.setLayoutData(gridDataRight);
-        createFileField(createGroupRight, "Field Limit:", 1, SWT.BORDER);
+        setSchemaRefreshButton(createGroupRight, "Field Limit:", 1, SWT.BORDER);
         schemaViewer = new TableViewer(group);
         XmlFileTableViewerProvider provider = new XmlFileTableViewerProvider();
         schemaViewer.setContentProvider(provider);
@@ -456,7 +456,7 @@ public class XmlFileOutputStep2Form extends AbstractXmlFileStepForm {
         });
     }
 
-    private void createFileField(final Composite composite, String string, int horizontalSpan,
+    private void setSchemaRefreshButton(final Composite composite, String string, int horizontalSpan,
             int styleField) {
         Label label = new Label(composite, SWT.LEFT);
         label.setText(string);
@@ -589,11 +589,11 @@ public class XmlFileOutputStep2Form extends AbstractXmlFileStepForm {
             @Override
             public void widgetSelected(SelectionEvent e) {
                 String limitNumber = limitNumberText.getText();
-                    Integer maxNumber = Integer.valueOf(limitNumber);
-                    int schemaViewerCount = schemaViewer.getTable().getItems().length;
-                    if (schemaViewerCount != maxNumber) {
-                        refreshSchema(maxNumber);
-                    }
+                Integer maxNumber = Integer.valueOf(limitNumber);
+                int schemaViewerCount = schemaViewer.getTable().getItems().length;
+                if (schemaViewerCount != maxNumber) {
+                    refreshSchema(maxNumber);
+                }
             }
         });
     }
