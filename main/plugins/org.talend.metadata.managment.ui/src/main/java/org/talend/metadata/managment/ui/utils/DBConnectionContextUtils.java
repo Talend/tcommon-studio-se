@@ -1321,34 +1321,21 @@ public final class DBConnectionContextUtils {
             }
         }
 
-        // Added 20130311 TDQ-7000, when it is context mode and not general jdbc, reset the url.
-        if (contextType != null
-                && !EDatabaseTypeName.GENERAL_JDBC
-                        .equals(EDatabaseTypeName.getTypeFromDbType(dbConn.getDatabaseType()))) {
-            String newURL = null;
-            if (EDatabaseTypeName.IMPALA.equals(EDatabaseTypeName.getTypeFromDbType(dbConn.getDatabaseType()))) {
-                newURL =
-                        DatabaseConnStrUtil.getImpalaString(cloneConn, cloneConn.getServerName(), cloneConn.getPort(),
-                                cloneConn.getSID(), DbConnStrForHive.URL_HIVE_2_TEMPLATE);
-            } else {
-                newURL =
-                        DatabaseConnStrUtil.getURLString(cloneConn.getDatabaseType(), dbConn.getDbVersionString(),
-                                server, username, password, port, sidOrDatabase, filePath.toLowerCase(), datasource,
-                                dbRootPath, additionParam);
-            }
-            cloneConn.setURL(newURL);
-            return cloneConn;
-        }// ~
-
-        if (dbConn.getURL() != null && !dbConn.getURL().equals("") && EDatabaseTypeName.GENERAL_JDBC
-                .equals(EDatabaseTypeName.getTypeFromDbType(dbConn.getDatabaseType()))) { //$NON-NLS-1$
+        if (dbConn.getURL() != null && !dbConn.getURL().equals("") //$NON-NLS-1$
+                && EDatabaseTypeName.GENERAL_JDBC.equals(EDatabaseTypeName.getTypeFromDbType(dbConn.getDatabaseType()))) {
             cloneConn.setURL(url);
             return cloneConn;
         }
-        String newURL =
-                DatabaseConnStrUtil.getURLString(cloneConn.getDatabaseType(), dbConn.getDbVersionString(), server,
-                        username, password, port, sidOrDatabase, filePath.toLowerCase(), datasource, dbRootPath,
-                        additionParam);
+
+        // Added 20130311 TDQ-7000, when it is context mode and not general jdbc, reset the url.
+        String newURL = null;
+        if (EDatabaseTypeName.IMPALA.equals(EDatabaseTypeName.getTypeFromDbType(dbConn.getDatabaseType()))) {
+            newURL = DatabaseConnStrUtil.getImpalaString(cloneConn, cloneConn.getServerName(), cloneConn.getPort(),
+                    cloneConn.getSID(), DbConnStrForHive.URL_HIVE_2_TEMPLATE);
+        } else {
+            newURL = DatabaseConnStrUtil.getURLString(cloneConn.getDatabaseType(), dbConn.getDbVersionString(), server, username,
+                    password, port, sidOrDatabase, filePath.toLowerCase(), datasource, dbRootPath, additionParam);
+        }
         cloneConn.setURL(newURL);
         return cloneConn;
     }
