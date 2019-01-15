@@ -31,6 +31,7 @@ import org.talend.core.model.metadata.types.DBTypeUtil;
 import org.talend.core.model.metadata.types.JavaType;
 import org.talend.core.model.metadata.types.JavaTypesManager;
 import org.talend.core.runtime.i18n.Messages;
+import org.talend.utils.xml.XmlUtils;
 import org.w3c.dom.Document;
 import org.w3c.dom.NamedNodeMap;
 import org.w3c.dom.Node;
@@ -77,7 +78,7 @@ public class MappingFileLoader {
         StringBuffer stringBuff = new StringBuffer();
 
         try {
-            DocumentBuilderFactory documentBuilderFactory = DocumentBuilderFactory.newInstance();
+            DocumentBuilderFactory documentBuilderFactory = XmlUtils.getSecureDocumentBuilderFactory();
             DocumentBuilder analyser = documentBuilderFactory.newDocumentBuilder();
             Document document = analyser.parse(file);
             stringBuff.append("language=" + codeLanguage + "\n"); //$NON-NLS-1$ //$NON-NLS-2$

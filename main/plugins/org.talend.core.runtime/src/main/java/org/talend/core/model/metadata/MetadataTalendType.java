@@ -53,6 +53,7 @@ import org.talend.core.runtime.CoreRuntimePlugin;
 import org.talend.core.runtime.i18n.Messages;
 import org.talend.core.utils.TalendQuoteUtils;
 import org.talend.repository.ProjectManager;
+import org.talend.utils.xml.XmlUtils;
 import org.w3c.dom.Document;
 import org.w3c.dom.NamedNodeMap;
 import org.w3c.dom.Node;
@@ -218,7 +219,7 @@ public final class MetadataTalendType {
         defaultvalue = new HashMap<String, Map<String, String>>();
 
         try {
-            DocumentBuilderFactory fabrique = DocumentBuilderFactory.newInstance();
+            DocumentBuilderFactory fabrique = XmlUtils.getSecureDocumentBuilderFactory();
             DocumentBuilder analyseur = fabrique.newDocumentBuilder();
 
             Bundle b = Platform.getBundle(CoreRuntimePlugin.PLUGIN_ID);

@@ -1771,6 +1771,14 @@ public class LocalRepositoryFactory extends AbstractEMFRepositoryFactory impleme
     }
 
     @Override
+    public void batchDeleteObjectPhysical(Project project, List<IRepositoryViewObject> objToDeleteList, boolean isDeleteOnRemote)
+            throws PersistenceException {
+        for (IRepositoryViewObject object : objToDeleteList) {
+            deleteObjectPhysical(project, object, null, isDeleteOnRemote);
+        }
+    }
+
+    @Override
     public void restoreObject(IRepositoryViewObject objToRestore, IPath path) throws PersistenceException {
         restoreObject(getRepositoryContext().getProject(), objToRestore, path);
     }

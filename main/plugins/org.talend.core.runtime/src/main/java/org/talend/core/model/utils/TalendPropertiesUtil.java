@@ -35,7 +35,7 @@ public final class TalendPropertiesUtil {
      * @return
      */
     public static boolean isHideExchange() {
-        return isEnabled("talend.hide.exchange"); //$NON-NLS-1$
+        return isEnabled("talend.hide.exchange") || isEnabled("talend.disable.internet"); //$NON-NLS-1$ //$NON-NLS-2$
     }
 
     /**

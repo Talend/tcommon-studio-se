@@ -20,7 +20,8 @@ Require-Bundle: org.eclipse.debug.core,
  org.talend.model,
  org.talend.core.repository,
  org.talend.libraries.apache,
- org.talend.core.runtime
+ org.talend.core.runtime,
+ org.talend.utils
 Bundle-Vendor: .Talend SA.
 Export-Package: org.talend.core,
  org.talend.core.branding,

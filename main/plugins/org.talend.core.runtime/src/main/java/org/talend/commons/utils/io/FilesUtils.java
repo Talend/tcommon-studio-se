@@ -67,6 +67,7 @@ import org.talend.commons.utils.encoding.CharsetToolkit;
 import org.talend.commons.utils.network.NetworkUtil;
 import org.talend.core.model.metadata.builder.connection.FileConnection;
 import org.talend.core.model.repository.SVNConstant;
+import org.talend.utils.xml.XmlUtils;
 import org.w3c.dom.Document;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
@@ -1048,7 +1049,7 @@ public class FilesUtils {
         if (file == null || !file.exists()) {
             return null;
         }
-        DocumentBuilderFactory dbf = DocumentBuilderFactory.newInstance();
+        DocumentBuilderFactory dbf = XmlUtils.getSecureDocumentBuilderFactory(false);
         DocumentBuilder db = dbf.newDocumentBuilder();
         Document domTree = db.parse(file);
         return domTree;

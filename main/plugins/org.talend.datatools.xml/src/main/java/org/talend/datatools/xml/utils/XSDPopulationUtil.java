@@ -24,6 +24,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import javax.xml.parsers.DocumentBuilderFactory;
+import javax.xml.parsers.ParserConfigurationException;
 
 import org.apache.xerces.impl.xs.XMLSchemaLoader;
 import org.apache.xerces.impl.xs.XSComplexTypeDecl;
@@ -36,14 +37,15 @@ import org.apache.xerces.xs.XSConstants;
 import org.apache.xerces.xs.XSModel;
 import org.apache.xerces.xs.XSNamedMap;
 import org.apache.xerces.xs.XSTypeDefinition;
+import org.talend.utils.xml.XmlUtils;
 
 /**
  * DOC ycbai class global comment. Detailled comment
  */
 public class XSDPopulationUtil {
 
-    public static XSModel getXSModel(String fileName) throws URISyntaxException, MalformedURLException {
-        DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
+    public static XSModel getXSModel(String fileName) throws URISyntaxException, MalformedURLException, ParserConfigurationException {
+        DocumentBuilderFactory factory = XmlUtils.getSecureDocumentBuilderFactory(false);
         factory.setNamespaceAware(true);
         URI uri = null;
         File f = new File(fileName);

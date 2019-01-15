@@ -20,9 +20,13 @@ public class XMLHelper {
 	
 	private XMLReader reader;
 
+    private final String DISALLOW_DOCTYPE_DECL = "http://apache.org/xml/features/disallow-doctype-decl"; //$NON-NLS-1$
+
 	private XMLHelper() {
-		SAXParserFactory factory = SAXParserFactory.newInstance();
 	    try {
+			SAXParserFactory factory = SAXParserFactory.newInstance();
+			factory.setFeature(javax.xml.XMLConstants.FEATURE_SECURE_PROCESSING, Boolean.TRUE);
+			factory.setFeature(DISALLOW_DOCTYPE_DECL, true);
 			reader = factory.newSAXParser().getXMLReader();
 			reader.setErrorHandler(null);
 		} catch (SAXException e) {

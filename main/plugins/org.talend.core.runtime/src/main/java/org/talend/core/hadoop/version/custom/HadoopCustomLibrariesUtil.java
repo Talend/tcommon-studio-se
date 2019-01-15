@@ -48,6 +48,7 @@ import org.talend.core.model.general.ILibrariesService;
 import org.talend.core.runtime.i18n.Messages;
 import org.talend.repository.ProjectManager;
 import org.talend.utils.files.FileUtils;
+import org.talend.utils.xml.XmlUtils;
 import org.w3c.dom.Attr;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
@@ -186,7 +187,7 @@ public class HadoopCustomLibrariesUtil {
             Map<File, IPath> toExport) throws Exception {
         OutputStreamWriter output = null;
         try {
-            final DocumentBuilderFactory docBuilder = DocumentBuilderFactory.newInstance();
+            final DocumentBuilderFactory docBuilder = XmlUtils.getSecureDocumentBuilderFactory();
             String indexFileName = "index.xml";//$NON-NLS-1$
             File indexFile = new File(tempFolder, indexFileName);
             final DocumentBuilder analyseur = docBuilder.newDocumentBuilder();

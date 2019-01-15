@@ -19,6 +19,7 @@ import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
 
+import org.talend.utils.xml.XmlUtils;
 import org.w3c.dom.Document;
 import org.xml.sax.ErrorHandler;
 import org.xml.sax.InputSource;
@@ -39,8 +40,7 @@ public class XSDValidator {
 
     public static Document checkXSD(File fileToCheck, File fileXSD) throws IOException, ParserConfigurationException,
             SAXException {
-        final DocumentBuilderFactory fabrique = DocumentBuilderFactory.newInstance();
-
+        final DocumentBuilderFactory fabrique = XmlUtils.getSecureDocumentBuilderFactory();
         fabrique.setAttribute(SCHEMA_LANGUAGE, "http://www.w3.org/2001/XMLSchema"); //$NON-NLS-1$
         fabrique.setAttribute(SCHEMA_VALIDATOR, fileXSD);
         fabrique.setValidating(true);

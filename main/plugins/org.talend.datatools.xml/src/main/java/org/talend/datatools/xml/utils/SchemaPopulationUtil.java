@@ -21,7 +21,9 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import javax.xml.XMLConstants;
 import javax.xml.parsers.DocumentBuilderFactory;
+import javax.xml.parsers.ParserConfigurationException;
 
 import org.apache.commons.lang.StringUtils;
 import org.apache.xerces.impl.xs.XMLSchemaLoader;
@@ -522,11 +524,18 @@ final class XSDFileSchemaTreePopulator {
      * @throws OdaException
      * @throws MalformedURLException
      * @throws URISyntaxException
+     * @throws ParserConfigurationException 
      */
     public static ATreeNode getSchemaTree(String fileName, boolean incAttr, boolean forMDM, List<String> attList)
             throws OdaException, MalformedURLException, URISyntaxException {
         includeAttribute = incAttr;
         DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
+        try {
+            factory.setFeature(XMLConstants.FEATURE_SECURE_PROCESSING, true);
+        } catch (ParserConfigurationException e1) {
+            e1.printStackTrace();
+        }
+
         factory.setNamespaceAware(true);
         URI uri = null;
         File f = new File(fileName);

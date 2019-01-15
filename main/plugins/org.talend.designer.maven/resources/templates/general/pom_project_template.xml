@@ -63,6 +63,28 @@
 					<artifactId>maven-surefire-plugin</artifactId>
 					<version>2.20</version>
 				</plugin>
+				<plugin>
+					<groupId>io.fabric8</groupId>
+					<artifactId>fabric8-maven-plugin</artifactId>
+					<version>3.5.37</version>
+					<dependencies>
+						<dependency>
+							<groupId>com.fasterxml.jackson.core</groupId>
+							<artifactId>jackson-annotations</artifactId>
+							<version>2.9.0</version>
+						</dependency>
+						<dependency>
+							<groupId>com.fasterxml.jackson.core</groupId>
+							<artifactId>jackson-core</artifactId>
+							<version>2.9.5</version>
+						</dependency>
+						<dependency>
+							<groupId>com.fasterxml.jackson.core</groupId>
+							<artifactId>jackson-databind</artifactId>
+							<version>2.9.5</version>
+						</dependency>
+					</dependencies>
+				</plugin>
 			</plugins>
 		</pluginManagement>
 	</build>

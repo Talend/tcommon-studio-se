@@ -24,6 +24,7 @@ import javax.xml.parsers.ParserConfigurationException;
 import org.talend.core.prefs.ITalendCorePrefConstants;
 import org.talend.core.runtime.CoreRuntimePlugin;
 import org.talend.core.runtime.i18n.Messages;
+import org.talend.utils.xml.XmlUtils;
 import org.w3c.dom.Document;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
@@ -110,7 +111,7 @@ public class XmlArray {
     public static XmlArray createFrom(InputStream is) throws IOException, ParserConfigurationException, SAXException {
         XmlArray array = new XmlArray();
 
-        DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
+        DocumentBuilderFactory factory = XmlUtils.getSecureDocumentBuilderFactory();
         DocumentBuilder builder = factory.newDocumentBuilder();
         Document document = builder.parse(is);
         Node root = document.getFirstChild();

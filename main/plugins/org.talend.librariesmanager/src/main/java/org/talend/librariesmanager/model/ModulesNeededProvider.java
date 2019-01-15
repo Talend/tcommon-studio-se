@@ -79,6 +79,7 @@ import org.talend.core.runtime.maven.MavenArtifact;
 import org.talend.core.runtime.maven.MavenUrlHelper;
 import org.talend.core.runtime.process.TalendProcessOptionConstants;
 import org.talend.core.utils.TalendCacheUtils;
+import org.talend.core.utils.TalendQuoteUtils;
 import org.talend.designer.core.model.utils.emf.component.IMPORTType;
 import org.talend.designer.core.model.utils.emf.talendfile.RoutinesParameterType;
 import org.talend.librariesmanager.i18n.Messages;
@@ -1076,4 +1077,16 @@ public class ModulesNeededProvider {
         }
     }
 
+    public static String getOrignalMvnURIIfCustom(String mvnPath) {
+        String mvnUri = TalendQuoteUtils.removeQuotesIfExist(mvnPath);
+        if (MavenUrlHelper.isMvnUrl(mvnUri)) {
+            for (String key : CustomUriManager.getInstance().keySet()) {
+                String value = CustomUriManager.getInstance().get(key);
+                if (mvnUri.equals(value)) {
+                    return key;
+                }
+            }
+        }
+        return mvnPath;
+    }
 }

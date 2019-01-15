@@ -78,6 +78,7 @@ import org.talend.designer.runprocess.ProcessorUtilities;
 import org.talend.repository.ProjectManager;
 import org.talend.repository.RepositoryWorkUnit;
 import org.talend.repository.model.RepositoryConstants;
+import org.talend.utils.xml.XmlUtils;
 import org.w3c.dom.Document;
 import org.w3c.dom.NamedNodeMap;
 import org.w3c.dom.Node;
@@ -419,10 +420,9 @@ public class CoreService implements ICoreService {
 
     public String getTargetName(File file) {
         String targetName = file.getName();
-        DocumentBuilderFactory documentBuilderFactory = DocumentBuilderFactory.newInstance();
-        DocumentBuilder analyser;
         try {
-            analyser = documentBuilderFactory.newDocumentBuilder();
+            DocumentBuilderFactory documentBuilderFactory = XmlUtils.getSecureDocumentBuilderFactory();
+            DocumentBuilder analyser = documentBuilderFactory.newDocumentBuilder();
             Document document = analyser.parse(file);
             NodeList dbmsNodes = document.getElementsByTagName("dbms"); //$NON-NLS-1$
             String dbmsIdValue = "";

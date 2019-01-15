@@ -215,6 +215,7 @@ public class DeleteAction extends AContextualAction {
                         selectNodes = selectNodesFullList;
                     }
                 }
+                List<IRepositoryViewObject> batchDeleteObjectList = new ArrayList<IRepositoryViewObject>();
                 List<RepositoryNode> accessNodes = new ArrayList<RepositoryNode>();
                 for (RepositoryNode node : selectNodes) {
                     try {
@@ -279,7 +280,8 @@ public class DeleteAction extends AContextualAction {
                             if (node.getProperties(EProperties.CONTENT_TYPE) == ERepositoryObjectType.JOBLET) {
                                 needToUpdataPalette = true;
                             }
-                            boolean needReturn = deleteElements(factory, deleteActionCache, node);
+
+                            boolean needReturn = deleteElements(factory, deleteActionCache, node, batchDeleteObjectList);
                             if (needReturn) {
                                 // TDI-31623: Access the rest nodes in select nodes if current node's delete has pb
                                 if (accessNodes.containsAll(selectNodes)) {
@@ -331,7 +333,8 @@ public class DeleteAction extends AContextualAction {
                                 types.add(ERepositoryObjectType.DOCUMENTATION);
                             }
                             deletedFolder.add(node);
-                            deleteFolder(node, factory, deleteActionCache);
+                            List<IRepositoryViewObject> deleteObjectList = new ArrayList<IRepositoryViewObject>();
+                            deleteFolder(node, factory, deleteActionCache, deleteObjectList);
                         }
                     } catch (PersistenceException e) {
                         MessageBoxExceptionHandler.process(e);
@@ -341,7 +344,13 @@ public class DeleteAction extends AContextualAction {
                 }
 
                 try {
-                    factory.saveProject(ProjectManager.getInstance().getCurrentProject());
+                    if (batchDeleteObjectList != null && batchDeleteObjectList.size() > 0) {
+                        // no need saveProject for remote, will do saveProject in batchDeleteObjectPhysical4Remote
+                        factory.batchDeleteObjectPhysical4Remote(ProjectManager.getInstance().getCurrentProject(),
+                                batchDeleteObjectList);
+                    } else {
+                        factory.saveProject(ProjectManager.getInstance().getCurrentProject());
+                    }
                 } catch (PersistenceException e) {
                     ExceptionHandler.process(e);
                 }
@@ -453,11 +462,11 @@ public class DeleteAction extends AContextualAction {
      * @param deleteActionCache
      */
     private void deleteFolder(final RepositoryNode node, final IProxyRepositoryFactory factory,
-            final DeleteActionCache deleteActionCache) {
+            final DeleteActionCache deleteActionCache, List<IRepositoryViewObject> batchDeleteObjectList) {
         if (node.getObject().isDeleted()) {
             // if folder has been deleted already
             try {
-                deleteElements(factory, deleteActionCache, node);
+                deleteElements(factory, deleteActionCache, node, batchDeleteObjectList);
             } catch (Exception e) {
                 ExceptionHandler.process(e);
             }
@@ -702,7 +711,8 @@ public class DeleteAction extends AContextualAction {
             }
             factory.deleteObjectLogical(objToDelete);
             removeConnFromSQLExplorer(repositoryNode);
-            deleteTestCases(factory, deleteActionCache, repositoryNode, null);
+            List<IRepositoryViewObject> batchDeleteObjectList = new ArrayList<IRepositoryViewObject>();
+            deleteTestCases(factory, deleteActionCache, repositoryNode, null, batchDeleteObjectList);
 
             return true;
         }
@@ -1285,14 +1295,16 @@ public class DeleteAction extends AContextualAction {
     }
 
     protected boolean deleteElements(IProxyRepositoryFactory factory, DeleteActionCache deleteActionCache,
-            RepositoryNode currentJobNode) throws PersistenceException, BusinessException {
-        return deleteElements(factory, deleteActionCache, currentJobNode, null);
+            RepositoryNode currentJobNode, List<IRepositoryViewObject> batchDeleteObjectList)
+            throws PersistenceException, BusinessException {
+        return deleteElements(factory, deleteActionCache, currentJobNode, null, batchDeleteObjectList);
     }
 
     protected boolean confirmFromDialog = false;
 
     protected boolean deleteElements(IProxyRepositoryFactory factory, DeleteActionCache deleteActionCache,
-            final RepositoryNode currentJobNode, Boolean confirm) throws PersistenceException, BusinessException {
+            final RepositoryNode currentJobNode, Boolean confirm, List<IRepositoryViewObject> batchDeleteObjectList)
+            throws PersistenceException, BusinessException {
         boolean needReturn = false;
         final boolean[] enableDeleting = new boolean[1];
         enableDeleting[0] = true;
@@ -1370,9 +1382,21 @@ public class DeleteAction extends AContextualAction {
                     deleteActionCache.closeOpenedEditor(objToDelete);
                     if (currentJobNode.getType() == ENodeType.SIMPLE_FOLDER) {
                         boolean success = true;
+                        List<IRepositoryViewObject> deleteObjectList = new ArrayList<IRepositoryViewObject>();
                         for (IRepositoryNode curNode : currentJobNode.getChildren()) {
                             try {
-                                deleteElements(factory, deleteActionCache, (RepositoryNode) curNode, confirm);
+                                deleteElements(factory, deleteActionCache, (RepositoryNode) curNode, confirm, deleteObjectList);
+                            } catch (Exception e) {
+                                ExceptionHandler.process(e);
+                                success = false;
+                            }
+                        }
+                        
+                        // for remote project, lazy batch delete physically
+                        if (deleteObjectList != null && deleteObjectList.size() > 0) {
+                            try {
+                                factory.batchDeleteObjectPhysical4Remote(ProjectManager.getInstance().getCurrentProject(),
+                                        deleteObjectList);
                             } catch (Exception e) {
                                 ExceptionHandler.process(e);
                                 success = false;
@@ -1435,7 +1459,12 @@ public class DeleteAction extends AContextualAction {
                             testService.deleteDataFiles(objToDelete);
                         }
 
-                        factory.deleteObjectPhysical(objToDelete);
+                        if (!ProjectManager.getInstance().getCurrentProject().isLocal()) {
+                            // if remote,batch delete later
+                            batchDeleteObjectList.add(objToDelete);
+                        } else {
+                            factory.deleteObjectPhysical(objToDelete);
+                        }
                         ExpressionPersistance.getInstance().jobDeleted(objToDelete.getLabel());
                         
                     }
@@ -1451,7 +1480,8 @@ public class DeleteAction extends AContextualAction {
                 factory.deleteObjectLogical(objToDelete);
                 updateRelatedViews();
                 removeConnFromSQLExplorer(currentJobNode);
-                deleteTestCases(factory, deleteActionCache, currentJobNode, confirm);
+                List<IRepositoryViewObject> deleteObjectList = new ArrayList<IRepositoryViewObject>();
+                deleteTestCases(factory, deleteActionCache, currentJobNode, confirm, null);
             }
         }
 
@@ -1459,7 +1489,8 @@ public class DeleteAction extends AContextualAction {
     }
     
     private void deleteTestCases(IProxyRepositoryFactory factory, DeleteActionCache deleteActionCache,
-            final IRepositoryNode currentJobNode, Boolean confirm) throws PersistenceException, BusinessException {
+            final IRepositoryNode currentJobNode, Boolean confirm, List<IRepositoryViewObject> batchDeleteObjectList)
+            throws PersistenceException, BusinessException {
         if (currentJobNode.getType() != ENodeType.REPOSITORY_ELEMENT) {
             return;
         }
@@ -1467,8 +1498,12 @@ public class DeleteAction extends AContextualAction {
             return;
         }
         if (!currentJobNode.getChildren().isEmpty()) {
+            List<IRepositoryViewObject> deleteObjectList = new ArrayList<IRepositoryViewObject>();
             for (IRepositoryNode child : currentJobNode.getChildren()) {
-                deleteElements(factory, deleteActionCache, (RepositoryNode) child, confirm);
+                deleteElements(factory, deleteActionCache, (RepositoryNode) child, confirm, deleteObjectList);
+            }
+            if (deleteObjectList != null && deleteObjectList.size() > 0) {
+                factory.batchDeleteObjectPhysical4Remote(ProjectManager.getInstance().getCurrentProject(), deleteObjectList);
             }
             return;
         }
@@ -1483,6 +1518,7 @@ public class DeleteAction extends AContextualAction {
         if (junitObjects.isEmpty() || junitObjects.getMembers().isEmpty()) {
             return;
         }
+        List<IRepositoryViewObject> lazydeleteList = new ArrayList<IRepositoryViewObject>();
         for (IRepositoryViewObject viewNode : junitObjects.getMembers()) {
             if (viewNode.isDeleted()) {
                 continue;
@@ -1490,7 +1526,10 @@ public class DeleteAction extends AContextualAction {
             RepositoryNode node = new RepositoryNode(viewNode, (RepositoryNode) currentJobNode, ENodeType.REPOSITORY_ELEMENT);
             node.setProperties(EProperties.CONTENT_TYPE, ERepositoryObjectType.TEST_CONTAINER);
             node.setProperties(EProperties.LABEL, viewNode.getLabel());
-            deleteElements(factory, deleteActionCache, node, confirm);
+            deleteElements(factory, deleteActionCache, node, confirm, lazydeleteList);
+        }
+        if (lazydeleteList != null && lazydeleteList.size() > 0) {
+            factory.batchDeleteObjectPhysical4Remote(ProjectManager.getInstance().getCurrentProject(), lazydeleteList);
         }
     }
 

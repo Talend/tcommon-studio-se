@@ -12,6 +12,9 @@
 // ============================================================================
 package org.talend.utils.xml;
 
+import javax.xml.XMLConstants;
+import javax.xml.parsers.DocumentBuilderFactory;
+import javax.xml.parsers.ParserConfigurationException;
 import javax.xml.transform.Transformer;
 import javax.xml.transform.TransformerConfigurationException;
 import javax.xml.transform.TransformerFactory;
@@ -27,5 +30,18 @@ public class XmlUtils {
         TransformerFactory transFactory = TransformerFactory.newInstance();
         transFactory.setFeature(javax.xml.XMLConstants.FEATURE_SECURE_PROCESSING, Boolean.TRUE);
         return transFactory;
+    }
+    
+    public static DocumentBuilderFactory getSecureDocumentBuilderFactory() throws ParserConfigurationException {
+        return getSecureDocumentBuilderFactory(true);
+    }
+    
+    public static DocumentBuilderFactory getSecureDocumentBuilderFactory(boolean disAllowDoctypeDecl) throws ParserConfigurationException {
+        DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
+        factory.setFeature(XMLConstants.FEATURE_SECURE_PROCESSING, true);
+        if (disAllowDoctypeDecl) {
+            factory.setFeature("http://apache.org/xml/features/disallow-doctype-decl", true); //$NON-NLS-1$
+        }
+        return factory;
     }
 }

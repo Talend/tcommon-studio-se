@@ -220,6 +220,8 @@ public interface IRunProcessService extends IService {
 
     void clearProjectRelatedSettings();
 
+    void batchDeleteAllVersionTalendJobProject(List<String> idList);
+
     boolean isExportConfig();
 
     boolean isdebug();

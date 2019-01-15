@@ -536,4 +536,7 @@ public interface IProxyRepositoryFactory {
     public org.talend.core.model.properties.Project getEmfProjectContent(String technicalLabel) throws PersistenceException;
     
     public byte[] getReferenceSettingContent(Project project, String branch) throws PersistenceException;
+
+    public void batchDeleteObjectPhysical4Remote(Project project, List<IRepositoryViewObject> objToDeleteList)
+            throws PersistenceException;
 }

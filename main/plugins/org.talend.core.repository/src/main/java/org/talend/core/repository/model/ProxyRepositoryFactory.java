@@ -866,6 +866,80 @@ public final class ProxyRepositoryFactory implements IProxyRepositoryFactory {
         log.info(Messages.getString("ProxyRepositoryFactory.log.physicalDeletion", str)); //$NON-NLS-1$    }
     }
 
+    @Override
+    public void batchDeleteObjectPhysical4Remote(Project project, List<IRepositoryViewObject> objToDeleteList)
+            throws PersistenceException {
+        if (project == null || objToDeleteList == null || objToDeleteList.size() == 0) {
+            return;
+        }
+
+        List<String> idList = new ArrayList<String>();
+        List<IRepositoryViewObject> repositoryObjectList = new ArrayList<IRepositoryViewObject>();
+        for (IRepositoryViewObject objToDelete : objToDeleteList) {
+            IRepositoryViewObject object = new RepositoryObject(objToDelete.getProperty());
+            boolean isExtendPoint = false;
+
+            if (isFullLogonFinished()) {
+                fireRepositoryPropertyChange(ERepositoryActionName.DELETE_FOREVER.getName(), null, object);
+            }
+            idList.add(object.getProperty().getId());
+            ERepositoryObjectType repositoryObjectType = object.getRepositoryObjectType();
+
+            ICoreService coreService = getCoreService();
+            if (coreService != null) {
+                for (IRepositoryContentHandler handler : RepositoryContentManager.getHandlers()) {
+                    isExtendPoint = handler.isRepObjType(repositoryObjectType);
+                    if (isExtendPoint == true) {
+                        if (repositoryObjectType == handler.getProcessType()) {
+                            coreService.removeJobLaunch(object);
+                        }
+                        if (repositoryObjectType == handler.getCodeType()) {
+                            try {
+                                coreService.deleteBeanfile(object);
+                            } catch (Exception e) {
+                                ExceptionHandler.process(e);
+                            }
+                        }
+                        break;
+                    }
+                }
+                if (repositoryObjectType == ERepositoryObjectType.PROCESS) {
+                    // delete the job launch, for bug 8878
+                    coreService.removeJobLaunch(object);
+                }
+            }
+
+            if (repositoryObjectType == ERepositoryObjectType.ROUTINES || repositoryObjectType == ERepositoryObjectType.PIG_UDF) {
+                try {
+                    coreService.deleteRoutinefile(object);
+                } catch (Exception e) {
+                    ExceptionHandler.process(e);
+                }
+            }
+
+            if (repositoryObjectType == ERepositoryObjectType.PROCESS && isFullLogonFinished()) {
+                if (GlobalServiceRegister.getDefault().isServiceRegistered(IESBService.class)) {
+                    IESBService service = (IESBService) GlobalServiceRegister.getDefault().getService(IESBService.class);
+                    if (service != null) {
+                        service.refreshOperationLabel(object.getProperty().getId());
+                    }
+                }
+            }
+
+            repositoryObjectList.add(object);
+        }
+
+        if (GlobalServiceRegister.getDefault().isServiceRegistered(IRunProcessService.class)) {
+            IRunProcessService service = (IRunProcessService) GlobalServiceRegister.getDefault()
+                    .getService(IRunProcessService.class);
+            service.batchDeleteAllVersionTalendJobProject(idList);
+        }
+        this.repositoryFactoryFromProvider.batchDeleteObjectPhysical(project, repositoryObjectList, false);
+
+        // save project will handle git/svn update
+        this.repositoryFactoryFromProvider.saveProject(project);
+    }
+
     /*
      * (non-Javadoc)
      * 

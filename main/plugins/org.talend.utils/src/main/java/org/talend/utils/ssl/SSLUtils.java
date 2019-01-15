@@ -21,12 +21,10 @@ import java.security.KeyStore;
 import java.security.cert.CertificateException;
 import java.security.cert.X509Certificate;
 
-import javax.net.ssl.HostnameVerifier;
 import javax.net.ssl.HttpsURLConnection;
 import javax.net.ssl.KeyManager;
 import javax.net.ssl.KeyManagerFactory;
 import javax.net.ssl.SSLContext;
-import javax.net.ssl.SSLSession;
 import javax.net.ssl.SSLSocketFactory;
 import javax.net.ssl.TrustManager;
 import javax.net.ssl.TrustManagerFactory;
@@ -39,17 +37,21 @@ public class SSLUtils {
 
     private static SSLContext sslcontext;
 
-    private static final String TAC_SSL_KEYSTORE = "clientKeystore.jks"; //$NON-NLS-1$
+    public static final String TAC_SSL_KEYSTORE = "clientKeystore.jks"; //$NON-NLS-1$
 
-    private static final String TAC_SSL_TRUSTSTORE = "clientTruststore.jks"; //$NON-NLS-1$
+    public static final String TAC_SSL_TRUSTSTORE = "clientTruststore.jks"; //$NON-NLS-1$
 
-    private static final String TAC_SSL_CLIENT_KEY = "tac.net.ssl.ClientKeyStore"; //$NON-NLS-1$
+    public static final String TAC_SSL_CLIENT_KEY = "tac.net.ssl.ClientKeyStore"; //$NON-NLS-1$
 
-    private static final String TAC_SSL_CLIENT_TRUST_KEY = "tac.net.ssl.ClientTrustStore"; //$NON-NLS-1$
+    public static final String TAC_SSL_CLIENT_TRUST_KEY = "tac.net.ssl.ClientTrustStore"; //$NON-NLS-1$
 
-    private static final String TAC_SSL_KEYSTORE_PASS = "tac.net.ssl.KeyStorePass"; //$NON-NLS-1$
+    public static final String TAC_SSL_KEYSTORE_PASS = "tac.net.ssl.KeyStorePass"; //$NON-NLS-1$
 
-    private static final String TAC_SSL_TRUSTSTORE_PASS = "tac.net.ssl.TrustStorePass"; //$NON-NLS-1$
+    public static final String TAC_SSL_TRUSTSTORE_PASS = "tac.net.ssl.TrustStorePass"; //$NON-NLS-1$
+
+    public static final String TAC_SSL_ENABLE_HOST_NAME_VERIFICATION = "tac.net.ssl.EnableHostNameVerification"; //$NON-NLS-1$
+
+    public static final String TAC_SSL_FAIL_IF_NO_TRUSTSTORE = "tac.net.ssl.FailIfNoTruststore"; //$NON-NLS-1$
 
     /**
      * 
@@ -57,22 +59,23 @@ public class SSLUtils {
      * 
      * @param buffer
      * @param url
+     * 
      * @return
      * @throws AMCPluginException
      */
     public static String getContent(StringBuffer buffer, URL url, String userDir) throws Exception {
         BufferedReader in = null;
         if (("https").equals(url.getProtocol())) {
+            boolean openHttpHostNameVerification = Boolean
+                    .parseBoolean(System.getProperty(TAC_SSL_ENABLE_HOST_NAME_VERIFICATION));
             final SSLSocketFactory socketFactory = getSSLContext(userDir).getSocketFactory();
             HttpsURLConnection httpsCon = (HttpsURLConnection) url.openConnection();
             httpsCon.setSSLSocketFactory(socketFactory);
-            httpsCon.setHostnameVerifier(new HostnameVerifier() {
-
-                @Override
-                public boolean verify(String arg0, SSLSession arg1) {
-                    return true;
-                }
-            });
+            if (openHttpHostNameVerification) {
+                httpsCon.setHostnameVerifier(org.apache.http.conn.ssl.SSLSocketFactory.BROWSER_COMPATIBLE_HOSTNAME_VERIFIER);
+            } else {
+                httpsCon.setHostnameVerifier(org.apache.http.conn.ssl.SSLSocketFactory.ALLOW_ALL_HOSTNAME_VERIFIER);
+            }
             httpsCon.connect();
             in = new BufferedReader(new InputStreamReader(httpsCon.getInputStream()));
         } else {
@@ -92,6 +95,7 @@ public class SSLUtils {
             String trustStorePath = System.getProperty(TAC_SSL_CLIENT_TRUST_KEY);
             String keystorePass = System.getProperty(TAC_SSL_KEYSTORE_PASS);
             String truststorePass = System.getProperty(TAC_SSL_TRUSTSTORE_PASS);
+            boolean failIfNoTrustStore = Boolean.parseBoolean(System.getProperty(TAC_SSL_FAIL_IF_NO_TRUSTSTORE));
             if (keystorePath == null) {
                 // if user does not set the keystore path in the .ini,we need to look for the keystore file under
                 // the root dir of product
@@ -116,29 +120,35 @@ public class SSLUtils {
                 // default,but not sure the ssl can connect
                 truststorePass = ""; //$NON-NLS-1$
             }
-
-            sslcontext = SSLContext.getInstance("SSL"); //$NON-NLS-1$
-            KeyManager[] keystoreManagers = null;
-            if (keystorePath != null) {
-                KeyManagerFactory kmf = KeyManagerFactory.getInstance("SunX509"); //$NON-NLS-1$
-                KeyStore ks = KeyStore.getInstance(KeyStore.getDefaultType());
-                ks.load(new FileInputStream(keystorePath), keystorePass.toCharArray());
-                kmf.init(ks, keystorePass.toCharArray());
-                keystoreManagers = kmf.getKeyManagers();
-            }
-
-            TrustManager[] truststoreManagers = null;
-            if (trustStorePath != null) {
-                TrustManagerFactory tmf = TrustManagerFactory.getInstance("SunX509"); //$NON-NLS-1$
-                KeyStore tks = KeyStore.getInstance(KeyStore.getDefaultType());
-                tks.load(new FileInputStream(trustStorePath), truststorePass.toCharArray());
-                tmf.init(tks);
-                truststoreManagers = tmf.getTrustManagers();
-            } else {
-                truststoreManagers = new TrustManager[] { new TrustAnyTrustManager() };
-            }
-            sslcontext.init(keystoreManagers, truststoreManagers, null);
+            sslcontext = getSSLContext(keystorePath, keystorePass, trustStorePath, truststorePass, failIfNoTrustStore);
         }
+        return sslcontext;
+    }
+
+    public static SSLContext getSSLContext(String keystorePath, String keystorePass, String trustStorePath, String truststorePass,
+            boolean failIfNoTrustStore) throws Exception {
+        SSLContext sslcontext = SSLContext.getInstance("SSL"); //$NON-NLS-1$
+        KeyManager[] keystoreManagers = null;
+        if (keystorePath != null) {
+            KeyManagerFactory kmf = KeyManagerFactory.getInstance("SunX509"); //$NON-NLS-1$
+            KeyStore ks = KeyStore.getInstance(KeyStore.getDefaultType());
+            ks.load(new FileInputStream(keystorePath), keystorePass == null ? null : keystorePass.toCharArray());
+            kmf.init(ks, keystorePass == null ? null : keystorePass.toCharArray());
+            keystoreManagers = kmf.getKeyManagers();
+        }
+
+        TrustManager[] truststoreManagers = null;
+        if (trustStorePath != null) {
+            TrustManagerFactory tmf = TrustManagerFactory.getInstance("SunX509"); //$NON-NLS-1$
+            KeyStore tks = KeyStore.getInstance(KeyStore.getDefaultType());
+            tks.load(new FileInputStream(trustStorePath), truststorePass.toCharArray());
+            tmf.init(tks);
+            truststoreManagers = tmf.getTrustManagers();
+        }
+        if (truststoreManagers == null && !failIfNoTrustStore) {
+            truststoreManagers = new TrustManager[] { new TrustAnyTrustManager() };
+        }
+        sslcontext.init(keystoreManagers, truststoreManagers, null);
         return sslcontext;
     }
 

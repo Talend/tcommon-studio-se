@@ -45,6 +45,8 @@ public class XSDValidater {
 
     File xsdFile = null;
 
+    private final String DISALLOW_DOCTYPE_DECL = "http://apache.org/xml/features/disallow-doctype-decl"; //$NON-NLS-1$
+
     /**
      * Sets the xsdFile.
      * 
@@ -97,6 +99,8 @@ public class XSDValidater {
      */
     public void validateWithSax(Reader xsd, Reader xml) throws Exception {
         SAXParserFactory spf = SAXParserFactory.newInstance();
+        spf.setFeature(javax.xml.XMLConstants.FEATURE_SECURE_PROCESSING, Boolean.TRUE);
+        spf.setFeature(DISALLOW_DOCTYPE_DECL, true);
         SAXParser parser = null;
         spf.setNamespaceAware(true);
         SchemaFactory sf = SchemaFactory.newInstance(XMLConstants.W3C_XML_SCHEMA_NS_URI);
