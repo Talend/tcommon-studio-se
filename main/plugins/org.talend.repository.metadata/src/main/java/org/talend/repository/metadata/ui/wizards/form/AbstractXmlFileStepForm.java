@@ -127,7 +127,7 @@ public abstract class AbstractXmlFileStepForm extends AbstractXmlStepForm {
             maxColumnsNumber = maxLimit;
         }
         for (FOXTreeNode node : list) {
-            if (columnList.size() > maxColumnsNumber) {
+            if (columnList.size() >= maxColumnsNumber) {
                 return;
             }
             IMetadataColumn column = node.getColumn();

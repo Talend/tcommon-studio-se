@@ -111,7 +111,7 @@ public class XmlFileOutputStep2Form extends AbstractXmlFileStepForm {
 
     private SashForm mainSashFormComposite;
 
-    protected Text limitNumberText;
+    private Text limitNumberText;
 
     private Button schemaButton;
 
@@ -480,7 +480,7 @@ public class XmlFileOutputStep2Form extends AbstractXmlFileStepForm {
         compositeButton.setLayoutData(new GridData(SWT.LEFT, SWT.CENTER, false, false));
         schemaButtonRefresh = new Button(compositeButton, SWT.PUSH);
         GridDataFactory.swtDefaults().applyTo(schemaButtonRefresh);
-        schemaButtonRefresh.setImage(ImageProvider.getImage(EImage.REFRESH_ICON)); // $NON-NLS-1$
+        schemaButtonRefresh.setImage(ImageProvider.getImage(EImage.REFRESH_ICON));
         schemaButtonRefresh.setToolTipText(Messages.getString("XmlFileOutputStep2Form.refresh"));
     }
 
@@ -553,6 +553,7 @@ public class XmlFileOutputStep2Form extends AbstractXmlFileStepForm {
             }
         }
     }
+
     @Override
     protected void addUtilsButtonListeners() {
         schemaButton.addSelectionListener(new SelectionAdapter() {
@@ -579,19 +580,7 @@ public class XmlFileOutputStep2Form extends AbstractXmlFileStepForm {
                     updateXmlTreeViewer(inputList);
                     redrawLinkers();
                     checkFieldsValue();
-                    if (schemaViewer.getTable().getItems().length > CoreUIPlugin.getDefault().getPreferenceStore()
-                            .getInt(ITalendCorePrefConstants.MAXIMUM_AMOUNT_OF_COLUMNS_FOR_XML) + 1) {
-                        limitNumberText.setText(String.valueOf(schemaViewer.getTable().getItems().length - 1));
-                    }
-                    String limitNumber = limitNumberText.getText();
-                    if ((!limitNumber.matches("\\d+")) || (Integer.valueOf(limitNumber) < 0)) {
-
-                    } else {
-                        Integer limitInt = Integer.valueOf(limitNumber);
-                        if (schemaViewer.getTable().getItems().length > limitInt) {
-                            limitNumberText.setText(String.valueOf(schemaViewer.getTable().getItems().length - 1));
-                        }
-                    }
+                    limitNumberText.setText(String.valueOf(schemaViewer.getTable().getItems().length));
 
                 }
             }
@@ -600,16 +589,11 @@ public class XmlFileOutputStep2Form extends AbstractXmlFileStepForm {
             @Override
             public void widgetSelected(SelectionEvent e) {
                 String limitNumber = limitNumberText.getText();
-                if ((!limitNumber.matches("\\d+")) || (Integer.valueOf(limitNumber) < 0)) {
-                    MessageDialog.openError(getShell(), "input error", "The format of input is error");
-                } else {
                     Integer maxNumber = Integer.valueOf(limitNumber);
                     int schemaViewerCount = schemaViewer.getTable().getItems().length;
                     if (schemaViewerCount != maxNumber) {
                         refreshSchema(maxNumber);
                     }
-                }
-
             }
         });
     }
@@ -621,7 +605,7 @@ public class XmlFileOutputStep2Form extends AbstractXmlFileStepForm {
         initMetadataTable(treeData, schemaMetadataColumn, true, maxColumnsNumber);
         List<MetadataColumn> columnList = new ArrayList<MetadataColumn>();
 
-        for (int i = 0; i < maxColumnsNumber + 1 && i < schemaMetadataColumn.size(); i++) {
+        for (int i = 0; i < maxColumnsNumber && i < schemaMetadataColumn.size(); i++) {
             columnList.add((MetadataColumn) schemaMetadataColumn.get(i));
         }
         schemaMetadataColumn.clear();
@@ -1114,15 +1098,7 @@ public class XmlFileOutputStep2Form extends AbstractXmlFileStepForm {
             // if (!creation) {
             checkFieldsValue();
             // }
-            limitNumberText.setText(String.valueOf(CoreUIPlugin.getDefault().getPreferenceStore()
-                    .getInt(ITalendCorePrefConstants.MAXIMUM_AMOUNT_OF_COLUMNS_FOR_XML)));
-            if (!creation) {
-                if (schemaViewer.getTable().getItems().length > CoreUIPlugin.getDefault().getPreferenceStore()
-                        .getInt(ITalendCorePrefConstants.MAXIMUM_AMOUNT_OF_COLUMNS_FOR_XML) + 1) {
-                    limitNumberText.setText(String.valueOf(schemaViewer.getTable().getItems().length - 1));
-                }
-
-            }
+            limitNumberText.setText(String.valueOf(schemaViewer.getTable().getItems().length));
         }
     }
 
