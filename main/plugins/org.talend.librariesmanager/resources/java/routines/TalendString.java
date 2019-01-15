@@ -62,6 +62,35 @@ public class TalendString {
     }
 
     /**
+     * getAsciiRandomString : Return a randomly generated String
+     *
+     *
+     * {talendTypes} String
+     *
+     * {Category} TalendString
+     *
+     * {param} int(6) length: length of the String to return
+     *
+     * {example} getAsciiRandomString(6) # Art34Z
+     */
+    public static String getAsciiRandomString(int length) {
+        Random random = new Random();
+        int cnt = 0;
+        StringBuffer buffer = new StringBuffer();
+        char ch;
+        int end = 'z' + 1;
+        int start = ' ';
+        while (cnt < length) {
+            ch = (char) (random.nextInt(end - start) + start);
+            if (Character.isLetterOrDigit(ch)) {
+                buffer.append(ch);
+                cnt++;
+            }
+        }
+        return buffer.toString();
+    }
+
+    /**
      * talendTrim: Returns a copy of the string, with leading and trailing specified char omitted.
      *
      *
