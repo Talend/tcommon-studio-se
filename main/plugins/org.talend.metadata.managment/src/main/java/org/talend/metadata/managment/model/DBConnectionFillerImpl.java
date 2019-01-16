@@ -676,6 +676,9 @@ public class DBConnectionFillerImpl extends MetadataFillerImpl<DatabaseConnectio
 
     private String getPostgresqlCatalogFromUrl(String url, String userName) {
         int indexOf = url.indexOf("/", url.indexOf("//") + 2); //$NON-NLS-1$//$NON-NLS-2$
+        if (indexOf == -1) {
+            return userName;
+        }
         int start = url.indexOf('/') == -1 ? url.length() - 1 : url.indexOf("/", indexOf); //$NON-NLS-1$
         int end = url.indexOf('?') == -1 ? url.length() : url.indexOf("?"); //$NON-NLS-1$
         String catalog = url.substring(start + 1 >= url.length() - 1 ? start : start + 1, end);
