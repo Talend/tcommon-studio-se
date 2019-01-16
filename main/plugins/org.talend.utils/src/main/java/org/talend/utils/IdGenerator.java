@@ -12,7 +12,7 @@
 // ============================================================================
 package org.talend.utils;
 
-import java.util.Random;
+import java.security.SecureRandom;
 
 /**
  * DOC amaumont class global comment. Detailled comment <br/>
@@ -30,20 +30,20 @@ public class IdGenerator {
      * {example} getAsciiRandomString(6) # Art34Z
      */
     public static String getAsciiRandomString(int length) {
-        Random random = new Random();
+        SecureRandom random = new SecureRandom();
         int cnt = 0;
-        StringBuffer buffer = new StringBuffer();
+        StringBuilder builder = new StringBuilder();
         char ch;
         int end = 'z' + 1;
         int start = ' ';
         while (cnt < length) {
             ch = (char) (random.nextInt(end - start) + start);
             if (Character.isLetterOrDigit(ch)) {
-                buffer.append(ch);
+                builder.append(ch);
                 cnt++;
             }
         }
-        return buffer.toString();
+        return builder.toString();
     }
 
 }

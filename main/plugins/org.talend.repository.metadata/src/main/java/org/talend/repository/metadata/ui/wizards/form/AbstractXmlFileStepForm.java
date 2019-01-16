@@ -31,6 +31,7 @@ import org.talend.commons.runtime.xml.XmlUtil;
 import org.talend.commons.ui.runtime.exception.ExceptionHandler;
 import org.talend.commons.utils.workbench.resources.ResourceUtils;
 import org.talend.core.model.general.Project;
+import org.talend.core.model.metadata.IMetadataColumn;
 import org.talend.core.model.metadata.builder.ConvertionHelper;
 import org.talend.core.model.metadata.builder.connection.ConnectionFactory;
 import org.talend.core.model.metadata.builder.connection.MetadataColumn;
@@ -119,57 +120,64 @@ public abstract class AbstractXmlFileStepForm extends AbstractXmlStepForm {
 
     }
 
-    protected void initMetadataTable(List<FOXTreeNode> list, EList columnList) {
+    protected void initMetadataTable(List<FOXTreeNode> list, EList columnList, boolean isEditor, int maxLimit) {
         int maxColumnsNumber = CoreUIPlugin.getDefault().getPreferenceStore()
                 .getInt(ITalendCorePrefConstants.MAXIMUM_AMOUNT_OF_COLUMNS_FOR_XML);
+        if (isEditor) {
+            maxColumnsNumber = maxLimit;
+        }
         for (FOXTreeNode node : list) {
-            if (columnList.size() > maxColumnsNumber) {
+            if (columnList.size() >= maxColumnsNumber) {
                 return;
             }
-            MetadataEmfTableEditor editor = new MetadataEmfTableEditor();
-            if (node instanceof Element) {
-                String label = node.getLabel();
-                if (!node.hasChildren() && label != null && !label.equals("")) {
-                    String columnName = label;
-                    if (columnName.contains(":")) { //$NON-NLS-1$
-                        columnName = columnName.split(":")[1]; //$NON-NLS-1$
+            IMetadataColumn column = node.getColumn();
+            if (!isEditor || column == null) {
+
+                MetadataEmfTableEditor editor = new MetadataEmfTableEditor();
+                if (node instanceof Element) {
+                    String label = node.getLabel();
+                    if (!node.hasChildren() && label != null && !label.equals("")) {
+                        String columnName = label;
+                        if (columnName.contains(":")) { //$NON-NLS-1$
+                            columnName = columnName.split(":")[1]; //$NON-NLS-1$
+                        }
+                        columnName = columnName.replaceAll("[^a-zA-Z0-9]", "_");
+                        String dataType = node.getDataType();
+                        MetadataColumn metadataColumn = ConnectionFactory.eINSTANCE.createMetadataColumn();
+                        metadataColumn.setLabel(editor.getNextGeneratedColumnName(columnName, columnList));
+                        metadataColumn.setOriginalField(label);
+                        metadataColumn.setTalendType(dataType);
+                        metadataColumn.setPattern("\"dd-MM-yyyy\""); //$NON-NLS-1$
+                        metadataColumn.setLength(node.getDataMaxLength());
+                        metadataColumn.setPrecision(node.getPrecisionValue());
+                        columnList.add(metadataColumn);
+                        node.setColumn(ConvertionHelper.convertToIMetaDataColumn(metadataColumn));
                     }
-                    columnName = columnName.replaceAll("[^a-zA-Z0-9]", "_");
-                    String dataType = node.getDataType();
-                    MetadataColumn metadataColumn = ConnectionFactory.eINSTANCE.createMetadataColumn();
-                    metadataColumn.setLabel(editor.getNextGeneratedColumnName(columnName, columnList));
-                    metadataColumn.setOriginalField(label);
-                    metadataColumn.setTalendType(dataType);
-                    metadataColumn.setPattern("\"dd-MM-yyyy\""); //$NON-NLS-1$
-                    metadataColumn.setLength(node.getDataMaxLength());
-                    metadataColumn.setPrecision(node.getPrecisionValue());
-                    columnList.add(metadataColumn);
-                    node.setColumn(ConvertionHelper.convertToIMetaDataColumn(metadataColumn));
                 }
-            }
-            if (node instanceof Attribute) {
-                String label = node.getLabel();
-                if (label != null && !label.equals("")) {
-                    String columnName = label;
-                    if (columnName.contains(":")) { //$NON-NLS-1$
-                        columnName = columnName.split(":")[1]; //$NON-NLS-1$
+                if (node instanceof Attribute) {
+                    String label = node.getLabel();
+                    if (label != null && !label.equals("")) {
+                        String columnName = label;
+                        if (columnName.contains(":")) { //$NON-NLS-1$
+                            columnName = columnName.split(":")[1]; //$NON-NLS-1$
+                        }
+                        columnName = columnName.replaceAll("[^a-zA-Z0-9]", "_");
+                        String dataType = node.getDataType();
+                        MetadataColumn metadataColumn = ConnectionFactory.eINSTANCE.createMetadataColumn();
+                        metadataColumn.setLabel(editor.getNextGeneratedColumnName(columnName, columnList));
+                        metadataColumn.setOriginalField(label);
+                        metadataColumn.setTalendType(dataType);
+                        metadataColumn.setPattern("\"dd-MM-yyyy\""); //$NON-NLS-1$
+                        metadataColumn.setLength(node.getDataMaxLength());
+                        metadataColumn.setPrecision(node.getPrecisionValue());
+                        columnList.add(metadataColumn);
+                        node.setColumn(ConvertionHelper.convertToIMetaDataColumn(metadataColumn));
                     }
-                    columnName = columnName.replaceAll("[^a-zA-Z0-9]", "_");
-                    String dataType = node.getDataType();
-                    MetadataColumn metadataColumn = ConnectionFactory.eINSTANCE.createMetadataColumn();
-                    metadataColumn.setLabel(editor.getNextGeneratedColumnName(columnName, columnList));
-                    metadataColumn.setOriginalField(label);
-                    metadataColumn.setTalendType(dataType);
-                    metadataColumn.setPattern("\"dd-MM-yyyy\""); //$NON-NLS-1$
-                    metadataColumn.setLength(node.getDataMaxLength());
-                    metadataColumn.setPrecision(node.getPrecisionValue());
-                    columnList.add(metadataColumn);
-                    node.setColumn(ConvertionHelper.convertToIMetaDataColumn(metadataColumn));
                 }
             }
             if (node.hasChildren()) {
                 List<FOXTreeNode> children = node.getChildren();
-                initMetadataTable(children, columnList);
+                initMetadataTable(children, columnList, isEditor, maxLimit);
             }
         }
     }
@@ -480,5 +488,4 @@ public abstract class AbstractXmlFileStepForm extends AbstractXmlStepForm {
     public MetadataTable getMetadataOutputTable() {
         return null;
     }
-
 }

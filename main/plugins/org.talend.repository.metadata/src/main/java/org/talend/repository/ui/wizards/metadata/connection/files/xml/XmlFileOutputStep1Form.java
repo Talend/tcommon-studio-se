@@ -86,6 +86,7 @@ import org.talend.metadata.managment.ui.wizard.metadata.xml.utils.TreeUtil;
 import org.talend.repository.ProjectManager;
 import org.talend.repository.metadata.i18n.Messages;
 import org.talend.repository.metadata.ui.wizards.form.AbstractXmlFileStepForm;
+
 import orgomg.cwm.resource.record.RecordFactory;
 import orgomg.cwm.resource.record.RecordFile;
 
@@ -330,7 +331,7 @@ public class XmlFileOutputStep1Form extends AbstractXmlFileStepForm {
         }
         EList schemaMetadataColumn = ConnectionHelper.getTables(getConnection()).toArray(new MetadataTable[0])[0].getColumns();
         schemaMetadataColumn.clear();
-        initMetadataTable(rootFoxTreeNodes, schemaMetadataColumn);
+        initMetadataTable(rootFoxTreeNodes, schemaMetadataColumn, false, 0);
         updateConnectionProperties(rootFoxTreeNodes.get(0));
     }
 
