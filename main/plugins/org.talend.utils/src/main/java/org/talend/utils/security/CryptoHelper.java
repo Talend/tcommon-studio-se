@@ -28,20 +28,4 @@ public class CryptoHelper extends org.talend.daikon.security.CryptoHelper {
     public CryptoHelper(String passPhrase) {
         super(passPhrase);
     }
-
-    /*
-     * FIXME, TDI-31303
-     * 
-     * Sometimes, even right encryption value, can't be be decrypted. And throw one exception:
-     * "javax.crypto.BadPaddingException: Given final block not properly padded", then return null.
-     * 
-     * Maybe, caused by the same problem with AES (TDI-31032).
-     * 
-     * Finally, try to use new instance for each one.
-     */
-    // public static final CryptoHelper DEFAULT = new CryptoHelper(PASSPHRASE);
-
-    public static final CryptoHelper getDefault() {
-        return new CryptoHelper(PASSPHRASE);
-    }
 }
