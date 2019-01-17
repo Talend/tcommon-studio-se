@@ -51,7 +51,6 @@ import org.eclipse.m2e.core.project.ResolverConfiguration;
 import org.eclipse.m2e.internal.launch.MavenLaunchDelegate;
 import org.eclipse.m2e.internal.launch.MavenLaunchUtils;
 import org.eclipse.osgi.util.NLS;
-import org.eclipse.swt.widgets.Display;
 import org.talend.commons.CommonsPlugin;
 import org.talend.commons.exception.ExceptionHandler;
 import org.talend.commons.runtime.debug.TalendDebugHandler;
@@ -394,14 +393,12 @@ public abstract class MavenCommandLauncher {
         public void waitFinish(ILaunch launch) {
 
             try {
-                Display display = Display.getCurrent();
+                boolean isCommandLine = CommonsPlugin.isHeadless();
                 while (!launchFinished) {
-                    if (display != null && !CommonsPlugin.isHeadless()) {
-                        if (!display.readAndDispatch()) {
-                            display.sleep();
-                        }
-                    } else {
+                    if (isCommandLine) {
                         Thread.sleep(100);
+                    } else {
+                        waitStudioFinish();
                     }
                     // if terminated also
                     if (launch.getProcesses() != null && launch.getProcesses().length > 0) {
@@ -415,6 +412,17 @@ public abstract class MavenCommandLauncher {
                 }
             } catch (InterruptedException e) {
                 ExceptionHandler.process(e);
+            }
+        }
+
+        private void waitStudioFinish() throws InterruptedException {
+            org.eclipse.swt.widgets.Display display = org.eclipse.swt.widgets.Display.getCurrent();
+            if (display != null) {
+                if (!display.readAndDispatch()) {
+                    display.sleep();
+                }
+            } else {
+                Thread.sleep(100);
             }
         }
     }
