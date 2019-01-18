@@ -271,6 +271,7 @@ public class OracleExtractManager extends ExtractManager {
             stmt = extractMeta.getConn().createStatement();
             extractMeta.setQueryStatementTimeout(stmt);
             results = stmt.executeQuery(sql.toString());
+        } catch (Exception e) {
         } finally {
             if (results != null) {
                 results.close();
