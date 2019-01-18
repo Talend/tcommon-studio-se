@@ -261,18 +261,13 @@ public class OracleExtractManager extends ExtractManager {
         ExtractMetaDataUtils extractMeta = ExtractMetaDataUtils.getInstance();
         ResultSet results = null;
         Statement stmt = null;
-        StringBuffer sql = new StringBuffer();
-        sql.append("SELECT * FROM ");
-        if (!StringUtils.isEmpty(schemaName)) {
-            sql.append(schemaName).append(".");
-        }
-        sql.append(tableName);
+        String sql = "select * from all_tab_columns where table_name='" + tableName //$NON-NLS-1$
+                + "'"; //$NON-NLS-1$
         try {
             stmt = extractMeta.getConn().createStatement();
             extractMeta.setQueryStatementTimeout(stmt);
             results = stmt.executeQuery(sql.toString());
-        } catch (Exception e) {
-        } finally {
+        }finally {
             if (results != null) {
                 results.close();
             }
