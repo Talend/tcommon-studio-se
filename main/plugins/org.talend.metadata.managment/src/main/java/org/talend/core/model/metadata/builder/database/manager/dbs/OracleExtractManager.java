@@ -22,7 +22,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
 
-import org.apache.commons.lang3.StringUtils;
 import org.apache.log4j.Logger;
 import org.talend.commons.exception.ExceptionHandler;
 import org.talend.core.ICoreService;
@@ -261,13 +260,12 @@ public class OracleExtractManager extends ExtractManager {
         ExtractMetaDataUtils extractMeta = ExtractMetaDataUtils.getInstance();
         ResultSet results = null;
         Statement stmt = null;
-        String sql = "select * from all_tab_columns where table_name='" + tableName //$NON-NLS-1$
-                + "'"; //$NON-NLS-1$
+        String sql = "select * from all_tab_columns where table_name='" + tableName + "'"; //$NON-NLS-1$
         try {
             stmt = extractMeta.getConn().createStatement();
             extractMeta.setQueryStatementTimeout(stmt);
             results = stmt.executeQuery(sql.toString());
-        }finally {
+        } finally {
             if (results != null) {
                 results.close();
             }
