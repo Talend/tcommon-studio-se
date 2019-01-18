@@ -31,8 +31,6 @@ import javax.net.ssl.TrustManager;
 import javax.net.ssl.TrustManagerFactory;
 import javax.net.ssl.X509TrustManager;
 
-import org.apache.commons.lang3.StringUtils;
-
 /**
  * DOC hcyi class global comment. Detailled comment
  */
@@ -120,7 +118,6 @@ public class SSLUtils {
         if (instance == null) {
             instance = new SSLUtils(userDir);
         } 
-        assert(StringUtils.equals(instance.getUserWorkingDir(), userDir));
         return instance;
     }
 
