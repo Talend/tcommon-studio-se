@@ -35,17 +35,6 @@ import javax.net.ssl.X509TrustManager;
  * DOC hcyi class global comment. Detailled comment
  */
 public class SSLUtils {
-
-    private static SSLUtils instance;
-
-    private String userWorkingDir = null;
-
-    private static HostnameVerifier hostnameVerifier;
-
-    private static KeyManager[] keystoreManagers;
-
-    private static TrustManager[] truststoreManagers;
-
     /**
      * {@value}
      * <p>
@@ -101,6 +90,16 @@ public class SSLUtils {
      * Accept all certification if don't setup tac.net.ssl.ClientTrustStore, the default value is <b>false</b>.
      */
     public static final String TAC_SSL_ACCEPT_ALL_IF_NO_TRUSTSTORE = "tac.net.ssl.AcceptAllIfNoTruststore"; //$NON-NLS-1$
+
+    private static SSLUtils instance;
+
+    private String userWorkingDir = null;
+
+    private static HostnameVerifier hostnameVerifier;
+
+    private static KeyManager[] keystoreManagers;
+
+    private static TrustManager[] truststoreManagers;
 
     /**
      * Get SSLUtils instance
@@ -203,10 +202,6 @@ public class SSLUtils {
 
     public HostnameVerifier getHostnameVerifier() {
         return hostnameVerifier;
-    }
-
-    public String getUserWorkingDir() {
-        return userWorkingDir;
     }
 
     // accept all certificate
