@@ -18,6 +18,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -37,6 +38,7 @@ import org.talend.core.model.process.JobInfo;
 import org.talend.core.model.properties.Property;
 import org.talend.core.model.relationship.Relation;
 import org.talend.core.model.relationship.RelationshipItemBuilder;
+import org.talend.core.runtime.maven.MavenConstants;
 import org.talend.core.runtime.process.ITalendProcessJavaProject;
 import org.talend.core.runtime.process.TalendProcessArgumentConstant;
 import org.talend.core.runtime.process.TalendProcessOptionConstants;
@@ -45,9 +47,11 @@ import org.talend.core.runtime.projectsetting.IProjectSettingTemplateConstants;
 import org.talend.designer.maven.model.TalendMavenConstants;
 import org.talend.designer.maven.template.MavenTemplateManager;
 import org.talend.designer.maven.tools.AggregatorPomsHelper;
+import org.talend.designer.maven.utils.PomIdsHelper;
 import org.talend.designer.maven.utils.PomUtil;
 import org.talend.designer.runprocess.IProcessor;
 import org.talend.utils.io.FilesUtils;
+import org.w3c.dom.Document;
 
 /**
  * @see OSGIJavaScriptForESBWithMavenManager to build job
@@ -209,7 +213,32 @@ public class CreateMavenStandardJobOSGiPom extends CreateMavenJobPom {
 
     @Override
     protected void updateDependencySet(IFile assemblyFile) {
-        // nothing to do.
+        Set<String> jobCoordinate = new HashSet<>();
+        if (!hasLoopDependency()) {
+            // add children jobs
+            Set<JobInfo> childrenJobInfo = getJobProcessor().getBuildChildrenJobs();
+            for (JobInfo jobInfo : childrenJobInfo) {
+                Property property = jobInfo.getProcessItem().getProperty();
+                String coordinate = getCoordinate(PomIdsHelper.getJobGroupId(property), PomIdsHelper.getJobArtifactId(jobInfo),
+                        MavenConstants.PACKAGING_JAR, PomIdsHelper.getJobVersion(property));
+                jobCoordinate.add(coordinate);
+            }
+        }
+        // add parent job
+        Property parentProperty = this.getJobProcessor().getProperty();
+        String parentCoordinate = getCoordinate(PomIdsHelper.getJobGroupId(parentProperty),
+                PomIdsHelper.getJobArtifactId(parentProperty), MavenConstants.PACKAGING_JAR,
+                PomIdsHelper.getJobVersion(parentProperty));
+        jobCoordinate.add(parentCoordinate);
+        try {
+            Document document = PomUtil.loadAssemblyFile(null, assemblyFile);
+            // add jobs
+            setupDependencySetNode(document, jobCoordinate, "${talend.job.name}",
+                    "${artifact.build.finalName}.${artifact.extension}", true);
+            PomUtil.saveAssemblyFile(assemblyFile, document);
+        } catch (Exception e) {
+            ExceptionHandler.process(e);
+        }
     }
 
     /*

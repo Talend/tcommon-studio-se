@@ -611,15 +611,17 @@ public class CreateMavenJobPom extends AbstractMavenProcessorPom {
 
     protected void updateDependencySet(IFile assemblyFile) {
         Set<String> jobCoordinate = new HashSet<>();
+        Set<JobInfo> childrenJobInfo = new HashSet<>();
         if (!hasLoopDependency()) {
-            // add children jobs
-            Set<JobInfo> childrenJobInfo = getJobProcessor().getBuildChildrenJobs();
-            for (JobInfo jobInfo : childrenJobInfo) {
-                Property property = jobInfo.getProcessItem().getProperty();
-                String coordinate = getCoordinate(PomIdsHelper.getJobGroupId(property), PomIdsHelper.getJobArtifactId(jobInfo),
-                        MavenConstants.PACKAGING_JAR, PomIdsHelper.getJobVersion(property));
-                jobCoordinate.add(coordinate);
-            }
+            childrenJobInfo = getJobProcessor().getBuildChildrenJobs();
+        }
+
+        // add children jobs
+        for (JobInfo jobInfo : childrenJobInfo) {
+            Property property = jobInfo.getProcessItem().getProperty();
+            String coordinate = getCoordinate(PomIdsHelper.getJobGroupId(property), PomIdsHelper.getJobArtifactId(jobInfo),
+                    MavenConstants.PACKAGING_JAR, PomIdsHelper.getJobVersion(property));
+            jobCoordinate.add(coordinate);
         }
 
         // add parent job
@@ -678,9 +680,8 @@ public class CreateMavenJobPom extends AbstractMavenProcessorPom {
         }
 
         // add missing modules from the job generation of children
-        Set<JobInfo> allJobs = LastGenerationInfo.getInstance().getLastGeneratedjobs();
         Set<ModuleNeeded> fullModulesList = new HashSet<>();
-        for (JobInfo jobInfo : allJobs) {
+        for (JobInfo jobInfo : childrenJobInfo) {
             fullModulesList.addAll(LastGenerationInfo.getInstance().getModulesNeededWithSubjobPerJob(jobInfo.getJobId(),
                     jobInfo.getJobVersion()));
         }
@@ -742,7 +743,7 @@ public class CreateMavenJobPom extends AbstractMavenProcessorPom {
         return getCoordinate(dependency.getGroupId(), dependency.getArtifactId(), dependency.getType(), dependency.getVersion());
     }
 
-    private String getCoordinate(String groupId, String artifactId, String type, String version) {
+    protected String getCoordinate(String groupId, String artifactId, String type, String version) {
         String separator = ":"; //$NON-NLS-1$
         String coordinate = groupId + separator;
         coordinate += artifactId + separator;
@@ -764,7 +765,7 @@ public class CreateMavenJobPom extends AbstractMavenProcessorPom {
         map.get(coordinate).add(dependency);
     }
 
-    private void setupDependencySetNode(Document document, Set<String> libIncludes, String outputDir, String fileNameMapping,
+    protected void setupDependencySetNode(Document document, Set<String> libIncludes, String outputDir, String fileNameMapping,
             boolean useProjectArtifact) {
         if (libIncludes.isEmpty()) {
             return;
