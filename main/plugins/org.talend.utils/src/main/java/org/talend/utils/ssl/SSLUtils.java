@@ -40,6 +40,7 @@ import javax.net.ssl.X509TrustManager;
  * DOC hcyi class global comment. Detailled comment
  */
 public class SSLUtils {
+
     /**
      * {@value}
      * <p>
@@ -106,6 +107,7 @@ public class SSLUtils {
 
     /**
      * Get SSLUtils instance
+     * 
      * @param userDir- The default keystore file folder, Once SSLUtils initialized, we should not use different value
      * @return SSLUtils instance
      * @throws NoSuchAlgorithmException
@@ -119,7 +121,7 @@ public class SSLUtils {
             UnrecoverableKeyException, CertificateException, FileNotFoundException, IOException {
         if (instance == null) {
             instance = new SSLUtils(userDir);
-        } 
+        }
         return instance;
     }
 
@@ -134,7 +136,8 @@ public class SSLUtils {
         String trustStorePath = System.getProperty(TAC_SSL_CLIENT_TRUST_KEY);
         String keystorePass = System.getProperty(TAC_SSL_KEYSTORE_PASS);
         String truststorePass = System.getProperty(TAC_SSL_TRUSTSTORE_PASS);
-        boolean acceptAllCertsIfNoTrustStore = Boolean.parseBoolean(System.getProperty(TAC_SSL_ACCEPT_ALL_CERTS_IF_NO_TRUSTSTORE));
+        boolean acceptAllCertsIfNoTrustStore = Boolean
+                .parseBoolean(System.getProperty(TAC_SSL_ACCEPT_ALL_CERTS_IF_NO_TRUSTSTORE));
 
         if (keystorePath == null) {
             // if user does not set the keystore path in the .ini,we need to look for the keystore file under
@@ -205,7 +208,7 @@ public class SSLUtils {
     public HostnameVerifier getHostnameVerifier() {
         return hostnameVerifier;
     }
-    
+
     /**
      * 
      * DOC hcyi Comment method "getContent".
@@ -219,7 +222,8 @@ public class SSLUtils {
     public String getContent(StringBuffer buffer, URL url) throws Exception {
         BufferedReader in = null;
         if (("https").equals(url.getProtocol())) {
-            boolean openHttpHostNameVerification = Boolean.parseBoolean(System.getProperty(TAC_SSL_ENABLE_HOST_NAME_VERIFICATION));
+            boolean openHttpHostNameVerification = Boolean
+                    .parseBoolean(System.getProperty(TAC_SSL_ENABLE_HOST_NAME_VERIFICATION));
             final SSLSocketFactory socketFactory = getSSLContext().getSocketFactory();
             HttpsURLConnection httpsCon = (HttpsURLConnection) url.openConnection();
             httpsCon.setSSLSocketFactory(socketFactory);
