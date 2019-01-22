@@ -12,10 +12,13 @@
 // ============================================================================
 package org.talend.utils.ssl;
 
+import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.io.InputStreamReader;
+import java.net.URL;
 import java.security.KeyStore;
 import java.security.KeyStoreException;
 import java.security.NoSuchAlgorithmException;
@@ -24,9 +27,11 @@ import java.security.cert.CertificateException;
 import java.security.cert.X509Certificate;
 
 import javax.net.ssl.HostnameVerifier;
+import javax.net.ssl.HttpsURLConnection;
 import javax.net.ssl.KeyManager;
 import javax.net.ssl.KeyManagerFactory;
 import javax.net.ssl.SSLContext;
+import javax.net.ssl.SSLSocketFactory;
 import javax.net.ssl.TrustManager;
 import javax.net.ssl.TrustManagerFactory;
 import javax.net.ssl.X509TrustManager;
@@ -80,20 +85,18 @@ public class SSLUtils {
     /**
      * {@value}
      * <p>
-     * Open host name verification, the default value is <b>true</b>.
+     * Enable host name verification, the default value is <b>true</b>.
      */
-    public static final String TAC_SSL_OPEN_HOST_NAME_VERIFICATION = "tac.net.ssl.OpenHttpHostNameVerification"; //$NON-NLS-1$
+    public static final String TAC_SSL_ENABLE_HOST_NAME_VERIFICATION = "tac.net.ssl.EnableHostNameVerification"; //$NON-NLS-1$
 
     /**
      * {@value}
      * <p>
-     * Accept all certification if don't setup tac.net.ssl.ClientTrustStore, the default value is <b>false</b>.
+     * Accept all certificates if don't setup tac.net.ssl.ClientTrustStore, the default value is <b>false</b>.
      */
-    public static final String TAC_SSL_ACCEPT_ALL_IF_NO_TRUSTSTORE = "tac.net.ssl.AcceptAllIfNoTruststore"; //$NON-NLS-1$
+    public static final String TAC_SSL_ACCEPT_ALL_CERTS_IF_NO_TRUSTSTORE = "tac.net.ssl.AcceptAllCertsIfNoTruststore"; //$NON-NLS-1$
 
     private static SSLUtils instance;
-
-    private String userWorkingDir = null;
 
     private static HostnameVerifier hostnameVerifier;
 
@@ -122,7 +125,6 @@ public class SSLUtils {
 
     private SSLUtils(String userDir) throws NoSuchAlgorithmException, KeyStoreException, UnrecoverableKeyException,
             CertificateException, FileNotFoundException, IOException {
-        this.userWorkingDir = userDir;
         Init(userDir);
     }
 
@@ -132,7 +134,7 @@ public class SSLUtils {
         String trustStorePath = System.getProperty(TAC_SSL_CLIENT_TRUST_KEY);
         String keystorePass = System.getProperty(TAC_SSL_KEYSTORE_PASS);
         String truststorePass = System.getProperty(TAC_SSL_TRUSTSTORE_PASS);
-        boolean acceptAllIfNoTrustStore = Boolean.parseBoolean(System.getProperty(TAC_SSL_ACCEPT_ALL_IF_NO_TRUSTSTORE));
+        boolean acceptAllCertsIfNoTrustStore = Boolean.parseBoolean(System.getProperty(TAC_SSL_ACCEPT_ALL_CERTS_IF_NO_TRUSTSTORE));
 
         if (keystorePath == null) {
             // if user does not set the keystore path in the .ini,we need to look for the keystore file under
@@ -176,7 +178,7 @@ public class SSLUtils {
         }
 
         if (truststoreManagers == null) {
-            if (acceptAllIfNoTrustStore) {
+            if (acceptAllCertsIfNoTrustStore) {
                 truststoreManagers = new TrustManager[] { new TrustAnyTrustManager() };
             } else {
                 TrustManagerFactory tmf = TrustManagerFactory.getInstance("SunX509"); //$NON-NLS-1$
@@ -186,7 +188,7 @@ public class SSLUtils {
         }
 
         boolean openHttpHostNameVerification = Boolean
-                .parseBoolean(System.getProperty(TAC_SSL_OPEN_HOST_NAME_VERIFICATION, Boolean.TRUE.toString()));
+                .parseBoolean(System.getProperty(TAC_SSL_ENABLE_HOST_NAME_VERIFICATION, Boolean.TRUE.toString()));
         if (openHttpHostNameVerification) {
             hostnameVerifier = org.apache.http.conn.ssl.SSLSocketFactory.BROWSER_COMPATIBLE_HOSTNAME_VERIFIER;
         } else {
@@ -202,6 +204,41 @@ public class SSLUtils {
 
     public HostnameVerifier getHostnameVerifier() {
         return hostnameVerifier;
+    }
+    
+    /**
+     * 
+     * DOC hcyi Comment method "getContent".
+     * 
+     * @param buffer
+     * @param url
+     * 
+     * @return
+     * @throws AMCPluginException
+     */
+    public String getContent(StringBuffer buffer, URL url) throws Exception {
+        BufferedReader in = null;
+        if (("https").equals(url.getProtocol())) {
+            boolean openHttpHostNameVerification = Boolean.parseBoolean(System.getProperty(TAC_SSL_ENABLE_HOST_NAME_VERIFICATION));
+            final SSLSocketFactory socketFactory = getSSLContext().getSocketFactory();
+            HttpsURLConnection httpsCon = (HttpsURLConnection) url.openConnection();
+            httpsCon.setSSLSocketFactory(socketFactory);
+            if (openHttpHostNameVerification) {
+                httpsCon.setHostnameVerifier(org.apache.http.conn.ssl.SSLSocketFactory.BROWSER_COMPATIBLE_HOSTNAME_VERIFIER);
+            } else {
+                httpsCon.setHostnameVerifier(org.apache.http.conn.ssl.SSLSocketFactory.ALLOW_ALL_HOSTNAME_VERIFIER);
+            }
+            httpsCon.connect();
+            in = new BufferedReader(new InputStreamReader(httpsCon.getInputStream()));
+        } else {
+            in = new BufferedReader(new InputStreamReader(url.openStream()));
+        }
+        String inputLine;
+        while ((inputLine = in.readLine()) != null) {
+            buffer.append(inputLine);
+        }
+        in.close();
+        return buffer.toString();
     }
 
     // accept all certificate
