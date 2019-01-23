@@ -496,37 +496,33 @@ public class TalendTextUtils {
      */
     public static String hidePassword(final String password) {
 
-        if (password == null) {
-            SecureRandom random = new SecureRandom();
-            int passWordLength = random.nextInt();
-            String passCover = PASS_COVER;
-            StringBuilder builder = new StringBuilder(passCover);
-
-            for(int i=0; i<passWordLength; i++)
-            {
-                builder.append(PASS_COVER);
-            }
-
-            return passCover;
-        }
-
         if (ContextParameterUtils.containContextVariables(password)) {
             return password;
         }
-        
+
         if(!TalendQuoteUtils.isCommonString(password)){
             return password;
         }
 
-        int length = password.length() + 2;
+        SecureRandom random = new SecureRandom();
+        int passWordLength = random.nextInt();
+
+        if (passWordLength < 3) {
+            passWordLength = 3;
+        }
+
+        if (passWordLength > 15) {
+            passWordLength = 15;
+        }
 
         StringBuilder builder = new StringBuilder();
-        for (int i = 0; i < length; i++) {
+
+        for(int i=0; i<passWordLength; i++)
+        {
             builder.append(PASS_COVER);
         }
 
         return builder.toString();
-
     }
 
     public static String filterSpecialChar(String input) { // for 8115
