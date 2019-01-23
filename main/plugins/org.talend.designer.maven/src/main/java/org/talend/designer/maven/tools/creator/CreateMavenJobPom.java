@@ -722,6 +722,9 @@ public class CreateMavenJobPom extends AbstractMavenProcessorPom {
             return;
         }
         Node dependencySetsNode = document.getElementsByTagName("dependencySets").item(0);
+        if (dependencySetsNode == null) {
+            return;
+        }
         Node dependencySetNode = document.createElement("dependencySet");
         dependencySetsNode.appendChild(dependencySetNode);
 
