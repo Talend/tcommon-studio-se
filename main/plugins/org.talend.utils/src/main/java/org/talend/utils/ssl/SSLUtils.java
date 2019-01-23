@@ -190,9 +190,9 @@ public class SSLUtils {
             }
         }
 
-        boolean openHttpHostNameVerification = Boolean
+        boolean enableHostnameVerification = Boolean
                 .parseBoolean(System.getProperty(TAC_SSL_ENABLE_HOST_NAME_VERIFICATION, Boolean.TRUE.toString()));
-        if (openHttpHostNameVerification) {
+        if (enableHostnameVerification) {
             hostnameVerifier = org.apache.http.conn.ssl.SSLSocketFactory.BROWSER_COMPATIBLE_HOSTNAME_VERIFIER;
         } else {
             hostnameVerifier = org.apache.http.conn.ssl.SSLSocketFactory.ALLOW_ALL_HOSTNAME_VERIFIER;
@@ -222,16 +222,10 @@ public class SSLUtils {
     public String getContent(StringBuffer buffer, URL url) throws Exception {
         BufferedReader in = null;
         if (("https").equals(url.getProtocol())) {
-            boolean openHttpHostNameVerification = Boolean
-                    .parseBoolean(System.getProperty(TAC_SSL_ENABLE_HOST_NAME_VERIFICATION));
             final SSLSocketFactory socketFactory = getSSLContext().getSocketFactory();
             HttpsURLConnection httpsCon = (HttpsURLConnection) url.openConnection();
             httpsCon.setSSLSocketFactory(socketFactory);
-            if (openHttpHostNameVerification) {
-                httpsCon.setHostnameVerifier(org.apache.http.conn.ssl.SSLSocketFactory.BROWSER_COMPATIBLE_HOSTNAME_VERIFIER);
-            } else {
-                httpsCon.setHostnameVerifier(org.apache.http.conn.ssl.SSLSocketFactory.ALLOW_ALL_HOSTNAME_VERIFIER);
-            }
+            httpsCon.setHostnameVerifier(hostnameVerifier);
             httpsCon.connect();
             in = new BufferedReader(new InputStreamReader(httpsCon.getInputStream()));
         } else {
@@ -245,7 +239,7 @@ public class SSLUtils {
         return buffer.toString();
     }
 
-    // accept all certificate
+    // accept all certificates
     private static class TrustAnyTrustManager implements X509TrustManager {
 
         @Override
