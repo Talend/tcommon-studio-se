@@ -336,7 +336,7 @@ public class ExtractMetaDataFromDataBase {
                 }
             }
             if (EDatabaseTypeName.SYBASEASE == EDatabaseTypeName.getTypeFromDisplayName(dbType)) {
-                boolean checkSybaseDB = checkSybaseDB(connection, sidOrDatabase);
+                boolean checkSybaseDB = checkSybaseDB(connection, sidOrDatabase, dbType);
                 if (!checkSybaseDB) {
                     connectionStatus.setMessageException(
                             Messages.getString("ExtractMetaDataFromDataBase.DatabaseNoPresent", sidOrDatabase)); //$NON-NLS-1$
@@ -380,18 +380,22 @@ public class ExtractMetaDataFromDataBase {
         return checkSchemaConnection(schema, connection, notCaseSensitive, dbType, null);
     }
 
-    public static boolean checkSybaseDB(Connection connection, String database) {
+    private static boolean checkSybaseDB(Connection connection, String database, String dbType) {
         ExtractMetaDataUtils extractMeta = ExtractMetaDataUtils.getInstance();
+        DatabaseMetaData dbMetaData = extractMeta.getDatabaseMetaData(connection, dbType);
         if (extractMeta != null) {
             Statement stmt = null;
             ResultSet resultSet = null;
             try {
-                stmt = connection.createStatement();
-                extractMeta.setQueryStatementTimeout(stmt);
-                resultSet = stmt.executeQuery("sp_helpdb " + database);
-                return true;
+                ResultSet catalogs = dbMetaData.getCatalogs();
+                while (catalogs.next()) {
+                    String catalog = catalogs.getString(1);
+                    if (StringUtils.equals(database, catalog)) {
+                        return true;
+                    }
+                }
             } catch (SQLException e) {
-                e.printStackTrace();
+                ExceptionHandler.process(e);
                 return false;
             } finally {
                 try {
@@ -402,7 +406,7 @@ public class ExtractMetaDataFromDataBase {
                         stmt.close();
                     }
                 } catch (SQLException e) {
-                    log.equals(e.toString());
+                    ExceptionHandler.process(e);
                 }
             }
 
