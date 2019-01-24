@@ -387,7 +387,6 @@ public class ExtractMetaDataFromDataBase {
             ResultSet catalogs = null;
             try {
                 catalogs = dbMetaData.getCatalogs();
-                catalogs.close();
                 while (catalogs.next()) {
                     String catalog = catalogs.getString(1);
                     if (StringUtils.equals(database, catalog)) {
