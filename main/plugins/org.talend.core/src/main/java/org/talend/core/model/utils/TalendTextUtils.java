@@ -12,7 +12,6 @@
 // ============================================================================
 package org.talend.core.model.utils;
 
-import java.security.SecureRandom;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -48,7 +47,7 @@ public class TalendTextUtils {
 
     private static final int LINE_MAX_NUM = 100;
 
-    private static final String PASS_COVER = "*"; //$NON-NLS-1$
+    private static final String PASS_COVER = "********"; //$NON-NLS-1$
 
     public static String addQuotes(String text) {
         return TalendQuoteUtils.addQuotes(text);
@@ -495,7 +494,6 @@ public class TalendTextUtils {
      * @return
      */
     public static String hidePassword(final String password) {
-
         if (ContextParameterUtils.containContextVariables(password)) {
             return password;
         }
@@ -504,25 +502,7 @@ public class TalendTextUtils {
             return password;
         }
 
-        SecureRandom random = new SecureRandom();
-        int passWordLength = random.nextInt();
-
-        if (passWordLength < 3) {
-            passWordLength = 3;
-        }
-
-        if (passWordLength > 15) {
-            passWordLength = 15;
-        }
-
-        StringBuilder builder = new StringBuilder();
-
-        for(int i=0; i<passWordLength; i++)
-        {
-            builder.append(PASS_COVER);
-        }
-
-        return builder.toString();
+        return PASS_COVER;
     }
 
     public static String filterSpecialChar(String input) { // for 8115

@@ -19,27 +19,27 @@ public class TalendTextUtilsTest {
         
         pass = " value ";
         result = TalendTextUtils.hidePassword(pass);
-        assertEquals(result,"*********");
+        assertEquals(result, "********");
         
         pass = " va  lue ";
         result = TalendTextUtils.hidePassword(pass);
-        assertEquals(result,"***********");
+        assertEquals(result, "********");
         
         pass = null;
         result = TalendTextUtils.hidePassword(pass);
-        assertEquals(result,"**");
+        assertEquals(result, "********");
         
         pass = " ";
         result = TalendTextUtils.hidePassword(pass);
-        assertEquals(result,"***");
+        assertEquals(result, "********");
         
         pass = "\"\"";
         result = TalendTextUtils.hidePassword(pass);
-        assertEquals(result,"****");
+        assertEquals(result, "********");
         
         pass = "\"  \"";
         result = TalendTextUtils.hidePassword(pass);
-        assertEquals(result,"******");
+        assertEquals(result, "********");
         
     }
 
