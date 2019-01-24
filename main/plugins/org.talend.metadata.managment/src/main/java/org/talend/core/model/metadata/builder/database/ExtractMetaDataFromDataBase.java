@@ -336,8 +336,8 @@ public class ExtractMetaDataFromDataBase {
                 }
             }
             if (EDatabaseTypeName.SYBASEASE == EDatabaseTypeName.getTypeFromDisplayName(dbType)) {
-                boolean checkSybaseDB = checkSybaseDB(connection, sidOrDatabase, dbType);
-                if (!checkSybaseDB) {
+                boolean exsitedSybaseDB = checkSybaseDB(connection, sidOrDatabase, dbType);
+                if (!exsitedSybaseDB) {
                     connectionStatus.setMessageException(
                             Messages.getString("ExtractMetaDataFromDataBase.DatabaseNoPresent", sidOrDatabase)); //$NON-NLS-1$
                     return connectionStatus;
@@ -384,10 +384,10 @@ public class ExtractMetaDataFromDataBase {
         ExtractMetaDataUtils extractMeta = ExtractMetaDataUtils.getInstance();
         DatabaseMetaData dbMetaData = extractMeta.getDatabaseMetaData(connection, dbType);
         if (extractMeta != null) {
-            Statement stmt = null;
-            ResultSet resultSet = null;
+            ResultSet catalogs = null;
             try {
-                ResultSet catalogs = dbMetaData.getCatalogs();
+                catalogs = dbMetaData.getCatalogs();
+                catalogs.close();
                 while (catalogs.next()) {
                     String catalog = catalogs.getString(1);
                     if (StringUtils.equals(database, catalog)) {
@@ -399,11 +399,8 @@ public class ExtractMetaDataFromDataBase {
                 return false;
             } finally {
                 try {
-                    if (resultSet != null) {
-                        resultSet.close();
-                    }
-                    if (stmt != null) {
-                        stmt.close();
+                    if (catalogs != null) {
+                        catalogs.close();
                     }
                 } catch (SQLException e) {
                     ExceptionHandler.process(e);
