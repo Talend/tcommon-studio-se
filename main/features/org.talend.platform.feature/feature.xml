@@ -45,6 +45,7 @@
     <import plugin="org.eclipse.ui.ide" version="0.0.0" match="greaterOrEqual"/>
     <import plugin="org.eclipse.ui.ide.application" version="0.0.0" match="greaterOrEqual"/>
     <import plugin="org.eclipse.ui.intro" version="0.0.0" match="greaterOrEqual"/>
+    <import plugin="org.eclipse.ui.intro.quicklinks" version="0.0.0" match="greaterOrEqual"/>
     <import plugin="org.eclipse.ui.intro.universal" version="0.0.0" match="greaterOrEqual"/>
     <import plugin="org.eclipse.ui.navigator" version="0.0.0" match="greaterOrEqual"/>
     <import plugin="org.eclipse.ui.navigator.resources" version="0.0.0" match="greaterOrEqual"/>
