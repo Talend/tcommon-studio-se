@@ -42,10 +42,7 @@ public enum EConnectionParameterName {
     GENERIC_URL("connection.jdbcUrl"),//$NON-NLS-1$
     GENERIC_DRIVER_JAR("connection.driverTable"),//$NON-NLS-1$
     GENERIC_DRIVER_CLASS("connection.driverClass"), //$NON-NLS-1$
-    GENERIC_JDBCURL("JDBC URL"),
-    GENERIC_DRIVERS("Drivers"),
-    GENERIC_MAPPING_FILE("Mapping file"),
-    GENERIC_USERID("User Id");
+    GENERIC_MAPPING_FILE("mappingFile");
 
     private String displayName;
 
