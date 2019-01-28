@@ -64,6 +64,18 @@ public class TalendTextUtilsTest {
         pass = "xyz";
         result = TalendTextUtils.hidePassword(pass);
         assertEquals(result, "********");
+
+        pass = "value**value";
+        result = TalendTextUtils.hidePassword(pass);
+        assertEquals(result, "********");
+
+        pass = "value**va*lu**e";
+        result = TalendTextUtils.hidePassword(pass);
+        assertEquals(result, "********");
+
+        pass = "value\"valu\"e";
+        result = TalendTextUtils.hidePassword(pass);
+        assertEquals(result, pass);
     }
 
     @Test

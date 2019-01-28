@@ -466,17 +466,6 @@ public class TalendTextUtils {
 
     /**
      * 
-     * ggu Comment method "isCommonString".
-     * 
-     * if there are no any quotes , variables and expression(connected string) in string, will return true.
-     * 
-     */
-    public static boolean isCommonString(final String str) {
-        return TalendQuoteUtils.isCommonString(str);
-    }
-
-    /**
-     * 
      * judge whether str is null or length is zreo
      * 
      * @param str
