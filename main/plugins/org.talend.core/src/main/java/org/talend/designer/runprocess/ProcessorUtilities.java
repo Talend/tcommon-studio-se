@@ -2155,7 +2155,7 @@ public class ProcessorUtilities {
         EList<NodeType> nodes = ptype.getNode();
         String jobletPaletteType = null;
         String frameWork = ptype.getFramework();
-        if (frameWork == null) {
+        if (StringUtils.isBlank(frameWork)) {
             jobletPaletteType = ComponentCategory.CATEGORY_4_DI.getName();
         } else if (frameWork.equals(HadoopConstants.FRAMEWORK_SPARK)) {
             jobletPaletteType = ComponentCategory.CATEGORY_4_SPARK.getName();
