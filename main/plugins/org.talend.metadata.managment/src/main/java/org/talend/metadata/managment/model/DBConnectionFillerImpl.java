@@ -28,6 +28,8 @@ import java.util.Map;
 import java.util.Set;
 import java.util.regex.Pattern;
 
+import metadata.managment.i18n.Messages;
+
 import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
 import org.eclipse.emf.ecore.EObject;
@@ -89,8 +91,6 @@ import org.talend.utils.sql.metadata.constants.GetPrimaryKey;
 import org.talend.utils.sql.metadata.constants.GetTable;
 import org.talend.utils.sql.metadata.constants.MetaDataConstants;
 import org.talend.utils.sql.metadata.constants.TableType;
-
-import metadata.managment.i18n.Messages;
 import orgomg.cwm.objectmodel.core.Package;
 import orgomg.cwm.resource.relational.Catalog;
 import orgomg.cwm.resource.relational.ColumnSet;
@@ -649,7 +649,8 @@ public class DBConnectionFillerImpl extends MetadataFillerImpl<DatabaseConnectio
         String catalogName = getDatabaseName(dbConn);
 
         if (StringUtils.isEmpty(catalogName)) {
-            catalogName = dbConn.getUsername();
+            // TDQ-16020 msjian: should get the correct catalog name
+            catalogName = getPostgresqlCatalogFromUrl(metaConnection.getUrl(), dbConn.getUsername());
         }
 
         if (StringUtils.isNotEmpty(catalogName)) {
@@ -673,6 +674,19 @@ public class DBConnectionFillerImpl extends MetadataFillerImpl<DatabaseConnectio
         return catalogList;
     }
 
+    private String getPostgresqlCatalogFromUrl(String url, String userName) {
+        int indexOf = url.indexOf("/", url.indexOf("//") + 2); //$NON-NLS-1$//$NON-NLS-2$
+        if (indexOf == -1) {
+            return userName;
+        }
+        int start = url.indexOf('/') == -1 ? url.length() - 1 : url.indexOf("/", indexOf); //$NON-NLS-1$
+        int end = url.indexOf('?') == -1 ? url.length() : url.indexOf("?"); //$NON-NLS-1$
+        String catalog = url.substring(start + 1 >= url.length() - 1 ? start : start + 1, end);
+        if ("/".equals(catalog)) { //$NON-NLS-1$
+            catalog = userName;
+        }
+        return catalog;
+    }
     /**
      * judge whether SID is null or empty string whatever context mode or nor
      * 

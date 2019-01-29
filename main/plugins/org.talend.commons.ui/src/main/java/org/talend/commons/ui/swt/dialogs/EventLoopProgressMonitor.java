@@ -12,6 +12,8 @@
 // ============================================================================
 package org.talend.commons.ui.swt.dialogs;
 
+import java.io.File;
+
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.IProgressMonitorWithBlocking;
 import org.eclipse.core.runtime.IStatus;
@@ -48,6 +50,8 @@ public class EventLoopProgressMonitor extends ProgressMonitorWrapper implements 
      * The task name is the name of the current task in the event loop.
      */
     private String taskName;
+    
+    private String originalTaskName;
 
     /**
      * Constructs a new instance of the receiver and forwards to monitor.
@@ -62,6 +66,12 @@ public class EventLoopProgressMonitor extends ProgressMonitorWrapper implements 
      * @see IProgressMonitor#beginTask
      */
     public void beginTask(String name, int totalWork) {
+        if(originalTaskName != null){
+            String tname = originalTaskName.replace(File.separatorChar, '-');
+            if(name.contains(tname)){
+                name= name.replace(tname, originalTaskName);
+            }
+        }
         super.beginTask(name, totalWork);
         taskName = name;
         runEventLoop();
@@ -160,6 +170,7 @@ public class EventLoopProgressMonitor extends ProgressMonitorWrapper implements 
      */
     public void setTaskName(String name) {
         super.setTaskName(name);
+        this.originalTaskName = name;
         taskName = name;
         runEventLoop();
     }

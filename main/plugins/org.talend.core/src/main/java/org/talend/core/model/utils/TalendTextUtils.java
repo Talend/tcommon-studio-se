@@ -47,7 +47,7 @@ public class TalendTextUtils {
 
     private static final int LINE_MAX_NUM = 100;
 
-    private static final String PASS_COVER = "*"; //$NON-NLS-1$
+    private static final String PASS_COVER = "********"; //$NON-NLS-1$
 
     public static String addQuotes(String text) {
         return TalendQuoteUtils.addQuotes(text);
@@ -466,17 +466,6 @@ public class TalendTextUtils {
 
     /**
      * 
-     * ggu Comment method "isCommonString".
-     * 
-     * if there are no any quotes , variables and expression(connected string) in string, will return true.
-     * 
-     */
-    public static boolean isCommonString(final String str) {
-        return TalendQuoteUtils.isCommonString(str);
-    }
-
-    /**
-     * 
      * judge whether str is null or length is zreo
      * 
      * @param str
@@ -494,28 +483,15 @@ public class TalendTextUtils {
      * @return
      */
     public static String hidePassword(final String password) {
-
-        if (password == null) {
-            return PASS_COVER + PASS_COVER; // Means two quote
-        }
-
         if (ContextParameterUtils.containContextVariables(password)) {
             return password;
         }
-        
+
         if(!TalendQuoteUtils.isCommonString(password)){
             return password;
         }
 
-        int length = password.length() + 2;
-
-        StringBuilder builder = new StringBuilder();
-        for (int i = 0; i < length; i++) {
-            builder.append(PASS_COVER);
-        }
-
-        return builder.toString();
-
+        return PASS_COVER;
     }
 
     public static String filterSpecialChar(String input) { // for 8115
