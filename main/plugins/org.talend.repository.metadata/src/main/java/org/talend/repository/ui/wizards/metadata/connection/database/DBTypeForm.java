@@ -215,7 +215,7 @@ public class DBTypeForm {
                     }
                     wizardPage.refreshDBForm(connectionItem);
                     if(wizardPage.isTCOMDB(dbType)){
-                        wizardPage.setPageComplete(false);
+                        wizardPage.setPageComplete(true);
                     }
                 }else{
                     setConnectionDBType(dbType);

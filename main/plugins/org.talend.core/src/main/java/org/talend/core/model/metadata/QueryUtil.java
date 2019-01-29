@@ -19,7 +19,6 @@ import org.talend.core.database.EDatabaseTypeName;
 import org.talend.core.language.LanguageManager;
 import org.talend.core.model.metadata.query.GenerateQueryFactory;
 import org.talend.core.model.metadata.query.IQueryGenerator;
-import org.talend.core.model.param.EConnectionParameterName;
 import org.talend.core.model.process.EParameterFieldType;
 import org.talend.core.model.process.Element;
 import org.talend.core.model.process.IElement;
@@ -474,7 +473,7 @@ public class QueryUtil {
         }
         query = query.trim();
         // modified by hyWang
-        if (!query.startsWith(TalendTextUtils.getQuoteChar()) || !TalendTextUtils.isCommonString(query)) { // perhaps,
+        if (!query.startsWith(TalendTextUtils.getQuoteChar()) || !TalendQuoteUtils.isCommonString(query)) { // perhaps,
             // need
             // improve
             return TalendTextUtils.addSQLQuotes(query);

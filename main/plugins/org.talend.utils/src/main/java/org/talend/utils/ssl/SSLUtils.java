@@ -25,6 +25,8 @@ import java.security.NoSuchAlgorithmException;
 import java.security.UnrecoverableKeyException;
 import java.security.cert.CertificateException;
 import java.security.cert.X509Certificate;
+import java.util.HashMap;
+import java.util.Map;
 
 import javax.net.ssl.HostnameVerifier;
 import javax.net.ssl.HttpsURLConnection;
@@ -97,13 +99,13 @@ public class SSLUtils {
      */
     public static final String TAC_SSL_ACCEPT_ALL_CERTS_IF_NO_TRUSTSTORE = "tac.net.ssl.AcceptAllCertsIfNoTruststore"; //$NON-NLS-1$
 
-    private static SSLUtils instance;
+    private HostnameVerifier hostnameVerifier;
 
-    private static HostnameVerifier hostnameVerifier;
+    private KeyManager[] keystoreManagers;
 
-    private static KeyManager[] keystoreManagers;
+    private TrustManager[] truststoreManagers;
 
-    private static TrustManager[] truststoreManagers;
+    private static Map<String, SSLUtils> userDirToInstanceMap = new HashMap<String, SSLUtils>();
 
     /**
      * Get SSLUtils instance
@@ -119,10 +121,15 @@ public class SSLUtils {
      */
     public static synchronized SSLUtils getInstance(String userDir) throws NoSuchAlgorithmException, KeyStoreException,
             UnrecoverableKeyException, CertificateException, FileNotFoundException, IOException {
-        if (instance == null) {
-            instance = new SSLUtils(userDir);
+        if (userDir == null) {
+            userDir = "";
         }
-        return instance;
+        if (userDirToInstanceMap.containsKey(userDir)) {
+            return userDirToInstanceMap.get(userDir);
+        }
+        SSLUtils newInstance = new SSLUtils(userDir);
+        userDirToInstanceMap.put(userDir, newInstance);
+        return newInstance;
     }
 
     private SSLUtils(String userDir) throws NoSuchAlgorithmException, KeyStoreException, UnrecoverableKeyException,
@@ -240,7 +247,7 @@ public class SSLUtils {
     }
 
     // accept all certificates
-    private static class TrustAnyTrustManager implements X509TrustManager {
+    private class TrustAnyTrustManager implements X509TrustManager {
 
         @Override
         public void checkClientTrusted(X509Certificate[] chain, String authType) throws CertificateException {
