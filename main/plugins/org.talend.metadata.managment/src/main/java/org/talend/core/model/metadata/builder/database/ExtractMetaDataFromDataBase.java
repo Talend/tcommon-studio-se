@@ -382,30 +382,29 @@ public class ExtractMetaDataFromDataBase {
 
     private static boolean checkSybaseDB(Connection connection, String database, String dbType) {
         ExtractMetaDataUtils extractMeta = ExtractMetaDataUtils.getInstance();
-        DatabaseMetaData dbMetaData = extractMeta.getDatabaseMetaData(connection, dbType);
         if (extractMeta != null) {
-            ResultSet catalogs = null;
+            Statement stmt = null;
+            ResultSet resultSet = null;
             try {
-                catalogs = dbMetaData.getCatalogs();
-                while (catalogs.next()) {
-                    String catalog = catalogs.getString(1);
-                    if (StringUtils.equals(database, catalog)) {
-                        return true;
-                    }
-                }
+                stmt = connection.createStatement();
+                extractMeta.setQueryStatementTimeout(stmt);
+                resultSet = stmt.executeQuery("sp_helpdb " + database);
+                return true;
             } catch (SQLException e) {
                 ExceptionHandler.process(e);
                 return false;
             } finally {
                 try {
-                    if (catalogs != null) {
-                        catalogs.close();
+                    if (resultSet != null) {
+                        resultSet.close();
+                    }
+                    if (stmt != null) {
+                        stmt.close();
                     }
                 } catch (SQLException e) {
                     ExceptionHandler.process(e);
                 }
             }
-
         }
         return false;
     }
