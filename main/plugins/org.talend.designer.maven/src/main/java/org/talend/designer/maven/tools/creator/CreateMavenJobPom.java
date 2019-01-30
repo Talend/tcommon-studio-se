@@ -450,7 +450,7 @@ public class CreateMavenJobPom extends AbstractMavenProcessorPom {
         if (codeProject == null) {
             return;
         }
-        Property property = codeProject.getPropery();
+        Property property = codeProject.getPropery() != null ? codeProject.getPropery() : processor.getProperty();
         if (property == null) {
             return;
         }
