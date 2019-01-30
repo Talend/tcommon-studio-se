@@ -33,7 +33,8 @@
     color: black;
 }
 
-.MPart Button[style~='SWT.PUSH']
+.MPart Button[style~='SWT.PUSH'],
+.MPart Combo
 {
     /*
      * Seems there is bug on Linux that we can't use the `black` dirrectly,
@@ -72,7 +73,8 @@
     color: black;
 }
 
-.CommonColorsSetting Button[style~='SWT.PUSH']
+.CommonColorsSetting Button[style~='SWT.PUSH'],
+.CommonColorsSetting Combo
 {
     color: #000001;
 }
