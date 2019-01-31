@@ -94,8 +94,8 @@ public final class JavaTypesManager {
 
     public static final JavaType PASSWORD = new JavaType(String.class, true, "Password"); //$NON-NLS-1$
 
-    public static final JavaType[] JAVA_TYPES = new JavaType[] { BOOLEAN, BYTE, BYTE_ARRAY, CHARACTER, DATE, DOUBLE, FLOAT,
-            BIGDECIMAL, INTEGER, LONG, OBJECT, SHORT, STRING, LIST };
+    public static final JavaType[] JAVA_TYPES = new JavaType[] { BOOLEAN, BYTE, BYTE_ARRAY, CHARACTER, DATE, DOUBLE,
+            FLOAT, BIGDECIMAL, INTEGER, LONG, OBJECT, SHORT, STRING, LIST };
 
     private static Map<String, Map<String, List<DBTypeUtil>>> javaTypeMappingFromExtension;
 
@@ -144,12 +144,16 @@ public final class JavaTypesManager {
                     for (IConfigurationElement configurationElement : configurationElements) {
                         try {
                             String className = configurationElement.getAttribute("nullableClass");
-                            Class myClass = Platform.getBundle(configurationElement.getContributor().getName()).loadClass(
-                                    className);
-                            boolean isGenerateWithCanonicalName = configurationElement.getAttribute("generateWithCanonicalName") == null ? false
-                                    : Boolean.valueOf(configurationElement.getAttribute("generateWithCanonicalName"));
-                            boolean isObjectBased = configurationElement.getAttribute("objectBased") == null ? false : Boolean
-                                    .valueOf(configurationElement.getAttribute("objectBased"));
+                            Class myClass =
+                                    Platform.getBundle(configurationElement.getContributor().getName()).loadClass(
+                                            className);
+                            boolean isGenerateWithCanonicalName =
+                                    configurationElement.getAttribute("generateWithCanonicalName") == null ? false
+                                            : Boolean.valueOf(configurationElement
+                                                    .getAttribute("generateWithCanonicalName"));
+                            boolean isObjectBased =
+                                    configurationElement.getAttribute("objectBased") == null ? false : Boolean
+                                            .valueOf(configurationElement.getAttribute("objectBased"));
                             JavaType javaType = new JavaType(myClass, isGenerateWithCanonicalName, isObjectBased);
                             addJavaType(javaType);
 
@@ -160,14 +164,18 @@ public final class JavaTypesManager {
                                 IConfigurationElement[] dbTypeElements = dbMappingElement.getChildren();
                                 List<DBTypeUtil> dbTypes = new ArrayList<DBTypeUtil>();
                                 for (IConfigurationElement dbTypeElement : dbTypeElements) {
-                                    boolean isDefault = dbTypeElement.getAttribute("default") == null ? false : Boolean
-                                            .valueOf(dbTypeElement.getAttribute("default"));
-                                    boolean isIgnoreLen = dbTypeElement.getAttribute("ignoreLen") == null ? false : Boolean
-                                            .valueOf(dbTypeElement.getAttribute("ignoreLen"));
-                                    boolean isIgnorePre = dbTypeElement.getAttribute("ignorePre") == null ? false : Boolean
-                                            .valueOf(dbTypeElement.getAttribute("ignorePre"));
-                                    DBTypeUtil dbType = new DBTypeUtil(dbTypeElement.getAttribute("DbType"), isDefault,
-                                            isIgnoreLen, isIgnorePre);
+                                    boolean isDefault =
+                                            dbTypeElement.getAttribute("default") == null ? false : Boolean
+                                                    .valueOf(dbTypeElement.getAttribute("default"));
+                                    boolean isIgnoreLen =
+                                            dbTypeElement.getAttribute("ignoreLen") == null ? false : Boolean
+                                                    .valueOf(dbTypeElement.getAttribute("ignoreLen"));
+                                    boolean isIgnorePre =
+                                            dbTypeElement.getAttribute("ignorePre") == null ? false : Boolean
+                                                    .valueOf(dbTypeElement.getAttribute("ignorePre"));
+                                    DBTypeUtil dbType =
+                                            new DBTypeUtil(dbTypeElement.getAttribute("DbType"), isDefault,
+                                                    isIgnoreLen, isIgnorePre);
                                     dbTypes.add(dbType);
                                 }
                                 dbAndDBType.put(mappingId, dbTypes);
@@ -519,16 +527,16 @@ public final class JavaTypesManager {
     /**
      * the numerical types with id_.
      */
-    public final static String[] NUMBERS = new String[] { JavaTypesManager.INTEGER.getId(), JavaTypesManager.FLOAT.getId(),
-            JavaTypesManager.DOUBLE.getId(), JavaTypesManager.LONG.getId(), JavaTypesManager.SHORT.getId(),
-            JavaTypesManager.BIGDECIMAL.getId(), JavaTypesManager.BYTE.getId() };
+    public final static String[] NUMBERS = new String[] { JavaTypesManager.INTEGER.getId(),
+            JavaTypesManager.FLOAT.getId(), JavaTypesManager.DOUBLE.getId(), JavaTypesManager.LONG.getId(),
+            JavaTypesManager.SHORT.getId(), JavaTypesManager.BIGDECIMAL.getId(), JavaTypesManager.BYTE.getId() };
 
     public static boolean isNumber(String type) {
         return ArrayUtils.contains(NUMBERS, type);
     }
 
     public static boolean isString(String type) {
-        return JavaTypesManager.STRING.getId().equals(type);
+        return JavaTypesManager.STRING.getId().equals(type) || JavaTypesManager.CHARACTER.getId().equals(type);
     }
 
     public static boolean isBoolean(String type) {
