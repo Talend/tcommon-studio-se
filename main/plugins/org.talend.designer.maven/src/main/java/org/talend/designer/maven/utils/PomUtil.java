@@ -31,6 +31,7 @@ import java.util.LinkedHashMap;
 import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Properties;
 import java.util.Set;
 
 import javax.xml.parsers.DocumentBuilder;
@@ -116,7 +117,9 @@ public class PomUtil {
         if (pomFile == null) {
             throw new NullPointerException("the output file is null.");
         }
-
+        Properties properties = new Properties();
+        properties.putAll(model.getProperties());
+        model.setProperties(properties);
         /*
          * copied the codes from createMavenModel of MavenModelManager
          */
@@ -138,7 +141,9 @@ public class PomUtil {
         if (pomFile == null) {
             throw new NullPointerException("the output file is null.");
         }
-
+        Properties properties = new Properties();
+        properties.putAll(model.getProperties());
+        model.setProperties(properties);
         ByteArrayOutputStream buf = new ByteArrayOutputStream();
         MavenPlugin.getMaven().writeModel(model, buf);
 
