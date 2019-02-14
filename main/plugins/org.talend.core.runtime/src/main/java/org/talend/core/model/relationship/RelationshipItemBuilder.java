@@ -129,8 +129,6 @@ public class RelationshipItemBuilder {
 
     private Map<Relation, Set<Relation>> referencesItemsRelations;
 
-    private Map<String, String> hadoopItemReferences = new HashMap<String, String>();
-
     private boolean loaded = false;
 
     private boolean loading = false;
@@ -1126,10 +1124,11 @@ public class RelationshipItemBuilder {
             Map<Relation, Set<Relation>> relations = handler.find(item);
             mergeRelationship(itemRelations, relations);
         }
-
-        if (oldProjectRelations != null) {
-            // check if there is any changes on the relations.
-            Set<Relation> newProjectRelations = currentProjectItemsRelations.get(relation);
+        // check if there is any changes on the relations.
+        Set<Relation> newProjectRelations = currentProjectItemsRelations.get(relation);
+        if (oldProjectRelations == null && newProjectRelations == null) {
+            relationsModified = false;
+        } else if (oldProjectRelations != null) {
             if (oldProjectRelations.size() == newProjectRelations.size()) {
                 relationsModified = false;
                 for (Relation newRelation : newProjectRelations) {
