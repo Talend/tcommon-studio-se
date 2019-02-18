@@ -346,4 +346,14 @@ public class BigDataNode extends AbstractNode implements IBigDataNode {
     public void addOutput(IConnection connection) {
         ((List<IConnection>) getOutgoingConnections()).add(connection);
     }
+    
+    @Override
+    public boolean shouldGenerateDatasetCode() {
+        return false;
+    }
+
+    @Override
+    public void loadDatasetConditions(){
+        
+    }
 }

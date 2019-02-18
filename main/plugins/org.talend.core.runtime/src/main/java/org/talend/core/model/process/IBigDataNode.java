@@ -122,5 +122,17 @@ public interface IBigDataNode extends INode {
      * @param dummy true if this node has to be declared as a dummy, else false.
      */
     public void setDummy(boolean dummy);
+    
+    /**
+     * Returns if node will generate Dataset or RDD code.
+     * 
+     * @return a boolean telling if Dataset code will be generated.
+     */
+    public boolean shouldGenerateDatasetCode();
+
+    /**
+     * Method to load Dataset conditions and determine if Dataset code can be generated.
+     */
+    public void loadDatasetConditions();
 
 }
