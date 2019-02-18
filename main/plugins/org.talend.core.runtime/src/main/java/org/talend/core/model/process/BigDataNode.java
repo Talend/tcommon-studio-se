@@ -356,4 +356,9 @@ public class BigDataNode extends AbstractNode implements IBigDataNode {
     public void loadDatasetConditions(){
         
     }
+    
+    @Override
+    public void processDatasetConditions(){
+        
+    }
 }

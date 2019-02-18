@@ -131,8 +131,15 @@ public interface IBigDataNode extends INode {
     public boolean shouldGenerateDatasetCode();
 
     /**
-     * Method to load Dataset conditions and determine if Dataset code can be generated.
+     * Method to load Dataset conditions.
      */
     public void loadDatasetConditions();
+    
+    /**
+     * Method to process previously loaded Dataset conditions and determine if Dataset code can be generated.
+     * 
+     * Loading and processing should be separated because conditions can be dependent on future component (in subjob order)
+     */
+    public void processDatasetConditions();
 
 }

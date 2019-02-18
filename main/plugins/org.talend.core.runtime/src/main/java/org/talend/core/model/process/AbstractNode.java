@@ -1327,8 +1327,4 @@ public abstract class AbstractNode implements INode {
     public void setRealGraphicalNode(INode realGraphicalNode) {
         this.realGraphicalNode = realGraphicalNode;
     }
-    
-    public void loadDatasetConditions(){
-        
-    }
 }
