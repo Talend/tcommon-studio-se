@@ -165,6 +165,8 @@ public class DatabaseWizardPage extends WizardPage {
         addCheckListener(dbService.getDynamicChecker(dynamicForm));
         if(isCreation){
             resetDynamicConnectionItem(connectionItem);
+        } else {
+            DatabaseWizardPage.this.setPageComplete(true);
         }
     }
     
@@ -350,7 +352,7 @@ public class DatabaseWizardPage extends WizardPage {
             @Override
             public void checkPerformed(IChecker source) {
                 if (source.isStatusOnError()) {
-                    DatabaseWizardPage.this.setPageComplete(false);
+                    DatabaseWizardPage.this.setPageComplete(true);
                     setErrorMessage(source.getStatus());
                 } else {
                     DatabaseWizardPage.this.setPageComplete(isRepositoryObjectEditable);

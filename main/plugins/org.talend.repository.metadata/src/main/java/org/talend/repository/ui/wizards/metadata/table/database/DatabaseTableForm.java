@@ -109,6 +109,7 @@ import org.talend.metadata.managment.repository.ManagerConnection;
 import org.talend.metadata.managment.ui.model.ProjectNodeHelper;
 import org.talend.metadata.managment.ui.wizard.AbstractForm;
 import org.talend.metadata.managment.ui.wizard.metadata.connection.GuessSchemaUtil;
+import org.talend.metadata.managment.utils.MetadataConnectionUtils;
 import org.talend.repository.metadata.i18n.Messages;
 import org.talend.repository.model.IProxyRepositoryFactory;
 
@@ -1239,7 +1240,11 @@ public class DatabaseTableForm extends AbstractForm {
                     String mappingID = metadataconnection.getMapping();
                     if (mappingID != null) {
                         if (!TypesManager.checkDBType(mappingID, oneColum.getTalendType(), oneColum.getSourceType())) {
-                            oneColum.setSourceType(TypesManager.getDBTypeFromTalendType(mappingID, oneColum.getTalendType()));
+                            String dbType = MetadataConnectionUtils.getDBType(schemaContent.get(4)[i - 1], mappingID);
+                            if(dbType == null || dbType.length() <= 0){
+                                dbType = TypesManager.getDBTypeFromTalendType(mappingID, oneColum.getTalendType());
+                            }
+                            oneColum.setSourceType(dbType);
                         }
                     }
                 }

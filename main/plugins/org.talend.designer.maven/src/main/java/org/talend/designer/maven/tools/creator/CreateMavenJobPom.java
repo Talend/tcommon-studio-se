@@ -450,7 +450,7 @@ public class CreateMavenJobPom extends AbstractMavenProcessorPom {
         if (codeProject == null) {
             return;
         }
-        Property property = codeProject.getPropery();
+        Property property = codeProject.getPropery() != null ? codeProject.getPropery() : processor.getProperty();
         if (property == null) {
             return;
         }
@@ -803,6 +803,9 @@ public class CreateMavenJobPom extends AbstractMavenProcessorPom {
             return;
         }
         Node dependencySetsNode = document.getElementsByTagName("dependencySets").item(0);
+        if (dependencySetsNode == null) {
+            return;
+        }
         Node dependencySetNode = document.createElement("dependencySet");
         dependencySetsNode.appendChild(dependencySetNode);
 

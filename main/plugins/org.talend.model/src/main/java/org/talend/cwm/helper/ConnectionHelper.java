@@ -44,7 +44,6 @@ import org.talend.cwm.softwaredeployment.TdSoftwareSystem;
 import org.talend.cwm.xml.TdXmlElementType;
 import org.talend.cwm.xml.TdXmlSchema;
 import org.talend.utils.security.CryptoHelper;
-import org.talend.utils.sql.ConnectionUtils;
 
 import orgomg.cwm.foundation.softwaredeployment.Component;
 import orgomg.cwm.foundation.softwaredeployment.DataManager;
@@ -924,7 +923,7 @@ public class ConnectionHelper {
         DatabaseConnection dbConn = SwitchHelpers.DATABASECONNECTION_SWITCH.doSwitch(connection);
         if (dbConn != null) {
             String databaseType = dbConn.getDatabaseType() == null ? "" : dbConn.getDatabaseType(); //$NON-NLS-1$
-            return "Redshift".equalsIgnoreCase(databaseType); //$NON-NLS-1$
+            return databaseType.startsWith("Redshift"); //$NON-NLS-1$
         }
         return false;
     }

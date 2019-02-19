@@ -42,6 +42,7 @@ import org.talend.core.database.EDatabase4DriverClassName;
 import org.talend.core.database.EDatabaseTypeName;
 import org.talend.core.database.conn.version.EDatabaseVersion4Drivers;
 import org.talend.core.model.metadata.IMetadataConnection;
+import org.talend.core.model.metadata.MetadataToolHelper;
 import org.talend.core.model.metadata.builder.ConvertionHelper;
 import org.talend.core.model.metadata.builder.MetadataConnection;
 import org.talend.core.model.metadata.builder.connection.Connection;
@@ -1326,6 +1327,24 @@ public class MetadataConnectionUtils {
             }
         }
         return columnTypeName;
+    }
+    
+    public static String getDBType(String typeName, String mappingID){
+        if(typeName == null){
+            return typeName;
+        }
+        typeName = typeName.toUpperCase().trim();
+        typeName = ManagementTextUtils.filterSpecialChar(typeName);
+        if (typeName.startsWith("TIMESTAMP(")) { //$NON-NLS-1$
+            typeName = "TIMESTAMP"; //$NON-NLS-1$
+        }
+        typeName = MetadataToolHelper.validateValueForDBType(typeName);
+        if("snowflake_id".equals(mappingID)){ //$NON-NLS-1$
+            if(MetadataConnectionUtils.getSnowflakeDBTypeMap().containsKey(typeName)){
+                typeName = getSnowflakeDBTypeMap().get(typeName);
+            }
+        }
+        return typeName;
     }
 
 }
