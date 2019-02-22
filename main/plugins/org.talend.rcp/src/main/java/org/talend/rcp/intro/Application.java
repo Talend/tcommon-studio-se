@@ -97,10 +97,12 @@ public class Application implements IApplication {
         try {
             // TUP-5816 don't put any code ahead of this part unless you make sure it won't trigger workspace
             // initialization.
-            Shell shell = new Shell(display, SWT.ON_TOP);
+            Shell shell = Display.getDefault().getActiveShell();
             Object instanceLocationCheck = acquireWorkspaceLock(shell);
             if (instanceLocationCheck != null) {// no workspace selected so return.
-                shell.dispose();
+                if (shell != null) {
+                    shell.dispose();
+                }
                 return instanceLocationCheck;
             }
 
@@ -156,7 +158,8 @@ public class Application implements IApplication {
                     final String installedMessages = patchComponent.getInstalledMessages();
                     if (installedMessages != null) {
                         log.log(Level.INFO, installedMessages);
-                        MessageDialog.openInformation(new Shell(), "Installing Patches", installedMessages);
+                        MessageDialog.openInformation(Display.getDefault().getActiveShell(), "Installing Patches",
+                                installedMessages);
                     }
                     if (patchComponent.needRelaunch()) {
                         needRelaunch = true;
@@ -176,7 +179,8 @@ public class Application implements IApplication {
                         final String installedMessages = installComponent.getInstalledMessages();
                         if (installedMessages != null) {
                             log.log(Level.INFO, installedMessages);
-                            MessageDialog.openInformation(new Shell(), "Installing Components", installedMessages);
+                            MessageDialog.openInformation(Display.getDefault().getActiveShell(), "Installing Components",
+                                    installedMessages);
                         }
                         if (installComponent.needRelaunch()) {
                             needRelaunch = true;

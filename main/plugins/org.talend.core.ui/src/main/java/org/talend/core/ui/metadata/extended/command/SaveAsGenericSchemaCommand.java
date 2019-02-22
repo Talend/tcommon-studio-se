@@ -18,9 +18,9 @@ import org.eclipse.core.runtime.IPath;
 import org.eclipse.core.runtime.Path;
 import org.eclipse.gef.commands.Command;
 import org.eclipse.jface.wizard.WizardDialog;
-import org.eclipse.swt.widgets.Shell;
 import org.eclipse.ui.PlatformUI;
 import org.talend.commons.exception.PersistenceException;
+import org.talend.commons.ui.gmf.util.DisplayUtils;
 import org.talend.commons.ui.swt.extended.table.ExtendedTableModel;
 import org.talend.core.model.metadata.IMetadataColumn;
 import org.talend.core.model.metadata.IMetadataTable;
@@ -43,6 +43,7 @@ import org.talend.cwm.helper.PackageHelper;
 import org.talend.repository.model.IMetadataService;
 import org.talend.repository.model.IProxyRepositoryFactory;
 import org.talend.repository.model.RepositoryNode;
+
 import orgomg.cwm.objectmodel.core.Package;
 
 /**
@@ -92,8 +93,8 @@ public class SaveAsGenericSchemaCommand extends Command {
             if (metadataService == null) {
                 return;
             }
-            WizardDialog dialog = metadataService.getGenericSchemaWizardDialog(new Shell(), PlatformUI.getWorkbench(), false,
-                    null, null, true);
+            WizardDialog dialog = metadataService.getGenericSchemaWizardDialog(DisplayUtils.getDefaultShell(false),
+                    PlatformUI.getWorkbench(), false, null, null, true);
             dialog.setPageSize(WIZARD_WIDTH, WIZARD_HEIGHT);
             dialog.create();
             Property property = null;

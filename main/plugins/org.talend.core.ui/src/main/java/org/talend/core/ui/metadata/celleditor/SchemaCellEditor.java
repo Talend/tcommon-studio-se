@@ -25,8 +25,8 @@ import org.eclipse.jface.window.Window;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
-import org.eclipse.swt.widgets.Shell;
 import org.eclipse.swt.widgets.Table;
+import org.talend.commons.ui.gmf.util.DisplayUtils;
 import org.talend.commons.ui.swt.advanced.dataeditor.AbstractDataTableEditorView;
 import org.talend.commons.ui.swt.extended.table.AbstractExtendedTableViewer;
 import org.talend.commons.ui.swt.tableviewer.TableViewerCreator;
@@ -283,8 +283,8 @@ public class SchemaCellEditor extends DialogCellEditor {
                         originalCurrentOutTable = new MetadataTable();
                         originalCurrentOutTable.setListColumns(listColumns);
                         // 2.open metadataDialog,set finalOutTable
-                        metaDialog = new MetadataDialog(new Shell(), originalInputTable, inputNode, originalCurrentOutTable,
-                                outputNode, tableEditorView.getTableViewerCreator().getCommandStack());
+                        metaDialog = new MetadataDialog(DisplayUtils.getDefaultShell(false), originalInputTable, inputNode,
+                                originalCurrentOutTable, outputNode, tableEditorView.getTableViewerCreator().getCommandStack());
                         if (metaDialog.open() == Window.OK) {
                             finalInputTable = metaDialog.getInputMetaData().clone();
                             finalOutTable = metaDialog.getOutputMetaData().clone();
@@ -660,8 +660,9 @@ public class SchemaCellEditor extends DialogCellEditor {
                             // originalCurrentOutTable = new MetadataTable();
                             // originalCurrentOutTable.setListColumns(listColumns);
                             // 2.open metadataDialog,set finalOutTable
-                            MetadataDialog metaDialog = new MetadataDialog(new Shell(), originalInputTable, inputNode,
-                                    tableToEdit.clone(), node, tableEditorView.getTableViewerCreator().getCommandStack());
+                            MetadataDialog metaDialog = new MetadataDialog(DisplayUtils.getDefaultShell(false),
+                                    originalInputTable, inputNode, tableToEdit.clone(), node,
+                                    tableEditorView.getTableViewerCreator().getCommandStack());
                             if (metaDialog.open() == Window.OK) {
                                 finalInputTable = metaDialog.getInputMetaData().clone();
                                 finalOutTable = metaDialog.getOutputMetaData().clone();
@@ -712,8 +713,9 @@ public class SchemaCellEditor extends DialogCellEditor {
                             // originalCurrentOutTable = new MetadataTable();
                             // originalCurrentOutTable.setListColumns(listColumns);
                             // 2.open metadataDialog,set finalOutTable
-                            MetadataDialog metaDialog = new MetadataDialog(new Shell(), originalInputTable, inputNode,
-                                    tableToEdit.clone(), node, tableEditorView.getTableViewerCreator().getCommandStack());
+                            MetadataDialog metaDialog = new MetadataDialog(DisplayUtils.getDefaultShell(false),
+                                    originalInputTable, inputNode, tableToEdit.clone(), node,
+                                    tableEditorView.getTableViewerCreator().getCommandStack());
                             if (metaDialog.open() == Window.OK) {
                                 finalInputTable = metaDialog.getInputMetaData().clone();
                                 finalOutTable = metaDialog.getOutputMetaData().clone();

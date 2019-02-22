@@ -56,6 +56,10 @@ public class DisplayUtils {
      * @since 1.2
      */
     public static Shell getDefaultShell() {
+        return getDefaultShell(false);
+    }
+
+    public static Shell getDefaultShell(boolean createIfNotExist) {
         Shell shell = null;
 
         try {
@@ -67,7 +71,11 @@ public class DisplayUtils {
         try {
             if (shell == null) {
                 if (!PlatformUI.isWorkbenchRunning()) {
-                    return new Shell();
+                    if (createIfNotExist) {
+                        return new Shell();
+                    } else {
+                        return null;
+                    }
                 }
                 IWorkbenchWindow activeWindow = PlatformUI.getWorkbench().getActiveWorkbenchWindow();
                 if (activeWindow != null) {
@@ -81,7 +89,11 @@ public class DisplayUtils {
 
         if (shell == null) {
             if (!PlatformUI.isWorkbenchRunning()) {
-                return new Shell();
+                if (createIfNotExist) {
+                    return new Shell();
+                } else {
+                    return null;
+                }
             }
             IWorkbenchWindow[] windows = PlatformUI.getWorkbench().getWorkbenchWindows();
             for (int i = 0; shell == null && i < windows.length; i++) {

@@ -30,6 +30,7 @@ import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.MessageBox;
 import org.eclipse.swt.widgets.Shell;
+import org.talend.commons.ui.gmf.util.DisplayUtils;
 import org.talend.commons.ui.runtime.image.ECoreImage;
 import org.talend.commons.ui.runtime.image.ImageProvider;
 import org.talend.core.model.context.JobContext;
@@ -170,7 +171,8 @@ public class ContextSetConfigurationDialog extends ObjectSelectionDialog<IContex
 
     private boolean validateContextName(String name) {
         if (name.equals("") || !name.matches(RepositoryConstants.CODE_ITEM_PATTERN)) { //$NON-NLS-1$
-            MessageDialog.openWarning(new Shell(), Messages.getString(Messages.getString("ContextProcessSection.50")), Messages //$NON-NLS-1$
+            MessageDialog.openWarning(DisplayUtils.getDefaultShell(false),
+                    Messages.getString(Messages.getString("ContextProcessSection.50")), Messages //$NON-NLS-1$
                     .getString(Messages.getString("ContextProcessSection.51"))); //$NON-NLS-1$
             return false;
         }
