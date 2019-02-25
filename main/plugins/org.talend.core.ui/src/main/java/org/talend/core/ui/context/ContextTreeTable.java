@@ -129,7 +129,7 @@ public class ContextTreeTable {
 
     private NatTable natTable;
 
-    // for bug TDI-32821锛� use LinkedList to keep the original order of context parameter list.
+    // for bug TDI-32821， use LinkedList to keep the original order of context parameter list.
     private List<ContextTreeNode> treeNodes = new LinkedList<ContextTreeNode>();
 
     private IStructuredSelection currentNatTabSel;
@@ -428,7 +428,6 @@ public class ContextTreeTable {
 
             @Override
             public void selectionChanged(SelectionChangedEvent event) {
-                System.out.println("Current selection: "+ ((IStructuredSelection) event.getSelection()).toString());
                 currentNatTabSel = (IStructuredSelection) event.getSelection();
             }
         });
@@ -717,7 +716,7 @@ public class ContextTreeTable {
 
         private Object treeData;
 
-        private ContextTreeNode parent;
+        private final ContextTreeNode parent;
 
         private final List<ContextTreeNode> children = new ArrayList<ContextTreeNode>();
 
@@ -737,10 +736,6 @@ public class ContextTreeTable {
             this.name = name;
         }
 
-        public void setParent(ContextTreeNode node) {
-            this.parent = node;
-        }
- 
         public ContextTreeNode getParent() {
             return parent;
         }
