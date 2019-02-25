@@ -440,7 +440,7 @@ public class ContextTreeTable {
                     StructuredSelection selection = (StructuredSelection) selectionProvider.getSelection();
                     Object element = selection.getFirstElement();
                     if (element instanceof ContextTreeNode && natTable.getParent().getParent().getParent().getClass().getName()
-                            .equals("org.talend.designer.core.ui.views.contexts.ContextViewComposite")) {
+                            .equals("org.talend.designer.core.ui.views.contexts.ContextViewComposite")) { //$NON-NLS-1$
                         try {
                             updateRelatedView();
                         } catch (Exception e) {
