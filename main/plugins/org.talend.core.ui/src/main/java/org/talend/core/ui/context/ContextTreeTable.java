@@ -452,7 +452,7 @@ public class ContextTreeTable {
         });
     }
 
-    protected void updateRelatedView() {
+    private void updateRelatedView() {
         IDesignerCoreService designerCoreService = CoreRuntimePlugin.getInstance().getDesignerCoreService();
         if (designerCoreService != null) {
             designerCoreService.switchToCurContextsView();
