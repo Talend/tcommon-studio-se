@@ -214,7 +214,9 @@ public class Application implements IApplication {
                     return EXIT_OK;
                 }
             } finally {
-                shell.dispose();
+                if (shell != null) {
+                    shell.dispose();
+                }
             }
 
             // if some commands are set to relaunch (not restart) the eclipse then relaunch it
