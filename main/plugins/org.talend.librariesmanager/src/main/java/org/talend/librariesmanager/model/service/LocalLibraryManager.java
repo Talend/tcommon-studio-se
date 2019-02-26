@@ -916,6 +916,9 @@ public class LocalLibraryManager implements ILibraryManagerService, IChangedLibr
         if (ModuleStatusProvider.getDeployStatus(mvnUriStatusKey) == ELibraryInstallStatus.NOT_DEPLOYED) {
             return null;
         }
+        if(mvnUriStatusKey == null){
+            return null;
+        }
         // then try to resolve locally
         String localMavenUri = mvnUriStatusKey.replace("mvn:", "mvn:" + MavenConstants.LOCAL_RESOLUTION_URL + "!"); //$NON-NLS-1$ //$NON-NLS-2$
         try {
