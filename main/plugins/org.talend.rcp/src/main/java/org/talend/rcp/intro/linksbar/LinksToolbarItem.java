@@ -43,19 +43,24 @@ public class LinksToolbarItem extends ContributionItem {
 
     private ToolItem toolitem;
 
-    private static final String LEARN_URL = "<a href=\"https://help.talend.com\">Learn</a>"; //$NON-NLS-1$
+    public static final String LEARN_URL = "<a href=\"https://help.talend.com\">Learn</a>"; //$NON-NLS-1$
+    public static final String LEARN_ORIG_URL="https://help.talend.com";
 
-    private static final String ASK_URL = "<a href=\"https://community.talend.com/\">Ask</a>"; //$NON-NLS-1$
+    public static final String ASK_URL = "<a href=\"https://community.talend.com/\">Ask</a>"; //$NON-NLS-1$
+    public static final String ASK_ORIG_URL ="https://community.talend.com";
 
     // private static final String SHARE_URL = "<a href=\"http://www.talendforge.org/exchange/\">Share</a>"; //$NON-NLS-1$
 
-    private static final String EXCHANGE_URL = "<a href=\"http://www.talendforge.org/exchange/index.php\">Exchange</a>"; //$NON-NLS-1$
+    public static final String EXCHANGE_URL = "<a href=\"http://www.talendforge.org/exchange/index.php\">Exchange</a>"; //$NON-NLS-1$
+    public static final String EXCHANGE_ORIG_URL ="http://www.talendforge.org/exchange/index.php";
 
-    private static final String VIDEOS_URL = "<a href=\"https://www.talendforge.org/tutorials\">Videos</a>"; //$NON-NLS-1$
-
-    private static final String CLOUD_URL = "<a href=\"https://iam.integrationcloud.talend.com/idp/trial-registration?utm_medium=studio&utm_source=toolbar&utm_campaign=dynamic_acronym\">Cloud</a>"; //$NON-NLS-1$
-
-    private static ImageRegistry registry = new ImageRegistry();
+    public static final String VIDEOS_URL = "<a href=\"https://www.talendforge.org/tutorials\">Videos</a>"; //$NON-NLS-1$
+    public static final String VIDEOS_ORIG_URL = "https://www.talendforge.org/tutorials";
+    
+    public static final String CLOUD_URL = "<a href=\"https://iam.integrationcloud.talend.com/idp/trial-registration?utm_medium=studio&utm_source=toolbar&utm_campaign=dynamic_acronym\">Cloud</a>"; //$NON-NLS-1$
+    public static final String CLOUD_ORIG_URL="https://iam.integrationcloud.talend.com/idp/trial-registration?utm_medium=studio&utm_source=toolbar&utm_campaign=dynamic_acronym";
+    
+    protected static ImageRegistry registry = new ImageRegistry();
 
     public static final String COOLITEM_LINKS_ID = Activator.PLUGIN_ID + ".CoolItemLinks"; //$NON-NLS-1$
 
@@ -230,7 +235,7 @@ public class LinksToolbarItem extends ContributionItem {
         super.dispose();
     }
 
-    private void openBrower(String url) {
+    protected void openBrower(String url) {
         Program.launch(url);
     }
 

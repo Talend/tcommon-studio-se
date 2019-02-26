@@ -252,10 +252,6 @@ public class ActionBarBuildHelper implements IActionBarHelper {
         IToolBarManager toolBar = new ToolBarManager(SWT.FLAT | SWT.RIGHT);
         coolBar.add(new ToolBarContributionItem(toolBar, Messages.getString("ApplicationActionBarAdvisor.save"))); //$NON-NLS-1$
         toolBar.add(ActionFactory.SAVE.create(window));
-
-        IToolBarManager toolBarManager = new ToolBarManager(SWT.FLAT | SWT.RIGHT);
-        toolBarManager.add(new LinksToolbarItem());
-        coolBar.add(new ToolBarContributionItem(toolBarManager, LinksToolbarItem.COOLITEM_LINKS_ID));
     }
 
     /**
