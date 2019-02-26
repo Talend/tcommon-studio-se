@@ -70,10 +70,11 @@ public class ApplicationActionBarAdvisor extends ActionBarAdvisor {
         helper.setActionBarConfigurer(configurer);
     }
 
-    public static final IExtensionPointLimiter GLOBAL_ACTIONS = new ExtensionPointLimiterImpl("org.talend.core.global_actions", //$NON-NLS-1$
-            "GlobalAction"); //$NON-NLS-1$
+	public static final IExtensionPointLimiter GLOBAL_ACTIONS = new ExtensionPointLimiterImpl(
+			"org.talend.core.global_actions", //$NON-NLS-1$
+			"GlobalAction"); //$NON-NLS-1$
 
-    @Override
+	@Override
 	protected void makeActions(final IWorkbenchWindow myWindow) {
 		this.window = myWindow;
 		helper.setWindow(window);
@@ -132,7 +133,7 @@ public class ApplicationActionBarAdvisor extends ActionBarAdvisor {
      * 
      * @see org.eclipse.ui.application.ActionBarAdvisor#fillCoolBar(org.eclipse.jface. action.ICoolBarManager)
      */
-    @Override
+	@Override
 	protected void fillCoolBar(ICoolBarManager coolBar) {
 		helper.fillCoolBar(coolBar);
 		IToolBarManager toolBarManager = new ToolBarManager(SWT.FLAT | SWT.RIGHT);
