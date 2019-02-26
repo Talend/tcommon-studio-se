@@ -22,10 +22,13 @@ public class ImageAction extends Action {
 
 	private final IWorkbenchWindow window;
 	private String url;
-
+	public static final String ACTION_ID ="org.talend.rcp.intro.ImageAction";
 	public ImageAction(IWorkbenchWindow window, String imagePath, String url, String tipText) {
 		this.window = window;
 		this.url = url;
+		setId(ACTION_ID);
+        // Associate the action with a pre-defined command, to allow key bindings.
+		setActionDefinitionId(ACTION_ID);
 		ImageDescriptor imageDescriptorFromPlugin = AbstractUIPlugin.imageDescriptorFromPlugin("org.talend.rcp",
 				imagePath);
 		setImageDescriptor(imageDescriptorFromPlugin);
