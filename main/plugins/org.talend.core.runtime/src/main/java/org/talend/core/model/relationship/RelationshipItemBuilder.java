@@ -23,6 +23,7 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import java.util.concurrent.ConcurrentHashMap;
 
 import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Level;
@@ -128,8 +129,6 @@ public class RelationshipItemBuilder {
     private Map<Relation, Set<Relation>> currentProjectItemsRelations;
 
     private Map<Relation, Set<Relation>> referencesItemsRelations;
-
-    private Map<String, String> hadoopItemReferences = new HashMap<String, String>();
 
     private boolean loaded = false;
 
@@ -670,8 +669,8 @@ public class RelationshipItemBuilder {
             return;
         }
         loading = true;
-        currentProjectItemsRelations = new HashMap<Relation, Set<Relation>>();
-        referencesItemsRelations = new HashMap<Relation, Set<Relation>>();
+        currentProjectItemsRelations = new ConcurrentHashMap<Relation, Set<Relation>>();
+        referencesItemsRelations = new ConcurrentHashMap<Relation, Set<Relation>>();
 
         loadRelations(currentProjectItemsRelations, getAimProject());
 
@@ -1126,10 +1125,11 @@ public class RelationshipItemBuilder {
             Map<Relation, Set<Relation>> relations = handler.find(item);
             mergeRelationship(itemRelations, relations);
         }
-
-        if (oldProjectRelations != null) {
-            // check if there is any changes on the relations.
-            Set<Relation> newProjectRelations = currentProjectItemsRelations.get(relation);
+        // check if there is any changes on the relations.
+        Set<Relation> newProjectRelations = currentProjectItemsRelations.get(relation);
+        if (oldProjectRelations == null && newProjectRelations == null) {
+            relationsModified = false;
+        } else if (oldProjectRelations != null) {
             if (oldProjectRelations.size() == newProjectRelations.size()) {
                 relationsModified = false;
                 for (Relation newRelation : newProjectRelations) {

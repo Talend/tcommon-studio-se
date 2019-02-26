@@ -19,8 +19,7 @@ Require-Bundle: org.apache.log4j,
  org.eclipse.ui.intro,
  org.eclipse.ui.workbench,
  org.talend.libraries.jackson,
- org.w3c.css.sac,
- org.talend.utils
+ org.w3c.css.sac
 Bundle-ActivationPolicy: lazy
 Export-Package: org.talend.presentation.onboarding.interfaces,
  org.talend.presentation.onboarding.ui.managers,
