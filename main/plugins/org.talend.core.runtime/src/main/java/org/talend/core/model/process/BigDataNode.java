@@ -354,11 +354,11 @@ public class BigDataNode extends AbstractNode implements IBigDataNode {
 
     @Override
     public void loadDatasetConditions(){
-        
+        // BigDataNode does not do anything related to Dataset, only anabled from SparkNode
     }
     
     @Override
     public void processDatasetConditions(){
-        
+        // BigDataNode does not do anything related to Dataset, only anabled from SparkNode
     }
 }
