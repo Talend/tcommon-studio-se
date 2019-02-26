@@ -35,7 +35,7 @@ public class BigDataNode extends AbstractNode implements IBigDataNode {
 
     protected String inputType = null;
 
-    protected Map<String, List<IMetadataColumn>> keyList = new java.util.HashMap<String, List<IMetadataColumn>>();
+    protected Map<String, List<IMetadataColumn>> keyList = new HashMap<String, List<IMetadataColumn>>();
 
     /**
      * Default constructor for the BigDataNode
