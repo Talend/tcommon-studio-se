@@ -17,22 +17,25 @@ import org.talend.core.service.ITutorialsService;
 import org.talend.core.ui.branding.IBrandingService;
 import org.talend.rcp.i18n.Messages;
 
-public class LinkToolbarLabel extends LinksToolbarItem{
+public class LinkToolbarLabel extends LinksToolbarItem {
 	private String url;
 	private String tipText;
-	public LinkToolbarLabel(String url,String tipText) {
+
+	public LinkToolbarLabel(String url, String tipText) {
 		this.url = url;
 		this.tipText = tipText;
-	
+
 	}
+
+	@Override
 	protected Control createControl(Composite parent) {
 		final Composite composite = new Composite(parent, SWT.NONE);
 
 		composite.setLayout(new FormLayout());
-       
-        Link ask = new Link(composite, SWT.NONE);
-        FormData formData = new FormData();
-        formData.bottom = new FormAttachment(90);
+
+		Link ask = new Link(composite, SWT.NONE);
+		FormData formData = new FormData();
+		formData.bottom = new FormAttachment(90);
 		ask.setLayoutData(formData);
 		if (!PluginChecker.isTIS() && StringUtils.equals(LinksToolbarItem.CLOUD_URL, url)
 				&& GlobalServiceRegister.getDefault().isServiceRegistered(IBrandingService.class)) {
@@ -46,7 +49,7 @@ public class LinkToolbarLabel extends LinksToolbarItem{
 
 		ask.addListener(SWT.Selection, new Listener() {
 
-            @Override
+			@Override
 			public void handleEvent(Event event) {
 
 				if (StringUtils.contains(EXCHANGE_URL, event.text)) {
@@ -56,12 +59,12 @@ public class LinkToolbarLabel extends LinksToolbarItem{
 				} else if (StringUtils.contains(VIDEOS_URL, event.text)) {
 					ITutorialsService service = (ITutorialsService) GlobalServiceRegister.getDefault()
 							.getService(ITutorialsService.class);
-                     service.openTutorialsDialog();
-                }else {
-                	openBrower(event.text);
-                }
-            }
-        });
+					service.openTutorialsDialog();
+				} else {
+					openBrower(event.text);
+				}
+			}
+		});
 		return composite;
 	}
 }

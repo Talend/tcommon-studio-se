@@ -1,4 +1,5 @@
 package org.talend.rcp.intro;
+
 import org.apache.commons.lang.StringUtils;
 import org.eclipse.jface.action.Action;
 import org.eclipse.jface.dialogs.MessageDialog;
@@ -16,7 +17,6 @@ import org.talend.core.service.IExchangeService;
 import org.talend.core.service.ITutorialsService;
 import org.talend.rcp.i18n.Messages;
 import org.talend.rcp.intro.linksbar.LinksToolbarItem;
-
 
 public class ImageAction extends Action {
 
