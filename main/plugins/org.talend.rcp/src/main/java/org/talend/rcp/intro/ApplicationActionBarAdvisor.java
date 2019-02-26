@@ -40,14 +40,14 @@ import org.talend.rcp.intro.linksbar.LinksToolbarItem;
  * 
  */
 public class ApplicationActionBarAdvisor extends ActionBarAdvisor {
-	private ImageAction learnImageAction ;
+	private ImageAction learnImageAction;
 	private ImageAction askImageAction;
 	private ImageAction exchangeImageAction;
 	private ImageAction videoImageAction;
 	private ImageAction cloudImageAction;
-    private IWorkbenchAction introAction;
+	private IWorkbenchAction introAction;
 
-    private IWorkbenchWindow window;
+	private IWorkbenchWindow window;
 
     private final IActionBarConfigurer actionBarConfigurer;
 
@@ -74,27 +74,32 @@ public class ApplicationActionBarAdvisor extends ActionBarAdvisor {
             "GlobalAction"); //$NON-NLS-1$
 
     @Override
-    protected void makeActions(final IWorkbenchWindow myWindow) {
-        this.window = myWindow;
-        helper.setWindow(window);
-        introAction = ActionFactory.INTRO.create(myWindow);
-        register(introAction);
-        CloseIntroAction action = new CloseIntroAction();
+	protected void makeActions(final IWorkbenchWindow myWindow) {
+		this.window = myWindow;
+		helper.setWindow(window);
+		introAction = ActionFactory.INTRO.create(myWindow);
+		register(introAction);
+		CloseIntroAction action = new CloseIntroAction();
 		register(action);
-		learnImageAction = new ImageAction(myWindow,"icons/demo.png",LinksToolbarItem.LEARN_ORIG_URL,"LinksToolbarItem_Learn");
+		learnImageAction = new ImageAction(myWindow, "icons/demo.png", LinksToolbarItem.LEARN_ORIG_URL,
+				"LinksToolbarItem_Learn");
 		register(learnImageAction);
-		askImageAction = new ImageAction(myWindow,"icons/irc_protocol.png",LinksToolbarItem.ASK_ORIG_URL,"LinksToolbarItem_7");
+		askImageAction = new ImageAction(myWindow, "icons/irc_protocol.png", LinksToolbarItem.ASK_ORIG_URL,
+				"LinksToolbarItem_7");
 		register(askImageAction);
-		exchangeImageAction = new ImageAction(myWindow,"icons/exchange_view.png",LinksToolbarItem.EXCHANGE_ORIG_URL,"LinksToolbarItem_exchange");
+		exchangeImageAction = new ImageAction(myWindow, "icons/exchange_view.png", LinksToolbarItem.EXCHANGE_ORIG_URL,
+				"LinksToolbarItem_exchange");
 		register(exchangeImageAction);
-		videoImageAction = new ImageAction(myWindow,"icons/videos_icon16x16.png",LinksToolbarItem.VIDEOS_ORIG_URL,"LinksToolbarItem_videos");
+		videoImageAction = new ImageAction(myWindow, "icons/videos_icon16x16.png", LinksToolbarItem.VIDEOS_ORIG_URL,
+				"LinksToolbarItem_videos");
 		register(videoImageAction);
 		if (!PluginChecker.isTIS()) {
-			cloudImageAction = new ImageAction(myWindow,"icons/cloud.png",LinksToolbarItem.CLOUD_ORIG_URL,"LinksToolbarItem_cloud");
+			cloudImageAction = new ImageAction(myWindow, "icons/cloud.png", LinksToolbarItem.CLOUD_ORIG_URL,
+					"LinksToolbarItem_cloud");
 			register(cloudImageAction);
 		}
 		registerGlobalActions();
-    }
+	}
 
     private void registerGlobalActions() {
         actionBarConfigurer.registerGlobalAction(ActionFactory.SAVE.create(window));
