@@ -434,9 +434,9 @@ public class ModuleNeeded {
         if (this.getModuleLocaion() != null) {
             hashCode *= this.getModuleLocaion().hashCode();
         }
-
-        hashCode *= this.getDefaultMavenURI().hashCode();
-
+        if(this.getDefaultMavenURI() != null){
+            hashCode *= this.getDefaultMavenURI().hashCode();
+        }
         return hashCode;
     }
 
@@ -519,8 +519,16 @@ public class ModuleNeeded {
         }
 
         // maven uri
-        if (!other.getDefaultMavenURI().equals(this.getDefaultMavenURI())) {
-            return false;
+        if (other.getDefaultMavenURI() == null) {
+            if (this.getDefaultMavenURI() != null) {
+                return false;
+            }
+        } else {
+            if (this.getDefaultMavenURI() == null) {
+                return false;
+            } else if (!other.getDefaultMavenURI().equals(this.getDefaultMavenURI())) {
+                return false;
+            }
         }
 
         return true;
