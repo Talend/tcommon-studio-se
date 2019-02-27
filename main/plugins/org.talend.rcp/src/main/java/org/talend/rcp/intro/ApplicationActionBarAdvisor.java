@@ -153,7 +153,7 @@ public class ApplicationActionBarAdvisor extends ActionBarAdvisor {
             toolBarManager.add(new LinkToolbarLabel(LinksToolbarItem.CLOUD_URL, "LinksToolbarItem_cloud"));
         }
         coolBar.add(new ToolBarContributionItem(toolBarManager, LinksToolbarItem.COOLITEM_LINKS_ID));
-	}
+    }
 
     public ActionBarBuildHelper getHelper() {
         return this.helper;
