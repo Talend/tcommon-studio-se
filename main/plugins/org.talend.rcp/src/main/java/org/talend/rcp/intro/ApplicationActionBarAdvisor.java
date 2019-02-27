@@ -40,20 +40,22 @@ import org.talend.rcp.intro.linksbar.LinksToolbarItem;
  * 
  */
 public class ApplicationActionBarAdvisor extends ActionBarAdvisor {
-	private ImageAction learnImageAction;
-	private ImageAction askImageAction;
-	private ImageAction exchangeImageAction;
-	private ImageAction videoImageAction;
-	private ImageAction cloudImageAction;
-	private IWorkbenchAction introAction;
 
-	private IWorkbenchWindow window;
+    private IWorkbenchAction introAction;
+
+    private IWorkbenchWindow window;
 
     private final IActionBarConfigurer actionBarConfigurer;
 
     private IBrandingService service = (IBrandingService) GlobalServiceRegister.getDefault().getService(IBrandingService.class);
 
     ActionBarBuildHelper helper;
+    
+    private ImageAction learnImageAction;
+	private ImageAction askImageAction;
+	private ImageAction exchangeImageAction;
+	private ImageAction videoImageAction;
+	private ImageAction cloudImageAction;
 
     public ApplicationActionBarAdvisor(IActionBarConfigurer configurer) {
         super(configurer);
@@ -70,19 +72,18 @@ public class ApplicationActionBarAdvisor extends ActionBarAdvisor {
         helper.setActionBarConfigurer(configurer);
     }
 
-	public static final IExtensionPointLimiter GLOBAL_ACTIONS = new ExtensionPointLimiterImpl(
-			"org.talend.core.global_actions", //$NON-NLS-1$
-			"GlobalAction"); //$NON-NLS-1$
+    public static final IExtensionPointLimiter GLOBAL_ACTIONS = new ExtensionPointLimiterImpl("org.talend.core.global_actions", //$NON-NLS-1$
+            "GlobalAction"); //$NON-NLS-1$
 
-	@Override
-	protected void makeActions(final IWorkbenchWindow myWindow) {
-		this.window = myWindow;
-		helper.setWindow(window);
-		introAction = ActionFactory.INTRO.create(myWindow);
-		register(introAction);
-		CloseIntroAction action = new CloseIntroAction();
-		register(action);
-		learnImageAction = new ImageAction(myWindow, "icons/demo.png", LinksToolbarItem.LEARN_ORIG_URL,
+    @Override
+    protected void makeActions(final IWorkbenchWindow myWindow) {
+        this.window = myWindow;
+        helper.setWindow(window);
+        introAction = ActionFactory.INTRO.create(myWindow);
+        register(introAction);
+        CloseIntroAction action = new CloseIntroAction();
+        register(action);
+        learnImageAction = new ImageAction(myWindow, "icons/demo.png", LinksToolbarItem.LEARN_ORIG_URL,
 				"LinksToolbarItem_Learn");
 		register(learnImageAction);
 		askImageAction = new ImageAction(myWindow, "icons/irc_protocol.png", LinksToolbarItem.ASK_ORIG_URL,
@@ -99,8 +100,8 @@ public class ApplicationActionBarAdvisor extends ActionBarAdvisor {
 					"LinksToolbarItem_cloud");
 			register(cloudImageAction);
 		}
-		registerGlobalActions();
-	}
+        registerGlobalActions();
+    }
 
     private void registerGlobalActions() {
         actionBarConfigurer.registerGlobalAction(ActionFactory.SAVE.create(window));
@@ -133,10 +134,10 @@ public class ApplicationActionBarAdvisor extends ActionBarAdvisor {
      * 
      * @see org.eclipse.ui.application.ActionBarAdvisor#fillCoolBar(org.eclipse.jface. action.ICoolBarManager)
      */
-	@Override
-	protected void fillCoolBar(ICoolBarManager coolBar) {
-		helper.fillCoolBar(coolBar);
-		IToolBarManager toolBarManager = new ToolBarManager(SWT.FLAT | SWT.RIGHT);
+    @Override
+    protected void fillCoolBar(ICoolBarManager coolBar) {
+        helper.fillCoolBar(coolBar);
+        IToolBarManager toolBarManager = new ToolBarManager(SWT.FLAT | SWT.RIGHT);
 		toolBarManager.add(learnImageAction);
 		toolBarManager.add(new LinkToolbarLabel(LinksToolbarItem.LEARN_URL, "LinksToolbarItem_Learn"));
 		toolBarManager.add(askImageAction);
@@ -150,7 +151,7 @@ public class ApplicationActionBarAdvisor extends ActionBarAdvisor {
 			toolBarManager.add(new LinkToolbarLabel(LinksToolbarItem.CLOUD_URL, "LinksToolbarItem_cloud"));
 		}
 		coolBar.add(new ToolBarContributionItem(toolBarManager, LinksToolbarItem.COOLITEM_LINKS_ID));
-	}
+    }
 
     public ActionBarBuildHelper getHelper() {
         return this.helper;
