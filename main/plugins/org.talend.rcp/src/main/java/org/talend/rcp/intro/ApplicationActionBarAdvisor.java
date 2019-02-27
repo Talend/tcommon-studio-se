@@ -51,7 +51,7 @@ public class ApplicationActionBarAdvisor extends ActionBarAdvisor {
 
     ActionBarBuildHelper helper;
     
-    private ImageAction learnImageAction;
+	private ImageAction learnImageAction;
 	private ImageAction askImageAction;
 	private ImageAction exchangeImageAction;
 	private ImageAction videoImageAction;
@@ -83,7 +83,7 @@ public class ApplicationActionBarAdvisor extends ActionBarAdvisor {
         register(introAction);
         CloseIntroAction action = new CloseIntroAction();
         register(action);
-        learnImageAction = new ImageAction(myWindow, "icons/demo.png", LinksToolbarItem.LEARN_ORIG_URL,
+		learnImageAction = new ImageAction(myWindow, "icons/demo.png", LinksToolbarItem.LEARN_ORIG_URL,
 				"LinksToolbarItem_Learn");
 		register(learnImageAction);
 		askImageAction = new ImageAction(myWindow, "icons/irc_protocol.png", LinksToolbarItem.ASK_ORIG_URL,
@@ -137,7 +137,7 @@ public class ApplicationActionBarAdvisor extends ActionBarAdvisor {
     @Override
     protected void fillCoolBar(ICoolBarManager coolBar) {
         helper.fillCoolBar(coolBar);
-        IToolBarManager toolBarManager = new ToolBarManager(SWT.FLAT | SWT.RIGHT);
+		IToolBarManager toolBarManager = new ToolBarManager(SWT.FLAT | SWT.RIGHT);
 		toolBarManager.add(learnImageAction);
 		toolBarManager.add(new LinkToolbarLabel(LinksToolbarItem.LEARN_URL, "LinksToolbarItem_Learn"));
 		toolBarManager.add(askImageAction);
@@ -151,7 +151,7 @@ public class ApplicationActionBarAdvisor extends ActionBarAdvisor {
 			toolBarManager.add(new LinkToolbarLabel(LinksToolbarItem.CLOUD_URL, "LinksToolbarItem_cloud"));
 		}
 		coolBar.add(new ToolBarContributionItem(toolBarManager, LinksToolbarItem.COOLITEM_LINKS_ID));
-    }
+	}
 
     public ActionBarBuildHelper getHelper() {
         return this.helper;
