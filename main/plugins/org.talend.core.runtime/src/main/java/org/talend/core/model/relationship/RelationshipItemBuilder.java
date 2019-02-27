@@ -23,6 +23,7 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import java.util.concurrent.ConcurrentHashMap;
 
 import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Level;
@@ -668,8 +669,8 @@ public class RelationshipItemBuilder {
             return;
         }
         loading = true;
-        currentProjectItemsRelations = new HashMap<Relation, Set<Relation>>();
-        referencesItemsRelations = new HashMap<Relation, Set<Relation>>();
+        currentProjectItemsRelations = new ConcurrentHashMap<Relation, Set<Relation>>();
+        referencesItemsRelations = new ConcurrentHashMap<Relation, Set<Relation>>();
 
         loadRelations(currentProjectItemsRelations, getAimProject());
 
