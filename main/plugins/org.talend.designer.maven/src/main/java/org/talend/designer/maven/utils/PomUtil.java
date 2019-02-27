@@ -115,6 +115,12 @@ public class PomUtil {
 
     private static final MavenModelManager MODEL_MANAGER = MavenPlugin.getMavenModelManager();
 
+    private static RelationshipItemBuilder relationshipItemBuilder = RelationshipItemBuilder.getInstance();
+
+    private static ProxyRepositoryFactory repositoryFactory = ProxyRepositoryFactory.getInstance();
+
+    private static Map<String, List<IFolder>> bakJobletFolderCache = new HashMap<>();
+
     public static void savePom(IProgressMonitor monitor, Model model, IFile pomFile) throws Exception {
         if (monitor == null) {
             monitor = new NullProgressMonitor();
@@ -885,12 +891,6 @@ public class PomUtil {
 
     }
 
-    private static RelationshipItemBuilder relationshipItemBuilder = RelationshipItemBuilder.getInstance();
-
-    private static ProxyRepositoryFactory repositoryFactory = ProxyRepositoryFactory.getInstance();
-
-    private static Map<String, List<IFolder>> bakJobletFolderCache = new HashMap<>();
-
     public static void checkJobRelatedJobletDependencies(Property currentJobProperty, Property mainProperty, String itemType,
             Set<String> childJobUrls, Set<Property> itemChecked, IProgressMonitor monitor) throws Exception {
         itemChecked.add(mainProperty);
@@ -948,11 +948,6 @@ public class PomUtil {
 
     }
     
-    private static String getMvnUrlByProperty(Property property) {
-        return MavenUrlHelper.generateMvnUrl(PomIdsHelper.getJobGroupId(property), PomIdsHelper.getJobArtifactId(property),
-                PomIdsHelper.getJobVersion(property), "jar", null);
-    }
-
     private static List<Relation> getAllChildItemRelations(Property property, String itemType) {
         List<Relation> itemsRelatedTo = new ArrayList<Relation>();
         itemsRelatedTo.addAll(relationshipItemBuilder.getItemsChildRelatedTo(property.getId(), property.getVersion(), itemType,
