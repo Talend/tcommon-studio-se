@@ -18,11 +18,11 @@ import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.jface.viewers.StructuredSelection;
 import org.eclipse.jface.viewers.TreeSelection;
 import org.eclipse.jface.viewers.TreeViewer;
-import org.eclipse.swt.widgets.Shell;
 import org.eclipse.ui.actions.ActionFactory;
 import org.talend.commons.exception.BusinessException;
 import org.talend.commons.exception.CommonExceptionHandler;
 import org.talend.commons.runtime.model.repository.ERepositoryStatus;
+import org.talend.commons.ui.gmf.util.DisplayUtils;
 import org.talend.commons.ui.runtime.exception.MessageBoxExceptionHandler;
 import org.talend.commons.ui.runtime.image.EImage;
 import org.talend.commons.ui.runtime.image.ImageProvider;
@@ -116,8 +116,9 @@ public class PasteAction extends AContextualAction {
                         if (copyObjectAction.validateAction((RepositoryNode) currentSource, target)) {
                             copyObjectAction.execute((RepositoryNode) currentSource, target);
                         } else {
-                            MessageDialog.openWarning(new Shell(), Messages.getString("PasteObjectAction.error.title"), Messages //$NON-NLS-1$
-                                    .getString("PasteObjectAction.error.labelAlreadyExists")); //$NON-NLS-1$
+                            MessageDialog.openWarning(DisplayUtils.getDefaultShell(false),
+                                    Messages.getString("PasteObjectAction.error.title"), Messages //$NON-NLS-1$
+                                            .getString("PasteObjectAction.error.labelAlreadyExists")); //$NON-NLS-1$
                         }
                     } catch (BusinessException e) {
                         MessageBoxExceptionHandler.process(e);

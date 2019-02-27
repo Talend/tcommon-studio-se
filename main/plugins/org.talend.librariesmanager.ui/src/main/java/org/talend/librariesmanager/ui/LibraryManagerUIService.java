@@ -21,6 +21,7 @@ import java.util.Set;
 import org.eclipse.jface.dialogs.MessageDialog;
 import org.eclipse.swt.widgets.Shell;
 import org.eclipse.ui.PlatformUI;
+import org.talend.commons.ui.gmf.util.DisplayUtils;
 import org.talend.commons.ui.swt.dialogs.IConfigModuleDialog;
 import org.talend.core.GlobalServiceRegister;
 import org.talend.core.ILibraryManagerService;
@@ -53,8 +54,7 @@ public class LibraryManagerUIService implements ILibraryManagerUIService {
 
             @Override
             public void run() {
-                Shell shell = PlatformUI.getWorkbench().getDisplay().getActiveShell();
-                ModulesInstaller.installModules(new Shell(shell), jarNames);
+                ModulesInstaller.installModules(DisplayUtils.getDefaultShell(false), jarNames);
             }
         });
 
@@ -66,8 +66,7 @@ public class LibraryManagerUIService implements ILibraryManagerUIService {
 
             @Override
             public void run() {
-                Shell shell = PlatformUI.getWorkbench().getDisplay().getActiveShell();
-                ModulesInstaller.installModules(new Shell(shell), requiredModules);
+                ModulesInstaller.installModules(DisplayUtils.getDefaultShell(false), requiredModules);
             }
         });
 
@@ -180,7 +179,7 @@ public class LibraryManagerUIService implements ILibraryManagerUIService {
     public boolean confirmDialog(String originalJarFileName) {
         String mvnUrlForJarName = MavenUrlHelper.generateMvnUrlForJarName(originalJarFileName, true, true);
         return MessageDialog
-                .openQuestion(new Shell(),
+                .openQuestion(DisplayUtils.getDefaultShell(false),
                         Messages.getString("ArtifactsDeployer.uploadJarEncounterMvnRepositroySameName.Title"), //$NON-NLS-1$
                         Messages.getString(
                                 "ArtifactsDeployer.uploadJarEncounterMvnRepositroySameName.MessageContent", originalJarFileName, mvnUrlForJarName));//$NON-NLS-1$

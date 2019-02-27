@@ -28,6 +28,7 @@ import org.eclipse.swt.widgets.Group;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Shell;
 import org.eclipse.swt.widgets.Text;
+import org.talend.commons.ui.gmf.util.DisplayUtils;
 import org.talend.commons.ui.runtime.i18n.Messages;
 
 public class SSLDialog extends Dialog {
@@ -144,15 +145,18 @@ public class SSLDialog extends Dialog {
     @Override
     protected void okPressed() {
         if (keyStoreText.getText().equals("")) {
-            MessageDialog.openError(new Shell(), getShell().getText(), Messages.getString("SSLConfirmDialog.KeyStore")); //$NON-NLS-1$
+            MessageDialog.openError(DisplayUtils.getDefaultShell(false), getShell().getText(),
+                    Messages.getString("SSLConfirmDialog.KeyStore")); //$NON-NLS-1$
             return;
         }
         if (passwordText.getText().equals("")) {
-            MessageDialog.openError(new Shell(), getShell().getText(), Messages.getString("SSLConfirmDialog.TrustStore")); //$NON-NLS-1$
+            MessageDialog.openError(DisplayUtils.getDefaultShell(false), getShell().getText(),
+                    Messages.getString("SSLConfirmDialog.TrustStore")); //$NON-NLS-1$
             return;
         }
         if (trustStoreText.getText().equals("")) {
-            MessageDialog.openError(new Shell(), getShell().getText(), Messages.getString("SSLConfirmDialog.Password")); //$NON-NLS-1$
+            MessageDialog.openError(DisplayUtils.getDefaultShell(false), getShell().getText(),
+                    Messages.getString("SSLConfirmDialog.Password")); //$NON-NLS-1$
             return;
         }
         keyStorePath = keyStoreText.getText();
@@ -191,7 +195,7 @@ public class SSLDialog extends Dialog {
         dialog.setFilterPath("");
         dialog.setText("select keyStore");
         dialog.setFileName("");
-        dialog.setFilterExtensions(new String[] { "*.jks" });// ÉèÖÃÎÄ¼þÀ©Õ¹Ãû
+        dialog.setFilterExtensions(new String[] { "*.jks" });// ï¿½ï¿½ï¿½ï¿½ï¿½Ä¼ï¿½ï¿½ï¿½Õ¹ï¿½ï¿½
         String fileName = dialog.open();//
 
         if (fileName != null) {
@@ -205,7 +209,7 @@ public class SSLDialog extends Dialog {
         dialog.setFilterPath("");
         dialog.setText("select trustStore");
         dialog.setFileName("");
-        dialog.setFilterExtensions(new String[] { "*.jks" });// ÉèÖÃÎÄ¼þÀ©Õ¹Ãû
+        dialog.setFilterExtensions(new String[] { "*.jks" });// ï¿½ï¿½ï¿½ï¿½ï¿½Ä¼ï¿½ï¿½ï¿½Õ¹ï¿½ï¿½
         String fileName = dialog.open();//
         if (fileName != null) {
             trustStoreText.setText(fileName);

@@ -241,4 +241,17 @@ public class MetadataConnectionUtilsTest {
         elementName = MetadataConnectionUtils.getMetadataColumnName(tdXmlElementType);
         assertNull(elementName);
     }
+    
+    @Test
+    public void testGetDBType() {
+        assertTrue("NTEXT".equals(MetadataConnectionUtils.getDBType("ntext", "id_MSSQL")));
+        assertTrue("NVARCHAR".equals(MetadataConnectionUtils.getDBType("nvarchar", "id_MSSQL")));
+        assertTrue("NCHAR".equals(MetadataConnectionUtils.getDBType("nchar", "id_MSSQL")));
+        
+        assertTrue("N_TEXT".equals(MetadataConnectionUtils.getDBType("n*text", "id_MSSQL")));
+        assertTrue("NVAR_CHAR".equals(MetadataConnectionUtils.getDBType("nvar$char", "id_MSSQL")));
+        assertTrue("NCHA_R".equals(MetadataConnectionUtils.getDBType("ncha#r", "id_MSSQL")));
+        
+        assertTrue("TIMESTAMP".equals(MetadataConnectionUtils.getDBType("TIMESTAMP(", "id_MSSQL")));
+    }
 }

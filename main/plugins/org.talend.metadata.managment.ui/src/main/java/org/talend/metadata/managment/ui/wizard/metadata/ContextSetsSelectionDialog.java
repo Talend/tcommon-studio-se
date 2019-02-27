@@ -29,6 +29,7 @@ import org.eclipse.swt.widgets.Shell;
 import org.eclipse.ui.IWorkbenchWindow;
 import org.eclipse.ui.PlatformUI;
 import org.eclipse.ui.dialogs.SelectionDialog;
+import org.talend.commons.ui.gmf.util.DisplayUtils;
 import org.talend.commons.ui.runtime.image.ECoreImage;
 import org.talend.commons.ui.runtime.image.ImageProvider;
 import org.talend.commons.ui.swt.formtools.LabelledCombo;
@@ -129,7 +130,7 @@ public class ContextSetsSelectionDialog extends SelectionDialog {
                         if (activeShell != null) {
                             shells[0] = activeShell;
                         } else {
-                            Shell shell = new Shell();
+                            Shell shell = DisplayUtils.getDefaultShell(false);
                             shells[0] = shell;
                         }
                     }

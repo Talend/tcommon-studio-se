@@ -30,7 +30,7 @@ import org.eclipse.swt.graphics.FontData;
 import org.eclipse.swt.graphics.GC;
 import org.eclipse.swt.graphics.RGB;
 import org.eclipse.swt.widgets.Display;
-import org.eclipse.swt.widgets.Shell;
+import org.talend.commons.ui.gmf.util.DisplayUtils;
 
 /**
  * Figure managing some simple HTML styles. <br/>
@@ -267,7 +267,7 @@ public class SimpleHtmlFigure extends Figure {
         } while (font == null && f != null);
 
         if (font == null) {
-            GC gc = new GC(new Shell());
+            GC gc = new GC(DisplayUtils.getDefaultShell(true));
             font = gc.getFont();
             gc.dispose();
         }
