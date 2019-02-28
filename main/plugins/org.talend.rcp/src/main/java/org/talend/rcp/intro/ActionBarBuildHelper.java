@@ -44,11 +44,11 @@ import org.talend.core.i18n.Messages;
 import org.talend.core.language.ECodeLanguage;
 import org.talend.core.language.LanguageManager;
 import org.talend.core.repository.model.ProxyRepositoryFactory;
-import org.talend.core.ui.IReferencedProjectService;
 import org.talend.core.ui.branding.IActionBarHelper;
 import org.talend.core.ui.branding.IBrandingService;
 import org.talend.core.ui.perspective.PerspectiveMenuManager;
 import org.talend.core.ui.services.IOpenJobScriptActionService;
+import org.talend.rcp.intro.linksbar.LinkToolbarLabel;
 import org.talend.rcp.intro.linksbar.LinksToolbarItem;
 import org.talend.repository.model.IProxyRepositoryFactory;
 import org.talend.repository.ui.actions.toolbar.ProjectSettingsAction;
@@ -252,6 +252,26 @@ public class ActionBarBuildHelper implements IActionBarHelper {
         IToolBarManager toolBar = new ToolBarManager(SWT.FLAT | SWT.RIGHT);
         coolBar.add(new ToolBarContributionItem(toolBar, Messages.getString("ApplicationActionBarAdvisor.save"))); //$NON-NLS-1$
         toolBar.add(ActionFactory.SAVE.create(window));
+
+        IToolBarManager toolBarManager = new ToolBarManager(SWT.FLAT | SWT.RIGHT);
+        toolBarManager
+                .add(new ImageAction(this.window, "icons/demo.png", LinksToolbarItem.LEARN_ORIG_URL, "LinksToolbarItem_Learn"));
+        toolBarManager.add(new LinkToolbarLabel(LinksToolbarItem.LEARN_URL, "LinksToolbarItem_Learn"));
+        toolBarManager
+                .add(new ImageAction(this.window, "icons/irc_protocol.png", LinksToolbarItem.ASK_ORIG_URL, "LinksToolbarItem_7"));
+        toolBarManager.add(new LinkToolbarLabel(LinksToolbarItem.ASK_URL, "LinksToolbarItem_7"));
+        toolBarManager.add(new ImageAction(this.window, "icons/exchange_view.png", LinksToolbarItem.EXCHANGE_ORIG_URL,
+                "LinksToolbarItem_exchange"));
+        toolBarManager.add(new LinkToolbarLabel(LinksToolbarItem.EXCHANGE_URL, "LinksToolbarItem_exchange"));
+        toolBarManager.add(new ImageAction(this.window, "icons/videos_icon16x16.png", LinksToolbarItem.VIDEOS_ORIG_URL,
+                "LinksToolbarItem_videos"));
+        toolBarManager.add(new LinkToolbarLabel(LinksToolbarItem.VIDEOS_URL, "LinksToolbarItem_videos"));
+        if (!PluginChecker.isTIS()) {
+            toolBarManager.add(
+                    new ImageAction(this.window, "icons/cloud.png", LinksToolbarItem.CLOUD_ORIG_URL, "LinksToolbarItem_cloud"));
+            toolBarManager.add(new LinkToolbarLabel(LinksToolbarItem.CLOUD_URL, "LinksToolbarItem_cloud"));
+        }
+        coolBar.add(new ToolBarContributionItem(toolBarManager, LinksToolbarItem.COOLITEM_LINKS_ID));
     }
 
     /**

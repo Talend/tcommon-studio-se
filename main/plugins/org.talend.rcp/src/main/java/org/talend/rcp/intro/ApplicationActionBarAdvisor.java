@@ -15,10 +15,6 @@ package org.talend.rcp.intro;
 import org.apache.commons.lang.IllegalClassException;
 import org.eclipse.jface.action.ICoolBarManager;
 import org.eclipse.jface.action.IMenuManager;
-import org.eclipse.jface.action.IToolBarManager;
-import org.eclipse.jface.action.ToolBarContributionItem;
-import org.eclipse.jface.action.ToolBarManager;
-import org.eclipse.swt.SWT;
 import org.eclipse.ui.IWorkbenchWindow;
 import org.eclipse.ui.actions.ActionFactory;
 import org.eclipse.ui.actions.ActionFactory.IWorkbenchAction;
@@ -27,11 +23,8 @@ import org.eclipse.ui.application.IActionBarConfigurer;
 import org.talend.commons.utils.workbench.extensions.ExtensionPointLimiterImpl;
 import org.talend.commons.utils.workbench.extensions.IExtensionPointLimiter;
 import org.talend.core.GlobalServiceRegister;
-import org.talend.core.PluginChecker;
 import org.talend.core.ui.branding.IBrandingService;
 import org.talend.rcp.i18n.Messages;
-import org.talend.rcp.intro.linksbar.LinkToolbarLabel;
-import org.talend.rcp.intro.linksbar.LinksToolbarItem;
 
 /**
  * DOC ccarbone class global comment. Detailled comment <br/>
@@ -51,16 +44,6 @@ public class ApplicationActionBarAdvisor extends ActionBarAdvisor {
 
     ActionBarBuildHelper helper;
     
-    private ImageAction learnImageAction;
-
-    private ImageAction askImageAction;
-
-    private ImageAction exchangeImageAction;
-
-    private ImageAction videoImageAction;
-
-    private ImageAction cloudImageAction;
-
     public ApplicationActionBarAdvisor(IActionBarConfigurer configurer) {
         super(configurer);
         actionBarConfigurer = configurer;
@@ -87,21 +70,6 @@ public class ApplicationActionBarAdvisor extends ActionBarAdvisor {
         register(introAction);
         CloseIntroAction action = new CloseIntroAction();
         register(action);
-        learnImageAction = new ImageAction(myWindow, "icons/demo.png", LinksToolbarItem.LEARN_ORIG_URL, "LinksToolbarItem_Learn");
-        register(learnImageAction);
-        askImageAction = new ImageAction(myWindow, "icons/irc_protocol.png", LinksToolbarItem.ASK_ORIG_URL, "LinksToolbarItem_7");
-        register(askImageAction);
-        exchangeImageAction = new ImageAction(myWindow, "icons/exchange_view.png", LinksToolbarItem.EXCHANGE_ORIG_URL,
-                "LinksToolbarItem_exchange");
-        register(exchangeImageAction);
-        videoImageAction = new ImageAction(myWindow, "icons/videos_icon16x16.png", LinksToolbarItem.VIDEOS_ORIG_URL,
-                "LinksToolbarItem_videos");
-        register(videoImageAction);
-        if (!PluginChecker.isTIS()) {
-            cloudImageAction = new ImageAction(myWindow, "icons/cloud.png", LinksToolbarItem.CLOUD_ORIG_URL,
-                    "LinksToolbarItem_cloud");
-            register(cloudImageAction);
-        }
         registerGlobalActions();
     }
 
@@ -139,20 +107,6 @@ public class ApplicationActionBarAdvisor extends ActionBarAdvisor {
     @Override
     protected void fillCoolBar(ICoolBarManager coolBar) {
         helper.fillCoolBar(coolBar);
-        IToolBarManager toolBarManager = new ToolBarManager(SWT.FLAT | SWT.RIGHT);
-        toolBarManager.add(learnImageAction);
-        toolBarManager.add(new LinkToolbarLabel(LinksToolbarItem.LEARN_URL, "LinksToolbarItem_Learn"));
-        toolBarManager.add(askImageAction);
-        toolBarManager.add(new LinkToolbarLabel(LinksToolbarItem.ASK_URL, "LinksToolbarItem_7"));
-        toolBarManager.add(exchangeImageAction);
-        toolBarManager.add(new LinkToolbarLabel(LinksToolbarItem.EXCHANGE_URL, "LinksToolbarItem_exchange"));
-        toolBarManager.add(videoImageAction);
-        toolBarManager.add(new LinkToolbarLabel(LinksToolbarItem.VIDEOS_URL, "LinksToolbarItem_videos"));
-        if (!PluginChecker.isTIS()) {
-            toolBarManager.add(cloudImageAction);
-            toolBarManager.add(new LinkToolbarLabel(LinksToolbarItem.CLOUD_URL, "LinksToolbarItem_cloud"));
-        }
-        coolBar.add(new ToolBarContributionItem(toolBarManager, LinksToolbarItem.COOLITEM_LINKS_ID));
     }
 
     public ActionBarBuildHelper getHelper() {

@@ -1,3 +1,15 @@
+// ============================================================================
+//
+// Copyright (C) 2006-2019 Talend Inc. - www.talend.com
+//
+// This source code is available under agreement available at
+// %InstallDIR%\features\org.talend.rcp.branding.%PRODUCTNAME%\%PRODUCTNAME%license.txt
+//
+// You should have received a copy of the agreement
+// along with this program; if not, write to Talend SA
+// 9 rue Pages 92150 Suresnes, France
+//
+// ============================================================================
 package org.talend.rcp.intro.linksbar;
 
 import org.apache.commons.lang.StringUtils;
@@ -8,6 +20,7 @@ import org.eclipse.swt.layout.FormLayout;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Event;
+import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Link;
 import org.eclipse.swt.widgets.Listener;
 import org.talend.core.GlobalServiceRegister;
@@ -35,9 +48,16 @@ public class LinkToolbarLabel extends LinksToolbarItem {
 
         composite.setLayout(new FormLayout());
 
+        Label label = new Label(composite, SWT.NONE);
+        FormData labelData = new FormData();
+        labelData.left = new FormAttachment(0, 0);
+        labelData.top = new FormAttachment(0, 0);
+        labelData.bottom = new FormAttachment(100, 0);
+        label.setLayoutData(labelData);
+
         Link ask = new Link(composite, SWT.NONE);
         FormData formData = new FormData();
-        formData.bottom = new FormAttachment(90);
+        formData.top = new FormAttachment(label, 0, SWT.CENTER);
         ask.setLayoutData(formData);
         if (!PluginChecker.isTIS() && StringUtils.equals(LinksToolbarItem.CLOUD_URL, url)
                 && GlobalServiceRegister.getDefault().isServiceRegistered(IBrandingService.class)) {

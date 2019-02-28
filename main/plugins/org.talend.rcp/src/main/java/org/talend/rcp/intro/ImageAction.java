@@ -1,3 +1,15 @@
+// ============================================================================
+//
+// Copyright (C) 2006-2019 Talend Inc. - www.talend.com
+//
+// This source code is available under agreement available at
+// %InstallDIR%\features\org.talend.rcp.branding.%PRODUCTNAME%\%PRODUCTNAME%license.txt
+//
+// You should have received a copy of the agreement
+// along with this program; if not, write to Talend SA
+// 9 rue Pages 92150 Suresnes, France
+//
+// ============================================================================
 package org.talend.rcp.intro;
 
 import org.apache.commons.lang.StringUtils;
@@ -34,10 +46,10 @@ public class ImageAction extends Action {
     @Override
     public void run() {
         if (window != null) {
-            if (StringUtils.contains(LinksToolbarItem.EXCHANGE_ORIG_URL, url)) {
+            if (StringUtils.equals(LinksToolbarItem.EXCHANGE_ORIG_URL, url)) {
                 IExchangeService service = GlobalServiceRegister.getDefault().getService(IExchangeService.class);
                 service.openExchangeEditor();
-            } else if (StringUtils.contains(LinksToolbarItem.VIDEOS_ORIG_URL, url)) {
+            } else if (StringUtils.equals(LinksToolbarItem.VIDEOS_ORIG_URL, url)) {
                 ITutorialsService service = GlobalServiceRegister.getDefault().getService(ITutorialsService.class);
                 service.openTutorialsDialog();
             } else {
