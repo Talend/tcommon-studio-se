@@ -366,5 +366,12 @@
          id="org.talend.rcp.perspective">
    </perspective>
 </extension>
+<extension
+      point="org.eclipse.ui.commands">
+   <command
+         id="org.talend.rcp.intro.ImageAction"
+         name="name">
+   </command>
+</extension>
 
 </plugin>
