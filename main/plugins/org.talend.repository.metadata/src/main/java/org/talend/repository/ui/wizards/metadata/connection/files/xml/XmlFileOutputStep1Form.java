@@ -331,7 +331,7 @@ public class XmlFileOutputStep1Form extends AbstractXmlFileStepForm {
         }
         EList schemaMetadataColumn = ConnectionHelper.getTables(getConnection()).toArray(new MetadataTable[0])[0].getColumns();
         schemaMetadataColumn.clear();
-        initMetadataTable(rootFoxTreeNodes, schemaMetadataColumn, false, 0);
+        initMetadataTable(rootFoxTreeNodes, schemaMetadataColumn, true, 0);
         updateConnectionProperties(rootFoxTreeNodes.get(0));
     }
 
