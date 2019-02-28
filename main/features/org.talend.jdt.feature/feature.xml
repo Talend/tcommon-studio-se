@@ -30,6 +30,6 @@
     <import plugin="org.hamcrest.core" version="0.0.0" match="greaterOrEqual"/>
     <import plugin="org.junit" version="0.0.0" match="greaterOrEqual"/>
   </requires>
-  <plugin id="org.eclipse.jdt.launching.macosx" os="macosx" download-size="17" install-size="28" version="3.2.300.v20130801-1441" unpack="false"/>
-  <plugin id="org.eclipse.jdt.launching.ui.macosx" os="macosx" download-size="55" install-size="101" version="1.0.300.v20130801-1441" unpack="false"/>
+  <plugin id="org.eclipse.jdt.launching.macosx" os="macosx" download-size="0" install-size="0" version="0.0.0" unpack="false"/>
+  <plugin id="org.eclipse.jdt.launching.ui.macosx" os="macosx" download-size="0" install-size="0" version="0.0.0" unpack="false"/>
 </feature>
