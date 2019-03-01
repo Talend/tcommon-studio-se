@@ -28,7 +28,6 @@ import org.talend.core.PluginChecker;
 import org.talend.core.service.IExchangeService;
 import org.talend.core.service.ITutorialsService;
 import org.talend.core.ui.branding.IBrandingService;
-import org.talend.rcp.i18n.Messages;
 
 public class LinkToolbarLabel extends LinksToolbarItem {
 
@@ -66,7 +65,7 @@ public class LinkToolbarLabel extends LinksToolbarItem {
             this.url = this.url.replace("dynamic_acronym", edition);//$NON-NLS-1$
         }
         ask.setText(url);
-        ask.setToolTipText(Messages.getString(tipText)); // $NON-NLS-1$
+        ask.setToolTipText(tipText); // $NON-NLS-1$
 
         ask.addListener(SWT.Selection, new Listener() {
 
