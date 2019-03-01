@@ -123,6 +123,10 @@ public class FileCopyUtils {
         if (!resFolder.exists()) {
             return;
         }
+        if (resFolder.getAbsolutePath().equals(destFolder.getAbsolutePath())) {// If the source path and target path are
+                                                                               // same, don't copy
+            return;
+        }
         destFolder.mkdirs();
         String[] file = resFolder.list();
         File temp = null;
