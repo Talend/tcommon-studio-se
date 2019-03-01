@@ -40,15 +40,15 @@ import org.talend.commons.utils.workbench.extensions.ExtensionPointLimiterImpl;
 import org.talend.commons.utils.workbench.extensions.IExtensionPointLimiter;
 import org.talend.core.GlobalServiceRegister;
 import org.talend.core.PluginChecker;
-import org.talend.core.i18n.Messages;
 import org.talend.core.language.ECodeLanguage;
 import org.talend.core.language.LanguageManager;
 import org.talend.core.repository.model.ProxyRepositoryFactory;
-import org.talend.core.ui.IReferencedProjectService;
 import org.talend.core.ui.branding.IActionBarHelper;
 import org.talend.core.ui.branding.IBrandingService;
 import org.talend.core.ui.perspective.PerspectiveMenuManager;
 import org.talend.core.ui.services.IOpenJobScriptActionService;
+import org.talend.rcp.i18n.Messages;
+import org.talend.rcp.intro.linksbar.LinkToolbarLabel;
 import org.talend.rcp.intro.linksbar.LinksToolbarItem;
 import org.talend.repository.model.IProxyRepositoryFactory;
 import org.talend.repository.ui.actions.toolbar.ProjectSettingsAction;
@@ -181,7 +181,7 @@ public class ActionBarBuildHelper implements IActionBarHelper {
         // fileMenu.add(openLocalFileAction);
 
         if (PluginChecker.isMetalanguagePluginLoaded()) {
-            IOpenJobScriptActionService openJobScriptActionService = (IOpenJobScriptActionService) GlobalServiceRegister
+            IOpenJobScriptActionService openJobScriptActionService = GlobalServiceRegister
                     .getDefault().getService(IOpenJobScriptActionService.class);
             if (openJobScriptActionService != null) {
                 fileMenu.add(openJobScriptActionService.getOpenJobScriptAction(window));
@@ -254,7 +254,23 @@ public class ActionBarBuildHelper implements IActionBarHelper {
         toolBar.add(ActionFactory.SAVE.create(window));
 
         IToolBarManager toolBarManager = new ToolBarManager(SWT.FLAT | SWT.RIGHT);
-        toolBarManager.add(new LinksToolbarItem());
+        toolBarManager.add(new ImageAction(this.window, "icons/demo.png", LinksToolbarItem.LEARN_ORIG_URL,
+                Messages.getString("LinksToolbarItem_Learn")));
+        toolBarManager.add(new LinkToolbarLabel(LinksToolbarItem.LEARN_URL, Messages.getString("LinksToolbarItem_Learn")));
+        toolBarManager.add(new ImageAction(this.window, "icons/irc_protocol.png", LinksToolbarItem.ASK_ORIG_URL,
+                Messages.getString("LinksToolbarItem_7")));
+        toolBarManager.add(new LinkToolbarLabel(LinksToolbarItem.ASK_URL, Messages.getString("LinksToolbarItem_7")));
+        toolBarManager.add(new ImageAction(this.window, "icons/exchange_view.png", LinksToolbarItem.EXCHANGE_ORIG_URL,
+                Messages.getString("LinksToolbarItem_exchange")));
+        toolBarManager.add(new LinkToolbarLabel(LinksToolbarItem.EXCHANGE_URL, Messages.getString("LinksToolbarItem_exchange")));
+        toolBarManager.add(new ImageAction(this.window, "icons/videos_icon16x16.png", LinksToolbarItem.VIDEOS_ORIG_URL,
+                Messages.getString("LinksToolbarItem_videos")));
+        toolBarManager.add(new LinkToolbarLabel(LinksToolbarItem.VIDEOS_URL, Messages.getString("LinksToolbarItem_videos")));
+        if (!PluginChecker.isTIS()) {
+            toolBarManager.add(new ImageAction(this.window, "icons/cloud.png", LinksToolbarItem.CLOUD_ORIG_URL,
+                    Messages.getString("LinksToolbarItem_cloud")));
+            toolBarManager.add(new LinkToolbarLabel(LinksToolbarItem.CLOUD_URL, Messages.getString("LinksToolbarItem_cloud")));
+        }
         coolBar.add(new ToolBarContributionItem(toolBarManager, LinksToolbarItem.COOLITEM_LINKS_ID));
     }
 
@@ -337,7 +353,7 @@ public class ActionBarBuildHelper implements IActionBarHelper {
         // }
 
         List<IPreferenceNode> prefsToDelete = new ArrayList<IPreferenceNode>();
-        IBrandingService brandingService = (IBrandingService) GlobalServiceRegister.getDefault().getService(
+        IBrandingService brandingService = GlobalServiceRegister.getDefault().getService(
                 IBrandingService.class);
         String[] availableLanguages = brandingService.getBrandingConfiguration().getAvailableLanguages();
         if (ArrayUtils.contains(availableLanguages, ECodeLanguage.PERL.getName())) {

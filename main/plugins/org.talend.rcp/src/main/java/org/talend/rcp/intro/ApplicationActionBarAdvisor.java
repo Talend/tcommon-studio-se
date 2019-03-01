@@ -40,7 +40,7 @@ public class ApplicationActionBarAdvisor extends ActionBarAdvisor {
 
     private final IActionBarConfigurer actionBarConfigurer;
 
-    private IBrandingService service = (IBrandingService) GlobalServiceRegister.getDefault().getService(IBrandingService.class);
+    private IBrandingService service = GlobalServiceRegister.getDefault().getService(IBrandingService.class);
 
     ActionBarBuildHelper helper;
 
