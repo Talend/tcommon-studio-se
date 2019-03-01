@@ -21,6 +21,7 @@ import org.eclipse.ui.plugin.AbstractUIPlugin;
 import org.talend.core.GlobalServiceRegister;
 import org.talend.core.service.IExchangeService;
 import org.talend.core.service.ITutorialsService;
+import org.talend.rcp.Activator;
 import org.talend.rcp.intro.linksbar.LinksToolbarItem;
 
 public class ImageAction extends Action {
@@ -29,12 +30,10 @@ public class ImageAction extends Action {
 
     private String url;
 
-    public static final String PLUGIN_ID = "org.talend.rcp";
-
     public ImageAction(IWorkbenchWindow window, String imagePath, String url, String tipText) {
         this.window = window;
         this.url = url;
-        ImageDescriptor imageDescriptorFromPlugin = AbstractUIPlugin.imageDescriptorFromPlugin(PLUGIN_ID, imagePath);
+        ImageDescriptor imageDescriptorFromPlugin = AbstractUIPlugin.imageDescriptorFromPlugin(Activator.PLUGIN_ID, imagePath);
         setImageDescriptor(imageDescriptorFromPlugin);
         setToolTipText(tipText);
     }
