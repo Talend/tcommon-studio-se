@@ -250,7 +250,7 @@ public class AcceptModuleLicensesWizardPage extends WizardPage {
                 String url = license.getUrl();
 
                 if (TalendPropertiesUtil.isEnabledUseBrowser() && licenseTextBox != null) {
-                    if (url != null) {
+                    if (url != null && !url.trim().isEmpty()) {
                         licenseTextBox.setUrl(url);
                     } else {
                         licenseTextBox.setText(Messages.getString("AcceptModuleLicensesWizardPage.licenseContent.defaultDesc")); //$NON-NLS-1$
@@ -309,7 +309,7 @@ public class AcceptModuleLicensesWizardPage extends WizardPage {
                         if (license == null) {
                             license = new License();
                             String licenseUrl = moduleToInstall.getLicenseUrl();
-                            if (licenseUrl == null) {
+                            if (licenseUrl == null || licenseUrl.trim().isEmpty()) {
                                 licenseUrl = RemoteModulesHelper.getInstance().getLicenseUrl(licenseType);
                             }
                             license.setName(licenseType);
