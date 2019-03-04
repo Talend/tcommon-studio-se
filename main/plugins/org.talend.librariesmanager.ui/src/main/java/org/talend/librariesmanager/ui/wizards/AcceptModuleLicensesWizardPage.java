@@ -9,6 +9,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 
+import org.apache.commons.lang3.StringUtils;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.jface.dialogs.Dialog;
 import org.eclipse.jface.dialogs.IDialogSettings;
@@ -250,7 +251,7 @@ public class AcceptModuleLicensesWizardPage extends WizardPage {
                 String url = license.getUrl();
 
                 if (TalendPropertiesUtil.isEnabledUseBrowser() && licenseTextBox != null) {
-                    if (url != null) {
+                    if (!StringUtils.isEmpty(url)) {
                         licenseTextBox.setUrl(url);
                     } else {
                         licenseTextBox.setText(Messages.getString("AcceptModuleLicensesWizardPage.licenseContent.defaultDesc")); //$NON-NLS-1$
@@ -309,7 +310,7 @@ public class AcceptModuleLicensesWizardPage extends WizardPage {
                         if (license == null) {
                             license = new License();
                             String licenseUrl = moduleToInstall.getLicenseUrl();
-                            if (licenseUrl == null) {
+                            if (StringUtils.isEmpty(licenseUrl)) {
                                 licenseUrl = RemoteModulesHelper.getInstance().getLicenseUrl(licenseType);
                             }
                             license.setName(licenseType);
