@@ -22,6 +22,8 @@ import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Shell;
+import org.talend.commons.exception.ExceptionHandler;
+import org.talend.repository.metadata.i18n.Messages;
 
 /**
  * DOC zwzhao class global comment. Detailled comment
@@ -51,7 +53,9 @@ public class BrowerDialog extends Dialog {
             // linux swt in eclipse4.10 has a bug that we can't pass empty string or null
             broswer.setUrl(url);
         } else {
-            broswer.setUrl("invalid");
+            String message = Messages.getString("BrowerDialog.empryUrl");
+            Exception e = new Exception(message);
+            ExceptionHandler.process(e);
         }
         broswer.setLayoutData(new GridData(GridData.FILL_BOTH));
         broswer.redraw();
