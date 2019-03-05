@@ -107,16 +107,16 @@ public enum EDatabaseConnTemplate {
             "jdbc:sqlite:/<filename>")), //$NON-NLS-1$
 
     INGRES(new DbConnStr(EDatabaseTypeName.INGRES, //
-            "jdbc:ingres://<host>:<port>/<sid>?<property>", //$NON-NLS-1$
+            "jdbc:ingres://<host>:<port>/<sid>;<property>", //$NON-NLS-1$
             "II7")), //$NON-NLS-1$
     VECTORWISE(new DbConnStr(EDatabaseTypeName.VECTORWISE, //
-            "jdbc:ingres://<host>:<port>/<sid>?<property>", //$NON-NLS-1$
+            "jdbc:ingres://<host>:<port>/<sid>;<property>", //$NON-NLS-1$
             "II7")), //$NON-NLS-1$
     INTERBASE(new DbConnStr(EDatabaseTypeName.INTERBASE, //
             "jdbc:interbase://<host>/<sid>?<property>")), //$NON-NLS-1$
 
     FIREBIRD(new DbConnStr(EDatabaseTypeName.FIREBIRD, //
-            "jdbc:firebirdsql:<host>/<port>:<filename>;<property>", //$NON-NLS-1$
+            "jdbc:firebirdsql:<host>/<port>:<filename>?<property>", //$NON-NLS-1$
             "3050")), //$NON-NLS-1$
 
     INFORMIX(new DbConnStr(EDatabaseTypeName.INFORMIX, //
@@ -137,11 +137,11 @@ public enum EDatabaseConnTemplate {
             "jdbc:derby:<dbRootPath>;<property>")), //$NON-NLS-1$
 
     JAVADB_JCCJDBC(new DbConnStr(EDatabaseTypeName.JAVADB_JCCJDBC, //
-            "jdbc:derby:net://<host>:<port>/<sid>?<property>", //$NON-NLS-1$
+            "jdbc:derby:net://<host>:<port>/<sid>;<property>", //$NON-NLS-1$
             "1527")), //$NON-NLS-1$
 
     JAVADB_DERBYCLIENT(new DbConnStr(EDatabaseTypeName.JAVADB_DERBYCLIENT, //
-            "jdbc:derby://<host>:<port>/<sid>?<property>", //$NON-NLS-1$
+            "jdbc:derby://<host>:<port>/<sid>;<property>", //$NON-NLS-1$
             "1527")), //$NON-NLS-1$
 
     HSQLDB_SERVER(new DbConnStr(EDatabaseTypeName.HSQLDB_SERVER, //
