@@ -120,33 +120,41 @@ public class SAPHanaDataBaseMetadata extends FakeDatabaseMetaData {
     public ResultSet getTables(String catalog, String schemaPattern, String tableNamePattern, String[] types)
             throws SQLException {
         String[] neededTypes = getNeededTypes(types);
-        ResultSet rs = connection.getMetaData().getTables(catalog, schemaPattern, tableNamePattern, neededTypes);
         List<String[]> list = new ArrayList<String[]>();
-        while (rs.next()) {
-            String name = rs.getString("TABLE_NAME"); //$NON-NLS-1$
-            String schema = rs.getString("TABLE_SCHEM"); //$NON-NLS-1$
-            String type = rs.getString("TABLE_TYPE"); //$NON-NLS-1$
+        // has other types which is not Calculation View
+        if (neededTypes.length > 1 || !ArrayUtils.contains(neededTypes, NEEDED_TYPES[3])) {
+            ResultSet rs = connection.getMetaData().getTables(catalog, schemaPattern, tableNamePattern, neededTypes);
+            while (rs.next()) {
+                String name = rs.getString("TABLE_NAME"); //$NON-NLS-1$
+                String schema = rs.getString("TABLE_SCHEM"); //$NON-NLS-1$
+                String type = rs.getString("TABLE_TYPE"); //$NON-NLS-1$
 
-            String id = ""; //$NON-NLS-1$
-            String remarks = ""; //$NON-NLS-1$
-            try {
-                remarks = rs.getString("REMARKS"); //$NON-NLS-1$
-            } catch (Exception e) {
-                // nothing
-            }
+                String id = ""; //$NON-NLS-1$
+                String remarks = ""; //$NON-NLS-1$
+                try {
+                    remarks = rs.getString("REMARKS"); //$NON-NLS-1$
+                } catch (Exception e) {
+                    // nothing
+                }
 
-            if (ArrayUtils.contains(neededTypes, type)) {
-                // check if the type is contained is in the types needed.
-                // since sybase can return some system views as "SYSTEM VIEW" instead of "VIEW/TABLE" from the request.
-                String[] r = new String[] { id, schema, name, type, remarks, null };
-                list.add(r);
+                if (ArrayUtils.contains(neededTypes, type)) {
+                    // check if the type is contained is in the types needed.
+                    // since sybase can return some system views as "SYSTEM VIEW" instead of "VIEW/TABLE" from the
+                    // request.
+                    String[] r = new String[] { id, schema, name, type, remarks, null };
+                    list.add(r);
+                }
             }
         }
 
         // For Calculation View
         if (ArrayUtils.contains(neededTypes, NEEDED_TYPES[3])) {
             // check if the type is contained is in the types needed.
-            String sqlcv = "SELECT CATALOG_NAME,SCHEMA_NAME,CUBE_NAME, COLUMN_OBJECT,CUBE_TYPE,DESCRIPTION from _SYS_BI.BIMC_CUBES"; //$NON-NLS-1$
+            String sqlcv = "SELECT OBJECT_NAME,PACKAGE_ID FROM _SYS_REPO.ACTIVE_OBJECT WHERE OBJECT_SUFFIX = 'calculationview'"; //$NON-NLS-1$
+            if (tableNamePattern != null && !tableNamePattern.equals("%")) { //$NON-NLS-1$
+                sqlcv += " AND (OBJECT_NAME LIKE '" + tableNamePattern + "'"; //$NON-NLS-1$ //$NON-NLS-2$
+                sqlcv += " OR PACKAGE_ID LIKE '" + tableNamePattern + "')"; //$NON-NLS-1$ //$NON-NLS-2$
+            }
             ResultSet rscv = null;
             Statement stmtcv = null;
             List<String[]> listcv = new ArrayList<String[]>();
@@ -154,25 +162,16 @@ public class SAPHanaDataBaseMetadata extends FakeDatabaseMetaData {
                 stmtcv = connection.createStatement();
                 rscv = stmtcv.executeQuery(sqlcv);
                 while (rscv.next()) {
-                    String catalogName = rscv.getString("CATALOG_NAME"); //$NON-NLS-1$
-                    if (catalogName != null) {
-                        catalogName = catalogName.trim();
+                    String objectName = rscv.getString("OBJECT_NAME"); //$NON-NLS-1$
+                    if (objectName != null) {
+                        objectName = objectName.trim();
                     }
-                    String schemaName = rscv.getString("SCHEMA_NAME"); //$NON-NLS-1$
-                    if (schemaName != null) {
-                        schemaName = schemaName.trim();
+                    String packageId = rscv.getString("PACKAGE_ID"); //$NON-NLS-1$
+                    if (packageId != null) {
+                        packageId = packageId.trim();
                     }
-                    String cubeName = rscv.getString("CUBE_NAME"); //$NON-NLS-1$
-                    if (cubeName != null) {
-                        cubeName = cubeName.trim();
-                    }
-                    String id = ""; //$NON-NLS-1$
-                    // String type = rscv.getString("CUBE_TYPE"); //$NON-NLS-1$
-
-                    String remarks = rscv.getString("DESCRIPTION"); //$NON-NLS-1$
-                    String name = catalogName + "/" + cubeName;//$NON-NLS-1$
-
-                    String[] r = new String[] { id, schemaName, name, NEEDED_TYPES[3], remarks, catalogName };
+                    String name = packageId + "/" + objectName; //$NON-NLS-1$
+                    String[] r = new String[] { "", "_SYS_BIC", name, NEEDED_TYPES[3], "", packageId }; //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
                     listcv.add(r);
                 }
             } catch (SQLException e) {
