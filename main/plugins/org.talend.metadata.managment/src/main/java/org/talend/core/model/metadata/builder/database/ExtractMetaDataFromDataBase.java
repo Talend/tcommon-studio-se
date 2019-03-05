@@ -336,7 +336,7 @@ public class ExtractMetaDataFromDataBase {
                 }
             }
             if (EDatabaseTypeName.SYBASEASE == EDatabaseTypeName.getTypeFromDisplayName(dbType)) {
-                boolean exsitedSybaseDB = checkSybaseDB(connection, sidOrDatabase, dbType);
+                boolean exsitedSybaseDB = checkSybaseDB(connection, sidOrDatabase);
                 if (!exsitedSybaseDB) {
                     connectionStatus.setMessageException(
                             Messages.getString("ExtractMetaDataFromDataBase.DatabaseNoPresent", sidOrDatabase)); //$NON-NLS-1$
@@ -380,7 +380,7 @@ public class ExtractMetaDataFromDataBase {
         return checkSchemaConnection(schema, connection, notCaseSensitive, dbType, null);
     }
 
-    private static boolean checkSybaseDB(Connection connection, String database, String dbType) {
+    private static boolean checkSybaseDB(Connection connection, String database) {
         ExtractMetaDataUtils extractMeta = ExtractMetaDataUtils.getInstance();
         if (extractMeta != null) {
             Statement stmt = null;
