@@ -119,7 +119,7 @@ public class PomUtil {
 
     private static ProxyRepositoryFactory repositoryFactory = ProxyRepositoryFactory.getInstance();
 
-    private static Map<String, List<IFolder>> bakJobletFolderCache = new HashMap<>();
+    private static List<IFolder> bakJobletFolderCache = new ArrayList<>();
 
     public static void savePom(IProgressMonitor monitor, Model model, IFile pomFile) throws Exception {
         if (monitor == null) {
@@ -891,7 +891,7 @@ public class PomUtil {
 
     }
 
-    public static void checkJobRelatedJobletDependencies(Property currentJobProperty, Property mainProperty, String itemType,
+    public static void checkJobRelatedJobletDependencies(Property mainProperty, String itemType,
             Set<String> childJobUrls, Set<Property> itemChecked, IProgressMonitor monitor) throws Exception {
         itemChecked.add(mainProperty);
         List<Relation> childItemRelations = getAllChildItemRelations(mainProperty, itemType);
@@ -906,32 +906,25 @@ public class PomUtil {
             if (repositoryObject != null && repositoryObject.getProperty() != null) {
                 // to update joblet dependencies for loop
                 if (relationshipItemBuilder.JOBLET_RELATION.equals(relation.getType())) {
-                    updateJobletDependencies4Loop(currentJobProperty, repositoryObject.getProperty(), childJobUrls, monitor);
+                    updateJobletDependencies4Loop(repositoryObject.getProperty(), childJobUrls, monitor);
                 }
 
                 // in case of loop
                 if (!itemChecked.contains(repositoryObject.getProperty())) {
                     // if joblet existed in subjob / joblet
-                    checkJobRelatedJobletDependencies(currentJobProperty, repositoryObject.getProperty(), relation.getType(),
+                    checkJobRelatedJobletDependencies(repositoryObject.getProperty(), relation.getType(),
                             childJobUrls, itemChecked, monitor);
                 }
             }
         }
     }
 
-    public static void updateJobletDependencies4Loop(Property currentJobProperty, Property jobletProperty,
-            Set<String> childJobUrls,
-            IProgressMonitor monitor)
+    public static void updateJobletDependencies4Loop(Property jobletProperty, Set<String> childJobUrls, IProgressMonitor monitor)
             throws Exception {
         IFolder pomFolder = AggregatorPomsHelper.getItemPomFolder(jobletProperty);
         backupPomFile(pomFolder);
-        // cache in key: projectFolderName_jobId_jobVersion
-        String jobletFoldersKey = JavaResourcesHelper.getProjectFolderName(currentJobProperty.getItem()) + "_"
-                + currentJobProperty.getId() + "_" + currentJobProperty.getVersion();
-        if (bakJobletFolderCache.get(jobletFoldersKey) == null) {
-            bakJobletFolderCache.put(jobletFoldersKey, new ArrayList<IFolder>());
-        }
-        bakJobletFolderCache.get(jobletFoldersKey).add(pomFolder);
+        // cached the backup pom file
+        bakJobletFolderCache.add(pomFolder);
 
         IFile jobletPomFile = pomFolder.getFile(TalendMavenConstants.POM_FILE_NAME);
         Model jobletModel = MODEL_MANAGER.readMavenModel(jobletPomFile);
@@ -957,15 +950,14 @@ public class PomUtil {
         return itemsRelatedTo;
     }
 
-    public static void restoreJobletPoms(Property mainJobProperty) {
-        String key = JavaResourcesHelper.getProjectFolderName(mainJobProperty.getItem()) + "_" + mainJobProperty.getId() + "_"
-                + mainJobProperty.getVersion();
-        List<IFolder> bakJobletFolders = bakJobletFolderCache.get(key);
-        for (IFolder folder : bakJobletFolders) {
+    public static void restoreJobletPoms() {
+        for (IFolder folder : bakJobletFolderCache) {
             IFile backFile = folder.getFile(TalendMavenConstants.POM_BACKUP_FILE_NAME);
             IFile pomFile = folder.getFile(TalendMavenConstants.POM_FILE_NAME);
             restorePomFile(pomFile, backFile);
         }
+
+        bakJobletFolderCache.clear();
     }
 
     public static void backupPomFile(ITalendProcessJavaProject talendProject) {
