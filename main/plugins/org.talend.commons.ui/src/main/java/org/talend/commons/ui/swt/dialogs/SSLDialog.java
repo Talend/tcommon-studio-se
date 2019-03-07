@@ -195,7 +195,7 @@ public class SSLDialog extends Dialog {
         dialog.setFilterPath("");
         dialog.setText("select keyStore");
         dialog.setFileName("");
-        dialog.setFilterExtensions(new String[] { "*.jks" });// �����ļ���չ��
+        dialog.setFilterExtensions(new String[] { "*.jks" });// set file extension
         String fileName = dialog.open();//
 
         if (fileName != null) {
@@ -209,7 +209,7 @@ public class SSLDialog extends Dialog {
         dialog.setFilterPath("");
         dialog.setText("select trustStore");
         dialog.setFileName("");
-        dialog.setFilterExtensions(new String[] { "*.jks" });// �����ļ���չ��
+        dialog.setFilterExtensions(new String[] { "*.jks" });// set file extension
         String fileName = dialog.open();//
         if (fileName != null) {
             trustStoreText.setText(fileName);
