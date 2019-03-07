@@ -956,7 +956,9 @@ public class PomUtil {
             IFile pomFile = folder.getFile(TalendMavenConstants.POM_FILE_NAME);
             restorePomFile(pomFile, backFile);
         }
+    }
 
+    public static void clearBakJobletCache() {
         bakJobletFolderCache.clear();
     }
 
