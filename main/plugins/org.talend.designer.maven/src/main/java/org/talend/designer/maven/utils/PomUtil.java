@@ -79,8 +79,12 @@ import org.talend.core.model.process.JobInfo;
 import org.talend.core.model.process.ProcessUtils;
 import org.talend.core.model.properties.ProcessItem;
 import org.talend.core.model.properties.Property;
+import org.talend.core.model.relationship.Relation;
+import org.talend.core.model.relationship.RelationshipItemBuilder;
+import org.talend.core.model.repository.IRepositoryViewObject;
 import org.talend.core.model.utils.JavaResourcesHelper;
 import org.talend.core.nexus.TalendMavenResolver;
+import org.talend.core.repository.model.ProxyRepositoryFactory;
 import org.talend.core.runtime.maven.MavenArtifact;
 import org.talend.core.runtime.maven.MavenConstants;
 import org.talend.core.runtime.maven.MavenUrlHelper;
@@ -89,6 +93,7 @@ import org.talend.core.ui.branding.IBrandingService;
 import org.talend.designer.maven.model.TalendJavaProjectConstants;
 import org.talend.designer.maven.model.TalendMavenConstants;
 import org.talend.designer.maven.template.MavenTemplateManager;
+import org.talend.designer.maven.tools.AggregatorPomsHelper;
 import org.talend.designer.maven.tools.ProcessorDependenciesManager;
 import org.talend.designer.runprocess.IProcessor;
 import org.talend.repository.ProjectManager;
@@ -109,6 +114,12 @@ import org.xml.sax.SAXException;
 public class PomUtil {
 
     private static final MavenModelManager MODEL_MANAGER = MavenPlugin.getMavenModelManager();
+
+    private static RelationshipItemBuilder relationshipItemBuilder = RelationshipItemBuilder.getInstance();
+
+    private static ProxyRepositoryFactory repositoryFactory = ProxyRepositoryFactory.getInstance();
+
+    private static List<IFolder> bakJobletFolderCache = new ArrayList<>();
 
     public static void savePom(IProgressMonitor monitor, Model model, IFile pomFile) throws Exception {
         if (monitor == null) {
@@ -883,6 +894,77 @@ public class PomUtil {
 
     }
 
+    public static void checkJobRelatedJobletDependencies(Property mainProperty, String itemType,
+            Set<String> childJobUrls, Set<Property> itemChecked, IProgressMonitor monitor) throws Exception {
+        itemChecked.add(mainProperty);
+        List<Relation> childItemRelations = getAllChildItemRelations(mainProperty, itemType);
+        for (Relation relation : childItemRelations) {
+            IRepositoryViewObject repositoryObject = null;
+            if (RelationshipItemBuilder.LATEST_VERSION.equals(relation.getVersion())) {
+                repositoryObject = repositoryFactory.getLastVersion(relation.getId());
+            } else {
+                repositoryObject = repositoryFactory.getSpecificVersion(relation.getId(), relation.getVersion(), true);
+            }
+
+            if (repositoryObject != null && repositoryObject.getProperty() != null) {
+                // to update joblet dependencies for loop
+                if (relationshipItemBuilder.JOBLET_RELATION.equals(relation.getType())) {
+                    updateJobletDependencies4Loop(repositoryObject.getProperty(), childJobUrls, monitor);
+                }
+
+                // in case of loop
+                if (!itemChecked.contains(repositoryObject.getProperty())) {
+                    // if joblet existed in subjob / joblet
+                    checkJobRelatedJobletDependencies(repositoryObject.getProperty(), relation.getType(),
+                            childJobUrls, itemChecked, monitor);
+                }
+            }
+        }
+    }
+
+    public static void updateJobletDependencies4Loop(Property jobletProperty, Set<String> childJobUrls, IProgressMonitor monitor)
+            throws Exception {
+        IFolder pomFolder = AggregatorPomsHelper.getItemPomFolder(jobletProperty);
+        backupPomFile(pomFolder);
+        // cached the backup pom file
+        bakJobletFolderCache.add(pomFolder);
+
+        IFile jobletPomFile = pomFolder.getFile(TalendMavenConstants.POM_FILE_NAME);
+        Model jobletModel = MODEL_MANAGER.readMavenModel(jobletPomFile);
+        List<Dependency> dependencies = jobletModel.getDependencies();
+        List<Dependency> toRemove = new ArrayList<Dependency>();
+        for (Dependency dependency : dependencies) {
+            String mvnUrl = generateMvnUrl(dependency);
+            if (childJobUrls.contains(mvnUrl)) {
+                toRemove.add(dependency);
+            }
+        }
+        dependencies.removeAll(toRemove);
+        savePom(monitor, jobletModel, jobletPomFile);
+
+    }
+    
+    private static List<Relation> getAllChildItemRelations(Property property, String itemType) {
+        List<Relation> itemsRelatedTo = new ArrayList<Relation>();
+        itemsRelatedTo.addAll(relationshipItemBuilder.getItemsChildRelatedTo(property.getId(), property.getVersion(), itemType,
+                RelationshipItemBuilder.JOBLET_RELATION));
+        itemsRelatedTo.addAll(relationshipItemBuilder.getItemsChildRelatedTo(property.getId(), property.getVersion(), itemType,
+                RelationshipItemBuilder.JOB_RELATION));
+        return itemsRelatedTo;
+    }
+
+    public static void restoreJobletPoms() {
+        for (IFolder folder : bakJobletFolderCache) {
+            IFile backFile = folder.getFile(TalendMavenConstants.POM_BACKUP_FILE_NAME);
+            IFile pomFile = folder.getFile(TalendMavenConstants.POM_FILE_NAME);
+            restorePomFile(pomFile, backFile);
+        }
+    }
+
+    public static void clearBakJobletCache() {
+        bakJobletFolderCache.clear();
+    }
+
     public static void backupPomFile(ITalendProcessJavaProject talendProject) {
         final IProject project = talendProject.getProject();
         final IFile backFile = project.getFile(TalendMavenConstants.POM_BACKUP_FILE_NAME);
@@ -921,6 +1003,10 @@ public class PomUtil {
         final IProject project = talendProject.getProject();
         final IFile backFile = project.getFile(TalendMavenConstants.POM_BACKUP_FILE_NAME);
         final IFile pomFile = project.getFile(TalendMavenConstants.POM_FILE_NAME);
+        restorePomFile(pomFile, backFile);
+    }
+
+    public static void restorePomFile(IFile pomFile, IFile backFile) {
         try {
             updateFilesInWorkspaceRunnable(null, new IWorkspaceRunnable() {
 
