@@ -17,6 +17,7 @@ import org.junit.Test;
 import org.talend.core.model.properties.Item;
 import org.talend.core.model.properties.PropertiesFactory;
 import org.talend.core.model.properties.Property;
+import org.talend.core.model.repository.ERepositoryObjectType;
 import org.talend.core.model.repository.FakePropertyImpl;
 import org.talend.core.model.repository.RepositoryViewObject;
 import org.talend.repository.model.IRepositoryNode.ENodeType;
@@ -35,6 +36,6 @@ public class RepositoryDropAdapterTest {
         property.setItem(item);
         RepositoryViewObject object = new RepositoryViewObject(property, true);
         RepositoryNode node = new RepositoryNode(object, null, ENodeType.SIMPLE_FOLDER);
-        Assert.assertEquals(node.getObjectType().getType(), "FOLDER"); //$NON-NLS-1$
+        Assert.assertEquals(node.getObjectType().getType(), ERepositoryObjectType.FOLDER.getType());
     }
 }
