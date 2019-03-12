@@ -86,8 +86,6 @@ public class RepositoryDropAdapter extends PluginDropAdapter {
 
     private INavigatorContentService contentService;
 
-    private final String REPOSITORY_FOLDER = "FOLDER"; //$NON-NLS-1$
-
     public RepositoryDropAdapter(StructuredViewer viewer) {
         super(viewer);
     }
@@ -123,7 +121,7 @@ public class RepositoryDropAdapter extends PluginDropAdapter {
                     boolean isLock = MoveObjectAction.getInstance().isLock(sourceNode);
                     if (isLock) {
                         String errorMsg = null;
-                        if (sourceNode.getObjectType().getType().equalsIgnoreCase(REPOSITORY_FOLDER)) {
+                        if (sourceNode.getObjectType().getType().equals(ERepositoryObjectType.FOLDER.getType())) {
                             errorMsg = Messages.getString("RepositoryDropAdapter_errorMsg"); //$NON-NLS-1$
                         }
                         if (ProxyRepositoryFactory.getInstance().getStatus(repositoryObject) == ERepositoryStatus.LOCK_BY_USER) {
@@ -654,7 +652,7 @@ public class RepositoryDropAdapter extends PluginDropAdapter {
                         IRepositoryViewObject objectToCopy = repositoryNode.getObject();
                         // TDI-14680 add a warning message when move a directory that it has locked jobs.
                         IRepositoryNode node = objectToCopy.getRepositoryNode();
-                        if (node.getObjectType().getType().equalsIgnoreCase(REPOSITORY_FOLDER)) {
+                        if (node.getObjectType().getType().equals(ERepositoryObjectType.FOLDER.getType())) {
                             errorMsg = Messages.getString("RepositoryDropAdapter_errorMsg"); //$NON-NLS-1$
                         }
                         if (ProxyRepositoryFactory.getInstance().getStatus(objectToCopy) == ERepositoryStatus.LOCK_BY_USER) {
