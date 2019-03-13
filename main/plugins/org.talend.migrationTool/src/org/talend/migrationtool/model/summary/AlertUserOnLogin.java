@@ -12,7 +12,7 @@
 // ============================================================================
 package org.talend.migrationtool.model.summary;
 
-import org.eclipse.swt.widgets.Shell;
+import org.eclipse.swt.widgets.Display;
 import org.eclipse.ui.IStartup;
 import org.eclipse.ui.IWorkbench;
 import org.eclipse.ui.IWorkbenchWindow;
@@ -55,7 +55,8 @@ public class AlertUserOnLogin implements IStartup {
                     MigrationToolService m = (MigrationToolService) service;
 
                     if (!m.getDoneThisSession().isEmpty()) {
-                        SummaryDialog loginDialog = new SummaryDialog(new Shell(), m.getDoneThisSession());
+                        SummaryDialog loginDialog = new SummaryDialog(Display.getDefault().getActiveShell(),
+                                m.getDoneThisSession());
                         loginDialog.open();
                     }
                 }

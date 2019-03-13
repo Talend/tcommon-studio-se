@@ -12,7 +12,6 @@ Require-Bundle: org.eclipse.core.runtime,
  org.eclipse.osgi.services,
  org.eclipse.m2e.core,
  org.ops4j.pax.url.mvn,
- org.talend.model,
  org.talend.libraries.apache,
  org.talend.libraries.dom4j-jaxen,
  org.talend.libraries.apache.http,
@@ -22,7 +21,9 @@ Require-Bundle: org.eclipse.core.runtime,
  org.apache.log4j,
  org.talend.designer.maven,
  org.talend.components.api,
- org.talend.designer.maven.aether
+ org.talend.designer.maven.aether,
+ javax.xml.bind,
+ org.talend.model
 Eclipse-LazyStart: true
 Bundle-ClassPath: .
 Export-Package: org.talend.librariesmanager.emf.librariesindex,

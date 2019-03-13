@@ -233,6 +233,11 @@ public class ShowAddedContextdialog extends SelectionDialog {
 
         }
 
+        @Override
+        public void dispose() {
+            super.dispose();
+        }
+
     }
 
 }

@@ -97,7 +97,8 @@ public class ModuleLicenseDialog extends Dialog {
             clufTextBrowser = new Browser(container, SWT.MULTI | SWT.WRAP | SWT.LEFT | SWT.BORDER);
             culfTextControl = clufTextBrowser;
 
-            if (licenseUrl != null) {
+            if (licenseUrl != null && !licenseUrl.trim().isEmpty()) {
+                // linux swt in eclipse4.10 has a bug that we can't pass empty string or null
                 clufTextBrowser.setUrl(licenseUrl);
             } else {
                 clufTextBrowser.setText(desc);

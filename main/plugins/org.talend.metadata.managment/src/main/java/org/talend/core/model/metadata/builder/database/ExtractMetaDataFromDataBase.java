@@ -35,7 +35,6 @@ import org.eclipse.core.runtime.Platform;
 import org.eclipse.jface.dialogs.IDialogConstants;
 import org.eclipse.jface.dialogs.MessageDialog;
 import org.eclipse.swt.widgets.Display;
-import org.eclipse.swt.widgets.Shell;
 import org.talend.commons.exception.ExceptionHandler;
 import org.talend.commons.utils.workbench.extensions.ExtensionImplementationProvider;
 import org.talend.commons.utils.workbench.extensions.ExtensionPointLimiterImpl;
@@ -410,7 +409,8 @@ public class ExtractMetaDataFromDataBase {
                     String title = Messages.getString("CheckConnection.CheckSchema.ProposeSchema.title"); //$NON-NLS-1$
                     String proposeMessage = Messages.getString("CheckConnection.CheckSchema.ProposeSchema.message", new Object[] { //$NON-NLS-1$
                             schema, proposeSchema });
-                    MessageDialog messageDialog = new MessageDialog(new Shell(), title, null, proposeMessage,
+                    MessageDialog messageDialog = new MessageDialog(Display.getDefault().getActiveShell(), title, null,
+                            proposeMessage,
                             MessageDialog.CONFIRM, new String[] { IDialogConstants.YES_LABEL, IDialogConstants.NO_LABEL }, 0);
                     if (messageDialog.open() == 0) {
                         retPropsedSchema.append(proposeSchema);

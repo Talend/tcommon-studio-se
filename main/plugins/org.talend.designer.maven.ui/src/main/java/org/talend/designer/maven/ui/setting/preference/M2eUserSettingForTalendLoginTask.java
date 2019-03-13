@@ -26,6 +26,7 @@ import java.util.List;
 import java.util.Properties;
 
 import org.apache.maven.cli.MavenCli;
+import org.apache.maven.cli.configuration.SettingsXmlConfigurationProcessor;
 import org.apache.maven.settings.Profile;
 import org.apache.maven.settings.Proxy;
 import org.apache.maven.settings.Settings;
@@ -134,8 +135,9 @@ public class M2eUserSettingForTalendLoginTask extends AbstractLoginTask {
              * only.
              */
             final String userSettingsFile = MavenPlugin.getMavenConfiguration().getUserSettingsFile();
-            boolean defaultUserSetting = (userSettingsFile == null || MavenCli.DEFAULT_USER_SETTINGS_FILE.getAbsolutePath()
-                    .equals(userSettingsFile));
+			boolean defaultUserSetting = (userSettingsFile == null
+					|| SettingsXmlConfigurationProcessor.DEFAULT_USER_SETTINGS_FILE.getAbsolutePath()
+							.equals(userSettingsFile));
             boolean isStudioUserSetting = studioUserSettingsPath.equals(userSettingsFile);
 
             // check the user setting when set for studio, don't existed or have no rights.

@@ -16,7 +16,7 @@ import org.talend.core.model.metadata.IMetadataConnection;
 import org.talend.core.model.metadata.builder.connection.DatabaseConnection;
 import org.talend.core.model.metadata.builder.connection.FileConnection;
 
-public interface IRepositoryContextService {
+public interface IRepositoryContextService extends IService {
 
     public DatabaseConnection cloneOriginalValueConnection(DatabaseConnection dbConn);
 

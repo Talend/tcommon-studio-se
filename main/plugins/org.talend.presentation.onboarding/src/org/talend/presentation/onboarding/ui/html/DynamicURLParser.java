@@ -18,9 +18,9 @@ import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.Properties;
 
+import org.eclipse.e4.ui.css.core.utils.StringUtils;
 import org.eclipse.ui.internal.intro.impl.model.url.IntroURL;
 import org.eclipse.ui.internal.intro.impl.util.Log;
-import org.eclipse.ui.internal.intro.impl.util.StringUtil;
 
 /**
  * DOC talend class global comment. Detailled comment
@@ -166,12 +166,12 @@ public class DynamicURLParser {
         if (query.indexOf("&amp;") != -1) {
             query = query.replaceAll("&amp;", "&");
         }
-        params = StringUtil.split(query, "&"); //$NON-NLS-1$
+        params = StringUtils.split(query, "&"); //$NON-NLS-1$
         for (String param : params) {
             // for every parameter, ie: key=value pair, create a property
             // entry. we know we have the key as the first string in the array,
             // and the value as the second array.
-            String[] keyValuePair = StringUtil.split(param, "="); //$NON-NLS-1$
+            String[] keyValuePair = StringUtils.split(param, "="); //$NON-NLS-1$
             if (keyValuePair.length != 2) {
                 Log.warning("Ignoring the following Intro URL parameter: " //$NON-NLS-1$
                         + param);

@@ -7,6 +7,6 @@
   <requires>
     <import feature="org.eclipse.m2m.atl" version="0.0.0" match="greaterOrEqual"/>
     <import feature="org.talend.utils.feature" version="0.0.0" match="greaterOrEqual"/>
-    <import plugin="bcprov" version="0.0.0" match="greaterOrEqual"/>
+    <import plugin="org.bouncycastle.bcprov" version="0.0.0" match="greaterOrEqual"/>
   </requires> 
 </feature>

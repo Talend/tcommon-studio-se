@@ -51,6 +51,7 @@ import org.eclipse.swt.widgets.TableColumn;
 import org.eclipse.swt.widgets.TableItem;
 import org.eclipse.swt.widgets.Text;
 import org.eclipse.ui.dialogs.SearchPattern;
+import org.talend.commons.ui.gmf.util.DisplayUtils;
 import org.talend.commons.ui.runtime.exception.ExceptionHandler;
 import org.talend.commons.ui.runtime.exception.ExceptionMessageDialog;
 import org.talend.commons.ui.runtime.swt.tableviewer.TableViewerCreatorNotModifiable.LAYOUT_MODE;
@@ -95,10 +96,10 @@ import org.talend.salesforce.SforceSessionConnection;
 import org.talend.salesforce.oauth.OAuthClient;
 import org.talend.salesforce.oauth.Token;
 
-import orgomg.cwm.objectmodel.core.CoreFactory;
-
 import com.salesforce.soap.partner.DescribeGlobalSObjectResult;
 import com.sforce.soap.enterprise.DescribeGlobalResult;
+
+import orgomg.cwm.objectmodel.core.CoreFactory;
 
 /**
  * @author cantoine
@@ -720,13 +721,13 @@ public class SelectorModulesForm extends AbstractSalesforceStepForm {
 
                 @Override
                 public void run() {
-                    MessageDialog.openInformation(new Shell(), title, msg);
+                    MessageDialog.openInformation(DisplayUtils.getDefaultShell(false), title, msg);
                 }
             });
         } else {
             Shell iShell = shell;
             if (iShell == null) {
-                iShell = new Shell();
+                iShell = DisplayUtils.getDefaultShell(false);
             }
             MessageDialog.openInformation(iShell, title, msg);
         }

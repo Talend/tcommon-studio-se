@@ -24,12 +24,12 @@ Require-Bundle: org.apache.commons.lang,
  org.talend.core.repository,
  org.eclipse.nebula.widgets.nattable.core,
  org.eclipse.nebula.widgets.nattable.extension.glazedlists,
- org.talend.libraries.nattable,
  org.eclipse.e4.core.di.extensions,
  org.talend.librariesmanager,
  org.eclipse.e4.ui.services,
  org.eclipse.ui.workbench,
- org.talend.themes.core
+ org.talend.themes.core,
+ ca.odell.glazedlists
 Import-Package: org.eclipse.jdt.internal.ui.workingsets
 Export-Package: org.talend.core.ui,
  org.talend.core.ui.actions,
