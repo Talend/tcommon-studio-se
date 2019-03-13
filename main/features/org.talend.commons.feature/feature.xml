@@ -9,7 +9,7 @@
   </url>  
   <requires>
     <import feature="org.talend.model.migration.feature" version="0.0.0" match="greaterOrEqual"/>
-    <import plugin="bcprov" version="0.0.0" match="greaterOrEqual"/>
+    <import plugin="org.bouncycastle.bcprov" version="0.0.0" match="greaterOrEqual"/>
     <import plugin="com.fasterxml.jackson.core.jackson-databind" version="2.9.5" match="greaterOrEqual"/>
     <import plugin="jackson-core-asl" version="0.0.0" match="greaterOrEqual"/>
     <import plugin="jackson-mapper-asl" version="0.0.0" match="greaterOrEqual"/>

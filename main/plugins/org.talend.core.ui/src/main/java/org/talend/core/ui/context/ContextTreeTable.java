@@ -23,6 +23,7 @@ import org.eclipse.jface.viewers.ISelectionChangedListener;
 import org.eclipse.jface.viewers.ISelectionProvider;
 import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.jface.viewers.SelectionChangedEvent;
+import org.eclipse.jface.viewers.StructuredSelection;
 import org.eclipse.jface.window.DefaultToolTip;
 import org.eclipse.nebula.widgets.nattable.NatTable;
 import org.eclipse.nebula.widgets.nattable.config.AbstractRegistryConfiguration;
@@ -56,8 +57,10 @@ import org.eclipse.nebula.widgets.nattable.hideshow.ColumnHideShowLayer;
 import org.eclipse.nebula.widgets.nattable.hideshow.RowHideShowLayer;
 import org.eclipse.nebula.widgets.nattable.hideshow.command.ColumnHideCommand;
 import org.eclipse.nebula.widgets.nattable.layer.DataLayer;
+import org.eclipse.nebula.widgets.nattable.layer.ILayerListener;
 import org.eclipse.nebula.widgets.nattable.layer.cell.ColumnOverrideLabelAccumulator;
 import org.eclipse.nebula.widgets.nattable.layer.config.DefaultColumnHeaderStyleConfiguration;
+import org.eclipse.nebula.widgets.nattable.layer.event.ILayerEvent;
 import org.eclipse.nebula.widgets.nattable.painter.cell.TextPainter;
 import org.eclipse.nebula.widgets.nattable.painter.layer.NatGridLayerPainter;
 import org.eclipse.nebula.widgets.nattable.reorder.ColumnReorderLayer;
@@ -92,6 +95,7 @@ import org.talend.core.model.process.IContextParameter;
 import org.talend.core.model.repository.ERepositoryObjectType;
 import org.talend.core.model.repository.IRepositoryViewObject;
 import org.talend.core.repository.model.ProxyRepositoryFactory;
+import org.talend.core.runtime.CoreRuntimePlugin;
 import org.talend.core.service.IMetadataManagmentUiService;
 import org.talend.core.ui.context.model.ContextTabChildModel;
 import org.talend.core.ui.context.model.table.ContextTableConstants;
@@ -107,6 +111,7 @@ import org.talend.core.ui.context.nattableTree.ContextParaModeChangeMenuConfigur
 import org.talend.core.ui.context.nattableTree.ContextRowDataListFixture;
 import org.talend.core.ui.context.nattableTree.ExtendedContextColumnPropertyAccessor;
 import org.talend.core.ui.i18n.Messages;
+import org.talend.designer.core.IDesignerCoreService;
 import org.talend.repository.ProjectManager;
 import org.talend.repository.model.IRepositoryNode.ENodeType;
 import org.talend.repository.model.RepositoryNode;
@@ -320,7 +325,7 @@ public class ContextTreeTable {
             GridDataFactory.fillDefaults().grab(true, true).applyTo(natTable);
 
             // add selection listener for the context NatTable
-            addNatTableListener(bodyDataProvider, selectionProvider);
+            addNatTableListener(bodyDataProvider, selectionProvider, bodyDataLayer);
 
             GridDataFactory.fillDefaults().grab(true, true).applyTo(natTable);
 
@@ -371,7 +376,7 @@ public class ContextTreeTable {
     }
 
     private void addNatTableListener(final GlazedListsDataProvider<ContextTreeNode> bodyDataProvider,
-            ISelectionProvider selectionProvider) {
+            ISelectionProvider selectionProvider, DataLayer bodyDataLayer) {
         this.natTable.addMouseListener(new MouseListener() {
 
             @Override
@@ -426,6 +431,36 @@ public class ContextTreeTable {
                 currentNatTabSel = (IStructuredSelection) event.getSelection();
             }
         });
+
+        bodyDataLayer.addLayerListener(new ILayerListener() {
+
+            @Override
+            public void handleLayerEvent(ILayerEvent event) {
+                if (event instanceof org.eclipse.nebula.widgets.nattable.layer.event.CellVisualChangeEvent) {
+                    StructuredSelection selection = (StructuredSelection) selectionProvider.getSelection();
+                    Object element = selection.getFirstElement();
+                    if (element instanceof ContextTreeNode && natTable.getParent().getParent().getParent().getClass().getName()
+                            .equals("org.talend.designer.core.ui.views.contexts.ContextViewComposite")) { //$NON-NLS-1$
+                        try {
+                            updateRelatedView();
+                        } catch (Exception e) {
+                            e.printStackTrace();
+                        }
+                    }
+                }
+            }
+        });
+    }
+
+    private void updateRelatedView() {
+        IDesignerCoreService designerCoreService = CoreRuntimePlugin.getInstance().getDesignerCoreService();
+        if (designerCoreService != null) {
+            designerCoreService.switchToCurContextsView();
+            // for tRunJob component
+            designerCoreService.switchToCurComponentSettingsView();
+            // for 2608
+            designerCoreService.switchToCurJobSettingsView();
+        }
     }
 
     private List<Integer> getAllCheckPosBehaviour(IContextModelManager manager, ColumnGroupModel contextGroupModel) {

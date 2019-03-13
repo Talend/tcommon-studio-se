@@ -5,7 +5,8 @@
   <copyright url="http://www.example.com/copyright">[Enter Copyright Description here.]</copyright>  
   <license url="http://www.example.com/license">[Enter License Description here.]</license>  
   <requires>
-    <import plugin="org.codehaus.groovy" version="0.0.0" match="greaterOrEqual"/>
+    <!-- bonita requires org.codehaus.groovy version 2.4.16.xx-201812291959-e2018-12-RELEASE -->
+    <import plugin="org.codehaus.groovy" version="2.4.16.xx-201812291959-e2018-12-RELEASE" match="perfect"/>
     <import plugin="org.eclipse.ant.launching" version="0.0.0" match="greaterOrEqual"/>
     <import plugin="org.eclipse.ant.ui" version="0.0.0" match="greaterOrEqual"/>
     <import plugin="org.eclipse.jdt" version="0.0.0" match="greaterOrEqual"/>
@@ -30,6 +31,6 @@
     <import plugin="org.hamcrest.core" version="0.0.0" match="greaterOrEqual"/>
     <import plugin="org.junit" version="0.0.0" match="greaterOrEqual"/>
   </requires>
-  <plugin id="org.eclipse.jdt.launching.macosx" os="macosx" download-size="17" install-size="28" version="3.2.300.v20130801-1441" unpack="false"/>
-  <plugin id="org.eclipse.jdt.launching.ui.macosx" os="macosx" download-size="55" install-size="101" version="1.0.300.v20130801-1441" unpack="false"/>
+  <plugin id="org.eclipse.jdt.launching.macosx" os="macosx" download-size="0" install-size="0" version="0.0.0" unpack="false"/>
+  <plugin id="org.eclipse.jdt.launching.ui.macosx" os="macosx" download-size="0" install-size="0" version="0.0.0" unpack="false"/>
 </feature>

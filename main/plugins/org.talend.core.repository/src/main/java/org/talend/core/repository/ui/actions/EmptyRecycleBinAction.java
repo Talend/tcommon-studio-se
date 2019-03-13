@@ -40,6 +40,7 @@ import org.eclipse.ui.PlatformUI;
 import org.talend.commons.exception.BusinessException;
 import org.talend.commons.exception.PersistenceException;
 import org.talend.commons.runtime.model.repository.ERepositoryStatus;
+import org.talend.commons.ui.gmf.util.DisplayUtils;
 import org.talend.commons.ui.runtime.exception.ExceptionHandler;
 import org.talend.commons.ui.runtime.exception.MessageBoxExceptionHandler;
 import org.talend.commons.ui.runtime.image.ECoreImage;
@@ -258,7 +259,7 @@ public class EmptyRecycleBinAction extends AContextualAction {
             }
         }
         if (shell == null) {
-            shell = new Shell();
+            shell = DisplayUtils.getDefaultShell(false);
         }
         return shell;
     }

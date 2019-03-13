@@ -24,12 +24,9 @@ import org.eclipse.jface.operation.IRunnableWithProgress;
 import org.eclipse.jface.viewers.ISelection;
 import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.jface.viewers.StructuredViewer;
-import org.eclipse.swt.SWT;
 import org.eclipse.swt.graphics.DeviceData;
-import org.eclipse.swt.graphics.Point;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Shell;
-import org.eclipse.ui.PlatformUI;
 import org.talend.commons.exception.ExceptionHandler;
 import org.talend.commons.ui.gmf.util.DisplayUtils;
 import org.talend.commons.ui.swt.actions.ITreeContextualAction;
@@ -148,8 +145,6 @@ public class RepoDoubleClickAction extends Action {
         final ProxyRepositoryFactory repoFactory = ProxyRepositoryFactory.getInstance();
         if (repoFactory.isRepositoryBusy()) {
             final DeviceData deviceData = Display.getDefault().getDeviceData();
-            Shell workbenchShell = PlatformUI.getWorkbench().getActiveWorkbenchWindow().getShell();
-            final Point location = workbenchShell.getLocation();
             Thread thread = new Thread(new Runnable() {
 
                 @Override
@@ -168,9 +163,7 @@ public class RepoDoubleClickAction extends Action {
                                 }
                                 final String info = Messages.getString("RepoDoubleClickAction.wait4run", clonedAction.getText(), //$NON-NLS-1$
                                         name);
-                                Shell shell = new Shell(SWT.ON_TOP);
-                                // in case they are in different screen
-                                shell.setLocation(location);
+                                Shell shell = DisplayUtils.getDefaultShell(false);
                                 final Job waitForRunJob = new Job(info) {
 
                                     @Override

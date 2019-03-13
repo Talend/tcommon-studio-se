@@ -54,9 +54,7 @@ public final class MessageBoxExceptionHandler {
 
                 @Override
                 public void run() {
-                    Shell shell = display.getActiveShell() == null ? new Shell() : display.getActiveShell();
-                    process(ex, shell);
-
+                    process(ex, display.getActiveShell());
                 }
             });
         }

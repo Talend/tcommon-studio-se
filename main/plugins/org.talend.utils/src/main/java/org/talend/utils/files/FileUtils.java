@@ -26,6 +26,7 @@ import java.io.IOException;
 import java.io.OutputStream;
 import java.io.OutputStreamWriter;
 import java.io.PrintStream;
+import java.io.Writer;
 import java.net.URISyntaxException;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -35,6 +36,12 @@ import java.util.function.Function;
 
 import org.talend.utils.string.StringUtilities;
 import org.talend.utils.sugars.ReturnCode;
+import org.w3c.dom.DOMConfiguration;
+import org.w3c.dom.DOMImplementation;
+import org.w3c.dom.Document;
+import org.w3c.dom.ls.DOMImplementationLS;
+import org.w3c.dom.ls.LSOutput;
+import org.w3c.dom.ls.LSSerializer;
 
 /**
  * DOC stephane class global comment. Detailled comment <br/>
@@ -44,11 +51,19 @@ import org.talend.utils.sugars.ReturnCode;
  */
 public final class FileUtils {
 
+    private static final String LS_FEATURE_KEY = "LS";
+
+    private static final String LS_FEATURE_VERSION = "3.0";
+
+    private static final String CORE_FEATURE_KEY = "Core";
+
+    private static final String CORE_FEATURE_VERSION = "2.0";
+
     private FileUtils() {
     }
 
-    public static synchronized void replaceInFile(String path, String oldString, String newString) throws IOException,
-            URISyntaxException {
+    public static synchronized void replaceInFile(String path, String oldString, String newString)
+            throws IOException, URISyntaxException {
         File file = new File(path);
         File tmpFile = new File(path + ".tmp");//$NON-NLS-1$
 
@@ -239,10 +254,11 @@ public final class FileUtils {
      * @return
      */
     public static File createUserTmpFolder(String folderName) {
-        File tmpFolder = new File(System.getProperty("user.dir"), "temp/" + folderName); //$NON-NLS-1$  //$NON-NLS-2$
+        File tmpFolder = new File(System.getProperty("user.dir"), "temp/" + folderName); //$NON-NLS-1$ //$NON-NLS-2$
         tmpFolder.mkdirs();
         return tmpFolder;
     }
+
     /**
      * DOC xlwang Comment method "createProjectFile".
      */
@@ -271,6 +287,26 @@ public final class FileUtils {
             if (ps != null) {
                 ps.close();
             }
+        }
+    }
+
+    public static void writeXMLFile(Document document, Writer writer) {
+        DOMImplementation implementation = document.getImplementation();
+
+        if (implementation.hasFeature(LS_FEATURE_KEY, LS_FEATURE_VERSION)
+                && implementation.hasFeature(CORE_FEATURE_KEY, CORE_FEATURE_VERSION)) {
+            DOMImplementationLS implementationLS = (DOMImplementationLS) implementation.getFeature(LS_FEATURE_KEY,
+                    LS_FEATURE_VERSION);
+            LSSerializer serializer = implementationLS.createLSSerializer();
+            DOMConfiguration configuration = serializer.getDomConfig();
+
+            configuration.setParameter("well-formed", Boolean.TRUE);
+            configuration.setParameter("comments", true);
+
+            LSOutput output = implementationLS.createLSOutput();
+            output.setEncoding("UTF-8");
+            output.setCharacterStream(writer);
+            serializer.write(document, output);
         }
     }
 }

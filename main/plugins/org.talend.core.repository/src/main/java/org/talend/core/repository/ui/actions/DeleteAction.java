@@ -48,6 +48,7 @@ import org.eclipse.ui.actions.ActionFactory;
 import org.talend.commons.exception.BusinessException;
 import org.talend.commons.exception.PersistenceException;
 import org.talend.commons.runtime.model.repository.ERepositoryStatus;
+import org.talend.commons.ui.gmf.util.DisplayUtils;
 import org.talend.commons.ui.runtime.exception.ExceptionHandler;
 import org.talend.commons.ui.runtime.exception.MessageBoxExceptionHandler;
 import org.talend.commons.ui.runtime.image.EImage;
@@ -1241,7 +1242,8 @@ public class DeleteAction extends AContextualAction {
 
                 @Override
                 public void run() {
-                    MessageDialog dialog = new MessageDialog(new Shell(), title, null, lockMessage, MessageDialog.ERROR,
+                    MessageDialog dialog = new MessageDialog(DisplayUtils.getDefaultShell(false), title, null, lockMessage,
+                            MessageDialog.ERROR,
                             new String[] { IDialogConstants.OK_LABEL }, 0);
                     dialog.open();
                 }
@@ -1372,7 +1374,7 @@ public class DeleteAction extends AContextualAction {
                                     + " " + Messages.getString("DeleteAction.dialog.message0") + "\n" //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
                                     + Messages.getString("DeleteAction.dialog.message2"); //$NON-NLS-1$
 
-                            confirmFromDialog = MessageDialog.openQuestion(new Shell(), title, message);
+                            confirmFromDialog = MessageDialog.openQuestion(DisplayUtils.getDefaultShell(false), title, message);
                         }
                     });
                     confirm = confirmFromDialog;
@@ -1839,7 +1841,7 @@ public class DeleteAction extends AContextualAction {
             }
         }
         if (shell == null) {
-            shell = new Shell();
+            shell = DisplayUtils.getDefaultShell(false);
         }
         return shell;
     }

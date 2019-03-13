@@ -24,7 +24,7 @@ import org.eclipse.core.runtime.SubMonitor;
 import org.eclipse.core.runtime.jobs.Job;
 import org.eclipse.jface.window.Window;
 import org.eclipse.swt.widgets.Display;
-import org.eclipse.swt.widgets.Shell;
+import org.talend.commons.ui.gmf.util.DisplayUtils;
 import org.talend.updates.runtime.i18n.Messages;
 import org.talend.updates.runtime.model.ExtraFeature;
 import org.talend.updates.runtime.model.FeatureRepositories;
@@ -93,7 +93,8 @@ public class InstallNewFeatureJob extends Job {
                 @Override
                 public void run() {
                     ErrorDialogWithDetailAreaAndTryAgainButton errorDialog = new ErrorDialogWithDetailAreaAndTryAgainButton(
-                            new Shell(), "org.talend.updates.runtime", Messages
+                            DisplayUtils.getDefaultShell(false), "org.talend.updates.runtime",
+                            Messages
                                     .getString("InstallNewFeatureJob.failed.dialog.tryagin"), detailesMessage.toString());
                     if (Window.OK == errorDialog.getCodeOfButton()) {
                         installFeature(failedFeature.keySet(), multiStatus, subMon);

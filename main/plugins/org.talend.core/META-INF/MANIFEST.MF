@@ -1,4 +1,5 @@
 Manifest-Version: 1.0
+Automatic-Module-Name: org.talend.core
 Bundle-ManifestVersion: 2
 Bundle-Name: Core Plug-in
 Bundle-SymbolicName: org.talend.core;singleton:=true
@@ -13,14 +14,13 @@ Require-Bundle: org.eclipse.debug.core,
  org.apache.commons.lang,
  org.apache.commons.collections,
  org.apache.log4j,
- org.talend.libraries.dom4j-jaxen,
+ org.eclipse.jface,
  org.talend.common.ui.runtime,
  org.talend.metadata.managment,
- org.talend.libraries.apache,
  org.talend.model,
- org.talend.core.runtime;visibility:=reexport,
  org.talend.core.repository,
- org.eclipse.jface,
+ org.talend.libraries.apache,
+ org.talend.core.runtime,
  org.talend.utils
 Bundle-Vendor: .Talend SA.
 Export-Package: org.talend.core,
@@ -53,3 +53,5 @@ Export-Package: org.talend.core,
  org.talend.core.services.resource,
  org.talend.core.views,
  org.talend.designer.runprocess
+Import-Package: org.apache.commons.collections4.map,
+ org.dom4j

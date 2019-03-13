@@ -12,8 +12,6 @@
 // ============================================================================
 package org.talend.themes.core.elements.handlers;
 
-import net.jeeeyul.swtend.ui.HSB;
-
 import org.apache.commons.lang.StringUtils;
 import org.eclipse.e4.ui.css.core.dom.properties.ICSSPropertyHandler;
 import org.eclipse.e4.ui.css.core.engine.CSSEngine;
@@ -28,6 +26,8 @@ import org.talend.themes.core.elements.renderers.TalendTabRenderer;
 import org.talend.themes.core.elements.stylesettings.TalendTabSettings;
 import org.w3c.dom.css.CSSValue;
 import org.w3c.dom.css.CSSValueList;
+
+import net.jeeeyul.swtend.ui.HSB;
 
 /**
  * created by cmeng on Feb 9, 2015 Detailled comment
@@ -61,7 +61,7 @@ public class TalendTabCSSPropertyHandler implements ICSSPropertyHandler {
                 _matched = true;
                 boolean _xblockexpression_48 = false;
                 {
-                    RGB rgb = CSSSWTColorHelper.getRGB((value));
+                    RGB rgb = CSSSWTColorHelper.getRGBA(value).rgb;
                     if (rgb != null) {
                         HSB hsb = new HSB(rgb.red, rgb.green, rgb.blue);
                         settings.setMinimizeButtonForgroundColor(hsb);
@@ -78,7 +78,7 @@ public class TalendTabCSSPropertyHandler implements ICSSPropertyHandler {
                 _matched = true;
                 boolean _xblockexpression_49 = false;
                 {
-                    RGB rgb = CSSSWTColorHelper.getRGB((value));
+                    RGB rgb = CSSSWTColorHelper.getRGBA(value).rgb;
                     if (rgb != null) {
                         HSB hsb = new HSB(rgb.red, rgb.green, rgb.blue);
                         settings.setMinimizeButtonBackgroundColor(hsb);
@@ -95,7 +95,7 @@ public class TalendTabCSSPropertyHandler implements ICSSPropertyHandler {
                 _matched = true;
                 boolean _xblockexpression_50 = false;
                 {
-                    RGB rgb = CSSSWTColorHelper.getRGB((value));
+                    RGB rgb = CSSSWTColorHelper.getRGBA(value).rgb;
                     if (rgb != null) {
                         HSB hsb = new HSB(rgb.red, rgb.green, rgb.blue);
                         settings.setMaximizeButtonForgroundColor(hsb);
@@ -112,7 +112,7 @@ public class TalendTabCSSPropertyHandler implements ICSSPropertyHandler {
                 _matched = true;
                 boolean _xblockexpression_51 = false;
                 {
-                    RGB rgb = CSSSWTColorHelper.getRGB((value));
+                    RGB rgb = CSSSWTColorHelper.getRGBA(value).rgb;
                     if (rgb != null) {
                         HSB hsb = new HSB(rgb.red, rgb.green, rgb.blue);
                         settings.setMaximizeButtonBackgroundColor(hsb);

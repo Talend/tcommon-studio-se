@@ -1094,9 +1094,10 @@ public class XmlFileOutputStep2Form extends AbstractXmlFileStepForm {
             }
             xmlViewer.setInput(treeData);
             xmlViewer.expandToLevel(3);
-            linker.createLinks();
+            int maxColumnsNumber = CoreUIPlugin.getDefault().getPreferenceStore()
+                    .getInt(ITalendCorePrefConstants.MAXIMUM_AMOUNT_OF_COLUMNS_FOR_XML);
+            refreshSchema(maxColumnsNumber);
             // if (!creation) {
-            checkFieldsValue();
             // }
             limitNumberText.setText(String.valueOf(schemaViewer.getTable().getItems().length));
         }

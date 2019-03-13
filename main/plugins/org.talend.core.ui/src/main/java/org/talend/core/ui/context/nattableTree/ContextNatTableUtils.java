@@ -16,7 +16,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.eclipse.jface.dialogs.MessageDialog;
-import org.eclipse.swt.widgets.Shell;
+import org.talend.commons.ui.gmf.util.DisplayUtils;
 import org.talend.core.GlobalServiceRegister;
 import org.talend.core.ILibraryManagerUIService;
 import org.talend.core.model.context.ContextUtils;
@@ -172,7 +172,7 @@ public class ContextNatTableUtils {
         if (!manager.getContextManager().checkValidParameterName(oldParamName, newParamName)) {
             MessageDialog
                     .openError(
-                            new Shell(),
+                            DisplayUtils.getDefaultShell(false),
                             Messages.getString("ContextProcessSection.errorTitle"), Messages.getString("ContextProcessSection.ParameterNameIsNotValid")); //$NON-NLS-1$ //$NON-NLS-2$
             return false;
         }
@@ -181,7 +181,7 @@ public class ContextNatTableUtils {
             if (newParamName.length() > 255) {
                 MessageDialog
                         .openError(
-                                new Shell(),
+                                DisplayUtils.getDefaultShell(false),
                                 Messages.getString("ContextProcessSection.errorTitle"), Messages.getString("ContextTemplateComposite.ParamterLengthInvilid")); //$NON-NLS-1$ //$NON-NLS-2$
                 return false;
             }

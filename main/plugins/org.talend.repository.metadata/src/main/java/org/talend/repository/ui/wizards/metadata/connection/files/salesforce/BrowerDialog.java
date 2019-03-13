@@ -17,12 +17,13 @@ import org.eclipse.jface.dialogs.IDialogConstants;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.browser.Browser;
 import org.eclipse.swt.graphics.Point;
-import org.eclipse.swt.layout.FillLayout;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Shell;
+import org.talend.commons.exception.ExceptionHandler;
+import org.talend.repository.metadata.i18n.Messages;
 
 /**
  * DOC zwzhao class global comment. Detailled comment
@@ -48,7 +49,14 @@ public class BrowerDialog extends Dialog {
         Composite composite = (Composite) super.createDialogArea(parent);
         composite.setLayout(new GridLayout());
         broswer = new Browser(composite, SWT.NONE);
-        broswer.setUrl(url);
+        if (url != null && !url.trim().isEmpty()) {
+            // linux swt in eclipse4.10 has a bug that we can't pass empty string or null
+            broswer.setUrl(url);
+        } else {
+            String message = Messages.getString("BrowerDialog.empryUrl");
+            Exception e = new Exception(message);
+            ExceptionHandler.process(e);
+        }
         broswer.setLayoutData(new GridData(GridData.FILL_BOTH));
         broswer.redraw();
         composite.redraw();

@@ -54,6 +54,8 @@ public class ConnectionBean implements Cloneable {
 
     private Map<String, String> dynamicFields = new HashMap<String, String>();
 
+    private static final String TOKEN = "token"; //$NON-NLS-1$
+
     /**
      * DOC smallet ConnectionBean constructor comment.
      */
@@ -281,6 +283,25 @@ public class ConnectionBean implements Cloneable {
         }
     }
 
+    public boolean isToken() {
+        try {
+            if (conDetails.has(TOKEN)) {
+                return (Boolean) conDetails.get(TOKEN);
+            }
+        } catch (JSONException e) {
+            ExceptionHandler.process(e);
+        }
+        return false;
+    }
+
+    public void setToken(boolean token) {
+        try {
+            conDetails.put(TOKEN, token);
+        } catch (JSONException e) {
+            ExceptionHandler.process(e);
+        }
+    }
+
     @Override
     public ConnectionBean clone() throws CloneNotSupportedException {
         return writeFromJSON(this.getConDetails());
@@ -303,6 +324,7 @@ public class ConnectionBean implements Cloneable {
             toReturn.setPassword(st[i++]);
             toReturn.setWorkSpace(st[i++]);
             toReturn.setComplete(new Boolean(st[i++]));
+            toReturn.setToken(new Boolean(st[i++]));
             JSONObject dynamicJson = new JSONObject();
             toReturn.getConDetails().put(DYNAMICFIELDS, dynamicJson);
             while (i < st.length) {

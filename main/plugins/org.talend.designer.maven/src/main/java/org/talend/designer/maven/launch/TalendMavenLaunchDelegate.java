@@ -32,7 +32,6 @@ import org.eclipse.jdt.launching.IVMInstall;
 import org.eclipse.jdt.launching.IVMRunner;
 import org.eclipse.jdt.launching.VMRunnerConfiguration;
 import org.eclipse.m2e.internal.launch.MavenLaunchDelegate;
-import org.eclipse.m2e.internal.launch.MavenRuntimeLaunchSupport;
 import org.eclipse.osgi.util.NLS;
 import org.talend.commons.CommonsPlugin;
 
@@ -100,7 +99,7 @@ public class TalendMavenLaunchDelegate extends MavenLaunchDelegate {
                         ForegroundResourceRefresher refresher = new ForegroundResourceRefresher(configuration, launch);
                         refresher.init();
                     } else {
-                        MavenRuntimeLaunchSupport.removeTempFiles(launch);
+                        // MavenRuntimeLaunchSupport.removeTempFiles(launch);
                     }
                 }
             };
@@ -155,7 +154,7 @@ class ForegroundResourceRefresher implements IDebugEventSetListener {
     protected void processResources() {
         IProgressMonitor monitor = new NullProgressMonitor();
 
-        MavenRuntimeLaunchSupport.removeTempFiles(launch);
+        // MavenRuntimeLaunchSupport.removeTempFiles(launch);
 
         if (CommonsPlugin.isHeadless() || !CommonsPlugin.isWorkbenchCreated()) { // no used for commandline to refresh.
             return;

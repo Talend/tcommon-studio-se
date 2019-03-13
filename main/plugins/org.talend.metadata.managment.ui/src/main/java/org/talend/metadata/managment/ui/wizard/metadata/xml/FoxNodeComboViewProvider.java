@@ -49,4 +49,9 @@ public class FoxNodeComboViewProvider extends ArrayContentProvider implements IL
         return text;
     }
 
+    @Override
+    public void dispose() {
+        super.dispose();
+    }
+
 }

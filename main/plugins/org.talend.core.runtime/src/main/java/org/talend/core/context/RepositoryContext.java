@@ -44,6 +44,8 @@ public class RepositoryContext {
 
     private Map<String, String> fields;
 
+    private boolean token = false;
+
     /**
      * DOC smallet RepositoryContext constructor comment.
      * 
@@ -245,5 +247,13 @@ public class RepositoryContext {
 
     public void setNoUpdateWhenLogon(boolean noUpdateWhenLogon) {
         this.noUpdateWhenLogon = noUpdateWhenLogon;
+    }
+
+    public boolean isToken() {
+        return this.token;
+    }
+
+    public void setToken(boolean token) {
+        this.token = token;
     }
 }

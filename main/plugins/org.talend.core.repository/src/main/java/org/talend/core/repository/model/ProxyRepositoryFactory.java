@@ -67,6 +67,7 @@ import org.talend.commons.exception.PersistenceException;
 import org.talend.commons.exception.SystemException;
 import org.talend.commons.runtime.model.repository.ERepositoryStatus;
 import org.talend.commons.runtime.service.ITaCoKitService;
+import org.talend.commons.ui.gmf.util.DisplayUtils;
 import org.talend.commons.ui.runtime.CommonUIPlugin;
 import org.talend.commons.ui.runtime.exception.MessageBoxExceptionHandler;
 import org.talend.commons.utils.data.container.RootContainer;
@@ -407,7 +408,7 @@ public final class ProxyRepositoryFactory implements IProxyRepositoryFactory {
                         public void run() {
                             Shell currentShell = tmpDisplay.getActiveShell();
                             if (currentShell == null) {
-                                currentShell = new Shell();
+                                currentShell = DisplayUtils.getDefaultShell(false);
                             }
                             MessageBox box = new MessageBox(currentShell, SWT.ICON_WARNING | SWT.OK | SWT.CANCEL);
                             box.setText(Messages.getString("ProxyRepositoryFactory.JobNameErroe")); //$NON-NLS-1$

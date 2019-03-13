@@ -16,7 +16,6 @@ import java.util.ArrayList;
 
 import org.apache.log4j.Logger;
 import org.eclipse.core.runtime.IStatus;
-import org.eclipse.core.runtime.Plugin;
 import org.eclipse.jface.viewers.CellEditor;
 import org.eclipse.jface.viewers.ICellModifier;
 import org.eclipse.jface.viewers.ISelection;
@@ -45,6 +44,7 @@ import org.eclipse.swt.widgets.Text;
 import org.talend.commons.ui.swt.formtools.Form;
 import org.talend.commons.ui.swt.formtools.LabelledCombo;
 import org.talend.commons.ui.swt.thread.SWTUIThreadProcessor;
+import org.talend.core.GlobalServiceRegister;
 import org.talend.core.PluginChecker;
 import org.talend.core.language.ECodeLanguage;
 import org.talend.core.language.LanguageManager;
@@ -305,10 +305,9 @@ public class WSDLSchemaStep1Form extends AbstractWSDLSchemaStepForm {
 
             @Override
             public void widgetSelected(SelectionEvent e) {
-                Plugin plugin = PluginChecker.getWSDLPlugin();
-                if (plugin instanceof IWSDLExplorerAccessor) {
-                    IWSDLExplorerAccessor accessor = (IWSDLExplorerAccessor) plugin;
-                    // Shell shell = new Shell(getParent().getShell().getDisplay());
+                GlobalServiceRegister serviceRegister = GlobalServiceRegister.getDefault();
+                if (serviceRegister.isServiceRegistered(IWSDLExplorerAccessor.class)) {
+                    IWSDLExplorerAccessor accessor = serviceRegister.getService(IWSDLExplorerAccessor.class);
                     accessor.openWSExplorer(getShell());
                 }
             }

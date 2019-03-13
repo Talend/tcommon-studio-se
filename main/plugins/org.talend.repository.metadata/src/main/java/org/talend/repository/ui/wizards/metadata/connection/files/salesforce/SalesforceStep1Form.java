@@ -35,6 +35,7 @@ import org.eclipse.swt.widgets.Group;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Shell;
 import org.talend.commons.exception.ExceptionHandler;
+import org.talend.commons.ui.gmf.util.DisplayUtils;
 import org.talend.commons.ui.swt.dialogs.ErrorDialogWidthDetailArea;
 import org.talend.commons.ui.swt.formtools.Form;
 import org.talend.commons.ui.swt.formtools.LabelledCombo;
@@ -654,7 +655,7 @@ public class SalesforceStep1Form extends AbstractSalesforceStepForm {
                                     BrowerDialog brower;
                                     try {
                                         // Display display = new Display();
-                                        Shell shell = new Shell(Display.getDefault(), SWT.ON_TOP);
+                                        Shell shell = DisplayUtils.getDefaultShell(false);
                                         brower = new BrowerDialog(shell, client.getUrl());
                                         if (Window.OK == brower.open()) {
                                             code = client.getServer().getCode();
