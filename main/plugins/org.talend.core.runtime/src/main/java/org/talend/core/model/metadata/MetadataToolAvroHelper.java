@@ -159,24 +159,24 @@ public final class MetadataToolAvroHelper {
         String tt = in.getTalendType();
 
         Schema type = null;
-        
+
         try {
             // Numeric types.
             if (JavaTypesManager.LONG.getId().equals(tt)) {
                 type = AvroUtils._long();
-                defaultValue = StringUtils.isEmpty((String)defaultValue) ? null : Long.parseLong(defaultValue.toString());
+                defaultValue = getDefaultLongValue(defaultValue);
             } else if (JavaTypesManager.INTEGER.getId().equals(tt)) {
                 type = AvroUtils._int();
-                defaultValue = StringUtils.isEmpty((String)defaultValue) ? null : Integer.parseInt(defaultValue.toString());
+                defaultValue = getDefaultIntegerValue(defaultValue);
             } else if (JavaTypesManager.SHORT.getId().equals(tt)) {
                 type = AvroUtils._short();
-                defaultValue = StringUtils.isEmpty((String)defaultValue) ? null : Integer.parseInt(defaultValue.toString());
+                defaultValue = getDefaultIntegerValue(defaultValue);
             } else if (JavaTypesManager.BYTE.getId().equals(tt)) {
                 type = AvroUtils._byte();
-                defaultValue = StringUtils.isEmpty((String)defaultValue) ? null : Integer.parseInt(defaultValue.toString());
+                defaultValue = getDefaultIntegerValue(defaultValue);
             } else if (JavaTypesManager.DOUBLE.getId().equals(tt)) {
                 type = AvroUtils._double();
-                defaultValue = StringUtils.isEmpty((String)defaultValue) ? null : Double.parseDouble(defaultValue.toString());
+                defaultValue = getDefaultDoubleValue(defaultValue);
             } else if (JavaTypesManager.FLOAT.getId().equals(tt)) {
                 type = AvroUtils._float();
                 defaultValue = StringUtils.isEmpty((String)defaultValue) ? null : Float.parseFloat(defaultValue.toString());
@@ -236,6 +236,64 @@ public final class MetadataToolAvroHelper {
 
         type = in.isNullable() ? AvroUtils.wrapAsNullable(type) : type;
         return defaultValue == null ? fb.type(type).noDefault() : fb.type(type).withDefault(defaultValue);
+    }
+
+
+    private static Long getDefaultLongValue(Object defaultValue) {
+        if (StringUtils.isEmpty((String) defaultValue)) {
+            return null;
+        }
+        Long longValue ;
+        try {
+            longValue = Long.parseLong(defaultValue.toString());
+        } catch (NumberFormatException e){
+            longValue = Long.parseLong(cleanupUserDefaultInputs(defaultValue.toString()));
+        }
+        return longValue;
+    }
+    private static Integer getDefaultIntegerValue(Object defaultValue) {
+        if (StringUtils.isEmpty((String) defaultValue)) {
+            return null;
+        }
+        Integer intValue;
+        try {
+            intValue = Integer.parseInt(defaultValue.toString());
+        } catch (NumberFormatException e) {
+            // if still error after clean up => exception should stop at parent try/catch and set default value
+            intValue = Integer.parseInt(cleanupUserDefaultInputs(defaultValue.toString()));
+        }
+        return intValue;
+    }
+
+    private static Double getDefaultDoubleValue(Object defaultValue) {
+        if (StringUtils.isEmpty((String) defaultValue)) {
+            return null;
+        }
+        Double doubleValue;
+        try {
+            doubleValue = Double.parseDouble(defaultValue.toString());
+        } catch (NumberFormatException e) {
+            doubleValue = Double.parseDouble(cleanupUserDefaultInputs(defaultValue.toString()));
+        }
+        return doubleValue;
+    }
+
+    /**
+     * don't want to corrupt user data so should check couple cases
+     * in other case return the same expression - probably it is user's expression
+     */
+    private static String cleanupUserDefaultInputs(String inStr) {
+        // case '000'
+        // todo ? reg exp for any number of digits inside
+        // inStr.matches("'[\\d,\\.]+'");
+        if (inStr.startsWith("'") && inStr.endsWith("'") && inStr.length() > 2) {
+            return inStr.substring(1, inStr.length() - 1);
+        }
+        // todo ? case (-1)
+
+        // todo ? case ""NULL""
+
+        return inStr;
     }
 
     private static Schema getLogicalTypeSchema(org.talend.core.model.metadata.builder.connection.MetadataColumn column) {
@@ -734,7 +792,7 @@ public final class MetadataToolAvroHelper {
     }
 
     /**
-     * @param in A field from an incoming schema
+     * @param field A field from an incoming schema
      * @return A MetadataColumn containing all the information from the Schema, including any information included the
      * schema as JSON property annotations for Talend 6 generated schemas.
      */
@@ -744,7 +802,7 @@ public final class MetadataToolAvroHelper {
     }
     
     /**
-     * @param in A field from an incoming schema
+     * @param field A field from an incoming schema
      * @return A MetadataColumn containing all the information from the Schema, including any information included the
      * schema as JSON property annotations for Talend 6 generated schemas.
      */
