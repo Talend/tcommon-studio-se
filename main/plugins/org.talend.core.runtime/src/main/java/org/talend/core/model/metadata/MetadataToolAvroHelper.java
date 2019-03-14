@@ -179,7 +179,7 @@ public final class MetadataToolAvroHelper {
                 defaultValue = getDefaultDoubleValue(defaultValue);
             } else if (JavaTypesManager.FLOAT.getId().equals(tt)) {
                 type = AvroUtils._float();
-                defaultValue = StringUtils.isEmpty((String)defaultValue) ? null : Float.parseFloat(defaultValue.toString());
+                defaultValue = getDefaultFloatValue(defaultValue);
             } else if (JavaTypesManager.BIGDECIMAL.getId().equals(tt)) {
                 // decimal(precision, scale) == column length and precision?
                 type = AvroUtils._decimal();
@@ -243,56 +243,85 @@ public final class MetadataToolAvroHelper {
         if (StringUtils.isEmpty((String) defaultValue)) {
             return null;
         }
-        Long longValue ;
+
         try {
-            longValue = Long.parseLong(defaultValue.toString());
+            return Long.parseLong(defaultValue.toString());
         } catch (NumberFormatException e){
-            longValue = Long.parseLong(cleanupUserDefaultInputs(defaultValue.toString()));
+            String result = cleanupUserDefaultInputs(defaultValue.toString());
+            if (StringUtils.isEmpty(result) || "null".equalsIgnoreCase(result)) {
+                return null;
+            }
+            return Long.parseLong(result);
         }
-        return longValue;
     }
+
     private static Integer getDefaultIntegerValue(Object defaultValue) {
         if (StringUtils.isEmpty((String) defaultValue)) {
             return null;
         }
-        Integer intValue;
         try {
-            intValue = Integer.parseInt(defaultValue.toString());
+            return Integer.parseInt(defaultValue.toString());
         } catch (NumberFormatException e) {
-            // if still error after clean up => exception should stop at parent try/catch and set default value
-            intValue = Integer.parseInt(cleanupUserDefaultInputs(defaultValue.toString()));
+            String result = cleanupUserDefaultInputs(defaultValue.toString());
+            if (StringUtils.isEmpty(result) || "null".equalsIgnoreCase(result)) {
+                return null;
+            }
+            return Integer.parseInt(result);
         }
-        return intValue;
     }
 
     private static Double getDefaultDoubleValue(Object defaultValue) {
         if (StringUtils.isEmpty((String) defaultValue)) {
             return null;
         }
-        Double doubleValue;
         try {
-            doubleValue = Double.parseDouble(defaultValue.toString());
+            return Double.parseDouble(defaultValue.toString());
         } catch (NumberFormatException e) {
-            doubleValue = Double.parseDouble(cleanupUserDefaultInputs(defaultValue.toString()));
+            String result = cleanupUserDefaultInputs(defaultValue.toString());
+            if (StringUtils.isEmpty(result) || "null".equalsIgnoreCase(result)) {
+                return null;
+            }
+            return Double.parseDouble(result);
         }
-        return doubleValue;
     }
 
-    /**
-     * don't want to corrupt user data so should check couple cases
+    private static Float getDefaultFloatValue(Object defaultValue) {
+
+        if (StringUtils.isEmpty((String) defaultValue)) {
+            return null;
+        }
+        try {
+            return Float.parseFloat(defaultValue.toString());
+        } catch (NumberFormatException e) {
+            String result = cleanupUserDefaultInputs(defaultValue.toString());
+            if (StringUtils.isEmpty(result) || "null".equalsIgnoreCase(result)) {
+                return null;
+            }
+            return Float.parseFloat(result);
+        }
+    }
+
+    /*
+     * don't want to corrupt user data but should check couple cases
      * in other case return the same expression - probably it is user's expression
      */
     private static String cleanupUserDefaultInputs(String inStr) {
-        // case '000'
-        // todo ? reg exp for any number of digits inside
-        // inStr.matches("'[\\d,\\.]+'");
-        if (inStr.startsWith("'") && inStr.endsWith("'") && inStr.length() > 2) {
-            return inStr.substring(1, inStr.length() - 1);
+        if (inStr.length() > 2) {
+            // case '000'
+            // todo ? reg exp for any number of digits inside
+            // inStr.matches("'[\\d,\\.]+'");
+            if (inStr.startsWith("'") && inStr.endsWith("'")) {
+                return inStr.substring(1, inStr.length() - 1);
+            }
+            // case (-1)
+            if (inStr.startsWith("(") && inStr.endsWith(")")) {
+                return inStr.substring(1, inStr.length() - 1);
+            }
+            // case "NULL"  or "000"
+            if (inStr.startsWith("\"") && inStr.endsWith("\"")) {
+                return inStr.substring(1, inStr.length() - 1);
+            }
         }
-        // todo ? case (-1)
-
-        // todo ? case ""NULL""
-
         return inStr;
     }
 
