@@ -513,6 +513,10 @@ public class TalendTextUtils {
 
     }
 
+    public static String escapeJavaText(final String text) {
+        return StringEscapeUtils.escapeJava(text);
+    }
+
     public static String filterSpecialChar(String input) { // for 8115
         if (input != null && !"".equals(input)) {
             for (int i = 0; i < input.length();) {
