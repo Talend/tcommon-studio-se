@@ -103,7 +103,7 @@ public class ImageUtils {
      * RAP.
      */
     public static Image scale(Image image, int percent) {
-        float scale = (float) percent / 100f;
+        float scale = percent / 100f;
         int newWidth = (int) (scale * image.getImageData().width);
         int newHeight = (int) (scale * image.getImageData().height);
         ImageData imageData = image.getImageData().scaledTo(newWidth, newHeight);
@@ -160,7 +160,8 @@ public class ImageUtils {
                 img = new ImageData(bais);
                 imageFromDataCachedImages.put(data, img);
             }
-            return ImageDescriptor.createFromImageData(img);
+            TalendImageProvider talendImageProvider = new TalendImageProvider(img);
+            return ImageDescriptor.createFromImageDataProvider(talendImageProvider);
         }
         return null;
     }
@@ -283,11 +284,11 @@ public class ImageUtils {
             // if width is mort than height.
             if (w > h) {
                 newSize.x = requiredSize.x;
-                newSize.y = (int) (w >= 1 ? Math.round(originalSize.y / w) : Math.round(originalSize.y * w));
+                newSize.y = w >= 1 ? Math.round(originalSize.y / w) : Math.round(originalSize.y * w);
             }
             // if width is less than height.
             else if (w < h) {
-                newSize.x = (int) (h >= 1 ? Math.round(originalSize.x / h) : Math.round(originalSize.x * h));
+                newSize.x = h >= 1 ? Math.round(originalSize.x / h) : Math.round(originalSize.x * h);
                 newSize.y = requiredSize.y;
             }
             // if equal
