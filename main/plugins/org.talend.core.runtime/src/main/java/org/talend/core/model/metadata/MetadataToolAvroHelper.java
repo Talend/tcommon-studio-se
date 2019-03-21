@@ -164,22 +164,22 @@ public final class MetadataToolAvroHelper {
             // Numeric types.
             if (JavaTypesManager.LONG.getId().equals(tt)) {
                 type = AvroUtils._long();
-                defaultValue = getDefaultLongValue(defaultValue);
+                defaultValue = parseLong(defaultValue);
             } else if (JavaTypesManager.INTEGER.getId().equals(tt)) {
                 type = AvroUtils._int();
-                defaultValue = getDefaultIntegerValue(defaultValue);
+                defaultValue = parseInt(defaultValue);
             } else if (JavaTypesManager.SHORT.getId().equals(tt)) {
                 type = AvroUtils._short();
-                defaultValue = getDefaultIntegerValue(defaultValue);
+                defaultValue = parseInt(defaultValue);
             } else if (JavaTypesManager.BYTE.getId().equals(tt)) {
                 type = AvroUtils._byte();
-                defaultValue = getDefaultIntegerValue(defaultValue);
+                defaultValue = parseInt(defaultValue);
             } else if (JavaTypesManager.DOUBLE.getId().equals(tt)) {
                 type = AvroUtils._double();
-                defaultValue = getDefaultDoubleValue(defaultValue);
+                defaultValue = parseDouble(defaultValue);
             } else if (JavaTypesManager.FLOAT.getId().equals(tt)) {
                 type = AvroUtils._float();
-                defaultValue = getDefaultFloatValue(defaultValue);
+                defaultValue = parseFloat(defaultValue);
             } else if (JavaTypesManager.BIGDECIMAL.getId().equals(tt)) {
                 // decimal(precision, scale) == column length and precision?
                 type = AvroUtils._decimal();
@@ -239,7 +239,7 @@ public final class MetadataToolAvroHelper {
     }
 
 
-    private static Long getDefaultLongValue(Object defaultValue) {
+    private static Long parseLong(Object defaultValue) {
         if (StringUtils.isEmpty((String) defaultValue)) {
             return null;
         }
@@ -247,7 +247,7 @@ public final class MetadataToolAvroHelper {
         try {
             return Long.parseLong(defaultValue.toString());
         } catch (NumberFormatException e){
-            String result = cleanupUserDefaultInputs(defaultValue.toString());
+            String result = cleanString(defaultValue.toString());
             if (StringUtils.isEmpty(result) || "null".equalsIgnoreCase(result)) {
                 return null;
             }
@@ -255,14 +255,14 @@ public final class MetadataToolAvroHelper {
         }
     }
 
-    private static Integer getDefaultIntegerValue(Object defaultValue) {
+    private static Integer parseInt(Object defaultValue) {
         if (StringUtils.isEmpty((String) defaultValue)) {
             return null;
         }
         try {
             return Integer.parseInt(defaultValue.toString());
         } catch (NumberFormatException e) {
-            String result = cleanupUserDefaultInputs(defaultValue.toString());
+            String result = cleanString(defaultValue.toString());
             if (StringUtils.isEmpty(result) || "null".equalsIgnoreCase(result)) {
                 return null;
             }
@@ -270,14 +270,14 @@ public final class MetadataToolAvroHelper {
         }
     }
 
-    private static Double getDefaultDoubleValue(Object defaultValue) {
+    private static Double parseDouble(Object defaultValue) {
         if (StringUtils.isEmpty((String) defaultValue)) {
             return null;
         }
         try {
             return Double.parseDouble(defaultValue.toString());
         } catch (NumberFormatException e) {
-            String result = cleanupUserDefaultInputs(defaultValue.toString());
+            String result = cleanString(defaultValue.toString());
             if (StringUtils.isEmpty(result) || "null".equalsIgnoreCase(result)) {
                 return null;
             }
@@ -285,7 +285,7 @@ public final class MetadataToolAvroHelper {
         }
     }
 
-    private static Float getDefaultFloatValue(Object defaultValue) {
+    private static Float parseFloat(Object defaultValue) {
 
         if (StringUtils.isEmpty((String) defaultValue)) {
             return null;
@@ -293,7 +293,7 @@ public final class MetadataToolAvroHelper {
         try {
             return Float.parseFloat(defaultValue.toString());
         } catch (NumberFormatException e) {
-            String result = cleanupUserDefaultInputs(defaultValue.toString());
+            String result = cleanString(defaultValue.toString());
             if (StringUtils.isEmpty(result) || "null".equalsIgnoreCase(result)) {
                 return null;
             }
@@ -305,11 +305,9 @@ public final class MetadataToolAvroHelper {
      * don't want to corrupt user data but should check couple cases
      * in other case return the same expression - probably it is user's expression
      */
-    private static String cleanupUserDefaultInputs(String inStr) {
+    private static String cleanString(String inStr) {
         if (inStr.length() > 2) {
             // case '000'
-            // todo ? reg exp for any number of digits inside
-            // inStr.matches("'[\\d,\\.]+'");
             if (inStr.startsWith("'") && inStr.endsWith("'")) {
                 return inStr.substring(1, inStr.length() - 1);
             }
