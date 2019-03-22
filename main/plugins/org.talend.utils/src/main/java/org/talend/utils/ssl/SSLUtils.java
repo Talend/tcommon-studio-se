@@ -223,7 +223,7 @@ public class SSLUtils {
     }
 
     public SSLContext getSSLContext() throws Exception {
-        SSLContext sslcontext = SSLContext.getInstance("TSL"); //$NON-NLS-1$
+        SSLContext sslcontext = SSLContext.getInstance("TLS"); //$NON-NLS-1$
         sslcontext.init(keystoreManagers, truststoreManagers, null);
         return sslcontext;
     }
