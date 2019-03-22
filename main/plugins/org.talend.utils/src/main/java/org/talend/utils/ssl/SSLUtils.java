@@ -196,7 +196,7 @@ public class SSLUtils {
         }
 
         if (trustStorePath != null) {
-            TrustManagerFactory tmf = TrustManagerFactory.getInstance(KeyManagerFactory.getDefaultAlgorithm()); //$NON-NLS-1$
+            TrustManagerFactory tmf = TrustManagerFactory.getInstance(TrustManagerFactory.getDefaultAlgorithm()); //$NON-NLS-1$
             KeyStore tks = KeyStore.getInstance(KeyStore.getDefaultType());
             tks.load(new FileInputStream(trustStorePath), truststorePass.toCharArray());
             tmf.init(tks);
@@ -207,7 +207,7 @@ public class SSLUtils {
             if (acceptAllCertsIfNoTrustStore) {
                 truststoreManagers = new TrustManager[] { new TrustAnyTrustManager() };
             } else {
-                TrustManagerFactory tmf = TrustManagerFactory.getInstance(KeyManagerFactory.getDefaultAlgorithm()); //$NON-NLS-1$
+                TrustManagerFactory tmf = TrustManagerFactory.getInstance(TrustManagerFactory.getDefaultAlgorithm()); //$NON-NLS-1$
                 tmf.init((KeyStore) null);
                 truststoreManagers = tmf.getTrustManagers();
             }
