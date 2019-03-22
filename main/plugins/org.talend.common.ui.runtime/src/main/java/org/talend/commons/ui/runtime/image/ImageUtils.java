@@ -23,6 +23,7 @@ import org.eclipse.jface.resource.ImageDescriptor;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.graphics.ImageData;
+import org.eclipse.swt.graphics.ImageDataProvider;
 import org.eclipse.swt.graphics.ImageLoader;
 import org.eclipse.swt.graphics.Point;
 import org.talend.commons.ui.runtime.exception.ExceptionHandler;
@@ -143,7 +144,7 @@ public class ImageUtils {
         return imageDes;
     }
 
-    private static Map<byte[], ImageData> imageFromDataCachedImages = new HashMap<byte[], ImageData>();
+    private static Map<byte[], ImageDataProvider> imageFromDataCachedImages = new HashMap<byte[], ImageDataProvider>();
 
     /**
      * By default, keep in memory the .
@@ -154,14 +155,14 @@ public class ImageUtils {
      */
     public static ImageDescriptor createImageFromData(byte[] data, boolean... keepInMemory) {
         if (data != null) {
-            ImageData img = imageFromDataCachedImages.get(data);
-            if (img == null) {
+            ImageDataProvider imageProvider = imageFromDataCachedImages.get(data);
+            if (imageProvider == null) {
                 ByteArrayInputStream bais = new ByteArrayInputStream(data);
-                img = new ImageData(bais);
-                imageFromDataCachedImages.put(data, img);
+                ImageData img = new ImageData(bais);
+                imageProvider = new TalendImageProvider(img);
+                imageFromDataCachedImages.put(data, imageProvider);
             }
-            TalendImageProvider talendImageProvider = new TalendImageProvider(img);
-            return ImageDescriptor.createFromImageDataProvider(talendImageProvider);
+            return ImageDescriptor.createFromImageDataProvider(imageProvider);
         }
         return null;
     }
