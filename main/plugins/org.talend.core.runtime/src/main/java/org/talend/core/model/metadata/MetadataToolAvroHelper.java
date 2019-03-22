@@ -213,6 +213,7 @@ public final class MetadataToolAvroHelper {
             //ignore it now as we can't process the complex expression for the default value, and the default value is not useful for runtime like the old javajet tjdbcxxx
             //TODO support the expression calculate, not sure it's necessary and sometimes, more complex like globalMap.get(xxx) which only have meaning after running the job.
             ExceptionHandler.process(e, Level.WARN);
+            defaultValue = null;
         }
 
         // Types with Document/Unknown elements, store as binary
