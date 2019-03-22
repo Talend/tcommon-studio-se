@@ -29,7 +29,9 @@ Require-Bundle: org.apache.commons.lang,
  org.eclipse.e4.ui.services,
  org.eclipse.ui.workbench,
  org.talend.themes.core,
- ca.odell.glazedlists
+ ca.odell.glazedlists,
+ org.talend.core,
+ org.apache.commons.io
 Import-Package: org.eclipse.jdt.internal.ui.workingsets
 Export-Package: org.talend.core.ui,
  org.talend.core.ui.actions,
