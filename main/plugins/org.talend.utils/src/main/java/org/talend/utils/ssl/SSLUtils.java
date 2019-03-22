@@ -188,7 +188,7 @@ public class SSLUtils {
         }
 
         if (keystorePath != null) {
-            KeyManagerFactory kmf = KeyManagerFactory.getInstance("SunX509"); //$NON-NLS-1$
+            KeyManagerFactory kmf = KeyManagerFactory.getInstance(KeyManagerFactory.getDefaultAlgorithm()); //$NON-NLS-1$
             KeyStore ks = KeyStore.getInstance(KeyStore.getDefaultType());
             ks.load(new FileInputStream(keystorePath), keystorePass == null ? null : keystorePass.toCharArray());
             kmf.init(ks, keystorePass == null ? null : keystorePass.toCharArray());
@@ -196,7 +196,7 @@ public class SSLUtils {
         }
 
         if (trustStorePath != null) {
-            TrustManagerFactory tmf = TrustManagerFactory.getInstance("SunX509"); //$NON-NLS-1$
+            TrustManagerFactory tmf = TrustManagerFactory.getInstance(KeyManagerFactory.getDefaultAlgorithm()); //$NON-NLS-1$
             KeyStore tks = KeyStore.getInstance(KeyStore.getDefaultType());
             tks.load(new FileInputStream(trustStorePath), truststorePass.toCharArray());
             tmf.init(tks);
@@ -207,7 +207,7 @@ public class SSLUtils {
             if (acceptAllCertsIfNoTrustStore) {
                 truststoreManagers = new TrustManager[] { new TrustAnyTrustManager() };
             } else {
-                TrustManagerFactory tmf = TrustManagerFactory.getInstance("SunX509"); //$NON-NLS-1$
+                TrustManagerFactory tmf = TrustManagerFactory.getInstance(KeyManagerFactory.getDefaultAlgorithm()); //$NON-NLS-1$
                 tmf.init((KeyStore) null);
                 truststoreManagers = tmf.getTrustManagers();
             }
@@ -223,7 +223,7 @@ public class SSLUtils {
     }
 
     public SSLContext getSSLContext() throws Exception {
-        SSLContext sslcontext = SSLContext.getInstance("SSL"); //$NON-NLS-1$
+        SSLContext sslcontext = SSLContext.getInstance("TSL"); //$NON-NLS-1$
         sslcontext.init(keystoreManagers, truststoreManagers, null);
         return sslcontext;
     }
