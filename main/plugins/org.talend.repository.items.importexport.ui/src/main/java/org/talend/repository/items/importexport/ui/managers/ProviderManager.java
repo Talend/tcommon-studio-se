@@ -41,7 +41,7 @@ public class ProviderManager extends AbstractImportResourcesManager {
         if (ArchiveFileManipulations.isTarFile(file.getPath())) {
             provider = new TarLeveledStructureProvider(new TarFile(file));
         } else if (ArchiveFileManipulations.isZipFile(file.getPath())) {
-            provider = new ZipLeveledStructureProvider(new ZipFile(file));
+            provider = new TalendZipLeveledStructureProvider(new ZipFile(file));
         }
 
     }

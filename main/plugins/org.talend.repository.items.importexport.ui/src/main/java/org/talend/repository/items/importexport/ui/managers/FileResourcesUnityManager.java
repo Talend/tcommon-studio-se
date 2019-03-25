@@ -31,7 +31,6 @@ import org.eclipse.ui.internal.wizards.datatransfer.ILeveledImportStructureProvi
 import org.eclipse.ui.internal.wizards.datatransfer.TarException;
 import org.eclipse.ui.internal.wizards.datatransfer.TarFile;
 import org.eclipse.ui.internal.wizards.datatransfer.TarLeveledStructureProvider;
-import org.eclipse.ui.internal.wizards.datatransfer.ZipLeveledStructureProvider;
 import org.talend.commons.exception.ExceptionHandler;
 import org.talend.commons.runtime.utils.io.FileCopyUtils;
 import org.talend.commons.utils.io.FilesUtils;
@@ -136,7 +135,7 @@ public class FileResourcesUnityManager extends FilesManager {
             } else if (ArchiveFileManipulations.isZipFile(absolutePath)) {
                 // if is not real zip file, will throw exception.
                 ZipFile zipFile = new ZipFile(originalFile);
-                importProvider = new ZipLeveledStructureProvider(zipFile);
+                importProvider = new TalendZipLeveledStructureProvider(zipFile);
                 archiveProviderManager = ResourcesManagerFactory.getInstance().createResourcesManager(importProvider);
             }
             // decompresss
