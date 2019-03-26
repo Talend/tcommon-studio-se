@@ -166,12 +166,18 @@ public class StringUtils {
             }
         }
 
+        
         int resultSize = substrings.size();
-        while (resultSize > 0 && substrings.get(resultSize - 1).equals("")) {
-        	resultSize--;
-        }
         String[] result = new String[resultSize];
+        
+        while (resultSize > 0 && substrings.get(resultSize - 1).equals("")) {
+            resultSize--;
+            result[resultSize]=null;
+        }
+       
+        
         return substrings.subList(0, resultSize).toArray(result);
+        
 	}
 	
 	/**
