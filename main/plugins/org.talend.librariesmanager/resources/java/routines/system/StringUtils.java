@@ -172,6 +172,7 @@ public class StringUtils {
         
         while (resultSize > 0 && substrings.get(resultSize - 1).equals("")) {
             resultSize--;
+            // Setting data to null for empty string in last columns to keep original behavior
             result[resultSize] = null;
         }
         return result;      
