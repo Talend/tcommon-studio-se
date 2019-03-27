@@ -174,11 +174,7 @@ public class StringUtils {
             resultSize--;
             result[resultSize] = null;
         }
-        return result;
-       
-        
-        return substrings.toArray(result);
-        
+        return result;      
 	}
 	
 	/**
