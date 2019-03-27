@@ -172,11 +172,10 @@ public class StringUtils {
         
         while (resultSize > 0 && substrings.get(resultSize - 1).equals("")) {
             resultSize--;
-            result[resultSize]=null;
         }
        
         
-        return substrings.subList(0, resultSize).toArray(result);
+        return substrings.toArray(result);
         
 	}
 	
