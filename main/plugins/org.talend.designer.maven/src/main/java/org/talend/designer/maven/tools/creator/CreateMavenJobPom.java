@@ -661,7 +661,7 @@ public class CreateMavenJobPom extends AbstractMavenProcessorPom {
             Property property = jobInfo.getProcessItem().getProperty();
             String coordinate =
                     getCoordinate(PomIdsHelper.getJobGroupId(property), PomIdsHelper.getJobArtifactId(jobInfo),
-                            MavenConstants.PACKAGING_JAR, PomIdsHelper.getJobVersion(property), null, false);
+                            MavenConstants.PACKAGING_JAR, PomIdsHelper.getJobVersion(property));
             Dependency dependency = getDependencyObject(PomIdsHelper.getJobGroupId(property), PomIdsHelper.getJobArtifactId(jobInfo), PomIdsHelper.getJobVersion(property),
                             MavenConstants.PACKAGING_JAR, null);
             jobCoordinateMap.put(coordinate, dependency);
@@ -671,7 +671,7 @@ public class CreateMavenJobPom extends AbstractMavenProcessorPom {
         Property parentProperty = this.getJobProcessor().getProperty();
         String parentCoordinate =
                 getCoordinate(PomIdsHelper.getJobGroupId(parentProperty), PomIdsHelper.getJobArtifactId(parentProperty),
-                        MavenConstants.PACKAGING_JAR, PomIdsHelper.getJobVersion(parentProperty), null, false);
+                        MavenConstants.PACKAGING_JAR, PomIdsHelper.getJobVersion(parentProperty));
         Dependency parentDependency = getDependencyObject(PomIdsHelper.getJobGroupId(parentProperty), PomIdsHelper.getJobArtifactId(parentProperty), PomIdsHelper.getJobVersion(parentProperty),
                         MavenConstants.PACKAGING_JAR, null);
         jobCoordinateMap.put(parentCoordinate, parentDependency);
@@ -685,7 +685,7 @@ public class CreateMavenJobPom extends AbstractMavenProcessorPom {
         List<Dependency> dependencies = new ArrayList<>();
         addCodesDependencies(dependencies);
         for (Dependency dependency : dependencies) {
-            talendLibCoordinateMap.put(getCoordinate(dependency, false), dependency);
+            talendLibCoordinateMap.put(getCoordinate(dependency), dependency);
         }
 
         // libraries
@@ -703,7 +703,7 @@ public class CreateMavenJobPom extends AbstractMavenProcessorPom {
                 continue;
             }
             String dependencyGroupId = dependency.getGroupId();
-            String coordinate = getCoordinate(dependency, false);
+            String coordinate = getCoordinate(dependency);
             if (!jobCoordinateMap.containsKey(coordinate)) {
                 if (MavenConstants.DEFAULT_LIB_GROUP_ID.equals(dependencyGroupId)) {
                     talendLibCoordinateMap.put(coordinate, dependency);
@@ -718,7 +718,7 @@ public class CreateMavenJobPom extends AbstractMavenProcessorPom {
             if (MavenConstants.PACKAGING_POM.equals(dependency.getType())) {
                 continue;
             }
-            String coordinate = getCoordinate(dependency, false);
+            String coordinate = getCoordinate(dependency);
             if (!jobCoordinateMap.containsKey(coordinate) && !talendLibCoordinateMap.containsKey(coordinate)) {
                 _3rdDepLibMap.put(coordinate, dependency);
                 addToDuplicateLibs(duplicateLibs, dependency);
@@ -739,7 +739,7 @@ public class CreateMavenJobPom extends AbstractMavenProcessorPom {
             }
             MavenArtifact artifact = MavenUrlHelper.parseMvnUrl(moduleNeeded.getMavenUri());
             String coordinate = getCoordinate(artifact.getGroupId(), artifact.getArtifactId(), artifact.getType(),
-                    artifact.getVersion(), artifact.getClassifier(), false);
+                    artifact.getVersion());
             if (!jobCoordinateMap.containsKey(coordinate) && !talendLibCoordinateMap.containsKey(coordinate)
                     && !_3rdDepLibMap.containsKey(coordinate)) {
                 Dependency dependencyObject = getDependencyObject(artifact.getGroupId(), artifact.getArtifactId(), artifact.getVersion(), artifact.getType(), artifact.getClassifier());
@@ -765,7 +765,7 @@ public class CreateMavenJobPom extends AbstractMavenProcessorPom {
             } else {
                 // remove duplicated dependencies from 3rd lib list
                 for (Dependency dependency : dupDependencies) {
-                    _3rdDepLibMap.remove(getCoordinate(dependency, false));
+                    _3rdDepLibMap.remove(getCoordinate(dependency));
                 }
             }
         }
@@ -789,27 +789,38 @@ public class CreateMavenJobPom extends AbstractMavenProcessorPom {
         }
     }
 
-    private String getCoordinate(Dependency dependency, boolean isForAssembly) {
+    private String getCoordinate(Dependency dependency) {
         return getCoordinate(dependency.getGroupId(), dependency.getArtifactId(), dependency.getType(),
-                dependency.getVersion(), dependency.getClassifier(), isForAssembly);
+                dependency.getVersion());
     }
 
-    protected String getCoordinate(String groupId, String artifactId, String type, String version, String classifier, boolean isForAssembly) {
+    protected String getCoordinate(String groupId, String artifactId, String type, String version) {
         String separator = ":"; //$NON-NLS-1$
         String coordinate = groupId + separator;
         coordinate += artifactId + separator;
         if (type != null) {
             coordinate += type;
         }
-        if (classifier != null) {
-            if (isForAssembly) {
-                coordinate += separator + "*";
-            } else {
-                coordinate += separator + classifier;
-            }
-        }
+
         if (version != null) {
             coordinate += separator + version;
+        }
+        
+        return coordinate;
+    }
+    
+    protected String getAssemblyCoordinate(Dependency dependency) {
+        String separator = ":"; //$NON-NLS-1$
+        String coordinate = dependency.getGroupId() + separator;
+        coordinate += dependency.getArtifactId() + separator;
+        if (dependency.getType() != null) {
+            coordinate += dependency.getType();
+        }
+        if (dependency.getClassifier() != null) {
+            coordinate += separator + "*";
+        }
+        if (dependency.getVersion() != null) {
+            coordinate += separator + dependency.getVersion();
         }
         
         return coordinate;
@@ -828,7 +839,7 @@ public class CreateMavenJobPom extends AbstractMavenProcessorPom {
 
     private void addToDuplicateLibs(Map<String, Set<Dependency>> map, Dependency dependency) {
         String coordinate =
-                getCoordinate(dependency.getGroupId(), dependency.getArtifactId(), dependency.getType(), null, dependency.getClassifier(), false);
+                getCoordinate(dependency.getGroupId(), dependency.getArtifactId(), dependency.getType(), null);
         if (!map.containsKey(coordinate)) {
             Set<Dependency> set = new HashSet<>();
             map.put(coordinate, set);
@@ -857,7 +868,7 @@ public class CreateMavenJobPom extends AbstractMavenProcessorPom {
 
         for (Dependency dependency : libIncludes.values()) {
             Node includeNode = document.createElement("include");
-            includeNode.setTextContent(getCoordinate(dependency, true));
+            includeNode.setTextContent(getAssemblyCoordinate(dependency));
             includesNode.appendChild(includeNode);
         }
 

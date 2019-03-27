@@ -210,7 +210,7 @@ public class CreateMavenStandardJobOSGiPom extends CreateMavenJobPom {
             for (JobInfo jobInfo : childrenJobInfo) {
                 Property property = jobInfo.getProcessItem().getProperty();
                 String coordinate = getCoordinate(PomIdsHelper.getJobGroupId(property), PomIdsHelper.getJobArtifactId(jobInfo),
-                        MavenConstants.PACKAGING_JAR, PomIdsHelper.getJobVersion(property), null, false);
+                        MavenConstants.PACKAGING_JAR, PomIdsHelper.getJobVersion(property));
                 Dependency dependency = getDependencyObject(PomIdsHelper.getJobGroupId(property), PomIdsHelper.getJobArtifactId(jobInfo), PomIdsHelper.getJobVersion(property),
                                 MavenConstants.PACKAGING_JAR, null);
                 jobCoordinateMap.put(coordinate, dependency);
@@ -220,7 +220,7 @@ public class CreateMavenStandardJobOSGiPom extends CreateMavenJobPom {
         Property parentProperty = this.getJobProcessor().getProperty();
         String parentCoordinate = getCoordinate(PomIdsHelper.getJobGroupId(parentProperty),
                 PomIdsHelper.getJobArtifactId(parentProperty), MavenConstants.PACKAGING_JAR,
-                PomIdsHelper.getJobVersion(parentProperty), null, false);
+                PomIdsHelper.getJobVersion(parentProperty));
         Dependency parentDependency = getDependencyObject(PomIdsHelper.getJobGroupId(parentProperty), PomIdsHelper.getJobArtifactId(parentProperty), PomIdsHelper.getJobVersion(parentProperty),
                         MavenConstants.PACKAGING_JAR, null);
         jobCoordinateMap.put(parentCoordinate, parentDependency);
