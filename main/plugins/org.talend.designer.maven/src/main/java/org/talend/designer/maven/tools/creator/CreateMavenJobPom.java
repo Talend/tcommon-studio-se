@@ -77,6 +77,7 @@ import org.talend.designer.maven.template.ETalendMavenVariables;
 import org.talend.designer.maven.template.MavenTemplateManager;
 import org.talend.designer.maven.utils.PomIdsHelper;
 import org.talend.designer.maven.utils.PomUtil;
+import org.talend.designer.maven.utils.SortableDependency;
 import org.talend.designer.runprocess.IProcessor;
 import org.talend.designer.runprocess.IRunProcessService;
 import org.talend.repository.ProjectManager;
@@ -748,7 +749,8 @@ public class CreateMavenJobPom extends AbstractMavenProcessorPom {
                     talendLibCoordinateMap.put(coordinate, dependencyObject);
                 } else {
                     _3rdDepLibMap.put(coordinate, dependencyObject);
-                    Dependency dependency = getDependencyObject(artifact.getGroupId(), artifact.getArtifactId(), artifact.getVersion(),
+                    Dependency dependency = PomUtil
+                            .createDependency(artifact.getGroupId(), artifact.getArtifactId(), artifact.getVersion(),
                                     artifact.getType(), artifact.getClassifier());
                     addToDuplicateLibs(duplicateLibs, dependency);
                 }
@@ -827,7 +829,7 @@ public class CreateMavenJobPom extends AbstractMavenProcessorPom {
     }
     
     protected Dependency getDependencyObject(String groupId, String artifactId, String version, String type, String classifier) {
-        Dependency object = new Dependency();
+        Dependency object = new SortableDependency();
         object.setGroupId(groupId);
         object.setArtifactId(artifactId);
         object.setVersion(version);
