@@ -168,11 +168,13 @@ public class StringUtils {
 
         
         int resultSize = substrings.size();
-        String[] result = new String[resultSize];
+        String[] result = substrings.toArray(new String[resultSize]);
         
         while (resultSize > 0 && substrings.get(resultSize - 1).equals("")) {
             resultSize--;
+            result[resultSize] = null;
         }
+        return result;
        
         
         return substrings.toArray(result);
