@@ -142,6 +142,8 @@ public class ContextTreeTable {
 
     private final static int fixedTypeWidth = 90;
 
+    private final static int fixedHidePromptWidth = 1;
+
     public ContextTreeTable(IContextModelManager manager) {
         this.manager = manager;
     }
@@ -320,7 +322,7 @@ public class ContextTreeTable {
             GridDataFactory.fillDefaults().grab(true, true).applyTo(natTable);
 
             // add selection listener for the context NatTable
-            addNatTableListener(bodyDataProvider, selectionProvider, bodyDataLayer);
+            addNatTableListener(bodyDataProvider, selectionProvider);
 
             GridDataFactory.fillDefaults().grab(true, true).applyTo(natTable);
 
@@ -371,7 +373,7 @@ public class ContextTreeTable {
     }
 
     private void addNatTableListener(final GlazedListsDataProvider<ContextTreeNode> bodyDataProvider,
-            ISelectionProvider selectionProvider, DataLayer bodyDataLayer) {
+            ISelectionProvider selectionProvider) {
         this.natTable.addMouseListener(new MouseListener() {
 
             @Override
@@ -454,7 +456,8 @@ public class ContextTreeTable {
         } else {
             int typeColumnPos = dataLayer.getColumnPositionByIndex(1);
 
-            int leftWidth = maxWidth - fixedTypeWidth - fixedCheckBoxWidth * checkColumnsPos.size() - cornerWidth * 2;
+            int leftWidth = maxWidth - fixedTypeWidth - fixedCheckBoxWidth * checkColumnsPos.size() - cornerWidth * 2
+                    - fixedHidePromptWidth;
 
             int currentColumnsCount = dataColumnsCount - hideColumnsPos.size() - checkColumnsPos.size() - 1;
             int averageWidth = leftWidth / currentColumnsCount;
@@ -469,7 +472,7 @@ public class ContextTreeTable {
                 for (int hidePos : hideColumnsPos) {
                     if (hidePos == i) {
                         findHide = true;
-                        dataLayer.setColumnWidthByPosition(i, 0);
+                        dataLayer.setColumnWidthByPosition(i, fixedHidePromptWidth);
                     }
                 }
                 for (int checkPos : checkColumnsPos) {
