@@ -18,12 +18,12 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
 import org.apache.maven.model.Build;
+import org.apache.maven.model.Dependency;
 import org.apache.maven.model.Model;
 import org.apache.maven.model.Plugin;
 import org.apache.maven.model.PluginExecution;
@@ -213,7 +213,7 @@ public class CreateMavenStandardJobOSGiPom extends CreateMavenJobPom {
 
     @Override
     protected void updateDependencySet(IFile assemblyFile) {
-        Set<String> jobCoordinate = new HashSet<>();
+        Map<String, Dependency> jobCoordinateMap = new HashMap<String, Dependency>();
         if (!hasLoopDependency()) {
             // add children jobs
             Set<JobInfo> childrenJobInfo = getJobProcessor().getBuildChildrenJobs();
@@ -221,7 +221,9 @@ public class CreateMavenStandardJobOSGiPom extends CreateMavenJobPom {
                 Property property = jobInfo.getProcessItem().getProperty();
                 String coordinate = getCoordinate(PomIdsHelper.getJobGroupId(property), PomIdsHelper.getJobArtifactId(jobInfo),
                         MavenConstants.PACKAGING_JAR, PomIdsHelper.getJobVersion(property));
-                jobCoordinate.add(coordinate);
+                Dependency dependency = getDependencyObject(PomIdsHelper.getJobGroupId(property), PomIdsHelper.getJobArtifactId(jobInfo), PomIdsHelper.getJobVersion(property),
+                                MavenConstants.PACKAGING_JAR, null);
+                jobCoordinateMap.put(coordinate, dependency);
             }
         }
         // add parent job
@@ -229,11 +231,13 @@ public class CreateMavenStandardJobOSGiPom extends CreateMavenJobPom {
         String parentCoordinate = getCoordinate(PomIdsHelper.getJobGroupId(parentProperty),
                 PomIdsHelper.getJobArtifactId(parentProperty), MavenConstants.PACKAGING_JAR,
                 PomIdsHelper.getJobVersion(parentProperty));
-        jobCoordinate.add(parentCoordinate);
+        Dependency parentDependency = getDependencyObject(PomIdsHelper.getJobGroupId(parentProperty), PomIdsHelper.getJobArtifactId(parentProperty), PomIdsHelper.getJobVersion(parentProperty),
+                        MavenConstants.PACKAGING_JAR, null);
+        jobCoordinateMap.put(parentCoordinate, parentDependency);
         try {
             Document document = PomUtil.loadAssemblyFile(null, assemblyFile);
             // add jobs
-            setupDependencySetNode(document, jobCoordinate, "${talend.job.name}",
+            setupDependencySetNode(document, jobCoordinateMap, "${talend.job.name}",
                     "${artifact.build.finalName}.${artifact.extension}", true);
             PomUtil.saveAssemblyFile(assemblyFile, document);
         } catch (Exception e) {
