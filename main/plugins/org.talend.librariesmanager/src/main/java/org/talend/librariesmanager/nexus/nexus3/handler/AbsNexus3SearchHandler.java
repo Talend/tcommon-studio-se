@@ -14,7 +14,6 @@ package org.talend.librariesmanager.nexus.nexus3.handler;
 // ============================================================================
 import java.net.URI;
 import java.net.URISyntaxException;
-
 import java.util.ArrayList;
 import java.util.List;
 
@@ -26,8 +25,8 @@ import org.apache.http.client.methods.HttpGet;
 import org.apache.http.impl.client.DefaultHttpClient;
 import org.apache.http.util.EntityUtils;
 import org.eclipse.core.runtime.IProgressMonitor;
-import org.talend.core.nexus.HttpClientTransport;
 import org.talend.core.nexus.ArtifactRepositoryBean;
+import org.talend.core.nexus.HttpClientTransport;
 import org.talend.core.runtime.maven.MavenArtifact;
 
 import net.sf.json.JSONArray;
@@ -55,13 +54,15 @@ public abstract class AbsNexus3SearchHandler implements INexus3SearchHandler {
             throws Exception {
         List<MavenArtifact> resultList = new ArrayList<MavenArtifact>();
         String searchUrl = getSearchUrl();
-        String query = getQueryParameter(repositoryId, groupIdToSearch, artifactId, versionToSearch);
-        String content = doRequest(searchUrl + query);
-        if (content.isEmpty()) {
-            return resultList;
+        String continuationToken = null;
+        while (true) {
+            String query = getQueryParameter(repositoryId, groupIdToSearch, artifactId, versionToSearch, continuationToken);
+            String content = doRequest(searchUrl + query);
+            continuationToken = parseResult(content, resultList);
+            if (continuationToken == null) {
+                break;
+            }
         }
-
-        resultList = parseResult(content);
         return resultList;
     }
 
@@ -86,11 +87,16 @@ public abstract class AbsNexus3SearchHandler implements INexus3SearchHandler {
         return sb.toString();
     }
 
-    protected List<MavenArtifact> parseResult(String content) throws Exception {
-        List<MavenArtifact> resultList = new ArrayList<MavenArtifact>();
-
+    protected String parseResult(String content, List<MavenArtifact> resultList) throws Exception {
+        if (StringUtils.isEmpty(content)) {
+            return null;
+        }
         JSONObject responseObject = JSONObject.fromObject(content);
         String resultStr = responseObject.getString("items"); //$NON-NLS-1$
+        String continuationToken = responseObject.getString("continuationToken");
+        if ("null".equalsIgnoreCase(continuationToken)) {
+            continuationToken = null;
+        }
         JSONArray resultArray = null;
         try {
             resultArray = JSONArray.fromObject(resultStr);
@@ -110,7 +116,7 @@ public abstract class AbsNexus3SearchHandler implements INexus3SearchHandler {
             }
         }
 
-        return resultList;
+        return continuationToken;
     }
 
     protected String getPackageType(JSONArray assertsArray) {
@@ -133,7 +139,8 @@ public abstract class AbsNexus3SearchHandler implements INexus3SearchHandler {
         return type;
     }
 
-    protected String getQueryParameter(String repositoryId, String groupIdToSearch, String artifactId, String versionToSearch) {
+    protected String getQueryParameter(String repositoryId, String groupIdToSearch, String artifactId, String versionToSearch,
+            String continuationToken) {
         StringBuffer sb = new StringBuffer();
         boolean hasParameter = false;
         if (StringUtils.isNoneEmpty(repositoryId)) {
@@ -159,6 +166,13 @@ public abstract class AbsNexus3SearchHandler implements INexus3SearchHandler {
                 sb.append("&"); //$NON-NLS-1$
             }
             sb.append("version=").append(versionToSearch); //$NON-NLS-1$
+            hasParameter = true;
+        }
+        if (StringUtils.isNoneEmpty(continuationToken)) {
+            if (hasParameter) {
+                sb.append("&"); //$NON-NLS-1$
+            }
+            sb.append("continuationToken=").append(continuationToken); //$NON-NLS-1$
             hasParameter = true;
         }
         return sb.toString();

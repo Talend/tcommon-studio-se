@@ -20,5 +20,7 @@ public interface INexus3SearchHandler {
 
     public List<MavenArtifact> search(String repositoryId, String groupIdToSearch, String artifactId, String versionToSearch)
             throws Exception;
+
     public String getHandlerVersion();
+
 }

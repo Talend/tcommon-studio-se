@@ -41,11 +41,15 @@ import org.talend.librariesmanager.nexus.nexus3.handler.Nexus3V1SearchHandler;
  *
  */
 public class Nexus3RepositoryHandler extends AbstractArtifactRepositoryHandler {
+
     private static Logger LOGGER = Logger.getLogger(Nexus3RepositoryHandler.class);
+
     private String REP_PREFIX_PATH = "/repository/";
+
     private INexus3SearchHandler currentQueryHandler = null;
+
     private static List<INexus3SearchHandler> queryHandlerList = new ArrayList<INexus3SearchHandler>();
-    
+
     @Override
     public IRepositoryArtifactHandler clone() {
         return new Nexus3RepositoryHandler();

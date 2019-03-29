@@ -96,9 +96,9 @@ public class Nexus3ScriptSearchHandler extends AbsNexus3SearchHandler {
     protected String getSearchUrl() {
         return this.getServerUrl() + SEARCH_SERVICE;
     }
-    
-    public String getHandlerVersion() { 
+
+    public String getHandlerVersion() {
         return "Nexus3.script"; //$NON-NLS-1$
-    }  
+    }
 
 }
