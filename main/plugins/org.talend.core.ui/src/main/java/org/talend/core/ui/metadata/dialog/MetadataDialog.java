@@ -749,7 +749,7 @@ public class MetadataDialog extends Dialog {
     }
     
     private void updateTableOriginalColumns(IMetadataTable table) {
-        if (table != null) {
+        if (table != null && table.getListColumns() != null) {
             List<String> columnNames = new ArrayList<String>();
             for (IMetadataColumn column : table.getListColumns()) {
                 columnNames.add(column.getLabel());
