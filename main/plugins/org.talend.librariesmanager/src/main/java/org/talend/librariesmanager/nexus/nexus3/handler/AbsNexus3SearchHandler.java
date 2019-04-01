@@ -94,7 +94,7 @@ public abstract class AbsNexus3SearchHandler implements INexus3SearchHandler {
         JSONObject responseObject = JSONObject.fromObject(content);
         String resultStr = responseObject.getString("items"); //$NON-NLS-1$
         String continuationToken = responseObject.getString("continuationToken");
-        if ("null".equalsIgnoreCase(continuationToken)) {
+        if (StringUtils.isEmpty(continuationToken) || "null".equalsIgnoreCase(continuationToken)) {
             continuationToken = null;
         }
         JSONArray resultArray = null;
