@@ -88,10 +88,8 @@
                     <talendType type="id_BigDecimal" default="true"/>
                 </dbType>
 				<dbType type="BIGINT">
-					<talendType type="id_BigDecimal" default="true"/>
-					<talendType type="id_Byte"/>
+					<talendType type="id_Long" default="true"/>
 					<talendType type="id_Integer"/>
-					<talendType type="id_Long"/>
 				</dbType>
 				<dbType type="INT">
 					<talendType type="id_Integer" default="true"/>
