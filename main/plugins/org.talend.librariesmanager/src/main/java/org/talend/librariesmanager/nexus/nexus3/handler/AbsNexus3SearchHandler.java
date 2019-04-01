@@ -25,8 +25,8 @@ import org.apache.http.client.methods.HttpGet;
 import org.apache.http.impl.client.DefaultHttpClient;
 import org.apache.http.util.EntityUtils;
 import org.eclipse.core.runtime.IProgressMonitor;
-import org.talend.core.nexus.ArtifactRepositoryBean;
 import org.talend.core.nexus.HttpClientTransport;
+import org.talend.core.nexus.NexusServerBean;
 import org.talend.core.runtime.maven.MavenArtifact;
 
 import net.sf.json.JSONArray;
@@ -34,9 +34,9 @@ import net.sf.json.JSONObject;
 
 public abstract class AbsNexus3SearchHandler implements INexus3SearchHandler {
 
-    protected ArtifactRepositoryBean serverBean;
+    protected NexusServerBean serverBean;
 
-    public AbsNexus3SearchHandler(ArtifactRepositoryBean serverBean) {
+    public AbsNexus3SearchHandler(NexusServerBean serverBean) {
         this.serverBean = serverBean;
     }
 

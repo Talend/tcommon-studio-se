@@ -1,12 +1,12 @@
 package org.talend.librariesmanager.nexus.nexus3.handler;
 
-import org.talend.core.nexus.ArtifactRepositoryBean;
+import org.talend.core.nexus.NexusServerBean;
 
 public class Nexus3V1SearchHandler extends AbsNexus3SearchHandler {
 
     private String SEARCH_SERVICE = "service/rest/v1/search?";
 
-    public Nexus3V1SearchHandler(ArtifactRepositoryBean serverBean) {
+    public Nexus3V1SearchHandler(NexusServerBean serverBean) {
         super(serverBean);
     }
 

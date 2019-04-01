@@ -23,7 +23,7 @@ import org.apache.http.client.fluent.Request;
 import org.apache.http.entity.ContentType;
 import org.apache.http.message.BasicHeader;
 import org.apache.http.util.EntityUtils;
-import org.talend.core.nexus.ArtifactRepositoryBean;
+import org.talend.core.nexus.NexusServerBean;
 import org.talend.core.runtime.maven.MavenArtifact;
 
 import net.sf.json.JSONArray;
@@ -33,7 +33,7 @@ public class Nexus3ScriptSearchHandler extends AbsNexus3SearchHandler {
 
     private String SEARCH_SERVICE = "service/rest/v1/script/search/run"; //$NON-NLS-1$
 
-    public Nexus3ScriptSearchHandler(ArtifactRepositoryBean serverBean) {
+    public Nexus3ScriptSearchHandler(NexusServerBean serverBean) {
         super(serverBean);
     }
 
