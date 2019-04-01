@@ -4,8 +4,8 @@ Bundle-Name: Teradata Plug-in
 Bundle-SymbolicName: org.talend.libraries.jdbc.teradata;singleton:=true
 Bundle-Version: 7.2.1.qualifier
 Bundle-Vendor: .Talend SA.
-Bundle-ClassPath: lib/terajdbc4-15.10.00.14.jar,
- lib/tdgssconfig-15.10.00.14.jar,
+Bundle-ClassPath: lib/terajdbc4-16.20.00.02.jar,
+ lib/tdgssconfig-16.20.00.02.jar,
  .
 Export-Package: com.ncr.teradata,
  com.teradata.jdbc,
