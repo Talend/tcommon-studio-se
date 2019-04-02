@@ -182,7 +182,14 @@ public class AggregatorPomsHelper {
     private void updateCodeProject(IProgressMonitor monitor, ERepositoryObjectType codeType, boolean forceBuild) {
         try {
             ITalendProcessJavaProject codeProject = getCodesProject(codeType);
-            updateCodeProjectPom(monitor, codeType, codeProject.getProjectPom());
+            IFile pomFile;
+            if (codeProject == null) {
+                // try to recover from any damage of pom.
+                pomFile = getCodeFolder(codeType).getFile(TalendMavenConstants.POM_FILE_NAME);
+            } else {
+                pomFile = codeProject.getProjectPom();
+            }
+            updateCodeProjectPom(monitor, codeType, pomFile);
             buildAndInstallCodesProject(monitor, codeType, true, forceBuild);
         } catch (Exception e) {
             ExceptionHandler.process(e);
