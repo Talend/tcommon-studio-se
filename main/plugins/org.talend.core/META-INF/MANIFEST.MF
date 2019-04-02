@@ -54,4 +54,5 @@ Export-Package: org.talend.core,
  org.talend.core.views,
  org.talend.designer.runprocess
 Import-Package: org.apache.commons.collections4.map,
- org.dom4j
+ org.dom4j,
+ org.dom4j.io

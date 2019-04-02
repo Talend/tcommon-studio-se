@@ -8,7 +8,7 @@
     <import plugin="org.bouncycastle.bcprov" version="0.0.0" match="greaterOrEqual"/>
     <import plugin="com.cedarsoftware.json-io" version="0.0.0" match="greaterOrEqual"/>
     <import plugin="com.fasterxml.jackson.core.jackson-annotations" version="2.9.0" match="greaterOrEqual"/>
-    <import plugin="com.fasterxml.jackson.core.jackson-core" version="2.9.5" match="greaterOrEqual"/>
+    <import plugin="com.fasterxml.jackson.core.jackson-core" version="2.9.8" match="greaterOrEqual"/>
     <import plugin="com.thoughtworks.paranamer" version="0.0.0" match="greaterOrEqual"/>
     <import plugin="jackson-core-asl" version="0.0.0" match="greaterOrEqual"/>
     <import plugin="jackson-mapper-asl" version="0.0.0" match="greaterOrEqual"/>
@@ -22,5 +22,6 @@
     <import plugin="org.slf4j.api" version="0.0.0" match="greaterOrEqual"/>
   </requires>  
   <plugin id="org.talend.daikon" download-size="0" install-size="0" version="0.0.0" unpack="false"/>
+  <plugin id="org.talend.daikon.exception" download-size="0" install-size="0" version="0.0.0" unpack="false"/>
   <plugin id="org.talend.utils" download-size="0" install-size="0" version="0.0.0" unpack="false"/>
 </feature>

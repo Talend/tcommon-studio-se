@@ -299,12 +299,12 @@ public class ExtractMetaDataFromDataBase {
     public static ConnectionStatus testConnection(String dbType, String url, String username, String pwd, String schema,
             final String driverClassName, final String driverJarPath, String dbVersionString, String additionalParam) {
         return testConnection(dbType, url, username, pwd, schema, driverClassName, driverJarPath, dbVersionString,
-                additionalParam, null);
+                additionalParam, null, null);
     }
 
     public static ConnectionStatus testConnection(String dbType, String url, String username, String pwd, String schema,
             final String driverClassName, final String driverJarPath, String dbVersionString, String additionalParam,
-            StringBuffer retProposedSchema) {
+            StringBuffer retProposedSchema, String sidOrDatabase) {
         Connection connection = null;
         ConnectionStatus connectionStatus = new ConnectionStatus();
         connectionStatus.setResult(false);
@@ -331,6 +331,14 @@ public class ExtractMetaDataFromDataBase {
                 // We have to check schema
                 if (!checkSchemaConnection(schema, connection, notCaseSensitive, dbType, retProposedSchema)) {
                     connectionStatus.setMessageException(Messages.getString("ExtractMetaDataFromDataBase.SchemaNoPresent")); //$NON-NLS-1$
+                    return connectionStatus;
+                }
+            }
+            if (EDatabaseTypeName.SYBASEASE == EDatabaseTypeName.getTypeFromDisplayName(dbType)) {
+                boolean exsitedSybaseDB = checkSybaseDB(connection, sidOrDatabase);
+                if (!exsitedSybaseDB) {
+                    connectionStatus.setMessageException(
+                            Messages.getString("ExtractMetaDataFromDataBase.DatabaseNoPresent", sidOrDatabase)); //$NON-NLS-1$
                     return connectionStatus;
                 }
             }
@@ -369,6 +377,35 @@ public class ExtractMetaDataFromDataBase {
     public static boolean checkSchemaConnection(String schema, Connection connection, boolean notCaseSensitive, String dbType)
             throws SQLException {
         return checkSchemaConnection(schema, connection, notCaseSensitive, dbType, null);
+    }
+
+    private static boolean checkSybaseDB(Connection connection, String database) {
+        ExtractMetaDataUtils extractMeta = ExtractMetaDataUtils.getInstance();
+        if (extractMeta != null) {
+            Statement stmt = null;
+            ResultSet resultSet = null;
+            try {
+                stmt = connection.createStatement();
+                extractMeta.setQueryStatementTimeout(stmt);
+                resultSet = stmt.executeQuery("sp_helpdb " + database);
+                return true;
+            } catch (SQLException e) {
+                ExceptionHandler.process(e);
+                return false;
+            } finally {
+                try {
+                    if (resultSet != null) {
+                        resultSet.close();
+                    }
+                    if (stmt != null) {
+                        stmt.close();
+                    }
+                } catch (SQLException e) {
+                    ExceptionHandler.process(e);
+                }
+            }
+        }
+        return false;
     }
 
     public static boolean checkSchemaConnection(final String schema, Connection connection, boolean notCaseSensitive,

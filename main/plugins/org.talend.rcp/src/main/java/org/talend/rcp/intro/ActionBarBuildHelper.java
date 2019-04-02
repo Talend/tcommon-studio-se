@@ -42,6 +42,7 @@ import org.talend.core.GlobalServiceRegister;
 import org.talend.core.PluginChecker;
 import org.talend.core.language.ECodeLanguage;
 import org.talend.core.language.LanguageManager;
+import org.talend.core.model.utils.TalendPropertiesUtil;
 import org.talend.core.repository.model.ProxyRepositoryFactory;
 import org.talend.core.ui.branding.IActionBarHelper;
 import org.talend.core.ui.branding.IBrandingService;
@@ -260,9 +261,12 @@ public class ActionBarBuildHelper implements IActionBarHelper {
         toolBarManager.add(new ImageAction(this.window, "icons/irc_protocol.png", LinksToolbarItem.ASK_ORIG_URL,
                 Messages.getString("LinksToolbarItem_7")));
         toolBarManager.add(new LinkToolbarLabel(LinksToolbarItem.ASK_URL, Messages.getString("LinksToolbarItem_7")));
-        toolBarManager.add(new ImageAction(this.window, "icons/exchange_view.png", LinksToolbarItem.EXCHANGE_ORIG_URL,
-                Messages.getString("LinksToolbarItem_exchange")));
-        toolBarManager.add(new LinkToolbarLabel(LinksToolbarItem.EXCHANGE_URL, Messages.getString("LinksToolbarItem_exchange")));
+        if (PluginChecker.isExchangeSystemLoaded() && !TalendPropertiesUtil.isHideExchange()) {
+            toolBarManager.add(new ImageAction(this.window, "icons/exchange_view.png", LinksToolbarItem.EXCHANGE_ORIG_URL,
+                    Messages.getString("LinksToolbarItem_exchange")));
+            toolBarManager
+                    .add(new LinkToolbarLabel(LinksToolbarItem.EXCHANGE_URL, Messages.getString("LinksToolbarItem_exchange")));
+        }
         toolBarManager.add(new ImageAction(this.window, "icons/videos_icon16x16.png", LinksToolbarItem.VIDEOS_ORIG_URL,
                 Messages.getString("LinksToolbarItem_videos")));
         toolBarManager.add(new LinkToolbarLabel(LinksToolbarItem.VIDEOS_URL, Messages.getString("LinksToolbarItem_videos")));

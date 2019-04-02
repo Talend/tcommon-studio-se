@@ -288,7 +288,8 @@ public class ManagerConnection {
             }
             // test the connection
             testConnection = ExtractMetaDataFromDataBase.testConnection(dbTypeString, urlConnectionString, username, password,
-                    schemaName, driverClassName, driverJarPath, dbVersionString, additionalParams, retProposedSchema);
+                    schemaName, driverClassName, driverJarPath, dbVersionString, additionalParams, retProposedSchema,
+                    sidOrDatabase);
             isValide = testConnection.getResult();
             messageException = testConnection.getMessageException();
         } catch (Exception e) {
@@ -387,7 +388,7 @@ public class ManagerConnection {
                         metadataConnection.getUrl(), metadataConnection.getUsername(), metadataConnection.getPassword(),
                         metadataConnection.getSchema(), metadataConnection.getDriverClass(),
                         metadataConnection.getDriverJarPath(), metadataConnection.getDbVersionString(),
-                        metadataConnection.getAdditionalParams(), retProposedSchema);
+                        metadataConnection.getAdditionalParams(), retProposedSchema, metadataConnection.getDatabase());
             }
             // qli
             // record this metadataConnection as old connection.

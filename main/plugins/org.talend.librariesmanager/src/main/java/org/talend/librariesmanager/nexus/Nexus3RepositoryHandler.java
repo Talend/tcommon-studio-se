@@ -14,7 +14,6 @@ package org.talend.librariesmanager.nexus;
 
 import java.io.File;
 import java.io.IOException;
-import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -22,21 +21,20 @@ import org.apache.commons.codec.binary.Base64;
 import org.apache.http.Header;
 import org.apache.http.HttpResponse;
 import org.apache.http.client.ClientProtocolException;
-import org.apache.http.client.fluent.Request;
 import org.apache.http.client.methods.HttpGet;
-import org.apache.http.entity.ContentType;
 import org.apache.http.impl.client.DefaultHttpClient;
 import org.apache.http.message.BasicHeader;
-import org.apache.http.util.EntityUtils;
+import org.apache.log4j.Logger;
 import org.eclipse.m2e.core.MavenPlugin;
 import org.talend.commons.exception.ExceptionHandler;
 import org.talend.core.nexus.IRepositoryArtifactHandler;
 import org.talend.core.runtime.maven.MavenArtifact;
 import org.talend.core.runtime.maven.MavenUrlHelper;
 import org.talend.designer.maven.aether.RepositorySystemFactory;
-
-import net.sf.json.JSONArray;
-import net.sf.json.JSONObject;
+import org.talend.librariesmanager.nexus.nexus3.handler.INexus3SearchHandler;
+import org.talend.librariesmanager.nexus.nexus3.handler.Nexus3BetaSearchHandler;
+import org.talend.librariesmanager.nexus.nexus3.handler.Nexus3ScriptSearchHandler;
+import org.talend.librariesmanager.nexus.nexus3.handler.Nexus3V1SearchHandler;
 
 /**
  * created by wchen on Aug 2, 2017 Detailled comment
@@ -44,9 +42,13 @@ import net.sf.json.JSONObject;
  */
 public class Nexus3RepositoryHandler extends AbstractArtifactRepositoryHandler {
 
-    private String SEARCH_SERVICE = "service/rest/v1/script/search/run";
+    private static Logger LOGGER = Logger.getLogger(Nexus3RepositoryHandler.class);
 
     private String REP_PREFIX_PATH = "/repository/";
+
+    private INexus3SearchHandler currentQueryHandler = null;
+
+    private static List<INexus3SearchHandler> queryHandlerList = new ArrayList<INexus3SearchHandler>();
 
     @Override
     public IRepositoryArtifactHandler clone() {
@@ -108,75 +110,50 @@ public class Nexus3RepositoryHandler extends AbstractArtifactRepositoryHandler {
     @Override
     public List<MavenArtifact> search(String groupIdToSearch, String artifactId, String versionToSearch, boolean fromRelease,
             boolean fromSnapshot) throws Exception {
-        String serverUrl = serverBean.getServer();
-        if (!serverUrl.endsWith("/")) {
-            serverUrl = serverUrl + "/";
-        }
-        String searchUrl = serverUrl + SEARCH_SERVICE;
-        Request request = Request.Post(searchUrl);
-        String userPass = serverBean.getUserName() + ":" + serverBean.getPassword();
-        String basicAuth = "Basic " + new String(new Base64().encode(userPass.getBytes()));
-        Header authority = new BasicHeader("Authorization", basicAuth);
-        Header contentType = new BasicHeader("Content-Type", "text/plain");
-        request.addHeader(contentType);
-        request.addHeader(authority);
+
         List<MavenArtifact> resultList = new ArrayList<MavenArtifact>();
         if (fromRelease) {
-            resultList.addAll(doSearch(request, serverBean.getRepositoryId(), groupIdToSearch, artifactId, versionToSearch));
+            resultList.addAll(doSearch(serverBean.getRepositoryId(), groupIdToSearch, artifactId, versionToSearch));
         }
         if (fromSnapshot) {
-            resultList.addAll(doSearch(request, serverBean.getSnapshotRepId(), groupIdToSearch, artifactId, versionToSearch));
+            resultList.addAll(doSearch(serverBean.getSnapshotRepId(), groupIdToSearch, artifactId, versionToSearch));
         }
 
         return resultList;
     }
 
-    private List<MavenArtifact> doSearch(Request request, String repositoryId, String groupIdToSearch, String artifactId,
-            String versionToSearch) throws Exception {
-        List<MavenArtifact> resultList = new ArrayList<MavenArtifact>();
-        JSONObject body = new JSONObject();
-        body.put("repositoryId", repositoryId);
-        if (groupIdToSearch != null) {
-            body.put("g", groupIdToSearch);
+    private List<MavenArtifact> doSearch(String repositoryId, String groupIdToSearch, String artifactId, String versionToSearch)
+            throws Exception {
+        if (currentQueryHandler == null) {
+            currentQueryHandler = getQueryHandler();
         }
-        if (artifactId != null) {
-            body.put("a", artifactId);
-        }
-        if (versionToSearch != null) {
-            body.put("v", versionToSearch);
-        }
-        request.bodyString(body.toString(),
-                ContentType.create(ContentType.APPLICATION_JSON.getMimeType(), StandardCharsets.UTF_8));
-        HttpResponse response = request.execute().returnResponse();
-        String content = EntityUtils.toString(response.getEntity());
-        if (content.isEmpty()) {
-            return resultList;
-        }
-        JSONObject responseObject = new JSONObject().fromObject(content);
-        String resultStr = responseObject.getString("result");
-        JSONArray resultArray = null;
+        List<MavenArtifact> result = new ArrayList<MavenArtifact>();
         try {
-            resultArray = new JSONArray().fromObject(resultStr);
-        } catch (Exception e) {
-            throw new Exception(resultStr);
-        }
-        if (resultArray != null) {
-            for (int i = 0; i < resultArray.size(); i++) {
-                JSONObject jsonObject = resultArray.getJSONObject(i);
-                MavenArtifact artifact = new MavenArtifact();
-                artifact.setGroupId(jsonObject.getString("groupId"));
-                artifact.setArtifactId(jsonObject.getString("artifactId"));
-                artifact.setVersion(jsonObject.getString("version"));
-                artifact.setType(jsonObject.getString("extension"));
-                artifact.setDescription(jsonObject.getString("description"));
-                artifact.setLastUpdated(jsonObject.getString("last_updated"));
-                // artifact.setLicense(jsonObject.getString("license"));
-                // artifact.setLicenseUrl(jsonObject.getString("licenseUrl"));
-                // artifact.setUrl(jsonObject.getString("url"));
-                resultList.add(artifact);
+            result = currentQueryHandler.search(repositoryId, groupIdToSearch, artifactId, versionToSearch);
+        } catch (Exception ex) {
+            for (int i = 0; i < queryHandlerList.size(); i++) {// Try to other version
+                INexus3SearchHandler handler = queryHandlerList.get(i);
+                if (handler != currentQueryHandler) {
+                    try {
+                        result = handler.search(repositoryId, groupIdToSearch, artifactId, versionToSearch);
+                        currentQueryHandler = handler;
+                        LOGGER.info("Switch to new search handler,the handler version is:" + currentQueryHandler.getHandlerVersion());
+                    } catch (Exception e) {
+                        LOGGER.info("Try to switch search handler failed" + e.getMessage());
+                    }
+                }
             }
         }
-        return resultList;
+        return result;
+    }
+
+    private INexus3SearchHandler getQueryHandler() {
+        if (queryHandlerList.size() == 0) {
+            queryHandlerList.add(new Nexus3ScriptSearchHandler(serverBean));
+            queryHandlerList.add(new Nexus3BetaSearchHandler(serverBean));
+            queryHandlerList.add(new Nexus3V1SearchHandler(serverBean));
+        }
+        return queryHandlerList.get(0);
     }
 
     /*

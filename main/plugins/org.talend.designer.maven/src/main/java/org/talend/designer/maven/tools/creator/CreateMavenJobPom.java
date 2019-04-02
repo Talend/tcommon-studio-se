@@ -77,6 +77,7 @@ import org.talend.designer.maven.template.ETalendMavenVariables;
 import org.talend.designer.maven.template.MavenTemplateManager;
 import org.talend.designer.maven.utils.PomIdsHelper;
 import org.talend.designer.maven.utils.PomUtil;
+import org.talend.designer.maven.utils.SortableDependency;
 import org.talend.designer.runprocess.IProcessor;
 import org.talend.designer.runprocess.IRunProcessService;
 import org.talend.repository.ProjectManager;
@@ -650,7 +651,7 @@ public class CreateMavenJobPom extends AbstractMavenProcessorPom {
     }
 
     protected void updateDependencySet(IFile assemblyFile) {
-        Set<String> jobCoordinate = new HashSet<>();
+        Map<String, Dependency> jobCoordinateMap = new HashMap<String, Dependency>();
         Set<JobInfo> childrenJobInfo = new HashSet<>();
         if (!hasLoopDependency()) {
             childrenJobInfo = getJobProcessor().getBuildChildrenJobs();
@@ -662,7 +663,9 @@ public class CreateMavenJobPom extends AbstractMavenProcessorPom {
             String coordinate =
                     getCoordinate(PomIdsHelper.getJobGroupId(property), PomIdsHelper.getJobArtifactId(jobInfo),
                             MavenConstants.PACKAGING_JAR, PomIdsHelper.getJobVersion(property));
-            jobCoordinate.add(coordinate);
+            Dependency dependency = getDependencyObject(PomIdsHelper.getJobGroupId(property), PomIdsHelper.getJobArtifactId(jobInfo), PomIdsHelper.getJobVersion(property),
+                            MavenConstants.PACKAGING_JAR, null);
+            jobCoordinateMap.put(coordinate, dependency);
         }
 
         // add parent job
@@ -670,10 +673,12 @@ public class CreateMavenJobPom extends AbstractMavenProcessorPom {
         String parentCoordinate =
                 getCoordinate(PomIdsHelper.getJobGroupId(parentProperty), PomIdsHelper.getJobArtifactId(parentProperty),
                         MavenConstants.PACKAGING_JAR, PomIdsHelper.getJobVersion(parentProperty));
-        jobCoordinate.add(parentCoordinate);
+        Dependency parentDependency = getDependencyObject(PomIdsHelper.getJobGroupId(parentProperty), PomIdsHelper.getJobArtifactId(parentProperty), PomIdsHelper.getJobVersion(parentProperty),
+                        MavenConstants.PACKAGING_JAR, null);
+        jobCoordinateMap.put(parentCoordinate, parentDependency);
 
         // add talend libraries and codes
-        Set<String> talendLibCoordinate = new HashSet<>();
+        Map<String, Dependency> talendLibCoordinateMap = new HashMap<String, Dependency>();
         String projectTechName = ProjectManager.getInstance().getProject(parentProperty).getTechnicalLabel();
         String projectGroupId = PomIdsHelper.getProjectGroupId(projectTechName);
 
@@ -681,7 +686,7 @@ public class CreateMavenJobPom extends AbstractMavenProcessorPom {
         List<Dependency> dependencies = new ArrayList<>();
         addCodesDependencies(dependencies);
         for (Dependency dependency : dependencies) {
-            talendLibCoordinate.add(getCoordinate(dependency));
+            talendLibCoordinateMap.put(getCoordinate(dependency), dependency);
         }
 
         // libraries
@@ -700,23 +705,23 @@ public class CreateMavenJobPom extends AbstractMavenProcessorPom {
             }
             String dependencyGroupId = dependency.getGroupId();
             String coordinate = getCoordinate(dependency);
-            if (!jobCoordinate.contains(coordinate)) {
+            if (!jobCoordinateMap.containsKey(coordinate)) {
                 if (MavenConstants.DEFAULT_LIB_GROUP_ID.equals(dependencyGroupId)) {
-                    talendLibCoordinate.add(coordinate);
+                    talendLibCoordinateMap.put(coordinate, dependency);
                 }
             }
         }
 
         // add 3rd party libraries
-        Set<String> _3rdDepLib = new HashSet<>();
+        Map<String, Dependency> _3rdDepLibMap = new HashMap<String, Dependency>();
         Map<String, Set<Dependency>> duplicateLibs = new HashMap<>();
         for (Dependency dependency : dependencies) {
             if (MavenConstants.PACKAGING_POM.equals(dependency.getType())) {
                 continue;
             }
             String coordinate = getCoordinate(dependency);
-            if (!jobCoordinate.contains(coordinate) && !talendLibCoordinate.contains(coordinate)) {
-                _3rdDepLib.add(coordinate);
+            if (!jobCoordinateMap.containsKey(coordinate) && !talendLibCoordinateMap.containsKey(coordinate)) {
+                _3rdDepLibMap.put(coordinate, dependency);
                 addToDuplicateLibs(duplicateLibs, dependency);
             }
         }
@@ -736,13 +741,14 @@ public class CreateMavenJobPom extends AbstractMavenProcessorPom {
             MavenArtifact artifact = MavenUrlHelper.parseMvnUrl(moduleNeeded.getMavenUri());
             String coordinate = getCoordinate(artifact.getGroupId(), artifact.getArtifactId(), artifact.getType(),
                     artifact.getVersion());
-            if (!jobCoordinate.contains(coordinate) && !talendLibCoordinate.contains(coordinate)
-                    && !_3rdDepLib.contains(coordinate)) {
+            if (!jobCoordinateMap.containsKey(coordinate) && !talendLibCoordinateMap.containsKey(coordinate)
+                    && !_3rdDepLibMap.containsKey(coordinate)) {
+                Dependency dependencyObject = getDependencyObject(artifact.getGroupId(), artifact.getArtifactId(), artifact.getVersion(), artifact.getType(), artifact.getClassifier());
                 if (MavenConstants.DEFAULT_LIB_GROUP_ID.equals(artifact.getGroupId())
                         || artifact.getGroupId().startsWith(projectGroupId)) {
-                    talendLibCoordinate.add(coordinate);
+                    talendLibCoordinateMap.put(coordinate, dependencyObject);
                 } else {
-                    _3rdDepLib.add(coordinate);
+                    _3rdDepLibMap.put(coordinate, dependencyObject);
                     Dependency dependency = PomUtil
                             .createDependency(artifact.getGroupId(), artifact.getArtifactId(), artifact.getVersion(),
                                     artifact.getType(), artifact.getClassifier());
@@ -761,7 +767,7 @@ public class CreateMavenJobPom extends AbstractMavenProcessorPom {
             } else {
                 // remove duplicated dependencies from 3rd lib list
                 for (Dependency dependency : dupDependencies) {
-                    _3rdDepLib.remove(getCoordinate(dependency));
+                    _3rdDepLibMap.remove(getCoordinate(dependency));
                 }
             }
         }
@@ -769,12 +775,12 @@ public class CreateMavenJobPom extends AbstractMavenProcessorPom {
         try {
             Document document = PomUtil.loadAssemblyFile(null, assemblyFile);
             // add talend libs & codes
-            setupDependencySetNode(document, talendLibCoordinate, "lib", "${artifact.artifactId}.${artifact.extension}",
+            setupDependencySetNode(document, talendLibCoordinateMap, "lib", "${artifact.artifactId}.${artifact.extension}",
                     false);
             // add 3rd party libs <dependencySet>
-            setupDependencySetNode(document, _3rdDepLib, "lib", null, false);
+            setupDependencySetNode(document, _3rdDepLibMap, "lib", null, false);
             // add jobs
-            setupDependencySetNode(document, jobCoordinate, "${talend.job.name}",
+            setupDependencySetNode(document, jobCoordinateMap, "${talend.job.name}",
                     "${artifact.build.finalName}.${artifact.extension}", true);
             // add duplicate dependencies if exists
             setupFileNode(document, duplicateLibs);
@@ -797,10 +803,40 @@ public class CreateMavenJobPom extends AbstractMavenProcessorPom {
         if (type != null) {
             coordinate += type;
         }
+
         if (version != null) {
             coordinate += separator + version;
         }
+        
         return coordinate;
+    }
+    
+    protected String getAssemblyCoordinate(Dependency dependency) {
+        String separator = ":"; //$NON-NLS-1$
+        String coordinate = dependency.getGroupId() + separator;
+        coordinate += dependency.getArtifactId() + separator;
+        if (dependency.getType() != null) {
+            coordinate += dependency.getType();
+        }
+        if (dependency.getClassifier() != null) {
+            coordinate += separator + "*";
+        }
+        if (dependency.getVersion() != null) {
+            coordinate += separator + dependency.getVersion();
+        }
+        
+        return coordinate;
+    }
+    
+    protected Dependency getDependencyObject(String groupId, String artifactId, String version, String type, String classifier) {
+        Dependency object = new SortableDependency();
+        object.setGroupId(groupId);
+        object.setArtifactId(artifactId);
+        object.setVersion(version);
+        object.setType(type);
+        object.setClassifier(classifier);
+        
+        return object;
     }
 
     private void addToDuplicateLibs(Map<String, Set<Dependency>> map, Dependency dependency) {
@@ -813,7 +849,7 @@ public class CreateMavenJobPom extends AbstractMavenProcessorPom {
         map.get(coordinate).add(dependency);
     }
 
-    protected void setupDependencySetNode(Document document, Set<String> libIncludes, String outputDir,
+    protected void setupDependencySetNode(Document document, Map<String, Dependency> libIncludes, String outputDir,
             String fileNameMapping, boolean useProjectArtifact) {
         if (libIncludes.isEmpty()) {
             return;
@@ -832,9 +868,9 @@ public class CreateMavenJobPom extends AbstractMavenProcessorPom {
         Node includesNode = document.createElement("includes");
         dependencySetNode.appendChild(includesNode);
 
-        for (String include : libIncludes) {
+        for (Dependency dependency : libIncludes.values()) {
             Node includeNode = document.createElement("include");
-            includeNode.setTextContent(include);
+            includeNode.setTextContent(getAssemblyCoordinate(dependency));
             includesNode.appendChild(includeNode);
         }
 
