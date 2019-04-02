@@ -614,7 +614,12 @@ public final class MetadataToolHelper {
         target.getListColumns().addAll(columnsTAdd);
         target.sortCustomColumns();
         target.setLabel(source.getLabel());
-        target.setOriginalColumns(source.getOriginalColumns());
+        List<String> originalColumnsList = null;
+        if (source.getOriginalColumns() != null) {
+            originalColumnsList = new ArrayList<String>();
+            originalColumnsList.addAll(source.getOriginalColumns());
+        }
+        target.setOriginalColumns(originalColumnsList);
         Map<String, String> targetProperties = target.getAdditionalProperties();
         Map<String, String> sourceProperties = source.getAdditionalProperties();
         for (Entry<String, String> entry : sourceProperties.entrySet()) {

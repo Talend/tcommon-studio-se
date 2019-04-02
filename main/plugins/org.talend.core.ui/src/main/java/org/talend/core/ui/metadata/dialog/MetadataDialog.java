@@ -725,6 +725,8 @@ public class MetadataDialog extends Dialog {
         }
 
         IDesignerCoreService designerCoreService = CoreUIPlugin.getDefault().getDesignerCoreService();
+        updateTableOriginalColumns(outputTable);
+        updateTableOriginalColumns(inputTable);
         designerCoreService.setTraceFilterParameters(outputNode, outputTable, preOutputColumnSet, changedNameColumnsForOutput);
         designerCoreService.setTraceFilterParameters(inputNode, inputTable, preInputColumnSet, changedNameColumnsForInput);
         if (outputTable != null && inputTable != null) {
@@ -743,6 +745,16 @@ public class MetadataDialog extends Dialog {
                     MessageDialog.openInformation(getParentShell(), "", Messages.getString("MetadataDialog.NeedDoGuessQuery"));
                 }
             }
+        }
+    }
+    
+    private void updateTableOriginalColumns(IMetadataTable table) {
+        if (table != null && table.getListColumns() != null) {
+            List<String> columnNames = new ArrayList<String>();
+            for (IMetadataColumn column : table.getListColumns()) {
+                columnNames.add(column.getLabel());
+            }
+            table.setOriginalColumns(columnNames);
         }
     }
 
