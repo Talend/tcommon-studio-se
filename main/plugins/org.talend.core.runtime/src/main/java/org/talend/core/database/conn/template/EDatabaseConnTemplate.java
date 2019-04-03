@@ -96,11 +96,11 @@ public enum EDatabaseConnTemplate {
             "jdbc:sqlanywhere:Host=<host>:<port>;DatabaseName=<sid>;<property>", //$NON-NLS-1$
             "2638")), //$NON-NLS-1$
     IBMDB2(new DbConnStr(EDatabaseTypeName.IBMDB2, //
-            "jdbc:db2://<host>:<port>/<sid>", //$NON-NLS-1$
+            "jdbc:db2://<host>:<port>/<sid>:<property>", //$NON-NLS-1$
             "50000")), //$NON-NLS-1$
 
     IBMDB2_ZOS(new DbConnStr(EDatabaseTypeName.IBMDB2ZOS, //
-            "jdbc:db2://<host>:<port>/<sid>", //$NON-NLS-1$
+            "jdbc:db2://<host>:<port>/<sid>:<property>", //$NON-NLS-1$
             "557")), //$NON-NLS-1$
 
     SQLITE(new DbConnStr(EDatabaseTypeName.SQLITE, //
@@ -145,11 +145,11 @@ public enum EDatabaseConnTemplate {
             "1527")), //$NON-NLS-1$
 
     HSQLDB_SERVER(new DbConnStr(EDatabaseTypeName.HSQLDB_SERVER, //
-            "jdbc:hsqldb:hsql://<host>:<port>/<sid>", //$NON-NLS-1$
+            "jdbc:hsqldb:hsql://<host>:<port>/<sid>;<property>", //$NON-NLS-1$
             "9001")), //$NON-NLS-1$
 
     HSQLDB_WEBSERVER(new DbConnStr(EDatabaseTypeName.HSQLDB_WEBSERVER, //
-            "jdbc:hsqldb:http://<host>:<port>/<sid>", //$NON-NLS-1$
+            "jdbc:hsqldb:http://<host>:<port>/<sid>;<property>", //$NON-NLS-1$
             "9001")), //$NON-NLS-1$
 
     HSQLDB_IN_PROGRESS(new DbConnStr(EDatabaseTypeName.HSQLDB_IN_PROGRESS, //
@@ -161,7 +161,7 @@ public enum EDatabaseConnTemplate {
             "7210")), //$NON-NLS-1$
 
     SAS(new DbConnStr(EDatabaseTypeName.SAS, //
-            "jdbc:sasiom://<host>:<port>", //$NON-NLS-1$
+            "jdbc:sasiom://<host>:<port>?<property>", //$NON-NLS-1$
             "8591")), //$NON-NLS-1$
     // "jdbc:sap://talendhana.cld.sr:30015";
     SAPHana(new DbConnStr(EDatabaseTypeName.SAPHana, //
@@ -182,7 +182,7 @@ public enum EDatabaseConnTemplate {
             "5439",//$NON-NLS-1$
             "")), //$NON-NLS-1$
     NETEZZA(new DbConnStr(EDatabaseTypeName.NETEZZA, //
-            "jdbc:netezza://<host>:<port>/<sid>", //$NON-NLS-1$
+            "jdbc:netezza://<host>:<port>/<sid>;<property>", //$NON-NLS-1$
             "5480")), //$NON-NLS-1$
 
     VERTICA(new DbConnStr(EDatabaseTypeName.VERTICA, //
@@ -306,7 +306,7 @@ public enum EDatabaseConnTemplate {
         List<ERepositoryObjectType> extraTypes = new ArrayList<ERepositoryObjectType>();
         IGenericDBService dbService = null;
         if (GlobalServiceRegister.getDefault().isServiceRegistered(IGenericDBService.class)) {
-            dbService = (IGenericDBService) GlobalServiceRegister.getDefault().getService(
+            dbService = GlobalServiceRegister.getDefault().getService(
                     IGenericDBService.class);
         }
         if(dbService != null){
@@ -420,6 +420,12 @@ public enum EDatabaseConnTemplate {
             case JAVADB_JCCJDBC:
             case JAVADB_DERBYCLIENT:
             case MAXDB:
+            case IBMDB2:
+            case IBMDB2_ZOS:
+            case HSQLDB_SERVER:
+            case HSQLDB_WEBSERVER:
+            case SAS:
+            case NETEZZA:
                 return true;
             default:
             }
