@@ -79,6 +79,11 @@ public class ArtifactRepositoryBean implements Cloneable {
                 if (index > 0) {
                     nexusUrl = url.substring(0, index + ARTIFACT_MIDDLE_PATH.length());
                     repoId = StringUtilities.removeEndingString(url.substring(index + ARTIFACT_MIDDLE_PATH.length()), "/");
+                } else {
+                    // can be non-default contextpath or root
+                    String tempurl = StringUtilities.removeEndingString(url, "/");
+                    repoId = tempurl.substring(tempurl.lastIndexOf("/") + 1);
+                    nexusUrl = url.substring(0, url.indexOf(repoId));
                 }
             }
             return new String[] { nexusUrl, repoId };
