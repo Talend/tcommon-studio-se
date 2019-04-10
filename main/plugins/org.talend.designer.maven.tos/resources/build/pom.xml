@@ -14,7 +14,6 @@
 		<module>plugins/maven-bundle-plugin-2-3-7</module>
 		<module>plugins/maven-bundle-plugin-2-5-3</module>
 		<module>plugins/maven-install-plugin-2-5-1</module>
-		<module>plugins/spring-boot-maven-plugin-1-5-9-RELEASE</module>
 	</modules>	
 	<dependencies>
 		<dependency>

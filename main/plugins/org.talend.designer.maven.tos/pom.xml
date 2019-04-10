@@ -64,12 +64,6 @@
 			<version>${project.version}</version>
 			<type>pom</type>
 		</dependency>
-		<dependency>
-			<groupId>org.talend.studio</groupId>
-			<artifactId>spring-boot-maven-plugin-1-5-9-RELEASE-tos</artifactId>
-			<version>${project.version}</version>
-			<type>pom</type>
-		</dependency>
         <dependency>
             <groupId>org.talend.studio</groupId>
             <artifactId>studio-maven-repository-zip</artifactId>
