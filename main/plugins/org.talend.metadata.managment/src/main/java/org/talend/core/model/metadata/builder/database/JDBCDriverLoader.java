@@ -25,6 +25,7 @@ import java.util.Map;
 import java.util.Properties;
 
 import org.apache.commons.collections.map.MultiKeyMap;
+import org.apache.commons.lang.StringUtils;
 import org.talend.commons.utils.encoding.CharsetToolkit;
 import org.talend.core.database.EDatabaseTypeName;
 import org.talend.core.database.conn.version.EDatabaseVersion4Drivers;
@@ -154,8 +155,12 @@ public class JDBCDriverLoader {
             // to avoid NPE
             username = username != null ? username : "";
             password = password != null ? password : "";
-            info.put("user", username); //$NON-NLS-1$
-            info.put("password", password); //$NON-NLS-1$
+            if (StringUtils.isNotEmpty(username)) {
+                info.put("user", username); //$NON-NLS-1$
+            }
+            if (StringUtils.isNotEmpty(password)) {
+                info.put("password", password); //$NON-NLS-1$
+            }
             if (dbType.equals(EDatabaseTypeName.ACCESS.getXmlName()) || dbType.equals(EDatabaseTypeName.GODBC.getXmlName())) {
                 Charset systemCharset = CharsetToolkit.getInternalSystemCharset();
                 if (systemCharset != null && systemCharset.displayName() != null) {
