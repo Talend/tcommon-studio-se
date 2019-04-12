@@ -52,10 +52,6 @@ public class ContextAutoResizeTextPainter extends TextPainter {
         changeBackgroundColor = isChange;
     }
 
-    @Override
-    protected boolean performRowResize(int contentHeight, Rectangle rectangle) {
-        return (contentHeight != rectangle.height) && (this.calculateByTextHeight);
-    }
     
 	@Override
 	protected void setNewMinLength(ILayerCell cell, int contentWidth) {
