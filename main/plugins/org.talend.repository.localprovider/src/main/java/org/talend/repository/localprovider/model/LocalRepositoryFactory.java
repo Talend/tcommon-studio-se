@@ -832,6 +832,7 @@ public class LocalRepositoryFactory extends AbstractEMFRepositoryFactory impleme
         List<MigrationTask> realMigrationTaskList = new ArrayList<MigrationTask>();
         MigrationTask fakeMigratonTask = ProjectDataJsonProvider.createFakeMigrationTask();
         boolean foundFakeTask = false;
+        project.getEmfProject().eSetDeliver(false);
         for (int i = 0; i < project.getEmfProject().getMigrationTask().size(); i++) {
             MigrationTask task = (MigrationTask) project.getEmfProject().getMigrationTask().get(i);
             if (!StringUtils.equals(task.getId(), fakeMigratonTask.getId())) {
@@ -902,6 +903,7 @@ public class LocalRepositoryFactory extends AbstractEMFRepositoryFactory impleme
         xmiResourceManager.saveResource(projectResource);
         project.getEmfProject().getMigrationTask().addAll(realMigrationTaskList);
         ProjectDataJsonProvider.saveProjectData(project.getEmfProject());
+        project.getEmfProject().eSetDeliver(true);
     }
     
     private void removeContentsFromProject(Resource projectResource, EClassifier type) {
