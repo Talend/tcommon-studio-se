@@ -34,7 +34,7 @@
 						<dependency>
 							<groupId>org.eclipse.tycho</groupId>
 							<artifactId>tycho-compiler-jdt</artifactId>
-							<version>1.0.0</version>
+							<version>1.4.0</version>
 						</dependency>
 					</dependencies>
 				</plugin>
