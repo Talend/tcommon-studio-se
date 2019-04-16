@@ -12,7 +12,13 @@
 // ============================================================================
 package org.talend.designer.maven.tools;
 
-import static org.talend.designer.maven.model.TalendJavaProjectConstants.*;
+import static org.talend.designer.maven.model.TalendJavaProjectConstants.DIR_AGGREGATORS;
+import static org.talend.designer.maven.model.TalendJavaProjectConstants.DIR_BEANS;
+import static org.talend.designer.maven.model.TalendJavaProjectConstants.DIR_CODES;
+import static org.talend.designer.maven.model.TalendJavaProjectConstants.DIR_JOBS;
+import static org.talend.designer.maven.model.TalendJavaProjectConstants.DIR_PIGUDFS;
+import static org.talend.designer.maven.model.TalendJavaProjectConstants.DIR_POMS;
+import static org.talend.designer.maven.model.TalendJavaProjectConstants.DIR_ROUTINES;
 
 import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
@@ -519,7 +525,7 @@ public class AggregatorPomsHelper {
     /**
      * without create/open project
      */
-    public static IFolder getItemPomFolder(Property property, String realVersion) {
+    public static IFolder getItemPomFolder(Property property, IPath itemRelativePath, String realVersion) {
         if (GlobalServiceRegister.getDefault().isServiceRegistered(ITestContainerProviderService.class)) {
             ITestContainerProviderService testContainerService =
                     (ITestContainerProviderService) GlobalServiceRegister.getDefault().getService(
@@ -537,13 +543,16 @@ public class AggregatorPomsHelper {
         }
         String projectTechName = ProjectManager.getInstance().getProject(property).getTechnicalLabel();
         AggregatorPomsHelper helper = new AggregatorPomsHelper(projectTechName);
-        IPath itemRelativePath = ItemResourceUtil.getItemRelativePath(property);
         String version = realVersion == null ? property.getVersion() : realVersion;
         String jobFolderName = getJobProjectFolderName(property.getLabel(), version);
         ERepositoryObjectType type = ERepositoryObjectType.getItemType(property.getItem());
         IFolder jobFolder = helper.getProcessFolder(type).getFolder(itemRelativePath).getFolder(jobFolderName);
         createFoldersIfNeeded(jobFolder);
         return jobFolder;
+    }
+
+    public static IFolder getItemPomFolder(Property property, String realVersion) {
+        return getItemPomFolder(property, ItemResourceUtil.getItemRelativePath(property), realVersion);
     }
 
     private static void createFoldersIfNeeded(IFolder folder) {
