@@ -213,14 +213,14 @@ public final class ProxyRepositoryFactory implements IProxyRepositoryFactory {
 
     private ICoreService getCoreService() {
         if (GlobalServiceRegister.getDefault().isServiceRegistered(ICoreService.class)) {
-            return (ICoreService) GlobalServiceRegister.getDefault().getService(ICoreService.class);
+            return GlobalServiceRegister.getDefault().getService(ICoreService.class);
         }
         return null;
     }
     
     private IRunProcessService getRunProcessService() {
         if (GlobalServiceRegister.getDefault().isServiceRegistered(IRunProcessService.class)) {
-            return (IRunProcessService) GlobalServiceRegister.getDefault().getService(IRunProcessService.class);
+            return GlobalServiceRegister.getDefault().getService(IRunProcessService.class);
         }
         return null;
     }
@@ -317,7 +317,7 @@ public final class ProxyRepositoryFactory implements IProxyRepositoryFactory {
      * @throws LoginException
      */
     private void checkProjectCompatibility(Project project) throws LoginException {
-        IMigrationToolService migrationToolService = (IMigrationToolService) GlobalServiceRegister.getDefault().getService(
+        IMigrationToolService migrationToolService = GlobalServiceRegister.getDefault().getService(
                 IMigrationToolService.class);
         // update migration system.
         migrationToolService.updateMigrationSystem(project.getEmfProject(), false);
@@ -386,7 +386,7 @@ public final class ProxyRepositoryFactory implements IProxyRepositoryFactory {
                 ITDQRepositoryService tdqRepService = null;
 
                 if (GlobalServiceRegister.getDefault().isServiceRegistered(ITDQRepositoryService.class)) {
-                    tdqRepService = (ITDQRepositoryService) GlobalServiceRegister.getDefault().getService(
+                    tdqRepService = GlobalServiceRegister.getDefault().getService(
                             ITDQRepositoryService.class);
                 }
 
@@ -523,7 +523,7 @@ public final class ProxyRepositoryFactory implements IProxyRepositoryFactory {
         checkFileName(projectInfor.getLabel(), RepositoryConstants.PROJECT_PATTERN);
         Project toReturn = this.repositoryFactoryFromProvider.createProject(authUser, authPassword, projectInfor);
         if (toReturn.isLocal()) {
-            IMigrationToolService service = (IMigrationToolService) GlobalServiceRegister.getDefault().getService(
+            IMigrationToolService service = GlobalServiceRegister.getDefault().getService(
                     IMigrationToolService.class);
             service.initNewProjectTasks(toReturn);
         }
@@ -853,7 +853,7 @@ public final class ProxyRepositoryFactory implements IProxyRepositoryFactory {
 
         if (repositoryObjectType == ERepositoryObjectType.PROCESS && isFullLogonFinished()) {
             if (GlobalServiceRegister.getDefault().isServiceRegistered(IESBService.class)) {
-                IESBService service = (IESBService) GlobalServiceRegister.getDefault().getService(IESBService.class);
+                IESBService service = GlobalServiceRegister.getDefault().getService(IESBService.class);
                 if (service != null) {
                     service.refreshOperationLabel(object.getProperty().getId());
                 }
@@ -920,7 +920,7 @@ public final class ProxyRepositoryFactory implements IProxyRepositoryFactory {
 
             if (repositoryObjectType == ERepositoryObjectType.PROCESS && isFullLogonFinished()) {
                 if (GlobalServiceRegister.getDefault().isServiceRegistered(IESBService.class)) {
-                    IESBService service = (IESBService) GlobalServiceRegister.getDefault().getService(IESBService.class);
+                    IESBService service = GlobalServiceRegister.getDefault().getService(IESBService.class);
                     if (service != null) {
                         service.refreshOperationLabel(object.getProperty().getId());
                     }
@@ -931,7 +931,7 @@ public final class ProxyRepositoryFactory implements IProxyRepositoryFactory {
         }
 
         if (GlobalServiceRegister.getDefault().isServiceRegistered(IRunProcessService.class)) {
-            IRunProcessService service = (IRunProcessService) GlobalServiceRegister.getDefault()
+            IRunProcessService service = GlobalServiceRegister.getDefault()
                     .getService(IRunProcessService.class);
             service.batchDeleteAllVersionTalendJobProject(idList);
         }
@@ -2034,6 +2034,7 @@ public final class ProxyRepositoryFactory implements IProxyRepositoryFactory {
                         workspace.setDescription(description);
                     } catch (CoreException e) {
                         // do nothing
+                        ExceptionHandler.process(e);
                     }
                 }
                 isCancelled = false;
@@ -2074,7 +2075,7 @@ public final class ProxyRepositoryFactory implements IProxyRepositoryFactory {
                 checkProjectCompatibility(project);
 
                 if (GlobalServiceRegister.getDefault().isServiceRegistered(IMavenUIService.class)) {
-                    IMavenUIService mavenUIService = (IMavenUIService) GlobalServiceRegister.getDefault().getService(
+                    IMavenUIService mavenUIService = GlobalServiceRegister.getDefault().getService(
                             IMavenUIService.class);
                     if (mavenUIService != null) {
                         mavenUIService.updateMavenResolver(true);
@@ -2111,7 +2112,7 @@ public final class ProxyRepositoryFactory implements IProxyRepositoryFactory {
                 currentMonitor.beginTask(Messages.getString("ProxyRepositoryFactory.load.componnents"), 1); //$NON-NLS-1$
                 ICoreUIService coreUiService = null;
                 if (GlobalServiceRegister.getDefault().isServiceRegistered(ICoreUIService.class)) {
-                    coreUiService = (ICoreUIService) GlobalServiceRegister.getDefault().getService(ICoreUIService.class);
+                    coreUiService = GlobalServiceRegister.getDefault().getService(ICoreUIService.class);
                 }
                 if (coreUiService != null) {
                     coreUiService.componentsReset();
@@ -2176,6 +2177,7 @@ public final class ProxyRepositoryFactory implements IProxyRepositoryFactory {
                             coreService.syncAllBeans();
                         } catch (SystemException e1) {
                             //
+                            ExceptionHandler.process(e1);
                         }
                     }
                 }
@@ -2205,6 +2207,7 @@ public final class ProxyRepositoryFactory implements IProxyRepositoryFactory {
                     }
                 } catch (SystemException e) {
                     // ignore
+                    ExceptionHandler.process(e);
                 }
 
                 if (runProcessService != null && !isCommandLineLocalRefProject) {
@@ -2213,7 +2216,7 @@ public final class ProxyRepositoryFactory implements IProxyRepositoryFactory {
                     TimeMeasure.step("logOnProject", "install / setup root poms"); //$NON-NLS-1$ //$NON-NLS-2$
                 }
                 if (GlobalServiceRegister.getDefault().isServiceRegistered(ITDQRepositoryService.class)) {
-                    ITDQRepositoryService tdqRepositoryService = (ITDQRepositoryService) GlobalServiceRegister.getDefault()
+                    ITDQRepositoryService tdqRepositoryService = GlobalServiceRegister.getDefault()
                             .getService(ITDQRepositoryService.class);
                     if (tdqRepositoryService != null) {
                         tdqRepositoryService.initProxyRepository();
