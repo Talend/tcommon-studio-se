@@ -39,6 +39,17 @@ public class DBConnectionContextUtilsTest {
                 "impala/tal-qa146.talend.lan@CDH.ONE");
         DatabaseConnection clonedConn = DBConnectionContextUtils.cloneOriginalValueConnection(originalConn, false, null);
         Assert.assertEquals(EXPECT_URL, clonedConn.getURL());
+
+        final String EXPECT_DB2_URL = "jdbc:db2://192.168.31.20:50000/mydb2:cursorSensitivity=2;";
+        DatabaseConnection DB2OriginalConn = ConnectionFactoryImpl.eINSTANCE.createDatabaseConnection();
+        DB2OriginalConn.setDatabaseType(EDatabaseTypeName.IBMDB2.getXmlName());
+        DB2OriginalConn.setServerName("192.168.31.20");
+        DB2OriginalConn.setPort("50000");
+        DB2OriginalConn.setSID("mydb2");
+        DatabaseConnection cloneOriginalValueConnection = DBConnectionContextUtils.cloneOriginalValueConnection(DB2OriginalConn,
+                false, null);
+        Assert.assertEquals(EXPECT_DB2_URL, cloneOriginalValueConnection.getURL());
+
     }
 
 }
