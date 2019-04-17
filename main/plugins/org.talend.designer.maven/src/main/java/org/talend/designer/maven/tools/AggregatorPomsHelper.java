@@ -27,6 +27,7 @@ import java.util.List;
 import java.util.ListIterator;
 import java.util.Map;
 import java.util.Set;
+import java.util.function.Function;
 
 import org.apache.maven.model.Model;
 import org.eclipse.core.resources.IContainer;
@@ -523,9 +524,10 @@ public class AggregatorPomsHelper {
     }
 
     /**
-     * without create/open project
+     * without create/open project<br/>
+     * Use Function to get the relativePath from property at realtime, since the property may be changed
      */
-    public static IFolder getItemPomFolder(Property property, IPath itemRelativePath, String realVersion) {
+    public static IFolder getItemPomFolder(Property property, String realVersion, Function<Property, IPath> getItemRelativePath) {
         if (GlobalServiceRegister.getDefault().isServiceRegistered(ITestContainerProviderService.class)) {
             ITestContainerProviderService testContainerService =
                     (ITestContainerProviderService) GlobalServiceRegister.getDefault().getService(
@@ -541,6 +543,7 @@ public class AggregatorPomsHelper {
                 }
             }
         }
+        IPath itemRelativePath = getItemRelativePath.apply(property);
         String projectTechName = ProjectManager.getInstance().getProject(property).getTechnicalLabel();
         AggregatorPomsHelper helper = new AggregatorPomsHelper(projectTechName);
         String version = realVersion == null ? property.getVersion() : realVersion;
@@ -552,7 +555,7 @@ public class AggregatorPomsHelper {
     }
 
     public static IFolder getItemPomFolder(Property property, String realVersion) {
-        return getItemPomFolder(property, ItemResourceUtil.getItemRelativePath(property), realVersion);
+        return getItemPomFolder(property, realVersion, p -> ItemResourceUtil.getItemRelativePath(p));
     }
 
     private static void createFoldersIfNeeded(IFolder folder) {
