@@ -82,7 +82,7 @@ public class RemoteModulesHelper {
     private final class RemoteModulesFetchRunnable implements IRunnableWithProgress {
 
         private final boolean collectModulesWithJarName;
-        
+
         private volatile boolean useLocalLicenseData;
 
         /**
@@ -176,7 +176,7 @@ public class RemoteModulesHelper {
             });
             monitor.done();
         }
-        
+
         private Map<String, ModuleToInstall> getRemoteCache() {
             if (useLocalLicenseData) {
                 return localLicenseDataCache;
@@ -190,19 +190,19 @@ public class RemoteModulesHelper {
                 IRepositoryArtifactHandler customerRepHandler = RepositoryArtifactHandlerManager
                         .getRepositoryHandler(customNexusServer);
                 if (customerRepHandler != null) {
-                // collect the groupIds to check
-                Set<String> groupIds = new HashSet<String>();
-                Set<String> snapshotgroupIds = new HashSet<String>();
-                for (String mvnUri : mavenUristoSearch) {
-                    final MavenArtifact parseMvnUrl = MavenUrlHelper.parseMvnUrl(mvnUri);
-                    if (parseMvnUrl != null) {
-                        if (parseMvnUrl.getVersion() != null && parseMvnUrl.getVersion().endsWith(MavenConstants.SNAPSHOT)) {
-                            snapshotgroupIds.add(parseMvnUrl.getGroupId());
-                        } else {
-                            groupIds.add(parseMvnUrl.getGroupId());
+                    // collect the groupIds to check
+                    Set<String> groupIds = new HashSet<String>();
+                    Set<String> snapshotgroupIds = new HashSet<String>();
+                    for (String mvnUri : mavenUristoSearch) {
+                        final MavenArtifact parseMvnUrl = MavenUrlHelper.parseMvnUrl(mvnUri);
+                        if (parseMvnUrl != null) {
+                            if (parseMvnUrl.getVersion() != null && parseMvnUrl.getVersion().endsWith(MavenConstants.SNAPSHOT)) {
+                                snapshotgroupIds.add(parseMvnUrl.getGroupId());
+                            } else {
+                                groupIds.add(parseMvnUrl.getGroupId());
+                            }
                         }
                     }
-                }
 
                     for (String groupId : groupIds) {
                         List<MavenArtifact> searchResults = customerRepHandler.search(groupId, null, null, true, false);
@@ -220,6 +220,7 @@ public class RemoteModulesHelper {
                 ExceptionHandler.process(e1);
             }
         }
+
         private void searchFromLocalDataFile(Set<String> mavenUristoSearch, IProgressMonitor monitor) {
             LibraryDataService service = LibraryDataService.getInstance();
             List<MavenArtifact> artifactList = new ArrayList<MavenArtifact>();
@@ -238,9 +239,9 @@ public class RemoteModulesHelper {
                     artifactList.add(parseMvnUrl);
                 }
             }
-            addModulesToCache(mavenUristoSearch, artifactList, getRemoteCache()); 
+            addModulesToCache(mavenUristoSearch, artifactList, getRemoteCache());
         }
-        
+
         private void searchFromRemoteNexus(Set<String> mavenUristoSearch, IProgressMonitor monitor) {
             LibraryDataService service = LibraryDataService.getInstance();
             List<MavenArtifact> artifactList = new ArrayList<MavenArtifact>();
@@ -264,9 +265,9 @@ public class RemoteModulesHelper {
                     // Igonre here
                 }
             }
-            addModulesToCache(mavenUristoSearch, artifactList, getRemoteCache()); 
+            addModulesToCache(mavenUristoSearch, artifactList, getRemoteCache());
         }
-        
+
         private void addModulesToCache(Set<String> mavenUristoSearch, List<MavenArtifact> searchResults,
                 Map<String, ModuleToInstall> theCache) {
             for (MavenArtifact artifact : searchResults) {
@@ -513,7 +514,7 @@ public class RemoteModulesHelper {
      * key : mvnuri(without SANPSHOT in version) value : ModuleToInstall
      */
     private Map<String, ModuleToInstall> localLicenseDataCache = new HashMap<String, ModuleToInstall>();
-    
+
     private Map<String, ModuleToInstall> remoteCache = new HashMap<String, ModuleToInstall>();
 
     private Map<String, ModuleToInstall> localCache = new HashMap<String, ModuleToInstall>();
