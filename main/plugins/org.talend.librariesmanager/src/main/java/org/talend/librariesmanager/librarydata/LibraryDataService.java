@@ -164,18 +164,19 @@ public class LibraryDataService {
                 MavenLibraryResolverProvider.getInstance().resolveArtifact(artifact);
             } catch (Exception ex) {
                 jarMissing = true;
+            } finally {
                 libraryObj.setJarMissing(jarMissing);
             }
         }
 
         return libraryObj;
     }
-    
+
     public Map<String, Object> resolveDescProperties(MavenArtifact artifact) throws Exception {
         Map<String, Object> properties = MavenLibraryResolverProvider.getInstance().resolveDescProperties(artifact);
         return properties;
     }
-    
+
     public void fillArtifactPropertyData(Map<String, Object> properties, MavenArtifact artifact) {
         Library libraryObj = new Library();
         libraryObj.setGroupId(artifact.getGroupId());
@@ -184,14 +185,14 @@ public class LibraryDataService {
         libraryObj.setMvnUrl(artifact.getUrl());
         libraryObj.setType(artifact.getType());
         libraryObj.setClassifier(artifact.getClassifier());
-        
+
         parseDescriptorResult(libraryObj, properties);
         fillLibraryData(libraryObj, artifact);
     }
-    
+
     private boolean isPackagePom(Library libraryObj) {
         if (libraryObj != null) {
-            for (LibraryLicense license: libraryObj.getLicenses()) {
+            for (LibraryLicense license : libraryObj.getLicenses()) {
                 if (MavenConstants.DOWNLOAD_MANUAL.equalsIgnoreCase(license.getDistribution())) {
                     return true;
                 }
@@ -276,13 +277,13 @@ public class LibraryDataService {
         }
         if (object != null) {
             if ("jar".equalsIgnoreCase(object.getType()) && !object.isJarMissing() && !object.isPomMissing()) {
-                isExist = true; 
+                isExist = true;
             }
             fillLibraryData(object, artifact);
         }
         return isExist;
     }
-    
+
     public void fillLibraryData(Library object, MavenArtifact artifact) {
         if (object != null && artifact != null) {
             List<LibraryLicense> objLicenseList = object.getLicenses();
@@ -339,7 +340,7 @@ public class LibraryDataService {
                 score++;
             }
             if (!obj1.isLicenseMissing()) {
-                score+=2;
+                score += 2;
             }
         }
         return score;
