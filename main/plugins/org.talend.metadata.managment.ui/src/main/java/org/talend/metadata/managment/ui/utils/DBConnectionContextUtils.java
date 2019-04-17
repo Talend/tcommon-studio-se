@@ -837,9 +837,12 @@ public final class DBConnectionContextUtils {
         if (dbConn.getDatabaseType().equals(EDatabaseConnTemplate.GENERAL_JDBC.getDBDisplayName())) {
             urlConnection = ConnectionContextHelper.getOriginalValue(contextType, dbConn.getURL());
         } else {
+            if (!StringUtils.equals(dbConn.getDatabaseType(), EDatabaseTypeName.FIREBIRD.getXmlName())) {
+                filePath = filePath.toLowerCase();
+            }
             urlConnection =
                     DatabaseConnStrUtil.getURLString(dbConn.getDatabaseType(), dbConn.getDbVersionString(), server,
-                            username, password, port, sidOrDatabase, filePath.toLowerCase(), datasource, dbRootPath,
+                            username, password, port, sidOrDatabase, filePath, datasource, dbRootPath,
                             additionParam);
         }
 
