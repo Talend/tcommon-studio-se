@@ -43,11 +43,9 @@ import org.eclipse.emf.ecore.resource.impl.ResourceSetImpl;
 import org.junit.After;
 import org.junit.Assert;
 import org.junit.Ignore;
-import org.junit.Rule;
 import org.junit.Test;
 import org.mockito.Mockito;
 import org.powermock.core.classloader.annotations.PrepareForTest;
-import org.powermock.modules.junit4.rule.PowerMockRule;
 import org.talend.core.database.EDatabase4DriverClassName;
 import org.talend.core.database.EDatabaseTypeName;
 import org.talend.core.model.metadata.IMetadataConnection;
@@ -71,9 +69,6 @@ import orgomg.cwm.objectmodel.core.Feature;
 @PrepareForTest({ ExtractMetaDataUtils.class })
 @Ignore
 public class AbstractTest4ExtractManager {
-
-    @Rule
-    public PowerMockRule powerMockRule = new PowerMockRule();
 
     private ExtractManager extractManger;
 
