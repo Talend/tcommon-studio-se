@@ -583,7 +583,7 @@ public class DatabaseForm extends AbstractForm {
 
     private IHadoopDistributionService getHadoopDistributionService() {
         if (GlobalServiceRegister.getDefault().isServiceRegistered(IHadoopDistributionService.class)) {
-            return (IHadoopDistributionService) GlobalServiceRegister.getDefault().getService(IHadoopDistributionService.class);
+            return GlobalServiceRegister.getDefault().getService(IHadoopDistributionService.class);
         }
         return null;
     }
@@ -928,7 +928,7 @@ public class DatabaseForm extends AbstractForm {
      */
     @Override
     protected void addHelpInfoFields() {
-        IBrandingService brandingService = (IBrandingService) GlobalServiceRegister.getDefault().getService(
+        IBrandingService brandingService = GlobalServiceRegister.getDefault().getService(
                 IBrandingService.class);
         if (!brandingService.isPoweredbyTalend()) {
             return;
@@ -5707,7 +5707,7 @@ public class DatabaseForm extends AbstractForm {
                 }
                 List<String> asList = new ArrayList<String>(Arrays.asList(values));
                 if (GlobalServiceRegister.getDefault().isServiceRegistered(ILibraryManagerUIService.class)) {
-                    ILibraryManagerUIService libUiService = (ILibraryManagerUIService) GlobalServiceRegister.getDefault()
+                    ILibraryManagerUIService libUiService = GlobalServiceRegister.getDefault()
                             .getService(ILibraryManagerUIService.class);
                     IConfigModuleDialog dialog = libUiService.getConfigModuleDialog(getShell(), null);
                     if (dialog.open() == IDialogConstants.OK_ID) {
@@ -5927,7 +5927,11 @@ public class DatabaseForm extends AbstractForm {
     // Added yyin 20121219 TDQ-6485, check if the url is changed, if yes ,need reload
     private void checkURLIsChanged() {
         if (originalURL != null) {
-            String url = isGeneralJdbc() ? generalJdbcUrlText.getText() : urlConnectionStringText.getText();
+            String urlText = urlConnectionStringText.getText();
+            if (EDatabaseTypeName.IBMDB2.equals(EDatabaseTypeName.getTypeFromDbType(getConnection().getDatabaseType()))) {
+                urlText = urlText + "cursorSensitivity=2;";
+            }
+            String url = isGeneralJdbc() ? generalJdbcUrlText.getText() : urlText;
             if (!originalURL.equalsIgnoreCase(url)) {
                 ConnectionHelper.setIsConnNeedReload(getConnection(), Boolean.TRUE);
             } else if (!originalUischema.equalsIgnoreCase(schemaText.getText())) {
@@ -8629,7 +8633,7 @@ public class DatabaseForm extends AbstractForm {
         }
         String selecteModulePath = null;
         if (GlobalServiceRegister.getDefault().isServiceRegistered(ILibraryManagerService.class)) {
-            ILibraryManagerService librairesService = (ILibraryManagerService) GlobalServiceRegister.getDefault().getService(
+            ILibraryManagerService librairesService = GlobalServiceRegister.getDefault().getService(
                     ILibraryManagerService.class);
             if (librairesService != null) {
                 selecteModulePath = librairesService.getJarPath(selecteModule);
