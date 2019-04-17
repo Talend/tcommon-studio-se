@@ -35,7 +35,7 @@ import org.talend.repository.model.IRepositoryService;
 /**
  * DOC ggu class global comment. Detailled comment
  */
-public final class ProjectPreferenceManager {
+public class ProjectPreferenceManager {
 
     /**
      * copied from EclipsePreferences.
@@ -61,11 +61,11 @@ public final class ProjectPreferenceManager {
     static {
         if (GlobalServiceRegister.getDefault().isServiceRegistered(IRunProcessService.class)) {
             runProcessService =
-                    (IRunProcessService) GlobalServiceRegister.getDefault().getService(IRunProcessService.class);
+                    GlobalServiceRegister.getDefault().getService(IRunProcessService.class);
         }
         if (GlobalServiceRegister.getDefault().isServiceRegistered(IRepositoryService.class)) {
             repositoryService =
-                    (IRepositoryService) GlobalServiceRegister.getDefault().getService(IRepositoryService.class);
+                    GlobalServiceRegister.getDefault().getService(IRepositoryService.class);
         }
     }
 
@@ -109,7 +109,7 @@ public final class ProjectPreferenceManager {
         }
     }
 
-    private void init(IProject project, String fileName) {
+    protected void init(IProject project, String fileName) {
         Assert.isNotNull(fileName);
         Assert.isNotNull(project);
         this.qualifier = fileName;
@@ -148,6 +148,7 @@ public final class ProjectPreferenceManager {
     /**
      * @deprecated because don't support the default value setting, so use store directly.
      */
+    @Deprecated
     private IEclipsePreferences getQulifierPreference() {
         return getProjectScope().getNode(getQualifier());
     }
