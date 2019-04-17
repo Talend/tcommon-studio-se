@@ -25,11 +25,11 @@ import javax.xml.soap.Node;
 
 import junit.framework.Assert;
 
-import org.junit.Rule;
 import org.junit.Test;
+import org.junit.runner.RunWith;
 import org.powermock.core.classloader.annotations.PowerMockIgnore;
 import org.powermock.core.classloader.annotations.PrepareForTest;
-import org.powermock.modules.junit4.rule.PowerMockRule;
+import org.powermock.modules.junit4.PowerMockRunner;
 import org.w3c.dom.Document;
 import org.w3c.dom.NamedNodeMap;
 import org.w3c.dom.NodeList;
@@ -37,12 +37,10 @@ import org.w3c.dom.NodeList;
 /**
  * DOC xqliu class global comment. Detailled comment
  */
+@RunWith(PowerMockRunner.class)
 @PrepareForTest({ FilesUtils.class })
 @PowerMockIgnore({"org.w3c.*", "javax.xml.*", "com.sun.*"})
 public class FilesUtilsTest {
-
-    @Rule
-    public PowerMockRule powerMockRule = new PowerMockRule();
 
     /**
      * Test method for {@link org.talend.commons.utils.io.FilesUtils#getUUID(java.lang.String)}
