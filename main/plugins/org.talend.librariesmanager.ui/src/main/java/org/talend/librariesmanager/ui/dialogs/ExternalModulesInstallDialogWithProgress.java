@@ -699,7 +699,7 @@ public class ExternalModulesInstallDialogWithProgress extends ExternalModulesIns
         // remove duplicated
         List<ModuleNeeded> required = new ArrayList<ModuleNeeded>(requiredModules);
         IRunnableWithProgress notInstalledModulesRunnable = RemoteModulesHelper.getInstance().getNotInstalledModulesRunnable(
-                required, inputList, true);
+                required, inputList, true, false);
         setBlockOnOpen(block);
         setInitialRunnable(notInstalledModulesRunnable);
         open();
