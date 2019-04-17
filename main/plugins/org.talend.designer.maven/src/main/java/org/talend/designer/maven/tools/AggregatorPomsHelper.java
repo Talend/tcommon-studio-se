@@ -543,9 +543,10 @@ public class AggregatorPomsHelper {
                 }
             }
         }
-        IPath itemRelativePath = getItemRelativePath.apply(property);
+
         String projectTechName = ProjectManager.getInstance().getProject(property).getTechnicalLabel();
         AggregatorPomsHelper helper = new AggregatorPomsHelper(projectTechName);
+        IPath itemRelativePath = getItemRelativePath.apply(property);
         String version = realVersion == null ? property.getVersion() : realVersion;
         String jobFolderName = getJobProjectFolderName(property.getLabel(), version);
         ERepositoryObjectType type = ERepositoryObjectType.getItemType(property.getItem());
