@@ -68,10 +68,8 @@ import org.talend.commons.exception.SystemException;
 import org.talend.commons.runtime.model.repository.ERepositoryStatus;
 import org.talend.commons.runtime.service.ITaCoKitService;
 import org.talend.commons.ui.gmf.util.DisplayUtils;
-import org.talend.commons.ui.runtime.CommonUIPlugin;
 import org.talend.commons.ui.runtime.exception.MessageBoxExceptionHandler;
 import org.talend.commons.utils.data.container.RootContainer;
-import org.talend.commons.utils.generation.JavaUtils;
 import org.talend.commons.utils.time.TimeMeasure;
 import org.talend.commons.utils.workbench.resources.ResourceUtils;
 import org.talend.core.AbstractDQModelService;
@@ -130,7 +128,6 @@ import org.talend.core.runtime.CoreRuntimePlugin;
 import org.talend.core.runtime.repository.item.ItemProductKeys;
 import org.talend.core.runtime.services.IMavenUIService;
 import org.talend.core.runtime.util.ItemDateParser;
-import org.talend.core.runtime.util.JavaHomeUtil;
 import org.talend.core.service.ICoreUIService;
 import org.talend.cwm.helper.SubItemHelper;
 import org.talend.cwm.helper.TableHelper;
@@ -2145,20 +2142,6 @@ public final class ProxyRepositoryFactory implements IProxyRepositoryFactory {
                 if (coreService != null) {
                     // clean workspace
                     currentMonitor.beginTask(Messages.getString("ProxyRepositoryFactory.cleanWorkspace"), 1); //$NON-NLS-1$
-
-                    String specifiedVersion = null;
-                    String currentVersion = JavaUtils.getProjectJavaVersion();
-                    String newVersion = null;
-                    if (CommonUIPlugin.isFullyHeadless()) {
-                        specifiedVersion = JavaHomeUtil.getSpecifiedJavaVersion();
-                    }
-                    if (specifiedVersion == null) {
-                        newVersion = currentVersion != null ? currentVersion : JavaUtils.DEFAULT_VERSION;
-                    } else {
-                        newVersion = specifiedVersion;
-                    }
-
-                    JavaUtils.updateProjectJavaVersion(newVersion);
                     
                     TimeMeasure.step("logOnProject", "clean Java project"); //$NON-NLS-1$ //$NON-NLS-2$     
 
