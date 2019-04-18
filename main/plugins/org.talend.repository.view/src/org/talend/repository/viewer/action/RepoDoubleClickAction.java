@@ -229,8 +229,6 @@ public class RepoDoubleClickAction extends Action {
                                     });
                                 } catch (Exception e) {
                                     ExceptionHandler.process(e);
-                                } finally {
-                                    shell.dispose();
                                 }
                             }
                         }, deviceData);
@@ -552,7 +550,7 @@ public class RepoDoubleClickAction extends Action {
 
         IGenericWizardService wizardService = null;
         if (GlobalServiceRegister.getDefault().isServiceRegistered(IGenericWizardService.class)) {
-            wizardService = (IGenericWizardService) GlobalServiceRegister.getDefault().getService(IGenericWizardService.class);
+            wizardService = GlobalServiceRegister.getDefault().getService(IGenericWizardService.class);
         }
         if (wizardService != null) {
             ITreeContextualAction defaultAction = wizardService.getDefaultAction(obj);

@@ -121,6 +121,10 @@ class Library {
     @JsonProperty("licenseMissing")
     @JsonInclude(Include.NON_DEFAULT)
     private boolean licenseMissing = false;
+    
+    @JsonProperty("pomMissing")
+    @JsonInclude(Include.NON_DEFAULT)
+    private boolean pomMissing = false;
 
     @JsonProperty("jarMissing")
     @JsonInclude(Include.NON_DEFAULT)
@@ -210,6 +214,14 @@ class Library {
 
     public void setJarMissing(boolean jarMissing) {
         this.jarMissing = jarMissing;
+    }
+
+    public boolean isPomMissing() {
+        return pomMissing;
+    }
+
+    public void setPomMissing(boolean pomMissing) {
+        this.pomMissing = pomMissing;
     }
 
     public String toString() {
