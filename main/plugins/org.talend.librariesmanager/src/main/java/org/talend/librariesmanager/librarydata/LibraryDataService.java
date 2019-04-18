@@ -192,6 +192,9 @@ public class LibraryDataService {
 
     private boolean isPackagePom(Library libraryObj) {
         if (libraryObj != null) {
+            if ("pom".equalsIgnoreCase(libraryObj.getType())) {
+                return true;
+            }
             for (LibraryLicense license : libraryObj.getLicenses()) {
                 if (MavenConstants.DOWNLOAD_MANUAL.equalsIgnoreCase(license.getDistribution())) {
                     return true;
@@ -205,6 +208,7 @@ public class LibraryDataService {
         if (properties.size() == 0) {
             libraryObj.setPomMissing(true);
         }
+        libraryObj.setType(String.valueOf(properties.get("type"))); //$NON-NLS-1$
         int licenseCount = 0;
         if (properties.containsKey("license.count")) { //$NON-NLS-1$
             licenseCount = (int) properties.get("license.count"); //$NON-NLS-1$
@@ -222,9 +226,7 @@ public class LibraryDataService {
             license.setDistribution(distribution);
             libraryObj.getLicenses().add(license);
         }
-        if (isPackagePom(libraryObj)) {
-            libraryObj.setType("pom"); //$NON-NLS-1$
-        }
+
         if (libraryObj.getLicenses().size() == 0) {
             libraryObj.setLicenseMissing(true);
             libraryObj.getLicenses().add(unknownLicense);
