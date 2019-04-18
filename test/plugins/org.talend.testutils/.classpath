@@ -4,6 +4,7 @@
 	<classpathentry exported="true" kind="lib" path="lib/assertj-core-3.5.2.jar"/>
 	<classpathentry exported="true" kind="lib" path="lib/byte-buddy-1.9.10.jar"/>
 	<classpathentry exported="true" kind="lib" path="lib/byte-buddy-agent-1.9.10.jar"/>
+	<classpathentry exported="true" kind="lib" path="lib/classmexer-0.0.3.1.jar"/>
 	<classpathentry exported="true" kind="lib" path="lib/javassist-3.24.0-GA.jar"/>
 	<classpathentry exported="true" kind="lib" path="lib/mockito-core-2.23.4.jar"/>
 	<classpathentry exported="true" kind="lib" path="lib/objenesis-2.6.jar"/>
