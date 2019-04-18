@@ -620,25 +620,25 @@ public abstract class AbstractEMFRepositoryFactory extends AbstractRepositoryFac
             stream = url.openStream();
             byte[] innerContent = new byte[stream.available()];
             stream.read(innerContent);
-            stream.close();
 
-            byte[] currentContent = item.getContent().getInnerContent();
-
-            if (!Arrays.equals(innerContent, currentContent)) {
-                item.getContent().setInnerContent(innerContent);
-                Project project = getRepositoryContext().getProject();
-                save(project, item);
-            }
+            // TDQ-16899: force to update the Routine files
+            // byte[] currentContent = item.getContent().getInnerContent();
+            // if (!Arrays.equals(innerContent, currentContent)) {
+            item.getContent().setInnerContent(innerContent);
+            Project project = getRepositoryContext().getProject();
+            save(project, item);
+            // }
 
         } catch (IOException ioe) {
+            throw new PersistenceException(ioe);
+        } finally {
             if (stream != null) {
                 try {
                     stream.close();
                 } catch (IOException e) {
-                    throw new PersistenceException(ioe);
+                    throw new PersistenceException(e);
                 }
             }
-            throw new PersistenceException(ioe);
         }
     }
 
