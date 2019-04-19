@@ -63,9 +63,9 @@ import org.talend.repository.viewer.ui.provider.INavigatorContentServiceProvider
 
 /**
  * DOC sgandon class global comment. Detailled comment <br/>
- * 
+ *
  * $Id: talend.epf 55206 2011-02-15 17:32:14Z mhirt $
- * 
+ *
  */
 public class RepoViewCommonViewer extends CommonViewer implements INavigatorContentServiceProvider {
 
@@ -81,7 +81,7 @@ public class RepoViewCommonViewer extends CommonViewer implements INavigatorCont
 
     /**
      * Getter for repViewCommonNavigator.
-     * 
+     *
      * @return the repViewCommonNavigator
      */
     public RepoViewCommonNavigator getRepViewCommonNavigator() {
@@ -95,7 +95,7 @@ public class RepoViewCommonViewer extends CommonViewer implements INavigatorCont
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see org.eclipse.ui.navigator.CommonViewer#init()
      */
     @Override
@@ -142,7 +142,7 @@ public class RepoViewCommonViewer extends CommonViewer implements INavigatorCont
 
             /*
              * (non-Javadoc)
-             * 
+             *
              * @see org.eclipse.swt.dnd.DragSourceAdapter#dragSetData(org.eclipse.swt.dnd.DragSourceEvent)
              */
             @Override
@@ -153,7 +153,7 @@ public class RepoViewCommonViewer extends CommonViewer implements INavigatorCont
 
             /*
              * (non-Javadoc)
-             * 
+             *
              * @see org.eclipse.swt.dnd.DragSourceAdapter#dragStart(org.eclipse.swt.dnd.DragSourceEvent)
              */
             @Override
@@ -175,7 +175,7 @@ public class RepoViewCommonViewer extends CommonViewer implements INavigatorCont
 
             /*
              * (non-Javadoc)
-             * 
+             *
              * @see org.eclipse.swt.dnd.DragSourceAdapter#dragFinished(org.eclipse.swt.dnd.DragSourceEvent)
              */
             @Override
@@ -231,7 +231,7 @@ public class RepoViewCommonViewer extends CommonViewer implements INavigatorCont
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see org.eclipse.jface.viewers.AbstractTreeViewer#getSortedChildren(java.lang.Object)
      */
     @Override
@@ -277,7 +277,7 @@ public class RepoViewCommonViewer extends CommonViewer implements INavigatorCont
 
     /**
      * DOC sgandon Comment method "refreshContentIfNecessary".
-     * 
+     *
      * @param item
      */
     private void refreshContentIfNecessary(org.talend.core.model.properties.Item item) {
@@ -410,35 +410,29 @@ public class RepoViewCommonViewer extends CommonViewer implements INavigatorCont
     }
 
     protected void refreshContentIfNecessary(Collection<String> fileList) {
-        Display.getDefault().asyncExec(new Runnable() {
-
-            @Override
-            public void run() {
-                RepoViewRefreshHelper helper = new RepoViewRefreshHelper();
-                for (String fileUpdated : fileList) {
-                    XmiResourceManager xrm = new XmiResourceManager();
-                    if (xrm.isPropertyFile(fileUpdated)) {
-                        IFile file = helper.getValidResourceFile(fileUpdated);
-                        if (file != null) {
-                            try {
-                                Property property = xrm.loadProperty(file);
-                                if (property != null) {
-                                    refreshNodeFromProperty(property);
-                                }
-                            } catch (Throwable e) {
-                                // if have error still, just log it
-                                ExceptionHandler.process(e);
-                            }
+        RepoViewRefreshHelper helper = new RepoViewRefreshHelper();
+        for (String fileUpdated : fileList) {
+            XmiResourceManager xrm = new XmiResourceManager();
+            if (xrm.isPropertyFile(fileUpdated)) {
+                IFile file = helper.getValidResourceFile(fileUpdated);
+                if (file != null) {
+                    try {
+                        Property property = xrm.loadProperty(file);
+                        if (property != null) {
+                            Display.getDefault().asyncExec(() -> refreshNodeFromProperty(property));
                         }
+                    } catch (Throwable e) {
+                        // if have error still, just log it
+                        ExceptionHandler.process(e);
                     }
                 }
             }
-        });
+        }
     }
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see org.eclipse.ui.navigator.CommonViewer#dispose()
      */
     @Override
