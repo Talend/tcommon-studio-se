@@ -297,25 +297,6 @@ public class LibraryDataService {
                 artifact.setLicense(bestLicense.getName());
                 artifact.setLicenseUrl(bestLicense.getUrl());
             }
-            // Artifact id
-            if (StringUtils.isEmpty(artifact.getArtifactId()) && StringUtils.isNotEmpty(object.getArtifactId())) {
-                artifact.setArtifactId(object.getArtifactId());
-            }
-
-            // Group id
-            if (StringUtils.isEmpty(artifact.getGroupId()) && StringUtils.isNotEmpty(object.getGroupId())) {
-                artifact.setGroupId(object.getGroupId());
-            }
-
-            // Version
-            if (StringUtils.isEmpty(artifact.getVersion()) && StringUtils.isNotEmpty(object.getVersion())) {
-                artifact.setVersion(object.getVersion());
-            }
-
-            // Type
-            if (StringUtils.isEmpty(artifact.getType()) && StringUtils.isNotEmpty(object.getType())) {
-                artifact.setType(object.getType());
-            }
 
             // URL
             if (StringUtils.isEmpty(artifact.getUrl()) && StringUtils.isNotEmpty(object.getUrl())) {

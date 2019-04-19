@@ -99,9 +99,10 @@ public class MavenLibraryResolverProvider {
     }
 
     public Map<String, Object> resolveDescProperties(MavenArtifact aritfact) throws Exception {
-        aritfact.setType("pom"); //$NON-NLS-1$
+        MavenArtifact clonedArtifact = aritfact.clone();
+        clonedArtifact.setType("pom"); //$NON-NLS-1$
         Map<String, Object> properties = new HashMap<String, Object>();
-        ArtifactResult result = resolveArtifact(aritfact);
+        ArtifactResult result = resolveArtifact(clonedArtifact);
         if (result != null && result.isResolved()) {
             DefaultModelBuilderFactory factory = new DefaultModelBuilderFactory();
             DefaultModelBuildingRequest request = new DefaultModelBuildingRequest();

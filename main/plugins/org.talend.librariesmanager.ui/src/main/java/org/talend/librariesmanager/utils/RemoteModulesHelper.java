@@ -34,10 +34,6 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.LinkedBlockingQueue;
-import java.util.concurrent.ThreadPoolExecutor;
-import java.util.concurrent.TimeUnit;
 
 import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
@@ -84,7 +80,6 @@ public class RemoteModulesHelper {
      * 
      */
     private final class RemoteModulesFetchRunnable implements IRunnableWithProgress {
-        private static final int MAX_POOL_SIZE = 5;
         private final boolean collectModulesWithJarName;
 
         private volatile boolean useLocalLicenseData;
@@ -98,8 +93,6 @@ public class RemoteModulesHelper {
          * 
          */
         private final Map<String, List<ModuleNeeded>> contextMap;
-        
-        private ExecutorService threadPool = null;
 
         /**
          * 
@@ -114,7 +107,6 @@ public class RemoteModulesHelper {
             this.contextMap = requiredModules;
             this.collectModulesWithJarName = collectModulesWithJarName;
             this.useLocalLicenseData = useLocalLicenseData;
-            this.threadPool = newFixedThreadPool(MAX_POOL_SIZE);
         }
 
         @Override
@@ -181,7 +173,6 @@ public class RemoteModulesHelper {
                     return o1.getName().compareTo(o2.getName());
                 }
             });
-            threadPool.shutdown();
             monitor.done();
         }
 
@@ -251,39 +242,29 @@ public class RemoteModulesHelper {
         }
 
         private void searchFromRemoteNexus(Set<String> mavenUristoSearch, IProgressMonitor monitor) {
+            LibraryDataService service = LibraryDataService.getInstance();
             List<MavenArtifact> artifactList = new ArrayList<MavenArtifact>();
             final Iterator<String> iterator = mavenUristoSearch.iterator();
-            List<MavenArtifact> finishedList = new ArrayList<MavenArtifact>();
             while (iterator.hasNext()) {
+                if (monitor.isCanceled()) {
+                    break;
+                }
                 String uriToCheck = iterator.next();
-                final MavenArtifact mavenArtifact = MavenUrlHelper.parseMvnUrl(uriToCheck);
-                threadPool.execute(new ArtifactResolveRunnable(mavenArtifact, finishedList));
-            }
-            threadPool.shutdown();
-            try {
-                boolean isWait = true;
-                do {
-                    isWait = !threadPool.awaitTermination(1, TimeUnit.SECONDS);
-                    if (monitor.isCanceled()) {
-                        isWait = false;
-                        threadPool.shutdownNow();
+                final MavenArtifact parseMvnUrl = MavenUrlHelper.parseMvnUrl(uriToCheck);
+                Map<String, Object> properties;
+                try {
+                    properties = service.resolveDescProperties(parseMvnUrl);
+                    if (properties != null && properties.size() > 0) {
+                        service.fillArtifactPropertyData(properties, parseMvnUrl);
+                        if (!MavenConstants.DOWNLOAD_MANUAL.equals(parseMvnUrl.getDistribution())) {
+                            artifactList.add(parseMvnUrl);
+                        }
                     }
-                } while (isWait);
-            } catch (InterruptedException ex) {
-                ExceptionHandler.process(ex);
-            }
-
-            for (MavenArtifact artifact : finishedList) {
-                if (!MavenConstants.DOWNLOAD_MANUAL.equals(artifact.getDistribution())) {
-                    artifactList.add(artifact);
+                } catch (Exception e) {
+                    ExceptionHandler.process(e);
                 }
             }
             addModulesToCache(mavenUristoSearch, artifactList, getRemoteCache());
-        }
-        
-        private ExecutorService newFixedThreadPool(int maximumPoolSize) {
-            return new ThreadPoolExecutor(maximumPoolSize, maximumPoolSize, 0L, TimeUnit.MILLISECONDS,
-                    new LinkedBlockingQueue<Runnable>());
         }
 
         private void addModulesToCache(Set<String> mavenUristoSearch, List<MavenArtifact> searchResults,
@@ -775,42 +756,3 @@ public class RemoteModulesHelper {
     }
 }
 
-class ArtifactResolveRunnable implements Runnable {
-
-    private final int WAITING_TIME = 500;// MS
-
-    private final int MAX_REPEAT_TIME = 3;
-
-    private volatile MavenArtifact mavenArtifact;
-
-    private volatile List<MavenArtifact> finishedList;
-
-    public ArtifactResolveRunnable(MavenArtifact mavenArtifact, List<MavenArtifact> finishedList) {
-        this.mavenArtifact = mavenArtifact;
-        this.finishedList = finishedList;
-    }
-
-    @Override
-    public void run() {
-        LibraryDataService service = LibraryDataService.getInstance();
-        Map<String, Object> properties;
-        int repeatTime = 0;
-        do {
-            repeatTime++;
-            try {
-                properties = service.resolveDescProperties(mavenArtifact);
-                if (properties != null && properties.size() > 0) {
-                    service.fillArtifactPropertyData(properties, mavenArtifact);
-                }
-                finishedList.add(mavenArtifact);
-                break;
-            } catch (Exception e) {
-                try {
-                    Thread.sleep(WAITING_TIME);
-                } catch (InterruptedException ex) {
-                    ExceptionHandler.process(ex);
-                }
-            }
-        } while (repeatTime <= MAX_REPEAT_TIME);
-    }
-}
