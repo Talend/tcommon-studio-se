@@ -1238,6 +1238,9 @@ public class RelationshipItemBuilder {
     }
 
     public void removeItemRelations(Relation relation, boolean save) {
+        if (!loaded) {
+            loadRelations();
+        }
         Map<Relation, Set<Relation>> itemRelations = getCurrentProjectItemsRelations();
         relation = findPossibleKeyObject(itemRelations.keySet(), relation);
         if (itemRelations != null && itemRelations.containsKey(relation)) {
