@@ -96,6 +96,7 @@ import org.talend.core.runtime.process.TalendProcessArgumentConstant;
 import org.talend.core.runtime.process.TalendProcessOptionConstants;
 import org.talend.core.runtime.repository.build.BuildExportManager;
 import org.talend.core.service.IResourcesDependenciesService;
+import org.talend.core.services.ICoreTisService;
 import org.talend.core.services.ISVNProviderService;
 import org.talend.core.ui.IJobletProviderService;
 import org.talend.core.ui.ITestContainerProviderService;
@@ -763,32 +764,26 @@ public class ProcessorUtilities {
             }
         }
 
-        out: for (INode node : (List<? extends INode>) currentProcess.getGeneratingNodes()) {
+        ICoreTisService service = null;
+        if (GlobalServiceRegister.getDefault().isServiceRegistered(ICoreTisService.class)) {
+            service = (ICoreTisService) GlobalServiceRegister.getDefault().getService(ICoreTisService.class);
+        }
+        for (INode node : (List<? extends INode>) currentProcess.getGeneratingNodes()) {
             if (node.getComponent() != null && node.getComponent().getComponentType() == EComponentType.GENERIC) {
                 // generic component, true always
                 return true;
             }
-            // to check if node is db component , maybe need modification
-            boolean isDbNode = false;
-            for (IElementParameter param : (List<? extends IElementParameter>) node.getElementParameters()) {
-                if (EParameterFieldType.TEXT == param.getFieldType() && param.getValue() != null) {
-                    if (("TYPE".equals(param.getName()) && !"".equals(param.getValue()))
-                            || ("FAMILY".equals(param.getName())
-                                    && param.getValue().toString().startsWith("Database"))) {
-                        isDbNode = true;
-                        break;
-                    }
-                }
-            }
-            if (isDbNode) {
-                for (IMetadataTable metadataTable : node.getMetadataList()) {
-                    for (IMetadataColumn column : metadataTable.getListColumns()) {
-                        if ("id_Dynamic".equals(column.getTalendType())) {
-                            hasDynamicMetadata = true;
-                            break out;
-                        }
-                    }
-                }
+            if (service != null && service.isSupportDynamicType(node)) {
+            	IElementParameter mappingParam = node.getElementParameterFromField(EParameterFieldType.MAPPING_TYPE);
+            	if (mappingParam != null) {
+	                for (IMetadataTable metadataTable : node.getMetadataList()) {
+	                    for (IMetadataColumn column : metadataTable.getListColumns()) {
+	                        if ("id_Dynamic".equals(column.getTalendType())) {
+	                            return true;
+	                        }
+	                    }
+	                }
+            	}
             }
         }
         return hasDynamicMetadata;

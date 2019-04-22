@@ -15,6 +15,11 @@ package org.talend.designer.maven.aether.util;
 import java.util.HashMap;
 import java.util.Map;
 
+import org.apache.maven.model.License;
+import org.apache.maven.model.Model;
+import org.apache.maven.model.building.DefaultModelBuilderFactory;
+import org.apache.maven.model.building.DefaultModelBuildingRequest;
+import org.apache.maven.model.building.ModelBuildingResult;
 import org.apache.maven.repository.internal.MavenRepositorySystemUtils;
 import org.eclipse.aether.DefaultRepositorySystemSession;
 import org.eclipse.aether.RepositorySystem;
@@ -26,8 +31,6 @@ import org.eclipse.aether.impl.DefaultServiceLocator;
 import org.eclipse.aether.repository.Authentication;
 import org.eclipse.aether.repository.LocalRepository;
 import org.eclipse.aether.repository.RemoteRepository;
-import org.eclipse.aether.resolution.ArtifactDescriptorRequest;
-import org.eclipse.aether.resolution.ArtifactDescriptorResult;
 import org.eclipse.aether.resolution.ArtifactRequest;
 import org.eclipse.aether.resolution.ArtifactResult;
 import org.eclipse.aether.spi.connector.RepositoryConnectorFactory;
@@ -41,8 +44,8 @@ import org.talend.core.nexus.TalendLibsServerManager;
 import org.talend.core.runtime.maven.MavenArtifact;
 
 public class MavenLibraryResolverProvider {
-    
-    public static final String KEY_LOCAL_MVN_REPOSITORY = "talend.mvn.repository";
+
+    public static final String KEY_LOCAL_MVN_REPOSITORY = "talend.mvn.repository"; //$NON-NLS-1$
 
     private static Map<String, RemoteRepository> urlToRepositoryMap = new HashMap<String, RemoteRepository>();
 
@@ -75,11 +78,11 @@ public class MavenLibraryResolverProvider {
         defaultRepoSystemSession = newSession(defaultRepoSystem, getLocalMVNRepository());
         ArtifactRepositoryBean talendServer = TalendLibsServerManager.getInstance().getTalentArtifactServer();
         if (talendServer.getUserName() == null && talendServer.getPassword() == null) {
-            defaultRemoteRepository = new RemoteRepository.Builder("talend", "default", talendServer.getRepositoryURL()).build();
+            defaultRemoteRepository = new RemoteRepository.Builder("talend", "default", talendServer.getRepositoryURL()).build(); //$NON-NLS-1$ //$NON-NLS-2$
         } else {
             Authentication authentication = new AuthenticationBuilder().addUsername(talendServer.getUserName())
                     .addPassword(talendServer.getPassword()).build();
-            defaultRemoteRepository = new RemoteRepository.Builder("talend", "default", talendServer.getRepositoryURL())
+            defaultRemoteRepository = new RemoteRepository.Builder("talend", "default", talendServer.getRepositoryURL()) //$NON-NLS-1$ //$NON-NLS-2$
                     .setAuthentication(authentication).build();
         }
     }
@@ -96,14 +99,31 @@ public class MavenLibraryResolverProvider {
     }
 
     public Map<String, Object> resolveDescProperties(MavenArtifact aritfact) throws Exception {
-        RemoteRepository remoteRepo = getRemoteRepositroy(aritfact);
-        Artifact artifact = new DefaultArtifact(aritfact.getGroupId(), aritfact.getArtifactId(), aritfact.getClassifier(),
-                aritfact.getType(), aritfact.getVersion());
-        ArtifactDescriptorRequest artifactRequest = new ArtifactDescriptorRequest();
-        artifactRequest.addRepository(remoteRepo);
-        artifactRequest.setArtifact(artifact);
-        ArtifactDescriptorResult result = defaultRepoSystem.readArtifactDescriptor(defaultRepoSystemSession, artifactRequest);
-        return result.getProperties();
+        MavenArtifact clonedArtifact = aritfact.clone();
+        clonedArtifact.setType("pom"); //$NON-NLS-1$
+        Map<String, Object> properties = new HashMap<String, Object>();
+        ArtifactResult result = resolveArtifact(clonedArtifact);
+        if (result != null && result.isResolved()) {
+            DefaultModelBuilderFactory factory = new DefaultModelBuilderFactory();
+            DefaultModelBuildingRequest request = new DefaultModelBuildingRequest();
+            request.setPomFile(result.getArtifact().getFile());
+            ModelBuildingResult modelResult = factory.newInstance().build(request);
+            Model model = modelResult.getEffectiveModel();
+            if (model != null) {
+                properties.put("type", model.getPackaging()); //$NON-NLS-1$
+                properties.put("license.count", model.getLicenses().size()); //$NON-NLS-1$
+                if (model.getLicenses() != null) {
+                    for (int i = 0; i < model.getLicenses().size(); i++) {
+                        License license = model.getLicenses().get(i);
+                        properties.put("license." + i + ".name", license.getName()); //$NON-NLS-1$//$NON-NLS-2$
+                        properties.put("license." + i + ".url", license.getUrl()); //$NON-NLS-1$ //$NON-NLS-2$
+                        properties.put("license." + i + ".comments", license.getComments()); //$NON-NLS-1$ //$NON-NLS-2$
+                        properties.put("license." + i + ".distribution", license.getDistribution()); //$NON-NLS-1$ //$NON-NLS-2$
+                    }
+                }
+            }
+        }
+        return properties;
     }
 
     public RemoteRepository getRemoteRepositroy(MavenArtifact aritfact) {
@@ -122,11 +142,11 @@ public class MavenLibraryResolverProvider {
     private RemoteRepository buildRemoteRepository(MavenArtifact aritfact) {
         RemoteRepository repository = null;
         if (aritfact.getUsername() == null && aritfact.getPassword() == null) {
-            repository = new RemoteRepository.Builder("talend", "default", aritfact.getRepositoryUrl()).build();
+            repository = new RemoteRepository.Builder("talend", "default", aritfact.getRepositoryUrl()).build(); //$NON-NLS-1$ //$NON-NLS-2$
         } else {
             Authentication authentication = new AuthenticationBuilder().addUsername(aritfact.getUsername())
                     .addPassword(aritfact.getPassword()).build();
-            repository = new RemoteRepository.Builder("talend", "default", aritfact.getRepositoryUrl())
+            repository = new RemoteRepository.Builder("talend", "default", aritfact.getRepositoryUrl()) //$NON-NLS-1$ //$NON-NLS-2$
                     .setAuthentication(authentication).build();
         }
         return repository;
@@ -149,7 +169,7 @@ public class MavenLibraryResolverProvider {
 
         return session;
     }
-    
+
     private String getLocalMVNRepository() {
         String repository = null;
         try {

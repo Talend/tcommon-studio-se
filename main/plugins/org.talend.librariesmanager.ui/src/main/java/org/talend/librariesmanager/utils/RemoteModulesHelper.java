@@ -80,7 +80,6 @@ public class RemoteModulesHelper {
      * 
      */
     private final class RemoteModulesFetchRunnable implements IRunnableWithProgress {
-
         private final boolean collectModulesWithJarName;
 
         private volatile boolean useLocalLicenseData;
@@ -262,7 +261,7 @@ public class RemoteModulesHelper {
                         }
                     }
                 } catch (Exception e) {
-                    // Igonre here
+                    ExceptionHandler.process(e);
                 }
             }
             addModulesToCache(mavenUristoSearch, artifactList, getRemoteCache());
@@ -755,5 +754,5 @@ public class RemoteModulesHelper {
         }
         return null;
     }
-
 }
+

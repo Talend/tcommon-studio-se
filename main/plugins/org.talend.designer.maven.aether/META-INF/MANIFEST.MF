@@ -7,7 +7,8 @@ Bundle-Activator: org.talend.designer.maven.aether.Activator
 Require-Bundle: org.eclipse.core.runtime,
  org.talend.libraries.jackson,
  org.talend.core.runtime,
- org.eclipse.m2e.core
+ org.eclipse.m2e.core,
+ org.eclipse.m2e.maven.runtime
 Bundle-ActivationPolicy: lazy
 Bundle-ClassPath: .,
  lib/maven-aether-provider-3.2.1.jar,
