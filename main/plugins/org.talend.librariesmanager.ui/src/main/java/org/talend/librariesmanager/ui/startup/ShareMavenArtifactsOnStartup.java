@@ -14,6 +14,7 @@ package org.talend.librariesmanager.ui.startup;
 
 import java.io.File;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
@@ -53,10 +54,16 @@ public class ShareMavenArtifactsOnStartup extends ShareLibrareisHelper {
             if (monitor.isCanceled()) {
                 return null;
             }
-
-            final String jarPathFromMaven = librariesService.getJarPathFromMaven(module.getMavenUri());
+            String jarPathFromMaven = librariesService.getJarPathFromMaven(module.getMavenUri());
             if (jarPathFromMaven == null) {
-                continue;
+                String moduleLocation = module.getModuleLocaion();
+                if (moduleLocation != null && librariesService.checkJarInstalledFromPlatform(moduleLocation)) {
+                    librariesService.installModules(Arrays.asList(module), monitor);
+                    jarPathFromMaven = librariesService.getJarPathFromMaven(module.getMavenUri());
+                }
+                if (jarPathFromMaven == null) {
+                    continue;
+                }
             }
             File jarFile = new File(jarPathFromMaven);
             if (jarFile.exists()) {
