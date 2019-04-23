@@ -301,7 +301,7 @@ public final class FilesUtils {
      */
     public static List<String> getContentLines(String filePath) throws IOException {
         BufferedReader in = new BufferedReader(new InputStreamReader(new FileInputStream(filePath)));
-        List<String> lines = new ArrayList<String>();
+        List<String> lines = new ArrayList<>();
         try {
             String line;
             while ((line = in.readLine()) != null) {
@@ -490,8 +490,9 @@ public final class FilesUtils {
             MessageDigest messageDigest = MessageDigest.getInstance("MD5"); //$NON-NLS-1$
             digestInputStream = new DigestInputStream(inputStream, messageDigest);
             byte[] buffer = new byte[bufferSize];
-            while (digestInputStream.read(buffer) > 0)
+            while (digestInputStream.read(buffer) > 0) {
                 ;
+            }
             messageDigest = digestInputStream.getMessageDigest();
             return new String(Hex.encodeHex(messageDigest.digest()));
         } catch (NoSuchAlgorithmException e) {
@@ -741,18 +742,23 @@ public final class FilesUtils {
         zip(sourceFileName, zippedFileName, fileFilter);
     }
 
+    public static void unzip(String zipFile, String targetFolder, String... fileSuffixes) throws Exception {
+        unzip(zipFile, targetFolder, true, fileSuffixes);
+    }
+
     /**
      * Unzip the component file to the user folder.
      * 
      * @param zipFile The component zip file
      * @param targetFolder The user folder
+     * @param overwrite if overwrite existing files
      * @param fileSuffixes Case-insensitive Suffixes , if these parameter are set, only the files named with these
      * suffixes will be extracted
      * @return
      * @throws Exception
      */
     @SuppressWarnings("unchecked")
-    public static void unzip(String zipFile, String targetFolder, String... fileSuffixes) throws Exception {
+    public static void unzip(String zipFile, String targetFolder, boolean overwrite, String... fileSuffixes) throws Exception {
         Exception exception = null;
         ZipFile zip = new ZipFile(zipFile);
         byte[] buf = new byte[8192];
@@ -764,12 +770,15 @@ public final class FilesUtils {
 
                 File file = new File(targetFolder, entry.getName());
 
+                boolean exist = file.exists();
                 if (entry.isDirectory()) {
-                    if (!file.exists()) {
+                    if (!exist) {
                         file.mkdir();
                     }
                 } else {
-
+                    if (!overwrite && exist) {
+                        continue;
+                    }
                     if (fileSuffixes.length > 0 && !isReservedFile(file.getName(), fileSuffixes)) {
                         continue;
                     }
