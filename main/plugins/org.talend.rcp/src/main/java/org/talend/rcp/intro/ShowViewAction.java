@@ -15,11 +15,20 @@ package org.talend.rcp.intro;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.inject.Inject;
+
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
+import org.eclipse.e4.core.contexts.ContextInjectionFactory;
+import org.eclipse.e4.core.contexts.IEclipseContext;
+import org.eclipse.e4.ui.model.application.MApplication;
+import org.eclipse.e4.ui.model.application.descriptor.basic.MPartDescriptor;
 import org.eclipse.e4.ui.model.application.ui.MElementContainer;
 import org.eclipse.e4.ui.model.application.ui.MUIElement;
 import org.eclipse.e4.ui.model.application.ui.basic.MPart;
+import org.eclipse.e4.ui.model.application.ui.basic.MWindow;
+import org.eclipse.e4.ui.workbench.modeling.EModelService;
+import org.eclipse.e4.ui.workbench.modeling.EPartService;
 import org.eclipse.jface.action.Action;
 import org.eclipse.jface.window.Window;
 import org.eclipse.swt.SWT;
@@ -31,16 +40,16 @@ import org.eclipse.swt.widgets.Listener;
 import org.eclipse.swt.widgets.Tree;
 import org.eclipse.swt.widgets.TypedListener;
 import org.eclipse.ui.IViewPart;
+import org.eclipse.ui.IWorkbench;
 import org.eclipse.ui.IWorkbenchPage;
 import org.eclipse.ui.IWorkbenchWindow;
 import org.eclipse.ui.PartInitException;
 import org.eclipse.ui.PlatformUI;
 import org.eclipse.ui.dialogs.FilteredTree;
 import org.eclipse.ui.internal.WorkbenchPage;
-import org.eclipse.ui.internal.WorkbenchPlugin;
 import org.eclipse.ui.internal.dialogs.ShowViewDialog;
 import org.eclipse.ui.statushandlers.StatusManager;
-import org.eclipse.ui.views.IViewDescriptor;
+import org.talend.commons.exception.ExceptionHandler;
 import org.talend.rcp.i18n.Messages;
 
 /**
@@ -52,6 +61,10 @@ import org.talend.rcp.i18n.Messages;
 public class ShowViewAction extends Action {
 
     private static final String ACTION_ID = "org.talend.rcp.intro.ShowViewAction"; //$NON-NLS-1$
+
+    private IEclipseContext activeContext;
+
+    private Params params;
 
     /**
      * Constructs a new ShowViewAction.
@@ -74,7 +87,9 @@ public class ShowViewAction extends Action {
             return;
         }
 
-        final ShowViewDialog dialog = new ShowViewDialog(window, WorkbenchPlugin.getDefault().getViewRegistry()) {
+        Params parameters = getParams();
+        final ShowViewDialog dialog = new ShowViewDialog(window.getShell(), parameters.getApplication(), parameters.getWindow(),
+                parameters.getModelService(), parameters.getPartService(), getEclipseContext()) {
 
             @Override
             protected Control createDialogArea(Composite parent) {
@@ -121,18 +136,18 @@ public class ShowViewAction extends Action {
         if (dialog.getReturnCode() == Window.CANCEL) {
             return;
         }
-        final IViewDescriptor[] descriptors = dialog.getSelection();
-        for (IViewDescriptor descriptor : descriptors) {
+        final MPartDescriptor[] descriptors = dialog.getSelection();
+        for (MPartDescriptor descriptor : descriptors) {
             try {
                 boolean viewExist = true;
                 if (page instanceof WorkbenchPage) {
-                    List<MUIElement> elementList = getMUIElement(descriptor.getId(),
+                    List<MUIElement> elementList = getMUIElement(descriptor.getElementId(),
                             ((WorkbenchPage) page).getCurrentPerspective());
                     if (elementList.isEmpty()) {
                         viewExist = false;
                     }
                 }
-                IViewPart viewPart = page.showView(descriptor.getId());
+                IViewPart viewPart = page.showView(descriptor.getElementId());
                 if (!viewExist) {
                     openViewInBottom(viewPart, page);
                     page.activate(viewPart);
@@ -196,5 +211,75 @@ public class ShowViewAction extends Action {
         }
 
         return elementList;
+    }
+    
+    private Params getParams() {
+        if (params == null) {
+            try {
+                params = new Params();
+                ContextInjectionFactory.inject(params, getEclipseContext());
+                // params = ContextInjectionFactory.make(Params.class, getEclipseContext());
+            } catch (Exception e) {
+                ExceptionHandler.process(e);
+            }
+        }
+        return params;
+    }
+
+    private IEclipseContext getEclipseContext() {
+        if (activeContext == null) {
+            IWorkbench workbench = PlatformUI.getWorkbench();
+            activeContext = ((IEclipseContext) workbench.getActiveWorkbenchWindow().getService(IEclipseContext.class))
+                    .getActiveLeaf();
+        }
+        return activeContext;
+    }
+
+    private static class Params {
+
+        @Inject
+        private MApplication application;
+
+        @Inject
+        private MWindow window;
+
+        @Inject
+        private EModelService modelService;
+
+        @Inject
+        private EPartService partService;
+
+        public MApplication getApplication() {
+            return application;
+        }
+
+        public void setApplication(MApplication application) {
+            this.application = application;
+        }
+
+        public MWindow getWindow() {
+            return window;
+        }
+
+        public void setWindow(MWindow window) {
+            this.window = window;
+        }
+
+        public EModelService getModelService() {
+            return modelService;
+        }
+
+        public void setModelService(EModelService modelService) {
+            this.modelService = modelService;
+        }
+
+        public EPartService getPartService() {
+            return partService;
+        }
+
+        public void setPartService(EPartService partService) {
+            this.partService = partService;
+        }
+
     }
 }

@@ -28,8 +28,6 @@ import java.util.Map;
 import java.util.Set;
 import java.util.regex.Pattern;
 
-import metadata.managment.i18n.Messages;
-
 import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
 import org.eclipse.emf.ecore.EObject;
@@ -91,6 +89,8 @@ import org.talend.utils.sql.metadata.constants.GetPrimaryKey;
 import org.talend.utils.sql.metadata.constants.GetTable;
 import org.talend.utils.sql.metadata.constants.MetaDataConstants;
 import org.talend.utils.sql.metadata.constants.TableType;
+
+import metadata.managment.i18n.Messages;
 import orgomg.cwm.objectmodel.core.Package;
 import orgomg.cwm.resource.relational.Catalog;
 import orgomg.cwm.resource.relational.ColumnSet;
@@ -696,6 +696,9 @@ public class DBConnectionFillerImpl extends MetadataFillerImpl<DatabaseConnectio
     private boolean isNullSID(Connection dbConn) {
         if (dbConn instanceof DatabaseConnection) {
             String databaseOnConnWizard = getDatabaseName((DatabaseConnection) dbConn);
+            if (StringUtils.isEmpty(databaseOnConnWizard)) {
+                return true;
+            }
             String readableName = TalendCWMService.getReadableName(dbConn, databaseOnConnWizard);
             if (StringUtils.isEmpty(databaseOnConnWizard) || StringUtils.isEmpty(readableName)) {
                 return true;

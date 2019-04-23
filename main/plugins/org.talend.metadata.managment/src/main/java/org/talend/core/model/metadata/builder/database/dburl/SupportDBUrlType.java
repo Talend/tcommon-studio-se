@@ -13,6 +13,7 @@
 package org.talend.core.model.metadata.builder.database.dburl;
 
 import org.apache.commons.lang.StringUtils;
+import org.talend.core.database.EDatabaseTypeName;
 
 /**
  * DOC rli class global comment. Detailled comment <br/>
@@ -29,6 +30,14 @@ public enum SupportDBUrlType {
             null,
             "sun.jdbc.odbc.JdbcOdbcDriver", //$NON-NLS-1$
             "datasourceName", "ODBC"), //$NON-NLS-1$ //$NON-NLS-2$
+    AMAZONAURORA(EDatabaseTypeName.AMAZON_AURORA.getDbType(), "localhost", //$NON-NLS-1$
+            "3306", //$NON-NLS-1$
+            "dbname", //$NON-NLS-1$
+            "?", //$NON-NLS-1$
+            "org.gjt.mm.mysql.Driver", //$NON-NLS-1$
+            null,
+            EDatabaseTypeName.AMAZON_AURORA.getDbType()),
+
     MYSQLDEFAULTURL("MySQL", //$NON-NLS-1$
             "localhost", //$NON-NLS-1$
             "3306", //$NON-NLS-1$
@@ -352,7 +361,8 @@ public enum SupportDBUrlType {
 
     public static boolean isOracle(String dbKey) {
         SupportDBUrlType dbTypeByKey = getDBTypeByKey(dbKey);
-        return dbTypeByKey != null && (dbTypeByKey == ORACLEWITHSIDDEFAULTURL || dbTypeByKey == ORACLEWITHSERVICENAMEDEFAULTURL);
+        return dbTypeByKey != null
+                && (dbTypeByKey == ORACLEWITHSIDDEFAULTURL || dbTypeByKey == ORACLEWITHSERVICENAMEDEFAULTURL);
     }
 
     /**

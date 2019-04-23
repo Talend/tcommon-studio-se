@@ -13,6 +13,7 @@
 package org.talend.repository.ui.wizards.metadata.connection.wsdl;
 
 import org.eclipse.swt.widgets.Shell;
+import org.talend.core.IService;
 
 /**
  * DOC bqian class global comment. Detailled comment <br/>
@@ -20,7 +21,7 @@ import org.eclipse.swt.widgets.Shell;
  * $Id: talend.epf 1 2006-09-29 17:06:40 +0000 (ææäº, 29 ä¹æ 2006) nrousseau $
  * 
  */
-public interface IWSDLExplorerAccessor {
+public interface IWSDLExplorerAccessor extends IService {
 
     public void openWSExplorer(Shell shell);
 

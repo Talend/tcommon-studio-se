@@ -73,7 +73,7 @@ public class FeaturesManager {
     private ProjectPreferenceManager projectPreferenceManager;
 
     public FeaturesManager() {
-        extraFeaturesFactory = new ExtraFeaturesUpdatesFactory();
+        extraFeaturesFactory = new ExtraFeaturesUpdatesFactory(true);
         featuresCache = new ArrayList<>();
     }
 

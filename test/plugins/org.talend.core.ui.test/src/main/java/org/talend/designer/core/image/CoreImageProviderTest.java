@@ -19,6 +19,7 @@ import org.junit.Assert;
 import org.junit.Test;
 import org.talend.commons.ui.runtime.image.IImage;
 import org.talend.commons.ui.runtime.image.ImageUtils;
+import org.talend.commons.ui.runtime.image.TalendImageProvider;
 import org.talend.core.model.repository.ERepositoryObjectType;
 import org.talend.core.ui.images.CoreImageProvider;
 
@@ -80,7 +81,7 @@ public class CoreImageProviderTest {
         Image img = imgDesc.createImage();
         Assert.assertNotNull(img);
 
-        ImageDescriptor newImgDesc = ImageDescriptor.createFromImageData(img.getImageData());
+        ImageDescriptor newImgDesc = ImageDescriptor.createFromImageDataProvider(new TalendImageProvider(img.getImageData()));
         Assert.assertNotNull(newImgDesc);
 
         byte[] data1 = ImageUtils.saveImageToData(newImgDesc);
@@ -101,8 +102,10 @@ public class CoreImageProviderTest {
         ImageData imageData2 = img.getImageData();
         Assert.assertNotEquals(imageData2, imageData1);
 
-        ImageDescriptor newImgDesc1 = ImageDescriptor.createFromImageData(imageData1);
-        ImageDescriptor newImgDesc2 = ImageDescriptor.createFromImageData(imageData2);
+        TalendImageProvider talendImageProvider1 = new TalendImageProvider(imageData1);
+        TalendImageProvider talendImageProvider2 = new TalendImageProvider(imageData2);
+        ImageDescriptor newImgDesc1 = ImageDescriptor.createFromImageDataProvider(talendImageProvider1);
+        ImageDescriptor newImgDesc2 = ImageDescriptor.createFromImageDataProvider(talendImageProvider2);
         Assert.assertNotEquals(newImgDesc2, newImgDesc1);
 
         byte[] data1 = ImageUtils.saveImageToData(newImgDesc1);
@@ -122,8 +125,9 @@ public class CoreImageProviderTest {
         ImageData imageData = img.getImageData();
         Assert.assertNotNull(imageData);
 
-        ImageDescriptor newImgDesc1 = ImageDescriptor.createFromImageData(imageData);
-        ImageDescriptor newImgDesc2 = ImageDescriptor.createFromImageData(imageData);
+        TalendImageProvider talendImageProvider = new TalendImageProvider(imageData);
+        ImageDescriptor newImgDesc1 = ImageDescriptor.createFromImageDataProvider(talendImageProvider);
+        ImageDescriptor newImgDesc2 = ImageDescriptor.createFromImageDataProvider(talendImageProvider);
         Assert.assertEquals(newImgDesc2, newImgDesc1);
 
         byte[] data1 = ImageUtils.saveImageToData(newImgDesc1);
@@ -145,8 +149,11 @@ public class CoreImageProviderTest {
         ImageData imageData2 = img2.getImageData();
         Assert.assertNotEquals(imageData2, imageData1);
 
-        ImageDescriptor newImgDesc1 = ImageDescriptor.createFromImageData(imageData1);
-        ImageDescriptor newImgDesc2 = ImageDescriptor.createFromImageData(imageData2);
+        TalendImageProvider talendImageProvider1 = new TalendImageProvider(imageData1);
+        TalendImageProvider talendImageProvider2 = new TalendImageProvider(imageData2);
+
+        ImageDescriptor newImgDesc1 = ImageDescriptor.createFromImageDataProvider(talendImageProvider1);
+        ImageDescriptor newImgDesc2 = ImageDescriptor.createFromImageDataProvider(talendImageProvider2);
         Assert.assertNotEquals(newImgDesc2, newImgDesc1);
 
         byte[] data1 = ImageUtils.saveImageToData(newImgDesc1);
@@ -169,8 +176,11 @@ public class CoreImageProviderTest {
         ImageData imageData2 = img2.getImageData();
         Assert.assertNotEquals(imageData2, imageData1);
 
-        ImageDescriptor newImgDesc1 = ImageDescriptor.createFromImageData(imageData1);
-        ImageDescriptor newImgDesc2 = ImageDescriptor.createFromImageData(imageData2);
+        TalendImageProvider talendImageProvider1 = new TalendImageProvider(imageData1);
+        TalendImageProvider talendImageProvider2 = new TalendImageProvider(imageData2);
+
+        ImageDescriptor newImgDesc1 = ImageDescriptor.createFromImageDataProvider(talendImageProvider1);
+        ImageDescriptor newImgDesc2 = ImageDescriptor.createFromImageDataProvider(talendImageProvider2);
         Assert.assertNotEquals(newImgDesc2, newImgDesc1);
 
         byte[] data1 = ImageUtils.saveImageToData(newImgDesc1);

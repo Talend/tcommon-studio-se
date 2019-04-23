@@ -17,8 +17,10 @@ import java.io.InputStream;
 import java.net.URL;
 
 import org.apache.commons.lang.ArrayUtils;
+import org.eclipse.core.runtime.FileLocator;
 import org.eclipse.core.runtime.Platform;
 import org.eclipse.core.runtime.preferences.InstanceScope;
+import org.osgi.framework.Bundle;
 import org.osgi.framework.BundleActivator;
 import org.osgi.framework.BundleContext;
 import org.osgi.framework.ServiceReference;
@@ -158,6 +160,15 @@ public class CommonsPlugin implements BundleActivator {
     
     public static void setMavenOfflineState(boolean state) {
     	InstanceScope.INSTANCE.getNode("org.eclipse.m2e.core").putBoolean("eclipse.m2.offline", state);
+    }
+
+    public static URL getBundleRealURL(String bundleId) throws Exception {
+        Bundle bundle = Platform.getBundle(bundleId);
+        if (bundle == null) {
+            return null;
+        }
+        URL entry = bundle.getEntry("/"); //$NON-NLS-1$
+        return FileLocator.toFileURL(entry);
     }
 
 }

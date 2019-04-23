@@ -17,13 +17,6 @@
    </license>
 
    <plugin
-         id="org.talend.libraries.nattable.glazedlist"
-         download-size="0"
-         install-size="0"
-         version="0.0.0"
-         fragment="true"/>
-
-   <plugin
          id="org.talend.developpement"
          download-size="0"
          install-size="0"

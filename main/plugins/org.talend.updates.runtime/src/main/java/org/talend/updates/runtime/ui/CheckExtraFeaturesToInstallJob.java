@@ -37,7 +37,7 @@ import org.talend.updates.runtime.model.ExtraFeature;
  * 
  */
 public class CheckExtraFeaturesToInstallJob extends Job {
-
+    protected boolean isCheckUpdateOnLine = false;
     /**
      * DOC sgandon CheckExtraFeaturesToUpdateJob constructor comment.
      * 
@@ -63,7 +63,7 @@ public class CheckExtraFeaturesToInstallJob extends Job {
             return Status.OK_STATUS;
         }// else look for updates and show the wizard if necessary.
          // check if there are features to update
-        ExtraFeaturesUpdatesFactory extraFeaturesFactory = new ExtraFeaturesUpdatesFactory();
+        ExtraFeaturesUpdatesFactory extraFeaturesFactory = new ExtraFeaturesUpdatesFactory(isCheckUpdateOnLine);
         final Set<ExtraFeature> uninstalledExtraFeatures = new HashSet<ExtraFeature>();
         extraFeaturesFactory.retrieveUninstalledExtraFeatures(monitor, uninstalledExtraFeatures, false);
         // if feature to update are available then show the update wizard
@@ -93,5 +93,12 @@ public class CheckExtraFeaturesToInstallJob extends Job {
         }// else not feature to install
         return Status.OK_STATUS;
     }
-
+  
+    public boolean isCheckUpdateOnLine() {
+        return isCheckUpdateOnLine;
+    }
+    
+    public void setCheckUpdateOnLine(boolean isCheckUpdateOnLine) {
+        this.isCheckUpdateOnLine = isCheckUpdateOnLine;
+    }
 }

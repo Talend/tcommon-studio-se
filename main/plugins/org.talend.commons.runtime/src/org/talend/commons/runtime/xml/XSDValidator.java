@@ -15,6 +15,7 @@ package org.talend.commons.runtime.xml;
 import java.io.File;
 import java.io.IOException;
 
+import javax.xml.XMLConstants;
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
@@ -38,11 +39,17 @@ public class XSDValidator {
 
     private static final String SCHEMA_VALIDATOR = "http://java.sun.com/xml/jaxp/properties/schemaSource"; //$NON-NLS-1$
 
+    private static final String PROTOCOL_PLATFORM = "platform"; //$NON-NLS-1$
+
+    private static final String PROTOCOL_FILE = "file"; //$NON-NLS-1$
+
     public static Document checkXSD(File fileToCheck, File fileXSD) throws IOException, ParserConfigurationException,
             SAXException {
         final DocumentBuilderFactory fabrique = XmlUtils.getSecureDocumentBuilderFactory(false);
         fabrique.setAttribute(SCHEMA_LANGUAGE, "http://www.w3.org/2001/XMLSchema"); //$NON-NLS-1$
         fabrique.setAttribute(SCHEMA_VALIDATOR, fileXSD);
+        fabrique.setAttribute(XMLConstants.ACCESS_EXTERNAL_SCHEMA, PROTOCOL_PLATFORM);
+        fabrique.setAttribute(XMLConstants.ACCESS_EXTERNAL_DTD, PROTOCOL_FILE);
         fabrique.setValidating(true);
 
         Document document = null;

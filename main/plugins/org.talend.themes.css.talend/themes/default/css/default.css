@@ -3,32 +3,87 @@
 }
 
 /**************************************************
+ * Global Font Setting
+ **************************************************/
+.MPartStack, .MPart {
+    font-family: '#org-eclipse-ui-workbench-TAB_TEXT_FONT';
+}
+
+/**************************************************
  * Global Color Setting
  **************************************************/
 .MPart {
     background-color: COLOR-LIST-BACKGROUND;
 }
-.MPart Shell, .MPart Widget, .MPart Control, .MPart Composite, .MPart Sash, .MPart Menu, .MPart Group, .MPart LayoutComposite {
+
+.MPart Shell,
+.MPart Widget,
+.MPart Control,
+.MPart Composite,
+.MPart Sash,
+.MPart Menu,
+.MPart Group,
+.MPart LayoutComposite
+{
     background-color: COLOR-LIST-BACKGROUND;
 }
-.MPart Button, .MPart Tree {
+
+.MPart Button,
+.MPart Tree
+{
     background-color: COLOR-LIST-BACKGROUND;
 }
-.MPart Label, .MPart CLabel {
+
+.MPart Label,
+.MPart CLabel
+{
     color: black;
 }
 
-.CommonColorsSetting {
+.MPart Button[style~='SWT.PUSH'],
+.MPart Combo
+{
+    /*
+     * Seems there is bug on Linux that we can't use the `black` dirrectly,
+     * otherwise it will be read as the `default value`,
+     * then eclipse will do some default behavior
+     */
+    color: #000001;
+}
+
+.CommonColorsSetting
+{
     background-color: COLOR-LIST-BACKGROUND;
 }
-.CommonColorsSetting Shell, .CommonColorsSetting Widget, .CommonColorsSetting Control, .CommonColorsSetting Composite, .CommonColorsSetting Sash, .CommonColorsSetting Menu, .CommonColorsSetting Group, .CommonColorsSetting LayoutComposite {
+
+.CommonColorsSetting Shell,
+.CommonColorsSetting Widget,
+.CommonColorsSetting Control,
+.CommonColorsSetting Composite,
+.CommonColorsSetting Sash,
+.CommonColorsSetting Menu,
+.CommonColorsSetting Group,
+.CommonColorsSetting LayoutComposite
+{
     background-color: COLOR-LIST-BACKGROUND;
 }
-.CommonColorsSetting Button, .CommonColorsSetting Tree {
+
+.CommonColorsSetting Button,
+.CommonColorsSetting Tree
+{
     background-color: COLOR-LIST-BACKGROUND;
 }
-.CommonColorsSetting Label, .CommonColorsSetting CLabel {
+
+.CommonColorsSetting Label,
+.CommonColorsSetting CLabel
+{
     color: black;
+}
+
+.CommonColorsSetting Button[style~='SWT.PUSH'],
+.CommonColorsSetting Combo
+{
+    color: #000001;
 }
 
 /**************************************************

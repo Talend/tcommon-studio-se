@@ -29,13 +29,13 @@ import org.talend.core.model.metadata.MetadataTable;
  */
 public class BigDataNode extends AbstractNode implements IBigDataNode {
 
-    private boolean dummy = false;
+    protected boolean dummy = false;
 
-    private String outputType = null;
+    protected String outputType = null;
 
-    private String inputType = null;
+    protected String inputType = null;
 
-    private Map<String, List<IMetadataColumn>> keyList = new java.util.HashMap<String, List<IMetadataColumn>>();
+    protected Map<String, List<IMetadataColumn>> keyList = new HashMap<String, List<IMetadataColumn>>();
 
     /**
      * Default constructor for the BigDataNode
@@ -149,7 +149,7 @@ public class BigDataNode extends AbstractNode implements IBigDataNode {
         return "IDENTITY".equals(getRequiredInputType()) && "IDENTITY".equals(getRequiredOutputType()); //$NON-NLS-1$ //$NON-NLS-2$
     }
 
-    private IElementParameter getNodeElemForList(IElementParameter parTableNode) {
+    protected IElementParameter getNodeElemForList(IElementParameter parTableNode) {
         // Iterate over the table columns and make sure one of them is a COLUMN_LIST or a CHECKBOX.
         for (Object nodeItemList : parTableNode.getListItemsValue()) {
             if (((IElementParameter) nodeItemList).getFieldType().equals(EParameterFieldType.PREV_COLUMN_LIST)
@@ -161,7 +161,7 @@ public class BigDataNode extends AbstractNode implements IBigDataNode {
         return null;
     }
 
-    private IElementParameter getPartitionTableNode(IBigDataNode bigDataNode, String rootPartitionKey) {
+    protected IElementParameter getPartitionTableNode(IBigDataNode bigDataNode, String rootPartitionKey) {
         // if the partition key is valid, get the first element of the key, which must be a table.
         IElementParameter partitionTableNode = bigDataNode.getElementParameter(rootPartitionKey);
         if (partitionTableNode == null) {
@@ -345,5 +345,20 @@ public class BigDataNode extends AbstractNode implements IBigDataNode {
     @Override
     public void addOutput(IConnection connection) {
         ((List<IConnection>) getOutgoingConnections()).add(connection);
+    }
+    
+    @Override
+    public boolean shouldGenerateDatasetCode() {
+        return false;
+    }
+
+    @Override
+    public void loadDatasetConditions(){
+        // BigDataNode does not do anything related to Dataset, only anabled from SparkNode
+    }
+    
+    @Override
+    public void processDatasetConditions(){
+        // BigDataNode does not do anything related to Dataset, only anabled from SparkNode
     }
 }

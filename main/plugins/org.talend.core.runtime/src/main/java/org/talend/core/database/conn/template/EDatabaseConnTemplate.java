@@ -93,30 +93,30 @@ public enum EDatabaseConnTemplate {
             "jdbc:sybase:Tds:<host>:<port>/<sid>?<property>", //$NON-NLS-1$ 
             "5001")), //$NON-NLS-1$
     SYBASEASE_16_SA(new DbConnStr(EDatabaseTypeName.SYBASEASE, //
-            "jdbc:sqlanywhere:Host=<host>:<port>;DatabaseName=<sid>", //$NON-NLS-1$ 
+            "jdbc:sqlanywhere:Host=<host>:<port>;DatabaseName=<sid>;<property>", //$NON-NLS-1$
             "2638")), //$NON-NLS-1$
     IBMDB2(new DbConnStr(EDatabaseTypeName.IBMDB2, //
-            "jdbc:db2://<host>:<port>/<sid>", //$NON-NLS-1$
+            "jdbc:db2://<host>:<port>/<sid>:<property>", //$NON-NLS-1$
             "50000")), //$NON-NLS-1$
 
     IBMDB2_ZOS(new DbConnStr(EDatabaseTypeName.IBMDB2ZOS, //
-            "jdbc:db2://<host>:<port>/<sid>", //$NON-NLS-1$
+            "jdbc:db2://<host>:<port>/<sid>:<property>", //$NON-NLS-1$
             "557")), //$NON-NLS-1$
 
     SQLITE(new DbConnStr(EDatabaseTypeName.SQLITE, //
             "jdbc:sqlite:/<filename>")), //$NON-NLS-1$
 
     INGRES(new DbConnStr(EDatabaseTypeName.INGRES, //
-            "jdbc:ingres://<host>:<port>/<sid>", //$NON-NLS-1$
+            "jdbc:ingres://<host>:<port>/<sid>;<property>", //$NON-NLS-1$
             "II7")), //$NON-NLS-1$
     VECTORWISE(new DbConnStr(EDatabaseTypeName.VECTORWISE, //
-            "jdbc:ingres://<host>:<port>/<sid>", //$NON-NLS-1$
+            "jdbc:ingres://<host>:<port>/<sid>;<property>", //$NON-NLS-1$
             "II7")), //$NON-NLS-1$
     INTERBASE(new DbConnStr(EDatabaseTypeName.INTERBASE, //
-            "jdbc:interbase://<host>/<sid>")), //$NON-NLS-1$
+            "jdbc:interbase://<host>/<sid>?<property>")), //$NON-NLS-1$
 
     FIREBIRD(new DbConnStr(EDatabaseTypeName.FIREBIRD, //
-            "jdbc:firebirdsql:<host>/<port>:<filename>", //$NON-NLS-1$
+            "jdbc:firebirdsql:<host>/<port>:<filename>?<property>", //$NON-NLS-1$
             "3050")), //$NON-NLS-1$
 
     INFORMIX(new DbConnStr(EDatabaseTypeName.INFORMIX, //
@@ -134,22 +134,22 @@ public enum EDatabaseConnTemplate {
             "prompt=false")), //$NON-NLS-1$
 
     JAVADB_EMBEDED(new DbConnStr(EDatabaseTypeName.JAVADB_EMBEDED, //
-            "jdbc:derby:<dbRootPath>")), //$NON-NLS-1$
+            "jdbc:derby:<dbRootPath>;<property>")), //$NON-NLS-1$
 
     JAVADB_JCCJDBC(new DbConnStr(EDatabaseTypeName.JAVADB_JCCJDBC, //
-            "jdbc:derby:net://<host>:<port>/<sid>", //$NON-NLS-1$
+            "jdbc:derby:net://<host>:<port>/<sid>;<property>", //$NON-NLS-1$
             "1527")), //$NON-NLS-1$
 
     JAVADB_DERBYCLIENT(new DbConnStr(EDatabaseTypeName.JAVADB_DERBYCLIENT, //
-            "jdbc:derby://<host>:<port>/<sid>", //$NON-NLS-1$
+            "jdbc:derby://<host>:<port>/<sid>;<property>", //$NON-NLS-1$
             "1527")), //$NON-NLS-1$
 
     HSQLDB_SERVER(new DbConnStr(EDatabaseTypeName.HSQLDB_SERVER, //
-            "jdbc:hsqldb:hsql://<host>:<port>/<sid>", //$NON-NLS-1$
+            "jdbc:hsqldb:hsql://<host>:<port>/<sid>;<property>", //$NON-NLS-1$
             "9001")), //$NON-NLS-1$
 
     HSQLDB_WEBSERVER(new DbConnStr(EDatabaseTypeName.HSQLDB_WEBSERVER, //
-            "jdbc:hsqldb:http://<host>:<port>/<sid>", //$NON-NLS-1$
+            "jdbc:hsqldb:http://<host>:<port>/<sid>;<property>", //$NON-NLS-1$
             "9001")), //$NON-NLS-1$
 
     HSQLDB_IN_PROGRESS(new DbConnStr(EDatabaseTypeName.HSQLDB_IN_PROGRESS, //
@@ -157,7 +157,7 @@ public enum EDatabaseConnTemplate {
             null, "ifexists=true")), //$NON-NLS-1$
 
     MAXDB(new DbConnStr(EDatabaseTypeName.MAXDB, //
-            "jdbc:sapdb://<host>:<port>/<sid>", //$NON-NLS-1$
+            "jdbc:sapdb://<host>:<port>/<sid>?<property>", //$NON-NLS-1$
             "7210")), //$NON-NLS-1$
 
     SAS(new DbConnStr(EDatabaseTypeName.SAS, //
@@ -170,11 +170,11 @@ public enum EDatabaseConnTemplate {
             "")), //$NON-NLS-1$
 
     PARACCEL(new DbConnStr(EDatabaseTypeName.PARACCEL, //
-            "jdbc:paraccel://<host>:<port>/<sid>", //$NON-NLS-1$
+            "jdbc:paraccel://<host>:<port>/<sid>?<property>", //$NON-NLS-1$
             "5439")), //$NON-NLS-1$
 
     REDSHIFT(new DbConnStr(EDatabaseTypeName.REDSHIFT, //
-            "jdbc:redshift://<host>:<port>/<sid>", //$NON-NLS-1$
+            "jdbc:redshift://<host>:<port>/<sid>?<property>", //$NON-NLS-1$
             "5439",//$NON-NLS-1$
             "")), //$NON-NLS-1$
     REDSHIFT_SSO(new DbConnStr(EDatabaseTypeName.REDSHIFT_SSO, //
@@ -182,7 +182,7 @@ public enum EDatabaseConnTemplate {
             "5439",//$NON-NLS-1$
             "")), //$NON-NLS-1$
     NETEZZA(new DbConnStr(EDatabaseTypeName.NETEZZA, //
-            "jdbc:netezza://<host>:<port>/<sid>", //$NON-NLS-1$
+            "jdbc:netezza://<host>:<port>/<sid>;<property>", //$NON-NLS-1$
             "5480")), //$NON-NLS-1$
 
     VERTICA(new DbConnStr(EDatabaseTypeName.VERTICA, //
@@ -306,7 +306,7 @@ public enum EDatabaseConnTemplate {
         List<ERepositoryObjectType> extraTypes = new ArrayList<ERepositoryObjectType>();
         IGenericDBService dbService = null;
         if (GlobalServiceRegister.getDefault().isServiceRegistered(IGenericDBService.class)) {
-            dbService = (IGenericDBService) GlobalServiceRegister.getDefault().getService(
+            dbService = GlobalServiceRegister.getDefault().getService(
                     IGenericDBService.class);
         }
         if(dbService != null){
@@ -411,6 +411,20 @@ public enum EDatabaseConnTemplate {
             case PSQL:
             case PLUSPSQL:
             case GREENPLUM:
+            case PARACCEL:
+            case INGRES:
+            case VECTORWISE:
+            case INTERBASE:
+            case FIREBIRD:
+            case JAVADB_EMBEDED:
+            case JAVADB_JCCJDBC:
+            case JAVADB_DERBYCLIENT:
+            case MAXDB:
+            case IBMDB2:
+            case IBMDB2_ZOS:
+            case HSQLDB_SERVER:
+            case HSQLDB_WEBSERVER:
+            case NETEZZA:
                 return true;
             default:
             }

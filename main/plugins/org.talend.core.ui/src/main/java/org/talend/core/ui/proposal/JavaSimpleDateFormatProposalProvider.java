@@ -72,10 +72,20 @@ public class JavaSimpleDateFormatProposalProvider implements IContentProposalPro
                         "\"dd/MM/yyyy\" : common format", "dd/MM/yyyy", "Date\n Examples : \n  01/01/2007\n  31/12/2007"), //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
                 new DateFormatContentProposal(
                         "\"MM/dd/yyyy\" : common format", "MM/dd/yyyy", "Date\n Examples : \n  01/01/2007\n  12/31/2007"), //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
-                new DateFormatContentProposal("\"yyyy-MM-dd'T'HH:mm:ss\" : common format", "yyyy-MM-dd'T'HH:mm:ss", //$NON-NLS-1$ //$NON-NLS-2$
+                new DateFormatContentProposal(
+                        "\"yyyy-MM-dd\" : common format", "yyyy-MM-dd", "Date\n Examples : \n  2007-01-01\n  2007-12-31"), //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+                new DateFormatContentProposal("\"yyyy-MM-dd HH:mm:ss\" : common format", "yyyy-MM-dd HH:mm:ss",
+                        "Date\n Examples : \n  2014-08-19 07:41:35\n  2014-12-31 07:41:35"),//$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+                new DateFormatContentProposal("\"yyyy-MM-dd'T'HH:mm:ss\" : common format", "yyyy-MM-dd'T'HH:mm:ss",
                         "Date\n Examples : \n  2007-01-01T00:00:00\n  2007-12-31T23:59:59"), // hywang //$NON-NLS-1$
                 new DateFormatContentProposal("\"yyyy-MM-dd'T'HH:mm:ss'000Z'\" : common format", "yyyy-MM-dd'T'HH:mm:ss'000Z'", //$NON-NLS-1$ //$NON-NLS-2$
                         "Date\n Examples : \n  2007-01-01T00:00:00000Z\n  2007-12-31T23:59:59000Z"), // hywang //$NON-NLS-1$
+                new DateFormatContentProposal("\"yyyy-MM-dd'T'HH:mm:ss.SSSSSS\" : common format", "yyyy-MM-dd'T'HH:mm:ss.SSSSSS",
+                        "Date\n Examples : \n  2019-04-18T09:47:49.568095"), //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$       
+                new DateFormatContentProposal("\"yyyy-MM-dd HH:mm:ss zzz\" : common format", "yyyy-MM-dd HH:mm:ss zzz", //$NON-NLS-1$ //$NON-NLS-2$
+                        "Date\n Examples : \n  2008-01-01 00:00:00 UTC\n  2008-12-31 04:08:00 PDT"), 
+                new DateFormatContentProposal("\"yyyy-MM-dd HH:mm:ss.SSSXXX\" : common format", "yyyy-MM-dd HH:mm:ss.SSSXXX", //$NON-NLS-1$ //$NON-NLS-2$
+                        "Date\n Examples : \n  2014-08-19 07:41:35.220 -05:00"),
                 new DateFormatContentProposal(
                         "\"HH:mm:ss\" : common format", "HH:mm:ss", "Date\n Examples : \n  00:00:00 \n  23:59:59"), //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
                 new DateFormatContentProposal("\"yy\" : Year (00-99)", "yy", "Year \nExamples : \n  98\n  07"), //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$

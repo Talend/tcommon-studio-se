@@ -12,6 +12,7 @@
 // ============================================================================
 package org.talend.core.model.process;
 
+import org.talend.daikon.properties.property.Property;
 
 /**
  * DOC cmeng  class global comment. Detailled comment
@@ -20,4 +21,5 @@ public interface IGenericElementParameter extends IElementParameter {
 
     public void setAskPropagate(Boolean askPropagate);
 
+    public Property getProperty();
 }

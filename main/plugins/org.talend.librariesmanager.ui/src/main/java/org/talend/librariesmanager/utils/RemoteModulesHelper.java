@@ -55,6 +55,7 @@ import org.talend.core.nexus.TalendLibsServerManager;
 import org.talend.core.runtime.maven.MavenArtifact;
 import org.talend.core.runtime.maven.MavenConstants;
 import org.talend.core.runtime.maven.MavenUrlHelper;
+import org.talend.librariesmanager.librarydata.LibraryDataService;
 import org.talend.librariesmanager.model.service.DynamicDistibutionLicenseUtil;
 import org.talend.librariesmanager.ui.i18n.Messages;
 
@@ -68,8 +69,6 @@ import us.monoid.json.JSONObject;
  */
 public class RemoteModulesHelper {
 
-    private static final String SLASH = "/"; //$NON-NLS-1$
-
     // TODO to be removed after nexus server available
     public static final boolean nexus_available = true;
 
@@ -81,8 +80,9 @@ public class RemoteModulesHelper {
      * 
      */
     private final class RemoteModulesFetchRunnable implements IRunnableWithProgress {
-
         private final boolean collectModulesWithJarName;
+
+        private volatile boolean useLocalLicenseData;
 
         /**
          * 
@@ -102,15 +102,19 @@ public class RemoteModulesHelper {
          * @param toInstall
          */
         private RemoteModulesFetchRunnable(Map<String, List<ModuleNeeded>> requiredModules, List<ModuleToInstall> toInstall,
-                boolean collectModulesWithJarName) {
+                boolean collectModulesWithJarName, boolean useLocalLicenseData) {
             this.toInstall = toInstall;
             this.contextMap = requiredModules;
             this.collectModulesWithJarName = collectModulesWithJarName;
+            this.useLocalLicenseData = useLocalLicenseData;
         }
 
         @Override
         public void run(IProgressMonitor monitor) throws InvocationTargetException, InterruptedException {
             final Set<String> mavenUrisTofetch = new HashSet<String>(contextMap.keySet());
+            if (LibraryDataService.getInstance().isBuildLibrariesData()) {
+                LibraryDataService.getInstance().buildLibraryLicenseData(mavenUrisTofetch);
+            }
             monitor.beginTask(Messages.getString("RemoteModulesHelper.fetch.module.info"), mavenUrisTofetch.size() * 10 + 10);//$NON-NLS-1$
             // fetch modules from local nexus first
             if (addCachedModulesToToBeInstallModules(toInstall, mavenUrisTofetch, contextMap, localCache)) {
@@ -131,7 +135,7 @@ public class RemoteModulesHelper {
                 return;
             }
 
-            if (addCachedModulesToToBeInstallModules(toInstall, mavenUrisTofetch, contextMap, remoteCache)) {
+            if (addCachedModulesToToBeInstallModules(toInstall, mavenUrisTofetch, contextMap, getRemoteCache())) {
                 if (collectModulesWithJarName) {
                     collectModulesWithJarName(toInstall);
                 }
@@ -148,8 +152,12 @@ public class RemoteModulesHelper {
                     alreadyWarnedAboutConnectionIssue = true;
                 } // else already warned so do nothing
             } else {
-                searchFromRemoteNexus(mavenUrisTofetch, monitor);
-                addCachedModulesToToBeInstallModules(toInstall, mavenUrisTofetch, contextMap, remoteCache);
+                if (useLocalLicenseData) {
+                    searchFromLocalDataFile(mavenUrisTofetch, monitor);
+                } else {
+                    searchFromRemoteNexus(mavenUrisTofetch, monitor);
+                }
+                addCachedModulesToToBeInstallModules(toInstall, mavenUrisTofetch, contextMap, getRemoteCache());
             }
 
             unavailableModules.addAll(mavenUrisTofetch);
@@ -168,25 +176,32 @@ public class RemoteModulesHelper {
             monitor.done();
         }
 
+        private Map<String, ModuleToInstall> getRemoteCache() {
+            if (useLocalLicenseData) {
+                return localLicenseDataCache;
+            }
+            return remoteCache;
+        }
+
         private void searchFromLocalNexus(Set<String> mavenUristoSearch, IProgressMonitor monitor) {
             try {
                 ArtifactRepositoryBean customNexusServer = TalendLibsServerManager.getInstance().getCustomNexusServer();
                 IRepositoryArtifactHandler customerRepHandler = RepositoryArtifactHandlerManager
                         .getRepositoryHandler(customNexusServer);
                 if (customerRepHandler != null) {
-                // collect the groupIds to check
-                Set<String> groupIds = new HashSet<String>();
-                Set<String> snapshotgroupIds = new HashSet<String>();
-                for (String mvnUri : mavenUristoSearch) {
-                    final MavenArtifact parseMvnUrl = MavenUrlHelper.parseMvnUrl(mvnUri);
-                    if (parseMvnUrl != null) {
-                        if (parseMvnUrl.getVersion() != null && parseMvnUrl.getVersion().endsWith(MavenConstants.SNAPSHOT)) {
-                            snapshotgroupIds.add(parseMvnUrl.getGroupId());
-                        } else {
-                            groupIds.add(parseMvnUrl.getGroupId());
+                    // collect the groupIds to check
+                    Set<String> groupIds = new HashSet<String>();
+                    Set<String> snapshotgroupIds = new HashSet<String>();
+                    for (String mvnUri : mavenUristoSearch) {
+                        final MavenArtifact parseMvnUrl = MavenUrlHelper.parseMvnUrl(mvnUri);
+                        if (parseMvnUrl != null) {
+                            if (parseMvnUrl.getVersion() != null && parseMvnUrl.getVersion().endsWith(MavenConstants.SNAPSHOT)) {
+                                snapshotgroupIds.add(parseMvnUrl.getGroupId());
+                            } else {
+                                groupIds.add(parseMvnUrl.getGroupId());
+                            }
                         }
                     }
-                }
 
                     for (String groupId : groupIds) {
                         List<MavenArtifact> searchResults = customerRepHandler.search(groupId, null, null, true, false);
@@ -205,66 +220,51 @@ public class RemoteModulesHelper {
             }
         }
 
-        private void searchFromRemoteNexus(Set<String> mavenUristoSearch, IProgressMonitor monitor) {
-            try {
-                ArtifactRepositoryBean talendServer = TalendLibsServerManager.getInstance().getTalentArtifactServer();
-                IRepositoryArtifactHandler talendRepositoryHander = RepositoryArtifactHandlerManager
-                        .getRepositoryHandler(talendServer);
-                if (talendRepositoryHander != null) {
-                    final Iterator<String> iterator = mavenUristoSearch.iterator();
-                    Map<String, List<StringBuffer>> groupIdAndJarsToCheck = new HashMap<>();
-                    while (iterator.hasNext()) {
-                        if (monitor.isCanceled()) {
-                            break;
-                        }
-                        String uriToCheck = iterator.next();
-                        final MavenArtifact parseMvnUrl = MavenUrlHelper.parseMvnUrl(uriToCheck);
-                        if (parseMvnUrl != null) {
-                            //
-                            if (StringUtils.isNotEmpty(parseMvnUrl.getRepositoryUrl())) {
-                                continue;
-                            }
-                            StringBuffer jarsToCheck = null;
-                            List<StringBuffer> buffers = groupIdAndJarsToCheck.get(parseMvnUrl.getGroupId());
-                            if (buffers == null) {
-                                buffers = new ArrayList<>();
-                                groupIdAndJarsToCheck.put(parseMvnUrl.getGroupId(), buffers);
-                            }
-                            if (buffers.isEmpty() || buffers.get(buffers.size() - 1).length() > 2000) {
-                                jarsToCheck = new StringBuffer();
-                                buffers.add(jarsToCheck);
-                            } else {
-                                jarsToCheck = buffers.get(buffers.size() - 1);
-                            }
-                            if (parseMvnUrl.getArtifactId() != null && !parseMvnUrl.getArtifactId().contains("$")) { //$NON-NLS-1$
-                                jarsToCheck.append(parseMvnUrl.getArtifactId());
-                                jarsToCheck.append(","); //$NON-NLS-1$
-                            } else {
-                                ExceptionHandler.log("wrong setup of artifact, cf:" + parseMvnUrl.getArtifactId()); //$NON-NLS-1$
-                            }
-
-                        }
-
-                    }
-                    for (String groupId : groupIdAndJarsToCheck.keySet()) {
-                        List<StringBuffer> buffers = groupIdAndJarsToCheck.get(groupId);
-                        for (StringBuffer toCheck : buffers) {
-                            String jarsToCheck = toCheck.toString();
-                            if (jarsToCheck.endsWith(",")) {
-                                jarsToCheck = jarsToCheck.substring(0, jarsToCheck.length() - 1);
-                            }
-                            List<MavenArtifact> searchResults = talendRepositoryHander.search(groupId, jarsToCheck, null, true,
-                                    false);
-                            monitor.worked(10);
-                            addModulesToCache(mavenUristoSearch, searchResults, remoteCache);
-
-                        }
-                    }
+        private void searchFromLocalDataFile(Set<String> mavenUristoSearch, IProgressMonitor monitor) {
+            LibraryDataService service = LibraryDataService.getInstance();
+            List<MavenArtifact> artifactList = new ArrayList<MavenArtifact>();
+            final Iterator<String> iterator = mavenUristoSearch.iterator();
+            while (iterator.hasNext()) {
+                if (monitor.isCanceled()) {
+                    break;
                 }
-
-            } catch (Exception e1) {
-                ExceptionHandler.process(e1);
+                String uriToCheck = iterator.next();
+                final MavenArtifact parseMvnUrl = MavenUrlHelper.parseMvnUrl(uriToCheck);
+                boolean isExist = false;
+                if (parseMvnUrl != null) {
+                    isExist = service.fillLibraryData(uriToCheck, parseMvnUrl);
+                }
+                if (isExist) {
+                    artifactList.add(parseMvnUrl);
+                }
             }
+            addModulesToCache(mavenUristoSearch, artifactList, getRemoteCache());
+        }
+
+        private void searchFromRemoteNexus(Set<String> mavenUristoSearch, IProgressMonitor monitor) {
+            LibraryDataService service = LibraryDataService.getInstance();
+            List<MavenArtifact> artifactList = new ArrayList<MavenArtifact>();
+            final Iterator<String> iterator = mavenUristoSearch.iterator();
+            while (iterator.hasNext()) {
+                if (monitor.isCanceled()) {
+                    break;
+                }
+                String uriToCheck = iterator.next();
+                final MavenArtifact parseMvnUrl = MavenUrlHelper.parseMvnUrl(uriToCheck);
+                Map<String, Object> properties;
+                try {
+                    properties = service.resolveDescProperties(parseMvnUrl);
+                    if (properties != null && properties.size() > 0) {
+                        service.fillArtifactPropertyData(properties, parseMvnUrl);
+                        if (!MavenConstants.DOWNLOAD_MANUAL.equals(parseMvnUrl.getDistribution())) {
+                            artifactList.add(parseMvnUrl);
+                        }
+                    }
+                } catch (Exception e) {
+                    ExceptionHandler.process(e);
+                }
+            }
+            addModulesToCache(mavenUristoSearch, artifactList, getRemoteCache());
         }
 
         private void addModulesToCache(Set<String> mavenUristoSearch, List<MavenArtifact> searchResults,
@@ -509,13 +509,11 @@ public class RemoteModulesHelper {
 
     private static final String SEPARATOR_DISPLAY = " | "; //$NON-NLS-1$
 
-    private static final String SEPARATOR = "|"; //$NON-NLS-1$
-
-    private static final String SEPARATOR_SLIP = "\\|"; //$NON-NLS-1$
-
     /**
      * key : mvnuri(without SANPSHOT in version) value : ModuleToInstall
      */
+    private Map<String, ModuleToInstall> localLicenseDataCache = new HashMap<String, ModuleToInstall>();
+
     private Map<String, ModuleToInstall> remoteCache = new HashMap<String, ModuleToInstall>();
 
     private Map<String, ModuleToInstall> localCache = new HashMap<String, ModuleToInstall>();
@@ -531,8 +529,8 @@ public class RemoteModulesHelper {
     }
 
     public RemoteModulesFetchRunnable createRemoteModuleFetchRunnable(final Map<String, List<ModuleNeeded>> requiredModules,
-            final List<ModuleToInstall> toInstall, boolean collectModulesWithJarName) {
-        return new RemoteModulesFetchRunnable(requiredModules, toInstall, collectModulesWithJarName);
+            final List<ModuleToInstall> toInstall, boolean collectModulesWithJarName, boolean useLocalLicenseData) {
+        return new RemoteModulesFetchRunnable(requiredModules, toInstall, collectModulesWithJarName, useLocalLicenseData);
     }
 
     private JSONObject readJsonFromUrl(String url) throws IOException {
@@ -628,7 +626,7 @@ public class RemoteModulesHelper {
      * ModuleToInstall.mavenUris set to download all needed versions
      */
     public RemoteModulesFetchRunnable getNotInstalledModulesRunnable(List<ModuleNeeded> neededModules,
-            List<ModuleToInstall> toInstall, boolean collectModulesWithJarName) {
+            List<ModuleToInstall> toInstall, boolean collectModulesWithJarName, boolean useLocalLicenseData) {
         Map<String, List<ModuleNeeded>> contextMap = new HashMap<String, List<ModuleNeeded>>();
         ILibraryManagerService librairesManagerService = (ILibraryManagerService) GlobalServiceRegister.getDefault()
                 .getService(ILibraryManagerService.class);
@@ -679,13 +677,13 @@ public class RemoteModulesHelper {
             }
         }
         // fetch the jars which are not in cache.
-        return createRemoteModuleFetchRunnable(contextMap, toInstall, collectModulesWithJarName);
+        return createRemoteModuleFetchRunnable(contextMap, toInstall, collectModulesWithJarName, useLocalLicenseData);
 
     }
 
     public RemoteModulesFetchRunnable getNotInstalledModulesRunnable(List<ModuleNeeded> neededModules,
             List<ModuleToInstall> toInstall) {
-        return getNotInstalledModulesRunnable(neededModules, toInstall, false);
+        return getNotInstalledModulesRunnable(neededModules, toInstall, false, true);
     }
 
     /**
@@ -756,5 +754,5 @@ public class RemoteModulesHelper {
         }
         return null;
     }
-
 }
+

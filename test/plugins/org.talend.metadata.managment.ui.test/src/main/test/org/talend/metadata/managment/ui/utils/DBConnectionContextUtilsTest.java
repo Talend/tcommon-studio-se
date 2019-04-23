@@ -16,8 +16,12 @@ import org.junit.Assert;
 import org.junit.Test;
 import org.talend.core.database.EDatabaseTypeName;
 import org.talend.core.database.conn.ConnParameterKeys;
+import org.talend.core.model.metadata.builder.connection.ConnectionFactory;
 import org.talend.core.model.metadata.builder.connection.DatabaseConnection;
 import org.talend.core.model.metadata.builder.connection.impl.ConnectionFactoryImpl;
+import org.talend.core.model.properties.ConnectionItem;
+import org.talend.core.model.properties.PropertiesFactory;
+import org.talend.metadata.managment.repository.ManagerConnection;
 
 
 /**
@@ -39,6 +43,37 @@ public class DBConnectionContextUtilsTest {
                 "impala/tal-qa146.talend.lan@CDH.ONE");
         DatabaseConnection clonedConn = DBConnectionContextUtils.cloneOriginalValueConnection(originalConn, false, null);
         Assert.assertEquals(EXPECT_URL, clonedConn.getURL());
+
+        final String EXPECT_DB2_URL = "jdbc:db2://192.168.31.20:50000/mydb2:cursorSensitivity=2;";
+        DatabaseConnection DB2OriginalConn = ConnectionFactoryImpl.eINSTANCE.createDatabaseConnection();
+        DB2OriginalConn.setDatabaseType(EDatabaseTypeName.IBMDB2.getXmlName());
+        DB2OriginalConn.setServerName("192.168.31.20");
+        DB2OriginalConn.setPort("50000");
+        DB2OriginalConn.setSID("mydb2");
+        DatabaseConnection cloneOriginalValueConnection = DBConnectionContextUtils.cloneOriginalValueConnection(DB2OriginalConn,
+                false, null);
+        Assert.assertEquals(EXPECT_DB2_URL, cloneOriginalValueConnection.getURL());
+
+    }
+
+    @SuppressWarnings("nls")
+    @Test
+    public void testSetManagerConnectionValues() {
+        final String EXPECT_URL = "jdbc:firebirdsql:tal-rd169.talend.lan/3050:/databases/TUJ?";
+        final ManagerConnection managerConnection = new ManagerConnection();
+        ConnectionItem connectionItem = PropertiesFactory.eINSTANCE.createConnectionItem();
+        DatabaseConnection conn = ConnectionFactory.eINSTANCE.createDatabaseConnection();
+        conn.setDatabaseType(EDatabaseTypeName.FIREBIRD.getXmlName());
+        conn.setProductId(EDatabaseTypeName.FIREBIRD.getProduct());
+        conn.setServerName("tal-rd169.talend.lan");
+        conn.setUsername("username");
+        conn.setPassword("pwd");
+        conn.setPort("3050");
+        conn.setFileFieldName("/databases/TUJ");
+        connectionItem.setConnection(conn);
+        String setManagerConnectionValues = DBConnectionContextUtils.setManagerConnectionValues(managerConnection, connectionItem,
+                null, conn.getDatabaseType());
+        Assert.assertEquals(EXPECT_URL, setManagerConnectionValues);
     }
 
 }

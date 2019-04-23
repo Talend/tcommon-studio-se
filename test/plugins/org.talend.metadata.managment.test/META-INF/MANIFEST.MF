@@ -6,7 +6,6 @@ Bundle-Version: 7.2.1.qualifier
 Fragment-Host: org.talend.metadata.managment
 Require-Bundle: org.talend.testutils,
  org.talend.libraries.jdbc.mysql,
- org.talend.libraries.jdbc.teradata,
  org.eclipse.osgi.services
 Bundle-ClassPath: .
 Bundle-Vendor: .Talend SA.

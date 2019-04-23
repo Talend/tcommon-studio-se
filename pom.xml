@@ -127,8 +127,6 @@
 		<module>main/plugins/org.talend.libraries.jxplorer</module>
 		<module>main/plugins/org.talend.libraries.mdm</module>
 		<module>main/plugins/org.talend.libraries.mdm.webservice.ce</module>
-		<module>main/plugins/org.talend.libraries.nattable</module>
-		<module>main/plugins/org.talend.libraries.nattable.glazedlist</module>
 		<module>main/plugins/org.talend.libraries.netsuite</module>
 		<module>main/plugins/org.talend.libraries.ui</module>
 		<module>main/plugins/org.talend.librariesmanager</module>

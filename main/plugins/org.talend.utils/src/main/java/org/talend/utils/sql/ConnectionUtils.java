@@ -423,6 +423,23 @@ public final class ConnectionUtils {
     }
 
     /**
+     * DOC msjian Comment method "isSnowflake".
+     * 
+     * @param metadata
+     * @return
+     * @throws SQLException
+     */
+    public static boolean isSnowflake(DatabaseMetaData metadata) throws SQLException {
+        if (metadata != null && metadata.getDriverName() != null
+                && metadata.getDriverName().toLowerCase().startsWith("snowflake") //$NON-NLS-1$
+                && metadata.getDatabaseProductName() != null
+                && metadata.getDatabaseProductName().toLowerCase().startsWith("snowflake")) { //$NON-NLS-1$
+            return true;
+        }
+        return false;
+    }
+
+    /**
      * 
      * DOC Comment method "isExasol".
      * 

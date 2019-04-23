@@ -28,7 +28,11 @@ import org.talend.updates.runtime.model.ExtraFeature;
 public class ExtraFeaturesUpdatesFactory {
 
     private final static ExtraFeaturesUpdatesReader updatesFactoryReader = new ExtraFeaturesUpdatesReader();
-
+    private boolean isCheckUpdateOnLine = false;
+    
+    public ExtraFeaturesUpdatesFactory(boolean isCheckUpdateOnLine) {
+        this.isCheckUpdateOnLine = isCheckUpdateOnLine;
+    }
     /**
      * 
      * DOC ggu Comment method "retrieveUninstalledExtraFeatures".
@@ -53,6 +57,7 @@ public class ExtraFeaturesUpdatesFactory {
                     }
                 }
                 try {
+                    factory.setCheckUpdateOnLine(isCheckUpdateOnLine);
                     factory.retrieveUninstalledExtraFeatures(monitor, uninstalledExtraFeatures);
                 } catch (Exception e) {
                     ExceptionHandler.process(e);
@@ -68,6 +73,7 @@ public class ExtraFeaturesUpdatesFactory {
             for (AbstractExtraUpdatesFactory factory : updatesFactories) {
                 if (factory instanceof IComponentUpdatesFactory) {
                     try {
+                        factory.setCheckUpdateOnLine(isCheckUpdateOnLine);
                         factory.retrieveAllExtraFeatures(monitor, allFeatures);
                     } catch (Exception e) {
                         ExceptionHandler.process(e);

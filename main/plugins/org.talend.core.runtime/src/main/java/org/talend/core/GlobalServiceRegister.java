@@ -139,7 +139,7 @@ public class GlobalServiceRegister {
      * @param klass the Service type you want to get
      * @return IService IService
      */
-    public IService getService(Class klass) {
+    public <T extends IService> T getService(Class<T> klass) {
         IService service = services.get(klass);
         if (service == null && getConfigurationElements() != null) {
             service = findService(klass);
@@ -149,7 +149,7 @@ public class GlobalServiceRegister {
             }
             services.put(klass, service);
         }
-        return service;
+        return (T) service;
     }
 
     /**
@@ -158,7 +158,7 @@ public class GlobalServiceRegister {
      * @param klass the interface type want to find.
      * @return IService
      */
-    private IService findService(Class klass) {
+    private <T extends IService> T findService(Class<T> klass) {
         String key = klass.getName();
         IConfigurationElement[] configElements = getConfigurationElements();
         if (configElements != null) {
@@ -171,7 +171,7 @@ public class GlobalServiceRegister {
                     try {
                         Object service = element.createExecutableExtension("class"); //$NON-NLS-1$
                         if (klass.isInstance(service)) {
-                            return (IService) service;
+                            return (T) service;
                         }
                     } catch (CoreException e) {
                         ExceptionHandler.process(e);

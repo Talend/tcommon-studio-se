@@ -15,46 +15,47 @@ import org.xml.sax.XMLReader;
  *
  */
 public class XMLHelper {
-	
-	private static XMLHelper instance;
-	
-	private XMLReader reader;
 
-	private XMLHelper() {
-		SAXParserFactory factory = SAXParserFactory.newInstance();
-	    try {
-			reader = factory.newSAXParser().getXMLReader();
-			reader.setErrorHandler(null);
-		} catch (SAXException e) {
-			e.printStackTrace();
-		} catch (ParserConfigurationException e) {
-			e.printStackTrace();
-		}
-	}
-	
-	public static XMLHelper getInstance() {
-		if(instance == null) {
-			instance = new XMLHelper();
-		}
-		return instance;
-	}
-	
-	
-	
-	/**
-	 * validate xml source
-	 * return true if xml is well formed
-	 * @param source
-	 * @return
-	 */
-	public boolean isValid(String xml) {
-		try {
-			InputSource source = new InputSource(new StringReader(xml));
-			reader.parse(source);
-        	return true;
-        } catch(Exception e) {
-        	return false;
+    private static XMLHelper instance;
+
+    private XMLReader reader;
+
+    private XMLHelper() {
+        SAXParserFactory factory = SAXParserFactory.newInstance();
+        try {
+            factory.setFeature(javax.xml.XMLConstants.FEATURE_SECURE_PROCESSING, true);
+            factory.setFeature("http://apache.org/xml/features/disallow-doctype-decl", true);
+            reader = factory.newSAXParser().getXMLReader();
+            reader.setErrorHandler(null);
+        } catch (SAXException e) {
+            e.printStackTrace();
+        } catch (ParserConfigurationException e) {
+            e.printStackTrace();
         }
-	}
-	
+    }
+
+    public static XMLHelper getInstance() {
+        if (instance == null) {
+            instance = new XMLHelper();
+        }
+        return instance;
+    }
+
+    /**
+     * validate xml source
+     * return true if xml is well formed
+     * 
+     * @param source
+     * @return
+     */
+    public boolean isValid(String xml) {
+        try {
+            InputSource source = new InputSource(new StringReader(xml));
+            reader.parse(source);
+            return true;
+        } catch(Exception e) {
+            return false;
+        }
+    }
+
 }
