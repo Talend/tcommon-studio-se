@@ -15,7 +15,6 @@
 			<groupId>org.apache.karaf.tooling</groupId>
 			<artifactId>features-maven-plugin</artifactId>
 			<version>2.2.9</version>
-            <classifier>TESB</classifier>
 		</dependency>
 		
 		<dependency>
