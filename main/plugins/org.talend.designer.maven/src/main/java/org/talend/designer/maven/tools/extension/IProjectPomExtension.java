@@ -17,6 +17,7 @@ import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.Properties;
+import java.util.regex.Pattern;
 
 import org.apache.commons.lang3.StringUtils;
 import org.apache.maven.model.Model;
@@ -54,8 +55,13 @@ public interface IProjectPomExtension {
         if (StringUtils.isBlank(version)) {
             version = talendVersion;
             String productVersion = VersionUtils.getInternalVersion();
-            if (productVersion.endsWith("-SNAPSHOT") || CommonsPlugin.isJUnitTest() || Platform.inDevelopmentMode()) { //$NON-NLS-1$
-                version += "-SNAPSHOT"; //$NON-NLS-1$
+            String revision = StringUtils.substringAfterLast(productVersion, "-"); //$NON-NLS-1$
+            if (("SNAPSHOT").equals(revision) || CommonsPlugin.isJUnitTest() || Platform.inDevelopmentMode()) { //$NON-NLS-1$
+                return version + "-SNAPSHOT"; //$NON-NLS-1$
+            }
+            Pattern pattern = Pattern.compile("M\\d{1}"); //$NON-NLS-1$
+            if (pattern.matcher(revision).matches()) {
+                return version + "-" + revision;
             }
         }
         return version;
