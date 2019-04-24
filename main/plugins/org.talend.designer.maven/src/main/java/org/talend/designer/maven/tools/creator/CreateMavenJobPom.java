@@ -601,7 +601,10 @@ public class CreateMavenJobPom extends AbstractMavenProcessorPom {
                 mainProjectBranch = "";
             }
         }
-        jobInfoContent = StringUtils.replace(jobInfoContent, "${talend.project.branch}", mainProjectBranch);
+
+        if (!isOptionChecked(TalendProcessArgumentConstant.ARG_AVOID_BRANCH_NAME)) {
+            jobInfoContent = StringUtils.replace(jobInfoContent, "${talend.project.branch}", mainProjectBranch);
+        }
 
         IFolder templateFolder = codeProject.getTemplatesFolder();
         IFile shFile = templateFolder.getFile(IProjectSettingTemplateConstants.JOB_RUN_SH_TEMPLATE_FILE_NAME);
