@@ -274,6 +274,7 @@ public class ProjectDataJsonProvider {
 
     public static void loadMigrationTaskSetting(Project project, InputStream input) throws PersistenceException {
         try {
+            project.eSetDeliver(false);
             MigrationTaskSetting migrationTaskSetting = null;
             if (input != null) {
                 migrationTaskSetting = new ObjectMapper().readValue(input, MigrationTaskSetting.class);
@@ -302,6 +303,7 @@ public class ProjectDataJsonProvider {
                     }
                 }
             }
+            project.eSetDeliver(true);
         } catch (Exception e) {
             throw new PersistenceException(e);
         } finally {
