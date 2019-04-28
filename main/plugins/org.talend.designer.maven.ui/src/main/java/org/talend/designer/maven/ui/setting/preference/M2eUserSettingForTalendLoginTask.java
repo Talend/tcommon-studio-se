@@ -25,7 +25,10 @@ import java.util.GregorianCalendar;
 import java.util.List;
 import java.util.Properties;
 
-import org.apache.maven.cli.MavenCli;
+import javax.xml.parsers.DocumentBuilder;
+import javax.xml.parsers.DocumentBuilderFactory;
+
+import org.apache.commons.lang3.StringUtils;
 import org.apache.maven.cli.configuration.SettingsXmlConfigurationProcessor;
 import org.apache.maven.settings.Profile;
 import org.apache.maven.settings.Proxy;
@@ -53,6 +56,8 @@ import org.talend.designer.maven.template.MavenTemplateManager;
 import org.talend.designer.maven.ui.DesignerMavenUiPlugin;
 import org.talend.login.AbstractLoginTask;
 import org.talend.utils.io.FilesUtils;
+import org.w3c.dom.Document;
+import org.w3c.dom.Node;
 
 /**
  * DOC ggu class global comment. Detailled comment
@@ -286,10 +291,34 @@ public class M2eUserSettingForTalendLoginTask extends AbstractLoginTask {
             return false;
         }
         final String m2Repo = ".m2/repository"; //$NON-NLS-1$
-        // default one
-        IPath localRepoPath = new Path(System.getProperty("user.home")).append(m2Repo); //$NON-NLS-1$
+        boolean isLocal = isLocalRepository();
+        IPath localRepoPath = null;
+        if (!isLocal) {
+            String mvnHome = System.getenv("M2_HOME"); //$NON-NLS-1$
+            if (mvnHome == null) {
+                mvnHome = System.getenv("MAVEN_HOME"); //$NON-NLS-1$
+            }
+            if (StringUtils.isNotBlank(mvnHome)) {
+                File globalSettings = new File(mvnHome).toPath().resolve("conf").resolve("settings.xml").toFile(); //$NON-NLS-1$ //$NON-NLS-2$
+                if (globalSettings.exists()) {
+                    DocumentBuilder builder = DocumentBuilderFactory.newInstance().newDocumentBuilder();
+                    Document document = builder.parse(globalSettings);
+                    Node node = document.getElementsByTagName("localRepository").item(0); //$NON-NLS-1$
+                    if (node != null) {
+                        String repoPath = node.getTextContent();
+                        if (StringUtils.isNotBlank(repoPath)) {
+                            localRepoPath = new Path(repoPath);
+                        }
+                    }
+                }
+            }
+            if (localRepoPath == null) {
+                // set default
+                localRepoPath = new Path(System.getProperty("user.home")).append(m2Repo); //$NON-NLS-1$
+            }
+        }
         // if local, always use config one
-        if (isLocalRepository() || !enableAccessM2Repository(monitor, localRepoPath.toString())) {
+        if (isLocal || !enableAccessM2Repository(monitor, localRepoPath.toString())) {
             // need change the repo setting
             localRepoPath = configPath.append(m2Repo);
             File studioDefaultRepoFolder = localRepoPath.toFile();
@@ -394,7 +423,7 @@ public class M2eUserSettingForTalendLoginTask extends AbstractLoginTask {
 
         String nonProxyHosts = p.getNonProxyHosts();
         if (nonProxyHosts != null && nonProxyHosts.trim().length() > 0) {
-            List<String> bypassHosts = new ArrayList<String>();
+            List<String> bypassHosts = new ArrayList<>();
             String[] nonProxiedHosts = proxyService.getNonProxiedHosts();
             if (nonProxiedHosts != null) {
                 bypassHosts.addAll(Arrays.asList(nonProxiedHosts));
