@@ -122,7 +122,7 @@ public class MavenPomSynchronizer {
      */
     public void cleanMavenFiles(IProgressMonitor monitor) throws Exception {
         IProject jProject = codeProject.getProject();
-        if (!jProject.isOpen()) {
+        if (!jProject.isOpen() && jProject.exists()) {
             jProject.open(monitor);
         }
         // empty the src/main/java...
