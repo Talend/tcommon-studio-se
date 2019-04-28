@@ -122,7 +122,7 @@ public class MavenPomSynchronizer {
      */
     public void cleanMavenFiles(IProgressMonitor monitor) throws Exception {
         IProject jProject = codeProject.getProject();
-        if (!jProject.isOpen() && jProject.exists()) {
+        if (!jProject.isOpen()) {
             jProject.open(monitor);
         }
         // empty the src/main/java...
@@ -174,7 +174,7 @@ public class MavenPomSynchronizer {
                         return;
                     }
                     if (GlobalServiceRegister.getDefault().isServiceRegistered(ILibrariesService.class)) {
-                        ILibrariesService libService = (ILibrariesService) GlobalServiceRegister.getDefault()
+                        ILibrariesService libService = GlobalServiceRegister.getDefault()
                                 .getService(ILibrariesService.class);
                         if (changedLibrariesListener == null) {
                             changedLibrariesListener = new ILibrariesService.IChangedLibrariesListener() {
@@ -204,7 +204,7 @@ public class MavenPomSynchronizer {
             synchronized (lock) {
                 if (isListenerAdded) {
                     if (GlobalServiceRegister.getDefault().isServiceRegistered(ILibrariesService.class)) {
-                        ILibrariesService libService = (ILibrariesService) GlobalServiceRegister.getDefault()
+                        ILibrariesService libService = GlobalServiceRegister.getDefault()
                                 .getService(ILibrariesService.class);
                         if (changedLibrariesListener != null) {
                             libService.removeChangeLibrariesListener(changedLibrariesListener);
