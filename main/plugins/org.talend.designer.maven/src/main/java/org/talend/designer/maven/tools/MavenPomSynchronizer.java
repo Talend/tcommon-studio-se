@@ -174,7 +174,7 @@ public class MavenPomSynchronizer {
                         return;
                     }
                     if (GlobalServiceRegister.getDefault().isServiceRegistered(ILibrariesService.class)) {
-                        ILibrariesService libService = GlobalServiceRegister.getDefault()
+                        ILibrariesService libService = (ILibrariesService) GlobalServiceRegister.getDefault()
                                 .getService(ILibrariesService.class);
                         if (changedLibrariesListener == null) {
                             changedLibrariesListener = new ILibrariesService.IChangedLibrariesListener() {
@@ -204,7 +204,7 @@ public class MavenPomSynchronizer {
             synchronized (lock) {
                 if (isListenerAdded) {
                     if (GlobalServiceRegister.getDefault().isServiceRegistered(ILibrariesService.class)) {
-                        ILibrariesService libService = GlobalServiceRegister.getDefault()
+                        ILibrariesService libService = (ILibrariesService) GlobalServiceRegister.getDefault()
                                 .getService(ILibrariesService.class);
                         if (changedLibrariesListener != null) {
                             libService.removeChangeLibrariesListener(changedLibrariesListener);
