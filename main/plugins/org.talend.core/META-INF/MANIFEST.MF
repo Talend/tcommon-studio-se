@@ -21,7 +21,8 @@ Require-Bundle: org.eclipse.debug.core,
  org.talend.core.repository,
  org.talend.libraries.apache,
  org.talend.core.runtime,
- org.talend.utils
+ org.talend.utils,
+ org.talend.libraries.dom4j-jaxen
 Bundle-Vendor: .Talend SA.
 Export-Package: org.talend.core,
  org.talend.core.branding,
@@ -53,6 +54,4 @@ Export-Package: org.talend.core,
  org.talend.core.services.resource,
  org.talend.core.views,
  org.talend.designer.runprocess
-Import-Package: org.apache.commons.collections4.map,
- org.dom4j,
- org.dom4j.io
+Import-Package: org.apache.commons.collections4.map
