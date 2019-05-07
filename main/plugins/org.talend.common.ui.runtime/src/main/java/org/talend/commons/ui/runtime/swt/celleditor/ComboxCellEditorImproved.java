@@ -18,6 +18,7 @@ import org.eclipse.jface.util.Assert;
 import org.eclipse.jface.viewers.CellEditor;
 import org.eclipse.jface.viewers.ComboBoxCellEditor;
 import org.eclipse.swt.SWT;
+import org.eclipse.swt.custom.CCombo;
 import org.eclipse.swt.events.FocusAdapter;
 import org.eclipse.swt.events.FocusEvent;
 import org.eclipse.swt.events.KeyAdapter;
@@ -27,7 +28,6 @@ import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.events.TraverseEvent;
 import org.eclipse.swt.events.TraverseListener;
 import org.eclipse.swt.graphics.GC;
-import org.eclipse.swt.widgets.Combo;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
 
@@ -53,7 +53,7 @@ public class ComboxCellEditorImproved extends CellEditor {
     /**
      * The custom combo box control.
      */
-    Combo comboBox;
+    CCombo comboBox;
 
     /**
      * Default ComboBoxCellEditor style
@@ -125,7 +125,7 @@ public class ComboxCellEditorImproved extends CellEditor {
      */
     protected Control createControl(Composite parent) {
 
-        comboBox = new Combo(parent, getStyle());
+        comboBox = new CCombo(parent, getStyle());
         comboBox.setFont(parent.getFont());
 
         comboBox.addKeyListener(new KeyAdapter() {
