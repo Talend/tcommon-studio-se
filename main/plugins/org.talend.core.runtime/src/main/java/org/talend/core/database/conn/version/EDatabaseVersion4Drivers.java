@@ -163,9 +163,9 @@ public enum EDatabaseVersion4Drivers {
     MAPRDB(new DbVersion4Drivers(EDatabaseTypeName.MAPRDB, new String[] {})),
 
     REDSHIFT(new DbVersion4Drivers(EDatabaseTypeName.REDSHIFT, "redshift", "REDSHIFT", //$NON-NLS-1$ //$NON-NLS-2$
-            "redshiftJDBC42-no-awssdk-1.2.16.1027.jar")), //$NON-NLS-1$
+            "redshiftJDBC42-no-awssdk-1.2.20.1043.jar")), //$NON-NLS-1$
     REDSHIFT_SSO(new DbVersion4Drivers(EDatabaseTypeName.REDSHIFT_SSO, "redshift sso", "REDSHIFT_SSO", //$NON-NLS-1$ //$NON-NLS-2$
-            new String[] { "redshiftJDBC42-no-awssdk-1.2.16.1027.jar", "aws-java-sdk-1.11.406.jar", "jackson-core-2.9.5.jar", //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+            new String[] { "redshiftJDBC42-no-awssdk-1.2.20.1043.jar", "aws-java-sdk-1.11.406.jar", "jackson-core-2.9.5.jar", //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
                     "jackson-databind-2.9.5.jar", "jackson-annotations-2.9.0.jar", "httpcore-4.4.9.jar", "httpclient-4.5.5.jar", //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$//$NON-NLS-4$
                     "joda-time-2.8.1.jar", "commons-logging-1.1.3.jar" })), //$NON-NLS-1$ //$NON-NLS-2$
 
