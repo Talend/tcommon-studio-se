@@ -23,6 +23,7 @@ import org.eclipse.jface.resource.ImageDescriptor;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.graphics.ImageData;
+import org.eclipse.swt.graphics.ImageDataProvider;
 import org.eclipse.swt.graphics.ImageLoader;
 import org.eclipse.swt.graphics.Point;
 import org.talend.commons.ui.runtime.exception.ExceptionHandler;
@@ -103,7 +104,7 @@ public class ImageUtils {
      * RAP.
      */
     public static Image scale(Image image, int percent) {
-        float scale = (float) percent / 100f;
+        float scale = percent / 100f;
         int newWidth = (int) (scale * image.getImageData().width);
         int newHeight = (int) (scale * image.getImageData().height);
         ImageData imageData = image.getImageData().scaledTo(newWidth, newHeight);
@@ -143,7 +144,7 @@ public class ImageUtils {
         return imageDes;
     }
 
-    private static Map<byte[], ImageData> imageFromDataCachedImages = new HashMap<byte[], ImageData>();
+    private static Map<byte[], ImageDataProvider> imageFromDataCachedImages = new HashMap<byte[], ImageDataProvider>();
 
     /**
      * By default, keep in memory the .
@@ -154,13 +155,14 @@ public class ImageUtils {
      */
     public static ImageDescriptor createImageFromData(byte[] data, boolean... keepInMemory) {
         if (data != null) {
-            ImageData img = imageFromDataCachedImages.get(data);
-            if (img == null) {
+            ImageDataProvider imageProvider = imageFromDataCachedImages.get(data);
+            if (imageProvider == null) {
                 ByteArrayInputStream bais = new ByteArrayInputStream(data);
-                img = new ImageData(bais);
-                imageFromDataCachedImages.put(data, img);
+                ImageData img = new ImageData(bais);
+                imageProvider = new TalendImageProvider(img);
+                imageFromDataCachedImages.put(data, imageProvider);
             }
-            return ImageDescriptor.createFromImageData(img);
+            return ImageDescriptor.createFromImageDataProvider(imageProvider);
         }
         return null;
     }
@@ -283,11 +285,11 @@ public class ImageUtils {
             // if width is mort than height.
             if (w > h) {
                 newSize.x = requiredSize.x;
-                newSize.y = (int) (w >= 1 ? Math.round(originalSize.y / w) : Math.round(originalSize.y * w));
+                newSize.y = w >= 1 ? Math.round(originalSize.y / w) : Math.round(originalSize.y * w);
             }
             // if width is less than height.
             else if (w < h) {
-                newSize.x = (int) (h >= 1 ? Math.round(originalSize.x / h) : Math.round(originalSize.x * h));
+                newSize.x = h >= 1 ? Math.round(originalSize.x / h) : Math.round(originalSize.x * h);
                 newSize.y = requiredSize.y;
             }
             // if equal

@@ -44,7 +44,6 @@ import org.talend.presentation.onboarding.ui.managers.OnBoardingResourceManager;
 import org.talend.presentation.onboarding.ui.runtimedata.OnBoardingJsonDoc;
 import org.talend.presentation.onboarding.ui.runtimedata.OnBoardingPerspectiveBean;
 import org.talend.presentation.onboarding.ui.runtimedata.OnBoardingRegistedResource;
-import org.talend.utils.xml.XmlUtils;
 import org.w3c.dom.Attr;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
@@ -256,7 +255,13 @@ public class OnBoardingUtils {
     public static Document convertStringToDocument(String htmlStr) {
         Document newDoc = null;
         try {
-            DocumentBuilderFactory factory = XmlUtils.getSecureDocumentBuilderFactory();
+            // Fixed in TUP-21880. As set XMLConstants.FEATURE_SECURE_PROCESSING feature to true will cause page display
+            // trouble in our studio's Quick tour page.
+            // Now we won't set the XMLConstants.FEATURE_SECURE_PROCESSING feature to true for this onBoardingView.html
+            // file.
+            DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
+            factory.setFeature("http://apache.org/xml/features/disallow-doctype-decl", true); //$NON-NLS-1$
+            factory.setNamespaceAware(true);
             factory.setValidating(false);
             // if this is not set, Document.getElementsByTagNameNS() will fail.
             factory.setNamespaceAware(true);

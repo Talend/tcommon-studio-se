@@ -43,6 +43,8 @@ public class MavenSystemFolders {
 
     public static final ProjectSystemFolder TEMP = new ProjectSystemFolder("temp");
 
+    public static final ProjectSystemFolder SRC = new ProjectSystemFolder("src");
+
     public static final ProjectSystemFolder[] SIMPLE_DIRS = { JAVA, RESOURCES };
 
     public static final ProjectSystemFolder[] TEST_DIRS = { JAVA_TEST, RESOURCES_TEST };

@@ -78,34 +78,36 @@ public class TOSDynamicExtraFeaturesFactory extends AbstractExtraUpdatesFactory 
     @Override
     public void retrieveUninstalledExtraFeatures(IProgressMonitor progress, Set<ExtraFeature> uninstalledExtraFeatures)
             throws Exception {
-        SubMonitor mainSubMonitor = SubMonitor.convert(progress, 5);
-        mainSubMonitor.setTaskName(Messages.getString("ExtraFeaturesFactory.checking..feature.to.install")); //$NON-NLS-1$
-        mainSubMonitor.worked(1);
-        Set<P2ExtraFeature> allExtraFeatures = getAllExtraFeatures(mainSubMonitor);
-        mainSubMonitor.worked(1);
-        if (mainSubMonitor.isCanceled()) {
-            return;
-        }
-        SubMonitor checkSubMonitor = SubMonitor.convert(mainSubMonitor.newChild(1), allExtraFeatures.size() * 2);
-        for (P2ExtraFeature extraF : allExtraFeatures) {
-            try {
-                if (!extraF.isInstalled(checkSubMonitor.newChild(1))) {
-                    if (checkSubMonitor.isCanceled()) {
-                        return;
-                    }
-                    addToSet(uninstalledExtraFeatures, extraF);
-                    checkSubMonitor.worked(1);
-                } else {// else already installed so try to find updates
-                    ExtraFeature updateFeature = extraF.createFeatureIfUpdates(checkSubMonitor.newChild(1));
-                    if (updateFeature != null) {
-                        addToSet(uninstalledExtraFeatures, updateFeature);
-                    }
-                }
-            } catch (Exception e) {
-                // could not determine if feature is already installed so do not consider it all
-                log.error(e);
+        if (isCheckUpdateOnLine) {
+            SubMonitor mainSubMonitor = SubMonitor.convert(progress, 5);
+            mainSubMonitor.setTaskName(Messages.getString("ExtraFeaturesFactory.checking..feature.to.install")); //$NON-NLS-1$
+            mainSubMonitor.worked(1);
+            Set<P2ExtraFeature> allExtraFeatures = getAllExtraFeatures(mainSubMonitor);
+            mainSubMonitor.worked(1);
+            if (mainSubMonitor.isCanceled()) {
+                return;
             }
-        }
+            SubMonitor checkSubMonitor = SubMonitor.convert(mainSubMonitor.newChild(1), allExtraFeatures.size() * 2);
+            for (P2ExtraFeature extraF : allExtraFeatures) {
+                try {
+                    if (!extraF.isInstalled(checkSubMonitor.newChild(1))) {
+                        if (checkSubMonitor.isCanceled()) {
+                            return;
+                        }
+                        addToSet(uninstalledExtraFeatures, extraF);
+                        checkSubMonitor.worked(1);
+                    } else {// else already installed so try to find updates
+                        ExtraFeature updateFeature = extraF.createFeatureIfUpdates(checkSubMonitor.newChild(1));
+                        if (updateFeature != null) {
+                            addToSet(uninstalledExtraFeatures, updateFeature);
+                        }
+                    }
+                } catch (Exception e) {
+                    // could not determine if feature is already installed so do not consider it all
+                    log.error(e);
+                }
+            }
+        }     
     }
 
     /**

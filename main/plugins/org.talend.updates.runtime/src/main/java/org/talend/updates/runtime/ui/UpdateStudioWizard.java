@@ -245,7 +245,7 @@ public class UpdateStudioWizard extends Wizard {
                             @Override
                             public void run(IProgressMonitor iprogressmonitor)
                                     throws InvocationTargetException, InterruptedException {
-                                ExtraFeaturesUpdatesFactory extraFeaturesFactory = new ExtraFeaturesUpdatesFactory();
+                                ExtraFeaturesUpdatesFactory extraFeaturesFactory = new ExtraFeaturesUpdatesFactory(true);
                                 extraFeaturesFactory.retrieveUninstalledExtraFeatures(iprogressmonitor,
                                         updateWizardModel.availableExtraFeatures, false);
 

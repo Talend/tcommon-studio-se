@@ -36,7 +36,6 @@ import org.eclipse.swt.browser.Browser;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Shell;
 import org.eclipse.ui.IWorkbench;
-import org.eclipse.ui.IWorkbenchPreferenceConstants;
 import org.eclipse.ui.PlatformUI;
 import org.osgi.service.prefs.BackingStoreException;
 import org.osgi.service.prefs.Preferences;
@@ -98,10 +97,12 @@ public class Application implements IApplication {
         try {
             // TUP-5816 don't put any code ahead of this part unless you make sure it won't trigger workspace
             // initialization.
-            Shell shell = new Shell(display, SWT.ON_TOP);
+            Shell shell = Display.getDefault().getActiveShell();
             Object instanceLocationCheck = acquireWorkspaceLock(shell);
             if (instanceLocationCheck != null) {// no workspace selected so return.
-                shell.dispose();
+                if (shell != null) {
+                    shell.dispose();
+                }
                 return instanceLocationCheck;
             }
 
@@ -157,7 +158,8 @@ public class Application implements IApplication {
                     final String installedMessages = patchComponent.getInstalledMessages();
                     if (installedMessages != null) {
                         log.log(Level.INFO, installedMessages);
-                        MessageDialog.openInformation(new Shell(), "Installing Patches", installedMessages);
+                        MessageDialog.openInformation(Display.getDefault().getActiveShell(), "Installing Patches",
+                                installedMessages);
                     }
                     if (patchComponent.needRelaunch()) {
                         needRelaunch = true;
@@ -177,7 +179,8 @@ public class Application implements IApplication {
                         final String installedMessages = installComponent.getInstalledMessages();
                         if (installedMessages != null) {
                             log.log(Level.INFO, installedMessages);
-                            MessageDialog.openInformation(new Shell(), "Installing Components", installedMessages);
+                            MessageDialog.openInformation(Display.getDefault().getActiveShell(), "Installing Components",
+                                    installedMessages);
                         }
                         if (installComponent.needRelaunch()) {
                             needRelaunch = true;
@@ -211,7 +214,9 @@ public class Application implements IApplication {
                     return EXIT_OK;
                 }
             } finally {
-                shell.dispose();
+                if (shell != null) {
+                    shell.dispose();
+                }
             }
 
             // if some commands are set to relaunch (not restart) the eclipse then relaunch it
@@ -244,8 +249,8 @@ public class Application implements IApplication {
             // other products will simply reuse the default presentation factory.
             if (brandingService.isPoweredbyTalend()) {
                 // setup the presentation factory, which is defined in the plugin.xml of the org.talend.rcp
-                store.putValue(IWorkbenchPreferenceConstants.PRESENTATION_FACTORY_ID,
-                        "org.talend.rcp.presentationfactory"); //$NON-NLS-1$
+                // store.putValue(IWorkbenchPreferenceConstants.PRESENTATION_FACTORY_ID,
+                // "org.talend.rcp.presentationfactory"); //$NON-NLS-1$
             }
             // clean the clearPersistedState if branding or project type change
             String lastProjectType = store.getString("last_started_project_type");

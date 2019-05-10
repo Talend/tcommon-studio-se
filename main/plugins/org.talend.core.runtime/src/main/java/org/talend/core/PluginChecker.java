@@ -18,7 +18,6 @@ import java.net.URL;
 import org.apache.log4j.Logger;
 import org.eclipse.core.runtime.FileLocator;
 import org.eclipse.core.runtime.Platform;
-import org.eclipse.core.runtime.Plugin;
 import org.osgi.framework.Bundle;
 
 /**
@@ -143,10 +142,6 @@ public class PluginChecker {
 
     public static boolean isTIS() {
         return isJobLetPluginLoaded();
-    }
-
-    public static Plugin getWSDLPlugin() {
-        return Platform.getPlugin(WSDL_PLUGIN_ID);
     }
 
     public static boolean isRefProjectLoaded() {

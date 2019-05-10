@@ -62,6 +62,8 @@ public interface TalendProcessArgumentConstant {
 
     static final String ARG_LAUNCHER_NAME = "LAUNCHER_NAME";
 
+    static final String ARG_AVOID_BRANCH_NAME = "AVOID_BRANCH_NAME";
+
     static final String CMD_ARG_STATS_PORT_PARAM = "stat_port";
 
     static final String CMD_ARG_TRACE_PORT_PARAM = "trace_port";

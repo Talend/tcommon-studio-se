@@ -62,7 +62,7 @@ public final class DefaultMavenRepositoryProvider {
             if (!zipFile.exists()) {
                 return;
             }
-            FilesUtils.unzip(zipFile.getAbsolutePath(), dest.getAbsolutePath());
+            FilesUtils.unzip(zipFile.getAbsolutePath(), dest.getAbsolutePath(), false);
         } catch (Exception e) {
             ExceptionHandler.process(e);
         }

@@ -51,8 +51,7 @@ public class AS400ExtractManagerTest extends AbstractTest4ExtractManager {
     @Override
     protected void verify4ExtractTablesFromDB(DatabaseMetaData mockedDBMetadata, ResultSet mockedGetTablesResultSet)
             throws SQLException {
-        verify(mockedDBMetadata).getTables(anyString(), anyString(), anyString(), any(String[].class));
-        verify(mockedDBMetadata).getTables((String) isNull(), anyString(), (String) isNull(), any(String[].class));
+        verify(mockedDBMetadata).getTables(isNull(), anyString(), isNull(), any(String[].class));
         // special
         verify(mockedDBMetadata, times(2)).supportsSchemasInTableDefinitions();
         // because limit is 1, so will call twince

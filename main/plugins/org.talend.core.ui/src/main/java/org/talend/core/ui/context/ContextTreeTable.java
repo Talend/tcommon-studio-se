@@ -142,6 +142,8 @@ public class ContextTreeTable {
 
     private final static int fixedTypeWidth = 90;
 
+    private final static int fixedHidePromptWidth = 1;
+
     public ContextTreeTable(IContextModelManager manager) {
         this.manager = manager;
     }
@@ -395,7 +397,7 @@ public class ContextTreeTable {
                                 RepositoryNode relateNode = new RepositoryNode(contextObj, null, ENodeType.REPOSITORY_ELEMENT);
                                 contextObj.setRepositoryNode(relateNode);
                                 if (GlobalServiceRegister.getDefault().isServiceRegistered(IMetadataManagmentUiService.class)) {
-                                    IMetadataManagmentUiService mmUIService = (IMetadataManagmentUiService) GlobalServiceRegister
+                                    IMetadataManagmentUiService mmUIService = GlobalServiceRegister
                                             .getDefault().getService(IMetadataManagmentUiService.class);
                                     mmUIService.openRepositoryContextWizard(relateNode);
                                 }
@@ -454,7 +456,8 @@ public class ContextTreeTable {
         } else {
             int typeColumnPos = dataLayer.getColumnPositionByIndex(1);
 
-            int leftWidth = maxWidth - fixedTypeWidth - fixedCheckBoxWidth * checkColumnsPos.size() - cornerWidth * 2;
+            int leftWidth = maxWidth - fixedTypeWidth - fixedCheckBoxWidth * checkColumnsPos.size() - cornerWidth * 2
+                    - fixedHidePromptWidth;
 
             int currentColumnsCount = dataColumnsCount - hideColumnsPos.size() - checkColumnsPos.size() - 1;
             int averageWidth = leftWidth / currentColumnsCount;
@@ -469,7 +472,7 @@ public class ContextTreeTable {
                 for (int hidePos : hideColumnsPos) {
                     if (hidePos == i) {
                         findHide = true;
-                        dataLayer.setColumnWidthByPosition(i, 0);
+                        dataLayer.setColumnWidthByPosition(i, fixedHidePromptWidth);
                     }
                 }
                 for (int checkPos : checkColumnsPos) {

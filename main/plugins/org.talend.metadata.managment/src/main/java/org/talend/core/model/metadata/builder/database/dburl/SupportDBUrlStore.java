@@ -70,11 +70,13 @@ public final class SupportDBUrlStore {
         // PTODO scorreia choose here which Database types to enable
         // supportDBUrlMap.put(SupportDBUrlType.ODBCDEFAULTURL.getDBKey(), SupportDBUrlType.ODBCDEFAULTURL);
         supportDBUrlMap.put(SupportDBUrlType.MYSQLDEFAULTURL.getDBKey(), SupportDBUrlType.MYSQLDEFAULTURL);
-        supportDBUrlMap.put(SupportDBUrlType.ORACLEWITHSIDDEFAULTURL.getDBKey(), SupportDBUrlType.ORACLEWITHSIDDEFAULTURL);
+        supportDBUrlMap.put(SupportDBUrlType.ORACLEWITHSIDDEFAULTURL.getDBKey(),
+                SupportDBUrlType.ORACLEWITHSIDDEFAULTURL);
         supportDBUrlMap.put(SupportDBUrlType.ORACLEWITHSERVICENAMEDEFAULTURL.getDBKey(),
                 SupportDBUrlType.ORACLEWITHSERVICENAMEDEFAULTURL);
         supportDBUrlMap.put(SupportDBUrlType.ORACLEOCIDEFAULTURL.getDBKey(), SupportDBUrlType.ORACLEOCIDEFAULTURL);
-        supportDBUrlMap.put(SupportDBUrlType.ORACLECUSTOMDEFAULTURL.getDBKey(), SupportDBUrlType.ORACLECUSTOMDEFAULTURL);
+        supportDBUrlMap
+                .put(SupportDBUrlType.ORACLECUSTOMDEFAULTURL.getDBKey(), SupportDBUrlType.ORACLECUSTOMDEFAULTURL);
         supportDBUrlMap.put(SupportDBUrlType.MSSQLDEFAULTURL.getDBKey(), SupportDBUrlType.MSSQLDEFAULTURL);
         supportDBUrlMap.put(SupportDBUrlType.MSSQL2008URL.getDBKey(), SupportDBUrlType.MSSQL2008URL);
         supportDBUrlMap.put(SupportDBUrlType.DB2DEFAULTURL.getDBKey(), SupportDBUrlType.DB2DEFAULTURL);
@@ -100,6 +102,7 @@ public final class SupportDBUrlStore {
         supportDBUrlMap.put(SupportDBUrlType.REDSHIFT.getDBKey(), SupportDBUrlType.REDSHIFT);
         supportDBUrlMap.put(SupportDBUrlType.REDSHIFT_SSO.getDBKey(), SupportDBUrlType.REDSHIFT_SSO);
         supportDBUrlMap.put(SupportDBUrlType.EXASOL.getDBKey(), SupportDBUrlType.EXASOL);
+        supportDBUrlMap.put(SupportDBUrlType.AMAZONAURORA.getDBKey(), SupportDBUrlType.AMAZONAURORA);
 
         // MOD mzhao bug 12313, 2010-04-02 There is not dbType in prv files before 4.0 release, here use driver class
         // name
@@ -113,30 +116,39 @@ public final class SupportDBUrlStore {
         supportDiverNameDBUrlMap.put(SupportDBUrlType.MSSQLDEFAULTURL.getDbDriver(), SupportDBUrlType.MSSQLDEFAULTURL);
         supportDiverNameDBUrlMap.put(SupportDBUrlType.MSSQL2008URL.getDbDriver(), SupportDBUrlType.MSSQL2008URL);
         supportDiverNameDBUrlMap.put(SupportDBUrlType.DB2DEFAULTURL.getDbDriver(), SupportDBUrlType.DB2DEFAULTURL);
-        supportDiverNameDBUrlMap.put(SupportDBUrlType.DB2ZOSDEFAULTURL.getDbDriver(), SupportDBUrlType.DB2ZOSDEFAULTURL);
-        supportDiverNameDBUrlMap.put(SupportDBUrlType.POSTGRESQLEFAULTURL.getDbDriver(), SupportDBUrlType.POSTGRESQLEFAULTURL);
+        supportDiverNameDBUrlMap
+                .put(SupportDBUrlType.DB2ZOSDEFAULTURL.getDbDriver(), SupportDBUrlType.DB2ZOSDEFAULTURL);
+        supportDiverNameDBUrlMap.put(SupportDBUrlType.POSTGRESQLEFAULTURL.getDbDriver(),
+                SupportDBUrlType.POSTGRESQLEFAULTURL);
         // supportDiverNameDBUrlMap.put(SupportDBUrlType.INTERBASEDEFAULTURL.getDbDriver(),
         // SupportDBUrlType.INTERBASEDEFAULTURL);
-        supportDiverNameDBUrlMap.put(SupportDBUrlType.SYBASEDEFAULTURL.getDbDriver(), SupportDBUrlType.SYBASEDEFAULTURL);
+        supportDiverNameDBUrlMap
+                .put(SupportDBUrlType.SYBASEDEFAULTURL.getDbDriver(), SupportDBUrlType.SYBASEDEFAULTURL);
         // supportDiverNameDBUrlMap.put(SupportDBUrlType.INFORMIXDEFAULTURL.getDbDriver(),
         // SupportDBUrlType.INFORMIXDEFAULTURL);
         // supportDiverNameDBUrlMap.put(SupportDBUrlType.FIREBIRDDEFAULTURL.getDbDriver(),
         // SupportDBUrlType.FIREBIRDDEFAULTURL);
-        supportDiverNameDBUrlMap.put(SupportDBUrlType.INGRESDEFAULTURL.getDbDriver(), SupportDBUrlType.INGRESDEFAULTURL);
-        supportDiverNameDBUrlMap.put(SupportDBUrlType.INFORMIXDEFAULTURL.getDbDriver(), SupportDBUrlType.INFORMIXDEFAULTURL);
-        supportDiverNameDBUrlMap.put(SupportDBUrlType.SQLITE3DEFAULTURL.getDbDriver(), SupportDBUrlType.SQLITE3DEFAULTURL);
         supportDiverNameDBUrlMap
-                .put(SupportDBUrlType.GENERICJDBCDEFAULTURL.getDbDriver(), SupportDBUrlType.GENERICJDBCDEFAULTURL);
-        supportDiverNameDBUrlMap.put(SupportDBUrlType.TERADATADEFAULTURL.getDbDriver(), SupportDBUrlType.TERADATADEFAULTURL);
+                .put(SupportDBUrlType.INGRESDEFAULTURL.getDbDriver(), SupportDBUrlType.INGRESDEFAULTURL);
+        supportDiverNameDBUrlMap.put(SupportDBUrlType.INFORMIXDEFAULTURL.getDbDriver(),
+                SupportDBUrlType.INFORMIXDEFAULTURL);
+        supportDiverNameDBUrlMap.put(SupportDBUrlType.SQLITE3DEFAULTURL.getDbDriver(),
+                SupportDBUrlType.SQLITE3DEFAULTURL);
+        supportDiverNameDBUrlMap.put(SupportDBUrlType.GENERICJDBCDEFAULTURL.getDbDriver(),
+                SupportDBUrlType.GENERICJDBCDEFAULTURL);
+        supportDiverNameDBUrlMap.put(SupportDBUrlType.TERADATADEFAULTURL.getDbDriver(),
+                SupportDBUrlType.TERADATADEFAULTURL);
         supportDiverNameDBUrlMap.put(SupportDBUrlType.AS400DEFAULTURL.getDbDriver(), SupportDBUrlType.AS400DEFAULTURL);
         // supportDiverNameDBUrlMap.put(SupportDBUrlType.XML_eXist.getDbDriver(), SupportDBUrlType.XML_eXist);
         supportDiverNameDBUrlMap.put(SupportDBUrlType.MDM.getDbDriver(), SupportDBUrlType.MDM);
-        supportDiverNameDBUrlMap.put(SupportDBUrlType.NETEZZADEFAULTURL.getDbDriver(), SupportDBUrlType.NETEZZADEFAULTURL);
+        supportDiverNameDBUrlMap.put(SupportDBUrlType.NETEZZADEFAULTURL.getDbDriver(),
+                SupportDBUrlType.NETEZZADEFAULTURL);
         supportDiverNameDBUrlMap.put(SupportDBUrlType.HIVEDEFAULTURL.getDbDriver(), SupportDBUrlType.HIVEDEFAULTURL);
         supportDiverNameDBUrlMap.put(SupportDBUrlType.VERTICA.getDbDriver(), SupportDBUrlType.VERTICA);
         supportDiverNameDBUrlMap.put(SupportDBUrlType.VERTICA2.getDbDriver(), SupportDBUrlType.VERTICA2);
         supportDiverNameDBUrlMap.put(SupportDBUrlType.REDSHIFT.getDbDriver(), SupportDBUrlType.REDSHIFT);
         supportDiverNameDBUrlMap.put(SupportDBUrlType.EXASOL.getDbDriver(), SupportDBUrlType.EXASOL);
+
         // ~12313
     }
 
@@ -175,8 +187,9 @@ public final class SupportDBUrlStore {
     }
 
     public String getDBUrl(SupportDBUrlType dbType) {
-        return getDBUrl(dbType.getDBKey(), dbType.getHostName(), dbType.getPort(), dbType.getDBName(), dbType.getDataSource(),
-                dbType.getParamSeprator() != null ? PluginConstant.DEFAULT_PARAMETERS : PluginConstant.EMPTY_STRING);
+        return getDBUrl(dbType.getDBKey(), dbType.getHostName(), dbType.getPort(), dbType.getDBName(),
+                dbType.getDataSource(), dbType.getParamSeprator() != null ? PluginConstant.DEFAULT_PARAMETERS
+                        : PluginConstant.EMPTY_STRING);
     }
 
     /**
@@ -200,7 +213,8 @@ public final class SupportDBUrlStore {
     }
 
     /**
-     * Get dburl which content are replaced by parameter value.(note: for mssql, this method result is wrong, so i deprecated this
+     * Get dburl which content are replaced by parameter value.(note: for mssql, this method result is wrong, so i
+     * deprecated this
      * method)
      * 
      * @param dbType
@@ -214,7 +228,8 @@ public final class SupportDBUrlStore {
      * {@link #getDBUrl(String dbType, String Version, String host, String username, String password, String port, String dbName, String dataSource, String paramString)}
      */
     @Deprecated
-    public String getDBUrl(String dbType, String host, String port, String dbName, String dataSource, String paramString) {
+    public String
+            getDBUrl(String dbType, String host, String port, String dbName, String dataSource, String paramString) {
         String propUrlValue = PROP.getProperty(dbType);
         SupportDBUrlType defaultUrlType = supportDBUrlMap.get(dbType);
         // defaultUrlType = defaultUrlType == null ? SupportDBUrlType.ODBCDEFAULTURL : defaultUrlType;
@@ -250,8 +265,9 @@ public final class SupportDBUrlStore {
         if (propUrlValue == null) {
             return PluginConstant.EMPTY_STRING;
         }
-        Object[] args = { defaultUrlType.getHostName(), defaultUrlType.getPort(), defaultUrlType.getDBName(),
-                defaultUrlType.getDataSource() };
+        Object[] args =
+                { defaultUrlType.getHostName(), defaultUrlType.getPort(), defaultUrlType.getDBName(),
+                        defaultUrlType.getDataSource() };
         return MessageFormat.format(propUrlValue, args);
     }
 

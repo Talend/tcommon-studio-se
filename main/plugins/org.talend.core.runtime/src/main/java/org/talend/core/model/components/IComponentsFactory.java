@@ -55,6 +55,8 @@ public interface IComponentsFactory {
      */
     public Set<IComponent> getComponents();
 
+    public boolean isInitialising();
+
     /**
      * Get a readonly components collection to avoid ConcurrentModificationException caused by multiple thread
      * access;<br/>

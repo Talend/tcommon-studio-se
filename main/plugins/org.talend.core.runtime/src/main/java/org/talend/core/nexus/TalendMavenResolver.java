@@ -14,6 +14,7 @@ package org.talend.core.nexus;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.Collection;
 import java.util.Dictionary;
 import java.util.Hashtable;
 
@@ -84,15 +85,18 @@ public class TalendMavenResolver {
             props = new Hashtable<String, String>();
         }
         final BundleContext context = CoreRuntimePlugin.getInstance().getBundle().getBundleContext();
-        ServiceReference<ManagedService> managedServiceRef = context.getServiceReference(ManagedService.class);
-        if (managedServiceRef != null) {
-            ManagedService managedService = context.getService(managedServiceRef);
+        Collection<ServiceReference<ManagedService>> managedServiceRefs = context.getServiceReferences(ManagedService.class,
+                "(service.pid=org.ops4j.pax.url.mvn)");
+        for (ServiceReference<ManagedService> managedServiceRef : managedServiceRefs) {
+            if (managedServiceRef != null) {
+                ManagedService managedService = context.getService(managedServiceRef);
 
-            managedService.updated(props);
-            talendResolverKey = resolverKey;
-            mavenResolver = null;
-        } else {
-            throw new RuntimeException("Failed to load the service :" + ManagedService.class.getCanonicalName()); //$NON-NLS-1$
+                managedService.updated(props);
+                talendResolverKey = resolverKey;
+                mavenResolver = null;
+            } else {
+                throw new RuntimeException("Failed to load the service :" + ManagedService.class.getCanonicalName()); //$NON-NLS-1$
+            }
         }
 
     }

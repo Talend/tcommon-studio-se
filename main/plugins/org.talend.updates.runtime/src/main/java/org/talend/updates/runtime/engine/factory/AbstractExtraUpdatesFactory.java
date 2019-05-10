@@ -36,7 +36,7 @@ import org.talend.updates.runtime.utils.PathUtils;
  *
  */
 public abstract class AbstractExtraUpdatesFactory implements IUpdatesFactory {
-
+    protected boolean isCheckUpdateOnLine = true;
     protected String getAcronym() {
         String acronym = "";
         if (GlobalServiceRegister.getDefault().isServiceRegistered(IBrandingService.class)) {
@@ -155,6 +155,15 @@ public abstract class AbstractExtraUpdatesFactory implements IUpdatesFactory {
 
     protected ExtraFeature createPlainZipFeature(IProgressMonitor monitor, ComponentIndexBean b) throws Exception {
         return new PlainZipFeature(b);
+    }
+
+    public boolean isCheckUpdateOnLine() {
+        return isCheckUpdateOnLine;
+    }
+
+    
+    public void setCheckUpdateOnLine(boolean isCheckUpdateOnLine) {
+        this.isCheckUpdateOnLine = isCheckUpdateOnLine;
     }
 
 }

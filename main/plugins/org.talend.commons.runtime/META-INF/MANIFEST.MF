@@ -11,7 +11,6 @@ Require-Bundle: org.apache.log4j;visibility:=reexport,
  org.eclipse.core.runtime,
  org.eclipse.emf.ecore.xmi,
  org.talend.libraries.apache,
- org.apache.xerces,
  com.ibm.icu,
  org.apache.commons.io,
  org.talend.utils
@@ -61,3 +60,4 @@ Bundle-ClassPath: .,
  fakejdbc_driver.jar
 Bundle-Vendor: .Talend SA.
 Bundle-ActivationPolicy: lazy
+Import-Package: org.apache.xerces.jaxp

@@ -24,7 +24,6 @@ import java.util.List;
 import java.util.Set;
 
 import org.eclipse.core.commands.IHandler;
-import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IPath;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.IStatus;
@@ -69,13 +68,11 @@ import org.eclipse.ui.internal.ide.IDEWorkbenchPlugin;
 import org.eclipse.ui.internal.util.PrefUtil;
 import org.eclipse.ui.preferences.ScopedPreferenceStore;
 import org.osgi.service.prefs.BackingStoreException;
-import org.talend.commons.exception.CommonExceptionHandler;
 import org.talend.commons.exception.ExceptionHandler;
 import org.talend.commons.exception.LoginException;
 import org.talend.commons.exception.PersistenceException;
 import org.talend.commons.ui.utils.CheatSheetPerspectiveAdapter;
 import org.talend.commons.utils.VersionUtils;
-import org.talend.commons.utils.generation.JavaUtils;
 import org.talend.commons.utils.workbench.extensions.ExtensionImplementationProvider;
 import org.talend.commons.utils.workbench.extensions.ExtensionPointLimiterImpl;
 import org.talend.commons.utils.workbench.extensions.IExtensionPointLimiter;
@@ -93,7 +90,6 @@ import org.talend.core.model.utils.TalendPropertiesUtil;
 import org.talend.core.prefs.IDEInternalPreferences;
 import org.talend.core.prefs.ITalendCorePrefConstants;
 import org.talend.core.repository.model.ProxyRepositoryFactory;
-import org.talend.core.runtime.util.JavaHomeUtil;
 import org.talend.core.ui.CoreUIPlugin;
 import org.talend.core.ui.branding.IBrandingConfiguration;
 import org.talend.core.ui.branding.IBrandingService;
@@ -263,24 +259,6 @@ public class ApplicationWorkbenchWindowAdvisor extends WorkbenchWindowAdvisor {
             };
             myJob.schedule();
         }
-
-        try {
-            JavaHomeUtil.initializeJavaHome();
-            if (JavaHomeUtil.isSetJdkHomeVariable()) {
-                String specifiedVersion = JavaHomeUtil.getSpecifiedJavaVersion();
-                if (specifiedVersion != null && !specifiedVersion.equals(JavaUtils.getProjectJavaVersion())) {
-                    JavaUtils.updateProjectJavaVersion(specifiedVersion);
-                }
-            }
-        } catch (CoreException e1) {
-            CommonExceptionHandler.process(e1);
-        }
-
-        // if (!JavaHomeUtil.isJDKSetup()) {
-        // MessageDialog.openWarning(DisplayUtils.getDefaultShell(),
-        //                    Messages.getString("ApplicationWorkbenchWindowAdvisor.wrongJavaSetup"), //$NON-NLS-1$
-        //                    Messages.getString("ApplicationWorkbenchWindowAdvisor.jdkRequired")); //$NON-NLS-1$
-        // }
 
         createActions();
         registerActions();

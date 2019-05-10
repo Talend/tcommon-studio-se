@@ -27,9 +27,9 @@ import org.eclipse.jface.viewers.ISelection;
 import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.jface.viewers.TreeViewer;
 import org.eclipse.swt.widgets.Display;
-import org.eclipse.swt.widgets.Shell;
 import org.talend.commons.exception.PersistenceException;
 import org.talend.commons.runtime.model.repository.ERepositoryStatus;
+import org.talend.commons.ui.gmf.util.DisplayUtils;
 import org.talend.commons.ui.runtime.exception.ExceptionHandler;
 import org.talend.commons.ui.runtime.image.EImage;
 import org.talend.commons.ui.runtime.image.ImageProvider;
@@ -157,8 +157,8 @@ public class DeleteTableAction extends AContextualAction {
 
                             @Override
                             public void run() {
-                                MessageDialog dialog = new MessageDialog(new Shell(), title, null, message, MessageDialog.ERROR,
-                                        new String[] { IDialogConstants.OK_LABEL }, 0);
+                                MessageDialog dialog = new MessageDialog(DisplayUtils.getDefaultShell(false), title, null,
+                                        message, MessageDialog.ERROR, new String[] { IDialogConstants.OK_LABEL }, 0);
                                 dialog.open();
                             }
                         });

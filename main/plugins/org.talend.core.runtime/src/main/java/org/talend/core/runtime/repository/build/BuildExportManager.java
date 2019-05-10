@@ -44,7 +44,7 @@ public/* final */class BuildExportManager {
         return instance;
     }
 
-    IBuildExportDependenciesProvider[] getDependenciesProviders() {
+    public IBuildExportDependenciesProvider[] getDependenciesProviders() {
         return reader.getDependenciesProviders();
     }
 

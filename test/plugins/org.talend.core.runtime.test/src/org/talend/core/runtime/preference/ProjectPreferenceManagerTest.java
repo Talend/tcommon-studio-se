@@ -164,9 +164,7 @@ public class ProjectPreferenceManagerTest {
         // if reload must set isCurrentProject
         ProjectPreferenceManager projectPrefManager = new ProjectPreferenceManager(testQualifier);
         IPreferenceStore originalStore = projectPrefManager.getPreferenceStore();
-        ProjectScope originalScope = projectPrefManager.getProjectScope();
         projectPrefManager.reload();
-        assertNotEquals(projectPrefManager.getProjectScope(), originalScope);
         assertNotEquals(projectPrefManager.getPreferenceStore(), originalStore);
     }
 

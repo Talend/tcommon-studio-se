@@ -33,7 +33,6 @@ import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.NullProgressMonitor;
 import org.eclipse.m2e.core.MavenPlugin;
 import org.talend.commons.exception.ExceptionHandler;
-import org.talend.commons.utils.VersionUtils;
 import org.talend.commons.utils.generation.JavaUtils;
 import org.talend.core.runtime.projectsetting.IProjectSettingPreferenceConstants;
 import org.talend.core.runtime.projectsetting.IProjectSettingTemplateConstants;
@@ -247,7 +246,6 @@ public class MavenTemplateManager {
 
                 Properties properties = model.getProperties();
                 properties.put("talend.project.name", projectTechName); //$NON-NLS-1$
-                properties.put("talend.version", VersionUtils.getTalendVersion()); //$NON-NLS-1$
 
                 return model;
             }

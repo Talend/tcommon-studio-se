@@ -15,10 +15,11 @@ package org.talend.core.services;
 import java.util.Collection;
 
 import org.eclipse.core.resources.IProject;
-import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.resources.IResource;
+import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.talend.commons.exception.PersistenceException;
+import org.talend.core.GlobalServiceRegister;
 import org.talend.core.IService;
 import org.talend.core.model.general.Project;
 
@@ -47,4 +48,11 @@ public interface IGITProviderService extends IService {
 
     void createOrUpdateGitIgnoreFile(IProject eclipseProject) throws CoreException;
 
+    public static IGITProviderService get() {
+        GlobalServiceRegister register = GlobalServiceRegister.getDefault();
+        if (!register.isServiceRegistered(IGITProviderService.class)) {
+            return null;
+        }
+        return register.getService(IGITProviderService.class);
+    }
 }

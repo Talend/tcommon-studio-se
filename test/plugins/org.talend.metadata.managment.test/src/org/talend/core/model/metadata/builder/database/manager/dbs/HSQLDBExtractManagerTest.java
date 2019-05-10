@@ -80,7 +80,7 @@ public class HSQLDBExtractManagerTest extends AbstractTest4ExtractManager {
         when(driver.connect(anyString(), any(Properties.class))).thenReturn(any(Connection.class));
 
         Assert.assertTrue(getExtractManger().closeConnectionForDerby(driverShim));
-        verify(driver).connect(anyString(), any(Properties.class));
+        verify(driver).connect(anyString(), isNull());
     }
 
     @Test

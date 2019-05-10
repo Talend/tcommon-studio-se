@@ -87,7 +87,7 @@ public class JavaDBExtractManagerTest extends AbstractTest4ExtractManager {
     @Override
     protected void testCloseConnect_Verify(IMetadataConnection metadataConn, DriverShim wapperDriver) throws Exception {
         Assert.assertTrue(getExtractManger().closeConnection(metadataConn, wapperDriver));
-        verify(wapperDriver).connect(anyString(), any(Properties.class));
+        verify(wapperDriver).connect(anyString(), isNull());
     }
 
     @Test

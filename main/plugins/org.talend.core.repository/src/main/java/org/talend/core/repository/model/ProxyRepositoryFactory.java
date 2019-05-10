@@ -67,10 +67,9 @@ import org.talend.commons.exception.PersistenceException;
 import org.talend.commons.exception.SystemException;
 import org.talend.commons.runtime.model.repository.ERepositoryStatus;
 import org.talend.commons.runtime.service.ITaCoKitService;
-import org.talend.commons.ui.runtime.CommonUIPlugin;
+import org.talend.commons.ui.gmf.util.DisplayUtils;
 import org.talend.commons.ui.runtime.exception.MessageBoxExceptionHandler;
 import org.talend.commons.utils.data.container.RootContainer;
-import org.talend.commons.utils.generation.JavaUtils;
 import org.talend.commons.utils.time.TimeMeasure;
 import org.talend.commons.utils.workbench.resources.ResourceUtils;
 import org.talend.core.AbstractDQModelService;
@@ -129,7 +128,6 @@ import org.talend.core.runtime.CoreRuntimePlugin;
 import org.talend.core.runtime.repository.item.ItemProductKeys;
 import org.talend.core.runtime.services.IMavenUIService;
 import org.talend.core.runtime.util.ItemDateParser;
-import org.talend.core.runtime.util.JavaHomeUtil;
 import org.talend.core.service.ICoreUIService;
 import org.talend.cwm.helper.SubItemHelper;
 import org.talend.cwm.helper.TableHelper;
@@ -212,14 +210,14 @@ public final class ProxyRepositoryFactory implements IProxyRepositoryFactory {
 
     private ICoreService getCoreService() {
         if (GlobalServiceRegister.getDefault().isServiceRegistered(ICoreService.class)) {
-            return (ICoreService) GlobalServiceRegister.getDefault().getService(ICoreService.class);
+            return GlobalServiceRegister.getDefault().getService(ICoreService.class);
         }
         return null;
     }
     
     private IRunProcessService getRunProcessService() {
         if (GlobalServiceRegister.getDefault().isServiceRegistered(IRunProcessService.class)) {
-            return (IRunProcessService) GlobalServiceRegister.getDefault().getService(IRunProcessService.class);
+            return GlobalServiceRegister.getDefault().getService(IRunProcessService.class);
         }
         return null;
     }
@@ -316,7 +314,7 @@ public final class ProxyRepositoryFactory implements IProxyRepositoryFactory {
      * @throws LoginException
      */
     private void checkProjectCompatibility(Project project) throws LoginException {
-        IMigrationToolService migrationToolService = (IMigrationToolService) GlobalServiceRegister.getDefault().getService(
+        IMigrationToolService migrationToolService = GlobalServiceRegister.getDefault().getService(
                 IMigrationToolService.class);
         // update migration system.
         migrationToolService.updateMigrationSystem(project.getEmfProject(), false);
@@ -385,7 +383,7 @@ public final class ProxyRepositoryFactory implements IProxyRepositoryFactory {
                 ITDQRepositoryService tdqRepService = null;
 
                 if (GlobalServiceRegister.getDefault().isServiceRegistered(ITDQRepositoryService.class)) {
-                    tdqRepService = (ITDQRepositoryService) GlobalServiceRegister.getDefault().getService(
+                    tdqRepService = GlobalServiceRegister.getDefault().getService(
                             ITDQRepositoryService.class);
                 }
 
@@ -407,7 +405,7 @@ public final class ProxyRepositoryFactory implements IProxyRepositoryFactory {
                         public void run() {
                             Shell currentShell = tmpDisplay.getActiveShell();
                             if (currentShell == null) {
-                                currentShell = new Shell();
+                                currentShell = DisplayUtils.getDefaultShell(false);
                             }
                             MessageBox box = new MessageBox(currentShell, SWT.ICON_WARNING | SWT.OK | SWT.CANCEL);
                             box.setText(Messages.getString("ProxyRepositoryFactory.JobNameErroe")); //$NON-NLS-1$
@@ -522,7 +520,7 @@ public final class ProxyRepositoryFactory implements IProxyRepositoryFactory {
         checkFileName(projectInfor.getLabel(), RepositoryConstants.PROJECT_PATTERN);
         Project toReturn = this.repositoryFactoryFromProvider.createProject(authUser, authPassword, projectInfor);
         if (toReturn.isLocal()) {
-            IMigrationToolService service = (IMigrationToolService) GlobalServiceRegister.getDefault().getService(
+            IMigrationToolService service = GlobalServiceRegister.getDefault().getService(
                     IMigrationToolService.class);
             service.initNewProjectTasks(toReturn);
         }
@@ -852,7 +850,7 @@ public final class ProxyRepositoryFactory implements IProxyRepositoryFactory {
 
         if (repositoryObjectType == ERepositoryObjectType.PROCESS && isFullLogonFinished()) {
             if (GlobalServiceRegister.getDefault().isServiceRegistered(IESBService.class)) {
-                IESBService service = (IESBService) GlobalServiceRegister.getDefault().getService(IESBService.class);
+                IESBService service = GlobalServiceRegister.getDefault().getService(IESBService.class);
                 if (service != null) {
                     service.refreshOperationLabel(object.getProperty().getId());
                 }
@@ -919,7 +917,7 @@ public final class ProxyRepositoryFactory implements IProxyRepositoryFactory {
 
             if (repositoryObjectType == ERepositoryObjectType.PROCESS && isFullLogonFinished()) {
                 if (GlobalServiceRegister.getDefault().isServiceRegistered(IESBService.class)) {
-                    IESBService service = (IESBService) GlobalServiceRegister.getDefault().getService(IESBService.class);
+                    IESBService service = GlobalServiceRegister.getDefault().getService(IESBService.class);
                     if (service != null) {
                         service.refreshOperationLabel(object.getProperty().getId());
                     }
@@ -930,7 +928,7 @@ public final class ProxyRepositoryFactory implements IProxyRepositoryFactory {
         }
 
         if (GlobalServiceRegister.getDefault().isServiceRegistered(IRunProcessService.class)) {
-            IRunProcessService service = (IRunProcessService) GlobalServiceRegister.getDefault()
+            IRunProcessService service = GlobalServiceRegister.getDefault()
                     .getService(IRunProcessService.class);
             service.batchDeleteAllVersionTalendJobProject(idList);
         }
@@ -2033,6 +2031,7 @@ public final class ProxyRepositoryFactory implements IProxyRepositoryFactory {
                         workspace.setDescription(description);
                     } catch (CoreException e) {
                         // do nothing
+                        ExceptionHandler.process(e);
                     }
                 }
                 isCancelled = false;
@@ -2073,7 +2072,7 @@ public final class ProxyRepositoryFactory implements IProxyRepositoryFactory {
                 checkProjectCompatibility(project);
 
                 if (GlobalServiceRegister.getDefault().isServiceRegistered(IMavenUIService.class)) {
-                    IMavenUIService mavenUIService = (IMavenUIService) GlobalServiceRegister.getDefault().getService(
+                    IMavenUIService mavenUIService = GlobalServiceRegister.getDefault().getService(
                             IMavenUIService.class);
                     if (mavenUIService != null) {
                         mavenUIService.updateMavenResolver(true);
@@ -2110,7 +2109,7 @@ public final class ProxyRepositoryFactory implements IProxyRepositoryFactory {
                 currentMonitor.beginTask(Messages.getString("ProxyRepositoryFactory.load.componnents"), 1); //$NON-NLS-1$
                 ICoreUIService coreUiService = null;
                 if (GlobalServiceRegister.getDefault().isServiceRegistered(ICoreUIService.class)) {
-                    coreUiService = (ICoreUIService) GlobalServiceRegister.getDefault().getService(ICoreUIService.class);
+                    coreUiService = GlobalServiceRegister.getDefault().getService(ICoreUIService.class);
                 }
                 if (coreUiService != null) {
                     coreUiService.componentsReset();
@@ -2143,20 +2142,6 @@ public final class ProxyRepositoryFactory implements IProxyRepositoryFactory {
                 if (coreService != null) {
                     // clean workspace
                     currentMonitor.beginTask(Messages.getString("ProxyRepositoryFactory.cleanWorkspace"), 1); //$NON-NLS-1$
-
-                    String specifiedVersion = null;
-                    String currentVersion = JavaUtils.getProjectJavaVersion();
-                    String newVersion = null;
-                    if (CommonUIPlugin.isFullyHeadless()) {
-                        specifiedVersion = JavaHomeUtil.getSpecifiedJavaVersion();
-                    }
-                    if (specifiedVersion == null) {
-                        newVersion = currentVersion != null ? currentVersion : JavaUtils.DEFAULT_VERSION;
-                    } else {
-                        newVersion = specifiedVersion;
-                    }
-
-                    JavaUtils.updateProjectJavaVersion(newVersion);
                     
                     TimeMeasure.step("logOnProject", "clean Java project"); //$NON-NLS-1$ //$NON-NLS-2$     
 
@@ -2175,6 +2160,7 @@ public final class ProxyRepositoryFactory implements IProxyRepositoryFactory {
                             coreService.syncAllBeans();
                         } catch (SystemException e1) {
                             //
+                            ExceptionHandler.process(e1);
                         }
                     }
                 }
@@ -2204,6 +2190,7 @@ public final class ProxyRepositoryFactory implements IProxyRepositoryFactory {
                     }
                 } catch (SystemException e) {
                     // ignore
+                    ExceptionHandler.process(e);
                 }
 
                 if (runProcessService != null && !isCommandLineLocalRefProject) {
@@ -2212,7 +2199,7 @@ public final class ProxyRepositoryFactory implements IProxyRepositoryFactory {
                     TimeMeasure.step("logOnProject", "install / setup root poms"); //$NON-NLS-1$ //$NON-NLS-2$
                 }
                 if (GlobalServiceRegister.getDefault().isServiceRegistered(ITDQRepositoryService.class)) {
-                    ITDQRepositoryService tdqRepositoryService = (ITDQRepositoryService) GlobalServiceRegister.getDefault()
+                    ITDQRepositoryService tdqRepositoryService = GlobalServiceRegister.getDefault()
                             .getService(ITDQRepositoryService.class);
                     if (tdqRepositoryService != null) {
                         tdqRepositoryService.initProxyRepository();
