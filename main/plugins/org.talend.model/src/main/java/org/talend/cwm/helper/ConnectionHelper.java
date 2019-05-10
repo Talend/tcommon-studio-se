@@ -1088,6 +1088,11 @@ public class ConnectionHelper {
         return result;
     }
 
+    /**
+     * 
+     * TUP-21510, should only work for old migration task.
+     */
+    @Deprecated
     public static String getCleanPassword(String password) {
         if (StringUtils.isBlank(password)) {
             return password;

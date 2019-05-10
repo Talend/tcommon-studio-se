@@ -25,7 +25,8 @@ Require-Bundle: org.eclipse.core.runtime,
  javax.xml.bind,
  org.talend.model
 Eclipse-LazyStart: true
-Bundle-ClassPath: .
+Bundle-ClassPath: .,
+ lib/crypto-utils.jar
 Export-Package: org.talend.librariesmanager.emf.librariesindex,
  org.talend.librariesmanager.librarydata,
  org.talend.librariesmanager.maven,

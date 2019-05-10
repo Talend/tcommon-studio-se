@@ -63,6 +63,16 @@
             <artifactId>httpclient</artifactId>
             <version>4.5.6</version>
         </dependency>
+		<dependency>
+  			<groupId>org.slf4j</groupId>
+  			<artifactId>slf4j-api</artifactId>
+  			<version>1.7.10</version>
+		</dependency>
+		<dependency>
+  			<groupId>org.slf4j</groupId>
+  			<artifactId>slf4j-log4j12</artifactId>
+  			<version>1.7.10</version>
+		</dependency>
     </dependencies>
 
     <build>
@@ -87,6 +97,32 @@
                     </instructions>
                 </configuration>
             </plugin>
+            <plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-dependency-plugin</artifactId>
+				<version>2.8</version>
+				<executions>
+					<execution>
+						<!-- same as org.talend.libraries.excel -->
+						<id>copy-maven-repository</id>
+						<phase>generate-sources</phase>
+						<goals>
+							<goal>copy</goal>
+						</goals>
+						<configuration>
+							<outputDirectory>${project.basedir}/lib</outputDirectory>
+							<destFileName>crypto-utils.jar</destFileName>
+							<artifactItems>
+								<dependency>
+									<groupId>org.talend.daikon</groupId>
+									<artifactId>crypto-utils</artifactId>
+									<version>${org.talend.daikon.crypto-utils.version}</version>
+								</dependency>
+							</artifactItems>
+						</configuration>
+					</execution>
+				</executions>
+			</plugin>
         </plugins>
     </build>
 

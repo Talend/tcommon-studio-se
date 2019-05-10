@@ -28,13 +28,15 @@ Export-Package:
  org.talend.utils.time;uses:="org.apache.log4j",
  org.talend.utils.wsdl,
  org.talend.utils.xml
-Bundle-ClassPath: .
+Bundle-ClassPath: .,
+ lib/crypto-utils.jar
 Require-Bundle: org.apache.commons.lang,
  org.talend.libraries.apache;visibility:=reexport,
  org.apache.log4j,
  org.apache.commons.io,
  org.talend.daikon;visibility:=reexport,
  org.bouncycastle.bcprov,
- org.apache.httpcomponents.httpclient
+ org.apache.httpcomponents.httpclient,
+ org.slf4j.api
 Eclipse-BuddyPolicy: registered
 Eclipse-RegisterBuddy: org.apache.log4j, org.talend.testutils

@@ -21,6 +21,7 @@ import javax.crypto.SecretKeyFactory;
 import javax.crypto.spec.DESKeySpec;
 
 import org.apache.commons.codec.binary.Base64;
+import org.talend.utils.security.AESEncryption;
 
 /**
  * DOC chuang class global comment. Detailled comment
@@ -85,20 +86,6 @@ public class PasswordEncryptUtil {
         return new String(clearByte);
     }
 
-    private static SecretKey passwordKey = null;
-
-    private static String CHARSET = "UTF-8";
-
-    private static SecretKey getSecretKeyUTF8() throws Exception {
-        if (passwordKey == null) {
-            byte rawKeyData[] = rawKey.getBytes(CHARSET);
-            DESKeySpec dks = new DESKeySpec(rawKeyData);
-            SecretKeyFactory keyFactory = SecretKeyFactory.getInstance("DES"); //$NON-NLS-1$
-            passwordKey = keyFactory.generateSecret(dks);
-        }
-        return passwordKey;
-    }
-
     /**
      * Work for codegen only. and must be same as the routine
      * "routines.system.PasswordEncryptUtil.encryptPassword(input)".
@@ -108,12 +95,7 @@ public class PasswordEncryptUtil {
         if (input == null) {
             return input;
         }
-        SecretKey key = getSecretKeyUTF8();
-        Cipher c = Cipher.getInstance("DES"); //$NON-NLS-1$
-        c.init(Cipher.ENCRYPT_MODE, key, secureRandom);
-        byte[] cipherByte = c.doFinal(input.getBytes(CHARSET));
-        String dec = Hex.encodeHexString(cipherByte);
-        return dec;
+        return AESEncryption.encryptPassword(input);
     }
 
     /**
@@ -159,5 +141,4 @@ public class PasswordEncryptUtil {
             return value.replaceAll(".", "*"); //$NON-NLS-1$ //$NON-NLS-2$
         }
     }
-
 }

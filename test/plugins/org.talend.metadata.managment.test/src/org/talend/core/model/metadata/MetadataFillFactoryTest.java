@@ -12,31 +12,28 @@
 // ============================================================================
 package org.talend.core.model.metadata;
 
+import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertSame;
 import static org.junit.Assert.assertTrue;
 
 import java.util.HashMap;
 import java.util.Map;
 
-import junit.framework.Assert;
-
 import org.junit.Test;
-import org.powermock.core.classloader.annotations.PrepareForTest;
 import org.talend.core.database.EDatabaseTypeName;
 import org.talend.core.database.conn.template.EDatabaseConnTemplate;
 import org.talend.cwm.helper.TaggedValueHelper;
 import org.talend.metadata.managment.model.MetadataFillFactory;
 import org.talend.metadata.managment.model.SybaseConnectionFillerImpl;
-import org.talend.model.bridge.ReponsitoryContextBridge;
 import org.talend.utils.properties.PropertiesLoader;
 import org.talend.utils.properties.TypedProperties;
+
+import junit.framework.Assert;
 
 /**
  * DOC zshen class global comment. Detailled comment
  */
-@PrepareForTest({ ReponsitoryContextBridge.class, MetadataTalendType.class })
 public class MetadataFillFactoryTest {
 
     private Map<String, String> initParameterMap() {
@@ -96,7 +93,7 @@ public class MetadataFillFactoryTest {
                 || Boolean.toString(metadataConnection.isRetrieveAllMetadata()).equals(parameterMap.get("retrieveAllMetadata")));
         assertSame(metadataConnection.getUrl(), parameterMap.get("jdbcUrl"));
         assertNotNull("Product is not null", metadataConnection.getProduct());
-        assertNull("Mapping is null", metadataConnection.getMapping());
+        assertEquals("Mapping is mysql_id", "mysql_id", metadataConnection.getMapping());
 
     }
 
