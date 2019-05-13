@@ -37,7 +37,7 @@ public class AESEncryptionTest {
 
     @Test
     public void testDecryptPasswordUseKey() throws Exception {
-        String key = "Talend_Key_" + String.valueOf(System.currentTimeMillis());
+        String key = "1234567890123456";
 
         assertNotEquals(input1, AESEncryption.encryptPassword(input1, key));
         assertEquals(input1, AESEncryption.decryptPassword(AESEncryption.encryptPassword(input1, key), key));
