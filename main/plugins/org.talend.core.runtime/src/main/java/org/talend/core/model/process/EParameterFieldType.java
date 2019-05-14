@@ -115,6 +115,8 @@ public enum EParameterFieldType {
     PATTERN_PROPERTY, // yyin, added TDQ-13437
 
     UNIFIED_COMPONENTS,
+    
+    LANGUAGE_CLOSED_LIST,
 
     TACOKIT_INPUT_SCHEMA,
     TACOKIT_GUESS_SCHEMA,

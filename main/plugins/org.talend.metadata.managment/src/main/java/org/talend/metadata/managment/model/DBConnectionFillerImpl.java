@@ -144,6 +144,8 @@ public class DBConnectionFillerImpl extends MetadataFillerImpl<DatabaseConnectio
             }
         }
         java.sql.Connection sqlConnection = null;
+        Statement stmt = null;
+        ResultSet rs = null;
         try {
             // MetadataConnectionUtils.setMetadataCon(metadataBean);
             // fill some base parameter
@@ -167,13 +169,22 @@ public class DBConnectionFillerImpl extends MetadataFillerImpl<DatabaseConnectio
                         : dbMetadata.getDatabaseProductName();
                 String productVersion = dbMetadata.getDatabaseProductVersion() == null ? PluginConstant.EMPTY_STRING
                         : dbMetadata.getDatabaseProductVersion();
+                String databaseType = dbconn.getDatabaseType();
+                // TDQ-16331 Azure Mysql must use 'select version()' to get correct version
+                if (EDatabaseTypeName.MYSQL.getDisplayName().equals(databaseType)) {
+                    stmt = sqlConnection.createStatement();
+                    rs = stmt.executeQuery("select version()"); //$NON-NLS-1$
+                    while (rs.next()) {
+                        productVersion = rs.getString(1);
+                    }
+                }
                 // TDI-35419 TDQ-11853: make sure the redshift connection save the productName is redshift, not use the
                 // postgresql.becauses we use this value to create dbmslauguage
-                boolean isRedshift = dbconn.getDatabaseType().equals(EDatabaseTypeName.REDSHIFT.getDisplayName());
+                boolean isRedshift = EDatabaseTypeName.REDSHIFT.getDisplayName().equals(databaseType);
                 if (isRedshift) {
                     productName = EDatabaseTypeName.REDSHIFT.getDisplayName();
                 }
-                boolean isRedshift_SSO = dbconn.getDatabaseType().equals(EDatabaseTypeName.REDSHIFT_SSO.getDisplayName());
+                boolean isRedshift_SSO = EDatabaseTypeName.REDSHIFT_SSO.getDisplayName().equals(databaseType);
                 if (isRedshift_SSO) {
                     productName = EDatabaseTypeName.REDSHIFT_SSO.getDisplayName();
                 }
@@ -181,14 +192,12 @@ public class DBConnectionFillerImpl extends MetadataFillerImpl<DatabaseConnectio
                 TaggedValueHelper.setTaggedValue(dbconn, TaggedValueHelper.DB_PRODUCT_NAME, productName);
                 TaggedValueHelper.setTaggedValue(dbconn, TaggedValueHelper.DB_PRODUCT_VERSION, productVersion);
 
-                boolean isHive = dbconn.getDatabaseType().equals(EDatabaseTypeName.HIVE.getDisplayName());
-                boolean isHiveJdbc = dbconn.getDatabaseType().equals(EDatabaseTypeName.GENERAL_JDBC.getDisplayName())
-                        && dbconn.getDriverClass() != null
-                        && dbconn.getDriverClass().equals(EDatabase4DriverClassName.HIVE.getDriverClass());
-                boolean isImpala = dbconn.getDatabaseType().equals(EDatabaseTypeName.IMPALA.getDisplayName());
-                boolean isImpalaJdbc = dbconn.getDatabaseType().equals(EDatabaseTypeName.IMPALA.getDisplayName())
-                        && dbconn.getDriverClass() != null
-                        && dbconn.getDriverClass().equals(EDatabase4DriverClassName.IMPALA.getDriverClass());
+                boolean isHive = EDatabaseTypeName.HIVE.getDisplayName().equals(databaseType);
+                boolean isHiveJdbc = EDatabaseTypeName.GENERAL_JDBC.getDisplayName().equals(databaseType)
+                        && EDatabase4DriverClassName.HIVE.getDriverClass().equals(dbconn.getDriverClass());
+                boolean isImpala = EDatabaseTypeName.IMPALA.getDisplayName().equals(databaseType);
+                boolean isImpalaJdbc = EDatabaseTypeName.IMPALA.getDisplayName().equals(databaseType)
+                        && EDatabase4DriverClassName.IMPALA.getDriverClass().equals(dbconn.getDriverClass());
                 if (!isHive && !isHiveJdbc && !isImpala && !isImpalaJdbc) {
                     String identifierQuote = dbMetadata.getIdentifierQuoteString();
                     ConnectionHelper.setIdentifierQuoteString(identifierQuote == null ? "" : identifierQuote, dbconn); //$NON-NLS-1$
@@ -206,13 +215,19 @@ public class DBConnectionFillerImpl extends MetadataFillerImpl<DatabaseConnectio
             if (sqlConnection != null) {
                 ConnectionUtils.closeConnection(sqlConnection);
             }
-            if (driver != null
-                    && MetadataConnectionUtils.isDerbyRelatedDb(metadataBean.getDriverClass(), metadataBean.getDbType())) {
-                try {
+            try {
+                if (driver != null && MetadataConnectionUtils
+                        .isDerbyRelatedDb(metadataBean.getDriverClass(), metadataBean.getDbType())) {
                     driver.connect("jdbc:derby:;shutdown=true", null); //$NON-NLS-1$
-                } catch (SQLException e) {
-                    // exception of shutdown success. no need to catch.
                 }
+                if (stmt != null) {
+                    stmt.close();
+                }
+                if (rs != null) {
+                    rs.close();
+                }
+            } catch (SQLException e) {
+                // exception of shutdown success. no need to catch.
             }
         }
         if (newConnection != null) {

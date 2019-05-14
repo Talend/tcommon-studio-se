@@ -12,8 +12,12 @@
 // ============================================================================
 package org.talend.designer.runprocess;
 
-import static org.junit.Assert.*;
-import static org.mockito.Mockito.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertTrue;
+import static org.mockito.ArgumentMatchers.anyObject;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.when;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -406,16 +410,11 @@ public class ProcessorUtilitiesTest {
         IComponent comp = mock(IComponent.class);
         when(dbNode.getComponent()).thenReturn(comp);
         when(comp.getComponentType()).thenReturn(EComponentType.EMF);
-
-        List params = new ArrayList();
-        when(dbNode.getElementParameters()).thenReturn(params);
+        when(comp.getName()).thenReturn("tSAPTableInput");
 
         // TYPE parameter
         IElementParameter typeParam = mock(IElementParameter.class);
-        params.add(typeParam);
-        when(typeParam.getName()).thenReturn("TYPE");
-        when(typeParam.getFieldType()).thenReturn(EParameterFieldType.TEXT);
-        when(typeParam.getValue()).thenReturn("MySQL");
+        when(dbNode.getElementParameterFromField(anyObject())).thenReturn(typeParam);
 
         List metadataList = new ArrayList<>();
         when(dbNode.getMetadataList()).thenReturn(metadataList);

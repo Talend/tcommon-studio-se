@@ -13,6 +13,8 @@
 			<dbType type="DOUBLE PRECISION" ignoreLen="true" ignorePre="true"/>
 			<dbType type="DATE" ignoreLen="true" ignorePre="true"/>			
 			<dbType type="TIMESTAMP" ignoreLen="true" ignorePre="true"/>
+			<dbType type="INTERVAL DAY TO SECOND" ignoreLen="true" ignorePre="true"/>
+			<dbType type="INTERVAL YEAR TO MONTH" ignoreLen="true" ignorePre="true"/>
 			<dbType type="BINARY" ignorePre="true"/>
 			<dbType type="VARBINARY" ignorePre="true" />
 			<dbType type="NUMERIC" defaultLength="10" defaultPrecision="5"/>
@@ -46,6 +48,8 @@
 				<talendType type="id_Date">
 					<dbType type="DATE" default="true" />
 					<dbType type="TIMESTAMP"/>
+					<dbType type="INTERVAL DAY TO SECOND"/>
+					<dbType type="INTERVAL YEAR TO MONTH"/>
 				</talendType>
 				<talendType type="id_Double">
 					<dbType type="DOUBLE PRECISION" default="true" />
@@ -119,6 +123,12 @@
 					<talendType type="id_Date" default="true" />
 				</dbType>
 				<dbType type="TIMESTAMP">
+					<talendType type="id_Date" default="true" />
+				</dbType>
+				<dbType type="INTERVAL DAY TO SECOND">
+					<talendType type="id_Date" default="true" />
+				</dbType>
+				<dbType type="INTERVAL YEAR TO MONTH">
 					<talendType type="id_Date" default="true" />
 				</dbType>
 				<dbType type="BINARY">
