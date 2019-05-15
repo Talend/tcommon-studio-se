@@ -16,6 +16,10 @@
         <relativePath>../pom_server.xml</relativePath>
     </parent>
 
+    <properties>
+        <org.talend.daikon.crypto-utils.version>1.2.0</org.talend.daikon.crypto-utils.version>
+    </properties>
+
     <dependencies>
         <dependency>
             <groupId>commons-codec</groupId>
