@@ -331,7 +331,6 @@ public class BackgroundRefresher implements IBackgroundRefresher {
 
     public Point convertPointToCommonParentOrigin(Point point, Composite child) {
         Point returnedPoint = new Point(point.x, point.y);
-        int center = (point.y) / 2;
         while (child != drawableComposite.getBgDrawableComposite()) {
             Rectangle bounds = child.getBounds();
             if ((WindowSystem.isGTK() || EnvironmentUtils.isMacOsSytem()) && child instanceof Table) {
