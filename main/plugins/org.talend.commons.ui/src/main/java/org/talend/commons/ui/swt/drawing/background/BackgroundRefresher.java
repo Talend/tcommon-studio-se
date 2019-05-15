@@ -30,6 +30,7 @@ import org.talend.commons.ui.runtime.ws.WindowSystem;
 import org.talend.commons.utils.performance.IPerformanceEvaluatorListener;
 import org.talend.commons.utils.performance.PerformanceEvaluator;
 import org.talend.commons.utils.performance.PerformanceEvaluatorEvent;
+import org.talend.commons.utils.system.EnvironmentUtils;
 import org.talend.commons.utils.threading.ExecutionLimiterImproved;
 
 /**
@@ -330,13 +331,16 @@ public class BackgroundRefresher implements IBackgroundRefresher {
 
     public Point convertPointToCommonParentOrigin(Point point, Composite child) {
         Point returnedPoint = new Point(point.x, point.y);
+        int center = (point.y) / 2;
         while (child != drawableComposite.getBgDrawableComposite()) {
             Rectangle bounds = child.getBounds();
-            if (WindowSystem.isGTK() && child instanceof Table) {
+            if ((WindowSystem.isGTK() || EnvironmentUtils.isMacOsSytem()) && child instanceof Table) {
                 returnedPoint.y += ((Table) child).getHeaderHeight();
+                returnedPoint.y += ((Table) child).getItemHeight();
             }
-            if (WindowSystem.isGTK() && child instanceof Tree) {
+            if ((WindowSystem.isGTK() || EnvironmentUtils.isMacOsSytem()) && child instanceof Tree) {
                 returnedPoint.y += ((Tree) child).getHeaderHeight();
+                returnedPoint.y += ((Table) child).getItemHeight();
             }
             child = child.getParent();
             ScrollBar vScrollBar = child.getVerticalBar();
