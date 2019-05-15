@@ -20,6 +20,7 @@ import org.eclipse.nebula.widgets.nattable.extension.glazedlists.GlazedListsData
 import org.eclipse.nebula.widgets.nattable.ui.NatEventData;
 import org.eclipse.nebula.widgets.nattable.ui.binding.UiBindingRegistry;
 import org.eclipse.nebula.widgets.nattable.ui.matcher.MouseEventMatcher;
+import org.eclipse.nebula.widgets.nattable.ui.menu.MenuItemProviders;
 import org.eclipse.nebula.widgets.nattable.ui.menu.PopupMenuAction;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.DisposeEvent;
@@ -55,7 +56,7 @@ public class ContextParaModeChangeMenuConfiguration extends AbstractUiBindingCon
             public void menuShown(MenuEvent e) {
                 // control the two menu item enable or disable for different rows when right click the menu
                 Menu menu = (Menu) e.getSource();
-                NatEventData natEventData = (NatEventData) menu.getData();
+                NatEventData natEventData = (NatEventData) menu.getData(MenuItemProviders.NAT_EVENT_DATA_KEY);
                 NatTable nt = natEventData.getNatTable();
                 int rowPosition = natEventData.getRowPosition();
                 int rowIndex = nt.getRowIndexByPosition(rowPosition);
