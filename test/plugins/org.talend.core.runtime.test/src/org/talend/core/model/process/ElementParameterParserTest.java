@@ -78,16 +78,16 @@ public class ElementParameterParserTest {
 
         // "ab"
         when(parameter.getValue()).thenReturn("\"ab\"");
-        assertEquals("\"n6BjxAHdNWGl2Jc0gLSS0A==\"", ElementParameterParser.getEncryptedValue(node, paramName));
+        assertEquals("\"mhTO5ftbNXqfUMNXo3nHmg==\"", ElementParameterParser.getEncryptedValue(node, paramName));
         // "a\"b"
         when(parameter.getValue()).thenReturn("\"a\\\"b\"");
-        assertEquals("\"QKgfO0uOwvcPufyMDlbn9Q==\"", ElementParameterParser.getEncryptedValue(node, paramName));
+        assertEquals("\"5mxyOpkHaSqOq8z2V2INkQ==\"", ElementParameterParser.getEncryptedValue(node, paramName));
         // "a\\b"
         when(parameter.getValue()).thenReturn("\"a\\\\b\"");
-        assertEquals("\"WhsqmBji8VPVQoOBwPedpQ==\"", ElementParameterParser.getEncryptedValue(node, paramName));
+        assertEquals("\"7GBfp1sX6vnzVV/sa7za6A==\"", ElementParameterParser.getEncryptedValue(node, paramName));
         // "a\\\\b"
         when(parameter.getValue()).thenReturn("\"a\\\\\\\\b\"");
-        assertEquals("\"R3oj7HgFHM6LYZI9Lp17VA==\"", ElementParameterParser.getEncryptedValue(node, paramName));
+        assertEquals("\"3x1Wn/yy2UiJwaPAMCJUOQ==\"", ElementParameterParser.getEncryptedValue(node, paramName));
         // "test"+context.mypassword + "a"
         when(parameter.getValue()).thenReturn("\"test\"+context.mypassword + \"a\"");
         assertEquals("\"test\"+context.mypassword + \"a\"", ElementParameterParser.getEncryptedValue(node, paramName));
@@ -96,9 +96,9 @@ public class ElementParameterParserTest {
         assertEquals("\"a\" + \"b\"", ElementParameterParser.getEncryptedValue(node, paramName));
         // \\123456/
         when(parameter.getValue()).thenReturn("\"\\\\123456/\"");
-        assertEquals("\"FlFFR5wmamqG3zkNPbbopw==\"", ElementParameterParser.getEncryptedValue(node, paramName));
+        assertEquals("\"B7HIZB1mu4mrbvTqJk84XQ==\"", ElementParameterParser.getEncryptedValue(node, paramName));
         // \123456/
         when(parameter.getValue()).thenReturn("\"\\123456/\"");
-        assertEquals("\"tEqqmqoHd22LTnvd5/jCDA==\"", ElementParameterParser.getEncryptedValue(node, paramName));
+        assertEquals("\"bzSVFVjd9z6nk8jyKYi3iw==\"", ElementParameterParser.getEncryptedValue(node, paramName));
     }
 }

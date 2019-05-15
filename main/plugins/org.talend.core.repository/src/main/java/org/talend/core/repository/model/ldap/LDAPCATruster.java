@@ -27,12 +27,12 @@ import java.security.NoSuchAlgorithmException;
 import java.security.cert.CertificateException;
 import java.security.cert.X509Certificate;
 
-import org.apache.log4j.Logger;
-import org.talend.commons.exception.ExceptionHandler;
-import org.talend.core.repository.i18n.Messages;
-
+import javax.net.ssl.TrustManager;
 import javax.net.ssl.TrustManagerFactory;
 import javax.net.ssl.X509TrustManager;
+
+import org.apache.log4j.Logger;
+import org.talend.core.repository.i18n.Messages;
 
 /**
  * This class is used for verifying CA for LDAP connection.
@@ -76,6 +76,26 @@ public class LDAPCATruster implements X509TrustManager {
         init();
     }
 
+    /**
+     * Comment method "deleteCert".
+     * 
+     * @param id
+     * @return
+     */
+    private boolean deleteCert(String id) {
+        try {
+            ks.deleteEntry(id);
+        } catch (KeyStoreException ex) {
+            return false;
+        }
+        return true;
+    }
+
+    /*
+     * (non-Javadoc)
+     * 
+     * @see com.sun.net.ssl.X509TrustManager#getAcceptedIssuers()
+     */
     public X509Certificate[] getAcceptedIssuers() {
         if (trustManager == null)
             return null;
@@ -157,9 +177,9 @@ public class LDAPCATruster implements X509TrustManager {
      */
     private X509TrustManager initTrustManager(KeyStore ks) throws NoSuchAlgorithmException, KeyStoreException {
         TrustManagerFactory trustManagerFactory = null;
-        trustManagerFactory = TrustManagerFactory.getInstance("SunX509"); //$NON-NLS-1$
+        trustManagerFactory = TrustManagerFactory.getInstance(TrustManagerFactory.getDefaultAlgorithm()); //$NON-NLS-1$
         trustManagerFactory.init(ks);
-        javax.net.ssl.TrustManager trusts[] = trustManagerFactory.getTrustManagers();
+        TrustManager trusts[] = trustManagerFactory.getTrustManagers();
         return (X509TrustManager) trusts[0];
     }
 
@@ -174,29 +194,28 @@ public class LDAPCATruster implements X509TrustManager {
         return false;
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see com.sun.net.ssl.X509TrustManager#isServerTrusted(java.security.cert.X509Certificate[])
-     */
-    public boolean isServerTrusted(X509Certificate chain[], String authType) {
-    	boolean isTrusted = false;
-    	if (trustManager != null) {
-    		try {
-        		trustManager.checkServerTrusted(chain, authType);
-        		isTrusted = true;
-    		}catch (CertificateException e) {
-    		    ExceptionHandler.process(e);
+    @Override
+	public void checkClientTrusted(X509Certificate[] chain, String authType) throws CertificateException {
+    	if (trustManager == null)
+            throw new CertificateException("Trust manager is not initialized");
+        else
+            trustManager.checkClientTrusted(chain, authType);
+	}
+    
+    @Override
+	public void checkServerTrusted(X509Certificate[] chain, String authType) throws CertificateException {
+		if (trustManager != null) {
+			try {
+				trustManager.checkServerTrusted(chain, authType);
+				return;
+			} catch(Exception e) {
 			}
-    	}
-    	if (isTrusted) {
-    		return true;
-    	}
+		}
         X509Certificate ca = getCACert(chain);
         if (ca != null) {
-            if (isAccepted(ca)) {
-                log.error(Messages.getString("LDAPCATruster.sslError1")); //$NON-NLS-1$
-                return false;
+            if (!isAccepted(ca)) {
+                System.err.println("SSL Error:Server certificate chain verification failed.");
+                throw new CertificateException("Server certificate chain verification failed.");
             }
             String id = String.valueOf(System.currentTimeMillis());
             X509TrustManager tmpTrustManager = null;
@@ -204,34 +223,26 @@ public class LDAPCATruster implements X509TrustManager {
                 ks.setCertificateEntry(id, ca);
                 tmpTrustManager = initTrustManager(ks);
             } catch (Exception e) {
-                log.error(Messages.getString("LDAPCATruster.failedCreateTmp") + e.getMessage()); //$NON-NLS-1$
-                return false;
+                System.err.println("ASF Truster: Failed to create tmp trust store : " + e.getMessage());
+                throw new CertificateException(e);
             }
-            boolean isTmpTrusted = false;
-        	if (tmpTrustManager != null) {
-        		try {
-        			tmpTrustManager.checkServerTrusted(chain, authType);
-        			isTmpTrusted = true;
-        		}catch (CertificateException e) {
-        		    ExceptionHandler.process(e);
-    			}
-        	}
-            if (isTmpTrusted) {
+            try{
+            	tmpTrustManager.checkServerTrusted(chain, authType);
                 if (this.isSaveCA) {
                     saveStore();
                     trustManager = tmpTrustManager;
                 }
-                return true;
-            } else {
-                log.error(Messages.getString("LDAPCATruster.sslError2")); //$NON-NLS-1$
-                return false;
+                return;
+            } catch(CertificateException e) {
+                System.err.println("SSL Error:Server certificate chain verification failed and \\nthe CA is missing.");
+                throw e;
             }
         } else {
-            log.error(Messages.getString("LDAPCATruster.sslError3") //$NON-NLS-1$
-                    + Messages.getString("LDAPCATruster.noCertificate")); //$NON-NLS-1$
-            return false;
+            System.err
+                    .println("SSL Error:CA certificate is not in the server certificate chain.\nPlease use the keytool command to import the server certificate.");
+            throw new CertificateException("CA certificate is not in the server certificate chain.\\nPlease use the keytool command to import the server certificate.");
         }
-    }
+	}
 
     /**
      * Comment method "saveStore".
@@ -266,18 +277,4 @@ public class LDAPCATruster implements X509TrustManager {
         }
     }
 
-	@Override
-	public void checkClientTrusted(X509Certificate[] chain, String authType) throws CertificateException {
-	    if (trustManager == null) {
-	        throw new CertificateException(Messages.getString("LDAPCATruster.failedInitialTrust"));
-	    }
-	    trustManager.checkClientTrusted(chain, authType);		
-	}
-
-	@Override
-	public void checkServerTrusted(X509Certificate[] chain, String authType) throws CertificateException {
-	    if (!isServerTrusted(chain, authType)) {
-	        throw new CertificateException(Messages.getString("LDAPCATruster.sslError1"));
-	    }	
-	}
 }

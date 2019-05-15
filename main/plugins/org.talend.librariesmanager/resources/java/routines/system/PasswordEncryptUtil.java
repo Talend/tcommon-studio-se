@@ -23,7 +23,7 @@ public class PasswordEncryptUtil {
 
     public static String ENCRYPT_KEY = "Encrypt"; //$NON-NLS-1$
 
-    private static final String ENCRYPTION_KEY = "Encrypt-Talend-TalendKey";
+    private static final String ENCRYPTION_KEY = "Talend_TalendKey";
 
     private static Encryption defaultEncryption;
 
