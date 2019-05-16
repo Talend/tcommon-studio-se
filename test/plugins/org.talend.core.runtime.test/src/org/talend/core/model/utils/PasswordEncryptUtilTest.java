@@ -37,10 +37,10 @@ public class PasswordEncryptUtilTest {
     @Test
     public void testEncryptPasswordHex() throws Exception {
         Assert.assertNull(PasswordEncryptUtil.encryptPasswordHex(null));
-        Assert.assertEquals("Po/9NgcqCzP4IajGQh6BNA==", PasswordEncryptUtil.encryptPasswordHex(""));
-        Assert.assertEquals("LyQOjBhSDr9RkpZzwK3aTQ==", PasswordEncryptUtil.encryptPasswordHex("Talend"));
-        Assert.assertEquals("3Tns/4xk6/iPgnKGUTte2g==", PasswordEncryptUtil.encryptPasswordHex("toor"));
-        Assert.assertEquals("4o7ak6AT0N1GCHazzWLyoQ==", PasswordEncryptUtil.encryptPasswordHex("Talend123"));
+        Assert.assertEquals("3wsOMnbk/woqdy5ZsU6GMg==", PasswordEncryptUtil.encryptPasswordHex(""));
+        Assert.assertEquals("DbNaSf740zWs/Wxk9uEQVg==", PasswordEncryptUtil.encryptPasswordHex("Talend"));
+        Assert.assertEquals("0VJ8+G+5+0GnM7gdwEg99A==", PasswordEncryptUtil.encryptPasswordHex("toor"));
+        Assert.assertEquals("KTndRHnWm9Iej7KMqWJ1fw==", PasswordEncryptUtil.encryptPasswordHex("Talend123"));
     }
 
     @Test
