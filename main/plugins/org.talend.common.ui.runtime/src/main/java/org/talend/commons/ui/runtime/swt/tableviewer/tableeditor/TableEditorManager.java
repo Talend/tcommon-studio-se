@@ -313,6 +313,17 @@ public class TableEditorManager {
         }
 
     }
+    
+    public void clearEditor() {
+    	for (int i = 0; i < tableEditorList.size(); i++) {
+            TableEditor tableEditor = tableEditorList.get(i);
+            disposeTableEditor(tableEditor);
+            fireEvent(new TableEditorManagerEvent(EVENT_TYPE.CONTROL_DISPOSED, tableEditor));
+        }
+
+        tableEditorList.clear();
+        dataToMultipleDataEditor.clear();
+    }
 
     @SuppressWarnings("unchecked")
     public void refresh() {
