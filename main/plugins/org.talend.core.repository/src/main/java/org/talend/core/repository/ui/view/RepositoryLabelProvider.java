@@ -66,7 +66,7 @@ import org.talend.repository.model.IProxyRepositoryFactory;
 import org.talend.repository.model.IRepositoryNode.ENodeType;
 import org.talend.repository.model.RepositoryNode;
 import org.talend.repository.ui.views.IRepositoryView;
-import org.talend.utils.string.MD5;
+import org.talend.utils.string.DigestUtil;
 
 /**
  * Label provider for the repository view. <code>DEBUG</code> boolean field specify if details (such as objects ids)
@@ -356,7 +356,7 @@ public class RepositoryLabelProvider extends LabelProvider implements IColorProv
 
             ImageDescriptor imageDesc = ImageUtils.createImageFromData(item.getIcon().getInnerContent());
             imageDesc = ImageUtils.scale(imageDesc, ICON_SIZE.ICON_32);
-            String md5Desc = MD5.getMD5(item.getIcon().getInnerContent());
+            String md5Desc = DigestUtil.sha256Hex(item.getIcon().getInnerContent());
             image = cachedImages.get(md5Desc);
 
             if (image == null || image.isDisposed()) {
