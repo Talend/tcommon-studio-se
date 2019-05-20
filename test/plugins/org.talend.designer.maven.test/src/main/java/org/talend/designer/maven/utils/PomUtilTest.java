@@ -12,7 +12,8 @@
 // ============================================================================
 package org.talend.designer.maven.utils;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -447,7 +448,7 @@ public class PomUtilTest {
         Assert.assertNotNull(projectName);
         Assert.assertEquals(currentProjectName, projectName);
 
-        Map<String, Object> parameters = new HashMap<String, Object>();
+        Map<String, Object> parameters = new HashMap<>();
         parameters.put(MavenTemplateManager.KEY_PROJECT_NAME, "");
         projectName = PomUtil.getProjectNameFromTemplateParameter(parameters);
         Assert.assertNotNull(projectName);
@@ -456,7 +457,7 @@ public class PomUtilTest {
 
     @Test
     public void testGetProjectNameFromTemplateParameter_diff() {
-        Map<String, Object> parameters = new HashMap<String, Object>();
+        Map<String, Object> parameters = new HashMap<>();
         parameters.put(MavenTemplateManager.KEY_PROJECT_NAME, "ABC");
         String projectName = PomUtil.getProjectNameFromTemplateParameter(parameters);
         Assert.assertNotNull(projectName);
@@ -530,7 +531,7 @@ public class PomUtilTest {
 
         artifact.setGroupId("org.apache.commons");
         artifact.setArtifactId("commons-lang3");
-        artifact.setVersion("3.4");
+        artifact.setVersion("3.8.1");
         artifact.setType("jar");
         absArtifactPath = PomUtil.getAbsArtifactPath(artifact);
         Assert.assertNotNull(absArtifactPath);
@@ -581,10 +582,10 @@ public class PomUtilTest {
         modelSubjob2.getDependencies().add(subjob2Dep_mainjob);
         PomUtil.savePom(null, modelSubjob2, subjob2Pom);
 
-        List<IFile> subjobPoms = new ArrayList<IFile>();
+        List<IFile> subjobPoms = new ArrayList<>();
         subjobPoms.add(subjob1Pom);
         subjobPoms.add(subjob2Pom);
-        Set<String> subjobURLs = new HashSet<String>();
+        Set<String> subjobURLs = new HashSet<>();
         subjobURLs.add("mvn:org.talend.test/subJob1/1.0.0/jar");
         subjobURLs.add("mvn:org.talend.test/subJob2/1.0.0/jar");
         subjobURLs.add("mvn:org.talend.test/main_job/1.0.0/jar");
