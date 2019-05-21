@@ -956,7 +956,7 @@ public class PomUtil {
         if (relationshipItemBuilder == null) {
             relationshipItemBuilder = RelationshipItemBuilder.getInstance();
         }
-        return getRelationshipItemBuilder();
+        return relationshipItemBuilder;
     }
 
     public static void restoreJobletPoms() {
