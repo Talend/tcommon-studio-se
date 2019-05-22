@@ -759,23 +759,23 @@ public class ModulesNeededProvider {
             importNeedsListForRoutes.add(getComponentModuleById("CAMEL", "spring-context"));
             importNeedsListForRoutes.add(getComponentModuleById("CAMEL", "spring-beans"));
             importNeedsListForRoutes.add(getComponentModuleById("CAMEL", "spring-core"));
-            if(System.getProperty("java.version") != null && System.getProperty("java.version").startsWith("11")) {
-        	getModulesNeededForRoutesJava11();
+            if (System.getProperty("java.version") != null && System.getProperty("java.version").startsWith("11")) {
+                getModulesNeededForRoutesJava11();
             }
         }
         return importNeedsListForRoutes;
     }
 
     private static void getModulesNeededForRoutesJava11() {
-	importNeedsListForRoutes.add(getModuleNeededForName("istack-commons-runtime-3.0.8.jar"));
-	importNeedsListForRoutes.add(getModuleNeededForName("jakarta.xml.bind-api-2.3.2.jar"));
-	importNeedsListForRoutes.add(getModuleNeededForName("jakarta.xml.soap-api-1.4.1.jar"));
-	importNeedsListForRoutes.add(getModuleNeededForName("javax.activation-1.2.0.jar"));
-	importNeedsListForRoutes.add(getModuleNeededForName("javax.annotation-api-1.3.jar"));
-	importNeedsListForRoutes.add(getModuleNeededForName("jaxb-runtime-2.3.2.jar"));
-	importNeedsListForRoutes.add(getModuleNeededForName("stax-ex-1.8.1.jar"));
-	importNeedsListForRoutes.add(getModuleNeededForName("txw2-2.3.2.jar"));
-	importNeedsListForRoutes.add(getModuleNeededForName("jakarta.jws-api-1.1.1.jar"));
+        importNeedsListForRoutes.add(getModuleNeededForName("istack-commons-runtime-3.0.8.jar"));
+        importNeedsListForRoutes.add(getModuleNeededForName("jakarta.xml.bind-api-2.3.2.jar"));
+        importNeedsListForRoutes.add(getModuleNeededForName("jakarta.xml.soap-api-1.4.1.jar"));
+        importNeedsListForRoutes.add(getModuleNeededForName("javax.activation-1.2.0.jar"));
+        importNeedsListForRoutes.add(getModuleNeededForName("javax.annotation-api-1.3.jar"));
+        importNeedsListForRoutes.add(getModuleNeededForName("jaxb-runtime-2.3.2.jar"));
+        importNeedsListForRoutes.add(getModuleNeededForName("stax-ex-1.8.1.jar"));
+        importNeedsListForRoutes.add(getModuleNeededForName("txw2-2.3.2.jar"));
+        importNeedsListForRoutes.add(getModuleNeededForName("jakarta.jws-api-1.1.1.jar"));
     }
 
     /**
@@ -792,10 +792,7 @@ public class ModulesNeededProvider {
     }
     
     public static List<ModuleNeeded> getModulesNeededForBeans() {
-        importNeedsListForBeans = null;
-                
         if (importNeedsListForBeans == null) {
-
             importNeedsListForBeans = getModulesNeededForRoutes();
             importNeedsListForBeans.add(getComponentModuleById("CAMEL", "camel-cxf"));
             importNeedsListForBeans.add(getComponentModuleById("CAMEL", "cxf-core"));
