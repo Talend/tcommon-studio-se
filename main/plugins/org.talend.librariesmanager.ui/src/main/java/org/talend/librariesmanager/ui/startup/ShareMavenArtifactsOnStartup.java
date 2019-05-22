@@ -116,9 +116,12 @@ public class ShareMavenArtifactsOnStartup extends ShareLibrareisHelper {
 
     private void addMojoArtifact(Map<ModuleNeeded, File> files, String groupId, String artifactId, String versionKey) {
         String mvnUrl = MavenUrlHelper.generateMvnUrl(groupId, artifactId, VersionUtils.getMojoVersion(versionKey), null, null);
+        // try to resolve locally
+        String localMvnUrl = mvnUrl.replace(MavenUrlHelper.MVN_PROTOCOL,
+                MavenUrlHelper.MVN_PROTOCOL + MavenConstants.LOCAL_RESOLUTION_URL + MavenUrlHelper.REPO_SEPERATOR);
         File file = null;
         try {
-            file = TalendMavenResolver.getMavenResolver().resolve(mvnUrl);
+            file = TalendMavenResolver.getMavenResolver().resolve(localMvnUrl);
         } catch (IOException | RuntimeException e) {
             ExceptionHandler.process(e);
         }
