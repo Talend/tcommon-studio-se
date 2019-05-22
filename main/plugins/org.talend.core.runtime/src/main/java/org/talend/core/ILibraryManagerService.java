@@ -21,6 +21,7 @@ import java.util.Set;
 
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.talend.core.model.general.ModuleNeeded;
+import org.talend.core.model.repository.ERepositoryObjectType;
 import org.talend.core.nexus.ArtifactRepositoryBean;
 import org.talend.core.nexus.TalendLibsServerManager;
 
@@ -97,6 +98,9 @@ public interface ILibraryManagerService extends IService {
             IProgressMonitor... monitorWrap);
 
     public boolean retrieve(Set<ModuleNeeded> modulesNeeded, String pathToStore, boolean showDialog,
+            IProgressMonitor... monitorWrap);
+
+    public boolean retrieve(ERepositoryObjectType type, Set<ModuleNeeded> modulesNeeded, String pathToStore, boolean showDialog,
             IProgressMonitor... monitorWrap);
 
     public boolean retrieve(ModuleNeeded module, String pathToStore, boolean showDialog, IProgressMonitor... monitorWrap);
