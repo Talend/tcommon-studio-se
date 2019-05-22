@@ -60,7 +60,6 @@ import org.talend.commons.utils.workbench.resources.ResourceUtils;
 import org.talend.core.GlobalServiceRegister;
 import org.talend.core.ILibraryManagerService;
 import org.talend.core.ILibraryManagerUIService;
-import org.talend.core.IService;
 import org.talend.core.database.EDatabase4DriverClassName;
 import org.talend.core.database.EDatabaseTypeName;
 import org.talend.core.database.conn.ConnParameterKeys;
@@ -81,7 +80,6 @@ import org.talend.designer.core.IDesignerCoreService;
 import org.talend.metadata.managment.connection.manager.HiveConnectionManager;
 import org.talend.metadata.managment.hive.EmbeddedHiveDataBaseMetadata;
 import org.talend.repository.ProjectManager;
-import org.talend.repository.model.IMetadataService;
 import org.talend.utils.exceptions.MissingDriverException;
 import org.talend.utils.sql.ConnectionUtils;
 
@@ -1032,6 +1030,11 @@ public class ExtractMetaDataUtils {
                         String jars[] = driverJarPathArg.split(";");
                         for (String jar : jars) {
                             String jarName = librairesManagerService.getJarNameFromMavenuri(driverJarPathArg);
+                            // TDQ-16842 msjian:sometimes for the import jdbc connection, the jarName is null
+                            if (jarName == null) {
+                                jarName = jar.split("/")[1] + ".jar";
+                            }
+                            // TDQ-16842~
                             if (!new File(getJavaLibPath() + jarName).exists()) {
                                 librairesManagerService.retrieve(jarName, getJavaLibPath(), new NullProgressMonitor());
                             }
