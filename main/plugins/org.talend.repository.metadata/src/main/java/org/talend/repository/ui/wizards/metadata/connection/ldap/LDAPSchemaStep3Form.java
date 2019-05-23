@@ -474,6 +474,9 @@ public class LDAPSchemaStep3Form extends AbstractLDAPSchemaStepForm implements I
                 TableItem[] tableItems = tableEditorView.getTable().getItems();
                 if (tableItems != null && tableItems.length > 0) {
                     for (TableItem item : tableItems) {
+                    	if(item.getText() == null || item.getText().length() <= 0) {
+                    		continue;
+                    	}
                         item.setChecked(true);
                         getConnection().getValue().add(item.getText());
                         checkFieldsValue();
