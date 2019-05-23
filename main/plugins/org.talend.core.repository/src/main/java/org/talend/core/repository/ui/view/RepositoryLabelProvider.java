@@ -356,12 +356,12 @@ public class RepositoryLabelProvider extends LabelProvider implements IColorProv
 
             ImageDescriptor imageDesc = ImageUtils.createImageFromData(item.getIcon().getInnerContent());
             imageDesc = ImageUtils.scale(imageDesc, ICON_SIZE.ICON_32);
-            String md5Desc = DigestUtil.sha256Hex(item.getIcon().getInnerContent());
-            image = cachedImages.get(md5Desc);
+            String sha256Desc = DigestUtil.sha256Hex(item.getIcon().getInnerContent());
+            image = cachedImages.get(sha256Desc);
 
             if (image == null || image.isDisposed()) {
                 image = imageDesc.createImage();
-                cachedImages.put(md5Desc, image);
+                cachedImages.put(sha256Desc, image);
             } else {
                 // image = imageDesc.createImage();
             }

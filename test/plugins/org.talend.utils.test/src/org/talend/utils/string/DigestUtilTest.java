@@ -20,11 +20,6 @@ import org.junit.Test;
 public class DigestUtilTest {
 
     @Test
-    public void testSHA256() {
-        assertNotNull(DigestUtil.sha256("abc".getBytes()));
-    }
-
-    @Test
     public void testSHA256Hex() {
         String result = "ba7816bf8f01cfea414140de5dae2223b00361a396177a9cb410ff61f20015ad";
         assertEquals(result, DigestUtil.sha256Hex("abc".getBytes()));

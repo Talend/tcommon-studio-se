@@ -14,10 +14,6 @@ package org.talend.utils.string;
 //============================================================================
 public class DigestUtil {
 
-	public static byte[] sha256(final byte[] data) {
-		return org.apache.commons.codec.digest.DigestUtils.sha256(data);
-	}
-
 	public static String sha256Hex(final byte[] data) {
 		return org.apache.commons.codec.digest.DigestUtils.sha256Hex(data);
 	}
