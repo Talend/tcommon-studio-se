@@ -76,6 +76,10 @@ import org.talend.designer.maven.aether.selector.DynamicExclusionDependencySelec
  */
 public class DynamicDistributionAetherUtils {
 
+    private static final String EXTENSION_POM = "pom";
+
+    private static final String GAV_SEPERATOR = ":";
+
     private static Map<String, RepositorySystem> repoSystemMap = new HashMap<>();
 
     private static Map<String, RepositorySystemSession> sessionMap = new HashMap<>();
@@ -183,7 +187,7 @@ public class DynamicDistributionAetherUtils {
         }
         Set<String> gavs = new HashSet<String>();
         Artifact artifact = node.getArtifact();
-        gavs.add(artifact.getGroupId() + ":" + artifact.getArtifactId() + ":" + artifact.getVersion());
+        gavs.add(artifact.getGroupId() + GAV_SEPERATOR + artifact.getArtifactId() + GAV_SEPERATOR + artifact.getVersion());
         List<org.eclipse.aether.graph.DependencyNode> children = node.getChildren();
         if (children != null) {
             for (org.eclipse.aether.graph.DependencyNode dn : children) {
@@ -207,10 +211,10 @@ public class DynamicDistributionAetherUtils {
 
             while (parent != null) {
                 checkCancelOrNot(monitor);
-                String key = parent.getGroupId() + ":" + parent.getArtifactId() + ":" + parent.getVersion();
+                String key = parent.getGroupId() + GAV_SEPERATOR + parent.getArtifactId() + GAV_SEPERATOR + parent.getVersion();
                 if (!existingGAVs.contains(key)) {
                     org.eclipse.aether.graph.DependencyNode dn = new DefaultDependencyNode(
-                            new DefaultArtifact(parent.getGroupId(), parent.getArtifactId(), "pom", parent.getVersion()));
+                            new DefaultArtifact(parent.getGroupId(), parent.getArtifactId(), EXTENSION_POM, parent.getVersion()));
                     node.getChildren().add(dn);
                     existingGAVs.add(key);
                 }
@@ -249,7 +253,7 @@ public class DynamicDistributionAetherUtils {
         File pomFile = null;
         try {
             ArtifactRequest ar = new ArtifactRequest();
-            Artifact reqArtifact = new DefaultArtifact(groupId, artifactId, "", "pom", version);
+            Artifact reqArtifact = new DefaultArtifact(groupId, artifactId, "", EXTENSION_POM, version);
             ar.setArtifact(reqArtifact);
             ar.addRepository(central);
             ArtifactResult result = repoSystem.resolveArtifact(session, ar);
@@ -257,7 +261,7 @@ public class DynamicDistributionAetherUtils {
         } catch (Exception e) {
             if (StringUtils.isNotBlank(classifier)) {
                 ArtifactRequest ar = new ArtifactRequest();
-                Artifact reqArtifact = new DefaultArtifact(groupId, artifactId, classifier, "pom", version);
+                Artifact reqArtifact = new DefaultArtifact(groupId, artifactId, classifier, EXTENSION_POM, version);
                 ar.setArtifact(reqArtifact);
                 ar.addRepository(central);
                 ArtifactResult result = repoSystem.resolveArtifact(session, ar);
@@ -295,7 +299,7 @@ public class DynamicDistributionAetherUtils {
             range = range + ")"; //$NON-NLS-1$
         }
 
-        Artifact artifact = new DefaultArtifact(groupId + ":" + artifactId + range); //$NON-NLS-1$
+        Artifact artifact = new DefaultArtifact(groupId + GAV_SEPERATOR + artifactId + range); //$NON-NLS-1$
         Builder builder = new RemoteRepository.Builder("central", "default", remoteUrl); //$NON-NLS-1$ //$NON-NLS-2$
         if (StringUtils.isNotEmpty(username)) {
             Authentication auth = new AuthenticationBuilder().addUsername(username).addPassword(password).build();
@@ -341,7 +345,7 @@ public class DynamicDistributionAetherUtils {
             range = range + ")"; //$NON-NLS-1$
         }
 
-        Artifact artifact = new DefaultArtifact(groupId + ":" + artifactId + range); //$NON-NLS-1$
+        Artifact artifact = new DefaultArtifact(groupId + GAV_SEPERATOR + artifactId + range); //$NON-NLS-1$
         Builder builder = new RemoteRepository.Builder("central", "default", remoteUrl); //$NON-NLS-1$ //$NON-NLS-2$
         if (StringUtils.isNotEmpty(username)) {
             Authentication auth = new AuthenticationBuilder().addUsername(username).addPassword(password).build();
