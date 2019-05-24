@@ -47,6 +47,7 @@ import org.talend.commons.exception.CommonExceptionHandler;
 import org.talend.commons.exception.ExceptionHandler;
 import org.talend.commons.exception.PersistenceException;
 import org.talend.commons.runtime.model.repository.ERepositoryStatus;
+import org.talend.commons.utils.PasswordEncryptUtil;
 import org.talend.commons.utils.generation.JavaUtils;
 import org.talend.commons.utils.time.TimeMeasure;
 import org.talend.core.CorePlugin;
@@ -71,6 +72,7 @@ import org.talend.core.model.metadata.MetadataTalendType;
 import org.talend.core.model.metadata.types.JavaTypesManager;
 import org.talend.core.model.process.EParameterFieldType;
 import org.talend.core.model.process.IContext;
+import org.talend.core.model.process.IContextParameter;
 import org.talend.core.model.process.IElementParameter;
 import org.talend.core.model.process.INode;
 import org.talend.core.model.process.IProcess;
@@ -861,7 +863,9 @@ public class ProcessorUtilities {
                 List<IContext> list = currentProcess.getContextManager().getListContext();
                 for (IContext context : list) {
                     if (context.getName().equals(currentContext.getName())) {
-                        processor.setContext(currentContext); // generate current context.
+                        // override parameter value before generate current context
+                        IContext checkedContext = checkNeedOverrideContextParameterValue(currentContext, jobInfo);
+                        processor.setContext(checkedContext); // generate current context.
                     } else {
                         processor.setContext(context);
                     }
@@ -900,6 +904,38 @@ public class ProcessorUtilities {
         } else {
             processor.setCodeGenerated(true);
         }
+    }
+
+    private static IContext checkNeedOverrideContextParameterValue(IContext currentContext, JobInfo jobInfo) {
+        if (jobInfo.getArgumentsMap() == null
+                || jobInfo.getArgumentsMap().get(TalendProcessArgumentConstant.ARG_CONTEXT_PARAMS) == null) {
+            return currentContext;
+        }
+        IContext context = currentContext.clone();
+
+        // (override parameter) parameterName-> contextParameter in parameterMap
+        Map<String, ContextParameterType> parameterMap = new HashMap<String, ContextParameterType>();
+        List paramsList = ProcessUtils.getOptionValue(jobInfo.getArgumentsMap(), TalendProcessArgumentConstant.ARG_CONTEXT_PARAMS,
+                (List) null);
+        for (Object param : paramsList) {
+            if (param instanceof ContextParameterType) {
+                ContextParameterType contextParamType = (ContextParameterType) param;
+                parameterMap.put(contextParamType.getName(), contextParamType);
+            }
+        }
+
+        List<IContextParameter> contextParameterList = context.getContextParameterList();
+        for (IContextParameter contextParameter : contextParameterList) {
+            ContextParameterType overrideParameter = parameterMap.get(contextParameter.getName());
+            if (overrideParameter != null && (StringUtils.isNotBlank(overrideParameter.getValue()))) {
+                if (PasswordEncryptUtil.isPasswordType(contextParameter.getType())) {
+                    contextParameter.setValue(overrideParameter.getRawValue());
+                } else {
+                    contextParameter.setValue(overrideParameter.getValue());
+                }
+            }
+        }
+        return context;
     }
 
     private static void generateDataSet(IProcess process, IProcessor processor) {
