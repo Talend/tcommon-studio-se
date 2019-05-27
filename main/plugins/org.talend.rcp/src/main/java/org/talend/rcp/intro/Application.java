@@ -91,6 +91,13 @@ public class Application implements IApplication {
     @SuppressWarnings("restriction")
     @Override
     public Object start(IApplicationContext context) throws Exception {
+        if (Boolean.getBoolean(EclipseCommandLine.PROP_TALEND_BUNDLES_DO_CLEAN)) {
+            System.setProperty(EclipseCommandLine.PROP_TALEND_BUNDLES_DO_CLEAN, Boolean.FALSE.toString());
+            EclipseCommandLine.updateOrCreateExitDataPropertyWithCommand(EclipseCommandLine.CLEAN, null, false);
+            EclipseCommandLine.updateOrCreateExitDataPropertyWithCommand(EclipseCommandLine.ARG_TALEND_BUNDLES_CLEANED,
+                    Boolean.TRUE.toString(), false);
+            return IApplication.EXIT_RELAUNCH;
+        }
         System.setProperty(TalendPropertiesUtil.PROD_APP, this.getClass().getName());
         
         Display display = PlatformUI.createDisplay();
@@ -301,6 +308,8 @@ public class Application implements IApplication {
     private void setRelaunchData() {
         EclipseCommandLine.updateOrCreateExitDataPropertyWithCommand(EclipseCommandLine.TALEND_RELOAD_COMMAND,
                 Boolean.TRUE.toString(), false);
+        EclipseCommandLine.updateOrCreateExitDataPropertyWithCommand(EclipseCommandLine.ARG_TALEND_BUNDLES_CLEANED,
+                Boolean.FALSE.toString(), false);
         // if relaunch, should delete the "disableLoginDialog" argument in eclipse data for bug TDI-19214
         EclipseCommandLine.updateOrCreateExitDataPropertyWithCommand(
                 EclipseCommandLine.TALEND_DISABLE_LOGINDIALOG_COMMAND, null, true);

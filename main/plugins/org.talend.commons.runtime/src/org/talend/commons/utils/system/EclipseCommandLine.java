@@ -52,7 +52,11 @@ public class EclipseCommandLine {
     /**
      * for relaunch of the plugins when relaunching the Studio
      */
-    static public final String TALEND_RELOAD_COMMAND = "-talendReload"; //$NON-NLS-1$    
+    static public final String TALEND_RELOAD_COMMAND = "-talendReload"; //$NON-NLS-1$
+
+    static public final String ARG_TALEND_BUNDLES_CLEANED = "-talend.studio.bundles.cleaned"; //$NON-NLS-1$
+
+    static public final String PROP_TALEND_BUNDLES_DO_CLEAN = "-talend.studio.bundles.doclean"; //$NON-NLS-1$
 
     /**
      * for relaunch of the plugins when relaunching the Studio
