@@ -12,10 +12,14 @@
 // ============================================================================
 package org.talend.core.model.utils;
 
-import junit.framework.Assert;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertNull;
+import static org.junit.Assert.assertTrue;
 
 import org.junit.Test;
 import org.talend.commons.utils.PasswordEncryptUtil;
+import org.talend.utils.security.AESEncryption;
 
 /**
  * DOC ggu class global comment. Detailled comment
@@ -28,49 +32,89 @@ public class PasswordEncryptUtilTest {
     public void testEncryptPassword() throws Exception {
         String rawStr = "Talend123";
         String encryptPassword = PasswordEncryptUtil.encryptPassword(rawStr);
-        Assert.assertEquals("ABBKp4a4zypsW08UouALBw==", encryptPassword);
+        assertEquals("ABBKp4a4zypsW08UouALBw==", encryptPassword);
 
         String decryptPassword = PasswordEncryptUtil.decryptPassword(encryptPassword);
-        Assert.assertEquals(rawStr, decryptPassword);
+        assertEquals(rawStr, decryptPassword);
     }
 
     @Test
     public void testEncryptPasswordHex() throws Exception {
-        Assert.assertNull(PasswordEncryptUtil.encryptPasswordHex(null));
-        Assert.assertEquals("3wsOMnbk/woqdy5ZsU6GMg==", PasswordEncryptUtil.encryptPasswordHex(""));
-        Assert.assertEquals("DbNaSf740zWs/Wxk9uEQVg==", PasswordEncryptUtil.encryptPasswordHex("Talend"));
-        Assert.assertEquals("0VJ8+G+5+0GnM7gdwEg99A==", PasswordEncryptUtil.encryptPasswordHex("toor"));
-        Assert.assertEquals("KTndRHnWm9Iej7KMqWJ1fw==", PasswordEncryptUtil.encryptPasswordHex("Talend123"));
+        assertNull(PasswordEncryptUtil.encryptPasswordHex(null));
+        assertEquals(PasswordEncryptUtil.PREFIX_PASSWORD + "3wsOMnbk/woqdy5ZsU6GMg==" + PasswordEncryptUtil.POSTFIX_PASSWORD,
+                PasswordEncryptUtil.encryptPasswordHex(""));
+        assertEquals(PasswordEncryptUtil.PREFIX_PASSWORD + "DbNaSf740zWs/Wxk9uEQVg==" + PasswordEncryptUtil.POSTFIX_PASSWORD,
+                PasswordEncryptUtil.encryptPasswordHex("Talend"));
+        assertEquals(PasswordEncryptUtil.PREFIX_PASSWORD + "0VJ8+G+5+0GnM7gdwEg99A==" + PasswordEncryptUtil.POSTFIX_PASSWORD,
+                PasswordEncryptUtil.encryptPasswordHex("toor"));
+        assertEquals(PasswordEncryptUtil.PREFIX_PASSWORD + "KTndRHnWm9Iej7KMqWJ1fw==" + PasswordEncryptUtil.POSTFIX_PASSWORD,
+                PasswordEncryptUtil.encryptPasswordHex("Talend123"));
     }
 
     @Test
     public void testIsPasswordType() {
-        Assert.assertFalse(PasswordEncryptUtil.isPasswordType(null));
-        Assert.assertFalse(PasswordEncryptUtil.isPasswordType(""));
-        Assert.assertFalse(PasswordEncryptUtil.isPasswordType("TEST"));
-        Assert.assertFalse(PasswordEncryptUtil.isPasswordType("1234"));
+        assertFalse(PasswordEncryptUtil.isPasswordType(null));
+        assertFalse(PasswordEncryptUtil.isPasswordType(""));
+        assertFalse(PasswordEncryptUtil.isPasswordType("TEST"));
+        assertFalse(PasswordEncryptUtil.isPasswordType("1234"));
 
-        Assert.assertTrue(PasswordEncryptUtil.isPasswordType("Password")); // seems test for perl.
-        Assert.assertTrue(PasswordEncryptUtil.isPasswordType("id_Password"));
+        assertTrue(PasswordEncryptUtil.isPasswordType("Password")); // seems test for perl.
+        assertTrue(PasswordEncryptUtil.isPasswordType("id_Password"));
     }
 
     @Test
     public void testIsPasswordField() {
-        Assert.assertFalse(PasswordEncryptUtil.isPasswordField(null));
-        Assert.assertFalse(PasswordEncryptUtil.isPasswordField(""));
-        Assert.assertFalse(PasswordEncryptUtil.isPasswordField("TEST"));
-        Assert.assertFalse(PasswordEncryptUtil.isPasswordField("1234"));
+        assertFalse(PasswordEncryptUtil.isPasswordField(null));
+        assertFalse(PasswordEncryptUtil.isPasswordField(""));
+        assertFalse(PasswordEncryptUtil.isPasswordField("TEST"));
+        assertFalse(PasswordEncryptUtil.isPasswordField("1234"));
 
-        Assert.assertTrue(PasswordEncryptUtil.isPasswordField("PASSWORD"));
+        assertTrue(PasswordEncryptUtil.isPasswordField("PASSWORD"));
     }
 
     @Test
     public void testGetPasswordDisplay() {
-        Assert.assertEquals("****", PasswordEncryptUtil.getPasswordDisplay(null));
-        Assert.assertEquals("****", PasswordEncryptUtil.getPasswordDisplay(""));
+        assertEquals("****", PasswordEncryptUtil.getPasswordDisplay(null));
+        assertEquals("****", PasswordEncryptUtil.getPasswordDisplay(""));
 
-        Assert.assertEquals("*", PasswordEncryptUtil.getPasswordDisplay("1"));
-        Assert.assertEquals("*****", PasswordEncryptUtil.getPasswordDisplay("12345"));
-        Assert.assertEquals("*******", PasswordEncryptUtil.getPasswordDisplay("ABCD123"));
+        assertEquals("*", PasswordEncryptUtil.getPasswordDisplay("1"));
+        assertEquals("*****", PasswordEncryptUtil.getPasswordDisplay("12345"));
+        assertEquals("*******", PasswordEncryptUtil.getPasswordDisplay("ABCD123"));
+    }
+
+    @Test
+    public void testDecryptPassword() {
+        String encryptPassword1 = PasswordEncryptUtil.PREFIX_PASSWORD + "3wsOMnbk/woqdy5ZsU6GMg=="
+                + PasswordEncryptUtil.POSTFIX_PASSWORD;
+        assertEquals("", decryptPassword(encryptPassword1));
+        String encryptPassword2 = PasswordEncryptUtil.PREFIX_PASSWORD + "KTndRHnWm9Iej7KMqWJ1fw=="
+                + PasswordEncryptUtil.POSTFIX_PASSWORD;
+        assertEquals("Talend123", decryptPassword(encryptPassword2));
+
+        String decryptPassword1 = "";
+        assertEquals(decryptPassword1, decryptPassword(decryptPassword1));
+
+        String decryptPassword2 = "Talend123";
+        assertEquals(decryptPassword2, decryptPassword(decryptPassword2));
+
+        String decryptPassword3 = " ";
+        assertEquals(decryptPassword3, decryptPassword(decryptPassword3));
+
+    }
+
+    // This method copy from routines.system.PasswordEncryptUtil, to make sure the decryptPassword work well
+    private String decryptPassword(String input) {
+        if (input == null || input.length() == 0) {
+            return input;
+        }
+        if (input.startsWith(PasswordEncryptUtil.PREFIX_PASSWORD) && input.endsWith(PasswordEncryptUtil.POSTFIX_PASSWORD)) {
+            try {
+                return AESEncryption.decryptPassword(input.substring(PasswordEncryptUtil.PREFIX_PASSWORD.length(),
+                        input.length() - PasswordEncryptUtil.POSTFIX_PASSWORD.length()));
+            } catch (Exception e) {
+                // do nothing
+            }
+        }
+        return input;
     }
 }
