@@ -125,7 +125,7 @@ abstract public class DownloadModuleRunnable implements IRunnableWithProgress {
                 } catch (Exception e) {
                     downloadFailed.add(module.getName());
                     connectionTimeOut = true;
-                    Exception ex = new Exception("Download " + module.getName() + " failed!", e);
+                    Exception ex = new Exception("Download " + module.getName() + " : " + module.getMavenUri() + " failed!", e);
                     if (showErrorInDialog) {
                         MessageBoxExceptionHandler.process(ex);
                     } else {
