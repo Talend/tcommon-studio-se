@@ -317,7 +317,7 @@ public class LocalLibraryManager implements ILibraryManagerService, IChangedLibr
                 if (showDialog && !CommonsPlugin.isHeadless()) {
                     // popup dialog if needed to download the jar.
                     if (GlobalServiceRegister.getDefault().isServiceRegistered(ILibraryManagerUIService.class)) {
-                        ILibraryManagerUIService libUiService = (ILibraryManagerUIService) GlobalServiceRegister.getDefault()
+                        ILibraryManagerUIService libUiService = GlobalServiceRegister.getDefault()
                                 .getService(ILibraryManagerUIService.class);
 
                         libUiService.installModules(new String[] { jarNeeded });
@@ -329,7 +329,7 @@ public class LocalLibraryManager implements ILibraryManagerService, IChangedLibr
                     }
                     // jar found > reset the modules just after install the jars
                     if (refresh && GlobalServiceRegister.getDefault().isServiceRegistered(ILibrariesService.class)) {
-                        ILibrariesService librariesService = (ILibrariesService) GlobalServiceRegister.getDefault()
+                        ILibrariesService librariesService = GlobalServiceRegister.getDefault()
                                 .getService(ILibrariesService.class);
                         librariesService.checkLibraries();
                     }
@@ -403,7 +403,7 @@ public class LocalLibraryManager implements ILibraryManagerService, IChangedLibr
     @Override
     public File resolveJar(final ArtifactRepositoryBean customNexusServer, String uri) throws Exception, IOException {
         if (GlobalServiceRegister.getDefault().isServiceRegistered(IMavenUIService.class)) {
-            IMavenUIService mavenUIService = (IMavenUIService) GlobalServiceRegister.getDefault()
+            IMavenUIService mavenUIService = GlobalServiceRegister.getDefault()
                     .getService(IMavenUIService.class);
             if (mavenUIService != null) {
                 if (customNexusServer != null) {
@@ -566,7 +566,7 @@ public class LocalLibraryManager implements ILibraryManagerService, IChangedLibr
         }
         if (showDialog && !modulesNotFound.isEmpty() && !CommonsPlugin.isHeadless()) {
             if (GlobalServiceRegister.getDefault().isServiceRegistered(ILibraryManagerUIService.class)) {
-                ILibraryManagerUIService libUiService = (ILibraryManagerUIService) GlobalServiceRegister.getDefault()
+                ILibraryManagerUIService libUiService = GlobalServiceRegister.getDefault()
                         .getService(ILibraryManagerUIService.class);
                 libUiService.installModules(modulesNotFound);
                 List<ModuleNeeded> retrievedModules = new ArrayList<>(modulesNotFound);
@@ -583,7 +583,7 @@ public class LocalLibraryManager implements ILibraryManagerService, IChangedLibr
                 }
                 if (needResetModulesNeeded) {
                     if (GlobalServiceRegister.getDefault().isServiceRegistered(ILibrariesService.class)) {
-                        ILibrariesService librariesService = (ILibrariesService) GlobalServiceRegister.getDefault()
+                        ILibrariesService librariesService = GlobalServiceRegister.getDefault()
                                 .getService(ILibrariesService.class);
                         librariesService.checkLibraries();
                     }
@@ -627,7 +627,7 @@ public class LocalLibraryManager implements ILibraryManagerService, IChangedLibr
         }
         if (showDialog && !jarNotFound.isEmpty() && !CommonsPlugin.isHeadless()) {
             if (GlobalServiceRegister.getDefault().isServiceRegistered(ILibraryManagerUIService.class)) {
-                ILibraryManagerUIService libUiService = (ILibraryManagerUIService) GlobalServiceRegister.getDefault()
+                ILibraryManagerUIService libUiService = GlobalServiceRegister.getDefault()
                         .getService(ILibraryManagerUIService.class);
                 libUiService.installModules(jarNotFound);
                 modulesNeeded = new HashSet<ModuleNeeded>(jarNotFound);
@@ -644,7 +644,7 @@ public class LocalLibraryManager implements ILibraryManagerService, IChangedLibr
                 }
                 if (needResetModulesNeeded) {
                     if (GlobalServiceRegister.getDefault().isServiceRegistered(ILibrariesService.class)) {
-                        ILibrariesService librariesService = (ILibrariesService) GlobalServiceRegister.getDefault()
+                        ILibrariesService librariesService = GlobalServiceRegister.getDefault()
                                 .getService(ILibrariesService.class);
                         librariesService.checkLibraries();
                     }
@@ -959,6 +959,15 @@ public class LocalLibraryManager implements ILibraryManagerService, IChangedLibr
                         String platformPath = getJarPathFromPlatform(module.getModuleLocaion());
                         if (platformPath != null) {
                             resolvedJar = new File(platformPath);
+                            // update mvn uri if load from platformPath
+                            MavenArtifact mArtifact = MavenUrlHelper.parseMvnUrl(mvnUriStatusKey);
+                            if (mArtifact != null) {
+                                String fileName = mArtifact.getFileName();
+                                if (!module.getModuleName().contains(mArtifact.getArtifactId())
+                                        && !module.getModuleName().equals(fileName)) {
+                                    mvnUriStatusKey = MavenUrlHelper.generateMvnUrlForJarName(module.getModuleName(), true, true);
+                                }
+                            }
                         }
                     }
                     /**
@@ -1092,7 +1101,7 @@ public class LocalLibraryManager implements ILibraryManagerService, IChangedLibr
         // TDQ-11125 TOP doesn't have IComponentsService.avoid NPE.
         IComponentsService service = null;
         if (GlobalServiceRegister.getDefault().isServiceRegistered(IComponentsService.class)) {
-            service = (IComponentsService) GlobalServiceRegister.getDefault().getService(IComponentsService.class);
+            service = GlobalServiceRegister.getDefault().getService(IComponentsService.class);
         }
         if (service != null) {
             for (IComponent component : service.getComponentsFactory().readComponents()) {
