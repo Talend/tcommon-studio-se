@@ -15,6 +15,7 @@ package org.talend.core.model.metadata;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
+import java.util.Comparator;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
@@ -625,7 +626,7 @@ public final class MetadataToolHelper {
         target.getListColumns().addAll(columnsTAdd);
         target.sortCustomColumns();
         target.setLabel(source.getLabel());
-        target.setOriginalColumns(source.getOriginalColumns());
+        setTargetOriginalColumns(source, target);
         // List<String> originalColumnsList = null;
         // if (source.getOriginalColumns() != null) {
         // originalColumnsList = new ArrayList<String>();
@@ -637,6 +638,57 @@ public final class MetadataToolHelper {
         for (Entry<String, String> entry : sourceProperties.entrySet()) {
             targetProperties.put(entry.getKey(), entry.getValue());
         }
+    }
+    
+    public static void setTargetOriginalColumns(IMetadataTable source, IMetadataTable target) {
+    	List<String> sColumns = source.getOriginalColumns();
+    	List<String> tColumns = target.getOriginalColumns();
+    	if(sColumns == null) {
+    		return;
+    	}
+    	if(tColumns == null) {
+    		target.setOriginalColumns(sColumns);
+    		return;
+    	}
+    	
+    	if(sColumns.size() == tColumns.size()) {
+    		boolean same = true;
+    		for(int i = 0;i<sColumns.size();i++) {
+    			if(!sColumns.get(i).equals(tColumns.get(i))) {
+    				same = false;
+    				break;
+    			}
+    		}
+    		if(same) {
+    			return;
+    		}
+    	}
+    	
+    	for(String sColumn : sColumns) {
+    		if(tColumns.contains(sColumn)) {
+    			continue;
+    		}
+    		tColumns.add(sColumn);
+    	}
+    	
+    	List<IMetadataColumn> targetColumns = target.getListColumns();
+    	List<String> temp = new ArrayList<String>(tColumns);
+    	if (targetColumns != null) {
+    		List<String> columnNames = new ArrayList<String>();
+        	for(IMetadataColumn column : targetColumns){
+        		columnNames.add(column.getLabel());
+        	}
+            Collections.sort(temp, new Comparator<String>() {
+
+                @Override
+                public int compare(String o1, String o2) {
+                    int index1 = columnNames.indexOf(o1);
+                    int index2 = columnNames.indexOf(o2);
+                    return index1 - index2;
+                }
+            });
+        }
+    	target.setOriginalColumns(temp);
     }
 
     public static void copyTable(List<IMetadataColumn> sourceColumns, IMetadataTable target,

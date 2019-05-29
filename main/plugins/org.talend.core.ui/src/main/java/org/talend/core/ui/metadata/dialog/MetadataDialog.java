@@ -754,7 +754,9 @@ public class MetadataDialog extends Dialog {
             for (IMetadataColumn column : table.getListColumns()) {
                 columnNames.add(column.getLabel());
             }
-            table.setOriginalColumns(columnNames);
+            if(table.getOriginalColumns() == null || table.getOriginalColumns().isEmpty()) {
+            	table.setOriginalColumns(columnNames);
+            }
         }
     }
 
