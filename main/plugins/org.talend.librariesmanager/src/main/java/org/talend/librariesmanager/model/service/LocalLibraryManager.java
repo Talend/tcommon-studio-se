@@ -1273,7 +1273,7 @@ public class LocalLibraryManager implements ILibraryManagerService, IChangedLibr
                 }
                 // check if jar name is setup based on maven uri
                 String generatedName = MavenUrlHelper.generateModuleNameByMavenURI(mavenUrl);
-                if(!generatedName.equals(module.getModuleName())) {
+                if(!generatedName.equals(module.getModuleName()) && CommonsPlugin.isDebugMode()) {
                     String context = module.getContext();
                     String warning = "Module Name is expected as " + generatedName + ",but it is configured as "//$NON-NLS-1$ //$NON-NLS-2$
                             + module.getModuleName() + (context == null || "".equals(context) ? "" : " in " + context);//$NON-NLS-1$ //$NON-NLS-2$//$NON-NLS-3$

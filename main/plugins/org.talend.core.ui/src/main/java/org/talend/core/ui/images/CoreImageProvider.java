@@ -30,7 +30,7 @@ import org.talend.core.model.repository.ERepositoryObjectType;
 import org.talend.core.runtime.services.IGenericWizardService;
 import org.talend.core.ui.component.ComponentsFactoryProvider;
 import org.talend.designer.core.IDesignerCoreService;
-import org.talend.utils.string.MD5;
+import org.talend.utils.string.DigestUtil;
 
 /**
  * amaumont class global comment. Detailled comment <br/>
@@ -85,12 +85,12 @@ public class CoreImageProvider {
     private static Map<String, Image> componentCachedImages = new HashMap<String, Image>();
 
     public static Image getComponentImageFromDesc(ImageDescriptor imageDescriptor) {
-        String md5Desc = MD5.getMD5(imageDescriptor.getImageData().data);
-        Image image = componentCachedImages.get(md5Desc);
+        String sha256Desc = DigestUtil.sha256Hex(imageDescriptor.getImageData().data);
+        Image image = componentCachedImages.get(sha256Desc);
 
         if (image == null || image.isDisposed()) {
             image = imageDescriptor.createImage();
-            componentCachedImages.put(md5Desc, image);
+            componentCachedImages.put(sha256Desc, image);
         }
         return image;
     }
@@ -99,8 +99,8 @@ public class CoreImageProvider {
         if (component != null && iconSize != null) {
             if (iconSize == ICON_SIZE.ICON_32
                     && GlobalServiceRegister.getDefault().isServiceRegistered(IDesignerCoreService.class)) {
-                IDesignerCoreService service = (IDesignerCoreService) GlobalServiceRegister.getDefault().getService(
-                        IDesignerCoreService.class);
+                IDesignerCoreService service = (IDesignerCoreService) GlobalServiceRegister.getDefault()
+                        .getService(IDesignerCoreService.class);
                 if (service.isDummyComponent(component)) {
                     return getComponentImageFromDesc(component.getIcon32());
                 }
@@ -133,24 +133,24 @@ public class CoreImageProvider {
         if (name != null && !name.equals("")) { //$NON-NLS-1$
             for (IComponent component : ComponentsFactoryProvider.getInstance().readComponents()) {
                 if (name.equals(component.getName())) {
-                    String md5Desc16 = MD5.getMD5(component.getIcon16().getImageData().data);
-                    Image image = componentCachedImages.get(md5Desc16);
+                    String sha256Desc16 = DigestUtil.sha256Hex(component.getIcon16().getImageData().data);
+                    Image image = componentCachedImages.get(sha256Desc16);
                     if (image != null && !image.isDisposed()) {
                         image.dispose();
                     }
-                    componentCachedImages.remove(md5Desc16);
-                    String md5Desc24 = MD5.getMD5(component.getIcon24().getImageData().data);
-                    image = componentCachedImages.get(md5Desc24);
+                    componentCachedImages.remove(sha256Desc16);
+                    String sha256Desc24 = DigestUtil.sha256Hex(component.getIcon24().getImageData().data);
+                    image = componentCachedImages.get(sha256Desc24);
                     if (image != null && !image.isDisposed()) {
                         image.dispose();
                     }
-                    componentCachedImages.remove(md5Desc24);
-                    String md5Desc32 = MD5.getMD5(component.getIcon32().getImageData().data);
-                    image = componentCachedImages.get(md5Desc32);
+                    componentCachedImages.remove(sha256Desc24);
+                    String sha256Desc32 = DigestUtil.sha256Hex(component.getIcon32().getImageData().data);
+                    image = componentCachedImages.get(sha256Desc32);
                     if (image != null && !image.isDisposed()) {
                         image.dispose();
                     }
-                    componentCachedImages.remove(md5Desc32);
+                    componentCachedImages.remove(sha256Desc32);
                 }
             }
         }

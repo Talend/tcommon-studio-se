@@ -104,5 +104,12 @@
             class="org.talend.updates.runtime.preference.UpdatesRuntimeInitializer">
       </initializer>
    </extension>
+   <extension
+         point="org.talend.core.runtime.service">
+      <Service
+            class="org.talend.updates.runtime.service.UpdateService"
+            serviceId="IUpdateService">
+      </Service>
+   </extension>
 
 </plugin>

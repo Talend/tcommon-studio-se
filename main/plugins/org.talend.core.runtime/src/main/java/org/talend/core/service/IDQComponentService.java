@@ -15,6 +15,7 @@ package org.talend.core.service;
 import org.talend.core.IService;
 import org.talend.core.model.metadata.IMetadataTable;
 import org.talend.core.model.process.IConnection;
+import org.talend.designer.core.model.utils.emf.talendfile.NodeType;
 
 /**
  * created by talend on Dec 17, 2014 Detailled comment
@@ -30,4 +31,11 @@ public interface IDQComponentService extends IService {
      * @param newMetadataTable
      */
     void externalComponentChange(IConnection oldConnection, IMetadataTable newMetadataTable);
+
+    /**
+     * Change the attribute of MatchingData and use parameterValue instead of original one.
+     * 
+     * @param node The node which need to be modified
+     */
+    void correctlyCustomMatcherParameter(NodeType node);
 }

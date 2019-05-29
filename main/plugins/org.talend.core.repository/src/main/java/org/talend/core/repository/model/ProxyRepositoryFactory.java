@@ -169,7 +169,7 @@ public final class ProxyRepositoryFactory implements IProxyRepositoryFactory {
 
     private final ProjectManager projectManager;
 
-    private Map<String, org.talend.core.model.properties.Project> emfProjectContentMap = new HashMap<String, org.talend.core.model.properties.Project>();
+    private Map<String, org.talend.core.model.properties.Project> emfProjectContentMap = new HashMap<>();
     
     private boolean isCancelled;
 
@@ -457,7 +457,7 @@ public final class ProxyRepositoryFactory implements IProxyRepositoryFactory {
     public List<ContextItem> getContextItem() throws PersistenceException {
         List<ContextItem> contextItems = getContextItem(projectManager.getCurrentProject());
         if (contextItems == null) {
-            contextItems = new ArrayList<ContextItem>();
+            contextItems = new ArrayList<>();
         }
         for (Project p : projectManager.getAllReferencedProjects()) {
             List<ContextItem> rContextItems = getContextItem(p);
@@ -871,8 +871,8 @@ public final class ProxyRepositoryFactory implements IProxyRepositoryFactory {
             return;
         }
 
-        List<String> idList = new ArrayList<String>();
-        List<IRepositoryViewObject> repositoryObjectList = new ArrayList<IRepositoryViewObject>();
+        List<String> idList = new ArrayList<>();
+        List<IRepositoryViewObject> repositoryObjectList = new ArrayList<>();
         for (IRepositoryViewObject objToDelete : objToDeleteList) {
             IRepositoryViewObject object = new RepositoryObject(objToDelete.getProperty());
             boolean isExtendPoint = false;
@@ -1088,7 +1088,7 @@ public final class ProxyRepositoryFactory implements IProxyRepositoryFactory {
                 @SuppressWarnings("null")
                 EventAdmin eventAdmin = (EventAdmin) bundleContext.getService(ref);
 
-                Dictionary<String, Object> properties = new Hashtable<String, Object>();
+                Dictionary<String, Object> properties = new Hashtable<>();
                 properties.put(Constant.ITEM_EVENT_PROPERTY_KEY, item);
 
                 Event lockEvent = new Event(Constant.REPOSITORY_ITEM_EVENT_PREFIX
@@ -1278,8 +1278,8 @@ public final class ProxyRepositoryFactory implements IProxyRepositoryFactory {
     }
 
     public List<String> getFolders(Project project, ERepositoryObjectType type) throws PersistenceException {
-        HashMap<String, Boolean> folderItems = new HashMap<String, Boolean>();
-        List<String> toReturn = new ArrayList<String>();
+        HashMap<String, Boolean> folderItems = new HashMap<>();
+        List<String> toReturn = new ArrayList<>();
         String[] split = ERepositoryObjectType.getFolderName(type).split("/"); //$NON-NLS-1$
         String labelType = split[split.length - 1];
 
@@ -1331,8 +1331,8 @@ public final class ProxyRepositoryFactory implements IProxyRepositoryFactory {
     }
 
     public HashMap<String, Boolean> getFolderItems(Project project, ERepositoryObjectType type) throws PersistenceException {
-        HashMap<String, Boolean> folderItems = new HashMap<String, Boolean>();
-        List<String> toReturn = new ArrayList<String>();
+        HashMap<String, Boolean> folderItems = new HashMap<>();
+        List<String> toReturn = new ArrayList<>();
         String[] split = ERepositoryObjectType.getFolderName(type).split("/"); //$NON-NLS-1$
         String labelType = split[split.length - 1];
 
@@ -2060,6 +2060,15 @@ public final class ProxyRepositoryFactory implements IProxyRepositoryFactory {
                 // init dynamic distirbution after `beforeLogon`, before loading libraries.
                 initDynamicDistribution(monitor);
 
+                // init sdk component
+                try {
+                    currentMonitor = subMonitor.newChild(1, SubMonitor.SUPPRESS_NONE);
+                    currentMonitor.beginTask(Messages.getString("ProxyRepositoryFactory.load.sdk.componnents"), 1); // $NON-NLS-1$
+                    ITaCoKitService.getInstance().start();
+                } catch (Exception e) {
+                    ExceptionHandler.process(e);
+                }
+
                 // Check reference project setting problems
                 checkReferenceProjectsProblems(project);
                 if (isCancelled) {
@@ -2289,7 +2298,7 @@ public final class ProxyRepositoryFactory implements IProxyRepositoryFactory {
         }
 
         if (!isCancelled) {
-            Map<String, List<ProjectReference>> projectRefMap = new HashMap<String, List<ProjectReference>>();
+            Map<String, List<ProjectReference>> projectRefMap = new HashMap<>();
             if (!ReferenceProjectProblemManager.checkCycleReference(project, projectRefMap)) {
                 throw new PersistenceException(Messages.getString("ProxyRepositoryFactory.CycleReferenceError")); //$NON-NLS-1$
             }

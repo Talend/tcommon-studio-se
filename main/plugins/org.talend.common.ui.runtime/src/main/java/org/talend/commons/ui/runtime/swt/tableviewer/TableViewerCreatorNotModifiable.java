@@ -375,8 +375,12 @@ public class TableViewerCreatorNotModifiable<B> {
             tableEditorManager.init(this.listenableList);
         }
 
-        if (hasChanged && !isLazyLoad()) {
-            refreshTableEditorControls();
+        if (hasChanged) {
+        	if(!isLazyLoad()) {
+        		refreshTableEditorControls();
+        	}else if(tableEditorManager != null){
+            	tableEditorManager.clearEditor();
+            }
         }
 
     }

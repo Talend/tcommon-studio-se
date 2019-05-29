@@ -479,6 +479,13 @@ public class ConnectionParameters {
         this.query = TalendQuoteUtils.checkAndRemoveQuotes(query);
     }
 
+    public void setQuery(String query, boolean isSQL) {
+        if (isSQL) {
+            this.query = query;
+        } else {
+            this.query = TalendQuoteUtils.checkAndRemoveQuotes(query);
+        }
+    }
     /**
      * Getter for userName.
      * 

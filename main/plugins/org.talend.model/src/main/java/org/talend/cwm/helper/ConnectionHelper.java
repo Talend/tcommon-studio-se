@@ -43,7 +43,7 @@ import org.talend.cwm.relational.TdColumn;
 import org.talend.cwm.softwaredeployment.TdSoftwareSystem;
 import org.talend.cwm.xml.TdXmlElementType;
 import org.talend.cwm.xml.TdXmlSchema;
-import org.talend.utils.security.CryptoHelper;
+import org.talend.daikon.security.CryptoHelper;
 
 import orgomg.cwm.foundation.softwaredeployment.Component;
 import orgomg.cwm.foundation.softwaredeployment.DataManager;

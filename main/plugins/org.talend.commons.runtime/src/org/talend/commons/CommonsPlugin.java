@@ -26,6 +26,7 @@ import org.osgi.framework.BundleContext;
 import org.osgi.framework.ServiceReference;
 import org.talend.commons.exception.ExceptionService;
 import org.talend.commons.runtime.debug.TalendDebugHandler;
+import org.talend.commons.utils.system.EclipseCommandLine;
 
 /**
  * Activator for Code Generator.
@@ -99,6 +100,10 @@ public class CommonsPlugin implements BundleActivator {
 
     public static void setHeadless(boolean headless) {
         CommonsPlugin.headless = headless;
+    }
+
+    public static boolean isScriptCmdlineMode() {
+        return System.getProperty(EclipseCommandLine.PROP_VM) == null;
     }
 
     public static boolean isDebugMode() {

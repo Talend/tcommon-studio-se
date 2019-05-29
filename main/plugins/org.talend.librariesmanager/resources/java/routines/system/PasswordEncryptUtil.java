@@ -24,6 +24,10 @@ public class PasswordEncryptUtil {
     public static String ENCRYPT_KEY = "Encrypt"; //$NON-NLS-1$
 
     private static final String ENCRYPTION_KEY = "Talend_TalendKey";
+    
+    public static String PREFIX_PASSWORD = "ENC:["; //$NON-NLS-1$
+    
+    public static String POSTFIX_PASSWORD = "]"; //$NON-NLS-1$
 
     private static Encryption defaultEncryption;
 
@@ -31,17 +35,20 @@ public class PasswordEncryptUtil {
         if (input == null) {
             return input;
         }
-        return getEncryption().encrypt(input);
+        return PREFIX_PASSWORD + getEncryption().encrypt(input) + POSTFIX_PASSWORD;
     }
 
     public static String decryptPassword(String input) {
         if (input == null || input.length() == 0) {
             return input;
         }
-        try {
-            return getEncryption().decrypt(input);
-        } catch (Exception e) {
-            // do nothing
+        if (input.startsWith(PREFIX_PASSWORD) && input.endsWith(POSTFIX_PASSWORD)) {
+            try {
+                return getEncryption()
+                        .decrypt(input.substring(PREFIX_PASSWORD.length(), input.length() - POSTFIX_PASSWORD.length()));
+            } catch (Exception e) {
+                // do nothing
+            }
         }
         return input;
     }

@@ -12,10 +12,12 @@
 // ============================================================================
 package org.talend.designer.maven.aether.util;
 
+import java.io.File;
 import java.io.PrintWriter;
 import java.io.StringWriter;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.LinkedHashSet;
@@ -23,6 +25,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
+import org.apache.maven.model.Model;
+import org.apache.maven.model.Parent;
 import org.apache.maven.repository.internal.MavenRepositorySystemUtils;
 import org.codehaus.plexus.util.StringUtils;
 import org.eclipse.aether.DefaultRepositorySystemSession;
@@ -33,12 +37,15 @@ import org.eclipse.aether.artifact.DefaultArtifact;
 import org.eclipse.aether.collection.CollectRequest;
 import org.eclipse.aether.collection.DependencySelector;
 import org.eclipse.aether.connector.basic.BasicRepositoryConnectorFactory;
+import org.eclipse.aether.graph.DefaultDependencyNode;
 import org.eclipse.aether.graph.Exclusion;
 import org.eclipse.aether.impl.DefaultServiceLocator;
 import org.eclipse.aether.repository.Authentication;
 import org.eclipse.aether.repository.LocalRepository;
 import org.eclipse.aether.repository.RemoteRepository;
 import org.eclipse.aether.repository.RemoteRepository.Builder;
+import org.eclipse.aether.resolution.ArtifactRequest;
+import org.eclipse.aether.resolution.ArtifactResult;
 import org.eclipse.aether.resolution.VersionRangeRequest;
 import org.eclipse.aether.resolution.VersionRangeResult;
 import org.eclipse.aether.spi.connector.RepositoryConnectorFactory;
@@ -55,6 +62,8 @@ import org.eclipse.aether.version.Version;
 import org.eclipse.aether.version.VersionConstraint;
 import org.eclipse.aether.version.VersionScheme;
 import org.eclipse.core.runtime.CoreException;
+import org.eclipse.m2e.core.MavenPlugin;
+import org.talend.commons.exception.ExceptionHandler;
 import org.talend.designer.maven.aether.DummyDynamicMonitor;
 import org.talend.designer.maven.aether.IDynamicMonitor;
 import org.talend.designer.maven.aether.node.DependencyNode;
@@ -66,6 +75,10 @@ import org.talend.designer.maven.aether.selector.DynamicExclusionDependencySelec
  * DOC cmeng class global comment. Detailled comment
  */
 public class DynamicDistributionAetherUtils {
+
+    private static final String EXTENSION_POM = "pom";
+
+    private static final String GAV_SEPERATOR = ":";
 
     private static Map<String, RepositorySystem> repoSystemMap = new HashMap<>();
 
@@ -148,6 +161,7 @@ public class DynamicDistributionAetherUtils {
         monitor.writeMessage("\n\n=== Start to collect dependecies of " + dependency.toString() + " ===\n");
         org.eclipse.aether.graph.DependencyNode node = repoSystem.collectDependencies(session, collectRequest).getRoot();
         if (node != null) {
+            addParentPoms(monitor, repoSystem, session, central, node, null);
             monitor.writeMessage("=== Collected dependencies:\n");
             monitor.writeMessage(buildDependencyTreeString(node, "    "));
             monitor.writeMessage("\n");
@@ -159,6 +173,108 @@ public class DynamicDistributionAetherUtils {
 
         return convertedNode;
 
+    }
+
+    private static Set<String> getAllGAVs(org.eclipse.aether.graph.DependencyNode node,
+            Set<org.eclipse.aether.graph.DependencyNode> visited) {
+        if (visited == null) {
+            visited = new HashSet<>();
+        }
+        if (visited.contains(node)) {
+            return Collections.EMPTY_SET;
+        } else {
+            visited.add(node);
+        }
+        Set<String> gavs = new HashSet<String>();
+        Artifact artifact = node.getArtifact();
+        gavs.add(artifact.getGroupId() + GAV_SEPERATOR + artifact.getArtifactId() + GAV_SEPERATOR + artifact.getVersion());
+        List<org.eclipse.aether.graph.DependencyNode> children = node.getChildren();
+        if (children != null) {
+            for (org.eclipse.aether.graph.DependencyNode dn : children) {
+                gavs.addAll(getAllGAVs(dn, visited));
+            }
+        }
+        return gavs;
+    }
+
+    private static void addParentPoms(IDynamicMonitor monitor, RepositorySystem repoSystem, RepositorySystemSession session,
+            RemoteRepository central, org.eclipse.aether.graph.DependencyNode node, Set<String> existingGAVs) throws Exception {
+        checkCancelOrNot(monitor);
+        if (existingGAVs == null) {
+            existingGAVs = getAllGAVs(node, null);
+        }
+        Artifact artifact = node.getArtifact();
+        try {
+            Model pomModel = getPomModel(monitor, repoSystem, session, central, artifact.getGroupId(), artifact.getArtifactId(),
+                    artifact.getVersion(), artifact.getClassifier());
+            Parent parent = pomModel.getParent();
+
+            while (parent != null) {
+                checkCancelOrNot(monitor);
+                String key = parent.getGroupId() + GAV_SEPERATOR + parent.getArtifactId() + GAV_SEPERATOR + parent.getVersion();
+                if (!existingGAVs.contains(key)) {
+                    org.eclipse.aether.graph.DependencyNode dn = new DefaultDependencyNode(
+                            new DefaultArtifact(parent.getGroupId(), parent.getArtifactId(), EXTENSION_POM, parent.getVersion()));
+                    node.getChildren().add(dn);
+                    existingGAVs.add(key);
+                }
+                Model model = getPomModel(monitor, repoSystem, session, central, parent.getGroupId(), parent.getArtifactId(),
+                        parent.getVersion(), null);
+                if (model != null) {
+                    parent = model.getParent();
+                } else {
+                    parent = null;
+                }
+            }
+
+        } catch (InterruptedException e) {
+            throw e;
+        } catch (Exception e) {
+            ExceptionHandler.process(e);
+        }
+        
+        List<org.eclipse.aether.graph.DependencyNode> children = node.getChildren();
+        if (children != null) {
+            for (org.eclipse.aether.graph.DependencyNode dn : children) {
+                try {
+                    addParentPoms(monitor, repoSystem, session, central, dn, existingGAVs);
+                } catch (InterruptedException e) {
+                    throw e;
+                } catch (Exception e) {
+                    ExceptionHandler.process(e);
+                }
+            }
+        }
+    }
+
+    private static Model getPomModel(IDynamicMonitor monitor, RepositorySystem repoSystem, RepositorySystemSession session,
+            RemoteRepository central, String groupId, String artifactId, String version, String classifier) throws Exception {
+        checkCancelOrNot(monitor);
+        File pomFile = null;
+        try {
+            ArtifactRequest ar = new ArtifactRequest();
+            Artifact reqArtifact = new DefaultArtifact(groupId, artifactId, "", EXTENSION_POM, version);
+            ar.setArtifact(reqArtifact);
+            ar.addRepository(central);
+            ArtifactResult result = repoSystem.resolveArtifact(session, ar);
+            pomFile = result.getArtifact().getFile();
+        } catch (Exception e) {
+            if (StringUtils.isNotBlank(classifier)) {
+                ArtifactRequest ar = new ArtifactRequest();
+                Artifact reqArtifact = new DefaultArtifact(groupId, artifactId, classifier, EXTENSION_POM, version);
+                ar.setArtifact(reqArtifact);
+                ar.addRepository(central);
+                ArtifactResult result = repoSystem.resolveArtifact(session, ar);
+                pomFile = result.getArtifact().getFile();
+            } else {
+                throw e;
+            }
+        }
+        if (pomFile != null) {
+            return MavenPlugin.getMavenModelManager().readMavenModel(pomFile);
+        } else {
+            return null;
+        }
     }
 
     public static List<String> versionRange(String remoteUrl, String username, String password, String localPath, String groupId,
@@ -183,7 +299,7 @@ public class DynamicDistributionAetherUtils {
             range = range + ")"; //$NON-NLS-1$
         }
 
-        Artifact artifact = new DefaultArtifact(groupId + ":" + artifactId + range); //$NON-NLS-1$
+        Artifact artifact = new DefaultArtifact(groupId + GAV_SEPERATOR + artifactId + range); //$NON-NLS-1$
         Builder builder = new RemoteRepository.Builder("central", "default", remoteUrl); //$NON-NLS-1$ //$NON-NLS-2$
         if (StringUtils.isNotEmpty(username)) {
             Authentication auth = new AuthenticationBuilder().addUsername(username).addPassword(password).build();
@@ -229,7 +345,7 @@ public class DynamicDistributionAetherUtils {
             range = range + ")"; //$NON-NLS-1$
         }
 
-        Artifact artifact = new DefaultArtifact(groupId + ":" + artifactId + range); //$NON-NLS-1$
+        Artifact artifact = new DefaultArtifact(groupId + GAV_SEPERATOR + artifactId + range); //$NON-NLS-1$
         Builder builder = new RemoteRepository.Builder("central", "default", remoteUrl); //$NON-NLS-1$ //$NON-NLS-2$
         if (StringUtils.isNotEmpty(username)) {
             Authentication auth = new AuthenticationBuilder().addUsername(username).addPassword(password).build();

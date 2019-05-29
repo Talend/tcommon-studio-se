@@ -13,6 +13,7 @@
 package org.talend.librariesmanager.ui.startup;
 
 import java.io.File;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
@@ -23,11 +24,15 @@ import java.util.Set;
 
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.SubMonitor;
+import org.talend.commons.exception.ExceptionHandler;
+import org.talend.commons.utils.VersionUtils;
 import org.talend.core.GlobalServiceRegister;
 import org.talend.core.ILibraryManagerService;
 import org.talend.core.model.general.ModuleNeeded;
+import org.talend.core.nexus.TalendMavenResolver;
 import org.talend.core.runtime.maven.MavenArtifact;
 import org.talend.core.runtime.maven.MavenConstants;
+import org.talend.core.runtime.maven.MavenUrlHelper;
 import org.talend.designer.maven.utils.PomUtil;
 import org.talend.librariesmanager.maven.ShareLibrareisHelper;
 import org.talend.librariesmanager.model.ModulesNeededProvider;
@@ -43,13 +48,13 @@ public class ShareMavenArtifactsOnStartup extends ShareLibrareisHelper {
 
     @Override
     public Map<ModuleNeeded, File> getFilesToShare(IProgressMonitor monitor) {
-        Map<ModuleNeeded, File> files = new HashMap<ModuleNeeded, File>();
+        Map<ModuleNeeded, File> files = new HashMap<>();
         SubMonitor mainSubMonitor = SubMonitor.convert(monitor, 1);
         mainSubMonitor.setTaskName(Messages.getString("ShareLibsJob.getFilesToShare")); //$NON-NLS-1$
-        final List<ModuleNeeded> modulesNeeded = new ArrayList<ModuleNeeded>(ModulesNeededProvider.getModulesNeeded());
-        ILibraryManagerService librariesService = (ILibraryManagerService) GlobalServiceRegister.getDefault().getService(
+        final List<ModuleNeeded> modulesNeeded = new ArrayList<>(ModulesNeededProvider.getModulesNeeded());
+        ILibraryManagerService librariesService = GlobalServiceRegister.getDefault().getService(
                 ILibraryManagerService.class);
-        Set<String> filePaths = new HashSet<String>();
+        Set<String> filePaths = new HashSet<>();
         for (ModuleNeeded module : modulesNeeded) {
             if (monitor.isCanceled()) {
                 return null;
@@ -73,6 +78,11 @@ public class ShareMavenArtifactsOnStartup extends ShareLibrareisHelper {
                 filePaths.add(jarPathFromMaven);
             }
         }
+
+        addMojoArtifact(files, "org.talend.ci", "builder-maven-plugin", "ci.builder.version"); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+        addMojoArtifact(files, "org.talend.ci", "cloudpublisher-maven-plugin", "cloud.publisher.version"); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+        addMojoArtifact(files, "org.talend.ci", "signer-maven-plugin", "signer.version"); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+
         mainSubMonitor.worked(1);
         return files;
     }
@@ -102,6 +112,23 @@ public class ShareMavenArtifactsOnStartup extends ShareLibrareisHelper {
         deployer.deploy(file, artifact);
         // artifact.setType(MavenConstants.PACKAGING_POM);
         // deployer.deploy(pomFile, artifact);
+    }
+
+    private void addMojoArtifact(Map<ModuleNeeded, File> files, String groupId, String artifactId, String versionKey) {
+        String mvnUrl = MavenUrlHelper.generateMvnUrl(groupId, artifactId, VersionUtils.getMojoVersion(versionKey), null, null);
+        // try to resolve locally
+        String localMvnUrl = mvnUrl.replace(MavenUrlHelper.MVN_PROTOCOL,
+                MavenUrlHelper.MVN_PROTOCOL + MavenConstants.LOCAL_RESOLUTION_URL + MavenUrlHelper.REPO_SEPERATOR);
+        File file = null;
+        try {
+            file = TalendMavenResolver.getMavenResolver().resolve(localMvnUrl);
+        } catch (IOException | RuntimeException e) {
+            ExceptionHandler.process(e);
+        }
+        if (file != null) {
+            ModuleNeeded module = new ModuleNeeded("", mvnUrl, "", true);
+            files.put(module, file);
+        }
     }
 
 }

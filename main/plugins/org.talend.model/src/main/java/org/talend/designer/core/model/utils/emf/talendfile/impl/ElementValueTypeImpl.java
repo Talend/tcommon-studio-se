@@ -9,9 +9,9 @@ import org.eclipse.emf.common.notify.Notification;
 import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.impl.ENotificationImpl;
 import org.eclipse.emf.ecore.impl.EObjectImpl;
+import org.talend.daikon.security.CryptoHelper;
 import org.talend.designer.core.model.utils.emf.talendfile.ElementValueType;
 import org.talend.designer.core.model.utils.emf.talendfile.TalendFilePackage;
-import org.talend.utils.security.CryptoHelper;
 
 /**
  * <!-- begin-user-doc --> An implementation of the model object '<em><b>Element Value Type</b></em>'. <!-- end-user-doc

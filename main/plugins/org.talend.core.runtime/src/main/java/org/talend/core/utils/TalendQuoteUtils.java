@@ -37,6 +37,8 @@ public final class TalendQuoteUtils {
 
     public static final String RBRACKET = "]"; //$NON-NLS-1$
 
+    public static final String SQL_SCRIPT = "sql"; //$NON-NLS-1$
+
     private static final String JAVA_DECLARE_STRING = "\""; //$NON-NLS-1$
 
     private static final String PERL_DECLARE_STRING = "'"; //$NON-NLS-1$
@@ -183,6 +185,8 @@ public final class TalendQuoteUtils {
             newString = ANTI_QUOTE + checkStringQuotationMarks(text) + ANTI_QUOTE;
         } else if (quoteStyle.equals(LBRACKET) || quoteStyle.equals(RBRACKET)) {
             newString = LBRACKET + checkStringQuotationMarks(text) + RBRACKET;
+        } else if (quoteStyle.equals(SQL_SCRIPT)) {
+            newString = QUOTATION_MARK + text + QUOTATION_MARK;
         } else {
             newString = QUOTATION_MARK + checkStringQuotationMarks(text) + QUOTATION_MARK;
         }

@@ -47,7 +47,27 @@ public class TalendTextUtils {
 
     private static final int LINE_MAX_NUM = 100;
 
-    private static final String PASS_COVER = "********"; //$NON-NLS-1$
+    private final static String DOUBLE_QUOTE = "\""; //$NON-NLS-1$
+
+    private final static String DOUBLE_QUOTE_WITH_BACKSLASH = "\\\""; //$NON-NLS-1$
+
+    private final static String SINGLE_BACKSLASH = "\\"; //$NON-NLS-1$
+
+    private final static String DOUBLE_BACKSLASH = "\\\\"; //$NON-NLS-1$
+
+    private final static String PASS_COVER = "********"; //$NON-NLS-1$
+
+    /**
+     * DOC Tao Tao Comment method "addStrInQuery". This method will add double quotes surrounding a String and convert
+     * "\\" to "\\\\".
+     * 
+     * @param input
+     * @return
+     */
+    public static String addStrInQuery(String input) {
+        String out = convertSlashForSpecialChar(input);
+        return addQuotes(out, TalendQuoteUtils.SQL_SCRIPT);
+    }
 
     public static String addQuotes(String text) {
         return TalendQuoteUtils.addQuotes(text);
@@ -139,6 +159,58 @@ public class TalendTextUtils {
         }
         return newString;
 
+    }
+
+    /**
+     * DOC Tao Tao Comment method "convertSlashForSpecialChar". This method will convert "\\" to "\\\\", for example,
+     * add a slash in String "'\\b'" to String "'\\\\b'".
+     * 
+     * @param input
+     * @return
+     */
+    public static String convertSlashForSpecialChar(String input) {
+
+        if (input.contains(SINGLE_BACKSLASH)) {
+            input = input.replace(SINGLE_BACKSLASH, DOUBLE_BACKSLASH);
+        }
+
+        if (input.contains(DOUBLE_QUOTE)) {
+            input = input.replace(DOUBLE_QUOTE, DOUBLE_QUOTE_WITH_BACKSLASH);
+        }
+
+        return input;
+    }
+
+    /**
+     * DOC Tao Tao Comment method "removeSlashForSpecialChar". This method will convert "\\\\" to "\\", for example,
+     * remove a slash in String "'\\\\b'" to String "'\\b'".
+     * 
+     * @param input
+     * @return
+     */
+    public static String removeSlashForSpecialChar(String input) {
+
+        if (input.contains(DOUBLE_BACKSLASH)) {
+            input = input.replace(DOUBLE_BACKSLASH, SINGLE_BACKSLASH);
+        }
+
+        if (input.contains(DOUBLE_QUOTE_WITH_BACKSLASH)) {
+            input = input.replace(DOUBLE_QUOTE_WITH_BACKSLASH, DOUBLE_QUOTE);
+        }
+
+        return input;
+    }
+
+    /**
+     * DOC Tao Tao Comment method "removeStrInQuery". This method will remove String surrounding quotes and convert
+     * "\\\\" to "\\".
+     * 
+     * @param input
+     * @return
+     */
+    public static String removeStrInQuery(String input) {
+        String out = removeQuotes(input);
+        return TalendTextUtils.removeSlashForSpecialChar(out);
     }
 
     /**
