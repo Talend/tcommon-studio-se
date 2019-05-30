@@ -48,7 +48,15 @@ public class ClasspathsJarGenerator {
     }
 
     public static String createJar(Property property, String classpath, String separator) throws Exception {
-        String newClasspath = generateClasspathForManifest(classpath, separator);
+        boolean isRelativePath = false;
+        String[] classpathArray = classpath.split(separator);
+        for (String cp : classpathArray) {
+            if (cp.startsWith("../") && cp.endsWith(".jar")) { //$NON-NLS-1$
+                isRelativePath = true;
+                break;
+            }
+        }
+        String newClasspath = generateClasspathForManifest(classpath, separator, isRelativePath);
 
         Manifest manifest = new Manifest();
         Attributes a = manifest.getMainAttributes();
@@ -69,10 +77,11 @@ public class ClasspathsJarGenerator {
             stream.close();
         }
 
-        return getFinalClasspath(classpath, separator, jarLocation);
+        return getFinalClasspath(classpath, separator, jarLocation, isRelativePath);
     }
 
-    private static String generateClasspathForManifest(String classpath, String separator) throws Exception {
+    private static String generateClasspathForManifest(String classpath, String separator, boolean isRelativePath)
+            throws Exception {
         if (BLANK.equals(separator)) {
             return classpath;
         }
@@ -81,10 +90,12 @@ public class ClasspathsJarGenerator {
         for (String cp : classpathArray) {
             if (cp.endsWith(".jar") || cp.endsWith(".exe")) { //$NON-NLS-1$ //$NON-NLS-2$
                 // files should be start with /
-                cp = prepend(cp);
+                if (!isRelativePath) {
+                    cp = prepend(cp);
+                }
             } else if (!cp.endsWith(".")) { //$NON-NLS-1$
                 // directory need to wrap with /
-                cp = wrapWithSlash(cp);
+                cp = StringUtils.appendIfMissing(cp, SLASH);
             }
             // cp = StringUtils.replace(cp, " ", "%20"); //$NON-NLS-1$ //$NON-NLS-2$
             newClasspath.append(cp + BLANK);
@@ -92,7 +103,8 @@ public class ClasspathsJarGenerator {
         return newClasspath.toString().trim();
     }
 
-    private static String getFinalClasspath(String classpath, String separator, String jarLocation) throws Exception {
+    private static String getFinalClasspath(String classpath, String separator, String jarLocation, boolean isRelativePath)
+            throws Exception {
         if (BLANK.equals(separator)) {
             return jarLocation;
         }
@@ -105,7 +117,9 @@ public class ClasspathsJarGenerator {
                     || path.lastSegment().startsWith("hadoop-core")) //$NON-NLS-1$
                     && path.lastSegment().endsWith(".jar")) { //$NON-NLS-1$
                 // files should be start with /
-                cp = prepend(cp);
+                if (!isRelativePath) {
+                    cp = prepend(cp);
+                }
                 finalClasspath.append(cp + separator);
             }
         }
@@ -147,7 +161,7 @@ public class ClasspathsJarGenerator {
     private static IRunProcessService getRunProcessService() {
         if (service == null) {
             if (GlobalServiceRegister.getDefault().isServiceRegistered(IRunProcessService.class)) {
-                service = (IRunProcessService) GlobalServiceRegister.getDefault().getService(IRunProcessService.class);
+                service = GlobalServiceRegister.getDefault().getService(IRunProcessService.class);
             }
         }
         return service;
