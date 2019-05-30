@@ -233,6 +233,8 @@ public class TableViewerCreatorNotModifiable<B> {
 
     private Table table;
 
+    private boolean isBeforeFilter;
+
     private TableViewerCreatorSorter tableViewerCreatorSorter;
 
     private LAYOUT_MODE layoutMode = LAYOUT_MODE.NONE;
@@ -591,6 +593,9 @@ public class TableViewerCreatorNotModifiable<B> {
 
                     @Override
                     public void handleEvent(Event event) {
+                        if (isBeforeFilter) {
+                            return;
+                        }
                         TableItem item = (TableItem) event.item;
                         int index = table.indexOf(item);
 
@@ -2221,5 +2226,13 @@ public class TableViewerCreatorNotModifiable<B> {
  
     public static boolean isLazyLoadingDisabled() {
         return Boolean.getBoolean("talend.table.disableLazyLoading"); //$NON-NLS-1$
+    }
+
+    public boolean isBeforeFilter() {
+        return isBeforeFilter;
+    }
+
+    public void setBeforeFilter(boolean isBeforeFilter) {
+        this.isBeforeFilter = isBeforeFilter;
     }
 }
