@@ -48,7 +48,6 @@ public class HorizontalTabFactory {
     public void initComposite(Composite parent, boolean displayCompactToolbar) {
 
         Composite panel = new Composite(parent, SWT.NONE);
-        panel.setLayoutData(new GridData(GridData.FILL_BOTH));
         panel.setLayout(new FormLayout());
 
         widgetFactory = new TabbedPropertySheetWidgetFactory();
