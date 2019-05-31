@@ -22,6 +22,7 @@ import org.eclipse.core.runtime.Path;
 import org.osgi.framework.Version;
 import org.talend.core.GlobalServiceRegister;
 import org.talend.core.ILibraryManagerService;
+import org.talend.core.database.conn.version.DatabaseDriversCache;
 import org.talend.core.model.process.IElementParameter;
 import org.talend.core.runtime.CoreRuntimePlugin;
 import org.talend.core.runtime.maven.MavenArtifact;
@@ -578,7 +579,8 @@ public class ModuleNeeded {
                 if (mvnUrisFromIndex != null) {
                     mavenUri = MavenUrlHelper.addTypeForMavenUri(mvnUrisFromIndex, getModuleName());
                 } else {
-                    mavenUri = MavenUrlHelper.generateMvnUrlForJarName(getModuleName(), true, true);
+                    boolean isDatabaseDriver = DatabaseDriversCache.isDatabaseDriver(getModuleName());
+                    mavenUri = MavenUrlHelper.generateMvnUrlForJarName(getModuleName(), true, !isDatabaseDriver);
                 }
             } else {
                 mavenUri = mavenUriFromConfiguration;
