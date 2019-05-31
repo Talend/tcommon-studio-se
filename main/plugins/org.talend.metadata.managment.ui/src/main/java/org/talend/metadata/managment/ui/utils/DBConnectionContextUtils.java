@@ -1270,12 +1270,11 @@ public final class DBConnectionContextUtils {
 
         // TDI-28124:tdb2input can't guess schema from join sql on system table
         if (EDatabaseTypeName.IBMDB2.equals(EDatabaseTypeName.getTypeFromDbType(dbConn.getDatabaseType()))) {
-            String cursorForDb2 = "cursorSensitivity=2;";
-            String database = sidOrDatabase;
-            String newURL =
-                    DatabaseConnStrUtil.getURLString(cloneConn.getDatabaseType(), dbConn.getDbVersionString(), server,
-                            username, password, port, database, filePath.toLowerCase(), datasource, dbRootPath,
-                            additionParam) + cursorForDb2;
+            String cursorForDb2 = ":cursorSensitivity=2;";
+            String database = sidOrDatabase + cursorForDb2;
+            String newURL = DatabaseConnStrUtil
+                    .getURLString(cloneConn.getDatabaseType(), dbConn.getDbVersionString(), server, username, password,
+                            port, database, filePath.toLowerCase(), datasource, dbRootPath, additionParam);
             cloneConn.setURL(newURL);
             return cloneConn;
         }
