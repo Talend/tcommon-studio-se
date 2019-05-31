@@ -12,6 +12,7 @@
 // ============================================================================
 package org.talend.core.database.conn;
 
+import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 
 import org.junit.Assert;
@@ -140,7 +141,7 @@ public class DatabaseConnStrUtilTest {
     public void testGetURLStringForMSSQL() {
         String dbType = EDatabaseTypeName.MSSQL.getDisplayName();
         String dbVersion = EDatabaseVersion4Drivers.MSSQL_PROP.getVersionValue();
-        String host = "lcoalhost";
+        String host = "localhost";
         String port = "";
         String sid = "master";
         String[] otherParam = new String[] {};
@@ -186,5 +187,21 @@ public class DatabaseConnStrUtilTest {
         Assert.assertEquals(analyseURL3[2], port);
         Assert.assertEquals(analyseURL3[3], database);
         Assert.assertEquals(analyseURL3[4], additionalProp);
+    }
+
+    @Test
+    public void testGetURLStringForDB2() {
+        // test for StandaloneConnectionContextUtils line 347
+        // TDI-28124:tdb2input can't guess schema from join sql on system table
+        String dbType = EDatabaseTypeName.IBMDB2.getDisplayName();
+        String dbVersion = EDatabaseVersion4Drivers.IBMDB2.getVersionValue();
+        String host = "localhost";
+        String port = "50000";
+        String sid = "TESTDB3:cursorSensitivity=2;";
+        String[] otherParam = new String[] {};
+        String expectURL = "jdbc:db2://" + host + ":" + port + "/" + sid;
+        String realValue = DatabaseConnStrUtil
+                .getURLString(false, dbType, dbVersion, host, "", "", port, sid, "", "", "", "", otherParam);
+        assertEquals(expectURL, realValue);
     }
 }
