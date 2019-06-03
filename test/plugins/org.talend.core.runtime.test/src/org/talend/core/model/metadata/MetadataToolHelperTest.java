@@ -805,7 +805,7 @@ public class MetadataToolHelperTest {
         MetadataToolHelper.setTargetOriginalColumns(source, target);
         tCs = target.getOriginalColumns();
         for(int i=0;i<target.getListColumns().size();i++) {
-        	assertEquals(tCs.get(i), "S"+i);
+        	assertEquals(tCs.get(i), "S"+(i+1));
         }
         
     }
