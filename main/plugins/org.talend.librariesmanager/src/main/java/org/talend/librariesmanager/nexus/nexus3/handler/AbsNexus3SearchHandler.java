@@ -24,6 +24,7 @@ import org.apache.http.HttpStatus;
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.impl.client.DefaultHttpClient;
 import org.apache.http.util.EntityUtils;
+import org.apache.log4j.Logger;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.talend.core.nexus.ArtifactRepositoryBean;
 import org.talend.core.nexus.HttpClientTransport;
@@ -33,8 +34,17 @@ import net.sf.json.JSONArray;
 import net.sf.json.JSONObject;
 
 public abstract class AbsNexus3SearchHandler implements INexus3SearchHandler {
-
+    private static Logger log = Logger.getLogger(AbsNexus3SearchHandler.class);
     protected ArtifactRepositoryBean serverBean;
+    
+    /**
+     * {@value}
+     * <p>
+     * System property of client keystore password.
+     */
+    private final String KEY_NEXUS3_SOCKET_TIMEOUT = "nexus3.socked.timeout";
+
+    private final int DEFAULT_SOCKED_TIMEOUT = 10 * 1000; // The default value is 10S
 
     public AbsNexus3SearchHandler(ArtifactRepositoryBean serverBean) {
         this.serverBean = serverBean;
@@ -182,5 +192,19 @@ public abstract class AbsNexus3SearchHandler implements INexus3SearchHandler {
         String userPass = serverBean.getUserName() + ":" + serverBean.getPassword(); //$NON-NLS-1$
         String basicAuth = "Basic " + new String(new Base64().encode(userPass.getBytes())); //$NON-NLS-1$
         return basicAuth;
+    }
+    
+    protected int getNexus3SocketTimeout() {
+        int sockedTimeout = DEFAULT_SOCKED_TIMEOUT;
+        String strValue = System.getProperty(KEY_NEXUS3_SOCKET_TIMEOUT);
+        if (StringUtils.isNotEmpty(strValue)) {
+            try {
+                int value = Integer.parseInt(strValue);
+                sockedTimeout = value * 1000;
+            } catch (NumberFormatException ex) {
+                log.error("Parse nexus3 socket timeout error:" + ex.getMessage());
+            }
+        }
+        return sockedTimeout;
     }
 }

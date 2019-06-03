@@ -137,7 +137,9 @@ public class Nexus3RepositoryHandler extends AbstractArtifactRepositoryHandler {
                     try {
                         result = handler.search(repositoryId, groupIdToSearch, artifactId, versionToSearch);
                         currentQueryHandler = handler;
-                        LOGGER.info("Switch to new search handler,the handler version is:" + currentQueryHandler.getHandlerVersion());
+                        LOGGER.info(
+                                "Switch to new search handler,the handler version is:" + currentQueryHandler.getHandlerVersion());
+                        break;
                     } catch (Exception e) {
                         LOGGER.info("Try to switch search handler failed" + e.getMessage());
                     }
@@ -149,9 +151,9 @@ public class Nexus3RepositoryHandler extends AbstractArtifactRepositoryHandler {
 
     private INexus3SearchHandler getQueryHandler() {
         if (queryHandlerList.size() == 0) {
-            queryHandlerList.add(new Nexus3ScriptSearchHandler(serverBean));
-            queryHandlerList.add(new Nexus3BetaSearchHandler(serverBean));
             queryHandlerList.add(new Nexus3V1SearchHandler(serverBean));
+            queryHandlerList.add(new Nexus3BetaSearchHandler(serverBean));
+            queryHandlerList.add(new Nexus3ScriptSearchHandler(serverBean));
         }
         return queryHandlerList.get(0);
     }
