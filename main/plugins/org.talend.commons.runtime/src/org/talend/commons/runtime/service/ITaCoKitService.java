@@ -31,6 +31,8 @@ import org.talend.commons.i18n.internal.Messages;
  */
 public interface ITaCoKitService {
 
+    void start() throws Exception;
+
     String reload(IProgressMonitor monitor) throws Exception;
 
     boolean isTaCoKitCar(File file, IProgressMonitor monitor) throws Exception;

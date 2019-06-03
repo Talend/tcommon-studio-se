@@ -25,6 +25,7 @@ import org.eclipse.jface.window.Window;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.ui.PlatformUI;
 import org.ops4j.pax.url.mvn.Handler;
+import org.talend.commons.exception.ExceptionHandler;
 import org.talend.commons.ui.runtime.exception.MessageBoxExceptionHandler;
 import org.talend.core.GlobalServiceRegister;
 import org.talend.core.model.general.ILibrariesService;
@@ -46,6 +47,8 @@ abstract public class DownloadModuleRunnable implements IRunnableWithProgress {
     protected Set<String> installedModules;
 
     private boolean checkLibraries;
+    
+    private boolean showErrorInDialog = true;
 
     /**
      * DOC sgandon DownloadModuleRunnable constructor comment.
@@ -122,7 +125,12 @@ abstract public class DownloadModuleRunnable implements IRunnableWithProgress {
                 } catch (Exception e) {
                     downloadFailed.add(module.getName());
                     connectionTimeOut = true;
-                    MessageBoxExceptionHandler.process(new Exception("Download " + module.getName() + " failed!", e));
+                    Exception ex = new Exception("Download " + module.getName() + " : " + module.getMavenUri() + " failed!", e);
+                    if (showErrorInDialog) {
+                        MessageBoxExceptionHandler.process(ex);
+                    } else {
+                        ExceptionHandler.process(ex);
+                    }
                     continue;
                 }
                 canDownload = false;
@@ -205,4 +213,9 @@ abstract public class DownloadModuleRunnable implements IRunnableWithProgress {
     public Set<String> getInstalledModules() {
         return this.installedModules;
     }
+
+    public void setShowErrorInDialog(boolean showErrorInDialog) {
+        this.showErrorInDialog = showErrorInDialog;
+    }
+
 }

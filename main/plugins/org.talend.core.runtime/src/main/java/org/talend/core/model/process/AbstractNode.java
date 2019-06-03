@@ -308,19 +308,8 @@ public abstract class AbstractNode implements INode {
                         return mapMerge.keySet().iterator().next().getSubProcessStartNode(withConditions);
                     }
                 }
-                if (getCurrentActiveLinksNbInput(EConnectionType.MAIN) == 0) {
-                    IConnection aheadConnection = null;
-                    for (IConnection inConnection : getIncomingConnections()) {
-                        // refer to DataProcess.checkFlowRefLink() added RUN_AFTER for incoming connection
-                        if (inConnection.isActivate()
-                                && inConnection.getLineStyle().getId() == EConnectionType.RUN_AFTER.getId()) {
-                            aheadConnection = inConnection;
-                            break;
-                        }
-                    }
-                    if (aheadConnection != null) {
-                        return aheadConnection.getSource().getDesignSubjobStartNode();
-                    }
+                if ((getCurrentActiveLinksNbInput(EConnectionType.MAIN) == 0)
+                        && !checkIfCurrentActiveLinksIsLookup()) {
                     return this; // main branch here, so we got the correct sub
                                  // process start.
                 }
@@ -344,6 +333,8 @@ public abstract class AbstractNode implements INode {
                 if (!connec.getLineStyle().equals(EConnectionType.FLOW_REF)) {
                     return connec.getSource().getSubProcessStartNode(withConditions);
                 }
+            } else if (connec.getLineStyle().equals(EConnectionType.RUN_AFTER)) {
+            	return connec.getSource().getSubProcessStartNode(withConditions);
             }
         }
         return null;
@@ -357,6 +348,27 @@ public abstract class AbstractNode implements INode {
             }
         }
         return nb;
+    }
+
+    private boolean checkIfCurrentActiveLinksIsLookup() {
+        boolean flag = false;
+        int input = 0;
+        for (IConnection inConnection : getIncomingConnections()) {
+            // refer to DataProcess.checkFlowRefLink() added RUN_AFTER for incoming connection
+            if (inConnection.isActivate() && inConnection.getLineStyle().getId() == EConnectionType.RUN_AFTER.getId()) {
+                input++;
+            }
+        }
+        // check if run_after is for lookup
+        if (input > 0) {
+            for (IConnection outConnection : getOutgoingConnections()) {
+                if (outConnection.isActivate() && outConnection.getLineStyle().getId() == EConnectionType.FLOW_REF.getId()) {
+                    flag = true;
+                    break;
+                }
+            }
+        }
+        return flag;
     }
 
     /*

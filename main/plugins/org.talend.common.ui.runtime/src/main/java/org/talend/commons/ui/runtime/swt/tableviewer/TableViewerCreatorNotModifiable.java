@@ -597,7 +597,7 @@ public class TableViewerCreatorNotModifiable<B> {
                         if (index == -1) {
                             return;
                         }
-                        B element = getInputList().get(index);
+                        B element = (B) item.getData();
                         // if (element != item.getData()) {
                         associate(element, item);
                         updateItem(item, element);
@@ -2222,4 +2222,5 @@ public class TableViewerCreatorNotModifiable<B> {
     public static boolean isLazyLoadingDisabled() {
         return Boolean.getBoolean("talend.table.disableLazyLoading"); //$NON-NLS-1$
     }
+
 }

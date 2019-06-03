@@ -776,6 +776,7 @@ public class ModulesNeededProvider {
         importNeedsListForRoutes.add(getModuleNeededForName("stax-ex-1.8.1.jar"));
         importNeedsListForRoutes.add(getModuleNeededForName("txw2-2.3.2.jar"));
         importNeedsListForRoutes.add(getModuleNeededForName("jakarta.jws-api-1.1.1.jar"));
+        importNeedsListForRoutes.add(getModuleNeededForName("org.apache.servicemix.specs.jaxws-api-2.2-2.9.0.jar"));
     }
 
     /**
@@ -784,11 +785,11 @@ public class ModulesNeededProvider {
      * @return
      */
     public static ModuleNeeded getModuleNeededForName(String moduleName) {
-	List<ModuleNeeded> modulesNeeded = getModulesNeededForName(moduleName);
-	if(modulesNeeded.size() > 0) {
-	    return modulesNeeded.get(0);
-	}
-	return null;
+        List<ModuleNeeded> modulesNeeded = getModulesNeededForName(moduleName);
+        if (modulesNeeded.size() > 0) {
+            return modulesNeeded.get(0);
+        }
+        return null;
     }
     
     public static List<ModuleNeeded> getModulesNeededForBeans() {

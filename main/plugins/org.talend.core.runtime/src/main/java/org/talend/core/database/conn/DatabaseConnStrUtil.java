@@ -193,6 +193,12 @@ public class DatabaseConnStrUtil {
         }
         if (EDatabaseConnTemplate.isAddtionParamsNeeded(dbType)) {
             string = getStringReplace(string, EDatabaseConnVar.PROPERTY.getVariable(), addParams, supportContext);
+            // check whether need to remove the last ":" before <property>.
+            // the example can refer to StandaloneConnectionContextUtils line 347
+            // TDI-28124:tdb2input can't guess schema from join sql on system table
+            if (string.endsWith(":")) { //$NON-NLS-1$
+                string = StringUtils.removeEnd(string, ":"); //$NON-NLS-1$
+            }
         }
         return string;
     }

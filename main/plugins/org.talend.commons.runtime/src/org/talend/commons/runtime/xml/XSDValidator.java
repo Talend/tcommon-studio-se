@@ -45,7 +45,7 @@ public class XSDValidator {
 
     public static Document checkXSD(File fileToCheck, File fileXSD) throws IOException, ParserConfigurationException,
             SAXException {
-        final DocumentBuilderFactory fabrique = XmlUtils.getSecureDocumentBuilderFactory(false);
+        final DocumentBuilderFactory fabrique = XmlUtils.getSecureDocumentBuilderFactory();
         fabrique.setAttribute(SCHEMA_LANGUAGE, "http://www.w3.org/2001/XMLSchema"); //$NON-NLS-1$
         fabrique.setAttribute(SCHEMA_VALIDATOR, fileXSD);
         fabrique.setAttribute(XMLConstants.ACCESS_EXTERNAL_SCHEMA, PROTOCOL_PLATFORM);

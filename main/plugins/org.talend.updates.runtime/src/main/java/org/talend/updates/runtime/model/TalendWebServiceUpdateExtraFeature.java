@@ -93,6 +93,7 @@ public class TalendWebServiceUpdateExtraFeature implements ExtraFeature {
                 return TalendWebServiceUpdateExtraFeature.acceptLicence( module );
             }
         };
+        downloadModule.setShowErrorInDialog(false);
         downloadModule.run( progress );
         // compute the dowload status
         Set<String> jarsFailedToDownload = downloadModule.getDownloadFailed();

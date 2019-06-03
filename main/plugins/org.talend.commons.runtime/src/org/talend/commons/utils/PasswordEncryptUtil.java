@@ -31,6 +31,10 @@ public class PasswordEncryptUtil {
     public static String ENCRYPT_KEY = "Encrypt"; //$NON-NLS-1$
 
     private static String rawKey = "Talend-Key"; //$NON-NLS-1$
+    
+    public static String PREFIX_PASSWORD = "ENC:["; //$NON-NLS-1$
+    
+    public static String POSTFIX_PASSWORD = "]"; //$NON-NLS-1$
 
     private static SecretKey key = null;
 
@@ -95,7 +99,7 @@ public class PasswordEncryptUtil {
         if (input == null) {
             return input;
         }
-        return AESEncryption.encryptPassword(input);
+        return PREFIX_PASSWORD + AESEncryption.encryptPassword(input) + POSTFIX_PASSWORD;
     }
 
     /**

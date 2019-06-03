@@ -45,6 +45,7 @@ public enum EDatabaseVersion4Drivers {
     ORACLE_8(new DbVersion4Drivers(new EDatabaseTypeName[] { EDatabaseTypeName.ORACLEFORSID, EDatabaseTypeName.ORACLESN,
             EDatabaseTypeName.ORACLE_OCI, EDatabaseTypeName.ORACLE_CUSTOM }, "Oracle 8", "ORACLE_8", "ojdbc12.jar")), //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
     // AS400
+    AS400_V7R1_V7R3(new DbVersion4Drivers(EDatabaseTypeName.AS400, "V7R1 to V7R3", "AS400_V7R1_V7R3", "jt400_V7R3.jar")), //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
     AS400_V6R1_V7R2(new DbVersion4Drivers(EDatabaseTypeName.AS400, "V6R1 to V7R2", "AS400_V6R1_V7R2", "jt400_V6R1.jar")), //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
     AS400_V5R3_V6R1(new DbVersion4Drivers(EDatabaseTypeName.AS400, "V5R3 to V6R1", "AS400_V5R3_V6R1", "jt400_V5R3.jar")), //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
     AS400_V5R2_V5R4(new DbVersion4Drivers(EDatabaseTypeName.AS400, "V5R2 to V5R4", "AS400_V5R2_V5R4", "jt400_V5R2.jar")), //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
@@ -80,9 +81,9 @@ public enum EDatabaseVersion4Drivers {
     MYSQL_4(new DbVersion4Drivers(EDatabaseTypeName.MYSQL, "MySQL 4", "MYSQL_4", "mysql-connector-java-3.1.14-bin.jar")), //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
     MARIADB(new DbVersion4Drivers(EDatabaseTypeName.MYSQL, "MariaDB", "MARIADB", "mariadb-java-client-1.1.7.jar")), //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
     // add for 9594
-    MSSQL(new DbVersion4Drivers(EDatabaseTypeName.MSSQL,"Open source JTDS", "JTDS", "jtds-1.3.1-patch.jar")), //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+    MSSQL(new DbVersion4Drivers(EDatabaseTypeName.MSSQL,"Open source JTDS", "JTDS", "jtds-1.3.1-patch-20190523.jar")), //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
     MSSQL_2012(new DbVersion4Drivers(EDatabaseTypeName.MSSQL,
-            "Microsoft SQL Server 2012", "Microsoft SQL Server 2012", "jtds-1.3.1-patch.jar")), //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+            "Microsoft SQL Server 2012", "Microsoft SQL Server 2012", "jtds-1.3.1-patch-20190523.jar")), //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
     MSSQL_PROP(new DbVersion4Drivers(EDatabaseTypeName.MSSQL,
             "Microsoft", "MSSQL_PROP", "mssql-jdbc.jar")), //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
     
