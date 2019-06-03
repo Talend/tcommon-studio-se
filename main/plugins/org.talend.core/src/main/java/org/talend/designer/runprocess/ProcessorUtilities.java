@@ -1124,6 +1124,10 @@ public class ProcessorUtilities {
                 argumentsMap.put(TalendProcessArgumentConstant.ARG_ENABLE_APPLY_CONTEXT_TO_CHILDREN,
                         jobInfo.isApplyContextToChildren());
                 argumentsMap.put(TalendProcessArgumentConstant.ARG_GENERATE_OPTION, option);
+                if (StringUtils.isNotBlank(jobInfo.getContextName())) {
+                    // for child job bat file lack of context
+                    argumentsMap.put(TalendProcessArgumentConstant.ARG_NEED_CONTEXT, true);
+                }
                 processor.setArguments(argumentsMap);
             }
             setNeededResources(argumentsMap, jobInfo);
