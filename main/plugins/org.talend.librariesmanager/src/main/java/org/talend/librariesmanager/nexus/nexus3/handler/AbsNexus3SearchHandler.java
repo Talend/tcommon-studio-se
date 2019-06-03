@@ -40,11 +40,11 @@ public abstract class AbsNexus3SearchHandler implements INexus3SearchHandler {
     /**
      * {@value}
      * <p>
-     * System property of client keystore password.
+     * System property of nexus3 socket timeout, the unit is second.
      */
-    private final String KEY_NEXUS3_SOCKET_TIMEOUT = "nexus3.socked.timeout";
+    private final String KEY_NEXUS3_SOCKET_TIMEOUT = "nexus3.socket.timeout";
 
-    private final int DEFAULT_SOCKED_TIMEOUT = 10 * 1000; // The default value is 10S
+    private final int DEFAULT_SOCKET_TIMEOUT = 10 * 1000; // The default value is 10S
 
     public AbsNexus3SearchHandler(ArtifactRepositoryBean serverBean) {
         this.serverBean = serverBean;
@@ -195,16 +195,16 @@ public abstract class AbsNexus3SearchHandler implements INexus3SearchHandler {
     }
     
     protected int getNexus3SocketTimeout() {
-        int sockedTimeout = DEFAULT_SOCKED_TIMEOUT;
+        int socketTimeout = DEFAULT_SOCKET_TIMEOUT;
         String strValue = System.getProperty(KEY_NEXUS3_SOCKET_TIMEOUT);
         if (StringUtils.isNotEmpty(strValue)) {
             try {
                 int value = Integer.parseInt(strValue);
-                sockedTimeout = value * 1000;
+                socketTimeout = value * 1000;
             } catch (NumberFormatException ex) {
                 log.error("Parse nexus3 socket timeout error:" + ex.getMessage());
             }
         }
-        return sockedTimeout;
+        return socketTimeout;
     }
 }
