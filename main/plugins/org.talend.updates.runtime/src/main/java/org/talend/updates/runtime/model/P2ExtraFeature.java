@@ -503,7 +503,7 @@ public class P2ExtraFeature extends AbstractExtraFeature implements IP2Feature {
                 .getService(IArtifactRepositoryManager.SERVICE_NAME);
 
         // create the feature query
-        IQuery<IInstallableUnit> iuQuery = QueryUtil.createLatestQuery(QueryUtil.createIUQuery(getP2IuId()));
+        IQuery<IInstallableUnit> iuQuery = createQuery();
 
         // remove existing repositories
         for (URI existingRepUri : metadataManager.getKnownRepositories(IRepositoryManager.REPOSITORIES_ALL)) {
@@ -521,6 +521,10 @@ public class P2ExtraFeature extends AbstractExtraFeature implements IP2Feature {
             return Collections.EMPTY_SET;
         }
         return metadataManager.query(iuQuery, progress).toUnmodifiableSet();
+    }
+
+    protected IQuery<IInstallableUnit> createQuery() {
+        return QueryUtil.createLatestQuery(QueryUtil.createIUQuery(getP2IuId()));
     }
 
     /**

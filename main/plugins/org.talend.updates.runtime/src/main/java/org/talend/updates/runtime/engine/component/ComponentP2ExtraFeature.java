@@ -37,6 +37,8 @@ import org.eclipse.equinox.p2.metadata.IInstallableUnit;
 import org.eclipse.equinox.p2.operations.InstallOperation;
 import org.eclipse.equinox.p2.operations.ProfileModificationJob;
 import org.eclipse.equinox.p2.operations.ProvisioningSession;
+import org.eclipse.equinox.p2.query.IQuery;
+import org.eclipse.equinox.p2.query.QueryUtil;
 import org.osgi.framework.Bundle;
 import org.osgi.framework.BundleContext;
 import org.osgi.framework.FrameworkUtil;
@@ -201,6 +203,16 @@ public class ComponentP2ExtraFeature extends P2ExtraFeature implements IP2Compon
             }
         }
         return Messages.createOkStatus("sucessfull.install.of.components", getP2IuId(), getVersion()); //$NON-NLS-1$
+    }
+
+    @Override
+    protected IQuery<IInstallableUnit> createQuery() {
+        return QueryUtil.createLatestQuery(QueryUtil.createIUAnyQuery());
+    }
+
+    @Override
+    public boolean needRestart() {
+        return true;
     }
 
     @Override
