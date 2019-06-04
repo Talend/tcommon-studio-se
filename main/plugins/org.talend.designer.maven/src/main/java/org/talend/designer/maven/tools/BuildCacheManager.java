@@ -24,7 +24,6 @@ import java.util.Set;
 
 import org.apache.maven.model.Model;
 import org.eclipse.core.resources.IFile;
-import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IPath;
 import org.eclipse.core.runtime.IProgressMonitor;
@@ -47,7 +46,6 @@ import org.talend.designer.maven.utils.MavenProjectUtils;
 import org.talend.designer.maven.utils.PomUtil;
 import org.talend.designer.runprocess.IRunProcessService;
 import org.talend.repository.ProjectManager;
-import org.talend.repository.model.IRepositoryService;
 
 /**
  * DOC zwxue class global comment. Detailled comment
@@ -347,38 +345,9 @@ public class BuildCacheManager {
     }
 
     private String getModulePath(Property property) {
-        String modulePath = null;
-        IPath basePath = null;
         IPath jobProjectPath = AggregatorPomsHelper.getItemPomFolder(property).getLocation();
-        ProjectManager proManager = ProjectManager.getInstance();
-        if (!proManager.isInCurrentMainProject(property)) {
-            if (GlobalServiceRegister.getDefault().isServiceRegistered(IRepositoryService.class)) {
-                IRepositoryService service = (IRepositoryService) GlobalServiceRegister.getDefault()
-                        .getService(IRepositoryService.class);
-                if (service.isGIT()) {
-                    String refProjectTechName = proManager.getCurrentProject().getTechnicalLabel();
-                    String mainProjectBranch = proManager.getMainProjectBranch(refProjectTechName);
-                    if ("master".equals(mainProjectBranch)) {
-                        modulePath = "../../../../"; //$NON-NLS-1$
-                    } else {
-                        modulePath = "../../../../../"; //$NON-NLS-1$
-                    }
-                    basePath = ResourcesPlugin.getWorkspace().getRoot().getLocation().append("/.repositories"); //$NON-NLS-1$
-                } else if (service.isSVN()) {
-                    modulePath = "../../"; //$NON-NLS-1$
-                    basePath = ResourcesPlugin.getWorkspace().getRoot().getLocation();
-                }
-            }
-            if (modulePath == null || basePath == null) {
-                throw new RuntimeException("modulePath or basePath can not be null!"); //$NON-NLS-1$
-            }
-        } else {
-            modulePath = ""; //$NON-NLS-1$
-            basePath = getAggregatorPomsHelper().getProjectPomsFolder().getLocation();
-        }
-        jobProjectPath = jobProjectPath.makeRelativeTo(basePath);
-        modulePath += jobProjectPath.toPortableString();
-
+        IPath basePath = getAggregatorPomsHelper().getProjectPomsFolder().getLocation();
+        String modulePath = jobProjectPath.makeRelativeTo(basePath).toPortableString();
         return modulePath;
     }
 
