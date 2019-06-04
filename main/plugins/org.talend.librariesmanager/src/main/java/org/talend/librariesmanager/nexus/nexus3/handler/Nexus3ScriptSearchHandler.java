@@ -95,6 +95,7 @@ public class Nexus3ScriptSearchHandler extends AbsNexus3SearchHandler {
         Header contentType = new BasicHeader("Content-Type", "text/plain"); //$NON-NLS-1$ //$NON-NLS-2$
         request.addHeader(contentType);
         request.addHeader(authority);
+        request.socketTimeout(this.getNexus3SocketTimeout());
         return request;
     }
 
