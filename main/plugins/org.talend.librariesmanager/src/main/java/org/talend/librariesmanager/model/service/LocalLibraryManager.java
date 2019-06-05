@@ -281,8 +281,7 @@ public class LocalLibraryManager implements ILibraryManagerService, IChangedLibr
     }
 
     private boolean retrieve(ModuleNeeded module, String pathToStore, boolean showDialog, boolean refresh) {
-        MavenArtifact artifact = MavenUrlHelper.parseMvnUrl(module.getMavenUri());
-        String jarNeeded = artifact.getFileName();
+        String jarNeeded = module.getModuleName();
         String sourcePath = null;
         File jarFile = null;
         try {
