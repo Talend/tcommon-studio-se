@@ -2212,6 +2212,8 @@ public class TableViewerCreatorNotModifiable<B> {
     public void setLazyLoad(boolean lazyLoad) {
         if (isLazyLoadingDisabled()) {
             this.lazyLoad = false;
+        } else if (isLazyLoadingEnabled()) {
+            this.lazyLoad = true;
         } else {
             this.lazyLoad = lazyLoad;
         }
@@ -2221,6 +2223,15 @@ public class TableViewerCreatorNotModifiable<B> {
  
     public static boolean isLazyLoadingDisabled() {
         return Boolean.getBoolean("talend.table.disableLazyLoading"); //$NON-NLS-1$
+    }
+
+    /**
+     * for default Lazy Load like linux to enable DOC jding Comment method "isLazyLoadingEnabled".
+     * 
+     * @return
+     */
+    public static boolean isLazyLoadingEnabled() {
+        return Boolean.getBoolean("talend.table.enableLazyLoading"); //$NON-NLS-1$
     }
 
 }
