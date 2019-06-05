@@ -213,8 +213,9 @@ public class MetadataTable implements IMetadataTable, Cloneable {
             }
             if (originalColumns != null) {
                 List<String> clonedOriginalColumns = new ArrayList<String>(originalColumns);
-                clonedMetadata.setOriginalColumns(clonedOriginalColumns);
-
+                if(clonedMetadata.getOriginalColumns() == null || clonedMetadata.getOriginalColumns().isEmpty()) {
+                	clonedMetadata.setOriginalColumns(clonedOriginalColumns);
+                }
             }
             clonedMetadata.setTableName(this.getTableName());
             clonedMetadata.setLabel(this.getLabel());

@@ -714,4 +714,99 @@ public class MetadataToolHelperTest {
         assertEquals("FLOAT4", target.getColumn("S3").getType());
         assertEquals("NUMERIC", target.getColumn("S4").getType());
     }
+    
+    @Test
+    public void testSetTargetOriginalColumns() {
+    	IMetadataTable source = new org.talend.core.model.metadata.MetadataTable();
+        IMetadataTable target = new org.talend.core.model.metadata.MetadataTable();
+        IMetadataColumn column = new org.talend.core.model.metadata.MetadataColumn();
+        column.setLabel("S1"); //$NON-NLS-1$
+        column.setTalendType(JavaTypesManager.STRING.getId());
+        column.setType("STRING");
+        source.getListColumns().add(column);
+        column = new org.talend.core.model.metadata.MetadataColumn();
+        column.setLabel("S2"); //$NON-NLS-1$
+        column.setTalendType(JavaTypesManager.SHORT.getId());
+        column.setType("SHORT");
+        source.getListColumns().add(column);
+        column = new org.talend.core.model.metadata.MetadataColumn();
+        column.setLabel("S3"); //$NON-NLS-1$
+        column.setTalendType(JavaTypesManager.FLOAT.getId());
+        column.setType("FLOAT");
+        source.getListColumns().add(column);
+        column = new org.talend.core.model.metadata.MetadataColumn();
+        column.setLabel("S4"); //$NON-NLS-1$
+        column.setTalendType(JavaTypesManager.BIGDECIMAL.getId());
+        column.setType("BIG_DECIMAL");
+        source.getListColumns().add(column);
+        
+        MetadataToolHelper.setTargetOriginalColumns(source, target);
+        assertNull(target.getOriginalColumns());
+        
+        List<String> sOriColumns = new ArrayList<>();
+        sOriColumns.add("S1");
+        sOriColumns.add("S2");
+        sOriColumns.add("S3");
+        sOriColumns.add("S4");
+        source.setOriginalColumns(sOriColumns);
+        
+        MetadataToolHelper.setTargetOriginalColumns(source, target);
+        List<String> tCs = target.getOriginalColumns();
+        List<String> sCs = target.getOriginalColumns();
+        for(int i=0;i<tCs.size();i++) {
+        	assertEquals(tCs.get(i), sCs.get(i));
+        }
+        
+        target.setOriginalColumns(sOriColumns);
+        
+        MetadataToolHelper.setTargetOriginalColumns(source, target);
+        tCs = target.getOriginalColumns();
+        sCs = target.getOriginalColumns();
+        for(int i=0;i<tCs.size();i++) {
+        	assertEquals(tCs.get(i), sCs.get(i));
+        }
+        
+        column = new org.talend.core.model.metadata.MetadataColumn();
+        column.setLabel("S1"); //$NON-NLS-1$
+        column.setTalendType(JavaTypesManager.STRING.getId());
+        column.setType("STRING");
+        target.getListColumns().add(column);
+        column = new org.talend.core.model.metadata.MetadataColumn();
+        column.setLabel("S2"); //$NON-NLS-1$
+        column.setTalendType(JavaTypesManager.SHORT.getId());
+        column.setType("SHORT");
+        target.getListColumns().add(column);
+        column = new org.talend.core.model.metadata.MetadataColumn();
+        column.setLabel("S3"); //$NON-NLS-1$
+        column.setTalendType(JavaTypesManager.FLOAT.getId());
+        column.setType("FLOAT");
+        target.getListColumns().add(column);
+        column = new org.talend.core.model.metadata.MetadataColumn();
+        column.setLabel("S4"); //$NON-NLS-1$
+        column.setTalendType(JavaTypesManager.BIGDECIMAL.getId());
+        column.setType("BIG_DECIMAL");
+        target.getListColumns().add(column);
+        column = new org.talend.core.model.metadata.MetadataColumn();
+        column.setLabel("S5"); //$NON-NLS-1$
+        column.setTalendType(JavaTypesManager.STRING.getId());
+        column.setType("STRING");
+        target.getListColumns().add(column);
+        column = new org.talend.core.model.metadata.MetadataColumn();
+        column.setLabel("S6"); //$NON-NLS-1$
+        column.setTalendType(JavaTypesManager.STRING.getId());
+        column.setType("STRING");
+        target.getListColumns().add(column);
+        
+        sOriColumns = new ArrayList<>();
+        sOriColumns.add("S5");
+        sOriColumns.add("S6");
+        target.setOriginalColumns(sOriColumns);
+        
+        MetadataToolHelper.setTargetOriginalColumns(source, target);
+        tCs = target.getOriginalColumns();
+        for(int i=0;i<target.getListColumns().size();i++) {
+        	assertEquals(tCs.get(i), "S"+(i+1));
+        }
+        
+    }
 }
