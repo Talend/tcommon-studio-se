@@ -12,6 +12,8 @@
 // ============================================================================
 package org.talend.core.model.routines;
 
+import java.io.File;
+import java.net.URI;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.Enumeration;
@@ -93,7 +95,11 @@ public class RoutineLibraryMananger {
                             if (entry != null && libManagerService != null) {
                                 try {
                                     URL fileUrl = FileLocator.toFileURL(entry);
-                                    libManagerService.deploy(fileUrl.toURI());
+                                    if(fileUrl != null){
+                                    	if (!"file".equals(fileUrl.getProtocol())) throw new IllegalArgumentException();
+                                    	URI fileUri = new File(fileUrl.getFile()).toURI();
+                                        libManagerService.deploy(fileUri);	
+                                    }
                                 } catch (Exception e) {
                                     log.warn("Cannot deploy: " + bundleName + path);
                                     continue;
