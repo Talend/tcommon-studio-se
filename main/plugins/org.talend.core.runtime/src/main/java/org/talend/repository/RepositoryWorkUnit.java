@@ -45,8 +45,6 @@ public abstract class RepositoryWorkUnit<T> {
 
     private boolean refreshRepository = true; // added for TDI-27085
 
-    private boolean svnFileModefied = false;
-
     /**
      * Usefull for some save only actions, where we're sure everything is up to date.
      */
@@ -213,13 +211,4 @@ public abstract class RepositoryWorkUnit<T> {
     public void setAvoidUpdateLocks(boolean avoidUpdateLocks) {
         this.avoidUpdateLocks = avoidUpdateLocks;
     }
-
-    public boolean isSvnFileModefied() {
-        return svnFileModefied;
-    }
-
-    public void setSvnFileModefied(boolean svnFileModefied) {
-        this.svnFileModefied = svnFileModefied;
-    }
-
 }
