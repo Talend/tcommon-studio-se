@@ -328,6 +328,13 @@ public class ProjectRepositoryNode extends RepositoryNode implements IProjectRep
 
     }
 
+    public void mapRootRepositoryNode(ERepositoryObjectType repObjType, IRepositoryNode node) {
+        if (!node.shouldCollectRepositoryNode() || repObjType == null) {
+            return;
+        }
+        repositoryNodeMap.put(repObjType.name(), (RepositoryNode) node);
+    }
+
     private String[] getUserAuthorization() throws JSONException {
         User currentUser = ProxyRepositoryFactory.getInstance().getRepositoryContext().getUser();
         String addData = currentUser.getAdditionnalData();
@@ -627,11 +634,15 @@ public class ProjectRepositoryNode extends RepositoryNode implements IProjectRep
             for (DynaEnum<? extends DynaEnum<?>> type : ERepositoryObjectType.values()) {
                 ERepositoryObjectType objectType = (ERepositoryObjectType) type;
                 if (objectType.isResouce()) {
+                    int maxSegmentCount = -2;
                     IPath typePath = new Path(objectType.getFolder());
                     if (typePath.isPrefixOf(fPath)) {
-                        folderPath = fPath.makeRelativeTo(typePath).toString();
-                        currentType = objectType;
-                        break;
+                        int segmentCount = typePath.segmentCount();
+                        if (maxSegmentCount < segmentCount) {
+                            folderPath = fPath.makeRelativeTo(typePath).toString();
+                            currentType = objectType;
+                            maxSegmentCount = segmentCount;
+                        }
                     }
                 }
             }
