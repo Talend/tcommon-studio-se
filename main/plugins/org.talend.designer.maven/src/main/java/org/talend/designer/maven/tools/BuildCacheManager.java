@@ -278,6 +278,7 @@ public class BuildCacheManager {
 
     public void clearAllCaches() {
         jobCache.clear();
+        clearCurrentJobletCache();
         jobletCache.clear();
         codesLastBuildCache.clear();
     }
