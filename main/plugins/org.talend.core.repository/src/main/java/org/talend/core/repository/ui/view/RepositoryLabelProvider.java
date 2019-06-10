@@ -290,6 +290,10 @@ public class RepositoryLabelProvider extends LabelProvider implements IColorProv
             }
         }
 
+        return decorateImageWithStatus(img, object);
+    }
+
+    public Image decorateImageWithStatus(Image originalImg, IRepositoryViewObject object) {
         ERepositoryStatus repositoryStatus = object.getRepositoryStatus();
 
         Context ctx = CoreRuntimePlugin.getInstance().getContext();
@@ -301,7 +305,7 @@ public class RepositoryLabelProvider extends LabelProvider implements IColorProv
             }
         }
 
-        Image image = OverlayImageProvider.getImageWithStatus(img, repositoryStatus);
+        Image image = OverlayImageProvider.getImageWithStatus(originalImg, repositoryStatus);
 
         ERepositoryStatus informationStatus = object.getInformationStatus();
 

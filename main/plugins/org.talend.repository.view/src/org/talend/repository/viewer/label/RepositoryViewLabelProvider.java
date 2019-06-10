@@ -28,6 +28,7 @@ import org.eclipse.ui.PlatformUI;
 import org.eclipse.ui.navigator.CommonNavigator;
 import org.eclipse.ui.navigator.ICommonContentExtensionSite;
 import org.talend.core.model.repository.ERepositoryObjectType;
+import org.talend.core.model.repository.IRepositoryViewObject;
 import org.talend.core.repository.ui.view.RepositoryLabelProvider;
 import org.talend.repository.model.RepositoryNode;
 import org.talend.repository.model.nodes.IProjectRepositoryNode;
@@ -185,6 +186,10 @@ public class RepositoryViewLabelProvider extends AbstractRepoViewLabelProvider {
     @Override
     public Image getImage(Object element) {
         return repoLabelProv.getImage(element);
+    }
+
+    protected Image decorateImageWithStatus(Image originalImg, IRepositoryViewObject object) {
+        return repoLabelProv.decorateImageWithStatus(originalImg, object);
     }
 
     @Override
