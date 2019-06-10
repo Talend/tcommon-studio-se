@@ -201,7 +201,6 @@ public abstract class ShareLibrareisHelper {
                             try {
                                 deployToLocalMaven(deployer, file, next);
                                 deployer.installToRemote(file, artifact, artifact.getType());
-                                deployer.installToRemote(pomFile, artifact, MavenConstants.PACKAGING_POM);
                                 mainSubMonitor.worked(1);
                             } catch (Exception e) {
                                 ExceptionHandler.process(new Exception("Share libraries :" + name + " failed !", e));
