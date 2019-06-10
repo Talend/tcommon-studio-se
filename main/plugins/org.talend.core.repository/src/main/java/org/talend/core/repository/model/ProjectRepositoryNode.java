@@ -631,10 +631,10 @@ public class ProjectRepositoryNode extends RepositoryNode implements IProjectRep
             String folderPath = null;
             final IPath fPath = new Path(fullPath);
             ERepositoryObjectType currentType = null;
+            int maxSegmentCount = -2;
             for (DynaEnum<? extends DynaEnum<?>> type : ERepositoryObjectType.values()) {
                 ERepositoryObjectType objectType = (ERepositoryObjectType) type;
                 if (objectType.isResouce()) {
-                    int maxSegmentCount = -2;
                     IPath typePath = new Path(objectType.getFolder());
                     if (typePath.isPrefixOf(fPath)) {
                         int segmentCount = typePath.segmentCount();
