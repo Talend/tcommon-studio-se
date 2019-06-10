@@ -44,18 +44,11 @@ public class ClasspathsJarGenerator {
     private static IRunProcessService service;
 
     public static String createJar(Property property, String classpath) throws Exception {
-        return createJar(property, classpath, BLANK);
+        return createJar(property, classpath, BLANK, false);
     }
 
-    public static String createJar(Property property, String classpath, String separator) throws Exception {
-        boolean isRelativePath = false;
-        String[] classpathArray = classpath.split(separator);
-        for (String cp : classpathArray) {
-            if (cp.startsWith("../") && cp.endsWith(".jar")) { //$NON-NLS-1$
-                isRelativePath = true;
-                break;
-            }
-        }
+    public static String createJar(Property property, String classpath, String separator, boolean isRelativePath)
+            throws Exception {
         String newClasspath = generateClasspathForManifest(classpath, separator, isRelativePath);
 
         Manifest manifest = new Manifest();
@@ -94,8 +87,11 @@ public class ClasspathsJarGenerator {
                     cp = prepend(cp);
                 }
             } else if (!cp.endsWith(".")) { //$NON-NLS-1$
-                // directory need to wrap with /
-                cp = StringUtils.appendIfMissing(cp, SLASH);
+                if (isRelativePath) {
+                    cp = StringUtils.appendIfMissing(cp, SLASH);
+                } else {
+                    cp = wrapWithSlash(cp);
+                }
             }
             // cp = StringUtils.replace(cp, " ", "%20"); //$NON-NLS-1$ //$NON-NLS-2$
             newClasspath.append(cp + BLANK);
