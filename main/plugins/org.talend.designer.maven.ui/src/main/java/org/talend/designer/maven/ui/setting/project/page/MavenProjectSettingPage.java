@@ -119,7 +119,11 @@ public class MavenProjectSettingPage extends AbstractProjectSettingPage {
 			@Override
 			public void widgetSelected(SelectionEvent event) {
 				try {
-					preferenceStore.setValue(MavenConstants.POM_FILTER, filter);
+                    String realFilter = filter;
+                    if (filter != null && filter.contains(LATEST_VERSION_DISPLAY)) {
+                        realFilter = filter.replace(LATEST_VERSION_DISPLAY, LATEST_VERSION_REAL);
+                    }
+                    preferenceStore.setValue(MavenConstants.POM_FILTER, realFilter);
 					new AggregatorPomsHelper().syncAllPoms();
 				} catch (Exception e) {
 					ExceptionHandler.process(e);
