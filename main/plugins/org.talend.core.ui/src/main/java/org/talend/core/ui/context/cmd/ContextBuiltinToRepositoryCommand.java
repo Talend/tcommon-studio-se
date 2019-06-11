@@ -48,6 +48,8 @@ public class ContextBuiltinToRepositoryCommand extends Command {
     private ContextItem item;
 
     private ContextManagerHelper helper;
+    
+    private Boolean confirm = null;
 
     /**
      * DOC ldong ContextBuiltinToRepositoryCommand constructor comment.
@@ -112,7 +114,7 @@ public class ContextBuiltinToRepositoryCommand extends Command {
                         if (conflictflag) {
                             // now if add the build-in param into repository context group,if already exist same
                             // one,just update the relation
-                            addRelationForContextParameter(item, contextParameters, selectedParam);
+                            addRelationForContextParameter(item, contextParameters, selectedParam, currentContext);
                         }
 
                     }
@@ -190,6 +192,21 @@ public class ContextBuiltinToRepositoryCommand extends Command {
      */
     @SuppressWarnings("unchecked")
     private void addRelationForContextParameter(ContextItem contextItem, EList parameterList, IContextParameter existParam) {
+    	addRelationForContextParameter(contextItem, parameterList, existParam, null);
+    }
+    
+    /**
+     * DOC ldong Comment method "addRelationForContextParameter".
+     * 
+     * @param contextItem
+     * @param parameterList
+     * @param existParam
+     */
+    @SuppressWarnings("unchecked")
+    private void addRelationForContextParameter(ContextItem contextItem, EList parameterList, IContextParameter existParam, IContext currentContext) {
+    	if(existParam == null) {
+    		return;
+    	}
         Iterator contextParamItor = parameterList.iterator();
         while (contextParamItor.hasNext()) {
             ContextParameterType defaultContextParamType = (ContextParameterType) contextParamItor.next();
@@ -198,15 +215,17 @@ public class ContextBuiltinToRepositoryCommand extends Command {
                 // existed.then create the relation and remove from job context parameters and update from the emf new
                 // one
 
-                boolean isContinue = MessageDialog.openConfirm(Display.getCurrent().getActiveShell(),
-                        Messages.getString("ContextTreeTable.AddToRepository_label"), //$NON-NLS-1$
-                        Messages.getString("ContextBuiltinToRepositoryCommand.addRelation")); //$NON-NLS-1$
+            	if(confirm == null) {
+            		confirm = MessageDialog.openConfirm(Display.getCurrent().getActiveShell(),
+                            Messages.getString("ContextTreeTable.AddToRepository_label"), //$NON-NLS-1$
+                            Messages.getString("ContextBuiltinToRepositoryCommand.addRelation")); //$NON-NLS-1$
+            	}
 
-                if (isContinue) {
+                if (confirm) {
 
                     new AddContextGroupRelationCommand(contextManager, existParam, contextItem).execute();
 
-                    new ContextRemoveParameterCommand(contextManager, defaultContextParamType.getName(), existParam.getSource())
+                    new ContextRemoveParameterCommand(contextManager, defaultContextParamType.getName(), existParam.getSource(), currentContext)
                             .execute();
                     helper.addContextParameterType(defaultContextParamType);
                 }

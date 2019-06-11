@@ -46,7 +46,9 @@ public class ContextRemoveParameterCommand extends Command {
     private Map<String, List<IContextParameter>> mapParams = new HashMap<String, List<IContextParameter>>();
 
     private boolean needRefresh;
-
+    
+    private IContext currentContext;
+    
     public ContextRemoveParameterCommand(IContextManager contextManager, Set<String> contextParamNames) {
         init(contextManager, contextParamNames, true);
     }
@@ -93,6 +95,13 @@ public class ContextRemoveParameterCommand extends Command {
         this.paraSourceId = paraSourceId;
     }
 
+    @Deprecated
+    public ContextRemoveParameterCommand(IContextManager contextManager, String contextParamName, String paraSourceId, IContext currentContext) {
+        this(contextManager, contextParamName);
+        this.paraSourceId = paraSourceId;
+        this.currentContext = currentContext;
+    }
+    
     /**
      * @param contextManager
      * @param contextParamName
@@ -152,6 +161,9 @@ public class ContextRemoveParameterCommand extends Command {
         if (list != null && list.size() > 0) {
             for (int i = 0; i < list.size(); i++) {
                 IContext context = list.get(i);
+                if(currentContext != null && !currentContext.getName().equals(context.getName())) {
+                	continue;
+                }
                 List<IContextParameter> contextParameters = context.getContextParameterList();
                 List<IContextParameter> movedList = new ArrayList<IContextParameter>();
                 if (contextParameters != null && contextParameters.size() > 0) {
