@@ -72,6 +72,7 @@ import org.talend.utils.exceptions.MissingDriverException;
 import org.talend.utils.sql.ConnectionUtils;
 import org.talend.utils.sugars.ReturnCode;
 import org.talend.utils.sugars.TypedReturnCode;
+
 import orgomg.cwm.foundation.softwaredeployment.DataProvider;
 import orgomg.cwm.objectmodel.core.ModelElement;
 import orgomg.cwm.objectmodel.core.Package;
@@ -988,7 +989,7 @@ public class MetadataConnectionUtils {
     }
 
     /**
-     * DOC connection created by TOS need to fill the basic information for useing in TOP.<br>
+     * DOC connection created by TOS need to fill the basic information for using in TOP.<br>
      *
      *
      * @param conn
