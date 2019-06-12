@@ -153,17 +153,17 @@ public class MetadataTable implements IMetadataTable, Cloneable {
             List<IMetadataColumn> temp = new ArrayList<IMetadataColumn>();
             temp.addAll(this.listColumns);
             temp.addAll(this.unusedColumns);
-//            if (originalColumns != null) {
-//                Collections.sort(temp, new Comparator<IMetadataColumn>() {
-//
-//                    @Override
-//                    public int compare(IMetadataColumn o1, IMetadataColumn o2) {
-//                        int index1 = originalColumns.indexOf(o1.getLabel());
-//                        int index2 = originalColumns.indexOf(o2.getLabel());
-//                        return index1 - index2;
-//                    }
-//                });
-//            }
+            if (originalColumns != null) {
+                Collections.sort(temp, new Comparator<IMetadataColumn>() {
+
+                    @Override
+                    public int compare(IMetadataColumn o1, IMetadataColumn o2) {
+                        int index1 = originalColumns.indexOf(o1.getLabel());
+                        int index2 = originalColumns.indexOf(o2.getLabel());
+                        return index1 - index2;
+                    }
+                });
+            }
             return temp;
         }
         return this.listColumns;
