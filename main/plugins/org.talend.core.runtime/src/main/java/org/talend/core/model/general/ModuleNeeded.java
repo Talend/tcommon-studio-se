@@ -86,6 +86,13 @@ public class ModuleNeeded {
 
     public static final String UNKNOWN = "Unknown";
 
+    /**
+     * TODO This is a hot fix for 7.2.1 . if the maven url is not specified in component/extension point , we will
+     * generate a release version with this flag=true .Need to improve it after release ,normally the studio should use
+     * all jars with release version by default if maven url is not specified.
+     */
+    private boolean useReleaseVersion = false;
+
     ILibraryManagerService libManagerService = (ILibraryManagerService) GlobalServiceRegister.getDefault()
             .getService(ILibraryManagerService.class);
 
@@ -194,6 +201,7 @@ public class ModuleNeeded {
         cloned.required = required;
         cloned.requiredIf = requiredIf;
         cloned.status = status;
+        cloned.useReleaseVersion = useReleaseVersion;
 
         return cloned;
     }
@@ -580,7 +588,8 @@ public class ModuleNeeded {
                     mavenUri = MavenUrlHelper.addTypeForMavenUri(mvnUrisFromIndex, getModuleName());
                 } else {
                     boolean isDatabaseDriver = DatabaseDriversCache.isDatabaseDriver(getModuleName());
-                    mavenUri = MavenUrlHelper.generateMvnUrlForJarName(getModuleName(), true, !isDatabaseDriver);
+                    mavenUri = MavenUrlHelper.generateMvnUrlForJarName(getModuleName(), true,
+                            !isDatabaseDriver && !useReleaseVersion);
                 }
             } else {
                 mavenUri = mavenUriFromConfiguration;
@@ -685,6 +694,10 @@ public class ModuleNeeded {
 
     public void setExcludeDependencies(boolean excludeDependencies) {
         this.excludeDependencies = excludeDependencies;
+    }
+
+    public void setUseReleaseVersion(boolean useReleaseVersion) {
+        this.useReleaseVersion = useReleaseVersion;
     }
 
 }

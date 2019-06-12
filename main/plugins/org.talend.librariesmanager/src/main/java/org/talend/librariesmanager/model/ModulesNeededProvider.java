@@ -398,6 +398,7 @@ public class ModulesNeededProvider {
         List<String> list = getInstallURL(importType);
         ModuleNeeded moduleNeeded = new ModuleNeeded(context, importType.getMODULE(), msg, importType.isREQUIRED(), list,
                 importType.getREQUIREDIF(), importType.getMVN());
+        moduleNeeded.setUseReleaseVersion(true);
         initBundleID(importType, moduleNeeded);
         moduleNeeded.setMrRequired(importType.isMRREQUIRED());
         moduleNeeded.setShow(importType.isSHOW());
@@ -849,6 +850,7 @@ public class ModulesNeededProvider {
         uripath = ExtensionModuleManager.getInstance().getFormalModulePath(uripath, current);
         String mvn_rui = current.getAttribute(ExtensionModuleManager.MVN_URI_ATTR);
         ModuleNeeded module = new ModuleNeeded(context, name, message, required);
+        module.setUseReleaseVersion(true);
         if (uripath != null && libManagerService.checkJarInstalledFromPlatform(uripath)) {
             module.setModuleLocaion(uripath);
         }
