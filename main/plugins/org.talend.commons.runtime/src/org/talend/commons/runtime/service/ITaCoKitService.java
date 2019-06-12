@@ -33,6 +33,8 @@ public interface ITaCoKitService {
 
     void start() throws Exception;
 
+    boolean isStarted() throws Exception;
+
     String reload(IProgressMonitor monitor) throws Exception;
 
     boolean isTaCoKitCar(File file, IProgressMonitor monitor) throws Exception;
