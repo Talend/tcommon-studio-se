@@ -1,6 +1,6 @@
 // ============================================================================
 //
-// Copyright (C) 2006-2018 Talend Inc. - www.talend.com
+// Copyright (C) 2006-2019 Talend Inc. - www.talend.com
 //
 // This source code is available under agreement available at
 // %InstallDIR%\features\org.talend.rcp.branding.%PRODUCTNAME%\%PRODUCTNAME%license.txt
@@ -19,9 +19,9 @@ import org.talend.designer.runprocess.ProcessorException;
 
 /**
  * DOC qian class global comment. Detailled comment <br/>
- * 
+ *
  * $Id: talend-code-templates.xml 1 2006-09-29 17:06:40 +0000 (星期五, 29 九月 2006) nrousseau $
- * 
+ *
  */
 public interface IJavaProcessor {
 
@@ -32,35 +32,35 @@ public interface IJavaProcessor {
 
     /**
      * DOC mhirt Comment method "getJavaContext".
-     * 
+     *
      * @return
      */
     public String getJavaContext();
 
     /**
      * Getter for codePath.
-     * 
+     *
      * @return the codePath
      */
     public IPath getCodePath();
 
     /**
      * Getter for contextPath.
-     * 
+     *
      * @return the contextPath
      */
     public IPath getContextPath();
 
     /**
      * Getter for javaProject.
-     * 
+     *
      * @return the javaProject
      */
     public IProject getJavaProject();
 
     /**
      * Return line number where stands specific node in code generated.
-     * 
+     *
      * @param nodeName
      */
     public int getLineNumber(String nodeName);

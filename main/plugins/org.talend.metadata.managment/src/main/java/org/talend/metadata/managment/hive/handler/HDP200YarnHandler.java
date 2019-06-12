@@ -1,6 +1,6 @@
 // ============================================================================
 //
-// Copyright (C) 2006-2018 Talend Inc. - www.talend.com
+// Copyright (C) 2006-2019 Talend Inc. - www.talend.com
 //
 // This source code is available under agreement available at
 // %InstallDIR%\features\org.talend.rcp.branding.%PRODUCTNAME%\%PRODUCTNAME%license.txt
@@ -20,13 +20,13 @@ import org.talend.core.model.metadata.builder.database.PluginConstant;
 
 /**
  * handle some hadoop parameters for hive connection with HDP2.0,it use yarn framework.
- * 
+ *
  */
 public class HDP200YarnHandler extends HortonWorksHandler implements IHiveYarnHandler {
 
     /**
      * DOC qiongli HDP200Handler constructor comment.
-     * 
+     *
      * @param metadataConnection
      */
     public HDP200YarnHandler(IMetadataConnection metadataConnection) {

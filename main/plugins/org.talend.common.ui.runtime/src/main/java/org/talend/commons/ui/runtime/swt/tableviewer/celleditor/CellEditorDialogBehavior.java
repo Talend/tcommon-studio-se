@@ -1,6 +1,6 @@
 // ============================================================================
 //
-// Copyright (C) 2006-2018 Talend Inc. - www.talend.com
+// Copyright (C) 2006-2019 Talend Inc. - www.talend.com
 //
 // This source code is available under agreement available at
 // %InstallDIR%\features\org.talend.rcp.branding.%PRODUCTNAME%\%PRODUCTNAME%license.txt
@@ -27,9 +27,9 @@ import org.talend.commons.ui.runtime.ws.WindowSystem;
 
 /**
  * yzhang class global comment. Detailled comment <br/>
- * 
+ *
  * $Id: CellEditorDialogBehavior.java 上午10:08:35 2007-8-16 +0000 (2007-8-16) yzhang $
- * 
+ *
  */
 public class CellEditorDialogBehavior implements IExtendedCellEditorBehavior {
 
@@ -39,7 +39,7 @@ public class CellEditorDialogBehavior implements IExtendedCellEditorBehavior {
 
     /**
      * Sets the cellEditorDialog.
-     * 
+     *
      * @param cellEditorDialog the cellEditorDialog to set
      */
     public void setCellEditorDialog(ICellEditorDialog cellEditorDialog) {
@@ -65,7 +65,7 @@ public class CellEditorDialogBehavior implements IExtendedCellEditorBehavior {
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see
      * org.talend.designer.rowgenerator.ui.tabs.IExtendedCellEditorBehavior#createBehaviorControls(org.eclipse.swt.widgets
      * .Composite)
@@ -105,7 +105,7 @@ public class CellEditorDialogBehavior implements IExtendedCellEditorBehavior {
 
             /*
              * (non-Javadoc)
-             * 
+             *
              * @see org.eclipse.swt.events.MouseAdapter#mouseUp(org.eclipse.swt.events.MouseEvent)
              */
             @Override

@@ -1,6 +1,6 @@
 // ============================================================================
 //
-// Copyright (C) 2006-2018 Talend Inc. - www.talend.com
+// Copyright (C) 2006-2019 Talend Inc. - www.talend.com
 //
 // This source code is available under agreement available at
 // %InstallDIR%\features\org.talend.rcp.branding.%PRODUCTNAME%\%PRODUCTNAME%license.txt
@@ -28,7 +28,7 @@ import orgomg.cwm.resource.relational.Catalog;
 
 /**
  * created by xqliu on 2014-10-29 Detailled comment
- * 
+ *
  */
 public class NetezzaConnectionFiller extends DBConnectionFillerImpl {
 
@@ -36,7 +36,7 @@ public class NetezzaConnectionFiller extends DBConnectionFillerImpl {
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see
      * org.talend.core.model.metadata.DBConnectionFillerImpl#getDatabaseName(org.talend.core.model.metadata.builder.
      * connection.DatabaseConnection)
@@ -49,7 +49,7 @@ public class NetezzaConnectionFiller extends DBConnectionFillerImpl {
 
     /**
      * get the database name from the url.
-     * 
+     *
      * @param url
      * @return
      */
@@ -74,7 +74,7 @@ public class NetezzaConnectionFiller extends DBConnectionFillerImpl {
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see org.talend.core.model.metadata.DBConnectionFillerImpl#getSchemaName(java.sql.ResultSet,
      * java.sql.DatabaseMetaData, orgomg.cwm.resource.relational.Catalog)
      */
@@ -97,7 +97,7 @@ public class NetezzaConnectionFiller extends DBConnectionFillerImpl {
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see
      * org.talend.core.model.metadata.DBConnectionFillerImpl#fillSchemas(org.talend.core.model.metadata.builder.connection
      * .DatabaseConnection, java.sql.DatabaseMetaData, org.talend.core.model.metadata.IMetadataConnection,

@@ -1,6 +1,6 @@
 // ============================================================================
 //
-// Copyright (C) 2006-2018 Talend Inc. - www.talend.com
+// Copyright (C) 2006-2019 Talend Inc. - www.talend.com
 //
 // This source code is available under agreement available at
 // %InstallDIR%\features\org.talend.rcp.branding.%PRODUCTNAME%\%PRODUCTNAME%license.txt
@@ -16,9 +16,9 @@ import org.talend.designer.runprocess.IPerformanceData;
 
 /**
  * Describes process performance data. <br/>
- * 
+ *
  * $Id: PerformanceData.java 21728 2009-02-09 10:23:23Z plegall $
- * 
+ *
  */
 public final class PerformanceData implements IPerformanceData {
 
@@ -30,7 +30,7 @@ public final class PerformanceData implements IPerformanceData {
 
     /**
      * Constructs a new PerformanceData.
-     * 
+     *
      * @param data Data string to be parsed.
      */
     public PerformanceData(final String data) {
@@ -98,7 +98,7 @@ public final class PerformanceData implements IPerformanceData {
 
     /**
      * DOC xtan the info style like this: row1|clear;row1.1|clear;if1|clear.
-     * 
+     *
      * @return
      */
     public boolean isClearCommand() {

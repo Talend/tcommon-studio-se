@@ -1,6 +1,6 @@
 // ============================================================================
 //
-// Copyright (C) 2006-2018 Talend Inc. - www.talend.com
+// Copyright (C) 2006-2019 Talend Inc. - www.talend.com
 //
 // This source code is available under agreement available at
 // %InstallDIR%\features\org.talend.rcp.branding.%PRODUCTNAME%\%PRODUCTNAME%license.txt
@@ -17,9 +17,9 @@ import java.util.List;
 
 /**
  * bqian XML Element structure. <br/>
- * 
+ *
  * $Id: Element.java,v 1.1 2007/06/12 07:20:39 gke Exp $
- * 
+ *
  */
 public class Element extends FOXTreeNode {
 
@@ -63,7 +63,7 @@ public class Element extends FOXTreeNode {
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see org.talend.designer.fileoutputxml.data.FOXTreeNode#hasChildren()
      */
     @Override
@@ -75,7 +75,7 @@ public class Element extends FOXTreeNode {
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see
      * org.talend.designer.fileoutputxml.data.FOXTreeNode#addChild(org.talend.designer.fileoutputxml.data.FOXTreeNode)
      */
@@ -98,7 +98,7 @@ public class Element extends FOXTreeNode {
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see org.talend.designer.fileoutputxml.data.FOXTreeNode#getChildren()
      */
     @Override

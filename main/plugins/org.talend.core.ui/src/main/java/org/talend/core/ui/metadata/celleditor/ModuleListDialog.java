@@ -1,6 +1,6 @@
 // ============================================================================
 //
-// Copyright (C) 2006-2018 Talend Inc. - www.talend.com
+// Copyright (C) 2006-2019 Talend Inc. - www.talend.com
 //
 // This source code is available under agreement available at
 // %InstallDIR%\features\org.talend.rcp.branding.%PRODUCTNAME%\%PRODUCTNAME%license.txt
@@ -107,7 +107,7 @@ public class ModuleListDialog extends Dialog {
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see org.eclipse.jface.dialogs.Dialog#create()
      */
     @Override
@@ -172,9 +172,9 @@ public class ModuleListDialog extends Dialog {
                 Messages.getString("ModuleListCellEditor.selectLabel"), FilesUtils.getAcceptJARFilesSuffix()); //$NON-NLS-1$
 
         if(param != null){
-            
+
             IElementParameter componentName = param.getElement().getElementParameter("COMPONENT_NAME");
-            
+
             if (componentName!=null && "cConfig".equals(componentName.getValue())) {
                 versionLabel = new LabelledText(c, "Version");
                 IElementParameter param = this.param.getElement().getElementParameter("DRIVER_JAR");
@@ -189,7 +189,7 @@ public class ModuleListDialog extends Dialog {
                 }
             }
         }
-        
+
         addListeners();
         // checkField(true); // init
         jarsViewer.getList().setSelection(new String[] { selecteModule });
@@ -233,25 +233,25 @@ public class ModuleListDialog extends Dialog {
                     getOKButton().setEnabled(false);
                 } else {
                     String version = "0.0.1-SNAPSHOT";
-                    
+
                     try {
-                        
+
                         Manifest manifest = new JarFile(selectField.getText()).getManifest();
                         Attributes mainAttribs = manifest.getMainAttributes();
-                        
+
                         if(StringUtils.isNotBlank(mainAttribs.getValue("Bundle-Version"))){
                             version = mainAttribs.getValue("Bundle-Version");
                         }else if(StringUtils.isNotBlank(mainAttribs.getValue("Implementation-Version"))){
                             version = mainAttribs.getValue("Implementation-Version");
                         }
                     } catch (Exception eee) {
-                        
+
                     }
-                    
+
                     if(versionLabel !=null ){
                         versionLabel.setText(version);
                     }
-                    
+
                     getOKButton().setEnabled(true);
                 }
             }
@@ -373,7 +373,7 @@ public class ModuleListDialog extends Dialog {
     public String getSelectedJarPath() {
         return this.selectedJarPath;
     }
-    
+
     public String getSelectedJarVersion() {
         return this.selectedJarVersion;
     }
@@ -415,11 +415,11 @@ public class ModuleListDialog extends Dialog {
                     if (GlobalServiceRegister.getDefault().isServiceRegistered(ILibrariesService.class)) {
                         ILibrariesService service = (ILibrariesService) GlobalServiceRegister.getDefault().getService(
                                 ILibrariesService.class);
-                        
+
                         if (param != null) {
-                            
+
                             IElementParameter componentName = param.getElement().getElementParameter("COMPONENT_NAME");
-                            
+
                             if(componentName !=null && "cConfig".equals(componentName.getValue())){
                                 String versionType = ".SNAPSHOT";
                                 selectedJarPath = jarPath;
@@ -436,7 +436,7 @@ public class ModuleListDialog extends Dialog {
                         }else{
                             service.deployLibrary(path.toFile().toURI().toURL());
                         }
-                        
+
                     }
 
                 } catch (Exception ee) {

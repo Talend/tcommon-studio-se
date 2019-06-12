@@ -1,6 +1,6 @@
 // ============================================================================
 //
-// Copyright (C) 2006-2018 Talend Inc. - www.talend.com
+// Copyright (C) 2006-2019 Talend Inc. - www.talend.com
 //
 // This source code is available under agreement available at
 // %InstallDIR%\features\org.talend.rcp.branding.%PRODUCTNAME%\%PRODUCTNAME%license.txt
@@ -21,14 +21,14 @@ import org.eclipse.swt.widgets.Text;
 
 /**
  * Create a text cell editor to edit a text in GEF. <br/>
- * 
+ *
  * $Id: LabelCellEditorLocator.java 7038 2007-11-15 14:05:48Z plegall $
- * 
+ *
  */
 public final class LabelCellEditorLocator implements CellEditorLocator {
 
     /**
-     * 
+     *
      */
     private static final int A_4 = 4;
 

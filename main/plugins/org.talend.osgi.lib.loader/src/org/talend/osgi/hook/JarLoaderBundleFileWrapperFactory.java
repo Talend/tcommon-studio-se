@@ -1,6 +1,6 @@
 // ============================================================================
 //
-// Copyright (C) 2006-2018 Talend Inc. - www.talend.com
+// Copyright (C) 2006-2019 Talend Inc. - www.talend.com
 //
 // This source code is available under agreement available at
 // %InstallDIR%\features\org.talend.rcp.branding.%PRODUCTNAME%\%PRODUCTNAME%license.txt
@@ -63,7 +63,7 @@ public class JarLoaderBundleFileWrapperFactory implements BundleFileWrapperFacto
 
         /**
          * DOC sgandon BundleFileWrapperExtension constructor comment.
-         * 
+         *
          * @param bundleFile
          * @param generation
          */
@@ -74,7 +74,7 @@ public class JarLoaderBundleFileWrapperFactory implements BundleFileWrapperFacto
 
         /*
          * (non-Javadoc)
-         * 
+         *
          * @see org.eclipse.osgi.storage.bundlefile.BundleFileWrapper#getEntry(java.lang.String)
          */
         @Override
@@ -174,7 +174,7 @@ public class JarLoaderBundleFileWrapperFactory implements BundleFileWrapperFacto
 
         /**
          * DOC sgandon Comment method "getMissingJars".
-         * 
+         *
          * @return
          */
         private Set<String> getMissingJars() {
@@ -186,7 +186,7 @@ public class JarLoaderBundleFileWrapperFactory implements BundleFileWrapperFacto
 
         /*
          * (non-Javadoc)
-         * 
+         *
          * @see org.eclipse.osgi.storage.bundlefile.BundleFileWrapper#getFile(java.lang.String, boolean)
          */
         @Override
@@ -196,7 +196,7 @@ public class JarLoaderBundleFileWrapperFactory implements BundleFileWrapperFacto
 
         /**
          * DOC sgandon Comment method "getFileBis".
-         * 
+         *
          * @param path
          * @param nativeCode
          * @return
@@ -218,7 +218,7 @@ public class JarLoaderBundleFileWrapperFactory implements BundleFileWrapperFacto
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see org.eclipse.osgi.internal.hookregistry.BundleFileWrapperFactoryHook#wrapBundleFile(org.eclipse.osgi.storage.
      * bundlefile.BundleFile, org.eclipse.osgi.storage.BundleInfo.Generation, boolean)
      */
@@ -235,7 +235,7 @@ public class JarLoaderBundleFileWrapperFactory implements BundleFileWrapperFacto
                 if (entry != null && entry instanceof MissingJarBundleEntry) {
                     String path = ((MissingJarBundleEntry) entry).path;
                     MissingJarServices
-                            .logDebugInfo("MissingJarBundleFileWrapper creating for :" + generation.getRevision().getSymbolicName() + "/" + path); //$NON-NLS-1$//$NON-NLS-2$ 
+                            .logDebugInfo("MissingJarBundleFileWrapper creating for :" + generation.getRevision().getSymbolicName() + "/" + path); //$NON-NLS-1$//$NON-NLS-2$
                     return new MissingJarBundleFileWrapper(bundleFile, generation, path);
 
                 }// else not the trick for proxying missign jars so do not create any wrapper.
@@ -246,7 +246,7 @@ public class JarLoaderBundleFileWrapperFactory implements BundleFileWrapperFacto
 
     /**
      * DOC sgandon Comment method "canHandleBundle".
-     * 
+     *
      * @param bundleSymbolicName
      * @return
      */

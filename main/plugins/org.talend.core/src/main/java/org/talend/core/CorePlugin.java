@@ -1,6 +1,6 @@
 // ============================================================================
 //
-// Copyright (C) 2006-2018 Talend Inc. - www.talend.com
+// Copyright (C) 2006-2019 Talend Inc. - www.talend.com
 //
 // This source code is available under agreement available at
 // %InstallDIR%\features\org.talend.rcp.branding.%PRODUCTNAME%\%PRODUCTNAME%license.txt
@@ -40,9 +40,9 @@ import org.talend.repository.model.IRepositoryService;
 
 /**
  * DOC nrousseau class global comment. Detailled comment <br/>
- * 
+ *
  * $Id$
- * 
+ *
  */
 public class CorePlugin extends Plugin {
 
@@ -61,7 +61,7 @@ public class CorePlugin extends Plugin {
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see org.eclipse.ui.plugin.AbstractUIPlugin#start(org.osgi.framework.BundleContext)
      */
     @Override
@@ -71,7 +71,7 @@ public class CorePlugin extends Plugin {
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see org.eclipse.ui.plugin.AbstractUIPlugin#stop(org.osgi.framework.BundleContext)
      */
     @Override
@@ -87,11 +87,11 @@ public class CorePlugin extends Plugin {
     private ScopedPreferenceStore preferenceStore;
 
     /**
-     * 
+     *
      * DOC ggu Comment method "getPreferenceStore".
-     * 
+     *
      * just want to remove the extended AbstractUIPlugin for this class.
-     * 
+     *
      * @return
      */
     public IPreferenceStore getPreferenceStore() {
@@ -105,7 +105,7 @@ public class CorePlugin extends Plugin {
 
     /**
      * Getter for context.
-     * 
+     *
      * @return the context
      */
     public static Context getContext() {
@@ -119,7 +119,7 @@ public class CorePlugin extends Plugin {
 
     /**
      * DOC get a implement of RunProcessService.
-     * 
+     *
      * @return a implement of RunProcessService
      */
     public IRunProcessService getRunProcessService() {
@@ -180,7 +180,7 @@ public class CorePlugin extends Plugin {
 
     /*
      * public boolean useSQLTemplate() { return (Boolean) CorePlugin.getContext().getProperty("useSQLTemplate"); }
-     * 
+     *
      * public boolean useRefproject() { return (Boolean) CorePlugin.getContext().getProperty("useRefProject"); }
      */
 

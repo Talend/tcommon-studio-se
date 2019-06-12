@@ -1,6 +1,6 @@
 // ============================================================================
 //
-// Copyright (C) 2006-2018 Talend Inc. - www.talend.com
+// Copyright (C) 2006-2019 Talend Inc. - www.talend.com
 //
 // This source code is available under agreement available at
 // %InstallDIR%\features\org.talend.rcp.branding.%PRODUCTNAME%\%PRODUCTNAME%license.txt
@@ -14,7 +14,7 @@
  * Copyright (c) 2000, 2006 IBM Corporation and others. All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0 which accompanies this distribution, and is
  * available at http://www.eclipse.org/legal/epl-v10.html
- * 
+ *
  * Contributors: IBM Corporation - initial API and implementation
  **********************************************************************************************************************/
 package org.talend.commons.ui.runtime.swt.tableviewer.behavior;
@@ -46,15 +46,15 @@ import org.talend.commons.utils.threading.ExecutionLimiter;
 
 /**
  * A layout for a table. Call <code>addColumnData</code> to add columns.
- * 
+ *
  * DefaultTableReflectLayout is based on <code>TableLayout</code> class.
- * 
+ *
  * This supports dynamically resize of columns of table parent composite when you set true <code>continuousLayout</code>
  * .
- * 
+ *
  * You can now force the layout with the <code>forceLayout</code> method, indeed the current layout method is processed
  * by default only once time.
- * 
+ *
  * $Id: TableViewerCreatorLayout.java 7042 2007-11-15 15:13:48Z smallet $
  */
 public class TableViewerCreatorLayout extends Layout {
@@ -62,7 +62,7 @@ public class TableViewerCreatorLayout extends Layout {
     /**
      * The number of extra pixels taken as horizontal trim by the table column. To ensure there are N pixels available
      * for the content of the column, assign N+COLUMN_TRIM for the column width.
-     * 
+     *
      * @since 3.1
      */
     private static final int COLUMN_TRIM = "carbon".equals(SWT.getPlatform()) ? 24 : 3; //$NON-NLS-1$
@@ -134,7 +134,7 @@ public class TableViewerCreatorLayout extends Layout {
 
     /**
      * Adds a new column of data to this table layout.
-     * 
+     *
      * @param data the column layout data
      */
     public void addColumnData(ColumnLayoutData data) {
@@ -164,9 +164,9 @@ public class TableViewerCreatorLayout extends Layout {
     }
 
     /**
-     * 
+     *
      * Add columns width.
-     * 
+     *
      * @return width of table
      */
     private int computeCurrentTableWidth() {
@@ -406,7 +406,7 @@ public class TableViewerCreatorLayout extends Layout {
     }
 
     /**
-     * 
+     *
      * DOC amaumont Comment method "initColumnsControlListener".
      */
     private void initColumnsControlListener() {
@@ -440,7 +440,7 @@ public class TableViewerCreatorLayout extends Layout {
 
     /**
      * Set the width of the item.
-     * 
+     *
      * @param item
      * @param width
      */
@@ -470,7 +470,7 @@ public class TableViewerCreatorLayout extends Layout {
 
     /**
      * Force the layout even if it is not the first layout.
-     * 
+     *
      * @param composite
      * @param flush
      */
@@ -481,7 +481,7 @@ public class TableViewerCreatorLayout extends Layout {
 
     /**
      * Return the columns for the receiver.
-     * 
+     *
      * @param composite
      * @return Item[]
      */
@@ -494,7 +494,7 @@ public class TableViewerCreatorLayout extends Layout {
 
     /**
      * Returns whether layout is really processed at each call.
-     * 
+     *
      * @return <code>true</code> if layout is really processed at each call, and <code>false</code> otherwise
      */
     public boolean isContinuousLayout() {
@@ -503,7 +503,7 @@ public class TableViewerCreatorLayout extends Layout {
 
     /**
      * Sets if if layout must be really processed at each call or not.
-     * 
+     *
      * @param continuousLayout <code>true</code> if layout must be really processed at each call, and <code>false</code>
      * otherwise
      */
@@ -513,7 +513,7 @@ public class TableViewerCreatorLayout extends Layout {
 
     /**
      * Returns widthAdjustValue which is used to adjust rendering.
-     * 
+     *
      * @return current widthAdjustValue
      */
     public int getWidthAdjustValue() {
@@ -526,7 +526,7 @@ public class TableViewerCreatorLayout extends Layout {
 
     /**
      * DOC amaumont Comment method "setShowAllColumns".
-     * 
+     *
      * @param b
      */
     public void setFillHorizontal(boolean showAllColumns) {
@@ -576,7 +576,7 @@ public class TableViewerCreatorLayout extends Layout {
 
     /**
      * DOC amaumont Comment method "resizeControl".
-     * 
+     *
      * @param e
      */
     private synchronized void controlResizedExecute(ControlEvent e) {

@@ -1,6 +1,6 @@
 // ============================================================================
 //
-// Copyright (C) 2006-2018 Talend Inc. - www.talend.com
+// Copyright (C) 2006-2019 Talend Inc. - www.talend.com
 //
 // This source code is available under agreement available at
 // %InstallDIR%\features\org.talend.rcp.branding.%PRODUCTNAME%\%PRODUCTNAME%license.txt
@@ -59,9 +59,9 @@ import org.talend.repository.ui.views.IRepositoryView;
 
 /**
  * DOC qwei class global comment. Detailled comment <br/>
- * 
+ *
  * $Id: talend.epf 1 2006-09-29 17:06:40 +0000 (ææäº, 29 ä¹æ 2006) nrousseau $
- * 
+ *
  */
 public abstract class AbstractCreatToolbarAction implements IWorkbenchWindowPulldownDelegate2, IActionDelegate2 {
 
@@ -79,7 +79,7 @@ public abstract class AbstractCreatToolbarAction implements IWorkbenchWindowPull
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see org.eclipse.ui.IWorkbenchWindowPulldownDelegate2#getMenu(org.eclipse.swt.widgets.Menu)
      */
     @Override
@@ -90,7 +90,7 @@ public abstract class AbstractCreatToolbarAction implements IWorkbenchWindowPull
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see org.eclipse.ui.IWorkbenchWindowActionDelegate#dispose()
      */
     @Override
@@ -101,7 +101,7 @@ public abstract class AbstractCreatToolbarAction implements IWorkbenchWindowPull
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see org.eclipse.ui.IWorkbenchWindowActionDelegate#init(org.eclipse.ui.IWorkbenchWindow)
      */
     @Override
@@ -112,7 +112,7 @@ public abstract class AbstractCreatToolbarAction implements IWorkbenchWindowPull
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see org.eclipse.ui.IActionDelegate2#init(org.eclipse.jface.action.IAction)
      */
     @Override
@@ -123,7 +123,7 @@ public abstract class AbstractCreatToolbarAction implements IWorkbenchWindowPull
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see org.eclipse.ui.IActionDelegate#run(org.eclipse.jface.action.IAction)
      */
     @Override
@@ -132,7 +132,7 @@ public abstract class AbstractCreatToolbarAction implements IWorkbenchWindowPull
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see org.eclipse.ui.IActionDelegate2#runWithEvent(org.eclipse.jface.action.IAction,
      * org.eclipse.swt.widgets.Event)
      */
@@ -148,7 +148,7 @@ public abstract class AbstractCreatToolbarAction implements IWorkbenchWindowPull
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see org.eclipse.ui.IActionDelegate#selectionChanged(org.eclipse.jface.action.IAction,
      * org.eclipse.jface.viewers.ISelection)
      */
@@ -326,7 +326,7 @@ public abstract class AbstractCreatToolbarAction implements IWorkbenchWindowPull
 
     /**
      * Adds a separator to the given menu.
-     * 
+     *
      * @param menu
      */
     protected void addSeparator(Menu menu) {

@@ -1,6 +1,6 @@
 // ============================================================================
 //
-// Copyright (C) 2006-2018 Talend Inc. - www.talend.com
+// Copyright (C) 2006-2019 Talend Inc. - www.talend.com
 //
 // This source code is available under agreement available at
 // %InstallDIR%\features\org.talend.rcp.branding.%PRODUCTNAME%\%PRODUCTNAME%license.txt
@@ -71,9 +71,9 @@ import org.talend.utils.string.DigestUtil;
 /**
  * Label provider for the repository view. <code>DEBUG</code> boolean field specify if details (such as objects ids)
  * must appears on display or not.<br/>
- * 
+ *
  * $Id$
- * 
+ *
  */
 public class RepositoryLabelProvider extends LabelProvider implements IColorProvider, IFontProvider {
 
@@ -237,7 +237,7 @@ public class RepositoryLabelProvider extends LabelProvider implements IColorProv
                     .getMainProjectBranch(ProjectManager.getInstance().getProjectFromProjectLabel(label));
             branch = ProjectManager.getCleanBranchName(branch);
             if (branch != null && branch.length() > 0) {
-                return label + "/" + branch; //$NON-NLS-1$ 
+                return label + "/" + branch; //$NON-NLS-1$
             }
             return label;
         } else {
@@ -290,6 +290,10 @@ public class RepositoryLabelProvider extends LabelProvider implements IColorProv
             }
         }
 
+        return decorateImageWithStatus(img, object);
+    }
+
+    public Image decorateImageWithStatus(Image originalImg, IRepositoryViewObject object) {
         ERepositoryStatus repositoryStatus = object.getRepositoryStatus();
 
         Context ctx = CoreRuntimePlugin.getInstance().getContext();
@@ -301,7 +305,7 @@ public class RepositoryLabelProvider extends LabelProvider implements IColorProv
             }
         }
 
-        Image image = OverlayImageProvider.getImageWithStatus(img, repositoryStatus);
+        Image image = OverlayImageProvider.getImageWithStatus(originalImg, repositoryStatus);
 
         ERepositoryStatus informationStatus = object.getInformationStatus();
 
@@ -322,7 +326,7 @@ public class RepositoryLabelProvider extends LabelProvider implements IColorProv
     public static Image getDefaultJobletImage() {
         return ImageProvider.getImage(ECoreImage.JOBLET_COMPONENT_ICON);
     }
-    
+
     public static Image getDefaultJobletImage(Item item) {
         if (GlobalServiceRegister.getDefault().isServiceRegistered(ISparkJobletProviderService.class)) {
             ISparkJobletProviderService sparkJobletService = (ISparkJobletProviderService) GlobalServiceRegister
@@ -343,7 +347,7 @@ public class RepositoryLabelProvider extends LabelProvider implements IColorProv
 
     /**
      * DOC bqian Comment method "getJobletCustomIcon".
-     * 
+     *
      * @param property
      * @return
      */
@@ -525,7 +529,7 @@ public class RepositoryLabelProvider extends LabelProvider implements IColorProv
             return JFaceResources.getFontRegistry().defaultFont();
         }
     }
-    
+
     public static void setRefresh(boolean refresh) {
         refreshProperty = refresh;
     }

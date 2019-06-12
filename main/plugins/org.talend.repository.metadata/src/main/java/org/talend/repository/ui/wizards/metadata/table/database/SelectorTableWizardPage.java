@@ -1,6 +1,6 @@
 // ============================================================================
 //
-// Copyright (C) 2006-2018 Talend Inc. - www.talend.com
+// Copyright (C) 2006-2019 Talend Inc. - www.talend.com
 //
 // This source code is available under agreement available at
 // %InstallDIR%\features\org.talend.rcp.branding.%PRODUCTNAME%\%PRODUCTNAME%license.txt
@@ -65,9 +65,9 @@ public class SelectorTableWizardPage extends TemplateWizardPage {
     /**
      * SelectorTableWizardPage constructor (to instance IMetadataConnection OR MetaDataTableType). If MetaDataTableType
      * exist, it's an update of existing metadata else it's a new metadata.
-     * 
+     *
      * @param tableInfoParameters
-     * 
+     *
      * @param ISelection
      */
     public SelectorTableWizardPage(ConnectionItem connectionItem, boolean isRepositoryObjectEditable,
@@ -94,7 +94,7 @@ public class SelectorTableWizardPage extends TemplateWizardPage {
 
     /**
      * Create the first composite, addComponentsAndControls and initialize TableWizardPage.
-     * 
+     *
      * @see IDialogPage#createControl(Composite)
      */
     public void createControl(final Composite parent) {
@@ -171,7 +171,7 @@ public class SelectorTableWizardPage extends TemplateWizardPage {
 
     /**
      * Getter for tableInfoParameters.
-     * 
+     *
      * @return the tableInfoParameters
      */
     public TableInfoParameters getTableInfoParameters() {
@@ -215,7 +215,7 @@ public class SelectorTableWizardPage extends TemplateWizardPage {
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see org.talend.repository.ui.wizards.metadata.table.database.TemplateWizardPage#getConnection()
      */
     public Connection getConnection() {

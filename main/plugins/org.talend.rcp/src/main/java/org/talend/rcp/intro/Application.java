@@ -1,6 +1,6 @@
 // ============================================================================
 //
-// Copyright (C) 2006-2018 Talend Inc. - www.talend.com
+// Copyright (C) 2006-2019 Talend Inc. - www.talend.com
 //
 // This source code is available under agreement available at
 // %InstallDIR%\features\org.talend.rcp.branding.%PRODUCTNAME%\%PRODUCTNAME%license.txt
@@ -76,7 +76,7 @@ import org.talend.repository.ui.login.LoginHelper;
 public class Application implements IApplication {
 
     /**
-     * 
+     *
      */
     private static final String TALEND_FORCE_INITIAL_WORKSPACE_PROMPT_SYS_PROP =
             "talend.force.initial.workspace.prompt"; //$NON-NLS-1$
@@ -91,8 +91,15 @@ public class Application implements IApplication {
     @SuppressWarnings("restriction")
     @Override
     public Object start(IApplicationContext context) throws Exception {
+        if (Boolean.getBoolean(EclipseCommandLine.PROP_TALEND_BUNDLES_DO_CLEAN)) {
+            System.setProperty(EclipseCommandLine.PROP_TALEND_BUNDLES_DO_CLEAN, Boolean.FALSE.toString());
+            EclipseCommandLine.updateOrCreateExitDataPropertyWithCommand(EclipseCommandLine.CLEAN, null, false);
+            EclipseCommandLine.updateOrCreateExitDataPropertyWithCommand(EclipseCommandLine.ARG_TALEND_BUNDLES_CLEANED,
+                    Boolean.TRUE.toString(), false);
+            return IApplication.EXIT_RELAUNCH;
+        }
         System.setProperty(TalendPropertiesUtil.PROD_APP, this.getClass().getName());
-        
+
         Display display = PlatformUI.createDisplay();
         try {
             // TUP-5816 don't put any code ahead of this part unless you make sure it won't trigger workspace
@@ -141,7 +148,7 @@ public class Application implements IApplication {
             // it is removed to plugin org.talend.license.gui
             // if (!ArrayUtils.contains(Platform.getApplicationArgs(),
             // EclipseCommandLine.TALEND_DISABLE_LOGINDIALOG_COMMAND)
-            //                    && !Boolean.parseBoolean(System.getProperty("talend.project.reload"))) {//$NON-NLS-1$ 
+            //                    && !Boolean.parseBoolean(System.getProperty("talend.project.reload"))) {//$NON-NLS-1$
             // openLicenseAndRegister(shell);
             // }
 
@@ -301,23 +308,25 @@ public class Application implements IApplication {
     private void setRelaunchData() {
         EclipseCommandLine.updateOrCreateExitDataPropertyWithCommand(EclipseCommandLine.TALEND_RELOAD_COMMAND,
                 Boolean.TRUE.toString(), false);
+        EclipseCommandLine.updateOrCreateExitDataPropertyWithCommand(EclipseCommandLine.ARG_TALEND_BUNDLES_CLEANED,
+                Boolean.FALSE.toString(), false);
         // if relaunch, should delete the "disableLoginDialog" argument in eclipse data for bug TDI-19214
         EclipseCommandLine.updateOrCreateExitDataPropertyWithCommand(
                 EclipseCommandLine.TALEND_DISABLE_LOGINDIALOG_COMMAND, null, true);
     }
 
     /**
-     * 
+     *
      * DOC ggu Comment method "checkForBrowser".
      */
     private void checkBrowserSupport() {
         Shell shell = new Shell();
         try {
             Browser browser = new Browser(shell, SWT.BORDER);
-            System.setProperty("USE_BROWSER", Boolean.TRUE.toString()); //$NON-NLS-1$ 
+            System.setProperty("USE_BROWSER", Boolean.TRUE.toString()); //$NON-NLS-1$
             browser.dispose();
         } catch (Throwable t) {
-            System.setProperty("USE_BROWSER", Boolean.FALSE.toString()); //$NON-NLS-1$ 
+            System.setProperty("USE_BROWSER", Boolean.FALSE.toString()); //$NON-NLS-1$
         } finally {
             shell.dispose();
 
@@ -347,7 +356,7 @@ public class Application implements IApplication {
 
     /**
      * Return <code>true</code> if the lock could be acquired.
-     * 
+     *
      * @param shell
      * @return null if lock was aquired or some exit status else
      * @throws IOException if lock acquisition fails somehow
@@ -443,7 +452,7 @@ public class Application implements IApplication {
      * Open a workspace selection dialog on the argument shell, populating the argument data with the user's selection.
      * Perform first level validation on the selection by comparing the version information. This method does not
      * examine the runtime state (e.g., is the workspace already locked?).
-     * 
+     *
      * @param shell
      * @param launchData
      * @param force setting to true makes the dialog open regardless of the showDialog value

@@ -1,6 +1,6 @@
 // ============================================================================
 //
-// Copyright (C) 2006-2018 Talend Inc. - www.talend.com
+// Copyright (C) 2006-2019 Talend Inc. - www.talend.com
 //
 // This source code is available under agreement available at
 // %InstallDIR%\features\org.talend.rcp.branding.%PRODUCTNAME%\%PRODUCTNAME%license.txt
@@ -56,9 +56,9 @@ import org.talend.repository.model.RepositoryConstants;
 
 /**
  * Utilities to work with IContextParamet objects. <br/>
- * 
+ *
  * $Id: ContextParameterUtils.java 38013 2010-03-05 14:21:59Z mhirt $
- * 
+ *
  */
 public final class ContextParameterUtils {
 
@@ -88,7 +88,7 @@ public final class ContextParameterUtils {
 
     /**
      * Script code used to invoque a context parameter in a given language.
-     * 
+     *
      * @param parameter Context parameter used in script.
      * @param language Language of the script.
      * @return Script code invoquing the context parameter.
@@ -322,7 +322,7 @@ public final class ContextParameterUtils {
 
     /**
      * DOC qzhang Comment method "containoldContext".
-     * 
+     *
      * @param code
      * @return
      */
@@ -333,7 +333,7 @@ public final class ContextParameterUtils {
 
     /**
      * DOC qzhang Comment method "containoldContext".
-     * 
+     *
      * @param code
      * @return
      */
@@ -346,9 +346,9 @@ public final class ContextParameterUtils {
     }
 
     /**
-     * 
+     *
      * ggu Comment method "getNewScriptCode".
-     * 
+     *
      * example: context.var1 for java, $_context{var1} for perl.
      */
     public static String getNewScriptCode(final String name, ECodeLanguage language) {
@@ -359,9 +359,9 @@ public final class ContextParameterUtils {
     }
 
     /**
-     * 
+     *
      * ggu Comment method "getVariableFromCode".
-     * 
+     *
      * only for new script code and the first variables. and if there is no variable in code, return null.
      */
     public static String getVariableFromCode(String code) {
@@ -419,9 +419,9 @@ public final class ContextParameterUtils {
     }
 
     /**
-     * 
+     *
      * ggu Comment method "containContextVariables".
-     * 
+     *
      * check the string contain context, or not.
      */
     public static boolean containContextVariables(String str) {
@@ -443,9 +443,9 @@ public final class ContextParameterUtils {
     }
 
     /**
-     * 
+     *
      * ggu Comment method "checkAndHideParameter".
-     * 
+     *
      * hide the value. if the type is password
      */
     public static String checkAndHideValue(IContextParameter parameter) {
@@ -461,10 +461,10 @@ public final class ContextParameterUtils {
     }
 
     /**
-     * 
+     *
      * ggu Comment method "isPasswordType".
-     * 
-     * 
+     *
+     *
      */
     public static boolean isPasswordType(IContextParameter parameter) {
         if (parameter == null) {
@@ -562,10 +562,10 @@ public final class ContextParameterUtils {
 
     /**
      * DOC ycbai Comment method "isContextParamOfContextType".
-     * 
+     *
      * <p>
      * Estimate if the context parameter exists in the context type.
-     * 
+     *
      * @param contextType
      * @param value
      * @return
@@ -620,11 +620,11 @@ public final class ContextParameterUtils {
 
     /**
      * DOC ycbai Comment method "getValidParameterName".
-     * 
+     *
      * <p>
      * Get a valid context parameter name which revise the invalid characters.
      * </p>
-     * 
+     *
      * @param name
      * @return
      */
@@ -648,12 +648,12 @@ public final class ContextParameterUtils {
      * Also it may be "dynamic". E.g. "const" + context.var. Javajet components remain user's input unchanged, thus it
      * is required to add quotes, when user sets string literal value. TCOMP/TaCoKit components allow user to miss
      * quotes, but this feature requires to check expression and to add quotes in case it is static.
-     * 
+     *
      * This implementation checks if {@code value} contains {@code context} or {@code globalMap} values. TODO dynamic
      * values are not limited to context or globalMap. Following cases should be covered by this method too: 1. "const"
      * + 10 2. routines method calls 3. connection name ("row1") usage in Parameter values Probably method should be
      * moved to more appropriate class
-     * 
+     *
      * @param value Parameter value to check
      * @return true if value is dynamic
      */

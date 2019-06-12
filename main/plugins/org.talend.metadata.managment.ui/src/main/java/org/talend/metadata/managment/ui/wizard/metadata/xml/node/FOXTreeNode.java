@@ -1,6 +1,6 @@
 // ============================================================================
 //
-// Copyright (C) 2006-2018 Talend Inc. - www.talend.com
+// Copyright (C) 2006-2019 Talend Inc. - www.talend.com
 //
 // This source code is available under agreement available at
 // %InstallDIR%\features\org.talend.rcp.branding.%PRODUCTNAME%\%PRODUCTNAME%license.txt
@@ -20,9 +20,9 @@ import org.talend.core.model.metadata.IMetadataTable;
 
 /**
  * DOC bqian class global comment. Detailled comment <br/>
- * 
+ *
  * $Id: FOXTreeNode.java,v 1.1 2007/06/12 07:20:39 gke Exp $
- * 
+ *
  */
 public abstract class FOXTreeNode {
 
@@ -96,7 +96,7 @@ public abstract class FOXTreeNode {
 
     /**
      * Getter for children.
-     * 
+     *
      * @return the children
      */
     public List<FOXTreeNode> getChildren() {
@@ -105,7 +105,7 @@ public abstract class FOXTreeNode {
 
     /**
      * Getter for parent.
-     * 
+     *
      * @return the parent
      */
     public FOXTreeNode getParent() {
@@ -114,7 +114,7 @@ public abstract class FOXTreeNode {
 
     /**
      * Sets the parent.
-     * 
+     *
      * @param parent the parent to set
      */
     public void setParent(FOXTreeNode parent) {
@@ -123,7 +123,7 @@ public abstract class FOXTreeNode {
 
     /**
      * DOC ke Comment method "getColumnLabel".
-     * 
+     *
      * @return
      */
     public String getColumnLabel() {
@@ -142,7 +142,7 @@ public abstract class FOXTreeNode {
 
     /**
      * Getter for schema.
-     * 
+     *
      * @return the schema
      */
     public IMetadataColumn getColumn() {
@@ -151,7 +151,7 @@ public abstract class FOXTreeNode {
 
     /**
      * Sets the schema.
-     * 
+     *
      * @param schema the schema to set
      */
     public void setColumn(IMetadataColumn column) {
@@ -160,7 +160,7 @@ public abstract class FOXTreeNode {
 
     /**
      * Getter for value.
-     * 
+     *
      * @return the value
      */
     public String getLabel() {
@@ -169,7 +169,7 @@ public abstract class FOXTreeNode {
 
     /**
      * Getter for value.
-     * 
+     *
      * @return the value
      */
     public String getLabelForViewer() {
@@ -178,7 +178,7 @@ public abstract class FOXTreeNode {
 
     /**
      * Getter for defaultValue.
-     * 
+     *
      * @return the value
      */
     public String getDefaultValue() {
@@ -187,7 +187,7 @@ public abstract class FOXTreeNode {
 
     /**
      * Sets the defaultValue.
-     * 
+     *
      * @param value the defaultValue to set
      */
     public void setDefaultValue(String defaultValue) {
@@ -196,7 +196,7 @@ public abstract class FOXTreeNode {
 
     /**
      * Sets the value.
-     * 
+     *
      * @param value the value to set
      */
     public void setLabel(String label) {
@@ -205,7 +205,7 @@ public abstract class FOXTreeNode {
 
     /**
      * DOC ke Comment method "addChild".
-     * 
+     *
      * @param child
      */
     public void addChild(FOXTreeNode child) {
@@ -215,9 +215,9 @@ public abstract class FOXTreeNode {
     }
 
     /**
-     * 
+     *
      * wzhang Comment method "addChild".
-     * 
+     *
      * @param index
      * @param child
      */
@@ -233,7 +233,7 @@ public abstract class FOXTreeNode {
 
     /**
      * DOC ke Comment method "removeChild".
-     * 
+     *
      * @param child
      */
     public void removeChild(FOXTreeNode child) {
@@ -243,7 +243,7 @@ public abstract class FOXTreeNode {
 
     /**
      * DOC ke Comment method "hasChildren".
-     * 
+     *
      * @return
      */
     public boolean hasChildren() {
@@ -252,7 +252,7 @@ public abstract class FOXTreeNode {
 
     /**
      * DOC ke Comment method "isLoop".
-     * 
+     *
      * @return
      */
     public boolean isLoop() {
@@ -261,7 +261,7 @@ public abstract class FOXTreeNode {
 
     /**
      * DOC ke Comment method "setLoop".
-     * 
+     *
      * @param b
      */
     public void setLoop(boolean b) {
@@ -270,7 +270,7 @@ public abstract class FOXTreeNode {
 
     /**
      * DOC ke Comment method "isGroup".
-     * 
+     *
      * @return
      */
     public boolean isGroup() {
@@ -279,7 +279,7 @@ public abstract class FOXTreeNode {
 
     /**
      * DOC ke Comment method "setGroup".
-     * 
+     *
      * @param b
      */
     public void setGroup(boolean b) {
@@ -288,7 +288,7 @@ public abstract class FOXTreeNode {
 
     /**
      * Getter for isMainNode.
-     * 
+     *
      * @return the isMainNode
      */
     public boolean isMain() {
@@ -297,7 +297,7 @@ public abstract class FOXTreeNode {
 
     /**
      * Sets the isMainNode.
-     * 
+     *
      * @param isMainNode the isMainNode to set
      */
     public void setMain(boolean isMainNode) {
@@ -305,9 +305,9 @@ public abstract class FOXTreeNode {
     }
 
     /**
-     * 
+     *
      * wzhang Comment method "getTable".
-     * 
+     *
      * @return
      */
     public IMetadataTable getTable() {
@@ -315,9 +315,9 @@ public abstract class FOXTreeNode {
     }
 
     /**
-     * 
+     *
      * wzhang Comment method "setTable".
-     * 
+     *
      * @param table
      */
     public void setTable(IMetadataTable table) {
@@ -325,9 +325,9 @@ public abstract class FOXTreeNode {
     }
 
     /**
-     * 
+     *
      * wzhang Comment method "getRow".
-     * 
+     *
      * @return
      */
     public String getRow() {
@@ -335,9 +335,9 @@ public abstract class FOXTreeNode {
     }
 
     /**
-     * 
+     *
      * wzhang Comment method "setRow".
-     * 
+     *
      * @param row
      */
     public void setRow(String row) {
@@ -346,7 +346,7 @@ public abstract class FOXTreeNode {
 
     /**
      * wzhang Comment method "getOrder".
-     * 
+     *
      * @return
      */
     public int getOrder() {
@@ -355,7 +355,7 @@ public abstract class FOXTreeNode {
 
     /**
      * wzhang Comment method "setOrder".
-     * 
+     *
      * @param order
      */
     public void setOrder(int order) {

@@ -1,6 +1,6 @@
 // ============================================================================
 //
-// Copyright (C) 2006-2018 Talend Inc. - www.talend.com
+// Copyright (C) 2006-2019 Talend Inc. - www.talend.com
 //
 // This source code is available under agreement available at
 // %InstallDIR%\features\org.talend.rcp.branding.%PRODUCTNAME%\%PRODUCTNAME%license.txt
@@ -20,7 +20,7 @@ import org.talend.utils.sql.metadata.constants.TableType;
 
 /**
  * @author scorreia
- * 
+ *
  * A class for creating Views from a connection.
  */
 public class ViewBuilder extends AbstractTableBuilder<TdView> {
@@ -31,7 +31,7 @@ public class ViewBuilder extends AbstractTableBuilder<TdView> {
 
     /**
      * ViewBuilder constructor.
-     * 
+     *
      * @param conn the connection from which the views will be created.
      */
     public ViewBuilder(org.talend.core.model.metadata.builder.connection.Connection conn) {
@@ -40,7 +40,7 @@ public class ViewBuilder extends AbstractTableBuilder<TdView> {
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see org.talend.cwm.builders.AbstractTableBuilder#createTable()
      */
     @Override

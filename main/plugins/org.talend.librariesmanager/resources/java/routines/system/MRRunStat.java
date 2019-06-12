@@ -1,6 +1,6 @@
 // ============================================================================
 //
-// Copyright (C) 2006-2018 Talend Inc. - www.talend.com
+// Copyright (C) 2006-2019 Talend Inc. - www.talend.com
 //
 // This source code is available under agreement available at
 // %InstallDIR%\features\org.talend.rcp.branding.%PRODUCTNAME%\%PRODUCTNAME%license.txt
@@ -19,7 +19,7 @@ import java.util.List;
 
 /**
  * created by bchen on Jul 24, 2013 Detailled comment
- * 
+ *
  */
 public class MRRunStat implements Runnable {
 
@@ -45,7 +45,7 @@ public class MRRunStat implements Runnable {
 
         /**
          * Getter for groupID.
-         * 
+         *
          * @return the groupID
          */
         public int getGroupID() {
@@ -54,7 +54,7 @@ public class MRRunStat implements Runnable {
 
         /**
          * Sets the groupID.
-         * 
+         *
          * @param groupID the groupID to set
          */
         public void setGroupID(int groupID) {
@@ -63,7 +63,7 @@ public class MRRunStat implements Runnable {
 
         /**
          * Getter for mrJobID.
-         * 
+         *
          * @return the mrJobID
          */
         public int getMRJobID() {
@@ -72,7 +72,7 @@ public class MRRunStat implements Runnable {
 
         /**
          * Sets the mrJobID.
-         * 
+         *
          * @param mrJobID the mrJobID to set
          */
         public void setMRJobID(int mrJobID) {
@@ -81,7 +81,7 @@ public class MRRunStat implements Runnable {
 
         /**
          * Getter for mapProgress.
-         * 
+         *
          * @return the mapProgress
          */
         public float getMapProgress() {
@@ -90,7 +90,7 @@ public class MRRunStat implements Runnable {
 
         /**
          * Sets the mapProgress.
-         * 
+         *
          * @param mapProgress the mapProgress to set
          */
         public void setMapProgress(float mapProgress) {
@@ -99,7 +99,7 @@ public class MRRunStat implements Runnable {
 
         /**
          * Getter for reduceProgress.
-         * 
+         *
          * @return the reduceProgress
          */
         public float getReduceProgress() {
@@ -108,7 +108,7 @@ public class MRRunStat implements Runnable {
 
         /**
          * Sets the reduceProgress.
-         * 
+         *
          * @param reduceProgress the reduceProgress to set
          */
         public void setReduceProgress(float reduceProgress) {
@@ -117,7 +117,7 @@ public class MRRunStat implements Runnable {
 
         /**
          * DOC bchen Comment method "toStatFormat".
-         * 
+         *
          * @return
          */
         public String toStatFormat() {

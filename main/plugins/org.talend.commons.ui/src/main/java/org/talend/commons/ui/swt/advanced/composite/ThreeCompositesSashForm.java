@@ -1,6 +1,6 @@
 // ============================================================================
 //
-// Copyright (C) 2006-2018 Talend Inc. - www.talend.com
+// Copyright (C) 2006-2019 Talend Inc. - www.talend.com
 //
 // This source code is available under agreement available at
 // %InstallDIR%\features\org.talend.rcp.branding.%PRODUCTNAME%\%PRODUCTNAME%license.txt
@@ -25,9 +25,9 @@ import org.eclipse.swt.widgets.Table;
 /**
  * This class is used for constructing three composites, putting 2 sashes in the middle composite, which is used for
  * changing other 2 composites.
- * 
+ *
  * $Id: talend-code-templates.xml 1 2007-3-19 下午04:55:01 (星期五, 29 九月 2006) qzhang $
- * 
+ *
  */
 public class ThreeCompositesSashForm extends Composite {
 
@@ -45,7 +45,7 @@ public class ThreeCompositesSashForm extends Composite {
 
     /**
      * Initialize.
-     * 
+     *
      * @param parent
      * @param style
      */
@@ -71,7 +71,7 @@ public class ThreeCompositesSashForm extends Composite {
 
     /**
      * Changes all widgets's position when sash was moved.
-     * 
+     *
      * @param shift
      */
     private void setCompositesBounds(int shift) {
@@ -116,7 +116,7 @@ public class ThreeCompositesSashForm extends Composite {
 
             /*
              * (non-Java)
-             * 
+             *
              * @see org.eclipse.swt.widgets.Listener#handleEvent(org.eclipse.swt.widgets.Event)
              */
             public void handleEvent(Event event) {
@@ -130,7 +130,7 @@ public class ThreeCompositesSashForm extends Composite {
 
             /*
              * (non-Java)
-             * 
+             *
              * @see org.eclipse.swt.widgets.Listener#handleEvent(org.eclipse.swt.widgets.Event)
              */
             public void handleEvent(Event event) {
@@ -213,7 +213,7 @@ public class ThreeCompositesSashForm extends Composite {
 
     /**
      * qzhang Comment method "setGridDatas".
-     * 
+     *
      * @return
      */
     public void setGridDatas() {

@@ -1,6 +1,6 @@
 // ============================================================================
 //
-// Copyright (C) 2006-2018 Talend Inc. - www.talend.com
+// Copyright (C) 2006-2019 Talend Inc. - www.talend.com
 //
 // This source code is available under agreement available at
 // %InstallDIR%\features\org.talend.rcp.branding.%PRODUCTNAME%\%PRODUCTNAME%license.txt
@@ -26,73 +26,73 @@ import org.talend.core.model.update.UpdateResult;
 public interface IProcessUpdateManagerProvider extends IUpdateManagerProvider {
 
     /**
-     * 
+     *
      * DOC ggu Comment method "validate".
-     * 
+     *
      * check the type need current provider to do or not.
-     * 
+     *
      * @param type
      * @return
      */
     boolean validate(IUpdateItemType type);
 
     /**
-     * 
+     *
      * DOC ggu Comment method "retrieveUpdateResults".
-     * 
+     *
      * @param process
      * @return
      */
     List<UpdateResult> retrieveUpdateResults(IProcess process);
 
     /**
-     * 
+     *
      * DOC ggu Comment method "getDisplayImage".
-     * 
+     *
      * mostly work for label provider in update manager dialog.
-     * 
+     *
      * @return
      */
     Object getDisplayImage(Object element, int columnIndex);
 
     /**
-     * 
+     *
      * DOC ggu Comment method "getDisplayText".
-     * 
+     *
      * mostly work for label provider in update manager dialog.
-     * 
+     *
      * @return
      */
     String getDisplayText(Object element, int columnIndex);
 
     /**
-     * 
+     *
      * DOC ggu Comment method "getDisplayCategory".
-     * 
+     *
      * mostly work for label provider in update manager dialog.
-     * 
+     *
      * @param result
      * @return
      */
     String getDisplayCategory(UpdateResult result);
 
     /**
-     * 
+     *
      * DOC ggu Comment method "getResultName".
-     * 
+     *
      * the label of result.
-     * 
+     *
      * @param result
      * @return
      */
     String getResultName(UpdateResult result);
 
     /**
-     * 
+     *
      * DOC ggu Comment method "doUpdate".
-     * 
+     *
      * Will do the real update by result via GEF command, if it's opened job/joblet to be dirty by the command.
-     * 
+     *
      * @param result
      * @param monitor
      * @return
@@ -100,19 +100,19 @@ public interface IProcessUpdateManagerProvider extends IUpdateManagerProvider {
     boolean doUpdate(IProgressMonitor monitor, UpdateResult result);
 
     /**
-     * 
+     *
      * DOC ggu Comment method "postUpdate".
-     * 
+     *
      * most like needRefreshRelatedViews, after udpate, need something to do.
-     * 
+     *
      * @param results
      */
     void postUpdate(List<UpdateResult> results);
 
     /**
-     * 
+     *
      * DOC ggu Comment method "needRefreshRelatedViews".
-     * 
+     *
      * @param results all result to check the related views
      * @return will refresh the view ids.
      */

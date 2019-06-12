@@ -1,6 +1,6 @@
 // ============================================================================
 //
-// Copyright (C) 2006-2018 Talend Inc. - www.talend.com
+// Copyright (C) 2006-2019 Talend Inc. - www.talend.com
 //
 // This source code is available under agreement available at
 // %InstallDIR%\features\org.talend.rcp.branding.%PRODUCTNAME%\%PRODUCTNAME%license.txt
@@ -14,14 +14,14 @@ package org.talend.utils.thread;
 
 /**
  * DOC amaumont class global comment. Detailled comment <br/>
- * 
+ *
  */
 public class ThreadUtils {
 
     /**
-     * 
+     *
      * "waitTimeBool" wait for the given time.
-     * 
+     *
      * @param object wait() will be start on this given object
      * @param time
      * @return true if interrupted, else false
@@ -38,9 +38,9 @@ public class ThreadUtils {
     }
 
     /**
-     * 
+     *
      * "waitTimeBool" wait for the given time.
-     * 
+     *
      * @param time
      * @return true if interrupted, else false
      */
@@ -54,12 +54,12 @@ public class ThreadUtils {
         }
         return false;
     }
-    
+
     /**
-     * 
+     *
      * "waitTimeBool" wait for the given time.
-     * 
-     * @param object wait() will be start on this given object 
+     *
+     * @param object wait() will be start on this given object
      * @param time
      * @throws InterruptedException when interrupted
      */
@@ -70,9 +70,9 @@ public class ThreadUtils {
     }
 
     /**
-     * 
+     *
      * "waitTimeBool" wait for the given time.
-     * 
+     *
      * @param time
      * @throws InterruptedException when interrupted
      */
@@ -81,5 +81,5 @@ public class ThreadUtils {
             Thread.currentThread().wait(time);
         }
     }
-    
+
 }

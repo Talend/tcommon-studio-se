@@ -1,6 +1,6 @@
 // ============================================================================
 //
-// Copyright (C) 2006-2018 Talend Inc. - www.talend.com
+// Copyright (C) 2006-2019 Talend Inc. - www.talend.com
 //
 // This source code is available under agreement available at
 // %InstallDIR%\features\org.talend.rcp.branding.%PRODUCTNAME%\%PRODUCTNAME%license.txt
@@ -56,9 +56,9 @@ public final class TalendTypeConvert {
     }
 
     /**
-     * 
+     *
      * convert talendType to jdbcType.
-     * 
+     *
      * @param xsdDataType
      * @return
      */
@@ -68,9 +68,9 @@ public final class TalendTypeConvert {
     }
 
     /**
-     * 
+     *
      * DOC qiongli Comment method "convertToObject".
-     * 
+     *
      * @param talendType
      * @param value
      * @param datePattern:just for date type then parse with the given pattern(format).
@@ -121,9 +121,9 @@ public final class TalendTypeConvert {
     }
 
     /**
-     * 
+     *
      * Convert the TalendType to Java type.
-     * 
+     *
      * @param talendType
      * @return
      */

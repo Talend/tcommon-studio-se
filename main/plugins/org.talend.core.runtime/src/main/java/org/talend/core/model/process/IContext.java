@@ -1,6 +1,6 @@
 // ============================================================================
 //
-// Copyright (C) 2006-2018 Talend Inc. - www.talend.com
+// Copyright (C) 2006-2019 Talend Inc. - www.talend.com
 //
 // This source code is available under agreement available at
 // %InstallDIR%\features\org.talend.rcp.branding.%PRODUCTNAME%\%PRODUCTNAME%license.txt
@@ -16,9 +16,9 @@ import java.util.List;
 
 /**
  * DOC nrousseau class global comment. Detailled comment <br/>
- * 
+ *
  * $Id: IContext.java 38013 2010-03-05 14:21:59Z mhirt $
- * 
+ *
  */
 public interface IContext {
 
@@ -43,7 +43,7 @@ public interface IContext {
      * {@link IContextParameter#getName()} can only identify an unique {@link IContextParameter}. That indicates one
      * source can has many varibles, but the variable name must be unique. For different source, the variable names can
      * be same.
-     * 
+     *
      * @param sourceId
      * @param paraName
      * @return
@@ -53,7 +53,7 @@ public interface IContext {
     /**
      * Gets the <code>IContextParameter</code>s by given <code>parameterName</code>, caz name is not the unique
      * attribute for the object which implements <code>IContextParameter</code>.
-     * 
+     *
      * @param parameterName
      * @return
      */

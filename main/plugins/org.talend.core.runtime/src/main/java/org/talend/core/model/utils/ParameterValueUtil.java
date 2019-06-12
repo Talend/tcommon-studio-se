@@ -1,6 +1,6 @@
 // ============================================================================
 //
-// Copyright (C) 2006-2018 Talend Inc. - www.talend.com
+// Copyright (C) 2006-2019 Talend Inc. - www.talend.com
 //
 // This source code is available under agreement available at
 // %InstallDIR%\features\org.talend.rcp.branding.%PRODUCTNAME%\%PRODUCTNAME%license.txt
@@ -489,7 +489,7 @@ public final class ParameterValueUtil {
 
         /*
          * (non-Javadoc)
-         * 
+         *
          * @see java.lang.Object#toString()
          */
         @Override
@@ -503,7 +503,7 @@ public final class ParameterValueUtil {
 
     /**
      * DOC cmeng Comment method "doVaribleReplace".
-     * 
+     *
      * @param oldName
      * @param newName
      * @param value
@@ -619,7 +619,7 @@ public final class ParameterValueUtil {
 
     /**
      * DOC cmeng Comment method "isEscapeSequence".
-     * 
+     *
      * @param value
      * @param i
      * @return
@@ -900,7 +900,7 @@ public final class ParameterValueUtil {
 
     /**
      * add \ before \ and " in the string.
-     * 
+     *
      * @param str
      * @return
      */

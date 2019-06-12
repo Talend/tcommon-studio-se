@@ -1,6 +1,6 @@
 // ============================================================================
 //
-// Copyright (C) 2006-2018 Talend Inc. - www.talend.com
+// Copyright (C) 2006-2019 Talend Inc. - www.talend.com
 //
 // This source code is available under agreement available at
 // %InstallDIR%\features\org.talend.rcp.branding.%PRODUCTNAME%\%PRODUCTNAME%license.txt
@@ -35,7 +35,7 @@ import org.talend.core.ui.context.model.ContextProviderProxy;
 
 /**
  * A label and content provider for the treeviewer which groups the Contexts by nothing.
- * 
+ *
  */
 public class GroupByNothingProvider extends ContextProviderProxy {
 
@@ -94,7 +94,7 @@ public class GroupByNothingProvider extends ContextProviderProxy {
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see org.eclipse.jface.viewers.ITableLabelProvider#getColumnText(java.lang.Object, int)
      */
     public String getColumnText(Object element, int columnIndex) {
@@ -115,7 +115,7 @@ public class GroupByNothingProvider extends ContextProviderProxy {
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see org.talend.core.ui.context.ConextTreeValuesComposite.ProviderProxy#getColumnImage(java.lang.Object, int)
      */
     @Override
@@ -125,7 +125,7 @@ public class GroupByNothingProvider extends ContextProviderProxy {
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see org.eclipse.jface.viewers.IStructuredContentProvider#getElements(java.lang.Object)
      */
     public Object[] getElements(Object inputElement) {
@@ -147,7 +147,7 @@ public class GroupByNothingProvider extends ContextProviderProxy {
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see org.eclipse.jface.viewers.ITreeContentProvider#getChildren(java.lang.Object)
      */
     public Object[] getChildren(Object parentElement) {
@@ -160,7 +160,7 @@ public class GroupByNothingProvider extends ContextProviderProxy {
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see org.eclipse.jface.viewers.ITreeContentProvider#getParent(java.lang.Object)
      */
     public Object getParent(Object element) {
@@ -173,7 +173,7 @@ public class GroupByNothingProvider extends ContextProviderProxy {
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see org.eclipse.jface.viewers.ITreeContentProvider#hasChildren(java.lang.Object)
      */
     public boolean hasChildren(Object element) {
@@ -186,7 +186,7 @@ public class GroupByNothingProvider extends ContextProviderProxy {
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see org.eclipse.jface.viewers.ITableColorProvider#getForeground(java.lang.Object, int)
      */
     public Color getForeground(Object element, int columnIndex) {
@@ -195,7 +195,7 @@ public class GroupByNothingProvider extends ContextProviderProxy {
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see org.eclipse.jface.viewers.ITableColorProvider#getBackground(java.lang.Object, int)
      */
     public Color getBackground(Object element, int columnIndex) {
@@ -210,7 +210,7 @@ public class GroupByNothingProvider extends ContextProviderProxy {
     }
 
     /**
-     * 
+     *
      * @param name
      * @return
      */

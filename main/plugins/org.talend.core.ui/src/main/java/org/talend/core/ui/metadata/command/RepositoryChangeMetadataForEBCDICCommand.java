@@ -1,6 +1,6 @@
 // ============================================================================
 //
-// Copyright (C) 2006-2018 Talend Inc. - www.talend.com
+// Copyright (C) 2006-2019 Talend Inc. - www.talend.com
 //
 // This source code is available under agreement available at
 // %InstallDIR%\features\org.talend.rcp.branding.%PRODUCTNAME%\%PRODUCTNAME%license.txt
@@ -43,9 +43,9 @@ public class RepositoryChangeMetadataForEBCDICCommand extends Command {
     private Integer index;
 
     /**
-     * 
+     *
      * nrousseau RepositoryChangeMetadataForEBCDICCommand constructor comment.
-     * 
+     *
      * only for DND
      */
     public RepositoryChangeMetadataForEBCDICCommand(INode node, String propName, Object propValue,

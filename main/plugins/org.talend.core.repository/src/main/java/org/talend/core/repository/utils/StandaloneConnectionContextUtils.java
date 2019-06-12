@@ -1,6 +1,6 @@
 // ============================================================================
 //
-// Copyright (C) 2006-2018 Talend Inc. - www.talend.com
+// Copyright (C) 2006-2019 Talend Inc. - www.talend.com
 //
 // This source code is available under agreement available at
 // %InstallDIR%\features\org.talend.rcp.branding.%PRODUCTNAME%\%PRODUCTNAME%license.txt
@@ -45,7 +45,7 @@ import org.talend.model.bridge.ReponsitoryContextBridge;
 
 /**
  * ADD sizhaoliu 2013-04-16
- * 
+ *
  */
 public class StandaloneConnectionContextUtils {
 
@@ -53,7 +53,7 @@ public class StandaloneConnectionContextUtils {
 
     /**
      * DOC sizhaoliu Comment method "cloneOriginalValueConnection".
-     * 
+     *
      * @param dbConn
      * @param contextProperties
      * @return
@@ -128,7 +128,7 @@ public class StandaloneConnectionContextUtils {
         // cloneConn.getTables().addAll(dbConn.getTables());
         /*
          * mustn't be set, is flag for method convert in class ConvertionHelper.
-         * 
+         *
          * working for sql builder especially.
          */
         // cloneConn.setContextId(dbConn.getContextId());
@@ -416,7 +416,7 @@ public class StandaloneConnectionContextUtils {
 
     /**
      * DOC sizhaoliu Comment method "getOriginalValue".
-     * 
+     *
      * @param contextProperties
      * @param dbmsId
      * @return
@@ -432,7 +432,7 @@ public class StandaloneConnectionContextUtils {
 
     /**
      * Clones other parameters from the original parameters. Added by Marvin Wang on Aug 13, 2012.
-     * 
+     *
      * @param dbConn
      * @param cloneConn
      */
@@ -448,7 +448,7 @@ public class StandaloneConnectionContextUtils {
 
     /**
      * DOC sizhaoliu Comment method "setMetadataConnectionParameter".
-     * 
+     *
      * @param dbConn
      * @param metaConn
      * @param contextProperties

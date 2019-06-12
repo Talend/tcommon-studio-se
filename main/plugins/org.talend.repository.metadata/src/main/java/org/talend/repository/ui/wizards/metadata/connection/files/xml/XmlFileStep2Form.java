@@ -1,6 +1,6 @@
 // ============================================================================
 //
-// Copyright (C) 2006-2018 Talend Inc. - www.talend.com
+// Copyright (C) 2006-2019 Talend Inc. - www.talend.com
 //
 // This source code is available under agreement available at
 // %InstallDIR%\features\org.talend.rcp.branding.%PRODUCTNAME%\%PRODUCTNAME%license.txt
@@ -102,7 +102,7 @@ import org.talend.repository.ui.wizards.metadata.connection.files.xml.extraction
 
 /**
  * @author ocarbone
- * 
+ *
  */
 public class XmlFileStep2Form extends AbstractXmlFileStepForm implements IRefreshable {
 
@@ -173,7 +173,7 @@ public class XmlFileStep2Form extends AbstractXmlFileStepForm implements IRefres
 
     /**
      * Constructor to use by RCP Wizard.
-     * 
+     *
      * @param Composite
      * @param Wizard
      * @param Style
@@ -185,7 +185,7 @@ public class XmlFileStep2Form extends AbstractXmlFileStepForm implements IRefres
     }
 
     /**
-     * 
+     *
      * Initialize value, forceFocus first field.
      */
     @Override
@@ -290,7 +290,7 @@ public class XmlFileStep2Form extends AbstractXmlFileStepForm implements IRefres
 
     /**
      * add Field to Group Xml File Settings.
-     * 
+     *
      * @param mainComposite
      * @param form
      * @param width
@@ -390,7 +390,7 @@ public class XmlFileStep2Form extends AbstractXmlFileStepForm implements IRefres
 
     /**
      * add Field to Group File Viewer.
-     * 
+     *
      * @param parent
      * @param form
      * @param width
@@ -458,7 +458,7 @@ public class XmlFileStep2Form extends AbstractXmlFileStepForm implements IRefres
 
     /**
      * add Field to Group File Viewer.
-     * 
+     *
      * @param parent
      * @param form
      * @param width
@@ -483,11 +483,11 @@ public class XmlFileStep2Form extends AbstractXmlFileStepForm implements IRefres
 
     /**
      * create ProcessDescription and set it.
-     * 
+     *
      * WARNING ::field FieldSeparator, RowSeparator, EscapeChar and TextEnclosure are surround by double quote.
-     * 
+     *
      * @param getConnection()
-     * 
+     *
      * @return processDescription
      */
     private ProcessDescription getProcessDescription(boolean defaultContext) {
@@ -541,7 +541,7 @@ public class XmlFileStep2Form extends AbstractXmlFileStepForm implements IRefres
 
             /*
              * (non-Javadoc)
-             * 
+             *
              * @see
              * org.talend.repository.ui.wizards.metadata.connection.files.xml.StoppablePreviewLoader#previewEnded(java
              * .lang.Object)
@@ -577,7 +577,7 @@ public class XmlFileStep2Form extends AbstractXmlFileStepForm implements IRefres
 
     /**
      * DOC amaumont Comment method "previewInFileError".
-     * 
+     *
      * @param e
      */
     protected void previewInError(CoreException e) {
@@ -624,7 +624,7 @@ public class XmlFileStep2Form extends AbstractXmlFileStepForm implements IRefres
 
     /**
      * get the standby XPath expression.
-     * 
+     *
      * @return
      */
     protected List getSelectedXPath(TreeItem selected) {
@@ -650,7 +650,7 @@ public class XmlFileStep2Form extends AbstractXmlFileStepForm implements IRefres
 
     /**
      * Ensures that fields are set. Update checkEnable / use to checkConnection().
-     * 
+     *
      * @return
      */
     @Override
@@ -704,7 +704,7 @@ public class XmlFileStep2Form extends AbstractXmlFileStepForm implements IRefres
 
     /**
      * addButtonControls.
-     * 
+     *
      * @param cancelButton
      */
     @Override
@@ -789,7 +789,7 @@ public class XmlFileStep2Form extends AbstractXmlFileStepForm implements IRefres
 
     /**
      * checkFileFieldsValue active fileViewer if file exist.
-     * 
+     *
      * @throws IOException
      */
     private void checkFilePathAndManageIt() {
@@ -880,7 +880,7 @@ public class XmlFileStep2Form extends AbstractXmlFileStepForm implements IRefres
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see org.eclipse.swt.widgets.Control#setVisible(boolean)
      */
     @Override
@@ -1007,7 +1007,7 @@ public class XmlFileStep2Form extends AbstractXmlFileStepForm implements IRefres
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see org.talend.repository.ui.swt.utils.IRefreshable#refresh()
      */
     @Override

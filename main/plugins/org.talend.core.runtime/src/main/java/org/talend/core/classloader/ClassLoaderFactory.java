@@ -1,6 +1,6 @@
 // ============================================================================
 //
-// Copyright (C) 2006-2018 Talend Inc. - www.talend.com
+// Copyright (C) 2006-2019 Talend Inc. - www.talend.com
 //
 // This source code is available under agreement available at
 // %InstallDIR%\features\org.talend.rcp.branding.%PRODUCTNAME%\%PRODUCTNAME%license.txt
@@ -73,7 +73,7 @@ public class ClassLoaderFactory {
 
     /**
      * DOC ycbai Comment method "getClassLoader".
-     * 
+     *
      * @param index
      * @return the classLoader by index
      */
@@ -117,7 +117,7 @@ public class ClassLoaderFactory {
 
     /**
      * DOC ycbai Comment method "getCustomClassLoader".
-     * 
+     *
      * @param index
      * @param libraries
      * @return the classLoader by specific libraries
@@ -316,7 +316,7 @@ public class ClassLoaderFactory {
             String jarsStr = (String) metadataConn.getParameter(ConnParameterKeys.CONN_PARA_KEY_HADOOP_CUSTOM_JARS);
             moduleList = jarsStr.split(";"); //$NON-NLS-1$
         } else {
-            String index = getDistributionIndex(metadataConn); //$NON-NLS-1$  
+            String index = getDistributionIndex(metadataConn); //$NON-NLS-1$
             moduleList = getDriverModuleList(index);
         }
         return moduleList;

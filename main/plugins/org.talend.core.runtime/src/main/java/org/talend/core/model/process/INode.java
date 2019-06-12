@@ -1,6 +1,6 @@
 // ============================================================================
 //
-// Copyright (C) 2006-2018 Talend Inc. - www.talend.com
+// Copyright (C) 2006-2019 Talend Inc. - www.talend.com
 //
 // This source code is available under agreement available at
 // %InstallDIR%\features\org.talend.rcp.branding.%PRODUCTNAME%\%PRODUCTNAME%license.txt
@@ -24,7 +24,7 @@ import org.talend.core.model.metadata.IMetadataTable;
 
 /**
  * DOC nrousseau class global comment. Detailled comment <br/>
- * 
+ *
  * $Id: INode.java 44861 2010-07-02 12:15:36Z gldu $
  */
 public interface INode extends IElement {
@@ -47,14 +47,14 @@ public interface INode extends IElement {
 
     /**
      * Returns the label of the node.
-     * 
+     *
      * @return label
      */
     public String getLabel();
 
     /**
      * Gives the unique name of the node.
-     * 
+     *
      * @return unique name
      */
     public String getUniqueName();
@@ -63,42 +63,42 @@ public interface INode extends IElement {
 
     /**
      * Return the start status of this node.
-     * 
+     *
      * @return
      */
     public boolean isStart();
 
     /**
      * Return the activate status of this node.
-     * 
+     *
      * @return
      */
     public boolean isActivate();
 
     /**
      * Return true if the node is the start of a sub process.
-     * 
+     *
      * @return
      */
     public boolean isSubProcessStart();
 
     /**
      * To call ONLY from a subprocessStart.
-     * 
+     *
      * @return
      */
     public boolean isSubProcessContainTraceBreakpoint();
 
     /**
      * Gives all incoming connections (only).
-     * 
+     *
      * @return List of Connection
      */
     public List<? extends IConnection> getIncomingConnections();
 
     /**
      * Gives all outgoing connections (only).
-     * 
+     *
      * @return List of Connection
      */
     public List<? extends IConnection> getOutgoingConnections();
@@ -111,7 +111,7 @@ public interface INode extends IElement {
 
     /**
      * Set performance data on this node.
-     * 
+     *
      * @param perfData Performance data (string to be parsed).
      * @deprecated
      */
@@ -120,7 +120,7 @@ public interface INode extends IElement {
 
     /**
      * Return list of Metadatas.
-     * 
+     *
      * @return
      */
     public List<IMetadataTable> getMetadataList();
@@ -145,7 +145,7 @@ public interface INode extends IElement {
      * Will return the first item of the subprocess. If "withCondition" is true, if there is links from type RunIf /
      * RunAfter / RunBefore, it will return the first element found. If "withCondition" is false, it will return the
      * first element with no active link from type Main/Ref/Iterate.<br>
-     * 
+     *
      * @param withCondition
      * @return Start Node found.
      */
@@ -154,7 +154,7 @@ public interface INode extends IElement {
     /**
      * Test if the component use one data (in the property or other), this data for example a name of a context /
      * component or other.
-     * 
+     *
      * @param name
      * @return
      */
@@ -163,7 +163,7 @@ public interface INode extends IElement {
     /**
      * Used for example when a component is renamed, or when a context is renamed. This function should look into each
      * property of the component to modify the value.
-     * 
+     *
      * @param oldName
      * @param newName
      */
@@ -194,7 +194,7 @@ public interface INode extends IElement {
 
     /**
      * This function is used only for the designer. Not implemented yet for the components use.
-     * 
+     *
      * @param connector name of the connector
      * @return INodeConnector
      */
@@ -213,14 +213,14 @@ public interface INode extends IElement {
 
     /**
      * This function is used only in the generation part to know if the node is virtual or not.
-     * 
+     *
      * @return
      */
     public boolean isVirtualGenerateNode();
 
     /**
      * This method gets the type of the connection used between two components in case of a virtual component
-     * 
+     *
      * @return Returns the type of the connection (ie. ON_ROWS_END)
      */
 
@@ -229,7 +229,7 @@ public interface INode extends IElement {
     /**
      * This method sets the property virtualLinkTo which is the connection type used between two components in case of a
      * virtual component.
-     * 
+     *
      * @param virtualLinkTo
      */
 
@@ -240,7 +240,7 @@ public interface INode extends IElement {
 
     /**
      * This function is only used before the generation part, to know if the component can generate virtual or not.
-     * 
+     *
      * @return
      */
     public boolean isGeneratedAsVirtualComponent();

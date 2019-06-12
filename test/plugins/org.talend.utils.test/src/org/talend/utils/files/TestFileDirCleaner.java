@@ -1,6 +1,6 @@
 // ============================================================================
 //
-// Copyright (C) 2006-2018 Talend Inc. - www.talend.com
+// Copyright (C) 2006-2019 Talend Inc. - www.talend.com
 //
 // This source code is available under agreement available at
 // %InstallDIR%\features\org.talend.rcp.branding.%PRODUCTNAME%\%PRODUCTNAME%license.txt
@@ -29,7 +29,7 @@ import org.talend.utils.files.FileDirCleaner;
 import org.talend.utils.files.FileDirCleaner.SCAN_STRATEGY;
 
 /**
- * 
+ *
  * DOC amaumont class global comment. Detailled comment
  */
 public class TestFileDirCleaner {
@@ -61,9 +61,9 @@ public class TestFileDirCleaner {
     }
 
     /**
-     * 
+     *
      * Tests on max entries
-     * 
+     *
      */
 
     @Test
@@ -153,9 +153,9 @@ public class TestFileDirCleaner {
     }
 
     /**
-     * 
+     *
      * Tests on max entries and elapsed time
-     * 
+     *
      */
 
     @Test
@@ -215,9 +215,9 @@ public class TestFileDirCleaner {
     }
 
     /**
-     * 
+     *
      * Tests on elapsed time only
-     * 
+     *
      */
 
     @Test
@@ -275,9 +275,9 @@ public class TestFileDirCleaner {
     }
 
     /**
-     * 
+     *
      * Tests on max entries, with regexp on files
-     * 
+     *
      */
     @Test
     public void testLeaveThreeFilesAndAllSubdirectoriesOnRootDirectoryWithRegexpOnFiles() {
@@ -297,9 +297,9 @@ public class TestFileDirCleaner {
     }
 
     /**
-     * 
+     *
      * Tests on max entries, with regexp on directories to remove
-     * 
+     *
      */
     @Test
     public void testLeaveThreeFilesAndAllSubdirectoriesOnRootDirectoryWithRegexpOnDirectoriesToRemove() {
@@ -319,9 +319,9 @@ public class TestFileDirCleaner {
     }
 
     /**
-     * 
+     *
      * Tests on max entries, with regexp on directories to remove
-     * 
+     *
      */
     @Test
     public void testLeaveAllFilesAndCleanSubdirectoriesAtLevel2WithRegexpOnDirectoriesToRemove() {
@@ -380,9 +380,9 @@ public class TestFileDirCleaner {
     }
 
     /**
-     * 
+     *
      * Tests on max entries and elapsed time, with regexp on files
-     * 
+     *
      */
 
     @Test
@@ -442,9 +442,9 @@ public class TestFileDirCleaner {
     }
 
     /**
-     * 
+     *
      * Tests on elapsed time only, with regexp on files
-     * 
+     *
      */
 
     @Test
@@ -570,7 +570,7 @@ public class TestFileDirCleaner {
     }
 
     /**
-     * 
+     *
      * DOC amaumont FileDirCleaner2Test class global comment. Detailled comment
      */
     public static class FSManager {
@@ -634,7 +634,7 @@ public class TestFileDirCleaner {
     }
 
     /**
-     * 
+     *
      * DOC amaumont FileDirCleaner2Test class global comment. Detailled comment
      */
     interface OperationForFSManager {
@@ -652,7 +652,7 @@ public class TestFileDirCleaner {
     }
 
     /**
-     * 
+     *
      * DOC amaumont FileDirCleaner2Test class global comment. Detailled comment
      */
     class FileDirCheckerForFSManager implements OperationForFSManager {
@@ -687,7 +687,7 @@ public class TestFileDirCleaner {
 
         /*
          * (non-Javadoc)
-         * 
+         *
          * @see files.TestFileDirCleaner.OperationForFSManager#processCountMatchingChildrenDir(java.io.File)
          */
         @Override
@@ -709,7 +709,7 @@ public class TestFileDirCleaner {
 
         /*
          * (non-Javadoc)
-         * 
+         *
          * @see files.TestFileDirCleaner.OperationForFSManager#processCountMatchingChildrenDir(java.io.File)
          */
         @Override
@@ -731,7 +731,7 @@ public class TestFileDirCleaner {
 
         /*
          * (non-Javadoc)
-         * 
+         *
          * @see org.talend.utils.files.FileDirCleaner2Test.OperationForFSManager#processDirectoryBegin(java.io.File,
          * int)
          */
@@ -778,7 +778,7 @@ public class TestFileDirCleaner {
 
         /*
          * (non-Javadoc)
-         * 
+         *
          * @see org.talend.utils.files.FileDirCleaner2Test.OperationForFSManager#processDirectoryEnd(java.io.File, int)
          */
         @Override
@@ -788,7 +788,7 @@ public class TestFileDirCleaner {
 
         /*
          * (non-Javadoc)
-         * 
+         *
          * @see org.talend.utils.files.FileDirCleaner2Test.OperationForFSManager#processFile(java.io.File, int)
          */
         @Override
@@ -838,7 +838,7 @@ public class TestFileDirCleaner {
 
         /**
          * Getter for maxEntriesByDirectory.
-         * 
+         *
          * @return the maxEntriesByDirectory
          */
         public int getExpectedEntriesByDirectoryAndByType() {
@@ -847,7 +847,7 @@ public class TestFileDirCleaner {
 
         /**
          * Sets the maxEntriesByDirectory.
-         * 
+         *
          * @param expectedEntriesByDirectoryAndByType the maxEntriesByDirectory to set
          */
         public void setExpectedEntriesByDirectoryAndByType(int expectedEntriesByDirectoryAndByType) {
@@ -856,7 +856,7 @@ public class TestFileDirCleaner {
 
         /**
          * Getter for maxDurationBeforeCleaning.
-         * 
+         *
          * @return the maxDurationBeforeCleaning
          */
         public long getCleanAfterThisDuration() {
@@ -865,7 +865,7 @@ public class TestFileDirCleaner {
 
         /**
          * Sets the maxDurationBeforeCleaning.
-         * 
+         *
          * @param maxDurationBeforeCleaning the maxDurationBeforeCleaning to set
          */
         public void setCleanAfterThisDuration(long maxDurationBeforeCleaning) {
@@ -874,7 +874,7 @@ public class TestFileDirCleaner {
 
         /**
          * Getter for cleanFilesOnly.
-         * 
+         *
          * @return the cleanFilesOnly
          */
         public boolean isCleanFiles() {
@@ -883,7 +883,7 @@ public class TestFileDirCleaner {
 
         /**
          * Sets the cleanFilesOnly.
-         * 
+         *
          * @param cleanFilesOnly the cleanFilesOnly to set
          */
         public void setCleanFiles(boolean cleanFilesOnly) {
@@ -892,7 +892,7 @@ public class TestFileDirCleaner {
 
         /**
          * Getter for cleanDirectories.
-         * 
+         *
          * @return the cleanDirectories
          */
         public boolean isCleanDirectories() {
@@ -901,7 +901,7 @@ public class TestFileDirCleaner {
 
         /**
          * Sets the cleanDirectories.
-         * 
+         *
          * @param cleanDirectories the cleanDirectories to set
          */
         public void setCleanDirectories(boolean cleanDirectories) {
@@ -910,7 +910,7 @@ public class TestFileDirCleaner {
 
         /**
          * Getter for recursively.
-         * 
+         *
          * @return the recursively
          */
         public boolean isRecursively() {
@@ -919,7 +919,7 @@ public class TestFileDirCleaner {
 
         /**
          * Sets the recursively.
-         * 
+         *
          * @param recursively the recursively to set
          */
         public void setRecursively(boolean recursively) {
@@ -928,7 +928,7 @@ public class TestFileDirCleaner {
 
         /**
          * Getter for filesCount.
-         * 
+         *
          * @return the filesCount
          */
         public int getFilesCount() {
@@ -937,7 +937,7 @@ public class TestFileDirCleaner {
 
         /**
          * Sets the filesCount.
-         * 
+         *
          * @param filesCount the filesCount to set
          */
         public void setFilesCount(int filesCount) {
@@ -946,7 +946,7 @@ public class TestFileDirCleaner {
 
         /**
          * Getter for directoriesCount.
-         * 
+         *
          * @return the directoriesCount
          */
         public int getDirectoriesCount() {
@@ -955,7 +955,7 @@ public class TestFileDirCleaner {
 
         /**
          * Sets the directoriesCount.
-         * 
+         *
          * @param directoriesCount the directoriesCount to set
          */
         public void setDirectoriesCount(int directoriesCount) {
@@ -964,7 +964,7 @@ public class TestFileDirCleaner {
 
         /**
          * Getter for filesRegExpPattern.
-         * 
+         *
          * @return the filesRegExpPattern
          */
         public String getFilesRegExpPattern() {
@@ -973,7 +973,7 @@ public class TestFileDirCleaner {
 
         /**
          * Sets the filesRegExpPattern.
-         * 
+         *
          * @param filesRegExpPattern the filesRegExpPattern to set
          */
         public void setFilesRegExpPattern(String filesRegExpPattern) {
@@ -982,7 +982,7 @@ public class TestFileDirCleaner {
 
         /**
          * Getter for directoriesRegExpPattern.
-         * 
+         *
          * @return the directoriesRegExpPattern
          */
         public String getDirectoriesRegExpPattern() {
@@ -991,7 +991,7 @@ public class TestFileDirCleaner {
 
         /**
          * Sets the directoriesRegExpPattern.
-         * 
+         *
          * @param directoriesRegExpPattern the directoriesRegExpPattern to set
          */
         public void setDirectoriesRegExpPattern(String directoriesRegExpPattern) {
@@ -1001,14 +1001,14 @@ public class TestFileDirCleaner {
     }
 
     /**
-     * 
+     *
      * DOC amaumont FileDirCleaner2Test class global comment. Detailled comment
      */
     class FileGeneratorForFSManager implements OperationForFSManager {
 
         /*
          * (non-Javadoc)
-         * 
+         *
          * @see files.TestFileDirCleaner.OperationForFSManager#processCountMatchingChildrenDir(java.io.File, int)
          */
         @Override
@@ -1019,7 +1019,7 @@ public class TestFileDirCleaner {
 
         /*
          * (non-Javadoc)
-         * 
+         *
          * @see files.TestFileDirCleaner.OperationForFSManager#processCountMatchingChildrenFiles(java.io.File, int)
          */
         @Override
@@ -1030,7 +1030,7 @@ public class TestFileDirCleaner {
 
         /*
          * (non-Javadoc)
-         * 
+         *
          * @see org.talend.utils.files.FileDirCleaner2Test.OperationForFSManager#processDirectoryBegin(java.io.File,
          * int)
          */
@@ -1041,7 +1041,7 @@ public class TestFileDirCleaner {
 
         /*
          * (non-Javadoc)
-         * 
+         *
          * @see org.talend.utils.files.FileDirCleaner2Test.OperationForFSManager#processDirectoryEnd(java.io.File, int)
          */
         @Override
@@ -1058,7 +1058,7 @@ public class TestFileDirCleaner {
 
         /*
          * (non-Javadoc)
-         * 
+         *
          * @see org.talend.utils.files.FileDirCleaner2Test.OperationForFSManager#processFile(java.io.File, int)
          */
         @Override

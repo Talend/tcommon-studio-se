@@ -1,6 +1,6 @@
 // ============================================================================
 //
-// Copyright (C) 2006-2018 Talend Inc. - www.talend.com
+// Copyright (C) 2006-2019 Talend Inc. - www.talend.com
 //
 // This source code is available under agreement available at
 // %InstallDIR%\features\org.talend.rcp.branding.%PRODUCTNAME%\%PRODUCTNAME%license.txt
@@ -25,9 +25,9 @@ import org.talend.core.utils.TalendQuoteUtils;
 
 /**
  * DOC nrousseau class global comment. Detailled comment <br/>
- * 
+ *
  * $Id: talend-code-templates.xml 1 2006-09-29 17:06:40 +0000 (ven., 29 sept. 2006) nrousseau $
- * 
+ *
  */
 public class TalendTextUtils {
 
@@ -60,7 +60,7 @@ public class TalendTextUtils {
     /**
      * DOC Tao Tao Comment method "addStrInQuery". This method will add double quotes surrounding a String and convert
      * "\\" to "\\\\".
-     * 
+     *
      * @param input
      * @return
      */
@@ -164,7 +164,7 @@ public class TalendTextUtils {
     /**
      * DOC Tao Tao Comment method "convertSlashForSpecialChar". This method will convert "\\" to "\\\\", for example,
      * add a slash in String "'\\b'" to String "'\\\\b'".
-     * 
+     *
      * @param input
      * @return
      */
@@ -184,7 +184,7 @@ public class TalendTextUtils {
     /**
      * DOC Tao Tao Comment method "removeSlashForSpecialChar". This method will convert "\\\\" to "\\", for example,
      * remove a slash in String "'\\\\b'" to String "'\\b'".
-     * 
+     *
      * @param input
      * @return
      */
@@ -204,7 +204,7 @@ public class TalendTextUtils {
     /**
      * DOC Tao Tao Comment method "removeStrInQuery". This method will remove String surrounding quotes and convert
      * "\\\\" to "\\".
-     * 
+     *
      * @param input
      * @return
      */
@@ -215,7 +215,7 @@ public class TalendTextUtils {
 
     /**
      * DOC qiang.zhang Comment method "widenRestrict".
-     * 
+     *
      * @param newString
      * @param quoteStyle
      * @return
@@ -236,7 +236,7 @@ public class TalendTextUtils {
 
     /**
      * DOC qiang.zhang Comment method "getAfterString".
-     * 
+     *
      * @param quoteStyle
      * @param string
      * @return
@@ -253,7 +253,7 @@ public class TalendTextUtils {
                 substring = string.substring(0, LINE_MAX_NUM);
             }
             substring = substring.substring(0, getLastWord(string, substring, quoteStyle));
-            after += substring + "\n "; //$NON-NLS-1$ 
+            after += substring + "\n "; //$NON-NLS-1$
             // String temp = substring;
             //            temp = temp.replaceAll(" ", "").replaceAll("\n", ""); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
             //            if (!"".equals(temp)) { //$NON-NLS-1$
@@ -270,7 +270,7 @@ public class TalendTextUtils {
 
     /**
      * DOC qiang.zhang Comment method "getLastWord".
-     * 
+     *
      * @param substring
      * @param quoteStyle
      * @return
@@ -368,7 +368,7 @@ public class TalendTextUtils {
 
         // for bug 11938
         // to see if the table name or column name was start with number
-        Pattern pattern2 = Pattern.compile("^[0-9]+[_0-9a-zA-Z]*$"); //$NON-NLS-1$  
+        Pattern pattern2 = Pattern.compile("^[0-9]+[_0-9a-zA-Z]*$"); //$NON-NLS-1$
         Matcher matcher2 = pattern2.matcher(temp);
 
         // for bug 12092
@@ -395,7 +395,7 @@ public class TalendTextUtils {
     /**
      * if the database type is IBM DB2/ORACLE and the field name contains lowercase character return true otherwise
      * return false.
-     * 
+     *
      * @param dbType
      * @param fieldName
      * @return
@@ -447,7 +447,7 @@ public class TalendTextUtils {
 
     /**
      * qzhang Comment method "getQuoteByDBType".
-     * 
+     *
      * @param dbType
      * @param b
      * @return
@@ -468,7 +468,7 @@ public class TalendTextUtils {
 
     /**
      * qzhang Comment method "removeQuotes".
-     * 
+     *
      * @param text
      * @param quotation_mark2
      * @return
@@ -507,7 +507,7 @@ public class TalendTextUtils {
             	// handle unicode
                 if (result.contains("\\u")) {
                 	for (int indexStart = 0; result.indexOf("\\u", indexStart) >= 0; indexStart = result.indexOf("\\u", indexStart)) {
-                		if (result.indexOf("\\u", indexStart) + 5 <= result.length()) { //$NON-NLS-1$ 
+                		if (result.indexOf("\\u", indexStart) + 5 <= result.length()) { //$NON-NLS-1$
                 			int unicodeStart = result.indexOf("\\u"); //$NON-NLS-1$
                 			int unicodeEnd = unicodeStart + 5;
                 			result = result.substring(0, Math.max(0, unicodeStart))
@@ -527,9 +527,9 @@ public class TalendTextUtils {
     }
 
     /**
-     * 
+     *
      * ggu Comment method "filterQuote".
-     * 
+     *
      * used for the string parsing, will ignore the char \" or \'.
      */
     public static String filterQuote(final String str) {
@@ -537,9 +537,9 @@ public class TalendTextUtils {
     }
 
     /**
-     * 
+     *
      * judge whether str is null or length is zreo
-     * 
+     *
      * @param str
      * @return
      */
@@ -548,9 +548,9 @@ public class TalendTextUtils {
     }
 
     /**
-     * 
+     *
      * DOC YeXiaowei Comment method "hidePassword".
-     * 
+     *
      * @param password
      * @return
      */
@@ -618,9 +618,9 @@ public class TalendTextUtils {
     }
 
     /**
-     * 
+     *
      * DOC xye Comment method "isPSQLSimilar".
-     * 
+     *
      * @param name
      * @return
      */
@@ -630,9 +630,9 @@ public class TalendTextUtils {
     }
 
     /**
-     * 
+     *
      * DOC YeXiaowei KeyString class global comment. Detailled comment <br/>
-     * 
+     *
      */
     public static final class KeyString {
 

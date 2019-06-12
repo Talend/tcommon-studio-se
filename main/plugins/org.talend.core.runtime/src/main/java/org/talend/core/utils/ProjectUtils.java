@@ -1,6 +1,6 @@
 // ============================================================================
 //
-// Copyright (C) 2006-2018 Talend Inc. - www.talend.com
+// Copyright (C) 2006-2019 Talend Inc. - www.talend.com
 //
 // This source code is available under agreement available at
 // %InstallDIR%\features\org.talend.rcp.branding.%PRODUCTNAME%\%PRODUCTNAME%license.txt
@@ -22,7 +22,7 @@ import org.talend.repository.model.RepositoryConstants;
 public class ProjectUtils {
 
     public static final String[] JAVA_KEY_WORDS = {
-            "abstract", "break", "case", "catch", "continue", "default", "do", "else", "extends", "final", "finally", "for", "if", "implements", "instanceof", "native", "new", "private", "protected", "public", "return", "static", "switch", "synchronized", "throw", "throws", "transient", "try", "volatile", "while", "assert", "enum", "strictfp", "package", "import", "boolean", "byte", "char", "class", "double", "float", "int", "interface", "long", "short", "void", "java", "org", "String", "etc", "com", "net", "fr", "sf", "routines", "javax", "false", "null", "super", "this", "true", "goto", "const" }; //$NON-NLS-1$ //$NON-NLS-2$ 
+            "abstract", "break", "case", "catch", "continue", "default", "do", "else", "extends", "final", "finally", "for", "if", "implements", "instanceof", "native", "new", "private", "protected", "public", "return", "static", "switch", "synchronized", "throw", "throws", "transient", "try", "volatile", "while", "assert", "enum", "strictfp", "package", "import", "boolean", "byte", "char", "class", "double", "float", "int", "interface", "long", "short", "void", "java", "org", "String", "etc", "com", "net", "fr", "sf", "routines", "javax", "false", "null", "super", "this", "true", "goto", "const" }; //$NON-NLS-1$ //$NON-NLS-2$
 
     public static boolean isNotValidProjectName(String projectName) {
         for (String keyword : JAVA_KEY_WORDS) {
@@ -35,7 +35,7 @@ public class ProjectUtils {
 
     /**
      * for the tac side DOC hcyi Comment method "isValidProjectName".
-     * 
+     *
      * @param projectLabel
      * @return
      */

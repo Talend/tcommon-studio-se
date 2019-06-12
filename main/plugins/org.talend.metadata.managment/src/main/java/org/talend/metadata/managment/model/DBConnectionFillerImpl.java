@@ -1,6 +1,6 @@
 // ============================================================================
 //
-// Copyright (C) 2006-2018 Talend Inc. - www.talend.com
+// Copyright (C) 2006-2019 Talend Inc. - www.talend.com
 //
 // This source code is available under agreement available at
 // %InstallDIR%\features\org.talend.rcp.branding.%PRODUCTNAME%\%PRODUCTNAME%license.txt
@@ -391,7 +391,7 @@ public class DBConnectionFillerImpl extends MetadataFillerImpl<DatabaseConnectio
 
     /**
      * fill the fake schemas into sqlite database connection since Sqlite no catalogs and no schemas.
-     * 
+     *
      * @param fakeSchemas
      * @return
      */
@@ -444,7 +444,8 @@ public class DBConnectionFillerImpl extends MetadataFillerImpl<DatabaseConnectio
             }
             ResultSet catalogNames = null;
             if (dbJDBCMetadata instanceof SybaseDatabaseMetaData) {
-                catalogNames = ((SybaseDatabaseMetaData) dbJDBCMetadata).getCatalogs(dbConn.getUsername());
+                // Whether in context mode or not, metaConnection can get the correct username always
+                catalogNames = ((SybaseDatabaseMetaData) dbJDBCMetadata).getCatalogs(metaConnection.getUsername());
             } else {
                 catalogNames = dbJDBCMetadata.getCatalogs();
             }
@@ -613,7 +614,7 @@ public class DBConnectionFillerImpl extends MetadataFillerImpl<DatabaseConnectio
     /**
      * return the database name of the DatabaseConnection, if the dbtype is jdbc should get the database name form the
      * url.
-     * 
+     *
      * @param dbConn
      * @return
      */
@@ -623,7 +624,7 @@ public class DBConnectionFillerImpl extends MetadataFillerImpl<DatabaseConnectio
 
     /**
      * judge db support get catalogNames or not
-     * 
+     *
      * @param dbJDBCMetadata
      * @return
      */
@@ -639,7 +640,7 @@ public class DBConnectionFillerImpl extends MetadataFillerImpl<DatabaseConnectio
 
     /**
      * judge db have catalogs or not
-     * 
+     *
      * @param dbJDBCMetadata
      * @return
      */
@@ -653,7 +654,7 @@ public class DBConnectionFillerImpl extends MetadataFillerImpl<DatabaseConnectio
 
     /**
      * fill the catalog and schemas into Postgresql database connection.
-     * 
+     *
      * @param dbConn
      * @param dbJDBCMetadata
      * @param catalogList
@@ -704,7 +705,7 @@ public class DBConnectionFillerImpl extends MetadataFillerImpl<DatabaseConnectio
     }
     /**
      * judge whether SID is null or empty string whatever context mode or nor
-     * 
+     *
      * @param dbConn
      * @return
      */
@@ -724,7 +725,7 @@ public class DBConnectionFillerImpl extends MetadataFillerImpl<DatabaseConnectio
 
     /**
      * judge whether UiSchema is null or empty string whatever context mode or nor
-     * 
+     *
      * @param dbConn
      * @return
      */
@@ -1160,7 +1161,7 @@ public class DBConnectionFillerImpl extends MetadataFillerImpl<DatabaseConnectio
 
     /**
      * get Table Comment.
-     * 
+     *
      * @param dbJDBCMetadata
      * @param tables
      * @param tableName
@@ -1188,7 +1189,7 @@ public class DBConnectionFillerImpl extends MetadataFillerImpl<DatabaseConnectio
 
     /**
      * get the Column Comment especially for oracle type.
-     * 
+     *
      * @param dbJDBCMetadata
      * @param columns
      * @param tableName
@@ -1386,7 +1387,7 @@ public class DBConnectionFillerImpl extends MetadataFillerImpl<DatabaseConnectio
     /**
      * Add try/catch, some DB donot support some strings, like :REMARKS. (TDQ-9344) and it should not break any
      * operations, if some string can not be get from the resultset, just continue to get others.
-     * 
+     *
      * @param tables
      * @param tableComment
      * @return
@@ -1825,7 +1826,7 @@ public class DBConnectionFillerImpl extends MetadataFillerImpl<DatabaseConnectio
 
     /**
      * DOC scorreia Comment method "executeGetCommentStatement".
-     * 
+     *
      * @param queryStmt
      * @return
      */
@@ -1948,7 +1949,7 @@ public class DBConnectionFillerImpl extends MetadataFillerImpl<DatabaseConnectio
 
     /**
      * zshen Comment method "createTdExpression". from BooleanExpressionHelper.
-     * 
+     *
      * @param language
      * @param body
      * @return

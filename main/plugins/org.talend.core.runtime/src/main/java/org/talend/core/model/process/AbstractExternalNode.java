@@ -1,6 +1,6 @@
 // ============================================================================
 //
-// Copyright (C) 2006-2018 Talend Inc. - www.talend.com
+// Copyright (C) 2006-2019 Talend Inc. - www.talend.com
 //
 // This source code is available under agreement available at
 // %InstallDIR%\features\org.talend.rcp.branding.%PRODUCTNAME%\%PRODUCTNAME%license.txt
@@ -23,9 +23,9 @@ import org.talend.designer.core.model.utils.emf.talendfile.AbstractExternalData;
 
 /**
  * DOC nrousseau class global comment. Detailled comment <br/>
- * 
+ *
  * $Id$
- * 
+ *
  */
 public abstract class AbstractExternalNode extends AbstractNode implements IExternalNode {
 
@@ -37,7 +37,7 @@ public abstract class AbstractExternalNode extends AbstractNode implements IExte
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see org.talend.core.model.process.AbstractNode#getExternalNode()
      */
     @Override
@@ -52,7 +52,7 @@ public abstract class AbstractExternalNode extends AbstractNode implements IExte
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @seeorg.talend.core.model.process.IExternalNode#setIODataComponents(org.talend.core.model.components.
      * IODataComponentContainer)
      */
@@ -63,7 +63,7 @@ public abstract class AbstractExternalNode extends AbstractNode implements IExte
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see org.talend.core.model.process.IExternalNode#getIODataComponents()
      */
     @Override
@@ -73,7 +73,7 @@ public abstract class AbstractExternalNode extends AbstractNode implements IExte
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see org.talend.core.model.process.INode#metataChanged(org.talend.core.model.components.IODataComponent)
      */
     @Override
@@ -101,7 +101,7 @@ public abstract class AbstractExternalNode extends AbstractNode implements IExte
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see org.talend.core.model.process.IExternalNode#isRunRefSubProcessAtStart(java.lang.String)
      */
     @Override
@@ -169,7 +169,7 @@ public abstract class AbstractExternalNode extends AbstractNode implements IExte
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see
      * org.talend.core.model.process.IExternalNode#connectionStatusChanged(org.talend.core.model.process.EConnectionType
      * , java.lang.String)

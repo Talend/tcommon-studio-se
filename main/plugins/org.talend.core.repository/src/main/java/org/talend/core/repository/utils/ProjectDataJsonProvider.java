@@ -1,6 +1,6 @@
 // ============================================================================
 //
-// Copyright (C) 2006-2018 Talend Inc. - www.talend.com
+// Copyright (C) 2006-2019 Talend Inc. - www.talend.com
 //
 // This source code is available under agreement available at
 // %InstallDIR%\features\org.talend.rcp.branding.%PRODUCTNAME%\%PRODUCTNAME%license.txt
@@ -150,7 +150,7 @@ public class ProjectDataJsonProvider {
                 }
             }
         }
-        
+
         return componentMap;
     }
 
@@ -178,7 +178,7 @@ public class ProjectDataJsonProvider {
     public static void loadProjectData(Project project, IContainer sourceProject, int loadContent) throws PersistenceException {
         loadProjectData(project, sourceProject.getLocation(), loadContent);
     }
-    
+
     public static void loadProjectData(Project project, IPath projectRootPath, InputStreamProvider inputStreamProvider)
             throws PersistenceException, IOException {
         if (projectRootPath == null) {
@@ -499,7 +499,7 @@ public class ProjectDataJsonProvider {
             }
         }
     }
-    
+
     public static MigrationTask createFakeMigrationTask() {
         MigrationTask fakeTask = PropertiesFactoryImpl.eINSTANCE.createMigrationTask();
         fakeTask.setId(FAKE_TASK);

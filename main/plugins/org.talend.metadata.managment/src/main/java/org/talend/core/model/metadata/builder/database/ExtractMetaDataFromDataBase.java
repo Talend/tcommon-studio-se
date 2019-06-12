@@ -1,6 +1,6 @@
 // ============================================================================
 //
-// Copyright (C) 2006-2018 Talend Inc. - www.talend.com
+// Copyright (C) 2006-2019 Talend Inc. - www.talend.com
 //
 // This source code is available under agreement available at
 // %InstallDIR%\features\org.talend.rcp.branding.%PRODUCTNAME%\%PRODUCTNAME%license.txt
@@ -64,25 +64,25 @@ import metadata.managment.i18n.Messages;
 
 /**
  * DOC cantoine. Extract Meta Data Table. Contains all the Table and Metadata about a DB Connection. <br/>
- * 
+ *
  * $Id: ExtractMetaDataFromDataBase.java 44018 2010-06-12 02:22:29Z zli $
- * 
+ *
  */
 public class ExtractMetaDataFromDataBase {
 
     public static List<IDBMetadataProviderObject> providerObjects = null;
 
     /**
-     * 
+     *
      */
 
     /**
      * qzhang TableInfoParameters class global comment. Detailled comment <br/>
-     * 
+     *
      */
     public enum ETableTypes {
         TABLETYPE_TABLE("TABLE"), //$NON-NLS-1$
-        TABLETYPE_BASE_TABLE("BASE TABLE"), //for mariadb //$NON-NLS-1$ 
+        TABLETYPE_BASE_TABLE("BASE TABLE"), //for mariadb //$NON-NLS-1$
         TABLETYPE_VIEW("VIEW"), //$NON-NLS-1$
         TABLETYPE_SYNONYM("SYNONYM"), //$NON-NLS-1$
         TABLETYPE_CALCULATION_VIEW("CALCULATION VIEW"), //$NON-NLS-1$
@@ -106,7 +106,7 @@ public class ExtractMetaDataFromDataBase {
 
         /**
          * Getter for name.
-         * 
+         *
          * @return the name
          */
         public String getName() {
@@ -170,7 +170,7 @@ public class ExtractMetaDataFromDataBase {
 
     /**
      * DOC cantoine. Method to return a Collection of Tables for a DB connection.
-     * 
+     *
      * @param DatabaseMetaData dbMetaData
      * @return Collection of MetadataTable
      */
@@ -212,7 +212,7 @@ public class ExtractMetaDataFromDataBase {
 
     /**
      * DOC cantoine. Method to return a Collection of Column about a Table for a DB connection.
-     * 
+     *
      * @param IMetadataConnection iMetadataConnection
      * @param String tableLabel
      * @return Collection of MetadataColumn Object of a Table
@@ -236,9 +236,9 @@ public class ExtractMetaDataFromDataBase {
     /**
      * Retrieves table name by synonym, this method is only for Oracle as we cannot get column informations by metadata
      * in Oracle.
-     * 
+     *
      * @param connection
-     * 
+     *
      * @param name synonym
      * @param tableType
      * @return table name
@@ -287,9 +287,9 @@ public class ExtractMetaDataFromDataBase {
 
     /**
      * DOC cantoine. Method to test DataBaseConnection.
-     * 
+     *
      * @param dbVersionString
-     * 
+     *
      * @param String driverClass
      * @param String urlString pwd
      * @param String username
@@ -368,7 +368,7 @@ public class ExtractMetaDataFromDataBase {
 
     /**
      * Get the database meta data.
-     * 
+     *
      * @param schema
      * @param connection
      * @return
@@ -464,7 +464,7 @@ public class ExtractMetaDataFromDataBase {
 
     /**
      * DOC cantoine.
-     * 
+     *
      * @param IMetadataConnection iMetadataConnection
      * @return Collection : return a String's collection of Table Name of a DB Connection
      * @throws SQLException
@@ -539,7 +539,7 @@ public class ExtractMetaDataFromDataBase {
      * configurations by
      * {@link JavaSqlFactory#doHivePreSetup(org.talend.core.model.metadata.builder.connection.Connection)} and then
      * remove these by {@link JavaSqlFactory#doHiveConfigurationClear()}. Added by Marvin Wang on Jan 8, 2013.
-     * 
+     *
      * @param iMetadataConnection
      * @return
      * @throws SQLException
@@ -551,7 +551,7 @@ public class ExtractMetaDataFromDataBase {
             ClassNotFoundException, InstantiationException, IllegalAccessException {
         List<String> allTables = new ArrayList<String>();
         DatabaseMetaData dbMetaData = HiveConnectionManager.getInstance().extractDatabaseMetaData(iMetadataConnection);
-        ResultSet results = dbMetaData.getTables(null, null, "%", new String[] { "TABLE" }); //$NON-NLS-1$//$NON-NLS-2$ 
+        ResultSet results = dbMetaData.getTables(null, null, "%", new String[] { "TABLE" }); //$NON-NLS-1$//$NON-NLS-2$
         while (results.next()) {
             allTables.add(results.getString(3));
         }
@@ -560,7 +560,7 @@ public class ExtractMetaDataFromDataBase {
 
     /**
      * DOC qiang.zhang Comment method "returnMetaTablesFormConnection".
-     * 
+     *
      * @param iMetadataConnection
      * @return
      * @throws SQLException
@@ -629,7 +629,7 @@ public class ExtractMetaDataFromDataBase {
 
     /**
      * This method is used for getting table type(table,view or synonym etc.) by table name.
-     * 
+     *
      * @param tableName a string representing table name
      * @return a string representing table type
      */
@@ -645,7 +645,7 @@ public class ExtractMetaDataFromDataBase {
 
     /**
      * DOC qzhang Comment method "returnTablesFormConnection".
-     * 
+     *
      * @param metadataConnection
      * @param tableInfoParameters
      * @return
@@ -668,9 +668,9 @@ public class ExtractMetaDataFromDataBase {
 
     /**
      * DOC qzhang Comment method "getTableNamesFromQuery".
-     * 
+     *
      * @param rsTables
-     * 
+     *
      * @return
      * @throws SQLException
      */

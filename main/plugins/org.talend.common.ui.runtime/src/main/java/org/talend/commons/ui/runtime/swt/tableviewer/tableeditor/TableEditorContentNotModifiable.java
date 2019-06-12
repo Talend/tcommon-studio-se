@@ -1,6 +1,6 @@
 // ============================================================================
 //
-// Copyright (C) 2006-2018 Talend Inc. - www.talend.com
+// Copyright (C) 2006-2019 Talend Inc. - www.talend.com
 //
 // This source code is available under agreement available at
 // %InstallDIR%\features\org.talend.rcp.branding.%PRODUCTNAME%\%PRODUCTNAME%license.txt
@@ -27,7 +27,7 @@ public abstract class TableEditorContentNotModifiable {
 
     /**
      * You can override this method if necessary.
-     * 
+     *
      * @param table
      * @return TableEditor
      */
@@ -36,7 +36,7 @@ public abstract class TableEditorContentNotModifiable {
 
             /*
              * (non-Javadoc)
-             * 
+             *
              * @see org.eclipse.swt.custom.TableEditor#layout()
              */
             @Override
@@ -54,7 +54,7 @@ public abstract class TableEditorContentNotModifiable {
 
     /**
      * Getter for layoutEnabled. For performance use
-     * 
+     *
      * @return the layoutEnabled
      */
     public boolean isLayoutEnabled() {
@@ -63,7 +63,7 @@ public abstract class TableEditorContentNotModifiable {
 
     /**
      * Sets the layoutEnabled. For performance use
-     * 
+     *
      * @param layoutEnabled the layoutEnabled to set
      */
     public void setLayoutEnabled(boolean layoutEnabled) {

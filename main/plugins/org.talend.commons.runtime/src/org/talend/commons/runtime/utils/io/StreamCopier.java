@@ -1,6 +1,6 @@
 // ============================================================================
 //
-// Copyright (C) 2006-2018 Talend Inc. - www.talend.com
+// Copyright (C) 2006-2019 Talend Inc. - www.talend.com
 //
 // This source code is available under agreement available at
 // %InstallDIR%\features\org.talend.rcp.branding.%PRODUCTNAME%\%PRODUCTNAME%license.txt
@@ -17,7 +17,7 @@ import java.io.InputStream;
 import java.io.OutputStream;
 
 /**
- * 
+ *
  * DOC amaumont  class global comment. Detailled comment
  * <br/>
  *
@@ -32,16 +32,16 @@ public class StreamCopier {
     catch (IOException e) {
       System.err.println(e);
     }
-    
+
   }
 
-  public static void copy(InputStream in, OutputStream out) 
+  public static void copy(InputStream in, OutputStream out)
    throws IOException {
 
     // do not allow other threads to read from the
     // input or write to the output while copying is
     // taking place
-    
+
     synchronized (in) {
       synchronized (out) {
 

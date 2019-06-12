@@ -1,6 +1,6 @@
 // ============================================================================
 //
-// Copyright (C) 2006-2018 Talend Inc. - www.talend.com
+// Copyright (C) 2006-2019 Talend Inc. - www.talend.com
 //
 // This source code is available under agreement available at
 // %InstallDIR%\features\org.talend.rcp.branding.%PRODUCTNAME%\%PRODUCTNAME%license.txt
@@ -35,9 +35,9 @@ import org.talend.librariesmanager.ui.actions.RemoveExternalJarAction;
 
 /**
  * DOC nrousseau class global comment. Detailled comment <br/>
- * 
+ *
  * $Id: ModulesView.java 1811 2007-02-05 03:29:11Z qzhang $
- * 
+ *
  */
 public class ModulesView extends ViewPart {
 
@@ -49,7 +49,7 @@ public class ModulesView extends ViewPart {
 
     /**
      * Ask the modules view composite to refresh its content.
-     * 
+     *
      * yzhang Comment method "refresh".
      */
     public void refresh() {
@@ -58,7 +58,7 @@ public class ModulesView extends ViewPart {
 
     /*
      * Creat the content of this view.
-     * 
+     *
      * @see org.eclipse.ui.part.WorkbenchPart#createPartControl(org.eclipse.swt.widgets.Composite)
      */
     @Override
@@ -98,7 +98,7 @@ public class ModulesView extends ViewPart {
 
     /*
      * Set focus on the composite within this view.
-     * 
+     *
      * @see org.eclipse.ui.part.WorkbenchPart#setFocus()
      */
     @Override
@@ -162,7 +162,7 @@ public class ModulesView extends ViewPart {
             }
         }
     }
-    
+
     public TableItem [] getSelection(){
     	return modulesViewComposite.getTableViewerCreator().getTable().getSelection();
     }

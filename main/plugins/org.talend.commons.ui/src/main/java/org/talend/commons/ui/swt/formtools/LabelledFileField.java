@@ -1,6 +1,6 @@
 // ============================================================================
 //
-// Copyright (C) 2006-2018 Talend Inc. - www.talend.com
+// Copyright (C) 2006-2019 Talend Inc. - www.talend.com
 //
 // This source code is available under agreement available at
 // %InstallDIR%\features\org.talend.rcp.branding.%PRODUCTNAME%\%PRODUCTNAME%license.txt
@@ -37,9 +37,9 @@ import org.talend.commons.ui.utils.PathUtils;
 
 /**
  * Create a Label and a Text.
- * 
+ *
  * $Id: LabelledFileField.java 7038 2007-11-15 14:05:48Z plegall $
- * 
+ *
  */
 public class LabelledFileField {
 
@@ -62,7 +62,7 @@ public class LabelledFileField {
 
     /**
      * Create a Label and a Text.
-     * 
+     *
      * @param composite
      * @param string
      * @param String[] extensions
@@ -73,7 +73,7 @@ public class LabelledFileField {
 
     /**
      * Create a Label and a Text.
-     * 
+     *
      * @param composite
      * @param string
      * @param String[] extensions
@@ -85,7 +85,7 @@ public class LabelledFileField {
 
     /**
      * Create a Label and a Text width specific styleField.
-     * 
+     *
      * @param composite
      * @param string
      * @param String[] extensions
@@ -97,7 +97,7 @@ public class LabelledFileField {
 
     /**
      * Create a Label and a Text width specific styleField.
-     * 
+     *
      * @param composite
      * @param string
      * @param String[] extensions
@@ -110,7 +110,7 @@ public class LabelledFileField {
 
     /**
      * Create a Label and a Text width Gridata option FILL.
-     * 
+     *
      * @param composite
      * @param string
      * @param String[] extensions
@@ -124,7 +124,7 @@ public class LabelledFileField {
 
     /**
      * Create a Label and a Text width specific styleField and Gridata option FILL.
-     * 
+     *
      * @param composite
      * @param string
      * @param String[] extensions
@@ -139,7 +139,7 @@ public class LabelledFileField {
 
     /**
      * Create a Label and a Text width specific styleField and Gridata option FILL.
-     * 
+     *
      * @param composite
      * @param string
      * @param String[] extensions
@@ -210,7 +210,7 @@ public class LabelledFileField {
 
     /**
      * displayDialog to choose a file path.
-     * 
+     *
      * @param composite
      * @param String[] extensions
      */
@@ -241,7 +241,7 @@ public class LabelledFileField {
 
     /**
      * setTextLimit to Text Object.
-     * 
+     *
      * @param limit
      */
     public void setTextLimit(final int limit) {
@@ -250,7 +250,7 @@ public class LabelledFileField {
 
     /**
      * setToolTipText to Text Object.
-     * 
+     *
      * @param string
      */
     public void setToolTipText(final String string) {
@@ -260,7 +260,7 @@ public class LabelledFileField {
 
     /**
      * getText to Text Object.
-     * 
+     *
      * @return string
      */
     public String getText() {
@@ -272,7 +272,7 @@ public class LabelledFileField {
 
     /**
      * setText to Text Object.
-     * 
+     *
      * @param string
      */
     public void setText(final String string) {
@@ -285,7 +285,7 @@ public class LabelledFileField {
 
     /**
      * setText to Label Object.
-     * 
+     *
      * @param string
      */
     public void setLabelText(final String string) {
@@ -302,7 +302,7 @@ public class LabelledFileField {
 
     /**
      * setEditable to Text and Label Object.
-     * 
+     *
      * @param boolean
      */
     public void forceFocus() {
@@ -312,7 +312,7 @@ public class LabelledFileField {
 
     /**
      * setEditable to Text and Label Object.
-     * 
+     *
      * @param boolean
      */
     public void setEditable(final boolean visible) {
@@ -323,7 +323,7 @@ public class LabelledFileField {
 
     /**
      * setVisible to Text and Label Object.
-     * 
+     *
      * @param boolean
      */
     public void setVisible(final boolean visible) {
@@ -354,7 +354,7 @@ public class LabelledFileField {
 
     /**
      * addListener to Text Object.
-     * 
+     *
      * @param eventType
      * @param listener
      */
@@ -364,7 +364,7 @@ public class LabelledFileField {
 
     /**
      * addModifyListener to Text Object.
-     * 
+     *
      * @param listener
      */
     public void addModifyListener(ModifyListener listener) {
@@ -373,7 +373,7 @@ public class LabelledFileField {
 
     /**
      * addSelectionListener to Button Object.
-     * 
+     *
      * @param listener
      */
     public void addSelectionListener(SelectionListener listener) {
@@ -382,7 +382,7 @@ public class LabelledFileField {
 
     /**
      * getEditable to Text Object.
-     * 
+     *
      * @return boolean
      */
     public boolean getEditable() {
@@ -391,7 +391,7 @@ public class LabelledFileField {
 
     /**
      * getCharCount to Text Object.
-     * 
+     *
      * @return int
      */
     public int getCharCount() {
@@ -400,7 +400,7 @@ public class LabelledFileField {
 
     /**
      * DOC ocarbone Comment method "setReadOnly".
-     * 
+     *
      * @param b
      */
     public void setReadOnly(boolean visible) {

@@ -1,6 +1,6 @@
 // ============================================================================
 //
-// Copyright (C) 2006-2018 Talend Inc. - www.talend.com
+// Copyright (C) 2006-2019 Talend Inc. - www.talend.com
 //
 // This source code is available under agreement available at
 // %InstallDIR%\features\org.talend.rcp.branding.%PRODUCTNAME%\%PRODUCTNAME%license.txt
@@ -16,9 +16,9 @@ import org.eclipse.swt.graphics.GC;
 
 /**
  * Draw an horizontal Bezier link. Detailled comment <br/>
- * 
+ *
  * $Id$
- * 
+ *
  */
 public class LineLinkWithHorizontalConnectors extends AbstractDrawableLink {
 
@@ -34,7 +34,7 @@ public class LineLinkWithHorizontalConnectors extends AbstractDrawableLink {
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see org.talend.commons.ui.swt.drawing.link.ICAbstractGraphicalLink#draw(org.eclipse.swt.graphics.GC)
      */
     @Override

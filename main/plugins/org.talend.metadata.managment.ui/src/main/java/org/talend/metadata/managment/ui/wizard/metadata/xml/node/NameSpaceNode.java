@@ -1,6 +1,6 @@
 // ============================================================================
 //
-// Copyright (C) 2006-2018 Talend Inc. - www.talend.com
+// Copyright (C) 2006-2019 Talend Inc. - www.talend.com
 //
 // This source code is available under agreement available at
 // %InstallDIR%\features\org.talend.rcp.branding.%PRODUCTNAME%\%PRODUCTNAME%license.txt
@@ -15,7 +15,7 @@ package org.talend.metadata.managment.ui.wizard.metadata.xml.node;
 
 /**
  * DOC s class global comment. Detailled comment
- * 
+ *
  */
 public class NameSpaceNode extends FOXTreeNode {
 
@@ -28,7 +28,7 @@ public class NameSpaceNode extends FOXTreeNode {
 
     /**
      * (non-Javadoc)
-     * 
+     *
      * @see org.talend.metadata.managment.ui.wizard.metadata.xml.node.FOXTreeNode#hasChildren()
      */
     @Override
@@ -38,7 +38,7 @@ public class NameSpaceNode extends FOXTreeNode {
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see org.talend.designer.fileoutputxml.data.FOXTreeNode#getValue()
      */
     @Override

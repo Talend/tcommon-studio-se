@@ -1,6 +1,6 @@
 // ============================================================================
 //
-// Copyright (C) 2006-2018 Talend Inc. - www.talend.com
+// Copyright (C) 2006-2019 Talend Inc. - www.talend.com
 //
 // This source code is available under agreement available at
 // %InstallDIR%\features\org.talend.rcp.branding.%PRODUCTNAME%\%PRODUCTNAME%license.txt
@@ -146,13 +146,13 @@ public class DatabaseWizard extends CheckLastVersionRepositoryWizard implements 
     private IProxyRepositoryFactory repFactory;
 
     private String propertyId;
-    
+
     private ConnectionItem originalConnectionItem;
 
     /**
      * Constructor for DatabaseWizard. Analyse Iselection to extract DatabaseConnection and the pathToSave. Start the
      * Lock Strategy.
-     * 
+     *
      * @param selection
      * @param existingNames
      */
@@ -236,7 +236,7 @@ public class DatabaseWizard extends CheckLastVersionRepositoryWizard implements 
     /**
      * Constructor for DatabaseWizard. Analyse Iselection to extract DatabaseConnection and the pathToSave. Start the
      * Lock Strategy.
-     * 
+     *
      * @param selection
      * @param existingNames
      */
@@ -313,11 +313,11 @@ public class DatabaseWizard extends CheckLastVersionRepositoryWizard implements 
 
     /**
      * DOC ycbai DatabaseWizard constructor comment.
-     * 
+     *
      * <p>
      * If you want to initialize connection before creation you can use this constructor.
      * </p>
-     * 
+     *
      * @param workbench
      * @param creation
      * @param node
@@ -350,7 +350,7 @@ public class DatabaseWizard extends CheckLastVersionRepositoryWizard implements 
 
     /**
      * yzhang Comment method "setToolBar".
-     * 
+     *
      * @param isToolbar
      */
     public void setToolBar(boolean isToolbar) {
@@ -381,7 +381,7 @@ public class DatabaseWizard extends CheckLastVersionRepositoryWizard implements 
             databaseWizardPage.setPageComplete(false);
         } else {
             boolean isTCOM = databaseWizardPage.isTCOMDB(connectionItem.getTypeName());
-            
+
             propertiesWizardPage.setTitle(Messages.getString("DatabaseWizardPage.titleUpdate.Step1")); //$NON-NLS-1$
             propertiesWizardPage.setDescription(Messages.getString("DatabaseWizardPage.descriptionUpdate.Step1")); //$NON-NLS-1$
             propertiesWizardPage.setPageComplete(isRepositoryObjectEditable() && !isTCOM);
@@ -464,7 +464,7 @@ public class DatabaseWizard extends CheckLastVersionRepositoryWizard implements 
                 }
                 return true;
             }
-            
+
             // MOD by gdbu 2011-3-24 bug 19528
             EDatabaseTypeName dbType = EDatabaseTypeName.getTypeFromDbType(getDBType(connectionItem));
             if (dbType != EDatabaseTypeName.GENERAL_JDBC) {
@@ -510,10 +510,10 @@ public class DatabaseWizard extends CheckLastVersionRepositoryWizard implements 
                 }
                 dbConnection.setDriverClass(driverClass);
             }
-        
+
             // ~19528
 
-        
+
             IMetadataConnection metadataConnection = null;
             if (contextName == null) {
                 metadataConnection = ConvertionHelper.convert(connection, true);
@@ -581,7 +581,7 @@ public class DatabaseWizard extends CheckLastVersionRepositoryWizard implements 
             return false;
         }
     }
-    
+
     private void deleteSwitchTypeNode(){
         if(isCreation()){
             return;
@@ -599,9 +599,9 @@ public class DatabaseWizard extends CheckLastVersionRepositoryWizard implements 
                 ExceptionHandler.process(e);
             }
         }
-        
+
     }
-    
+
     private boolean isTCOMType(String dbType){
         List<ERepositoryObjectType> extraTypes = new ArrayList<ERepositoryObjectType>();
         IGenericDBService dbService = null;
@@ -623,7 +623,7 @@ public class DatabaseWizard extends CheckLastVersionRepositoryWizard implements 
     /**
      * if the database if oracle uppercase the ui schema of it; if the database if netezza uppercase the sid and url of
      * it.
-     * 
+     *
      * @param databaseConnection
      * @param metadataConnection
      */
@@ -650,7 +650,7 @@ public class DatabaseWizard extends CheckLastVersionRepositoryWizard implements 
 
     /**
      * DOC zhao Comment method "handleUpdate".
-     * 
+     *
      * @param metadataConnection
      * @param tdqRepService
      * @return True if handled successfully.
@@ -768,7 +768,7 @@ public class DatabaseWizard extends CheckLastVersionRepositoryWizard implements 
 
     /**
      * DOC zhao Comment method "handleCreation".
-     * 
+     *
      * @param databaseConnection
      * @param metadataConnection
      * @param tdqRepService
@@ -815,7 +815,7 @@ public class DatabaseWizard extends CheckLastVersionRepositoryWizard implements 
 
     /**
      * uppercase the sid and url of Netezza connection.
-     * 
+     *
      * @param netezzaConnection
      */
     private void uppercaseNetezzaSidUrl(DatabaseConnection netezzaConnection) {
@@ -890,7 +890,7 @@ public class DatabaseWizard extends CheckLastVersionRepositoryWizard implements 
             connectionItem.getProperty().setDescription(this.originalDescription);
             connectionItem.getProperty().setPurpose(this.originalPurpose);
             connectionItem.getProperty().setStatusCode(this.originalStatus);
-            
+
             if(connectionItem.getConnection() instanceof DatabaseConnection){
                 DBConnectionContextUtils.setDatabaseConnectionParameter((DatabaseConnection) connectionItem.getConnection(),
                         databaseWizardPage.getMetadataConnection());
@@ -898,7 +898,7 @@ public class DatabaseWizard extends CheckLastVersionRepositoryWizard implements 
         }
         return super.performCancel();
     }
-    
+
     public void setNewConnectionItem(ConnectionItem connectionItem){
         this.connection = connectionItem.getConnection();
         this.connectionItem = connectionItem;
@@ -908,7 +908,7 @@ public class DatabaseWizard extends CheckLastVersionRepositoryWizard implements 
 
     /**
      * We will accept the selection in the workbench to see if we can initialize from it.
-     * 
+     *
      * @see IWorkbenchWizard#init(IWorkbench, IStructuredSelection)
      */
     @Override
@@ -919,7 +919,7 @@ public class DatabaseWizard extends CheckLastVersionRepositoryWizard implements 
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see org.talend.repository.ui.wizards.RepositoryWizard#getConnectionItem()
      */
     @Override
@@ -928,9 +928,9 @@ public class DatabaseWizard extends CheckLastVersionRepositoryWizard implements 
     }
 
     /**
-     * 
+     *
      * DOC Comment method "updateConnectionInformation".
-     * 
+     *
      * @param dbConn
      * @throws SQLException
      * @throws IllegalAccessException
@@ -987,7 +987,7 @@ public class DatabaseWizard extends CheckLastVersionRepositoryWizard implements 
 
     /**
      * judgement reload the connection or not
-     * 
+     *
      * @param reloadFlag
      * @return
      */
@@ -997,7 +997,7 @@ public class DatabaseWizard extends CheckLastVersionRepositoryWizard implements 
 
     /**
      * open the confirm dialog
-     * 
+     *
      * @param shell
      * @return
      */
@@ -1013,7 +1013,7 @@ public class DatabaseWizard extends CheckLastVersionRepositoryWizard implements 
 
     /**
      * replace the package(catalog and/or schema) name with the new name if needed.
-     * 
+     *
      * @param dbConnection
      */
     private void relpacePackageName(DatabaseConnection dbConnection) {
@@ -1099,14 +1099,14 @@ public class DatabaseWizard extends CheckLastVersionRepositoryWizard implements 
         }
         super.closeLockStrategy();
     }
-    
+
     private DatabaseConnection getDatabaseConnection(){
         if(connection instanceof DatabaseConnection){
             return (DatabaseConnection)connection;
         }
         return null;
     }
-    
+
     private String getDBType(ConnectionItem item){
         if(item.getConnection() instanceof DatabaseConnection){
             return ((DatabaseConnection)item.getConnection()).getDatabaseType();

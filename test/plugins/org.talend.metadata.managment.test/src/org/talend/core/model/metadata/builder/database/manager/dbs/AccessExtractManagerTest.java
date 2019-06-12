@@ -1,6 +1,6 @@
 // ============================================================================
 //
-// Copyright (C) 2006-2018 Talend Inc. - www.talend.com
+// Copyright (C) 2006-2019 Talend Inc. - www.talend.com
 //
 // This source code is available under agreement available at
 // %InstallDIR%\features\org.talend.rcp.branding.%PRODUCTNAME%\%PRODUCTNAME%license.txt
@@ -17,7 +17,7 @@ import org.talend.core.database.EDatabaseTypeName;
 
 /**
  * created by ggu on Jul 4, 2012 Detailled comment
- * 
+ *
  */
 public class AccessExtractManagerTest extends AbstractTest4ExtractManager {
 

@@ -1,6 +1,6 @@
 // ============================================================================
 //
-// Copyright (C) 2006-2018 Talend Inc. - www.talend.com
+// Copyright (C) 2006-2019 Talend Inc. - www.talend.com
 //
 // This source code is available under agreement available at
 // %InstallDIR%\features\org.talend.rcp.branding.%PRODUCTNAME%\%PRODUCTNAME%license.txt
@@ -34,7 +34,7 @@ public class MDMXSDExtractorFieldModel extends ExtendedTableModel<ConceptTarget>
 
     /**
      * set XmlXPathLoopDescriptor.
-     * 
+     *
      * @param schemaTargetList
      */
     public void setConcept(List schemaTargetList) {
@@ -43,7 +43,7 @@ public class MDMXSDExtractorFieldModel extends ExtendedTableModel<ConceptTarget>
 
     /**
      * DOC amaumont Comment method "createSchemaTarget".
-     * 
+     *
      * @return
      */
     public ConceptTarget createNewSchemaTarget() {

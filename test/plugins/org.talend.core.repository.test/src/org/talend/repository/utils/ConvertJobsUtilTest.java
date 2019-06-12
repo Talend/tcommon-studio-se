@@ -1,6 +1,6 @@
 // ============================================================================
 //
-// Copyright (C) 2006-2018 Talend Inc. - www.talend.com
+// Copyright (C) 2006-2019 Talend Inc. - www.talend.com
 //
 // This source code is available under agreement available at
 // %InstallDIR%\features\org.talend.rcp.branding.%PRODUCTNAME%\%PRODUCTNAME%license.txt
@@ -33,7 +33,7 @@ import org.talend.core.repository.utils.ConvertJobsUtil.JobType;
 import org.talend.repository.model.RepositoryNode;
 
 /**
- * 
+ *
  * DOC hwang class global comment. Detailled comment
  */
 public class ConvertJobsUtilTest {
@@ -50,13 +50,13 @@ public class ConvertJobsUtilTest {
         //
         IPath path1 =  ConvertJobsUtil.getTestCasePath(item, JobType.STANDARD.getDisplayName());
         assertTrue(path1.equals(new Path(JobType.STANDARD.getERepositoryObjectType().getFolder()+File.separator+id)));
-        
+
         IPath path2 =  ConvertJobsUtil.getTestCasePath(item, JobType.BIGDATABATCH.getDisplayName());
         assertTrue(path2.equals(new Path(JobType.BIGDATABATCH.getERepositoryObjectType().getFolder()+File.separator+id)));
-        
+
         IPath path3 =  ConvertJobsUtil.getTestCasePath(item, JobType.BIGDATASTREAMING.getDisplayName());
         assertTrue(path3.equals(new Path(JobType.BIGDATASTREAMING.getERepositoryObjectType().getFolder()+File.separator+id)));
-        
+
         IPath path4 =  ConvertJobsUtil.getTestCasePath(item, JobType.STANDARD.getDisplayName());
         assertTrue(path4.equals(new Path(JobType.STANDARD.getERepositoryObjectType().getFolder()+File.separator+id)));
     }

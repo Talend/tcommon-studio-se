@@ -1,6 +1,6 @@
 // ============================================================================
 //
-// Copyright (C) 2006-2018 Talend Inc. - www.talend.com
+// Copyright (C) 2006-2019 Talend Inc. - www.talend.com
 //
 // This source code is available under agreement available at
 // %InstallDIR%\features\org.talend.rcp.branding.%PRODUCTNAME%\%PRODUCTNAME%license.txt
@@ -62,7 +62,7 @@ public class XPathPrefixHandler {
 
     /**
      * DOC chuang Comment method "sortByLevel".
-     * 
+     *
      * @param nameNodesMap2
      */
     private void sortByLevel(Map<String, List<NodeInfo>> map) {
@@ -100,7 +100,7 @@ public class XPathPrefixHandler {
 
     /**
      * DOC chuang Comment method "addXPathPrefix".
-     * 
+     *
      * @param relativeXPathExpression
      * @param referenceNode
      * @return
@@ -128,7 +128,7 @@ public class XPathPrefixHandler {
 
     /**
      * DOC chuang Comment method "extractRelativePath".
-     * 
+     *
      * @param result
      * @param relativeXPathExpression
      * @return
@@ -146,7 +146,7 @@ public class XPathPrefixHandler {
 
     /**
      * DOC chuang Comment method "getNodeInfo".
-     * 
+     *
      * @param node
      * @param list
      */
@@ -237,7 +237,7 @@ public class XPathPrefixHandler {
 
     /**
      * DOC chuang Comment method "fixXPath".
-     * 
+     *
      * @param paths
      */
     private void fixUnknownPath(PathSegment[] paths) {
@@ -257,7 +257,7 @@ public class XPathPrefixHandler {
 
     /**
      * DOC chuang Comment method "validate".
-     * 
+     *
      * @param paths
      * @param pos
      * @param node
@@ -312,7 +312,7 @@ public class XPathPrefixHandler {
 
     /**
      * DOC chuang Comment method "resolve".
-     * 
+     *
      * @param path
      */
     private int resolvePath(PathSegment[] path) {
@@ -349,7 +349,7 @@ public class XPathPrefixHandler {
 
     /**
      * DOC chuang Comment method "createPathSegments".
-     * 
+     *
      * @param names
      * @return
      */
@@ -362,7 +362,7 @@ public class XPathPrefixHandler {
     }
 
     /**
-     * 
+     *
      * DOC chuang XPathPrefixHandler class global comment. Detailled comment
      */
     static class PathSegment {
@@ -386,7 +386,7 @@ public class XPathPrefixHandler {
 
     /**
      * DOC chuang Comment method "getPrefix".
-     * 
+     *
      * @param name
      * @return
      */
@@ -398,7 +398,7 @@ public class XPathPrefixHandler {
 
     /**
      * DOC chuang Comment method "collectNodes".
-     * 
+     *
      * @param root2
      * @param string
      */
@@ -502,7 +502,7 @@ public class XPathPrefixHandler {
 
     /**
      * DOC chuang Comment method "addInfoToMap".
-     * 
+     *
      * @param node
      * @param info
      */
@@ -517,7 +517,7 @@ public class XPathPrefixHandler {
 
     /**
      * DOC chuang Comment method "getNamespace".
-     * 
+     *
      * @param node
      * @param parentPath
      * @return
@@ -575,7 +575,7 @@ public class XPathPrefixHandler {
 
     /**
      * DOC chuang Comment method "collectAttributes".
-     * 
+     *
      * @param info
      * @param attributes
      */
@@ -618,7 +618,7 @@ public class XPathPrefixHandler {
     }
 
     /**
-     * 
+     *
      * DOC chuang XPathPrefixHandler class global comment. Detailled comment
      */
     static class NodeInfo {
@@ -642,7 +642,7 @@ public class XPathPrefixHandler {
     };
 
     /**
-     * 
+     *
      * DOC chuang XPathPrefixHandler class global comment. Detailled comment
      */
     static class CustomNamespaceContext implements NamespaceContext {
@@ -675,7 +675,7 @@ public class XPathPrefixHandler {
 
         /*
          * (non-Javadoc)
-         * 
+         *
          * @see javax.xml.namespace.NamespaceContext#getNamespaceURI(java.lang.String)
          */
         public String getNamespaceURI(String prefix) {
@@ -684,7 +684,7 @@ public class XPathPrefixHandler {
 
         /*
          * (non-Javadoc)
-         * 
+         *
          * @see javax.xml.namespace.NamespaceContext#getPrefix(java.lang.String)
          */
         public String getPrefix(String namespaceURI) {
@@ -696,7 +696,7 @@ public class XPathPrefixHandler {
 
         /*
          * (non-Javadoc)
-         * 
+         *
          * @see javax.xml.namespace.NamespaceContext#getPrefixes(java.lang.String)
          */
         public Iterator getPrefixes(String namespaceURI) {

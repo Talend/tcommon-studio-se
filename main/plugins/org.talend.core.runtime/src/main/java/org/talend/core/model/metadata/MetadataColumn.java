@@ -1,6 +1,6 @@
 // ============================================================================
 //
-// Copyright (C) 2006-2018 Talend Inc. - www.talend.com
+// Copyright (C) 2006-2019 Talend Inc. - www.talend.com
 //
 // This source code is available under agreement available at
 // %InstallDIR%\features\org.talend.rcp.branding.%PRODUCTNAME%\%PRODUCTNAME%license.txt
@@ -19,9 +19,9 @@ import org.talend.commons.exception.ExceptionHandler;
 
 /**
  * Definition of a column in the Meta Data. <br/>
- * 
+ *
  * $Id: MetadataColumn.java 38013 2010-03-05 14:21:59Z mhirt $
- * 
+ *
  */
 public class MetadataColumn implements IMetadataColumn, Cloneable {
 
@@ -76,7 +76,7 @@ public class MetadataColumn implements IMetadataColumn, Cloneable {
 
     /**
      * copy all fields.
-     * 
+     *
      * @param metadataColumn
      */
     public MetadataColumn(IMetadataColumn metadataColumn) {
@@ -125,7 +125,7 @@ public class MetadataColumn implements IMetadataColumn, Cloneable {
 
     /**
      * Getter for id.
-     * 
+     *
      * @return the id
      */
     @Override
@@ -135,7 +135,7 @@ public class MetadataColumn implements IMetadataColumn, Cloneable {
 
     /**
      * Sets the id.
-     * 
+     *
      * @param id the id to set
      */
     @Override
@@ -145,7 +145,7 @@ public class MetadataColumn implements IMetadataColumn, Cloneable {
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see org.talend.designer.core.model.metadata.IMetadataColumn#getLabel()
      */
     @Override
@@ -165,7 +165,7 @@ public class MetadataColumn implements IMetadataColumn, Cloneable {
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see org.talend.designer.core.model.metadata.IMetadataColumn#setLabel(java.lang.String)
      */
     @Override
@@ -175,7 +175,7 @@ public class MetadataColumn implements IMetadataColumn, Cloneable {
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see org.talend.designer.core.model.metadata.IMetadataColumn#isKey()
      */
     @Override
@@ -185,7 +185,7 @@ public class MetadataColumn implements IMetadataColumn, Cloneable {
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see org.talend.designer.core.model.metadata.IMetadataColumn#setKey(boolean)
      */
     @Override
@@ -195,7 +195,7 @@ public class MetadataColumn implements IMetadataColumn, Cloneable {
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see org.talend.designer.core.model.metadata.IMetadataColumn#getType()
      */
     @Override
@@ -205,7 +205,7 @@ public class MetadataColumn implements IMetadataColumn, Cloneable {
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see org.talend.designer.core.model.metadata.IMetadataColumn#setType(java.lang.String)
      */
     @Override
@@ -215,7 +215,7 @@ public class MetadataColumn implements IMetadataColumn, Cloneable {
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see org.talend.core.model.metadata.IMetadataColumn#getTalendType()
      */
     @Override
@@ -228,7 +228,7 @@ public class MetadataColumn implements IMetadataColumn, Cloneable {
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see org.talend.core.model.metadata.IMetadataColumn#setTalendType(java.lang.String)
      */
     @Override
@@ -256,7 +256,7 @@ public class MetadataColumn implements IMetadataColumn, Cloneable {
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see org.talend.designer.core.model.metadata.IMetadataColumn#getLength()
      */
     @Override
@@ -266,7 +266,7 @@ public class MetadataColumn implements IMetadataColumn, Cloneable {
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see org.talend.designer.core.model.metadata.IMetadataColumn#setLength(Integer)
      */
     @Override
@@ -276,7 +276,7 @@ public class MetadataColumn implements IMetadataColumn, Cloneable {
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see org.talend.designer.core.model.metadata.IMetadataColumn#isNullable()
      */
     @Override
@@ -286,7 +286,7 @@ public class MetadataColumn implements IMetadataColumn, Cloneable {
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see org.talend.designer.core.model.metadata.IMetadataColumn#setNullable(boolean)
      */
     @Override
@@ -296,7 +296,7 @@ public class MetadataColumn implements IMetadataColumn, Cloneable {
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see org.talend.designer.core.model.metadata.IMetadataColumn#getPrecision()
      */
     @Override
@@ -306,7 +306,7 @@ public class MetadataColumn implements IMetadataColumn, Cloneable {
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see org.talend.designer.core.model.metadata.IMetadataColumn#setPrecision(Integer)
      */
     @Override
@@ -316,7 +316,7 @@ public class MetadataColumn implements IMetadataColumn, Cloneable {
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see org.talend.designer.core.model.metadata.IMetadataColumn#getDefault()
      */
     @Override
@@ -326,7 +326,7 @@ public class MetadataColumn implements IMetadataColumn, Cloneable {
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see org.talend.designer.core.model.metadata.IMetadataColumn#setDefault(java.lang.String)
      */
     @Override
@@ -336,7 +336,7 @@ public class MetadataColumn implements IMetadataColumn, Cloneable {
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see org.talend.designer.core.model.metadata.IMetadataColumn#getComment()
      */
     @Override
@@ -346,7 +346,7 @@ public class MetadataColumn implements IMetadataColumn, Cloneable {
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see org.talend.designer.core.model.metadata.IMetadataColumn#setComment(java.lang.String)
      */
     @Override
@@ -356,7 +356,7 @@ public class MetadataColumn implements IMetadataColumn, Cloneable {
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see org.talend.core.model.metadata.IMetadataColumn#getPattern()
      */
     @Override
@@ -366,7 +366,7 @@ public class MetadataColumn implements IMetadataColumn, Cloneable {
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see org.talend.core.model.metadata.IMetadataColumn#setPattern(java.lang.String)
      */
     @Override
@@ -556,7 +556,7 @@ public class MetadataColumn implements IMetadataColumn, Cloneable {
 
     /**
      * Getter for custom.
-     * 
+     *
      * @return the custom
      */
     @Override
@@ -566,7 +566,7 @@ public class MetadataColumn implements IMetadataColumn, Cloneable {
 
     /**
      * Sets the custom.
-     * 
+     *
      * @param custom the custom to set
      */
     @Override
@@ -576,7 +576,7 @@ public class MetadataColumn implements IMetadataColumn, Cloneable {
 
     /**
      * Getter for readOnly.
-     * 
+     *
      * @return the readOnly
      */
     @Override
@@ -586,7 +586,7 @@ public class MetadataColumn implements IMetadataColumn, Cloneable {
 
     /**
      * Sets the readOnly.
-     * 
+     *
      * @param readOnly the readOnly to set
      */
     @Override

@@ -1,6 +1,6 @@
 // ============================================================================
 //
-// Copyright (C) 2006-2018 Talend Inc. - www.talend.com
+// Copyright (C) 2006-2019 Talend Inc. - www.talend.com
 //
 // This source code is available under agreement available at
 // %InstallDIR%\features\org.talend.rcp.branding.%PRODUCTNAME%\%PRODUCTNAME%license.txt
@@ -49,9 +49,9 @@ import org.talend.repository.model.RepositoryConstants;
 
 /**
  * yzhang class global comment. Detailled comment <br/>
- * 
+ *
  * $Id: ExpressionPersistance.java 下午01:26:21 2007-9-24 +0000 (2007-9-24) yzhang $
- * 
+ *
  */
 public class ExpressionPersistance {
 
@@ -79,7 +79,7 @@ public class ExpressionPersistance {
 
     /**
      * yzhang Comment method "getInstance".
-     * 
+     *
      * @return
      */
     public static ExpressionPersistance getInstance() {
@@ -91,7 +91,7 @@ public class ExpressionPersistance {
 
     /**
      * Getter for ownerId.
-     * 
+     *
      * @return the ownerId
      */
     public String getOwnerId() {
@@ -100,7 +100,7 @@ public class ExpressionPersistance {
 
     /**
      * Sets the ownerId.
-     * 
+     *
      * @param ownerId the ownerId to set
      */
     public void setOwnerId(String ownerId) {
@@ -109,7 +109,7 @@ public class ExpressionPersistance {
 
     /**
      * Getter for path.
-     * 
+     *
      * @return the path
      */
     public String getPath() {
@@ -118,7 +118,7 @@ public class ExpressionPersistance {
 
     /**
      * Sets the path.
-     * 
+     *
      * @param path the path to set
      */
     public void setPath(String path) {
@@ -126,9 +126,9 @@ public class ExpressionPersistance {
     }
 
     /**
-     * 
+     *
      * yzhang Comment method "convert".
-     * 
+     *
      * @param expression
      * @return
      */
@@ -151,7 +151,7 @@ public class ExpressionPersistance {
 
     /**
      * yzhang Comment method "convert".
-     * 
+     *
      * @param emfExpression
      * @return
      */
@@ -168,7 +168,7 @@ public class ExpressionPersistance {
 
     /**
      * yzhang Comment method "saveExpression".
-     * 
+     *
      * @param expression
      */
     public void saveExpression(Expression expression) {
@@ -215,7 +215,7 @@ public class ExpressionPersistance {
 
     /**
      * yzhang Comment method "loadExpression".
-     * 
+     *
      * @return
      */
     public Expression loadExpression() {
@@ -272,7 +272,7 @@ public class ExpressionPersistance {
 
     /**
      * yzhang Comment method "jobNameChanged".
-     * 
+     *
      * @param oldJobName
      * @param newJobName
      */
@@ -289,7 +289,7 @@ public class ExpressionPersistance {
 
     /**
      * yzhang Comment method "jobDeleted".
-     * 
+     *
      * @param jobName
      */
     public void jobDeleted(String jobName) {
@@ -302,7 +302,7 @@ public class ExpressionPersistance {
 
     /**
      * yzhang Comment method "getExpressionStoreFolder".
-     * 
+     *
      * @return
      */
     private String getExpressionStoreFolderPath() {

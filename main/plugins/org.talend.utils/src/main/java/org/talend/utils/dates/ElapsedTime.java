@@ -1,6 +1,6 @@
 // ============================================================================
 //
-// Copyright (C) 2006-2018 Talend Inc. - www.talend.com
+// Copyright (C) 2006-2019 Talend Inc. - www.talend.com
 //
 // This source code is available under agreement available at
 // %InstallDIR%\features\org.talend.rcp.branding.%PRODUCTNAME%\%PRODUCTNAME%license.txt
@@ -18,12 +18,12 @@ import java.util.GregorianCalendar;
 
 /**
  * @author S. Correia Class This class has methods for counting days and months.
- * 
+ *
  * The definition of time unit change is relatively simple: If you are counting days, you simply count the number of
  * times the date has changed. For example, if something starts on the 15th and ends on the 17th, 2 days have passed.
  * (The date changed first to the 16th, then to the 17th.) Similarly, if a process starts at 3:25 in the afternoon and
  * finishes at 4:10 p.m., 1 hour has passed because the hour has changed once (from 3 to 4).
- * 
+ *
  * Libraries often calculate time in this manner. For example, if I borrow a book from my library, I don't need to have
  * the book in my possession for a minimum of 24 hours for the library to consider it borrowed for one day. Instead, the
  * day that I borrow the book is recorded on my account. As soon as the date switches to the next day, I have borrowed
@@ -100,7 +100,7 @@ public final class ElapsedTime {
      * here. Since 15 Oct 1582 the input dates represent Gregorian calendar Input date must be after this first date of
      * the Gregorian calendar, else the julian day is incorrect (10 days should be added) for dates on or before 4
      * October 1582, the Julian calendar is to be used, not the Gregorian calendar.
-     * 
+     *
      * @param year
      * @param month
      * @param day
@@ -144,17 +144,17 @@ public final class ElapsedTime {
      * Finds the largest value of field that can be added to start that ends up with a date that is less than or equal
      * to end. Modifies the input calendar to be the result of adding that number to the field. Ought to be method on
      * calendar, with just the final 2 params
-     * 
+     *
      * @param start the start date (is modified)
      * @param endTime the end date
      * @param field the Calendar's field unit
      * @return the difference between start and endTime in Calendar's field unit Ex: int months =
      * ElapsedTime.fieldDifference(cal2, y, Calendar.MONTH); int days = ElapsedTime.fieldDifference(cal2, y,
      * Calendar.DAY_OF_MONTH); int hours = ElapsedTime.fieldDifference(cal2, y, Calendar.HOUR);
-     * 
+     *
      * Ex: Adding 124 months, 0 days and 0 hours to date Thu Jan 01 02:29:05 CET 1970 gives Thu May 01 02:29:05 CEST
      * 1980 and the difference between the two is: 123 months, 29 days, 23 hours.
-     * 
+     *
      * See "Need API to find intervals between dates, in locale-independent fashion" at
      * http://bugs.sun.com/bugdatabase/view_bug.do?bug_id=4114914
      */

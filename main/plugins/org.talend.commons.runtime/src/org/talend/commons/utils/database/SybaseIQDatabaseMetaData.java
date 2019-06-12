@@ -1,6 +1,6 @@
 // ============================================================================
 //
-// Copyright (C) 2006-2018 Talend Inc. - www.talend.com
+// Copyright (C) 2006-2019 Talend Inc. - www.talend.com
 //
 // This source code is available under agreement available at
 // %InstallDIR%\features\org.talend.rcp.branding.%PRODUCTNAME%\%PRODUCTNAME%license.txt
@@ -17,13 +17,13 @@ import java.sql.SQLException;
 
 /**
  * created by qiongli on 2013-11-13 Detailled comment
- * 
+ *
  */
 public class SybaseIQDatabaseMetaData extends SybaseDatabaseMetaData {
 
     /**
      * DOC qiongli SybaseIQDatabaseMetaData constructor comment.
-     * 
+     *
      * @param connection
      * @throws SQLException
      */
@@ -37,7 +37,7 @@ public class SybaseIQDatabaseMetaData extends SybaseDatabaseMetaData {
     @Override
     protected String createSqlByLoginAndCatalog(String loginName, String catalogName) {
         return "select count(*) from " + catalogName //$NON-NLS-1$
-                + ".dbo.sysusers where suid in (select suid from master.dbo.syslogins where name = '" + loginName + "')"; //$NON-NLS-1$ //$NON-NLS-2$ 
+                + ".dbo.sysusers where suid in (select suid from master.dbo.syslogins where name = '" + loginName + "')"; //$NON-NLS-1$ //$NON-NLS-2$
 
     }
 

@@ -1,6 +1,6 @@
 // ============================================================================
 //
-// Copyright (C) 2006-2018 Talend Inc. - www.talend.com
+// Copyright (C) 2006-2019 Talend Inc. - www.talend.com
 //
 // This source code is available under agreement available at
 // %InstallDIR%\features\org.talend.rcp.branding.%PRODUCTNAME%\%PRODUCTNAME%license.txt
@@ -49,13 +49,13 @@ import org.talend.repository.ui.views.IRepositoryView;
 
 /**
  * DOC ftang class global comment. Detailled comment <br/>
- * 
+ *
  */
 public class DocumentationHelper {
 
     /**
      * ftang Comment method "isSyncWithDocumentation".
-     * 
+     *
      * @return
      */
     public static boolean isSyncWithDocumentation() {
@@ -65,7 +65,7 @@ public class DocumentationHelper {
 
     /**
      * ftang Comment method "isFolderExisting".
-     * 
+     *
      * @param type
      * @param path
      * @param folderName
@@ -110,7 +110,7 @@ public class DocumentationHelper {
 
     /**
      * ftang Comment method "getExportFileResources".
-     * 
+     *
      * @param nodes
      * @return
      */
@@ -182,7 +182,7 @@ public class DocumentationHelper {
 
     /**
      * DOC Administrator Comment method "addTreeNode".
-     * 
+     *
      * @param node
      * @param path
      * @param list
@@ -249,7 +249,7 @@ public class DocumentationHelper {
 
     /**
      * ftang Comment method "getHTMLFilePath".
-     * 
+     *
      * @param currentNode
      * @return
      */
@@ -275,7 +275,7 @@ public class DocumentationHelper {
 
     /**
      * ftang Comment method "getJobNodeDocumentationRoot".
-     * 
+     *
      * @return
      */
     public static String getJobNodeDocumentationRoot(Item item, String docRootPath) {
@@ -312,7 +312,7 @@ public class DocumentationHelper {
 
     /**
      * Gets the documentation node which in the Recycle bin for current job node.
-     * 
+     *
      * @param sourceNode
      * @return
      */
@@ -338,7 +338,7 @@ public class DocumentationHelper {
 
     /**
      * Get the documentation node for the job node.
-     * 
+     *
      * @param selectedJobNode
      * @return
      */
@@ -395,7 +395,7 @@ public class DocumentationHelper {
 
     /**
      * ftang Comment method "deleteDocumentationFileAndNode".
-     * 
+     *
      * @param docFolder
      */
     public static void deleteDocumentationFiles(File docFolder) {
@@ -411,7 +411,7 @@ public class DocumentationHelper {
 
     /**
      * ftang Comment method "deleteFiles".
-     * 
+     *
      * @param docFolder
      */
     private static void deleteFiles(File docFolder) {
@@ -431,7 +431,7 @@ public class DocumentationHelper {
 
     /**
      * ftang Comment method "deleteFolders".
-     * 
+     *
      * @param docFolder
      */
     private static void deleteFolders(File docFolder) {
@@ -450,7 +450,7 @@ public class DocumentationHelper {
 
     /**
      * Deletes preview pictures of job.
-     * 
+     *
      * @param jobName
      * @param versionList
      */

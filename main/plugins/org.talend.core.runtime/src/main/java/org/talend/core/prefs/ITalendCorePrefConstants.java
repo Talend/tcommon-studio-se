@@ -1,6 +1,6 @@
 // ============================================================================
 //
-// Copyright (C) 2006-2018 Talend Inc. - www.talend.com
+// Copyright (C) 2006-2019 Talend Inc. - www.talend.com
 //
 // This source code is available under agreement available at
 // %InstallDIR%\features\org.talend.rcp.branding.%PRODUCTNAME%\%PRODUCTNAME%license.txt
@@ -14,9 +14,9 @@ package org.talend.core.prefs;
 
 /**
  * Core preferences. Detailled comment <br/>
- * 
+ *
  * $Id: ITalendCorePrefConstants.java 46402 2010-08-06 08:19:31Z wzhang $
- * 
+ *
  */
 public interface ITalendCorePrefConstants {
 
@@ -82,7 +82,7 @@ public interface ITalendCorePrefConstants {
     public static final String DEACTIVE_REPOSITORY_UPDATE = "DEACTIVE_REPOSITORY_UPDATE"; //$NON-NLS-1$
 
     public static final String DB_CONNECTION_TIMEOUT_ACTIVED = "db_conn_timeout_actived"; //$NON-NLS-1$
-    
+
     public static final String DB_CONNECTION_TIMEOUT = "db_conn_timeout"; //$NON-NLS-1$
 
     public static final String HBASE_OR_MAPRDB_SCAN_LIMIT = "hbase_or_maprdb_scan_limit"; //$NON-NLS-1$

@@ -1,6 +1,6 @@
 // ============================================================================
 //
-// Copyright (C) 2006-2018 Talend Inc. - www.talend.com
+// Copyright (C) 2006-2019 Talend Inc. - www.talend.com
 //
 // This source code is available under agreement available at
 // %InstallDIR%\features\org.talend.rcp.branding.%PRODUCTNAME%\%PRODUCTNAME%license.txt
@@ -24,7 +24,7 @@ import java.util.Date;
 import java.util.List;
 
 /**
- * 
+ *
  * DOC hcyi class global comment. Detailled comment
  */
 public class DownloadHelper implements IDownloadHelper {
@@ -37,7 +37,7 @@ public class DownloadHelper implements IDownloadHelper {
 
     /**
      * Download file from specific url.
-     * 
+     *
      * @param componentUrl The file url to download
      * @param destination The local file to be saved
      * @throws IOException
@@ -112,7 +112,7 @@ public class DownloadHelper implements IDownloadHelper {
 
     /**
      * Return true if the user cancel download process.
-     * 
+     *
      * @return the cancel
      */
     public boolean isCancel() {
@@ -121,7 +121,7 @@ public class DownloadHelper implements IDownloadHelper {
 
     /**
      * Set true if the user cacel download process.
-     * 
+     *
      * @param cancel the cancel to set
      */
     @Override
@@ -131,7 +131,7 @@ public class DownloadHelper implements IDownloadHelper {
 
     /**
      * Notify listeners about progress.
-     * 
+     *
      * @param bytesRead
      */
     private void fireDownloadProgress(int bytesRead) {
@@ -161,7 +161,7 @@ public class DownloadHelper implements IDownloadHelper {
 
     /**
      * Add listener to observe the download process.
-     * 
+     *
      * @param listener
      */
     public void addDownloadListener(DownloadListener listener) {

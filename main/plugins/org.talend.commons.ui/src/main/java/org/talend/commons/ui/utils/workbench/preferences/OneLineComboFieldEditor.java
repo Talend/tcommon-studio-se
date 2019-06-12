@@ -1,6 +1,6 @@
 // ============================================================================
 //
-// Copyright (C) 2006-2018 Talend Inc. - www.talend.com
+// Copyright (C) 2006-2019 Talend Inc. - www.talend.com
 //
 // This source code is available under agreement available at
 // %InstallDIR%\features\org.talend.rcp.branding.%PRODUCTNAME%\%PRODUCTNAME%license.txt
@@ -18,9 +18,9 @@ import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
 
 /**
- *  
+ *
  * $Id: OneLineComboFieldEditor.java 2007-2-8,下午01:35:31 ftang $
- * 
+ *
  */
 public class OneLineComboFieldEditor extends ComboFieldEditor {
 
@@ -30,7 +30,7 @@ public class OneLineComboFieldEditor extends ComboFieldEditor {
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see org.talend.commons.utils.workbench.preferences.ComboFieldEditor#doFillIntoGrid(org.eclipse.swt.widgets.Composite,
      * int)
      */
@@ -41,7 +41,7 @@ public class OneLineComboFieldEditor extends ComboFieldEditor {
         layout.marginHeight = 0;
         layout.horizontalSpacing = HORIZONTAL_GAP;
         parent.setLayout(layout);
-        
+
         Control control = getLabelControl(parent);
         GridData gd = new GridData();
         gd.horizontalSpan = numColumns;
@@ -49,8 +49,8 @@ public class OneLineComboFieldEditor extends ComboFieldEditor {
         control = getComboBoxControl(parent);
         gd = new GridData(GridData.FILL_HORIZONTAL);
         gd.horizontalSpan = numColumns;
-      
-        
+
+
         control.setLayoutData(gd);
     }
 

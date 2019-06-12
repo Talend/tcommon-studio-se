@@ -1,6 +1,6 @@
 // ============================================================================
 //
-// Copyright (C) 2006-2018 Talend Inc. - www.talend.com
+// Copyright (C) 2006-2019 Talend Inc. - www.talend.com
 //
 // This source code is available under agreement available at
 // %InstallDIR%\features\org.talend.rcp.branding.%PRODUCTNAME%\%PRODUCTNAME%license.txt
@@ -26,11 +26,11 @@ import org.talend.core.model.process.JobInfo;
 
 /**
  * Management of deletion and protection on resource of jobs.
- * 
+ *
  * yzhang class global comment. Detailled comment <br/>
- * 
+ *
  * $Id: ResourceManager.java 下午03:44:34 2007-7-6 +0000 (2007-7-6) yzhang $
- * 
+ *
  */
 public class JobResourceManager {
 
@@ -40,7 +40,7 @@ public class JobResourceManager {
 
     /**
      * Set the default constructor as private avoid accessed by other method.
-     * 
+     *
      * yzhang ResourceManager constructor comment.
      */
     private JobResourceManager() {
@@ -49,9 +49,9 @@ public class JobResourceManager {
 
     /**
      * Return the single instance of this class.
-     * 
+     *
      * yzhang Comment method "getInstance".
-     * 
+     *
      * @return
      */
     public static JobResourceManager getInstance() {
@@ -63,7 +63,7 @@ public class JobResourceManager {
 
     /**
      * Add protection on the resource of job avoid deleted by some operation.
-     * 
+     *
      * yzhang Comment method "addProtection".
      */
     public void addProtection(IJobResourceProtection protection) {
@@ -80,9 +80,9 @@ public class JobResourceManager {
 
     /**
      * To see whether this resource is protected by other operation.
-     * 
+     *
      * yzhang Comment method "canBeDeleted".
-     * 
+     *
      * @param resource
      */
     private boolean canBeDeleted(JobResource resource) {
@@ -97,9 +97,9 @@ public class JobResourceManager {
 
     /**
      * To see whether this resource is protected by other operation.
-     * 
+     *
      * yzhang Comment method "isProtected".
-     * 
+     *
      * @param resource
      * @return
      */
@@ -109,9 +109,9 @@ public class JobResourceManager {
 
     /**
      * Delete the resource.
-     * 
+     *
      * yzhang Comment method "deleteResource".
-     * 
+     *
      * @param resource
      */
     public void deleteResource(JobResource resource) {
@@ -136,9 +136,9 @@ public class JobResourceManager {
 
     /**
      * Release the protection of the resource under specific job.
-     * 
+     *
      * yzhang Comment method "removeProtection".
-     * 
+     *
      * @param protection
      */
     public void removeProtection(IJobResourceProtection protection) {
@@ -152,9 +152,9 @@ public class JobResourceManager {
     }
 
     /**
-     * 
+     *
      * DOC achen Comment method "getJobResource".
-     * 
+     *
      * @param jobInfo
      * @return
      */

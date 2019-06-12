@@ -1,6 +1,6 @@
 // ============================================================================
 //
-// Copyright (C) 2006-2018 Talend Inc. - www.talend.com
+// Copyright (C) 2006-2019 Talend Inc. - www.talend.com
 //
 // This source code is available under agreement available at
 // %InstallDIR%\features\org.talend.rcp.branding.%PRODUCTNAME%\%PRODUCTNAME%license.txt
@@ -27,7 +27,7 @@ import org.talend.core.model.temp.ECodePart;
 
 /**
  * Interface that describes the functions that a must implements a component manager. <br/>
- * 
+ *
  * $Id: IComponent.java 40568 2010-04-19 02:10:00Z nrousseau $
  */
 public interface IComponent {
@@ -92,7 +92,7 @@ public interface IComponent {
 
     /**
      * Should only be set for external components, for others should be null.
-     * 
+     *
      * @return
      */
     public String getPluginExtension();
@@ -116,7 +116,7 @@ public interface IComponent {
     /**
      * To avoid since a component can be visible in one family but displayed in another one.<br>
      * Better use isVisible(String family) to check if component is visible in current family.
-     * 
+     *
      * @return
      */
     @Deprecated
@@ -126,14 +126,14 @@ public interface IComponent {
 
     /**
      * Get the default modules needed for the component.
-     * 
+     *
      * @return
      */
     public List<ModuleNeeded> getModulesNeeded();
 
     /**
      * Get the modules needed according the setup of a defined component.
-     * 
+     *
      * @return
      */
     public List<ModuleNeeded> getModulesNeeded(INode node);
@@ -152,7 +152,7 @@ public interface IComponent {
 
     /**
      * Return true if this component is technical, means should not be displayed in the palette but must be generated
-     * 
+     *
      * @return
      */
     public boolean isTechnical();
@@ -186,7 +186,7 @@ public interface IComponent {
      * This is just added in <code>HEADER</code>, it is used to present the component belongs to common process, M/R
      * process and etc. About the type please refer to the {@link ComponentCategory}. Added by Marvin Wang on Jan 11,
      * 2013.
-     * 
+     *
      * @return
      */
     String getType();
@@ -194,7 +194,7 @@ public interface IComponent {
     /**
      * This is used to present if the current component includes reduce code or not. Added by Marvin Wang on Jan 11,
      * 2013.
-     * 
+     *
      * @return
      */
     boolean isReduce();
@@ -202,7 +202,7 @@ public interface IComponent {
     /**
      * This method is used to get the type of input that can go in a BigData component DOC rdubois Comment method
      * "getInputType".
-     * 
+     *
      * @return
      */
 
@@ -211,7 +211,7 @@ public interface IComponent {
     /**
      * This method is used to get the type of output that can go out a BigData component DOC rdubois Comment method
      * "getOutputType".
-     * 
+     *
      * @return
      */
 
@@ -219,7 +219,7 @@ public interface IComponent {
 
     /**
      * This method is used to define if a component generates a Spark Action.
-     * 
+     *
      * @return a boolean which defines if the component generates a Spark Action.
      */
 

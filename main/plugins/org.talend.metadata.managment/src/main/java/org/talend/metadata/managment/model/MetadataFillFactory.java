@@ -1,6 +1,6 @@
 // ============================================================================
 //
-// Copyright (C) 2006-2018 Talend Inc. - www.talend.com
+// Copyright (C) 2006-2019 Talend Inc. - www.talend.com
 //
 // This source code is available under agreement available at
 // %InstallDIR%\features\org.talend.rcp.branding.%PRODUCTNAME%\%PRODUCTNAME%license.txt
@@ -69,9 +69,9 @@ public class MetadataFillFactory {
     }
 
     /**
-     * 
+     *
      * Get DatabaseConnection Instance
-     * 
+     *
      * @deprecated use {@link #getDBInstance(EDatabaseTypeName)} instead it
      * @return
      */
@@ -86,7 +86,7 @@ public class MetadataFillFactory {
 
     /**
      * Get DatabaseConnection Instance
-     * 
+     *
      * @param eDatabaseType the type of you want to fill database
      * @return
      */
@@ -143,9 +143,9 @@ public class MetadataFillFactory {
     }
 
     /**
-     * 
+     *
      * zshen Comment method "fillUIParams". convert a Map of UI parameter to IMetadataConnection
-     * 
+     *
      * @param paramMap
      * @return null only if paramMap is null
      */
@@ -154,9 +154,9 @@ public class MetadataFillFactory {
     }
 
     /**
-     * 
+     *
      * zshen Comment method "fillUIParams". convert a DatabaseConnection object to IMetadataConnection
-     * 
+     *
      * @deprecated
      * @see {@link org.talend.core.model.metadata.builder.ConvertionHelper#fillUIParams(IMetadataConnection, DatabaseConnection)}
      * @param conn
@@ -168,9 +168,9 @@ public class MetadataFillFactory {
     }
 
     /**
-     * 
+     *
      * zshen Comment method "fillUIConnParams".
-     * 
+     *
      * @param metadataBean sotre information of the connection which you will get.
      * @param connection which you want to be fill Connection.
      * @return connection which have be fill by the information store on the metadataBean.null when the information is
@@ -181,10 +181,10 @@ public class MetadataFillFactory {
     }
 
     /**
-     * 
+     *
      * Fill the catalog with the restrain of catalogFilter, note that if the database name (e.g SID for SQL server ) on
      * connection wizard UI is set, then this method will only return one catalog with this name.
-     * 
+     *
      * @param dbConn the connection which you want schema to be filled.Can't be null if need to fill the catalogs into
      * the object of connection. And if Linked is false everything is ok.
      * @param dbJDBCMetadata If it is null the method will do nothing and return null too.
@@ -204,7 +204,7 @@ public class MetadataFillFactory {
     /**
      * Fill the schema with the restrain of schemaFilter, note that if the schema name (e.g UISchema for Oracle ) on
      * connection wizard UI is set, then this method will only return one schema with this name.
-     * 
+     *
      * @param dbConn the connection which you want schema to be filled.Can't be null if need to fill the schemas into
      * the object of connection.And if Linked is false everything is ok.
      * @param dbJDBCMetadata If it is null the method will do nothing and return null too.
@@ -222,9 +222,9 @@ public class MetadataFillFactory {
     }
 
     /**
-     * 
+     *
      * wzhang Comment method "fillAll".
-     * 
+     *
      * @param pack the object(catalog or schema) which you want tables to be filled.Can't be null if need to fill the
      * tables into the object of package(catalog or schema).And if Linked is false everything is ok.
      * @param dbJDBCMetadata If it is null the method will do nothing and return null too.
@@ -246,9 +246,9 @@ public class MetadataFillFactory {
     }
 
     /**
-     * 
+     *
      * zshen Comment method "fillTables".
-     * 
+     *
      * @param pack the object(catalog or schema) which you want tables to be filled.Can't be null if need to fill the
      * tables into the object of package(catalog or schema).And if Linked is false everything is ok.
      * @param dbJDBCMetadata If it is null the method will do nothing and return null too.
@@ -265,9 +265,9 @@ public class MetadataFillFactory {
     }
 
     /**
-     * 
+     *
      * zshen Comment method "fillTables".
-     * 
+     *
      * @param pack the object(catalog or schema) which you want tables to be filled.Can't be null if need to fill the
      * tables into the object of package(catalog or schema).And if Linked is false everything is ok.
      * @param dbJDBCMetadata If it is null the method will do nothing and return null too.
@@ -281,9 +281,9 @@ public class MetadataFillFactory {
     }
 
     /**
-     * 
+     *
      * zshen Comment method "fillViews".
-     * 
+     *
      * @param pack the object(catalog or schema) which you want views to be filled.Can't be null if need to fill the
      * views into the object of package(catalog or schema).And if Linked is false everything is ok.
      * @param dbJDBCMetadata If it is null the method will do nothing and return null too.
@@ -296,9 +296,9 @@ public class MetadataFillFactory {
     }
 
     /**
-     * 
+     *
      * zshen Comment method "fillViews".
-     * 
+     *
      * @param pack the object(catalog or schema) which you want views to be filled.Can't be null if need to fill the
      * views into the object of package(catalog or schema).And if Linked is false everything is ok.
      * @param dbJDBCMetadata If it is null the method will do nothing and return null too.
@@ -314,9 +314,9 @@ public class MetadataFillFactory {
     }
 
     /**
-     * 
+     *
      * zshen Comment method "fillColumns".
-     * 
+     *
      * @param colSet the object(tdView or tdTable) which you want columns to be filled.Can't be null if need to fill the
      * views into the object of package(tdView or tdTable).
      * @param dbJDBCMetadata If it is null the method will do nothing and return null too.
@@ -332,9 +332,9 @@ public class MetadataFillFactory {
     }
 
     /**
-     * 
+     *
      * zshen Comment method "fillColumns".
-     * 
+     *
      * @param colSet the object(tdView or tdTable) which you want columns to be filled.Can't be null if need to fill the
      * views into the object of package(tdView or tdTable).
      * @param dbJDBCMetadata If it is null the method will do nothing and return null too.
@@ -352,9 +352,9 @@ public class MetadataFillFactory {
     }
 
     /**
-     * 
+     *
      * zshen Comment method "isLinked".
-     * 
+     *
      * @return get whether the subElements need to be linked to the parent element.
      */
     public boolean isLinked() {
@@ -362,9 +362,9 @@ public class MetadataFillFactory {
     }
 
     /**
-     * 
+     *
      * zshen Comment method "isLinked". set whether the subElements need to be linked to the parent element.
-     * 
+     *
      * @return
      */
     public void setLinked(boolean isLinked) {
@@ -373,7 +373,7 @@ public class MetadataFillFactory {
 
     /**
      * check a Connection and at last will close connection.
-     * 
+     *
      * @param metadataBean
      * @return
      */
@@ -383,7 +383,7 @@ public class MetadataFillFactory {
 
     /**
      * create a Connection and at last will not close connection.
-     * 
+     *
      * @param metadataBean
      * @return
      */
@@ -392,10 +392,10 @@ public class MetadataFillFactory {
     }
 
     /**
-     * 
+     *
      Fill the schema to catalog with the restrain of schemaFilter, note that if the schema name (e.g UISchema for SQL
      * server ) on connection wizard UI is set, then this method will only return one schema with this name.
-     * 
+     *
      * @param dbConn
      * @param dbJDBCMetadata
      * @param catalog
@@ -416,7 +416,7 @@ public class MetadataFillFactory {
 
     /**
      * Getter for metadataFiller.
-     * 
+     *
      * @return the metadataFiller
      */
     public IMetadataFiller getMetadataFiller() {
@@ -435,7 +435,7 @@ public class MetadataFillFactory {
     public static boolean isJdbcNetezza(String dbType, String driverClass) {
         if (!StringUtils.isBlank(dbType) && !StringUtils.isBlank(driverClass)) {
             return StringUtils.equals(EDatabaseTypeName.GENERAL_JDBC.getDisplayName(), dbType)
-                    && StringUtils.indexOf(StringUtils.lowerCase(driverClass), "netezza") > -1; //$NON-NLS-1$    
+                    && StringUtils.indexOf(StringUtils.lowerCase(driverClass), "netezza") > -1; //$NON-NLS-1$
         }
         return false;
     }

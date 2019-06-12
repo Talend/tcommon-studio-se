@@ -1,6 +1,6 @@
 // ============================================================================
 //
-// Copyright (C) 2006-2018 Talend Inc. - www.talend.com
+// Copyright (C) 2006-2019 Talend Inc. - www.talend.com
 //
 // This source code is available under agreement available at
 // %InstallDIR%\features\org.talend.rcp.branding.%PRODUCTNAME%\%PRODUCTNAME%license.txt
@@ -20,9 +20,9 @@ import org.talend.commons.ui.swt.extended.table.ExtendedTableModel;
 
 /**
  * DOC amaumont class global comment. Detailled comment <br/>
- * 
+ *
  * $Id$
- * 
+ *
  */
 public abstract class AbstractExtendedTableResetDBTypesCommand extends Command implements IExtendedTableCommand {
 
@@ -38,7 +38,7 @@ public abstract class AbstractExtendedTableResetDBTypesCommand extends Command i
 
     /**
      * DOC amaumont ExtendedTableAddCommand constructor comment.
-     * 
+     *
      * @param dbmsId
      */
     public AbstractExtendedTableResetDBTypesCommand(ExtendedTableModel extendedTable, String dbmsId) {
@@ -49,7 +49,7 @@ public abstract class AbstractExtendedTableResetDBTypesCommand extends Command i
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see org.eclipse.gef.commands.Command#execute()
      */
     @SuppressWarnings("unchecked")//$NON-NLS-1$
@@ -107,7 +107,7 @@ public abstract class AbstractExtendedTableResetDBTypesCommand extends Command i
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see org.talend.commons.ui.command.CommonCommand#canUndo()
      */
     @Override
@@ -117,7 +117,7 @@ public abstract class AbstractExtendedTableResetDBTypesCommand extends Command i
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see org.talend.commons.ui.command.CommonCommand#redo()
      */
     @Override
@@ -127,7 +127,7 @@ public abstract class AbstractExtendedTableResetDBTypesCommand extends Command i
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see org.talend.commons.ui.command.CommonCommand#undo()
      */
     @SuppressWarnings("unchecked")//$NON-NLS-1$

@@ -1,6 +1,6 @@
 // ============================================================================
 //
-// Copyright (C) 2006-2018 Talend Inc. - www.talend.com
+// Copyright (C) 2006-2019 Talend Inc. - www.talend.com
 //
 // This source code is available under agreement available at
 // %InstallDIR%\features\org.talend.rcp.branding.%PRODUCTNAME%\%PRODUCTNAME%license.txt
@@ -24,13 +24,13 @@ import org.talend.commons.ui.swt.extended.table.AbstractExtendedControlViewer;
 
 /**
  * DOC YeXiaowei class global comment. Detailled comment <br/>
- * 
+ *
  */
 public abstract class AddAllPushButton extends ExtendedPushButton {
 
 	/**
 	 * DOC YeXiaowei AddAllPustButton constructor comment.
-	 * 
+	 *
 	 * @param parent
 	 * @param extendedViewer
 	 * @param tooltip
@@ -49,7 +49,7 @@ public abstract class AddAllPushButton extends ExtendedPushButton {
 
 	/*
 	 * (non-Javadoc)
-	 * 
+	 *
 	 * @see
 	 * org.talend.commons.ui.swt.advanced.dataeditor.control.ExtendedPushButton
 	 * #getEnabledState()

@@ -1,6 +1,6 @@
 // ============================================================================
 //
-// Copyright (C) 2006-2018 Talend Inc. - www.talend.com
+// Copyright (C) 2006-2019 Talend Inc. - www.talend.com
 //
 // This source code is available under agreement available at
 // %InstallDIR%\features\org.talend.rcp.branding.%PRODUCTNAME%\%PRODUCTNAME%license.txt
@@ -37,18 +37,18 @@ import orgomg.cwm.resource.relational.Schema;
 public interface IMetadataFiller<T extends Connection> {
 
     /**
-     * 
+     *
      * zshen Comment method "fillUIParams". convert a Map of UI parameter to IMetadataConnection
-     * 
+     *
      * @param paramMap
      * @return null only if paramMap is null
      */
     public IMetadataConnection fillUIParams(Map<String, String> paramMap);
 
     /**
-     * 
+     *
      * zshen Comment method "fillUIParams". convert a DatabaseConnection object to IMetadataConnection
-     * 
+     *
      * @deprecated
      * @see {@link org.talend.core.model.metadata.builder.ConvertionHelper#fillUIParams(IMetadataConnection, DatabaseConnection)}
      * @param conn
@@ -58,9 +58,9 @@ public interface IMetadataFiller<T extends Connection> {
     public IMetadataConnection fillUIParams(DatabaseConnection conn);
 
     /**
-     * 
+     *
      * zshen Comment method "fillUIConnParams".
-     * 
+     *
      * @param metadataBean sotre information of the connection which you will get.
      * @param connection which you want to be fill Connection.
      * @return connection which have be fill by the information store on the metadataBean.null when the information is
@@ -69,9 +69,9 @@ public interface IMetadataFiller<T extends Connection> {
     public T fillUIConnParams(IMetadataConnection metadataBean, T connection);
 
     /**
-     * 
+     *
      * DOC zshen Comment method "fillCatalogs".
-     * 
+     *
      * @param dbConn the connection which you want schema to be filled.Can't be null if need to fill the catalogs into
      * the object of connection. And if Linked is false everything is ok.
      * @param dbJDBCMetadata If it is null the method will do nothing and return null too.
@@ -85,9 +85,9 @@ public interface IMetadataFiller<T extends Connection> {
             List<String> catalogFilter);
 
     /**
-     * 
+     *
      * zshen Comment method "fillSchemas".
-     * 
+     *
      * @param dbConn the connection which you want schema to be filled.Can't be null if need to fill the schemas into
      * the object of connection.And if Linked is false everything is ok.
      * @param dbJDBCMetadata If it is null the method will do nothing and return null too.
@@ -102,20 +102,20 @@ public interface IMetadataFiller<T extends Connection> {
 
     /**
      * wzhang Comment method "fillAll".
-     * 
+     *
      * @param pack the object(catalog or schema) which you want tables to be filled.Can't be null if need to fill the
      * tables into the object of package(catalog or schema).And if Linked is false everything is ok.
-     * 
+     *
      * @param dbJDBCMetadata If it is null the method will do nothing and return null too.
-     * 
+     *
      * @param tableFilter The list for filter tables which you want to get.If it is null all of tables which belong to
      * the package will be return.
-     * 
+     *
      * @param tablePattern another method to filter the tables.the table will be keep if it's name match to the
      * tablePattern.And if you don't want to use it null is ok.
-     * 
+     *
      * @param tableType the type of Table which you want to fill.It should be the one of TableType enum.
-     * 
+     *
      * @return The list of tables/views/sysnonyms after filter.Will return null only if dbJDBCMetadata isn't normal.
      */
     public List<MetadataTable> fillAll(Package pack, DatabaseMetaData dbJDBCMetadata, List<String> tableFilter,
@@ -125,11 +125,11 @@ public interface IMetadataFiller<T extends Connection> {
             List<String> tableFilter, String tablePattern, String[] tableType);
 
     /**
-     * 
+     *
      /**
-     * 
+     *
      * zshen Comment method "fillTables".
-     * 
+     *
      * @param pack the object(catalog or schema) which you want tables to be filled.Can't be null if need to fill the
      * tables into the object of package(catalog or schema).And if Linked is false everything is ok.
      * @param dbJDBCMetadata If it is null the method will do nothing and return null too.
@@ -144,9 +144,9 @@ public interface IMetadataFiller<T extends Connection> {
             String[] tableType);
 
     /**
-     * 
+     *
      * zshen Comment method "fillViews".
-     * 
+     *
      * @param pack the object(catalog or schema) which you want views to be filled.Can't be null if need to fill the
      * views into the object of package(catalog or schema).And if Linked is false everything is ok.
      * @param dbJDBCMetadata If it is null the method will do nothing and return null too.
@@ -160,9 +160,9 @@ public interface IMetadataFiller<T extends Connection> {
             String[] tableType);
 
     /**
-     * 
+     *
      * zshen Comment method "fillColumns".
-     * 
+     *
      * @param colSet the object(tdView or tdTable) which you want columns to be filled.Can't be null if need to fill the
      * views into the object of package(tdView or tdTable).
      * @param dbJDBCMetadata If it is null the method will do nothing and return null too.
@@ -179,24 +179,24 @@ public interface IMetadataFiller<T extends Connection> {
             List<String> columnFilter, String columnPattern);
 
     /**
-     * 
+     *
      * zshen Comment method "isLinked".
-     * 
+     *
      * @return get whether the subElements need to be linked to the parent element.
      */
     public boolean isLinked();
 
     /**
-     * 
+     *
      * zshen Comment method "isLinked". set whether the subElements need to be linked to the parent element.
-     * 
+     *
      * @return
      */
     public void setLinked(boolean isLinked);
 
     /**
      * this is used to check a Connection and at last the connection will be closed at once.
-     * 
+     *
      * @param metadataBean
      * @return
      */
@@ -204,23 +204,23 @@ public interface IMetadataFiller<T extends Connection> {
 
     /**
      * this is used to create a Connection and the connection will be not closed.
-     * 
+     *
      * @param metadataBean
      * @return
      */
     public TypedReturnCode<?> createConnection(IMetadataConnection metadataBean);
 
     /**
-     * 
+     *
      * DOC mzhao Fill catalog with schema children.
-     * 
+     *
      * @param dbConn
      * @param dbJDBCMetadata
      * @param catalog
      * @param schemaFilter
      * @return
      * @throws Throwable
-     * 
+     *
      */
     public List<Schema> fillSchemaToCatalog(T dbConn, DatabaseMetaData dbJDBCMetadata, Catalog catalog, List<String> schemaFilter)
             throws Throwable;

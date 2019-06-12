@@ -2,7 +2,7 @@
 //
 // Talend Community Edition
 //
-// Copyright (C) 2006-2018 Talend – www.talend.com
+// Copyright (C) 2006-2019 Talend – www.talend.com
 //
 // This library is free software; you can redistribute it and/or
 // modify it under the terms of the GNU Lesser General Public
@@ -53,7 +53,7 @@ public interface IESBMicroService extends IService {
 
     /**
      * DOC sunchaoqun Comment method "buildJob".
-     * 
+     *
      * @param destinationPath
      * @param itemToExport
      * @param version
@@ -67,7 +67,7 @@ public interface IESBMicroService extends IService {
 
     /**
      * DOC sunchaoqun Comment method "createBuildJobHandler".
-     * 
+     *
      * @param itemToExport
      * @param version
      * @param context

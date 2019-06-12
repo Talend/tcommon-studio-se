@@ -1,6 +1,6 @@
 // ============================================================================
 //
-// Copyright (C) 2006-2018 Talend Inc. - www.talend.com
+// Copyright (C) 2006-2019 Talend Inc. - www.talend.com
 //
 // This source code is available under agreement available at
 // %InstallDIR%\features\org.talend.rcp.branding.%PRODUCTNAME%\%PRODUCTNAME%license.txt
@@ -51,9 +51,9 @@ import org.talend.repository.metadata.ui.wizards.form.AbstractLDAPSchemaStepForm
 
 /**
  * The class is used for LDAP schema on Repository View. <br/>
- * 
+ *
  * @author ftang, 18/09/2007
- * 
+ *
  */
 public class LDAPSchemaStep2Form extends AbstractLDAPSchemaStepForm {
 
@@ -121,7 +121,7 @@ public class LDAPSchemaStep2Form extends AbstractLDAPSchemaStepForm {
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see org.talend.repository.ui.swt.utils.AbstractForm#adaptFormToReadOnly()
      */
     @Override
@@ -132,7 +132,7 @@ public class LDAPSchemaStep2Form extends AbstractLDAPSchemaStepForm {
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see org.talend.repository.ui.swt.utils.AbstractForm#addFields()
      */
     @Override
@@ -196,7 +196,7 @@ public class LDAPSchemaStep2Form extends AbstractLDAPSchemaStepForm {
 
     /**
      * Adds the base DN input.
-     * 
+     *
      * @param parent the parent
      */
     private void addBaseDNInput(Composite parent) {
@@ -222,7 +222,7 @@ public class LDAPSchemaStep2Form extends AbstractLDAPSchemaStepForm {
 
     /**
      * Adds the limit input.
-     * 
+     *
      * @param parent the parent
      */
     public void addLimitInput(Composite parent) {
@@ -237,7 +237,7 @@ public class LDAPSchemaStep2Form extends AbstractLDAPSchemaStepForm {
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see org.talend.repository.ui.swt.utils.AbstractForm#addFieldsListeners()
      */
     @Override
@@ -547,7 +547,7 @@ public class LDAPSchemaStep2Form extends AbstractLDAPSchemaStepForm {
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see org.talend.repository.ui.swt.utils.AbstractForm#addUtilsButtonListeners()
      */
     @Override
@@ -558,7 +558,7 @@ public class LDAPSchemaStep2Form extends AbstractLDAPSchemaStepForm {
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see org.talend.repository.ui.swt.utils.AbstractForm#checkFieldsValue()
      */
     @Override
@@ -596,7 +596,7 @@ public class LDAPSchemaStep2Form extends AbstractLDAPSchemaStepForm {
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see org.talend.repository.ui.swt.utils.AbstractForm#initialize()
      */
     @Override
@@ -725,7 +725,7 @@ public class LDAPSchemaStep2Form extends AbstractLDAPSchemaStepForm {
 
     /**
      * Creates the widget.
-     * 
+     *
      * @param parent the parent
      */
     public void addAliasDereferenceGroupInput(Composite parent) {
@@ -747,7 +747,7 @@ public class LDAPSchemaStep2Form extends AbstractLDAPSchemaStepForm {
 
     /**
      * Creates the widget.
-     * 
+     *
      * @param parent the parent
      */
     public void addReferralsGroupInput(Composite parent) {
@@ -764,7 +764,7 @@ public class LDAPSchemaStep2Form extends AbstractLDAPSchemaStepForm {
 
     /**
      * Creates the widget.
-     * 
+     *
      * @param parent the parent
      */
     public void addLimitGroupInput(Composite parent) {
@@ -784,7 +784,7 @@ public class LDAPSchemaStep2Form extends AbstractLDAPSchemaStepForm {
 
     /**
      * Comment method "refreshAuthParamGroup".
-     * 
+     *
      * @param connection
      */
     private void refreshAuthParamGroup(final LDAPSchemaConnection connection, boolean isEnabledAllowed) {

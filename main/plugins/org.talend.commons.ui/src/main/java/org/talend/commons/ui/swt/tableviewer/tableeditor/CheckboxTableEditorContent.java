@@ -1,6 +1,6 @@
 // ============================================================================
 //
-// Copyright (C) 2006-2018 Talend Inc. - www.talend.com
+// Copyright (C) 2006-2019 Talend Inc. - www.talend.com
 //
 // This source code is available under agreement available at
 // %InstallDIR%\features\org.talend.rcp.branding.%PRODUCTNAME%\%PRODUCTNAME%license.txt
@@ -37,9 +37,9 @@ import org.talend.commons.ui.swt.tableviewer.TableViewerCreatorColumn;
 
 /**
  * DOC amaumont class global comment. Detailled comment <br/>
- * 
+ *
  * $Id: CheckboxTableEditorContent.java 7183 2007-11-23 11:03:36Z amaumont $
- * 
+ *
  */
 public class CheckboxTableEditorContent extends TableEditorContent {
 
@@ -61,9 +61,9 @@ public class CheckboxTableEditorContent extends TableEditorContent {
     }
 
     /*
-     * 
+     *
      * (non-Javadoc)
-     * 
+     *
      * @see org.talend.commons.ui.swt.tableviewer.TableEditorContent#initialize(org.eclipse.swt.widgets.Table,
      * org.eclipse.swt.custom.TableEditor, org.talend.commons.ui.swt.tableviewer.TableViewerCreatorColumn,
      * java.lang.Object, java.lang.Object)
@@ -203,7 +203,7 @@ public class CheckboxTableEditorContent extends TableEditorContent {
 
     /**
      * Sets the toolTipText.
-     * 
+     *
      * @param toolTipText the toolTipText to set
      */
     public void setToolTipText(String toolTipText) {

@@ -1,6 +1,6 @@
 // ============================================================================
 //
-// Copyright (C) 2006-2018 Talend Inc. - www.talend.com
+// Copyright (C) 2006-2019 Talend Inc. - www.talend.com
 //
 // This source code is available under agreement available at
 // %InstallDIR%\features\org.talend.rcp.branding.%PRODUCTNAME%\%PRODUCTNAME%license.txt
@@ -54,9 +54,9 @@ public interface ITDQRepositoryService extends IService {
     public void openConnectionEditor(Item item);
 
     /**
-     * 
+     *
      * add some new Alias to sql explorer system.
-     * 
+     *
      * @param items
      */
     public void notifySQLExplorer(Item... items);
@@ -133,7 +133,7 @@ public interface ITDQRepositoryService extends IService {
     /**
      * create a hive connection(embedded or standalone) according to the IMetadataConnection, if it is not a hive
      * connection type, return null.
-     * 
+     *
      * @param metadataConnection the db((MetadataTable) selectedObj).getColumns() type should be hive
      * @return a hive connection or null
      */
@@ -143,7 +143,7 @@ public interface ITDQRepositoryService extends IService {
     public boolean isDQEditorOpened(Item item);
 
     /**
-     * 
+     *
      * Add the software system update listener. The listener will be triggered when a new connection created, an
      * existing connection reloaded, modifed with another type and updated from SVN repository. <br>
      * Note that this listener will be registered only once a time when application startup.
@@ -151,9 +151,9 @@ public interface ITDQRepositoryService extends IService {
     public void addSoftwareSystemUpdateListener();
 
     /**
-     * 
+     *
      * Publish software system update event.
-     * 
+     *
      * @param databaseConnection
      */
     public void publishSoftwareSystemUpdateEvent(DatabaseConnection databaseConnection);
@@ -162,22 +162,22 @@ public interface ITDQRepositoryService extends IService {
      * After creating the database connection, will open the connection editor when this parameter= false (used in
      * ConnectionTypePage, which will use DatabaseWizard but no need to open the connection editor after creating the db
      * from here); will not open the connection editor when this parameter=true;
-     * 
+     *
      * @param noNeedToOpenConnectionEditor: true--open the connection editor after creating, false-- not open
      */
     public void setIsOpenConnectionEditorAfterCreate(boolean noNeedToOpenConnectionEditor);
 
     /**
      * Refresh the table in data sample section of match analysis after running
-     * 
+     *
      * @param result
      */
     public void refreshTableWithResult(ModelElement analysis, List<Object[]> result);
 
     /**
-     * 
+     *
      * update sql exploerer by the old connection name and new connectionItem.
-     * 
+     *
      * @param connectionItem The connection item with new name that is used to update the Alias.
      * @param oldConnName The original connection name used to find Alias from SQL Explorer system.
      */
@@ -186,7 +186,7 @@ public interface ITDQRepositoryService extends IService {
     /**
      * update the depended analysis of the current file connection, when the file connection changed schema: if the
      * analysis 's analyzed columns are in the changed schema: compare columns, and remain the column with same name.
-     * 
+     *
      * @param newMetadataTable
      */
     public void reloadMetadataOfDelimitedFile(MetadataTable newMetadataTable) throws BusinessException;
@@ -207,9 +207,9 @@ public interface ITDQRepositoryService extends IService {
     /**
      * When the context is modified, the analysis and report which had imported this context should also be updated.
      * Added TDQ-14992,yyin,20180518
-     * 
+     *
      * @param parameter
-     * 
+     *
      * @param ruManager: RepositoryUpdateManager
      */
     void updateAllContextInAnalysisAndReport(RepositoryUpdateManager ruManager, Object parameter, boolean isUpdated);

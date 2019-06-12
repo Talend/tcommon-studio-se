@@ -1,6 +1,6 @@
 // ============================================================================
 //
-// Copyright (C) 2006-2018 Talend Inc. - www.talend.com
+// Copyright (C) 2006-2019 Talend Inc. - www.talend.com
 //
 // This source code is available under agreement available at
 // %InstallDIR%\features\org.talend.rcp.branding.%PRODUCTNAME%\%PRODUCTNAME%license.txt
@@ -40,7 +40,7 @@ import org.talend.updates.runtime.model.UpdateSiteLocationType;
 
 /**
  * created by sgandon on 25 févr. 2013 Detailled comment
- * 
+ *
  */
 public class ChooseUpdateSitesWizardPage extends WizardPage {
 
@@ -62,7 +62,7 @@ public class ChooseUpdateSitesWizardPage extends WizardPage {
 
     /**
      * Create the wizard.
-     * 
+     *
      * @param updateWizardModel
      */
     public ChooseUpdateSitesWizardPage(UpdateWizardModel updateWizardModel) {
@@ -82,7 +82,7 @@ public class ChooseUpdateSitesWizardPage extends WizardPage {
 
     /**
      * Create contents of the wizard.
-     * 
+     *
      * @param parent
      */
     @Override

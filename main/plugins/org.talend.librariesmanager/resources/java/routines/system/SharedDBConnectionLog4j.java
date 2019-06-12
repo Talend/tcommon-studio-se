@@ -1,6 +1,6 @@
 // ============================================================================
 //
-// Copyright (C) 2006-2018 Talend Inc. - www.talend.com
+// Copyright (C) 2006-2019 Talend Inc. - www.talend.com
 //
 // This source code is available under agreement available at
 // %InstallDIR%\features\org.talend.rcp.branding.%PRODUCTNAME%\%PRODUCTNAME%license.txt
@@ -29,7 +29,7 @@ public class SharedDBConnectionLog4j {
     private static boolean DEBUG = false;
 
     private static org.apache.log4j.Logger LOGGER = null;
-    
+
     private static String cid = null;
 
     private static SharedDBConnectionLog4j instance = null;
@@ -61,7 +61,7 @@ public class SharedDBConnectionLog4j {
         logMessage(Level.DEBUG,cid +" - SharedDBConnection, current shared connections list is:"+keys);
     }
     /**
-     * 
+     *
      * DOC jyhu Comment method "logMessage".
      * @param logLevel :current logInfo level
      * @param logInfo :loginfo
@@ -150,7 +150,7 @@ public class SharedDBConnectionLog4j {
 
     /**
      * If there don't exist the connection or it is closed, create and store it.
-     * 
+     *
      * @param dbDriver
      * @param url
      * @param userName
@@ -169,7 +169,7 @@ public class SharedDBConnectionLog4j {
 
     /**
      * If there don't exist the connection or it is closed, create and store it.
-     * 
+     *
      * @param dbDriver
      * @param url
      * @param dbConnectionName
@@ -194,7 +194,7 @@ public class SharedDBConnectionLog4j {
     public static void setDebugMode(boolean debug) {
         DEBUG = debug;
     }
-    
+
     public static void initLogger(org.apache.log4j.Logger logger,String uniqueName) {
         if(LOGGER ==null){
             LOGGER = logger;

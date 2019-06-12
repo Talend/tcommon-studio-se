@@ -1,6 +1,6 @@
 // ============================================================================
 //
-// Copyright (C) 2006-2018 Talend Inc. - www.talend.com
+// Copyright (C) 2006-2019 Talend Inc. - www.talend.com
 //
 // This source code is available under agreement available at
 // %InstallDIR%\features\org.talend.rcp.branding.%PRODUCTNAME%\%PRODUCTNAME%license.txt
@@ -50,12 +50,12 @@ public class EventLoopProgressMonitor extends ProgressMonitorWrapper implements 
      * The task name is the name of the current task in the event loop.
      */
     private String taskName;
-    
+
     private String originalTaskName;
 
     /**
      * Constructs a new instance of the receiver and forwards to monitor.
-     * 
+     *
      * @param monitor
      */
     public EventLoopProgressMonitor(IProgressMonitor monitor) {
@@ -79,7 +79,7 @@ public class EventLoopProgressMonitor extends ProgressMonitorWrapper implements 
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see org.eclipse.core.runtime.IProgressMonitorWithBlocking#clearBlocked()
      */
     public void clearBlocked() {
@@ -149,7 +149,7 @@ public class EventLoopProgressMonitor extends ProgressMonitorWrapper implements 
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see org.eclipse.core.runtime.IProgressMonitorWithBlocking#setBlocked(org.eclipse.core.runtime.IStatus)
      */
     public void setBlocked(IStatus reason) {
@@ -197,7 +197,7 @@ public class EventLoopProgressMonitor extends ProgressMonitorWrapper implements 
 
     /**
      * Return the name of the current task.
-     * 
+     *
      * @return Returns the taskName.
      */
     protected String getTaskName() {

@@ -1,6 +1,6 @@
 // ============================================================================
 //
-// Copyright (C) 2006-2018 Talend Inc. - www.talend.com
+// Copyright (C) 2006-2019 Talend Inc. - www.talend.com
 //
 // This source code is available under agreement available at
 // %InstallDIR%\features\org.talend.rcp.branding.%PRODUCTNAME%\%PRODUCTNAME%license.txt
@@ -103,7 +103,7 @@ import orgomg.cwm.objectmodel.core.CoreFactory;
 
 /**
  * @author cantoine
- * 
+ *
  */
 public class SelectorModulesForm extends AbstractSalesforceStepForm {
 
@@ -216,7 +216,7 @@ public class SelectorModulesForm extends AbstractSalesforceStepForm {
 
     /**
      * TableForm Constructor to use by RCP Wizard.
-     * 
+     *
      * @param parent
      * @param page
      * @param connection
@@ -252,9 +252,9 @@ public class SelectorModulesForm extends AbstractSalesforceStepForm {
     }
 
     /**
-     * 
+     *
      * Initialize value, forceFocus first field for right Click (new Table).
-     * 
+     *
      */
     @Override
     public void initialize() {
@@ -407,7 +407,7 @@ public class SelectorModulesForm extends AbstractSalesforceStepForm {
 
     /**
      * DOC qzhang Comment method "getColumnSelectionListener".
-     * 
+     *
      * @return
      */
     private SelectionAdapter getColumnSelectionListener() {
@@ -496,7 +496,7 @@ public class SelectorModulesForm extends AbstractSalesforceStepForm {
 
     /**
      * addButtonControls.
-     * 
+     *
      */
     @Override
     protected void addUtilsButtonListeners() {
@@ -610,7 +610,7 @@ public class SelectorModulesForm extends AbstractSalesforceStepForm {
 
     /**
      * checkConnection.
-     * 
+     *
      * @param displayMessageBox
      */
     protected void checkConnection(final boolean displayMessageBox) {
@@ -668,7 +668,7 @@ public class SelectorModulesForm extends AbstractSalesforceStepForm {
 
     /**
      * DOC qzhang Comment method "createAllItems".
-     * 
+     *
      * @param displayMessageBox
      * @param newList
      */
@@ -735,7 +735,7 @@ public class SelectorModulesForm extends AbstractSalesforceStepForm {
 
     /**
      * createTable.
-     * 
+     *
      * @param tableItem
      */
     protected void createTable(TableItem tableItem) {
@@ -815,7 +815,7 @@ public class SelectorModulesForm extends AbstractSalesforceStepForm {
 
     /**
      * deleteTable.
-     * 
+     *
      * @param tableItem
      */
     protected void deleteTable(TableItem tableItem) {
@@ -843,8 +843,8 @@ public class SelectorModulesForm extends AbstractSalesforceStepForm {
     /**
      * A subclass of ThreadPoolExecutor that executes each submitted RetrieveColumnRunnable using one of possibly
      * several pooled threads.
-     * 
-     * 
+     *
+     *
      */
     class CustomThreadPoolExecutor extends TalendCustomThreadPoolExecutor {
 
@@ -860,7 +860,7 @@ public class SelectorModulesForm extends AbstractSalesforceStepForm {
 
         /*
          * (non-Javadoc)
-         * 
+         *
          * @see java.util.concurrent.ThreadPoolExecutor#afterExecute(java.lang.Runnable, java.lang.Throwable)
          */
         @Override
@@ -871,7 +871,7 @@ public class SelectorModulesForm extends AbstractSalesforceStepForm {
 
         /*
          * (non-Javadoc)
-         * 
+         *
          * @see java.util.concurrent.ThreadPoolExecutor#beforeExecute(java.lang.Thread, java.lang.Runnable)
          */
         @Override
@@ -882,7 +882,7 @@ public class SelectorModulesForm extends AbstractSalesforceStepForm {
 
         /**
          * If an item is in the List runningThreads, it means that the item's related thread is running.
-         * 
+         *
          * @param item
          * @return
          */
@@ -892,7 +892,7 @@ public class SelectorModulesForm extends AbstractSalesforceStepForm {
 
         /**
          * Find the RetrieveColumnRunnable from map and waiting queue. Map stores running runnables
-         * 
+         *
          * @param key
          * @return
          */
@@ -914,7 +914,7 @@ public class SelectorModulesForm extends AbstractSalesforceStepForm {
 
     /**
      * Subclass of SWTUIThreadProcessor to process the Retrieving Columns job. <br/>
-     * 
+     *
      */
     class RetrieveColumnRunnable implements Runnable {
 
@@ -934,7 +934,7 @@ public class SelectorModulesForm extends AbstractSalesforceStepForm {
 
         /**
          * Getter for tableItem.
-         * 
+         *
          * @return the tableItem
          */
         public TableItem getTableItem() {
@@ -952,7 +952,7 @@ public class SelectorModulesForm extends AbstractSalesforceStepForm {
 
         /**
          * Getter for isCanceled.
-         * 
+         *
          * @return the isCanceled
          */
         public boolean isCanceled() {
@@ -1144,7 +1144,7 @@ public class SelectorModulesForm extends AbstractSalesforceStepForm {
 
     /**
      * refreshTable. This Methos execute the CreateTable in a Thread task.
-     * 
+     *
      * @param tableItem
      * @param size
      */
@@ -1174,7 +1174,7 @@ public class SelectorModulesForm extends AbstractSalesforceStepForm {
 
     /**
      * DOC ocarbone Comment method "initExistingNames".
-     * 
+     *
      * @param connection
      * @param metadataTable
      */
@@ -1252,7 +1252,7 @@ public class SelectorModulesForm extends AbstractSalesforceStepForm {
                     if (num != null) {
                         // get column num from previous result
                         tableItem.setText(2, num.toString());
-                        tableItem.setText(3, Messages.getString("SelectorTableForm.Success")); //$NON-NLS-1$   
+                        tableItem.setText(3, Messages.getString("SelectorTableForm.Success")); //$NON-NLS-1$
                     } else {
                         // retrieve column num again
                         refreshTable(tableItem, -1);
@@ -1275,7 +1275,7 @@ public class SelectorModulesForm extends AbstractSalesforceStepForm {
                     if (num != null) {
                         // get column num from previous result
                         tableItem.setText(2, num.toString());
-                        tableItem.setText(3, Messages.getString("SelectorTableForm.Success")); //$NON-NLS-1$   
+                        tableItem.setText(3, Messages.getString("SelectorTableForm.Success")); //$NON-NLS-1$
                     } else {
                         // retrieve column num again
                         refreshTable(tableItem, -1);
@@ -1317,7 +1317,7 @@ public class SelectorModulesForm extends AbstractSalesforceStepForm {
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see org.talend.repository.ui.swt.AbstractForm#adaptFormToReadOnly()
      */
     @Override
@@ -1326,7 +1326,7 @@ public class SelectorModulesForm extends AbstractSalesforceStepForm {
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see org.eclipse.swt.widgets.Control#setVisible(boolean)
      */
     @Override
@@ -1381,7 +1381,7 @@ public class SelectorModulesForm extends AbstractSalesforceStepForm {
 
     /**
      * Getter for tableInfoParameters.
-     * 
+     *
      * @return the tableInfoParameters
      */
     public TableInfoParameters getTableInfoParameters() {

@@ -1,6 +1,6 @@
 // ============================================================================
 //
-// Copyright (C) 2006-2018 Talend Inc. - www.talend.com
+// Copyright (C) 2006-2019 Talend Inc. - www.talend.com
 //
 // This source code is available under agreement available at
 // %InstallDIR%\features\org.talend.rcp.branding.%PRODUCTNAME%\%PRODUCTNAME%license.txt
@@ -46,9 +46,9 @@ import org.talend.commons.ui.utils.TreeUtils;
 
 /**
  * DOC amaumont class global comment. Detailled comment <br/>
- * 
+ *
  * $Id$
- * 
+ *
  * @param <D1> the data item of extremety 1
  * @param <D2> the data item of extremety 2
  */
@@ -78,7 +78,7 @@ public class TreeToTablesLinker<D1, D2> extends BgDrawableComposite implements I
 
     /**
      * DOC amaumont TreeToTableLinker constructor comment.
-     * 
+     *
      * @param tree
      * @param table
      */
@@ -89,7 +89,7 @@ public class TreeToTablesLinker<D1, D2> extends BgDrawableComposite implements I
 
     /**
      * DOC amaumont Comment method "init".
-     * 
+     *
      * @param tree
      * @param tables
      * @param backgroundRefresher
@@ -164,7 +164,7 @@ public class TreeToTablesLinker<D1, D2> extends BgDrawableComposite implements I
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see org.talend.commons.ui.swt.drawing.link.BackgroundRefresher#drawBackground(org.eclipse.swt.graphics.GC)
      */
     @Override
@@ -280,7 +280,7 @@ public class TreeToTablesLinker<D1, D2> extends BgDrawableComposite implements I
 
     /**
      * DOC amaumont Comment method "findMaxWidth".
-     * 
+     *
      * @param items
      * @param maxWidth
      * @return
@@ -301,7 +301,7 @@ public class TreeToTablesLinker<D1, D2> extends BgDrawableComposite implements I
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see
      * org.talend.commons.ui.swt.linking.IControlsLinker#updateLinksStyleAndControlsSelection(org.eclipse.swt.widgets
      * .Control, java.lang.Boolean)
@@ -367,7 +367,7 @@ public class TreeToTablesLinker<D1, D2> extends BgDrawableComposite implements I
 
     /**
      * Getter for selectedStyleLink.
-     * 
+     *
      * @return the selectedStyleLink
      */
     public IStyleLink getSelectedStyleLink() {
@@ -376,7 +376,7 @@ public class TreeToTablesLinker<D1, D2> extends BgDrawableComposite implements I
 
     /**
      * Sets the selectedStyleLink.
-     * 
+     *
      * @param selectedStyleLink the selectedStyleLink to set
      */
     public void setSelectedStyleLink(IStyleLink selectedStyleLink) {
@@ -385,7 +385,7 @@ public class TreeToTablesLinker<D1, D2> extends BgDrawableComposite implements I
 
     /**
      * Getter for unselectedStyleLink.
-     * 
+     *
      * @return the unselectedStyleLink
      */
     public IStyleLink getUnselectedStyleLink() {
@@ -394,7 +394,7 @@ public class TreeToTablesLinker<D1, D2> extends BgDrawableComposite implements I
 
     /**
      * Sets the unselectedStyleLink.
-     * 
+     *
      * @param unselectedStyleLink the unselectedStyleLink to set
      */
     public void setUnselectedStyleLink(IStyleLink unselectedStyleLink) {
@@ -403,7 +403,7 @@ public class TreeToTablesLinker<D1, D2> extends BgDrawableComposite implements I
 
     /**
      * Getter for backgroundRefresher.
-     * 
+     *
      * @return the backgroundRefresher
      */
     public IBackgroundRefresher getBackgroundRefresher() {
@@ -412,7 +412,7 @@ public class TreeToTablesLinker<D1, D2> extends BgDrawableComposite implements I
 
     /**
      * Sets the backgroundRefresher.
-     * 
+     *
      * @param backgroundRefresher the backgroundRefresher to set
      */
     public void setBackgroundRefresher(IBackgroundRefresher backgroundRefresher) {
@@ -421,7 +421,7 @@ public class TreeToTablesLinker<D1, D2> extends BgDrawableComposite implements I
 
     /**
      * Getter for tables.
-     * 
+     *
      * @return the tables
      */
     public List<Table> getTables() {
@@ -430,7 +430,7 @@ public class TreeToTablesLinker<D1, D2> extends BgDrawableComposite implements I
 
     /**
      * Getter for tree.
-     * 
+     *
      * @return the tree
      */
     public Tree getTree() {
@@ -443,7 +443,7 @@ public class TreeToTablesLinker<D1, D2> extends BgDrawableComposite implements I
 
     /**
      * Getter for linksManager.
-     * 
+     *
      * @return the linksManager
      */
     protected LinksManager<TreeItem, D1, Table, D2> getLinksManager() {

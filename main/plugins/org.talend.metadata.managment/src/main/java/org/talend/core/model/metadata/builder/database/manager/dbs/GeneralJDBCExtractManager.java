@@ -1,6 +1,6 @@
 // ============================================================================
 //
-// Copyright (C) 2006-2018 Talend Inc. - www.talend.com
+// Copyright (C) 2006-2019 Talend Inc. - www.talend.com
 //
 // This source code is available under agreement available at
 // %InstallDIR%\features\org.talend.rcp.branding.%PRODUCTNAME%\%PRODUCTNAME%license.txt
@@ -106,7 +106,7 @@ public class GeneralJDBCExtractManager extends ExtractManager {
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see
      * org.talend.core.model.metadata.builder.database.manager.ExtractManager#closeConnection(org.talend.core.model.
      * metadata.IMetadataConnection, org.talend.core.model.metadata.builder.database.DriverShim)

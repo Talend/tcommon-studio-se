@@ -1,6 +1,6 @@
 // ============================================================================
 //
-// Copyright (C) 2006-2018 Talend Inc. - www.talend.com
+// Copyright (C) 2006-2019 Talend Inc. - www.talend.com
 //
 // This source code is available under agreement available at
 // %InstallDIR%\features\org.talend.rcp.branding.%PRODUCTNAME%\%PRODUCTNAME%license.txt
@@ -19,11 +19,11 @@ import org.eclipse.jface.viewers.Viewer;
 import org.talend.commons.ui.runtime.swt.tableviewer.TableViewerCreatorNotModifiable;
 
 /**
- * 
+ *
  * Default implementation of <code>IStructuredContentProvider</code> used by <code>TableViewerCreator</code>. <br/>
- * 
+ *
  * $Id: DefaultStructuredContentProvider.java 7038 2007-11-15 14:05:48Z plegall $
- * 
+ *
  * @see <code>IStructuredContentProvider</code>
  */
 public class DefaultStructuredContentProvider implements IStructuredContentProvider {

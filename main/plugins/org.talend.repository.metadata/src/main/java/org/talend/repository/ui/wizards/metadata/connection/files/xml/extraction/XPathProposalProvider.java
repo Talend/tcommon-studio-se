@@ -1,6 +1,6 @@
 // ============================================================================
 //
-// Copyright (C) 2006-2018 Talend Inc. - www.talend.com
+// Copyright (C) 2006-2019 Talend Inc. - www.talend.com
 //
 // This source code is available under agreement available at
 // %InstallDIR%\features\org.talend.rcp.branding.%PRODUCTNAME%\%PRODUCTNAME%license.txt
@@ -28,9 +28,9 @@ import org.w3c.dom.Node;
 
 /**
  * ContentProposalProvider which proposes child nodes. <br/>
- * 
+ *
  * $Id: ExpressionProposalProvider.java 311 2006-11-03 07:00:19 +0000 (ven., 03 nov. 2006) amaumont $
- * 
+ *
  */
 public class XPathProposalProvider implements IContentProposalProvider {
 
@@ -48,9 +48,9 @@ public class XPathProposalProvider implements IContentProposalProvider {
 
     /**
      * Constructs a new ProcessProposalProvider.
-     * 
+     *
      * @param linker
-     * 
+     *
      * @param tables
      * @param control
      */
@@ -66,7 +66,7 @@ public class XPathProposalProvider implements IContentProposalProvider {
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see org.eclipse.jface.fieldassist.IContentProposalProvider#getProposals(java.lang.String, int)
      */
     public IContentProposal[] getProposals(String contents, int position) {
@@ -292,7 +292,7 @@ public class XPathProposalProvider implements IContentProposalProvider {
 
     /**
      * DOC amaumont Comment method "modifyXpathToSetFirstAscendant".
-     * 
+     *
      * @param currentExpr
      * @return
      */
@@ -312,7 +312,7 @@ public class XPathProposalProvider implements IContentProposalProvider {
 
     /**
      * DOC amaumont Comment method "addTooManyNodesContentProposal".
-     * 
+     *
      * @param proposals
      */
     private void addTooManyNodesContentProposal(List<IContentProposal> proposals) {
@@ -323,7 +323,7 @@ public class XPathProposalProvider implements IContentProposalProvider {
 
     /**
      * Extract last word of an expression, the last character must be a letter or a number.
-     * 
+     *
      * @param currentExpr
      * @return
      */
@@ -339,11 +339,11 @@ public class XPathProposalProvider implements IContentProposalProvider {
 
     /**
      * DOC amaumont Comment method "createXPathExpression".
-     * 
+     *
      * @param currentExpr
      * @param isRelative TODO
      * @param slash
-     * 
+     *
      * @return
      */
     private String modifyXpathToSearchAllChildren(String currentExpr, boolean isRelative) {
@@ -365,7 +365,7 @@ public class XPathProposalProvider implements IContentProposalProvider {
 
     /**
      * Getter for otherContentProposalProviders.
-     * 
+     *
      * @return the otherContentProposalProviders
      */
     public IContentProposalProvider[] getOtherContentProposalProviders() {
@@ -374,7 +374,7 @@ public class XPathProposalProvider implements IContentProposalProvider {
 
     /**
      * Sets the otherContentProposalProviders.
-     * 
+     *
      * @param otherContentProposalProviders the otherContentProposalProviders to set
      */
     public void setOtherContentProposalProviders(IContentProposalProvider[] otherContentProposalProviders) {

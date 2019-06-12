@@ -1,6 +1,6 @@
 // ============================================================================
 //
-// Copyright (C) 2006-2018 Talend Inc. - www.talend.com
+// Copyright (C) 2006-2019 Talend Inc. - www.talend.com
 //
 // This source code is available under agreement available at
 // %InstallDIR%\features\org.talend.rcp.branding.%PRODUCTNAME%\%PRODUCTNAME%license.txt
@@ -37,7 +37,7 @@ public class TalendTabCSSPropertyHandler implements ICSSPropertyHandler {
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see org.eclipse.e4.ui.css.core.dom.properties.ICSSPropertyHandler#applyCSSProperty(java.lang.Object,
      * java.lang.String, org.w3c.dom.css.CSSValue, java.lang.String, org.eclipse.e4.ui.css.core.engine.CSSEngine)
      */
@@ -267,7 +267,7 @@ public class TalendTabCSSPropertyHandler implements ICSSPropertyHandler {
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see org.eclipse.e4.ui.css.core.dom.properties.ICSSPropertyHandler#retrieveCSSProperty(java.lang.Object,
      * java.lang.String, java.lang.String, org.eclipse.e4.ui.css.core.engine.CSSEngine)
      */

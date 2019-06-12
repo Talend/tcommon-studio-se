@@ -1,6 +1,6 @@
 // ============================================================================
 //
-// Copyright (C) 2006-2018 Talend Inc. - www.talend.com
+// Copyright (C) 2006-2019 Talend Inc. - www.talend.com
 //
 // This source code is available under agreement available at
 // %InstallDIR%\features\org.talend.rcp.branding.%PRODUCTNAME%\%PRODUCTNAME%license.txt
@@ -41,9 +41,9 @@ import com.ca.commons.naming.DXNamingEnumeration;
 
 /**
  * This class is used for getting connection and retrieving data for LDAP. <br/>
- * 
+ *
  * @author ftang, 18/09/2007
- * 
+ *
  */
 public class LDAPConnectionUtils {
 
@@ -59,9 +59,9 @@ public class LDAPConnectionUtils {
 
     /**
      * qli Comment method "getAttributes".
-     * 
+     *
      * @param schema
-     * 
+     *
      * @return array
      */
 
@@ -213,7 +213,7 @@ public class LDAPConnectionUtils {
 
     /**
      * Comment method "fetchBaseDNs".
-     * 
+     *
      * @return
      */
     public static List<String> fetchBaseDNs() {
@@ -253,7 +253,7 @@ public class LDAPConnectionUtils {
 
     /**
      * Administrator Comment method "checkParam".
-     * 
+     *
      * @param connection
      * @return
      */
@@ -305,7 +305,7 @@ public class LDAPConnectionUtils {
                 || (encryptionMethod.equals(EEncryptionMethod.STARTTSL_EXTENSION_METHOD.getName()))) {
             hostUrl = LDAPS_URL_PREFIX + hostName + ":" + port; //$NON-NLS-1$
             env.put(javax.naming.Context.SECURITY_PROTOCOL, "ssl"); //$NON-NLS-1$
-            env.put("java.naming.ldap.factory.socket", AdvancedSocketFactory.class.getName()); //$NON-NLS-1$ 
+            env.put("java.naming.ldap.factory.socket", AdvancedSocketFactory.class.getName()); //$NON-NLS-1$
         } else if (encryptionMethod.equals(EEncryptionMethod.NO_ENCRYPTION_METHOD.getName())) {
             hostUrl = LDAP_URL_PREFIX + hostName + ":" + port; //$NON-NLS-1$
             env.remove(javax.naming.Context.SECURITY_PROTOCOL);

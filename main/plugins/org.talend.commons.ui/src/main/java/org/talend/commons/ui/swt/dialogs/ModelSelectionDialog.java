@@ -1,6 +1,6 @@
 // ============================================================================
 //
-// Copyright (C) 2006-2018 Talend Inc. - www.talend.com
+// Copyright (C) 2006-2019 Talend Inc. - www.talend.com
 //
 // This source code is available under agreement available at
 // %InstallDIR%\features\org.talend.rcp.branding.%PRODUCTNAME%\%PRODUCTNAME%license.txt
@@ -74,7 +74,7 @@ public class ModelSelectionDialog extends SelectionDialog {
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see org.eclipse.jface.dialogs.Dialog#createDialogArea(org.eclipse.swt.widgets.Composite)
      */
     @Override
@@ -142,7 +142,7 @@ public class ModelSelectionDialog extends SelectionDialog {
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see org.eclipse.jface.dialogs.Dialog#okPressed()
      */
     @Override
@@ -165,7 +165,7 @@ public class ModelSelectionDialog extends SelectionDialog {
 
     /**
      * Getter for optionValue.
-     * 
+     *
      * @return the optionValue
      */
     public EEditSelection getOptionValue() {
@@ -174,7 +174,7 @@ public class ModelSelectionDialog extends SelectionDialog {
 
     /**
      * Sets the optionValue.
-     * 
+     *
      * @param optionValue the optionValue to set
      */
     public void setOptionValue(EEditSelection optionValue) {

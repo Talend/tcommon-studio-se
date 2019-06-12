@@ -1,6 +1,6 @@
 // ============================================================================
 //
-// Copyright (C) 2006-2018 Talend Inc. - www.talend.com
+// Copyright (C) 2006-2019 Talend Inc. - www.talend.com
 //
 // This source code is available under agreement available at
 // %InstallDIR%\features\org.talend.rcp.branding.%PRODUCTNAME%\%PRODUCTNAME%license.txt
@@ -86,7 +86,7 @@ public class ComponentStatus {
 
     /**
      * Getter for indexBean.
-     * 
+     *
      * @return the indexBean
      */
     public ComponentIndexBean getIndexBean() {
@@ -95,7 +95,7 @@ public class ComponentStatus {
 
     /**
      * Getter for statusCode.
-     * 
+     *
      * @return the statusCode
      */
     public int getStatusCode() {
@@ -104,7 +104,7 @@ public class ComponentStatus {
 
     /**
      * Getter for exitedComponents.
-     * 
+     *
      * @return the exitedComponents
      */
     public List<ComponentIndexBean> getExitedComponents() {

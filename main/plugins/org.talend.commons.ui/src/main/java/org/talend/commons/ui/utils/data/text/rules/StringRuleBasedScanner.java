@@ -1,6 +1,6 @@
 // ============================================================================
 //
-// Copyright (C) 2006-2018 Talend Inc. - www.talend.com
+// Copyright (C) 2006-2019 Talend Inc. - www.talend.com
 //
 // This source code is available under agreement available at
 // %InstallDIR%\features\org.talend.rcp.branding.%PRODUCTNAME%\%PRODUCTNAME%license.txt
@@ -21,9 +21,9 @@ import org.eclipse.jface.text.rules.Token;
 
 /**
  * DOC nrousseau class global comment. Detailled comment <br/>
- * 
+ *
  * $Id: StringRuleBasedScanner.java 7038 2007-11-15 14:05:48Z plegall $
- * 
+ *
  */
 public class StringRuleBasedScanner implements ICharacterScanner, IStringTokenScanner {
 
@@ -63,7 +63,7 @@ public class StringRuleBasedScanner implements ICharacterScanner, IStringTokenSc
 
     /**
      * Configures the scanner with the given sequence of rules.
-     * 
+     *
      * @param rules the sequence of rules controlling this scanner
      */
     public void setRules(IRule[] rules) {
@@ -78,7 +78,7 @@ public class StringRuleBasedScanner implements ICharacterScanner, IStringTokenSc
     /**
      * Configures the scanner's default return token. This is the token which is returned when non of the rules fired
      * and EOF has not been reached.
-     * 
+     *
      * @param defaultReturnToken the default return token
      * @since 2.0
      */
@@ -89,16 +89,16 @@ public class StringRuleBasedScanner implements ICharacterScanner, IStringTokenSc
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see org.eclipse.jface.text.rules.ICharacterScanner#getColumn()
      */
     public int getColumn() {
         /*
          * if (fColumn == UNDEFINED) { try { int line= fDocument.getLineOfOffset(fOffset); int start=
          * fDocument.getLineOffset(line);
-         * 
+         *
          * fColumn= fOffset - start; } catch (BadLocationException ex) { } }
-         * 
+         *
          * return fColumn;
          */
         return UNDEFINED;
@@ -106,7 +106,7 @@ public class StringRuleBasedScanner implements ICharacterScanner, IStringTokenSc
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see org.eclipse.jface.text.rules.ICharacterScanner#getLegalLineDelimiters()
      */
     public char[][] getLegalLineDelimiters() {
@@ -115,7 +115,7 @@ public class StringRuleBasedScanner implements ICharacterScanner, IStringTokenSc
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see org.eclipse.jface.text.rules.ICharacterScanner#read()
      */
     public int read() {
@@ -138,7 +138,7 @@ public class StringRuleBasedScanner implements ICharacterScanner, IStringTokenSc
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see org.eclipse.jface.text.rules.ICharacterScanner#unread()
      */
     public void unread() {
@@ -147,7 +147,7 @@ public class StringRuleBasedScanner implements ICharacterScanner, IStringTokenSc
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see org.talend.commons.utils.data.text.rules.IStringTokenScanner#getTokenLength()
      */
     public int getTokenLength() {
@@ -159,7 +159,7 @@ public class StringRuleBasedScanner implements ICharacterScanner, IStringTokenSc
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see org.talend.commons.utils.data.text.rules.IStringTokenScanner#getTokenOffset()
      */
     public int getTokenOffset() {
@@ -168,7 +168,7 @@ public class StringRuleBasedScanner implements ICharacterScanner, IStringTokenSc
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see org.talend.commons.utils.data.text.rules.IStringTokenScanner#nextToken()
      */
     public IToken nextToken() {
@@ -192,7 +192,7 @@ public class StringRuleBasedScanner implements ICharacterScanner, IStringTokenSc
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see org.talend.commons.utils.data.text.rules.IStringTokenScanner#setRange(java.lang.String, int, int)
      */
     public void setRange(String text, int offset, int length) {

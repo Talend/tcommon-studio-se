@@ -1,6 +1,6 @@
 // ============================================================================
 //
-// Copyright (C) 2006-2018 Talend Inc. - www.talend.com
+// Copyright (C) 2006-2019 Talend Inc. - www.talend.com
 //
 // This source code is available under agreement available at
 // %InstallDIR%\features\org.talend.rcp.branding.%PRODUCTNAME%\%PRODUCTNAME%license.txt
@@ -22,7 +22,7 @@ import org.eclipse.draw2d.geometry.Rectangle;
 /**
  * Class implementing a list of <code>PrecisionPoint</code> similarly to
  * <code>PointList</code> class.
- * 
+ *
  * @author aboyko
  *
  */
@@ -34,7 +34,7 @@ public class PrecisionPointList extends PointList {
 
     static final long serialVersionUID = 1;
 
-    /** 
+    /**
      * Constructs an empty PrecisionPointList.
      */
     public PrecisionPointList() { }
@@ -48,15 +48,15 @@ public class PrecisionPointList extends PointList {
         this.size = points.length / 2;
     }
 
-    /** 
+    /**
      * Constructs a PrecisionPointList with initial capacity <i>size</i>, but no points.
-     * 
+     *
      * @param size  Number of points to hold.
      */
     public PrecisionPointList(int size) {
         points = new double[size * 2];
     }
-    
+
     public PrecisionPointList(PointList pointList) {
         this();
         addAll(pointList);
@@ -71,7 +71,7 @@ public class PrecisionPointList extends PointList {
         System.arraycopy(source.points, 0, points, size * 2, source.size * 2);
         size += source.size;
     }
-    
+
     /* (non-Javadoc)
      * @see org.eclipse.draw2d.geometry.PointList#addAll(org.eclipse.draw2d.geometry.PointList)
      */
@@ -84,7 +84,7 @@ public class PrecisionPointList extends PointList {
             addPoint(source.getPoint(i));
         }
     }
-        
+
     /* (non-Javadoc)
      * @see org.eclipse.draw2d.geometry.PointList#addPoint(org.eclipse.draw2d.geometry.Point)
      */
@@ -96,8 +96,8 @@ public class PrecisionPointList extends PointList {
             addPrecisionPoint(p.preciseX(), p.preciseY());
         }
     }
-    
-    /** 
+
+    /**
      * Adds the input point values to this PointList.
      * @param x  X value of a point to add
      * @param y  Y value of a point to add
@@ -216,7 +216,7 @@ public class PrecisionPointList extends PointList {
         points = new double[length + 2];
         System.arraycopy(old, 0, points, 0, index);
         System.arraycopy(old, index, points, index + 2, length - index);
-        
+
         if (p instanceof PrecisionPoint) {
             PrecisionPoint precisionPt = (PrecisionPoint)p;
             points[index] = precisionPt.preciseX;
@@ -266,7 +266,7 @@ public class PrecisionPointList extends PointList {
             throw new IndexOutOfBoundsException(
                 "Index: " + index + //$NON-NLS-1$
                 ", Size: " + size); //$NON-NLS-1$
-            
+
         index *= 2;
         PrecisionPoint pt = new PrecisionPoint(points[index], points[index + 1]);
         if (index != size * 2 - 2)
@@ -331,10 +331,10 @@ public class PrecisionPointList extends PointList {
         return size;
     }
 
-    /** 
+    /**
      * Returns the contents of this PrecisionPointList as a double array.  The returned array is by
      * reference.  Any changes made to the array will also be changing the original PrecisionPointList.
-     * 
+     *
      * @return the integer array of points by reference
      */
     public double[] toDoubleArray() {
@@ -345,7 +345,7 @@ public class PrecisionPointList extends PointList {
         }
         return points;
     }
-    
+
     /* (non-Javadoc)
      * @see org.eclipse.draw2d.geometry.PointList#toIntArray()
      */
@@ -387,5 +387,5 @@ public class PrecisionPointList extends PointList {
             points[i + 1] = temp;
         }
     }
-    
+
 }

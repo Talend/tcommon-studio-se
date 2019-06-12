@@ -1,6 +1,6 @@
 // ============================================================================
 //
-// Copyright (C) 2006-2018 Talend Inc. - www.talend.com
+// Copyright (C) 2006-2019 Talend Inc. - www.talend.com
 //
 // This source code is available under agreement available at
 // %InstallDIR%\features\org.talend.rcp.branding.%PRODUCTNAME%\%PRODUCTNAME%license.txt
@@ -19,9 +19,9 @@ import org.talend.core.model.properties.User;
 
 /**
  * Defines a repository object, an object that can be stored in the repository. <br/>
- * 
+ *
  * $Id: IRepositoryObject.java 44053 2010-06-12 09:14:16Z nma $
- * 
+ *
  */
 public interface IRepositoryObject extends IRepositoryViewObject {
 

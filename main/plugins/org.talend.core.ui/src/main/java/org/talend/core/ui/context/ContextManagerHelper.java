@@ -1,6 +1,6 @@
 // ============================================================================
 //
-// Copyright (C) 2006-2018 Talend Inc. - www.talend.com
+// Copyright (C) 2006-2019 Talend Inc. - www.talend.com
 //
 // This source code is available under agreement available at
 // %InstallDIR%\features\org.talend.rcp.branding.%PRODUCTNAME%\%PRODUCTNAME%license.txt
@@ -178,7 +178,7 @@ public final class ContextManagerHelper {
 
     /**
      * get the ContextItem from the name.
-     * 
+     *
      * @deprecated by 13184
      */
     @Deprecated
@@ -197,9 +197,9 @@ public final class ContextManagerHelper {
     }
 
     /**
-     * 
+     *
      * ggu Comment method "getContextItemById".
-     * 
+     *
      * bug 13184
      */
     public ContextItem getContextItemById(String id) {
@@ -234,7 +234,7 @@ public final class ContextManagerHelper {
     public Object getParentContextItem(Object obj) {
         return getParentContextItem(obj, null);
     }
-    
+
     /**
      * get parent object of the object
      */
@@ -285,7 +285,7 @@ public final class ContextManagerHelper {
         }
         if (allContextItems == null) {
             allContextItems = new ArrayList<ContextItem>(getContextItems());
-        } 
+        }
         if (allContextItems != null) {
             if (obj instanceof ContextItem) {
                 return new HashSet(allContextItems);
@@ -316,7 +316,7 @@ public final class ContextManagerHelper {
         }
         return null;
     }
-    
+
     public Set getSiblingContextObject(Object obj) {
         return getSiblingContextObject(obj, null);
     }
@@ -332,9 +332,9 @@ public final class ContextManagerHelper {
     }
 
     /**
-     * 
+     *
      * DOC ggu Comment method "addContextParameterType".
-     * 
+     *
      * @param defaultContextParameterType
      */
     public void addContextParameterType(ContextParameterType defaultContextParameterType) {
@@ -350,9 +350,9 @@ public final class ContextManagerHelper {
     }
 
     /**
-     * 
+     *
      * ggu Comment method "existParameterForJob".
-     * 
+     *
      * check that the obj is existed in job context.
      */
     public boolean existParameterForJob(Object obj, List<ContextItem> allContextItems) {
@@ -374,15 +374,15 @@ public final class ContextManagerHelper {
         }
         return false;
     }
-    
+
     public boolean existParameterForJob(Object obj) {
         return existParameterForJob(obj, null);
     }
-    
+
     /**
-     * 
+     *
      * ggu Comment method "convertFormat".
-     * 
+     *
      * @param contextParameterType
      * @return
      */
@@ -433,9 +433,9 @@ public final class ContextManagerHelper {
     }
 
     /**
-     * 
+     *
      * ggu Comment method "changeContextOrder".
-     * 
+     *
      * order the context parameter
      */
     public static boolean changeContextOrder(TreeViewer viewer, IContextModelManager modelManager, boolean up) {
@@ -484,9 +484,9 @@ public final class ContextManagerHelper {
     }
 
     /**
-     * 
+     *
      * ggu Comment method "changeContextOrder".
-     * 
+     *
      * order the context parameter
      */
     public static boolean changeContextOrder(ISelection selObj, IContextModelManager modelManager, boolean up) {
@@ -529,7 +529,7 @@ public final class ContextManagerHelper {
     }
 
     /**
-     * 
+     *
      * revert selection according to parameter.
      */
     public static void revertTreeSelection(TreeViewer viewer, IContextParameter param) {
@@ -578,7 +578,7 @@ public final class ContextManagerHelper {
     }
 
     /**
-     * 
+     *
      * search before context parameter item.
      */
     public static IContextParameter getNearParameterBySelectionItem(final TreeViewer viewer) {
@@ -602,7 +602,7 @@ public final class ContextManagerHelper {
     }
 
     /**
-     * 
+     *
      * return the item of real context parameter.
      */
     private static IContextParameter searchNearItemParam(final TreeItem[] items, final TreeItem searchItem) {
@@ -669,9 +669,9 @@ public final class ContextManagerHelper {
     }
 
     /**
-     * 
+     *
      * ggu Comment method "checkAndSetDefaultValue".
-     * 
+     *
      * if value is null or empty. will return the undef value (bug 4420).
      */
     public static void checkAndSetDefaultValue(final IContextParameter param) {
@@ -712,7 +712,7 @@ public final class ContextManagerHelper {
 
     /**
      * DOC msjian Comment method "getContextView".
-     * 
+     *
      * @return
      */
     protected IViewPart getContextView() {

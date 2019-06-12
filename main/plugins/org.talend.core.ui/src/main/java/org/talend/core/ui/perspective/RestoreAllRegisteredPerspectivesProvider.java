@@ -1,6 +1,6 @@
 // ============================================================================
 //
-// Copyright (C) 2006-2018 Talend Inc. - www.talend.com
+// Copyright (C) 2006-2019 Talend Inc. - www.talend.com
 //
 // This source code is available under agreement available at
 // %InstallDIR%\features\org.talend.rcp.branding.%PRODUCTNAME%\%PRODUCTNAME%license.txt
@@ -59,7 +59,7 @@ import org.talend.core.ui.branding.IBrandingService;
 public class RestoreAllRegisteredPerspectivesProvider {
 
     /**
-     * 
+     *
      */
     private static final String FIRST_TIME_LAUNCH_PREF = "first.time.launch"; //$NON-NLS-1$
 
@@ -145,9 +145,9 @@ public class RestoreAllRegisteredPerspectivesProvider {
     }
 
     /**
-     * 
+     *
      * DOC ggu Comment method "restoreAlwaysVisiblePerspectives".
-     * 
+     *
      * Try to create the perspectives which are providered via extension point.
      */
     public void restoreAlwaysVisiblePerspectives() {
@@ -181,7 +181,7 @@ public class RestoreAllRegisteredPerspectivesProvider {
 
     /**
      * DOC sgandon Comment method "activateTheProperPerspective".
-     * 
+     *
      * @param mPerspStack, the stack to look for the perspecive to activate
      * @param initialSelectedPerspective, the perspective that was initialy selected
      */
@@ -228,12 +228,12 @@ public class RestoreAllRegisteredPerspectivesProvider {
     }
 
     /**
-     * 
+     *
      * DOC ggu Comment method "restorePerspective".
-     * 
+     *
      * try to find and create the perspective. if the existed custom perspective, will use the custom one. won't create
      * original one.
-     * 
+     *
      */
     protected void restorePerspective(MPerspectiveStack mPerspStack, String id) {
 

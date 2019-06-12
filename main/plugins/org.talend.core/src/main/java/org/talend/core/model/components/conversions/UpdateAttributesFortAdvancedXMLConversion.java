@@ -1,6 +1,6 @@
 // ============================================================================
 //
-// Copyright (C) 2006-2018 Talend Inc. - www.talend.com
+// Copyright (C) 2006-2019 Talend Inc. - www.talend.com
 //
 // This source code is available under agreement available at
 // %InstallDIR%\features\org.talend.rcp.branding.%PRODUCTNAME%\%PRODUCTNAME%license.txt
@@ -20,7 +20,7 @@ import org.talend.designer.core.model.utils.emf.talendfile.NodeType;
 
 /**
  * DOC s class global comment. Detailled comment <br/>
- * 
+ *
  * $Id: talend.epf 1 2007-10-25 17:06:40 +0000 xzhang $
  */
 public class UpdateAttributesFortAdvancedXMLConversion implements IComponentConversion {
@@ -56,7 +56,7 @@ public class UpdateAttributesFortAdvancedXMLConversion implements IComponentConv
 
     /**
      * DOC s Comment method "modifyAttribute".
-     * 
+     *
      * @param eleParaGroup
      * @param loopRootPath
      * @param path

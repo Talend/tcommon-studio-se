@@ -1,6 +1,6 @@
 // ============================================================================
 //
-// Copyright (C) 2006-2018 Talend Inc. - www.talend.com
+// Copyright (C) 2006-2019 Talend Inc. - www.talend.com
 //
 // This source code is available under agreement available at
 // %InstallDIR%\features\org.talend.rcp.branding.%PRODUCTNAME%\%PRODUCTNAME%license.txt
@@ -33,9 +33,9 @@ import org.talend.repository.model.IProxyRepositoryFactory;
 
 /**
  * The class is used for LDAP schema on Repository View. <br/>
- * 
+ *
  * @author ftang, 18/09/2007
- * 
+ *
  */
 public class LDAPSchemaWizardPage extends WizardPage {
 
@@ -55,7 +55,7 @@ public class LDAPSchemaWizardPage extends WizardPage {
 
     /**
      * DelimitedFileWizardPage constructor comment.
-     * 
+     *
      * @param step
      * @param connection
      * @param isRepositoryObjectEditable
@@ -72,7 +72,7 @@ public class LDAPSchemaWizardPage extends WizardPage {
     }
 
     /**
-     * 
+     *
      * @see IDialogPage#createControl(Composite)
      */
     public void createControl(final Composite parent) {

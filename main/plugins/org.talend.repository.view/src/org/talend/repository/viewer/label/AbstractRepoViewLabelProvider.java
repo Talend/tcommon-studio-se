@@ -1,6 +1,6 @@
 // ============================================================================
 //
-// Copyright (C) 2006-2018 Talend Inc. - www.talend.com
+// Copyright (C) 2006-2019 Talend Inc. - www.talend.com
 //
 // This source code is available under agreement available at
 // %InstallDIR%\features\org.talend.rcp.branding.%PRODUCTNAME%\%PRODUCTNAME%license.txt
@@ -114,7 +114,7 @@ public abstract class AbstractRepoViewLabelProvider extends LabelProvider implem
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see org.eclipse.jface.viewers.LabelProvider#getImage(java.lang.Object)
      */
     @Override
@@ -205,7 +205,7 @@ public abstract class AbstractRepoViewLabelProvider extends LabelProvider implem
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see org.eclipse.jface.viewers.LabelProvider#getText(java.lang.Object)
      */
     @Override

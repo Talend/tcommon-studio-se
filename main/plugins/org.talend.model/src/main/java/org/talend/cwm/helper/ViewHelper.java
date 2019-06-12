@@ -1,6 +1,6 @@
 // ============================================================================
 //
-// Copyright (C) 2006-2018 Talend Inc. - www.talend.com
+// Copyright (C) 2006-2019 Talend Inc. - www.talend.com
 //
 // This source code is available under agreement available at
 // %InstallDIR%\features\org.talend.rcp.branding.%PRODUCTNAME%\%PRODUCTNAME%license.txt
@@ -36,7 +36,7 @@ public final class ViewHelper {
 
     /**
      * Method "getColumns".
-     * 
+     *
      * @param view
      * @return the columns of the view
      */
@@ -46,7 +46,7 @@ public final class ViewHelper {
 
     /**
      * Method "getViews" extracts the views from the list.
-     * 
+     *
      * @param elements any elements that could contain TdView
      * @return the list of TdView found in the given list (never null, but can be empty).
      */

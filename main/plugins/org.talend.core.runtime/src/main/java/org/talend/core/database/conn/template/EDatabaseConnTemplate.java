@@ -1,6 +1,6 @@
 // ============================================================================
 //
-// Copyright (C) 2006-2018 Talend Inc. - www.talend.com
+// Copyright (C) 2006-2019 Talend Inc. - www.talend.com
 //
 // This source code is available under agreement available at
 // %InstallDIR%\features\org.talend.rcp.branding.%PRODUCTNAME%\%PRODUCTNAME%license.txt
@@ -67,17 +67,17 @@ public enum EDatabaseConnTemplate {
                      "1521")), //$NON-NLS-1$
 
     ORACLE_CUSTOM(new DbConnStr(EDatabaseTypeName.ORACLE_CUSTOM, //
-            "<host>")), //$NON-NLS-1$  
+            "<host>")), //$NON-NLS-1$
 
     ORACLE_OCI(new DbConnStr(EDatabaseTypeName.ORACLE_OCI, //
-            "jdbc:oracle:oci8:@<service_name>")), //$NON-NLS-1$    
-    
+            "jdbc:oracle:oci8:@<service_name>")), //$NON-NLS-1$
+
     MSSQL(new DbConnStrForMSSQL(EDatabaseTypeName.MSSQL, "jdbc:jtds:sqlserver://<host>:<port>/<sid>;<property>", //$NON-NLS-1$
             "1433", new EDatabaseVersion4Drivers[] { EDatabaseVersion4Drivers.MSSQL, EDatabaseVersion4Drivers.MSSQL_2012,
                     EDatabaseVersion4Drivers.MSSQL_PROP})),
     MSSQL05_08(new DbConnStr(EDatabaseTypeName.MSSQL05_08, //
             "jdbc:sqlserver://<host>:<port>;DatabaseName=<sid>", //$NON-NLS-1$
-            "1433")), //$NON-NLS-1$         
+            "1433")), //$NON-NLS-1$
 
     GODBC(new DbConnStr(EDatabaseTypeName.GODBC, //
             "jdbc:odbc:<datasource>")), //$NON-NLS-1$
@@ -90,7 +90,7 @@ public enum EDatabaseConnTemplate {
             "jackcessOpener=org.talend.ucanaccess.encrypt.CryptCodecOpener;memory=false")),
 
     SYBASEASE(new DbConnStr(EDatabaseTypeName.SYBASEASE, //
-            "jdbc:sybase:Tds:<host>:<port>/<sid>?<property>", //$NON-NLS-1$ 
+            "jdbc:sybase:Tds:<host>:<port>/<sid>?<property>", //$NON-NLS-1$
             "5001")), //$NON-NLS-1$
     SYBASEASE_16_SA(new DbConnStr(EDatabaseTypeName.SYBASEASE, //
             "jdbc:sqlanywhere:Host=<host>:<port>;DatabaseName=<sid>;<property>", //$NON-NLS-1$
@@ -205,14 +205,14 @@ public enum EDatabaseConnTemplate {
     //
     //    HIVE2_STANDALONE(new DbConnStr(EDatabaseTypeName.HIVE, "jdbc:hive2://<host>:<port>/<sid>")), //$NON-NLS-1$
 
-    IMPALA(new DbConnStr(EDatabaseTypeName.IMPALA, "jdbc:hive2://<host>:<port>/<sid>;auth=noSasl", //$NON-NLS-1$  
+    IMPALA(new DbConnStr(EDatabaseTypeName.IMPALA, "jdbc:hive2://<host>:<port>/<sid>;auth=noSasl", //$NON-NLS-1$
             "21050", null, null, "localhost", "default")), //$NON-NLS-1$
 
     HBASE(new DbConnStr(EDatabaseTypeName.HBASE, "127.0.0.1", //$NON-NLS-1$
             "2181")), //$NON-NLS-1$
 
     MAPRDB(new DbConnStr(EDatabaseTypeName.MAPRDB, "127.0.0.1", //$NON-NLS-1$
-            "5181")); //$NON-NLS-1$    
+            "5181")); //$NON-NLS-1$
 
     private DbConnStr connStr;
 
@@ -249,7 +249,7 @@ public enum EDatabaseConnTemplate {
     public String getDefaultServer(EDatabaseVersion4Drivers version) {
         return this.connStr.getDefaultServer(version);
     }
-    
+
     public String getDefaultDB(EDatabaseVersion4Drivers version) {
         return this.connStr.getDefaultDB(version);
     }
@@ -302,7 +302,7 @@ public enum EDatabaseConnTemplate {
     private static List<String> getDBTypes(boolean sort, boolean all, boolean display) {
         EDatabaseConnTemplate[] values = EDatabaseConnTemplate.values();
         List<String> databaseType = new ArrayList<String>();
-        
+
         List<ERepositoryObjectType> extraTypes = new ArrayList<ERepositoryObjectType>();
         IGenericDBService dbService = null;
         if (GlobalServiceRegister.getDefault().isServiceRegistered(IGenericDBService.class)) {
@@ -312,7 +312,7 @@ public enum EDatabaseConnTemplate {
         if(dbService != null){
             extraTypes.addAll(dbService.getExtraTypes());
         }
-        
+
         for(ERepositoryObjectType type : extraTypes){
             databaseType.add(type.getType());
         }

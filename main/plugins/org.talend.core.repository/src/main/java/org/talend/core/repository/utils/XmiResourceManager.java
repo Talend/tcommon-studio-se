@@ -1,6 +1,6 @@
 // ============================================================================
 //
-// Copyright (C) 2006-2018 Talend Inc. - www.talend.com
+// Copyright (C) 2006-2019 Talend Inc. - www.talend.com
 //
 // This source code is available under agreement available at
 // %InstallDIR%\features\org.talend.rcp.branding.%PRODUCTNAME%\%PRODUCTNAME%license.txt
@@ -76,9 +76,9 @@ import org.talend.repository.ProjectManager;
 
 /**
  * DOC mhelleboid class global comment. Detailled comment <br/>
- * 
+ *
  * $Id: XmiResourceManager.java 44692 2010-06-30 04:29:32Z nrousseau $
- * 
+ *
  */
 public class XmiResourceManager {
 
@@ -99,7 +99,7 @@ public class XmiResourceManager {
     }
 
     public void resetResourceSet() {
-        resourceSet = new TalendResourceSet();      
+        resourceSet = new TalendResourceSet();
         resourcesMap.clear();
         resourceSet.setURIResourceMap(resourcesMap);
 
@@ -197,9 +197,9 @@ public class XmiResourceManager {
     }
 
     /**
-     * 
+     *
      * DOC klliu Comment method "getFolderPath".
-     * 
+     *
      * @param project
      * @param repositoryObjectType
      * @param relativePath
@@ -496,7 +496,7 @@ public class XmiResourceManager {
                 if (item.isNeedVersion()) {
                     version = "_" + property.getVersion();
                 }
-                String itemStr = property.getLabel() + version + "." + FileConstants.PROPERTIES_EXTENSION; //$NON-NLS-1$ 
+                String itemStr = property.getLabel() + version + "." + FileConstants.PROPERTIES_EXTENSION; //$NON-NLS-1$
                 path = path.append(itemStr);
                 return URIHelper.convert(path);
             }
@@ -512,7 +512,7 @@ public class XmiResourceManager {
                 if (item.isNeedVersion()) {
                     version = "_" + property.getVersion();
                 }
-                String itemStr = property.getLabel() + version + "." + FileConstants.PROPERTIES_EXTENSION; //$NON-NLS-1$ 
+                String itemStr = property.getLabel() + version + "." + FileConstants.PROPERTIES_EXTENSION; //$NON-NLS-1$
                 fullPath = fullPath.append(itemStr);
             } else {
                 // mormally this should not happen
@@ -804,7 +804,7 @@ public class XmiResourceManager {
      * Copies the original screent shot of original item and writes into a new screen shot of new item. Before invoking
      * this method, client should make sure the items have screen shot. Like metadata item, context item and etc, they
      * have not screen shot. Added by Marvin Wang on Apr 15, 2013.
-     * 
+     *
      * @param originalItem process, joblet or m/r process
      * @param newItem process, joblet or m/r process
      * @throws IOException
@@ -885,7 +885,7 @@ public class XmiResourceManager {
 
     /**
      * Method "unloadResource" unload and remove the specification resource from the resource set. MOD mzhao
-     * 
+     *
      * @param uriString the uri sting of resource.
      */
     public void unloadResource(String uriString) {

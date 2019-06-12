@@ -1,6 +1,6 @@
 // ============================================================================
 //
-// Copyright (C) 2006-2018 Talend Inc. - www.talend.com
+// Copyright (C) 2006-2019 Talend Inc. - www.talend.com
 //
 // This source code is available under agreement available at
 // %InstallDIR%\features\org.talend.rcp.branding.%PRODUCTNAME%\%PRODUCTNAME%license.txt
@@ -62,15 +62,15 @@ import org.xml.sax.SAXException;
 
 /**
  * Load Metadata Talend Type from mappingMetadataTypes.xml. Talend Types available in the application
- * 
- * 
+ *
+ *
  * $Id: MetadataTalendType.java 38013 2010-03-05 14:21:59Z mhirt $
- * 
+ *
  */
 public final class MetadataTalendType {
 
     /**
-     * 
+     *
      */
     public static final String INTERNAL_MAPPINGS_FOLDER = "mappings"; //$NON-NLS-1$
 
@@ -127,7 +127,7 @@ public final class MetadataTalendType {
 
     /**
      * Get the Talend Type for a particular type of a particular database.
-     * 
+     *
      * @param type to map
      * @param dbms
      * @param reload, true if it's necessary to reload mapping from our repository
@@ -146,7 +146,7 @@ public final class MetadataTalendType {
 
     /**
      * Load dbms default type for a talend Type and a dbms.
-     * 
+     *
      * @param talendType
      * @param dbms
      * @param reload
@@ -165,7 +165,7 @@ public final class MetadataTalendType {
 
     /**
      * Load Talend Types available for a particular Database.
-     * 
+     *
      * @param dbms
      * @param reload
      * @return
@@ -190,7 +190,7 @@ public final class MetadataTalendType {
 
     /**
      * Load Database Types available.
-     * 
+     *
      * @param dbms
      * @param reload
      * @return
@@ -209,7 +209,7 @@ public final class MetadataTalendType {
 
     /**
      * initialisation of datas.
-     * 
+     *
      * @return
      * @throws SystemException
      * @deprecated.
@@ -268,7 +268,7 @@ public final class MetadataTalendType {
 
     /**
      * return an Array of String for a given Collection TO DO Move in utils.
-     * 
+     *
      * @param types
      * @return
      * @deprecated
@@ -282,7 +282,7 @@ public final class MetadataTalendType {
 
     /**
      * initialize if necessary or asked.
-     * 
+     *
      * @param dbms
      * @param reload
      * @throws SystemException
@@ -304,9 +304,9 @@ public final class MetadataTalendType {
     }
 
     /**
-     * 
+     *
      * Return the talend types function of the current language.
-     * 
+     *
      * @return
      */
     public static String[] getTalendTypesLabels() {
@@ -343,9 +343,9 @@ public final class MetadataTalendType {
     }
 
     /**
-     * 
+     *
      * Return array of Dbms which have the given product value.
-     * 
+     *
      * @param product
      * @return array of Dbms which have the given product value
      */
@@ -398,9 +398,9 @@ public final class MetadataTalendType {
     }
 
     /**
-     * 
+     *
      * Retrieve and return the dbms from the given id.
-     * 
+     *
      * @param dbmsId
      * @return the dbms from the given id
      */
@@ -434,7 +434,7 @@ public final class MetadataTalendType {
 
     /**
      * Retrievd the dbms from the given dbmsId and return db types from it.
-     * 
+     *
      * @param dbmsId
      * @return return db types from the dbms
      */
@@ -450,7 +450,7 @@ public final class MetadataTalendType {
         Arrays.sort(list);
         return list;
     }
-    
+
     public static URL getSystemForderURLOfMappingsFile() throws SystemException {
         String dirPath = "/" + INTERNAL_MAPPINGS_FOLDER; //$NON-NLS-1$
         URL url = null;
@@ -465,7 +465,7 @@ public final class MetadataTalendType {
         }
         return url;
     }
-    
+
     public static URL getProjectForderURLOfMappingsFile() throws SystemException {
         try {
             String dirPath = "/" + INTERNAL_MAPPINGS_FOLDER; //$NON-NLS-1$
@@ -487,9 +487,9 @@ public final class MetadataTalendType {
     }
 
     /**
-     * 
+     *
      * Load db types and mapping with the current activated language (Java, Perl, ...).
-     * 
+     *
      * @throws SystemException
      */
     public static void loadCommonMappings() throws SystemException {
@@ -508,7 +508,7 @@ public final class MetadataTalendType {
         }
 
     }
-    
+
     private static void loadMapping(File file) throws SystemException {
         MappingFileLoader mappingFileLoader = new MappingFileLoader();
         mappingFileLoader.load(file);
@@ -528,7 +528,7 @@ public final class MetadataTalendType {
 
     /**
      * Getter for codeLanguage.
-     * 
+     *
      * @return the codeLanguage
      */
     static ECodeLanguage getCodeLanguage() {
@@ -540,7 +540,7 @@ public final class MetadataTalendType {
 
     /**
      * Getter for dbmsSet.
-     * 
+     *
      * @return the dbmsSet
      */
     static Set<Dbms> getDbmsSet() {
@@ -549,7 +549,7 @@ public final class MetadataTalendType {
 
     /**
      * Create and return a MappingTypeRetriever which helps to retrieve dbType from a talendType or the contrary.
-     * 
+     *
      * @param dbmsId
      * @return new MappingTypeRetriever loaded with Dbms found with given dbmsId
      */
@@ -565,9 +565,9 @@ public final class MetadataTalendType {
     }
 
     /**
-     * 
+     *
      * Return the default Talend type function of the current language.
-     * 
+     *
      * @return the default Talend type function of the current language
      */
     public static String getDefaultTalendType() {
@@ -582,7 +582,7 @@ public final class MetadataTalendType {
 
     /**
      * Getter for pERL_TYPES.
-     * 
+     *
      * @return the pERL_TYPES
      */
     public static String[] getPerlTypes() {
@@ -630,7 +630,7 @@ public final class MetadataTalendType {
 
     /**
      * DOC xqliu Comment method "getMappingTypeProduct".
-     * 
+     *
      * @param product
      * @return
      */

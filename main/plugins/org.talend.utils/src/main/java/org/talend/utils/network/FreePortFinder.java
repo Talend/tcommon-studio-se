@@ -1,6 +1,6 @@
 // ============================================================================
 //
-// Copyright (C) 2006-2018 Talend Inc. - www.talend.com
+// Copyright (C) 2006-2019 Talend Inc. - www.talend.com
 //
 // This source code is available under agreement available at
 // %InstallDIR%\features\org.talend.rcp.branding.%PRODUCTNAME%\%PRODUCTNAME%license.txt
@@ -23,7 +23,7 @@ import org.apache.log4j.Logger;
 
 /**
  * DOC amaumont class global comment. Detailled comment <br/>
- * 
+ *
  */
 public class FreePortFinder {
 
@@ -35,7 +35,7 @@ public class FreePortFinder {
 
     /**
      * DOC amaumont FreePortFinder constructor comment.
-     * 
+     *
      * @throws IOException
      */
     public FreePortFinder() {
@@ -45,11 +45,11 @@ public class FreePortFinder {
     public static Set<String> busyPorts = Collections.synchronizedSet(new HashSet<String>());
 
     /**
-     * 
+     *
      * Return true if the specified port is free. This method is changed by Marvin Wang on Feb. 20 for bug TDI-19166. To
      * try to save all the ports that ever be searched. Make sure the port sent from here is free. If port is no longer
      * to use, remember to invoke the method {@link #removePort(int)} to remove the port.
-     * 
+     *
      * @param port
      * @return Return true if the specified port is free
      */
@@ -100,7 +100,7 @@ public class FreePortFinder {
      * needed. Because all assigned ports are kept in a set. Another case is when invoker calls the method
      * {@link #isPortFree(int)},port will be kept in the set, so if port is no longer to use, remember to invoke this
      * method.
-     * 
+     *
      * @param port
      */
     public void removePort(int port) {
@@ -114,9 +114,9 @@ public class FreePortFinder {
     }
 
     /**
-     * 
+     *
      * Return true if the specified port is free.
-     * 
+     *
      * @param port
      * @return
      */
@@ -132,11 +132,11 @@ public class FreePortFinder {
     }
 
     /**
-     * 
+     *
      * Search the next free port from <code>portRangeBound1</code> to max port <code>portRangeBound2</code> with
      * randomize start searching. If port is no longer to use, remember to invoke the method {@link #removePort(int)} to
      * remove the port.
-     * 
+     *
      * @param portRangeBound1
      * @param portRangeBound2
      * @return
@@ -146,10 +146,10 @@ public class FreePortFinder {
     }
 
     /**
-     * 
+     *
      * Search the next free port from <code>portRangeBound1</code> to max port <code>portRangeBound2</code>. If port is
      * no longer to use, remember to invoke the method {@link #removePort(int)} to remove the port.
-     * 
+     *
      * @param portRangeBound1
      * @param portRangeBound2
      * @param randomizeIndexStart if true, start with a randomized port number between <code>portRangeBound1</code> and

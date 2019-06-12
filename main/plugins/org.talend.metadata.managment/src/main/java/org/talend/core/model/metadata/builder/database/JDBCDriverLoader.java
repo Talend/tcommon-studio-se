@@ -1,6 +1,6 @@
 // ============================================================================
 //
-// Copyright (C) 2006-2018 Talend Inc. - www.talend.com
+// Copyright (C) 2006-2019 Talend Inc. - www.talend.com
 //
 // This source code is available under agreement available at
 // %InstallDIR%\features\org.talend.rcp.branding.%PRODUCTNAME%\%PRODUCTNAME%license.txt
@@ -35,7 +35,7 @@ import org.talend.utils.sql.ConnectionUtils;
 
 /**
  * DOC YeXiaowei class global comment. Detailled comment <br/>
- * 
+ *
  */
 public class JDBCDriverLoader {
 
@@ -47,7 +47,7 @@ public class JDBCDriverLoader {
      * Loads the jars for hive embedded mode required, I do not think it is the better method to do this here. Due to
      * the limitation on code structure, I have to write this method to load the jar required by Hive. If metadata
      * connection part is refactored, developer could adjust this method. Added by Marvin Wang on Oct 24, 2012.
-     * 
+     *
      * @param libraries
      * @param dbType
      * @param dbVersion
@@ -82,7 +82,7 @@ public class JDBCDriverLoader {
 
     /**
      * DOC msjian Comment method "getHotClassLoaderFromCache".
-     * 
+     *
      * @param dbType
      * @param dbVersion
      * @return
@@ -128,9 +128,9 @@ public class JDBCDriverLoader {
     }
 
     /**
-     * 
+     *
      * DOC YeXiaowei Comment method "getConnection".
-     * 
+     *
      * @param jarPath
      * @param driverClassName
      * @param url
@@ -213,7 +213,7 @@ public class JDBCDriverLoader {
 
     /**
      * Extract this method from getConnection(...) in this class.
-     * 
+     *
      * @param jarPath
      * @param dbType
      * @param dbVersion

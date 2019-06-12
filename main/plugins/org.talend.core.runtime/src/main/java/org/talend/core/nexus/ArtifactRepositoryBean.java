@@ -1,6 +1,6 @@
 // ============================================================================
 //
-// Copyright (C) 2006-2018 Talend Inc. - www.talend.com
+// Copyright (C) 2006-2019 Talend Inc. - www.talend.com
 //
 // This source code is available under agreement available at
 // %InstallDIR%\features\org.talend.rcp.branding.%PRODUCTNAME%\%PRODUCTNAME%license.txt
@@ -24,7 +24,7 @@ public class ArtifactRepositoryBean implements Cloneable {
     public static final String REPO3_MIDDLE_PATH = "/repository/";
     public static final String ARTIFACT_MIDDLE_PATH = "/artifactory/";
     public enum NexusType {
-        
+
         NEXUS_2("NEXUS", "http://localhost:8081/nexus/"),
         NEXUS_3("NEXUS 3", "http://localhost:8081/"),
         ARTIFACTORY("Artifactory", "http://localhost:8081/artifactory/");
@@ -62,7 +62,7 @@ public class ArtifactRepositoryBean implements Cloneable {
         public String getDefaultURL() {
             return defaultURL;
         }
-        
+
         public static String[] splitRepositoryUrl(String url, String repositoryType) {
             String nexusUrl = url;
             String repoId = "";
@@ -234,7 +234,7 @@ public class ArtifactRepositoryBean implements Cloneable {
 
     /**
      * Getter for type.
-     * 
+     *
      * @return the type
      */
     public String getType() {
@@ -243,7 +243,7 @@ public class ArtifactRepositoryBean implements Cloneable {
 
     /**
      * Sets the type.
-     * 
+     *
      * @param type the type to set
      */
     public void setType(String type) {
@@ -297,7 +297,7 @@ public class ArtifactRepositoryBean implements Cloneable {
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see java.lang.Object#equals(java.lang.Object)
      */
     @Override

@@ -5,8 +5,8 @@
   <copyright url="http://www.example.com/copyright">[Enter Copyright Description here.]</copyright>  
   <license url="http://www.example.com/license">[Enter License Description here.]</license>  
   <requires>
-    <!-- bonita requires org.codehaus.groovy version 2.4.16.xx-201812291959-e2018-12-RELEASE -->
-    <import plugin="org.codehaus.groovy" version="2.4.16.xx-201812291959-e2018-12-RELEASE" match="perfect"/>
+    <!-- bonita requires org.codehaus.groovy version 2.4.16.xx-201903290056-e1812-RELEASE -->
+    <import plugin="org.codehaus.groovy" version="2.4.16.xx-201903290056-e1812-RELEASE" match="perfect"/>
     <import plugin="org.eclipse.ant.launching" version="0.0.0" match="greaterOrEqual"/>
     <import plugin="org.eclipse.ant.ui" version="0.0.0" match="greaterOrEqual"/>
     <import plugin="org.eclipse.jdt" version="0.0.0" match="greaterOrEqual"/>

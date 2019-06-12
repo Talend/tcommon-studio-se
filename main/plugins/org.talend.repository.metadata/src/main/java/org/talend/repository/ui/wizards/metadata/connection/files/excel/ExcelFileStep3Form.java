@@ -1,6 +1,6 @@
 // ============================================================================
 //
-// Copyright (C) 2006-2018 Talend Inc. - www.talend.com
+// Copyright (C) 2006-2019 Talend Inc. - www.talend.com
 //
 // This source code is available under agreement available at
 // %InstallDIR%\features\org.talend.rcp.branding.%PRODUCTNAME%\%PRODUCTNAME%license.txt
@@ -69,7 +69,7 @@ import org.talend.repository.metadata.i18n.Messages;
 import org.talend.repository.metadata.ui.wizards.form.AbstractExcelFileStepForm;
 
 /**
- * 
+ *
  * DOC yexiaowei class global comment. Detailled comment
  */
 public class ExcelFileStep3Form extends AbstractExcelFileStepForm {
@@ -100,7 +100,7 @@ public class ExcelFileStep3Form extends AbstractExcelFileStepForm {
 
     /**
      * Constructor to use by RCP Wizard.
-     * 
+     *
      * @param Composite
      */
     public ExcelFileStep3Form(Composite parent, ConnectionItem connectionItem, MetadataTable metadataTable, String[] existingNames) {
@@ -125,7 +125,7 @@ public class ExcelFileStep3Form extends AbstractExcelFileStepForm {
     }
 
     /**
-     * 
+     *
      * Initialize value, forceFocus first field.
      */
     @Override
@@ -240,7 +240,7 @@ public class ExcelFileStep3Form extends AbstractExcelFileStepForm {
 
     /**
      * addButtonControls.
-     * 
+     *
      * @param cancelButton
      */
     @Override
@@ -296,10 +296,10 @@ public class ExcelFileStep3Form extends AbstractExcelFileStepForm {
 
     /**
      * create ProcessDescription and set it.
-     * 
+     *
      * WARNING ::field FieldSeparator, RowSeparator, EscapeChar and TextEnclosure are surround by double quote.
-     * 
-     * 
+     *
+     *
      * @return processDescription
      */
     private ProcessDescription getProcessDescription(FileExcelConnection originalValueConnection) {
@@ -422,10 +422,10 @@ public class ExcelFileStep3Form extends AbstractExcelFileStepForm {
                                 if (fields[i] != null && !("").equals(fields[i])) { //$NON-NLS-1$
                                     label[i] = fields[i].trim().replaceAll(" ", "_"); //$NON-NLS-1$ //$NON-NLS-2$
                                 } else {
-                                    label[i] = DEFAULT_LABEL + " " + i; //$NON-NLS-1$ 
+                                    label[i] = DEFAULT_LABEL + " " + i; //$NON-NLS-1$
                                 }
                             } else {
-                                label[i] = DEFAULT_LABEL + " " + i; //$NON-NLS-1$ 
+                                label[i] = DEFAULT_LABEL + " " + i; //$NON-NLS-1$
                             }
                         }
                     }
@@ -575,7 +575,7 @@ public class ExcelFileStep3Form extends AbstractExcelFileStepForm {
 
     /**
      * Ensures that fields are set. Update checkEnable / use to checkConnection().
-     * 
+     *
      * @return
      */
     @Override
@@ -606,7 +606,7 @@ public class ExcelFileStep3Form extends AbstractExcelFileStepForm {
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see org.eclipse.swt.widgets.Control#setVisible(boolean)
      */
     @Override

@@ -1,6 +1,6 @@
 // ============================================================================
 //
-// Copyright (C) 2006-2018 Talend Inc. - www.talend.com
+// Copyright (C) 2006-2019 Talend Inc. - www.talend.com
 //
 // This source code is available under agreement available at
 // %InstallDIR%\features\org.talend.rcp.branding.%PRODUCTNAME%\%PRODUCTNAME%license.txt
@@ -189,7 +189,7 @@ public class PomUtil {
 
     /**
      * main for the codes pom without version.
-     * 
+     *
      * get the pom name, if name is null, return default one "pom.xml", else will be "pom_<name>.xml"
      */
     public static String getPomFileName(String name) {
@@ -197,7 +197,7 @@ public class PomUtil {
     }
 
     /**
-     * 
+     *
      * get the pom name, if name is null, return default one "pom.xml", else will be "pom_<name>_<version>.xml"
      */
     public static String getPomFileName(String name, String version) {
@@ -229,9 +229,9 @@ public class PomUtil {
     }
 
     /**
-     * 
+     *
      * DOC ggu Comment method "getDefaultMavenVersion".
-     * 
+     *
      * @return 6.0.0, without classifier.
      */
     public static String getDefaultMavenVersion() {
@@ -248,9 +248,9 @@ public class PomUtil {
     }
 
     /**
-     * 
+     *
      * DOC ggu Comment method "checkParent". make sure the parent are unified.
-     * 
+     *
      * @param curModel
      * @param curPomFile
      */
@@ -292,7 +292,7 @@ public class PomUtil {
 
     /**
      * DOC ggu Comment method "createModuleSystemScopeDependency".
-     * 
+     *
      * @return
      */
     public static Dependency createDependency(String groupId, String artifactId, String version, String type, String classifier) {
@@ -331,9 +331,9 @@ public class PomUtil {
     }
 
     /**
-     * 
+     *
      * According to the process, generate the groud id, like org.talend.process.di.demo.
-     * 
+     *
      * @deprecated
      */
     @Deprecated
@@ -435,7 +435,7 @@ public class PomUtil {
     }
 
     /**
-     * 
+     *
      * Try to find the template files form the path which based on root container first. if not found, will try to find
      * in parent folder until root container.
      */
@@ -466,9 +466,9 @@ public class PomUtil {
     }
 
     /**
-     * 
+     *
      * Get artifact relative path
-     * 
+     *
      * @param artifact
      * @return
      */
@@ -512,7 +512,7 @@ public class PomUtil {
 
     /**
      * Get absolute path for installed artifact
-     * 
+     *
      * @param artifact
      * @return installed artifact absolute path , it will return null if artifact is not installed.
      */
@@ -650,9 +650,9 @@ public class PomUtil {
     }
 
     /**
-     * 
+     *
      * Create pom without refresh eclipse resources
-     * 
+     *
      * @param artifact
      * @return
      */
@@ -672,7 +672,7 @@ public class PomUtil {
     }
 
     /**
-     * 
+     *
      * in order to make sure no compile error for editor, so add all needed dependencies always.
      */
     public static Collection<Dependency> getCodesDependencies(IFile projectPomFile, String projectTechName) throws CoreException {
@@ -850,10 +850,10 @@ public class PomUtil {
     }
 
     /**
-     * 
+     *
      * DOC wchen Comment : when build job with subjob loop dependecies , all source code will be generated in main job
      * and the pom of main will remove subjob in dependency but add all dependencies from child pom
-     * 
+     *
      * @param mainJobPom
      * @param childJobPoms
      * @param childJobRUL
@@ -940,7 +940,7 @@ public class PomUtil {
         savePom(monitor, jobletModel, jobletPomFile);
 
     }
-    
+
     private static List<Relation> getAllChildItemRelations(Property property, String itemType) {
         List<Relation> itemsRelatedTo = new ArrayList<>();
         itemsRelatedTo

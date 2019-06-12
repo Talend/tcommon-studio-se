@@ -1,6 +1,6 @@
 // ============================================================================
 //
-// Copyright (C) 2006-2018 Talend Inc. - www.talend.com
+// Copyright (C) 2006-2019 Talend Inc. - www.talend.com
 //
 // This source code is available under agreement available at
 // %InstallDIR%\features\org.talend.rcp.branding.%PRODUCTNAME%\%PRODUCTNAME%license.txt
@@ -31,9 +31,9 @@ import org.talend.utils.json.JSONObject;
 
 /**
  * Used to store connections / users for the login dialog <br/>
- * 
+ *
  * $Id: PreferenceManipulator.java 44184 2010-06-17 04:01:35Z cli $
- * 
+ *
  */
 public final class PreferenceManipulator implements ITalendCorePrefConstants {
 
@@ -50,7 +50,7 @@ public final class PreferenceManipulator implements ITalendCorePrefConstants {
 
     /**
      * Constructs a new PreferenceManipulator.
-     * 
+     *
      * @param store The preference store manipulated.
      * @deprecated The preferences are only used to store specific connections, so will be forced to a specific
      * preference store, no matter the parameter
@@ -63,7 +63,7 @@ public final class PreferenceManipulator implements ITalendCorePrefConstants {
 
     /**
      * Constructs a new PreferenceManipulator.
-     * 
+     *
      * @param store The preference store manipulated.
      */
     public PreferenceManipulator() {
@@ -74,7 +74,7 @@ public final class PreferenceManipulator implements ITalendCorePrefConstants {
 
     /**
      * Read a string array in the preference store.
-     * 
+     *
      * @param prefName Name of the preference to be read.
      * @return an array of strings.
      */
@@ -113,7 +113,7 @@ public final class PreferenceManipulator implements ITalendCorePrefConstants {
 
     /**
      * Save a string array in the preference store.
-     * 
+     *
      * @param prefArray Preferences to be saved.
      * @param prefName Name of the preference to be saved.
      */
@@ -136,7 +136,7 @@ public final class PreferenceManipulator implements ITalendCorePrefConstants {
 
     /**
      * Add a string to an array preference.
-     * 
+     *
      * @param s String to be added.
      * @param prefName Name of the preference to add.
      */
@@ -195,7 +195,7 @@ public final class PreferenceManipulator implements ITalendCorePrefConstants {
 
     /**
      * Read all known users in the preference store.
-     * 
+     *
      * @return all known users.
      */
     public String[] readUsers() {
@@ -204,7 +204,7 @@ public final class PreferenceManipulator implements ITalendCorePrefConstants {
 
     /**
      * Save all known users in the preference store.
-     * 
+     *
      * @param users all known users.
      */
     public void saveUsers(String[] users) {
@@ -292,7 +292,7 @@ public final class PreferenceManipulator implements ITalendCorePrefConstants {
     }
 
     /**
-     * 
+     *
      * DOC ggu Comment method "save".
      */
     public void save() {
@@ -336,7 +336,7 @@ public final class PreferenceManipulator implements ITalendCorePrefConstants {
         store.setValue(hexKey, json.toString());
         save();
     }
-    
+
     public void setAllLocalRefBranchSetting(JSONObject allBranchSetting) {
         if (allBranchSetting == null) {
             allBranchSetting = new JSONObject();

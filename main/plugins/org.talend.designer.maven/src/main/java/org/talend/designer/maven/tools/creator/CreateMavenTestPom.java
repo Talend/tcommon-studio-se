@@ -1,6 +1,6 @@
 // ============================================================================
 //
-// Copyright (C) 2006-2018 Talend Inc. - www.talend.com
+// Copyright (C) 2006-2019 Talend Inc. - www.talend.com
 //
 // This source code is available under agreement available at
 // %InstallDIR%\features\org.talend.rcp.branding.%PRODUCTNAME%\%PRODUCTNAME%license.txt
@@ -24,7 +24,7 @@ public class CreateMavenTestPom extends CreateMavenJobPom {
     public CreateMavenTestPom(IProcessor jobProcessor, IFile pomFile) {
         super(jobProcessor, pomFile);
     }
-    
+
     @Deprecated
     public CreateMavenTestPom(IProcessor jobProcessor, IFile pomFile, String pomTestRouteTemplateFileName) {
         super(jobProcessor, pomFile);

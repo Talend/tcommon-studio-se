@@ -1,6 +1,6 @@
 // ============================================================================
 //
-// Copyright (C) 2006-2018 Talend Inc. - www.talend.com
+// Copyright (C) 2006-2019 Talend Inc. - www.talend.com
 //
 // This source code is available under agreement available at
 // %InstallDIR%\features\org.talend.rcp.branding.%PRODUCTNAME%\%PRODUCTNAME%license.txt
@@ -481,7 +481,7 @@ public class FeaturesManager {
 
         /**
          * Start with 0
-         * 
+         *
          * @return
          */
         public int getCurrentPage() {
@@ -490,7 +490,7 @@ public class FeaturesManager {
 
         /**
          * Start with 0
-         * 
+         *
          * @param currentPage
          */
         public void setCurrentPage(int currentPage) {

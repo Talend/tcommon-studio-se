@@ -1,6 +1,6 @@
 // ============================================================================
 //
-// Copyright (C) 2006-2018 Talend Inc. - www.talend.com
+// Copyright (C) 2006-2019 Talend Inc. - www.talend.com
 //
 // This source code is available under agreement available at
 // %InstallDIR%\features\org.talend.rcp.branding.%PRODUCTNAME%\%PRODUCTNAME%license.txt
@@ -126,7 +126,7 @@ public abstract class RepositoryWorkUnit<T> {
 
     /**
      * Getter for avoidUnloadResources.
-     * 
+     *
      * @return the avoidUnloadResources
      */
     public boolean isAvoidUnloadResources() {
@@ -135,7 +135,7 @@ public abstract class RepositoryWorkUnit<T> {
 
     /**
      * Sets the avoidUnloadResources.
-     * 
+     *
      * @param avoidUnloadResources the avoidUnloadResources to set
      */
     public void setAvoidUnloadResources(boolean avoidUnloadResources) {
@@ -152,7 +152,7 @@ public abstract class RepositoryWorkUnit<T> {
 
     /**
      * Getter for avoidSvnUpdate.
-     * 
+     *
      * @return the avoidSvnUpdate
      */
     public boolean isAvoidSvnUpdate() {
@@ -161,7 +161,7 @@ public abstract class RepositoryWorkUnit<T> {
 
     /**
      * Sets the avoidSvnUpdate.
-     * 
+     *
      * @param avoidSvnUpdate the avoidSvnUpdate to set
      */
     public void setAvoidSvnUpdate(boolean avoidSvnUpdate) {
@@ -170,7 +170,7 @@ public abstract class RepositoryWorkUnit<T> {
 
     /**
      * Getter for filesModifiedOutsideOfRWU.
-     * 
+     *
      * @return the filesModifiedOutsideOfRWU
      */
     public boolean isFilesModifiedOutsideOfRWU() {
@@ -179,7 +179,7 @@ public abstract class RepositoryWorkUnit<T> {
 
     /**
      * Sets the filesModifiedOutsideOfRWU.
-     * 
+     *
      * @param filesModifiedOutsideOfRWU the filesModifiedOutsideOfRWU to set
      */
     public void setFilesModifiedOutsideOfRWU(boolean filesModifiedOutsideOfRWU) {
@@ -194,7 +194,7 @@ public abstract class RepositoryWorkUnit<T> {
         this.refreshRepository = refreshRepository;
     }
 
-    
+
     /**
      * Getter for avoidUpdateLocks.
      * @return the avoidUpdateLocks
@@ -203,7 +203,7 @@ public abstract class RepositoryWorkUnit<T> {
         return this.avoidUpdateLocks;
     }
 
-    
+
     /**
      * Sets the avoidUpdateLocks.
      * @param avoidUpdateLocks the avoidUpdateLocks to set

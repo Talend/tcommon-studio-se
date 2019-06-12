@@ -1,6 +1,6 @@
 // ============================================================================
 //
-// Copyright (C) 2006-2018 Talend Inc. - www.talend.com
+// Copyright (C) 2006-2019 Talend Inc. - www.talend.com
 //
 // This source code is available under agreement available at
 // %InstallDIR%\features\org.talend.rcp.branding.%PRODUCTNAME%\%PRODUCTNAME%license.txt
@@ -69,9 +69,9 @@ import com.ca.directory.jxplorer.broker.JNDIBroker.DataConnectionQuery;
 
 /**
  * The class is used for LDAP schema on Repository View. <br/>
- * 
+ *
  * @author ftang, 18/09/2007
- * 
+ *
  */
 public class LDAPSchemaStep3Form extends AbstractLDAPSchemaStepForm implements IRefreshable {
 
@@ -116,7 +116,7 @@ public class LDAPSchemaStep3Form extends AbstractLDAPSchemaStepForm implements I
 
     /**
      * Constructor to use by RCP Wizard.
-     * 
+     *
      * @param Composite
      * @param Wizard
      * @param Style
@@ -129,7 +129,7 @@ public class LDAPSchemaStep3Form extends AbstractLDAPSchemaStepForm implements I
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see org.talend.repository.ui.swt.utils.AbstractForm#adaptFormToReadOnly()
      */
     @Override
@@ -139,7 +139,7 @@ public class LDAPSchemaStep3Form extends AbstractLDAPSchemaStepForm implements I
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see org.talend.repository.ui.swt.utils.AbstractForm#addFields()
      */
     @Override
@@ -162,7 +162,7 @@ public class LDAPSchemaStep3Form extends AbstractLDAPSchemaStepForm implements I
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see org.talend.repository.ui.swt.utils.AbstractForm#addFieldsListeners()
      */
     @Override
@@ -183,7 +183,7 @@ public class LDAPSchemaStep3Form extends AbstractLDAPSchemaStepForm implements I
 
     /**
      * addButtonControls.
-     * 
+     *
      * @param cancelButton
      */
     @Override
@@ -232,7 +232,7 @@ public class LDAPSchemaStep3Form extends AbstractLDAPSchemaStepForm implements I
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see org.talend.repository.ui.swt.utils.AbstractForm#checkFieldsValue()
      */
     @Override
@@ -244,7 +244,7 @@ public class LDAPSchemaStep3Form extends AbstractLDAPSchemaStepForm implements I
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see org.talend.repository.ui.swt.utils.AbstractForm#initialize()
      */
     @Override
@@ -261,7 +261,7 @@ public class LDAPSchemaStep3Form extends AbstractLDAPSchemaStepForm implements I
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see org.talend.repository.ui.swt.utils.IRefreshable#refresh()
      */
     @Override
@@ -271,9 +271,9 @@ public class LDAPSchemaStep3Form extends AbstractLDAPSchemaStepForm implements I
 
     /**
      * Subclass of SWTUIThreadProcessor to process the preview event. <br/>
-     * 
+     *
      * $Id: DelimitedFileStep2Form.java 4837 2007-07-27 05:40:31Z bqian $
-     * 
+     *
      */
     class PreviewProcessor extends SWTUIThreadProcessor {
 
@@ -405,12 +405,12 @@ public class LDAPSchemaStep3Form extends AbstractLDAPSchemaStepForm implements I
     }
 
     /**
-     * 
+     *
      * addGroupAttributes.
      */
     /**
      * DOC Administrator Comment method "addGroupAttributes".
-     * 
+     *
      * @param mainComposite
      * @param width
      * @param height
@@ -425,7 +425,7 @@ public class LDAPSchemaStep3Form extends AbstractLDAPSchemaStepForm implements I
 
             /*
              * (non-Javadoc)
-             * 
+             *
              * @see
              * org.talend.commons.ui.swt.extended.macrotable.AbstractExtendedTableViewer#setTableViewerCreatorOptions
              * (org.talend.commons.ui.swt.tableviewer.TableViewerCreator)
@@ -506,7 +506,7 @@ public class LDAPSchemaStep3Form extends AbstractLDAPSchemaStepForm implements I
 
     /**
      * add Field to Group File Viewer.
-     * 
+     *
      * @param parent
      * @param form
      * @param width
@@ -559,7 +559,7 @@ public class LDAPSchemaStep3Form extends AbstractLDAPSchemaStepForm implements I
 
     /**
      * add field to Group Limit.
-     * 
+     *
      * @param mainComposite
      * @param form
      * @param width
@@ -586,7 +586,7 @@ public class LDAPSchemaStep3Form extends AbstractLDAPSchemaStepForm implements I
 
     /**
      * populateLDAPSchemaAttributes method to populate the Table of Attributes to read the ldap schema
-     * 
+     *
      */
     protected void populateLDAPSchemaAttributes() {
 
@@ -608,11 +608,11 @@ public class LDAPSchemaStep3Form extends AbstractLDAPSchemaStepForm implements I
     }
 
     /**
-     * 
+     *
      * qli comment the method "getSchema".
-     * 
+     *
      * @param talendLDAPConnection
-     * 
+     *
      * */
     private SchemaOps getSchema(LDAPSchemaConnection talendLDAPConnection) {
         if (talendLDAPConnection == null) {
@@ -667,11 +667,11 @@ public class LDAPSchemaStep3Form extends AbstractLDAPSchemaStepForm implements I
     }
 
     /**
-     * 
+     *
      * qli comment the method "getURL".
-     * 
+     *
      * @param host, portString
-     * 
+     *
      * */
     private String getURL(String host, String portString) throws NumberFormatException, URISyntaxException {
 
@@ -713,11 +713,11 @@ public class LDAPSchemaStep3Form extends AbstractLDAPSchemaStepForm implements I
 
     /**
      * create ProcessDescription and set it.
-     * 
+     *
      * WARNING ::field FieldSeparator, RowSeparator, EscapeChar and TextEnclosure are surround by double quote.
-     * 
+     *
      * @param getConnection()
-     * 
+     *
      * @return processDescription
      */
     private ProcessDescription getProcessDescription() {
@@ -728,7 +728,7 @@ public class LDAPSchemaStep3Form extends AbstractLDAPSchemaStepForm implements I
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see org.eclipse.swt.widgets.Control#setVisible(boolean)
      */
     @Override
@@ -766,7 +766,7 @@ public class LDAPSchemaStep3Form extends AbstractLDAPSchemaStepForm implements I
 
     /**
      * checkTheRightAttributes.
-     * 
+     *
      * @param getConnection().getValue() Checked Attribute Checked in EMF model
      */
     protected void checkTheRightAttributes(List<String> attribute) {

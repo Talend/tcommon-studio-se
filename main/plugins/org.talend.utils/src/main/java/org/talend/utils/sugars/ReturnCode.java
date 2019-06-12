@@ -1,6 +1,6 @@
 // ============================================================================
 //
-// Copyright (C) 2006-2018 Talend Inc. - www.talend.com
+// Copyright (C) 2006-2019 Talend Inc. - www.talend.com
 //
 // This source code is available under agreement available at
 // %InstallDIR%\features\org.talend.rcp.branding.%PRODUCTNAME%\%PRODUCTNAME%license.txt
@@ -14,7 +14,7 @@ package org.talend.utils.sugars;
 
 /**
  * @author scorreia
- * 
+ *
  * This class can be used when one wants to return more than a simple boolean in a method.
  */
 public class ReturnCode {
@@ -25,7 +25,7 @@ public class ReturnCode {
 
     /**
      * ReturnCode constructor.
-     * 
+     *
      * @param mess the message to return
      * @param retCode the boolean to return
      */
@@ -44,7 +44,7 @@ public class ReturnCode {
 
     /**
      * ReturnCode constructor. Message is set to null.
-     * 
+     *
      * @param isOk the return boolean by default.
      */
     public ReturnCode(Boolean isOk) {
@@ -54,7 +54,7 @@ public class ReturnCode {
 
     /**
      * Method "setReturnCode" set the message and return code in one call.
-     * 
+     *
      * @param mess
      * @param retCode
      */
@@ -65,7 +65,7 @@ public class ReturnCode {
 
     /**
      * Getter for ok.
-     * 
+     *
      * @return the ok
      */
     public Boolean isOk() {
@@ -74,7 +74,7 @@ public class ReturnCode {
 
     /**
      * Sets the ok.
-     * 
+     *
      * @param ok the ok to set
      */
     public void setOk(Boolean ok) {
@@ -83,7 +83,7 @@ public class ReturnCode {
 
     /**
      * Getter for message.
-     * 
+     *
      * @return the message
      */
     public String getMessage() {
@@ -92,7 +92,7 @@ public class ReturnCode {
 
     /**
      * Sets the message.
-     * 
+     *
      * @param message the message to set
      */
     public void setMessage(String message) {

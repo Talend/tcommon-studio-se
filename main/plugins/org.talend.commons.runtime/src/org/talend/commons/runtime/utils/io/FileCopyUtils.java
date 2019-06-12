@@ -1,6 +1,6 @@
 // ============================================================================
 //
-// Copyright (C) 2006-2018 Talend Inc. - www.talend.com
+// Copyright (C) 2006-2019 Talend Inc. - www.talend.com
 //
 // This source code is available under agreement available at
 // %InstallDIR%\features\org.talend.rcp.branding.%PRODUCTNAME%\%PRODUCTNAME%license.txt
@@ -23,20 +23,20 @@ import org.talend.commons.exception.ExceptionHandler;
 
 /**
  * This class is used for copying file from one place to the other.
- * 
+ *
  * $Id: CopyFileUtils.java 2007-3-9,下午07:28:36 ftang $
- * 
+ *
  */
 public class FileCopyUtils {
 
     /**
-     * 
+     *
      */
     private static final int COPY_BUF_SIZE = 512;
 
     /**
      * This method is used for coping file from one place to the other.
-     * 
+     *
      * @param srcFilePath
      * @param destFilePath
      * @throws Exception
@@ -51,7 +51,7 @@ public class FileCopyUtils {
 
     /**
      * This method is used for coping file from one place to the other.
-     * 
+     *
      * @param srcFilePath
      * @param destFilePath
      * @throws IOException
@@ -76,7 +76,7 @@ public class FileCopyUtils {
 
     /**
      * copy is to os.
-     * 
+     *
      * @param is
      * @param os
      * @throws IOException thrown if copy fails

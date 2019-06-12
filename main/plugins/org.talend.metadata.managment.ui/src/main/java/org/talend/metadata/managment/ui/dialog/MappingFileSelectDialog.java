@@ -1,6 +1,6 @@
 // ============================================================================
 //
-// Copyright (C) 2006-2018 Talend Inc. - www.talend.com
+// Copyright (C) 2006-2019 Talend Inc. - www.talend.com
 //
 // This source code is available under agreement available at
 // %InstallDIR%\features\org.talend.rcp.branding.%PRODUCTNAME%\%PRODUCTNAME%license.txt
@@ -26,7 +26,7 @@ import org.talend.metadata.managment.ui.i18n.Messages;
 
 /**
  * DOC YeXiaowei class global comment. Detailled comment <br/>
- * 
+ *
  */
 public class MappingFileSelectDialog extends TitleAreaDialog {
 
@@ -36,7 +36,7 @@ public class MappingFileSelectDialog extends TitleAreaDialog {
 
     /**
      * DOC YeXiaowei MappingFileSelectDialog constructor comment.
-     * 
+     *
      * @param parentShell
      */
     public MappingFileSelectDialog(Shell parentShell) {
@@ -45,7 +45,7 @@ public class MappingFileSelectDialog extends TitleAreaDialog {
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see org.eclipse.jface.dialogs.TitleAreaDialog#createDialogArea(org.eclipse.swt.widgets.Composite)
      */
     @Override
@@ -70,7 +70,7 @@ public class MappingFileSelectDialog extends TitleAreaDialog {
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see org.eclipse.jface.window.Window#configureShell(org.eclipse.swt.widgets.Shell)
      */
     @Override
@@ -81,7 +81,7 @@ public class MappingFileSelectDialog extends TitleAreaDialog {
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see org.eclipse.jface.dialogs.Dialog#okPressed()
      */
     @Override
@@ -97,7 +97,7 @@ public class MappingFileSelectDialog extends TitleAreaDialog {
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see org.eclipse.jface.dialogs.Dialog#createButtonsForButtonBar(org.eclipse.swt.widgets.Composite)
      */
     @Override
@@ -108,7 +108,7 @@ public class MappingFileSelectDialog extends TitleAreaDialog {
 
     /**
      * Getter for selectId.
-     * 
+     *
      * @return the selectId
      */
     public String getSelectId() {
@@ -117,7 +117,7 @@ public class MappingFileSelectDialog extends TitleAreaDialog {
 
     /**
      * Sets the selectId.
-     * 
+     *
      * @param selectId the selectId to set
      */
     public void setSelectId(String selectId) {

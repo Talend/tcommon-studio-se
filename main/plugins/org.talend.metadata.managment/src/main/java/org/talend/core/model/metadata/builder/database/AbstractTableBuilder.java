@@ -1,6 +1,6 @@
 // ============================================================================
 //
-// Copyright (C) 2006-2018 Talend Inc. - www.talend.com
+// Copyright (C) 2006-2019 Talend Inc. - www.talend.com
 //
 // This source code is available under agreement available at
 // %InstallDIR%\features\org.talend.rcp.branding.%PRODUCTNAME%\%PRODUCTNAME%license.txt
@@ -33,7 +33,7 @@ import orgomg.cwm.resource.relational.NamedColumnSet;
 
 /**
  * By default, no column is retrieved.
- * 
+ *
  * @param <T> the type of table to create (TdTable, TdView)
  */
 public abstract class AbstractTableBuilder<T extends NamedColumnSet> extends CwmBuilder {
@@ -54,7 +54,7 @@ public abstract class AbstractTableBuilder<T extends NamedColumnSet> extends Cwm
 
     /**
      * DOC scorreia AbstractTableBuilder constructor comment.
-     * 
+     *
      * @param conn
      * @param type the type of columnSet
      */
@@ -68,7 +68,7 @@ public abstract class AbstractTableBuilder<T extends NamedColumnSet> extends Cwm
 
     /**
      * Method "getColumnSets" returns tables or views. MOD xqliu 2009-04-27 bug 6507
-     * 
+     *
      * @param catalogName a catalog name; must match the catalog name as it is stored in the database; "" retrieves
      * those without a catalog; null means that the catalog name should not be used to narrow the search
      * @param schemaPattern a schema name pattern; must match the schema name as it is stored in the database; ""
@@ -105,7 +105,7 @@ public abstract class AbstractTableBuilder<T extends NamedColumnSet> extends Cwm
 
     /**
      * Method "isColumnsRequested".
-     * 
+     *
      * @return true if columns loading from database has been requested.
      */
     public boolean isColumnsRequested() {
@@ -114,7 +114,7 @@ public abstract class AbstractTableBuilder<T extends NamedColumnSet> extends Cwm
 
     /**
      * Method "setColumnsRequested".
-     * 
+     *
      * @param columnsRequested true if the columns must be loaded from the database.
      */
     public void setColumnsRequested(boolean columnsRequested) {
@@ -123,7 +123,7 @@ public abstract class AbstractTableBuilder<T extends NamedColumnSet> extends Cwm
 
     /**
      * Method "createTableWithColumns" create a Table or View.
-     * 
+     *
      * @param catalogName
      * @param schemaPattern
      * @param tablesSet
@@ -166,9 +166,9 @@ public abstract class AbstractTableBuilder<T extends NamedColumnSet> extends Cwm
 
     /**
      * DOC scorreia Comment method "getTableComment".
-     * 
+     *
      * @param tableName
-     * 
+     *
      * @param tablesSet
      * @return
      * @throws SQLException

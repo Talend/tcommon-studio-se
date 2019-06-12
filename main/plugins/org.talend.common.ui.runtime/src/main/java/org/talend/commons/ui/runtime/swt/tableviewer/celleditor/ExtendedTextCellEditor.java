@@ -1,6 +1,6 @@
 // ============================================================================
 //
-// Copyright (C) 2006-2018 Talend Inc. - www.talend.com
+// Copyright (C) 2006-2019 Talend Inc. - www.talend.com
 //
 // This source code is available under agreement available at
 // %InstallDIR%\features\org.talend.rcp.branding.%PRODUCTNAME%\%PRODUCTNAME%license.txt
@@ -38,9 +38,9 @@ import org.talend.commons.ui.runtime.expressionbuilder.IExtendedCellEditorBehavi
 
 /**
  * yzhang class global comment. Detailled comment <br/>
- * 
+ *
  * $Id: ExtendedTextCellEditor.java 下午03:55:26 2007-8-1 +0000 (2007-8-1) yzhang $
- * 
+ *
  */
 public class ExtendedTextCellEditor extends TextCellEditor implements IExpressionDataBean {
 
@@ -65,7 +65,7 @@ public class ExtendedTextCellEditor extends TextCellEditor implements IExpressio
 
     /**
      * yzhang ExtendedTextCellEditor constructor comment.
-     * 
+     *
      * @param behavior
      */
     public ExtendedTextCellEditor(Composite parent, CellEditorDialogBehavior cellEditorBehavior) {
@@ -100,7 +100,7 @@ public class ExtendedTextCellEditor extends TextCellEditor implements IExpressio
 
             /*
              * (non-Javadoc)
-             * 
+             *
              * @see org.eclipse.swt.events.FocusAdapter#focusGained(org.eclipse.swt.events.FocusEvent)
              */
             @Override
@@ -125,7 +125,7 @@ public class ExtendedTextCellEditor extends TextCellEditor implements IExpressio
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see org.eclipse.jface.viewers.TextCellEditor#createControl(org.eclipse.swt.widgets.Composite)
      */
     @Override
@@ -247,7 +247,7 @@ public class ExtendedTextCellEditor extends TextCellEditor implements IExpressio
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see org.talend.expressionbuilder.IExpressionConsumer#setConsumerExpression(java.lang.String)
      */
     public void setConsumerExpression(String expression) {
@@ -256,7 +256,7 @@ public class ExtendedTextCellEditor extends TextCellEditor implements IExpressio
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see org.talend.expressionbuilder.IExpressionDataBean#getExpression()
      */
     public String getExpression() {
@@ -265,7 +265,7 @@ public class ExtendedTextCellEditor extends TextCellEditor implements IExpressio
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see org.talend.expressionbuilder.IExpressionDataBean#getVariables()
      */
     public List<Variable> getVariables() {
@@ -279,7 +279,7 @@ public class ExtendedTextCellEditor extends TextCellEditor implements IExpressio
 
     /**
      * Sets the ownerId.
-     * 
+     *
      * @param ownerId the ownerId to set
      */
     public void setOwnerId(String ownerId) {
@@ -288,7 +288,7 @@ public class ExtendedTextCellEditor extends TextCellEditor implements IExpressio
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see org.talend.expressionbuilder.IExpressionDataBean#getOwnerId()
      */
     public String getOwnerId() {
@@ -299,7 +299,7 @@ public class ExtendedTextCellEditor extends TextCellEditor implements IExpressio
 
     /**
      * yzhang Comment method "setData".
-     * 
+     *
      * @param data
      */
     public void setData(Object data) {
@@ -308,7 +308,7 @@ public class ExtendedTextCellEditor extends TextCellEditor implements IExpressio
 
     /**
      * yzhang Comment method "getData".
-     * 
+     *
      * @return
      */
     public Object getData() {
@@ -317,7 +317,7 @@ public class ExtendedTextCellEditor extends TextCellEditor implements IExpressio
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see org.eclipse.jface.viewers.CellEditor#focusLost()
      */
     @Override
@@ -327,7 +327,7 @@ public class ExtendedTextCellEditor extends TextCellEditor implements IExpressio
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see org.talend.expressionbuilder.IExpressionDataBean#getExpressionType()
      */
     public String getExpressionType() {
@@ -336,7 +336,7 @@ public class ExtendedTextCellEditor extends TextCellEditor implements IExpressio
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see org.talend.expressionbuilder.IExpressionDataBean#setExpressionType(java.lang.String)
      */
     public void setExpressionType(String expressionType) {

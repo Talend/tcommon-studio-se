@@ -1,6 +1,6 @@
 // ============================================================================
 //
-// Copyright (C) 2006-2018 Talend Inc. - www.talend.com
+// Copyright (C) 2006-2019 Talend Inc. - www.talend.com
 //
 // This source code is available under agreement available at
 // %InstallDIR%\features\org.talend.rcp.branding.%PRODUCTNAME%\%PRODUCTNAME%license.txt
@@ -32,8 +32,8 @@ import org.talend.repository.ProjectManager;
 
 /**
  * DOC cmeng class global comment. Detailled comment
- * 
- * 
+ *
+ *
  * test for the encryption and decryption, in this junit, maybe some test case will be failed random, so fart, can't
  * find out the root problems.
  */
@@ -375,15 +375,15 @@ public class ParameterValueUtilTest {
         /*
          * case 2:
          * "insert into "+context.schema+"."+context.table+"(schema, table) values(\"context.schema\", \"context.table\")"
-         * 
+         *
          * case 3: ""+"insert into "+context.schema+"."+context.table+
          * "(schema, table) values(\"context.schema\", \"context.table\")"
-         * 
-         * 
+         *
+         *
          * case 4:
          * "insert into "+context.schema+"."+context.table+"(schema, table) values(\"context.schema\", \"context.table\")"
          * +""
-         * 
+         *
          * case 5: "insert into "+context.schema+"."+context.table+""+
          * "(schema, table) values(\"context.schema\", \"context.table\")"
          */
@@ -944,7 +944,7 @@ public class ParameterValueUtilTest {
     }
 
     /**
-     * 
+     *
      * there are some problem when decryption. It's not because the TDI-30227, I think, should be some problem for the
      * encrypt JAVA API for PasswordEncryptUtil and CryptoHelper. like Cipher,
      */

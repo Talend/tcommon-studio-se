@@ -1,6 +1,6 @@
 // ============================================================================
 //
-// Copyright (C) 2006-2018 Talend Inc. - www.talend.com
+// Copyright (C) 2006-2019 Talend Inc. - www.talend.com
 //
 // This source code is available under agreement available at
 // %InstallDIR%\features\org.talend.rcp.branding.%PRODUCTNAME%\%PRODUCTNAME%license.txt
@@ -53,7 +53,7 @@ public class MavenPomSynchronizer {
     private static Object lock = new Object();
 
     private static IChangedLibrariesListener changedLibrariesListener;
-    
+
     private IFile projectPomFile;
 
     public MavenPomSynchronizer(IProcessor processor, IFile pomFile) {
@@ -70,7 +70,7 @@ public class MavenPomSynchronizer {
     }
 
     /**
-     * 
+     *
      * add the job to the pom modules list of project.
      */
     public void addChildModules(boolean removeOld, String... childModules) throws Exception {
@@ -115,9 +115,9 @@ public class MavenPomSynchronizer {
     }
 
     /**
-     * 
+     *
      * Clean the pom_xxx.xml and assembly_xxx.xml and target folder, also clean the module and dependencies.
-     * 
+     *
      * another cleaning up for sources codes or such in @see DeleteAllJobWhenStartUp.
      */
     public void cleanMavenFiles(IProgressMonitor monitor) throws Exception {

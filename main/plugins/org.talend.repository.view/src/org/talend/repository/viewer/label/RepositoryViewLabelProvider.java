@@ -1,6 +1,6 @@
 // ============================================================================
 //
-// Copyright (C) 2006-2018 Talend Inc. - www.talend.com
+// Copyright (C) 2006-2019 Talend Inc. - www.talend.com
 //
 // This source code is available under agreement available at
 // %InstallDIR%\features\org.talend.rcp.branding.%PRODUCTNAME%\%PRODUCTNAME%license.txt
@@ -28,6 +28,7 @@ import org.eclipse.ui.PlatformUI;
 import org.eclipse.ui.navigator.CommonNavigator;
 import org.eclipse.ui.navigator.ICommonContentExtensionSite;
 import org.talend.core.model.repository.ERepositoryObjectType;
+import org.talend.core.model.repository.IRepositoryViewObject;
 import org.talend.core.repository.ui.view.RepositoryLabelProvider;
 import org.talend.repository.model.RepositoryNode;
 import org.talend.repository.model.nodes.IProjectRepositoryNode;
@@ -37,9 +38,9 @@ public class RepositoryViewLabelProvider extends AbstractRepoViewLabelProvider {
 
     /**
      * DOC sgandon class global comment. Detailled comment <br/>
-     * 
+     *
      * $Id: talend.epf 55206 2011-02-15 17:32:14Z mhirt $
-     * 
+     *
      */
     private final class CommonNavigatorRepositoryViewForLabelProvider implements IRepositoryView {
 
@@ -187,6 +188,10 @@ public class RepositoryViewLabelProvider extends AbstractRepoViewLabelProvider {
         return repoLabelProv.getImage(element);
     }
 
+    protected Image decorateImageWithStatus(Image originalImg, IRepositoryViewObject object) {
+        return repoLabelProv.decorateImageWithStatus(originalImg, object);
+    }
+
     @Override
     public String getText(Object element) {
         if (element instanceof RepositoryNode) {// Only handle repository
@@ -220,7 +225,7 @@ public class RepositoryViewLabelProvider extends AbstractRepoViewLabelProvider {
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see org.talend.repository.viewer.label.AbstractRepoViewLabelProvider#getFont(java.lang.Object)
      */
     @Override
@@ -230,7 +235,7 @@ public class RepositoryViewLabelProvider extends AbstractRepoViewLabelProvider {
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see org.talend.repository.viewer.label.AbstractRepoViewLabelProvider#getBackground(java.lang.Object)
      */
     @Override
@@ -240,7 +245,7 @@ public class RepositoryViewLabelProvider extends AbstractRepoViewLabelProvider {
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see org.talend.repository.viewer.label.AbstractRepoViewLabelProvider#getForeground(java.lang.Object)
      */
     @Override

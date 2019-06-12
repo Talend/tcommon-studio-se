@@ -1,6 +1,6 @@
 // ============================================================================
 //
-// Copyright (C) 2006-2018 Talend Inc. - www.talend.com
+// Copyright (C) 2006-2019 Talend Inc. - www.talend.com
 //
 // This source code is available under agreement available at
 // %InstallDIR%\features\org.talend.rcp.branding.%PRODUCTNAME%\%PRODUCTNAME%license.txt
@@ -28,7 +28,7 @@ import org.talend.repository.model.IProxyRepositoryFactory;
 
 /**
  * Class to review, no cache anymore here.
- * 
+ *
  * to be renamed in future versions.
  */
 public class ItemCacheManager {
@@ -103,7 +103,7 @@ public class ItemCacheManager {
         }
         return null;
     }
-    
+
     public static ProcessItem getProcessItem(String processId, String version) {
         String[] parsedArray = parseProcessId(processId);
         ProcessItem refProcessItem = null;
@@ -116,7 +116,7 @@ public class ItemCacheManager {
         }
         return refProcessItem;
     }
-    
+
     private static String[] parseProcessId(String processId) {
         String[] parsedArray = new String[2];
         if (processId != null) {
@@ -202,7 +202,7 @@ public class ItemCacheManager {
 
     /**
      * It would be better to use <b>getJobletProcessItem(Project project, String jobletId)</b>
-     * 
+     *
      * @param jobletId
      * @return
      */

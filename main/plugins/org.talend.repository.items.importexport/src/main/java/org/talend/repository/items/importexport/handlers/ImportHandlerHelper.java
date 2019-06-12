@@ -1,6 +1,6 @@
 // ============================================================================
 //
-// Copyright (C) 2006-2018 Talend Inc. - www.talend.com
+// Copyright (C) 2006-2019 Talend Inc. - www.talend.com
 //
 // This source code is available under agreement available at
 // %InstallDIR%\features\org.talend.rcp.branding.%PRODUCTNAME%\%PRODUCTNAME%license.txt
@@ -26,14 +26,14 @@ import org.talend.repository.items.importexport.manager.ResourcesManager;
 
 /**
  * created by ggu on Apr 15, 2014 Detailled comment
- * 
+ *
  */
 public class ImportHandlerHelper {
 
     /**
      * According to the valid resource path, resolve the EMF properties file, and check the overwrite status or be valid
      * item or not, etc.
-     * 
+     *
      * @param monitor
      * @param resManager
      * @param resourcePath according to the this path to calculate the item record.

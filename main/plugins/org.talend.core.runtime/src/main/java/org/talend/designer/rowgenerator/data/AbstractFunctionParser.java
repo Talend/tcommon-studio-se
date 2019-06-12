@@ -1,6 +1,6 @@
 // ============================================================================
 //
-// Copyright (C) 2006-2018 Talend Inc. - www.talend.com
+// Copyright (C) 2006-2019 Talend Inc. - www.talend.com
 //
 // This source code is available under agreement available at
 // %InstallDIR%\features\org.talend.rcp.branding.%PRODUCTNAME%\%PRODUCTNAME%license.txt
@@ -22,9 +22,9 @@ import org.talend.commons.exception.ExceptionHandler;
 
 /**
  * qzhang class global comment. Detailled comment <br/>
- * 
+ *
  * $Id: talend-code-templates.xml 1 2007-3-28 下午02:42:59 (星期五, 29 九月 2006) qzhang $
- * 
+ *
  */
 public abstract class AbstractFunctionParser {
 
@@ -48,7 +48,7 @@ public abstract class AbstractFunctionParser {
 
     /**
      * Getter for list.
-     * 
+     *
      * @return the list
      */
     public List<TalendType> getList() {
@@ -57,7 +57,7 @@ public abstract class AbstractFunctionParser {
 
     /**
      * qzhang Comment method "parse description of the function".
-     * 
+     *
      * @param string
      */
     protected String parseDescription(String string) {
@@ -76,7 +76,7 @@ public abstract class AbstractFunctionParser {
 
     /**
      * qzhang Comment method "parseFunction".
-     * 
+     *
      * @param string
      * @return
      */
@@ -96,7 +96,7 @@ public abstract class AbstractFunctionParser {
 
     /**
      * parse the input file for the category.
-     * 
+     *
      * @param string
      * @return
      */
@@ -116,7 +116,7 @@ public abstract class AbstractFunctionParser {
 
     /**
      * qzhang Comment method "parseFunctionParameters".
-     * 
+     *
      * @param string
      * @return
      */
@@ -138,7 +138,7 @@ public abstract class AbstractFunctionParser {
 
     /**
      * qzhang Comment method "convertToParameter".
-     * 
+     *
      * @param parameter
      * @return
      */
@@ -153,7 +153,7 @@ public abstract class AbstractFunctionParser {
 
     /**
      * Gets the TalendType that already created, if the wanted one is one existent ,create one.
-     * 
+     *
      * @param name
      * @return
      */

@@ -1,6 +1,6 @@
 // ============================================================================
 //
-// Copyright (C) 2006-2018 Talend Inc. - www.talend.com
+// Copyright (C) 2006-2019 Talend Inc. - www.talend.com
 //
 // This source code is available under agreement available at
 // %InstallDIR%\features\org.talend.rcp.branding.%PRODUCTNAME%\%PRODUCTNAME%license.txt
@@ -17,9 +17,9 @@ import org.talend.core.runtime.i18n.Messages;
 
 /**
  * Different types of connections in Talend. <br/>
- * 
+ *
  * $Id: EConnectionType.java 38013 2010-03-05 14:21:59Z mhirt $
- * 
+ *
  */
 public enum EConnectionType implements IConnectionCategory, IDraw2dGraphics {
 
@@ -33,7 +33,7 @@ public enum EConnectionType implements IConnectionCategory, IDraw2dGraphics {
     RUN_AFTER(2, "AFTER", //$NON-NLS-1$
               EConnectionCategory.OTHER,
               EXECUTION_ORDER | DEPENDENCY,
-              "RunAfter", Messages.getString("EConnectionType.runAfterMenu"), //$NON-NLS-1$ //$NON-NLS-2$ 
+              "RunAfter", Messages.getString("EConnectionType.runAfterMenu"), //$NON-NLS-1$ //$NON-NLS-2$
               new Integer(LINE_SOLID),
               new RGB(100, 100, 100)),
 
@@ -163,7 +163,7 @@ public enum EConnectionType implements IConnectionCategory, IDraw2dGraphics {
                    new RGB(230, 100, 0)),
 
     STARTS(21, "STARTS", EConnectionCategory.OTHER, CONDITION | DEPENDENCY | UNIQUE_NAME, "Starts", Messages//$NON-NLS-1$ //$NON-NLS-2$
-            .getString("EConnectionType.startsMenu"), new Integer(LINE_SOLID), new RGB(0, 0, 150)), //$NON-NLS-1$ 
+            .getString("EConnectionType.startsMenu"), new Integer(LINE_SOLID), new RGB(0, 0, 150)), //$NON-NLS-1$
 
     REJECT(0, "REJECT", //$NON-NLS-1$
            EConnectionCategory.MAIN,
@@ -242,7 +242,7 @@ public enum EConnectionType implements IConnectionCategory, IDraw2dGraphics {
 
     /**
      * Getter for category.
-     * 
+     *
      * @return the category
      * @deprecated
      */
@@ -257,7 +257,7 @@ public enum EConnectionType implements IConnectionCategory, IDraw2dGraphics {
 
     /**
      * Getter for defaultColor.
-     * 
+     *
      * @return the defaultColor
      */
     public RGB getRGB() {
@@ -266,7 +266,7 @@ public enum EConnectionType implements IConnectionCategory, IDraw2dGraphics {
 
     /**
      * Getter for defaultLineStyle.
-     * 
+     *
      * @return the defaultLineStyle
      */
     public Integer getDefaultLineStyle() {
@@ -275,7 +275,7 @@ public enum EConnectionType implements IConnectionCategory, IDraw2dGraphics {
 
     /**
      * Getter for defaultLinkName.
-     * 
+     *
      * @return the defaultLinkName
      */
     public String getDefaultLinkName() {
@@ -284,7 +284,7 @@ public enum EConnectionType implements IConnectionCategory, IDraw2dGraphics {
 
     /**
      * Getter for defaultMenuName.
-     * 
+     *
      * @return the defaultMenuName
      */
     public String getDefaultMenuName() {

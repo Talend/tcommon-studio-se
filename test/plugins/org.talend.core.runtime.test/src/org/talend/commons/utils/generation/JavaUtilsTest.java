@@ -1,6 +1,6 @@
 // ============================================================================
 //
-// Copyright (C) 2006-2018 Talend Inc. - www.talend.com
+// Copyright (C) 2006-2019 Talend Inc. - www.talend.com
 //
 // This source code is available under agreement available at
 // %InstallDIR%\features\org.talend.rcp.branding.%PRODUCTNAME%\%PRODUCTNAME%license.txt
@@ -33,14 +33,14 @@ public class JavaUtilsTest {
         eclipsePreferences = InstanceScope.INSTANCE.getNode(JavaCore.PLUGIN_ID);
         originalCompliance = eclipsePreferences.get(JavaCore.COMPILER_COMPLIANCE, JavaCore.VERSION_1_8);
     }
-    
+
     @Test
     public void testUpdateProjectJavaVersion() {
         JavaUtils.updateProjectJavaVersion(JavaCore.VERSION_1_6);
-        
+
         assertEquals(eclipsePreferences.get(JavaCore.COMPILER_COMPLIANCE, null), JavaCore.VERSION_1_6);
         assertEquals(JavaCore.getOption(JavaCore.COMPILER_COMPLIANCE), JavaCore.VERSION_1_6);
-        
+
         assertEquals(JavaCore.VERSION_1_6,
                 CoreRuntimePlugin.getInstance().getProjectPreferenceManager().getValue("talend.project.java.version"));
         assertEquals(JavaCore.VERSION_1_6, JavaUtils.getProjectJavaVersion());

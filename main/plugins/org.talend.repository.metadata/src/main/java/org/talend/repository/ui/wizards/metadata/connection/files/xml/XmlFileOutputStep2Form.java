@@ -1,6 +1,6 @@
 // ============================================================================
 //
-// Copyright (C) 2006-2018 Talend Inc. - www.talend.com
+// Copyright (C) 2006-2019 Talend Inc. - www.talend.com
 //
 // This source code is available under agreement available at
 // %InstallDIR%\features\org.talend.rcp.branding.%PRODUCTNAME%\%PRODUCTNAME%license.txt
@@ -415,7 +415,7 @@ public class XmlFileOutputStep2Form extends AbstractXmlFileStepForm {
         schemaButton = new Button(createGroup, SWT.PUSH);
         schemaButton.setText("Schema Management");
         schemaButton.setToolTipText("You can add or edit schema and save in 'Schema List' viewer");
-        
+
         Composite createGroupRight = new Composite(createGroup, SWT.NULL);
         GridLayout gridLayoutRight = new GridLayout(3, false);
         gridLayoutRight.marginHeight = 0;

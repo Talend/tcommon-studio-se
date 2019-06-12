@@ -1,6 +1,6 @@
 // ============================================================================
 //
-// Copyright (C) 2006-2018 Talend Inc. - www.talend.com
+// Copyright (C) 2006-2019 Talend Inc. - www.talend.com
 //
 // This source code is available under agreement available at
 // %InstallDIR%\features\org.talend.rcp.branding.%PRODUCTNAME%\%PRODUCTNAME%license.txt
@@ -62,11 +62,11 @@ public class MavenTemplateManager {
 
     /**
      * 1. get the template from the file template under the folder first.
-     * 
+     *
      * 2. if file template is not existed, try to get th template from project setting.
-     * 
+     *
      * 3. if the project setting is not set still, try to get the template from the bundle template.
-     * 
+     *
      */
     @SuppressWarnings("resource")
     public static InputStream getTemplateStream(File templateFile, String projectSettingKey, String bundleName,
@@ -96,7 +96,7 @@ public class MavenTemplateManager {
     }
 
     /**
-     * 
+     *
      * get the template file stream from bundle.
      */
     public static InputStream getBundleTemplateStream(String bundleName, String bundleTemplatePath) throws Exception {

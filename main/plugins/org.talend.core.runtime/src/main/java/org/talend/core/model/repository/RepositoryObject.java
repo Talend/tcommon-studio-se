@@ -1,6 +1,6 @@
 // ============================================================================
 //
-// Copyright (C) 2006-2018 Talend Inc. - www.talend.com
+// Copyright (C) 2006-2019 Talend Inc. - www.talend.com
 //
 // This source code is available under agreement available at
 // %InstallDIR%\features\org.talend.rcp.branding.%PRODUCTNAME%\%PRODUCTNAME%license.txt
@@ -81,7 +81,7 @@ public class RepositoryObject implements IRepositoryObject {
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see java.lang.Object#equals(java.lang.Object)
      */
     @Override
@@ -99,7 +99,7 @@ public class RepositoryObject implements IRepositoryObject {
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see java.lang.Object#hashCode()
      */
     @Override
@@ -346,7 +346,7 @@ public class RepositoryObject implements IRepositoryObject {
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see org.talend.core.model.repository.IRepositoryObject#getRepositoryNode()
      */
     @Override
@@ -356,7 +356,7 @@ public class RepositoryObject implements IRepositoryObject {
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see
      * org.talend.core.model.repository.IRepositoryObject#setRepositoryNode(org.talend.repository.model.RepositoryNode)
      */
@@ -368,7 +368,7 @@ public class RepositoryObject implements IRepositoryObject {
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see org.talend.core.model.repository.IRepositoryViewObject#isDeleted()
      */
     @Override
@@ -381,7 +381,7 @@ public class RepositoryObject implements IRepositoryObject {
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see org.talend.core.model.repository.IRepositoryViewObject#getProjectLabel()
      */
     @Override
@@ -392,7 +392,7 @@ public class RepositoryObject implements IRepositoryObject {
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see org.talend.core.model.repository.IRepositoryViewObject#getPath()
      */
     @Override
@@ -402,7 +402,7 @@ public class RepositoryObject implements IRepositoryObject {
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see org.talend.core.model.repository.IRepositoryViewObject#getInformationStatus()
      */
     @Override
@@ -416,7 +416,7 @@ public class RepositoryObject implements IRepositoryObject {
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see org.talend.core.model.repository.IRepositoryViewObject#getRepositoryStatus()
      */
     @Override
@@ -428,7 +428,7 @@ public class RepositoryObject implements IRepositoryObject {
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see org.talend.core.model.repository.IRepositoryViewObject#throwPersistenceExceptionIfAny()
      */
     public void throwPersistenceExceptionIfAny() throws PersistenceException {
@@ -460,7 +460,7 @@ public class RepositoryObject implements IRepositoryObject {
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see org.talend.core.model.repository.IRepositoryViewObject#isModified()
      */
     @Override

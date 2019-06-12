@@ -1,6 +1,6 @@
 // ============================================================================
 //
-// Copyright (C) 2006-2018 Talend Inc. - www.talend.com
+// Copyright (C) 2006-2019 Talend Inc. - www.talend.com
 //
 // This source code is available under agreement available at
 // %InstallDIR%\features\org.talend.rcp.branding.%PRODUCTNAME%\%PRODUCTNAME%license.txt
@@ -32,11 +32,11 @@ import org.talend.repository.model.RepositoryNode;
  * manager, user can get all convert services which are registed by the extension point <b>
  * <code>org.talend.designer.core.process_convert</code></b> and implement {@link IProcessConvertService}.
  * </pre>
- * 
+ *
  * <pre>
  * User also can get the {@link IProcessConvertService} by the special convert type {@link ProcessConverterType}.
  * </pre>
- * 
+ *
  * Created by Marvin Wang on Feb 18, 2013.
  */
 public class ProcessConvertManager {
@@ -61,7 +61,7 @@ public class ProcessConvertManager {
     /**
      * Extracts all convert services which are registed by the extension point <b>
      * <code>org.talend.designer.core.process_convert</code> </b>. Added by Marvin Wang on Mar 19, 2013.
-     * 
+     *
      * @return
      */
     public List<IProcessConvertService> extractAllConvertServices() {
@@ -92,7 +92,7 @@ public class ProcessConvertManager {
     /**
      * Extracts the special convert service by the given {@link ProcessConverterType}. Added by Marvin Wang on Mar 19,
      * 2013.
-     * 
+     *
      * @param convertType
      * @return
      */

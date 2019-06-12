@@ -1,6 +1,6 @@
 // ============================================================================
 //
-// Copyright (C) 2006-2018 Talend Inc. - www.talend.com
+// Copyright (C) 2006-2019 Talend Inc. - www.talend.com
 //
 // This source code is available under agreement available at
 // %InstallDIR%\features\org.talend.rcp.branding.%PRODUCTNAME%\%PRODUCTNAME%license.txt
@@ -93,9 +93,9 @@ public final class DeleteActionCache {
     }
 
     /**
-     * 
+     *
      * cli Comment method "clearRecords".
-     * 
+     *
      * revert the original values.
      */
     public void clearRecords() {
@@ -119,7 +119,7 @@ public final class DeleteActionCache {
     }
 
     /*
-     * 
+     *
      */
     private List<IProcess2> openedProcessList;
 
@@ -171,9 +171,9 @@ public final class DeleteActionCache {
     }
 
     /**
-     * 
+     *
      * cli Comment method "setGetAlways".
-     * 
+     *
      * work for documentation
      */
     public void setGetAlways(boolean always) {
@@ -225,9 +225,9 @@ public final class DeleteActionCache {
     }
 
     /**
-     * 
+     *
      * ggu Comment method "closeRelations".
-     * 
+     *
      * bug 12883
      */
     public void closeOpenedEditor(final IRepositoryViewObject objToDelete) {

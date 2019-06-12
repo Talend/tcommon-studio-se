@@ -1,6 +1,6 @@
 // ============================================================================
 //
-// Copyright (C) 2006-2018 Talend Inc. - www.talend.com
+// Copyright (C) 2006-2019 Talend Inc. - www.talend.com
 //
 // This source code is available under agreement available at
 // %InstallDIR%\features\org.talend.rcp.branding.%PRODUCTNAME%\%PRODUCTNAME%license.txt
@@ -28,13 +28,13 @@ import org.talend.repository.model.IRepositoryNode.ENodeType;
 
 /**
  * created by ggu on Mar 27, 2014 Detailled comment
- * 
+ *
  */
 public abstract class AbstractRepositoryNodeUpdateManagerProvider extends AbstractRepositoryUpdateManagerProvider {
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see
      * org.talend.core.model.update.extension.IRepositoryUpdateManagerProvider#validateAction(org.eclipse.jface.viewers
      * .TreeViewer, org.eclipse.jface.viewers.IStructuredSelection)
@@ -65,18 +65,18 @@ public abstract class AbstractRepositoryNodeUpdateManagerProvider extends Abstra
     }
 
     /**
-     * 
+     *
      * DOC ggu Comment method "validRepositoryType".
-     * 
+     *
      * @param objectType repository type.
      * @return
      */
     protected abstract boolean validRepositoryType(ERepositoryObjectType objectType);
 
     /**
-     * 
+     *
      * DOC ggu Comment method "isDeletedNode".
-     * 
+     *
      * @param repNode
      * @return
      */
@@ -103,12 +103,12 @@ public abstract class AbstractRepositoryNodeUpdateManagerProvider extends Abstra
     }
 
     /**
-     * 
+     *
      * DOC ggu Comment method "retrieveUpdateResults".
-     * 
-     * 
+     *
+     *
      * retrieve the view object, like item, metadata table, query, etc.
-     * 
+     *
      * @param monitor
      * @param object
      * @return

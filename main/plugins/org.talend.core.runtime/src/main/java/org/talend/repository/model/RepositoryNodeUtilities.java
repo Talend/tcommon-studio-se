@@ -1,6 +1,6 @@
 // ============================================================================
 //
-// Copyright (C) 2006-2018 Talend Inc. - www.talend.com
+// Copyright (C) 2006-2019 Talend Inc. - www.talend.com
 //
 // This source code is available under agreement available at
 // %InstallDIR%\features\org.talend.rcp.branding.%PRODUCTNAME%\%PRODUCTNAME%license.txt
@@ -62,9 +62,9 @@ import org.talend.repository.ui.views.IRepositoryView;
 
 /**
  * Utility class to manage RepositoryNode.<br/>
- * 
+ *
  * $Id: RepositoryNodeUtilities.java 1368 2007-01-10 09:50:53Z smallet $
- * 
+ *
  */
 public class RepositoryNodeUtilities {
 
@@ -170,9 +170,9 @@ public class RepositoryNodeUtilities {
     // }
 
     /**
-     * 
+     *
      * ggu Comment method "getPath".
-     * 
+     *
      * get path by repository item id. can't get the folders.
      */
     public static IPath getPath(final String id) {
@@ -201,9 +201,9 @@ public class RepositoryNodeUtilities {
     }
 
     /**
-     * 
+     *
      * ggu Comment method "getRepositoryNode".
-     * 
+     *
      * @param id
      * @return the repository node by id
      * @see RepositorySeekerManager.searchRepoViewNode
@@ -236,9 +236,9 @@ public class RepositoryNodeUtilities {
     }
 
     /**
-     * 
+     *
      * ggu Comment method "getRepositoryNode".
-     * 
+     *
      * get the repository node by a IRepositoryObject.
      */
     public static RepositoryNode getRepositoryNode(IRepositoryViewObject curNode) {
@@ -762,9 +762,9 @@ public class RepositoryNodeUtilities {
     }
 
     /**
-     * 
+     *
      * ggu Comment method "getParentRepositoryNodeFromSelection".
-     * 
+     *
      */
     public static RepositoryNode getParentRepositoryNodeFromSelection(IRepositoryViewObject object) {
         if (object.getRepositoryNode() != null && ((RepositoryNode) object.getRepositoryNode()).getParent() != null) {

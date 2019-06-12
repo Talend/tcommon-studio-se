@@ -1,6 +1,6 @@
 // ============================================================================
 //
-// Copyright (C) 2006-2018 Talend Inc. - www.talend.com
+// Copyright (C) 2006-2019 Talend Inc. - www.talend.com
 //
 // This source code is available under agreement available at
 // %InstallDIR%\features\org.talend.rcp.branding.%PRODUCTNAME%\%PRODUCTNAME%license.txt
@@ -143,11 +143,11 @@ public class ExtractManager {
     }
 
     /**
-     * 
+     *
      * DOC ggu Comment method "extractTablesFromDB".
-     * 
+     *
      * work for @see ExtractMetaDataFromDataBase.extractTablesFromDB(...)
-     * 
+     *
      * @param dbMetaData
      * @param metadataConnection
      * @param limit
@@ -181,10 +181,10 @@ public class ExtractManager {
 
     /**
      * DOC ggu Comment method "getAvailableTableTypes".
-     * 
-     * 
+     *
+     *
      * make it's public,just for junit
-     * 
+     *
      * @param dbMetaData
      * @return
      * @throws SQLException
@@ -260,7 +260,7 @@ public class ExtractManager {
 
     /**
      * DOC qzhang Comment method "getMetadataTables".
-     * 
+     *
      * @param medataTables
      * @param rsTables
      * @throws SQLException
@@ -344,11 +344,11 @@ public class ExtractManager {
     }
 
     /**
-     * 
+     *
      * DOC ggu Comment method "returnColumns".
-     * 
+     *
      * work for @see ExtractMetaDataFromDataBase.returnColumns(...)
-     * 
+     *
      * @param metadataConnection
      * @param tableNode
      * @param dontCreateClose
@@ -443,9 +443,9 @@ public class ExtractManager {
     }
 
     /**
-     * 
+     *
      * DOC ggu Comment method "getTableNameBySynonym".
-     * 
+     *
      * @see ExtractMetaDataFromDataBase.getTableNameBySynonym(...), refactor for this.
      * @param conn
      * @param name
@@ -456,11 +456,11 @@ public class ExtractManager {
     }
 
     /**
-     * 
+     *
      * DOC ggu Comment method "fillSynonms".
-     * 
+     *
      * fill the columns for synonm,can get column name,column data type,length,precision,nullable
-     * 
+     *
      * @param metadataConnection
      * @param metadataColumns
      * @param table
@@ -474,9 +474,9 @@ public class ExtractManager {
     }
 
     /**
-     * 
+     *
      * DOC ggu Comment method "closeConnect".
-     * 
+     *
      * @param wapperDriver
      */
     public boolean closeConnection(IMetadataConnection metadataConnection, DriverShim wapperDriver) {
@@ -496,9 +496,9 @@ public class ExtractManager {
     }
 
     /**
-     * 
+     *
      * DOC ggu Comment method "returnMetadataColumnsFormTable".
-     * 
+     *
      * @param metadataConnection
      * @param tableLabel
      * @param dontCreateClose
@@ -997,11 +997,11 @@ public class ExtractManager {
     }
 
     /**
-     * 
+     *
      * DOC ggu Comment method "returnTablesFormConnection".
-     * 
+     *
      * work for @see ExtractMetaDataFromDataBase.returnTablesFormConnection(...)
-     * 
+     *
      * @param metadataConnection
      * @param tableInfoParameters
      * @return
@@ -1084,11 +1084,11 @@ public class ExtractManager {
     }
 
     /**
-     * 
+     *
      * cli Comment method "getTableNamesFromTablesForMultiSchema".
-     * 
+     *
      * bug 12179
-     * 
+     *
      * @throws IllegalAccessException
      * @throws InstantiationException
      * @throws ClassNotFoundException
@@ -1115,7 +1115,7 @@ public class ExtractManager {
 
     /**
      * DOC qzhang Comment method "getResultSetFromTableInfo".
-     * 
+     *
      * @param dbMetaData
      * @return
      * @throws SQLException
@@ -1168,9 +1168,9 @@ public class ExtractManager {
 
     /**
      * DOC qzhang Comment method "getTableNamesFromQuery".
-     * 
+     *
      * @param rsTables
-     * 
+     *
      * @return
      * @throws SQLException
      */

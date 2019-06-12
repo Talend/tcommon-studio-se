@@ -1,6 +1,6 @@
 // ============================================================================
 //
-// Copyright (C) 2006-2018 Talend Inc. - www.talend.com
+// Copyright (C) 2006-2019 Talend Inc. - www.talend.com
 //
 // This source code is available under agreement available at
 // %InstallDIR%\features\org.talend.rcp.branding.%PRODUCTNAME%\%PRODUCTNAME%license.txt
@@ -189,7 +189,7 @@ public class RepositoryViewObject implements IRepositoryViewObject {
 
     /**
      * DOC bqian Comment method "getJobletCustomIcon".
-     * 
+     *
      * @param property
      * @return
      */
@@ -243,7 +243,7 @@ public class RepositoryViewObject implements IRepositoryViewObject {
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see java.lang.Object#equals(java.lang.Object)
      */
     @Override
@@ -424,7 +424,7 @@ public class RepositoryViewObject implements IRepositoryViewObject {
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see org.talend.core.model.repository.IRepositoryObject#getRepositoryNode()
      */
     @Override
@@ -434,7 +434,7 @@ public class RepositoryViewObject implements IRepositoryViewObject {
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see
      * org.talend.core.model.repository.IRepositoryObject#setRepositoryNode(org.talend.repository.model.RepositoryNode)
      */
@@ -578,7 +578,7 @@ public class RepositoryViewObject implements IRepositoryViewObject {
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see org.talend.core.model.repository.IRepositoryViewObject#isDeleted()
      */
     @Override
@@ -588,7 +588,7 @@ public class RepositoryViewObject implements IRepositoryViewObject {
 
     /**
      * Getter for projectLabel.
-     * 
+     *
      * @return the projectLabel
      */
     @Override
@@ -598,7 +598,7 @@ public class RepositoryViewObject implements IRepositoryViewObject {
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see org.talend.core.model.repository.IRepositoryViewObject#getPath()
      */
     @Override
@@ -608,7 +608,7 @@ public class RepositoryViewObject implements IRepositoryViewObject {
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see org.talend.core.model.repository.IRepositoryViewObject#getInformationStatus()
      */
     @Override
@@ -618,7 +618,7 @@ public class RepositoryViewObject implements IRepositoryViewObject {
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see org.talend.core.model.repository.IRepositoryViewObject#getRepositoryStatus()
      */
     @Override
@@ -628,7 +628,7 @@ public class RepositoryViewObject implements IRepositoryViewObject {
 
     /**
      * Getter for customImage.
-     * 
+     *
      * @return the customImage
      */
     public Image getCustomImage() {
@@ -637,7 +637,7 @@ public class RepositoryViewObject implements IRepositoryViewObject {
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see org.talend.core.model.repository.IRepositoryViewObject#throwPersistenceExceptionIfAny()
      */
     public void throwPersistenceExceptionIfAny() throws PersistenceException {
@@ -648,7 +648,7 @@ public class RepositoryViewObject implements IRepositoryViewObject {
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see org.talend.core.model.repository.IRepositoryViewObject#isModified()
      */
     @Override
@@ -658,7 +658,7 @@ public class RepositoryViewObject implements IRepositoryViewObject {
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see java.lang.Object#toString()
      */
     @Override
@@ -687,7 +687,7 @@ public class RepositoryViewObject implements IRepositoryViewObject {
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see java.lang.Object#hashCode()
      */
     @Override
@@ -700,7 +700,7 @@ public class RepositoryViewObject implements IRepositoryViewObject {
 
     /**
      * Getter for framework.
-     * 
+     *
      * @return the framework
      */
     public String getFramework() {
@@ -709,7 +709,7 @@ public class RepositoryViewObject implements IRepositoryViewObject {
 
     /**
      * Sets the framework.
-     * 
+     *
      * @param framework the framework to set
      */
     public void setFramework(String framework) {

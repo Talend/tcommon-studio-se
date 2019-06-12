@@ -1,6 +1,6 @@
 // ============================================================================
 //
-// Copyright (C) 2006-2018 Talend Inc. - www.talend.com
+// Copyright (C) 2006-2019 Talend Inc. - www.talend.com
 //
 // This source code is available under agreement available at
 // %InstallDIR%\features\org.talend.rcp.branding.%PRODUCTNAME%\%PRODUCTNAME%license.txt
@@ -127,13 +127,13 @@ public final class ConnectionContextHelper {
     public static final String DOT = "."; //$NON-NLS-1$
 
     public static IContextManager contextManager;
-    
+
     public static ContextType context;
 
     /**
-     * 
+     *
      * ggu Comment method "checkContextMode".
-     * 
+     *
      * initialize and check context mode for the ConnectionItem.
      */
     public static ContextItem checkContextMode(ConnectionItem connItem) {
@@ -184,9 +184,9 @@ public final class ConnectionContextHelper {
     }
 
     /**
-     * 
+     *
      * ggu Comment method "exportAsContext".
-     * 
+     *
      */
     public static Map<ContextItem, List<ConectionAdaptContextVariableModel>> exportAsContext(String defaultContextName,
             ConnectionItem connItem, Set<IConnParamName> paramSet) {
@@ -229,16 +229,16 @@ public final class ConnectionContextHelper {
     }
 
     /**
-     * 
+     *
      * change the mode of lebel to Context mode
-     * 
+     *
      * @param label which you want to convert(it is the name of connection normal)
      * @return Context mode label
      */
     public static String convertContextLabel(String label) {
         if (label != null) {
-            String invalidCharactor = "[\\~\\!\\`\\@\\#\\$\\%\\^\\&\\*\\(\\)\\-\\+\\=\\{\\[\\]\\}\\:\\;\\'\\|\\<\\,\\>\\.\\?\\/\"￥；：‘”、《，》。？]";//$NON-NLS-1$ 
-            String newLabel = label.replaceAll(invalidCharactor, "_"); //$NON-NLS-1$ 
+            String invalidCharactor = "[\\~\\!\\`\\@\\#\\$\\%\\^\\&\\*\\(\\)\\-\\+\\=\\{\\[\\]\\}\\:\\;\\'\\|\\<\\,\\>\\.\\?\\/\"￥；：‘”、《，》。？]";//$NON-NLS-1$
+            String newLabel = label.replaceAll(invalidCharactor, "_"); //$NON-NLS-1$
             Pattern pattern = Pattern.compile("^[0-9]+.*$"); //$NON-NLS-1$
             Matcher m = pattern.matcher(newLabel);
             if (m.matches()) {
@@ -593,9 +593,9 @@ public final class ConnectionContextHelper {
     }
 
     /**
-     * 
+     *
      * ggu Comment method "upateContext".
-     * 
+     *
      * open the context wizard to update context parameters.
      */
     public static boolean upateContext(ConnectionItem connItem) {
@@ -626,9 +626,9 @@ public final class ConnectionContextHelper {
     }
 
     /**
-     * 
+     *
      * ggu Comment method "processContextForJob".
-     * 
+     *
      * @ignoreContextMode if true, only work for jobtemplate plugin(so far).
      */
     public static void addContextForNodeParameter(final INode node, final ConnectionItem connItem, final boolean ignoreContextMode) {
@@ -642,9 +642,9 @@ public final class ConnectionContextHelper {
     }
 
     /**
-     * 
+     *
      * ggu Comment method "addContextForProcessParameter".
-     * 
+     *
      * @param process
      * @param connItem
      * @param section for EXTRA and STATSANDLOGS
@@ -659,9 +659,9 @@ public final class ConnectionContextHelper {
     }
 
     /**
-     * 
+     *
      * ggu Comment method "addContextForElementParameters".
-     * 
+     *
      * @param process
      * @param connItem
      * @param elementParameters
@@ -697,8 +697,8 @@ public final class ConnectionContextHelper {
                         tempVars = checkAndAddContextVariables(contextItem, neededVars, process.getContextManager(),
                                 false);
                     }
-                    Set<String> addedVars = tempVars; 
-                    
+                    Set<String> addedVars = tempVars;
+
                     if (addedVars != null && !addedVars.isEmpty()
                             && (isGeneric || !isAddContextVar(contextItem, process.getContextManager(), neededVars))) {
                         AtomicBoolean added = new AtomicBoolean();
@@ -928,9 +928,9 @@ public final class ConnectionContextHelper {
     }
 
     /**
-     * 
+     *
      * ggu Comment method "checkNodesPropertiesForAddedContextMode".
-     * 
+     *
      * @param process
      */
     public static void checkNodesPropertiesForAddedContextMode(final IProcess2 process) {
@@ -1051,12 +1051,12 @@ public final class ConnectionContextHelper {
             EComponentCategory category) {
         return retrieveContextVar(elementParameters, connection, category, false, new HashMap<Object, Object>());
     }
-    
+
     public static Set<String> retrieveContextVar(List<? extends IElementParameter> elementParameters, Connection connection,
             EComponentCategory category, Map<Object, Object> contextData) {
         return retrieveContextVar(elementParameters, connection, category, false, contextData);
     }
-    
+
     public static boolean isGenericConnection(Connection connection){
         if (GlobalServiceRegister.getDefault().isServiceRegistered(IGenericWizardService.class)) {
             IGenericWizardService wizardService = (IGenericWizardService) GlobalServiceRegister.getDefault().getService(
@@ -1067,7 +1067,7 @@ public final class ConnectionContextHelper {
         }
         return false;
     }
-    
+
     public static Set<String> retrieveContextVar(List<? extends IElementParameter> elementParameters, Connection connection,
             EComponentCategory category, boolean onlyConsiderShowedParam) {
         return retrieveContextVar(elementParameters, connection, category, onlyConsiderShowedParam, new HashMap<Object, Object>());
@@ -1136,7 +1136,7 @@ public final class ConnectionContextHelper {
 
     /**
      * DOC zli Comment method "addContextVarForJob".
-     * 
+     *
      * @param process
      * @param contextItem
      * @param ctxManager added for bug 15608
@@ -1148,7 +1148,7 @@ public final class ConnectionContextHelper {
 
     /**
      * add the context list into the job.
-     * 
+     *
      * @param process
      * @param contexts
      * @param defaultContextName
@@ -1193,7 +1193,7 @@ public final class ConnectionContextHelper {
 
     /**
      * add the context variables into the job.
-     * 
+     *
      * @param process
      * @param contexts
      * @param defaultContextName the default context name of contexts
@@ -1225,7 +1225,7 @@ public final class ConnectionContextHelper {
 
     /**
      * merge the context variables and groups: add variables into the job; add context group into the job.
-     * 
+     *
      * @param process
      * @param contexts
      * @param defaultContextName the default context name of contexts
@@ -1264,7 +1264,7 @@ public final class ConnectionContextHelper {
 
     /**
      * merge the context variables and groups: add variables into the job; add context group into the job.
-     * 
+     *
      * @param process
      * @param contextItem
      * @param ctxManager
@@ -1301,7 +1301,7 @@ public final class ConnectionContextHelper {
     /**
      * merge the context variables and groups: add variables from contexts into ctxManager; add context group from
      * contexts into ctxManager.
-     * 
+     *
      * @param contexts
      * @param defaultContextName the default context name of contexts
      * @param contextItemId the ContextItem's property Id or null
@@ -1317,7 +1317,7 @@ public final class ConnectionContextHelper {
     /**
      * merge the context variables and groups: add variables from contexts into ctxManager; add context group from
      * contexts into ctxManager.
-     * 
+     *
      * @param contexts
      * @param defaultContextName the default context name of contexts
      * @param contextItemId the ContextItem's property Id or null
@@ -1421,7 +1421,7 @@ public final class ConnectionContextHelper {
 
     /**
      * DOC xqliu Comment method "getContextNameParamsMap".
-     * 
+     *
      * @param contexts
      * @return
      */
@@ -1449,7 +1449,7 @@ public final class ConnectionContextHelper {
     /**
      * merge the context variables and groups: add variables from contextItem into ctxManager; add context group from
      * contextItem into ctxManager.
-     * 
+     *
      * @param contextItem
      * @param ctxManager
      * @param addedVars the variables need to adding
@@ -1463,7 +1463,7 @@ public final class ConnectionContextHelper {
 
     /**
      * add the variables from ctxParams into JobContext.
-     * 
+     *
      * @param addedVars the variables need to adding
      * @param ctxParams the list of IContextParameter
      * @param jobContext the JobContext
@@ -1486,7 +1486,7 @@ public final class ConnectionContextHelper {
 
     /**
      * add the variables from ctxParams into JobContext.
-     * 
+     *
      * @param contextItemId the ContextItem's property Id
      * @param addedVars the variables need to adding
      * @param ctxParams the list of IContextParameter
@@ -1511,7 +1511,7 @@ public final class ConnectionContextHelper {
 
     /**
      * add the context from the ContextItem into the job.
-     * 
+     *
      * @param process the job
      * @param contextItem the ContextItem
      * @param ctxManager
@@ -1551,7 +1551,7 @@ public final class ConnectionContextHelper {
 
     /**
      * add the context from contextItem into the ctxManager: add the variables and the context groups.
-     * 
+     *
      * @param contextItem
      * @param ctxManager
      * @param addedVars the variables need to adding
@@ -1565,7 +1565,7 @@ public final class ConnectionContextHelper {
 
     /**
      * add the variables from ctxParams into JobContext.
-     * 
+     *
      * @param contextItem
      * @param addedVars the variables need to adding
      * @param ctxParams
@@ -1616,7 +1616,7 @@ public final class ConnectionContextHelper {
         return checkAndAddContextVariables(contextItem.getContext(), contextItem.getDefaultContext(), contextItem.getProperty()
                 .getId(), neededVars, ctxManager, added);
     }
-    
+
     public static Set<String> checkAndAddContextVariables(final ContextItem contextItem,
             final IContextManager ctxManager, boolean added) {
         List<ContextType> contexts = contextItem.getContext();
@@ -1650,7 +1650,7 @@ public final class ConnectionContextHelper {
 
     /**
      * check if there exist variables which need to add into the ctxManager.
-     * 
+     *
      * @param contexts
      * @param defaultContextName
      * @param contextItemId
@@ -1720,9 +1720,9 @@ public final class ConnectionContextHelper {
     }
 
     /**
-     * 
+     *
      * wzhang Comment method "containsVariable".
-     * 
+     *
      * @param ctxManager
      * @return
      */
@@ -1738,9 +1738,9 @@ public final class ConnectionContextHelper {
     }
 
     /**
-     * 
+     *
      * wzhang Comment method "checkAndAddContextsVarDND".
-     * 
+     *
      * @param item
      * @param ctxManager
      */
@@ -1750,7 +1750,7 @@ public final class ConnectionContextHelper {
 
     /**
      * add the context into the ctxManager.
-     * 
+     *
      * @param contexts
      * @param defaultContextName the default context name of the contexts
      * @param contextItemId the ContextItem's property Id or null
@@ -1786,7 +1786,7 @@ public final class ConnectionContextHelper {
     /*
      * if defaultContext is false, maybe will open dialog to confirm the context set. same as
      * getContextTypeForContextMode(connection).
-     * 
+     *
      * if defaultContext is true, will use the default context.
      */
     public static ContextType getContextTypeForContextMode(Connection connection, boolean defaultContext) {
@@ -1836,11 +1836,11 @@ public final class ConnectionContextHelper {
     }
 
     /**
-     * 
+     *
      * ggu Comment method "getContextTypeForContextMode".
-     * 
+     *
      * if connection is in context mode,choose the context. if return null, the connection is not in context mode.
-     * 
+     *
      * if canCancel is true, the selecting cotnext sets dialog will can be cancel.
      */
     private static ContextType getContextTypeForContextMode(Shell shell, Connection connection, String selectedContext,
@@ -1924,7 +1924,7 @@ public final class ConnectionContextHelper {
 
     /**
      * DOC gcui Comment method "getContextTypeForJob".
-     * 
+     *
      * @param shell
      * @param contextManager
      * @param canCancel
@@ -1938,11 +1938,11 @@ public final class ConnectionContextHelper {
     }
 
     /**
-     * 
+     *
      * ggu Comment method "getOriginalValue".
-     * 
+     *
      * if value is context mode, return original value.
-     * 
+     *
      * @deprecated use instead ContextParameterUtils.getOriginalValue
      */
     @Deprecated
@@ -1961,7 +1961,7 @@ public final class ConnectionContextHelper {
     }
 
     /*
-     * 
+     *
      */
     public static int convertValue(String value) {
         if (value == null || value.equals(EMPTY)) {

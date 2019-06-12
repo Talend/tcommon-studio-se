@@ -1,6 +1,6 @@
 // ============================================================================
 //
-// Copyright (C) 2006-2018 Talend Inc. - www.talend.com
+// Copyright (C) 2006-2019 Talend Inc. - www.talend.com
 //
 // This source code is available under agreement available at
 // %InstallDIR%\features\org.talend.rcp.branding.%PRODUCTNAME%\%PRODUCTNAME%license.txt
@@ -36,9 +36,9 @@ import org.talend.core.repository.i18n.Messages;
 
 /**
  * This class is used for verifying CA for LDAP connection.
- * 
+ *
  * @author ftang, 10/09/2007
- * 
+ *
  */
 public class LDAPCATruster implements X509TrustManager {
 
@@ -58,7 +58,7 @@ public class LDAPCATruster implements X509TrustManager {
 
     /**
      * LDAPCATruster constructor comment.
-     * 
+     *
      * @param certStorePath
      */
     public LDAPCATruster(String certStorePath) {
@@ -78,7 +78,7 @@ public class LDAPCATruster implements X509TrustManager {
 
     /**
      * Comment method "deleteCert".
-     * 
+     *
      * @param id
      * @return
      */
@@ -93,7 +93,7 @@ public class LDAPCATruster implements X509TrustManager {
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see com.sun.net.ssl.X509TrustManager#getAcceptedIssuers()
      */
     public X509Certificate[] getAcceptedIssuers() {
@@ -105,7 +105,7 @@ public class LDAPCATruster implements X509TrustManager {
 
     /**
      * Comment method "getCACert".
-     * 
+     *
      * @param chain
      * @return
      */
@@ -169,7 +169,7 @@ public class LDAPCATruster implements X509TrustManager {
 
     /**
      * Comment method "initTrustManager".
-     * 
+     *
      * @param ks
      * @return
      * @throws NoSuchAlgorithmException
@@ -201,7 +201,7 @@ public class LDAPCATruster implements X509TrustManager {
         else
             trustManager.checkClientTrusted(chain, authType);
 	}
-    
+
     @Override
 	public void checkServerTrusted(X509Certificate[] chain, String authType) throws CertificateException {
 		if (trustManager != null) {
@@ -246,7 +246,7 @@ public class LDAPCATruster implements X509TrustManager {
 
     /**
      * Comment method "saveStore".
-     * 
+     *
      * @return
      */
     private boolean saveStore() {

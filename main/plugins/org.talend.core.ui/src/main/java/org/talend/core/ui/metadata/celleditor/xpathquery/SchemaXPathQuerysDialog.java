@@ -1,6 +1,6 @@
 // ============================================================================
 //
-// Copyright (C) 2006-2018 Talend Inc. - www.talend.com
+// Copyright (C) 2006-2019 Talend Inc. - www.talend.com
 //
 // This source code is available under agreement available at
 // %InstallDIR%\features\org.talend.rcp.branding.%PRODUCTNAME%\%PRODUCTNAME%license.txt
@@ -58,7 +58,7 @@ public class SchemaXPathQuerysDialog extends Dialog {
     private String values;
 
     /*
-     * 
+     *
      */
     private XPathQueryMetadataTableEditorExt metadataTableEditor;
 
@@ -226,7 +226,7 @@ public class SchemaXPathQuerysDialog extends Dialog {
     }
 
     /**
-     * 
+     *
      * cli XPathQueryChangeCommand class global comment. Detailled comment
      */
     class XPathQueryChangeCommand extends Command {

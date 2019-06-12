@@ -1,6 +1,6 @@
 // ============================================================================
 //
-// Copyright (C) 2006-2018 Talend Inc. - www.talend.com
+// Copyright (C) 2006-2019 Talend Inc. - www.talend.com
 //
 // This source code is available under agreement available at
 // %InstallDIR%\features\org.talend.rcp.branding.%PRODUCTNAME%\%PRODUCTNAME%license.txt
@@ -17,9 +17,9 @@ import org.talend.designer.core.model.utils.emf.talendfile.NodeType;
 
 /**
  * yzhang class global comment. Detailled comment <br/>
- * 
+ *
  * $Id: talend.epf 1 2006-09-29 17:06:40Z nrousseau $
- * 
+ *
  */
 public class ParameterTypeFilter implements IComponentFilter {
 
@@ -34,7 +34,7 @@ public class ParameterTypeFilter implements IComponentFilter {
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see org.talend.core.model.components.filters.IComponentFilter#accept(org.talend.designer.core.model.utils.emf.talendfile.NodeType)
      */
     public boolean accept(NodeType node) {

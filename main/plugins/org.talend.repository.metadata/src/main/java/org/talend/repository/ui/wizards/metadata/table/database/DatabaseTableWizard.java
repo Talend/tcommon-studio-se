@@ -1,6 +1,6 @@
 // ============================================================================
 //
-// Copyright (C) 2006-2018 Talend Inc. - www.talend.com
+// Copyright (C) 2006-2019 Talend Inc. - www.talend.com
 //
 // This source code is available under agreement available at
 // %InstallDIR%\features\org.talend.rcp.branding.%PRODUCTNAME%\%PRODUCTNAME%license.txt
@@ -97,7 +97,7 @@ public class DatabaseTableWizard extends CheckLastVersionRepositoryWizard implem
 
     /**
      * DOC ocarbone DatabaseTableWizard constructor comment.
-     * 
+     *
      * @param workbench
      * @param idNodeDbConnection
      * @param metadataTable
@@ -133,7 +133,7 @@ public class DatabaseTableWizard extends CheckLastVersionRepositoryWizard implem
 
     /**
      * DOC acer Comment method "setSkipStep".
-     * 
+     *
      * @param skipStep
      */
     public void setSkipStep(boolean skipStep) {
@@ -239,7 +239,7 @@ public class DatabaseTableWizard extends CheckLastVersionRepositoryWizard implem
                         tdqRepositoryService.updateImpactOnAnalysis(connectionItem);
                     }
                     Display.getDefault().asyncExec(new Runnable() {
-                        
+
                         @Override
                         public void run() {
                             RepositoryUpdateManager.updateMultiSchema(connectionItem, oldMetadataTable, oldTableMap);
@@ -270,7 +270,7 @@ public class DatabaseTableWizard extends CheckLastVersionRepositoryWizard implem
 
     /**
      * We will accept the selection in the workbench to see if we can initialize from it.
-     * 
+     *
      * @see IWorkbenchWizard#init(IWorkbench, IStructuredSelection)
      */
     @Override
@@ -294,7 +294,7 @@ public class DatabaseTableWizard extends CheckLastVersionRepositoryWizard implem
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see org.talend.repository.ui.wizards.RepositoryWizard#performCancel()
      */
     @Override
@@ -318,11 +318,11 @@ public class DatabaseTableWizard extends CheckLastVersionRepositoryWizard implem
     }
 
     /**
-     * 
+     *
      * DOC qiongli: judge if need to update related Analyses for TDQ.It is according to method
      * RepositoryUpdateManager.updateMultiSchema(ConnectionItem connItem, List<IMetadataTable> oldMetadataTable,
      * Map<String, String> oldTableMap).
-     * 
+     *
      * @param item
      * @return
      */

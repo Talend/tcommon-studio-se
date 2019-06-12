@@ -1,6 +1,6 @@
 // ============================================================================
 //
-// Copyright (C) 2006-2018 Talend Inc. - www.talend.com
+// Copyright (C) 2006-2019 Talend Inc. - www.talend.com
 //
 // This source code is available under agreement available at
 // %InstallDIR%\features\org.talend.rcp.branding.%PRODUCTNAME%\%PRODUCTNAME%license.txt
@@ -48,7 +48,7 @@ public class MissingJarBundleFileWrapper extends BundleFileWrapper {
 
     /**
      * DOC sgandon MissingJarBundleFileWrapper constructor comment.
-     * 
+     *
      * @param bundleFile
      * @param generation
      * @param jarPath
@@ -61,7 +61,7 @@ public class MissingJarBundleFileWrapper extends BundleFileWrapper {
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see org.eclipse.osgi.storage.bundlefile.BundleFileWrapper#getFile(java.lang.String, boolean)
      */
     @Override
@@ -77,18 +77,18 @@ public class MissingJarBundleFileWrapper extends BundleFileWrapper {
 
     /**
      * DOC sgandon Comment method "createResolvedBundleFile".
-     * 
+     *
      * @param jarFile
      */
     private void createResolvedBundleFile(File jarFile) {
         resolvedBundleFile = generation.getBundleInfo().getStorage().createBundleFile(jarFile, generation, false, false);
         MissingJarServices
-                .logDebugInfo("MissingJarBundleFileWrapper resolved :" + generation.getRevision().getSymbolicName() + "/" + jarPath + "(" + jarFile.getAbsolutePath() + ")"); //$NON-NLS-1$//$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$                     
+                .logDebugInfo("MissingJarBundleFileWrapper resolved :" + generation.getRevision().getSymbolicName() + "/" + jarPath + "(" + jarFile.getAbsolutePath() + ")"); //$NON-NLS-1$//$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$
     }
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see org.eclipse.osgi.storage.bundlefile.BundleFileWrapper#getEntry(java.lang.String)
      */
     @Override
@@ -104,7 +104,7 @@ public class MissingJarBundleFileWrapper extends BundleFileWrapper {
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see org.eclipse.osgi.storage.bundlefile.BundleFileWrapper#getEntryPaths(java.lang.String)
      */
     @Override
@@ -120,7 +120,7 @@ public class MissingJarBundleFileWrapper extends BundleFileWrapper {
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see org.eclipse.osgi.storage.bundlefile.BundleFileWrapper#getEntryPaths(java.lang.String, boolean)
      */
     @Override
@@ -136,7 +136,7 @@ public class MissingJarBundleFileWrapper extends BundleFileWrapper {
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see org.eclipse.osgi.storage.bundlefile.BundleFile#getResourceURL(java.lang.String,
      * org.eclipse.osgi.container.Module, int)
      */
@@ -162,7 +162,7 @@ public class MissingJarBundleFileWrapper extends BundleFileWrapper {
             if (MissingJarServices.getJarMissingObservable().countObservers() != 0) {
                 String message = "one third party library file [" + jarPath.substring(0, jarPath.length() - 1) //$NON-NLS-1$
                         + "] was not found, it is required for bundle [" + getBundleFile().getBaseFile().getName() //$NON-NLS-1$
-                        + "]."; //$NON-NLS-1$ 
+                        + "]."; //$NON-NLS-1$
                 if (MissingJarServices.getLogService() != null) {
                     MissingJarServices.getLogService().log(LogService.LOG_DEBUG, message);
                 } else {// no log service available so throw a runtime exception to try
@@ -177,7 +177,7 @@ public class MissingJarBundleFileWrapper extends BundleFileWrapper {
     /**
      * Looks for missing jar using a maven resolver if a maven parameter is found in the Bundle-Classpath hearder.
      * otherwise looks for the bundle in the lib/java folder.
-     * 
+     *
      * @param path of the jar to find as denoted in the Bundle-ClassPath header
      * @param generation the generation of the bundle to get the manifest from
      * @param notifyMissingJar this will call the notification service if true

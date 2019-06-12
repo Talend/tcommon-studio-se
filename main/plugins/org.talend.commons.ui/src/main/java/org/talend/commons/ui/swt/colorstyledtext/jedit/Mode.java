@@ -1,6 +1,6 @@
 // ============================================================================
 //
-// Copyright (C) 2006-2018 Talend Inc. - www.talend.com
+// Copyright (C) 2006-2019 Talend Inc. - www.talend.com
 //
 // This source code is available under agreement available at
 // %InstallDIR%\features\org.talend.rcp.branding.%PRODUCTNAME%\%PRODUCTNAME%license.txt
@@ -25,17 +25,17 @@ import org.talend.commons.ui.runtime.i18n.Messages;
 
 /**
  * DOC nrousseau class global comment. Detailled comment <br/>
- * 
+ *
  * $Id: Mode.java 7038 2007-11-15 14:05:48Z plegall $
- * 
+ *
  */
 public class Mode {
 
     /**
      * DOC nrousseau Mode class global comment. Detailled comment <br/>
-     * 
+     *
      * $Id: Mode.java 7038 2007-11-15 14:05:48Z plegall $
-     * 
+     *
      */
     class ModeSyntaxListener implements ISyntaxListener {
 
@@ -116,10 +116,10 @@ public class Mode {
 
     /**
      * Answer the named rule. This may be a rule local to this mode or may refer to a rule in another mode.
-     * 
+     *
      * BUGFIX I also found that some of the modes specify modes that do not exist. (asp.xml) in cases where that happens
      * answer the default rule.
-     * 
+     *
      * @param name
      * @return Rule
      */

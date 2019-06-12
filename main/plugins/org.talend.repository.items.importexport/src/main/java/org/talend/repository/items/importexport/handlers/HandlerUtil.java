@@ -1,6 +1,6 @@
 // ============================================================================
 //
-// Copyright (C) 2006-2018 Talend Inc. - www.talend.com
+// Copyright (C) 2006-2019 Talend Inc. - www.talend.com
 //
 // This source code is available under agreement available at
 // %InstallDIR%\features\org.talend.rcp.branding.%PRODUCTNAME%\%PRODUCTNAME%license.txt
@@ -142,7 +142,7 @@ public final class HandlerUtil {
     }
 
     /**
-     * 
+     *
      * load the resource
      */
     public static Resource loadResource(ResourcesManager manager, ImportItem importItem) {
@@ -157,7 +157,7 @@ public final class HandlerUtil {
 
                 /*
                  * (non-Javadoc)
-                 * 
+                 *
                  * @see org.eclipse.emf.ecore.resource.impl.ExtensibleURIConverterImpl#createInputStream(org.eclipse.
                  * emf.common.util.URI, java.util.Map)
                  */
@@ -175,7 +175,7 @@ public final class HandlerUtil {
 
                 /*
                  * (non-Javadoc)
-                 * 
+                 *
                  * @see
                  * org.eclipse.emf.ecore.resource.impl.ExtensibleURIConverterImpl#contentDescription(org.eclipse.emf
                  * .common.util.URI, java.util.Map)

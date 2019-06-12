@@ -1,6 +1,6 @@
 // ============================================================================
 //
-// Copyright (C) 2006-2018 Talend Inc. - www.talend.com
+// Copyright (C) 2006-2019 Talend Inc. - www.talend.com
 //
 // This source code is available under agreement available at
 // %InstallDIR%\features\org.talend.rcp.branding.%PRODUCTNAME%\%PRODUCTNAME%license.txt
@@ -22,7 +22,7 @@ import org.talend.core.model.metadata.builder.database.manager.dbs.OracleExtract
 
 /**
  * qzhang class global comment. Detailled comment <br/>
- * 
+ *
  */
 public class TableInfoParameters {
 
@@ -51,7 +51,7 @@ public class TableInfoParameters {
 
     /**
      * Getter for types.
-     * 
+     *
      * @return the types
      */
     public List<ETableTypes> getTypes() {
@@ -60,7 +60,7 @@ public class TableInfoParameters {
 
     /**
      * Sets the types.
-     * 
+     *
      * @param types the types to set
      */
     private void addTypes(ETableTypes type) {
@@ -83,7 +83,7 @@ public class TableInfoParameters {
 
     /**
      * Getter for nameFiter.
-     * 
+     *
      * @return the nameFiter
      */
     public Set<String> getNameFilters() {
@@ -99,7 +99,7 @@ public class TableInfoParameters {
 
     /**
      * Sets the nameFiter.
-     * 
+     *
      * @param nameFiter the nameFiter to set
      */
     private void addNameFiter(String nameFiter) {
@@ -114,7 +114,7 @@ public class TableInfoParameters {
 
     /**
      * Getter for sqlFiter.
-     * 
+     *
      * @return the sqlFiter
      */
     public String getSqlFiter() {
@@ -123,7 +123,7 @@ public class TableInfoParameters {
 
     /**
      * Sets the sqlFiter.
-     * 
+     *
      * @param sqlFiter the sqlFiter to set
      */
     public void setSqlFiter(String sqlFiter) {
@@ -132,7 +132,7 @@ public class TableInfoParameters {
 
     /**
      * Getter for usedName.
-     * 
+     *
      * @return the usedName
      */
     public boolean isUsedName() {
@@ -141,7 +141,7 @@ public class TableInfoParameters {
 
     /**
      * Sets the usedName.
-     * 
+     *
      * @param usedName the usedName to set
      */
     public void setUsedName(boolean usedName) {

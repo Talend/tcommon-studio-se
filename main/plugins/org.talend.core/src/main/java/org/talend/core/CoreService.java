@@ -1,6 +1,6 @@
 // ============================================================================
 //
-// Copyright (C) 2006-2018 Talend Inc. - www.talend.com
+// Copyright (C) 2006-2019 Talend Inc. - www.talend.com
 //
 // This source code is available under agreement available at
 // %InstallDIR%\features\org.talend.rcp.branding.%PRODUCTNAME%\%PRODUCTNAME%license.txt
@@ -134,7 +134,7 @@ public class CoreService implements ICoreService {
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see org.talend.core.ICoreService#setFlagForQueryUtils(boolean)
      */
     @Override
@@ -145,7 +145,7 @@ public class CoreService implements ICoreService {
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see org.talend.core.ICoreService#getFlagFromQueryUtils()
      */
     @Override
@@ -155,7 +155,7 @@ public class CoreService implements ICoreService {
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see org.talend.core.ICoreService#getRoutineAndJars()
      */
     @Override
@@ -165,7 +165,7 @@ public class CoreService implements ICoreService {
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see org.talend.core.ICoreService#getTemplateString()
      */
     @Override
@@ -175,7 +175,7 @@ public class CoreService implements ICoreService {
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see org.talend.core.ICoreService#getParameterUNIQUENAME()
      */
     @Override
@@ -271,7 +271,7 @@ public class CoreService implements ICoreService {
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see org.talend.core.ICoreService#syncAllRoutines()
      */
     @Override
@@ -489,7 +489,7 @@ public class CoreService implements ICoreService {
     @Override
     public void syncLog4jSettings(ITalendProcessJavaProject talendJavaProject) {
         Project project = ProjectManager.getInstance().getCurrentProject();
-        String log = "Sync log4j settings"; //$NON-NLS-1$ 
+        String log = "Sync log4j settings"; //$NON-NLS-1$
         final RepositoryWorkUnit repositoryWorkUnit = new RepositoryWorkUnit(project, log) {
 
             @Override

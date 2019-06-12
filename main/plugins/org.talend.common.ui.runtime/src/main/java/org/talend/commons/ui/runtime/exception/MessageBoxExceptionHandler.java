@@ -1,6 +1,6 @@
 // ============================================================================
 //
-// Copyright (C) 2006-2018 Talend Inc. - www.talend.com
+// Copyright (C) 2006-2019 Talend Inc. - www.talend.com
 //
 // This source code is available under agreement available at
 // %InstallDIR%\features\org.talend.rcp.branding.%PRODUCTNAME%\%PRODUCTNAME%license.txt
@@ -24,9 +24,9 @@ import org.talend.commons.ui.runtime.i18n.Messages;
 
 /**
  * Exception handling via message box.<br/>
- * 
+ *
  * $Id: MessageBoxExceptionHandler.java 7038 2007-11-15 14:05:48Z plegall $
- * 
+ *
  */
 public final class MessageBoxExceptionHandler {
 
@@ -40,7 +40,7 @@ public final class MessageBoxExceptionHandler {
 
     /**
      * Log the exeption then open a message box showing a generic message and exception message.
-     * 
+     *
      * @param ex - exception to log
      */
     public static void process(final Throwable ex) {
@@ -74,7 +74,7 @@ public final class MessageBoxExceptionHandler {
 
     /**
      * Open a message box showing a generic message and exception message.
-     * 
+     *
      * @param ex - exception to show
      */
     public static void showMessage(Throwable ex, Shell shell) {
@@ -105,9 +105,9 @@ public final class MessageBoxExceptionHandler {
 
     /**
      * bug 17654:import the xml file as the schema will throw error.
-     * 
+     *
      * DOC yhch Comment method "showMessageForSchemaImportXml".
-     * 
+     *
      * @param ex
      * @param shell
      */

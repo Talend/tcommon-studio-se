@@ -1,6 +1,6 @@
 // ============================================================================
 //
-// Copyright (C) 2006-2018 Talend Inc. - www.talend.com
+// Copyright (C) 2006-2019 Talend Inc. - www.talend.com
 //
 // This source code is available under agreement available at
 // %InstallDIR%\features\org.talend.rcp.branding.%PRODUCTNAME%\%PRODUCTNAME%license.txt
@@ -64,7 +64,7 @@ import orgomg.cwm.objectmodel.core.Feature;
 
 /**
  * created by ggu on Jul 4, 2012 Detailled comment
- * 
+ *
  */
 @PrepareForTest({ ExtractMetaDataUtils.class })
 @Ignore
@@ -104,7 +104,7 @@ public class AbstractTest4ExtractManager {
     }
 
     /**
-     * 
+     *
      * DOC ggu Comment method "testGetDbType".
      */
     @Test
@@ -114,9 +114,9 @@ public class AbstractTest4ExtractManager {
     }
 
     /**
-     * 
+     *
      * DOC ggu Comment method "testCloseConnect4Null".
-     * 
+     *
      * @throws Exception
      */
     @Test
@@ -138,9 +138,9 @@ public class AbstractTest4ExtractManager {
     }
 
     /**
-     * 
+     *
      * DOC ggu Comment method "testCloseConnect".
-     * 
+     *
      * @throws Exception
      */
     @Test
@@ -167,9 +167,9 @@ public class AbstractTest4ExtractManager {
     }
 
     /**
-     * 
+     *
      * DOC ggu Comment method "testExtractTablesFromDB4NullSchema".
-     * 
+     *
      * @throws Exception
      */
     // @Test
@@ -184,9 +184,9 @@ public class AbstractTest4ExtractManager {
     }
 
     /**
-     * 
+     *
      * DOC ggu Comment method "testExtractTablesFromDB4EmptySchema".
-     * 
+     *
      * @throws Exception
      */
     // @Test
@@ -201,9 +201,9 @@ public class AbstractTest4ExtractManager {
     }
 
     /**
-     * 
+     *
      * DOC ggu Comment method "testExtractTablesFromDB".
-     * 
+     *
      * @throws Exception
      */
     @Test
@@ -304,9 +304,9 @@ public class AbstractTest4ExtractManager {
     }
 
     /**
-     * 
+     *
      * DOC ggu Comment method "testExtractTablesFromDB4SQLException".
-     * 
+     *
      * @throws Exception
      */
     @Test(expected = RuntimeException.class)
@@ -348,9 +348,9 @@ public class AbstractTest4ExtractManager {
     }
 
     /**
-     * 
+     *
      * DOC ggu Comment method "testGetTableNameBySynonyms".
-     * 
+     *
      * @see ExtractManager.getTableNameBySynonyms(Connection,String)
      * @throws Exception
      */
@@ -367,9 +367,9 @@ public class AbstractTest4ExtractManager {
     }
 
     /**
-     * 
+     *
      * DOC ggu Comment method "testGetSchema".
-     * 
+     *
      * @see ExtractManager.getSchema(IMetadataConnection)
      */
     @Test
@@ -388,9 +388,9 @@ public class AbstractTest4ExtractManager {
     }
 
     /**
-     * 
+     *
      * DOC ggu Comment method "testReturnMetadataColumnsFormTable".
-     * 
+     *
      * @see ExtractManager.returnMetadataColumnsFormTable(IMetadataConnection, String, boolean...)
      * @throws Exception
      */
@@ -401,11 +401,11 @@ public class AbstractTest4ExtractManager {
     }
 
     /**
-     * 
+     *
      * DOC ggu Comment method "testReturnColumns4DontCreateConnection".
-     * 
+     *
      * @see ExtractManager.returnColumns(IMetadataConnection, TableNode, boolean...)
-     * 
+     *
      * don't recreate the connection.
      * @throws Exception
      */
@@ -552,11 +552,11 @@ public class AbstractTest4ExtractManager {
     }
 
     /**
-     * 
+     *
      * DOC ggu Comment method "testReturnColumns4DontCreateConnection2TableTypeSynonym".
-     * 
+     *
      * test for the Synonym
-     * 
+     *
      * @throws Exception
      */
     @Test
@@ -620,11 +620,11 @@ public class AbstractTest4ExtractManager {
     }
 
     /**
-     * 
+     *
      * DOC ggu Comment method "testReturnColumns4reCreateConnection".
-     * 
+     *
      * test when the dontCreateClose is true
-     * 
+     *
      * @throws Exception
      */
     @Test
@@ -741,9 +741,9 @@ public class AbstractTest4ExtractManager {
     }
 
     /**
-     * 
+     *
      * DOC ggu Comment method "testReturnTablesFormConnection".
-     * 
+     *
      * @see ExtractManager.returnTablesFormConnection(IMetadataConnection, TableInfoParameters)
      * @throws Exception
      */

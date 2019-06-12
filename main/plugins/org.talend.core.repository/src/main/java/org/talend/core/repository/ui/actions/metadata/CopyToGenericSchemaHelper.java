@@ -1,6 +1,6 @@
 // ============================================================================
 //
-// Copyright (C) 2006-2018 Talend Inc. - www.talend.com
+// Copyright (C) 2006-2019 Talend Inc. - www.talend.com
 //
 // This source code is available under agreement available at
 // %InstallDIR%\features\org.talend.rcp.branding.%PRODUCTNAME%\%PRODUCTNAME%license.txt
@@ -48,7 +48,7 @@ import orgomg.cwm.objectmodel.core.Package;
 
 /**
  * Administrator class global comment. Detailed comment <br/>
- * 
+ *
  */
 public class CopyToGenericSchemaHelper {
 
@@ -58,7 +58,7 @@ public class CopyToGenericSchemaHelper {
 
     /**
      * Administrator Comment method "moveToGenericSchema".
-     * 
+     *
      * @param factory
      * @param targetPath
      * @param ve
@@ -190,7 +190,7 @@ public class CopyToGenericSchemaHelper {
 
     /**
      * Comment method "checkIsConnectionTableSchema".
-     * 
+     *
      * @param objectToM m isConnectionTableSchema
      * @return
      */
@@ -210,7 +210,7 @@ public class CopyToGenericSchemaHelper {
 
     /**
      * Comment method "getCopiedLabel".
-     * 
+     *
      * @param copiedProperty
      * @return
      * @throws PersistenceException

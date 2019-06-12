@@ -1,6 +1,6 @@
 // ============================================================================
 //
-// Copyright (C) 2006-2018 Talend Inc. - www.talend.com
+// Copyright (C) 2006-2019 Talend Inc. - www.talend.com
 //
 // This source code is available under agreement available at
 // %InstallDIR%\features\org.talend.rcp.branding.%PRODUCTNAME%\%PRODUCTNAME%license.txt
@@ -19,7 +19,7 @@ public class ExceptionServiceImpl implements ExceptionService {
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see org.talend.commons.exception.ExceptionService#showExceptionInMessgeBox(java.lang.Throwable)
      */
     @Override
@@ -29,7 +29,7 @@ public class ExceptionServiceImpl implements ExceptionService {
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see org.talend.commons.exception.ExceptionService#showMessageForSchemaImportXml(java.lang.Throwable)
      */
     @Override

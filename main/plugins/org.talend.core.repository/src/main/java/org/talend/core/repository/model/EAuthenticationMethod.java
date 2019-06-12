@@ -1,6 +1,6 @@
 // ============================================================================
 //
-// Copyright (C) 2006-2018 Talend Inc. - www.talend.com
+// Copyright (C) 2006-2019 Talend Inc. - www.talend.com
 //
 // This source code is available under agreement available at
 // %InstallDIR%\features\org.talend.rcp.branding.%PRODUCTNAME%\%PRODUCTNAME%license.txt
@@ -16,22 +16,22 @@ import org.talend.core.repository.i18n.Messages;
 
 /**
  * This class is used for storing Authentication method for LDAP schema. <br/>
- * 
+ *
  * @author ftang, 18/09/2007
- * 
+ *
  */
 public enum EAuthenticationMethod {
     ANONYMOUS("EAuthenticationMethod.anonymousAuth"), //$NON-NLS-1$
     SIMPLE("EAuthenticationMethod.simpleAuth"); //$NON-NLS-1$
 
     /**
-     * 
+     *
      */
     private String methodName;
 
     /**
      * EAuthenticationMethod constructor comment.
-     * 
+     *
      * @param methodName
      */
     private EAuthenticationMethod(String methodName) {
@@ -40,7 +40,7 @@ public enum EAuthenticationMethod {
 
     /**
      * Comment method "getName".
-     * 
+     *
      * @return
      */
     public String getName() {

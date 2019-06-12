@@ -1,6 +1,6 @@
 // ============================================================================
 //
-// Copyright (C) 2006-2018 Talend Inc. - www.talend.com
+// Copyright (C) 2006-2019 Talend Inc. - www.talend.com
 //
 // This source code is available under agreement available at
 // %InstallDIR%\features\org.talend.rcp.branding.%PRODUCTNAME%\%PRODUCTNAME%license.txt
@@ -96,7 +96,7 @@ public class ContextWizard extends CheckLastVersionRepositoryWizard implements I
     ProxyRepositoryFactory factory = ProxyRepositoryFactory.getInstance();
 
     /**
-     * 
+     *
      * this constructor only for context mode. (feature 2449)
      */
     public ContextWizard(final String contextName, boolean creation, ISelection selection, final List<IContextParameter> paramList) {
@@ -131,7 +131,7 @@ public class ContextWizard extends CheckLastVersionRepositoryWizard implements I
 
     /**
      * Constructor for FileWizard.
-     * 
+     *
      * @param workbench
      * @param selection
      * @param strings
@@ -391,7 +391,7 @@ public class ContextWizard extends CheckLastVersionRepositoryWizard implements I
 
     /**
      * We will accept the selection in the workbench to see if we can initialize from it.
-     * 
+     *
      * @see IWorkbenchWizard#init(IWorkbench, IStructuredSelection)
      */
     public void init(final IWorkbench workbench, final IStructuredSelection selection2) {

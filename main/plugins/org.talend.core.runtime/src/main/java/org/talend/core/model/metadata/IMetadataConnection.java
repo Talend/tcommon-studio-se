@@ -1,6 +1,6 @@
 // ============================================================================
 //
-// Copyright (C) 2006-2018 Talend Inc. - www.talend.com
+// Copyright (C) 2006-2019 Talend Inc. - www.talend.com
 //
 // This source code is available under agreement available at
 // %InstallDIR%\features\org.talend.rcp.branding.%PRODUCTNAME%\%PRODUCTNAME%license.txt
@@ -19,9 +19,9 @@ import org.talend.core.database.conn.ConnParameterKeys;
 
 /**
  * DOC nrousseau class global comment. Detailled comment <br/>
- * 
+ *
  * $Id: IMetadataConnection.java 38013 2010-03-05 14:21:59Z mhirt $
- * 
+ *
  */
 public interface IMetadataConnection extends IMetadata {
 
@@ -199,7 +199,7 @@ public interface IMetadataConnection extends IMetadata {
      * Returns the value that you stored in the data collection by the key. Normally, it is like this key-value. For
      * business it is extensible for later whenever you want to add a new parameter for a connection. The constants for
      * key are stored in {@link ConnParameterKeys}. Added by Marvin Wang on Aug. 8, 2012.
-     * 
+     *
      * @param key
      * @return
      */
@@ -209,7 +209,7 @@ public interface IMetadataConnection extends IMetadata {
      * Puts the key-value you want to add into a collection, which is extensible for later whenever you want to add a
      * new parameter for connection. The constants for key are stored in {@link ConnParameterKeys}. Added by Marvin Wang
      * on Aug. 8, 2012.
-     * 
+     *
      * @param key
      * @param value
      */

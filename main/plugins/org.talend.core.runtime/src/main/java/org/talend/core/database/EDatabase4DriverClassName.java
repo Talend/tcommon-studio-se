@@ -1,6 +1,6 @@
 // ============================================================================
 //
-// Copyright (C) 2006-2018 Talend Inc. - www.talend.com
+// Copyright (C) 2006-2019 Talend Inc. - www.talend.com
 //
 // This source code is available under agreement available at
 // %InstallDIR%\features\org.talend.rcp.branding.%PRODUCTNAME%\%PRODUCTNAME%license.txt
@@ -95,7 +95,7 @@ public enum EDatabase4DriverClassName {
 
     HIVE2(EDatabaseTypeName.HIVE, "org.apache.hive.jdbc.HiveDriver"), //$NON-NLS-1$
 
-    IMPALA(EDatabaseTypeName.IMPALA, "org.apache.hive.jdbc.HiveDriver"), //$NON-NLS-1$ 
+    IMPALA(EDatabaseTypeName.IMPALA, "org.apache.hive.jdbc.HiveDriver"), //$NON-NLS-1$
 
     H2(EDatabaseTypeName.H2, "org.h2.Driver")//$NON-NLS-1$
     //

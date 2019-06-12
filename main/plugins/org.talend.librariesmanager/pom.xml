@@ -24,14 +24,14 @@
 							<goal>copy</goal>
 						</goals>
 						<configuration>
+							<stripVersion>true</stripVersion>
 							<outputDirectory>${project.basedir}/lib</outputDirectory>
-							<destFileName>crypto-utils.jar</destFileName>
 							<artifactItems>
-								<dependency>
+								<artifactItem>
 									<groupId>org.talend.daikon</groupId>
 									<artifactId>crypto-utils</artifactId>
 									<version>${org.talend.daikon.crypto-utils.version}</version>
-								</dependency>
+								</artifactItem>
 							</artifactItems>
 						</configuration>
 					</execution>

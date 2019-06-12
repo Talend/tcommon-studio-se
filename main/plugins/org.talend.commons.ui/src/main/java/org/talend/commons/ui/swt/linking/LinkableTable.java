@@ -1,6 +1,6 @@
 // ============================================================================
 //
-// Copyright (C) 2006-2018 Talend Inc. - www.talend.com
+// Copyright (C) 2006-2019 Talend Inc. - www.talend.com
 //
 // This source code is available under agreement available at
 // %InstallDIR%\features\org.talend.rcp.branding.%PRODUCTNAME%\%PRODUCTNAME%license.txt
@@ -31,9 +31,9 @@ import org.talend.commons.ui.swt.tableviewer.TableViewerCreator;
 
 /**
  * DOC amaumont class global comment. Detailled comment <br/>
- * 
+ *
  * $Id$
- * 
+ *
  */
 public class LinkableTable implements ILinkableControl {
 
@@ -56,7 +56,7 @@ public class LinkableTable implements ILinkableControl {
 
     /**
      * DOC amaumont LinkableTable constructor comment.
-     * 
+     *
      * @param table
      * @param bgDrawableComposite TODO
      */
@@ -80,7 +80,7 @@ public class LinkableTable implements ILinkableControl {
 
     /**
      * Getter for table.
-     * 
+     *
      * @return the table
      */
     public Table getTable() {
@@ -191,7 +191,7 @@ public class LinkableTable implements ILinkableControl {
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see org.talend.commons.ui.swt.linking.ILinkableControl#dispose()
      */
     public void dispose() {

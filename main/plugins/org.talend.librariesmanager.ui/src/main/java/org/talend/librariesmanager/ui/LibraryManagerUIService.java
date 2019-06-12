@@ -1,6 +1,6 @@
 // ============================================================================
 //
-// Copyright (C) 2006-2018 Talend Inc. - www.talend.com
+// Copyright (C) 2006-2019 Talend Inc. - www.talend.com
 //
 // This source code is available under agreement available at
 // %InstallDIR%\features\org.talend.rcp.branding.%PRODUCTNAME%\%PRODUCTNAME%license.txt
@@ -44,7 +44,7 @@ import org.talend.librariesmanager.utils.ModulesInstaller;
 
 /**
  * created by wchen on 2013-1-24 Detailled comment
- * 
+ *
  */
 public class LibraryManagerUIService implements ILibraryManagerUIService {
 
@@ -74,7 +74,7 @@ public class LibraryManagerUIService implements ILibraryManagerUIService {
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see org.talend.core.ILibraryManagerUIService#getRoutinesProviders()
      */
     @Override
@@ -84,7 +84,7 @@ public class LibraryManagerUIService implements ILibraryManagerUIService {
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see org.talend.core.ILibraryManagerUIService#initializeSystemLibs()
      */
     @Override
@@ -94,7 +94,7 @@ public class LibraryManagerUIService implements ILibraryManagerUIService {
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see org.talend.core.ILibraryManagerUIService#getRoutineAndJars()
      */
     @Override
@@ -104,7 +104,7 @@ public class LibraryManagerUIService implements ILibraryManagerUIService {
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see org.talend.core.ILibraryManagerUIService#collectRelatedRoutines()
      */
     @Override
@@ -115,7 +115,7 @@ public class LibraryManagerUIService implements ILibraryManagerUIService {
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see org.talend.core.ILibraryManagerUIService#getLibrariesPath(org.talend.core.language.ECodeLanguage)
      */
     @Override
@@ -144,7 +144,7 @@ public class LibraryManagerUIService implements ILibraryManagerUIService {
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see org.talend.core.ILibraryManagerUIService#isModuleInstalledForBundle(java.lang.String)
      */
     @Override
@@ -171,7 +171,7 @@ public class LibraryManagerUIService implements ILibraryManagerUIService {
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see org.talend.core.ILibraryManagerUIService#confirmDialog(org.talend.core.runtime.maven.MavenArtifact,
      * java.lang.String)
      */

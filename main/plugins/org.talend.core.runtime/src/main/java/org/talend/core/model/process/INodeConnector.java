@@ -1,6 +1,6 @@
 // ============================================================================
 //
-// Copyright (C) 2006-2018 Talend Inc. - www.talend.com
+// Copyright (C) 2006-2019 Talend Inc. - www.talend.com
 //
 // This source code is available under agreement available at
 // %InstallDIR%\features\org.talend.rcp.branding.%PRODUCTNAME%\%PRODUCTNAME%license.txt
@@ -16,9 +16,9 @@ import org.eclipse.swt.graphics.RGB;
 
 /**
  * Interface for Links between Nodes in a Process. <br/>
- * 
+ *
  * $Id: INodeConnector.java 38013 2010-03-05 14:21:59Z mhirt $
- * 
+ *
  */
 public interface INodeConnector {
 
@@ -47,7 +47,7 @@ public interface INodeConnector {
     /**
      * Built In field allow to create new schemas directly in the right click on the component. A Built In schema will
      * always be Dynamic.
-     * 
+     *
      * @return
      */
     public boolean isBuiltIn();
@@ -56,7 +56,7 @@ public interface INodeConnector {
 
     /**
      * Dynamic is set when the component can have several schemas on one connector.
-     * 
+     *
      * @return
      */
     public boolean isMultiSchema();
@@ -105,7 +105,7 @@ public interface INodeConnector {
 
     /**
      * DOC qzhang Comment method "addConnectionProperty".
-     * 
+     *
      * @param flow_ref
      * @param rgb
      * @param defaultLineStyle

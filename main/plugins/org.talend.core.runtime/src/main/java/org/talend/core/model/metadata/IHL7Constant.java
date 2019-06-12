@@ -1,6 +1,6 @@
 // ============================================================================
 //
-// Copyright (C) 2006-2018 Talend Inc. - www.talend.com
+// Copyright (C) 2006-2019 Talend Inc. - www.talend.com
 //
 // This source code is available under agreement available at
 // %InstallDIR%\features\org.talend.rcp.branding.%PRODUCTNAME%\%PRODUCTNAME%license.txt
@@ -44,7 +44,7 @@ public interface IHL7Constant {
     public static final String REPEATABLE = "REPEATABLE";//$NON-NLS-1$
 
     /*
-     * 
+     *
      */
     public static final String PROPERTY = "PROPERTY"; //$NON-NLS-1$
 

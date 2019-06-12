@@ -1,6 +1,6 @@
 // ============================================================================
 //
-// Copyright (C) 2006-2018 Talend Inc. - www.talend.com
+// Copyright (C) 2006-2019 Talend Inc. - www.talend.com
 //
 // This source code is available under agreement available at
 // %InstallDIR%\features\org.talend.rcp.branding.%PRODUCTNAME%\%PRODUCTNAME%license.txt
@@ -13,11 +13,11 @@
 package org.talend.commons.utils.threading;
 
 /**
- * 
+ *
  * Limit the execution of threads by verifying at call of <code>startIfExecutable</code> if the process can be
  * executable at this moment. If not the current process is aborted and the <code>execute</code> method is not called.
  * If yes the current process is executed by call the <code>execute</code> method. <br/>
- * 
+ *
  * @deprecated use ExecutionLimiterImproved instead
  */
 public abstract class ExecutionLimiter {
@@ -45,9 +45,9 @@ public abstract class ExecutionLimiter {
     }
 
     /**
-     * 
+     *
      * DOC amaumont ExecutionLimiter constructor comment.
-     * 
+     *
      * @param timeBeforeNewExecute time max between executions
      * @param finalExecute execute at end of time the treatment to ensure it is executed a least one time after last
      * call of startIfExecutable()
@@ -64,11 +64,11 @@ public abstract class ExecutionLimiter {
     public boolean startIfExecutable(Object data) {
         return startIfExecutable(false, data);
     }
-    
+
     /**
      * Start execution if executable, after <code>timeBeforeNewExecute</code> is elapsed if
      * <code>executeAtEndOfTime</code> is true.
-     * 
+     *
      * @param executeAtEndOfTime if true call <code>execute()</code> now, else call <code>execute()</code> at end of
      * <code>timeBeforeNewExecute</code>
      * @param data TODO
@@ -132,7 +132,7 @@ public abstract class ExecutionLimiter {
 
     /**
      * DOC amaumont Comment method "startThreadForFinalExecution".
-     * @param data 
+     * @param data
      */
     private void startThreadForFinalExecution(final Object data) {
         (new Thread() {
@@ -151,9 +151,9 @@ public abstract class ExecutionLimiter {
     }
 
     /**
-     * 
+     *
      * DOC amaumont ExecutionLimiter class global comment. Detailled comment <br/>
-     * 
+     *
      */
     class FinalExecution extends Thread {
 
@@ -184,7 +184,7 @@ public abstract class ExecutionLimiter {
     }
 
     /**
-     * 
+     *
      * DOC amaumont Comment method "execute".
      * @param isFinalExecution
      * @param data can be null

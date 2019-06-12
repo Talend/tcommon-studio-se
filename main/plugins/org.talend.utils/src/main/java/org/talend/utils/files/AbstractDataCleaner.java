@@ -1,6 +1,6 @@
 // ============================================================================
 //
-// Copyright (C) 2006-2018 Talend Inc. - www.talend.com
+// Copyright (C) 2006-2019 Talend Inc. - www.talend.com
 //
 // This source code is available under agreement available at
 // %InstallDIR%\features\org.talend.rcp.branding.%PRODUCTNAME%\%PRODUCTNAME%license.txt
@@ -16,7 +16,7 @@ import org.apache.log4j.Logger;
 import org.talend.utils.thread.ThreadUtils;
 
 /**
- * 
+ *
  * DOC amaumont class global comment. Detailled comment
  */
 public abstract class AbstractDataCleaner {
@@ -38,9 +38,9 @@ public abstract class AbstractDataCleaner {
     }
 
     /**
-     * 
+     *
      * DOC amaumont Comment method "start".
-     * 
+     *
      * @return
      */
     public boolean start() {
@@ -51,7 +51,7 @@ public abstract class AbstractDataCleaner {
 
                 /*
                  * (non-Javadoc)
-                 * 
+                 *
                  * @see java.lang.Thread#run()
                  */
                 @Override
@@ -95,7 +95,7 @@ public abstract class AbstractDataCleaner {
 
     /**
      * Getter for frequencyCleaningAction.
-     * 
+     *
      * @return the frequencyCleaningAction
      */
     public int getFrequencyCleaningAction() {
@@ -104,7 +104,7 @@ public abstract class AbstractDataCleaner {
 
     /**
      * Sets the frequencyCleaningAction.
-     * 
+     *
      * @param frequencyCleaningAction the frequencyCleaningAction to set
      */
     public void setFrequencyCleaningAction(int frequencyCleaningAction) {

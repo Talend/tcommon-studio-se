@@ -1,6 +1,6 @@
 // ============================================================================
 //
-// Copyright (C) 2006-2018 Talend Inc. - www.talend.com
+// Copyright (C) 2006-2019 Talend Inc. - www.talend.com
 //
 // This source code is available under agreement available at
 // %InstallDIR%\features\org.talend.rcp.branding.%PRODUCTNAME%\%PRODUCTNAME%license.txt
@@ -28,11 +28,11 @@ public abstract class AbstractElementFilter<E> {
     }
 
     /**
-     * 
+     *
      * DOC ycbai Comment method "filter".
-     * 
+     *
      * Returns the passed elements from this filter.
-     * 
+     *
      * @return
      */
     public List<E> filter() {
@@ -62,22 +62,22 @@ public abstract class AbstractElementFilter<E> {
     }
 
     /**
-     * 
+     *
      * DOC ycbai Comment method "select".
-     * 
+     *
      * Returns whether the given element makes it through this filter.
-     * 
+     *
      * @param element
      * @return
      */
     protected abstract boolean select(E element);
 
     /**
-     * 
+     *
      * DOC ycbai Comment method "setElements".
-     * 
+     *
      * Set the elements which will be filtered.
-     * 
+     *
      * @param elements
      */
     public void setElements(List<E> elements) {
@@ -85,11 +85,11 @@ public abstract class AbstractElementFilter<E> {
     }
 
     /**
-     * 
+     *
      * DOC ycbai Comment method "setSearchText".
-     * 
+     *
      * Set the search string.
-     * 
+     *
      * @param searchText
      */
     public void setSearchText(String searchStr) {

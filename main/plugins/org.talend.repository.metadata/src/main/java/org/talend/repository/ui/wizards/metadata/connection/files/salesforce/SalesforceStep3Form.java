@@ -1,6 +1,6 @@
 // ============================================================================
 //
-// Copyright (C) 2006-2018 Talend Inc. - www.talend.com
+// Copyright (C) 2006-2019 Talend Inc. - www.talend.com
 //
 // This source code is available under agreement available at
 // %InstallDIR%\features\org.talend.rcp.branding.%PRODUCTNAME%\%PRODUCTNAME%license.txt
@@ -65,7 +65,7 @@ import org.talend.repository.metadata.i18n.Messages;
 import org.talend.repository.metadata.ui.wizards.form.AbstractSalesforceStepForm;
 
 /**
- * 
+ *
  * DOC yexiaowei class global comment. Detailled comment
  */
 public class SalesforceStep3Form extends AbstractSalesforceStepForm {
@@ -94,7 +94,7 @@ public class SalesforceStep3Form extends AbstractSalesforceStepForm {
 
     /**
      * Constructor to use by RCP Wizard.
-     * 
+     *
      * @param Composite
      */
     public SalesforceStep3Form(Composite parent, ConnectionItem connectionItem, MetadataTable metadataTable,
@@ -113,7 +113,7 @@ public class SalesforceStep3Form extends AbstractSalesforceStepForm {
     }
 
     /**
-     * 
+     *
      * Initialize value, forceFocus first field.
      */
     @Override
@@ -229,7 +229,7 @@ public class SalesforceStep3Form extends AbstractSalesforceStepForm {
 
     /**
      * addButtonControls.
-     * 
+     *
      * @param cancelButton
      */
     @Override
@@ -279,10 +279,10 @@ public class SalesforceStep3Form extends AbstractSalesforceStepForm {
 
     /**
      * create ProcessDescription and set it.
-     * 
+     *
      * WARNING ::field FieldSeparator, RowSeparator, EscapeChar and TextEnclosure are surround by double quote.
-     * 
-     * 
+     *
+     *
      * @return processDescription
      */
     private ProcessDescription getProcessDescription(SalesforceSchemaConnection originalValueConnection) {
@@ -338,7 +338,7 @@ public class SalesforceStep3Form extends AbstractSalesforceStepForm {
         SalesforceSchemaConnection originalValueConnection = getOriginalValueConnection();
         // if no file, the process don't be executed
         if (originalValueConnection.getWebServiceUrl() == null || originalValueConnection.getWebServiceUrl().equals("")) { //$NON-NLS-1$
-            informationLabel.setText("Salesforce endpoint lost" //$NON-NLS-1$ 
+            informationLabel.setText("Salesforce endpoint lost" //$NON-NLS-1$
                     + "                                                                              "); //$NON-NLS-1$
             return;
         }
@@ -392,7 +392,7 @@ public class SalesforceStep3Form extends AbstractSalesforceStepForm {
 
     /**
      * DOC zli Comment method "guessSchema".
-     * 
+     *
      * @param processDescription
      */
     public void guessSchema(ProcessDescription processDescription) {
@@ -545,7 +545,7 @@ public class SalesforceStep3Form extends AbstractSalesforceStepForm {
 
     /**
      * Ensures that fields are set. Update checkEnable / use to checkConnection().
-     * 
+     *
      * @return
      */
     @Override
@@ -577,7 +577,7 @@ public class SalesforceStep3Form extends AbstractSalesforceStepForm {
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see org.eclipse.swt.widgets.Control#setVisible(boolean)
      */
     @Override

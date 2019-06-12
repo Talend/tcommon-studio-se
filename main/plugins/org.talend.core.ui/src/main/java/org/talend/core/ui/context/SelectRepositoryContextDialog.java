@@ -1,6 +1,6 @@
 // ============================================================================
 //
-// Copyright (C) 2006-2018 Talend Inc. - www.talend.com
+// Copyright (C) 2006-2019 Talend Inc. - www.talend.com
 //
 // This source code is available under agreement available at
 // %InstallDIR%\features\org.talend.rcp.branding.%PRODUCTNAME%\%PRODUCTNAME%license.txt
@@ -72,9 +72,9 @@ import org.talend.repository.ProjectManager;
 
 /**
  * ggu class global comment. Detailled comment <br/>
- * 
+ *
  * $Id: talend.epf 1 2006-09-29 17:06:40 +0000 (ææäº, 29 ä¹æ 2006) nrousseau $
- * 
+ *
  */
 public class SelectRepositoryContextDialog extends SelectionDialog {
 
@@ -119,7 +119,7 @@ public class SelectRepositoryContextDialog extends SelectionDialog {
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see org.eclipse.ui.dialogs.SelectionDialog#configureShell(org.eclipse.swt.widgets.Shell)
      */
 
@@ -393,9 +393,9 @@ public class SelectRepositoryContextDialog extends SelectionDialog {
     }
 
     /**
-     * 
+     *
      * ggu Comment method "updateTreeCheckedState".
-     * 
+     *
      * init
      */
     private void updateTreeCheckedState() {
@@ -563,7 +563,7 @@ public class SelectRepositoryContextDialog extends SelectionDialog {
     }
 
     /**
-     * 
+     *
      * ggu SelectRepositoryContextDialog class global comment. Detailled comment
      */
     class ContextTreeContentProvider implements ITreeContentProvider {
@@ -612,7 +612,7 @@ public class SelectRepositoryContextDialog extends SelectionDialog {
     }
 
     /**
-     * 
+     *
      * ggu SelectRepositoryContextDialog class global comment. Detailled comment
      */
     class ContextTreeLabelProvider implements ILabelProvider {
@@ -680,7 +680,7 @@ public class SelectRepositoryContextDialog extends SelectionDialog {
     }
 
     /**
-     * 
+     *
      * ggu SelectRepositoryContextDialog class global comment. Detailled comment
      */
     class ContextViewerFilter extends ViewerFilter {
@@ -722,7 +722,7 @@ public class SelectRepositoryContextDialog extends SelectionDialog {
     }
 
     /**
-     * 
+     *
      * ggu ContextViewerSorter class global comment. Detailled comment
      */
     class ContextViewerSorter extends ViewerSorter {

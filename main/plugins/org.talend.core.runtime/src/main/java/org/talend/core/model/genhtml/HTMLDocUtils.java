@@ -1,6 +1,6 @@
 // ============================================================================
 //
-// Copyright (C) 2006-2018 Talend Inc. - www.talend.com
+// Copyright (C) 2006-2019 Talend Inc. - www.talend.com
 //
 // This source code is available under agreement available at
 // %InstallDIR%\features\org.talend.rcp.branding.%PRODUCTNAME%\%PRODUCTNAME%license.txt
@@ -27,13 +27,13 @@ import org.talend.repository.ProjectManager;
 
 /**
  * Utility class for generating HTML file.
- * 
+ *
  */
 public class HTMLDocUtils {
 
     /**
      * Strings handler.
-     * 
+     *
      * @param str <code>String</code>
      * @return string
      */
@@ -46,7 +46,7 @@ public class HTMLDocUtils {
 
     /**
      * Dates handler.
-     * 
+     *
      * @param date
      * @return
      */
@@ -60,7 +60,7 @@ public class HTMLDocUtils {
 
     /**
      * Gets the temporary folder.
-     * 
+     *
      * @return a string representing temporary folder
      */
     public static String getTmpFolder() {
@@ -82,7 +82,7 @@ public class HTMLDocUtils {
     }
 
     /**
-     * 
+     *
      * cli Comment method "deleteTempFiles".
      */
     public static void deleteTempFiles() {
@@ -95,7 +95,7 @@ public class HTMLDocUtils {
 
     /**
      * This method is used for deleting a directory.
-     * 
+     *
      * @param dir
      */
     private static void deleteDirectory(File dir) {
@@ -113,7 +113,7 @@ public class HTMLDocUtils {
 
     /**
      * Checks if inputed list is null or length is 0.
-     * 
+     *
      * @param tables
      */
     public static boolean checkList(List tables) {
@@ -132,7 +132,7 @@ public class HTMLDocUtils {
 
     /**
      * Gets tMap's preview image path base on a list of <code>IElementParameter</code>
-     * 
+     *
      * @param elementParameters
      * @return
      */

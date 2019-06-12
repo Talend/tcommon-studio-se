@@ -1,6 +1,6 @@
 // ============================================================================
 //
-// Copyright (C) 2006-2018 Talend Inc. - www.talend.com
+// Copyright (C) 2006-2019 Talend Inc. - www.talend.com
 //
 // This source code is available under agreement available at
 // %InstallDIR%\features\org.talend.rcp.branding.%PRODUCTNAME%\%PRODUCTNAME%license.txt
@@ -41,9 +41,9 @@ import org.talend.core.model.utils.RepositoryManagerHelper;
 /**
  * DOC cantoine. GraphicRule : This Class represent the Graphic rule who represent the Position of the PositionalText in
  * the Wizard Metadata FilePositional
- * 
+ *
  * $Id: GraphicRule.java 38013 2010-03-05 14:21:59Z mhirt $
- * 
+ *
  */
 
 public class GraphicRule extends ScrolledComposite {
@@ -127,7 +127,7 @@ public class GraphicRule extends ScrolledComposite {
 
         /**
          * mouseMoveListener. : This Listener choose the cursor when the pointer is on the Top of Graphic Rule
-         * 
+         *
          */
         MouseMoveListener mouseMoveListener = new MouseMoveListener() {
 
@@ -146,7 +146,7 @@ public class GraphicRule extends ScrolledComposite {
 
         /**
          * mouseMoveListener. : This Listener create a Position delimiter when you click(down) in the appropriate area
-         * 
+         *
          */
         Listener graphicRuleEventListener = new Listener() {
 
@@ -247,7 +247,7 @@ public class GraphicRule extends ScrolledComposite {
     /**
      * PositionMarkerEditor. : This inner class represents the Number in the Graphic Rule who's pointed the position of
      * a Positional delimiter.
-     * 
+     *
      */
     public static class PositionMarkerEditor extends Canvas {
 
@@ -286,7 +286,7 @@ public class GraphicRule extends ScrolledComposite {
 
         /**
          * Getter for posX.
-         * 
+         *
          * @return the posX
          */
         public int getPosX() {
@@ -295,7 +295,7 @@ public class GraphicRule extends ScrolledComposite {
 
         /**
          * Sets the posX.
-         * 
+         *
          * @param posX the posX to set
          */
         public void setPosX(int posX) {
@@ -305,7 +305,7 @@ public class GraphicRule extends ScrolledComposite {
 
     /**
      * drawGraphicRule. This method draw the position at the Position setting in parameter.
-     * 
+     *
      * @param int posX : Position to draw the Position Number of the Positional delimiter
      */
     public static void drawGraphicRule(int posX) {
@@ -324,7 +324,7 @@ public class GraphicRule extends ScrolledComposite {
 
     /**
      * erasePositionMarker. This method draw the position at the Position setting in parameter.
-     * 
+     *
      * @param PositionMarkerEditor pm : the Object PositionMarker who will be delete.
      * @param int posX : Initial position of Object (Axis of abscissas).
      * @param int erase : End position of Object (Axis of abscissas).
@@ -337,7 +337,7 @@ public class GraphicRule extends ScrolledComposite {
     /**
      * HorizontalMarkerEditor. : This inner class is a graphic Object who's representing an Interval in the Graphic
      * Rule.
-     * 
+     *
      */
     public static class HorizontalMarkerEditor extends Canvas {
 
@@ -375,7 +375,7 @@ public class GraphicRule extends ScrolledComposite {
 
         /**
          * Getter for posX.
-         * 
+         *
          * @return the posX
          */
         public int getPosX() {
@@ -384,7 +384,7 @@ public class GraphicRule extends ScrolledComposite {
 
         /**
          * Sets the posX.
-         * 
+         *
          * @param posX the posX to set
          */
         public void setPosX(int posX) {
@@ -394,7 +394,7 @@ public class GraphicRule extends ScrolledComposite {
 
     /**
      * drawHorizontalRule. This method draw the interval between two Positions delimiter.
-     * 
+     *
      * @param String fieldValue : the fieldSeparator value
      * @param String intervalValue : the fieldPosition value
      */
@@ -431,7 +431,7 @@ public class GraphicRule extends ScrolledComposite {
 
     /**
      * Getter for isEnabled.
-     * 
+     *
      * @return the isEnabled
      */
     public boolean isEnabled() {
@@ -440,7 +440,7 @@ public class GraphicRule extends ScrolledComposite {
 
     /**
      * Sets the isEnabled.
-     * 
+     *
      * @param isEnabled the isEnabled to set
      */
     public void setEnabled(boolean isEnabled) {

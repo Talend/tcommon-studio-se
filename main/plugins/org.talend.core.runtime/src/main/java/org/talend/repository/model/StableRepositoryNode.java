@@ -1,6 +1,6 @@
 // ============================================================================
 //
-// Copyright (C) 2006-2018 Talend Inc. - www.talend.com
+// Copyright (C) 2006-2019 Talend Inc. - www.talend.com
 //
 // This source code is available under agreement available at
 // %InstallDIR%\features\org.talend.rcp.branding.%PRODUCTNAME%\%PRODUCTNAME%license.txt
@@ -17,9 +17,9 @@ import org.talend.core.model.repository.ERepositoryObjectType;
 
 /**
  * DOC smallet class global comment. Detailled comment <br/>
- * 
+ *
  * $Id: talend.epf 1 2006-09-29 17:06:40 +0000 (ven., 29 sept. 2006) nrousseau $
- * 
+ *
  */
 public class StableRepositoryNode extends RepositoryNode {
 
@@ -31,7 +31,7 @@ public class StableRepositoryNode extends RepositoryNode {
 
     /**
      * DOC smallet StableRepositoryNode constructor comment.
-     * 
+     *
      * @param object
      * @param parent
      * @param type
@@ -44,7 +44,7 @@ public class StableRepositoryNode extends RepositoryNode {
 
     /**
      * Getter for icon.
-     * 
+     *
      * @return the icon
      */
     @Override
@@ -54,7 +54,7 @@ public class StableRepositoryNode extends RepositoryNode {
 
     /**
      * Sets the icon.
-     * 
+     *
      * @param icon the icon to set
      */
     @Override
@@ -64,7 +64,7 @@ public class StableRepositoryNode extends RepositoryNode {
 
     /**
      * Getter for label.
-     * 
+     *
      * @return the label
      */
     @Override
@@ -74,7 +74,7 @@ public class StableRepositoryNode extends RepositoryNode {
 
     /**
      * Sets the label.
-     * 
+     *
      * @param label the label to set
      */
     public void setLabel(String label) {
@@ -95,7 +95,7 @@ public class StableRepositoryNode extends RepositoryNode {
 
     /**
      * Sets the childrenObjectType.
-     * 
+     *
      * @param childrenObjectType the childrenObjectType to set
      */
     public void setChildrenObjectType(ERepositoryObjectType childrenObjectType) {
@@ -104,7 +104,7 @@ public class StableRepositoryNode extends RepositoryNode {
 
     /**
      * Getter for childrenObjectType.
-     * 
+     *
      * @return the childrenObjectType
      */
     public ERepositoryObjectType getChildrenObjectType() {

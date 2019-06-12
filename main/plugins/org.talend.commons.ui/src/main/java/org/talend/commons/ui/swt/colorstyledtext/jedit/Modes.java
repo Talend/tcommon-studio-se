@@ -1,6 +1,6 @@
 // ============================================================================
 //
-// Copyright (C) 2006-2018 Talend Inc. - www.talend.com
+// Copyright (C) 2006-2019 Talend Inc. - www.talend.com
 //
 // This source code is available under agreement available at
 // %InstallDIR%\features\org.talend.rcp.branding.%PRODUCTNAME%\%PRODUCTNAME%license.txt
@@ -19,9 +19,9 @@ import org.talend.commons.runtime.xml.XmlUtil;
 
 /**
  * DOC nrousseau class global comment. Detailled comment <br/>
- * 
+ *
  * $Id: Modes.java 7038 2007-11-15 14:05:48Z plegall $
- * 
+ *
  */
 public class Modes {
 
@@ -78,7 +78,7 @@ public class Modes {
 
     /**
      * Answer a sorted array containing all of the modes defined by the catalog.
-     * 
+     *
      * @return Mode[]
      */
     public Mode[] getModeList() {

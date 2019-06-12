@@ -1,6 +1,6 @@
 // ============================================================================
 //
-// Copyright (C) 2006-2018 Talend Inc. - www.talend.com
+// Copyright (C) 2006-2019 Talend Inc. - www.talend.com
 //
 // This source code is available under agreement available at
 // %InstallDIR%\features\org.talend.rcp.branding.%PRODUCTNAME%\%PRODUCTNAME%license.txt
@@ -28,17 +28,17 @@ import org.talend.core.model.properties.ProcessItem;
 import org.talend.repository.model.IRepositoryNode;
 
 /**
- * 
+ *
  * DOC Administrator class global comment. Detailled comment <br/>
- * 
+ *
  * $Id: ExportFileResource.java 1 2006-09-29 17:06:40 +0000 (星期五, 29 九月 2006) nrousseau $
- * 
+ *
  */
 /**
  * DOC class global comment. Detailled comment <br/>
- * 
+ *
  * $Id: ExportFileResource.java 1 2007-1-30下午05:16:53 +0000 ylv $
- * 
+ *
  */
 public class ExportFileResource {
 
@@ -70,7 +70,7 @@ public class ExportFileResource {
 
     /**
      * Adds the resource list to this.
-     * 
+     *
      * @param relativePath relative Path
      * @param resources
      */
@@ -82,7 +82,7 @@ public class ExportFileResource {
 
     /**
      * DOC ycbai Comment method "addResource".
-     * 
+     *
      * @param relativePath
      * @param resource
      */
@@ -136,7 +136,7 @@ public class ExportFileResource {
 
     /**
      * Answer the total number of file resources that exist at or below self in the resources hierarchy.
-     * 
+     *
      * @return int
      * @param checkResource org.eclipse.core.resources.IResource
      */
@@ -177,7 +177,7 @@ public class ExportFileResource {
 
     /**
      * Gets the count of the files.
-     * 
+     *
      * @return
      */
     public int getFilesCount() throws CoreException {
@@ -196,7 +196,7 @@ public class ExportFileResource {
 
     /**
      * Getter for node.
-     * 
+     *
      * @return the node
      */
     public IRepositoryNode getNode() {
@@ -205,7 +205,7 @@ public class ExportFileResource {
 
     /**
      * Sets the node.
-     * 
+     *
      * @param node the node to set
      */
     public void setNode(IRepositoryNode node) {

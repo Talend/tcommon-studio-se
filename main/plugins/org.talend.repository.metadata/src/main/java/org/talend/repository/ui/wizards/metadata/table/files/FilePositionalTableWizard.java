@@ -1,6 +1,6 @@
 // ============================================================================
 //
-// Copyright (C) 2006-2018 Talend Inc. - www.talend.com
+// Copyright (C) 2006-2019 Talend Inc. - www.talend.com
 //
 // This source code is available under agreement available at
 // %InstallDIR%\features\org.talend.rcp.branding.%PRODUCTNAME%\%PRODUCTNAME%license.txt
@@ -33,9 +33,9 @@ import org.talend.repository.model.IProxyRepositoryFactory;
 
 /**
  * DOC ocarbone class global comment. Detailled comment <br/>
- * 
+ *
  * $Id: FilePositionalTableWizard.java 51998 2010-12-01 05:33:08Z hywang $
- * 
+ *
  */
 public class FilePositionalTableWizard extends AbstractRepositoryFileTableWizard implements INewWizard {
 
@@ -49,7 +49,7 @@ public class FilePositionalTableWizard extends AbstractRepositoryFileTableWizard
 
     /**
      * Constructor for TableWizard.
-     * 
+     *
      * @param ISelection
      */
     @SuppressWarnings("unchecked")//$NON-NLS-1$
@@ -127,7 +127,7 @@ public class FilePositionalTableWizard extends AbstractRepositoryFileTableWizard
 
     /**
      * We will accept the selection in the workbench to see if we can initialize from it.
-     * 
+     *
      * @see IWorkbenchWizard#init(IWorkbench, IStructuredSelection)
      */
     public void init(final IWorkbench workbench, final IStructuredSelection selection) {

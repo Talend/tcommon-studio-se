@@ -1,6 +1,6 @@
 // ============================================================================
 //
-// Copyright (C) 2006-2018 Talend Inc. - www.talend.com
+// Copyright (C) 2006-2019 Talend Inc. - www.talend.com
 //
 // This source code is available under agreement available at
 // %InstallDIR%\features\org.talend.rcp.branding.%PRODUCTNAME%\%PRODUCTNAME%license.txt
@@ -19,7 +19,7 @@ import java.util.Locale;
 
 /**
  * @author scorreia
- * 
+ *
  * This class contains utilities for formatting strings.
  */
 public final class StringFormatUtil {
@@ -34,7 +34,7 @@ public final class StringFormatUtil {
 
     /**
      * Method "padString".
-     * 
+     *
      * @param stringToPad the string to which white spaces must be added.
      * @param size the size of the new string.
      * @return the given string completed with white spaces up the the given size.
@@ -45,7 +45,7 @@ public final class StringFormatUtil {
 
     /**
      * DOC Zqin Comment method "format".
-     * 
+     *
      * @param input the object that was formated.
      * @param style the style of formated, it should be 0, 1,2,99999.
      * @return the formated object.
@@ -107,7 +107,7 @@ public final class StringFormatUtil {
 
     /**
      * DOC Zqin Comment method "formatPersent".
-     * 
+     *
      * @param input the object that was formated.
      * @return the persent form of this valid input object
      */
@@ -125,7 +125,7 @@ public final class StringFormatUtil {
 
     /**
      * DOC Zqin Comment method "formatDouble".
-     * 
+     *
      * @param input the object that was formated.
      * @return the Double form of this valid input object.
      */
@@ -143,7 +143,7 @@ public final class StringFormatUtil {
 
     /**
      * DOC Zshen Comment method "formatDouble".
-     * 
+     *
      * @param input the object that was formated.
      * @return the Double form of this valid input object and to retain four decimal places
      */
@@ -161,7 +161,7 @@ public final class StringFormatUtil {
 
     /**
      * DOC Zqin Comment method "parseDouble".
-     * 
+     *
      * @param input the object that was parsed.
      * @return the Double object represents this input
      */
@@ -183,7 +183,7 @@ public final class StringFormatUtil {
 
     /**
      * DOC Zqin Comment method "checkInput".
-     * 
+     *
      * @param input the object that was formated.
      * @return true if the input is valid, else false;
      */

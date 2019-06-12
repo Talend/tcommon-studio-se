@@ -1,6 +1,6 @@
 // ============================================================================
 //
-// Copyright (C) 2006-2018 Talend Inc. - www.talend.com
+// Copyright (C) 2006-2019 Talend Inc. - www.talend.com
 //
 // This source code is available under agreement available at
 // %InstallDIR%\features\org.talend.rcp.branding.%PRODUCTNAME%\%PRODUCTNAME%license.txt
@@ -74,7 +74,7 @@ public abstract class RepositoryMavenSetting {
     }
 
     /**
-     * 
+     *
      * If existed same id of node, will use it directly. Else will create one folder node.
      */
     public IPreferenceNode createAndFindMavenFolderNode(final IPreferenceNode parentNode, final ILabelProvider labelProvider,
@@ -126,7 +126,7 @@ public abstract class RepositoryMavenSetting {
     }
 
     /**
-     * 
+     *
      * Create folder node.
      */
     protected IPreferenceNode createFolderNode(final String id, final ILabelProvider labelProvider, final RepositoryNode node) {
@@ -148,7 +148,7 @@ public abstract class RepositoryMavenSetting {
     }
 
     /**
-     * 
+     *
      * Check the node to enable add the maven scripts nodes or not.
      */
     public boolean needMavenScripts(RepositoryNode node) {
@@ -164,7 +164,7 @@ public abstract class RepositoryMavenSetting {
     }
 
     /**
-     * 
+     *
      * Create the maven scripts children nodes
      */
     public abstract void createMavenScriptsChildren(final IPreferenceNode parentNode, final RepositoryNode node);

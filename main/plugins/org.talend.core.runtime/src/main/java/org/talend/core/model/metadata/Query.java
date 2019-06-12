@@ -1,6 +1,6 @@
 // ============================================================================
 //
-// Copyright (C) 2006-2018 Talend Inc. - www.talend.com
+// Copyright (C) 2006-2019 Talend Inc. - www.talend.com
 //
 // This source code is available under agreement available at
 // %InstallDIR%\features\org.talend.rcp.branding.%PRODUCTNAME%\%PRODUCTNAME%license.txt
@@ -25,7 +25,7 @@ public class Query implements Cloneable {
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see org.talend.designer.core.model.metadata.IMetadataTable#getTableName()
      */
     public String getTableName() {
@@ -34,7 +34,7 @@ public class Query implements Cloneable {
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see org.talend.designer.core.model.metadata.IMetadataTable#setTableName(java.lang.String)
      */
     public void setTableName(String tableName) {
@@ -43,7 +43,7 @@ public class Query implements Cloneable {
 
     /**
      * Getter for parent.
-     * 
+     *
      * @return the parent
      */
     public IMetadataConnection getParent() {
@@ -52,7 +52,7 @@ public class Query implements Cloneable {
 
     /**
      * Sets the parent.
-     * 
+     *
      * @param parent the parent to set
      */
     public void setParent(IMetadataConnection parent) {

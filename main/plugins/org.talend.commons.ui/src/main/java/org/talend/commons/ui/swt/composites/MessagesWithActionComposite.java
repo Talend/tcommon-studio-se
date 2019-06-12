@@ -1,6 +1,6 @@
 // ============================================================================
 //
-// Copyright (C) 2006-2018 Talend Inc. - www.talend.com
+// Copyright (C) 2006-2019 Talend Inc. - www.talend.com
 //
 // This source code is available under agreement available at
 // %InstallDIR%\features\org.talend.rcp.branding.%PRODUCTNAME%\%PRODUCTNAME%license.txt
@@ -83,7 +83,7 @@ public class MessagesWithActionComposite extends MessagesComposite {
             }
             /*
              * Don't set the image, there is a different effect between win and linux.
-             * 
+             *
              * in win, if set a non-null image first. then try to set a null image, there is a unknown image to be set
              * still. more strange.
              */

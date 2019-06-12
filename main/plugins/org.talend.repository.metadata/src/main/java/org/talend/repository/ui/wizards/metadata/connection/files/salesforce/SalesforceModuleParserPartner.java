@@ -1,6 +1,6 @@
 // ============================================================================
 //
-// Copyright (C) 2006-2018 Talend Inc. - www.talend.com
+// Copyright (C) 2006-2019 Talend Inc. - www.talend.com
 //
 // This source code is available under agreement available at
 // %InstallDIR%\features\org.talend.rcp.branding.%PRODUCTNAME%\%PRODUCTNAME%license.txt
@@ -29,7 +29,7 @@ import com.salesforce.soap.partner.Field;
  * Maybe need a long connection ...
  * <p>
  * DOC YeXiaowei class global comment. Detailled comment <br/>
- * 
+ *
  */
 public class SalesforceModuleParserPartner implements ISalesforceModuleParser {
 
@@ -46,7 +46,7 @@ public class SalesforceModuleParserPartner implements ISalesforceModuleParser {
     private boolean loginOk = false;
 
     /*
-     * 
+     *
      */
     // private String proxyHost = null;
     //
@@ -227,7 +227,7 @@ public class SalesforceModuleParserPartner implements ISalesforceModuleParser {
     /**
      * Fetch a module from SF and transfor to Talend metadata data type. DOC YeXiaowei Comment method
      * "fetchMetaDataColumns".
-     * 
+     *
      * @param module
      * @return
      */
@@ -253,7 +253,7 @@ public class SalesforceModuleParserPartner implements ISalesforceModuleParser {
      * Fetch module fields from SF service. Make sure login sucess before do this.
      * <p>
      * DOC YeXiaowei Comment method "fetchSFDescriptionField".
-     * 
+     *
      * @param module
      * @return
      */
@@ -298,7 +298,7 @@ public class SalesforceModuleParserPartner implements ISalesforceModuleParser {
      * Parse SF field to Talend data type
      * <p>
      * DOC YeXiaowei Comment method "parseFieldToMetadataColumn".
-     * 
+     *
      * @param field
      * @return
      */
@@ -373,7 +373,7 @@ public class SalesforceModuleParserPartner implements ISalesforceModuleParser {
 
     /**
      * Getter for login.
-     * 
+     *
      * @return the login
      */
     @Override
@@ -383,7 +383,7 @@ public class SalesforceModuleParserPartner implements ISalesforceModuleParser {
 
     /**
      * Sets the login.
-     * 
+     *
      * @param login the login to set
      */
     @Override
@@ -393,7 +393,7 @@ public class SalesforceModuleParserPartner implements ISalesforceModuleParser {
 
     /**
      * Getter for currentModuleName.
-     * 
+     *
      * @return the currentModuleName
      */
     @Override
@@ -403,7 +403,7 @@ public class SalesforceModuleParserPartner implements ISalesforceModuleParser {
 
     /**
      * Sets the currentModuleName.
-     * 
+     *
      * @param currentModuleName the currentModuleName to set
      */
     @Override
@@ -413,7 +413,7 @@ public class SalesforceModuleParserPartner implements ISalesforceModuleParser {
 
     /**
      * Getter for currentMetadataColumns.
-     * 
+     *
      * @return the currentMetadataColumns
      */
     @Override
@@ -423,7 +423,7 @@ public class SalesforceModuleParserPartner implements ISalesforceModuleParser {
 
     /**
      * Sets the currentMetadataColumns.
-     * 
+     *
      * @param currentMetadataColumns the currentMetadataColumns to set
      */
     @Override

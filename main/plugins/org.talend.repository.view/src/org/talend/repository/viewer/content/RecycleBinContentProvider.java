@@ -1,6 +1,6 @@
 // ============================================================================
 //
-// Copyright (C) 2006-2018 Talend Inc. - www.talend.com
+// Copyright (C) 2006-2019 Talend Inc. - www.talend.com
 //
 // This source code is available under agreement available at
 // %InstallDIR%\features\org.talend.rcp.branding.%PRODUCTNAME%\%PRODUCTNAME%license.txt
@@ -37,7 +37,7 @@ public class RecycleBinContentProvider extends ProjectRepoDirectChildrenNodeCont
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see
      * org.talend.repository.viewer.content.ProjectRepoChildrenNodeContentProvider#getTopLevelNodeFromProjectRepositoryNode
      * (org.talend.repository.model.ProjectRepositoryNode)
@@ -52,7 +52,7 @@ public class RecycleBinContentProvider extends ProjectRepoDirectChildrenNodeCont
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see org.talend.repository.viewer.content.SingleTopLevelContentProvider#getChildren(java.lang.Object)
      */
     @Override
@@ -68,7 +68,7 @@ public class RecycleBinContentProvider extends ProjectRepoDirectChildrenNodeCont
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see
      * org.talend.repository.viewer.content.FolderListenerSingleTopContentProvider#addResourceVisitor(org.eclipse.ui
      * .navigator.CommonViewer)
@@ -100,9 +100,9 @@ public class RecycleBinContentProvider extends ProjectRepoDirectChildrenNodeCont
 
     /**
      * DOC sgandon class global comment. Detailled comment <br/>
-     * 
+     *
      * $Id: talend.epf 55206 2011-02-15 17:32:14Z mhirt $
-     * 
+     *
      */
     private final class DirectChildrenNodeVisitor extends RunnableResourceVisitor {
 

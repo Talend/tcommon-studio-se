@@ -1,6 +1,6 @@
 // ============================================================================
 //
-// Copyright (C) 2006-2018 Talend Inc. - www.talend.com
+// Copyright (C) 2006-2019 Talend Inc. - www.talend.com
 //
 // This source code is available under agreement available at
 // %InstallDIR%\features\org.talend.rcp.branding.%PRODUCTNAME%\%PRODUCTNAME%license.txt
@@ -264,7 +264,7 @@ public class ConvertionHelperTest {
             }
         }
     }
-    
+
     @Test
     public void testConvert1() {
         IMetadataTable source = new org.talend.core.model.metadata.MetadataTable();
@@ -274,49 +274,49 @@ public class ConvertionHelperTest {
         newColumn.setOriginalDbColumnName("long");
         newColumn.getAdditionalField().put("AVRO_TECHNICAL_KEY", "long");
         source.getListColumns().add(newColumn);
-        
+
         newColumn = new org.talend.core.model.metadata.MetadataColumn();
         newColumn.setId("111111");
         newColumn.setLabel("A");
         newColumn.setOriginalDbColumnName("A");
         newColumn.getAdditionalField().put("AVRO_TECHNICAL_KEY", "A");
         source.getListColumns().add(newColumn);
-        
+
         newColumn = new org.talend.core.model.metadata.MetadataColumn();
         newColumn.setId("222222");
         newColumn.setLabel("B");
         newColumn.setOriginalDbColumnName("B");
         newColumn.getAdditionalField().put("AVRO_TECHNICAL_KEY", "B");
         source.getListColumns().add(newColumn);
-        
+
         newColumn = new org.talend.core.model.metadata.MetadataColumn();
         newColumn.setId("333333");
         newColumn.setLabel("_234");
         newColumn.setOriginalDbColumnName("1234");
         newColumn.getAdditionalField().put("AVRO_TECHNICAL_KEY", "_234");
         source.getListColumns().add(newColumn);
-        
+
         newColumn = new org.talend.core.model.metadata.MetadataColumn();
         newColumn.setId("444444");
         newColumn.setLabel("中文");
         newColumn.setOriginalDbColumnName("中文");
         newColumn.getAdditionalField().put("AVRO_TECHNICAL_KEY", "中文");
         source.getListColumns().add(newColumn);
-        
+
         newColumn = new org.talend.core.model.metadata.MetadataColumn();
         newColumn.setId("555555");
         newColumn.setLabel("TEST");
         newColumn.setOriginalDbColumnName("TEST");
         newColumn.getAdditionalField().put("AVRO_TECHNICAL_KEY", "TEST");
         source.getListColumns().add(newColumn);
-        
+
         newColumn = new org.talend.core.model.metadata.MetadataColumn();
         newColumn.setId("666666");
         newColumn.setLabel("TEST1");
         newColumn.setOriginalDbColumnName("TEST");
         newColumn.getAdditionalField().put("AVRO_TECHNICAL_KEY", "TEST1");
         source.getListColumns().add(newColumn);
-        
+
         IEclipsePreferences coreUIPluginNode = new InstanceScope().getNode(ITalendCorePrefConstants.CoreUIPlugin_ID);
         coreUIPluginNode.putBoolean(IRepositoryPrefConstants.ALLOW_SPECIFIC_CHARACTERS_FOR_SCHEMA_COLUMNS, true);
         org.talend.core.model.metadata.builder.connection.MetadataTable metadataTable = ConvertionHelper.convert(source);
@@ -330,7 +330,7 @@ public class ConvertionHelperTest {
                 break;
             }
         }
-        
+
         assertTrue(metadataTable.getColumns().get(1).getLabel().equals("A"));
         assertTrue(metadataTable.getColumns().get(1).getName().equals("A"));
         ite = metadataTable.getColumns().get(1).getTaggedValue().iterator();
@@ -341,7 +341,7 @@ public class ConvertionHelperTest {
                 break;
             }
         }
-        
+
         assertTrue(metadataTable.getColumns().get(2).getLabel().equals("B"));
         assertTrue(metadataTable.getColumns().get(2).getName().equals("B"));
         ite = metadataTable.getColumns().get(2).getTaggedValue().iterator();
@@ -352,7 +352,7 @@ public class ConvertionHelperTest {
                 break;
             }
         }
-        
+
         assertTrue(metadataTable.getColumns().get(3).getLabel().equals("_234"));
         assertTrue(metadataTable.getColumns().get(3).getName().equals("1234"));
         ite = metadataTable.getColumns().get(3).getTaggedValue().iterator();
@@ -363,7 +363,7 @@ public class ConvertionHelperTest {
                 break;
             }
         }
-        
+
         assertTrue(metadataTable.getColumns().get(4).getLabel().equals("中文"));
         assertTrue(metadataTable.getColumns().get(4).getName().equals("中文"));
         ite = metadataTable.getColumns().get(4).getTaggedValue().iterator();
@@ -374,7 +374,7 @@ public class ConvertionHelperTest {
                 break;
             }
         }
-        
+
         assertTrue(metadataTable.getColumns().get(5).getLabel().equals("TEST"));
         assertTrue(metadataTable.getColumns().get(5).getName().equals("TEST"));
         ite = metadataTable.getColumns().get(5).getTaggedValue().iterator();
@@ -385,7 +385,7 @@ public class ConvertionHelperTest {
                 break;
             }
         }
-        
+
         assertTrue(metadataTable.getColumns().get(6).getLabel().equals("TEST1"));
         assertTrue(metadataTable.getColumns().get(6).getName().equals("TEST"));
         ite = metadataTable.getColumns().get(6).getTaggedValue().iterator();
@@ -397,14 +397,14 @@ public class ConvertionHelperTest {
             }
         }
     }
-    
+
     @Test
     public void testConvert2(){
         IProxyRepositoryFactory factory = CoreRuntimePlugin.getInstance().getProxyRepositoryFactory();
         org.talend.core.model.metadata.builder.connection.MetadataTable inputTable = ConnectionFactory.eINSTANCE.createMetadataTable();
         inputTable.setId(factory.getNextId());
         inputTable.setLabel("Input");
-        
+
         org.talend.core.model.metadata.builder.connection.MetadataColumn creatMetadataColumn = ConnectionFactory.eINSTANCE.createMetadataColumn();
         creatMetadataColumn.setId(factory.getNextId());
         creatMetadataColumn.setLabel("long");
@@ -412,8 +412,8 @@ public class ConvertionHelperTest {
         TaggedValue tv = TaggedValueHelper.createTaggedValue("AVRO_TECHNICAL_KEY", "long");
         creatMetadataColumn.getTaggedValue().add(tv);
         inputTable.getColumns().add(creatMetadataColumn);
-        
-        
+
+
         creatMetadataColumn = ConnectionFactory.eINSTANCE.createMetadataColumn();
         creatMetadataColumn.setId(factory.getNextId());
         creatMetadataColumn.setLabel("A");
@@ -421,7 +421,7 @@ public class ConvertionHelperTest {
         tv = TaggedValueHelper.createTaggedValue("AVRO_TECHNICAL_KEY", "A");
         creatMetadataColumn.getTaggedValue().add(tv);
         inputTable.getColumns().add(creatMetadataColumn);
-        
+
         creatMetadataColumn = ConnectionFactory.eINSTANCE.createMetadataColumn();
         creatMetadataColumn.setId(factory.getNextId());
         creatMetadataColumn.setLabel("B");
@@ -429,7 +429,7 @@ public class ConvertionHelperTest {
         tv = TaggedValueHelper.createTaggedValue("AVRO_TECHNICAL_KEY", "B");
         creatMetadataColumn.getTaggedValue().add(tv);
         inputTable.getColumns().add(creatMetadataColumn);
-        
+
         creatMetadataColumn = ConnectionFactory.eINSTANCE.createMetadataColumn();
         creatMetadataColumn.setId(factory.getNextId());
         creatMetadataColumn.setLabel("_234");
@@ -437,7 +437,7 @@ public class ConvertionHelperTest {
         tv = TaggedValueHelper.createTaggedValue("AVRO_TECHNICAL_KEY", "_234");
         creatMetadataColumn.getTaggedValue().add(tv);
         inputTable.getColumns().add(creatMetadataColumn);
-        
+
         creatMetadataColumn = ConnectionFactory.eINSTANCE.createMetadataColumn();
         creatMetadataColumn.setId(factory.getNextId());
         creatMetadataColumn.setLabel("中文");
@@ -445,7 +445,7 @@ public class ConvertionHelperTest {
         tv = TaggedValueHelper.createTaggedValue("AVRO_TECHNICAL_KEY", "中文");
         creatMetadataColumn.getTaggedValue().add(tv);
         inputTable.getColumns().add(creatMetadataColumn);
-        
+
         creatMetadataColumn = ConnectionFactory.eINSTANCE.createMetadataColumn();
         creatMetadataColumn.setId(factory.getNextId());
         creatMetadataColumn.setLabel("TEST");
@@ -453,7 +453,7 @@ public class ConvertionHelperTest {
         tv = TaggedValueHelper.createTaggedValue("AVRO_TECHNICAL_KEY","TEST");
         creatMetadataColumn.getTaggedValue().add(tv);
         inputTable.getColumns().add(creatMetadataColumn);
-        
+
         List<String> labels = new ArrayList<String>();
         for(org.talend.core.model.metadata.builder.connection.MetadataColumn c:inputTable.getColumns()){
             labels.add(c.getLabel());
@@ -465,38 +465,38 @@ public class ConvertionHelperTest {
         tv = TaggedValueHelper.createTaggedValue("AVRO_TECHNICAL_KEY", "TEST1");
         creatMetadataColumn.getTaggedValue().add(tv);
         inputTable.getColumns().add(creatMetadataColumn);
-        
+
         IEclipsePreferences coreUIPluginNode = new InstanceScope().getNode(ITalendCorePrefConstants.CoreUIPlugin_ID);
         coreUIPluginNode.putBoolean(IRepositoryPrefConstants.ALLOW_SPECIFIC_CHARACTERS_FOR_SCHEMA_COLUMNS, true);
         IMetadataTable targetTable = MetadataToolHelper.convert(inputTable);
         assertTrue(targetTable.getListColumns().get(0).getLabel().equals("_long"));
         assertTrue(targetTable.getListColumns().get(0).getOriginalDbColumnName().equals("long"));
         assertTrue(targetTable.getListColumns().get(0).getAdditionalField().get("AVRO_TECHNICAL_KEY").equals("long"));
-        
+
         assertTrue(targetTable.getListColumns().get(1).getLabel().equals("A"));
         assertTrue(targetTable.getListColumns().get(1).getOriginalDbColumnName().equals("A"));
         assertTrue(targetTable.getListColumns().get(1).getAdditionalField().get("AVRO_TECHNICAL_KEY").equals("A"));
-        
+
         assertTrue(targetTable.getListColumns().get(2).getLabel().equals("B"));
         assertTrue(targetTable.getListColumns().get(2).getOriginalDbColumnName().equals("B"));
         assertTrue(targetTable.getListColumns().get(2).getAdditionalField().get("AVRO_TECHNICAL_KEY").equals("B"));
-        
+
         assertTrue(targetTable.getListColumns().get(3).getLabel().equals("_234"));
         assertTrue(targetTable.getListColumns().get(3).getOriginalDbColumnName().equals("1234"));
         assertTrue(targetTable.getListColumns().get(3).getAdditionalField().get("AVRO_TECHNICAL_KEY").equals("_234"));
-        
+
         assertTrue(targetTable.getListColumns().get(4).getLabel().equals("中文"));
         assertTrue(targetTable.getListColumns().get(4).getOriginalDbColumnName().equals("中文"));
         assertTrue(targetTable.getListColumns().get(4).getAdditionalField().get("AVRO_TECHNICAL_KEY").equals("中文"));
-        
+
         assertTrue(targetTable.getListColumns().get(5).getLabel().equals("TEST"));
         assertTrue(targetTable.getListColumns().get(5).getOriginalDbColumnName().equals("TEST"));
         assertTrue(targetTable.getListColumns().get(5).getAdditionalField().get("AVRO_TECHNICAL_KEY").equals("TEST"));
-        
+
         assertTrue(targetTable.getListColumns().get(6).getLabel().equals("TEST1"));
         assertTrue(targetTable.getListColumns().get(6).getOriginalDbColumnName().equals("TEST"));
         assertTrue(targetTable.getListColumns().get(6).getAdditionalField().get("AVRO_TECHNICAL_KEY").equals("TEST1"));
-        
+
     }
 
 }

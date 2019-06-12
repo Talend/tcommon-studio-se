@@ -1,6 +1,6 @@
 // ============================================================================
 //
-// Copyright (C) 2006-2018 Talend Inc. - www.talend.com
+// Copyright (C) 2006-2019 Talend Inc. - www.talend.com
 //
 // This source code is available under agreement available at
 // %InstallDIR%\features\org.talend.rcp.branding.%PRODUCTNAME%\%PRODUCTNAME%license.txt
@@ -67,7 +67,7 @@ public class LocalRepositoryFactoryTest extends BaseRepositoryTest {
      * Test method for
      * {@link org.talend.repository.localprovider.model.LocalRepositoryFactory#createProject(org.talend.core.model.general.Project)}
      * .
-     * 
+     *
      * @throws PersistenceException
      * @throws CoreException
      */
@@ -88,7 +88,7 @@ public class LocalRepositoryFactoryTest extends BaseRepositoryTest {
 
     /**
      * Test method for {@link org.talend.repository.localprovider.model.LocalRepositoryFactory#readProject()}.
-     * 
+     *
      * @throws CoreException
      * @throws PersistenceException
      */
@@ -110,7 +110,7 @@ public class LocalRepositoryFactoryTest extends BaseRepositoryTest {
      * Test method for
      * {@link org.talend.repository.localprovider.model.LocalRepositoryFactory#logOnProject(org.talend.core.model.general.Project)}
      * .
-     * 
+     *
      * @throws LoginException
      * @throws PersistenceException
      * @throws CoreException
@@ -127,7 +127,7 @@ public class LocalRepositoryFactoryTest extends BaseRepositoryTest {
      * Test method for
      * {@link org.talend.repository.localprovider.model.LocalRepositoryFactory#getFolder(org.talend.core.model.general.Project, org.talend.core.model.repository.ERepositoryObjectType)}
      * .
-     * 
+     *
      * @throws PersistenceException
      * @throws CoreException
      * @throws LoginException
@@ -143,7 +143,7 @@ public class LocalRepositoryFactoryTest extends BaseRepositoryTest {
      * Test method for
      * {@link org.talend.repository.localprovider.model.LocalRepositoryFactory#createUser(org.talend.core.model.general.Project)}
      * .
-     * 
+     *
      * @throws CoreException
      * @throws PersistenceException
      */
@@ -158,7 +158,7 @@ public class LocalRepositoryFactoryTest extends BaseRepositoryTest {
      * Test method for
      * {@link org.talend.repository.localprovider.model.LocalRepositoryFactory#create(org.talend.core.model.general.Project, org.talend.core.model.properties.Item, org.eclipse.core.runtime.IPath, boolean[])}
      * .
-     * 
+     *
      * @throws CoreException
      * @throws PersistenceException
      * @throws LoginException
@@ -193,7 +193,7 @@ public class LocalRepositoryFactoryTest extends BaseRepositoryTest {
      * Test method for
      * {@link org.talend.repository.localprovider.model.LocalRepositoryFactory#createFolder(org.talend.core.model.general.Project, org.talend.core.model.repository.ERepositoryObjectType, org.eclipse.core.runtime.IPath, java.lang.String)}
      * .
-     * 
+     *
      * @throws CoreException
      * @throws PersistenceException
      * @throws LoginException
@@ -230,7 +230,7 @@ public class LocalRepositoryFactoryTest extends BaseRepositoryTest {
      * Test method for
      * {@link org.talend.repository.localprovider.model.LocalRepositoryFactory#getSerializableFromFolder(org.talend.core.model.general.Project, java.lang.Object, java.lang.String, org.talend.core.model.repository.ERepositoryObjectType, boolean, boolean, boolean, boolean, boolean[])}
      * .
-     * 
+     *
      * @throws CoreException
      * @throws PersistenceException
      * @throws LoginException
@@ -264,7 +264,7 @@ public class LocalRepositoryFactoryTest extends BaseRepositoryTest {
      * Test method for
      * {@link org.talend.repository.localprovider.model.LocalRepositoryFactory#getObjectFromFolder(org.talend.core.model.general.Project, org.talend.core.model.repository.ERepositoryObjectType, boolean, boolean[])}
      * .
-     * 
+     *
      * @throws CoreException
      * @throws PersistenceException
      * @throws LoginException
@@ -298,7 +298,7 @@ public class LocalRepositoryFactoryTest extends BaseRepositoryTest {
      * Test method for
      * {@link org.talend.repository.localprovider.model.LocalRepositoryFactory#getFolderHelper(org.talend.core.model.properties.Project)}
      * .
-     * 
+     *
      * @throws CoreException
      * @throws PersistenceException
      * @throws LoginException
@@ -315,7 +315,7 @@ public class LocalRepositoryFactoryTest extends BaseRepositoryTest {
      * Test method for
      * {@link org.talend.repository.localprovider.model.LocalRepositoryFactory#getUptodateProperty(org.talend.core.model.general.Project, org.talend.core.model.properties.Property)}
      * .
-     * 
+     *
      * @throws CoreException
      * @throws PersistenceException
      * @throws LoginException
@@ -361,7 +361,7 @@ public class LocalRepositoryFactoryTest extends BaseRepositoryTest {
      * Test method for
      * {@link org.talend.repository.localprovider.model.LocalRepositoryFactory#reloadProject(org.talend.core.model.general.Project)}
      * .
-     * 
+     *
      * @throws CoreException
      * @throws PersistenceException
      */
@@ -377,7 +377,7 @@ public class LocalRepositoryFactoryTest extends BaseRepositoryTest {
      * Test method for
      * {@link org.talend.repository.localprovider.model.LocalRepositoryFactory#getAll(org.talend.core.model.general.Project, org.talend.core.model.repository.ERepositoryObjectType, boolean, boolean)}
      * .
-     * 
+     *
      * @throws CoreException
      * @throws PersistenceException
      * @throws LoginException
@@ -410,7 +410,7 @@ public class LocalRepositoryFactoryTest extends BaseRepositoryTest {
     /**
      * Test method for
      * {@link org.talend.repository.localprovider.model.LocalRepositoryFactory#unloadUnlockedResources()}.
-     * 
+     *
      * @throws CoreException
      * @throws PersistenceException
      * @throws LoginException
@@ -509,7 +509,7 @@ public class LocalRepositoryFactoryTest extends BaseRepositoryTest {
      * Test method for
      * {@link org.talend.repository.localprovider.model.LocalRepositoryFactory#unloadResources(org.talend.core.model.properties.Property)}
      * .
-     * 
+     *
      * @throws CoreException
      * @throws PersistenceException
      * @throws LoginException
@@ -562,7 +562,7 @@ public class LocalRepositoryFactoryTest extends BaseRepositoryTest {
      * Test method for {@link
      * org.talend.repository.localprovider.model.LocalRepositoryFactory#save((org.talend.core.model.general.Project,
      * org.talend.core.model.properties.Item)} .
-     * 
+     *
      * @throws PersistenceException
      * @throws CoreException
      * @throws LoginException
@@ -582,7 +582,7 @@ public class LocalRepositoryFactoryTest extends BaseRepositoryTest {
      * Test method for {@link
      * org.talend.repository.localprovider.model.LocalRepositoryFactory#save((org.talend.core.model.general.Project,
      * org.talend.core.model.properties.Property)} .
-     * 
+     *
      * @throws PersistenceException
      * @throws CoreException
      * @throws LoginException
@@ -1011,7 +1011,7 @@ public class LocalRepositoryFactoryTest extends BaseRepositoryTest {
      * Test method for
      * {@link org.talend.repository.localprovider.model.LocalRepositoryFactory#moveObject(org.talend.core.model.general.Project)}
      * .
-     * 
+     *
      * @throws CoreException
      * @throws PersistenceException
      * @throws LoginException
@@ -1057,7 +1057,7 @@ public class LocalRepositoryFactoryTest extends BaseRepositoryTest {
      * Test method for
      * {@link org.talend.repository.localprovider.model.LocalRepositoryFactory#createFolder(org.talend.core.model.general.Project)}
      * .
-     * 
+     *
      * @throws CoreException
      * @throws PersistenceException
      * @throws LoginException
@@ -1096,7 +1096,7 @@ public class LocalRepositoryFactoryTest extends BaseRepositoryTest {
      * Test method for
      * {@link org.talend.repository.localprovider.model.LocalRepositoryFactory#deleteObjectPhysical(org.talend.core.model.general.Project, org.talend.core.model.repository.IRepositoryViewObject)}
      * .
-     * 
+     *
      * @throws PersistenceException
      * @throws IOException
      * @throws BusinessException

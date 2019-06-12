@@ -1,6 +1,6 @@
 // ============================================================================
 //
-// Copyright (C) 2006-2014 Talend Inc. - www.talend.com
+// Copyright (C) 2006-2019 Talend Inc. - www.talend.com
 //
 // This source code is available under agreement available at
 // %InstallDIR%\features\org.talend.rcp.branding.%PRODUCTNAME%\%PRODUCTNAME%license.txt
@@ -30,9 +30,9 @@ import org.junit.Test;
 public class XSDPopulationUtil2Test {
 
     /**
-     * 
+     *
      * DOC wchen Comment method "getSchemaTreeXSDSchemaATreeNode".
-     * 
+     *
      * @throws URISyntaxException
      * @throws IOException
      * @throws OdaException
@@ -80,9 +80,9 @@ public class XSDPopulationUtil2Test {
     }
 
     /**
-     * 
+     *
      * DOC wchen Comment method "getSchemaTreeXSDSchemaATreeNode".
-     * 
+     *
      * @throws URISyntaxException
      * @throws IOException
      * @throws OdaException

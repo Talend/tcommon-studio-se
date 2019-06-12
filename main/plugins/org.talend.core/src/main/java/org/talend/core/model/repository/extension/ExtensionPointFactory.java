@@ -1,6 +1,6 @@
 // ============================================================================
 //
-// Copyright (C) 2006-2018 Talend Inc. - www.talend.com
+// Copyright (C) 2006-2019 Talend Inc. - www.talend.com
 //
 // This source code is available under agreement available at
 // %InstallDIR%\features\org.talend.rcp.branding.%PRODUCTNAME%\%PRODUCTNAME%license.txt
@@ -17,9 +17,9 @@ import org.talend.commons.utils.workbench.extensions.IExtensionPointLimiter;
 
 /**
  * Provides extension points for this plug-in.<br/>
- * 
+ *
  * $Id: ExtensionPointFactory.java 911 2006-12-08 06:50:50 +0000 (星期五, 08 十二月 2006) bqian $
- * 
+ *
  */
 public class ExtensionPointFactory {
 

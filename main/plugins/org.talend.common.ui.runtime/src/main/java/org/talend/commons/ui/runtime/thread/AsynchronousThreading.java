@@ -1,6 +1,6 @@
 // ============================================================================
 //
-// Copyright (C) 2006-2018 Talend Inc. - www.talend.com
+// Copyright (C) 2006-2019 Talend Inc. - www.talend.com
 //
 // This source code is available under agreement available at
 // %InstallDIR%\features\org.talend.rcp.branding.%PRODUCTNAME%\%PRODUCTNAME%license.txt
@@ -20,15 +20,15 @@ import org.eclipse.swt.widgets.Display;
 
 /**
  * This class is useful to execute code after a given time. <br/>
- * 
+ *
  * Samples:
- * 
+ *
  * new AsynchronousThread(50, false, dataMapTableView.getDisplay(), new Runnable() { public void run() { // calls of
  * Widget methods } }).start();
- * 
+ *
  * new AsynchronousThread(50, new Runnable() { public void run() { // calls of methods except Widget methods }
  * }).start();
- * 
+ *
  */
 public class AsynchronousThreading {
 
@@ -54,9 +54,9 @@ public class AsynchronousThreading {
     });
 
     /**
-     * 
+     *
      * DOC amaumont AsynchronousThreading constructor comment.
-     * 
+     *
      * @param sleepingTime before execution in ms
      * @param synchronousDisplayExecution
      * @param display
@@ -70,9 +70,9 @@ public class AsynchronousThreading {
     }
 
     /**
-     * 
+     *
      * DOC amaumont AsynchronousThreading constructor comment.
-     * 
+     *
      * @param sleepingTime before execution in ms
      * @param target
      */

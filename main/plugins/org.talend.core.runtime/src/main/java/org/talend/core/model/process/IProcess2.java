@@ -1,6 +1,6 @@
 // ============================================================================
 //
-// Copyright (C) 2006-2018 Talend Inc. - www.talend.com
+// Copyright (C) 2006-2019 Talend Inc. - www.talend.com
 //
 // This source code is available under agreement available at
 // %InstallDIR%\features\org.talend.rcp.branding.%PRODUCTNAME%\%PRODUCTNAME%license.txt
@@ -42,7 +42,7 @@ public interface IProcess2 extends IRepositoryObject, IProcess {
 
     /**
      * DOC qzhang Comment method "loadXmlFile".
-     * 
+     *
      * @param process
      */
     void loadXmlFile();
@@ -56,7 +56,7 @@ public interface IProcess2 extends IRepositoryObject, IProcess {
 
     /**
      * DOC qzhang Comment method "setXmlStream".
-     * 
+     *
      * @param contents
      */
     void setXmlStream(InputStream contents);
@@ -65,7 +65,7 @@ public interface IProcess2 extends IRepositoryObject, IProcess {
 
     /**
      * DOC qzhang Comment method "setActivate".
-     * 
+     *
      * @param b
      */
     @Override
@@ -84,7 +84,7 @@ public interface IProcess2 extends IRepositoryObject, IProcess {
 
     /**
      * DOC qzhang Comment method "setProcessModified".
-     * 
+     *
      * @param processModified
      */
     void setProcessModified(boolean processModified);

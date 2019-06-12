@@ -1,6 +1,6 @@
 // ============================================================================
 //
-// Copyright (C) 2006-2018 Talend Inc. - www.talend.com
+// Copyright (C) 2006-2019 Talend Inc. - www.talend.com
 //
 // This source code is available under agreement available at
 // %InstallDIR%\features\org.talend.rcp.branding.%PRODUCTNAME%\%PRODUCTNAME%license.txt
@@ -149,7 +149,7 @@ public abstract class CustomDialogCellEditor extends CellEditor {
 
     /**
      * Creates a new dialog cell editor with no control.
-     * 
+     *
      * @since 2.1
      */
     public CustomDialogCellEditor() {
@@ -159,7 +159,7 @@ public abstract class CustomDialogCellEditor extends CellEditor {
     /**
      * Creates a new dialog cell editor parented under the given control. The cell editor value is <code>null</code>
      * initially, and has no validator.
-     * 
+     *
      * @param parent the parent control
      */
     protected CustomDialogCellEditor(Composite parent) {
@@ -169,7 +169,7 @@ public abstract class CustomDialogCellEditor extends CellEditor {
     /**
      * Creates a new dialog cell editor parented under the given control. The cell editor value is <code>null</code>
      * initially, and has no validator.
-     * 
+     *
      * @param parent the parent control
      * @param style the style bits
      * @since 2.1
@@ -184,7 +184,7 @@ public abstract class CustomDialogCellEditor extends CellEditor {
      * The default implementation of this framework method creates the button display on the right hand side of the
      * dialog cell editor. Subclasses may extend or reimplement.
      * </p>
-     * 
+     *
      * @param parent the parent control
      * @return the new button control
      */
@@ -204,7 +204,7 @@ public abstract class CustomDialogCellEditor extends CellEditor {
      * Subclasses may reimplement. If you reimplement this method, you should also reimplement
      * <code>updateContents</code>.
      * </p>
-     * 
+     *
      * @param cell the control for this cell editor
      */
     protected Control createContents(Composite cell) {
@@ -267,7 +267,7 @@ public abstract class CustomDialogCellEditor extends CellEditor {
 
     /**
      * bqian Comment method "isTextEditable".
-     * 
+     *
      * @return
      */
     protected boolean isTextEditable() {
@@ -366,7 +366,7 @@ public abstract class CustomDialogCellEditor extends CellEditor {
 
             /*
              * (non-Javadoc)
-             * 
+             *
              * @see org.eclipse.swt.events.KeyListener#keyReleased(org.eclipse.swt.events.KeyEvent)
              */
             public void keyReleased(KeyEvent e) {
@@ -380,7 +380,7 @@ public abstract class CustomDialogCellEditor extends CellEditor {
 
             /*
              * (non-Javadoc)
-             * 
+             *
              * @see org.eclipse.swt.events.SelectionListener#widgetSelected(org.eclipse.swt.events.SelectionEvent)
              */
             public void widgetSelected(SelectionEvent event) {
@@ -414,9 +414,9 @@ public abstract class CustomDialogCellEditor extends CellEditor {
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * Override in order to remove the button's focus listener if the celleditor is deactivating.
-     * 
+     *
      * @see org.eclipse.jface.viewers.CellEditor#deactivate()
      */
     public void deactivate() {
@@ -456,7 +456,7 @@ public abstract class CustomDialogCellEditor extends CellEditor {
 
     /**
      * Return a listener for button focus.
-     * 
+     *
      * @return FocusListener
      */
     private FocusListener getButtonFocusListener() {
@@ -465,7 +465,7 @@ public abstract class CustomDialogCellEditor extends CellEditor {
 
                 /*
                  * (non-Javadoc)
-                 * 
+                 *
                  * @see org.eclipse.swt.events.FocusListener#focusGained(org.eclipse.swt.events.FocusEvent)
                  */
                 public void focusGained(FocusEvent e) {
@@ -474,7 +474,7 @@ public abstract class CustomDialogCellEditor extends CellEditor {
 
                 /*
                  * (non-Javadoc)
-                 * 
+                 *
                  * @see org.eclipse.swt.events.FocusListener#focusLost(org.eclipse.swt.events.FocusEvent)
                  */
                 public void focusLost(FocusEvent e) {
@@ -500,7 +500,7 @@ public abstract class CustomDialogCellEditor extends CellEditor {
 
     /**
      * Returns the default label widget created by <code>createContents</code>.
-     * 
+     *
      * @return the default label widget
      */
     protected Text getDefaultLabel() {
@@ -514,7 +514,7 @@ public abstract class CustomDialogCellEditor extends CellEditor {
      * This framework method must be implemented by concrete subclasses. It is called when the user has pressed the
      * button and the dialog box must pop up.
      * </p>
-     * 
+     *
      * @param cellEditorWindow the parent control cell editor's window so that a subclass can adjust the dialog box
      * accordingly
      * @return the selected value, or <code>null</code> if the dialog was cancelled or no selection was made in the
@@ -532,7 +532,7 @@ public abstract class CustomDialogCellEditor extends CellEditor {
      * Subclasses may reimplement. If you reimplement this method, you should also reimplement
      * <code>createContents</code>.
      * </p>
-     * 
+     *
      * @param value the new value of this cell editor
      */
     protected void updateContents(Object value) {

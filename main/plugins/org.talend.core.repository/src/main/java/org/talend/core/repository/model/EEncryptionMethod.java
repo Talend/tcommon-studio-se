@@ -1,6 +1,6 @@
 // ============================================================================
 //
-// Copyright (C) 2006-2018 Talend Inc. - www.talend.com
+// Copyright (C) 2006-2019 Talend Inc. - www.talend.com
 //
 // This source code is available under agreement available at
 // %InstallDIR%\features\org.talend.rcp.branding.%PRODUCTNAME%\%PRODUCTNAME%license.txt
@@ -14,9 +14,9 @@ package org.talend.core.repository.model;
 
 /**
  * This class is used for storing Encryption method for LDAP schema. <br/>
- * 
+ *
  * @author ftang, 18/09/2007
- * 
+ *
  */
 public enum EEncryptionMethod {
 
@@ -25,13 +25,13 @@ public enum EEncryptionMethod {
     STARTTSL_EXTENSION_METHOD("TLS"); //$NON-NLS-1$
 
     /**
-     * 
+     *
      */
     private String methodName;
 
     /**
      * EEncryptionMethod constructor comment.
-     * 
+     *
      * @param methodName
      */
     private EEncryptionMethod(String methodName) {
@@ -40,7 +40,7 @@ public enum EEncryptionMethod {
 
     /**
      * Comment method "getName".
-     * 
+     *
      * @return
      */
     public String getName() {

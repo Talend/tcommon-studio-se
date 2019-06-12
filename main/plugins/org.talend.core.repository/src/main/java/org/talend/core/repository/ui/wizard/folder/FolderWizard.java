@@ -1,6 +1,6 @@
 // ============================================================================
 //
-// Copyright (C) 2006-2018 Talend Inc. - www.talend.com
+// Copyright (C) 2006-2019 Talend Inc. - www.talend.com
 //
 // This source code is available under agreement available at
 // %InstallDIR%\features\org.talend.rcp.branding.%PRODUCTNAME%\%PRODUCTNAME%license.txt
@@ -39,9 +39,9 @@ import org.talend.repository.model.IProxyRepositoryFactory;
 
 /**
  * Wizard for the creation of a new project. <br/>
- * 
+ *
  * $Id: FolderWizard.java 83889 2012-05-19 08:18:10Z nrousseau $
- * 
+ *
  */
 public class FolderWizard extends Wizard {
 
@@ -50,7 +50,7 @@ public class FolderWizard extends Wizard {
 
     /**
      * Getter for mainPage.
-     * 
+     *
      * @return the mainPage
      */
     public FolderWizardPage getMainPage() {
@@ -67,7 +67,7 @@ public class FolderWizard extends Wizard {
 
     /**
      * Constructs a new NewProjectWizard.
-     * 
+     *
      * @param author Project author.
      * @param server
      * @param password

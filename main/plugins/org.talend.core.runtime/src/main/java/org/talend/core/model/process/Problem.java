@@ -1,6 +1,6 @@
 // ============================================================================
 //
-// Copyright (C) 2006-2018 Talend Inc. - www.talend.com
+// Copyright (C) 2006-2019 Talend Inc. - www.talend.com
 //
 // This source code is available under agreement available at
 // %InstallDIR%\features\org.talend.rcp.branding.%PRODUCTNAME%\%PRODUCTNAME%license.txt
@@ -25,9 +25,9 @@ import org.eclipse.ui.PlatformUI;
 
 /**
  * Class that will be used in the ProblemsView. <br/>
- * 
+ *
  * $Id: Problem.java 38013 2010-03-05 14:21:59Z mhirt $
- * 
+ *
  */
 public class Problem {
 
@@ -39,7 +39,7 @@ public class Problem {
 
     /**
      * smallet Problem class global comment. Detailled comment <br/>
-     * 
+     *
      * $Id: Problem.java 48513 2010-09-18 14:56:23Z nrousseau $
      */
     public enum ProblemStatus {
@@ -69,9 +69,9 @@ public class Problem {
 
     /**
      * Added to enhance the refresh speed of the problems view. <br/>
-     * 
+     *
      * $Id: Problem.java 48513 2010-09-18 14:56:23Z nrousseau $
-     * 
+     *
      */
 
     private String description;
@@ -97,7 +97,7 @@ public class Problem {
 
     /**
      * DOC smallet Problem constructor comment.
-     * 
+     *
      * @param element
      * @param description
      * @param status
@@ -111,7 +111,7 @@ public class Problem {
 
     /**
      * Getter for JobInfo.
-     * 
+     *
      * @return the JobInfo
      */
     public BasicJobInfo getJobInfo() {
@@ -149,7 +149,7 @@ public class Problem {
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see java.lang.Object#hashCode()
      */
     @Override
@@ -166,7 +166,7 @@ public class Problem {
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see java.lang.Object#equals(java.lang.Object)
      */
     @Override
@@ -245,7 +245,7 @@ public class Problem {
 
     /**
      * Getter for status.
-     * 
+     *
      * @return the status
      */
     public ProblemStatus getStatus() {
@@ -254,7 +254,7 @@ public class Problem {
 
     /**
      * Sets the status.
-     * 
+     *
      * @param status the status to set
      */
     public void setStatus(ProblemStatus status) {
@@ -263,7 +263,7 @@ public class Problem {
 
     /**
      * Getter for key.
-     * 
+     *
      * @return the key
      */
     public String getKey() {
@@ -272,7 +272,7 @@ public class Problem {
 
     /**
      * Sets the key.
-     * 
+     *
      * @param key the key to set
      */
     public void setKey(String key) {
@@ -289,7 +289,7 @@ public class Problem {
 
     /**
      * bqian Comment method "getName".
-     * 
+     *
      * @return
      */
     public String getProblemResource() {
@@ -303,7 +303,7 @@ public class Problem {
 
     /**
      * Getter for type.
-     * 
+     *
      * @return the type
      */
     public ProblemType getType() {
@@ -312,7 +312,7 @@ public class Problem {
 
     /**
      * Sets the type.
-     * 
+     *
      * @param type the type to set
      */
     public void setType(ProblemType type) {
@@ -321,7 +321,7 @@ public class Problem {
 
     /**
      * Getter for nodeName.
-     * 
+     *
      * @return the nodeName
      */
     public String getNodeName() {
@@ -334,7 +334,7 @@ public class Problem {
 
     /**
      * Getter for componentName.
-     * 
+     *
      * @return the componentName
      */
     public String getComponentName() {

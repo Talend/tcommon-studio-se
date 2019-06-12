@@ -1,6 +1,6 @@
 // ============================================================================
 //
-// Copyright (C) 2006-2018 Talend Inc. - www.talend.com
+// Copyright (C) 2006-2019 Talend Inc. - www.talend.com
 //
 // This source code is available under agreement available at
 // %InstallDIR%\features\org.talend.rcp.branding.%PRODUCTNAME%\%PRODUCTNAME%license.txt
@@ -46,7 +46,7 @@ import orgomg.cwm.resource.relational.impl.RelationalFactoryImpl;
 
 /**
  * @author scorreia
- * 
+ *
  * Helper for Table class.
  */
 public final class TableHelper extends SubItemHelper {
@@ -56,7 +56,7 @@ public final class TableHelper extends SubItemHelper {
 
     /**
      * Method "getTables" extracts the tables from the list.
-     * 
+     *
      * @param elements any elements that could contain TdTables
      * @return the list of TdTables found in the given list (never null, but can be empty).
      */
@@ -77,7 +77,7 @@ public final class TableHelper extends SubItemHelper {
 
     /**
      * Method "getColumns" returns the columns of a table.
-     * 
+     *
      * @param table a table
      * @return the list of TdColumn contained in the table
      */
@@ -87,7 +87,7 @@ public final class TableHelper extends SubItemHelper {
 
     /**
      * Method "addColumns".
-     * 
+     *
      * @param table the table in which to add the columns (must not be null)
      * @param columns the columns to add (must not be null)
      * @return true if the content of the table changed as a result of the call.
@@ -98,7 +98,7 @@ public final class TableHelper extends SubItemHelper {
 
     /**
      * Method "addColumn" adds a column to the given table.
-     * 
+     *
      * @param table the table in which the column is added (must not be null)
      * @param column the column to add (must not be null)
      * @return true if the content of the table changed as a result of the call.
@@ -111,7 +111,7 @@ public final class TableHelper extends SubItemHelper {
 
     /**
      * Method "getParentTable".
-     * 
+     *
      * @param column a column
      * @return the table containing this column or null
      * @deprecated use ColumnHelper.getTdTableOwner();
@@ -123,7 +123,7 @@ public final class TableHelper extends SubItemHelper {
 
     /**
      * Method "addPrimaryKey".
-     * 
+     *
      * @param table
      * @param pk the primary key of the table
      */
@@ -154,7 +154,7 @@ public final class TableHelper extends SubItemHelper {
 
     /**
      * Method "addPrimaryKey".
-     * 
+     *
      * @param table
      * @param pk the primary key of the table
      */
@@ -181,7 +181,7 @@ public final class TableHelper extends SubItemHelper {
     /**
      * removes the key from the table and eventually removes all references from the key referenced colums <br>
      * //TODO handle the foreign key that may reference this primary key
-     * 
+     *
      * @param columnSet the table in which the key is to be removed
      * @param key the key to be removed
      * @return true if the PK existed in the table
@@ -199,7 +199,7 @@ public final class TableHelper extends SubItemHelper {
 
     /**
      * removes the key from the table and eventually removes all references from the key referenced colums <br>
-     * 
+     *
      * @param columnSet the table in which the key is to be removed
      * @param key the key to be removed
      * @return true if the PK existed in the table
@@ -217,7 +217,7 @@ public final class TableHelper extends SubItemHelper {
 
     /**
      * Method "removeForeignKey".
-     * 
+     *
      * @param table
      * @param foreignKey
      * @return true if the FK existed in the table
@@ -230,7 +230,7 @@ public final class TableHelper extends SubItemHelper {
 
     /**
      * Method "addAllPrimaryKeys".
-     * 
+     *
      * @param table
      * @param primaryKeys the primary keys of the table.
      * @deprecated because there can only be one PrimaryKey on same one table, so use addPrimaryKey instead
@@ -247,7 +247,7 @@ public final class TableHelper extends SubItemHelper {
 
     /**
      * Method "addForeignKey".
-     * 
+     *
      * @param table
      * @param foreignKey the foreign key of the given table
      */
@@ -275,7 +275,7 @@ public final class TableHelper extends SubItemHelper {
 
     /**
      * Method "addForeignKeys".
-     * 
+     *
      * @param table
      * @param foreignKeys the foreign keys of this table
      * @deprecated cause only working on TdTable and not on ColumnSet use addForeignKeys(Table, List<ForeignKey>)
@@ -292,7 +292,7 @@ public final class TableHelper extends SubItemHelper {
 
     /**
      * Method "addForeignKeys".
-     * 
+     *
      * @param table
      * @param foreignKeys the foreign keys of this table
      */
@@ -304,7 +304,7 @@ public final class TableHelper extends SubItemHelper {
 
     /**
      * Method "addForeignKey".
-     * 
+     *
      * @param table
      * @param foreignKey the foreign key of the given table
      */
@@ -332,7 +332,7 @@ public final class TableHelper extends SubItemHelper {
 
     /**
      * Method "getPrimaryKeys".
-     * 
+     *
      * @param table a table
      * @return a list of all primary keys of the given table
      * @deprecated use getPrimaryKey() instead
@@ -352,7 +352,7 @@ public final class TableHelper extends SubItemHelper {
 
     /**
      * Method "getForeignKeys".
-     * 
+     *
      * @param table a table
      * @return a list of all foreign keys of the given table
      */
@@ -370,7 +370,7 @@ public final class TableHelper extends SubItemHelper {
 
     /**
      * Method "getParentCatalogOrSchema" returns the owner of the element (Catalog or Schema).
-     * 
+     *
      * @param element (can be null)
      * @return the Catalog or of Schema or null
      * @deprecated use PackageHelper.getParentPackage()
@@ -386,7 +386,7 @@ public final class TableHelper extends SubItemHelper {
 
     /**
      * return the primary key associated with this table or null if there is none
-     * 
+     *
      * @param table to search in for a PK
      * @return the PK found or null
      */
@@ -408,7 +408,7 @@ public final class TableHelper extends SubItemHelper {
      * removes the column from the MetadataTable, if it is a TdColumn then try to remove it from the primary key and the
      * foreign key that contains it. this eventually removes the private key and foreign key from the table if the are
      * no more refering to any column
-     * 
+     *
      * @param column to be removed
      * @param metadataTable the set to remove the column from
      */
@@ -429,9 +429,9 @@ public final class TableHelper extends SubItemHelper {
     }
 
     /**
-     * 
+     *
      * DOC mzhao 2009-03-12 Remove all columns from this column set.
-     * 
+     *
      * @param column
      * @param metadataTable
      * @return true if remove successfully, false or else.
@@ -446,7 +446,7 @@ public final class TableHelper extends SubItemHelper {
 
     /**
      * Method "addColumns".
-     * 
+     *
      * @param metadataTable the column set in which to add the columns (must not be null)
      * @param columns the columns to add (must not be null)
      * @return true if the content of the table changed as a result of the call.
@@ -459,7 +459,7 @@ public final class TableHelper extends SubItemHelper {
 
     /**
      * Method "setColumns" replaces the previous columns by the new ones.
-     * 
+     *
      * @param metadataTable the column set in which to add the columns (must not be null)
      * @param columns the columns to add (must not be null)
      * @return true if the content of the table changed as a result of the call.
@@ -491,9 +491,9 @@ public final class TableHelper extends SubItemHelper {
 
     /**
      * DOC bZhou Comment method "isFromSamePackage".
-     * 
+     *
      * this method is used to judge columnset whether from same package.
-     * 
+     *
      * @param sets
      * @return
      */
@@ -509,7 +509,7 @@ public final class TableHelper extends SubItemHelper {
 
     /**
      * DOC bZhou Comment method "getTableFilter".
-     * 
+     *
      * @param element
      * @return
      */
@@ -523,7 +523,7 @@ public final class TableHelper extends SubItemHelper {
 
     /**
      * DOC bZhou Comment method "setTableFilter".
-     * 
+     *
      * @param filter
      * @param element
      */
@@ -533,7 +533,7 @@ public final class TableHelper extends SubItemHelper {
 
     /**
      * DOC bZhou Comment method "getViewFilter".
-     * 
+     *
      * @param element
      * @return
      */
@@ -547,7 +547,7 @@ public final class TableHelper extends SubItemHelper {
 
     /**
      * DOC bZhou Comment method "setViewFilter".
-     * 
+     *
      * @param filter
      * @param element
      */
@@ -557,7 +557,7 @@ public final class TableHelper extends SubItemHelper {
 
     /**
      * DOC bZhou Comment method "getComment".
-     * 
+     *
      * @param element
      * @return
      */
@@ -571,7 +571,7 @@ public final class TableHelper extends SubItemHelper {
 
     /**
      * DOC bZhou Comment method "setComment".
-     * 
+     *
      * @param comment
      * @param element
      */
@@ -582,7 +582,7 @@ public final class TableHelper extends SubItemHelper {
     /**
      * return the first connection available that refers to this table by moving up to the last Package instance that
      * hold this table and finding the connection linked to it
-     * 
+     *
      * @param metadataTable
      * @return
      */
@@ -612,7 +612,7 @@ public final class TableHelper extends SubItemHelper {
 
     /**
      * DOC sgandon Comment method "getPackageDataProvider".
-     * 
+     *
      * @param result
      * @param thePackage
      * @return
@@ -643,7 +643,7 @@ public final class TableHelper extends SubItemHelper {
 
     /**
      * DOC tguiu Comment method "doGetTableNames".
-     * 
+     *
      * @param connection
      * @return
      */
@@ -667,9 +667,9 @@ public final class TableHelper extends SubItemHelper {
     }
 
     /**
-     * 
+     *
      * DOC tguiu Comment method "findByLabel".
-     * 
+     *
      * @deprecated it would be better to use find with some unique identifier
      * @param connection
      * @param label

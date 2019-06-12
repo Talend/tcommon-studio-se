@@ -1,6 +1,6 @@
 // ============================================================================
 //
-// Copyright (C) 2006-2018 Talend Inc. - www.talend.com
+// Copyright (C) 2006-2019 Talend Inc. - www.talend.com
 //
 // This source code is available under agreement available at
 // %InstallDIR%\features\org.talend.rcp.branding.%PRODUCTNAME%\%PRODUCTNAME%license.txt
@@ -15,7 +15,7 @@ package org.talend.core.repository.model;
 /**
  *This class is used for storing aliases dereference for LDAP schema. <br/>
  *@author ftang, 18/09/2007
- * 
+ *
  */
 public enum EAliasesDereference {
 
@@ -25,7 +25,7 @@ public enum EAliasesDereference {
     SEARCHING("Searching","searching"); //$NON-NLS-1$ //$NON-NLS-2$
 
     private String displayName;
-    
+
     private String repositoryName;
 
     /**
@@ -45,7 +45,7 @@ public enum EAliasesDereference {
     public String getDisplayName() {
         return this.displayName;
     }
-    
+
     /**
      * Comment method "getRepositoryName".
      * @return
@@ -53,6 +53,6 @@ public enum EAliasesDereference {
     public String getRepositoryName(){
         return this.repositoryName;
     }
-    
-    
+
+
 }

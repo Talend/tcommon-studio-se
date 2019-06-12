@@ -1,6 +1,6 @@
 // ============================================================================
 //
-// Copyright (C) 2006-2018 Talend Inc. - www.talend.com
+// Copyright (C) 2006-2019 Talend Inc. - www.talend.com
 //
 // This source code is available under agreement available at
 // %InstallDIR%\features\org.talend.rcp.branding.%PRODUCTNAME%\%PRODUCTNAME%license.txt
@@ -19,13 +19,13 @@ import org.eclipse.swt.widgets.DirectoryDialog;
 
 /**
  * DOC qiang.zhang class global comment. Detailled comment <br/>
- * 
+ *
  */
 public class DirectoryCellEditor extends DialogCellEditor {
 
     /**
      * DOC qiang.zhang DirectoryCellEditor constructor comment.
-     * 
+     *
      * @param parent
      */
     public DirectoryCellEditor(Composite parent) {
@@ -34,7 +34,7 @@ public class DirectoryCellEditor extends DialogCellEditor {
 
     /**
      * DOC qiang.zhang DirectoryCellEditor constructor comment.
-     * 
+     *
      * @param parent
      * @param style
      */
@@ -44,7 +44,7 @@ public class DirectoryCellEditor extends DialogCellEditor {
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see org.eclipse.jface.viewers.DialogCellEditor#openDialogBox(org.eclipse.swt.widgets.Control)
      */
     @Override

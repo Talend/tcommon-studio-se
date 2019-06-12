@@ -1,6 +1,6 @@
 // ============================================================================
 //
-// Copyright (C) 2006-2018 Talend Inc. - www.talend.com
+// Copyright (C) 2006-2019 Talend Inc. - www.talend.com
 //
 // This source code is available under agreement available at
 // %InstallDIR%\features\org.talend.rcp.branding.%PRODUCTNAME%\%PRODUCTNAME%license.txt
@@ -35,9 +35,9 @@ import org.talend.commons.i18n.internal.Messages;
 
 /**
  * Represents a version. Contents a major and a minor version.<br/>
- * 
+ *
  * $Id: Version.java 1 2006-09-29 17:06:40 +0000 (ven., 29 sept. 2006) nrousseau $
- * 
+ *
  */
 public class VersionUtils {
 
@@ -82,9 +82,9 @@ public class VersionUtils {
     }
 
     /**
-     * 
+     *
      * DOC ggu Comment method "getEclipseProductFile".
-     * 
+     *
      * @return
      * @throws URISyntaxException
      */
@@ -138,7 +138,7 @@ public class VersionUtils {
 
     /**
      * DOC ycbai Comment method "getVersion".
-     * 
+     *
      * @deprecated Please use either getInternalVersion() or getDisplayVersion()
      * @return the studio version.
      */
@@ -149,13 +149,13 @@ public class VersionUtils {
 
     /**
      * DOC ycbai Comment method "getTalendVersion".
-     * 
+     *
      * return the internal version of the studio that may be different from the Studio version in OEM distribution. look
      * for version in org.talend.commons.runtime/talend.properties with the key talend.version if none found then return
      * the Studio version.
-     * 
+     *
      * @return the talend version or the Studio version or null if none found.
-     * 
+     *
      */
     public static String getTalendVersion() {
         if (talendVersion == null) {

@@ -1,6 +1,6 @@
 // ============================================================================
 //
-// Copyright (C) 2006-2018 Talend Inc. - www.talend.com
+// Copyright (C) 2006-2019 Talend Inc. - www.talend.com
 //
 // This source code is available under agreement available at
 // %InstallDIR%\features\org.talend.rcp.branding.%PRODUCTNAME%\%PRODUCTNAME%license.txt
@@ -90,7 +90,7 @@ public class CreateRuleDialog extends SelectionDialog {
     @Override
     protected Label createMessageArea(Composite composite) {
         Label label = new Label(composite, SWT.NONE);
-        label.setText(Messages.getString("CreateRuleDialog.messageLabel")); //$NON-NLS-1$ 
+        label.setText(Messages.getString("CreateRuleDialog.messageLabel")); //$NON-NLS-1$
         label.setFont(composite.getFont());
         return label;
     }
@@ -178,7 +178,7 @@ public class CreateRuleDialog extends SelectionDialog {
         String[] ruleNames = null;
         if (content != null && !content.equals("")) { //$NON-NLS-1$
             try {
-                Pattern regex = Pattern.compile("\\s*rule\\s+\"(.*)\"", //$NON-NLS-1$ 
+                Pattern regex = Pattern.compile("\\s*rule\\s+\"(.*)\"", //$NON-NLS-1$
                         Pattern.CANON_EQ);
                 Matcher regexMatcher = regex.matcher(content);
                 while (regexMatcher.find()) {
@@ -186,7 +186,7 @@ public class CreateRuleDialog extends SelectionDialog {
 
                 }
                 if (names.isEmpty()) {
-                    regex = Pattern.compile("\\s*rule\\x20(.*)", //$NON-NLS-1$ 
+                    regex = Pattern.compile("\\s*rule\\x20(.*)", //$NON-NLS-1$
                             Pattern.CANON_EQ);
                     regexMatcher = regex.matcher(content);
                     while (regexMatcher.find()) {

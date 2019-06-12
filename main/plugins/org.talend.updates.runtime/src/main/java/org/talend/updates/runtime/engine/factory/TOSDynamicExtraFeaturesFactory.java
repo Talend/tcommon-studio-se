@@ -1,6 +1,6 @@
 // ============================================================================
 //
-// Copyright (C) 2006-2018 Talend Inc. - www.talend.com
+// Copyright (C) 2006-2019 Talend Inc. - www.talend.com
 //
 // This source code is available under agreement available at
 // %InstallDIR%\features\org.talend.rcp.branding.%PRODUCTNAME%\%PRODUCTNAME%license.txt
@@ -69,7 +69,7 @@ public class TOSDynamicExtraFeaturesFactory extends AbstractExtraUpdatesFactory 
     /**
      * compute all extra features in the current licence and only return those that are not installed in the current
      * Studio
-     * 
+     *
      * @param progress to report progress or cancel
      * @param availableExtraFeatures
      * @return the set of uninstall extra feature the user may install or empty if none found or progress canceled by
@@ -107,12 +107,12 @@ public class TOSDynamicExtraFeaturesFactory extends AbstractExtraUpdatesFactory 
                     log.error(e);
                 }
             }
-        }     
+        }
     }
 
     /**
      * DOC sgandon Comment method "retreiveAllExtraFeatureForThisProduct".
-     * 
+     *
      * @param mainSubMonitor
      * @param updateSiteUrl
      * @param productAcronym
@@ -168,9 +168,9 @@ public class TOSDynamicExtraFeaturesFactory extends AbstractExtraUpdatesFactory 
 
     /**
      * This check the IU product property to only return the IU for the current product.
-     * 
+     *
      * @param productAcronym
-     * 
+     *
      * @param queryResult
      * @return
      */
@@ -196,7 +196,7 @@ public class TOSDynamicExtraFeaturesFactory extends AbstractExtraUpdatesFactory 
 
     /**
      * created for JUnit test so that profile Id can be changed by overriding
-     * 
+     *
      * @return
      */
     public String getP2ProfileId() {
@@ -205,7 +205,7 @@ public class TOSDynamicExtraFeaturesFactory extends AbstractExtraUpdatesFactory 
 
     /**
      * create for JUnit test so that URI can be change to some other P2 repo
-     * 
+     *
      * @return null for using the current defined area, but may be overriden ot point to another area for JUnitTests
      */
     public URI getP2AgentUri() {

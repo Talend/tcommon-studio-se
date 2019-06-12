@@ -1,6 +1,6 @@
 // ============================================================================
 //
-// Copyright (C) 2006-2018 Talend Inc. - www.talend.com
+// Copyright (C) 2006-2019 Talend Inc. - www.talend.com
 //
 // This source code is available under agreement available at
 // %InstallDIR%\features\org.talend.rcp.branding.%PRODUCTNAME%\%PRODUCTNAME%license.txt
@@ -17,7 +17,7 @@ import org.eclipse.jface.viewers.Viewer;
 
 /**
  * created by wchen on 2013-11-12 Detailled comment
- * 
+ *
  */
 public interface IRepositoryReviewFilter extends IExecutableExtension {
 

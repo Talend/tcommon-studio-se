@@ -1,6 +1,6 @@
 // ============================================================================
 //
-// Copyright (C) 2006-2018 Talend Inc. - www.talend.com
+// Copyright (C) 2006-2019 Talend Inc. - www.talend.com
 //
 // This source code is available under agreement available at
 // %InstallDIR%\features\org.talend.rcp.branding.%PRODUCTNAME%\%PRODUCTNAME%license.txt
@@ -34,22 +34,22 @@ import test.common.BundleTestCollector;
 
 /**
  * DOC sgandon class global comment. Detailled comment <br/>
- * 
+ *
  * $Id: talend.epf 1 2006-09-29 17:06:40Z nrousseau $
- * 
+ *
  */
 public class TalendSwtBotTestCollectorAnt extends TalendTestCollector{
     private static final String PROPERTY_FOLDER_PATH = "/conf/"; //$NON-NLS-1$
-	
+
     private static Logger log = Logger.getLogger(TalendSwtBotTestCollectorAnt.class);
-    
+
     public static final String TEST_PLUGIN_PREFIX_SUFFIX_PACKAGE_CLASS_FRAGMENTS="test.plugin.prefix.suffix.package.class.fragments";
     public static final String TEST_PLUGIN_PREFIX_SUFFIX_PACKAGE_CLASS_FRAGMENTS_REMOVE="test.plugin.prefix.suffix.package.class.fragments.remove";
 
     /**
      * System property key to specify string representing the prefix of plugin names to look for test classes, this may
      * be empty.
-     * 
+     *
      * @see GenericTestsJUnit4Suite.DEFAULT_PLUGIN_PREFIX
      */
     public static final String TEST_PLUGIN_PREFIX_SP = "test.plugin.prefix"; //$NON-NLS-1$
@@ -63,7 +63,7 @@ public class TalendSwtBotTestCollectorAnt extends TalendTestCollector{
     /**
      * System property key to specify string representing the suffix of plugin names to look for test classes, this may
      * be empty
-     * 
+     *
      * @see GenericTestsJUnit4Suite.DEFAULT_PLUGIN_SUFFIX
      */
     public static final String TEST_PLUGIN_SUFFIX_SP = "test.plugin.suffix"; //$NON-NLS-1$
@@ -76,7 +76,7 @@ public class TalendSwtBotTestCollectorAnt extends TalendTestCollector{
 
     /**
      * System property key to specify string representing the package prefix list value, this may be empty.
-     * 
+     *
      * @see GenericTestsJUnit4Suite.DEFAULT_PLUGIN_SUFFIX
      */
     public static final String TEST_PACKAGE_PREFIX_SP = "test.package.prefix"; //$NON-NLS-1$
@@ -89,7 +89,7 @@ public class TalendSwtBotTestCollectorAnt extends TalendTestCollector{
 
     /**
      * System property key to specify string representing the filter to select test classes, you may use the * wildcard.
-     * 
+     *
      * @see GenericTestsJUnit4Suite.TEST_CLASS_FILTER_SP
      */
     public static final String TEST_CLASS_FILTER_SP = "test.class.filter"; //$NON-NLS-1$
@@ -103,7 +103,7 @@ public class TalendSwtBotTestCollectorAnt extends TalendTestCollector{
     /**
      * System property key to specify a boolean (false or true) to use only Eclipse fragment instead of all plugins. the
      * default value is true
-     * 
+     *
      */
     public static final String ONLY_USE_FRAGMENT_SP = "test.only.fragments"; //$NON-NLS-1$
     public static final String ONLY_USE_FRAGMENT_REMOVE_SP = "test.only.fragments.remove"; //$NON-NLS-1$
@@ -118,14 +118,14 @@ public class TalendSwtBotTestCollectorAnt extends TalendTestCollector{
      * add tests
      */
     private static final String DEFAULT_FEATURE_LIST = null;
-    
+
     private static final long MAX = Integer.MAX_VALUE;
 
     public Class<?>[] getTests() {
-    	
+
         List<String[]> addClassCollectors =  new ArrayList<String[]>();
         for(int i=1; i<MAX; i++) {
-        	
+
         	if(System.getProperty(TEST_PLUGIN_PREFIX_SUFFIX_PACKAGE_CLASS_FRAGMENTS+i)!=null && !"".equals(System.getProperty(TEST_PLUGIN_PREFIX_SUFFIX_PACKAGE_CLASS_FRAGMENTS+i))) {
         		System.err.println("Add - "  + System.getProperty(TEST_PLUGIN_PREFIX_SUFFIX_PACKAGE_CLASS_FRAGMENTS+i));
             	if(this.splitTheParameters(System.getProperty(TEST_PLUGIN_PREFIX_SUFFIX_PACKAGE_CLASS_FRAGMENTS+i)).length <= 5){
@@ -133,7 +133,7 @@ public class TalendSwtBotTestCollectorAnt extends TalendTestCollector{
             	}else {
             		addClassCollectors.add(this.splitTheParameters(System.getProperty(TEST_PLUGIN_PREFIX_SUFFIX_PACKAGE_CLASS_FRAGMENTS+i)));
             	}
-            	
+
         	} else {
         		break;
         	}
@@ -144,7 +144,7 @@ public class TalendSwtBotTestCollectorAnt extends TalendTestCollector{
                         System.getProperty(TEST_PLUGIN_SUFFIX_SP+i, DEFAULT_PLUGIN_SUFFIX),
                         System.getProperty(TEST_PACKAGE_PREFIX_SP+i, DEFAULT_PACKAGE_PREFIX),
                         System.getProperty(TEST_CLASS_FILTER_SP+i, DEFAULT_CLASS_FILTER),
-                        System.getProperty(ONLY_USE_FRAGMENT_SP+i, "true")	
+                        System.getProperty(ONLY_USE_FRAGMENT_SP+i, "true")
                 };
             	addClassCollectors.add(collector);
         	} else {
@@ -155,7 +155,7 @@ public class TalendSwtBotTestCollectorAnt extends TalendTestCollector{
         for(Class c : classes) {
         	System.err.println("Add - "  + c.getCanonicalName());
         }
-        
+
         List<String[]> removeClassCollectors = new ArrayList<String[]>();
         for(int i=1; i<MAX; i++) {
         	if(System.getProperty(TEST_PLUGIN_PREFIX_SUFFIX_PACKAGE_CLASS_FRAGMENTS_REMOVE+i)!=null && !"".equals(System.getProperty(TEST_PLUGIN_PREFIX_SUFFIX_PACKAGE_CLASS_FRAGMENTS_REMOVE+i))) {
@@ -168,9 +168,9 @@ public class TalendSwtBotTestCollectorAnt extends TalendTestCollector{
         	} else {
         		break;
         	}
-        	
+
 /*        	if(System.getProperty(TEST_CLASS_FILTER_REMOVE_SP+i)!=null && !"".equals(System.getProperty(TEST_CLASS_FILTER_REMOVE_SP+i))) {
-            	String[] collector = new String[]{                
+            	String[] collector = new String[]{
                 		System.getProperty(TEST_FEATURE_LIST_REMOVE_SP+i, DEFAULT_FEATURE_LIST),
                         System.getProperty(TEST_PLUGIN_PREFIX_REMOVE_SP+i, DEFAULT_PLUGIN_PREFIX),
                         System.getProperty(TEST_PLUGIN_SUFFIX_REMOVE_SP+i, DEFAULT_PLUGIN_SUFFIX),
@@ -186,18 +186,18 @@ public class TalendSwtBotTestCollectorAnt extends TalendTestCollector{
         for(Class c : exceptionClasses) {
         	System.err.println("Remove - "  + c.getCanonicalName());
         }
-        
+
         // remove the except classes from added classes
         for(Class clazz : exceptionClasses) {
         	if(classes.contains(clazz)) {
         		classes.remove(clazz);
         	}
         }
-        
+
         for(Class c : classes) {
         	System.err.println("Finally - "  + c.getCanonicalName());
         }
-        
+
         // Add ProfiledPropertyLoader
         ProfiledPropertyLoader loader = new ProfiledPropertyLoader();
         try {
@@ -211,8 +211,8 @@ public class TalendSwtBotTestCollectorAnt extends TalendTestCollector{
         // load the properties here.
         return classes.toArray(new Class<?>[]{});
     }
-    
-    
+
+
     public static Class<?>[] getTests(String[] parameters) {
         BundleTestCollector testCollector = new BundleTestCollector();
         Class<?>[] allCollectedTestClasses = testCollector.collectTestsClasses(
@@ -229,7 +229,7 @@ public class TalendSwtBotTestCollectorAnt extends TalendTestCollector{
         System.err.println(classListMessage.toString());
         return allCollectedTestClasses; //$NON-NLS-1$
     }
-    
+
     public static void addArrayToArrayList(List<Class> classes, Class[] clazz) {
     	for(Class clz : clazz) {
     		if(!classes.contains(clz)) {
@@ -237,24 +237,24 @@ public class TalendSwtBotTestCollectorAnt extends TalendTestCollector{
     		}
     	}
     }
-    
+
     public static List<Class> getClassesViaFilter(List<String[]> filters) {
-        List<Class> filterClasses = new ArrayList<Class>(); 
+        List<Class> filterClasses = new ArrayList<Class>();
         for(String[] filter : filters) {
         	Class<?>[] classFilter = getTests(filter);
         	addArrayToArrayList(filterClasses, classFilter);
         }
         return filterClasses;
     }
-    
+
     public String[] splitTheParameters(String param){
     	return param.split(":");
     }
-    
+
 //
 //    /**
 //     * return a File instance pointing to the file or folder located below this plugin sample folder
-//     * 
+//     *
 //     * @param subSamplePath, path located below /sample/, so subpath should never start with a /, example : test.xsl
 //     * @return the File instance pointing to the obsolute path of the subSamplePath
 //     * @throws IOException
@@ -269,7 +269,7 @@ public class TalendSwtBotTestCollectorAnt extends TalendTestCollector{
 //
 //    /**
 //     * Convert any URL to a file URL
-//     * 
+//     *
 //     * @param url, may be a eclipse URL
 //     * @return a file:/ url
 //     * @throws IOException
@@ -286,7 +286,7 @@ public class TalendSwtBotTestCollectorAnt extends TalendTestCollector{
 //
 //    /**
 //     * Load properties to System from properties file.
-//     * 
+//     *
 //     * @throws IOException
 //     * @throws URISyntaxException
 //     */

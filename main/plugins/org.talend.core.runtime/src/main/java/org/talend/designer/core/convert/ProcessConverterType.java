@@ -1,6 +1,6 @@
 // ============================================================================
 //
-// Copyright (C) 2006-2018 Talend Inc. - www.talend.com
+// Copyright (C) 2006-2019 Talend Inc. - www.talend.com
 //
 // This source code is available under agreement available at
 // %InstallDIR%\features\org.talend.rcp.branding.%PRODUCTNAME%\%PRODUCTNAME%license.txt
@@ -14,12 +14,12 @@ package org.talend.designer.core.convert;
 
 /**
  * This enum is used to store the type of converter. Created by Marvin Wang on Feb 18, 2013.
- * 
+ *
  * <pre>
  * <li>{@link ProcessConverterType#CONVERTER_FOR_MAPREDUCE}.
  * <li>{@link ProcessConverterType#CONVERTER_FOR_JOBLET}.
  * <li>{@link ProcessConverterType#CONVERTER_FOR_ROUTE}.
- * 
+ *
  */
 public enum ProcessConverterType {
 

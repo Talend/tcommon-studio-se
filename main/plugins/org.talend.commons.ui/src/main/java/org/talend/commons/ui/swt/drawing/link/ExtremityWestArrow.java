@@ -1,6 +1,6 @@
 // ============================================================================
 //
-// Copyright (C) 2006-2018 Talend Inc. - www.talend.com
+// Copyright (C) 2006-2019 Talend Inc. - www.talend.com
 //
 // This source code is available under agreement available at
 // %InstallDIR%\features\org.talend.rcp.branding.%PRODUCTNAME%\%PRODUCTNAME%license.txt
@@ -18,15 +18,15 @@ import org.eclipse.swt.graphics.Point;
 
 /**
  * DOC amaumont class global comment. Detailled comment <br/>
- * 
+ *
  * $Id$
- * 
+ *
  */
 public class ExtremityWestArrow extends AbstractExtremityDrawableLink {
 
     /**
      * DOC amaumont TipWestArrow constructor comment.
-     * 
+     *
      * @param styleLink
      */
     public ExtremityWestArrow(IStyleLink styleLink) {
@@ -35,7 +35,7 @@ public class ExtremityWestArrow extends AbstractExtremityDrawableLink {
 
     /**
      * DOC amaumont TipWestArrow constructor comment.
-     * 
+     *
      * @param styleLink
      * @param xOffset
      * @param yOffset
@@ -46,7 +46,7 @@ public class ExtremityWestArrow extends AbstractExtremityDrawableLink {
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see org.talend.commons.ui.swt.drawing.link.ITipLink#draw(org.eclipse.swt.graphics.GC,
      * org.eclipse.swt.graphics.Point)
      */

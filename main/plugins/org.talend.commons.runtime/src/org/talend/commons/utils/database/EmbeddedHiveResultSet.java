@@ -1,6 +1,6 @@
 // ============================================================================
 //
-// Copyright (C) 2006-2018 Talend Inc. - www.talend.com
+// Copyright (C) 2006-2019 Talend Inc. - www.talend.com
 //
 // This source code is available under agreement available at
 // %InstallDIR%\features\org.talend.rcp.branding.%PRODUCTNAME%\%PRODUCTNAME%license.txt
@@ -17,9 +17,9 @@ import java.sql.Types;
 
 /**
  * DOC ggu class global comment. Detailled comment <br/>
- * 
+ *
  * $Id: talend.epf 55206 2011-02-15 17:32:14Z mhirt $
- * 
+ *
  */
 public class EmbeddedHiveResultSet extends AbstractFakeResultSet {
 
@@ -32,7 +32,7 @@ public class EmbeddedHiveResultSet extends AbstractFakeResultSet {
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see org.talend.commons.utils.database.AbstractFakeResultSet#getInt(java.lang.String)
      */
     @Override
@@ -43,17 +43,17 @@ public class EmbeddedHiveResultSet extends AbstractFakeResultSet {
                 return Types.SMALLINT;
             } else if (sqlType.trim().equalsIgnoreCase("INT")) { //$NON-NLS-1$
                 return Types.INTEGER;
-            } else if (sqlType.trim().equalsIgnoreCase("BIGINT")) { //$NON-NLS-1$ 
+            } else if (sqlType.trim().equalsIgnoreCase("BIGINT")) { //$NON-NLS-1$
                 return Types.BIGINT;
             } else if (sqlType.trim().equalsIgnoreCase("BOOLEAN")) { //$NON-NLS-1$
                 return Types.BOOLEAN;
-            } else if (sqlType.trim().equalsIgnoreCase("FLOAT")) { //$NON-NLS-1$ 
+            } else if (sqlType.trim().equalsIgnoreCase("FLOAT")) { //$NON-NLS-1$
                 return Types.FLOAT;
-            } else if (sqlType.trim().equalsIgnoreCase("DOUBLE")) { //$NON-NLS-1$ 
+            } else if (sqlType.trim().equalsIgnoreCase("DOUBLE")) { //$NON-NLS-1$
                 return Types.DOUBLE;
             } else if (sqlType.trim().equalsIgnoreCase("STRING")) { //$NON-NLS-1$
                 return Types.VARCHAR;
-            } else if (sqlType.trim().equalsIgnoreCase("BINARY")) { //$NON-NLS-1$ 
+            } else if (sqlType.trim().equalsIgnoreCase("BINARY")) { //$NON-NLS-1$
                 return Types.BINARY;
             } else if (sqlType.trim().equalsIgnoreCase("TIMESTAMP")) { //$NON-NLS-1$
                 return Types.TIMESTAMP;

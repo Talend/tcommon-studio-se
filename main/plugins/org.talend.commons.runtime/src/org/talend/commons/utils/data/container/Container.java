@@ -1,6 +1,6 @@
 // ============================================================================
 //
-// Copyright (C) 2006-2018 Talend Inc. - www.talend.com
+// Copyright (C) 2006-2019 Talend Inc. - www.talend.com
 //
 // This source code is available under agreement available at
 // %InstallDIR%\features\org.talend.rcp.branding.%PRODUCTNAME%\%PRODUCTNAME%license.txt
@@ -24,15 +24,15 @@ import org.talend.commons.i18n.internal.Messages;
 /**
  * Utilities class use to hold data in a tree like structure.<br/>
  * <br/>
- * 
+ *
  * This structure assure id unicity in the whole structure using the addMember method.<br/>
  * <br/>
- * 
+ *
  * @param <K> - DOC SML
  * @param <V> - type the container manages
- * 
+ *
  * $Id$
- * 
+ *
  */
 public class Container<K, V> {
 
@@ -50,7 +50,7 @@ public class Container<K, V> {
 
     /**
      * Private constructor used to create a sub-container.
-     * 
+     *
      * @param label
      */
     protected Container(String label, Container<K, V> parent) {
@@ -61,7 +61,7 @@ public class Container<K, V> {
 
     /**
      * Retrieves the root of the structure this container belongs.
-     * 
+     *
      * @return the structure root as a container
      */
     public RootContainer<K, V> getRoot() {
@@ -74,7 +74,7 @@ public class Container<K, V> {
 
     /**
      * Getter for label.
-     * 
+     *
      * @return the label
      */
     public String getLabel() {
@@ -83,7 +83,7 @@ public class Container<K, V> {
 
     /**
      * Sets the label.
-     * 
+     *
      * @param label the label to set
      */
     public void setLabel(String label) {
@@ -92,7 +92,7 @@ public class Container<K, V> {
 
     /**
      * Getter for id.
-     * 
+     *
      * @return the id
      */
     public String getId() {
@@ -101,7 +101,7 @@ public class Container<K, V> {
 
     /**
      * Sets the id.
-     * 
+     *
      * @param id the id to set
      */
     public void setId(String id) {
@@ -110,7 +110,7 @@ public class Container<K, V> {
 
     /**
      * Getter for parent.
-     * 
+     *
      * @return the parent
      */
     public Container<K, V> getParent() {
@@ -119,7 +119,7 @@ public class Container<K, V> {
 
     /**
      * Used to know if a container has a parent or not. If not, it's the root of a structure.
-     * 
+     *
      * @return <i>true</i> if it has a parent, <i>false</i> if not
      */
     public boolean hasParent() {
@@ -148,7 +148,7 @@ public class Container<K, V> {
 
     /**
      * Used to know if a container has members.
-     * 
+     *
      * @return <i>true</i> if it has members, <i>false</i> if not
      */
     public boolean hasMembers() {
@@ -157,7 +157,7 @@ public class Container<K, V> {
 
     /**
      * Returns the number of members this container has.
-     * 
+     *
      * @return the number of memebers
      */
     public int membersSize() {
@@ -166,7 +166,7 @@ public class Container<K, V> {
 
     /**
      * Getter for members.
-     * 
+     *
      * @return the members
      */
     public List<V> getMembers() {
@@ -182,7 +182,7 @@ public class Container<K, V> {
 
     /**
      * Returns a specific member of the container by its key.
-     * 
+     *
      * @param key - the key to retrieve
      * @return the member with the searched id or null if no member with this id exists
      */
@@ -196,7 +196,7 @@ public class Container<K, V> {
 
     /**
      * Adds a member to this container. Checks id unicity in structure.
-     * 
+     *
      * @param member - the member to add
      * @throws BusinessException if a member with this id already exists in the tree. If member with the same id exists
      * in this container, no exception is thrown and param member replace old member with same id
@@ -219,7 +219,7 @@ public class Container<K, V> {
 
     /**
      * Remove an object from the container given its key if present. Based on the remove method of Map.
-     * 
+     *
      * @param key - the key of the member to remove
      */
     public void removeMember(Object key) {
@@ -229,7 +229,7 @@ public class Container<K, V> {
 
     /**
      * Indicates if this container has sub-containers.
-     * 
+     *
      * @return <i>true</i> if it has sub-conntainer or <i>false</i> if not.
      */
     public boolean hasSubContainers() {
@@ -238,7 +238,7 @@ public class Container<K, V> {
 
     /**
      * Returns the number of member in this container.
-     * 
+     *
      * @return the number of member in this container.
      */
     public int subContainersSize() {
@@ -247,7 +247,7 @@ public class Container<K, V> {
 
     /**
      * Getter for subContainer.
-     * 
+     *
      * @return the subContainer
      */
     public List<Container<K, V>> getSubContainer() {
@@ -266,7 +266,7 @@ public class Container<K, V> {
     /**
      * Adds a sub-container to this container. The new container is instantiate given its label and attach the the
      * container as a child.
-     * 
+     *
      * @param name - the label of the new sub-container
      * @return the newly instantiate container
      */
@@ -283,7 +283,7 @@ public class Container<K, V> {
 
     /**
      * Removes a sub container from this container if present. All sub-container and members are also removed.
-     * 
+     *
      * @param container - the container to remove.
      */
     public void removeSubContainer(Container<K, V> container) {

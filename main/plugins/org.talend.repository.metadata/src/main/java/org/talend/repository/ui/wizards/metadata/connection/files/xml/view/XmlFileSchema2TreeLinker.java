@@ -1,6 +1,6 @@
 // ============================================================================
 //
-// Copyright (C) 2006-2018 Talend Inc. - www.talend.com
+// Copyright (C) 2006-2019 Talend Inc. - www.talend.com
 //
 // This source code is available under agreement available at
 // %InstallDIR%\features\org.talend.rcp.branding.%PRODUCTNAME%\%PRODUCTNAME%license.txt
@@ -218,7 +218,7 @@ public class XmlFileSchema2TreeLinker extends TableToTreeLinker<Object, Object> 
         updateLinksStyleAndControlsSelection(tree);
         return link;
     }
-    
+
     public TreeItem getTreeItem(TreeItem[] items, FOXTreeNode treeNode, boolean expandedOnly) {
         TreeItem item = null;
         for (TreeItem curItem : items) {
@@ -242,10 +242,10 @@ public class XmlFileSchema2TreeLinker extends TableToTreeLinker<Object, Object> 
         }
         return item;
     }
-    
+
     /**
      * DOC nrousseau Comment method "containsTreeNode".
-     * 
+     *
      * @param data
      * @param treeNode
      * @return
@@ -395,7 +395,7 @@ public class XmlFileSchema2TreeLinker extends TableToTreeLinker<Object, Object> 
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see org.talend.commons.ui.swt.linking.TableToTreeLinker#getFirstVisibleTreeItemOfPath(java.lang.Object)
      */
     @Override

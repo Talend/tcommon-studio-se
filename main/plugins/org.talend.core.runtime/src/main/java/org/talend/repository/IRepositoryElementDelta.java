@@ -1,6 +1,6 @@
 // ============================================================================
 //
-// Copyright (C) 2006-2018 Talend Inc. - www.talend.com
+// Copyright (C) 2006-2019 Talend Inc. - www.talend.com
 //
 // This source code is available under agreement available at
 // %InstallDIR%\features\org.talend.rcp.branding.%PRODUCTNAME%\%PRODUCTNAME%license.txt
@@ -17,9 +17,9 @@ import org.talend.core.model.repository.IRepositoryViewObject;
 /**
  * A repository element delta describes changes in repository element between two discrete points in time. Given a
  * delta, clients can access the element that has changed, and any children that have changed.
- * 
+ *
  * $Id: IRepositoryElementDelta.java 2007-1-4涓嬪?�3:40:26 bqian $
- * 
+ *
  */
 public interface IRepositoryElementDelta {
 

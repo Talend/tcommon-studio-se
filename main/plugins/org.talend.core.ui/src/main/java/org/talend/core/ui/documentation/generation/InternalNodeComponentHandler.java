@@ -1,6 +1,6 @@
 // ============================================================================
 //
-// Copyright (C) 2006-2018 Talend Inc. - www.talend.com
+// Copyright (C) 2006-2019 Talend Inc. - www.talend.com
 //
 // This source code is available under agreement available at
 // %InstallDIR%\features\org.talend.rcp.branding.%PRODUCTNAME%\%PRODUCTNAME%license.txt
@@ -30,7 +30,7 @@ import org.talend.designer.core.IDesignerCoreService;
 
 /**
  * This class is internal node component handler for generating HTML. <br/>
- * 
+ *
  */
 public class InternalNodeComponentHandler extends AbstractComponentHandler {
 
@@ -54,7 +54,7 @@ public class InternalNodeComponentHandler extends AbstractComponentHandler {
 
     /**
      * DOC Administrator InternalNodeComponentHandler constructor comment.
-     * 
+     *
      * @param picFilePathMap
      * @param internalNodeElement
      * @param allComponentsList
@@ -82,7 +82,7 @@ public class InternalNodeComponentHandler extends AbstractComponentHandler {
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see org.talend.repository.ui.wizards.genHTMLDoc.IComponentHandler#generateComponentInfo(org.dom4j.Element,
      * java.util.List)
      */
@@ -99,7 +99,7 @@ public class InternalNodeComponentHandler extends AbstractComponentHandler {
 
     /**
      * DOC Administrator Comment method "generateComponentElemParamters".
-     * 
+     *
      * @param node
      * @param componentElement
      */
@@ -116,7 +116,7 @@ public class InternalNodeComponentHandler extends AbstractComponentHandler {
 
     /**
      * Generates the element parameters information of component.
-     * 
+     *
      * @param istMap
      * @param istRunJob
      * @param parametersElement
@@ -217,7 +217,7 @@ public class InternalNodeComponentHandler extends AbstractComponentHandler {
 
     /**
      * Gets the repository value.
-     * 
+     *
      * @param newList
      * @param repositoryName
      * @return
@@ -239,7 +239,7 @@ public class InternalNodeComponentHandler extends AbstractComponentHandler {
 
     /**
      * Gets the repository value.
-     * 
+     *
      * @param newList
      * @param repositoryName
      * @return
@@ -265,7 +265,7 @@ public class InternalNodeComponentHandler extends AbstractComponentHandler {
 
     /**
      * Gets the repository value.
-     * 
+     *
      * @param newList
      * @param repositoryName
      * @return

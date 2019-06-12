@@ -1,6 +1,6 @@
 // ============================================================================
 //
-// Copyright (C) 2006-2018 Talend Inc. - www.talend.com
+// Copyright (C) 2006-2019 Talend Inc. - www.talend.com
 //
 // This source code is available under agreement available at
 // %InstallDIR%\features\org.talend.rcp.branding.%PRODUCTNAME%\%PRODUCTNAME%license.txt
@@ -89,9 +89,9 @@ public class CreateMavenCodeProject extends AbstractMavenGeneralTemplatePom {
     }
 
     /**
-     * 
+     *
      * By default, it's current workspace.
-     * 
+     *
      */
     protected IPath getBaseLocation() {
         return ResourcesPlugin.getWorkspace().getRoot().getLocation();
@@ -106,9 +106,9 @@ public class CreateMavenCodeProject extends AbstractMavenGeneralTemplatePom {
     }
 
     /**
-     * 
+     *
      * By default, create the all maven folders.
-     * 
+     *
      */
     protected String[] getFolders() {
         ProjectSystemFolder[] mavenDirectories = MavenSystemFolders.ALL_DIRS;
@@ -122,7 +122,7 @@ public class CreateMavenCodeProject extends AbstractMavenGeneralTemplatePom {
     }
 
     /**
-     * 
+     *
      * can do something before create operation.
      */
     protected void beforeCreate(IProgressMonitor monitor, IResource res) throws Exception {
@@ -130,7 +130,7 @@ public class CreateMavenCodeProject extends AbstractMavenGeneralTemplatePom {
     }
 
     /**
-     * 
+     *
      * after create operation, can do something, like add some natures.
      */
     protected void afterCreate(IProgressMonitor monitor, IResource res) throws Exception {

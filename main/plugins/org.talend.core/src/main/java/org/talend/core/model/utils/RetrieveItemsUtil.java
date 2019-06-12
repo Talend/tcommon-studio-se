@@ -1,6 +1,6 @@
 // ============================================================================
 //
-// Copyright (C) 2006-2018 Talend Inc. - www.talend.com
+// Copyright (C) 2006-2019 Talend Inc. - www.talend.com
 //
 // This source code is available under agreement available at
 // %InstallDIR%\features\org.talend.rcp.branding.%PRODUCTNAME%\%PRODUCTNAME%license.txt
@@ -41,9 +41,9 @@ public final class RetrieveItemsUtil {
     }
 
     /**
-     * 
+     *
      * cli Comment method "retrieveItems".
-     * 
+     *
      */
     public static List<IRepositoryViewObject> retrieveItems(final ERepositoryObjectType[] types, final boolean withLastVersion,
             final boolean withDeleted, final boolean withLocked, final boolean withRefProject) throws PersistenceException {
@@ -61,11 +61,11 @@ public final class RetrieveItemsUtil {
     }
 
     /**
-     * 
+     *
      * cli Comment method "retrieveObjectByIndexWithType".
-     * 
+     *
      * ? Did the index function support for Ref project or not?
-     * 
+     *
      */
     public static List<IRepositoryViewObject> retrieveObjectByIndexWithType(String relatedId, final boolean withLastVersion,
             final boolean withDeleted, final boolean withLocked, final boolean withRefProject, String sourceRelation,
@@ -137,9 +137,9 @@ public final class RetrieveItemsUtil {
     }
 
     /**
-     * 
+     *
      * cli Comment method "retrieveItems".
-     * 
+     *
      * arguments set by preference
      */
     public static List<IRepositoryViewObject> retrieveItems(ERepositoryObjectType[] types) throws PersistenceException {

@@ -1,6 +1,6 @@
 // ============================================================================
 //
-// Copyright (C) 2006-2018 Talend Inc. - www.talend.com
+// Copyright (C) 2006-2019 Talend Inc. - www.talend.com
 //
 // This source code is available under agreement available at
 // %InstallDIR%\features\org.talend.rcp.branding.%PRODUCTNAME%\%PRODUCTNAME%license.txt
@@ -42,7 +42,7 @@ public class ComponentsSettingsHelper {
     /**
      * This gives all the components and the families where they're hidden. Components are stored like:
      * componentMap.get("tMsgBox").add("hiddenFamily"); paletteTypeMap.put("DI",componentMap);
-     * 
+     *
      * Components not in this list are visible.
      */
     private static Map<String, Map<String, Set<String>>> hiddenComponents;
@@ -157,7 +157,7 @@ public class ComponentsSettingsHelper {
     /**
      * Check if the component is visible in the current family. Note that a component can be visible in one family but
      * not in another one.
-     * 
+     *
      * @param component
      * @param family
      * @return
@@ -181,7 +181,7 @@ public class ComponentsSettingsHelper {
     /**
      * Check if the component is visible in the current family. Note that a component can be visible in one family but
      * not in another one.
-     * 
+     *
      * @param component
      * @param family
      * @return

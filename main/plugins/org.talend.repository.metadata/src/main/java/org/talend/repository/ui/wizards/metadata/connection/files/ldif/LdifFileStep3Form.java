@@ -1,6 +1,6 @@
 // ============================================================================
 //
-// Copyright (C) 2006-2018 Talend Inc. - www.talend.com
+// Copyright (C) 2006-2019 Talend Inc. - www.talend.com
 //
 // This source code is available under agreement available at
 // %InstallDIR%\features\org.talend.rcp.branding.%PRODUCTNAME%\%PRODUCTNAME%license.txt
@@ -68,7 +68,7 @@ import org.talend.repository.metadata.ui.wizards.form.AbstractLdifFileStepForm;
 
 /**
  * @author ocarbone
- * 
+ *
  */
 public class LdifFileStep3Form extends AbstractLdifFileStepForm {
 
@@ -96,7 +96,7 @@ public class LdifFileStep3Form extends AbstractLdifFileStepForm {
 
     /**
      * Constructor to use by RCP Wizard.
-     * 
+     *
      * @param Composite
      */
     public LdifFileStep3Form(Composite parent, ConnectionItem connectionItem, MetadataTable metadataTable, String[] existingNames) {
@@ -112,7 +112,7 @@ public class LdifFileStep3Form extends AbstractLdifFileStepForm {
     }
 
     /**
-     * 
+     *
      * Initialize value, forceFocus first field.
      */
     @Override
@@ -134,7 +134,7 @@ public class LdifFileStep3Form extends AbstractLdifFileStepForm {
 
     /**
      * DOC ocarbone Comment method "adaptFormToReadOnly".
-     * 
+     *
      */
     @Override
     protected void adaptFormToReadOnly() {
@@ -234,7 +234,7 @@ public class LdifFileStep3Form extends AbstractLdifFileStepForm {
 
     /**
      * addButtonControls.
-     * 
+     *
      * @param cancelButton
      */
     @Override
@@ -289,10 +289,10 @@ public class LdifFileStep3Form extends AbstractLdifFileStepForm {
 
     /**
      * create ProcessDescription and set it.
-     * 
+     *
      * WARNING ::field FieldSeparator, RowSeparator, EscapeChar and TextEnclosure are surround by double quote.
-     * 
-     * 
+     *
+     *
      * @return processDescription
      */
     private ProcessDescription getProcessDescription(LdifFileConnection originalValueConnection) {
@@ -343,7 +343,7 @@ public class LdifFileStep3Form extends AbstractLdifFileStepForm {
 
     /**
      * DOC ocarbone Comment method "refreshMetaData".
-     * 
+     *
      * @param csvArray
      */
     public void refreshMetaDataTable(final CsvArray csvArray, ProcessDescription processDescription) {
@@ -505,7 +505,7 @@ public class LdifFileStep3Form extends AbstractLdifFileStepForm {
 
     /**
      * Ensures that fields are set. Update checkEnable / use to checkConnection().
-     * 
+     *
      * @return
      */
     @Override
@@ -536,7 +536,7 @@ public class LdifFileStep3Form extends AbstractLdifFileStepForm {
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see org.eclipse.swt.widgets.Control#setVisible(boolean)
      */
     @Override

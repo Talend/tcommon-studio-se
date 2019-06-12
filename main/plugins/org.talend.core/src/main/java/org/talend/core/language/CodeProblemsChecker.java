@@ -1,6 +1,6 @@
 // ============================================================================
 //
-// Copyright (C) 2006-2018 Talend Inc. - www.talend.com
+// Copyright (C) 2006-2019 Talend Inc. - www.talend.com
 //
 // This source code is available under agreement available at
 // %InstallDIR%\features\org.talend.rcp.branding.%PRODUCTNAME%\%PRODUCTNAME%license.txt
@@ -22,9 +22,9 @@ import org.talend.designer.codegen.IAloneProcessNodeConfigurer;
 
 /**
  * DOC amaumont class global comment. Detailled comment <br/>
- * 
+ *
  * $Id$
- * 
+ *
  */
 public abstract class CodeProblemsChecker implements ICodeProblemsChecker {
 
@@ -36,7 +36,7 @@ public abstract class CodeProblemsChecker implements ICodeProblemsChecker {
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see org.talend.core.language.ICodeProblemsChecker#checkProblemsFromKey(java.lang.String)
      */
     public List<Problem> checkProblemsFromKey(String key, IAloneProcessNodeConfigurer nodeConfigurer) {
@@ -120,7 +120,7 @@ public abstract class CodeProblemsChecker implements ICodeProblemsChecker {
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see org.talend.core.language.ICodeProblemsChecker#getProblemsFromKey(java.lang.String)
      */
     public List<Problem> getProblemsFromKey(String key) {
@@ -130,7 +130,7 @@ public abstract class CodeProblemsChecker implements ICodeProblemsChecker {
 
     /**
      * Getter for problems.
-     * 
+     *
      * @return the problems
      */
     protected List<Problem> getProblems() {
@@ -139,7 +139,7 @@ public abstract class CodeProblemsChecker implements ICodeProblemsChecker {
 
     /**
      * Sets the problems.
-     * 
+     *
      * @param problems the problems to set
      */
     protected void setProblems(List<Problem> problems) {

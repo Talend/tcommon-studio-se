@@ -1,6 +1,6 @@
 // ============================================================================
 //
-// Copyright (C) 2006-2018 Talend Inc. - www.talend.com
+// Copyright (C) 2006-2019 Talend Inc. - www.talend.com
 //
 // This source code is available under agreement available at
 // %InstallDIR%\features\org.talend.rcp.branding.%PRODUCTNAME%\%PRODUCTNAME%license.txt
@@ -41,7 +41,7 @@ public interface IRepositoryContentHandler {
     /**
      * Sub-classes override this method to create a screen shot resource, if there is no need to create a screen shot
      * resource, then return <code>null</code>. Added by Marvin Wang on Mar 8, 2013.
-     * 
+     *
      * @param project
      * @param item
      * @param classifierID
@@ -53,7 +53,7 @@ public interface IRepositoryContentHandler {
     /**
      * This method is used to load screen shot resources to return by the given item. Sub-classes could override this
      * method to return a special resource if required. Added by Marvin Wang on Apr 1, 2013.
-     * 
+     *
      * @param item
      * @return
      * @throws PersistenceException
@@ -63,13 +63,13 @@ public interface IRepositoryContentHandler {
     /**
      * Client can invoke this method to copy the screen shot resource of original item to new item. Added by Marvin Wang
      * on Apr 15, 2013.
-     * 
+     *
      * @param originalItem
      * @param newItem
      * @throws IOException
      */
     void copyScreenShotFile(Item originalItem, Item newItem) throws IOException;
-    
+
     void copyIcon(Item originalItem, Item newItem);
 
     public Resource save(Item item) throws PersistenceException;
@@ -93,33 +93,33 @@ public interface IRepositoryContentHandler {
 
     public void addContents(Collection<EObject> collection, Resource resource);
 
-    
+
     /**
      * Returns true if the function getIcon(Item) is implemented.
      * This will avoid to load property for nothing on the repository (slow)
      * @return
      */
     public boolean hasDynamicIcon();
-    
+
     public IImage getIcon(Item item);
 
     /**
      * DOC ycbai Comment method "getHandleType".
-     * 
+     *
      * @return the ERepositoryObjectType which the handler process.
      */
     public ERepositoryObjectType getHandleType();
 
     /**
      * DOC ycbai Comment method "hasSchemas".
-     * 
+     *
      * @return whether has schema node.
      */
     public boolean hasSchemas();
 
     /**
      * DOC ycbai Comment method "getPropertyStatus".
-     * 
+     *
      * @param item
      * @return the property status list.
      */
@@ -127,7 +127,7 @@ public interface IRepositoryContentHandler {
 
     /**
      * DOC ycbai Comment method "hideAction".
-     * 
+     *
      * @param node
      * @param actionType actionType the type of action which you want to hide for this node.
      * @return true if you want to hide the action.
@@ -136,7 +136,7 @@ public interface IRepositoryContentHandler {
 
     /**
      * DOC ycbai Comment method "isOwnTable".
-     * 
+     *
      * @param node
      * @return true if the table or column node belong to the item.
      */
@@ -144,7 +144,7 @@ public interface IRepositoryContentHandler {
 
     /**
      * DOC ycbai Comment method "newWizard".
-     * 
+     *
      * @param workbench
      * @param creation
      * @param node
@@ -154,9 +154,9 @@ public interface IRepositoryContentHandler {
     public IWizard newWizard(IWorkbench workbench, boolean creation, RepositoryNode node, String[] existingNames);
 
     /**
-     * 
+     *
      * DOC ycbai Comment method "newSchemaWizard".
-     * 
+     *
      * @param workbench
      * @param creation
      * @param object
@@ -171,18 +171,18 @@ public interface IRepositoryContentHandler {
     public int openWizardDialog(IRepositoryNode repoNode, IWizard wizard);
 
     /**
-     * 
+     *
      * DOC ycbai Comment method "deleteNode".
-     * 
+     *
      * Delete the relevances of this node.
-     * 
+     *
      * @param repViewObject
      */
     public void deleteNode(IRepositoryViewObject repViewObject);
 
     /**
      * DOC ycbai Comment method "getRepositoryTypeProcessor".
-     * 
+     *
      * @param repositoryType
      * @return the type processor which handles the appearance of node in RepositoryReviewDialog.
      */

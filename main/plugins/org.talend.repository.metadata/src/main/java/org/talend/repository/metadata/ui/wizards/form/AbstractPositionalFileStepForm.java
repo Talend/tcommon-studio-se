@@ -1,6 +1,6 @@
 // ============================================================================
 //
-// Copyright (C) 2006-2018 Talend Inc. - www.talend.com
+// Copyright (C) 2006-2019 Talend Inc. - www.talend.com
 //
 // This source code is available under agreement available at
 // %InstallDIR%\features\org.talend.rcp.branding.%PRODUCTNAME%\%PRODUCTNAME%license.txt
@@ -22,15 +22,15 @@ import org.talend.core.utils.TalendQuoteUtils;
 
 /**
  * DOC tguiu class global comment. Detailled comment <br/>
- * 
+ *
  * $Id: AbstractPositionalFileStepForm.java 38013 2010-03-05 14:21:59Z mhirt $
- * 
+ *
  */
 public abstract class AbstractPositionalFileStepForm extends AbstractFileStepForm {
 
     /**
      * DOC ocarbone AbstractPositionalFileStepForm constructor comment.
-     * 
+     *
      * @param parent
      * @param connection
      * @param existingNames
@@ -42,7 +42,7 @@ public abstract class AbstractPositionalFileStepForm extends AbstractFileStepFor
 
     /**
      * DOC ocarbone AbstractPositionalFileStepForm constructor comment.
-     * 
+     *
      * @param parent
      * @param connection
      * @param existingNames
@@ -62,7 +62,7 @@ public abstract class AbstractPositionalFileStepForm extends AbstractFileStepFor
 
     /**
      * DOC ocarbone Comment method "checkPositionalFieldSeparatorValue". return a cleaned value of FieldSeparatorValue
-     * 
+     *
      * @param value
      * @return value
      */
@@ -97,7 +97,7 @@ public abstract class AbstractPositionalFileStepForm extends AbstractFileStepFor
 
     /**
      * DOC ocarbone Comment method "charIsAcceptedOnFieldSeparatorValue".
-     * 
+     *
      * @param string
      * @param character
      * @param position
@@ -128,7 +128,7 @@ public abstract class AbstractPositionalFileStepForm extends AbstractFileStepFor
 
     /**
      * DOC ocarbone Comment method "charIsAcceptedOnFieldSeparatorValue".
-     * 
+     *
      * @param string
      * @param character
      * @param position
@@ -185,7 +185,7 @@ public abstract class AbstractPositionalFileStepForm extends AbstractFileStepFor
 
     /**
      * DOC ocarbone Comment method "checkPositionalFieldSeparatorValue". return a cleaned value of FieldSeparatorValue
-     * 
+     *
      * @param value
      * @return value
      */
@@ -225,9 +225,9 @@ public abstract class AbstractPositionalFileStepForm extends AbstractFileStepFor
     }
 
     /**
-     * 
+     *
      * ggu Comment method "removeInvalidEndComma".
-     * 
+     *
      * remove the end comma
      */
     protected String removeInvalidEndComma(String value) {

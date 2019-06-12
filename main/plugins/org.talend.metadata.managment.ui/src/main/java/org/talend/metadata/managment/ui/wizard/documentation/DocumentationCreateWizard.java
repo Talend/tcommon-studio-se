@@ -1,6 +1,6 @@
 // ============================================================================
 //
-// Copyright (C) 2006-2018 Talend Inc. - www.talend.com
+// Copyright (C) 2006-2019 Talend Inc. - www.talend.com
 //
 // This source code is available under agreement available at
 // %InstallDIR%\features\org.talend.rcp.branding.%PRODUCTNAME%\%PRODUCTNAME%license.txt
@@ -49,9 +49,9 @@ import org.talend.repository.model.IProxyRepositoryFactory;
 
 /**
  * Wizard to create a new IDocumentation. <br/>
- * 
+ *
  * $Id: DocumentationCreateWizard.java 38013 2010-03-05 14:21:59Z mhirt $
- * 
+ *
  */
 public class DocumentationCreateWizard extends CheckLastVersionRepositoryWizard implements IDocumentationContext {
 
@@ -70,7 +70,7 @@ public class DocumentationCreateWizard extends CheckLastVersionRepositoryWizard 
 
     /**
      * Constructs a new DocumentationCreateWizard.
-     * 
+     *
      * @param destinationPath Path in the repository where the documentation must be saved.
      */
     public DocumentationCreateWizard(IWorkbench workbench, IPath destinationPath) {
@@ -85,7 +85,7 @@ public class DocumentationCreateWizard extends CheckLastVersionRepositoryWizard 
         property.setAuthor(((RepositoryContext) CoreRuntimePlugin.getInstance().getContext()
                 .getProperty(Context.REPOSITORY_CONTEXT_KEY)).getUser());
         property.setVersion(VersionUtils.DEFAULT_VERSION);
-        property.setStatusCode(""); //$NON-NLS-1$  
+        property.setStatusCode(""); //$NON-NLS-1$
 
         this.property = PropertiesFactory.eINSTANCE.createProperty();
         this.property.setAuthor(((RepositoryContext) CoreRuntimePlugin.getInstance().getContext()
@@ -101,7 +101,7 @@ public class DocumentationCreateWizard extends CheckLastVersionRepositoryWizard 
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see org.eclipse.jface.wizard.Wizard#addPages()
      */
     @Override
@@ -116,7 +116,7 @@ public class DocumentationCreateWizard extends CheckLastVersionRepositoryWizard 
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see org.eclipse.jface.wizard.Wizard#performFinish()
      */
     @Override
@@ -196,7 +196,7 @@ public class DocumentationCreateWizard extends CheckLastVersionRepositoryWizard 
 
     /**
      * Getter for docOriginalName.
-     * 
+     *
      * @return the docOriginalName
      */
     public String getDocOriginalName() {
@@ -210,7 +210,7 @@ public class DocumentationCreateWizard extends CheckLastVersionRepositoryWizard 
 
     /**
      * Sets the docOriginalName.
-     * 
+     *
      * @param docOriginalName the docOriginalName to set
      */
     public void setDocOriginalName(String docOriginalName) {
@@ -221,7 +221,7 @@ public class DocumentationCreateWizard extends CheckLastVersionRepositoryWizard 
 
     /**
      * Getter for docOriginalExtension.
-     * 
+     *
      * @return the docOriginalExtension
      */
     public String getDocOriginalExtension() {
@@ -235,7 +235,7 @@ public class DocumentationCreateWizard extends CheckLastVersionRepositoryWizard 
 
     /**
      * Sets the docOriginalExtension.
-     * 
+     *
      * @param docOriginalExtension the docOriginalExtension to set
      */
     public void setDocOriginalExtension(String docOriginalExtension) {
@@ -244,7 +244,7 @@ public class DocumentationCreateWizard extends CheckLastVersionRepositoryWizard 
 
     /**
      * Getter for docFilePath.
-     * 
+     *
      * @return the docFilePath
      */
     public IPath getDocFilePath() {
@@ -253,7 +253,7 @@ public class DocumentationCreateWizard extends CheckLastVersionRepositoryWizard 
 
     /**
      * Sets the docFilePath.
-     * 
+     *
      * @param docFilePath the docFilePath to set
      */
     public void setDocFilePath(IPath docFilePath) {
@@ -262,7 +262,7 @@ public class DocumentationCreateWizard extends CheckLastVersionRepositoryWizard 
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see org.talend.repository.ui.wizards.IDocumentationContext#isDocNameEditable()
      */
     public boolean isDocNameEditable() {
@@ -271,7 +271,7 @@ public class DocumentationCreateWizard extends CheckLastVersionRepositoryWizard 
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see org.talend.repository.ui.wizards.IDocumentationContext#isDocVersionEditable()
      */
     public boolean isDocVersionEditable() {

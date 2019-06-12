@@ -1,6 +1,6 @@
 // ============================================================================
 //
-// Copyright (C) 2006-2018 Talend Inc. - www.talend.com
+// Copyright (C) 2006-2019 Talend Inc. - www.talend.com
 //
 // This source code is available under agreement available at
 // %InstallDIR%\features\org.talend.rcp.branding.%PRODUCTNAME%\%PRODUCTNAME%license.txt
@@ -24,7 +24,7 @@ import org.eclipse.emf.ecore.xmi.XMLResource;
 
 /**
  * @author scorreia
- * 
+ *
  * Helper on resources.
  */
 public final class ResourceHelper {
@@ -49,7 +49,7 @@ public final class ResourceHelper {
 
     /**
      * Method "getUUID".
-     * 
+     *
      * @param object a EMF object
      * @return the universal id as stored in the resource or null if not found.
      */
@@ -95,7 +95,7 @@ public final class ResourceHelper {
 
     /**
      * Method "referenceObject" search in given collection for the searched object by id.
-     * 
+     *
      * @param container a possible container of another instance of the given searcheObject. All object in the container
      * are supposed to be contained in a same resource.
      * @param proxy the object to search by id

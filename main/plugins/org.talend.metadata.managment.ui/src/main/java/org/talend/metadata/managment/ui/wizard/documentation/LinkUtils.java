@@ -1,6 +1,6 @@
 // ============================================================================
 //
-// Copyright (C) 2006-2018 Talend Inc. - www.talend.com
+// Copyright (C) 2006-2019 Talend Inc. - www.talend.com
 //
 // This source code is available under agreement available at
 // %InstallDIR%\features\org.talend.rcp.branding.%PRODUCTNAME%\%PRODUCTNAME%license.txt
@@ -55,7 +55,7 @@ public final class LinkUtils {
     public static final String HTTP_PATTERN = "^(http://([\\w-]+\\.)+[\\w-]+)(/\\S*)?"; //$NON-NLS-1$
 
     /**
-     * 
+     *
      */
     public enum LinkInfo {
         FILE_NOT_FOUND,
@@ -65,9 +65,9 @@ public final class LinkUtils {
     }
 
     /**
-     * 
+     *
      * ggu Comment method "existedLink".
-     * 
+     *
      * the link is valid or not.
      */
     public static boolean validateLink(LinkType link) {
@@ -87,9 +87,9 @@ public final class LinkUtils {
     }
 
     /**
-     * 
+     *
      * ggu Comment method "isFile".
-     * 
+     *
      * check the file
      */
     public static boolean isFile(final String file) {
@@ -123,9 +123,9 @@ public final class LinkUtils {
     }
 
     /**
-     * 
+     *
      * ggu Comment method "existedFile".
-     * 
+     *
      * the file is existed or not.
      */
     public static boolean existedFile(final File file) {
@@ -159,9 +159,9 @@ public final class LinkUtils {
     }
 
     /**
-     * 
+     *
      * ggu Comment method "isPropertyFile".
-     * 
+     *
      * check the file is property file or not.
      */
     public static boolean isPropertyFile(IPath path) {
@@ -179,9 +179,9 @@ public final class LinkUtils {
     }
 
     /**
-     * 
+     *
      * ggu Comment method "isItemFile".
-     * 
+     *
      * check the file is item file or not.
      */
     public static boolean isItemFile(IPath path) {
@@ -199,9 +199,9 @@ public final class LinkUtils {
     }
 
     /**
-     * 
+     *
      * ggu Comment method "isLinkDocumentationItem".
-     * 
+     *
      */
     public static boolean isLinkDocumentationItem(Item item) {
         if (item == null) {
@@ -224,9 +224,9 @@ public final class LinkUtils {
     }
 
     /**
-     * 
+     *
      * ggu Comment method "getItemPath".
-     * 
+     *
      * get the related Item file.
      */
     public static IPath getItemPath(IPath path) {
@@ -237,9 +237,9 @@ public final class LinkUtils {
     }
 
     /**
-     * 
+     *
      * ggu Comment method "getPropertiesPath".
-     * 
+     *
      * get the related property file.
      */
     public static IPath getPropertyPath(IPath path) {
@@ -310,9 +310,9 @@ public final class LinkUtils {
     }
 
     /**
-     * 
+     *
      * ggu Comment method "checkLinkFile".
-     * 
+     *
      * @param uri
      * @return
      */

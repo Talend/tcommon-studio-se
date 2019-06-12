@@ -1,6 +1,6 @@
 // ============================================================================
 //
-// Copyright (C) 2006-2018 Talend Inc. - www.talend.com
+// Copyright (C) 2006-2019 Talend Inc. - www.talend.com
 //
 // This source code is available under agreement available at
 // %InstallDIR%\features\org.talend.rcp.branding.%PRODUCTNAME%\%PRODUCTNAME%license.txt
@@ -38,9 +38,9 @@ import org.talend.repository.ui.wizards.metadata.table.files.FileTableWizardPage
 
 /**
  * The class is used for LDAP schema on Repository View, Only used for "edit ldap schema".<br/>
- * 
+ *
  * @author ftang, 18/09/2007
- * 
+ *
  */
 public class LDAPSchemaTableWizard extends CheckLastVersionRepositoryWizard implements INewWizard {
 
@@ -54,7 +54,7 @@ public class LDAPSchemaTableWizard extends CheckLastVersionRepositoryWizard impl
 
     /**
      * Constructor for TableWizard.
-     * 
+     *
      * @param ISelection
      */
     @SuppressWarnings("unchecked")//$NON-NLS-1$
@@ -127,7 +127,7 @@ public class LDAPSchemaTableWizard extends CheckLastVersionRepositoryWizard impl
 
     /**
      * We will accept the selection in the workbench to see if we can initialize from it.
-     * 
+     *
      * @see IWorkbenchWizard#init(IWorkbench, IStructuredSelection)
      */
     public void init(final IWorkbench workbench, final IStructuredSelection selection) {

@@ -1,6 +1,6 @@
 // ============================================================================
 //
-// Copyright (C) 2006-2018 Talend Inc. - www.talend.com
+// Copyright (C) 2006-2019 Talend Inc. - www.talend.com
 //
 // This source code is available under agreement available at
 // %InstallDIR%\features\org.talend.rcp.branding.%PRODUCTNAME%\%PRODUCTNAME%license.txt
@@ -50,25 +50,25 @@ import org.talend.repository.metadata.i18n.Messages;
  * DOC hwang  class global comment. Detailled comment
  */
 public class DBTypeForm {
-    
+
     private static final int VISIBLE_DATABASE_COUNT = 20;
-    
+
     private LabelledCombo dbTypeCombo;
-    
+
     private ConnectionItem connectionItem;
-    
+
     private boolean isReadOnly;
-    
+
     private boolean isCreation;
-    
+
     private DatabaseWizardPage wizardPage;
-    
+
     private Composite parent;
-    
+
     private String dbType;
-    
+
     private ConnectionItem oriConnItem;
-    
+
     public DBTypeForm(DatabaseWizardPage wizardPage, Composite parent, ConnectionItem connectionItem,int style, boolean readOnly, boolean isCreation) {
         this.parent = parent;
         this.wizardPage = wizardPage;
@@ -77,7 +77,7 @@ public class DBTypeForm {
         this.isCreation = isCreation;
         initialize();
     }
-    
+
     public void initialize() {
         this.dbType = getConnectionDBType();
         addDBSelectCombo();
@@ -93,11 +93,11 @@ public class DBTypeForm {
             this.oriConnItem = connectionItem;
         }
     }
-    
+
     private void adaptFormToReadOnly() {
         dbTypeCombo.setReadOnly(isReadOnly);
     }
-    
+
     private void addDBSelectCombo() {
         List<String> dbTypeDisplayList = EDatabaseConnTemplate.getDBTypeDisplay();
 
@@ -147,7 +147,7 @@ public class DBTypeForm {
         }
         dbTypeCombo.getCombo().setVisibleItemCount(visibleItemCount);
     }
-    
+
     private void filterUnsupportedDBType(List<String> dbTypeDisplayList) {
         Iterator<String> it = dbTypeDisplayList.iterator();
         while (it.hasNext()) {
@@ -187,14 +187,14 @@ public class DBTypeForm {
 
         return resultList;
     }
-    
+
     protected final boolean isContextMode() {
         if (connectionItem != null) {
             return connectionItem.getConnection().isContextMode();
         }
         return false;
     }
-    
+
     private void addListerner(){
         dbTypeCombo.addModifyListener(new ModifyListener() {
             @Override
@@ -224,7 +224,7 @@ public class DBTypeForm {
             }
         });
     }
-    
+
     public boolean needDisposeOldForm(String newType, String oldType){
         if(newType.equals(oldType)){
             return false;
@@ -234,7 +234,7 @@ public class DBTypeForm {
         }
         return false;
     }
-    
+
     private void reCreateConnection(){
         if(wizardPage.isTCOMDB(dbType)){
             IGenericDBService dbService = null;
@@ -251,16 +251,16 @@ public class DBTypeForm {
             }
         }
     }
-    
+
     public String getDBType(){
         return this.dbType;
     }
-    
+
     private String getConnectionDBType(){
         return ((DatabaseConnection)connectionItem.getConnection()).getDatabaseType();
     }
 
-    
+
     private void setConnectionDBType(String type){
         if(connectionItem.getConnection() instanceof DatabaseConnection){
             connectionItem.setTypeName(type);

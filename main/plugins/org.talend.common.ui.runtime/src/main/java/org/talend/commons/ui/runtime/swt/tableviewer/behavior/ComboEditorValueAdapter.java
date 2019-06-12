@@ -1,6 +1,6 @@
 // ============================================================================
 //
-// Copyright (C) 2006-2018 Talend Inc. - www.talend.com
+// Copyright (C) 2006-2019 Talend Inc. - www.talend.com
 //
 // This source code is available under agreement available at
 // %InstallDIR%\features\org.talend.rcp.branding.%PRODUCTNAME%\%PRODUCTNAME%license.txt
@@ -16,9 +16,9 @@ import org.eclipse.jface.viewers.CellEditor;
 
 /**
  * DOC amaumont class global comment. Detailled comment <br/>
- * 
+ *
  * $Id$
- * 
+ *
  */
 public abstract class ComboEditorValueAdapter extends CellEditorValueAdapter {
 
@@ -26,7 +26,7 @@ public abstract class ComboEditorValueAdapter extends CellEditorValueAdapter {
 
     /**
      * DOC amaumont ComboEditorValueAdapter constructor comment.
-     * 
+     *
      * @param defaultItem
      */
     public ComboEditorValueAdapter(String defaultItem) {
@@ -60,7 +60,7 @@ public abstract class ComboEditorValueAdapter extends CellEditorValueAdapter {
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see org.talend.commons.ui.swt.tableviewer.behavior.CellEditorValueAdapter#getColumnText(org.eclipse.jface.viewers.CellEditor,
      * java.lang.Object)
      */

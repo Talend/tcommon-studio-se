@@ -1,6 +1,6 @@
 // ============================================================================
 //
-// Copyright (C) 2006-2018 Talend Inc. - www.talend.com
+// Copyright (C) 2006-2019 Talend Inc. - www.talend.com
 //
 // This source code is available under agreement available at
 // %InstallDIR%\features\org.talend.rcp.branding.%PRODUCTNAME%\%PRODUCTNAME%license.txt
@@ -42,9 +42,9 @@ import org.talend.designer.runprocess.IRunProcessService;
 
 /**
  * Utilities around perl stuff. <br/>
- * 
+ *
  * $Id: JavaUtils.java 1804 2007-02-04 09:50:15Z rli $
- * 
+ *
  */
 public final class JavaUtils {
 
@@ -57,7 +57,7 @@ public final class JavaUtils {
     public static final String DEFAULT_VERSION = JavaCore.VERSION_1_8;
 
     public static final List<String> AVAILABLE_VERSIONS = Arrays.asList(JavaCore.VERSION_1_8 );
-    
+
     public static final String PROCESSOR_TYPE = "javaProcessor"; //$NON-NLS-1$
 
     public static final String PATH_SEPARATOR = "/"; //$NON-NLS-1$
@@ -137,7 +137,7 @@ public final class JavaUtils {
     /** Java ClassPath Separator. */
     public static final String JAVA_CLASSPATH_SEPARATOR = (Platform.getOS().compareTo(Platform.WS_WIN32) == 0) ? ";" : ":"; //$NON-NLS-1$ //$NON-NLS-2$
 
-    public static final String JAVA_CP = "-cp"; //$NON-NLS-1$ 
+    public static final String JAVA_CP = "-cp"; //$NON-NLS-1$
 
     public static final String ROUTINE_JAR_DEFAULT_VERSION = "1.0";//$NON-NLS-1$
 
@@ -166,7 +166,7 @@ public final class JavaUtils {
 
     /**
      * DOC ycbai Get default jvm name.
-     * 
+     *
      * @return
      */
     public static String getDefaultJVMName() {
@@ -180,7 +180,7 @@ public final class JavaUtils {
 
     /**
      * DOC ycbai Get default javaEE name.
-     * 
+     *
      * @return
      */
     public static String getDefaultEEName() {
@@ -215,7 +215,7 @@ public final class JavaUtils {
 
     /**
      * DOC ycbai Get compiler compliance via vminstall and default compliance.
-     * 
+     *
      * @param vMInstall
      * @param defaultCompliance
      * @return
@@ -224,7 +224,7 @@ public final class JavaUtils {
         String version = vMInstall.getJavaVersion();
         return getJavaVersion(defaultCompliance, version);
     }
-    
+
     public static String getProjectJavaVersion() {
         String javaVersion = CoreRuntimePlugin.getInstance().getProjectPreferenceManager().getValue(PROJECT_JAVA_VERSION_KEY);
         if (javaVersion != null && javaVersion.trim().equals("")) { //$NON-NLS-1$
@@ -232,7 +232,7 @@ public final class JavaUtils {
         }
         return javaVersion;
     }
-    
+
     public static void updateProjectJavaVersion(String javaVersion) {
         setProjectJavaVserion(javaVersion);
         applyCompilerCompliance(javaVersion);
@@ -241,7 +241,7 @@ public final class JavaUtils {
             service.updateProjectPomWithTemplate();
         }
     }
-    
+
     private static void setProjectJavaVserion(String javaVersion) {
         if (javaVersion != null) {
             ProjectPreferenceManager manager = CoreRuntimePlugin.getInstance().getProjectPreferenceManager();
@@ -249,7 +249,7 @@ public final class JavaUtils {
             manager.save();
         }
     }
-    
+
     private static void applyCompilerCompliance(String compliance) {
         if (compliance != null) {
             IEclipsePreferences eclipsePreferences = InstanceScope.INSTANCE.getNode(JavaCore.PLUGIN_ID);
@@ -268,7 +268,7 @@ public final class JavaUtils {
             }
         }
     }
-    
+
     private static String getJavaVersion(String defaultCompliance, String version) {
         if (version == null) {
             return defaultCompliance;
@@ -302,7 +302,7 @@ public final class JavaUtils {
 
     /**
      * DOC ycbai Get execution environment compliance via execution environment.
-     * 
+     *
      * @param executionEnvironment
      * @return
      */
@@ -331,7 +331,7 @@ public final class JavaUtils {
 
     /**
      * DOC ycbai Add the java nature to project.
-     * 
+     *
      * @param project
      * @param monitor
      * @throws CoreException

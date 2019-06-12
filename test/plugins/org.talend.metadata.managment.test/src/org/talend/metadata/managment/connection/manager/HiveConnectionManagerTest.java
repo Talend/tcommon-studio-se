@@ -1,6 +1,6 @@
 // ============================================================================
 //
-// Copyright (C) 2006-2018 Talend Inc. - www.talend.com
+// Copyright (C) 2006-2019 Talend Inc. - www.talend.com
 //
 // This source code is available under agreement available at
 // %InstallDIR%\features\org.talend.rcp.branding.%PRODUCTNAME%\%PRODUCTNAME%license.txt
@@ -31,13 +31,13 @@ import org.talend.metadata.managment.hive.handler.Mapr212Handler;
 
 /**
  * created by qiongli on 2014-3-11 Detailled comment
- * 
+ *
  */
 public class HiveConnectionManagerTest {
 
     /**
      * DOC qiongli Comment method "setUp".
-     * 
+     *
      * @throws java.lang.Exception
      */
     @Before
@@ -46,7 +46,7 @@ public class HiveConnectionManagerTest {
 
     /**
      * DOC qiongli Comment method "tearDown".
-     * 
+     *
      * @throws java.lang.Exception
      */
     @After
@@ -88,7 +88,7 @@ public class HiveConnectionManagerTest {
     }
 
     /**
-     * 
+     *
      * DOC qiongli Comment method "testCreateHandler_standalone".
      */
     @Test

@@ -1,6 +1,6 @@
 // ============================================================================
 //
-// Copyright (C) 2006-2018 Talend Inc. - www.talend.com
+// Copyright (C) 2006-2019 Talend Inc. - www.talend.com
 //
 // This source code is available under agreement available at
 // %InstallDIR%\features\org.talend.rcp.branding.%PRODUCTNAME%\%PRODUCTNAME%license.txt
@@ -14,9 +14,9 @@ package org.talend.commons.utils.workbench.extensions;
 
 /**
  * Default implementation of IExtensionPoint.<br/>
- * 
+ *
  * $Id$
- * 
+ *
  */
 public class ExtensionPointLimiterImpl implements IExtensionPointLimiter {
 
@@ -30,7 +30,7 @@ public class ExtensionPointLimiterImpl implements IExtensionPointLimiter {
 
     /**
      * DOC amaumont ExtensionPointLimiterImpl constructor comment.
-     * 
+     *
      * @param extPointId
      * @param elementName can be null
      * @param namespaceIdentifier can be null
@@ -47,7 +47,7 @@ public class ExtensionPointLimiterImpl implements IExtensionPointLimiter {
 
     /**
      * DOC amaumont ExtensionPointLimiterImpl constructor comment.
-     * 
+     *
      * @param extPointId
      * @param minOcc
      * @param maxOcc
@@ -61,7 +61,7 @@ public class ExtensionPointLimiterImpl implements IExtensionPointLimiter {
 
     /**
      * DOC amaumont ExtensionPointLimiterImpl constructor comment.
-     * 
+     *
      * @param extPointId
      */
     public ExtensionPointLimiterImpl(String extPointId) {
@@ -71,7 +71,7 @@ public class ExtensionPointLimiterImpl implements IExtensionPointLimiter {
 
     /**
      * DOC amaumont ExtensionPointLimiterImpl constructor comment.
-     * 
+     *
      * @param extPointId
      * @param elementName
      */
@@ -83,7 +83,7 @@ public class ExtensionPointLimiterImpl implements IExtensionPointLimiter {
 
     /**
      * Sets the extPointId.
-     * 
+     *
      * @param extPointId the extPointId to set
      */
     public void setExtPointId(String extPointId) {
@@ -92,7 +92,7 @@ public class ExtensionPointLimiterImpl implements IExtensionPointLimiter {
 
     /**
      * Sets the maxOcc.
-     * 
+     *
      * @param maxOcc the maxOcc to set
      */
     public void setMaxOcc(int maxOcc) {
@@ -101,7 +101,7 @@ public class ExtensionPointLimiterImpl implements IExtensionPointLimiter {
 
     /**
      * Sets the minOcc.
-     * 
+     *
      * @param minOcc the minOcc to set
      */
     public void setMinOcc(int minOcc) {
@@ -110,7 +110,7 @@ public class ExtensionPointLimiterImpl implements IExtensionPointLimiter {
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see org.talend.designer.core.extension.IExtensionPoint#getExtPointId()
      */
     public String getExtPointId() {
@@ -119,7 +119,7 @@ public class ExtensionPointLimiterImpl implements IExtensionPointLimiter {
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see org.talend.designer.core.extension.IExtensionPoint#getMaxOcc()
      */
     public int getMaxOcc() {
@@ -128,7 +128,7 @@ public class ExtensionPointLimiterImpl implements IExtensionPointLimiter {
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see org.talend.designer.core.extension.IExtensionPoint#getMinOcc()
      */
     public int getMinOcc() {
@@ -137,7 +137,7 @@ public class ExtensionPointLimiterImpl implements IExtensionPointLimiter {
 
     /**
      * Getter for elementNAme.
-     * 
+     *
      * @return the elementNAme
      */
     public String getConfigurationElementName() {
@@ -146,7 +146,7 @@ public class ExtensionPointLimiterImpl implements IExtensionPointLimiter {
 
     /**
      * Sets the elementNAme.
-     * 
+     *
      * @param elementNAme the elementNAme to set
      */
     public void setElementName(String elementName) {

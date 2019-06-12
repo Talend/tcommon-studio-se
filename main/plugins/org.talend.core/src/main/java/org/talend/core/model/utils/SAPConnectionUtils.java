@@ -1,6 +1,6 @@
 // ============================================================================
 //
-// Copyright (C) 2006-2018 Talend Inc. - www.talend.com
+// Copyright (C) 2006-2019 Talend Inc. - www.talend.com
 //
 // This source code is available under agreement available at
 // %InstallDIR%\features\org.talend.rcp.branding.%PRODUCTNAME%\%PRODUCTNAME%license.txt
@@ -29,16 +29,16 @@ import org.talend.core.model.metadata.designerproperties.RepositoryToComponentPr
 
 /**
  * DOC YeXiaowei class global comment. Detailled comment <br/>
- * 
+ *
  * $Id: talend.epf 1 2006-09-29 17:06:40 +0000 (忙聵聼忙聹聼盲潞聰, 29 盲鹿聺忙聹聢 2006) nrousseau $
- * 
+ *
  */
 public final class SAPConnectionUtils {
 
     /**
-     * 
+     *
      * DOC YeXiaowei Comment method "isFunctionUnitExist".
-     * 
+     *
      * @param connection
      * @param function
      * @return
@@ -59,7 +59,7 @@ public final class SAPConnectionUtils {
 
     /**
      * DOC zli Comment method "findExistIDocUnit".
-     * 
+     *
      * @param connection
      * @param iDocName
      * @return
@@ -79,9 +79,9 @@ public final class SAPConnectionUtils {
     }
 
     /**
-     * 
+     *
      * DOC YeXiaowei Comment method "sameParamterTableWith".
-     * 
+     *
      * @param unit
      * @param table
      * @param value2
@@ -122,9 +122,9 @@ public final class SAPConnectionUtils {
     }
 
     /**
-     * 
+     *
      * DOC YeXiaowei Comment method "sameParameterTable".
-     * 
+     *
      * @param source
      * @param dest
      */
@@ -167,9 +167,9 @@ public final class SAPConnectionUtils {
     }
 
     /**
-     * 
+     *
      * DOC YeXiaowei Comment method "sameParameterColumn".
-     * 
+     *
      * @param source
      * @param dest
      * @return
@@ -179,9 +179,9 @@ public final class SAPConnectionUtils {
     }
 
     /**
-     * 
+     *
      * DOC YeXiaowei Comment method "compareStringFiled".
-     * 
+     *
      * @param source
      * @param dest
      * @return

@@ -1,6 +1,6 @@
 // ============================================================================
 //
-// Copyright (C) 2006-2018 Talend Inc. - www.talend.com
+// Copyright (C) 2006-2019 Talend Inc. - www.talend.com
 //
 // This source code is available under agreement available at
 // %InstallDIR%\features\org.talend.rcp.branding.%PRODUCTNAME%\%PRODUCTNAME%license.txt
@@ -34,7 +34,7 @@ public class CharsetToolkit {
 
     /**
      * Constructor utility class.
-     * 
+     *
      * @param buffer the byte buffer of which we want to know the encoding.
      */
     public CharsetToolkit(byte[] buffer) {
@@ -44,7 +44,7 @@ public class CharsetToolkit {
 
     /**
      * Constructor utility class.
-     * 
+     *
      * @param buffer the byte buffer of which we want to know the encoding.
      * @param defaultCharset the default Charset to use in case an 8-bit charset is recognized.
      */
@@ -55,7 +55,7 @@ public class CharsetToolkit {
 
     /**
      * Defines the default <code>Charset</code> used in case the buffer represents an 8-bit <code>Charset</code>.
-     * 
+     *
      * @param defaultCharset the default <code>Charset</code> to be returned by <code>guessEncoding()</code> if an 8-bit
      * <code>Charset</code> is encountered.
      */
@@ -71,7 +71,7 @@ public class CharsetToolkit {
      * If US-ASCII is recognized, enforce to return the default encoding, rather than US-ASCII. It might be a file
      * without any special character in the range 128-255, but that may be or become a file encoded with the default
      * <code>charset</code> rather than US-ASCII.
-     * 
+     *
      * @param enforce a boolean specifying the use or not of US-ASCII.
      */
     public void setEnforce8Bit(boolean enforce) {
@@ -80,7 +80,7 @@ public class CharsetToolkit {
 
     /**
      * Gets the enforce8Bit flag, in case we do not want to ever get a US-ASCII encoding.
-     * 
+     *
      * @return a boolean representing the flag of use of US-ASCII.
      */
     public boolean getEnforce8Bit() {
@@ -89,7 +89,7 @@ public class CharsetToolkit {
 
     /**
      * Retrieves the default Charset.
-     * 
+     *
      * @return defaultCharset
      */
     public Charset getDefaultCharset() {
@@ -98,7 +98,7 @@ public class CharsetToolkit {
 
     /**
      * Guess the encoding of the provided buffer.
-     * 
+     *
      * @return the Charset recognized.
      */
     public Charset guessEncoding() {
@@ -206,7 +206,7 @@ public class CharsetToolkit {
 
     /**
      * Guess the encoding of the provided buffer.
-     * 
+     *
      */
     public static Charset guessEncoding(File f, int bufferLength) throws IOException {
         FileInputStream fis = new FileInputStream(f);
@@ -220,7 +220,7 @@ public class CharsetToolkit {
 
     /**
      * Guess the encoding of the provided buffer.
-     * 
+     *
      */
     public static Charset guessEncoding(File f, int bufferLength, Charset defaultCharset) throws IOException {
         FileInputStream fis = new FileInputStream(f);
@@ -234,7 +234,7 @@ public class CharsetToolkit {
 
     /**
      * If the byte has the form 10xxxxx, then it's a continuation byte of a multiple byte character.
-     * 
+     *
      * @param b a byte.
      * @return true if it's a continuation char.
      */
@@ -244,7 +244,7 @@ public class CharsetToolkit {
 
     /**
      * If the byte has the form 110xxxx, then it's the first byte of a two-bytes sequence character.
-     * 
+     *
      * @param b a byte.
      * @return true if it's the first byte of a two-bytes sequence.
      */
@@ -254,7 +254,7 @@ public class CharsetToolkit {
 
     /**
      * If the byte has the form 1110xxx, then it's the first byte of a three-bytes sequence character.
-     * 
+     *
      * @param b a byte.
      * @return true if it's the first byte of a three-bytes sequence.
      */
@@ -264,7 +264,7 @@ public class CharsetToolkit {
 
     /**
      * If the byte has the form 11110xx, then it's the first byte of a four-bytes sequence character.
-     * 
+     *
      * @param b a byte.
      * @return true if it's the first byte of a four-bytes sequence.
      */
@@ -274,7 +274,7 @@ public class CharsetToolkit {
 
     /**
      * If the byte has the form 11110xx, then it's the first byte of a five-bytes sequence character.
-     * 
+     *
      * @param b a byte.
      * @return true if it's the first byte of a five-bytes sequence.
      */
@@ -284,7 +284,7 @@ public class CharsetToolkit {
 
     /**
      * If the byte has the form 1110xxx, then it's the first byte of a six-bytes sequence character.
-     * 
+     *
      * @param b a byte.
      * @return true if it's the first byte of a six-bytes sequence.
      */
@@ -294,7 +294,7 @@ public class CharsetToolkit {
 
     /**
      * Retrieve the default charset of the system.
-     * 
+     *
      * @return the default <code>Charset</code>.
      */
     public static Charset getDefaultSystemCharset() {
@@ -303,9 +303,9 @@ public class CharsetToolkit {
 
     /**
      * DOC ycbai Comment method "getInternalSystemCharset".
-     * 
+     *
      * Retrieve the system charset from "sun.jnu.encoding" property.
-     * 
+     *
      * @return
      */
     public static Charset getInternalSystemCharset() {
@@ -314,7 +314,7 @@ public class CharsetToolkit {
 
     /**
      * Has a Byte Order Marker for UTF-8 (Used by Microsoft's Notepad and other editors).
-     * 
+     *
      * @param buffer a buffer.
      * @return true if the buffer has a BOM for UTF8.
      */
@@ -324,7 +324,7 @@ public class CharsetToolkit {
 
     /**
      * Has a Byte Order Marker for UTF-16 Low Endian (ucs-2le, ucs-4le, and ucs-16le).
-     * 
+     *
      * @param buffer a buffer.
      * @return true if the buffer has a BOM for UTF-16 Low Endian.
      */
@@ -334,14 +334,14 @@ public class CharsetToolkit {
 
     /**
      * Has a Byte Order Marker for UTF-16 Big Endian (utf-16 and ucs-2).
-     * 
+     *
      * @param buffer a buffer.
      * @return true if the buffer has a BOM for UTF-16 Big Endian.
      */
     private static boolean hasUTF16BEBuffer(byte[] buffer) {
         return (buffer[0] == -2 && buffer[1] == -1);
     }
-    
+
     public static String getCharset(File file){
         String charset = "UTF-8";
         byte[] fileContent = null;
@@ -358,7 +358,7 @@ public class CharsetToolkit {
         }
         return charset;
     }
-    
+
     public static String getCharset(byte[] data){
         String charset = "UTF-8";
         com.ibm.icu.text.CharsetDetector detector = new com.ibm.icu.text.CharsetDetector();

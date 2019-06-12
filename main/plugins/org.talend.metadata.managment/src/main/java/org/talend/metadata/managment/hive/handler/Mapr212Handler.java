@@ -1,6 +1,6 @@
 // ============================================================================
 //
-// Copyright (C) 2006-2018 Talend Inc. - www.talend.com
+// Copyright (C) 2006-2019 Talend Inc. - www.talend.com
 //
 // This source code is available under agreement available at
 // %InstallDIR%\features\org.talend.rcp.branding.%PRODUCTNAME%\%PRODUCTNAME%license.txt
@@ -19,7 +19,7 @@ import org.talend.core.model.metadata.IMetadataConnection;
 
 /**
  * created by msjian on 2013-11-7 Detailled comment
- * 
+ *
  */
 public class Mapr212Handler extends MaprHandler {
 
@@ -37,7 +37,7 @@ public class Mapr212Handler extends MaprHandler {
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * If user didn't fill the property in connection wizard,set a default value for this properties. Requried
      * properties:"mapred.map.child.java.opts";"mapred.reduce.child.java.opts"
      */

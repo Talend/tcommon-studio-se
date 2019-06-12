@@ -1,6 +1,6 @@
 // ============================================================================
 //
-// Copyright (C) 2006-2018 Talend Inc. - www.talend.com
+// Copyright (C) 2006-2019 Talend Inc. - www.talend.com
 //
 // This source code is available under agreement available at
 // %InstallDIR%\features\org.talend.rcp.branding.%PRODUCTNAME%\%PRODUCTNAME%license.txt
@@ -19,13 +19,13 @@ import org.eclipse.nebula.widgets.nattable.ui.menu.PopupMenuBuilder;
 
 /**
  * created by ldong on Aug 14, 2014 Detailled comment
- * 
+ *
  */
 public class ContextPopMenuBuilder extends PopupMenuBuilder {
 
     /**
      * DOC ldong ContextPopMenuBuilder constructor comment.
-     * 
+     *
      * @param parent
      */
     public ContextPopMenuBuilder(NatTable parent) {

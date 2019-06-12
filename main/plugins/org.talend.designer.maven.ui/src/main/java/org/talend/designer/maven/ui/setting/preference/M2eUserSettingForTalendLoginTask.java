@@ -1,6 +1,6 @@
 // ============================================================================
 //
-// Copyright (C) 2006-2018 Talend Inc. - www.talend.com
+// Copyright (C) 2006-2019 Talend Inc. - www.talend.com
 //
 // This source code is available under agreement available at
 // %InstallDIR%\features\org.talend.rcp.branding.%PRODUCTNAME%\%PRODUCTNAME%license.txt
@@ -61,7 +61,7 @@ import org.w3c.dom.Node;
 
 /**
  * DOC ggu class global comment. Detailled comment
- * 
+ *
  * set the preference for MavenSettingsPreferencePage.
  */
 @SuppressWarnings({ "rawtypes", "unchecked" })
@@ -83,7 +83,7 @@ public class M2eUserSettingForTalendLoginTask extends AbstractLoginTask {
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see org.talend.login.ILoginTask#getOrder()
      */
     @Override
@@ -102,7 +102,7 @@ public class M2eUserSettingForTalendLoginTask extends AbstractLoginTask {
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see org.talend.login.ILoginTask#run(org.eclipse.core.runtime.IProgressMonitor)
      */
     @Override
@@ -133,9 +133,9 @@ public class M2eUserSettingForTalendLoginTask extends AbstractLoginTask {
 
             /*
              * FIXME, only deal with for special settings in studio.
-             * 
+             *
              * If use other user setting, nothing to do.
-             * 
+             *
              * Just keep the problem for user, because we should change the setting for Studio in configuration folder
              * only.
              */

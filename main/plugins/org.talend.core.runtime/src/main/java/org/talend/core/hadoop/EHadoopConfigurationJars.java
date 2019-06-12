@@ -1,6 +1,6 @@
 // ============================================================================
 //
-// Copyright (C) 2006-2018 Talend Inc. - www.talend.com
+// Copyright (C) 2006-2019 Talend Inc. - www.talend.com
 //
 // This source code is available under agreement available at
 // %InstallDIR%\features\org.talend.rcp.branding.%PRODUCTNAME%\%PRODUCTNAME%license.txt
@@ -14,13 +14,13 @@ package org.talend.core.hadoop;
 
 /**
  * created by ycbai on 2014-5-28 Detailled comment
- * 
+ *
  */
 public enum EHadoopConfigurationJars {
 
-    HDFS(new String[0], new String[] { "hadoop-conf-kerberos.jar" }), //$NON-NLS-1$ 
+    HDFS(new String[0], new String[] { "hadoop-conf-kerberos.jar" }), //$NON-NLS-1$
 
-    MAP_REDUCE(new String[0], new String[] { "hadoop-conf-kerberos.jar" }), //$NON-NLS-1$ 
+    MAP_REDUCE(new String[0], new String[] { "hadoop-conf-kerberos.jar" }), //$NON-NLS-1$
 
     HCATALOG(new String[] { "hadoop-conf.jar" }, new String[] { "hadoop-conf-kerberos.jar" }), //$NON-NLS-1$ //$NON-NLS-2$
 

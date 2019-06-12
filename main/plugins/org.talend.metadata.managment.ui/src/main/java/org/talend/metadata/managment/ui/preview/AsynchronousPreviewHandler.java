@@ -1,6 +1,6 @@
 // ============================================================================
 //
-// Copyright (C) 2006-2018 Talend Inc. - www.talend.com
+// Copyright (C) 2006-2019 Talend Inc. - www.talend.com
 //
 // This source code is available under agreement available at
 // %InstallDIR%\features\org.talend.rcp.branding.%PRODUCTNAME%\%PRODUCTNAME%license.txt
@@ -19,9 +19,9 @@ import org.talend.core.repository.model.preview.IPreview;
 
 /**
  * DOC amaumont class global comment. Detailled comment <br/>
- * 
+ *
  * $Id$
- * 
+ *
  * @param <R> result of preview
  */
 public class AsynchronousPreviewHandler<R> {
@@ -44,7 +44,7 @@ public class AsynchronousPreviewHandler<R> {
 
     /**
      * DOC amaumont Comment method "launchSynchronousPreview".
-     * 
+     *
      * @throws CoreException
      */
     public void launchPreview(final ProcessDescription processDescription, final String type) {
@@ -57,7 +57,7 @@ public class AsynchronousPreviewHandler<R> {
 
             /*
              * (non-Javadoc)
-             * 
+             *
              * @see java.lang.Thread#run()
              */
             @SuppressWarnings("unchecked")//$NON-NLS-1$
@@ -108,7 +108,7 @@ public class AsynchronousPreviewHandler<R> {
 
     /**
      * Getter for result.
-     * 
+     *
      * @return the result
      */
     public R getResult() {
@@ -125,7 +125,7 @@ public class AsynchronousPreviewHandler<R> {
 
     /**
      * DOC amaumont Comment method "fireEvent".
-     * 
+     *
      * @param event
      */
     protected void fireEvent(PreviewHandlerEvent event) {

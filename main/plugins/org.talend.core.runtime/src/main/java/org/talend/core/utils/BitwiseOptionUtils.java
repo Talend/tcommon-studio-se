@@ -1,6 +1,6 @@
 // ============================================================================
 //
-// Copyright (C) 2006-2018 Talend Inc. - www.talend.com
+// Copyright (C) 2006-2019 Talend Inc. - www.talend.com
 //
 // This source code is available under agreement available at
 // %InstallDIR%\features\org.talend.rcp.branding.%PRODUCTNAME%\%PRODUCTNAME%license.txt
@@ -22,7 +22,7 @@ public class BitwiseOptionUtils {
      * Estimate whether <code>option</code> is contained by <code>options</code>.
      * <p>
      * DOC ycbai Comment method "containOption".
-     * 
+     *
      * @param options
      * @param option
      * @return

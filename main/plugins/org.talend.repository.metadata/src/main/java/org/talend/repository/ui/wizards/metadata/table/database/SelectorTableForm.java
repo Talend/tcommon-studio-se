@@ -1,6 +1,6 @@
 // ============================================================================
 //
-// Copyright (C) 2006-2018 Talend Inc. - www.talend.com
+// Copyright (C) 2006-2019 Talend Inc. - www.talend.com
 //
 // This source code is available under agreement available at
 // %InstallDIR%\features\org.talend.rcp.branding.%PRODUCTNAME%\%PRODUCTNAME%license.txt
@@ -131,7 +131,7 @@ import orgomg.cwm.resource.relational.impl.SchemaImpl;
 
 /**
  * @author cantoine
- * 
+ *
  */
 public class SelectorTableForm extends AbstractForm {
 
@@ -198,7 +198,7 @@ public class SelectorTableForm extends AbstractForm {
 
     /**
      * TableForm Constructor to use by RCP Wizard.
-     * 
+     *
      * @param parent
      * @param page
      * @param connection
@@ -238,9 +238,9 @@ public class SelectorTableForm extends AbstractForm {
     }
 
     /**
-     * 
+     *
      * Initialize value, forceFocus first field for right Click (new Table).
-     * 
+     *
      */
     @Override
     public void initialize() {
@@ -478,7 +478,7 @@ public class SelectorTableForm extends AbstractForm {
 
     /**
      * DOC qzhang Comment method "getColumnSelectionListener".
-     * 
+     *
      * @return
      */
     private SelectionAdapter getColumnSelectionListener() {
@@ -567,7 +567,7 @@ public class SelectorTableForm extends AbstractForm {
 
     /**
      * addButtonControls.
-     * 
+     *
      */
     @Override
     protected void addUtilsButtonListeners() {
@@ -767,7 +767,7 @@ public class SelectorTableForm extends AbstractForm {
                                     refreshTable(treeItem, -1);
                                 }
                             } else {
-                                clearTableItem(treeItem);    
+                                clearTableItem(treeItem);
                             }
                         }
                     }
@@ -801,7 +801,7 @@ public class SelectorTableForm extends AbstractForm {
                         parentWizardPage.setPageComplete(false);
                         refreshTable(treeItem, -1);
                     }
-                } else {                   
+                } else {
                     clearTableItem(treeItem);
                 }
             } else {
@@ -844,9 +844,9 @@ public class SelectorTableForm extends AbstractForm {
     }
 
     /**
-     * 
+     *
      * wzhang Comment method "updateItem".
-     * 
+     *
      * @param item
      * @param checked
      */
@@ -1073,7 +1073,7 @@ public class SelectorTableForm extends AbstractForm {
 
     /**
      * checkConnection.
-     * 
+     *
      * @param displayMessageBox
      */
     protected void checkConnection(final boolean displayMessageBox) {
@@ -1175,7 +1175,7 @@ public class SelectorTableForm extends AbstractForm {
 
     /**
      * DOC qzhang Comment method "createAllItems".
-     * 
+     *
      * @param displayMessageBox
      * @param newList
      */
@@ -1210,7 +1210,7 @@ public class SelectorTableForm extends AbstractForm {
 
     /**
      * createTable.
-     * 
+     *
      * @param tableItem
      */
     protected void createTable(TreeItem tableItem) {
@@ -1286,7 +1286,7 @@ public class SelectorTableForm extends AbstractForm {
 
     /**
      * deleteTable.
-     * 
+     *
      * @param tableItem
      */
     protected void deleteTable(TreeItem tableItem) {
@@ -1349,8 +1349,8 @@ public class SelectorTableForm extends AbstractForm {
     /**
      * A subclass of ThreadPoolExecutor that executes each submitted RetrieveColumnRunnable using one of possibly
      * several pooled threads.
-     * 
-     * 
+     *
+     *
      */
     class CustomThreadPoolExecutor extends TalendCustomThreadPoolExecutor {
 
@@ -1369,7 +1369,7 @@ public class SelectorTableForm extends AbstractForm {
 
         /*
          * (non-Javadoc)
-         * 
+         *
          * @see java.util.concurrent.ThreadPoolExecutor#afterExecute(java.lang.Runnable, java.lang.Throwable)
          */
         @Override
@@ -1380,7 +1380,7 @@ public class SelectorTableForm extends AbstractForm {
 
         /*
          * (non-Javadoc)
-         * 
+         *
          * @see java.util.concurrent.ThreadPoolExecutor#beforeExecute(java.lang.Thread, java.lang.Runnable)
          */
         @Override
@@ -1391,7 +1391,7 @@ public class SelectorTableForm extends AbstractForm {
 
         /**
          * If an item is in the List runningThreads, it means that the item's related thread is running.
-         * 
+         *
          * @param item
          * @return
          */
@@ -1401,7 +1401,7 @@ public class SelectorTableForm extends AbstractForm {
 
         /**
          * Find the RetrieveColumnRunnable from map and waiting queue. Map stores running runnables
-         * 
+         *
          * @param key
          * @return
          */
@@ -1423,7 +1423,7 @@ public class SelectorTableForm extends AbstractForm {
 
     /**
      * Subclass of SWTUIThreadProcessor to process the Retrieving Columns job. <br/>
-     * 
+     *
      */
     class RetrieveColumnRunnable implements Runnable {
 
@@ -1438,13 +1438,13 @@ public class SelectorTableForm extends AbstractForm {
         List<TdColumn> metadataColumns = null;
 
         volatile boolean isCanceled = false;
-        
+
         volatile boolean isFinished = false;
-       
+
 
         /**
          * Getter for tableItem.
-         * 
+         *
          * @return the tableItem
          */
         public TreeItem getTreeItem() {
@@ -1480,7 +1480,7 @@ public class SelectorTableForm extends AbstractForm {
 
         /**
          * Getter for isCanceled.
-         * 
+         *
          * @return the isCanceled
          */
         public boolean isCanceled() {
@@ -1697,7 +1697,7 @@ public class SelectorTableForm extends AbstractForm {
 
             }
             refreshColumnData(tableNode, treeItem);
-            
+
             isFinished = true;
             countSuccess++;
             updateStatus(IStatus.OK, null);
@@ -1706,7 +1706,7 @@ public class SelectorTableForm extends AbstractForm {
             parentWizardPage.setPageComplete(isAllTaskFinished());
         }
     }
-    
+
     private boolean isAllTaskFinished() {
         return threadExecutor.getQueue().isEmpty()
                 && (threadExecutor.getActiveCount() == 0 || countSuccess == countPending);
@@ -1714,7 +1714,7 @@ public class SelectorTableForm extends AbstractForm {
 
     /**
      * refreshTable. This Methos execute the CreateTable in a Thread task.
-     * 
+     *
      * @param tableItem
      * @param size
      */
@@ -1876,7 +1876,7 @@ public class SelectorTableForm extends AbstractForm {
 
     /**
      * DOC ocarbone Comment method "initExistingNames".
-     * 
+     *
      * @param connection
      * @param metadataTable
      */
@@ -1918,7 +1918,7 @@ public class SelectorTableForm extends AbstractForm {
                         if (num != null) {
                             // get column num from previous result
                             item.setText(2, num.toString());
-                            item.setText(3, Messages.getString("SelectorTableForm.Success")); //$NON-NLS-1$ 
+                            item.setText(3, Messages.getString("SelectorTableForm.Success")); //$NON-NLS-1$
                             refreshColumnData(node, item);
                         } else {
                             // retrieve column num again
@@ -2038,9 +2038,9 @@ public class SelectorTableForm extends AbstractForm {
     }
 
     /**
-     * 
+     *
      * wzhang Comment method "isExistTable".
-     * 
+     *
      * @param tableNode
      * @return
      */
@@ -2164,9 +2164,9 @@ public class SelectorTableForm extends AbstractForm {
     }
 
     /**
-     * 
+     *
      * ldong Comment method "getExistCheckedTable".
-     * 
+     *
      * @param tableNode
      * @return
      */
@@ -2359,7 +2359,7 @@ public class SelectorTableForm extends AbstractForm {
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see org.talend.repository.ui.swt.AbstractForm#adaptFormToReadOnly()
      */
     @Override
@@ -2368,7 +2368,7 @@ public class SelectorTableForm extends AbstractForm {
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see org.eclipse.swt.widgets.Control#setVisible(boolean)
      */
     @Override
@@ -2447,7 +2447,7 @@ public class SelectorTableForm extends AbstractForm {
 
     /**
      * Getter for tableInfoParameters.
-     * 
+     *
      * @return the tableInfoParameters
      */
     public TableInfoParameters getTableInfoParameters() {
@@ -2538,7 +2538,7 @@ public class SelectorTableForm extends AbstractForm {
     }
 
     /**
-     * 
+     *
      * wzhang SelectorTableForm class global comment. Detailled comment
      */
     class selectorViewerFilter extends ViewerFilter {

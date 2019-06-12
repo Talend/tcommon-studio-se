@@ -1,6 +1,6 @@
 // ============================================================================
 //
-// Copyright (C) 2006-2018 Talend Inc. - www.talend.com
+// Copyright (C) 2006-2019 Talend Inc. - www.talend.com
 //
 // This source code is available under agreement available at
 // %InstallDIR%\features\org.talend.rcp.branding.%PRODUCTNAME%\%PRODUCTNAME%license.txt
@@ -74,14 +74,14 @@ public class ProjectPomManager {
         for (String module : projectModel.getModules()) {
             templateModel.addModule(module);
         }
- 
+
         PomUtil.savePom(monitor, templateModel, projectPomFile);
     }
 
     /**
-     * 
+     *
      * update the main attributes for project pom.
-     * 
+     *
      */
     protected void updateAttributes(IProgressMonitor monitor, IProcessor processor, Model projectModel) throws Exception {
         final Map<String, Object> templateParameters = PomUtil.getTemplateParameters(processor);

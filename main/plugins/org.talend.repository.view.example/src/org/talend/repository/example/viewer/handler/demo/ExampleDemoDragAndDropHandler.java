@@ -1,6 +1,6 @@
 // ============================================================================
 //
-// Copyright (C) 2006-2018 Talend Inc. - www.talend.com
+// Copyright (C) 2006-2019 Talend Inc. - www.talend.com
 //
 // This source code is available under agreement available at
 // %InstallDIR%\features\org.talend.rcp.branding.%PRODUCTNAME%\%PRODUCTNAME%license.txt
@@ -38,9 +38,9 @@ import org.talend.repository.model.RepositoryNode;
 
 /**
  * DOC ggu class global comment. Detailled comment <br/>
- * 
+ *
  * $Id: talend.epf 55206 2011-02-15 17:32:14Z mhirt $
- * 
+ *
  * NOTE: this calss is not finished, because need related some components.
  */
 public class ExampleDemoDragAndDropHandler extends AbstractDragAndDropServiceHandler {
@@ -53,7 +53,7 @@ public class ExampleDemoDragAndDropHandler extends AbstractDragAndDropServiceHan
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see
      * org.talend.core.model.utils.IDragAndDropServiceHandler#canHandle(org.talend.core.model.metadata.builder.connection
      * .Connection)
@@ -65,7 +65,7 @@ public class ExampleDemoDragAndDropHandler extends AbstractDragAndDropServiceHan
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see
      * org.talend.core.model.utils.IDragAndDropServiceHandler#getComponentValue(org.talend.core.model.metadata.builder
      * .connection.Connection, java.lang.String, org.talend.core.model.metadata.IMetadataTable)
@@ -85,7 +85,7 @@ public class ExampleDemoDragAndDropHandler extends AbstractDragAndDropServiceHan
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see
      * org.talend.core.model.utils.IDragAndDropServiceHandler#filterNeededComponents(org.talend.core.model.properties
      * .Item, org.talend.repository.model.RepositoryNode, org.talend.core.model.repository.ERepositoryObjectType)
@@ -109,7 +109,7 @@ public class ExampleDemoDragAndDropHandler extends AbstractDragAndDropServiceHan
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see
      * org.talend.core.model.utils.IDragAndDropServiceHandler#getCorrespondingComponentName(org.talend.core.model.properties
      * .Item, org.talend.core.model.repository.ERepositoryObjectType)
@@ -140,7 +140,7 @@ public class ExampleDemoDragAndDropHandler extends AbstractDragAndDropServiceHan
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see
      * org.talend.core.model.utils.IDragAndDropServiceHandler#setComponentValue(org.talend.core.model.metadata.builder
      * .connection.Connection, org.talend.core.model.process.INode, java.lang.String)
@@ -155,7 +155,7 @@ public class ExampleDemoDragAndDropHandler extends AbstractDragAndDropServiceHan
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see org.talend.core.model.utils.IDragAndDropServiceHandler#getType(java.lang.String)
      */
     @Override
@@ -172,7 +172,7 @@ public class ExampleDemoDragAndDropHandler extends AbstractDragAndDropServiceHan
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see
      * org.talend.core.model.utils.IDragAndDropServiceHandler#getComponentValue(org.talend.core.model.metadata.builder
      * .connection.Connection, java.lang.String, org.talend.core.model.metadata.IMetadataTable, java.lang.String)
@@ -185,7 +185,7 @@ public class ExampleDemoDragAndDropHandler extends AbstractDragAndDropServiceHan
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see
      * org.talend.core.model.utils.IDragAndDropServiceHandler#handleTableRelevantParameters(org.talend.core.model.metadata
      * .builder.connection.Connection, org.talend.core.model.process.IElement,
@@ -198,7 +198,7 @@ public class ExampleDemoDragAndDropHandler extends AbstractDragAndDropServiceHan
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see org.talend.core.model.utils.IDragAndDropServiceHandler#isValidForDataViewer(org.talend.core.model.metadata.
      * IMetadataTable)
      */

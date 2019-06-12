@@ -1,6 +1,6 @@
 // ============================================================================
 //
-// Copyright (C) 2006-2018 Talend Inc. - www.talend.com
+// Copyright (C) 2006-2019 Talend Inc. - www.talend.com
 //
 // This source code is available under agreement available at
 // %InstallDIR%\features\org.talend.rcp.branding.%PRODUCTNAME%\%PRODUCTNAME%license.txt
@@ -20,16 +20,16 @@ import java.util.TreeSet;
 
 /**
  * DOC amaumont class global comment. Detailled comment
- * 
+ *
  * @param <K> key
  * @param <V> value
  */
 public class SimpleCache<K, V> {
 
     /**
-     * 
+     *
      * DOC amaumont SimpleCache class global comment. Detailled comment
-     * 
+     *
      * @param <K> key
      */
     class HashKeyValue<K, V> implements Comparable<HashKeyValue<K, V>> {
@@ -52,7 +52,7 @@ public class SimpleCache<K, V> {
 
         /*
          * (non-Javadoc)
-         * 
+         *
          * @see java.lang.Object#hashCode()
          */
         @Override
@@ -65,7 +65,7 @@ public class SimpleCache<K, V> {
 
         /*
          * (non-Javadoc)
-         * 
+         *
          * @see java.lang.Object#equals(java.lang.Object)
          */
         @Override
@@ -92,7 +92,7 @@ public class SimpleCache<K, V> {
 
         /*
          * (non-Javadoc)
-         * 
+         *
          * @see java.lang.Comparable#compareTo(java.lang.Object)
          */
         public int compareTo(HashKeyValue<K, V> o) {
@@ -104,7 +104,7 @@ public class SimpleCache<K, V> {
 
         /**
          * Getter for value.
-         * 
+         *
          * @return the value
          */
         public V getValue() {
@@ -113,7 +113,7 @@ public class SimpleCache<K, V> {
 
         /**
          * Getter for key.
-         * 
+         *
          * @return the key
          */
         public K getKey() {
@@ -122,7 +122,7 @@ public class SimpleCache<K, V> {
 
         /**
          * Getter for addTime.
-         * 
+         *
          * @return the addTime
          */
         public long getAddTime() {
@@ -140,9 +140,9 @@ public class SimpleCache<K, V> {
     private Long maxTime;
 
     /**
-     * 
+     *
      * Constructor SimpleCache.
-     * 
+     *
      * @param maxTime in ms, a value greater than <code>0</code> to enable the <code>maxTime</code>, a negative or
      * Integer.MAX_VALUE or Long.MAX_VALUE value means infinite.
      * @param maxItems max number of items to keep in the cache, a value greater than <code>0</code> to enable the
@@ -181,11 +181,11 @@ public class SimpleCache<K, V> {
     }
 
     /**
-     * 
+     *
      * Method "put".
-     * 
+     *
      * The clean is done when putting new data.
-     * 
+     *
      * @param key
      * @param value
      * @return previous value for the same key

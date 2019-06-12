@@ -1,6 +1,6 @@
 // ============================================================================
 //
-// Copyright (C) 2006-2018 Talend Inc. - www.talend.com
+// Copyright (C) 2006-2019 Talend Inc. - www.talend.com
 //
 // This source code is available under agreement available at
 // %InstallDIR%\features\org.talend.rcp.branding.%PRODUCTNAME%\%PRODUCTNAME%license.txt
@@ -40,29 +40,29 @@ import org.talend.designer.core.model.utils.emf.talendfile.TalendFileFactory;
  * DOC zwxue class global comment. Detailled comment
  */
 public class RepositoryObjectCacheTest {
-    
+
     private RepositoryObjectCache roc;
-    
+
     private ContextItem contextItem;
-    
+
     private ProcessItem jobItem;
-    
+
     private String contextId;
-    
+
     private String jobId;
-    
+
     private String contextName = "org_talend_context1";
-    
+
     private String contextDisplayName = "org.talend.context1";
-    
+
     private String jobName = "job1";
-    
+
     private ProxyRepositoryFactory factory = ProxyRepositoryFactory.getInstance();
 
     @Before
     public void setUp() throws Exception {
         roc = new RepositoryObjectCache();
-        
+
         Property contextProperty = PropertiesFactory.eINSTANCE.createProperty();
         contextId = ProxyRepositoryFactory.getInstance().getNextId();
         contextProperty.setId(contextId);
@@ -78,16 +78,16 @@ public class RepositoryObjectCacheTest {
         jobProperty.setLabel(jobName);
         jobItem = PropertiesFactory.eINSTANCE.createProcessItem();
         jobItem.setProperty(jobProperty);
-        
+
         ProcessType process = TalendFileFactory.eINSTANCE.createProcessType();
         ParametersType parameterType = TalendFileFactory.eINSTANCE.createParametersType();
         List<RoutinesParameterType> dependenciesInPreference = RoutinesUtil.createDependenciesInPreference();
         parameterType.getRoutinesParameter().addAll(dependenciesInPreference);
         process.setParameters(parameterType);
         jobItem.setProcess(process);
-        
+
         factory.create(jobItem, Path.EMPTY);
-        
+
     }
 
     @Test
@@ -95,7 +95,7 @@ public class RepositoryObjectCacheTest {
         roc.addToCache(contextItem);
         validateResult(roc.getIdItemChache(), contextItem, contextId);
         validateResult(roc.getNameItemChache(), contextItem, contextName);
-        
+
         roc.clear();
         roc.addToCache(jobItem);
         validateResult(roc.getIdItemChache(), jobItem, jobId);
@@ -107,9 +107,9 @@ public class RepositoryObjectCacheTest {
         roc.initialize(ERepositoryObjectType.CONTEXT);
         validateResult(roc.getIdItemChache(), contextItem, contextId);
         validateResult(roc.getNameItemChache(), contextItem, contextName);
-        
+
         roc.clear();
-        
+
         roc.initialize(ERepositoryObjectType.PROCESS);
         validateResult(roc.getIdItemChache(), jobItem, jobId);
         validateResult(roc.getNameItemChache(), jobItem, jobName);
@@ -122,14 +122,14 @@ public class RepositoryObjectCacheTest {
         IRepositoryViewObject obj = items.get(0);
         assertEquals(item, obj.getProperty().getItem());
     }
-    
+
     private void deleteItem(Item item) throws PersistenceException {
         IRepositoryViewObject repObj = factory.getLastVersion(item.getProperty().getId());
         if (repObj != null) {
             factory.deleteObjectPhysical(repObj);
         }
     }
-    
+
 
     @After
     public void tearDown() throws Exception {

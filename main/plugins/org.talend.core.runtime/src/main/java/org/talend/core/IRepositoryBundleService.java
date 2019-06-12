@@ -1,6 +1,6 @@
 // ============================================================================
 //
-// Copyright (C) 2006-2018 Talend Inc. - www.talend.com
+// Copyright (C) 2006-2019 Talend Inc. - www.talend.com
 //
 // This source code is available under agreement available at
 // %InstallDIR%\features\org.talend.rcp.branding.%PRODUCTNAME%\%PRODUCTNAME%license.txt
@@ -25,9 +25,9 @@ public interface IRepositoryBundleService extends IService {
 
     /**
      * DOC ycbai Comment method "isInitialized".
-     * 
+     *
      * Check whether the OBR has been initialized.
-     * 
+     *
      * @param monitorWrap
      * @return
      */
@@ -37,9 +37,9 @@ public interface IRepositoryBundleService extends IService {
 
     /**
      * DOC ycbai Comment method "deploy".
-     * 
+     *
      * Deploy jar file to OBR.
-     * 
+     *
      * @param jarFileUri
      * @param monitorWrap
      */
@@ -49,9 +49,9 @@ public interface IRepositoryBundleService extends IService {
 
     /**
      * DOC ycbai Comment method "retrieve".
-     * 
+     *
      * Retrieve jar file from OBR.
-     * 
+     *
      * @param jarNeeded
      * @param pathToStore
      * @param monitorWrap
@@ -63,9 +63,9 @@ public interface IRepositoryBundleService extends IService {
 
     /**
      * DOC ycbai Comment method "list".
-     * 
+     *
      * List all the jar files from OBR.
-     * 
+     *
      * @param monitorWrap
      * @return
      */

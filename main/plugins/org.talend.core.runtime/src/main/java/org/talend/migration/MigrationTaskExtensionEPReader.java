@@ -1,6 +1,6 @@
 // ============================================================================
 //
-// Copyright (C) 2006-2018 Talend Inc. - www.talend.com
+// Copyright (C) 2006-2019 Talend Inc. - www.talend.com
 //
 // This source code is available under agreement available at
 // %InstallDIR%\features\org.talend.rcp.branding.%PRODUCTNAME%\%PRODUCTNAME%license.txt
@@ -29,17 +29,17 @@ import org.talend.core.utils.RegistryReader;
 /**
  * Parses the Eclipse extension point registry to construct a Migration Task extension map using the
  * org.talend.migration.task.type.extension extension point
- * 
+ *
  */
 public class MigrationTaskExtensionEPReader extends RegistryReader {
 
     /**
-     * 
+     *
      */
     private static final String TYPE_ATTRIBUTE = "type"; //$NON-NLS-1$
 
     /**
-     * 
+     *
      */
     private static final String EXTENDED_TYPE_ATTRIBUTE = "extended_type"; //$NON-NLS-1$
 
@@ -51,7 +51,7 @@ public class MigrationTaskExtensionEPReader extends RegistryReader {
 
     /**
      * DOC sgandon MigrationTaskExtensionEPReader constructor comment.
-     * 
+     *
      * @param aPluginId
      * @param anExtensionPoint
      */
@@ -63,7 +63,7 @@ public class MigrationTaskExtensionEPReader extends RegistryReader {
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see org.talend.core.utils.RegistryReader#readElement(org.eclipse.core.runtime.IConfigurationElement)
      */
     @Override
@@ -97,7 +97,7 @@ public class MigrationTaskExtensionEPReader extends RegistryReader {
 
     /**
      * return the Map of all extensiion of all type.
-     * 
+     *
      * @return
      */
     public Map<ERepositoryObjectType, List<ERepositoryObjectType>> getMigrationTaskExtensions() {
@@ -105,8 +105,8 @@ public class MigrationTaskExtensionEPReader extends RegistryReader {
     }
 
     /**
-     * 
-     * 
+     *
+     *
      * @return the unique set of ERepositoryObjectType that extends an existing collection of ERepositoryObjectType for
      * the migration task, may be emty but never null.
      */

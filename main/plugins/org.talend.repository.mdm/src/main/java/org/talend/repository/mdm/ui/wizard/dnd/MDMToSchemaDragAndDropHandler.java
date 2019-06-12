@@ -1,6 +1,6 @@
 // ============================================================================
 //
-// Copyright (C) 2006-2018 Talend Inc. - www.talend.com
+// Copyright (C) 2006-2019 Talend Inc. - www.talend.com
 //
 // This source code is available under agreement available at
 // %InstallDIR%\features\org.talend.rcp.branding.%PRODUCTNAME%\%PRODUCTNAME%license.txt
@@ -70,7 +70,7 @@ public class MDMToSchemaDragAndDropHandler {
 
     /**
      * DOC amaumont TreeToTableDragAndDropHandler constructor comment.
-     * 
+     *
      * @param linker
      */
     public MDMToSchemaDragAndDropHandler(MDMLinker linker) {
@@ -90,9 +90,9 @@ public class MDMToSchemaDragAndDropHandler {
     }
 
     /**
-     * 
+     *
      * DOC amaumont Comment method "createDragSource".
-     * 
+     *
      * @param sourceListener
      */
     private void createDragSource() {
@@ -106,7 +106,7 @@ public class MDMToSchemaDragAndDropHandler {
     }
 
     /**
-     * 
+     *
      * create DropTarget.
      */
     private void createDropTarget() {
@@ -129,11 +129,11 @@ public class MDMToSchemaDragAndDropHandler {
     }
 
     /**
-     * 
+     *
      * DOC amaumont XmlToSchemaDragAndDropHandler class global comment. Detailled comment <br/>
-     * 
+     *
      * $Id$
-     * 
+     *
      */
     class TreeDragSourceListener implements TransferDragSourceListener {
 
@@ -170,11 +170,11 @@ public class MDMToSchemaDragAndDropHandler {
     };
 
     /**
-     * 
+     *
      * DOC amaumont XmlToSchemaDragAndDropHandler class global comment. Detailled comment <br/>
-     * 
+     *
      * $Id$
-     * 
+     *
      */
     public class TableDropTargetListener implements TransferDropTargetListener {
 
@@ -184,7 +184,7 @@ public class MDMToSchemaDragAndDropHandler {
 
         /**
          * DOC amaumont Comment method "dragEnterExecute".
-         * 
+         *
          * @param event
          */
         private void dragEnterExecute(DropTargetEvent event) {
@@ -217,7 +217,7 @@ public class MDMToSchemaDragAndDropHandler {
 
         /*
          * (non-Javadoc)
-         * 
+         *
          * @see org.eclipse.jface.util.TransferDropTargetListener#getTransfer()
          */
         public Transfer getTransfer() {
@@ -226,7 +226,7 @@ public class MDMToSchemaDragAndDropHandler {
 
         /*
          * (non-Javadoc)
-         * 
+         *
          * @see org.eclipse.jface.util.TransferDropTargetListener#isEnabled(org.eclipse.swt.dnd.DropTargetEvent)
          */
         public boolean isEnabled(DropTargetEvent event) {
@@ -236,7 +236,7 @@ public class MDMToSchemaDragAndDropHandler {
 
         /*
          * (non-Javadoc)
-         * 
+         *
          * @see org.eclipse.swt.dnd.DropTargetListener#drop(org.eclipse.swt.dnd.DropTargetEvent)
          */
         public void drop(DropTargetEvent event) {
@@ -338,7 +338,7 @@ public class MDMToSchemaDragAndDropHandler {
 
     /**
      * Extract last word of an expression, the last character must be a letter or a number.
-     * 
+     *
      * @param currentExpr
      * @return
      */
@@ -354,7 +354,7 @@ public class MDMToSchemaDragAndDropHandler {
 
     /**
      * Extract last word of an expression, the last character must be a letter or a number.
-     * 
+     *
      * @param currentExpr
      * @return
      */
@@ -372,7 +372,7 @@ public class MDMToSchemaDragAndDropHandler {
 
     /**
      * Extract column name of an expression
-     * 
+     *
      * @param currentExpr
      * @param fullSchemaTargetList
      * @return
@@ -384,7 +384,7 @@ public class MDMToSchemaDragAndDropHandler {
 
             /*
              * (non-Javadoc)
-             * 
+             *
              * @see org.talend.commons.utils.data.list.UniqueStringGenerator#getBeanString(java.lang.Object)
              */
             @Override

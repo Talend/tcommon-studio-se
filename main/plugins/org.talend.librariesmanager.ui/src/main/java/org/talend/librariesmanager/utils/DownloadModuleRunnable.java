@@ -1,6 +1,6 @@
 // ============================================================================
 //
-// Copyright (C) 2006-2018 Talend Inc. - www.talend.com
+// Copyright (C) 2006-2019 Talend Inc. - www.talend.com
 //
 // This source code is available under agreement available at
 // %InstallDIR%\features\org.talend.rcp.branding.%PRODUCTNAME%\%PRODUCTNAME%license.txt
@@ -13,6 +13,7 @@
 package org.talend.librariesmanager.utils;
 
 import java.net.URL;
+import java.util.Arrays;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -25,6 +26,7 @@ import org.eclipse.jface.window.Window;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.ui.PlatformUI;
 import org.ops4j.pax.url.mvn.Handler;
+import org.talend.commons.exception.ExceptionHandler;
 import org.talend.commons.ui.runtime.exception.MessageBoxExceptionHandler;
 import org.talend.core.GlobalServiceRegister;
 import org.talend.core.model.general.ILibrariesService;
@@ -47,9 +49,11 @@ abstract public class DownloadModuleRunnable implements IRunnableWithProgress {
 
     private boolean checkLibraries;
 
+    private boolean showErrorInDialog = true;
+
     /**
      * DOC sgandon DownloadModuleRunnable constructor comment.
-     * 
+     *
      * @param shell, never null, used to ask the user to accept the licenses
      * @param toDownload
      */
@@ -84,10 +88,8 @@ abstract public class DownloadModuleRunnable implements IRunnableWithProgress {
                 Messages.getString("ExternalModulesInstallDialog.downloading2") + " (" + toDownload.size() + ")", //$NON-NLS-1$
                 toDownload.size());
 
-        // TUP-3135 : stop to try to download at the first timeout.
-        boolean connectionTimeOut = false;
         for (final ModuleToInstall module : toDownload) {
-            if (!monitor.isCanceled() && !connectionTimeOut) {
+            if (!monitor.isCanceled()) {
                 monitor.subTask(module.getName());
                 boolean canDownload;
                 try {
@@ -117,12 +119,11 @@ abstract public class DownloadModuleRunnable implements IRunnableWithProgress {
                         downloader.download(new URL(null, module.getMavenUri(), new Handler()), null, subMonitor.newChild(1));
                     }
 
-                    // deploy to index as snapshot
                     installedModules.add(module.getName());
                 } catch (Exception e) {
                     downloadFailed.add(module.getName());
-                    connectionTimeOut = true;
-                    MessageBoxExceptionHandler.process(new Exception("Download " + module.getName() + " failed!", e));
+                    Exception ex = new Exception("Download " + module.getName() + " : " + module.getMavenUri() + " failed!", e);
+                    ExceptionHandler.process(ex);
                     continue;
                 }
                 canDownload = false;
@@ -130,6 +131,13 @@ abstract public class DownloadModuleRunnable implements IRunnableWithProgress {
                 downloadFailed.add(module.getName());
             }
         }
+
+        if (showErrorInDialog) {
+            Exception ex = new Exception(Messages.getString("DownloadModuleRunnable.jar.download.failed",
+                    Arrays.toString(downloadFailed.toArray(new String[downloadFailed.size()]))));
+            MessageBoxExceptionHandler.process(ex);
+        }
+
         if (checkLibraries) {
             ILibrariesService librariesService = (ILibrariesService) GlobalServiceRegister.getDefault()
                     .getService(ILibrariesService.class);
@@ -183,14 +191,14 @@ abstract public class DownloadModuleRunnable implements IRunnableWithProgress {
 
     /**
      * DOC sgandon Comment method "acceptLicence".
-     * 
+     *
      * @param module
      */
     abstract protected boolean acceptLicence(ModuleToInstall module);
 
     /**
      * Getter for downloadFailed.
-     * 
+     *
      * @return the downloadFailed
      */
     public Set<String> getDownloadFailed() {
@@ -199,10 +207,15 @@ abstract public class DownloadModuleRunnable implements IRunnableWithProgress {
 
     /**
      * Getter for installedModules.
-     * 
+     *
      * @return the installedModules
      */
     public Set<String> getInstalledModules() {
         return this.installedModules;
     }
+
+    public void setShowErrorInDialog(boolean showErrorInDialog) {
+        this.showErrorInDialog = showErrorInDialog;
+    }
+
 }

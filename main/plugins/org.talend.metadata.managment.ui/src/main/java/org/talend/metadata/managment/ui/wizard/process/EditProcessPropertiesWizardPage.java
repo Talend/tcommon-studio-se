@@ -1,6 +1,6 @@
 // ============================================================================
 //
-// Copyright (C) 2006-2018 Talend Inc. - www.talend.com
+// Copyright (C) 2006-2019 Talend Inc. - www.talend.com
 //
 // This source code is available under agreement available at
 // %InstallDIR%\features\org.talend.rcp.branding.%PRODUCTNAME%\%PRODUCTNAME%license.txt
@@ -64,7 +64,7 @@ public class EditProcessPropertiesWizardPage extends PropertiesWizardPage {
 
     /**
      * DOC marvin EditProcessPropertiesWizardPage constructor comment.
-     * 
+     *
      * @param pageName
      * @param property
      * @param destinationPath
@@ -76,7 +76,7 @@ public class EditProcessPropertiesWizardPage extends PropertiesWizardPage {
 
     /**
      * DOC marvin EditProcessPropertiesWizardPage constructor comment.
-     * 
+     *
      * @param pageName
      * @param property
      * @param destinationPath
@@ -91,7 +91,7 @@ public class EditProcessPropertiesWizardPage extends PropertiesWizardPage {
 
     /**
      * DOC marvin EditProcessPropertiesWizardPage constructor comment.
-     * 
+     *
      * @param pageName
      * @param property
      * @param destinationPath
@@ -120,7 +120,7 @@ public class EditProcessPropertiesWizardPage extends PropertiesWizardPage {
             gridData.horizontalSpan = 2;
             label.setLayoutData(gridData);
         }
-        
+
         super.createControl(container);
         // Added by Marvin Wang on Jan. 29, 2013.
         // createBottomPart(container);
@@ -130,8 +130,8 @@ public class EditProcessPropertiesWizardPage extends PropertiesWizardPage {
         addListeners();
         setPageComplete(false);
     }
-    
-    
+
+
 
     @Override
     protected void createFrameworkPart(Composite parent) {
@@ -261,7 +261,7 @@ public class EditProcessPropertiesWizardPage extends PropertiesWizardPage {
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see org.talend.repository.ui.wizards.PropertiesWizardPage#getRepositoryObjectType()
      */
     @Override

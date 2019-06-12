@@ -1,6 +1,6 @@
 // ============================================================================
 //
-// Copyright (C) 2006-2018 Talend Inc. - www.talend.com
+// Copyright (C) 2006-2019 Talend Inc. - www.talend.com
 //
 // This source code is available under agreement available at
 // %InstallDIR%\features\org.talend.rcp.branding.%PRODUCTNAME%\%PRODUCTNAME%license.txt
@@ -54,7 +54,7 @@ import org.talend.repository.model.IProxyRepositoryFactory;
 /**
  * This class store all relationships between jobs/joblets and other items from the repository. Be sure to update the
  * INDEX_VERSION when change this class. This will force to run the migration task on the next logon on this project.
- * 
+ *
  * This actually can deal with: <br>
  * - Context (id = context id) <br>
  * - Property (id = connection id) <br>
@@ -115,7 +115,7 @@ public class RelationshipItemBuilder {
     public static final String DYNAMIC_DISTRIBUTION_RELATION = "dynamicDistribution"; //$NON-NLS-1$
 
     /*
-     * 
+     *
      */
 
     public static final String OPTION_KEY_TYPE = "OPTION_TYPE"; //$NON-NLS-1$
@@ -222,7 +222,7 @@ public class RelationshipItemBuilder {
     /**
      * Look for every linked items who use the selected id, no matter the version. Usefull when want to delete an item
      * since it will delete every versions.
-     * 
+     *
      * @param itemId
      * @param version
      * @param relationType
@@ -236,7 +236,7 @@ public class RelationshipItemBuilder {
     /**
      * Look for every linked items who use the selected id, no matter the version. Usefull when want to delete an item
      * since it will delete every versions.
-     * 
+     *
      * @param itemId
      * @param version
      * @return
@@ -261,7 +261,7 @@ public class RelationshipItemBuilder {
 
     /**
      * Look for every linked items who use the selected id as subjob
-     * 
+     *
      * @param itemId
      * @param version
      * @param relationType
@@ -362,9 +362,9 @@ public class RelationshipItemBuilder {
     }
 
     /**
-     * 
+     *
      * DOC cmeng Comment method "getItemsHaveRelationWith".
-     * 
+     *
      * @param itemsRelations
      * @param itemId
      * @param version if null, then won't check
@@ -555,10 +555,10 @@ public class RelationshipItemBuilder {
     }
 
     /**
-     * 
+     *
      * DOC wchen Comment method "getItemsChildRelatedTo". look for all <relationTypeTofind> child items used by the main
      * <itemId>
-     * 
+     *
      * @param itemId
      * @param version
      * @param relationType
@@ -747,7 +747,7 @@ public class RelationshipItemBuilder {
         }
         modified = false;
     }
-    
+
     public void synchronizeItemRelationToProject(Project currentProject) {
         List<ItemRelations> oldRelations = new ArrayList<ItemRelations>(currentProject.getEmfProject().getItemsRelations());
         List<ItemRelations> usedList = new ArrayList<ItemRelations>();

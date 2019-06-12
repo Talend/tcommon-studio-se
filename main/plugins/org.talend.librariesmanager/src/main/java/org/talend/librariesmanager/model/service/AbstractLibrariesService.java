@@ -1,6 +1,6 @@
 // ============================================================================
 //
-// Copyright (C) 2006-2018 Talend Inc. - www.talend.com
+// Copyright (C) 2006-2019 Talend Inc. - www.talend.com
 //
 // This source code is available under agreement available at
 // %InstallDIR%\features\org.talend.rcp.branding.%PRODUCTNAME%\%PRODUCTNAME%license.txt
@@ -80,9 +80,9 @@ public abstract class AbstractLibrariesService implements ILibrariesService {
     public abstract URL getBeanTemplate();
 
     /**
-     * 
+     *
      * DOC wchen Comment method "getLibraryStatus".
-     * 
+     *
      * @deprecated better call the function getLibraryStatus(String libName, String mvnURI)
      * @param libName
      * @return
@@ -97,7 +97,7 @@ public abstract class AbstractLibrariesService implements ILibrariesService {
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see org.talend.core.model.general.ILibrariesService#getLibraryStatus(java.lang.String, java.lang.String)
      */
     @Override
@@ -261,7 +261,7 @@ public abstract class AbstractLibrariesService implements ILibrariesService {
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see
      * org.talend.core.model.general.ILibrariesService#resetModulesNeededForCurrentJob(org.talend.core.model.properties
      * .Item)

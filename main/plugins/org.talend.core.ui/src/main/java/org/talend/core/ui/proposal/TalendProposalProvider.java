@@ -1,6 +1,6 @@
 // ============================================================================
 //
-// Copyright (C) 2006-2018 Talend Inc. - www.talend.com
+// Copyright (C) 2006-2019 Talend Inc. - www.talend.com
 //
 // This source code is available under agreement available at
 // %InstallDIR%\features\org.talend.rcp.branding.%PRODUCTNAME%\%PRODUCTNAME%license.txt
@@ -32,9 +32,9 @@ import org.talend.designer.rowgenerator.data.TalendType;
 
 /**
  * ContentProposalProvider based on a Process. <br/>
- * 
+ *
  * $Id$
- * 
+ *
  */
 public class TalendProposalProvider implements IContentProposalProvider {
 
@@ -64,7 +64,7 @@ public class TalendProposalProvider implements IContentProposalProvider {
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see org.eclipse.jface.fieldassist.IContentProposalProvider#getProposals(java.lang.String, int)
      */
     @Override
@@ -143,7 +143,7 @@ public class TalendProposalProvider implements IContentProposalProvider {
     /**
      * Make sure the $row proposal follow the context proposal see feature 3725 DOC YeXiaowei Comment method
      * "compareRowAndContextProposal".
-     * 
+     *
      * @param label0
      * @param label1
      * @return

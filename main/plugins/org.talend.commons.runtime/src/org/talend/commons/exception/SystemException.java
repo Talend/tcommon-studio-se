@@ -1,6 +1,6 @@
 // ============================================================================
 //
-// Copyright (C) 2006-2018 Talend Inc. - www.talend.com
+// Copyright (C) 2006-2019 Talend Inc. - www.talend.com
 //
 // This source code is available under agreement available at
 // %InstallDIR%\features\org.talend.rcp.branding.%PRODUCTNAME%\%PRODUCTNAME%license.txt
@@ -17,9 +17,9 @@ import org.talend.commons.i18n.internal.Messages;
 /**
  * Defines system exception - Use or extends this class when a system problem occurs and affects a fonctionnality but
  * application can keep running.<br/>
- * 
+ *
  * $Id$
- * 
+ *
  */
 public class SystemException extends Exception {
 

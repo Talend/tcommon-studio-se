@@ -1,6 +1,6 @@
 // ============================================================================
 //
-// Copyright (C) 2006-2018 Talend Inc. - www.talend.com
+// Copyright (C) 2006-2019 Talend Inc. - www.talend.com
 //
 // This source code is available under agreement available at
 // %InstallDIR%\features\org.talend.rcp.branding.%PRODUCTNAME%\%PRODUCTNAME%license.txt
@@ -37,9 +37,9 @@ import org.talend.core.ui.i18n.Messages;
 
 /**
  * DOC msjian class global comment. Detailled comment <br/>
- * 
+ *
  * $Id: CorePreferencePage.java TDQ-3990 move from org.talend.core $
- * 
+ *
  */
 public class CorePreferencePage extends FieldEditorPreferencePage implements IWorkbenchPreferencePage {
 
@@ -128,7 +128,7 @@ public class CorePreferencePage extends FieldEditorPreferencePage implements IWo
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see org.eclipse.jface.preference.FieldEditorPreferencePage#performOk()
      */
     @Override
@@ -169,7 +169,7 @@ public class CorePreferencePage extends FieldEditorPreferencePage implements IWo
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see org.eclipse.jface.preference.FieldEditorPreferencePage#addField(org.eclipse.jface.preference.FieldEditor)
      */
     @Override
@@ -180,7 +180,7 @@ public class CorePreferencePage extends FieldEditorPreferencePage implements IWo
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see org.eclipse.jface.preference.FieldEditorPreferencePage#checkState()
      */
     @Override

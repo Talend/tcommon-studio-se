@@ -1,6 +1,6 @@
 // ============================================================================
 //
-// Copyright (C) 2006-2018 Talend Inc. - www.talend.com
+// Copyright (C) 2006-2019 Talend Inc. - www.talend.com
 //
 // This source code is available under agreement available at
 // %InstallDIR%\features\org.talend.rcp.branding.%PRODUCTNAME%\%PRODUCTNAME%license.txt
@@ -32,7 +32,7 @@ public class Nexus2RepositoryHandler extends AbstractArtifactRepositoryHandler {
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see org.talend.core.nexus.IArtifactHandler#checkConnection(java.lang.String, java.lang.String, java.lang.String,
      * java.lang.String)
      */
@@ -43,7 +43,7 @@ public class Nexus2RepositoryHandler extends AbstractArtifactRepositoryHandler {
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see org.talend.core.nexus.IRepositoryArtifactHandler#checkConnection(boolean, boolean)
      */
     @Override
@@ -64,7 +64,7 @@ public class Nexus2RepositoryHandler extends AbstractArtifactRepositoryHandler {
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see org.talend.core.nexus.IArtifactHandler#search(java.lang.String, java.lang.String, java.lang.String,
      * java.lang.String, java.lang.String, java.lang.String, java.lang.String)
      */
@@ -85,7 +85,7 @@ public class Nexus2RepositoryHandler extends AbstractArtifactRepositoryHandler {
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see org.talend.core.nexus.IArtifactHandler#install(java.io.File, java.lang.String, java.lang.String,
      * java.lang.String, java.lang.String, java.lang.String)
      */
@@ -118,7 +118,7 @@ public class Nexus2RepositoryHandler extends AbstractArtifactRepositoryHandler {
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see org.talend.core.nexus.IRepositoryArtifactHandler#deployWithPOM(java.io.File, java.io.File, java.lang.String,
      * java.lang.String, java.lang.String, java.lang.String, java.lang.String)
      */

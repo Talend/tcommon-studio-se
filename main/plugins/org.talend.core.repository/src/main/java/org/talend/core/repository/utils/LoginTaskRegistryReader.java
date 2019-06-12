@@ -1,6 +1,6 @@
 // ============================================================================
 //
-// Copyright (C) 2006-2018 Talend Inc. - www.talend.com
+// Copyright (C) 2006-2019 Talend Inc. - www.talend.com
 //
 // This source code is available under agreement available at
 // %InstallDIR%\features\org.talend.rcp.branding.%PRODUCTNAME%\%PRODUCTNAME%license.txt
@@ -25,12 +25,12 @@ import org.talend.login.ILoginTask;
 
 /**
  * This provides data for extensions points extending org.talend.core.repository.loginTask
- * 
+ *
  */
 public class LoginTaskRegistryReader extends RegistryReader {
 
     /**
-     * 
+     *
      */
     private static final String PRIORITY_ATTRIBUTE = "priority"; //$NON-NLS-1$
 
@@ -58,12 +58,12 @@ public class LoginTaskRegistryReader extends RegistryReader {
     }
 
     /**
-     * 
+     *
      */
     private static final String CLASS_ATTRIBUTE = "class"; //$NON-NLS-1$
 
     /**
-     * 
+     *
      */
     private static final String LOGIN_TASK_ELEMENT_NAME = "loginTask"; //$NON-NLS-1$
 
@@ -76,7 +76,7 @@ public class LoginTaskRegistryReader extends RegistryReader {
 
     /**
      * DOC sgandon LoginTaskRegistryReader constructor comment.
-     * 
+     *
      * @param aPluginId
      * @param anExtensionPoint
      */
@@ -106,7 +106,7 @@ public class LoginTaskRegistryReader extends RegistryReader {
 
     /**
      * DOC sgandon Comment method "getAllRunnables".
-     * 
+     *
      * @param allLoginTasks2
      * @return
      */
@@ -121,7 +121,7 @@ public class LoginTaskRegistryReader extends RegistryReader {
 
     /**
      * sort all login task according to the priority
-     * 
+     *
      * @param allLoginTasks2
      */
     private void sortLoginTasks(List<LoginTask> allLoginTasks2) {
@@ -141,7 +141,7 @@ public class LoginTaskRegistryReader extends RegistryReader {
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see org.talend.core.utils.RegistryReader#readElement(org.eclipse.core.runtime.IConfigurationElement)
      */
     @Override

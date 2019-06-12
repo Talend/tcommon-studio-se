@@ -1,6 +1,6 @@
 // ============================================================================
 //
-// Copyright (C) 2006-2018 Talend Inc. - www.talend.com
+// Copyright (C) 2006-2019 Talend Inc. - www.talend.com
 //
 // This source code is available under agreement available at
 // %InstallDIR%\features\org.talend.rcp.branding.%PRODUCTNAME%\%PRODUCTNAME%license.txt
@@ -24,12 +24,12 @@ import org.talend.commons.runtime.debug.TalendDebugHandler;
 
 /**
  * Timer to measure elapsed time of any process or between steps.
- * 
+ *
  * $Id$
- * 
+ *
  */
 public class TimeMeasure {
-    
+
     // PTODO create junit test class
     private static HashMap<String, TimeStack> timers;
 
@@ -59,9 +59,9 @@ public class TimeMeasure {
     private static Map<String, List<Map<Integer, Object>>> logValue = new HashMap<String, List<Map<Integer, Object>>>();
 
     /**
-     * 
+     *
      * DOC amaumont Comment method "start".
-     * 
+     *
      * @param idTimer
      */
     public static void begin(String idTimer) {
@@ -82,15 +82,15 @@ public class TimeMeasure {
             }
         }
     }
-    
+
     private static void log (String message) {
         TalendDebugHandler.debug(message);
     }
 
     /**
-     * 
+     *
      * DOC amaumont Comment method "end".
-     * 
+     *
      * @param idTimer
      * @return total elapsed time since start in ms
      */
@@ -136,9 +136,9 @@ public class TimeMeasure {
     }
 
     /**
-     * 
+     *
      * DOC amaumont Comment method "timeSinceStart".
-     * 
+     *
      * @param idTimer
      * @return total elapsed time since start in ms
      */
@@ -171,9 +171,9 @@ public class TimeMeasure {
     }
 
     /**
-     * 
+     *
      * DOC amaumont Comment method "timeStep".
-     * 
+     *
      * @param idTimer
      * @return elapsed time since previous step in ms
      */

@@ -1,6 +1,6 @@
 // ============================================================================
 //
-// Copyright (C) 2006-2018 Talend Inc. - www.talend.com
+// Copyright (C) 2006-2019 Talend Inc. - www.talend.com
 //
 // This source code is available under agreement available at
 // %InstallDIR%\features\org.talend.rcp.branding.%PRODUCTNAME%\%PRODUCTNAME%license.txt
@@ -78,7 +78,7 @@ public final class ProjectManager {
     private Project currentProject;
 
     private Map<String, String> mapProjectUrlToBranchUrl = new HashMap<String, String>();
-    
+
 	private static final Map<String, Integer> projectLabelToIdMap = new HashMap<String, Integer>();
 
     private Map<String, List<FolderItem>> foldersMap = new HashMap<String, List<FolderItem>>();
@@ -321,7 +321,7 @@ public final class ProjectManager {
                 }
                 String eProxyUriString = eProxyUri.toString();
                 if (eProxyUriString != null && eProxyUriString.startsWith(URI_PREFIX)) {
-                    
+
                     String tmpString = eProxyUriString.substring(URI_PREFIX.length());
                     String projectLabel = tmpString.substring(0, tmpString.indexOf("/")); //$NON-NLS-1$
 

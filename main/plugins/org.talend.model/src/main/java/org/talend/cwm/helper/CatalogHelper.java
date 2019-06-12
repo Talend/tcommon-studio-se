@@ -1,6 +1,6 @@
 // ============================================================================
 //
-// Copyright (C) 2006-2018 Talend Inc. - www.talend.com
+// Copyright (C) 2006-2019 Talend Inc. - www.talend.com
 //
 // This source code is available under agreement available at
 // %InstallDIR%\features\org.talend.rcp.branding.%PRODUCTNAME%\%PRODUCTNAME%license.txt
@@ -30,7 +30,7 @@ import orgomg.cwm.resource.relational.Schema;
 
 /**
  * @author scorreia
- * 
+ *
  * Utility class for handling Catalog and its children.
  */
 public final class CatalogHelper {
@@ -40,7 +40,7 @@ public final class CatalogHelper {
 
     /**
      * Method "createCatalog" creates a catalog with the given name.
-     * 
+     *
      * @param name the name of the catalog
      * @return the new catalog
      */
@@ -62,9 +62,9 @@ public final class CatalogHelper {
     }
 
     /**
-     * 
+     *
      * Get a catalog by Connection and catalog name.
-     * 
+     *
      * @param conn
      * @param catalogName
      * @return
@@ -87,7 +87,7 @@ public final class CatalogHelper {
 
     /**
      * Method "getParentCatalog" returns a Catalog if the element is directly owned by a catalog.
-     * 
+     *
      * @param element (can be null)
      * @return the Catalog or null
      */

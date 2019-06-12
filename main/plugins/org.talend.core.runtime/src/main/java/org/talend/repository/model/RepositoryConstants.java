@@ -1,6 +1,6 @@
 // ============================================================================
 //
-// Copyright (C) 2006-2018 Talend Inc. - www.talend.com
+// Copyright (C) 2006-2019 Talend Inc. - www.talend.com
 //
 // This source code is available under agreement available at
 // %InstallDIR%\features\org.talend.rcp.branding.%PRODUCTNAME%\%PRODUCTNAME%license.txt
@@ -17,9 +17,9 @@ import org.talend.core.model.repository.ERepositoryObjectType;
 
 /**
  * Defines some constants relative to repository such as file patterns.<br/>
- * 
+ *
  * $Id: RepositoryConstants.java 8 2006-10-02 09:09:23 +0000 (鏄熸湡涓� 02 �?鏈�2006) mhirt $
- * 
+ *
  */
 public class RepositoryConstants {
 
@@ -184,7 +184,7 @@ public class RepositoryConstants {
 
     /**
      * DOC tang Comment method "isJobletsFolder".
-     * 
+     *
      * @param label
      * @return
      */

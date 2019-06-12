@@ -1,6 +1,6 @@
 // ============================================================================
 //
-// Copyright (C) 2006-2018 Talend Inc. - www.talend.com
+// Copyright (C) 2006-2019 Talend Inc. - www.talend.com
 //
 // This source code is available under agreement available at
 // %InstallDIR%\features\org.talend.rcp.branding.%PRODUCTNAME%\%PRODUCTNAME%license.txt
@@ -39,11 +39,11 @@ public class DatabaseTableFilterWizardPage extends WizardPage {
     /**
      * DatabaseWizardPage constructor (to instance IMetadataConnection OR MetaDataTableType). If MetaDataTableType
      * exist, it's an update of existing metadata else it's a new metadata.
-     * 
+     *
      * @param tableInfoParameters
-     * 
+     *
      * @param managerConnection
-     * 
+     *
      * @param ISelection
      */
     public DatabaseTableFilterWizardPage(TableInfoParameters tableInfoParameters, ConnectionItem connectionItem,
@@ -60,7 +60,7 @@ public class DatabaseTableFilterWizardPage extends WizardPage {
 
     /**
      * Create the first composite, addComponentsAndControls and initialize TableWizardPage.
-     * 
+     *
      * @see IDialogPage#createControl(Composite)
      */
     public void createControl(final Composite parent) {
@@ -86,7 +86,7 @@ public class DatabaseTableFilterWizardPage extends WizardPage {
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see org.eclipse.jface.wizard.WizardPage#getNextPage()
      */
     @Override
@@ -103,7 +103,7 @@ public class DatabaseTableFilterWizardPage extends WizardPage {
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see org.eclipse.jface.wizard.WizardPage#canFlipToNextPage()
      */
     @Override
@@ -113,7 +113,7 @@ public class DatabaseTableFilterWizardPage extends WizardPage {
 
     /**
      * Getter for tableInfoParameters.
-     * 
+     *
      * @return the tableInfoParameters
      */
     public TableInfoParameters getTableInfoParameters() {

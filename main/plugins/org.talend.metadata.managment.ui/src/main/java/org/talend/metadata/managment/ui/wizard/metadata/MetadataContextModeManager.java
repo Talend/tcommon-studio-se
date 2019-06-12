@@ -1,6 +1,6 @@
 // ============================================================================
 //
-// Copyright (C) 2006-2018 Talend Inc. - www.talend.com
+// Copyright (C) 2006-2019 Talend Inc. - www.talend.com
 //
 // This source code is available under agreement available at
 // %InstallDIR%\features\org.talend.rcp.branding.%PRODUCTNAME%\%PRODUCTNAME%license.txt
@@ -26,7 +26,7 @@ public class MetadataContextModeManager implements IMetadataContextModeManager {
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see org.talend.repository.ui.wizards.metadata.IMetadataContextModeManager#getOriginalValue(java.lang.String)
      */
     public String getOriginalValue(String code) {
@@ -38,7 +38,7 @@ public class MetadataContextModeManager implements IMetadataContextModeManager {
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see org.talend.repository.ui.wizards.metadata.IMetadataContextModeManager#getSelectedContextType()
      */
     public ContextType getSelectedContextType() {
@@ -47,7 +47,7 @@ public class MetadataContextModeManager implements IMetadataContextModeManager {
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see org.talend.repository.ui.wizards.metadata.IMetadataContextModeManager#setSelectedContextType(org.talend.designer.core.model.utils.emf.talendfile.ContextType)
      */
     public void setSelectedContextType(ContextType type) {
@@ -57,7 +57,7 @@ public class MetadataContextModeManager implements IMetadataContextModeManager {
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see org.talend.repository.ui.wizards.metadata.IMetadataContextModeManager#setDefaultContextType(org.talend.core.model.metadata.builder.connection.Connection)
      */
     public void setDefaultContextType(Connection connection) {

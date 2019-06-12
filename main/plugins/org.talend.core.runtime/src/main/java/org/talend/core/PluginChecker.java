@@ -1,6 +1,6 @@
 // ============================================================================
 //
-// Copyright (C) 2006-2018 Talend Inc. - www.talend.com
+// Copyright (C) 2006-2019 Talend Inc. - www.talend.com
 //
 // This source code is available under agreement available at
 // %InstallDIR%\features\org.talend.rcp.branding.%PRODUCTNAME%\%PRODUCTNAME%license.txt
@@ -22,7 +22,7 @@ import org.osgi.framework.Bundle;
 
 /**
  * This class can check whether some specific plugins are loaded or not. <br/>
- * 
+ *
  */
 public class PluginChecker {
 
@@ -31,9 +31,9 @@ public class PluginChecker {
     private static final String DOCUMENTATION_PLUGIN_ID = "org.talend.repository.documentation"; //$NON-NLS-1$
 
     private static final String JOBLET_PLUGIN_ID = "org.talend.designer.joblet"; //$NON-NLS-1$
-    
+
     private static final String SPARK_JOBLET_PLUGIN_ID = "org.talend.designer.sparkjoblet"; //$NON-NLS-1$
-    
+
     private static final String SPARK_STREAMING_JOBLET_PLUGIN_ID = "org.talend.designer.sparkstreamingjoblet"; //$NON-NLS-1$
 
     private static final String WSDL_PLUGIN_ID = "org.talend.wsdl.advancement"; //$NON-NLS-1$
@@ -55,18 +55,18 @@ public class PluginChecker {
     private static final String EXCHANGE_SYSTEM_PLUGIN_ID = "org.talend.designer.components.exchange"; //$NON-NLS-1$
 
     // added by hyWang
-    private static final String RULES_PLUGIN_ID = "org.talend.repository.rules"; //$NON-NLS-1$   
+    private static final String RULES_PLUGIN_ID = "org.talend.repository.rules"; //$NON-NLS-1$
 
     // TDQ-3356
     private static final String SURVIVORSHIP_PLUGIN_ID = "org.talend.survivorship.designer"; //$NON-NLS-1$
 
-    private static final String PREVIEW_PLUGIN_ID = "org.talend.designer.component.preview"; //$NON-NLS-1$   
+    private static final String PREVIEW_PLUGIN_ID = "org.talend.designer.component.preview"; //$NON-NLS-1$
 
-    private static final String SVN_PROVIDER_PLUGIN_ID = "org.talend.repository.svnprovider"; //$NON-NLS-1$   
+    private static final String SVN_PROVIDER_PLUGIN_ID = "org.talend.repository.svnprovider"; //$NON-NLS-1$
 
-    private static final String GIT_PROVIDER_PLUGIN_ID = "org.talend.repository.gitprovider"; //$NON-NLS-1$   
+    private static final String GIT_PROVIDER_PLUGIN_ID = "org.talend.repository.gitprovider"; //$NON-NLS-1$
 
-    private static final String CORE_TIS_PLUGIN_ID = "org.talend.core.tis"; //$NON-NLS-1$   
+    private static final String CORE_TIS_PLUGIN_ID = "org.talend.core.tis"; //$NON-NLS-1$
 
     private static final String HL7_PLUGIN_ID = "org.talend.repository.hl7"; //$NON-NLS-1$
 
@@ -84,13 +84,13 @@ public class PluginChecker {
 
     private static final String DATACERT_PLUGIN_ID = "com.datacert.rest.core"; //$NON-NLS-1$
 
-    private static final String RUNREMOTE_PLUGIN_ID = "org.talend.designer.runprocess.remote"; //$NON-NLS-1$ 
+    private static final String RUNREMOTE_PLUGIN_ID = "org.talend.designer.runprocess.remote"; //$NON-NLS-1$
 
-    private static final String TRACEDEBUG_PLUGIN_ID = "org.talend.designer.runprocess.debug"; //$NON-NLS-1$ 
+    private static final String TRACEDEBUG_PLUGIN_ID = "org.talend.designer.runprocess.debug"; //$NON-NLS-1$
 
-    private static final String HDFS_PLUGIN_ID = "org.talend.repository.hdfs"; //$NON-NLS-1$ 
+    private static final String HDFS_PLUGIN_ID = "org.talend.repository.hdfs"; //$NON-NLS-1$
 
-    private static final String METADATA_PLUGIN_ID = "org.talend.repository.metadata"; //$NON-NLS-1$ 
+    private static final String METADATA_PLUGIN_ID = "org.talend.repository.metadata"; //$NON-NLS-1$
 
     private static final String MAPREDUCE_PLUGIN_ID = "org.talend.designer.mapreduce"; //$NON-NLS-1$
 
@@ -128,7 +128,7 @@ public class PluginChecker {
 
     /**
      * Check if specific plug-in is loaded.
-     * 
+     *
      * @return isLoaded
      */
     public static boolean isPluginLoaded(String pluginID) {
@@ -162,7 +162,7 @@ public class PluginChecker {
 
     /**
      * Checks if documentation plug-in is loaded.
-     * 
+     *
      * @return isLoaded
      */
     public static boolean isDocumentationPluginLoaded() {
@@ -175,25 +175,25 @@ public class PluginChecker {
 
     /**
      * DOC tang Comment method "isJobLetPluginLoaded".
-     * 
+     *
      * @return
      */
     public static boolean isJobLetPluginLoaded() {
         return isPluginLoaded(JOBLET_PLUGIN_ID);
     }
-    
+
     /**
      * DOC tang Comment method "isSparkJobLetPluginLoaded".
-     * 
+     *
      * @return
      */
     public static boolean isSparkJobLetPluginLoaded() {
         return isPluginLoaded(SPARK_JOBLET_PLUGIN_ID);
     }
-    
+
     /**
      * DOC tang Comment method "isSparkStreamingJobLetPluginLoaded".
-     * 
+     *
      * @return
      */
     public static boolean isSparkStreamingJobLetPluginLoaded() {
@@ -202,7 +202,7 @@ public class PluginChecker {
 
     /**
      * DOC qzhang Comment method "containJoblet".
-     * 
+     *
      * @return
      */
     public static boolean isCDCPluginLoaded() {
@@ -315,7 +315,7 @@ public class PluginChecker {
 
     /**
      * To check if the plugin is loaded for map-reduce. Added by Marvin Wang on Jan 10, 2013.
-     * 
+     *
      * @return
      */
     public static boolean isMapReducePluginLoader() {
@@ -341,7 +341,7 @@ public class PluginChecker {
     public static boolean isBPMloaded() {
         return isPluginLoaded(BPM_PLUGIN_ID) || isPluginLoaded(MDM_BOS_PLUGIN_ID);
     }
-    
+
     public static boolean isRouteLoaded() {
         return isPluginLoaded(EXPORT_ROUTE_PLUGIN_ID);
     }

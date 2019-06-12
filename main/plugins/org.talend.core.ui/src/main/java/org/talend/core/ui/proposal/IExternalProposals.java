@@ -1,6 +1,6 @@
 // ============================================================================
 //
-// Copyright (C) 2006-2018 Talend Inc. - www.talend.com
+// Copyright (C) 2006-2019 Talend Inc. - www.talend.com
 //
 // This source code is available under agreement available at
 // %InstallDIR%\features\org.talend.rcp.branding.%PRODUCTNAME%\%PRODUCTNAME%license.txt
@@ -25,17 +25,17 @@ public interface IExternalProposals {
 
     /**
      * Proposals used in the viewers.
-     * 
+     *
      * @param prefix
      * @param offset
-     * 
+     *
      * @return
      */
     public List<ICompletionProposal> getAdvancedProposals(int offset, String prefix);
 
     /**
      * Proposals used in the simple text box for example.
-     * 
+     *
      * @return
      */
     public List<IContentProposal> getStandardProposals();

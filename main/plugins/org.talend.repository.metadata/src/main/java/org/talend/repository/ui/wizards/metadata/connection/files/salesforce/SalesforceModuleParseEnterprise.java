@@ -1,6 +1,6 @@
 // ============================================================================
 //
-// Copyright (C) 2006-2018 Talend Inc. - www.talend.com
+// Copyright (C) 2006-2019 Talend Inc. - www.talend.com
 //
 // This source code is available under agreement available at
 // %InstallDIR%\features\org.talend.rcp.branding.%PRODUCTNAME%\%PRODUCTNAME%license.txt
@@ -40,7 +40,7 @@ import com.sforce.soap.enterprise.sobject.SObject;
  * Maybe need a long connection ...
  * <p>
  * DOC YeXiaowei class global comment. Detailled comment <br/>
- * 
+ *
  */
 public class SalesforceModuleParseEnterprise implements ISalesforceModuleParser {
 
@@ -57,7 +57,7 @@ public class SalesforceModuleParseEnterprise implements ISalesforceModuleParser 
     private boolean loginOk = false;
 
     /*
-     * 
+     *
      */
     // private String proxyHost = null;
     //
@@ -81,7 +81,7 @@ public class SalesforceModuleParseEnterprise implements ISalesforceModuleParser 
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see
      * org.talend.repository.ui.wizards.metadata.connection.files.salesforce.ISalesforceModuleParser#login(java.lang
      * .String, java.lang.String, java.lang.String, java.lang.String, java.lang.String, java.lang.String,
@@ -232,7 +232,7 @@ public class SalesforceModuleParseEnterprise implements ISalesforceModuleParser 
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see
      * org.talend.repository.ui.wizards.metadata.connection.files.salesforce.ISalesforceModuleParser#describeGlobalSample
      * ()
@@ -254,7 +254,7 @@ public class SalesforceModuleParseEnterprise implements ISalesforceModuleParser 
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see
      * org.talend.repository.ui.wizards.metadata.connection.files.salesforce.ISalesforceModuleParser#fetchMetaDataColumns
      * (java.lang.String)
@@ -280,7 +280,7 @@ public class SalesforceModuleParseEnterprise implements ISalesforceModuleParser 
      * Fetch module fields from SF service. Make sure login sucess before do this.
      * <p>
      * DOC YeXiaowei Comment method "fetchSFDescriptionField".
-     * 
+     *
      * @param module
      * @return
      */
@@ -312,7 +312,7 @@ public class SalesforceModuleParseEnterprise implements ISalesforceModuleParser 
      * Parse SF field to Talend data type
      * <p>
      * DOC YeXiaowei Comment method "parseFieldToMetadataColumn".
-     * 
+     *
      * @param field
      * @return
      */
@@ -386,7 +386,7 @@ public class SalesforceModuleParseEnterprise implements ISalesforceModuleParser 
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see org.talend.repository.ui.wizards.metadata.connection.files.salesforce.ISalesforceModuleParser#isLogin()
      */
     @Override
@@ -396,7 +396,7 @@ public class SalesforceModuleParseEnterprise implements ISalesforceModuleParser 
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see
      * org.talend.repository.ui.wizards.metadata.connection.files.salesforce.ISalesforceModuleParser#setLogin(boolean)
      */
@@ -407,7 +407,7 @@ public class SalesforceModuleParseEnterprise implements ISalesforceModuleParser 
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see
      * org.talend.repository.ui.wizards.metadata.connection.files.salesforce.ISalesforceModuleParser#getCurrentModuleName
      * ()
@@ -419,7 +419,7 @@ public class SalesforceModuleParseEnterprise implements ISalesforceModuleParser 
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see
      * org.talend.repository.ui.wizards.metadata.connection.files.salesforce.ISalesforceModuleParser#setCurrentModuleName
      * (java.lang.String)
@@ -431,7 +431,7 @@ public class SalesforceModuleParseEnterprise implements ISalesforceModuleParser 
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @seeorg.talend.repository.ui.wizards.metadata.connection.files.salesforce.ISalesforceModuleParser#
      * getCurrentMetadataColumns()
      */
@@ -442,7 +442,7 @@ public class SalesforceModuleParseEnterprise implements ISalesforceModuleParser 
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @seeorg.talend.repository.ui.wizards.metadata.connection.files.salesforce.ISalesforceModuleParser#
      * setCurrentMetadataColumns(java.util.List)
      */

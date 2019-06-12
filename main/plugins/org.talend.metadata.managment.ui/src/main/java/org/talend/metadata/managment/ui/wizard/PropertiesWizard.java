@@ -1,6 +1,6 @@
 // ============================================================================
 //
-// Copyright (C) 2006-2018 Talend Inc. - www.talend.com
+// Copyright (C) 2006-2019 Talend Inc. - www.talend.com
 //
 // This source code is available under agreement available at
 // %InstallDIR%\features\org.talend.rcp.branding.%PRODUCTNAME%\%PRODUCTNAME%license.txt
@@ -69,9 +69,9 @@ import org.talend.repository.model.IProxyRepositoryService;
 
 /**
  * DOC smallet class global comment. Detailled comment <br/>
- * 
+ *
  * $Id: talend.epf 1 2006-09-29 17:06:40 +0000 (ven., 29 sept. 2006) nrousseau $
- * 
+ *
  */
 public class PropertiesWizard extends Wizard {
 
@@ -347,7 +347,7 @@ public class PropertiesWizard extends Wizard {
     // }
     /**
      * Update the "required" property.
-     * 
+     *
      * <required> <job context="Default" name="newJobName"/> </required>
      */
     // private class UpdateRequiredProperty implements IComponentConversion {
@@ -418,7 +418,7 @@ public class PropertiesWizard extends Wizard {
      * This method is used to control if the item which property is edited is required to unlock after closing the
      * wizard. It is invoked by {@link #dispose()} method. The wizard that extends {@link PropertiesWizard} could
      * override this method. Added by Marvin Wang on Jan 31, 2013.
-     * 
+     *
      * @return <code>true</code> as default to unlock the object. Otherwise, <code>false</code>.
      */
     protected boolean isUnlockRequired() {
@@ -427,7 +427,7 @@ public class PropertiesWizard extends Wizard {
 
     /**
      * Getter for mainPage.
-     * 
+     *
      * @return the mainPage
      */
     public PropertiesWizardPage getMainPage() {
@@ -436,7 +436,7 @@ public class PropertiesWizard extends Wizard {
 
     /**
      * Sets the mainPage.
-     * 
+     *
      * @param mainPage the mainPage to set
      */
     public void setMainPage(PropertiesWizardPage mainPage) {
@@ -445,7 +445,7 @@ public class PropertiesWizard extends Wizard {
 
     /**
      * Getter for object.
-     * 
+     *
      * @return the object
      */
     public IRepositoryObject getObject() {
@@ -454,7 +454,7 @@ public class PropertiesWizard extends Wizard {
 
     /**
      * Sets the object.
-     * 
+     *
      * @param object the object to set
      */
     public void setObject(IRepositoryObject object) {
@@ -463,7 +463,7 @@ public class PropertiesWizard extends Wizard {
 
     /**
      * Sets the unlockRequired.
-     * 
+     *
      * @param unlockRequired the unlockRequired to set
      */
     public void setUnlockRequired(boolean unlockRequired) {
@@ -472,7 +472,7 @@ public class PropertiesWizard extends Wizard {
 
     /**
      * Getter for alreadyEditedByUser.
-     * 
+     *
      * @return the alreadyEditedByUser
      */
     public boolean isAlreadyEditedByUser() {
@@ -481,7 +481,7 @@ public class PropertiesWizard extends Wizard {
 
     /**
      * Sets the alreadyEditedByUser.
-     * 
+     *
      * @param alreadyEditedByUser the alreadyEditedByUser to set
      */
     public void setAlreadyEditedByUser(boolean alreadyEditedByUser) {

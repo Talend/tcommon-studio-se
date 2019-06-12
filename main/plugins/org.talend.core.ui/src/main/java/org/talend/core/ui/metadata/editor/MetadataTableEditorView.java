@@ -1,6 +1,6 @@
 // ============================================================================
 //
-// Copyright (C) 2006-2018 Talend Inc. - www.talend.com
+// Copyright (C) 2006-2019 Talend Inc. - www.talend.com
 //
 // This source code is available under agreement available at
 // %InstallDIR%\features\org.talend.rcp.branding.%PRODUCTNAME%\%PRODUCTNAME%license.txt
@@ -26,15 +26,15 @@ import org.talend.core.ui.proposal.JavaSimpleDateFormatProposalProvider;
 
 /**
  * MetadataTableEditorView2 must be used.
- * 
+ *
  * $Id: MetadataTableEditorView.java 51244 2010-11-15 03:28:34Z cli $
- * 
+ *
  */
 public class MetadataTableEditorView extends AbstractMetadataTableEditorView<IMetadataColumn> {
 
     /**
      * DOC amaumont MetadataTableEditorView constructor comment.
-     * 
+     *
      * @param parent
      * @param style
      * @param metadataTableEditor
@@ -45,7 +45,7 @@ public class MetadataTableEditorView extends AbstractMetadataTableEditorView<IMe
 
     /**
      * DOC amaumont MetadataTableEditorView constructor comment.
-     * 
+     *
      * @param parentComposite
      * @param mainCompositeStyle
      * @param extendedTableModel
@@ -59,7 +59,7 @@ public class MetadataTableEditorView extends AbstractMetadataTableEditorView<IMe
 
     /**
      * DOC amaumont MetadataTableEditorView constructor comment.
-     * 
+     *
      * @param parentComposite
      * @param mainCompositeStyle
      * @param extendedTableModel
@@ -84,7 +84,7 @@ public class MetadataTableEditorView extends AbstractMetadataTableEditorView<IMe
 
     /**
      * DOC amaumont MetadataTableEditorView constructor comment.
-     * 
+     *
      * @param parentComposite
      * @param mainCompositeStyle
      * @param initGraphicsComponents
@@ -95,7 +95,7 @@ public class MetadataTableEditorView extends AbstractMetadataTableEditorView<IMe
 
     /**
      * DOC amaumont MetadataTableEditorView constructor comment.
-     * 
+     *
      * @param parentComposite
      * @param mainCompositeStyle
      * @param extendedTableModel
@@ -111,7 +111,7 @@ public class MetadataTableEditorView extends AbstractMetadataTableEditorView<IMe
 
     /**
      * DOC amaumont MetadataTableEditorView constructor comment.
-     * 
+     *
      * @param parentComposite
      * @param mainCompositeStyle
      * @param extendedTableModel
@@ -131,7 +131,7 @@ public class MetadataTableEditorView extends AbstractMetadataTableEditorView<IMe
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see
      * org.talend.commons.ui.swt.advanced.dataeditor.AbstractDataTableEditorView#setTableViewerCreatorOptions(org.talend
      * .commons.ui.swt.tableviewer.TableViewerCreator)
@@ -161,7 +161,7 @@ public class MetadataTableEditorView extends AbstractMetadataTableEditorView<IMe
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see org.talend.core.ui.metadata.editor.AbstractMetadataTableEditorView#getNullableAccessor()
      */
     @Override
@@ -234,7 +234,7 @@ public class MetadataTableEditorView extends AbstractMetadataTableEditorView<IMe
 
             /**
              * Adds double quotes if Talend type is Date or String.
-             * 
+             *
              * @param bean
              * @param value
              * @return String
@@ -394,7 +394,7 @@ public class MetadataTableEditorView extends AbstractMetadataTableEditorView<IMe
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see org.talend.core.ui.metadata.editor.AbstractMetadataTableEditorView#validateColumnName(java.lang.String, int)
      */
     @Override
@@ -471,7 +471,7 @@ public class MetadataTableEditorView extends AbstractMetadataTableEditorView<IMe
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see org.talend.commons.ui.swt.advanced.dataeditor.AbstractDataTableEditorView#initToolBar()
      */
     @Override
@@ -485,7 +485,7 @@ public class MetadataTableEditorView extends AbstractMetadataTableEditorView<IMe
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see
      * org.talend.core.ui.metadata.editor.AbstractMetadataTableEditorView#configureDefaultColumn(org.talend.commons.
      * ui.swt.tableviewer.TableViewerCreator)

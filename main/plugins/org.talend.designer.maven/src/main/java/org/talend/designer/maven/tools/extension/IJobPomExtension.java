@@ -1,6 +1,6 @@
 // ============================================================================
 //
-// Copyright (C) 2006-2018 Talend Inc. - www.talend.com
+// Copyright (C) 2006-2019 Talend Inc. - www.talend.com
 //
 // This source code is available under agreement available at
 // %InstallDIR%\features\org.talend.rcp.branding.%PRODUCTNAME%\%PRODUCTNAME%license.txt
@@ -20,7 +20,7 @@ import org.eclipse.core.runtime.IProgressMonitor;
 /**
  * This interface provides capabilities for third party bundles to contribute to the maven pom which is used to create
  * jobs jar files.
- * 
+ *
  * @See {@link PomExtensionRegistry}
  * @author jclaude
  */

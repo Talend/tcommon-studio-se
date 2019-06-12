@@ -1,6 +1,6 @@
 // ============================================================================
 //
-// Copyright (C) 2006-2018 Talend Inc. - www.talend.com
+// Copyright (C) 2006-2019 Talend Inc. - www.talend.com
 //
 // This source code is available under agreement available at
 // %InstallDIR%\features\org.talend.rcp.branding.%PRODUCTNAME%\%PRODUCTNAME%license.txt
@@ -53,12 +53,12 @@ public class DatabaseConnStrUtil {
     }
 
     /**
-     * 
+     *
      * cli Comment method "getStringReplace".
-     * 
+     *
      * if support context, the "init" string have been quoted, and the "after" should be original(quoted or in context
      * mode).
-     * 
+     *
      */
     private static String getStringReplace(final String init, final String before, final String after,
             final boolean supportContext, final boolean password) {
@@ -93,11 +93,11 @@ public class DatabaseConnStrUtil {
     }
 
     /**
-     * 
+     *
      * cli Comment method "getURLString".
-     * 
+     *
      * if supportContext is true, the other parameters should be kept original value.
-     * 
+     *
      * (for example, if quote the parameters, should be kept).
      */
     public static String getURLString(final boolean supportContext, final String dbType, final String dbVersion,
@@ -140,7 +140,7 @@ public class DatabaseConnStrUtil {
 
     /**
      * For some special DB type, the port can be empty DOC jding Comment method "checkSpecialPortEmpty".
-     * 
+     *
      * @param dbType
      * @param port
      * @return
@@ -193,6 +193,12 @@ public class DatabaseConnStrUtil {
         }
         if (EDatabaseConnTemplate.isAddtionParamsNeeded(dbType)) {
             string = getStringReplace(string, EDatabaseConnVar.PROPERTY.getVariable(), addParams, supportContext);
+            // check whether need to remove the last ":" before <property>.
+            // the example can refer to StandaloneConnectionContextUtils line 347
+            // TDI-28124:tdb2input can't guess schema from join sql on system table
+            if (string.endsWith(":")) { //$NON-NLS-1$
+                string = StringUtils.removeEnd(string, ":"); //$NON-NLS-1$
+            }
         }
         return string;
     }
@@ -420,7 +426,7 @@ public class DatabaseConnStrUtil {
     /**
      * analyse URL. (note: when the url is context mode, this method is NOT suitable. for example: the url is
      * jdbc:mysql://context.TdqContext_Host:context.TdqContext_Port/context.TdqContext_DbName?characterEncoding=UTF8)
-     * 
+     *
      * @param currentDbType
      * @param dbVersion
      * @param url
@@ -551,7 +557,7 @@ public class DatabaseConnStrUtil {
     }
 
     /**
-     * 
+     *
      * @param dbType
      * @return
      */

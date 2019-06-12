@@ -1,6 +1,6 @@
 // ============================================================================
 //
-// Copyright (C) 2006-2018 Talend Inc. - www.talend.com
+// Copyright (C) 2006-2019 Talend Inc. - www.talend.com
 //
 // This source code is available under agreement available at
 // %InstallDIR%\features\org.talend.rcp.branding.%PRODUCTNAME%\%PRODUCTNAME%license.txt
@@ -30,41 +30,41 @@ import org.eclipse.draw2d.geometry.Translatable;
  * This is a geometric utility class that allows for manipulation of line segments.
  * A line segment is defined as a set of two points where one point is designated as the
  * origin and the other is the terminal.
- * 
+ *
  * @author sshaw
  * @canBeSeenBy %partners
  */
-public class LineSeg 
+public class LineSeg
     implements Cloneable, java.io.Serializable, Translatable {
-    
-    final private static int DEFAULT_INTERSECTION_TOLERANCE = 1; 
+
+    final private static int DEFAULT_INTERSECTION_TOLERANCE = 1;
 
     private Point origin;
     private Point terminus;
     static final long serialVersionUID = 1;
-    
+
     /**
      * Enumeration class for defining the keypoint along a line segment.  Can be one
      * of <code>ORIGIN</code>, <code>MIDPOINT</code> or <code>TERMINUS</code>.
      */
     static public class KeyPoint {
         private final String name;
-        private KeyPoint(String name) { 
-            this.name = name; 
+        private KeyPoint(String name) {
+            this.name = name;
         }
-        
+
         public String toString() { return name; }
-        
+
         /**
          * Constant designating the origin point on the line segment.
          */
         public static final KeyPoint ORIGIN = new KeyPoint("origin"); //$NON-NLS-1$
-        
+
         /**
          * Constant designating the mid point on the line segment.
          */
         public static final KeyPoint MIDPOINT = new KeyPoint("midpoint");//$NON-NLS-1$
-        
+
         /**
          * Constant designating the terminal point on the line segment.
          */
@@ -73,23 +73,23 @@ public class LineSeg
 
     /**
      * Enumeration class for defining the orientations of a point relative to the line
-     * segment.  The orientations can be one of <code>POSITIVE</code> or 
+     * segment.  The orientations can be one of <code>POSITIVE</code> or
      * <code>NEGATIVE</code>.
      */
     static public class Sign {
         private final String name;
-        private Sign(String name) { 
-            this.name = name; 
+        private Sign(String name) {
+            this.name = name;
         }
-        
+
         public String toString() { return name; }
-        
+
         /**
          * Constant designating an orientation that is position relative to the lineseg
          * vector.
          */
         public static final Sign POSITIVE = new Sign("positive");//$NON-NLS-1$
-        
+
         /**
          * Constant designating an orientation that is negative relative to the lineseg
          * vector.
@@ -99,7 +99,7 @@ public class LineSeg
 
     /**
      * Constructor
-     * 
+     *
      * @param ptStart Point indicating the start of the line segment
      * @param ptEnd Point indicating the end of the line segment
      */
@@ -109,12 +109,12 @@ public class LineSeg
     }
 
     /**
-     * Creates a segment using (fromX, fromY) as either the 
-     * first point of the segment (start == Origin) or the midpoint of the 
+     * Creates a segment using (fromX, fromY) as either the
+     * first point of the segment (start == Origin) or the midpoint of the
      * segment (start == Midpoint), and using slope as its new slope and len as
      * the new length.  xdir indicates which direction the segment should
      * go in the x-axis.
-     * 
+     *
      * @param start <code>KeyPoint</code> from which the other parameters are relative to
      * @param fromX int x value of start <code>KeyPoint</code>
      * @param fromY int y value of start <code>KeyPoint</code>
@@ -172,30 +172,30 @@ public class LineSeg
         terminus.y = fromY + dy;
     }
 
-    /* 
+    /*
      * (non-Javadoc)
      * @see java.lang.Object#equals(java.lang.Object)
      */
     public boolean equals(Object seg) {
         if (!(seg instanceof LineSeg))
             return false;
-        
+
         LineSeg ls = (LineSeg)seg;
         return getOrigin().equals(ls.getOrigin())
             && getTerminus().equals(ls.getTerminus());
     }
-    
-    /* 
+
+    /*
      * (non-Javadoc)
      * @see java.lang.Object#hashCode()
      */
     public int hashCode() {
         return getOrigin().hashCode() ^ getTerminus().hashCode();
     }
-    
+
     /**
      * Accesssor to retrieve the origin point of the line segement.
-     * 
+     *
      * @return <code>Point</code> the origin of the line segment.
      */
     public Point getOrigin() {
@@ -204,7 +204,7 @@ public class LineSeg
 
     /**
      * Accesssor to retrieve the terminal point of the line segement.
-     * 
+     *
      * @return <code>Point</code> the terminating point of the line segment
      */
     public Point getTerminus() {
@@ -213,7 +213,7 @@ public class LineSeg
 
     /**
      * Sets the origin point of the line segment
-     * 
+     *
      * @param origin Point to set as origin
      */
     public void setOrigin(Point origin) {
@@ -222,7 +222,7 @@ public class LineSeg
 
     /**
      * Sets the terminating point of the line segment.
-     * 
+     *
      * @param terminus Point to set as terminus
      */
     public void setTerminus(Point terminus) {
@@ -230,9 +230,9 @@ public class LineSeg
     }
 
     /**
-     * Get points representing the highest point value 
+     * Get points representing the highest point value
      * for this line segment.
-     * 
+     *
      * @return <code>Point</code> Representing the highest point value.
      */
     public final Point getSupremum() {
@@ -242,9 +242,9 @@ public class LineSeg
     }
 
     /**
-     * Get a <code>Point</code> representing the lowest point value 
+     * Get a <code>Point</code> representing the lowest point value
      * for this line segment.
-     * 
+     *
      * @return <code>Point</code> Representing the lowest point value.
      */
     public final Point getInfimum() {
@@ -252,11 +252,11 @@ public class LineSeg
             Math.min(origin.x, terminus.x),
             Math.min(origin.y, terminus.y));
     }
-    
+
     /**
      * Determines if this a horizontal segment
-     * 
-     * @return <code>boolean</code> <code>true</code> if horizontal, 
+     *
+     * @return <code>boolean</code> <code>true</code> if horizontal,
      * <code>false</code> otherwise.
      */
     public final boolean isHorizontal() {
@@ -265,8 +265,8 @@ public class LineSeg
 
     /**
      * Determines if this a vertical segment
-     * 
-     * @return <code>boolean</code> <code>true</code> if vertical, 
+     *
+     * @return <code>boolean</code> <code>true</code> if vertical,
      * <code>false</code> otherwise.
      */
     public final boolean isVertical() {
@@ -280,7 +280,7 @@ public class LineSeg
 
     /**
      * Calculates the slope of this line segment (y=mx+b)
-     * 
+     *
      * @return <code>float</code> the slope of this segment.  If the slope
      * is not defined such as when the line segment is vertical, then the
      * constant <code>BIGSLOPE</code> is returned to avoid divide by zero
@@ -298,8 +298,8 @@ public class LineSeg
      * the slope and then inverts it.  Again, to avoid divide by zero errors,
      * the constant <code>BIGSLOPE</code> is returned if the calculated slope
      * before inverting it was zero.
-     * 
-     * @return <code>float</code> the perpendicular slope value of the 
+     *
+     * @return <code>float</code> the perpendicular slope value of the
      * line segment.
      */
     public final float perpSlope() {
@@ -312,7 +312,7 @@ public class LineSeg
 
     /**
      * Calculate the length of the line segment.
-     * 
+     *
      * @return the <code>double</code> length of the line segment.
      */
     public final double length() {
@@ -320,14 +320,14 @@ public class LineSeg
     }
 
     /**
-     * Determines the intersect point between this line and the line passed 
-     * in as a parameter.  If they intersect, then true is returned and the 
-     * point reference passed in will be set to the intersect point.  
+     * Determines the intersect point between this line and the line passed
+     * in as a parameter.  If they intersect, then true is returned and the
+     * point reference passed in will be set to the intersect point.
      * If they don't intersect, then the method returns <code>false</code>.
-     * 
+     *
      * @param line <code>LineSeg</code> to test the intersection against.
      * @param nTolerance int tolerance value for detecting the intersection.
-     * @return <code>Point</code> that represents the intersection with this line, 
+     * @return <code>Point</code> that represents the intersection with this line,
      * or <code>null</code> if the calculation is not possible.
      */
     public Point intersect(
@@ -350,11 +350,11 @@ public class LineSeg
 
     /**
      * Checks if this line segment contains the given point within a tolerance value.
-     * 
+     *
      * @param aPoint <code>Point</code> to test if contained in this line.
      * @param tolerance int tolerance value for detecting the intersection.
-     * 
-     * @return <code>boolean</code> <code>true</code> if the given point lies on this 
+     *
+     * @return <code>boolean</code> <code>true</code> if the given point lies on this
      * segment, <code>false</code> otherwise.
      */
     public final boolean containsPoint(final Point aPoint, final int tolerance) {
@@ -365,16 +365,16 @@ public class LineSeg
         double lengthOfSegment = origin.getDistance(terminus);
         double lengthFromOriginToPoint = origin.getDistance(aPoint);
         double lengthFromTerminusToPoint = terminus.getDistance(aPoint);
-        
+
         return lengthFromTerminusToPoint + lengthFromOriginToPoint - lengthOfSegment <= tolerance;
     }
 
     /**
      * Finds the percentage distance along this line segement where the given point
      * resides.
-     * 
+     *
      * @param coord <code>Point</code> to determine how far along the line segment it resides.
-     * @return <code>float</code> the distance along the line segment where the ptCoord is 
+     * @return <code>float</code> the distance along the line segment where the ptCoord is
      *      in a percentage from.
      */
     public final float distanceAlong(Point coord) {
@@ -384,7 +384,7 @@ public class LineSeg
         /*
         Use parametric form for equation of a line segment:
         p + td, where 0 < t < 1 and d = p2 - p (direction vector)
-        
+
         To find out if point lies "inside" line segment (i.e. can
         draw perpendicular line from segment to point), use projection
         of point (q) to line (p + td):
@@ -415,15 +415,15 @@ public class LineSeg
 
     /**
      * Finds the perpendicular distance from a point coordinates to this line segment.
-     * If point is "inside" line segment, then use distance from point to the line, 
+     * If point is "inside" line segment, then use distance from point to the line,
      * otherwise use distance to nearest endpoint of segment
-     * 
+     *
      * @param xCoord the x coordinate of the point.
      * @param yCoord the y coordinate of the point.
      * @return <code>long</code> the distance from the line segment to the given point.
      */
     public final long distanceToPoint(final int xCoord, final int yCoord) {
-        
+
         double proj = projection(xCoord, yCoord);
 
         if (proj > 0 && proj < 1) {
@@ -433,7 +433,7 @@ public class LineSeg
 
         long d1 = Math.round(getOrigin().getDistance(new Point(xCoord, yCoord)));
         long d2 = Math.round(getTerminus().getDistance(new Point(xCoord, yCoord)));
-        
+
         return (d1 < d2 ? d1 : d2);
 
         /* There are 2 general forms to equations of a line:
@@ -451,9 +451,9 @@ public class LineSeg
     }
 
     /**
-     * Calculates the perpendicular intersection point on 
+     * Calculates the perpendicular intersection point on
      * the line segment from the given point.
-     * 
+     *
      * @param startX the x coordinate of the point
      * @param startY the y coordinate of the point
      * @return <code>Point</code> value containment the perpendicular intersection point.
@@ -487,7 +487,7 @@ public class LineSeg
 
     /**
      * Calculates the projection of the given point onto the line segment.
-     * 
+     *
      * @param xCoord the x coordinate of the point.
      * @param yCoord the y coordinate of the point.
      * @return <code>double</code> value of the calculated projection.
@@ -496,7 +496,7 @@ public class LineSeg
         /*
             Use parametric form for equation of a line segment:
             p + td, where 0 < t < 1 and d = p2 - p (direction vector)
-        
+
         To find out if point lies "inside" line segment (i.e. can
         draw perpendicular line from segment to point), use projection
         of point (q) to line (p + td):
@@ -528,14 +528,14 @@ public class LineSeg
     /**
      * Returns out a positive or negative value (Positive / Negative) depending
      * on the orientation of the given point to the line.
-     * 
-     *              Point on this side: Positive.                
-     *                        
+     *
+     *              Point on this side: Positive.
+     *
      *      P1------------------------------>
      *                  this segment
      *
      *              Point on this side: Negative.
-     * 
+     *
      * @param rel <code>Point</code> to test the relative position against this line.
      * @return <code>Sign</code> value indicating the relative position of the given point.
      */
@@ -554,14 +554,14 @@ public class LineSeg
 
     /**
      * Locates a point at a given height and distance along the line segment.
-     * 
+     *
      *                   B (the point we are looking for)
      *                   +
      *                   |
      *            dist   |h       this segment
      *      P1-----------+------------------->
      *                   A
-     *  
+     *
      *   get point A (on picture above)
      *
      * @param pctDist <code>double</code> distance along the line
@@ -597,13 +597,13 @@ public class LineSeg
     }
 
     /**
-     * Gets the point on the line segment at the given distance away from the 
+     * Gets the point on the line segment at the given distance away from the
      * key point.
-     * 
+     *
      * @param theDistance <code>long</code> distance along the line
      * @param fromKeyPoint <code>KeyPoint</code> to calculate the distance from
      * @param ptResult <code>Point</code> where the resulting calculating value is stored.
-     * @return <code>boolean</code> <code>true</code> if point can be calculated, 
+     * @return <code>boolean</code> <code>true</code> if point can be calculated,
      * <code>false</code> otherwise.
      */
     public final boolean pointOn(
@@ -682,13 +682,13 @@ public class LineSeg
      * @author sshaw
      */
     static public class TrigValues {
-        
+
         /**
          * Sin theta value
          */
         public double sinTheta;
-        
-        
+
+
         /**
          * Cos theta value.
          */
@@ -698,11 +698,11 @@ public class LineSeg
     /**
      * Gets the trig values associated with the angle from this line segment
      * to the given vector.
-     * 
+     *
      * @param ptToVector <code>Ray</code> value to calculate trig values of.
      * @return <code>TrigValues</code> object representing the trigonometry values
      * for the angle of the passed in <code>Ray</code> relative to <code>this</code>
-     * or null if calculation is not possible, 
+     * or null if calculation is not possible,
      */
     public TrigValues getTrigValues(final Ray ptToVector) {
         double dFromLength = length();
@@ -740,10 +740,10 @@ public class LineSeg
     }
 
     /**
-     * Returns a new <code>LineSeg</code> that is parallel to this by the given distance.  
-     * Orientation is relative to the start and end.  Negative implies to the 
+     * Returns a new <code>LineSeg</code> that is parallel to this by the given distance.
+     * Orientation is relative to the start and end.  Negative implies to the
      * left and Position implies to the right.
-     * 
+     *
      * @param ptLoc <code>Point</code> value to constrain the line to.
      * @return <code>LineSeg</code> line that was calculated going through the given point
      */
@@ -758,18 +758,18 @@ public class LineSeg
             Point ptProj = perpIntersect(ptLoc.x, ptLoc.y);
             long nHeight = Math.round(ptProj.getDistance(ptLoc));
             Sign position = positionRelativeTo(ptLoc);
-        
+
             return new LineSeg(
                  locatePoint(0.0, nHeight, position),
                  locatePoint(1.0, nHeight, position));
         }
     }
-        
+
     /**
      * Returns the coefficients of the generalized equation of the line passing through
      * points (x1,y1) and (x2,y2)
      * Generalized line equation: ax+by=c => a==result[0], b==result[1], c==result[2]
-     * 
+     *
      * @param x1 - x coordinate of the 1st point
      * @param y1 - y coordinate of the 1st point
      * @param x2 - x coordinate of the 2nd point
@@ -781,17 +781,17 @@ public class LineSeg
         double equation[] = new double[3];
         for (int i=0; i<3; i++)
             equation[i]=0;
-        
+
         if (x1 == x2 && y1 == y2)
             return equation;
-        
+
         if (x1 == x2) {
             equation[0]=1;
             equation[1]=0;
             equation[2]=x1;
             return equation;
         }
-        
+
         equation[0]=(y1-y2)/(x2-x1);
         equation[1]=1.0;
         equation[2]=y2+equation[0]*x2;
@@ -802,7 +802,7 @@ public class LineSeg
      * Returns array with 3 numbers in it, which are the coefficients of the
      * generalized line equation of the line corresponding to this line segment
      * a*x+b*y=c is the equation => result[0]=a, result[1]=b, result[2]=c
-     * 
+     *
      * @return an array with 3 numbers in it, which are the coefficients of the
      * generalized line equation
      */
@@ -812,14 +812,14 @@ public class LineSeg
         return getLineEquation(preciseOrigin.preciseX, preciseOrigin.preciseY,
                 preciseTerminus.preciseX, preciseTerminus.preciseY);
     }
-    
+
     /**
      * Returns intersection points of two lines that contain this line segment and
      * the argumet line segment.
      * The list of intersection points may contain at most two points and will contain
      * 2 points if and only if the lines are equal. The 2 points will be the end points
-     * of the parameter line segment 
-     * 
+     * of the parameter line segment
+     *
      * @param line - the line segment
      * @return intersection points of two lines that contain this line segment and
      * the argumet line segment.
@@ -855,7 +855,7 @@ public class LineSeg
                         } else {
                             return 1;
                         }
-                    }                   
+                    }
                 });
                 // if lines are the same, then instead of infinite number of intersections
                 // we will put the 2 points out of 4 points - ends of 2 segments. Look above.
@@ -868,10 +868,10 @@ public class LineSeg
         }
         return intersections;
     }
-    
+
     /**
-     * Calculates intersection points of the line of the line segment and ellipse 
-     * 
+     * Calculates intersection points of the line of the line segment and ellipse
+     *
      * @param ellipseBounds - width and height of the ellipse
      * @return - <Code>PointList</Code> containing all intersection points
      */
@@ -889,20 +889,20 @@ public class LineSeg
         double yl1 = preciseOrigin.preciseY - ellipsePreciseCenter.preciseY;
         double yl2 = preciseTerminus.preciseY - ellipsePreciseCenter.preciseY;
         double [] equation = LineSeg.getLineEquation(xl1, yl1, xl2, yl2);
-        
+
         if (equation.length<3 || (equation[0] == 0 && equation[1] == 0))
             return intersections;
-        
+
         double a = equation[0];
         double b = equation[1];
         double c = equation[2];
         double w = preciseEllipseBounds.preciseWidth;
         double h = preciseEllipseBounds.preciseHeight;
-        
+
         // Ellipse with a center at the origin has an equation:
         // (h*x)^2+(w*y)^2=(h*w/2)^2
         // Line equation: a*x+b*y=c
-        
+
         if (b==0) {
             // b==0 is a special case since in general case we will express
             // y in terms of x, i.e. we need to divide by b, which should not
@@ -924,25 +924,25 @@ public class LineSeg
             double xB = (-2)*Math.pow(w,2)*a*c/Math.pow(b,2);
             double xC = Math.pow(w*c/b,2)-Math.pow(h*w/2,2);
             double xD = Math.pow(xB,2)-4*xA*xC;
-            
+
             if (xD<0)
                 return intersections;
-            
+
             double x1 = (-xB+Math.sqrt(xD))/(2*xA);
             double x2 = (-xB-Math.sqrt(xD))/(2*xA);
             intersections.addPoint(new PrecisionPoint(x1+ellipsePreciseCenter.preciseX, (c-a*x1)/b+ellipsePreciseCenter.preciseY));
             intersections.addPoint(new PrecisionPoint(x2+ellipsePreciseCenter.preciseX, (c-a*x2)/b+ellipsePreciseCenter.preciseY));
         }
-        
+
         return intersections;
     }
-    
+
     /**
      * Calculates intersection points of the line that contains this line segment with
      * a list of other line segments. If the list of points (line segments) form a closed
      * <Code>PolyLine</Code>, i.e form a closed polygon figure, then the method will
      * claculate intersections of a line and a figure
-     * 
+     *
      * @param points - list of points that form linesegments, i.e the <Code>PolyLine</Code>
      * @return the intersection points of the line that contains this line segment with
      * a list of other line segments.
@@ -953,7 +953,7 @@ public class LineSeg
             if (containsPoint(points.getFirstPoint(), DEFAULT_INTERSECTION_TOLERANCE)) {
                 intersections.addPoint(points.getFirstPoint());
             }
-        } else {    
+        } else {
             for (int i=0; i<points.size()-1; i++) {
                 LineSeg seg = new LineSeg(points.getPoint(i), points.getPoint(i+1));
                 PointList currentIntersections = getLinesIntersections(seg);
@@ -968,7 +968,7 @@ public class LineSeg
         return intersections;
     }
 
-    /* 
+    /*
      * (non-Javadoc)
      * @see org.eclipse.draw2d.geometry.Translatable#performScale(double)
      */
@@ -977,7 +977,7 @@ public class LineSeg
         setTerminus(getTerminus().scale(factor));
     }
 
-    /* 
+    /*
      * (non-Javadoc)
      * @see org.eclipse.draw2d.geometry.Translatable#performTranslate(int, int)
      */
@@ -985,5 +985,5 @@ public class LineSeg
         setOrigin(getOrigin().translate(dx, dy));
         setTerminus(getTerminus().translate(dx, dy));
     }
-    
+
 }

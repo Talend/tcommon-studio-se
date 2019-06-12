@@ -1,6 +1,6 @@
 // ============================================================================
 //
-// Copyright (C) 2006-2018 Talend Inc. - www.talend.com
+// Copyright (C) 2006-2019 Talend Inc. - www.talend.com
 //
 // This source code is available under agreement available at
 // %InstallDIR%\features\org.talend.rcp.branding.%PRODUCTNAME%\%PRODUCTNAME%license.txt
@@ -54,14 +54,14 @@ import orgomg.cwm.objectmodel.core.TaggedValue;
 
 /**
  * Metadata Schema.
- * 
+ *
  * $Id: MetadataSchema.java 51271 2010-11-15 08:40:42Z nrousseau $
- * 
+ *
  */
 public class MetadataSchema {
 
     /**
-     * 
+     *
      */
     // private static final String CORE_PLUGIN_ID = "org.talend.core";
 
@@ -86,7 +86,7 @@ public class MetadataSchema {
 
     /**
      * Load Metadatas form a file.
-     * 
+     *
      * @param file to read datas
      * @param oldTable precedent table, will be cloned
      * @return IMetadataTable setted with datas from file
@@ -110,7 +110,7 @@ public class MetadataSchema {
 
     /**
      * Load MetadataColumn from a file.
-     * 
+     *
      * @param file file to load
      * @return List MetadataColumn to set
      * @throws ParserConfigurationException if dom exception occured
@@ -125,7 +125,7 @@ public class MetadataSchema {
 
     /**
      * Load SchemaTarget from a file.
-     * 
+     *
      * @param file file to load
      * @return List SchemaTarget to set
      * @throws ParserConfigurationException if dom exception occured
@@ -140,7 +140,7 @@ public class MetadataSchema {
 
     /**
      * Initalize MetadataColumns available in a file.
-     * 
+     *
      * @param file where MeatadataColumns data are available
      * @return IMetadataTable setted with datas from file
      * @throws ParserConfigurationException if dom exception occured
@@ -155,7 +155,7 @@ public class MetadataSchema {
 
     /**
      * qzhang Comment method "initializeAllColumns".
-     * 
+     *
      * @param file
      * @return
      * @throws IOException
@@ -190,7 +190,7 @@ public class MetadataSchema {
 
     /**
      * qzhang Comment method "initializeColumn".
-     * 
+     *
      * @param metadataColumn
      * @param nodeMap
      * @return
@@ -264,7 +264,7 @@ public class MetadataSchema {
 
     /**
      * Initalize MetadataColumns available in a file.
-     * 
+     *
      * @param file where MeatadataColumns data are available
      * @return IMetadataTable setted with datas from file
      * @throws ParserConfigurationException if dom exception occured
@@ -351,7 +351,7 @@ public class MetadataSchema {
 
                     /*
                      * (non-Javadoc)
-                     * 
+                     *
                      * @see org.talend.commons.utils.data.list.UniqueStringGenerator#getBeanString(java.lang.Object)
                      */
                     @Override
@@ -430,7 +430,7 @@ public class MetadataSchema {
 
     /**
      * Initalize SchemaTargets available in a file.
-     * 
+     *
      * @param file where SchemaTargets data are available
      * @return MetadataSchema setted with datas from file
      * @throws ParserConfigurationException if dom exception occured
@@ -497,7 +497,7 @@ public class MetadataSchema {
 
     /**
      * Export MetadataColumn to the specified file.
-     * 
+     *
      * @param file to save
      * @param table to export
      * @return boolean result
@@ -611,7 +611,7 @@ public class MetadataSchema {
 
     /**
      * Export SchemaTarget to the specified file.
-     * 
+     *
      * @param file to save
      * @param table to export
      * @return boolean result
@@ -682,7 +682,7 @@ public class MetadataSchema {
 
     /**
      * Export MetadataColumn to the specified file.
-     * 
+     *
      * @param file to save
      * @param table to export
      * @return boolean result
@@ -697,7 +697,7 @@ public class MetadataSchema {
 
     /**
      * qzhang Comment method "saveColumnsToFile".
-     * 
+     *
      * @param file
      * @param table
      * @return
@@ -762,7 +762,7 @@ public class MetadataSchema {
 
     /**
      * qzhang Comment method "saveOneColumn".
-     * 
+     *
      * @param document
      * @param metadataColumn
      * @param column
@@ -833,9 +833,9 @@ public class MetadataSchema {
     }
 
     /**
-     * 
+     *
      * DOC ggu Comment method "getPerlNewType".
-     * 
+     *
      * @param type
      * @return
      */
@@ -851,9 +851,9 @@ public class MetadataSchema {
     }
 
     /**
-     * 
+     *
      * DOC ggu Comment method "saveDocumentByEncoding".
-     * 
+     *
      * @param document
      * @param file
      * @throws IOException

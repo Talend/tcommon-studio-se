@@ -1,6 +1,6 @@
 // ============================================================================
 //
-// Copyright (C) 2006-2018 Talend Inc. - www.talend.com
+// Copyright (C) 2006-2019 Talend Inc. - www.talend.com
 //
 // This source code is available under agreement available at
 // %InstallDIR%\features\org.talend.rcp.branding.%PRODUCTNAME%\%PRODUCTNAME%license.txt
@@ -19,9 +19,9 @@ import org.eclipse.swt.widgets.Composite;
 
 /**
  * DOC amaumont class global comment. Detailled comment <br/>
- * 
+ *
  * $Id: MapperColorStyledText.java 898 2006-12-07 11:06:17Z amaumont $
- * 
+ *
  */
 public class UnnotifiableColorStyledText extends ColorStyledText {
 
@@ -33,11 +33,11 @@ public class UnnotifiableColorStyledText extends ColorStyledText {
      * This implementation is needed because synchronisation with TableEntries does not work using standard
      * implementation : <BR> - focus of TableEntry is lost when a character is typed <BR> - coloration does'nt work when
      * a character is typed in a TableEntry
-     * 
+     *
      * <BR>
      * <BR>
      * <b>WARNING: listeners will not be notified in this implementation.</b>
-     * 
+     *
      * @param text new widget content. Replaces existing content. Line styles that were set using StyledText API are
      * discarded. The current selection is also discarded.
      * @exception SWTException

@@ -1,6 +1,6 @@
 // ============================================================================
 //
-// Copyright (C) 2006-2018 Talend Inc. - www.talend.com
+// Copyright (C) 2006-2019 Talend Inc. - www.talend.com
 //
 // This source code is available under agreement available at
 // %InstallDIR%\features\org.talend.rcp.branding.%PRODUCTNAME%\%PRODUCTNAME%license.txt
@@ -296,9 +296,9 @@ public class DynamicContentProviderGeneric extends DynamicContentProvider {
     }
 
     /**
-     * 
+     *
      * DOC create title for the CREATE_NEW_ITEM in the second column
-     * 
+     *
      * @param dom
      * @param parent
      * @param title
@@ -311,9 +311,9 @@ public class DynamicContentProviderGeneric extends DynamicContentProvider {
     }
 
     /**
-     * 
+     *
      * DOC create a new create item for the CREATE_NEW_ITEM in the second column
-     * 
+     *
      * @param dom
      * @param parent
      * @param title
@@ -337,9 +337,9 @@ public class DynamicContentProviderGeneric extends DynamicContentProvider {
     }
 
     /**
-     * 
+     *
      * DOC create fixed part for the CREATE_NEW_ITEM in the second column
-     * 
+     *
      * @param dom
      * @param parent
      * @param title

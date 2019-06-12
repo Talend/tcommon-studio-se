@@ -1,6 +1,6 @@
 // ============================================================================
 //
-// Copyright (C) 2006-2018 Talend Inc. - www.talend.com
+// Copyright (C) 2006-2019 Talend Inc. - www.talend.com
 //
 // This source code is available under agreement available at
 // %InstallDIR%\features\org.talend.rcp.branding.%PRODUCTNAME%\%PRODUCTNAME%license.txt
@@ -36,9 +36,9 @@ import org.talend.commons.ui.swt.colorstyledtext.ColorStyledText;
 
 /**
  * DOC amaumont class global comment. Detailled comment <br/>
- * 
+ *
  * $Id: TypedTextCommandExecutor.java 7038 2007-11-15 14:05:48Z plegall $
- * 
+ *
  */
 public class TypedTextCommandExecutor {
 
@@ -137,7 +137,7 @@ public class TypedTextCommandExecutor {
 
     /**
      * DOC amaumont TypedTextCommandExecutor constructor comment.
-     * 
+     *
      * @param stack
      */
     public TypedTextCommandExecutor() {
@@ -205,7 +205,7 @@ public class TypedTextCommandExecutor {
 
     /**
      * DOC amaumont Comment method "updateCommand".
-     * 
+     *
      * @param commandStack2
      */
     public void updateCommand(Control control) {
@@ -214,11 +214,11 @@ public class TypedTextCommandExecutor {
     }
 
     /**
-     * 
+     *
      * To store previous typed key informations. <br/>
-     * 
+     *
      * $Id: TypedTextCommandExecutor.java 7038 2007-11-15 14:05:48Z plegall $
-     * 
+     *
      */
     class Key {
 
@@ -232,7 +232,7 @@ public class TypedTextCommandExecutor {
 
         /**
          * DOC amaumont Key constructor comment.
-         * 
+         *
          * @param e
          * @param alphaNumMatched
          */
@@ -246,7 +246,7 @@ public class TypedTextCommandExecutor {
     }
 
     /**
-     * 
+     *
      * Implement your method by overriding.
      */
     public void addNewCommand(Control control) {
@@ -255,7 +255,7 @@ public class TypedTextCommandExecutor {
 
     /**
      * DOC amaumont Comment method "register".
-     * 
+     *
      * @param control
      */
     public void register(Control control) {
@@ -279,7 +279,7 @@ public class TypedTextCommandExecutor {
 
     /**
      * DOC amaumont Comment method "unregister".
-     * 
+     *
      * @param control
      */
     public void unregister(Control control) {

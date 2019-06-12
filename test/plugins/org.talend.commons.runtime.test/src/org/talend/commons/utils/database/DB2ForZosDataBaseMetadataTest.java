@@ -1,6 +1,6 @@
 // ============================================================================
 //
-// Copyright (C) 2006-2018 Talend Inc. - www.talend.com
+// Copyright (C) 2006-2019 Talend Inc. - www.talend.com
 //
 // This source code is available under agreement available at
 // %InstallDIR%\features\org.talend.rcp.branding.%PRODUCTNAME%\%PRODUCTNAME%license.txt
@@ -28,13 +28,13 @@ import org.talend.utils.sql.metadata.constants.TableType;
 
 /**
  * created by zshen on Apr 7, 2013 Detailled comment
- * 
+ *
  */
 public class DB2ForZosDataBaseMetadataTest {
 
     /**
      * DOC zshen Comment method "setUp".
-     * 
+     *
      * @throws java.lang.Exception
      */
     @Before
@@ -44,7 +44,7 @@ public class DB2ForZosDataBaseMetadataTest {
     /**
      * Test method for
      * {@link org.talend.commons.utils.database.DB2ForZosDataBaseMetadata#getTables(java.lang.String, java.lang.String, java.lang.String, java.lang.String[])}
-     * 
+     *
      * case1: schema is not null, only contain Table
      */
     @Test
@@ -79,7 +79,7 @@ public class DB2ForZosDataBaseMetadataTest {
     /**
      * Test method for
      * {@link org.talend.commons.utils.database.DB2ForZosDataBaseMetadata#getTables(java.lang.String, java.lang.String, java.lang.String, java.lang.String[])}
-     * 
+     *
      * case2:schema is not null, not only contain Table
      */
     @Test
@@ -115,7 +115,7 @@ public class DB2ForZosDataBaseMetadataTest {
     /**
      * Test method for
      * {@link org.talend.commons.utils.database.DB2ForZosDataBaseMetadata#getTables(java.lang.String, java.lang.String, java.lang.String, java.lang.String[])}
-     * 
+     *
      * case3 :schema is null, not only contain Table
      */
     @Test
@@ -150,7 +150,7 @@ public class DB2ForZosDataBaseMetadataTest {
     /**
      * Test method for
      * {@link org.talend.commons.utils.database.DB2ForZosDataBaseMetadata#getTables(java.lang.String, java.lang.String, java.lang.String, java.lang.String[])}
-     * 
+     *
      * case3 :schema is null, only contain Table
      */
     @Test
@@ -185,7 +185,7 @@ public class DB2ForZosDataBaseMetadataTest {
 
     /**
      * DOC yyin Comment method "mockMetadata".
-     * 
+     *
      * @param catalog
      * @param schema
      * @param tableNamePattern
@@ -208,7 +208,7 @@ public class DB2ForZosDataBaseMetadataTest {
 
     /**
      * DOC yyin Comment method "mockResultSet".
-     * 
+     *
      * @return
      */
     private ResultSet mockResultSet() {
@@ -226,7 +226,7 @@ public class DB2ForZosDataBaseMetadataTest {
 
     /**
      * DOC yyin Comment method "mockPreparedStatement".
-     * 
+     *
      * @param resultSet
      * @return
      */
@@ -242,7 +242,7 @@ public class DB2ForZosDataBaseMetadataTest {
 
     /**
      * DOC yyin Comment method "mockConnection".
-     * 
+     *
      * @param exceptSql
      * @param sqlStatement
      * @return

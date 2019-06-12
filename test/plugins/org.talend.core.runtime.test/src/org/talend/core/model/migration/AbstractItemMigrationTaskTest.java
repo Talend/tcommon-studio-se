@@ -1,6 +1,6 @@
 // ============================================================================
 //
-// Copyright (C) 2006-2018 Talend Inc. - www.talend.com
+// Copyright (C) 2006-2019 Talend Inc. - www.talend.com
 //
 // This source code is available under agreement available at
 // %InstallDIR%\features\org.talend.rcp.branding.%PRODUCTNAME%\%PRODUCTNAME%license.txt
@@ -30,13 +30,13 @@ import org.talend.core.model.repository.ERepositoryObjectType;
 
 /**
  * created by sgandon on 7 avr. 2014 Detailled comment
- * 
+ *
  */
 public class AbstractItemMigrationTaskTest {
 
     /**
      * created by sgandon on 23 avr. 2014 Detailled comment
-     * 
+     *
      */
     public class JobAndCodeItemMigrationTask extends AbstractItemMigrationTask {
 
@@ -52,7 +52,7 @@ public class AbstractItemMigrationTaskTest {
 
         /*
          * (non-Javadoc)
-         * 
+         *
          * @see org.talend.core.model.migration.AbstractItemMigrationTask#getTypes()
          */
         @Override
@@ -75,7 +75,7 @@ public class AbstractItemMigrationTaskTest {
 
         /*
          * (non-Javadoc)
-         * 
+         *
          * @see org.talend.core.model.migration.AbstractItemMigrationTask#getTypes()
          */
         @Override
@@ -100,7 +100,7 @@ public class AbstractItemMigrationTaskTest {
 
         /*
          * (non-Javadoc)
-         * 
+         *
          * @see org.talend.core.model.migration.AbstractItemMigrationTask#getTypes()
          */
         @Override

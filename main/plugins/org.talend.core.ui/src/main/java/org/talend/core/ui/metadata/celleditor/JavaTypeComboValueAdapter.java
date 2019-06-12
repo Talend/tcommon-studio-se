@@ -1,6 +1,6 @@
 // ============================================================================
 //
-// Copyright (C) 2006-2018 Talend Inc. - www.talend.com
+// Copyright (C) 2006-2019 Talend Inc. - www.talend.com
 //
 // This source code is available under agreement available at
 // %InstallDIR%\features\org.talend.rcp.branding.%PRODUCTNAME%\%PRODUCTNAME%license.txt
@@ -23,9 +23,9 @@ import org.talend.core.model.metadata.types.JavaTypesManager;
 
 /**
  * DOC amaumont class global comment. Detailled comment <br/>
- * 
+ *
  * $Id$
- * 
+ *
  * @param <B> type of bean
  */
 public class JavaTypeComboValueAdapter<B> extends CellEditorValueAdapter {
@@ -38,7 +38,7 @@ public class JavaTypeComboValueAdapter<B> extends CellEditorValueAdapter {
 
     /**
      * DOC amaumont JavaTypeComboValueAdapter constructor comment.
-     * 
+     *
      * @param nullableAccessors
      */
     public JavaTypeComboValueAdapter(JavaType defaultJavaType, IBeanPropertyAccessors<B, Boolean> nullableAccessors) {
@@ -85,7 +85,7 @@ public class JavaTypeComboValueAdapter<B> extends CellEditorValueAdapter {
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see
      * org.talend.commons.ui.swt.tableviewer.behavior.CellEditorValueAdapter#getColumnText(org.eclipse.jface.viewers
      * .CellEditor, java.lang.Object)

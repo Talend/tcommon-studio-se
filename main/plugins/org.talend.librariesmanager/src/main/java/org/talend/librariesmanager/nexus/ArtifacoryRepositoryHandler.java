@@ -1,6 +1,6 @@
 // ============================================================================
 //
-// Copyright (C) 2006-2014 Talend Inc. - www.talend.com
+// Copyright (C) 2006-2019 Talend Inc. - www.talend.com
 //
 // This source code is available under agreement available at
 // %InstallDIR%\features\org.talend.rcp.branding.%PRODUCTNAME%\%PRODUCTNAME%license.txt
@@ -49,7 +49,7 @@ public class ArtifacoryRepositoryHandler extends AbstractArtifactRepositoryHandl
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see org.talend.core.nexus.IRepositoryArtifactHandler#checkConnection()
      */
     @Override
@@ -59,7 +59,7 @@ public class ArtifacoryRepositoryHandler extends AbstractArtifactRepositoryHandl
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see org.talend.core.nexus.IRepositoryArtifactHandler#checkConnection(boolean, boolean)
      */
     @Override
@@ -95,7 +95,7 @@ public class ArtifacoryRepositoryHandler extends AbstractArtifactRepositoryHandl
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see org.talend.core.nexus.IRepositoryArtifactHandler#search(java.lang.String, java.lang.String,
      * java.lang.String, boolean, boolean)
      */
@@ -209,7 +209,7 @@ public class ArtifacoryRepositoryHandler extends AbstractArtifactRepositoryHandl
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see org.talend.core.nexus.IRepositoryArtifactHandler#deploy(java.io.File, java.lang.String, java.lang.String,
      * java.lang.String, java.lang.String, java.lang.String)
      */
@@ -231,7 +231,7 @@ public class ArtifacoryRepositoryHandler extends AbstractArtifactRepositoryHandl
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see org.talend.core.nexus.IRepositoryArtifactHandler#deployWithPOM(java.io.File, java.io.File, java.lang.String,
      * java.lang.String, java.lang.String, java.lang.String, java.lang.String)
      */
@@ -254,7 +254,7 @@ public class ArtifacoryRepositoryHandler extends AbstractArtifactRepositoryHandl
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see org.talend.librariesmanager.nexus.AbstractArtifactRepositoryHandler#getRepositoryPrefixPath()
      */
     @Override
@@ -264,7 +264,7 @@ public class ArtifacoryRepositoryHandler extends AbstractArtifactRepositoryHandl
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see org.talend.librariesmanager.nexus.AbstractArtifactRepositoryHandler#clone()
      */
     @Override

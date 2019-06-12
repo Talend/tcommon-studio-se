@@ -1,6 +1,6 @@
 // ============================================================================
 //
-// Copyright (C) 2006-2018 Talend Inc. - www.talend.com
+// Copyright (C) 2006-2019 Talend Inc. - www.talend.com
 //
 // This source code is available under agreement available at
 // %InstallDIR%\features\org.talend.rcp.branding.%PRODUCTNAME%\%PRODUCTNAME%license.txt
@@ -23,13 +23,13 @@ import org.junit.Test;
 
 /**
  * created by xqliu on Jul 23, 2013 Detailled comment
- * 
+ *
  */
 public class SybaseResultSetTest {
 
     /**
      * Test method for {@link org.talend.commons.utils.database.SybaseResultSet#getInt(java.lang.String)} .
-     * 
+     *
      * @throws SQLException
      */
     @Test

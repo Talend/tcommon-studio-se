@@ -1,6 +1,6 @@
 // ============================================================================
 //
-// Copyright (C) 2006-2018 Talend Inc. - www.talend.com
+// Copyright (C) 2006-2019 Talend Inc. - www.talend.com
 //
 // This source code is available under agreement available at
 // %InstallDIR%\features\org.talend.rcp.branding.%PRODUCTNAME%\%PRODUCTNAME%license.txt
@@ -24,7 +24,7 @@ public enum EHadoopConfs {
 
     YARN("YARN", new String[] { "core-site.xml", "yarn-site.xml" }), //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
 
-    WEBHCAT("WEBHCAT", new String[] { "webhcat-site.xml" }), //$NON-NLS-1$ //$NON-NLS-2$ 
+    WEBHCAT("WEBHCAT", new String[] { "webhcat-site.xml" }), //$NON-NLS-1$ //$NON-NLS-2$
 
     HIVE("HIVE", new String[] { "mapred-site.xml", "hive-site.xml" }), //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
 
@@ -32,7 +32,7 @@ public enum EHadoopConfs {
 
     MAPRDB("MAPRDB", new String[] { "hdfs-site.xml", "hbase-site.xml" }), //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
 
-    OOZIE("OOZIE", new String[] { "oozie-site.xml" }), //$NON-NLS-1$ //$NON-NLS-2$ 
+    OOZIE("OOZIE", new String[] { "oozie-site.xml" }), //$NON-NLS-1$ //$NON-NLS-2$
 
     SPARK("SPARK", new String[0]), //$NON-NLS-1$
 

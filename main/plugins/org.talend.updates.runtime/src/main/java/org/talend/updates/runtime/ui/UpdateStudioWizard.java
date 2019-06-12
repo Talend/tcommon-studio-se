@@ -1,6 +1,6 @@
 // ============================================================================
 //
-// Copyright (C) 2006-2018 Talend Inc. - www.talend.com
+// Copyright (C) 2006-2019 Talend Inc. - www.talend.com
 //
 // This source code is available under agreement available at
 // %InstallDIR%\features\org.talend.rcp.branding.%PRODUCTNAME%\%PRODUCTNAME%license.txt
@@ -46,7 +46,7 @@ import org.talend.updates.runtime.model.ExtraFeature;
 
 /**
  * created by sgandon on 25 févr. 2013 Detailled comment
- * 
+ *
  */
 public class UpdateStudioWizard extends Wizard {
 
@@ -102,7 +102,7 @@ public class UpdateStudioWizard extends Wizard {
 
 //    Force a restart instead of reload components
 // This can be improved later if we want to avoid the restart
-    
+
 //    private boolean needReloadComponents() {
 //        boolean _needReload = false;
 //        if (updateWizardModel.selectedExtraFeatures != null) {
@@ -229,7 +229,7 @@ public class UpdateStudioWizard extends Wizard {
     /**
      * called right after the dialog is display to launch any initial runnable if no extra feature is set in the model
      * then launch a thread to get them
-     * 
+     *
      * @param updateStudioWizardDialog
      */
     public void launchInitialRunnable(final UpdateStudioWizardDialog updateStudioWizardDialog) {
@@ -269,7 +269,7 @@ public class UpdateStudioWizard extends Wizard {
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see org.eclipse.jface.wizard.Wizard#needsProgressMonitor()
      */
     @Override

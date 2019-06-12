@@ -1,6 +1,6 @@
 // ============================================================================
 //
-// Copyright (C) 2006-2018 Talend Inc. - www.talend.com
+// Copyright (C) 2006-2019 Talend Inc. - www.talend.com
 //
 // This source code is available under agreement available at
 // %InstallDIR%\features\org.talend.rcp.branding.%PRODUCTNAME%\%PRODUCTNAME%license.txt
@@ -22,7 +22,7 @@ import org.eclipse.nebula.widgets.nattable.data.ReflectiveColumnPropertyAccessor
 
 /**
  * created by ldong on Jul 24, 2014 Detailled comment
- * 
+ *
  */
 public class EmptyColumnContextAccessor<R> implements IColumnPropertyAccessor<R> {
 
@@ -36,7 +36,7 @@ public class EmptyColumnContextAccessor<R> implements IColumnPropertyAccessor<R>
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see org.eclipse.nebula.widgets.nattable.data.IColumnAccessor#getColumnCount()
      */
     @Override
@@ -46,7 +46,7 @@ public class EmptyColumnContextAccessor<R> implements IColumnPropertyAccessor<R>
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see org.eclipse.nebula.widgets.nattable.data.IColumnAccessor#getDataValue(java.lang.Object, int)
      */
     @Override
@@ -57,7 +57,7 @@ public class EmptyColumnContextAccessor<R> implements IColumnPropertyAccessor<R>
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see org.eclipse.nebula.widgets.nattable.data.IColumnAccessor#setDataValue(java.lang.Object, int,
      * java.lang.Object)
      */
@@ -69,7 +69,7 @@ public class EmptyColumnContextAccessor<R> implements IColumnPropertyAccessor<R>
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see org.eclipse.nebula.widgets.nattable.data.IColumnPropertyResolver#getColumnIndex(java.lang.String)
      */
     @Override
@@ -79,7 +79,7 @@ public class EmptyColumnContextAccessor<R> implements IColumnPropertyAccessor<R>
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see org.eclipse.nebula.widgets.nattable.data.IColumnPropertyResolver#getColumnProperty(int)
      */
     @Override

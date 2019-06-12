@@ -1,6 +1,6 @@
 // ============================================================================
 //
-// Copyright (C) 2006-2018 Talend Inc. - www.talend.com
+// Copyright (C) 2006-2019 Talend Inc. - www.talend.com
 //
 // This source code is available under agreement available at
 // %InstallDIR%\features\org.talend.rcp.branding.%PRODUCTNAME%\%PRODUCTNAME%license.txt
@@ -30,7 +30,7 @@ import org.talend.core.runtime.projectsetting.ProjectPreferenceManager;
 public class MavenTemplateManagerTest {
 
     private String originalCompliance;
-    
+
     private ProjectPreferenceManager manager;
 
     @Before
@@ -39,13 +39,13 @@ public class MavenTemplateManagerTest {
         originalCompliance = eclipsePreferences.get(JavaCore.COMPILER_COMPLIANCE, JavaCore.VERSION_1_8);
         manager = CoreRuntimePlugin.getInstance().getProjectPreferenceManager();
     }
-    
+
     @Test
     public void testSetJavaVersionForModel() {
         manager.setValue(JavaUtils.PROJECT_JAVA_VERSION_KEY, JavaCore.VERSION_1_7);
         Model model = MavenTemplateManager.getCodeProjectTemplateModel();
         validateResult(model, JavaCore.VERSION_1_7);
-        
+
         manager.setValue(JavaUtils.PROJECT_JAVA_VERSION_KEY, "");
         model = MavenTemplateManager.getCodeProjectTemplateModel();
         validateResult(model, JavaCore.VERSION_1_8);
@@ -63,7 +63,7 @@ public class MavenTemplateManagerTest {
             assertEquals(expectedValue, targetNode.getValue());
         }
     }
-    
+
     @After
     public void tearDown() throws Exception {
         JavaUtils.updateProjectJavaVersion(originalCompliance);

@@ -1,6 +1,6 @@
 // ============================================================================
 //
-// Copyright (C) 2006-2018 Talend Inc. - www.talend.com
+// Copyright (C) 2006-2019 Talend Inc. - www.talend.com
 //
 // This source code is available under agreement available at
 // %InstallDIR%\features\org.talend.rcp.branding.%PRODUCTNAME%\%PRODUCTNAME%license.txt
@@ -31,7 +31,7 @@ import org.talend.core.model.metadata.builder.database.PluginConstant;
 
 /**
  * This class store the all the support database connection url.
- * 
+ *
  */
 public final class SupportDBUrlStore {
 
@@ -194,7 +194,7 @@ public final class SupportDBUrlStore {
 
     /**
      * get dburl which content are replaced by parameter value.
-     * 
+     *
      * @param dbType
      * @param dbVersion
      * @param host
@@ -216,7 +216,7 @@ public final class SupportDBUrlStore {
      * Get dburl which content are replaced by parameter value.(note: for mssql, this method result is wrong, so i
      * deprecated this
      * method)
-     * 
+     *
      * @param dbType
      * @param host
      * @param port
@@ -253,7 +253,7 @@ public final class SupportDBUrlStore {
 
     /**
      * Get the dburl via the dbType, and the dburl content come from the default value of SupportDBUrlType.
-     * 
+     *
      * @param dbType
      * @return
      */
@@ -279,7 +279,7 @@ public final class SupportDBUrlStore {
 
     /**
      * MOD mzhao bug 12313, 2010-04-02 There is not dbType in prv files before 4.0 release, here use driver class name.
-     * 
+     *
      * @param dbType
      * @return
      */
@@ -326,7 +326,7 @@ public final class SupportDBUrlStore {
 
     /**
      * DOC bZhou Comment method "findDBTypeByName".
-     * 
+     *
      * @param dbName
      * @return
      */

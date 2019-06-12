@@ -1,6 +1,6 @@
 // ============================================================================
 //
-// Copyright (C) 2006-2018 Talend Inc. - www.talend.com
+// Copyright (C) 2006-2019 Talend Inc. - www.talend.com
 //
 // This source code is available under agreement available at
 // %InstallDIR%\features\org.talend.rcp.branding.%PRODUCTNAME%\%PRODUCTNAME%license.txt
@@ -23,9 +23,9 @@ import org.talend.designer.core.model.utils.emf.talendfile.AbstractExternalData;
 
 /**
  * DOC nrousseau class global comment. Detailled comment <br/>
- * 
+ *
  * $Id: IExternalNode.java 38013 2010-03-05 14:21:59Z mhirt $
- * 
+ *
  */
 public interface IExternalNode extends INode {
 
@@ -33,7 +33,7 @@ public interface IExternalNode extends INode {
 
     /**
      * Open a modal swt Shell.
-     * 
+     *
      * @param display
      * @return SWT.OK / SWT.CANCEL
      */
@@ -45,17 +45,17 @@ public interface IExternalNode extends INode {
     public void setExternalData(IExternalData persistentData);
 
     /**
-     * 
+     *
      * This function is only useful for DataProcess to keep the same IMapperModel as original node
-     * 
+     *
      * @param mapperModel
      */
     public void setInternalMapperModel(IMapperModel mapperModel);
 
     /**
-     * 
+     *
      * This function is only useful for DataProcess to keep the same IMapperModel as original node
-     * 
+     *
      * @param mapperModel
      */
     public IMapperModel getInternalMapperModel();

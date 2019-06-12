@@ -1,6 +1,6 @@
 // ============================================================================
 //
-// Copyright (C) 2006-2018 Talend Inc. - www.talend.com
+// Copyright (C) 2006-2019 Talend Inc. - www.talend.com
 //
 // This source code is available under agreement available at
 // %InstallDIR%\features\org.talend.rcp.branding.%PRODUCTNAME%\%PRODUCTNAME%license.txt
@@ -26,13 +26,13 @@ public class AtlEMFModelHandlerPatched extends org.eclipse.m2m.atl.drivers.emf4a
 
     /**
      * EMFModelLoader is extended to add a setSaveoption method
-     * 
+     *
      */
     public class EMFModelLoaderPatched extends EMFModelLoader {
 
         /**
          * DOC sgandon Comment method "setSaveOptions".
-         * 
+         *
          * @param options
          */
         public void setSaveOptions(Map<String, Object> options) {
@@ -43,7 +43,7 @@ public class AtlEMFModelHandlerPatched extends org.eclipse.m2m.atl.drivers.emf4a
 
     /**
      * {@inheritDoc}
-     * 
+     *
      * @see org.eclipse.m2m.atl.engine.vm.AtlModelHandler#createModelLoader()
      */
     public ModelLoader createModelLoader() {

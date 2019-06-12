@@ -1,6 +1,6 @@
 // ============================================================================
 //
-// Copyright (C) 2006-2018 Talend Inc. - www.talend.com
+// Copyright (C) 2006-2019 Talend Inc. - www.talend.com
 //
 // This source code is available under agreement available at
 // %InstallDIR%\features\org.talend.rcp.branding.%PRODUCTNAME%\%PRODUCTNAME%license.txt
@@ -155,7 +155,7 @@ public class UpdateManagerProviderReader extends RegistryReader {
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see org.talend.core.utils.RegistryReader#readElement(org.eclipse.core.runtime.IConfigurationElement)
      */
     @Override
@@ -196,7 +196,7 @@ public class UpdateManagerProviderReader extends RegistryReader {
         } else if ("ProcessUpdateManagerProvider".equals(element.getName())) {//$NON-NLS-1$
             readProviderElement(element, processProvidersMap);
             return true;
-        } else if ("RepositoryUpdateManagerProvider".equals(element.getName())) { //$NON-NLS-1$ 
+        } else if ("RepositoryUpdateManagerProvider".equals(element.getName())) { //$NON-NLS-1$
             readProviderElement(element, repositorProvidersMap);
             return true;
         }
@@ -205,7 +205,7 @@ public class UpdateManagerProviderReader extends RegistryReader {
 
     /**
      * DOC ggu Comment method "readProviderElement".
-     * 
+     *
      * @param element
      */
     private void readProviderElement(final IConfigurationElement element,

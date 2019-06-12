@@ -1,6 +1,6 @@
 // ============================================================================
 //
-// Copyright (C) 2006-2018 Talend Inc. - www.talend.com
+// Copyright (C) 2006-2019 Talend Inc. - www.talend.com
 //
 // This source code is available under agreement available at
 // %InstallDIR%\features\org.talend.rcp.branding.%PRODUCTNAME%\%PRODUCTNAME%license.txt
@@ -16,11 +16,11 @@ import java.util.List;
 import java.util.Set;
 
 /**
- * 
+ *
  * DOC amaumont TypesManager class global comment. Detailled comment <br/>
- * 
+ *
  * $Id$
- * 
+ *
  */
 public class Dbms {
 
@@ -65,7 +65,7 @@ public class Dbms {
 
 	/**
 	 * DOC amaumont Dbms constructor comment.
-	 * 
+	 *
 	 * @param id
 	 * @param label
 	 * @param dbmsTypes
@@ -82,7 +82,7 @@ public class Dbms {
 
 	/**
 	 * DOC amaumont Dbms constructor comment.
-	 * 
+	 *
 	 * @param dbmsIdValue
 	 */
 	protected Dbms(String id) {
@@ -91,7 +91,7 @@ public class Dbms {
 
 	/**
 	 * Getter for dbmsTypes.
-	 * 
+	 *
 	 * @return the dbmsTypes
 	 */
 	public List<String> getDbTypes() {
@@ -100,7 +100,7 @@ public class Dbms {
 
 	/**
 	 * Sets the dbmsTypes.
-	 * 
+	 *
 	 * @param dbmsTypes
 	 *            the dbmsTypes to set
 	 */
@@ -110,7 +110,7 @@ public class Dbms {
 
 	/**
 	 * Getter for id.
-	 * 
+	 *
 	 * @return the id
 	 */
 	public String getId() {
@@ -119,7 +119,7 @@ public class Dbms {
 
 	/**
 	 * Sets the id.
-	 * 
+	 *
 	 * @param id
 	 *            the id to set
 	 */
@@ -129,7 +129,7 @@ public class Dbms {
 
 	/**
 	 * Getter for label.
-	 * 
+	 *
 	 * @return the label
 	 */
 	public String getLabel() {
@@ -138,7 +138,7 @@ public class Dbms {
 
 	/**
 	 * Sets the label.
-	 * 
+	 *
 	 * @param label
 	 *            the label to set
 	 */
@@ -148,7 +148,7 @@ public class Dbms {
 
 	/**
 	 * Getter for mappingTypes.
-	 * 
+	 *
 	 * @return the mappingTypes
 	 */
 	public Set<MappingType> getDbToTalendTypes() {
@@ -157,7 +157,7 @@ public class Dbms {
 
 	/**
 	 * Sets the mappingTypes.
-	 * 
+	 *
 	 * @param mappingTypes
 	 *            the mappingTypes to set
 	 */
@@ -167,7 +167,7 @@ public class Dbms {
 
 	/**
 	 * Getter for talendToDbTypes.
-	 * 
+	 *
 	 * @return the talendToDbTypes
 	 */
 	public Set<MappingType> getTalendToDbTypes() {
@@ -176,7 +176,7 @@ public class Dbms {
 
 	/**
 	 * Sets the talendToDbTypes.
-	 * 
+	 *
 	 * @param talendToDbTypes
 	 *            the talendToDbTypes to set
 	 */
@@ -186,7 +186,7 @@ public class Dbms {
 
 	/**
 	 * Getter for product.
-	 * 
+	 *
 	 * @return the product
 	 */
 	public String getProduct() {
@@ -195,7 +195,7 @@ public class Dbms {
 
 	/**
 	 * Sets the product.
-	 * 
+	 *
 	 * @param product
 	 *            the product to set
 	 */
@@ -205,7 +205,7 @@ public class Dbms {
 
 	/**
 	 * Getter for defaultDbType.
-	 * 
+	 *
 	 * @return the defaultDbType
 	 */
 	public String getDefaultDbType() {
@@ -214,7 +214,7 @@ public class Dbms {
 
 	/**
 	 * Sets the defaultDbType.
-	 * 
+	 *
 	 * @param defaultDbType
 	 *            the defaultDbType to set
 	 */
@@ -224,7 +224,7 @@ public class Dbms {
 
 	/*
 	 * (non-Javadoc)
-	 * 
+	 *
 	 * @see java.lang.Object#hashCode()
 	 */
 	@Override
@@ -237,7 +237,7 @@ public class Dbms {
 
 	/*
 	 * (non-Javadoc)
-	 * 
+	 *
 	 * @see java.lang.Object#equals(java.lang.Object)
 	 */
 	@Override
@@ -259,7 +259,7 @@ public class Dbms {
 
 	/**
 	 * toString method: creates a String representation of the object
-	 * 
+	 *
 	 * @return the String representation
 	 * @author
 	 */
@@ -278,7 +278,7 @@ public class Dbms {
 
 	/**
 	 * Getter for defaultDbms.
-	 * 
+	 *
 	 * @return the defaultDbms
 	 */
 	protected boolean isDefaultDbms() {
@@ -287,7 +287,7 @@ public class Dbms {
 
 	/**
 	 * Sets the defaultDbms.
-	 * 
+	 *
 	 * @param defaultDbms
 	 *            the defaultDbms to set
 	 */

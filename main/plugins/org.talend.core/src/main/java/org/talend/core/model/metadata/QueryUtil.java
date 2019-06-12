@@ -1,6 +1,6 @@
 // ============================================================================
 //
-// Copyright (C) 2006-2018 Talend Inc. - www.talend.com
+// Copyright (C) 2006-2019 Talend Inc. - www.talend.com
 //
 // This source code is available under agreement available at
 // %InstallDIR%\features\org.talend.rcp.branding.%PRODUCTNAME%\%PRODUCTNAME%license.txt
@@ -30,7 +30,7 @@ import org.talend.core.utils.TalendQuoteUtils;
 
 /**
  * qzhang class global comment. Detailled comment <br/>
- * 
+ *
  */
 public class QueryUtil {
 
@@ -126,7 +126,7 @@ public class QueryUtil {
      * TODO need to check logic
      * <p>
      * DOC YeXiaowei Comment method "generateNewQuery".
-     * 
+     *
      * @param repositoryMetadata
      * @param dbType
      * @param tableName
@@ -462,9 +462,9 @@ public class QueryUtil {
     }
 
     /**
-     * 
+     *
      * ggu Comment method "checkAndAddQuotes".
-     * 
+     *
      * if the query start with quote, will not add quotes.
      */
     public static String checkAndAddQuotes(String query) {
@@ -483,7 +483,7 @@ public class QueryUtil {
 
     /**
      * Wanghaoyu Comment method "checkIfIsNoQuotesAtAll"
-     * 
+     *
      * to check a query if has any quote
      */
     public static boolean checkIfIsNoQuotesAtAll(String query) {

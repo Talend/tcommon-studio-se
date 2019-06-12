@@ -1,6 +1,6 @@
 // ============================================================================
 //
-// Copyright (C) 2006-2018 Talend Inc. - www.talend.com
+// Copyright (C) 2006-2019 Talend Inc. - www.talend.com
 //
 // This source code is available under agreement available at
 // %InstallDIR%\features\org.talend.rcp.branding.%PRODUCTNAME%\%PRODUCTNAME%license.txt
@@ -41,9 +41,9 @@ import org.talend.utils.sql.metadata.constants.MetaDataConstants;
 
 /**
  * DOC ggu class global comment. Detailled comment <br/>
- * 
+ *
  * $Id: talend.epf 55206 2011-02-15 17:32:14Z mhirt $
- * 
+ *
  */
 @SuppressWarnings({ "unchecked", "rawtypes" })
 public class EmbeddedHiveDataBaseMetadata extends AbstractFakeDatabaseMetaData {
@@ -112,13 +112,13 @@ public class EmbeddedHiveDataBaseMetadata extends AbstractFakeDatabaseMetaData {
      * For hive embedded mode if tables can be fetched from metastore db without any exceptions, then return
      * <code>true</code>. If there is any exceptions thrown, then that indicates it is failed to connection to hive.
      * Added by Marvin Wang on Mar 12, 2013.
-     * 
+     *
      * @return
      * @throws SQLException
      */
     public boolean checkConnection() throws SQLException {
         if (!isSupportJRE) {
-            throw new SQLException("This function is not available with a JDK < 1.7"); //$NON-NLS-1$ 
+            throw new SQLException("This function is not available with a JDK < 1.7"); //$NON-NLS-1$
         }
         boolean isWindows = EnvironmentUtils.isWindowsSystem();
         String hiveDistribution = (String) this.metadataConn.getParameter(ConnParameterKeys.CONN_PARA_KEY_HIVE_DISTRIBUTION);
@@ -126,15 +126,15 @@ public class EmbeddedHiveDataBaseMetadata extends AbstractFakeDatabaseMetaData {
 
         boolean isNotSupportEmbedded = HiveMetadataHelper.doSupportEmbeddedMode(hiveDistribution, hiveVersion, false);
         if (isWindows && isNotSupportEmbedded) {
-            throw new WarningSQLException(Messages.getString("EmbeddedHiveDataBaseMetadata.functionNotSupportMessage")); //$NON-NLS-1$ 
+            throw new WarningSQLException(Messages.getString("EmbeddedHiveDataBaseMetadata.functionNotSupportMessage")); //$NON-NLS-1$
         }
-        getTables(this.metadataConn.getDatabase(), null, null, new String[] { "TABLE", "VIEW", "SYSTEM_TABLE" }); //$NON-NLS-1$//$NON-NLS-2$ //$NON-NLS-3$ 
+        getTables(this.metadataConn.getDatabase(), null, null, new String[] { "TABLE", "VIEW", "SYSTEM_TABLE" }); //$NON-NLS-1$//$NON-NLS-2$ //$NON-NLS-3$
         return true;
     }
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see org.talend.commons.utils.database.FakeDatabaseMetaData#getSchemas()
      */
     @Override
@@ -149,7 +149,7 @@ public class EmbeddedHiveDataBaseMetadata extends AbstractFakeDatabaseMetaData {
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see org.talend.fakejdbc.FakeDatabaseMetaData#getCatalogs()
      */
     @Override
@@ -178,7 +178,7 @@ public class EmbeddedHiveDataBaseMetadata extends AbstractFakeDatabaseMetaData {
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see org.talend.commons.utils.database.FakeDatabaseMetaData#getPrimaryKeys(java.lang.String, java.lang.String,
      * java.lang.String)
      */
@@ -189,7 +189,7 @@ public class EmbeddedHiveDataBaseMetadata extends AbstractFakeDatabaseMetaData {
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see org.talend.commons.utils.database.FakeDatabaseMetaData#getTableTypes()
      */
     @Override
@@ -207,7 +207,7 @@ public class EmbeddedHiveDataBaseMetadata extends AbstractFakeDatabaseMetaData {
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see org.talend.commons.utils.database.FakeDatabaseMetaData#getExportedKeys(java.lang.String, java.lang.String,
      * java.lang.String)
      */
@@ -233,7 +233,7 @@ public class EmbeddedHiveDataBaseMetadata extends AbstractFakeDatabaseMetaData {
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see org.talend.commons.utils.database.FakeDatabaseMetaData#getTables(java.lang.String, java.lang.String,
      * java.lang.String, java.lang.String[])
      */
@@ -262,7 +262,7 @@ public class EmbeddedHiveDataBaseMetadata extends AbstractFakeDatabaseMetaData {
 
         try {
             Class hiveClass = hiveObject.getClass();
-            Method method = hiveClass.getDeclaredMethod("getConf");//$NON-NLS-1$ 
+            Method method = hiveClass.getDeclaredMethod("getConf");//$NON-NLS-1$
             Object hiveConf = method.invoke(hiveObject);
             Class hiveConfClass = hiveConf.getClass();
             // find ConfVar enum in the HiveConf class.
@@ -320,7 +320,7 @@ public class EmbeddedHiveDataBaseMetadata extends AbstractFakeDatabaseMetaData {
 
     /**
      * DOC ycbai Comment method "getTableType".
-     * 
+     *
      * @param dbName
      * @param tableName
      * @return the type of table.
@@ -340,7 +340,7 @@ public class EmbeddedHiveDataBaseMetadata extends AbstractFakeDatabaseMetaData {
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see org.talend.commons.utils.database.FakeDatabaseMetaData#getColumns(java.lang.String, java.lang.String,
      * java.lang.String, java.lang.String)
      */
@@ -365,7 +365,7 @@ public class EmbeddedHiveDataBaseMetadata extends AbstractFakeDatabaseMetaData {
                 Object table = ReflectionUtils.invokeMethod(hiveObject, "getTable", new Object[] { hiveCat, tableNamePattern }); //$NON-NLS-1$
                 if (table != null) {
                     Class tableClass = table.getClass();
-                    Method getAllColsMethod = tableClass.getDeclaredMethod("getAllCols");//$NON-NLS-1$ 
+                    Method getAllColsMethod = tableClass.getDeclaredMethod("getAllCols");//$NON-NLS-1$
                     Object cols = getAllColsMethod.invoke(table);
                     if (cols instanceof List) {
                         List colsList = (List) cols;

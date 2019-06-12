@@ -1,6 +1,6 @@
 // ============================================================================
 //
-// Copyright (C) 2006-2018 Talend Inc. - www.talend.com
+// Copyright (C) 2006-2019 Talend Inc. - www.talend.com
 //
 // This source code is available under agreement available at
 // %InstallDIR%\features\org.talend.rcp.branding.%PRODUCTNAME%\%PRODUCTNAME%license.txt
@@ -36,9 +36,9 @@ import org.talend.utils.xml.XmlUtils;
 
 /**
  * This class is used for transfering XML file to HTML file.
- * 
+ *
  * $Id: HTMLGenerator.java 2007-3-7,下午04:42:22 ftang $
- * 
+ *
  */
 public class HTMLHandler {
 
@@ -49,7 +49,7 @@ public class HTMLHandler {
 
     /**
      * This method is used for generating HTML file base on given folder, job name and xsl file name.
-     * 
+     *
      * @param tempFolderPath a string
      * @param jobName a string
      * @param htmlFileMap
@@ -133,7 +133,7 @@ public class HTMLHandler {
 
     /**
      * This method is used for generating HTML file base on given folder, job name and xsl file name.
-     * 
+     *
      * @param tempFolderPath a string
      * @param jobNameOrComponentName a string
      * @param externalNodeHTMLList
@@ -199,7 +199,7 @@ public class HTMLHandler {
 
     /**
      * This methos is used for coping file from one place to the other.
-     * 
+     *
      * @param srcFilePath
      * @param destFilePath
      * @throws Exception

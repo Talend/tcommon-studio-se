@@ -1,6 +1,6 @@
 // ============================================================================
 //
-// Copyright (C) 2006-2018 Talend Inc. - www.talend.com
+// Copyright (C) 2006-2019 Talend Inc. - www.talend.com
 //
 // This source code is available under agreement available at
 // %InstallDIR%\features\org.talend.rcp.branding.%PRODUCTNAME%\%PRODUCTNAME%license.txt
@@ -31,9 +31,9 @@ import org.talend.commons.ui.swt.formtools.UtilsButton;
 /**
  * Test org.talend.commons.ui.swt.formtools<br/>
  * .
- * 
+ *
  * $Id: TestFormtools.java 7038 2007-11-15 14:05:48Z plegall $
- * 
+ *
  */
 public final class TestFormtools {
 
@@ -60,7 +60,7 @@ public final class TestFormtools {
 
     /**
      * m�thode principale.
-     * 
+     *
      * @param args
      */
     public static void main(String[] args) {
@@ -111,7 +111,7 @@ public final class TestFormtools {
 
     /**
      * updateStatus.
-     * 
+     *
      * @param String
      */
     // private static void updateStatus(String string) {

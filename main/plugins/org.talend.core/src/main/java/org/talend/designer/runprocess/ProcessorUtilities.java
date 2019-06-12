@@ -1,6 +1,6 @@
 // ============================================================================
 //
-// Copyright (C) 2006-2018 Talend Inc. - www.talend.com
+// Copyright (C) 2006-2019 Talend Inc. - www.talend.com
 //
 // This source code is available under agreement available at
 // %InstallDIR%\features\org.talend.rcp.branding.%PRODUCTNAME%\%PRODUCTNAME%license.txt
@@ -47,6 +47,7 @@ import org.talend.commons.exception.CommonExceptionHandler;
 import org.talend.commons.exception.ExceptionHandler;
 import org.talend.commons.exception.PersistenceException;
 import org.talend.commons.runtime.model.repository.ERepositoryStatus;
+import org.talend.commons.utils.PasswordEncryptUtil;
 import org.talend.commons.utils.generation.JavaUtils;
 import org.talend.commons.utils.time.TimeMeasure;
 import org.talend.core.CorePlugin;
@@ -71,6 +72,7 @@ import org.talend.core.model.metadata.MetadataTalendType;
 import org.talend.core.model.metadata.types.JavaTypesManager;
 import org.talend.core.model.process.EParameterFieldType;
 import org.talend.core.model.process.IContext;
+import org.talend.core.model.process.IContextParameter;
 import org.talend.core.model.process.IElementParameter;
 import org.talend.core.model.process.INode;
 import org.talend.core.model.process.IProcess;
@@ -861,7 +863,9 @@ public class ProcessorUtilities {
                 List<IContext> list = currentProcess.getContextManager().getListContext();
                 for (IContext context : list) {
                     if (context.getName().equals(currentContext.getName())) {
-                        processor.setContext(currentContext); // generate current context.
+                        // override parameter value before generate current context
+                        IContext checkedContext = checkNeedOverrideContextParameterValue(currentContext, jobInfo);
+                        processor.setContext(checkedContext); // generate current context.
                     } else {
                         processor.setContext(context);
                     }
@@ -900,6 +904,38 @@ public class ProcessorUtilities {
         } else {
             processor.setCodeGenerated(true);
         }
+    }
+
+    private static IContext checkNeedOverrideContextParameterValue(IContext currentContext, JobInfo jobInfo) {
+        if (jobInfo.getArgumentsMap() == null
+                || jobInfo.getArgumentsMap().get(TalendProcessArgumentConstant.ARG_CONTEXT_PARAMS) == null) {
+            return currentContext;
+        }
+        IContext context = currentContext.clone();
+
+        // (override parameter) parameterName-> contextParameter in parameterMap
+        Map<String, ContextParameterType> parameterMap = new HashMap<String, ContextParameterType>();
+        List paramsList = ProcessUtils.getOptionValue(jobInfo.getArgumentsMap(), TalendProcessArgumentConstant.ARG_CONTEXT_PARAMS,
+                (List) null);
+        for (Object param : paramsList) {
+            if (param instanceof ContextParameterType) {
+                ContextParameterType contextParamType = (ContextParameterType) param;
+                parameterMap.put(contextParamType.getName(), contextParamType);
+            }
+        }
+
+        List<IContextParameter> contextParameterList = context.getContextParameterList();
+        for (IContextParameter contextParameter : contextParameterList) {
+            ContextParameterType overrideParameter = parameterMap.get(contextParameter.getName());
+            if (overrideParameter != null && (StringUtils.isNotBlank(overrideParameter.getValue()))) {
+                if (PasswordEncryptUtil.isPasswordType(contextParameter.getType())) {
+                    contextParameter.setValue(overrideParameter.getRawValue());
+                } else {
+                    contextParameter.setValue(overrideParameter.getValue());
+                }
+            }
+        }
+        return context;
     }
 
     private static void generateDataSet(IProcess process, IProcessor processor) {
@@ -1124,6 +1160,10 @@ public class ProcessorUtilities {
                 argumentsMap.put(TalendProcessArgumentConstant.ARG_ENABLE_APPLY_CONTEXT_TO_CHILDREN,
                         jobInfo.isApplyContextToChildren());
                 argumentsMap.put(TalendProcessArgumentConstant.ARG_GENERATE_OPTION, option);
+                if (StringUtils.isNotBlank(jobInfo.getContextName())) {
+                    // for child job bat file lack of context
+                    argumentsMap.put(TalendProcessArgumentConstant.ARG_NEED_CONTEXT, true);
+                }
                 processor.setArguments(argumentsMap);
             }
             setNeededResources(argumentsMap, jobInfo);
@@ -1181,7 +1221,7 @@ public class ProcessorUtilities {
 
     /**
      * DOC nrousseau Comment method "cleanSourceFolder".
-     * 
+     *
      * @param progressMonitor
      * @param currentProcess
      * @param processor
@@ -1227,9 +1267,9 @@ public class ProcessorUtilities {
     }
 
     /**
-     * 
+     *
      * copy the current item's drools file from 'workspace/metadata/survivorship' to '.Java/src/resources'
-     * 
+     *
      * @param processItem
      */
     private static void copyDQDroolsToSrc(ProcessItem processItem) {
@@ -1284,7 +1324,7 @@ public class ProcessorUtilities {
     /**
      * For child job runtime resource file needed, copy the reource file to 'src\main\ext-resources' DOC jding Comment
      * method "copyDependenciedResources".
-     * 
+     *
      * @param currentProcess
      */
     private static void copyDependenciedResources(IProcess currentProcess) {
@@ -1302,7 +1342,7 @@ public class ProcessorUtilities {
             Set<JobInfo> childrenJobInfo = getChildrenJobInfo(rootItem, false);
             for (JobInfo jobInfo : childrenJobInfo) {
                 Property property = jobInfo.getProcessItem().getProperty();
-                
+
                 Set<String> resourceList = new HashSet<String>();
                 List<ContextType> contexts = jobInfo.getProcessItem().getProcess().getContext();
                 for (ContextType context : contexts) {
@@ -2203,7 +2243,7 @@ public class ProcessorUtilities {
         // trunjob component
         EList<NodeType> nodes = ptype.getNode();
         getSubjobInfo(nodes, ptype, parentJobInfo, jobInfos,firstChildOnly);
-        
+
         if (parentJobInfo.isTestContainer()
                 && GlobalServiceRegister.getDefault().isServiceRegistered(ITestContainerProviderService.class)) {
             ITestContainerProviderService testContainerService =
@@ -2240,7 +2280,7 @@ public class ProcessorUtilities {
         }
         return jobInfos;
     }
-    
+
     private static Set<JobInfo> getSubjobInfo(List<NodeType> nodes, ProcessType ptype, JobInfo parentJobInfo, Set<JobInfo> jobInfos,
             boolean firstChildOnly) {
         String jobletPaletteType = null;
@@ -2292,7 +2332,7 @@ public class ProcessorUtilities {
                             JobInfo jobInfo = new JobInfo(processItem, jobContext);
                             jobInfo.setJobId(jobId);
                             if (!jobInfos.contains(jobInfo)) {
-                                jobInfos.add(jobInfo);                                
+                                jobInfos.add(jobInfo);
                                 jobInfo.setFatherJobInfo(parentJobInfo);
                                 if (!firstChildOnly) {
                                     getAllJobInfo(processItem.getProcess(), jobInfo, jobInfos, firstChildOnly);
@@ -2464,7 +2504,7 @@ public class ProcessorUtilities {
         }
         return null;
     }
-    
+
     public static File getJavaProjectLibFolder() {
         if (GlobalServiceRegister.getDefault().isServiceRegistered(IRunProcessService.class)) {
             IRunProcessService processService =
@@ -2501,7 +2541,7 @@ public class ProcessorUtilities {
 
     /**
      * Getter for hasLoopDependency.
-     * 
+     *
      * @return the hasLoopDependency
      */
     public static boolean hasLoopDependency() {
@@ -2510,7 +2550,7 @@ public class ProcessorUtilities {
 
     /**
      * Getter for mainJobInfo. <font color="red">Need to check null</font>
-     * 
+     *
      * @return the mainJobInfo
      */
     public static JobInfo getMainJobInfo() {
@@ -2584,7 +2624,7 @@ public class ProcessorUtilities {
     public static boolean isdebug() {
         return isDebug;
     }
-    
+
     public static boolean isNeedProjectProcessId(String componentName) {
         return "tRunJob".equalsIgnoreCase(componentName) || "cTalendJob".equalsIgnoreCase(componentName);
     }

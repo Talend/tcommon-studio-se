@@ -1,6 +1,6 @@
 // ============================================================================
 //
-// Copyright (C) 2006-2018 Talend Inc. - www.talend.com
+// Copyright (C) 2006-2019 Talend Inc. - www.talend.com
 //
 // This source code is available under agreement available at
 // %InstallDIR%\features\org.talend.rcp.branding.%PRODUCTNAME%\%PRODUCTNAME%license.txt
@@ -31,9 +31,9 @@ import org.talend.core.ui.i18n.Messages;
 
 /**
  * yzhang class global comment. Detailled comment <br/>
- * 
+ *
  * $Id: talend.epf 1 2006-09-29 17:06:40 +0000 (ææäº, 29 ä¹æ 2006) nrousseau $
- * 
+ *
  */
 public class PaletteContentDialog extends Dialog {
 
@@ -47,7 +47,7 @@ public class PaletteContentDialog extends Dialog {
 
     /**
      * DOC yzhang PaletteContentDialog constructor comment.
-     * 
+     *
      * @param parentShell
      */
     public PaletteContentDialog(Shell parentShell, ComponentsFormatPreferencePage page) {
@@ -59,7 +59,7 @@ public class PaletteContentDialog extends Dialog {
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see org.eclipse.jface.window.Window#configureShell(org.eclipse.swt.widgets.Shell)
      */
     @Override
@@ -71,7 +71,7 @@ public class PaletteContentDialog extends Dialog {
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see org.eclipse.jface.dialogs.Dialog#createDialogArea(org.eclipse.swt.widgets.Composite)
      */
     @Override
@@ -84,7 +84,7 @@ public class PaletteContentDialog extends Dialog {
 
     /**
      * yzhang Comment method "addViewer".
-     * 
+     *
      * @param parent
      */
     private void addTreeViewer(Composite parent) {
@@ -108,7 +108,7 @@ public class PaletteContentDialog extends Dialog {
 
     /**
      * yzhang Comment method "addFileds".
-     * 
+     *
      * @param parent
      */
     private void addFileds(Composite parent) {
@@ -135,7 +135,7 @@ public class PaletteContentDialog extends Dialog {
 
     /**
      * yzhang Comment method "getViewer".
-     * 
+     *
      * @return
      */
     public TreeViewer getViewer() {
@@ -144,7 +144,7 @@ public class PaletteContentDialog extends Dialog {
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see org.eclipse.jface.dialogs.Dialog#okPressed()
      */
     @Override

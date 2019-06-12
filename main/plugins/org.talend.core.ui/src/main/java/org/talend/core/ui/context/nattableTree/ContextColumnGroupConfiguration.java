@@ -1,6 +1,6 @@
 // ============================================================================
 //
-// Copyright (C) 2006-2018 Talend Inc. - www.talend.com
+// Copyright (C) 2006-2019 Talend Inc. - www.talend.com
 //
 // This source code is available under agreement available at
 // %InstallDIR%\features\org.talend.rcp.branding.%PRODUCTNAME%\%PRODUCTNAME%license.txt
@@ -34,7 +34,7 @@ import org.eclipse.swt.SWT;
 
 /**
  * created by ldong on Sep 19, 2014 Detailled comment
- * 
+ *
  */
 public class ContextColumnGroupConfiguration extends DefaultColumnGroupHeaderLayerConfiguration {
 
@@ -42,7 +42,7 @@ public class ContextColumnGroupConfiguration extends DefaultColumnGroupHeaderLay
 
     /**
      * DOC ldong ContextColumnGroupConfiguration constructor comment.
-     * 
+     *
      * @param columnGroupModel
      */
     public ContextColumnGroupConfiguration(ColumnGroupModel columnGroupModel) {
@@ -53,7 +53,7 @@ public class ContextColumnGroupConfiguration extends DefaultColumnGroupHeaderLay
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see
      * org.eclipse.nebula.widgets.nattable.group.config.DefaultColumnGroupHeaderLayerConfiguration#configureRegistry
      * (org.eclipse.nebula.widgets.nattable.config.IConfigRegistry)
@@ -66,7 +66,7 @@ public class ContextColumnGroupConfiguration extends DefaultColumnGroupHeaderLay
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see
      * org.eclipse.nebula.widgets.nattable.group.config.DefaultColumnGroupHeaderLayerConfiguration#configureUiBindings
      * (org.eclipse.nebula.widgets.nattable.ui.binding.UiBindingRegistry)

@@ -1,6 +1,6 @@
 // ============================================================================
 //
-// Copyright (C) 2006-2018 Talend Inc. - www.talend.com
+// Copyright (C) 2006-2019 Talend Inc. - www.talend.com
 //
 // This source code is available under agreement available at
 // %InstallDIR%\features\org.talend.rcp.branding.%PRODUCTNAME%\%PRODUCTNAME%license.txt
@@ -214,7 +214,7 @@ public class InstallModuleDialog extends TitleAreaDialog implements ICellEditorD
 
             /*
              * (non-Javadoc)
-             * 
+             *
              * @see org.eclipse.swt.events.SelectionAdapter#widgetSelected(org.eclipse.swt.events.SelectionEvent)
              */
             @Override
@@ -356,7 +356,7 @@ public class InstallModuleDialog extends TitleAreaDialog implements ICellEditorD
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see org.eclipse.jface.dialogs.TitleAreaDialog#setMessage(java.lang.String, int)
      */
     @Override
@@ -371,7 +371,7 @@ public class InstallModuleDialog extends TitleAreaDialog implements ICellEditorD
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see org.eclipse.jface.dialogs.Dialog#createContents(org.eclipse.swt.widgets.Composite)
      */
     @Override
@@ -405,7 +405,7 @@ public class InstallModuleDialog extends TitleAreaDialog implements ICellEditorD
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see org.talend.commons.ui.runtime.expressionbuilder.ICellEditorDialog#openDialog(java.lang.Object)
      */
     @Override
@@ -422,7 +422,7 @@ public class InstallModuleDialog extends TitleAreaDialog implements ICellEditorD
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see org.eclipse.jface.dialogs.Dialog#okPressed()
      */
     @Override
@@ -478,7 +478,7 @@ public class InstallModuleDialog extends TitleAreaDialog implements ICellEditorD
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see org.eclipse.jface.dialogs.Dialog#close()
      */
     @Override
@@ -489,7 +489,7 @@ public class InstallModuleDialog extends TitleAreaDialog implements ICellEditorD
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see org.talend.commons.ui.swt.dialogs.IConfigModuleDialog#getModuleName()
      */
     @Override
@@ -499,7 +499,7 @@ public class InstallModuleDialog extends TitleAreaDialog implements ICellEditorD
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see org.talend.commons.ui.swt.dialogs.IConfigModuleDialog#getMavenURI()
      */
     @Override

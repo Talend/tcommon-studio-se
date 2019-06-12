@@ -1,6 +1,6 @@
 // ============================================================================
 //
-// Copyright (C) 2006-2018 Talend Inc. - www.talend.com
+// Copyright (C) 2006-2019 Talend Inc. - www.talend.com
 //
 // This source code is available under agreement available at
 // %InstallDIR%\features\org.talend.rcp.branding.%PRODUCTNAME%\%PRODUCTNAME%license.txt
@@ -86,7 +86,7 @@ public class DefaultBrandingConfiguration implements IBrandingConfiguration {
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see org.talend.core.ui.branding.IBrandingConfiguration#getHiddenRepositoryCategory()
      */
     @Override
@@ -99,7 +99,7 @@ public class DefaultBrandingConfiguration implements IBrandingConfiguration {
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see org.talend.core.ui.branding.IBrandingConfiguration#initPerspective(org.eclipse.ui.IPageLayout)
      */
     @Override
@@ -167,7 +167,7 @@ public class DefaultBrandingConfiguration implements IBrandingConfiguration {
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see org.talend.core.ui.branding.IBrandingConfiguration#getAvailableComponents()
      */
     @Override
@@ -177,7 +177,7 @@ public class DefaultBrandingConfiguration implements IBrandingConfiguration {
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see org.talend.core.ui.branding.IBrandingConfiguration#getAvailableLanguages()
      */
     @Override
@@ -190,7 +190,7 @@ public class DefaultBrandingConfiguration implements IBrandingConfiguration {
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see org.talend.core.ui.branding.IBrandingConfiguration#getJobEditorSettings()
      */
     @Override
@@ -201,7 +201,7 @@ public class DefaultBrandingConfiguration implements IBrandingConfiguration {
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see org.talend.core.ui.branding.IBrandingConfiguration#isUseMailLoginCheck()
      */
     @Override
@@ -211,7 +211,7 @@ public class DefaultBrandingConfiguration implements IBrandingConfiguration {
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see org.talend.core.ui.branding.IBrandingConfiguration#isUseProductRegistration()
      */
     @Override
@@ -221,7 +221,7 @@ public class DefaultBrandingConfiguration implements IBrandingConfiguration {
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see org.talend.core.ui.branding.IBrandingConfiguration#isAllowDebugMode()
      */
     @Override
@@ -231,7 +231,7 @@ public class DefaultBrandingConfiguration implements IBrandingConfiguration {
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see org.talend.core.ui.branding.IBrandingConfiguration#isUseDemoProjects()
      */
     @Override
@@ -241,7 +241,7 @@ public class DefaultBrandingConfiguration implements IBrandingConfiguration {
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see org.talend.core.ui.branding.IBrandingConfiguration#getAdditionalTitle()
      */
     @Override
@@ -251,7 +251,7 @@ public class DefaultBrandingConfiguration implements IBrandingConfiguration {
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see org.talend.core.ui.branding.IBrandingConfiguration#setAdditionalTitle(java.lang.String)
      */
     @Override
@@ -277,7 +277,7 @@ public class DefaultBrandingConfiguration implements IBrandingConfiguration {
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see org.talend.core.ui.branding.IBrandingConfiguration#setUseMailLoginCheck(boolean)
      */
     @Override
@@ -287,7 +287,7 @@ public class DefaultBrandingConfiguration implements IBrandingConfiguration {
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see org.talend.core.ui.branding.IBrandingConfiguration#setUseProductRegistration(boolean)
      */
     @Override

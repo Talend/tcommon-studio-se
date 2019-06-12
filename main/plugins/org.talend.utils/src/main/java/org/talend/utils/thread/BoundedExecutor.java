@@ -1,6 +1,6 @@
 // ============================================================================
 //
-// Copyright (C) 2006-2018 Talend Inc. - www.talend.com
+// Copyright (C) 2006-2019 Talend Inc. - www.talend.com
 //
 // This source code is available under agreement available at
 // %InstallDIR%\features\org.talend.rcp.branding.%PRODUCTNAME%\%PRODUCTNAME%license.txt
@@ -22,7 +22,7 @@ import java.util.concurrent.ThreadPoolExecutor;
 import java.util.concurrent.TimeUnit;
 
 /**
- * 
+ *
  * BoundedExecutor. Useful to bound the executor at the bound value.
  */
 public class BoundedExecutor {
@@ -37,9 +37,9 @@ public class BoundedExecutor {
     }
 
     /**
-     * 
+     *
      * BoundedExecutor constructor.
-     * 
+     *
      * @param poolName for the pool to create internally
      * @param bound
      */
@@ -86,7 +86,7 @@ public class BoundedExecutor {
 
     /**
      * Getter for exec.
-     * 
+     *
      * @return the exec
      */
     public ExecutorService getExecutorService() {

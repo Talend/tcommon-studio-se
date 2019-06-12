@@ -1,6 +1,6 @@
 // ============================================================================
 //
-// Copyright (C) 2006-2018 Talend Inc. - www.talend.com
+// Copyright (C) 2006-2019 Talend Inc. - www.talend.com
 //
 // This source code is available under agreement available at
 // %InstallDIR%\features\org.talend.rcp.branding.%PRODUCTNAME%\%PRODUCTNAME%license.txt
@@ -31,8 +31,8 @@ import org.talend.cwm.relational.TdColumn;
 
 /**
  * created by ggu on Jul 5, 2012 Detailled comment
- * 
- * 
+ *
+ *
  * only test the normal null, so set mysql db as default, (no need care)
  */
 public class ExtractManager4NormalTest {
@@ -62,9 +62,9 @@ public class ExtractManager4NormalTest {
     }
 
     /**
-     * 
+     *
      * DOC ggu Comment method "testExtractTablesFromDB4Null".
-     * 
+     *
      * @throws Exception
      */
     @Test
@@ -95,7 +95,7 @@ public class ExtractManager4NormalTest {
     }
 
     /**
-     * 
+     *
      * DOC ggu Comment method "testReturnColumns4Null".
      */
     @Test

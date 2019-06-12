@@ -1,6 +1,6 @@
 // ============================================================================
 //
-// Copyright (C) 2006-2018 Talend Inc. - www.talend.com
+// Copyright (C) 2006-2019 Talend Inc. - www.talend.com
 //
 // This source code is available under agreement available at
 // %InstallDIR%\features\org.talend.rcp.branding.%PRODUCTNAME%\%PRODUCTNAME%license.txt
@@ -15,14 +15,14 @@ package org.talend.utils.files;
 import java.io.File;
 
 /**
- * 
+ *
  * DOC amaumont class global comment. Detailled comment
  */
 public interface FileDirCleanerFilter {
 
     /**
      * Tests whether or not the specified abstract pathname should be cleaned.
-     * 
+     *
      * @param pathname The abstract pathname to be tested
      * @return <code>true</code> if and only if <code>pathname</code> should be included
      */

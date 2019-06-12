@@ -1,6 +1,6 @@
 // ============================================================================
 //
-// Copyright (C) 2006-2018 Talend Inc. - www.talend.com
+// Copyright (C) 2006-2019 Talend Inc. - www.talend.com
 //
 // This source code is available under agreement available at
 // %InstallDIR%\features\org.talend.rcp.branding.%PRODUCTNAME%\%PRODUCTNAME%license.txt
@@ -41,9 +41,9 @@ import org.talend.repository.model.RepositoryConstants;
 
 /**
  * DOC mhelleboid class global comment. Detailled comment <br/>
- * 
+ *
  * $Id: RepositoryEditionManager.java 295 2006-11-02 08:28:03 +0000 (星期四, 02 十一月 2006) smallet $
- * 
+ *
  */
 public class RepositoryEditionManager {
 
@@ -66,7 +66,7 @@ public class RepositoryEditionManager {
 
     /**
      * DOC mhelleboid Comment method "getRepositoryProject".
-     * 
+     *
      * @return
      */
     private Project getRepositoryProject() {
@@ -77,9 +77,9 @@ public class RepositoryEditionManager {
 
     /**
      * DOC mhelleboid Comment method "getTempFolder".
-     * 
+     *
      * @param project TODO
-     * 
+     *
      * @return
      */
     private IPath getTempFolderPath(Project project) {

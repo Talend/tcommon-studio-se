@@ -1,6 +1,6 @@
 // ============================================================================
 //
-// Copyright (C) 2006-2018 Talend Inc. - www.talend.com
+// Copyright (C) 2006-2019 Talend Inc. - www.talend.com
 //
 // This source code is available under agreement available at
 // %InstallDIR%\features\org.talend.rcp.branding.%PRODUCTNAME%\%PRODUCTNAME%license.txt
@@ -20,7 +20,7 @@ import org.apache.log4j.Logger;
 
 /**
  * DOC amaumont class global comment. Detailled comment <br/>
- * 
+ *
  */
 public class ServerSocketFreePortOpener {
 
@@ -30,7 +30,7 @@ public class ServerSocketFreePortOpener {
 
     /**
      * DOC amaumont FreePortFinder constructor comment.
-     * 
+     *
      * @throws IOException
      */
     public ServerSocketFreePortOpener() {
@@ -38,9 +38,9 @@ public class ServerSocketFreePortOpener {
     }
 
     /**
-     * 
+     *
      * Return true if the specified port is free.
-     * 
+     *
      * @param port
      * @return
      * @throws IOException
@@ -51,11 +51,11 @@ public class ServerSocketFreePortOpener {
     }
 
     /**
-     * 
+     *
      * Search the next free port from <code>portRangeBound1</code> to max port <code>portRangeBound2</code> with
      * randomize start searching. If port is no longer to use, remember to invoke the method {@link #removePort(int)} to
      * remove the port.
-     * 
+     *
      * @param portRangeBound1
      * @param portRangeBound2
      * @return ServerSocket or null if can't find an available port
@@ -65,9 +65,9 @@ public class ServerSocketFreePortOpener {
     }
 
     /**
-     * 
+     *
      * Search the next free port from <code>portRangeBound1</code> to max port <code>portRangeBound2</code>.
-     * 
+     *
      * @param portRangeBound1
      * @param portRangeBound2
      * @param randomizeIndexStart if true, start with a randomized port number between <code>portRangeBound1</code> and

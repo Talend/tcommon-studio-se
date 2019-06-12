@@ -1,6 +1,6 @@
 // ============================================================================
 //
-// Copyright (C) 2006-2018 Talend Inc. - www.talend.com
+// Copyright (C) 2006-2019 Talend Inc. - www.talend.com
 //
 // This source code is available under agreement available at
 // %InstallDIR%\features\org.talend.rcp.branding.%PRODUCTNAME%\%PRODUCTNAME%license.txt
@@ -20,17 +20,17 @@ import us.monoid.json.JSONObject;
 public interface ITokenCollector {
 
     /**
-     * 
+     *
      * ggu Comment method "priorCollect".
-     * 
+     *
      * main for special collect, after logon project.
      */
     public void priorCollect() throws Exception;
 
     /**
-     * 
+     *
      * ggu Comment method "collect".
-     * 
+     *
      * collect the values from different provider.
      */
     public JSONObject collect() throws Exception;

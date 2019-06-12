@@ -1,6 +1,6 @@
 // ============================================================================
 //
-// Copyright (C) 2006-2018 Talend Inc. - www.talend.com
+// Copyright (C) 2006-2019 Talend Inc. - www.talend.com
 //
 // This source code is available under agreement available at
 // %InstallDIR%\features\org.talend.rcp.branding.%PRODUCTNAME%\%PRODUCTNAME%license.txt
@@ -22,11 +22,11 @@ import org.eclipse.jface.viewers.TreeViewer;
 public interface IImportExportItemsActionHelper {
 
     /**
-     * 
+     *
      * DOC ggu Comment method "isImportEnabled".
-     * 
+     *
      * Work for the method init of ImportItemsAction.
-     * 
+     *
      * @param viewer, current repository view.
      * @param selection, the selection of repository view.
      * @return if all actions return false, will disable the action. If there is one action to return true, will enable
@@ -37,9 +37,9 @@ public interface IImportExportItemsActionHelper {
     boolean isImportEnabled(IAction action, ISelection selection);
 
     /**
-     * 
+     *
      * DOC ggu Comment method "isExportEnabled".
-     * 
+     *
      * @param viewer, current repository view.
      * @param selection, the selection of repository view.
      * @return if all actions return false, will disable the action. If there is one action to return true, will enable

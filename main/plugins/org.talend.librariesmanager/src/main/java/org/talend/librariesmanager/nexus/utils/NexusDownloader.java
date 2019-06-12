@@ -1,6 +1,6 @@
 // ============================================================================
 //
-// Copyright (C) 2006-2018 Talend Inc. - www.talend.com
+// Copyright (C) 2006-2019 Talend Inc. - www.talend.com
 //
 // This source code is available under agreement available at
 // %InstallDIR%\features\org.talend.rcp.branding.%PRODUCTNAME%\%PRODUCTNAME%license.txt
@@ -64,7 +64,7 @@ public class NexusDownloader implements IDownloadHelper {
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see org.talend.core.download.IDownloadHelper#download(java.net.URL, java.io.File)
      */
     @Override
@@ -181,7 +181,7 @@ public class NexusDownloader implements IDownloadHelper {
 
     /**
      * Return true if the user cancel download process.
-     * 
+     *
      * @return the cancel
      */
     public boolean isCancel() {
@@ -190,7 +190,7 @@ public class NexusDownloader implements IDownloadHelper {
 
     /**
      * Set true if the user cacel download process.
-     * 
+     *
      * @param cancel the cancel to set
      */
     @Override
@@ -200,7 +200,7 @@ public class NexusDownloader implements IDownloadHelper {
 
     /**
      * Notify listeners about progress.
-     * 
+     *
      * @param bytesRead
      */
     private void fireDownloadProgress(int bytesRead) {
@@ -230,7 +230,7 @@ public class NexusDownloader implements IDownloadHelper {
 
     /**
      * Add listener to observe the download process.
-     * 
+     *
      * @param listener
      */
     public void addDownloadListener(DownloadListener listener) {

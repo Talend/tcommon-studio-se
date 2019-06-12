@@ -1,6 +1,6 @@
 // ============================================================================
 //
-// Copyright (C) 2006-2018 Talend Inc. - www.talend.com
+// Copyright (C) 2006-2019 Talend Inc. - www.talend.com
 //
 // This source code is available under agreement available at
 // %InstallDIR%\features\org.talend.rcp.branding.%PRODUCTNAME%\%PRODUCTNAME%license.txt
@@ -49,14 +49,14 @@ public final class DesignerMavenUiHelper {
 
     /**
      * only display the tree nodes with same type as selected node or not.
-     * 
+     *
      * false, by default, display all support nodes.
      */
     public final static boolean onlyWithselectedType = false;
 
     /**
      * When have BD nodes, the "Job Designer" node is a fake node for process type now.
-     * 
+     *
      */
     public static boolean isFakeProcessRootNode(RepositoryNode node) {
         ENodeType nodeType = node.getType();
@@ -76,7 +76,7 @@ public final class DesignerMavenUiHelper {
     }
 
     /**
-     * 
+     *
      * FIXME, maybe this checking is not good.
      */
     private static boolean isStandardJobNode(IRepositoryNode node) {
@@ -89,7 +89,7 @@ public final class DesignerMavenUiHelper {
 
     /**
      * Check the pom and assembly exsited under the node of disk or not.
-     * 
+     *
      * FIXME, need check the node is in reference project, also with merge reference project option.
      */
     public static boolean existMavenSetting(RepositoryNode node, String... fileNames) {
@@ -128,9 +128,9 @@ public final class DesignerMavenUiHelper {
     }
 
     /**
-     * 
+     *
      * get the absolute path for node.
-     * 
+     *
      * for job, like <project absolute path>/process/...
      */
     public static IPath getNodeAbsolutePath(RepositoryNode node) throws PersistenceException {
@@ -153,9 +153,9 @@ public final class DesignerMavenUiHelper {
     }
 
     /**
-     * 
+     *
      * get the node path in disk, it's relative path in project.
-     * 
+     *
      * for job, like process/...
      */
     public static IPath getNodeProjectRelativePath(RepositoryNode node) {

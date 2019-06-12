@@ -1,6 +1,6 @@
 // ============================================================================
 //
-// Copyright (C) 2006-2018 Talend Inc. - www.talend.com
+// Copyright (C) 2006-2019 Talend Inc. - www.talend.com
 //
 // This source code is available under agreement available at
 // %InstallDIR%\features\org.talend.rcp.branding.%PRODUCTNAME%\%PRODUCTNAME%license.txt
@@ -404,11 +404,11 @@ public class DuplicateAction extends AContextualAction {
     }
 
     /**
-     * 
+     *
      * DOC YeXiaowei Comment method "isValid".
-     * 
+     *
      * @param node
-     * 
+     *
      * @param itemName
      * @param selectionInClipboard
      * @return null means valid, other means some error exist
@@ -523,7 +523,7 @@ public class DuplicateAction extends AContextualAction {
 
     /**
      * DOC hcw Comment method "isKeyword".
-     * 
+     *
      * @param itemName
      * @return
      */
@@ -908,9 +908,9 @@ public class DuplicateAction extends AContextualAction {
     }
 
     /**
-     * 
+     *
      * DOC YeXiaowei Comment method "resetProcessVersion".
-     * 
+     *
      * @return
      */
     protected boolean resetProcessVersion() {

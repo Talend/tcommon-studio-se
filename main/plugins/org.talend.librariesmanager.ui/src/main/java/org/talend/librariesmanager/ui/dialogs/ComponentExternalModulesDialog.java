@@ -1,6 +1,6 @@
 // ============================================================================
 //
-// Copyright (C) 2006-2018 Talend Inc. - www.talend.com
+// Copyright (C) 2006-2019 Talend Inc. - www.talend.com
 //
 // This source code is available under agreement available at
 // %InstallDIR%\features\org.talend.rcp.branding.%PRODUCTNAME%\%PRODUCTNAME%license.txt
@@ -23,7 +23,7 @@ import org.talend.librariesmanager.ui.i18n.Messages;
 
 /**
  * created by Administrator on 2012-9-18 Detailled comment
- * 
+ *
  */
 public class ComponentExternalModulesDialog extends ExternalModulesInstallDialogWithProgress {
 
@@ -58,7 +58,7 @@ public class ComponentExternalModulesDialog extends ExternalModulesInstallDialog
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see
      * org.talend.librariesmanager.ui.dialogs.ExternalModulesInstallDialog#configureShell(org.eclipse.swt.widgets.Shell)
      */

@@ -1,6 +1,6 @@
 // ============================================================================
 //
-// Copyright (C) 2006-2018 Talend Inc. - www.talend.com
+// Copyright (C) 2006-2019 Talend Inc. - www.talend.com
 //
 // This source code is available under agreement available at
 // %InstallDIR%\features\org.talend.rcp.branding.%PRODUCTNAME%\%PRODUCTNAME%license.txt
@@ -17,9 +17,9 @@ import java.util.Map;
 
 /**
  * DOC nrousseau class global comment. Detailled comment <br/>
- * 
+ *
  * $Id: IMetadataTable.java 38013 2010-03-05 14:21:59Z mhirt $
- * 
+ *
  */
 public interface IMetadataTable {
 
@@ -85,7 +85,7 @@ public interface IMetadataTable {
 
     /**
      * used in component team; it is used to judge if the List<IMetadataColumn> has the dynamic columns.
-     * 
+     *
      * @author wliu
      * @return true: the List<IMetadataColumn> has dynamic column; false,not
      */

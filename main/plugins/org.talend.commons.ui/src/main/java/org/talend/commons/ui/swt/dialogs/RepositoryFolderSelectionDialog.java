@@ -2,7 +2,7 @@
 //
 // Talend Community Edition
 //
-// Copyright (C) 2006-2018 Talend Inc. - www.talend.com
+// Copyright (C) 2006-2019 Talend Inc. - www.talend.com
 //
 // This library is free software; you can redistribute it and/or
 // modify it under the terms of the GNU Lesser General Public
@@ -38,9 +38,9 @@ import org.eclipse.ui.dialogs.SelectionDialog;
 
 /**
  * yzhang class global comment. Detailled comment <br/>
- * 
+ *
  * $Id: talend.epf 1 2006-09-29 17:06:40Z nrousseau $
- * 
+ *
  */
 public class RepositoryFolderSelectionDialog extends SelectionDialog {
 
@@ -54,7 +54,7 @@ public class RepositoryFolderSelectionDialog extends SelectionDialog {
 
     /**
      * Sets the treeListener.
-     * 
+     *
      * @param treeListener the treeListener to set
      */
     public void setTreeListener(ITreeViewerListener treeListener) {
@@ -69,7 +69,7 @@ public class RepositoryFolderSelectionDialog extends SelectionDialog {
 
     /**
      * yzhang RepositoryFolderSelectionDialog constructor comment.
-     * 
+     *
      * @param parentShell
      */
     public RepositoryFolderSelectionDialog(Shell parentShell) {
@@ -78,7 +78,7 @@ public class RepositoryFolderSelectionDialog extends SelectionDialog {
 
     /**
      * Sets the input.
-     * 
+     *
      * @param input the input to set
      */
     public void setInput(Object input) {
@@ -87,7 +87,7 @@ public class RepositoryFolderSelectionDialog extends SelectionDialog {
 
     /**
      * Sets the contentProvider.
-     * 
+     *
      * @param contentProvider the contentProvider to set
      */
     public void setContentProvider(ITreeContentProvider contentProvider) {
@@ -96,7 +96,7 @@ public class RepositoryFolderSelectionDialog extends SelectionDialog {
 
     /**
      * Sets the labelProvider.
-     * 
+     *
      * @param labelProvider the labelProvider to set
      */
     public void setLabelProvider(ILabelProvider labelProvider) {
@@ -105,7 +105,7 @@ public class RepositoryFolderSelectionDialog extends SelectionDialog {
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see org.eclipse.jface.dialogs.Dialog#createDialogArea(org.eclipse.swt.widgets.Composite)
      */
     @Override
@@ -136,7 +136,7 @@ public class RepositoryFolderSelectionDialog extends SelectionDialog {
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see org.eclipse.jface.dialogs.Dialog#okPressed()
      */
     @Override

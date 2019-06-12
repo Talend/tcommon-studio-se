@@ -1,6 +1,6 @@
 // ============================================================================
 //
-// Copyright (C) 2006-2018 Talend Inc. - www.talend.com
+// Copyright (C) 2006-2019 Talend Inc. - www.talend.com
 //
 // This source code is available under agreement available at
 // %InstallDIR%\features\org.talend.rcp.branding.%PRODUCTNAME%\%PRODUCTNAME%license.txt
@@ -84,29 +84,29 @@ import org.talend.libraries.ui.SWTFacade;
  * A concrete Table viewer based on the JFace <code>TableViewer</code> and the SWT <code>Table</code> control.
  * <p>
  * This class is intended to make easier creation and use of a table.
- * 
+ *
  * For a basic usage you need create columns with <code>TableViewerCreatorColumn</code> and init a addedObjects of
  * objects. The addedObjects will be introspected to retrieve values of each its objects. Each object of the
  * addedObjects will represent one line in the Table.
- * 
+ *
  * The following functions are already implemented : sort, automatic resize of columns (see layoutMode), and basic
  * functions.
- * 
+ *
  * You can access directly to instanciated <code>TableViewer</code> and <code>Table</code> to manage, add custom
  * listeners or other usages.
- * 
+ *
  * Filtering is not currently implemented, but you can add manually yours.
- * 
+ *
  * <p>
  * You can add CellEditor using <code>TableViewerCreatorColumn</code> and <code>setCellEditor()</code> method. According
  * case you will have to override certain methods of <code>CellEditorValueAdapter</code>.
  * </p>
- * 
+ *
  * <p>
  * You can add TableEditor using <code>TableViewerCreatorColumn</code> and <code>setTableEditor()</code> method.
  * According case you will have to override certain methods of <code>TableEditorInitializer</code>.
  * </p>
- * 
+ *
  * Read the following steps to create a reflect table :
  * <p>
  * 1) instanciate <code>TableViewerCreator</code>
@@ -123,7 +123,7 @@ import org.talend.libraries.ui.SWTFacade;
  * - <code>setHeaderVisible</code> <br/>
  * - <code>setLinesVisible</code>
  * </p>
- * 
+ *
  * <p>
  * 3) optionally call <code>createTable</code> if you need initialize <code>Table</code>'s children components before
  * <code>init</code> call.
@@ -144,18 +144,18 @@ import org.talend.libraries.ui.SWTFacade;
  * - <code>setAllColumnsResizable</code> <br/>
  * - <code>setAllColumnsSortable</code> <br/>
  * </p>
- * 
+ *
  * <p>
  * 6) call <code>init</code> method with your addedObjects of objects in parameter.
  * </p>
- * 
+ *
  * @see org.eclipse.jface.viewers#TableViewer
  * @see org.eclipse.swt.widgets#Table <br/>
- * 
+ *
  * <br/>
- * 
+ *
  * $Id: TableViewerCreator.java 7183 2007-11-23 11:03:36Z amaumont $
- * 
+ *
  * @param <B> type of objects in the input list of <code>TableViewer</code>
  */
 public class TableViewerCreatorNotModifiable<B> {
@@ -184,13 +184,13 @@ public class TableViewerCreatorNotModifiable<B> {
     private boolean linesVisible = true;
 
     /**
-     * 
+     *
      */
     private Color emptyZoneColor;
 
     /**
      * SWT.BORDER style applied to <code>Table</code>.
-     * 
+     *
      * @see SWT#CHECK
      */
     private boolean borderVisible;
@@ -202,7 +202,7 @@ public class TableViewerCreatorNotModifiable<B> {
 
     /**
      * SWT.CHECK style applied to <code>Table</code>.
-     * 
+     *
      * @see SWT#CHECK
      */
     private boolean checkboxInFirstColumn;
@@ -285,7 +285,7 @@ public class TableViewerCreatorNotModifiable<B> {
 
     /**
      * Constructor.
-     * 
+     *
      * @param compositeParent used to initialize <code>Table</code>.
      */
     public TableViewerCreatorNotModifiable(Composite compositeParent) {
@@ -310,44 +310,44 @@ public class TableViewerCreatorNotModifiable<B> {
     }
 
     /**
-     * 
+     *
      * <p>
      * Create a new instance of <code>Table</code> with its <code>TableColumn</code> and create also a new instance of
      * <code>TableViewer</code> if these objects doesn't exist already.
      * </p>
-     * 
+     *
      * <p>
      * Initialize the <code>TableViewer</code> with by default the <code>DefaultStructuredContentProvider</code>, the
      * <code>DefaultTableLabelProvider</code> and the <code>DefaultTableViewerSorter</code>.
      * </p>
-     * 
+     *
      */
     public void init() {
         init(null);
     }
 
     /**
-     * 
+     *
      * <p>
      * Create a new instance of <code>Table</code> with its <code>TableColumn</code>s and create also a new instance of
      * <code>TableViewer</code> if these objects doesn't exist already.
      * </p>
-     * 
+     *
      * <p>
      * Initialize the <code>TableViewer</code> with by default the <code>DefaultStructuredContentProvider</code>, the
      * <code>DefaultTableLabelProvider</code> and the <code>DefaultTableViewerSorter</code>.
      * </p>
-     * 
+     *
      * <p>
      * If you use the default ContentProvider, you must set as input an object which extends <code>Collection</code>.
      * </p>
-     * 
-     * 
+     *
+     *
      * <p>
      * <b> If it is the second or more time than you call this method, only the input object is loaded. Call methods of
      * <code>TableViewer</code> for others operations. </b>
      * </p>
-     * 
+     *
      * @param input by default a object which extends <code>Collection</code>.
      */
     public void init(List list) {
@@ -407,10 +407,10 @@ public class TableViewerCreatorNotModifiable<B> {
     }
 
     /**
-     * 
+     *
      * Instantiate the <code>Table</code> with the <code>compositeParent</code> as parent, with pre-configured styles
      * and options.
-     * 
+     *
      * @return
      */
     public Table createTable() {
@@ -438,7 +438,7 @@ public class TableViewerCreatorNotModifiable<B> {
 
             /*
              * (non-Javadoc)
-             * 
+             *
              * @see org.eclipse.jface.viewers.TableViewer#add(java.lang.Object)
              */
             @Override
@@ -450,7 +450,7 @@ public class TableViewerCreatorNotModifiable<B> {
 
             /*
              * (non-Javadoc)
-             * 
+             *
              * @see org.eclipse.jface.viewers.TableViewer#add(java.lang.Object[])
              */
             @Override
@@ -468,7 +468,7 @@ public class TableViewerCreatorNotModifiable<B> {
 
             /*
              * (non-Javadoc)
-             * 
+             *
              * @see org.eclipse.jface.viewers.TableViewer#remove(java.lang.Object[])
              */
             @Override
@@ -481,7 +481,7 @@ public class TableViewerCreatorNotModifiable<B> {
 
             /*
              * (non-Javadoc)
-             * 
+             *
              * @see org.eclipse.jface.viewers.TableViewer#replace(java.lang.Object, int)
              */
             @Override
@@ -492,7 +492,7 @@ public class TableViewerCreatorNotModifiable<B> {
 
             /*
              * (non-Javadoc)
-             * 
+             *
              * @see org.eclipse.jface.viewers.StructuredViewer#refresh()
              */
             @Override
@@ -510,7 +510,7 @@ public class TableViewerCreatorNotModifiable<B> {
 
             /*
              * (non-Javadoc)
-             * 
+             *
              * @see org.eclipse.jface.viewers.StructuredViewer#refresh(boolean)
              */
             @Override
@@ -528,7 +528,7 @@ public class TableViewerCreatorNotModifiable<B> {
 
             /*
              * (non-Javadoc)
-             * 
+             *
              * @see org.eclipse.jface.viewers.StructuredViewer#refresh(java.lang.Object, boolean)
              */
             @Override
@@ -539,7 +539,7 @@ public class TableViewerCreatorNotModifiable<B> {
 
             /*
              * (non-Javadoc)
-             * 
+             *
              * @see org.eclipse.jface.viewers.StructuredViewer#refresh(java.lang.Object)
              */
             @Override
@@ -564,7 +564,7 @@ public class TableViewerCreatorNotModifiable<B> {
 
             /*
              * (non-Javadoc)
-             * 
+             *
              * @seeorg.eclipse.jface.viewers.ColumnViewer#triggerEditorActivationEvent(org.eclipse.jface.viewers.
              * ColumnViewerEditorActivationEvent)
              */
@@ -597,7 +597,7 @@ public class TableViewerCreatorNotModifiable<B> {
                         if (index == -1) {
                             return;
                         }
-                        B element = getInputList().get(index);
+                        B element = (B) item.getData();
                         // if (element != item.getData()) {
                         associate(element, item);
                         updateItem(item, element);
@@ -683,9 +683,9 @@ public class TableViewerCreatorNotModifiable<B> {
     }
 
     /**
-     * 
+     *
      * Initiate the style intended for instanciate <code>Table</code>.
-     * 
+     *
      * @return int style
      */
     protected int checkTableStyles() {
@@ -870,7 +870,7 @@ public class TableViewerCreatorNotModifiable<B> {
 
     /**
      * DOC amaumont Comment method "addTraversListenerRecursivly".
-     * 
+     *
      * @param control
      * @param traverseListenerForControls
      */
@@ -889,7 +889,7 @@ public class TableViewerCreatorNotModifiable<B> {
 
     /**
      * Edit a cell.
-     * 
+     *
      * @param currentControl current control before change, if null the first valid cell is edited or focused.
      */
     private void editOtherEditor(final Control currentControl) {
@@ -1035,7 +1035,7 @@ public class TableViewerCreatorNotModifiable<B> {
 
     /**
      * DOC amaumont Comment method "isEqualsOrChildOf".
-     * 
+     *
      * @param currentControl
      * @param control
      * @return
@@ -1058,14 +1058,14 @@ public class TableViewerCreatorNotModifiable<B> {
     }
 
     /**
-     * 
+     *
      * This method initialize erase listener to go round the following SWT bug
      * https://bugs.eclipse.org/bugs/show_bug.cgi?id=50163 "Table doesn't respect transparency in column images when
      * using a different row background color" .
-     * 
+     *
      * Unfortunately, use this listener implies that : - automatic tooltip in Table doesn't work anymore - bug when
      * {@link TableViewer#refresh()} or {@link TableViewer#refresh(boolean)} are called and possibly others...
-     * 
+     *
      */
     protected void createEraseItemListener() {
 
@@ -1267,7 +1267,7 @@ public class TableViewerCreatorNotModifiable<B> {
 
     /**
      * DOC amaumont Comment method "initColumnLayout".
-     * 
+     *
      * @param column
      */
     protected void initColumnLayout(final TableViewerCreatorColumnNotModifiable column) {
@@ -1286,7 +1286,7 @@ public class TableViewerCreatorNotModifiable<B> {
 
     /**
      * Create a <code>TableColumn</code> and intialize it from <code>TableViewerCreatorColumn</code>'s properties.
-     * 
+     *
      * @param column
      */
     protected TableColumn createTableColumn(final TableViewerCreatorColumnNotModifiable column) {
@@ -1345,7 +1345,7 @@ public class TableViewerCreatorNotModifiable<B> {
 
     /**
      * Unlike <code>Table</code> header is visible by default.
-     * 
+     *
      * @return true if table has header visible
      */
     public boolean isHeaderVisible() {
@@ -1357,7 +1357,7 @@ public class TableViewerCreatorNotModifiable<B> {
 
     /**
      * Unlike <code>Table</code> header is visible by default.
-     * 
+     *
      * @param headerVisible
      */
     public void setHeaderVisible(boolean headerVisible) {
@@ -1369,9 +1369,9 @@ public class TableViewerCreatorNotModifiable<B> {
     }
 
     /**
-     * 
+     *
      * DOC amaumont Comment method "addColumn".
-     * 
+     *
      * @param tableEditorColumn
      */
     public void addColumn(TableViewerCreatorColumnNotModifiable tableEditorColumn) {
@@ -1396,10 +1396,10 @@ public class TableViewerCreatorNotModifiable<B> {
 
     /**
      * Line selection mode for SWT Table. <br/>
-     * 
+     *
      * @see SWT.SINGLE
      * @see SWT.MULTI
-     * 
+     *
      */
     public enum LINE_SELECTION implements ISwtStyle {
         /**
@@ -1414,9 +1414,9 @@ public class TableViewerCreatorNotModifiable<B> {
         private int swtStyle = SWT.NONE;
 
         /**
-         * 
+         *
          * DOC amaumont LINE_SELECTION constructor comment.
-         * 
+         *
          * @param swtStyle
          */
         LINE_SELECTION(int swtStyle) {
@@ -1431,10 +1431,10 @@ public class TableViewerCreatorNotModifiable<B> {
 
     /**
      * Show selection mode of a <code>Table</code>'s row. <br/>
-     * 
+     *
      * @see SWT.FULL_SELECTION
      * @see SWT.HIDE_SELECTION
-     * 
+     *
      */
     public enum SHOW_ROW_SELECTION implements ISwtStyle {
         /**
@@ -1460,7 +1460,7 @@ public class TableViewerCreatorNotModifiable<B> {
 
     /**
      * Layout mode of the <code>TableViewer</code>.
-     * 
+     *
      */
     public enum LAYOUT_MODE {
         /**
@@ -1529,9 +1529,9 @@ public class TableViewerCreatorNotModifiable<B> {
     }
 
     /**
-     * 
+     *
      * <code>LINE_SELECTION.MULTI</code> is the default value.
-     * 
+     *
      * @param lineSelection
      */
     public void setLineSelection(LINE_SELECTION lineSelection) {
@@ -1540,7 +1540,7 @@ public class TableViewerCreatorNotModifiable<B> {
 
     /**
      * Unlike <code>Table</code> lines are visible by default.
-     * 
+     *
      * @see Table#getLinesVisible()
      */
     public boolean isLinesVisible() {
@@ -1552,7 +1552,7 @@ public class TableViewerCreatorNotModifiable<B> {
 
     /**
      * Unlike <code>Table</code> lines are visible by default.
-     * 
+     *
      * @see Table#setLinesVisible(boolean)
      */
     public void setLinesVisible(boolean linesVisible) {
@@ -1565,7 +1565,7 @@ public class TableViewerCreatorNotModifiable<B> {
 
     /**
      * By default <code>showSelection</code> has <code>SHOW_SELECTION.FULL</code> value.
-     * 
+     *
      * @return
      */
     public SHOW_ROW_SELECTION getShowLineSelection() {
@@ -1573,9 +1573,9 @@ public class TableViewerCreatorNotModifiable<B> {
     }
 
     /**
-     * 
+     *
      * By default <code>showSelection</code> has <code>SHOW_SELECTION.FULL</code> value.
-     * 
+     *
      * @param showLineSelection
      */
     public void setShowLineSelection(SHOW_ROW_SELECTION showLineSelection) {
@@ -1583,9 +1583,9 @@ public class TableViewerCreatorNotModifiable<B> {
     }
 
     /**
-     * 
+     *
      * The <code>TableViewer</code> is instanciate at same time than <code>Table</code>.
-     * 
+     *
      * @return
      */
     public TableViewer getTableViewer() {
@@ -1613,7 +1613,7 @@ public class TableViewerCreatorNotModifiable<B> {
 
     /**
      * Note: has no effects for Windows sytem, scrollbar are always visible. Call this method before call createTable().
-     * 
+     *
      * @param horizontalScroll
      */
     public void setHorizontalScroll(boolean horizontalScroll) {
@@ -1629,7 +1629,7 @@ public class TableViewerCreatorNotModifiable<B> {
 
     /**
      * Note: has no effects for Windows sytem, scrollbar are always visible. Call this method before call createTable().
-     * 
+     *
      * @param verticalScroll
      */
     public void setVerticalScroll(boolean verticalScroll) {
@@ -1684,7 +1684,7 @@ public class TableViewerCreatorNotModifiable<B> {
 
     /**
      * Sort mode. <br/>
-     * 
+     *
      */
     public enum SORT {
         ASC,
@@ -1736,7 +1736,7 @@ public class TableViewerCreatorNotModifiable<B> {
 
     /**
      * Call this method before {@link #init(List)}.
-     * 
+     *
      * @param defaultOrderedColumn
      * @param defaultOrderBy
      */
@@ -1748,7 +1748,7 @@ public class TableViewerCreatorNotModifiable<B> {
 
     /**
      * Change sort properties and refresh table. You can call this method if you have already call init(List).
-     * 
+     *
      * @param orderedColumn
      * @param orderBy
      */
@@ -1805,7 +1805,7 @@ public class TableViewerCreatorNotModifiable<B> {
     /**
      * This method is useful for mask first column on a Windows Table because the first column display a blank space at
      * left border. By default first column is masked.
-     * 
+     *
      * @param firstColumnMasked
      */
     public void setFirstColumnMasked(boolean firstColumnMasked) {
@@ -1818,7 +1818,7 @@ public class TableViewerCreatorNotModifiable<B> {
 
     /**
      * DOC amaumont Comment method "getModifiedObjectInfo".
-     * 
+     *
      * @return always a instance of ModifiedObjectInfo
      */
     public ModifiedObjectInfo<B> getModifiedObjectInfo() {
@@ -1857,7 +1857,7 @@ public class TableViewerCreatorNotModifiable<B> {
 
     /**
      * Setter for firstVisibleColumnIsSelection.
-     * 
+     *
      * @param firstVisibleColumnIsSelection
      */
     public void setFirstVisibleColumnIsSelection(boolean firstVisibleColumnIsSelection) {
@@ -1866,7 +1866,7 @@ public class TableViewerCreatorNotModifiable<B> {
 
     /**
      * Getter for firstVisibleColumnIsSelection.
-     * 
+     *
      * @return the firstVisibleColumnIsSelection
      */
     public boolean isFirstVisibleColumnIsSelection() {
@@ -1906,7 +1906,7 @@ public class TableViewerCreatorNotModifiable<B> {
     /**
      * You must use DefaultCellModifier or a class which extends it to use this method. You can call this method only if
      * you have already called createTable().
-     * 
+     *
      * @param tableCellValueModifiedListener
      * @throws UnsupportedOperationException if current CellModifier is not DefaultCellModifier or a class which extends
      * it
@@ -1937,7 +1937,7 @@ public class TableViewerCreatorNotModifiable<B> {
      * <li>automatic tooltip behavior can't be found again if you unactive custom coloring due to Table._addListener()
      * and Table.removeListener().</li>
      * </ul>
-     * 
+     *
      * @param useCustomColoring
      */
     public void setUseCustomItemColoring(boolean useCustomColoring) {
@@ -1968,7 +1968,7 @@ public class TableViewerCreatorNotModifiable<B> {
      * <p>
      * Note : only available on Win32
      * </p>
-     * 
+     *
      * @return the color set by user (not the default color of selection)
      */
     public Color getBgColorSelectedLine() {
@@ -1980,7 +1980,7 @@ public class TableViewerCreatorNotModifiable<B> {
      * <p>
      * Note : only available on Win32
      * </p>
-     * 
+     *
      * @param lineSelectionBackgroundColor
      * @see TableViewerCreatorNotModifiable#setUseCustomItemColoring(boolean)
      */
@@ -1993,7 +1993,7 @@ public class TableViewerCreatorNotModifiable<B> {
      * <p>
      * Note : only available on Win32
      * </p>
-     * 
+     *
      * @return the color set by user (not the default color of selection)
      */
     public Color getFgColorSelectedLine() {
@@ -2005,7 +2005,7 @@ public class TableViewerCreatorNotModifiable<B> {
      * <p>
      * Note : only available on Win32
      * </p>
-     * 
+     *
      * @param lineSelectionForegroundColor
      * @see TableViewerCreatorNotModifiable#setUseCustomItemColoring(boolean)
      */
@@ -2018,7 +2018,7 @@ public class TableViewerCreatorNotModifiable<B> {
      * <p>
      * Note : only available on Win32
      * </p>
-     * 
+     *
      * @return the color set by user (not the default color of selection)
      */
     public Color getBgColorSelectedLineWhenUnactive() {
@@ -2030,7 +2030,7 @@ public class TableViewerCreatorNotModifiable<B> {
      * <p>
      * Note : only available on Win32
      * </p>
-     * 
+     *
      * @param bgColorSelectedLineWhenUnactive
      * @see TableViewerCreatorNotModifiable#setUseCustomItemColoring(boolean)
      */
@@ -2043,7 +2043,7 @@ public class TableViewerCreatorNotModifiable<B> {
      * <p>
      * Note : only available on Win32
      * </p>
-     * 
+     *
      * @return the color set by user (not the default color of selection)
      */
     public Color getFgColorSelectedLineWhenUnactive() {
@@ -2055,7 +2055,7 @@ public class TableViewerCreatorNotModifiable<B> {
      * <p>
      * Note : only available on Win32
      * </p>
-     * 
+     *
      * @param fgColorSelectedLineWhenUnactive
      * @see TableViewerCreatorNotModifiable#setUseCustomItemColoring(boolean)
      */
@@ -2070,7 +2070,7 @@ public class TableViewerCreatorNotModifiable<B> {
 
     /**
      * Getter for compositeParent.
-     * 
+     *
      * @return the compositeParent
      */
     public Composite getCompositeParent() {
@@ -2100,7 +2100,7 @@ public class TableViewerCreatorNotModifiable<B> {
 
     /**
      * Getter for readOnly.
-     * 
+     *
      * @return the readOnly
      */
     public boolean isReadOnly() {
@@ -2109,7 +2109,7 @@ public class TableViewerCreatorNotModifiable<B> {
 
     /**
      * Sets the readOnly.
-     * 
+     *
      * @param readOnly the readOnly to set
      */
     public void setReadOnly(boolean readOnly) {
@@ -2212,14 +2212,26 @@ public class TableViewerCreatorNotModifiable<B> {
     public void setLazyLoad(boolean lazyLoad) {
         if (isLazyLoadingDisabled()) {
             this.lazyLoad = false;
+        } else if (isLazyLoadingEnabled()) {
+            this.lazyLoad = true;
         } else {
             this.lazyLoad = lazyLoad;
         }
         // for bug TUP-15924, lazyload always be false by default,we have a system property like
         // "disableLazyLoading" and if set to true we won't set virtual here. (user would set it manually).
     }
- 
+
     public static boolean isLazyLoadingDisabled() {
         return Boolean.getBoolean("talend.table.disableLazyLoading"); //$NON-NLS-1$
     }
+
+    /**
+     * for default Lazy Load like linux to enable DOC jding Comment method "isLazyLoadingEnabled".
+     *
+     * @return
+     */
+    public static boolean isLazyLoadingEnabled() {
+        return Boolean.getBoolean("talend.table.enableLazyLoading"); //$NON-NLS-1$
+    }
+
 }

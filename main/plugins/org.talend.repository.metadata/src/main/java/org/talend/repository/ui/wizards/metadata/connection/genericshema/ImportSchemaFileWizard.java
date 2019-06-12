@@ -1,6 +1,6 @@
 // ============================================================================
 //
-// Copyright (C) 2006-2018 Talend Inc. - www.talend.com
+// Copyright (C) 2006-2019 Talend Inc. - www.talend.com
 //
 // This source code is available under agreement available at
 // %InstallDIR%\features\org.talend.rcp.branding.%PRODUCTNAME%\%PRODUCTNAME%license.txt
@@ -56,7 +56,7 @@ import orgomg.cwm.objectmodel.core.Package;
 
 /**
  * DOC ggu class global comment. Detailled comment <br/>
- * 
+ *
  */
 public class ImportSchemaFileWizard extends CheckLastVersionRepositoryWizard implements INewWizard {
 
@@ -95,7 +95,7 @@ public class ImportSchemaFileWizard extends CheckLastVersionRepositoryWizard imp
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see org.talend.repository.ui.wizards.metadata.connection.genericshema.GenericSchemaWizard#addPages()
      */
     @Override
@@ -113,7 +113,7 @@ public class ImportSchemaFileWizard extends CheckLastVersionRepositoryWizard imp
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see org.talend.repository.ui.wizards.metadata.connection.genericshema.GenericSchemaWizard#performFinish()
      */
     @Override
@@ -233,7 +233,7 @@ public class ImportSchemaFileWizard extends CheckLastVersionRepositoryWizard imp
         connectionProperty.setAuthor(((RepositoryContext) CoreRuntimePlugin.getInstance().getContext()
                 .getProperty(Context.REPOSITORY_CONTEXT_KEY)).getUser());
         connectionProperty.setVersion(VersionUtils.DEFAULT_VERSION);
-        connectionProperty.setStatusCode(""); //$NON-NLS-1$ 
+        connectionProperty.setStatusCode(""); //$NON-NLS-1$
         String name = file.getName();
         if (name.indexOf(".") > 0) { //$NON-NLS-1$
             name = name.substring(0, name.indexOf(".")); //$NON-NLS-1$

@@ -1,6 +1,6 @@
 // ============================================================================
 //
-// Copyright (C) 2006-2018 Talend Inc. - www.talend.com
+// Copyright (C) 2006-2019 Talend Inc. - www.talend.com
 //
 // This source code is available under agreement available at
 // %InstallDIR%\features\org.talend.rcp.branding.%PRODUCTNAME%\%PRODUCTNAME%license.txt
@@ -47,9 +47,9 @@ import org.talend.repository.RepositoryWorkUnit;
 /**
  * DOC qian class global comment. Repository factory use by client. Based on implementation provide by extension point
  * system. This class contains all commons treatments done by repository whatever implementation. <br/>
- * 
+ *
  * $Id: talend-code-templates.xml 1 2006-09-29 17:06:40 +0000 (星期五, 29 九月 2006) nrousseau $
- * 
+ *
  */
 public interface IProxyRepositoryFactory {
 
@@ -77,7 +77,7 @@ public interface IProxyRepositoryFactory {
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see org.talend.repository.model.IRepositoryFactory#isValid(org.talend.core .model.general.Project,
      * org.talend.core.model.repository.ERepositoryObjectType, org.eclipse.core.runtime.IPath, java.lang.String)
      */
@@ -162,7 +162,7 @@ public interface IProxyRepositoryFactory {
 
     /**
      * yzhang Comment method "getRecycleBinItems".
-     * 
+     *
      * @return
      * @throws PersistenceException
      */
@@ -200,7 +200,7 @@ public interface IProxyRepositoryFactory {
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see org.talend.repository.model.IRepositoryFactory#deleteObject(org.talend .core.model.general.Project,
      * org.talend.core.model.repository.IRepositoryViewObject)
      */
@@ -233,7 +233,7 @@ public interface IProxyRepositoryFactory {
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see org.talend.repository.model.IRepositoryFactory#moveObject(org.talend. core.model.general.Project,
      * org.talend.core.model.repository.IRepositoryViewObject)
      */
@@ -255,7 +255,7 @@ public interface IProxyRepositoryFactory {
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see org.talend.repository.model.IRepositoryFactory#getAllVersion(org.talend .core.model.general.Project, int)
      */
     public abstract List<IRepositoryViewObject> getAllVersion(Project project, String id, boolean avoidSaveProject)
@@ -340,7 +340,7 @@ public interface IProxyRepositoryFactory {
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see org.talend.repository.model.IRepositoryFactory#isServerValid()
      */
     // public abstract String isServerValid();
@@ -370,7 +370,7 @@ public interface IProxyRepositoryFactory {
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see org.talend.repository.model.IRepositoryFactory#unlock(org.talend.core .model.general.Project,
      * org.talend.core.model.repository.IRepositoryViewObject)
      */
@@ -392,7 +392,7 @@ public interface IProxyRepositoryFactory {
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see org.talend.repository.model.IRepositoryFactory#getStatus(org.talend.core .model.properties.Item)
      */
     public abstract ERepositoryStatus getStatus(IRepositoryViewObject obj);
@@ -403,7 +403,7 @@ public interface IProxyRepositoryFactory {
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see org.talend.repository.model.IRepositoryFactory#getStatusAndLockIfPossible
      * (org.talend.core.model.properties.Item)
      */
@@ -411,7 +411,7 @@ public interface IProxyRepositoryFactory {
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see org.talend.repository.model.IRepositoryFactory#isEditable(org.talend.
      * core.model.repository.IRepositoryViewObject)
      */
@@ -421,8 +421,8 @@ public interface IProxyRepositoryFactory {
 
     /*
      * (non-Javadoc)
-     * 
-     * 
+     *
+     *
      * @seeorg.talend.repository.model.IRepositoryFactory#isPotentiallyEditable(org .talend.core.model.repository.
      * IRepositoryViewObject)
      */
@@ -469,7 +469,7 @@ public interface IProxyRepositoryFactory {
 
     /**
      * Catch only the next repositoryWorkUnit operation, once workUnit is finished, listener is removed.
-     * 
+     *
      * @param listener
      */
     public void addRepositoryWorkUnitListener(IRepositoryWorkUnitListener listener);
@@ -484,9 +484,9 @@ public interface IProxyRepositoryFactory {
     public boolean isLocalConnectionProvider() throws PersistenceException;
 
     /**
-     * 
+     *
      * DOC zshen Comment method "getMetadataByFolder".
-     * 
+     *
      * @param project
      * @param itemType
      * @param path
@@ -500,7 +500,7 @@ public interface IProxyRepositoryFactory {
 
     /**
      * DOC ycbai Comment method "getNavigatorViewDescription".
-     * 
+     *
      * @return
      */
     public String getNavigatorViewDescription();
@@ -513,7 +513,7 @@ public interface IProxyRepositoryFactory {
 
     /**
      * DOC nrousseau Comment method "getObjectFromFolder".
-     * 
+     *
      * @param project
      * @param type
      * @param folderName
@@ -534,7 +534,7 @@ public interface IProxyRepositoryFactory {
     public void updateEmfProjectContent(org.talend.core.model.properties.Project project);
 
     public org.talend.core.model.properties.Project getEmfProjectContent(String technicalLabel) throws PersistenceException;
-    
+
     public byte[] getReferenceSettingContent(Project project, String branch) throws PersistenceException;
 
     public void batchDeleteObjectPhysical4Remote(Project project, List<IRepositoryViewObject> objToDeleteList)

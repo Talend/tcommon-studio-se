@@ -1,6 +1,6 @@
 // ============================================================================
 //
-// Copyright (C) 2006-2018 Talend Inc. - www.talend.com
+// Copyright (C) 2006-2019 Talend Inc. - www.talend.com
 //
 // This source code is available under agreement available at
 // %InstallDIR%\features\org.talend.rcp.branding.%PRODUCTNAME%\%PRODUCTNAME%license.txt
@@ -21,7 +21,7 @@ import org.talend.repository.model.RepositoryConstants;
 
 /**
  * created by msjian on 2014-1-2 Detailled comment
- * 
+ *
  */
 public final class WorkspaceUtils {
 
@@ -33,7 +33,7 @@ public final class WorkspaceUtils {
 
     /**
      * check the file name whether it contains special characters.
-     * 
+     *
      * @param fileName
      * @return boolean: OK means not contains
      */

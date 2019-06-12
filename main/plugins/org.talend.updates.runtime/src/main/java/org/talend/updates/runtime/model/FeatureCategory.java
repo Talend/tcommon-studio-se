@@ -1,6 +1,6 @@
 // ============================================================================
 //
-// Copyright (C) 2006-2018 Talend Inc. - www.talend.com
+// Copyright (C) 2006-2019 Talend Inc. - www.talend.com
 //
 // This source code is available under agreement available at
 // %InstallDIR%\features\org.talend.rcp.branding.%PRODUCTNAME%\%PRODUCTNAME%license.txt
@@ -29,7 +29,7 @@ import org.eclipse.core.runtime.Status;
  *
  */
 public class FeatureCategory implements ExtraFeature {
-    
+
     private String name;
     private String version;
     private String description;
@@ -38,7 +38,7 @@ public class FeatureCategory implements ExtraFeature {
      * use LinkedHashSet to keep children order
      */
     private Set<ExtraFeature> children = new LinkedHashSet<>();
-    
+
 
     /* (non-Javadoc)
      * @see org.talend.updates.runtime.model.ExtraFeature#isInstalled(org.eclipse.core.runtime.IProgressMonitor)
@@ -51,7 +51,7 @@ public class FeatureCategory implements ExtraFeature {
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see
      * org.talend.updates.runtime.model.ExtraFeature#createFeatureIfUpdates(org.eclipse.core.runtime.IProgressMonitor)
      */
@@ -119,7 +119,7 @@ public class FeatureCategory implements ExtraFeature {
         // TODO Auto-generated method stub
         return false;
     }
-    
+
     /**
      * Getter for children.
      * @return the children

@@ -1,6 +1,6 @@
 // ============================================================================
 //
-// Copyright (C) 2006-2018 Talend Inc. - www.talend.com
+// Copyright (C) 2006-2019 Talend Inc. - www.talend.com
 //
 // This source code is available under agreement available at
 // %InstallDIR%\features\org.talend.rcp.branding.%PRODUCTNAME%\%PRODUCTNAME%license.txt
@@ -47,9 +47,9 @@ public final class RepositoryManager {
     public static final String PATTERNS_SEPARATOR = ","; //$NON-NLS-1$
 
     /**
-     * 
+     *
      * DOC wchen DesignerCorePreference disappear in some case ,so i change to use repository preference store.
-     * 
+     *
      * @return
      */
     public static IPreferenceStore getRepositoryPreferenceStore() {
@@ -61,7 +61,7 @@ public final class RepositoryManager {
     }
 
     /**
-     * 
+     *
      * for create
      */
     public static void refreshCreatedNode(ERepositoryObjectType type) {
@@ -72,9 +72,9 @@ public final class RepositoryManager {
     }
 
     /**
-     * 
+     *
      * qli Comment method "syncRoutineAndJoblet".
-     * 
+     *
      * synchronize the routines and the joblets created by other users.
      */
     public static void syncRoutineAndJoblet(ERepositoryObjectType type) {
@@ -140,9 +140,9 @@ public final class RepositoryManager {
     }
 
     /**
-     * 
+     *
      * ggu Comment method "isOpenedItemInEditor".
-     * 
+     *
      * for jobs/joblets/business diagrams/routines/sql patterns
      */
     public static boolean isOpenedItemInEditor(IRepositoryViewObject objectToMove) {
@@ -203,11 +203,11 @@ public final class RepositoryManager {
 
 
     /**
-     * 
+     *
      * ggu Comment method "isEditableItemInEditor".
-     * 
+     *
      * it's editable also.
-     * 
+     *
      * for jobs/joblets/business diagrams/routines/sql patterns
      */
     public static boolean isEditableItemInEditor(IRepositoryViewObject objectToMove) {

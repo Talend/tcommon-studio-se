@@ -1,6 +1,6 @@
 // ============================================================================
 //
-// Copyright (C) 2006-2018 Talend Inc. - www.talend.com
+// Copyright (C) 2006-2019 Talend Inc. - www.talend.com
 //
 // This source code is available under agreement available at
 // %InstallDIR%\features\org.talend.rcp.branding.%PRODUCTNAME%\%PRODUCTNAME%license.txt
@@ -68,7 +68,7 @@ public class RunInBackgroundProgressMonitorDialog extends ProgressMonitorDialog 
 
     /**
      * get the user choice
-     * 
+     *
      * @return null: user hasn't choose yet;<br/>
      * USER_CHOICE_RUN_IN_BACKGROUND: user chooses to run in background;<br/>
      * USER_CHOICE_CANCEL: user cancels.

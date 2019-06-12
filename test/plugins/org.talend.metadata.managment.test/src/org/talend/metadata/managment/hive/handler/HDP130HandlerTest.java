@@ -1,6 +1,6 @@
 // ============================================================================
 //
-// Copyright (C) 2006-2018 Talend Inc. - www.talend.com
+// Copyright (C) 2006-2019 Talend Inc. - www.talend.com
 //
 // This source code is available under agreement available at
 // %InstallDIR%\features\org.talend.rcp.branding.%PRODUCTNAME%\%PRODUCTNAME%license.txt
@@ -24,13 +24,13 @@ import org.talend.core.model.metadata.builder.MetadataConnection;
 
 /**
  * created by qiongli on 2014-3-11 Detailled comment
- * 
+ *
  */
 public class HDP130HandlerTest {
 
     /**
      * DOC qiongli Comment method "setUp".
-     * 
+     *
      * @throws java.lang.Exception
      */
     @Before
@@ -39,7 +39,7 @@ public class HDP130HandlerTest {
 
     /**
      * DOC qiongli Comment method "tearDown".
-     * 
+     *
      * @throws java.lang.Exception
      */
     @After
@@ -56,7 +56,7 @@ public class HDP130HandlerTest {
         HDP130Handler hdp130Handler = new HDP130Handler(metadataConnection);
         Map<String, String> defaultHadoopParameters = hdp130Handler.getDefaultHadoopParameters();
         assertEquals(defaultHadoopParameters.get("mapred.job.map.memory.mb"), "1000"); //$NON-NLS-1$ //$NON-NLS-2$
-        assertEquals(defaultHadoopParameters.get("mapred.job.reduce.memory.mb"), "1000"); //$NON-NLS-1$ //$NON-NLS-2$ 
+        assertEquals(defaultHadoopParameters.get("mapred.job.reduce.memory.mb"), "1000"); //$NON-NLS-1$ //$NON-NLS-2$
     }
 
 }

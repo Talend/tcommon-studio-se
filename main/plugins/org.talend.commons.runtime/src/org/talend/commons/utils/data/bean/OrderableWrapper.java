@@ -1,6 +1,6 @@
 // ============================================================================
 //
-// Copyright (C) 2006-2018 Talend Inc. - www.talend.com
+// Copyright (C) 2006-2019 Talend Inc. - www.talend.com
 //
 // This source code is available under agreement available at
 // %InstallDIR%\features\org.talend.rcp.branding.%PRODUCTNAME%\%PRODUCTNAME%license.txt
@@ -14,16 +14,16 @@ package org.talend.commons.utils.data.bean;
 
 /**
  * DOC amaumont class global comment. Detailled comment <br/>
- * 
+ *
  * $Id$
- * 
+ *
  */
 /**
- * 
+ *
  * DOC amaumont ListenableList class global comment. Detailled comment <br/>
- * 
+ *
  * $Id$
- * 
+ *
  * @param <B> bean which must be ordered by <code>order</code> value
  */
 class OrderableWrapper<B> implements Comparable<OrderableWrapper> {
@@ -43,7 +43,7 @@ class OrderableWrapper<B> implements Comparable<OrderableWrapper> {
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see java.lang.Comparable#compareTo(java.lang.Object)
      */
     public int compareTo(OrderableWrapper o) {
@@ -68,7 +68,7 @@ class OrderableWrapper<B> implements Comparable<OrderableWrapper> {
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see java.lang.Object#hashCode()
      */
     @Override
@@ -81,7 +81,7 @@ class OrderableWrapper<B> implements Comparable<OrderableWrapper> {
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see java.lang.Object#equals(java.lang.Object)
      */
     @Override
@@ -108,7 +108,7 @@ class OrderableWrapper<B> implements Comparable<OrderableWrapper> {
 
     /**
      * Getter for bean.
-     * 
+     *
      * @return the bean
      */
     public B getBean() {
@@ -117,7 +117,7 @@ class OrderableWrapper<B> implements Comparable<OrderableWrapper> {
 
     /**
      * Sets the bean.
-     * 
+     *
      * @param bean the bean to set
      */
     public void setBean(B bean) {
@@ -126,7 +126,7 @@ class OrderableWrapper<B> implements Comparable<OrderableWrapper> {
 
     /**
      * Getter for priorityCalled.
-     * 
+     *
      * @return the priorityCalled
      */
     public int getOrder() {
@@ -135,7 +135,7 @@ class OrderableWrapper<B> implements Comparable<OrderableWrapper> {
 
     /**
      * Sets the priorityCalled.
-     * 
+     *
      * @param priorityCalled the priorityCalled to set
      */
     public void setOrder(int priorityCalled) {

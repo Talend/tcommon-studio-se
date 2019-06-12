@@ -1,6 +1,6 @@
 // ============================================================================
 //
-// Copyright (C) 2006-2018 Talend Inc. - www.talend.com
+// Copyright (C) 2006-2019 Talend Inc. - www.talend.com
 //
 // This source code is available under agreement available at
 // %InstallDIR%\features\org.talend.rcp.branding.%PRODUCTNAME%\%PRODUCTNAME%license.txt
@@ -78,9 +78,9 @@ import org.talend.repository.model.RepositoryConstants;
 
 /**
  * DOC smallet class global comment. Detailled comment <br/>
- * 
+ *
  * $Id$
- * 
+ *
  */
 public abstract class AbstractEMFRepositoryFactory extends AbstractRepositoryFactory implements IRepositoryFactory {
 
@@ -90,9 +90,9 @@ public abstract class AbstractEMFRepositoryFactory extends AbstractRepositoryFac
 
     /**
      * Generates the next id for serializable. If no serializable returns 0.
-     * 
+     *
      * @param project the project to scan
-     * 
+     *
      * @return the next id for the project
      * @throws PersistenceException
      * @throws PersistenceException if processes cannot be retrieved
@@ -146,7 +146,7 @@ public abstract class AbstractEMFRepositoryFactory extends AbstractRepositoryFac
 
     /**
      * DOC smallet Comment method "convert".
-     * 
+     *
      * @param toReturn
      * @param serializableAllVersion
      */
@@ -295,7 +295,7 @@ public abstract class AbstractEMFRepositoryFactory extends AbstractRepositoryFac
 
     /**
      * Use instead the function with the parameter (int options)
-     * 
+     *
      * @deprecated
      */
     @Deprecated
@@ -308,7 +308,7 @@ public abstract class AbstractEMFRepositoryFactory extends AbstractRepositoryFac
 
     /**
      * Use instead the function with the parameter (int options)
-     * 
+     *
      * @deprecated
      */
     @Deprecated
@@ -329,7 +329,7 @@ public abstract class AbstractEMFRepositoryFactory extends AbstractRepositoryFac
 
     /**
      * Use instead the function with the parameter (int options)
-     * 
+     *
      * @deprecated
      */
     @Deprecated
@@ -392,7 +392,7 @@ public abstract class AbstractEMFRepositoryFactory extends AbstractRepositoryFac
     /**
      * Method "setPropNewName". Try first the new name with "[PROPERTY_NAME]_Copy", then, if it already exists, try
      * again with "[PROPERTY_NAME]_CopyN" where N is number between 1 and Integer.MAX.
-     * 
+     *
      * @param copiedProperty
      * @throws PersistenceException
      * @throws BusinessException
@@ -560,7 +560,7 @@ public abstract class AbstractEMFRepositoryFactory extends AbstractRepositoryFac
 
     /**
      * DOC smallet Comment method "createRoutine".
-     * 
+     *
      * @param url
      * @throws PersistenceException
      */
@@ -811,7 +811,7 @@ public abstract class AbstractEMFRepositoryFactory extends AbstractRepositoryFac
 
     /**
      * DOC zli Comment method "getItemsMessages".
-     * 
+     *
      * @param serializableAllVersion
      * @param size
      * @return
@@ -960,7 +960,7 @@ public abstract class AbstractEMFRepositoryFactory extends AbstractRepositoryFac
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see org.talend.repository.model.IRepositoryFactory#reloadProject(org.talend.core.model.general.Project)
      */
     @Override
@@ -970,9 +970,9 @@ public abstract class AbstractEMFRepositoryFactory extends AbstractRepositoryFac
     }
 
     /**
-     * 
+     *
      * DOC zshen Comment method "getMetadataByFolder".
-     * 
+     *
      * @param itemType
      * @param path
      * @return all of object under path.
@@ -1030,7 +1030,7 @@ public abstract class AbstractEMFRepositoryFactory extends AbstractRepositoryFac
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see org.talend.core.repository.model.IRepositoryFactory#afterLogon()
      */
     @Override

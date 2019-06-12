@@ -1,6 +1,6 @@
 // ============================================================================
 //
-// Copyright (C) 2006-2018 Talend Inc. - www.talend.com
+// Copyright (C) 2006-2019 Talend Inc. - www.talend.com
 //
 // This source code is available under agreement available at
 // %InstallDIR%\features\org.talend.rcp.branding.%PRODUCTNAME%\%PRODUCTNAME%license.txt
@@ -154,7 +154,7 @@ import org.talend.utils.sql.ConnectionUtils;
 
 /**
  * @author ocarbone
- * 
+ *
  */
 public class DatabaseForm extends AbstractForm {
 
@@ -349,9 +349,9 @@ public class DatabaseForm extends AbstractForm {
     private final String originalUischema;
 
     private final String originalURL;
-    
+
     private final String orginalDBVersion;
-    
+
     private final String originalPort;
 
     private final Boolean originalIsNeedReload;
@@ -544,9 +544,9 @@ public class DatabaseForm extends AbstractForm {
 
     /**
      * Constructor to use by a Wizard to create a new database connection.
-     * 
+     *
      * @param existingNames
-     * 
+     *
      * @param Composite
      * @param Wizard
      * @param ISelection
@@ -923,7 +923,7 @@ public class DatabaseForm extends AbstractForm {
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see org.talend.repository.ui.swt.utils.AbstractForm#addHelpInfoFields()
      */
     @Override
@@ -968,7 +968,7 @@ public class DatabaseForm extends AbstractForm {
 
     /**
      * DOC YeXiaowei Comment method "addFieldForTypeDB".
-     * 
+     *
      * @param width
      * @param compositeGroupDbSettings
      */
@@ -3123,7 +3123,7 @@ public class DatabaseForm extends AbstractForm {
 
     /**
      * DOC plv Comment method "createLinkGroup".
-     * 
+     *
      * @param parent
      */
     private void createHadoopLinkPart(Composite parent) {
@@ -3732,9 +3732,9 @@ public class DatabaseForm extends AbstractForm {
     }
 
     /**
-     * 
+     *
      * Added by Marvin Wang on Mar 25, 2013.
-     * 
+     *
      * @param parent
      */
     private void createHiveServerVersionField(Composite parent) {
@@ -3747,7 +3747,7 @@ public class DatabaseForm extends AbstractForm {
 
     /**
      * Added by Marvin Wang on Oct. 15, 2012.
-     * 
+     *
      * @param parent
      */
     private void createHadoopVersionInfoForHiveEmbedded(Composite parent) {
@@ -3791,7 +3791,7 @@ public class DatabaseForm extends AbstractForm {
     /**
      * The contents only show up when the current db type is hive and hive mode is embedded. Contents include name node
      * url and job tracker url. Added by Marvin Wang on Oct. 15, 2012.
-     * 
+     *
      * @param parent
      */
     private void createHadoopUIContentsForHiveEmbedded(Composite parent) {
@@ -3813,7 +3813,7 @@ public class DatabaseForm extends AbstractForm {
 
 
     /**
-     * 
+     *
      * @param parent
      */
     private void createMetastoreUIContentsForHiveEmbedded(Composite parent) {
@@ -3844,11 +3844,11 @@ public class DatabaseForm extends AbstractForm {
     }
 
     /**
-     * 
+     *
      * DOC YeXiaowei Comment method "getVersionDrivers".
-     * 
+     *
      * DOC qli modify method "getVersionDrivers",just add a parameter "dbType".
-     * 
+     *
      * @return
      */
     private List<String> getVersionDrivers(String dbType) {
@@ -3932,7 +3932,7 @@ public class DatabaseForm extends AbstractForm {
      * Hidden one composite and display another one
      * <p>
      * DOC YeXiaowei Comment method "switchBetweenTypeandGeneralDB".
-     * 
+     *
      * @param hiddenGeneral
      */
     private void switchBetweenTypeandGeneralDB(boolean hiddenGeneral) {
@@ -3960,7 +3960,7 @@ public class DatabaseForm extends AbstractForm {
 
     /**
      * DOC YeXiaowei Comment method "addCheckAndStandardButtons".
-     * 
+     *
      * @param width
      * @param compositeGroupDbSettings
      */
@@ -4331,7 +4331,7 @@ public class DatabaseForm extends AbstractForm {
 
     /**
      * DOC zshen Comment method "isGeneralJDBCSqlite".
-     * 
+     *
      * @return
      */
     private boolean isGeneralJDBCSqlite() {
@@ -4346,7 +4346,7 @@ public class DatabaseForm extends AbstractForm {
 
     /**
      * DOC zshen Comment method "isSqlite".
-     * 
+     *
      * @return
      */
     private boolean isSqlite() {
@@ -4355,7 +4355,7 @@ public class DatabaseForm extends AbstractForm {
 
     /**
      * DOC zshen Comment method "getFileFullPath".
-     * 
+     *
      * @param urlText
      * @return
      */
@@ -4368,7 +4368,7 @@ public class DatabaseForm extends AbstractForm {
 
     /**
      * If the current db type is also hive, return <code>true</code>. Changed by Marvin Wang on Oct 17, 2012.
-     * 
+     *
      * @return
      */
     private boolean enableDbVersion() {
@@ -4505,7 +4505,7 @@ public class DatabaseForm extends AbstractForm {
 
     /**
      * addButtonControls.
-     * 
+     *
      * @param cancelButton
      */
     @Override
@@ -4547,7 +4547,7 @@ public class DatabaseForm extends AbstractForm {
     /**
      * Makes the flag of createDefaultDB <code>false</code> each time when a checking is complete. Added by Marvin Wang
      * on Oct 19, 2012.
-     * 
+     *
      * @throws ClassNotFoundException
      */
     private void forceSetFlagForHiveCreateDefaultDB() throws ClassNotFoundException {
@@ -4748,9 +4748,9 @@ public class DatabaseForm extends AbstractForm {
                                 portText.setText(EDatabaseConnTemplate.SYBASEASE.getDefaultPort());
                             }
                         }
-                        
+
                         getConnection().setDbVersionString(version.getVersionValue());
-                       
+
                     }
                     urlConnectionStringText.setText(getStringConnection());
                     checkFieldsValue();
@@ -5234,9 +5234,9 @@ public class DatabaseForm extends AbstractForm {
     }
 
     /**
-     * 
+     *
      * ggu Comment method "checkAndSetIniSQLModel".
-     * 
+     *
      * bug 12811
      */
     private void checkAndSetIniSQLModel() {
@@ -5782,9 +5782,9 @@ public class DatabaseForm extends AbstractForm {
     }
 
     /**
-     * 
+     *
      * DOC YeXiaowei Comment method "isGeneralJDBC".
-     * 
+     *
      * @return
      */
     private boolean isGeneralJDBC() {
@@ -5793,7 +5793,7 @@ public class DatabaseForm extends AbstractForm {
 
     /**
      * To check if the current db selected is Hive. Added by Marvin Wang on Oct 15, 2012.
-     * 
+     *
      * @return
      */
     private boolean isHiveDBConnSelected() {
@@ -5954,7 +5954,7 @@ public class DatabaseForm extends AbstractForm {
 
     /**
      * DOC bZhou Comment method "isSupportByTDQ" for feature 17159.
-     * 
+     *
      * @return
      */
     private boolean isSupportByTDQ() {
@@ -6106,7 +6106,7 @@ public class DatabaseForm extends AbstractForm {
 
     /**
      * Set up the URL by checking the current hive mode. Added by Marvin Wang on Sep 4, 2012.
-     * 
+     *
      * @return
      */
     private String getStringConnection() {
@@ -6183,7 +6183,7 @@ public class DatabaseForm extends AbstractForm {
 
     /**
      * SetEditable fields.
-     * 
+     *
      * @param boolean
      */
     @SuppressWarnings("static-access")
@@ -6257,7 +6257,7 @@ public class DatabaseForm extends AbstractForm {
                                 .getDBDisplayName().equals(getConnectionDBType())));
         usernameText.setEditable(visible);
         passwordText.setEditable(visible);
-       
+
         serverText.setEditable(false);
         portText.setEditable(false);
         sidOrDatabaseText.setEditable(false);
@@ -6764,9 +6764,9 @@ public class DatabaseForm extends AbstractForm {
     }
 
     /**
-     * 
+     *
      * Added by Marvin Wang on Nov 29, 2012.
-     * 
+     *
      * @param hide
      */
     private void hideMappingFileRelatedWidgets(boolean hide) {
@@ -6777,9 +6777,9 @@ public class DatabaseForm extends AbstractForm {
     }
 
     /**
-     * 
+     *
      * DOC YeXiaowei Comment method "oracleVersionEnable".
-     * 
+     *
      * @return
      */
     private boolean oracleVersionEnable() {
@@ -6812,9 +6812,9 @@ public class DatabaseForm extends AbstractForm {
     }
 
     /**
-     * 
+     *
      * DOC qli Comment method "as400VersionEnable".
-     * 
+     *
      * @return
      */
     private boolean as400VersionEnable() {
@@ -6828,9 +6828,9 @@ public class DatabaseForm extends AbstractForm {
     }
 
     /**
-     * 
+     *
      * DOC zli Comment method "as400VersionEnable".
-     * 
+     *
      * @return
      */
     private boolean asMySQLVersionEnable() {
@@ -6844,9 +6844,9 @@ public class DatabaseForm extends AbstractForm {
     }
 
     /**
-     * 
+     *
      * DOC hwang Comment method "asMsSQLVersionEnable".
-     * 
+     *
      * @return
      */
     private boolean asMsSQLVersionEnable() {
@@ -6860,9 +6860,9 @@ public class DatabaseForm extends AbstractForm {
     }
 
     /**
-     * 
+     *
      * DOC hwang Comment method "asSybaseVersionEnable".
-     * 
+     *
      * @return
      */
     private boolean asSybaseVersionEnable() {
@@ -6882,9 +6882,9 @@ public class DatabaseForm extends AbstractForm {
                 && LanguageManager.getCurrentLanguage().equals(ECodeLanguage.JAVA);
     }
     /**
-     * 
+     *
      * DOC hwang Comment method "sasVersionEnable".
-     * 
+     *
      * @return
      */
     private boolean asSASVersionEnable() {
@@ -6897,9 +6897,9 @@ public class DatabaseForm extends AbstractForm {
     }
 
     /**
-     * 
+     *
      * DOC hwang Comment method "VerticaVersionEnable".
-     * 
+     *
      * @return
      */
     private boolean asVerticaVersionEnable() {
@@ -6939,7 +6939,7 @@ public class DatabaseForm extends AbstractForm {
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see org.eclipse.swt.widgets.Control#setVisible(boolean)
      */
     @Override
@@ -7559,7 +7559,7 @@ public class DatabaseForm extends AbstractForm {
     }
 
     /**
-     * 
+     *
      * Added by Marvin Wang on Oct 18, 2012.
      */
     private void regHiveRelatedWidgetMetastoreConnDriverJarBrowserListener() {
@@ -7640,7 +7640,7 @@ public class DatabaseForm extends AbstractForm {
     }
 
     /**
-     * 
+     *
      * Added by Marvin Wang on Aug 10, 2012.
      */
     protected void doHiveDistributionModify() {
@@ -7674,7 +7674,7 @@ public class DatabaseForm extends AbstractForm {
     }
 
     /**
-     * 
+     *
      * Added by Marvin Wang on Oct 17, 2012.
      */
     protected void doHiveVersionModify() {
@@ -7996,7 +7996,7 @@ public class DatabaseForm extends AbstractForm {
     }
 
     /**
-     * 
+     *
      * Added by Marvin Wang on Oct 17, 2012.
      */
     protected void doNameNodeModify() {
@@ -8007,7 +8007,7 @@ public class DatabaseForm extends AbstractForm {
     }
 
     /**
-     * 
+     *
      * Added by Marvin Wang on Oct 17, 2012.
      */
     protected void doJobTrackerModify() {
@@ -8017,7 +8017,7 @@ public class DatabaseForm extends AbstractForm {
     }
 
     /**
-     * 
+     *
      * Added by Marvin Wang on Oct 17, 2012.
      */
     protected void doMetastoreConnURLModify() {
@@ -8028,7 +8028,7 @@ public class DatabaseForm extends AbstractForm {
     }
 
     /**
-     * 
+     *
      * Added by Marvin Wang on Oct 17, 2012.
      */
     protected void doMetastoreConnUserNameModify() {
@@ -8039,7 +8039,7 @@ public class DatabaseForm extends AbstractForm {
     }
 
     /**
-     * 
+     *
      * Added by Marvin Wang on Oct 17, 2012.
      */
     protected void doMetastoreConnPasswordModify() {
@@ -8050,7 +8050,7 @@ public class DatabaseForm extends AbstractForm {
     }
 
     /**
-     * 
+     *
      * Added by Marvin Wang on Oct 17, 2012.
      */
     protected void doMetastoreConnDriverJarModify() {
@@ -8061,7 +8061,7 @@ public class DatabaseForm extends AbstractForm {
     }
 
     /**
-     * 
+     *
      * Added by Marvin Wang on Oct 17, 2012.
      */
     protected void doMetastoreConnDriverNameModify() {
@@ -8152,7 +8152,7 @@ public class DatabaseForm extends AbstractForm {
     /**
      * Makes sure if the hive server2 UI displays. If displaying it, then check the selection. Added by Marvin Wang on
      * Mar 25, 2013.
-     * 
+     *
      * @param distributionIndex
      * @param hiveVersionIndex
      */
@@ -8323,7 +8323,7 @@ public class DatabaseForm extends AbstractForm {
     /**
      * This method is used to handle the groups including version info, hadoop info and metastore info are hide or
      * visible. Added by Marvin Wang on Oct 16, 2012.
-     * 
+     *
      * @param hide
      */
     private void handleHiveRelatedWidgetsStatus(boolean hide) {
@@ -8339,7 +8339,7 @@ public class DatabaseForm extends AbstractForm {
      * current db type is <code>Hive</code> and the current hive mode is <code>STANDALONE</code>. Otherwise, all will be
      * visible when the current db type is <code>Hive</code> and the current hive mode is <code>EMBEDDED</code>. Added
      * by Marvin Wang on Oct 17, 2012.
-     * 
+     *
      * @param hide
      */
     private void handleOtherWidgetsStatusForHive(boolean hide) {
@@ -8362,7 +8362,7 @@ public class DatabaseForm extends AbstractForm {
     /**
      * Invokes this method to handle the widget status of hive version info related, hide or visible. Added by Marvin
      * Wang on Oct 16, 2012.
-     * 
+     *
      * @param hide
      */
     private void setHideVersionInfoWidgets(boolean hide) {
@@ -8407,7 +8407,7 @@ public class DatabaseForm extends AbstractForm {
     /**
      * Invokes this method to make the widgets of hadoop info related hidden or visible. Widgets include text of name
      * node url, job tracker url. Added by Marvin Wang on Oct 17, 2012.
-     * 
+     *
      * @param hide
      */
     private void setHideHadoopInfoWidgets(boolean hide) {
@@ -8427,7 +8427,7 @@ public class DatabaseForm extends AbstractForm {
     /**
      * Invokes this method to make the widgets of metastore connection related hidden or visible, including connection
      * URL, user name, password, driver jar directory and driver name. Added by Marvin Wang on Oct 17, 2012.
-     * 
+     *
      * @param hide
      */
     private void setHideMetastoreInfoWidgets(boolean hide) {
@@ -8444,9 +8444,9 @@ public class DatabaseForm extends AbstractForm {
     /**
      * Invokes this method when an existing connection is opened or a new db connection is created. For developer, if
      * you add any widgets, you have to add them here to be hide or visible.
-     * 
+     *
      * Added by Marvin Wang on Oct 16, 2012.
-     * 
+     *
      * @param hide
      */
     protected void doHideHiveWidgets(boolean hide) {
@@ -8519,7 +8519,7 @@ public class DatabaseForm extends AbstractForm {
     }
 
     /**
-     * 
+     *
      * Added by Marvin Wang on Oct 17, 2012.
      */
     protected void doHivePreSetup(DatabaseConnection connection) {
@@ -8545,7 +8545,7 @@ public class DatabaseForm extends AbstractForm {
     /**
      * Indentifies the hive mode selected in hive mode combo is standalone or embedded. If embedded, return
      * <code>true</code>, <code>false</code> otherwise.
-     * 
+     *
      * @return
      */
     protected boolean isHiveEmbeddedMode() {
@@ -8641,9 +8641,9 @@ public class DatabaseForm extends AbstractForm {
     }
 
     /**
-     * 
+     *
      * DOC zshen Comment method "getMetadataConnection".
-     * 
+     *
      * @return
      */
     public IMetadataConnection getMetadataConnection() {
@@ -8668,7 +8668,7 @@ public class DatabaseForm extends AbstractForm {
 
     /**
      * Getter for properties.
-     * 
+     *
      * @return the properties
      */
     public List<HashMap<String, Object>> getProperties() {
@@ -8677,7 +8677,7 @@ public class DatabaseForm extends AbstractForm {
 
     /**
      * Sets the properties.
-     * 
+     *
      * @param properties the properties to set
      */
     public void setProperties(List<HashMap<String, Object>> properties) {
@@ -8686,7 +8686,7 @@ public class DatabaseForm extends AbstractForm {
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see org.talend.metadata.managment.ui.wizard.AbstractForm#exportAsContext()
      */
     @Override

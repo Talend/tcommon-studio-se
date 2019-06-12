@@ -1,6 +1,6 @@
 // ============================================================================
 //
-// Copyright (C) 2006-2018 Talend Inc. - www.talend.com
+// Copyright (C) 2006-2019 Talend Inc. - www.talend.com
 //
 // This source code is available under agreement available at
 // %InstallDIR%\features\org.talend.rcp.branding.%PRODUCTNAME%\%PRODUCTNAME%license.txt
@@ -20,9 +20,9 @@ import org.eclipse.swt.widgets.TreeItem;
 
 /**
  * DOC amaumont class global comment. Detailled comment <br/>
- * 
+ *
  * $Id: TableUtils.java 596 2006-11-17 15:12:15 +0000 (ven., 17 nov. 2006) amaumont $
- * 
+ *
  */
 public class TreeUtils {
 
@@ -154,7 +154,7 @@ public class TreeUtils {
 
     /**
      * DOC amaumont Comment method "getTableItem".
-     * 
+     *
      * @param target
      */
     public static TreeItem getTreeItem(Tree tree, Object dataOfTableItem) {
@@ -166,7 +166,7 @@ public class TreeUtils {
 
     /**
      * DOC amaumont Comment method "getTreeItemFromData".
-     * 
+     *
      * @param dataOfTableItem
      * @param treeItems
      */
@@ -188,7 +188,7 @@ public class TreeUtils {
 
     /**
      * Find the next collapsed ascendant from the given item.
-     * 
+     *
      * @param treeItem
      */
     private static TreeItem getNextCollapsedAscendant(TreeItem treeItem) {
@@ -210,7 +210,7 @@ public class TreeUtils {
 
     /**
      * Find the first visible ascendant item from the given item.
-     * 
+     *
      * @param treeItem
      */
     public static TreeItem findFirstVisibleItemAscFrom(TreeItem treeItem) {

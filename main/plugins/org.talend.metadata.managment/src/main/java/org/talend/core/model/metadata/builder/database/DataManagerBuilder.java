@@ -1,6 +1,6 @@
 // ============================================================================
 //
-// Copyright (C) 2006-2018 Talend Inc. - www.talend.com
+// Copyright (C) 2006-2019 Talend Inc. - www.talend.com
 //
 // This source code is available under agreement available at
 // %InstallDIR%\features\org.talend.rcp.branding.%PRODUCTNAME%\%PRODUCTNAME%license.txt
@@ -20,7 +20,7 @@ import org.talend.cwm.softwaredeployment.TdMachine;
 
 /**
  * DOC scorreia class global comment. Detailled comment
- * 
+ *
  * @deprecated this class does not seem to be used anymore. Remove it?
  */
 public class DataManagerBuilder extends CwmBuilder {
@@ -31,7 +31,7 @@ public class DataManagerBuilder extends CwmBuilder {
 
     /**
      * DOC scorreia DataManagerBuilder constructor comment.
-     * 
+     *
      * @param conn
      * @throws SQLException
      */
@@ -48,7 +48,7 @@ public class DataManagerBuilder extends CwmBuilder {
 
     /**
      * DOC scorreia Comment method "initializeMachine".
-     * 
+     *
      * @return
      */
     private TdMachine initializeMachine() {
@@ -58,7 +58,7 @@ public class DataManagerBuilder extends CwmBuilder {
 
     /**
      * DOC scorreia Comment method "initializeDataManager".
-     * 
+     *
      * @return
      */
     private TdDataManager initializeDataManager() {

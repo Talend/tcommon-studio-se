@@ -1,6 +1,6 @@
 // ============================================================================
 //
-// Copyright (C) 2006-2018 Talend Inc. - www.talend.com
+// Copyright (C) 2006-2019 Talend Inc. - www.talend.com
 //
 // This source code is available under agreement available at
 // %InstallDIR%\features\org.talend.rcp.branding.%PRODUCTNAME%\%PRODUCTNAME%license.txt
@@ -26,7 +26,7 @@ import org.talend.core.database.EDatabaseTypeName;
 
 /**
  * created by ggu on Jul 6, 2012 Detailled comment
- * 
+ *
  */
 public class AS400ExtractManagerTest extends AbstractTest4ExtractManager {
 
@@ -36,9 +36,9 @@ public class AS400ExtractManagerTest extends AbstractTest4ExtractManager {
     }
 
     /**
-     * 
+     *
      * DOC ggu Comment method "testGetSchema".
-     * 
+     *
      * @see AS400ExtractManager.getSchema(IMetadataConnection)
      */
     @Override
@@ -61,11 +61,11 @@ public class AS400ExtractManagerTest extends AbstractTest4ExtractManager {
     }
 
     /**
-     * 
+     *
      * DOC ggu Comment method "testExtractTablesFromDB4MultiSchemas".
-     * 
+     *
      * because there are many libs to be supported by AS400
-     * 
+     *
      * @throws Exception
      */
     // @Test
@@ -74,11 +74,11 @@ public class AS400ExtractManagerTest extends AbstractTest4ExtractManager {
     }
 
     /**
-     * 
+     *
      * DOC ggu Comment method "testExtractTablesFromDB4SupportsSchemasInTableDefinitions".
-     * 
+     *
      * because when supportsSchemasInTableDefinitions for AS400
-     * 
+     *
      * @throws Exception
      */
     // @Test

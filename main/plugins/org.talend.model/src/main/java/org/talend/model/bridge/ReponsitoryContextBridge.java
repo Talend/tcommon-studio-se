@@ -1,6 +1,6 @@
 // ============================================================================
 //
-// Copyright (C) 2006-2018 Talend Inc. - www.talend.com
+// Copyright (C) 2006-2019 Talend Inc. - www.talend.com
 //
 // This source code is available under agreement available at
 // %InstallDIR%\features\org.talend.rcp.branding.%PRODUCTNAME%\%PRODUCTNAME%license.txt
@@ -34,7 +34,7 @@ public final class ReponsitoryContextBridge {
 
     /**
      * Getter for projectName.
-     * 
+     *
      * @return the projectName
      */
     public static String getProjectName() {
@@ -44,7 +44,7 @@ public final class ReponsitoryContextBridge {
     // ADD msjian 2011-8-5 TDQ-3165: get the Project Description
     /**
      * Getter for projectDescription.
-     * 
+     *
      * @return the projectDescription
      */
     public static String getProjectDescription() {
@@ -53,7 +53,7 @@ public final class ReponsitoryContextBridge {
 
     /**
      * Getter for author.
-     * 
+     *
      * @return the author
      */
     public static String getAuthor() {
@@ -71,7 +71,7 @@ public final class ReponsitoryContextBridge {
 
     /**
      * DOC bZhou Comment method "getRootProject".
-     * 
+     *
      * @return
      */
     public static IProject getRootProject() {
@@ -79,9 +79,9 @@ public final class ReponsitoryContextBridge {
     }
 
     /**
-     * 
+     *
      * find the spcial project which name is projectName
-     * 
+     *
      * @param projectName the name of project which you finding
      * @return
      */
@@ -91,7 +91,7 @@ public final class ReponsitoryContextBridge {
 
     /**
      * DOC bZhou Comment method "initialized".
-     * 
+     *
      * @param proj
      * @param user
      */
@@ -102,7 +102,7 @@ public final class ReponsitoryContextBridge {
 
     /**
      * Getter for project.
-     * 
+     *
      * @return the project
      */
     public static Project getProject() {
@@ -111,7 +111,7 @@ public final class ReponsitoryContextBridge {
 
     /**
      * Sets the project.
-     * 
+     *
      * @param project the project to set
      */
     public static void setProject(Project project) {
@@ -120,7 +120,7 @@ public final class ReponsitoryContextBridge {
 
     /**
      * Getter for user.
-     * 
+     *
      * @return the user
      */
     public static User getUser() {
@@ -129,7 +129,7 @@ public final class ReponsitoryContextBridge {
 
     /**
      * DOC bZhou Comment method "isDefautProject".
-     * 
+     *
      * @return
      */
     public static boolean isDefautProject() {
@@ -137,9 +137,9 @@ public final class ReponsitoryContextBridge {
     }
 
     /**
-     * 
+     *
      * MOD zshen bug:11068 For component only. 2010-04-30
-     * 
+     *
      * @param projectName
      */
     public static void setDefaultProjectName(String projectName) {

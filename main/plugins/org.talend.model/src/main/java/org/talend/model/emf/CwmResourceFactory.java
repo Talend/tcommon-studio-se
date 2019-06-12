@@ -1,6 +1,6 @@
 // ============================================================================
 //
-// Copyright (C) 2006-2018 Talend Inc. - www.talend.com
+// Copyright (C) 2006-2019 Talend Inc. - www.talend.com
 //
 // This source code is available under agreement available at
 // %InstallDIR%\features\org.talend.rcp.branding.%PRODUCTNAME%\%PRODUCTNAME%license.txt
@@ -19,10 +19,10 @@ import org.talend.commons.runtime.model.emf.TalendXMIResource;
 
 /**
  * @author scorreia
- * 
+ *
  * This factory only create CwmResource. It can be used in plugin.xml file in order to automatically map the editor to a
  * file name extension.
- * 
+ *
  * see http://serdom.szn.pl/ser/?p=6
  */
 public class CwmResourceFactory extends XMIResourceFactoryImpl {

@@ -1,6 +1,6 @@
 // ============================================================================
 //
-// Copyright (C) 2006-2018 Talend Inc. - www.talend.com
+// Copyright (C) 2006-2019 Talend Inc. - www.talend.com
 //
 // This source code is available under agreement available at
 // %InstallDIR%\features\org.talend.rcp.branding.%PRODUCTNAME%\%PRODUCTNAME%license.txt
@@ -50,9 +50,9 @@ public class DatabaseTableWizardPage extends WizardPage {
     /**
      * DatabaseWizardPage constructor (to instance IMetadataConnection OR MetaDataTableType). If MetaDataTableType
      * exist, it's an update of existing metadata else it's a new metadata.
-     * 
+     *
      * @param managerConnection
-     * 
+     *
      * @param ISelection
      */
     public DatabaseTableWizardPage(MetadataTable metadataTable, ManagerConnection managerConnection,
@@ -80,7 +80,7 @@ public class DatabaseTableWizardPage extends WizardPage {
 
     /**
      * Create the first composite, addComponentsAndControls and initialize TableWizardPage.
-     * 
+     *
      * @see IDialogPage#createControl(Composite)
      */
     @Override

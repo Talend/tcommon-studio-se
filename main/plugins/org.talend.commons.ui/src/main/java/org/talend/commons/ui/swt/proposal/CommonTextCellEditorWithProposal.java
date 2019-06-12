@@ -1,6 +1,6 @@
 // ============================================================================
 //
-// Copyright (C) 2006-2018 Talend Inc. - www.talend.com
+// Copyright (C) 2006-2019 Talend Inc. - www.talend.com
 //
 // This source code is available under agreement available at
 // %InstallDIR%\features\org.talend.rcp.branding.%PRODUCTNAME%\%PRODUCTNAME%license.txt
@@ -31,7 +31,7 @@ import org.talend.commons.ui.swt.tableviewer.TableViewerCreatorColumn;
 /**
  * This class extends the ExtendedTextCellEditor to add the Expression Builder to tMapper. Only tMapper can use this
  * class. <br/>
- * 
+ *
  */
 public class CommonTextCellEditorWithProposal {
 
@@ -59,7 +59,7 @@ public class CommonTextCellEditorWithProposal {
 
     /**
      * DOC amaumont Comment method "init".
-     * 
+     *
      * @param tableViewerCreatorColumn
      */
     public void init(TableViewerCreatorColumn tableViewerCreatorColumn) {
@@ -205,7 +205,7 @@ public class CommonTextCellEditorWithProposal {
 
     /**
      * Getter for contentProposalAdapter.
-     * 
+     *
      * @return the contentProposalAdapter
      */
     public ContentProposalAdapterExtended getContentProposalAdapter() {

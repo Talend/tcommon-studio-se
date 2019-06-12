@@ -1,6 +1,6 @@
 // ============================================================================
 //
-// Copyright (C) 2006-2018 Talend Inc. - www.talend.com
+// Copyright (C) 2006-2019 Talend Inc. - www.talend.com
 //
 // This source code is available under agreement available at
 // %InstallDIR%\features\org.talend.rcp.branding.%PRODUCTNAME%\%PRODUCTNAME%license.txt
@@ -48,7 +48,7 @@ public abstract class AbstractRepositoryContextHandler implements IRepositoryCon
     protected String getCorrectVariableName(ContextItem contextItem, String originalVariableName, EHadoopParamName noSqlParam) {
         return getCorrectVariableName(contextItem, originalVariableName, noSqlParam.name());
     }
-    
+
     protected String getCorrectVariableName(ContextItem contextItem, String originalVariableName, String noSqlParam) {
         Set<String> contextVarNames = ContextUtils.getContextVarNames(contextItem);
         if (contextVarNames != null && !contextVarNames.contains(originalVariableName)) {

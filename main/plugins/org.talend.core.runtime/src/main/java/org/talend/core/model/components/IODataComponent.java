@@ -1,6 +1,6 @@
 // ============================================================================
 //
-// Copyright (C) 2006-2018 Talend Inc. - www.talend.com
+// Copyright (C) 2006-2019 Talend Inc. - www.talend.com
 //
 // This source code is available under agreement available at
 // %InstallDIR%\features\org.talend.rcp.branding.%PRODUCTNAME%\%PRODUCTNAME%license.txt
@@ -25,9 +25,9 @@ import org.talend.core.model.process.INode;
 
 /**
  * DOC smallet class global comment. Detailled comment <br/>
- * 
+ *
  * $Id: IODataComponent.java 38013 2010-03-05 14:21:59Z mhirt $
- * 
+ *
  */
 public class IODataComponent {
 
@@ -45,7 +45,7 @@ public class IODataComponent {
 
     /**
      * DOC smallet IODataComponent constructor comment.
-     * 
+     *
      * @param connection
      */
     public IODataComponent(IConnection connection) {
@@ -81,7 +81,7 @@ public class IODataComponent {
 
     /**
      * Getter for connection.
-     * 
+     *
      * @return the connection
      */
     public IConnection getConnection() {
@@ -143,7 +143,7 @@ public class IODataComponent {
 
     /**
      * Getter for columnOption.
-     * 
+     *
      * @return the columnOption
      */
     public int getColumnOption() {
@@ -152,7 +152,7 @@ public class IODataComponent {
 
     /**
      * Sets the columnOption.
-     * 
+     *
      * @param columnOption the columnOption to set
      */
     public void setColumnOption(int columnOption) {
@@ -169,7 +169,7 @@ public class IODataComponent {
 
     /**
      * Getter for newMetadataTable.
-     * 
+     *
      * @return the newMetadataTable
      */
     public IMetadataTable getNewMetadataTable() {
@@ -178,7 +178,7 @@ public class IODataComponent {
 
     /**
      * Sets the newMetadataTable.
-     * 
+     *
      * @param newMetadataTable the newMetadataTable to set
      */
     public void setNewMetadataTable(IMetadataTable newMetadataTable) {

@@ -1,6 +1,6 @@
 // ============================================================================
 //
-// Copyright (C) 2006-2018 Talend Inc. - www.talend.com
+// Copyright (C) 2006-2019 Talend Inc. - www.talend.com
 //
 // This source code is available under agreement available at
 // %InstallDIR%\features\org.talend.rcp.branding.%PRODUCTNAME%\%PRODUCTNAME%license.txt
@@ -65,9 +65,9 @@ public class S56MdmConnectionHelper extends AbsMdmConnectionHelper {
     }
 
     /**
-     * 
+     *
      * DOC wchen Comment method "getPKs". used to call getDataModelPKs,getDataClusterPKs,getUniversePKs
-     * 
+     *
      * @param stub
      * @param modelOrContainerMethod
      * @param modelOrContainerClass
@@ -198,7 +198,7 @@ public class S56MdmConnectionHelper extends AbsMdmConnectionHelper {
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see org.talend.metadata.managment.mdm.AbsMdmConnectionHelper#resetStubUser(java.lang.Object, java.lang.String)
      */
     @Override

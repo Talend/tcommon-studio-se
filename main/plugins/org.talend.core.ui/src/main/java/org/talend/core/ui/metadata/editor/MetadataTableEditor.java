@@ -1,6 +1,6 @@
 // ============================================================================
 //
-// Copyright (C) 2006-2018 Talend Inc. - www.talend.com
+// Copyright (C) 2006-2019 Talend Inc. - www.talend.com
 //
 // This source code is available under agreement available at
 // %InstallDIR%\features\org.talend.rcp.branding.%PRODUCTNAME%\%PRODUCTNAME%license.txt
@@ -30,9 +30,9 @@ import org.talend.core.ui.services.IDesignerCoreUIService;
 
 /**
  * DOC amaumont class global comment. Detailled comment <br/>
- * 
+ *
  * $Id: MetadataTableEditor.java 51244 2010-11-15 03:28:34Z cli $
- * 
+ *
  */
 public class MetadataTableEditor extends ExtendedTableModel<IMetadataColumn> {
 
@@ -67,7 +67,7 @@ public class MetadataTableEditor extends ExtendedTableModel<IMetadataColumn> {
                 registerDataList(this.metadataTable.getListColumns(true));
             } else {
                 registerDataList(this.metadataTable.getListColumns());
-            } 
+            }
         }
     }
 
@@ -85,7 +85,7 @@ public class MetadataTableEditor extends ExtendedTableModel<IMetadataColumn> {
 
     /**
      * set MetadaTable.
-     * 
+     *
      * @param metadataEditorTable
      */
     public void setMetadataTable(IMetadataTable metadataTable) {
@@ -94,9 +94,9 @@ public class MetadataTableEditor extends ExtendedTableModel<IMetadataColumn> {
     }
 
     /**
-     * 
+     *
      * DOC amaumont Comment method "validateColumnName".
-     * 
+     *
      * @param columnName
      * @return true if columnName has a valid value
      */
@@ -106,7 +106,7 @@ public class MetadataTableEditor extends ExtendedTableModel<IMetadataColumn> {
         }
 
         if (!MetadataToolHelper.isValidColumnName(columnName)) {
-            return ""; //$NON-NLS-1$ 
+            return ""; //$NON-NLS-1$
         }
 
         int lstSize = getBeansList().size();
@@ -140,7 +140,7 @@ public class MetadataTableEditor extends ExtendedTableModel<IMetadataColumn> {
 
                 /*
                  * (non-Javadoc)
-                 * 
+                 *
                  * @see org.talend.commons.utils.data.list.UniqueStringGenerator#getBeanString(java.lang.Object)
                  */
                 @Override
@@ -154,7 +154,7 @@ public class MetadataTableEditor extends ExtendedTableModel<IMetadataColumn> {
 
                 /*
                  * (non-Javadoc)
-                 * 
+                 *
                  * @see org.talend.commons.utils.data.list.UniqueStringGenerator#getBeanString(java.lang.Object)
                  */
                 @Override

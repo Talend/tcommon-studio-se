@@ -1,6 +1,6 @@
 // ============================================================================
 //
-// Copyright (C) 2006-2018 Talend Inc. - www.talend.com
+// Copyright (C) 2006-2019 Talend Inc. - www.talend.com
 //
 // This source code is available under agreement available at
 // %InstallDIR%\features\org.talend.rcp.branding.%PRODUCTNAME%\%PRODUCTNAME%license.txt
@@ -59,7 +59,7 @@ public interface ITestContainerProviderService extends IService {
     public boolean hasTestCase(Project project, Property property);
 
     public ProcessType getTestContainerProcess(Item item);
-    
+
     public void setTestContainerProcess(ProcessType process,Item item);
 
     public Item getParentJobItem(Item item) throws PersistenceException;
@@ -75,7 +75,7 @@ public interface ITestContainerProviderService extends IService {
     public List<IFile> getTestReportFiles(ProcessItem testItem);
 
     public IFolder getProcessFolder(String originalJobID);
-    
+
     public IFolder getProcessFolder(IProject project, String originalJobID);
 
     public List<ProcessItem> getAllTestContainers(ProcessItem item);
@@ -83,7 +83,7 @@ public interface ITestContainerProviderService extends IService {
     public void copyDataSetFiles(IProcess process, IPath srcPath);
 
     public String getTestDataValue(IProcess process, String instance, String testData);
-    
+
     public String getTestDataParamemter(IProcess process, String instance, String testData);
 
     public List<Information> getTestContainerInformations(Item item);
@@ -122,17 +122,17 @@ public interface ITestContainerProviderService extends IService {
     public ProcessType loadRemoteTestContainer(Item item, IProcess2 loadedProcess, Property loadProperty);
 
     public ERepositoryObjectType getTestCaseObjectType();
-    
+
     public String getParentVersion(Item item);
-    
+
     public List<ProcessItem> getTestContainersByVersion(ProcessItem item);
-    
+
     boolean isTestContainerEditor(IEditorPart editor);
 
     Set<ModuleNeeded> getAllJobTestcaseModules(ProcessItem item) throws PersistenceException;
-    
+
     public void deleteDataFiles(Object deleteObj);
-    
+
     public List<NodeType> getOriginalNodes(ProcessType process);
 
 }

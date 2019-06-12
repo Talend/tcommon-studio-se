@@ -1,6 +1,6 @@
 // ============================================================================
 //
-// Copyright (C) 2006-2018 Talend Inc. - www.talend.com
+// Copyright (C) 2006-2019 Talend Inc. - www.talend.com
 //
 // This source code is available under agreement available at
 // %InstallDIR%\features\org.talend.rcp.branding.%PRODUCTNAME%\%PRODUCTNAME%license.txt
@@ -30,12 +30,12 @@ import java.util.concurrent.atomic.AtomicReference;
 import org.apache.log4j.Logger;
 
 /**
- * 
+ *
  * Class LockerByKeyUnrestricted.
- * 
+ *
  * This class has the same behaviours that {@link LockerByKey} except
- * 
- * 
+ *
+ *
  */
 public class LockerByKeyUnrestricted<KP> implements ILockerByKey<KP> {
 
@@ -73,9 +73,9 @@ public class LockerByKeyUnrestricted<KP> implements ILockerByKey<KP> {
     }
 
     /**
-     * 
+     *
      * Constructor LockerByKey.
-     * 
+     *
      * @param fair {@code true} if this lock should use a fair ordering policy
      */
     public LockerByKeyUnrestricted(boolean fair) {
@@ -83,9 +83,9 @@ public class LockerByKeyUnrestricted<KP> implements ILockerByKey<KP> {
     }
 
     /**
-     * 
+     *
      * Constructor LockerByKey.
-     * 
+     *
      * @param cleanPeriod in number of operations, it means that an automatic clean will be done for each
      * <code>cleanPeriod</code> number of unlock operation.
      */
@@ -94,9 +94,9 @@ public class LockerByKeyUnrestricted<KP> implements ILockerByKey<KP> {
     }
 
     /**
-     * 
+     *
      * Constructor LockerByKey.
-     * 
+     *
      * @param fair {@code true} if this lock should use a fair ordering policy
      * @param cleanPeriod in number of operations, it means that an automatic clean will be done for each
      * <code>cleanPeriod</code> number of unlock operation.
@@ -129,9 +129,9 @@ public class LockerByKeyUnrestricted<KP> implements ILockerByKey<KP> {
     }
 
     /**
-     * 
+     *
      * Method "lockInterruptibly".
-     * 
+     *
      * @param key
      * @throws InterruptedException
      * @see java.util.concurrent.locks.ReentrantLock#lockInterruptibly()
@@ -148,9 +148,9 @@ public class LockerByKeyUnrestricted<KP> implements ILockerByKey<KP> {
     }
 
     /**
-     * 
+     *
      * Method "lockInterruptiblyUnrestricted".
-     * 
+     *
      * @param key
      * @throws InterruptedException
      * @see java.util.concurrent.locks.ReentrantLock#lockInterruptibly()
@@ -186,7 +186,7 @@ public class LockerByKeyUnrestricted<KP> implements ILockerByKey<KP> {
 
                 /*
                  * (non-Javadoc)
-                 * 
+                 *
                  * @see java.util.concurrent.Callable#call()
                  */
                 @Override
@@ -237,7 +237,7 @@ public class LockerByKeyUnrestricted<KP> implements ILockerByKey<KP> {
 
     /**
      * Method "tryLock".
-     * 
+     *
      * @param key
      * @return {@code true} if the lock was free and was acquired by the current thread, or the lock was already held by
      * the current thread; and {@code false} otherwise
@@ -258,7 +258,7 @@ public class LockerByKeyUnrestricted<KP> implements ILockerByKey<KP> {
 
     /**
      * Method "tryLockUnrestricted".
-     * 
+     *
      * @param key
      * @return {@code true} if the lock was free and was acquired by the current thread, or the lock was already held by
      * the current thread; and {@code false} otherwise
@@ -278,7 +278,7 @@ public class LockerByKeyUnrestricted<KP> implements ILockerByKey<KP> {
 
                 /*
                  * (non-Javadoc)
-                 * 
+                 *
                  * @see java.util.concurrent.Callable#call()
                  */
                 @Override
@@ -322,7 +322,7 @@ public class LockerByKeyUnrestricted<KP> implements ILockerByKey<KP> {
 
     /**
      * Method "tryLock".
-     * 
+     *
      * @param key
      * @param timeout the time to wait for the lock in milliseconds
      * @return true if the lock was free and was acquired by the current thread, or the lock was already held by the
@@ -338,7 +338,7 @@ public class LockerByKeyUnrestricted<KP> implements ILockerByKey<KP> {
 
     /**
      * Method "tryLockUnrestricted".
-     * 
+     *
      * @param key
      * @param timeout the time to wait for the lock in milliseconds
      * @return true if the lock was free and was acquired by the current thread, or the lock was already held by the
@@ -353,7 +353,7 @@ public class LockerByKeyUnrestricted<KP> implements ILockerByKey<KP> {
 
     /**
      * Method "tryLock".
-     * 
+     *
      * @param key
      * @param timeout the time to wait for the lock
      * @param unit the time unit of the timeout argument
@@ -361,7 +361,7 @@ public class LockerByKeyUnrestricted<KP> implements ILockerByKey<KP> {
      * current thread; and false if the waiting time elapsed before the lock could be acquired
      * @throws InterruptedException
      * @throws IllegalArgumentException if bean is null
-     * 
+     *
      * @see java.util.concurrent.locks.ReentrantLock#tryLock(long, java.util.concurrent.TimeUnit)
      */
     @Override
@@ -377,7 +377,7 @@ public class LockerByKeyUnrestricted<KP> implements ILockerByKey<KP> {
 
     /**
      * Method "tryLockUnrestricted".
-     * 
+     *
      * @param key
      * @param timeout the time to wait for the lock
      * @param unit the time unit of the timeout argument
@@ -385,7 +385,7 @@ public class LockerByKeyUnrestricted<KP> implements ILockerByKey<KP> {
      * current thread; and false if the waiting time elapsed before the lock could be acquired
      * @throws InterruptedException
      * @throws IllegalArgumentException if bean is null
-     * 
+     *
      * @see java.util.concurrent.locks.ReentrantLock#tryLock(long, java.util.concurrent.TimeUnit)
      */
     public boolean tryLockUnrestricted(final KP key, final long timeout, final TimeUnit unit) throws InterruptedException {
@@ -401,7 +401,7 @@ public class LockerByKeyUnrestricted<KP> implements ILockerByKey<KP> {
 
                 /*
                  * (non-Javadoc)
-                 * 
+                 *
                  * @see java.util.concurrent.Callable#call()
                  */
                 @Override
@@ -454,10 +454,10 @@ public class LockerByKeyUnrestricted<KP> implements ILockerByKey<KP> {
 
     /**
      * Method "unlock". Unlock the operations with the provided key.
-     * 
+     *
      * To detect incorrect unlocking, this method may return an <code>IllegalStateException</code> when the lock has
      * been already unlocked or it never been locked.
-     * 
+     *
      * @param key
      * @return true if the key has been found to release the lock; and false otherwise
      * @throws IllegalStateException
@@ -480,10 +480,10 @@ public class LockerByKeyUnrestricted<KP> implements ILockerByKey<KP> {
 
     /**
      * Method "unlockUnrestricted". Unlock the operations with the provided key.
-     * 
+     *
      * To detect incorrect unlocking, this method may return an <code>IllegalStateException</code> when the lock has
      * been already unlocked or it never been locked.
-     * 
+     *
      * @param key
      * @return true if the key has been found to release the lock; and false otherwise
      * @throws IllegalStateException
@@ -549,14 +549,14 @@ public class LockerByKeyUnrestricted<KP> implements ILockerByKey<KP> {
     }
 
     /**
-     * 
+     *
      * Method "clean".
-     * 
+     *
      * Clean the map which contains the lock wrappers.
-     * 
+     *
      * Removed lock wrappers are these where lock is not locked by a thread and no one thread is waiting to obtain the
      * lock.
-     * 
+     *
      * The default clean will do an automatic clean all 1000 unlock operation, you can disable or change this value from
      * the constructor.
      */

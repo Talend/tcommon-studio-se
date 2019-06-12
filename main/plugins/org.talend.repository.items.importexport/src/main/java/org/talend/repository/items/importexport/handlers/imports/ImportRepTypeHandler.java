@@ -1,6 +1,6 @@
 // ============================================================================
 //
-// Copyright (C) 2006-2018 Talend Inc. - www.talend.com
+// Copyright (C) 2006-2019 Talend Inc. - www.talend.com
 //
 // This source code is available under agreement available at
 // %InstallDIR%\features\org.talend.rcp.branding.%PRODUCTNAME%\%PRODUCTNAME%license.txt
@@ -35,8 +35,8 @@ import org.talend.repository.items.importexport.manager.ResourcesManager;
 
 /**
  * DOC ggu class global comment. Detailled comment
- * 
- * 
+ *
+ *
  * most of importers should extends this class, just recommend.
  */
 @SuppressWarnings("rawtypes")
@@ -76,14 +76,14 @@ public class ImportRepTypeHandler extends ImportBasicHandler {
 
     /**
      * set by extension point, will be item type of import items.
-     * 
+     *
      * for example, for job designer, will be "ERepositoryObjectType.PROCCESS".
      */
     protected final Set<ERepositoryObjectType> checkedItemTypes = new HashSet<ERepositoryObjectType>();
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see
      * org.talend.repository.items.importexport.handlers.imports.AbstractImportExecutableHandler#setInitializationData
      * (org.eclipse.core.runtime.IConfigurationElement, java.lang.String, java.lang.Object)

@@ -1,6 +1,6 @@
 // ============================================================================
 //
-// Copyright (C) 2006-2018 Talend Inc. - www.talend.com
+// Copyright (C) 2006-2019 Talend Inc. - www.talend.com
 //
 // This source code is available under agreement available at
 // %InstallDIR%\features\org.talend.rcp.branding.%PRODUCTNAME%\%PRODUCTNAME%license.txt
@@ -32,9 +32,9 @@ import org.talend.commons.ui.utils.PathUtils;
 
 /**
  * Create a Label and a Text.
- * 
+ *
  * $Id: LabelledFileField.java 3351 2007-05-04 12:14:00Z plegall $
- * 
+ *
  */
 public class LabelledDirectoryField {
 
@@ -50,7 +50,7 @@ public class LabelledDirectoryField {
 
     /**
      * Create a Label and a Text.
-     * 
+     *
      * @param composite
      * @param string
      * @param String[] extensions
@@ -61,7 +61,7 @@ public class LabelledDirectoryField {
 
     /**
      * Create a Label and a Text.
-     * 
+     *
      * @param composite
      * @param string
      * @param String[] extensions
@@ -73,7 +73,7 @@ public class LabelledDirectoryField {
 
     /**
      * Create a Label and a Text width specific styleField.
-     * 
+     *
      * @param composite
      * @param string
      * @param String[] extensions
@@ -85,7 +85,7 @@ public class LabelledDirectoryField {
 
     /**
      * Create a Label and a Text width specific styleField.
-     * 
+     *
      * @param composite
      * @param string
      * @param String[] extensions
@@ -98,7 +98,7 @@ public class LabelledDirectoryField {
 
     /**
      * Create a Label and a Text width Gridata option FILL.
-     * 
+     *
      * @param composite
      * @param string
      * @param String[] extensions
@@ -112,7 +112,7 @@ public class LabelledDirectoryField {
 
     /**
      * Create a Label and a Text width specific styleField and Gridata option FILL.
-     * 
+     *
      * @param composite
      * @param string
      * @param String[] extensions
@@ -127,7 +127,7 @@ public class LabelledDirectoryField {
 
     /**
      * Create a Label and a Text width specific styleField and Gridata option FILL.
-     * 
+     *
      * @param composite
      * @param string
      * @param String[] extensions
@@ -198,7 +198,7 @@ public class LabelledDirectoryField {
 
     /**
      * displayDialog to choose a file path.
-     * 
+     *
      * @param composite
      * @param String[] extensions
      */
@@ -213,7 +213,7 @@ public class LabelledDirectoryField {
 
     /**
      * setTextLimit to Text Object.
-     * 
+     *
      * @param limit
      */
     public void setTextLimit(final int limit) {
@@ -222,7 +222,7 @@ public class LabelledDirectoryField {
 
     /**
      * setToolTipText to Text Object.
-     * 
+     *
      * @param string
      */
     public void setToolTipText(final String string) {
@@ -232,7 +232,7 @@ public class LabelledDirectoryField {
 
     /**
      * getText to Text Object.
-     * 
+     *
      * @return string
      */
     public String getText() {
@@ -244,7 +244,7 @@ public class LabelledDirectoryField {
 
     /**
      * setText to Text Object.
-     * 
+     *
      * @param string
      */
     public void setText(final String string) {
@@ -257,7 +257,7 @@ public class LabelledDirectoryField {
 
     /**
      * setText to Label Object.
-     * 
+     *
      * @param string
      */
     public void setLabelText(final String string) {
@@ -274,7 +274,7 @@ public class LabelledDirectoryField {
 
     /**
      * setEditable to Text and Label Object.
-     * 
+     *
      * @param boolean
      */
     public void forceFocus() {
@@ -284,7 +284,7 @@ public class LabelledDirectoryField {
 
     /**
      * setEditable to Text and Label Object.
-     * 
+     *
      * @param boolean
      */
     public void setEditable(final boolean visible) {
@@ -295,7 +295,7 @@ public class LabelledDirectoryField {
 
     /**
      * setVisible to Text and Label Object.
-     * 
+     *
      * @param boolean
      */
     public void setVisible(final boolean visible) {
@@ -326,7 +326,7 @@ public class LabelledDirectoryField {
 
     /**
      * addListener to Text Object.
-     * 
+     *
      * @param eventType
      * @param listener
      */
@@ -336,7 +336,7 @@ public class LabelledDirectoryField {
 
     /**
      * addModifyListener to Text Object.
-     * 
+     *
      * @param listener
      */
     public void addModifyListener(ModifyListener listener) {
@@ -345,7 +345,7 @@ public class LabelledDirectoryField {
 
     /**
      * getEditable to Text Object.
-     * 
+     *
      * @return boolean
      */
     public boolean getEditable() {
@@ -354,7 +354,7 @@ public class LabelledDirectoryField {
 
     /**
      * getCharCount to Text Object.
-     * 
+     *
      * @return int
      */
     public int getCharCount() {
@@ -363,7 +363,7 @@ public class LabelledDirectoryField {
 
     /**
      * DOC ocarbone Comment method "setReadOnly".
-     * 
+     *
      * @param b
      */
     public void setReadOnly(boolean visible) {
@@ -374,7 +374,7 @@ public class LabelledDirectoryField {
 
     /**
      * DOC ycbai Comment method "getTextControl".
-     * 
+     *
      * @return
      */
     public Text getTextControl() {

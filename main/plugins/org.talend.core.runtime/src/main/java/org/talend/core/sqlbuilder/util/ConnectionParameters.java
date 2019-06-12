@@ -1,6 +1,6 @@
 // ============================================================================
 //
-// Copyright (C) 2006-2018 Talend Inc. - www.talend.com
+// Copyright (C) 2006-2019 Talend Inc. - www.talend.com
 //
 // This source code is available under agreement available at
 // %InstallDIR%\features\org.talend.rcp.branding.%PRODUCTNAME%\%PRODUCTNAME%license.txt
@@ -34,9 +34,9 @@ import org.talend.repository.model.RepositoryNode;
 
 /**
  * This class is used for representing connection parameters. <br/>
- * 
+ *
  * @author ftang
- * 
+ *
  */
 public class ConnectionParameters {
 
@@ -53,7 +53,7 @@ public class ConnectionParameters {
 
     /**
      * qzhang ConnectionParameters class global comment. Detailled comment <br/>
-     * 
+     *
      */
     public enum EFrameworkKeyName {
         EMBEDED("Embeded"), //$NON-NLS-1$
@@ -72,7 +72,7 @@ public class ConnectionParameters {
 
         /**
          * Getter for displayName.
-         * 
+         *
          * @return the displayName
          */
         public String getDisplayName() {
@@ -175,7 +175,7 @@ public class ConnectionParameters {
 
     /**
      * Sets the connectionComment.
-     * 
+     *
      * @param connectionComment the connectionComment to set
      */
     public void setConnectionComment(String connectionComment) {
@@ -184,7 +184,7 @@ public class ConnectionParameters {
 
     /**
      * Getter for schema.
-     * 
+     *
      * @return the schema
      */
     public String getLocalServiceName() {
@@ -193,7 +193,7 @@ public class ConnectionParameters {
 
     /**
      * Sets the schema.
-     * 
+     *
      * @param schema the schema to set
      */
     public void setLocalServiceName(String localServiceName) {
@@ -205,7 +205,7 @@ public class ConnectionParameters {
 
     /**
      * Getter for schema.
-     * 
+     *
      * @return the schema
      */
     public String getSchema() {
@@ -214,7 +214,7 @@ public class ConnectionParameters {
 
     /**
      * Sets the schema.
-     * 
+     *
      * @param schema the schema to set
      */
     public void setSchema(String schema) {
@@ -226,7 +226,7 @@ public class ConnectionParameters {
 
     /**
      * Getter for status.
-     * 
+     *
      * @return the status
      */
     public boolean isStatus() {
@@ -235,7 +235,7 @@ public class ConnectionParameters {
 
     /**
      * Sets the status.
-     * 
+     *
      * @param status the status to set
      */
     public void setStatus(boolean status) {
@@ -244,7 +244,7 @@ public class ConnectionParameters {
 
     /**
      * Getter for connectionComment.
-     * 
+     *
      * @return the connectionComment
      */
     public String getConnectionComment() {
@@ -253,7 +253,7 @@ public class ConnectionParameters {
 
     /**
      * Getter for queryObject.
-     * 
+     *
      * @return the queryObject
      */
     public Query getQueryObject() {
@@ -262,7 +262,7 @@ public class ConnectionParameters {
 
     /**
      * Sets the queryObject.
-     * 
+     *
      * @param queryObject the queryObject to set
      */
     public void setQueryObject(Query queryObject) {
@@ -283,7 +283,7 @@ public class ConnectionParameters {
 
     /**
      * Getter for parameters.
-     * 
+     *
      * @return the parameters
      */
     public Map<String, String> getParameters() {
@@ -292,7 +292,7 @@ public class ConnectionParameters {
 
     /**
      * Sets the parameters.
-     * 
+     *
      * @param parameters the parameters to set
      */
     public void setParameters(Map<String, String> parameters) {
@@ -301,7 +301,7 @@ public class ConnectionParameters {
 
     /**
      * Getter for filename.
-     * 
+     *
      * @return the filename
      */
     public String getFilename() {
@@ -310,7 +310,7 @@ public class ConnectionParameters {
 
     /**
      * Sets the filename.
-     * 
+     *
      * @param filename the filename to set
      */
     public void setFilename(String filename) {
@@ -328,7 +328,7 @@ public class ConnectionParameters {
 
     /**
      * Getter for datasource.
-     * 
+     *
      * @return the datasource
      */
     public String getDatasource() {
@@ -337,7 +337,7 @@ public class ConnectionParameters {
 
     /**
      * Sets the datasource.
-     * 
+     *
      * @param datasource the datasource to set
      */
     public void setDatasource(String datasource) {
@@ -349,7 +349,7 @@ public class ConnectionParameters {
 
     /**
      * Getter for dbType.
-     * 
+     *
      * @return the dbType
      */
     public String getDbType() {
@@ -358,7 +358,7 @@ public class ConnectionParameters {
 
     /**
      * Sets the dbType.
-     * 
+     *
      * @param dbType the dbType to set
      */
     public void setDbType(String dbType) {
@@ -375,7 +375,7 @@ public class ConnectionParameters {
 
     /**
      * Getter for dbName.
-     * 
+     *
      * @return the dbName
      */
     public String getDbName() {
@@ -384,7 +384,7 @@ public class ConnectionParameters {
 
     /**
      * Sets the dbName.
-     * 
+     *
      * @param dbName the dbName to set
      */
     public void setDbName(String dbName) {
@@ -399,7 +399,7 @@ public class ConnectionParameters {
 
     /**
      * Getter for host.
-     * 
+     *
      * @return the host
      */
     public String getHost() {
@@ -408,7 +408,7 @@ public class ConnectionParameters {
 
     /**
      * Sets the host.
-     * 
+     *
      * @param host the host to set
      */
     public void setHost(String host) {
@@ -420,7 +420,7 @@ public class ConnectionParameters {
 
     /**
      * Getter for password.
-     * 
+     *
      * @return the password
      */
     public String getPassword() {
@@ -429,7 +429,7 @@ public class ConnectionParameters {
 
     /**
      * Sets the password.
-     * 
+     *
      * @param password the password to set
      */
     public void setPassword(String password) {
@@ -442,7 +442,7 @@ public class ConnectionParameters {
 
     /**
      * Getter for port.
-     * 
+     *
      * @return the port
      */
     public String getPort() {
@@ -451,7 +451,7 @@ public class ConnectionParameters {
 
     /**
      * Sets the port.
-     * 
+     *
      * @param port the port to set
      */
     public void setPort(String port) {
@@ -463,7 +463,7 @@ public class ConnectionParameters {
 
     /**
      * Getter for query.
-     * 
+     *
      * @return the query
      */
     public String getQuery() {
@@ -472,7 +472,7 @@ public class ConnectionParameters {
 
     /**
      * Sets the query.
-     * 
+     *
      * @param query the query to set
      */
     public void setQuery(String query) {
@@ -488,7 +488,7 @@ public class ConnectionParameters {
     }
     /**
      * Getter for userName.
-     * 
+     *
      * @return the userName
      */
     public String getUserName() {
@@ -497,7 +497,7 @@ public class ConnectionParameters {
 
     /**
      * Sets the userName.
-     * 
+     *
      * @param userName the userName to set
      */
     public void setUserName(String userName) {
@@ -509,7 +509,7 @@ public class ConnectionParameters {
 
     /**
      * Getter for repositoryName.
-     * 
+     *
      * @return the repositoryName
      */
     public String getRepositoryName() {
@@ -518,7 +518,7 @@ public class ConnectionParameters {
 
     /**
      * Sets the repositoryName.
-     * 
+     *
      * @param repositoryName the repositoryName to set
      */
     public void setRepositoryName(String repositoryName) {
@@ -527,7 +527,7 @@ public class ConnectionParameters {
 
     /**
      * Get url String , use it to create Connection.
-     * 
+     *
      * @return url String from user input parameters.
      */
     public String getCombineURL() {
@@ -547,7 +547,7 @@ public class ConnectionParameters {
 
     /**
      * Sets selected component name.
-     * 
+     *
      * @param selectedComponentName
      */
     public void setSelectedComponentName(String selectedComponentName) {
@@ -557,7 +557,7 @@ public class ConnectionParameters {
 
     /**
      * Gets selected component name.
-     * 
+     *
      * @return
      */
     public String getSelectedComponentName() {
@@ -566,7 +566,7 @@ public class ConnectionParameters {
 
     /**
      * Getter for repositoryNodeBuiltIn.
-     * 
+     *
      * @return the repositoryNodeBuiltIn
      */
     public RepositoryNode getRepositoryNodeBuiltIn() {
@@ -575,7 +575,7 @@ public class ConnectionParameters {
 
     /**
      * Sets the repositoryNodeBuiltIn.
-     * 
+     *
      * @param repositoryNodeBuiltIn the repositoryNodeBuiltIn to set
      */
     public void setRepositoryNodeBuiltIn(RepositoryNode repositoryNodeBuiltIn) {
@@ -685,7 +685,7 @@ public class ConnectionParameters {
 
     /**
      * qzhang Comment method "setNode".
-     * 
+     *
      * @param elem
      */
     public void setNode(IElement elem) {
@@ -714,7 +714,7 @@ public class ConnectionParameters {
 
     /**
      * Getter for directory.
-     * 
+     *
      * @return the directory
      */
     public String getDirectory() {
@@ -723,7 +723,7 @@ public class ConnectionParameters {
 
     /**
      * Sets the directory.
-     * 
+     *
      * @param directory the directory to set
      */
     public void setDirectory(String directory) {
@@ -740,7 +740,7 @@ public class ConnectionParameters {
 
     /**
      * Sets the frameworkType.
-     * 
+     *
      * @param frameworkType the frameworkType to set
      */
     public void setFrameworkType(String frameworkType) {
@@ -761,7 +761,7 @@ public class ConnectionParameters {
 
     /**
      * Getter for jdbcProperties.
-     * 
+     *
      * @return the jdbcProperties
      */
     public String getJdbcProperties() {
@@ -770,7 +770,7 @@ public class ConnectionParameters {
 
     /**
      * Sets the jdbcProperties.
-     * 
+     *
      * @param jdbcProperties the jdbcProperties to set
      */
     public void setJdbcProperties(String jdbcProperties) {
@@ -790,7 +790,7 @@ public class ConnectionParameters {
 
     /**
      * Getter for isGeneralJDBC.
-     * 
+     *
      * @return the isGeneralJDBC
      */
     public boolean isGeneralJDBC() {
@@ -799,7 +799,7 @@ public class ConnectionParameters {
 
     /**
      * Sets the isGeneralJDBC.
-     * 
+     *
      * @param isGeneralJDBC the isGeneralJDBC to set
      */
     public void setGeneralJDBC(boolean isGeneralJDBC) {
@@ -808,7 +808,7 @@ public class ConnectionParameters {
 
     /**
      * Getter for url.
-     * 
+     *
      * @return the url
      */
     public String getUrl() {
@@ -817,7 +817,7 @@ public class ConnectionParameters {
 
     /**
      * Sets the url.
-     * 
+     *
      * @param url the url to set
      */
     public void setUrl(String url) {
@@ -826,7 +826,7 @@ public class ConnectionParameters {
 
     /**
      * Getter for driverJar.
-     * 
+     *
      * @return the driverJar
      */
     public String getDriverJar() {
@@ -835,7 +835,7 @@ public class ConnectionParameters {
 
     /**
      * Sets the driverJar.
-     * 
+     *
      * @param driverJar the driverJar to set
      */
     public void setDriverJar(String driverJar) {
@@ -844,7 +844,7 @@ public class ConnectionParameters {
 
     /**
      * Getter for driverClass.
-     * 
+     *
      * @return the driverClass
      */
     public String getDriverClass() {
@@ -853,7 +853,7 @@ public class ConnectionParameters {
 
     /**
      * Sets the driverClass.
-     * 
+     *
      * @param driverClass the driverClass to set
      */
     public void setDriverClass(String driverClass) {
@@ -886,7 +886,7 @@ public class ConnectionParameters {
 
     /**
      * Sets the isFirstOpenSqlBuilder.
-     * 
+     *
      * @param isFirstOpenSqlBuilder the isFirstOpenSqlBuilder to set
      */
     public boolean isFirstOpenSqlBuilder() {

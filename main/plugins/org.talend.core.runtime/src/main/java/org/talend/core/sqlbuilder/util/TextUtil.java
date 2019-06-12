@@ -1,6 +1,6 @@
 // ============================================================================
 //
-// Copyright (C) 2006-2018 Talend Inc. - www.talend.com
+// Copyright (C) 2006-2019 Talend Inc. - www.talend.com
 //
 // This source code is available under agreement available at
 // %InstallDIR%\features\org.talend.rcp.branding.%PRODUCTNAME%\%PRODUCTNAME%license.txt
@@ -17,7 +17,7 @@ import org.talend.core.runtime.i18n.Messages;
 
 /**
  * Text handling utility.
- * 
+ *
  * @author qzhang
  */
 public class TextUtil {
@@ -58,7 +58,7 @@ public class TextUtil {
 
     /**
      * Clear all linebreaks and carriage returns from input text.
-     * 
+     *
      * @return cleaned string
      */
     public static String removeLineBreaks(String input) {
@@ -72,7 +72,7 @@ public class TextUtil {
 
     /**
      * Return the text reformatted to have a max charwidth of maxWidth.
-     * 
+     *
      * @param maxWidth number of chars that the text can be wide.
      */
     public static String getWrappedText(String input) {
@@ -81,7 +81,7 @@ public class TextUtil {
 
     /**
      * Return the text reformatted to have a max charwidth of maxWidth.
-     * 
+     *
      * @param maxWidth number of chars that the text can be wide.
      */
     public static String getWrappedText(String input, int maxWidth) {
@@ -152,7 +152,7 @@ public class TextUtil {
 
     /**
      * Replace all occurrences of replaceFrom in inputString with replaceTo.
-     * 
+     *
      * @param inputString string to update
      * @param replaceFrom occurrences to replace
      * @param replaceTo string that replaces occurrences
@@ -239,7 +239,7 @@ public class TextUtil {
 
     /**
      * ftang Comment method "isDoubleQuotesNeededDbType".
-     * 
+     *
      * @param dbType
      * @return
      */
@@ -253,7 +253,7 @@ public class TextUtil {
 
     /**
      * DOC zli Comment method "isOracleDbType".
-     * 
+     *
      * @param dbType
      * @return
      */

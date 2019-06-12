@@ -1,6 +1,6 @@
 // ============================================================================
 //
-// Copyright (C) 2006-2018 Talend Inc. - www.talend.com
+// Copyright (C) 2006-2019 Talend Inc. - www.talend.com
 //
 // This source code is available under agreement available at
 // %InstallDIR%\features\org.talend.rcp.branding.%PRODUCTNAME%\%PRODUCTNAME%license.txt
@@ -29,9 +29,9 @@ import org.talend.designer.runprocess.ItemCacheManager;
 
 /**
  * DOC nrousseau ProcessController class global comment. Detailled comment <br/>
- * 
+ *
  * $Id: talend-code-templates.xml 1 2006-09-29 17:06:40 +0000 (ven., 29 sept. 2006) nrousseau $
- * 
+ *
  */
 public class JobInfo {
 
@@ -84,7 +84,7 @@ public class JobInfo {
 
     /**
      * DOC nrousseau JobInfo constructor comment.
-     * 
+     *
      * @param process2
      * @param context2
      */
@@ -99,7 +99,7 @@ public class JobInfo {
 
     /**
      * DOC nrousseau JobInfo constructor comment.
-     * 
+     *
      * @param process2
      * @param contextName2
      */
@@ -147,7 +147,7 @@ public class JobInfo {
 
     /**
      * DOC nrousseau JobInfo constructor comment.
-     * 
+     *
      * @param process2
      * @param contextName2
      */
@@ -174,7 +174,7 @@ public class JobInfo {
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see org.talend.designer.runprocess.IJobInfo#getContextName()
      */
     public String getContextName() {
@@ -183,7 +183,7 @@ public class JobInfo {
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see org.talend.designer.runprocess.IJobInfo#setContextName(java.lang.String)
      */
     public void setContextName(String contextName) {
@@ -192,7 +192,7 @@ public class JobInfo {
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see org.talend.designer.runprocess.IJobInfo#getJobId()
      */
     public String getJobId() {
@@ -201,7 +201,7 @@ public class JobInfo {
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see org.talend.designer.runprocess.IJobInfo#setJobId(java.lang.String)
      */
     public void setJobId(String jobId) {
@@ -210,7 +210,7 @@ public class JobInfo {
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see org.talend.designer.runprocess.IJobInfo#getProcess()
      */
     public IProcess getProcess() {
@@ -219,7 +219,7 @@ public class JobInfo {
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see org.talend.designer.runprocess.IJobInfo#setProcess(org.talend.core.model.process.IProcess)
      */
     public void setProcess(IProcess process) {
@@ -228,7 +228,7 @@ public class JobInfo {
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see org.talend.designer.runprocess.IJobInfo#getContext()
      */
     public IContext getContext() {
@@ -237,7 +237,7 @@ public class JobInfo {
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see org.talend.designer.runprocess.IJobInfo#setContext(org.talend.core.model.process.IContext)
      */
     public void setContext(IContext context) {
@@ -246,7 +246,7 @@ public class JobInfo {
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see org.talend.designer.runprocess.IJobInfo#getJobVersion()
      */
     public String getJobVersion() {
@@ -255,7 +255,7 @@ public class JobInfo {
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see org.talend.designer.runprocess.IJobInfo#setJobVersion(java.lang.String)
      */
     public void setJobVersion(String jobVersion) {
@@ -264,7 +264,7 @@ public class JobInfo {
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see org.talend.designer.runprocess.IJobInfo#isApplyContextToChildren()
      */
     public boolean isApplyContextToChildren() {
@@ -273,7 +273,7 @@ public class JobInfo {
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see org.talend.designer.runprocess.IJobInfo#setApplyContextToChildren(boolean)
      */
     public void setApplyContextToChildren(boolean applyContextToChildren) {
@@ -290,7 +290,7 @@ public class JobInfo {
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see org.talend.designer.runprocess.IJobInfo#getJobName()
      */
     public String getJobName() {
@@ -299,7 +299,7 @@ public class JobInfo {
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see org.talend.designer.runprocess.IJobInfo#setJobName(java.lang.String)
      */
     public void setJobName(String jobName) {
@@ -365,7 +365,7 @@ public class JobInfo {
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see org.talend.designer.runprocess.IJobInfo#getFatherJobInfo()
      */
     public JobInfo getFatherJobInfo() {
@@ -374,7 +374,7 @@ public class JobInfo {
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see org.talend.designer.runprocess.IJobInfo#setFatherJobInfo(org.talend.designer.runprocess.IJobInfo)
      */
     public void setFatherJobInfo(JobInfo fatherJobInfo) {
@@ -383,7 +383,7 @@ public class JobInfo {
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see org.talend.designer.runprocess.IJobInfo#isForceRegenerate()
      */
     public boolean isForceRegenerate() {
@@ -392,7 +392,7 @@ public class JobInfo {
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see org.talend.designer.runprocess.IJobInfo#setForceRegenerate(boolean)
      */
     public void setForceRegenerate(boolean forceRegenerate) {
@@ -401,7 +401,7 @@ public class JobInfo {
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see org.talend.designer.runprocess.IJobInfo#getProjectFolderName()
      */
     public String getProjectFolderName() {
@@ -410,7 +410,7 @@ public class JobInfo {
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see org.talend.designer.runprocess.IJobInfo#setProjectFolderName(java.lang.String)
      */
     public void setProjectFolderName(String projectFolderName) {
@@ -419,7 +419,7 @@ public class JobInfo {
 
     /**
      * Getter for testContainer.
-     * 
+     *
      * @return the testContainer
      */
     public boolean isTestContainer() {
@@ -428,7 +428,7 @@ public class JobInfo {
 
     /**
      * Sets the testContainer.
-     * 
+     *
      * @param testContainer the testContainer to set
      */
     public void setTestContainer(boolean testContainer) {
@@ -445,7 +445,7 @@ public class JobInfo {
 
     /**
      * Getter for processor.
-     * 
+     *
      * @return the processor
      */
     public IProcessor getProcessor() {
@@ -453,10 +453,10 @@ public class JobInfo {
     }
 
     /**
-     * 
+     *
      * DOC wchen Comment method "getReloadedProcessor". Reload the processor only if need to get the process/property in
      * the processor
-     * 
+     *
      * @return
      */
     public IProcessor getReloadedProcessor() {
@@ -504,7 +504,7 @@ public class JobInfo {
 
     /**
      * Sets the processor.
-     * 
+     *
      * @param processor the processor to set
      */
     public void setProcessor(IProcessor processor) {
@@ -513,7 +513,7 @@ public class JobInfo {
 
     /**
      * Getter for pomFile.
-     * 
+     *
      * @return the pomFile
      */
     public IFile getPomFile() {
@@ -522,7 +522,7 @@ public class JobInfo {
 
     /**
      * Sets the pomFile.
-     * 
+     *
      * @param pomFile the pomFile to set
      */
     public void setPomFile(IFile pomFile) {
@@ -531,7 +531,7 @@ public class JobInfo {
 
     /**
      * Getter for codeFile.
-     * 
+     *
      * @return the codeFile
      */
     public IFile getCodeFile() {
@@ -540,7 +540,7 @@ public class JobInfo {
 
     /**
      * Sets the codeFile.
-     * 
+     *
      * @param codeFile the codeFile to set
      */
     public void setCodeFile(IFile codeFile) {
@@ -557,7 +557,7 @@ public class JobInfo {
 
     /**
      * Sets the needUnloadProcessor.
-     * 
+     *
      * @param needUnloadProcessor the needUnloadProcessor to set
      */
     public void setNeedUnloadProcessor(boolean needUnloadProcessor) {
@@ -566,7 +566,7 @@ public class JobInfo {
 
     /**
      * Getter for needUnloadProcessor.
-     * 
+     *
      * @return the needUnloadProcessor
      */
     public boolean isNeedUnloadProcessor() {

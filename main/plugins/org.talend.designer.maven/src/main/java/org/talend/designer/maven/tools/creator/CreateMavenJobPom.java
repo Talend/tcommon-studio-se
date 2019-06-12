@@ -1,6 +1,6 @@
 // ============================================================================
 //
-// Copyright (C) 2006-2018 Talend Inc. - www.talend.com
+// Copyright (C) 2006-2019 Talend Inc. - www.talend.com
 //
 // This source code is available under agreement available at
 // %InstallDIR%\features\org.talend.rcp.branding.%PRODUCTNAME%\%PRODUCTNAME%license.txt
@@ -28,7 +28,6 @@ import java.util.Properties;
 import java.util.Set;
 
 import org.apache.commons.lang3.BooleanUtils;
-import org.apache.commons.lang3.StringEscapeUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.maven.artifact.repository.ArtifactRepository;
 import org.apache.maven.model.Activation;
@@ -69,9 +68,7 @@ import org.talend.core.runtime.projectsetting.IProjectSettingPreferenceConstants
 import org.talend.core.runtime.projectsetting.IProjectSettingTemplateConstants;
 import org.talend.core.runtime.projectsetting.ProjectPreferenceManager;
 import org.talend.core.ui.ITestContainerProviderService;
-import org.talend.core.utils.TalendQuoteUtils;
 import org.talend.core.utils.TemplateFileUtils;
-import org.talend.designer.core.model.utils.emf.talendfile.ContextParameterType;
 import org.talend.designer.maven.model.TalendMavenConstants;
 import org.talend.designer.maven.template.ETalendMavenVariables;
 import org.talend.designer.maven.template.MavenTemplateManager;
@@ -478,38 +475,7 @@ public class CreateMavenJobPom extends AbstractMavenProcessorPom {
             addScriptAddition(windowsScriptAdditionValue, contextPart);
             addScriptAddition(unixScriptAdditionValue, contextPart);
         }
-        // context params
-        List paramsList = ProcessUtils
-                .getOptionValue(getArgumentsMap(), TalendProcessArgumentConstant.ARG_CONTEXT_PARAMS, (List) null);
-        if (paramsList != null && !paramsList.isEmpty()) {
-            StringBuffer contextParamPart = new StringBuffer(100);
-            // do codes same as JobScriptsManager.getSettingContextParametersValue
-            for (Object param : paramsList) {
-                if (param instanceof ContextParameterType) {
-                    ContextParameterType contextParamType = (ContextParameterType) param;
-                    contextParamPart.append(' ');
-                    contextParamPart.append(TalendProcessArgumentConstant.CMD_ARG_CONTEXT_PARAMETER);
-                    contextParamPart.append(' ');
-                    contextParamPart.append(contextParamType.getName());
-                    contextParamPart.append('=');
 
-                    String value = contextParamType.getRawValue();
-                    if (!contextParamType.getType().equals("id_Password")) { //$NON-NLS-1$
-                        value = StringEscapeUtils.escapeJava(value);
-                    }
-                    if (value == null) {
-                        contextParamPart.append((String) null);
-                    } else {
-                        value = TalendQuoteUtils.addPairQuotesIfNotExist(value);
-                        contextParamPart.append(value);
-                    }
-                }
-            }
-            if (contextParamPart.length() > 0) {
-                addScriptAddition(windowsScriptAdditionValue, contextParamPart.toString());
-                addScriptAddition(unixScriptAdditionValue, contextParamPart.toString());
-            }
-        }
         // log4j level
         if (isOptionChecked(TalendProcessArgumentConstant.ARG_ENABLE_LOG4J)
                 && isOptionChecked(TalendProcessArgumentConstant.ARG_NEED_LOG4J_LEVEL)) {
@@ -810,10 +776,10 @@ public class CreateMavenJobPom extends AbstractMavenProcessorPom {
         if (version != null) {
             coordinate += separator + version;
         }
-        
+
         return coordinate;
     }
-    
+
     protected String getAssemblyCoordinate(Dependency dependency) {
         String separator = ":"; //$NON-NLS-1$
         String coordinate = dependency.getGroupId() + separator;
@@ -827,10 +793,10 @@ public class CreateMavenJobPom extends AbstractMavenProcessorPom {
         if (dependency.getVersion() != null) {
             coordinate += separator + dependency.getVersion();
         }
-        
+
         return coordinate;
     }
-    
+
     protected Dependency getDependencyObject(String groupId, String artifactId, String version, String type, String classifier) {
         Dependency object = new SortableDependency();
         object.setGroupId(groupId);
@@ -838,7 +804,7 @@ public class CreateMavenJobPom extends AbstractMavenProcessorPom {
         object.setVersion(version);
         object.setType(type);
         object.setClassifier(classifier);
-        
+
         return object;
     }
 

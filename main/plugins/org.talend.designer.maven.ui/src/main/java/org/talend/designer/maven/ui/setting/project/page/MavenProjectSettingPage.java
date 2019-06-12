@@ -1,6 +1,6 @@
 // ============================================================================
 //
-// Copyright (C) 2006-2018 Talend Inc. - www.talend.com
+// Copyright (C) 2006-2019 Talend Inc. - www.talend.com
 //
 // This source code is available under agreement available at
 // %InstallDIR%\features\org.talend.rcp.branding.%PRODUCTNAME%\%PRODUCTNAME%license.txt
@@ -40,6 +40,10 @@ import org.talend.designer.maven.ui.i18n.Messages;
  */
 public class MavenProjectSettingPage extends AbstractProjectSettingPage {
 
+    private final static String LATEST_VERSION_DISPLAY = "version=latest"; //$NON-NLS-1$
+
+    private final static String LATEST_VERSION_REAL = "version=-1.-1"; //$NON-NLS-1$
+
 	private Text filterText;
 
 	private String filter;
@@ -74,6 +78,9 @@ public class MavenProjectSettingPage extends AbstractProjectSettingPage {
         if (StringUtils.isBlank(filter)) {
             filter = ""; //$NON-NLS-1$
 		}
+        if (filter.contains(LATEST_VERSION_REAL)) {
+            filter = filter.replace(LATEST_VERSION_REAL, LATEST_VERSION_DISPLAY);
+        }
 
         Label filterExampleLable = new Label(parent, SWT.NONE);
         filterExampleLable.setText(Messages.getString("MavenProjectSettingPage.filterExampleMessage")); //$NON-NLS-1$
@@ -87,10 +94,14 @@ public class MavenProjectSettingPage extends AbstractProjectSettingPage {
 				if (GlobalServiceRegister.getDefault().isServiceRegistered(IFilterService.class)) {
 					IFilterService service = (IFilterService) GlobalServiceRegister.getDefault()
 							.getService(IFilterService.class);
-                    String filterError = service.checkFilterError(filterText.getText());
-                    if (StringUtils.isBlank(filterText.getText()) || filterError == null) {
+                    String text = filterText.getText();
+                    if (text != null && text.contains(LATEST_VERSION_DISPLAY)) {
+                        text = text.replace(LATEST_VERSION_DISPLAY, LATEST_VERSION_REAL);
+                    }
+                    String filterError = service.checkFilterError(text);
+                    if (StringUtils.isBlank(text) || filterError == null) {
 						setErrorMessage(null);
-						filter = filterText.getText();
+                        filter = text;
 						setValid(true);
 						button.setEnabled(true);
 					} else {
@@ -108,7 +119,11 @@ public class MavenProjectSettingPage extends AbstractProjectSettingPage {
 			@Override
 			public void widgetSelected(SelectionEvent event) {
 				try {
-					preferenceStore.setValue(MavenConstants.POM_FILTER, filter);
+                    String realFilter = filter;
+                    if (filter != null && filter.contains(LATEST_VERSION_DISPLAY)) {
+                        realFilter = filter.replace(LATEST_VERSION_DISPLAY, LATEST_VERSION_REAL);
+                    }
+                    preferenceStore.setValue(MavenConstants.POM_FILTER, realFilter);
 					new AggregatorPomsHelper().syncAllPoms();
 				} catch (Exception e) {
 					ExceptionHandler.process(e);

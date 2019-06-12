@@ -1,6 +1,6 @@
 // ============================================================================
 //
-// Copyright (C) 2006-2018 Talend Inc. - www.talend.com
+// Copyright (C) 2006-2019 Talend Inc. - www.talend.com
 //
 // This source code is available under agreement available at
 // %InstallDIR%\features\org.talend.rcp.branding.%PRODUCTNAME%\%PRODUCTNAME%license.txt
@@ -42,9 +42,9 @@ import org.talend.repository.model.IProxyRepositoryFactory;
 
 /**
  * DOC ocarbone class global comment.
- * 
+ *
  * $Id: FileDelimitedTableWizard.java 51998 2010-12-01 05:33:08Z hywang $
- * 
+ *
  */
 public class FileDelimitedTableWizard extends AbstractRepositoryFileTableWizard implements INewWizard {
 
@@ -65,7 +65,7 @@ public class FileDelimitedTableWizard extends AbstractRepositoryFileTableWizard 
 
     /**
      * Constructor for TableWizard.
-     * 
+     *
      * @param ISelection
      */
     public FileDelimitedTableWizard(IWorkbench workbench, boolean creation, ConnectionItem connectionItem,
@@ -217,7 +217,7 @@ public class FileDelimitedTableWizard extends AbstractRepositoryFileTableWizard 
 
     /**
      * We will accept the selection in the workbench to see if we can initialize from it.
-     * 
+     *
      * @see IWorkbenchWizard#init(IWorkbench, IStructuredSelection)
      */
     @Override

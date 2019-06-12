@@ -1,6 +1,6 @@
 // ============================================================================
 //
-// Copyright (C) 2006-2018 Talend Inc. - www.talend.com
+// Copyright (C) 2006-2019 Talend Inc. - www.talend.com
 //
 // This source code is available under agreement available at
 // %InstallDIR%\features\org.talend.rcp.branding.%PRODUCTNAME%\%PRODUCTNAME%license.txt
@@ -26,7 +26,7 @@ public interface IItemRelationshipHandler {
 
     /**
      * find the relation from the item, can any items. for example, process item
-     * 
+     *
      * @param item
      * @return
      */
@@ -34,7 +34,7 @@ public interface IItemRelationshipHandler {
 
     /**
      * If not valid, no relations to return
-     * 
+     *
      * @param baseItem
      * @return
      */
@@ -42,7 +42,7 @@ public interface IItemRelationshipHandler {
 
     /**
      * get the base item's relation type
-     * 
+     *
      * @return
      */
     String getBaseItemType(Item baseItem);

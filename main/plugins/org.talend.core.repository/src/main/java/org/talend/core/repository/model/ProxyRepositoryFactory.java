@@ -1,6 +1,6 @@
 // ============================================================================
 //
-// Copyright (C) 2006-2018 Talend Inc. - www.talend.com
+// Copyright (C) 2006-2019 Talend Inc. - www.talend.com
 //
 // This source code is available under agreement available at
 // %InstallDIR%\features\org.talend.rcp.branding.%PRODUCTNAME%\%PRODUCTNAME%license.txt
@@ -146,9 +146,9 @@ import orgomg.cwm.objectmodel.core.ModelElement;
 /**
  * Repository factory use by client. Based on implementation provide by extension point system. This class contains all
  * commons treatments done by repository whatever implementation.<br/>
- * 
+ *
  * $Id: ProxyRepositoryFactory.java 46606 2010-08-11 08:33:54Z cli $
- * 
+ *
  */
 /**
  * DOC Administrator class global comment. Detailled comment
@@ -170,7 +170,7 @@ public final class ProxyRepositoryFactory implements IProxyRepositoryFactory {
     private final ProjectManager projectManager;
 
     private Map<String, org.talend.core.model.properties.Project> emfProjectContentMap = new HashMap<>();
-    
+
     private boolean isCancelled;
 
     @Override
@@ -214,7 +214,7 @@ public final class ProxyRepositoryFactory implements IProxyRepositoryFactory {
         }
         return null;
     }
-    
+
     private IRunProcessService getRunProcessService() {
         if (GlobalServiceRegister.getDefault().isServiceRegistered(IRunProcessService.class)) {
             return GlobalServiceRegister.getDefault().getService(IRunProcessService.class);
@@ -224,7 +224,7 @@ public final class ProxyRepositoryFactory implements IProxyRepositoryFactory {
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see org.talend.repository.model.IProxyRepositoryFactory#refreshJobPictureFolder()
      */
     @Override
@@ -241,7 +241,7 @@ public final class ProxyRepositoryFactory implements IProxyRepositoryFactory {
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see org.talend.repository.model.IProxyRepositoryFactory#refreshJobPictureFolder()
      */
     @Override
@@ -259,7 +259,7 @@ public final class ProxyRepositoryFactory implements IProxyRepositoryFactory {
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see org.talend.repository.model.IProxyRepositoryFactory#getRepositoryContext()
      */
     @Override
@@ -270,7 +270,7 @@ public final class ProxyRepositoryFactory implements IProxyRepositoryFactory {
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see org.talend.repository.model.IProxyRepositoryFactory#getRepositoryFactoryFromProvider()
      */
     public IRepositoryFactory getRepositoryFactoryFromProvider() {
@@ -284,7 +284,7 @@ public final class ProxyRepositoryFactory implements IProxyRepositoryFactory {
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see
      * org.talend.repository.model.IProxyRepositoryFactory#setRepositoryFactoryFromProvider(org.talend.repository.model
      * .IRepositoryFactory)
@@ -309,7 +309,7 @@ public final class ProxyRepositoryFactory implements IProxyRepositoryFactory {
 
     /**
      * DOC ycbai Comment method "checkProjectCompatibility".
-     * 
+     *
      * @param project
      * @throws LoginException
      */
@@ -470,7 +470,7 @@ public final class ProxyRepositoryFactory implements IProxyRepositoryFactory {
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see org.talend.repository.model.IProxyRepositoryFactory#isNameAvailable(org.talend.core.model.properties.Item,
      * java.lang.String)
      */
@@ -487,7 +487,7 @@ public final class ProxyRepositoryFactory implements IProxyRepositoryFactory {
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @seeorg.talend.repository.model.IProxyRepositoryFactory#isPathValid(org.talend.core.model.repository.
      * ERepositoryObjectType, org.eclipse.core.runtime.IPath, java.lang.String)
      */
@@ -503,7 +503,7 @@ public final class ProxyRepositoryFactory implements IProxyRepositoryFactory {
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see org.talend.repository.model.IProxyRepositoryFactory#createProject(java.lang.String, java.lang.String,
      * org.talend.core.model.temp.ECodeLanguage, org.talend.core.model.properties.User)
      */
@@ -534,7 +534,7 @@ public final class ProxyRepositoryFactory implements IProxyRepositoryFactory {
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @seeorg.talend.repository.model.IProxyRepositoryFactory#createFolder(org.talend.core.model.repository.
      * ERepositoryObjectType, org.eclipse.core.runtime.IPath, java.lang.String)
      */
@@ -570,7 +570,7 @@ public final class ProxyRepositoryFactory implements IProxyRepositoryFactory {
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @seeorg.talend.repository.model.IProxyRepositoryFactory#deleteFolder(org.talend.core.model.repository.
      * ERepositoryObjectType, org.eclipse.core.runtime.IPath)
      */
@@ -627,7 +627,7 @@ public final class ProxyRepositoryFactory implements IProxyRepositoryFactory {
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see
      * org.talend.repository.model.IProxyRepositoryFactory#moveFolder(org.talend.core.model.repository.ERepositoryObjectType
      * , org.eclipse.core.runtime.IPath, org.eclipse.core.runtime.IPath)
@@ -655,7 +655,7 @@ public final class ProxyRepositoryFactory implements IProxyRepositoryFactory {
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see org.talend.repository.model.IProxyRepositoryFactory#getNextId()
      */
     @Override
@@ -675,7 +675,7 @@ public final class ProxyRepositoryFactory implements IProxyRepositoryFactory {
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see org.talend.repository.model.IProxyRepositoryFactory#getRecycleBinItems()
      */
     @Override
@@ -685,7 +685,7 @@ public final class ProxyRepositoryFactory implements IProxyRepositoryFactory {
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see org.talend.repository.model.IProxyRepositoryFactory#readProject()
      */
     @Override
@@ -706,7 +706,7 @@ public final class ProxyRepositoryFactory implements IProxyRepositoryFactory {
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @seeorg.talend.repository.model.IProxyRepositoryFactory#renameFolder(org.talend.core.model.repository.
      * ERepositoryObjectType, org.eclipse.core.runtime.IPath, java.lang.String)
      */
@@ -724,7 +724,7 @@ public final class ProxyRepositoryFactory implements IProxyRepositoryFactory {
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @seeorg.talend.repository.model.IProxyRepositoryFactory#deleteObjectLogical(org.talend.core.model.repository.
      * IRepositoryViewObject)
      */
@@ -759,7 +759,7 @@ public final class ProxyRepositoryFactory implements IProxyRepositoryFactory {
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @seeorg.talend.repository.model.IProxyRepositoryFactory#deleteObjectPhysical(org.talend.core.model.repository.
      * IRepositoryViewObject)
      */
@@ -776,7 +776,7 @@ public final class ProxyRepositoryFactory implements IProxyRepositoryFactory {
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @seeorg.talend.repository.model.IProxyRepositoryFactory#deleteObjectPhysical(org.talend.core.model.repository.
      * IRepositoryViewObject)
      */
@@ -940,7 +940,7 @@ public final class ProxyRepositoryFactory implements IProxyRepositoryFactory {
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @seeorg.talend.repository.model.IProxyRepositoryFactory#restoreObject(org.talend.core.model.repository.
      * IRepositoryViewObject , org.eclipse.core.runtime.IPath)
      */
@@ -976,13 +976,13 @@ public final class ProxyRepositoryFactory implements IProxyRepositoryFactory {
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see org.talend.repository.model.IRepositoryFactory#moveObject(org.talend.core.model.general.Project,
      * org.talend.core.model.repository.IRepositoryViewObject)
      */
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see
      * org.talend.repository.model.IProxyRepositoryFactory#moveObject(org.talend.core.model.repository.IRepositoryViewObject
      * , org.eclipse.core.runtime.IPath)
@@ -1039,7 +1039,7 @@ public final class ProxyRepositoryFactory implements IProxyRepositoryFactory {
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see
      * org.talend.repository.model.IProxyRepositoryFactory#lock(org.talend.core.model.repository.IRepositoryViewObject)
      */
@@ -1050,7 +1050,7 @@ public final class ProxyRepositoryFactory implements IProxyRepositoryFactory {
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see org.talend.repository.model.IProxyRepositoryFactory#lock(org.talend.core.model.properties.Item)
      */
     @Override
@@ -1076,7 +1076,7 @@ public final class ProxyRepositoryFactory implements IProxyRepositoryFactory {
 
     /**
      * DOC sgandon Comment method "notifyLock".
-     * 
+     *
      * @param item
      */
     private void notifyLock(Item item, boolean lock) {
@@ -1101,7 +1101,7 @@ public final class ProxyRepositoryFactory implements IProxyRepositoryFactory {
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see org.talend.repository.model.IProxyRepositoryFactory#getAllVersion(java.lang.String)
      */
     @Override
@@ -1109,7 +1109,7 @@ public final class ProxyRepositoryFactory implements IProxyRepositoryFactory {
         String objId = id;
         String projectLabel = ProcessUtils.getProjectLabelFromItemId(objId);
         Project project = projectManager.getCurrentProject();
-        if (projectLabel != null) {   
+        if (projectLabel != null) {
             Project tempProject = projectManager.getProjectFromProjectTechLabel(projectLabel);
             objId = ProcessUtils.getPureItemId(objId);
             if (tempProject != null) {
@@ -1345,7 +1345,7 @@ public final class ProxyRepositoryFactory implements IProxyRepositoryFactory {
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see org.talend.repository.model.IProxyRepositoryFactory#getDocumentationStatus()
      */
     @Override
@@ -1355,7 +1355,7 @@ public final class ProxyRepositoryFactory implements IProxyRepositoryFactory {
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see org.talend.repository.model.IProxyRepositoryFactory#getTechnicalStatus()
      */
     @Override
@@ -1365,7 +1365,7 @@ public final class ProxyRepositoryFactory implements IProxyRepositoryFactory {
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see org.talend.repository.model.IProxyRepositoryFactory#getTechnicalStatus()
      */
     // public List<SpagoBiServer> getSpagoBiServer() throws PersistenceException {
@@ -1373,7 +1373,7 @@ public final class ProxyRepositoryFactory implements IProxyRepositoryFactory {
     // }
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see org.talend.repository.model.IProxyRepositoryFactory#setDocumentationStatus(java.util.List)
      */
     @Override
@@ -1383,7 +1383,7 @@ public final class ProxyRepositoryFactory implements IProxyRepositoryFactory {
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see org.talend.repository.model.IProxyRepositoryFactory#forceCreate(org.talend.core.model.properties.Item,
      * org.eclipse.core.runtime.IPath)
      */
@@ -1437,7 +1437,7 @@ public final class ProxyRepositoryFactory implements IProxyRepositoryFactory {
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see org.talend.repository.model.IProxyRepositoryFactory#setTechnicalStatus(java.util.List)
      */
     @Override
@@ -1447,7 +1447,7 @@ public final class ProxyRepositoryFactory implements IProxyRepositoryFactory {
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see org.talend.repository.model.IProxyRepositoryFactory#setSpagoBiServer(java.util.List)
      */
     @Override
@@ -1462,12 +1462,12 @@ public final class ProxyRepositoryFactory implements IProxyRepositoryFactory {
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see org.talend.repository.model.IRepositoryFactory#isServerValid()
      */
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see org.talend.repository.model.IProxyRepositoryFactory#isServerValid()
      */
     // public String isServerValid() {
@@ -1475,7 +1475,7 @@ public final class ProxyRepositoryFactory implements IProxyRepositoryFactory {
     // }
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see org.talend.repository.model.IProxyRepositoryFactory#create(org.talend.core.model.properties.Item,
      * org.eclipse.core.runtime.IPath)
      */
@@ -1515,7 +1515,7 @@ public final class ProxyRepositoryFactory implements IProxyRepositoryFactory {
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see org.talend.repository.model.IProxyRepositoryFactory#save(org.talend.core.model.properties.Item)
      */
     @Override
@@ -1538,7 +1538,7 @@ public final class ProxyRepositoryFactory implements IProxyRepositoryFactory {
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see org.talend.repository.model.IProxyRepositoryFactory#save(org.talend.core.model.properties.Property)
      */
     @Override
@@ -1554,7 +1554,7 @@ public final class ProxyRepositoryFactory implements IProxyRepositoryFactory {
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see org.talend.repository.model.IProxyRepositoryFactory#copy(org.talend.core.model.properties.Item,
      * org.eclipse.core.runtime.IPath)
      */
@@ -1624,7 +1624,7 @@ public final class ProxyRepositoryFactory implements IProxyRepositoryFactory {
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see org.talend.repository.model.IProxyRepositoryFactory#reload(org.talend.core.model.properties.Property)
      */
     @Override
@@ -1638,13 +1638,13 @@ public final class ProxyRepositoryFactory implements IProxyRepositoryFactory {
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see org.talend.repository.model.IRepositoryFactory#unlock(org.talend.core.model.general.Project,
      * org.talend.core.model.repository.IRepositoryViewObject)
      */
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see
      * org.talend.repository.model.IProxyRepositoryFactory#unlock(org.talend.core.model.repository.IRepositoryViewObject
      * )
@@ -1656,7 +1656,7 @@ public final class ProxyRepositoryFactory implements IProxyRepositoryFactory {
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see org.talend.repository.model.IProxyRepositoryFactory#unlock(org.talend.core.model.properties.Item)
      */
     @Override
@@ -1683,7 +1683,7 @@ public final class ProxyRepositoryFactory implements IProxyRepositoryFactory {
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see org.talend.repository.model.IProxyRepositoryFactory#findUser(org.talend.core.model.general.Project)
      */
     // public boolean doesLoggedUserExist() throws PersistenceException {
@@ -1691,7 +1691,7 @@ public final class ProxyRepositoryFactory implements IProxyRepositoryFactory {
     // }
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see org.talend.repository.model.IProxyRepositoryFactory#createUser(org.talend.core.model.general.Project)
      */
     // public void createUser() throws PersistenceException {
@@ -1699,7 +1699,7 @@ public final class ProxyRepositoryFactory implements IProxyRepositoryFactory {
     // }
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see org.talend.repository.model.IProxyRepositoryFactory#initialize()
      */
     @Override
@@ -1718,7 +1718,7 @@ public final class ProxyRepositoryFactory implements IProxyRepositoryFactory {
 
     /**
      * DOC smallet Comment method "emptyTempFolder".
-     * 
+     *
      * @param project
      * @throws PersistenceException
      */
@@ -1738,12 +1738,12 @@ public final class ProxyRepositoryFactory implements IProxyRepositoryFactory {
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see org.talend.repository.model.IRepositoryFactory#getStatus(org.talend.core.model.properties.Item)
      */
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see
      * org.talend.repository.model.IProxyRepositoryFactory#getStatus(org.talend.core.model.repository.IRepositoryViewObject
      * )
@@ -1792,7 +1792,7 @@ public final class ProxyRepositoryFactory implements IProxyRepositoryFactory {
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see org.talend.repository.model.IProxyRepositoryFactory#getStatus(org.talend.core.model.properties.Item)
      */
     @Override
@@ -1810,7 +1810,7 @@ public final class ProxyRepositoryFactory implements IProxyRepositoryFactory {
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see
      * org.talend.repository.model.IProxyRepositoryFactory#getStatus(org.talend.core.model.properties.InformationLevel)
      */
@@ -1827,13 +1827,13 @@ public final class ProxyRepositoryFactory implements IProxyRepositoryFactory {
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see
      * org.talend.repository.model.IRepositoryFactory#getStatusAndLockIfPossible(org.talend.core.model.properties.Item)
      */
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see
      * org.talend.repository.model.IProxyRepositoryFactory#isEditableAndLockIfPossible(org.talend.core.model.properties
      * .Item)
@@ -1882,13 +1882,13 @@ public final class ProxyRepositoryFactory implements IProxyRepositoryFactory {
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see
      * org.talend.repository.model.IRepositoryFactory#isEditable(org.talend.core.model.repository.IRepositoryViewObject)
      */
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see
      * org.talend.repository.model.IProxyRepositoryFactory#isEditableAndLockIfPossible(org.talend.core.model.repository
      * .IRepositoryViewObject)
@@ -1918,12 +1918,12 @@ public final class ProxyRepositoryFactory implements IProxyRepositoryFactory {
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see org.talend.repository.model.IRepositoryFactory#isPotentiallyEditable(org.talend.core.model.properties.Item)
      */
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see
      * org.talend.repository.model.IProxyRepositoryFactory#isPotentiallyEditable(org.talend.core.model.properties.Item)
      */
@@ -1938,13 +1938,13 @@ public final class ProxyRepositoryFactory implements IProxyRepositoryFactory {
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @seeorg.talend.repository.model.IRepositoryFactory#isPotentiallyEditable(org.talend.core.model.repository.
      * IRepositoryViewObject)
      */
     /*
      * (non-Javadoc)
-     * 
+     *
      * @seeorg.talend.repository.model.IProxyRepositoryFactory#isPotentiallyEditable(org.talend.core.model.repository.
      * IRepositoryViewObject)
      */
@@ -2006,7 +2006,7 @@ public final class ProxyRepositoryFactory implements IProxyRepositoryFactory {
 
     /**
      * DOC tang Comment method "logOnProject".
-     * 
+     *
      * @param project
      * @param monitorWrap
      * @throws PersistenceException
@@ -2140,7 +2140,7 @@ public final class ProxyRepositoryFactory implements IProxyRepositoryFactory {
                 if (monitor != null && monitor.isCanceled()) {
                     throw new OperationCanceledException(""); //$NON-NLS-1$
                 }
-                
+
                 boolean isCommandLineLocalRefProject = false;
                 CommandLineContext commandLineContext = (CommandLineContext) CoreRuntimePlugin.getInstance().getContext()
                         .getProperty(Context.COMMANDLINE_CONTEXT_KEY);
@@ -2151,8 +2151,8 @@ public final class ProxyRepositoryFactory implements IProxyRepositoryFactory {
                 if (coreService != null) {
                     // clean workspace
                     currentMonitor.beginTask(Messages.getString("ProxyRepositoryFactory.cleanWorkspace"), 1); //$NON-NLS-1$
-                    
-                    TimeMeasure.step("logOnProject", "clean Java project"); //$NON-NLS-1$ //$NON-NLS-2$     
+
+                    TimeMeasure.step("logOnProject", "clean Java project"); //$NON-NLS-1$ //$NON-NLS-2$
 
                     if (workspace instanceof Workspace) {
                         ((Workspace) workspace).getFileSystemManager().getHistoryStore().clean(currentMonitor);
@@ -2234,7 +2234,7 @@ public final class ProxyRepositoryFactory implements IProxyRepositoryFactory {
                 TimeMeasure.displaySteps = false;
                 TimeMeasure.measureActive = false;
             }
-            String str[] = new String[] { getRepositoryContext().getUser() + "", projectManager.getCurrentProject() + "" }; //$NON-NLS-1$ //$NON-NLS-2$        
+            String str[] = new String[] { getRepositoryContext().getUser() + "", projectManager.getCurrentProject() + "" }; //$NON-NLS-1$ //$NON-NLS-2$
             log.info(Messages.getString("ProxyRepositoryFactory.log.loggedOn", str)); //$NON-NLS-1$
         } catch (LoginException e) {
             logOffProject();
@@ -2352,7 +2352,7 @@ public final class ProxyRepositoryFactory implements IProxyRepositoryFactory {
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see
      * org.talend.repository.model.IProxyRepositoryFactory#getRecycleBinItems(org.talend.core.model.general.Project)
      */
@@ -2363,7 +2363,7 @@ public final class ProxyRepositoryFactory implements IProxyRepositoryFactory {
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see
      * org.talend.repository.model.IProxyRepositoryFactory#getSpecificVersion(org.talend.core.model.general.Project,
      * java.lang.String, java.lang.String)
@@ -2389,7 +2389,7 @@ public final class ProxyRepositoryFactory implements IProxyRepositoryFactory {
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see org.talend.repository.model.IProxyRepositoryFactory#getSpecificVersion(java.lang.String, java.lang.String)
      */
     @Override
@@ -2414,9 +2414,9 @@ public final class ProxyRepositoryFactory implements IProxyRepositoryFactory {
     }
 
     /**
-     * 
+     *
      * DOC mzhao Comment method "unloadResources".
-     * 
+     *
      * @param uriString
      * @throws PersistenceException
      */
@@ -2435,7 +2435,7 @@ public final class ProxyRepositoryFactory implements IProxyRepositoryFactory {
 
     /**
      * Getter for fullLogonFinished.
-     * 
+     *
      * @return the fullLogonFinished
      */
     @Override
@@ -2445,7 +2445,7 @@ public final class ProxyRepositoryFactory implements IProxyRepositoryFactory {
 
     /**
      * Sets the fullLogonFinished.
-     * 
+     *
      * @param fullLogonFinished the fullLogonFinished to set
      */
     public void setFullLogonFinished(boolean fullLogonFinished) {
@@ -2454,7 +2454,7 @@ public final class ProxyRepositoryFactory implements IProxyRepositoryFactory {
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see
      * org.talend.repository.model.IProxyRepositoryFactory#addRepositoryWorkUnitListener(org.talend.core.model.repository
      * .IRepositoryWorkUnitListener)
@@ -2466,7 +2466,7 @@ public final class ProxyRepositoryFactory implements IProxyRepositoryFactory {
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see org.talend.repository.model.IProxyRepositoryFactory#enableSandboxProject()
      */
     @Override
@@ -2476,7 +2476,7 @@ public final class ProxyRepositoryFactory implements IProxyRepositoryFactory {
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see org.talend.repository.model.IProxyRepositoryFactory#isLocalConnectionProvider()
      */
     @Override
@@ -2486,7 +2486,7 @@ public final class ProxyRepositoryFactory implements IProxyRepositoryFactory {
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see
      * org.talend.repository.model.IProxyRepositoryFactory#getMetadataByFolder(org.talend.core.model.general.Project,
      * org.talend.core.model.repository.ERepositoryObjectType, org.eclipse.core.runtime.IPath)
@@ -2498,7 +2498,7 @@ public final class ProxyRepositoryFactory implements IProxyRepositoryFactory {
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @seeorg.talend.repository.model.IProxyRepositoryFactory#getMetadataByFolder(org.talend.core.model.repository.
      * ERepositoryObjectType, org.eclipse.core.runtime.IPath)
      */
@@ -2509,7 +2509,7 @@ public final class ProxyRepositoryFactory implements IProxyRepositoryFactory {
 
     /**
      * DOC xqliu Comment method "getTdqRepositoryViewObjects".
-     * 
+     *
      * @param itemType
      * @param folderName
      * @return
@@ -2522,7 +2522,7 @@ public final class ProxyRepositoryFactory implements IProxyRepositoryFactory {
 
     /**
      * DOC xqliu Comment method "getTdqRepositoryViewObjects".
-     * 
+     *
      * @param project
      * @param type
      * @param folderName
@@ -2537,7 +2537,7 @@ public final class ProxyRepositoryFactory implements IProxyRepositoryFactory {
 
     /**
      * DOC bZhou Comment method "getProperty".
-     * 
+     *
      * @param element
      * @return
      */
@@ -2582,7 +2582,7 @@ public final class ProxyRepositoryFactory implements IProxyRepositoryFactory {
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see
      * org.talend.repository.model.IProxyRepositoryFactory#getObjectFromFolder(org.talend.core.model.general.Project,
      * org.talend.core.model.repository.ERepositoryObjectType, java.lang.String, int)

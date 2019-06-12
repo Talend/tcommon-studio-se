@@ -1,6 +1,6 @@
 // ============================================================================
 //
-// Copyright (C) 2006-2018 Talend Inc. - www.talend.com
+// Copyright (C) 2006-2019 Talend Inc. - www.talend.com
 //
 // This source code is available under agreement available at
 // %InstallDIR%\features\org.talend.rcp.branding.%PRODUCTNAME%\%PRODUCTNAME%license.txt
@@ -19,9 +19,9 @@ import org.talend.core.model.utils.ContextParameterUtils;
 
 /**
  * Parameter in a context. <br/>
- * 
+ *
  * $Id: JobContextParameter.java 42455 2010-05-18 10:24:53Z cli $
- * 
+ *
  */
 public class JobContextParameter implements IContextParameter, Cloneable {
 
@@ -79,7 +79,7 @@ public class JobContextParameter implements IContextParameter, Cloneable {
 
     /**
      * Getter for context.
-     * 
+     *
      * @return the context
      */
     @Override
@@ -89,7 +89,7 @@ public class JobContextParameter implements IContextParameter, Cloneable {
 
     /**
      * Sets the context.
-     * 
+     *
      * @param context the context to set
      */
     @Override
@@ -99,7 +99,7 @@ public class JobContextParameter implements IContextParameter, Cloneable {
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see org.talend.designer.core.model.context.IDesignerContextParameter#getName()
      */
     @Override
@@ -109,7 +109,7 @@ public class JobContextParameter implements IContextParameter, Cloneable {
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see org.talend.designer.core.model.context.IDesignerContextParameter#setName(java.lang.String)
      */
     @Override
@@ -120,7 +120,7 @@ public class JobContextParameter implements IContextParameter, Cloneable {
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see org.talend.designer.core.model.context.IDesignerContextParameter#getPrompt()
      */
     @Override
@@ -130,7 +130,7 @@ public class JobContextParameter implements IContextParameter, Cloneable {
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see org.talend.designer.core.model.context.IDesignerContextParameter#setPrompt(java.lang.String)
      */
     @Override
@@ -140,7 +140,7 @@ public class JobContextParameter implements IContextParameter, Cloneable {
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see org.talend.designer.core.model.context.IDesignerContextParameter#getType()
      */
     @Override
@@ -150,7 +150,7 @@ public class JobContextParameter implements IContextParameter, Cloneable {
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see
      * org.talend.designer.core.model.context.IDesignerContextParameter#setType(org.talend.core.model.metadata.EMetadataType
      * )
@@ -167,7 +167,7 @@ public class JobContextParameter implements IContextParameter, Cloneable {
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see org.talend.designer.core.model.context.IDesignerContextParameter#setValue(java.lang.String)
      */
     @Override
@@ -185,7 +185,7 @@ public class JobContextParameter implements IContextParameter, Cloneable {
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see org.talend.designer.core.model.context.IDesignerContextParameter#getValue()
      */
     @Override
@@ -195,7 +195,7 @@ public class JobContextParameter implements IContextParameter, Cloneable {
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see org.talend.core.model.process.IContextParameter#getDiaplayValue()
      */
     @Override
@@ -229,7 +229,7 @@ public class JobContextParameter implements IContextParameter, Cloneable {
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see org.talend.designer.core.model.context.IDesignerContextParameter#getComment()
      */
     @Override
@@ -239,7 +239,7 @@ public class JobContextParameter implements IContextParameter, Cloneable {
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see org.talend.designer.core.model.context.IDesignerContextParameter#setComment(java.lang.String)
      */
     @Override
@@ -249,7 +249,7 @@ public class JobContextParameter implements IContextParameter, Cloneable {
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see org.talend.designer.core.model.context.IDesignerContextParameter#isPromptNeeded()
      */
     @Override
@@ -259,7 +259,7 @@ public class JobContextParameter implements IContextParameter, Cloneable {
 
     /**
      * Getter for scriptCode.
-     * 
+     *
      * @return the scriptCode
      */
     @Override
@@ -272,7 +272,7 @@ public class JobContextParameter implements IContextParameter, Cloneable {
 
     /**
      * Sets the scriptCode.
-     * 
+     *
      * @param scriptCode the scriptCode to set
      */
     @Override
@@ -282,7 +282,7 @@ public class JobContextParameter implements IContextParameter, Cloneable {
 
     /**
      * Getter for source.
-     * 
+     *
      * @return the source
      */
     @Override
@@ -292,7 +292,7 @@ public class JobContextParameter implements IContextParameter, Cloneable {
 
     /**
      * Sets the source.
-     * 
+     *
      * bug 13184, later will be always saved by id.
      */
     @Override
@@ -302,7 +302,7 @@ public class JobContextParameter implements IContextParameter, Cloneable {
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see org.talend.designer.core.model.context.IDesignerContextParameter#setPromptNeeded(boolean)
      */
     @Override
@@ -358,7 +358,7 @@ public class JobContextParameter implements IContextParameter, Cloneable {
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see java.lang.Object#hashCode()
      */
     @Override
@@ -371,7 +371,7 @@ public class JobContextParameter implements IContextParameter, Cloneable {
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see java.lang.Object#equals(java.lang.Object)
      */
     @Override
@@ -405,7 +405,7 @@ public class JobContextParameter implements IContextParameter, Cloneable {
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see
      * org.talend.core.model.process.IContextParameter#checkBuiltIn(org.talend.core.model.process.IContextParameter)
      */

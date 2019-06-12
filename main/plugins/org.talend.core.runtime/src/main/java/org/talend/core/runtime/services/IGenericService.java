@@ -1,6 +1,6 @@
 // ============================================================================
 //
-// Copyright (C) 2006-2018 Talend Inc. - www.talend.com
+// Copyright (C) 2006-2019 Talend Inc. - www.talend.com
 //
 // This source code is available under agreement available at
 // %InstallDIR%\features\org.talend.rcp.branding.%PRODUCTNAME%\%PRODUCTNAME%license.txt
@@ -27,19 +27,19 @@ public interface IGenericService extends IService {
 
     /**
      * Call method <code>callBeforeActivate()</code> of <code>parameter</code>.
-     * 
-     * 
+     *
+     *
      * @param parameter
      * @return
      */
     public boolean callBeforeActivate(IElementParameter parameter);
-    
+
     /**
      * Get all installed generic components information.
-     * 
+     *
      */
     public List<Map<String, String>> getAllGenericComponentsInfo();
-    
+
     public void resetReferenceValue(INode curNode, String oldConnectionName, String newConnectionName);
 
 }

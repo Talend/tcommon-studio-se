@@ -1,6 +1,6 @@
 // ============================================================================
 //
-// Copyright (C) 2006-2018 Talend Inc. - www.talend.com
+// Copyright (C) 2006-2019 Talend Inc. - www.talend.com
 //
 // This source code is available under agreement available at
 // %InstallDIR%\features\org.talend.rcp.branding.%PRODUCTNAME%\%PRODUCTNAME%license.txt
@@ -16,7 +16,7 @@ import org.eclipse.nebula.widgets.nattable.sort.SortDirectionEnum;
 
 /**
  * created by Talend on Jul 9, 2014 Detailled comment
- * 
+ *
  */
 public class SortState {
 
@@ -102,7 +102,7 @@ public class SortState {
 
     /**
      * check if the given column is the current selected column
-     * 
+     *
      * @param currentColumnName
      * @return
      */

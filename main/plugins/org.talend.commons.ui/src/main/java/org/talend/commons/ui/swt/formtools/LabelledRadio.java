@@ -1,6 +1,6 @@
 // ============================================================================
 //
-// Copyright (C) 2006-2018 Talend Inc. - www.talend.com
+// Copyright (C) 2006-2019 Talend Inc. - www.talend.com
 //
 // This source code is available under agreement available at
 // %InstallDIR%\features\org.talend.rcp.branding.%PRODUCTNAME%\%PRODUCTNAME%license.txt
@@ -22,9 +22,9 @@ import org.eclipse.swt.widgets.Listener;
 
 /**
  * Create a Label and a Button Radio.
- * 
+ *
  * $Id: LabelledRadio.java 7038 2007-11-15 14:05:48Z plegall $
- * 
+ *
  */
 public class LabelledRadio {
 
@@ -34,7 +34,7 @@ public class LabelledRadio {
 
     /**
      * Create a Label and a Text.
-     * 
+     *
      * @param composite
      * @param string
      */
@@ -44,7 +44,7 @@ public class LabelledRadio {
 
     /**
      * Create a Label and a Text.
-     * 
+     *
      * @param composite
      * @param string
      * @param isFill
@@ -55,7 +55,7 @@ public class LabelledRadio {
 
     /**
      * Create a Label and a Button width specific styleField.
-     * 
+     *
      * @param composite
      * @param string
      * @param int horizontalSpan
@@ -66,7 +66,7 @@ public class LabelledRadio {
 
     /**
      * Create a Label and a Button width specific styleField.
-     * 
+     *
      * @param composite
      * @param string
      * @param int horizontalSpan
@@ -78,7 +78,7 @@ public class LabelledRadio {
 
     /**
      * Create a Label and a Button width Gridata option FILL.
-     * 
+     *
      * @param composite
      * @param string
      * @param styleField
@@ -91,7 +91,7 @@ public class LabelledRadio {
 
     /**
      * Create a Label and a Button width specific styleField and Gridata option FILL.
-     * 
+     *
      * @param composite
      * @param string
      * @param int horizontalSpan
@@ -104,7 +104,7 @@ public class LabelledRadio {
 
     /**
      * Create a Label and a Button width specific styleField and Gridata option FILL.
-     * 
+     *
      * @param composite
      * @param string
      * @param int horizontalSpan
@@ -130,7 +130,7 @@ public class LabelledRadio {
 
     /**
      * setToolTipText to Text Object.
-     * 
+     *
      * @param string
      */
     public void setToolTipText(final String string) {
@@ -139,7 +139,7 @@ public class LabelledRadio {
 
     /**
      * is Checkbox Selected.
-     * 
+     *
      * @return boolean
      */
     public Boolean isSelected() {
@@ -148,7 +148,7 @@ public class LabelledRadio {
 
     /**
      * setText to Label Object.
-     * 
+     *
      * @param string
      */
     public void setLabelText(final String string) {
@@ -162,7 +162,7 @@ public class LabelledRadio {
 
     /**
      * setEditable to Button and Label Object.
-     * 
+     *
      * @param boolean
      */
     public void forceFocus() {
@@ -172,7 +172,7 @@ public class LabelledRadio {
 
     /**
      * setEnabled to Button and Label Object.
-     * 
+     *
      * @param boolean
      */
     public void setEnabled(final boolean visible) {
@@ -182,7 +182,7 @@ public class LabelledRadio {
 
     /**
      * setVisible to Button and Label Object.
-     * 
+     *
      * @param boolean
      */
     public void setVisible(final boolean visible) {
@@ -192,7 +192,7 @@ public class LabelledRadio {
 
     /**
      * addListener to Button Object.
-     * 
+     *
      * @param eventType
      * @param listener
      */
@@ -202,7 +202,7 @@ public class LabelledRadio {
 
     /**
      * addFocusListener to Button Object.
-     * 
+     *
      * @param listener
      */
     public void addFocusListener(FocusListener listener) {

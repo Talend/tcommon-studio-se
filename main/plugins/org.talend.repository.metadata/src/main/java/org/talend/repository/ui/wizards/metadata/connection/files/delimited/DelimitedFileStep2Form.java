@@ -1,6 +1,6 @@
 // ============================================================================
 //
-// Copyright (C) 2006-2018 Talend Inc. - www.talend.com
+// Copyright (C) 2006-2019 Talend Inc. - www.talend.com
 //
 // This source code is available under agreement available at
 // %InstallDIR%\features\org.talend.rcp.branding.%PRODUCTNAME%\%PRODUCTNAME%license.txt
@@ -66,7 +66,7 @@ import org.talend.repository.metadata.ui.wizards.form.AbstractDelimitedFileStepF
 
 /**
  * @author ocarbone
- * 
+ *
  */
 public class DelimitedFileStep2Form extends AbstractDelimitedFileStepForm implements IRefreshable {
 
@@ -155,7 +155,7 @@ public class DelimitedFileStep2Form extends AbstractDelimitedFileStepForm implem
 
     /**
      * Constructor to use by RCP Wizard.
-     * 
+     *
      * @param Composite
      * @param Wizard
      * @param Style
@@ -167,7 +167,7 @@ public class DelimitedFileStep2Form extends AbstractDelimitedFileStepForm implem
     }
 
     /**
-     * 
+     *
      * Initialize value, forceFocus first field.
      */
     @Override
@@ -289,7 +289,7 @@ public class DelimitedFileStep2Form extends AbstractDelimitedFileStepForm implem
 
     /**
      * add Field to Group Delimited File Settings.
-     * 
+     *
      * @param mainComposite
      * @param form
      * @param width
@@ -346,7 +346,7 @@ public class DelimitedFileStep2Form extends AbstractDelimitedFileStepForm implem
      * CUSTOM_REGEX is not supported in java mode.
      * <p>
      * DOC YeXiaowei Comment method "getFieldSeparatorStyleSupportByLanguage".
-     * 
+     *
      * @return
      */
     private String[] getFieldSeparatorStyleSupportByLanguage() {
@@ -405,7 +405,7 @@ public class DelimitedFileStep2Form extends AbstractDelimitedFileStepForm implem
 
     /**
      * add Field to Group Escape Char.
-     * 
+     *
      * @param mainComposite
      * @param form
      * @param width
@@ -481,7 +481,7 @@ public class DelimitedFileStep2Form extends AbstractDelimitedFileStepForm implem
 
     /**
      * add field to Group Limit.
-     * 
+     *
      * @param mainComposite
      * @param form
      * @param width
@@ -514,7 +514,7 @@ public class DelimitedFileStep2Form extends AbstractDelimitedFileStepForm implem
 
     /**
      * add Field to Group File Viewer.
-     * 
+     *
      * @param parent
      * @param form
      * @param width
@@ -601,11 +601,11 @@ public class DelimitedFileStep2Form extends AbstractDelimitedFileStepForm implem
 
     /**
      * create ProcessDescription and set it.
-     * 
+     *
      * WARNING ::field FieldSeparator, RowSeparator, EscapeChar and TextEnclosure are surround by double quote.
-     * 
+     *
      * @param getConnection()
-     * 
+     *
      * @return processDescription
      */
     private ProcessDescription getProcessDescription(DelimitedFileConnection delimitedConn) {
@@ -811,7 +811,7 @@ public class DelimitedFileStep2Form extends AbstractDelimitedFileStepForm implem
 
     /**
      * DOC ocarbone Comment method "setCharFlag".
-     * 
+     *
      * @param escapeCharFlag2
      * @param text
      */
@@ -1161,7 +1161,7 @@ public class DelimitedFileStep2Form extends AbstractDelimitedFileStepForm implem
 
     /**
      * Ensures that fields are set. Update checkEnable / use to checkConnection().
-     * 
+     *
      * @return
      */
     @Override
@@ -1230,9 +1230,9 @@ public class DelimitedFileStep2Form extends AbstractDelimitedFileStepForm implem
 
     /**
      * Subclass of SWTUIThreadProcessor to process the preview event. <br/>
-     * 
+     *
      * $Id: DelimitedFileStep2Form.java 45911 2010-07-23 11:30:58Z hywang $
-     * 
+     *
      */
     class PreviewProcessor extends SWTUIThreadProcessor {
 
@@ -1376,7 +1376,7 @@ public class DelimitedFileStep2Form extends AbstractDelimitedFileStepForm implem
 
     /**
      * addButtonControls.
-     * 
+     *
      * @param cancelButton
      */
     @Override
@@ -1405,7 +1405,7 @@ public class DelimitedFileStep2Form extends AbstractDelimitedFileStepForm implem
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see org.eclipse.swt.widgets.Control#setVisible(boolean)
      */
     @Override
@@ -1440,7 +1440,7 @@ public class DelimitedFileStep2Form extends AbstractDelimitedFileStepForm implem
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see org.talend.repository.ui.swt.utils.IRefreshable#refresh()
      */
     @Override

@@ -1,6 +1,6 @@
 // ============================================================================
 //
-// Copyright (C) 2006-2018 Talend Inc. - www.talend.com
+// Copyright (C) 2006-2019 Talend Inc. - www.talend.com
 //
 // This source code is available under agreement available at
 // %InstallDIR%\features\org.talend.rcp.branding.%PRODUCTNAME%\%PRODUCTNAME%license.txt
@@ -30,7 +30,7 @@ import org.eclipse.swt.graphics.Font;
 
 /**
  * created by ldong on Aug 26, 2014 Detailled comment
- * 
+ *
  */
 public class ContextNatTableStyleConfiguration extends AbstractRegistryConfiguration {
 
@@ -54,7 +54,7 @@ public class ContextNatTableStyleConfiguration extends AbstractRegistryConfigura
 
     /**
      * DOC ldong ContextNatTableStyleConfiguration constructor comment.
-     * 
+     *
      * @param font
      */
     public ContextNatTableStyleConfiguration(Font font) {

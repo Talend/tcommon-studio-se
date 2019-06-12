@@ -1,6 +1,6 @@
 // ============================================================================
 //
-// Copyright (C) 2006-2018 Talend Inc. - www.talend.com
+// Copyright (C) 2006-2019 Talend Inc. - www.talend.com
 //
 // This source code is available under agreement available at
 // %InstallDIR%\features\org.talend.rcp.branding.%PRODUCTNAME%\%PRODUCTNAME%license.txt
@@ -64,9 +64,9 @@ import org.talend.repository.ui.actions.AContextualAction;
 
 /**
  * DOC tguiu class global comment. Detailled comment <br/>
- * 
+ *
  * $Id$
- * 
+ *
  */
 public class DeleteTableAction extends AContextualAction {
 
@@ -90,7 +90,7 @@ public class DeleteTableAction extends AContextualAction {
     /**
      * only delete the caller's specified objects, in case the caller already obtains all the selected objects and also
      * wants to delete them
-     * 
+     *
      * @param objsNeedToBeDeleted
      */
     public DeleteTableAction(List<Object> objsNeedToBeDeleted) {
@@ -273,7 +273,7 @@ public class DeleteTableAction extends AContextualAction {
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see org.talend.repository.ui.actions.ITreeContextualAction#init(org.eclipse.jface.viewers.TreeViewer,
      * org.eclipse.jface.viewers.IStructuredSelection)
      */

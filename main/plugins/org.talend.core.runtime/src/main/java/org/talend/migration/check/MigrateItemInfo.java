@@ -1,6 +1,6 @@
 // ============================================================================
 //
-// Copyright (C) 2006-2018 Talend Inc. - www.talend.com
+// Copyright (C) 2006-2019 Talend Inc. - www.talend.com
 //
 // This source code is available under agreement available at
 // %InstallDIR%\features\org.talend.rcp.branding.%PRODUCTNAME%\%PRODUCTNAME%license.txt
@@ -46,7 +46,7 @@ public class MigrateItemInfo {
 
     /**
      * Getter for id.
-     * 
+     *
      * @return the id
      */
     public int getId() {
@@ -55,7 +55,7 @@ public class MigrateItemInfo {
 
     /**
      * Sets the id.
-     * 
+     *
      * @param id the id to set
      */
     public void setId(int id) {
@@ -64,7 +64,7 @@ public class MigrateItemInfo {
 
     /**
      * Sets the type.
-     * 
+     *
      * @param type the type to set
      */
     public void setType(String type) {
@@ -73,7 +73,7 @@ public class MigrateItemInfo {
 
     /**
      * Getter for type.
-     * 
+     *
      * @return the type
      */
     public String getType() {
@@ -82,7 +82,7 @@ public class MigrateItemInfo {
 
     /**
      * Getter for type_name.
-     * 
+     *
      * @return the type_name
      */
     public String getType_name() {
@@ -91,7 +91,7 @@ public class MigrateItemInfo {
 
     /**
      * Sets the type_name.
-     * 
+     *
      * @param type_name the type_name to set
      */
     public void setType_name(String type_name) {
@@ -100,7 +100,7 @@ public class MigrateItemInfo {
 
     /**
      * Getter for label.
-     * 
+     *
      * @return the label
      */
     public String getLabel() {
@@ -109,7 +109,7 @@ public class MigrateItemInfo {
 
     /**
      * Sets the label.
-     * 
+     *
      * @param label the label to set
      */
     public void setLabel(String label) {
@@ -118,7 +118,7 @@ public class MigrateItemInfo {
 
     /**
      * Getter for version.
-     * 
+     *
      * @return the version
      */
     public String getVersion() {
@@ -127,7 +127,7 @@ public class MigrateItemInfo {
 
     /**
      * Sets the version.
-     * 
+     *
      * @param version the version to set
      */
     public void setVersion(String version) {
@@ -136,7 +136,7 @@ public class MigrateItemInfo {
 
     /**
      * Getter for created.
-     * 
+     *
      * @return the created
      */
     public Date getCreated() {
@@ -145,7 +145,7 @@ public class MigrateItemInfo {
 
     /**
      * Sets the created.
-     * 
+     *
      * @param created the created to set
      */
     public void setCreated(Date created) {
@@ -154,7 +154,7 @@ public class MigrateItemInfo {
 
     /**
      * Getter for author.
-     * 
+     *
      * @return the author
      */
     public String getAuthor() {
@@ -163,7 +163,7 @@ public class MigrateItemInfo {
 
     /**
      * Sets the author.
-     * 
+     *
      * @param author the author to set
      */
     public void setAuthor(String author) {
@@ -172,7 +172,7 @@ public class MigrateItemInfo {
 
     /**
      * Getter for project_id.
-     * 
+     *
      * @return the project_id
      */
     public int getProject_id() {
@@ -181,7 +181,7 @@ public class MigrateItemInfo {
 
     /**
      * Sets the project_id.
-     * 
+     *
      * @param project_id the project_id to set
      */
     public void setProject_id(int project_id) {
@@ -190,7 +190,7 @@ public class MigrateItemInfo {
 
     /**
      * Getter for last_modified.
-     * 
+     *
      * @return the last_modified
      */
     public Date getLast_modified() {
@@ -199,7 +199,7 @@ public class MigrateItemInfo {
 
     /**
      * Sets the last_modified.
-     * 
+     *
      * @param last_modified the last_modified to set
      */
     public void setLast_modified(Date last_modified) {
@@ -208,7 +208,7 @@ public class MigrateItemInfo {
 
     /**
      * Getter for problems.
-     * 
+     *
      * @return the problems
      */
     public List<Problem> getProblems() {
@@ -217,7 +217,7 @@ public class MigrateItemInfo {
 
     /**
      * Getter for status.
-     * 
+     *
      * @return the status
      */
     public String getStatus() {
@@ -226,7 +226,7 @@ public class MigrateItemInfo {
 
     /**
      * Sets the status.
-     * 
+     *
      * @param status the status to set
      */
     public void setStatus(String status) {

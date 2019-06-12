@@ -1,6 +1,6 @@
 // ============================================================================
 //
-// Copyright (C) 2006-2018 Talend Inc. - www.talend.com
+// Copyright (C) 2006-2019 Talend Inc. - www.talend.com
 //
 // This source code is available under agreement available at
 // %InstallDIR%\features\org.talend.rcp.branding.%PRODUCTNAME%\%PRODUCTNAME%license.txt
@@ -1143,7 +1143,7 @@ public class MDMOutputSchemaForm extends AbstractMDMFileStepForm {
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see org.talend.repository.mdm.ui.wizard.concept.AbstractMDMFileStepForm#createTable()
      */
     @Override
@@ -1172,7 +1172,7 @@ public class MDMOutputSchemaForm extends AbstractMDMFileStepForm {
             if (loopList != null && loopList.size() > 0) {
                 String fullPath = loopList.get(0).getXMLPath();
                 if (fullPath.contains("/")) {
-                    String source = fullPath.split("/")[1]; //$NON-NLS-1$ 
+                    String source = fullPath.split("/")[1]; //$NON-NLS-1$
                     tempMetadataTable.setSourceName(source);
                 } else {
                     tempMetadataTable.setSourceName(fullPath);

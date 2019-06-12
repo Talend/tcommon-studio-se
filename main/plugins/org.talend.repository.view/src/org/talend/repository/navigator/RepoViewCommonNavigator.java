@@ -1,6 +1,6 @@
 // ============================================================================
 //
-// Copyright (C) 2006-2018 Talend Inc. - www.talend.com
+// Copyright (C) 2006-2019 Talend Inc. - www.talend.com
 //
 // This source code is available under agreement available at
 // %InstallDIR%\features\org.talend.rcp.branding.%PRODUCTNAME%\%PRODUCTNAME%license.txt
@@ -122,22 +122,22 @@ import org.talend.repository.viewer.filter.listener.RepoViewPerspectiveListener;
 
 /**
  * DOC sgandon class global comment. Detailled comment <br/>
- * 
+ *
  * $Id: talend.epf 55206 2011-02-15 17:32:14Z mhirt $
- * 
+ *
  */
 public class RepoViewCommonNavigator extends CommonNavigator implements IRepositoryView, ITabbedPropertySheetPageContributor,
         IRepositoryChangedListener {
 
     /**
      * A savable to reflect the current editor status in the view
-     * 
+     *
      */
     public class EditorSavable extends Saveable {
 
         /**
          * DOC sgandon EditorSavable constructor comment.
-         * 
+         *
          * @param repoViewCommonNavigator
          */
         public EditorSavable() {
@@ -146,7 +146,7 @@ public class RepoViewCommonNavigator extends CommonNavigator implements IReposit
 
         /*
          * (non-Javadoc)
-         * 
+         *
          * @see org.eclipse.ui.Saveable#getName()
          */
         @Override
@@ -157,7 +157,7 @@ public class RepoViewCommonNavigator extends CommonNavigator implements IReposit
 
         /*
          * (non-Javadoc)
-         * 
+         *
          * @see org.eclipse.ui.Saveable#getToolTipText()
          */
         @Override
@@ -168,7 +168,7 @@ public class RepoViewCommonNavigator extends CommonNavigator implements IReposit
 
         /*
          * (non-Javadoc)
-         * 
+         *
          * @see org.eclipse.ui.Saveable#getImageDescriptor()
          */
         @Override
@@ -179,7 +179,7 @@ public class RepoViewCommonNavigator extends CommonNavigator implements IReposit
 
         /*
          * (non-Javadoc)
-         * 
+         *
          * @see org.eclipse.ui.Saveable#doSave(org.eclipse.core.runtime.IProgressMonitor)
          */
         @Override
@@ -195,7 +195,7 @@ public class RepoViewCommonNavigator extends CommonNavigator implements IReposit
 
         /*
          * (non-Javadoc)
-         * 
+         *
          * @see org.eclipse.ui.Saveable#isDirty()
          */
         @Override
@@ -209,7 +209,7 @@ public class RepoViewCommonNavigator extends CommonNavigator implements IReposit
 
         /*
          * (non-Javadoc)
-         * 
+         *
          * @see org.eclipse.ui.Saveable#equals(java.lang.Object)
          */
         @Override
@@ -220,7 +220,7 @@ public class RepoViewCommonNavigator extends CommonNavigator implements IReposit
 
         /*
          * (non-Javadoc)
-         * 
+         *
          * @see org.eclipse.ui.Saveable#hashCode()
          */
         @Override
@@ -267,7 +267,7 @@ public class RepoViewCommonNavigator extends CommonNavigator implements IReposit
 
     /**
      * yzhang Comment method "addPreparedListeners".
-     * 
+     *
      * @param listeners
      */
     public void addPreparedListeners(ISelectionChangedListener listeners) {
@@ -278,7 +278,7 @@ public class RepoViewCommonNavigator extends CommonNavigator implements IReposit
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see org.eclipse.ui.part.ViewPart#init(org.eclipse.ui.IViewSite)
      */
     @Override
@@ -308,7 +308,7 @@ public class RepoViewCommonNavigator extends CommonNavigator implements IReposit
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see org.eclipse.ui.navigator.CommonNavigator#createCommonViewerObject(org.eclipse.swt.widgets.Composite)
      */
     @Override
@@ -318,7 +318,7 @@ public class RepoViewCommonNavigator extends CommonNavigator implements IReposit
 
     /*
      * this by default return a ProjectRepositoryNode except if the public static variable named initialInput is set.
-     * 
+     *
      * @see org.eclipse.ui.navigator.CommonNavigator#getInitialInput()
      */
     @Override
@@ -582,7 +582,7 @@ public class RepoViewCommonNavigator extends CommonNavigator implements IReposit
 
     /**
      * DOC bqian Comment method "createTreeTooltip".
-     * 
+     *
      * @param tree
      */
     private void createTreeTooltip(Tree tree) {
@@ -590,7 +590,7 @@ public class RepoViewCommonNavigator extends CommonNavigator implements IReposit
 
             /*
              * (non-Javadoc)
-             * 
+             *
              * @see
              * org.talend.commons.ui.swt.tooltip.AbstractTreeTooltip#getTooltipContent(org.eclipse.swt.widgets.TreeItem)
              */
@@ -627,7 +627,7 @@ public class RepoViewCommonNavigator extends CommonNavigator implements IReposit
                             }
                         }
                         if (login != null && !"".equals(login)) {//$NON-NLS-1$
-                            content = Messages.getString("RepoViewCommonNavigator.Content", login, application); //$NON-NLS-1$ 
+                            content = Messages.getString("RepoViewCommonNavigator.Content", login, application); //$NON-NLS-1$
                         }
                     }
                     String description = object.getDescription();
@@ -710,7 +710,7 @@ public class RepoViewCommonNavigator extends CommonNavigator implements IReposit
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see org.talend.core.ui.repository.views.IRepositoryView#getViewer()
      */
     @Override
@@ -725,7 +725,7 @@ public class RepoViewCommonNavigator extends CommonNavigator implements IReposit
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see org.talend.core.ui.repository.views.IRepositoryView#refresh()
      */
     public void refresh(final boolean needInitialize, final boolean needPopup) {
@@ -866,7 +866,7 @@ public class RepoViewCommonNavigator extends CommonNavigator implements IReposit
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see org.talend.repository.ui.views.IRepositoryView#refresh(java.lang.Object)
      */
     @Override
@@ -932,7 +932,7 @@ public class RepoViewCommonNavigator extends CommonNavigator implements IReposit
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see org.eclipse.ui.views.properties.tabbed.ITabbedPropertySheetPageContributor#getContributorId()
      */
     @Override
@@ -942,7 +942,7 @@ public class RepoViewCommonNavigator extends CommonNavigator implements IReposit
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see org.eclipse.ui.part.WorkbenchPart#getAdapter(java.lang.Class)
      */
     @Override
@@ -960,7 +960,7 @@ public class RepoViewCommonNavigator extends CommonNavigator implements IReposit
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @seeorg.talend.repository.ui.views.IRepositoryView#containsRepositoryType(org.talend.core.model.repository.
      * ERepositoryObjectType)
      */
@@ -989,7 +989,7 @@ public class RepoViewCommonNavigator extends CommonNavigator implements IReposit
 
     /*
      * does not return true for the internal editor saveable
-     * 
+     *
      * @see org.eclipse.ui.navigator.CommonNavigator#isSaveOnCloseNeeded()
      */
     @Override

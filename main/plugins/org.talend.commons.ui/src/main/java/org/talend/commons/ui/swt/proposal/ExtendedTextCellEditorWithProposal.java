@@ -1,6 +1,6 @@
 // ============================================================================
 //
-// Copyright (C) 2006-2018 Talend Inc. - www.talend.com
+// Copyright (C) 2006-2019 Talend Inc. - www.talend.com
 //
 // This source code is available under agreement available at
 // %InstallDIR%\features\org.talend.rcp.branding.%PRODUCTNAME%\%PRODUCTNAME%license.txt
@@ -24,9 +24,9 @@ import org.talend.commons.ui.swt.tableviewer.TableViewerCreatorColumn;
 /**
  * This class extends the ExtendedTextCellEditor to add the Expression Builder to tMapper. Only tMapper can use this
  * class. <br/>
- * 
+ *
  * $Id: TextCellEditorWithProposal.java 3351 2007-05-04 12:14:00Z plegall $
- * 
+ *
  */
 public class ExtendedTextCellEditorWithProposal extends ExtendedTextCellEditor implements
         IShowInvisibleCellEditorMethods {
@@ -80,7 +80,7 @@ public class ExtendedTextCellEditorWithProposal extends ExtendedTextCellEditor i
 
     /**
      * Getter for contentProposalAdapter.
-     * 
+     *
      * @return the contentProposalAdapter
      */
     public ContentProposalAdapterExtended getContentProposalAdapter() {

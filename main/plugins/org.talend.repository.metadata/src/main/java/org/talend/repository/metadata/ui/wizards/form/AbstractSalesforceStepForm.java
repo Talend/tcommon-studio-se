@@ -1,6 +1,6 @@
 // ============================================================================
 //
-// Copyright (C) 2006-2018 Talend Inc. - www.talend.com
+// Copyright (C) 2006-2019 Talend Inc. - www.talend.com
 //
 // This source code is available under agreement available at
 // %InstallDIR%\features\org.talend.rcp.branding.%PRODUCTNAME%\%PRODUCTNAME%license.txt
@@ -59,7 +59,7 @@ import com.sforce.soap.enterprise.fault.UnexpectedErrorFault;
 
 /**
  * DOC YeXiaowei class global comment. Detailled comment <br/>
- * 
+ *
  */
 public abstract class AbstractSalesforceStepForm extends AbstractForm {
 
@@ -135,9 +135,9 @@ public abstract class AbstractSalesforceStepForm extends AbstractForm {
     }
 
     /**
-     * 
+     *
      * DOC YeXiaowei Comment method "getSalesforceComponent".
-     * 
+     *
      * @return Always not null
      */
     public INode getSalesforceNode() {
@@ -417,8 +417,8 @@ public abstract class AbstractSalesforceStepForm extends AbstractForm {
         }
 
         if (salesforceAPI.isLogin()) {
-            MessageDialog.openInformation(getShell(), Messages.getString("SalesforceForm.checkConnectionTitle"), //$NON-NLS-1$ 
-                    Messages.getString("SalesforceForm.checkIsDone")); //$NON-NLS-1$ 
+            MessageDialog.openInformation(getShell(), Messages.getString("SalesforceForm.checkConnectionTitle"), //$NON-NLS-1$
+                    Messages.getString("SalesforceForm.checkIsDone")); //$NON-NLS-1$
         } else {
             String mainMsg = Messages.getString("SalesforceForm.checkFailure") + " " //$NON-NLS-1$ //$NON-NLS-2$
                     + Messages.getString("SalesforceForm.checkFailureTip"); //$NON-NLS-1$
@@ -584,7 +584,7 @@ public abstract class AbstractSalesforceStepForm extends AbstractForm {
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see org.talend.repository.ui.swt.utils.AbstractForm#adaptFormToReadOnly()
      */
     @Override
@@ -595,7 +595,7 @@ public abstract class AbstractSalesforceStepForm extends AbstractForm {
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see org.talend.repository.ui.swt.utils.AbstractForm#addFields()
      */
     @Override
@@ -606,7 +606,7 @@ public abstract class AbstractSalesforceStepForm extends AbstractForm {
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see org.talend.repository.ui.swt.utils.AbstractForm#addFieldsListeners()
      */
     @Override
@@ -617,7 +617,7 @@ public abstract class AbstractSalesforceStepForm extends AbstractForm {
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see org.talend.repository.ui.swt.utils.AbstractForm#addUtilsButtonListeners()
      */
     @Override
@@ -628,7 +628,7 @@ public abstract class AbstractSalesforceStepForm extends AbstractForm {
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see org.talend.repository.ui.swt.utils.AbstractForm#checkFieldsValue()
      */
     @Override
@@ -639,7 +639,7 @@ public abstract class AbstractSalesforceStepForm extends AbstractForm {
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see org.talend.repository.ui.swt.utils.AbstractForm#initialize()
      */
     @Override
@@ -649,7 +649,7 @@ public abstract class AbstractSalesforceStepForm extends AbstractForm {
 
     /**
      * Getter for salesforceAPI.
-     * 
+     *
      * @return the salesforceAPI
      */
     public SalesforceModuleParseAPI getSalesforceAPI() {
@@ -658,7 +658,7 @@ public abstract class AbstractSalesforceStepForm extends AbstractForm {
 
     /**
      * Sets the salesforceAPI.
-     * 
+     *
      * @param salesforceAPI the salesforceAPI to set
      */
     public void setSalesforceAPI(SalesforceModuleParseAPI salesforceAPI) {
@@ -675,7 +675,7 @@ public abstract class AbstractSalesforceStepForm extends AbstractForm {
 
     /**
      * DOC Administrator Comment method "getTableByLabel".
-     * 
+     *
      * @param label
      * @return
      */

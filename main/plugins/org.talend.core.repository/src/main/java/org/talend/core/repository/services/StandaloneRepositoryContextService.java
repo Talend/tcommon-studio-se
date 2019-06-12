@@ -1,6 +1,6 @@
 // ============================================================================
 //
-// Copyright (C) 2006-2018 Talend Inc. - www.talend.com
+// Copyright (C) 2006-2019 Talend Inc. - www.talend.com
 //
 // This source code is available under agreement available at
 // %InstallDIR%\features\org.talend.rcp.branding.%PRODUCTNAME%\%PRODUCTNAME%license.txt
@@ -33,7 +33,7 @@ public class StandaloneRepositoryContextService implements IRepositoryContextSer
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see
      * org.talend.repository.model.IRepositoryService#cloneOriginalValueConnection(org.talend.core.model.metadata.builder
      * .connection.DatabaseConnection)
@@ -45,7 +45,7 @@ public class StandaloneRepositoryContextService implements IRepositoryContextSer
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see
      * org.talend.repository.model.IRepositoryService#cloneOriginalValueConnection(org.talend.core.model.metadata.builder
      * .connection.DatabaseConnection, boolean)
@@ -57,7 +57,7 @@ public class StandaloneRepositoryContextService implements IRepositoryContextSer
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see
      * org.talend.repository.model.IRepositoryService#cloneOriginalValueConnection(org.talend.core.model.metadata.builder
      * .connection.DatabaseConnection, boolean, java.lang.String)

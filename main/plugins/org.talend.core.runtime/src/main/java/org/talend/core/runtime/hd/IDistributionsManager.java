@@ -1,6 +1,6 @@
 // ============================================================================
 //
-// Copyright (C) 2006-2018 Talend Inc. - www.talend.com
+// Copyright (C) 2006-2019 Talend Inc. - www.talend.com
 //
 // This source code is available under agreement available at
 // %InstallDIR%\features\org.talend.rcp.branding.%PRODUCTNAME%\%PRODUCTNAME%license.txt
@@ -18,7 +18,7 @@ package org.talend.core.runtime.hd;
 public interface IDistributionsManager {
 
     /**
-     * 
+     *
      * Get all Distributions for this service manager.
      */
     IHDistribution[] getDistributions();
@@ -26,13 +26,13 @@ public interface IDistributionsManager {
     String[] getDistributionsDisplay(boolean withCustom);
 
     /**
-     * 
+     *
      * Find the name of distribution.
      */
     IHDistribution getDistribution(String name, boolean byDisplay);
 
     /**
-     * 
+     *
      * Find the version of distribution.
      */
     IHDistributionVersion getDistributionVersion(String version, boolean byDisplay);

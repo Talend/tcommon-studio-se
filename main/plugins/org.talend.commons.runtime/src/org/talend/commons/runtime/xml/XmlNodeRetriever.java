@@ -1,6 +1,6 @@
 // ============================================================================
 //
-// Copyright (C) 2006-2018 Talend Inc. - www.talend.com
+// Copyright (C) 2006-2019 Talend Inc. - www.talend.com
 //
 // This source code is available under agreement available at
 // %InstallDIR%\features\org.talend.rcp.branding.%PRODUCTNAME%\%PRODUCTNAME%license.txt
@@ -52,9 +52,9 @@ import org.xml.sax.SAXException;
 
 /**
  * DOC amaumont class global comment. Detailled comment <br/>
- * 
+ *
  * $Id$
- * 
+ *
  */
 public class XmlNodeRetriever {
 
@@ -78,7 +78,7 @@ public class XmlNodeRetriever {
 
     /**
      * DOC amaumont XMLNodeRetriever constructor comment.
-     * 
+     *
      * @param string
      */
     public XmlNodeRetriever(String filePath, String loopXPath) {
@@ -124,7 +124,7 @@ public class XmlNodeRetriever {
 
     /**
      * DOC qzhang Comment method "getNamespaceForPrefix".
-     * 
+     *
      * @param prefix
      * @return
      */
@@ -138,7 +138,7 @@ public class XmlNodeRetriever {
 
     /**
      * qzhang Comment method "getDefaultNamespace".
-     * 
+     *
      * @return
      */
     private String getDefaultNamespace() {
@@ -159,7 +159,7 @@ public class XmlNodeRetriever {
 
     /**
      * DOC amaumont Comment method "initSource".
-     * 
+     *
      * @param filePath2
      */
     private synchronized void initSource(String filePath) {
@@ -210,7 +210,7 @@ public class XmlNodeRetriever {
 
     /**
      * DOC qzhang Comment method "initLastNodes".
-     * 
+     *
      * @param node
      */
     private void initLastNodes(Node node) {
@@ -230,7 +230,7 @@ public class XmlNodeRetriever {
 
     /**
      * DOC qzhang Comment method "setPrefixToNamespace".
-     * 
+     *
      * @param node
      */
     private void setPrefixToNamespace(Node node) {
@@ -267,9 +267,9 @@ public class XmlNodeRetriever {
     }
 
     /**
-     * 
+     *
      * DOC amaumont Comment method "retrieveListOfNodes".
-     * 
+     *
      * @param xPathExpression
      * @return always a <code>List</code> empty or not
      * @throws XPathExpressionException
@@ -281,7 +281,7 @@ public class XmlNodeRetriever {
 
     /**
      * DOC amaumont Comment method "retrieveNodeList".
-     * 
+     *
      * @param xPathExpression
      * @param nodeList
      * @return <code>NodeList</code> or null if expression is invalid
@@ -309,7 +309,7 @@ public class XmlNodeRetriever {
 
     /**
      * DOC amaumont Comment method "simplifyXPathExpression".
-     * 
+     *
      * @param pathExpression
      * @return
      */
@@ -342,7 +342,7 @@ public class XmlNodeRetriever {
 
     /**
      * DOC amaumont Comment method "retrieveNodeList".
-     * 
+     *
      * @param xPathExpression
      * @param nodeList
      * @return <code>NodeList</code> or null if expression is invalid
@@ -368,7 +368,7 @@ public class XmlNodeRetriever {
 
     /**
      * DOC amaumont Comment method "retrieveNodeList".
-     * 
+     *
      * @param xPathExpression
      * @param nodeList
      * @return <code>NodeList</code> or null if expression is invalid
@@ -383,7 +383,7 @@ public class XmlNodeRetriever {
 
     /**
      * DOC amaumont Comment method "retrieveNodeList".
-     * 
+     *
      * @param relativeXPathExpression
      * @param nodeList
      * @return <code>NodeList</code> or null if expression is invalid
@@ -398,7 +398,7 @@ public class XmlNodeRetriever {
 
     /**
      * DOC amaumont Comment method "retrieveNodeList".
-     * 
+     *
      * @param xPathExpression
      * @param nodeList
      * @return <code>NodeList</code> or null if expression is invalid
@@ -542,7 +542,7 @@ public class XmlNodeRetriever {
 
     /**
      * DOC amaumont Comment method "getAbsoluteXPathFromNode".
-     * 
+     *
      * @param node
      */
     public String getAbsoluteXPathFromNode(Node node) {
@@ -551,8 +551,8 @@ public class XmlNodeRetriever {
 
     /**
      * DOC amaumont Comment method "getAbsoluteXPathFromNode".
-     * 
-     * 
+     *
+     *
      * @param node
      * @param string
      */
@@ -599,7 +599,7 @@ public class XmlNodeRetriever {
 
     /**
      * Getter for document.
-     * 
+     *
      * @return the document
      */
     public Document getDocument() {
@@ -608,7 +608,7 @@ public class XmlNodeRetriever {
 
     /**
      * DOC amaumont Comment method "setCurrentLoopXPath".
-     * 
+     *
      * @param newValue
      */
     public void setCurrentLoopXPath(String currentLoopXPath) {
@@ -617,7 +617,7 @@ public class XmlNodeRetriever {
 
     /**
      * Getter for currentLoopXPath.
-     * 
+     *
      * @return the currentLoopXPath
      */
     public String getCurrentLoopXPath() {

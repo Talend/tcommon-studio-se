@@ -1,6 +1,6 @@
 // ============================================================================
 //
-// Copyright (C) 2006-2018 Talend Inc. - www.talend.com
+// Copyright (C) 2006-2019 Talend Inc. - www.talend.com
 //
 // This source code is available under agreement available at
 // %InstallDIR%\features\org.talend.rcp.branding.%PRODUCTNAME%\%PRODUCTNAME%license.txt
@@ -231,8 +231,8 @@ public class RecycleBinManager {
             project.getDeletedFolders().clear();
             for (String deletedFolder : recycleBin.getDeletedFolders()) {
                 project.getDeletedFolders().add(deletedFolder);
-            }  
-        } 
+            }
+        }
     }
 
     public RecycleBin loadRecycleBin(IPath recycleBinIndexPath) throws Exception {
@@ -316,7 +316,7 @@ public class RecycleBinManager {
         resource.getDefaultLoadOptions().put(XMLResource.OPTION_USE_LEXICAL_HANDLER, Boolean.TRUE);
         return resource;
     }
-    
+
     public static boolean equals(RecycleBin r1, RecycleBin r2) {
         if (r1 == null && r2 == null) {
             return true;

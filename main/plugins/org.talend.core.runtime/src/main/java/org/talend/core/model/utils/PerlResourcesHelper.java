@@ -1,6 +1,6 @@
 // ============================================================================
 //
-// Copyright (C) 2006-2018 Talend Inc. - www.talend.com
+// Copyright (C) 2006-2019 Talend Inc. - www.talend.com
 //
 // This source code is available under agreement available at
 // %InstallDIR%\features\org.talend.rcp.branding.%PRODUCTNAME%\%PRODUCTNAME%license.txt
@@ -28,7 +28,7 @@ import org.talend.repository.ProjectManager;
 
 /**
  * bqian An util tools for perl version resources. <br/>
- * 
+ *
  */
 public class PerlResourcesHelper {
 
@@ -38,10 +38,10 @@ public class PerlResourcesHelper {
 
     /**
      * Gets the specific resource in the perl project.
-     * 
+     *
      * @param name
      * @param projectName
-     * 
+     *
      * @return
      */
     public static IResource getSpecificResourceInPerlProject(IPath path) throws CoreException {
@@ -57,7 +57,7 @@ public class PerlResourcesHelper {
 
     /**
      * Gets current project name.
-     * 
+     *
      * @return
      */
     public static String getCurrentProjectName() {
@@ -68,7 +68,7 @@ public class PerlResourcesHelper {
 
     /**
      * ftang Comment method "escapeSpace".
-     * 
+     *
      * @param name
      * @return
      */

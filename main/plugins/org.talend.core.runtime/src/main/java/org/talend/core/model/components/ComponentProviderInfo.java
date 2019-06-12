@@ -1,6 +1,6 @@
 // ============================================================================
 //
-// Copyright (C) 2006-2018 Talend Inc. - www.talend.com
+// Copyright (C) 2006-2019 Talend Inc. - www.talend.com
 //
 // This source code is available under agreement available at
 // %InstallDIR%\features\org.talend.rcp.branding.%PRODUCTNAME%\%PRODUCTNAME%license.txt
@@ -26,7 +26,7 @@ public class ComponentProviderInfo {
 
     /**
      * Getter for id.
-     * 
+     *
      * @return the id
      */
     public String getId() {
@@ -35,7 +35,7 @@ public class ComponentProviderInfo {
 
     /**
      * Sets the id.
-     * 
+     *
      * @param id the id to set
      */
     public void setId(String id) {
@@ -44,7 +44,7 @@ public class ComponentProviderInfo {
 
     /**
      * Getter for contributer.
-     * 
+     *
      * @return the contributer
      */
     public String getContributer() {
@@ -53,7 +53,7 @@ public class ComponentProviderInfo {
 
     /**
      * Sets the contributer.
-     * 
+     *
      * @param contributer the contributer to set
      */
     public void setContributer(String contributer) {
@@ -62,7 +62,7 @@ public class ComponentProviderInfo {
 
     /**
      * Getter for location.
-     * 
+     *
      * @return the location
      */
     public String getLocation() {
@@ -71,7 +71,7 @@ public class ComponentProviderInfo {
 
     /**
      * Sets the location.
-     * 
+     *
      * @param location the location to set
      */
     public void setLocation(String location) {

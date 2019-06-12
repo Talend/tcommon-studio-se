@@ -1,6 +1,6 @@
 // ============================================================================
 //
-// Copyright (C) 2006-2018 Talend Inc. - www.talend.com
+// Copyright (C) 2006-2019 Talend Inc. - www.talend.com
 //
 // This source code is available under agreement available at
 // %InstallDIR%\features\org.talend.rcp.branding.%PRODUCTNAME%\%PRODUCTNAME%license.txt
@@ -68,7 +68,7 @@ public abstract class FolderListenerSingleTopContentProvider extends SingleTopLe
 
     /*
      * stores the folder workspace relative path related to the topLevel node into a map.
-     * 
+     *
      * @see
      * org.talend.repository.viewer.content.SingleTopLevelContentProvider#initilizeContentProvider(org.talend.repository
      * .model.RepositoryNode)
@@ -84,9 +84,9 @@ public abstract class FolderListenerSingleTopContentProvider extends SingleTopLe
 
     /**
      * This calls the refresh of the toplevel node, this must be invoke from the UI thread.
-     * 
+     *
      * @param repoNode
-     * 
+     *
      * @param topLevelNode
      */
     protected void refreshTopLevelNode(RepositoryNode repoNode) {
@@ -145,9 +145,9 @@ public abstract class FolderListenerSingleTopContentProvider extends SingleTopLe
 
     /**
      * DOC sgandon Comment method "getTopLevelNodeProjectRelativePath".
-     * 
+     *
      * @param topLevelNode
-     * 
+     *
      * @return the relative path to the project or null if none
      */
     protected String getTopLevelNodeProjectRelativePath(RepositoryNode topLevelNode) {
@@ -163,7 +163,7 @@ public abstract class FolderListenerSingleTopContentProvider extends SingleTopLe
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see org.eclipse.jface.viewers.IContentProvider#inputChanged(org.eclipse.jface.viewers.Viewer, java.lang.Object,
      * java.lang.Object)
      */
@@ -181,9 +181,9 @@ public abstract class FolderListenerSingleTopContentProvider extends SingleTopLe
     }
 
     /**
-     * 
+     *
      * DOC ggu Comment method "addResourceVisitor".
-     * 
+     *
      * @param v
      */
     protected void addResourceVisitor(CommonViewer v) {
@@ -210,7 +210,7 @@ public abstract class FolderListenerSingleTopContentProvider extends SingleTopLe
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see org.eclipse.jface.viewers.IContentProvider#dispose()
      */
     @Override

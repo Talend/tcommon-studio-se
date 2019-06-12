@@ -1,6 +1,6 @@
 // ============================================================================
 //
-// Copyright (C) 2006-2018 Talend Inc. - www.talend.com
+// Copyright (C) 2006-2019 Talend Inc. - www.talend.com
 //
 // This source code is available under agreement available at
 // %InstallDIR%\features\org.talend.rcp.branding.%PRODUCTNAME%\%PRODUCTNAME%license.txt
@@ -16,20 +16,20 @@ import java.net.URL;
 
 /**
  * This interface is used for storing component documentation information.
- * 
+ *
  */
 public interface IComponentDocumentation {
 
     /**
      * Gets the url of html file of current component.
-     * 
+     *
      * @return
      */
     public URL getHTMLFile();
 
     /**
      * Sets the path.
-     * 
+     *
      * @param tempFolderPath
      * @return
      */
@@ -37,7 +37,7 @@ public interface IComponentDocumentation {
 
     /**
      * Sets the component name
-     * 
+     *
      * @param componentName
      * @return
      */

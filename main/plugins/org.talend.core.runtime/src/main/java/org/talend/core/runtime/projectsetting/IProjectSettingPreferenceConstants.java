@@ -1,6 +1,6 @@
 // ============================================================================
 //
-// Copyright (C) 2006-2018 Talend Inc. - www.talend.com
+// Copyright (C) 2006-2019 Talend Inc. - www.talend.com
 //
 // This source code is available under agreement available at
 // %InstallDIR%\features\org.talend.rcp.branding.%PRODUCTNAME%\%PRODUCTNAME%license.txt
@@ -23,7 +23,7 @@ public interface IProjectSettingPreferenceConstants {
     public static final String TEMPLATE_SH = "template_sh_script";
 
     public static final String TEMPLATE_BAT = "template_bat_script";
-    
+
     public static final String TEMPLATE_PS = "template_ps_script";
 
     /*
@@ -71,7 +71,7 @@ public interface IProjectSettingPreferenceConstants {
      * Enable ODBC or not, used for DatabaseForm and stats&logs
      */
     public static final String METADATA_DBCONNECTION_ODBC_ENABLE = "metadata.dbconnection.odbc.enable"; //$NON-NLS-1$
-    
+
     /*
      * docker profile
      */

@@ -1,6 +1,6 @@
 // ============================================================================
 //
-// Copyright (C) 2006-2018 Talend Inc. - www.talend.com
+// Copyright (C) 2006-2019 Talend Inc. - www.talend.com
 //
 // This source code is available under agreement available at
 // %InstallDIR%\features\org.talend.rcp.branding.%PRODUCTNAME%\%PRODUCTNAME%license.txt
@@ -73,7 +73,7 @@ public class RepositoryMavenSettingDialog extends PreferenceDialog implements IP
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see org.eclipse.jface.preference.PreferenceDialog#createTreeAreaContents(org.eclipse.swt.widgets.Composite)
      */
     @Override
@@ -108,7 +108,7 @@ public class RepositoryMavenSettingDialog extends PreferenceDialog implements IP
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see org.eclipse.ui.internal.dialogs.FilteredPreferenceDialog#findNodeMatching(java.lang.String)
      */
     @Override
@@ -128,7 +128,7 @@ public class RepositoryMavenSettingDialog extends PreferenceDialog implements IP
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see org.eclipse.jface.preference.PreferenceDialog#cancelPressed()
      */
     @Override
@@ -138,7 +138,7 @@ public class RepositoryMavenSettingDialog extends PreferenceDialog implements IP
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see org.eclipse.jface.preference.PreferenceDialog#okPressed()
      */
     @Override

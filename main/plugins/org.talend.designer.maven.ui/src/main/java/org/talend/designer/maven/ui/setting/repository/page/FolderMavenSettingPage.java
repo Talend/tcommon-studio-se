@@ -1,6 +1,6 @@
 // ============================================================================
 //
-// Copyright (C) 2006-2018 Talend Inc. - www.talend.com
+// Copyright (C) 2006-2019 Talend Inc. - www.talend.com
 //
 // This source code is available under agreement available at
 // %InstallDIR%\features\org.talend.rcp.branding.%PRODUCTNAME%\%PRODUCTNAME%license.txt
@@ -254,8 +254,8 @@ public abstract class FolderMavenSettingPage extends AbstractProjectSettingPage 
         if (!DesignerMavenUiHelper.displayWithExtension) {
             displayName = fileWithExtension.substring(0, fileWithExtension.lastIndexOf('.'));
         }
-        return "<a href=\"" + name + '\"' + '>' //$NON-NLS-1$ 
-                + displayName + "</a>";//$NON-NLS-1$ 
+        return "<a href=\"" + name + '\"' + '>' //$NON-NLS-1$
+                + displayName + "</a>";//$NON-NLS-1$
     }
 
     protected void processLinkId(SelectionEvent e) {
@@ -413,7 +413,7 @@ public abstract class FolderMavenSettingPage extends AbstractProjectSettingPage 
     }
 
     /**
-     * 
+     *
      * Will create the maven scripts nodes, it same as the RepositoryMavenSetting to create.
      */
     protected abstract List<IPreferenceNode> createMavenChildrenNodes(IFolder nodeFolder);

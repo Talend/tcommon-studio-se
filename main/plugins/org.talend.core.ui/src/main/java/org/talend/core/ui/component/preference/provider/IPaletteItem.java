@@ -1,6 +1,6 @@
 // ============================================================================
 //
-// Copyright (C) 2006-2018 Talend Inc. - www.talend.com
+// Copyright (C) 2006-2019 Talend Inc. - www.talend.com
 //
 // This source code is available under agreement available at
 // %InstallDIR%\features\org.talend.rcp.branding.%PRODUCTNAME%\%PRODUCTNAME%license.txt
@@ -31,7 +31,7 @@ public interface IPaletteItem {
 
     /**
      * Label who can contain translation.
-     * 
+     *
      * @return
      */
     public String getLabel();
@@ -40,14 +40,14 @@ public interface IPaletteItem {
 
     /**
      * Get the palette type / component category for the current item.
-     * 
+     *
      * @return
      */
     public ComponentCategory getPaletteType();
 
     /**
      * Get the current family the current component. Value empty for other things than component
-     * 
+     *
      * @return
      */
     public String getFamily();

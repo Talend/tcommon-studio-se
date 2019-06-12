@@ -1,6 +1,6 @@
 // ============================================================================
 //
-// Copyright (C) 2006-2018 Talend Inc. - www.talend.com
+// Copyright (C) 2006-2019 Talend Inc. - www.talend.com
 //
 // This source code is available under agreement available at
 // %InstallDIR%\features\org.talend.rcp.branding.%PRODUCTNAME%\%PRODUCTNAME%license.txt
@@ -30,9 +30,9 @@ import org.talend.core.ui.i18n.Messages;
 
 /**
  * Menu manager for perspective switching. <br/>
- * 
+ *
  * $Id: PerspectiveMenuManager.java 1774 2007-02-03 02:05:47 +0000 (星期六, 03 二月 2007) bqian $
- * 
+ *
  */
 public class PerspectiveMenuManager extends MenuManager {
 
@@ -74,9 +74,9 @@ public class PerspectiveMenuManager extends MenuManager {
 
     /**
      * Fills the perspective menu. <br/>
-     * 
+     *
      * $Id: PerspectiveMenuManager.java 1774 2007-02-03 02:05:47 +0000 (星期六, 03 二月 2007) bqian $
-     * 
+     *
      */
     private static class MenuFiller implements IMenuListener {
 

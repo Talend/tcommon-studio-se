@@ -1,6 +1,6 @@
 // ============================================================================
 //
-// Copyright (C) 2006-2018 Talend Inc. - www.talend.com
+// Copyright (C) 2006-2019 Talend Inc. - www.talend.com
 //
 // This source code is available under agreement available at
 // %InstallDIR%\features\org.talend.rcp.branding.%PRODUCTNAME%\%PRODUCTNAME%license.txt
@@ -18,9 +18,9 @@ import org.talend.commons.ui.swt.tableviewer.TableViewerCreator;
 
 /**
  * DOC amaumont class global comment. Detailled comment <br/>
- * 
+ *
  * $Id$
- * 
+ *
  */
 public class EnableStateListenerForTableButton {
 
@@ -28,7 +28,7 @@ public class EnableStateListenerForTableButton {
 
     /**
      * DOC amaumont EnableStateHandlerForTableButton constructor comment.
-     * 
+     *
      * @param extendedTableViewer
      * @param button
      */

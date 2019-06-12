@@ -1,6 +1,6 @@
 // ============================================================================
 //
-// Copyright (C) 2006-2018 Talend Inc. - www.talend.com
+// Copyright (C) 2006-2019 Talend Inc. - www.talend.com
 //
 // This source code is available under agreement available at
 // %InstallDIR%\features\org.talend.rcp.branding.%PRODUCTNAME%\%PRODUCTNAME%license.txt
@@ -27,9 +27,9 @@ import org.talend.commons.utils.data.list.ListenableList;
 
 /**
  * DOC amaumont class global comment. Detailled comment <br/>
- * 
+ *
  * $Id$
- * 
+ *
  * @param <B> Type of beans
  */
 public class ExtendedTableModel<B> extends AbstractExtendedControlModel {
@@ -63,7 +63,7 @@ public class ExtendedTableModel<B> extends AbstractExtendedControlModel {
 
     /**
      * Use the given list to load data.
-     * 
+     *
      * @param name
      * @param beansList
      */
@@ -74,9 +74,9 @@ public class ExtendedTableModel<B> extends AbstractExtendedControlModel {
     }
 
     /**
-     * 
+     *
      * Insert bean.
-     * 
+     *
      * @param bean
      * @param index can be null
      */
@@ -96,9 +96,9 @@ public class ExtendedTableModel<B> extends AbstractExtendedControlModel {
     }
 
     /**
-     * 
+     *
      * Add bean at end of table.
-     * 
+     *
      * @param bean
      */
     public void add(B bean) {
@@ -110,7 +110,7 @@ public class ExtendedTableModel<B> extends AbstractExtendedControlModel {
 
     /**
      * DOC amaumont Comment method "add".
-     * 
+     *
      * @param beans
      * @param index can be null
      */
@@ -138,7 +138,7 @@ public class ExtendedTableModel<B> extends AbstractExtendedControlModel {
 
     /**
      * DOC amaumont Comment method "add".
-     * 
+     *
      * @param beans
      * @param index can be null
      */
@@ -148,7 +148,7 @@ public class ExtendedTableModel<B> extends AbstractExtendedControlModel {
 
     /**
      * DOC amaumont Comment method "add".
-     * 
+     *
      * @param beans
      * @param index can be null
      */
@@ -181,7 +181,7 @@ public class ExtendedTableModel<B> extends AbstractExtendedControlModel {
 
     /**
      * DOC amaumont Comment method "remove".
-     * 
+     *
      * @param bean
      */
     public boolean remove(B bean) {
@@ -193,7 +193,7 @@ public class ExtendedTableModel<B> extends AbstractExtendedControlModel {
 
     /**
      * DOC amaumont Comment method "remove".
-     * 
+     *
      * @param i
      */
     public B remove(int index) {
@@ -285,7 +285,7 @@ public class ExtendedTableModel<B> extends AbstractExtendedControlModel {
 
     /**
      * DOC amaumont Comment method "remove".
-     * 
+     *
      * @param indexArray
      */
     public List<B> remove(int[] indexArray) {
@@ -364,7 +364,7 @@ public class ExtendedTableModel<B> extends AbstractExtendedControlModel {
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see org.talend.commons.ui.swt.extended.macrotable.AbstractExtendedControlModel#release()
      */
     @Override
@@ -373,7 +373,7 @@ public class ExtendedTableModel<B> extends AbstractExtendedControlModel {
 
     /**
      * DOC amaumont Comment method "getBeanCount".
-     * 
+     *
      * @return
      */
     public int getBeanCount() {

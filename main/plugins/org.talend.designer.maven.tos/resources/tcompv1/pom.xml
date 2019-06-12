@@ -11,7 +11,7 @@
     <packaging>pom</packaging>
     
     <properties>
-        <tcomp.version>1.1.9</tcomp.version>
+        <tcomp.version>1.1.10</tcomp.version>
         <slf4j.version>1.7.25</slf4j.version>
     </properties>
     
@@ -83,8 +83,18 @@
         </dependency>
         <dependency>
             <groupId>org.talend.sdk.component</groupId>
+            <artifactId>component-api</artifactId>
+            <version>${tcomp.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.talend.sdk.component</groupId>
             <artifactId>slf4j-standard</artifactId>
             <version>${tcomp.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.slf4j</groupId>
+            <artifactId>slf4j-api</artifactId>
+            <version>${slf4j.version}</version>
         </dependency>
         <dependency>
             <groupId>org.slf4j</groupId>

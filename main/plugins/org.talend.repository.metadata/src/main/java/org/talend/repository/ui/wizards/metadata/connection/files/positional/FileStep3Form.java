@@ -1,6 +1,6 @@
 // ============================================================================
 //
-// Copyright (C) 2006-2018 Talend Inc. - www.talend.com
+// Copyright (C) 2006-2019 Talend Inc. - www.talend.com
 //
 // This source code is available under agreement available at
 // %InstallDIR%\features\org.talend.rcp.branding.%PRODUCTNAME%\%PRODUCTNAME%license.txt
@@ -70,7 +70,7 @@ import org.talend.repository.model.RepositoryConstants;
 
 /**
  * @author ocarbone
- * 
+ *
  */
 public class FileStep3Form extends AbstractPositionalFileStepForm {
 
@@ -98,7 +98,7 @@ public class FileStep3Form extends AbstractPositionalFileStepForm {
 
     /**
      * Constructor to use by RCP Wizard.
-     * 
+     *
      * @param Composite
      * @param Wizard
      * @param Style
@@ -148,7 +148,7 @@ public class FileStep3Form extends AbstractPositionalFileStepForm {
     }
 
     /**
-     * 
+     *
      * Initialize value, forceFocus first field.
      */
     @Override
@@ -163,7 +163,7 @@ public class FileStep3Form extends AbstractPositionalFileStepForm {
 
     /**
      * DOC ocarbone Comment method "adaptFormToReadOnly".
-     * 
+     *
      */
     @Override
     protected void adaptFormToReadOnly() {
@@ -263,7 +263,7 @@ public class FileStep3Form extends AbstractPositionalFileStepForm {
 
     /**
      * addButtonControls.
-     * 
+     *
      * @param cancelButton
      */
     @Override
@@ -318,11 +318,11 @@ public class FileStep3Form extends AbstractPositionalFileStepForm {
 
     /**
      * create ProcessDescription and set it.
-     * 
+     *
      * WARNING ::field FieldSeparator, RowSeparator, EscapeChar and TextEnclosure are surround by double quote.
-     * 
+     *
      * @param connection
-     * 
+     *
      * @return processDescription
      */
     private ProcessDescription getProcessDescription(PositionalFileConnection originalValueConnection) {
@@ -347,7 +347,7 @@ public class FileStep3Form extends AbstractPositionalFileStepForm {
 
     /**
      * DOC ocarbone Comment method "refreshMetaData".
-     * 
+     *
      * @param csvArray
      */
     public void refreshMetaDataTable(final CsvArray csvArray) {
@@ -521,7 +521,7 @@ public class FileStep3Form extends AbstractPositionalFileStepForm {
 
     /**
      * Ensures that fields are set. Update checkEnable / use to checkConnection().
-     * 
+     *
      * @return
      */
     @Override
@@ -555,7 +555,7 @@ public class FileStep3Form extends AbstractPositionalFileStepForm {
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see org.eclipse.swt.widgets.Control#setVisible(boolean)
      */
     @Override

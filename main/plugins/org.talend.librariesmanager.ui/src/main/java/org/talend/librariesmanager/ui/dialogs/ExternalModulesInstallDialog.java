@@ -1,6 +1,6 @@
 // ============================================================================
 //
-// Copyright (C) 2006-2018 Talend Inc. - www.talend.com
+// Copyright (C) 2006-2019 Talend Inc. - www.talend.com
 //
 // This source code is available under agreement available at
 // %InstallDIR%\features\org.talend.rcp.branding.%PRODUCTNAME%\%PRODUCTNAME%license.txt
@@ -155,7 +155,7 @@ public class ExternalModulesInstallDialog extends TitleAreaDialog implements IMo
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see org.eclipse.jface.dialogs.Dialog#createDialogArea(org.eclipse.swt.widgets.Composite)
      */
     @Override
@@ -403,9 +403,9 @@ public class ExternalModulesInstallDialog extends TitleAreaDialog implements IMo
 
     /**
      * DOC sgandon Comment method "createMoreInformationColumn".
-     * 
+     *
      * @param composite
-     * 
+     *
      * @return
      */
     public TableViewerCreatorColumn<ModuleToInstall, String> createMoreInformationColumn() {
@@ -434,7 +434,7 @@ public class ExternalModulesInstallDialog extends TitleAreaDialog implements IMo
 
     /**
      * DOC sgandon Comment method "createActionColumn".
-     * 
+     *
      * @return
      */
     public TableViewerCreatorColumn<ModuleToInstall, String> createActionColumn() {
@@ -761,7 +761,7 @@ public class ExternalModulesInstallDialog extends TitleAreaDialog implements IMo
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see
      * org.talend.librariesmanager.ui.dialogs.ExternalModulesInstallDialog#createButtonsForButtonBar(org.eclipse.swt
      * .widgets.Composite)
@@ -777,7 +777,7 @@ public class ExternalModulesInstallDialog extends TitleAreaDialog implements IMo
     /**
      * Creates the Install button for this wizard dialog. Creates a standard (<code>SWT.PUSH</code>) button and
      * registers for its selection events. Note that the number of columns in the button bar composite is incremented.
-     * 
+     *
      * @param parent the parent button bar
      * @return the new Install button
      */
@@ -800,7 +800,7 @@ public class ExternalModulesInstallDialog extends TitleAreaDialog implements IMo
 
     /**
      * created by sgandon on 30 sept. 2013 Detailled comment
-     * 
+     *
      */
     private final class ImportButtonSelectionListener implements SelectionListener {
 
@@ -810,7 +810,7 @@ public class ExternalModulesInstallDialog extends TitleAreaDialog implements IMo
 
         /**
          * DOC sgandon ImportButtonSelectionListener constructor comment.
-         * 
+         *
          * @param item
          */
         public ImportButtonSelectionListener(AtomicInteger enabledButtonCount, TableItem item) {
@@ -859,7 +859,7 @@ public class ExternalModulesInstallDialog extends TitleAreaDialog implements IMo
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see org.talend.librariesmanager.ui.dialogs.IJobDownListener#downloadProgress()
      */
     @Override
@@ -882,7 +882,7 @@ public class ExternalModulesInstallDialog extends TitleAreaDialog implements IMo
 
     /**
      * DOC sgandon Comment method "showImportJarDialog".
-     * 
+     *
      * @param item
      */
     public void showImportJarDialog(AtomicInteger enabledButtonCount, TableItem item) {
@@ -907,7 +907,7 @@ public class ExternalModulesInstallDialog extends TitleAreaDialog implements IMo
 
     /**
      * DOC sgandon Comment method "updateManualImportedJars".
-     * 
+     *
      * @param importedJars
      */
     private void updateManualImportedJars(AtomicInteger enabledButtonCount, String[] importedJars) {
@@ -936,7 +936,7 @@ public class ExternalModulesInstallDialog extends TitleAreaDialog implements IMo
 
     /**
      * DOC sgandon Comment method "getModulesToBeInstalled".
-     * 
+     *
      * @return
      */
     protected List<ModuleToInstall> getModulesToBeInstalled() {
@@ -955,9 +955,9 @@ public class ExternalModulesInstallDialog extends TitleAreaDialog implements IMo
 
     /**
      * called when the user clicked on a indivual download button.
-     * 
+     *
      * @param button, to make it disabled or enabled
-     * 
+     *
      * @param enabledButtonCount, if 0 means that the last button has been clicked. This needs to maintained when
      * enabeling or disabeling the button
      * @param data, the data to install

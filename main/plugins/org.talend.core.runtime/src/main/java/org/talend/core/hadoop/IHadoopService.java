@@ -1,6 +1,6 @@
 // ============================================================================
 //
-// Copyright (C) 2006-2018 Talend Inc. - www.talend.com
+// Copyright (C) 2006-2019 Talend Inc. - www.talend.com
 //
 // This source code is available under agreement available at
 // %InstallDIR%\features\org.talend.rcp.branding.%PRODUCTNAME%\%PRODUCTNAME%license.txt
@@ -19,13 +19,13 @@ import org.talend.core.hadoop.version.custom.ECustomVersionType;
 
 /**
  * created by ycbai on 2013-3-14 Detailled comment
- * 
+ *
  */
 public interface IHadoopService extends IService {
 
     /**
      * DOC ycbai Comment method "getHadoopJars".
-     * 
+     *
      * @param distribution
      * @param version
      * @return jars which this hadoop distribution(and version) needed.
@@ -36,7 +36,7 @@ public interface IHadoopService extends IService {
 
     /**
      * DOC Talend Comment method "getMissingLibraries".
-     * 
+     *
      * @param distribution
      * @param version
      * @return

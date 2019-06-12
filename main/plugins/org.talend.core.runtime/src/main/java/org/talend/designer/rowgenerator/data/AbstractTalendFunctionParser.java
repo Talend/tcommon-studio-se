@@ -1,6 +1,6 @@
 // ============================================================================
 //
-// Copyright (C) 2006-2018 Talend Inc. - www.talend.com
+// Copyright (C) 2006-2019 Talend Inc. - www.talend.com
 //
 // This source code is available under agreement available at
 // %InstallDIR%\features\org.talend.rcp.branding.%PRODUCTNAME%\%PRODUCTNAME%license.txt
@@ -92,7 +92,7 @@ public abstract class AbstractTalendFunctionParser extends AbstractFunctionParse
             ExceptionHandler.process(e);
         }
     }
-    
+
     abstract protected ITalendProcessJavaProject getTalendCodeProject();
 
     protected void processSourceType(IMember member, String className, String fullName, String funcName, boolean isSystem) {
@@ -150,7 +150,7 @@ public abstract class AbstractTalendFunctionParser extends AbstractFunctionParse
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see org.talend.designer.rowgenerator.data.AbstractFunctionParser#parseDescription(java.lang.String)
      */
     @Override
@@ -164,7 +164,7 @@ public abstract class AbstractTalendFunctionParser extends AbstractFunctionParse
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see org.talend.designer.rowgenerator.data.AbstractFunctionParser#parseFunctionType(java.lang.String)
      */
     @Override

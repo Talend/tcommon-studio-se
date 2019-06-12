@@ -1,6 +1,6 @@
 // ============================================================================
 //
-// Copyright (C) 2006-2018 Talend Inc. - www.talend.com
+// Copyright (C) 2006-2019 Talend Inc. - www.talend.com
 //
 // This source code is available under agreement available at
 // %InstallDIR%\features\org.talend.rcp.branding.%PRODUCTNAME%\%PRODUCTNAME%license.txt
@@ -24,7 +24,7 @@ import org.talend.designer.core.model.utils.emf.talendfile.TalendFileFactory;
 
 /**
  * DOC s class global comment. Detailled comment <br/>
- * 
+ *
  * $Id: talend.epf 1 2007-10-25 17:06:40 +0000 xzhang $
  */
 public class UpdateMappingFortAdvancedXMLConversion implements IComponentConversion {
@@ -66,7 +66,7 @@ public class UpdateMappingFortAdvancedXMLConversion implements IComponentConvers
         if (eleParaRoot == null || eleParaGroup == null || eleParaMap == null) {
             return;
         }
-        
+
         StringBuffer path = new StringBuffer();
 
         // count the values of "ROOT_TAGS" to "ROOT".
@@ -131,7 +131,7 @@ public class UpdateMappingFortAdvancedXMLConversion implements IComponentConvers
             }
             addOneRecord(newValueListForLoop, pathValue, columnValue, "", attributeValue); //$NON-NLS-1$
         }
-        
+
         // add new Property
         ComponentUtilities.addNodeProperty(node, NEW_ROOT_NAME, "TABLE"); //$NON-NLS-1$
         ComponentUtilities.setNodeProperty(node, NEW_ROOT_NAME, newValueListForRoot);
@@ -148,7 +148,7 @@ public class UpdateMappingFortAdvancedXMLConversion implements IComponentConvers
 
     /**
      * change the depth to path DOC s Comment method "getPathByDepth".
-     * 
+     *
      * @param pathStrs store the pathValue
      * @param pathValue the LABEL of MAPPING table
      * @param depthValue the DEPTH of MAPPING table
@@ -169,9 +169,9 @@ public class UpdateMappingFortAdvancedXMLConversion implements IComponentConvers
     }
 
     /**
-     * 
+     *
      * DOC s Comment method "addOneRecord".
-     * 
+     *
      * @param values
      * @param pathValue
      * @param columnValue

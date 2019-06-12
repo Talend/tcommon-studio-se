@@ -1,6 +1,6 @@
 // ============================================================================
 //
-// Copyright (C) 2006-2018 Talend Inc. - www.talend.com
+// Copyright (C) 2006-2019 Talend Inc. - www.talend.com
 //
 // This source code is available under agreement available at
 // %InstallDIR%\features\org.talend.rcp.branding.%PRODUCTNAME%\%PRODUCTNAME%license.txt
@@ -65,7 +65,7 @@ import us.monoid.json.JSONObject;
 
 /**
  * created by Administrator on 2012-9-19 Detailled comment
- * 
+ *
  */
 public class RemoteModulesHelper {
 
@@ -77,7 +77,7 @@ public class RemoteModulesHelper {
 
     /**
      * created by sgandon on 24 sept. 2013 Detailled comment
-     * 
+     *
      */
     private final class RemoteModulesFetchRunnable implements IRunnableWithProgress {
         private final boolean collectModulesWithJarName;
@@ -85,19 +85,19 @@ public class RemoteModulesHelper {
         private volatile boolean useLocalLicenseData;
 
         /**
-         * 
+         *
          */
         private final List<ModuleToInstall> toInstall;
 
         /**
-         * 
+         *
          */
         private final Map<String, List<ModuleNeeded>> contextMap;
 
         /**
-         * 
+         *
          * DOC wchen RemoteModulesFetchRunnable constructor comment.
-         * 
+         *
          * @param requiredModules a map with key=mvnuri , value =list of ModuleNeeded with the same mvnuri
          * @param toInstall
          */
@@ -318,9 +318,9 @@ public class RemoteModulesHelper {
         }
 
         /**
-         * 
+         *
          * DOC wchen Comment method "addCachedModulesToToBeInstallModules".
-         * 
+         *
          * @param toInstall
          * @param mavenUrisTofetch
          * @param contextMap
@@ -370,7 +370,7 @@ public class RemoteModulesHelper {
 
         /**
          * DOC sgandon Comment method "addUnavailableModulesToToBeInstalledModules".
-         * 
+         *
          * @param unavailableModules
          * @param toInstall2
          * @param contextMap
@@ -389,7 +389,7 @@ public class RemoteModulesHelper {
 
         /**
          * DOC sgandon Comment method "createUnavailableModuleToInstall".
-         * 
+         *
          * @param unavailableModuleName
          * @param contextMap, may be null
          * @return
@@ -437,7 +437,7 @@ public class RemoteModulesHelper {
 
         /**
          * DOC sgandon Comment method "setContext".
-         * 
+         *
          * @param m
          * @param contextMap
          */
@@ -459,7 +459,7 @@ public class RemoteModulesHelper {
 
         /**
          * DOC sgandon Comment method "getDescription".
-         * 
+         *
          * @param nm
          * @return
          */
@@ -621,7 +621,7 @@ public class RemoteModulesHelper {
      * return a runnable to fetch remote modules or null if no nothing need be fetched, this means that toInstall array
      * is filled with existing modules found in cache. if module do not have mvnuri ,try to download module with all
      * mvnuris found form index in background.
-     * 
+     *
      * @param collectModulesWithJarName if<true> then collect the modules with jarname and fill all mvnuri to
      * ModuleToInstall.mavenUris set to download all needed versions
      */
@@ -687,10 +687,10 @@ public class RemoteModulesHelper {
     }
 
     /**
-     * 
+     *
      * collect all vesions to one ModuleToInstall to don't display several times for the same jar in the dialog if need
      * to download all versions
-     * 
+     *
      */
     public void collectModulesWithJarName(List<ModuleToInstall> toInstall) {
         // fix for TUP-4942 incase the jar appear many times in the dialog

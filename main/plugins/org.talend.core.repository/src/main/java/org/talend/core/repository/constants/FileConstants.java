@@ -1,6 +1,6 @@
 // ============================================================================
 //
-// Copyright (C) 2006-2018 Talend Inc. - www.talend.com
+// Copyright (C) 2006-2019 Talend Inc. - www.talend.com
 //
 // This source code is available under agreement available at
 // %InstallDIR%\features\org.talend.rcp.branding.%PRODUCTNAME%\%PRODUCTNAME%license.txt
@@ -22,21 +22,21 @@ public interface FileConstants {
     String OLD_TALEND_PROJECT_FILENAME = "talendProject"; //$NON-NLS-1$
 
     String LOCAL_PROJECT_FILENAME = "talend.project"; //$NON-NLS-1$
-    
+
     String SETTINGS_FOLDER_NAME = ".settings"; //$NON-NLS-1$
 
     String PROJECTSETTING_FILE_NAME = "project.settings"; //$NON-NLS-1$
 
     String RELATIONSHIP_FILE_NAME = "relationship.index"; //$NON-NLS-1$
-    
+
     String COMPONENT_FILE_NAME = "component.index"; //$NON-NLS-1$
 
     String TALEND_RECYCLE_BIN_INDEX = "recycle_bin.index"; //$NON-NLS-1$
-    
+
     String MIGRATION_TASK_FILE_NAME = "migration_task.index"; //$NON-NLS-1$
 
     String TDM_PROPS_FOLDER = RepositoryConstants.SETTING_DIRECTORY;
-    
+
     String TDM_PROPS = "com.oaklandsw.base.projectProps"; //$NON-NLS-1$
 
     String TDM_PROPS_PATH = TDM_PROPS_FOLDER + "/" + TDM_PROPS; //$NON-NLS-1$

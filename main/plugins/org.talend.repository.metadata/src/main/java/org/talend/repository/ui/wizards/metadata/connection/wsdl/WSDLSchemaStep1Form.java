@@ -1,6 +1,6 @@
 // ============================================================================
 //
-// Copyright (C) 2006-2018 Talend Inc. - www.talend.com
+// Copyright (C) 2006-2019 Talend Inc. - www.talend.com
 //
 // This source code is available under agreement available at
 // %InstallDIR%\features\org.talend.rcp.branding.%PRODUCTNAME%\%PRODUCTNAME%license.txt
@@ -152,7 +152,7 @@ public class WSDLSchemaStep1Form extends AbstractWSDLSchemaStepForm {
 
     /**
      * WSDLSchemaStep2Form constructor comment.
-     * 
+     *
      * @param parent
      * @param connectionItem
      * @param metadataTable
@@ -168,7 +168,7 @@ public class WSDLSchemaStep1Form extends AbstractWSDLSchemaStepForm {
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see org.talend.repository.ui.swt.utils.AbstractForm#addFields()
      */
     @Override
@@ -222,7 +222,7 @@ public class WSDLSchemaStep1Form extends AbstractWSDLSchemaStepForm {
 
             /*
              * (non-Javadoc)
-             * 
+             *
              * @see org.eclipse.jface.viewers.ICellModifier#canModify(java.lang.Object, java.lang.String)
              */
             @Override
@@ -232,7 +232,7 @@ public class WSDLSchemaStep1Form extends AbstractWSDLSchemaStepForm {
 
             /*
              * (non-Javadoc)
-             * 
+             *
              * @see org.eclipse.jface.viewers.ICellModifier#getValue(java.lang.Object, java.lang.String)
              */
             @Override
@@ -245,7 +245,7 @@ public class WSDLSchemaStep1Form extends AbstractWSDLSchemaStepForm {
 
             /*
              * (non-Javadoc)
-             * 
+             *
              * @see org.eclipse.jface.viewers.ICellModifier#modify(java.lang.Object, java.lang.String, java.lang.Object)
              */
             @Override
@@ -316,7 +316,7 @@ public class WSDLSchemaStep1Form extends AbstractWSDLSchemaStepForm {
 
     /**
      * add Field to Group File Viewer.
-     * 
+     *
      * @param parent
      * @param form
      * @param width
@@ -470,7 +470,7 @@ public class WSDLSchemaStep1Form extends AbstractWSDLSchemaStepForm {
             public void modifyText(ModifyEvent e) {
                 if (!isContextMode()) {
                     checkFieldsValue();
-                    if (timeOut.getText() != null && !"".equals(timeOut.getText())) { //$NON-NLS-1$ 
+                    if (timeOut.getText() != null && !"".equals(timeOut.getText())) { //$NON-NLS-1$
                         try {
                             int timeInt = Integer.valueOf(timeOut.getText());
                             if (timeInt < 0) {
@@ -524,7 +524,7 @@ public class WSDLSchemaStep1Form extends AbstractWSDLSchemaStepForm {
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see org.talend.repository.ui.swt.utils.AbstractForm#addFieldsListeners()
      */
     @Override
@@ -568,7 +568,7 @@ public class WSDLSchemaStep1Form extends AbstractWSDLSchemaStepForm {
 
             /*
              * (non-Javadoc)
-             * 
+             *
              * @see org.eclipse.swt.events.MouseAdapter#mouseUp(org.eclipse.swt.events.MouseEvent)
              */
             @Override
@@ -591,7 +591,7 @@ public class WSDLSchemaStep1Form extends AbstractWSDLSchemaStepForm {
 
             /*
              * (non-Javadoc)
-             * 
+             *
              * @see org.eclipse.swt.events.MouseAdapter#mouseUp(org.eclipse.swt.events.MouseEvent)
              */
             @Override
@@ -629,7 +629,7 @@ public class WSDLSchemaStep1Form extends AbstractWSDLSchemaStepForm {
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see org.talend.repository.ui.swt.utils.AbstractForm#addUtilsButtonListeners()
      */
     @Override
@@ -640,7 +640,7 @@ public class WSDLSchemaStep1Form extends AbstractWSDLSchemaStepForm {
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see org.talend.repository.ui.swt.utils.AbstractForm#initialize()
      */
     @Override
@@ -725,7 +725,7 @@ public class WSDLSchemaStep1Form extends AbstractWSDLSchemaStepForm {
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see org.talend.repository.ui.swt.utils.AbstractForm#adaptFormToReadOnly()
      */
     @Override
@@ -736,7 +736,7 @@ public class WSDLSchemaStep1Form extends AbstractWSDLSchemaStepForm {
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see org.talend.repository.ui.swt.utils.AbstractForm#checkFieldsValue()
      */
     @Override
@@ -803,9 +803,9 @@ public class WSDLSchemaStep1Form extends AbstractWSDLSchemaStepForm {
 
     /**
      * Subclass of SWTUIThreadProcessor to process the preview event. <br/>
-     * 
+     *
      * $Id: DelimitedFileStep2Form.java 4837 2007-07-27 05:40:31Z bqian $
-     * 
+     *
      */
     class PreviewProcessor extends SWTUIThreadProcessor {
 

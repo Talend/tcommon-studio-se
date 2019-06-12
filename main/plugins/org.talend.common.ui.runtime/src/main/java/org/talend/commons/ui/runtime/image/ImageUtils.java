@@ -1,6 +1,6 @@
 // ============================================================================
 //
-// Copyright (C) 2006-2018 Talend Inc. - www.talend.com
+// Copyright (C) 2006-2019 Talend Inc. - www.talend.com
 //
 // This source code is available under agreement available at
 // %InstallDIR%\features\org.talend.rcp.branding.%PRODUCTNAME%\%PRODUCTNAME%license.txt
@@ -30,9 +30,9 @@ import org.talend.commons.ui.runtime.exception.ExceptionHandler;
 
 /**
  * Image utilities. <br/>
- * 
+ *
  * $Id: ImageUtils.java 7038 2007-11-15 14:05:48Z plegall $
- * 
+ *
  */
 public class ImageUtils {
 
@@ -61,7 +61,7 @@ public class ImageUtils {
 
     /**
      * Save an image in a file.
-     * 
+     *
      * @param image
      * @param file
      * @param format SWT.IMAGE_BMP, SWT.IMAGE_GIF, etc.
@@ -148,7 +148,7 @@ public class ImageUtils {
 
     /**
      * By default, keep in memory the .
-     * 
+     *
      * @param data
      * @param keepInMemory
      * @return
@@ -239,9 +239,9 @@ public class ImageUtils {
     }
 
     /**
-     * 
+     *
      * DOC amaumont Comment method "changeAlpha".
-     * 
+     *
      * @param image
      * @param alpha 0 is meaning fully transparent, 255 is meaning fully opaque
      * @return
@@ -266,9 +266,9 @@ public class ImageUtils {
     }
 
     /**
-     * 
+     *
      * ggu Comment method "AdjustSize".
-     * 
+     *
      * do the better size of image, when scale.
      */
     public static Point AdjustSize(final Point originalSize, final Point requiredSize) {

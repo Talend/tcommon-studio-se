@@ -1,6 +1,6 @@
 // ============================================================================
 //
-// Copyright (C) 2006-2018 Talend Inc. - www.talend.com
+// Copyright (C) 2006-2019 Talend Inc. - www.talend.com
 //
 // This source code is available under agreement available at
 // %InstallDIR%\features\org.talend.rcp.branding.%PRODUCTNAME%\%PRODUCTNAME%license.txt
@@ -70,9 +70,9 @@ import org.talend.repository.ui.views.IRepositoryView;
 
 /**
  * Used to manage contextual actions on repository objects.<br/>
- * 
+ *
  * $Id: AContextualAction.java 219 2006-10-24 13:45:54 +0000 (星期二, 24 十月 2006) smallet $
- * 
+ *
  */
 public abstract class AContextualAction extends Action implements ITreeContextualAction {
 
@@ -136,7 +136,7 @@ public abstract class AContextualAction extends Action implements ITreeContextua
 
     /**
      * Getter for level.
-     * 
+     *
      * @return the level
      */
     @Override
@@ -146,7 +146,7 @@ public abstract class AContextualAction extends Action implements ITreeContextua
 
     /**
      * Sets the level.
-     * 
+     *
      * @param level the level to set
      */
     @Override
@@ -156,7 +156,7 @@ public abstract class AContextualAction extends Action implements ITreeContextua
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see org.talend.commons.ui.swt.actions.ITreeContextualAction#isVisible()
      */
     @Override
@@ -166,7 +166,7 @@ public abstract class AContextualAction extends Action implements ITreeContextua
 
     /**
      * Returns if this action is accessible by double-click.
-     * 
+     *
      * @return <code>true</code> if action is accessible by double-click, <code>true</code> otherwise
      */
     @Override
@@ -176,7 +176,7 @@ public abstract class AContextualAction extends Action implements ITreeContextua
 
     /**
      * Returns the class on wich this action may be call by double-click.
-     * 
+     *
      * @return the class on wich this action may be call by double-click
      */
     @Override
@@ -186,7 +186,7 @@ public abstract class AContextualAction extends Action implements ITreeContextua
 
     /**
      * Getter for neededVersion.
-     * 
+     *
      * @return the neededVersion
      */
     public String getNeededVersion() {
@@ -195,7 +195,7 @@ public abstract class AContextualAction extends Action implements ITreeContextua
 
     /**
      * Sets the neededVersion.
-     * 
+     *
      * @param neededVersion the neededVersion to set
      */
     public void setNeededVersion(String neededVersion) {
@@ -215,7 +215,7 @@ public abstract class AContextualAction extends Action implements ITreeContextua
 
     /**
      * Convenience method user to refresh view (starting with the given element) on wich action had been called.
-     * 
+     *
      * @param obj - object to start the refresh on
      */
     public void refresh(Object obj) {
@@ -231,7 +231,7 @@ public abstract class AContextualAction extends Action implements ITreeContextua
 
     /**
      * Getter for workbenchPart.
-     * 
+     *
      * @return the workbenchPart
      */
     public IWorkbenchPart getWorkbenchPart() {
@@ -240,7 +240,7 @@ public abstract class AContextualAction extends Action implements ITreeContextua
 
     /**
      * Sets the workbenchPart.
-     * 
+     *
      * @param workbenchPart the workbenchPart to set
      */
     @Override
@@ -257,7 +257,7 @@ public abstract class AContextualAction extends Action implements ITreeContextua
 
     /**
      * The repository view selection.
-     * 
+     *
      * @return the selection
      */
     private ISelection initSelection() {
@@ -329,9 +329,9 @@ public abstract class AContextualAction extends Action implements ITreeContextua
     }
 
     /**
-     * 
+     *
      * Returns the repository view..
-     * 
+     *
      * @return - the repository biew
      */
     public IRepositoryView getViewPart() {
@@ -365,7 +365,7 @@ public abstract class AContextualAction extends Action implements ITreeContextua
 
     /**
      * Returns the currently active page for this workbench window.
-     * 
+     *
      * @return the active page, or <code>null</code> if none
      */
     public IWorkbenchPage getActivePage() {
@@ -378,7 +378,7 @@ public abstract class AContextualAction extends Action implements ITreeContextua
 
     /**
      * Getter for isToolbar.
-     * 
+     *
      * @return the isToolbar
      */
     public boolean isToolbar() {
@@ -387,7 +387,7 @@ public abstract class AContextualAction extends Action implements ITreeContextua
 
     /**
      * Sets the isToolbar.
-     * 
+     *
      * @param isToolbar the isToolbar to set
      */
     public void setToolbar(boolean isToolbar) {
@@ -407,7 +407,7 @@ public abstract class AContextualAction extends Action implements ITreeContextua
 
     /**
      * DOC qzhang Comment method "getCurrentRepositoryNode".
-     * 
+     *
      * @return
      */
     protected RepositoryNode initCurrentRepositoryNode() {
@@ -462,7 +462,7 @@ public abstract class AContextualAction extends Action implements ITreeContextua
 
     /**
      * DOC wzhang Comment method "getRepositorySelection".
-     * 
+     *
      * @return
      */
     protected ISelection getRepositorySelection() {
@@ -489,9 +489,9 @@ public abstract class AContextualAction extends Action implements ITreeContextua
     }
 
     /**
-     * 
+     *
      * DOC ggu Comment method "getRepositoryNodeByDefault".
-     * 
+     *
      * get the type of repository node for default.
      */
     public RepositoryNode getRepositoryNodeForDefault(ERepositoryObjectType type) {
@@ -523,7 +523,7 @@ public abstract class AContextualAction extends Action implements ITreeContextua
 
     /**
      * yzhang Comment method "isUnderUserDefined".
-     * 
+     *
      * @param node
      * @return
      */
@@ -599,7 +599,7 @@ public abstract class AContextualAction extends Action implements ITreeContextua
 
     /**
      * Display a prompt dialog to ask the user if we should save the job before duplicating.
-     * 
+     *
      * @param part
      * @return
      */
@@ -771,7 +771,7 @@ public abstract class AContextualAction extends Action implements ITreeContextua
 
     /**
      * Sets the node.
-     * 
+     *
      * @param node the node to set
      */
     public void setNode(IRepositoryNode node) {
@@ -780,7 +780,7 @@ public abstract class AContextualAction extends Action implements ITreeContextua
 
     /**
      * Getter for node.
-     * 
+     *
      * @return the node
      */
     public IRepositoryNode getNode() {

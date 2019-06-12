@@ -1,6 +1,6 @@
 // ============================================================================
 //
-// Copyright (C) 2006-2018 Talend Inc. - www.talend.com
+// Copyright (C) 2006-2019 Talend Inc. - www.talend.com
 //
 // This source code is available under agreement available at
 // %InstallDIR%\features\org.talend.rcp.branding.%PRODUCTNAME%\%PRODUCTNAME%license.txt
@@ -119,9 +119,9 @@ import orgomg.cwm.resource.record.RecordFile;
 
 /**
  * DOC smallet class global comment. Detailed comment <br/>
- * 
+ *
  * $Id$
- * 
+ *
  */
 public abstract class AbstractCreateTableAction extends AbstractCreateAction {
 
@@ -133,7 +133,7 @@ public abstract class AbstractCreateTableAction extends AbstractCreateAction {
 
     /**
      * DOC mhelleboid Comment method "handleWizard".
-     * 
+     *
      * @param node
      * @param wizardDialog
      */
@@ -164,7 +164,7 @@ public abstract class AbstractCreateTableAction extends AbstractCreateAction {
 
     /**
      * DOC mhelleboid Comment method "handleWizard".
-     * 
+     *
      * @param node
      * @param wizardDialog
      */
@@ -221,7 +221,7 @@ public abstract class AbstractCreateTableAction extends AbstractCreateAction {
 
     /**
      * DOC ocarbone Comment method "isUniqLabel".
-     * 
+     *
      * @param label
      * @return boolean
      */
@@ -247,7 +247,7 @@ public abstract class AbstractCreateTableAction extends AbstractCreateAction {
 
     /**
      * DOC ocarbone Comment method "createFilePositionalTableWizard".
-     * 
+     *
      * @param selection
      * @return
      */
@@ -308,7 +308,7 @@ public abstract class AbstractCreateTableAction extends AbstractCreateAction {
 
     /**
      * DOC ocarbone Comment method "createFileRegexpTableWizard".
-     * 
+     *
      * @param selection
      * @return
      */
@@ -365,7 +365,7 @@ public abstract class AbstractCreateTableAction extends AbstractCreateAction {
 
     /**
      * DOC cantoine Comment method "createFileXmlTableWizard".
-     * 
+     *
      * @param selection
      * @return
      */
@@ -422,7 +422,7 @@ public abstract class AbstractCreateTableAction extends AbstractCreateAction {
 
     /**
      * DOC ocarbone Comment method "createFileDelimitedTableWizard".
-     * 
+     *
      * @param selection
      * @return
      */
@@ -478,7 +478,7 @@ public abstract class AbstractCreateTableAction extends AbstractCreateAction {
 
     /**
      * DOC cantoine Comment method "createFileLdifTableWizard".
-     * 
+     *
      * @param selection
      * @return
      */
@@ -533,9 +533,9 @@ public abstract class AbstractCreateTableAction extends AbstractCreateAction {
     }
 
     /**
-     * 
+     *
      * DOC yexiaowei Comment method "createFileExcelTableWizard".
-     * 
+     *
      * @param selection
      * @param forceReadOnly
      */
@@ -642,7 +642,7 @@ public abstract class AbstractCreateTableAction extends AbstractCreateAction {
 
     /**
      * DOC Administrator Comment method "createLDAPSchemaWizard".
-     * 
+     *
      * @param selection
      * @param b
      */
@@ -700,9 +700,9 @@ public abstract class AbstractCreateTableAction extends AbstractCreateAction {
     }
 
     /**
-     * 
+     *
      * DOC YeXiaowei Comment method "createSalesforceSchemaWizard".
-     * 
+     *
      * @param selection
      * @param forceReadOnly
      */
@@ -763,9 +763,9 @@ public abstract class AbstractCreateTableAction extends AbstractCreateAction {
     }
 
     /**
-     * 
+     *
      * DOC YeXiaowei Comment method "createSalesforceSchemaWizard".
-     * 
+     *
      * @param selection
      * @param forceReadOnly
      */
@@ -868,9 +868,9 @@ public abstract class AbstractCreateTableAction extends AbstractCreateAction {
     }
 
     /**
-     * 
+     *
      * DOC hwang Comment method "createSAPSchemaWizard".
-     * 
+     *
      * @param selection
      * @param forceReadOnly
      */
@@ -907,7 +907,7 @@ public abstract class AbstractCreateTableAction extends AbstractCreateAction {
 
     /**
      * DOC qzhang Comment method "createWSDLSchemaWizard".
-     * 
+     *
      * @param selection
      * @param forceReadOnly
      */
@@ -965,7 +965,7 @@ public abstract class AbstractCreateTableAction extends AbstractCreateAction {
 
     /**
      * DOC ocarbone Comment method "creataDatabaseTableWizard".
-     * 
+     *
      * @param selection
      * @return
      */
@@ -1178,13 +1178,13 @@ public abstract class AbstractCreateTableAction extends AbstractCreateAction {
     }
 
     /**
-     * 
+     *
      * DOC ycbai Comment method "createExtenseNodeSchemaWizard".
-     * 
+     *
      * <p>
      * Create and open a wizard associated with the node.
      * </p>
-     * 
+     *
      * @param nodeItemType the type of item which the schema node belongs to.
      * @param node the schema node.
      * @param forceReadOnly whether or not set the wizard as readonly.
@@ -1259,7 +1259,7 @@ public abstract class AbstractCreateTableAction extends AbstractCreateAction {
 
     /**
      * DOC zli Comment method "checkConnectStatus".
-     * 
+     *
      * @param check
      * @param itemTableName
      * @return
@@ -1278,7 +1278,7 @@ public abstract class AbstractCreateTableAction extends AbstractCreateAction {
 
     /**
      * DOC zli Comment method "noTableExistInDB".
-     * 
+     *
      * @param managerConnection
      * @param metadataConnection
      * @return

@@ -1,6 +1,6 @@
 // ============================================================================
 //
-// Copyright (C) 2006-2018 Talend Inc. - www.talend.com
+// Copyright (C) 2006-2019 Talend Inc. - www.talend.com
 //
 // This source code is available under agreement available at
 // %InstallDIR%\features\org.talend.rcp.branding.%PRODUCTNAME%\%PRODUCTNAME%license.txt
@@ -80,7 +80,7 @@ public class HiveConnectionManager extends DataBaseConnectionManager {
      * Creates a connection by the given argument, maybe it is an embedded hive connection or a standalone connection,
      * that depends on the parameter in {@link IMetadataConnection#getParameter(String)}. The key is
      * {@link ConnParameterKeys#CONN_PARA_KEY_HIVE_MODE}. Added by Marvin Wang on Mar 14, 2013.
-     * 
+     *
      * @param metadataConn
      * @return
      * @throws ClassNotFoundException
@@ -102,7 +102,7 @@ public class HiveConnectionManager extends DataBaseConnectionManager {
 
     /**
      * Returns the driver by the given argument. Added by Marvin Wang on Mar 14, 2013.
-     * 
+     *
      * @param metadataConn
      * @return
      * @throws ClassNotFoundException
@@ -195,7 +195,7 @@ public class HiveConnectionManager extends DataBaseConnectionManager {
         String mapRHadoopLogin = (String) metadataConn.getParameter(ConnParameterKeys.CONN_PARA_KEY_MAPRTICKET_MAPRHADOOPLOGIN);
         Long desiredTicketDurInSecs = 86400L;
         if (mapRTicketDuration != null && StringUtils.isNotBlank(mapRTicketDuration)) {
-            if (mapRTicketDuration.endsWith("L")) {//$NON-NLS-1$ 
+            if (mapRTicketDuration.endsWith("L")) {//$NON-NLS-1$
                 mapRTicketDuration = mapRTicketDuration.substring(0, mapRTicketDuration.length() - 1);
                 desiredTicketDurInSecs = Long.valueOf(mapRTicketDuration) + 'L';
             } else if (StringUtils.isNumeric(mapRTicketDuration)) {
@@ -415,17 +415,17 @@ public class HiveConnectionManager extends DataBaseConnectionManager {
 
     /**
      * Checks if Hive can be connected.
-     * 
+     *
      * <pre>
      * <li>For hive standalone model, it trys to {
      * {@link #createHiveStandloneConnection(IMetadataConnection)}, if there is no any exceptions thrown, then it
-     * indicates Standalone Hive can be connected. 
-     * <li>For hive embedded model, it just checks if tables can be fetched from a "fake" database metadata of hive, 
+     * indicates Standalone Hive can be connected.
+     * <li>For hive embedded model, it just checks if tables can be fetched from a "fake" database metadata of hive,
      * The fake database metadata is {@link EmbeddedHiveDataBaseMetadata#checkConnection()}.
      * </pre>
-     * 
+     *
      * Added by Marvin Wang on Mar 18, 2013.
-     * 
+     *
      * @param metadataConn
      * @throws ClassNotFoundException
      * @throws InstantiationException
@@ -449,7 +449,7 @@ public class HiveConnectionManager extends DataBaseConnectionManager {
      * Set hadoop properties to the hive connection.
      * </p>
      * DOC ycbai Comment method "setHadoopProperties".
-     * 
+     *
      * @param metadataConn
      */
     private void setHadoopProperties(IMetadataConnection metadataConn) {
@@ -478,7 +478,7 @@ public class HiveConnectionManager extends DataBaseConnectionManager {
      * Set JDBC properties to the hive db connection.
      * </p>
      * DOC ycbai Comment method "setHiveJDBCProperties".
-     * 
+     *
      * @param metadataConn
      * @param dbConn
      */
@@ -518,7 +518,7 @@ public class HiveConnectionManager extends DataBaseConnectionManager {
     /**
      * Extracts the database metadata from hive connection by the given argument {@link IMetadataConnection}, it can be
      * hive embedded or standalone .Added by Marvin Wang on Mar 14, 2013.
-     * 
+     *
      * @param metadataConn
      * @return
      * @throws ClassNotFoundException
@@ -571,10 +571,10 @@ public class HiveConnectionManager extends DataBaseConnectionManager {
     }
 
     /**
-     * 
+     *
      * create a related hive hanlder when run an analysis.embeded model need to execute some hadoop parametes for
      * embeded model. if it is standalone model,return HiveConnectionHandler.
-     * 
+     *
      * @param metadataConnection
      * @return
      */

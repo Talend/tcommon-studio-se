@@ -1,6 +1,6 @@
 // ============================================================================
 //
-// Copyright (C) 2006-2018 Talend Inc. - www.talend.com
+// Copyright (C) 2006-2019 Talend Inc. - www.talend.com
 //
 // This source code is available under agreement available at
 // %InstallDIR%\features\org.talend.rcp.branding.%PRODUCTNAME%\%PRODUCTNAME%license.txt
@@ -47,7 +47,7 @@ public abstract class AbstractMDMFileStepForm extends AbstractXmlStepForm {
 
     /**
      * DOC Administrator AbstractMDMFileStepForm constructor comment.
-     * 
+     *
      * @param parent
      * @param style
      */
@@ -190,7 +190,7 @@ public abstract class AbstractMDMFileStepForm extends AbstractXmlStepForm {
 
     /**
      * Removes the column from metadatatable by the name identified, created by Marvin Wang on May 21, 2012.
-     * 
+     *
      * @param orignalColumnName
      * @return the index removed. If no need to remove, return -1.
      */

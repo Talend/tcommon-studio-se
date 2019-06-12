@@ -1,6 +1,6 @@
 // ============================================================================
 //
-// Copyright (C) 2006-2018 Talend Inc. - www.talend.com
+// Copyright (C) 2006-2019 Talend Inc. - www.talend.com
 //
 // This source code is available under agreement available at
 // %InstallDIR%\features\org.talend.rcp.branding.%PRODUCTNAME%\%PRODUCTNAME%license.txt
@@ -94,9 +94,9 @@ public class ProcessorDependenciesManager {
     }
 
     /**
-     * 
+     *
      * DOC ggu Comment method "updateDependencies". add the job Needed Libraries for current model.
-     * 
+     *
      * @param model the job of pom model
      * @param fresh if true, will remove old dependencies, else will add the new dependencies in the head.
      * @return if there are some changes, will return true

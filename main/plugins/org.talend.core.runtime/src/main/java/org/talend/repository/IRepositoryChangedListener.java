@@ -1,6 +1,6 @@
 // ============================================================================
 //
-// Copyright (C) 2006-2018 Talend Inc. - www.talend.com
+// Copyright (C) 2006-2019 Talend Inc. - www.talend.com
 //
 // This source code is available under agreement available at
 // %InstallDIR%\features\org.talend.rcp.branding.%PRODUCTNAME%\%PRODUCTNAME%license.txt
@@ -14,9 +14,9 @@ package org.talend.repository;
 
 /**
  * DOC bqian class global comment. Detailled comment <br/>
- * 
+ *
  * $Id: IRepositoryChangedListener.java 2006-12-31涓嬪?�1:22:26 bqian $
- * 
+ *
  */
 public interface IRepositoryChangedListener {
 

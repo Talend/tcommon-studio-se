@@ -1,6 +1,6 @@
 // ============================================================================
 //
-// Copyright (C) 2006-2018 Talend Inc. - www.talend.com
+// Copyright (C) 2006-2019 Talend Inc. - www.talend.com
 //
 // This source code is available under agreement available at
 // %InstallDIR%\features\org.talend.rcp.branding.%PRODUCTNAME%\%PRODUCTNAME%license.txt
@@ -35,7 +35,7 @@ import org.talend.commons.runtime.model.emf.provider.EmfResourcesFactoryReader;
 /**
  * created by nrousseau on Aug 7, 2013<br>
  * <br>
- * 
+ *
  * This class reimplement some of the original classes from the emf ResourceSetImpl, to try to have a synchronzed list.
  * It should avoid any concurrent access. <br>
  * <br>
@@ -60,7 +60,7 @@ public class TalendResourceSet extends ResourceSetImpl {
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see org.eclipse.emf.ecore.resource.impl.ResourceSetImpl#getResources()
      */
     @Override
@@ -73,7 +73,7 @@ public class TalendResourceSet extends ResourceSetImpl {
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see org.eclipse.emf.ecore.resource.impl.ResourceSetImpl#getResource(org.eclipse.emf.common.util.URI, boolean)
      */
     @Override
@@ -159,7 +159,7 @@ public class TalendResourceSet extends ResourceSetImpl {
 
         /*
          * (non-Javadoc)
-         * 
+         *
          * @see org.eclipse.emf.common.util.AbstractEList#add(java.lang.Object)
          */
         @Override
@@ -172,7 +172,7 @@ public class TalendResourceSet extends ResourceSetImpl {
 
         /*
          * (non-Javadoc)
-         * 
+         *
          * @see org.eclipse.emf.common.util.AbstractEList#add(int, java.lang.Object)
          */
         @Override
@@ -182,7 +182,7 @@ public class TalendResourceSet extends ResourceSetImpl {
 
         /*
          * (non-Javadoc)
-         * 
+         *
          * @see org.eclipse.emf.common.util.AbstractEList#addAll(java.util.Collection)
          */
         @Override
@@ -192,7 +192,7 @@ public class TalendResourceSet extends ResourceSetImpl {
 
         /*
          * (non-Javadoc)
-         * 
+         *
          * @see org.eclipse.emf.common.util.AbstractEList#addAll(int, java.util.Collection)
          */
         @Override
@@ -202,7 +202,7 @@ public class TalendResourceSet extends ResourceSetImpl {
 
         /*
          * (non-Javadoc)
-         * 
+         *
          * @see org.eclipse.emf.common.util.AbstractEList#remove(java.lang.Object)
          */
         @Override
@@ -212,7 +212,7 @@ public class TalendResourceSet extends ResourceSetImpl {
 
         /*
          * (non-Javadoc)
-         * 
+         *
          * @see org.eclipse.emf.common.util.AbstractEList#move(int, java.lang.Object)
          */
         @Override
@@ -286,7 +286,7 @@ public class TalendResourceSet extends ResourceSetImpl {
 
     /**
      * Returns a standard label with the list of resources.
-     * 
+     *
      * @return the string form.
      */
     @Override

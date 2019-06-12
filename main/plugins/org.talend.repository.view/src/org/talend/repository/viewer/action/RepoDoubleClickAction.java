@@ -1,6 +1,6 @@
 // ============================================================================
 //
-// Copyright (C) 2006-2018 Talend Inc. - www.talend.com
+// Copyright (C) 2006-2019 Talend Inc. - www.talend.com
 //
 // This source code is available under agreement available at
 // %InstallDIR%\features\org.talend.rcp.branding.%PRODUCTNAME%\%PRODUCTNAME%license.txt
@@ -561,7 +561,7 @@ public class RepoDoubleClickAction extends Action {
 
         return null;
     }
-    
+
     private boolean isDisguiseEdit(ITreeContextualAction current, RepositoryNode obj){
         if(obj.getType() != ENodeType.REPOSITORY_ELEMENT){
             return false;

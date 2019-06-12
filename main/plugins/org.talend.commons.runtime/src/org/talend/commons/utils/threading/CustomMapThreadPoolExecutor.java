@@ -1,6 +1,6 @@
 // ============================================================================
 //
-// Copyright (C) 2006-2018 Talend Inc. - www.talend.com
+// Copyright (C) 2006-2019 Talend Inc. - www.talend.com
 //
 // This source code is available under agreement available at
 // %InstallDIR%\features\org.talend.rcp.branding.%PRODUCTNAME%\%PRODUCTNAME%license.txt
@@ -21,7 +21,7 @@ import java.util.concurrent.TimeUnit;
 
 /**
  * created by wchen on 2014-6-6 Detailled comment
- * 
+ *
  */
 public class CustomMapThreadPoolExecutor extends TalendCustomThreadPoolExecutor {
 
@@ -45,7 +45,7 @@ public class CustomMapThreadPoolExecutor extends TalendCustomThreadPoolExecutor 
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see java.util.concurrent.ThreadPoolExecutor#afterExecute(java.lang.Runnable, java.lang.Throwable)
      */
     @Override
@@ -56,7 +56,7 @@ public class CustomMapThreadPoolExecutor extends TalendCustomThreadPoolExecutor 
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see java.util.concurrent.ThreadPoolExecutor#beforeExecute(java.lang.Thread, java.lang.Runnable)
      */
     @Override
@@ -67,7 +67,7 @@ public class CustomMapThreadPoolExecutor extends TalendCustomThreadPoolExecutor 
 
     /**
      * If an item is in the List runningThreads, it means that the item's related thread is running.
-     * 
+     *
      * @param item
      * @return
      */
@@ -77,7 +77,7 @@ public class CustomMapThreadPoolExecutor extends TalendCustomThreadPoolExecutor 
 
     /**
      * Find the RetrieveColumnRunnable from map and waiting queue. Map stores running runnables
-     * 
+     *
      * @param key
      * @return
      */

@@ -1,6 +1,6 @@
 // ============================================================================
 //
-// Copyright (C) 2006-2018 Talend Inc. - www.talend.com
+// Copyright (C) 2006-2019 Talend Inc. - www.talend.com
 //
 // This source code is available under agreement available at
 // %InstallDIR%\features\org.talend.rcp.branding.%PRODUCTNAME%\%PRODUCTNAME%license.txt
@@ -54,30 +54,30 @@ public class DatabaseWizardPage extends WizardPage {
     private ConnectionItem connectionItem;
 
     private DatabaseForm databaseForm;
-    
+
     private Composite dynamicForm;
-    
+
     private Composite dynamicContextForm;
-    
+
     private Composite dynamicParentForm;
-    
+
     private Composite compositeDbSettings;
-    
+
     private DBTypeForm dbTypeForm;
 
     private final String[] existingNames;
 
     private final boolean isRepositoryObjectEditable;
-    
+
     private Composite parentContainer;
-    
+
     private boolean isCreation = false;
-    
+
     protected IStatus genericStatus;
 
     /**
      * DatabaseWizardPage constructor.
-     * 
+     *
      * @param connection
      * @param isRepositoryObjectEditable
      * @param existingNames
@@ -91,7 +91,7 @@ public class DatabaseWizardPage extends WizardPage {
 
     /**
      * Create the composites, initialize it and add controls.
-     * 
+     *
      * @see IDialogPage#createControl(Composite)
      */
     @Override
@@ -99,7 +99,7 @@ public class DatabaseWizardPage extends WizardPage {
         if (this.getWizard() instanceof RepositoryWizard) {
             isCreation = ((RepositoryWizard) getWizard()).isCreation();
         }
-        
+
         parentContainer = new Composite(parent, SWT.NONE);
         FillLayout fillLayout = new FillLayout();
         fillLayout.spacing = 1;
@@ -110,16 +110,16 @@ public class DatabaseWizardPage extends WizardPage {
         parentContainer.setLayoutData(parentGridData);
         compositeDbSettings = new Composite(parentContainer, SWT.NULL);
         compositeDbSettings.setLayout(new GridLayout(3, false));
-        
+
         FormData data = new FormData();
         data.left = new FormAttachment(0, 0);
         data.right = new FormAttachment(100, 0);
         compositeDbSettings.setLayoutData(data);
         dbTypeForm = new DBTypeForm(this, compositeDbSettings, connectionItem, SWT.NONE, !isRepositoryObjectEditable, isCreation);
-        
+
         createDBForm();
     }
-    
+
     public void createDBForm(){
         if(parentContainer == null || parentContainer.isDisposed()){
             return;
@@ -127,12 +127,12 @@ public class DatabaseWizardPage extends WizardPage {
 
         //dynamic Composite
         createDynamicForm();
-        
+
         //DB Composite
         createDatabaseForm();
         parentContainer.layout();
     }
-    
+
     private void createDynamicForm(){
         IGenericDBService dbService = null;
         if (GlobalServiceRegister.getDefault().isServiceRegistered(IGenericDBService.class)) {
@@ -143,19 +143,19 @@ public class DatabaseWizardPage extends WizardPage {
             return;
         }
         if(dbService.getExtraTypes().isEmpty()){
-           return; 
+           return;
         }
         FormData data = new FormData();
         data.left = new FormAttachment(0, 0);
         data.right = new FormAttachment(100, 0);
         data.top = new FormAttachment(compositeDbSettings, 0);
         data.bottom = new FormAttachment(100, 0);
-        
+
         dynamicParentForm = new Composite(parentContainer, SWT.NONE);
         dynamicParentForm.setLayoutData(data);
         dynamicParentForm.setLayout(new FormLayout());
         Map<String, Composite> map = dbService.creatDBDynamicComposite(dynamicParentForm, EComponentCategory.BASIC,
-                !isRepositoryObjectEditable, isCreation, connectionItem.getProperty(), "JDBC"); 
+                !isRepositoryObjectEditable, isCreation, connectionItem.getProperty(), "JDBC");
         dynamicForm = map.get("DynamicComposite");//$NON-NLS-1$
         dynamicContextForm = map.get("ContextComposite");//$NON-NLS-1$
         if(isTCOMDB(dbTypeForm.getDBType())){
@@ -169,17 +169,17 @@ public class DatabaseWizardPage extends WizardPage {
             DatabaseWizardPage.this.setPageComplete(true);
         }
     }
-    
+
     private void createDatabaseForm(){
         if(isTCOMDB(dbTypeForm.getDBType())){
-           return; 
+           return;
         }
         FormData data = new FormData();
         data.left = new FormAttachment(0, 0);
         data.right = new FormAttachment(100, 0);
         data.top = new FormAttachment(compositeDbSettings, 0);
         data.bottom = new FormAttachment(100, 0);
-        
+
         databaseForm = new DatabaseForm(parentContainer, connectionItem, existingNames, isCreation);
         databaseForm.setLayoutData(data);
         databaseForm.setReadOnly(!isRepositoryObjectEditable);
@@ -211,7 +211,7 @@ public class DatabaseWizardPage extends WizardPage {
         }
         databaseForm.setVisible(!isTCOMDB(dbTypeForm.getDBType()));
     }
-    
+
     public boolean isTCOMDB(String type){
         if(type == null){
             return false;
@@ -227,12 +227,12 @@ public class DatabaseWizardPage extends WizardPage {
         }
         for(ERepositoryObjectType eType:extraTypes){
             if(eType.getType().equals(type)){
-               return true; 
+               return true;
             }
         }
         return false;
     }
-    
+
     public boolean isGenericConn(ConnectionItem connItem){
         IGenericWizardService dbService = null;
         if (GlobalServiceRegister.getDefault().isServiceRegistered(IGenericWizardService.class)) {
@@ -244,7 +244,7 @@ public class DatabaseWizardPage extends WizardPage {
         }
         return false;
     }
-    
+
     private void resetDynamicConnectionItem(ConnectionItem connItem){
         if(connItem == null){
             return;
@@ -259,7 +259,7 @@ public class DatabaseWizardPage extends WizardPage {
             dbService.resetConnectionItem(dynamicContextForm, connItem);
         }
     }
-    
+
     public void refreshDBForm(ConnectionItem connItem){
         if(connItem != null){
             this.connectionItem = connItem;
@@ -297,7 +297,7 @@ public class DatabaseWizardPage extends WizardPage {
         parentContainer.layout();
     }
 
-    
+
     public void disposeDBForm(){
         if(databaseForm != null && !databaseForm.isDisposed()){
             databaseForm.dispose();
@@ -310,9 +310,9 @@ public class DatabaseWizardPage extends WizardPage {
         }
     }
     /**
-     * 
+     *
      * DOC zshen Comment method "getMetadataConnection".
-     * 
+     *
      * @return
      */
     public IMetadataConnection getMetadataConnection() {
@@ -328,7 +328,7 @@ public class DatabaseWizardPage extends WizardPage {
         }
         return null;
     }
-    
+
     public Form getForm(){
         if(dynamicForm != null){
             IGenericDBService dbService = null;
@@ -342,7 +342,7 @@ public class DatabaseWizardPage extends WizardPage {
         }
         return null;
     }
-    
+
     protected void addCheckListener(IChecker checker) {
         if(checker == null){
             return;
@@ -363,5 +363,5 @@ public class DatabaseWizardPage extends WizardPage {
         };
         checker.setListener(checkListener);
     }
-    
+
 }

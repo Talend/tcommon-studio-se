@@ -1,6 +1,6 @@
 // ============================================================================
 //
-// Copyright (C) 2006-2018 Talend Inc. - www.talend.com
+// Copyright (C) 2006-2019 Talend Inc. - www.talend.com
 //
 // This source code is available under agreement available at
 // %InstallDIR%\features\org.talend.rcp.branding.%PRODUCTNAME%\%PRODUCTNAME%license.txt
@@ -17,9 +17,9 @@ import java.util.LinkedHashMap;
 
 /**
  * DOC bchen class global comment. Detailled comment <br/>
- * 
+ *
  * $Id: talend.epf 55206 2011-02-15 17:32:14Z mhirt $
- * 
+ *
  */
 public class TraceDataBean implements TraceBean, Serializable {
 
@@ -61,7 +61,7 @@ public class TraceDataBean implements TraceBean, Serializable {
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see routines.system.RunTrace.TraceBean#equals(routines.system.RunTrace.TraceBean)
      */
     public boolean equals(TraceBean traceBean) {

@@ -1,6 +1,6 @@
 // ============================================================================
 //
-// Copyright (C) 2006-2018 Talend Inc. - www.talend.com
+// Copyright (C) 2006-2019 Talend Inc. - www.talend.com
 //
 // This source code is available under agreement available at
 // %InstallDIR%\features\org.talend.rcp.branding.%PRODUCTNAME%\%PRODUCTNAME%license.txt
@@ -49,7 +49,7 @@ public class RepoViewPerspectiveListener implements IPerspectiveListener, IPersp
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see org.eclipse.ui.IPerspectiveListener4#perspectivePreDeactivate(org.eclipse.ui.IWorkbenchPage,
      * org.eclipse.ui.IPerspectiveDescriptor)
      */
@@ -60,7 +60,7 @@ public class RepoViewPerspectiveListener implements IPerspectiveListener, IPersp
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see org.eclipse.ui.IPerspectiveListener3#perspectiveOpened(org.eclipse.ui.IWorkbenchPage,
      * org.eclipse.ui.IPerspectiveDescriptor)
      */
@@ -71,7 +71,7 @@ public class RepoViewPerspectiveListener implements IPerspectiveListener, IPersp
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see org.eclipse.ui.IPerspectiveListener3#perspectiveClosed(org.eclipse.ui.IWorkbenchPage,
      * org.eclipse.ui.IPerspectiveDescriptor)
      */
@@ -82,7 +82,7 @@ public class RepoViewPerspectiveListener implements IPerspectiveListener, IPersp
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see org.eclipse.ui.IPerspectiveListener3#perspectiveDeactivated(org.eclipse.ui.IWorkbenchPage,
      * org.eclipse.ui.IPerspectiveDescriptor)
      */
@@ -93,7 +93,7 @@ public class RepoViewPerspectiveListener implements IPerspectiveListener, IPersp
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see org.eclipse.ui.IPerspectiveListener3#perspectiveSavedAs(org.eclipse.ui.IWorkbenchPage,
      * org.eclipse.ui.IPerspectiveDescriptor, org.eclipse.ui.IPerspectiveDescriptor)
      */
@@ -105,7 +105,7 @@ public class RepoViewPerspectiveListener implements IPerspectiveListener, IPersp
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see org.eclipse.ui.IPerspectiveListener#perspectiveActivated(org.eclipse.ui.IWorkbenchPage,
      * org.eclipse.ui.IPerspectiveDescriptor)
      */
@@ -122,7 +122,7 @@ public class RepoViewPerspectiveListener implements IPerspectiveListener, IPersp
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see org.eclipse.ui.IPerspectiveListener#perspectiveChanged(org.eclipse.ui.IWorkbenchPage,
      * org.eclipse.ui.IPerspectiveDescriptor, java.lang.String)
      */
@@ -133,7 +133,7 @@ public class RepoViewPerspectiveListener implements IPerspectiveListener, IPersp
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see org.eclipse.ui.IPerspectiveListener2#perspectiveChanged(org.eclipse.ui.IWorkbenchPage,
      * org.eclipse.ui.IPerspectiveDescriptor, org.eclipse.ui.IWorkbenchPartReference, java.lang.String)
      */

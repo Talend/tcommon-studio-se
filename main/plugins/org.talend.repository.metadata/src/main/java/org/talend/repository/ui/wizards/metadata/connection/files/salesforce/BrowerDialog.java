@@ -1,6 +1,6 @@
 // ============================================================================
 //
-// Copyright (C) 2006-2018 Talend Inc. - www.talend.com
+// Copyright (C) 2006-2019 Talend Inc. - www.talend.com
 //
 // This source code is available under agreement available at
 // %InstallDIR%\features\org.talend.rcp.branding.%PRODUCTNAME%\%PRODUCTNAME%license.txt
@@ -36,7 +36,7 @@ public class BrowerDialog extends Dialog {
 
     /**
      * DOC zwzhao BrowerDialog constructor comment.
-     * 
+     *
      * @param parentShell
      */
     protected BrowerDialog(Shell parentShell, String url) {
@@ -65,7 +65,7 @@ public class BrowerDialog extends Dialog {
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see org.eclipse.jface.dialogs.Dialog#getInitialSize()
      */
     @Override
@@ -76,7 +76,7 @@ public class BrowerDialog extends Dialog {
 
     /**
      * Getter for broswer.
-     * 
+     *
      * @return the broswer
      */
     public Browser getBroswer() {
@@ -85,7 +85,7 @@ public class BrowerDialog extends Dialog {
 
     /**
      * Sets the broswer.
-     * 
+     *
      * @param broswer the broswer to set
      */
     public void setBroswer(Browser broswer) {
@@ -94,7 +94,7 @@ public class BrowerDialog extends Dialog {
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see org.eclipse.jface.dialogs.Dialog#createButtonsForButtonBar(org.eclipse.swt.widgets.Composite)
      */
     @Override

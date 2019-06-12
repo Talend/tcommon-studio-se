@@ -1,6 +1,6 @@
 // ============================================================================
 //
-// Copyright (C) 2006-2018 Talend Inc. - www.talend.com
+// Copyright (C) 2006-2019 Talend Inc. - www.talend.com
 //
 // This source code is available under agreement available at
 // %InstallDIR%\features\org.talend.rcp.branding.%PRODUCTNAME%\%PRODUCTNAME%license.txt
@@ -44,7 +44,7 @@ import org.talend.repository.model.RepositoryConstants;
 
 /**
  * A dialog that config the context value sets.
- * 
+ *
  */
 public class ContextSetConfigurationDialog extends ObjectSelectionDialog<IContext> {
 
@@ -54,7 +54,7 @@ public class ContextSetConfigurationDialog extends ObjectSelectionDialog<IContex
 
     /**
      * DOC bqian ContextSetConfigurationDialog class global comment. Detailled comment <br/>
-     * 
+     *
      */
     public class ContextLabelProvider extends LabelProvider {
 
@@ -235,7 +235,7 @@ public class ContextSetConfigurationDialog extends ObjectSelectionDialog<IContex
 
         /*
          * (non-Javadoc)
-         * 
+         *
          * @see java.util.Comparator#compare(java.lang.Object, java.lang.Object)
          */
         @Override

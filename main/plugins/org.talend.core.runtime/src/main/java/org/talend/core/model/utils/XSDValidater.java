@@ -1,6 +1,6 @@
 // ============================================================================
 //
-// Copyright (C) 2006-2018 Talend Inc. - www.talend.com
+// Copyright (C) 2006-2019 Talend Inc. - www.talend.com
 //
 // This source code is available under agreement available at
 // %InstallDIR%\features\org.talend.rcp.branding.%PRODUCTNAME%\%PRODUCTNAME%license.txt
@@ -14,7 +14,7 @@ package org.talend.core.model.utils;
 
 /**
  * DOC acer class global comment. Detailled comment <br/>
- * 
+ *
  */
 import java.io.File;
 import java.io.FileReader;
@@ -40,7 +40,7 @@ import org.xml.sax.helpers.DefaultHandler;
 
 /**
  * bqian Use xml xsd file to validate the xml file. <br/>
- * 
+ *
  */
 public class XSDValidater {
 
@@ -50,7 +50,7 @@ public class XSDValidater {
 
     /**
      * Sets the xsdFile.
-     * 
+     *
      * @param xsdFile the xsdFile to set
      */
     public void setXsdFile(File xsdFile) {
@@ -67,7 +67,7 @@ public class XSDValidater {
 
     /**
      * Validate xml with xsd by dom.
-     * 
+     *
      * @param xsd the reader of xsd file.
      * @param xml the reader of xml file.
      * @throws Exception
@@ -93,7 +93,7 @@ public class XSDValidater {
 
     /**
      * Validate xml with xsd by sax.
-     * 
+     *
      * @param xsd the reader of xsd file.
      * @param xml the reader of xml file.
      * @throws Exception

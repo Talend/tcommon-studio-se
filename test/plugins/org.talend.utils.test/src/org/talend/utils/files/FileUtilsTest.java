@@ -1,6 +1,6 @@
 // ============================================================================
 //
-// Copyright (C) 2006-2018 Talend Inc. - www.talend.com
+// Copyright (C) 2006-2019 Talend Inc. - www.talend.com
 //
 // This source code is available under agreement available at
 // %InstallDIR%\features\org.talend.rcp.branding.%PRODUCTNAME%\%PRODUCTNAME%license.txt
@@ -60,7 +60,7 @@ public class FileUtilsTest {
     /**
      * Test method for
      * {@link org.talend.utils.files.FileUtils#getAllFilesFromFolder(java.io.File, java.util.List, java.io.FilenameFilter)}
-     * 
+     *
      * @throws IOException
      */
     @Test
@@ -98,7 +98,7 @@ public class FileUtilsTest {
     /**
      * Test method for
      * {@link org.talend.utils.files.FileUtils#getAllFilesFromFolder(java.io.File, java.io.FilenameFilter)}
-     * 
+     *
      * @throws IOException
      */
     @Test
@@ -131,7 +131,7 @@ public class FileUtilsTest {
 
     /**
      * Test method for {@link org.talend.utils.files.FileUtils#getAllFilesFromFolder(java.io.File, java.util.Map)}
-     * 
+     *
      * @throws IOException
      */
     @Test

@@ -1,6 +1,6 @@
 // ============================================================================
 //
-// Copyright (C) 2006-2018 Talend Inc. - www.talend.com
+// Copyright (C) 2006-2019 Talend Inc. - www.talend.com
 //
 // This source code is available under agreement available at
 // %InstallDIR%\features\org.talend.rcp.branding.%PRODUCTNAME%\%PRODUCTNAME%license.txt
@@ -16,7 +16,7 @@ import java.util.ArrayList;
 
 /**
  * DOC YeXiaowei class global comment. Detailled comment <br/>
- * 
+ *
  */
 public class ExcelSchemaBean {
 
@@ -42,7 +42,7 @@ public class ExcelSchemaBean {
 
     /**
      * Getter for advancedSeparator.
-     * 
+     *
      * @return the advancedSeparator
      */
     public boolean isAdvancedSeparator() {
@@ -51,7 +51,7 @@ public class ExcelSchemaBean {
 
     /**
      * Sets the advancedSeparator.
-     * 
+     *
      * @param advancedSeparator the advancedSeparator to set
      */
     public void setAdvancedSeparator(boolean advancedSeparator) {
@@ -60,7 +60,7 @@ public class ExcelSchemaBean {
 
     /**
      * Getter for thousandSeparator.
-     * 
+     *
      * @return the thousandSeparator
      */
     public String getThousandSeparator() {
@@ -69,7 +69,7 @@ public class ExcelSchemaBean {
 
     /**
      * Sets the thousandSeparator.
-     * 
+     *
      * @param thousandSeparator the thousandSeparator to set
      */
     public void setThousandSeparator(String thousandSeparator) {
@@ -78,7 +78,7 @@ public class ExcelSchemaBean {
 
     /**
      * Getter for decimalSeparator.
-     * 
+     *
      * @return the decimalSeparator
      */
     public String getDecimalSeparator() {
@@ -87,7 +87,7 @@ public class ExcelSchemaBean {
 
     /**
      * Sets the decimalSeparator.
-     * 
+     *
      * @param decimalSeparator the decimalSeparator to set
      */
     public void setDecimalSeparator(String decimalSeparator) {
@@ -96,7 +96,7 @@ public class ExcelSchemaBean {
 
     /**
      * Getter for firstColumn.
-     * 
+     *
      * @return the firstColumn
      */
     public String getFirstColumn() {
@@ -105,7 +105,7 @@ public class ExcelSchemaBean {
 
     /**
      * Sets the firstColumn.
-     * 
+     *
      * @param firstColumn the firstColumn to set
      */
     public void setFirstColumn(String firstColumn) {
@@ -114,7 +114,7 @@ public class ExcelSchemaBean {
 
     /**
      * Getter for lastColumn.
-     * 
+     *
      * @return the lastColumn
      */
     public String getLastColumn() {
@@ -123,7 +123,7 @@ public class ExcelSchemaBean {
 
     /**
      * Sets the lastColumn.
-     * 
+     *
      * @param lastColumn the lastColumn to set
      */
     public void setLastColumn(String lastColumn) {
@@ -132,7 +132,7 @@ public class ExcelSchemaBean {
 
     /**
      * Getter for dieOnError.
-     * 
+     *
      * @return the dieOnError
      */
     public boolean isDieOnError() {
@@ -141,7 +141,7 @@ public class ExcelSchemaBean {
 
     /**
      * Sets the dieOnError.
-     * 
+     *
      * @param dieOnError the dieOnError to set
      */
     public void setDieOnError(boolean dieOnError) {
@@ -150,7 +150,7 @@ public class ExcelSchemaBean {
 
     /**
      * Getter for sheetName.
-     * 
+     *
      * @return the sheetName
      */
     public String getSheetName() {
@@ -159,7 +159,7 @@ public class ExcelSchemaBean {
 
     /**
      * Sets the sheetName.
-     * 
+     *
      * @param sheetName the sheetName to set
      */
     public void setSheetName(String sheetName) {
@@ -168,7 +168,7 @@ public class ExcelSchemaBean {
 
     /**
      * Getter for selectAllSheets.
-     * 
+     *
      * @return the selectAllSheets
      */
     public boolean isSelectAllSheets() {
@@ -177,7 +177,7 @@ public class ExcelSchemaBean {
 
     /**
      * Sets the selectAllSheets.
-     * 
+     *
      * @param selectAllSheets the selectAllSheets to set
      */
     public void setSelectAllSheets(boolean selectAllSheets) {
@@ -186,7 +186,7 @@ public class ExcelSchemaBean {
 
     /**
      * Getter for sheetsList.
-     * 
+     *
      * @return the sheetsList
      */
     public ArrayList getSheetsList() {
@@ -195,7 +195,7 @@ public class ExcelSchemaBean {
 
     /**
      * Sets the sheetsList.
-     * 
+     *
      * @param sheetsList the sheetsList to set
      */
     public void setSheetsList(ArrayList sheetsList) {

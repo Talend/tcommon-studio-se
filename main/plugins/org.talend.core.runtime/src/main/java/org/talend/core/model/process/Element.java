@@ -1,6 +1,6 @@
 // ============================================================================
 //
-// Copyright (C) 2006-2018 Talend Inc. - www.talend.com
+// Copyright (C) 2006-2019 Talend Inc. - www.talend.com
 //
 // This source code is available under agreement available at
 // %InstallDIR%\features\org.talend.rcp.branding.%PRODUCTNAME%\%PRODUCTNAME%license.txt
@@ -28,9 +28,9 @@ import org.talend.commons.utils.data.list.ListenableListEvent;
 
 /**
  * Abstract base class of elements in the model. All elements in the diagram must extends this class <br/>
- * 
+ *
  * $Id$
- * 
+ *
  */
 
 public abstract class Element implements Cloneable, IElement {
@@ -106,7 +106,7 @@ public abstract class Element implements Cloneable, IElement {
 
     /**
      * Gives the value of the given property.
-     * 
+     *
      * @param id
      * @return Object
      */
@@ -120,9 +120,9 @@ public abstract class Element implements Cloneable, IElement {
     }
 
     /**
-     * 
+     *
      * DOC xye Comment method "getPropertyValue".
-     * 
+     *
      * @param id
      * @param paramName
      * @return
@@ -138,7 +138,7 @@ public abstract class Element implements Cloneable, IElement {
 
     /**
      * Set the property of the object.
-     * 
+     *
      * @param id
      * @param value
      */
@@ -159,7 +159,7 @@ public abstract class Element implements Cloneable, IElement {
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see org.talend.designer.core.ui.editor.IElement#getElementParameters()
      */
     @Override
@@ -169,7 +169,7 @@ public abstract class Element implements Cloneable, IElement {
 
     /**
      * The returned list can not be modified.
-     * 
+     *
      * @return
      */
     @Override
@@ -201,9 +201,9 @@ public abstract class Element implements Cloneable, IElement {
     }
 
     /**
-     * 
+     *
      * DOC xye Comment method "getElementParameter".
-     * 
+     *
      * @param typeName
      * @param paramName
      * @return
@@ -255,7 +255,7 @@ public abstract class Element implements Cloneable, IElement {
 
     /**
      * Note that this will return only the first element parameter only.
-     * 
+     *
      * @param fieldType
      * @return
      */
@@ -295,7 +295,7 @@ public abstract class Element implements Cloneable, IElement {
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see org.talend.core.model.process.IElement#isForceReadOnly()
      */
     @Override
@@ -305,7 +305,7 @@ public abstract class Element implements Cloneable, IElement {
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see org.talend.core.model.process.IElement#setForceReadOnly(boolean)
      */
     @Override
@@ -315,7 +315,7 @@ public abstract class Element implements Cloneable, IElement {
 
     /**
      * <font color="red">Currently only used by junit</font>
-     * 
+     *
      * @return
      */
     @Deprecated

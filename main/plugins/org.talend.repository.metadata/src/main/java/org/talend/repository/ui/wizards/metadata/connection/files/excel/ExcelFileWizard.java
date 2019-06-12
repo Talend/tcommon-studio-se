@@ -1,6 +1,6 @@
 // ============================================================================
 //
-// Copyright (C) 2006-2018 Talend Inc. - www.talend.com
+// Copyright (C) 2006-2019 Talend Inc. - www.talend.com
 //
 // This source code is available under agreement available at
 // %InstallDIR%\features\org.talend.rcp.branding.%PRODUCTNAME%\%PRODUCTNAME%license.txt
@@ -88,7 +88,7 @@ public class ExcelFileWizard extends CheckLastVersionRepositoryWizard implements
 
     /**
      * Sets the isToolbar.
-     * 
+     *
      * @param isToolbar the isToolbar to set
      */
     public void setToolbar(boolean isToolbar) {
@@ -238,7 +238,7 @@ public class ExcelFileWizard extends CheckLastVersionRepositoryWizard implements
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see org.eclipse.jface.wizard.Wizard#performFinish()
      */
     @Override
@@ -293,7 +293,7 @@ public class ExcelFileWizard extends CheckLastVersionRepositoryWizard implements
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see org.eclipse.ui.IWorkbenchWizard#init(org.eclipse.ui.IWorkbench,
      * org.eclipse.jface.viewers.IStructuredSelection)
      */
@@ -304,7 +304,7 @@ public class ExcelFileWizard extends CheckLastVersionRepositoryWizard implements
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see org.talend.repository.ui.wizards.RepositoryWizard#getConnectionItem()
      */
     @Override

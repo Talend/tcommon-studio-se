@@ -1,6 +1,6 @@
 // ============================================================================
 //
-// Copyright (C) 2006-2018 Talend Inc. - www.talend.com
+// Copyright (C) 2006-2019 Talend Inc. - www.talend.com
 //
 // This source code is available under agreement available at
 // %InstallDIR%\features\org.talend.rcp.branding.%PRODUCTNAME%\%PRODUCTNAME%license.txt
@@ -93,7 +93,7 @@ import org.talend.repository.metadata.ui.wizards.form.AbstractXmlFileStepForm;
 
 /**
  * @author ocarbone
- * 
+ *
  */
 public class XmlFileStep1Form extends AbstractXmlFileStepForm {
 
@@ -148,9 +148,9 @@ public class XmlFileStep1Form extends AbstractXmlFileStepForm {
 
     /**
      * Constructor to use by RCP Wizard.
-     * 
+     *
      * @param existingNames
-     * 
+     *
      * @param Composite
      * @param Wizard
      * @param Style
@@ -162,7 +162,7 @@ public class XmlFileStep1Form extends AbstractXmlFileStepForm {
     }
 
     /**
-     * 
+     *
      * Initialize value, forceFocus first field.
      */
     @Override
@@ -265,7 +265,7 @@ public class XmlFileStep1Form extends AbstractXmlFileStepForm {
 
     /**
      * DOC ocarbone Comment method "adaptFormToReadOnly".
-     * 
+     *
      */
     @Override
     protected void adaptFormToReadOnly() {
@@ -285,7 +285,7 @@ public class XmlFileStep1Form extends AbstractXmlFileStepForm {
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see org.talend.repository.ui.swt.utils.AbstractForm#addFields()
      */
     @Override
@@ -313,7 +313,7 @@ public class XmlFileStep1Form extends AbstractXmlFileStepForm {
         // labelIsGuess.setText(Messages.getString("XmlFileStep1.checkBoxIsGuess"));
 
         // file Field XML
-        String[] xmlExtensions = { "*.xml;*.xsd", "*.*", "*" }; //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ 
+        String[] xmlExtensions = { "*.xml;*.xsd", "*.*", "*" }; //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
         fileFieldXml = new LabelledFileField(compositeFileLocation, Messages.getString("XmlFileStep1.filepathXml"), //$NON-NLS-1$
                 xmlExtensions);
 
@@ -724,7 +724,7 @@ public class XmlFileStep1Form extends AbstractXmlFileStepForm {
 
     /**
      * Ensures that fields are set.
-     * 
+     *
      * @return
      */
     @Override
@@ -765,7 +765,7 @@ public class XmlFileStep1Form extends AbstractXmlFileStepForm {
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see org.eclipse.swt.widgets.Control#setVisible(boolean)
      */
     @Override

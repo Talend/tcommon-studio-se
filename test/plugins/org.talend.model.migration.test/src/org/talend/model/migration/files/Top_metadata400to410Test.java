@@ -1,6 +1,6 @@
 // ============================================================================
 //
-// Copyright (C) 2006-2018 Talend Inc. - www.talend.com
+// Copyright (C) 2006-2019 Talend Inc. - www.talend.com
 //
 // This source code is available under agreement available at
 // %InstallDIR%\features\org.talend.rcp.branding.%PRODUCTNAME%\%PRODUCTNAME%license.txt
@@ -35,14 +35,14 @@ import org.talend.model.migration.TopMetadataMigrationFrom400to410usingGenericVM
 
 /**
  * DOC sgandon class global comment. Detailled comment <br/>
- * 
+ *
  * $Id: talend.epf 1 2006-09-29 17:06:40Z nrousseau $
- * 
+ *
  */
 public class Top_metadata400to410Test {
 
     /**
-     * 
+     *
      */
     private static final String MIGRATION_FILE_EXT = ".mig";
 
@@ -131,7 +131,7 @@ public class Top_metadata400to410Test {
 
     /**
      * DOC sgandon Comment method "getAllFilesFromFolder".
-     * 
+     *
      * @param sampleFolder
      * @param arrayList
      * @param filenameFilter

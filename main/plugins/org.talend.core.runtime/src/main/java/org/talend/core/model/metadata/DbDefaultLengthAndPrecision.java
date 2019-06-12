@@ -1,6 +1,6 @@
 // ============================================================================
 //
-// Copyright (C) 2006-2018 Talend Inc. - www.talend.com
+// Copyright (C) 2006-2019 Talend Inc. - www.talend.com
 //
 // This source code is available under agreement available at
 // %InstallDIR%\features\org.talend.rcp.branding.%PRODUCTNAME%\%PRODUCTNAME%license.txt
@@ -14,9 +14,9 @@ package org.talend.core.model.metadata;
 
 /**
  * Enum for available Code Languages in the application.
- * 
+ *
  * $Id: EMetadataEncoding.java 3351 2007-05-04 12:14:00 +0000 (星期五, 04 五月 2007) plegall $
- * 
+ *
  */
 public class DbDefaultLengthAndPrecision {
 

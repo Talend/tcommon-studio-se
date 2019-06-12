@@ -1,6 +1,6 @@
 // ============================================================================
 //
-// Copyright (C) 2006-2018 Talend Inc. - www.talend.com
+// Copyright (C) 2006-2019 Talend Inc. - www.talend.com
 //
 // This source code is available under agreement available at
 // %InstallDIR%\features\org.talend.rcp.branding.%PRODUCTNAME%\%PRODUCTNAME%license.txt
@@ -27,9 +27,9 @@ import org.talend.core.service.IPigMapService;
 
 /**
  * class global comment. Detailled comment <br/>
- * 
+ *
  * $Id: FunctionManager.java,v 1.13 2007/01/31 05:20:51 pub Exp $
- * 
+ *
  */
 public class FunctionManager {
 
@@ -57,7 +57,7 @@ public class FunctionManager {
 
     /**
      * qzhang Comment method "getFunctionByName".
-     * 
+     *
      * @param name is TalendType name.
      * @return
      */
@@ -136,9 +136,9 @@ public class FunctionManager {
     }
 
     /**
-     * 
+     *
      * DOC ggu Comment method "getFunctionMethod".
-     * 
+     *
      * @param f
      */
     public static String getFunctionMethod(Function f) {

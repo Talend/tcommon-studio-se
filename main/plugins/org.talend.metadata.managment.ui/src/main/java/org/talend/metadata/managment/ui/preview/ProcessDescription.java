@@ -1,6 +1,6 @@
 // ============================================================================
 //
-// Copyright (C) 2006-2018 Talend Inc. - www.talend.com
+// Copyright (C) 2006-2019 Talend Inc. - www.talend.com
 //
 // This source code is available under agreement available at
 // %InstallDIR%\features\org.talend.rcp.branding.%PRODUCTNAME%\%PRODUCTNAME%license.txt
@@ -19,9 +19,9 @@ import org.talend.core.repository.model.preview.WSDLSchemaBean;
 
 /**
  * Describes a process for shadow execution. <br/>
- * 
+ *
  * $Id: ProcessDescription.java 38013 2010-03-05 14:21:59Z mhirt $
- * 
+ *
  */
 public class ProcessDescription extends AbstractProcessDescription {
 
@@ -35,7 +35,7 @@ public class ProcessDescription extends AbstractProcessDescription {
 
     /**
      * Getter for wsdlSchemaBean.
-     * 
+     *
      * @return the wsdlSchemaBean
      */
     @Override
@@ -45,7 +45,7 @@ public class ProcessDescription extends AbstractProcessDescription {
 
     /**
      * Sets the wsdlSchemaBean.
-     * 
+     *
      * @param wsdlSchemaBean the wsdlSchemaBean to set
      */
     @Override
@@ -72,7 +72,7 @@ public class ProcessDescription extends AbstractProcessDescription {
 
     /**
      * Getter for excelSchemaBean.
-     * 
+     *
      * @return the excelSchemaBean
      */
     @Override
@@ -82,7 +82,7 @@ public class ProcessDescription extends AbstractProcessDescription {
 
     /**
      * Sets the excelSchemaBean.
-     * 
+     *
      * @param excelSchemaBean the excelSchemaBean to set
      */
     @Override
@@ -92,7 +92,7 @@ public class ProcessDescription extends AbstractProcessDescription {
 
     /**
      * Getter for salesforceSchemaBean.
-     * 
+     *
      * @return the salesforceSchemaBean
      */
     @Override
@@ -102,7 +102,7 @@ public class ProcessDescription extends AbstractProcessDescription {
 
     /**
      * Sets the salesforceSchemaBean.
-     * 
+     *
      * @param salesforceSchemaBean the salesforceSchemaBean to set
      */
     @Override

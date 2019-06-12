@@ -18,21 +18,21 @@
          <attribute name="point" type="string" use="required">
             <annotation>
                <documentation>
-                  
+
                </documentation>
             </annotation>
          </attribute>
          <attribute name="id" type="string">
             <annotation>
                <documentation>
-                  
+
                </documentation>
             </annotation>
          </attribute>
          <attribute name="name" type="string">
             <annotation>
                <documentation>
-                  
+
                </documentation>
                <appInfo>
                   <meta.attribute translatable="true"/>
@@ -47,14 +47,14 @@
          <attribute name="id" type="string" use="required">
             <annotation>
                <documentation>
-                  
+
                </documentation>
             </annotation>
          </attribute>
          <attribute name="class" type="string" use="required">
             <annotation>
                <documentation>
-                  
+
                </documentation>
                <appInfo>
                   <meta.attribute kind="java" basedOn="org.talend.core.model.components.AbstractComponentsProvider:"/>
@@ -64,7 +64,7 @@
          <attribute name="folderName" type="string">
             <annotation>
                <documentation>
-                  
+
                </documentation>
             </annotation>
          </attribute>
@@ -85,7 +85,7 @@
          <meta.section type="examples"/>
       </appInfo>
       <documentation>
-         
+
       </documentation>
    </annotation>
 
@@ -113,7 +113,7 @@
       </appInfo>
       <documentation>
          Talend Community Edition&lt;br&gt;
-Copyright (C) 2006-2013 Talend - www.talend.com
+Copyright (C) 2006-2019 Talend - www.talend.com
       </documentation>
    </annotation>
 

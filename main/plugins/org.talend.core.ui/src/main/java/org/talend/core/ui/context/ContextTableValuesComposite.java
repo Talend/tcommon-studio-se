@@ -1,6 +1,6 @@
 // ============================================================================
 //
-// Copyright (C) 2006-2018 Talend Inc. - www.talend.com
+// Copyright (C) 2006-2019 Talend Inc. - www.talend.com
 //
 // This source code is available under agreement available at
 // %InstallDIR%\features\org.talend.rcp.branding.%PRODUCTNAME%\%PRODUCTNAME%license.txt
@@ -65,7 +65,7 @@ import org.talend.core.ui.i18n.Messages;
 
 /**
  * DOC zwang class global comment. Detailled comment <br/>
- * 
+ *
  */
 public class ContextTableValuesComposite extends AbstractContextTabEditComposite {
 
@@ -93,7 +93,7 @@ public class ContextTableValuesComposite extends AbstractContextTabEditComposite
 
     /**
      * Constructor.
-     * 
+     *
      * @param parent
      * @param style
      */
@@ -108,7 +108,7 @@ public class ContextTableValuesComposite extends AbstractContextTabEditComposite
 
     /**
      * zwang Comment method "initializeUI".
-     * 
+     *
      * @param viewer
      */
     private void initializeUI() {
@@ -191,7 +191,7 @@ public class ContextTableValuesComposite extends AbstractContextTabEditComposite
 
     /**
      * bqian Comment method "createTreeTooltip".
-     * 
+     *
      * @param tree
      */
     protected void createTreeTooltip(final Tree tree) {
@@ -199,7 +199,7 @@ public class ContextTableValuesComposite extends AbstractContextTabEditComposite
 
             /*
              * (non-Javadoc)
-             * 
+             *
              * @see
              * org.talend.commons.ui.swt.tooltip.AbstractTreeTooltip#getTooltipContent(org.eclipse.swt.widgets.TreeItem)
              */
@@ -387,7 +387,7 @@ public class ContextTableValuesComposite extends AbstractContextTabEditComposite
 
     /**
      * bqian Comment method "createMenuBar".
-     * 
+     *
      * @param toolBar
      */
     private void createToolBar(final ToolBar toolBar) {
@@ -421,7 +421,7 @@ public class ContextTableValuesComposite extends AbstractContextTabEditComposite
 
     /**
      * bqian Comment method "getContexts".
-     * 
+     *
      * @return
      */
     public List<IContext> getContexts() {
@@ -525,7 +525,7 @@ public class ContextTableValuesComposite extends AbstractContextTabEditComposite
 
     /**
      * Clear the data in this viewer.
-     * 
+     *
      * @param jobContextManager2
      */
     public void clear() {
@@ -544,7 +544,7 @@ public class ContextTableValuesComposite extends AbstractContextTabEditComposite
 
         /*
          * (non-Javadoc)
-         * 
+         *
          * @see java.util.Comparator#compare(java.lang.Object, java.lang.Object)
          */
         @Override

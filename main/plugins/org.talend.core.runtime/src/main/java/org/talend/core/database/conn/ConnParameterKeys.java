@@ -1,6 +1,6 @@
 // ============================================================================
 //
-// Copyright (C) 2006-2018 Talend Inc. - www.talend.com
+// Copyright (C) 2006-2019 Talend Inc. - www.talend.com
 //
 // This source code is available under agreement available at
 // %InstallDIR%\features\org.talend.rcp.branding.%PRODUCTNAME%\%PRODUCTNAME%license.txt
@@ -17,7 +17,7 @@ package org.talend.core.database.conn;
  * {@link org.talend.core.model.metadata.builder.connection.DatabaseConnection#getParameters <em>Parameters</em>} of
  * database connection. The key of a parameter you want to add to database connection later is put here to manager
  * easily.
- * 
+ *
  * @author Marvin Wang
  * @version 1.0 jdk1.6
  * @date Aug 8, 2012
@@ -271,7 +271,7 @@ public class ConnParameterKeys {
     public static final String CONN_PARA_KEY_DEFINE_PATH_TO_GOOGLE_CREDENTIALS = "CONN_PARA_KEY_DEFINE_PATH_TO_GOOGLE_CREDENTIALS"; //$NON-NLS-1$
 
     public static final String CONN_PARA_KEY_PATH_TO_GOOGLE_CREDENTIALS = "CONN_PARA_KEY_PATH_TO_GOOGLE_CREDENTIALS"; //$NON-NLS-1$
-    
+
     /** Qubole */
     public static final String CONN_PARA_KEY_QUBOLE_API_TOKEN = "CONN_PARA_KEY_QUBOLE_API_TOKEN";
 
@@ -292,14 +292,14 @@ public class ConnParameterKeys {
     public static final String CONN_PARA_KEY_QUBOLE_S3_BUCKET_KEY = "CONN_PARA_KEY_QUBOLE_S3_BUCKET_KEY";
 
     public static final String CONN_PARA_KEY_QUBOLE_S3_REGION = "CONN_PARA_KEY_QUBOLE_S3_REGION";
-    
+
     /**DataBricks*/
     public static final String CONN_PARA_KEY_DATABRICKS_ENDPOINT="CONN_PARA_KEY_DATABRICKS_ENDPOINT";
-    
+
     public static final String CONN_PARA_KEY_DATABRICKS_CLUSTER_ID="CONN_PARA_KEY_DATABRICKS_CLUSTER_ID";
-    
+
     public static final String CONN_PARA_KEY_DATABRICKS_TOKEN="CONN_PARA_KEY_DATABRICKS_TOKEN";
-    
+
     public static final String CONN_PARA_KEY_DATABRICKS_DBFS_DEP_FOLDER="CONN_PARA_KEY_DATABRICKS_DBFS_DEP_FOLDER";
-    
+
 }

@@ -1,6 +1,6 @@
 // ============================================================================
 //
-// Copyright (C) 2006-2018 Talend Inc. - www.talend.com
+// Copyright (C) 2006-2019 Talend Inc. - www.talend.com
 //
 // This source code is available under agreement available at
 // %InstallDIR%\features\org.talend.rcp.branding.%PRODUCTNAME%\%PRODUCTNAME%license.txt
@@ -42,7 +42,7 @@ public class TreeUtilTest {
 
     /**
      * DOC wchen Comment method "setUp".
-     * 
+     *
      * @throws java.lang.Exception
      */
     @Before
@@ -51,7 +51,7 @@ public class TreeUtilTest {
 
     /**
      * DOC wchen Comment method "tearDown".
-     * 
+     *
      * @throws java.lang.Exception
      */
     @After
@@ -125,18 +125,18 @@ public class TreeUtilTest {
         };
         child2.setValue("child2"); //$NON-NLS-1$
         parent.addChild(child2);
-        
+
         // add again the same child1/subchild1 to the tree on child2.
         child2.addChild(child1);
         NodeCreationObserver.stop();
-        
+
         FOXTreeNode root = TreeUtil.cloneATreeNode(parent, true);
         assertEquals(2, root.getChildren().size());
         assertEquals("child1", root.getChildren().get(0).getLabel());
         assertEquals("child2", root.getChildren().get(1).getLabel());
         assertEquals(1, root.getChildren().get(0).getChildren().size());
         assertEquals("subchild1", root.getChildren().get(0).getChildren().get(0).getLabel());
-        
+
         assertEquals(1, root.getChildren().get(1).getChildren().size());
         assertEquals("child1", root.getChildren().get(1).getChildren().get(0).getLabel());
 

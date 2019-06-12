@@ -1,6 +1,6 @@
 // ============================================================================
 //
-// Copyright (C) 2006-2018 Talend Inc. - www.talend.com
+// Copyright (C) 2006-2019 Talend Inc. - www.talend.com
 //
 // This source code is available under agreement available at
 // %InstallDIR%\features\org.talend.rcp.branding.%PRODUCTNAME%\%PRODUCTNAME%license.txt
@@ -20,9 +20,9 @@ import org.talend.core.model.process.IContextParameter;
 
 /**
  * Context of a process.
- * 
+ *
  * $Id: JobContext.java 38013 2010-03-05 14:21:59Z mhirt $
- * 
+ *
  */
 public class JobContext implements IContext, Cloneable {
 
@@ -33,7 +33,7 @@ public class JobContext implements IContext, Cloneable {
     public JobContext(String name) {
         this.name = name;
         if (this.name == null) {
-        	this.name = ""; 
+        	this.name = "";
         }
     }
 
@@ -54,7 +54,7 @@ public class JobContext implements IContext, Cloneable {
     public void setName(final String name) {
         this.name = name;
         if (this.name == null) {
-        	this.name = ""; 
+        	this.name = "";
         }
     }
 
@@ -116,7 +116,7 @@ public class JobContext implements IContext, Cloneable {
      * Added by Marvin Wang on Mar.2, 2012. To get an existing <code>ContextParameter</code>, do not suggest to use the
      * method {@link #getContextParameter(String)} to get an existing <code>ContextParameter</code>. Note that the given
      * parameters are not <code>null</code>.
-     * 
+     *
      * @param sourceId Not <code>Null</code>
      * @param paraName Not <code>Null</code>
      * @return
@@ -138,7 +138,7 @@ public class JobContext implements IContext, Cloneable {
     /**
      * Thru the given name to get the <code>JobContextParameter</code>s which all have the same parameter name. Added by
      * Marvin Wang on Mar.6, 2012.
-     * 
+     *
      * @param paraName
      * @return
      */
@@ -157,7 +157,7 @@ public class JobContext implements IContext, Cloneable {
     /**
      * Returns the size of <code>JobContextParameter</code>s which all have the same parameter name. See
      * {@link #getSameNameContextParameters(String)}. Added by Marvin Wang on Mar.6, 2012.
-     * 
+     *
      * @param paraName
      * @return
      */

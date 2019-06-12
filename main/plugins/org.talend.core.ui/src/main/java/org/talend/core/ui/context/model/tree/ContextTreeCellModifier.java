@@ -1,6 +1,6 @@
 // ============================================================================
 //
-// Copyright (C) 2006-2018 Talend Inc. - www.talend.com
+// Copyright (C) 2006-2019 Talend Inc. - www.talend.com
 //
 // This source code is available under agreement available at
 // %InstallDIR%\features\org.talend.rcp.branding.%PRODUCTNAME%\%PRODUCTNAME%license.txt
@@ -36,7 +36,7 @@ public class ContextTreeCellModifier extends AbstractContextCellModifier {
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see org.eclipse.jface.viewers.ICellModifier#canModify(java.lang.Object, java.lang.String)
      */
     public boolean canModify(Object element, String property) {
@@ -63,7 +63,7 @@ public class ContextTreeCellModifier extends AbstractContextCellModifier {
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see org.eclipse.jface.viewers.ICellModifier#getValue(java.lang.Object, java.lang.String)
      */
     public Object getValue(Object element, String property) {
@@ -83,7 +83,7 @@ public class ContextTreeCellModifier extends AbstractContextCellModifier {
 
     /**
      * bqian Comment method "getRealParameter".
-     * 
+     *
      * @param property
      * @param templatePara
      * @return
@@ -101,7 +101,7 @@ public class ContextTreeCellModifier extends AbstractContextCellModifier {
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see org.eclipse.jface.viewers.ICellModifier#modify(java.lang.Object, java.lang.String, java.lang.Object)
      */
     public void modify(Object element, final String property, final Object value) {
@@ -144,7 +144,7 @@ public class ContextTreeCellModifier extends AbstractContextCellModifier {
 
     /**
      * To look up all nodes that have the same variable name from input model.
-     * 
+     *
      * @param nodeName
      * @return
      */

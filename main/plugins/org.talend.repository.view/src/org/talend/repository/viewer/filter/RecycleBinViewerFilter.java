@@ -1,6 +1,6 @@
 // ============================================================================
 //
-// Copyright (C) 2006-2018 Talend Inc. - www.talend.com
+// Copyright (C) 2006-2019 Talend Inc. - www.talend.com
 //
 // This source code is available under agreement available at
 // %InstallDIR%\features\org.talend.rcp.branding.%PRODUCTNAME%\%PRODUCTNAME%license.txt
@@ -32,7 +32,7 @@ import org.talend.repository.viewer.ui.provider.INavigatorContentServiceProvider
 
 /**
  * DOC ggu class global comment. Detailled comment
- * 
+ *
  * TDI-20859, Only filter the nodes under recycle bin. do same function like perspective filter.
  */
 public class RecycleBinViewerFilter extends ViewerFilter {
@@ -66,11 +66,11 @@ public class RecycleBinViewerFilter extends ViewerFilter {
     }
 
     /**
-     * 
+     *
      * DOC ggu Comment method "isUnderRecycleBinNode".
-     * 
+     *
      * check the node is recycle bin or the deleted node is under the recycle bin.
-     * 
+     *
      * @param node
      * @return
      */
@@ -90,17 +90,17 @@ public class RecycleBinViewerFilter extends ViewerFilter {
     }
 
     /**
-     * 
+     *
      * DOC ggu Comment method "findRealContextType".
-     * 
+     *
      * Find the context type for the node.
-     * 
+     *
      * If element, return element type.
-     * 
+     *
      * If other, return content type.
-     * 
+     *
      * Also, if the type is sub type, need find out the item type.
-     * 
+     *
      * @param node
      * @return
      */

@@ -1,6 +1,6 @@
 // ============================================================================
 //
-// Copyright (C) 2006-2018 Talend Inc. - www.talend.com
+// Copyright (C) 2006-2019 Talend Inc. - www.talend.com
 //
 // This source code is available under agreement available at
 // %InstallDIR%\features\org.talend.rcp.branding.%PRODUCTNAME%\%PRODUCTNAME%license.txt
@@ -22,9 +22,9 @@ import org.talend.core.model.metadata.IMetadataTable;
 
 /**
  * DOC cantoine Meta Data Connection. Contains info of conncection. <br/>
- * 
+ *
  * $Id: MetadataConnection.java 38013 2010-03-05 14:21:59Z mhirt $
- * 
+ *
  */
 public class MetadataConnection implements IMetadataConnection {
 
@@ -136,7 +136,7 @@ public class MetadataConnection implements IMetadataConnection {
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see org.talend.core.model.metadata.IMetadataTable#getName()
      */
     public String getDbType() {
@@ -145,7 +145,7 @@ public class MetadataConnection implements IMetadataConnection {
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see org.talend.core.model.metadata.IMetadataTable#setName(java.lang.String)
      */
     public void setDbType(String dbType) {
@@ -154,7 +154,7 @@ public class MetadataConnection implements IMetadataConnection {
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see org.talend.core.model.metadata.IMetadataTable#getName()
      */
     public String getDriverClass() {
@@ -163,7 +163,7 @@ public class MetadataConnection implements IMetadataConnection {
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see org.talend.core.model.metadata.IMetadataTable#setName(java.lang.String)
      */
     public void setDriverClass(String driverClass) {
@@ -172,7 +172,7 @@ public class MetadataConnection implements IMetadataConnection {
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see org.talend.core.model.metadata.IMetadataTable#getName()
      */
     public String getUrl() {
@@ -181,7 +181,7 @@ public class MetadataConnection implements IMetadataConnection {
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see org.talend.core.model.metadata.IMetadataTable#setName(java.lang.String)
      */
     public void setUrl(String url) {
@@ -190,7 +190,7 @@ public class MetadataConnection implements IMetadataConnection {
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see org.talend.core.model.metadata.IMetadataTable#getName()
      */
     public String getPort() {
@@ -199,7 +199,7 @@ public class MetadataConnection implements IMetadataConnection {
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see org.talend.core.model.metadata.IMetadataTable#setName(java.lang.String)
      */
     public void setPort(String port) {
@@ -208,7 +208,7 @@ public class MetadataConnection implements IMetadataConnection {
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see org.talend.core.model.metadata.IMetadataTable#getName()
      */
     public String getUsername() {
@@ -217,7 +217,7 @@ public class MetadataConnection implements IMetadataConnection {
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see org.talend.core.model.metadata.IMetadataTable#setName(java.lang.String)
      */
     public void setUsername(String username) {
@@ -226,7 +226,7 @@ public class MetadataConnection implements IMetadataConnection {
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see org.talend.core.model.metadata.IMetadataTable#getName()
      */
     public String getPassword() {
@@ -235,7 +235,7 @@ public class MetadataConnection implements IMetadataConnection {
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see org.talend.core.model.metadata.IMetadataTable#setName(java.lang.String)
      */
     public void setPassword(String password) {
@@ -244,7 +244,7 @@ public class MetadataConnection implements IMetadataConnection {
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see org.talend.core.model.metadata.IMetadataTable#getName()
      */
     public String getServerName() {
@@ -253,7 +253,7 @@ public class MetadataConnection implements IMetadataConnection {
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see org.talend.core.model.metadata.IMetadataTable#setName(java.lang.String)
      */
     public void setServerName(String serverName) {
@@ -262,7 +262,7 @@ public class MetadataConnection implements IMetadataConnection {
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see org.talend.core.model.metadata.IMetadataTable#getName()
      */
     public String getDataSourceName() {
@@ -271,7 +271,7 @@ public class MetadataConnection implements IMetadataConnection {
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see org.talend.core.model.metadata.IMetadataTable#setName(java.lang.String)
      */
     public void setDataSourceName(String dataSourceName) {
@@ -280,7 +280,7 @@ public class MetadataConnection implements IMetadataConnection {
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see org.talend.core.model.metadata.IMetadataTable#getName()
      */
     public String getFileFieldName() {
@@ -289,7 +289,7 @@ public class MetadataConnection implements IMetadataConnection {
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see org.talend.core.model.metadata.IMetadataTable#setName(java.lang.String)
      */
     public void setFileFieldName(String fileFieldName) {
@@ -298,7 +298,7 @@ public class MetadataConnection implements IMetadataConnection {
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see org.talend.core.model.metadata.IMetadataConnection#getDatabase()
      */
     public String getDatabase() {
@@ -307,7 +307,7 @@ public class MetadataConnection implements IMetadataConnection {
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see org.talend.core.model.metadata.IMetadataConnection#setDatabase(java.lang.String)
      */
     public void setDatabase(String database) {
@@ -317,7 +317,7 @@ public class MetadataConnection implements IMetadataConnection {
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see org.talend.core.model.metadata.IMetadataTable#getName()
      */
     public String getSchema() {
@@ -326,7 +326,7 @@ public class MetadataConnection implements IMetadataConnection {
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see org.talend.core.model.metadata.IMetadataTable#setName(java.lang.String)
      */
     public void setSchema(String schema) {
@@ -335,7 +335,7 @@ public class MetadataConnection implements IMetadataConnection {
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see org.talend.core.model.metadata.IMetadataTable#getName()
      */
     public String getSqlSyntax() {
@@ -344,7 +344,7 @@ public class MetadataConnection implements IMetadataConnection {
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see org.talend.core.model.metadata.IMetadataTable#setName(java.lang.String)
      */
     public void setSqlSyntax(String sqlSyntax) {
@@ -353,7 +353,7 @@ public class MetadataConnection implements IMetadataConnection {
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see org.talend.core.model.metadata.IMetadataTable#getName()
      */
     public String getStringQuote() {
@@ -362,7 +362,7 @@ public class MetadataConnection implements IMetadataConnection {
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see org.talend.core.model.metadata.IMetadataTable#setName(java.lang.String)
      */
     public void setStringQuote(String stringQuote) {
@@ -371,7 +371,7 @@ public class MetadataConnection implements IMetadataConnection {
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see org.talend.core.model.metadata.IMetadataTable#getName()
      */
     public String getNullChar() {
@@ -380,7 +380,7 @@ public class MetadataConnection implements IMetadataConnection {
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see org.talend.core.model.metadata.IMetadataTable#setName(java.lang.String)
      */
     public void setNullChar(String nullChar) {
@@ -389,7 +389,7 @@ public class MetadataConnection implements IMetadataConnection {
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see org.talend.core.model.temp.IXmlSerializable#getXmlStream()
      */
     public InputStream getXmlStream() {
@@ -398,7 +398,7 @@ public class MetadataConnection implements IMetadataConnection {
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see org.talend.core.model.temp.IXmlSerializable#setXmlStream(java.io.InputStream)
      */
     public void setXmlStream(InputStream xmlStream) {
@@ -407,7 +407,7 @@ public class MetadataConnection implements IMetadataConnection {
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see org.talend.designer.core.model.metadata.IMetadataTable#getListColumns()
      */
     public List<IMetadataTable> getListTables() {
@@ -416,7 +416,7 @@ public class MetadataConnection implements IMetadataConnection {
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see org.talend.designer.core.model.metadata.IMetadataTable#setListColumns(java.util.Hashtable)
      */
     public void setListTables(List<IMetadataTable> listTables) {
@@ -441,7 +441,7 @@ public class MetadataConnection implements IMetadataConnection {
 
     /**
      * Getter for dbRootPath.
-     * 
+     *
      * @return the dbRootPath
      */
     public String getDbRootPath() {
@@ -450,7 +450,7 @@ public class MetadataConnection implements IMetadataConnection {
 
     /**
      * Sets the dbRootPath.
-     * 
+     *
      * @param dbRootPath the dbRootPath to set
      */
     public void setDbRootPath(String dbRootPath) {
@@ -459,7 +459,7 @@ public class MetadataConnection implements IMetadataConnection {
 
     /**
      * Getter for additionalParams.
-     * 
+     *
      * @return the additionalParams
      */
     public String getAdditionalParams() {
@@ -468,7 +468,7 @@ public class MetadataConnection implements IMetadataConnection {
 
     /**
      * Sets the additionalParams.
-     * 
+     *
      * @param additionalParams the additionalParams to set
      */
     public void setAdditionalParams(String additionalParams) {
@@ -477,7 +477,7 @@ public class MetadataConnection implements IMetadataConnection {
 
     /**
      * Getter for driverJarPath.
-     * 
+     *
      * @return the driverJarPath
      */
     public String getDriverJarPath() {
@@ -486,7 +486,7 @@ public class MetadataConnection implements IMetadataConnection {
 
     /**
      * Sets the driverJarPath.
-     * 
+     *
      * @param driverJarPath the driverJarPath to set
      */
     public void setDriverJarPath(String driverJarPath) {
@@ -495,7 +495,7 @@ public class MetadataConnection implements IMetadataConnection {
 
     /**
      * Getter for dbVersionString.
-     * 
+     *
      * @return the dbVersionString
      */
     public String getDbVersionString() {
@@ -504,7 +504,7 @@ public class MetadataConnection implements IMetadataConnection {
 
     /**
      * Sets the dbVersionString.
-     * 
+     *
      * @param dbVersionString the dbVersionString to set
      */
     public void setDbVersionString(String dbVersionString) {
@@ -729,7 +729,7 @@ public class MetadataConnection implements IMetadataConnection {
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see org.talend.core.model.metadata.IMetadataConnection#getParameter(java.lang.String)
      */
     public Object getParameter(String key) {
@@ -740,7 +740,7 @@ public class MetadataConnection implements IMetadataConnection {
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see org.talend.core.model.metadata.IMetadataConnection#setParameter(java.lang.String, java.lang.Object)
      */
     public void setParameter(String key, Object value) {

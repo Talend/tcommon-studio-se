@@ -1,6 +1,6 @@
 // ============================================================================
 //
-// Copyright (C) 2006-2018 Talend Inc. - www.talend.com
+// Copyright (C) 2006-2019 Talend Inc. - www.talend.com
 //
 // This source code is available under agreement available at
 // %InstallDIR%\features\org.talend.rcp.branding.%PRODUCTNAME%\%PRODUCTNAME%license.txt
@@ -110,7 +110,7 @@ public abstract class AbstractTreeTooltip {
 
     /*
      * author by hfchang
-     * 
+     *
      * make a string line wrap autom
      */
     private String cutStr(String str, int len) {

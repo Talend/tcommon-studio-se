@@ -1,6 +1,6 @@
 // ============================================================================
 //
-// Copyright (C) 2006-2018 Talend Inc. - www.talend.com
+// Copyright (C) 2006-2019 Talend Inc. - www.talend.com
 //
 // This source code is available under agreement available at
 // %InstallDIR%\features\org.talend.rcp.branding.%PRODUCTNAME%\%PRODUCTNAME%license.txt
@@ -22,7 +22,7 @@ public class Java2STLangTypesHelper {
 
     /**
      * DOC return as: int int64, big_int, float, bool, char, string.
-     * 
+     *
      * @param metadataTable
      * @param columnLabel
      * @return
@@ -63,7 +63,7 @@ public class Java2STLangTypesHelper {
 
     /**
      * DOC return as: int, long, double, float, string.
-     * 
+     *
      * @author rdubois
      * @param metadataTable
      * @param columnLabel
@@ -87,7 +87,7 @@ public class Java2STLangTypesHelper {
         }
 
         // Floats: float(Float)
-        if (typeToGenerate.equals("float")) { //$NON-NLS-1$ 
+        if (typeToGenerate.equals("float")) { //$NON-NLS-1$
             return "float"; //$NON-NLS-1$
         }
 
@@ -98,7 +98,7 @@ public class Java2STLangTypesHelper {
 
     /**
      * DOC return as: int, long, double, float, string.
-     * 
+     *
      * @author rdubois
      * @param metadataTable
      * @param columnLabel
@@ -113,7 +113,7 @@ public class Java2STLangTypesHelper {
 
         String typeToGenerate = JavaTypesManager.getTypeToGenerate(talendType, false);
         // Integers: int(Integer), long(Long), short(Short), byte(Byte), BigDecimal, double(Double).
-        if (typeToGenerate.equals("int") || typeToGenerate.equals("byte")) { //$NON-NLS-1$ //$NON-NLS-2$ 
+        if (typeToGenerate.equals("int") || typeToGenerate.equals("byte")) { //$NON-NLS-1$ //$NON-NLS-2$
             return "int"; //$NON-NLS-1$
         } else if (typeToGenerate.equals("long")) { //$NON-NLS-1$
             return "bigint"; //$NON-NLS-1$
@@ -126,7 +126,7 @@ public class Java2STLangTypesHelper {
         }
 
         // Floats: float(Float)
-        if (typeToGenerate.equals("float")) { //$NON-NLS-1$ 
+        if (typeToGenerate.equals("float")) { //$NON-NLS-1$
             return "float"; //$NON-NLS-1$
         }
 
@@ -137,7 +137,7 @@ public class Java2STLangTypesHelper {
 
     /**
      * DOC return as: %d, %f, %b, %s.
-     * 
+     *
      * @param metadataTable
      * @param columnLabel
      * @return

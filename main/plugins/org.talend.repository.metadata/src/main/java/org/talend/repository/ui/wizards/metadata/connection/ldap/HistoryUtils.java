@@ -1,6 +1,6 @@
 // ============================================================================
 //
-// Copyright (C) 2006-2018 Talend Inc. - www.talend.com
+// Copyright (C) 2006-2019 Talend Inc. - www.talend.com
 //
 // This source code is available under agreement available at
 // %InstallDIR%\features\org.talend.rcp.branding.%PRODUCTNAME%\%PRODUCTNAME%license.txt
@@ -20,14 +20,14 @@ import org.talend.core.runtime.CoreRuntimePlugin;
 
 /**
  * The HistoryUtils are used to save and load the history of input fields.
- * 
+ *
  * @author ftang, 18/09/2007
  */
 public class HistoryUtils {
 
     /**
      * Saves the the given value under the given key in the dialog settings.
-     * 
+     *
      * @param key the key
      * @param value the value
      */
@@ -55,7 +55,7 @@ public class HistoryUtils {
 
     /**
      * Loads the value of the given key from the dialog settings
-     * 
+     *
      * @param key the key
      * @return the value
      */

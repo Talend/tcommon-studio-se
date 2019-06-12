@@ -1,6 +1,6 @@
 // ============================================================================
 //
-// Copyright (C) 2006-2018 Talend Inc. - www.talend.com
+// Copyright (C) 2006-2019 Talend Inc. - www.talend.com
 //
 // This source code is available under agreement available at
 // %InstallDIR%\features\org.talend.rcp.branding.%PRODUCTNAME%\%PRODUCTNAME%license.txt
@@ -20,7 +20,7 @@ import org.apache.log4j.Logger;
 
 /**
  * FileDirCleaner.
- * 
+ *
  * Either it cleans according number of items, or according date, or both, by checking only items which match the regexp
  * and the chosen strategy.
  */
@@ -51,7 +51,7 @@ public class FileDirCleaner {
     private FileDirCleanerFilter filter;
 
     /**
-     * 
+     *
      * SCAN_STRATEGY. Match according the chosen strategy: <br>
      * - FILES: scan and match only the direct children files from the given <code>pathDir</code> not recursively <br>
      * - DIRECTORIES: scan and match only the directories from the given <code>pathDir</code> not recursively <br>
@@ -61,7 +61,7 @@ public class FileDirCleaner {
      * - DIRECTORIES_RECURSIVELY: scan and match directories and files from the given <code>pathDir</code> recursively <br>
      * - FILES_AND_DIRECTORIES_RECURSIVELY: scan and match directories and files from the given <code>pathDir</code>
      * recursively
-     * 
+     *
      */
     public enum SCAN_STRATEGY {
         FILES(false, true, false),
@@ -85,7 +85,7 @@ public class FileDirCleaner {
 
         /**
          * Getter for cleanDirectories.
-         * 
+         *
          * @return the cleanDirectories
          */
         public boolean isCleanDirectories() {
@@ -94,7 +94,7 @@ public class FileDirCleaner {
 
         /**
          * Getter for cleanFilesOnly.
-         * 
+         *
          * @return the cleanFilesOnly
          */
         public boolean isCleanFiles() {
@@ -103,7 +103,7 @@ public class FileDirCleaner {
 
         /**
          * Getter for recursively.
-         * 
+         *
          * @return the recursively
          */
         public boolean isRecursively() {
@@ -112,7 +112,7 @@ public class FileDirCleaner {
     }
 
     /**
-     * 
+     *
      * DOC amaumont FileDirCleaner class global comment. Detailled comment
      */
     static class CleanResult {
@@ -127,13 +127,13 @@ public class FileDirCleaner {
     }
 
     /**
-     * 
+     *
      * FileDirCleaner constructor.
-     * 
+     *
      * @param doAction
      * @param maxEntriesByDirectoryAndByType
      * @param maxDurationBeforeCleaning
-     * 
+     *
      * Default clean strategy is STRATEGY.CLEAN_FILES_ONLY
      */
     public FileDirCleaner(boolean doAction, int maxEntriesByDirectoryAndByType, long maxDurationBeforeCleaning) {
@@ -141,9 +141,9 @@ public class FileDirCleaner {
     }
 
     /**
-     * 
+     *
      * DOC amaumont FileDirCleaner constructor comment.
-     * 
+     *
      * @param doAction TODO
      * @param strategy strategy to use
      * @param maxEntriesByDirectory max number of files to keep and max number of directories to keep (if
@@ -200,9 +200,9 @@ public class FileDirCleaner {
     }
 
     /**
-     * 
+     *
      * "clean".
-     * 
+     *
      * @param pathDir, required
      * @param filesRegExpPattern, optional
      * @param directoriesRegExpPattern, optional
@@ -213,9 +213,9 @@ public class FileDirCleaner {
     }
 
     /**
-     * 
+     *
      * "clean".
-     * 
+     *
      * @param pathDir, required
      * @param filesRegExpPattern, optional
      * @param directoriesRegExpPattern, optional
@@ -238,9 +238,9 @@ public class FileDirCleaner {
     }
 
     /**
-     * 
+     *
      * "cleanFilesDirRecursively".
-     * 
+     *
      * @param dir
      * @param isRootDirectory
      */

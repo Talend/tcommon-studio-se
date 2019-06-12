@@ -1,6 +1,6 @@
 // ============================================================================
 //
-// Copyright (C) 2006-2018 Talend Inc. - www.talend.com
+// Copyright (C) 2006-2019 Talend Inc. - www.talend.com
 //
 // This source code is available under agreement available at
 // %InstallDIR%\features\org.talend.rcp.branding.%PRODUCTNAME%\%PRODUCTNAME%license.txt
@@ -14,9 +14,9 @@ package org.talend.commons.runtime.model.repository;
 
 /**
  * DOC smallet class global comment. Detailled comment <br/>
- * 
+ *
  * $Id$
- * 
+ *
  */
 public enum ERepositoryStatus {
     NEW(true, true),
@@ -43,7 +43,7 @@ public enum ERepositoryStatus {
 
     /**
      * Getter for editable.
-     * 
+     *
      * @return the editable
      */
     public boolean isEditable() {
@@ -52,7 +52,7 @@ public enum ERepositoryStatus {
 
     /**
      * Getter for potentiallyEditable.
-     * 
+     *
      * @return the potentiallyEditable
      */
     public boolean isPotentiallyEditable() {
@@ -60,9 +60,9 @@ public enum ERepositoryStatus {
     }
 
     /**
-     * 
+     *
      * Judge current status is lock status
-     * 
+     *
      * @param es The status of current
      * @return true if current is lock status else false
      */

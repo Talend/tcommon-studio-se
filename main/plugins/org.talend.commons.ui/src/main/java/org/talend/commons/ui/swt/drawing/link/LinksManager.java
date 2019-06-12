@@ -1,6 +1,6 @@
 // ============================================================================
 //
-// Copyright (C) 2006-2018 Talend Inc. - www.talend.com
+// Copyright (C) 2006-2019 Talend Inc. - www.talend.com
 //
 // This source code is available under agreement available at
 // %InstallDIR%\features\org.talend.rcp.branding.%PRODUCTNAME%\%PRODUCTNAME%license.txt
@@ -23,9 +23,9 @@ import java.util.Set;
 
 /**
  * DOC amaumont class global comment. Detailled comment <br/>
- * 
+ *
  * $Id: LinkManager.java 318 2006-11-03 09:44:45 +0000 (ven., 03 nov. 2006) amaumont $
- * 
+ *
  * @param <G1> the graphical item of extremety 1
  * @param <D1> the data item of extremety 1
  * @param <G2> the graphical item of extremety 2
@@ -52,7 +52,7 @@ public class LinksManager<G1, D1, G2, D2> {
 
     /**
      * DOC amaumont Comment method "addLink".
-     * 
+     *
      * @param link
      */
     public void addLink(LinkDescriptor<G1, D1, G2, D2> link) {
@@ -72,7 +72,7 @@ public class LinksManager<G1, D1, G2, D2> {
 
     /**
      * DOC amaumont Comment method "registerItem".
-     * 
+     *
      * @param link
      * @param extremity
      */
@@ -88,7 +88,7 @@ public class LinksManager<G1, D1, G2, D2> {
 
     /**
      * DOC amaumont Comment method "addLink".
-     * 
+     *
      * @param link
      */
     public boolean removeLink(LinkDescriptor<G1, D1, G2, D2> link) {
@@ -118,7 +118,7 @@ public class LinksManager<G1, D1, G2, D2> {
 
     /**
      * DOC amaumont Comment method "getLinks".
-     * 
+     *
      * @return
      */
     public List<LinkDescriptor<G1, D1, G2, D2>> getLinks() {
@@ -127,7 +127,7 @@ public class LinksManager<G1, D1, G2, D2> {
 
     /**
      * Getter for currentNumberLinks.
-     * 
+     *
      * @return the currentNumberLinks
      */
     public int getCurrentNumberLinks() {
@@ -152,7 +152,7 @@ public class LinksManager<G1, D1, G2, D2> {
 
     /**
      * DOC amaumont Comment method "removeLinks".
-     * 
+     *
      * @param linksFromG2
      */
     private boolean removeLinks(Set<LinkDescriptor<G1, D1, G2, D2>> linksFromG2) {
@@ -167,7 +167,7 @@ public class LinksManager<G1, D1, G2, D2> {
 
     /**
      * DOC amaumont Comment method "getLinksFromExtremity1".
-     * 
+     *
      * @param treeItem
      */
     public Set<LinkDescriptor<G1, D1, G2, D2>> getLinksFromGraphicalExtremity1(G1 graphicalItem) {
@@ -176,7 +176,7 @@ public class LinksManager<G1, D1, G2, D2> {
 
     /**
      * DOC amaumont Comment method "getLinksFromExtremity1".
-     * 
+     *
      * @param treeItem
      */
     public Set<LinkDescriptor<G1, D1, G2, D2>> getLinksFromDataExtremity1(D1 dataItem) {
@@ -185,7 +185,7 @@ public class LinksManager<G1, D1, G2, D2> {
 
     /**
      * DOC amaumont Comment method "getLinksFromExtremity1".
-     * 
+     *
      * @param treeItem
      */
     public Set<LinkDescriptor<G1, D1, G2, D2>> getLinksFromGraphicalExtremity2(G2 graphicalItem) {
@@ -194,7 +194,7 @@ public class LinksManager<G1, D1, G2, D2> {
 
     /**
      * DOC amaumont Comment method "getLinksFromExtremity1".
-     * 
+     *
      * @param treeItem
      */
     public Set<LinkDescriptor<G1, D1, G2, D2>> getLinksFromDataExtremity2(D2 dataItem) {
@@ -203,7 +203,7 @@ public class LinksManager<G1, D1, G2, D2> {
 
     /**
      * DOC amaumont Comment method "getLinks".
-     * 
+     *
      * @param toLinks
      * @param dataItem
      * @return

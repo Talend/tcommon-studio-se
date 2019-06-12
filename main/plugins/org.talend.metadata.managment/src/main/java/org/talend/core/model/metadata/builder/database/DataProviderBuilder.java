@@ -1,6 +1,6 @@
 // ============================================================================
 //
-// Copyright (C) 2006-2018 Talend Inc. - www.talend.com
+// Copyright (C) 2006-2019 Talend Inc. - www.talend.com
 //
 // This source code is available under agreement available at
 // %InstallDIR%\features\org.talend.rcp.branding.%PRODUCTNAME%\%PRODUCTNAME%license.txt
@@ -21,7 +21,7 @@ import org.talend.cwm.helper.ConnectionHelper;
 
 /**
  * DOC scorreia class global comment. Detailled comment
- * 
+ *
  * @deprecated this class does not seem to be used anymore. Remove it?
  */
 public class DataProviderBuilder extends CwmBuilder {
@@ -30,7 +30,7 @@ public class DataProviderBuilder extends CwmBuilder {
 
     /**
      * DataProviderBuilder constructor.
-     * 
+     *
      * @param conn the connection
      * @param driver the JDBC driver
      * @param databaseUrl the database connection string (must not be null)

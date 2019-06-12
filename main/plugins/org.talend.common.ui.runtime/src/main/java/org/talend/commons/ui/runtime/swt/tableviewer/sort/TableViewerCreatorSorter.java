@@ -1,6 +1,6 @@
 // ============================================================================
 //
-// Copyright (C) 2006-2018 Talend Inc. - www.talend.com
+// Copyright (C) 2006-2019 Talend Inc. - www.talend.com
 //
 // This source code is available under agreement available at
 // %InstallDIR%\features\org.talend.rcp.branding.%PRODUCTNAME%\%PRODUCTNAME%license.txt
@@ -22,11 +22,11 @@ import org.talend.commons.ui.runtime.swt.tableviewer.TableViewerCreatorNotModifi
 import org.talend.commons.ui.runtime.swt.tableviewer.TableViewerCreatorNotModifiable.SORT;
 
 /**
- * 
+ *
  * The default <code>ViewerSorter</code> used by <code>TableRecflect</code>. <br/>
- * 
+ *
  * $Id: TableViewerCreatorSorter.java 7038 2007-11-15 14:05:48Z plegall $
- * 
+ *
  */
 public class TableViewerCreatorSorter extends ViewerSorter {
 
@@ -51,7 +51,7 @@ public class TableViewerCreatorSorter extends ViewerSorter {
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see org.eclipse.jface.viewers.ViewerComparator#compare(org.eclipse.jface.viewers.Viewer, java.lang.Object,
      * java.lang.Object)
      */
@@ -74,7 +74,7 @@ public class TableViewerCreatorSorter extends ViewerSorter {
 
     /**
      * DOC amaumont Comment method "prepareSort".
-     * 
+     *
      * @param tableViewerCreator
      * @param tableViewerCreatorColumn
      * @param newOrderDirection

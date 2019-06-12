@@ -1,6 +1,6 @@
 // ============================================================================
 //
-// Copyright (C) 2006-2018 Talend Inc. - www.talend.com
+// Copyright (C) 2006-2019 Talend Inc. - www.talend.com
 //
 // This source code is available under agreement available at
 // %InstallDIR%\features\org.talend.rcp.branding.%PRODUCTNAME%\%PRODUCTNAME%license.txt
@@ -22,15 +22,15 @@ import org.talend.repository.model.IRepositoryNode;
 
 /**
  * Defines a empty repository object. <br/>
- * 
+ *
  * @author ftang $Id: EmptyRepositoryObject.java $
- * 
+ *
  */
 public class EmptyRepositoryObject implements IRepositoryObject {
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see org.talend.core.model.repository.IRepositoryObject#getAuthor()
      */
     public User getAuthor() {
@@ -39,7 +39,7 @@ public class EmptyRepositoryObject implements IRepositoryObject {
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see org.talend.core.model.repository.IRepositoryObject#getCreationDate()
      */
     public Date getCreationDate() {
@@ -48,7 +48,7 @@ public class EmptyRepositoryObject implements IRepositoryObject {
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see org.talend.core.model.repository.IRepositoryObject#getDescription()
      */
     public String getDescription() {
@@ -57,7 +57,7 @@ public class EmptyRepositoryObject implements IRepositoryObject {
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see org.talend.core.model.repository.IRepositoryObject#getId()
      */
     public String getId() {
@@ -66,7 +66,7 @@ public class EmptyRepositoryObject implements IRepositoryObject {
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see org.talend.core.model.repository.IRepositoryObject#getLabel()
      */
     public String getLabel() {
@@ -75,7 +75,7 @@ public class EmptyRepositoryObject implements IRepositoryObject {
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see org.talend.core.model.repository.IRepositoryObject#getModificationDate()
      */
     public Date getModificationDate() {
@@ -84,7 +84,7 @@ public class EmptyRepositoryObject implements IRepositoryObject {
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see org.talend.core.model.repository.IRepositoryObject#getProperty()
      */
     public Property getProperty() {
@@ -96,7 +96,7 @@ public class EmptyRepositoryObject implements IRepositoryObject {
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see org.talend.core.model.repository.IRepositoryObject#getPurpose()
      */
     public String getPurpose() {
@@ -105,7 +105,7 @@ public class EmptyRepositoryObject implements IRepositoryObject {
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see org.talend.core.model.repository.IRepositoryObject#getStatusCode()
      */
     public String getStatusCode() {
@@ -114,7 +114,7 @@ public class EmptyRepositoryObject implements IRepositoryObject {
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see org.talend.core.model.repository.IRepositoryObject#getRepositoryObjectType()
      */
     public ERepositoryObjectType getRepositoryObjectType() {
@@ -123,7 +123,7 @@ public class EmptyRepositoryObject implements IRepositoryObject {
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see org.talend.core.model.repository.IRepositoryObject#getVersion()
      */
     public String getVersion() {
@@ -132,7 +132,7 @@ public class EmptyRepositoryObject implements IRepositoryObject {
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see org.talend.core.model.repository.IRepositoryObject#setAuthor(org.talend.core.model.general.User)
      */
     public void setAuthor(User author) {
@@ -140,7 +140,7 @@ public class EmptyRepositoryObject implements IRepositoryObject {
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see org.talend.core.model.repository.IRepositoryObject#setCreationDate(java.util.Date)
      */
     public void setCreationDate(Date value) {
@@ -148,7 +148,7 @@ public class EmptyRepositoryObject implements IRepositoryObject {
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see org.talend.core.model.repository.IRepositoryObject#setDescription(java.lang.String)
      */
     public void setDescription(String value) {
@@ -156,7 +156,7 @@ public class EmptyRepositoryObject implements IRepositoryObject {
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see org.talend.core.model.repository.IRepositoryObject#setId(int)
      */
     public void setId(String id) {
@@ -164,7 +164,7 @@ public class EmptyRepositoryObject implements IRepositoryObject {
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see org.talend.core.model.repository.IRepositoryObject#setLabel(java.lang.String)
      */
     public void setLabel(String label) {
@@ -172,7 +172,7 @@ public class EmptyRepositoryObject implements IRepositoryObject {
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see org.talend.core.model.repository.IRepositoryObject#setModificationDate(java.util.Date)
      */
     public void setModificationDate(Date value) {
@@ -180,7 +180,7 @@ public class EmptyRepositoryObject implements IRepositoryObject {
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see org.talend.core.model.repository.IRepositoryObject#setPurpose(java.lang.String)
      */
     public void setPurpose(String value) {
@@ -188,7 +188,7 @@ public class EmptyRepositoryObject implements IRepositoryObject {
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see org.talend.core.model.repository.IRepositoryObject#setStatusCode(java.lang.String)
      */
     public void setStatusCode(String statusCode) {
@@ -196,7 +196,7 @@ public class EmptyRepositoryObject implements IRepositoryObject {
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see org.talend.core.model.repository.IRepositoryObject#setVersion(org.talend.core.model.general.Version)
      */
     public void setVersion(String version) {
@@ -204,7 +204,7 @@ public class EmptyRepositoryObject implements IRepositoryObject {
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see org.talend.core.model.repository.IRepositoryObject#getChildren()
      */
     public List<IRepositoryViewObject> getChildren() {
@@ -214,7 +214,7 @@ public class EmptyRepositoryObject implements IRepositoryObject {
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see org.talend.core.model.repository.IRepositoryObject#getRepositoryNode()
      */
     public IRepositoryNode getRepositoryNode() {
@@ -224,7 +224,7 @@ public class EmptyRepositoryObject implements IRepositoryObject {
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see
      * org.talend.core.model.repository.IRepositoryObject#setRepositoryNode(org.talend.repository.model.RepositoryNode)
      */
@@ -235,7 +235,7 @@ public class EmptyRepositoryObject implements IRepositoryObject {
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see org.talend.core.model.repository.IRepositoryViewObject#getProjectLabel()
      */
     public String getProjectLabel() {
@@ -245,7 +245,7 @@ public class EmptyRepositoryObject implements IRepositoryObject {
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see org.talend.core.model.repository.IRepositoryViewObject#isDeleted()
      */
     public boolean isDeleted() {
@@ -255,7 +255,7 @@ public class EmptyRepositoryObject implements IRepositoryObject {
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see org.talend.core.model.repository.IRepositoryViewObject#getPath()
      */
     public String getPath() {
@@ -265,7 +265,7 @@ public class EmptyRepositoryObject implements IRepositoryObject {
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see org.talend.core.model.repository.IRepositoryViewObject#getInformationStatus()
      */
     public ERepositoryStatus getInformationStatus() {
@@ -275,7 +275,7 @@ public class EmptyRepositoryObject implements IRepositoryObject {
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see org.talend.core.model.repository.IRepositoryViewObject#getRepositoryStatus()
      */
     public ERepositoryStatus getRepositoryStatus() {
@@ -285,7 +285,7 @@ public class EmptyRepositoryObject implements IRepositoryObject {
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see org.talend.core.model.repository.IRepositoryViewObject#isModified()
      */
     public boolean isModified() {

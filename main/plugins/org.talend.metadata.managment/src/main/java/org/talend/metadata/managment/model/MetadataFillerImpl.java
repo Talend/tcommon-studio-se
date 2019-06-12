@@ -1,6 +1,6 @@
 // ============================================================================
 //
-// Copyright (C) 2006-2018 Talend Inc. - www.talend.com
+// Copyright (C) 2006-2019 Talend Inc. - www.talend.com
 //
 // This source code is available under agreement available at
 // %InstallDIR%\features\org.talend.rcp.branding.%PRODUCTNAME%\%PRODUCTNAME%license.txt
@@ -54,7 +54,7 @@ public abstract class MetadataFillerImpl<T extends Connection> implements IMetad
 
     /*
      * (non-Jsdoc)
-     * 
+     *
      * @see
      * org.talend.core.model.metadata.IMetadataFiller#fillMetadataParams(org.talend.core.model.metadata.IMetadataConnection
      * , org.talend.core.model.metadata.builder.connection.Connection)
@@ -104,7 +104,7 @@ public abstract class MetadataFillerImpl<T extends Connection> implements IMetad
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see
      * org.talend.core.model.metadata.IMetadataFiller#fillUIConnParams(org.talend.core.model.metadata.IMetadataConnection
      * , org.talend.core.model.metadata.builder.connection.Connection)
@@ -299,7 +299,7 @@ public abstract class MetadataFillerImpl<T extends Connection> implements IMetad
 
     /**
      * Fills other parameters from db connection into metadata connection. Added by Marvin Wang on Aug 13, 2012.
-     * 
+     *
      * @param metaConn
      * @param dbConn
      */
@@ -318,7 +318,7 @@ public abstract class MetadataFillerImpl<T extends Connection> implements IMetad
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see org.talend.core.model.metadata.IMetadataFiller#fillViews(orgomg.cwm.objectmodel.core.Package,
      * java.sql.DatabaseMetaData, java.util.List, java.lang.String)
      */
@@ -330,7 +330,7 @@ public abstract class MetadataFillerImpl<T extends Connection> implements IMetad
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see org.talend.core.model.metadata.IMetadataFiller#fillColumns(orgomg.cwm.resource.relational.ColumnSet,
      * java.sql.DatabaseMetaData, java.util.List, java.lang.String)
      */
@@ -347,9 +347,9 @@ public abstract class MetadataFillerImpl<T extends Connection> implements IMetad
     }
 
     /**
-     * 
+     *
      * zshen Comment method "isLinked".
-     * 
+     *
      * @return get whether the subElements need to be linked to the parent element.
      */
     @Override
@@ -358,9 +358,9 @@ public abstract class MetadataFillerImpl<T extends Connection> implements IMetad
     }
 
     /**
-     * 
+     *
      * zshen Comment method "isLinked". set whether the subElements need to be linked to the parent element.
-     * 
+     *
      * @return
      */
     @Override
@@ -370,7 +370,7 @@ public abstract class MetadataFillerImpl<T extends Connection> implements IMetad
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see
      * org.talend.core.model.metadata.IMetadataFiller#checkConnection(org.talend.core.model.metadata.IMetadataConnection
      * )
@@ -382,7 +382,7 @@ public abstract class MetadataFillerImpl<T extends Connection> implements IMetad
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see
      * org.talend.core.model.metadata.IMetadataFiller#createConnection(org.talend.core.model.metadata.IMetadataConnection
      * )
@@ -394,7 +394,7 @@ public abstract class MetadataFillerImpl<T extends Connection> implements IMetad
 
     /**
      * create a Connection and whether close it depend on closeConnection.
-     * 
+     *
      * @param metadataBean
      * @param closeConnection
      * @return
@@ -423,9 +423,9 @@ public abstract class MetadataFillerImpl<T extends Connection> implements IMetad
     }
 
     /**
-     * 
+     *
      * This method is to judge whether the db element need to be created or not according to the filter list.
-     * 
+     *
      * @param filterList
      * @param elementName
      * @param isCaseSensitive some Schemas are CaseSensitive

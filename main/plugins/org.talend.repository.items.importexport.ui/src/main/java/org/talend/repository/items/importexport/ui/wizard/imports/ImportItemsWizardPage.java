@@ -1,6 +1,6 @@
 // ============================================================================
 //
-// Copyright (C) 2006-2018 Talend Inc. - www.talend.com
+// Copyright (C) 2006-2019 Talend Inc. - www.talend.com
 //
 // This source code is available under agreement available at
 // %InstallDIR%\features\org.talend.rcp.branding.%PRODUCTNAME%\%PRODUCTNAME%license.txt
@@ -105,7 +105,7 @@ import org.talend.repository.model.RepositoryNodeUtilities;
 import org.talend.repository.ui.dialog.AProgressMonitorDialogWithCancel;
 
 /**
- * 
+ *
  * DOC ggu class global comment. Detailled comment
  */
 public class ImportItemsWizardPage extends WizardPage {
@@ -125,7 +125,7 @@ public class ImportItemsWizardPage extends WizardPage {
     private Button overwriteButton;
 
     /*
-     * 
+     *
      */
     private static final String[] ARCHIVE_FILE_MASK = { "*.jar;*.zip;*.tar;*.tar.gz;*.tgz", "*.*" }; //$NON-NLS-1$ //$NON-NLS-2$
 
@@ -142,9 +142,9 @@ public class ImportItemsWizardPage extends WizardPage {
     private final ImportExportHandlersManager importManager = new ImportExportHandlersManager();
 
     /**
-     * 
+     *
      * DOC ggu ImportItemsWizardPage constructor comment.
-     * 
+     *
      * @param pageName
      */
     public ImportItemsWizardPage(String pageName, IStructuredSelection s) {
@@ -195,7 +195,7 @@ public class ImportItemsWizardPage extends WizardPage {
 
     /**
      * DOC ggu Comment method "createDirectorySelectionArea".
-     * 
+     *
      * @param selectionArea
      */
     private void createDirectorySelectionArea(Composite selectionArea) {
@@ -251,7 +251,7 @@ public class ImportItemsWizardPage extends WizardPage {
 
     /**
      * DOC ggu Comment method "createArchiveSelectionArea".
-     * 
+     *
      * @param selectionArea
      */
     protected void createArchiveSelectionArea(Composite selectionArea) {
@@ -494,7 +494,7 @@ public class ImportItemsWizardPage extends WizardPage {
 
     /**
      * DOC ggu Comment method "createAdditionArea".
-     * 
+     *
      * @param workArea
      */
     private void createAdditionArea(Composite workArea) {
@@ -519,7 +519,7 @@ public class ImportItemsWizardPage extends WizardPage {
 
     /**
      * From directory
-     * 
+     *
      */
     private void handleDirectoryRadioSelected() {
         boolean selection = this.itemFromDirectoryRadio.getSelection();
@@ -532,7 +532,7 @@ public class ImportItemsWizardPage extends WizardPage {
 
     /**
      * From directory
-     * 
+     *
      */
     private void handleBrowseDirectoryButtonPressed() {
         DirectoryDialog dialog = new DirectoryDialog(this.getShell());
@@ -564,7 +564,7 @@ public class ImportItemsWizardPage extends WizardPage {
 
     /**
      * From archive
-     * 
+     *
      */
     private void handleArchiveRadioSelected() {
         boolean selection = this.itemFromArchiveRadio.getSelection();
@@ -577,7 +577,7 @@ public class ImportItemsWizardPage extends WizardPage {
 
     /**
      * From archive
-     * 
+     *
      */
     private void handleArchiveButtonPressed() {
         FileDialog dialog = new FileDialog(archivePathField.getShell());
@@ -650,15 +650,15 @@ public class ImportItemsWizardPage extends WizardPage {
             } catch (FileNotFoundException e) {
                 return; // file is not existed
             } catch (ZipException e) {
-                displayErrorDialog(Messages.getString("ImportItemsWizardPage_ZipImport_badFormat")); //$NON-NLS-1$ 
+                displayErrorDialog(Messages.getString("ImportItemsWizardPage_ZipImport_badFormat")); //$NON-NLS-1$
                 // if folder, won't have errors.
                 archivePathField.setFocus();
             } catch (TarException e) {
-                displayErrorDialog(Messages.getString("ImportItemsWizardPage_TarImport_badFormat")); //$NON-NLS-1$ 
+                displayErrorDialog(Messages.getString("ImportItemsWizardPage_TarImport_badFormat")); //$NON-NLS-1$
                 // if folder, won't have errors.
                 archivePathField.setFocus();
             } catch (IOException e) {
-                displayErrorDialog(Messages.getString("ImportItemsWizardPage_couldNotRead")); //$NON-NLS-1$ 
+                displayErrorDialog(Messages.getString("ImportItemsWizardPage_couldNotRead")); //$NON-NLS-1$
                 // if folder, won't have errors.
                 archivePathField.setFocus();
             } catch (Throwable e) {
@@ -701,7 +701,7 @@ public class ImportItemsWizardPage extends WizardPage {
     }
 
     protected void displayErrorDialog(String message) {
-        MessageDialog.openError(getContainer().getShell(), Messages.getString("ImportItemsWizardPage_errorTitle"), message); //$NON-NLS-1$ 
+        MessageDialog.openError(getContainer().getShell(), Messages.getString("ImportItemsWizardPage_errorTitle"), message); //$NON-NLS-1$
     }
 
     private void populateItems(final boolean overwrite, boolean keepSelection) {
@@ -753,7 +753,7 @@ public class ImportItemsWizardPage extends WizardPage {
                             }
                         } else {
                             errors.add(Messages.getString(
-                                    "ImportItemsWizardPage_ErrorsMessage", itemRecord.getItemName(), reObject.getVersion())); //$NON-NLS-1$ 
+                                    "ImportItemsWizardPage_ErrorsMessage", itemRecord.getItemName(), reObject.getVersion())); //$NON-NLS-1$
                         }
                     } else {
                         // TDI-21399,TDI-21401
@@ -885,7 +885,7 @@ public class ImportItemsWizardPage extends WizardPage {
     /**
      * Checks for consistency in selected elements and report an error message. in case of error or null the message
      * error.
-     * 
+     *
      * @param checkedElements element to be checked
      */
     private void updateErrorMessage(List<ImportItem> checkedElements) {
@@ -896,7 +896,7 @@ public class ImportItemsWizardPage extends WizardPage {
     /**
      * This check that 2 items in the list do not have the same Id and the same version. if that is so the return an
      * error message else return null.
-     * 
+     *
      * @param checkedElementsn the element to be checked
      * @return an error message or null if no error.
      */
@@ -919,7 +919,7 @@ public class ImportItemsWizardPage extends WizardPage {
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see org.eclipse.jface.wizard.WizardPage#isPageComplete()
      */
     @Override

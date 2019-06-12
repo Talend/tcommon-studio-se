@@ -1,6 +1,6 @@
 // ============================================================================
 //
-// Copyright (C) 2006-2018 Talend Inc. - www.talend.com
+// Copyright (C) 2006-2019 Talend Inc. - www.talend.com
 //
 // This source code is available under agreement available at
 // %InstallDIR%\features\org.talend.rcp.branding.%PRODUCTNAME%\%PRODUCTNAME%license.txt
@@ -19,7 +19,7 @@ import org.talend.core.model.metadata.IMetadataConnection;
 
 /**
  * created by xqliu on 2014-2-27 Detailled comment
- * 
+ *
  */
 public class CDH5YarnHandler extends ClouderaHandler implements IHiveYarnHandler {
 
@@ -39,7 +39,7 @@ public class CDH5YarnHandler extends ClouderaHandler implements IHiveYarnHandler
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * If user didn't fill the property in connection wizard,set a default value for this properties. Requried
      * properties:"yarn.application.classpath";"yarn.app.mapreduce.am.resource.mb";"mapreduce.map.memory.mb";
      * "mapreduce.reduce.memory.mb"

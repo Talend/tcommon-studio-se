@@ -1,6 +1,6 @@
 // ============================================================================
 //
-// Copyright (C) 2006-2018 Talend Inc. - www.talend.com
+// Copyright (C) 2006-2019 Talend Inc. - www.talend.com
 //
 // This source code is available under agreement available at
 // %InstallDIR%\features\org.talend.rcp.branding.%PRODUCTNAME%\%PRODUCTNAME%license.txt
@@ -26,33 +26,33 @@ import java.util.concurrent.ConcurrentHashMap;
 
 /**
  * Timer to measure elapsed time of any process or between steps.
- * 
+ *
  * Can write in a file by adding the JVM argument
- * 
+ *
  * -DstatsTracerPathFile=/myPathFile
- * 
+ *
  * and calling the method print()
- * 
+ *
  * Example of use:
- * 
+ *
  * <pre>
  * StatisticsTracer myTracerTest1 = StatisticsTracer.getTracer(&quot;myTracerTest1&quot;);
- * 
+ *
  * myTracerTest1.traceToFile(&quot;/myPathFileToTrace&quot;, false);
- * 
+ *
  * int sleepTime = 100;
  * int roundsCount = 10;
- * 
+ *
  * for (int i = 0; i &lt; 10; i++) {
  *     myTracerTest1.start();
  *     Thread.sleep(sleepTime);
  *     myTracerTest1.stop();
  * }
- * 
+ *
  * long averageWorkTime = myTracerTest1.getAverageWorkTime();
  * long elapsedTimeSinceFirstStart = myTracerTest1.getElapsedTimeSinceFirstStart();
  * long countRounds = myTracerTest1.getCountExecutions();
- * 
+ *
  * StatisticsTracer.removeTracer(&quot;myTracerTest1&quot;);
  * </pre>
  */
@@ -178,7 +178,7 @@ public final class StatisticsTracer {
 
         /**
          * Getter for tracerId.
-         * 
+         *
          * @return the tracerId
          */
         public String getTracerId() {
@@ -187,7 +187,7 @@ public final class StatisticsTracer {
 
         /**
          * Getter for description.
-         * 
+         *
          * @return the description
          */
         public String getDescription() {
@@ -196,7 +196,7 @@ public final class StatisticsTracer {
 
         /**
          * Getter for parameters.
-         * 
+         *
          * @return the parameters
          */
         public Map<String, Object> getParameters() {
@@ -205,7 +205,7 @@ public final class StatisticsTracer {
 
         /**
          * Getter for totalRounds.
-         * 
+         *
          * @return the totalRounds
          */
         public int getTotalRounds() {
@@ -214,7 +214,7 @@ public final class StatisticsTracer {
 
         /**
          * Getter for averageTime.
-         * 
+         *
          * @return the averageTime
          */
         public long getAverageRoundsTime() {
@@ -223,7 +223,7 @@ public final class StatisticsTracer {
 
         /**
          * Getter for roundsTime.
-         * 
+         *
          * @return the roundsTime
          */
         public long getRoundsTime() {
@@ -232,7 +232,7 @@ public final class StatisticsTracer {
 
         /**
          * Getter for totalElapsedTime.
-         * 
+         *
          * @return the totalElapsedTime
          */
         public long getTotalElapsedTime() {
@@ -241,7 +241,7 @@ public final class StatisticsTracer {
 
         /**
          * Getter for roundsInError.
-         * 
+         *
          * @return the roundsInError
          */
         public int getRoundsInError() {
@@ -250,7 +250,7 @@ public final class StatisticsTracer {
 
         /**
          * Getter for minTime.
-         * 
+         *
          * @return the minTime
          */
         public long getMinTime() {
@@ -259,7 +259,7 @@ public final class StatisticsTracer {
 
         /**
          * Getter for roundOfMinTime.
-         * 
+         *
          * @return the roundOfMinTime
          */
         public int getRoundOfMinTime() {
@@ -268,7 +268,7 @@ public final class StatisticsTracer {
 
         /**
          * Getter for maxTime.
-         * 
+         *
          * @return the maxTime
          */
         public long getMaxTime() {
@@ -277,7 +277,7 @@ public final class StatisticsTracer {
 
         /**
          * Getter for roundOfMaxTime.
-         * 
+         *
          * @return the roundOfMaxTime
          */
         public int getRoundOfMaxTime() {
@@ -286,7 +286,7 @@ public final class StatisticsTracer {
 
         /*
          * (non-Javadoc)
-         * 
+         *
          * @see java.lang.Object#toString()
          */
         @Override
@@ -382,7 +382,7 @@ public final class StatisticsTracer {
 
         /**
          * DOC amaumont Comment method "toDataRow".
-         * 
+         *
          * @return
          */
         public String toDataRow() {
@@ -400,7 +400,7 @@ public final class StatisticsTracer {
     }
 
     /**
-     * 
+     *
      * DOC amaumont TimeMeasurer class global comment. Detailled comment
      */
     class InternalTimer {
@@ -510,9 +510,9 @@ public final class StatisticsTracer {
     }
 
     /**
-     * 
+     *
      * DOC amaumont Comment method "start".
-     * 
+     *
      * @return id of internalTimer
      */
     public synchronized long start() {
@@ -546,11 +546,11 @@ public final class StatisticsTracer {
     }
 
     /**
-     * 
+     *
      * Method "stopWithRoundInError".
-     * 
+     *
      * Use this method when several threads may use the same StatisticTracer instance.
-     * 
+     *
      * @param internalTimerId
      * @return the timeDelta of the round
      */
@@ -560,11 +560,11 @@ public final class StatisticsTracer {
     }
 
     /**
-     * 
+     *
      * Method "stop".
-     * 
+     *
      * Use this method when several threads may use the same StatisticTracer instance.
-     * 
+     *
      * @param internalTimerId
      * @return the timeDelta of the round
      */
@@ -574,11 +574,11 @@ public final class StatisticsTracer {
     }
 
     /**
-     * 
+     *
      * Method "stop".
-     * 
+     *
      * Use this method when several threads may use the same StatisticTracer instance.
-     * 
+     *
      * @param internalTimerId
      * @param roundInError
      * @return the timeDelta of the round
@@ -616,9 +616,9 @@ public final class StatisticsTracer {
     }
 
     /**
-     * 
+     *
      * Method "stop".
-     * 
+     *
      * @param internalTimerId
      * @return the total time since the start
      */

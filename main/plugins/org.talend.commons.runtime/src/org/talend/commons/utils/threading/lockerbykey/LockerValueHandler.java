@@ -1,6 +1,6 @@
 // ============================================================================
 //
-// Copyright (C) 2006-2018 Talend Inc. - www.talend.com
+// Copyright (C) 2006-2019 Talend Inc. - www.talend.com
 //
 // This source code is available under agreement available at
 // %InstallDIR%\features\org.talend.rcp.branding.%PRODUCTNAME%\%PRODUCTNAME%license.txt
@@ -36,7 +36,7 @@ public class LockerValueHandler {
 
     /**
      * Getter for future.
-     * 
+     *
      * @return the future
      */
     public Future<Boolean> getFuture() {
@@ -45,7 +45,7 @@ public class LockerValueHandler {
 
     /**
      * Getter for barrier.
-     * 
+     *
      * @return the barrier
      */
     public CyclicBarrier getBarrier() {
@@ -54,7 +54,7 @@ public class LockerValueHandler {
 
     /**
      * Getter for callerThreadLocker.
-     * 
+     *
      * @return the callerThreadLocker
      */
     public Thread getCallerThreadLocker() {

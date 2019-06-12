@@ -1,6 +1,6 @@
 // ============================================================================
 //
-// Copyright (C) 2006-2018 Talend Inc. - www.talend.com
+// Copyright (C) 2006-2019 Talend Inc. - www.talend.com
 //
 // This source code is available under agreement available at
 // %InstallDIR%\features\org.talend.rcp.branding.%PRODUCTNAME%\%PRODUCTNAME%license.txt
@@ -19,7 +19,7 @@ import orgomg.cwm.objectmodel.core.ModelElement;
 
 /**
  * @author scorreia
- * 
+ *
  * Utility class for element Descriptions.
  * @deprecated this class has never been used. Please, make sure that it's really the class you need. If yes, then
  * remove the deprecated flag.
@@ -31,7 +31,7 @@ public final class DescriptionHelper {
 
     /**
      * Method "getTypedDescriptionString".
-     * 
+     *
      * @param type the type of the searched description
      * @param element a CWM element
      * @return the description or null
@@ -64,7 +64,7 @@ public final class DescriptionHelper {
 
     /**
      * Method "createDescription".
-     * 
+     *
      * @param type the type of the description
      * @param body the body of the description
      * @return the created description

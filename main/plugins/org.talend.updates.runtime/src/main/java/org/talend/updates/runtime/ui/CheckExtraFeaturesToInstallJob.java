@@ -1,6 +1,6 @@
 // ============================================================================
 //
-// Copyright (C) 2006-2018 Talend Inc. - www.talend.com
+// Copyright (C) 2006-2019 Talend Inc. - www.talend.com
 //
 // This source code is available under agreement available at
 // %InstallDIR%\features\org.talend.rcp.branding.%PRODUCTNAME%\%PRODUCTNAME%license.txt
@@ -34,13 +34,13 @@ import org.talend.updates.runtime.model.ExtraFeature;
 /**
  * This will check if there are extra features to update and provide a wizard for to choose which featurte to download
  * and install. First a check i done to see if the user refused the check once.
- * 
+ *
  */
 public class CheckExtraFeaturesToInstallJob extends Job {
     protected boolean isCheckUpdateOnLine = false;
     /**
      * DOC sgandon CheckExtraFeaturesToUpdateJob constructor comment.
-     * 
+     *
      * @param name
      */
     public CheckExtraFeaturesToInstallJob() {
@@ -49,7 +49,7 @@ public class CheckExtraFeaturesToInstallJob extends Job {
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see org.eclipse.core.runtime.jobs.Job#run(org.eclipse.core.runtime.IProgressMonitor)
      */
     @Override
@@ -93,11 +93,11 @@ public class CheckExtraFeaturesToInstallJob extends Job {
         }// else not feature to install
         return Status.OK_STATUS;
     }
-  
+
     public boolean isCheckUpdateOnLine() {
         return isCheckUpdateOnLine;
     }
-    
+
     public void setCheckUpdateOnLine(boolean isCheckUpdateOnLine) {
         this.isCheckUpdateOnLine = isCheckUpdateOnLine;
     }

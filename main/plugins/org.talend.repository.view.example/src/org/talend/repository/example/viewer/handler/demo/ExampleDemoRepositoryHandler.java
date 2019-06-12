@@ -1,6 +1,6 @@
 // ============================================================================
 //
-// Copyright (C) 2006-2018 Talend Inc. - www.talend.com
+// Copyright (C) 2006-2019 Talend Inc. - www.talend.com
 //
 // This source code is available under agreement available at
 // %InstallDIR%\features\org.talend.rcp.branding.%PRODUCTNAME%\%PRODUCTNAME%license.txt
@@ -47,9 +47,9 @@ import org.talend.repository.model.RepositoryNode;
 
 /**
  * DOC ggu class global comment. Detailled comment <br/>
- * 
+ *
  * $Id: talend.epf 55206 2011-02-15 17:32:14Z mhirt $
- * 
+ *
  */
 public class ExampleDemoRepositoryHandler implements IRepositoryContentHandler {
 
@@ -63,7 +63,7 @@ public class ExampleDemoRepositoryHandler implements IRepositoryContentHandler {
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see org.talend.core.model.repository.IRepositoryContentHandler#create(org.eclipse.core.resources.IProject,
      * org.talend.core.model.properties.Item, int, org.eclipse.core.runtime.IPath)
      */
@@ -82,7 +82,7 @@ public class ExampleDemoRepositoryHandler implements IRepositoryContentHandler {
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see org.talend.core.model.repository.IRepositoryContentHandler#save(org.talend.core.model.properties.Item)
      */
     @Override
@@ -100,7 +100,7 @@ public class ExampleDemoRepositoryHandler implements IRepositoryContentHandler {
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see org.talend.core.model.repository.IRepositoryContentHandler#createNewItem(org.talend.core.model.repository.
      * ERepositoryObjectType)
      */
@@ -114,7 +114,7 @@ public class ExampleDemoRepositoryHandler implements IRepositoryContentHandler {
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see
      * org.talend.core.model.repository.IRepositoryContentHandler#getRepositoryObjectType(org.talend.core.model.properties
      * .Item)
@@ -129,7 +129,7 @@ public class ExampleDemoRepositoryHandler implements IRepositoryContentHandler {
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see org.talend.core.model.repository.IRepositoryContentHandler#isRepObjType(org.talend.core.model.repository.
      * ERepositoryObjectType)
      */
@@ -140,7 +140,7 @@ public class ExampleDemoRepositoryHandler implements IRepositoryContentHandler {
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see org.talend.core.model.repository.IRepositoryContentHandler#getIcon(org.talend.core.model.repository.
      * ERepositoryObjectType)
      */
@@ -154,7 +154,7 @@ public class ExampleDemoRepositoryHandler implements IRepositoryContentHandler {
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see org.talend.core.model.repository.IRepositoryContentHandler#getIcon(org.talend.core.model.properties.Item)
      */
     @Override
@@ -164,7 +164,7 @@ public class ExampleDemoRepositoryHandler implements IRepositoryContentHandler {
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see org.talend.core.model.repository.IRepositoryContentHandler#isProcess(org.talend.core.model.properties.Item)
      */
     @Override
@@ -174,7 +174,7 @@ public class ExampleDemoRepositoryHandler implements IRepositoryContentHandler {
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see org.talend.core.model.repository.IRepositoryContentHandler#getProcessType()
      */
     @Override
@@ -184,7 +184,7 @@ public class ExampleDemoRepositoryHandler implements IRepositoryContentHandler {
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see org.talend.core.model.repository.IRepositoryContentHandler#getCodeType()
      */
     @Override
@@ -194,7 +194,7 @@ public class ExampleDemoRepositoryHandler implements IRepositoryContentHandler {
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see org.talend.core.model.repository.IRepositoryContentHandler#addNode(org.talend.core.model.repository.
      * ERepositoryObjectType, org.talend.repository.model.RepositoryNode,
      * org.talend.core.model.repository.IRepositoryViewObject, org.talend.repository.model.RepositoryNode)
@@ -207,7 +207,7 @@ public class ExampleDemoRepositoryHandler implements IRepositoryContentHandler {
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see org.talend.core.model.repository.IRepositoryContentHandler#addContents(java.util.Collection,
      * org.eclipse.emf.ecore.resource.Resource)
      */
@@ -218,7 +218,7 @@ public class ExampleDemoRepositoryHandler implements IRepositoryContentHandler {
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see org.talend.core.model.repository.IRepositoryContentHandler#getHandleType()
      */
     @Override
@@ -228,7 +228,7 @@ public class ExampleDemoRepositoryHandler implements IRepositoryContentHandler {
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see org.talend.core.model.repository.IRepositoryContentHandler#hasSchemas()
      */
     @Override
@@ -238,7 +238,7 @@ public class ExampleDemoRepositoryHandler implements IRepositoryContentHandler {
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see
      * org.talend.core.model.repository.IRepositoryContentHandler#getPropertyStatus(org.talend.core.model.properties
      * .Item)
@@ -255,7 +255,7 @@ public class ExampleDemoRepositoryHandler implements IRepositoryContentHandler {
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see
      * org.talend.core.model.repository.IRepositoryContentHandler#hideAction(org.talend.repository.model.IRepositoryNode
      * , java.lang.Class)
@@ -267,7 +267,7 @@ public class ExampleDemoRepositoryHandler implements IRepositoryContentHandler {
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see
      * org.talend.core.model.repository.IRepositoryContentHandler#isOwnTable(org.talend.repository.model.IRepositoryNode
      * , java.lang.Class)
@@ -279,7 +279,7 @@ public class ExampleDemoRepositoryHandler implements IRepositoryContentHandler {
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see org.talend.core.model.repository.IRepositoryContentHandler#newWizard(org.eclipse.ui.IWorkbench, boolean,
      * org.talend.repository.model.RepositoryNode, java.lang.String[])
      */
@@ -291,7 +291,7 @@ public class ExampleDemoRepositoryHandler implements IRepositoryContentHandler {
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see
      * org.talend.core.model.repository.IRepositoryContentHandler#createScreenShotResource(org.eclipse.core.resources
      * .IProject, org.talend.core.model.properties.Item, int, org.eclipse.core.runtime.IPath)
@@ -305,7 +305,7 @@ public class ExampleDemoRepositoryHandler implements IRepositoryContentHandler {
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see
      * org.talend.core.model.repository.IRepositoryContentHandler#saveScreenShots(org.talend.core.model.properties.Item)
      */
@@ -317,7 +317,7 @@ public class ExampleDemoRepositoryHandler implements IRepositoryContentHandler {
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see
      * org.talend.core.model.repository.IRepositoryContentHandler#copyScreenShotFile(org.talend.core.model.properties
      * .Item, org.talend.core.model.properties.Item)
@@ -330,7 +330,7 @@ public class ExampleDemoRepositoryHandler implements IRepositoryContentHandler {
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see org.talend.core.model.repository.IRepositoryContentHandler#deleteNode(org.talend.core.model.repository.
      * IRepositoryViewObject)
      */
@@ -342,7 +342,7 @@ public class ExampleDemoRepositoryHandler implements IRepositoryContentHandler {
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see org.talend.core.model.repository.IRepositoryContentHandler#getRepositoryTypeProcessor(java.lang.String)
      */
     @Override
@@ -353,7 +353,7 @@ public class ExampleDemoRepositoryHandler implements IRepositoryContentHandler {
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see
      * org.talend.core.model.repository.IRepositoryContentHandler#getReferenceFileURI(org.talend.core.model.properties
      * .Item, java.lang.String)
@@ -366,7 +366,7 @@ public class ExampleDemoRepositoryHandler implements IRepositoryContentHandler {
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see org.talend.core.model.repository.IRepositoryContentHandler#newSchemaWizard(org.eclipse.ui.IWorkbench,
      * boolean, org.talend.core.model.repository.IRepositoryViewObject,
      * org.talend.core.model.metadata.builder.connection.MetadataTable, java.lang.String[], boolean)
@@ -386,10 +386,10 @@ public class ExampleDemoRepositoryHandler implements IRepositoryContentHandler {
         // TODO Auto-generated method stub
         return false;
     }
-    
+
     @Override
     public void copyIcon(Item originalItem, Item newItem){
-        
+
     }
 
     @Override

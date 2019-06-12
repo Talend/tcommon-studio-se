@@ -1,6 +1,6 @@
 // ============================================================================
 //
-// Copyright (C) 2006-2018 Talend Inc. - www.talend.com
+// Copyright (C) 2006-2019 Talend Inc. - www.talend.com
 //
 // This source code is available under agreement available at
 // %InstallDIR%\features\org.talend.rcp.branding.%PRODUCTNAME%\%PRODUCTNAME%license.txt
@@ -14,9 +14,9 @@ package org.talend.commons.ui.swt.drawing.link;
 
 /**
  * DOC amaumont class global comment. Detailled comment <br/>
- * 
+ *
  * $Id$
- * 
+ *
  * @param <G1> the graphical item of extremety 1
  * @param <D1> the data item of extremety 1
  * @param <G2> the graphical item of extremety 2
@@ -32,7 +32,7 @@ public class LinkDescriptor<G1, D1, G2, D2> {
 
     /**
      * DOC amaumont Link constructor comment.
-     * 
+     *
      * @param extremity1
      * @param extremity2
      */
@@ -44,7 +44,7 @@ public class LinkDescriptor<G1, D1, G2, D2> {
 
     /**
      * Getter for tip1.
-     * 
+     *
      * @return the tip1
      */
     public IExtremityLink<G1, D1> getExtremity1() {
@@ -53,7 +53,7 @@ public class LinkDescriptor<G1, D1, G2, D2> {
 
     /**
      * Sets the tip1.
-     * 
+     *
      * @param extremity1 the tip1 to set
      */
     public void setExtremity1(IExtremityLink<G1, D1> extremity1) {
@@ -62,7 +62,7 @@ public class LinkDescriptor<G1, D1, G2, D2> {
 
     /**
      * Getter for tip2.
-     * 
+     *
      * @return the tip2
      */
     public IExtremityLink<G2, D2> getExtremity2() {
@@ -71,7 +71,7 @@ public class LinkDescriptor<G1, D1, G2, D2> {
 
     /**
      * Sets the tip2.
-     * 
+     *
      * @param extremity22 the tip2 to set
      */
     public void setExtremity2(IExtremityLink<G2, D2> extremity22) {
@@ -80,7 +80,7 @@ public class LinkDescriptor<G1, D1, G2, D2> {
 
     /**
      * Getter for styleLink.
-     * 
+     *
      * @return the styleLink
      */
     public IStyleLink getStyleLink() {
@@ -89,7 +89,7 @@ public class LinkDescriptor<G1, D1, G2, D2> {
 
     /**
      * Sets the styleLink.
-     * 
+     *
      * @param drawableLink the styleLink to set
      */
     public void setStyleLink(IStyleLink styleLink) {

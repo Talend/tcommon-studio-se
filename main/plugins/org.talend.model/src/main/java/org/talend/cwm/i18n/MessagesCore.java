@@ -1,6 +1,6 @@
 // ============================================================================
 //
-// Copyright (C) 2006-2018 Talend Inc. - www.talend.com
+// Copyright (C) 2006-2019 Talend Inc. - www.talend.com
 //
 // This source code is available under agreement available at
 // %InstallDIR%\features\org.talend.rcp.branding.%PRODUCTNAME%\%PRODUCTNAME%license.txt
@@ -18,7 +18,7 @@ import java.util.ResourceBundle;
 
 /**
  * Core of i18n management.<br/>
- * 
+ *
  * Features :
  * <ul>
  * <li>String without args</li>
@@ -29,10 +29,10 @@ import java.util.ResourceBundle;
  * <li>Dates</li>
  * <li>Using many file per plug-in</li>
  * </ul>
- * 
+ *
  * Using plug-in can create their implementation by copy the DefaultMessagesImpl in the same package.<br/> * $Id:
  * MessagesCore.java,v 1.8 2006/07/26 16:02:00 amaumont Exp $
- * 
+ *
  */
 public abstract class MessagesCore {
 
@@ -44,7 +44,7 @@ public abstract class MessagesCore {
 
     /**
      * Returns the i18n formatted message for <i>key</i> in the specified bundle.
-     * 
+     *
      * @param key - the key for the desired string
      * @param resourceBundle - the ResourceBundle to search in
      * @return the string for the given key in the given resource bundle
@@ -70,7 +70,7 @@ public abstract class MessagesCore {
 
     /**
      * Returns the i18n formatted message for <i>key</i> and <i>args</i> in the specified bundle.
-     * 
+     *
      * @param key - the key for the desired string
      * @param resourceBundle - the ResourceBundle to search in
      * @param args - arg to include in the string
@@ -82,7 +82,7 @@ public abstract class MessagesCore {
 
     /**
      * Returns the i18n formatted message for <i>key</i> in the specified bundle.
-     * 
+     *
      * @param key - the key for the desired string
      * @param resourceBundle - the ResourceBundle to search in
      * @return the string for the given key in the given resource bundle
@@ -93,7 +93,7 @@ public abstract class MessagesCore {
 
     /**
      * Returns the i18n formatted message for <i>key</i> and <i>args</i> in the specified bundle.
-     * 
+     *
      * @param key - the key for the desired string
      * @param resourceBundle - the ResourceBundle to search in
      * @param args - arg to include in the string

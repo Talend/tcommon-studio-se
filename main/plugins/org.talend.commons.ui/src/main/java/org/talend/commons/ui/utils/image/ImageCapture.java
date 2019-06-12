@@ -1,6 +1,6 @@
 // ============================================================================
 //
-// Copyright (C) 2006-2018 Talend Inc. - www.talend.com
+// Copyright (C) 2006-2019 Talend Inc. - www.talend.com
 //
 // This source code is available under agreement available at
 // %InstallDIR%\features\org.talend.rcp.branding.%PRODUCTNAME%\%PRODUCTNAME%license.txt
@@ -14,7 +14,7 @@
  * Copyright (c) 2003, 2005 IBM Corporation and others. All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0 which accompanies this distribution, and is
  * available at http://www.eclipse.org/legal/epl-v10.html
- * 
+ *
  * Contributors: IBM Corporation - initial API and implementation
  **********************************************************************************************************************/
 package org.talend.commons.ui.utils.image;
@@ -31,16 +31,16 @@ import org.talend.commons.utils.system.EnvironmentUtils;
 
 /**
  * <code>ImageCapture</code> provides utilities to capture images.
- * 
+ *
  * $Id: ImageCapture.java 7042 2007-11-15 15:13:48Z smallet $
- * 
+ *
  */
 public class ImageCapture {
 
     /**
      * Captures the specified control and saves the result into a file in the BMP format. The capture is a copy of
      * screen with bounds of the Control
-     * 
+     *
      * @param control
      * @param filePath is the path of the file. If only the file name is provided, file is saved at root of application.
      */
@@ -51,10 +51,10 @@ public class ImageCapture {
 
     /**
      * DOC amaumont Comment method "capture".
-     * 
+     *
      * @param control
      */
-    public static Image capture(Control control) {    	
+    public static Image capture(Control control) {
         Shell shell = control.getShell();
         Rectangle boundsShell = shell.getBounds();
 
@@ -82,7 +82,7 @@ public class ImageCapture {
 
     /**
      * Image Capture for Win32 platforms.
-     * 
+     *
      * @since 1.1.0
      */
 

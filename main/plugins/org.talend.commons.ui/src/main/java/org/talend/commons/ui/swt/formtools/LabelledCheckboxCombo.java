@@ -1,6 +1,6 @@
 // ============================================================================
 //
-// Copyright (C) 2006-2018 Talend Inc. - www.talend.com
+// Copyright (C) 2006-2019 Talend Inc. - www.talend.com
 //
 // This source code is available under agreement available at
 // %InstallDIR%\features\org.talend.rcp.branding.%PRODUCTNAME%\%PRODUCTNAME%license.txt
@@ -28,19 +28,19 @@ import org.eclipse.swt.widgets.Listener;
 
 /**
  * Create Label, checkbox and Combo.
- * 
+ *
  * $Id: LabelledCheckboxCombo.java 7038 2007-11-15 14:05:48Z plegall $
- * 
+ *
  */
 public class LabelledCheckboxCombo {
 
     /**
-     * 
+     *
      */
     private static final int A_20 = 20;
 
     /**
-     * 
+     *
      */
     private static final int A_100 = 100;
 
@@ -56,7 +56,7 @@ public class LabelledCheckboxCombo {
 
     /**
      * create Label and Combo width a List of String.
-     * 
+     *
      * @param Composite parent
      * @param String label
      * @param String tip
@@ -71,14 +71,14 @@ public class LabelledCheckboxCombo {
 
     /**
      * create Label and Combo width a Array of String.
-     * 
+     *
      * @param Composite parent
      * @param String label
      * @param String tip
      * @param String[] item
      * @param int horizontalSpan
      * @param boolean isFill
-     * 
+     *
      * @return Combo
      */
     public LabelledCheckboxCombo(final Composite parent, final String labelStr, final String tip, final String[] item,
@@ -88,13 +88,13 @@ public class LabelledCheckboxCombo {
 
     /**
      * create Label and Combo width a Array of String.
-     * 
+     *
      * @param Composite parent
      * @param String label
      * @param String tip
      * @param String[] item
      * @param int horizontalSpan
-     * 
+     *
      * @return Combo
      */
     public LabelledCheckboxCombo(Composite parent, String labelStr, String tip, String[] item, int horizontalSpan) {
@@ -103,12 +103,12 @@ public class LabelledCheckboxCombo {
 
     /**
      * create Label and Combo width a Array of String.
-     * 
+     *
      * @param Composite parent
      * @param String label
      * @param String tip
      * @param String[] item
-     * 
+     *
      * @return Combo
      */
     public LabelledCheckboxCombo(Composite parent, String labelStr, String tip, String[] item) {
@@ -117,7 +117,7 @@ public class LabelledCheckboxCombo {
 
     /**
      * create Label and Combo width a Array of String.
-     * 
+     *
      * @param parent
      * @param labelStr
      * @param tip
@@ -198,7 +198,7 @@ public class LabelledCheckboxCombo {
 
     /**
      * return Object Combo.
-     * 
+     *
      * @return Combo
      */
     public Combo getCombo() {
@@ -207,7 +207,7 @@ public class LabelledCheckboxCombo {
 
     /**
      * return Object Checkbox.
-     * 
+     *
      * @return Button Checkbox
      */
     public Button getCheckbox() {
@@ -216,7 +216,7 @@ public class LabelledCheckboxCombo {
 
     /**
      * return SelectionIndex of the combo.
-     * 
+     *
      * @return int
      */
     public int getSelectionIndex() {
@@ -225,7 +225,7 @@ public class LabelledCheckboxCombo {
 
     /**
      * select a item of the combo.
-     * 
+     *
      * @param index
      */
     public void select(int index) {
@@ -236,7 +236,7 @@ public class LabelledCheckboxCombo {
 
     /**
      * setVisibleItemCount of the combo.
-     * 
+     *
      * @param size
      */
     public void setVisibleItemCount(int size) {
@@ -245,7 +245,7 @@ public class LabelledCheckboxCombo {
 
     /**
      * getItem of the combo.
-     * 
+     *
      * @param index
      * @return int
      */
@@ -255,7 +255,7 @@ public class LabelledCheckboxCombo {
 
     /**
      * addModifyListener to the combo and the checkbox.
-     * 
+     *
      * @param listener
      */
     public void addModifyListener(ModifyListener listener) {
@@ -264,7 +264,7 @@ public class LabelledCheckboxCombo {
 
     /**
      * addModifyListener to the combo and the checkbox.
-     * 
+     *
      * @param listener
      */
     public void addSelectionListener(SelectionListener listener) {
@@ -282,7 +282,7 @@ public class LabelledCheckboxCombo {
 
     /**
      * deselect a Item of the combo.
-     * 
+     *
      * @param index
      */
     public void deselect(Integer index) {
@@ -291,7 +291,7 @@ public class LabelledCheckboxCombo {
 
     /**
      * forceFocus.
-     * 
+     *
      * @return
      */
     public void forceFocus() {
@@ -304,7 +304,7 @@ public class LabelledCheckboxCombo {
 
     /**
      * addKeyListener to the combo.
-     * 
+     *
      * @param adapter
      */
     public void addKeyListener(KeyAdapter adapter) {
@@ -313,7 +313,7 @@ public class LabelledCheckboxCombo {
 
     /**
      * getText to the combo.
-     * 
+     *
      * @return string
      */
     public String getText() {
@@ -322,7 +322,7 @@ public class LabelledCheckboxCombo {
 
     /**
      * clearSelection to the combo.
-     * 
+     *
      * @return
      */
     public void clearSelection() {
@@ -331,7 +331,7 @@ public class LabelledCheckboxCombo {
 
     /**
      * isInteger.
-     * 
+     *
      * @return boolean
      */
     public Boolean isInteger() {
@@ -351,7 +351,7 @@ public class LabelledCheckboxCombo {
 
     /**
      * isEmpty.
-     * 
+     *
      * @return boolean
      */
     public Boolean isEmpty() {
@@ -360,7 +360,7 @@ public class LabelledCheckboxCombo {
 
     /**
      * DOC ocarbone Comment method "getLabelText".
-     * 
+     *
      * @return string
      */
     public String getLabelText() {
@@ -369,7 +369,7 @@ public class LabelledCheckboxCombo {
 
     /**
      * checkbox.getSelection().
-     * 
+     *
      * @return boolean
      */
     public boolean isChecked() {
@@ -378,7 +378,7 @@ public class LabelledCheckboxCombo {
 
     /**
      * combo.setText() and checkbox.setSelection(true).
-     * 
+     *
      * @param i
      */
     public void setText(String string) {
@@ -389,7 +389,7 @@ public class LabelledCheckboxCombo {
 
     /**
      * DOC ocarbone Comment method "setReadOnly".
-     * 
+     *
      * @param b
      */
     public void setReadOnly(boolean visible) {

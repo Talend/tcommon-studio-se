@@ -1,6 +1,6 @@
 // ============================================================================
 //
-// Copyright (C) 2006-2018 Talend Inc. - www.talend.com
+// Copyright (C) 2006-2019 Talend Inc. - www.talend.com
 //
 // This source code is available under agreement available at
 // %InstallDIR%\features\org.talend.rcp.branding.%PRODUCTNAME%\%PRODUCTNAME%license.txt
@@ -29,7 +29,7 @@ import org.talend.core.model.process.IContextParameter;
 
 /**
  * qzhang class global comment. Detailled comment <br/>
- * 
+ *
  */
 public class DialogCellEditorForContext extends CustomDialogCellEditor {
 
@@ -61,7 +61,7 @@ public class DialogCellEditorForContext extends CustomDialogCellEditor {
 
     /**
      * qzhang Comment method "init".
-     * 
+     *
      * @param tableViewerCreatorColumn
      */
     private void init(TableViewerCreatorColumn tableViewerCreatorColumn) {
@@ -71,7 +71,7 @@ public class DialogCellEditorForContext extends CustomDialogCellEditor {
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see org.eclipse.jface.viewers.CellEditor#activate()
      */
     @Override
@@ -154,7 +154,7 @@ public class DialogCellEditorForContext extends CustomDialogCellEditor {
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see org.eclipse.jface.viewers.DialogCellEditor#openDialogBox(org.eclipse.swt.widgets.Control)
      */
     @Override

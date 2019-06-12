@@ -1,6 +1,6 @@
 // ============================================================================
 //
-// Copyright (C) 2006-2018 Talend Inc. - www.talend.com
+// Copyright (C) 2006-2019 Talend Inc. - www.talend.com
 //
 // This source code is available under agreement available at
 // %InstallDIR%\features\org.talend.rcp.branding.%PRODUCTNAME%\%PRODUCTNAME%license.txt
@@ -85,12 +85,12 @@ public final class TalendQuoteUtils {
             return addQuotes(text, SINGLE_QUOTE);
         }
     }
-    
+
     public static String addQuotesForComplexusString(String input){
         if (input == null) {
             return null;
         }
-        
+
         int count = 0;
         for(int i = 0; i < input.length(); i++){
             if(QUOTATION_MARK.equals(String.valueOf(input.charAt(i)))){
@@ -134,7 +134,7 @@ public final class TalendQuoteUtils {
 
     /**
      * DOC ycbai Comment method "addQuotesIfNotExist".
-     * 
+     *
      * @param text
      * @return
      */
@@ -160,7 +160,7 @@ public final class TalendQuoteUtils {
      * <p>
      * Add pair of quotes(begin and end of the text) if the text is not surrounded with them.
      * </p>
-     * 
+     *
      * @param text
      * @param quote
      * @return
@@ -282,9 +282,9 @@ public final class TalendQuoteUtils {
     }
 
     /**
-     * 
+     *
      * ggu Comment method "addQuotesForSQLString".
-     * 
+     *
      * if simple is true, the text should not be the context or variables.
      */
     public static String addQuotesForSQLString(String text, String quoteStyle, boolean simple) {
@@ -328,9 +328,9 @@ public final class TalendQuoteUtils {
     }
 
     /**
-     * 
+     *
      * ggu Comment method "filterQuote".
-     * 
+     *
      * used for the string parsing, will ignore the char \" or \'.
      */
     public static String filterQuote(final String str) {
@@ -352,11 +352,11 @@ public final class TalendQuoteUtils {
     private static Pattern quotePatternRegex = Pattern.compile(QUOTE_PATTERN, Pattern.CANON_EQ | Pattern.MULTILINE);
 
     /**
-     * 
+     *
      * ggu Comment method "isCommonString".
-     * 
+     *
      * if there are no any quotes , variables and expression(connected string) in string, will return true.
-     * 
+     *
      */
     public static boolean isCommonString(final String str) {
         String newStr = replaceNewLine(str);
@@ -442,7 +442,7 @@ public final class TalendQuoteUtils {
 
     /**
      * qzhang Comment method "getBracket".
-     * 
+     *
      * @return
      */
     private static String getBracket() {
@@ -460,9 +460,9 @@ public final class TalendQuoteUtils {
     }
 
     /**
-     * 
+     *
      * ggu Comment method "checkAndRemoveQuotes".
-     * 
+     *
      * if the query is common string and start with quote, will remove the quotes.
      */
     public static String checkAndRemoveQuotes(String query) {
@@ -477,9 +477,9 @@ public final class TalendQuoteUtils {
     }
 
     /**
-     * 
+     *
      * plv Comment method "checkAndAddBackslashes".
-     * 
+     *
      * if str contains "\" ,will change "\" to "\\"
      */
     public static String checkAndAddBackslashes(String str) {
@@ -491,9 +491,9 @@ public final class TalendQuoteUtils {
     }
 
     /**
-     * 
+     *
      * plv Comment method "checkAndRemoveBackslashes".
-     * 
+     *
      * if str contains "\\" ,will change "\\" to "\"
      */
     public static String checkAndRemoveBackslashes(String str) {

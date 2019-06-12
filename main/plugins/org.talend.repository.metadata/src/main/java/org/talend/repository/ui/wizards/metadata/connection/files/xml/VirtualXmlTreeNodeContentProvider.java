@@ -1,6 +1,6 @@
 // ============================================================================
 //
-// Copyright (C) 2006-2018 Talend Inc. - www.talend.com
+// Copyright (C) 2006-2019 Talend Inc. - www.talend.com
 //
 // This source code is available under agreement available at
 // %InstallDIR%\features\org.talend.rcp.branding.%PRODUCTNAME%\%PRODUCTNAME%license.txt
@@ -20,13 +20,13 @@ import org.talend.datatools.xml.utils.ATreeNode;
 
 /**
  * created by nrousseau on May 9, 2013 Detailled comment
- * 
+ *
  */
 public class VirtualXmlTreeNodeContentProvider extends TreeNodeContentProvider implements ILazyTreeContentProvider {
 
     /**
      * DOC nrousseau VirtualXmlTreeNodeContentProvider constructor comment.
-     * 
+     *
      * @param viewer
      */
     public VirtualXmlTreeNodeContentProvider(TreeViewer viewer) {
@@ -40,7 +40,7 @@ public class VirtualXmlTreeNodeContentProvider extends TreeNodeContentProvider i
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see org.eclipse.jface.viewers.ILazyTreeContentProvider#updateElement(java.lang.Object, int)
      */
     @Override
@@ -57,7 +57,7 @@ public class VirtualXmlTreeNodeContentProvider extends TreeNodeContentProvider i
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see org.eclipse.jface.viewers.ILazyTreeContentProvider#updateChildCount(java.lang.Object, int)
      */
     @Override
@@ -77,7 +77,7 @@ public class VirtualXmlTreeNodeContentProvider extends TreeNodeContentProvider i
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see org.eclipse.jface.viewers.ILazyTreeContentProvider#getParent(java.lang.Object)
      */
     @Override
@@ -90,7 +90,7 @@ public class VirtualXmlTreeNodeContentProvider extends TreeNodeContentProvider i
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see org.eclipse.jface.viewers.TreeNodeContentProvider#inputChanged(org.eclipse.jface.viewers.Viewer,
      * java.lang.Object, java.lang.Object)
      */
@@ -101,7 +101,7 @@ public class VirtualXmlTreeNodeContentProvider extends TreeNodeContentProvider i
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see org.eclipse.jface.viewers.TreeNodeContentProvider#getChildren(java.lang.Object)
      */
     @Override
@@ -117,7 +117,7 @@ public class VirtualXmlTreeNodeContentProvider extends TreeNodeContentProvider i
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see org.eclipse.jface.viewers.TreeNodeContentProvider#hasChildren(java.lang.Object)
      */
     @Override

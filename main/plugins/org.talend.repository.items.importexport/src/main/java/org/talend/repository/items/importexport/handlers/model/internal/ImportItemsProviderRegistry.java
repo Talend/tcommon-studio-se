@@ -1,6 +1,6 @@
 // ============================================================================
 //
-// Copyright (C) 2006-2018 Talend Inc. - www.talend.com
+// Copyright (C) 2006-2019 Talend Inc. - www.talend.com
 //
 // This source code is available under agreement available at
 // %InstallDIR%\features\org.talend.rcp.branding.%PRODUCTNAME%\%PRODUCTNAME%license.txt
@@ -27,7 +27,7 @@ public class ImportItemsProviderRegistry extends BasicRegistry {
 
     /**
      * Getter for importHandler.
-     * 
+     *
      * @return the importHandler
      */
     public IImportItemsHandler getImportItemsHandler() {
@@ -36,7 +36,7 @@ public class ImportItemsProviderRegistry extends BasicRegistry {
 
     /**
      * Sets the importHandler.
-     * 
+     *
      * @param importHandler the importHandler to set
      */
     public void setImportItemsHandler(IImportItemsHandler handler) {

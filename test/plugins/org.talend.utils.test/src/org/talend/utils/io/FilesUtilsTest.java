@@ -1,6 +1,6 @@
 // ============================================================================
 //
-// Copyright (C) 2006-2018 Talend Inc. - www.talend.com
+// Copyright (C) 2006-2019 Talend Inc. - www.talend.com
 //
 // This source code is available under agreement available at
 // %InstallDIR%\features\org.talend.rcp.branding.%PRODUCTNAME%\%PRODUCTNAME%license.txt
@@ -75,7 +75,7 @@ public class FilesUtilsTest {
      * Test method for
      * {@link org.talend.utils.io.FilesUtils#copyFolder(java.io.File, java.io.File, boolean, java.io.FileFilter, java.io.FileFilter, boolean)}
      * .
-     * 
+     *
      * @throws IOException
      */
     @Test
@@ -136,7 +136,7 @@ public class FilesUtilsTest {
 
     /**
      * Test method for {@link org.talend.utils.io.FilesUtils#createFoldersIfNotExists(java.lang.String)}.
-     * 
+     *
      * @throws IOException
      */
     @Test
@@ -149,7 +149,7 @@ public class FilesUtilsTest {
 
     /**
      * Test method for {@link org.talend.utils.io.FilesUtils#createFoldersIfNotExists(java.lang.String)}.
-     * 
+     *
      * @throws IOException
      */
     @Test
@@ -166,7 +166,7 @@ public class FilesUtilsTest {
 
     /**
      * Test method for {@link org.talend.utils.io.FilesUtils#createFoldersIfNotExists(java.lang.String)}.
-     * 
+     *
      * @throws IOException
      */
     @Test
@@ -181,7 +181,7 @@ public class FilesUtilsTest {
 
     /**
      * Test method for {@link org.talend.utils.io.FilesUtils#deleteFile(java.io.File, boolean)}.
-     * 
+     *
      * @throws IOException
      */
     @Test

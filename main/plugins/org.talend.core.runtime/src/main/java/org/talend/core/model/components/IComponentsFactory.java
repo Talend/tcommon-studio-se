@@ -1,6 +1,6 @@
 // ============================================================================
 //
-// Copyright (C) 2006-2018 Talend Inc. - www.talend.com
+// Copyright (C) 2006-2019 Talend Inc. - www.talend.com
 //
 // This source code is available under agreement available at
 // %InstallDIR%\features\org.talend.rcp.branding.%PRODUCTNAME%\%PRODUCTNAME%license.txt
@@ -22,9 +22,9 @@ import org.eclipse.core.runtime.IProgressMonitor;
 
 /**
  * Defines methods to use components. Implementation from extension point is given by ComponentsFactoryProvider<br/>
- * 
+ *
  * $Id: IComponentsFactory.java 46516 2010-08-09 11:55:19Z wchen $
- * 
+ *
  */
 public interface IComponentsFactory {
 
@@ -70,15 +70,15 @@ public interface IComponentsFactory {
 
     /**
      * Added by Marvin Wang on Jan 11, 2013.
-     * 
+     *
      * @return
      */
     IComponentsHandler getComponentsHandler();
 
     /**
-     * 
+     *
      * Added by Marvin Wang on Jan 11, 2013.
-     * 
+     *
      * @param componentsHandler
      */
     void setComponentsHandler(IComponentsHandler componentsHandler);
@@ -86,7 +86,7 @@ public interface IComponentsFactory {
     /**
      * This one by default will avoid the new possible type for M/R.<br>
      * Deprecated, Shouldn't be used anymore.
-     * 
+     *
      * @param name
      * @return
      * @deprecated

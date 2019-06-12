@@ -1,6 +1,6 @@
 // ============================================================================
 //
-// Copyright (C) 2006-2018 Talend Inc. - www.talend.com
+// Copyright (C) 2006-2019 Talend Inc. - www.talend.com
 //
 // This source code is available under agreement available at
 // %InstallDIR%\features\org.talend.rcp.branding.%PRODUCTNAME%\%PRODUCTNAME%license.txt
@@ -24,9 +24,9 @@ import org.talend.utils.json.JSONObject;
 
 /**
  * DOC smallet class global comment. Detailled comment <br/>
- * 
+ *
  * $Id: talend.epf 1 2006-09-29 17:06:40 +0000 (ven., 29 sept. 2006) nrousseau $
- * 
+ *
  */
 public class ConnectionBean implements Cloneable {
 
@@ -84,7 +84,7 @@ public class ConnectionBean implements Cloneable {
 
     /**
      * Getter for ID.
-     * 
+     *
      * @return the ID
      */
     public String getRepositoryId() {
@@ -100,7 +100,7 @@ public class ConnectionBean implements Cloneable {
 
     /**
      * Sets the ID.
-     * 
+     *
      * @param id the id to set
      */
     public void setRepositoryId(String repositoryId) {
@@ -113,7 +113,7 @@ public class ConnectionBean implements Cloneable {
 
     /**
      * Getter for description.
-     * 
+     *
      * @return the description
      */
     public String getDescription() {
@@ -129,7 +129,7 @@ public class ConnectionBean implements Cloneable {
 
     /**
      * Sets the description.
-     * 
+     *
      * @param description the description to set
      */
     public void setDescription(String description) {
@@ -142,7 +142,7 @@ public class ConnectionBean implements Cloneable {
 
     /**
      * Getter for name.
-     * 
+     *
      * @return the name
      */
     public String getName() {
@@ -158,7 +158,7 @@ public class ConnectionBean implements Cloneable {
 
     /**
      * Sets the name.
-     * 
+     *
      * @param name the name to set
      */
     public void setName(String name) {
@@ -171,7 +171,7 @@ public class ConnectionBean implements Cloneable {
 
     /**
      * Getter for password.
-     * 
+     *
      * @return the password
      */
     public String getPassword() {
@@ -187,7 +187,7 @@ public class ConnectionBean implements Cloneable {
 
     /**
      * Sets the password.
-     * 
+     *
      * @param password the password to set
      */
     public void setPassword(String password) {
@@ -200,7 +200,7 @@ public class ConnectionBean implements Cloneable {
 
     /**
      * Getter for user.
-     * 
+     *
      * @return the user
      */
     public String getUser() {
@@ -216,7 +216,7 @@ public class ConnectionBean implements Cloneable {
 
     /**
      * Sets the user.
-     * 
+     *
      * @param user the user to set
      */
     public void setUser(String user) {
@@ -229,7 +229,7 @@ public class ConnectionBean implements Cloneable {
 
     /**
      * Getter for workSpace.
-     * 
+     *
      * @return the workSpace
      */
     public String getWorkSpace() {
@@ -245,7 +245,7 @@ public class ConnectionBean implements Cloneable {
 
     /**
      * Sets the workSpace.
-     * 
+     *
      * @param workSpace the workSpace to set
      */
     public void setWorkSpace(String workSpace) {

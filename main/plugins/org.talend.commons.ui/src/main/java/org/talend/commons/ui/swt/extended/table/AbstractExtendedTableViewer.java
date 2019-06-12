@@ -1,6 +1,6 @@
 // ============================================================================
 //
-// Copyright (C) 2006-2018 Talend Inc. - www.talend.com
+// Copyright (C) 2006-2019 Talend Inc. - www.talend.com
 //
 // This source code is available under agreement available at
 // %InstallDIR%\features\org.talend.rcp.branding.%PRODUCTNAME%\%PRODUCTNAME%license.txt
@@ -39,9 +39,9 @@ import org.talend.commons.utils.data.list.ListenableListEvent.TYPE;
 
 /**
  * DOC amaumont class global comment. Detailled comment <br/>
- * 
+ *
  * $Id$
- * 
+ *
  * @param <B> Type of beans
  */
 public abstract class AbstractExtendedTableViewer<B> extends AbstractExtendedControlViewer {
@@ -93,7 +93,7 @@ public abstract class AbstractExtendedTableViewer<B> extends AbstractExtendedCon
 
     /**
      * DOC amaumont Comment method "init".
-     * 
+     *
      */
     protected void initTable() {
         if (this.tableViewerCreator != null && this.tableViewerCreator.getTable() != null) {
@@ -148,7 +148,7 @@ public abstract class AbstractExtendedTableViewer<B> extends AbstractExtendedCon
 
     /**
      * DOC amaumont Comment method "initLineSelectionListeners".
-     * 
+     *
      * @return
      */
     protected void initLineSelectionListeners() {
@@ -202,7 +202,7 @@ public abstract class AbstractExtendedTableViewer<B> extends AbstractExtendedCon
     }
 
     /**
-     * 
+     *
      * DOC YeXiaowei Comment method "copyMetdataItem".
      */
     private void copyMetdataItem() {
@@ -220,7 +220,7 @@ public abstract class AbstractExtendedTableViewer<B> extends AbstractExtendedCon
     }
 
     /**
-     * 
+     *
      * DOC YeXiaowei Comment method "pasteMetadataItem".
      */
     private void pasteMetadataItem() {
@@ -239,7 +239,7 @@ public abstract class AbstractExtendedTableViewer<B> extends AbstractExtendedCon
 
     /**
      * .
-     * 
+     *
      * @param newTableViewerCreator
      */
     protected void setTableViewerCreatorOptions(TableViewerCreator<B> newTableViewerCreator) {
@@ -256,7 +256,7 @@ public abstract class AbstractExtendedTableViewer<B> extends AbstractExtendedCon
 
     /**
      * DOC amaumont Comment method "getBeansList".
-     * 
+     *
      * @return
      */
     private List<B> getBeansList() {
@@ -334,7 +334,7 @@ public abstract class AbstractExtendedTableViewer<B> extends AbstractExtendedCon
 
     /**
      * DOC amaumont Comment method "handleListenableListEvent".
-     * 
+     *
      * @param event
      */
     protected void handleBeforeListenableListOperationEvent(ListenableListEvent<B> event) {
@@ -357,7 +357,7 @@ public abstract class AbstractExtendedTableViewer<B> extends AbstractExtendedCon
 
     /**
      * DOC amaumont Comment method "handleListenableListEvent".
-     * 
+     *
      * @param event
      */
     protected void handleAfterListenableListOperationEvent(ListenableListEvent<B> event) {
@@ -412,14 +412,14 @@ public abstract class AbstractExtendedTableViewer<B> extends AbstractExtendedCon
 
     /**
      * DOC amaumont Comment method "createColumns".
-     * 
+     *
      * @param tableViewerCreator2
      */
     protected abstract void createColumns(TableViewerCreator<B> tableViewerCreator, Table table);
 
     /**
      * Getter for extendedTable.
-     * 
+     *
      * @return the extendedTable
      */
     @SuppressWarnings("unchecked")
@@ -429,7 +429,7 @@ public abstract class AbstractExtendedTableViewer<B> extends AbstractExtendedCon
 
     /**
      * Getter for tableViewerCreator.
-     * 
+     *
      * @return the tableViewerCreator
      */
     public TableViewerCreator<B> getTableViewerCreator() {
@@ -438,7 +438,7 @@ public abstract class AbstractExtendedTableViewer<B> extends AbstractExtendedCon
 
     /**
      * Getter for tableViewerCreator.
-     * 
+     *
      * @return the tableViewerCreator
      */
     public Table getTable() {
@@ -450,7 +450,7 @@ public abstract class AbstractExtendedTableViewer<B> extends AbstractExtendedCon
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see
      * org.talend.commons.ui.swt.extended.macrotable.AbstractExtendedControlViewer#modelChanged(org.talend.commons.ui
      * .swt.extended.macrotable.AbstractExtendedControlModel,
@@ -468,7 +468,7 @@ public abstract class AbstractExtendedTableViewer<B> extends AbstractExtendedCon
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see
      * org.talend.commons.ui.swt.extended.table.AbstractExtendedControlViewer#setCommandStackAdapter(org.talend.commons
      * .ui.command.ICommandStackAdapter)
@@ -483,7 +483,7 @@ public abstract class AbstractExtendedTableViewer<B> extends AbstractExtendedCon
 
     /**
      * DOC amaumont Comment method "setTableSelection".
-     * 
+     *
      * @param selectionIndices
      */
     public void setTableSelection(int[] selectionIndices, boolean executeSelectionEvent) {
@@ -504,7 +504,7 @@ public abstract class AbstractExtendedTableViewer<B> extends AbstractExtendedCon
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see org.talend.commons.ui.swt.extended.table.AbstractExtendedControlViewer#setReadOnly(boolean)
      */
     @Override

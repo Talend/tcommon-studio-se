@@ -1,6 +1,6 @@
 // ============================================================================
 //
-// Copyright (C) 2006-2018 Talend Inc. - www.talend.com
+// Copyright (C) 2006-2019 Talend Inc. - www.talend.com
 //
 // This source code is available under agreement available at
 // %InstallDIR%\features\org.talend.rcp.branding.%PRODUCTNAME%\%PRODUCTNAME%license.txt
@@ -25,11 +25,11 @@ import org.talend.core.model.update.UpdateResult;
 public interface IRepositoryUpdateManagerProvider extends IUpdateManagerProvider {
 
     /**
-     * 
+     *
      * DOC ggu Comment method "validateAction".
-     * 
+     *
      * Mostly work for the method init(TreeViewer,IStructuredSelection) of class DetecteViewImpactAction.
-     * 
+     *
      * @param viewer
      * @param selection
      * @return
@@ -37,29 +37,29 @@ public interface IRepositoryUpdateManagerProvider extends IUpdateManagerProvider
     boolean validateAction(TreeViewer viewer, IStructuredSelection selection);
 
     /**
-     * 
+     *
      * DOC ggu Comment method "needPropagate".
-     * 
+     *
      * @param selection
      * @return
      */
     boolean needPropagate(IStructuredSelection selection);
 
     /**
-     * 
+     *
      * DOC ggu Comment method "needForcePropagation".
-     * 
+     *
      * @param selection
      * @return if true, will force propagate to update manager.
      */
     boolean needForcePropagation(IStructuredSelection selection);
 
     /**
-     * 
+     *
      * DOC ggu Comment method "updateForRepository".
-     * 
+     *
      * Work for DetecteViewImpactAction.
-     * 
+     *
      * @param selection
      * @return true, update successfully
      */
@@ -71,17 +71,17 @@ public interface IRepositoryUpdateManagerProvider extends IUpdateManagerProvider
     boolean enableCheckItem(final IRepositoryViewObject object);
 
     /**
-     * 
+     *
      * @param checkItem if true , force to check closed job
      */
     void setEnableCheckItem(boolean checkItem);
-    
+
     /**
      * @param selection
      * @return Retrieve the update result
      */
     public List<UpdateResult> retrieveUpdateResults(final IStructuredSelection selection);
-    
+
     /**
      * @param updateResults
      * @return Valid update result

@@ -1,6 +1,6 @@
 // ============================================================================
 //
-// Copyright (C) 2006-2018 Talend Inc. - www.talend.com
+// Copyright (C) 2006-2019 Talend Inc. - www.talend.com
 //
 // This source code is available under agreement available at
 // %InstallDIR%\features\org.talend.rcp.branding.%PRODUCTNAME%\%PRODUCTNAME%license.txt
@@ -19,9 +19,9 @@ import org.talend.core.model.metadata.IMetadataTable;
 
 /**
  * DOC nrousseau class global comment. Detailled comment <br/>
- * 
+ *
  * $Id: IConnection.java 44753 2010-07-01 06:42:03Z wchen $
- * 
+ *
  */
 public interface IConnection extends IElement {
 
@@ -40,21 +40,21 @@ public interface IConnection extends IElement {
 
     /**
      * Get the node target of the connection.
-     * 
+     *
      * @return Node
      */
     public INode getTarget();
 
     /**
      * Get the node source of the connection.
-     * 
+     *
      * @return Node
      */
     public INode getSource();
 
     /**
      * Get the name of the connection.
-     * 
+     *
      * @return
      */
     public String getName();
@@ -63,7 +63,7 @@ public interface IConnection extends IElement {
 
     /**
      * Return the given style of the connection.
-     * 
+     *
      * @see org.talend.designer.core.ui.editor.connections.EConnectionType
      * @return int value of the style
      */

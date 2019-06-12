@@ -1,6 +1,6 @@
 // ============================================================================
 //
-// Copyright (C) 2006-2018 Talend Inc. - www.talend.com
+// Copyright (C) 2006-2019 Talend Inc. - www.talend.com
 //
 // This source code is available under agreement available at
 // %InstallDIR%\features\org.talend.rcp.branding.%PRODUCTNAME%\%PRODUCTNAME%license.txt
@@ -23,12 +23,12 @@ import org.talend.repository.model.IRepositoryNode;
 public class ResourceNode {
 
     private String path;
-    
+
     private IRepositoryNode topNode;
-    
+
     private String topNodePath;
 
-    
+
     /**
      * Getter for path.
      * @return the path
@@ -37,7 +37,7 @@ public class ResourceNode {
         return this.path;
     }
 
-    
+
     /**
      * Sets the path.
      * @param path the path to set
@@ -46,7 +46,7 @@ public class ResourceNode {
         this.path = path;
     }
 
-    
+
     /**
      * Getter for topNode.
      * @return the topNode
@@ -55,7 +55,7 @@ public class ResourceNode {
         return this.topNode;
     }
 
-    
+
     /**
      * Sets the topNode.
      * @param topNode the topNode to set
@@ -63,7 +63,7 @@ public class ResourceNode {
     protected void setTopNode(IRepositoryNode topNode) {
         this.topNode = topNode;
     }
-    
+
     /**
      * Getter for topNodePath.
      * @return the topNodePath
@@ -73,7 +73,7 @@ public class ResourceNode {
     }
 
 
-    
+
     /**
      * Sets the topNodePath.
      * @param topNodePath the topNodePath to set

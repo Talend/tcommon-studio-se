@@ -1,6 +1,6 @@
 // ============================================================================
 //
-// Copyright (C) 2006-2018 Talend Inc. - www.talend.com
+// Copyright (C) 2006-2019 Talend Inc. - www.talend.com
 //
 // This source code is available under agreement available at
 // %InstallDIR%\features\org.talend.rcp.branding.%PRODUCTNAME%\%PRODUCTNAME%license.txt
@@ -50,7 +50,7 @@ public class DB2ForZosDataBaseMetadata extends PackageFakeDatabaseMetadata {
 
     /**
      * DOC xqliu Comment method "getDb2zosTypeName".
-     * 
+     *
      * @param typeName
      * @return
      */
@@ -70,7 +70,7 @@ public class DB2ForZosDataBaseMetadata extends PackageFakeDatabaseMetadata {
 
     /**
      * DOC xqliu Comment method "getTypeNameFromDb2zosType".
-     * 
+     *
      * @param typeName
      * @return
      */
@@ -90,7 +90,7 @@ public class DB2ForZosDataBaseMetadata extends PackageFakeDatabaseMetadata {
 
     /**
      * DOC bqian DB2ForZosDataBaseMetadata constructor comment.
-     * 
+     *
      * @param metaData
      * @throws SQLException
      */
@@ -100,7 +100,7 @@ public class DB2ForZosDataBaseMetadata extends PackageFakeDatabaseMetadata {
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see org.talend.commons.utils.database.FakeDatabaseMetaData#getSchemas()
      */
     @Override
@@ -140,7 +140,7 @@ public class DB2ForZosDataBaseMetadata extends PackageFakeDatabaseMetadata {
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see org.talend.commons.utils.database.FakeDatabaseMetaData#getPrimaryKeys(java.lang.String, java.lang.String,
      * java.lang.String)
      */
@@ -151,7 +151,7 @@ public class DB2ForZosDataBaseMetadata extends PackageFakeDatabaseMetadata {
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see org.talend.commons.utils.database.FakeDatabaseMetaData#getTableTypes()
      */
     @Override
@@ -177,7 +177,7 @@ public class DB2ForZosDataBaseMetadata extends PackageFakeDatabaseMetadata {
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see org.talend.commons.utils.database.FakeDatabaseMetaData#getExportedKeys(java.lang.String, java.lang.String,
      * java.lang.String)
      */
@@ -188,7 +188,7 @@ public class DB2ForZosDataBaseMetadata extends PackageFakeDatabaseMetadata {
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see org.talend.commons.utils.database.FakeDatabaseMetaData#getTables(java.lang.String, java.lang.String,
      * java.lang.String, java.lang.String[])
      */
@@ -249,7 +249,7 @@ public class DB2ForZosDataBaseMetadata extends PackageFakeDatabaseMetadata {
 
     /**
      * DOC xqliu Comment method "addTypesToSql".
-     * 
+     *
      * @param sql
      * @param types
      * @param and
@@ -275,7 +275,7 @@ public class DB2ForZosDataBaseMetadata extends PackageFakeDatabaseMetadata {
 
     /**
      * DOC zshen Comment method "checkContainTable".
-     * 
+     *
      * @param types
      */
     private boolean checkContainTable(String[] types) {
@@ -293,7 +293,7 @@ public class DB2ForZosDataBaseMetadata extends PackageFakeDatabaseMetadata {
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see org.talend.commons.utils.database.FakeDatabaseMetaData#supportsSchemasInDataManipulation()
      */
     @Override
@@ -303,7 +303,7 @@ public class DB2ForZosDataBaseMetadata extends PackageFakeDatabaseMetadata {
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see org.talend.commons.utils.database.FakeDatabaseMetaData#supportsSchemasInTableDefinitions()
      */
     @Override
@@ -313,7 +313,7 @@ public class DB2ForZosDataBaseMetadata extends PackageFakeDatabaseMetadata {
 
     @Override
     public String getIdentifierQuoteString() throws SQLException {
-        return "\""; //$NON-NLS-1$ 
+        return "\""; //$NON-NLS-1$
     }
 
     @Override
@@ -323,7 +323,7 @@ public class DB2ForZosDataBaseMetadata extends PackageFakeDatabaseMetadata {
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see org.talend.commons.utils.database.FakeDatabaseMetaData#getColumns(java.lang.String, java.lang.String,
      * java.lang.String, java.lang.String)
      */
@@ -403,7 +403,7 @@ public class DB2ForZosDataBaseMetadata extends PackageFakeDatabaseMetadata {
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see org.talend.fakejdbc.FakeDatabaseMetaData#getDatabaseProductName()
      */
     @Override

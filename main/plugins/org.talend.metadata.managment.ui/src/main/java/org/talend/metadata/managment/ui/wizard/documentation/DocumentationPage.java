@@ -1,6 +1,6 @@
 // ============================================================================
 //
-// Copyright (C) 2006-2018 Talend Inc. - www.talend.com
+// Copyright (C) 2006-2019 Talend Inc. - www.talend.com
 //
 // This source code is available under agreement available at
 // %InstallDIR%\features\org.talend.rcp.branding.%PRODUCTNAME%\%PRODUCTNAME%license.txt
@@ -45,9 +45,9 @@ import org.talend.metadata.managment.ui.wizard.documentation.LinkUtils.LinkInfo;
 
 /**
  * Wizard page collecting informations to create a new IDocumentation. <br/>
- * 
+ *
  * $Id: DocumentationPage.java 38013 2010-03-05 14:21:59Z mhirt $
- * 
+ *
  */
 public class DocumentationPage extends PropertiesWizardPage {
 
@@ -88,7 +88,7 @@ public class DocumentationPage extends PropertiesWizardPage {
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see org.eclipse.jface.dialogs.IDialogPage#createControl(org.eclipse.swt.widgets.Composite)
      */
     public void createControl(Composite parent) {
@@ -297,9 +297,9 @@ public class DocumentationPage extends PropertiesWizardPage {
     }
 
     /**
-     * 
+     *
      * ggu Comment method "checkSpaceName".
-     * 
+     *
      * replace the "space" character
      */
     private String checkSpaceName(final String name) {
@@ -364,9 +364,9 @@ public class DocumentationPage extends PropertiesWizardPage {
     }
 
     /**
-     * 
+     *
      * ggu Comment method "enabledLinkMode".
-     * 
+     *
      * auto switch to the link mode
      */
     private void enabledLinkMode(final String uri) {

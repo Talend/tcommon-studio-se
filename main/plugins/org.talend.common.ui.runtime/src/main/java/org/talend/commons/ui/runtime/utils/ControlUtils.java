@@ -1,6 +1,6 @@
 // ============================================================================
 //
-// Copyright (C) 2006-2018 Talend Inc. - www.talend.com
+// Copyright (C) 2006-2019 Talend Inc. - www.talend.com
 //
 // This source code is available under agreement available at
 // %InstallDIR%\features\org.talend.rcp.branding.%PRODUCTNAME%\%PRODUCTNAME%license.txt
@@ -24,16 +24,16 @@ import org.talend.commons.ui.runtime.i18n.Messages;
 
 /**
  * DOC amaumont class global comment. Detailled comment <br/>
- * 
+ *
  * $Id: ControlUtils.java 7038 2007-11-15 14:05:48Z plegall $
- * 
+ *
  */
 public class ControlUtils {
 
     /**
-     * 
+     *
      * DOC amaumont Comment method "getText".
-     * 
+     *
      * @param control
      * @return
      */
@@ -49,7 +49,7 @@ public class ControlUtils {
 
     /**
      * DOC sgandon Comment method "invokeMethod".
-     * 
+     *
      * @param control
      * @param value
      * @return
@@ -73,7 +73,7 @@ public class ControlUtils {
 
     /**
      * DOC sgandon Comment method "invokeMethod".
-     * 
+     *
      * @param control
      * @param value
      * @return
@@ -99,9 +99,9 @@ public class ControlUtils {
     }
 
     /**
-     * 
+     *
      * DOC amaumont Comment method "getText".
-     * 
+     *
      * @param control
      * @return
      */
@@ -110,9 +110,9 @@ public class ControlUtils {
     }
 
     /**
-     * 
+     *
      * DOC amaumont Comment method "getText".
-     * 
+     *
      * @param control
      * @return
      */
@@ -127,9 +127,9 @@ public class ControlUtils {
     }
 
     /**
-     * 
+     *
      * DOC amaumont Comment method "getText".
-     * 
+     *
      * @param control
      * @return
      */
@@ -144,9 +144,9 @@ public class ControlUtils {
     }
 
     /**
-     * 
+     *
      * DOC amaumont Comment method "getText".
-     * 
+     *
      * @param control
      * @return
      */
@@ -156,7 +156,7 @@ public class ControlUtils {
 
     /**
      * DOC amaumont Comment method "removeModifyListener".
-     * 
+     *
      * @param control
      * @param modifyListener
      */
@@ -198,13 +198,13 @@ public class ControlUtils {
     static class InvocationFailedException extends RuntimeException {
 
         /**
-         * 
+         *
          */
         private static final long serialVersionUID = 1L;
 
         /**
          * DOC sgandon InvocationFailed constructor comment.
-         * 
+         *
          * @param e
          */
         public InvocationFailedException(Throwable e) {

@@ -1,6 +1,6 @@
 // ============================================================================
 //
-// Copyright (C) 2006-2018 Talend Inc. - www.talend.com
+// Copyright (C) 2006-2019 Talend Inc. - www.talend.com
 //
 // This source code is available under agreement available at
 // %InstallDIR%\features\org.talend.rcp.branding.%PRODUCTNAME%\%PRODUCTNAME%license.txt
@@ -21,7 +21,7 @@ import java.util.Map;
 
 /**
  * @author scorreia
- * 
+ *
  * This class helps to sort a map according to its values.
  */
 public class MapValueSorter {
@@ -35,7 +35,7 @@ public class MapValueSorter {
 
         /**
          * AscByValueComparator constructor.
-         * 
+         *
          * @param map the map to be sorted according to its values
          */
         public AscByValueComparator(Map<Object, Long> map) {
@@ -44,7 +44,7 @@ public class MapValueSorter {
 
         /*
          * (non-Javadoc)
-         * 
+         *
          * @see java.util.Comparator#compare(java.lang.Object, java.lang.Object)
          */
         public int compare(Object arg0, Object arg1) {
@@ -67,7 +67,7 @@ public class MapValueSorter {
 
         /**
          * DescByValueComparator constructor.
-         * 
+         *
          * @param map the map to be sorted according to its values
          */
         public DescByValueComparator(Map<Object, Long> map) {
@@ -76,7 +76,7 @@ public class MapValueSorter {
 
         /*
          * (non-Javadoc)
-         * 
+         *
          * @see java.util.Comparator#compare(java.lang.Object, java.lang.Object)
          */
         public int compare(Object arg0, Object arg1) {
@@ -93,7 +93,7 @@ public class MapValueSorter {
 
     /**
      * Method "getMostFrequent".
-     * 
+     *
      * @param map the input map to be sorted
      * @param topN this parameter filters the most frequent elements
      * @return the list of most frequent keys according to the number values.
@@ -105,7 +105,7 @@ public class MapValueSorter {
 
     /**
      * Method "getLessFrequent".
-     * 
+     *
      * @param map the input map to be sorted
      * @param bottomN this parameter filters the less frequent elements
      * @return the list of less frequent keys according to the number values.
@@ -137,7 +137,7 @@ public class MapValueSorter {
 
     /**
      * Method "sortMap".
-     * 
+     *
      * @param map the input map (the values being the elements on which the sort is done)
      * @param ascendingOrder the order of the sort
      * @return the list of sorted keys
@@ -148,6 +148,6 @@ public class MapValueSorter {
         Collections.sort(keySet, cmp);
         return keySet;
     }
-    
+
 
 }

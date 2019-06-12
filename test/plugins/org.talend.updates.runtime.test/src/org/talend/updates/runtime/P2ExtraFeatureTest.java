@@ -1,6 +1,6 @@
 // ============================================================================
 //
-// Copyright (C) 2006-2018 Talend Inc. - www.talend.com
+// Copyright (C) 2006-2019 Talend Inc. - www.talend.com
 //
 // This source code is available under agreement available at
 // %InstallDIR%\features\org.talend.rcp.branding.%PRODUCTNAME%\%PRODUCTNAME%license.txt
@@ -31,53 +31,53 @@ public class P2ExtraFeatureTest {
     public void testGetP2RepositoryURI() {
         org.osgi.framework.Version studioVersion = new org.osgi.framework.Version(VersionUtils.getTalendVersion());
         String version = studioVersion.getMajor() + "." + studioVersion.getMinor() + "." + studioVersion.getMicro();
-        
+
         P2ExtraFeature p2 = new IuP2ExtraFeature(null);
         URI uri = p2.getP2RepositoryURI(null,false);
         assertTrue(uri.equals(URI.create(String.valueOf(version))));
-        
+
         p2 = new IuP2ExtraFeature(null);
         uri = p2.getP2RepositoryURI("default.update.site.url",true);
         assertTrue(uri.equals(URI.create(String.valueOf(version))));
-        
+
         p2 = new IuP2ExtraFeature("http://update.talend.com/Studio/tos/");
         uri = p2.getP2RepositoryURI("default.update.site.url",false);
         assertTrue(uri.equals(URI.create("http://update.talend.com/Studio/tos/"+version)));
-        
+
         p2 = new IuP2ExtraFeature("http://update.talend.com/Studio/tos");
         uri = p2.getP2RepositoryURI("default.update.site.url",false);
         assertTrue(uri.equals(URI.create("http://update.talend.com/Studio/tos/"+version)));
-        
+
         p2 = new IuP2ExtraFeature("http://update.talend.com/Studio/tos/");
         uri = p2.getP2RepositoryURI("default.update.site.url",true);
         assertTrue(uri.equals(URI.create("http://update.talend.com/Studio/tos/"+version)));
-        
+
         p2 = new IuP2ExtraFeature("http://update.talend.com/Studio/tos");
         uri = p2.getP2RepositoryURI(null,false);
         assertTrue(uri.equals(URI.create("http://update.talend.com/Studio/tos/"+version)));
-        
+
         System.setProperty("talend.p2.repo.url", "http://update.talend.com/Studio/tos/"+version);
         p2 = new IuP2ExtraFeature(null);
         uri = p2.getP2RepositoryURI(null,false);
         assertTrue(uri.equals(URI.create("http://update.talend.com/Studio/tos/"+version)));
-        
+
         p2 = new IuP2ExtraFeature("http://update.talend.com/Studio/tos");
         uri = p2.getP2RepositoryURI(null,false);
         assertTrue(uri.equals(URI.create("http://update.talend.com/Studio/tos/"+version)));
-        
+
         System.setProperty("default.update.site.url","http://update.talend.com/Studio/tos/");
         p2 = new IuP2ExtraFeature(null);
         uri = p2.getP2RepositoryURI("default.update.site.url",false);
         assertTrue(uri.equals(URI.create("http://update.talend.com/Studio/tos/")));
-        
+
         p2 = new IuP2ExtraFeature("http://update.talend.com/Studio/tos/");
         uri = p2.getP2RepositoryURI("default.update.site.url",false);
         assertTrue(uri.equals(URI.create("http://update.talend.com/Studio/tos/")));
-        
+
         p2 = new IuP2ExtraFeature("http://update.talend.com/Studio/tos/");
         uri = p2.getP2RepositoryURI("default.update.site.url",true);
         assertTrue(uri.equals(URI.create("http://update.talend.com/Studio/tos/"+version)));
-        
+
     }
 
 }

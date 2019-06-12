@@ -1,6 +1,6 @@
 // ============================================================================
 //
-// Copyright (C) 2006-2018 Talend Inc. - www.talend.com
+// Copyright (C) 2006-2019 Talend Inc. - www.talend.com
 //
 // This source code is available under agreement available at
 // %InstallDIR%\features\org.talend.rcp.branding.%PRODUCTNAME%\%PRODUCTNAME%license.txt
@@ -15,6 +15,7 @@ package org.talend.core.model.metadata;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
+import java.util.Comparator;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
@@ -94,9 +95,9 @@ public final class MetadataToolHelper {
     private static final int MAX = 255;
 
     /**
-     * 
+     *
      * DOC wchen Comment method "getMetadataTableFromConnection".
-     * 
+     *
      * @param conn
      * @return
      * @deprecated deprecated by getMetadataTableFromConnection(final Connection conn,String tableName) , sap tableName
@@ -183,7 +184,7 @@ public final class MetadataToolHelper {
 
     /**
      * qzhang Comment method "isBoolean".
-     * 
+     *
      * @param value
      * @return
      */
@@ -193,7 +194,7 @@ public final class MetadataToolHelper {
 
     /**
      * qzhang Comment method "isDirectory".
-     * 
+     *
      * @param value
      * @return
      */
@@ -217,7 +218,7 @@ public final class MetadataToolHelper {
 
     /**
      * qzhang Comment method "isDate".
-     * 
+     *
      * @param value
      * @return
      */
@@ -233,7 +234,7 @@ public final class MetadataToolHelper {
 
     /**
      * qzhang Comment method "isFile".
-     * 
+     *
      * @param value
      * @return
      */
@@ -286,10 +287,10 @@ public final class MetadataToolHelper {
     }
 
     /**
-     * 
+     *
      * qli Comment method "validateColumnName".
-     * 
-     * 
+     *
+     *
      */
     public static String validateColumnName(final String columnName, final int index) {
         String originalColumnName = new String(mapSpecialChar(columnName));
@@ -342,10 +343,10 @@ public final class MetadataToolHelper {
     }
 
     /**
-     * 
+     *
      * hwang Comment method "validateTableName".
-     * 
-     * 
+     *
+     *
      */
     public static String validateTableName(String tableName) {
         String originalTableName = new String(tableName);
@@ -437,10 +438,10 @@ public final class MetadataToolHelper {
     }
 
     /**
-     * 
+     *
      * qli Comment method "mapSpecialChar".
-     * 
-     * 
+     *
+     *
      */
     private static String mapSpecialChar(String columnName) {
         if (GlobalServiceRegister.getDefault().isServiceRegistered(IRoutinesService.class)) {
@@ -468,10 +469,10 @@ public final class MetadataToolHelper {
     }
 
     /**
-     * 
+     *
      * qli Comment method "initSpecificMapping".
-     * 
-     * 
+     *
+     *
      */
     private static String initSpecificMapping(String columnName, Vector map) {
         for (int i = 0; i < columnName.toCharArray().length; i++) {
@@ -507,9 +508,9 @@ public final class MetadataToolHelper {
     }
 
     /**
-     * 
+     *
      * wzhang Comment method "validateSchemaValue".
-     * 
+     *
      * @param value
      * @param beanPosition
      * @param list
@@ -625,7 +626,7 @@ public final class MetadataToolHelper {
         target.getListColumns().addAll(columnsTAdd);
         target.sortCustomColumns();
         target.setLabel(source.getLabel());
-        target.setOriginalColumns(source.getOriginalColumns());
+        setTargetOriginalColumns(source, target);
         // List<String> originalColumnsList = null;
         // if (source.getOriginalColumns() != null) {
         // originalColumnsList = new ArrayList<String>();
@@ -637,6 +638,57 @@ public final class MetadataToolHelper {
         for (Entry<String, String> entry : sourceProperties.entrySet()) {
             targetProperties.put(entry.getKey(), entry.getValue());
         }
+    }
+
+    public static void setTargetOriginalColumns(IMetadataTable source, IMetadataTable target) {
+    	List<String> sColumns = source.getOriginalColumns();
+    	List<String> tColumns = target.getOriginalColumns();
+    	if(sColumns == null) {
+    		return;
+    	}
+    	if(tColumns == null) {
+    		target.setOriginalColumns(sColumns);
+    		return;
+    	}
+
+    	if(sColumns.size() == tColumns.size()) {
+    		boolean same = true;
+    		for(int i = 0;i<sColumns.size();i++) {
+    			if(!sColumns.get(i).equals(tColumns.get(i))) {
+    				same = false;
+    				break;
+    			}
+    		}
+    		if(same) {
+    			return;
+    		}
+    	}
+
+    	for(String sColumn : sColumns) {
+    		if(tColumns.contains(sColumn)) {
+    			continue;
+    		}
+    		tColumns.add(sColumn);
+    	}
+
+    	List<IMetadataColumn> targetColumns = target.getListColumns();
+    	List<String> temp = new ArrayList<String>(tColumns);
+    	if (targetColumns != null) {
+    		List<String> columnNames = new ArrayList<String>();
+        	for(IMetadataColumn column : targetColumns){
+        		columnNames.add(column.getLabel());
+        	}
+            Collections.sort(temp, new Comparator<String>() {
+
+                @Override
+                public int compare(String o1, String o2) {
+                    int index1 = columnNames.indexOf(o1);
+                    int index2 = columnNames.indexOf(o2);
+                    return index1 - index2;
+                }
+            });
+        }
+    	target.setOriginalColumns(temp);
     }
 
     public static void copyTable(List<IMetadataColumn> sourceColumns, IMetadataTable target,
@@ -681,9 +733,9 @@ public final class MetadataToolHelper {
     // }
 
     /**
-     * 
+     *
      * DOC qli Comment method "copyTable".
-     * 
+     *
      * @param sourceColumns,target,targetDbms
      * @return
      */
@@ -787,7 +839,7 @@ public final class MetadataToolHelper {
 
     /**
      * Added by Marvin Wang on Jun. 20, 2012 for getting the <code>MetadataTable</code> by given parameters.
-     * 
+     *
      * @param connectionId
      * @param functionId
      * @param tableName
@@ -995,9 +1047,9 @@ public final class MetadataToolHelper {
     }
 
     /**
-     * 
+     *
      * DOC qli Comment method "copyTable".
-     * 
+     *
      * @param sourceColumns,target
      * @return
      */
@@ -1053,7 +1105,7 @@ public final class MetadataToolHelper {
 
     /**
      * qzhang Comment method "getNewMetadataColumns".
-     * 
+     *
      * @param oldTable
      * @param newTable
      * @return
@@ -1079,7 +1131,7 @@ public final class MetadataToolHelper {
 
     /**
      * qzhang Comment method "getRemoveMetadataColumns".
-     * 
+     *
      * @param oldTable
      * @param newTable
      * @return
@@ -1231,7 +1283,7 @@ public final class MetadataToolHelper {
 
     /**
      * DOC qzhang Comment method "copyTable".
-     * 
+     *
      * @param source
      * @param target
      */
@@ -1328,9 +1380,9 @@ public final class MetadataToolHelper {
     }
 
     /**
-     * 
+     *
      * cli Comment method "processFieldLength".
-     * 
+     *
      */
     public static void processFieldsLength(EObject obj) {
         if (obj != null) {

@@ -1,6 +1,6 @@
 // ============================================================================
 //
-// Copyright (C) 2006-2018 Talend Inc. - www.talend.com
+// Copyright (C) 2006-2019 Talend Inc. - www.talend.com
 //
 // This source code is available under agreement available at
 // %InstallDIR%\features\org.talend.rcp.branding.%PRODUCTNAME%\%PRODUCTNAME%license.txt
@@ -18,9 +18,9 @@ import org.eclipse.swt.graphics.Point;
 
 /**
  * DOC amaumont class global comment. Detailled comment <br/>
- * 
+ *
  * $Id$
- * 
+ *
  */
 public abstract class AbstractExtremityDrawableLink implements IExtremityDrawableLink {
 
@@ -32,7 +32,7 @@ public abstract class AbstractExtremityDrawableLink implements IExtremityDrawabl
 
     /**
      * DOC amaumont AbstractTipLink constructor comment.
-     * 
+     *
      * @param styleLink
      */
     public AbstractExtremityDrawableLink(IStyleLink styleLink) {
@@ -41,7 +41,7 @@ public abstract class AbstractExtremityDrawableLink implements IExtremityDrawabl
 
     /**
      * DOC amaumont AbstractTipLink constructor comment.
-     * 
+     *
      * @param styleLink
      * @param xOffset
      * @param yOffset
@@ -56,7 +56,7 @@ public abstract class AbstractExtremityDrawableLink implements IExtremityDrawabl
     /**
      * Return the current foregroundColor if defined , else return styleLink foreground if defined , else return gc
      * foreground.
-     * 
+     *
      * @return the foregroundColor
      */
     public Color getForegroundColor(GC gc) {
@@ -69,14 +69,14 @@ public abstract class AbstractExtremityDrawableLink implements IExtremityDrawabl
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see org.talend.commons.ui.swt.drawing.link.ITipLink#draw(org.eclipse.swt.graphics.GC)
      */
     public abstract void draw(GC gc, Point point);
 
     /**
      * Getter for styleLink.
-     * 
+     *
      * @return the styleLink
      */
     public IStyleLink getStyleLink() {
@@ -85,7 +85,7 @@ public abstract class AbstractExtremityDrawableLink implements IExtremityDrawabl
 
     /**
      * Sets the styleLink.
-     * 
+     *
      * @param styleLink the styleLink to set
      */
     public void setStyleLink(IStyleLink styleLink) {
@@ -94,7 +94,7 @@ public abstract class AbstractExtremityDrawableLink implements IExtremityDrawabl
 
     /**
      * Getter for xOffset.
-     * 
+     *
      * @return the xOffset
      */
     public int getXOffset() {
@@ -103,7 +103,7 @@ public abstract class AbstractExtremityDrawableLink implements IExtremityDrawabl
 
     /**
      * Sets the xOffset.
-     * 
+     *
      * @param offset the xOffset to set
      */
     public void setXOffset(int offset) {
@@ -112,7 +112,7 @@ public abstract class AbstractExtremityDrawableLink implements IExtremityDrawabl
 
     /**
      * Getter for yOffset.
-     * 
+     *
      * @return the yOffset
      */
     public int getYOffset() {
@@ -121,7 +121,7 @@ public abstract class AbstractExtremityDrawableLink implements IExtremityDrawabl
 
     /**
      * Sets the yOffset.
-     * 
+     *
      * @param offset the yOffset to set
      */
     public void setYOffset(int offset) {

@@ -1,6 +1,6 @@
 // ============================================================================
 //
-// Copyright (C) 2006-2018 Talend Inc. - www.talend.com
+// Copyright (C) 2006-2019 Talend Inc. - www.talend.com
 //
 // This source code is available under agreement available at
 // %InstallDIR%\features\org.talend.rcp.branding.%PRODUCTNAME%\%PRODUCTNAME%license.txt
@@ -53,7 +53,7 @@ import org.talend.repository.model.RepositoryNodeUtilities;
 
 /**
  * ftang class global comment. Detailled comment <br/>
- * 
+ *
  */
 public class GenericSchemaWizard extends CheckLastVersionRepositoryWizard implements INewWizard {
 
@@ -87,7 +87,7 @@ public class GenericSchemaWizard extends CheckLastVersionRepositoryWizard implem
 
     /**
      * Sets the isToolbar.
-     * 
+     *
      * @param isToolbar the isToolbar to set
      */
     public void setToolbar(boolean isToolbar) {
@@ -96,7 +96,7 @@ public class GenericSchemaWizard extends CheckLastVersionRepositoryWizard implem
 
     /**
      * Constructor for FileWizard.
-     * 
+     *
      * @param workbench
      * @param selection
      * @param strings
@@ -423,7 +423,7 @@ public class GenericSchemaWizard extends CheckLastVersionRepositoryWizard implem
 
     /**
      * We will accept the selection in the workbench to see if we can initialize from it.
-     * 
+     *
      * @see IWorkbenchWizard#init(IWorkbench, IStructuredSelection)
      */
     @Override
@@ -433,7 +433,7 @@ public class GenericSchemaWizard extends CheckLastVersionRepositoryWizard implem
 
     /**
      * Getter for connectionProperty.
-     * 
+     *
      * @return the connectionProperty
      */
     public Property getConnectionProperty() {
@@ -442,7 +442,7 @@ public class GenericSchemaWizard extends CheckLastVersionRepositoryWizard implem
 
     /**
      * Getter for destinationPath.
-     * 
+     *
      * @return the destinationPath
      */
     public IPath getPathForSaveAsGenericSchema() {

@@ -1,6 +1,6 @@
 // ============================================================================
 //
-// Copyright (C) 2006-2018 Talend Inc. - www.talend.com
+// Copyright (C) 2006-2019 Talend Inc. - www.talend.com
 //
 // This source code is available under agreement available at
 // %InstallDIR%\features\org.talend.rcp.branding.%PRODUCTNAME%\%PRODUCTNAME%license.txt
@@ -21,7 +21,7 @@ import org.talend.commons.exception.CommonExceptionHandler;
 
 /**
  * ggu class global comment. Detailled comment
- * 
+ *
  * add the function for debug "--talendDebug"
  */
 public final class TalendDebugHandler {
@@ -29,9 +29,9 @@ public final class TalendDebugHandler {
     public static final String TALEND_DEBUG = "--talendDebug"; //$NON-NLS-1$
 
     /**
-     * 
+     *
      * ggu Comment method "debug".
-     * 
+     *
      * @param e
      */
     public static void debug(Throwable e) {
@@ -52,9 +52,9 @@ public final class TalendDebugHandler {
     }
 
     /**
-     * 
+     *
      * ggu Comment method "debug".
-     * 
+     *
      * @param messages
      */
     public static void debug(String messages) {

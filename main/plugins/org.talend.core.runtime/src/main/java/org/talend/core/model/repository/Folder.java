@@ -1,6 +1,6 @@
 // ============================================================================
 //
-// Copyright (C) 2006-2018 Talend Inc. - www.talend.com
+// Copyright (C) 2006-2019 Talend Inc. - www.talend.com
 //
 // This source code is available under agreement available at
 // %InstallDIR%\features\org.talend.rcp.branding.%PRODUCTNAME%\%PRODUCTNAME%license.txt
@@ -29,11 +29,11 @@ import org.talend.repository.model.IProxyRepositoryService;
 
 /**
  * Represents a folder as a repository object.<br/>
- * 
+ *
  * A folder has (in this version) no version, no author.
- * 
+ *
  * $Id: Folder.java 44053 2010-06-12 09:14:16Z nma $
- * 
+ *
  */
 public class Folder extends RepositoryObject implements IRepositoryObject {
 
@@ -66,7 +66,7 @@ public class Folder extends RepositoryObject implements IRepositoryObject {
 
     /**
      * Returns the type.
-     * 
+     *
      * @return ERepositoryObjectType.FOLDER
      */
     @Override
@@ -97,7 +97,7 @@ public class Folder extends RepositoryObject implements IRepositoryObject {
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see org.talend.core.model.repository.RepositoryObject#getProperty()
      */
     @Override

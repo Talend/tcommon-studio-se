@@ -1,6 +1,6 @@
 // ============================================================================
 //
-// Copyright (C) 2006-2018 Talend Inc. - www.talend.com
+// Copyright (C) 2006-2019 Talend Inc. - www.talend.com
 //
 // This source code is available under agreement available at
 // %InstallDIR%\features\org.talend.rcp.branding.%PRODUCTNAME%\%PRODUCTNAME%license.txt
@@ -38,9 +38,9 @@ import org.talend.repository.ReferenceProjectProvider;
 
 /**
  * DOC smallet class global comment. Detailled comment <br/>
- * 
+ *
  * $Id: Project.java 46606 2010-08-11 08:33:54Z cli $
- * 
+ *
  */
 public class Project {
 
@@ -55,12 +55,12 @@ public class Project {
     private boolean isSandboxProject;
 
     private boolean mainProject = true;
-    
+
     private IReferenceProjectProvider referenceProjectProvider;
 
     /**
      * Getter for mainProject.
-     * 
+     *
      * @return the mainProject
      */
     public boolean isMainProject() {
@@ -69,7 +69,7 @@ public class Project {
 
     /**
      * Sets the mainProject.
-     * 
+     *
      * @param mainProject the mainProject to set
      */
     public void setMainProject(boolean mainProject) {
@@ -79,7 +79,7 @@ public class Project {
     // end
     /**
      * DOC smallet Project constructor comment.
-     * 
+     *
      * @param label
      * @param project
      */
@@ -109,7 +109,7 @@ public class Project {
 
     /**
      * Getter for label.
-     * 
+     *
      * @return the label
      */
     public String getLabel() {
@@ -118,7 +118,7 @@ public class Project {
 
     /**
      * Sets the label.
-     * 
+     *
      * @param label the label to set
      */
     public void setLabel(String label) {
@@ -127,7 +127,7 @@ public class Project {
 
     /**
      * Getter for technicalLabel.
-     * 
+     *
      * @return the technicalLabel
      */
     public String getTechnicalLabel() {
@@ -136,7 +136,7 @@ public class Project {
 
     /**
      * Sets the technicalLabel.
-     * 
+     *
      * @param technicalLabel the technicalLabel to set
      */
     public void setTechnicalLabel(String technicalLabel) {
@@ -150,7 +150,7 @@ public class Project {
 
     /**
      * Getter for author.
-     * 
+     *
      * @return the author
      */
     public User getAuthor() {
@@ -159,7 +159,7 @@ public class Project {
 
     /**
      * Sets the author.
-     * 
+     *
      * @param author the author to set
      */
     public void setAuthor(User author) {
@@ -168,7 +168,7 @@ public class Project {
 
     /**
      * Getter for description.
-     * 
+     *
      * @return the description
      */
     public String getDescription() {
@@ -177,7 +177,7 @@ public class Project {
 
     /**
      * Sets the description.
-     * 
+     *
      * @param description the description to set
      */
     public void setDescription(String description) {
@@ -186,7 +186,7 @@ public class Project {
 
     /**
      * Getter for language.
-     * 
+     *
      * @return the language
      */
     public ECodeLanguage getLanguage() {
@@ -195,7 +195,7 @@ public class Project {
 
     /**
      * Sets the language.
-     * 
+     *
      * @param language the language to set
      */
     public void setLanguage(ECodeLanguage language) {
@@ -204,7 +204,7 @@ public class Project {
 
     /**
      * Getter for local.
-     * 
+     *
      * @return the local
      */
     public boolean isLocal() {
@@ -213,7 +213,7 @@ public class Project {
 
     /**
      * Sets the local.
-     * 
+     *
      * @param local the local to set
      */
     public void setLocal(boolean local) {
@@ -222,7 +222,7 @@ public class Project {
 
     /**
      * create technical name.
-     * 
+     *
      * @param name
      * @return
      */
@@ -251,7 +251,7 @@ public class Project {
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see java.lang.Object#hashCode()
      */
     @Override
@@ -264,7 +264,7 @@ public class Project {
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see java.lang.Object#equals(java.lang.Object)
      */
     @Override
@@ -352,7 +352,7 @@ public class Project {
     public void setExchangeUser(ExchangeUser exchangeUser) {
         // project.setExchangeUser(exchangeUser);
     }
-    
+
 	public List<ProjectReference> getProjectReferenceList() {
 		return getProjectReferenceList(false);
 	}
@@ -391,7 +391,7 @@ public class Project {
         referenceProjectProvider.setProjectReference(projectReferenceList);
         referenceProjectProvider.saveSettings();
     }
-    
+
     public boolean isHasConfigurationFile() {
         if (referenceProjectProvider == null) {
             referenceProjectProvider = new ReferenceProjectProvider(project);
@@ -403,12 +403,12 @@ public class Project {
         }
         return referenceProjectProvider.isHasConfigurationFile();
     }
-   
+
     public void setReferenceProjectProvider(IReferenceProjectProvider referenceProjectProvider) {
         this.referenceProjectProvider = referenceProjectProvider;
     }
 
-    
+
     public IReferenceProjectProvider getReferenceProjectProvider() {
         return referenceProjectProvider;
     }

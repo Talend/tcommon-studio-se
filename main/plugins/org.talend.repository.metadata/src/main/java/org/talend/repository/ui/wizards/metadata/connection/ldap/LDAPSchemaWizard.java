@@ -1,6 +1,6 @@
 // ============================================================================
 //
-// Copyright (C) 2006-2018 Talend Inc. - www.talend.com
+// Copyright (C) 2006-2019 Talend Inc. - www.talend.com
 //
 // This source code is available under agreement available at
 // %InstallDIR%\features\org.talend.rcp.branding.%PRODUCTNAME%\%PRODUCTNAME%license.txt
@@ -56,9 +56,9 @@ import org.talend.repository.model.RepositoryNodeUtilities;
 
 /**
  * The class is used for LDAP schema on Repository View. <br/>
- * 
+ *
  * @author ftang, 18/09/2007
- * 
+ *
  */
 public class LDAPSchemaWizard extends CheckLastVersionRepositoryWizard implements INewWizard {
 
@@ -102,7 +102,7 @@ public class LDAPSchemaWizard extends CheckLastVersionRepositoryWizard implement
 
     /**
      * Sets the isToolbar.
-     * 
+     *
      * @param isToolbar the isToolbar to set
      */
     public void setToolbar(boolean isToolbar) {
@@ -111,7 +111,7 @@ public class LDAPSchemaWizard extends CheckLastVersionRepositoryWizard implement
 
     /**
      * LDAPSchemaWizard constructor comment.
-     * 
+     *
      * @param workbench
      * @param creation
      * @param selection
@@ -423,7 +423,7 @@ public class LDAPSchemaWizard extends CheckLastVersionRepositoryWizard implement
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see org.eclipse.jface.wizard.Wizard#performFinish()
      */
     @Override
@@ -479,7 +479,7 @@ public class LDAPSchemaWizard extends CheckLastVersionRepositoryWizard implement
 
     /**
      * We will accept the selection in the workbench to see if we can initialize from it.
-     * 
+     *
      * @see IWorkbenchWizard#init(IWorkbench, IStructuredSelection)
      */
     @Override
@@ -489,7 +489,7 @@ public class LDAPSchemaWizard extends CheckLastVersionRepositoryWizard implement
 
     /**
      * Getter for connectionProperty.
-     * 
+     *
      * @return the connectionProperty
      */
     public Property getConnectionProperty() {
@@ -498,7 +498,7 @@ public class LDAPSchemaWizard extends CheckLastVersionRepositoryWizard implement
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see org.talend.repository.ui.wizards.RepositoryWizard#getConnectionItem()
      */
     @Override

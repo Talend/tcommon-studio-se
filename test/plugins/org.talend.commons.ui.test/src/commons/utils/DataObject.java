@@ -1,6 +1,6 @@
 // ============================================================================
 //
-// Copyright (C) 2006-2018 Talend Inc. - www.talend.com
+// Copyright (C) 2006-2019 Talend Inc. - www.talend.com
 //
 // This source code is available under agreement available at
 // %InstallDIR%\features\org.talend.rcp.branding.%PRODUCTNAME%\%PRODUCTNAME%license.txt
@@ -21,11 +21,11 @@ import org.apache.commons.lang.builder.ToStringBuilder;
 import org.apache.commons.lang.builder.ToStringStyle;
 
 /**
- * 
+ *
  * Bean useful for various uses. <br/>
- * 
+ *
  * $Id: DataObject.java 7038 2007-11-15 14:05:48Z plegall $
- * 
+ *
  */
 public class DataObject {
 
@@ -160,7 +160,7 @@ public class DataObject {
     private ArrayList2 vect;
 
     /**
-     * 
+     *
      */
     private String[] libelles = new String[] { "abc", "abcd", "abcde", "ABC", "ABCD", "ABCDE", }; //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$ //$NON-NLS-5$ //$NON-NLS-6$
 
@@ -211,7 +211,7 @@ public class DataObject {
 
     /**
      * getter for id.
-     * 
+     *
      * @return int id
      */
     public int getId() {
@@ -220,7 +220,7 @@ public class DataObject {
 
     /**
      * setter for id.
-     * 
+     *
      * @param value int id
      */
     public void setId(int value) {
@@ -229,7 +229,7 @@ public class DataObject {
 
     /**
      * getter for email.
-     * 
+     *
      * @return String email
      */
     public String getEmail() {
@@ -238,7 +238,7 @@ public class DataObject {
 
     /**
      * setter for email.
-     * 
+     *
      * @param value String email
      */
     public void setEmail(String value) {
@@ -247,7 +247,7 @@ public class DataObject {
 
     /**
      * getter for date.
-     * 
+     *
      * @return Date
      */
     public Date getDate() {
@@ -259,7 +259,7 @@ public class DataObject {
 
     /**
      * getter for money.
-     * 
+     *
      * @return double money
      */
     public double getMoney() {
@@ -268,7 +268,7 @@ public class DataObject {
 
     /**
      * getter for description.
-     * 
+     *
      * @return String description
      */
     public String getDescription() {
@@ -277,7 +277,7 @@ public class DataObject {
 
     /**
      * getter for long description.
-     * 
+     *
      * @return String long description
      */
     public String getLongDescription() {
@@ -286,7 +286,7 @@ public class DataObject {
 
     /**
      * getter for url.
-     * 
+     *
      * @return String url
      */
     public String getUrl() {
@@ -295,7 +295,7 @@ public class DataObject {
 
     /**
      * test for null values.
-     * 
+     *
      * @return null
      */
     public String getStringNullValue() {
@@ -368,7 +368,7 @@ public class DataObject {
 
     /**
      * Returns a simple string representation of the object.
-     * 
+     *
      * @return String simple representation of the object
      */
     public String toString() {
@@ -377,7 +377,7 @@ public class DataObject {
 
     /**
      * Returns a detailed string representation of the object.
-     * 
+     *
      * @return String detailed representation of the object
      */
     public String toDetailedString() {
@@ -397,7 +397,7 @@ public class DataObject {
 
     /**
      * Returns the subList.
-     * 
+     *
      * @return List
      */
     public List getSubList() {
@@ -406,7 +406,7 @@ public class DataObject {
 
     /**
      * Returns the subList.
-     * 
+     *
      * @return List
      */
     public ArrayList2 getVect() {
@@ -415,7 +415,7 @@ public class DataObject {
 
     /**
      * Inner class used in testing nested tables.
-     * 
+     *
      * @author Fabrizio Giustina
      */
     public static class SubListItem {
@@ -438,7 +438,7 @@ public class DataObject {
 
         /**
          * getter for name.
-         * 
+         *
          * @return String name
          */
         public String getName() {
@@ -447,7 +447,7 @@ public class DataObject {
 
         /**
          * getter for email.
-         * 
+         *
          * @return String
          */
         public String getEmail() {
@@ -458,7 +458,7 @@ public class DataObject {
          * @see java.lang.Object#toString()
          */
         public String toString() {
-            return new ToStringBuilder(this, ToStringStyle.SIMPLE_STYLE) // 
+            return new ToStringBuilder(this, ToStringStyle.SIMPLE_STYLE) //
                     .append("name", this.itemName) //$NON-NLS-1$
                     .append("email", this.itemEmail) //$NON-NLS-1$
                     .toString();
@@ -468,12 +468,12 @@ public class DataObject {
     /**
      * <br/>
      * .
-     * 
+     *
      */
     class ArrayList2 extends ArrayList {
 
         /**
-         * 
+         *
          */
         private static final long serialVersionUID = 4155640352372921319L;
 

@@ -1,6 +1,6 @@
 // ============================================================================
 //
-// Copyright (C) 2006-2018 Talend Inc. - www.talend.com
+// Copyright (C) 2006-2019 Talend Inc. - www.talend.com
 //
 // This source code is available under agreement available at
 // %InstallDIR%\features\org.talend.rcp.branding.%PRODUCTNAME%\%PRODUCTNAME%license.txt
@@ -24,7 +24,7 @@ import org.talend.osgi.hook.URIUtil;
  * This observable is registered as an OSGI service and can be used to register Observers by clients that whishes to be
  * notified when a jar is missing in a "org.talend.*" bundle. the notification is done in a synchronous manner. The
  * notification is done with a JarMissingEvent parameter. created by sgandon on 12 sept. 2013 Detailled comment
- * 
+ *
  */
 public class JarMissingObservable extends Observable {
 
@@ -50,7 +50,7 @@ public class JarMissingObservable extends Observable {
 
         /**
          * return the name of the missing jar.
-         * 
+         *
          * @return the jarName
          */
         public String getJarName() {
@@ -68,7 +68,7 @@ public class JarMissingObservable extends Observable {
 
         /**
          * return the folder path where the jar is excepted to be found
-         * 
+         *
          * @return the expectedLibFolder
          */
         public String getExpectedLibFolder() {
@@ -89,7 +89,7 @@ public class JarMissingObservable extends Observable {
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see java.util.Observable#notifyObservers(java.lang.Object)
      */
     @Override

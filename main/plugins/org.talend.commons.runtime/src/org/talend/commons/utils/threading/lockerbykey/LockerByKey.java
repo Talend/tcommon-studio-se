@@ -1,6 +1,6 @@
 // ============================================================================
 //
-// Copyright (C) 2006-2018 Talend Inc. - www.talend.com
+// Copyright (C) 2006-2019 Talend Inc. - www.talend.com
 //
 // This source code is available under agreement available at
 // %InstallDIR%\features\org.talend.rcp.branding.%PRODUCTNAME%\%PRODUCTNAME%license.txt
@@ -27,15 +27,15 @@ import org.talend.commons.utils.StringUtils;
 
 /**
  * This class is useful to lock some part of code from the provided key.
- * 
+ *
  * This class has the same behaviour that <code>java.util.concurrent.locks.ReentrantLock</code> except additionally it
  * expect keys to lock the parts of code.
- * 
+ *
  * It uses internally a <code>java.util.concurrent.ConcurrentHashMap</code> to store locks from keys <code>KP</code> and
  * the <code>java.util.concurrent.locks.ReentrantLock</code> as properties of a value wrapper. <br/>
- * 
+ *
  * @see java.util.concurrent.locks.ReentrantLock
- * 
+ *
  * @param <KP> type of the key
  */
 public class LockerByKey<KP> implements ILockerByKey<KP> {
@@ -89,9 +89,9 @@ public class LockerByKey<KP> implements ILockerByKey<KP> {
     }
 
     /**
-     * 
+     *
      * Constructor LockerByKey.
-     * 
+     *
      * @param fair {@code true} if this lock should use a fair ordering policy
      */
     public LockerByKey(boolean fair) {
@@ -99,9 +99,9 @@ public class LockerByKey<KP> implements ILockerByKey<KP> {
     }
 
     /**
-     * 
+     *
      * Constructor LockerByKey.
-     * 
+     *
      * @param cleanPeriod in number of operations, it means that an automatic clean will be done for each
      * <code>cleanPeriod</code> number of unlock operation.
      */
@@ -110,9 +110,9 @@ public class LockerByKey<KP> implements ILockerByKey<KP> {
     }
 
     /**
-     * 
+     *
      * Constructor LockerByKey.
-     * 
+     *
      * @param fair {@code true} if this lock should use a fair ordering policy
      * @param cleanPeriod in number of operations, it means that an automatic clean will be done after each
      * <code>cleanPeriod</code> number of unlock operation.
@@ -131,9 +131,9 @@ public class LockerByKey<KP> implements ILockerByKey<KP> {
     }
 
     /**
-     * 
+     *
      * Constructor LockerByKey.
-     * 
+     *
      * @param fair {@code true} if this lock should use a fair ordering policy
      * @param cleanDisabled true to disable the clean completely <code>cleanPeriod</code> number of unlock operation.
      */
@@ -156,7 +156,7 @@ public class LockerByKey<KP> implements ILockerByKey<KP> {
 
             /*
              * (non-Javadoc)
-             * 
+             *
              * @see java.lang.Thread#run()
              */
             @Override
@@ -188,10 +188,10 @@ public class LockerByKey<KP> implements ILockerByKey<KP> {
 
     /**
      * Method "isLocked".
-     * 
+     *
      * @param key
      * @return true if any thread holds this lock and false otherwise
-     * 
+     *
      * @see java.util.concurrent.locks.ReentrantLock#isLocked()
      */
     @Override
@@ -202,9 +202,9 @@ public class LockerByKey<KP> implements ILockerByKey<KP> {
     }
 
     /**
-     * 
+     *
      * Method "lockInterruptibly".
-     * 
+     *
      * @param key
      * @throws InterruptedException
      * @see java.util.concurrent.locks.ReentrantLock#lockInterruptibly()
@@ -223,7 +223,7 @@ public class LockerByKey<KP> implements ILockerByKey<KP> {
 
     /**
      * Method "tryLock".
-     * 
+     *
      * @param key
      * @return {@code true} if the lock was free and was acquired by the current thread, or the lock was already held by
      * the current thread; and {@code false} otherwise
@@ -250,7 +250,7 @@ public class LockerByKey<KP> implements ILockerByKey<KP> {
 
     /**
      * Method "tryLock".
-     * 
+     *
      * @param key
      * @param timeout the time to wait for the lock in milliseconds
      * @return true if the lock was free and was acquired by the current thread, or the lock was already held by the
@@ -266,7 +266,7 @@ public class LockerByKey<KP> implements ILockerByKey<KP> {
 
     /**
      * Method "tryLock".
-     * 
+     *
      * @param key
      * @param timeout the time to wait for the lock
      * @param unit the time unit of the timeout argument
@@ -274,7 +274,7 @@ public class LockerByKey<KP> implements ILockerByKey<KP> {
      * current thread; and false if the waiting time elapsed before the lock could be acquired
      * @throws InterruptedException
      * @throws IllegalArgumentException if bean is null
-     * 
+     *
      * @see java.util.concurrent.locks.ReentrantLock#tryLock(long, java.util.concurrent.TimeUnit)
      */
     @Override
@@ -312,7 +312,7 @@ public class LockerByKey<KP> implements ILockerByKey<KP> {
 
     /**
      * Method "unlock". Unlock the operations with the provided key.
-     * 
+     *
      * @param key
      * @return true if the key has been found to release the lock; and false otherwise
      * @see java.util.concurrent.locks.ReentrantLock#unlock()
@@ -349,14 +349,14 @@ public class LockerByKey<KP> implements ILockerByKey<KP> {
     }
 
     /**
-     * 
+     *
      * Method "clean".
-     * 
+     *
      * Clean the map which contains the lock wrappers.
-     * 
+     *
      * Removed lock wrappers are these where lock is not locked by a thread and no one thread is waiting to obtain the
      * lock.
-     * 
+     *
      * The default clean will do an automatic clean all 1000 unlock operation, you can disable or change this value from
      * the constructor.
      */
@@ -392,7 +392,7 @@ public class LockerByKey<KP> implements ILockerByKey<KP> {
 
     /**
      * Method "check". Check if the key is not null.
-     * 
+     *
      * @param key
      */
     private void checkKey(KP key) {
@@ -444,7 +444,7 @@ public class LockerByKey<KP> implements ILockerByKey<KP> {
 
     /**
      * Get locker.
-     * 
+     *
      * @param bean
      * @return locker value.
      */
@@ -486,7 +486,7 @@ public class LockerByKey<KP> implements ILockerByKey<KP> {
 
     /**
      * Getter for cleanFrequency.
-     * 
+     *
      * @return the cleanFrequency
      */
     @Override
@@ -496,7 +496,7 @@ public class LockerByKey<KP> implements ILockerByKey<KP> {
 
     /**
      * Getter for detectSuspectLocks.
-     * 
+     *
      * @return the detectSuspectLocks
      */
     @Override
@@ -506,7 +506,7 @@ public class LockerByKey<KP> implements ILockerByKey<KP> {
 
     /**
      * Sets the detectSuspectLocks.
-     * 
+     *
      * @param detectSuspectLocks the detectSuspectLocks to set
      */
     @Override
@@ -534,9 +534,9 @@ public class LockerByKey<KP> implements ILockerByKey<KP> {
     }
 
     /**
-     * 
+     *
      * LockerByKey class.<br/>
-     * 
+     *
      * @param <IKP> key
      */
     class InternalKeyLock<IKP> {
@@ -548,7 +548,7 @@ public class LockerByKey<KP> implements ILockerByKey<KP> {
 
         /**
          * InternalKeyLock constructor comment.
-         * 
+         *
          * @param key2
          */
         public InternalKeyLock(IKP key) {
@@ -557,7 +557,7 @@ public class LockerByKey<KP> implements ILockerByKey<KP> {
 
         /*
          * (non-Javadoc)
-         * 
+         *
          * @see java.lang.Object#hashCode()
          */
         @Override
@@ -570,7 +570,7 @@ public class LockerByKey<KP> implements ILockerByKey<KP> {
 
         /*
          * (non-Javadoc)
-         * 
+         *
          * @see java.lang.Object#equals(java.lang.Object)
          */
         @Override
@@ -607,7 +607,7 @@ public class LockerByKey<KP> implements ILockerByKey<KP> {
 
     /**
      * Getter for mapKeyLockToValueLock.
-     * 
+     *
      * @return the mapKeyLockToValueLock
      */
     Map<InternalKeyLock<KP>, LockerValue<KP>> getMapKeyLockToValueLock() {

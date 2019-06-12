@@ -1,6 +1,6 @@
 // ============================================================================
 //
-// Copyright (C) 2006-2018 Talend Inc. - www.talend.com
+// Copyright (C) 2006-2019 Talend Inc. - www.talend.com
 //
 // This source code is available under agreement available at
 // %InstallDIR%\features\org.talend.rcp.branding.%PRODUCTNAME%\%PRODUCTNAME%license.txt
@@ -64,7 +64,7 @@ public class OsgiLoaderTest {
     private class MissingJarObserverWithFolderResolution implements Observer {
 
         /**
-         * 
+         *
          */
         private final Boolean[] observerCalled;
 
@@ -72,7 +72,7 @@ public class OsgiLoaderTest {
 
         /**
          * DOC sgandon MissingJarObserverWithFolderResolution constructor comment.
-         * 
+         *
          * @param observerCalled
          */
         private MissingJarObserverWithFolderResolution(Boolean[] observerCalled, boolean checkJarName) {
@@ -110,7 +110,7 @@ public class OsgiLoaderTest {
     private class MissingJarObserverWithMavenResolution implements Observer {
 
         /**
-         * 
+         *
          */
         private final Boolean[] observerCalled;
 
@@ -118,7 +118,7 @@ public class OsgiLoaderTest {
 
         /**
          * DOC sgandon MissingJarObserverWithMavenResolution constructor comment.
-         * 
+         *
          * @param observerCalled
          */
         private MissingJarObserverWithMavenResolution(Boolean[] observerCalled, boolean checkJarName) {
@@ -150,7 +150,7 @@ public class OsgiLoaderTest {
     }
 
     /**
-     * 
+     *
      */
     private static final String EXISTING_JAR_NAME = "any-existing.jar"; //$NON-NLS-1$
 
@@ -255,7 +255,7 @@ public class OsgiLoaderTest {
             bundle.start();// I am not sure to understand why we need to start this bundle.
             // check finding of existing jar in fragment
             assertNotNull(bundle);
-            URL jarURL = FileLocator.find(bundle, new Path("lib/any-existing.jar"), null); //$NON-NLS-1$ 
+            URL jarURL = FileLocator.find(bundle, new Path("lib/any-existing.jar"), null); //$NON-NLS-1$
             checkFileExistsOrNot(jarURL, true);
         } finally {
             fragmentBundle.uninstall();
@@ -269,7 +269,7 @@ public class OsgiLoaderTest {
 
     /**
      * DOC sgandon Comment method "checkFileExists".
-     * 
+     *
      * @param jarURL
      * @param shouldExist
      * @throws IOException
@@ -292,7 +292,7 @@ public class OsgiLoaderTest {
             bundle.start();// I am not sure to understand why we need to start this bundle.
             // check finding of existing jar in fragment
             assertNotNull(bundle);
-            URL[] jarURL = FileLocator.findEntries(bundle, new Path("lib/any-existing.jar")); //$NON-NLS-1$ 
+            URL[] jarURL = FileLocator.findEntries(bundle, new Path("lib/any-existing.jar")); //$NON-NLS-1$
             assertEquals("There should be only one URL", 1, jarURL.length); //$NON-NLS-1$
             URL fileURL = FileLocator.toFileURL(jarURL[0]);
             File jarFile = new File(fileURL.getFile());
@@ -311,11 +311,11 @@ public class OsgiLoaderTest {
     public void CheckFindingExistingJarUsingFindEntriesAndMaven() throws IOException, BundleException, URISyntaxException {
         Bundle bundle = osgiBundle.getBundleContext().installBundle(BUNDLE_NO_LIB_FOLDER_URL);
         try {
-            URL[] jarURL = FileLocator.findEntries(bundle, new Path("lib/any-existing.jar")); //$NON-NLS-1$ 
+            URL[] jarURL = FileLocator.findEntries(bundle, new Path("lib/any-existing.jar")); //$NON-NLS-1$
             URL fileURL = FileLocator.toFileURL(jarURL[0]);
             assertFalse("File should not exists", new File(fileURL.getFile()).exists()); //$NON-NLS-1$
             copyExistingJarIntoMavenLocalRepo(false);
-            jarURL = FileLocator.findEntries(bundle, new Path("lib/any-existing.jar")); //$NON-NLS-1$ 
+            jarURL = FileLocator.findEntries(bundle, new Path("lib/any-existing.jar")); //$NON-NLS-1$
             fileURL = FileLocator.toFileURL(jarURL[0]);
             assertTrue("File should exists", new File(fileURL.getFile()).exists()); //$NON-NLS-1$
         } finally {
@@ -330,11 +330,11 @@ public class OsgiLoaderTest {
             URISyntaxException {
         Bundle bundle = osgiBundle.getBundleContext().installBundle(BUNDLE_NO_LIB_FOLDER_URL);
         try {
-            URL[] jarURL = FileLocator.findEntries(bundle, new Path("lib/any-existing.jar")); //$NON-NLS-1$ 
+            URL[] jarURL = FileLocator.findEntries(bundle, new Path("lib/any-existing.jar")); //$NON-NLS-1$
             URL fileURL = FileLocator.toFileURL(jarURL[0]);
             assertFalse("File should not exists", new File(fileURL.getFile()).exists()); //$NON-NLS-1$
             copyExistingJarIntoMavenLocalRepo(true);
-            jarURL = FileLocator.findEntries(bundle, new Path("lib/any-existing.jar")); //$NON-NLS-1$ 
+            jarURL = FileLocator.findEntries(bundle, new Path("lib/any-existing.jar")); //$NON-NLS-1$
             fileURL = FileLocator.toFileURL(jarURL[0]);
             assertTrue("File should exists", new File(fileURL.getFile()).exists()); //$NON-NLS-1$
         } finally {
@@ -375,7 +375,7 @@ public class OsgiLoaderTest {
             bundle.start();// I am not sure to understand why we need to start this bundle.
             // check finding of existing jar in fragment
             assertNotNull(bundle);
-            FileLocator.find(bundle, new Path("lib/any-existing.jar"), null); //$NON-NLS-1$ 
+            FileLocator.find(bundle, new Path("lib/any-existing.jar"), null); //$NON-NLS-1$
             assertFalse("Observer should never be called", observerCalled[0]); //$NON-NLS-1$
         } finally {
             fragmentBundle.uninstall();
@@ -882,7 +882,7 @@ public class OsgiLoaderTest {
 
     /**
      * DOC sgandon Comment method "unsetupMissingJarLoadingObserver".
-     * 
+     *
      * @param observer
      */
     private void unsetupMissingJarLoadingObserver(Observer observer) {
@@ -910,7 +910,7 @@ public class OsgiLoaderTest {
 
     /**
      * DOC sgandon Comment method "callBundleMethodToCallLibApi".
-     * 
+     *
      * @param bundle
      * @throws ClassNotFoundException
      * @throws IllegalAccessException
@@ -930,7 +930,7 @@ public class OsgiLoaderTest {
 
     /**
      * DOC sgandon Comment method "copyExistingJarIntoLibJavaFolder".
-     * 
+     *
      * @param jarName
      * @throws URISyntaxException
      */
@@ -946,9 +946,9 @@ public class OsgiLoaderTest {
 
     /**
      * DOC sgandon Comment method "copyExistingJarIntoLibJavaFolder".
-     * 
+     *
      * @param isSnapshot
-     * 
+     *
      * @param jarName
      * @throws URISyntaxException
      * @throws IOException

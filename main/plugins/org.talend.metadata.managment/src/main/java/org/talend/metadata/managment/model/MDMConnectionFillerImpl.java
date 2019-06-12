@@ -1,6 +1,6 @@
 // ============================================================================
 //
-// Copyright (C) 2006-2018 Talend Inc. - www.talend.com
+// Copyright (C) 2006-2019 Talend Inc. - www.talend.com
 //
 // This source code is available under agreement available at
 // %InstallDIR%\features\org.talend.rcp.branding.%PRODUCTNAME%\%PRODUCTNAME%license.txt
@@ -54,7 +54,7 @@ import orgomg.cwm.resource.relational.Schema;
 
 /**
  * @author zshen
- * 
+ *
  */
 public class MDMConnectionFillerImpl extends MetadataFillerImpl<MDMConnection> {
 
@@ -145,7 +145,7 @@ public class MDMConnectionFillerImpl extends MetadataFillerImpl<MDMConnection> {
 
     /**
      * DOC xqliu Comment method "adaptToCWMDocument".
-     * 
+     *
      * @param xmlDocCollection
      * @param stub
      * @param resName
@@ -235,7 +235,7 @@ public class MDMConnectionFillerImpl extends MetadataFillerImpl<MDMConnection> {
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see org.talend.core.model.metadata.IMetadataFiller#fillAll(orgomg.cwm.objectmodel.core.Package,
      * java.sql.DatabaseMetaData, org.talend.core.model.metadata.IMetadataConnection, java.util.List, java.lang.String,
      * java.lang.String[])
@@ -249,7 +249,7 @@ public class MDMConnectionFillerImpl extends MetadataFillerImpl<MDMConnection> {
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see
      * org.talend.core.model.metadata.IMetadataFiller#fillSchemas(org.talend.core.model.metadata.builder.connection.
      * Connection, java.sql.DatabaseMetaData, org.talend.core.model.metadata.IMetadataConnection, java.util.List)

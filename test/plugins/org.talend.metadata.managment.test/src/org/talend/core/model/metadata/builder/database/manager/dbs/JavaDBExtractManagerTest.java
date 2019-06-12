@@ -1,6 +1,6 @@
 // ============================================================================
 //
-// Copyright (C) 2006-2018 Talend Inc. - www.talend.com
+// Copyright (C) 2006-2019 Talend Inc. - www.talend.com
 //
 // This source code is available under agreement available at
 // %InstallDIR%\features\org.talend.rcp.branding.%PRODUCTNAME%\%PRODUCTNAME%license.txt
@@ -32,7 +32,7 @@ import org.talend.core.model.metadata.builder.database.DriverShim;
 
 /**
  * created by ggu on Jul 4, 2012 Detailled comment
- * 
+ *
  */
 public class JavaDBExtractManagerTest extends AbstractTest4ExtractManager {
 
@@ -40,7 +40,7 @@ public class JavaDBExtractManagerTest extends AbstractTest4ExtractManager {
     public void setUp() throws Exception {
         /*
          * can be JAVADB, JAVADB_JCCJDBC,JAVADB_DERBYCLIENT
-         * 
+         *
          * specially test the JAVADB_EMBEDED in @see JavaDBExtractManager4EmbededTest
          */
         init(EDatabaseTypeName.JAVADB_JCCJDBC);

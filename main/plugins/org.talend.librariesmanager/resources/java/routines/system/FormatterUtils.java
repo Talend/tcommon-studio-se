@@ -1,6 +1,6 @@
 // ============================================================================
 //
-// Copyright (C) 2006-2018 Talend Inc. - www.talend.com
+// Copyright (C) 2006-2019 Talend Inc. - www.talend.com
 //
 // This source code is available under agreement available at
 // %InstallDIR%\features\org.talend.rcp.branding.%PRODUCTNAME%\%PRODUCTNAME%license.txt
@@ -34,7 +34,7 @@ public class FormatterUtils {
         if(obj == null) {
             return null;
         }
-        
+
         //the order is on purpose here for the appear rank
         if(obj instanceof String) {
             return obj.toString();
@@ -59,10 +59,10 @@ public class FormatterUtils {
         } else if(obj instanceof byte[]) {
             return format((byte[])obj, null);
         }
-        
+
         return obj.toString();
     }
-    
+
     public static String format(Object obj, String pattern) {
         return (obj == null) ? null : obj.toString();
     }
@@ -175,15 +175,15 @@ public class FormatterUtils {
         if(thousandsSeparator!=null && !thousandsSeparator.isEmpty()) {
             thousandsSeparatorChar = thousandsSeparator.charAt(0);
         }
-        
+
         Character decimalSeparatorChar = null;
         if(decimalSeparator!=null && !decimalSeparator.isEmpty()) {
             decimalSeparatorChar = decimalSeparator.charAt(0);
         }
-        
+
         return format_Number(s, thousandsSeparatorChar, decimalSeparatorChar);
     }
-    
+
     /**
      * in order to transform the number "1234567.89" to string 123,456.89
      */
@@ -281,7 +281,7 @@ public class FormatterUtils {
     static {
         df.setRoundingMode(RoundingMode.HALF_UP);
     }
-    
+
     /**
      * the number format to avoid scientific notation and avoid locale-related and do best to keep precision
      */
@@ -295,17 +295,17 @@ public class FormatterUtils {
         }
         return df.format(number);
     }
-    
+
     //overload it for performance to avoid auto convert to Double object
     public static String formatNumber(double number) {
         return df.format(number);
     }
-    
+
     //overload it for performance to avoid auto convert to Float object
     public static String formatNumber(float number) {
         return formatUnwithE(number);
     }
-    
+
     /**
      * DOC Administrator Comment method "formatUnwithE". In java when double more than six decimal that use toString
      * will rentru contains E scientific natation.

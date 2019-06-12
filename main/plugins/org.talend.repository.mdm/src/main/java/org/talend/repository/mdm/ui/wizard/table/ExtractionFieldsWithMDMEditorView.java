@@ -1,6 +1,6 @@
 // ============================================================================
 //
-// Copyright (C) 2006-2018 Talend Inc. - www.talend.com
+// Copyright (C) 2006-2019 Talend Inc. - www.talend.com
 //
 // This source code is available under agreement available at
 // %InstallDIR%\features\org.talend.rcp.branding.%PRODUCTNAME%\%PRODUCTNAME%license.txt
@@ -67,7 +67,7 @@ public class ExtractionFieldsWithMDMEditorView extends AbstractDataTableEditorVi
 
     /**
      * TargetSchemaTableEditorView2 constructor comment.
-     * 
+     *
      * @param parent
      * @param styleChild
      * @param showDbTypeColumn
@@ -79,7 +79,7 @@ public class ExtractionFieldsWithMDMEditorView extends AbstractDataTableEditorVi
 
     /**
      * Getter for xPathCellEditor.
-     * 
+     *
      * @return the xPathCellEditor
      */
     public TextCellEditorWithProposal getXPathCellEditor() {
@@ -88,7 +88,7 @@ public class ExtractionFieldsWithMDMEditorView extends AbstractDataTableEditorVi
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see
      * org.talend.commons.ui.swt.advanced.dataeditor.AbstractDataTableEditorView#handleBeforeListenableListOperationEvent
      * (org.talend.commons.utils.data.list.ListenableListEvent)
@@ -100,7 +100,7 @@ public class ExtractionFieldsWithMDMEditorView extends AbstractDataTableEditorVi
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see
      * org.talend.commons.ui.swt.extended.macrotable.AbstractExtendedTableViewer#handleListenableListEvent(org.talend
      * .commons.utils.data.list.ListenableListEvent)
@@ -117,7 +117,7 @@ public class ExtractionFieldsWithMDMEditorView extends AbstractDataTableEditorVi
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see
      * org.talend.commons.ui.swt.extended.macrotable.AbstractExtendedTableViewer#setTableViewerCreatorOptions(org.talend
      * .commons.ui.swt.tableviewer.TableViewerCreator)
@@ -130,7 +130,7 @@ public class ExtractionFieldsWithMDMEditorView extends AbstractDataTableEditorVi
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see
      * org.talend.commons.ui.swt.advanced.macrotable.AbstractExtendedTableViewer#createColumns(org.talend.commons.ui
      * .swt.tableviewer.TableViewerCreator, org.eclipse.swt.widgets.Table)
@@ -241,7 +241,7 @@ public class ExtractionFieldsWithMDMEditorView extends AbstractDataTableEditorVi
 
     /**
      * DOC chuang Comment method "createTagName".
-     * 
+     *
      * @param tableViewerCreator
      * @param column
      * @return
@@ -321,7 +321,7 @@ public class ExtractionFieldsWithMDMEditorView extends AbstractDataTableEditorVi
 
     /**
      * DOC hcw Comment method "setRowBackground".
-     * 
+     *
      * @param list
      * @param conflictNames
      */
@@ -346,7 +346,7 @@ public class ExtractionFieldsWithMDMEditorView extends AbstractDataTableEditorVi
 
     /**
      * Getter for xPathColumn.
-     * 
+     *
      * @return the xPathColumn
      */
     public TableViewerCreatorColumn getXPathColumn() {
@@ -355,7 +355,7 @@ public class ExtractionFieldsWithMDMEditorView extends AbstractDataTableEditorVi
 
     /**
      * DOC amaumont Comment method "setLinker".
-     * 
+     *
      * @param linker
      */
     public void setLinker(MDMLinker linker) {
@@ -364,7 +364,7 @@ public class ExtractionFieldsWithMDMEditorView extends AbstractDataTableEditorVi
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see org.talend.commons.ui.swt.advanced.dataeditor.AbstractDataTableEditorView#initToolBar()
      */
     @Override
@@ -398,7 +398,7 @@ public class ExtractionFieldsWithMDMEditorView extends AbstractDataTableEditorVi
 
             /*
              * (non-Javadoc)
-             * 
+             *
              * @see org.talend.core.ui.extended.ExtendedToolbarView#createPastePushButton()
              */
             @Override

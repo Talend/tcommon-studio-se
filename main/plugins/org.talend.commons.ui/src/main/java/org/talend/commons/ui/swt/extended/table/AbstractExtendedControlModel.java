@@ -1,6 +1,6 @@
 // ============================================================================
 //
-// Copyright (C) 2006-2018 Talend Inc. - www.talend.com
+// Copyright (C) 2006-2019 Talend Inc. - www.talend.com
 //
 // This source code is available under agreement available at
 // %InstallDIR%\features\org.talend.rcp.branding.%PRODUCTNAME%\%PRODUCTNAME%license.txt
@@ -16,18 +16,18 @@ import org.eclipse.core.runtime.ListenerList;
 
 /**
  * DOC amaumont class global comment. Detailled comment <br/>
- * 
+ *
  * $Id$
- * 
+ *
  */
 public abstract class AbstractExtendedControlModel {
 
     /**
-     * 
+     *
      * Event type. <br/>
-     * 
+     *
      * $Id$
-     * 
+     *
      */
     public enum EVENT_TYPE implements IExtendedControlEventType {
         NAME_CHANGED,
@@ -62,7 +62,7 @@ public abstract class AbstractExtendedControlModel {
 
     /**
      * Sets the name.
-     * 
+     *
      * @param name the name to set
      */
     public void setName(String name) {
@@ -84,7 +84,7 @@ public abstract class AbstractExtendedControlModel {
 
     /**
      * DOC amaumont Comment method "fireEvent".
-     * 
+     *
      * @param event
      */
     protected void fireEvent(ExtendedModelEvent event) {

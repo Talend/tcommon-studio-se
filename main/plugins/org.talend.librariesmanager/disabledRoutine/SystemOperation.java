@@ -2,7 +2,7 @@
 //
 // Talend Community Edition
 //
-// Copyright (C) 2006-2018 Talend Inc. - www.talend.com
+// Copyright (C) 2006-2019 Talend Inc. - www.talend.com
 //
 // This library is free software; you can redistribute it and/or
 // modify it under the terms of the GNU Lesser General Public
@@ -30,13 +30,13 @@ public class SystemOperation {
 
 //    /**
 //     * DATE( ) Returns the internal system date.
-//     * 
+//     *
 //     * {talendTypes} Date
-//     * 
+//     *
 //     * {Category} SystemOperation
-//     * 
+//     *
 //     * {example} DATE()
-//     * 
+//     *
 //     */
 //    public static String DATE() {
 //        Date date = new Date();
@@ -45,15 +45,15 @@ public class SystemOperation {
 
 //    /**
 //     * NAP Suspends execution of a BASIC program, pausing for a specified number of milliseconds.
-//     * 
+//     *
 //     * {talendTypes} String
-//     * 
+//     *
 //     * {Category} SystemOperation
-//     * 
+//     *
 //     * {param} long(5000)
-//     * 
+//     *
 //     * {example} NAP(5000)
-//     * 
+//     *
 //     */
 //    public static void NAP(long milliseconds) {
 //        try {
@@ -65,15 +65,15 @@ public class SystemOperation {
 
 //    /**
 //     * SLEEP Suspends execution of a BASIC program, pausing for a specified number of seconds.
-//     * 
+//     *
 //     * {talendTypes} String
-//     * 
+//     *
 //     * {Category} SystemOperation
-//     * 
+//     *
 //     * {param} long(5000)
-//     * 
+//     *
 //     * {example} SLEEP(5000)
-//     * 
+//     *
 //     */
 //    public static void SLEEP(long milliseconds) {
 //        try {
@@ -89,13 +89,13 @@ public class SystemOperation {
 
 //    /**
 //     * TIME( ) Returns the time in internal format.
-//     * 
+//     *
 //     * {talendTypes} String
-//     * 
+//     *
 //     * {Category} SystemOperation
-//     * 
+//     *
 //     * {example} TIME()
-//     * 
+//     *
 //     */
 //    public static String TIME() {
 //        Date date = new Date();

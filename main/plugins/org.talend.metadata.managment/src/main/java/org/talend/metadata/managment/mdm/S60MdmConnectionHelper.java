@@ -1,6 +1,6 @@
 // ============================================================================
 //
-// Copyright (C) 2006-2018 Talend Inc. - www.talend.com
+// Copyright (C) 2006-2019 Talend Inc. - www.talend.com
 //
 // This source code is available under agreement available at
 // %InstallDIR%\features\org.talend.rcp.branding.%PRODUCTNAME%\%PRODUCTNAME%license.txt
@@ -38,7 +38,7 @@ public class S60MdmConnectionHelper extends AbsMdmConnectionHelper {
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see org.talend.metadata.managment.mdm.AbsMdmConnectionHelper#checkConnection(java.lang.String, java.lang.String,
      * java.lang.String, java.lang.String)
      */
@@ -74,7 +74,7 @@ public class S60MdmConnectionHelper extends AbsMdmConnectionHelper {
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see org.talend.metadata.managment.mdm.AbsMdmConnectionHelper#getPKs(org.apache.axis.client.Stub,
      * java.lang.String, java.lang.String)
      */
@@ -101,7 +101,7 @@ public class S60MdmConnectionHelper extends AbsMdmConnectionHelper {
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see org.talend.metadata.managment.mdm.AbsMdmConnectionHelper#initConcept(org.talend.core.model.metadata.builder.
      * connection.MDMConnection, java.io.File)
      */
@@ -199,7 +199,7 @@ public class S60MdmConnectionHelper extends AbsMdmConnectionHelper {
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see org.talend.metadata.managment.mdm.AbsMdmConnectionHelper#resetUniverseUser(java.lang.Object,
      * java.lang.String)
      */

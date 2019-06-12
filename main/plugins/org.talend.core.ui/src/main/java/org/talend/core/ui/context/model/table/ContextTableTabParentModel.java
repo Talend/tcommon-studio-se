@@ -1,6 +1,6 @@
 // ============================================================================
 //
-// Copyright (C) 2006-2018 Talend Inc. - www.talend.com
+// Copyright (C) 2006-2019 Talend Inc. - www.talend.com
 //
 // This source code is available under agreement available at
 // %InstallDIR%\features\org.talend.rcp.branding.%PRODUCTNAME%\%PRODUCTNAME%license.txt
@@ -16,7 +16,7 @@ import org.talend.core.model.process.IContextParameter;
 import org.talend.core.ui.context.model.ContextTabParentModel;
 
 /**
- * 
+ *
  */
 public class ContextTableTabParentModel extends ContextTabParentModel {
 
@@ -69,7 +69,7 @@ public class ContextTableTabParentModel extends ContextTabParentModel {
 
     /**
      * Getter for order.
-     * 
+     *
      * @return the order
      */
     public int getOrder() {
@@ -78,7 +78,7 @@ public class ContextTableTabParentModel extends ContextTabParentModel {
 
     /**
      * Sets the order.
-     * 
+     *
      * @param order the order to set
      */
     public void setOrder(int order) {

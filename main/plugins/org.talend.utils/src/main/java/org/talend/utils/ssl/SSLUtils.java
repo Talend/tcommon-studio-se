@@ -1,6 +1,6 @@
 // ============================================================================
 //
-// Copyright (C) 2006-2018 Talend Inc. - www.talend.com
+// Copyright (C) 2006-2019 Talend Inc. - www.talend.com
 //
 // This source code is available under agreement available at
 // %InstallDIR%\features\org.talend.rcp.branding.%PRODUCTNAME%\%PRODUCTNAME%license.txt
@@ -51,7 +51,7 @@ import javax.net.ssl.TrustManagerFactory;
 import javax.net.ssl.X509TrustManager;
 
 /**
- * DOC hcyi class global comment. Detailled comment 
+ * DOC hcyi class global comment. Detailled comment
  * This class have 3 duplicate in studio, If you fix some bugs in this class, please synchronize others.
  */
 public class SSLUtils {
@@ -122,7 +122,7 @@ public class SSLUtils {
 
     /**
      * Get SSLUtils instance
-     * 
+     *
      * @param userDir- The default keystore file folder, Once SSLUtils initialized, we should not use different value
      * @return SSLUtils instance
      * @throws NoSuchAlgorithmException
@@ -243,12 +243,12 @@ public class SSLUtils {
     }
 
     /**
-     * 
+     *
      * DOC hcyi Comment method "getContent".
-     * 
+     *
      * @param buffer
      * @param url
-     * 
+     *
      * @return
      * @throws AMCPluginException
      */

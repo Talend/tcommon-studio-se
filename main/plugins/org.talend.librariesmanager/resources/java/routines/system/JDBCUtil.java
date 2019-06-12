@@ -1,6 +1,6 @@
 // ============================================================================
 //
-// Copyright (C) 2006-2018 Talend Inc. - www.talend.com
+// Copyright (C) 2006-2019 Talend Inc. - www.talend.com
 //
 // This source code is available under agreement available at
 // %InstallDIR%\features\org.talend.rcp.branding.%PRODUCTNAME%\%PRODUCTNAME%license.txt
@@ -56,15 +56,15 @@ public class JDBCUtil {
 
         throw new RuntimeException("Null value in non-Nullable column");
     }
-    
+
     public static Date getDate(ResultSet rs, int index) throws java.sql.SQLException {
         if(rs.getTimestamp(index) != null) {
             return new Date(rs.getTimestamp(index).getTime());
         }
-        
+
         return null;
     }
-    
+
     //decrease the get method call number
     public static Double getDoubleObject2(ResultSet rs, int index) throws java.sql.SQLException {
         Double result = rs.getDouble(index);
@@ -73,7 +73,7 @@ public class JDBCUtil {
         }
         return result;
     }
-    
+
     //decrease the get method call number
     public static double getDouble2(ResultSet rs, int index) throws java.sql.SQLException {
         Double result = rs.getDouble(index);
@@ -82,5 +82,5 @@ public class JDBCUtil {
         }
         return result;
     }
-    
+
 }

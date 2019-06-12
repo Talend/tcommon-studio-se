@@ -1,6 +1,6 @@
 // ============================================================================
 //
-// Copyright (C) 2006-2018 Talend Inc. - www.talend.com
+// Copyright (C) 2006-2019 Talend Inc. - www.talend.com
 //
 // This source code is available under agreement available at
 // %InstallDIR%\features\org.talend.rcp.branding.%PRODUCTNAME%\%PRODUCTNAME%license.txt
@@ -78,7 +78,7 @@ import org.talend.core.utils.TalendQuoteUtils;
 
 /**
  * zwang class global comment. Detailled comment <br/>
- * 
+ *
  */
 public class ContextTemplateComposite extends AbstractContextTabEditComposite {
 
@@ -112,7 +112,7 @@ public class ContextTemplateComposite extends AbstractContextTabEditComposite {
 
     /**
      * bqian ConextTemplateComposite constructor comment.
-     * 
+     *
      * @param parent
      * @param style
      */
@@ -137,7 +137,7 @@ public class ContextTemplateComposite extends AbstractContextTabEditComposite {
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see org.eclipse.swt.widgets.Control#setEnabled(boolean)
      */
     @Override
@@ -261,7 +261,7 @@ public class ContextTemplateComposite extends AbstractContextTabEditComposite {
     }
 
     /**
-     * 
+     *
      * DOC xye Comment method "createPopupMenu".
      */
     private void createPopupMenu() {
@@ -389,7 +389,7 @@ public class ContextTemplateComposite extends AbstractContextTabEditComposite {
 
     /**
      * zwang Comment method "setContexts".
-     * 
+     *
      * @param jobContextManager2
      */
     @Override
@@ -473,7 +473,7 @@ public class ContextTemplateComposite extends AbstractContextTabEditComposite {
     }
 
     /**
-     * 
+     *
      * Added by Marvin Wang on Mar 7, 2013.
      */
     private void refreshContextView() {
@@ -482,7 +482,7 @@ public class ContextTemplateComposite extends AbstractContextTabEditComposite {
 
     /**
      * Clear the data in this viewer.
-     * 
+     *
      * @param jobContextManager2
      */
     public void clear() {
@@ -492,9 +492,9 @@ public class ContextTemplateComposite extends AbstractContextTabEditComposite {
 
     /**
      * bqian Comment method "computeContextTemplate".
-     * 
+     *
      * @param contexts
-     * 
+     *
      * @return
      */
     public static List<IContextParameter> computeContextTemplate(List<IContext> contexts) {
@@ -800,7 +800,7 @@ public class ContextTemplateComposite extends AbstractContextTabEditComposite {
 
     /**
      * bqian Comment method "getProcess".
-     * 
+     *
      * @return
      */
     private IProcess getProcess() {
@@ -809,7 +809,7 @@ public class ContextTemplateComposite extends AbstractContextTabEditComposite {
 
     /**
      * bqian Comment method "getCommandStack".
-     * 
+     *
      * @return
      */
 

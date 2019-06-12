@@ -1,6 +1,6 @@
 // ============================================================================
 //
-// Copyright (C) 2006-2018 Talend Inc. - www.talend.com
+// Copyright (C) 2006-2019 Talend Inc. - www.talend.com
 //
 // This source code is available under agreement available at
 // %InstallDIR%\features\org.talend.rcp.branding.%PRODUCTNAME%\%PRODUCTNAME%license.txt
@@ -23,7 +23,7 @@ import org.talend.daikon.security.CryptoHelper;
 
 /**
  * DOC ggu class global comment. Detailled comment
- * 
+ *
  * mvn-uri:='mvn:'[repository-url '!'] group-id '/' artifact-id ['/' [version] ['/' [type] ['/' classifier ]]]]
  */
 @SuppressWarnings("nls")
@@ -222,7 +222,7 @@ public class MavenUrlHelper {
 
     /**
      * The generated mvn url is only used to display on UI
-     * 
+     *
      * @param mArt
      * @param encryptPassword
      * @return
@@ -233,7 +233,7 @@ public class MavenUrlHelper {
     }
 
     /**
-     * 
+     *
      * mvn:groupId/artifactId/version/packaging/classifier
      */
     public static String generateMvnUrl(String groupId, String artifactId, String version, String packaging, String classifier) {

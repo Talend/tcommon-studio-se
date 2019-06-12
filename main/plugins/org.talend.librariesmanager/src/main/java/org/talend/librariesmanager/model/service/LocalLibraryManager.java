@@ -1,6 +1,6 @@
 // ============================================================================
 //
-// Copyright (C) 2006-2018 Talend Inc. - www.talend.com
+// Copyright (C) 2006-2019 Talend Inc. - www.talend.com
 //
 // This source code is available under agreement available at
 // %InstallDIR%\features\org.talend.rcp.branding.%PRODUCTNAME%\%PRODUCTNAME%license.txt
@@ -65,6 +65,7 @@ import org.talend.core.model.general.ILibrariesService.IChangedLibrariesListener
 import org.talend.core.model.general.ModuleNeeded;
 import org.talend.core.model.general.ModuleNeeded.ELibraryInstallStatus;
 import org.talend.core.model.general.ModuleStatusProvider;
+import org.talend.core.model.repository.ERepositoryObjectType;
 import org.talend.core.nexus.ArtifactRepositoryBean;
 import org.talend.core.nexus.IRepositoryArtifactHandler;
 import org.talend.core.nexus.NexusServerUtils;
@@ -77,6 +78,7 @@ import org.talend.core.runtime.maven.MavenConstants;
 import org.talend.core.runtime.maven.MavenUrlHelper;
 import org.talend.core.runtime.services.IMavenUIService;
 import org.talend.core.utils.TalendQuoteUtils;
+import org.talend.designer.maven.tools.BuildCacheManager;
 import org.talend.designer.maven.utils.PomUtil;
 import org.talend.librariesmanager.maven.MavenArtifactsHandler;
 import org.talend.librariesmanager.model.ExtensionModuleManager;
@@ -91,20 +93,20 @@ public class LocalLibraryManager implements ILibraryManagerService, IChangedLibr
 
     private static Logger log = Logger.getLogger(LocalLibraryManager.class);
 
-    private Set<String> jarList = new HashSet<String>();
+    private Set<String> jarList = new HashSet<>();
 
     // map platform_uri/maven_uri to absolute path
     // key = null, means uri not tested yet....
     // value is null = jar not existingb
     // value set = absolute path of the jar
-    private Map<String, String> studioJarInstalled = new HashMap<String, String>();
+    private Map<String, String> studioJarInstalled = new HashMap<>();
 
     // rules same as studioJarInstalled
     // key maven uri , value jar path
     // only check the existing status in list() incase of performance problem
-    private Map<String, String> mavenJarInstalled = new HashMap<String, String>();
+    private Map<String, String> mavenJarInstalled = new HashMap<>();
 
-    private Set<String> urlWarned = new HashSet<String>();
+    private Set<String> urlWarned = new HashSet<>();
 
     private JarMissingObservable missingJarObservable;
 
@@ -160,9 +162,9 @@ public class LocalLibraryManager implements ILibraryManagerService, IChangedLibr
     }
 
     /**
-     * 
+     *
      * DOC wchen Comment method "deployFile".
-     * 
+     *
      * @param file
      * @param mavenUri snaopshot mvn uri
      * @param monitorWrap
@@ -171,7 +173,7 @@ public class LocalLibraryManager implements ILibraryManagerService, IChangedLibr
         try {
             if (file.isDirectory()) {
                 List<File> jarFiles = FilesUtils.getJarFilesFromFolder(file, null);
-                Map<String, String> sourceAndMavenUri = new HashMap<String, String>();
+                Map<String, String> sourceAndMavenUri = new HashMap<>();
                 if (!jarFiles.isEmpty()) {
                     for (File jarFile : jarFiles) {
                         if (mavenRUI == null) {
@@ -185,7 +187,7 @@ public class LocalLibraryManager implements ILibraryManagerService, IChangedLibr
                     updateInstalledMvnUri(sourceAndMavenUri.keySet());
                 }
             } else {
-                Map<String, String> sourceAndMavenUri = new HashMap<String, String>();
+                Map<String, String> sourceAndMavenUri = new HashMap<>();
                 if (mavenRUI == null) {
                     guessMavenRUIFromIndex(file, sourceAndMavenUri);
                 } else {
@@ -238,9 +240,9 @@ public class LocalLibraryManager implements ILibraryManagerService, IChangedLibr
     }
 
     /**
-     * 
+     *
      * update the mavenJarInstalled cache after deploy jars
-     * 
+     *
      * @param installedUris
      */
     private void updateInstalledMvnUri(Collection<String> installedUris) {
@@ -252,7 +254,7 @@ public class LocalLibraryManager implements ILibraryManagerService, IChangedLibr
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see org.talend.core.IRepositoryBundleService#retrieve(java.lang.String, java.lang.String)
      */
     @Override
@@ -374,7 +376,7 @@ public class LocalLibraryManager implements ILibraryManagerService, IChangedLibr
     private Set<String> guessMavenURI(ModuleNeeded module) {
         String jarNeeded = module.getModuleName();
         EMap<String, String> mvnURIIndex = LibrariesIndexManager.getInstance().getMavenLibIndex().getJarsToRelativePath();
-        Set<String> toResolve = new HashSet<String>();
+        Set<String> toResolve = new HashSet<>();
         if (module.getCustomMavenUri() != null) {
             toResolve.add(module.getCustomMavenUri());
         } else if (module.getMavenURIFromConfiguration() == null && mvnURIIndex.get(jarNeeded) != null) {
@@ -391,7 +393,7 @@ public class LocalLibraryManager implements ILibraryManagerService, IChangedLibr
 
     /**
      * DOC nrousseau Comment method "resolveJar".
-     * 
+     *
      * @param jarNeeded
      * @param jarFile
      * @param customNexusServer
@@ -403,8 +405,7 @@ public class LocalLibraryManager implements ILibraryManagerService, IChangedLibr
     @Override
     public File resolveJar(final ArtifactRepositoryBean customNexusServer, String uri) throws Exception, IOException {
         if (GlobalServiceRegister.getDefault().isServiceRegistered(IMavenUIService.class)) {
-            IMavenUIService mavenUIService = GlobalServiceRegister.getDefault()
-                    .getService(IMavenUIService.class);
+            IMavenUIService mavenUIService = GlobalServiceRegister.getDefault().getService(IMavenUIService.class);
             if (mavenUIService != null) {
                 if (customNexusServer != null) {
                     mavenUIService.updateMavenResolver(customNexusServer);
@@ -470,7 +471,7 @@ public class LocalLibraryManager implements ILibraryManagerService, IChangedLibr
 
     /**
      * DOC nrousseau Comment method "isResolveAllowed".
-     * 
+     *
      * @param uri
      * @return
      */
@@ -485,7 +486,7 @@ public class LocalLibraryManager implements ILibraryManagerService, IChangedLibr
         }
 
         if (lastResolveDate == null) {
-            lastResolveDate = new HashMap<String, Date>();
+            lastResolveDate = new HashMap<>();
             IEclipsePreferences prefSetting = ConfigurationScope.INSTANCE.getNode("org.talend.librariesmanager");
             String lastUpdate = prefSetting.get(LAST_UPDATE_KEY, null);
             if (lastUpdate != null) {
@@ -519,7 +520,7 @@ public class LocalLibraryManager implements ILibraryManagerService, IChangedLibr
 
     public void updateLastResolveDate(String uri) {
         if (lastResolveDate == null) {
-            lastResolveDate = new HashMap<String, Date>();
+            lastResolveDate = new HashMap<>();
         }
         lastResolveDate.put(uri, new Date());
         IEclipsePreferences prefSetting = ConfigurationScope.INSTANCE.getNode("org.talend.librariesmanager");
@@ -596,7 +597,7 @@ public class LocalLibraryManager implements ILibraryManagerService, IChangedLibr
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see org.talend.core.IRepositoryBundleService#retrieve(java.util.Collection, java.lang.String,
      * org.eclipse.core.runtime.IProgressMonitor[])
      */
@@ -605,19 +606,25 @@ public class LocalLibraryManager implements ILibraryManagerService, IChangedLibr
         return retrieve(jarsNeeded, pathToStore, true, monitorWrap);
     }
 
+    @Override
+    public boolean retrieve(Set<ModuleNeeded> modulesNeeded, String pathToStore, boolean showDialog,
+            IProgressMonitor... monitorWrap) {
+        return retrieve(null, modulesNeeded, pathToStore, showDialog, monitorWrap);
+    }
+
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see org.talend.core.ILibraryManagerService#retrieve(java.util.Set, java.lang.String,
      * org.eclipse.core.runtime.IProgressMonitor[])
      */
     @Override
-    public boolean retrieve(Set<ModuleNeeded> modulesNeeded, String pathToStore, boolean showDialog,
-            IProgressMonitor... monitorWrap) {
+    public boolean retrieve(ERepositoryObjectType codeType, Set<ModuleNeeded> modulesNeeded, String pathToStore,
+            boolean showDialog, IProgressMonitor... monitorWrap) {
         if (modulesNeeded == null || modulesNeeded.size() == 0) {
             return false;
         }
-        Set<ModuleNeeded> jarNotFound = new HashSet<ModuleNeeded>();
+        Set<ModuleNeeded> jarNotFound = new HashSet<>();
         boolean allIsOK = true;
         for (ModuleNeeded jar : modulesNeeded) {
             if (!retrieve(jar, pathToStore, false, false)) {
@@ -630,7 +637,7 @@ public class LocalLibraryManager implements ILibraryManagerService, IChangedLibr
                 ILibraryManagerUIService libUiService = GlobalServiceRegister.getDefault()
                         .getService(ILibraryManagerUIService.class);
                 libUiService.installModules(jarNotFound);
-                modulesNeeded = new HashSet<ModuleNeeded>(jarNotFound);
+                modulesNeeded = new HashSet<>(jarNotFound);
                 jarNotFound.clear();
                 allIsOK = true;
                 boolean needResetModulesNeeded = false;
@@ -646,6 +653,11 @@ public class LocalLibraryManager implements ILibraryManagerService, IChangedLibr
                     if (GlobalServiceRegister.getDefault().isServiceRegistered(ILibrariesService.class)) {
                         ILibrariesService librariesService = GlobalServiceRegister.getDefault()
                                 .getService(ILibrariesService.class);
+                        if (codeType != null) {
+                            BuildCacheManager.getInstance().clearCodesCache(codeType);
+                        } else {
+                            BuildCacheManager.getInstance().clearAllCodesCache();
+                        }
                         librariesService.checkLibraries();
                     }
                 }
@@ -662,7 +674,7 @@ public class LocalLibraryManager implements ILibraryManagerService, IChangedLibr
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see org.talend.core.IRepositoryBundleService#list(org.eclipse.core.runtime.IProgressMonitor[])
      */
     @Override
@@ -686,7 +698,7 @@ public class LocalLibraryManager implements ILibraryManagerService, IChangedLibr
 
     @Override
     public Set<String> listAllDllFiles() {
-        Set<String> names = new HashSet<String>();
+        Set<String> names = new HashSet<>();
         try {
             List<File> dllFiles = FilesUtils.getDllFilesFromFolder(getStorageDirectory(), null);
             if (dllFiles.size() > 0) {
@@ -738,7 +750,7 @@ public class LocalLibraryManager implements ILibraryManagerService, IChangedLibr
 
     /*
      * (non-Jsdoc)
-     * 
+     *
      * @see org.talend.core.ILibraryManagerService#delete(java.lang.String)
      */
     @Override
@@ -869,7 +881,7 @@ public class LocalLibraryManager implements ILibraryManagerService, IChangedLibr
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see org.talend.core.ILibraryManagerService#getJarPathFromMaven(java.lang.String)
      */
     @Override
@@ -878,7 +890,7 @@ public class LocalLibraryManager implements ILibraryManagerService, IChangedLibr
             return null;
         }
         String libPath = null;
-        Set<String> mvnUris = new HashSet<String>();
+        Set<String> mvnUris = new HashSet<>();
         if (MavenUrlHelper.isMvnUrl(jarNameOrMavenUri)) {
             mvnUris.add(jarNameOrMavenUri);
         } else {
@@ -917,7 +929,7 @@ public class LocalLibraryManager implements ILibraryManagerService, IChangedLibr
         if (ModuleStatusProvider.getDeployStatus(mvnUriStatusKey) == ELibraryInstallStatus.NOT_DEPLOYED) {
             return null;
         }
-        if(mvnUriStatusKey == null){
+        if (mvnUriStatusKey == null) {
             return null;
         }
         // then try to resolve locally
@@ -940,7 +952,7 @@ public class LocalLibraryManager implements ILibraryManagerService, IChangedLibr
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see org.talend.core.ILibraryManagerService#checkModuleStatus(org.talend.core.model.general.ModuleNeeded)
      */
     @Override
@@ -1016,7 +1028,7 @@ public class LocalLibraryManager implements ILibraryManagerService, IChangedLibr
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see org.talend.core.ILibraryManagerService#checkJarInstalledFromMaven(java.lang.String)
      */
 
@@ -1092,12 +1104,12 @@ public class LocalLibraryManager implements ILibraryManagerService, IChangedLibr
     @Override
     public void createModulesIndexFromComponentAndExtension(IProgressMonitor... monitorWrap) {
         // key: moduleName, value: platformURL
-        Map<String, String> platformURLMap = new HashMap<String, String>();
+        Map<String, String> platformURLMap = new HashMap<>();
         // key: moduleName, value: mvn uri
-        Map<String, String> mavenURIMap = new HashMap<String, String>();
-        List<ModuleNeeded> modules = new ArrayList<ModuleNeeded>();
-        Set<String> duplicateLocationJar = new HashSet<String>();
-        Set<String> duplicateMavenUri = new HashSet<String>();
+        Map<String, String> mavenURIMap = new HashMap<>();
+        List<ModuleNeeded> modules = new ArrayList<>();
+        Set<String> duplicateLocationJar = new HashSet<>();
+        Set<String> duplicateMavenUri = new HashSet<>();
         // TDQ-11125 TOP doesn't have IComponentsService.avoid NPE.
         IComponentsService service = null;
         if (GlobalServiceRegister.getDefault().isServiceRegistered(IComponentsService.class)) {
@@ -1136,15 +1148,15 @@ public class LocalLibraryManager implements ILibraryManagerService, IChangedLibr
     }
 
     /**
-     * 
+     *
      * The old components might use some jars in component folder and theres jars are not configured with platfrom URL
-     * 
+     *
      * @param service
      * @param libsWithoutUri
      * @param platformURLMap
      */
     private void deployLibsFromComponentFolder(IComponentsService service, Map<String, String> platformURLMap) {
-        Set<File> needToDeploy = new HashSet<File>();
+        Set<File> needToDeploy = new HashSet<>();
         List<ComponentProviderInfo> componentsFolders = service.getComponentsFactory().getComponentsProvidersInfo();
         for (ComponentProviderInfo providerInfo : componentsFolders) {
             String contributeID = providerInfo.getContributer();
@@ -1205,7 +1217,7 @@ public class LocalLibraryManager implements ILibraryManagerService, IChangedLibr
         // deploy needed jars for User and Exchange component providers
         if (!needToDeploy.isEmpty()) {
             // search on nexus to avoid deploy the jar many times
-            Set<File> existFiles = new HashSet<File>();
+            Set<File> existFiles = new HashSet<>();
             ArtifactRepositoryBean customNexusServer = TalendLibsServerManager.getInstance().getCustomNexusServer();
             IRepositoryArtifactHandler customerRepHandler = RepositoryArtifactHandlerManager
                     .getRepositoryHandler(customNexusServer);
@@ -1238,8 +1250,8 @@ public class LocalLibraryManager implements ILibraryManagerService, IChangedLibr
 
     private void warnDuplicated(List<ModuleNeeded> modules, Set<String> duplicates, String type) {
         for (String lib : duplicates) {
-            Set<String> components = new HashSet<String>();
-            Set<String> locations = new HashSet<String>();
+            Set<String> components = new HashSet<>();
+            Set<String> locations = new HashSet<>();
             for (ModuleNeeded module : modules) {
                 if (lib != null && lib.equals(module.getModuleName())) {
                     components.add(module.getContext());
@@ -1282,7 +1294,7 @@ public class LocalLibraryManager implements ILibraryManagerService, IChangedLibr
                 }
                 // check if jar name is setup based on maven uri
                 String generatedName = MavenUrlHelper.generateModuleNameByMavenURI(mavenUrl);
-                if(!generatedName.equals(module.getModuleName()) && CommonsPlugin.isDebugMode()) {
+                if (!generatedName.equals(module.getModuleName()) && CommonsPlugin.isDebugMode()) {
                     String context = module.getContext();
                     String warning = "Module Name is expected as " + generatedName + ",but it is configured as "//$NON-NLS-1$ //$NON-NLS-2$
                             + module.getModuleName() + (context == null || "".equals(context) ? "" : " in " + context);//$NON-NLS-1$ //$NON-NLS-2$//$NON-NLS-3$
@@ -1308,7 +1320,7 @@ public class LocalLibraryManager implements ILibraryManagerService, IChangedLibr
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see org.talend.core.ILibraryManagerService#deploy(java.util.Map, org.eclipse.core.runtime.IProgressMonitor[])
      */
     @Override
@@ -1328,7 +1340,7 @@ public class LocalLibraryManager implements ILibraryManagerService, IChangedLibr
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see org.talend.core.ILibraryManagerService#deployMavenIndex(java.util.Map,
      * org.eclipse.core.runtime.IProgressMonitor[])
      */
@@ -1390,7 +1402,7 @@ public class LocalLibraryManager implements ILibraryManagerService, IChangedLibr
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see org.talend.core.ILibraryManagerService#synToLocalMaven()
      */
     @Override
@@ -1432,7 +1444,7 @@ public class LocalLibraryManager implements ILibraryManagerService, IChangedLibr
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see org.talend.core.ILibraryManagerService#getMavenUriFromIndex()
      */
     @Override
@@ -1443,7 +1455,7 @@ public class LocalLibraryManager implements ILibraryManagerService, IChangedLibr
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see org.talend.core.model.general.ILibrariesService#setCustomMavenURI(java.lang.String, java.lang.String)
      */
     @Override
@@ -1453,7 +1465,7 @@ public class LocalLibraryManager implements ILibraryManagerService, IChangedLibr
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see org.talend.core.model.general.ILibrariesService#getCustomMavenURI(java.lang.String)
      */
     @Override
@@ -1463,7 +1475,7 @@ public class LocalLibraryManager implements ILibraryManagerService, IChangedLibr
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see org.talend.core.model.general.ILibrariesService#saveCustomMavenURIMap()
      */
     @Override
@@ -1473,7 +1485,7 @@ public class LocalLibraryManager implements ILibraryManagerService, IChangedLibr
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see org.talend.core.ILibraryManagerService#getPlatformURLFromIndex(java.lang.String)
      */
     @Override
@@ -1593,7 +1605,7 @@ public class LocalLibraryManager implements ILibraryManagerService, IChangedLibr
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see org.talend.core.model.general.ILibrariesService.IChangedLibrariesListener#afterChangingLibraries()
      */
     @Override
@@ -1604,12 +1616,12 @@ public class LocalLibraryManager implements ILibraryManagerService, IChangedLibr
     @Override
     public String getJarNameFromMavenuri(String mavenURI) {
         EMap<String, String> jarsToMavenuri = LibrariesIndexManager.getInstance().getMavenLibIndex().getJarsToRelativePath();
-        for(String key : jarsToMavenuri.keySet()){
-            if(jarsToMavenuri.get(key) == null){
+        for (String key : jarsToMavenuri.keySet()) {
+            if (jarsToMavenuri.get(key) == null) {
                 continue;
             }
-            if(TalendQuoteUtils.removeQuotesIfExist(jarsToMavenuri.get(key)).
-                    equalsIgnoreCase(TalendQuoteUtils.removeQuotesIfExist(mavenURI))){
+            if (TalendQuoteUtils.removeQuotesIfExist(jarsToMavenuri.get(key))
+                    .equalsIgnoreCase(TalendQuoteUtils.removeQuotesIfExist(mavenURI))) {
                 return key;
             }
         }

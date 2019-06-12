@@ -1,6 +1,6 @@
 // ============================================================================
 //
-// Copyright (C) 2006-2018 Talend Inc. - www.talend.com
+// Copyright (C) 2006-2019 Talend Inc. - www.talend.com
 //
 // This source code is available under agreement available at
 // %InstallDIR%\features\org.talend.rcp.branding.%PRODUCTNAME%\%PRODUCTNAME%license.txt
@@ -42,7 +42,7 @@ public class PerspectiveFilterActionProvider extends AbstractRepositoryFilterAct
 
     /**
      * set the filtering state of the viewer and update the content of the viewer accordingly.
-     * 
+     *
      * @param filtering, if true filtering is active (false make filtering unactive)
      */
     public void setFiltering(boolean activedPerspectiveFilter, boolean restoring) {

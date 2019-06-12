@@ -1,6 +1,6 @@
 // ============================================================================
 //
-// Copyright (C) 2006-2018 Talend Inc. - www.talend.com
+// Copyright (C) 2006-2019 Talend Inc. - www.talend.com
 //
 // This source code is available under agreement available at
 // %InstallDIR%\features\org.talend.rcp.branding.%PRODUCTNAME%\%PRODUCTNAME%license.txt
@@ -205,7 +205,7 @@ public class ModuleListCellEditor extends DialogCellEditor {
         }
         // enable to refresh component setting after change modules.
         IElement element = this.tableParam.getElement();
-        boolean isNotCConfig = element.getElementParameter("COMPONENT_NAME") == null ? 
+        boolean isNotCConfig = element.getElementParameter("COMPONENT_NAME") == null ?
                 true : !"cConfig".equals(element.getElementParameter("COMPONENT_NAME").getValue());
         if (element != null && isNotCConfig) {
             IElementParameter updateComponentsParam = element.getElementParameter("UPDATE_COMPONENTS"); //$NON-NLS-1$
@@ -234,7 +234,7 @@ public class ModuleListCellEditor extends DialogCellEditor {
     }
 
     /**
-     * 
+     *
      * ggu ModelChangeCommand class global comment. Detailled comment
      */
     class ModelChangeCommand extends Command {

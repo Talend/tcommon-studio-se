@@ -1,6 +1,6 @@
 // ============================================================================
 //
-// Copyright (C) 2006-2018 Talend Inc. - www.talend.com
+// Copyright (C) 2006-2019 Talend Inc. - www.talend.com
 //
 // This source code is available under agreement available at
 // %InstallDIR%\features\org.talend.rcp.branding.%PRODUCTNAME%\%PRODUCTNAME%license.txt
@@ -44,24 +44,24 @@ public interface ICoreTisService extends IService {
 
     /**
      * DOC ycbai Comment method "exportAsCWM".
-     * 
+     *
      * @param itemUri
      * @param destDir
      */
     public void exportAsCWM(URI itemUri, String destDir);
-    
+
     public boolean needUpdate(String userName, String password, String adminUrl)  throws SystemException;
 
     public void downLoadAndInstallUpdates(String userName, String password, String adminUrl) throws Exception;
-    
+
     public boolean isLicenseExpired();
-    
+
     public boolean isTheSameType(String userName, String password, String adminUrl);
 
     public void clearCustomLicensePathArg();
-    
+
     public File getLicenseFile();
-    
+
     public String generateSignerSessionId();
 
     public void updateConfiguratorBundles(File configFile, File tempConfigFile) throws IOException;

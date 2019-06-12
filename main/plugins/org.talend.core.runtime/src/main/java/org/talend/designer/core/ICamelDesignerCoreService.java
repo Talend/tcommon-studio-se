@@ -1,6 +1,6 @@
 // ============================================================================
 //
-// Copyright (C) 2006-2018 Talend Inc. - www.talend.com
+// Copyright (C) 2006-2019 Talend Inc. - www.talend.com
 //
 // This source code is available under agreement available at
 // %InstallDIR%\features\org.talend.rcp.branding.%PRODUCTNAME%\%PRODUCTNAME%license.txt
@@ -45,7 +45,7 @@ public interface ICamelDesignerCoreService extends IService {
 
     /**
      * Synchronized Route resource
-     * 
+     *
      * @param item
      */
     public void synchronizeRouteResource(ProcessItem item);
@@ -64,7 +64,7 @@ public interface ICamelDesignerCoreService extends IService {
 
     /**
      * DOC sunchaoqun Comment method "getUnselectDependenciesBundle".
-     * 
+     *
      * @param processItem
      * @return
      */

@@ -1,6 +1,6 @@
 // ============================================================================
 //
-// Copyright (C) 2006-2018 Talend Inc. - www.talend.com
+// Copyright (C) 2006-2019 Talend Inc. - www.talend.com
 //
 // This source code is available under agreement available at
 // %InstallDIR%\features\org.talend.rcp.branding.%PRODUCTNAME%\%PRODUCTNAME%license.txt
@@ -30,14 +30,14 @@ import org.eclipse.swt.widgets.Text;
 
 /**
  * This class provides utility methods to create SWT widgets for LDAP.
- * 
+ *
  * @author ftang, 18/09/2007
  */
 public class BaseWidgetUtils {
 
     /**
      * Creates a SWT {@link Group} under the given parent.
-     * 
+     *
      * @param parent the parent
      * @param label the label of the group
      * @param span the horizontal span
@@ -55,7 +55,7 @@ public class BaseWidgetUtils {
 
     /**
      * Creates a SWT {@link Composite} under the given parent. A GridLayout with the given number of columns is used.
-     * 
+     *
      * @param parent the parent
      * @param columnCount the number of columns
      * @param span the horizontal span
@@ -74,7 +74,7 @@ public class BaseWidgetUtils {
 
     /**
      * Creates a SWT {@link Label} under the given parent.
-     * 
+     *
      * @param parent the parent
      * @param text the label's text
      * @param span the horizontal span
@@ -93,7 +93,7 @@ public class BaseWidgetUtils {
     /**
      * Creates a SWT {@link Label} under the given parent. The label is created with the SWT.WRAP style to enable line
      * wrapping.
-     * 
+     *
      * @param parent the parent
      * @param text the label's text
      * @param span the horizontal span
@@ -111,7 +111,7 @@ public class BaseWidgetUtils {
 
     /**
      * Creates a SWT {@link Text} under the given parent. The created text control is modifyable.
-     * 
+     *
      * @param parent the parent
      * @param text the initial text
      * @param span the horizontal span
@@ -128,7 +128,7 @@ public class BaseWidgetUtils {
 
     /**
      * Creates a SWT {@link Text} under the given parent. The created text control is modifyable.
-     * 
+     *
      * @param parent the parent
      * @param text the initial text
      * @param textWidth the width of the text control
@@ -149,7 +149,7 @@ public class BaseWidgetUtils {
     /**
      * Creates a SWT {@link Text} under the given parent. The created text control is created with the SWT.PASSWORD
      * style.
-     * 
+     *
      * @param parent the parent
      * @param text the initial text
      * @param span the horizontal span
@@ -167,7 +167,7 @@ public class BaseWidgetUtils {
     /**
      * Creates a SWT {@link Text} under the given parent. The created text control is created with the SWT.PASSWORD and
      * SWT.READ_ONLY style. So the created controls is not modifyable.
-     * 
+     *
      * @param parent the parent
      * @param text the initial text
      * @param span the horizontal span
@@ -187,7 +187,7 @@ public class BaseWidgetUtils {
     /**
      * Creates a SWT {@link Text} under the given parent. The created text control behaves like a label: it has no
      * border, a grayed background and is not modifyable. But the text is selectable and could be copied.
-     * 
+     *
      * @param parent the parent
      * @param text the initial text
      * @param span the horizontal span
@@ -208,7 +208,7 @@ public class BaseWidgetUtils {
      * Creates a SWT {@link Text} under the given parent. The created text control behaves like a label: it has no
      * border, a grayed background and is not modifyable. But the text is selectable and could be copied. The label is
      * created with the SWT.WRAP style to enable line wrapping.
-     * 
+     *
      * @param parent the parent
      * @param text the initial text
      * @param span the horizontal span
@@ -231,7 +231,7 @@ public class BaseWidgetUtils {
     /**
      * Creates a SWT {@link Text} under the given parent. The text is not modifyable, but the text is selectable and
      * could be copied.
-     * 
+     *
      * @param parent the parent
      * @param text the initial text
      * @param span the horizontal span
@@ -251,7 +251,7 @@ public class BaseWidgetUtils {
     /**
      * Creates a SWT {@link Combo} under the given parent. Beside the selection of an item it is also possible to type
      * free text into the combo.
-     * 
+     *
      * @param parent the parent
      * @param items the initial visible items
      * @param selectedIndex the initial selected item, zero-based
@@ -272,7 +272,7 @@ public class BaseWidgetUtils {
     /**
      * Creates a SWT {@link Combo} under the given parent. It is not possible to type free text into the combo, only
      * selection of predefined items is possible.
-     * 
+     *
      * @param parent the parent
      * @param items the initial visible items
      * @param selectedIndex the initial selected item, zero-based
@@ -293,7 +293,7 @@ public class BaseWidgetUtils {
 
     /**
      * Creates a checkbox under the given parent.
-     * 
+     *
      * @param parent the parent
      * @param text the label of the checkbox
      * @param span the horizontal span
@@ -310,7 +310,7 @@ public class BaseWidgetUtils {
 
     /**
      * Creates a radio button under the given parent.
-     * 
+     *
      * @param parent the parent
      * @param text the label of the radio button
      * @param span the horizontal span
@@ -327,7 +327,7 @@ public class BaseWidgetUtils {
 
     /**
      * Creates a button under the given parent. The button width is set to the default width.
-     * 
+     *
      * @param parent the parent
      * @param text the label of the button
      * @param span the horizontal span
@@ -349,7 +349,7 @@ public class BaseWidgetUtils {
 
     /**
      * Adds some space to indent radio buttons.
-     * 
+     *
      * @param parent the parent
      * @param span the horizontal span
      */
@@ -363,7 +363,7 @@ public class BaseWidgetUtils {
 
     /**
      * Creates a spacer.
-     * 
+     *
      * @param parent the parent
      * @param span the horizontal span
      */
@@ -378,7 +378,7 @@ public class BaseWidgetUtils {
 
     /**
      * Creates a separator line.
-     * 
+     *
      * @param parent the parent
      * @param span the horizontal span
      */
@@ -392,7 +392,7 @@ public class BaseWidgetUtils {
 
     /**
      * Creates a SWT {@link Link} under the given parent.
-     * 
+     *
      * @param parent the parent
      * @param text the initial text
      * @param span the horizontal span

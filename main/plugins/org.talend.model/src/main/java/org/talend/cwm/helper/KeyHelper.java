@@ -1,6 +1,6 @@
 // ============================================================================
 //
-// Copyright (C) 2006-2018 Talend Inc. - www.talend.com
+// Copyright (C) 2006-2019 Talend Inc. - www.talend.com
 //
 // This source code is available under agreement available at
 // %InstallDIR%\features\org.talend.rcp.branding.%PRODUCTNAME%\%PRODUCTNAME%license.txt
@@ -24,14 +24,14 @@ import orgomg.cwm.resource.relational.PrimaryKey;
 
 /**
  * this provides a set of helpers static method to deal with Primary and Foreign key of the talend DB metamodel <br/>
- * 
+ *
  * created on 29 avr. 2010 by sgandon
  */
 public class KeyHelper {
 
     /**
      * return the list of columns associated with the given key
-     * 
+     *
      * @param theKey to find the associated columns
      * @return list of the column related to this key
      */
@@ -49,7 +49,7 @@ public class KeyHelper {
 
     /**
      * return the list of columns associated with the given key
-     * 
+     *
      * @param theKey to find the associated columns
      * @return list of the column related to this key
      */

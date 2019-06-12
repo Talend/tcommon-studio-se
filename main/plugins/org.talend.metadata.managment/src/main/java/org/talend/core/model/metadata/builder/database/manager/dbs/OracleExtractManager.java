@@ -1,6 +1,6 @@
 // ============================================================================
 //
-// Copyright (C) 2006-2018 Talend Inc. - www.talend.com
+// Copyright (C) 2006-2019 Talend Inc. - www.talend.com
 //
 // This source code is available under agreement available at
 // %InstallDIR%\features\org.talend.rcp.branding.%PRODUCTNAME%\%PRODUCTNAME%license.txt
@@ -132,7 +132,7 @@ public class OracleExtractManager extends ExtractManager {
 
         try {
             if (conn != null && conn.getMetaData().getDatabaseProductName().equals(DATABASE_PRODUCT_NAME)) {
-                String sql = "select TABLE_NAME from ALL_SYNONYMS where SYNONYM_NAME = '" + tableName + "'"; //$NON-NLS-1$ //$NON-NLS-2$ 
+                String sql = "select TABLE_NAME from ALL_SYNONYMS where SYNONYM_NAME = '" + tableName + "'"; //$NON-NLS-1$ //$NON-NLS-2$
                 // String sql = "select * from all_tab_columns where upper(table_name)='" + name +
                 // "' order by column_id";
                 // Statement sta;
@@ -303,7 +303,7 @@ public class OracleExtractManager extends ExtractManager {
         ExtractMetaDataUtils extractMeta = ExtractMetaDataUtils.getInstance();
         try {
             statement = extractMeta.getConn().prepareStatement("SELECT COMMENTS FROM USER_COL_COMMENTS WHERE TABLE_NAME='" //$NON-NLS-1$
-                    + tableName + "'"); //$NON-NLS-1$ 
+                    + tableName + "'"); //$NON-NLS-1$
             extractMeta.setQueryStatementTimeout(statement);
             if (statement.execute()) {
                 keys = statement.getResultSet();

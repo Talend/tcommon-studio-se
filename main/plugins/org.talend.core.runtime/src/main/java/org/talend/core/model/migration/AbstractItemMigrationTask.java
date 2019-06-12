@@ -1,6 +1,6 @@
 // ============================================================================
 //
-// Copyright (C) 2006-2018 Talend Inc. - www.talend.com
+// Copyright (C) 2006-2019 Talend Inc. - www.talend.com
 //
 // This source code is available under agreement available at
 // %InstallDIR%\features\org.talend.rcp.branding.%PRODUCTNAME%\%PRODUCTNAME%license.txt
@@ -126,7 +126,7 @@ public abstract class AbstractItemMigrationTask extends AbstractMigrationTask im
 
     /**
      * Getter for project.
-     * 
+     *
      * @return the project
      */
     public Project getProject() {
@@ -135,7 +135,7 @@ public abstract class AbstractItemMigrationTask extends AbstractMigrationTask im
 
     /**
      * Sets the project.
-     * 
+     *
      * @param project the project to set
      */
     public void setProject(Project project) {
@@ -159,7 +159,7 @@ public abstract class AbstractItemMigrationTask extends AbstractMigrationTask im
 
     /**
      * DOC sgandon Comment method "getExtendedTypes".
-     * 
+     *
      * @return
      */
     Set<? extends ERepositoryObjectType> getExtendedTypes() {

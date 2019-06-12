@@ -1,6 +1,6 @@
 // ============================================================================
 //
-// Copyright (C) 2006-2018 Talend Inc. - www.talend.com
+// Copyright (C) 2006-2019 Talend Inc. - www.talend.com
 //
 // This source code is available under agreement available at
 // %InstallDIR%\features\org.talend.rcp.branding.%PRODUCTNAME%\%PRODUCTNAME%license.txt
@@ -30,7 +30,7 @@ import org.talend.core.utils.RegistryReader;
 public class RelationshipRegistryReader extends RegistryReader {
 
     /**
-     * 
+     *
      * DOC ggu ItemRelationshipRegistry class global comment. Detailled comment.
      */
     static class ItemRelationshipRegistry extends RelationshipRegistry {
@@ -52,7 +52,7 @@ public class RelationshipRegistryReader extends RegistryReader {
     }
 
     /**
-     * 
+     *
      * DOC ggu ParameterRelationshipRegistry class global comment. Detailled comment.
      */
     static class ParameterRelationshipRegistry extends RelationshipRegistry {
@@ -151,7 +151,7 @@ public class RelationshipRegistryReader extends RegistryReader {
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see org.talend.core.utils.RegistryReader#readElement(org.eclipse.core.runtime.IConfigurationElement)
      */
     @Override

@@ -1,6 +1,6 @@
 // ============================================================================
 //
-// Copyright (C) 2006-2018 Talend Inc. - www.talend.com
+// Copyright (C) 2006-2019 Talend Inc. - www.talend.com
 //
 // This source code is available under agreement available at
 // %InstallDIR%\features\org.talend.rcp.branding.%PRODUCTNAME%\%PRODUCTNAME%license.txt
@@ -21,13 +21,13 @@ import org.talend.core.utils.TalendQuoteUtils;
 
 /**
  * created by wchen on 2013-5-20 Detailled comment
- * 
+ *
  */
 public abstract class AbstractDragAndDropServiceHandler implements IDragAndDropServiceHandler {
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see
      * org.talend.core.model.utils.IDragAndDropServiceHandler#getComponentValue(org.talend.core.model.metadata.builder
      * .connection.Connection, java.lang.String, org.talend.core.model.metadata.IMetadataTable)
@@ -39,7 +39,7 @@ public abstract class AbstractDragAndDropServiceHandler implements IDragAndDropS
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see org.talend.core.model.utils.IDragAndDropServiceHandler#isValidForDataViewer(org.talend.core.model.metadata.
      * IMetadataTable)
      */
@@ -66,7 +66,7 @@ public abstract class AbstractDragAndDropServiceHandler implements IDragAndDropS
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see org.talend.core.model.utils.IDragAndDropServiceHandler#getGenericRepositoryValue(java.util.List,
      * java.lang.String)
      */
@@ -74,7 +74,7 @@ public abstract class AbstractDragAndDropServiceHandler implements IDragAndDropS
     public Object getGenericRepositoryValue(List<ComponentProperties> componentProperties, String paramName) {
         return null;
     }
-    
+
     @Override
     public boolean isGenericPropertiesValue(String paramName){
         return false;

@@ -1,6 +1,6 @@
 // ============================================================================
 //
-// Copyright (C) 2006-2018 Talend Inc. - www.talend.com
+// Copyright (C) 2006-2019 Talend Inc. - www.talend.com
 //
 // This source code is available under agreement available at
 // %InstallDIR%\features\org.talend.rcp.branding.%PRODUCTNAME%\%PRODUCTNAME%license.txt
@@ -79,7 +79,7 @@ public class UpdatesHelper {
     }
 
     /**
-     * 
+     *
      * will check that existed the plugins folder only.
      */
     public static boolean isPlainUpdate(File file) {
@@ -156,9 +156,9 @@ public class UpdatesHelper {
     }
 
     /**
-     * 
+     *
      * Find the validated updates files.
-     * 
+     *
      * if zip, will return the zip path directly, if folder, will find the real valid path of update(if plain, is parent
      * of plugins folder, if update site, is parent of artifacts.xml, content.xml and plugins folder )
      */

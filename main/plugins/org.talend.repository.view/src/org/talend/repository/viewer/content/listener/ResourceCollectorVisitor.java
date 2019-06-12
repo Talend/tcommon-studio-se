@@ -1,6 +1,6 @@
 // ============================================================================
 //
-// Copyright (C) 2006-2018 Talend Inc. - www.talend.com
+// Copyright (C) 2006-2019 Talend Inc. - www.talend.com
 //
 // This source code is available under agreement available at
 // %InstallDIR%\features\org.talend.rcp.branding.%PRODUCTNAME%\%PRODUCTNAME%license.txt
@@ -56,7 +56,7 @@ public abstract class ResourceCollectorVisitor implements IResourceDeltaVisitor 
     protected abstract Set<RepositoryNode> getTopNodes();
 
     protected abstract IPath getTopLevelNodePath(RepositoryNode repoNode);
-    
+
 
     protected IPath getTopLevelNodePathForRefresh(RepositoryNode repoNode) {
         return getTopLevelNodePath(repoNode);
@@ -79,7 +79,7 @@ public abstract class ResourceCollectorVisitor implements IResourceDeltaVisitor 
         // this visitor doesn't handle the current folder
         return null;
     }
-    
+
     private IRepositoryNode findTopNode(IRepositoryNode repoNode){
         List<ERepositoryObjectType> extraTypes = new ArrayList<ERepositoryObjectType>();
         IGenericDBService dbService = null;
@@ -90,7 +90,7 @@ public abstract class ResourceCollectorVisitor implements IResourceDeltaVisitor 
         if(dbService != null){
             extraTypes.addAll(dbService.getExtraTypes());
         }
-        
+
         if(repoNode.getContentType() != null && extraTypes.contains(repoNode.getContentType())){
             RepositoryNode dbRootNode = (RepositoryNode) repoNode.getRoot().getRootRepositoryNode(
                     ERepositoryObjectType.METADATA_CONNECTIONS);
@@ -173,9 +173,9 @@ public abstract class ResourceCollectorVisitor implements IResourceDeltaVisitor 
                 // file modified, need to refresh the current file
                 XmiResourceManager xrm = new XmiResourceManager();
                 if (xrm.isPropertyFile((IFile) resource)) {
-                    // no refresh needed if something else than a .properties is modified                    
+                    // no refresh needed if something else than a .properties is modified
                     pathToRefresh.add(resourceNode);
-                    
+
 //                    ResourceNode fileResourceNode = new ResourceNode();
 //                    fileResourceNode.setPath(resource.getFullPath().toPortableString());
 //                    fileResourceNode.setTopNode(topNode);

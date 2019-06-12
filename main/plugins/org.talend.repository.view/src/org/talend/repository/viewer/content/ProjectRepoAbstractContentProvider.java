@@ -1,6 +1,6 @@
 // ============================================================================
 //
-// Copyright (C) 2006-2018 Talend Inc. - www.talend.com
+// Copyright (C) 2006-2019 Talend Inc. - www.talend.com
 //
 // This source code is available under agreement available at
 // %InstallDIR%\features\org.talend.rcp.branding.%PRODUCTNAME%\%PRODUCTNAME%license.txt
@@ -86,7 +86,7 @@ public abstract class ProjectRepoAbstractContentProvider extends FolderListenerS
     /*
      * only called with a ProjectRepoNode as a parent. register a listener to the current project to be notified of the
      * deleted folders
-     * 
+     *
      * @see
      * org.talend.repository.example.viewer.content.LegacyRepositoryContentProvider#getRootNode(org.talend.repository
      * .model.ProjectRepositoryNode)
@@ -102,7 +102,7 @@ public abstract class ProjectRepoAbstractContentProvider extends FolderListenerS
 
     /**
      * DOC sgandon Comment method "setupDeleteFolderListener".
-     * 
+     *
      * @param projRepo
      */
     protected void setupDeleteFolderListener(ProjectRepositoryNode projRepo) {
@@ -116,7 +116,7 @@ public abstract class ProjectRepoAbstractContentProvider extends FolderListenerS
         }// no project set so no need to listen
 
     }
-    
+
     private AdapterImpl getDeleteListener() {
         if (deleteFolderListener == null) {
             deleteFolderListener = new DeletedFolderListener();
@@ -157,14 +157,14 @@ public abstract class ProjectRepoAbstractContentProvider extends FolderListenerS
 
     /**
      * return the project repository from the element, never null
-     * 
+     *
      * @param element
      */
     abstract protected ProjectRepositoryNode getProjectRepositoryNode(RepositoryNode element);
 
     /**
      * DOC sgandon Comment method "getTopLevelNodeFromProjectRepositoryNode".
-     * 
+     *
      * @param element
      * @return
      */
@@ -198,7 +198,7 @@ public abstract class ProjectRepoAbstractContentProvider extends FolderListenerS
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see
      * org.talend.repository.viewer.content.FolderListenerSingleTopContentProvider#inputChanged(org.eclipse.jface.viewers
      * .Viewer, java.lang.Object, java.lang.Object)
@@ -252,7 +252,7 @@ public abstract class ProjectRepoAbstractContentProvider extends FolderListenerS
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see org.talend.repository.viewer.content.FolderListenerSingleTopContentProvider#dispose()
      */
     @Override
@@ -274,7 +274,7 @@ public abstract class ProjectRepoAbstractContentProvider extends FolderListenerS
 
     /**
      * Getter for project.
-     * 
+     *
      * @return the project
      */
     protected Project getProject() {
@@ -283,7 +283,7 @@ public abstract class ProjectRepoAbstractContentProvider extends FolderListenerS
 
     /**
      * Sets the project.
-     * 
+     *
      * @param project the project to set
      */
     protected void setProject(Project project) {

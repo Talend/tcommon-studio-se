@@ -1,6 +1,6 @@
 // ============================================================================
 //
-// Copyright (C) 2006-2018 Talend Inc. - www.talend.com
+// Copyright (C) 2006-2019 Talend Inc. - www.talend.com
 //
 // This source code is available under agreement available at
 // %InstallDIR%\features\org.talend.rcp.branding.%PRODUCTNAME%\%PRODUCTNAME%license.txt
@@ -29,17 +29,17 @@ public class ExtraFeaturesUpdatesFactory {
 
     private final static ExtraFeaturesUpdatesReader updatesFactoryReader = new ExtraFeaturesUpdatesReader();
     private boolean isCheckUpdateOnLine = false;
-    
+
     public ExtraFeaturesUpdatesFactory(boolean isCheckUpdateOnLine) {
         this.isCheckUpdateOnLine = isCheckUpdateOnLine;
     }
     /**
-     * 
+     *
      * DOC ggu Comment method "retrieveUninstalledExtraFeatures".
-     * 
-     * 
+     *
+     *
      * Retrieve all uninstalled extra features.
-     * 
+     *
      * @param monitor
      * @return
      */

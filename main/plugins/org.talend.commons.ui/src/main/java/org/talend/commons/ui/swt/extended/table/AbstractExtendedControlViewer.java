@@ -1,6 +1,6 @@
 // ============================================================================
 //
-// Copyright (C) 2006-2018 Talend Inc. - www.talend.com
+// Copyright (C) 2006-2019 Talend Inc. - www.talend.com
 //
 // This source code is available under agreement available at
 // %InstallDIR%\features\org.talend.rcp.branding.%PRODUCTNAME%\%PRODUCTNAME%license.txt
@@ -20,9 +20,9 @@ import org.talend.commons.ui.swt.advanced.dataeditor.AbstractExtendedToolbar;
 
 /**
  * DOC amaumont class global comment. Detailled comment <br/>
- * 
+ *
  * $Id$
- * 
+ *
  */
 public abstract class AbstractExtendedControlViewer {
 
@@ -37,11 +37,11 @@ public abstract class AbstractExtendedControlViewer {
     private boolean readOnly;
 
     /**
-     * 
+     *
      * Event type. <br/>
-     * 
+     *
      * $Id$
-     * 
+     *
      */
     public enum EVENT_TYPE implements IExtendedControlEventType {
         MODEL_CHANGED,
@@ -63,7 +63,7 @@ public abstract class AbstractExtendedControlViewer {
 
     /**
      * DOC amaumont AbstractExtendedControlViewer constructor comment.
-     * 
+     *
      * @param extendedControl, can be null
      * @param parentComposite
      */
@@ -75,7 +75,7 @@ public abstract class AbstractExtendedControlViewer {
 
     /**
      * DOC amaumont AbstractExtendedControlViewer constructor comment.
-     * 
+     *
      * @param extendedControl, can be null
      * @param parentComposite
      * @param readOnly
@@ -89,7 +89,7 @@ public abstract class AbstractExtendedControlViewer {
 
     /**
      * DOC amaumont Comment method "executeCommand".
-     * 
+     *
      * @param command
      */
     public void executeCommand(Command command) {
@@ -103,7 +103,7 @@ public abstract class AbstractExtendedControlViewer {
 
     /**
      * Getter for extendedControl.
-     * 
+     *
      * @return the extendedControl
      */
     public AbstractExtendedControlModel getExtendedControlModel() {
@@ -112,7 +112,7 @@ public abstract class AbstractExtendedControlViewer {
 
     /**
      * Sets the extendedControl.
-     * 
+     *
      * @param model the extendedControl to set
      */
     public void setExtendedControlModel(AbstractExtendedControlModel model) {
@@ -131,7 +131,7 @@ public abstract class AbstractExtendedControlViewer {
 
     /**
      * Getter for parentComposite.
-     * 
+     *
      * @return the parentComposite
      */
     public Composite getParentComposite() {
@@ -140,7 +140,7 @@ public abstract class AbstractExtendedControlViewer {
 
     /**
      * Getter for commandStackAdapter.
-     * 
+     *
      * @return the commandStackAdapter
      */
     public CommandStack getCommandStack() {
@@ -149,7 +149,7 @@ public abstract class AbstractExtendedControlViewer {
 
     /**
      * Sets the commandStackAdapter.
-     * 
+     *
      * @param commandStack the commandStackAdapter to set
      */
     public void setCommandStack(CommandStack commandStack) {
@@ -166,7 +166,7 @@ public abstract class AbstractExtendedControlViewer {
 
     /**
      * DOC amaumont Comment method "fireEvent".
-     * 
+     *
      * @param event
      */
     protected void fireEvent(ExtendedControlEvent event) {
@@ -179,7 +179,7 @@ public abstract class AbstractExtendedControlViewer {
 
     /**
      * Getter for readOnly.
-     * 
+     *
      * @return the readOnly
      */
     public boolean isReadOnly() {
@@ -188,7 +188,7 @@ public abstract class AbstractExtendedControlViewer {
 
     /**
      * Sets the readOnly.
-     * 
+     *
      * @param readOnly the readOnly to set
      */
     public void setReadOnly(boolean readOnly) {
@@ -200,7 +200,7 @@ public abstract class AbstractExtendedControlViewer {
 
     /**
      * Getter for bindingToolbar.
-     * 
+     *
      * @return the bindingToolbar
      */
     public AbstractExtendedToolbar getBindingToolbar() {
@@ -209,7 +209,7 @@ public abstract class AbstractExtendedControlViewer {
 
     /**
      * Sets the bindingToolbar.
-     * 
+     *
      * @param bindingToolbar the bindingToolbar to set
      */
     public void setBindingToolbar(AbstractExtendedToolbar bindingToolbar) {

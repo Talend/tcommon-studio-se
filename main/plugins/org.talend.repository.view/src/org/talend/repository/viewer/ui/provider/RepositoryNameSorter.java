@@ -1,6 +1,6 @@
 // ============================================================================
 //
-// Copyright (C) 2006-2018 Talend Inc. - www.talend.com
+// Copyright (C) 2006-2019 Talend Inc. - www.talend.com
 //
 // This source code is available under agreement available at
 // %InstallDIR%\features\org.talend.rcp.branding.%PRODUCTNAME%\%PRODUCTNAME%license.txt
@@ -22,9 +22,9 @@ import org.talend.repository.model.RepositoryNode;
 
 /**
  * Name sorter for the repository view.<br/>
- * 
+ *
  * $Id$
- * 
+ *
  * @deprecated by TUP-507
  */
 @Deprecated
@@ -32,7 +32,7 @@ public class RepositoryNameSorter extends ViewerSorter {
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see org.eclipse.jface.viewers.ViewerComparator#category(java.lang.Object)
      */
     @Override
@@ -133,7 +133,7 @@ public class RepositoryNameSorter extends ViewerSorter {
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see org.eclipse.jface.viewers.ViewerSorter#getComparator()
      */
     @Override
@@ -143,7 +143,7 @@ public class RepositoryNameSorter extends ViewerSorter {
 
             /*
              * (non-Javadoc)
-             * 
+             *
              * @see java.util.Comparator#compare(java.lang.Object, java.lang.Object)
              */
 

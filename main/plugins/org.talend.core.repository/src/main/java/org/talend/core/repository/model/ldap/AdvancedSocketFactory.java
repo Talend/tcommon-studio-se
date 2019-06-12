@@ -1,6 +1,6 @@
 // ============================================================================
 //
-// Copyright (C) 2006-2018 Talend Inc. - www.talend.com
+// Copyright (C) 2006-2019 Talend Inc. - www.talend.com
 //
 // This source code is available under agreement available at
 // %InstallDIR%\features\org.talend.rcp.branding.%PRODUCTNAME%\%PRODUCTNAME%license.txt
@@ -33,9 +33,9 @@ import org.talend.core.repository.i18n.Messages;
 
 /**
  * This class is used for LDAP. <br/>
- * 
+ *
  * @author ftang, 19/09/2007
- * 
+ *
  */
 public class AdvancedSocketFactory extends SSLSocketFactory {
 
@@ -61,7 +61,7 @@ public class AdvancedSocketFactory extends SSLSocketFactory {
 
     /**
      * AdvancedSocketFactory constructor comment.
-     * 
+     *
      * @param in
      * @param keyStore
      * @param password
@@ -81,7 +81,7 @@ public class AdvancedSocketFactory extends SSLSocketFactory {
 
     /**
      * AdvancedSocketFactory constructor comment.
-     * 
+     *
      * @param keyStore
      * @param passphrase
      */
@@ -92,7 +92,7 @@ public class AdvancedSocketFactory extends SSLSocketFactory {
 
     /**
      * Comment method "closeStream".
-     * 
+     *
      * @param in
      */
     private static void closeStream(InputStream in) {
@@ -107,7 +107,7 @@ public class AdvancedSocketFactory extends SSLSocketFactory {
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see javax.net.SocketFactory#createSocket(java.lang.String, int)
      */
     public Socket createSocket(String host, int port) throws IOException, UnknownHostException {
@@ -116,7 +116,7 @@ public class AdvancedSocketFactory extends SSLSocketFactory {
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see javax.net.SocketFactory#createSocket(java.lang.String, int, java.net.InetAddress, int)
      */
     public Socket createSocket(String host, int port, InetAddress clientHost, int clientPort) throws IOException,
@@ -126,7 +126,7 @@ public class AdvancedSocketFactory extends SSLSocketFactory {
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see javax.net.SocketFactory#createSocket(java.net.InetAddress, int)
      */
     public Socket createSocket(InetAddress host, int port) throws IOException, UnknownHostException {
@@ -135,7 +135,7 @@ public class AdvancedSocketFactory extends SSLSocketFactory {
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see javax.net.SocketFactory#createSocket(java.net.InetAddress, int, java.net.InetAddress, int)
      */
     public Socket createSocket(InetAddress host, int port, InetAddress clientHost, int clientPort) throws IOException,
@@ -145,7 +145,7 @@ public class AdvancedSocketFactory extends SSLSocketFactory {
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see javax.net.ssl.SSLSocketFactory#createSocket(java.net.Socket, java.lang.String, int, boolean)
      */
     public Socket createSocket(Socket socket, String host, int port, boolean autoclose) throws IOException, UnknownHostException {
@@ -154,7 +154,7 @@ public class AdvancedSocketFactory extends SSLSocketFactory {
 
     /**
      * Comment method "getDefault".
-     * 
+     *
      * @return
      */
     public static synchronized SocketFactory getDefault() {
@@ -163,7 +163,7 @@ public class AdvancedSocketFactory extends SSLSocketFactory {
 
     /**
      * Comment method "setCertStorePath".
-     * 
+     *
      * @param path
      */
     public static void setCertStorePath(String path) {
@@ -172,7 +172,7 @@ public class AdvancedSocketFactory extends SSLSocketFactory {
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see javax.net.ssl.SSLSocketFactory#getDefaultCipherSuites()
      */
     public String[] getDefaultCipherSuites() {
@@ -181,7 +181,7 @@ public class AdvancedSocketFactory extends SSLSocketFactory {
 
     /**
      * Comment method "getDefaultFactory".
-     * 
+     *
      * @return
      */
     private static SocketFactory getDefaultFactory() {
@@ -192,7 +192,7 @@ public class AdvancedSocketFactory extends SSLSocketFactory {
 
     /**
      * Comment method "getDefaultTrustManager".
-     * 
+     *
      * @return
      */
     private TrustManager[] getDefaultTrustManager() {
@@ -203,7 +203,7 @@ public class AdvancedSocketFactory extends SSLSocketFactory {
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see javax.net.ssl.SSLSocketFactory#getSupportedCipherSuites()
      */
     public String[] getSupportedCipherSuites() {
@@ -212,7 +212,7 @@ public class AdvancedSocketFactory extends SSLSocketFactory {
 
     /**
      * Comment method "init".
-     * 
+     *
      * @param ks
      * @param password
      */

@@ -1,6 +1,6 @@
 // ============================================================================
 //
-// Copyright (C) 2006-2018 Talend Inc. - www.talend.com
+// Copyright (C) 2006-2019 Talend Inc. - www.talend.com
 //
 // This source code is available under agreement available at
 // %InstallDIR%\features\org.talend.rcp.branding.%PRODUCTNAME%\%PRODUCTNAME%license.txt
@@ -28,14 +28,14 @@ import org.eclipse.swt.widgets.Listener;
 
 /**
  * Create Label and Combo.
- * 
+ *
  * $Id: LabelledCombo.java 7496 2007-12-07 12:26:00Z mhelleboid $
- * 
+ *
  */
 public class LabelledCombo {
 
     /**
-     * 
+     *
      */
 
     private Label label;
@@ -55,13 +55,13 @@ public class LabelledCombo {
 
     /**
      * create Label and Combo width a List of String.
-     * 
+     *
      * @param Composite parent
      * @param String label
-     * 
+     *
      * @param String tip
      * @param List <String> item
-     * 
+     *
      * @return Combo
      */
     public LabelledCombo(Composite parent, String labelStr, String tip, List<String> item) {
@@ -94,14 +94,14 @@ public class LabelledCombo {
 
     /**
      * create Label and Combo width a Array of String.
-     * 
+     *
      * @param Composite parent
      * @param String label
      * @param String tip
      * @param String [] item
      * @param int horizontalSpan
      * @param boolean isFill
-     * 
+     *
      * @return Combo
      */
     public LabelledCombo(final Composite parent, final String labelStr, final String tip, final String[] item,
@@ -111,13 +111,13 @@ public class LabelledCombo {
 
     /**
      * create Label and Combo width a Array of String.
-     * 
+     *
      * @param Composite parent
      * @param String label
      * @param String tip
      * @param String [] item
      * @param int horizontalSpan
-     * 
+     *
      * @return Combo
      */
     public LabelledCombo(Composite parent, String labelStr, String tip, String[] item, int horizontalSpan) {
@@ -126,12 +126,12 @@ public class LabelledCombo {
 
     /**
      * create Label and Combo width a Array of String.
-     * 
+     *
      * @param Composite parent
      * @param String label
      * @param String tip
      * @param String [] item
-     * 
+     *
      * @return Combo
      */
     public LabelledCombo(Composite parent, String labelStr, String tip, String[] item) {
@@ -140,7 +140,7 @@ public class LabelledCombo {
 
     /**
      * create Label and Combo width a Array of String.
-     * 
+     *
      * @param Composite parent
      * @param String label
      * @param String tip
@@ -156,7 +156,7 @@ public class LabelledCombo {
 
     /**
      * create Label and Combo width a Array of String.
-     * 
+     *
      * @param Composite parent
      * @param String label
      * @param String tip
@@ -174,7 +174,7 @@ public class LabelledCombo {
 
     /**
      * create Label and Combo width a Array of String.
-     * 
+     *
      * @param parent
      * @param labelStr
      * @param tip
@@ -218,7 +218,7 @@ public class LabelledCombo {
 
     /**
      * DOC YeXiaowei Comment method "layoutWidgets".
-     * 
+     *
      * @param horizontalSpan
      * @param isFill
      */
@@ -236,9 +236,9 @@ public class LabelledCombo {
     }
 
     /**
-     * 
+     *
      * DOC YeXiaowei Comment method "hideWidgets".
-     * 
+     *
      * @param hide
      */
     public void setHideWidgets(final boolean hide) {
@@ -259,7 +259,7 @@ public class LabelledCombo {
 
     /**
      * return Object Combo.
-     * 
+     *
      * @return Combo
      */
     public Combo getCombo() {
@@ -268,7 +268,7 @@ public class LabelledCombo {
 
     /**
      * return SelectionIndex of the combo.
-     * 
+     *
      * @return int
      */
     public int getSelectionIndex() {
@@ -277,7 +277,7 @@ public class LabelledCombo {
 
     /**
      * select a item of the combo.
-     * 
+     *
      * @param index
      */
     public void select(int index) {
@@ -286,7 +286,7 @@ public class LabelledCombo {
 
     /**
      * setVisibleItemCount of the combo.
-     * 
+     *
      * @param size
      */
     public void setVisibleItemCount(int size) {
@@ -295,7 +295,7 @@ public class LabelledCombo {
 
     /**
      * getItem of the combo.
-     * 
+     *
      * @param index
      * @return int
      */
@@ -305,7 +305,7 @@ public class LabelledCombo {
 
     /**
      * addModifyListener to the combo.
-     * 
+     *
      * @param listener
      */
     public void addModifyListener(ModifyListener listener) {
@@ -321,7 +321,7 @@ public class LabelledCombo {
 
     /**
      * addKeyListener to the combo.
-     * 
+     *
      * @param adapter
      */
     public void addKeyListener(KeyAdapter adapter) {
@@ -372,7 +372,7 @@ public class LabelledCombo {
 
     /**
      * combo.getItemCount().
-     * 
+     *
      * @return
      */
     public int getItemCount() {
@@ -381,7 +381,7 @@ public class LabelledCombo {
 
     /**
      * combo.add().
-     * 
+     *
      * @param string
      */
     public void add(String string) {
@@ -390,7 +390,7 @@ public class LabelledCombo {
 
     /**
      * combo.setText (use less SWT.READ_ONLY).
-     * 
+     *
      * @param escapeCharComboOldValue
      */
     public void setText(String string) {
@@ -403,7 +403,7 @@ public class LabelledCombo {
 
     /**
      * label.getText().
-     * 
+     *
      * @return string
      */
     public String getLabel() {
@@ -412,7 +412,7 @@ public class LabelledCombo {
 
     /**
      * DOC ocarbone Comment method "setReadOnly".
-     * 
+     *
      * @param b
      */
     public void setReadOnly(boolean visible) {

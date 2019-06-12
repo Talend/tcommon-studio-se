@@ -1,6 +1,6 @@
 // ============================================================================
 //
-// Copyright (C) 2006-2018 Talend Inc. - www.talend.com
+// Copyright (C) 2006-2019 Talend Inc. - www.talend.com
 //
 // This source code is available under agreement available at
 // %InstallDIR%\features\org.talend.rcp.branding.%PRODUCTNAME%\%PRODUCTNAME%license.txt
@@ -32,17 +32,17 @@ public interface IBrandingConfiguration extends IActionBarHelper {
     public static final String PERSPECTIVE_MDM_ID = ProductUtils.PERSPECTIVE_MDM_ID;
 
     /**
-     * 
+     *
      * init perspective.
-     * 
+     *
      * @param layout
      */
     public void initPerspective(IPageLayout layout);
 
     /**
-     * 
+     *
      * get the repositorynode you want to hide in repositoryview.
-     * 
+     *
      * @return
      * @deprecated try to remove this hidden function by CNF in extension point.
      * @see point="org.eclipse.ui.navigator.navigatorContent"

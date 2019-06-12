@@ -1,6 +1,6 @@
 // ============================================================================
 //
-// Copyright (C) 2006-2018 Talend Inc. - www.talend.com
+// Copyright (C) 2006-2019 Talend Inc. - www.talend.com
 //
 // This source code is available under agreement available at
 // %InstallDIR%\features\org.talend.rcp.branding.%PRODUCTNAME%\%PRODUCTNAME%license.txt
@@ -38,7 +38,7 @@ import org.talend.model.migration.i18n.Messages;
 
 /**
  * class that perform the migration for TOP metadata from version 4.0x to 4.10 <br/>
- * 
+ *
  */
 public class TopMetadataMigrationFrom400to410usingGenericVM {
 
@@ -142,7 +142,7 @@ public class TopMetadataMigrationFrom400to410usingGenericVM {
      * \TDQ_Libraries , \TDQ_Data Profiling, TQD_Metadata into something else before performing the migration and then
      * rename those folders back to their original names.(use a try {}finally{} to be sure to revert back the folder
      * names. )
-     * 
+     *
      * @param inUri URI that will be loaded for migration
      * @param outUri URI that will be created as a result of the migration
      * @param monitor, monitor the progress of the migration (untested)

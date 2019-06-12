@@ -1,6 +1,6 @@
 // ============================================================================
 //
-// Copyright (C) 2006-2018 Talend Inc. - www.talend.com
+// Copyright (C) 2006-2019 Talend Inc. - www.talend.com
 //
 // This source code is available under agreement available at
 // %InstallDIR%\features\org.talend.rcp.branding.%PRODUCTNAME%\%PRODUCTNAME%license.txt
@@ -123,9 +123,9 @@ import org.talend.repository.ui.actions.AContextualAction;
 
 /**
  * Action used to delete object from repository. This action manages logical and physical deletions.<br/>
- * 
+ *
  * $Id$
- * 
+ *
  */
 public class DeleteAction extends AContextualAction {
 
@@ -359,7 +359,7 @@ public class DeleteAction extends AContextualAction {
 
             /**
              * DOC xqliu Comment method "sourceFileOpening".
-             * 
+             *
              * @param node
              * @return
              */
@@ -415,7 +415,7 @@ public class DeleteAction extends AContextualAction {
 
     /**
      * DOC zshen Comment method "synchUI".
-     * 
+     *
      * @param deleteActionCache
      * @param updatePalette
      */
@@ -459,7 +459,7 @@ public class DeleteAction extends AContextualAction {
 
     /**
      * DOC qwei Comment method "deleteFolder".
-     * 
+     *
      * @param deleteActionCache
      */
     private void deleteFolder(final RepositoryNode node, final IProxyRepositoryFactory factory,
@@ -721,7 +721,7 @@ public class DeleteAction extends AContextualAction {
 
     /**
      * DOC qzhang Comment method "checkRepository".
-     * 
+     *
      * @param factory
      * @param currentJobNode
      * @return
@@ -750,9 +750,9 @@ public class DeleteAction extends AContextualAction {
     }
 
     /**
-     * 
+     *
      * wzhang Comment method "calcParentProjects".
-     * 
+     *
      * @param curProject
      * @param parentProject
      * @param refParentProjects
@@ -1200,7 +1200,7 @@ public class DeleteAction extends AContextualAction {
 
     /**
      * ftang Comment method "isForbbidNode".
-     * 
+     *
      * @param node
      * @return
      */
@@ -1393,7 +1393,7 @@ public class DeleteAction extends AContextualAction {
                                 success = false;
                             }
                         }
-                        
+
                         // for remote project, lazy batch delete physically
                         if (deleteObjectList != null && deleteObjectList.size() > 0) {
                             try {
@@ -1451,12 +1451,12 @@ public class DeleteAction extends AContextualAction {
                                 }
                             }
                         }
-                        
+
                         if (GlobalServiceRegister.getDefault().isServiceRegistered(ITestContainerProviderService.class)) {
                             ITestContainerProviderService testService = (ITestContainerProviderService) GlobalServiceRegister.getDefault()
                                     .getService(ITestContainerProviderService.class);
                             if(testService != null){
-                            	
+
                             }
                             testService.deleteDataFiles(objToDelete);
                         }
@@ -1468,7 +1468,7 @@ public class DeleteAction extends AContextualAction {
                             factory.deleteObjectPhysical(objToDelete);
                         }
                         ExpressionPersistance.getInstance().jobDeleted(objToDelete.getLabel());
-                        
+
                     }
                     if (needToUpdataPalette) {
                         ICoreUIService coreUIService = (ICoreUIService) GlobalServiceRegister.getDefault().getService(
@@ -1489,7 +1489,7 @@ public class DeleteAction extends AContextualAction {
 
         return needReturn;
     }
-    
+
     private void deleteTestCases(IProxyRepositoryFactory factory, DeleteActionCache deleteActionCache,
             final IRepositoryNode currentJobNode, Boolean confirm, List<IRepositoryViewObject> batchDeleteObjectList)
             throws PersistenceException, BusinessException {
@@ -1536,7 +1536,7 @@ public class DeleteAction extends AContextualAction {
     }
 
     /**
-     * 
+     *
      * Added by Marvin Wang on Sep 14, 2012.
      */
     private void updateRelatedViews() {
@@ -1564,9 +1564,9 @@ public class DeleteAction extends AContextualAction {
     }
 
     /**
-     * 
+     *
      * Remove the dbconnection in sql explorer after logical delete.
-     * 
+     *
      * @param node
      */
     private void removeConnFromSQLExplorer(IRepositoryNode node) {
@@ -1589,7 +1589,7 @@ public class DeleteAction extends AContextualAction {
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see org.talend.repository.ui.actions.ITreeContextualAction#init(org.eclipse.jface.viewers.TreeViewer,
      * org.eclipse.jface.viewers.IStructuredSelection)
      */
@@ -1797,7 +1797,7 @@ public class DeleteAction extends AContextualAction {
 
     /**
      * Getter for visible.
-     * 
+     *
      * @return the visible
      */
     @Override
@@ -1807,7 +1807,7 @@ public class DeleteAction extends AContextualAction {
 
     /**
      * Sets the visible.
-     * 
+     *
      * @param visible the visible to set
      */
     public void setVisible(boolean visible) {

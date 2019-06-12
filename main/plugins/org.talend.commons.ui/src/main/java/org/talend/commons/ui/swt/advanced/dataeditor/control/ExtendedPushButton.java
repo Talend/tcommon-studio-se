@@ -1,6 +1,6 @@
 // ============================================================================
 //
-// Copyright (C) 2006-2018 Talend Inc. - www.talend.com
+// Copyright (C) 2006-2019 Talend Inc. - www.talend.com
 //
 // This source code is available under agreement available at
 // %InstallDIR%\features\org.talend.rcp.branding.%PRODUCTNAME%\%PRODUCTNAME%license.txt
@@ -29,9 +29,9 @@ import org.talend.commons.ui.swt.extended.table.IExtendedControlListener;
 
 /**
  * DOC amaumont class global comment. Detailled comment <br/>
- * 
+ *
  * $Id$
- * 
+ *
  */
 public abstract class ExtendedPushButton implements IExtendedPushButton {
 
@@ -50,7 +50,7 @@ public abstract class ExtendedPushButton implements IExtendedPushButton {
 
     /**
      * DOC amaumont ExtendedTableButton constructor comment.
-     * 
+     *
      * @param extendedViewer
      */
     public ExtendedPushButton(Composite parent, AbstractExtendedControlViewer extendedViewer, String tooltip, Image image) {
@@ -61,7 +61,7 @@ public abstract class ExtendedPushButton implements IExtendedPushButton {
 
     /**
      * DOC amaumont Comment method "init".
-     * 
+     *
      * @param image
      * @param tooltip
      * @param parent2
@@ -101,7 +101,7 @@ public abstract class ExtendedPushButton implements IExtendedPushButton {
 
     /**
      * Getter for button.
-     * 
+     *
      * @return the button
      */
     public Button getButton() {
@@ -110,7 +110,7 @@ public abstract class ExtendedPushButton implements IExtendedPushButton {
 
     /**
      * Getter for extendedTableViewer.
-     * 
+     *
      * @return the extendedTableViewer
      */
     public AbstractExtendedControlViewer getExtendedControlViewer() {
@@ -119,7 +119,7 @@ public abstract class ExtendedPushButton implements IExtendedPushButton {
 
     /**
      * DOC amaumont Comment method "executeCommand".
-     * 
+     *
      * @param command
      */
     public void executeCommand(Command command) {
@@ -127,9 +127,9 @@ public abstract class ExtendedPushButton implements IExtendedPushButton {
     }
 
     /**
-     * 
+     *
      * This method is not intended to be overriden.
-     * 
+     *
      * @param event
      */
     protected void handleSelectionEvent(Event event) {
@@ -142,7 +142,7 @@ public abstract class ExtendedPushButton implements IExtendedPushButton {
     }
 
     /**
-     * 
+     *
      * DOC YeXiaowei Comment method "callSelectionAction".
      */
     public void callSelectionAction() {
@@ -151,7 +151,7 @@ public abstract class ExtendedPushButton implements IExtendedPushButton {
 
     /**
      * This method is called before getCommandToExecute() to prepare data for command instanciation if needed.
-     * 
+     *
      */
     protected void beforeCommandExecution() {
         fireEvent(new ExtendedButtonEvent(true));
@@ -161,14 +161,14 @@ public abstract class ExtendedPushButton implements IExtendedPushButton {
 
     /**
      * Return the <code>Command</code> to execute.
-     * 
+     *
      * @return the command to execute, null if no command to execute
      */
     protected abstract Command getCommandToExecute();
 
     /**
      * This method is called after getCommandToExecute() to get data or errors after command execution.
-     * 
+     *
      * @param executedCommand
      */
     protected void afterCommandExecution(Command executedCommand) {
@@ -200,7 +200,7 @@ public abstract class ExtendedPushButton implements IExtendedPushButton {
 
     /**
      * DOC amaumont Comment method "fireEvent".
-     * 
+     *
      * @param event
      */
     protected void fireEvent(ExtendedButtonEvent event) {

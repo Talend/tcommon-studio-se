@@ -1,6 +1,6 @@
 // ============================================================================
 //
-// Copyright (C) 2006-2018 Talend Inc. - www.talend.com
+// Copyright (C) 2006-2019 Talend Inc. - www.talend.com
 //
 // This source code is available under agreement available at
 // %InstallDIR%\features\org.talend.rcp.branding.%PRODUCTNAME%\%PRODUCTNAME%license.txt
@@ -22,7 +22,7 @@ import org.talend.core.repository.model.ProjectRepositoryNode;
 import org.talend.repository.navigator.RepoViewCommonNavigator;
 
 /**
- * 
+ *
  * DOC ggu RepoRefreshAction class global comment. Detailled comment
  */
 public class RepoRefreshAction implements IViewActionDelegate {
@@ -31,7 +31,7 @@ public class RepoRefreshAction implements IViewActionDelegate {
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see org.eclipse.ui.IActionDelegate#run(org.eclipse.jface.action.IAction)
      */
     @Override
@@ -50,7 +50,7 @@ public class RepoRefreshAction implements IViewActionDelegate {
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see org.eclipse.ui.IActionDelegate#selectionChanged(org.eclipse.jface.action.IAction,
      * org.eclipse.jface.viewers.ISelection)
      */
@@ -61,7 +61,7 @@ public class RepoRefreshAction implements IViewActionDelegate {
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see org.eclipse.ui.IViewActionDelegate#init(org.eclipse.ui.IViewPart)
      */
     @Override

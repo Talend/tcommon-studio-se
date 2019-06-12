@@ -1,6 +1,6 @@
 // ============================================================================
 //
-// Copyright (C) 2006-2018 Talend Inc. - www.talend.com
+// Copyright (C) 2006-2019 Talend Inc. - www.talend.com
 //
 // This source code is available under agreement available at
 // %InstallDIR%\features\org.talend.rcp.branding.%PRODUCTNAME%\%PRODUCTNAME%license.txt
@@ -264,9 +264,9 @@ public abstract class RepositoryUpdateManager {
     }
 
     /**
-     * 
+     *
      * ggu Comment method "openNoModificationDialog".
-     * 
+     *
      * @param onlyImpactAnalysis for 9543
      * @return
      */
@@ -1166,9 +1166,9 @@ public abstract class RepositoryUpdateManager {
     }
 
     /**
-     * 
+     *
      * ggu Comment method "checkJobItemsForUpdate".
-     * 
+     *
      * @param types - need update types of jobs.
      * @param sourceIdMap - map old source id to new one.
      * @param sourceItem - modified repository item.
@@ -1464,9 +1464,9 @@ public abstract class RepositoryUpdateManager {
     }
 
     /**
-     * 
+     *
      * ggu Comment method "updateSchema".
-     * 
+     *
      * for repository wizard.
      */
     public static boolean updateDBConnection(ConnectionItem connection) {
@@ -1474,9 +1474,9 @@ public abstract class RepositoryUpdateManager {
     }
 
     /**
-     * 
+     *
      * hwang Comment method "updateServices".
-     * 
+     *
      * for repository wizard.
      */
     public static boolean updateServices(ConnectionItem connection) {
@@ -1492,9 +1492,9 @@ public abstract class RepositoryUpdateManager {
     }
 
     /**
-     * 
+     *
      * ggu Comment method "updateQuery".
-     * 
+     *
      * if show is false, will work for context menu action.
      */
     public static boolean updateDBConnection(ConnectionItem connectionItem, String version, boolean show,
@@ -1522,9 +1522,9 @@ public abstract class RepositoryUpdateManager {
     }
 
     /**
-     * 
+     *
      * hwang Comment method "updateServices".
-     * 
+     *
      * if show is false, will work for context menu action.
      */
     public static boolean updateServices(ConnectionItem connectionItem, boolean show, final boolean onlySimpleShow) {
@@ -1551,9 +1551,9 @@ public abstract class RepositoryUpdateManager {
     }
 
     /**
-     * 
+     *
      * ggu Comment method "updateSchema".
-     * 
+     *
      * for repository wizard.
      */
     public static boolean updateFileConnection(ConnectionItem connection) {
@@ -1562,7 +1562,7 @@ public abstract class RepositoryUpdateManager {
 
     /**
      * DOC PLV Comment method "updateFileConnection".
-     * 
+     *
      * @param connectionItem
      * @param oldMetadataTable
      */
@@ -1576,9 +1576,9 @@ public abstract class RepositoryUpdateManager {
     }
 
     /**
-     * 
+     *
      * ggu Comment method "updateQuery".
-     * 
+     *
      * if show is false, will work for context menu action.
      */
     public static boolean updateFileConnection(ConnectionItem connectionItem, boolean show, boolean onlySimpleShow) {
@@ -1606,7 +1606,7 @@ public abstract class RepositoryUpdateManager {
 
     /**
      * DOC ycbai Comment method "updateValidationRuleConnection".
-     * 
+     *
      * @param connection
      * @return
      */
@@ -1616,7 +1616,7 @@ public abstract class RepositoryUpdateManager {
 
     /**
      * DOC ycbai Comment method "updateValidationRuleConnection".
-     * 
+     *
      * @param connectionItem
      * @param show
      * @param onlySimpleShow
@@ -1712,9 +1712,9 @@ public abstract class RepositoryUpdateManager {
     }
 
     /**
-     * 
+     *
      * overload the method for TDQ-3930.
-     * 
+     *
      * @param connection
      * @param property
      * @param oldTableMap
@@ -1766,9 +1766,9 @@ public abstract class RepositoryUpdateManager {
     }
 
     /**
-     * 
+     *
      * ggu Comment method "updateSchema".
-     * 
+     *
      * for repository wizard.
      */
     public static boolean updateSingleSchema(ConnectionItem connItem, final MetadataTable newTable,
@@ -2054,9 +2054,9 @@ public abstract class RepositoryUpdateManager {
     }
 
     /**
-     * 
+     *
      * xye Comment method "updateSAPFunction".
-     * 
+     *
      * @param sapFunction
      * @param show
      * @return
@@ -2084,7 +2084,7 @@ public abstract class RepositoryUpdateManager {
 
     /**
      * DOC zli Comment method "updateSAPIDoc".
-     * 
+     *
      * @param sapIDoc
      * @param show
      * @param onlySimpleShow
@@ -2112,9 +2112,9 @@ public abstract class RepositoryUpdateManager {
     }
 
     /**
-     * 
+     *
      * xye Comment method "updateSAPFunction".
-     * 
+     *
      * @param sapFunction
      * @return
      */
@@ -2124,7 +2124,7 @@ public abstract class RepositoryUpdateManager {
 
     /**
      * DOC zli Comment method "updateSAPIDoc".
-     * 
+     *
      * @param sapIDoc
      * @return
      */
@@ -2133,9 +2133,9 @@ public abstract class RepositoryUpdateManager {
     }
 
     /**
-     * 
+     *
      * ggu Comment method "updateSchema".
-     * 
+     *
      * if show is false, will work for context menu action.
      */
     public static boolean updateSchema(final MetadataTable metadataTable, boolean show) {
@@ -2179,9 +2179,9 @@ public abstract class RepositoryUpdateManager {
     }
 
     /**
-     * 
+     *
      * ggu Comment method "updateQuery".
-     * 
+     *
      * for repository wizard.
      */
     public static boolean updateQuery(Query query) {
@@ -2194,9 +2194,9 @@ public abstract class RepositoryUpdateManager {
     }
 
     /**
-     * 
+     *
      * ggu Comment method "updateQuery".
-     * 
+     *
      * if show is false, will work for context menu action.
      */
     public static boolean updateQuery(Query query, boolean show) {
@@ -2256,9 +2256,9 @@ public abstract class RepositoryUpdateManager {
     }
 
     /**
-     * 
+     *
      * ggu Comment method "updateContext".
-     * 
+     *
      * if show is false, will work for context menu action.
      */
     public static boolean updateContext(ContextItem item, boolean show) {
@@ -2270,9 +2270,9 @@ public abstract class RepositoryUpdateManager {
     }
 
     /**
-     * 
+     *
      * ggu Comment method "updateContext".
-     * 
+     *
      * for repository wizard.
      */
     public static boolean updateContext(JobContextManager repositoryContextManager, ContextItem item) {
@@ -2351,8 +2351,8 @@ public abstract class RepositoryUpdateManager {
         } catch (PersistenceException e) {
             ExceptionHandler.process(e);
         }
-        
-        
+
+
 
         return repositoryUpdateManager.doWork(show, onlySimpleShow);
     }

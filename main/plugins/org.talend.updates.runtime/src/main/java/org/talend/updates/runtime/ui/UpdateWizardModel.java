@@ -1,6 +1,6 @@
 // ============================================================================
 //
-// Copyright (C) 2006-2018 Talend Inc. - www.talend.com
+// Copyright (C) 2006-2019 Talend Inc. - www.talend.com
 //
 // This source code is available under agreement available at
 // %InstallDIR%\features\org.talend.rcp.branding.%PRODUCTNAME%\%PRODUCTNAME%license.txt
@@ -33,13 +33,13 @@ import org.talend.updates.runtime.model.UpdateSiteLocationType;
 
 /**
  * created by sgandon on 26 févr. 2013 Detailled comment
- * 
+ *
  */
 public class UpdateWizardModel {
 
     /**
      * created by sgandon on 25 avr. 2013 Detailled comment
-     * 
+     *
      */
     class FeatureSelectionValidator extends MultiValidator {
 
@@ -112,7 +112,7 @@ public class UpdateWizardModel {
 
     /**
      * DOC sgandon UpdateWizardModel constructor comment.
-     * 
+     *
      * @param extraFeatures
      */
     public UpdateWizardModel(Set<ExtraFeature> extraFeatures) {
@@ -134,7 +134,7 @@ public class UpdateWizardModel {
 
     /**
      * Getter for selectedExtraFeatureBeanSet.
-     * 
+     *
      * @return the selectedExtraFeatureBeanSet
      */
     public Set<ExtraFeature> getSelectedExtraFeatureBeanSet() {
@@ -143,7 +143,7 @@ public class UpdateWizardModel {
 
     /**
      * Sets the selectedExtraFeatureBeanSet.
-     * 
+     *
      * @param selectedExtraFeatureBeanSet the selectedExtraFeatureBeanSet to set
      */
     public void setSelectedExtraFeatureBeanSet(Set<ExtraFeature> selectedExtraFeatureBeanSet) {
@@ -152,7 +152,7 @@ public class UpdateWizardModel {
 
     /**
      * Getter for featureRepositories.
-     * 
+     *
      * @return the featureRepositories
      */
     public FeatureRepositories getFeatureRepositories() {
@@ -161,7 +161,7 @@ public class UpdateWizardModel {
 
     /**
      * Sets the featureRepositories.
-     * 
+     *
      * @param featureRepositories the featureRepositories to set
      */
     public void setFeatureRepositories(FeatureRepositories featureRepositories) {
@@ -170,7 +170,7 @@ public class UpdateWizardModel {
 
     /**
      * DOC sgandon Comment method "needToSelectUpdateSite".
-     * 
+     *
      * @return true is all of the selected feature can have a customisable remote update site, and false otherwise
      */
     public boolean canConfigureUpdateSiteLocation() {

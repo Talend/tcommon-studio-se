@@ -1,6 +1,6 @@
 // ============================================================================
 //
-// Copyright (C) 2006-2018 Talend Inc. - www.talend.com
+// Copyright (C) 2006-2019 Talend Inc. - www.talend.com
 //
 // This source code is available under agreement available at
 // %InstallDIR%\features\org.talend.rcp.branding.%PRODUCTNAME%\%PRODUCTNAME%license.txt
@@ -32,7 +32,7 @@ import org.talend.core.model.metadata.IMetadataColumn;
  * Maybe need a long connection ...
  * <p>
  * DOC YeXiaowei class global comment. Detailled comment <br/>
- * 
+ *
  */
 public class SalesforceModuleParseAPI {
 
@@ -157,7 +157,7 @@ public class SalesforceModuleParseAPI {
     /**
      * Fetch a module from SF and transfor to Talend metadata data type. DOC YeXiaowei Comment method
      * "fetchMetaDataColumns".
-     * 
+     *
      * @param module
      * @return
      */
@@ -167,7 +167,7 @@ public class SalesforceModuleParseAPI {
 
     /**
      * Getter for login.
-     * 
+     *
      * @return the login
      */
     public boolean isLogin() {
@@ -176,7 +176,7 @@ public class SalesforceModuleParseAPI {
 
     /**
      * Sets the login.
-     * 
+     *
      * @param login the login to set
      */
     public void setLogin(boolean login) {
@@ -185,7 +185,7 @@ public class SalesforceModuleParseAPI {
 
     /**
      * Getter for currentModuleName.
-     * 
+     *
      * @return the currentModuleName
      */
     public String getCurrentModuleName() {
@@ -197,7 +197,7 @@ public class SalesforceModuleParseAPI {
 
     /**
      * Sets the currentModuleName.
-     * 
+     *
      * @param currentModuleName the currentModuleName to set
      */
     public void setCurrentModuleName(String currentModuleName) {
@@ -206,7 +206,7 @@ public class SalesforceModuleParseAPI {
 
     /**
      * Getter for currentMetadataColumns.
-     * 
+     *
      * @return the currentMetadataColumns
      */
     public List<IMetadataColumn> getCurrentMetadataColumns() {
@@ -215,7 +215,7 @@ public class SalesforceModuleParseAPI {
 
     /**
      * Sets the currentMetadataColumns.
-     * 
+     *
      * @param currentMetadataColumns the currentMetadataColumns to set
      */
     public void setCurrentMetadataColumns(List<IMetadataColumn> currentMetadataColumns) {
@@ -229,7 +229,7 @@ public class SalesforceModuleParseAPI {
     public void setProxy(String proxyHost, String proxyPort, String proxyUsername, String proxyPassword, boolean httpProxy,
             boolean socksProxy, boolean httpsProxy) {
         Properties properties = System.getProperties();
-        if (socksProxy && proxyHost != null && proxyPort != null) { //$NON-NLS-1$ 
+        if (socksProxy && proxyHost != null && proxyPort != null) { //$NON-NLS-1$
             if (properties.containsKey(SalesforceModuleParseAPI.SOCKS_PROXY_HOST)) {
                 oldProxyHost = (String) properties.get(SalesforceModuleParseAPI.SOCKS_PROXY_HOST);
                 oldProxyPort = (String) properties.get(SalesforceModuleParseAPI.SOCKS_PROXY_PORT);
@@ -243,7 +243,7 @@ public class SalesforceModuleParseAPI {
             properties.put(SalesforceModuleParseAPI.SOCKS_PROXY_PORT, proxyPort);
             properties.put(SalesforceModuleParseAPI.SOCKS_PROXY_USERNAME, proxyUsername == null ? "" : proxyUsername); //$NON-NLS-1$
             properties.put(SalesforceModuleParseAPI.SOCKS_PROXY_PASSWORD, proxyPassword == null ? "" : proxyPassword); //$NON-NLS-1$
-        } else if (httpProxy && proxyHost != null && proxyPort != null) { //$NON-NLS-1$ 
+        } else if (httpProxy && proxyHost != null && proxyPort != null) { //$NON-NLS-1$
             if (properties.containsKey(SalesforceModuleParseAPI.HTTP_PROXY_HOST)) {
                 oldHttpProxySet = (String) properties.get(SalesforceModuleParseAPI.HTTP_PROXY_SET);
                 oldProxyHost = (String) properties.get(SalesforceModuleParseAPI.HTTP_PROXY_HOST);

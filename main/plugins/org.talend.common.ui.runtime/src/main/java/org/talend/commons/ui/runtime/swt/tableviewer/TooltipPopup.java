@@ -1,6 +1,6 @@
 // ============================================================================
 //
-// Copyright (C) 2006-2018 Talend Inc. - www.talend.com
+// Copyright (C) 2006-2019 Talend Inc. - www.talend.com
 //
 // This source code is available under agreement available at
 // %InstallDIR%\features\org.talend.rcp.branding.%PRODUCTNAME%\%PRODUCTNAME%license.txt
@@ -24,9 +24,9 @@ import org.eclipse.swt.widgets.Shell;
 
 /**
  * DOC amaumont class global comment. Detailled comment <br/>
- * 
+ *
  * $Id: TooltipPopup.java 7038 2007-11-15 14:05:48Z plegall $
- * 
+ *
  */
 public final class TooltipPopup {
 
@@ -42,11 +42,11 @@ public final class TooltipPopup {
     }
 
     /**
-     * 
+     *
      * DOC amaumont DraggingInfosPopup class global comment. Detailled comment <br/>
-     * 
+     *
      * $Id: TooltipPopup.java 7038 2007-11-15 14:05:48Z plegall $
-     * 
+     *
      */
     private class Popup extends PopupDialog {
 
@@ -114,7 +114,7 @@ public final class TooltipPopup {
 
         /**
          * DOC amaumont Comment method "setVisible".
-         * 
+         *
          * @param visible
          */
         public void setVisible(boolean visible) {
@@ -132,7 +132,7 @@ public final class TooltipPopup {
 
     /**
      * DOC amaumont Comment method "init".
-     * 
+     *
      * @param parent
      */
     private void init(Shell parent) {
@@ -147,7 +147,7 @@ public final class TooltipPopup {
 
     /**
      * DOC amaumont Comment method "getBounds".
-     * 
+     *
      * @return
      */
     public Rectangle getBounds() {
@@ -156,7 +156,7 @@ public final class TooltipPopup {
 
     /**
      * DOC amaumont Comment method "setVisible".
-     * 
+     *
      * @param b
      */
     public void setVisible(boolean visible) {
@@ -165,7 +165,7 @@ public final class TooltipPopup {
 
     /**
      * DOC amaumont Comment method "setCursorPosition".
-     * 
+     *
      * @param x
      * @param y
      */

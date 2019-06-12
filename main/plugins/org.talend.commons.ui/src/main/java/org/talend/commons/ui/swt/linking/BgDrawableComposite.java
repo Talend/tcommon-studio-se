@@ -1,6 +1,6 @@
 // ============================================================================
 //
-// Copyright (C) 2006-2018 Talend Inc. - www.talend.com
+// Copyright (C) 2006-2019 Talend Inc. - www.talend.com
 //
 // This source code is available under agreement available at
 // %InstallDIR%\features\org.talend.rcp.branding.%PRODUCTNAME%\%PRODUCTNAME%license.txt
@@ -19,9 +19,9 @@ import org.talend.commons.ui.swt.drawing.background.IBgDrawableComposite;
 
 /**
  * DOC amaumont class global comment. Detailled comment <br/>
- * 
+ *
  * $Id$
- * 
+ *
  */
 public abstract class BgDrawableComposite implements IBgDrawableComposite {
 
@@ -31,7 +31,7 @@ public abstract class BgDrawableComposite implements IBgDrawableComposite {
 
     /**
      * DOC amaumont DrawableBackground constructor comment.
-     * 
+     *
      * @param commonParent
      */
     public BgDrawableComposite(Composite commonParent) {
@@ -40,14 +40,14 @@ public abstract class BgDrawableComposite implements IBgDrawableComposite {
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see org.talend.commons.ui.swt.drawing.background.IDrawableComposite#drawBackground(org.eclipse.swt.graphics.GC)
      */
     public abstract void drawBackground(GC gc);
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see org.talend.commons.ui.swt.drawing.background.IDrawableComposite#getComposite()
      */
     public Composite getBgDrawableComposite() {

@@ -1,6 +1,6 @@
 // ============================================================================
 //
-// Copyright (C) 2006-2018 Talend Inc. - www.talend.com
+// Copyright (C) 2006-2019 Talend Inc. - www.talend.com
 //
 // This source code is available under agreement available at
 // %InstallDIR%\features\org.talend.rcp.branding.%PRODUCTNAME%\%PRODUCTNAME%license.txt
@@ -15,15 +15,15 @@ package org.talend.repository.navigator;
 /**
  * This interface is used to provide the top line string description in the Talend repository view this shall be adapted
  * to the repository navigator input
- * 
+ *
  * $Id: talend.epf 55206 2011-02-15 17:32:14Z mhirt $
- * 
+ *
  */
 public interface INavigatorDescriptor {
 
     /**
      * Return the descritor string for the view. never null
-     * 
+     *
      * @return
      */
     public String getDescriptor();

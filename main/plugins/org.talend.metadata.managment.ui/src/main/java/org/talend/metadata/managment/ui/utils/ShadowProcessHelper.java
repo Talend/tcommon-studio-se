@@ -1,6 +1,6 @@
 // ============================================================================
 //
-// Copyright (C) 2006-2018 Talend Inc. - www.talend.com
+// Copyright (C) 2006-2019 Talend Inc. - www.talend.com
 //
 // This source code is available under agreement available at
 // %InstallDIR%\features\org.talend.rcp.branding.%PRODUCTNAME%\%PRODUCTNAME%license.txt
@@ -49,9 +49,9 @@ import org.talend.metadata.managment.ui.preview.ProcessDescription;
 
 /**
  * Create a ProcessDescription to use in the step2 & step3 of CSV File Wizard on Shadow mode.
- * 
+ *
  * $Id: ShadowProcessHelper.java 51244 2010-11-15 03:28:34Z cli $
- * 
+ *
  */
 public class ShadowProcessHelper {
 
@@ -78,11 +78,11 @@ public class ShadowProcessHelper {
     /**
      * Create a ProcessDescription and set it width the value of FileConnection. Particularity : field FieldSeparator,
      * RowSeparator, EscapeChar and TextEnclosure are surround by double quote.
-     * 
+     *
      * This method is usefull to adapt a processDescription before run the shadow process.
-     * 
+     *
      * @param FileConnection
-     * 
+     *
      * @return ProcessDescription
      */
     public static ProcessDescription getProcessDescription(final FileConnection connection) {
@@ -165,11 +165,11 @@ public class ShadowProcessHelper {
 
     /**
      * Create a ProcessDescription and set it width the value of XmlFileConnection.
-     * 
+     *
      * This method is usefull to adapt a processDescription before run the shadow process.
-     * 
+     *
      * @param XmlFileConnection
-     * 
+     *
      * @return ProcessDescription
      */
     public static ProcessDescription getProcessDescription(final XmlFileConnection connection) {
@@ -191,7 +191,7 @@ public class ShadowProcessHelper {
             while (iterate.hasNext()) {
                 SchemaTarget schemaTarget = iterate.next();
                 Map<String, String> lineMapping = new HashMap<String, String>();
-                lineMapping.put("QUERY", TalendQuoteUtils.addQuotes(schemaTarget.getRelativeXPathQuery())); //$NON-NLS-1$ 
+                lineMapping.put("QUERY", TalendQuoteUtils.addQuotes(schemaTarget.getRelativeXPathQuery())); //$NON-NLS-1$
                 mapping.add(lineMapping);
             }
         }
@@ -278,11 +278,11 @@ public class ShadowProcessHelper {
 
     /**
      * Create a ProcessDescription and set it width the value of LdifFileConnection.
-     * 
+     *
      * This method is usefull to adapt a processDescription before run the shadow process.
-     * 
+     *
      * @param LdifFileConnection
-     * 
+     *
      * @return ProcessDescription
      */
     public static ProcessDescription getProcessDescription(final LdifFileConnection connection) {
@@ -339,7 +339,7 @@ public class ShadowProcessHelper {
     /**
      * parse a file describe by a fileConnection in XmlArray. Simple method to run the shadow process from the
      * fileConnection.
-     * 
+     *
      * @param fileConnection
      * @return xmlArray
      * @throws CoreException
@@ -350,7 +350,7 @@ public class ShadowProcessHelper {
 
     /**
      * parse a file describe by a processDescription in XmlArray.
-     * 
+     *
      * @param processDescription
      * @return xmlArray
      */
@@ -368,7 +368,7 @@ public class ShadowProcessHelper {
 
     /**
      * parse a file describe by a processDescription in XmlArray.
-     * 
+     *
      * @param processDescription
      * @return xmlArray
      */
@@ -387,7 +387,7 @@ public class ShadowProcessHelper {
 
     /**
      * DOC amaumont Comment method "createPreview".
-     * 
+     *
      * @param configurationElements
      * @return
      * @throws CoreException
@@ -398,7 +398,7 @@ public class ShadowProcessHelper {
 
     /**
      * DOC amaumont Comment method "createPreview".
-     * 
+     *
      * @param configurationElements
      * @return
      * @throws CoreException
@@ -458,7 +458,7 @@ public class ShadowProcessHelper {
 
     /**
      * Administrator Comment method "getProcessDescription".
-     * 
+     *
      * @param connection
      * @return
      */

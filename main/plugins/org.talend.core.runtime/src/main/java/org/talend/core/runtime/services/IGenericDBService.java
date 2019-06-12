@@ -1,6 +1,6 @@
 // ============================================================================
 //
-// Copyright (C) 2006-2018 Talend Inc. - www.talend.com
+// Copyright (C) 2006-2019 Talend Inc. - www.talend.com
 //
 // This source code is available under agreement available at
 // %InstallDIR%\features\org.talend.rcp.branding.%PRODUCTNAME%\%PRODUCTNAME%license.txt
@@ -36,32 +36,32 @@ import org.talend.daikon.properties.presentation.Form;
  * DOC hwang  class global comment. Detailled comment
  */
 public interface IGenericDBService extends IService{
-    
+
     public Map<String, Composite> creatDBDynamicComposite(Composite composite, EComponentCategory sectionCategory, boolean isCreation,
             boolean isReadOnly,Property property, String typeName);
-    
+
     public void dbWizardPerformFinish(ConnectionItem item, Form form, boolean creation, IPath pathToSave, List<IMetadataTable> oldMetadataTable,String contextName) throws CoreException;
-    
+
     public Form getDynamicForm(Composite composite);
-    
+
     public IChecker getDynamicChecker(Composite dynamicComposite);
-    
+
     public void resetConnectionItem(Composite composite, ConnectionItem connectionItem);
-    
+
     public List<ERepositoryObjectType> getExtraTypes();
-    
+
     public void convertPropertiesToDBElements(Properties props,Connection connection);
-    
+
     public String getMVNPath(String value);
-    
+
     public IMetadataTable converTable(INode node, IMetadataTable iTable);
-    
+
     public void setPropertyTaggedValue(ComponentProperties properties);
-    
+
     public void initReferencedComponent(IElementParameter refPara, String newValue);
-    
+
     public Properties getComponentProperties(String typeName, String id);
-    
+
     public ERepositoryObjectType getExtraDBType(ERepositoryObjectType type);
-    
+
 }

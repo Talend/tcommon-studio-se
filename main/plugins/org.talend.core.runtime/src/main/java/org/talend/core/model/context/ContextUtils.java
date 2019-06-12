@@ -1,6 +1,6 @@
 // ============================================================================
 //
-// Copyright (C) 2006-2018 Talend Inc. - www.talend.com
+// Copyright (C) 2006-2019 Talend Inc. - www.talend.com
 //
 // This source code is available under agreement available at
 // %InstallDIR%\features\org.talend.rcp.branding.%PRODUCTNAME%\%PRODUCTNAME%license.txt
@@ -60,9 +60,9 @@ public class ContextUtils {
             "static", "void", "class", "finally", "long", "strictfp", "volatile", "const", "float", "native", "super", "while")); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$ //$NON-NLS-5$ //$NON-NLS-6$ //$NON-NLS-7$ //$NON-NLS-8$ //$NON-NLS-9$ //$NON-NLS-10$ //$NON-NLS-11$ //$NON-NLS-12$
 
     /**
-     * 
+     *
      * ggu Comment method "isJavaKeyWords".
-     * 
+     *
      */
     public static boolean isJavaKeyWords(final String name) {
         if (Platform.isRunning()) {
@@ -78,9 +78,9 @@ public class ContextUtils {
     }
 
     /**
-     * 
+     *
      * update the JobContextParameter form repository ContextItem by context name.
-     * 
+     *
      */
     public static boolean updateParameterFromRepository(ContextItem sourceItem, IContextParameter contextParam, String contextName) {
         if (sourceItem == null || contextParam == null) {
@@ -105,12 +105,12 @@ public class ContextUtils {
     }
 
     /**
-     * 
+     *
      * get ContextType from the repository ContextItem by context name.
-     * 
+     *
      * if not found, check the byDefault to return default context or not.
-     * 
-     * 
+     *
+     *
      */
     @SuppressWarnings("unchecked")
     public static ContextType getContextTypeByName(ContextItem sourceItem, final String contextName, boolean byDefault) {
@@ -159,7 +159,7 @@ public class ContextUtils {
     }
 
     /**
-     * 
+     *
      * get ContextParameterType form a ContextType by parameter name.
      */
     @SuppressWarnings("unchecked")
@@ -199,9 +199,9 @@ public class ContextUtils {
     }
 
     /**
-     * 
+     *
      * get ContextItem by the id.
-     * 
+     *
      * @deprecated by bug 13184
      */
     @Deprecated
@@ -256,9 +256,9 @@ public class ContextUtils {
     }
 
     /**
-     * 
+     *
      * get ContextItem by name.
-     * 
+     *
      * @deprecated by bug 13184
      */
     @Deprecated
@@ -273,9 +273,9 @@ public class ContextUtils {
     }
 
     /**
-     * 
+     *
      * ggu Comment method "getContextItemByName".
-     * 
+     *
      * @deprecated by bug 13184
      */
     @Deprecated
@@ -293,9 +293,9 @@ public class ContextUtils {
     }
 
     /**
-     * 
+     *
      * get all of repository ContextItem(not include deleted item).
-     * 
+     *
      */
     public static List<ContextItem> getAllContextItem() {
         IProxyRepositoryFactory factory = CoreRuntimePlugin.getInstance().getProxyRepositoryFactory();
@@ -309,9 +309,9 @@ public class ContextUtils {
     }
 
     /**
-     * 
+     *
      * get JobContext from ContextManager by name.
-     * 
+     *
      * if not found, check the byDefault to return default context or not.
      */
     public static IContext getContextByName(IContextManager contextManager, final String contextName, boolean byDefault) {
@@ -335,7 +335,7 @@ public class ContextUtils {
 
     /**
      * DOC xqliu Comment method "updateParameter".
-     * 
+     *
      * @param sourceParam
      * @param targetParam
      */
@@ -375,7 +375,7 @@ public class ContextUtils {
     }
 
     /**
-     * 
+     *
      * update the JobContextParameter form the ContextParameterType.
      */
     public static void updateParameter(ContextParameterType sourceParam, IContextParameter targetParam) {
@@ -430,7 +430,7 @@ public class ContextUtils {
     }
 
     /**
-     * 
+     *
      * get the repository context item,now contextId can be either joblet node or context node.
      */
     public static Item getRepositoryContextItemById(String contextId) {
@@ -457,9 +457,9 @@ public class ContextUtils {
     }
 
     /**
-     * 
+     *
      * ggu Comment method "getContextItemVarName".
-     * 
+     *
      * get the variable name of the ContextItem
      */
     public static Set<String> getContextVarNames(ContextItem item) {
@@ -485,9 +485,9 @@ public class ContextUtils {
     }
 
     /**
-     * 
+     *
      * ggu Comment method "sameValueContextParameter".
-     * 
+     *
      * not contain the source
      */
     public static boolean samePropertiesForContextParameter(IContextParameter sourceParam, ContextParameterType targetParamType) {
@@ -543,7 +543,7 @@ public class ContextUtils {
     }
 
     /**
-     * 
+     *
      * ggu Comment method "addInContextModelForProcessItem".
      */
     public static boolean addInContextModelForProcessItem(Item item, Map<String, Set<String>> contextVars,

@@ -1,6 +1,6 @@
 // ============================================================================
 //
-// Copyright (C) 2006-2018 Talend Inc. - www.talend.com
+// Copyright (C) 2006-2019 Talend Inc. - www.talend.com
 //
 // This source code is available under agreement available at
 // %InstallDIR%\features\org.talend.rcp.branding.%PRODUCTNAME%\%PRODUCTNAME%license.txt
@@ -326,7 +326,7 @@ public abstract class AbstractMavenProcessorPom extends CreateMavenBundleTemplat
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see org.talend.core.runtime.repository.build.IMavenPomCreator#needsyncCodesPoms(boolean)
      */
     @Override
@@ -340,7 +340,7 @@ public abstract class AbstractMavenProcessorPom extends CreateMavenBundleTemplat
 
     /**
      * Sets the hasLoopDependency.
-     * 
+     *
      * @param hasLoopDependency the hasLoopDependency to set
      */
     public void setHasLoopDependency(boolean hasLoopDependency) {
@@ -349,7 +349,7 @@ public abstract class AbstractMavenProcessorPom extends CreateMavenBundleTemplat
 
     /**
      * Getter for hasLoopDependency.
-     * 
+     *
      * @return the hasLoopDependency
      */
     public boolean hasLoopDependency() {

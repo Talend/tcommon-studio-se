@@ -1,6 +1,6 @@
 // ============================================================================
 //
-// Copyright (C) 2006-2018 Talend Inc. - www.talend.com
+// Copyright (C) 2006-2019 Talend Inc. - www.talend.com
 //
 // This source code is available under agreement available at
 // %InstallDIR%\features\org.talend.rcp.branding.%PRODUCTNAME%\%PRODUCTNAME%license.txt
@@ -28,7 +28,7 @@ public class TeradataPreferencePage extends FieldEditorPreferencePage implements
     @Override
     public void init(IWorkbench workbench) {
         IPreferenceStore store = CoreUIPlugin.getDefault().getPreferenceStore();
-        
+
         store.setDefault(IDatabasePrefConstants.USE_SQL_MODEL, false); //$NON-NLS-1$
         setPreferenceStore(store);
     }
@@ -37,7 +37,7 @@ public class TeradataPreferencePage extends FieldEditorPreferencePage implements
     protected void createFieldEditors() {
         RadioGroupFieldEditor sqlModelField = new RadioGroupFieldEditor(
                 IDatabasePrefConstants.STANDARD_SQL,
-                Messages.getString("DatabaseForm.sqlMode"), 2, new String[][] { { Messages.getString("DatabaseForm.yes"), "" + 24 }, //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ 
+                Messages.getString("DatabaseForm.sqlMode"), 2, new String[][] { { Messages.getString("DatabaseForm.yes"), "" + 24 }, //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
                         { Messages.getString("DatabaseForm.no"), "" + 32 } }, getFieldEditorParent()); //$NON-NLS-1$ //$NON-NLS-2$
         addField(sqlModelField);
     }

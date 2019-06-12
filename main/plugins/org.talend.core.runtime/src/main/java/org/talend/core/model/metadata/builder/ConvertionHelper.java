@@ -1,6 +1,6 @@
 // ============================================================================
 //
-// Copyright (C) 2006-2018 Talend Inc. - www.talend.com
+// Copyright (C) 2006-2019 Talend Inc. - www.talend.com
 //
 // This source code is available under agreement available at
 // %InstallDIR%\features\org.talend.rcp.branding.%PRODUCTNAME%\%PRODUCTNAME%license.txt
@@ -568,9 +568,9 @@ public final class ConvertionHelper {
             newColumn.setComment(column.getComment());
             newColumn.setDefaultValue(column.getDefault());
             newColumn.setKey(column.isKey());
-            
+
             newColumn.setLabel(column.getLabel());
-            
+
             newColumn.setPattern(column.getPattern());
             if (column.getLength() == null || column.getLength() < 0) {
                 newColumn.setLength(-1);
@@ -609,9 +609,9 @@ public final class ConvertionHelper {
         }
         result.getColumns().addAll(columns);
         return result;
-    
+
     }
-    
+
     public static MetadataTable convert(IMetadataTable old) {
         return convert(old, null);
     }

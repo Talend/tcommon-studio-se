@@ -1,6 +1,6 @@
 // ============================================================================
 //
-// Copyright (C) 2006-2018 Talend Inc. - www.talend.com
+// Copyright (C) 2006-2019 Talend Inc. - www.talend.com
 //
 // This source code is available under agreement available at
 // %InstallDIR%\features\org.talend.rcp.branding.%PRODUCTNAME%\%PRODUCTNAME%license.txt
@@ -45,9 +45,9 @@ import org.talend.repository.RepositoryWorkUnit;
 
 /**
  * Defines all methods that a repository provider plug-in must provides to client.<br/>
- * 
+ *
  * $Id: IRepositoryFactory.java 46606 2010-08-11 08:33:54Z cli $
- * 
+ *
  */
 public interface IRepositoryFactory {
 
@@ -112,12 +112,12 @@ public interface IRepositoryFactory {
     /**
      * Returns if the name is used by another item of the same type. Type, name and id of item are used to test label
      * availability.
-     * 
+     *
      * Implementations should be updated when folder are treated as Items.
-     * 
+     *
      * This function will take some time as it will retrieve all items from the repository. It is possible also to give
      * in parameter the list of items, to avoid to have this function too slow.
-     * 
+     *
      * @param item
      * @param name TODO
      * @return <code>true</code> if the name is not used an so is available.
@@ -139,7 +139,7 @@ public interface IRepositoryFactory {
 
     /**
      * Returns all version of an object given its id.
-     * 
+     *
      * @param project - the current project
      * @param id - the id to look for
      * @return a list (may be empty) of all version
@@ -153,7 +153,7 @@ public interface IRepositoryFactory {
 
     /**
      * Returns last version of an object given its id.
-     * 
+     *
      * @param project - the current project
      * @param id - the id to look for
      * @return the most recent version of object with this id or <code>null</code> if no object with this id has been
@@ -165,7 +165,7 @@ public interface IRepositoryFactory {
     /**
      * Returns last version of an object given its id. If folder and repository type is given it can be faster (mostly
      * usefull for imports)
-     * 
+     *
      * @param project - the current project
      * @param id - the id to look for
      * @return the most recent version of object with this id or <code>null</code> if no object with this id has been
@@ -177,7 +177,7 @@ public interface IRepositoryFactory {
 
     /**
      * Returns all object of a given type.<br/>
-     * 
+     *
      * @param project - the current project
      * @param type - the type
      * @param withDeleted - with deleted items
@@ -190,7 +190,7 @@ public interface IRepositoryFactory {
 
     /**
      * Deletes logically the given object. <code>isDeleted</code> on this object will now returned <code>true</code>.
-     * 
+     *
      * @param project - the current project
      * @param objToDelete - the objet to delete
      * @param deletionAuthor - the user perfom the deletion (only for logging in this version)
@@ -200,7 +200,7 @@ public interface IRepositoryFactory {
 
     /**
      * Deletes physically the given object. Object cannot be retrieved.
-     * 
+     *
      * @param project - the current project
      * @param objToDelete - the objet to delete
      * @param deletionAuthor - the user perfom the deletion (only for logging in this version)
@@ -220,7 +220,7 @@ public interface IRepositoryFactory {
 
     /**
      * Restore a logically deleted object. <code>isDeleted</code> on this object will now returned <code>false</code>.
-     * 
+     *
      * @param project - the current project
      * @param objToRestore - the object to restore
      * @param path - the path to restore the object. Cannot be null. Path is relative to root type folder.
@@ -272,7 +272,7 @@ public interface IRepositoryFactory {
 
     /**
      * DOC mhelleboid Comment method "cancel".
-     * 
+     *
      * @param property
      * @throws PersistenceException
      */
@@ -292,7 +292,7 @@ public interface IRepositoryFactory {
 
     /**
      * get all context items.
-     * 
+     *
      * @return
      * @throws PersistenceException
      */
@@ -315,7 +315,7 @@ public interface IRepositoryFactory {
     public boolean setAuthorByLogin(Item item, String login) throws PersistenceException;
 
     public Property getUptodateProperty(Project project, Property property) throws PersistenceException;
-    
+
     public void initProjectRepository(Project project, String branchForMainProject) throws PersistenceException;
 
     public void beforeLogon(Project project) throws PersistenceException, LoginException;
@@ -329,7 +329,7 @@ public interface IRepositoryFactory {
 
     /**
      * Catch only the next repositoryWorkUnit operation, once workUnit is finished, listener is removed.
-     * 
+     *
      * @param listener
      */
     public void addRepositoryWorkUnitListener(IRepositoryWorkUnitListener listener);
@@ -341,9 +341,9 @@ public interface IRepositoryFactory {
     public void unloadResources(Property property);
 
     /**
-     * 
+     *
      * DOC mzhao feature 9207 unload and remove the specification resource from the resource set.
-     * 
+     *
      * @param uriString the uri sting of resource.
      */
     public void unloadResources(String uriString);
@@ -360,9 +360,9 @@ public interface IRepositoryFactory {
             boolean... options) throws PersistenceException;
 
     /**
-     * 
+     *
      * DOC zshen Comment method "getMetadataByFolder".
-     * 
+     *
      * @param itemType
      * @param path
      * @return all of object under path.
@@ -373,7 +373,7 @@ public interface IRepositoryFactory {
 
     /**
      * DOC xqliu Comment method "getTdqRepositoryViewObjects".
-     * 
+     *
      * @param project
      * @param type
      * @param folderName
@@ -386,7 +386,7 @@ public interface IRepositoryFactory {
 
     /**
      * DOC nrousseau Comment method "getObjectFromFolder".
-     * 
+     *
      * @param project
      * @param type
      * @param folderName
@@ -408,24 +408,24 @@ public interface IRepositoryFactory {
 
     /**
      * Item will be considered as locked, won't check if item is locked here.
-     * 
+     *
      * @param item
-     * 
+     *
      * @return
      */
     public LockInfo getLockInfo(Item item);
 
     /**
      * DOC ycbai Comment method "getNavigatorViewDescription".
-     * 
+     *
      * @return
      */
     public String getNavigatorViewDescription();
 
     /**
-     * 
+     *
      * DOC ggu Comment method "updateLockStatus".
-     * 
+     *
      * update the lock status
      */
     public void updateLockStatus() throws PersistenceException;
@@ -444,7 +444,7 @@ public interface IRepositoryFactory {
 
     public void loadProjectAndSetContext(Project project, IProject eclipseProject, boolean updateCurrentProject)
             throws PersistenceException;
-    
+
     public byte[] getReferenceSettingContent(Project project, String branch) throws PersistenceException;
 
     public boolean isRepositoryBusy();

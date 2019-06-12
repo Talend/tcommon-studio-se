@@ -1,6 +1,6 @@
 // ============================================================================
 //
-// Copyright (C) 2006-2018 Talend Inc. - www.talend.com
+// Copyright (C) 2006-2019 Talend Inc. - www.talend.com
 //
 // This source code is available under agreement available at
 // %InstallDIR%\features\org.talend.rcp.branding.%PRODUCTNAME%\%PRODUCTNAME%license.txt
@@ -35,7 +35,7 @@ public class JobRoutinesItemRelationshipHandlerTest extends AbstractProcessItemR
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see org.talend.core.repository.handlers.AbstractProcessItemRelationshipHandlerTest#createHandler()
      */
     @Override
@@ -45,7 +45,7 @@ public class JobRoutinesItemRelationshipHandlerTest extends AbstractProcessItemR
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see org.talend.core.repository.handlers.AbstractProcessItemRelationshipHandlerTest#getHandler()
      */
     @Override

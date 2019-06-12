@@ -1,6 +1,6 @@
 // ============================================================================
 //
-// Copyright (C) 2006-2018 Talend Inc. - www.talend.com
+// Copyright (C) 2006-2019 Talend Inc. - www.talend.com
 //
 // This source code is available under agreement available at
 // %InstallDIR%\features\org.talend.rcp.branding.%PRODUCTNAME%\%PRODUCTNAME%license.txt
@@ -21,15 +21,15 @@ import org.talend.core.model.process.IProcess;
 
 /**
  * DOC amaumont class global comment. Detailled comment <br/>
- * 
+ *
  * $Id$
- * 
+ *
  */
 public class TalendProposalUtils {
 
     /**
      * Installs a proposal provider on a text component based on a process.
-     * 
+     *
      * @param control Text component on wich proposals are installed.
      * @param process Process from wich proposals are built.
      */
@@ -47,9 +47,9 @@ public class TalendProposalUtils {
     }
 
     /**
-     * 
+     *
      * DOC YeXiaowei Comment method "installOn".
-     * 
+     *
      * @param control
      * @param process
      * @return

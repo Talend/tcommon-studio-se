@@ -1,6 +1,6 @@
 // ============================================================================
 //
-// Copyright (C) 2006-2018 Talend Inc. - www.talend.com
+// Copyright (C) 2006-2019 Talend Inc. - www.talend.com
 //
 // This source code is available under agreement available at
 // %InstallDIR%\features\org.talend.rcp.branding.%PRODUCTNAME%\%PRODUCTNAME%license.txt
@@ -48,9 +48,9 @@ import org.talend.repository.ui.wizards.metadata.connection.database.DatabaseWiz
 
 /**
  * Action used to create a new connection.<br/>
- * 
+ *
  * $Id: CreateConnectionAction.java 77219 2012-01-24 01:14:15Z mhirt $
- * 
+ *
  */
 public class CreateConnectionAction extends AbstractCreateAction {
 
@@ -89,7 +89,7 @@ public class CreateConnectionAction extends AbstractCreateAction {
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see org.eclipse.jface.action.Action#run()
      */
     @Override
@@ -253,7 +253,7 @@ public class CreateConnectionAction extends AbstractCreateAction {
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see org.talend.repository.ui.actions.AContextualView#getClassForDoubleClick()
      */
     @Override

@@ -1,6 +1,6 @@
 // ============================================================================
 //
-// Copyright (C) 2006-2018 Talend Inc. - www.talend.com
+// Copyright (C) 2006-2019 Talend Inc. - www.talend.com
 //
 // This source code is available under agreement available at
 // %InstallDIR%\features\org.talend.rcp.branding.%PRODUCTNAME%\%PRODUCTNAME%license.txt
@@ -51,7 +51,7 @@ public class RunStat implements Runnable {
 
     public static String TYPE1_CONNECTION = "1";
 
-    private class StatBean {
+    public class StatBean {
 
         private String itemId;
 
@@ -66,15 +66,15 @@ public class RunStat implements Runnable {
         private long endTime = 0;
 
         private String exec = null;
-        
+
         /**
-         * sometimes, we need to computer the connection execution time, so it need to 
+         * sometimes, we need to computer the connection execution time, so it need to
          * save both the connection start time and end time in one StatBean object, so after
          * send "start" status StatBean, we need to keep it to set the end time when "end" status come, then do computer.
-         * 
-         * But for iterate connection case, no need connection execution time, so clear it from memory at once after send it, then avoid memory leak. 
+         *
+         * But for iterate connection case, no need connection execution time, so clear it from memory at once after send it, then avoid memory leak.
          * The field do for that.
-         * 
+         *
          */
         private boolean clearAfterSend;
 
@@ -155,11 +155,11 @@ public class RunStat implements Runnable {
         public String getItemId() {
             return itemId;
         }
-        
+
         public void setClearAfterSend(boolean clearAfterSend) {
             this.clearAfterSend = clearAfterSend;
         }
-        
+
         public boolean isClearAfterSend() {
             return clearAfterSend;
         }
@@ -296,7 +296,7 @@ public class RunStat implements Runnable {
                     if (sb.getState() != RunStat.RUNNING) {
                         str += "|" + ((sb.getState() == RunStat.BEGIN) ? "start" : "stop"); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
                     }
-                    
+
                     if(sb.isClearAfterSend()) {
                         //remove the stat object when end to avoid memory cost
                         processStats.remove(curKey);
@@ -328,6 +328,64 @@ public class RunStat implements Runnable {
     }
 
     long lastStatsUpdate = 0;
+
+    private Map<String, StatBean> processStats4Meter = new HashMap<String, StatBean>();
+
+    private List<String> keysList4Meter = new LinkedList<String>();
+
+    public synchronized StatBean logStatOnConnection(String connectionId, int mode, int nbLine) {
+        StatBean bean;
+        String key = connectionId;
+        if (connectionId.contains(".")) {
+            String firstKey = null;
+            String connectionName = connectionId.split("\\.")[0];
+            int nbKeys = 0;
+            for (String myKey : keysList4Meter) {
+                if (myKey.startsWith(connectionName + ".")) {
+                    if (firstKey == null) {
+                        firstKey = myKey;
+                    }
+                    nbKeys++;
+                    if (nbKeys == 4) {
+                        break;
+                    }
+                }
+            }
+            if (nbKeys == 4) {
+            	keysList4Meter.remove(firstKey);
+            }
+        }
+
+        if (keysList4Meter.contains(key)) {
+            int keyNb = keysList4Meter.indexOf(key);
+            keysList4Meter.remove(key);
+            keysList4Meter.add(keyNb, key);
+        } else {
+        	keysList4Meter.add(key);
+        }
+
+        if (processStats4Meter.containsKey(key)) {
+            bean = processStats4Meter.get(key);
+        } else {
+            bean = new StatBean(connectionId);
+        }
+
+        bean.setNbLine(bean.getNbLine() + nbLine);
+        processStats4Meter.put(key, bean);
+
+        if (mode == BEGIN) {
+            bean.setNbLine(0);
+            bean.setStartTime(System.currentTimeMillis());
+        } else if(mode == END) {
+        	bean.setEndTime(System.currentTimeMillis());
+
+    		processStats4Meter.remove(key);
+
+        	keysList4Meter.clear();
+        }
+
+        return bean;
+    }
 
     public synchronized void updateStatOnConnection(String connectionId, int mode, int nbLine) {
         StatBean bean;

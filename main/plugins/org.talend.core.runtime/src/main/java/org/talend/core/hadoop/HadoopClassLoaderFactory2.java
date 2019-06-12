@@ -1,6 +1,6 @@
 // ============================================================================
 //
-// Copyright (C) 2006-2018 Talend Inc. - www.talend.com
+// Copyright (C) 2006-2019 Talend Inc. - www.talend.com
 //
 // This source code is available under agreement available at
 // %InstallDIR%\features\org.talend.rcp.branding.%PRODUCTNAME%\%PRODUCTNAME%license.txt
@@ -21,9 +21,9 @@ import org.talend.core.classloader.DynamicClassLoader;
 import org.talend.core.hadoop.repository.HadoopRepositoryUtil;
 
 /**
- * 
+ *
  * created by ycbai on Aug 11, 2014 Detailled comment
- * 
+ *
  * <p>
  * TODO: Need to improve it and replace {@link HadoopClassLoaderFactory} with it after.
  * </p>
@@ -78,11 +78,11 @@ public class HadoopClassLoaderFactory2 {
 
     /**
      * DOC ycbai Comment method "builder".
-     * 
+     *
      * <p>
      * Build the classloader with some options.
      * <p>
-     * 
+     *
      * @return
      */
     public static HadoopClassLoaderFactory2.Builder builder() {
@@ -90,7 +90,7 @@ public class HadoopClassLoaderFactory2 {
     }
 
     /**
-     * 
+     *
      * created by ycbai on Aug 11, 2014 Detailled comment
      *
      */

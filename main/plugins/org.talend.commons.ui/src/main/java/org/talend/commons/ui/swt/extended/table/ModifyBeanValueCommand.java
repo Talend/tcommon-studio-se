@@ -1,6 +1,6 @@
 // ============================================================================
 //
-// Copyright (C) 2006-2018 Talend Inc. - www.talend.com
+// Copyright (C) 2006-2019 Talend Inc. - www.talend.com
 //
 // This source code is available under agreement available at
 // %InstallDIR%\features\org.talend.rcp.branding.%PRODUCTNAME%\%PRODUCTNAME%license.txt
@@ -22,9 +22,9 @@ import org.talend.commons.ui.swt.tableviewer.TableViewerCreator;
 
 /**
  * DOC amaumont class global comment. Detailled comment <br/>
- * 
+ *
  * $Id$
- * 
+ *
  * @param <B> modie
  */
 public class ModifyBeanValueCommand<B> extends Command {
@@ -33,7 +33,7 @@ public class ModifyBeanValueCommand<B> extends Command {
 
     /**
      * DOC amaumont ModifiedBeanValueCommand constructor comment.
-     * 
+     *
      * @param event
      */
     public ModifyBeanValueCommand(ModifiedBeanEvent<B> event) {
@@ -42,7 +42,7 @@ public class ModifyBeanValueCommand<B> extends Command {
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see org.talend.commons.ui.command.CommonCommand#getLabel()
      */
     @Override
@@ -52,7 +52,7 @@ public class ModifyBeanValueCommand<B> extends Command {
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see org.talend.commons.ui.command.CommonCommand#redo()
      */
     @SuppressWarnings("unchecked")
@@ -73,7 +73,7 @@ public class ModifyBeanValueCommand<B> extends Command {
 
     /**
      * DOC amaumont Comment method "getBean".
-     * 
+     *
      * @param tableViewerCreator
      * @return
      */
@@ -93,7 +93,7 @@ public class ModifyBeanValueCommand<B> extends Command {
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see org.talend.commons.ui.command.CommonCommand#undo()
      */
     @SuppressWarnings("unchecked")
@@ -114,7 +114,7 @@ public class ModifyBeanValueCommand<B> extends Command {
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see org.talend.commons.ui.command.CommonCommand#canUndo()
      */
     @Override

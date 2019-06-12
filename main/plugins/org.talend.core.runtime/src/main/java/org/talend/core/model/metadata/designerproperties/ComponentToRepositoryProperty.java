@@ -1,6 +1,6 @@
 // ============================================================================
 //
-// Copyright (C) 2006-2018 Talend Inc. - www.talend.com
+// Copyright (C) 2006-2019 Talend Inc. - www.talend.com
 //
 // This source code is available under agreement available at
 // %InstallDIR%\features\org.talend.rcp.branding.%PRODUCTNAME%\%PRODUCTNAME%license.txt
@@ -81,7 +81,7 @@ public class ComponentToRepositoryProperty {
 
     /**
      * DOC wzhang Comment method "setValue".
-     * 
+     *
      * @param connection
      * @param node
      */
@@ -166,9 +166,9 @@ public class ComponentToRepositoryProperty {
     }
 
     /**
-     * 
+     *
      * DOC wzhang Comment method "setValue".
-     * 
+     *
      * @param connection
      * @param node
      * @param repositoryValue
@@ -215,9 +215,9 @@ public class ComponentToRepositoryProperty {
     }
 
     /**
-     * 
+     *
      * DOC wzhang Comment method "getParameterValue".
-     * 
+     *
      * @param node
      * @param paramName
      * @return
@@ -241,7 +241,7 @@ public class ComponentToRepositoryProperty {
                         value = getContextOriginalValue(connection, node, value);
                     }
                     return value;
-                } else if (o instanceof List && (param.getName().equals("DRIVER_JAR") 
+                } else if (o instanceof List && (param.getName().equals("DRIVER_JAR")
                         || param.getName().equals("connection.driverTable"))) {
                     List<Map<String, Object>> list = (List<Map<String, Object>>) o;
                     String userDir = System.getProperty("user.dir"); //$NON-NLS-1$
@@ -309,7 +309,7 @@ public class ComponentToRepositoryProperty {
         }
         return null;
     }
-    
+
     private static void setGenericRepositoryValue(DatabaseConnection connection, INode node){
         if(node.getComponent().getComponentType() != EComponentType.GENERIC){
             return;
@@ -340,9 +340,9 @@ public class ComponentToRepositoryProperty {
     }
 
     /**
-     * 
+     *
      * DOC wzhang Comment method "setDatabaseType".
-     * 
+     *
      * @param connection
      * @param node
      */
@@ -557,9 +557,9 @@ public class ComponentToRepositoryProperty {
     }
 
     /**
-     * 
+     *
      * DOC wzhang Comment method "setDatabaseValue".
-     * 
+     *
      * @param connection
      * @param node
      * @param repositoryValue
@@ -673,9 +673,9 @@ public class ComponentToRepositoryProperty {
     }
 
     /**
-     * 
+     *
      * DOC wzhang Comment method "setDatabaseValueForOracleSid".
-     * 
+     *
      * @param connection
      * @param node
      * @param repositoryValue
@@ -806,9 +806,9 @@ public class ComponentToRepositoryProperty {
     }
 
     /**
-     * 
+     *
      * DOC wzhang Comment method "setXmlFileValue".
-     * 
+     *
      * @param connection
      * @param node
      * @param repositoryValue
@@ -865,16 +865,16 @@ public class ComponentToRepositoryProperty {
     }
 
     /**
-     * 
+     *
      * DOC wzhang Comment method "setLDAPSchemaValue".
-     * 
+     *
      * @param connection
      * @param node
      * @param repositoryValue
      */
     private static void setLDAPSchemaValue(LDAPSchemaConnection connection, INode node, IElementParameter param) {
         if ("HOST".equals(param.getRepositoryValue())) { //$NON-NLS-1$
-            String value = (getParameterValue(connection, node, param)).replaceAll("\\\\\\\\", "\\\\"); //$NON-NLS-1$ //$NON-NLS-2$ 
+            String value = (getParameterValue(connection, node, param)).replaceAll("\\\\\\\\", "\\\\"); //$NON-NLS-1$ //$NON-NLS-2$
             if (value != null) {
                 connection.setHost(value);
             }
@@ -886,7 +886,7 @@ public class ComponentToRepositoryProperty {
             }
         }
         if ("BASEDN".equals(param.getRepositoryValue())) { //$NON-NLS-1$
-            String value = (getParameterValue(connection, node, param)).replaceAll("\\\\\\\\", "\\\\"); //$NON-NLS-1$ //$NON-NLS-2$ 
+            String value = (getParameterValue(connection, node, param)).replaceAll("\\\\\\\\", "\\\\"); //$NON-NLS-1$ //$NON-NLS-2$
             if (value != null) {
                 connection.setSelectedDN(value);
             }
@@ -906,13 +906,13 @@ public class ComponentToRepositoryProperty {
         }
 
         if ("USER".equals(param.getRepositoryValue())) { //$NON-NLS-1$
-            String value = (getParameterValue(connection, node, param)).replaceAll("\\\\\\\\", "\\\\"); //$NON-NLS-1$ //$NON-NLS-2$ 
+            String value = (getParameterValue(connection, node, param)).replaceAll("\\\\\\\\", "\\\\"); //$NON-NLS-1$ //$NON-NLS-2$
             if (value != null) {
                 connection.setBindPrincipal(value);
             }
         }
         if ("PASSWORD".equals(param.getRepositoryValue())) { //$NON-NLS-1$
-            String value = (getParameterValue(connection, node, param)).replaceAll("\\\\\\\\", "\\\\"); //$NON-NLS-1$ //$NON-NLS-2$ 
+            String value = (getParameterValue(connection, node, param)).replaceAll("\\\\\\\\", "\\\\"); //$NON-NLS-1$ //$NON-NLS-2$
             if (value != null) {
                 connection.setBindPassword(connection.getValue(value, true));
             }
@@ -1289,9 +1289,9 @@ public class ComponentToRepositoryProperty {
     }
 
     /**
-     * 
+     *
      * DOC wzhang Comment method "setDelimitedFileValue".
-     * 
+     *
      * @param connection
      * @param node
      * @param repositoryValue
@@ -1421,9 +1421,9 @@ public class ComponentToRepositoryProperty {
     }
 
     /**
-     * 
+     *
      * DOC wzhang Comment method "setPositionalFileValue".
-     * 
+     *
      * @param connection
      * @param node
      * @param repositoryValue
@@ -1475,9 +1475,9 @@ public class ComponentToRepositoryProperty {
     }
 
     /**
-     * 
+     *
      * DOC wzhang Comment method "setRegexpFileValue".
-     * 
+     *
      * @param connection
      * @param node
      * @param repositoryValue
@@ -1576,9 +1576,9 @@ public class ComponentToRepositoryProperty {
     }
 
     /**
-     * 
+     *
      * DOC wzhang Comment method "setSalesforceSchema".
-     * 
+     *
      * @param connection
      * @param node
      * @param repositoryValue

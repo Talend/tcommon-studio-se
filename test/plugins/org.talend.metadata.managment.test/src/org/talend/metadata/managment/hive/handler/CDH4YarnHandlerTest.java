@@ -1,6 +1,6 @@
 // ============================================================================
 //
-// Copyright (C) 2006-2018 Talend Inc. - www.talend.com
+// Copyright (C) 2006-2019 Talend Inc. - www.talend.com
 //
 // This source code is available under agreement available at
 // %InstallDIR%\features\org.talend.rcp.branding.%PRODUCTNAME%\%PRODUCTNAME%license.txt
@@ -26,13 +26,13 @@ import org.talend.core.model.metadata.connection.hive.HiveModeInfo;
 
 /**
  * created by qiongli on 2014-3-11 Detailled comment
- * 
+ *
  */
 public class CDH4YarnHandlerTest {
 
     /**
      * DOC qiongli Comment method "setUp".
-     * 
+     *
      * @throws java.lang.Exception
      */
     @Before
@@ -41,7 +41,7 @@ public class CDH4YarnHandlerTest {
 
     /**
      * DOC qiongli Comment method "tearDown".
-     * 
+     *
      * @throws java.lang.Exception
      */
     @After
@@ -59,7 +59,7 @@ public class CDH4YarnHandlerTest {
         CDH4YarnHandler hiveYarnHandler = new CDH4YarnHandler(metadataConnection);
         Map<String, String> defaultHadoopParameters = hiveYarnHandler.getDefaultHadoopParameters();
         assertEquals(defaultHadoopParameters.get(CDH4YarnHandler.MAP_FM_NAME), "yarn"); //$NON-NLS-1$
-        assertEquals(defaultHadoopParameters.get(CDH4YarnHandler.YARN_RM_ADDRESS), "hdfs://ubuntu:8020"); //$NON-NLS-1$ 
+        assertEquals(defaultHadoopParameters.get(CDH4YarnHandler.YARN_RM_ADDRESS), "hdfs://ubuntu:8020"); //$NON-NLS-1$
         assertEquals(defaultHadoopParameters.get(CDH4YarnHandler.YARN_CLASSPATH), CDH4YarnHandler.YARN_CLASSPATH_VALUE);
 
         // test when job track url is " ".

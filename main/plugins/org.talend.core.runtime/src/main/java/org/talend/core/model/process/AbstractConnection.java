@@ -1,6 +1,6 @@
 // ============================================================================
 //
-// Copyright (C) 2006-2018 Talend Inc. - www.talend.com
+// Copyright (C) 2006-2019 Talend Inc. - www.talend.com
 //
 // This source code is available under agreement available at
 // %InstallDIR%\features\org.talend.rcp.branding.%PRODUCTNAME%\%PRODUCTNAME%license.txt
@@ -23,9 +23,9 @@ import org.talend.core.runtime.IAdditionalInfo;
 
 /**
  * DOC nrousseau class global comment. Detailled comment <br/>
- * 
+ *
  * $Id$
- * 
+ *
  */
 public abstract class AbstractConnection implements IConnection, IAdditionalInfo {
 
@@ -199,7 +199,7 @@ public abstract class AbstractConnection implements IConnection, IAdditionalInfo
 
     /**
      * Getter for uniqueName.
-     * 
+     *
      * @return the uniqueName
      */
     @Override
@@ -209,7 +209,7 @@ public abstract class AbstractConnection implements IConnection, IAdditionalInfo
 
     /**
      * Sets the uniqueName.
-     * 
+     *
      * @param uniqueName the uniqueName to set
      */
     public void setUniqueName(String uniqueName) {
@@ -218,7 +218,7 @@ public abstract class AbstractConnection implements IConnection, IAdditionalInfo
 
     /**
      * Getter for connectorName.
-     * 
+     *
      * @return the connectorName
      */
     @Override
@@ -228,7 +228,7 @@ public abstract class AbstractConnection implements IConnection, IAdditionalInfo
 
     /**
      * Sets the connectorName.
-     * 
+     *
      * @param connectorName the connectorName to set
      */
     @Override
@@ -278,7 +278,7 @@ public abstract class AbstractConnection implements IConnection, IAdditionalInfo
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see java.lang.Object#toString()
      */
     @Override
@@ -326,7 +326,7 @@ public abstract class AbstractConnection implements IConnection, IAdditionalInfo
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see org.talend.core.model.process.IElement#getElementName()
      */
     @Override
@@ -445,7 +445,7 @@ public abstract class AbstractConnection implements IConnection, IAdditionalInfo
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see org.talend.core.model.process.IElement#isForceReadOnly()
      */
     @Override
@@ -455,7 +455,7 @@ public abstract class AbstractConnection implements IConnection, IAdditionalInfo
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see org.talend.core.model.process.IElement#setForceReadOnly(boolean)
      */
     @Override

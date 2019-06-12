@@ -1,6 +1,6 @@
 // ============================================================================
 //
-// Copyright (C) 2006-2018 Talend Inc. - www.talend.com
+// Copyright (C) 2006-2019 Talend Inc. - www.talend.com
 //
 // This source code is available under agreement available at
 // %InstallDIR%\features\org.talend.rcp.branding.%PRODUCTNAME%\%PRODUCTNAME%license.txt
@@ -138,16 +138,16 @@ public final class MetadataToolAvroHelper {
     private static FieldAssembler<Schema> convertToAvro(FieldAssembler<Schema> fa,
             org.talend.core.model.metadata.builder.connection.MetadataColumn in) {
         ICoreService coreService = (ICoreService) GlobalServiceRegister.getDefault().getService(ICoreService.class);
-        String label = in.getLabel(); 
+        String label = in.getLabel();
         if (label != null && coreService != null) {
             if (coreService.isKeyword(label)) {
                 label = "_" + label; //$NON-NLS-1$
             }
         }
-        
+
         FieldBuilder<Schema> fb = fa.name(label);
         copyColumnProperties(fb, in);
-        
+
         fb.prop(DiSchemaConstants.TALEND6_LABEL, label);
 
         Object defaultValue = null;
@@ -159,7 +159,7 @@ public final class MetadataToolAvroHelper {
         String tt = in.getTalendType();
 
         Schema type = null;
-        
+
         try {
             // Numeric types.
             if (JavaTypesManager.LONG.getId().equals(tt)) {
@@ -184,7 +184,7 @@ public final class MetadataToolAvroHelper {
                 // decimal(precision, scale) == column length and precision?
                 type = AvroUtils._decimal();
             }
-    
+
             // Other primitive types that map directly to Avro.
             else if (JavaTypesManager.BOOLEAN.getId().equals(tt)) {
                 type = AvroUtils._boolean();
@@ -544,7 +544,7 @@ public final class MetadataToolAvroHelper {
         col.setTalendType("id_Dynamic"); //$NON-NLS-1$
         return col;
     }
-    
+
     public static org.talend.core.model.metadata.builder.connection.MetadataColumn convertFromAvro(Schema.Field field, MetadataTable metadataTable) {
         org.talend.core.model.metadata.builder.connection.MetadataColumn col = convertFromAvro(field);
         if(metadataTable == null){
@@ -561,13 +561,13 @@ public final class MetadataToolAvroHelper {
         }
         label = MetadataToolHelper.validateColumnName(label, metadataTable.getColumns().size(), labels);
         col.setLabel(label);
-        
+
         TaggedValue tv = TaggedValueHelper.createTaggedValue(DiSchemaConstants.AVRO_TECHNICAL_KEY, field.name());
         col.getTaggedValue().add(tv);
-        
+
         return col;
     }
-    
+
     public static org.talend.core.model.metadata.builder.connection.MetadataColumn convertFromAvro(Schema.Field field,
             org.talend.core.model.metadata.builder.connection.MetadataColumn col){
         Schema in = field.schema();
@@ -604,7 +604,7 @@ public final class MetadataToolAvroHelper {
           	} else if(logicalType == LogicalTypes.timeMillis()) {
             	  TaggedValue tv = TaggedValueHelper.createTaggedValue(DiSchemaConstants.TALEND6_COLUMN_DATE_TIME, "true");
                 col.getTaggedValue().add(tv);
-                
+
           	    String logical_time_type_as = field.getProp(DiSchemaConstants.LOGICAL_TIME_TYPE_AS);
           	    if(DiSchemaConstants.AS_TALEND_DATE.equals(logical_time_type_as)) {
                 	  col.setTalendType(JavaTypesManager.DATE.getId());
@@ -731,7 +731,7 @@ public final class MetadataToolAvroHelper {
         }
 
         return col;
-    
+
     }
 
     /**
@@ -743,7 +743,7 @@ public final class MetadataToolAvroHelper {
         org.talend.core.model.metadata.builder.connection.MetadataColumn col = ConnectionFactory.eINSTANCE.createMetadataColumn();
         return convertFromAvro(field, col);
     }
-    
+
     /**
      * @param in A field from an incoming schema
      * @return A MetadataColumn containing all the information from the Schema, including any information included the
@@ -1031,5 +1031,5 @@ public final class MetadataToolAvroHelper {
     // }
     // return schema;
     // }
-    
+
 }

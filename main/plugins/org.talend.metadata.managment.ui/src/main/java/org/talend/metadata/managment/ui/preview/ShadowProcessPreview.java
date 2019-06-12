@@ -1,6 +1,6 @@
 // ============================================================================
 //
-// Copyright (C) 2006-2018 Talend Inc. - www.talend.com
+// Copyright (C) 2006-2019 Talend Inc. - www.talend.com
 //
 // This source code is available under agreement available at
 // %InstallDIR%\features\org.talend.rcp.branding.%PRODUCTNAME%\%PRODUCTNAME%license.txt
@@ -29,9 +29,9 @@ import org.talend.metadata.managment.ui.i18n.Messages;
 
 /**
  * Create SWT Table to show the content of a file. <br/>
- * 
+ *
  * $Id:ShadowProcessPreview.java 1185 2006-12-22 10:43:29 +0000 (閺勭喐婀℃禍锟�22 閸椾椒绨╅張锟�006) amaumont $
- * 
+ *
  */
 public class ShadowProcessPreview {
 
@@ -68,7 +68,7 @@ public class ShadowProcessPreview {
 
     /**
      * Create Object to manage Preview and MetaData.
-     * 
+     *
      * @param compositeFileViewer
      * @param filepath (null or path)
      */
@@ -81,9 +81,9 @@ public class ShadowProcessPreview {
 
     /**
      * Create Table to show the content of a file.
-     * 
+     *
      * @return
-     * 
+     *
      */
     public void newTablePreview() {
         table = new Table(composite, SWT.BORDER);
@@ -102,7 +102,7 @@ public class ShadowProcessPreview {
 
     /**
      * refresh Header of table Preview.
-     * 
+     *
      * @param columns
      */
     public void refreshPreviewHeader(final String[] columns) {
@@ -133,7 +133,7 @@ public class ShadowProcessPreview {
 
     /**
      * refresh TablePreview width the first rows of the file.
-     * 
+     *
      * @param csvArray
      * @param firstRowIsLabel
      */
@@ -226,7 +226,7 @@ public class ShadowProcessPreview {
 
     /**
      * refresh TablePreview width the first rows of the file.
-     * 
+     *
      * @param csvArray
      * @param firstRowIsLabel
      */
@@ -291,7 +291,7 @@ public class ShadowProcessPreview {
 
     /**
      * refresh TablePreview width the first rows of the file.
-     * 
+     *
      * @param csvArray
      * @param firstRowIsLabel
      */
@@ -328,7 +328,7 @@ public class ShadowProcessPreview {
 
     /**
      * refresh TablePreview width the first rows of the file.
-     * 
+     *
      * @param csvArray
      * @param firstRowIsLabel
      */
@@ -417,7 +417,7 @@ public class ShadowProcessPreview {
 
     /**
      * refresh the Item of Preview.
-     * 
+     *
      * @param csvRows
      * @param firstRowIsLabel
      */
@@ -454,7 +454,7 @@ public class ShadowProcessPreview {
 
     /**
      * Getter for filePath.
-     * 
+     *
      * @return the filePath
      */
     public String getFilePath() {
@@ -463,7 +463,7 @@ public class ShadowProcessPreview {
 
     /**
      * Sets the filePath.
-     * 
+     *
      * @param filePath the filePath to set
      */
     public void setFilePath(String filePath) {
@@ -472,7 +472,7 @@ public class ShadowProcessPreview {
 
     /**
      * Getter for header.
-     * 
+     *
      * @return the header
      */
     public String[] getHeader() {

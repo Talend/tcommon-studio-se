@@ -1,6 +1,6 @@
 // ============================================================================
 //
-// Copyright (C) 2006-2018 Talend Inc. - www.talend.com
+// Copyright (C) 2006-2019 Talend Inc. - www.talend.com
 //
 // This source code is available under agreement available at
 // %InstallDIR%\features\org.talend.rcp.branding.%PRODUCTNAME%\%PRODUCTNAME%license.txt
@@ -33,18 +33,18 @@ public interface IDragAndDropServiceHandler {
 
     /**
      * DOC hwang Comment method "canHandle".
-     * 
+     *
      * to judge can handle or not(base on connection)
-     * 
+     *
      * @param connection - connection
      */
     public boolean canHandle(Connection connection);
 
     /**
      * DOC hwang Comment method "getComponentValue".
-     * 
+     *
      * get parameter value of the connection
-     * 
+     *
      * @param connection - connection
      * @param value - parameter name
      */
@@ -54,9 +54,9 @@ public interface IDragAndDropServiceHandler {
 
     /**
      * DOC hwang Comment method "filterNeededComponents".
-     * 
+     *
      * get components list when you drag&drop a repositoryNode to processEditor
-     * 
+     *
      * @param item - the Item of the selectedNode
      * @param seletetedNode - the repositoryNode you selected
      * @param type - the type of the selectedNode
@@ -65,9 +65,9 @@ public interface IDragAndDropServiceHandler {
 
     /**
      * DOC hwang Comment method "getCorrespondingComponentName".
-     * 
+     *
      * get the default component and input/output names for the quick drag&drop
-     * 
+     *
      * @param item - the Item of the selectedNode
      * @param type - the type of the selectedNode
      */
@@ -75,9 +75,9 @@ public interface IDragAndDropServiceHandler {
 
     /**
      * DOC zwzhao Comment method "setComponentValue".
-     * 
+     *
      * set parameter value of the connection
-     * 
+     *
      * @param connection - connection
      * @param node - node
      * @param param - param
@@ -91,9 +91,9 @@ public interface IDragAndDropServiceHandler {
 
     /**
      * DOC ycbai Comment method "handleTableRelevantParameters".
-     * 
+     *
      * Set metadata table relevant parameters value of the element.
-     * 
+     *
      * @param connection
      * @param ele
      * @param metadataTable
@@ -104,7 +104,7 @@ public interface IDragAndDropServiceHandler {
      * DOC ycbai Comment method "isValidForDataViewer".
      * <p>
      * Check if the table can do data viewer.
-     * 
+     *
      * @param connection
      * @param metadataTable
      * @return
@@ -112,9 +112,9 @@ public interface IDragAndDropServiceHandler {
     public boolean isValidForDataViewer(Connection connection, IMetadataTable metadataTable);
 
     /**
-     * 
+     *
      * DOC hcyi Comment method "isGenericRepositoryValue".
-     * 
+     *
      * @param connection
      * @param paramName
      * @return
@@ -122,6 +122,6 @@ public interface IDragAndDropServiceHandler {
     public boolean isGenericRepositoryValue(List<ComponentProperties> componentProperties, String paramName);
 
     public Object getGenericRepositoryValue(List<ComponentProperties> componentProperties, String paramName);
-    
+
     public boolean isGenericPropertiesValue(String paramName);
 }

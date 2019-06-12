@@ -1,6 +1,6 @@
 // ============================================================================
 //
-// Copyright (C) 2006-2018 Talend Inc. - www.talend.com
+// Copyright (C) 2006-2019 Talend Inc. - www.talend.com
 //
 // This source code is available under agreement available at
 // %InstallDIR%\features\org.talend.rcp.branding.%PRODUCTNAME%\%PRODUCTNAME%license.txt
@@ -14,9 +14,9 @@ package org.talend.core.model.metadata.types;
 
 /**
  * DOC amaumont class global comment. Detailled comment <br/>
- * 
+ *
  * $Id$
- * 
+ *
  */
 public final class JavaType {
 
@@ -48,7 +48,7 @@ public final class JavaType {
 
     /**
      * DOC amaumont Comment method "createId".
-     * 
+     *
      * @param simpleName
      * @return
      */
@@ -93,7 +93,7 @@ public final class JavaType {
 
     /**
      * DOC amaumont JavaType constructor comment.
-     * 
+     *
      * @param id
      * @param nullableClass
      * @param primitiveClass
@@ -107,7 +107,7 @@ public final class JavaType {
 
     /**
      * DOC amaumont JavaType constructor comment.
-     * 
+     *
      * @param id
      * @param nullableClass
      */
@@ -119,7 +119,7 @@ public final class JavaType {
 
     /**
      * Getter for label.
-     * 
+     *
      * @return the label
      */
     public String getLabel() {
@@ -128,7 +128,7 @@ public final class JavaType {
 
     /**
      * Getter for id.
-     * 
+     *
      * @return the id
      */
     public String getId() {
@@ -137,7 +137,7 @@ public final class JavaType {
 
     /**
      * Getter for objectClass.
-     * 
+     *
      * @return the objectClass
      */
     public Class getNullableClass() {
@@ -146,7 +146,7 @@ public final class JavaType {
 
     /**
      * Getter for primitiveClass. Can be null.
-     * 
+     *
      * @return the primitiveClass
      */
     public Class getPrimitiveClass() {
@@ -155,7 +155,7 @@ public final class JavaType {
 
     /**
      * Getter for generateWithCanonicalName.
-     * 
+     *
      * @return the generateWithCanonicalName
      */
     public boolean isGenerateWithCanonicalName() {
@@ -163,7 +163,7 @@ public final class JavaType {
     }
 
     /**
-     * 
+     *
      * @return
      * @author
      */

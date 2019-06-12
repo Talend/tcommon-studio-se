@@ -1,6 +1,6 @@
 // ============================================================================
 //
-// Copyright (C) 2006-2018 Talend Inc. - www.talend.com
+// Copyright (C) 2006-2019 Talend Inc. - www.talend.com
 //
 // This source code is available under agreement available at
 // %InstallDIR%\features\org.talend.rcp.branding.%PRODUCTNAME%\%PRODUCTNAME%license.txt
@@ -30,9 +30,9 @@ import org.talend.repository.documentation.ExportFileResource;
 
 /**
  * This class has utility methods for generating job information as HTML file.
- * 
+ *
  * $Id: JobHTMLScriptsManager.java 2007-3-8,下午03:15:50 ftang $
- * 
+ *
  */
 public class JobHTMLScriptsManager implements IDocumentationManager {
 
@@ -42,7 +42,7 @@ public class JobHTMLScriptsManager implements IDocumentationManager {
 
     /**
      * JobHTMLScriptsManager constructor comment.
-     * 
+     *
      * @param docGenerator
      * @param isNeedGenerate
      */
@@ -53,7 +53,7 @@ public class JobHTMLScriptsManager implements IDocumentationManager {
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see org.talend.repository.documentation.generation.IDocumentationManager#getDocGenerator()
      */
     @Override
@@ -63,7 +63,7 @@ public class JobHTMLScriptsManager implements IDocumentationManager {
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see org.talend.repository.documentation.generation.IDocumentationManager#getDocGenerator()
      */
     @Override
@@ -73,7 +73,7 @@ public class JobHTMLScriptsManager implements IDocumentationManager {
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see org.talend.repository.documentation.generation.IDocumentationManager#getDocGenerator()
      */
     public void setNeedGenerate(boolean needGenerate) {
@@ -82,7 +82,7 @@ public class JobHTMLScriptsManager implements IDocumentationManager {
 
     /**
      * Gets the set of <code>ExportFileResource</code>
-     * 
+     *
      * @param process
      * @return
      */
@@ -103,7 +103,7 @@ public class JobHTMLScriptsManager implements IDocumentationManager {
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see
      * org.talend.repository.documentation.generation.IDocumentationManager#getExportResources(org.talend.repository
      * .documentation.ExportFileResource[], java.lang.String, java.lang.String[])
@@ -131,7 +131,7 @@ public class JobHTMLScriptsManager implements IDocumentationManager {
 
     /**
      * ftang Comment method "collectionGeneratedDocumentation".
-     * 
+     *
      * @param exportFileResource
      * @param jobVersion
      * @param targetPath

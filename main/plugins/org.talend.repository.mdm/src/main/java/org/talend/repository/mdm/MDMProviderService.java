@@ -1,6 +1,6 @@
 // ============================================================================
 //
-// Copyright (C) 2006-2018 Talend Inc. - www.talend.com
+// Copyright (C) 2006-2019 Talend Inc. - www.talend.com
 //
 // This source code is available under agreement available at
 // %InstallDIR%\features\org.talend.rcp.branding.%PRODUCTNAME%\%PRODUCTNAME%license.txt
@@ -40,7 +40,7 @@ public class MDMProviderService implements IMDMProviderService {
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see org.talend.core.ui.IMDMProviderService#getRepositoryItem(org.talend.core.model.process.INode)
      */
     public MDMConnectionItem getRepositoryItem(INode node) {
@@ -64,7 +64,7 @@ public class MDMProviderService implements IMDMProviderService {
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see org.talend.core.ui.IMDMProviderService#isMDMNode(org.talend.core.model.process.INode)
      */
     public boolean isMDMNode(INode node) {
@@ -80,7 +80,7 @@ public class MDMProviderService implements IMDMProviderService {
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see org.talend.core.ui.IMDMProviderService#isRepositorySchemaLine(org.talend.core.model.process.INode,
      * java.util.Map)
      */
@@ -102,7 +102,7 @@ public class MDMProviderService implements IMDMProviderService {
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see org.talend.core.ui.IMDMProviderService#newMDMWizard(org.eclipse.ui.IWorkbench, boolean,
      * org.talend.repository.model.RepositoryNode, java.lang.String[])
      */

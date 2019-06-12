@@ -1,6 +1,6 @@
 // ============================================================================
 //
-// Copyright (C) 2006-2018 Talend Inc. - www.talend.com
+// Copyright (C) 2006-2019 Talend Inc. - www.talend.com
 //
 // This source code is available under agreement available at
 // %InstallDIR%\features\org.talend.rcp.branding.%PRODUCTNAME%\%PRODUCTNAME%license.txt
@@ -21,9 +21,9 @@ import org.talend.commons.ui.runtime.swt.tableviewer.behavior.ComboEditorValueAd
 
 /**
  * DOC amaumont class global comment. Detailled comment <br/>
- * 
+ *
  * $Id$
- * 
+ *
  */
 public class CellEditorValueAdapterFactory {
 
@@ -59,7 +59,7 @@ public class CellEditorValueAdapterFactory {
 
             /*
              * (non-Javadoc)
-             * 
+             *
              * @see
              * org.talend.commons.ui.swt.tableviewer.behavior.CellEditorValueAdapter#getColumnText(org.eclipse.jface
              * .viewers.CellEditor, java.lang.Object)
@@ -76,7 +76,7 @@ public class CellEditorValueAdapterFactory {
 
     /**
      * DOC amaumont Comment method "getComboAdapter".
-     * 
+     *
      * @return
      */
     public static CellEditorValueAdapter getComboAdapterForComboCellEditor(final String defaultItem) {
@@ -93,7 +93,7 @@ public class CellEditorValueAdapterFactory {
 
     /**
      * DOC amaumont Comment method "getComboAdapter".
-     * 
+     *
      * @return
      */
     public static CellEditorValueAdapter getComboAdapterForComboCellEditor() {
@@ -102,7 +102,7 @@ public class CellEditorValueAdapterFactory {
 
     /**
      * DOC amaumont Comment method "getComboAdapter".
-     * 
+     *
      * @return
      */
     public static CellEditorValueAdapter getComboAdapterForComboCellEditorImproved(final String defaultItem) {
@@ -119,7 +119,7 @@ public class CellEditorValueAdapterFactory {
 
     /**
      * DOC amaumont Comment method "getComboAdapter".
-     * 
+     *
      * @return
      */
     public static CellEditorValueAdapter getComboAdapterForComboCellEditorImproved() {

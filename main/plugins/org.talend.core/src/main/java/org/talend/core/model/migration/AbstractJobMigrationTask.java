@@ -1,6 +1,6 @@
 // ============================================================================
 //
-// Copyright (C) 2006-2018 Talend Inc. - www.talend.com
+// Copyright (C) 2006-2019 Talend Inc. - www.talend.com
 //
 // This source code is available under agreement available at
 // %InstallDIR%\features\org.talend.rcp.branding.%PRODUCTNAME%\%PRODUCTNAME%license.txt
@@ -48,7 +48,7 @@ public abstract class AbstractJobMigrationTask extends AbstractItemMigrationTask
         if (processType != null) {
             EmfHelper.visitChilds(processType);
             ERepositoryObjectType itemType = ERepositoryObjectType.getItemType(item);
-            if(itemType == ERepositoryObjectType.TEST_CONTAINER && 
+            if(itemType == ERepositoryObjectType.TEST_CONTAINER &&
             		!ConvertJobsUtil.JobType.STANDARD.getDisplayName().equalsIgnoreCase(processType.getJobType())){
             	return null;
             }

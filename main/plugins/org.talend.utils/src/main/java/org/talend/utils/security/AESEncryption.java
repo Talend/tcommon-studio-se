@@ -2,7 +2,7 @@ package org.talend.utils.security;
 
 // ============================================================================
 //
-// Copyright (C) 2006-2018 Talend Inc. - www.talend.com
+// Copyright (C) 2006-2019 Talend Inc. - www.talend.com
 //
 // This source code is available under agreement available at
 // %InstallDIR%\features\org.talend.rcp.branding.%PRODUCTNAME%\%PRODUCTNAME%license.txt
@@ -18,7 +18,7 @@ import org.talend.daikon.crypto.KeySources;
 
 public class AESEncryption {
 
-    //TODO We should remove default key after implements master key encryption algorithm 
+    //TODO We should remove default key after implements master key encryption algorithm
     private static final String ENCRYPTION_KEY = "Talend_TalendKey";// The length of key should be 16, 24 or 32.
 
     private static Encryption defaultEncryption;

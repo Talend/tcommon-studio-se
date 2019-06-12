@@ -1,6 +1,6 @@
 // ============================================================================
 //
-// Copyright (C) 2006-2018 Talend Inc. - www.talend.com
+// Copyright (C) 2006-2019 Talend Inc. - www.talend.com
 //
 // This source code is available under agreement available at
 // %InstallDIR%\features\org.talend.rcp.branding.%PRODUCTNAME%\%PRODUCTNAME%license.txt
@@ -16,9 +16,9 @@ import java.sql.Types;
 
 /**
  * DOC zqin class global comment. Detailled comment <br/>
- * 
+ *
  * $Id: talend.epf 1 2006-09-29 17:06:40Z zqin $
- * 
+ *
  */
 public final class Java2SqlType {
 
@@ -171,11 +171,11 @@ public final class Java2SqlType {
 
     /**
      * In case of teradata connection is on SQL mode, the datatype must be converted by this method.
-     * 
+     *
      * About INTERVAL types: inter_year, YR, inter_month, MO, inter_day, DY, inter_hour, HR, inter_sec, SC, inter_mini,
      * MI, inter_year_to_month, YM, inter_day_to_hour, DH, inter_day_to_mini, DM, inter_day_to_sec, DS,
      * inter_hour_to_mini, HM, inter_hour_to_sec, HS, inter_min_to_sec, MS,
-     * 
+     *
      * @param sqlType
      * @return
      */
@@ -190,7 +190,7 @@ public final class Java2SqlType {
             return Types.FLOAT;
         } else if (sqlType.trim().equals("CF") || sqlType.trim().equals("BF")) { //$NON-NLS-1$ //$NON-NLS-2$
             return Types.CHAR;
-        } else if (sqlType.trim().equals("CV") || sqlType.trim().equals("BV")) { //$NON-NLS-1$ //$NON-NLS-2$ 
+        } else if (sqlType.trim().equals("CV") || sqlType.trim().equals("BV")) { //$NON-NLS-1$ //$NON-NLS-2$
             return Types.VARCHAR;
         } else if (sqlType.trim().equals("D")) { //$NON-NLS-1$
             return Types.DECIMAL;
@@ -214,7 +214,7 @@ public final class Java2SqlType {
 
     /**
      * In case of teradata connection is on SQL mode, the datatype must be converted by this method.
-     * 
+     *
      * @param sqlType
      * @return
      */
@@ -227,11 +227,11 @@ public final class Java2SqlType {
             return "SMALLINT"; //$NON-NLS-1$
         } else if (sqlType.trim().equals("F")) { //$NON-NLS-1$
             return "FLOAT"; //$NON-NLS-1$
-        } else if (sqlType.trim().equals("CF") || sqlType.trim().equals("BF")) { //$NON-NLS-1$ //$NON-NLS-2$ 
+        } else if (sqlType.trim().equals("CF") || sqlType.trim().equals("BF")) { //$NON-NLS-1$ //$NON-NLS-2$
             return "CHAR"; //$NON-NLS-1$
-        } else if (sqlType.trim().equals("CV") || sqlType.trim().equals("BV")) { //$NON-NLS-1$ //$NON-NLS-2$ 
+        } else if (sqlType.trim().equals("CV") || sqlType.trim().equals("BV")) { //$NON-NLS-1$ //$NON-NLS-2$
             return "VARCHAR"; //$NON-NLS-1$
-        } else if (sqlType.trim().equals("D")) { //$NON-NLS-1$ 
+        } else if (sqlType.trim().equals("D")) { //$NON-NLS-1$
             return "DECIMAL"; //$NON-NLS-1$
         } else if (sqlType.trim().equals("TS") || sqlType.trim().equals("SZ")) { //$NON-NLS-1$ //$NON-NLS-2$
             return "TIMESTAMP"; //$NON-NLS-1$
@@ -246,7 +246,7 @@ public final class Java2SqlType {
             return "INTERVAL DAY TO HOUR";//$NON-NLS-1$
         } else if (sqlType.trim().equals("DM")) { //$NON-NLS-1$
             return "INTERVAL DAY TO MINUTE";//$NON-NLS-1$
-        } else if (sqlType.trim().equals("DS")) { //$NON-NLS-1$ 
+        } else if (sqlType.trim().equals("DS")) { //$NON-NLS-1$
             return "INTERVAL DAY TO SECOND";//$NON-NLS-1$
         } else if (sqlType.trim().equals("DY")) { //$NON-NLS-1$
             return "INTERVAL DAY";//$NON-NLS-1$
@@ -272,7 +272,7 @@ public final class Java2SqlType {
 
     /**
      * Added yyin 20121211, TDQ-6099 :judge if it is the type: INTERVAL_XXX, or : INTERVAL_XX_TO_XX
-     * 
+     *
      * @param typeName
      * @return 0: not INTERVAL; TERADATA_INTERVAL: INTERVAL_XX; TERADATA_INTERVAL_TO: INTERVAL_XX_TO_XX
      */

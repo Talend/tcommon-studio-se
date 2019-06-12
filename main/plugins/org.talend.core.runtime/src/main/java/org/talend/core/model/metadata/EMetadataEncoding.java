@@ -1,6 +1,6 @@
 // ============================================================================
 //
-// Copyright (C) 2006-2018 Talend Inc. - www.talend.com
+// Copyright (C) 2006-2019 Talend Inc. - www.talend.com
 //
 // This source code is available under agreement available at
 // %InstallDIR%\features\org.talend.rcp.branding.%PRODUCTNAME%\%PRODUCTNAME%license.txt
@@ -16,9 +16,9 @@ import org.talend.core.runtime.i18n.Messages;
 
 /**
  * Enum for available Code Languages in the application.
- * 
+ *
  * $Id: EMetadataEncoding.java 38013 2010-03-05 14:21:59Z mhirt $
- * 
+ *
  */
 public enum EMetadataEncoding {
 
@@ -69,7 +69,7 @@ public enum EMetadataEncoding {
 
     /**
      * Getter for Label.
-     * 
+     *
      * @return the Label
      */
     public String getLabel() {
@@ -78,7 +78,7 @@ public enum EMetadataEncoding {
 
     /**
      * Sets the Label.
-     * 
+     *
      * @param extension the extension to set
      */
     public void setLabel(String label) {
@@ -87,7 +87,7 @@ public enum EMetadataEncoding {
 
     /**
      * Getter for name.
-     * 
+     *
      * @return the name
      */
     public String getName() {
@@ -96,7 +96,7 @@ public enum EMetadataEncoding {
 
     /**
      * Sets the name.
-     * 
+     *
      * @param name the name to set
      */
     public void setName(String name) {

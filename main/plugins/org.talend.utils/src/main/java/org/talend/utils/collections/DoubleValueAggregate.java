@@ -1,6 +1,6 @@
 // ============================================================================
 //
-// Copyright (C) 2006-2018 Talend Inc. - www.talend.com
+// Copyright (C) 2006-2019 Talend Inc. - www.talend.com
 //
 // This source code is available under agreement available at
 // %InstallDIR%\features\org.talend.rcp.branding.%PRODUCTNAME%\%PRODUCTNAME%license.txt
@@ -16,7 +16,7 @@ import java.util.Arrays;
 
 /**
  * @author scorreia
- * 
+ *
  * This class aggregates doubles.
  * @param <T> the key class
  */
@@ -24,14 +24,14 @@ public class DoubleValueAggregate<T> extends ValueAggregate<T, Double> {
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see org.talend.utils.collections.ValueAggregate#addValue(java.lang.Object, N[])
      */
     public void addValue(T key, Double[] values) {
         Double[] doubles = keyToVal.get(key);
         if (doubles == null) {
             doubles = new Double[values.length];
-            Arrays.fill(doubles, 0.0);           
+            Arrays.fill(doubles, 0.0);
         }
 
         for (int i = 0; i < values.length; i++) {

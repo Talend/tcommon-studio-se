@@ -1,6 +1,6 @@
 // ============================================================================
 //
-// Copyright (C) 2006-2018 Talend Inc. - www.talend.com
+// Copyright (C) 2006-2019 Talend Inc. - www.talend.com
 //
 // This source code is available under agreement available at
 // %InstallDIR%\features\org.talend.rcp.branding.%PRODUCTNAME%\%PRODUCTNAME%license.txt
@@ -21,7 +21,7 @@ public abstract class MetadataTalendTypeFilter {
 
     /**
      * This method returns a List of String, representing the data types that must not be shown in the Talend schema.
-     * 
+     *
      * @return
      */
     protected abstract List<String> getUnsupportedTypes();
@@ -29,7 +29,7 @@ public abstract class MetadataTalendTypeFilter {
     /**
      * This method has the responsibility to remove the unsupported type from the Talend schema. DOC rdubois Comment
      * method "filter".
-     * 
+     *
      * @param arrayTalendTypes
      * @return
      */

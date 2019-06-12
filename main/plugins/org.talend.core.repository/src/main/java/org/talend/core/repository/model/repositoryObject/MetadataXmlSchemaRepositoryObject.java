@@ -1,6 +1,6 @@
 // ============================================================================
 //
-// Copyright (C) 2006-2018 Talend Inc. - www.talend.com
+// Copyright (C) 2006-2019 Talend Inc. - www.talend.com
 //
 // This source code is available under agreement available at
 // %InstallDIR%\features\org.talend.rcp.branding.%PRODUCTNAME%\%PRODUCTNAME%license.txt
@@ -64,7 +64,7 @@ public class MetadataXmlSchemaRepositoryObject extends MetadataXmlSchema impleme
 
     /**
      * DOC klliu MetadataXmlSchemaRepositoryObject constructor comment.
-     * 
+     *
      * @param repositoryViewObject
      * @param tdXmlSchema
      */
@@ -175,7 +175,7 @@ public class MetadataXmlSchemaRepositoryObject extends MetadataXmlSchema impleme
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see org.talend.core.model.repository.IRepositoryViewObject#isModified()
      */
     @Override

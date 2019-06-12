@@ -20,6 +20,7 @@
 			<dbType type="NUMERIC" defaultLength="10" defaultPrecision="5"/>
 			<dbType type="INT8" ignoreLen="true" ignorePre="true"/>
 			<dbType type="FLOAT8" ignoreLen="true" ignorePre="true"/>
+			<dbType type="UUID" ignoreLen="true" ignorePre="true"/>
 		</dbTypes>
 
 		<language name="java">
@@ -68,6 +69,7 @@
 					<dbType type="BIGINT" default="true" />
 				</talendType>
 				<talendType type="id_Object">
+					<dbType type="UUID" default="true" />
 				</talendType>
 				<talendType type="id_Short">
 					<dbType type="BIGINT" default="true" />	
@@ -76,6 +78,7 @@
 				<talendType type="id_String">
 					<dbType type="VARCHAR" default="true" />
 					<dbType type="CHARACTER VARYING"/>	
+					<dbType type="UUID" />
 				</talendType>
 			</talendToDbTypes>
 			<dbToTalendTypes><!-- Adviced mappings  -->
@@ -140,6 +143,10 @@
 				<dbType type="NUMERIC">
 					<talendType type="id_Double"/>
 					<talendType type="id_BigDecimal" default="true"/>
+				</dbType>
+				<dbType type="UUID">
+					<talendType type="id_Object" default="true"/>
+					<talendType type="id_String"/>
 				</dbType>
 			</dbToTalendTypes>
 		</language>

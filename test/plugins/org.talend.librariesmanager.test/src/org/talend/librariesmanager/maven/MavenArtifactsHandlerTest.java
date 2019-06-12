@@ -1,6 +1,6 @@
 // ============================================================================
 //
-// Copyright (C) 2006-2018 Talend Inc. - www.talend.com
+// Copyright (C) 2006-2019 Talend Inc. - www.talend.com
 //
 // This source code is available under agreement available at
 // %InstallDIR%\features\org.talend.rcp.branding.%PRODUCTNAME%\%PRODUCTNAME%license.txt
@@ -40,7 +40,7 @@ public class MavenArtifactsHandlerTest {
 
     @Before
     public void prepare() throws Exception {
-        tmpFolder = org.talend.utils.files.FileUtils.createTmpFolder(this.getClass().getSimpleName(), ""); //$NON-NLS-1$  
+        tmpFolder = org.talend.utils.files.FileUtils.createTmpFolder(this.getClass().getSimpleName(), ""); //$NON-NLS-1$
 
         final File testDataFile = BundleFileUtil.getBundleFile(this.getClass(), "resources/m2/mytest_jar.zip");
         Assert.assertNotNull(testDataFile);
@@ -102,7 +102,7 @@ public class MavenArtifactsHandlerTest {
     }
 
     /**
-     * 
+     *
      * Test for ArtifactsDeployer.install(String path, String mavenUri, boolean toRemoteNexus)
      */
     @Test

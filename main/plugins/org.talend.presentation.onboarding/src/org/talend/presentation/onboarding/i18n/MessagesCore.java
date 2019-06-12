@@ -1,6 +1,6 @@
 // ============================================================================
 //
-// Copyright (C) 2006-2018 Talend Inc. - www.talend.com
+// Copyright (C) 2006-2019 Talend Inc. - www.talend.com
 //
 // This source code is available under agreement available at
 // %InstallDIR%\features\org.talend.rcp.branding.%PRODUCTNAME%\%PRODUCTNAME%license.txt
@@ -37,7 +37,7 @@ public abstract class MessagesCore {
 
     /**
      * Returns the i18n formatted message for <i>key</i> in the specified bundle.
-     * 
+     *
      * @param key - the key for the desired string
      * @param resourceBundle - the ResourceBundle to search in
      * @return the string for the given key in the given resource bundle
@@ -57,7 +57,7 @@ public abstract class MessagesCore {
 
     /**
      * Returns the i18n formatted message for <i>key</i> and <i>args</i> in the specified bundle.
-     * 
+     *
      * @param key - the key for the desired string
      * @param resourceBundle - the ResourceBundle to search in
      * @param args - arg to include in the string
@@ -74,7 +74,7 @@ public abstract class MessagesCore {
 
     /**
      * Returns the i18n formatted message for <i>key</i> and <i>args</i> in the specified bundle.
-     * 
+     *
      * @param key - the key for the desired string
      * @param resourceBundle - the ResourceBundle to search in
      * @param args - arg to include in the string
@@ -88,7 +88,7 @@ public abstract class MessagesCore {
 
     /**
      * Returns the i18n formatted message for <i>key</i> in the specified bundle.
-     * 
+     *
      * @param key - the key for the desired string
      * @param resourceBundle - the ResourceBundle to search in
      * @return the string for the given key in the given resource bundle

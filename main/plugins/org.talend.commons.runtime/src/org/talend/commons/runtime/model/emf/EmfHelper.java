@@ -1,6 +1,6 @@
 // ============================================================================
 //
-// Copyright (C) 2006-2018 Talend Inc. - www.talend.com
+// Copyright (C) 2006-2019 Talend Inc. - www.talend.com
 //
 // This source code is available under agreement available at
 // %InstallDIR%\features\org.talend.rcp.branding.%PRODUCTNAME%\%PRODUCTNAME%license.txt
@@ -45,12 +45,12 @@ import org.talend.commons.runtime.model.emf.provider.EmfResourcesFactoryReader;
 public class EmfHelper {
 
     /**
-     * 
+     *
      */
     public static final String STRING_MAX_SIZE_ANNOTATION_KEY = "string.max.size";
 
     /**
-     * 
+     *
      */
     public static final String UI_CONSTRAINTS_ANNOTATION_URL = "htttp://talend.org/UiConstraints";
 
@@ -132,8 +132,8 @@ public class EmfHelper {
 
     /**
      * Load emf model from file.
-     * 
-     * 
+     *
+     *
      * @param pkg EPackage of your emf model.
      * @param file The file that contains your emf model.
      * @return A list of emf object.
@@ -157,7 +157,7 @@ public class EmfHelper {
 
     /**
      * Save emf model to file.
-     * 
+     *
      * @param pkg EPackage of your emf model.
      * @param models A list of emf object.
      * @param file The file that will store your emf model.
@@ -243,7 +243,7 @@ public class EmfHelper {
     /**
      * return the String size limit for the given ecore feature. This looks for an annotation url :
      * htttp://talend.org/UiConstraints and search for the key string.max.size
-     * 
+     *
      * @param feature the ecore feature to get the size of, never null
      * @param defaultValue the default value returned if limit not found in feature
      * @return the string limit found or the default value

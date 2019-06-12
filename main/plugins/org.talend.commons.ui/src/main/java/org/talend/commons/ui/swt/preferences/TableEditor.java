@@ -1,6 +1,6 @@
 // ============================================================================
 //
-// Copyright (C) 2006-2018 Talend Inc. - www.talend.com
+// Copyright (C) 2006-2019 Talend Inc. - www.talend.com
 //
 // This source code is available under agreement available at
 // %InstallDIR%\features\org.talend.rcp.branding.%PRODUCTNAME%\%PRODUCTNAME%license.txt
@@ -45,9 +45,9 @@ import org.eclipse.swt.widgets.Widget;
 
 /**
  * DOC tguiu class global comment. Detailled comment <br/>
- * 
+ *
  * $Id: TableEditor.java 7038 2007-11-15 14:05:48Z plegall $
- * 
+ *
  */
 public abstract class TableEditor extends FieldEditor {
 
@@ -122,7 +122,7 @@ public abstract class TableEditor extends FieldEditor {
 
     /**
      * Creates the Add, Remove, Up, and Down button in the given button box.
-     * 
+     *
      * @param box the box for the buttons
      */
     protected void createButtons(Composite box) {
@@ -134,7 +134,7 @@ public abstract class TableEditor extends FieldEditor {
 
     /**
      * Helper method to create a push button.
-     * 
+     *
      * @param parent the parent control
      * @param key the resource name used to supply the button's label text
      * @return Button
@@ -251,7 +251,7 @@ public abstract class TableEditor extends FieldEditor {
 
     /**
      * Returns this field editor's button box containing the Add, Remove, Up, and Down button.
-     * 
+     *
      * @param parent the parent control
      * @return the button box
      */
@@ -283,7 +283,7 @@ public abstract class TableEditor extends FieldEditor {
 
     /**
      * Returns this field editor's list control.
-     * 
+     *
      * @param parent the parent control
      * @return the list control
      */
@@ -335,7 +335,7 @@ public abstract class TableEditor extends FieldEditor {
      * <p>
      * Subclasses must implement this method.
      * </p>
-     * 
+     *
      * @return a new item
      */
     protected abstract String getNewInputObject();
@@ -352,7 +352,7 @@ public abstract class TableEditor extends FieldEditor {
 
     /**
      * Returns this field editor's selection listener. The listener is created if nessessary.
-     * 
+     *
      * @return the selection listener
      */
     private SelectionListener getSelectionListener() {
@@ -367,7 +367,7 @@ public abstract class TableEditor extends FieldEditor {
      * <p>
      * This method is internal to the framework; subclassers should not call this method.
      * </p>
-     * 
+     *
      * @return the shell
      */
     protected Shell getShell() {
@@ -382,7 +382,7 @@ public abstract class TableEditor extends FieldEditor {
      * <p>
      * Subclasses must implement this method.
      * </p>
-     * 
+     *
      * @param items the list of items
      * @return the combined string
      * @see #readString
@@ -394,7 +394,7 @@ public abstract class TableEditor extends FieldEditor {
      * <p>
      * Subclasses must implement this method.
      * </p>
-     * 
+     *
      * @param stringList the string
      * @return an array of <code>String</code>
      * @see #writeString
@@ -440,7 +440,7 @@ public abstract class TableEditor extends FieldEditor {
 
     /**
      * Moves the currently selected item up or down.
-     * 
+     *
      * @param up <code>true</code> if the item should move up, and <code>false</code> if it should move down
      */
     private void swap(boolean up) {
@@ -484,7 +484,7 @@ public abstract class TableEditor extends FieldEditor {
 
     /**
      * Getter for list.
-     * 
+     *
      * @return the list
      */
     public List<String> getList() {

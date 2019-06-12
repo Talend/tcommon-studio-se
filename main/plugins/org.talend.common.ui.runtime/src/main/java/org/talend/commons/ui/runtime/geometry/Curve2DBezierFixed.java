@@ -1,6 +1,6 @@
 // ============================================================================
 //
-// Copyright (C) 2006-2018 Talend Inc. - www.talend.com
+// Copyright (C) 2006-2019 Talend Inc. - www.talend.com
 //
 // This source code is available under agreement available at
 // %InstallDIR%\features\org.talend.rcp.branding.%PRODUCTNAME%\%PRODUCTNAME%license.txt
@@ -33,11 +33,11 @@
 package org.talend.commons.ui.runtime.geometry;
 
 /**
- * 
+ *
  * DOC amaumont class global comment. Detailled comment <br/>
- * 
+ *
  * $Id: Curve2DBezierFixed.java 7048 2007-11-16 02:36:17Z nrousseau $
- * 
+ *
  */
 public class Curve2DBezierFixed extends Curve2D {
 
@@ -97,9 +97,9 @@ public class Curve2DBezierFixed extends Curve2D {
     }
 
     /**
-     * 
+     *
      * DOC amaumont Comment method "BezierTerm".
-     * 
+     *
      * @param d
      * @param i
      * @param t

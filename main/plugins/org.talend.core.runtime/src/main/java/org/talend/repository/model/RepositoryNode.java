@@ -1,6 +1,6 @@
 // ============================================================================
 //
-// Copyright (C) 2006-2018 Talend Inc. - www.talend.com
+// Copyright (C) 2006-2019 Talend Inc. - www.talend.com
 //
 // This source code is available under agreement available at
 // %InstallDIR%\features\org.talend.rcp.branding.%PRODUCTNAME%\%PRODUCTNAME%license.txt
@@ -32,9 +32,9 @@ import org.talend.repository.ui.actions.ActionFilterDelegateFactory;
 /**
  * Node used to fill the repository view TreeViewer. Each node has a type defines in ENodeType enum. Object isn't stored
  * in the node but retrieve using the provider at each getObject call.<br/>
- * 
+ *
  * $Id: RepositoryNode.java 914 2006-12-08 08:28:53 +0000 (星期五, 08 �??二月 2006) bqian $
- * 
+ *
  */
 public class RepositoryNode implements IRepositoryNode, IActionFilter {
 
@@ -66,7 +66,7 @@ public class RepositoryNode implements IRepositoryNode, IActionFilter {
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see org.talend.repository.model.RepositoryNode#isInitialized()
      */
     public boolean isInitialized() {
@@ -79,9 +79,9 @@ public class RepositoryNode implements IRepositoryNode, IActionFilter {
 
     /**
      * Constructor with an object.
-     * 
+     *
      * TODO SML Will be removed
-     * 
+     *
      * @param id
      * @param object
      * @param parent Parent Node
@@ -123,7 +123,7 @@ public class RepositoryNode implements IRepositoryNode, IActionFilter {
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see org.talend.repository.model.RepositoryNode#getChildren()
      */
     @Override
@@ -161,7 +161,7 @@ public class RepositoryNode implements IRepositoryNode, IActionFilter {
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see org.talend.repository.model.RepositoryNode#hasChildren()
      */
     @Override
@@ -171,7 +171,7 @@ public class RepositoryNode implements IRepositoryNode, IActionFilter {
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see org.talend.repository.model.RepositoryNode#getId()
      */
     @Override
@@ -181,7 +181,7 @@ public class RepositoryNode implements IRepositoryNode, IActionFilter {
 
     /**
      * Sets the id.
-     * 
+     *
      * @param id the id to set
      */
     public void setId(String id) {
@@ -190,7 +190,7 @@ public class RepositoryNode implements IRepositoryNode, IActionFilter {
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see org.talend.repository.model.RepositoryNode#getObject()
      */
     @Override
@@ -200,7 +200,7 @@ public class RepositoryNode implements IRepositoryNode, IActionFilter {
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see org.talend.repository.model.RepositoryNode#getParent()
      */
     @Override
@@ -210,7 +210,7 @@ public class RepositoryNode implements IRepositoryNode, IActionFilter {
 
     /**
      * Sets the parent.
-     * 
+     *
      * @param parent the parent to set
      */
     public void setParent(RepositoryNode parent) {
@@ -219,7 +219,7 @@ public class RepositoryNode implements IRepositoryNode, IActionFilter {
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see org.talend.repository.model.RepositoryNode#getType()
      */
     @Override
@@ -234,7 +234,7 @@ public class RepositoryNode implements IRepositoryNode, IActionFilter {
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see org.talend.repository.model.RepositoryNode#getObjectType()
      */
     @Override
@@ -247,7 +247,7 @@ public class RepositoryNode implements IRepositoryNode, IActionFilter {
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see org.talend.repository.model.RepositoryNode#getContentType()
      */
     @Override
@@ -267,7 +267,7 @@ public class RepositoryNode implements IRepositoryNode, IActionFilter {
 
     /**
      * Sets the type.
-     * 
+     *
      * @param type the type to set
      */
     public void setType(ENodeType type) {
@@ -276,7 +276,7 @@ public class RepositoryNode implements IRepositoryNode, IActionFilter {
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see org.talend.repository.model.RepositoryNode#getLabel()
      */
     @Override
@@ -312,7 +312,7 @@ public class RepositoryNode implements IRepositoryNode, IActionFilter {
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see org.talend.repository.model.RepositoryNode#getIcon()
      */
     public IImage getIcon() {
@@ -338,7 +338,7 @@ public class RepositoryNode implements IRepositoryNode, IActionFilter {
     // TODO SML Remove theses props
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see org.talend.repository.model.RepositoryNode#getProperties(org.talend.
      * repository.model.RepositoryNode.EProperties)
      */
@@ -349,7 +349,7 @@ public class RepositoryNode implements IRepositoryNode, IActionFilter {
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see org.talend.repository.model.RepositoryNode#isBin()
      */
     @Override
@@ -361,7 +361,7 @@ public class RepositoryNode implements IRepositoryNode, IActionFilter {
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see java.lang.Object#hashCode()
      */
     @Override
@@ -375,7 +375,7 @@ public class RepositoryNode implements IRepositoryNode, IActionFilter {
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see java.lang.Object#equals(java.lang.Object)
      */
     @Override
@@ -450,7 +450,7 @@ public class RepositoryNode implements IRepositoryNode, IActionFilter {
 
     /**
      * Sets the root.
-     * 
+     *
      * @param root the root to set
      */
     public void setRoot(IProjectRepositoryNode root) {
@@ -460,7 +460,7 @@ public class RepositoryNode implements IRepositoryNode, IActionFilter {
     /**
      * it is used to TDQ ,some subClasses in TDQ will overwrite it. if withDeleted is true,will contain some logical
      * delete elements; if withDeleted is false,will not catain some logical delete elements.
-     * 
+     *
      */
     @Override
     public List<IRepositoryNode> getChildren(boolean withDeleted) {
@@ -477,7 +477,7 @@ public class RepositoryNode implements IRepositoryNode, IActionFilter {
 
     /*
      * Declarative visibility filter of extension points.
-     * 
+     *
      * @see org.eclipse.ui.IActionFilter#testAttribute(java.lang.Object, java.lang.String, java.lang.String)
      */
     @Override
@@ -497,7 +497,7 @@ public class RepositoryNode implements IRepositoryNode, IActionFilter {
                 return true;
             }
         }
-        
+
         return ActionFilterDelegateFactory.getInstance().testAttribute(name, node);
     }
 
@@ -558,7 +558,7 @@ public class RepositoryNode implements IRepositoryNode, IActionFilter {
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see org.talend.repository.model.IRepositoryNode#getDisplayText()
      */
     @Override

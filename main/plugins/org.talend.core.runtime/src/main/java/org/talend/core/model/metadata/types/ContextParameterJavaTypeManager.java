@@ -1,6 +1,6 @@
 // ============================================================================
 //
-// Copyright (C) 2006-2018 Talend Inc. - www.talend.com
+// Copyright (C) 2006-2019 Talend Inc. - www.talend.com
 //
 // This source code is available under agreement available at
 // %InstallDIR%\features\org.talend.rcp.branding.%PRODUCTNAME%\%PRODUCTNAME%license.txt
@@ -32,7 +32,7 @@ import org.talend.core.model.metadata.MetadataTalendType;
 
 /**
  * qzhang class global comment. Detailled comment <br/>
- * 
+ *
  */
 public class ContextParameterJavaTypeManager {
 
@@ -132,7 +132,7 @@ public class ContextParameterJavaTypeManager {
 
     /**
      * Add a java type to the common list.
-     * 
+     *
      * @param javaType
      */
     public static void addJavaType(JavaType javaType) {
@@ -165,9 +165,9 @@ public class ContextParameterJavaTypeManager {
     }
 
     /**
-     * 
+     *
      * Search JavaType from label (ex: "double / Double" or "String").
-     * 
+     *
      * @param typeName
      * @return JavaType if found, else null
      */
@@ -176,9 +176,9 @@ public class ContextParameterJavaTypeManager {
     }
 
     /**
-     * 
+     *
      * Search JavaType from label (ex: "double / Double" or "String").
-     * 
+     *
      * @param typeName
      * @return JavaType if found, else null
      */
@@ -206,9 +206,9 @@ public class ContextParameterJavaTypeManager {
     }
 
     /**
-     * 
+     *
      * Search JavaType from short name (ex: "Double" or "double").
-     * 
+     *
      * @param typeName
      * @return JavaType if found, else null
      */
@@ -217,9 +217,9 @@ public class ContextParameterJavaTypeManager {
     }
 
     /**
-     * 
+     *
      * Get primitive or object type according to id and nullable parameters.
-     * 
+     *
      * @param idType
      * @param nullable
      * @return canonical name of class (java.lang.String or int)
@@ -231,7 +231,7 @@ public class ContextParameterJavaTypeManager {
 
     /**
      * DOC amaumont Comment method "getFinalType".
-     * 
+     *
      * @param javaType
      * @param nullable
      * @return
@@ -262,9 +262,9 @@ public class ContextParameterJavaTypeManager {
     }
 
     /**
-     * 
+     *
      * Return true if given type represents a primitive java type.
-     * 
+     *
      * @param type
      * @return true if given type represents a primitive java type
      */
@@ -276,9 +276,9 @@ public class ContextParameterJavaTypeManager {
     }
 
     /**
-     * 
+     *
      * Return true if given type represents a primitive java type.
-     * 
+     *
      * @param type
      * @return true if given type represents a primitive java type
      */
@@ -288,9 +288,9 @@ public class ContextParameterJavaTypeManager {
     }
 
     /**
-     * 
+     *
      * Return true if given type represents a primitive java type.
-     * 
+     *
      * @param type
      * @return true if given type represents a primitive java type
      */
@@ -300,9 +300,9 @@ public class ContextParameterJavaTypeManager {
     }
 
     /**
-     * 
+     *
      * Return the default value for a given type.
-     * 
+     *
      * @param type
      * @return
      */
@@ -324,9 +324,9 @@ public class ContextParameterJavaTypeManager {
     }
 
     /**
-     * 
+     *
      * Return the default value for a given type, if the given parameter "defaultValue" is set, this value is returned.
-     * 
+     *
      * @param type
      * @return string value if the case is valid or the default value is valid. If the type is primitive and the
      * <code>defaultValue</code> is not set, java null is returned.
@@ -343,9 +343,9 @@ public class ContextParameterJavaTypeManager {
     }
 
     /**
-     * 
+     *
      * Return the default value for a given type.
-     * 
+     *
      * @param type
      * @return
      */
@@ -355,9 +355,9 @@ public class ContextParameterJavaTypeManager {
     }
 
     /**
-     * 
+     *
      * Return the default value for a given type.
-     * 
+     *
      * @param type
      * @return
      */
@@ -376,7 +376,7 @@ public class ContextParameterJavaTypeManager {
 
     /**
      * qzhang Comment method "getPerlTypesLabels".
-     * 
+     *
      * @return
      */
     public static String[] getPerlTypesLabels() {

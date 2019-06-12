@@ -1,6 +1,6 @@
 // ============================================================================
 //
-// Copyright (C) 2006-2018 Talend Inc. - www.talend.com
+// Copyright (C) 2006-2019 Talend Inc. - www.talend.com
 //
 // This source code is available under agreement available at
 // %InstallDIR%\features\org.talend.rcp.branding.%PRODUCTNAME%\%PRODUCTNAME%license.txt
@@ -75,15 +75,15 @@ public class TDColumnAttributeHelper {
     }
 
     /**
-     * 
+     *
      * DOC Administrator Comment method "addColumnAttribute".
-     * 
+     *
      * @deprecated
      * @param resutSet
      * @param column
      * @return
      * @throws SQLException
-     * 
+     *
      */
     @Deprecated
     public static TdColumn addColumnAttribute(ResultSet resutSet, TdColumn column) throws SQLException {
@@ -304,7 +304,7 @@ public class TDColumnAttributeHelper {
         }
         // ADD xqliu 2010-12-28 bug 16538
         try {
-            column.setNullable("YES".equals(resutSet.getString(GetColumn.IS_NULLABLE.name()))); //$NON-NLS-1$ 
+            column.setNullable("YES".equals(resutSet.getString(GetColumn.IS_NULLABLE.name()))); //$NON-NLS-1$
             // ~ 16538
         } catch (Exception e) {
             // for ORACLE synonyms
@@ -315,7 +315,7 @@ public class TDColumnAttributeHelper {
 
     /**
      * DOC xqliu Comment method "createDataType".
-     * 
+     *
      * @param dataType
      * @param typeName
      * @param decimalDigits
@@ -333,7 +333,7 @@ public class TDColumnAttributeHelper {
 
     /**
      * DOC zshen Comment method "isMssql".
-     * 
+     *
      * @param connection
      * @return decide to whether is mssql connection
      * @throws SQLException
@@ -351,8 +351,8 @@ public class TDColumnAttributeHelper {
 
     /**
      * DOC zshen Comment method "isMssql".
-     * 
-     * 
+     *
+     *
      * @return decide to whether is mssql connection
      * @throws SQLException
      */
@@ -366,7 +366,7 @@ public class TDColumnAttributeHelper {
 
     /**
      * DOC xqliu Comment method "getConnectionMetadata". 2009-07-13 bug 7888.
-     * 
+     *
      * @param conn
      * @return
      * @throws SQLException
@@ -386,7 +386,7 @@ public class TDColumnAttributeHelper {
 
     /**
      * only for db2 on z/os right now. 2009-07-13 bug 7888.
-     * 
+     *
      * @param conn2
      * @return
      * @throws SQLException
@@ -404,10 +404,10 @@ public class TDColumnAttributeHelper {
      * message.
      * <p>
      * The created connection must be closed by the caller. (use {@link ConnectionUtils#closeConnection(Connection)})
-     * 
+     *
      * @param providerConnection the provider connection
      * @return a ReturnCode (never null)
-     * 
+     *
      * getby JavaSqlFactory
      */
     private static TypedReturnCode<java.sql.Connection> createConnection(DatabaseConnection providerConnection) {
@@ -417,7 +417,7 @@ public class TDColumnAttributeHelper {
 
     /**
      * Method "createConnection".
-     * 
+     *
      * @param url the database url
      * @param driverClassName the Driver classname
      * @param props properties passed to the driver manager for getting the connection (normally at least a "user" and

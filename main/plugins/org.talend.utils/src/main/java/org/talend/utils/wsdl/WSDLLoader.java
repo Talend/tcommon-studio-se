@@ -1,6 +1,6 @@
 // ============================================================================
 //
-// Copyright (C) 2006-2018 Talend Inc. - www.talend.com
+// Copyright (C) 2006-2019 Talend Inc. - www.talend.com
 //
 // This source code is available under agreement available at
 // %InstallDIR%\features\org.talend.rcp.branding.%PRODUCTNAME%\%PRODUCTNAME%license.txt
@@ -46,7 +46,7 @@ import org.xml.sax.SAXException;
 
 /**
  * class WSDLLoader
- * 
+ *
  * @author amarkevich
  */
 public class WSDLLoader {
@@ -138,7 +138,7 @@ public class WSDLLoader {
 			importedSchemas.clear();
 		}
 	}
-	
+
 	/*
 	  @param contextURL the context in which to attempt to resolve the spec.
 	  Effectively a document base.
@@ -205,9 +205,9 @@ public class WSDLLoader {
 										Element schema = (Element) nl.item(i);
 										if (schemaNS.equals(schema.getAttribute(NAME_ATTRIBUTE_TARGET_NAMESPACE))) {
 											Element schemaElement = loadSchema(schemaURL, true);
-	
+
 											loadSchemas(schema, schemaElement, schemaURL);
-	
+
 											Node refChild = getInsertLocation(schema.getLastChild());
 											Node child = schemaElement.getFirstChild();
 											while (child != null) {
@@ -375,7 +375,7 @@ public class WSDLLoader {
 		// update values
 		for(int i = 0; i < nnm.getLength(); ++i) {
 			Node attr = nnm.item(i);
-			String value = attr.getNodeValue(); 
+			String value = attr.getNodeValue();
 			if(value != null) {
 				int index = value.indexOf(':');
 				if(index != -1) {
@@ -443,7 +443,7 @@ public class WSDLLoader {
 			node = next;
 		}
 	}
-	
+
 	private static Node getInsertLocation(Node currentNode) {
 		Node refChild;
 		for (refChild = currentNode.getPreviousSibling(); refChild != null; refChild = refChild.getPreviousSibling()) {

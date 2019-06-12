@@ -1,6 +1,6 @@
 // ============================================================================
 //
-// Copyright (C) 2006-2018 Talend Inc. - www.talend.com
+// Copyright (C) 2006-2019 Talend Inc. - www.talend.com
 //
 // This source code is available under agreement available at
 // %InstallDIR%\features\org.talend.rcp.branding.%PRODUCTNAME%\%PRODUCTNAME%license.txt
@@ -25,7 +25,7 @@ import org.talend.core.ui.branding.IBrandingConfiguration;
 
 /**
  * qzhang class global comment. Detailled comment <br/>
- * 
+ *
  */
 public class Contexts {
 
@@ -33,7 +33,7 @@ public class Contexts {
 
     private static String newTitle = ""; //$NON-NLS-1$
 
-    private static final String PERSPECTIVE_DI_ID = "org.talend.rcp.perspective"; //$NON-NLS-1$ 
+    private static final String PERSPECTIVE_DI_ID = "org.talend.rcp.perspective"; //$NON-NLS-1$
 
     public static void switchToCurContextsView() {
         AbstractContextView cxtView = getViewWithPerspectiveIDs();
@@ -65,7 +65,7 @@ public class Contexts {
 
     /**
      * DOC xqliu Comment method "updateTitle".
-     * 
+     *
      * @param cxtView
      */
     private static void updateTitle(AbstractContextView cxtView) {
@@ -117,7 +117,7 @@ public class Contexts {
 
     /**
      * DOC xqliu Comment method "forceGetView".
-     * 
+     *
      * @param viewId
      * @return
      */
@@ -167,7 +167,7 @@ public class Contexts {
 
     /**
      * qzhang Comment method "refreshView".
-     * 
+     *
      * @param view
      */
     private static void refreshView(AbstractContextView view) {

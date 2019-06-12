@@ -1,6 +1,6 @@
 // ============================================================================
 //
-// Copyright (C) 2006-2018 Talend Inc. - www.talend.com
+// Copyright (C) 2006-2019 Talend Inc. - www.talend.com
 //
 // This source code is available under agreement available at
 // %InstallDIR%\features\org.talend.rcp.branding.%PRODUCTNAME%\%PRODUCTNAME%license.txt
@@ -59,13 +59,13 @@ import org.talend.repository.ProjectManager;
 
 /**
  * DOC ke class global comment. Detailled comment <br/>
- * 
+ *
  */
 public class TreeUtil {
 
     /**
      * DOC ke Comment method "checkLoopNode".
-     * 
+     *
      * @param node
      * @return
      */
@@ -129,7 +129,7 @@ public class TreeUtil {
 
     /**
      * DOC ke Comment method "guessAndSetLoopNode".
-     * 
+     *
      * @param root
      */
     public static FOXTreeNode guessAndSetLoopNode(FOXTreeNode root) {
@@ -172,7 +172,7 @@ public class TreeUtil {
 
     /**
      * DOC ke Comment method "setAsLoopNode".
-     * 
+     *
      * @param node
      */
     public static void setAsLoopNode(FOXTreeNode node) {
@@ -183,7 +183,7 @@ public class TreeUtil {
 
     /**
      * DOC ke Comment method "clearLoopNode".
-     * 
+     *
      * @param root
      */
     public static void clearLoopNode(FOXTreeNode root) {
@@ -201,7 +201,7 @@ public class TreeUtil {
 
     /**
      * DOC xzhang Comment method "clearMainNode".
-     * 
+     *
      * @param root
      */
     public static void clearMainNode(FOXTreeNode root) {
@@ -218,7 +218,7 @@ public class TreeUtil {
 
     /**
      * DOC xzhang Comment method "clearMainNode".
-     * 
+     *
      * @param root
      */
     public static void upsetMainNode(FOXTreeNode loop) {
@@ -234,7 +234,7 @@ public class TreeUtil {
 
     /**
      * DOC ke Comment method "getLoopNode".
-     * 
+     *
      * @param root
      * @return
      */
@@ -256,7 +256,7 @@ public class TreeUtil {
 
     /**
      * DOC ke Comment method "getGroupNode".
-     * 
+     *
      * @param root
      * @return
      */
@@ -281,7 +281,7 @@ public class TreeUtil {
 
     /**
      * DOC ke Comment method "betweenGroupAndLoop".
-     * 
+     *
      * @param node
      * @return whether the currnt node is between the group node and loop node in the tree hierachy.
      */
@@ -311,7 +311,7 @@ public class TreeUtil {
 
     /**
      * DOC ke Comment method "clearSubGroupNode".
-     * 
+     *
      * @param node
      */
     public static void clearSubGroupNode(FOXTreeNode node) {
@@ -332,7 +332,7 @@ public class TreeUtil {
 
     /**
      * DOC ke Comment method "guessLoopWithGroup".
-     * 
+     *
      * @param node
      * @return
      */
@@ -375,7 +375,7 @@ public class TreeUtil {
 
     /**
      * DOC ke Comment method "checkTreeGoupNode".
-     * 
+     *
      * @param node
      * @return
      */

@@ -1,6 +1,6 @@
 // ============================================================================
 //
-// Copyright (C) 2006-2018 Talend Inc. - www.talend.com
+// Copyright (C) 2006-2019 Talend Inc. - www.talend.com
 //
 // This source code is available under agreement available at
 // %InstallDIR%\features\org.talend.rcp.branding.%PRODUCTNAME%\%PRODUCTNAME%license.txt
@@ -133,9 +133,9 @@ public abstract class AbstractQueryGenerator implements IQueryGenerator {
     }
 
     /**
-     * 
+     *
      * ggu Comment method "getDBTableName".
-     * 
+     *
      * moved from QueryUtil
      */
     protected String getDBTableName(IElement elem) {
@@ -160,7 +160,7 @@ public abstract class AbstractQueryGenerator implements IQueryGenerator {
     }
 
     /**
-     * 
+     *
      * if need, should override.
      */
     protected String processDBTableName(String tabelName) {
@@ -175,9 +175,9 @@ public abstract class AbstractQueryGenerator implements IQueryGenerator {
     }
 
     /**
-     * 
+     *
      * ggu Comment method "getDBName".
-     * 
+     *
      * moved from QueryUtil
      */
     protected String getDBName(IElement elem) {
@@ -202,7 +202,7 @@ public abstract class AbstractQueryGenerator implements IQueryGenerator {
     }
 
     /**
-     * 
+     *
      * if need, should override.
      */
     protected String processDBName(String dbName) {
@@ -253,9 +253,9 @@ public abstract class AbstractQueryGenerator implements IQueryGenerator {
     }
 
     /**
-     * 
+     *
      * ggu Comment method "setForceAddQuote".
-     * 
+     *
      * if you want to set it, must call this first "true".
      */
     public void setForceAddQuote(boolean sqlQuoteFlag) {
@@ -271,11 +271,11 @@ public abstract class AbstractQueryGenerator implements IQueryGenerator {
     }
 
     /**
-     * 
+     *
      * ggu Comment method "getDatabaseFieldQuote".
-     * 
+     *
      * more similar with TalendTextUtils.addQuotesForSQLString
-     * 
+     *
      * @param left, main for Access
      */
     protected String getDatabaseFieldQuote(boolean left) {
@@ -357,9 +357,9 @@ public abstract class AbstractQueryGenerator implements IQueryGenerator {
     }
 
     /**
-     * 
+     *
      * ggu Comment method "addQuotesForSQL".
-     * 
+     *
      * need improve and check later
      */
     protected String addQuotesForSQL(String field) {
@@ -371,9 +371,9 @@ public abstract class AbstractQueryGenerator implements IQueryGenerator {
     }
 
     /**
-     * 
+     *
      * ggu Comment method "processResultSQL".
-     * 
+     *
      */
     protected String processResultSQL(String sql) {
         if (sql != null) {

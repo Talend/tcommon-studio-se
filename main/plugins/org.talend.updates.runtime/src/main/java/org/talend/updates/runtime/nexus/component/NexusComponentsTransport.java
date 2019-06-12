@@ -1,6 +1,6 @@
 // ============================================================================
 //
-// Copyright (C) 2006-2018 Talend Inc. - www.talend.com
+// Copyright (C) 2006-2019 Talend Inc. - www.talend.com
 //
 // This source code is available under agreement available at
 // %InstallDIR%\features\org.talend.rcp.branding.%PRODUCTNAME%\%PRODUCTNAME%license.txt
@@ -201,11 +201,11 @@ public class NexusComponentsTransport {
     }
 
     /**
-     * 
+     *
      * DOC ggu Comment method "doHttpUpload".
-     * 
+     *
      * upload the file to remote nexus, and base one the maven artifact.
-     * 
+     *
      */
     public void doHttpUpload(IProgressMonitor monitor, final File uploadFile, final MavenArtifact artifact) throws Exception {
         if (monitor == null) {
@@ -280,9 +280,9 @@ public class NexusComponentsTransport {
     }
 
     /**
-     * 
+     *
      * DOC ggu Comment method "doHttpDelete".
-     * 
+     *
      * delete/remove from nexus.
      */
     public void doHttpDelete(IProgressMonitor monitor, final MavenArtifact artifact) throws Exception {
@@ -334,9 +334,9 @@ public class NexusComponentsTransport {
     }
 
     /**
-     * 
+     *
      * DOC ggu Comment method "doHttpDownload".
-     * 
+     *
      * download the maven artifact from the remote nexus to target file, if download falure, will remove the unfinished
      * file.
      */
@@ -450,11 +450,11 @@ public class NexusComponentsTransport {
     }
 
     /**
-     * 
+     *
      * DOC ggu Comment method "isAvailable".
-     * 
+     *
      * check the maven artifact existed on remote nexus or not.
-     * 
+     *
      * @param monitor
      * @param artifact
      * @return

@@ -1,6 +1,6 @@
 // ============================================================================
 //
-// Copyright (C) 2006-2018 Talend Inc. - www.talend.com
+// Copyright (C) 2006-2019 Talend Inc. - www.talend.com
 //
 // This source code is available under agreement available at
 // %InstallDIR%\features\org.talend.rcp.branding.%PRODUCTNAME%\%PRODUCTNAME%license.txt
@@ -41,9 +41,9 @@ import org.talend.repository.ui.views.IRepositoryView;
 
 /**
  * DOC smallet class global comment. Detailled comment <br/>
- * 
+ *
  * $Id: RepositoryWizard.java 51271 2010-11-15 08:40:42Z nrousseau $
- * 
+ *
  */
 public abstract class RepositoryWizard extends Wizard {
 
@@ -82,7 +82,7 @@ public abstract class RepositoryWizard extends Wizard {
 
     /**
      * Getter for workbench.
-     * 
+     *
      * @return the workbench
      */
     public IWorkbench getWorkbench() {
@@ -91,7 +91,7 @@ public abstract class RepositoryWizard extends Wizard {
 
     /**
      * Sets the workbench.
-     * 
+     *
      * @param workbench the workbench to set
      */
     public void setWorkbench(IWorkbench workbench) {
@@ -100,7 +100,7 @@ public abstract class RepositoryWizard extends Wizard {
 
     /**
      * DOC ocarbone Comment method "performCancel". Unlock the IRepositoryObject before the close of the wizard.
-     * 
+     *
      * @param IRepositoryObject
      */
     @Override
@@ -114,7 +114,7 @@ public abstract class RepositoryWizard extends Wizard {
 
     /**
      * DOC mhelleboid Comment method "reload".
-     * 
+     *
      * @throws PersistenceException
      */
     private void reload() throws PersistenceException {
@@ -137,7 +137,7 @@ public abstract class RepositoryWizard extends Wizard {
 
     /**
      * Sets the repositoryObject.
-     * 
+     *
      * @param repositoryObject the repositoryObject to set
      */
     public void setRepositoryObject(IRepositoryViewObject repositoryViewObject) {
@@ -151,7 +151,7 @@ public abstract class RepositoryWizard extends Wizard {
     /**
      * DOC ocarbone Comment method "isRepositoryObjectEditable". Check the RepositoryObject (is locked or on recycle
      * bin) and return a boolean represent if the RepositoryObject is editable (true) or readOnly (false).
-     * 
+     *
      * @return boolean
      */
     public boolean isRepositoryObjectEditable() {
@@ -160,7 +160,7 @@ public abstract class RepositoryWizard extends Wizard {
 
     /**
      * DOC matthieu Comment method "calculateObjectEditable".
-     * 
+     *
      * @return
      */
     private void calculateRepositoryObjectEditable(IRepositoryViewObject repositoryViewObject) {
@@ -181,7 +181,7 @@ public abstract class RepositoryWizard extends Wizard {
 
     /**
      * DOC ocarbone Comment method "initLockStrategy". If needed, lock the repositoryObject.
-     * 
+     *
      */
     public void initLockStrategy() {
         if (isRepositoryObjectEditable()) {
@@ -204,7 +204,7 @@ public abstract class RepositoryWizard extends Wizard {
 
     /**
      * DOC ocarbone Comment method "performCancel". Unlock the IRepositoryObject before the close of the wizard.
-     * 
+     *
      * @param IRepositoryObject
      */
     public void closeLockStrategy() {
@@ -228,9 +228,9 @@ public abstract class RepositoryWizard extends Wizard {
     }
 
     /**
-     * 
+     *
      * DOC wzhang Comment method "getConnectionItem".
-     * 
+     *
      * @return
      */
     public ConnectionItem getConnectionItem() {

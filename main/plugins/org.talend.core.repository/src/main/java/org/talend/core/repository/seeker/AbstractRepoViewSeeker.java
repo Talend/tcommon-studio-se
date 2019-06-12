@@ -1,6 +1,6 @@
 // ============================================================================
 //
-// Copyright (C) 2006-2018 Talend Inc. - www.talend.com
+// Copyright (C) 2006-2019 Talend Inc. - www.talend.com
 //
 // This source code is available under agreement available at
 // %InstallDIR%\features\org.talend.rcp.branding.%PRODUCTNAME%\%PRODUCTNAME%license.txt
@@ -29,9 +29,9 @@ import org.talend.repository.model.nodes.IProjectRepositoryNode;
 
 /**
  * DOC ggu class global comment. Detailled comment <br/>
- * 
+ *
  * $Id: talend.epf 55206 2011-02-15 17:32:14Z mhirt $
- * 
+ *
  */
 public abstract class AbstractRepoViewSeeker implements IRepositorySeeker<IRepositoryNode> {
 
@@ -125,7 +125,7 @@ public abstract class AbstractRepoViewSeeker implements IRepositorySeeker<IRepos
     }
 
     /**
-     * 
+     *
      * Eeach implement classes should do the current type
      */
     protected boolean validType(ERepositoryObjectType itemType) {
@@ -150,7 +150,7 @@ public abstract class AbstractRepoViewSeeker implements IRepositorySeeker<IRepos
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see org.talend.core.repository.seeker.IRepositorySeeker#neededExpand()
      */
     @Override
@@ -160,7 +160,7 @@ public abstract class AbstractRepoViewSeeker implements IRepositorySeeker<IRepos
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see org.talend.core.repository.seeker.IRepositorySeeker#expandNodes(org.eclipse.jface.viewers.TreeViewer,
      * java.lang.Object, int)
      */
@@ -171,7 +171,7 @@ public abstract class AbstractRepoViewSeeker implements IRepositorySeeker<IRepos
             if (root != null) {
                 /*
                  * expand some node before expand other nodes.
-                 * 
+                 *
                  * Because the parent of some root type node is not the real parent. like all metadatas
                  */
                 List<ERepositoryObjectType> preExpandTypes = getPreExpandTypes();
@@ -190,7 +190,7 @@ public abstract class AbstractRepoViewSeeker implements IRepositorySeeker<IRepos
     }
 
     /**
-     * 
+     *
      * Make sure the order is needed for the expanding
      */
     protected List<ERepositoryObjectType> getPreExpandTypes() {

@@ -1,6 +1,6 @@
 // ============================================================================
 //
-// Copyright (C) 2006-2018 Talend Inc. - www.talend.com
+// Copyright (C) 2006-2019 Talend Inc. - www.talend.com
 //
 // This source code is available under agreement available at
 // %InstallDIR%\features\org.talend.rcp.branding.%PRODUCTNAME%\%PRODUCTNAME%license.txt
@@ -51,9 +51,9 @@ import org.talend.repository.ui.wizards.metadata.connection.files.xml.extraction
 
 /**
  * DOC amaumont class global comment. Detailed comment <br/>
- * 
+ *
  * $Id$
- * 
+ *
  */
 public class XmlToSchemaDragAndDropHandler {
 
@@ -75,7 +75,7 @@ public class XmlToSchemaDragAndDropHandler {
 
     /**
      * DOC amaumont TreeToTableDragAndDropHandler constructor comment.
-     * 
+     *
      * @param linker
      */
     public XmlToSchemaDragAndDropHandler(XmlToXPathLinker linker) {
@@ -95,9 +95,9 @@ public class XmlToSchemaDragAndDropHandler {
     }
 
     /**
-     * 
+     *
      * DOC amaumont Comment method "createDragSource".
-     * 
+     *
      * @param sourceListener
      */
     private void createDragSource() {
@@ -111,7 +111,7 @@ public class XmlToSchemaDragAndDropHandler {
     }
 
     /**
-     * 
+     *
      * create DropTarget.
      */
     private void createDropTarget() {
@@ -134,11 +134,11 @@ public class XmlToSchemaDragAndDropHandler {
     }
 
     /**
-     * 
+     *
      * DOC amaumont XmlToSchemaDragAndDropHandler class global comment. Detailled comment <br/>
-     * 
+     *
      * $Id$
-     * 
+     *
      */
     class TreeDragSourceListener implements TransferDragSourceListener {
 
@@ -179,11 +179,11 @@ public class XmlToSchemaDragAndDropHandler {
     };
 
     /**
-     * 
+     *
      * DOC amaumont XmlToSchemaDragAndDropHandler class global comment. Detailled comment <br/>
-     * 
+     *
      * $Id$
-     * 
+     *
      */
     public class TableDropTargetListener implements TransferDropTargetListener {
 
@@ -194,7 +194,7 @@ public class XmlToSchemaDragAndDropHandler {
 
         /**
          * DOC amaumont Comment method "dragEnterExecute".
-         * 
+         *
          * @param event
          */
         private void dragEnterExecute(DropTargetEvent event) {
@@ -231,7 +231,7 @@ public class XmlToSchemaDragAndDropHandler {
 
         /*
          * (non-Javadoc)
-         * 
+         *
          * @see org.eclipse.jface.util.TransferDropTargetListener#getTransfer()
          */
         @Override
@@ -241,7 +241,7 @@ public class XmlToSchemaDragAndDropHandler {
 
         /*
          * (non-Javadoc)
-         * 
+         *
          * @see org.eclipse.jface.util.TransferDropTargetListener#isEnabled(org.eclipse.swt.dnd.DropTargetEvent)
          */
         @Override
@@ -252,7 +252,7 @@ public class XmlToSchemaDragAndDropHandler {
 
         /*
          * (non-Javadoc)
-         * 
+         *
          * @see org.eclipse.swt.dnd.DropTargetListener#drop(org.eclipse.swt.dnd.DropTargetEvent)
          */
         @Override
@@ -278,7 +278,7 @@ public class XmlToSchemaDragAndDropHandler {
                 originalValue = ConnectionContextHelper.getOriginalValue(contextType, pathLoopDescriptor.getAbsoluteXPathQuery());
                 originalValue = TalendQuoteUtils.removeQuotes(originalValue);
             }
-            
+
             if (linker.isLoopTable((Table) control)) {
 
                 if (transferableEntryList.size() > 0) {
@@ -357,7 +357,7 @@ public class XmlToSchemaDragAndDropHandler {
 
     /**
      * Extract last word of an expression, the last character must be a letter or a number.
-     * 
+     *
      * @param currentExpr
      * @return
      */
@@ -373,7 +373,7 @@ public class XmlToSchemaDragAndDropHandler {
 
     /**
      * Extract last word of an expression, the last character must be a letter or a number.
-     * 
+     *
      * @param currentExpr
      * @return
      */
@@ -391,7 +391,7 @@ public class XmlToSchemaDragAndDropHandler {
 
     /**
      * Extract last word of an expression, the last character must be a letter or a number.
-     * 
+     *
      * @param currentExpr
      * @param fullSchemaTargetList
      * @return
@@ -406,7 +406,7 @@ public class XmlToSchemaDragAndDropHandler {
 
             /*
              * (non-Javadoc)
-             * 
+             *
              * @see org.talend.commons.utils.data.list.UniqueStringGenerator#getBeanString(java.lang.Object)
              */
             @Override

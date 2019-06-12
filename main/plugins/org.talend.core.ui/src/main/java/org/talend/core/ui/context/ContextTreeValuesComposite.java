@@ -1,6 +1,6 @@
 // ============================================================================
 //
-// Copyright (C) 2006-2018 Talend Inc. - www.talend.com
+// Copyright (C) 2006-2019 Talend Inc. - www.talend.com
 //
 // This source code is available under agreement available at
 // %InstallDIR%\features\org.talend.rcp.branding.%PRODUCTNAME%\%PRODUCTNAME%license.txt
@@ -68,7 +68,7 @@ import org.talend.core.ui.i18n.Messages;
 
 /**
  * DOC bqian class global comment. Detailled comment <br/>
- * 
+ *
  */
 public class ContextTreeValuesComposite extends AbstractContextTabEditComposite {
 
@@ -98,7 +98,7 @@ public class ContextTreeValuesComposite extends AbstractContextTabEditComposite 
 
     /**
      * bqian ConextTemplateComposite constructor comment.
-     * 
+     *
      * @param parent
      * @param style
      */
@@ -203,7 +203,7 @@ public class ContextTreeValuesComposite extends AbstractContextTabEditComposite 
 
     /**
      * DOC bqian Comment method "createTreeTooltip".
-     * 
+     *
      * @param tree
      */
     protected void createTreeTooltip(Tree tree) {
@@ -211,7 +211,7 @@ public class ContextTreeValuesComposite extends AbstractContextTabEditComposite 
 
             /*
              * (non-Javadoc)
-             * 
+             *
              * @see
              * org.talend.commons.ui.swt.tooltip.AbstractTreeTooltip#getTooltipContent(org.eclipse.swt.widgets.TreeItem)
              */
@@ -232,7 +232,7 @@ public class ContextTreeValuesComposite extends AbstractContextTabEditComposite 
 
     /**
      * DOC bqian Comment method "addSorter".
-     * 
+     *
      * @param viewer2
      */
     private void addSorter(final TreeViewer viewer2) {
@@ -397,7 +397,7 @@ public class ContextTreeValuesComposite extends AbstractContextTabEditComposite 
 
     /**
      * bqian Comment method "createMenuBar".
-     * 
+     *
      * @param toolBar
      */
     private void createToolBar(final ToolBar toolBar) {
@@ -473,7 +473,7 @@ public class ContextTreeValuesComposite extends AbstractContextTabEditComposite 
 
     /**
      * Clear the data in this viewer.
-     * 
+     *
      * @param jobContextManager2
      */
     public void clear() {
@@ -512,7 +512,7 @@ public class ContextTreeValuesComposite extends AbstractContextTabEditComposite 
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see org.talend.core.ui.context.AbstractContextTabEditComposite#isGroupBySource()
      */
     @Override

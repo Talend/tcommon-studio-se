@@ -1,6 +1,6 @@
 // ============================================================================
 //
-// Copyright (C) 2006-2018 Talend Inc. - www.talend.com
+// Copyright (C) 2006-2019 Talend Inc. - www.talend.com
 //
 // This source code is available under agreement available at
 // %InstallDIR%\features\org.talend.rcp.branding.%PRODUCTNAME%\%PRODUCTNAME%license.txt
@@ -20,7 +20,7 @@ public interface ITDQReportService extends ITDQService {
 
     /**
      * This method is to excute report.
-     * 
+     *
      * @param names Report name, more names delimited by comma.
      * @param pathes Report relative current project path, more pathes delimited by comma.
      * @param contextName Report context name, more contextName delimited by comma.
