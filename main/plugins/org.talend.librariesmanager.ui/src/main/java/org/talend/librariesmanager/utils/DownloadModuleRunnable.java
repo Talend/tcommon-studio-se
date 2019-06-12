@@ -132,7 +132,7 @@ abstract public class DownloadModuleRunnable implements IRunnableWithProgress {
             }
         }
 
-        if (showErrorInDialog) {
+        if (showErrorInDialog && !downloadFailed.isEmpty()) {
             Exception ex = new Exception(Messages.getString("DownloadModuleRunnable.jar.download.failed",
                     Arrays.toString(downloadFailed.toArray(new String[downloadFailed.size()]))));
             MessageBoxExceptionHandler.process(ex);
