@@ -655,6 +655,8 @@ public class LocalLibraryManager implements ILibraryManagerService, IChangedLibr
                                 .getService(ILibrariesService.class);
                         if (codeType != null) {
                             BuildCacheManager.getInstance().clearCodesCache(codeType);
+                        } else {
+                            BuildCacheManager.getInstance().clearAllCodesCache();
                         }
                         librariesService.checkLibraries();
                     }
