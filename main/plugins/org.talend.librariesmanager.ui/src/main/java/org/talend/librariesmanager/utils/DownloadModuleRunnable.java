@@ -13,6 +13,7 @@
 package org.talend.librariesmanager.utils;
 
 import java.net.URL;
+import java.util.Arrays;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -87,10 +88,8 @@ abstract public class DownloadModuleRunnable implements IRunnableWithProgress {
                 Messages.getString("ExternalModulesInstallDialog.downloading2") + " (" + toDownload.size() + ")", //$NON-NLS-1$
                 toDownload.size());
 
-        // TUP-3135 : stop to try to download at the first timeout.
-        boolean connectionTimeOut = false;
         for (final ModuleToInstall module : toDownload) {
-            if (!monitor.isCanceled() && !connectionTimeOut) {
+            if (!monitor.isCanceled()) {
                 monitor.subTask(module.getName());
                 boolean canDownload;
                 try {
@@ -120,17 +119,11 @@ abstract public class DownloadModuleRunnable implements IRunnableWithProgress {
                         downloader.download(new URL(null, module.getMavenUri(), new Handler()), null, subMonitor.newChild(1));
                     }
 
-                    // deploy to index as snapshot
                     installedModules.add(module.getName());
                 } catch (Exception e) {
                     downloadFailed.add(module.getName());
-                    connectionTimeOut = true;
                     Exception ex = new Exception("Download " + module.getName() + " : " + module.getMavenUri() + " failed!", e);
-                    if (showErrorInDialog) {
-                        MessageBoxExceptionHandler.process(ex);
-                    } else {
-                        ExceptionHandler.process(ex);
-                    }
+                    ExceptionHandler.process(ex);
                     continue;
                 }
                 canDownload = false;
@@ -138,6 +131,13 @@ abstract public class DownloadModuleRunnable implements IRunnableWithProgress {
                 downloadFailed.add(module.getName());
             }
         }
+
+        if (showErrorInDialog) {
+            Exception ex = new Exception(Messages.getString("DownloadModuleRunnable.jar.download.failed",
+                    Arrays.toString(downloadFailed.toArray(new String[downloadFailed.size()]))));
+            MessageBoxExceptionHandler.process(ex);
+        }
+
         if (checkLibraries) {
             ILibrariesService librariesService = (ILibrariesService) GlobalServiceRegister.getDefault()
                     .getService(ILibrariesService.class);
