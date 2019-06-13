@@ -80,6 +80,7 @@
 									<groupId>org.talend.daikon</groupId>
 									<artifactId>crypto-utils</artifactId>
 									<version>${org.talend.daikon.crypto-utils.version}</version>
+									<overWrite>true</overWrite>
 								</artifactItem>
 							</artifactItems>
 						</configuration>
