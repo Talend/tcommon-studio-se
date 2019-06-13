@@ -83,7 +83,8 @@ public abstract class AbstractArtifactRepositoryHandler implements IRepositoryAr
             repositories = releaseUrl;
         }
         if (snapshot_rep != null) {
-            String snapshotUrl = custom_server + snapshot_rep + "@id=" + snapshot_rep + NexusConstants.SNAPSHOTS;//$NON-NLS-1$
+            String snapshotUrl = custom_server + snapshot_rep + "@id=" + snapshot_rep + NexusConstants.SNAPSHOTS //$NON-NLS-1$
+                    + NexusConstants.DISALLOW_RELEASES;
             if (repositories != null) {
                 repositories = repositories + "," + snapshotUrl;
             } else {
