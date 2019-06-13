@@ -26,5 +26,7 @@ public class NexusConstants {
 
     public static final String SLASH = "/";//$NON-NLS-1$ 
 
-    public static final String SNAPSHOTS = "@snapshots";
+    public static final String SNAPSHOTS = "@snapshots";//$NON-NLS-1$
+
+    public static final String DISALLOW_RELEASES = "@noreleases";//$NON-NLS-1$
 }
