@@ -26,6 +26,7 @@ import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.IStatus;
+import org.eclipse.core.runtime.NullProgressMonitor;
 import org.eclipse.core.runtime.Platform;
 import org.eclipse.core.runtime.Status;
 import org.eclipse.core.runtime.jobs.Job;
@@ -738,6 +739,25 @@ public class RepoViewCommonNavigator extends CommonNavigator implements IReposit
         if (shell == null) {
             return;
         }
+        boolean svn = false;
+        if (GlobalServiceRegister.getDefault().isServiceRegistered(IRepositoryService.class)) {
+            IRepositoryService service = GlobalServiceRegister.getDefault().getService(IRepositoryService.class);
+            svn = service.isSVN();
+        }
+        final boolean isSVN = svn;
+        if (needInitialize && isSVN) {
+            try {
+                final ProxyRepositoryFactory factory = ProxyRepositoryFactory.getInstance();
+                factory.initialize();
+            } catch (Exception e) {
+                ExceptionHandler.process(e);
+            }
+            try {
+                ResourcesPlugin.getWorkspace().getRoot().refreshLocal(IResource.DEPTH_INFINITE, new NullProgressMonitor());
+            } catch (CoreException e) {
+                ExceptionHandler.process(e);
+            }
+        }
 
         final Job job = new Job(Messages.getString("RepoViewCommonNavigator.refresh")) { //$NON-NLS-1$
 
@@ -746,7 +766,7 @@ public class RepoViewCommonNavigator extends CommonNavigator implements IReposit
                 try {
                     Timer timer = Timer.getTimer("repositoryView"); //$NON-NLS-1$
                     timer.start();
-                    if (needInitialize) {
+                    if (needInitialize && !isSVN) {
                         try {
                             final ProxyRepositoryFactory factory = ProxyRepositoryFactory.getInstance();
                             factory.initialize();
