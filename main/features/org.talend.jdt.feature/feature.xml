@@ -16,7 +16,7 @@
     <import plugin="org.eclipse.jdt.apt.ui" version="0.0.0" match="greaterOrEqual"/>
     <import plugin="org.eclipse.jdt.compiler.apt" version="0.0.0" match="greaterOrEqual"/>
     <import plugin="org.eclipse.jdt.compiler.tool" version="0.0.0" match="greaterOrEqual"/>
-    <import plugin="org.eclipse.jdt.core" version="0.0.0" match="greaterOrEqual"/>
+    <import plugin="org.eclipse.jdt.core" version="3.16.0.xx-201903290056-e1812-RELEASE" match="greaterOrEqual"/>
     <import plugin="org.eclipse.jdt.core.manipulation" version="0.0.0" match="greaterOrEqual"/>
     <import plugin="org.eclipse.jdt.debug" version="0.0.0" match="greaterOrEqual"/>
     <import plugin="org.eclipse.jdt.debug.ui" version="0.0.0" match="greaterOrEqual"/>
