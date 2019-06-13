@@ -227,6 +227,11 @@ public class ContextBuiltinToRepositoryCommand extends Command {
 
                     new ContextRemoveParameterCommand(contextManager, defaultContextParamType.getName(), existParam.getSource(), currentContext)
                             .execute();
+                    defaultContextParamType.setValue(existParam.getValue());
+                    defaultContextParamType.setComment(existParam.getComment());
+                    defaultContextParamType.setPrompt(existParam.getPrompt());
+                    defaultContextParamType.setType(existParam.getType());
+                    defaultContextParamType.setPromptNeeded(existParam.isPromptNeeded());
                     helper.addContextParameterType(defaultContextParamType);
                 }
             }
