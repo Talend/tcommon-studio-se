@@ -78,9 +78,7 @@ public class MavenProjectSettingPage extends AbstractProjectSettingPage {
         if (StringUtils.isBlank(filter)) {
             filter = ""; //$NON-NLS-1$
 		}
-        if (filter.contains(LATEST_VERSION_REAL)) {
-            filter = filter.replace(LATEST_VERSION_REAL, LATEST_VERSION_DISPLAY);
-        }
+        filter = getDisplayVersionFilter(filter);
 
         Label filterExampleLable = new Label(parent, SWT.NONE);
         filterExampleLable.setText(Messages.getString("MavenProjectSettingPage.filterExampleMessage")); //$NON-NLS-1$
@@ -94,10 +92,7 @@ public class MavenProjectSettingPage extends AbstractProjectSettingPage {
 				if (GlobalServiceRegister.getDefault().isServiceRegistered(IFilterService.class)) {
 					IFilterService service = (IFilterService) GlobalServiceRegister.getDefault()
 							.getService(IFilterService.class);
-                    String text = filterText.getText();
-                    if (text != null && text.contains(LATEST_VERSION_DISPLAY)) {
-                        text = text.replace(LATEST_VERSION_DISPLAY, LATEST_VERSION_REAL);
-                    }
+                    String text = getRealVersionFilter(filterText.getText());
                     String filterError = service.checkFilterError(text);
                     if (StringUtils.isBlank(text) || filterError == null) {
 						setErrorMessage(null);
@@ -119,11 +114,7 @@ public class MavenProjectSettingPage extends AbstractProjectSettingPage {
 			@Override
 			public void widgetSelected(SelectionEvent event) {
 				try {
-                    String realFilter = filter;
-                    if (filter != null && filter.contains(LATEST_VERSION_DISPLAY)) {
-                        realFilter = filter.replace(LATEST_VERSION_DISPLAY, LATEST_VERSION_REAL);
-                    }
-                    preferenceStore.setValue(MavenConstants.POM_FILTER, realFilter);
+                    preferenceStore.setValue(MavenConstants.POM_FILTER, getRealVersionFilter(filter));
 					new AggregatorPomsHelper().syncAllPoms();
 				} catch (Exception e) {
 					ExceptionHandler.process(e);
@@ -141,9 +132,25 @@ public class MavenProjectSettingPage extends AbstractProjectSettingPage {
 	public boolean performOk() {
 		boolean ok = super.performOk();
 		if (preferenceStore != null) {
-			preferenceStore.setValue(MavenConstants.POM_FILTER, filter);
+            preferenceStore.setValue(MavenConstants.POM_FILTER, getRealVersionFilter(filter));
 		}
 		return ok;
 	}
+
+    private String getRealVersionFilter(String displayVersion) {
+        String realVersion = displayVersion;
+        if (displayVersion != null && displayVersion.contains(LATEST_VERSION_DISPLAY)) {
+            realVersion = displayVersion.replace(LATEST_VERSION_DISPLAY, LATEST_VERSION_REAL);
+        }
+        return realVersion;
+    }
+
+    private String getDisplayVersionFilter(String realVersion) {
+        String displayVersion = realVersion;
+        if (realVersion != null && realVersion.contains(LATEST_VERSION_REAL)) {
+            displayVersion = realVersion.replace(LATEST_VERSION_REAL, LATEST_VERSION_DISPLAY);
+        }
+        return displayVersion;
+    }
 
 }
