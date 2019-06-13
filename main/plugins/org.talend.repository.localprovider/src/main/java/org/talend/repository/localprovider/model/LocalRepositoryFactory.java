@@ -1335,7 +1335,7 @@ public class LocalRepositoryFactory extends AbstractEMFRepositoryFactory impleme
             // ProjectRepoAbstractContentProvider class to refresh the node, if don't delete resource first, the deleted
             // foler display in repository view
             deleteResource(folder);
-        } finally {
+        }  finally {
             // even if the folder do not exist anymore, clean the list on the project
             getFolderHelper(project.getEmfProject()).deleteFolder(completePath);
             if (!fromEmptyRecycleBin) {
@@ -1508,8 +1508,10 @@ public class LocalRepositoryFactory extends AbstractEMFRepositoryFactory impleme
                     for (Item children2 : childrens) {
                         if (children2 instanceof FolderItem) {
                             FolderItem children = (FolderItem) children2;
-                            moveFolder(type, sourcePath.append(children.getProperty().getLabel()),
-                                    targetPath.append(newFolder.getProperty().getLabel()));
+                            IPath sPath = sourcePath.append(children.getProperty().getLabel());
+                            if(isFolderExist(type, sPath)){
+                            	moveFolder(type, sPath, targetPath.append(newFolder.getProperty().getLabel()));
+                            }
                         } else {
                             moveOldContentToNewFolder(project, completeNewPath, emfFolder, newFolder, children2);
                         }
@@ -1565,6 +1567,14 @@ public class LocalRepositoryFactory extends AbstractEMFRepositoryFactory impleme
         } catch (CoreException e) {
             throw new PersistenceException(e.getCause());
         }
+    }
+    
+    private boolean isFolderExist(final ERepositoryObjectType type, final IPath sourcePath) throws PersistenceException {
+    	String completePath = new Path(ERepositoryObjectType.getFolderName(type)).append(sourcePath).toString();
+    	Project project = getRepositoryContext().getProject();
+    	IProject fsProject = ResourceUtils.getProject(project);
+    	IFolder processFolder = fsProject.getFolder(completePath);
+    	return processFolder.exists();
     }
 
     @Override
