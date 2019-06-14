@@ -460,7 +460,7 @@ public class LocalLibraryManager implements ILibraryManagerService, IChangedLibr
                     File generatedPom = new File(PomUtil.generatePom(parseMvnUrl));
                     FilesUtils.copyFile(generatedPom, pomFile);
                 } else {
-                    updatePomFile(pomFile, MavenUrlHelper.parseMvnUrl(uri));
+                    updatePomFile(uri);
                 }
             } catch (Exception e) {
                 ExceptionHandler.process(e);
@@ -1023,20 +1023,12 @@ public class LocalLibraryManager implements ILibraryManagerService, IChangedLibr
                         }
                     }
                     if (pomFile != null) {
-                        updatePomFile(pomFile, pomMa);
+                        PomUtil.removeParentFromPom(pomFile, ma);
                     } else if (pomEx != null) {
                         throw pomEx;
                     }
                 }
             }
-        } finally {
-            // to do
-        }
-    }
-
-    private void updatePomFile(File pomFile, MavenArtifact ma) throws Exception {
-        try {
-            PomUtil.removeParentFromPom(pomFile, ma);
         } finally {
             // to do
         }
