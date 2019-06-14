@@ -1390,8 +1390,10 @@ public class LocalRepositoryFactory extends AbstractEMFRepositoryFactory impleme
         for (Item children2 : childrens) {
             if (children2 instanceof FolderItem) {
                 FolderItem children = (FolderItem) children2;
-                moveFolder(type, sourcePath.append(children.getProperty().getLabel()),
-                        targetPath.append(emfFolder.getProperty().getLabel()));
+                IPath sPath = sourcePath.append(children.getProperty().getLabel());
+                if(isFolderExist(type, sPath)){
+                	moveFolder(type, sPath, targetPath.append(emfFolder.getProperty().getLabel()));
+                }
             } else {
                 moveOldContentToNewFolder(project, completeNewPath, emfFolder, newFolder, children2);
             }
