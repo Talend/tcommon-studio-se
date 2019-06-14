@@ -188,7 +188,7 @@ public class LocalLibraryManager implements ILibraryManagerService, IChangedLibr
                     Set<String> uriSet = sourceAndMavenUri.keySet();
                     for (String uri : uriSet) {
                         try {
-                            updatePomFile(uri);
+                            updatePomFileForJar(uri);
                         } catch (Exception e) {
                             ExceptionHandler.process(e);
                         }
@@ -208,7 +208,7 @@ public class LocalLibraryManager implements ILibraryManagerService, IChangedLibr
                 Set<String> uriSet = sourceAndMavenUri.keySet();
                 for (String uri : uriSet) {
                     try {
-                        updatePomFile(uri);
+                        updatePomFileForJar(uri);
                     } catch (Exception e) {
                         ExceptionHandler.process(e);
                     }
@@ -460,7 +460,7 @@ public class LocalLibraryManager implements ILibraryManagerService, IChangedLibr
                     File generatedPom = new File(PomUtil.generatePom(parseMvnUrl));
                     FilesUtils.copyFile(generatedPom, pomFile);
                 } else {
-                    updatePomFile(uri);
+                    updatePomFileForJar(uri);
                 }
             } catch (Exception e) {
                 ExceptionHandler.process(e);
@@ -974,7 +974,7 @@ public class LocalLibraryManager implements ILibraryManagerService, IChangedLibr
             File resolvedJar = TalendMavenResolver.getMavenResolver().resolve(localMavenUri);
             if (resolvedJar != null) {
                 try {
-                    updatePomFile(mvnUriStatusKey);
+                    updatePomFileForJar(mvnUriStatusKey);
                 } catch (Exception e) {
                     ExceptionHandler.process(e);
                 }
@@ -991,7 +991,7 @@ public class LocalLibraryManager implements ILibraryManagerService, IChangedLibr
         return null;
     }
 
-    private void updatePomFile(String mvnUri) throws Exception {
+    private void updatePomFileForJar(String mvnUri) throws Exception {
         try {
             MavenResolver mavenResolver = TalendMavenResolver.getMavenResolver();
             MavenArtifact ma = MavenUrlHelper.parseMvnUrl(mvnUri);
@@ -1002,7 +1002,12 @@ public class LocalLibraryManager implements ILibraryManagerService, IChangedLibr
                     return;
                 }
                 String groupId = ma.getGroupId();
-                if (!MavenConstants.DEFAULT_LIB_GROUP_ID.equals(groupId)) {
+                String type = ma.getType();
+                if (type == null || type.trim().isEmpty()) {
+                    type = MavenConstants.PACKAGING_JAR;
+                }
+                if (!MavenConstants.DEFAULT_LIB_GROUP_ID.equals(groupId)
+                        && !MavenConstants.PACKAGING_POM.equalsIgnoreCase(type)) {
                     MavenArtifact pomMa = ma.clone();
                     pomMa.setType(MavenConstants.PACKAGING_POM);
                     String classifier = pomMa.getClassifier();
