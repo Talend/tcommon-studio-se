@@ -584,11 +584,6 @@ public final class MetadataToolHelper {
 
     public static void copyTable(IMetadataTable source, IMetadataTable target, String targetDbms,
             boolean avoidUsedColumnsFromInput) {
-        copyTable(source, target, targetDbms, avoidUsedColumnsFromInput, false);
-    }
-
-    public static void copyTable(IMetadataTable source, IMetadataTable target, String targetDbms,
-            boolean avoidUsedColumnsFromInput, boolean withCustoms) {
         if (source == null || target == null) {
             return;
         }
@@ -608,7 +603,7 @@ public final class MetadataToolHelper {
         List<IMetadataColumn> columnsTAdd = new ArrayList<IMetadataColumn>();
         for (IMetadataColumn column : source.getListColumns(!avoidUsedColumnsFromInput)) {
             IMetadataColumn targetColumn = target.getColumn(column.getLabel());
-            IMetadataColumn newTargetColumn = column.clone(withCustoms);
+            IMetadataColumn newTargetColumn = column.clone();
             if (targetColumn == null) {
                 columnsTAdd.add(newTargetColumn);
                 newTargetColumn
