@@ -154,9 +154,8 @@ public class RemoteModulesHelper {
             } else {
                 if (useLocalLicenseData) {
                     searchFromLocalDataFile(mavenUrisTofetch, monitor);
-                } else {
-                    searchFromRemoteNexus(mavenUrisTofetch, monitor);
-                }
+                } 
+                searchFromRemoteNexus(mavenUrisTofetch, monitor);
                 addCachedModulesToToBeInstallModules(toInstall, mavenUrisTofetch, contextMap, getRemoteCache());
             }
 

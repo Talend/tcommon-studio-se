@@ -56,13 +56,6 @@ public class LibraryDataService {
     /**
      * {@value}
      * <p>
-     * System property of retrieve library data, the default value is <b>true</b>.
-     */
-    public static final String KEY_BUILD_LIBRARY_IF_MISSING = "talend.libraries.buildIfMissing"; //$NON-NLS-1$
-
-    /**
-     * {@value}
-     * <p>
      * System property of retrieve library data, the default value is <b>false</b>.
      */
     public static final String KEY_BUILD_LIBRARY_IF_LICENSE_MISSING = "talend.libraries.buildIfLicenseMissing"; //$NON-NLS-1$
@@ -74,8 +67,6 @@ public class LibraryDataService {
     private static boolean buildLibraryIfFileMissing = true;
 
     private boolean buildLibraryLicense = false;
-
-    private boolean buildLibraryIfLibraryMissing = true;
 
     private boolean buildLibraryIfLicenseMissing = false;
 
@@ -95,7 +86,6 @@ public class LibraryDataService {
 
     private LibraryDataService() {
         buildLibraryLicense = Boolean.valueOf(System.getProperty(KEY_LIBRARIES_BUILD_LICENSE, Boolean.FALSE.toString()));
-        buildLibraryIfLibraryMissing = Boolean.valueOf(System.getProperty(KEY_BUILD_LIBRARY_IF_MISSING, Boolean.TRUE.toString()));
         buildLibraryIfLicenseMissing = Boolean
                 .valueOf(System.getProperty(KEY_BUILD_LIBRARY_IF_LICENSE_MISSING, Boolean.FALSE.toString()));
         buildLibraryJarFile = Boolean.valueOf(System.getProperty(KEY_LIBRARIES_BUILD_JAR, Boolean.FALSE.toString()));
@@ -140,6 +130,7 @@ public class LibraryDataService {
         libraryObj.setMvnUrl(getShortMvnUrl(mvnUrl));
         libraryObj.setType(artifact.getType());
         libraryObj.setClassifier(artifact.getClassifier());
+        libraryObj.setPomMissing(true);
         boolean hasError = false;
         logger.debug("Resolving artifact descriptor:" + getShortMvnUrl(mvnUrl)); //$NON-NLS-1$
         for (int repeated = 0; repeated < repeatTime; repeated++) {
@@ -148,7 +139,10 @@ public class LibraryDataService {
                     Thread.sleep(1000); // To avoid server connection pool shut down
                 }
                 Map<String, Object> properties = resolveDescProperties(artifact);
-                parseDescriptorResult(libraryObj, properties);
+                if (properties != null && properties.size() > 0) {
+                    parseDescriptorResult(libraryObj, properties);
+                    libraryObj.setPomMissing(false);
+                }
                 hasError = false;
             } catch (Exception e) {
                 hasError = true;
@@ -168,8 +162,16 @@ public class LibraryDataService {
                 libraryObj.setJarMissing(jarMissing);
             }
         }
-
         return libraryObj;
+    }
+    
+    public void setJarMissing(String mvnUrl) {
+        String shortMvnUrl = getShortMvnUrl(mvnUrl);
+        Library libraryObj = mvnToLibraryMap.get(shortMvnUrl);
+        if (libraryObj != null) {
+            libraryObj.setJarMissing(true);
+        }
+        dataProvider.saveLicenseData(mvnToLibraryMap);
     }
 
     public Map<String, Object> resolveDescProperties(MavenArtifact artifact) throws Exception {
@@ -193,6 +195,9 @@ public class LibraryDataService {
     private boolean isPackagePom(Library libraryObj) {
         if (libraryObj != null) {
             if ("pom".equalsIgnoreCase(libraryObj.getType())) {
+                return true;
+            }
+            if (libraryObj.isJarMissing() || libraryObj.isPomMissing()) {
                 return true;
             }
             for (LibraryLicense license : libraryObj.getLicenses()) {
@@ -262,7 +267,7 @@ public class LibraryDataService {
         boolean isExist = false;
         String shortMvnUrl = getShortMvnUrl(mvnUrl);
         Library object = mvnToLibraryMap.get(shortMvnUrl);
-        if (!retievedMissingSet.contains(mvnUrl) && ((object == null && buildLibraryIfLibraryMissing)
+        if (!retievedMissingSet.contains(mvnUrl) && ((object == null || object.isPomMissing() || object.isJarMissing() )
                 || (object.isLicenseMissing() && buildLibraryIfLicenseMissing))) {
             Library newObject = null;
             retievedMissingSet.add(mvnUrl);
