@@ -33,6 +33,7 @@ import org.talend.core.model.general.ILibrariesService;
 import org.talend.core.model.general.ModuleNeeded.ELibraryInstallStatus;
 import org.talend.core.model.general.ModuleStatusProvider;
 import org.talend.core.model.general.ModuleToInstall;
+import org.talend.librariesmanager.librarydata.LibraryDataService;
 import org.talend.librariesmanager.ui.LibManagerUiPlugin;
 import org.talend.librariesmanager.ui.i18n.Messages;
 import org.talend.librariesmanager.ui.wizards.AcceptModuleLicensesWizard;
@@ -122,6 +123,7 @@ abstract public class DownloadModuleRunnable implements IRunnableWithProgress {
                     installedModules.add(module.getName());
                 } catch (Exception e) {
                     downloadFailed.add(module.getName());
+                    LibraryDataService.getInstance().setJarMissing(module.getMavenUri());
                     Exception ex = new Exception("Download " + module.getName() + " : " + module.getMavenUri() + " failed!", e);
                     ExceptionHandler.process(ex);
                     continue;

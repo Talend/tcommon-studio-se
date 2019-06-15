@@ -99,16 +99,13 @@ public class MavenLibraryResolverProvider {
     }
 
     public Map<String, Object> resolveDescProperties(MavenArtifact aritfact) throws Exception {
+        Map<String, Object> properties = null;
         MavenArtifact clonedArtifact = aritfact.clone();
         clonedArtifact.setType("pom"); //$NON-NLS-1$
-        Map<String, Object> properties = new HashMap<String, Object>();
         ArtifactResult result = resolveArtifact(clonedArtifact);
         if (result != null && result.isResolved()) {
-            DefaultModelBuilderFactory factory = new DefaultModelBuilderFactory();
-            DefaultModelBuildingRequest request = new DefaultModelBuildingRequest();
-            request.setPomFile(result.getArtifact().getFile());
-            ModelBuildingResult modelResult = factory.newInstance().build(request);
-            Model model = modelResult.getEffectiveModel();
+            properties = new HashMap<String, Object>();
+            Model model = MavenPlugin.getMavenModelManager().readMavenModel(result.getArtifact().getFile());
             if (model != null) {
                 properties.put("type", model.getPackaging()); //$NON-NLS-1$
                 properties.put("license.count", model.getLicenses().size()); //$NON-NLS-1$
