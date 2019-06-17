@@ -131,7 +131,7 @@ public class LibraryDataService {
         libraryObj.setType(artifact.getType());
         libraryObj.setClassifier(artifact.getClassifier());
         libraryObj.setPomMissing(true);
-        boolean hasError = false;
+        boolean isRetry = false;
         logger.debug("Resolving artifact descriptor:" + getShortMvnUrl(mvnUrl)); //$NON-NLS-1$
         for (int repeated = 0; repeated < repeatTime; repeated++) {
             try {
@@ -143,11 +143,14 @@ public class LibraryDataService {
                     parseDescriptorResult(libraryObj, properties);
                     libraryObj.setPomMissing(false);
                 }
-                hasError = false;
-            } catch (Exception e) {
-                hasError = true;
+                isRetry = false;
+            } catch (Exception ex) {
+                if (isBuildLibrariesData()) {
+                    isRetry = true;
+                }
+                logger.info(ex);
             }
-            if (!hasError) {
+            if (!isRetry) {
                 break;
             }
         }
