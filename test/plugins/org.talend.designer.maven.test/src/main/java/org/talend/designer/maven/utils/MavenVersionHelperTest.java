@@ -12,6 +12,7 @@
 // ============================================================================
 package org.talend.designer.maven.utils;
 
+import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 
 import org.junit.Test;
@@ -31,6 +32,14 @@ public class MavenVersionHelperTest {
         assertTrue(MavenVersionHelper.compareTo("1.0.0-SNAPSHOT", "1.0.1") < 0);
         assertTrue(MavenVersionHelper.compareTo("1.0.0-SNAPSHOT", "1.0.1-SNAPSHOT") < 0);
 
+    }
+
+    @Test
+    public void testGetJarOriginalVersion() {
+        // slf4j-log4j12-1.7.10.jar
+        String jarName = "slf4j-log4j12-1.7.10.jar";
+        String result = "1.7.10";
+        assertEquals(MavenVersionHelper.getJarOriginalVersion(jarName), result);
     }
 
 }
