@@ -275,7 +275,7 @@ public class ExternalModulesInstallDialogWithProgress extends ExternalModulesIns
     protected void buttonPressed(int buttonId) {
         if (IDialogConstants.CLOSE_ID == buttonId) {
             closePressed();
-        }// else cancel button has a listener already
+        } // else cancel button has a listener already
     }
 
     protected IProgressMonitor getProgressMonitor() {
@@ -594,14 +594,12 @@ public class ExternalModulesInstallDialogWithProgress extends ExternalModulesIns
             @Override
             public void run() {
                 List<ModuleToInstall> inputList2 = new ArrayList<ModuleToInstall>();
-                for (String moduleName : downloadFailed) {
-                    for (ModuleToInstall module : inputList) {
-                        if (moduleName.equals(module.getName())) {
-                            module.setDistribution(MavenConstants.DOWNLOAD_MANUAL);
-                            inputList2.add(module);
-                        } else if (!donwloadSuccessed.contains(module.getName())) {
-                            inputList2.add(module);
-                        }
+                for (ModuleToInstall module : inputList) {
+                    if (downloadFailed.contains(module.getName())) {
+                        module.setDistribution(MavenConstants.DOWNLOAD_MANUAL);
+                        inputList2.add(module);
+                    } else if (!donwloadSuccessed.contains(module.getName())) {
+                        inputList2.add(module);
                     }
                 }
                 inputList = inputList2;
@@ -695,7 +693,8 @@ public class ExternalModulesInstallDialogWithProgress extends ExternalModulesIns
      * @param enabledButtonCount
      * @param button
      */
-    protected void individualDownloadFailed(final AtomicInteger enabledButtonCount, final Button button, final ModuleToInstall data) {
+    protected void individualDownloadFailed(final AtomicInteger enabledButtonCount, final Button button,
+            final ModuleToInstall data) {
         Display.getDefault().asyncExec(new Runnable() {
 
             @Override
