@@ -17,8 +17,10 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 import java.util.concurrent.atomic.AtomicInteger;
 
 import org.apache.commons.lang.ArrayUtils;
@@ -47,6 +49,7 @@ import org.talend.commons.exception.ExceptionHandler;
 import org.talend.commons.utils.system.EclipseCommandLine;
 import org.talend.core.model.general.ModuleNeeded;
 import org.talend.core.model.general.ModuleToInstall;
+import org.talend.core.runtime.maven.MavenConstants;
 import org.talend.librariesmanager.ui.LibManagerUiPlugin;
 import org.talend.librariesmanager.utils.DownloadModuleRunnableWithLicenseDialog;
 import org.talend.librariesmanager.utils.RemoteModulesHelper;
@@ -272,7 +275,7 @@ public class ExternalModulesInstallDialogWithProgress extends ExternalModulesIns
     protected void buttonPressed(int buttonId) {
         if (IDialogConstants.CLOSE_ID == buttonId) {
             closePressed();
-        }// else cancel button has a listener already
+        } // else cancel button has a listener already
     }
 
     protected IProgressMonitor getProgressMonitor() {
@@ -557,7 +560,14 @@ public class ExternalModulesInstallDialogWithProgress extends ExternalModulesIns
 
                 installAllBtn.setEnabled(false);
                 try {
-                    run(new DownloadModuleRunnableWithLicenseDialog(toInstall, getShell()));
+                    DownloadModuleRunnableWithLicenseDialog downloadDialog = new DownloadModuleRunnableWithLicenseDialog(
+                            toInstall, getShell());
+                    run(downloadDialog);
+                    Set<String> downloadFailed = downloadDialog.getDownloadFailed();
+                    if (downloadFailed.size() > 0) {
+                        updateFailedButtonStatus(downloadFailed, downloadDialog.getInstalledModules());
+                        return;
+                    }
                     // close the dialog box when the download is done if it has not been canceled
                     if (!getProgressMonitor().isCanceled()) {
                         setReturnCode(CANCEL);
@@ -574,6 +584,26 @@ public class ExternalModulesInstallDialogWithProgress extends ExternalModulesIns
                         installAllBtn.setEnabled(true);
                     }
                 }
+            }
+        });
+    }
+    
+    private void updateFailedButtonStatus(Set<String> downloadFailed, Set<String> donwloadSuccessed) {
+        Display.getDefault().syncExec(new Runnable() {
+
+            @Override
+            public void run() {
+                List<ModuleToInstall> inputList2 = new ArrayList<ModuleToInstall>();
+                for (ModuleToInstall module : inputList) {
+                    if (downloadFailed.contains(module.getName())) {
+                        module.setDistribution(MavenConstants.DOWNLOAD_MANUAL);
+                        inputList2.add(module);
+                    } else if (!donwloadSuccessed.contains(module.getName())) {
+                        inputList2.add(module);
+                    }
+                }
+                inputList = inputList2;
+                initialRunnableDone();
             }
         });
     }
@@ -615,22 +645,31 @@ public class ExternalModulesInstallDialogWithProgress extends ExternalModulesIns
     @Override
     protected void launchIndividualDownload(final AtomicInteger enabledButtonCount, ModuleToInstall data, final Button button) {
         button.setEnabled(false);
-        enabledButtonCount.decrementAndGet();
+        boolean isDownloadSuccess = false;
         DownloadModuleRunnableWithLicenseDialog downloadModuleRunnable = new DownloadModuleRunnableWithLicenseDialog(
                 Collections.singletonList(data), getShell());
         try {
             run(downloadModuleRunnable);
+            if (downloadModuleRunnable.getDownloadFailed().size() == 0) {
+                enabledButtonCount.decrementAndGet();
+                isDownloadSuccess = true;
+            }
         } catch (InvocationTargetException e) {
-            individualDownloadFailed(enabledButtonCount, button);
+            individualDownloadFailed(enabledButtonCount, button, data);
             // an error occured when fetching the modules, so report it to the user.
             ExceptionHandler.process(e);
         } catch (InterruptedException e) {
-            individualDownloadFailed(enabledButtonCount, button);
+            individualDownloadFailed(enabledButtonCount, button, null);
             // the thread was interupted
             ExceptionHandler.process(e);
         } finally {// if button canceled then enable button
-            if (getProgressMonitor().isCanceled()) {
-                individualDownloadFailed(enabledButtonCount, button);
+            if (!isDownloadSuccess) {
+                if (getProgressMonitor().isCanceled()) {
+                    individualDownloadFailed(enabledButtonCount, button, null);
+                } else {
+                    individualDownloadFailed(enabledButtonCount, button, data);
+                }
+
             } else {// keep button disabled and make download all button disabled if that was the last
                 Display.getDefault().syncExec(new Runnable() {
 
@@ -654,15 +693,21 @@ public class ExternalModulesInstallDialogWithProgress extends ExternalModulesIns
      * @param enabledButtonCount
      * @param button
      */
-    protected void individualDownloadFailed(final AtomicInteger enabledButtonCount, final Button button) {
+    protected void individualDownloadFailed(final AtomicInteger enabledButtonCount, final Button button,
+            final ModuleToInstall data) {
         Display.getDefault().asyncExec(new Runnable() {
 
             @Override
             public void run() {
-                if (!button.isDisposed()) {
-                    button.setEnabled(true);
-                    enabledButtonCount.incrementAndGet();
-                    installAllBtn.setEnabled(true);
+                if (data == null) {
+                    if (!button.isDisposed()) {
+                        button.setEnabled(true);
+                        installAllBtn.setEnabled(true);
+                    }
+                } else {                 
+                    Set<String> failedSet = new HashSet<String>();
+                    failedSet.add(data.getName());
+                    updateFailedButtonStatus(failedSet, new HashSet<String>());
                 }
             }
         });
@@ -699,7 +744,7 @@ public class ExternalModulesInstallDialogWithProgress extends ExternalModulesIns
         // remove duplicated
         List<ModuleNeeded> required = new ArrayList<ModuleNeeded>(requiredModules);
         IRunnableWithProgress notInstalledModulesRunnable = RemoteModulesHelper.getInstance().getNotInstalledModulesRunnable(
-                required, inputList, true, false);
+                required, inputList, true, true, false);
         setBlockOnOpen(block);
         setInitialRunnable(notInstalledModulesRunnable);
         open();

@@ -83,6 +83,7 @@ public class RemoteModulesHelper {
         private final boolean collectModulesWithJarName;
 
         private volatile boolean useLocalLicenseData;
+        private volatile boolean onlyUseLocalLicenseData;
 
         /**
          *
@@ -102,11 +103,12 @@ public class RemoteModulesHelper {
          * @param toInstall
          */
         private RemoteModulesFetchRunnable(Map<String, List<ModuleNeeded>> requiredModules, List<ModuleToInstall> toInstall,
-                boolean collectModulesWithJarName, boolean useLocalLicenseData) {
+                boolean collectModulesWithJarName, boolean useLocalLicenseData, boolean onlyUseLocalLicenseData) {
             this.toInstall = toInstall;
             this.contextMap = requiredModules;
             this.collectModulesWithJarName = collectModulesWithJarName;
             this.useLocalLicenseData = useLocalLicenseData;
+            this.onlyUseLocalLicenseData = onlyUseLocalLicenseData;
         }
 
         @Override
@@ -135,7 +137,7 @@ public class RemoteModulesHelper {
                 return;
             }
 
-            if (addCachedModulesToToBeInstallModules(toInstall, mavenUrisTofetch, contextMap, getRemoteCache())) {
+            if (addCachedModulesToToBeInstallModules(toInstall, mavenUrisTofetch, contextMap, remoteCache)) {
                 if (collectModulesWithJarName) {
                     collectModulesWithJarName(toInstall);
                 }
@@ -154,12 +156,13 @@ public class RemoteModulesHelper {
             } else {
                 if (useLocalLicenseData) {
                     searchFromLocalDataFile(mavenUrisTofetch, monitor);
-                } else {
+                    addCachedModulesToToBeInstallModules(toInstall, mavenUrisTofetch, contextMap, remoteCache);
+                } 
+                if (!onlyUseLocalLicenseData || LibraryDataService.getInstance().isBuildLibrariesData()) {
                     searchFromRemoteNexus(mavenUrisTofetch, monitor);
+                    addCachedModulesToToBeInstallModules(toInstall, mavenUrisTofetch, contextMap, remoteCache);  
                 }
-                addCachedModulesToToBeInstallModules(toInstall, mavenUrisTofetch, contextMap, getRemoteCache());
             }
-
             unavailableModules.addAll(mavenUrisTofetch);
             addUnavailableModulesToToBeInstalledModules(unavailableModules, toInstall, contextMap);
 
@@ -174,13 +177,6 @@ public class RemoteModulesHelper {
                 }
             });
             monitor.done();
-        }
-
-        private Map<String, ModuleToInstall> getRemoteCache() {
-            if (useLocalLicenseData) {
-                return localLicenseDataCache;
-            }
-            return remoteCache;
         }
 
         private void searchFromLocalNexus(Set<String> mavenUristoSearch, IProgressMonitor monitor) {
@@ -232,13 +228,13 @@ public class RemoteModulesHelper {
                 final MavenArtifact parseMvnUrl = MavenUrlHelper.parseMvnUrl(uriToCheck);
                 boolean isExist = false;
                 if (parseMvnUrl != null) {
-                    isExist = service.fillLibraryData(uriToCheck, parseMvnUrl);
+                    isExist = service.fillLibraryDataUseCache(uriToCheck, parseMvnUrl);
                 }
                 if (isExist) {
                     artifactList.add(parseMvnUrl);
                 }
             }
-            addModulesToCache(mavenUristoSearch, artifactList, getRemoteCache());
+            addModulesToCache(mavenUristoSearch, artifactList, remoteCache);
         }
 
         private void searchFromRemoteNexus(Set<String> mavenUristoSearch, IProgressMonitor monitor) {
@@ -251,20 +247,15 @@ public class RemoteModulesHelper {
                 }
                 String uriToCheck = iterator.next();
                 final MavenArtifact parseMvnUrl = MavenUrlHelper.parseMvnUrl(uriToCheck);
-                Map<String, Object> properties;
-                try {
-                    properties = service.resolveDescProperties(parseMvnUrl);
-                    if (properties != null && properties.size() > 0) {
-                        service.fillArtifactPropertyData(properties, parseMvnUrl);
-                        if (!MavenConstants.DOWNLOAD_MANUAL.equals(parseMvnUrl.getDistribution())) {
-                            artifactList.add(parseMvnUrl);
-                        }
+                if (parseMvnUrl != null) {
+                    service.fillLibraryDataByRemote(uriToCheck, parseMvnUrl);
+                    if (!MavenConstants.DOWNLOAD_MANUAL.equals(parseMvnUrl.getDistribution())) {
+                        artifactList.add(parseMvnUrl);
                     }
-                } catch (Exception e) {
-                    ExceptionHandler.process(e);
                 }
             }
-            addModulesToCache(mavenUristoSearch, artifactList, getRemoteCache());
+            service.saveData();
+            addModulesToCache(mavenUristoSearch, artifactList, remoteCache);
         }
 
         private void addModulesToCache(Set<String> mavenUristoSearch, List<MavenArtifact> searchResults,
@@ -529,8 +520,8 @@ public class RemoteModulesHelper {
     }
 
     public RemoteModulesFetchRunnable createRemoteModuleFetchRunnable(final Map<String, List<ModuleNeeded>> requiredModules,
-            final List<ModuleToInstall> toInstall, boolean collectModulesWithJarName, boolean useLocalLicenseData) {
-        return new RemoteModulesFetchRunnable(requiredModules, toInstall, collectModulesWithJarName, useLocalLicenseData);
+            final List<ModuleToInstall> toInstall, boolean collectModulesWithJarName, boolean useLocalLicenseData, boolean onlyUseLocalLicenseData) {
+        return new RemoteModulesFetchRunnable(requiredModules, toInstall, collectModulesWithJarName, useLocalLicenseData, onlyUseLocalLicenseData);
     }
 
     private JSONObject readJsonFromUrl(String url) throws IOException {
@@ -626,7 +617,7 @@ public class RemoteModulesHelper {
      * ModuleToInstall.mavenUris set to download all needed versions
      */
     public RemoteModulesFetchRunnable getNotInstalledModulesRunnable(List<ModuleNeeded> neededModules,
-            List<ModuleToInstall> toInstall, boolean collectModulesWithJarName, boolean useLocalLicenseData) {
+            List<ModuleToInstall> toInstall, boolean collectModulesWithJarName, boolean useLocalLicenseData, boolean onlyUseLocalLicenseData) {
         Map<String, List<ModuleNeeded>> contextMap = new HashMap<String, List<ModuleNeeded>>();
         ILibraryManagerService librairesManagerService = (ILibraryManagerService) GlobalServiceRegister.getDefault()
                 .getService(ILibraryManagerService.class);
@@ -677,13 +668,13 @@ public class RemoteModulesHelper {
             }
         }
         // fetch the jars which are not in cache.
-        return createRemoteModuleFetchRunnable(contextMap, toInstall, collectModulesWithJarName, useLocalLicenseData);
+        return createRemoteModuleFetchRunnable(contextMap, toInstall, collectModulesWithJarName, useLocalLicenseData, onlyUseLocalLicenseData);
 
     }
 
     public RemoteModulesFetchRunnable getNotInstalledModulesRunnable(List<ModuleNeeded> neededModules,
             List<ModuleToInstall> toInstall) {
-        return getNotInstalledModulesRunnable(neededModules, toInstall, false, true);
+        return getNotInstalledModulesRunnable(neededModules, toInstall, false, true, false);
     }
 
     /**

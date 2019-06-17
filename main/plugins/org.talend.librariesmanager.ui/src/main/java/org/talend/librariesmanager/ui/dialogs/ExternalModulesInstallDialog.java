@@ -965,7 +965,6 @@ public class ExternalModulesInstallDialog extends TitleAreaDialog implements IMo
     protected void launchIndividualDownload(final AtomicInteger enabledButtonCount, final ModuleToInstall data,
             final Button button) {
         button.setEnabled(false);
-        enabledButtonCount.decrementAndGet();
         final DownloadModuleJob job = new DownloadModuleJob(Collections.singletonList(data));
         job.addJobChangeListener(new JobChangeAdapter() {
 
@@ -983,12 +982,13 @@ public class ExternalModulesInstallDialog extends TitleAreaDialog implements IMo
                             ImportExternalJarAction.cleanupLib(installedModule);
                         } else {
                             message = Messages.getString("ExternalModulesInstallDialog_Download_Fialed", data.getName());; //$NON-NLS-1$
-                            // set enable to let user be able to try download again
-                            button.setEnabled(true);
                         }
                         MessageDialog.openInformation(getShell(),
                                 Messages.getString("ExternalModulesInstallDialog.MessageDialog.Infor"), message); //$NON-NLS-1$
                         // need to force a refresh after install jars of component
+                        if (installedModule.contains(data.getName())) {
+                            enabledButtonCount.decrementAndGet();
+                        }
                         if (enabledButtonCount.get() == 0) {
                             if (GlobalServiceRegister.getDefault().isServiceRegistered(IDesignerCoreService.class)) {
                                 IDesignerCoreService service = (IDesignerCoreService) GlobalServiceRegister.getDefault()
