@@ -51,7 +51,7 @@ public class RunStat implements Runnable {
 
     public static String TYPE1_CONNECTION = "1";
 
-    public class StatBean {
+    private class StatBean {
 
         private String itemId;
 
@@ -333,7 +333,7 @@ public class RunStat implements Runnable {
 
     private List<String> keysList4Meter = new LinkedList<String>();
 
-    public synchronized StatBean logStatOnConnection(String connectionId, int mode, int nbLine) {
+    public synchronized StatBean log(String connectionId, int mode, int nbLine) {
         StatBean bean;
         String key = connectionId;
         if (connectionId.contains(".")) {
@@ -385,6 +385,32 @@ public class RunStat implements Runnable {
         }
 
         return bean;
+    }
+    
+    public synchronized void log(String connectionId, int mode, int nbLine, 
+    		JobStructureCatcherUtils jscu, String sourceNodeId, String sourceNodeComponent, String targetNodeId, String targetNodeComponent, String lineType) {
+    	StatBean bean = log(connectionId, mode, nbLine);
+    	jscu.addConnectionMessage(
+    		sourceNodeId, 
+    		sourceNodeComponent, 
+		    false,
+		    lineType,
+		    connectionId,
+		    bean.getNbLine(),
+		    bean.getStartTime(),
+		    bean.getEndTime()
+		);
+		
+ 		jscu.addConnectionMessage(
+			targetNodeId, 
+			targetNodeComponent, 
+		    true,
+		    "input",
+		    connectionId,
+		    bean.getNbLine(),
+		    bean.getStartTime(),
+		    bean.getEndTime()
+		);
     }
 
     public synchronized void updateStatOnConnection(String connectionId, int mode, int nbLine) {
