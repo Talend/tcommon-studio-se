@@ -26,6 +26,7 @@ import java.io.InputStreamReader;
 import java.security.SecureRandom;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.LinkedHashMap;
@@ -1015,6 +1016,18 @@ public class PomUtil {
                 file.delete();
             }
         }
+    }
+
+    public static void removeAllDependenciesFromPom(File pomFile, MavenArtifact ma) throws Exception {
+        Model pomModel = MavenPlugin.getMavenModelManager().readMavenModel(pomFile);
+        pomModel.setParent(null);
+        pomModel.setGroupId(ma.getGroupId());
+        pomModel.setArtifactId(ma.getArtifactId());
+        pomModel.setVersion(ma.getVersion());
+        pomModel.setDependencies(Collections.EMPTY_LIST);
+        pomModel.setDependencyManagement(null);
+        pomModel.setProfiles(Collections.EMPTY_LIST);
+        savePom(new NullProgressMonitor(), pomModel, pomFile);
     }
 
     private final static FileFilter lastUpdatedFilter = new FileFilter() {

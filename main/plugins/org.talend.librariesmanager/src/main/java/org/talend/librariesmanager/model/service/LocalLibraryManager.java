@@ -940,6 +940,53 @@ public class LocalLibraryManager implements ILibraryManagerService, IChangedLibr
         return null;
     }
 
+    private void updatePomFileForJar(String mvnUri) throws Exception {
+        try {
+            MavenArtifact ma = MavenUrlHelper.parseMvnUrl(mvnUri);
+            if (ma != null) {
+                String repositoryUrl = ma.getRepositoryUrl();
+                if (repositoryUrl == null || repositoryUrl.trim().isEmpty()
+                        || MavenConstants.LOCAL_RESOLUTION_URL.equalsIgnoreCase(repositoryUrl)) {
+                    return;
+                }
+                String groupId = ma.getGroupId();
+                String type = ma.getType();
+                if (type == null || type.trim().isEmpty()) {
+                    type = MavenConstants.PACKAGING_JAR;
+                }
+                if (!MavenConstants.DEFAULT_LIB_GROUP_ID.equals(groupId)
+                        && !MavenConstants.PACKAGING_POM.equalsIgnoreCase(type)) {
+                    MavenArtifact pomMa = ma.clone();
+                    pomMa.setType(MavenConstants.PACKAGING_POM);
+                    String classifier = pomMa.getClassifier();
+                    pomMa.setClassifier("");
+                    File pomFile = null;
+                    Exception pomEx = null;
+                    try {
+                        pomFile = TalendMavenResolver.resolve(MavenUrlHelper.generateMvnUrl(pomMa));
+                    } catch (Exception e) {
+                        pomEx = e;
+                    }
+                    if (pomFile == null && classifier != null && !classifier.trim().isEmpty()) {
+                        pomMa.setClassifier(classifier);
+                        try {
+                            pomFile = TalendMavenResolver.resolve(MavenUrlHelper.generateMvnUrl(pomMa));
+                        } catch (Exception e) {
+                            // ignore
+                        }
+                    }
+                    if (pomFile != null) {
+                        PomUtil.removeAllDependenciesFromPom(pomFile, ma);
+                    } else if (pomEx != null) {
+                        throw pomEx;
+                    }
+                }
+            }
+        } finally {
+            // to do
+        }
+    }
+
     /*
      * (non-Javadoc)
      * 
