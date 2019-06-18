@@ -1028,7 +1028,7 @@ public class LocalLibraryManager implements ILibraryManagerService, IChangedLibr
                         }
                     }
                     if (pomFile != null) {
-                        PomUtil.removeParentFromPom(pomFile, ma);
+                        PomUtil.removeAllDependenciesFromPom(pomFile, ma);
                     } else if (pomEx != null) {
                         throw pomEx;
                     }
