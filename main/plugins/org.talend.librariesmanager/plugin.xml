@@ -47,18 +47,6 @@
          <library
                name="crypto-utils.jar">
          </library>
-         <library
-               name="slf4j-api-1.7.10.jar">
-            <bundleId
-                  bundleId="org.talend.libraries.slf4j">
-            </bundleId>
-         </library>
-         <library
-               name="slf4j-log4j12-1.7.10.jar">
-            <bundleId
-                  bundleId="org.talend.libraries.slf4j">
-            </bundleId>
-         </library>   
       </systemRoutine>
    </extension>
    <extension
