@@ -60,7 +60,7 @@ public class RemoteModulesHelperTest {
         neededModules.add(m5);
         List<ModuleToInstall> toInstall1 = new ArrayList<ModuleToInstall>();
         IRunnableWithProgress notInstalledModulesRunnable = RemoteModulesHelper.getInstance()
-                .getNotInstalledModulesRunnable(neededModules, toInstall1, false, false);
+                .getNotInstalledModulesRunnable(neededModules, toInstall1, false, false, false);
         notInstalledModulesRunnable.run(new NullProgressMonitor());
         assertEquals(4, toInstall1.size());
 
@@ -74,7 +74,7 @@ public class RemoteModulesHelperTest {
         neededModules.add(m1);
         List<ModuleToInstall> toInstall1 = new ArrayList<ModuleToInstall>();
         IRunnableWithProgress notInstalledModulesRunnable = RemoteModulesHelper.getInstance()
-                .getNotInstalledModulesRunnable(neededModules, toInstall1, false, false);
+                .getNotInstalledModulesRunnable(neededModules, toInstall1, false, false, false);
         notInstalledModulesRunnable.run(new NullProgressMonitor());
         assertEquals(1, toInstall1.size());
         Assert.assertEquals("protobuf-java-2.6.1.jar", toInstall1.get(0).getName());
@@ -86,7 +86,7 @@ public class RemoteModulesHelperTest {
         neededModules.add(m2);
         toInstall1 = new ArrayList<ModuleToInstall>();
         notInstalledModulesRunnable = RemoteModulesHelper.getInstance().getNotInstalledModulesRunnable(neededModules, toInstall1,
-                false, false);
+                false, false, false);
         notInstalledModulesRunnable.run(new NullProgressMonitor());
         assertEquals(1, toInstall1.size());
         Assert.assertEquals("protobuf-java.jar", toInstall1.get(0).getName());
