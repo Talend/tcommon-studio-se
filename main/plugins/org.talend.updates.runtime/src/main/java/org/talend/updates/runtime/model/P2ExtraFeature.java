@@ -61,6 +61,7 @@ import org.osgi.framework.BundleContext;
 import org.osgi.framework.FrameworkUtil;
 import org.osgi.framework.ServiceReference;
 import org.talend.commons.exception.ExceptionHandler;
+import org.talend.commons.runtime.utils.io.IOUtils;
 import org.talend.core.GlobalServiceRegister;
 import org.talend.core.services.ICoreTisService;
 import org.talend.updates.runtime.engine.P2Manager;
@@ -275,7 +276,7 @@ public class P2ExtraFeature extends AbstractExtraFeature implements IP2Feature {
         try {
             if (!isUseLegacyP2Install()) {
                 // backup the config.ini
-                configIniBackupFile = copyConfigFile(null);
+                configIniBackupFile = backupConfigFile();
             } // else legacy p2 install will update the config.ini
             doInstallStatus = installP2(progress, allRepoUris);
             if (doInstallStatus == null || !doInstallStatus.isOK()) {
@@ -327,7 +328,7 @@ public class P2ExtraFeature extends AbstractExtraFeature implements IP2Feature {
             // restore the config.ini
             if (configIniBackupFile != null) { // must existed backup file.
                 try {
-                    copyConfigFile(configIniBackupFile);
+                    restoreConfigFile(configIniBackupFile, isInstalled);
                 } catch (IOException e) {
                     throw new P2ExtraFeatureException(
                             new ProvisionException(Messages.createErrorStatus(e, "ExtraFeaturesFactory.back.config.error"))); //$NON-NLS-1$
@@ -650,29 +651,30 @@ public class P2ExtraFeature extends AbstractExtraFeature implements IP2Feature {
         }
     }
 
-    /**
-     * copy the config.ini to a temporary file or vise versa is toRestore is not null
-     *
-     * @param toResore file to be copied to config.ini
-     * @return the temporary file to restore or null if toRestore is not null
-     * @throws IOException
-     */
-    protected File copyConfigFile(File toResore) throws IOException {
-        File tempFile = null;
+    protected File backupConfigFile() throws IOException {
         try {
             File configurationFile = PathUtils.getStudioConfigFile();
-            if (toResore != null) {
+            File tempFile = File.createTempFile("config.ini", null); //$NON-NLS-1$
+            FilesUtils.copyFile(new FileInputStream(configurationFile), tempFile);
+            return tempFile;
+        } catch (Exception e) {
+            if (e instanceof IOException) {
+                throw (IOException) e;
+            }
+            throw new IOException(e);
+        }
+    }
+
+    protected void restoreConfigFile(File toResore, boolean isInstalled) throws IOException {
+        try {
+            File configurationFile = PathUtils.getStudioConfigFile();
+            if (isInstalled && !IOUtils.contentEquals(new FileInputStream(configurationFile), new FileInputStream(toResore))) {
                 if (GlobalServiceRegister.getDefault().isServiceRegistered(ICoreTisService.class)) {
                     ICoreTisService coreTisService = (ICoreTisService) GlobalServiceRegister.getDefault()
                             .getService(ICoreTisService.class);
                     coreTisService.updateConfiguratorBundles(configurationFile, toResore);
                 }
-            } else {
-                tempFile = File.createTempFile("config.ini", null); //$NON-NLS-1$
-                FilesUtils.copyFile(new FileInputStream(configurationFile), tempFile);
             }
-        } catch (IOException e) {
-            throw e;
         } catch (Exception e) {
             throw new IOException(e);
         } finally {
@@ -680,7 +682,6 @@ public class P2ExtraFeature extends AbstractExtraFeature implements IP2Feature {
                 toResore.delete();
             }
         }
-        return tempFile;
     }
 
     @Override
