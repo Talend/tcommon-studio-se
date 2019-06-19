@@ -47,7 +47,10 @@ public class PluginOptionalMissingJarsExtraUpdatesFactory extends AbstractExtraU
     @Override
     public void retrieveUninstalledExtraFeatures(IProgressMonitor monitor, Set<ExtraFeature> uninstalledExtraFeatures)
             throws Exception {
-
+    	String disable_internet = System.getProperty("talend.disable.internet"); //$NON-NLS-1$
+    	if(disable_internet != null && Boolean.valueOf(disable_internet)) {
+    		return;
+    	}
         SubMonitor mainSubMonitor = SubMonitor.convert(monitor, 2);
         List<ModuleNeeded> unistalledModulesNeeded = ModulesNeededProvider
                 .filterOutRequiredModulesForBundle(ModulesNeededProvider.getUnistalledModulesNeeded());
