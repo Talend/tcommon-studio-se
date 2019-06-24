@@ -12,11 +12,14 @@
 // ============================================================================
 package org.talend.metadata.managment.ui.wizard.metadata.hive.creator;
 
+import java.net.URI;
+import java.net.URISyntaxException;
 import java.util.HashMap;
 import java.util.Map;
 
 import org.apache.commons.lang.StringUtils;
 import org.eclipse.core.runtime.CoreException;
+import org.talend.commons.exception.ExceptionHandler;
 import org.talend.core.GlobalServiceRegister;
 import org.talend.core.database.EDatabaseTypeName;
 import org.talend.core.database.conn.ConnParameterKeys;
@@ -100,6 +103,15 @@ public class HiveConnectionCreator extends AbstractHadoopDBConnectionCreator {
             String metastoreurl = params.get(EHadoopConfProperties.HIVE_METASTORE_URIS.getName());
             if (StringUtils.isNotEmpty(metastoreurl)) {
                 paramsMap.put(ConnParameterKeys.HIVE_AUTHENTICATION_METASTOREURL, metastoreurl);
+                try {
+                    URI uri = new URI(metastoreurl);
+                    String serverName = uri.getHost();
+                    if (StringUtils.isNotEmpty(serverName)) {
+                        paramsMap.put(ConnParameterKeys.CONN_PARA_KEY_DB_SERVER, serverName);
+                    }
+                } catch (URISyntaxException e) {
+                    ExceptionHandler.process(e);
+                }
             }
             String username = params.get(EHadoopConfProperties.JAVAX_JDO_OPTION_CONNECTIONUSERNAME.getName());
             if (StringUtils.isNotEmpty(username)) {
