@@ -15,5 +15,9 @@
             id="org.talend.repository.items.sync.children.contexts"
             provider="org.talend.repository.items.importexport.handlers.exports.SyncChildrenContextsResourcesProvider">
       </resourcesProvider>
+      <resourcesProvider
+            id="org.talend.repository.items.importexport.handlers.exports.SyncChildrenSourceCodeProvider"
+            provider="org.talend.repository.items.importexport.handlers.exports.SyncChildrenSourceCodeProvider">
+      </resourcesProvider>
    </extension>
 </plugin>
