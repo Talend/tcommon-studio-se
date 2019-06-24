@@ -201,15 +201,12 @@ public class CreateMavenJobPom extends AbstractMavenProcessorPom {
             }
         }
 
-        // same as JavaProcessor.initCodePath
-        String jobClassPackageFolder = JavaResourcesHelper.getJobClassPackageFolder(property.getItem());
-
         Project project = ProjectManager.getInstance().getProject(property);
         if (project == null) { // current project
             project = ProjectManager.getInstance().getCurrentProject().getEmfProject();
         }
-
-        checkPomProperty(properties, "talend.job.path", ETalendMavenVariables.JobPath, jobClassPackageFolder);
+        String talendJobPath = project.getTechnicalLabel().toLowerCase();
+        checkPomProperty(properties, "talend.job.path", ETalendMavenVariables.JobPath, talendJobPath);
         IPath jobFolderPath = ItemResourceUtil.getItemRelativePath(property);
         String jobFolder = "";
         if (jobFolderPath != null && !StringUtils.isEmpty(jobFolderPath.toPortableString())) {
