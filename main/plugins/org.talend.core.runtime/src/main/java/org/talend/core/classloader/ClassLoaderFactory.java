@@ -316,7 +316,7 @@ public class ClassLoaderFactory {
             String jarsStr = (String) metadataConn.getParameter(ConnParameterKeys.CONN_PARA_KEY_HADOOP_CUSTOM_JARS);
             moduleList = jarsStr.split(";"); //$NON-NLS-1$
         } else {
-            String index = getDistributionIndex(metadataConn); //$NON-NLS-1$
+            String index = getDistributionIndex(metadataConn); 
             moduleList = getDriverModuleList(index);
         }
         return moduleList;
@@ -365,39 +365,41 @@ public class ClassLoaderFactory {
         return hdClassLoader;
     }
 
-    private static synchronized IConfigurationElement[] getConfigurationElements() {
-        if (isCacheChanged()) {
-            IExtensionRegistry registry = Platform.getExtensionRegistry();
-            configurationElements = registry.getConfigurationElementsFor(EXTENSION_POINT_ID);
-        }
+    private static IConfigurationElement[] getConfigurationElements() {
+        checkCache();
         return configurationElements;
     }
 
-    private static boolean isCacheChanged() {
-        if (classLoadersMap == null) {
-            return true;
-        }
-        if (configurationElements == null) {
-            return true;
-        }
+    private synchronized static void checkCache() {
+        boolean isCacheChanged = false;
         if (configurationElements != null) {
             for (IConfigurationElement configElement : configurationElements) {
                 if (!configElement.isValid()) {
-                    return true;
+                    isCacheChanged = true;
                 }
             }
         }
-        if (cacheVersion != null && !cacheVersion.equals(BigDataBasicUtil.getDynamicDistributionCacheVersion())) {
-            return true;
+        if (!StringUtils.equals(cacheVersion, BigDataBasicUtil.getDynamicDistributionCacheVersion())) {
+            isCacheChanged = true;
         }
-        return false;
+        if (isCacheChanged) {
+            init();
+            IExtensionRegistry registry = Platform.getExtensionRegistry();
+            configurationElements = registry.getConfigurationElementsFor(EXTENSION_POINT_ID);
+            cacheVersion = BigDataBasicUtil.getDynamicDistributionCacheVersion();
+        } else {
+            if (classLoadersMap == null) {
+                init();
+            }
+            if (configurationElements == null) {
+                IExtensionRegistry registry = Platform.getExtensionRegistry();
+                configurationElements = registry.getConfigurationElementsFor(EXTENSION_POINT_ID);
+            }
+        }
     }
 
     private static Map<String, DynamicClassLoader> getClassLoaderMap() {
-        if (isCacheChanged()) {
-            init();
-            cacheVersion = BigDataBasicUtil.getDynamicDistributionCacheVersion();
-        }
+        checkCache();
         return classLoadersMap;
     }
 }
