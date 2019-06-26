@@ -83,6 +83,9 @@ public final class Java2SqlType {
         case Types.BIGINT:
         case Types.DECIMAL:
         case Types.NUMERIC:
+            // TDQ-16888 msjian: for mysql boolean type data's store value is 1 or 0
+            // for postgresql, bit type data's store value is 1 or 0
+        case Types.BIT:
             return true;
         default:
             return false;
