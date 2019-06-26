@@ -20,6 +20,7 @@ import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
 
 public class RunStat implements Runnable {
 
@@ -387,32 +388,154 @@ public class RunStat implements Runnable {
         return bean;
     }
     
-    public synchronized void log(String connectionId, int mode, int nbLine, 
+    public synchronized boolean log(Map<String, Object> resourceMap, String connectionId, int mode, int nbLine, 
     		JobStructureCatcherUtils jscu, String sourceNodeId, String sourceNodeComponent, String targetNodeId, String targetNodeComponent, String lineType) {
-    	StatBean bean = log(connectionId, mode, nbLine);
-    	jscu.addConnectionMessage(
-    		sourceNodeId, 
-    		sourceNodeComponent, 
-		    false,
-		    lineType,
-		    connectionId,
-		    bean.getNbLine(),
-		    bean.getStartTime(),
-		    bean.getEndTime()
-		);
-		
- 		jscu.addConnectionMessage(
-			targetNodeId, 
-			targetNodeComponent, 
-		    true,
-		    "input",
-		    connectionId,
-		    bean.getNbLine(),
-		    bean.getStartTime(),
-		    bean.getEndTime()
-		);
+    	if(resourceMap.get("inIterateVComp") == null || !((Boolean)resourceMap.get("inIterateVComp"))) {
+	    	StatBean bean = log(connectionId, mode, nbLine);
+	    	jscu.addConnectionMessage(
+	    		sourceNodeId, 
+	    		sourceNodeComponent, 
+			    false,
+			    lineType,
+			    connectionId,
+			    bean.getNbLine(),
+			    bean.getStartTime(),
+			    bean.getEndTime()
+			);
+			
+	 		jscu.addConnectionMessage(
+				targetNodeId, 
+				targetNodeComponent, 
+			    true,
+			    "input",
+			    connectionId,
+			    bean.getNbLine(),
+			    bean.getStartTime(),
+			    bean.getEndTime()
+			);
+	 		
+	 		return true;
+    	} else {
+    		return false;
+    	}
     }
 
+    /**
+     * work for avoiding the 65535 issue
+     * @param connectionId
+     * @param mode
+     * @param nbLine
+     */
+    public synchronized void updateStatOnConnection2(Map<String, Object> resourceMap, String iterateId, int mode, int nbLine, String... connectionIds) {
+    	if(resourceMap.get("inIterateVComp") == null || !((Boolean)resourceMap.get("inIterateVComp"))){
+	    	for(String connectionId : connectionIds) {
+	    		updateStatOnConnection(connectionId+iterateId, mode, nbLine);
+	    	}
+    	}
+    }
+    
+    /**
+     * work for avoiding the 65535 issue
+     * @param connectionId
+     * @param mode
+     * @param nbLine
+     */
+    public synchronized void updateStatOnConnection(Map<String, Object> resourceMap, String iterateId, int mode, int nbLine, String... connectionIds) {
+    	if(resourceMap.get("inIterateVComp") == null){
+	    	for(String connectionId : connectionIds) {
+	    		updateStatOnConnection(connectionId+iterateId, mode, nbLine);
+	    	}
+    	}
+    }
+    
+    /**
+     * work for avoiding the 65535 issue
+     * @param connectionId
+     * @param mode
+     * @param nbLine
+     */
+    public synchronized void log(Map<String, Object> resourceMap, String iterateId, int mode, int nbLine, String... connectionIds) {
+    	if(resourceMap.get("inIterateVComp") == null){
+	    	for(String connectionId : connectionIds) {
+	    		log(connectionId+iterateId, mode, nbLine);
+	    	}
+    	}
+    }
+    
+    /**
+     * work for avoiding the 65535 issue
+     * @param connectionId
+     * @param mode
+     * @param nbLine
+     */
+    public synchronized void updateStatOnConnection(String iterateId, int mode, int nbLine, String... connectionIds) {
+    	for(String connectionId : connectionIds) {
+    		updateStatOnConnection(connectionId+iterateId, mode, nbLine);
+    	}
+    }
+    
+    /**
+     * work for avoiding the 65535 issue
+     * @param connectionId
+     * @param mode
+     * @param nbLine
+     */
+    public synchronized void log(String iterateId, int mode, int nbLine, String... connectionIds) {
+    	for(String connectionId : connectionIds) {
+    		log(connectionId+iterateId, mode, nbLine);
+    	}
+    }
+    
+    /**
+     * work for avoiding the 65535 issue
+     * @param connectionId
+     * @param mode
+     * @param nbLine
+     */
+    public synchronized void updateStatOnConnectionAndLog(Map<String, Object> globalMap, String iterateLoop, String iterateId, boolean execStat, boolean enableLogStash, int nbLine, String... connectionIds) {
+    	for(String connectionId : connectionIds) {
+	    	ConcurrentHashMap<Object, Object> concurrentHashMap = (ConcurrentHashMap) globalMap.get("concurrentHashMap");
+			concurrentHashMap.putIfAbsent(connectionId + iterateLoop,new java.util.concurrent.atomic.AtomicInteger(0));
+			java.util.concurrent.atomic.AtomicInteger stats = (java.util.concurrent.atomic.AtomicInteger) concurrentHashMap.get(connectionId + iterateLoop);
+			
+			int step = stats.incrementAndGet()<=1?0:1;
+			
+			if(execStat) {
+				updateStatOnConnection(connectionId+iterateId, step, nbLine);
+			}
+			
+			if(enableLogStash) {
+				log(connectionId+iterateId, step, nbLine);
+			}
+    	}
+    }
+    
+    /**
+     * work for avoiding the 65535 issue
+     * @param connectionId
+     * @param mode
+     * @param nbLine
+     */
+    public synchronized void updateStatOnConnectionAndLog(Map<String, Object> resourceMap, Map<String, Object> globalMap, String iterateLoop, String iterateId, boolean execStat, boolean enableLogStash, int nbLine, String... connectionIds) {
+    	for(String connectionId : connectionIds) {
+    		if(resourceMap.get("inIterateVComp") == null) {
+		    	ConcurrentHashMap<Object, Object> concurrentHashMap = (ConcurrentHashMap) globalMap.get("concurrentHashMap");
+				concurrentHashMap.putIfAbsent(connectionId + iterateLoop,new java.util.concurrent.atomic.AtomicInteger(0));
+				java.util.concurrent.atomic.AtomicInteger stats = (java.util.concurrent.atomic.AtomicInteger) concurrentHashMap.get(connectionId + iterateLoop);
+				
+				int step = stats.incrementAndGet()<=1?0:1;
+				
+				if(execStat) {
+					updateStatOnConnection(connectionId+iterateId, step, nbLine);
+				}
+				
+				if(enableLogStash) {
+					log(connectionId+iterateId, step, nbLine);
+				}
+    		}
+    	}
+    }
+    
     public synchronized void updateStatOnConnection(String connectionId, int mode, int nbLine) {
         StatBean bean;
         String key = connectionId;
