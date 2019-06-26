@@ -15,6 +15,8 @@ package org.talend.updates.runtime.nexus.component;
 import java.io.File;
 import java.io.IOException;
 import java.util.Collection;
+import java.util.Dictionary;
+import java.util.Hashtable;
 
 import org.apache.commons.lang3.StringUtils;
 import org.eclipse.core.runtime.IProgressMonitor;
@@ -27,6 +29,7 @@ import org.talend.core.nexus.IRepositoryArtifactHandler;
 import org.talend.core.nexus.RepositoryArtifactHandlerManager;
 import org.talend.core.nexus.TalendMavenResolver;
 import org.talend.core.runtime.maven.MavenArtifact;
+import org.talend.core.runtime.services.IMavenUIService;
 import org.talend.updates.runtime.feature.model.Type;
 import org.talend.updates.runtime.model.interfaces.ITaCoKitCarFeature;
 import org.talend.updates.runtime.service.ITaCoKitUpdateService;
@@ -212,7 +215,15 @@ public class ComponentsDeploymentManager {
         artifactRepisotory.setRepositoryId(repositoryId);
         if (repositoryHandler == null) {
             repositoryHandler = RepositoryArtifactHandlerManager.getRepositoryHandler(artifactRepisotory);
-            repositoryHandler.updateMavenResolver(TalendMavenResolver.COMPONENT_MANANGER_RESOLVER, null);
+            Dictionary<String, String> properties = new Hashtable<String, String>();
+            if (GlobalServiceRegister.getDefault().isServiceRegistered(IMavenUIService.class)) {
+                IMavenUIService mavenUIService = (IMavenUIService) GlobalServiceRegister.getDefault()
+                        .getService(IMavenUIService.class);
+                if (mavenUIService != null) {
+                    properties = mavenUIService.getTalendMavenSetting();
+                }
+            }
+            repositoryHandler.updateMavenResolver(TalendMavenResolver.COMPONENT_MANANGER_RESOLVER, properties);
         }
         return repositoryHandler;
     }
