@@ -561,12 +561,8 @@ public class DatabaseWizard extends CheckLastVersionRepositoryWizard implements 
                 // MOD qiongli 2012-11-19 TDQ-6287
                 if (creation) {
                     tdqRepService.notifySQLExplorer(connectionItem);
-                    tdqRepService.openConnectionEditor(connectionItem);
                 } else {
                     tdqRepService.updateAliasInSQLExplorer(connectionItem, originaleObjectLabel);
-                    // refresh the opened connection editor whatever is in DI or DQ perspective.
-                    tdqRepService.refreshConnectionEditor(connectionItem);
-
                 }
                 if (CoreRuntimePlugin.getInstance().isDataProfilePerspectiveSelected()) {
                     tdqRepService.refresh(node.getParent());
@@ -1082,22 +1078,6 @@ public class DatabaseWizard extends CheckLastVersionRepositoryWizard implements 
                 }
             }
         }
-    }
-
-    @Override
-    /**
-     * TDQ-7217 if the related connection editor is opened in DQ side,shoud not unlock.
-     */
-    public void closeLockStrategy() {
-        ITDQRepositoryService tdqRepService = null;
-        if (GlobalServiceRegister.getDefault().isServiceRegistered(ITDQRepositoryService.class)) {
-            tdqRepService = (ITDQRepositoryService) GlobalServiceRegister.getDefault().getService(ITDQRepositoryService.class);
-        }
-        if (tdqRepService != null && tdqRepService.isDQEditorOpened(connectionItem)) {
-            tdqRepService.refreshConnectionEditor(connectionItem);
-            return;
-        }
-        super.closeLockStrategy();
     }
 
     private DatabaseConnection getDatabaseConnection(){

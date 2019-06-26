@@ -34,6 +34,7 @@ import org.talend.core.model.update.RepositoryUpdateManager;
 import org.talend.repository.model.IRepositoryNode;
 import org.talend.repository.model.RepositoryNode;
 import org.talend.utils.sugars.ReturnCode;
+
 import orgomg.cwm.objectmodel.core.ModelElement;
 
 /**
@@ -50,8 +51,6 @@ public interface ITDQRepositoryService extends IService {
     public static final String RULE_TABLE = "RULE_TABLE";//$NON-NLS-1$
 
     public IViewPart getTDQRespositoryView();
-
-    public void openConnectionEditor(Item item);
 
     /**
      *
@@ -120,8 +119,6 @@ public interface ITDQRepositoryService extends IService {
 
     // Add yyin 2012-11-15 TDQ-6395
     public void saveConnectionWithDependency(ConnectionItem connectionItem);
-
-    public void refreshConnectionEditor(Item item);
 
     // Add xqliu 2012-12-11 TDQ-5750
     public void refreshCurrentAnalysisEditor(ConnectionItem connectionItem);
