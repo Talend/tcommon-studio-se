@@ -121,7 +121,7 @@ public class ShareMavenArtifactsOnStartup extends ShareLibrareisHelper {
                 MavenUrlHelper.MVN_PROTOCOL + MavenConstants.LOCAL_RESOLUTION_URL + MavenUrlHelper.REPO_SEPERATOR);
         File file = null;
         try {
-            file = TalendMavenResolver.getMavenResolver().resolve(localMvnUrl);
+            file = TalendMavenResolver.resolve(localMvnUrl);
         } catch (IOException | RuntimeException e) {
             ExceptionHandler.process(e);
         }

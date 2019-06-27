@@ -98,23 +98,7 @@ public class NexusDownloadHelperWithProgress extends DownloadHelperWithProgress 
     private File resolveJar(ArtifactRepositoryBean customNexusServer, String decryptedMvnUri) throws Exception {
         ILibraryManagerService libManager = (ILibraryManagerService) GlobalServiceRegister.getDefault()
                 .getService(ILibraryManagerService.class);
-        File resolved = null;
-        try {
-            resolved = libManager.resolveJar(customNexusServer, decryptedMvnUri);
-        } catch (Exception e) {
-            // hide the user/password in the error
-            String regex = "\\://(.+)\\:(.+)@";
-            String message = e.getMessage();
-            message = message.replaceAll(regex, "://");
-            Exception cause = null;
-            if (e.getCause() != null) {
-                String causeMessage = e.getCause().getMessage();
-                causeMessage = causeMessage.replaceAll(regex, "://");
-                cause = new Exception(causeMessage);
-            }
-            throw new Exception(message, cause);
-        }
-        return resolved;
+        return libManager.resolveJar(customNexusServer, decryptedMvnUri);
     }
 
     /*

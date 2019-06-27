@@ -406,7 +406,7 @@ public class AggregatorPomsHelperTest {
             throws IOException {
         String projectMvnUrl = MavenUrlHelper.generateMvnUrl(groupId, artifactId, version, packaging, null);
         String projectLocalMavenUri = projectMvnUrl.replace("mvn:", "mvn:" + MavenConstants.LOCAL_RESOLUTION_URL + "!");
-        File installedFile = TalendMavenResolver.getMavenResolver().resolve(projectLocalMavenUri);
+        File installedFile = TalendMavenResolver.resolve(projectLocalMavenUri);
         return installedFile;
     }
 

@@ -46,7 +46,6 @@ import org.eclipse.core.runtime.preferences.ConfigurationScope;
 import org.eclipse.core.runtime.preferences.IEclipsePreferences;
 import org.eclipse.core.runtime.preferences.InstanceScope;
 import org.eclipse.emf.common.util.EMap;
-import org.ops4j.pax.url.mvn.MavenResolver;
 import org.osgi.framework.BundleContext;
 import org.osgi.framework.FrameworkUtil;
 import org.osgi.framework.ServiceReference;
@@ -971,7 +970,7 @@ public class LocalLibraryManager implements ILibraryManagerService, IChangedLibr
             localMavenUri = mvnUriStatusKey.replace("mvn:", "mvn:" + MavenConstants.LOCAL_RESOLUTION_URL + "!"); //$NON-NLS-1$ //$NON-NLS-2$
         }
         try {
-            File resolvedJar = TalendMavenResolver.getMavenResolver().resolve(localMavenUri);
+            File resolvedJar = TalendMavenResolver.resolve(localMavenUri);
             if (resolvedJar != null) {
                 try {
                     updatePomFileForJar(mvnUriStatusKey);
@@ -993,7 +992,6 @@ public class LocalLibraryManager implements ILibraryManagerService, IChangedLibr
 
     private void updatePomFileForJar(String mvnUri) throws Exception {
         try {
-            MavenResolver mavenResolver = TalendMavenResolver.getMavenResolver();
             MavenArtifact ma = MavenUrlHelper.parseMvnUrl(mvnUri);
             if (ma != null) {
                 String repositoryUrl = ma.getRepositoryUrl();
@@ -1015,14 +1013,14 @@ public class LocalLibraryManager implements ILibraryManagerService, IChangedLibr
                     File pomFile = null;
                     Exception pomEx = null;
                     try {
-                        pomFile = mavenResolver.resolve(MavenUrlHelper.generateMvnUrl(pomMa));
+                        pomFile = TalendMavenResolver.resolve(MavenUrlHelper.generateMvnUrl(pomMa));
                     } catch (Exception e) {
                         pomEx = e;
                     }
                     if (pomFile == null && classifier != null && !classifier.trim().isEmpty()) {
                         pomMa.setClassifier(classifier);
                         try {
-                            pomFile = mavenResolver.resolve(MavenUrlHelper.generateMvnUrl(pomMa));
+                            pomFile = TalendMavenResolver.resolve(MavenUrlHelper.generateMvnUrl(pomMa));
                         } catch (Exception e) {
                             // ignore
                         }
