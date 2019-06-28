@@ -39,8 +39,6 @@ import org.talend.repository.ui.wizards.metadata.connection.files.xml.XmlFileOut
  */
 public class ImportTreeFromXMLAction extends SelectionProviderAction {
 
-    private static final String PLUGIN_ID = "org.talend.repository.metadata"; //$NON-NLS-1$
-
     private static final String LINEFEED = "\n";//$NON-NLS-1$
 
     private TreeViewer xmlViewer;
@@ -80,7 +78,7 @@ public class ImportTreeFromXMLAction extends SelectionProviderAction {
                     for (String xsdfilePath : notExistImportSchema) {
                         detail.append(xsdfilePath).append(LINEFEED);
                     }
-                    new ErrorDialogWidthDetailArea(xmlViewer.getControl().getShell(), PLUGIN_ID,
+                    new ErrorDialogWidthDetailArea(xmlViewer.getControl().getShell(), Messages.PLUGIN_ID,
                             Messages.getString("ImportTreeFromXMLAction.ImportSchemaNotExistError"), detail.toString());//$NON-NLS-1$
                 } else {
                     List<ATreeNode> list = new XSDPopulationUtil2().getAllRootNodes(xsdSchema);

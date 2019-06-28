@@ -102,8 +102,6 @@ public class XmlFileStep1Form extends AbstractXmlFileStepForm {
 
     private static final String LINEFEED = "\n";//$NON-NLS-1$
 
-    private static final String PLUGIN_ID = "org.talend.repository.metadata"; //$NON-NLS-1$
-
     /**
      * Settings.
      */
@@ -955,7 +953,7 @@ public class XmlFileStep1Form extends AbstractXmlFileStepForm {
             for (String xsdfilePath : notExistImportSchema) {
                 detail.append(xsdfilePath).append(LINEFEED);
             }
-            new ErrorDialogWidthDetailArea(this.getShell(), PID,
+            new ErrorDialogWidthDetailArea(this.getShell(), Messages.PLUGIN_ID,
                     Messages.getString("ImportTreeFromXMLAction.ImportSchemaNotExistError"), detail.toString());//$NON-NLS-1$
         }
         return flag;
