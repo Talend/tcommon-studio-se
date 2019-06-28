@@ -82,23 +82,25 @@ public class ImportTreeFromXMLAction extends SelectionProviderAction {
                     }
                     new ErrorDialogWidthDetailArea(xmlViewer.getControl().getShell(), PLUGIN_ID,
                             Messages.getString("ImportTreeFromXMLAction.ImportSchemaNotExistError"), detail.toString());//$NON-NLS-1$
-                }
-                List<ATreeNode> list = new XSDPopulationUtil2().getAllRootNodes(xsdSchema);
-                if (list.size() > 1) {
-                    RootNodeSelectDialog dialog = new RootNodeSelectDialog(xmlViewer.getControl().getShell(), list);
-                    if (dialog.open() == IDialogConstants.OK_ID) {
-                        ATreeNode selectedNode = dialog.getSelectedNode();
-                        newInput = TreeUtil.getFoxTreeNodesByRootNode(xsdSchema, selectedNode);
-                        if (form instanceof XmlFileOutputStep2Form) {
-                            ((XmlFileOutputStep2Form) form).resetRootCombo();
-                        }
-                        changed = true;
-                    } else {
-                        changed = false;
-                    }
                 } else {
-                    newInput = TreeUtil.getFoxTreeNodesByRootNode(xsdSchema, list.get(0));
-                    changed = true;
+                    List<ATreeNode> list = new XSDPopulationUtil2().getAllRootNodes(xsdSchema);
+                    if (list.size() > 1) {
+                        RootNodeSelectDialog dialog = new RootNodeSelectDialog(xmlViewer.getControl().getShell(), list);
+                        if (dialog.open() == IDialogConstants.OK_ID) {
+                            ATreeNode selectedNode = dialog.getSelectedNode();
+                            newInput = TreeUtil.getFoxTreeNodesByRootNode(xsdSchema, selectedNode);
+                            if (form instanceof XmlFileOutputStep2Form) {
+                                ((XmlFileOutputStep2Form) form).resetRootCombo();
+                            }
+                            changed = true;
+                        } else {
+                            changed = false;
+                        }
+                    } else {
+                        newInput = TreeUtil.getFoxTreeNodesByRootNode(xsdSchema, list.get(0));
+                        changed = true;
+                    }
+
                 }
             } else {
                 newInput = TreeUtil.getFoxTreeNodes(filePath);
