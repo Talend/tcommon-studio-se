@@ -511,6 +511,10 @@ public class PomUtil {
         return repoPath + "/" + artifactPath; //$NON-NLS-1$
     }
 
+    public static String getLocalRepositoryPath() {
+        return MavenPlugin.getMaven().getLocalRepositoryPath();
+    }
+
     /**
      * Get absolute path for installed artifact
      *
