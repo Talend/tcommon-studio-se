@@ -234,6 +234,7 @@ public class RepoDoubleClickAction extends Action {
                         }, deviceData);
                     } catch (Exception e) {
                         ExceptionHandler.process(e);
+                        // TODO show message
                     }
                 }
             });

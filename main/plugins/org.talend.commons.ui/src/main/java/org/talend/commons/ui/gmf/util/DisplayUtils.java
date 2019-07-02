@@ -14,6 +14,8 @@ package org.talend.commons.ui.gmf.util;
 
 import java.util.concurrent.Semaphore;
 
+import javax.transaction.NotSupportedException;
+
 import org.eclipse.swt.graphics.DeviceData;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Shell;
@@ -130,6 +132,9 @@ public class DisplayUtils {
     }
 
     public static void syncExecInNewUIThread(Runnable runnable, DeviceData deviceData) throws Exception {
+        if (EnvironmentUtils.isLinuxUnixSystem()) {
+            throw new NotSupportedException("Linux/Unit doesn't support multiple display.");
+        }
         final Semaphore semaphore = new Semaphore(1, true);
         semaphore.acquire();
         Thread thread = new Thread(new Runnable() {
