@@ -22,6 +22,7 @@ import org.eclipse.swt.widgets.Shell;
 import org.eclipse.ui.IWorkbenchWindow;
 import org.eclipse.ui.PlatformUI;
 import org.talend.commons.exception.ExceptionHandler;
+import org.talend.commons.ui.i18n.Messages;
 import org.talend.commons.utils.system.EnvironmentUtils;
 
 /**
@@ -131,8 +132,9 @@ public class DisplayUtils {
     }
 
     public static void syncExecInNewUIThread(Runnable runnable, DeviceData deviceData) throws Exception {
+        // Linux doesn't allow creating a display instance in a new thread.
         if (EnvironmentUtils.isLinuxUnixSystem()) {
-            throw new NotSupportedException("Linux/Unit doesn't support multiple display.");
+            throw new NotSupportedException(Messages.getString("DisplayUtils.NotSupportedExceptionOnLinux"));//$NON-NLS-1$
         }
         final Semaphore semaphore = new Semaphore(1, true);
         semaphore.acquire();

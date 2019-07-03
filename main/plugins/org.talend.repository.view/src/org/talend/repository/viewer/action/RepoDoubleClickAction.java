@@ -16,10 +16,13 @@ import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.transaction.NotSupportedException;
+
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.jobs.Job;
 import org.eclipse.jface.action.Action;
+import org.eclipse.jface.dialogs.MessageDialog;
 import org.eclipse.jface.operation.IRunnableWithProgress;
 import org.eclipse.jface.viewers.ISelection;
 import org.eclipse.jface.viewers.IStructuredSelection;
@@ -234,7 +237,11 @@ public class RepoDoubleClickAction extends Action {
                         }, deviceData);
                     } catch (Exception e) {
                         ExceptionHandler.process(e);
-                        // TODO show message
+                        if (e instanceof NotSupportedException) {
+                            MessageDialog.openInformation(DisplayUtils.getDefaultShell(false),
+                                    Messages.getString("RepoDoubleClickAction.Warning"), e.getMessage());
+                        }
+
                     }
                 }
             });
