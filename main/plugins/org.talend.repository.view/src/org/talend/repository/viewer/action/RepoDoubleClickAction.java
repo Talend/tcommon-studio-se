@@ -27,7 +27,6 @@ import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.jface.viewers.StructuredViewer;
 import org.eclipse.swt.graphics.DeviceData;
 import org.eclipse.swt.widgets.Display;
-import org.eclipse.swt.widgets.Shell;
 import org.talend.commons.exception.ExceptionHandler;
 import org.talend.commons.ui.gmf.util.DisplayUtils;
 import org.talend.commons.ui.swt.actions.ITreeContextualAction;
@@ -164,7 +163,6 @@ public class RepoDoubleClickAction extends Action {
                                 }
                                 final String info = Messages.getString("RepoDoubleClickAction.wait4run", clonedAction.getText(), //$NON-NLS-1$
                                         name);
-                                Shell shell = DisplayUtils.getDefaultShell(false);
                                 final Job waitForRunJob = new Job(info) {
 
                                     @Override
@@ -193,7 +191,7 @@ public class RepoDoubleClickAction extends Action {
                                         return org.eclipse.core.runtime.Status.OK_STATUS;
                                     }
                                 };
-                                RunInBackgroundProgressMonitorDialog dialog = new RunInBackgroundProgressMonitorDialog(shell);
+                                RunInBackgroundProgressMonitorDialog dialog = new RunInBackgroundProgressMonitorDialog(null);
                                 try {
                                     waitForRunJob.schedule();
                                     dialog.run(true, true, new IRunnableWithProgress() {

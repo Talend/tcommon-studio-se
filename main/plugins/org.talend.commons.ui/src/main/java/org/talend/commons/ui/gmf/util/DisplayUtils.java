@@ -14,8 +14,6 @@ package org.talend.commons.ui.gmf.util;
 
 import java.util.concurrent.Semaphore;
 
-import javax.transaction.NotSupportedException;
-
 import org.eclipse.swt.graphics.DeviceData;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Shell;
@@ -137,7 +135,7 @@ public class DisplayUtils {
          * remove this check if future eclipse version support it again
          */
         if (EnvironmentUtils.isLinuxUnixSystem()) {
-            throw new NotSupportedException(Messages.getString("DisplayUtils.NotSupportedExceptionOnLinux"));//$NON-NLS-1$
+            throw new UnsupportedOperationException(Messages.getString("DisplayUtils.NotSupportedExceptionOnLinux"));//$NON-NLS-1$
         }
         final Semaphore semaphore = new Semaphore(1, true);
         semaphore.acquire();
