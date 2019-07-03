@@ -22,7 +22,6 @@ import org.eclipse.swt.widgets.Shell;
 import org.eclipse.ui.IWorkbenchWindow;
 import org.eclipse.ui.PlatformUI;
 import org.talend.commons.exception.ExceptionHandler;
-import org.talend.commons.ui.swt.LinuxDisplay;
 import org.talend.commons.utils.system.EnvironmentUtils;
 
 /**
@@ -143,9 +142,9 @@ public class DisplayUtils {
             public void run() {
                 Display display = null;
                 if (deviceData == null) {
-                    display = EnvironmentUtils.isLinuxUnixSystem() ? new LinuxDisplay() : new Display();
+                    display = new Display();
                 } else {
-                    display = EnvironmentUtils.isLinuxUnixSystem() ? new LinuxDisplay(deviceData) : new Display(deviceData);
+                    display = new Display(deviceData);
                 }
                 try {
                     Thread currentThread = Thread.currentThread();
