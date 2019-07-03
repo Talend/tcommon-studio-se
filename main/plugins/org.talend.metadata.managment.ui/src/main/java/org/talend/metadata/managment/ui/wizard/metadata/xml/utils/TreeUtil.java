@@ -863,6 +863,11 @@ public class TreeUtil {
      */
     public static Set<String> getNotExistImportSchema(String schemaFileName, XSDSchema xsdSchema) {
         Set<String> importRefSchemaNotExist = new HashSet<String>();
+        checkImportSchemaExist(importRefSchemaNotExist, schemaFileName, xsdSchema);
+        return importRefSchemaNotExist;
+    }
+
+    private static void checkImportSchemaExist(Set<String> importRefSchemaNotExist, String schemaFileName, XSDSchema xsdSchema) {
         EList<XSDSchemaContent> contents = xsdSchema.getContents();
         for (XSDSchemaContent xsdSchemaContent : contents) {
             if (xsdSchemaContent instanceof XSDImport) {
@@ -872,24 +877,37 @@ public class TreeUtil {
                 }
                 String schemaLocation = xsdImport.getSchemaLocation();
                 File importFile = new File(schemaLocation);
+                String existedFile = null;
                 if (importFile.isAbsolute()) {
                     if (!importFile.exists()) {
                         importRefSchemaNotExist.add(schemaLocation);
+                    } else {
+                        // check deep import schema
+                        checkImportSchemaExist(importRefSchemaNotExist, schemaLocation, getXSDSchema(schemaLocation));
                     }
                 } else {
+                    
                     String parent = new File(schemaFileName).getParent();
                     File importSchemaFile = new File(parent, schemaLocation);
-                    if (!importSchemaFile.exists()) {
-                        try {
-                            importRefSchemaNotExist.add(importSchemaFile.getCanonicalPath());
-                        } catch (IOException e) {
-                            // do nothing
+                    String canonicalPath = null;
+                    try {
+                        canonicalPath = importSchemaFile.getCanonicalPath();
+                    } catch (IOException e) {
+                        ExceptionHandler.process(e);
+                    }
+
+                    if (canonicalPath != null) {
+                        if (!importSchemaFile.exists()) {
+                            importRefSchemaNotExist.add(canonicalPath);
+                        } else {
+                            // check deep import schema
+                            checkImportSchemaExist(importRefSchemaNotExist, canonicalPath, getXSDSchema(canonicalPath));
                         }
                     }
                 }
             }
         }
-        return importRefSchemaNotExist;
+
     }
 
     private static IPath getTempPath() {
