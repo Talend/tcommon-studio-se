@@ -132,7 +132,10 @@ public class DisplayUtils {
     }
 
     public static void syncExecInNewUIThread(Runnable runnable, DeviceData deviceData) throws Exception {
-        // Linux doesn't allow creating a display instance in a new thread.
+        /**
+         * Linux doesn't allow creating a display instance in a new thread after upgrading eclipse platform 4.10, we can
+         * remove this check if future eclipse version support it again
+         */
         if (EnvironmentUtils.isLinuxUnixSystem()) {
             throw new NotSupportedException(Messages.getString("DisplayUtils.NotSupportedExceptionOnLinux"));//$NON-NLS-1$
         }
