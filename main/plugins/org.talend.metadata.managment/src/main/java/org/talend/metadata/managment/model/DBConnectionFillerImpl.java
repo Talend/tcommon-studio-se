@@ -1739,6 +1739,8 @@ public class DBConnectionFillerImpl extends MetadataFillerImpl<DatabaseConnectio
                                 // obviously
                                 // the sql
                                 // data type it is null and results in a NPE
+                            } else if (typeName.toLowerCase().equals("datetime2")) { //$NON-NLS-1$
+                                dataType = 93;
                             }
                         }
 
