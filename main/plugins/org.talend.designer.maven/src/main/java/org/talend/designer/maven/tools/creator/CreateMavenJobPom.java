@@ -733,12 +733,12 @@ public class CreateMavenJobPom extends AbstractMavenProcessorPom {
             Document document = PomUtil.loadAssemblyFile(null, assemblyFile);
             // add talend libs & codes
             setupDependencySetNode(document, talendLibCoordinateMap, "lib", "${artifact.artifactId}.${artifact.extension}",
-                    false);
+                    false, false);
             // add 3rd party libs <dependencySet>
-            setupDependencySetNode(document, _3rdDepLibMap, "lib", null, false);
+            setupDependencySetNode(document, _3rdDepLibMap, "lib", null, false, false);
             // add jobs
             setupDependencySetNode(document, jobCoordinateMap, "${talend.job.name}",
-                    "${artifact.build.finalName}.${artifact.extension}", true);
+                    "${artifact.build.finalName}.${artifact.extension}", true, false);
             // add duplicate dependencies if exists
             setupFileNode(document, duplicateLibs);
 
@@ -805,7 +805,7 @@ public class CreateMavenJobPom extends AbstractMavenProcessorPom {
     }
 
     protected void setupDependencySetNode(Document document, Map<String, Dependency> libIncludes, String outputDir,
-            String fileNameMapping, boolean useProjectArtifact) {
+            String fileNameMapping, boolean useProjectArtifact, boolean unpack) {
         if (libIncludes.isEmpty()) {
             return;
         }
@@ -816,9 +816,11 @@ public class CreateMavenJobPom extends AbstractMavenProcessorPom {
         Node dependencySetNode = document.createElement("dependencySet");
         dependencySetsNode.appendChild(dependencySetNode);
 
-        Node outputDirNode = document.createElement("outputDirectory");
-        outputDirNode.setTextContent(outputDir);
-        dependencySetNode.appendChild(outputDirNode);
+        if (StringUtils.isNotBlank(outputDir)) {
+            Node outputDirNode = document.createElement("outputDirectory");
+            outputDirNode.setTextContent(outputDir);
+            dependencySetNode.appendChild(outputDirNode);
+        }
 
         Node includesNode = document.createElement("includes");
         dependencySetNode.appendChild(includesNode);
@@ -838,6 +840,12 @@ public class CreateMavenJobPom extends AbstractMavenProcessorPom {
         Node useProjectArtifactNode = document.createElement("useProjectArtifact");
         useProjectArtifactNode.setTextContent(Boolean.toString(useProjectArtifact));
         dependencySetNode.appendChild(useProjectArtifactNode);
+
+        if (unpack) {
+            Node unpackNode = document.createElement("unpack");
+            unpackNode.setTextContent(Boolean.TRUE.toString());
+            dependencySetNode.appendChild(unpackNode);
+        }
 
     }
 
