@@ -20,6 +20,8 @@ import org.eclipse.swt.widgets.Shell;
 import org.eclipse.ui.IWorkbenchWindow;
 import org.eclipse.ui.PlatformUI;
 import org.talend.commons.exception.ExceptionHandler;
+import org.talend.commons.ui.i18n.Messages;
+import org.talend.commons.utils.system.EnvironmentUtils;
 
 /**
  * Utility methods to work with Display object
@@ -128,6 +130,13 @@ public class DisplayUtils {
     }
 
     public static void syncExecInNewUIThread(Runnable runnable, DeviceData deviceData) throws Exception {
+        /**
+         * Linux doesn't allow creating a display instance in a new thread after upgrading eclipse platform 4.10, we can
+         * remove this check if future eclipse version support it again
+         */
+        if (EnvironmentUtils.isLinuxUnixSystem()) {
+            throw new UnsupportedOperationException(Messages.getString("DisplayUtils.NotSupportedExceptionOnLinux"));//$NON-NLS-1$
+        }
         final Semaphore semaphore = new Semaphore(1, true);
         semaphore.acquire();
         Thread thread = new Thread(new Runnable() {

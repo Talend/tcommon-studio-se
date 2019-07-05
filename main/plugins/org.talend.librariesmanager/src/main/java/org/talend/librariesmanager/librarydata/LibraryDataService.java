@@ -287,7 +287,11 @@ public class LibraryDataService {
                 bestLicense = objLicenseList.get(0);
             }
             if (bestLicense != null) {
-                artifact.setLicense(bestLicense.getName());
+                String licenseName = bestLicense.getName();
+                if (licenseName == null || "null".equalsIgnoreCase(licenseName)) {
+                    licenseName = UNRESOLVED_LICENSE_NAME;
+                }
+                artifact.setLicense(licenseName);
                 artifact.setLicenseUrl(bestLicense.getUrl());
             }
 

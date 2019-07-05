@@ -21,6 +21,7 @@ import org.apache.log4j.Logger;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.SubMonitor;
 import org.eclipse.jface.operation.IRunnableWithProgress;
+import org.talend.commons.utils.network.NetworkUtil;
 import org.talend.core.model.general.ModuleNeeded;
 import org.talend.core.model.general.ModuleToInstall;
 import org.talend.librariesmanager.model.ModulesNeededProvider;
@@ -47,7 +48,10 @@ public class PluginOptionalMissingJarsExtraUpdatesFactory extends AbstractExtraU
     @Override
     public void retrieveUninstalledExtraFeatures(IProgressMonitor monitor, Set<ExtraFeature> uninstalledExtraFeatures)
             throws Exception {
-
+    	if(!NetworkUtil.isNetworkValid()) {
+    		return;
+    	}
+    	
         SubMonitor mainSubMonitor = SubMonitor.convert(monitor, 2);
         List<ModuleNeeded> unistalledModulesNeeded = ModulesNeededProvider
                 .filterOutRequiredModulesForBundle(ModulesNeededProvider.getUnistalledModulesNeeded());

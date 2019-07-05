@@ -490,7 +490,7 @@ public abstract class RepositoryUpdateManager {
     }
 
     @SuppressWarnings("unchecked")
-    private boolean filterForType(UpdateResult result) {
+    protected boolean filterForType(UpdateResult result) {
         if (result == null || parameter == null) {
             return false;
         }

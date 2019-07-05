@@ -280,13 +280,6 @@ public class MDMWizard extends RepositoryWizard implements INewWizard {
         list.add(repositoryObject);
 
         if (tdqRepService != null) {
-            // MOD qiongli 2012-11-23 TDQ-6287
-            if (creation) {
-                tdqRepService.openConnectionEditor(connectionItem);
-            } else {
-                // refresh the opened connection editor whatever is in DI or DQ perspective.
-                tdqRepService.refreshConnectionEditor(connectionItem);
-            }
             if (CoreRuntimePlugin.getInstance().isDataProfilePerspectiveSelected()) {
                 tdqRepService.refresh(node.getParent());
             }
@@ -369,19 +362,4 @@ public class MDMWizard extends RepositoryWizard implements INewWizard {
         this.currentPage = currentPage;
     }
 
-    @Override
-    /**
-     * TDQ-7217 if the related connection editor is opened in DQ side,shoud not unlock.
-     */
-    public void closeLockStrategy() {
-        ITDQRepositoryService tdqRepService = null;
-        if (GlobalServiceRegister.getDefault().isServiceRegistered(ITDQRepositoryService.class)) {
-            tdqRepService = (ITDQRepositoryService) GlobalServiceRegister.getDefault().getService(ITDQRepositoryService.class);
-        }
-        if (tdqRepService != null && tdqRepService.isDQEditorOpened(connectionItem)) {
-            tdqRepService.refreshConnectionEditor(connectionItem);
-            return;
-        }
-        super.closeLockStrategy();
-    }
 }

@@ -19,20 +19,26 @@ import java.net.URISyntaxException;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
+import org.apache.commons.lang.StringUtils;
 import org.apache.xerces.xs.XSModel;
 import org.eclipse.core.resources.IProject;
 import org.eclipse.core.runtime.FileLocator;
 import org.eclipse.core.runtime.IPath;
 import org.eclipse.core.runtime.Path;
 import org.eclipse.core.runtime.Platform;
+import org.eclipse.emf.common.util.EList;
 import org.eclipse.jface.dialogs.IDialogConstants;
 import org.eclipse.jface.dialogs.MessageDialog;
 import org.eclipse.swt.widgets.Shell;
+import org.eclipse.xsd.XSDImport;
 import org.eclipse.xsd.XSDSchema;
+import org.eclipse.xsd.XSDSchemaContent;
 import org.osgi.framework.Bundle;
 import org.talend.commons.exception.PersistenceException;
 import org.talend.commons.runtime.xml.XmlUtil;
@@ -847,6 +853,61 @@ public class TreeUtil {
             ExceptionHandler.process(e);
         }
         return schema;
+    }
+
+    /**
+     * There maybe some import reference schema for one main schema, check if they are exist or not DOC jding Comment
+     * method "getNotExistImportSchema".
+     * 
+     * @return
+     */
+    public static Set<String> getNotExistImportSchema(String schemaFileName, XSDSchema xsdSchema) {
+        Set<String> importRefSchemaNotExist = new HashSet<String>();
+        checkImportSchemaExist(importRefSchemaNotExist, schemaFileName, xsdSchema);
+        return importRefSchemaNotExist;
+    }
+
+    private static void checkImportSchemaExist(Set<String> importRefSchemaNotExist, String schemaFileName, XSDSchema xsdSchema) {
+        EList<XSDSchemaContent> contents = xsdSchema.getContents();
+        for (XSDSchemaContent xsdSchemaContent : contents) {
+            if (xsdSchemaContent instanceof XSDImport) {
+                XSDImport xsdImport = (XSDImport) xsdSchemaContent;
+                if (StringUtils.isEmpty(xsdImport.getSchemaLocation())) {
+                    continue;
+                }
+                String schemaLocation = xsdImport.getSchemaLocation();
+                File importFile = new File(schemaLocation);
+                String existedFile = null;
+                if (importFile.isAbsolute()) {
+                    if (!importFile.exists()) {
+                        importRefSchemaNotExist.add(schemaLocation);
+                    } else {
+                        // check deep import schema
+                        checkImportSchemaExist(importRefSchemaNotExist, schemaLocation, getXSDSchema(schemaLocation));
+                    }
+                } else {
+                    
+                    String parent = new File(schemaFileName).getParent();
+                    File importSchemaFile = new File(parent, schemaLocation);
+                    String canonicalPath = null;
+                    try {
+                        canonicalPath = importSchemaFile.getCanonicalPath();
+                    } catch (IOException e) {
+                        ExceptionHandler.process(e);
+                    }
+
+                    if (canonicalPath != null) {
+                        if (!importSchemaFile.exists()) {
+                            importRefSchemaNotExist.add(canonicalPath);
+                        } else {
+                            // check deep import schema
+                            checkImportSchemaExist(importRefSchemaNotExist, canonicalPath, getXSDSchema(canonicalPath));
+                        }
+                    }
+                }
+            }
+        }
+
     }
 
     private static IPath getTempPath() {

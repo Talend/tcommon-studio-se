@@ -58,6 +58,7 @@ import org.talend.metadata.managment.repository.ManagerConnection;
 import org.talend.metadata.managment.ui.wizard.CheckLastVersionRepositoryWizard;
 import org.talend.repository.metadata.i18n.Messages;
 import org.talend.repository.model.IProxyRepositoryFactory;
+
 import orgomg.cwm.objectmodel.core.Package;
 
 /**
@@ -369,19 +370,4 @@ public class DatabaseTableWizard extends CheckLastVersionRepositoryWizard implem
         return isNeed;
     }
 
-    @Override
-    /**
-     * TUP-2073 if the related connection editor is opened in DQ side,should not unlock.
-     */
-    public void closeLockStrategy() {
-        ITDQRepositoryService tdqRepService = null;
-        if (GlobalServiceRegister.getDefault().isServiceRegistered(ITDQRepositoryService.class)) {
-            tdqRepService = (ITDQRepositoryService) GlobalServiceRegister.getDefault().getService(ITDQRepositoryService.class);
-        }
-        if (tdqRepService != null && tdqRepService.isDQEditorOpened(connectionItem)) {
-            tdqRepService.refreshConnectionEditor(connectionItem);
-            return;
-        }
-        super.closeLockStrategy();
-    }
 }

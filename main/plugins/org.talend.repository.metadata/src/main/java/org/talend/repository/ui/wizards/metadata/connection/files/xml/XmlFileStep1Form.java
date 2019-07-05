@@ -26,6 +26,7 @@ import java.nio.charset.Charset;
 import java.text.MessageFormat;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
 
 import org.apache.log4j.Logger;
 import org.apache.oro.text.regex.MalformedPatternException;
@@ -98,6 +99,8 @@ import org.talend.repository.metadata.ui.wizards.form.AbstractXmlFileStepForm;
 public class XmlFileStep1Form extends AbstractXmlFileStepForm {
 
     private static Logger log = Logger.getLogger(XmlFileStep1Form.class);
+
+    private static final String LINEFEED = "\n";//$NON-NLS-1$
 
     /**
      * Settings.
@@ -193,45 +196,52 @@ public class XmlFileStep1Form extends AbstractXmlFileStepForm {
             if (XmlUtil.isXSDFile(convertedFilePath)) {
                 try {
                     XSDSchema schema = TreeUtil.getXSDSchema(convertedFilePath);
-                    List<ATreeNode> rootNodes = new XSDPopulationUtil2().getAllRootNodes(schema);
-                    if (rootNodes.size() > 0) {
-                        ATreeNode rootNode = getDefaultRootNode(rootNodes);
-                        if (rootNode != null) {
-                            List<ATreeNode> treeNodes = new ArrayList<ATreeNode>();
-                            valid = treePopulator.populateTree(schema, rootNode, treeNodes);
-                            if (treeNodes.size() > 0) {
-                                treeNode = treeNodes.get(0);
-                            }
-                        } else {
-                            String xmlPath = getConnection().getSchema().get(0).getAbsoluteXPathQuery();
-                            if (xmlPath != null && xmlPath.length() > 0) {
-                                xmlPath = xmlPath.substring(xmlPath.lastIndexOf("/") + 1); //$NON-NLS-1$
-                                boolean found = false;
-                                for (int i = 0; i < rootNodes.size(); i++) {
-                                    ATreeNode node = rootNodes.get(i);
-                                    if (xmlPath.equals(node.getValue())) {
-                                        List<ATreeNode> treeNodes = new ArrayList<ATreeNode>();
-                                        valid = treePopulator.populateTree(schema, node, treeNodes);
-                                        if (treeNodes.size() > 0) {
-                                            treeNode = treeNodes.get(0);
-                                        }
-                                        found = true;
-                                        break;
-                                    }
+
+                    // check if there have some (<xs:import>) import reference schema xsd file don't exist
+                    boolean missing = checkIfImportReferenceSchemaNotExist(convertedFilePath, schema);
+                    if (missing) {
+                        missingReferenceSchema = true;
+                    } else {
+                        List<ATreeNode> rootNodes = new XSDPopulationUtil2().getAllRootNodes(schema);
+                        if (rootNodes.size() > 0) {
+                            ATreeNode rootNode = getDefaultRootNode(rootNodes);
+                            if (rootNode != null) {
+                                List<ATreeNode> treeNodes = new ArrayList<ATreeNode>();
+                                valid = treePopulator.populateTree(schema, rootNode, treeNodes);
+                                if (treeNodes.size() > 0) {
+                                    treeNode = treeNodes.get(0);
                                 }
-                                if (!found) {
+                            } else {
+                                String xmlPath = getConnection().getSchema().get(0).getAbsoluteXPathQuery();
+                                if (xmlPath != null && xmlPath.length() > 0) {
+                                    xmlPath = xmlPath.substring(xmlPath.lastIndexOf("/") + 1); //$NON-NLS-1$
+                                    boolean found = false;
                                     for (int i = 0; i < rootNodes.size(); i++) {
                                         ATreeNode node = rootNodes.get(i);
-                                        String[] nodeValue = ((String) node.getValue()).split(":");
-                                        if (nodeValue.length > 1) {
-                                            if (xmlPath.equals(nodeValue[1])) {
-                                                List<ATreeNode> treeNodes = new ArrayList<ATreeNode>();
-                                                valid = treePopulator.populateTree(schema, node, treeNodes);
-                                                if (treeNodes.size() > 0) {
-                                                    treeNode = treeNodes.get(0);
+                                        if (xmlPath.equals(node.getValue())) {
+                                            List<ATreeNode> treeNodes = new ArrayList<ATreeNode>();
+                                            valid = treePopulator.populateTree(schema, node, treeNodes);
+                                            if (treeNodes.size() > 0) {
+                                                treeNode = treeNodes.get(0);
+                                            }
+                                            found = true;
+                                            break;
+                                        }
+                                    }
+                                    if (!found) {
+                                        for (int i = 0; i < rootNodes.size(); i++) {
+                                            ATreeNode node = rootNodes.get(i);
+                                            String[] nodeValue = ((String) node.getValue()).split(":");
+                                            if (nodeValue.length > 1) {
+                                                if (xmlPath.equals(nodeValue[1])) {
+                                                    List<ATreeNode> treeNodes = new ArrayList<ATreeNode>();
+                                                    valid = treePopulator.populateTree(schema, node, treeNodes);
+                                                    if (treeNodes.size() > 0) {
+                                                        treeNode = treeNodes.get(0);
+                                                    }
+                                                    found = true;
+                                                    break;
                                                 }
-                                                found = true;
-                                                break;
                                             }
                                         }
                                     }
@@ -420,6 +430,8 @@ public class XmlFileStep1Form extends AbstractXmlFileStepForm {
     }
 
     boolean valid = true;
+    
+    boolean missingReferenceSchema = false;
 
     /**
      * Main Fields addControls.
@@ -454,59 +466,70 @@ public class XmlFileStep1Form extends AbstractXmlFileStepForm {
                 File file = new File(text);
                 if (file.exists()) {
                     if (XmlUtil.isXSDFile(text)) {
-                        if (!validXsd) {
+                        if (!validXsd && !missingReferenceSchema) {
                             List<ATreeNode> treeNodes = new ArrayList<ATreeNode>();
                             try {
                                 XSDSchema xsdSchema = updateXSDSchema(text);
-                                List<ATreeNode> list = updateRootNodes(xsdSchema, true);
-                                if (list.size() > 1) {
-                                    RootNodeSelectDialog dialog = new RootNodeSelectDialog(null, list);
-                                    if (dialog.open() == IDialogConstants.OK_ID) {
-                                        ATreeNode selectedNode = dialog.getSelectedNode();
-                                        valid = treePopulator.populateTree(xsdSchema, selectedNode, treeNodes);
+
+                                // check if there have some (<xs:import>) import reference schema xsd file don't exist
+                                // if delete those import xsd files, restart studio and edit the file xml
+                                // will pop up error. better check here
+                                boolean missing = checkIfImportReferenceSchemaNotExist(text, xsdSchema);
+                                if (missing) {
+                                    missingReferenceSchema = true;
+                                } else {
+                                    List<ATreeNode> list = updateRootNodes(xsdSchema, true);
+                                    if (list.size() > 1) {
+                                        RootNodeSelectDialog dialog = new RootNodeSelectDialog(null, list);
+                                        if (dialog.open() == IDialogConstants.OK_ID) {
+                                            ATreeNode selectedNode = dialog.getSelectedNode();
+                                            valid = treePopulator.populateTree(xsdSchema, selectedNode, treeNodes);
+                                            if (treeNodes.size() > 0) {
+                                                treeNode = treeNodes.get(0);
+                                            }
+                                        } else {
+                                            return;
+                                        }
+                                    } else {
+                                        valid = treePopulator.populateTree(xsdSchema, list.get(0), treeNodes);
                                         if (treeNodes.size() > 0) {
                                             treeNode = treeNodes.get(0);
                                         }
-                                    } else {
-                                        return;
-                                    }
-                                } else {
-                                    valid = treePopulator.populateTree(xsdSchema, list.get(0), treeNodes);
-                                    if (treeNodes.size() > 0) {
-                                        treeNode = treeNodes.get(0);
                                     }
                                 }
                             } catch (Exception ex) {
                                 ExceptionHandler.process(ex);
                             }
-                            XmlFileWizard wizard = ((XmlFileWizard) getPage().getWizard());
-                            wizard.setRootNodes(treeNodes);
-                            wizard.setTreeRootNode(treeNode);
-                            List<FOXTreeNode> nodeList = getCorrespondingFoxTreeNodes(treeNode, true);
-                            if (nodeList.size() > 0) {
-                                FOXTreeNode foxTreeNode = nodeList.get(0);
-                                EList root = getConnection().getRoot();
-                                if (root == null) {
-                                    return;
+                            if (!missingReferenceSchema) {
+                                XmlFileWizard wizard = ((XmlFileWizard) getPage().getWizard());
+                                wizard.setRootNodes(treeNodes);
+                                wizard.setTreeRootNode(treeNode);
+                                List<FOXTreeNode> nodeList = getCorrespondingFoxTreeNodes(treeNode, true);
+                                if (nodeList.size() > 0) {
+                                    FOXTreeNode foxTreeNode = nodeList.get(0);
+                                    EList root = getConnection().getRoot();
+                                    if (root == null) {
+                                        return;
+                                    }
+                                    XMLFileNode xmlFileNode = ConnectionFactory.eINSTANCE.createXMLFileNode();
+                                    String currentPath = "/" + foxTreeNode.getLabel();
+                                    xmlFileNode.setXMLPath(currentPath);
+                                    xmlFileNode.setRelatedColumn(foxTreeNode.getColumnLabel());
+                                    xmlFileNode.setAttribute(foxTreeNode.isMain() ? "main" : "branch");
+                                    xmlFileNode.setDefaultValue(foxTreeNode.getDefaultValue());
+                                    xmlFileNode.setType(foxTreeNode.getDataType());
+                                    XMLFileNode originalXmlNode = null;
+                                    if (root.size() > 0) {
+                                        originalXmlNode = (XMLFileNode) root.get(0);
+                                    }
+                                    if (originalXmlNode != null && !currentPath.equals(originalXmlNode.getXMLPath())) {
+                                        wizard.setXsdRootChange(true);
+                                    } else {
+                                        wizard.setXsdRootChange(false);
+                                    }
+                                    root.clear();
+                                    root.add(xmlFileNode);
                                 }
-                                XMLFileNode xmlFileNode = ConnectionFactory.eINSTANCE.createXMLFileNode();
-                                String currentPath = "/" + foxTreeNode.getLabel();
-                                xmlFileNode.setXMLPath(currentPath);
-                                xmlFileNode.setRelatedColumn(foxTreeNode.getColumnLabel());
-                                xmlFileNode.setAttribute(foxTreeNode.isMain() ? "main" : "branch");
-                                xmlFileNode.setDefaultValue(foxTreeNode.getDefaultValue());
-                                xmlFileNode.setType(foxTreeNode.getDataType());
-                                XMLFileNode originalXmlNode = null;
-                                if (root.size() > 0) {
-                                    originalXmlNode = (XMLFileNode) root.get(0);
-                                }
-                                if (originalXmlNode != null && !currentPath.equals(originalXmlNode.getXMLPath())) {
-                                    wizard.setXsdRootChange(true);
-                                } else {
-                                    wizard.setXsdRootChange(false);
-                                }
-                                root.clear();
-                                root.add(xmlFileNode);
                             }
                         }
                     } else {
@@ -650,56 +673,65 @@ public class XmlFileStep1Form extends AbstractXmlFileStepForm {
                         List<ATreeNode> treeNodes = new ArrayList<ATreeNode>();
                         try {
                             XSDSchema xsdSchema = updateXSDSchema(text);
-                            List<ATreeNode> list = updateRootNodes(xsdSchema, true);
-                            if (list.size() > 1) {
-                                RootNodeSelectDialog dialog = new RootNodeSelectDialog(null, list);
-                                if (dialog.open() == IDialogConstants.OK_ID) {
-                                    ATreeNode selectedNode = dialog.getSelectedNode();
-                                    valid = treePopulator.populateTree(xsdSchema, selectedNode, treeNodes);
+
+                            // check if there have some (<xs:import>) import reference schema xsd file don't exist
+                            boolean missing = checkIfImportReferenceSchemaNotExist(text, xsdSchema);
+                            if (missing) {
+                                missingReferenceSchema = true;
+                            } else {
+                                List<ATreeNode> list = updateRootNodes(xsdSchema, true);
+                                if (list.size() > 1) {
+                                    RootNodeSelectDialog dialog = new RootNodeSelectDialog(null, list);
+                                    if (dialog.open() == IDialogConstants.OK_ID) {
+                                        ATreeNode selectedNode = dialog.getSelectedNode();
+                                        valid = treePopulator.populateTree(xsdSchema, selectedNode, treeNodes);
+                                        if (treeNodes.size() > 0) {
+                                            treeNode = treeNodes.get(0);
+                                        }
+                                        validXsd = true;
+                                    } else {
+                                        return;
+                                    }
+                                } else {
+                                    valid = treePopulator.populateTree(xsdSchema, list.get(0), treeNodes);
                                     if (treeNodes.size() > 0) {
                                         treeNode = treeNodes.get(0);
                                     }
-                                    validXsd = true;
-                                } else {
-                                    return;
-                                }
-                            } else {
-                                valid = treePopulator.populateTree(xsdSchema, list.get(0), treeNodes);
-                                if (treeNodes.size() > 0) {
-                                    treeNode = treeNodes.get(0);
                                 }
                             }
                         } catch (Exception ex) {
                             ExceptionHandler.process(ex);
                         }
-                        XmlFileWizard wizard1 = ((XmlFileWizard) getPage().getWizard());
-                        wizard1.setRootNodes(treeNodes);
-                        wizard1.setTreeRootNode(treeNode);
-                        List<FOXTreeNode> nodeList = getCorrespondingFoxTreeNodes(treeNode, true);
-                        if (nodeList.size() > 0) {
-                            FOXTreeNode foxTreeNode = nodeList.get(0);
-                            EList root = getConnection().getRoot();
-                            if (root == null) {
-                                return;
+                        if (!missingReferenceSchema) {
+                            XmlFileWizard wizard1 = ((XmlFileWizard) getPage().getWizard());
+                            wizard1.setRootNodes(treeNodes);
+                            wizard1.setTreeRootNode(treeNode);
+                            List<FOXTreeNode> nodeList = getCorrespondingFoxTreeNodes(treeNode, true);
+                            if (nodeList.size() > 0) {
+                                FOXTreeNode foxTreeNode = nodeList.get(0);
+                                EList root = getConnection().getRoot();
+                                if (root == null) {
+                                    return;
+                                }
+                                XMLFileNode xmlFileNode = ConnectionFactory.eINSTANCE.createXMLFileNode();
+                                String currentPath = "/" + foxTreeNode.getLabel();
+                                xmlFileNode.setXMLPath(currentPath);
+                                xmlFileNode.setRelatedColumn(foxTreeNode.getColumnLabel());
+                                xmlFileNode.setAttribute(foxTreeNode.isMain() ? "main" : "branch");
+                                xmlFileNode.setDefaultValue(foxTreeNode.getDefaultValue());
+                                xmlFileNode.setType(foxTreeNode.getDataType());
+                                XMLFileNode originalXmlNode = null;
+                                if (root.size() > 0) {
+                                    originalXmlNode = (XMLFileNode) root.get(0);
+                                }
+                                if (originalXmlNode != null && !currentPath.equals(originalXmlNode.getXMLPath())) {
+                                    wizard1.setXsdRootChange(true);
+                                } else {
+                                    wizard1.setXsdRootChange(false);
+                                }
+                                root.clear();
+                                root.add(xmlFileNode);
                             }
-                            XMLFileNode xmlFileNode = ConnectionFactory.eINSTANCE.createXMLFileNode();
-                            String currentPath = "/" + foxTreeNode.getLabel();
-                            xmlFileNode.setXMLPath(currentPath);
-                            xmlFileNode.setRelatedColumn(foxTreeNode.getColumnLabel());
-                            xmlFileNode.setAttribute(foxTreeNode.isMain() ? "main" : "branch");
-                            xmlFileNode.setDefaultValue(foxTreeNode.getDefaultValue());
-                            xmlFileNode.setType(foxTreeNode.getDataType());
-                            XMLFileNode originalXmlNode = null;
-                            if (root.size() > 0) {
-                                originalXmlNode = (XMLFileNode) root.get(0);
-                            }
-                            if (originalXmlNode != null && !currentPath.equals(originalXmlNode.getXMLPath())) {
-                                wizard1.setXsdRootChange(true);
-                            } else {
-                                wizard1.setXsdRootChange(false);
-                            }
-                            root.clear();
-                            root.add(xmlFileNode);
                         }
                     } else {
                         valid = treePopulator.populateTree(text, treeNode);
@@ -744,6 +776,11 @@ public class XmlFileStep1Form extends AbstractXmlFileStepForm {
         }
         if (!valid) {
             updateStatus(IStatus.ERROR, Messages.getString("XmlFileStep1Form.notFound", xmlXsdFilePathText)); //$NON-NLS-1$
+            return false;
+        }
+
+        if (missingReferenceSchema) {
+            updateStatus(IStatus.ERROR, Messages.getString("XmlFileStep1Form.ImportSchemaNotExistError", xmlXsdFilePathText)); //$NON-NLS-1$
             return false;
         }
 
@@ -896,5 +933,29 @@ public class XmlFileStep1Form extends AbstractXmlFileStepForm {
         // }
         // valid = this.treePopulator.populateTree(tempXmlXsdPath, treeNode);
         // temfile.delete();
+    }
+
+    /**
+     * Check if there have some (<xs:import>) import reference schema xsd file don't exist DOC jding Comment method
+     * "checkIfImportReferenceSchemaNotExist".
+     * 
+     * @param filePath
+     * @param xsdSchema
+     * @return
+     */
+    private boolean checkIfImportReferenceSchemaNotExist(String filePath, XSDSchema xsdSchema) {
+        boolean flag = false;
+        Set<String> notExistImportSchema = TreeUtil.getNotExistImportSchema(filePath, xsdSchema);
+        if (!notExistImportSchema.isEmpty()) {
+            flag = true;
+            StringBuffer detail = new StringBuffer();
+            detail.append(Messages.getString("ImportTreeFromXMLAction.schemaFileNotExistDetailTitle")).append(LINEFEED);//$NON-NLS-1$
+            for (String xsdfilePath : notExistImportSchema) {
+                detail.append(xsdfilePath).append(LINEFEED);
+            }
+            new ErrorDialogWidthDetailArea(this.getShell(), Messages.PLUGIN_ID,
+                    Messages.getString("ImportTreeFromXMLAction.ImportSchemaNotExistError"), detail.toString());//$NON-NLS-1$
+        }
+        return flag;
     }
 }

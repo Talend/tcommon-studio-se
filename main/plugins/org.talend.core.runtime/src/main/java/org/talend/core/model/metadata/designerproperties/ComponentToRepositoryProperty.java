@@ -93,10 +93,10 @@ public class ComponentToRepositoryProperty {
         // impossible to use OCI in oracle
         IElementParameter elementParameter = node.getElementParameter("CONNECTION_TYPE"); //$NON-NLS-1$
         if (elementParameter != null) {
-            if ("ORACLE_OCI".equals(elementParameter.getValue())) { //$NON-NLS-1$
+            if ("ORACLE_WALLET".equals(elementParameter.getValue())) { //$NON-NLS-1$
                 Shell shell = Display.getCurrent().getActiveShell();
                 String title = Messages.getString("ComponentToRepositoryProperty.error"); //$NON-NLS-1$
-                String message = Messages.getString("ComponentToRepositoryProperty.ImpossibleUseOCI"); //$NON-NLS-1$
+                String message = Messages.getString("ComponentToRepositoryProperty.ImpossibleUseWALLET"); //$NON-NLS-1$
                 MessageDialog.openError(shell, title, message);
                 return false;
             }
@@ -449,6 +449,11 @@ public class ComponentToRepositoryProperty {
             connection.setDatabaseType(EDatabaseTypeName.VERTICA.getDisplayName());
             connection.setProductId(EDatabaseTypeName.VERTICA.getProduct());
         }
+        // GREENPLUM
+        else if (EDatabaseTypeName.GREENPLUM.getProduct().equalsIgnoreCase((String) parameter.getValue())) {
+            connection.setDatabaseType(EDatabaseTypeName.GREENPLUM.getDisplayName());
+            connection.setProductId(EDatabaseTypeName.GREENPLUM.getProduct());
+        }
         // MaxDB
         else if (EDatabaseTypeName.MAXDB.getProduct().equalsIgnoreCase((String) parameter.getValue())) {
             connection.setDatabaseType(EDatabaseTypeName.MAXDB.getDisplayName());
@@ -498,6 +503,10 @@ public class ComponentToRepositoryProperty {
             parameter = node.getElementParameter("CONNECTION_TYPE"); //$NON-NLS-1$
             // if ("ORACLE_OCI".equals(parameter.getValue())) {
             // }
+            if ("ORACLE_OCI".equals(parameter.getValue())) {
+                connection.setDatabaseType(EDatabaseTypeName.ORACLE_OCI.getDisplayName());
+                connection.setProductId(EDatabaseTypeName.ORACLE_OCI.getProduct());
+            }
 
             if ("ORACLE_SERVICE_NAME".equals(parameter.getValue()) || "service_name".equals(parameter.getValue())) { //$NON-NLS-1$ //$NON-NLS-2$
                 connection.setDatabaseType(EDatabaseTypeName.ORACLESN.getDisplayName());
@@ -505,7 +514,8 @@ public class ComponentToRepositoryProperty {
             } else if ("ORACLE_SID".equals(parameter.getValue()) || "sid".equals(parameter.getValue())) { //$NON-NLS-1$  //$NON-NLS-2$
                 connection.setDatabaseType(EDatabaseTypeName.ORACLEFORSID.getDisplayName());
                 connection.setProductId(EDatabaseTypeName.ORACLESN.getProduct());
-            } else if ("ORACLE_CUSTOM".equals(parameter.getValue()) || "rac".equals(parameter.getValue())) { //$NON-NLS-1$  //$NON-NLS-2$
+            } else if ("ORACLE_CUSTOM".equals(parameter.getValue()) || "rac".equals(parameter.getValue()) //$NON-NLS-1$ //$NON-NLS-2$
+                    || "ORACLE_RAC".equals(parameter.getValue())) {
                 connection.setDatabaseType(EDatabaseTypeName.ORACLE_CUSTOM.getDisplayName());
                 connection.setProductId(EDatabaseTypeName.ORACLESN.getProduct());
             }
@@ -551,7 +561,21 @@ public class ComponentToRepositoryProperty {
                 connection.setProductId(EDatabaseTypeName.GODBC.getProduct());
             }
         }
-
+        // AMAZON_AURORA
+        else if (EDatabaseTypeName.AMAZON_AURORA.getProduct().equalsIgnoreCase((String) parameter.getValue())) {
+            connection.setDatabaseType(EDatabaseTypeName.AMAZON_AURORA.getDisplayName());
+            connection.setProductId(EDatabaseTypeName.AMAZON_AURORA.getProduct());
+        }
+        // SAPHana
+        else if (EDatabaseTypeName.SAPHana.getProduct().equalsIgnoreCase((String) parameter.getValue())) {
+            connection.setDatabaseType(EDatabaseTypeName.SAPHana.getDisplayName());
+            connection.setProductId(EDatabaseTypeName.SAPHana.getProduct());
+        }
+        // VECTORWISE
+        else if (EDatabaseTypeName.VECTORWISE.getProduct().equalsIgnoreCase((String) parameter.getValue())) {
+            connection.setDatabaseType(EDatabaseTypeName.VECTORWISE.getDisplayName());
+            connection.setProductId(EDatabaseTypeName.VECTORWISE.getProduct());
+        }
         // SAX
         // can not find corresponding component. also not exist in EDatabaseType.java.
     }
@@ -649,6 +673,12 @@ public class ComponentToRepositoryProperty {
         if (connection.getDatabaseType().equals(EDatabaseTypeName.ORACLESN.getDisplayName())) {
             setDatabaseValueForOracleSeverName(connection, node, param);
         }
+        if (connection.getDatabaseType().equals(EDatabaseTypeName.ORACLE_CUSTOM.getDisplayName())) {
+            setDatabaseValueForOracleCustom(connection, node, param);
+        }
+        if (connection.getDatabaseType().equals(EDatabaseTypeName.ORACLE_OCI.getDisplayName())) {
+            setDatabaseValueForOracleOci(connection, node, param);
+        }
         if (connection.getDatabaseType().equals(EDatabaseTypeName.ACCESS.getDisplayName())) {
             setDatabaseValueForAccess(connection, node, param);
         }
@@ -657,6 +687,19 @@ public class ComponentToRepositoryProperty {
         }
         if (connection.getDatabaseType().equals(EDatabaseTypeName.VERTICA.getDisplayName())) {
             setDatabaseValueForVertica(connection, node, param);
+        }
+        if (connection.getDatabaseType().equals(EDatabaseTypeName.MYSQL.getDisplayName())) {
+            setDatabaseValueForMysql(connection, node, param);
+        }
+        if (connection.getDatabaseType().equals(EDatabaseTypeName.PSQL.getDisplayName())) {
+            setDatabaseValueForPSQL(connection, node, param);
+        }
+        if (connection.getDatabaseType().equals(EDatabaseTypeName.PLUSPSQL.getDisplayName())) {
+            setDatabaseValueForPLUSPSQL(connection, node, param);
+        }
+        if (connection.getDatabaseType().equals(EDatabaseTypeName.SYBASEASE.getDisplayName())
+                || connection.getDatabaseType().equals(EDatabaseTypeName.SYBASEIQ.getDisplayName())) {
+            setDatabaseValueForSysbase(connection, node, param);
         }
         if (connection.getDatabaseType().equals(EDatabaseTypeName.JAVADB.getDisplayName())
                 || connection.getDatabaseType().equals(EDatabaseTypeName.JAVADB_EMBEDED.getDisplayName())
@@ -670,6 +713,11 @@ public class ComponentToRepositoryProperty {
         if (connection.getDatabaseType().equals(EDatabaseTypeName.GENERAL_JDBC.getDisplayName())) {
             setDatabaseValueForJdbc(connection, node, param);
         }
+
+        if (connection.getDatabaseType().equals(EDatabaseTypeName.MSSQL.getDisplayName())) {
+            setDatabaseValueForMSSql(connection, node, param);
+        }
+
     }
 
     /**
@@ -727,6 +775,53 @@ public class ComponentToRepositoryProperty {
         }
     }
 
+    private static void setDatabaseValueForOracleCustom(DatabaseConnection connection, INode node, IElementParameter param) {
+
+        if ("DB_VERSION".equals(param.getRepositoryValue())) { //$NON-NLS-1$
+            String value = getParameterValue(connection, node, param);
+            String dbVersionName = EDatabaseVersion4Drivers.getDbVersionName(EDatabaseTypeName.ORACLE_CUSTOM, value);
+            if (value != null) {
+                connection.setDbVersionString(dbVersionName);
+            }
+        }
+        if ("SID".equals(param.getRepositoryValue())) { //$NON-NLS-1$
+            if (param != null && "ORACLE_OCI".equals(param.getValue())) { //$NON-NLS-1$
+                String value = getParameterValue(connection, node, node.getElementParameter("LOCAL_SERVICE_NAME")); //$NON-NLS-1$
+                if (value != null) {
+                    connection.setSID(value);
+                }
+            } else {
+                String value = getParameterValue(connection, node, node.getElementParameter("DBNAME")); //$NON-NLS-1$
+                if (value != null) {
+                    connection.setSID(value);
+                }
+            }
+        }
+    }
+
+    private static void setDatabaseValueForOracleOci(DatabaseConnection connection, INode node, IElementParameter param) {
+
+        if ("DB_VERSION".equals(param.getRepositoryValue())) { //$NON-NLS-1$
+            String value = getParameterValue(connection, node, param);
+            String dbVersionName = EDatabaseVersion4Drivers.getDbVersionName(EDatabaseTypeName.ORACLE_OCI, value);
+            if (value != null) {
+                connection.setDbVersionString(dbVersionName);
+            }
+        }
+        if ("SID".equals(param.getRepositoryValue())) { //$NON-NLS-1$
+            if (param != null && "ORACLE_OCI".equals(param.getValue())) { //$NON-NLS-1$
+                String value = getParameterValue(connection, node, node.getElementParameter("LOCAL_SERVICE_NAME")); //$NON-NLS-1$
+                if (value != null) {
+                    connection.setSID(value);
+                }
+            } else {
+                String value = getParameterValue(connection, node, node.getElementParameter("DBNAME")); //$NON-NLS-1$
+                if (value != null) {
+                    connection.setSID(value);
+                }
+            }
+        }
+    }
     private static void setDatabaseValueForAs400(DatabaseConnection connection, INode node, IElementParameter param) {
         if ("DB_VERSION".equals(param.getRepositoryValue())) { //$NON-NLS-1$
             String value = getParameterValue(connection, node, param);
@@ -748,6 +843,55 @@ public class ComponentToRepositoryProperty {
         }
     }
 
+
+    private static void setDatabaseValueForMysql(DatabaseConnection connection, INode node, IElementParameter param) {
+        if ("DB_VERSION".equals(param.getRepositoryValue())) { //$NON-NLS-1$
+            String value = getParameterValue(connection, node, param);
+            String dbVersionName = EDatabaseVersion4Drivers.getDbVersionName(EDatabaseTypeName.MYSQL, value);
+            if (value != null) {
+                connection.setDbVersionString(dbVersionName);
+            }
+        }
+    }
+
+    private static void setDatabaseValueForPSQL(DatabaseConnection connection, INode node, IElementParameter param) {
+        if ("DB_VERSION".equals(param.getRepositoryValue())) { //$NON-NLS-1$
+            String value = getParameterValue(connection, node, param);
+            String dbVersionName = EDatabaseVersion4Drivers.getDbVersionName(EDatabaseTypeName.PSQL, value);
+            if (value != null) {
+                connection.setDbVersionString(dbVersionName);
+            }
+        }
+    }
+
+    private static void setDatabaseValueForPLUSPSQL(DatabaseConnection connection, INode node, IElementParameter param) {
+        if ("DB_VERSION".equals(param.getRepositoryValue())) { //$NON-NLS-1$
+            String value = getParameterValue(connection, node, param);
+            String dbVersionName = EDatabaseVersion4Drivers.getDbVersionName(EDatabaseTypeName.PLUSPSQL, value);
+            if (value != null) {
+                connection.setDbVersionString(dbVersionName);
+            }
+        }
+    }
+    private static void setDatabaseValueForSysbase(DatabaseConnection connection, INode node, IElementParameter param) {
+        if ("DB_VERSION".equals(param.getRepositoryValue())) { //$NON-NLS-1$
+            String value = getParameterValue(connection, node, param); // $NON-NLS-1$
+            String dbVersionName = EDatabaseVersion4Drivers.getDbVersionName(EDatabaseTypeName.SYBASEASE, value);
+            if (value != null) {
+                connection.setDbVersionString(dbVersionName);
+            }
+        }
+    }
+
+    private static void setDatabaseValueForMSSql(DatabaseConnection connection, INode node, IElementParameter param) {
+        if ("DRIVER".equals(param.getRepositoryValue())) { //$NON-NLS-1$
+            String value = getParameterValue(connection, node, param);
+            String dbVersionName = EDatabaseVersion4Drivers.getDbVersionName(EDatabaseTypeName.MSSQL, value);
+            if (value != null) {
+                connection.setDbVersionString(dbVersionName);
+            }
+        }
+    }
     private static void setDatabaseValueForAccess(DatabaseConnection connection, INode node, IElementParameter param) {
         if ("DB_VERSION".equals(param.getRepositoryValue())) { //$NON-NLS-1$
             String value = getParameterValue(connection, node, param);
