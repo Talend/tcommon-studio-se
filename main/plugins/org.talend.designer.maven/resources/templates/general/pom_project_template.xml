@@ -37,10 +37,10 @@
 							<version>1.4.0</version>
 						</dependency>
 						<dependency>
-              				<groupId>org.codehaus.plexus</groupId>
-              				<artifactId>plexus-utils</artifactId>
-             				<version>3.0.24</version>
-            			</dependency>
+							<groupId>org.codehaus.plexus</groupId>
+							<artifactId>plexus-utils</artifactId>
+							<version>3.0.24</version>
+						</dependency>
 					</dependencies>
 				</plugin>
 				<plugin>
@@ -49,10 +49,10 @@
 					<version>3.0.2</version>
 					<dependencies>
 						<dependency>
-              				<groupId>org.codehaus.plexus</groupId>
-              				<artifactId>plexus-utils</artifactId>
-             				<version>3.0.24</version>
-            			</dependency>
+							<groupId>org.codehaus.plexus</groupId>
+							<artifactId>plexus-utils</artifactId>
+							<version>3.0.24</version>
+						</dependency>
 					</dependencies>
 				</plugin>
 				<plugin>
@@ -61,10 +61,10 @@
 					<version>3.0.2</version>
 					<dependencies>
 						<dependency>
-              				<groupId>org.codehaus.plexus</groupId>
-              				<artifactId>plexus-utils</artifactId>
-             				<version>3.0.24</version>
-            			</dependency>
+							<groupId>org.codehaus.plexus</groupId>
+							<artifactId>plexus-utils</artifactId>
+							<version>3.0.24</version>
+						</dependency>
 					</dependencies>
 					<configuration>
 						<archive>
@@ -78,10 +78,10 @@
 					<version>3.0.0</version>
 					<dependencies>
 						<dependency>
-              				<groupId>org.codehaus.plexus</groupId>
-              				<artifactId>plexus-utils</artifactId>
-             				<version>3.0.24</version>
-            			</dependency>
+							<groupId>org.codehaus.plexus</groupId>
+							<artifactId>plexus-utils</artifactId>
+							<version>3.0.24</version>
+						</dependency>
 					</dependencies>
 				</plugin>
 				<plugin>
@@ -90,10 +90,10 @@
 					<version>2.20</version>
 					<dependencies>
 						<dependency>
-              				<groupId>org.codehaus.plexus</groupId>
-              				<artifactId>plexus-utils</artifactId>
-             				<version>3.0.24</version>
-            			</dependency>
+							<groupId>org.codehaus.plexus</groupId>
+							<artifactId>plexus-utils</artifactId>
+							<version>3.0.24</version>
+						</dependency>
 					</dependencies>
 				</plugin>
 				<plugin>
@@ -102,10 +102,10 @@
 					<version>2.5.1</version>
 					<dependencies>
 						<dependency>
-              				<groupId>org.codehaus.plexus</groupId>
-              				<artifactId>plexus-utils</artifactId>
-             				<version>3.0.24</version>
-            			</dependency>
+							<groupId>org.codehaus.plexus</groupId>
+							<artifactId>plexus-utils</artifactId>
+							<version>3.0.24</version>
+						</dependency>
 					</dependencies>
 				</plugin>
 				<plugin>
@@ -114,10 +114,10 @@
 					<version>2.7</version>
 					<dependencies>
 						<dependency>
-              				<groupId>org.codehaus.plexus</groupId>
-              				<artifactId>plexus-utils</artifactId>
-             				<version>3.0.24</version>
-            			</dependency>
+							<groupId>org.codehaus.plexus</groupId>
+							<artifactId>plexus-utils</artifactId>
+							<version>3.0.24</version>
+						</dependency>
 					</dependencies>
 				</plugin>
 			</plugins>
