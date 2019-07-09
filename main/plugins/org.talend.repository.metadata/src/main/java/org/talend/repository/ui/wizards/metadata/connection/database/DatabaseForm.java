@@ -35,7 +35,6 @@ import org.eclipse.core.runtime.IPath;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Path;
-import org.eclipse.core.runtime.Platform;
 import org.eclipse.emf.common.util.EMap;
 import org.eclipse.jface.dialogs.IDialogConstants;
 import org.eclipse.jface.dialogs.MessageDialog;
@@ -57,7 +56,6 @@ import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.graphics.GC;
 import org.eclipse.swt.graphics.Point;
-import org.eclipse.swt.graphics.Rectangle;
 import org.eclipse.swt.layout.FillLayout;
 import org.eclipse.swt.layout.FormAttachment;
 import org.eclipse.swt.layout.FormData;
@@ -904,19 +902,7 @@ public class DatabaseForm extends AbstractForm {
 
             @Override
             public void controlResized(ControlEvent e) {
-                Rectangle r = scrolledComposite.getClientArea();
-                // scrolledComposite.setMinSize(newParent.computeSize(r.width-100, 550));
-                if (getConnection().getDatabaseType() != null
-                        && getConnection().getDatabaseType().equals(EDatabaseConnTemplate.HIVE.getDBDisplayName())) {
-                    if (Platform.getOS().equals(Platform.OS_LINUX)) {
-                        scrolledComposite.setMinSize(newParent.computeSize(SWT.DEFAULT, 900));
-                    } else {
-                        scrolledComposite.setMinSize(newParent.computeSize(SWT.DEFAULT, 820));
-                    }
-
-                } else {
-                    scrolledComposite.setMinSize(newParent.computeSize(SWT.DEFAULT, 550));
-                }
+                scrolledComposite.setMinSize(newParent.computeSize(SWT.DEFAULT, SWT.DEFAULT));
             }
         });
     }
@@ -1779,6 +1765,9 @@ public class DatabaseForm extends AbstractForm {
         hiveExecutionGrp.setVisible(!hide);
         hiveExecutionGrp.setLayoutData(hadoopData);
         hiveExecutionGrp.getParent().layout();
+        if (!hide) {
+            adjustScrolledComHeight();
+        }
     }
 
     private void initForHBaseAuthentication() {
@@ -2058,6 +2047,7 @@ public class DatabaseForm extends AbstractForm {
                 }
                 urlConnectionStringText.setText(getStringConnection());
                 modifyFieldValue();
+                adjustScrolledComHeight();
             }
 
         });
@@ -2116,6 +2106,7 @@ public class DatabaseForm extends AbstractForm {
                 }
                 authenticationGrpForHBase.layout();
                 authenticationGrpForHBase.getParent().layout();
+                adjustScrolledComHeight();
             }
 
         });
@@ -2134,6 +2125,7 @@ public class DatabaseForm extends AbstractForm {
                 authenticationComForHBase.getParent().layout();
                 authenticationGrpForHBase.layout();
                 authenticationGrpForHBase.getParent().layout();
+                adjustScrolledComHeight();
             }
 
         });
@@ -2311,6 +2303,7 @@ public class DatabaseForm extends AbstractForm {
                 }
                 authenticationGrpForMaprdb.layout();
                 authenticationGrpForMaprdb.getParent().layout();
+                adjustScrolledComHeight();
             }
 
         });
@@ -2329,6 +2322,7 @@ public class DatabaseForm extends AbstractForm {
                 authenticationComForMaprdb.getParent().layout();
                 authenticationGrpForMaprdb.layout();
                 authenticationGrpForMaprdb.getParent().layout();
+                adjustScrolledComHeight();
             }
 
         });
@@ -2421,6 +2415,7 @@ public class DatabaseForm extends AbstractForm {
                 }
                 authenticationGrpForMaprdb.layout();
                 authenticationGrpForMaprdb.getParent().layout();
+                adjustScrolledComHeight();
             }
 
         });
@@ -2493,6 +2488,7 @@ public class DatabaseForm extends AbstractForm {
                     authenticationGrp.getParent().layout();
                     getConnection().getParameters().put(ConnParameterKeys.CONN_PARA_KEY_USEKEYTAB, "false"); //$NON-NLS-1$
                 }
+                adjustScrolledComHeight();
             }
 
         });
@@ -2523,6 +2519,7 @@ public class DatabaseForm extends AbstractForm {
                 }
                 updateSSLEncryptionDetailsDisplayStatus();
                 urlConnectionStringText.setText(getStringConnection());
+                adjustScrolledComHeight();
             }
 
         });
@@ -2715,6 +2712,7 @@ public class DatabaseForm extends AbstractForm {
                             String.valueOf(useSSLEncryption.getSelection()));
                     updateSSLEncryptionDetailsDisplayStatus();
                     urlConnectionStringText.setText(getStringConnection());
+                    adjustScrolledComHeight();
                 }
             }
 
@@ -4016,6 +4014,7 @@ public class DatabaseForm extends AbstractForm {
                     moveButton.setToolTipText(Messages.getString("DatabaseForm.hideContext")); //$NON-NLS-1$
                     moveButton.setText(DOWN);
                 }
+                adjustScrolledComHeight();
             }
         });
     }
@@ -8700,5 +8699,9 @@ public class DatabaseForm extends AbstractForm {
             return "";
         }
         return getConnection().getDatabaseType();
+    }
+
+    private void adjustScrolledComHeight() {
+        scrolledComposite.setMinSize(newParent.computeSize(SWT.DEFAULT, SWT.DEFAULT));
     }
 }
