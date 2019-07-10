@@ -76,7 +76,8 @@ public final class ParameterValueUtil {
                     param.setValue(newValue);
                 }
             }
-        } else if (param.getValue() instanceof List) { // for TABLE
+        } else if (param.getValue() instanceof List && EParameterFieldType.TABLE.equals(param.getFieldType())) { // for
+                                                                                                                 // TABLE
             List<Map<String, Object>> tableValues = (List<Map<String, Object>>) param.getValue();
             for (Map<String, Object> line : tableValues) {
                 for (String key : line.keySet()) {
@@ -720,7 +721,8 @@ public final class ParameterValueUtil {
             if (ParameterValueUtil.valueContains(value, name)) {
                 return true;
             }
-        } else if (param.getValue() instanceof List) { // for TABLE
+        } else if (param.getValue() instanceof List && EParameterFieldType.TABLE.equals(param.getFieldType())) { // for
+                                                                                                                 // TABLE
             List<Map<String, Object>> tableValues = (List<Map<String, Object>>) param.getValue();
             for (Map<String, Object> line : tableValues) {
                 for (String key : line.keySet()) {
