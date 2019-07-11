@@ -24,7 +24,6 @@ import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Group;
-import org.eclipse.swt.widgets.MessageBox;
 import org.talend.commons.exception.ExceptionHandler;
 import org.talend.commons.ui.swt.formtools.Form;
 import org.talend.commons.ui.swt.formtools.LabelledCombo;
@@ -258,10 +257,8 @@ public class MDMForm extends AbstractForm {
         }
         if (stub != null) {
             page.setPageComplete(true);
-            MessageBox box = new MessageBox(Display.getCurrent().getActiveShell(), SWT.ICON_WORKING | SWT.OK | SWT.CANCEL);
-            box.setText(Messages.getString("MDMForm_success")); //$NON-NLS-1$
-            box.setMessage(Messages.getString("MDMForm_connect_successful")); //$NON-NLS-1$
-            box.open();
+            MessageDialog.openInformation(Display.getCurrent().getActiveShell(), Messages.getString("MDMForm_success"),
+                    Messages.getString("MDMForm_connect_successful"));
         } else {
             String titleMsg = Messages.getString("MDMForm_error_message");
             String mainMsg = Messages.getString("MDMForm_connection_failure");
