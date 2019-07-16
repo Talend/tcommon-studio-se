@@ -1,6 +1,6 @@
 // ============================================================================
 //
-// Copyright (C) 2006-2018 Talend Inc. - www.talend.com
+// Copyright (C) 2006-2019 Talend Inc. - www.talend.com
 //
 // This source code is available under agreement available at
 // %InstallDIR%\features\org.talend.rcp.branding.%PRODUCTNAME%\%PRODUCTNAME%license.txt
@@ -41,7 +41,7 @@ public class MetadataConnectionImportHandler extends ImportRepTypeHandler {
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see
      * org.talend.repository.items.importexport.handlers.imports.ImportBasicHandler#beforeCreatingItem(org.talend.repository
      * .items.importexport.handlers.model.ImportItem)
@@ -58,7 +58,7 @@ public class MetadataConnectionImportHandler extends ImportRepTypeHandler {
          * If load the old emf item files, in fact when resolveItem, will error to load for connection items. But the
          * resolveItem won't catch the exception at all. And in this case, before do the model migration, the
          * isConnectionEmptyBeforeMigration need to be true. Then, enable to copy the old items file manually.
-         * 
+         *
          * Else, will cause the problem TDI-29262. Because after "factory.create", the isConnectionEmptyBeforeMigration
          * will be false, so don't copy the old items to prepare for model migration.
          */
@@ -69,7 +69,7 @@ public class MetadataConnectionImportHandler extends ImportRepTypeHandler {
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see org.talend.repository.items.importexport.handlers.imports.ImportRepTypeHandler#afterCreatedItem(org.
      * talend.repository.items.importexport.ui.wizard.imports.managers.ResourcesManager,
      * org.talend.repository.items.importexport.ui.wizard.imports.models.ItemRecord)

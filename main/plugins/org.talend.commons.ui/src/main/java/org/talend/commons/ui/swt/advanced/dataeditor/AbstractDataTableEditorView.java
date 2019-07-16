@@ -1,6 +1,6 @@
 // ============================================================================
 //
-// Copyright (C) 2006-2018 Talend Inc. - www.talend.com
+// Copyright (C) 2006-2019 Talend Inc. - www.talend.com
 //
 // This source code is available under agreement available at
 // %InstallDIR%\features\org.talend.rcp.branding.%PRODUCTNAME%\%PRODUCTNAME%license.txt
@@ -30,9 +30,9 @@ import org.talend.commons.utils.data.list.ListenableListEvent;
 
 /**
  * This class is an abstraction of a group formed by a Label in top, a Table and a Toolbar at bottom. <br/>
- * 
+ *
  * $Id$
- * 
+ *
  * @param <B> Type of beans
  */
 public abstract class AbstractDataTableEditorView<B> {
@@ -44,7 +44,7 @@ public abstract class AbstractDataTableEditorView<B> {
     private String title;
 
     protected Composite mainComposite;
-    
+
     protected Composite tableComposite;
 
     protected int mainCompositeStyle;
@@ -74,9 +74,9 @@ public abstract class AbstractDataTableEditorView<B> {
     // };
     //
     /**
-     * 
+     *
      * This constructor init graphics components, then load model.
-     * 
+     *
      * @param parentComposite
      * @param mainCompositeStyle
      * @param extendedTableModel
@@ -88,9 +88,9 @@ public abstract class AbstractDataTableEditorView<B> {
     }
 
     /**
-     * 
+     *
      * This constructor init graphics components, then load model.
-     * 
+     *
      * @param parentComposite
      * @param mainCompositeStyle
      * @param extendedTableModel
@@ -112,11 +112,11 @@ public abstract class AbstractDataTableEditorView<B> {
     }
 
     /**
-     * 
+     *
      * This constructor init graphics components, then load model.
-     * 
+     *
      * Table data will be writable and toolbar will be visible.
-     * 
+     *
      * @param parentComposite
      * @param mainCompositeStyle
      * @param extendedTableModel
@@ -127,7 +127,7 @@ public abstract class AbstractDataTableEditorView<B> {
 
     /**
      * This constructor doesn't initialize graphics components and model.
-     * 
+     *
      * @param parentComposite
      * @param mainCompositeStyle
      */
@@ -137,7 +137,7 @@ public abstract class AbstractDataTableEditorView<B> {
 
     /**
      * This constructor doesn't initialize graphics components and model.
-     * 
+     *
      * @param parentComposite
      * @param mainCompositeStyle
      */
@@ -155,7 +155,7 @@ public abstract class AbstractDataTableEditorView<B> {
     protected AbstractDataTableEditorView() {
         super();
     }
-    
+
     protected void createLabelComposite(Composite mainComposite){
         if (!this.labelVisible) {
             return;
@@ -167,7 +167,7 @@ public abstract class AbstractDataTableEditorView<B> {
         }
         titleLabel.setVisible(true);
     }
-    
+
     private void createTableComposite(){
         if(tableComposite != null){
             initTable(tableComposite);
@@ -226,7 +226,7 @@ public abstract class AbstractDataTableEditorView<B> {
     protected ExtendedToolbarView initToolBar() {
         return null;
     }
-    
+
     protected void initTable() {
         initTable(null);
     }
@@ -247,7 +247,7 @@ public abstract class AbstractDataTableEditorView<B> {
 
             /*
              * (non-Javadoc)
-             * 
+             *
              * @see
              * org.talend.commons.ui.swt.extended.macrotable.AbstractExtendedTableViewer#setTableViewerCreatorOptions
              * (org.talend.commons.ui.swt.tableviewer.TableViewerCreator)
@@ -260,7 +260,7 @@ public abstract class AbstractDataTableEditorView<B> {
 
             /*
              * (non-Javadoc)
-             * 
+             *
              * @seeorg.talend.commons.ui.swt.extended.macrotable.AbstractExtendedTableViewer#
              * handleBeforeListenableListOperationEvent(org.talend.commons.utils.data.list.ListenableListEvent)
              */
@@ -272,7 +272,7 @@ public abstract class AbstractDataTableEditorView<B> {
 
             /*
              * (non-Javadoc)
-             * 
+             *
              * @seeorg.talend.commons.ui.swt.extended.macrotable.AbstractExtendedTableViewer#
              * handleAfterListenableListOperationEvent(org.talend.commons.utils.data.list.ListenableListEvent)
              */
@@ -287,7 +287,7 @@ public abstract class AbstractDataTableEditorView<B> {
 
     /**
      * DOC amaumont Comment method "handleBeforeListenableListOperationEvent".
-     * 
+     *
      * @param event
      */
     protected void handleBeforeListenableListOperationEvent(ListenableListEvent<B> event) {
@@ -296,7 +296,7 @@ public abstract class AbstractDataTableEditorView<B> {
 
     /**
      * DOC amaumont Comment method "handleAfterListenableListOperationEvent".
-     * 
+     *
      * @param event
      */
     protected void handleAfterListenableListOperationEvent(ListenableListEvent<B> event) {
@@ -305,7 +305,7 @@ public abstract class AbstractDataTableEditorView<B> {
 
     /**
      * DOC amaumont Comment method "setTableViewerCreatorOptions".
-     * 
+     *
      * @param newTableViewerCreator
      */
     protected void setTableViewerCreatorOptions(TableViewerCreator<B> newTableViewerCreator) {
@@ -349,7 +349,7 @@ public abstract class AbstractDataTableEditorView<B> {
 
     /**
      * DOC ocarbone Comment method "setGridDataSize".
-     * 
+     *
      * @param minimumWidth
      * @param minimumHeight
      */
@@ -374,7 +374,7 @@ public abstract class AbstractDataTableEditorView<B> {
 
     /**
      * Getter for readOnly.
-     * 
+     *
      * @return the readOnly
      */
     public boolean isReadOnly() {
@@ -387,7 +387,7 @@ public abstract class AbstractDataTableEditorView<B> {
 
     /**
      * Getter for composite.
-     * 
+     *
      * @return the composite
      */
     public Composite getMainComposite() {
@@ -417,7 +417,7 @@ public abstract class AbstractDataTableEditorView<B> {
 
     /**
      * Getter for extendedTableModel.
-     * 
+     *
      * @return the extendedTableModel
      */
     public ExtendedTableModel<B> getExtendedTableModel() {
@@ -432,7 +432,7 @@ public abstract class AbstractDataTableEditorView<B> {
 
     /**
      * Sets the extendedTableModel.
-     * 
+     *
      * @param extendedTableModel the extendedTableModel to set
      */
     public void setExtendedTableModel(ExtendedTableModel<B> extendedTableModel) {
@@ -448,7 +448,7 @@ public abstract class AbstractDataTableEditorView<B> {
 
     /**
      * Getter for extendedTableViewer.
-     * 
+     *
      * @return the extendedTableViewer
      */
     public AbstractExtendedTableViewer<B> getExtendedTableViewer() {
@@ -457,7 +457,7 @@ public abstract class AbstractDataTableEditorView<B> {
 
     /**
      * Getter for extendedToolbar.
-     * 
+     *
      * @return the extendedToolbar
      */
     public ExtendedToolbarView getExtendedToolbar() {
@@ -466,7 +466,7 @@ public abstract class AbstractDataTableEditorView<B> {
 
     /**
      * Getter for title.
-     * 
+     *
      * @return the title
      */
     public String getTitle() {
@@ -475,7 +475,7 @@ public abstract class AbstractDataTableEditorView<B> {
 
     /**
      * Sets the title.
-     * 
+     *
      * @param title the title to set
      */
     public void setTitle(String title) {

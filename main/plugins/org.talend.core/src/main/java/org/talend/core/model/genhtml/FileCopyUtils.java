@@ -1,6 +1,6 @@
 // ============================================================================
 //
-// Copyright (C) 2006-2018 Talend Inc. - www.talend.com
+// Copyright (C) 2006-2019 Talend Inc. - www.talend.com
 //
 // This source code is available under agreement available at
 // %InstallDIR%\features\org.talend.rcp.branding.%PRODUCTNAME%\%PRODUCTNAME%license.txt
@@ -15,15 +15,15 @@ package org.talend.core.model.genhtml;
 
 /**
  * This class is used for copying file from one place to the other.
- * 
+ *
  * $Id: CopyFileUtils.java 2007-3-9,下午07:28:36 ftang $
- * 
+ *
  */
 public class FileCopyUtils {
 
     /**
      * This method is used for coping file from one place to the other.
-     * 
+     *
      * @param srcFilePath
      * @param destFilePath
      * @throws Exception

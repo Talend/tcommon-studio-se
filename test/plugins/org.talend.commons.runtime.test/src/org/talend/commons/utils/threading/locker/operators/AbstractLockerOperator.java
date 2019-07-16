@@ -1,6 +1,6 @@
 // ============================================================================
 //
-// Copyright (C) 2006-2018 Talend Inc. - www.talend.com
+// Copyright (C) 2006-2019 Talend Inc. - www.talend.com
 //
 // This source code is available under agreement available at
 // %InstallDIR%\features\org.talend.rcp.branding.%PRODUCTNAME%\%PRODUCTNAME%license.txt
@@ -26,7 +26,7 @@ public abstract class AbstractLockerOperator implements IThreadSafetyOperator {
 
     /**
      * Sets the locker.
-     * 
+     *
      * @param locker the locker to set
      */
     public void setLocker(Locker locker) {
@@ -35,7 +35,7 @@ public abstract class AbstractLockerOperator implements IThreadSafetyOperator {
 
     /**
      * Sets the nOperationsByOperator.
-     * 
+     *
      * @param nOperationsByOperator the nOperationsByOperator to set
      */
     public void setnOperationsByOperator(int nOperationsByOperator) {
@@ -44,7 +44,7 @@ public abstract class AbstractLockerOperator implements IThreadSafetyOperator {
 
     /**
      * Sets the resultContainer.
-     * 
+     *
      * @param resultContainer the resultContainer to set
      */
     public void setResultContainer(ResultContainer resultContainer) {

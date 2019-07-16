@@ -1,6 +1,6 @@
 // ============================================================================
 //
-// Copyright (C) 2006-2018 Talend Inc. - www.talend.com
+// Copyright (C) 2006-2019 Talend Inc. - www.talend.com
 //
 // This source code is available under agreement available at
 // %InstallDIR%\features\org.talend.rcp.branding.%PRODUCTNAME%\%PRODUCTNAME%license.txt
@@ -43,7 +43,7 @@ public class DefaultHeaderColumnSelectionListener implements ITableColumnSelecti
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see org.eclipse.swt.events.SelectionListener#widgetDefaultSelected(org.eclipse.swt.events.SelectionEvent)
      */
     public void widgetDefaultSelected(SelectionEvent e) {
@@ -53,7 +53,7 @@ public class DefaultHeaderColumnSelectionListener implements ITableColumnSelecti
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see org.eclipse.swt.events.SelectionListener#widgetSelected(org.eclipse.swt.events.SelectionEvent)
      */
     public void widgetSelected(SelectionEvent e) {

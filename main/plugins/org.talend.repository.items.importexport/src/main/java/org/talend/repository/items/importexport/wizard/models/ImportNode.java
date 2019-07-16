@@ -1,6 +1,6 @@
 // ============================================================================
 //
-// Copyright (C) 2006-2018 Talend Inc. - www.talend.com
+// Copyright (C) 2006-2019 Talend Inc. - www.talend.com
 //
 // This source code is available under agreement available at
 // %InstallDIR%\features\org.talend.rcp.branding.%PRODUCTNAME%\%PRODUCTNAME%license.txt
@@ -61,7 +61,7 @@ public abstract class ImportNode implements Comparable<ImportNode> {
 
     /**
      * Getter for parent.
-     * 
+     *
      * @return the parent
      */
     public ImportNode getParentNode() {
@@ -70,7 +70,7 @@ public abstract class ImportNode implements Comparable<ImportNode> {
 
     /**
      * Sets the parent.
-     * 
+     *
      * @param parent the parent to set
      */
     protected void setParentNode(ImportNode parent) {
@@ -112,7 +112,7 @@ public abstract class ImportNode implements Comparable<ImportNode> {
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see java.lang.Object#hashCode()
      */
     @Override
@@ -125,7 +125,7 @@ public abstract class ImportNode implements Comparable<ImportNode> {
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see java.lang.Object#equals(java.lang.Object)
      */
     @Override
@@ -152,7 +152,7 @@ public abstract class ImportNode implements Comparable<ImportNode> {
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see java.lang.Object#toString()
      */
     @Override
@@ -162,7 +162,7 @@ public abstract class ImportNode implements Comparable<ImportNode> {
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see java.lang.Comparable#compareTo(java.lang.Object)
      */
     @Override
@@ -184,7 +184,7 @@ public abstract class ImportNode implements Comparable<ImportNode> {
 
     /**
      * Sets the itemRecord.
-     * 
+     *
      * @param itemRecord the itemRecord to set
      */
     public void setItemRecord(ImportItem itemRecord) {

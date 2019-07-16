@@ -1,6 +1,6 @@
 // ============================================================================
 //
-// Copyright (C) 2006-2018 Talend Inc. - www.talend.com
+// Copyright (C) 2006-2019 Talend Inc. - www.talend.com
 //
 // This source code is available under agreement available at
 // %InstallDIR%\features\org.talend.rcp.branding.%PRODUCTNAME%\%PRODUCTNAME%license.txt
@@ -33,29 +33,29 @@ import org.talend.commons.utils.data.list.ListenableList;
  * A concrete Table viewer based on the JFace <code>TableViewer</code> and the SWT <code>Table</code> control.
  * <p>
  * This class is intended to make easier creation and use of a table.
- * 
+ *
  * For a basic usage you need create columns with <code>TableViewerCreatorColumn</code> and init a addedObjects of
  * objects. The addedObjects will be introspected to retrieve values of each its objects. Each object of the
  * addedObjects will represent one line in the Table.
- * 
+ *
  * The following functions are already implemented : sort, automatic resize of columns (see layoutMode), and basic
  * functions.
- * 
+ *
  * You can access directly to instanciated <code>TableViewer</code> and <code>Table</code> to manage, add custom
  * listeners or other usages.
- * 
+ *
  * Filtering is not currently implemented, but you can add manually yours.
- * 
+ *
  * <p>
  * You can add CellEditor using <code>TableViewerCreatorColumn</code> and <code>setCellEditor()</code> method. According
  * case you will have to override certain methods of <code>CellEditorValueAdapter</code>.
  * </p>
- * 
+ *
  * <p>
  * You can add TableEditor using <code>TableViewerCreatorColumn</code> and <code>setTableEditor()</code> method.
  * According case you will have to override certain methods of <code>TableEditorInitializer</code>.
  * </p>
- * 
+ *
  * Read the following steps to create a reflect table :
  * <p>
  * 1) instanciate <code>TableViewerCreator</code>
@@ -72,7 +72,7 @@ import org.talend.commons.utils.data.list.ListenableList;
  * - <code>setHeaderVisible</code> <br/>
  * - <code>setLinesVisible</code>
  * </p>
- * 
+ *
  * <p>
  * 3) optionally call <code>createTable</code> if you need initialize <code>Table</code>'s children components before
  * <code>init</code> call.
@@ -93,28 +93,28 @@ import org.talend.commons.utils.data.list.ListenableList;
  * - <code>setAllColumnsResizable</code> <br/>
  * - <code>setAllColumnsSortable</code> <br/>
  * </p>
- * 
+ *
  * <p>
  * 6) call <code>init</code> method with your addedObjects of objects in parameter.
  * </p>
- * 
+ *
  * @see org.eclipse.jface.viewers#TableViewer
  * @see org.eclipse.swt.widgets#Table <br/>
- * 
+ *
  * <br/>
- * 
+ *
  * $Id: TableViewerCreator.java 7183 2007-11-23 11:03:36Z amaumont $
- * 
+ *
  * @param <B> type of objects in the input list of <code>TableViewer</code>
  */
 public class TableViewerCreator<B> extends TableViewerCreatorNotModifiable<B> implements IModifiedBeanListenable<B> {
 
     /**
-     * 
+     *
      * DOC amaumont MetadataEditorEvent class global comment. Detailled comment <br/>
-     * 
+     *
      * $Id: TableViewerCreator.java 7183 2007-11-23 11:03:36Z amaumont $
-     * 
+     *
      */
     public enum CELL_EDITOR_STATE {
         EDITING,
@@ -131,7 +131,7 @@ public class TableViewerCreator<B> extends TableViewerCreatorNotModifiable<B> im
 
     /**
      * Constructor.
-     * 
+     *
      * @param compositeParent used to initialize <code>Table</code>.
      */
     public TableViewerCreator(Composite compositeParent) {
@@ -139,10 +139,10 @@ public class TableViewerCreator<B> extends TableViewerCreatorNotModifiable<B> im
     }
 
     /**
-     * 
+     *
      * Instantiate the <code>Table</code> with the <code>compositeParent</code> as parent, with pre-configured styles
      * and options.
-     * 
+     *
      * @return
      */
     @Override
@@ -167,8 +167,8 @@ public class TableViewerCreator<B> extends TableViewerCreatorNotModifiable<B> im
     /**
      * You must use DefaultCellModifier or a class which extends it to use this method. You can call this method only if
      * you have already called createTable().
-     * 
-     * 
+     *
+     *
      * @param tableCellValueModifiedListener
      * @throws UnsupportedOperationException if current CellModifier is not DefaultCellModifier or a class which extends
      * it @
@@ -189,7 +189,7 @@ public class TableViewerCreator<B> extends TableViewerCreatorNotModifiable<B> im
     /**
      * You must use DefaultCellModifier or a class which extends it to use this method. You can call this method only if
      * you have already called createTable().
-     * 
+     *
      * @param tableCellValueModifiedListener
      * @throws UnsupportedOperationException if current CellModifier is not DefaultCellModifier or a class which extends
      * it
@@ -210,7 +210,7 @@ public class TableViewerCreator<B> extends TableViewerCreatorNotModifiable<B> im
     /**
      * Change value in model and refresh auomatically the <code>TableViewer</code> if <code>Table</code> is not
      * disposed.
-     * 
+     *
      * @param currentRowObject
      * @param createNewCommand TODO
      * @param beanPropertyAccessors
@@ -304,7 +304,7 @@ public class TableViewerCreator<B> extends TableViewerCreatorNotModifiable<B> im
 
     /**
      * Getter for commandStackAdapter.
-     * 
+     *
      * @return the commandStackAdapter
      */
     public CommandStack getCommandStack() {
@@ -313,7 +313,7 @@ public class TableViewerCreator<B> extends TableViewerCreatorNotModifiable<B> im
 
     /**
      * Sets the commandStackAdapter.
-     * 
+     *
      * @param commandStack the commandStackAdapter to set
      */
     public void setCommandStack(CommandStack commandStack) {

@@ -1,6 +1,6 @@
 // ============================================================================
 //
-// Copyright (C) 2006-2018 Talend Inc. - www.talend.com
+// Copyright (C) 2006-2019 Talend Inc. - www.talend.com
 //
 // This source code is available under agreement available at
 // %InstallDIR%\features\org.talend.rcp.branding.%PRODUCTNAME%\%PRODUCTNAME%license.txt
@@ -19,9 +19,9 @@ import org.apache.oro.text.regex.Perl5Matcher;
 
 /**
  * DOC amaumont class global comment. Detailled comment <br/>
- * 
+ *
  * $Id$
- * 
+ *
  */
 public class CodeGenerationUtils {
 
@@ -39,7 +39,7 @@ public class CodeGenerationUtils {
 
     /**
      * DOC amaumont Comment method "buildProblemKey".
-     * 
+     *
      * @param mapperComponent
      * @param problemKeyField
      * @param tableName
@@ -61,7 +61,7 @@ public class CodeGenerationUtils {
 
     /**
      * DOC amaumont Comment method "insertFieldKey".
-     * 
+     *
      * @param string
      * @param expression
      * @return
@@ -72,7 +72,7 @@ public class CodeGenerationUtils {
 
     /**
      * DOC amaumont Comment method "buildEndFieldKey".
-     * 
+     *
      * @param key
      * @return
      */

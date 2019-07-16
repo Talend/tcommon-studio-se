@@ -1,6 +1,6 @@
 // ============================================================================
 //
-// Copyright (C) 2006-2018 Talend Inc. - www.talend.com
+// Copyright (C) 2006-2019 Talend Inc. - www.talend.com
 //
 // This source code is available under agreement available at
 // %InstallDIR%\features\org.talend.rcp.branding.%PRODUCTNAME%\%PRODUCTNAME%license.txt
@@ -29,7 +29,7 @@ import org.talend.core.model.metadata.builder.database.DriverShim;
 
 /**
  * created by ggu on Jul 6, 2012 Detailled comment
- * 
+ *
  */
 public class GeneralJDBCExtractManagerTest extends AbstractTest4ExtractManager {
 
@@ -68,11 +68,11 @@ public class GeneralJDBCExtractManagerTest extends AbstractTest4ExtractManager {
     }
 
     /**
-     * 
+     *
      * DOC ggu Comment method "testCloseConnect4DirverClass_JavaDB".
-     * 
+     *
      * need test the driverclass for java db
-     * 
+     *
      * @throws Exception
      */
     // @Test
@@ -81,11 +81,11 @@ public class GeneralJDBCExtractManagerTest extends AbstractTest4ExtractManager {
     }
 
     /**
-     * 
+     *
      * DOC ggu Comment method "testCloseConnect4DirverClass_HsqlDB".
-     * 
+     *
      * need test the driverclass for HSQLDB
-     * 
+     *
      * @throws Exception
      */
     // @Test

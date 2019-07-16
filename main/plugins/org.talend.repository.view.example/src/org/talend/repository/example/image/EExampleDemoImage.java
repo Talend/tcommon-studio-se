@@ -1,6 +1,6 @@
 // ============================================================================
 //
-// Copyright (C) 2006-2018 Talend Inc. - www.talend.com
+// Copyright (C) 2006-2019 Talend Inc. - www.talend.com
 //
 // This source code is available under agreement available at
 // %InstallDIR%\features\org.talend.rcp.branding.%PRODUCTNAME%\%PRODUCTNAME%license.txt
@@ -16,9 +16,9 @@ import org.talend.commons.ui.runtime.image.IImage;
 
 /**
  * DOC ggu class global comment. Detailled comment <br/>
- * 
+ *
  * $Id: talend.epf 55206 2011-02-15 17:32:14Z mhirt $
- * 
+ *
  */
 public enum EExampleDemoImage implements IImage {
     DEMO_ICON("/icons/demo.gif"), //$NON-NLS-1$
@@ -37,7 +37,7 @@ public enum EExampleDemoImage implements IImage {
 
     /**
      * Getter for path.
-     * 
+     *
      * @return the path
      */
     @Override
@@ -47,7 +47,7 @@ public enum EExampleDemoImage implements IImage {
 
     /**
      * Getter for clazz.
-     * 
+     *
      * @return the clazz
      */
     @Override

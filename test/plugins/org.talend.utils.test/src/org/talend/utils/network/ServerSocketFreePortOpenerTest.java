@@ -1,6 +1,6 @@
 // ============================================================================
 //
-// Copyright (C) 2006-2018 Talend Inc. - www.talend.com
+// Copyright (C) 2006-2019 Talend Inc. - www.talend.com
 //
 // This source code is available under agreement available at
 // %InstallDIR%\features\org.talend.rcp.branding.%PRODUCTNAME%\%PRODUCTNAME%license.txt
@@ -211,7 +211,7 @@ public class ServerSocketFreePortOpenerTest {
 
             /*
              * (non-Javadoc)
-             * 
+             *
              * @see org.talend.commons.utils.threading.AbstractThreadSafetyTester#initInstance(org.talend.commons.utils.
              * threading .IThreadSafetyOperator)
              */
@@ -224,7 +224,7 @@ public class ServerSocketFreePortOpenerTest {
 
             /*
              * (non-Javadoc)
-             * 
+             *
              * @see org.talend.commons.utils.threading.AbstractThreadSafetyTester#assertFinal()
              */
             @Override
@@ -244,9 +244,9 @@ public class ServerSocketFreePortOpenerTest {
     }
 
     /**
-     * 
+     *
      * Return true if the specified port is free.
-     * 
+     *
      * @param port
      * @return Return true if the specified port is free
      */

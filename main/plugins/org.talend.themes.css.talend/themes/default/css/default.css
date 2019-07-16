@@ -639,6 +639,9 @@ CTabFolder.org-talend-rcp-abstractMultiPageEditor-footer CTabItem:selected {
 .SynonymIndexView Text{
     background-color: white;
 }
+.TalendStagingView StyledText {
+    background-color: COLOR-LIST-BACKGROUND;
+}
 
 /**************************************************
  * Palette

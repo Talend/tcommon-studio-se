@@ -1,6 +1,6 @@
 // ============================================================================
 //
-// Copyright (C) 2006-2018 Talend Inc. - www.talend.com
+// Copyright (C) 2006-2019 Talend Inc. - www.talend.com
 //
 // This source code is available under agreement available at
 // %InstallDIR%\features\org.talend.rcp.branding.%PRODUCTNAME%\%PRODUCTNAME%license.txt
@@ -16,7 +16,7 @@ import org.talend.core.i18n.Messages;
 
 /**
  * qzhang class global comment. Detailled comment <br/>
- * 
+ *
  */
 public enum EConnectionParameterName {
     SERVER_NAME(Messages.getString("ConnectionParameterName.HostLabel")), //$NON-NLS-1$
@@ -35,7 +35,7 @@ public enum EConnectionParameterName {
     URL("Url"), //$NON-NLS-1$
     HTTPS("https"), //$NON-NLS-1$
     DBPATH("DBPATH"),//$NON-NLS-1$
-    
+
     GENERIC_TABLENAME("tableSelection.tablename"),//$NON-NLS-1$
     GENERIC_USERNAME("connection.userPassword.userId"),//$NON-NLS-1$
     GENERIC_PASSWORD("connection.userPassword.password"),//$NON-NLS-1$

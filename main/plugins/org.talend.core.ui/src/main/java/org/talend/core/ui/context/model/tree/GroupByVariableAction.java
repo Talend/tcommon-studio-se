@@ -1,6 +1,6 @@
 // ============================================================================
 //
-// Copyright (C) 2006-2018 Talend Inc. - www.talend.com
+// Copyright (C) 2006-2019 Talend Inc. - www.talend.com
 //
 // This source code is available under agreement available at
 // %InstallDIR%\features\org.talend.rcp.branding.%PRODUCTNAME%\%PRODUCTNAME%license.txt
@@ -24,7 +24,7 @@ import org.talend.core.ui.i18n.Messages;
 
 /**
  * cli class global comment. Detailled comment
- * 
+ *
  * This action is used to group the text by variables.
  */
 public class GroupByVariableAction extends Action {
@@ -38,7 +38,7 @@ public class GroupByVariableAction extends Action {
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see org.eclipse.jface.action.Action#run()
      */
     @Override

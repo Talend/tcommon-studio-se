@@ -1,6 +1,6 @@
 // ============================================================================
 //
-// Copyright (C) 2006-2018 Talend Inc. - www.talend.com
+// Copyright (C) 2006-2019 Talend Inc. - www.talend.com
 //
 // This source code is available under agreement available at
 // %InstallDIR%\features\org.talend.rcp.branding.%PRODUCTNAME%\%PRODUCTNAME%license.txt
@@ -73,7 +73,7 @@ import org.talend.repository.metadata.ui.wizards.form.AbstractSalesforceStepForm
 
 /**
  * DOC YeXiaowei class global comment. Detailled comment <br/>
- * 
+ *
  */
 public class SalesforceStep2Form extends AbstractSalesforceStepForm {
 
@@ -132,7 +132,7 @@ public class SalesforceStep2Form extends AbstractSalesforceStepForm {
 
     /**
      * DOC YeXiaowei SalesforceStep2Form constructor comment.
-     * 
+     *
      * @param parent
      * @param connectionItem
      */
@@ -150,7 +150,7 @@ public class SalesforceStep2Form extends AbstractSalesforceStepForm {
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see org.talend.repository.ui.swt.utils.AbstractForm#adaptFormToReadOnly()
      */
     @Override
@@ -160,7 +160,7 @@ public class SalesforceStep2Form extends AbstractSalesforceStepForm {
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see org.talend.repository.ui.swt.utils.AbstractForm#addFields()
      */
     @Override
@@ -198,7 +198,7 @@ public class SalesforceStep2Form extends AbstractSalesforceStepForm {
 
     /**
      * DOC ocarbone Comment method "addTreeNavigator".
-     * 
+     *
      * @param parent
      * @param width
      * @param height
@@ -330,7 +330,7 @@ public class SalesforceStep2Form extends AbstractSalesforceStepForm {
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see org.talend.repository.ui.swt.utils.AbstractForm#addFieldsListeners()
      */
     @Override
@@ -420,7 +420,7 @@ public class SalesforceStep2Form extends AbstractSalesforceStepForm {
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see org.talend.repository.ui.swt.utils.AbstractForm#addUtilsButtonListeners()
      */
     @Override
@@ -449,7 +449,7 @@ public class SalesforceStep2Form extends AbstractSalesforceStepForm {
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see org.talend.repository.ui.swt.utils.AbstractForm#checkFieldsValue()
      */
     @Override
@@ -466,7 +466,7 @@ public class SalesforceStep2Form extends AbstractSalesforceStepForm {
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see org.talend.repository.ui.swt.utils.AbstractForm#initialize()
      */
     @Override
@@ -515,9 +515,9 @@ public class SalesforceStep2Form extends AbstractSalesforceStepForm {
     }
 
     /**
-     * 
+     *
      * DOC YeXiaowei SalesforceStep2Form class global comment. Detailled comment <br/>
-     * 
+     *
      */
     class PreviewProcessor extends SWTUIThreadProcessor {
 
@@ -554,7 +554,7 @@ public class SalesforceStep2Form extends AbstractSalesforceStepForm {
             }
 
             if (webServiceUrl == null || webServiceUrl.equals("")) { //$NON-NLS-1$
-                previewInformationLabel.setText(" Please reset Salesforce URL"); //$NON-NLS-1$ 
+                previewInformationLabel.setText(" Please reset Salesforce URL"); //$NON-NLS-1$
                 return false;
             }
 
@@ -668,7 +668,7 @@ public class SalesforceStep2Form extends AbstractSalesforceStepForm {
 
     /**
      * DOC YeXiaowei Comment method "getProcessDescription".
-     * 
+     *
      * @return
      */
     private ProcessDescription getProcessDescription(SalesforceSchemaConnection originalValueConnection) {
@@ -715,7 +715,7 @@ public class SalesforceStep2Form extends AbstractSalesforceStepForm {
 
         processDescription.setSchema(tableSchema);
 
-        processDescription.setEncoding(TalendQuoteUtils.addQuotes("ISO-8859-15")); //$NON-NLS-1$  
+        processDescription.setEncoding(TalendQuoteUtils.addQuotes("ISO-8859-15")); //$NON-NLS-1$
         if (tableGet != null) {
             moduleViewer.getTable().clearAll();
             if (useAlphbet) {
@@ -749,7 +749,7 @@ public class SalesforceStep2Form extends AbstractSalesforceStepForm {
 
     /**
      * DOC YeXiaowei Comment method "createModuleDetailViewer".
-     * 
+     *
      * @param moduleGroup
      */
     private void createModuleDetailViewer(Composite moduleGroup) {

@@ -1,6 +1,6 @@
 // ============================================================================
 //
-// Copyright (C) 2006-2018 Talend Inc. - www.talend.com
+// Copyright (C) 2006-2019 Talend Inc. - www.talend.com
 //
 // This source code is available under agreement available at
 // %InstallDIR%\features\org.talend.rcp.branding.%PRODUCTNAME%\%PRODUCTNAME%license.txt
@@ -90,9 +90,9 @@ public class ColorPalettePopup {
          * Note: Even if <code>returnMissingImageOnError</code> is true, it is still possible for this method to return
          * <code>null</code> in extreme cases, for example if SWT runs out of image handles.
          * </p>
-         * 
+         *
          * @return a new image or <code>null</code> if the image could not be created
-         * 
+         *
          */
         public Image createImage() {
 
@@ -187,7 +187,7 @@ public class ColorPalettePopup {
 
     /**
      * Creates a color palette popup above the specified shell.
-     * 
+     *
      * @param parent a Shell control which will be the parent of the new instance (cannot be null)
      * @deprecated Use the other constructor. This one does not retrieve the default value from the correct preference
      * store.
@@ -198,7 +198,7 @@ public class ColorPalettePopup {
 
     /**
      * Creates a PopupList above the specified shell.
-     * 
+     *
      * @param parent a widget which will be the parent of the new instance (cannot be null)
      * @param style the style of widget to construct
      */
@@ -270,7 +270,7 @@ public class ColorPalettePopup {
         customColorButton = moreColors;
 
     }
-    
+
     public void centerDialog(Shell dialogShell, Shell parentShell) {
         try {
             Point dialogSize = dialogShell.getSize();
@@ -298,10 +298,10 @@ public class ColorPalettePopup {
 
     /**
      * Launches the Popup List, waits for an item to be selected and then closes PopupList.
-     * 
+     *
      * @param rect the initial size and location of the PopupList; the dialog will be positioned so that it does not run
      * off the screen and the largest number of items are visible
-     * 
+     *
      * @return the text of the selected item or null if no item is selected
      */
     public RGB open(Point location) {
@@ -310,19 +310,19 @@ public class ColorPalettePopup {
         shell.setBounds(location.x, location.y, listSize.x, listSize.y);
 
         shell.open();
-        shell.setFocus();       
+        shell.setFocus();
         Display display = shell.getDisplay();
         Button prevButton = (Button)buttonMap.get(integerToRGB(getPreviousColor()));
         if (prevButton != null){
             shell.setDefaultButton(prevButton);
-        }   
+        }
         else{
             shell.setDefaultButton(customColorButton);
         }
         while (!shell.isDisposed() && shell.isVisible()) {
             if (!display.readAndDispatch())
                 display.sleep();
-        }       
+        }
         return getSelectedColor();
     }
 
@@ -334,7 +334,7 @@ public class ColorPalettePopup {
     /**
      * Gets the color the user selected. Could be null as the user may have cancelled the gesture or they may have
      * selected the default color button. See {@link #useDefaultColor()}.
-     * 
+     *
      * @return the selected color or null
      */
     public RGB getSelectedColor() {
@@ -343,7 +343,7 @@ public class ColorPalettePopup {
 
     /**
      * Returns true if the user selected to use the default color
-     * 
+     *
      * @return true if the default color is to be used; false otherwise
      */
     public boolean useDefaultColor() {

@@ -1,6 +1,6 @@
 // ============================================================================
 //
-// Copyright (C) 2006-2018 Talend Inc. - www.talend.com
+// Copyright (C) 2006-2019 Talend Inc. - www.talend.com
 //
 // This source code is available under agreement available at
 // %InstallDIR%\features\org.talend.rcp.branding.%PRODUCTNAME%\%PRODUCTNAME%license.txt
@@ -56,7 +56,7 @@ public final class FileConnectionContextUtils {
     private static final ECodeLanguage LANGUAGE = LanguageManager.getCurrentLanguage();
 
     /**
-     * 
+     *
      */
     public enum EFileParamName implements IConnParamName {
         // Server,
@@ -316,9 +316,9 @@ public final class FileConnectionContextUtils {
     }
 
     /**
-     * 
+     *
      * ggu Comment method "cloneOriginalValueConnection".
-     * 
+     *
      * @deprecated use instead CloneConnectionUtils.cloneOriginalValueConnection
      */
     @Deprecated
@@ -336,9 +336,9 @@ public final class FileConnectionContextUtils {
     }
 
     /**
-     * 
+     *
      * ggu Comment method "cloneOriginalValueConnection".
-     * 
+     *
      * @deprecated use instead CloneConnectionUtils.cloneOriginalValueConnection
      */
     @Deprecated
@@ -399,9 +399,9 @@ public final class FileConnectionContextUtils {
     }
 
     /**
-     * 
+     *
      * DOC zshen Comment method "retrieveFileConnection".
-     * 
+     *
      * @param sourceFileConnection
      * @param targetFileConnection
      */
@@ -414,13 +414,13 @@ public final class FileConnectionContextUtils {
     }
 
     /**
-     * 
+     *
      * DOC zshen Comment method "retrieveFileConnection".
-     * 
+     *
      * @param sourceFileConnection
      * @param targetFileConnection
      * @param contextType
-     * 
+     *
      * retrieve FileConnection from sourceFileConnection to targetFileConnection
      */
     public static void retrieveFileConnection(FileConnection sourceFileConnection, FileConnection targetFileConnection,
@@ -511,9 +511,9 @@ public final class FileConnectionContextUtils {
     }
 
     /**
-     * 
+     *
      * DOC klliu Comment method "isFilePathAvailable".
-     * 
+     *
      * @param fileStr
      * @param connection
      * @return

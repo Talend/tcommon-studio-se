@@ -1,6 +1,6 @@
 // ============================================================================
 //
-// Copyright (C) 2006-2018 Talend Inc. - www.talend.com
+// Copyright (C) 2006-2019 Talend Inc. - www.talend.com
 //
 // This source code is available under agreement available at
 // %InstallDIR%\features\org.talend.rcp.branding.%PRODUCTNAME%\%PRODUCTNAME%license.txt
@@ -22,13 +22,13 @@ import org.eclipse.jface.preference.IPreferenceNode;
 public interface IProjectSettingContainer {
 
     /**
-     * 
+     *
      * add the child nodes under the parent id of node.
      */
     boolean addChildrenPreferenceNodes(String parentId, List<IPreferenceNode> childrenNodes);
 
     /**
-     * 
+     *
      * remove the child nodes of parent id
      */
     boolean removeChildrenPreferenceNodes(String parentId, List<String> childrenIds);

@@ -1,6 +1,6 @@
 // ============================================================================
 //
-// Copyright (C) 2006-2018 Talend Inc. - www.talend.com
+// Copyright (C) 2006-2019 Talend Inc. - www.talend.com
 //
 // This source code is available under agreement available at
 // %InstallDIR%\features\org.talend.rcp.branding.%PRODUCTNAME%\%PRODUCTNAME%license.txt
@@ -24,7 +24,7 @@ public class Problem {
 
     /**
      * Getter for category.
-     * 
+     *
      * @return the category
      */
     public ProblemCategory getCategory() {
@@ -33,7 +33,7 @@ public class Problem {
 
     /**
      * Sets the category.
-     * 
+     *
      * @param category the category to set
      */
     public void setCategory(ProblemCategory category) {
@@ -42,7 +42,7 @@ public class Problem {
 
     /**
      * Getter for problem.
-     * 
+     *
      * @return the problem
      */
     public String getProblem() {
@@ -51,7 +51,7 @@ public class Problem {
 
     /**
      * Sets the problem.
-     * 
+     *
      * @param problem the problem to set
      */
     public void setProblem(String problem) {

@@ -1,6 +1,6 @@
 // ============================================================================
 //
-// Copyright (C) 2006-2018 Talend Inc. - www.talend.com
+// Copyright (C) 2006-2019 Talend Inc. - www.talend.com
 //
 // This source code is available under agreement available at
 // %InstallDIR%\features\org.talend.rcp.branding.%PRODUCTNAME%\%PRODUCTNAME%license.txt
@@ -14,12 +14,12 @@ package org.talend.commons.utils.data.container;
 
 /**
  * PTODO SML Delete this class.<br/>
- * 
+ *
  * @param <K> - DOC SML
  * @param <V> - type the container manages
- * 
+ *
  * $Id$
- * 
+ *
  */
 public class Content<K, V> {
 
@@ -31,7 +31,7 @@ public class Content<K, V> {
 
     /**
      * DOC smallet Content constructor comment.
-     * 
+     *
      * @param parent
      * @param content
      * @param key
@@ -45,7 +45,7 @@ public class Content<K, V> {
 
     /**
      * Getter for content.
-     * 
+     *
      * @return the content
      */
     public V getContent() {
@@ -54,7 +54,7 @@ public class Content<K, V> {
 
     /**
      * Sets the content.
-     * 
+     *
      * @param content the content to set
      */
     public void setContent(V content) {
@@ -63,7 +63,7 @@ public class Content<K, V> {
 
     /**
      * Getter for key.
-     * 
+     *
      * @return the key
      */
     public Object getKey() {
@@ -72,7 +72,7 @@ public class Content<K, V> {
 
     /**
      * Sets the key.
-     * 
+     *
      * @param key the key to set
      */
     public void setKey(K key) {
@@ -81,7 +81,7 @@ public class Content<K, V> {
 
     /**
      * Getter for parent.
-     * 
+     *
      * @return the parent
      */
     public Container<K, V> getParent() {
@@ -90,7 +90,7 @@ public class Content<K, V> {
 
     /**
      * Sets the parent.
-     * 
+     *
      * @param parent the parent to set
      */
     public void setParent(Container<K, V> parent) {

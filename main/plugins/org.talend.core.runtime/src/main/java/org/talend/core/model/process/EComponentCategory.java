@@ -1,6 +1,6 @@
 // ============================================================================
 //
-// Copyright (C) 2006-2018 Talend Inc. - www.talend.com
+// Copyright (C) 2006-2019 Talend Inc. - www.talend.com
 //
 // This source code is available under agreement available at
 // %InstallDIR%\features\org.talend.rcp.branding.%PRODUCTNAME%\%PRODUCTNAME%license.txt
@@ -16,9 +16,9 @@ import org.talend.core.runtime.i18n.Messages;
 
 /**
  * DOC nrousseau class global comment. Detailled comment <br/>
- * 
+ *
  * $Id: EComponentCategory.java 44874 2010-07-04 07:40:42Z nrousseau $
- * 
+ *
  */
 public enum EComponentCategory {
     MAIN(Messages.getString("EComponentCategory_main"), 1), //$NON-NLS-1$
@@ -89,7 +89,7 @@ public enum EComponentCategory {
 
     /**
      * yzhang Comment method "getTitle".
-     * 
+     *
      * @return
      */
     public String getTitle() {
@@ -98,7 +98,7 @@ public enum EComponentCategory {
 
     /**
      * yzhang Comment method "getPriorityNumber".
-     * 
+     *
      * @return
      */
     public int getPriorityNumber() {
@@ -107,7 +107,7 @@ public enum EComponentCategory {
 
     /**
      * yzhang Comment method "getSubCategories".
-     * 
+     *
      * @return
      */
     public EComponentCategory[] getSubCategories() {
@@ -116,7 +116,7 @@ public enum EComponentCategory {
 
     /**
      * yzhang Comment method "hadSubCategories".
-     * 
+     *
      * @return
      */
     public boolean hadSubCategories() {
@@ -125,7 +125,7 @@ public enum EComponentCategory {
 
     /**
      * yzhang Comment method "getAliasFor".
-     * 
+     *
      * @return
      */
     public EComponentCategory getAliasFor() {
@@ -134,7 +134,7 @@ public enum EComponentCategory {
 
     /**
      * yzhang Comment method "isAlias".
-     * 
+     *
      * @return
      */
     public boolean isAlias() {

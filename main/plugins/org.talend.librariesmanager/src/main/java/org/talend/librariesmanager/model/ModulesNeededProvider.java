@@ -1,6 +1,6 @@
 // ============================================================================
 //
-// Copyright (C) 2006-2018 Talend Inc. - www.talend.com
+// Copyright (C) 2006-2019 Talend Inc. - www.talend.com
 //
 // This source code is available under agreement available at
 // %InstallDIR%\features\org.talend.rcp.branding.%PRODUCTNAME%\%PRODUCTNAME%license.txt
@@ -92,9 +92,9 @@ import org.talend.repository.model.IRepositoryService;
 
 /**
  * @TODO to be refactored to avoid those ugly static methods everywhere. (SG)
- * 
+ *
  * $Id: ModulesNeededProvider.java 1893 2007-02-07 11:33:35Z mhirt $
- * 
+ *
  */
 public class ModulesNeededProvider {
 
@@ -104,7 +104,7 @@ public class ModulesNeededProvider {
     public static final String ORG_TALEND_EXTERNAL_LIB_FOLDER_SYS_PROP = "talend.library.path"; //$NON-NLS-1$
 
     /**
-     * 
+     *
      */
     private static final String PLUGINS_CONTEXT_KEYWORD = "plugin:";
 
@@ -200,7 +200,7 @@ public class ModulesNeededProvider {
 
     /**
      * DOC sgandon Comment method "getModulesNeeded".
-     * 
+     *
      * @param moduleName, must not be null
      * @return all modules needed matching the module name
      */
@@ -269,7 +269,7 @@ public class ModulesNeededProvider {
 
     /**
      * ftang Comment method "resetCurrentJobNeededModuleList".
-     * 
+     *
      * @param process
      */
     public static void resetCurrentJobNeededModuleList(IProcess process) {
@@ -398,6 +398,7 @@ public class ModulesNeededProvider {
         List<String> list = getInstallURL(importType);
         ModuleNeeded moduleNeeded = new ModuleNeeded(context, importType.getMODULE(), msg, importType.isREQUIRED(), list,
                 importType.getREQUIREDIF(), importType.getMVN());
+        moduleNeeded.setUseReleaseVersion(true);
         initBundleID(importType, moduleNeeded);
         moduleNeeded.setMrRequired(importType.isMRREQUIRED());
         moduleNeeded.setShow(importType.isSHOW());
@@ -516,9 +517,9 @@ public class ModulesNeededProvider {
     }
 
     /**
-     * 
+     *
      * ggu Comment method "getModulesNeededForRoutines".
-     * 
+     *
      */
     @SuppressWarnings("unchecked")
     public static List<ModuleNeeded> getModulesNeededForRoutines(ProcessItem[] processItems, ERepositoryObjectType type) {
@@ -759,13 +760,41 @@ public class ModulesNeededProvider {
             importNeedsListForRoutes.add(getComponentModuleById("CAMEL", "spring-context"));
             importNeedsListForRoutes.add(getComponentModuleById("CAMEL", "spring-beans"));
             importNeedsListForRoutes.add(getComponentModuleById("CAMEL", "spring-core"));
+            if (System.getProperty("java.version") != null && System.getProperty("java.version").startsWith("11")) {
+                getModulesNeededForRoutesJava11();
+            }
         }
         return importNeedsListForRoutes;
     }
 
+    private static void getModulesNeededForRoutesJava11() {
+        importNeedsListForRoutes.add(getModuleNeededForName("istack-commons-runtime-3.0.8.jar"));
+        importNeedsListForRoutes.add(getModuleNeededForName("jakarta.xml.bind-api-2.3.2.jar"));
+        importNeedsListForRoutes.add(getModuleNeededForName("jakarta.xml.soap-api-1.4.1.jar"));
+        importNeedsListForRoutes.add(getModuleNeededForName("javax.activation-1.2.0.jar"));
+        importNeedsListForRoutes.add(getModuleNeededForName("javax.annotation-api-1.3.jar"));
+        importNeedsListForRoutes.add(getModuleNeededForName("jaxb-runtime-2.3.2.jar"));
+        importNeedsListForRoutes.add(getModuleNeededForName("stax-ex-1.8.1.jar"));
+        importNeedsListForRoutes.add(getModuleNeededForName("txw2-2.3.2.jar"));
+        importNeedsListForRoutes.add(getModuleNeededForName("jakarta.jws-api-1.1.1.jar"));
+        importNeedsListForRoutes.add(getModuleNeededForName("org.apache.servicemix.specs.jaxws-api-2.2-2.9.0.jar"));
+    }
+
+    /**
+     * Get first ModelNeed by name
+     * @param moduleName
+     * @return
+     */
+    public static ModuleNeeded getModuleNeededForName(String moduleName) {
+        List<ModuleNeeded> modulesNeeded = getModulesNeededForName(moduleName);
+        if (modulesNeeded.size() > 0) {
+            return modulesNeeded.get(0);
+        }
+        return null;
+    }
+
     public static List<ModuleNeeded> getModulesNeededForBeans() {
         if (importNeedsListForBeans == null) {
-
             importNeedsListForBeans = getModulesNeededForRoutes();
             importNeedsListForBeans.add(getComponentModuleById("CAMEL", "camel-cxf"));
             importNeedsListForBeans.add(getComponentModuleById("CAMEL", "cxf-core"));
@@ -807,7 +836,7 @@ public class ModulesNeededProvider {
 
     /**
      * DOC sgandon Comment method "createModuleNeededInstance".
-     * 
+     *
      * @param current
      * @return
      */
@@ -821,6 +850,7 @@ public class ModulesNeededProvider {
         uripath = ExtensionModuleManager.getInstance().getFormalModulePath(uripath, current);
         String mvn_rui = current.getAttribute(ExtensionModuleManager.MVN_URI_ATTR);
         ModuleNeeded module = new ModuleNeeded(context, name, message, required);
+        module.setUseReleaseVersion(true);
         if (uripath != null && libManagerService.checkJarInstalledFromPlatform(uripath)) {
             module.setModuleLocaion(uripath);
         }
@@ -836,7 +866,7 @@ public class ModulesNeededProvider {
     }
 
     /**
-     * 
+     *
      * @return the list of all extensions implementing org.talend.core.runtime.librariesNeeded/libraryNeeded
      */
     public static List<IConfigurationElement> getAllModulesNeededExtensions() {
@@ -871,7 +901,7 @@ public class ModulesNeededProvider {
     /**
      * this method checks if each required library is installed without any caching to be careful when using this. if
      * monitor is canceled, then the return value will be empty
-     * 
+     *
      * @return the list all extension implementing org.talend.core.runtime.librariesNeeded/libraryNeeded, that define a
      * bundle(plugin) required jar. they are defined using the "context" attribute that starts with the keyword
      * "plugin:" and that also are not present in the java.lib library
@@ -896,7 +926,7 @@ public class ModulesNeededProvider {
     /**
      * filer in the moduleList the modeules required for the bundleSymbolicName. It first checks that the module is
      * indeed a bundle module and then check if the symbolic name matches.
-     * 
+     *
      * @param bundleSymbolicName
      * @param moduleList
      * @return list of modules required for the bundle named "bundleSymbolicName" among the "moduleList"
@@ -960,7 +990,7 @@ public class ModulesNeededProvider {
 
     /**
      * return the list of uninstalled modules needed by the Studio.
-     * 
+     *
      * @return the list uninstalled modules
      */
     public static List<ModuleNeeded> getUnistalledModulesNeeded() {

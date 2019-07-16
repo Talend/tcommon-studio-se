@@ -1,6 +1,6 @@
 // ============================================================================
 //
-// Copyright (C) 2006-2018 Talend Inc. - www.talend.com
+// Copyright (C) 2006-2019 Talend Inc. - www.talend.com
 //
 // This source code is available under agreement available at
 // %InstallDIR%\features\org.talend.rcp.branding.%PRODUCTNAME%\%PRODUCTNAME%license.txt
@@ -49,9 +49,9 @@ import org.talend.utils.sugars.ReturnCode;
 
 /**
  * DOC smallet class global comment. Detailled comment <br/>
- * 
+ *
  * $Id: talend.epf 1 2006-09-29 17:06:40 +0000 (ven., 29 sept. 2006) nrousseau $
- * 
+ *
  */
 public final class FilesUtils {
 
@@ -296,12 +296,12 @@ public final class FilesUtils {
 
     /**
      * Load in a list all lines of the given file.
-     * 
+     *
      * @throws IOException
      */
     public static List<String> getContentLines(String filePath) throws IOException {
         BufferedReader in = new BufferedReader(new InputStreamReader(new FileInputStream(filePath)));
-        List<String> lines = new ArrayList<String>();
+        List<String> lines = new ArrayList<>();
         try {
             String line;
             while ((line = in.readLine()) != null) {
@@ -315,7 +315,7 @@ public final class FilesUtils {
 
     /**
      * Create all the folders if they don't exist for the following path.
-     * 
+     *
      * @param path
      * @return the return code with a non null error message if the state is false. When the state is ok, there is no
      * message.
@@ -326,7 +326,7 @@ public final class FilesUtils {
 
     /**
      * .
-     * 
+     *
      * @param path
      * @param pathIsFilePath if true the given path has a filename at last segment so this segment is not processed
      * @return the return code with a non null error message if the state is false. When the state is ok, there is no
@@ -381,7 +381,7 @@ public final class FilesUtils {
 
     /**
      * DOC amaumont Comment method "removeDirectory".
-     * 
+     *
      * @param b
      */
     public static boolean removeFolder(String pathFolder, boolean recursiveRemove) {
@@ -394,7 +394,7 @@ public final class FilesUtils {
 
     /**
      * DOC amaumont Comment method "removeFolder".
-     * 
+     *
      * @param current
      * @param removeRecursivly
      */
@@ -490,8 +490,9 @@ public final class FilesUtils {
             MessageDigest messageDigest = MessageDigest.getInstance("MD5"); //$NON-NLS-1$
             digestInputStream = new DigestInputStream(inputStream, messageDigest);
             byte[] buffer = new byte[bufferSize];
-            while (digestInputStream.read(buffer) > 0)
+            while (digestInputStream.read(buffer) > 0) {
                 ;
+            }
             messageDigest = digestInputStream.getMessageDigest();
             return new String(Hex.encodeHex(messageDigest.digest()));
         } catch (NoSuchAlgorithmException e) {
@@ -510,7 +511,7 @@ public final class FilesUtils {
 
     /**
      * DOC amaumont Comment method "getBytes".
-     * 
+     *
      * @param archiveFile
      * @throws IOException
      */
@@ -541,7 +542,7 @@ public final class FilesUtils {
 
     /**
      * DOC amaumont Comment method "getFile".
-     * 
+     *
      * @param jobScriptArchive
      * @throws IOException
      */
@@ -575,7 +576,7 @@ public final class FilesUtils {
 
     /**
      * zip a new file with specified name to the user folder.
-     * 
+     *
      * @param sourceFileName
      * @param zippedFileName
      * @throws IOException
@@ -586,7 +587,7 @@ public final class FilesUtils {
 
     /**
      * zip a new file with specified name to the user folder.
-     * 
+     *
      * @param sourceFileName
      * @param zippedFileName
      * @param fileFilter optional
@@ -598,7 +599,7 @@ public final class FilesUtils {
 
     /**
      * zip the file to the user folder.
-     * 
+     *
      * @param sourceFile
      * @param zippedFileName
      * @throws IOException
@@ -609,7 +610,7 @@ public final class FilesUtils {
 
     /**
      * zip the file to the user folder.
-     * 
+     *
      * @param sourceFile
      * @param zippedFileName
      * @param fileFilter optional
@@ -624,9 +625,9 @@ public final class FilesUtils {
     }
 
     /**
-     * 
+     *
      * Method "jar".
-     * 
+     *
      * @param manifest
      * @param sourceDir
      * @param zip
@@ -637,9 +638,9 @@ public final class FilesUtils {
     }
 
     /**
-     * 
+     *
      * Method "jar".
-     * 
+     *
      * @param manifest
      * @param sourceDir
      * @param zip
@@ -656,9 +657,9 @@ public final class FilesUtils {
     }
 
     /**
-     * 
+     *
      * DOC zshen Comment method "zips".
-     * 
+     *
      * @param sourceFile
      * @param zippedFileName
      * @param fileFilter optional
@@ -669,9 +670,9 @@ public final class FilesUtils {
     }
 
     /**
-     * 
+     *
      * DOC zshen Comment method "zips".
-     * 
+     *
      * @param sourceFile
      * @param zippedFileName
      * @param fileFilter optional
@@ -699,9 +700,9 @@ public final class FilesUtils {
     }
 
     /**
-     * 
+     *
      * DOC zshen Comment method "zip".
-     * 
+     *
      * @param out
      * @param f
      * @param base
@@ -741,18 +742,23 @@ public final class FilesUtils {
         zip(sourceFileName, zippedFileName, fileFilter);
     }
 
+    public static void unzip(String zipFile, String targetFolder, String... fileSuffixes) throws Exception {
+        unzip(zipFile, targetFolder, true, fileSuffixes);
+    }
+
     /**
      * Unzip the component file to the user folder.
-     * 
+     *
      * @param zipFile The component zip file
      * @param targetFolder The user folder
+     * @param overwrite if overwrite existing files
      * @param fileSuffixes Case-insensitive Suffixes , if these parameter are set, only the files named with these
      * suffixes will be extracted
      * @return
      * @throws Exception
      */
     @SuppressWarnings("unchecked")
-    public static void unzip(String zipFile, String targetFolder, String... fileSuffixes) throws Exception {
+    public static void unzip(String zipFile, String targetFolder, boolean overwrite, String... fileSuffixes) throws Exception {
         Exception exception = null;
         ZipFile zip = new ZipFile(zipFile);
         byte[] buf = new byte[8192];
@@ -764,12 +770,15 @@ public final class FilesUtils {
 
                 File file = new File(targetFolder, entry.getName());
 
+                boolean exist = file.exists();
                 if (entry.isDirectory()) {
-                    if (!file.exists()) {
+                    if (!exist) {
                         file.mkdir();
                     }
                 } else {
-
+                    if (!overwrite && exist) {
+                        continue;
+                    }
                     if (fileSuffixes.length > 0 && !isReservedFile(file.getName(), fileSuffixes)) {
                         continue;
                     }
@@ -889,7 +898,7 @@ public final class FilesUtils {
     }
 
     /**
-     * 
+     *
      * Delete the sub folders, if true, will delete current folder also.
      */
     public static void deleteFolder(File file, boolean withCurrentFolder) {
@@ -906,7 +915,7 @@ public final class FilesUtils {
 
     /**
      * check multi-files in same folder.
-     * 
+     *
      * The base file must be existed first, then, will check the files in this folder (if base file is directory) or
      * with same folder (if the base file is file).
      *

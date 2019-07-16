@@ -1,6 +1,6 @@
 // ============================================================================
 //
-// Copyright (C) 2006-2018 Talend Inc. - www.talend.com
+// Copyright (C) 2006-2019 Talend Inc. - www.talend.com
 //
 // This source code is available under agreement available at
 // %InstallDIR%\features\org.talend.rcp.branding.%PRODUCTNAME%\%PRODUCTNAME%license.txt
@@ -22,7 +22,7 @@ import org.eclipse.core.runtime.Platform;
 import org.talend.commons.ui.runtime.exception.ExceptionHandler;
 
 /**
- * 
+ *
  * DOC mzhao Get extensions of service:org.talend.core.repository.resource_unload
  */
 public class TDQServiceRegister {
@@ -64,7 +64,7 @@ public class TDQServiceRegister {
 
     /**
      * DOC mzhao find the unload resource service.
-     * 
+     *
      * @param klass the class type want to find.
      * @return IService
      */

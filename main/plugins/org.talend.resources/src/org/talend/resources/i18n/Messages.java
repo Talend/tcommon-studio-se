@@ -1,6 +1,6 @@
 // ============================================================================
 //
-// Copyright (C) 2006-2018 Talend Inc. - www.talend.com
+// Copyright (C) 2006-2019 Talend Inc. - www.talend.com
 //
 // This source code is available under agreement available at
 // %InstallDIR%\features\org.talend.rcp.branding.%PRODUCTNAME%\%PRODUCTNAME%license.txt
@@ -19,14 +19,14 @@ import org.talend.resources.ResourcesPlugin;
 
 /**
  * Default implementation of MessageCore from org.talend.commons plug-in.<br/>
- * 
+ *
  * Developpers can copy this class in their plug-in and change :
  * <ul>
  * <li>the BUNDLE_NAME constant</li>
  * </ul>
- * 
+ *
  * $Id: DefaultMessagesImpl.java 2738 2007-03-28 13:12:27Z plegall $
- * 
+ *
  */
 public class Messages extends MessagesCore {
 
@@ -36,7 +36,7 @@ public class Messages extends MessagesCore {
 
     /**
      * Returns the i18n formatted message for <i>key</i> in the class bundle.
-     * 
+     *
      * @param key - the key for the desired string
      * @return the string for the given key in the class resource bundle
      * @see MessagesCore#getString(String, ResourceBundle)
@@ -47,7 +47,7 @@ public class Messages extends MessagesCore {
 
     /**
      * Returns the i18n formatted message for <i>key</i> and <i>args</i> in the specified bundle.
-     * 
+     *
      * @param key - the key for the desired string
      * @param args - arg to include in the string
      * @return the string for the given key in the given resource bundle

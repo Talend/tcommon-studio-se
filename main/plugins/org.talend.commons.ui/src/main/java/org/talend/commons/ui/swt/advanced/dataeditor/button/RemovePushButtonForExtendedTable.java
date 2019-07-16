@@ -1,6 +1,6 @@
 // ============================================================================
 //
-// Copyright (C) 2006-2018 Talend Inc. - www.talend.com
+// Copyright (C) 2006-2019 Talend Inc. - www.talend.com
 //
 // This source code is available under agreement available at
 // %InstallDIR%\features\org.talend.rcp.branding.%PRODUCTNAME%\%PRODUCTNAME%license.txt
@@ -20,9 +20,9 @@ import org.talend.commons.ui.swt.extended.table.AbstractExtendedTableViewer;
 
 /**
  * DOC amaumont class global comment. Detailled comment <br/>
- * 
+ *
  * $Id$
- * 
+ *
  */
 public class RemovePushButtonForExtendedTable extends RemovePushButton implements IExtendedTablePushButton {
 
@@ -30,7 +30,7 @@ public class RemovePushButtonForExtendedTable extends RemovePushButton implement
 
     /**
      * DOC amaumont SchemaTargetAddPushButton constructor comment.
-     * 
+     *
      * @param parent
      * @param extendedControlViewer
      */
@@ -51,7 +51,7 @@ public class RemovePushButtonForExtendedTable extends RemovePushButton implement
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see org.talend.core.ui.extended.button.IExtendedTablePushButton#getExtendedTableViewer()
      */
     public AbstractExtendedTableViewer getExtendedTableViewer() {

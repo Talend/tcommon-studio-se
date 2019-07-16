@@ -1,6 +1,6 @@
 // ============================================================================
 //
-// Copyright (C) 2006-2018 Talend Inc. - www.talend.com
+// Copyright (C) 2006-2019 Talend Inc. - www.talend.com
 //
 // This source code is available under agreement available at
 // %InstallDIR%\features\org.talend.rcp.branding.%PRODUCTNAME%\%PRODUCTNAME%license.txt
@@ -14,7 +14,7 @@ package org.talend.core.model.process;
 
 /**
  * DOC amaumont class global comment. Detailled comment <br/>
- * 
+ *
  */
 public class BlockCode {
 
@@ -22,7 +22,7 @@ public class BlockCode {
 
     /**
      * Constructor.
-     * 
+     *
      * @param label label of block code
      */
     public BlockCode(String label) {

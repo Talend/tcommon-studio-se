@@ -1,6 +1,6 @@
 // ============================================================================
 //
-// Copyright (C) 2006-2018 Talend Inc. - www.talend.com
+// Copyright (C) 2006-2019 Talend Inc. - www.talend.com
 //
 // This source code is available under agreement available at
 // %InstallDIR%\features\org.talend.rcp.branding.%PRODUCTNAME%\%PRODUCTNAME%license.txt
@@ -14,9 +14,9 @@ package org.talend.core.model.utils;
 
 /**
  * DOC ggu class global comment. Detailled comment <br/>
- * 
+ *
  * $Id: talend.epf 55206 2011-02-15 17:32:14Z mhirt $
- * 
+ *
  */
 public final class TalendPropertiesUtil {
 
@@ -28,10 +28,10 @@ public final class TalendPropertiesUtil {
     }
 
     /**
-     * 
+     *
      * DOC ggu Comment method "isHideExchange".
-     * 
-     * 
+     *
+     *
      * @return
      */
     public static boolean isHideExchange() {
@@ -39,9 +39,9 @@ public final class TalendPropertiesUtil {
     }
 
     /**
-     * 
+     *
      * DOC ggu Comment method "isHideBuildNumber".
-     * 
+     *
      * @return
      */
     public static boolean isHideBuildNumber() {
@@ -49,9 +49,9 @@ public final class TalendPropertiesUtil {
     }
 
     /**
-     * 
+     *
      * DOC ggu Comment method "isEnabledMultiBranchesInWorkspacee".
-     * 
+     *
      * @return
      */
     public static boolean isEnabledMultiBranchesInWorkspace() {
@@ -59,9 +59,9 @@ public final class TalendPropertiesUtil {
     }
 
     /**
-     * 
+     *
      * DOC ggu Comment method "isEnabledMultiBranchesInWorkspacee".
-     * 
+     *
      * @return
      */
     public static boolean isCleanCache() {

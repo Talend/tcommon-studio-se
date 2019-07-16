@@ -1,6 +1,6 @@
 // ============================================================================
 //
-// Copyright (C) 2006-2018 Talend Inc. - www.talend.com
+// Copyright (C) 2006-2019 Talend Inc. - www.talend.com
 //
 // This source code is available under agreement available at
 // %InstallDIR%\features\org.talend.rcp.branding.%PRODUCTNAME%\%PRODUCTNAME%license.txt
@@ -40,11 +40,11 @@ import org.talend.repository.model.RepositoryConstants;
 
 /**
  * This helper class contains a set of methods to perform basic operations on FolderItem objects.
- * 
+ *
  * DOC tguiu class global comment. Detailled comment <br/>
- * 
+ *
  * $Id: FolderHelper.java 44053 2010-06-12 09:14:16Z nma $
- * 
+ *
  */
 public abstract class FolderHelper {
 
@@ -54,7 +54,7 @@ public abstract class FolderHelper {
 
     /**
      * DOC tguiu FolderHelper constructor comment.
-     * 
+     *
      * @param project
      */
     protected FolderHelper(Project project, User connectedUser) {
@@ -87,8 +87,8 @@ public abstract class FolderHelper {
             createSystemFolder(new Path(RepositoryConstants.TEMP_DIRECTORY));
         }
 
-        if (getFolder(new Path("code/routines/system")) == null) { //$NON-NLS-1$  
-            createSystemFolder(new Path("code/routines/system")); //$NON-NLS-1$  
+        if (getFolder(new Path("code/routines/system")) == null) { //$NON-NLS-1$
+            createSystemFolder(new Path("code/routines/system")); //$NON-NLS-1$
         }
     }
 
@@ -303,7 +303,7 @@ public abstract class FolderHelper {
     /**
      * Returns <code>true</code> if a folder at the same level of <code>folder</code> with a different id and wich label
      * is <code>label</code> exists.
-     * 
+     *
      * @param folder
      * @param label
      * @return

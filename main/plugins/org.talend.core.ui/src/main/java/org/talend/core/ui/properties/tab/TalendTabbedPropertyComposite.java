@@ -1,6 +1,6 @@
 // ============================================================================
 //
-// Copyright (C) 2006-2018 Talend Inc. - www.talend.com
+// Copyright (C) 2006-2019 Talend Inc. - www.talend.com
 //
 // This source code is available under agreement available at
 // %InstallDIR%\features\org.talend.rcp.branding.%PRODUCTNAME%\%PRODUCTNAME%license.txt
@@ -31,9 +31,9 @@ import org.talend.core.ui.i18n.Messages;
 
 /**
  * yzhang class global comment. Detailled comment <br/>
- * 
+ *
  * $Id: talend.epf 1 2006-09-29 17:06:40Z nrousseau $
- * 
+ *
  */
 public class TalendTabbedPropertyComposite extends Composite {
 
@@ -59,7 +59,7 @@ public class TalendTabbedPropertyComposite extends Composite {
 
     /**
      * Constructor for a TabbedPropertyComposite
-     * 
+     *
      * @param parent the parent widget.
      * @param factory the widget factory.
      * @param displayTitle if <code>true</code>, then the title bar will be displayed.
@@ -208,7 +208,7 @@ public class TalendTabbedPropertyComposite extends Composite {
 
     /**
      * Get the tabbed property list, which is the list of tabs on the left hand side of this composite.
-     * 
+     *
      * @return the tabbed property list.
      */
     public TalendTabbedPropertyList getList() {
@@ -217,7 +217,7 @@ public class TalendTabbedPropertyComposite extends Composite {
 
     /**
      * Get the tabbed property title bar.
-     * 
+     *
      * @return the tabbed property title bar or <code>null</code> if not used.
      */
     public TalendTabbedPropertyTitle getTitle() {
@@ -226,7 +226,7 @@ public class TalendTabbedPropertyComposite extends Composite {
 
     /**
      * Get the tab composite where sections display their property contents.
-     * 
+     *
      * @return the tab composite.
      */
     public Composite getTabComposite() {
@@ -235,7 +235,7 @@ public class TalendTabbedPropertyComposite extends Composite {
 
     /**
      * Get the scrolled composite which surrounds the title bar and tab composite.
-     * 
+     *
      * @return the scrolled composite.
      */
     public ScrolledComposite getScrolledComposite() {
@@ -244,7 +244,7 @@ public class TalendTabbedPropertyComposite extends Composite {
 
     /**
      * Get the widget factory.
-     * 
+     *
      * @return the widget factory.
      */
     protected TabbedPropertySheetWidgetFactory getFactory() {
@@ -265,7 +265,7 @@ public class TalendTabbedPropertyComposite extends Composite {
 
     /**
      * Getter for isCompactView.
-     * 
+     *
      * @return the isCompactView
      */
     public boolean isCompactView() {
@@ -274,7 +274,7 @@ public class TalendTabbedPropertyComposite extends Composite {
 
     /**
      * Sets the isCompactView.
-     * 
+     *
      * @param isCompactView the isCompactView to set
      */
     public void setCompactView(boolean isCompactView) {
@@ -298,7 +298,7 @@ public class TalendTabbedPropertyComposite extends Composite {
 
     /**
      * Getter for compactButton.
-     * 
+     *
      * @return the compactButton
      */
     public Button getCompactButton() {
@@ -307,7 +307,7 @@ public class TalendTabbedPropertyComposite extends Composite {
 
     /**
      * Getter for tableButton.
-     * 
+     *
      * @return the tableButton
      */
     public Button getTableButton() {
@@ -316,7 +316,7 @@ public class TalendTabbedPropertyComposite extends Composite {
 
     /**
      * Getter for toolBarComposite.
-     * 
+     *
      * @return the toolBarComposite
      */
     public Composite getToolBarComposite() {

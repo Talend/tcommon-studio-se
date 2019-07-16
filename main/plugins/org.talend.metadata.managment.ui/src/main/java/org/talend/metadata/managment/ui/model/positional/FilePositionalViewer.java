@@ -1,6 +1,6 @@
 // ============================================================================
 //
-// Copyright (C) 2006-2018 Talend Inc. - www.talend.com
+// Copyright (C) 2006-2019 Talend Inc. - www.talend.com
 //
 // This source code is available under agreement available at
 // %InstallDIR%\features\org.talend.rcp.branding.%PRODUCTNAME%\%PRODUCTNAME%license.txt
@@ -47,9 +47,9 @@ import org.talend.metadata.managment.ui.model.positional.GraphicRule.PositionMar
 /**
  * DOC cantoine. FilePositionalViewer : This Class represent the Composite who shows the Text and the Position of
  * Delimiter
- * 
+ *
  * $Id: FilePositionalViewer.java 38013 2010-03-05 14:21:59Z mhirt $
- * 
+ *
  */
 
 public class FilePositionalViewer extends Composite {
@@ -128,7 +128,7 @@ public class FilePositionalViewer extends Composite {
         /**
          * mouseAdapter. : This Listener draw the PositionDelimiter unit whith VerticalLine, PositionInformation and
          * IntervalInformation
-         * 
+         *
          */
         MouseAdapter mouseAdapter = new MouseAdapter() {
 
@@ -155,7 +155,7 @@ public class FilePositionalViewer extends Composite {
 
         /**
          * mouseMoveListener. : This Listener choose the cursor when the pointer is on Text of PositionalText
-         * 
+         *
          */
         MouseMoveListener mouseMoveListener = new MouseMoveListener() {
 
@@ -190,7 +190,7 @@ public class FilePositionalViewer extends Composite {
     /**
      * DOC ocarbone Comment method "setSeparatorValue" used to synchronise the modification of FileStep1 on this
      * PositionalViewer.
-     * 
+     *
      * @param s
      * @param eraseMarkersIsNedeed
      */
@@ -240,7 +240,7 @@ public class FilePositionalViewer extends Composite {
     /**
      * DOC ocarbone Comment method "setPositionValue" used to synchronise the modification of FileStep1 on this
      * PositionalViewer.
-     * 
+     *
      * @param s
      */
     public void setPositionValue(String s, boolean eraseMarkersIsNedeed) {
@@ -477,8 +477,8 @@ public class FilePositionalViewer extends Composite {
 
     /**
      * VerticalMarker.
-     * 
-     * 
+     *
+     *
      */
     public static class VerticalMarkerEditor extends Canvas {
 
@@ -505,7 +505,7 @@ public class FilePositionalViewer extends Composite {
 
         /**
          * Getter for posX.
-         * 
+         *
          * @return the posX
          */
         public int getPosX() {
@@ -514,7 +514,7 @@ public class FilePositionalViewer extends Composite {
 
         /**
          * Sets the posX.
-         * 
+         *
          * @param posX the posX to set
          */
         public void setPosX(int posX) {
@@ -524,8 +524,8 @@ public class FilePositionalViewer extends Composite {
 
     /**
      * topMarker.
-     * 
-     * 
+     *
+     *
      */
     public static class TopMarkerEditor extends Canvas {
 
@@ -658,7 +658,7 @@ public class FilePositionalViewer extends Composite {
 
         /**
          * Getter for posX.
-         * 
+         *
          * @return the posX
          */
         public int getPosX() {
@@ -667,7 +667,7 @@ public class FilePositionalViewer extends Composite {
 
         /**
          * Sets the posX.
-         * 
+         *
          * @param posX the posX to set
          */
         public void setPosX(int posX) {
@@ -700,9 +700,9 @@ public class FilePositionalViewer extends Composite {
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see org.eclipse.swt.widgets.Composite#layout()
-     * 
+     *
      * Resize the Text before the composite.
      */
     @Override
@@ -713,7 +713,7 @@ public class FilePositionalViewer extends Composite {
 
     /**
      * Getter for text.
-     * 
+     *
      * @return the text
      */
     public Text getText() {
@@ -722,7 +722,7 @@ public class FilePositionalViewer extends Composite {
 
     /**
      * Getter for text.
-     * 
+     *
      * @return the text
      */
     public Text getFieldSeparatorValue() {
@@ -738,7 +738,7 @@ public class FilePositionalViewer extends Composite {
 
     /**
      * Getter for isEnabled.
-     * 
+     *
      * @return the isEnabled
      */
     @Override
@@ -748,7 +748,7 @@ public class FilePositionalViewer extends Composite {
 
     /**
      * Sets the isEnabled.
-     * 
+     *
      * @param isEnabled the isEnabled to set
      */
     @Override

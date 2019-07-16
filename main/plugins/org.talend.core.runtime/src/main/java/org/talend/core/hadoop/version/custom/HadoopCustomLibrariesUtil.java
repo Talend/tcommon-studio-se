@@ -1,6 +1,6 @@
 // ============================================================================
 //
-// Copyright (C) 2006-2018 Talend Inc. - www.talend.com
+// Copyright (C) 2006-2019 Talend Inc. - www.talend.com
 //
 // This source code is available under agreement available at
 // %InstallDIR%\features\org.talend.rcp.branding.%PRODUCTNAME%\%PRODUCTNAME%license.txt
@@ -61,7 +61,7 @@ import org.xml.sax.SAXParseException;
 
 /**
  * created by wchen on 2013-3-27 Detailled comment
- * 
+ *
  */
 public class HadoopCustomLibrariesUtil {
 
@@ -70,7 +70,7 @@ public class HadoopCustomLibrariesUtil {
 
     private CustomVersionLibsManager libsManager;
 
-    public static final String[] FILE__MASK = { "*.zip" }; //$NON-NLS-1$ 
+    public static final String[] FILE__MASK = { "*.zip" }; //$NON-NLS-1$
 
     /**
      * DOC wchen HadoopCustomLibrariesUtil constructor comment.
@@ -86,7 +86,7 @@ public class HadoopCustomLibrariesUtil {
         try {
             Map<File, IPath> toExport = new HashMap<File, IPath>();
             tmpFolder = createTempFolder();
-            File libFolder = new File(tmpFolder, "lib");//$NON-NLS-1$ 
+            File libFolder = new File(tmpFolder, "lib");//$NON-NLS-1$
             libFolder.mkdir();
             // put all needed jars to tempFolder/lib
             for (String group : LibMap.keySet()) {
@@ -97,20 +97,20 @@ public class HadoopCustomLibrariesUtil {
                     if (!retreived) {
                         jarNotFound.add(libFile);
                     } else {
-                        toExport.put(jarToStore, new Path("lib/" + jarName));//$NON-NLS-1$ 
+                        toExport.put(jarToStore, new Path("lib/" + jarName));//$NON-NLS-1$
                     }
                 }
             }
             if (!jarNotFound.isEmpty()) {
-                String msg = "";//$NON-NLS-1$ 
+                String msg = "";//$NON-NLS-1$
                 for (LibraryFile libFile : jarNotFound) {
-                    msg += libFile.getName() + ",";//$NON-NLS-1$ 
+                    msg += libFile.getName() + ",";//$NON-NLS-1$
                 }
                 msg = msg.substring(0, msg.length() - 1);
-                String message = Messages.getString("HadoopCustomLibrariesUtil.libMissing", msg); //$NON-NLS-1$ 
+                String message = Messages.getString("HadoopCustomLibrariesUtil.libMissing", msg); //$NON-NLS-1$
 
                 boolean openConfirm = MessageDialog.openConfirm(null,
-                        Messages.getString("HadoopCustomLibrariesUtil.importConfirmMsg"), message);//$NON-NLS-1$ 
+                        Messages.getString("HadoopCustomLibrariesUtil.importConfirmMsg"), message);//$NON-NLS-1$
                 if (!openConfirm) {
                     return;
                 }

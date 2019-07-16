@@ -1,6 +1,6 @@
 // ============================================================================
 //
-// Copyright (C) 2006-2018 Talend Inc. - www.talend.com
+// Copyright (C) 2006-2019 Talend Inc. - www.talend.com
 //
 // This source code is available under agreement available at
 // %InstallDIR%\features\org.talend.rcp.branding.%PRODUCTNAME%\%PRODUCTNAME%license.txt
@@ -27,36 +27,36 @@ import org.talend.core.utils.RegistryReader;
 
 /**
  * DOC sgandon class global comment. Detailled comment <br/>
- * 
+ *
  * $Id: talend.epf 55206 2011-02-15 17:32:14Z mhirt $
- * 
+ *
  */
 public class PerspectiveFilterRegistryReader extends RegistryReader {
 
     public static class PerspectiveFilterDescription {
 
         /**
-         * 
+         *
          */
         private static final String PATTERN = "pattern"; //$NON-NLS-1$
 
         /**
-         * 
+         *
          */
         private static final String CONTENT_EXTENSION = "contentExtension"; //$NON-NLS-1$
 
         /**
-         * 
+         *
          */
         private static final String INCLUDES = "includes"; //$NON-NLS-1$
 
         /**
-         * 
+         *
          */
         static final String PERSPECTIVE_ID = "perspectiveId"; //$NON-NLS-1$
 
         /**
-         * 
+         *
          */
         static final String ACTION_PROVIDER_ID = "actionProviderId"; //$NON-NLS-1$
 
@@ -66,7 +66,7 @@ public class PerspectiveFilterRegistryReader extends RegistryReader {
 
         /**
          * Getter for actionProviderId.
-         * 
+         *
          * @return the actionProviderId
          */
         public String getActionProviderId() {
@@ -77,7 +77,7 @@ public class PerspectiveFilterRegistryReader extends RegistryReader {
 
         /**
          * Getter for perspectiveId.
-         * 
+         *
          * @return the perspectiveId
          */
         public String getPerspectiveId() {
@@ -90,7 +90,7 @@ public class PerspectiveFilterRegistryReader extends RegistryReader {
 
         /**
          * Getter for actionProviderIncludes.
-         * 
+         *
          * @return the actionProviderIncludes
          */
         public Set<Pattern> getActionProviderIncludes() {
@@ -106,7 +106,7 @@ public class PerspectiveFilterRegistryReader extends RegistryReader {
 
         /**
          * DOC sgandon Comment method "init".
-         * 
+         *
          * @param element
          */
         private void init(IConfigurationElement element) {
@@ -132,7 +132,7 @@ public class PerspectiveFilterRegistryReader extends RegistryReader {
 
         /**
          * DOC sgandon Comment method "getActionProviderExcludes".
-         * 
+         *
          * @return
          */
         public Set<Pattern> getActionProviderExcludes() {
@@ -143,12 +143,12 @@ public class PerspectiveFilterRegistryReader extends RegistryReader {
     private static Logger log = Logger.getLogger(PerspectiveFilterRegistryReader.class);
 
     /**
-     * 
+     *
      */
     private static final String PLUGIN_ID = "org.talend.repository.viewer"; //$NON-NLS-1$
 
     /**
-     * 
+     *
      */
     private static final String PERSPECTIVE_FILTER_EXTENSION = "perspective.filter"; //$NON-NLS-1$
 
@@ -160,7 +160,7 @@ public class PerspectiveFilterRegistryReader extends RegistryReader {
 
     /**
      * DOC sgandon PerspectiveFilterRegistryReader constructor comment.
-     * 
+     *
      * @param aPluginId
      * @param anExtensionPoint
      */
@@ -172,7 +172,7 @@ public class PerspectiveFilterRegistryReader extends RegistryReader {
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see
      * org.talend.repository.viewer.filter.RegistryReader#readElement(org.eclipse.core.runtime.IConfigurationElement)
      */
@@ -197,7 +197,7 @@ public class PerspectiveFilterRegistryReader extends RegistryReader {
     /**
      * return the list of content providers ID for the given content services thar match the extension point for
      * perspective filter. if no filter is set then all contents IDs are returned.
-     * 
+     *
      * @param contentService
      * @param perspectiveId
      * @return the list of contentProviders IDs filtered
@@ -210,7 +210,7 @@ public class PerspectiveFilterRegistryReader extends RegistryReader {
     /**
      * use the patterns from the filters to determine if what content IDs to filter. if filters set is empty then all
      * content providers IDs are returned.
-     * 
+     *
      * @param filtersForPerspective list of filters to apply to compute the contentProviders IDs,
      * @param contentService, list of content providers to be filtered.
      * @return all the content providers Id to be displayed
@@ -250,7 +250,7 @@ public class PerspectiveFilterRegistryReader extends RegistryReader {
 
     /**
      * DOC sgandon Comment method "getAllExcludesPatterns".
-     * 
+     *
      * @param filters
      * @return
      */
@@ -265,7 +265,7 @@ public class PerspectiveFilterRegistryReader extends RegistryReader {
 
     /**
      * DOC sgandon Comment method "getAllIncludesPatterns".
-     * 
+     *
      * @param filters
      * @return
      */
@@ -280,7 +280,7 @@ public class PerspectiveFilterRegistryReader extends RegistryReader {
 
     /**
      * return all the filters extensions for the given perspective.
-     * 
+     *
      * @param perspectiveId
      * @return
      */

@@ -2,7 +2,7 @@
 //
 // Talend Community Edition
 //
-// Copyright (C) 2006-2018 Talend Inc. - www.talend.com
+// Copyright (C) 2006-2019 Talend Inc. - www.talend.com
 //
 // This library is free software; you can redistribute it and/or
 // modify it under the terms of the GNU Lesser General Public
@@ -45,9 +45,9 @@ import org.talend.commons.ui.i18n.Messages;
 
 /**
  * DOC bqian class global comment. Detailled comment <br/>
- * 
+ *
  * $Id: talend.epf 1 2006-09-29 17:06:40 +0000) nrousseau $
- * 
+ *
  */
 public class ArchiveDirectoryChooser {
 
@@ -299,7 +299,7 @@ public class ArchiveDirectoryChooser {
 
     /**
      * Sets the fileFilterString.
-     * 
+     *
      * @param fileFilterString the fileFilterString to set
      */
     public void setFileFilterString(String[] fileFilterString) {
@@ -308,7 +308,7 @@ public class ArchiveDirectoryChooser {
 
     /**
      * Getter for lastPath.
-     * 
+     *
      * @return the lastPath
      */
     public String getLastPath() {
@@ -317,7 +317,7 @@ public class ArchiveDirectoryChooser {
 
     /**
      * DOC bqian Comment method "setArchiveSelected".
-     * 
+     *
      * @param isArchive
      */
     public void setArchiveSelected(boolean isArchive) {
@@ -327,7 +327,7 @@ public class ArchiveDirectoryChooser {
 
     /**
      * DOC bqian Comment method "setDestinationValue".
-     * 
+     *
      * @param value
      */
     public void setDestinationValue(String value) {
@@ -340,7 +340,7 @@ public class ArchiveDirectoryChooser {
 
     /**
      * DOC bqian Comment method "addDestinationItem".
-     * 
+     *
      * @param string
      */
     public void addDestinationItem(String string) {

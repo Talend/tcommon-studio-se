@@ -1,6 +1,6 @@
 // ============================================================================
 //
-// Copyright (C) 2006-2018 Talend Inc. - www.talend.com
+// Copyright (C) 2006-2019 Talend Inc. - www.talend.com
 //
 // This source code is available under agreement available at
 // %InstallDIR%\features\org.talend.rcp.branding.%PRODUCTNAME%\%PRODUCTNAME%license.txt
@@ -25,7 +25,7 @@ import org.talend.metadata.managment.ui.model.IConnParamName;
 
 /**
  * created by ldong on Dec 18, 2014 Detailled comment
- * 
+ *
  */
 public interface IRepositoryContextHandler {
 

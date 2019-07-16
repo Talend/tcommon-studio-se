@@ -1,6 +1,6 @@
 // ============================================================================
 //
-// Copyright (C) 2006-2018 Talend Inc. - www.talend.com
+// Copyright (C) 2006-2019 Talend Inc. - www.talend.com
 //
 // This source code is available under agreement available at
 // %InstallDIR%\features\org.talend.rcp.branding.%PRODUCTNAME%\%PRODUCTNAME%license.txt
@@ -15,9 +15,9 @@ package org.talend.core.model.process;
 import java.util.List;
 
 /**
- * 
+ *
  * DOC amaumont AdvancedMapperComponent class global comment. Detailled comment <br/>
- * 
+ *
  */
 public class HashConfiguration implements IHashConfiguration {
 
@@ -33,7 +33,7 @@ public class HashConfiguration implements IHashConfiguration {
 
     /**
      * DOC amaumont HashConfigurationForMapper constructor comment.
-     * 
+     *
      * @param hashableColumns
      * @param hashableColumnsIndices
      * @param matchingMode
@@ -51,7 +51,7 @@ public class HashConfiguration implements IHashConfiguration {
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see org.talend.core.model.process.IHashConfiguration#getHashableColumns(java.lang.String)
      */
     public List<IHashableColumn> getHashableColumns() {
@@ -60,7 +60,7 @@ public class HashConfiguration implements IHashConfiguration {
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see org.talend.core.model.process.IHashConfiguration#getMatchingMode()
      */
     public IMatchingMode getMatchingMode() {
@@ -69,7 +69,7 @@ public class HashConfiguration implements IHashConfiguration {
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see org.talend.core.model.process.IHashConfiguration#isPersistent()
      */
     public boolean isPersistent() {

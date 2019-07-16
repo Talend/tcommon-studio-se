@@ -1,6 +1,6 @@
 // ============================================================================
 //
-// Copyright (C) 2006-2018 Talend Inc. - www.talend.com
+// Copyright (C) 2006-2019 Talend Inc. - www.talend.com
 //
 // This source code is available under agreement available at
 // %InstallDIR%\features\org.talend.rcp.branding.%PRODUCTNAME%\%PRODUCTNAME%license.txt
@@ -8,7 +8,7 @@
 // You should have received a copy of the agreement
 // along with this program; if not, write to Talend SA
 // 9 rue Pages 92150 Suresnes, France
-//   
+//
 // ============================================================================
 package org.talend.platform.logging;
 
@@ -25,9 +25,9 @@ import org.osgi.framework.Bundle;
 
 /**
  * Define the log stategy of application. <br/>
- * 
+ *
  * $Id: TalendPlatformLogAppender.java 6924 2007-11-12 13:16:18Z plegall $
- * 
+ *
  */
 public class TalendPlatformLogAppender extends AppenderSkeleton {
 
@@ -35,7 +35,7 @@ public class TalendPlatformLogAppender extends AppenderSkeleton {
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see org.apache.log4j.AppenderSkeleton#append(org.apache.log4j.spi.LoggingEvent)
      */
     protected void append(LoggingEvent event) {
@@ -64,7 +64,7 @@ public class TalendPlatformLogAppender extends AppenderSkeleton {
 
     /**
      * map LoggingEvent's level to Status severity
-     * 
+     *
      * @param ev
      * @return
      */
@@ -84,7 +84,7 @@ public class TalendPlatformLogAppender extends AppenderSkeleton {
 
     /**
      * Returns the pluginId under which the messages will be logged.
-     * 
+     *
      * @return the symbolicName
      */
     public String getSymbolicName() {
@@ -93,7 +93,7 @@ public class TalendPlatformLogAppender extends AppenderSkeleton {
 
     /**
      * Sets the symbolicName.
-     * 
+     *
      * @param symbolicName the symbolicName to set
      */
     public void setSymbolicName(String symbolicName) {
@@ -102,7 +102,7 @@ public class TalendPlatformLogAppender extends AppenderSkeleton {
 
     /**
      * map LoggingEvent to Status code.
-     * 
+     *
      * @param ev
      * @return
      */

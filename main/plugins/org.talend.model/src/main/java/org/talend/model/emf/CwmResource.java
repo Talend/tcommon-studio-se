@@ -1,6 +1,6 @@
 // ============================================================================
 //
-// Copyright (C) 2006-2018 Talend Inc. - www.talend.com
+// Copyright (C) 2006-2019 Talend Inc. - www.talend.com
 //
 // This source code is available under agreement available at
 // %InstallDIR%\features\org.talend.rcp.branding.%PRODUCTNAME%\%PRODUCTNAME%license.txt
@@ -19,9 +19,9 @@ import org.talend.commons.runtime.model.emf.TalendXMIResource;
 
 /**
  * @author scorreia
- * 
+ *
  * This resource generates UUIDs for each object.
- * 
+ *
  * See http://serdom.szn.pl/ser/?p=6
  */
 public class CwmResource extends TalendXMIResource {

@@ -1,6 +1,6 @@
 // ============================================================================
 //
-// Copyright (C) 2006-2018 Talend Inc. - www.talend.com
+// Copyright (C) 2006-2019 Talend Inc. - www.talend.com
 //
 // This source code is available under agreement available at
 // %InstallDIR%\features\org.talend.rcp.branding.%PRODUCTNAME%\%PRODUCTNAME%license.txt
@@ -77,11 +77,11 @@ public class DynamicClassLoader extends URLClassLoader {
 
     /**
      * DOC ycbai Comment method "getLibraries".
-     * 
+     *
      * <p>
      * Get libraries which this classloader contains.
      * </p>
-     * 
+     *
      * @return
      */
     public Set<String> getLibraries() {
@@ -103,11 +103,11 @@ public class DynamicClassLoader extends URLClassLoader {
 
     /**
      * DOC ycbai Comment method "getLibStorePath".
-     * 
+     *
      * <p>
      * Get folder path which stores libraries of classloader.
      * </p>
-     * 
+     *
      * @return
      */
     public String getLibStorePath() {

@@ -1,6 +1,6 @@
 // ============================================================================
 //
-// Copyright (C) 2006-2018 Talend Inc. - www.talend.com
+// Copyright (C) 2006-2019 Talend Inc. - www.talend.com
 //
 // This source code is available under agreement available at
 // %InstallDIR%\features\org.talend.rcp.branding.%PRODUCTNAME%\%PRODUCTNAME%license.txt
@@ -21,6 +21,7 @@ import javax.crypto.SecretKeyFactory;
 import javax.crypto.spec.DESKeySpec;
 
 import org.apache.commons.codec.binary.Base64;
+import org.talend.utils.security.AESEncryption;
 
 /**
  * DOC chuang class global comment. Detailled comment
@@ -30,6 +31,10 @@ public class PasswordEncryptUtil {
     public static String ENCRYPT_KEY = "Encrypt"; //$NON-NLS-1$
 
     private static String rawKey = "Talend-Key"; //$NON-NLS-1$
+
+    public static String PREFIX_PASSWORD = "ENC:["; //$NON-NLS-1$
+
+    public static String POSTFIX_PASSWORD = "]"; //$NON-NLS-1$
 
     private static SecretKey key = null;
 
@@ -47,9 +52,9 @@ public class PasswordEncryptUtil {
     }
 
     /**
-     * 
+     *
      * DOC ggu Comment method "encryptPassword".
-     * 
+     *
      * TDI-30227, should only work for old migration task.
      */
     @Deprecated
@@ -67,9 +72,9 @@ public class PasswordEncryptUtil {
     }
 
     /**
-     * 
+     *
      * DOC ggu Comment method "encryptPassword".
-     * 
+     *
      * TDI-30227, should only work for old migration task.
      */
     @Deprecated
@@ -85,43 +90,24 @@ public class PasswordEncryptUtil {
         return new String(clearByte);
     }
 
-    private static SecretKey passwordKey = null;
-
-    private static String CHARSET = "UTF-8";
-
-    private static SecretKey getSecretKeyUTF8() throws Exception {
-        if (passwordKey == null) {
-            byte rawKeyData[] = rawKey.getBytes(CHARSET);
-            DESKeySpec dks = new DESKeySpec(rawKeyData);
-            SecretKeyFactory keyFactory = SecretKeyFactory.getInstance("DES"); //$NON-NLS-1$
-            passwordKey = keyFactory.generateSecret(dks);
-        }
-        return passwordKey;
-    }
-
     /**
      * Work for codegen only. and must be same as the routine
      * "routines.system.PasswordEncryptUtil.encryptPassword(input)".
-     * 
+     *
      */
     public static String encryptPasswordHex(String input) throws Exception {
         if (input == null) {
             return input;
         }
-        SecretKey key = getSecretKeyUTF8();
-        Cipher c = Cipher.getInstance("DES"); //$NON-NLS-1$
-        c.init(Cipher.ENCRYPT_MODE, key, secureRandom);
-        byte[] cipherByte = c.doFinal(input.getBytes(CHARSET));
-        String dec = Hex.encodeHexString(cipherByte);
-        return dec;
+        return PREFIX_PASSWORD + AESEncryption.encryptPassword(input) + POSTFIX_PASSWORD;
     }
 
     /**
-     * 
+     *
      * DOC ggu Comment method "isPasswordType".
-     * 
+     *
      * should match with JavaTypesManager.PASSWORD.getId()
-     * 
+     *
      * @param type
      * @return
      */
@@ -130,24 +116,24 @@ public class PasswordEncryptUtil {
     }
 
     /**
-     * 
+     *
      * DOC ggu Comment method "isPasswordField".
-     * 
+     *
      * should match with the EParameterFieldType.PASSWORD
-     * 
+     *
      * @param field
      * @return
      */
     public static boolean isPasswordField(String field) {
-        return "PASSWORD".equals(field); //$NON-NLS-1$   
+        return "PASSWORD".equals(field); //$NON-NLS-1$
     }
 
     /**
-     * 
+     *
      * DOC ggu Comment method "getPasswordDisplay".
-     * 
+     *
      * will be * to dispaly always.
-     * 
+     *
      * @param value
      * @return
      */
@@ -159,5 +145,4 @@ public class PasswordEncryptUtil {
             return value.replaceAll(".", "*"); //$NON-NLS-1$ //$NON-NLS-2$
         }
     }
-
 }

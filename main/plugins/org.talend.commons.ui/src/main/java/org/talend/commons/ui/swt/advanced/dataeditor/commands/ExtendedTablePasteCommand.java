@@ -1,6 +1,6 @@
 // ============================================================================
 //
-// Copyright (C) 2006-2018 Talend Inc. - www.talend.com
+// Copyright (C) 2006-2019 Talend Inc. - www.talend.com
 //
 // This source code is available under agreement available at
 // %InstallDIR%\features\org.talend.rcp.branding.%PRODUCTNAME%\%PRODUCTNAME%license.txt
@@ -23,9 +23,9 @@ import org.talend.commons.utils.data.list.UniqueStringGenerator;
 
 /**
  * DOC amaumont class global comment. Detailled comment <br/>
- * 
+ *
  * $Id$
- * 
+ *
  */
 public abstract class ExtendedTablePasteCommand extends Command implements IExtendedTableCommand {
 
@@ -53,7 +53,7 @@ public abstract class ExtendedTablePasteCommand extends Command implements IExte
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see org.eclipse.gef.commands.Command#execute()
      */
     @SuppressWarnings("unchecked")//$NON-NLS-1$
@@ -73,7 +73,7 @@ public abstract class ExtendedTablePasteCommand extends Command implements IExte
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see org.talend.commons.ui.command.CommonCommand#canUndo()
      */
     @Override

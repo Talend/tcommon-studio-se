@@ -1,6 +1,6 @@
 // ============================================================================
 //
-// Copyright (C) 2006-2018 Talend Inc. - www.talend.com
+// Copyright (C) 2006-2019 Talend Inc. - www.talend.com
 //
 // This source code is available under agreement available at
 // %InstallDIR%\features\org.talend.rcp.branding.%PRODUCTNAME%\%PRODUCTNAME%license.txt
@@ -57,7 +57,7 @@ import org.talend.repository.mdm.util.MDMUtil;
 import org.talend.repository.ui.wizards.metadata.connection.files.xml.TreePopulator;
 
 /**
- * 
+ *
  *
  */
 public class MDMTableForm extends AbstractMDMFileStepForm {
@@ -86,7 +86,7 @@ public class MDMTableForm extends AbstractMDMFileStepForm {
 
     /**
      * Constructor to use by RCP Wizard.
-     * 
+     *
      * @param Composite
      */
     public MDMTableForm(Composite parent, ConnectionItem connectionItem, MetadataTable metadataTable, String[] existingNames) {
@@ -97,7 +97,7 @@ public class MDMTableForm extends AbstractMDMFileStepForm {
     }
 
     /**
-     * 
+     *
      * Initialize value, forceFocus first field.
      */
     @Override
@@ -113,7 +113,7 @@ public class MDMTableForm extends AbstractMDMFileStepForm {
 
     /**
      * DOC ocarbone Comment method "adaptFormToReadOnly".
-     * 
+     *
      */
     @Override
     protected void adaptFormToReadOnly() {
@@ -216,7 +216,7 @@ public class MDMTableForm extends AbstractMDMFileStepForm {
 
     /**
      * addButtonControls.
-     * 
+     *
      * @param cancelButton
      */
     @Override
@@ -320,7 +320,7 @@ public class MDMTableForm extends AbstractMDMFileStepForm {
 
     /**
      * DOC ocarbone Comment method "refreshMetaData".
-     * 
+     *
      * @param csvArray
      */
     public void refreshMetaDataTable(List<ConceptTarget> schemaTarget) {
@@ -345,7 +345,7 @@ public class MDMTableForm extends AbstractMDMFileStepForm {
 
     /**
      * Ensures that fields are set. Update checkEnable / use to checkConnection().
-     * 
+     *
      * @return
      */
     @Override
@@ -376,7 +376,7 @@ public class MDMTableForm extends AbstractMDMFileStepForm {
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see org.eclipse.swt.widgets.Control#setVisible(boolean)
      */
     @Override

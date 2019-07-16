@@ -1,6 +1,6 @@
 // ============================================================================
 //
-// Copyright (C) 2006-2018 Talend Inc. - www.talend.com
+// Copyright (C) 2006-2019 Talend Inc. - www.talend.com
 //
 // This source code is available under agreement available at
 // %InstallDIR%\features\org.talend.rcp.branding.%PRODUCTNAME%\%PRODUCTNAME%license.txt
@@ -41,9 +41,9 @@ import org.talend.commons.ui.swt.drawing.link.StyleLink;
 
 /**
  * bqian class global comment. Detailled comment <br/>
- * 
+ *
  * $Id: TableToTablesLinker.java,v 1.1 2007/06/12 07:20:39 gke Exp $
- * 
+ *
  * @param <D1> the data item of extremety 1
  * @param <D2> the data item of extremety 2
  */
@@ -69,7 +69,7 @@ public class TableToTablesLinker<D1, D2> extends BgDrawableComposite implements 
 
     /**
      * DOC amaumont TreeToTableLinker constructor comment.
-     * 
+     *
      * @param source
      * @param table
      */
@@ -79,7 +79,7 @@ public class TableToTablesLinker<D1, D2> extends BgDrawableComposite implements 
 
     /**
      * DOC amaumont Comment method "init".
-     * 
+     *
      * @param sourceTable
      * @param targetTables
      * @param backgroundRefresher
@@ -141,7 +141,7 @@ public class TableToTablesLinker<D1, D2> extends BgDrawableComposite implements 
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see org.talend.commons.ui.swt.drawing.link.BackgroundRefresher#drawBackground(org.eclipse.swt.graphics.GC)
      */
     @Override
@@ -251,7 +251,7 @@ public class TableToTablesLinker<D1, D2> extends BgDrawableComposite implements 
 
     /**
      * DOC amaumont Comment method "findMaxWidth".
-     * 
+     *
      * @param items
      * @param maxWidth
      * @return
@@ -331,7 +331,7 @@ public class TableToTablesLinker<D1, D2> extends BgDrawableComposite implements 
 
     /**
      * Getter for selectedStyleLink.
-     * 
+     *
      * @return the selectedStyleLink
      */
     public IStyleLink getSelectedStyleLink() {
@@ -340,7 +340,7 @@ public class TableToTablesLinker<D1, D2> extends BgDrawableComposite implements 
 
     /**
      * Sets the selectedStyleLink.
-     * 
+     *
      * @param selectedStyleLink the selectedStyleLink to set
      */
     public void setSelectedStyleLink(IStyleLink selectedStyleLink) {
@@ -349,7 +349,7 @@ public class TableToTablesLinker<D1, D2> extends BgDrawableComposite implements 
 
     /**
      * Getter for unselectedStyleLink.
-     * 
+     *
      * @return the unselectedStyleLink
      */
     public IStyleLink getUnselectedStyleLink() {
@@ -358,7 +358,7 @@ public class TableToTablesLinker<D1, D2> extends BgDrawableComposite implements 
 
     /**
      * Sets the unselectedStyleLink.
-     * 
+     *
      * @param unselectedStyleLink the unselectedStyleLink to set
      */
     public void setUnselectedStyleLink(IStyleLink unselectedStyleLink) {
@@ -367,7 +367,7 @@ public class TableToTablesLinker<D1, D2> extends BgDrawableComposite implements 
 
     /**
      * Getter for backgroundRefresher.
-     * 
+     *
      * @return the backgroundRefresher
      */
     public IBackgroundRefresher getBackgroundRefresher() {
@@ -376,7 +376,7 @@ public class TableToTablesLinker<D1, D2> extends BgDrawableComposite implements 
 
     /**
      * Sets the backgroundRefresher.
-     * 
+     *
      * @param backgroundRefresher the backgroundRefresher to set
      */
     public void setBackgroundRefresher(IBackgroundRefresher backgroundRefresher) {
@@ -385,7 +385,7 @@ public class TableToTablesLinker<D1, D2> extends BgDrawableComposite implements 
 
     /**
      * Getter for tables.
-     * 
+     *
      * @return the tables
      */
     public List<Table> getTargets() {
@@ -394,7 +394,7 @@ public class TableToTablesLinker<D1, D2> extends BgDrawableComposite implements 
 
     /**
      * Getter for tree.
-     * 
+     *
      * @return the tree
      */
     public Table getSource() {
@@ -403,7 +403,7 @@ public class TableToTablesLinker<D1, D2> extends BgDrawableComposite implements 
 
     /**
      * Getter for linksManager.
-     * 
+     *
      * @return the linksManager
      */
     public LinksManager<TableItem, D1, Table, D2> getLinksManager() {

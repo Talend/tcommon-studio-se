@@ -1,6 +1,6 @@
 // ============================================================================
 //
-// Copyright (C) 2006-2018 Talend Inc. - www.talend.com
+// Copyright (C) 2006-2019 Talend Inc. - www.talend.com
 //
 // This source code is available under agreement available at
 // %InstallDIR%\features\org.talend.rcp.branding.%PRODUCTNAME%\%PRODUCTNAME%license.txt
@@ -40,9 +40,9 @@ import org.talend.repository.model.RepositoryNode;
 
 /**
  * DOC ggu class global comment. Detailled comment
- * 
+ *
  * filter by status, users and label for repository element and folder
- * 
+ *
  * FIXME, later, it's better to split for each functions.
  */
 public class RepositoryCommonViewerFilter extends ViewerFilter {
@@ -59,7 +59,7 @@ public class RepositoryCommonViewerFilter extends ViewerFilter {
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see org.eclipse.jface.viewers.ViewerFilter#select(org.eclipse.jface.viewers.Viewer, java.lang.Object,
      * java.lang.Object)
      */

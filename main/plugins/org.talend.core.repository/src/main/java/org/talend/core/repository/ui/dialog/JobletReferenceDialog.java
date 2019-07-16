@@ -1,6 +1,6 @@
 // ============================================================================
 //
-// Copyright (C) 2006-2018 Talend Inc. - www.talend.com
+// Copyright (C) 2006-2019 Talend Inc. - www.talend.com
 //
 // This source code is available under agreement available at
 // %InstallDIR%\features\org.talend.rcp.branding.%PRODUCTNAME%\%PRODUCTNAME%license.txt
@@ -75,7 +75,7 @@ public class JobletReferenceDialog extends SelectionDialog {
             case 2:
                 if (bean.isDelete()) {
                     return bean.getJobName()
-                            + " " + bean.getJobVersion() + "(" + Messages.getString("JobletReferenceDialog.DeletedInfor") + ")"; //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$  
+                            + " " + bean.getJobVersion() + "(" + Messages.getString("JobletReferenceDialog.DeletedInfor") + ")"; //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$
                 } else {
                     String prefix = ""; //$NON-NLS-1$
                     if (bean.getJobPath() != null && !"".equals(bean.getJobPath())) { //$NON-NLS-1$

@@ -1,6 +1,6 @@
 // ============================================================================
 //
-// Copyright (C) 2006-2018 Talend Inc. - www.talend.com
+// Copyright (C) 2006-2019 Talend Inc. - www.talend.com
 //
 // This source code is available under agreement available at
 // %InstallDIR%\features\org.talend.rcp.branding.%PRODUCTNAME%\%PRODUCTNAME%license.txt
@@ -45,9 +45,9 @@ import org.talend.utils.json.JSONException;
 
 /**
  * DOC qian class global comment. Interface for RepositoryService. <br/>
- * 
+ *
  * $Id: talend-code-templates.xml 1 2006-09-29 17:06:40 +0000 (鏄熸湡浜� 29 涔?鏈�2006) nrousseau $
- * 
+ *
  */
 public interface IRepositoryService extends IService {
 
@@ -71,7 +71,7 @@ public interface IRepositoryService extends IService {
 
     /**
      * qzhang Comment method "registerRepositoryChangedListenerAsFirst".
-     * 
+     *
      * @param view
      */
     public void registerRepositoryChangedListenerAsFirst(IRepositoryChangedListener listener);
@@ -129,7 +129,7 @@ public interface IRepositoryService extends IService {
     public RepositoryNode getRepNodeFromRepReviewDialog(Shell parentShell, ERepositoryObjectType type, String repositoryType);
 
     public void openProjectSettingDialog(final String pageId);
-    
+
     public List<String> getProjectBranch(Project project) throws JSONException;
 
     public boolean askRetryForNetworkIssue(Throwable ex);

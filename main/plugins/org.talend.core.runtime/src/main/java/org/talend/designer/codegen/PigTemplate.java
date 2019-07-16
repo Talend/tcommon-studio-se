@@ -1,6 +1,6 @@
 // ============================================================================
 //
-// Copyright (C) 2006-2018 Talend Inc. - www.talend.com
+// Copyright (C) 2006-2019 Talend Inc. - www.talend.com
 //
 // This source code is available under agreement available at
 // %InstallDIR%\features\org.talend.rcp.branding.%PRODUCTNAME%\%PRODUCTNAME%license.txt
@@ -14,7 +14,7 @@ package org.talend.designer.codegen;
 
 /**
  * created by Administrator on 2013-3-14 Detailled comment
- * 
+ *
  */
 public enum PigTemplate {
     EVALFUNC("Eval Function", "__PIGUDF_EVALFUNC__"), //$NON-NLS-1$ //$NON-NLS-2$

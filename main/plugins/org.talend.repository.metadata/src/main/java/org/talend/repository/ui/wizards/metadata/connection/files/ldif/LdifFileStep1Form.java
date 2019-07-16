@@ -1,6 +1,6 @@
 // ============================================================================
 //
-// Copyright (C) 2006-2018 Talend Inc. - www.talend.com
+// Copyright (C) 2006-2019 Talend Inc. - www.talend.com
 //
 // This source code is available under agreement available at
 // %InstallDIR%\features\org.talend.rcp.branding.%PRODUCTNAME%\%PRODUCTNAME%license.txt
@@ -46,7 +46,7 @@ import org.talend.repository.metadata.ui.wizards.form.AbstractLdifFileStepForm;
 
 /**
  * @author cantoine
- * 
+ *
  */
 public class LdifFileStep1Form extends AbstractLdifFileStepForm {
 
@@ -77,9 +77,9 @@ public class LdifFileStep1Form extends AbstractLdifFileStepForm {
 
     /**
      * Constructor to use by RCP Wizard.
-     * 
+     *
      * @param existingNames
-     * 
+     *
      * @param Composite
      * @param Wizard
      * @param Style
@@ -93,7 +93,7 @@ public class LdifFileStep1Form extends AbstractLdifFileStepForm {
     }
 
     /**
-     * 
+     *
      * Initialize value, forceFocus first field.
      */
     @Override
@@ -121,7 +121,7 @@ public class LdifFileStep1Form extends AbstractLdifFileStepForm {
 
     /**
      * DOC cantoine Comment method "adaptFormToReadOnly".
-     * 
+     *
      */
     @Override
     protected void adaptFormToReadOnly() {
@@ -298,7 +298,7 @@ public class LdifFileStep1Form extends AbstractLdifFileStepForm {
 
     /**
      * Ensures that fields are set.
-     * 
+     *
      * @return
      */
     @Override
@@ -332,7 +332,7 @@ public class LdifFileStep1Form extends AbstractLdifFileStepForm {
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see org.eclipse.swt.widgets.Control#setVisible(boolean)
      */
     @Override

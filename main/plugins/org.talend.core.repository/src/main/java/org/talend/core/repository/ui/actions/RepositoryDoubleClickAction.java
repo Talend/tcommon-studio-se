@@ -1,6 +1,6 @@
 // ============================================================================
 //
-// Copyright (C) 2006-2018 Talend Inc. - www.talend.com
+// Copyright (C) 2006-2019 Talend Inc. - www.talend.com
 //
 // This source code is available under agreement available at
 // %InstallDIR%\features\org.talend.rcp.branding.%PRODUCTNAME%\%PRODUCTNAME%license.txt
@@ -47,9 +47,9 @@ import org.talend.repository.ui.views.IRepositoryView;
 
 /**
  * DOC smallet class global comment. Detailled comment <br/>
- * 
+ *
  * $Id$
- * 
+ *
  */
 public class RepositoryDoubleClickAction extends Action {
 
@@ -69,7 +69,7 @@ public class RepositoryDoubleClickAction extends Action {
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see org.eclipse.jface.action.Action#run()
      */
     @Override
@@ -113,9 +113,9 @@ public class RepositoryDoubleClickAction extends Action {
     }
 
     /**
-     * 
+     *
      * ggu Comment method "isLinkCDCNode".
-     * 
+     *
      * for cdc
      */
     private boolean isLinkCDCNode(RepositoryNode node) {
@@ -142,9 +142,9 @@ public class RepositoryDoubleClickAction extends Action {
     }
 
     /**
-     * 
+     *
      * ggu Comment method "isEBCDICTable".
-     * 
+     *
      * for ebcdic
      */
     private boolean isEBCDICTable(RepositoryNode node) {
@@ -166,9 +166,9 @@ public class RepositoryDoubleClickAction extends Action {
     }
 
     /**
-     * 
+     *
      * hwang Comment method "isSERVICES".
-     * 
+     *
      * for services
      */
     private boolean isSERVICES(RepositoryNode node) {
@@ -180,9 +180,9 @@ public class RepositoryDoubleClickAction extends Action {
     }
 
     /**
-     * 
+     *
      * hwang Comment method "isMDMTable".
-     * 
+     *
      * for mdm
      */
     private boolean isMDMTable(RepositoryNode node) {
@@ -204,9 +204,9 @@ public class RepositoryDoubleClickAction extends Action {
     }
 
     /**
-     * 
+     *
      * hwang Comment method "isSAPTable".
-     * 
+     *
      * for sap
      */
     private boolean isSAPTable(RepositoryNode node) {

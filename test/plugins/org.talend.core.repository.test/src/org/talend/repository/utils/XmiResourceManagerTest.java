@@ -1,6 +1,6 @@
 // ============================================================================
 //
-// Copyright (C) 2006-2018 Talend Inc. - www.talend.com
+// Copyright (C) 2006-2019 Talend Inc. - www.talend.com
 //
 // This source code is available under agreement available at
 // %InstallDIR%\features\org.talend.rcp.branding.%PRODUCTNAME%\%PRODUCTNAME%license.txt
@@ -138,7 +138,7 @@ public class XmiResourceManagerTest {
 
     /**
      * Test method for {@link org.talend.core.repository.utils.XmiResourceManager#resetResourceSet()}.
-     * 
+     *
      * @throws CoreException
      */
     @Test
@@ -153,7 +153,7 @@ public class XmiResourceManagerTest {
     /**
      * Test method for
      * {@link org.talend.core.repository.utils.XmiResourceManager#loadProject(org.eclipse.core.resources.IProject)}.
-     * 
+     *
      * @throws PersistenceException
      * @throws CoreException
      */
@@ -169,7 +169,7 @@ public class XmiResourceManagerTest {
      * Test method for
      * {@link org.talend.core.repository.utils.XmiResourceManager#hasTalendProjectFile(org.eclipse.core.resources.IProject)}
      * .
-     * 
+     *
      * @throws PersistenceException
      * @throws CoreException
      */
@@ -184,7 +184,7 @@ public class XmiResourceManagerTest {
      * Test method for
      * {@link org.talend.core.repository.utils.XmiResourceManager#createProjectResource(org.eclipse.core.resources.IProject)}
      * .
-     * 
+     *
      * @throws CoreException
      */
     @Test
@@ -202,7 +202,7 @@ public class XmiResourceManagerTest {
      * Test method for
      * {@link org.talend.core.repository.utils.XmiResourceManager#createItemResource(org.eclipse.core.resources.IProject, org.talend.core.model.properties.Item, org.eclipse.core.runtime.IPath, org.talend.core.model.repository.ERepositoryObjectType, boolean)}
      * .
-     * 
+     *
      * @throws PersistenceException
      * @throws CoreException
      */
@@ -282,7 +282,7 @@ public class XmiResourceManagerTest {
      * Test method for
      * {@link org.talend.core.repository.utils.XmiResourceManager#deleteResource(org.eclipse.emf.ecore.resource.Resource)}
      * .
-     * 
+     *
      * @throws PersistenceException
      * @throws CoreException
      */
@@ -326,7 +326,7 @@ public class XmiResourceManagerTest {
      * Test method for
      * {@link org.talend.core.repository.utils.XmiResourceManager#createPropertyResource(org.eclipse.emf.ecore.resource.Resource)}
      * .
-     * 
+     *
      * @throws PersistenceException
      */
     @Test
@@ -369,7 +369,7 @@ public class XmiResourceManagerTest {
      * Test method for
      * {@link org.talend.core.repository.utils.XmiResourceManager#getItemResource(org.talend.core.model.properties.Item)}
      * .
-     * 
+     *
      * @throws PersistenceException
      */
     @Test
@@ -439,7 +439,7 @@ public class XmiResourceManagerTest {
      * Test method for
      * {@link org.talend.core.repository.utils.XmiResourceManager#getAffectedResources(org.talend.core.model.properties.Property)}
      * .
-     * 
+     *
      * @throws PersistenceException
      */
     @Test
@@ -528,7 +528,7 @@ public class XmiResourceManagerTest {
     /**
      * Test method for
      * {@link org.talend.core.repository.utils.XmiResourceManager#loadProperty(org.eclipse.core.resources.IResource)}.
-     * 
+     *
      * @throws PersistenceException
      */
     @Test
@@ -592,7 +592,7 @@ public class XmiResourceManagerTest {
      * Test method for
      * {@link org.talend.core.repository.utils.XmiResourceManager#forceReloadProperty(org.talend.core.model.properties.Property)}
      * .
-     * 
+     *
      * @throws PersistenceException
      */
     @Test
@@ -650,7 +650,7 @@ public class XmiResourceManagerTest {
      * Test method for
      * {@link org.talend.core.repository.utils.XmiResourceManager#moveResource(org.eclipse.emf.ecore.resource.Resource, org.eclipse.core.runtime.IPath)}
      * .
-     * 
+     *
      * @throws PersistenceException
      * @throws CoreException
      */
@@ -722,7 +722,7 @@ public class XmiResourceManagerTest {
      * Test method for
      * {@link org.talend.core.repository.utils.XmiResourceManager#saveResource(org.eclipse.emf.ecore.resource.Resource)}
      * .
-     * 
+     *
      * @throws PersistenceException
      */
     @Test
@@ -792,7 +792,7 @@ public class XmiResourceManagerTest {
     /**
      * Test method for
      * {@link org.talend.core.repository.utils.XmiResourceManager#isPropertyFile(org.eclipse.core.resources.IFile)}.
-     * 
+     *
      * @throws PersistenceException
      */
     @Test
@@ -839,7 +839,7 @@ public class XmiResourceManagerTest {
     /**
      * Test method for
      * {@link org.talend.core.repository.utils.XmiResourceManager#isProjectFile(org.eclipse.core.resources.IFile)}.
-     * 
+     *
      * @throws PersistenceException
      * @throws CoreException
      */
@@ -877,7 +877,7 @@ public class XmiResourceManagerTest {
      * Test method for
      * {@link org.talend.core.repository.utils.XmiResourceManager#propagateFileName(org.talend.core.model.properties.Property, org.talend.core.model.properties.Property)}
      * .
-     * 
+     *
      * @throws PersistenceException
      */
     @Test
@@ -1155,7 +1155,7 @@ public class XmiResourceManagerTest {
 
     /**
      * Test method for {@link org.talend.core.repository.utils.XmiResourceManager#unloadResources()}.
-     * 
+     *
      * @throws CoreException
      */
     @Test
@@ -1176,7 +1176,7 @@ public class XmiResourceManagerTest {
      * Test method for
      * {@link org.talend.core.repository.utils.XmiResourceManager#unloadResources(org.talend.core.model.properties.Property)}
      * .
-     * 
+     *
      * @throws CoreException
      */
     @Test
@@ -1240,7 +1240,7 @@ public class XmiResourceManagerTest {
 
     /**
      * Test method for {@link org.talend.core.repository.utils.XmiResourceManager#unloadResource(java.lang.String)}.
-     * 
+     *
      * @throws IOException
      * @throws PersistenceException
      * @throws CoreException

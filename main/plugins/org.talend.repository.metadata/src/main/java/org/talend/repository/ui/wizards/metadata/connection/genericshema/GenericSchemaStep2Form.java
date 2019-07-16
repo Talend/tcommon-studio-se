@@ -1,6 +1,6 @@
 // ============================================================================
 //
-// Copyright (C) 2006-2018 Talend Inc. - www.talend.com
+// Copyright (C) 2006-2019 Talend Inc. - www.talend.com
 //
 // This source code is available under agreement available at
 // %InstallDIR%\features\org.talend.rcp.branding.%PRODUCTNAME%\%PRODUCTNAME%license.txt
@@ -60,7 +60,7 @@ import org.talend.repository.metadata.i18n.Messages;
 
 /**
  * DOC Administrator class global comment. Detailled comment <br/>
- * 
+ *
  */
 public class GenericSchemaStep2Form extends AbstractForm {
 
@@ -116,7 +116,7 @@ public class GenericSchemaStep2Form extends AbstractForm {
 
     /**
      * DOC ocarbone AbstractDelimitedFileStepForm constructor comment. Use to step2
-     * 
+     *
      * @param parent
      * @param connection2
      */
@@ -139,7 +139,7 @@ public class GenericSchemaStep2Form extends AbstractForm {
 
     /**
      * Getter for page.
-     * 
+     *
      * @return the page
      */
     public WizardPage getWizardPage() {
@@ -148,7 +148,7 @@ public class GenericSchemaStep2Form extends AbstractForm {
 
     /**
      * Sets the page.
-     * 
+     *
      * @param page the page to set
      */
     public void setWizardPage(WizardPage page) {
@@ -157,7 +157,7 @@ public class GenericSchemaStep2Form extends AbstractForm {
 
     /**
      * Constructor to use by RCP Wizard.
-     * 
+     *
      * @param Composite
      */
     public GenericSchemaStep2Form(Composite parent, ConnectionItem connectionItem, MetadataTable metadataTable,
@@ -169,7 +169,7 @@ public class GenericSchemaStep2Form extends AbstractForm {
     }
 
     /**
-     * 
+     *
      * Initialize value, forceFocus first field.
      */
     @Override
@@ -228,7 +228,7 @@ public class GenericSchemaStep2Form extends AbstractForm {
 
     /**
      * DOC Administrator Comment method "getMappingTypeLabelById".
-     * 
+     *
      * @param mappingTypeId
      * @return
      */
@@ -261,7 +261,7 @@ public class GenericSchemaStep2Form extends AbstractForm {
 
     /**
      * DOC ocarbone Comment method "adaptFormToReadOnly".
-     * 
+     *
      */
     @Override
     protected void adaptFormToReadOnly() {
@@ -448,7 +448,7 @@ public class GenericSchemaStep2Form extends AbstractForm {
 
     /**
      * addButtonControls.
-     * 
+     *
      * @param cancelButton
      */
     @Override
@@ -549,7 +549,7 @@ public class GenericSchemaStep2Form extends AbstractForm {
 
     /**
      * DOC ocarbone Comment method "refreshMetaData".
-     * 
+     *
      * @param csvArray
      */
     public void refreshMetaDataTable(final CsvArray csvArray) {
@@ -589,17 +589,17 @@ public class GenericSchemaStep2Form extends AbstractForm {
                             label[i] = fields[i].trim().replaceAll(" ", "_"); //$NON-NLS-1$ //$NON-NLS-2$
                             label[i] = MetadataToolHelper.validateColumnName(label[i], i);
                         } else {
-                            label[i] = DEFAULT_LABEL + " " + i; //$NON-NLS-1$ 
+                            label[i] = DEFAULT_LABEL + " " + i; //$NON-NLS-1$
                         }
                     } else {// current field size is less than bigest column size
                         if (i < fields.length) {
                             if (fields[i] != null && !("").equals(fields[i])) { //$NON-NLS-1$
                                 label[i] = fields[i].trim().replaceAll(" ", "_"); //$NON-NLS-1$ //$NON-NLS-2$
                             } else {
-                                label[i] = DEFAULT_LABEL + " " + i; //$NON-NLS-1$ 
+                                label[i] = DEFAULT_LABEL + " " + i; //$NON-NLS-1$
                             }
                         } else {
-                            label[i] = DEFAULT_LABEL + " " + i; //$NON-NLS-1$ 
+                            label[i] = DEFAULT_LABEL + " " + i; //$NON-NLS-1$
                         }
                     }
                 }
@@ -727,7 +727,7 @@ public class GenericSchemaStep2Form extends AbstractForm {
 
     /**
      * Ensures that fields are set. Update checkEnable / use to checkConnection().
-     * 
+     *
      * @return
      */
     @Override
@@ -758,7 +758,7 @@ public class GenericSchemaStep2Form extends AbstractForm {
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see org.eclipse.swt.widgets.Control#setVisible(boolean)
      */
     @Override

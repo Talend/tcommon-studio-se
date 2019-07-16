@@ -1,6 +1,6 @@
 // ============================================================================
 //
-// Copyright (C) 2006-2018 Talend Inc. - www.talend.com
+// Copyright (C) 2006-2019 Talend Inc. - www.talend.com
 //
 // This source code is available under agreement available at
 // %InstallDIR%\features\org.talend.rcp.branding.%PRODUCTNAME%\%PRODUCTNAME%license.txt
@@ -143,7 +143,7 @@ public class MdmReceiveForm extends AbstractMDMFileStepForm {
 
     /**
      * Constructor to use by RCP Wizard.
-     * 
+     *
      * @param Composite
      * @param Wizard
      * @param Style
@@ -159,7 +159,7 @@ public class MdmReceiveForm extends AbstractMDMFileStepForm {
     }
 
     /**
-     * 
+     *
      * Initialize value, forceFocus first field.
      */
     @Override
@@ -262,7 +262,7 @@ public class MdmReceiveForm extends AbstractMDMFileStepForm {
 
     /**
      * add Field to Group Xml File Settings.
-     * 
+     *
      * @param mainComposite
      * @param form
      * @param width
@@ -378,7 +378,7 @@ public class MdmReceiveForm extends AbstractMDMFileStepForm {
 
     /**
      * add Field to Group File Viewer.
-     * 
+     *
      * @param parent
      * @param form
      * @param width
@@ -440,7 +440,7 @@ public class MdmReceiveForm extends AbstractMDMFileStepForm {
 
     /**
      * get the standby XPath expression.
-     * 
+     *
      * @return
      */
     protected List getSelectedXPath(TreeItem selected) {
@@ -466,7 +466,7 @@ public class MdmReceiveForm extends AbstractMDMFileStepForm {
 
     /**
      * Ensures that fields are set. Update checkEnable / use to checkConnection().
-     * 
+     *
      * @return
      */
     @Override
@@ -518,7 +518,7 @@ public class MdmReceiveForm extends AbstractMDMFileStepForm {
 
     /**
      * addButtonControls.
-     * 
+     *
      * @param cancelButton
      */
     @Override
@@ -537,7 +537,7 @@ public class MdmReceiveForm extends AbstractMDMFileStepForm {
 
     /**
      * checkFileFieldsValue active fileViewer if file exist.
-     * 
+     *
      * @throws IOException
      */
     private void checkFilePathAndManageIt() {
@@ -579,7 +579,7 @@ public class MdmReceiveForm extends AbstractMDMFileStepForm {
             filePathIsDone = true;
 
         } catch (Exception e) {
-            String msgError = Messages.getString("MdmReceiveForm.filepath") + " \"" + fileXmlText.getText().replace("\\\\", "\\") + "\"\n"; //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$ //$NON-NLS-5$ 
+            String msgError = Messages.getString("MdmReceiveForm.filepath") + " \"" + fileXmlText.getText().replace("\\\\", "\\") + "\"\n"; //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$ //$NON-NLS-5$
 
             //$NON-NLS-4$ //$NON-NLS-5$
             if (e instanceof FileNotFoundException) {
@@ -597,7 +597,7 @@ public class MdmReceiveForm extends AbstractMDMFileStepForm {
             }
             log.error(msgError + " " + e.getMessage()); //$NON-NLS-1$
         } finally {
-            String msgError = Messages.getString("MdmReceiveForm.filepath") + " \"" + fileXmlText.getText().replace("\\\\", "\\") + "\"\n"; //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$ //$NON-NLS-5$ 
+            String msgError = Messages.getString("MdmReceiveForm.filepath") + " \"" + fileXmlText.getText().replace("\\\\", "\\") + "\"\n"; //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$ //$NON-NLS-5$
 
             //$NON-NLS-4$ //$NON-NLS-5$
             try {
@@ -614,7 +614,7 @@ public class MdmReceiveForm extends AbstractMDMFileStepForm {
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see org.eclipse.swt.widgets.Control#setVisible(boolean)
      */
     @Override

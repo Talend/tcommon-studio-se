@@ -1,6 +1,6 @@
 // ============================================================================
 //
-// Copyright (C) 2006-2018 Talend Inc. - www.talend.com
+// Copyright (C) 2006-2019 Talend Inc. - www.talend.com
 //
 // This source code is available under agreement available at
 // %InstallDIR%\features\org.talend.rcp.branding.%PRODUCTNAME%\%PRODUCTNAME%license.txt
@@ -32,7 +32,7 @@ public class DbConnStrForHive extends DbConnStr {
 
     /**
      * DOC Marvin DbConnStrForHive constructor comment.
-     * 
+     *
      * @param dbType
      * @param urlTemplate
      */
@@ -43,7 +43,7 @@ public class DbConnStrForHive extends DbConnStr {
     public DbConnStrForHive(EDatabaseTypeName dbType, String urlTemplate, EDatabaseVersion4Drivers[] hiveModes) {
         super(dbType, urlTemplate, null, null, hiveModes);
     }
-    
+
     public DbConnStrForHive(EDatabaseTypeName dbType, String urlTemplate, EDatabaseVersion4Drivers[] hiveModes, String defaultServer, String defaultDB) {
         super(dbType, urlTemplate, null, null, hiveModes, defaultServer, defaultDB);
     }

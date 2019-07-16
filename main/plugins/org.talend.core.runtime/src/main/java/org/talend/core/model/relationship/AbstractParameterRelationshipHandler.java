@@ -1,6 +1,6 @@
 // ============================================================================
 //
-// Copyright (C) 2006-2018 Talend Inc. - www.talend.com
+// Copyright (C) 2006-2019 Talend Inc. - www.talend.com
 //
 // This source code is available under agreement available at
 // %InstallDIR%\features\org.talend.rcp.branding.%PRODUCTNAME%\%PRODUCTNAME%license.txt
@@ -31,7 +31,7 @@ public abstract class AbstractParameterRelationshipHandler implements IParameter
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see org.talend.core.model.relationship.IParameterRelationshipHandler#find(org.talend.core.model.properties.Item,
      * java.util.Map, java.util.Map)
      */
@@ -58,8 +58,8 @@ public abstract class AbstractParameterRelationshipHandler implements IParameter
 
     /**
      * collect the relations from the parameters.
-     * 
-     * 
+     *
+     *
      * @param baseItem
      * @return
      */

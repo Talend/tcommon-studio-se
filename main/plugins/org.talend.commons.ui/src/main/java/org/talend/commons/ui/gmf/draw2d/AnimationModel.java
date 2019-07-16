@@ -1,6 +1,6 @@
 // ============================================================================
 //
-// Copyright (C) 2006-2018 Talend Inc. - www.talend.com
+// Copyright (C) 2006-2019 Talend Inc. - www.talend.com
 //
 // This source code is available under agreement available at
 // %InstallDIR%\features\org.talend.rcp.branding.%PRODUCTNAME%\%PRODUCTNAME%license.txt
@@ -20,7 +20,7 @@ import java.util.Date;
  * interested figures of changes in animation.
  * Created by a root, which loops through the
  * animation process.
- * 
+ *
  * <p>
  * Code taken from Eclipse reference bugzilla #98820
  *

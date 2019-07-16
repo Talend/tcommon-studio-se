@@ -1,6 +1,6 @@
 // ============================================================================
 //
-// Copyright (C) 2006-2018 Talend Inc. - www.talend.com
+// Copyright (C) 2006-2019 Talend Inc. - www.talend.com
 //
 // This source code is available under agreement available at
 // %InstallDIR%\features\org.talend.rcp.branding.%PRODUCTNAME%\%PRODUCTNAME%license.txt
@@ -52,7 +52,7 @@ public abstract class AbstractNamedWizardPage extends WizardPage {
 
     /**
      * DOC nrousseau AbstractNamedWizardPage constructor comment.
-     * 
+     *
      * @param pageName
      */
     protected AbstractNamedWizardPage(String pageName) {
@@ -149,9 +149,9 @@ public abstract class AbstractNamedWizardPage extends WizardPage {
     }
 
     /**
-     * 
+     *
      * DOC ggu Comment method "isKeywords".
-     * 
+     *
      * @param itemName
      * @return
      */

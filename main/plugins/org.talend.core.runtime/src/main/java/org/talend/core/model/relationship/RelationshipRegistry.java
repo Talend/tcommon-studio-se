@@ -1,6 +1,6 @@
 // ============================================================================
 //
-// Copyright (C) 2006-2018 Talend Inc. - www.talend.com
+// Copyright (C) 2006-2019 Talend Inc. - www.talend.com
 //
 // This source code is available under agreement available at
 // %InstallDIR%\features\org.talend.rcp.branding.%PRODUCTNAME%\%PRODUCTNAME%license.txt
@@ -31,7 +31,7 @@ class RelationshipRegistry {
 
     /**
      * Getter for bundleId.
-     * 
+     *
      * @return the bundleId
      */
     public String getBundleId() {
@@ -40,7 +40,7 @@ class RelationshipRegistry {
 
     /**
      * Getter for id.
-     * 
+     *
      * @return the id
      */
     public String getId() {
@@ -49,7 +49,7 @@ class RelationshipRegistry {
 
     /**
      * Sets the name.
-     * 
+     *
      * @param name the name to set
      */
     public void setName(String name) {
@@ -58,7 +58,7 @@ class RelationshipRegistry {
 
     /**
      * Getter for name.
-     * 
+     *
      * @return the name
      */
     public String getName() {
@@ -67,7 +67,7 @@ class RelationshipRegistry {
 
     /**
      * Getter for description.
-     * 
+     *
      * @return the description
      */
     public String getDescription() {
@@ -76,7 +76,7 @@ class RelationshipRegistry {
 
     /**
      * Sets the description.
-     * 
+     *
      * @param description the description to set
      */
     public void setDescription(String description) {
@@ -85,7 +85,7 @@ class RelationshipRegistry {
 
     /**
      * Getter for overrideId.
-     * 
+     *
      * @return the overrideId
      */
     public String getOverrideId() {
@@ -94,7 +94,7 @@ class RelationshipRegistry {
 
     /**
      * Sets the overrideId.
-     * 
+     *
      * @param overrideId the overrideId to set
      */
     public void setOverrideId(String overrideId) {
@@ -103,7 +103,7 @@ class RelationshipRegistry {
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see java.lang.Object#hashCode()
      */
     @Override
@@ -116,7 +116,7 @@ class RelationshipRegistry {
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see java.lang.Object#equals(java.lang.Object)
      */
     @Override

@@ -1,6 +1,6 @@
 // ============================================================================
 //
-// Copyright (C) 2006-2018 Talend Inc. - www.talend.com
+// Copyright (C) 2006-2019 Talend Inc. - www.talend.com
 //
 // This source code is available under agreement available at
 // %InstallDIR%\features\org.talend.rcp.branding.%PRODUCTNAME%\%PRODUCTNAME%license.txt
@@ -45,19 +45,19 @@ import org.talend.repository.model.RepositoryConstants;
 public final class LinkDocumentationHelper {
 
     /**
-     * 
+     *
      * ggu Comment method "getTempFile".
-     * 
-     * 
+     *
+     *
      */
     public static IFile getTempFile(String id, String extension) {
         if (id == null) {
             return null;
         }
         if (extension == null) {
-            extension = ""; //$NON-NLS-1$ 
+            extension = ""; //$NON-NLS-1$
         } else {
-            extension = "." + extension; //$NON-NLS-1$ 
+            extension = "." + extension; //$NON-NLS-1$
         }
         // Save data to a temporary file
         Project project = ((RepositoryContext) CoreRuntimePlugin.getInstance().getContext()
@@ -82,9 +82,9 @@ public final class LinkDocumentationHelper {
     }
 
     /**
-     * 
+     *
      * ggu Comment method "getContentFormGeneralFile".
-     * 
+     *
      * get content form link documentation item
      */
     public static ByteArray getLinkItemContent(final LinkDocumentationItem linkItem) {
@@ -114,9 +114,9 @@ public final class LinkDocumentationHelper {
     }
 
     /**
-     * 
+     *
      * ggu Comment method "createContentFromRemote".
-     * 
+     *
      * create content of remote file to temporary file.
      */
     public static File createContentFromRemote(final String uri) {

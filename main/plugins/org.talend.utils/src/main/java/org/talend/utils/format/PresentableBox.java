@@ -1,6 +1,6 @@
 // ============================================================================
 //
-// Copyright (C) 2006-2018 Talend Inc. - www.talend.com
+// Copyright (C) 2006-2019 Talend Inc. - www.talend.com
 //
 // This source code is available under agreement available at
 // %InstallDIR%\features\org.talend.rcp.branding.%PRODUCTNAME%\%PRODUCTNAME%license.txt
@@ -14,9 +14,9 @@ package org.talend.utils.format;
 
 /**
  * @author scorreia
- * 
+ *
  * This utility class facilitates the creation of title boxes. Code adapted from J. Jean-Charles.
- * 
+ *
  * <code>
  *  <br>CST_PAR: !!----------------------------!!
  *  <br>CST_PAR: !!                            !!
@@ -25,7 +25,7 @@ package org.talend.utils.format;
  *  <br>CST_PAR: !!                            !!
  *  <br>CST_PAR: !!----------------------------!!
  *  </code>
- * 
+ *
  */
 public final class PresentableBox {
 
@@ -116,9 +116,9 @@ public final class PresentableBox {
      * <br>
      * An example of return is like this <br>
      * <code>
-     * 	<br>final String tokPar = "\nCST_PAR: " ; // on each line  
+     * 	<br>final String tokPar = "\nCST_PAR: " ; // on each line
      * 	<br>final PresentableBox box = new PresentableBox("PARAMS CONSTANT DECS" , "MINORTEST" , 30) ;
-     *  <br>System.out.println(box.getFullBox(tokPar)); 
+     *  <br>System.out.println(box.getFullBox(tokPar));
      *  <br>CST_PAR: !!----------------------------!!
      *	<br>CST_PAR: !!							   !!
      *	<br>CST_PAR: !!    PARAMS CONSTANT DECS    !!
@@ -126,7 +126,7 @@ public final class PresentableBox {
      *	<br>CST_PAR: !!                            !!
      *	<br>CST_PAR: !!----------------------------!!
      *  </code>
-     * 
+     *
      * @param startTokAtEachLine added in front each line
      * @return a full box : in order to + empty + title + subtitle + empty + bottom with token at start of each lines
      */
@@ -145,7 +145,7 @@ public final class PresentableBox {
 
     /**
      * Method "getFullBox".
-     * 
+     *
      * @return the boxed presentation string without any token in front of each line.
      * @see this.{@link #getFullBox(String)}
      */

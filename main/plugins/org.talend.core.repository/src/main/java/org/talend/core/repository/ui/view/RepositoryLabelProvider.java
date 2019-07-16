@@ -1,6 +1,6 @@
 // ============================================================================
 //
-// Copyright (C) 2006-2018 Talend Inc. - www.talend.com
+// Copyright (C) 2006-2019 Talend Inc. - www.talend.com
 //
 // This source code is available under agreement available at
 // %InstallDIR%\features\org.talend.rcp.branding.%PRODUCTNAME%\%PRODUCTNAME%license.txt
@@ -66,14 +66,14 @@ import org.talend.repository.model.IProxyRepositoryFactory;
 import org.talend.repository.model.IRepositoryNode.ENodeType;
 import org.talend.repository.model.RepositoryNode;
 import org.talend.repository.ui.views.IRepositoryView;
-import org.talend.utils.string.MD5;
+import org.talend.utils.string.DigestUtil;
 
 /**
  * Label provider for the repository view. <code>DEBUG</code> boolean field specify if details (such as objects ids)
  * must appears on display or not.<br/>
- * 
+ *
  * $Id$
- * 
+ *
  */
 public class RepositoryLabelProvider extends LabelProvider implements IColorProvider, IFontProvider {
 
@@ -237,7 +237,7 @@ public class RepositoryLabelProvider extends LabelProvider implements IColorProv
                     .getMainProjectBranch(ProjectManager.getInstance().getProjectFromProjectLabel(label));
             branch = ProjectManager.getCleanBranchName(branch);
             if (branch != null && branch.length() > 0) {
-                return label + "/" + branch; //$NON-NLS-1$ 
+                return label + "/" + branch; //$NON-NLS-1$
             }
             return label;
         } else {
@@ -290,6 +290,10 @@ public class RepositoryLabelProvider extends LabelProvider implements IColorProv
             }
         }
 
+        return decorateImageWithStatus(img, object);
+    }
+
+    public Image decorateImageWithStatus(Image originalImg, IRepositoryViewObject object) {
         ERepositoryStatus repositoryStatus = object.getRepositoryStatus();
 
         Context ctx = CoreRuntimePlugin.getInstance().getContext();
@@ -301,7 +305,7 @@ public class RepositoryLabelProvider extends LabelProvider implements IColorProv
             }
         }
 
-        Image image = OverlayImageProvider.getImageWithStatus(img, repositoryStatus);
+        Image image = OverlayImageProvider.getImageWithStatus(originalImg, repositoryStatus);
 
         ERepositoryStatus informationStatus = object.getInformationStatus();
 
@@ -322,7 +326,7 @@ public class RepositoryLabelProvider extends LabelProvider implements IColorProv
     public static Image getDefaultJobletImage() {
         return ImageProvider.getImage(ECoreImage.JOBLET_COMPONENT_ICON);
     }
-    
+
     public static Image getDefaultJobletImage(Item item) {
         if (GlobalServiceRegister.getDefault().isServiceRegistered(ISparkJobletProviderService.class)) {
             ISparkJobletProviderService sparkJobletService = (ISparkJobletProviderService) GlobalServiceRegister
@@ -343,7 +347,7 @@ public class RepositoryLabelProvider extends LabelProvider implements IColorProv
 
     /**
      * DOC bqian Comment method "getJobletCustomIcon".
-     * 
+     *
      * @param property
      * @return
      */
@@ -356,12 +360,12 @@ public class RepositoryLabelProvider extends LabelProvider implements IColorProv
 
             ImageDescriptor imageDesc = ImageUtils.createImageFromData(item.getIcon().getInnerContent());
             imageDesc = ImageUtils.scale(imageDesc, ICON_SIZE.ICON_32);
-            String md5Desc = MD5.getMD5(item.getIcon().getInnerContent());
-            image = cachedImages.get(md5Desc);
+            String sha256Desc = DigestUtil.sha256Hex(item.getIcon().getInnerContent());
+            image = cachedImages.get(sha256Desc);
 
             if (image == null || image.isDisposed()) {
                 image = imageDesc.createImage();
-                cachedImages.put(md5Desc, image);
+                cachedImages.put(sha256Desc, image);
             } else {
                 // image = imageDesc.createImage();
             }
@@ -525,7 +529,7 @@ public class RepositoryLabelProvider extends LabelProvider implements IColorProv
             return JFaceResources.getFontRegistry().defaultFont();
         }
     }
-    
+
     public static void setRefresh(boolean refresh) {
         refreshProperty = refresh;
     }

@@ -1,6 +1,6 @@
 // ============================================================================
 //
-// Copyright (C) 2006-2018 Talend Inc. - www.talend.com
+// Copyright (C) 2006-2019 Talend Inc. - www.talend.com
 //
 // This source code is available under agreement available at
 // %InstallDIR%\features\org.talend.rcp.branding.%PRODUCTNAME%\%PRODUCTNAME%license.txt
@@ -25,14 +25,14 @@ public interface ITDQRuleService extends ITDQService {
 
     /**
      * This method is used in tos to fill the DQRULES_LIST parameter with rule list values.
-     * 
+     *
      * @param param
      */
     public void fillTDQRuleList(IElementParameter param);
 
     /**
      * This method is used to generate query for a DQ rule + component params.
-     * 
+     *
      * @param dbType (value = SupportDBUrlType.dbkey)
      * @param catalogName
      * @param schemaName
@@ -41,14 +41,14 @@ public interface ITDQRuleService extends ITDQService {
      * @param ruleParam
      * @param isInvalidRowsComponent
      * @param whereClause
-     * 
+     *
      */
     public String getQueryByRule(IElementParameter ruleParam, IElementParameter dbType, String catalogName, String schemaName,
             String tableName, IMetadataTable metadataTable, boolean isInvalidRowsComponent, String whereClause);
 
     /**
      * This method is used to generate query for a DQ rule + component params.
-     * 
+     *
      * @param dbType (value = SupportDBUrlType.dbkey)
      * @param dbName
      * @param schema
@@ -68,7 +68,7 @@ public interface ITDQRuleService extends ITDQService {
 
     /**
      * Retrieve select columns in the query to update metadata if possible
-     * 
+     *
      * @param columns
      * @param queryParam
      */

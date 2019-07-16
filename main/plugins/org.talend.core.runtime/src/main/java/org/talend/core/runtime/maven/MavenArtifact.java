@@ -1,6 +1,6 @@
 // ============================================================================
 //
-// Copyright (C) 2006-2018 Talend Inc. - www.talend.com
+// Copyright (C) 2006-2019 Talend Inc. - www.talend.com
 //
 // This source code is available under agreement available at
 // %InstallDIR%\features\org.talend.rcp.branding.%PRODUCTNAME%\%PRODUCTNAME%license.txt
@@ -139,19 +139,19 @@ public class MavenArtifact implements Cloneable {
     }
 
     /**
-     * 
+     *
      * DOC ggu Comment method "getFileName".
-     * 
+     *
      * @return if need full path, try PomUtil.getArtifactPath
      */
     public String getFileName() {
         return getFileName(true);
     }
-    
+
     /**
-     * 
+     *
      * DOC ggu Comment method "getFileName".
-     * 
+     *
      * @return if need full path, try PomUtil.getArtifactPath
      */
     public String getFileName(boolean stripVersion) {
@@ -289,7 +289,7 @@ public class MavenArtifact implements Cloneable {
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see java.lang.Object#toString()
      */
     @Override

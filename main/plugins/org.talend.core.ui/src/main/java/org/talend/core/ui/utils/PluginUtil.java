@@ -1,6 +1,6 @@
 // ============================================================================
 //
-// Copyright (C) 2006-2018 Talend Inc. - www.talend.com
+// Copyright (C) 2006-2019 Talend Inc. - www.talend.com
 //
 // This source code is available under agreement available at
 // %InstallDIR%\features\org.talend.rcp.branding.%PRODUCTNAME%\%PRODUCTNAME%license.txt
@@ -30,7 +30,7 @@ public class PluginUtil {
 
     /**
      * Get the absolute installation path of plugin.
-     * 
+     *
      * @param pluginId
      * @return the plugin path or an empty string when it's not found.
      */
@@ -61,7 +61,7 @@ public class PluginUtil {
 
     /**
      * DOC ycbai Get the install path of product.
-     * 
+     *
      * @return
      */
     public static String getProductInstallPath() {
@@ -77,7 +77,7 @@ public class PluginUtil {
 
     /**
      * DOC yyan Comment method "isRouteTestEditor".
-     * 
+     *
      * @return true if esb route test case editor opened
      */
     public static boolean isRouteTestEditor() {
@@ -86,7 +86,7 @@ public class PluginUtil {
 
     /**
      * DOC yyan Get active editor ID.
-     * 
+     *
      * @return Active editor ID
      */
     public static String getActiveEditorId() {

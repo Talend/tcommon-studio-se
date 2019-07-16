@@ -3,7 +3,7 @@ Automatic-Module-Name: org.talend.core.repository
 Bundle-ManifestVersion: 2
 Bundle-Name: Core Repository Plug-in
 Bundle-SymbolicName: org.talend.core.repository;singleton:=true
-Bundle-Version: 7.2.1.qualifier
+Bundle-Version: 7.3.1.qualifier
 Require-Bundle: org.eclipse.ui,
  org.eclipse.ui.ide,
  org.apache.commons.collections,

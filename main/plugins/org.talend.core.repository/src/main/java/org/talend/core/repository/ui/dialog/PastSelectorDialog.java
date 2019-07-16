@@ -1,6 +1,6 @@
 // ============================================================================
 //
-// Copyright (C) 2006-2018 Talend Inc. - www.talend.com
+// Copyright (C) 2006-2019 Talend Inc. - www.talend.com
 //
 // This source code is available under agreement available at
 // %InstallDIR%\features\org.talend.rcp.branding.%PRODUCTNAME%\%PRODUCTNAME%license.txt
@@ -56,12 +56,12 @@ public class PastSelectorDialog extends Dialog {
     private Button selectAll;
 
     private Button selectNone;
-    
+
     private List<String> testParentVersions;
 
     /**
      * DOC talend PastSelectorDialog constructor comment.
-     * 
+     *
      * @param parentShell
      */
     public PastSelectorDialog(Shell parentShell, List<IRepositoryViewObject> versions, RepositoryNode sourceNode) {
@@ -71,7 +71,7 @@ public class PastSelectorDialog extends Dialog {
         this.sourceNode = sourceNode;
         init();
     }
-    
+
     private void init(){
         this.testParentVersions = getTestParentVersionList();
     }
@@ -198,7 +198,7 @@ public class PastSelectorDialog extends Dialog {
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see org.eclipse.jface.dialogs.Dialog#createButtonsForButtonBar(org.eclipse.swt.widgets.Composite)
      */
     @Override
@@ -206,11 +206,11 @@ public class PastSelectorDialog extends Dialog {
         super.createButtonsForButtonBar(parent);
         checkSelectedItems();
     }
-    
+
     private List<String> getTestParentVersionList(){
         List<String> versionList = new ArrayList<String>();
         if(sourceNode.getObject() == null){
-           return versionList; 
+           return versionList;
         }
         Item item = sourceNode.getObject().getProperty().getItem();
         if (!(item instanceof ProcessItem)) {
@@ -226,7 +226,7 @@ public class PastSelectorDialog extends Dialog {
                 }
                 List<ProcessItem> testsItems = testContainerService.getAllTestContainers(processItem);
                 for(ProcessItem testItem : testsItems){
-                    versionList.add(testContainerService.getParentVersion(testItem)); 
+                    versionList.add(testContainerService.getParentVersion(testItem));
                 }
             }
         }

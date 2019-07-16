@@ -1,6 +1,6 @@
 // ============================================================================
 //
-// Copyright (C) 2006-2018 Talend Inc. - www.talend.com
+// Copyright (C) 2006-2019 Talend Inc. - www.talend.com
 //
 // This source code is available under agreement available at
 // %InstallDIR%\features\org.talend.rcp.branding.%PRODUCTNAME%\%PRODUCTNAME%license.txt
@@ -42,7 +42,7 @@ public final class XmlElementHelper {
 
     /**
      * DOC xqliu Comment method "isLeafNode".
-     * 
+     *
      * @param element
      * @return
      */
@@ -60,7 +60,7 @@ public final class XmlElementHelper {
 
     /**
      * DOC xqliu Comment method "isFromSameTable".
-     * 
+     *
      * @param xmlElements
      * @return
      */
@@ -83,7 +83,7 @@ public final class XmlElementHelper {
 
     /**
      * DOC xqliu Comment method "getFullName".
-     * 
+     *
      * @param xmlElement
      * @return
      */
@@ -97,7 +97,7 @@ public final class XmlElementHelper {
 
     /**
      * DOC xqliu Comment method "getParentElement".
-     * 
+     *
      * @param xmlElement
      * @return
      */
@@ -116,7 +116,7 @@ public final class XmlElementHelper {
 
     /**
      * DOC xqliu Comment method "getParentElementName".
-     * 
+     *
      * @param xmlElement
      * @return
      */
@@ -127,7 +127,7 @@ public final class XmlElementHelper {
 
     /**
      * DOC xqliu Comment method "clearLeafNode".
-     * 
+     *
      * @param modelElements
      * @return
      */
@@ -147,7 +147,7 @@ public final class XmlElementHelper {
 
     /**
      * DOC xqliu Comment method "getLeafNode".
-     * 
+     *
      * @param modelElements
      * @return
      */
@@ -162,9 +162,9 @@ public final class XmlElementHelper {
     }
 
     /**
-     * 
+     *
      * DOC qiongli Comment method "getFullPath".
-     * 
+     *
      * @param xmlElement
      * @param path
      * @return

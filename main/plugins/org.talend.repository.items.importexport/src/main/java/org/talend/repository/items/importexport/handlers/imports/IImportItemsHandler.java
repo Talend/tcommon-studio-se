@@ -1,6 +1,6 @@
 // ============================================================================
 //
-// Copyright (C) 2006-2018 Talend Inc. - www.talend.com
+// Copyright (C) 2006-2019 Talend Inc. - www.talend.com
 //
 // This source code is available under agreement available at
 // %InstallDIR%\features\org.talend.rcp.branding.%PRODUCTNAME%\%PRODUCTNAME%license.txt
@@ -27,17 +27,17 @@ import org.talend.repository.items.importexport.manager.ResourcesManager;
 public interface IImportItemsHandler extends IExecutableExtension {
 
     /**
-     * 
+     *
      * DOC ggu Comment method "isEnableProductChecking".
-     * 
+     *
      * @return if need recheck the items is under current product or not.
      */
     boolean isEnableProductChecking();
 
     /**
-     * 
+     *
      * DOC ggu Comment method "setEnableProductChecking".
-     * 
+     *
      * @param enableProductChecking
      */
     void setEnableProductChecking(boolean enableProductChecking);
@@ -45,7 +45,7 @@ public interface IImportItemsHandler extends IExecutableExtension {
     /**
      * If enable to import normal files which can't be loaded via *.properties and not valid, will try to check via the
      * path of resource to import.
-     * 
+     *
      */
     boolean valid(ResourcesManager resManager, IPath path);
 
@@ -56,7 +56,7 @@ public interface IImportItemsHandler extends IExecutableExtension {
 
     /**
      * If it is a valid and builtin/system item
-     * 
+     *
      * @param importItem
      * @return
      */
@@ -65,22 +65,22 @@ public interface IImportItemsHandler extends IExecutableExtension {
     /**
      * According to the valid resource path, resolve the EMF properties file, and check the overwrite status or be valid
      * item or not, etc.
-     * 
+     *
      * @param monitor
      * @param resManager
      * @param resourcePath according to the this path to calculate the item record.
      * @param overwrite
      * @param existedImportItems this items list has been calculated. will check the duplicated name or not.
      * @return if not valid, will return null.
-     * 
+     *
      */
     ImportItem createImportItem(IProgressMonitor monitor, ResourcesManager resManager, IPath resourcePath, boolean overwrite,
             List<ImportItem> existedImportItems) throws Exception;
 
     /**
-     * 
+     *
      * Almost seem with createImportItem, but this method won't do check
-     * 
+     *
      * @param monitor
      * @param resManager
      * @param resourcePath
@@ -94,7 +94,7 @@ public interface IImportItemsHandler extends IExecutableExtension {
 
     /**
      * Find out current item's related items. in order to implictly import the related items.
-     * 
+     *
      * @param monitor
      * @param resManager
      * @param importItem the item will be imported.
@@ -106,8 +106,8 @@ public interface IImportItemsHandler extends IExecutableExtension {
 
     /**
      * Will import the valid selected items to current project.
-     * 
-     * 
+     *
+     *
      * @param importItem the importing item
      * @param overwrite If true will overwrite the original item. else will ignore to import the selected item.
      * @param destinationPath, only used for contextual import otherwise it is null. If not null it is to the handler
@@ -119,17 +119,17 @@ public interface IImportItemsHandler extends IExecutableExtension {
 
     /**
      * When there are some related items to be import, will use this flag.
-     * 
+     *
      * If true, will import the related items before current item.
-     * 
+     *
      * if false, will after import current item.
-     * 
+     *
      */
     boolean isPriorImportRelatedItem();
 
     /**
      * Maybe, need some disposed actions(like EMF Resources), sync functions, etc.
-     * 
+     *
      */
     void afterImportingItems(IProgressMonitor monitor, ResourcesManager resManager, ImportItem importItem) throws Exception;
 }

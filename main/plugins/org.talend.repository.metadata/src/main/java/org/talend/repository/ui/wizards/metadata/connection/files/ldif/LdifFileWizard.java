@@ -1,6 +1,6 @@
 // ============================================================================
 //
-// Copyright (C) 2006-2018 Talend Inc. - www.talend.com
+// Copyright (C) 2006-2019 Talend Inc. - www.talend.com
 //
 // This source code is available under agreement available at
 // %InstallDIR%\features\org.talend.rcp.branding.%PRODUCTNAME%\%PRODUCTNAME%license.txt
@@ -89,7 +89,7 @@ public class LdifFileWizard extends CheckLastVersionRepositoryWizard implements 
 
     /**
      * Sets the isToobar.
-     * 
+     *
      * @param isToobar the isToobar to set
      */
     public void setToolbar(boolean isToobar) {
@@ -98,7 +98,7 @@ public class LdifFileWizard extends CheckLastVersionRepositoryWizard implements 
 
     /**
      * Constructor for FileWizard.
-     * 
+     *
      * @param workbench
      * @param selection
      * @param strings
@@ -370,7 +370,7 @@ public class LdifFileWizard extends CheckLastVersionRepositoryWizard implements 
 
     /**
      * We will accept the selection in the workbench to see if we can initialize from it.
-     * 
+     *
      * @see IWorkbenchWizard#init(IWorkbench, IStructuredSelection)
      */
     @Override
@@ -380,7 +380,7 @@ public class LdifFileWizard extends CheckLastVersionRepositoryWizard implements 
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see org.talend.repository.ui.wizards.RepositoryWizard#getConnectionItem()
      */
     @Override

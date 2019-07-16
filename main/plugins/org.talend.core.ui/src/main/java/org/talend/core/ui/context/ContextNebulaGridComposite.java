@@ -1,6 +1,6 @@
 // ============================================================================
 //
-// Copyright (C) 2006-2018 Talend Inc. - www.talend.com
+// Copyright (C) 2006-2019 Talend Inc. - www.talend.com
 //
 // This source code is available under agreement available at
 // %InstallDIR%\features\org.talend.rcp.branding.%PRODUCTNAME%\%PRODUCTNAME%license.txt
@@ -69,7 +69,7 @@ import org.talend.core.utils.TalendQuoteUtils;
 
 /**
  * created by ldong on Jul 8, 2014 Detailled comment
- * 
+ *
  */
 public class ContextNebulaGridComposite extends AbstractContextTabEditComposite {
 
@@ -115,7 +115,7 @@ public class ContextNebulaGridComposite extends AbstractContextTabEditComposite 
 
     /**
      * Constructor.
-     * 
+     *
      * @param parent
      * @param style
      */
@@ -126,7 +126,7 @@ public class ContextNebulaGridComposite extends AbstractContextTabEditComposite 
         this.helper = new ContextManagerHelper(manager.getContextManager());
         this.setLayout(GridLayoutFactory.swtDefaults().spacing(0, 0).create());
         initializeUI();
-        // for bug TDI-32674 to set different bgColor of ContextView and RepositoryContextComposite. 
+        // for bug TDI-32674 to set different bgColor of ContextView and RepositoryContextComposite.
         if(modelManager instanceof ContextComposite
                 && ((ContextComposite) modelManager).isRepositoryContext()) {
         	this.setBackground(parent.getBackground());
@@ -147,7 +147,7 @@ public class ContextNebulaGridComposite extends AbstractContextTabEditComposite 
 
     /**
      * zwang Comment method "initializeUI".
-     * 
+     *
      * @param viewer
      */
     private void initializeUI() {
@@ -356,7 +356,7 @@ public class ContextNebulaGridComposite extends AbstractContextTabEditComposite 
                     }
                     modelManager.refresh();
                     setButtonEnableState();
-                    
+
                     if (!treeTable.getSelection().isEmpty()) {
                         treeTable.clearSelection();
                     }

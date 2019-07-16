@@ -1,6 +1,6 @@
 // ============================================================================
 //
-// Copyright (C) 2006-2018 Talend Inc. - www.talend.com
+// Copyright (C) 2006-2019 Talend Inc. - www.talend.com
 //
 // This source code is available under agreement available at
 // %InstallDIR%\features\org.talend.rcp.branding.%PRODUCTNAME%\%PRODUCTNAME%license.txt
@@ -51,7 +51,7 @@ public class TeradataDataBaseMetadata extends FakeDatabaseMetaData {
     private static final String CONST_S = "S";//$NON-NLS-1$
 
     /**
-     * 
+     *
      * @param metaData
      */
     public TeradataDataBaseMetadata(Connection connection) {
@@ -68,7 +68,7 @@ public class TeradataDataBaseMetadata extends FakeDatabaseMetaData {
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see org.talend.commons.utils.database.FakeDatabaseMetaData#getConnection()
      */
     @Override
@@ -78,7 +78,7 @@ public class TeradataDataBaseMetadata extends FakeDatabaseMetaData {
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see org.talend.commons.utils.database.FakeDatabaseMetaData#getSchemas()
      */
     @Override
@@ -88,7 +88,7 @@ public class TeradataDataBaseMetadata extends FakeDatabaseMetaData {
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see org.talend.commons.utils.database.FakeDatabaseMetaData#getPrimaryKeys(java.lang.String, java.lang.String,
      * java.lang.String)
      */
@@ -150,7 +150,7 @@ public class TeradataDataBaseMetadata extends FakeDatabaseMetaData {
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see org.talend.commons.utils.database.FakeDatabaseMetaData#getTableTypes()
      */
     @Override
@@ -174,7 +174,7 @@ public class TeradataDataBaseMetadata extends FakeDatabaseMetaData {
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see org.talend.commons.utils.database.FakeDatabaseMetaData#getExportedKeys(java.lang.String, java.lang.String,
      * java.lang.String)
      */
@@ -185,7 +185,7 @@ public class TeradataDataBaseMetadata extends FakeDatabaseMetaData {
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see org.talend.commons.utils.database.FakeDatabaseMetaData#getTables(java.lang.String, java.lang.String,
      * java.lang.String, java.lang.String[])
      */
@@ -289,7 +289,7 @@ public class TeradataDataBaseMetadata extends FakeDatabaseMetaData {
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see org.talend.commons.utils.database.FakeDatabaseMetaData#supportsSchemasInDataManipulation()
      */
     @Override
@@ -299,7 +299,7 @@ public class TeradataDataBaseMetadata extends FakeDatabaseMetaData {
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see org.talend.commons.utils.database.FakeDatabaseMetaData#supportsSchemasInTableDefinitions()
      */
     @Override
@@ -309,7 +309,7 @@ public class TeradataDataBaseMetadata extends FakeDatabaseMetaData {
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see org.talend.commons.utils.database.FakeDatabaseMetaData#getColumns(java.lang.String, java.lang.String,
      * java.lang.String, java.lang.String)
      */

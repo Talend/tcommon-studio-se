@@ -1,6 +1,6 @@
 // ============================================================================
 //
-// Copyright (C) 2006-2018 Talend Inc. - www.talend.com
+// Copyright (C) 2006-2019 Talend Inc. - www.talend.com
 //
 // This source code is available under agreement available at
 // %InstallDIR%\features\org.talend.rcp.branding.%PRODUCTNAME%\%PRODUCTNAME%license.txt
@@ -47,7 +47,7 @@ import metadata.managment.i18n.Messages;
 
 /**
  * @author ocarbone
- * 
+ *
  */
 public class ManagerConnection {
 
@@ -105,7 +105,7 @@ public class ManagerConnection {
 
     /**
      * setValue.
-     * 
+     *
      * @param id
      * @param dbType
      * @param sidStr
@@ -156,7 +156,7 @@ public class ManagerConnection {
      * message {@link #messageException}. Otherwise, return <code>false</code>. In fact, in this method it invokes
      * {@link HiveConnectionManager#checkHiveConnection(IMetadataConnection)} to check hive connection. Added by Marvin
      * Wang on Mar 18, 2013.
-     * 
+     *
      * @param metadataConn
      * @return
      */
@@ -164,7 +164,7 @@ public class ManagerConnection {
         try {
             HiveConnectionManager.getInstance().checkConnection(metadataConn);
             isValide = true;
-            messageException = Messages.getString("ExtractMetaDataFromDataBase.connectionSuccessful"); //$NON-NLS-1$ 
+            messageException = Messages.getString("ExtractMetaDataFromDataBase.connectionSuccessful"); //$NON-NLS-1$
         } catch (Exception e) {
             isValide = false;
             exception = e;
@@ -180,7 +180,7 @@ public class ManagerConnection {
         try {
             ImpalaConnectionManager.getInstance().checkConnection(metadataConn);
             isValide = true;
-            messageException = Messages.getString("ExtractMetaDataFromDataBase.connectionSuccessful"); //$NON-NLS-1$ 
+            messageException = Messages.getString("ExtractMetaDataFromDataBase.connectionSuccessful"); //$NON-NLS-1$
         } catch (Exception e) {
             isValide = false;
             exception = e;
@@ -193,9 +193,9 @@ public class ManagerConnection {
     }
 
     /**
-     * 
+     *
      * Added by Marvin Wang on Nov 22, 2012.
-     * 
+     *
      * @param metadataConn
      * @return
      */
@@ -217,9 +217,9 @@ public class ManagerConnection {
     }
 
     /**
-     * 
+     *
      * Added by Marvin Wang on Nov 22, 2012.
-     * 
+     *
      * @param metadataConn
      * @return
      */
@@ -243,9 +243,9 @@ public class ManagerConnection {
     }
 
     /**
-     * 
+     *
      * DOC YeXiaowei Comment method "getJavaLibPath".
-     * 
+     *
      * @return
      */
     public static String getJavaLibPath() {
@@ -272,7 +272,7 @@ public class ManagerConnection {
 
     /**
      * Check connexion from the fields form.
-     * 
+     *
      * @return isValide
      */
     public boolean check(StringBuffer retProposedSchema) {
@@ -323,7 +323,7 @@ public class ManagerConnection {
 
     /**
      * DOC cantoine : Check connexion from IMetadataConnection comment. Detailled comment.
-     * 
+     *
      * @return isValide
      */
     public boolean check(IMetadataConnection metadataConnection, StringBuffer retProposedSchema, boolean... onlyIfNeeded) {
@@ -404,7 +404,7 @@ public class ManagerConnection {
 
     /**
      * Getter for IsValide.
-     * 
+     *
      * @return isValide
      */
     public boolean getIsValide() {
@@ -421,7 +421,7 @@ public class ManagerConnection {
 
     /**
      * Getter for messageException.
-     * 
+     *
      * @return the messageException
      */
     public String getMessageException() {
@@ -430,7 +430,7 @@ public class ManagerConnection {
 
     /**
      * Sets the messageException.
-     * 
+     *
      * @param messageException the messageException to set
      */
     public void setMessageException(final String messageException) {
@@ -439,7 +439,7 @@ public class ManagerConnection {
 
     /**
      * Getter for dbRootPath.
-     * 
+     *
      * @return the dbRootPath
      */
     public String getDbRootPath() {
@@ -448,7 +448,7 @@ public class ManagerConnection {
 
     /**
      * Sets the dbRootPath.
-     * 
+     *
      * @param dbRootPath the dbRootPath to set
      */
     public void setDbRootPath(String dbRootPath) {
@@ -468,7 +468,7 @@ public class ManagerConnection {
 
     /**
      * Sets the isValide.
-     * 
+     *
      * @param isValide the isValide to set
      */
     public void setValide(boolean isValide) {

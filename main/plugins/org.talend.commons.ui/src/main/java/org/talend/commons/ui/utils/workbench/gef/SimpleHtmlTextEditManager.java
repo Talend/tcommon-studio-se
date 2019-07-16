@@ -1,6 +1,6 @@
 // ============================================================================
 //
-// Copyright (C) 2006-2018 Talend Inc. - www.talend.com
+// Copyright (C) 2006-2019 Talend Inc. - www.talend.com
 //
 // This source code is available under agreement available at
 // %InstallDIR%\features\org.talend.rcp.branding.%PRODUCTNAME%\%PRODUCTNAME%license.txt
@@ -23,9 +23,9 @@ import org.eclipse.swt.widgets.Text;
 
 /**
  * Manage the direct edit of a text in GEF. <br/>
- * 
+ *
  * $Id: SimpleHtmlTextEditManager.java 7038 2007-11-15 14:05:48Z plegall $
- * 
+ *
  */
 public class SimpleHtmlTextEditManager extends DirectEditManager {
 
@@ -74,7 +74,7 @@ public class SimpleHtmlTextEditManager extends DirectEditManager {
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see org.eclipse.gef.tools.DirectEditManager#getCellEditor()
      */
     @Override

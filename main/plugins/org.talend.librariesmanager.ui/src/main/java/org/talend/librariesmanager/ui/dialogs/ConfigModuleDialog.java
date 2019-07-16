@@ -1,6 +1,6 @@
 // ============================================================================
 //
-// Copyright (C) 2006-2018 Talend Inc. - www.talend.com
+// Copyright (C) 2006-2019 Talend Inc. - www.talend.com
 //
 // This source code is available under agreement available at
 // %InstallDIR%\features\org.talend.rcp.branding.%PRODUCTNAME%\%PRODUCTNAME%license.txt
@@ -65,7 +65,7 @@ import org.talend.librariesmanager.ui.i18n.Messages;
 import org.talend.librariesmanager.utils.ModuleMavenURIUtils;
 
 /**
- * 
+ *
  * created by wchen on Sep 18, 2017 Detailled comment
  *
  */
@@ -119,7 +119,7 @@ public class ConfigModuleDialog extends TitleAreaDialog implements IConfigModule
 
     /**
      * DOC wchen InstallModuleDialog constructor comment.
-     * 
+     *
      * @param parentShell
      */
     public ConfigModuleDialog(Shell parentShell, String initValue) {
@@ -200,7 +200,7 @@ public class ConfigModuleDialog extends TitleAreaDialog implements IConfigModule
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see org.eclipse.jface.window.Window#open()
      */
     @Override
@@ -582,7 +582,7 @@ public class ConfigModuleDialog extends TitleAreaDialog implements IConfigModule
 
             /*
              * (non-Javadoc)
-             * 
+             *
              * @see org.eclipse.swt.events.SelectionAdapter#widgetSelected(org.eclipse.swt.events.SelectionEvent)
              */
             @Override
@@ -655,7 +655,7 @@ public class ConfigModuleDialog extends TitleAreaDialog implements IConfigModule
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see org.talend.librariesmanager.ui.dialogs.InstallModuleDialog#checkFieldsError()
      */
     private boolean checkFieldsError() {
@@ -801,7 +801,7 @@ public class ConfigModuleDialog extends TitleAreaDialog implements IConfigModule
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see org.eclipse.jface.dialogs.Dialog#okPressed()
      */
     @Override
@@ -884,7 +884,7 @@ public class ConfigModuleDialog extends TitleAreaDialog implements IConfigModule
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see org.talend.commons.ui.swt.dialogs.IConfigModuleDialog#getMavenURI()
      */
     @Override
@@ -894,7 +894,7 @@ public class ConfigModuleDialog extends TitleAreaDialog implements IConfigModule
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see org.eclipse.jface.dialogs.TitleAreaDialog#setMessage(java.lang.String, int)
      */
     @Override

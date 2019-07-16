@@ -1,6 +1,6 @@
 // ============================================================================
 //
-// Copyright (C) 2006-2018 Talend Inc. - www.talend.com
+// Copyright (C) 2006-2019 Talend Inc. - www.talend.com
 //
 // This source code is available under agreement available at
 // %InstallDIR%\features\org.talend.rcp.branding.%PRODUCTNAME%\%PRODUCTNAME%license.txt
@@ -61,7 +61,7 @@ public class JobEditorHandlerManager {
      * Extracts the editor input factory {@link IJobEditorHandler} by the repository object type
      * {@link ERepositoryObjectType} which is defined in extension point. The value is from the type of
      * {@link ERepositoryObjectType#getType()}. Added by Marvin Wang on Apr 18, 2013.
-     * 
+     *
      * @param repObjType should not be <code>null</code>.
      * @return <code>null</code> if the given parameter is <code>null</code>, or can not find any factories to match the
      * given parameter.

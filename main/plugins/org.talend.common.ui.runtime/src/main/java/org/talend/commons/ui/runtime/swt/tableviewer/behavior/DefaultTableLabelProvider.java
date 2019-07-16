@@ -1,6 +1,6 @@
 // ============================================================================
 //
-// Copyright (C) 2006-2018 Talend Inc. - www.talend.com
+// Copyright (C) 2006-2019 Talend Inc. - www.talend.com
 //
 // This source code is available under agreement available at
 // %InstallDIR%\features\org.talend.rcp.branding.%PRODUCTNAME%\%PRODUCTNAME%license.txt
@@ -23,11 +23,11 @@ import org.talend.commons.ui.runtime.swt.tableviewer.TableViewerCreatorNotModifi
 import org.talend.commons.ui.runtime.swt.tableviewer.data.AccessorUtils;
 
 /**
- * 
+ *
  * DOC amaumont class global comment. Detailled comment <br/>
- * 
+ *
  * $Id: DefaultTableLabelProvider.java 7038 2007-11-15 14:05:48Z plegall $
- * 
+ *
  */
 public class DefaultTableLabelProvider implements ITableLabelProvider, ITableColorProvider {
 
@@ -108,7 +108,7 @@ public class DefaultTableLabelProvider implements ITableLabelProvider, ITableCol
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see org.eclipse.jface.viewers.ITableColorProvider#getBackground(java.lang.Object, int)
      */
     public Color getBackground(Object element, int columnIndex) {
@@ -122,7 +122,7 @@ public class DefaultTableLabelProvider implements ITableLabelProvider, ITableCol
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see org.eclipse.jface.viewers.ITableColorProvider#getForeground(java.lang.Object, int)
      */
     public Color getForeground(Object element, int columnIndex) {

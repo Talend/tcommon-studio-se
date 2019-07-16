@@ -1,6 +1,6 @@
 // ============================================================================
 //
-// Copyright (C) 2006-2018 Talend Inc. - www.talend.com
+// Copyright (C) 2006-2019 Talend Inc. - www.talend.com
 //
 // This source code is available under agreement available at
 // %InstallDIR%\features\org.talend.rcp.branding.%PRODUCTNAME%\%PRODUCTNAME%license.txt
@@ -82,7 +82,7 @@ public class RegisterWizardPage1 extends AbstractBasicWizardDialog {
 
     /**
      * DOC zli RegisterWizardPage1 constructor comment.
-     * 
+     *
      * @param parentShell
      * @param wizard
      */
@@ -257,7 +257,7 @@ public class RegisterWizardPage1 extends AbstractBasicWizardDialog {
 
     /**
      * DOC mhirt Comment method "initiateCountryList".
-     * 
+     *
      * @return
      */
     private String[] initiateCountryList() {
@@ -426,7 +426,7 @@ public class RegisterWizardPage1 extends AbstractBasicWizardDialog {
 
         /**
          * DOC zli NetworSettingDialog constructor comment.
-         * 
+         *
          * @param parentShell
          */
         protected NetworkSettingDialog(Shell parentShell) {

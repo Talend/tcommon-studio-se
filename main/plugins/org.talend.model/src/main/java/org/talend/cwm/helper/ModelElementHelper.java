@@ -1,6 +1,6 @@
 // ============================================================================
 //
-// Copyright (C) 2006-2018 Talend Inc. - www.talend.com
+// Copyright (C) 2006-2019 Talend Inc. - www.talend.com
 //
 // This source code is available under agreement available at
 // %InstallDIR%\features\org.talend.rcp.branding.%PRODUCTNAME%\%PRODUCTNAME%license.txt
@@ -52,11 +52,11 @@ public final class ModelElementHelper {
 
     /**
      * Method "createUsageDependencyOn".
-     * 
+     *
      * Example Analysis depends on the exitence of a DataProvider. This method must be called
      * createUsageDependencyOn(Analysis, DataProvider). The created dependency is added to the DataProvider in its
      * "client dependencies" and to the Analysis in its "supplier dependencies". See OMG CWM spec paragraph 4.3.2.7.
-     * 
+     *
      * @param kind the kind of dependency
      * @param clientElement the element that requires the requiredElement
      * @param supplierElement the required element
@@ -75,7 +75,7 @@ public final class ModelElementHelper {
      * clients). This method gets all the dependencies that link the supplier to the clients. Then for each client, the
      * dependency toward the supplier is removed. And finally the list of dependencies that link the supplier to its
      * clients is suppressed.
-     * 
+     *
      * @param supplierElement an element that is required by other elements
      * @return
      */
@@ -93,7 +93,7 @@ public final class ModelElementHelper {
     /**
      * Method "getDependencyBetween" the dependency that relates the supplier to the client. This method looks into the
      * list of dependencies of both the supplier and the client.
-     * 
+     *
      * @param kind the kind of dependency looked for (could be null)
      * @param clientElement
      * @param supplierElement
@@ -144,7 +144,7 @@ public final class ModelElementHelper {
 
     /**
      * DOC bZhou Comment method "iterateClientDependencies".
-     * 
+     *
      * @param element
      * @param returnElements
      */
@@ -171,7 +171,7 @@ public final class ModelElementHelper {
 
     /**
      * DOC bZhou Comment method "iterateSupplyDependencies".
-     * 
+     *
      * @param element
      * @param returnElements
      */
@@ -240,7 +240,7 @@ public final class ModelElementHelper {
 
     /**
      * DOC xqliu Comment method "getContainer".
-     * 
+     *
      * @param modelElement
      * @return
      */
@@ -258,7 +258,7 @@ public final class ModelElementHelper {
 
     /**
      * Return the first description for the modelelement, creates one if none is found
-     * 
+     *
      * @return the first description of the ModelElement, never null
      */
     public static Description getFirstDescription(ModelElement modelElement) {
@@ -274,7 +274,7 @@ public final class ModelElementHelper {
 
     /**
      * Return the first Document for the modelelement, creates one if none is found
-     * 
+     *
      * @return the first Document of the ModelElement, never null
      */
     public static Document getFirstDocument(ModelElement modelElement) {
@@ -300,9 +300,9 @@ public final class ModelElementHelper {
     }
 
     /**
-     * 
+     *
      * DOC qiongli Comment method "getModleElementName".
-     * 
+     *
      * @param modelElement
      * @return
      */
@@ -319,7 +319,7 @@ public final class ModelElementHelper {
     }
 
     /**
-     * 
+     *
      * @param mElement1
      * @param mElement2
      * @return compare the uuid between both ModelElement
@@ -333,7 +333,7 @@ public final class ModelElementHelper {
 
     /**
      * DOC xqliu Comment method "getIFile".
-     * 
+     *
      * @param modelElement
      * @return
      */

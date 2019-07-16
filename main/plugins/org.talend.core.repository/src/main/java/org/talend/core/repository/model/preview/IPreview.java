@@ -1,6 +1,6 @@
 // ============================================================================
 //
-// Copyright (C) 2006-2018 Talend Inc. - www.talend.com
+// Copyright (C) 2006-2019 Talend Inc. - www.talend.com
 //
 // This source code is available under agreement available at
 // %InstallDIR%\features\org.talend.rcp.branding.%PRODUCTNAME%\%PRODUCTNAME%license.txt
@@ -18,15 +18,15 @@ import org.talend.designer.runprocess.ProcessorException;
 
 /**
  * Generates the preview of a file delimited input.
- * 
+ *
  * $Id: IPreview.java 1 2006-09-29 17:06:40 +0000 (星期五, 29 九月 2006) nrousseau $
- * 
+ *
  */
 public interface IPreview {
 
     /**
      * Generates the preview of a file delimited input.
-     * 
+     *
      * @param description Description a the input file.
      * @return The content of the preview, null in case of errors.
      * @throws CoreException
@@ -35,9 +35,9 @@ public interface IPreview {
     CsvArray preview(IProcessDescription description, String type) throws CoreException;
 
     /**
-     * 
+     *
      * DOC YeXiaowei Comment method "preview".
-     * 
+     *
      * @param description
      * @param type
      * @param errorOutputAsException

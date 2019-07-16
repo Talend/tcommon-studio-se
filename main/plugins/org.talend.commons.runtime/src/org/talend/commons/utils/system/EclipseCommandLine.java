@@ -2,7 +2,7 @@
 //
 // Talend Community Edition
 //
-// Copyright (C) 2006-2018 Talend Inc. - www.talend.com
+// Copyright (C) 2006-2019 Talend Inc. - www.talend.com
 //
 // This library is free software; you can redistribute it and/or
 // modify it under the terms of the GNU Lesser General Public
@@ -26,13 +26,13 @@ import java.util.regex.Pattern;
 
 /**
  * Creates and updates properties for the eclipse commandline in case of relaunch <br/>
- * 
+ *
  * $Id: talend.epf 55206 2011-02-15 17:32:14Z sgandon $
- * 
+ *
  */
 public class EclipseCommandLine {
 
-    static final String PROP_VM = "eclipse.vm"; //$NON-NLS-1$
+    public static final String PROP_VM = "eclipse.vm"; //$NON-NLS-1$
 
     static final String PROP_VMARGS = "eclipse.vmargs"; //$NON-NLS-1$
 
@@ -52,12 +52,16 @@ public class EclipseCommandLine {
     /**
      * for relaunch of the plugins when relaunching the Studio
      */
-    static public final String TALEND_RELOAD_COMMAND = "-talendReload"; //$NON-NLS-1$    
+    static public final String TALEND_RELOAD_COMMAND = "-talendReload"; //$NON-NLS-1$
+
+    static public final String ARG_TALEND_BUNDLES_CLEANED = "-talend.studio.bundles.cleaned"; //$NON-NLS-1$
+
+    static public final String PROP_TALEND_BUNDLES_DO_CLEAN = "-talend.studio.bundles.doclean"; //$NON-NLS-1$
 
     /**
      * for relaunch of the plugins when relaunching the Studio
      */
-    static public final String TALEND_DISABLE_LOGINDIALOG_COMMAND = "--disableLoginDialog"; //$NON-NLS-1$   
+    static public final String TALEND_DISABLE_LOGINDIALOG_COMMAND = "--disableLoginDialog"; //$NON-NLS-1$
 
     static public final String TALEND_DISABLE_UPDATE_DIALOG_COMMAND = "--disableUpdateDialog"; //$NON-NLS-1$
 
@@ -84,7 +88,7 @@ public class EclipseCommandLine {
     /**
      * this creates or updates the org.eclipse.equinox.app.IApplicationContext.EXIT_DATA_PROPERTY by adding or changing
      * the command with value, except if value is null then the command shall be removed.
-     * 
+     *
      * @param command the command to add or update or remove (if value is null) (usually starts with a -)
      * @param value the value of the command,if the value is null,will only update the commmand
      * @param delete the flag used to trigger delete or insert/update the command

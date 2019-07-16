@@ -1,6 +1,6 @@
 // ============================================================================
 //
-// Copyright (C) 2006-2018 Talend Inc. - www.talend.com
+// Copyright (C) 2006-2019 Talend Inc. - www.talend.com
 //
 // This source code is available under agreement available at
 // %InstallDIR%\features\org.talend.rcp.branding.%PRODUCTNAME%\%PRODUCTNAME%license.txt
@@ -48,7 +48,7 @@ import org.talend.repository.metadata.ui.wizards.form.AbstractRegexpFileStepForm
 
 /**
  * @author ocarbone
- * 
+ *
  */
 public class RegexpFileStep1Form extends AbstractRegexpFileStepForm {
 
@@ -81,9 +81,9 @@ public class RegexpFileStep1Form extends AbstractRegexpFileStepForm {
 
     /**
      * Constructor to use by RCP Wizard.
-     * 
+     *
      * @param existingNames
-     * 
+     *
      * @param Composite
      * @param Wizard
      * @param Style
@@ -96,7 +96,7 @@ public class RegexpFileStep1Form extends AbstractRegexpFileStepForm {
     }
 
     /**
-     * 
+     *
      * Initialize value, forceFocus first field.
      */
     @Override
@@ -128,7 +128,7 @@ public class RegexpFileStep1Form extends AbstractRegexpFileStepForm {
 
     /**
      * DOC ocarbone Comment method "adaptFormToReadOnly".
-     * 
+     *
      */
     protected void adaptFormToReadOnly() {
         readOnly = isReadOnly();
@@ -327,7 +327,7 @@ public class RegexpFileStep1Form extends AbstractRegexpFileStepForm {
 
     /**
      * Ensures that fields are set.
-     * 
+     *
      * @return
      */
     protected boolean checkFieldsValue() {
@@ -365,7 +365,7 @@ public class RegexpFileStep1Form extends AbstractRegexpFileStepForm {
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see org.eclipse.swt.widgets.Control#setVisible(boolean)
      */
     public void setVisible(boolean visible) {

@@ -2,7 +2,7 @@
 //
 // Talend Community Edition
 //
-// Copyright (C) 2006-2018 Talend Inc. - www.talend.com
+// Copyright (C) 2006-2019 Talend Inc. - www.talend.com
 //
 // This library is free software; you can redistribute it and/or
 // modify it under the terms of the GNU Lesser General Public
@@ -30,9 +30,9 @@ import org.talend.core.model.repository.ERepositoryObjectType;
 
 /**
  * DOC bZhou class global comment. Detailled comment <br/>
- * 
+ *
  * $Id: talend.epf 55206 2011-02-15 17:32:14Z bzhou $
- * 
+ *
  */
 public final class RepositoryObjectTypeHelper {
 
@@ -40,9 +40,9 @@ public final class RepositoryObjectTypeHelper {
 
     /**
      * DOC bZhou Comment method "getSharedTypeList".
-     * 
+     *
      * This mehtod is to get all shared types.
-     * 
+     *
      * @return
      */
     public static List<ERepositoryObjectType> getSharedTypeList() {
@@ -59,9 +59,9 @@ public final class RepositoryObjectTypeHelper {
 
     /**
      * DOC bZhou Comment method "getDQTypeList".
-     * 
+     *
      * This method is to get all types used in Data Quality, it inclused the Shared types and the DP types.
-     * 
+     *
      * @return
      */
     public static List<ERepositoryObjectType> getDQTypeList() {
@@ -78,9 +78,9 @@ public final class RepositoryObjectTypeHelper {
 
     /**
      * DOC bZhou Comment method "getDPTypeList".
-     * 
+     *
      * This method is to get Data Profile object types. These types is just only used in the Data Profile.
-     * 
+     *
      * @return
      */
     public static List<ERepositoryObjectType> getDPTypeList() {
@@ -98,9 +98,9 @@ public final class RepositoryObjectTypeHelper {
 
     /**
      * DOC bZhou Comment method "getDQResourceTypeList".
-     * 
+     *
      * This method is to get all types used in Data Quality, it inclused the Shared types and the DP types.
-     * 
+     *
      * @return
      */
     public static List<ERepositoryObjectType> getDQResourceTypeList() {
@@ -116,9 +116,9 @@ public final class RepositoryObjectTypeHelper {
     }
 
     /**
-     * 
+     *
      * create Connection instance by connType
-     * 
+     *
      * @param connType
      * @return Connection which be Created, null if connType is null.
      * @exception throw UnsupportedOperationException if connType is not be use

@@ -1,6 +1,6 @@
 // ============================================================================
 //
-// Copyright (C) 2006-2018 Talend Inc. - www.talend.com
+// Copyright (C) 2006-2019 Talend Inc. - www.talend.com
 //
 // This source code is available under agreement available at
 // %InstallDIR%\features\org.talend.rcp.branding.%PRODUCTNAME%\%PRODUCTNAME%license.txt
@@ -38,20 +38,20 @@ import org.talend.repository.model.RepositoryNode;
 
 /**
  * An util tools for java version resources. Detailled comment <br/>
- * 
+ *
  */
 /**
  * bqian An util tools for java version resources. <br/>
- * 
+ *
  */
 public class JavaResourcesHelper {
 
     /**
      * Gets the specific resource in the java project.
-     * 
+     *
      * @param name
      * @param projectName
-     * 
+     *
      * @return
      */
     public static IResource getSpecificResourceInJavaProject(IPath path) throws CoreException {
@@ -70,7 +70,7 @@ public class JavaResourcesHelper {
 
     /**
      * Gets current project name.
-     * 
+     *
      * @return
      */
     public static String getCurrentProjectName() {
@@ -83,13 +83,13 @@ public class JavaResourcesHelper {
     public static String getJobFolderName(String jobName, String version) {
         String newJobName = escapeFileName(jobName).toLowerCase();
         if (version != null) {
-            newJobName += '_' + version.replace('.', '_'); 
+            newJobName += '_' + version.replace('.', '_');
         }
         return newJobName;
     }
 
     /**
-     * 
+     *
      * get the jar name like maven "artifactId.version"
      */
     public static String getJobJarName(String jobName, String version) {
@@ -127,7 +127,7 @@ public class JavaResourcesHelper {
 
     /**
      * project name is "Test". will return "org.talend.test".
-     * 
+     *
      * If other branding, like "Camel", will return "org.camel.test".
      * @deprecated
      */
@@ -142,7 +142,7 @@ public class JavaResourcesHelper {
 
     /**
      * return the getGroupName with project "Test", and item name "TestJob".
-     * 
+     *
      * something like: "org.talend.test.testjob".
      * @deprecated
      */
@@ -167,7 +167,7 @@ public class JavaResourcesHelper {
 
     /**
      * if project "Test" and item "TestJob 0.1" , will return "test.testjob_0_1"
-     * 
+     *
      */
     public static String getJobClassPackageName(Item processItem) {
         return getJobClassPackageName(processItem, false);
@@ -194,7 +194,7 @@ public class JavaResourcesHelper {
 
     /**
      * if project "Test" and item "TestJob 0.1" , will return "test.testjob_0_1.TestJob"
-     * 
+     *
      */
     public static String getJobPackagedClass(Item processItem, boolean filenameFromLabel) {
         return getJobPackagedClass(processItem, filenameFromLabel, false);
@@ -219,7 +219,7 @@ public class JavaResourcesHelper {
 
     /**
      * if project "Test" and item "TestJob 0.1" , will return "test/testjob_0_1".
-     * 
+     *
      */
     public static String getJobClassPackageFolder(Item processItem) {
         return getJobClassPackageFolder(processItem, false);
@@ -257,7 +257,7 @@ public class JavaResourcesHelper {
 
     /**
      * project is test. job is "TestJob 0.1".
-     * 
+     *
      * will return test/testjob_0_1/TestJob.java
      */
     public static String getJobClassFilePath(Item processItem, boolean filenameFromLabel) {

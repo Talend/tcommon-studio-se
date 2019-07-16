@@ -1,6 +1,6 @@
 // ============================================================================
 //
-// Copyright (C) 2006-2018 Talend Inc. - www.talend.com
+// Copyright (C) 2006-2019 Talend Inc. - www.talend.com
 //
 // This source code is available under agreement available at
 // %InstallDIR%\features\org.talend.rcp.branding.%PRODUCTNAME%\%PRODUCTNAME%license.txt
@@ -21,7 +21,7 @@ import org.talend.cwm.helper.TableHelper;
 import org.talend.metadata.managment.ui.wizard.AbstractForm;
 
 /**
- * 
+ *
  *
  */
 public class MdmConceptWizardPage4 extends WizardPage {
@@ -37,9 +37,9 @@ public class MdmConceptWizardPage4 extends WizardPage {
     /**
      * DatabaseWizardPage constructor (to instance IMetadataConnection OR MetaDataTableType). If MetaDataTableType
      * exist, it's an update of existing metadata else it's a new metadata.
-     * 
+     *
      * @param existingNames
-     * 
+     *
      * @param ISelection
      */
     public MdmConceptWizardPage4(ConnectionItem connectionItem, MetadataTable metadataTable, boolean isRepositoryObjectEditable) {
@@ -51,7 +51,7 @@ public class MdmConceptWizardPage4 extends WizardPage {
 
     /**
      * Create the first composite, addComponentsAndControls and initialize TableWizardPage.
-     * 
+     *
      * @see IDialogPage#createControl(Composite)
      */
     public void createControl(final Composite parent) {

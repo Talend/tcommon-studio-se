@@ -1,6 +1,6 @@
 // ============================================================================
 //
-// Copyright (C) 2006-2018 Talend Inc. - www.talend.com
+// Copyright (C) 2006-2019 Talend Inc. - www.talend.com
 //
 // This source code is available under agreement available at
 // %InstallDIR%\features\org.talend.rcp.branding.%PRODUCTNAME%\%PRODUCTNAME%license.txt
@@ -22,9 +22,9 @@ import org.talend.registration.i18n.Messages;
 
 /**
  * DOC smallet class global comment. Detailled comment <br/>
- * 
+ *
  * $Id: talend.epf 1 2006-09-29 17:06:40 +0000 (ven., 29 sept. 2006) nrousseau $
- * 
+ *
  */
 public class RegisterWizardDialog extends WizardDialog {
 
@@ -34,7 +34,7 @@ public class RegisterWizardDialog extends WizardDialog {
 
     /**
      * DOC smallet RegisterWizardDialog constructor comment.
-     * 
+     *
      * @param parentShell
      * @param newWizard
      */
@@ -54,7 +54,7 @@ public class RegisterWizardDialog extends WizardDialog {
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see org.eclipse.jface.wizard.WizardDialog#configureShell(org.eclipse.swt.widgets.Shell)
      */
     @Override

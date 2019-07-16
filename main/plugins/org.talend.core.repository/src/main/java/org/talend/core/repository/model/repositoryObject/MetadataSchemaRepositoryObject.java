@@ -1,6 +1,6 @@
 // ============================================================================
 //
-// Copyright (C) 2006-2018 Talend Inc. - www.talend.com
+// Copyright (C) 2006-2019 Talend Inc. - www.talend.com
 //
 // This source code is available under agreement available at
 // %InstallDIR%\features\org.talend.rcp.branding.%PRODUCTNAME%\%PRODUCTNAME%license.txt
@@ -43,7 +43,7 @@ public class MetadataSchemaRepositoryObject extends MetadataSchema implements IS
 
     /**
      * Getter for parentCatalogObject.
-     * 
+     *
      * @return the parentCatalogObject
      */
     public MetadataCatalogRepositoryObject getParentCatalogObject() {
@@ -52,7 +52,7 @@ public class MetadataSchemaRepositoryObject extends MetadataSchema implements IS
 
     /**
      * Sets the parentCatalogObject.
-     * 
+     *
      * @param parentCatalogObject the parentCatalogObject to set
      */
     public void setParentCatalogObject(MetadataCatalogRepositoryObject parentCatalogObject) {
@@ -75,7 +75,7 @@ public class MetadataSchemaRepositoryObject extends MetadataSchema implements IS
 
     /**
      * DOC klliu MetadataSchemaRepositoryObject constructor comment.
-     * 
+     *
      * @param repositoryViewObject
      * @param schema
      */
@@ -120,7 +120,7 @@ public class MetadataSchemaRepositoryObject extends MetadataSchema implements IS
     /**
      * update the Schema object according to the Property, because when the connection has been reloaded, the schema
      * object should be changed, so need use the new schema object.
-     * 
+     *
      * @param property
      */
     private void updateSchema(Property property) {
@@ -230,7 +230,7 @@ public class MetadataSchemaRepositoryObject extends MetadataSchema implements IS
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see org.talend.core.model.repository.IRepositoryViewObject#isModified()
      */
     @Override

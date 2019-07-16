@@ -1,6 +1,6 @@
 // ============================================================================
 //
-// Copyright (C) 2006-2018 Talend Inc. - www.talend.com
+// Copyright (C) 2006-2019 Talend Inc. - www.talend.com
 //
 // This source code is available under agreement available at
 // %InstallDIR%\features\org.talend.rcp.branding.%PRODUCTNAME%\%PRODUCTNAME%license.txt
@@ -21,9 +21,9 @@ import org.talend.commons.ui.utils.SimpleClipboard;
 
 /**
  * DOC amaumont class global comment. Detailled comment <br/>
- * 
+ *
  * $Id$
- * 
+ *
  */
 public class ExtendedTableCopyCommand extends Command implements IExtendedTableCommand {
 
@@ -52,7 +52,7 @@ public class ExtendedTableCopyCommand extends Command implements IExtendedTableC
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see org.eclipse.gef.commands.Command#execute()
      */
     @Override
@@ -62,7 +62,7 @@ public class ExtendedTableCopyCommand extends Command implements IExtendedTableC
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see org.talend.commons.ui.command.CommonCommand#canUndo()
      */
     @Override
@@ -72,7 +72,7 @@ public class ExtendedTableCopyCommand extends Command implements IExtendedTableC
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see org.talend.commons.ui.command.CommonCommand#redo()
      */
     @Override
@@ -81,7 +81,7 @@ public class ExtendedTableCopyCommand extends Command implements IExtendedTableC
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see org.talend.commons.ui.command.CommonCommand#undo()
      */
     @Override

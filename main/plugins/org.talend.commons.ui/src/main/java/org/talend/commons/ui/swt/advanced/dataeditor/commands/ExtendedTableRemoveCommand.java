@@ -1,6 +1,6 @@
 // ============================================================================
 //
-// Copyright (C) 2006-2018 Talend Inc. - www.talend.com
+// Copyright (C) 2006-2019 Talend Inc. - www.talend.com
 //
 // This source code is available under agreement available at
 // %InstallDIR%\features\org.talend.rcp.branding.%PRODUCTNAME%\%PRODUCTNAME%license.txt
@@ -24,9 +24,9 @@ import org.talend.commons.ui.swt.extended.table.ExtendedTableModel;
 
 /**
  * DOC amaumont class global comment. Detailled comment <br/>
- * 
+ *
  * $Id$
- * 
+ *
  */
 public class ExtendedTableRemoveCommand extends Command implements IExtendedTableCommand {
 
@@ -82,7 +82,7 @@ public class ExtendedTableRemoveCommand extends Command implements IExtendedTabl
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see org.eclipse.gef.commands.Command#execute()
      */
     @SuppressWarnings("unchecked")//$NON-NLS-1$
@@ -135,7 +135,7 @@ public class ExtendedTableRemoveCommand extends Command implements IExtendedTabl
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see org.talend.commons.ui.command.CommonCommand#canUndo()
      */
     @Override
@@ -145,7 +145,7 @@ public class ExtendedTableRemoveCommand extends Command implements IExtendedTabl
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see org.talend.commons.ui.command.CommonCommand#redo()
      */
     @Override
@@ -155,7 +155,7 @@ public class ExtendedTableRemoveCommand extends Command implements IExtendedTabl
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see org.talend.commons.ui.command.CommonCommand#undo()
      */
     @SuppressWarnings("unchecked")//$NON-NLS-1$

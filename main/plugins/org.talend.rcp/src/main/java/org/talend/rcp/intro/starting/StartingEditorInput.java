@@ -1,6 +1,6 @@
 // ============================================================================
 //
-// Copyright (C) 2006-2018 Talend Inc. - www.talend.com
+// Copyright (C) 2006-2019 Talend Inc. - www.talend.com
 //
 // This source code is available under agreement available at
 // %InstallDIR%\features\org.talend.rcp.branding.%PRODUCTNAME%\%PRODUCTNAME%license.txt
@@ -31,7 +31,7 @@ public class StartingEditorInput implements IPathEditorInput {
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see org.eclipse.ui.IEditorInput#exists()
      */
     public boolean exists() {
@@ -41,7 +41,7 @@ public class StartingEditorInput implements IPathEditorInput {
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see org.eclipse.ui.IEditorInput#getImageDescriptor()
      */
     public ImageDescriptor getImageDescriptor() {
@@ -51,7 +51,7 @@ public class StartingEditorInput implements IPathEditorInput {
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see org.eclipse.ui.IEditorInput#getName()
      */
     public String getName() {
@@ -60,7 +60,7 @@ public class StartingEditorInput implements IPathEditorInput {
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see org.eclipse.ui.IEditorInput#getPersistable()
      */
     public IPersistableElement getPersistable() {
@@ -70,7 +70,7 @@ public class StartingEditorInput implements IPathEditorInput {
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see org.eclipse.ui.IEditorInput#getToolTipText()
      */
     public String getToolTipText() {
@@ -79,7 +79,7 @@ public class StartingEditorInput implements IPathEditorInput {
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see org.eclipse.core.runtime.IAdaptable#getAdapter(java.lang.Class)
      */
     public Object getAdapter(Class adapter) {
@@ -89,7 +89,7 @@ public class StartingEditorInput implements IPathEditorInput {
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see org.eclipse.ui.IPathEditorInput#getPath()
      */
     public IPath getPath() {

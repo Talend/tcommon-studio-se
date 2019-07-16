@@ -1,6 +1,6 @@
 // ============================================================================
 //
-// Copyright (C) 2006-2018 Talend Inc. - www.talend.com
+// Copyright (C) 2006-2019 Talend Inc. - www.talend.com
 //
 // This source code is available under agreement available at
 // %InstallDIR%\features\org.talend.rcp.branding.%PRODUCTNAME%\%PRODUCTNAME%license.txt
@@ -60,7 +60,7 @@ import org.talend.repository.metadata.ui.wizards.form.AbstractPositionalFileStep
 
 /**
  * @author ocarbone
- * 
+ *
  */
 public class FileStep1Form extends AbstractPositionalFileStepForm {
 
@@ -103,9 +103,9 @@ public class FileStep1Form extends AbstractPositionalFileStepForm {
 
     /**
      * Constructor to use by RCP Wizard.
-     * 
+     *
      * @param existingNames
-     * 
+     *
      * @param Composite
      * @param Wizard
      * @param Style
@@ -118,7 +118,7 @@ public class FileStep1Form extends AbstractPositionalFileStepForm {
     }
 
     /**
-     * 
+     *
      * Initialize value, forceFocus first field.
      */
     @Override
@@ -546,7 +546,7 @@ public class FileStep1Form extends AbstractPositionalFileStepForm {
             encoding = TalendQuoteUtils.removeQuotes(encoding);
         }
         if (fileStr == null || fileStr == "") { //$NON-NLS-1$
-            filePositionalViewer.setText("\n" + Messages.getString("FileStep1.fileViewerTip1")); //$NON-NLS-1$ //$NON-NLS-2$ 
+            filePositionalViewer.setText("\n" + Messages.getString("FileStep1.fileViewerTip1")); //$NON-NLS-1$ //$NON-NLS-2$
 
         } else {
             filePositionalViewer.setText("\n" + Messages.getString("FileStep1.fileViewerProgress")); //$NON-NLS-1$ //$NON-NLS-2$
@@ -625,7 +625,7 @@ public class FileStep1Form extends AbstractPositionalFileStepForm {
 
     /**
      * Ensures that fields are set.
-     * 
+     *
      * @return
      */
     @Override
@@ -635,7 +635,7 @@ public class FileStep1Form extends AbstractPositionalFileStepForm {
 
     /**
      * Ensures that fields are set.
-     * 
+     *
      * @return
      */
     protected boolean checkFieldsValue(boolean checkViewerField) {
@@ -678,7 +678,7 @@ public class FileStep1Form extends AbstractPositionalFileStepForm {
 
     /**
      * Ensures that field Separator are set.
-     * 
+     *
      * @return
      */
     protected boolean checkFieldSeparatorValue() {
@@ -712,7 +712,7 @@ public class FileStep1Form extends AbstractPositionalFileStepForm {
 
     /**
      * Ensures that field Separator are set.
-     * 
+     *
      * @return
      */
     protected boolean checkFieldPositionValue() {
@@ -748,7 +748,7 @@ public class FileStep1Form extends AbstractPositionalFileStepForm {
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see org.eclipse.swt.widgets.Control#setVisible(boolean)
      */
     @Override

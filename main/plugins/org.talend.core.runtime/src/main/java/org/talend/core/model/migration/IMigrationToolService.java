@@ -1,6 +1,6 @@
 // ============================================================================
 //
-// Copyright (C) 2006-2018 Talend Inc. - www.talend.com
+// Copyright (C) 2006-2019 Talend Inc. - www.talend.com
 //
 // This source code is available under agreement available at
 // %InstallDIR%\features\org.talend.rcp.branding.%PRODUCTNAME%\%PRODUCTNAME%license.txt
@@ -22,9 +22,9 @@ import org.talend.core.model.properties.MigrationTask;
 
 /**
  * DOC smallet class global comment. Detailled comment <br/>
- * 
+ *
  * $Id: talend.epf 1 2006-09-29 17:06:40 +0000 (ven., 29 sept. 2006) nrousseau $
- * 
+ *
  */
 public interface IMigrationToolService extends IService {
 
@@ -40,7 +40,7 @@ public interface IMigrationToolService extends IService {
 
     /**
      * DOC ycbai Comment method "executeMigrationTasksForImport".
-     * 
+     *
      * @param project
      * @param item
      * @param migrationTasksToApply
@@ -52,7 +52,7 @@ public interface IMigrationToolService extends IService {
 
     /**
      * DOC ycbai Comment method "checkMigrationTasks".
-     * 
+     *
      * @param project
      * @return
      */
@@ -60,7 +60,7 @@ public interface IMigrationToolService extends IService {
 
     /**
      * DOC ycbai Comment method "updateMigrationSystem".
-     * 
+     *
      * @param project
      * @param persistence
      */

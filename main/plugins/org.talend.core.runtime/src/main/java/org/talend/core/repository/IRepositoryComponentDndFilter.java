@@ -1,6 +1,6 @@
 // ============================================================================
 //
-// Copyright (C) 2006-2018 Talend Inc. - www.talend.com
+// Copyright (C) 2006-2019 Talend Inc. - www.talend.com
 //
 // This source code is available under agreement available at
 // %InstallDIR%\features\org.talend.rcp.branding.%PRODUCTNAME%\%PRODUCTNAME%license.txt
@@ -33,7 +33,7 @@ public interface IRepositoryComponentDndFilter {
             String repositoryType);
 
     /**
-     * 
+     *
      * if true, and have existed in list, will remove it; if false, will ignore it.
      */
     public boolean except(Item item, ERepositoryObjectType type, RepositoryNode seletetedNode, IComponent component,

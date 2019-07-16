@@ -1,6 +1,6 @@
 // ============================================================================
 //
-// Copyright (C) 2006-2018 Talend Inc. - www.talend.com
+// Copyright (C) 2006-2019 Talend Inc. - www.talend.com
 //
 // This source code is available under agreement available at
 // %InstallDIR%\features\org.talend.rcp.branding.%PRODUCTNAME%\%PRODUCTNAME%license.txt
@@ -41,9 +41,9 @@ import org.talend.librariesmanager.prefs.LibrariesManagerUtils;
 
 /**
  * DOC smallet class global comment. Detailled comment <br/>
- * 
+ *
  * $Id$
- * 
+ *
  */
 public class JavaLibrariesService extends AbstractLibrariesService {
 
@@ -80,7 +80,7 @@ public class JavaLibrariesService extends AbstractLibrariesService {
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see org.talend.core.model.general.ILibrariesService#getSqlPatternTemplate()
      */
     @Override
@@ -91,7 +91,7 @@ public class JavaLibrariesService extends AbstractLibrariesService {
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see org.talend.core.model.general.ILibrariesService#getSystemRoutines()
      */
     @Override
@@ -117,7 +117,7 @@ public class JavaLibrariesService extends AbstractLibrariesService {
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see org.talend.core.model.general.ILibrariesService#getTalendRoutines()
      */
     @Override
@@ -220,7 +220,7 @@ public class JavaLibrariesService extends AbstractLibrariesService {
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see org.talend.core.model.general.ILibrariesService#isLibSynchronized()
      */
     @Override
@@ -231,7 +231,7 @@ public class JavaLibrariesService extends AbstractLibrariesService {
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see org.talend.core.model.general.ILibrariesService#getPerlLibrariesPath()
      */
     @Override
@@ -242,7 +242,7 @@ public class JavaLibrariesService extends AbstractLibrariesService {
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see
      * org.talend.core.model.general.ILibrariesService#syncLibrariesFromLibs(org.eclipse.core.runtime.IProgressMonitor
      * [])

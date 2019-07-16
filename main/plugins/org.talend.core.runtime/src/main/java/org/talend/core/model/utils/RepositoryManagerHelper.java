@@ -1,6 +1,6 @@
 // ============================================================================
 //
-// Copyright (C) 2006-2018 Talend Inc. - www.talend.com
+// Copyright (C) 2006-2019 Talend Inc. - www.talend.com
 //
 // This source code is available under agreement available at
 // %InstallDIR%\features\org.talend.rcp.branding.%PRODUCTNAME%\%PRODUCTNAME%license.txt
@@ -82,7 +82,7 @@ public final class RepositoryManagerHelper {
 
     /**
      * get the RepoViewCommonNavigator from UI.
-     * 
+     *
      * @param flag if it is true return RepoViewCommonNavigator even if the current perspective is DQ, if is is false
      * return null when the current perspective is DQ
      * @return

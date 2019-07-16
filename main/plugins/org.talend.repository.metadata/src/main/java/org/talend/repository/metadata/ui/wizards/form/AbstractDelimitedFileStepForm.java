@@ -1,6 +1,6 @@
 // ============================================================================
 //
-// Copyright (C) 2006-2018 Talend Inc. - www.talend.com
+// Copyright (C) 2006-2019 Talend Inc. - www.talend.com
 //
 // This source code is available under agreement available at
 // %InstallDIR%\features\org.talend.rcp.branding.%PRODUCTNAME%\%PRODUCTNAME%license.txt
@@ -20,9 +20,9 @@ import org.talend.core.model.properties.ConnectionItem;
 
 /**
  * DOC tguiu class global comment. Detailled comment <br/>
- * 
+ *
  * $Id: AbstractDelimitedFileStepForm.java 38013 2010-03-05 14:21:59Z mhirt $
- * 
+ *
  */
 public abstract class AbstractDelimitedFileStepForm extends AbstractFileStepForm {
 
@@ -37,7 +37,7 @@ public abstract class AbstractDelimitedFileStepForm extends AbstractFileStepForm
 
     /**
      * DOC ocarbone AbstractDelimitedFileStepForm constructor comment. Use to step2
-     * 
+     *
      * @param parent
      * @param connection2
      */
@@ -59,7 +59,7 @@ public abstract class AbstractDelimitedFileStepForm extends AbstractFileStepForm
 
     /**
      * Getter for page.
-     * 
+     *
      * @return the page
      */
     public WizardPage getWizardPage() {
@@ -68,7 +68,7 @@ public abstract class AbstractDelimitedFileStepForm extends AbstractFileStepForm
 
     /**
      * Sets the page.
-     * 
+     *
      * @param page the page to set
      */
     public void setWizardPage(WizardPage page) {

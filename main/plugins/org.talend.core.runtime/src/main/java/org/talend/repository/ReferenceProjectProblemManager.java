@@ -1,7 +1,7 @@
 package org.talend.repository;
 // ============================================================================
 //
-// Copyright (C) 2006-2018 Talend Inc. - www.talend.com
+// Copyright (C) 2006-2019 Talend Inc. - www.talend.com
 //
 // This source code is available under agreement available at
 // %InstallDIR%\features\org.talend.rcp.branding.%PRODUCTNAME%\%PRODUCTNAME%license.txt
@@ -40,7 +40,7 @@ public class ReferenceProjectProblemManager {
         }
         return instance;
     }
-    
+
     public void setInvalidProjectReferenceList(String mainProjectLabel, List<ReferenceProjectBean> beanList) {
         invalidProjectMap.put(mainProjectLabel, beanList);
     }
@@ -147,7 +147,7 @@ public class ReferenceProjectProblemManager {
     }
 
     /**
-     * 
+     *
      * @param referenceMap
      * @return false- cycle reference exist otherwise true
      */
@@ -209,7 +209,7 @@ public class ReferenceProjectProblemManager {
     }
 
     /**
-     * 
+     *
      * @param projectRefMap key : project technical label, value : all referenced project list
      * @throws MoreThanOneBranchException
      */

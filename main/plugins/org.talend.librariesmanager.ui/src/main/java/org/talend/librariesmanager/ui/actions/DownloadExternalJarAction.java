@@ -1,6 +1,6 @@
 // ============================================================================
 //
-// Copyright (C) 2006-2018 Talend Inc. - www.talend.com
+// Copyright (C) 2006-2019 Talend Inc. - www.talend.com
 //
 // This source code is available under agreement available at
 // %InstallDIR%\features\org.talend.rcp.branding.%PRODUCTNAME%\%PRODUCTNAME%license.txt
@@ -29,10 +29,10 @@ import org.talend.librariesmanager.ui.views.ModulesView;
 
 /**
  * created by Administrator on 2012-9-20 Detailled comment
- * 
+ *
  */
 public class DownloadExternalJarAction extends Action {
-	
+
 	private ModulesView parentView = null;
 
     public DownloadExternalJarAction(ModulesView parentView) {
@@ -49,7 +49,7 @@ public class DownloadExternalJarAction extends Action {
         String text = Messages.getString("download.external.dialog.desciption");
         List<ModuleNeeded> updatedModules = getUpdatedModules();
         if(updatedModules.isEmpty()){
-        	MessageDialog.openWarning(parentView.getSite().getShell(), Messages.getString("download.external.dialog.warning"), 
+        	MessageDialog.openWarning(parentView.getSite().getShell(), Messages.getString("download.external.dialog.warning"),
         			Messages.getString("download.external.dialog.message"));
         	return;
         }
@@ -57,7 +57,7 @@ public class DownloadExternalJarAction extends Action {
                 .getActiveWorkbenchWindow().getShell(), text, title);
         dialog.showDialog(true, updatedModules);
     }
-    
+
     private List<ModuleNeeded> getUpdatedModules(){
     	List<ModuleNeeded> updatedModules = new ArrayList<ModuleNeeded>();
     	TableItem [] items = parentView.getSelection();

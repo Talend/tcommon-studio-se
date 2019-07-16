@@ -1,6 +1,6 @@
 // ============================================================================
 //
-// Copyright (C) 2006-2018 Talend Inc. - www.talend.com
+// Copyright (C) 2006-2019 Talend Inc. - www.talend.com
 //
 // This source code is available under agreement available at
 // %InstallDIR%\features\org.talend.rcp.branding.%PRODUCTNAME%\%PRODUCTNAME%license.txt
@@ -41,9 +41,9 @@ import org.talend.repository.ui.wizards.metadata.connection.files.json.AbstractT
 
 /**
  * DOC amaumont class global comment. Detailled comment <br/>
- * 
+ *
  * $Id$
- * 
+ *
  */
 public class TreePopulator extends AbstractTreePopulator {
 
@@ -53,7 +53,7 @@ public class TreePopulator extends AbstractTreePopulator {
 
     /**
      * Use the constructor with TreeViewer instead.
-     * 
+     *
      * @param tree
      * @deprecated
      */
@@ -69,7 +69,7 @@ public class TreePopulator extends AbstractTreePopulator {
 
     /**
      * DOC amaumont TreePopulator constructor comment.
-     * 
+     *
      * @param availableXmlTree
      */
     public TreePopulator(TreeViewer availableXmlTree) {
@@ -79,7 +79,7 @@ public class TreePopulator extends AbstractTreePopulator {
 
     /**
      * populate xml tree.
-     * 
+     *
      */
     @Override
     public boolean populateTree(String filePath, ATreeNode treeNode) {

@@ -1,6 +1,6 @@
 // ============================================================================
 //
-// Copyright (C) 2006-2018 Talend Inc. - www.talend.com
+// Copyright (C) 2006-2019 Talend Inc. - www.talend.com
 //
 // This source code is available under agreement available at
 // %InstallDIR%\features\org.talend.rcp.branding.%PRODUCTNAME%\%PRODUCTNAME%license.txt
@@ -30,9 +30,9 @@ import org.talend.core.prefs.ITalendCorePrefConstants;
 
 /**
  * DOC amaumont class global comment. Detailled comment <br/>
- * 
+ *
  * $Id$
- * 
+ *
  */
 public class MappingTypeRetriever {
 
@@ -50,7 +50,7 @@ public class MappingTypeRetriever {
 
     /**
      * DOC amaumont MappingTypeHelper constructor comment.
-     * 
+     *
      * @param dbms
      */
     public MappingTypeRetriever(Dbms dbms) {
@@ -96,7 +96,7 @@ public class MappingTypeRetriever {
 
     /**
      * Returns adviced mappings for a given db type.
-     * 
+     *
      * @param dbType
      * @return a list of MappingType or null if not found
      */
@@ -110,7 +110,7 @@ public class MappingTypeRetriever {
 
     /**
      * Returns adviced mappings for a given Talend type.
-     * 
+     *
      * @param talendType
      * @return a list of MappingType or null if not found
      */
@@ -255,10 +255,10 @@ public class MappingTypeRetriever {
     }
 
     /**
-     * 
+     *
      * Search and return the Db type which matches with the given parameters. If the Db type is not found, a new search
      * is done with inverse of given <code>nullable</code>
-     * 
+     *
      * @param dbmsType
      * @param nullable
      * @return
@@ -316,10 +316,10 @@ public class MappingTypeRetriever {
     }
 
     /**
-     * 
+     *
      * Search and return the Db type which matches with the given parameters. If the Db type is not found, a new search
      * is done with inverse of given <code>nullable</code>
-     * 
+     *
      * @param talendType
      * @param nullable
      * @return
@@ -335,10 +335,10 @@ public class MappingTypeRetriever {
         return mappingType.getDbType();
 
     }
-    
+
     /**
      * Getter for the current loaded dbms.
-     * 
+     *
      * @return the dbms
      */
     public Dbms getDbms() {
@@ -347,7 +347,7 @@ public class MappingTypeRetriever {
 
     /**
      * Sets the dbms.
-     * 
+     *
      * @param dbms the dbms to set
      */
     public void setDbms(Dbms dbms) {

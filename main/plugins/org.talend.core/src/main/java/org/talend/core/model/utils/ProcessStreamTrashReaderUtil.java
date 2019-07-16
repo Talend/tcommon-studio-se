@@ -1,6 +1,6 @@
 // ============================================================================
 //
-// Copyright (C) 2006-2018 Talend Inc. - www.talend.com
+// Copyright (C) 2006-2019 Talend Inc. - www.talend.com
 //
 // This source code is available under agreement available at
 // %InstallDIR%\features\org.talend.rcp.branding.%PRODUCTNAME%\%PRODUCTNAME%license.txt
@@ -204,7 +204,7 @@ public final class ProcessStreamTrashReaderUtil {
                         String line = null;
                         while ((line = reader.readLine()) != null) {
                             System.out.println("getErrorStream " + line); //$NON-NLS-1$
-                            if(line.startsWith("log4j:WARN")){
+                            if(line.startsWith("log4j:WARN") || line.startsWith("SLF4J:")){
                                 continue;
                             }
                             buffer.append(line);

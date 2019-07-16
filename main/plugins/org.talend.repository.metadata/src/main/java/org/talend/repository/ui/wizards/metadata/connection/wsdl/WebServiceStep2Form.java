@@ -1,6 +1,6 @@
 // ============================================================================
 //
-// Copyright (C) 2006-2018 Talend Inc. - www.talend.com
+// Copyright (C) 2006-2019 Talend Inc. - www.talend.com
 //
 // This source code is available under agreement available at
 // %InstallDIR%\features\org.talend.rcp.branding.%PRODUCTNAME%\%PRODUCTNAME%license.txt
@@ -98,7 +98,7 @@ public class WebServiceStep2Form extends AbstractWSDLSchemaStepForm {
 
     /**
      * Constructor to use by RCP Wizard.
-     * 
+     *
      * @param Composite
      */
     public WebServiceStep2Form(Composite parent, ConnectionItem connectionItem) {
@@ -155,7 +155,7 @@ public class WebServiceStep2Form extends AbstractWSDLSchemaStepForm {
 
     /**
      * addButtonControls.
-     * 
+     *
      * @param cancelButton
      */
     @Override
@@ -204,7 +204,7 @@ public class WebServiceStep2Form extends AbstractWSDLSchemaStepForm {
     }
 
     /**
-     * 
+     *
      * Initialize value, forceFocus first field.
      */
     @Override
@@ -309,7 +309,7 @@ public class WebServiceStep2Form extends AbstractWSDLSchemaStepForm {
 
     /**
      * Ensures that fields are set. Update checkEnable / use to checkConnection().
-     * 
+     *
      * @return
      */
     @Override
@@ -337,10 +337,10 @@ public class WebServiceStep2Form extends AbstractWSDLSchemaStepForm {
 
     /**
      * create ProcessDescription and set it.
-     * 
+     *
      * WARNING ::field FieldSeparator, RowSeparator, EscapeChar and TextEnclosure are surround by double quote.
-     * 
-     * 
+     *
+     *
      * @return processDescription
      */
     private ProcessDescription getProcessDescription() {
@@ -351,7 +351,7 @@ public class WebServiceStep2Form extends AbstractWSDLSchemaStepForm {
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see org.talend.repository.ui.swt.utils.AbstractForm#adaptFormToReadOnly()
      */
     @Override
@@ -367,7 +367,7 @@ public class WebServiceStep2Form extends AbstractWSDLSchemaStepForm {
 
     /**
      * DOC ocarbone Comment method "refreshMetaData".
-     * 
+     *
      * @param csvArray
      */
     public void refreshMetaDataTable(final CsvArray csvArray, ProcessDescription processDescription) {
@@ -532,7 +532,7 @@ public class WebServiceStep2Form extends AbstractWSDLSchemaStepForm {
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see org.eclipse.swt.widgets.Control#setVisible(boolean)
      */
     @Override

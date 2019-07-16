@@ -1,6 +1,6 @@
 // ============================================================================
 //
-// Copyright (C) 2006-2018 Talend Inc. - www.talend.com
+// Copyright (C) 2006-2019 Talend Inc. - www.talend.com
 //
 // This source code is available under agreement available at
 // %InstallDIR%\features\org.talend.rcp.branding.%PRODUCTNAME%\%PRODUCTNAME%license.txt
@@ -22,16 +22,16 @@ import org.talend.commons.utils.io.FilesUtils;
 /**
  * <br>
  * bqian This program can not be executed after all the projects of talend have been updated.<br/>
- * 
+ *
  * <br>
  * The following plugins have ralated nl plugins.<br>
- * 
+ *
  * <br>
  * <br>
  * org.talend.commons<br>
  * <br>
  * org.talend.core<br>
- * 
+ *
  * <br>
  * org.talend.designer.codegen<br>
  * <br>
@@ -62,19 +62,19 @@ import org.talend.commons.utils.io.FilesUtils;
  * org.talend.scheduler<br>
  * <br>
  * org.talend.sqlbuilder<br>
- * 
- * 
+ *
+ *
  * Note that the <br>
  * org.talend.designer.business.diagram<br>
- * 
+ *
  * is special. $Id: I18NChecker.java 1 2007-07-11 17:06:40 +0000 bqian $
- * 
+ *
  */
 public class I18NChecker {
 
     /**
      * DOC bqian Comment method "main".
-     * 
+     *
      * @param args
      */
     public static void main(String[] args) {
@@ -98,7 +98,7 @@ public class I18NChecker {
 
     /**
      * bqian Comment method "processMapper".
-     * 
+     *
      * @param mapper
      */
     private void processMapper(ProjectMapper mapper) throws Exception {
@@ -121,7 +121,7 @@ public class I18NChecker {
 
     /**
      * bqian Comment method "compare".
-     * 
+     *
      * @param desProperties
      * @param otherProperties
      */
@@ -162,7 +162,7 @@ public class I18NChecker {
 
     /**
      * bqian Comment method "copyContent".
-     * 
+     *
      * @param srcProperties
      * @param desProperties
      */
@@ -229,11 +229,11 @@ public class I18NChecker {
     };
 
     /**
-     * 
+     *
      * <br/>
-     * 
+     *
      * $Id: talend.epf 1 2006-09-29 17:06:40 +0000 (ææäº, 29 ä¹æ 2006) nrousseau $
-     * 
+     *
      */
     class ProjectMapper {
 
@@ -243,7 +243,7 @@ public class I18NChecker {
 
         /*
          * (non-Javadoc)
-         * 
+         *
          * @see java.lang.Object#toString()
          */
         @Override

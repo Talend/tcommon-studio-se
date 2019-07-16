@@ -1,6 +1,6 @@
 // ============================================================================
 //
-// Copyright (C) 2006-2018 Talend Inc. - www.talend.com
+// Copyright (C) 2006-2019 Talend Inc. - www.talend.com
 //
 // This source code is available under agreement available at
 // %InstallDIR%\features\org.talend.rcp.branding.%PRODUCTNAME%\%PRODUCTNAME%license.txt
@@ -39,9 +39,9 @@ import org.talend.repository.metadata.i18n.Messages;
 
 /**
  * PositionalText
- * 
+ *
  * $Id: PositionalTextTest.java 38013 2010-03-05 14:21:59Z mhirt $
- * 
+ *
  */
 
 public class PositionalTextTest extends Composite {
@@ -299,8 +299,8 @@ public class PositionalTextTest extends Composite {
 
     /**
      * VerticalMarker.
-     * 
-     * 
+     *
+     *
      */
     public static class VerticalMarkerEditor extends Canvas {
 
@@ -395,7 +395,7 @@ public class PositionalTextTest extends Composite {
 
         /**
          * Getter for posX.
-         * 
+         *
          * @return the posX
          */
         public int getPosX() {
@@ -404,7 +404,7 @@ public class PositionalTextTest extends Composite {
 
         /**
          * Sets the posX.
-         * 
+         *
          * @param posX the posX to set
          */
         public void setPosX(int posX) {
@@ -430,8 +430,8 @@ public class PositionalTextTest extends Composite {
 
     /**
      * OvalMarker.
-     * 
-     * 
+     *
+     *
      */
     public static class OvalMarkerEditor extends Canvas {
 
@@ -534,7 +534,7 @@ public class PositionalTextTest extends Composite {
 
         /**
          * Getter for posX.
-         * 
+         *
          * @return the posX
          */
         public int getPosX() {
@@ -543,7 +543,7 @@ public class PositionalTextTest extends Composite {
 
         /**
          * Sets the posX.
-         * 
+         *
          * @param posX the posX to set
          */
         public void setPosX(int posX) {

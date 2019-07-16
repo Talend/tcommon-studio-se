@@ -1,6 +1,6 @@
 // ============================================================================
 //
-// Copyright (C) 2006-2018 Talend Inc. - www.talend.com
+// Copyright (C) 2006-2019 Talend Inc. - www.talend.com
 //
 // This source code is available under agreement available at
 // %InstallDIR%\features\org.talend.rcp.branding.%PRODUCTNAME%\%PRODUCTNAME%license.txt
@@ -20,15 +20,15 @@ import org.talend.core.model.temp.ECodePart;
 
 /**
  * CodeGenerator Interface
- * 
+ *
  * $Id: CodeGenerator.java 636 2006-11-21 03:34:52 +0000 (星期二, 21 十一月 2006) ftang $
- * 
+ *
  */
 public interface ICodeGenerator {
 
     /**
      * Generate the code for the process given to the constructor.
-     * 
+     *
      * @return
      * @throws CodeGeneratorException
      */
@@ -41,7 +41,7 @@ public interface ICodeGenerator {
 
     /**
      * Generate Part Code for a given Component.
-     * 
+     *
      * @param config
      * @param node
      * @return
@@ -52,7 +52,7 @@ public interface ICodeGenerator {
 
     /**
      * Generate Part Code for a given node, with optional nodeConfigurer.
-     * 
+     *
      * @param node
      * @param nodeConfigurer allows to configure thr process node, can be null
      * @return generated code

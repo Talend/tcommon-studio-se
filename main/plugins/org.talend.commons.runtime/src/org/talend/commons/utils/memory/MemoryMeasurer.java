@@ -1,6 +1,6 @@
 // ============================================================================
 //
-// Copyright (C) 2006-2018 Talend Inc. - www.talend.com
+// Copyright (C) 2006-2019 Talend Inc. - www.talend.com
 //
 // This source code is available under agreement available at
 // %InstallDIR%\features\org.talend.rcp.branding.%PRODUCTNAME%\%PRODUCTNAME%license.txt
@@ -17,7 +17,7 @@ import java.text.NumberFormat;
 
 /**
  * class MemoryMeasurer.
- * 
+ *
  * It is used to know the difference between the used memory at beginning and at end of measure.
  */
 public class MemoryMeasurer {
@@ -27,9 +27,9 @@ public class MemoryMeasurer {
     private Long usedMemoryAtEnd;
 
     /**
-     * 
+     *
      * Method "begin".
-     * 
+     *
      * It defines the reference of the used memory.
      */
     public void begin() {
@@ -38,11 +38,11 @@ public class MemoryMeasurer {
     }
 
     /**
-     * 
+     *
      * Method "begin".
-     * 
+     *
      * It defines the reference of the used memory.
-     * 
+     *
      * @param useGCBeforeMeasure true to force gc
      */
     public void begin(boolean useGCBeforeMeasure) {
@@ -54,9 +54,9 @@ public class MemoryMeasurer {
     }
 
     /**
-     * 
+     *
      * Method "step".
-     * 
+     *
      * @param useGCBeforeMeasure true to force gc
      * @return the difference between the used memory at beginning and at end of measure
      */
@@ -66,9 +66,9 @@ public class MemoryMeasurer {
     }
 
     /**
-     * 
+     *
      * Method "step".
-     * 
+     *
      * @param useGCBeforeMeasure true to force gc
      * @return the difference between the used memory at beginning and at end of measure
      */
@@ -83,9 +83,9 @@ public class MemoryMeasurer {
     }
 
     /**
-     * 
+     *
      * Method "end".
-     * 
+     *
      * @return the difference between the used memory at beginning and at end of measure
      */
     public long end() {
@@ -94,9 +94,9 @@ public class MemoryMeasurer {
     }
 
     /**
-     * 
+     *
      * Method "end".
-     * 
+     *
      * @param useGCBeforeMeasure true to force gc
      * @return the difference between the used memory at beginning and at end of measure
      */
@@ -115,18 +115,18 @@ public class MemoryMeasurer {
     }
 
     /**
-     * 
+     *
      * Method "printUsedMemory".
-     * 
+     *
      */
     public void printUsedMemory() {
         printUsedMemory(null);
     }
 
     /**
-     * 
+     *
      * Method "printUsedMemory".
-     * 
+     *
      */
     public void printUsedMemory(String contextInfo) {
         callGC();

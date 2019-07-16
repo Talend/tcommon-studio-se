@@ -1,6 +1,6 @@
 // ============================================================================
 //
-// Copyright (C) 2006-2018 Talend Inc. - www.talend.com
+// Copyright (C) 2006-2019 Talend Inc. - www.talend.com
 //
 // This source code is available under agreement available at
 // %InstallDIR%\features\org.talend.rcp.branding.%PRODUCTNAME%\%PRODUCTNAME%license.txt
@@ -26,9 +26,9 @@ import org.talend.commons.ui.runtime.i18n.Messages;
 /**
  * bqian This class can start a thread to execute the backgroud job that user spcified, and have the ability to refresh
  * the SWT UI after finishing the job. Class must extend this class to provide specific funtionality.<br/>
- * 
+ *
  * $Id: SWTUIThreadProcessor.java 1 2006-09-29 17:06:40 +0000 (ææäº, 29 ä¹æ 2006) bqian $
- * 
+ *
  */
 public abstract class SWTUIThreadProcessor {
 
@@ -130,7 +130,7 @@ public abstract class SWTUIThreadProcessor {
     }
 
     /**
-     * 
+     *
      * cli Comment method "forceStop". (bug 6976)
      */
     public void forceStop() {
@@ -146,7 +146,7 @@ public abstract class SWTUIThreadProcessor {
 
     /**
      * Getter for exception.
-     * 
+     *
      * @return the exception
      */
     public Exception getException() {
@@ -155,7 +155,7 @@ public abstract class SWTUIThreadProcessor {
 
     /**
      * Sets the exception.
-     * 
+     *
      * @param exception the exception to set
      */
     public void setException(Exception exception) {
@@ -164,7 +164,7 @@ public abstract class SWTUIThreadProcessor {
 
     /**
      * Getter for isStopped.
-     * 
+     *
      * @return the isStopped
      */
     public boolean isStopped() {

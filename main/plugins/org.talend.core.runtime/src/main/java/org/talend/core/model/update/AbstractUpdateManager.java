@@ -1,6 +1,6 @@
 // ============================================================================
 //
-// Copyright (C) 2006-2018 Talend Inc. - www.talend.com
+// Copyright (C) 2006-2019 Talend Inc. - www.talend.com
 //
 // This source code is available under agreement available at
 // %InstallDIR%\features\org.talend.rcp.branding.%PRODUCTNAME%\%PRODUCTNAME%license.txt
@@ -22,7 +22,7 @@ import org.talend.core.model.update.extension.UpdateManagerProviderDetector;
 
 /**
  * ggu class global comment. Detailled comment
- * 
+ *
  * update manager for the jobs / joblets.
  */
 public abstract class AbstractUpdateManager implements IUpdateManager {
@@ -49,7 +49,7 @@ public abstract class AbstractUpdateManager implements IUpdateManager {
 
     /**
      * ggu AbstractUpdateManager constructor comment.
-     * 
+     *
      * @param process
      */
     public AbstractUpdateManager() {
@@ -61,9 +61,9 @@ public abstract class AbstractUpdateManager implements IUpdateManager {
     }
 
     /**
-     * 
+     *
      * ggu Comment method "getSchemaRenamedMap".
-     * 
+     *
      * used for repository renamed schema update.
      */
     public Map<String, String> getSchemaRenamedMap() {
@@ -82,9 +82,9 @@ public abstract class AbstractUpdateManager implements IUpdateManager {
     }
 
     /**
-     * 
+     *
      * ldong Comment method "getColumnRenamedMap".
-     * 
+     *
      * used for file connection column rename update.
      */
     public Map<String, String> getColumnRenamedMap() {
@@ -111,7 +111,7 @@ public abstract class AbstractUpdateManager implements IUpdateManager {
     }
 
     /**
-     * 
+     *
      * ggu Comment method "clearResult". clear all result .
      */
     public void clearResult() {
@@ -137,9 +137,9 @@ public abstract class AbstractUpdateManager implements IUpdateManager {
     }
 
     /**
-     * 
+     *
      * ggu Comment method "addNodesPropertyChanger".
-     * 
+     *
      * for joblet updated.
      */
     @Override
@@ -195,7 +195,7 @@ public abstract class AbstractUpdateManager implements IUpdateManager {
 
     /**
      * Getter for isAddColumn.
-     * 
+     *
      * @return the isAddColumn
      */
     public boolean isAddColumn() {
@@ -204,7 +204,7 @@ public abstract class AbstractUpdateManager implements IUpdateManager {
 
     /**
      * Sets the isAddColumn.
-     * 
+     *
      * @param isAddColumn the isAddColumn to set
      */
     public void setAddColumn(boolean isAddColumn) {

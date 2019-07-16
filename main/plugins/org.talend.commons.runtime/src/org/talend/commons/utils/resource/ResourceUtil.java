@@ -1,6 +1,6 @@
 // ============================================================================
 //
-// Copyright (C) 2006-2018 Talend Inc. - www.talend.com
+// Copyright (C) 2006-2019 Talend Inc. - www.talend.com
 //
 // This source code is available under agreement available at
 // %InstallDIR%\features\org.talend.rcp.branding.%PRODUCTNAME%\%PRODUCTNAME%license.txt
@@ -46,7 +46,7 @@ public class ResourceUtil {
      * Method "getFileFromResource" returns a File from the given path relative to the class. When the path starts with
      * "/", the file can be located in a plugin (in the classpath of the plugin). This method must be used in plugin
      * mode. It will return null when it's called as a java application.
-     * 
+     *
      * @param clazz a class in the same plugin as the file to find
      * @param path the path of the file.
      * @return the file when found. Can return null. Otherwise will throw an exception

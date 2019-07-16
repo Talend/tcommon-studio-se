@@ -1,6 +1,6 @@
 // ============================================================================
 //
-// Copyright (C) 2006-2018 Talend Inc. - www.talend.com
+// Copyright (C) 2006-2019 Talend Inc. - www.talend.com
 //
 // This source code is available under agreement available at
 // %InstallDIR%\features\org.talend.rcp.branding.%PRODUCTNAME%\%PRODUCTNAME%license.txt
@@ -43,10 +43,10 @@ public class Document implements java.io.Serializable{
     /**
      * Format XML String by a OutputFormat object
      * (Used in tAdvancedFileOutputXML )
-     * 
+     *
      * @param format
      * @return the formatted time string.
-     * 
+     *
      */
     public String formatXMLString(org.dom4j.io.OutputFormat format){
 
@@ -65,7 +65,7 @@ public class Document implements java.io.Serializable{
 		}
 
 		return outputStream.toString();
-	
+
     }
 
     /**
@@ -87,7 +87,7 @@ public class Document implements java.io.Serializable{
         }
         List<Map<String, Object>> result = new ArrayList<Map<String, Object>>();
         org.dom4j.Document document = doc.getDocument();
-        
+
         //init document to flat tool
         DocumentToFlat docToFlat = new DocumentToFlat(lookupInfo, xpathOfResults, xpathToTypeMap, xpathToPatternMap);
         docToFlat.setDoc(document);
@@ -101,7 +101,7 @@ public class Document implements java.io.Serializable{
         	xpathToPatternMap = docToFlat.getXpathToPatternMap();
         }
         java.util.List<org.dom4j.tree.AbstractNode> nodes = docToFlat.getNodes();
-        
+
         for (org.dom4j.tree.AbstractNode node : nodes) {
             boolean reject = false;
             // lookup action
@@ -116,7 +116,7 @@ public class Document implements java.io.Serializable{
 	            	String pattern = xpathToPatternMap.get(xpath);
 	            	String javaType = xpathToTypeMap.get(xpath);
 	            	Object value = ParserUtils.parse(text, javaType, pattern);
-	            	
+
 	            	if(lookupValue == null && value == null) {
 	            		//do nothing(null==null)
 	            	} else {
@@ -125,7 +125,7 @@ public class Document implements java.io.Serializable{
 	                    	break;
 	                	}
 	            	}
-	                
+
 	            }
             }
             // generate result action
@@ -144,7 +144,7 @@ public class Document implements java.io.Serializable{
             }
 
         }
-        //set resultset 
+        //set resultset
 		int count = result.size();
 		if(count>0) {
 			if("UNIQUE_MATCH".equals(matchingMode)) {
@@ -159,5 +159,5 @@ public class Document implements java.io.Serializable{
 		}
 		return result;
     }
-    
+
 }

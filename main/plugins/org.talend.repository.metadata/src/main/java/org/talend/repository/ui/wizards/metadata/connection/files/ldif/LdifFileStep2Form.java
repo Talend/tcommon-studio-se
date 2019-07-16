@@ -1,6 +1,6 @@
 // ============================================================================
 //
-// Copyright (C) 2006-2018 Talend Inc. - www.talend.com
+// Copyright (C) 2006-2019 Talend Inc. - www.talend.com
 //
 // This source code is available under agreement available at
 // %InstallDIR%\features\org.talend.rcp.branding.%PRODUCTNAME%\%PRODUCTNAME%license.txt
@@ -66,7 +66,7 @@ import org.talend.repository.metadata.ui.wizards.form.AbstractLdifFileStepForm;
 
 /**
  * @author cantoine
- * 
+ *
  */
 public class LdifFileStep2Form extends AbstractLdifFileStepForm implements IRefreshable {
 
@@ -117,7 +117,7 @@ public class LdifFileStep2Form extends AbstractLdifFileStepForm implements IRefr
 
     /**
      * Constructor to use by RCP Wizard.
-     * 
+     *
      * @param Composite
      * @param Wizard
      * @param Style
@@ -130,7 +130,7 @@ public class LdifFileStep2Form extends AbstractLdifFileStepForm implements IRefr
     }
 
     /**
-     * 
+     *
      * Initialize value, forceFocus first field.
      */
     @Override
@@ -153,7 +153,7 @@ public class LdifFileStep2Form extends AbstractLdifFileStepForm implements IRefr
     }
 
     /**
-     * 
+     *
      * addGroupAttributes.
      */
     private void addGroupAttributes(final Composite mainComposite, final int width, final int height) {
@@ -166,7 +166,7 @@ public class LdifFileStep2Form extends AbstractLdifFileStepForm implements IRefr
 
             /*
              * (non-Javadoc)
-             * 
+             *
              * @see
              * org.talend.commons.ui.swt.extended.macrotable.AbstractExtendedTableViewer#setTableViewerCreatorOptions
              * (org.talend.commons.ui.swt.tableviewer.TableViewerCreator)
@@ -220,7 +220,7 @@ public class LdifFileStep2Form extends AbstractLdifFileStepForm implements IRefr
 
     /**
      * populateLdifAttributes. method to populate the Table of Attributes to read the Ldif file
-     * 
+     *
      */
     protected void populateLdifAttributes() throws IOException, Exception {
 
@@ -253,7 +253,7 @@ public class LdifFileStep2Form extends AbstractLdifFileStepForm implements IRefr
 
     /**
      * checkTheRightAttributes.
-     * 
+     *
      * @param getConnection().getValue() Checked Attribute Checked in EMF model
      */
     protected void checkTheRightAttributes(List<String> attribute) {
@@ -274,7 +274,7 @@ public class LdifFileStep2Form extends AbstractLdifFileStepForm implements IRefr
 
     /**
      * add field to Group Limit.
-     * 
+     *
      * @param mainComposite
      * @param form
      * @param width
@@ -299,7 +299,7 @@ public class LdifFileStep2Form extends AbstractLdifFileStepForm implements IRefr
 
     /**
      * add Field to Group File Viewer.
-     * 
+     *
      * @param parent
      * @param form
      * @param width
@@ -367,11 +367,11 @@ public class LdifFileStep2Form extends AbstractLdifFileStepForm implements IRefr
 
     /**
      * create ProcessDescription and set it.
-     * 
+     *
      * WARNING ::field FieldSeparator, RowSeparator, EscapeChar and TextEnclosure are surround by double quote.
-     * 
+     *
      * @param getConnection()
-     * 
+     *
      * @return processDescription
      */
     private ProcessDescription getProcessDescription(LdifFileConnection originalValueConnection) {
@@ -389,9 +389,9 @@ public class LdifFileStep2Form extends AbstractLdifFileStepForm implements IRefr
 
     /**
      * Subclass of SWTUIThreadProcessor to process the preview event. <br/>
-     * 
+     *
      * $Id: DelimitedFileStep2Form.java 4837 2007-07-27 05:40:31Z bqian $
-     * 
+     *
      */
     class PreviewProcessor extends SWTUIThreadProcessor {
 
@@ -522,7 +522,7 @@ public class LdifFileStep2Form extends AbstractLdifFileStepForm implements IRefr
 
     /**
      * DOC ocarbone Comment method "setCharFlag".
-     * 
+     *
      * @param escapeCharFlag2
      * @param text
      */
@@ -580,7 +580,7 @@ public class LdifFileStep2Form extends AbstractLdifFileStepForm implements IRefr
 
     /**
      * Ensures that fields are set. Update checkEnable / use to checkConnection().
-     * 
+     *
      * @return
      */
     @Override
@@ -613,7 +613,7 @@ public class LdifFileStep2Form extends AbstractLdifFileStepForm implements IRefr
 
     /**
      * addButtonControls.
-     * 
+     *
      * @param cancelButton
      */
     @Override
@@ -661,7 +661,7 @@ public class LdifFileStep2Form extends AbstractLdifFileStepForm implements IRefr
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see org.eclipse.swt.widgets.Control#setVisible(boolean)
      */
     @Override
@@ -701,7 +701,7 @@ public class LdifFileStep2Form extends AbstractLdifFileStepForm implements IRefr
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see org.talend.repository.ui.swt.utils.IRefreshable#refresh()
      */
     @Override

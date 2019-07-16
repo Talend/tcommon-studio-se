@@ -1,6 +1,6 @@
 // ============================================================================
 //
-// Copyright (C) 2006-2018 Talend Inc. - www.talend.com
+// Copyright (C) 2006-2019 Talend Inc. - www.talend.com
 //
 // This source code is available under agreement available at
 // %InstallDIR%\features\org.talend.rcp.branding.%PRODUCTNAME%\%PRODUCTNAME%license.txt
@@ -27,7 +27,7 @@ import org.talend.metadata.managment.connection.manager.HiveConnectionManager;
 
 /**
  * created by xqliu on 2013-11-1 Detailled comment
- * 
+ *
  */
 public class HiveConnectionHandler {
 
@@ -43,7 +43,7 @@ public class HiveConnectionHandler {
 
     /**
      * Getter for metadataConnection.
-     * 
+     *
      * @return the metadataConnection
      */
     public IMetadataConnection getMetadataConnection() {
@@ -52,7 +52,7 @@ public class HiveConnectionHandler {
 
     /**
      * Sets the metadataConnection.
-     * 
+     *
      * @param metadataConnection the metadataConnection to set
      */
     public void setMetadataConnection(IMetadataConnection metadataConnection) {
@@ -61,7 +61,7 @@ public class HiveConnectionHandler {
 
     /**
      * Getter for hadoopPropertiesMap.
-     * 
+     *
      * @return the hadoopPropertiesMap
      */
     public Map<String, String> getHadoopPropertiesMap() {
@@ -70,7 +70,7 @@ public class HiveConnectionHandler {
 
     /**
      * Sets the hadoopPropertiesMap.
-     * 
+     *
      * @param hadoopPropertiesMap the hadoopPropertiesMap to set
      */
     public void setHadoopPropertiesMap(Map<String, String> hadoopPropertiesMap) {
@@ -102,7 +102,7 @@ public class HiveConnectionHandler {
 
     /**
      * create the hive connection, set/execute hadoop properties.
-     * 
+     *
      * @return
      * @throws ClassNotFoundException
      * @throws InstantiationException
@@ -136,7 +136,7 @@ public class HiveConnectionHandler {
 
     /**
      * if user don't input the default hadoop properties, add them and the default value here.
-     * 
+     *
      * @return
      */
     protected Map<String, String> getDefaultHadoopParameters() {

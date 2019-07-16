@@ -1,6 +1,6 @@
 // ============================================================================
 //
-// Copyright (C) 2006-2018 Talend Inc. - www.talend.com
+// Copyright (C) 2006-2019 Talend Inc. - www.talend.com
 //
 // This source code is available under agreement available at
 // %InstallDIR%\features\org.talend.rcp.branding.%PRODUCTNAME%\%PRODUCTNAME%license.txt
@@ -180,7 +180,7 @@ public class LockerByKeyTest {
 
             /*
              * (non-Javadoc)
-             * 
+             *
              * @see java.util.concurrent.Callable#call()
              */
             @Override
@@ -225,7 +225,7 @@ public class LockerByKeyTest {
 
             /*
              * (non-Javadoc)
-             * 
+             *
              * @see java.util.concurrent.Callable#call()
              */
             @Override
@@ -346,7 +346,7 @@ public class LockerByKeyTest {
 
             /*
              * (non-Javadoc)
-             * 
+             *
              * @see java.util.concurrent.Callable#call()
              */
             @Override
@@ -394,7 +394,7 @@ public class LockerByKeyTest {
 
             /*
              * (non-Javadoc)
-             * 
+             *
              * @see java.util.concurrent.Callable#call()
              */
             @Override
@@ -665,7 +665,7 @@ public class LockerByKeyTest {
 
     /**
      * Test to show the increasing memory with old Locker and stable memory with new LockerByKey
-     * 
+     *
      * @throws Exception
      */
     @SuppressWarnings("unchecked")
@@ -724,7 +724,7 @@ public class LockerByKeyTest {
 
             /*
              * (non-Javadoc)
-             * 
+             *
              * @see
              * org.talend.commons.utils.threading.AbstractThreadSafetyTester#initInstance(org.talend.commons.utils.threading
              * .IThreadSafetyOperator)
@@ -738,7 +738,7 @@ public class LockerByKeyTest {
 
             /*
              * (non-Javadoc)
-             * 
+             *
              * @see org.talend.commons.utils.threading.AbstractThreadSafetyTester#assertFinal()
              */
             @Override

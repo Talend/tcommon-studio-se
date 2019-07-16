@@ -1,6 +1,6 @@
 // ============================================================================
 //
-// Copyright (C) 2006-2018 Talend Inc. - www.talend.com
+// Copyright (C) 2006-2019 Talend Inc. - www.talend.com
 //
 // This source code is available under agreement available at
 // %InstallDIR%\features\org.talend.rcp.branding.%PRODUCTNAME%\%PRODUCTNAME%license.txt
@@ -67,7 +67,7 @@ public class ContextNatTableConfiguration extends AbstractRegistryConfiguration 
 
     /**
      * DOC ldong ContextNatTableConfiguration constructor comment.
-     * 
+     *
      * @param dataProvider
      */
     public ContextNatTableConfiguration(IDataProvider dataProvider, ColumnGroupModel columnGroupModel, IContextManager manager,
@@ -81,7 +81,7 @@ public class ContextNatTableConfiguration extends AbstractRegistryConfiguration 
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see
      * org.eclipse.nebula.widgets.nattable.config.IConfiguration#configureRegistry(org.eclipse.nebula.widgets.nattable
      * .config.IConfigRegistry)
@@ -233,7 +233,7 @@ public class ContextNatTableConfiguration extends AbstractRegistryConfiguration 
 
             /*
              * (non-Javadoc)
-             * 
+             *
              * @see
              * org.eclipse.nebula.widgets.nattable.painter.cell.CellPainterWrapper#paintCell(org.eclipse.nebula.widgets
              * .nattable.layer.cell.ILayerCell, org.eclipse.swt.graphics.GC, org.eclipse.swt.graphics.Rectangle,
@@ -280,7 +280,7 @@ public class ContextNatTableConfiguration extends AbstractRegistryConfiguration 
 
             /*
              * (non-Javadoc)
-             * 
+             *
              * @see
              * org.eclipse.nebula.widgets.nattable.painter.cell.ImagePainter#paintCell(org.eclipse.nebula.widgets.nattable
              * .layer.cell.ILayerCell, org.eclipse.swt.graphics.GC, org.eclipse.swt.graphics.Rectangle,
@@ -322,7 +322,7 @@ public class ContextNatTableConfiguration extends AbstractRegistryConfiguration 
         configRegistry.registerConfigAttribute(EditConfigAttributes.CELL_EDITOR, cutomCellEditor, DisplayMode.EDIT,
                 ContextTableConstants.COLUMN_CONTEXT_VALUE);
     }
-    
+
     private void registerColumnSixTextEditor(IConfigRegistry configRegistry) {
         configRegistry.registerConfigAttribute(EditConfigAttributes.CELL_EDITOR, new TextCellEditor(true, true),
                 DisplayMode.NORMAL, ContextTableConstants.COLUMN_COMMENT_PROPERTY);
@@ -332,7 +332,7 @@ public class ContextNatTableConfiguration extends AbstractRegistryConfiguration 
 
         /*
          * (non-Javadoc)
-         * 
+         *
          * @see
          * org.eclipse.nebula.widgets.nattable.data.convert.DefaultBooleanDisplayConverter#displayToCanonicalValue(java
          * .lang.Object)
@@ -344,7 +344,7 @@ public class ContextNatTableConfiguration extends AbstractRegistryConfiguration 
 
         /*
          * (non-Javadoc)
-         * 
+         *
          * @see
          * org.eclipse.nebula.widgets.nattable.data.convert.DefaultBooleanDisplayConverter#canonicalToDisplayValue(java
          * .lang.Object)

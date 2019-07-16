@@ -1,6 +1,6 @@
 // ============================================================================
 //
-// Copyright (C) 2006-2018 Talend Inc. - www.talend.com
+// Copyright (C) 2006-2019 Talend Inc. - www.talend.com
 //
 // This source code is available under agreement available at
 // %InstallDIR%\features\org.talend.rcp.branding.%PRODUCTNAME%\%PRODUCTNAME%license.txt
@@ -36,7 +36,7 @@ public abstract class AbstractShowJobStartup implements IStartup {
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see org.eclipse.ui.IStartup#earlyStartup()
      */
     @Override
@@ -123,7 +123,7 @@ public abstract class AbstractShowJobStartup implements IStartup {
 
     /**
      * Enable to check the case sensitive for name.
-     * 
+     *
      */
     protected boolean validJob(IRepositoryViewObject viewObject, String[] showJobNames) {
         if (viewObject != null) {
@@ -142,7 +142,7 @@ public abstract class AbstractShowJobStartup implements IStartup {
     }
 
     /**
-     * 
+     *
      * will process the object as you want.
      */
     protected abstract void processJob(IRepositoryViewObject viewObject);

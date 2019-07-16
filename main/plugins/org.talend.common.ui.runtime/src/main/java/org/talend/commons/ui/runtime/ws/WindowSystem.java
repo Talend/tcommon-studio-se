@@ -1,6 +1,6 @@
 // ============================================================================
 //
-// Copyright (C) 2006-2018 Talend Inc. - www.talend.com
+// Copyright (C) 2006-2019 Talend Inc. - www.talend.com
 //
 // This source code is available under agreement available at
 // %InstallDIR%\features\org.talend.rcp.branding.%PRODUCTNAME%\%PRODUCTNAME%license.txt
@@ -17,11 +17,11 @@ import org.eclipse.core.runtime.Platform;
 import org.osgi.framework.BundleContext;
 
 /**
- * 
+ *
  * DOC root class global comment. Detailled comment <br/>
- * 
+ *
  * $Id: WindowSystem.java 7038 2007-11-15 14:05:48Z plegall $
- * 
+ *
  */
 @SuppressWarnings("restriction")
 public class WindowSystem {
@@ -42,7 +42,7 @@ public class WindowSystem {
 
     /**
      * .
-     * 
+     *
      * @return true if WIN32 or eclipse bundle is null
      */
     public static boolean isWIN32() {

@@ -1,6 +1,6 @@
 // ============================================================================
 //
-// Copyright (C) 2006-2018 Talend Inc. - www.talend.com
+// Copyright (C) 2006-2019 Talend Inc. - www.talend.com
 //
 // This source code is available under agreement available at
 // %InstallDIR%\features\org.talend.rcp.branding.%PRODUCTNAME%\%PRODUCTNAME%license.txt
@@ -16,9 +16,9 @@ import org.eclipse.swt.widgets.TableItem;
 
 /**
  * DOC amaumont class global comment. Detailled comment <br/>
- * 
+ *
  * $Id$
- * 
+ *
  */
 public class TableExtremityDescriptor implements IExtremityLink<TableItem, Object> {
 
@@ -28,7 +28,7 @@ public class TableExtremityDescriptor implements IExtremityLink<TableItem, Objec
 
     /**
      * DOC amaumont TreeItemExtremityDescriptor constructor comment.
-     * 
+     *
      * @param treeItem
      */
     public TableExtremityDescriptor(TableItem treeItem, Object dataObject) {
@@ -39,7 +39,7 @@ public class TableExtremityDescriptor implements IExtremityLink<TableItem, Objec
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see org.talend.commons.ui.swt.drawing.link.IExtremityLink#getAssociatedItem()
      */
     public TableItem getGraphicalObject() {
@@ -48,7 +48,7 @@ public class TableExtremityDescriptor implements IExtremityLink<TableItem, Objec
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see org.talend.commons.ui.swt.drawing.link.IExtremityLink#getDataItem()
      */
     public Object getDataItem() {
@@ -57,7 +57,7 @@ public class TableExtremityDescriptor implements IExtremityLink<TableItem, Objec
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see org.talend.commons.ui.swt.drawing.link.IExtremityLink#setDataItem(java.lang.Object)
      */
     public void setDataItem(Object dataItem) {
@@ -66,7 +66,7 @@ public class TableExtremityDescriptor implements IExtremityLink<TableItem, Objec
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see org.talend.commons.ui.swt.drawing.link.IExtremityLink#setGraphicalItem(java.lang.Object)
      */
     public void setGraphicalObject(TableItem graphicalItem) {

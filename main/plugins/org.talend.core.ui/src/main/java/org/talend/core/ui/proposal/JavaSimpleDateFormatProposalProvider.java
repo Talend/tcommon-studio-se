@@ -1,6 +1,6 @@
 // ============================================================================
 //
-// Copyright (C) 2006-2018 Talend Inc. - www.talend.com
+// Copyright (C) 2006-2019 Talend Inc. - www.talend.com
 //
 // This source code is available under agreement available at
 // %InstallDIR%\features\org.talend.rcp.branding.%PRODUCTNAME%\%PRODUCTNAME%license.txt
@@ -22,9 +22,9 @@ import org.talend.core.utils.TalendQuoteUtils;
 
 /**
  * DOC amaumont class global comment. Detailled comment <br/>
- * 
+ *
  * $Id: talend-code-templates.xml 1 2006-09-29 17:06:40Z nrousseau $
- * 
+ *
  */
 public class JavaSimpleDateFormatProposalProvider implements IContentProposalProvider {
 
@@ -58,7 +58,7 @@ public class JavaSimpleDateFormatProposalProvider implements IContentProposalPro
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see org.eclipse.jface.fieldassist.IContentProposalProvider#getProposals(java.lang.String, int)
      */
     public IContentProposal[] getProposals(String contents, int position) {
@@ -81,9 +81,9 @@ public class JavaSimpleDateFormatProposalProvider implements IContentProposalPro
                 new DateFormatContentProposal("\"yyyy-MM-dd'T'HH:mm:ss'000Z'\" : common format", "yyyy-MM-dd'T'HH:mm:ss'000Z'", //$NON-NLS-1$ //$NON-NLS-2$
                         "Date\n Examples : \n  2007-01-01T00:00:00000Z\n  2007-12-31T23:59:59000Z"), // hywang //$NON-NLS-1$
                 new DateFormatContentProposal("\"yyyy-MM-dd'T'HH:mm:ss.SSSSSS\" : common format", "yyyy-MM-dd'T'HH:mm:ss.SSSSSS",
-                        "Date\n Examples : \n  2019-04-18T09:47:49.568095"), //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$       
+                        "Date\n Examples : \n  2019-04-18T09:47:49.568095"), //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
                 new DateFormatContentProposal("\"yyyy-MM-dd HH:mm:ss zzz\" : common format", "yyyy-MM-dd HH:mm:ss zzz", //$NON-NLS-1$ //$NON-NLS-2$
-                        "Date\n Examples : \n  2008-01-01 00:00:00 UTC\n  2008-12-31 04:08:00 PDT"), 
+                        "Date\n Examples : \n  2008-01-01 00:00:00 UTC\n  2008-12-31 04:08:00 PDT"),
                 new DateFormatContentProposal("\"yyyy-MM-dd HH:mm:ss.SSSXXX\" : common format", "yyyy-MM-dd HH:mm:ss.SSSXXX", //$NON-NLS-1$ //$NON-NLS-2$
                         "Date\n Examples : \n  2014-08-19 07:41:35.220 -05:00"),
                 new DateFormatContentProposal(
@@ -125,11 +125,11 @@ public class JavaSimpleDateFormatProposalProvider implements IContentProposalPro
     }
 
     /**
-     * 
+     *
      * DOC amaumont JavaSimpleDateFormatProposalProvider class global comment. Detailled comment <br/>
-     * 
+     *
      * $Id: talend-code-templates.xml 1 2006-09-29 17:06:40Z nrousseau $
-     * 
+     *
      */
     class DateFormatContentProposal implements IContentProposal {
 
@@ -141,7 +141,7 @@ public class JavaSimpleDateFormatProposalProvider implements IContentProposalPro
 
         /**
          * DOC amaumont DateFormatProposal constructor comment.
-         * 
+         *
          * @param content
          * @param description
          * @param label

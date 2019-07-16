@@ -1,6 +1,6 @@
 // ============================================================================
 //
-// Copyright (C) 2006-2018 Talend Inc. - www.talend.com
+// Copyright (C) 2006-2019 Talend Inc. - www.talend.com
 //
 // This source code is available under agreement available at
 // %InstallDIR%\features\org.talend.rcp.branding.%PRODUCTNAME%\%PRODUCTNAME%license.txt
@@ -105,7 +105,7 @@ public class ContextModeWizard extends CheckLastVersionRepositoryWizard implemen
     ProxyRepositoryFactory factory = ProxyRepositoryFactory.getInstance();
 
     /**
-     * 
+     *
      * this constructor only for context mode. (feature 2449)
      */
     public ContextModeWizard(final String contextName, boolean creation, ISelection selection,
@@ -115,7 +115,7 @@ public class ContextModeWizard extends CheckLastVersionRepositoryWizard implemen
     }
 
     /**
-     * 
+     *
      * this constructor only for context mode. (feature TDI-29250)
      */
     public ContextModeWizard(final String contextName, boolean creation, ISelection selection,
@@ -151,7 +151,7 @@ public class ContextModeWizard extends CheckLastVersionRepositoryWizard implemen
 
     /**
      * Constructor for FileWizard.
-     * 
+     *
      * @param workbench
      * @param selection
      * @param strings
@@ -396,7 +396,7 @@ public class ContextModeWizard extends CheckLastVersionRepositoryWizard implemen
 
     /**
      * We will accept the selection in the workbench to see if we can initialize from it.
-     * 
+     *
      * @see IWorkbenchWizard#init(IWorkbench, IStructuredSelection)
      */
     @Override

@@ -1,6 +1,6 @@
 // ============================================================================
 //
-// Copyright (C) 2006-2018 Talend Inc. - www.talend.com
+// Copyright (C) 2006-2019 Talend Inc. - www.talend.com
 //
 // This source code is available under agreement available at
 // %InstallDIR%\features\org.talend.rcp.branding.%PRODUCTNAME%\%PRODUCTNAME%license.txt
@@ -22,9 +22,9 @@ import org.talend.commons.ui.swt.extended.table.AbstractExtendedTableViewer;
 
 /**
  * DOC amaumont class global comment. Detailled comment <br/>
- * 
+ *
  * $Id$
- * 
+ *
  */
 public abstract class AbstractExtendedToolbar {
 
@@ -36,7 +36,7 @@ public abstract class AbstractExtendedToolbar {
 
     /**
      * DOC amaumont MatadataToolbarEditor constructor comment.
-     * 
+     *
      * @param parent
      * @param style
      * @param metadataEditorView
@@ -66,7 +66,7 @@ public abstract class AbstractExtendedToolbar {
 
     /**
      * Getter for parentComposite.
-     * 
+     *
      * @return the parentComposite
      */
     public Composite getParentComposite() {
@@ -75,7 +75,7 @@ public abstract class AbstractExtendedToolbar {
 
     /**
      * Getter for extendedTableViewer.
-     * 
+     *
      * @return the extendedTableViewer
      */
     public AbstractExtendedTableViewer getExtendedTableViewer() {

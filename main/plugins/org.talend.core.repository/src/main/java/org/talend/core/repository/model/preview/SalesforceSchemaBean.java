@@ -1,6 +1,6 @@
 // ============================================================================
 //
-// Copyright (C) 2006-2018 Talend Inc. - www.talend.com
+// Copyright (C) 2006-2019 Talend Inc. - www.talend.com
 //
 // This source code is available under agreement available at
 // %InstallDIR%\features\org.talend.rcp.branding.%PRODUCTNAME%\%PRODUCTNAME%license.txt
@@ -14,7 +14,7 @@ package org.talend.core.repository.model.preview;
 
 /**
  * DOC YeXiaowei class global comment. Detailled comment <br/>
- * 
+ *
  */
 public class SalesforceSchemaBean {
 
@@ -52,7 +52,7 @@ public class SalesforceSchemaBean {
 
     /**
      * Getter for webServerUrl.
-     * 
+     *
      * @return the webServerUrl
      */
     public String getWebServerUrl() {
@@ -61,7 +61,7 @@ public class SalesforceSchemaBean {
 
     /**
      * Sets the webServerUrl.
-     * 
+     *
      * @param webServerUrl the webServerUrl to set
      */
     public void setWebServerUrl(String webServerUrl) {
@@ -70,7 +70,7 @@ public class SalesforceSchemaBean {
 
     /**
      * Getter for userName.
-     * 
+     *
      * @return the userName
      */
     public String getUserName() {
@@ -79,7 +79,7 @@ public class SalesforceSchemaBean {
 
     /**
      * Sets the userName.
-     * 
+     *
      * @param userName the userName to set
      */
     public void setUserName(String userName) {
@@ -88,7 +88,7 @@ public class SalesforceSchemaBean {
 
     /**
      * Getter for password.
-     * 
+     *
      * @return the password
      */
     public String getPassword() {
@@ -97,7 +97,7 @@ public class SalesforceSchemaBean {
 
     /**
      * Sets the password.
-     * 
+     *
      * @param password the password to set
      */
     public void setPassword(String password) {
@@ -106,7 +106,7 @@ public class SalesforceSchemaBean {
 
     /**
      * Getter for moduleName.
-     * 
+     *
      * @return the moduleName
      */
     public String getModuleName() {
@@ -115,7 +115,7 @@ public class SalesforceSchemaBean {
 
     /**
      * Sets the moduleName.
-     * 
+     *
      * @param moduleName the moduleName to set
      */
     public void setModuleName(String moduleName) {
@@ -124,7 +124,7 @@ public class SalesforceSchemaBean {
 
     /**
      * Getter for queryCondition.
-     * 
+     *
      * @return the queryCondition
      */
     public String getQueryCondition() {
@@ -133,7 +133,7 @@ public class SalesforceSchemaBean {
 
     /**
      * Sets the queryCondition.
-     * 
+     *
      * @param queryCondition the queryCondition to set
      */
     public void setQueryCondition(String queryCondition) {

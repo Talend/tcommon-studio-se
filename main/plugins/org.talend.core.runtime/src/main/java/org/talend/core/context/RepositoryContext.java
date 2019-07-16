@@ -1,6 +1,6 @@
 // ============================================================================
 //
-// Copyright (C) 2006-2018 Talend Inc. - www.talend.com
+// Copyright (C) 2006-2019 Talend Inc. - www.talend.com
 //
 // This source code is available under agreement available at
 // %InstallDIR%\features\org.talend.rcp.branding.%PRODUCTNAME%\%PRODUCTNAME%license.txt
@@ -20,9 +20,9 @@ import org.talend.core.model.properties.User;
 
 /**
  * DOC smallet class global comment. Detailled comment <br/>
- * 
+ *
  * $Id: RepositoryContext.java 38013 2010-03-05 14:21:59Z mhirt $
- * 
+ *
  */
 public class RepositoryContext {
 
@@ -39,7 +39,7 @@ public class RepositoryContext {
     private boolean forceReadOnly = false;
 
     private boolean editableAsReadOnly = false;
-    
+
     private boolean noUpdateWhenLogon = false;
 
     private Map<String, String> fields;
@@ -48,7 +48,7 @@ public class RepositoryContext {
 
     /**
      * DOC smallet RepositoryContext constructor comment.
-     * 
+     *
      */
     public RepositoryContext() {
         super();
@@ -56,7 +56,7 @@ public class RepositoryContext {
 
     /**
      * Getter for user.
-     * 
+     *
      * @return the user
      */
     public User getUser() {
@@ -65,7 +65,7 @@ public class RepositoryContext {
 
     /**
      * Sets the user, see also setClearPassword()
-     * 
+     *
      * @param user the user to set
      */
     public void setUser(User user) {
@@ -109,7 +109,7 @@ public class RepositoryContext {
 
     /**
      * Getter for project.
-     * 
+     *
      * @return the project
      */
     public Project getProject() {
@@ -118,7 +118,7 @@ public class RepositoryContext {
 
     /**
      * Sets the project.
-     * 
+     *
      * @param project the project to set
      */
     public void setProject(Project project) {
@@ -135,7 +135,7 @@ public class RepositoryContext {
 
     /**
      * Getter for clearPassword.
-     * 
+     *
      * @return the clearPassword
      */
     public String getClearPassword() {
@@ -144,7 +144,7 @@ public class RepositoryContext {
 
     /**
      * Sets the clearPassword.
-     * 
+     *
      * @param clearPassword the clearPassword to set
      */
     public void setClearPassword(String clearPassword) {
@@ -161,7 +161,7 @@ public class RepositoryContext {
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see java.lang.Object#hashCode()
      */
     @Override
@@ -175,7 +175,7 @@ public class RepositoryContext {
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see java.lang.Object#equals(java.lang.Object)
      */
     @Override
@@ -209,7 +209,7 @@ public class RepositoryContext {
 
     /**
      * Getter for offline.
-     * 
+     *
      * @return the offline
      */
     public boolean isOffline() {
@@ -218,7 +218,7 @@ public class RepositoryContext {
 
     /**
      * Sets the offline.
-     * 
+     *
      * @param offline the offline to set
      */
     public void setOffline(boolean offline) {

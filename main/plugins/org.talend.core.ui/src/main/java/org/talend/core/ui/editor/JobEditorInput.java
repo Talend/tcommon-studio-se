@@ -1,6 +1,6 @@
 // ============================================================================
 //
-// Copyright (C) 2006-2018 Talend Inc. - www.talend.com
+// Copyright (C) 2006-2019 Talend Inc. - www.talend.com
 //
 // This source code is available under agreement available at
 // %InstallDIR%\features\org.talend.rcp.branding.%PRODUCTNAME%\%PRODUCTNAME%license.txt
@@ -47,7 +47,7 @@ import org.talend.repository.model.RepositoryConstants;
 
 /**
  * ggu class global comment. Detailled comment
- * 
+ *
  * refactor for job/jobletEditorInput
  */
 public abstract class JobEditorInput extends RepositoryEditorInput {
@@ -89,7 +89,7 @@ public abstract class JobEditorInput extends RepositoryEditorInput {
 
     /**
      * DOC mhelleboid Comment method "initFile".
-     * 
+     *
      * @throws PersistenceException
      */
     private static IFile initFile(Item item) throws PersistenceException {
@@ -221,9 +221,9 @@ public abstract class JobEditorInput extends RepositoryEditorInput {
     }
 
     /**
-     * 
+     *
      * ggu Comment method "resetItem".
-     * 
+     *
      * bug 10925/11491
      */
     public void resetItem() throws PersistenceException {

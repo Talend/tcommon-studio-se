@@ -1,6 +1,6 @@
 // ============================================================================
 //
-// Copyright (C) 2006-2018 Talend Inc. - www.talend.com
+// Copyright (C) 2006-2019 Talend Inc. - www.talend.com
 //
 // This source code is available under agreement available at
 // %InstallDIR%\features\org.talend.rcp.branding.%PRODUCTNAME%\%PRODUCTNAME%license.txt
@@ -54,7 +54,7 @@ public class Function implements Cloneable {
 
     /**
      * Getter for category.
-     * 
+     *
      * @return the category
      */
     public String getCategory() {
@@ -63,7 +63,7 @@ public class Function implements Cloneable {
 
     /**
      * Sets the category.
-     * 
+     *
      * @param category the category to set
      */
     public void setCategory(String category) {
@@ -72,7 +72,7 @@ public class Function implements Cloneable {
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see java.lang.Object#clone()
      */
     @SuppressWarnings("unchecked")
@@ -329,7 +329,7 @@ public class Function implements Cloneable {
 
     /**
      * qzhang Comment method "sameParameters".
-     * 
+     *
      * @param fun
      * @return
      */
@@ -354,7 +354,7 @@ public class Function implements Cloneable {
 
     /**
      * Getter of the property <tt>name</tt>.
-     * 
+     *
      * @return Returns the name.
      * @uml.property name="name"
      */
@@ -364,7 +364,7 @@ public class Function implements Cloneable {
 
     /**
      * Setter of the property <tt>name</tt>.
-     * 
+     *
      * @param name The name to set.
      * @uml.property name="name"
      */
@@ -379,7 +379,7 @@ public class Function implements Cloneable {
 
     /**
      * Getter of the property <tt>preview</tt>.
-     * 
+     *
      * @return Returns the preview.
      * @uml.property name="preview"
      */
@@ -389,7 +389,7 @@ public class Function implements Cloneable {
 
     /**
      * Setter of the property <tt>preview</tt>.
-     * 
+     *
      * @param preview The preview to set.
      * @uml.property name="preview"
      */
@@ -404,7 +404,7 @@ public class Function implements Cloneable {
 
     /**
      * Getter of the property <tt>description</tt>.
-     * 
+     *
      * @return Returns the description.
      * @uml.property name="description"
      */
@@ -414,7 +414,7 @@ public class Function implements Cloneable {
 
     /**
      * Setter of the property <tt>description</tt>.
-     * 
+     *
      * @param description The description to set.
      * @uml.property name="description"
      */
@@ -430,7 +430,7 @@ public class Function implements Cloneable {
 
     /**
      * Getter of the property <tt>parameters</tt>.
-     * 
+     *
      * @return Returns the parameters.
      * @uml.property name="parameters"
      */
@@ -440,7 +440,7 @@ public class Function implements Cloneable {
 
     /**
      * Returns all elements of this collection in an array.
-     * 
+     *
      * @return an array containing all of the elements in this collection
      * @see java.util.Collection#toArray()
      * @uml.property name="parameters"
@@ -452,7 +452,7 @@ public class Function implements Cloneable {
 
     /**
      * Setter of the property <tt>parameters</tt>.
-     * 
+     *
      * @param parameters the parameters to set.
      * @uml.property name="parameters"
      */
@@ -464,7 +464,7 @@ public class Function implements Cloneable {
     public String toString() {
         StringBuilder sb = new StringBuilder();
         sb.append(Messages.getString("Function.FunctionName", name)) //$NON-NLS-1$
-                .append("   " + this.getDescription()).append("\n").append("    "); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ 
+                .append("   " + this.getDescription()).append("\n").append("    "); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
         Parameter[] p = this.parametersToArray();
 
         for (Parameter para : p) {
@@ -475,7 +475,7 @@ public class Function implements Cloneable {
 
     /**
      * Getter for talendType.
-     * 
+     *
      * @return the talendType
      */
     public TalendType getTalendType() {
@@ -484,7 +484,7 @@ public class Function implements Cloneable {
 
     /**
      * Sets the talendType.
-     * 
+     *
      * @param talendType the talendType to set
      */
     public void setTalendType(TalendType talendType) {
@@ -501,7 +501,7 @@ public class Function implements Cloneable {
 
     /**
      * Getter for className.
-     * 
+     *
      * @return the className
      */
     public String getClassName() {
@@ -510,7 +510,7 @@ public class Function implements Cloneable {
 
     /**
      * Sets the className.
-     * 
+     *
      * @param className the className to set
      */
     public void setClassName(String className) {

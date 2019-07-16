@@ -1,6 +1,6 @@
 // ============================================================================
 //
-// Copyright (C) 2006-2018 Talend Inc. - www.talend.com
+// Copyright (C) 2006-2019 Talend Inc. - www.talend.com
 //
 // This source code is available under agreement available at
 // %InstallDIR%\features\org.talend.rcp.branding.%PRODUCTNAME%\%PRODUCTNAME%license.txt
@@ -36,9 +36,9 @@ import org.talend.designer.core.model.utils.emf.talendfile.TalendFileFactory;
 
 /**
  * DOC nrousseau class global comment. Detailled comment <br/>
- * 
+ *
  * $Id: JobContextManager.java 51129 2010-11-10 06:35:59Z nrousseau $
- * 
+ *
  */
 public class JobContextManager implements IContextManager {
 
@@ -57,7 +57,7 @@ public class JobContextManager implements IContextManager {
 
     /*
      * when modify(renamed var, removed var, modified value) the context, it will be true.
-     * 
+     *
      * this flag only works for update the var of reference(job context, tRunjob).
      */
     private boolean modified = false;
@@ -169,7 +169,7 @@ public class JobContextManager implements IContextManager {
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see org.talend.core.model.process.IContextManager#getDefaultContext()
      */
     @Override
@@ -179,7 +179,7 @@ public class JobContextManager implements IContextManager {
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see org.talend.core.model.process.IContextManager#setDefaultContext(org.talend.core.model.process.IContext)
      */
     @Override
@@ -189,7 +189,7 @@ public class JobContextManager implements IContextManager {
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see org.talend.core.model.process.IContextManager#getListContext()
      */
     @Override
@@ -199,7 +199,7 @@ public class JobContextManager implements IContextManager {
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see org.talend.core.model.process.IContextManager#getListContext(java.util.List)
      */
     @Override
@@ -210,7 +210,7 @@ public class JobContextManager implements IContextManager {
     /**
      * Check if the given name will be unique in the process. If another link already exists with that name, false will
      * be returned.
-     * 
+     *
      * @param uniqueName
      * @return true if the name is unique
      */
@@ -474,7 +474,7 @@ public class JobContextManager implements IContextManager {
     }
 
     /**
-     * 
+     *
      * DOC ggu Comment method "retrieveDefaultContext".
      */
     private void retrieveDefaultContext() {
@@ -487,9 +487,9 @@ public class JobContextManager implements IContextManager {
     }
 
     /**
-     * 
+     *
      * ggu Comment method "getLostParameters".
-     * 
+     *
      * @return
      */
     public Set<String> getLostParameters() {
@@ -530,7 +530,7 @@ public class JobContextManager implements IContextManager {
 
     /**
      * The newly added parameter is renamed.
-     * 
+     *
      * @param newName
      * @param oldName
      */
@@ -549,9 +549,9 @@ public class JobContextManager implements IContextManager {
     }
 
     /**
-     * 
+     *
      * ggu Comment method "isOriginalParameter".
-     * 
+     *
      * (bug 4988)
      */
     public boolean isOriginalParameter(String name) {

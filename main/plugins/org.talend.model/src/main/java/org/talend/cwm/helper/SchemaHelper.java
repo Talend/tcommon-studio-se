@@ -1,6 +1,6 @@
 // ============================================================================
 //
-// Copyright (C) 2006-2018 Talend Inc. - www.talend.com
+// Copyright (C) 2006-2019 Talend Inc. - www.talend.com
 //
 // This source code is available under agreement available at
 // %InstallDIR%\features\org.talend.rcp.branding.%PRODUCTNAME%\%PRODUCTNAME%license.txt
@@ -29,7 +29,7 @@ import orgomg.cwm.resource.relational.Schema;
 
 /**
  * @author scorreia
- * 
+ *
  * Utility for handling Schema.
  */
 public final class SchemaHelper {
@@ -56,7 +56,7 @@ public final class SchemaHelper {
 
     /**
      * get schema by the name from collection which you pass.
-     * 
+     *
      * @param elements packages of connection
      * @param schemaName the name of schema
      * @return
@@ -75,9 +75,9 @@ public final class SchemaHelper {
     }
 
     /**
-     * 
+     *
      * Get a Schema by Connection and Schema name.
-     * 
+     *
      * @param conn
      * @param schemaName
      * @return
@@ -118,7 +118,7 @@ public final class SchemaHelper {
 
     /**
      * Method "getParentSchema" returns a schema if the element is directly owned by a schema.
-     * 
+     *
      * @param element (can be null)
      * @return the Catalog or null
      */

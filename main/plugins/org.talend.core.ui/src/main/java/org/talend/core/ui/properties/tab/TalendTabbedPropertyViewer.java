@@ -1,6 +1,6 @@
 // ============================================================================
 //
-// Copyright (C) 2006-2018 Talend Inc. - www.talend.com
+// Copyright (C) 2006-2019 Talend Inc. - www.talend.com
 //
 // This source code is available under agreement available at
 // %InstallDIR%\features\org.talend.rcp.branding.%PRODUCTNAME%\%PRODUCTNAME%license.txt
@@ -26,9 +26,9 @@ import org.eclipse.ui.IWorkbenchPart;
 
 /**
  * DOC yzhang class global comment. Detailled comment <br/>
- * 
+ *
  * $Id: talend.epf 1 2006-09-29 17:06:40Z nrousseau $
- * 
+ *
  */
 public class TalendTabbedPropertyViewer extends StructuredViewer implements IInputChangedListener {
 
@@ -40,7 +40,7 @@ public class TalendTabbedPropertyViewer extends StructuredViewer implements IInp
 
     /**
      * Constructor for TabbedPropertyViewer.
-     * 
+     *
      * @param list the TabbedPropertyList.
      */
     public TalendTabbedPropertyViewer(TalendTabbedPropertyList list) {
@@ -53,7 +53,7 @@ public class TalendTabbedPropertyViewer extends StructuredViewer implements IInp
     /**
      * Returns the element with the given index from this list viewer. Returns <code>null</code> if the index is out
      * of range.
-     * 
+     *
      * @param index the zero-based index
      * @return the element at the given index, or <code>null</code> if the index is out of range
      */
@@ -67,7 +67,7 @@ public class TalendTabbedPropertyViewer extends StructuredViewer implements IInp
     /**
      * Returns the zero-relative index of the item which is currently selected in the receiver, or -1 if no item is
      * selected.
-     * 
+     *
      * @return the index of the selected item
      */
     public int getSelectionIndex() {
@@ -131,7 +131,7 @@ public class TalendTabbedPropertyViewer extends StructuredViewer implements IInp
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see org.eclipse.jface.viewers.Viewer#inputChanged(java.lang.Object, java.lang.Object)
      */
     public void inputChanged(Object input, Object oldInput) {
@@ -147,7 +147,7 @@ public class TalendTabbedPropertyViewer extends StructuredViewer implements IInp
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see org.talend.core.properties.tab.IInputChangedListener#inputChanged(java.lang.Object)
      */
     public void inputChanged(TabInputChangedEvent event) {
@@ -161,7 +161,7 @@ public class TalendTabbedPropertyViewer extends StructuredViewer implements IInp
 
     /**
      * Set the input for viewer.
-     * 
+     *
      * @param part the workbench part.
      * @param selection the selection in the workbench part.
      */
@@ -172,7 +172,7 @@ public class TalendTabbedPropertyViewer extends StructuredViewer implements IInp
 
     /**
      * Get the current workbench part.
-     * 
+     *
      * @return the current workbench part.
      */
     public IWorkbenchPart getWorkbenchPart() {

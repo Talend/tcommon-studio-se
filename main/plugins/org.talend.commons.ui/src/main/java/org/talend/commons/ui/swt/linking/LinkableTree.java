@@ -1,6 +1,6 @@
 // ============================================================================
 //
-// Copyright (C) 2006-2018 Talend Inc. - www.talend.com
+// Copyright (C) 2006-2019 Talend Inc. - www.talend.com
 //
 // This source code is available under agreement available at
 // %InstallDIR%\features\org.talend.rcp.branding.%PRODUCTNAME%\%PRODUCTNAME%license.txt
@@ -30,9 +30,9 @@ import org.talend.commons.ui.swt.drawing.background.IBackgroundRefresher;
 
 /**
  * DOC amaumont class global comment. Detailled comment <br/>
- * 
+ *
  * $Id$
- * 
+ *
  */
 public class LinkableTree implements ILinkableControl {
 
@@ -58,7 +58,7 @@ public class LinkableTree implements ILinkableControl {
 
     /**
      * DOC amaumont LinkableTable constructor comment.
-     * 
+     *
      * @param tree
      * @param bgDrawableComposite
      */
@@ -68,9 +68,9 @@ public class LinkableTree implements ILinkableControl {
     }
 
     /**
-     * 
+     *
      * DOC amaumont LinkableTree constructor comment.
-     * 
+     *
      * @param controlsLinker
      * @param backgroundRefresher
      * @param tree
@@ -95,7 +95,7 @@ public class LinkableTree implements ILinkableControl {
 
     /**
      * DOC amaumont Comment method "init".
-     * 
+     *
      * @param forceDrawLinksGtk2
      */
     private void init() {
@@ -104,7 +104,7 @@ public class LinkableTree implements ILinkableControl {
 
     /**
      * Getter for table.
-     * 
+     *
      * @return the table
      */
     public Tree getTree() {
@@ -113,7 +113,7 @@ public class LinkableTree implements ILinkableControl {
 
     /**
      * DOC amaumont Comment method "addListeners".
-     * 
+     *
      * @param forceDrawLinksGtk2
      */
     private void addListeners() {
@@ -199,7 +199,7 @@ public class LinkableTree implements ILinkableControl {
 
     /**
      * Getter for selectionListener.
-     * 
+     *
      * @return the selectionListener
      */
     public SelectionListener getSelectionListener() {
@@ -215,7 +215,7 @@ public class LinkableTree implements ILinkableControl {
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see org.talend.commons.ui.swt.linking.ILinkableControl#dispose()
      */
     public void dispose() {

@@ -1,6 +1,6 @@
 // ============================================================================
 //
-// Copyright (C) 2006-2018 Talend Inc. - www.talend.com
+// Copyright (C) 2006-2019 Talend Inc. - www.talend.com
 //
 // This source code is available under agreement available at
 // %InstallDIR%\features\org.talend.rcp.branding.%PRODUCTNAME%\%PRODUCTNAME%license.txt
@@ -32,7 +32,7 @@ public class LastGenerationInfo {
     private HashMap<String, Set<String>> pigudfNeededPerJob;
 
     private HashMap<String, Set<ModuleNeeded>> modulesNeededWithSubjobPerJob;
-    
+
     private HashMap<String, Set<ModuleNeeded>> highPriorityModuleNeeded;
 
     private HashMap<String, Set<String>> routinesNeededWithSubjobPerJob;
@@ -46,7 +46,7 @@ public class LastGenerationInfo {
     private static LastGenerationInfo instance;
 
     private JobInfo lastMainJob;
-    
+
     private JobInfo currentBuildJob;
 
     private Set<JobInfo> lastGeneratedjobs; // main job + child jobs
@@ -74,7 +74,7 @@ public class LastGenerationInfo {
     }
 
     /**
-     * 
+     *
      * @return the modulesNeededPerJob
      */
     public Set<ModuleNeeded> getModulesNeededWithSubjobPerJob(String jobId, String jobVersion) {
@@ -86,7 +86,7 @@ public class LastGenerationInfo {
     }
 
     /**
-     * 
+     *
      * @return the modulesNeededPerJob
      */
     public Set<ModuleNeeded> getModulesNeededPerJob(String jobId, String jobVersion) {
@@ -99,7 +99,7 @@ public class LastGenerationInfo {
 
     /**
      * Getter for contextPerJob.
-     * 
+     *
      * @return the contextPerJob
      */
     public Set<String> getContextPerJob(String jobId, String jobVersion) {
@@ -112,7 +112,7 @@ public class LastGenerationInfo {
 
     /**
      * Sets the modulesNeededPerJob.
-     * 
+     *
      * @param modulesNeededPerJob the modulesNeededPerJob to set
      */
     public void setModulesNeededPerJob(String jobId, String jobVersion, Set<ModuleNeeded> modulesNeeded) {
@@ -122,7 +122,7 @@ public class LastGenerationInfo {
 
     /**
      * Sets the modulesNeededWithSubjobPerJob.
-     * 
+     *
      * @param modulesNeededWithSubjobPerJob the modulesNeededWithSubjobPerJob to set
      */
     public void setModulesNeededWithSubjobPerJob(String jobId, String jobVersion, Set<ModuleNeeded> modulesNeeded) {
@@ -136,7 +136,7 @@ public class LastGenerationInfo {
 
     /**
      * Sets the contextPerJob.
-     * 
+     *
      * @param contextPerJob the contextPerJob to set
      */
     public void setContextPerJob(String jobId, String jobVersion, Set<String> contexts) {
@@ -197,7 +197,7 @@ public class LastGenerationInfo {
 
     /**
      * Getter for lastMainJob.
-     * 
+     *
      * @return the lastMainJob
      */
     public JobInfo getLastMainJob() {
@@ -206,13 +206,13 @@ public class LastGenerationInfo {
 
     /**
      * Sets the lastMainJob.
-     * 
+     *
      * @param lastMainJob the lastMainJob to set
      */
     public void setLastMainJob(JobInfo lastMainJob) {
         this.lastMainJob = lastMainJob;
     }
-    
+
     public JobInfo getCurrentBuildJob() {
         return currentBuildJob;
     }
@@ -230,7 +230,7 @@ public class LastGenerationInfo {
 
     /**
      * Getter for lastGeneratedjobs.
-     * 
+     *
      * @return the lastGeneratedjobs
      */
     public Set<JobInfo> getLastGeneratedjobs() {
@@ -239,7 +239,7 @@ public class LastGenerationInfo {
 
     /**
      * Sets the lastGeneratedjobs.
-     * 
+     *
      * @param lastGeneratedjobs the lastGeneratedjobs to set
      */
     public void setLastGeneratedjobs(Set<JobInfo> lastGeneratedjobs) {
@@ -247,7 +247,7 @@ public class LastGenerationInfo {
     }
 
     /**
-     * 
+     *
      * @return the modulesNeededPerJob
      */
     public Set<String> getRoutinesNeededPerJob(String jobId, String jobVersion) {
@@ -284,7 +284,7 @@ public class LastGenerationInfo {
 
     /**
      * Getter for pigudfNeededPerJob.
-     * 
+     *
      * @return the pigudfNeededPerJob
      */
     public Set<String> getPigudfNeededPerJob(String jobId, String jobVersion) {
@@ -298,7 +298,7 @@ public class LastGenerationInfo {
 
     /**
      * Sets the routinesNeededPerJob.
-     * 
+     *
      * @param modulesNeededPerJob the modulesNeededPerJob to set
      */
     public void setRoutinesNeededPerJob(String jobId, String jobVersion, Set<String> modulesNeeded) {
@@ -308,7 +308,7 @@ public class LastGenerationInfo {
 
     /**
      * Sets the pigudfNeededPerJob.
-     * 
+     *
      * @param pigudfNeededPerJob the pigudfNeededPerJob to set
      */
     public void setPigudfNeededPerJob(String jobId, String jobVersion, Set<String> modulesNeeded) {
@@ -317,7 +317,7 @@ public class LastGenerationInfo {
     }
 
     /**
-     * 
+     *
      * @return the modulesNeededPerJob
      */
     public Set<String> getRoutinesNeededWithSubjobPerJob(String jobId, String jobVersion) {
@@ -330,7 +330,7 @@ public class LastGenerationInfo {
 
     /**
      * Getter for pigudfNeededWithSubjobPerJob.
-     * 
+     *
      * @return the pigudfNeededWithSubjobPerJob
      */
     public Set<String> getPigudfNeededWithSubjobPerJob(String jobId, String jobVersion) {
@@ -344,7 +344,7 @@ public class LastGenerationInfo {
 
     /**
      * Sets the routinesNeededPerJob.
-     * 
+     *
      * @param modulesNeededPerJob the modulesNeededPerJob to set
      */
     public void setRoutinesNeededWithSubjobPerJob(String jobId, String jobVersion, Set<String> modulesNeeded) {
@@ -354,14 +354,14 @@ public class LastGenerationInfo {
 
     /**
      * Sets the pigudfNeededWithSubjobPerJob.
-     * 
+     *
      * @param pigudfNeededWithSubjobPerJob the pigudfNeededWithSubjobPerJob to set
      */
     public void setPigudfNeededWithSubjobPerJob(String jobId, String jobVersion, Set<String> modulesNeeded) {
         String key = jobId + "_" + jobVersion; //$NON-NLS-1$
         pigudfNeededWithSubjobPerJob.put(key, new HashSet<String>(modulesNeeded));
     }
-    
+
     public void clearModulesNeededWithSubjobPerJob() {
         if (!modulesNeededWithSubjobPerJob.isEmpty()) {
             modulesNeededWithSubjobPerJob.clear();

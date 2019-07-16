@@ -1,6 +1,6 @@
 // ============================================================================
 //
-// Copyright (C) 2006-2018 Talend Inc. - www.talend.com
+// Copyright (C) 2006-2019 Talend Inc. - www.talend.com
 //
 // This source code is available under agreement available at
 // %InstallDIR%\features\org.talend.rcp.branding.%PRODUCTNAME%\%PRODUCTNAME%license.txt
@@ -27,7 +27,7 @@ import org.talend.daikon.properties.property.Property;
  *
  */
 public class GenericTypeUtils {
-    
+
     private static final TypeLiteral<List<String>> LIST_STRING_TYPE = new TypeLiteral<List<String>>() {// empty
     };
 
@@ -67,11 +67,11 @@ public class GenericTypeUtils {
     public static boolean isIntegerType(Property<?> property) {
         return TypeUtils.toString(Integer.class).equals(property.getType());
     }
-    
+
     public static boolean isListStringType(Property<?> property) {
         return TypeUtils.toString(LIST_STRING_TYPE.getType()).equals(property.getType());
     }
-    
+
     public static boolean isListType(Property<?> property) {
         return property.getType().startsWith("java.util.List");
     }

@@ -1,6 +1,6 @@
 // ============================================================================
 //
-// Copyright (C) 2006-2018 Talend Inc. - www.talend.com
+// Copyright (C) 2006-2019 Talend Inc. - www.talend.com
 //
 // This source code is available under agreement available at
 // %InstallDIR%\features\org.talend.rcp.branding.%PRODUCTNAME%\%PRODUCTNAME%license.txt
@@ -39,7 +39,7 @@ import orgomg.cwm.resource.relational.Schema;
 
 /**
  * @author scorreia
- * 
+ *
  * This class gives easy access to the correctly typed elements.
  */
 public final class SwitchHelpers {
@@ -59,7 +59,7 @@ public final class SwitchHelpers {
 
         /*
          * (non-Javadoc)
-         * 
+         *
          * @see
          * orgomg.cwm.resource.relational.util.RelationalSwitch#casePrimaryKey(orgomg.cwm.resource.relational.PrimaryKey
          * )
@@ -75,7 +75,7 @@ public final class SwitchHelpers {
 
         /*
          * (non-Javadoc)
-         * 
+         *
          * @see
          * orgomg.cwm.resource.relational.util.RelationalSwitch#caseForeignKey(orgomg.cwm.resource.relational.ForeignKey
          * )
@@ -103,7 +103,7 @@ public final class SwitchHelpers {
         }
 
     };
-    
+
 
     public static final XmlSwitch<TdXmlSchema> XMLSCHEMA_SWITCH = new XmlSwitch<TdXmlSchema>() {
 
@@ -171,7 +171,7 @@ public final class SwitchHelpers {
 
         /*
          * (non-Javadoc)
-         * 
+         *
          * @seeorg.talend.cwm.softwaredeployment.util.SoftwaredeploymentSwitch#caseTdSoftwareSystem(org.talend.cwm.
          * softwaredeployment.TdSoftwareSystem)
          */
@@ -186,7 +186,7 @@ public final class SwitchHelpers {
 
         /*
          * (non-Javadoc)
-         * 
+         *
          * @see
          * orgomg.cwm.foundation.softwaredeployment.util.SoftwaredeploymentSwitch#caseComponent(orgomg.cwm.foundation
          * .softwaredeployment.Component)
@@ -202,7 +202,7 @@ public final class SwitchHelpers {
 
         /*
          * (non-Javadoc)
-         * 
+         *
          * @see
          * org.talend.core.model.metadata.builder.connection.util.ConnectionSwitch#caseMetadataTable(org.talend.core
          * .model.metadata.builder.connection.MetadataTable)

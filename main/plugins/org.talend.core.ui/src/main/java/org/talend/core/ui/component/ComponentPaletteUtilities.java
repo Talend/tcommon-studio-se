@@ -1,6 +1,6 @@
 // ============================================================================
 //
-// Copyright (C) 2006-2018 Talend Inc. - www.talend.com
+// Copyright (C) 2006-2019 Talend Inc. - www.talend.com
 //
 // This source code is available under agreement available at
 // %InstallDIR%\features\org.talend.rcp.branding.%PRODUCTNAME%\%PRODUCTNAME%license.txt
@@ -30,11 +30,11 @@ import org.talend.designer.core.IPaletteFilter;
 
 /**
  * DOC smallet class global comment. Detailled comment <br/>
- * 
+ *
  * TODO SML/NRO Move into org.talend.core ?
- * 
+ *
  * $Id: talend.epf 1 2006-09-29 17:06:40 +0000 (ven., 29 sept. 2006) nrousseau $
- * 
+ *
  */
 public class ComponentPaletteUtilities {
 
@@ -196,7 +196,7 @@ public class ComponentPaletteUtilities {
 
     /**
      * yzhang Comment method "filterPalette".
-     * 
+     *
      * @param filer
      */
     public static void filterPalette(String filer) {
@@ -236,7 +236,7 @@ public class ComponentPaletteUtilities {
 
     /**
      * yzhang Comment method "recordEmptyDrawer".
-     * 
+     *
      * @param entry
      */
     private static void recordEmptyDrawer(PaletteEntry entry) {
@@ -262,7 +262,7 @@ public class ComponentPaletteUtilities {
 
     /**
      * yzhang Comment method "filterEmptyDrawer".
-     * 
+     *
      * @param entry
      */
     private static void markEmptyDrawer(PaletteEntry entry) {
@@ -288,7 +288,7 @@ public class ComponentPaletteUtilities {
 
     /**
      * DOC guanglong.du Comment method "updateFromRepositoryType".
-     * 
+     *
      * @param itemType
      */
     public static void updateFromRepositoryType(ERepositoryObjectType itemType) {

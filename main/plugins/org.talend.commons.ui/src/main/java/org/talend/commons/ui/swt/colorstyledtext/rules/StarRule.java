@@ -1,6 +1,6 @@
 // ============================================================================
 //
-// Copyright (C) 2006-2018 Talend Inc. - www.talend.com
+// Copyright (C) 2006-2019 Talend Inc. - www.talend.com
 //
 // This source code is available under agreement available at
 // %InstallDIR%\features\org.talend.rcp.branding.%PRODUCTNAME%\%PRODUCTNAME%license.txt
@@ -23,9 +23,9 @@ import org.talend.commons.ui.swt.colorstyledtext.scanner.ColoringScanner;
 
 /**
  * DOC nrousseau class global comment. Detailled comment <br/>
- * 
+ *
  * $Id: StarRule.java 7038 2007-11-15 14:05:48Z plegall $
- * 
+ *
  */
 public class StarRule implements IPredicateRule {
 
@@ -67,7 +67,7 @@ public class StarRule implements IPredicateRule {
     /**
      * Sets a column constraint for this rule. If set, the rule's token will only be returned if the pattern is detected
      * starting at the specified column. If the column is smaller then 0, the column constraint is considered removed.
-     * 
+     *
      * @param column the column in which the pattern starts
      */
     public void setColumnConstraint(int column) {
@@ -79,7 +79,7 @@ public class StarRule implements IPredicateRule {
 
     /**
      * Evaluates this rules without considering any column constraints.
-     * 
+     *
      * @param scanner the character scanner to be used
      * @return the token resulting from this evaluation
      */
@@ -93,7 +93,7 @@ public class StarRule implements IPredicateRule {
     /**
      * Evaluates this rules without considering any column constraints. Resumes detection, i.e. looks only for the end
      * sequence required by this rule if the <code>resume</code> flag is set.
-     * 
+     *
      * @param scanner the character scanner to be used
      * @param resume <code>true</code> if detection should be resumed, <code>false</code> otherwise
      * @return the token resulting from this evaluation
@@ -125,7 +125,7 @@ public class StarRule implements IPredicateRule {
     /**
      * Evaluates this rules without considering any column constraints. Resumes detection, i.e. looks only for the end
      * sequence required by this rule if the <code>resume</code> flag is set.
-     * 
+     *
      * @param scanner the character scanner to be used
      * @param resume <code>true</code> if detection should be resumed, <code>false</code> otherwise
      * @return the token resulting from this evaluation
@@ -192,7 +192,7 @@ public class StarRule implements IPredicateRule {
      * Returns whether the next characters to be read by the character scanner are an exact match with the given
      * sequence. No escape characters are allowed within the sequence. If specified the sequence is considered to be
      * found when reading the EOF character.
-     * 
+     *
      * @param scanner the character scanner to be used
      * @param sequence the sequence to be detected
      * @param eofAllowed indicated whether EOF terminates the pattern
@@ -239,7 +239,7 @@ public class StarRule implements IPredicateRule {
      * Returns whether the next characters to be read by the character scanner are an exact match with the given
      * sequence. No escape characters are allowed within the sequence. If specified the sequence is considered to be
      * found when reading the EOF character.
-     * 
+     *
      * @param scanner the character scanner to be used
      * @param sequence the sequence to be detected
      * @param eofAllowed indicated whether EOF terminates the pattern

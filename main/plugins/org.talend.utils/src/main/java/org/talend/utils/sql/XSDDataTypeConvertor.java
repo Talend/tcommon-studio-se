@@ -1,6 +1,6 @@
 // ============================================================================
 //
-// Copyright (C) 2006-2018 Talend Inc. - www.talend.com
+// Copyright (C) 2006-2019 Talend Inc. - www.talend.com
 //
 // This source code is available under agreement available at
 // %InstallDIR%\features\org.talend.rcp.branding.%PRODUCTNAME%\%PRODUCTNAME%license.txt
@@ -18,10 +18,10 @@ import java.util.Map;
 
 /**
  * DOC yyi 2010-07-02.
- * 
+ *
  * This class contains the data type regisited in XSDTypeRegister and XSDTypeExtendRegister <br>
  * To convert W3C data types to JDBC types <a>http://www.w3.org/TR/xmlschema-2/#built-in-datatypes</a>
- * 
+ *
  * @link org.eclipse.xsd.impl.type.XSDTypeRegister
  * @link org.talend.cwm.management.api.XSDTypeExtendRegister
  */
@@ -34,7 +34,7 @@ public final class XSDDataTypeConvertor {
 
     /**
      * DOC get the map yyi 2010-07-01.
-     * 
+     *
      * @link org.eclipse.xsd.impl.type.XSDTypeRegister
      * @link org.talend.cwm.management.api.XSDTypeExtendRegister
      * @return
@@ -81,7 +81,7 @@ public final class XSDDataTypeConvertor {
 
     /**
      * DOC yyi convert W3C data types to JDBC types <a>http://www.w3.org/TR/xmlschema-2/#built-in-datatypes</a>.
-     * 
+     *
      * @param xsdDataType
      * @return java.sql.Types
      */

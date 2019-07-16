@@ -1,6 +1,6 @@
 // ============================================================================
 //
-// Copyright (C) 2006-2018 Talend Inc. - www.talend.com
+// Copyright (C) 2006-2019 Talend Inc. - www.talend.com
 //
 // This source code is available under agreement available at
 // %InstallDIR%\features\org.talend.rcp.branding.%PRODUCTNAME%\%PRODUCTNAME%license.txt
@@ -67,9 +67,9 @@ import org.talend.repository.metadata.ui.wizards.form.AbstractLDAPSchemaStepForm
 
 /**
  * The class is used for LDAP schema on Repository View. <br/>
- * 
+ *
  * @author ftang, 18/09/2007
- * 
+ *
  */
 public class LDAPSchemaStep4Form extends AbstractLDAPSchemaStepForm {
 
@@ -97,7 +97,7 @@ public class LDAPSchemaStep4Form extends AbstractLDAPSchemaStepForm {
 
     /**
      * Constructor to use by RCP Wizard.
-     * 
+     *
      * @param Composite
      */
     // public LDAPSchemaStep4Form(Composite parent, ConnectionItem connectionItem) {
@@ -162,7 +162,7 @@ public class LDAPSchemaStep4Form extends AbstractLDAPSchemaStepForm {
 
     /**
      * addButtonControls.
-     * 
+     *
      * @param cancelButton
      */
     @Override
@@ -211,7 +211,7 @@ public class LDAPSchemaStep4Form extends AbstractLDAPSchemaStepForm {
     }
 
     /**
-     * 
+     *
      * Initialize value, forceFocus first field.
      */
     @Override
@@ -306,7 +306,7 @@ public class LDAPSchemaStep4Form extends AbstractLDAPSchemaStepForm {
 
     /**
      * Ensures that fields are set. Update checkEnable / use to checkConnection().
-     * 
+     *
      * @return
      */
     @Override
@@ -334,10 +334,10 @@ public class LDAPSchemaStep4Form extends AbstractLDAPSchemaStepForm {
 
     /**
      * create ProcessDescription and set it.
-     * 
+     *
      * WARNING ::field FieldSeparator, RowSeparator, EscapeChar and TextEnclosure are surround by double quote.
-     * 
-     * 
+     *
+     *
      * @return processDescription
      */
     private ProcessDescription getProcessDescription() {
@@ -359,7 +359,7 @@ public class LDAPSchemaStep4Form extends AbstractLDAPSchemaStepForm {
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see org.talend.repository.ui.swt.utils.AbstractForm#adaptFormToReadOnly()
      */
     @Override
@@ -378,7 +378,7 @@ public class LDAPSchemaStep4Form extends AbstractLDAPSchemaStepForm {
 
     /**
      * DOC ocarbone Comment method "refreshMetaData".
-     * 
+     *
      * @param csvArray
      */
     public void refreshMetaDataTable(final CsvArray csvArray, ProcessDescription processDescription) {
@@ -543,7 +543,7 @@ public class LDAPSchemaStep4Form extends AbstractLDAPSchemaStepForm {
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see org.eclipse.swt.widgets.Control#setVisible(boolean)
      */
     @Override

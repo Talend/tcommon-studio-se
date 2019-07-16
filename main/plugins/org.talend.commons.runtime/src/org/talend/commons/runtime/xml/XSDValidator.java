@@ -1,6 +1,6 @@
 // ============================================================================
 //
-// Copyright (C) 2006-2018 Talend Inc. - www.talend.com
+// Copyright (C) 2006-2019 Talend Inc. - www.talend.com
 //
 // This source code is available under agreement available at
 // %InstallDIR%\features\org.talend.rcp.branding.%PRODUCTNAME%\%PRODUCTNAME%license.txt
@@ -29,9 +29,9 @@ import org.xml.sax.SAXParseException;
 
 /**
  * DOC smallet class global comment. Detailled comment <br/>
- * 
+ *
  * $Id: talend.epf 1 2006-09-29 17:06:40 +0000 (ven., 29 sept. 2006) nrousseau $
- * 
+ *
  */
 public class XSDValidator {
 
@@ -45,7 +45,7 @@ public class XSDValidator {
 
     public static Document checkXSD(File fileToCheck, File fileXSD) throws IOException, ParserConfigurationException,
             SAXException {
-        final DocumentBuilderFactory fabrique = XmlUtils.getSecureDocumentBuilderFactory(false);
+        final DocumentBuilderFactory fabrique = XmlUtils.getSecureDocumentBuilderFactory();
         fabrique.setAttribute(SCHEMA_LANGUAGE, "http://www.w3.org/2001/XMLSchema"); //$NON-NLS-1$
         fabrique.setAttribute(SCHEMA_VALIDATOR, fileXSD);
         fabrique.setAttribute(XMLConstants.ACCESS_EXTERNAL_SCHEMA, PROTOCOL_PLATFORM);

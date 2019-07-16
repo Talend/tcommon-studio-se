@@ -1,6 +1,6 @@
 // ============================================================================
 //
-// Copyright (C) 2006-2018 Talend Inc. - www.talend.com
+// Copyright (C) 2006-2019 Talend Inc. - www.talend.com
 //
 // This source code is available under agreement available at
 // %InstallDIR%\features\org.talend.rcp.branding.%PRODUCTNAME%\%PRODUCTNAME%license.txt
@@ -21,7 +21,7 @@ import org.talend.designer.rowgenerator.data.FunctionManager;
 
 /**
  * DOC ggu class global comment. Detailled comment <br/>
- * 
+ *
  */
 public class RoutinesFunctionProposal implements IContentProposal {
 
@@ -35,7 +35,7 @@ public class RoutinesFunctionProposal implements IContentProposal {
 
     /**
      * DOC ggu RoutinesProposal constructor comment.
-     * 
+     *
      * @param function
      */
     public RoutinesFunctionProposal(Function function) {
@@ -48,7 +48,7 @@ public class RoutinesFunctionProposal implements IContentProposal {
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see org.eclipse.jface.fieldassist.IContentProposal#getContent()
      */
     @Override
@@ -58,7 +58,7 @@ public class RoutinesFunctionProposal implements IContentProposal {
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see org.eclipse.jface.fieldassist.IContentProposal#getCursorPosition()
      */
     @Override
@@ -69,7 +69,7 @@ public class RoutinesFunctionProposal implements IContentProposal {
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see org.eclipse.jface.fieldassist.IContentProposal#getDescription()
      */
     @Override
@@ -88,7 +88,7 @@ public class RoutinesFunctionProposal implements IContentProposal {
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see org.eclipse.jface.fieldassist.IContentProposal#getLabel()
      */
     @Override

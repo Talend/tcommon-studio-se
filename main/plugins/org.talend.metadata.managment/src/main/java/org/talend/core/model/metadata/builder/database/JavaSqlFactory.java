@@ -1,6 +1,6 @@
 // ============================================================================
 //
-// Copyright (C) 2006-2018 Talend Inc. - www.talend.com
+// Copyright (C) 2006-2019 Talend Inc. - www.talend.com
 //
 // This source code is available under agreement available at
 // %InstallDIR%\features\org.talend.rcp.branding.%PRODUCTNAME%\%PRODUCTNAME%license.txt
@@ -46,7 +46,7 @@ import org.talend.utils.sugars.TypedReturnCode;
 
 /**
  * @author scorreia
- * 
+ *
  * This utility class provides methods that convert CWM object into java.sql object. It is a kind of inverse of the
  * DatabaseContentRetriever class.
  */
@@ -67,7 +67,7 @@ public final class JavaSqlFactory {
      * When something goes wrong, {@link ReturnCode#isOk()} is false and {@link ReturnCode#getMessage()} gives the error message.
      * <p>
      * The created connection must be closed by the caller. (use {@link ConnectionUtils#closeConnection(Connection)})
-     * 
+     *
      * @param providerConnection the provider connection
      * @return a ReturnCode (never null)
      * @deprecated {@link #createConnection(Connection)}
@@ -117,7 +117,7 @@ public final class JavaSqlFactory {
      * When something goes wrong, {@link ReturnCode#isOk()} is false and {@link ReturnCode#getMessage()} gives the error message.
      * <p>
      * The created connection must be closed by the caller. (use {@link ConnectionUtils#closeConnection(Connection)})
-     * 
+     *
      * @param connection the connection (DatabaseConnection MDMConnection or others)
      * @return a ReturnCode (never null)
      */
@@ -134,7 +134,7 @@ public final class JavaSqlFactory {
 
     /**
      * DOC xqliu Comment method "getDriverClass".
-     * 
+     *
      * @param conn
      * @return driver class name of the connection or null
      */
@@ -167,7 +167,7 @@ public final class JavaSqlFactory {
     /**
      * set Url of connection. when the connection is MDM connection, set its pathname, when the connection is file
      * connection, set its filepath.
-     * 
+     *
      * @param conn
      * @param url
      */
@@ -189,7 +189,7 @@ public final class JavaSqlFactory {
 
     /**
      * DOC xqliu Comment method "getUsername".
-     * 
+     *
      * @param conn
      * @return username of the connection or null
      */
@@ -212,7 +212,7 @@ public final class JavaSqlFactory {
 
     /**
      * DOC xqliu Comment method "getPassword".
-     * 
+     *
      * @param conn
      * @return password of the connection or null
      */
@@ -235,7 +235,7 @@ public final class JavaSqlFactory {
 
     /**
      * DOC xqliu Comment method "setUsername".
-     * 
+     *
      * @param conn
      * @param username
      */
@@ -245,7 +245,7 @@ public final class JavaSqlFactory {
 
     /**
      * DOC xqliu Comment method "setPassword".
-     * 
+     *
      * @param conn
      * @param password
      */
@@ -256,7 +256,7 @@ public final class JavaSqlFactory {
     /**
      * get Url of connection. when the connection is MDM connection, return its pathname, when the connection is file
      * connection, return its filepath.
-     * 
+     *
      * @param conn
      * @return url string of the connection or null
      */
@@ -291,9 +291,9 @@ public final class JavaSqlFactory {
     }
 
     /**
-     * 
+     *
      * get driver jar path only for GENERAL JDBC type.
-     * 
+     *
      * @param conn
      * @return
      */
@@ -309,7 +309,7 @@ public final class JavaSqlFactory {
     /**
      * Just for hive pre-setup, some configurations are required to set up to the properties of system. It is just for
      * Hive embedded mode.Added by Marvin Wang on Nov 22, 2012.(Just a reminder: TDQ-6462)
-     * 
+     *
      * @param conn
      */
     public static void doHivePreSetup(Connection connection) {
@@ -436,7 +436,7 @@ public final class JavaSqlFactory {
 
     /**
      * get Server Name from connection.
-     * 
+     *
      * @param conn
      * @return server name of the connection or null
      */
@@ -454,7 +454,7 @@ public final class JavaSqlFactory {
 
     /**
      * DOC xqliu Comment method "setDriverClass".
-     * 
+     *
      * @param conn
      * @param driverClass
      */
@@ -467,7 +467,7 @@ public final class JavaSqlFactory {
 
     /**
      * DOC xqliu Comment method "setServerName".
-     * 
+     *
      * @param conn
      * @param serverName
      */
@@ -484,7 +484,7 @@ public final class JavaSqlFactory {
 
     /**
      * get Port from connection.
-     * 
+     *
      * @param conn
      * @return port of the connection or null
      */
@@ -502,7 +502,7 @@ public final class JavaSqlFactory {
 
     /**
      * DOC xqliu Comment method "setPort".
-     * 
+     *
      * @param conn
      * @param port
      */
@@ -519,7 +519,7 @@ public final class JavaSqlFactory {
 
     /**
      * DOC xqliu Comment method "getSID".
-     * 
+     *
      * @param conn
      * @return sid of the connection or null
      */
@@ -537,7 +537,7 @@ public final class JavaSqlFactory {
 
     /**
      * set SID for connection.
-     * 
+     *
      * @param conn
      * @param sid
      */
@@ -554,7 +554,7 @@ public final class JavaSqlFactory {
 
     /**
      * get dbmsid from connection.
-     * 
+     *
      * @param conn
      * @return sid of the connection or null
      */
@@ -569,7 +569,7 @@ public final class JavaSqlFactory {
 
     /**
      * get Original Value Connection.
-     * 
+     *
      * @param fileconnection
      * @param headValue
      * @return
@@ -589,7 +589,7 @@ public final class JavaSqlFactory {
 
     /**
      * get Original Value Connection.
-     * 
+     *
      * @param fileconnection
      * @param headValue
      * @return
@@ -607,7 +607,7 @@ public final class JavaSqlFactory {
 
     /**
      * get HeadValue for fileconnection.
-     * 
+     *
      * @param fileconnection
      * @return
      */
@@ -621,7 +621,7 @@ public final class JavaSqlFactory {
 
     /**
      * get FooterValue for fileconnection.
-     * 
+     *
      * @param fileconnection
      * @return
      */
@@ -636,7 +636,7 @@ public final class JavaSqlFactory {
 
     /**
      * get LimitValue for fileconnection.
-     * 
+     *
      * @param delimitedFileconnection
      * @return
      */
@@ -651,7 +651,7 @@ public final class JavaSqlFactory {
 
     /**
      * get FieldSeparator Value for fileconnection.
-     * 
+     *
      * @param fileconnection
      * @return
      */
@@ -665,7 +665,7 @@ public final class JavaSqlFactory {
 
     /**
      * get Encoding for fileconnection.
-     * 
+     *
      * @param fileconnection
      * @return
      */
@@ -679,7 +679,7 @@ public final class JavaSqlFactory {
 
     /**
      * get RowSeparator Value for fileconnection.
-     * 
+     *
      * @param fileconnection
      * @return
      */

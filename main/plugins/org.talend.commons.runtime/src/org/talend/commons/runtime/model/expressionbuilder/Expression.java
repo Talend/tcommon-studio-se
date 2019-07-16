@@ -1,6 +1,6 @@
 // ============================================================================
 //
-// Copyright (C) 2006-2018 Talend Inc. - www.talend.com
+// Copyright (C) 2006-2019 Talend Inc. - www.talend.com
 //
 // This source code is available under agreement available at
 // %InstallDIR%\features\org.talend.rcp.branding.%PRODUCTNAME%\%PRODUCTNAME%license.txt
@@ -17,9 +17,9 @@ import java.util.List;
 
 /**
  * yzhang class global comment. Detailled comment <br/>
- * 
+ *
  * $Id: Expression.java 上午10:50:58 2007-9-15 +0000 (2007-9-15) yzhang $
- * 
+ *
  */
 public class Expression {
 
@@ -37,7 +37,7 @@ public class Expression {
 
     /**
      * yzhang Expression constructor comment.
-     * 
+     *
      * @param expression
      * @param vList
      */
@@ -48,7 +48,7 @@ public class Expression {
 
     /**
      * Getter for expression.
-     * 
+     *
      * @return the expression
      */
     public String getExpression() {
@@ -57,7 +57,7 @@ public class Expression {
 
     /**
      * Sets the expression.
-     * 
+     *
      * @param expression the expression to set
      */
     public void setExpression(String expression) {
@@ -66,7 +66,7 @@ public class Expression {
 
     /**
      * Getter for variables.
-     * 
+     *
      * @return the variables
      */
     public List<Variable> getVariables() {

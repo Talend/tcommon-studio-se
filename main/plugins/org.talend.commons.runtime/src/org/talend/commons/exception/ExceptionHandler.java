@@ -1,6 +1,6 @@
 // ============================================================================
 //
-// Copyright (C) 2006-2018 Talend Inc. - www.talend.com
+// Copyright (C) 2006-2019 Talend Inc. - www.talend.com
 //
 // This source code is available under agreement available at
 // %InstallDIR%\features\org.talend.rcp.branding.%PRODUCTNAME%\%PRODUCTNAME%license.txt
@@ -18,15 +18,15 @@ import org.talend.commons.CommonsPlugin;
 
 /**
  * Implementation of exception handling strategy.<br/>
- * 
+ *
  * $Id: ExceptionHandler.java 7038 2007-11-15 14:05:48Z plegall $
- * 
+ *
  */
 public class ExceptionHandler {
 
     /**
      * Log message relative to ex param. Log level depends on exception type.
-     * 
+     *
      * @param ex - exception to log
      */
     public static void process(Throwable ex) {
@@ -51,9 +51,9 @@ public class ExceptionHandler {
 
     /**
      * bug 17654: import the xml file as the schema will throw error.
-     * 
+     *
      * DOC yhch Comment method "processForSchemaImportXml".
-     * 
+     *
      * @param ex
      */
     public static void processForSchemaImportXml(Throwable ex) {

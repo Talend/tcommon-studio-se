@@ -1,6 +1,6 @@
 // ============================================================================
 //
-// Copyright (C) 2006-2018 Talend Inc. - www.talend.com
+// Copyright (C) 2006-2019 Talend Inc. - www.talend.com
 //
 // This source code is available under agreement available at
 // %InstallDIR%\features\org.talend.rcp.branding.%PRODUCTNAME%\%PRODUCTNAME%license.txt
@@ -60,7 +60,6 @@ import org.talend.commons.utils.workbench.resources.ResourceUtils;
 import org.talend.core.GlobalServiceRegister;
 import org.talend.core.ILibraryManagerService;
 import org.talend.core.ILibraryManagerUIService;
-import org.talend.core.IService;
 import org.talend.core.database.EDatabase4DriverClassName;
 import org.talend.core.database.EDatabaseTypeName;
 import org.talend.core.database.conn.ConnParameterKeys;
@@ -81,7 +80,6 @@ import org.talend.designer.core.IDesignerCoreService;
 import org.talend.metadata.managment.connection.manager.HiveConnectionManager;
 import org.talend.metadata.managment.hive.EmbeddedHiveDataBaseMetadata;
 import org.talend.repository.ProjectManager;
-import org.talend.repository.model.IMetadataService;
 import org.talend.utils.exceptions.MissingDriverException;
 import org.talend.utils.sql.ConnectionUtils;
 
@@ -90,9 +88,9 @@ import orgomg.cwm.objectmodel.core.Expression;
 
 /**
  * DOC cantoine. Extract Meta Data Table. Contains all the Table and Metadata about a DB Connection. <br/>
- * 
+ *
  * $Id: ExtractMetaDataUtils.java 38999 2010-03-24 03:33:58Z cli $
- * 
+ *
  */
 public class ExtractMetaDataUtils {
 
@@ -134,7 +132,7 @@ public class ExtractMetaDataUtils {
      * Gets an instance of <code>DatabaseMetadata</code> by the given argument. The reason why it provides this method
      * is sometimes the database metadata you want to get is not from the <code>Connection</code>, in talend product
      * maybe a "fake" database metadata is created like "HiveDatabaseMetadata". Added by Marvin Wang on Mar 13, 2013.
-     * 
+     *
      * @param metadataConn
      * @return
      */
@@ -152,13 +150,13 @@ public class ExtractMetaDataUtils {
 
     /**
      * DOC cantoine. Method to return DatabaseMetaData of a DB connection.
-     * 
+     *
      * FIXME sizhaoliu remove repetitions of specific DB conditions.
-     * 
+     *
      * @param Connection conn
      * @param Connection dbType
      * @return DatabaseMetaData
-     * 
+     *
      * MOD by zshen this method don't care about sqlMode
      */
     public DatabaseMetaData getDatabaseMetaData(Connection conn, String dbType) {
@@ -171,11 +169,11 @@ public class ExtractMetaDataUtils {
 
     /**
      * DOC cantoine. Method to return DatabaseMetaData of a DB connection.
-     * 
+     *
      * @param Connection conn
      * @param DatabaseConnection dbConn
      * @return DatabaseMetaData
-     * 
+     *
      * MOD by zshen this method don't care about sqlMode
      */
     public DatabaseMetaData getDatabaseMetaData(Connection connection, DatabaseConnection dbConnection) {
@@ -184,13 +182,13 @@ public class ExtractMetaDataUtils {
 
     /**
      * DOC cantoine. Method to return DatabaseMetaData of a DB connection.
-     * 
+     *
      * @param Connection conn
      * @param isSqlMode
      * @param DatabaseConnection dbConn
      * @return DatabaseMetaData
-     * 
-     * 
+     *
+     *
      */
     public DatabaseMetaData getDatabaseMetaData(Connection connection, DatabaseConnection dbConnection, boolean isSqlMode) {
         IMetadataConnection metadataConnection = ConvertionHelper.convert(dbConnection);
@@ -214,15 +212,15 @@ public class ExtractMetaDataUtils {
     }
 
     /**
-     * 
-     * 
+     *
+     *
      * @param conn
      * @return
      * @throws SQLException
-     * 
+     *
      * this method will pass a mistake databaseType to get DatabaseMetDdata(e.x. db2->db2 for zos) if you can, you
      * should use getDatabaseMetaData() instead of this method
-     * 
+     *
      */
     public DatabaseMetaData getConnectionMetadata(java.sql.Connection conn) throws SQLException {
         if (conn != null) {
@@ -240,13 +238,13 @@ public class ExtractMetaDataUtils {
 
     /**
      * DOC cantoine. Method to return DatabaseMetaData of a DB connection.
-     * 
+     *
      * @param Connection conn
      * @param isSqlMode whether is sqlMode
      * @param String dbType
      * @return DatabaseMetaData
-     * 
-     * 
+     *
+     *
      */
     public DatabaseMetaData getDatabaseMetaData(Connection conn, String dbType, boolean isSqlMode, String database) {
         DatabaseMetaData dbMetaData = null;
@@ -331,9 +329,9 @@ public class ExtractMetaDataUtils {
     }
 
     /**
-     * 
+     *
      * Added by Marvin Wang on Dec 6, 2012.
-     * 
+     *
      * @param metadataConnection
      * @return
      */
@@ -358,7 +356,7 @@ public class ExtractMetaDataUtils {
 
     /**
      * Added by Marvin Wang on Dec 6, 2012.
-     * 
+     *
      * @param dbType
      * @param isSqlMode
      * @return
@@ -385,7 +383,7 @@ public class ExtractMetaDataUtils {
 
     /**
      * only for db2 on z/os right now.
-     * 
+     *
      * @param conn2
      * @return
      * @throws SQLException
@@ -437,7 +435,7 @@ public class ExtractMetaDataUtils {
 
     /**
      * DOC cantoine. Method to return MetaDataInfo on Column DataBaseConnection.
-     * 
+     *
      * @param ResultSet columns
      * @param String infoType
      * @return String : the result of column's information MetaData
@@ -470,9 +468,9 @@ public class ExtractMetaDataUtils {
     }
 
     /**
-     * 
+     *
      * DOC xye Comment method "getStringMetaDataInfo".
-     * 
+     *
      * @param columns
      * @param infoType
      * @return
@@ -496,7 +494,7 @@ public class ExtractMetaDataUtils {
 
     /**
      * DOC cantoine. Method to return MetaDataInfo on Column DataBaseConnection.
-     * 
+     *
      * @param ResultSet columns
      * @param String infoType
      * @return int : the result of column's information MetaData
@@ -549,7 +547,7 @@ public class ExtractMetaDataUtils {
     /**
      * Return boolean value, used only to check if one field is nullable or not. If used to something else than nullable
      * check, take care of the default values returned. Actually returns null if there is any error during the check.
-     * 
+     *
      * @param ResultSet columns
      * @param String infoType
      * @return boolean : the result of column's information MetaData
@@ -576,7 +574,7 @@ public class ExtractMetaDataUtils {
     // OCA : save connectionString and associated regex in the same place.
     /**
      * DOC cantoine. Method to return MetaDataInfo on Column DataBaseConnection.
-     * 
+     *
      * @param ResultSet columns
      * @param String infoType
      * @return String : the result of column's information MetaData
@@ -600,9 +598,9 @@ public class ExtractMetaDataUtils {
     }
 
     /**
-     * 
+     *
      * DOC YeXiaowei Comment method "isValidJarFile".
-     * 
+     *
      * @param driverJarPath
      * @return
      */
@@ -620,9 +618,9 @@ public class ExtractMetaDataUtils {
     }
 
     /**
-     * 
+     *
      * cli Comment method "retrieveSchemaPatternForAS400".
-     * 
+     *
      * bug 12179
      */
     public String retrieveSchemaPatternForAS400(String url) {
@@ -679,9 +677,9 @@ public class ExtractMetaDataUtils {
     }
 
     /**
-     * 
+     *
      * cli Comment method "getMultiSchems".
-     * 
+     *
      * bug 12179
      */
     public String[] getMultiSchems(String schemas) {
@@ -745,9 +743,9 @@ public class ExtractMetaDataUtils {
     }
 
     /**
-     * 
+     *
      * ggu Comment method "checkDBConnectionTimeout".
-     * 
+     *
      * there is no effect for oracle.
      */
     public void checkDBConnectionTimeout() {
@@ -766,9 +764,9 @@ public class ExtractMetaDataUtils {
     }
 
     /**
-     * 
+     *
      * ggu Comment method "setQueryStatementTimeout".
-     * 
+     *
      * @param statement
      */
     public void setQueryStatementTimeout(Statement statement) {
@@ -788,7 +786,7 @@ public class ExtractMetaDataUtils {
 
     /**
      * Getter for ignoreTimeout.
-     * 
+     *
      * @return the ignoreTimeout
      */
     public boolean isIgnoreTimeout() {
@@ -797,7 +795,7 @@ public class ExtractMetaDataUtils {
 
     /**
      * Sets the ignoreTimeout.
-     * 
+     *
      * @param ignoreTimeout the ignoreTimeout to set
      */
     public void setIgnoreTimeout(boolean ignoreTimeout) {
@@ -806,7 +804,7 @@ public class ExtractMetaDataUtils {
 
     /**
      * DOC cantoine. Method to connect to DataBase.
-     * 
+     *
      * @param String driverClass
      * @param String urlString pwdT
      * @param String username
@@ -888,7 +886,7 @@ public class ExtractMetaDataUtils {
      * JDBCDriverLoader.java. Due to the limitation on code structure, I have to put it here, so if the part of metadata
      * connection will be refactored later, then developer could remove it to anyway they want. Added by Marvin Wang on
      * Oct 24, 2012.
-     * 
+     *
      * @param dbType
      * @param dbVersion
      */
@@ -912,7 +910,7 @@ public class ExtractMetaDataUtils {
 
     /**
      * DOC xye Comment method "connect".
-     * 
+     *
      * @param dbType
      * @param url
      * @param username
@@ -965,13 +963,13 @@ public class ExtractMetaDataUtils {
                         } else if (EDatabaseVersion4Drivers.MARIADB.getVersionValue().equals(dbVersion)) {
                             driverClassName = EDatabase4DriverClassName.MARIADB.getDriverClass();
                         }
-                    }else if(EDatabaseTypeName.MSSQL.getDisplayName().equals(dbType) 
+                    }else if(EDatabaseTypeName.MSSQL.getDisplayName().equals(dbType)
                             && EDatabaseVersion4Drivers.MSSQL_PROP.getVersionValue().equals(dbVersion)){
                         driverClassName = EDatabase4DriverClassName.MSSQL2.getDriverClass();
-                    }else if(EDatabaseTypeName.SYBASEASE.getDisplayName().equals(dbType) 
+                    }else if(EDatabaseTypeName.SYBASEASE.getDisplayName().equals(dbType)
                             && EDatabaseVersion4Drivers.SYBASEIQ_16.getVersionValue().equals(dbVersion)){
                         driverClassName = EDatabase4DriverClassName.SYBASEIQ_16.getDriverClass();
-                    }else if(EDatabaseTypeName.SYBASEASE.getDisplayName().equals(dbType) 
+                    }else if(EDatabaseTypeName.SYBASEASE.getDisplayName().equals(dbType)
                             && EDatabaseVersion4Drivers.SYBASEIQ_16_SA.getVersionValue().equals(dbVersion)){
                         driverClassName = EDatabase4DriverClassName.SYBASEIQ_16_SA.getDriverClass();
                     }
@@ -1032,6 +1030,11 @@ public class ExtractMetaDataUtils {
                         String jars[] = driverJarPathArg.split(";");
                         for (String jar : jars) {
                             String jarName = librairesManagerService.getJarNameFromMavenuri(driverJarPathArg);
+                            // TDQ-16842 msjian:sometimes for the import jdbc connection, the jarName is null
+                            if (jarName == null) {
+                                jarName = jar.split("/")[1] + ".jar";
+                            }
+                            // TDQ-16842~
                             if (!new File(getJavaLibPath() + jarName).exists()) {
                                 librairesManagerService.retrieve(jarName, getJavaLibPath(), new NullProgressMonitor());
                             }
@@ -1181,7 +1184,7 @@ public class ExtractMetaDataUtils {
 
     /**
      * DOC PLV Comment method "setDriverCache".
-     * 
+     *
      * @param wapperDriver
      */
     public void setDriverCache(DriverShim wapperDriver) {
@@ -1230,9 +1233,9 @@ public class ExtractMetaDataUtils {
     }
 
     /**
-     * 
+     *
      * DOC YeXiaowei Comment method "getJavaLibPath".
-     * 
+     *
      * @return
      */
     public String getJavaLibPath() {
@@ -1320,7 +1323,7 @@ public class ExtractMetaDataUtils {
 
     /**
      * DOC ycbai Comment method "getMeataConnectionSchema".
-     * 
+     *
      * @param metadataConnection
      * @return
      */
@@ -1330,7 +1333,7 @@ public class ExtractMetaDataUtils {
 
     /**
      * DOC ycbai Comment method "getDBConnectionSchema".
-     * 
+     *
      * @param dbConnection
      * @return
      */
@@ -1375,7 +1378,7 @@ public class ExtractMetaDataUtils {
 
     /**
      * DOC ycbai Comment method "handleDefaultValue".
-     * 
+     *
      * @param column
      */
     public void handleDefaultValue(MetadataColumn column, DatabaseMetaData dbMetaData) {

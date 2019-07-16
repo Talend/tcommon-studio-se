@@ -1,6 +1,6 @@
 // ============================================================================
 //
-// Copyright (C) 2006-2018 Talend Inc. - www.talend.com
+// Copyright (C) 2006-2019 Talend Inc. - www.talend.com
 //
 // This source code is available under agreement available at
 // %InstallDIR%\features\org.talend.rcp.branding.%PRODUCTNAME%\%PRODUCTNAME%license.txt
@@ -17,9 +17,9 @@ import java.util.List;
 
 /**
  * bqian A data container for LocalDataTransfer.<br/>
- * 
+ *
  * $Id$
- * 
+ *
  */
 public class LocalDraggedData {
 
@@ -37,9 +37,9 @@ public class LocalDraggedData {
     }
 
     /**
-     * 
+     *
      * DOC wzhang Comment method "getTable".
-     * 
+     *
      * @return
      */
     public Object getTable() {
@@ -47,9 +47,9 @@ public class LocalDraggedData {
     }
 
     /**
-     * 
+     *
      * DOC wzhang Comment method "setTable".
-     * 
+     *
      * @param table
      */
     public void setTable(Object table) {
@@ -58,7 +58,7 @@ public class LocalDraggedData {
 
     /**
      * Getter for transferableEntryList.
-     * 
+     *
      * @return the transferableEntryList
      */
     public List<Object> getTransferableEntryList() {

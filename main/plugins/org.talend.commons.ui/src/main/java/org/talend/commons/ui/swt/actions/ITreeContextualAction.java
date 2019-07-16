@@ -1,6 +1,6 @@
 // ============================================================================
 //
-// Copyright (C) 2006-2018 Talend Inc. - www.talend.com
+// Copyright (C) 2006-2019 Talend Inc. - www.talend.com
 //
 // This source code is available under agreement available at
 // %InstallDIR%\features\org.talend.rcp.branding.%PRODUCTNAME%\%PRODUCTNAME%license.txt
@@ -20,17 +20,17 @@ import org.eclipse.ui.IWorkbenchPart;
 
 /**
  * Defines contextual actions used on a TreeViewer.
- * 
+ *
  * $Id: ITreeContextualAction.java 7196 2007-11-26 04:19:19Z bqian $
- * 
+ *
  */
 public interface ITreeContextualAction extends IAction, Cloneable {
 
     /**
      * Initialise the action on a given tree with the actual selection.<br/>
-     * 
+     *
      * Use the <code>setEnabled</code> method to anable/disable this action for the current selection.
-     * 
+     *
      * @param viewer - The tree.
      * @param selection - Actual selection in the tree.
      */
@@ -38,7 +38,7 @@ public interface ITreeContextualAction extends IAction, Cloneable {
 
     /**
      * Specifies if this action can be launch by double-click.
-     * 
+     *
      * @return <code>true</code> if this action can be launch by double-click.
      */
     public boolean isDoubleClickAction();
@@ -48,7 +48,7 @@ public interface ITreeContextualAction extends IAction, Cloneable {
     /**
      * Defines the Class on wich this action is launch by double-click. Means that when a double-click occurs in the
      * TreeViewer, the first registred IContextuelAction matching the selection Class is launch.
-     * 
+     *
      * @return the class correspondinf to this action
      */
     public Class getClassForDoubleClick();

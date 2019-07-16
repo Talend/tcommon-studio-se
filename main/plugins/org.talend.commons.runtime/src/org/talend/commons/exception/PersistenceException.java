@@ -1,6 +1,6 @@
 // ============================================================================
 //
-// Copyright (C) 2006-2018 Talend Inc. - www.talend.com
+// Copyright (C) 2006-2019 Talend Inc. - www.talend.com
 //
 // This source code is available under agreement available at
 // %InstallDIR%\features\org.talend.rcp.branding.%PRODUCTNAME%\%PRODUCTNAME%license.txt
@@ -15,9 +15,9 @@ package org.talend.commons.exception;
 /**
  * Represents DataProviderException. (Wich is more generic that DBException for example). This exception is throwed when
  * data cannot be retrieve from system.<br/>
- * 
+ *
  * $Id$
- * 
+ *
  */
 public class PersistenceException extends SystemException {
 

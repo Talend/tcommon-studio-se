@@ -1,6 +1,6 @@
 // ============================================================================
 //
-// Copyright (C) 2006-2018 Talend Inc. - www.talend.com
+// Copyright (C) 2006-2019 Talend Inc. - www.talend.com
 //
 // This source code is available under agreement available at
 // %InstallDIR%\features\org.talend.rcp.branding.%PRODUCTNAME%\%PRODUCTNAME%license.txt
@@ -23,9 +23,9 @@ import org.apache.log4j.Logger;
 
 /**
  * DOC ycbai class global comment. Detailled comment
- * 
+ *
  * General reflection utils.
- * 
+ *
  */
 public class ReflectionUtils {
 
@@ -33,9 +33,9 @@ public class ReflectionUtils {
 
     /**
      * DOC ycbai Comment method "getPublicField".
-     * 
+     *
      * Returns the value of a public field.
-     * 
+     *
      * @param owner
      * @param fieldName
      * @return
@@ -57,9 +57,9 @@ public class ReflectionUtils {
 
     /**
      * DOC ycbai Comment method "getPrivateField".
-     * 
+     *
      * Returns the value of a private field.
-     * 
+     *
      * @param owner
      * @param fieldName
      * @return
@@ -81,9 +81,9 @@ public class ReflectionUtils {
 
     /**
      * DOC ycbai Comment method "getStaticField".
-     * 
+     *
      * Returns the value of a static field.
-     * 
+     *
      * @param className
      * @param loader
      * @param fieldName
@@ -135,9 +135,9 @@ public class ReflectionUtils {
 
     /**
      * DOC ycbai Comment method "invokeMethod".
-     * 
+     *
      * Returns the value of a method.
-     * 
+     *
      * @param owner
      * @param methodName
      * @param args
@@ -191,9 +191,9 @@ public class ReflectionUtils {
 
     /**
      * DOC ycbai Comment method "invokeStaticMethod".
-     * 
+     *
      * Returns the value of a static method.
-     * 
+     *
      * @param className
      * @param loader
      * @param methodName
@@ -255,9 +255,9 @@ public class ReflectionUtils {
 
     /**
      * DOC ycbai Comment method "newInstance".
-     * 
+     *
      * Create a new instance of a class.
-     * 
+     *
      * @param className
      * @param initialize
      * @param loader
@@ -304,9 +304,9 @@ public class ReflectionUtils {
 
     /**
      * DOC ycbai Comment method "isInstance".
-     * 
+     *
      * Whether or not the object is the instance of the class.
-     * 
+     *
      * @param obj
      * @param cls
      * @return
@@ -317,9 +317,9 @@ public class ReflectionUtils {
 
     /**
      * DOC ycbai Comment method "getByArray".
-     * 
+     *
      * Returns the value of a element of a array by the index.
-     * 
+     *
      * @param array
      * @param index
      * @return
@@ -327,7 +327,7 @@ public class ReflectionUtils {
     public static Object getByArray(Object array, int index) {
         return Array.get(array, index);
     }
-    
+
 
     public static Class getClass(String className, ClassLoader loader) {
         Class ownerClass = null;

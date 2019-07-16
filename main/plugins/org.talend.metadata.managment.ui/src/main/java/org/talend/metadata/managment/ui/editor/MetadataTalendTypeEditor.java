@@ -1,6 +1,6 @@
 // ============================================================================
 //
-// Copyright (C) 2006-2018 Talend Inc. - www.talend.com
+// Copyright (C) 2006-2019 Talend Inc. - www.talend.com
 //
 // This source code is available under agreement available at
 // %InstallDIR%\features\org.talend.rcp.branding.%PRODUCTNAME%\%PRODUCTNAME%license.txt
@@ -80,9 +80,9 @@ import org.talend.repository.RepositoryWorkUnit;
 
 /**
  * bqian. MetadataTalendType Editor<br/>
- * 
+ *
  * $Id: MetadataTalendTypeEditor.java 2738 2007-05-11 13:12:27Z bqian $
- * 
+ *
  */
 public class MetadataTalendTypeEditor extends FieldEditor {
 
@@ -117,9 +117,9 @@ public class MetadataTalendTypeEditor extends FieldEditor {
 
     /**
      * Store file infomation <br/>
-     * 
+     *
      * $Id: MetadataTalendTypeEditor.java 1 May 21, 2007 3:47:57 PM +0000 $
-     * 
+     *
      */
     class FileInfo {
 
@@ -133,9 +133,9 @@ public class MetadataTalendTypeEditor extends FieldEditor {
 
     /**
      * FileInfo manager. <br/>
-     * 
+     *
      * $Id: MetadataTalendTypeEditor.java 1 May 21, 2007 3:48:13 PM +0000 $
-     * 
+     *
      */
     class TmpFilesManager {
 
@@ -200,7 +200,7 @@ public class MetadataTalendTypeEditor extends FieldEditor {
 
     /**
      * MetadataTalendTypeEditor constructor.
-     * 
+     *
      * @param name
      * @param labelText
      * @param parent
@@ -253,7 +253,7 @@ public class MetadataTalendTypeEditor extends FieldEditor {
 
     /**
      * Returns this field editor's list control.
-     * 
+     *
      * @param parent the parent control
      * @return the list control
      */
@@ -302,7 +302,7 @@ public class MetadataTalendTypeEditor extends FieldEditor {
 
     /**
      * Returns this field editor's button box containing the Add, Remove, Up, and Down button.
-     * 
+     *
      * @param parent the parent control
      * @return the button box
      */
@@ -339,7 +339,7 @@ public class MetadataTalendTypeEditor extends FieldEditor {
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see org.talend.commons.ui.swt.preferences.TableEditor#createButtons(org.eclipse.swt.widgets.Composite)
      */
     protected void createButtons(Composite box) {
@@ -386,7 +386,7 @@ public class MetadataTalendTypeEditor extends FieldEditor {
 
     /**
      * Helper method to create a push button.
-     * 
+     *
      * @param parent the parent control
      * @param key the resource name used to supply the button's label text
      * @return Button
@@ -527,7 +527,7 @@ public class MetadataTalendTypeEditor extends FieldEditor {
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see org.talend.commons.ui.swt.preferences.TableEditor#selectionChanged()
      */
     protected void selectionChanged() {
@@ -544,7 +544,7 @@ public class MetadataTalendTypeEditor extends FieldEditor {
                 String id = null;
                 String infoName = info.fileName;
                 for (int i = 0; i < allDbms.length; i++) {
-                    if (allDbms[i].getLabel().equalsIgnoreCase(infoName.substring(0, infoName.indexOf(".")).replace("_", " "))) { //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ 
+                    if (allDbms[i].getLabel().equalsIgnoreCase(infoName.substring(0, infoName.indexOf(".")).replace("_", " "))) { //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
                         id = allDbms[i].getId();
                     }
                 }
@@ -579,7 +579,7 @@ public class MetadataTalendTypeEditor extends FieldEditor {
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see org.talend.commons.ui.swt.preferences.TableEditor#doLoad()
      */
     @Override
@@ -597,7 +597,7 @@ public class MetadataTalendTypeEditor extends FieldEditor {
     }
 
     /**
-     * 
+     *
      * DOC YeXiaowei Comment method "forceStore".
      */
     public void forceStore() {
@@ -606,7 +606,7 @@ public class MetadataTalendTypeEditor extends FieldEditor {
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see org.eclipse.jface.preference.FieldEditor#doStore()
      */
     @Override
@@ -691,7 +691,7 @@ public class MetadataTalendTypeEditor extends FieldEditor {
 
     /**
      * bqian Comment method "updateFileContent".
-     * 
+     *
      * @param realFile
      * @param string
      */
@@ -708,9 +708,9 @@ public class MetadataTalendTypeEditor extends FieldEditor {
 
     /**
      * Import the selected file into talend.
-     * 
+     *
      * @param xmlFile
-     * @throws SystemException 
+     * @throws SystemException
      */
     private File importFileIntoTalend(File xmlFile) throws IOException, SystemException {
         String fileName = xmlFile.getName();
@@ -731,7 +731,7 @@ public class MetadataTalendTypeEditor extends FieldEditor {
 
     /**
      * Getter for selectId.
-     * 
+     *
      * @return the selectId
      */
     public String getSelectId() {
@@ -740,7 +740,7 @@ public class MetadataTalendTypeEditor extends FieldEditor {
 
     /**
      * Sets the selectId.
-     * 
+     *
      * @param selectId the selectId to set
      */
     public void setSelectId(String selectId) {

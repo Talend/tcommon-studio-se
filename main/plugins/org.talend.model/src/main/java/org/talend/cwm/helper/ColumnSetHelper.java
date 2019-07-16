@@ -1,6 +1,6 @@
 // ============================================================================
 //
-// Copyright (C) 2006-2018 Talend Inc. - www.talend.com
+// Copyright (C) 2006-2019 Talend Inc. - www.talend.com
 //
 // This source code is available under agreement available at
 // %InstallDIR%\features\org.talend.rcp.branding.%PRODUCTNAME%\%PRODUCTNAME%license.txt
@@ -41,7 +41,7 @@ import orgomg.cwm.resource.relational.View;
 
 /**
  * @author scorreia
- * 
+ *
  * Utility class for handling ColumnSets.
  */
 public final class ColumnSetHelper {
@@ -51,7 +51,7 @@ public final class ColumnSetHelper {
 
     /**
      * Method "addColumn" adds the given column to the given column set.
-     * 
+     *
      * @param column the column to add
      * @param columnSet the column set
      * @return true if the column set has changed.
@@ -64,7 +64,7 @@ public final class ColumnSetHelper {
      * removes the column from the columnSet and remove the column from the primary key and the foreign key that
      * contains it. this eventually removes the private key and foreign key from the table if the are no more refering
      * to any column
-     * 
+     *
      * @param column to be removed
      * @param columnSet the set to remove the column from
      */
@@ -89,9 +89,9 @@ public final class ColumnSetHelper {
     }
 
     /**
-     * 
+     *
      * DOC mzhao 2009-03-12 Remove all columns from this column set.
-     * 
+     *
      * @param column
      * @param columnSet
      * @return true if remove successfully, false or else.
@@ -106,7 +106,7 @@ public final class ColumnSetHelper {
 
     /**
      * Method "addColumns".
-     * 
+     *
      * @param columnSet the column set in which to add the columns (must not be null)
      * @param columns the columns to add (must not be null)
      * @return true if the content of the table changed as a result of the call.
@@ -127,7 +127,7 @@ public final class ColumnSetHelper {
 
     /**
      * Method "setColumns" replaces the previous columns by the new ones.
-     * 
+     *
      * @param columnSet the column set in which to add the columns (must not be null)
      * @param columns the columns to add (must not be null)
      * @return true if the content of the table changed as a result of the call.
@@ -141,7 +141,7 @@ public final class ColumnSetHelper {
 
     /**
      * Method "createQueryColumnSet".
-     * 
+     *
      * @return a Query column set
      */
     public static QueryColumnSet createQueryColumnSet() {
@@ -150,7 +150,7 @@ public final class ColumnSetHelper {
 
     /**
      * DMethod "createQueryColumnSet" creates a column set from given columns.
-     * 
+     *
      * @param columns the columns
      * @return the column set
      */
@@ -164,7 +164,7 @@ public final class ColumnSetHelper {
 
     /**
      * Method "getParentCatalogOrSchema" returns the owner of the element (Catalog or Schema).
-     * 
+     *
      * @param element (can be null)
      * @return the Catalog or of Schema or null
      */
@@ -178,7 +178,7 @@ public final class ColumnSetHelper {
 
     /**
      * Method "fillColumnSets". TODO scorreia this method has not been tested yet!!
-     * 
+     *
      * @param <T> the type of elements to find (either Table, View, ColumnSet)
      * @param catalog the catalog if the tables are stored directly in catalog (or null)
      * @param schema the schema if the tables are stored directly in schema (or null)
@@ -253,7 +253,7 @@ public final class ColumnSetHelper {
 
     /**
      * Method "getTableNames".
-     * 
+     *
      * @param columnSet a set of columns (that could come from several Tables or views)
      * @return the list of container names (tables, views) which the columns belong to (not null).
      */
@@ -264,7 +264,7 @@ public final class ColumnSetHelper {
 
     /**
      * Method "getTableNames".
-     * 
+     *
      * @param columnSet a set of columns (that could come from several Tables or views)
      * @return the list of container names (tables, views) which the columns belong to (not null).
      */
@@ -281,9 +281,9 @@ public final class ColumnSetHelper {
 
     /**
      * DOC bZhou Comment method "isFromSamePackage".
-     * 
+     *
      * this method is used to judge columnset whether from same package.
-     * 
+     *
      * @param sets
      * @return
      */
@@ -299,7 +299,7 @@ public final class ColumnSetHelper {
 
     /**
      * DOC bZhou Comment method "getTableFilter".
-     * 
+     *
      * @param element
      * @return
      */
@@ -313,7 +313,7 @@ public final class ColumnSetHelper {
 
     /**
      * DOC bZhou Comment method "setTableFilter".
-     * 
+     *
      * @param filter
      * @param element
      */
@@ -323,7 +323,7 @@ public final class ColumnSetHelper {
 
     /**
      * DOC bZhou Comment method "getViewFilter".
-     * 
+     *
      * @param element
      * @return
      */
@@ -337,7 +337,7 @@ public final class ColumnSetHelper {
 
     /**
      * DOC bZhou Comment method "setViewFilter".
-     * 
+     *
      * @param filter
      * @param element
      */
@@ -347,7 +347,7 @@ public final class ColumnSetHelper {
 
     /**
      * DOC bZhou Comment method "getComment".
-     * 
+     *
      * @param element
      * @return
      */
@@ -361,7 +361,7 @@ public final class ColumnSetHelper {
 
     /**
      * DOC bZhou Comment method "setComment".
-     * 
+     *
      * @param comment
      * @param element
      */

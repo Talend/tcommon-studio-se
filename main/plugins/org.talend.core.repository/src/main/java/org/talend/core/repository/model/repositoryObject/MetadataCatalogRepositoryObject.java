@@ -1,6 +1,6 @@
 // ============================================================================
 //
-// Copyright (C) 2006-2018 Talend Inc. - www.talend.com
+// Copyright (C) 2006-2019 Talend Inc. - www.talend.com
 //
 // This source code is available under agreement available at
 // %InstallDIR%\features\org.talend.rcp.branding.%PRODUCTNAME%\%PRODUCTNAME%license.txt
@@ -53,9 +53,9 @@ public class MetadataCatalogRepositoryObject extends MetadataCatalog implements 
 
     /**
      * DOC klliu MetadataCatalogRepositoryObject constructor comment.
-     * 
+     *
      * Arguments must not be null.
-     * 
+     *
      * @param repositoryViewObject
      * @param catalog
      */
@@ -102,7 +102,7 @@ public class MetadataCatalogRepositoryObject extends MetadataCatalog implements 
     /**
      * update the Catalog object according to the Property, because when the connection has been reloaded, the catalog
      * object should be changed, so need use the new catalog object.
-     * 
+     *
      * @param property
      */
     private void updateCatalog(Property property) {
@@ -202,7 +202,7 @@ public class MetadataCatalogRepositoryObject extends MetadataCatalog implements 
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see org.talend.core.model.repository.IRepositoryViewObject#isModified()
      */
     @Override

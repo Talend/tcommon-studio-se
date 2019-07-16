@@ -1,6 +1,6 @@
 // ============================================================================
 //
-// Copyright (C) 2006-2018 Talend Inc. - www.talend.com
+// Copyright (C) 2006-2019 Talend Inc. - www.talend.com
 //
 // This source code is available under agreement available at
 // %InstallDIR%\features\org.talend.rcp.branding.%PRODUCTNAME%\%PRODUCTNAME%license.txt
@@ -60,7 +60,7 @@ public class CreateMavenStandardJobOSGiPom extends CreateMavenJobPom {
 
     /**
      * DOC yyan CreateMavenStandardJobOSGiPom constructor comment.
-     * 
+     *
      * @param jobProcessor
      * @param pomFile
      */
@@ -227,8 +227,8 @@ public class CreateMavenStandardJobOSGiPom extends CreateMavenJobPom {
         try {
             Document document = PomUtil.loadAssemblyFile(null, assemblyFile);
             // add jobs
-            setupDependencySetNode(document, jobCoordinateMap, "${talend.job.name}",
-                    "${artifact.build.finalName}.${artifact.extension}", true);
+            setupDependencySetNode(document, jobCoordinateMap, null, "${artifact.build.finalName}.${artifact.extension}", true,
+                    true);
             PomUtil.saveAssemblyFile(assemblyFile, document);
         } catch (Exception e) {
             ExceptionHandler.process(e);
@@ -237,7 +237,7 @@ public class CreateMavenStandardJobOSGiPom extends CreateMavenJobPom {
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see
      * org.talend.designer.maven.tools.creator.CreateMavenJobPom#afterCreate(org.eclipse.core.runtime.IProgressMonitor)
      */
@@ -255,7 +255,7 @@ public class CreateMavenStandardJobOSGiPom extends CreateMavenJobPom {
 
     /**
      * Find service relation for ESB data service
-     * 
+     *
      * @param property
      * @return
      */

@@ -1,6 +1,6 @@
 // ============================================================================
 //
-// Copyright (C) 2006-2018 Talend Inc. - www.talend.com
+// Copyright (C) 2006-2019 Talend Inc. - www.talend.com
 //
 // This source code is available under agreement available at
 // %InstallDIR%\features\org.talend.rcp.branding.%PRODUCTNAME%\%PRODUCTNAME%license.txt
@@ -20,7 +20,7 @@ import org.talend.commons.exception.BusinessException;
 public class HiveConnectionException extends BusinessException {
 
     /**
-     * 
+     *
      */
     private static final long serialVersionUID = 7632407286326416971L;
 
@@ -32,7 +32,7 @@ public class HiveConnectionException extends BusinessException {
 
     /**
      * DOC marvin HiveConnectionException constructor comment.
-     * 
+     *
      * @param key
      * @param args
      */
@@ -42,7 +42,7 @@ public class HiveConnectionException extends BusinessException {
 
     /**
      * DOC marvin HiveConnectionException constructor comment.
-     * 
+     *
      * @param key
      */
     public HiveConnectionException(String key) {
@@ -51,7 +51,7 @@ public class HiveConnectionException extends BusinessException {
 
     /**
      * DOC marvin HiveConnectionException constructor comment.
-     * 
+     *
      * @param cause
      */
     public HiveConnectionException(Throwable cause) {
@@ -60,7 +60,7 @@ public class HiveConnectionException extends BusinessException {
 
     /**
      * DOC marvin HiveConnectionException constructor comment.
-     * 
+     *
      * @param key
      * @param cause
      */
@@ -70,7 +70,7 @@ public class HiveConnectionException extends BusinessException {
 
     /**
      * DOC marvin HiveConnectionException constructor comment.
-     * 
+     *
      * @param cause
      * @param key
      * @param args

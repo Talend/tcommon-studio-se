@@ -1,6 +1,6 @@
 // ============================================================================
 //
-// Copyright (C) 2006-2018 Talend Inc. - www.talend.com
+// Copyright (C) 2006-2019 Talend Inc. - www.talend.com
 //
 // This source code is available under agreement available at
 // %InstallDIR%\features\org.talend.rcp.branding.%PRODUCTNAME%\%PRODUCTNAME%license.txt
@@ -56,9 +56,9 @@ public interface IDesignerCoreUIService extends IService {
     List<PaletteEntry> createPaletteEtnry();
 
     boolean executeCommand(IGEFProcess process, Command cmd);
-    
+
     Command createMavenDeploymentValueChangeCommand(Object object, String type, String value);
-    
+
     void loadComponentsFromProviders(ERepositoryObjectType type);
-    
+
 }

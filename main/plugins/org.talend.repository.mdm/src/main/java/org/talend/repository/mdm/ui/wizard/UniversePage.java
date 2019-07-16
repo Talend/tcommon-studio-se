@@ -1,6 +1,6 @@
 // ============================================================================
 //
-// Copyright (C) 2006-2018 Talend Inc. - www.talend.com
+// Copyright (C) 2006-2019 Talend Inc. - www.talend.com
 //
 // This source code is available under agreement available at
 // %InstallDIR%\features\org.talend.rcp.branding.%PRODUCTNAME%\%PRODUCTNAME%license.txt
@@ -36,7 +36,7 @@ public class UniversePage extends WizardPage {
 
     /**
      * DOC Administrator UniseverPage constructor comment.
-     * 
+     *
      * @param pageName
      */
     protected UniversePage(ConnectionItem connectionItem, String pageName) {
@@ -47,7 +47,7 @@ public class UniversePage extends WizardPage {
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see org.eclipse.jface.dialogs.IDialogPage#createControl(org.eclipse.swt.widgets.Composite)
      */
     public void createControl(Composite parent) {

@@ -1,6 +1,6 @@
 // ============================================================================
 //
-// Copyright (C) 2006-2018 Talend Inc. - www.talend.com
+// Copyright (C) 2006-2019 Talend Inc. - www.talend.com
 //
 // This source code is available under agreement available at
 // %InstallDIR%\features\org.talend.rcp.branding.%PRODUCTNAME%\%PRODUCTNAME%license.txt
@@ -43,7 +43,7 @@ public class RegexpFileWizardPage extends WizardPage {
 
     /**
      * DOC ocarbone RegexpFileWizardPage constructor comment.
-     * 
+     *
      * @param step
      * @param connection
      * @param isRepositoryObjectEditable
@@ -60,7 +60,7 @@ public class RegexpFileWizardPage extends WizardPage {
     }
 
     /**
-     * 
+     *
      * @see IDialogPage#createControl(Composite)
      */
     public void createControl(final Composite parent) {

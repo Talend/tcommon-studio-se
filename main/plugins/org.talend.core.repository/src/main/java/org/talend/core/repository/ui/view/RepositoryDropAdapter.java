@@ -1,6 +1,6 @@
 // ============================================================================
 //
-// Copyright (C) 2006-2018 Talend Inc. - www.talend.com
+// Copyright (C) 2006-2019 Talend Inc. - www.talend.com
 //
 // This source code is available under agreement available at
 // %InstallDIR%\features\org.talend.rcp.branding.%PRODUCTNAME%\%PRODUCTNAME%license.txt
@@ -78,9 +78,9 @@ import org.talend.repository.model.RepositoryNode;
 
 /**
  * DOC smallet class global comment. Detailled comment <br/>
- * 
+ *
  * $Id$
- * 
+ *
  */
 public class RepositoryDropAdapter extends PluginDropAdapter {
 
@@ -105,7 +105,7 @@ public class RepositoryDropAdapter extends PluginDropAdapter {
 
     /**
      * Does the conversion between common jobs and m/r jobs. Added by Marvin Wang on Mar 19, 2013.
-     * 
+     *
      * @param sourceSelections
      * @param targetNode that is <b>Standard Jobs</b> or <b>Map/Reduce Jobs</b>.
      */
@@ -210,7 +210,7 @@ public class RepositoryDropAdapter extends PluginDropAdapter {
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see org.eclipse.ui.part.PluginDropAdapter#performDrop(java.lang.Object)
      */
     @Override
@@ -341,10 +341,10 @@ public class RepositoryDropAdapter extends PluginDropAdapter {
 
     /**
      * ADD gdbu 2011-9-29 TDQ-3546
-     * 
+     *
      * DOC gdbu(TDQ) Comment method "judgeCanMoveOrNotByDependency". If current connecton have dependencies in TDQ ,
      * then return false and that means can not move it.
-     * 
+     *
      * @param sourceNode
      * @param resourceChangeService
      * @return
@@ -371,7 +371,7 @@ public class RepositoryDropAdapter extends PluginDropAdapter {
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see org.eclipse.ui.part.PluginDropAdapter#validateDrop(java.lang.Object, int, org.eclipse.swt.dnd.TransferData)
      */
     @Override

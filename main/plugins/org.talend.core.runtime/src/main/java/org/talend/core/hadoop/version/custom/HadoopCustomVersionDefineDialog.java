@@ -1,6 +1,6 @@
 // ============================================================================
 //
-// Copyright (C) 2006-2018 Talend Inc. - www.talend.com
+// Copyright (C) 2006-2019 Talend Inc. - www.talend.com
 //
 // This source code is available under agreement available at
 // %InstallDIR%\features\org.talend.rcp.branding.%PRODUCTNAME%\%PRODUCTNAME%license.txt
@@ -79,13 +79,13 @@ import org.talend.repository.ui.dialog.LibrariesListSelectionDialog;
 
 /**
  * created by ycbai on 2013-3-12 Detailled comment
- * 
+ *
  * <p>
  * A dialog which can be used to define a hadoop version. You can use {@link #getLibMap()} to gain all libraries which
  * you have defined in it or use {@link #getLibList(ECustomVersionGroup)} or {@link #getLibListStr(ECustomVersionGroup)}
  * to gain the specific type(which defined in {@link ECustomVersionGroup} of libraries.
  * </p>
- * 
+ *
  */
 public class HadoopCustomVersionDefineDialog extends TitleAreaDialog {
 
@@ -129,11 +129,11 @@ public class HadoopCustomVersionDefineDialog extends TitleAreaDialog {
 
     /**
      * DOC ycbai HadoopCustomVersionDefineDialog constructor comment.
-     * 
+     *
      * <p>
      * Create a instance of this dialog without contents.
      * </p>
-     * 
+     *
      * @param parentShell
      */
     public HadoopCustomVersionDefineDialog(Shell parentShell) {
@@ -141,9 +141,9 @@ public class HadoopCustomVersionDefineDialog extends TitleAreaDialog {
     }
 
     /**
-     * 
+     *
      * DOC ycbai HadoopCustomVersionDefineDialog constructor comment.
-     * 
+     *
      * <p>
      * Create a instance of this dialog and initialise it use {@code currentLibMap} which form is:
      * <ul>
@@ -151,7 +151,7 @@ public class HadoopCustomVersionDefineDialog extends TitleAreaDialog {
      * <li>Value: set of libraries correspond to the key.</li>
      * </ul>
      * </p>
-     * 
+     *
      * @param parentShell
      * @param currentLibMap
      */
@@ -225,7 +225,7 @@ public class HadoopCustomVersionDefineDialog extends TitleAreaDialog {
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see org.eclipse.jface.dialogs.Dialog#createButtonsForButtonBar(org.eclipse.swt.widgets.Composite)
      */
     @Override
@@ -491,7 +491,7 @@ public class HadoopCustomVersionDefineDialog extends TitleAreaDialog {
 
     /**
      * DOC ycbai Comment method "getDisplayTypes".
-     * 
+     *
      * @return Types({@link ECustomVersionType}) array which you want to display in this dialog.
      */
     protected ECustomVersionType[] getDisplayTypes() {
@@ -665,7 +665,7 @@ public class HadoopCustomVersionDefineDialog extends TitleAreaDialog {
 
     /**
      * DOC ycbai Comment method "getLibMap".
-     * 
+     *
      * <p>
      * Get libraries map which defined in the dialog. The form of the returned map is:
      * <ul>
@@ -673,7 +673,7 @@ public class HadoopCustomVersionDefineDialog extends TitleAreaDialog {
      * <li>Value: set of libraries correspond to the key.</li>
      * </ul>
      * </p>
-     * 
+     *
      * @return Libraries map which used by the hadoop version.
      */
     public Map<String, Set<String>> getLibMap() {
@@ -690,13 +690,13 @@ public class HadoopCustomVersionDefineDialog extends TitleAreaDialog {
     }
 
     /**
-     * 
+     *
      * DOC ycbai Comment method "getLibList".
-     * 
+     *
      * <p>
      * Get libraries which <code>definitionType</code> need.
      * </p>
-     * 
+     *
      * @param definitionType
      * @return Libraries set which needed by the <code>definitionType</code>.
      */
@@ -706,11 +706,11 @@ public class HadoopCustomVersionDefineDialog extends TitleAreaDialog {
 
     /**
      * DOC ycbai Comment method "getLibListStr".
-     * 
+     *
      * <p>
      * Get libraries which <code>definitionType</code> need.
      * </p>
-     * 
+     *
      * @param definitionType
      * @return Libraries string(separated by ';') which needed by the <code>definitionType</code>.
      */
@@ -736,9 +736,9 @@ public class HadoopCustomVersionDefineDialog extends TitleAreaDialog {
     }
 
     /**
-     * 
+     *
      * created by ycbai on 2013-3-19 Detailled comment
-     * 
+     *
      */
     class TableViewerComparator extends ViewerComparator {
 
@@ -794,13 +794,13 @@ public class HadoopCustomVersionDefineDialog extends TitleAreaDialog {
 
     /**
      * created by ycbai on 2013-3-19 Detailled comment
-     * 
+     *
      */
     class LibNameDialogCellEditor extends DialogCellEditor {
 
         /**
          * DOC ycbai LibNameDialogCellEditor constructor comment.
-         * 
+         *
          * @param composite
          */
         public LibNameDialogCellEditor(Composite composite) {
@@ -809,7 +809,7 @@ public class HadoopCustomVersionDefineDialog extends TitleAreaDialog {
 
         /*
          * (non-Javadoc)
-         * 
+         *
          * @see org.eclipse.jface.viewers.DialogCellEditor#openDialogBox(org.eclipse.swt.widgets.Control)
          */
         @Override
@@ -868,7 +868,7 @@ public class HadoopCustomVersionDefineDialog extends TitleAreaDialog {
 
     /**
      * created by ycbai on 2013-3-19 Detailled comment
-     * 
+     *
      */
     class LibNameEditingSupport extends EditingSupport {
 

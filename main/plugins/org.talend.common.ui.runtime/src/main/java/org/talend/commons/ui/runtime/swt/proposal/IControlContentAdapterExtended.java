@@ -1,6 +1,6 @@
 // ============================================================================
 //
-// Copyright (C) 2006-2018 Talend Inc. - www.talend.com
+// Copyright (C) 2006-2019 Talend Inc. - www.talend.com
 //
 // This source code is available under agreement available at
 // %InstallDIR%\features\org.talend.rcp.branding.%PRODUCTNAME%\%PRODUCTNAME%license.txt
@@ -17,17 +17,17 @@ import org.eclipse.swt.widgets.Control;
 
 /**
  * DOC amaumont class global comment. Detailled comment <br/>
- * 
+ *
  * $Id: IControlContentAdapterExtended.java 7038 2007-11-15 14:05:48Z plegall $
- * 
+ *
  */
 public interface IControlContentAdapterExtended extends IControlContentAdapter {
 
     /**
-     * 
+     *
      * Return the last word before the cursor. If control contains "test filter value" and cursor is at offset 8, The
      * filter value is "fil".
-     * 
+     *
      * @param control
      * @return return the last word before the cursor.
      */
@@ -35,7 +35,7 @@ public interface IControlContentAdapterExtended extends IControlContentAdapter {
 
     /**
      * Proposal set the used filter.
-     * 
+     *
      * @param filterValue
      */
     public void setUsedFilterValue(String filterValue);

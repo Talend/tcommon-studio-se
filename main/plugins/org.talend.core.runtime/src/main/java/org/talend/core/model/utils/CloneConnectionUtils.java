@@ -1,6 +1,6 @@
 // ============================================================================
 //
-// Copyright (C) 2006-2018 Talend Inc. - www.talend.com
+// Copyright (C) 2006-2019 Talend Inc. - www.talend.com
 //
 // This source code is available under agreement available at
 // %InstallDIR%\features\org.talend.rcp.branding.%PRODUCTNAME%\%PRODUCTNAME%license.txt
@@ -42,14 +42,14 @@ import orgomg.cwm.objectmodel.core.Package;
 
 /**
  * created by nrousseau on Sep 4, 2013 Detailled comment
- * 
+ *
  */
 public class CloneConnectionUtils {
 
     /**
-     * 
+     *
      * ggu Comment method "cloneOriginalValueConnection".
-     * 
+     *
      * perhaps, if connection is in context mode, will open dialog to choose context sets.
      */
     public static FileConnection cloneOriginalValueConnection(FileConnection fileConn) {
@@ -73,10 +73,10 @@ public class CloneConnectionUtils {
     }
 
     /**
-     * 
+     *
      * ggu Comment method "cloneOriginalValueConnection".
-     * 
-     * 
+     *
+     *
      */
     @SuppressWarnings("unchecked")
     public static FileConnection cloneOriginalValueConnection(FileConnection fileConn, ContextType contextType) {

@@ -1,6 +1,6 @@
 // ============================================================================
 //
-// Copyright (C) 2006-2018 Talend Inc. - www.talend.com
+// Copyright (C) 2006-2019 Talend Inc. - www.talend.com
 //
 // This source code is available under agreement available at
 // %InstallDIR%\features\org.talend.rcp.branding.%PRODUCTNAME%\%PRODUCTNAME%license.txt
@@ -31,7 +31,7 @@ import org.talend.repository.metadata.i18n.Messages;
  * DOC hwang  class global comment. Detailled comment
  */
 public class DatabasePreferencePage extends FieldEditorPreferencePage implements IWorkbenchPreferencePage{
-    
+
     public DatabasePreferencePage() {
         super(GRID);
     }
@@ -39,11 +39,11 @@ public class DatabasePreferencePage extends FieldEditorPreferencePage implements
     @Override
     public void init(IWorkbench workbench) {
         IPreferenceStore store = CoreUIPlugin.getDefault().getPreferenceStore();
-        
+
         store.setDefault(IDatabasePrefConstants.SQL_SYNTAX, "SQL 92"); //$NON-NLS-1$
         store.setDefault(IDatabasePrefConstants.STRING_QUOTE, "\""); //$NON-NLS-1$
         store.setDefault(IDatabasePrefConstants.NULL_CHAR, "000"); //$NON-NLS-1$
-        
+
         setPreferenceStore(store);
     }
 
@@ -53,7 +53,7 @@ public class DatabasePreferencePage extends FieldEditorPreferencePage implements
         createForMapper(parent);
         parent.pack();
     }
-    
+
     protected Composite createForMapper(Composite parent) {
         Group group = createGroup(parent);
         group.setText("Database properties");
@@ -61,23 +61,23 @@ public class DatabasePreferencePage extends FieldEditorPreferencePage implements
         createFieldEditors2(composite);
         GridLayout layout = createLayout();
         composite.setLayout(layout);
-//        
-//        
+//
+//
 //        RadioGroupFieldEditor standardSQLField = new RadioGroupFieldEditor(
 //                IDatabasePrefConstants.STANDARD_SQL,
-//                "", 2, new String[][] { { Messages.getString("DatabaseForm.StandardSQL"), "" + 24 }, //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ 
+//                "", 2, new String[][] { { Messages.getString("DatabaseForm.StandardSQL"), "" + 24 }, //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
 //                        { Messages.getString("DatabaseForm.SystemSQL"), "" + 32 } }, getFieldEditorParent()); //$NON-NLS-1$ //$NON-NLS-2$
 //        addField(standardSQLField);
-//        
-//        
+//
+//
 //        RadioGroupFieldEditor sqlModelField = new RadioGroupFieldEditor(
 //                IDatabasePrefConstants.STANDARD_SQL,
-//                Messages.getString("DatabaseForm.sqlMode"), 2, new String[][] { { Messages.getString("DatabaseForm.yes"), "" + 24 }, //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ 
+//                Messages.getString("DatabaseForm.sqlMode"), 2, new String[][] { { Messages.getString("DatabaseForm.yes"), "" + 24 }, //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
 //                        { Messages.getString("DatabaseForm.no"), "" + 32 } }, getFieldEditorParent()); //$NON-NLS-1$ //$NON-NLS-2$
 //        addField(sqlModelField);
         return group;
     }
-    
+
     protected GridLayout createLayout() {
         GridLayout layout = new GridLayout();
         layout.numColumns = 8;
@@ -86,11 +86,11 @@ public class DatabasePreferencePage extends FieldEditorPreferencePage implements
         layout.horizontalSpacing = 8;
         return layout;
     }
-    
+
     protected void addFontAndColorFieldsForMapper(Composite composite) {
         createFieldEditors2(composite);
     }
-    
+
     public void createFieldEditors2(Composite composite) {
         IPreferenceStore store = CoreUIPlugin.getDefault().getPreferenceStore();
         store.getString(IDatabasePrefConstants.STRING_QUOTE);
@@ -104,18 +104,18 @@ public class DatabasePreferencePage extends FieldEditorPreferencePage implements
         }
 
         ComboFieldEditor syntaxField = new ComboFieldEditor(IDatabasePrefConstants.SQL_SYNTAX,
-                "SQL Syntax", strComboValues, composite); 
+                "SQL Syntax", strComboValues, composite);
         addField(syntaxField);
-        
+
         StringFieldEditor quoteField = new StringFieldEditor(IDatabasePrefConstants.STRING_QUOTE,
                 "String Quote", composite);
         addField(quoteField);
-        
+
         StringFieldEditor charField = new StringFieldEditor(IDatabasePrefConstants.NULL_CHAR,
                 "Null Char", composite);
         addField(charField);
     }
-    
+
     protected Composite createComposite(Group group) {
         Composite composite = new Composite(group, SWT.NONE);
         GridLayout gridLayout = new GridLayout(3, false);
@@ -126,7 +126,7 @@ public class DatabasePreferencePage extends FieldEditorPreferencePage implements
         composite.setLayoutData(gridData);
         return composite;
     }
-    
+
     protected Group createGroup(Composite parent) {
         Group group = new Group(parent, SWT.NONE);
         GridData layoutData = new GridData(GridData.FILL_HORIZONTAL);

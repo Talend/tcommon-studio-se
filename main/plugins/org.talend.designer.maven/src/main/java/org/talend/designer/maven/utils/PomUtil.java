@@ -1,6 +1,6 @@
 // ============================================================================
 //
-// Copyright (C) 2006-2018 Talend Inc. - www.talend.com
+// Copyright (C) 2006-2019 Talend Inc. - www.talend.com
 //
 // This source code is available under agreement available at
 // %InstallDIR%\features\org.talend.rcp.branding.%PRODUCTNAME%\%PRODUCTNAME%license.txt
@@ -26,6 +26,7 @@ import java.io.InputStreamReader;
 import java.security.SecureRandom;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.LinkedHashSet;
@@ -115,7 +116,7 @@ public class PomUtil {
 
     private static final MavenModelManager MODEL_MANAGER = MavenPlugin.getMavenModelManager();
 
-    private static RelationshipItemBuilder relationshipItemBuilder = RelationshipItemBuilder.getInstance();
+    private static RelationshipItemBuilder relationshipItemBuilder;
 
     private static ProxyRepositoryFactory repositoryFactory = ProxyRepositoryFactory.getInstance();
 
@@ -189,7 +190,7 @@ public class PomUtil {
 
     /**
      * main for the codes pom without version.
-     * 
+     *
      * get the pom name, if name is null, return default one "pom.xml", else will be "pom_<name>.xml"
      */
     public static String getPomFileName(String name) {
@@ -197,7 +198,7 @@ public class PomUtil {
     }
 
     /**
-     * 
+     *
      * get the pom name, if name is null, return default one "pom.xml", else will be "pom_<name>_<version>.xml"
      */
     public static String getPomFileName(String name, String version) {
@@ -229,9 +230,9 @@ public class PomUtil {
     }
 
     /**
-     * 
+     *
      * DOC ggu Comment method "getDefaultMavenVersion".
-     * 
+     *
      * @return 6.0.0, without classifier.
      */
     public static String getDefaultMavenVersion() {
@@ -248,9 +249,9 @@ public class PomUtil {
     }
 
     /**
-     * 
+     *
      * DOC ggu Comment method "checkParent". make sure the parent are unified.
-     * 
+     *
      * @param curModel
      * @param curPomFile
      */
@@ -292,7 +293,7 @@ public class PomUtil {
 
     /**
      * DOC ggu Comment method "createModuleSystemScopeDependency".
-     * 
+     *
      * @return
      */
     public static Dependency createDependency(String groupId, String artifactId, String version, String type, String classifier) {
@@ -331,9 +332,9 @@ public class PomUtil {
     }
 
     /**
-     * 
+     *
      * According to the process, generate the groud id, like org.talend.process.di.demo.
-     * 
+     *
      * @deprecated
      */
     @Deprecated
@@ -399,7 +400,7 @@ public class PomUtil {
      * return the list of existed maven artifacts in local repository.
      */
     public static Set<String> availableArtifacts(IProgressMonitor monitor, String[] mvnUrls) throws Exception {
-        Set<String> existedMvnUrls = new LinkedHashSet<String>();
+        Set<String> existedMvnUrls = new LinkedHashSet<>();
         if (mvnUrls != null) {
             for (String mvnUrl : mvnUrls) {
                 MavenArtifact artifact = MavenUrlHelper.parseMvnUrl(mvnUrl);
@@ -435,7 +436,7 @@ public class PomUtil {
     }
 
     /**
-     * 
+     *
      * Try to find the template files form the path which based on root container first. if not found, will try to find
      * in parent folder until root container.
      */
@@ -466,9 +467,9 @@ public class PomUtil {
     }
 
     /**
-     * 
+     *
      * Get artifact relative path
-     * 
+     *
      * @param artifact
      * @return
      */
@@ -510,9 +511,13 @@ public class PomUtil {
         return repoPath + "/" + artifactPath; //$NON-NLS-1$
     }
 
+    public static String getLocalRepositoryPath() {
+        return MavenPlugin.getMaven().getLocalRepositoryPath();
+    }
+
     /**
      * Get absolute path for installed artifact
-     * 
+     *
      * @param artifact
      * @return installed artifact absolute path , it will return null if artifact is not installed.
      */
@@ -522,7 +527,7 @@ public class PomUtil {
         }
         String mvnUri = MavenUrlHelper.generateMvnUrl(artifact);
         if (GlobalServiceRegister.getDefault().isServiceRegistered(ILibraryManagerService.class)) {
-            ILibraryManagerService librariesService = (ILibraryManagerService) GlobalServiceRegister.getDefault()
+            ILibraryManagerService librariesService = GlobalServiceRegister.getDefault()
                     .getService(ILibraryManagerService.class);
             return librariesService.getJarPathFromMaven(mvnUri);
         } else {
@@ -588,7 +593,7 @@ public class PomUtil {
         pomModel.setArtifactId(artifact.getArtifactId());
         pomModel.setVersion(artifact.getVersion());
         if (GlobalServiceRegister.getDefault().isServiceRegistered(IBrandingService.class)) {
-            IBrandingService brandingService = (IBrandingService) GlobalServiceRegister.getDefault()
+            IBrandingService brandingService = GlobalServiceRegister.getDefault()
                     .getService(IBrandingService.class);
             pomModel.setDescription("Generated by " + brandingService.getCorporationName());//$NON-NLS-1$
         } else {
@@ -650,9 +655,9 @@ public class PomUtil {
     }
 
     /**
-     * 
+     *
      * Create pom without refresh eclipse resources
-     * 
+     *
      * @param artifact
      * @return
      */
@@ -672,11 +677,11 @@ public class PomUtil {
     }
 
     /**
-     * 
+     *
      * in order to make sure no compile error for editor, so add all needed dependencies always.
      */
     public static Collection<Dependency> getCodesDependencies(IFile projectPomFile, String projectTechName) throws CoreException {
-        Map<String, Dependency> codesDependencies = new LinkedHashMap<String, Dependency>();
+        Map<String, Dependency> codesDependencies = new LinkedHashMap<>();
 
         // routines
         addCodeDependencies(codesDependencies, projectPomFile, TalendMavenConstants.DEFAULT_ROUTINES_ARTIFACT_ID,
@@ -709,7 +714,7 @@ public class PomUtil {
     }
 
     public static List<String> getMavenCodesModules(IProcess process) {
-        List<String> codesModules = new ArrayList<String>();
+        List<String> codesModules = new ArrayList<>();
 
         // add routines always.
         String routinesModule = PomUtil.getPomFileName(TalendMavenConstants.DEFAULT_ROUTINES_ARTIFACT_ID);
@@ -731,7 +736,7 @@ public class PomUtil {
     }
 
     public static List<String> getCodesExportJars(IProcess process) {
-        List<String> codesJars = new ArrayList<String>();
+        List<String> codesJars = new ArrayList<>();
         // add routines always.
         codesJars.add(JavaUtils.ROUTINES_JAR);
 
@@ -748,7 +753,7 @@ public class PomUtil {
     }
 
     public static Map<String, Object> getTemplateParameters(IProcessor processor) {
-        Map<String, Object> parameters = new HashMap<String, Object>();
+        Map<String, Object> parameters = new HashMap<>();
         if (processor != null) {
             final Property property = processor.getProperty();
             return getTemplateParameters(property);
@@ -757,7 +762,7 @@ public class PomUtil {
     }
 
     public static Map<String, Object> getTemplateParameters(Property property) {
-        Map<String, Object> parameters = new HashMap<String, Object>();
+        Map<String, Object> parameters = new HashMap<>();
         if (property != null && property.eResource() != null) {
             final org.talend.core.model.properties.Project project = ProjectManager.getInstance().getProject(property);
             if (project != null // from reference projects
@@ -850,10 +855,10 @@ public class PomUtil {
     }
 
     /**
-     * 
+     *
      * DOC wchen Comment : when build job with subjob loop dependecies , all source code will be generated in main job
      * and the pom of main will remove subjob in dependency but add all dependencies from child pom
-     * 
+     *
      * @param mainJobPom
      * @param childJobPoms
      * @param childJobRUL
@@ -862,11 +867,11 @@ public class PomUtil {
      */
     public static void updateMainJobDependencies(IFile mainJobPom, List<IFile> childJobPoms, Set<String> childJobRUL,
             IProgressMonitor monitor) throws Exception {
-        Map<String, Dependency> codesDependencies = new LinkedHashMap<String, Dependency>();
+        Map<String, Dependency> codesDependencies = new LinkedHashMap<>();
         Model mainModel = MODEL_MANAGER.readMavenModel(mainJobPom);
 
         List<Dependency> mainDependencies = mainModel.getDependencies();
-        List<Dependency> toRemove = new ArrayList<Dependency>();
+        List<Dependency> toRemove = new ArrayList<>();
         for (Dependency dependency : mainDependencies) {
             String mvnUrl = generateMvnUrl(dependency);
             if (childJobRUL.contains(mvnUrl)) {
@@ -905,7 +910,7 @@ public class PomUtil {
 
             if (repositoryObject != null && repositoryObject.getProperty() != null) {
                 // to update joblet dependencies for loop
-                if (relationshipItemBuilder.JOBLET_RELATION.equals(relation.getType())) {
+                if (getRelationshipItemBuilder().JOBLET_RELATION.equals(relation.getType())) {
                     updateJobletDependencies4Loop(repositoryObject.getProperty(), childJobUrls, monitor);
                 }
 
@@ -929,7 +934,7 @@ public class PomUtil {
         IFile jobletPomFile = pomFolder.getFile(TalendMavenConstants.POM_FILE_NAME);
         Model jobletModel = MODEL_MANAGER.readMavenModel(jobletPomFile);
         List<Dependency> dependencies = jobletModel.getDependencies();
-        List<Dependency> toRemove = new ArrayList<Dependency>();
+        List<Dependency> toRemove = new ArrayList<>();
         for (Dependency dependency : dependencies) {
             String mvnUrl = generateMvnUrl(dependency);
             if (childJobUrls.contains(mvnUrl)) {
@@ -940,14 +945,23 @@ public class PomUtil {
         savePom(monitor, jobletModel, jobletPomFile);
 
     }
-    
+
     private static List<Relation> getAllChildItemRelations(Property property, String itemType) {
-        List<Relation> itemsRelatedTo = new ArrayList<Relation>();
-        itemsRelatedTo.addAll(relationshipItemBuilder.getItemsChildRelatedTo(property.getId(), property.getVersion(), itemType,
+        List<Relation> itemsRelatedTo = new ArrayList<>();
+        itemsRelatedTo
+                .addAll(getRelationshipItemBuilder().getItemsChildRelatedTo(property.getId(), property.getVersion(), itemType,
                 RelationshipItemBuilder.JOBLET_RELATION));
-        itemsRelatedTo.addAll(relationshipItemBuilder.getItemsChildRelatedTo(property.getId(), property.getVersion(), itemType,
+        itemsRelatedTo
+                .addAll(getRelationshipItemBuilder().getItemsChildRelatedTo(property.getId(), property.getVersion(), itemType,
                 RelationshipItemBuilder.JOB_RELATION));
         return itemsRelatedTo;
+    }
+
+    private static RelationshipItemBuilder getRelationshipItemBuilder() {
+        if (relationshipItemBuilder == null) {
+            relationshipItemBuilder = RelationshipItemBuilder.getInstance();
+        }
+        return relationshipItemBuilder;
     }
 
     public static void restoreJobletPoms() {
@@ -1095,6 +1109,18 @@ public class PomUtil {
                 file.delete();
             }
         }
+    }
+
+    public static void removeAllDependenciesFromPom(File pomFile, MavenArtifact ma) throws Exception {
+        Model pomModel = MavenPlugin.getMavenModelManager().readMavenModel(pomFile);
+        pomModel.setParent(null);
+        pomModel.setGroupId(ma.getGroupId());
+        pomModel.setArtifactId(ma.getArtifactId());
+        pomModel.setVersion(ma.getVersion());
+        pomModel.setDependencies(Collections.EMPTY_LIST);
+        pomModel.setDependencyManagement(null);
+        pomModel.setProfiles(Collections.EMPTY_LIST);
+        savePom(new NullProgressMonitor(), pomModel, pomFile);
     }
 
     private final static FileFilter lastUpdatedFilter = new FileFilter() {

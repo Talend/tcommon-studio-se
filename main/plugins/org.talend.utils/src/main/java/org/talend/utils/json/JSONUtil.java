@@ -1,6 +1,6 @@
 // ============================================================================
 //
-// Copyright (C) 2006-2018 Talend Inc. - www.talend.com
+// Copyright (C) 2006-2019 Talend Inc. - www.talend.com
 //
 // This source code is available under agreement available at
 // %InstallDIR%\features\org.talend.rcp.branding.%PRODUCTNAME%\%PRODUCTNAME%license.txt
@@ -21,13 +21,13 @@ public class JSONUtil {
 
     /**
      * If the key have been existed in target,
-     * 
+     *
      * - for JSONObject, will merge the children.
-     * 
+     *
      * - for JSONArray, will append the source array in the end.
-     * 
+     *
      * - else, will overwrite.
-     * 
+     *
      * will return a new json always, means, won't break and change the source and target json.
      */
     public static JSONObject merge(JSONObject source, JSONObject target) {

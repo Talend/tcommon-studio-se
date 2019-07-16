@@ -1,6 +1,6 @@
 // ============================================================================
 //
-// Copyright (C) 2006-2018 Talend Inc. - www.talend.com
+// Copyright (C) 2006-2019 Talend Inc. - www.talend.com
 //
 // This source code is available under agreement available at
 // %InstallDIR%\features\org.talend.rcp.branding.%PRODUCTNAME%\%PRODUCTNAME%license.txt
@@ -44,7 +44,7 @@ import org.talend.repository.metadata.i18n.Messages;
 
 /**
  * DOC qzhang class global comment. Detailled comment <br/>
- * 
+ *
  */
 public class DatabaseTableFilterForm extends AbstractForm {
 
@@ -102,9 +102,9 @@ public class DatabaseTableFilterForm extends AbstractForm {
     }
 
     /**
-     * 
+     *
      * Initialize value, forceFocus first field for right Click (new Table).
-     * 
+     *
      */
     @Override
     public void initialize() {
@@ -212,7 +212,7 @@ public class DatabaseTableFilterForm extends AbstractForm {
 
     /**
      * DOC qzhang Comment method "createSwitchComposite".
-     * 
+     *
      * @param composite
      */
     private void createSwitchComposite(Composite composite) {
@@ -252,7 +252,7 @@ public class DatabaseTableFilterForm extends AbstractForm {
 
     /**
      * DOC qzhang Comment method "createNameFiterComposite".
-     * 
+     *
      * @param composite
      */
     private void createNameFiterComposite(Composite composite) {
@@ -392,7 +392,7 @@ public class DatabaseTableFilterForm extends AbstractForm {
 
     /**
      * DOC qzhang Comment method "getNameFilters".
-     * 
+     *
      * @return
      */
     private String[] getNameFilters() {
@@ -410,7 +410,7 @@ public class DatabaseTableFilterForm extends AbstractForm {
 
     /**
      * addButtonControls.
-     * 
+     *
      */
     @Override
     protected void addUtilsButtonListeners() {
@@ -516,7 +516,7 @@ public class DatabaseTableFilterForm extends AbstractForm {
 
                     /*
                      * (non-Javadoc)
-                     * 
+                     *
                      * @see org.eclipse.jface.window.Window#configureShell(org.eclipse.swt.widgets.Shell)
                      */
                     @Override
@@ -527,7 +527,7 @@ public class DatabaseTableFilterForm extends AbstractForm {
 
                     /*
                      * (non-Javadoc)
-                     * 
+                     *
                      * @see org.eclipse.jface.dialogs.Dialog#okPressed()
                      */
                     @Override
@@ -573,7 +573,7 @@ public class DatabaseTableFilterForm extends AbstractForm {
 
                     /*
                      * (non-Javadoc)
-                     * 
+                     *
                      * @see org.eclipse.jface.window.Window#configureShell(org.eclipse.swt.widgets.Shell)
                      */
                     @Override
@@ -584,7 +584,7 @@ public class DatabaseTableFilterForm extends AbstractForm {
 
                     /*
                      * (non-Javadoc)
-                     * 
+                     *
                      * @see org.eclipse.jface.dialogs.Dialog#okPressed()
                      */
                     @Override
@@ -640,7 +640,7 @@ public class DatabaseTableFilterForm extends AbstractForm {
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see org.talend.repository.ui.swt.AbstractForm#adaptFormToReadOnly()
      */
     @Override
@@ -649,7 +649,7 @@ public class DatabaseTableFilterForm extends AbstractForm {
 
     /**
      * Getter for tableInfoParameters.
-     * 
+     *
      * @return the tableInfoParameters
      */
     public TableInfoParameters getTableInfoParameters() {
@@ -658,7 +658,7 @@ public class DatabaseTableFilterForm extends AbstractForm {
 
     /**
      * Getter for nameFilter.
-     * 
+     *
      * @return the nameFilter
      */
     public String getNameFilter() {
@@ -676,7 +676,7 @@ public class DatabaseTableFilterForm extends AbstractForm {
 
     /**
      * DOC qzhang Comment method "getFilters".
-     * 
+     *
      * @return
      */
     public String[] getFilters() {

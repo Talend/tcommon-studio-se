@@ -1,6 +1,6 @@
 // ============================================================================
 //
-// Copyright (C) 2006-2018 Talend Inc. - www.talend.com
+// Copyright (C) 2006-2019 Talend Inc. - www.talend.com
 //
 // This source code is available under agreement available at
 // %InstallDIR%\features\org.talend.rcp.branding.%PRODUCTNAME%\%PRODUCTNAME%license.txt
@@ -40,7 +40,7 @@ import org.talend.core.ui.i18n.Messages;
 
 /**
  * A dialog that configure the object value sets.
- * 
+ *
  * @param <B>
  */
 public abstract class ObjectSelectionDialog<B> extends SelectionDialog {
@@ -133,7 +133,7 @@ public abstract class ObjectSelectionDialog<B> extends SelectionDialog {
 
     /**
      * DOC chuang Comment method "initTableViewer".
-     * 
+     *
      * @param parent
      */
     protected void initTableViewer(Composite parent) {

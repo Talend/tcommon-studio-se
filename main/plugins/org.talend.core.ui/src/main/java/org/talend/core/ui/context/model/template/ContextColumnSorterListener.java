@@ -1,6 +1,6 @@
 // ============================================================================
 //
-// Copyright (C) 2006-2018 Talend Inc. - www.talend.com
+// Copyright (C) 2006-2019 Talend Inc. - www.talend.com
 //
 // This source code is available under agreement available at
 // %InstallDIR%\features\org.talend.rcp.branding.%PRODUCTNAME%\%PRODUCTNAME%license.txt
@@ -30,7 +30,7 @@ public class ContextColumnSorterListener implements Listener {
 
     /**
      * ggu ContextColumnSorterListener constructor comment.
-     * 
+     *
      * @param viewer
      */
     public ContextColumnSorterListener(TreeViewer viewer) {
@@ -43,7 +43,7 @@ public class ContextColumnSorterListener implements Listener {
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see org.eclipse.swt.widgets.Listener#handleEvent(org.eclipse.swt.widgets.Event)
      */
     public void handleEvent(Event e) {

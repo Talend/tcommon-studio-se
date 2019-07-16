@@ -1,6 +1,6 @@
 // ============================================================================
 //
-// Copyright (C) 2006-2018 Talend Inc. - www.talend.com
+// Copyright (C) 2006-2019 Talend Inc. - www.talend.com
 //
 // This source code is available under agreement available at
 // %InstallDIR%\features\org.talend.rcp.branding.%PRODUCTNAME%\%PRODUCTNAME%license.txt
@@ -24,11 +24,11 @@ import org.talend.commons.utils.data.list.ListenableListEvent.TYPE;
 
 /**
  * DOC amaumont class global comment. Detailled comment <br/>
- * 
+ *
  * $Id$
- * 
+ *
  * @param <T> type of beans in list
- * 
+ *
  */
 public class ListenableList<T> implements IExtendedList<T> {
 
@@ -52,7 +52,7 @@ public class ListenableList<T> implements IExtendedList<T> {
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see java.util.List#add(java.lang.Object)
      */
     @Override
@@ -69,7 +69,7 @@ public class ListenableList<T> implements IExtendedList<T> {
 
     /**
      * DOC amaumont Comment method "fireAddedEvent".
-     * 
+     *
      * @param i
      * @param o
      * @param before TODO
@@ -82,7 +82,7 @@ public class ListenableList<T> implements IExtendedList<T> {
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see java.util.List#add(int, java.lang.Object)
      */
     @Override
@@ -94,7 +94,7 @@ public class ListenableList<T> implements IExtendedList<T> {
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see java.util.List#addAll(java.util.Collection)
      */
     @Override
@@ -116,7 +116,7 @@ public class ListenableList<T> implements IExtendedList<T> {
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see java.util.List#addAll(int, java.util.Collection)
      */
     @Override
@@ -137,8 +137,8 @@ public class ListenableList<T> implements IExtendedList<T> {
     }
 
     /**
-     * 
-     * 
+     *
+     *
      */
     @Override
     @SuppressWarnings("unchecked")
@@ -163,7 +163,7 @@ public class ListenableList<T> implements IExtendedList<T> {
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see java.util.List#clear()
      */
     @Override
@@ -185,7 +185,7 @@ public class ListenableList<T> implements IExtendedList<T> {
     /**
      * Returns whether the list contains the object. This implementation uses either <code>equals</code> or
      * <code>"=="</code> depending on {@link #isUseEquals useEquals}.
-     * 
+     *
      * @param object the object in question.
      * @return whether the list contains the object.
      * @see #useEquals
@@ -220,7 +220,7 @@ public class ListenableList<T> implements IExtendedList<T> {
     /**
      * Returns the position of the first occurrence of the object in the list. This implementation uses either
      * <code>equals</code> or <code>"=="</code> depending on {@link #isUseEquals useEquals}.
-     * 
+     *
      * @param object the object in question.
      * @return the position of the first occurrence of the object in the list.
      */
@@ -245,7 +245,7 @@ public class ListenableList<T> implements IExtendedList<T> {
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see java.util.List#containsAll(java.util.Collection)
      */
     @Override
@@ -255,7 +255,7 @@ public class ListenableList<T> implements IExtendedList<T> {
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see java.util.List#get(int)
      */
     @Override
@@ -265,7 +265,7 @@ public class ListenableList<T> implements IExtendedList<T> {
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see java.util.List#isEmpty()
      */
     @Override
@@ -275,7 +275,7 @@ public class ListenableList<T> implements IExtendedList<T> {
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see java.util.List#iterator()
      */
     @Override
@@ -310,7 +310,7 @@ public class ListenableList<T> implements IExtendedList<T> {
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see java.util.List#lastIndexOf(java.lang.Object)
      */
     @Override
@@ -320,7 +320,7 @@ public class ListenableList<T> implements IExtendedList<T> {
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see java.util.List#listIterator()
      */
     @Override
@@ -389,7 +389,7 @@ public class ListenableList<T> implements IExtendedList<T> {
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see java.util.List#listIterator(int)
      */
     @Override
@@ -399,7 +399,7 @@ public class ListenableList<T> implements IExtendedList<T> {
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see java.util.List#remove(java.lang.Object)
      */
     @Override
@@ -415,7 +415,7 @@ public class ListenableList<T> implements IExtendedList<T> {
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see java.util.List#remove(int)
      */
     @Override
@@ -428,7 +428,7 @@ public class ListenableList<T> implements IExtendedList<T> {
 
     /**
      * DOC amaumont Comment method "fireRemovedEvent".
-     * 
+     *
      * @param index
      * @param removedObject
      */
@@ -452,7 +452,7 @@ public class ListenableList<T> implements IExtendedList<T> {
     /**
      * Removes each object of the collection from the list and returns whether any object was actually contained by the
      * list.
-     * 
+     *
      * @param collection the collection of objects to be removed.
      * @return whether any object was actually contained by the list.
      */
@@ -485,7 +485,7 @@ public class ListenableList<T> implements IExtendedList<T> {
 
     /**
      * DOC amaumont Comment method "getIndices".
-     * 
+     *
      * @param c
      */
     private List<Integer> getIndices(Collection<?> c) {
@@ -503,7 +503,7 @@ public class ListenableList<T> implements IExtendedList<T> {
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see java.util.List#retainAll(java.util.Collection)
      */
     @Override
@@ -527,7 +527,7 @@ public class ListenableList<T> implements IExtendedList<T> {
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see java.util.List#set(int, java.lang.Object)
      */
     @Override
@@ -540,7 +540,7 @@ public class ListenableList<T> implements IExtendedList<T> {
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see java.util.List#size()
      */
     @Override
@@ -555,7 +555,7 @@ public class ListenableList<T> implements IExtendedList<T> {
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see java.util.List#subList(int, int)
      */
     @Override
@@ -569,7 +569,7 @@ public class ListenableList<T> implements IExtendedList<T> {
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see java.util.List#toArray()
      */
     @Override
@@ -583,7 +583,7 @@ public class ListenableList<T> implements IExtendedList<T> {
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see java.util.List#toArray(T[])
      */
     @Override
@@ -659,7 +659,7 @@ public class ListenableList<T> implements IExtendedList<T> {
 
     /**
      * DOC amaumont Comment method "fireAddedListener".
-     * 
+     *
      * @param index
      * @param addedObjects
      * @param indicesTarget TODO
@@ -679,7 +679,7 @@ public class ListenableList<T> implements IExtendedList<T> {
 
     /**
      * DOC amaumont Comment method "fireAddedListener".
-     * 
+     *
      * @param index
      * @param before
      * @param removedObject
@@ -698,9 +698,9 @@ public class ListenableList<T> implements IExtendedList<T> {
 
     /**
      * DOC amaumont Comment method "fireAddedListener".
-     * 
+     *
      * @param before
-     * 
+     *
      * @param index
      * @param element
      */
@@ -717,7 +717,7 @@ public class ListenableList<T> implements IExtendedList<T> {
 
     /**
      * DOC amaumont Comment method "fireAddedListener".
-     * 
+     *
      * @param index
      * @param index
      * @param before TODO
@@ -741,7 +741,7 @@ public class ListenableList<T> implements IExtendedList<T> {
 
     /**
      * DOC amaumont Comment method "fireClearedListener".
-     * 
+     *
      * @param before TODO
      */
     public void fireClearedEvent(boolean before) {
@@ -754,7 +754,7 @@ public class ListenableList<T> implements IExtendedList<T> {
 
     /**
      * DOC amaumont Comment method "fireClearedListener".
-     * 
+     *
      * @param before TODO
      */
     public void fireListRegisteredEvent(boolean before) {
@@ -767,7 +767,7 @@ public class ListenableList<T> implements IExtendedList<T> {
 
     /**
      * DOC amaumont Comment method "fireEvent".
-     * 
+     *
      * @param event
      */
     @SuppressWarnings("unchecked")
@@ -798,9 +798,9 @@ public class ListenableList<T> implements IExtendedList<T> {
     }
 
     /**
-     * 
+     *
      * When you call this method priorityCalled is set to 50.
-     * 
+     *
      * @param listener
      */
     private void addListener(IListenableListListener listener, boolean before) {
@@ -808,7 +808,7 @@ public class ListenableList<T> implements IExtendedList<T> {
     }
 
     /**
-     * 
+     *
      * @param listener
      * @param orderCall listeners will be called in ascendant order of priorityCalled (low values in first, high values
      * in last). Can be negative.
@@ -825,7 +825,7 @@ public class ListenableList<T> implements IExtendedList<T> {
 
     /**
      * DOC amaumont Comment method "getCurrentListeners".
-     * 
+     *
      * @param before
      * @return
      */
@@ -849,7 +849,7 @@ public class ListenableList<T> implements IExtendedList<T> {
 
     /**
      * Getter for list.
-     * 
+     *
      * @return the list
      */
     public List<T> getOriginaList() {
@@ -857,9 +857,9 @@ public class ListenableList<T> implements IExtendedList<T> {
     }
 
     /**
-     * 
+     *
      * Register list.
-     * 
+     *
      * @param list
      */
     public void registerList(List<T> list) {
@@ -870,7 +870,7 @@ public class ListenableList<T> implements IExtendedList<T> {
 
     /**
      * DOC amaumont Comment method "isListRegistered".
-     * 
+     *
      * @return true if list has been registered, else false
      */
     public boolean isListRegistered() {
@@ -879,7 +879,7 @@ public class ListenableList<T> implements IExtendedList<T> {
 
     /**
      * Getter for useEquals.
-     * 
+     *
      * @return the useEquals
      */
     @Override
@@ -889,7 +889,7 @@ public class ListenableList<T> implements IExtendedList<T> {
 
     /**
      * Sets the useEquals.
-     * 
+     *
      * @param useEquals the useEquals to set
      */
     @Override

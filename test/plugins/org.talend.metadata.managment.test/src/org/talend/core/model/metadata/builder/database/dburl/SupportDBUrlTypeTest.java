@@ -1,6 +1,6 @@
 // ============================================================================
 //
-// Copyright (C) 2006-2018 Talend Inc. - www.talend.com
+// Copyright (C) 2006-2019 Talend Inc. - www.talend.com
 //
 // This source code is available under agreement available at
 // %InstallDIR%\features\org.talend.rcp.branding.%PRODUCTNAME%\%PRODUCTNAME%license.txt
@@ -14,19 +14,14 @@ package org.talend.core.model.metadata.builder.database.dburl;
 
 import static org.junit.Assert.assertTrue;
 
-import org.junit.Rule;
 import org.junit.Test;
 import org.powermock.core.classloader.annotations.PrepareForTest;
-import org.powermock.modules.junit4.rule.PowerMockRule;
 
 /**
  * DOC msjian class global comment. Detailled comment
  */
 @PrepareForTest({ SupportDBUrlType.class })
 public class SupportDBUrlTypeTest {
-
-    @Rule
-    public PowerMockRule powerMockRule = new PowerMockRule();
 
     /**
      * Test method for {@link org.talend.core.model.metadata.builder.database.dburl.SupportDBUrlType#isMssql(String)} .

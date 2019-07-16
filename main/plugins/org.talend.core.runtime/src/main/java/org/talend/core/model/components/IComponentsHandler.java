@@ -1,6 +1,6 @@
 // ============================================================================
 //
-// Copyright (C) 2006-2018 Talend Inc. - www.talend.com
+// Copyright (C) 2006-2019 Talend Inc. - www.talend.com
 //
 // This source code is available under agreement available at
 // %InstallDIR%\features\org.talend.rcp.branding.%PRODUCTNAME%\%PRODUCTNAME%license.txt
@@ -22,7 +22,7 @@ public interface IComponentsHandler {
     /**
      * Filters the components from the given components, returns the components that what you want to show in palette.
      * Added by Marvin Wang on Jan. 10, 2012.
-     * 
+     *
      * @param allComponents
      * @return
      */
@@ -31,7 +31,7 @@ public interface IComponentsHandler {
     /**
      * Sorts the filtered components as you want, if you would not like to sort, just return the given components. Added
      * by Marvin Wang on Jan. 10, 2012.
-     * 
+     *
      * @param filteredComponents
      * @return
      */
@@ -40,7 +40,7 @@ public interface IComponentsHandler {
     /**
      * Returns the category for these components, it means all components handled by the handler have the same category.
      * More details refer to {@link ComponentCategory}. Added by Marvin Wang on May 3, 2013.
-     * 
+     *
      * @return
      */
     ComponentCategory extractComponentsCategory();

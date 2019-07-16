@@ -1,6 +1,6 @@
 // ============================================================================
 //
-// Copyright (C) 2006-2018 Talend Inc. - www.talend.com
+// Copyright (C) 2006-2019 Talend Inc. - www.talend.com
 //
 // This source code is available under agreement available at
 // %InstallDIR%\features\org.talend.rcp.branding.%PRODUCTNAME%\%PRODUCTNAME%license.txt
@@ -42,9 +42,9 @@ public abstract class UpdateResult {
     protected String jobInfor;
 
     protected boolean isJoblet;
-    
+
     protected boolean isSparkJoblet;
-    
+
     protected boolean isSparkStreamingJoblet;
 
     protected boolean isMR;
@@ -62,12 +62,12 @@ public abstract class UpdateResult {
      * For opened process job is an instance of Process, For closed process job must be null to save some memory
      */
     private Object job = null;
-    
+
     private RepositoryUpdateManager repositoryUpdateManager;
 
     /**
      * Getter for readOnlyProcess.
-     * 
+     *
      * @return the readOnlyProcess
      */
     public boolean isReadOnlyProcess() {
@@ -76,7 +76,7 @@ public abstract class UpdateResult {
 
     /**
      * Sets the readOnlyProcess.
-     * 
+     *
      * @param readOnlyProcess the readOnlyProcess to set
      */
     public void setReadOnlyProcess(boolean readOnlyProcess) {
@@ -92,7 +92,7 @@ public abstract class UpdateResult {
 
     /**
      * ggu UpdateCheckResult constructor comment.
-     * 
+     *
      * @param item
      */
     public UpdateResult(Object object) {
@@ -101,9 +101,9 @@ public abstract class UpdateResult {
     }
 
     /**
-     * 
+     *
      * ggu Comment method "setResult".
-     * 
+     *
      * @param updateType
      * @param resultType
      * @param parameter
@@ -133,9 +133,9 @@ public abstract class UpdateResult {
     }
 
     /**
-     * 
+     *
      * hwang Comment method "setResult".
-     * 
+     *
      * @param updateType
      * @param resultType
      * @param parameter
@@ -306,11 +306,11 @@ public abstract class UpdateResult {
     public boolean isJoblet() {
         return isJoblet;
     }
-    
+
     public boolean isSparkJoblet() {
         return isSparkJoblet;
     }
-    
+
     public boolean isSparkStreamingJoblet() {
         return isSparkStreamingJoblet;
     }

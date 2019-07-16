@@ -1,6 +1,6 @@
 // ============================================================================
 //
-// Copyright (C) 2006-2018 Talend Inc. - www.talend.com
+// Copyright (C) 2006-2019 Talend Inc. - www.talend.com
 //
 // This source code is available under agreement available at
 // %InstallDIR%\features\org.talend.rcp.branding.%PRODUCTNAME%\%PRODUCTNAME%license.txt
@@ -16,7 +16,7 @@ import java.awt.Color;
 
 /**
  * @author scorreia
- * 
+ *
  * Utility class to handle colors.
  */
 public final class AWTColorUtils {
@@ -28,7 +28,7 @@ public final class AWTColorUtils {
 
     /**
      * Method "getColor".
-     * 
+     *
      * @param idx a positive index
      * @return a color among a list of predefined colors (White is not returned).
      */

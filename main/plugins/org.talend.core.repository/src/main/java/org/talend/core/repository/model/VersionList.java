@@ -1,6 +1,6 @@
 // ============================================================================
 //
-// Copyright (C) 2006-2018 Talend Inc. - www.talend.com
+// Copyright (C) 2006-2019 Talend Inc. - www.talend.com
 //
 // This source code is available under agreement available at
 // %InstallDIR%\features\org.talend.rcp.branding.%PRODUCTNAME%\%PRODUCTNAME%license.txt
@@ -24,11 +24,11 @@ import org.talend.core.model.repository.IRepositoryViewObject;
  * Used to manage IRepositoryObject list with allowing or not of all versions of each object. Constructor parameter
  * <code>allVersion</code> specify, if <code>false</code>, that only the most recent version of an object must be kept.
  * This functionnality is realized by the <code>add</code> method.<br/>
- * 
+ *
  * PTODO SML Overide other way to put object in the list
- * 
+ *
  * $Id: VersionList.java 44053 2010-06-12 09:14:16Z nma $
- * 
+ *
  */
 public class VersionList extends ArrayList<IRepositoryViewObject> {
 
@@ -43,7 +43,7 @@ public class VersionList extends ArrayList<IRepositoryViewObject> {
 
     /**
      * DEfault constructor.
-     * 
+     *
      * @param allVersion - <code>true</code> if all versions of each object must be kept, <code>false</code> otherwise.
      */
     public VersionList(boolean allVersion) {
@@ -53,7 +53,7 @@ public class VersionList extends ArrayList<IRepositoryViewObject> {
 
     /**
      * Add object in the list following the versionning strategy specify by the <code>allVersion</code> field.<br/>
-     * 
+     *
      * If <code>false</code>, method will add object only if
      * <ul>
      * <li>no object with this id could be found or</li>
@@ -61,7 +61,7 @@ public class VersionList extends ArrayList<IRepositoryViewObject> {
      * removed and new is added.</li>
      * </ul>
      * So only the most recent version of the object is kept.
-     * 
+     *
      * @param o - the object to add
      * @return see Collection.add contract
      * @see Collection.add

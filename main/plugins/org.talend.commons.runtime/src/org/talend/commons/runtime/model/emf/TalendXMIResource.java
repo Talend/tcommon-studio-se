@@ -1,6 +1,6 @@
 // ============================================================================
 //
-// Copyright (C) 2006-2018 Talend Inc. - www.talend.com
+// Copyright (C) 2006-2019 Talend Inc. - www.talend.com
 //
 // This source code is available under agreement available at
 // %InstallDIR%\features\org.talend.rcp.branding.%PRODUCTNAME%\%PRODUCTNAME%license.txt
@@ -53,9 +53,9 @@ public class TalendXMIResource extends XMIResourceImpl {
     /*
      * this is overriden to provide our own implmentation the SAX parser because the JDK 1.6 sax parser is bugged and
      * cannot load XML 1.1 file correctly.
-     * 
+     *
      * @see org.talend.teneo.model.TalendDatastoreTest#testReadingXMLversionOnePointOneInUTF8()
-     * 
+     *
      * @see org.eclipse.emf.ecore.xmi.impl.XMIResourceImpl#createXMLLoad()
      */
     @Override
@@ -72,7 +72,7 @@ public class TalendXMIResource extends XMIResourceImpl {
 
             /*
              * (non-Javadoc)
-             * 
+             *
              * @see org.eclipse.emf.ecore.xmi.impl.XMLLoadImpl#makeParser()
              */
             @Override
@@ -166,7 +166,7 @@ public class TalendXMIResource extends XMIResourceImpl {
     /*
      * this is overriden to provide our own implmentation of the escape class in order to remove all \0 control
      * characters because they are not authorised in XML files. see TDI-23991
-     * 
+     *
      * @see org.eclipse.emf.ecore.xmi.impl.XMIResourceImpl#createXMLSave()
      */
     @Override
@@ -183,7 +183,7 @@ public class TalendXMIResource extends XMIResourceImpl {
 
             /*
              * (non-Javadoc)
-             * 
+             *
              * @see org.eclipse.emf.ecore.xmi.impl.XMISaveImpl#init(org.eclipse.emf.ecore.xmi.XMLResource,
              * java.util.Map)
              */

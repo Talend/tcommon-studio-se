@@ -1,6 +1,6 @@
 // ============================================================================
 //
-// Copyright (C) 2006-2018 Talend Inc. - www.talend.com
+// Copyright (C) 2006-2019 Talend Inc. - www.talend.com
 //
 // This source code is available under agreement available at
 // %InstallDIR%\features\org.talend.rcp.branding.%PRODUCTNAME%\%PRODUCTNAME%license.txt
@@ -96,7 +96,7 @@ public class MDMWizard extends RepositoryWizard implements INewWizard {
 
     /**
      * DOC hwang MDMWizard constructor comment.
-     * 
+     *
      * @param workbench
      * @param creation
      */
@@ -209,7 +209,7 @@ public class MDMWizard extends RepositoryWizard implements INewWizard {
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see org.eclipse.jface.wizard.Wizard#performFinish()
      */
     @Override
@@ -280,13 +280,6 @@ public class MDMWizard extends RepositoryWizard implements INewWizard {
         list.add(repositoryObject);
 
         if (tdqRepService != null) {
-            // MOD qiongli 2012-11-23 TDQ-6287
-            if (creation) {
-                tdqRepService.openConnectionEditor(connectionItem);
-            } else {
-                // refresh the opened connection editor whatever is in DI or DQ perspective.
-                tdqRepService.refreshConnectionEditor(connectionItem);
-            }
             if (CoreRuntimePlugin.getInstance().isDataProfilePerspectiveSelected()) {
                 tdqRepService.refresh(node.getParent());
             }
@@ -315,7 +308,7 @@ public class MDMWizard extends RepositoryWizard implements INewWizard {
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see org.eclipse.ui.IWorkbenchWizard#init(org.eclipse.ui.IWorkbench,
      * org.eclipse.jface.viewers.IStructuredSelection)
      */
@@ -349,7 +342,7 @@ public class MDMWizard extends RepositoryWizard implements INewWizard {
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see org.talend.repository.ui.wizards.RepositoryWizard#getConnectionItem()
      */
     @Override
@@ -369,19 +362,4 @@ public class MDMWizard extends RepositoryWizard implements INewWizard {
         this.currentPage = currentPage;
     }
 
-    @Override
-    /**
-     * TDQ-7217 if the related connection editor is opened in DQ side,shoud not unlock.
-     */
-    public void closeLockStrategy() {
-        ITDQRepositoryService tdqRepService = null;
-        if (GlobalServiceRegister.getDefault().isServiceRegistered(ITDQRepositoryService.class)) {
-            tdqRepService = (ITDQRepositoryService) GlobalServiceRegister.getDefault().getService(ITDQRepositoryService.class);
-        }
-        if (tdqRepService != null && tdqRepService.isDQEditorOpened(connectionItem)) {
-            tdqRepService.refreshConnectionEditor(connectionItem);
-            return;
-        }
-        super.closeLockStrategy();
-    }
 }

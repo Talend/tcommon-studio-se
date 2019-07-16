@@ -1,6 +1,6 @@
 // ============================================================================
 //
-// Copyright (C) 2006-2018 Talend Inc. - www.talend.com
+// Copyright (C) 2006-2019 Talend Inc. - www.talend.com
 //
 // This source code is available under agreement available at
 // %InstallDIR%\features\org.talend.rcp.branding.%PRODUCTNAME%\%PRODUCTNAME%license.txt
@@ -37,7 +37,7 @@ import org.talend.core.model.process.IContextParameter;
 
 /**
  * created by ldong on Jul 29, 2014 Detailled comment
- * 
+ *
  */
 public class ContextValuesNatText extends Composite {
 
@@ -196,7 +196,7 @@ public class ContextValuesNatText extends Composite {
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see org.eclipse.swt.widgets.Control#addFocusListener(org.eclipse.swt.events.FocusListener)
      */
     @Override
@@ -206,7 +206,7 @@ public class ContextValuesNatText extends Composite {
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see org.eclipse.swt.widgets.Control#removeFocusListener(org.eclipse.swt.events.FocusListener)
      */
     // @Override
@@ -257,7 +257,7 @@ public class ContextValuesNatText extends Composite {
 
     /**
      * Getter for text.
-     * 
+     *
      * @return the text
      */
     public Text getText() {
@@ -266,7 +266,7 @@ public class ContextValuesNatText extends Composite {
 
     /**
      * Getter for button.
-     * 
+     *
      * @return the button
      */
     public Button getButton() {

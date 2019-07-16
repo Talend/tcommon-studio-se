@@ -1,6 +1,6 @@
 // ============================================================================
 //
-// Copyright (C) 2006-2018 Talend Inc. - www.talend.com
+// Copyright (C) 2006-2019 Talend Inc. - www.talend.com
 //
 // This source code is available under agreement available at
 // %InstallDIR%\features\org.talend.rcp.branding.%PRODUCTNAME%\%PRODUCTNAME%license.txt
@@ -32,9 +32,9 @@ import org.talend.repository.ui.wizards.metadata.connection.files.ldif.LdifFileW
 
 /**
  * Action used to create a new "file ldif" metadata.<br/>
- * 
+ *
  * $Id: CreateFileLdifAction.java 344 2006-11-08 14:29:42 +0000 (mer., 08 nov. 2006) cantoine $
- * 
+ *
  */
 public class CreateFileLdifAction extends AbstractCreateAction {
 

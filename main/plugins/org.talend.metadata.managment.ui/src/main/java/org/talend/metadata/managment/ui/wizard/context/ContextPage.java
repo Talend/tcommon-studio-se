@@ -1,6 +1,6 @@
 // ============================================================================
 //
-// Copyright (C) 2006-2018 Talend Inc. - www.talend.com
+// Copyright (C) 2006-2019 Talend Inc. - www.talend.com
 //
 // This source code is available under agreement available at
 // %InstallDIR%\features\org.talend.rcp.branding.%PRODUCTNAME%\%PRODUCTNAME%license.txt
@@ -19,9 +19,9 @@ import org.talend.core.model.process.IContextManager;
 
 /**
  * Wizard page collecting informations to create a new IDocumentation. <br/>
- * 
+ *
  * $Id: DocumentationPage.java 1935 2007-02-09 05:58:57 +0000 (ven., 09 févr. 2007) bqian $
- * 
+ *
  */
 public class ContextPage extends WizardPage {
 

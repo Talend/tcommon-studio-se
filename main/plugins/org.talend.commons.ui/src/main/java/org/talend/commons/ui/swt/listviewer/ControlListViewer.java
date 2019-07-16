@@ -1,6 +1,6 @@
 // ============================================================================
 //
-// Copyright (C) 2006-2018 Talend Inc. - www.talend.com
+// Copyright (C) 2006-2019 Talend Inc. - www.talend.com
 //
 // This source code is available under agreement available at
 // %InstallDIR%\features\org.talend.rcp.branding.%PRODUCTNAME%\%PRODUCTNAME%license.txt
@@ -44,7 +44,7 @@ import org.eclipse.swt.widgets.Widget;
 /**
  * Based on {@link org.eclipse.equinox.internal.p2.ui.discovery.util.ControlListViewer} <br/>
  * If you can't find it, please refer to {@link org.eclipse.ui.internal.progress.DetailedProgressViewer}
- * 
+ *
  */
 @SuppressWarnings("restriction")
 public abstract class ControlListViewer extends StructuredViewer {
@@ -59,7 +59,7 @@ public abstract class ControlListViewer extends StructuredViewer {
 
     /**
      * Create a new instance of the receiver with a control that is a child of parent with style style.
-     * 
+     *
      * @param parent
      * @param style
      */
@@ -259,7 +259,7 @@ public abstract class ControlListViewer extends StructuredViewer {
 
     /**
      * Create a new item for info.
-     * 
+     *
      * @param element
      * @return ControlListItem
      */

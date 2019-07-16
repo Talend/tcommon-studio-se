@@ -1,6 +1,6 @@
 // ============================================================================
 //
-// Copyright (C) 2006-2018 Talend Inc. - www.talend.com
+// Copyright (C) 2006-2019 Talend Inc. - www.talend.com
 //
 // This source code is available under agreement available at
 // %InstallDIR%\features\org.talend.rcp.branding.%PRODUCTNAME%\%PRODUCTNAME%license.txt
@@ -22,7 +22,7 @@ import org.talend.core.runtime.maven.MavenUrlHelper;
 
 /**
  * created by WCHEN on 2012-9-17 Detailled comment
- * 
+ *
  */
 public class ModuleToInstall {
 
@@ -108,7 +108,7 @@ public class ModuleToInstall {
 
     /**
      * Getter for licenseUrl.
-     * 
+     *
      * @return the licenseUrl
      */
     public String getLicenseUrl() {
@@ -117,7 +117,7 @@ public class ModuleToInstall {
 
     /**
      * Sets the licenseUrl.
-     * 
+     *
      * @param licenseUrl the licenseUrl to set
      */
     public void setLicenseUrl(String licenseUrl) {
@@ -126,7 +126,7 @@ public class ModuleToInstall {
 
     /**
      * Getter for mavenUri.
-     * 
+     *
      * @return the mavenUri
      */
     public String getMavenUri() {
@@ -135,7 +135,7 @@ public class ModuleToInstall {
 
     /**
      * Sets the mavenUri.
-     * 
+     *
      * @param mavenUri the mavenUri to set
      */
     public void setMavenUri(String mavenUri) {
@@ -144,7 +144,7 @@ public class ModuleToInstall {
 
     /**
      * Getter for distribution.
-     * 
+     *
      * @return the distribution
      */
     public String getDistribution() {
@@ -153,7 +153,7 @@ public class ModuleToInstall {
 
     /**
      * Sets the distribution.
-     * 
+     *
      * @param distribution the distribution to set
      */
     public void setDistribution(String distribution) {
@@ -202,7 +202,7 @@ public class ModuleToInstall {
 
     /**
      * Getter for mavenUris.
-     * 
+     *
      * @return the mavenUris
      */
     public Set<String> getMavenUris() {
@@ -211,7 +211,7 @@ public class ModuleToInstall {
 
     /**
      * Sets the fromCustomNexus.
-     * 
+     *
      * @param fromCustomNexus the fromCustomNexus to set
      */
     public void setFromCustomNexus(boolean fromCustomNexus) {

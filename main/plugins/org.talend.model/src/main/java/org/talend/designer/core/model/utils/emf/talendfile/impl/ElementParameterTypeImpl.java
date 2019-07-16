@@ -17,10 +17,10 @@ import org.eclipse.emf.ecore.impl.EObjectImpl;
 import org.eclipse.emf.ecore.util.EObjectContainmentEList;
 import org.eclipse.emf.ecore.util.InternalEList;
 import org.talend.commons.utils.PasswordEncryptUtil;
+import org.talend.daikon.security.CryptoHelper;
 import org.talend.designer.core.model.utils.emf.talendfile.ElementParameterType;
 import org.talend.designer.core.model.utils.emf.talendfile.ElementValueType;
 import org.talend.designer.core.model.utils.emf.talendfile.TalendFilePackage;
-import org.talend.utils.security.CryptoHelper;
 
 /**
  * <!-- begin-user-doc --> An implementation of the model object '<em><b>Element Parameter Type</b></em>'. <!--

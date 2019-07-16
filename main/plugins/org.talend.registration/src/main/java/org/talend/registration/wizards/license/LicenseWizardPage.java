@@ -1,6 +1,6 @@
 // ============================================================================
 //
-// Copyright (C) 2006-2018 Talend Inc. - www.talend.com
+// Copyright (C) 2006-2019 Talend Inc. - www.talend.com
 //
 // This source code is available under agreement available at
 // %InstallDIR%\features\org.talend.rcp.branding.%PRODUCTNAME%\%PRODUCTNAME%license.txt
@@ -44,9 +44,9 @@ import org.talend.registration.i18n.Messages;
 
 /**
  * Page for new project details. <br/>
- * 
+ *
  * $Id: LicenseWizardPage.java 38013 2010-03-05 14:21:59Z mhirt $
- * 
+ *
  */
 public class LicenseWizardPage extends WizardPage {
 
@@ -57,7 +57,7 @@ public class LicenseWizardPage extends WizardPage {
 
     /**
      * Constructs a new LicenseWizardPage.
-     * 
+     *
      * @param server
      * @param password
      * @param author
@@ -146,7 +146,7 @@ public class LicenseWizardPage extends WizardPage {
 
     /**
      * DOC mhirt Comment method "getLicense".
-     * 
+     *
      * @return
      * @throws PersistenceException
      * @throws FileNotFoundException

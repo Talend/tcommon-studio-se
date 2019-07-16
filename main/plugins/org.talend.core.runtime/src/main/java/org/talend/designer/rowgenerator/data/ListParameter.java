@@ -1,6 +1,6 @@
 // ============================================================================
 //
-// Copyright (C) 2006-2018 Talend Inc. - www.talend.com
+// Copyright (C) 2006-2019 Talend Inc. - www.talend.com
 //
 // This source code is available under agreement available at
 // %InstallDIR%\features\org.talend.rcp.branding.%PRODUCTNAME%\%PRODUCTNAME%license.txt
@@ -21,7 +21,7 @@ public class ListParameter extends Parameter {
 
     /**
      * Sets the values.
-     * 
+     *
      * @param values the values to set
      */
     public void setValues(String[] values) {
@@ -30,7 +30,7 @@ public class ListParameter extends Parameter {
 
     /**
      * Getter for values.
-     * 
+     *
      * @return the values
      */
     public String[] getValues() {
@@ -46,7 +46,7 @@ public class ListParameter extends Parameter {
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see org.talend.designer.rowgenerator.data.Parameter#setValue(java.lang.String)
      */
     @Override
@@ -56,7 +56,7 @@ public class ListParameter extends Parameter {
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see org.talend.designer.rowgenerator.data.Parameter#sameParameterAs(org.talend.designer.rowgenerator.data.Parameter)
      */
     @Override

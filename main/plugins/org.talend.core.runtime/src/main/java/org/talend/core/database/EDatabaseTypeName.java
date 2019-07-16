@@ -1,6 +1,6 @@
 // ============================================================================
 //
-// Copyright (C) 2006-2018 Talend Inc. - www.talend.com
+// Copyright (C) 2006-2019 Talend Inc. - www.talend.com
 //
 // This source code is available under agreement available at
 // %InstallDIR%\features\org.talend.rcp.branding.%PRODUCTNAME%\%PRODUCTNAME%license.txt
@@ -18,7 +18,7 @@ import org.talend.core.runtime.projectsetting.IProjectSettingPreferenceConstants
 
 /**
  * qzhang class global comment. Detailled comment <br/>
- * 
+ *
  */
 public enum EDatabaseTypeName {
     MYSQL(
@@ -36,7 +36,7 @@ public enum EDatabaseTypeName {
     ORACLE_OCI(
             "ORACLE_OCI", "Oracle OCI", Boolean.TRUE, "ORACLE", "DBORACLE", EDatabaseSchemaOrCatalogMapping.None, EDatabaseSchemaOrCatalogMapping.Schema), //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$
     ORACLE_CUSTOM(
-            "ORACLE_CUSTOM", "Oracle Custom", Boolean.TRUE, "ORACLE", "DBORACLE", EDatabaseSchemaOrCatalogMapping.None, EDatabaseSchemaOrCatalogMapping.Schema), //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$    
+            "ORACLE_CUSTOM", "Oracle Custom", Boolean.TRUE, "ORACLE", "DBORACLE", EDatabaseSchemaOrCatalogMapping.None, EDatabaseSchemaOrCatalogMapping.Schema), //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$
     /**
      * @deprecated odbc is not supported in java8
      */
@@ -138,7 +138,7 @@ public enum EDatabaseTypeName {
             EDatabaseSchemaOrCatalogMapping.Schema),
 
     IMPALA(
-            "IMPALA", "Impala", Boolean.TRUE, "IMPALA", EDatabaseSchemaOrCatalogMapping.None, EDatabaseSchemaOrCatalogMapping.Schema), //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ 
+            "IMPALA", "Impala", Boolean.TRUE, "IMPALA", EDatabaseSchemaOrCatalogMapping.None, EDatabaseSchemaOrCatalogMapping.Schema), //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
 
     HBASE(
             "HBase", "HBase", Boolean.FALSE, "HBASE", EDatabaseSchemaOrCatalogMapping.Sid, EDatabaseSchemaOrCatalogMapping.Column_Family, true), //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
@@ -289,7 +289,7 @@ public enum EDatabaseTypeName {
 
     /**
      * DOC zli Comment method "getTypeFromProductName".
-     * 
+     *
      * @param productName
      * @return
      */
@@ -307,7 +307,7 @@ public enum EDatabaseTypeName {
 
     /**
      * This is only for the component type, not for the repository.
-     * 
+     *
      * @param dbType
      * @return
      */
@@ -341,7 +341,7 @@ public enum EDatabaseTypeName {
 
     /**
      * Getter for dbType.
-     * 
+     *
      * @return the dbType
      */
     public String getDbType() {

@@ -1,6 +1,6 @@
 // ============================================================================
 //
-// Copyright (C) 2006-2018 Talend Inc. - www.talend.com
+// Copyright (C) 2006-2019 Talend Inc. - www.talend.com
 //
 // This source code is available under agreement available at
 // %InstallDIR%\features\org.talend.rcp.branding.%PRODUCTNAME%\%PRODUCTNAME%license.txt
@@ -40,16 +40,16 @@ import org.talend.commons.utils.threading.ExecutionLimiter;
 
 /**
  * This component is an adaptation of a Color Editor for a StyledText.
- * 
+ *
  * The original editor can be found on http://www.gstaff.org/colorEditor/ <br/>
- * 
+ *
  * <b>How to use it, example :</b> <br/>
  * ColorStyledText text = new ColorStyledText(parent, SWT.H_SCROLL | SWT.V_SCROLL,
  * CorePlugin.getDefault().getPreferenceStore(), ECodeLanguage.PERL.getName());</i> <br/>
  * <br/>
- * 
+ *
  * $Id: ColorStyledText.java 7183 2007-11-23 11:03:36Z amaumont $
- * 
+ *
  */
 public class ColorStyledText extends StyledText {
 
@@ -156,9 +156,9 @@ public class ColorStyledText extends StyledText {
 
     /**
      * DOC qli Comment method "invokeAction".
-     * 
+     *
      * @param action
-     * 
+     *
      * */
     public void invokeAction(int action) {
         super.invokeAction(action);
@@ -175,7 +175,7 @@ public class ColorStyledText extends StyledText {
 
     /**
      * Getter for undoRedoManager.
-     * 
+     *
      * @return the undoRedoManager
      */
     public UndoRedoManager getUndoManager() {
@@ -184,7 +184,7 @@ public class ColorStyledText extends StyledText {
 
     /**
      * Sets the undoRedoManager.
-     * 
+     *
      * @param undoRedoManager the undoRedoManager to set
      */
     public void setUndoManager(UndoRedoManager undoRedoManager) {
@@ -301,7 +301,7 @@ public class ColorStyledText extends StyledText {
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see org.eclipse.swt.custom.StyledText#setEditable(boolean)
      */
     @Override
@@ -314,7 +314,7 @@ public class ColorStyledText extends StyledText {
 
     /**
      * Getter for coloring.
-     * 
+     *
      * @return the coloring
      */
     public boolean isColoring() {
@@ -323,7 +323,7 @@ public class ColorStyledText extends StyledText {
 
     /**
      * Sets the coloring.
-     * 
+     *
      * @param coloring the coloring to set
      */
     public void setColoring(boolean coloring) {
@@ -340,7 +340,7 @@ public class ColorStyledText extends StyledText {
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see org.eclipse.swt.widgets.Widget#dispose()
      */
     @Override

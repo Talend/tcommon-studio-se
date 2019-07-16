@@ -1,6 +1,6 @@
 // ============================================================================
 //
-// Copyright (C) 2006-2018 Talend Inc. - www.talend.com
+// Copyright (C) 2006-2019 Talend Inc. - www.talend.com
 //
 // This source code is available under agreement available at
 // %InstallDIR%\features\org.talend.rcp.branding.%PRODUCTNAME%\%PRODUCTNAME%license.txt
@@ -43,11 +43,9 @@ import org.eclipse.emf.ecore.resource.impl.ResourceSetImpl;
 import org.junit.After;
 import org.junit.Assert;
 import org.junit.Ignore;
-import org.junit.Rule;
 import org.junit.Test;
 import org.mockito.Mockito;
 import org.powermock.core.classloader.annotations.PrepareForTest;
-import org.powermock.modules.junit4.rule.PowerMockRule;
 import org.talend.core.database.EDatabase4DriverClassName;
 import org.talend.core.database.EDatabaseTypeName;
 import org.talend.core.model.metadata.IMetadataConnection;
@@ -66,14 +64,11 @@ import orgomg.cwm.objectmodel.core.Feature;
 
 /**
  * created by ggu on Jul 4, 2012 Detailled comment
- * 
+ *
  */
 @PrepareForTest({ ExtractMetaDataUtils.class })
 @Ignore
 public class AbstractTest4ExtractManager {
-
-    @Rule
-    public PowerMockRule powerMockRule = new PowerMockRule();
 
     private ExtractManager extractManger;
 
@@ -109,7 +104,7 @@ public class AbstractTest4ExtractManager {
     }
 
     /**
-     * 
+     *
      * DOC ggu Comment method "testGetDbType".
      */
     @Test
@@ -119,9 +114,9 @@ public class AbstractTest4ExtractManager {
     }
 
     /**
-     * 
+     *
      * DOC ggu Comment method "testCloseConnect4Null".
-     * 
+     *
      * @throws Exception
      */
     @Test
@@ -143,9 +138,9 @@ public class AbstractTest4ExtractManager {
     }
 
     /**
-     * 
+     *
      * DOC ggu Comment method "testCloseConnect".
-     * 
+     *
      * @throws Exception
      */
     @Test
@@ -172,9 +167,9 @@ public class AbstractTest4ExtractManager {
     }
 
     /**
-     * 
+     *
      * DOC ggu Comment method "testExtractTablesFromDB4NullSchema".
-     * 
+     *
      * @throws Exception
      */
     // @Test
@@ -189,9 +184,9 @@ public class AbstractTest4ExtractManager {
     }
 
     /**
-     * 
+     *
      * DOC ggu Comment method "testExtractTablesFromDB4EmptySchema".
-     * 
+     *
      * @throws Exception
      */
     // @Test
@@ -206,9 +201,9 @@ public class AbstractTest4ExtractManager {
     }
 
     /**
-     * 
+     *
      * DOC ggu Comment method "testExtractTablesFromDB".
-     * 
+     *
      * @throws Exception
      */
     @Test
@@ -224,7 +219,7 @@ public class AbstractTest4ExtractManager {
         when(mockedDBMetadata.getTableTypes()).thenReturn(mockedTableTypeResultSet);
         // tables
         ResultSet mockedGetTablesResultSet = mockGetTablesResultSet4ExtractTablesFromDB();
-        when(mockedDBMetadata.getTables(anyString(), anyString(), anyString(), any(String[].class))).thenReturn(
+        when(mockedDBMetadata.getTables(isNull(), anyString(), isNull(), any(String[].class))).thenReturn(
                 mockedGetTablesResultSet);
 
         // because only test one table, so limit 1 to make sure "break" the "while"
@@ -255,9 +250,8 @@ public class AbstractTest4ExtractManager {
         // verify(mockedTableTypeResultSet).next();
         // verify(mockedTableTypeResultSet).close();
 
-        verify(mockedDBMetadata).getTables(anyString(), anyString(), anyString(), any(String[].class));
         // same
-        verify(mockedDBMetadata).getTables((String) isNull(), anyString(), (String) isNull(), any(String[].class));
+        verify(mockedDBMetadata).getTables(isNull(), anyString(), isNull(), any(String[].class));
 
         verify(mockedDBMetadata).supportsSchemasInTableDefinitions();
         // because limit is 1, so will call twince
@@ -310,9 +304,9 @@ public class AbstractTest4ExtractManager {
     }
 
     /**
-     * 
+     *
      * DOC ggu Comment method "testExtractTablesFromDB4SQLException".
-     * 
+     *
      * @throws Exception
      */
     @Test(expected = RuntimeException.class)
@@ -354,9 +348,9 @@ public class AbstractTest4ExtractManager {
     }
 
     /**
-     * 
+     *
      * DOC ggu Comment method "testGetTableNameBySynonyms".
-     * 
+     *
      * @see ExtractManager.getTableNameBySynonyms(Connection,String)
      * @throws Exception
      */
@@ -373,9 +367,9 @@ public class AbstractTest4ExtractManager {
     }
 
     /**
-     * 
+     *
      * DOC ggu Comment method "testGetSchema".
-     * 
+     *
      * @see ExtractManager.getSchema(IMetadataConnection)
      */
     @Test
@@ -394,9 +388,9 @@ public class AbstractTest4ExtractManager {
     }
 
     /**
-     * 
+     *
      * DOC ggu Comment method "testReturnMetadataColumnsFormTable".
-     * 
+     *
      * @see ExtractManager.returnMetadataColumnsFormTable(IMetadataConnection, String, boolean...)
      * @throws Exception
      */
@@ -407,11 +401,11 @@ public class AbstractTest4ExtractManager {
     }
 
     /**
-     * 
+     *
      * DOC ggu Comment method "testReturnColumns4DontCreateConnection".
-     * 
+     *
      * @see ExtractManager.returnColumns(IMetadataConnection, TableNode, boolean...)
-     * 
+     *
      * don't recreate the connection.
      * @throws Exception
      */
@@ -558,11 +552,11 @@ public class AbstractTest4ExtractManager {
     }
 
     /**
-     * 
+     *
      * DOC ggu Comment method "testReturnColumns4DontCreateConnection2TableTypeSynonym".
-     * 
+     *
      * test for the Synonym
-     * 
+     *
      * @throws Exception
      */
     @Test
@@ -626,11 +620,11 @@ public class AbstractTest4ExtractManager {
     }
 
     /**
-     * 
+     *
      * DOC ggu Comment method "testReturnColumns4reCreateConnection".
-     * 
+     *
      * test when the dontCreateClose is true
-     * 
+     *
      * @throws Exception
      */
     @Test
@@ -742,19 +736,14 @@ public class AbstractTest4ExtractManager {
     protected TdTable mockTable4ReturnColumns4reCreateConnection() throws Exception {
         TdTable tdTable = mock(TdTable.class);
         when(tdTable.getName()).thenReturn("TestTable2");
-        ResourceSet resourceSet = new ResourceSetImpl();
-        Resource resource = resourceSet.createResource(URI.createFileURI("tdtable.xml")); //$NON-NLS-1$
-        if (resource != null) {
-            resource.getContents().add(tdTable);
-        }
         when(tdTable.getFeature()).thenReturn(new BasicEList<Feature>());
         return tdTable;
     }
 
     /**
-     * 
+     *
      * DOC ggu Comment method "testReturnTablesFormConnection".
-     * 
+     *
      * @see ExtractManager.returnTablesFormConnection(IMetadataConnection, TableInfoParameters)
      * @throws Exception
      */

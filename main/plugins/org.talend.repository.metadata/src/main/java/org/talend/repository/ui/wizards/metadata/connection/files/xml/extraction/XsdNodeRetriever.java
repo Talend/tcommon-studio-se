@@ -1,6 +1,6 @@
 // ============================================================================
 //
-// Copyright (C) 2006-2018 Talend Inc. - www.talend.com
+// Copyright (C) 2006-2019 Talend Inc. - www.talend.com
 //
 // This source code is available under agreement available at
 // %InstallDIR%\features\org.talend.rcp.branding.%PRODUCTNAME%\%PRODUCTNAME%license.txt
@@ -32,7 +32,7 @@ public class XsdNodeRetriever extends XmlNodeRetriever {
 
     /**
      * DOC nrousseau XsdNodeRetriever constructor comment.
-     * 
+     *
      * @param filePath
      * @param loopXPath
      */
@@ -42,7 +42,7 @@ public class XsdNodeRetriever extends XmlNodeRetriever {
 
     /**
      * Getter for treePopulator.
-     * 
+     *
      * @return the treePopulator
      */
     public TreePopulator getTreePopulator() {
@@ -51,7 +51,7 @@ public class XsdNodeRetriever extends XmlNodeRetriever {
 
     /**
      * Sets the treePopulator.
-     * 
+     *
      * @param treePopulator the treePopulator to set
      */
     public void setTreePopulator(TreePopulator treePopulator) {
@@ -60,7 +60,7 @@ public class XsdNodeRetriever extends XmlNodeRetriever {
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see org.talend.commons.xml.XmlNodeRetriever#retrieveNode(java.lang.String)
      */
     @Override
@@ -71,7 +71,7 @@ public class XsdNodeRetriever extends XmlNodeRetriever {
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see org.talend.commons.xml.XmlNodeRetriever#retrieveNodeCount(java.lang.String)
      */
     @Override
@@ -82,7 +82,7 @@ public class XsdNodeRetriever extends XmlNodeRetriever {
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see org.talend.commons.xml.XmlNodeRetriever#retrieveNodeFromNode(java.lang.String, org.w3c.dom.Node)
      */
     @Override
@@ -94,7 +94,7 @@ public class XsdNodeRetriever extends XmlNodeRetriever {
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see org.talend.commons.xml.XmlNodeRetriever#retrieveNodeList(java.lang.String)
      */
     @Override
@@ -111,7 +111,7 @@ public class XsdNodeRetriever extends XmlNodeRetriever {
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see org.talend.commons.xml.XmlNodeRetriever#retrieveNodeListFromNode(java.lang.String, org.w3c.dom.Node)
      */
     @Override
@@ -123,7 +123,7 @@ public class XsdNodeRetriever extends XmlNodeRetriever {
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see org.talend.commons.xml.XmlNodeRetriever#getAbsoluteXPathFromNode(org.w3c.dom.Node)
      */
     @Override

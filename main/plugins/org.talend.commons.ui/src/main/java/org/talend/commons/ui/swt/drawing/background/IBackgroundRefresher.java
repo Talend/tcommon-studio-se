@@ -1,6 +1,6 @@
 // ============================================================================
 //
-// Copyright (C) 2006-2018 Talend Inc. - www.talend.com
+// Copyright (C) 2006-2019 Talend Inc. - www.talend.com
 //
 // This source code is available under agreement available at
 // %InstallDIR%\features\org.talend.rcp.branding.%PRODUCTNAME%\%PRODUCTNAME%license.txt
@@ -18,9 +18,9 @@ import org.eclipse.swt.widgets.Composite;
 
 /**
  * DOC amaumont class global comment. Detailled comment <br/>
- * 
+ *
  * $Id$
- * 
+ *
  */
 public interface IBackgroundRefresher {
 
@@ -33,14 +33,14 @@ public interface IBackgroundRefresher {
 
     /**
      * Getter for backgroundColor.
-     * 
+     *
      * @return the backgroundColor
      */
     public Color getBackgroundColor();
 
     /**
      * Sets the backgroundColor.
-     * 
+     *
      * @param backgroundColor the backgroundColor to set
      */
     public void setBackgroundColor(Color backgroundColor);
@@ -49,7 +49,7 @@ public interface IBackgroundRefresher {
 
     /**
      * Getter for antialiasActivated.
-     * 
+     *
      * @return the antialiasActivated
      */
     public boolean isAntialiasAllowed();

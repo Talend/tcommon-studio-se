@@ -1,6 +1,6 @@
 // ============================================================================
 //
-// Copyright (C) 2006-2018 Talend Inc. - www.talend.com
+// Copyright (C) 2006-2019 Talend Inc. - www.talend.com
 //
 // This source code is available under agreement available at
 // %InstallDIR%\features\org.talend.rcp.branding.%PRODUCTNAME%\%PRODUCTNAME%license.txt
@@ -17,13 +17,13 @@ import org.eclipse.emf.ecore.xmi.impl.XMIResourceFactoryImpl;
 import org.talend.model.emf.CwmResourceFactory;
 
 /**
- * 
+ *
  * class ResourcesFactoryInitializer. Initialize *ResourcesFactory instances required to load Talend items.
  */
 public class ResourcesFactoryInitializer {
 
     /**
-     * 
+     *
      * Method "initResourceFactories". <br/>
      * Initialize *ResourcesFactory instances required to load Talend *.properties files.
      */

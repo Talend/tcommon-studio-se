@@ -1,6 +1,6 @@
 // ============================================================================
 //
-// Copyright (C) 2006-2018 Talend Inc. - www.talend.com
+// Copyright (C) 2006-2019 Talend Inc. - www.talend.com
 //
 // This source code is available under agreement available at
 // %InstallDIR%\features\org.talend.rcp.branding.%PRODUCTNAME%\%PRODUCTNAME%license.txt
@@ -23,7 +23,7 @@ import java.util.TimeZone;
 import org.apache.log4j.Logger;
 
 /**
- * 
+ *
  * DOC mzhao class global comment. Detailled comment
  */
 public final class DateUtils {
@@ -56,7 +56,7 @@ public final class DateUtils {
 
     /**
      * DOC bZhou Comment method "parse".
-     * 
+     *
      * @param pattern
      * @param dateText
      * @return
@@ -71,7 +71,7 @@ public final class DateUtils {
 
     /**
      * DOC bZhou Comment method "getCurrentDate".
-     * 
+     *
      * @param pattern
      * @return
      */
@@ -81,9 +81,9 @@ public final class DateUtils {
     }
 
     /**
-     * 
+     *
      * Comment method "formatTimeStamp".
-     * 
+     *
      * @param date
      * @return
      */
@@ -100,7 +100,7 @@ public final class DateUtils {
 
     /**
      * get the standard time: UTC.
-     * 
+     *
      * @param localDate the date with local time zone
      * @return
      */
@@ -120,7 +120,7 @@ public final class DateUtils {
 
     /**
      * get the date without the time, for example: 2008-08-08 00:00:00, because of oracle 12c store the date like 2008-08-08 00:00:00
-     * 
+     *
      * @param utcExecutionDate
      * @return
      */
@@ -135,9 +135,9 @@ public final class DateUtils {
     }
 
     /**
-     * 
+     *
      * create DateFormate depend on dataType.
-     * 
+     *
      * @param dataType
      * @return
      */

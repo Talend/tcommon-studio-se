@@ -1,6 +1,6 @@
 // ============================================================================
 //
-// Copyright (C) 2006-2018 Talend Inc. - www.talend.com
+// Copyright (C) 2006-2019 Talend Inc. - www.talend.com
 //
 // This source code is available under agreement available at
 // %InstallDIR%\features\org.talend.rcp.branding.%PRODUCTNAME%\%PRODUCTNAME%license.txt
@@ -60,7 +60,7 @@ import org.talend.designer.maven.model.TalendMavenConstants;
 
 /**
  * DOC ggu class global comment. Detailled comment
- * 
+ *
  * most codes are copied from @see ExecutePomAction. just in order to set the debug is in foreground.
  */
 @SuppressWarnings("restriction")
@@ -77,7 +77,7 @@ public abstract class MavenCommandLauncher {
 
     /*
      * By default for Launch Configuration , will capture the output, and try to open Console view to show maven logs.
-     * 
+     *
      * Here, false, by default, don't cpture output. maybe later can add this option in the preference to enable show
      * the logs in Console View.
      */
@@ -130,7 +130,7 @@ public abstract class MavenCommandLauncher {
         this.skipTests = skipTests;
     }
 
-    
+
     public void setSkipCIBuilder(boolean skipCIBuilder) {
         this.skipCIBuilder = skipCIBuilder;
     }
@@ -357,7 +357,7 @@ public abstract class MavenCommandLauncher {
     }
 
     /**
-     * 
+     *
      * created by ggu on 16 Mar 2015 Detailled comment
      *
      */
@@ -378,7 +378,7 @@ public abstract class MavenCommandLauncher {
 
         /*
          * (non-Javadoc)
-         * 
+         *
          * @see org.eclipse.debug.core.IDebugEventSetListener#handleDebugEvents(org.eclipse.debug.core.DebugEvent[])
          */
         @Override

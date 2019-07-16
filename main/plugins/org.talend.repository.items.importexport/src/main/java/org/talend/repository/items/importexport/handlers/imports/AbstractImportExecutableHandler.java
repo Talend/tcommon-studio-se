@@ -1,6 +1,6 @@
 // ============================================================================
 //
-// Copyright (C) 2006-2018 Talend Inc. - www.talend.com
+// Copyright (C) 2006-2019 Talend Inc. - www.talend.com
 //
 // This source code is available under agreement available at
 // %InstallDIR%\features\org.talend.rcp.branding.%PRODUCTNAME%\%PRODUCTNAME%license.txt
@@ -41,7 +41,7 @@ public abstract class AbstractImportExecutableHandler implements IImportItemsHan
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see
      * org.talend.repository.items.importexport.handlers.imports.IImportItemsHandler#findRelatedImportItems(org.eclipse
      * .core .runtime.IProgressMonitor, org.talend.repository.items.importexport.manager.ResourcesManager,
@@ -56,7 +56,7 @@ public abstract class AbstractImportExecutableHandler implements IImportItemsHan
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see org.talend.repository.items.importexport.handlers.imports.IImportItemsHandler#isPriorImportRelatedItem()
      */
     @Override
@@ -66,7 +66,7 @@ public abstract class AbstractImportExecutableHandler implements IImportItemsHan
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see
      * org.talend.repository.items.importexport.handlers.imports.IImportItemsHandler#afterImportingItems(org.eclipse
      * .core.runtime.IProgressMonitor, org.talend.repository.items.importexport.manager.ResourcesManager,

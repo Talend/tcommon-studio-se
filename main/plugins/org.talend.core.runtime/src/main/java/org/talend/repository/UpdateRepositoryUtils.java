@@ -1,6 +1,6 @@
 // ============================================================================
 //
-// Copyright (C) 2006-2018 Talend Inc. - www.talend.com
+// Copyright (C) 2006-2019 Talend Inc. - www.talend.com
 //
 // This source code is available under agreement available at
 // %InstallDIR%\features\org.talend.rcp.branding.%PRODUCTNAME%\%PRODUCTNAME%license.txt
@@ -51,7 +51,7 @@ public final class UpdateRepositoryUtils {
 
     /**
      * ggu Comment method "getQueryFromItem".
-     * 
+     *
      * get Query
      */
     @SuppressWarnings("unchecked")
@@ -114,9 +114,9 @@ public final class UpdateRepositoryUtils {
     }
 
     /**
-     * 
+     *
      * ggu Comment method "getTableFromItem".
-     * 
+     *
      * get MetadataTable
      */
     @SuppressWarnings("unchecked")
@@ -176,9 +176,9 @@ public final class UpdateRepositoryUtils {
     }
 
     /**
-     * 
+     *
      * ggu Comment method "getConnectionItemByChildId".
-     * 
+     *
      * @param itemsMap
      * @param childId for table and query
      * @return
@@ -222,9 +222,9 @@ public final class UpdateRepositoryUtils {
     }
 
     /**
-     * 
+     *
      * ggu Comment method "getConnectionItemByItemId".
-     * 
+     *
      * get item by id
      */
     public static ConnectionItem getConnectionItemByItemId(String itemId) {
@@ -236,9 +236,9 @@ public final class UpdateRepositoryUtils {
     }
 
     /**
-     * 
+     *
      * ggu Comment method "getQueriesFromItemId".
-     * 
+     *
      * get queries from the item.
      */
     public static List<Query> getQueriesFromItemId(final String itemId) {
@@ -278,9 +278,9 @@ public final class UpdateRepositoryUtils {
     }
 
     /**
-     * 
+     *
      * ggu Comment method "getMetadataTablesFromItemId".
-     * 
+     *
      * get tables from item
      */
     public static List<MetadataTable> getMetadataTablesFromItemId(final String itemId) {
@@ -354,9 +354,9 @@ public final class UpdateRepositoryUtils {
     }
 
     /**
-     * 
+     *
      * ggu Comment method "getRepositoryObjectById".
-     * 
+     *
      * @param id
      * @return
      */
@@ -375,9 +375,9 @@ public final class UpdateRepositoryUtils {
     }
 
     /**
-     * 
+     *
      * ggu Comment method "getRepositoryAliasName".
-     * 
+     *
      * @param item
      * @return
      */

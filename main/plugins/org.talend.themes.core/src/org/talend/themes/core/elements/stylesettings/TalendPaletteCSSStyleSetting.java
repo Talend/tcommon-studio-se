@@ -1,6 +1,6 @@
 // ============================================================================
 //
-// Copyright (C) 2006-2018 Talend Inc. - www.talend.com
+// Copyright (C) 2006-2019 Talend Inc. - www.talend.com
 //
 // This source code is available under agreement available at
 // %InstallDIR%\features\org.talend.rcp.branding.%PRODUCTNAME%\%PRODUCTNAME%license.txt
@@ -172,7 +172,7 @@ public class TalendPaletteCSSStyleSetting extends CommonCSSStyleSetting {
 
     /**
      * Getter for fgColor.
-     * 
+     *
      * @return the fgColor
      */
     public Color getFgColor() {
@@ -181,7 +181,7 @@ public class TalendPaletteCSSStyleSetting extends CommonCSSStyleSetting {
 
     /**
      * Sets the fgColor.
-     * 
+     *
      * @param fgColor the fgColor to set
      */
     public void setFgColor(Color fgColor) {
@@ -191,7 +191,7 @@ public class TalendPaletteCSSStyleSetting extends CommonCSSStyleSetting {
 
     /**
      * Getter for scrollPaneBorder.
-     * 
+     *
      * @return the scrollPaneBorder
      */
     public Border getScrollPaneBorder() {
@@ -200,7 +200,7 @@ public class TalendPaletteCSSStyleSetting extends CommonCSSStyleSetting {
 
     /**
      * Sets the scrollPaneBorder.
-     * 
+     *
      * @param scrollPaneBorder the scrollPaneBorder to set
      */
     public void setScrollPaneBorder(Border scrollPaneBorder) {
@@ -213,7 +213,7 @@ public class TalendPaletteCSSStyleSetting extends CommonCSSStyleSetting {
 
     /**
      * Getter for scrollPaneListBorder.
-     * 
+     *
      * @return the scrollPaneListBorder
      */
     public Border getScrollPaneListBorder() {
@@ -222,7 +222,7 @@ public class TalendPaletteCSSStyleSetting extends CommonCSSStyleSetting {
 
     /**
      * Sets the scrollPaneListBorder.
-     * 
+     *
      * @param scrollPaneListBorder the scrollPaneListBorder to set
      */
     public void setScrollPaneListBorder(Border scrollPaneListBorder) {
@@ -316,7 +316,7 @@ public class TalendPaletteCSSStyleSetting extends CommonCSSStyleSetting {
 
     /**
      * Getter for listBackgroundColor.
-     * 
+     *
      * @return the listBackgroundColor
      */
     public Color getListBackgroundColor() {
@@ -325,7 +325,7 @@ public class TalendPaletteCSSStyleSetting extends CommonCSSStyleSetting {
 
     /**
      * Sets the listBackgroundColor.
-     * 
+     *
      * @param listBackgroundColor the listBackgroundColor to set
      */
     public void setListBackgroundColor(Color listBackgroundColor) {
@@ -335,7 +335,7 @@ public class TalendPaletteCSSStyleSetting extends CommonCSSStyleSetting {
 
     /**
      * Getter for colorIncrement.
-     * 
+     *
      * @return the colorIncrement
      */
     public int getColorIncrement() {
@@ -344,7 +344,7 @@ public class TalendPaletteCSSStyleSetting extends CommonCSSStyleSetting {
 
     /**
      * Sets the colorIncrement.
-     * 
+     *
      * @param colorIncrement the colorIncrement to set
      */
     public void setColorIncrement(int colorIncrement) {
@@ -353,7 +353,7 @@ public class TalendPaletteCSSStyleSetting extends CommonCSSStyleSetting {
 
     /**
      * Getter for titleMarginBorder.
-     * 
+     *
      * @return the titleMarginBorder
      */
     public Border getTitleMarginBorder() {
@@ -362,7 +362,7 @@ public class TalendPaletteCSSStyleSetting extends CommonCSSStyleSetting {
 
     /**
      * Sets the titleMarginBorder.
-     * 
+     *
      * @param titleMarginBorder the titleMarginBorder to set
      */
     public void setTitleMarginBorder(Border titleMarginBorder) {
@@ -375,7 +375,7 @@ public class TalendPaletteCSSStyleSetting extends CommonCSSStyleSetting {
 
     /**
      * Getter for xOffset.
-     * 
+     *
      * @return the xOffset
      */
     public int getxOffset() {
@@ -384,7 +384,7 @@ public class TalendPaletteCSSStyleSetting extends CommonCSSStyleSetting {
 
     /**
      * Sets the xOffset.
-     * 
+     *
      * @param xOffset the xOffset to set
      */
     public void setxOffset(int xOffset) {
@@ -393,7 +393,7 @@ public class TalendPaletteCSSStyleSetting extends CommonCSSStyleSetting {
 
     /**
      * Getter for stylingChangeListener.
-     * 
+     *
      * @return the stylingChangeListener
      */
     // public List<ICSSStylingChangedListener> getStylingChangeListeners() {
@@ -402,7 +402,7 @@ public class TalendPaletteCSSStyleSetting extends CommonCSSStyleSetting {
 
     /**
      * Sets the stylingChangeListener.
-     * 
+     *
      * @param stylingChangeListener the stylingChangeListener to set
      */
     // public void addStylingChangeListener(ICSSStylingChangedListener stylingChangeListener) {
@@ -413,7 +413,7 @@ public class TalendPaletteCSSStyleSetting extends CommonCSSStyleSetting {
 
     /**
      * Getter for sliderPaletteForgroundColor.
-     * 
+     *
      * @return the sliderPaletteForgroundColor
      */
     public Color getSliderPaletteForgroundColor() {
@@ -422,7 +422,7 @@ public class TalendPaletteCSSStyleSetting extends CommonCSSStyleSetting {
 
     /**
      * Sets the sliderPaletteForgroundColor.
-     * 
+     *
      * @param sliderPaletteForgroundColor the sliderPaletteForgroundColor to set
      */
     public void setSliderPaletteForgroundColor(Color sliderPaletteForgroundColor) {
@@ -432,7 +432,7 @@ public class TalendPaletteCSSStyleSetting extends CommonCSSStyleSetting {
 
     /**
      * Getter for sliderPaletteBackgroundColor.
-     * 
+     *
      * @return the sliderPaletteBackgroundColor
      */
     public Color getSliderPaletteBackgroundColor() {
@@ -441,7 +441,7 @@ public class TalendPaletteCSSStyleSetting extends CommonCSSStyleSetting {
 
     /**
      * Sets the sliderPaletteBackgroundColor.
-     * 
+     *
      * @param sliderPaletteBackgroundColor the sliderPaletteBackgroundColor to set
      */
     public void setSliderPaletteBackgroundColor(Color sliderPaletteBackgroundColor) {
@@ -451,7 +451,7 @@ public class TalendPaletteCSSStyleSetting extends CommonCSSStyleSetting {
 
     /**
      * Getter for showFolderImage.
-     * 
+     *
      * @return the showFolderImage
      */
     public boolean isShowFolderImage() {
@@ -460,7 +460,7 @@ public class TalendPaletteCSSStyleSetting extends CommonCSSStyleSetting {
 
     /**
      * Sets the showFolderImage.
-     * 
+     *
      * @param showFolderImage the showFolderImage to set
      */
     public void setShowFolderImage(boolean showFolderImage) {
@@ -469,7 +469,7 @@ public class TalendPaletteCSSStyleSetting extends CommonCSSStyleSetting {
 
     /**
      * Getter for entryEditPartArrowWidth.
-     * 
+     *
      * @return the entryEditPartArrowWidth
      */
     public int getEntryEditPartArrowWidth() {
@@ -478,7 +478,7 @@ public class TalendPaletteCSSStyleSetting extends CommonCSSStyleSetting {
 
     /**
      * Sets the entryEditPartArrowWidth.
-     * 
+     *
      * @param entryEditPartArrowWidth the entryEditPartArrowWidth to set
      */
     public void setEntryEditPartArrowWidth(int entryEditPartArrowWidth) {
@@ -487,7 +487,7 @@ public class TalendPaletteCSSStyleSetting extends CommonCSSStyleSetting {
 
     /**
      * Getter for entryEditPartListBorder.
-     * 
+     *
      * @return the entryEditPartListBorder
      */
     public Border getEntryEditPartListBorder() {
@@ -496,7 +496,7 @@ public class TalendPaletteCSSStyleSetting extends CommonCSSStyleSetting {
 
     /**
      * Sets the entryEditPartListBorder.
-     * 
+     *
      * @param entryEditPartListBorder the entryEditPartListBorder to set
      */
     public void setEntryEditPartListBorder(Border entryEditPartListBorder) {
@@ -505,7 +505,7 @@ public class TalendPaletteCSSStyleSetting extends CommonCSSStyleSetting {
 
     /**
      * Getter for entryEditPartIconBorder.
-     * 
+     *
      * @return the entryEditPartIconBorder
      */
     public Border getEntryEditPartIconBorder() {
@@ -514,7 +514,7 @@ public class TalendPaletteCSSStyleSetting extends CommonCSSStyleSetting {
 
     /**
      * Sets the entryEditPartIconBorder.
-     * 
+     *
      * @param entryEditPartIconBorder the entryEditPartIconBorder to set
      */
     public void setEntryEditPartIconBorder(Border entryEditPartIconBorder) {
@@ -523,7 +523,7 @@ public class TalendPaletteCSSStyleSetting extends CommonCSSStyleSetting {
 
     /**
      * Getter for entryEditPartToolEntryForgroundDisabledColor.
-     * 
+     *
      * @return the entryEditPartToolEntryForgroundDisabledColor
      */
     public Color getEntryEditPartToolEntryForgroundDisabledColor() {
@@ -532,7 +532,7 @@ public class TalendPaletteCSSStyleSetting extends CommonCSSStyleSetting {
 
     /**
      * Sets the entryEditPartToolEntryForgroundDisabledColor.
-     * 
+     *
      * @param entryEditPartToolEntryForgroundDisabledColor the entryEditPartToolEntryForgroundDisabledColor to set
      */
     public void setEntryEditPartToolEntryForgroundDisabledColor(Color entryEditPartToolEntryForgroundDisabledColor) {
@@ -542,7 +542,7 @@ public class TalendPaletteCSSStyleSetting extends CommonCSSStyleSetting {
 
     /**
      * Getter for entryEditPartToolEntrySelectedBackgroundColor.
-     * 
+     *
      * @return the entryEditPartToolEntrySelectedBackgroundColor
      */
     public Color getEntryEditPartToolEntrySelectedBackgroundColor() {
@@ -551,7 +551,7 @@ public class TalendPaletteCSSStyleSetting extends CommonCSSStyleSetting {
 
     /**
      * Sets the entryEditPartToolEntrySelectedBackgroundColor.
-     * 
+     *
      * @param entryEditPartToolEntrySelectedBackgroundColor the entryEditPartToolEntrySelectedBackgroundColor to set
      */
     public void setEntryEditPartToolEntrySelectedBackgroundColor(Color entryEditPartToolEntrySelectedBackgroundColor) {
@@ -560,7 +560,7 @@ public class TalendPaletteCSSStyleSetting extends CommonCSSStyleSetting {
 
     /**
      * Getter for entryEditPartToolEntryHoverBackgroundColor.
-     * 
+     *
      * @return the entryEditPartToolEntryHoverBackgroundColor
      */
     public Color getEntryEditPartToolEntryHoverBackgroundColor() {
@@ -569,7 +569,7 @@ public class TalendPaletteCSSStyleSetting extends CommonCSSStyleSetting {
 
     /**
      * Sets the entryEditPartToolEntryHoverBackgroundColor.
-     * 
+     *
      * @param entryEditPartToolEntryHoverBackgroundColor the entryEditPartToolEntryHoverBackgroundColor to set
      */
     public void setEntryEditPartToolEntryHoverBackgroundColor(Color entryEditPartToolEntryHoverBackgroundColor) {
@@ -579,7 +579,7 @@ public class TalendPaletteCSSStyleSetting extends CommonCSSStyleSetting {
 
     /**
      * Getter for entryEditPartToolEntryBorderFocusForgroundColor.
-     * 
+     *
      * @return the entryEditPartToolEntryBorderFocusForgroundColor
      */
     public Color getEntryEditPartToolEntryBorderFocusForgroundColor() {
@@ -588,7 +588,7 @@ public class TalendPaletteCSSStyleSetting extends CommonCSSStyleSetting {
 
     /**
      * Sets the entryEditPartToolEntryBorderFocusForgroundColor.
-     * 
+     *
      * @param entryEditPartToolEntryBorderFocusForgroundColor the entryEditPartToolEntryBorderFocusForgroundColor to set
      */
     public void setEntryEditPartToolEntryBorderFocusForgroundColor(Color entryEditPartToolEntryBorderFocusForgroundColor) {
@@ -597,7 +597,7 @@ public class TalendPaletteCSSStyleSetting extends CommonCSSStyleSetting {
 
     /**
      * Getter for entryEditPartToolEntryBorderFocusBackgroundColor.
-     * 
+     *
      * @return the entryEditPartToolEntryBorderFocusBackgroundColor
      */
     public Color getEntryEditPartToolEntryBorderFocusBackgroundColor() {
@@ -606,7 +606,7 @@ public class TalendPaletteCSSStyleSetting extends CommonCSSStyleSetting {
 
     /**
      * Sets the entryEditPartToolEntryBorderFocusBackgroundColor.
-     * 
+     *
      * @param entryEditPartToolEntryBorderFocusBackgroundColor the entryEditPartToolEntryBorderFocusBackgroundColor to
      * set
      */
@@ -616,7 +616,7 @@ public class TalendPaletteCSSStyleSetting extends CommonCSSStyleSetting {
 
     /**
      * Getter for drawerFigureBaseColor.
-     * 
+     *
      * @return the drawerFigureBaseColor
      */
     public Color getDrawerFigureBaseColor() {
@@ -625,7 +625,7 @@ public class TalendPaletteCSSStyleSetting extends CommonCSSStyleSetting {
 
     /**
      * Sets the drawerFigureBaseColor.
-     * 
+     *
      * @param drawerFigureBaseColor the drawerFigureBaseColor to set
      */
     public void setDrawerFigureBaseColor(Color drawerFigureBaseColor) {
@@ -635,7 +635,7 @@ public class TalendPaletteCSSStyleSetting extends CommonCSSStyleSetting {
 
     /**
      * Getter for collapseTopBorderForgroundLineColor1.
-     * 
+     *
      * @return the collapseTopBorderForgroundLineColor1
      */
     public Color getCollapseTopBorderForgroundLineColor1() {
@@ -644,7 +644,7 @@ public class TalendPaletteCSSStyleSetting extends CommonCSSStyleSetting {
 
     /**
      * Sets the collapseTopBorderForgroundLineColor1.
-     * 
+     *
      * @param collapseTopBorderForgroundLineColor1 the collapseTopBorderForgroundLineColor1 to set
      */
     public void setCollapseTopBorderForgroundLineColor1(Color collapseTopBorderForgroundLineColor1) {
@@ -654,7 +654,7 @@ public class TalendPaletteCSSStyleSetting extends CommonCSSStyleSetting {
 
     /**
      * Getter for collapseTopBorderForgroundLineColor2.
-     * 
+     *
      * @return the collapseTopBorderForgroundLineColor2
      */
     public Color getCollapseTopBorderForgroundLineColor2() {
@@ -663,7 +663,7 @@ public class TalendPaletteCSSStyleSetting extends CommonCSSStyleSetting {
 
     /**
      * Sets the collapseTopBorderForgroundLineColor2.
-     * 
+     *
      * @param collapseTopBorderForgroundLineColor2 the collapseTopBorderForgroundLineColor2 to set
      */
     public void setCollapseTopBorderForgroundLineColor2(Color collapseTopBorderForgroundLineColor2) {
@@ -673,7 +673,7 @@ public class TalendPaletteCSSStyleSetting extends CommonCSSStyleSetting {
 
     /**
      * Getter for collapseExpandedLineForgroundColor.
-     * 
+     *
      * @return the collapseExpandedLineForgroundColor
      */
     public Color getCollapseExpandedLineForgroundColor() {
@@ -682,7 +682,7 @@ public class TalendPaletteCSSStyleSetting extends CommonCSSStyleSetting {
 
     /**
      * Sets the collapseExpandedLineForgroundColor.
-     * 
+     *
      * @param collapseExpandedLineForgroundColor the collapseExpandedLineForgroundColor to set
      */
     public void setCollapseExpandedLineForgroundColor(Color collapseExpandedLineForgroundColor) {
@@ -692,7 +692,7 @@ public class TalendPaletteCSSStyleSetting extends CommonCSSStyleSetting {
 
     /**
      * Getter for collapseNotExpandedLineForgroundColor.
-     * 
+     *
      * @return the collapseNotExpandedLineForgroundColor
      */
     public Color getCollapseNotExpandedLineForgroundColor() {
@@ -701,7 +701,7 @@ public class TalendPaletteCSSStyleSetting extends CommonCSSStyleSetting {
 
     /**
      * Sets the collapseNotExpandedLineForgroundColor.
-     * 
+     *
      * @param collapseNotExpandedLineForgroundColor the collapseNotExpandedLineForgroundColor to set
      */
     public void setCollapseNotExpandedLineForgroundColor(Color collapseNotExpandedLineForgroundColor) {
@@ -711,7 +711,7 @@ public class TalendPaletteCSSStyleSetting extends CommonCSSStyleSetting {
 
     /**
      * Getter for entryEditPartToolEntryTopLineColor.
-     * 
+     *
      * @return the entryEditPartToolEntryTopLineColor
      */
     public Color getEntryEditPartToolEntryTopLineColor() {
@@ -720,7 +720,7 @@ public class TalendPaletteCSSStyleSetting extends CommonCSSStyleSetting {
 
     /**
      * Sets the entryEditPartToolEntryTopLineColor.
-     * 
+     *
      * @param entryEditPartToolEntryTopLineColor the entryEditPartToolEntryTopLineColor to set
      */
     public void setEntryEditPartToolEntryTopLineColor(Color entryEditPartToolEntryTopLineColor) {
@@ -729,7 +729,7 @@ public class TalendPaletteCSSStyleSetting extends CommonCSSStyleSetting {
 
     /**
      * Getter for entryEditPartToolEntryBottomLineColor.
-     * 
+     *
      * @return the entryEditPartToolEntryBottomLineColor
      */
     public Color getEntryEditPartToolEntryBottomLineColor() {
@@ -738,7 +738,7 @@ public class TalendPaletteCSSStyleSetting extends CommonCSSStyleSetting {
 
     /**
      * Sets the entryEditPartToolEntryBottomLineColor.
-     * 
+     *
      * @param entryEditPartToolEntryBottomLineColor the entryEditPartToolEntryBottomLineColor to set
      */
     public void setEntryEditPartToolEntryBottomLineColor(Color entryEditPartToolEntryBottomLineColor) {
@@ -747,7 +747,7 @@ public class TalendPaletteCSSStyleSetting extends CommonCSSStyleSetting {
 
     /**
      * Getter for entryEditPartToolEntryBackgroundColor.
-     * 
+     *
      * @return the entryEditPartToolEntryBackgroundColor
      */
     public Color getEntryEditPartToolEntryBackgroundColor() {
@@ -756,7 +756,7 @@ public class TalendPaletteCSSStyleSetting extends CommonCSSStyleSetting {
 
     /**
      * Sets the entryEditPartToolEntryBackgroundColor.
-     * 
+     *
      * @param entryEditPartToolEntryBackgroundColor the entryEditPartToolEntryBackgroundColor to set
      */
     public void setEntryEditPartToolEntryBackgroundColor(Color entryEditPartToolEntryBackgroundColor) {
@@ -765,7 +765,7 @@ public class TalendPaletteCSSStyleSetting extends CommonCSSStyleSetting {
 
     /**
      * Getter for entryEditPartBackgroundColorInheritFromParent.
-     * 
+     *
      * @return the entryEditPartBackgroundColorInheritFromParent
      */
     public boolean isEntryEditPartBackgroundColorInheritFromParent() {
@@ -774,7 +774,7 @@ public class TalendPaletteCSSStyleSetting extends CommonCSSStyleSetting {
 
     /**
      * Sets the entryEditPartBackgroundColorInheritFromParent.
-     * 
+     *
      * @param entryEditPartBackgroundColorInheritFromParent the entryEditPartBackgroundColorInheritFromParent to set
      */
     public void setEntryEditPartBackgroundColorInheritFromParent(boolean entryEditPartBackgroundColorInheritFromParent) {
@@ -783,7 +783,7 @@ public class TalendPaletteCSSStyleSetting extends CommonCSSStyleSetting {
 
     /**
      * Getter for searchButtonImage.
-     * 
+     *
      * @return the searchButtonImage
      */
     public Image getSearchButtonImage() {
@@ -792,7 +792,7 @@ public class TalendPaletteCSSStyleSetting extends CommonCSSStyleSetting {
 
     /**
      * Sets the searchButtonImage.
-     * 
+     *
      * @param searchButtonImage the searchButtonImage to set
      */
     public void setSearchButtonImage(Image searchButtonImage) {
@@ -801,7 +801,7 @@ public class TalendPaletteCSSStyleSetting extends CommonCSSStyleSetting {
 
     /**
      * Getter for searchButtonBackgroundColor.
-     * 
+     *
      * @return the searchButtonBackgroundColor
      */
     public Color getSearchButtonBackgroundColor() {
@@ -810,7 +810,7 @@ public class TalendPaletteCSSStyleSetting extends CommonCSSStyleSetting {
 
     /**
      * Sets the searchButtonBackgroundColor.
-     * 
+     *
      * @param searchButtonBackgroundColor the searchButtonBackgroundColor to set
      */
     public void setSearchButtonBackgroundColor(Color searchButtonBackgroundColor) {

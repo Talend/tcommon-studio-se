@@ -1,6 +1,6 @@
 // ============================================================================
 //
-// Copyright (C) 2006-2018 Talend Inc. - www.talend.com
+// Copyright (C) 2006-2019 Talend Inc. - www.talend.com
 //
 // This source code is available under agreement available at
 // %InstallDIR%\features\org.talend.rcp.branding.%PRODUCTNAME%\%PRODUCTNAME%license.txt
@@ -32,9 +32,9 @@ import org.talend.repository.ui.wizards.metadata.connection.files.xml.XmlFileWiz
 
 /**
  * DOC cantoine class global comment. Detailled comment <br/>
- * 
+ *
  * $Id: CreateFileXmlAction.java 77219 2012-01-24 01:14:15Z mhirt $
- * 
+ *
  */
 public class CreateFileXmlAction extends AbstractCreateAction {
 
@@ -56,7 +56,7 @@ public class CreateFileXmlAction extends AbstractCreateAction {
 
     /**
      * DOC cantoine CreateFileXmlAction constructor comment.
-     * 
+     *
      * @param viewer
      */
     public CreateFileXmlAction() {

@@ -1,6 +1,6 @@
 // ============================================================================
 //
-// Copyright (C) 2006-2018 Talend Inc. - www.talend.com
+// Copyright (C) 2006-2019 Talend Inc. - www.talend.com
 //
 // This source code is available under agreement available at
 // %InstallDIR%\features\org.talend.rcp.branding.%PRODUCTNAME%\%PRODUCTNAME%license.txt
@@ -24,9 +24,9 @@ import org.apache.oro.text.regex.Perl5Matcher;
 /**
  * DataTypeManager is used to determine the Java Type or the Talend Type of a string. TODO : This class don't determine
  * the type DATE.
- * 
+ *
  * $Id: DataTypeHelper.java 1155 2006-12-21 09:51:10Z amaumont $
- * 
+ *
  */
 public final class JavaDataTypeHelper {
 
@@ -53,7 +53,7 @@ public final class JavaDataTypeHelper {
 
     /**
      * getTypeOfValue return STRING, CHAR, NUMBER, LONG, FLOAT, DOUBLE.
-     * 
+     *
      * @param value
      * @return string or null if the value.equals("")
      */
@@ -73,7 +73,7 @@ public final class JavaDataTypeHelper {
 
     /**
      * getTypeOfValue return String, Character, Integer, Long, Float, Double.
-     * 
+     *
      * @param value
      * @return string or null if the value.equals("")
      */
@@ -147,11 +147,11 @@ public final class JavaDataTypeHelper {
                         }
                     }
                 } catch (Exception e) {
-                    // 
+                    //
                 }
 
             } catch (Exception e) {
-                // 
+                //
             }
         }
 
@@ -160,19 +160,19 @@ public final class JavaDataTypeHelper {
             Integer.parseInt(value);
             return JavaTypesManager.INTEGER.getId();
         } catch (Exception e) {
-            // 
+            //
         }
         try {
             Long.parseLong(value);
             return JavaTypesManager.LONG.getId();
         } catch (Exception e) {
-            // 
+            //
         }
         try {
             Double.parseDouble(value);
             return JavaTypesManager.DOUBLE.getId();
         } catch (Exception e) {
-            // 
+            //
         }
 
         // by default the type is string
@@ -180,11 +180,11 @@ public final class JavaDataTypeHelper {
     }
 
     /**
-     * 
+     *
      * qli comment the method "isDateOne".
-     * 
+     *
      * @param value
-     * 
+     *
      * @return boolean
      */
     private static boolean isDateOne(String value) {
@@ -205,11 +205,11 @@ public final class JavaDataTypeHelper {
     }
 
     /**
-     * 
+     *
      * qli comment the method "isDateTwo".
-     * 
+     *
      * @param value
-     * 
+     *
      * @return boolean
      */
     private static boolean isDateTwo(String value) {
@@ -230,7 +230,7 @@ public final class JavaDataTypeHelper {
 
     /**
      * getGlobalType compare two type and determine the common Type.
-     * 
+     *
      * @param type1
      * @param type2
      * @return
@@ -351,7 +351,7 @@ public final class JavaDataTypeHelper {
 
         /**
          * Getter for idName.
-         * 
+         *
          * @return the idName
          */
         public String getIdName() {
@@ -360,7 +360,7 @@ public final class JavaDataTypeHelper {
 
         /**
          * Sets the idName.
-         * 
+         *
          * @param idName the idName to set
          */
         public void setIdName(String idName) {
@@ -369,7 +369,7 @@ public final class JavaDataTypeHelper {
 
         /**
          * Getter for priority.
-         * 
+         *
          * @return the priority
          */
         public int getPriority() {
@@ -378,7 +378,7 @@ public final class JavaDataTypeHelper {
 
         /**
          * Sets the priority.
-         * 
+         *
          * @param priority the priority to set
          */
         public void setPriority(int priority) {
@@ -387,7 +387,7 @@ public final class JavaDataTypeHelper {
 
         /**
          * Getter for numberType.
-         * 
+         *
          * @return the numberType
          */
         public boolean isNumberType() {
@@ -396,7 +396,7 @@ public final class JavaDataTypeHelper {
 
         /**
          * Sets the numberType.
-         * 
+         *
          * @param numberType the numberType to set
          */
         public void setNumberType(boolean numberType) {

@@ -1,6 +1,6 @@
 // ============================================================================
 //
-// Copyright (C) 2006-2018 Talend Inc. - www.talend.com
+// Copyright (C) 2006-2019 Talend Inc. - www.talend.com
 //
 // This source code is available under agreement available at
 // %InstallDIR%\features\org.talend.rcp.branding.%PRODUCTNAME%\%PRODUCTNAME%license.txt
@@ -52,7 +52,7 @@ public class OsgiLoaderActivator implements BundleActivator {
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see org.osgi.framework.BundleActivator#start(org.osgi.framework.BundleContext)
      */
     @Override
@@ -65,7 +65,7 @@ public class OsgiLoaderActivator implements BundleActivator {
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see org.osgi.framework.BundleActivator#stop(org.osgi.framework.BundleContext)
      */
     @Override
@@ -75,7 +75,7 @@ public class OsgiLoaderActivator implements BundleActivator {
 
     /**
      * DOC sgandon Comment method "storeTalendLibFolder".
-     * 
+     *
      * @param context
      */
     private void storeTalendLibFolder(BundleContext theContext) {
@@ -87,7 +87,7 @@ public class OsgiLoaderActivator implements BundleActivator {
                     .getServiceReference(LogService.class);
             if (logServRef != null) {
                 LogService logService = OsgiLoaderActivator.getBundleContext().getService(logServRef);
-                logService.log(LogService.LOG_ERROR, "failed to initialize [" //$NON-NLS-1$ 
+                logService.log(LogService.LOG_ERROR, "failed to initialize [" //$NON-NLS-1$
                         + ORG_TALEND_EXTERNAL_LIB_FOLDER_SYS_PROP + "]"); //$NON-NLS-1$
             } else {
                 System.err.println("Failed to initialise the system property [" + ORG_TALEND_EXTERNAL_LIB_FOLDER_SYS_PROP + "]"); //$NON-NLS-1$//$NON-NLS-2$
@@ -98,7 +98,7 @@ public class OsgiLoaderActivator implements BundleActivator {
 
     /**
      * return the folder where to find the missing libraries
-     * 
+     *
      * @param theContext
      * */
     protected File getLibJavaFolderFile(BundleContext theContext) throws URISyntaxException {
@@ -115,7 +115,7 @@ public class OsgiLoaderActivator implements BundleActivator {
 
     /**
      * return the eclipse configuration location
-     * 
+     *
      * @param bundleContext
      */
     private Location getConfigurationLocation(BundleContext bundleContext) {

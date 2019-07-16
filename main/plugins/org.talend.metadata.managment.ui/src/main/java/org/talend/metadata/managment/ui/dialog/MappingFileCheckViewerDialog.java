@@ -1,6 +1,6 @@
 // ============================================================================
 //
-// Copyright (C) 2006-2018 Talend Inc. - www.talend.com
+// Copyright (C) 2006-2019 Talend Inc. - www.talend.com
 //
 // This source code is available under agreement available at
 // %InstallDIR%\features\org.talend.rcp.branding.%PRODUCTNAME%\%PRODUCTNAME%license.txt
@@ -25,9 +25,9 @@ import org.talend.metadata.managment.ui.i18n.Messages;
 
 /**
  * DOC bqian class global comment. Detailled comment <br/>
- * 
+ *
  * $Id: MappingFileCheckViewerDialog.java 1 May 22, 2007 10:44:43 AM +0000 $
- * 
+ *
  */
 public class MappingFileCheckViewerDialog extends SourceViewerDialog {
 
@@ -35,7 +35,7 @@ public class MappingFileCheckViewerDialog extends SourceViewerDialog {
 
     /**
      * Sets the validater.
-     * 
+     *
      * @param validater the validater to set
      */
     public void setValidater(XSDValidater validater) {
@@ -44,7 +44,7 @@ public class MappingFileCheckViewerDialog extends SourceViewerDialog {
 
     /**
      * bqian MappingFileCheckViewerDialog constructor comment.
-     * 
+     *
      * @param parentShell
      * @param title
      */
@@ -54,7 +54,7 @@ public class MappingFileCheckViewerDialog extends SourceViewerDialog {
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see org.eclipse.jface.dialogs.Dialog#okPressed()
      */
     @Override

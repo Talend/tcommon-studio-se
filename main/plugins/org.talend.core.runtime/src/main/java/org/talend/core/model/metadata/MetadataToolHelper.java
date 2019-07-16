@@ -1,6 +1,6 @@
 // ============================================================================
 //
-// Copyright (C) 2006-2018 Talend Inc. - www.talend.com
+// Copyright (C) 2006-2019 Talend Inc. - www.talend.com
 //
 // This source code is available under agreement available at
 // %InstallDIR%\features\org.talend.rcp.branding.%PRODUCTNAME%\%PRODUCTNAME%license.txt
@@ -15,6 +15,7 @@ package org.talend.core.model.metadata;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
+import java.util.Comparator;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
@@ -94,9 +95,9 @@ public final class MetadataToolHelper {
     private static final int MAX = 255;
 
     /**
-     * 
+     *
      * DOC wchen Comment method "getMetadataTableFromConnection".
-     * 
+     *
      * @param conn
      * @return
      * @deprecated deprecated by getMetadataTableFromConnection(final Connection conn,String tableName) , sap tableName
@@ -162,7 +163,8 @@ public final class MetadataToolHelper {
         if (itemId == null || itemId.equals("")) { //$NON-NLS-1$
             return null;
         }
-        final IProxyRepositoryFactory proxyRepositoryFactory = CoreRuntimePlugin.getInstance().getProxyRepositoryFactory();
+        final IProxyRepositoryFactory proxyRepositoryFactory =
+                CoreRuntimePlugin.getInstance().getProxyRepositoryFactory();
         try {
             final IRepositoryViewObject lastVersion = proxyRepositoryFactory.getLastVersion(itemId);
             if (lastVersion != null) {
@@ -182,7 +184,7 @@ public final class MetadataToolHelper {
 
     /**
      * qzhang Comment method "isBoolean".
-     * 
+     *
      * @param value
      * @return
      */
@@ -192,7 +194,7 @@ public final class MetadataToolHelper {
 
     /**
      * qzhang Comment method "isDirectory".
-     * 
+     *
      * @param value
      * @return
      */
@@ -216,7 +218,7 @@ public final class MetadataToolHelper {
 
     /**
      * qzhang Comment method "isDate".
-     * 
+     *
      * @param value
      * @return
      */
@@ -232,7 +234,7 @@ public final class MetadataToolHelper {
 
     /**
      * qzhang Comment method "isFile".
-     * 
+     *
      * @param value
      * @return
      */
@@ -280,14 +282,15 @@ public final class MetadataToolHelper {
 
     private static boolean isAllowSpecificCharacters() {
         IEclipsePreferences coreUIPluginNode = new InstanceScope().getNode(ITalendCorePrefConstants.CoreUIPlugin_ID);
-        return coreUIPluginNode.getBoolean(IRepositoryPrefConstants.ALLOW_SPECIFIC_CHARACTERS_FOR_SCHEMA_COLUMNS, false);
+        return coreUIPluginNode
+                .getBoolean(IRepositoryPrefConstants.ALLOW_SPECIFIC_CHARACTERS_FOR_SCHEMA_COLUMNS, false);
     }
 
     /**
-     * 
+     *
      * qli Comment method "validateColumnName".
-     * 
-     * 
+     *
+     *
      */
     public static String validateColumnName(final String columnName, final int index) {
         String originalColumnName = new String(mapSpecialChar(columnName));
@@ -317,8 +320,8 @@ public final class MetadataToolHelper {
                 }
             }
         }
-        if (isKeyword
-                || org.apache.commons.lang.StringUtils.countMatches(returnedColumnName, underLine) > (originalColumnName.length() / 2)) {
+        if (isKeyword || org.apache.commons.lang.StringUtils
+                .countMatches(returnedColumnName, underLine) > (originalColumnName.length() / 2)) {
             returnedColumnName = "Column" + index; //$NON-NLS-1$
         }
 
@@ -340,10 +343,10 @@ public final class MetadataToolHelper {
     }
 
     /**
-     * 
+     *
      * hwang Comment method "validateTableName".
-     * 
-     * 
+     *
+     *
      */
     public static String validateTableName(String tableName) {
         String originalTableName = new String(tableName);
@@ -435,14 +438,14 @@ public final class MetadataToolHelper {
     }
 
     /**
-     * 
+     *
      * qli Comment method "mapSpecialChar".
-     * 
-     * 
+     *
+     *
      */
-    private  static String mapSpecialChar(String columnName) {
+    private static String mapSpecialChar(String columnName) {
         if (GlobalServiceRegister.getDefault().isServiceRegistered(IRoutinesService.class)) {
-            IRoutinesService service = (IRoutinesService) GlobalServiceRegister.getDefault().getService(IRoutinesService.class);
+            IRoutinesService service = GlobalServiceRegister.getDefault().getService(IRoutinesService.class);
             if (service != null) {
                 Vector map = service.getAccents();
                 map.setElementAt("AE", 4);//$NON-NLS-1$
@@ -466,10 +469,10 @@ public final class MetadataToolHelper {
     }
 
     /**
-     * 
+     *
      * qli Comment method "initSpecificMapping".
-     * 
-     * 
+     *
+     *
      */
     private static String initSpecificMapping(String columnName, Vector map) {
         for (int i = 0; i < columnName.toCharArray().length; i++) {
@@ -491,21 +494,23 @@ public final class MetadataToolHelper {
      */
     public static void validateSchema(String value) {
         if (value == null) {
-            MessageDialog.openError(Display.getCurrent().getActiveShell(),
-                    Messages.getString("MetadataTool.nullValue"), Messages.getString("MetadataTool.nameNull")); //$NON-NLS-1$ //$NON-NLS-2$
+            MessageDialog
+                    .openError(Display.getCurrent().getActiveShell(), Messages.getString("MetadataTool.nullValue"), //$NON-NLS-1$
+                            Messages.getString("MetadataTool.nameNull")); //$NON-NLS-1$
             return;
         }
         if (!isValidSchemaName(value)) {
-            MessageDialog.openError(Display.getCurrent().getActiveShell(),
-                    Messages.getString("MetadataTool.invalid"), Messages.getString("MetadataTool.schemaInvalid")); //$NON-NLS-1$ //$NON-NLS-2$
+            MessageDialog
+                    .openError(Display.getCurrent().getActiveShell(), Messages.getString("MetadataTool.invalid"), //$NON-NLS-1$
+                            Messages.getString("MetadataTool.schemaInvalid")); //$NON-NLS-1$
             return;
         }
     }
 
     /**
-     * 
+     *
      * wzhang Comment method "validateSchemaValue".
-     * 
+     *
      * @param value
      * @param beanPosition
      * @param list
@@ -533,8 +538,9 @@ public final class MetadataToolHelper {
     public static void checkSchema(Shell shell, KeyEvent event) {
         if ((!Character.isIdentifierIgnorable(event.character)) && (event.character == ' ')) {
             event.doit = false;
-            MessageDialog.openError(shell,
-                    Messages.getString("MetadataTool.invalidChar"), Messages.getString("MetadataTool.errorMessage")); //$NON-NLS-1$ //$NON-NLS-2$
+            MessageDialog
+                    .openError(shell, Messages.getString("MetadataTool.invalidChar"), //$NON-NLS-1$
+                            Messages.getString("MetadataTool.errorMessage")); //$NON-NLS-1$
         }
     }
 
@@ -601,7 +607,8 @@ public final class MetadataToolHelper {
             IMetadataColumn newTargetColumn = column.clone();
             if (targetColumn == null) {
                 columnsTAdd.add(newTargetColumn);
-                newTargetColumn.setReadOnly(target.isReadOnly() || readOnlycolumns.contains(newTargetColumn.getLabel()));
+                newTargetColumn
+                        .setReadOnly(target.isReadOnly() || readOnlycolumns.contains(newTargetColumn.getLabel()));
             } else {
                 if (!targetColumn.isReadOnly()) {
                     target.getListColumns().remove(targetColumn);
@@ -614,12 +621,13 @@ public final class MetadataToolHelper {
         target.getListColumns().addAll(columnsTAdd);
         target.sortCustomColumns();
         target.setLabel(source.getLabel());
-        List<String> originalColumnsList = null;
-        if (source.getOriginalColumns() != null) {
-            originalColumnsList = new ArrayList<String>();
-            originalColumnsList.addAll(source.getOriginalColumns());
-        }
-        target.setOriginalColumns(originalColumnsList);
+        setTargetOriginalColumns(source, target);
+        // List<String> originalColumnsList = null;
+        // if (source.getOriginalColumns() != null) {
+        // originalColumnsList = new ArrayList<String>();
+        // originalColumnsList.addAll(source.getOriginalColumns());
+        // }
+        // target.setOriginalColumns(originalColumnsList);
         Map<String, String> targetProperties = target.getAdditionalProperties();
         Map<String, String> sourceProperties = source.getAdditionalProperties();
         for (Entry<String, String> entry : sourceProperties.entrySet()) {
@@ -627,7 +635,59 @@ public final class MetadataToolHelper {
         }
     }
 
-    public static void copyTable(List<IMetadataColumn> sourceColumns, IMetadataTable target, List<IMetadataColumn> targetColumns) {
+    public static void setTargetOriginalColumns(IMetadataTable source, IMetadataTable target) {
+    	List<String> sColumns = source.getOriginalColumns();
+    	List<String> tColumns = target.getOriginalColumns();
+    	if(sColumns == null) {
+    		return;
+    	}
+    	if(tColumns == null) {
+    		target.setOriginalColumns(sColumns);
+    		return;
+    	}
+
+    	if(sColumns.size() == tColumns.size()) {
+    		boolean same = true;
+    		for(int i = 0;i<sColumns.size();i++) {
+    			if(!sColumns.get(i).equals(tColumns.get(i))) {
+    				same = false;
+    				break;
+    			}
+    		}
+    		if(same) {
+    			return;
+    		}
+    	}
+
+    	for(String sColumn : sColumns) {
+    		if(tColumns.contains(sColumn)) {
+    			continue;
+    		}
+    		tColumns.add(sColumn);
+    	}
+
+    	List<IMetadataColumn> targetColumns = target.getListColumns();
+    	List<String> temp = new ArrayList<String>(tColumns);
+    	if (targetColumns != null) {
+            final List<String> columnNames = new ArrayList<String>();
+        	for(IMetadataColumn column : targetColumns){
+        		columnNames.add(column.getLabel());
+        	}
+            Collections.sort(temp, new Comparator<String>() {
+
+                @Override
+                public int compare(String o1, String o2) {
+                    int index1 = columnNames.indexOf(o1);
+                    int index2 = columnNames.indexOf(o2);
+                    return index1 - index2;
+                }
+            });
+        }
+    	target.setOriginalColumns(temp);
+    }
+
+    public static void copyTable(List<IMetadataColumn> sourceColumns, IMetadataTable target,
+            List<IMetadataColumn> targetColumns) {
         if (sourceColumns == null || target == null || targetColumns == null) {
             return;
         }
@@ -649,7 +709,8 @@ public final class MetadataToolHelper {
             IMetadataColumn newTargetColumn = column.clone();
             if (targetColumn == null) {
                 columnsTAdd.add(newTargetColumn);
-                newTargetColumn.setReadOnly(target.isReadOnly() || readOnlycolumns.contains(newTargetColumn.getLabel()));
+                newTargetColumn
+                        .setReadOnly(target.isReadOnly() || readOnlycolumns.contains(newTargetColumn.getLabel()));
             } else {
                 if (!targetColumn.isReadOnly()) {
                     target.getListColumns().remove(targetColumn);
@@ -667,9 +728,9 @@ public final class MetadataToolHelper {
     // }
 
     /**
-     * 
+     *
      * DOC qli Comment method "copyTable".
-     * 
+     *
      * @param sourceColumns,target,targetDbms
      * @return
      */
@@ -704,7 +765,8 @@ public final class MetadataToolHelper {
             IMetadataColumn newTargetColumn = column.clone();
             if (targetColumn == null) {
                 columnsTAdd.add(newTargetColumn);
-                newTargetColumn.setReadOnly(target.isReadOnly() || readOnlycolumns.contains(newTargetColumn.getLabel()));
+                newTargetColumn
+                        .setReadOnly(target.isReadOnly() || readOnlycolumns.contains(newTargetColumn.getLabel()));
             } else {
                 if (!targetColumn.isReadOnly()) {
                     target.getListColumns().remove(targetColumn);
@@ -750,9 +812,9 @@ public final class MetadataToolHelper {
             }
             Set<MetadataTable> tables = null;
             IGenericWizardService wizardService = null;
-            if (!CommonsPlugin.isHeadless() && GlobalServiceRegister.getDefault().isServiceRegistered(IGenericWizardService.class)) {
-                wizardService = (IGenericWizardService) GlobalServiceRegister.getDefault()
-                        .getService(IGenericWizardService.class);
+            if (!CommonsPlugin.isHeadless()
+                    && GlobalServiceRegister.getDefault().isServiceRegistered(IGenericWizardService.class)) {
+                wizardService = GlobalServiceRegister.getDefault().getService(IGenericWizardService.class);
             }
             if (wizardService != null && wizardService.isGenericConnection(connection)) {
                 List<MetadataTable> metadataTables = wizardService.getMetadataTables(connection);
@@ -772,13 +834,14 @@ public final class MetadataToolHelper {
 
     /**
      * Added by Marvin Wang on Jun. 20, 2012 for getting the <code>MetadataTable</code> by given parameters.
-     * 
+     *
      * @param connectionId
      * @param functionId
      * @param tableName
      * @return
      */
-    public static MetadataTable getMetadataTableFromSAPFunction(String connectionId, String functionId, String tableName) {
+    public static MetadataTable getMetadataTableFromSAPFunction(String connectionId, String functionId,
+            String tableName) {
         org.talend.core.model.metadata.builder.connection.Connection connection;
         if (connectionId != null) {
             connection = getConnectionFromRepository(connectionId);
@@ -850,7 +913,8 @@ public final class MetadataToolHelper {
         return null;
     }
 
-    public static org.talend.core.model.metadata.builder.connection.Connection getConnectionFromRepository(String metaRepositoryid) {
+    public static org.talend.core.model.metadata.builder.connection.Connection
+            getConnectionFromRepository(String metaRepositoryid) {
         ConnectionItem connItem = getConnectionItemFromRepository(metaRepositoryid);
         if (connItem != null) {
             return connItem.getConnection();
@@ -916,9 +980,9 @@ public final class MetadataToolHelper {
 
     // ////////////////////////////////////////////////////////////////////////////////////
 
-    //    private static final String VALIDATE_PATTERN_NAME = "^[a-zA-Z_][a-zA-Z_0-9]*$"; //$NON-NLS-1$
+    // private static final String VALIDATE_PATTERN_NAME = "^[a-zA-Z_][a-zA-Z_0-9]*$"; //$NON-NLS-1$
 
-    //    private static final String VALIDATE_PATTERN_SCHEMA_NAME = "^[a-zA-Z_0-9][a-zA-Z_0-9]*$"; //$NON-NLS-1$
+    // private static final String VALIDATE_PATTERN_SCHEMA_NAME = "^[a-zA-Z_0-9][a-zA-Z_0-9]*$"; //$NON-NLS-1$
 
     public static List<ColumnNameChanged> getColumnNameChanged(IMetadataTable oldTable, IMetadataTable newTable) {
         List<ColumnNameChanged> columnNameChanged = new ArrayList<ColumnNameChanged>();
@@ -949,8 +1013,9 @@ public final class MetadataToolHelper {
             IMetadataColumn clonedColumn = getColumn(newTable, originalColumn, oldIndex);
             if (clonedColumn != null) {
                 if (!originalColumn.getLabel().equals(clonedColumn.getLabel())) {
-                    columnNameChanged.add(new ColumnNameChangedExt(changedNode, originalColumn.getLabel(), clonedColumn
-                            .getLabel()));
+                    columnNameChanged
+                            .add(new ColumnNameChangedExt(changedNode, originalColumn.getLabel(),
+                                    clonedColumn.getLabel()));
                 }
             }
         }
@@ -977,9 +1042,9 @@ public final class MetadataToolHelper {
     }
 
     /**
-     * 
+     *
      * DOC qli Comment method "copyTable".
-     * 
+     *
      * @param sourceColumns,target
      * @return
      */
@@ -1035,7 +1100,7 @@ public final class MetadataToolHelper {
 
     /**
      * qzhang Comment method "getNewMetadataColumns".
-     * 
+     *
      * @param oldTable
      * @param newTable
      * @return
@@ -1061,7 +1126,7 @@ public final class MetadataToolHelper {
 
     /**
      * qzhang Comment method "getRemoveMetadataColumns".
-     * 
+     *
      * @param oldTable
      * @param newTable
      * @return
@@ -1099,8 +1164,8 @@ public final class MetadataToolHelper {
                     initilializeNewSchema(metadataTable, mappingParameter, param);
                     if (!param.getDefaultValues().isEmpty()) {
                         Schema schema = (Schema) param.getDefaultValues().get(0).getDefaultValue();
-                        org.talend.core.model.metadata.builder.connection.MetadataTable defaultEmfTable = MetadataToolAvroHelper
-                                .convertFromAvro(schema);
+                        org.talend.core.model.metadata.builder.connection.MetadataTable defaultEmfTable =
+                                MetadataToolAvroHelper.convertFromAvro(schema);
                         IMetadataTable defaultTable = MetadataToolHelper.convert(defaultEmfTable);
                         for (IMetadataColumn currentColumn : metadataTable.getListColumns()) {
                             IMetadataColumn defaultColumn = defaultTable.getColumn(currentColumn.getLabel());
@@ -1130,8 +1195,8 @@ public final class MetadataToolHelper {
                     Object schemaObj = properties.getValuedProperty(param.getName()).getValue();
                     if (schemaObj instanceof Schema) {
                         Schema schema = (Schema) schemaObj;
-                        org.talend.core.model.metadata.builder.connection.MetadataTable emfTable = MetadataToolAvroHelper
-                                .convertFromAvro(schema);
+                        org.talend.core.model.metadata.builder.connection.MetadataTable emfTable =
+                                MetadataToolAvroHelper.convertFromAvro(schema);
                         IMetadataTable newTable = MetadataToolHelper.convert(emfTable);
                         initilializeSchema(metadataTable, newTable, mappingParameter, node);
                     }
@@ -1213,7 +1278,7 @@ public final class MetadataToolHelper {
 
     /**
      * DOC qzhang Comment method "copyTable".
-     * 
+     *
      * @param source
      * @param target
      */
@@ -1291,8 +1356,8 @@ public final class MetadataToolHelper {
                     if (connection != null) {
                         IRepositoryViewObject lastVersion = null;
                         if (connection.getContextId() != null) {
-                            IRepositoryService service = (IRepositoryService) GlobalServiceRegister.getDefault().getService(
-                                    IRepositoryService.class);
+                            IRepositoryService service =
+                                    GlobalServiceRegister.getDefault().getService(IRepositoryService.class);
                             lastVersion = service.getProxyRepositoryFactory().getLastVersion(connection.getContextId());
                         }
                         if (lastVersion != null) {
@@ -1310,9 +1375,9 @@ public final class MetadataToolHelper {
     }
 
     /**
-     * 
+     *
      * cli Comment method "processFieldLength".
-     * 
+     *
      */
     public static void processFieldsLength(EObject obj) {
         if (obj != null) {
@@ -1386,7 +1451,7 @@ public final class MetadataToolHelper {
     }
 
     public static IMetadataTable convert(MetadataTable old) {
-        ICoreService coreService = (ICoreService) GlobalServiceRegister.getDefault().getService(ICoreService.class);
+        ICoreService coreService = GlobalServiceRegister.getDefault().getService(ICoreService.class);
         IMetadataTable result = new org.talend.core.model.metadata.MetadataTable();
         result.setComment(old.getComment());
         result.setId(old.getId());
@@ -1406,7 +1471,8 @@ public final class MetadataToolHelper {
         }
 
         for (Object o : old.getColumns()) {
-            org.talend.core.model.metadata.builder.connection.MetadataColumn column = (org.talend.core.model.metadata.builder.connection.MetadataColumn) o;
+            org.talend.core.model.metadata.builder.connection.MetadataColumn column =
+                    (org.talend.core.model.metadata.builder.connection.MetadataColumn) o;
             IMetadataColumn newColumn = new org.talend.core.model.metadata.MetadataColumn();
             columns.add(newColumn);
             newColumn.setComment(column.getComment());
@@ -1420,7 +1486,7 @@ public final class MetadataToolHelper {
             }
             newColumn.setLabel(label2);
             newColumn.setPattern(column.getPattern());
-            
+
             if (column.getLength() < 0) {
                 newColumn.setLength(null);
             } else {
@@ -1443,12 +1509,12 @@ public final class MetadataToolHelper {
                         newColumn.setCustom(Boolean.valueOf(tv.getValue()));
                     } else if (DiSchemaConstants.TALEND6_IS_READ_ONLY.equals(additionalTag)) {
                         newColumn.setReadOnly(Boolean.valueOf(tv.getValue()));
-                    }else {
+                    } else {
                         newColumn.getAdditionalField().put(additionalTag, tv.getValue());
                     }
                 }
             }
-            
+
             newColumn.setNullable(column.isNullable());
             if (column.getPrecision() < 0) {
                 newColumn.setPrecision(null);

@@ -1,6 +1,6 @@
 // ============================================================================
 //
-// Copyright (C) 2006-2018 Talend Inc. - www.talend.com
+// Copyright (C) 2006-2019 Talend Inc. - www.talend.com
 //
 // This source code is available under agreement available at
 // %InstallDIR%\features\org.talend.rcp.branding.%PRODUCTNAME%\%PRODUCTNAME%license.txt
@@ -19,13 +19,13 @@ import org.talend.osgi.hook.JarLoaderBundleFileWrapperFactory;
 /**
  * configure the equinox hook that Talend uses to derive the jar missing in the bundle to load them in another folder.
  * created by sgandon on 9 sept. 2013 Detailled comment
- * 
+ *
  */
 public class JarLoaderConfigurator implements HookConfigurator {
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see org.eclipse.osgi.baseadaptor.HookConfigurator#addHooks(org.eclipse.osgi.baseadaptor.HookRegistry)
      */
     @Override

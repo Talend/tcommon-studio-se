@@ -1,6 +1,6 @@
 // ============================================================================
 //
-// Copyright (C) 2006-2018 Talend Inc. - www.talend.com
+// Copyright (C) 2006-2019 Talend Inc. - www.talend.com
 //
 // This source code is available under agreement available at
 // %InstallDIR%\features\org.talend.rcp.branding.%PRODUCTNAME%\%PRODUCTNAME%license.txt
@@ -16,15 +16,15 @@ import java.util.List;
 
 /**
  * DOC ocarbone class global comment. Detailled comment <br/>
- * 
+ *
  * $Id$
- * 
+ *
  */
 public class IndiceHelper {
 
     /**
      * Check the unicity of the newLabel in the list of existingLabel. Add or increase an indice if needed.
-     * 
+     *
      * @param String newLabel
      * @param List existingLabel2
      * @return String
@@ -39,7 +39,7 @@ public class IndiceHelper {
 
     /**
      * Check the unicity of the newLabel in the list of existingLabel. Add or increase an indice if needed.
-     * 
+     *
      * @param String Label
      * @param String[] existingLabel
      * @return String

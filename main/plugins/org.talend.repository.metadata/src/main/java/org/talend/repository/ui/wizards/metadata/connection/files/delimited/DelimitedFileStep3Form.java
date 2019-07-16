@@ -1,6 +1,6 @@
 // ============================================================================
 //
-// Copyright (C) 2006-2018 Talend Inc. - www.talend.com
+// Copyright (C) 2006-2019 Talend Inc. - www.talend.com
 //
 // This source code is available under agreement available at
 // %InstallDIR%\features\org.talend.rcp.branding.%PRODUCTNAME%\%PRODUCTNAME%license.txt
@@ -60,7 +60,7 @@ import org.talend.repository.metadata.ui.wizards.form.AbstractDelimitedFileStepF
 
 /**
  * @author ocarbone
- * 
+ *
  */
 public class DelimitedFileStep3Form extends AbstractDelimitedFileStepForm {
 
@@ -88,7 +88,7 @@ public class DelimitedFileStep3Form extends AbstractDelimitedFileStepForm {
 
     /**
      * Constructor to use by RCP Wizard.
-     * 
+     *
      * @param Composite
      */
     public DelimitedFileStep3Form(Composite parent, ConnectionItem connectionItem, MetadataTable metadataTable,
@@ -105,7 +105,7 @@ public class DelimitedFileStep3Form extends AbstractDelimitedFileStepForm {
     }
 
     /**
-     * 
+     *
      * Initialize value, forceFocus first field.
      */
     @Override
@@ -127,7 +127,7 @@ public class DelimitedFileStep3Form extends AbstractDelimitedFileStepForm {
 
     /**
      * DOC ocarbone Comment method "adaptFormToReadOnly".
-     * 
+     *
      */
     @Override
     protected void adaptFormToReadOnly() {
@@ -222,7 +222,7 @@ public class DelimitedFileStep3Form extends AbstractDelimitedFileStepForm {
 
     /**
      * addButtonControls.
-     * 
+     *
      * @param cancelButton
      */
     @Override
@@ -278,10 +278,10 @@ public class DelimitedFileStep3Form extends AbstractDelimitedFileStepForm {
 
     /**
      * create ProcessDescription and set it.
-     * 
+     *
      * WARNING ::field FieldSeparator, RowSeparator, EscapeChar and TextEnclosure are surround by double quote.
-     * 
-     * 
+     *
+     *
      * @return processDescription
      */
     private ProcessDescription getProcessDescription(DelimitedFileConnection originalValueConnection) {
@@ -357,7 +357,7 @@ public class DelimitedFileStep3Form extends AbstractDelimitedFileStepForm {
 
     /**
      * DOC ocarbone Comment method "refreshMetaData".
-     * 
+     *
      * @param csvArray
      */
     public void refreshMetaDataTable(final CsvArray csvArray) {
@@ -372,9 +372,9 @@ public class DelimitedFileStep3Form extends AbstractDelimitedFileStepForm {
                 realEncodingValue = ContextParameterUtils.getOriginalValue(contextType, getConnection().getEncoding());
             }
         }
-        
+
         List<MetadataColumn> columns = GuessSchemaUtil.guessSchemaFromArray(csvArray, getConnection().isFirstLineCaption(),
-        		realEncodingValue, tableEditorView, 1); 
+        		realEncodingValue, tableEditorView, 1);
         tableEditorView.getMetadataEditor().addAll(columns);
 
         checkFieldsValue();
@@ -385,7 +385,7 @@ public class DelimitedFileStep3Form extends AbstractDelimitedFileStepForm {
 
     /**
      * Ensures that fields are set. Update checkEnable / use to checkConnection().
-     * 
+     *
      * @return
      */
     @Override
@@ -416,7 +416,7 @@ public class DelimitedFileStep3Form extends AbstractDelimitedFileStepForm {
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see org.eclipse.swt.widgets.Control#setVisible(boolean)
      */
     @Override
@@ -446,7 +446,7 @@ public class DelimitedFileStep3Form extends AbstractDelimitedFileStepForm {
 
     /**
      * DOC yyin Comment method "setSchemaObservable".
-     * 
+     *
      * @param schemaObservable
      */
     public void setSchemaObservable(Observable schemaObservable) {

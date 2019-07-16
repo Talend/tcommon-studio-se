@@ -1,6 +1,6 @@
 // ============================================================================
 //
-// Copyright (C) 2006-2018 Talend Inc. - www.talend.com
+// Copyright (C) 2006-2019 Talend Inc. - www.talend.com
 //
 // This source code is available under agreement available at
 // %InstallDIR%\features\org.talend.rcp.branding.%PRODUCTNAME%\%PRODUCTNAME%license.txt
@@ -26,14 +26,14 @@ import org.talend.designer.core.model.utils.emf.talendfile.AbstractExternalData;
 
 /**
  * DOC YeXiaowei class global comment. Detailled comment <br/>
- * 
+ *
  */
 public interface IDesignerMapperService extends IService {
 
     /**
-     * 
+     *
      * DOC YeXiaowei Comment method "isVirtualComponent".
-     * 
+     *
      * @param node
      * @return
      */
@@ -49,7 +49,7 @@ public interface IDesignerMapperService extends IService {
 
     /**
      * DOC ycbai Comment method "getRepositorySchemaIds".
-     * 
+     *
      * @param nodeData
      * @return
      */
@@ -57,7 +57,7 @@ public interface IDesignerMapperService extends IService {
 
     /**
      * DOC ycbai Comment method "getRepositorySchemaIds".
-     * 
+     *
      * @param nodeType
      * @return
      */
@@ -67,7 +67,7 @@ public interface IDesignerMapperService extends IService {
 
     /**
      * DOC ycbai Comment method "updateMapperTableEntries".
-     * 
+     *
      * @param nodeData
      * @param schemaId
      * @param metadataTable
@@ -78,7 +78,7 @@ public interface IDesignerMapperService extends IService {
 
     /**
      * DOC ycbai Comment method "isSameMetadata".
-     * 
+     *
      * @param nodeData
      * @param schemaId
      * @param metadataTable

@@ -1,6 +1,6 @@
 // ============================================================================
 //
-// Copyright (C) 2006-2018 Talend Inc. - www.talend.com
+// Copyright (C) 2006-2019 Talend Inc. - www.talend.com
 //
 // This source code is available under agreement available at
 // %InstallDIR%\features\org.talend.rcp.branding.%PRODUCTNAME%\%PRODUCTNAME%license.txt
@@ -23,15 +23,15 @@ import org.talend.core.ui.branding.IBrandingService;
 
 /**
  * DOC ccarbone class global comment. Detailed comment <br/>
- * 
+ *
  * $Id$
- * 
+ *
  */
 public class Perspective implements IPerspectiveFactory {
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see org.eclipse.ui.IPerspectiveFactory#createInitialLayout(org.eclipse.ui.IPageLayout)
      */
     public void createInitialLayout(IPageLayout layout) {
@@ -43,7 +43,7 @@ public class Perspective implements IPerspectiveFactory {
 
             /*
              * (non-Javadoc)
-             * 
+             *
              * @see org.eclipse.ui.IPerspectiveListener#perspectiveActivated(org.eclipse.ui.IWorkbenchPage,
              * org.eclipse.ui.IPerspectiveDescriptor)
              */

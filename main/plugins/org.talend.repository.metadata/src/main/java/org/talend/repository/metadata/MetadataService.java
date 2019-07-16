@@ -1,6 +1,6 @@
 // ============================================================================
 //
-// Copyright (C) 2006-2018 Talend Inc. - www.talend.com
+// Copyright (C) 2006-2019 Talend Inc. - www.talend.com
 //
 // This source code is available under agreement available at
 // %InstallDIR%\features\org.talend.rcp.branding.%PRODUCTNAME%\%PRODUCTNAME%license.txt
@@ -72,7 +72,7 @@ public class MetadataService implements IMetadataService {
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see org.talend.repository.model.IRepositoryService#getGenericSchemaWizardDialog(org.eclipse.swt.widgets.Shell,
      * org.eclipse.ui.IWorkbench, boolean, org.eclipse.jface.viewers.ISelection, java.lang.String[], boolean)
      */
@@ -86,7 +86,7 @@ public class MetadataService implements IMetadataService {
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see org.talend.repository.model.IRepositoryService#getPropertyFromWizardDialog()
      */
     @Override
@@ -99,7 +99,7 @@ public class MetadataService implements IMetadataService {
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see org.talend.repository.model.IRepositoryService#getPathForSaveAsGenericSchema()
      */
     @Override
@@ -258,7 +258,7 @@ public class MetadataService implements IMetadataService {
 
                 /*
                  * (non-Javadoc)
-                 * 
+                 *
                  * @see org.talend.repository.ui.actions.AContextualAction#getSelection()
                  */
                 @Override

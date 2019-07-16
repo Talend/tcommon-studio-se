@@ -1,6 +1,6 @@
 // ============================================================================
 //
-// Copyright (C) 2006-2018 Talend Inc. - www.talend.com
+// Copyright (C) 2006-2019 Talend Inc. - www.talend.com
 //
 // This source code is available under agreement available at
 // %InstallDIR%\features\org.talend.rcp.branding.%PRODUCTNAME%\%PRODUCTNAME%license.txt
@@ -24,7 +24,7 @@ import org.talend.metadata.managment.ui.wizard.AbstractForm;
 
 /**
  * DOC Administrator class global comment. Detailled comment <br/>
- * 
+ *
  */
 public class GenericSchemaWizardPage extends WizardPage {
 
@@ -40,7 +40,7 @@ public class GenericSchemaWizardPage extends WizardPage {
 
     /**
      * DOC ocarbone DelimitedFileWizardPage constructor comment.
-     * 
+     *
      * @param step
      * @param connection
      * @param isRepositoryObjectEditable
@@ -56,7 +56,7 @@ public class GenericSchemaWizardPage extends WizardPage {
     }
 
     /**
-     * 
+     *
      * @see IDialogPage#createControl(Composite)
      */
     public void createControl(final Composite parent) {

@@ -1,6 +1,6 @@
 // ============================================================================
 //
-// Copyright (C) 2006-2018 Talend Inc. - www.talend.com
+// Copyright (C) 2006-2019 Talend Inc. - www.talend.com
 //
 // This source code is available under agreement available at
 // %InstallDIR%\features\org.talend.rcp.branding.%PRODUCTNAME%\%PRODUCTNAME%license.txt
@@ -14,7 +14,7 @@ package org.talend.utils.sugars;
 
 /**
  * @author scorreia
- * 
+ *
  * This class can be used when one wants to return more than a simple boolean in a method.
  * @param <T> the type of object returned in method.
  */
@@ -24,7 +24,7 @@ public class TypedReturnCode<T> extends ReturnCode {
 
     /**
      * ReturnCode constructor.
-     * 
+     *
      * @param mess the message to return
      * @param retCode the boolean to return
      */
@@ -41,7 +41,7 @@ public class TypedReturnCode<T> extends ReturnCode {
 
     /**
      * ReturnCode constructor.
-     * 
+     *
      * @param isOk the boolean to return
      */
     public TypedReturnCode(boolean isOk) {
@@ -50,7 +50,7 @@ public class TypedReturnCode<T> extends ReturnCode {
 
     /**
      * Method "getObject".
-     * 
+     *
      * @return the object when everything is ok
      */
     public T getObject() {
@@ -59,7 +59,7 @@ public class TypedReturnCode<T> extends ReturnCode {
 
     /**
      * Method "setObject".
-     * 
+     *
      * @param obj the object to return.
      */
     public void setObject(T obj) {

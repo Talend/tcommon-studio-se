@@ -1,6 +1,6 @@
 // ============================================================================
 //
-// Copyright (C) 2006-2018 Talend Inc. - www.talend.com
+// Copyright (C) 2006-2019 Talend Inc. - www.talend.com
 //
 // This source code is available under agreement available at
 // %InstallDIR%\features\org.talend.rcp.branding.%PRODUCTNAME%\%PRODUCTNAME%license.txt
@@ -40,17 +40,17 @@ import org.talend.commons.utils.data.bean.IBeanPropertyAccessors;
 import commons.utils.DataObject;
 
 /**
- * 
+ *
  * Test class of <code>TableViewerCreator</code>. <br/>
- * 
+ *
  * $Id: TestTableViewerCreator2.java 410 2006-11-13 13:25:52 +0000 (lun., 13 nov. 2006) amaumont $
- * 
+ *
  */
 public final class TestExtendedTableViewer extends AbstractDataTableEditorView<DataObject> {
 
     /**
      * DOC amaumont TestExtendedTableViewer constructor comment.
-     * 
+     *
      * @param macroTable
      * @param shell1
      */
@@ -110,7 +110,7 @@ public final class TestExtendedTableViewer extends AbstractDataTableEditorView<D
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see org.talend.commons.ui.swt.advanced.macrotable.AbstractExtendedTableViewer#createColumns()
      */
     @Override

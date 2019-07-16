@@ -1,6 +1,6 @@
 // ============================================================================
 //
-// Copyright (C) 2006-2018 Talend Inc. - www.talend.com
+// Copyright (C) 2006-2019 Talend Inc. - www.talend.com
 //
 // This source code is available under agreement available at
 // %InstallDIR%\features\org.talend.rcp.branding.%PRODUCTNAME%\%PRODUCTNAME%license.txt
@@ -59,7 +59,7 @@ public class WSDLSchemaBean {
 
     /**
      * Getter for wslUrl.
-     * 
+     *
      * @return the wslUrl
      */
     public String getWslUrl() {
@@ -68,7 +68,7 @@ public class WSDLSchemaBean {
 
     /**
      * Sets the wslUrl.
-     * 
+     *
      * @param wslUrl the wslUrl to set
      */
     public void setWslUrl(String wslUrl) {
@@ -77,7 +77,7 @@ public class WSDLSchemaBean {
 
     /**
      * Getter for method.
-     * 
+     *
      * @return the method
      */
     public String getMethod() {
@@ -86,7 +86,7 @@ public class WSDLSchemaBean {
 
     /**
      * Sets the method.
-     * 
+     *
      * @param method the method to set
      */
     public void setMethod(String method) {
@@ -95,7 +95,7 @@ public class WSDLSchemaBean {
 
     /**
      * Getter for needAuth.
-     * 
+     *
      * @return the needAuth
      */
     public boolean isNeedAuth() {
@@ -104,7 +104,7 @@ public class WSDLSchemaBean {
 
     /**
      * Sets the needAuth.
-     * 
+     *
      * @param needAuth the needAuth to set
      */
     public void setNeedAuth(boolean needAuth) {
@@ -113,7 +113,7 @@ public class WSDLSchemaBean {
 
     /**
      * Getter for userName.
-     * 
+     *
      * @return the userName
      */
     public String getUserName() {
@@ -122,7 +122,7 @@ public class WSDLSchemaBean {
 
     /**
      * Sets the userName.
-     * 
+     *
      * @param userName the userName to set
      */
     public void setUserName(String userName) {
@@ -131,7 +131,7 @@ public class WSDLSchemaBean {
 
     /**
      * Getter for password.
-     * 
+     *
      * @return the password
      */
     public String getPassword() {
@@ -140,7 +140,7 @@ public class WSDLSchemaBean {
 
     /**
      * Sets the password.
-     * 
+     *
      * @param password the password to set
      */
     public void setPassword(String password) {
@@ -149,7 +149,7 @@ public class WSDLSchemaBean {
 
     /**
      * Getter for parameters.
-     * 
+     *
      * @return the parameters
      */
     public ArrayList getParameters() {
@@ -158,7 +158,7 @@ public class WSDLSchemaBean {
 
     /**
      * Sets the parameters.
-     * 
+     *
      * @param parameters the parameters to set
      */
     public void setParameters(ArrayList parameters) {
@@ -167,7 +167,7 @@ public class WSDLSchemaBean {
 
     /**
      * Getter for useProxy.
-     * 
+     *
      * @return the useProxy
      */
     public boolean isUseProxy() {
@@ -176,7 +176,7 @@ public class WSDLSchemaBean {
 
     /**
      * Sets the useProxy.
-     * 
+     *
      * @param useProxy the useProxy to set
      */
     public void setUseProxy(boolean useProxy) {
@@ -185,7 +185,7 @@ public class WSDLSchemaBean {
 
     /**
      * Getter for proxyHost.
-     * 
+     *
      * @return the proxyHost
      */
     public String getProxyHost() {
@@ -194,7 +194,7 @@ public class WSDLSchemaBean {
 
     /**
      * Sets the proxyHost.
-     * 
+     *
      * @param proxyHost the proxyHost to set
      */
     public void setProxyHost(String proxyHost) {
@@ -203,7 +203,7 @@ public class WSDLSchemaBean {
 
     /**
      * Getter for proxyPort.
-     * 
+     *
      * @return the proxyPort
      */
     public String getProxyPort() {
@@ -212,7 +212,7 @@ public class WSDLSchemaBean {
 
     /**
      * Sets the proxyPort.
-     * 
+     *
      * @param proxyPort the proxyPort to set
      */
     public void setProxyPort(String proxyPort) {
@@ -221,7 +221,7 @@ public class WSDLSchemaBean {
 
     /**
      * Getter for proxyUser.
-     * 
+     *
      * @return the proxyUser
      */
     public String getProxyUser() {
@@ -230,7 +230,7 @@ public class WSDLSchemaBean {
 
     /**
      * Sets the proxyUser.
-     * 
+     *
      * @param proxyUser the proxyUser to set
      */
     public void setProxyUser(String proxyUser) {
@@ -239,7 +239,7 @@ public class WSDLSchemaBean {
 
     /**
      * Getter for proxyPassword.
-     * 
+     *
      * @return the proxyPassword
      */
     public String getProxyPassword() {
@@ -248,7 +248,7 @@ public class WSDLSchemaBean {
 
     /**
      * DOC gcui Comment method "getTimeOut".
-     * 
+     *
      * @return
      */
     public int getTimeOut() {
@@ -257,7 +257,7 @@ public class WSDLSchemaBean {
 
     /**
      * DOC gcui Comment method "setTimeOut".
-     * 
+     *
      * @param timeOut
      */
     public void setTimeOut(int timeOut) {
@@ -266,7 +266,7 @@ public class WSDLSchemaBean {
 
     /**
      * Sets the proxyPassword.
-     * 
+     *
      * @param proxyPassword the proxyPassword to set
      */
     public void setProxyPassword(String proxyPassword) {
@@ -275,7 +275,7 @@ public class WSDLSchemaBean {
 
     /**
      * Getter for endpointURI.
-     * 
+     *
      * @return the endpointURI
      */
     public String getEndpointURI() {
@@ -284,7 +284,7 @@ public class WSDLSchemaBean {
 
     /**
      * Sets the endpointURI.
-     * 
+     *
      * @param endpointURI the endpointURI to set
      */
     public void setEndpointURI(String endpointURI) {

@@ -1,6 +1,6 @@
 // ============================================================================
 //
-// Copyright (C) 2006-2018 Talend Inc. - www.talend.com
+// Copyright (C) 2006-2019 Talend Inc. - www.talend.com
 //
 // This source code is available under agreement available at
 // %InstallDIR%\features\org.talend.rcp.branding.%PRODUCTNAME%\%PRODUCTNAME%license.txt
@@ -56,7 +56,7 @@ import orgomg.cwm.resource.record.RecordFile;
 
 /**
  * DOC YeXiaowei class global comment. Detailled comment <br/>
- * 
+ *
  */
 public class SalesforceSchemaWizard extends CheckLastVersionRepositoryWizard implements INewWizard {
 
@@ -92,7 +92,7 @@ public class SalesforceSchemaWizard extends CheckLastVersionRepositoryWizard imp
 
     /**
      * Sets the isToolbar.
-     * 
+     *
      * @param isToolbar the isToolbar to set
      */
     public void setToolbar(boolean isToolbar) {
@@ -101,7 +101,7 @@ public class SalesforceSchemaWizard extends CheckLastVersionRepositoryWizard imp
 
     /**
      * DOC YeXiaowei SalesforceSchemaWizard constructor comment.
-     * 
+     *
      * @param workbench
      * @param creation
      * @param forceReadOnly
@@ -291,7 +291,7 @@ public class SalesforceSchemaWizard extends CheckLastVersionRepositoryWizard imp
                 ERepositoryObjectType.METADATA_SALESFORCE_SCHEMA, !isRepositoryObjectEditable(), creation);
 
         salesforceSchemaWizardPage0.setTitle(Messages.getString("SalesforceWizardPage.titleCreate.Step") + " 1 " //$NON-NLS-1$ //$NON-NLS-2$
-                + Messages.getString("FileWizardPage.of") + ALL_STEPS); //$NON-NLS-1$ 
+                + Messages.getString("FileWizardPage.of") + ALL_STEPS); //$NON-NLS-1$
         salesforceSchemaWizardPage0.setDescription(Messages.getString("SalesforceWizardPage.descriptionCreate.Step1")); //$NON-NLS-1$
         addPage(salesforceSchemaWizardPage0);
         if (creation) {
@@ -302,7 +302,7 @@ public class SalesforceSchemaWizard extends CheckLastVersionRepositoryWizard imp
         page1 = new SalesforceWizardPage(1, connectionItem, isRepositoryObjectEditable(), existingNames, salesforceAPI,
                 contextModeManager);
         page1.setTitle(Messages.getString("SalesforceWizardPage.titleCreate.Step") + " 2 " //$NON-NLS-1$ //$NON-NLS-2$
-                + Messages.getString("FileWizardPage.of") + ALL_STEPS); //$NON-NLS-1$ 
+                + Messages.getString("FileWizardPage.of") + ALL_STEPS); //$NON-NLS-1$
         page1.setDescription(Messages.getString("SalesforceWizardPage.descriptionCreate.Step2")); //$NON-NLS-1$
         addPage(page1);
         page1.setPageComplete(false);
@@ -360,7 +360,7 @@ public class SalesforceSchemaWizard extends CheckLastVersionRepositoryWizard imp
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see org.talend.repository.ui.wizards.RepositoryWizard#getConnectionItem()
      */
     @Override

@@ -1,6 +1,6 @@
 // ============================================================================
 //
-// Copyright (C) 2006-2018 Talend Inc. - www.talend.com
+// Copyright (C) 2006-2019 Talend Inc. - www.talend.com
 //
 // This source code is available under agreement available at
 // %InstallDIR%\features\org.talend.rcp.branding.%PRODUCTNAME%\%PRODUCTNAME%license.txt
@@ -38,9 +38,9 @@ import org.talend.libraries.ui.SWTFacade;
 
 /**
  * DOC amaumont class global comment. Detailled comment <br/>
- * 
+ *
  * $Id: MouseTableSelectionHelper.java 7038 2007-11-15 14:05:48Z plegall $
- * 
+ *
  */
 public class MouseTableSelectionHelper {
 
@@ -81,7 +81,7 @@ public class MouseTableSelectionHelper {
     //
     /**
      * DOC amaumont MouseTableSelectionHelper constructor comment.
-     * 
+     *
      * @param table
      */
     public MouseTableSelectionHelper(TableViewerCreatorNotModifiable tableViewerCreator) {
@@ -309,7 +309,7 @@ public class MouseTableSelectionHelper {
 
     /**
      * DOC amaumont Comment method "getCursorPositionFromTableOrigin".
-     * 
+     *
      * @param event
      * @return
      */
@@ -329,7 +329,7 @@ public class MouseTableSelectionHelper {
 
     /**
      * DOC amaumont Comment method "isColumnSelection".
-     * 
+     *
      * @param columnIndex
      * @return
      */

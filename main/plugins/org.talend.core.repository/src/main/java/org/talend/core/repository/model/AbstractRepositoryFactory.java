@@ -1,6 +1,6 @@
 // ============================================================================
 //
-// Copyright (C) 2006-2018 Talend Inc. - www.talend.com
+// Copyright (C) 2006-2019 Talend Inc. - www.talend.com
 //
 // This source code is available under agreement available at
 // %InstallDIR%\features\org.talend.rcp.branding.%PRODUCTNAME%\%PRODUCTNAME%license.txt
@@ -39,9 +39,9 @@ import org.talend.repository.RepositoryWorkUnit;
 
 /**
  * DOC smallet class global comment. Detailled comment <br/>
- * 
+ *
  * $Id$
- * 
+ *
  */
 public abstract class AbstractRepositoryFactory implements IRepositoryFactory {
 
@@ -77,7 +77,7 @@ public abstract class AbstractRepositoryFactory implements IRepositoryFactory {
 
     /**
      * Getter for authenticationNeeded.
-     * 
+     *
      * @return the authenticationNeeded
      */
     @Override
@@ -87,7 +87,7 @@ public abstract class AbstractRepositoryFactory implements IRepositoryFactory {
 
     /**
      * Sets the authenticationNeeded.
-     * 
+     *
      * @param authenticationNeeded the authenticationNeeded to set
      */
     @Override
@@ -97,7 +97,7 @@ public abstract class AbstractRepositoryFactory implements IRepositoryFactory {
 
     /**
      * Getter for name.
-     * 
+     *
      * @return the name
      */
     @Override
@@ -107,7 +107,7 @@ public abstract class AbstractRepositoryFactory implements IRepositoryFactory {
 
     /**
      * Sets the name.
-     * 
+     *
      * @param name the name to set
      */
     @Override
@@ -147,9 +147,9 @@ public abstract class AbstractRepositoryFactory implements IRepositoryFactory {
 
     /**
      * Generates the next id for serializable. If no serializable returns 0.
-     * 
+     *
      * @param project the project to scan
-     * 
+     *
      * @return the next id for the project
      * @throws PersistenceException
      * @throws PersistenceException if processes cannot be retrieved
@@ -276,7 +276,7 @@ public abstract class AbstractRepositoryFactory implements IRepositoryFactory {
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @seeorg.talend.repository.model.IRepositoryFactory#addRepositoryWorkUnitListener(org.talend.repository.model.
      * IRepositoryWorkUnitListener)
      */
@@ -304,7 +304,7 @@ public abstract class AbstractRepositoryFactory implements IRepositoryFactory {
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see org.talend.repository.model.IRepositoryFactory#readProject(boolean)
      */
     @Override

@@ -1,6 +1,6 @@
 // ============================================================================
 //
-// Copyright (C) 2006-2018 Talend Inc. - www.talend.com
+// Copyright (C) 2006-2019 Talend Inc. - www.talend.com
 //
 // This source code is available under agreement available at
 // %InstallDIR%\features\org.talend.rcp.branding.%PRODUCTNAME%\%PRODUCTNAME%license.txt
@@ -78,9 +78,9 @@ import org.talend.repository.ui.properties.StatusHelper;
 
 /**
  * Wizard page contains common properties fields.<br/>
- * 
+ *
  * $Id: PropertiesWizardPage.java 914 2006-12-08 08:28:53 +0000 (������, 08 ʮ���� 2006) bqian $
- * 
+ *
  */
 public abstract class PropertiesWizardPage extends AbstractNamedWizardPage {
 
@@ -225,7 +225,7 @@ public abstract class PropertiesWizardPage extends AbstractNamedWizardPage {
     /**
      * Loads the repository view objects that are used to check if the name of job(Opened in the current properties
      * wizard dialog) can be found. Added by Marvin Wang on Feb 22, 2013.
-     * 
+     *
      * @return a list includes the instance of <code>IRepositoryViewObject</code>, which are used to check if a given
      * job name is present in the list.
      * @throws PersistenceException
@@ -249,9 +249,9 @@ public abstract class PropertiesWizardPage extends AbstractNamedWizardPage {
     }
 
     /**
-     * 
+     *
      * get all available process objects except current object(only If this object is a proecss object)
-     * 
+     *
      * @return
      * @throws PersistenceException
      */
@@ -284,7 +284,7 @@ public abstract class PropertiesWizardPage extends AbstractNamedWizardPage {
     /**
      * Loads the repository view objects, which have the same repository type as the current job that are opened in
      * properties wizard dialog. Added by Marvin Wang on Feb 22, 2013.
-     * 
+     *
      * @return
      * @throws PersistenceException
      */
@@ -305,7 +305,7 @@ public abstract class PropertiesWizardPage extends AbstractNamedWizardPage {
      * in properties wizard dialog. If the given job named is required to check with other repository view object with
      * different repository type, then implement this method to return others repository veiw object. Added by Marvin
      * Wang on Feb 22, 2013.
-     * 
+     *
      * @return
      * @throws PersistenceException
      */
@@ -319,7 +319,7 @@ public abstract class PropertiesWizardPage extends AbstractNamedWizardPage {
 
     /**
      * Getter for editPath.
-     * 
+     *
      * @return the editPath
      */
     public boolean isEditPath() {
@@ -328,7 +328,7 @@ public abstract class PropertiesWizardPage extends AbstractNamedWizardPage {
 
     /**
      * Sets the editPath.
-     * 
+     *
      * @param editPath the editPath to set
      */
     public void setEditPath(boolean editPath) {
@@ -337,7 +337,7 @@ public abstract class PropertiesWizardPage extends AbstractNamedWizardPage {
 
     /**
      * Getter for isUpdate.
-     * 
+     *
      * @return the isUpdate
      */
     public boolean isUpdate() {
@@ -346,7 +346,7 @@ public abstract class PropertiesWizardPage extends AbstractNamedWizardPage {
 
     /**
      * Sets the isUpdate.
-     * 
+     *
      * @param isUpdate the isUpdate to set
      */
     public void setUpdate(boolean update) {
@@ -355,7 +355,7 @@ public abstract class PropertiesWizardPage extends AbstractNamedWizardPage {
 
     /**
      * Getter for nameModifiedByUser.
-     * 
+     *
      * @return the nameModifiedByUser
      */
     public boolean isNameModifiedByUser() {
@@ -364,7 +364,7 @@ public abstract class PropertiesWizardPage extends AbstractNamedWizardPage {
 
     /**
      * Sets the nameModifiedByUser.
-     * 
+     *
      * @param nameModifiedByUser the nameModifiedByUser to set
      */
     public void setNameModifiedByUser(boolean nameModifiedByUser) {
@@ -373,7 +373,7 @@ public abstract class PropertiesWizardPage extends AbstractNamedWizardPage {
 
     /**
      * Getter for destinationPath.
-     * 
+     *
      * @return the destinationPath
      */
     public IPath getDestinationPath() {
@@ -392,7 +392,7 @@ public abstract class PropertiesWizardPage extends AbstractNamedWizardPage {
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see org.eclipse.jface.dialogs.IDialogPage#createControl(org.eclipse.swt.widgets.Composite)
      */
     @Override
@@ -535,7 +535,7 @@ public abstract class PropertiesWizardPage extends AbstractNamedWizardPage {
     /**
      * This method is used to create the Job type and Framework part for any properties wizard page which extends this
      * page. Added by hwang on Aug. 8, 2016.
-     * 
+     *
      * @param parent
      */
     protected void createFrameworkPart(Composite parent) {
@@ -544,7 +544,7 @@ public abstract class PropertiesWizardPage extends AbstractNamedWizardPage {
     /**
      * This method is used to create the bottom part for any properties wizard page which extends this page. Added by
      * Marvin Wang on Jan. 29, 2013.
-     * 
+     *
      * @param parent
      */
     protected void createBottomPart(Composite parent) {
@@ -552,9 +552,9 @@ public abstract class PropertiesWizardPage extends AbstractNamedWizardPage {
 
     /**
      * yzhang PropertiesWizardPage class global comment. Detailled comment <br/>
-     * 
+     *
      * $Id: talend.epf 1 2006-09-29 17:06:40Z nrousseau $
-     * 
+     *
      */
     private class Folder {
 
@@ -573,7 +573,7 @@ public abstract class PropertiesWizardPage extends AbstractNamedWizardPage {
 
         /**
          * Getter for parent.
-         * 
+         *
          * @return the parent
          */
         public Folder getParent() {
@@ -582,7 +582,7 @@ public abstract class PropertiesWizardPage extends AbstractNamedWizardPage {
 
         /**
          * Sets the parent.
-         * 
+         *
          * @param parent the parent to set
          */
         public void setParent(Folder parent) {
@@ -591,7 +591,7 @@ public abstract class PropertiesWizardPage extends AbstractNamedWizardPage {
 
         /**
          * Getter for name.
-         * 
+         *
          * @return the name
          */
         public String getName() {
@@ -600,7 +600,7 @@ public abstract class PropertiesWizardPage extends AbstractNamedWizardPage {
 
         /**
          * Getter for path.
-         * 
+         *
          * @return the path
          */
         public String getPath() {
@@ -620,7 +620,7 @@ public abstract class PropertiesWizardPage extends AbstractNamedWizardPage {
 
         /**
          * Sets the name.
-         * 
+         *
          * @param name the name to set
          */
         public void setName(String name) {
@@ -629,7 +629,7 @@ public abstract class PropertiesWizardPage extends AbstractNamedWizardPage {
 
         /**
          * yzhang Comment method "addChildFolder".
-         * 
+         *
          * @param folder
          */
         public void addChildFolder(Folder folder) {
@@ -639,7 +639,7 @@ public abstract class PropertiesWizardPage extends AbstractNamedWizardPage {
 
         /**
          * yzhang Comment method "getChildren".
-         * 
+         *
          * @return
          */
         public List<Folder> getChildren() {
@@ -650,9 +650,9 @@ public abstract class PropertiesWizardPage extends AbstractNamedWizardPage {
 
     /**
      * yzhang PropertiesWizardPage class global comment. Detailled comment <br/>
-     * 
+     *
      * $Id: talend.epf 1 2006-09-29 17:06:40Z nrousseau $
-     * 
+     *
      */
     private class FoldersLabelProvider extends LabelProvider {
 
@@ -667,7 +667,7 @@ public abstract class PropertiesWizardPage extends AbstractNamedWizardPage {
 
         /*
          * (non-Javadoc)
-         * 
+         *
          * @see org.eclipse.jface.viewers.ILabelProvider#getImage(java.lang.Object)
          */
         @Override
@@ -678,7 +678,7 @@ public abstract class PropertiesWizardPage extends AbstractNamedWizardPage {
 
         /*
          * (non-Javadoc)
-         * 
+         *
          * @see org.eclipse.jface.viewers.ILabelProvider#getText(java.lang.Object)
          */
         @Override
@@ -723,7 +723,7 @@ public abstract class PropertiesWizardPage extends AbstractNamedWizardPage {
 
     /**
      * yzhang Comment method "findFolder".
-     * 
+     *
      * @param folder
      * @param name
      * @return
@@ -745,9 +745,9 @@ public abstract class PropertiesWizardPage extends AbstractNamedWizardPage {
 
     /**
      * Provides all user folders for a given type.<br/>
-     * 
+     *
      * $Id: talend.epf 1 2006-09-29 17:06:40 +0000 (ven., 29 sept. 2006) nrousseau $
-     * 
+     *
      */
     private class FoldersContentProvider implements ITreeContentProvider {
 
@@ -755,7 +755,7 @@ public abstract class PropertiesWizardPage extends AbstractNamedWizardPage {
 
         /*
          * (non-Javadoc)
-         * 
+         *
          * @see org.eclipse.jface.viewers.IStructuredContentProvider#getElements(java.lang.Object)
          */
         @Override
@@ -776,7 +776,7 @@ public abstract class PropertiesWizardPage extends AbstractNamedWizardPage {
 
         /*
          * (non-Javadoc)
-         * 
+         *
          * @see org.eclipse.jface.viewers.IContentProvider#dispose()
          */
         @Override
@@ -787,7 +787,7 @@ public abstract class PropertiesWizardPage extends AbstractNamedWizardPage {
 
         /*
          * (non-Javadoc)
-         * 
+         *
          * @see org.eclipse.jface.viewers.IContentProvider#inputChanged(org.eclipse.jface.viewers.Viewer,
          * java.lang.Object, java.lang.Object)
          */
@@ -799,7 +799,7 @@ public abstract class PropertiesWizardPage extends AbstractNamedWizardPage {
 
         /*
          * (non-Javadoc)
-         * 
+         *
          * @see org.eclipse.jface.viewers.ITreeContentProvider#getChildren(java.lang.Object)
          */
         @Override
@@ -809,7 +809,7 @@ public abstract class PropertiesWizardPage extends AbstractNamedWizardPage {
 
         /*
          * (non-Javadoc)
-         * 
+         *
          * @see org.eclipse.jface.viewers.ITreeContentProvider#getParent(java.lang.Object)
          */
         @Override
@@ -820,7 +820,7 @@ public abstract class PropertiesWizardPage extends AbstractNamedWizardPage {
 
         /*
          * (non-Javadoc)
-         * 
+         *
          * @see org.eclipse.jface.viewers.ITreeContentProvider#hasChildren(java.lang.Object)
          */
         @Override
@@ -907,7 +907,7 @@ public abstract class PropertiesWizardPage extends AbstractNamedWizardPage {
 
             /**
              * yzhang Comment method "setItemImage".
-             * 
+             *
              * @param event
              */
             private void setItemImage(TreeExpansionEvent event, boolean isCollpased) {
@@ -959,7 +959,7 @@ public abstract class PropertiesWizardPage extends AbstractNamedWizardPage {
 
     /**
      * yzhang Comment method "getTreeObject".
-     * 
+     *
      * @param item
      * @param element
      * @return
@@ -979,7 +979,7 @@ public abstract class PropertiesWizardPage extends AbstractNamedWizardPage {
 
     /**
      * yzhang Comment method "getTreeObject".
-     * 
+     *
      * @param tree
      * @param objectToFind
      * @return
@@ -1228,7 +1228,7 @@ public abstract class PropertiesWizardPage extends AbstractNamedWizardPage {
 
     /**
      * ftang Comment method "isNameExistingInRountine".
-     * 
+     *
      * @param jobName
      */
     private boolean isNameValidInRountine(String jobName) {
@@ -1263,7 +1263,7 @@ public abstract class PropertiesWizardPage extends AbstractNamedWizardPage {
 
     /**
      * ftang Comment method "isNameExistingInJob".
-     * 
+     *
      * @param jobName
      */
     private boolean isNameValidInJob(String jobName) {
@@ -1291,7 +1291,7 @@ public abstract class PropertiesWizardPage extends AbstractNamedWizardPage {
 
     /**
      * Getter for item.
-     * 
+     *
      * @return the item
      */
     public Item getItem() {
@@ -1300,7 +1300,7 @@ public abstract class PropertiesWizardPage extends AbstractNamedWizardPage {
 
     /**
      * Sets the item.
-     * 
+     *
      * @param item the item to set
      */
     public void setItem(Item item) {
@@ -1309,7 +1309,7 @@ public abstract class PropertiesWizardPage extends AbstractNamedWizardPage {
 
     /**
      * Getter for converter.
-     * 
+     *
      * @return the converter
      */
     public IProcessConvertService getConverter() {
@@ -1318,7 +1318,7 @@ public abstract class PropertiesWizardPage extends AbstractNamedWizardPage {
 
     /**
      * Sets the converter.
-     * 
+     *
      * @param converter the converter to set
      */
     public void setConverter(IProcessConvertService converter) {

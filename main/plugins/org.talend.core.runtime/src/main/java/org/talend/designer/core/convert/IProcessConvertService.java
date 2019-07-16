@@ -1,6 +1,6 @@
 // ============================================================================
 //
-// Copyright (C) 2006-2018 Talend Inc. - www.talend.com
+// Copyright (C) 2006-2019 Talend Inc. - www.talend.com
 //
 // This source code is available under agreement available at
 // %InstallDIR%\features\org.talend.rcp.branding.%PRODUCTNAME%\%PRODUCTNAME%license.txt
@@ -27,7 +27,7 @@ public interface IProcessConvertService {
     /**
      * Converts the current child process extends process to process. For example, convert m/r process to common
      * process.Added by Marvin Wang on Feb 18, 2013.
-     * 
+     *
      * @param item an item to be converted.
      * @param repViewObject an object to be converted.
      * @return
@@ -37,7 +37,7 @@ public interface IProcessConvertService {
     /**
      * Converts the current child process extends process to process. For example, convert m/r process to common
      * process.Added by Marvin Wang on Feb 18, 2013.
-     * 
+     *
      * @param item an item to be converted.
      * @param repViewObject an object to be converted.
      * @return
@@ -46,7 +46,7 @@ public interface IProcessConvertService {
 
     /**
      * Converts process to the current process which extends process. Added by Marvin Wang on Feb 18, 2013.
-     * 
+     *
      * @param item an item to be converted.
      * @param repViewObject an object to be converted.
      * @return
@@ -55,7 +55,7 @@ public interface IProcessConvertService {
 
     /**
      * Converts process to the current process which extends process. Added by hWang.
-     * 
+     *
      * @param item an item to be converted.
      * @param repViewObject an object to be converted.
      * @param targetNode provider path when d&d a node.
@@ -65,7 +65,7 @@ public interface IProcessConvertService {
 
     /**
      * Returns a boolean value to indicate if the original item is delelted. Added by Marvin Wang on Jan 31, 2013.
-     * 
+     *
      * @return
      */
     boolean isOriginalItemDeleted();
@@ -73,14 +73,14 @@ public interface IProcessConvertService {
     /**
      * Returns a boolean value to indicate if the new item is converted sucessfully. Added by Marvin Wang on Jan 31,
      * 2013.
-     * 
+     *
      * @return
      */
     boolean isNewItemCreated();
 
     /**
      * Returns the type of the instance of {@link ProcessConverterType}. Added by Marvin Wang on Feb 18, 2013.
-     * 
+     *
      * @return
      */
     ProcessConverterType getConverterType();

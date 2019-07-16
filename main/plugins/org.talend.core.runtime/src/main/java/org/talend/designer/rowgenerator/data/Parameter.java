@@ -1,6 +1,6 @@
 // ============================================================================
 //
-// Copyright (C) 2006-2018 Talend Inc. - www.talend.com
+// Copyright (C) 2006-2019 Talend Inc. - www.talend.com
 //
 // This source code is available under agreement available at
 // %InstallDIR%\features\org.talend.rcp.branding.%PRODUCTNAME%\%PRODUCTNAME%license.txt
@@ -29,7 +29,7 @@ public abstract class Parameter {
 
     /**
      * Getter of the property <tt>name</tt>.
-     * 
+     *
      * @return Returns the name.
      * @uml.property name="name"
      */
@@ -39,7 +39,7 @@ public abstract class Parameter {
 
     /**
      * Setter of the property <tt>name</tt>.
-     * 
+     *
      * @param name The name to set.
      * @uml.property name="name"
      */
@@ -54,7 +54,7 @@ public abstract class Parameter {
 
     /**
      * Getter of the property <tt>value</tt>.
-     * 
+     *
      * @return Returns the value.
      * @uml.property name="value"
      */
@@ -69,7 +69,7 @@ public abstract class Parameter {
 
     /**
      * Setter of the property <tt>value</tt>.
-     * 
+     *
      * @param value The value to set.
      * @uml.property name="value"
      */
@@ -84,7 +84,7 @@ public abstract class Parameter {
 
     /**
      * Getter of the property <tt>comment</tt>.
-     * 
+     *
      * @return Returns the comment.
      * @uml.property name="comment"
      */
@@ -94,7 +94,7 @@ public abstract class Parameter {
 
     /**
      * Setter of the property <tt>comment</tt>.
-     * 
+     *
      * @param comment The comment to set.
      * @uml.property name="comment"
      */
@@ -111,7 +111,7 @@ public abstract class Parameter {
 
     /**
      * qzhang Comment method "sameParameterAs".
-     * 
+     *
      * @param obj
      * @return
      */
@@ -133,7 +133,7 @@ public abstract class Parameter {
 
     /**
      * Getter for type.
-     * 
+     *
      * @return the type
      * @see #setType(String);
      */
@@ -143,7 +143,7 @@ public abstract class Parameter {
 
     /**
      * Sets the type.
-     * 
+     *
      * @param the type value: {@link ParameterFactory#PARAMETER_TYPE_STRING} or
      * {@link ParameterFactory#PARAMETER_TYPE_INT} or {@link ParameterFactory#PARAMETER_TYPE_LIST} or
      * {@link ParameterFactory#PARAMETER_TYPE_DOUBLE} or {@link ParameterFactory#PARAMETER_TYPE_OBJECT} or

@@ -1,6 +1,6 @@
 // ============================================================================
 //
-// Copyright (C) 2006-2018 Talend Inc. - www.talend.com
+// Copyright (C) 2006-2019 Talend Inc. - www.talend.com
 //
 // This source code is available under agreement available at
 // %InstallDIR%\features\org.talend.rcp.branding.%PRODUCTNAME%\%PRODUCTNAME%license.txt
@@ -30,7 +30,7 @@ import org.talend.metadata.managment.utils.MetadataConnectionUtils;
 
 /**
  * created by ggu on Jul 12, 2012 Detailled comment
- * 
+ *
  */
 public class MetadataConnectionUtilsTest {
 
@@ -129,9 +129,9 @@ public class MetadataConnectionUtilsTest {
     }
 
     /**
-     * 
+     *
      * test for judging if it is hive connection. normal case.
-     * 
+     *
      * @throws SQLException
      */
     @Test
@@ -143,9 +143,9 @@ public class MetadataConnectionUtilsTest {
     }
 
     /**
-     * 
+     *
      * test for judging if it is hive connection. abnormal case
-     * 
+     *
      * @throws SQLException
      */
     @Test
@@ -241,17 +241,17 @@ public class MetadataConnectionUtilsTest {
         elementName = MetadataConnectionUtils.getMetadataColumnName(tdXmlElementType);
         assertNull(elementName);
     }
-    
+
     @Test
     public void testGetDBType() {
         assertTrue("NTEXT".equals(MetadataConnectionUtils.getDBType("ntext", "id_MSSQL")));
         assertTrue("NVARCHAR".equals(MetadataConnectionUtils.getDBType("nvarchar", "id_MSSQL")));
         assertTrue("NCHAR".equals(MetadataConnectionUtils.getDBType("nchar", "id_MSSQL")));
-        
+
         assertTrue("N_TEXT".equals(MetadataConnectionUtils.getDBType("n*text", "id_MSSQL")));
         assertTrue("NVAR_CHAR".equals(MetadataConnectionUtils.getDBType("nvar$char", "id_MSSQL")));
         assertTrue("NCHA_R".equals(MetadataConnectionUtils.getDBType("ncha#r", "id_MSSQL")));
-        
+
         assertTrue("TIMESTAMP".equals(MetadataConnectionUtils.getDBType("TIMESTAMP(", "id_MSSQL")));
     }
 }

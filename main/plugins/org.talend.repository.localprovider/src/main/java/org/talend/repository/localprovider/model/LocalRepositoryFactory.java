@@ -1,6 +1,6 @@
 // ============================================================================
 //
-// Copyright (C) 2006-2018 Talend Inc. - www.talend.com
+// Copyright (C) 2006-2019 Talend Inc. - www.talend.com
 //
 // This source code is available under agreement available at
 // %InstallDIR%\features\org.talend.rcp.branding.%PRODUCTNAME%\%PRODUCTNAME%license.txt
@@ -180,9 +180,9 @@ import orgomg.cwm.foundation.businessinformation.BusinessinformationPackage;
 
 /**
  * DOC smallet class global comment. Detailled comment <br/>
- * 
+ *
  * $Id$ $Id: RepositoryFactory.java,v 1.55 2006/08/23 14:30:39 tguiu Exp $
- * 
+ *
  */
 public class LocalRepositoryFactory extends AbstractEMFRepositoryFactory implements ILocalRepositoryFactory {
 
@@ -202,7 +202,7 @@ public class LocalRepositoryFactory extends AbstractEMFRepositoryFactory impleme
 
     /**
      * Use instead functions from ProxyRepositoryFactory.
-     * 
+     *
      * @return
      */
     @Deprecated
@@ -215,12 +215,12 @@ public class LocalRepositoryFactory extends AbstractEMFRepositoryFactory impleme
 
     /**
      * DOC smallet Comment method "getObjectFromFolder".
-     * 
+     *
      * @param type - the type of object to search
      * @param onlyLastVersion specify <i>true</i> if only the last version of an object must be returned, false for all
      * version
      * @param project - the project to searched in
-     * 
+     *
      * @param <T> - DOC smallet
      * @return a structure of all object of type in the project
      * @throws PersistenceException if project, folder or resource cannot be found
@@ -256,7 +256,7 @@ public class LocalRepositoryFactory extends AbstractEMFRepositoryFactory impleme
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see
      * org.talend.core.repository.model.AbstractEMFRepositoryFactory#getObjectFromFolder(org.talend.core.model.general
      * .Project, org.talend.core.model.repository.ERepositoryObjectType, java.lang.String, int)
@@ -420,7 +420,7 @@ public class LocalRepositoryFactory extends AbstractEMFRepositoryFactory impleme
                             if (folder == null) {
                                 folder = folderHelper.createFolder(current.getProjectRelativePath().toString());
                                 if (folder == null) {
-                                    log.error("Can't create folder item " + ((IFolder) current).getName() + //$NON-NLS-1$ 
+                                    log.error("Can't create folder item " + ((IFolder) current).getName() + //$NON-NLS-1$
                                             " with path: " + current.getProjectRelativePath()); //$NON-NLS-1$
                                     continue;
                                 }
@@ -556,9 +556,9 @@ public class LocalRepositoryFactory extends AbstractEMFRepositoryFactory impleme
     }
 
     /**
-     * 
+     *
      * Get all object in a folder recursively.
-     * 
+     *
      * @param folder - the folder to search in
      * @param id - the id of the object searched. Specify <code>null</code> to get all objects.
      * @param type - the type searched
@@ -903,7 +903,7 @@ public class LocalRepositoryFactory extends AbstractEMFRepositoryFactory impleme
         project.getEmfProject().getMigrationTask().addAll(realMigrationTaskList);
         ProjectDataJsonProvider.saveProjectData(project.getEmfProject());
     }
-    
+
     private void removeContentsFromProject(Resource projectResource, EClassifier type) {
         Collection<Object> contents = EcoreUtil.getObjectsByType(projectResource.getContents(), type);
         if (!contents.isEmpty()) {
@@ -913,7 +913,7 @@ public class LocalRepositoryFactory extends AbstractEMFRepositoryFactory impleme
 
     /**
      * DOC qwei Comment method "saveProjectf".
-     * 
+     *
      * @param author
      * @param prj
      * @param project
@@ -928,7 +928,7 @@ public class LocalRepositoryFactory extends AbstractEMFRepositoryFactory impleme
 
     /**
      * DOC smallet Comment method "synchronizeRoutines".
-     * 
+     *
      * @throws PersistenceException
      */
     @Override
@@ -968,7 +968,7 @@ public class LocalRepositoryFactory extends AbstractEMFRepositoryFactory impleme
 
     /**
      * bqian Comment method "clearSystemSqlPatterns".
-     * 
+     *
      * @param f1
      */
     // private void clearSystemSqlPatterns(IFolder sqlPatternFolder) {
@@ -989,7 +989,7 @@ public class LocalRepositoryFactory extends AbstractEMFRepositoryFactory impleme
 
     /**
      * DOC smallet Comment method "createFolders".
-     * 
+     *
      * @param prj
      * @param project
      * @throws PersistenceException
@@ -1022,7 +1022,7 @@ public class LocalRepositoryFactory extends AbstractEMFRepositoryFactory impleme
         createFolder(prj, folderHelper, RepositoryConstants.IMG_DIRECTORY_OF_JOBLET_OUTLINE);
 
         // 4. Code/routines/Snippets :
-        createFolder(prj, folderHelper, "code/routines/system"); //$NON-NLS-1$  
+        createFolder(prj, folderHelper, "code/routines/system"); //$NON-NLS-1$
         // 5. Job Disigns/System
         // createFolder(prj, folderHelper, "process/system"); //$NON-NLS-1$
         // 6. .settings folder
@@ -1055,7 +1055,7 @@ public class LocalRepositoryFactory extends AbstractEMFRepositoryFactory impleme
 
     /**
      * DOC smallet Comment method "createFolder".
-     * 
+     *
      * @param prj
      * @param folderHelper
      * @throws PersistenceException
@@ -1219,7 +1219,7 @@ public class LocalRepositoryFactory extends AbstractEMFRepositoryFactory impleme
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see org.talend.designer.core.extension.IRepositoryFactory#createFolder(org .talend.core.model.temp.Project,
      * org.talend.core.model.repository.EObjectType, org.eclipse.core.runtime.IPath, java.lang.String)
      */
@@ -1268,7 +1268,7 @@ public class LocalRepositoryFactory extends AbstractEMFRepositoryFactory impleme
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see org.talend.repository.model.IRepositoryFactory#isValid(org.talend.core .model.general.Project,
      * org.talend.core.model.repository.ERepositoryObjectType, org.eclipse.core.runtime.IPath, java.lang.String)
      */
@@ -1335,7 +1335,7 @@ public class LocalRepositoryFactory extends AbstractEMFRepositoryFactory impleme
             // ProjectRepoAbstractContentProvider class to refresh the node, if don't delete resource first, the deleted
             // foler display in repository view
             deleteResource(folder);
-        } finally {
+        }  finally {
             // even if the folder do not exist anymore, clean the list on the project
             getFolderHelper(project.getEmfProject()).deleteFolder(completePath);
             if (!fromEmptyRecycleBin) {
@@ -1390,8 +1390,10 @@ public class LocalRepositoryFactory extends AbstractEMFRepositoryFactory impleme
         for (Item children2 : childrens) {
             if (children2 instanceof FolderItem) {
                 FolderItem children = (FolderItem) children2;
-                moveFolder(type, sourcePath.append(children.getProperty().getLabel()),
-                        targetPath.append(emfFolder.getProperty().getLabel()));
+                IPath sPath = sourcePath.append(children.getProperty().getLabel());
+                if(isFolderExist(type, sPath)){
+                	moveFolder(type, sPath, targetPath.append(emfFolder.getProperty().getLabel()));
+                }
             } else {
                 moveOldContentToNewFolder(project, completeNewPath, emfFolder, newFolder, children2);
             }
@@ -1430,7 +1432,7 @@ public class LocalRepositoryFactory extends AbstractEMFRepositoryFactory impleme
 
     /**
      * if move TDQReportItem, need to move the generated doc folder also.
-     * 
+     *
      * @param project
      * @param completeNewPath
      * @param object
@@ -1508,8 +1510,10 @@ public class LocalRepositoryFactory extends AbstractEMFRepositoryFactory impleme
                     for (Item children2 : childrens) {
                         if (children2 instanceof FolderItem) {
                             FolderItem children = (FolderItem) children2;
-                            moveFolder(type, sourcePath.append(children.getProperty().getLabel()),
-                                    targetPath.append(newFolder.getProperty().getLabel()));
+                            IPath sPath = sourcePath.append(children.getProperty().getLabel());
+                            if(isFolderExist(type, sPath)){
+                            	moveFolder(type, sPath, targetPath.append(newFolder.getProperty().getLabel()));
+                            }
                         } else {
                             moveOldContentToNewFolder(project, completeNewPath, emfFolder, newFolder, children2);
                         }
@@ -1566,6 +1570,14 @@ public class LocalRepositoryFactory extends AbstractEMFRepositoryFactory impleme
             throw new PersistenceException(e.getCause());
         }
     }
+    
+    private boolean isFolderExist(final ERepositoryObjectType type, final IPath sourcePath) throws PersistenceException {
+    	String completePath = new Path(ERepositoryObjectType.getFolderName(type)).append(sourcePath).toString();
+    	Project project = getRepositoryContext().getProject();
+    	IProject fsProject = ResourceUtils.getProject(project);
+    	IFolder processFolder = fsProject.getFolder(completePath);
+    	return processFolder.exists();
+    }
 
     @Override
     public void renameFolder(final ERepositoryObjectType type, final IPath sourcePath, final String label)
@@ -1619,7 +1631,7 @@ public class LocalRepositoryFactory extends AbstractEMFRepositoryFactory impleme
 
     /**
      * do something when move a TDQItem, eg. if move TDQReportItem, need to move the generated doc of it also.
-     * 
+     *
      * @param project
      * @param completeNewPath
      * @param child
@@ -1639,7 +1651,7 @@ public class LocalRepositoryFactory extends AbstractEMFRepositoryFactory impleme
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see org.talend.repository.model.IRepositoryFactory#getProcess2()
      */
     public List<IRepositoryViewObject> getProcess2() throws PersistenceException {
@@ -1663,7 +1675,7 @@ public class LocalRepositoryFactory extends AbstractEMFRepositoryFactory impleme
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see org.talend.repository.model.IRepositoryFactory#deleteObject(org.talend .core.model.general.Project,
      * org.talend.core.model.repository.IRepositoryViewObject)
      */
@@ -1898,7 +1910,7 @@ public class LocalRepositoryFactory extends AbstractEMFRepositoryFactory impleme
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see org.talend.repository.model.IRepositoryFactory#moveObject(org.talend. core.model.general.Project,
      * org.talend.core.model.repository.IRepositoryViewObject, org.eclipse.core.runtime.IPath)
      */
@@ -1974,7 +1986,7 @@ public class LocalRepositoryFactory extends AbstractEMFRepositoryFactory impleme
 
     /**
      * Find cross reference.
-     * 
+     *
      * @param resource
      * @return
      */
@@ -1994,7 +2006,7 @@ public class LocalRepositoryFactory extends AbstractEMFRepositoryFactory impleme
 
     /**
      * Save cross reference.
-     * 
+     *
      * @param needSaves
      */
     private void saveCrossReference(List<Resource> needSaves) {
@@ -2009,7 +2021,7 @@ public class LocalRepositoryFactory extends AbstractEMFRepositoryFactory impleme
 
     /**
      * Used normally for folders only, it could be used for other resources if needed anyway.
-     * 
+     *
      * @param resource
      * @throws PersistenceException
      */
@@ -2023,7 +2035,7 @@ public class LocalRepositoryFactory extends AbstractEMFRepositoryFactory impleme
 
     /**
      * Used only for emf related files since this one will update the resourceset.
-     * 
+     *
      * @param resource
      * @throws PersistenceException
      */
@@ -2153,7 +2165,7 @@ public class LocalRepositoryFactory extends AbstractEMFRepositoryFactory impleme
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see org.talend.repository.model.IRepositoryFactory#isServerValid(java.lang .String, java.lang.String, int)
      */
     @Override
@@ -2174,7 +2186,7 @@ public class LocalRepositoryFactory extends AbstractEMFRepositoryFactory impleme
 
         return itemResource;
     }
-    
+
     private Resource create(IProject project, ConnectionItem item, IPath path) throws PersistenceException {
         XmiResourceManager xmiResourceManager = ProxyRepositoryFactory.getInstance().getRepositoryFactoryFromProvider()
                 .getResourceManager();
@@ -3001,7 +3013,7 @@ public class LocalRepositoryFactory extends AbstractEMFRepositoryFactory impleme
 
     /**
      * DOC xqliu Comment method "getParentPath".
-     * 
+     *
      * @param project
      * @param item
      * @param path
@@ -3300,7 +3312,7 @@ public class LocalRepositoryFactory extends AbstractEMFRepositoryFactory impleme
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see org.talend.repository.model.IRepositoryFactory#getStatus(org.talend.core .model.properties.Item)
      */
     @Override
@@ -3396,7 +3408,7 @@ public class LocalRepositoryFactory extends AbstractEMFRepositoryFactory impleme
 
     /**
      * get the correct ItemStatePath for TDQ Elements(Patterns, Indicators, Rules, etc.).
-     * 
+     *
      * @param type ERepositoryObjectType of the TDQ Element
      * @param targetPath target path of the TDQ Element
      * @return
@@ -3509,7 +3521,7 @@ public class LocalRepositoryFactory extends AbstractEMFRepositoryFactory impleme
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see org.talend.repository.model.IRepositoryFactory#enableSandboxProject()
      */
     @Override
@@ -3519,7 +3531,7 @@ public class LocalRepositoryFactory extends AbstractEMFRepositoryFactory impleme
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see org.talend.repository.model.IRepositoryFactory#isLocalConnectionProvider()
      */
     @Override
@@ -3529,7 +3541,7 @@ public class LocalRepositoryFactory extends AbstractEMFRepositoryFactory impleme
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @seeorg.talend.repository.model.IRepositoryFactory#getMetadataByFolder(org.talend.core.model.repository.
      * ERepositoryObjectType, org.eclipse.core.runtime.IPath)
      */
@@ -3573,7 +3585,7 @@ public class LocalRepositoryFactory extends AbstractEMFRepositoryFactory impleme
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see org.talend.repository.model.IRepositoryFactory#getResourceManager()
      */
     @Override
@@ -3602,7 +3614,7 @@ public class LocalRepositoryFactory extends AbstractEMFRepositoryFactory impleme
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see org.talend.core.repository.model.IRepositoryFactory#isModified(org.talend.core.model.properties.Item)
      */
     @Override
@@ -3612,7 +3624,7 @@ public class LocalRepositoryFactory extends AbstractEMFRepositoryFactory impleme
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see org.talend.core.repository.model.AbstractRepositoryFactory#logOffProject()
      */
     @Override

@@ -1,6 +1,6 @@
 // ============================================================================
 //
-// Copyright (C) 2006-2018 Talend Inc. - www.talend.com
+// Copyright (C) 2006-2019 Talend Inc. - www.talend.com
 //
 // This source code is available under agreement available at
 // %InstallDIR%\features\org.talend.rcp.branding.%PRODUCTNAME%\%PRODUCTNAME%license.txt
@@ -28,7 +28,6 @@ import java.util.Properties;
 import java.util.Set;
 
 import org.apache.commons.lang3.BooleanUtils;
-import org.apache.commons.lang3.StringEscapeUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.maven.artifact.repository.ArtifactRepository;
 import org.apache.maven.model.Activation;
@@ -69,9 +68,7 @@ import org.talend.core.runtime.projectsetting.IProjectSettingPreferenceConstants
 import org.talend.core.runtime.projectsetting.IProjectSettingTemplateConstants;
 import org.talend.core.runtime.projectsetting.ProjectPreferenceManager;
 import org.talend.core.ui.ITestContainerProviderService;
-import org.talend.core.utils.TalendQuoteUtils;
 import org.talend.core.utils.TemplateFileUtils;
-import org.talend.designer.core.model.utils.emf.talendfile.ContextParameterType;
 import org.talend.designer.maven.model.TalendMavenConstants;
 import org.talend.designer.maven.template.ETalendMavenVariables;
 import org.talend.designer.maven.template.MavenTemplateManager;
@@ -204,15 +201,12 @@ public class CreateMavenJobPom extends AbstractMavenProcessorPom {
             }
         }
 
-        // same as JavaProcessor.initCodePath
-        String jobClassPackageFolder = JavaResourcesHelper.getJobClassPackageFolder(property.getItem());
-
         Project project = ProjectManager.getInstance().getProject(property);
         if (project == null) { // current project
             project = ProjectManager.getInstance().getCurrentProject().getEmfProject();
         }
-
-        checkPomProperty(properties, "talend.job.path", ETalendMavenVariables.JobPath, jobClassPackageFolder);
+        String talendJobPath = project.getTechnicalLabel().toLowerCase();
+        checkPomProperty(properties, "talend.job.path", ETalendMavenVariables.JobPath, talendJobPath);
         IPath jobFolderPath = ItemResourceUtil.getItemRelativePath(property);
         String jobFolder = "";
         if (jobFolderPath != null && !StringUtils.isEmpty(jobFolderPath.toPortableString())) {
@@ -478,38 +472,7 @@ public class CreateMavenJobPom extends AbstractMavenProcessorPom {
             addScriptAddition(windowsScriptAdditionValue, contextPart);
             addScriptAddition(unixScriptAdditionValue, contextPart);
         }
-        // context params
-        List paramsList = ProcessUtils
-                .getOptionValue(getArgumentsMap(), TalendProcessArgumentConstant.ARG_CONTEXT_PARAMS, (List) null);
-        if (paramsList != null && !paramsList.isEmpty()) {
-            StringBuffer contextParamPart = new StringBuffer(100);
-            // do codes same as JobScriptsManager.getSettingContextParametersValue
-            for (Object param : paramsList) {
-                if (param instanceof ContextParameterType) {
-                    ContextParameterType contextParamType = (ContextParameterType) param;
-                    contextParamPart.append(' ');
-                    contextParamPart.append(TalendProcessArgumentConstant.CMD_ARG_CONTEXT_PARAMETER);
-                    contextParamPart.append(' ');
-                    contextParamPart.append(contextParamType.getName());
-                    contextParamPart.append('=');
 
-                    String value = contextParamType.getRawValue();
-                    if (!contextParamType.getType().equals("id_Password")) { //$NON-NLS-1$
-                        value = StringEscapeUtils.escapeJava(value);
-                    }
-                    if (value == null) {
-                        contextParamPart.append((String) null);
-                    } else {
-                        value = TalendQuoteUtils.addPairQuotesIfNotExist(value);
-                        contextParamPart.append(value);
-                    }
-                }
-            }
-            if (contextParamPart.length() > 0) {
-                addScriptAddition(windowsScriptAdditionValue, contextParamPart.toString());
-                addScriptAddition(unixScriptAdditionValue, contextParamPart.toString());
-            }
-        }
         // log4j level
         if (isOptionChecked(TalendProcessArgumentConstant.ARG_ENABLE_LOG4J)
                 && isOptionChecked(TalendProcessArgumentConstant.ARG_NEED_LOG4J_LEVEL)) {
@@ -601,7 +564,10 @@ public class CreateMavenJobPom extends AbstractMavenProcessorPom {
                 mainProjectBranch = "";
             }
         }
-        jobInfoContent = StringUtils.replace(jobInfoContent, "${talend.project.branch}", mainProjectBranch);
+
+        if (!isOptionChecked(TalendProcessArgumentConstant.ARG_AVOID_BRANCH_NAME)) {
+            jobInfoContent = StringUtils.replace(jobInfoContent, "${talend.project.branch}", mainProjectBranch);
+        }
 
         IFolder templateFolder = codeProject.getTemplatesFolder();
         IFile shFile = templateFolder.getFile(IProjectSettingTemplateConstants.JOB_RUN_SH_TEMPLATE_FILE_NAME);
@@ -776,12 +742,12 @@ public class CreateMavenJobPom extends AbstractMavenProcessorPom {
             Document document = PomUtil.loadAssemblyFile(null, assemblyFile);
             // add talend libs & codes
             setupDependencySetNode(document, talendLibCoordinateMap, "lib", "${artifact.artifactId}.${artifact.extension}",
-                    false);
+                    false, false);
             // add 3rd party libs <dependencySet>
-            setupDependencySetNode(document, _3rdDepLibMap, "lib", null, false);
+            setupDependencySetNode(document, _3rdDepLibMap, "lib", null, false, false);
             // add jobs
             setupDependencySetNode(document, jobCoordinateMap, "${talend.job.name}",
-                    "${artifact.build.finalName}.${artifact.extension}", true);
+                    "${artifact.build.finalName}.${artifact.extension}", true, false);
             // add duplicate dependencies if exists
             setupFileNode(document, duplicateLibs);
 
@@ -807,10 +773,10 @@ public class CreateMavenJobPom extends AbstractMavenProcessorPom {
         if (version != null) {
             coordinate += separator + version;
         }
-        
+
         return coordinate;
     }
-    
+
     protected String getAssemblyCoordinate(Dependency dependency) {
         String separator = ":"; //$NON-NLS-1$
         String coordinate = dependency.getGroupId() + separator;
@@ -824,10 +790,10 @@ public class CreateMavenJobPom extends AbstractMavenProcessorPom {
         if (dependency.getVersion() != null) {
             coordinate += separator + dependency.getVersion();
         }
-        
+
         return coordinate;
     }
-    
+
     protected Dependency getDependencyObject(String groupId, String artifactId, String version, String type, String classifier) {
         Dependency object = new SortableDependency();
         object.setGroupId(groupId);
@@ -835,7 +801,7 @@ public class CreateMavenJobPom extends AbstractMavenProcessorPom {
         object.setVersion(version);
         object.setType(type);
         object.setClassifier(classifier);
-        
+
         return object;
     }
 
@@ -850,7 +816,7 @@ public class CreateMavenJobPom extends AbstractMavenProcessorPom {
     }
 
     protected void setupDependencySetNode(Document document, Map<String, Dependency> libIncludes, String outputDir,
-            String fileNameMapping, boolean useProjectArtifact) {
+            String fileNameMapping, boolean useProjectArtifact, boolean unpack) {
         if (libIncludes.isEmpty()) {
             return;
         }
@@ -861,9 +827,11 @@ public class CreateMavenJobPom extends AbstractMavenProcessorPom {
         Node dependencySetNode = document.createElement("dependencySet");
         dependencySetsNode.appendChild(dependencySetNode);
 
-        Node outputDirNode = document.createElement("outputDirectory");
-        outputDirNode.setTextContent(outputDir);
-        dependencySetNode.appendChild(outputDirNode);
+        if (StringUtils.isNotBlank(outputDir)) {
+            Node outputDirNode = document.createElement("outputDirectory");
+            outputDirNode.setTextContent(outputDir);
+            dependencySetNode.appendChild(outputDirNode);
+        }
 
         Node includesNode = document.createElement("includes");
         dependencySetNode.appendChild(includesNode);
@@ -883,6 +851,12 @@ public class CreateMavenJobPom extends AbstractMavenProcessorPom {
         Node useProjectArtifactNode = document.createElement("useProjectArtifact");
         useProjectArtifactNode.setTextContent(Boolean.toString(useProjectArtifact));
         dependencySetNode.appendChild(useProjectArtifactNode);
+
+        if (unpack) {
+            Node unpackNode = document.createElement("unpack");
+            unpackNode.setTextContent(Boolean.TRUE.toString());
+            dependencySetNode.appendChild(unpackNode);
+        }
 
     }
 

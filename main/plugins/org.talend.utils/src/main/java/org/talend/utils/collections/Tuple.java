@@ -1,6 +1,6 @@
 // ============================================================================
 //
-// Copyright (C) 2006-2018 Talend Inc. - www.talend.com
+// Copyright (C) 2006-2019 Talend Inc. - www.talend.com
 //
 // This source code is available under agreement available at
 // %InstallDIR%\features\org.talend.rcp.branding.%PRODUCTNAME%\%PRODUCTNAME%license.txt
@@ -16,7 +16,7 @@ import java.util.Arrays;
 
 /**
  * @author scorreia
- * 
+ *
  * A simple container of an array of objects.
  */
 public class Tuple {
@@ -28,7 +28,7 @@ public class Tuple {
     /**
      * Creates a tuple from the given array of objects. Beware that it does not create a new array, instead it keeps a
      * reference on the given array. If you need to create a new array, see {@link MultipleKey}.
-     * 
+     *
      * @param objects the object array that forms the tuple (must not be null, but may contains null values)
      */
     public Tuple(Object[] objects) {
@@ -40,7 +40,7 @@ public class Tuple {
 
     /**
      * Getter for tuple.
-     * 
+     *
      * @return the tuple as given in the constructor
      */
     public Object[] getTuple() {
@@ -53,7 +53,7 @@ public class Tuple {
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see java.lang.Object#hashCode()
      */
     @Override
@@ -63,7 +63,7 @@ public class Tuple {
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see java.lang.Object#equals(java.lang.Object)
      */
     @Override

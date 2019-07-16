@@ -1,6 +1,6 @@
 // ============================================================================
 //
-// Copyright (C) 2006-2018 Talend Inc. - www.talend.com
+// Copyright (C) 2006-2019 Talend Inc. - www.talend.com
 //
 // This source code is available under agreement available at
 // %InstallDIR%\features\org.talend.rcp.branding.%PRODUCTNAME%\%PRODUCTNAME%license.txt
@@ -22,11 +22,11 @@ public interface IMigrateDIMetadataItemService extends IService {
 
     /**
      * DOC bZhou Comment method "migrateDIItems".
-     * 
+     *
      * This method to invode the migration task in DI to do migration when import items from DQ perspective.
-     * 
+     *
      * It should be removed after merge the migrate mechanism.
-     * 
+     *
      * @param item
      * @return
      */

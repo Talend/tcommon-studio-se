@@ -1,6 +1,6 @@
 // ============================================================================
 //
-// Copyright (C) 2006-2018 Talend Inc. - www.talend.com
+// Copyright (C) 2006-2019 Talend Inc. - www.talend.com
 //
 // This source code is available under agreement available at
 // %InstallDIR%\features\org.talend.rcp.branding.%PRODUCTNAME%\%PRODUCTNAME%license.txt
@@ -19,15 +19,15 @@ import static org.powermock.api.mockito.PowerMockito.*;
 import org.powermock.reflect.Whitebox;
 
 /**
- * 
+ *
  * SingletonUtil.
- * 
+ *
  * The advantages of this class is that it creates a spy instead a mock, does the required checks to ensure the
  * singleton is well spied, and initialize again the (static) singleton when calling again the method on the same
  * singleton class.
- * 
+ *
  * Warning: it is required to use PowerMock to use this class by using the following annotatoions such as:
- * 
+ *
  * <br/>
  * <b> <code>@RunWith(PowerMockRunner.class)<br/> </code> <code>@PrepareForTest({ MySingletonClass.class })<br/></code>
  * public class MyClassTest { <br/>
@@ -38,15 +38,15 @@ import org.powermock.reflect.Whitebox;
 public final class SingletonUtil {
 
     /**
-     * 
+     *
      */
     private static final String DEFAULT_METHOD_NAME_GET_INSTANCE = "getInstance";
 
     /**
-     * 
+     *
      * Method "spySingleton". This method will use by default the method "getInstance()" as method to retrieve the
      * Singleton instance.
-     * 
+     *
      * @param <C>
      * @param singletonClass
      * @return
@@ -57,9 +57,9 @@ public final class SingletonUtil {
     }
 
     /**
-     * 
+     *
      * Method "spySingleton".
-     * 
+     *
      * @param <C>
      * @param singletonClass
      * @param getInstanceMethodName
@@ -97,10 +97,10 @@ public final class SingletonUtil {
     }
 
     /**
-     * 
+     *
      * Method "spySingleton". This method will use by default the method "getInstance()" as method to retrieve the
      * Singleton instance.
-     * 
+     *
      * @param <C>
      * @param singletonClass
      * @return
@@ -111,9 +111,9 @@ public final class SingletonUtil {
     }
 
     /**
-     * 
+     *
      * Method "spySingleton".
-     * 
+     *
      * @param <C>
      * @param singletonClass
      * @param getInstanceMethodName
@@ -149,9 +149,9 @@ public final class SingletonUtil {
     }
 
     /**
-     * 
+     *
      * Method "clearInstance". Set the internal singleton instance by setting the null value.
-     * 
+     *
      * @param singletonClass
      * @param getInstanceMethodName
      * @throws Exception
@@ -169,9 +169,9 @@ public final class SingletonUtil {
     }
 
     /**
-     * 
+     *
      * Method "clearInstance". Reset the internal singleton instance by setting a new instance value.
-     * 
+     *
      * @param singletonClass
      * @throws Exception
      */
@@ -180,9 +180,9 @@ public final class SingletonUtil {
     }
 
     /**
-     * 
+     *
      * Method "clearInstance". Reset the internal singleton instance by setting a new instance value.
-     * 
+     *
      * @param singletonClass
      * @param getInstanceMethodName
      * @return

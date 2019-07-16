@@ -1,6 +1,6 @@
 // ============================================================================
 //
-// Copyright (C) 2006-2018 Talend Inc. - www.talend.com
+// Copyright (C) 2006-2019 Talend Inc. - www.talend.com
 //
 // This source code is available under agreement available at
 // %InstallDIR%\features\org.talend.rcp.branding.%PRODUCTNAME%\%PRODUCTNAME%license.txt
@@ -68,7 +68,7 @@ public class SalesforceModulesWizard extends CheckLastVersionRepositoryWizard im
 
     /**
      * DOC ocarbone DatabaseTableWizard constructor comment.
-     * 
+     *
      * @param workbench
      * @param idNodeDbConnection
      * @param metadataTable
@@ -172,7 +172,7 @@ public class SalesforceModulesWizard extends CheckLastVersionRepositoryWizard im
 
     /**
      * We will accept the selection in the workbench to see if we can initialize from it.
-     * 
+     *
      * @see IWorkbenchWizard#init(IWorkbench, IStructuredSelection)
      */
     public void init(final IWorkbench workbench, final IStructuredSelection selection2) {
@@ -181,7 +181,7 @@ public class SalesforceModulesWizard extends CheckLastVersionRepositoryWizard im
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see org.talend.repository.ui.wizards.RepositoryWizard#performCancel()
      */
     @Override

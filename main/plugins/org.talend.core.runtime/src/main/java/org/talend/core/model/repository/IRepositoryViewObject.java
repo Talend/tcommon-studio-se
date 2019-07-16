@@ -1,6 +1,6 @@
 // ============================================================================
 //
-// Copyright (C) 2006-2018 Talend Inc. - www.talend.com
+// Copyright (C) 2006-2019 Talend Inc. - www.talend.com
 //
 // This source code is available under agreement available at
 // %InstallDIR%\features\org.talend.rcp.branding.%PRODUCTNAME%\%PRODUCTNAME%license.txt
@@ -27,21 +27,21 @@ public interface IRepositoryViewObject {
 
     /**
      * Returns the process id. Returns -1 if process id is not set or cannot be retrieve.
-     * 
+     *
      * @return the process id
      */
     public String getId();
 
     /**
      * Returns the process label. Returns null if process label is not set or cannot be retrieve.
-     * 
+     *
      * @return the process id
      */
     public String getLabel();
 
     /**
      * Returns the process version. Returns null if process id is not set or cannot be retrieve.
-     * 
+     *
      * @return the process version
      */
     public String getVersion();
@@ -80,7 +80,7 @@ public interface IRepositoryViewObject {
 
     /**
      * DOC nrousseau Comment method "isModified".
-     * 
+     *
      * @return
      */
     public boolean isModified();

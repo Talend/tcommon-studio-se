@@ -1,6 +1,6 @@
 // ============================================================================
 //
-// Copyright (C) 2006-2018 Talend Inc. - www.talend.com
+// Copyright (C) 2006-2019 Talend Inc. - www.talend.com
 //
 // This source code is available under agreement available at
 // %InstallDIR%\features\org.talend.rcp.branding.%PRODUCTNAME%\%PRODUCTNAME%license.txt
@@ -19,12 +19,12 @@ import java.util.Map;
 
 /**
  * PTODO SML Delete this class.
- * 
+ *
  * @param <K> - DOC SML
  * @param <T> - type the container manages
- * 
+ *
  * $Id$
- * 
+ *
  */
 public class ContentList<K, T> extends Hashtable<K, Content<K, T>> implements Map<K, Content<K, T>> {
 

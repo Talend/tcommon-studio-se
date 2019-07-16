@@ -1,6 +1,6 @@
 // ============================================================================
 //
-// Copyright (C) 2006-2018 Talend Inc. - www.talend.com
+// Copyright (C) 2006-2019 Talend Inc. - www.talend.com
 //
 // This source code is available under agreement available at
 // %InstallDIR%\features\org.talend.rcp.branding.%PRODUCTNAME%\%PRODUCTNAME%license.txt
@@ -41,16 +41,16 @@ import org.talend.repository.ui.login.connections.ConnectionUserPerReader;
 /**
  * Implements the open workspace action. Opens a dialog prompting for a directory and then restarts the IDE on that
  * workspace.
- * 
+ *
  * @since 3.0
  */
 public class OpenWorkspaceAction extends Action implements ActionFactory.IWorkbenchAction {
 
     /**
      * Action responsible for opening the "Other..." dialog (ie: the workspace chooser).
-     * 
+     *
      * @since 3.3
-     * 
+     *
      */
     class OpenDialogAction extends Action {
 
@@ -61,7 +61,7 @@ public class OpenWorkspaceAction extends Action implements ActionFactory.IWorkbe
 
         /*
          * (non-Javadoc)
-         * 
+         *
          * @see org.eclipse.jface.action.Action#run()
          */
         @Override
@@ -72,7 +72,7 @@ public class OpenWorkspaceAction extends Action implements ActionFactory.IWorkbe
 
     /**
      * Action responsible for opening a specific workspace location
-     * 
+     *
      * @since 3.3
      */
     class WorkspaceMRUAction extends Action {
@@ -93,7 +93,7 @@ public class OpenWorkspaceAction extends Action implements ActionFactory.IWorkbe
 
         /*
          * (non-Javadoc)
-         * 
+         *
          * @see org.eclipse.jface.action.Action#run()
          */
         @Override
@@ -126,7 +126,7 @@ public class OpenWorkspaceAction extends Action implements ActionFactory.IWorkbe
     /**
      * Set definition for this action and text so that it will be used for File -&gt; Open Workspace in the argument
      * window.
-     * 
+     *
      * @param window the window in which this action should appear
      */
     public OpenWorkspaceAction(IWorkbenchWindow window) {
@@ -170,7 +170,7 @@ public class OpenWorkspaceAction extends Action implements ActionFactory.IWorkbe
 
             /*
              * (non-Javadoc)
-             * 
+             *
              * @see org.eclipse.jface.action.IMenuCreator#getMenu(org.eclipse.swt.widgets.Control)
              */
             @Override
@@ -181,7 +181,7 @@ public class OpenWorkspaceAction extends Action implements ActionFactory.IWorkbe
 
             /*
              * (non-Javadoc)
-             * 
+             *
              * @see org.eclipse.jface.action.IMenuCreator#getMenu(org.eclipse.swt.widgets.Menu)
              */
             @Override
@@ -201,7 +201,7 @@ public class OpenWorkspaceAction extends Action implements ActionFactory.IWorkbe
 
             /*
              * (non-Javadoc)
-             * 
+             *
              * @see org.eclipse.jface.action.IMenuCreator#dispose()
              */
             @Override
@@ -216,7 +216,7 @@ public class OpenWorkspaceAction extends Action implements ActionFactory.IWorkbe
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see org.eclipse.jface.action.Action#run()
      */
     @Override
@@ -231,7 +231,7 @@ public class OpenWorkspaceAction extends Action implements ActionFactory.IWorkbe
 
     /**
      * Restart the workbench using the specified path as the workspace location.
-     * 
+     *
      * @param path the location
      * @since 3.3
      */
@@ -248,7 +248,7 @@ public class OpenWorkspaceAction extends Action implements ActionFactory.IWorkbe
 
     /**
      * Use the ChooseWorkspaceDialog to get the new workspace from the user.
-     * 
+     *
      * @return a string naming the new workspace and null if cancel was selected
      */
     private String promptForWorkspace() {
@@ -271,7 +271,7 @@ public class OpenWorkspaceAction extends Action implements ActionFactory.IWorkbe
     /**
      * Create and return a string with command line options for eclipse.exe that will launch a new workbench that is the
      * same as the currently running one, but using the argument directory as its workspace.
-     * 
+     *
      * @param workspace the directory to use as the new workspace
      * @return a string of command line options or null on error
      */
@@ -330,7 +330,7 @@ public class OpenWorkspaceAction extends Action implements ActionFactory.IWorkbe
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see org.eclipse.jface.action.Action#dispose()
      */
     @Override

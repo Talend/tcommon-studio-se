@@ -1,6 +1,6 @@
 // ============================================================================
 //
-// Copyright (C) 2006-2018 Talend Inc. - www.talend.com
+// Copyright (C) 2006-2019 Talend Inc. - www.talend.com
 //
 // This source code is available under agreement available at
 // %InstallDIR%\features\org.talend.rcp.branding.%PRODUCTNAME%\%PRODUCTNAME%license.txt
@@ -61,7 +61,7 @@ public class SelectRepositoryContextGroupDialog extends SelectionDialog {
     private static final String RIGHTBRACKET = ")"; //$NON-NLS-1$
 
     private static final String DEFAULTFLAG = LEFTBRACKET
-            + Messages.getString("SelectRepositoryContextGroupDialog.Default") + RIGHTBRACKET; //$NON-NLS-1$ 
+            + Messages.getString("SelectRepositoryContextGroupDialog.Default") + RIGHTBRACKET; //$NON-NLS-1$
 
     private CheckboxTreeViewer treeViewer;
 
@@ -343,7 +343,7 @@ public class SelectRepositoryContextGroupDialog extends SelectionDialog {
     }
 
     /**
-     * 
+     *
      * DOC ggu ContextTreeContentProvider class global comment. Detailled comment
      */
 
@@ -390,7 +390,7 @@ public class SelectRepositoryContextGroupDialog extends SelectionDialog {
     }
 
     /**
-     * 
+     *
      * ggu ContextTreeLabelProvider class global comment. Detailled comment
      */
     class ContextTreeLabelProvider implements ILabelProvider {
@@ -449,7 +449,7 @@ public class SelectRepositoryContextGroupDialog extends SelectionDialog {
     }
 
     /**
-     * 
+     *
      * ggu ContextViewerFilter class global comment. Detailled comment
      */
     class ContextViewerFilter extends ViewerFilter {
@@ -486,7 +486,7 @@ public class SelectRepositoryContextGroupDialog extends SelectionDialog {
     /**
      * Added by Marvin Wang on Jun. 6, 2012 for judging if the context group from repository exists in job context
      * groups without case sensitive.
-     * 
+     *
      * @param repContextGrpName is not <code>null<code>.
      * @return
      */

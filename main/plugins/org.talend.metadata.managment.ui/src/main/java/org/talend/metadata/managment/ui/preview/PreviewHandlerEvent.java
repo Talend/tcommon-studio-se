@@ -1,6 +1,6 @@
 // ============================================================================
 //
-// Copyright (C) 2006-2018 Talend Inc. - www.talend.com
+// Copyright (C) 2006-2019 Talend Inc. - www.talend.com
 //
 // This source code is available under agreement available at
 // %InstallDIR%\features\org.talend.rcp.branding.%PRODUCTNAME%\%PRODUCTNAME%license.txt
@@ -16,18 +16,18 @@ import org.eclipse.core.runtime.CoreException;
 
 /**
  * DOC amaumont class global comment. Detailled comment <br/>
- * 
+ *
  * $Id$
- * 
+ *
  * @param <R> result of preview
  */
 public class PreviewHandlerEvent<R> {
 
     /**
      * Type of the preview handler event. <br/>
-     * 
+     *
      * $Id$
-     * 
+     *
      */
     public enum TYPE {
         PREVIEW_STARTED,
@@ -53,7 +53,7 @@ public class PreviewHandlerEvent<R> {
 
     /**
      * DOC amaumont PreviewHandlerEvent constructor comment.
-     * 
+     *
      * @param preview_in_error
      * @param name
      * @param e
@@ -65,7 +65,7 @@ public class PreviewHandlerEvent<R> {
 
     /**
      * Getter for type.
-     * 
+     *
      * @return the type
      */
     public TYPE getType() {
@@ -74,7 +74,7 @@ public class PreviewHandlerEvent<R> {
 
     /**
      * Getter for source.
-     * 
+     *
      * @return the source
      */
     public AsynchronousPreviewHandler<R> getSource() {
@@ -83,7 +83,7 @@ public class PreviewHandlerEvent<R> {
 
     /**
      * Getter for exception.
-     * 
+     *
      * @return the exception
      */
     public CoreException getException() {

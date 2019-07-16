@@ -1,6 +1,6 @@
 // ============================================================================
 //
-// Copyright (C) 2006-2018 Talend Inc. - www.talend.com
+// Copyright (C) 2006-2019 Talend Inc. - www.talend.com
 //
 // This source code is available under agreement available at
 // %InstallDIR%\features\org.talend.rcp.branding.%PRODUCTNAME%\%PRODUCTNAME%license.txt
@@ -29,7 +29,7 @@ public interface IMigrationTask {
 
     /**
      * DOC ycbai Comment method "getVersion". This is the Talend version when this migration task was introduced.
-     * 
+     *
      * @return
      */
     public String getVersion();
@@ -39,7 +39,7 @@ public interface IMigrationTask {
     /**
      * DOC ycbai Comment method "getBreaks". this is the version of the latest version of Studio that will not be able
      * to load the data migrated with the current task. default value is considered : 5.1.9
-     * 
+     *
      * @return
      */
     public String getBreaks();

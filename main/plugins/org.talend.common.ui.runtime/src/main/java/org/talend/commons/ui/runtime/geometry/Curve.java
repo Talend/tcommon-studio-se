@@ -1,6 +1,6 @@
 // ============================================================================
 //
-// Copyright (C) 2006-2018 Talend Inc. - www.talend.com
+// Copyright (C) 2006-2019 Talend Inc. - www.talend.com
 //
 // This source code is available under agreement available at
 // %InstallDIR%\features\org.talend.rcp.branding.%PRODUCTNAME%\%PRODUCTNAME%license.txt
@@ -37,11 +37,11 @@ import java.util.ArrayList;
 import org.eclipse.swt.graphics.Color;
 
 /**
- * 
+ *
  * DOC amaumont class global comment. Detailled comment <br/>
- * 
+ *
  * $Id: Curve.java 7048 2007-11-16 02:36:17Z nrousseau $
- * 
+ *
  */
 public abstract class Curve {
 

@@ -1,6 +1,6 @@
 // ============================================================================
 //
-// Copyright (C) 2006-2018 Talend Inc. - www.talend.com
+// Copyright (C) 2006-2019 Talend Inc. - www.talend.com
 //
 // This source code is available under agreement available at
 // %InstallDIR%\features\org.talend.rcp.branding.%PRODUCTNAME%\%PRODUCTNAME%license.txt
@@ -28,7 +28,7 @@ import org.talend.repository.metadata.i18n.Messages;
 
 /**
  * @author cantoine.
- * 
+ *
  */
 public class LDIFReader {
 
@@ -42,7 +42,7 @@ public class LDIFReader {
 
     /**
      * add.
-     * 
+     *
      * @param entry
      * @param attribute
      * @param value
@@ -81,7 +81,7 @@ public class LDIFReader {
     /**
      * @author cantoine
      * @return Dn
-     * 
+     *
      */
     public String getDN() {
         return lastDN;
@@ -106,7 +106,7 @@ public class LDIFReader {
 
     /**
      * @author cantoine
-     * 
+     *
      */
     public Attributes getNext() throws IOException {
         int type = 1;

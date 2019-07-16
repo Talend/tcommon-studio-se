@@ -1,6 +1,6 @@
 // ============================================================================
 //
-// Copyright (C) 2006-2018 Talend Inc. - www.talend.com
+// Copyright (C) 2006-2019 Talend Inc. - www.talend.com
 //
 // This source code is available under agreement available at
 // %InstallDIR%\features\org.talend.rcp.branding.%PRODUCTNAME%\%PRODUCTNAME%license.txt
@@ -42,13 +42,15 @@ public class NetworkUtil {
 
     private static final String TALEND_DISABLE_INTERNET = "talend.disable.internet";//$NON-NLS-1$
 
+    private static final String HTTP_NETWORK_URL = "https://talend-update.talend.com";
+
     public static boolean isNetworkValid() {
         String disableInternet = System.getProperty(TALEND_DISABLE_INTERNET);
         if ("true".equals(disableInternet)) { //$NON-NLS-1$
             return false;
         }
         try {
-            URL url = new URL("https://www.talend.com"); //$NON-NLS-1$
+            URL url = new URL(HTTP_NETWORK_URL);
             HttpURLConnection conn = (HttpURLConnection) url.openConnection();
             conn.setConnectTimeout(4000);
             conn.setReadTimeout(4000);
@@ -129,7 +131,7 @@ public class NetworkUtil {
 
     /**
      * encode url
-     * 
+     *
      * @param urlStr url not encoded yet!
      * @return
      * @throws Exception

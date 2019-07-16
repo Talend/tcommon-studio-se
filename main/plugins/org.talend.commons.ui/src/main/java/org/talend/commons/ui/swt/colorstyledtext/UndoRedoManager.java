@@ -1,6 +1,6 @@
 // ============================================================================
 //
-// Copyright (C) 2006-2018 Talend Inc. - www.talend.com
+// Copyright (C) 2006-2019 Talend Inc. - www.talend.com
 //
 // This source code is available under agreement available at
 // %InstallDIR%\features\org.talend.rcp.branding.%PRODUCTNAME%\%PRODUCTNAME%license.txt
@@ -29,13 +29,13 @@ import org.talend.commons.ui.runtime.exception.ExceptionHandler;
 
 /**
  * DOC qli class global comment.
- * 
+ *
  * manage the operation of the undo/redo.
- * 
+ *
  * Listen the change of the text,and Generate the oerration record.<br>
- * 
+ *
  * @author qli
- * 
+ *
  */
 public class UndoRedoManager {
 
@@ -65,11 +65,11 @@ public class UndoRedoManager {
     }
 
     /**
-     * 
+     *
      * DOC qli Comment method "connect".
-     * 
+     *
      * let text to cotact the undo manager.
-     * 
+     *
      * */
     public void connect(StyledText styledText) {
         if (!isConnected() && styledText != null) {
@@ -103,9 +103,9 @@ public class UndoRedoManager {
 
     /**
      * DOC qli Comment method "addlisteners".
-     * 
+     *
      * addlisteners.
-     * 
+     *
      * */
     private void addListeners() {
         if (styledText != null) {
@@ -161,9 +161,9 @@ public class UndoRedoManager {
 
     /**
      * DOC qli Comment class "UndoableOperation".
-     * 
+     *
      * The undo opetation make a change_data record.
-     * 
+     *
      * */
     private class UndoableOperation extends AbstractOperation {
 
@@ -188,7 +188,7 @@ public class UndoRedoManager {
 
         /*
          * (non-Javadoc)
-         * 
+         *
          * @see org.eclipse.core.commands.operations.AbstractOperation#undo(org.eclipse.core.runtime.IProgressMonitor,
          * org.eclipse.core.runtime.IAdaptable)
          */
@@ -202,7 +202,7 @@ public class UndoRedoManager {
 
         /*
          * (non-Javadoc)
-         * 
+         *
          * @see org.eclipse.core.commands.operations.AbstractOperation#redo(org.eclipse.core.runtime.IProgressMonitor,
          * org.eclipse.core.runtime.IAdaptable)
          */
@@ -216,7 +216,7 @@ public class UndoRedoManager {
 
         /*
          * (non-Javadoc)
-         * 
+         *
          * @see
          * org.eclipse.core.commands.operations.AbstractOperation#execute(org.eclipse.core.runtime.IProgressMonitor,
          * org.eclipse.core.runtime.IAdaptable)

@@ -1,6 +1,6 @@
 // ============================================================================
 //
-// Copyright (C) 2006-2018 Talend Inc. - www.talend.com
+// Copyright (C) 2006-2019 Talend Inc. - www.talend.com
 //
 // This source code is available under agreement available at
 // %InstallDIR%\features\org.talend.rcp.branding.%PRODUCTNAME%\%PRODUCTNAME%license.txt
@@ -24,7 +24,7 @@ public interface ISwitchContext {
 
     /**
      * update Context Group for one Connection Item.
-     * 
+     *
      * @param connItem
      * @param selectedContext
      * @return
@@ -33,7 +33,7 @@ public interface ISwitchContext {
 
     /**
      * update Context For all Connection Items.
-     * 
+     *
      * @param contextGroupRanamedMap
      * @param contextItem
      * @return

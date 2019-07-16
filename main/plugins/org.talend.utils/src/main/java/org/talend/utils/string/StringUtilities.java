@@ -1,6 +1,6 @@
 // ============================================================================
 //
-// Copyright (C) 2006-2018 Talend Inc. - www.talend.com
+// Copyright (C) 2006-2019 Talend Inc. - www.talend.com
 //
 // This source code is available under agreement available at
 // %InstallDIR%\features\org.talend.rcp.branding.%PRODUCTNAME%\%PRODUCTNAME%license.txt
@@ -29,7 +29,7 @@ public final class StringUtilities {
 
     /**
      * Method "tokenize".
-     * 
+     *
      * @param input the string to split
      * @param delimiters the delimiter(s) of the fields
      * @see StringTokenizer
@@ -55,7 +55,7 @@ public final class StringUtilities {
 
     /**
      * Method "checkBalancedParenthesis".
-     * 
+     *
      * @param input the string to check
      * @param openingBlock can be a left parenthesis,...
      * @param closingBlock can be a right parenthesis...
@@ -86,7 +86,7 @@ public final class StringUtilities {
 
     /**
      * DOC xqliu Comment method "getRandomString".
-     * 
+     *
      * @param length
      * @return
      */

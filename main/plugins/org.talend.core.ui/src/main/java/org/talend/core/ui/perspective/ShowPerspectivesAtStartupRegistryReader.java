@@ -1,6 +1,6 @@
 // ============================================================================
 //
-// Copyright (C) 2006-2018 Talend Inc. - www.talend.com
+// Copyright (C) 2006-2019 Talend Inc. - www.talend.com
 //
 // This source code is available under agreement available at
 // %InstallDIR%\features\org.talend.rcp.branding.%PRODUCTNAME%\%PRODUCTNAME%license.txt
@@ -35,9 +35,9 @@ public class ShowPerspectivesAtStartupRegistryReader extends RegistryReader {
 
     /**
      * key is the id of perspective, value are the id of perspectives for argument "appearsAfter".
-     * 
+     *
      * The "appearsAfter" can be multi, split by "|".
-     * 
+     *
      */
     private Map<String, List<String>> showPerspRelationMap = new HashMap<String, List<String>>();
 
@@ -112,11 +112,11 @@ public class ShowPerspectivesAtStartupRegistryReader extends RegistryReader {
     }
 
     /**
-     * 
+     *
      * DOC ggu Comment method "validPerspective".
-     * 
+     *
      * check the perspective is real existed in extension point or not.
-     * 
+     *
      * @param perspId
      * @return
      */
@@ -138,7 +138,7 @@ public class ShowPerspectivesAtStartupRegistryReader extends RegistryReader {
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see org.talend.core.utils.RegistryReader#readElement(org.eclipse.core.runtime.IConfigurationElement)
      */
     @Override

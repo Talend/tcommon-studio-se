@@ -1,6 +1,6 @@
 // ============================================================================
 //
-// Copyright (C) 2006-2018 Talend Inc. - www.talend.com
+// Copyright (C) 2006-2019 Talend Inc. - www.talend.com
 //
 // This source code is available under agreement available at
 // %InstallDIR%\features\org.talend.rcp.branding.%PRODUCTNAME%\%PRODUCTNAME%license.txt
@@ -36,11 +36,11 @@ import org.apache.commons.lang.ArrayUtils;
 import org.eclipse.swt.graphics.GC;
 
 /**
- * 
+ *
  * DOC amaumont class global comment. Detailled comment <br/>
- * 
+ *
  * $Id: Curve2DBezier.java 7189 2007-11-23 17:06:19Z amaumont $
- * 
+ *
  */
 public class Curve2DBezier extends Curve2D {
 

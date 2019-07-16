@@ -1,6 +1,6 @@
 // ============================================================================
 //
-// Copyright (C) 2006-2018 Talend Inc. - www.talend.com
+// Copyright (C) 2006-2019 Talend Inc. - www.talend.com
 //
 // This source code is available under agreement available at
 // %InstallDIR%\features\org.talend.rcp.branding.%PRODUCTNAME%\%PRODUCTNAME%license.txt
@@ -58,9 +58,9 @@ import org.talend.themes.core.elements.widgets.ITalendTabbedPropertyListWidget;
 
 /**
  * yzhang class global comment. Detailled comment <br/>
- * 
+ *
  * $Id: talend.epf 1 2006-09-29 17:06:40Z nrousseau $
- * 
+ *
  */
 public class TalendTabbedPropertyList extends Composite implements ITalendTabbedPropertyListWidget {
 
@@ -109,7 +109,7 @@ public class TalendTabbedPropertyList extends Composite implements ITalendTabbed
 
         /**
          * Constructor for ListElement.
-         * 
+         *
          * @param parent the parent Composite.
          * @param tab the tab item for the element.
          * @param index the index in the list.
@@ -170,7 +170,7 @@ public class TalendTabbedPropertyList extends Composite implements ITalendTabbed
 
         /**
          * Set selected value for this element.
-         * 
+         *
          * @param selected the selected value.
          */
         public void setSelected(boolean selected) {
@@ -180,7 +180,7 @@ public class TalendTabbedPropertyList extends Composite implements ITalendTabbed
 
         /**
          * Paint the element.
-         * 
+         *
          * @param e the paint event.
          */
         private void paint(PaintEvent e) {
@@ -284,7 +284,7 @@ public class TalendTabbedPropertyList extends Composite implements ITalendTabbed
 
         /**
          * Get the tab item.
-         * 
+         *
          * @return the tab item.
          */
         public ITabItem getTabItem() {
@@ -305,7 +305,7 @@ public class TalendTabbedPropertyList extends Composite implements ITalendTabbed
 
         /**
          * Constructor for TopNavigationElement.
-         * 
+         *
          * @param parent the parent Composite.
          */
         public TopNavigationElement(Composite parent) {
@@ -336,7 +336,7 @@ public class TalendTabbedPropertyList extends Composite implements ITalendTabbed
 
         /**
          * Paint the element.
-         * 
+         *
          * @param e the paint event.
          */
         private void paint(PaintEvent e) {
@@ -395,7 +395,7 @@ public class TalendTabbedPropertyList extends Composite implements ITalendTabbed
 
         /**
          * Constructor for BottomNavigationElement.
-         * 
+         *
          * @param parent the parent Composite.
          */
         public BottomNavigationElement(Composite parent) {
@@ -426,7 +426,7 @@ public class TalendTabbedPropertyList extends Composite implements ITalendTabbed
 
         /**
          * Paint the element.
-         * 
+         *
          * @param e the paint event.
          */
         private void paint(PaintEvent e) {
@@ -493,7 +493,7 @@ public class TalendTabbedPropertyList extends Composite implements ITalendTabbed
 
     /**
      * Sets the inputs.
-     * 
+     *
      * @param inputChangedListeners the inputs to set
      */
     public void addInputChangedListener(IInputChangedListener listener) {
@@ -502,7 +502,7 @@ public class TalendTabbedPropertyList extends Composite implements ITalendTabbed
 
     /**
      * Constructor for TabbedPropertyList.
-     * 
+     *
      * @param parent the parent widget.
      * @param factory the widget factory.
      */
@@ -581,7 +581,7 @@ public class TalendTabbedPropertyList extends Composite implements ITalendTabbed
     /**
      * Returns the element with the given index from this list viewer. Returns <code>null</code> if the index is out of
      * range.
-     * 
+     *
      * @param index the zero-based index
      * @return the element at the given index, or <code>null</code> if the index is out of range
      */
@@ -595,7 +595,7 @@ public class TalendTabbedPropertyList extends Composite implements ITalendTabbed
     /**
      * Returns the zero-relative index of the item which is currently selected in the receiver, or -1 if no item is
      * selected.
-     * 
+     *
      * @return the index of the selected item
      */
     public int getSelectionIndex() {
@@ -625,7 +625,7 @@ public class TalendTabbedPropertyList extends Composite implements ITalendTabbed
 
     /**
      * Sets the new list elements.
-     * 
+     *
      * @param children
      */
     public void setElements(Object[] children) {
@@ -663,7 +663,7 @@ public class TalendTabbedPropertyList extends Composite implements ITalendTabbed
 
     /**
      * Selects one of the elements in the list.
-     * 
+     *
      * @param index the index of the element to select.
      */
     public void select(int index) {
@@ -747,7 +747,7 @@ public class TalendTabbedPropertyList extends Composite implements ITalendTabbed
 
     /**
      * yzhang Comment method "isWithin".
-     * 
+     *
      * @param target
      * @param collection
      * @return
@@ -763,7 +763,7 @@ public class TalendTabbedPropertyList extends Composite implements ITalendTabbed
 
     /**
      * DOC yzhang Comment method "fireInputChangeListeners".
-     * 
+     *
      * @param children
      */
     private void fireInputChangeListeners(TabInputChangedEvent event) {
@@ -817,7 +817,7 @@ public class TalendTabbedPropertyList extends Composite implements ITalendTabbed
 
     /**
      * Get the dimensions of the provided string.
-     * 
+     *
      * @param text the string.
      * @return the dimensions of the provided string.
      */
@@ -838,11 +838,11 @@ public class TalendTabbedPropertyList extends Composite implements ITalendTabbed
 
     /**
      * Get the height of a tab. The height of the tab is the height of the text plus buffer.
-     * 
+     *
      * @return the height of a tab.
      */
     private int getTabHeight() {
-        int tabHeight = getTextDimension("").y + INDENT; //$NON-NLS-1$ 
+        int tabHeight = getTextDimension("").y + INDENT; //$NON-NLS-1$
         if (tabsThatFitInComposite == 1) {
             /*
              * if only one tab will fix, reduce the size of the tab height so that the navigation elements fit.
@@ -855,7 +855,7 @@ public class TalendTabbedPropertyList extends Composite implements ITalendTabbed
 
     /**
      * Determine if a downward scrolling is required.
-     * 
+     *
      * @return true if downward scrolling is required.
      */
     private boolean isDownScrollRequired() {
@@ -864,7 +864,7 @@ public class TalendTabbedPropertyList extends Composite implements ITalendTabbed
 
     /**
      * Determine if an upward scrolling is required.
-     * 
+     *
      * @return true if upward scrolling is required.
      */
     private boolean isUpScrollRequired() {
@@ -912,7 +912,7 @@ public class TalendTabbedPropertyList extends Composite implements ITalendTabbed
 
     /**
      * Layout the tabs.
-     * 
+     *
      * @param up if <code>true</code>, then we are laying out as a result of an scroll up request.
      */
     private void layoutTabs() {

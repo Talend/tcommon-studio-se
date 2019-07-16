@@ -1,6 +1,6 @@
 // ============================================================================
 //
-// Copyright (C) 2006-2018 Talend Inc. - www.talend.com
+// Copyright (C) 2006-2019 Talend Inc. - www.talend.com
 //
 // This source code is available under agreement available at
 // %InstallDIR%\features\org.talend.rcp.branding.%PRODUCTNAME%\%PRODUCTNAME%license.txt
@@ -56,7 +56,7 @@ import org.talend.updates.runtime.model.P2ExtraFeature;
 
 /**
  * created by sgandon on 25 févr. 2013 Detailled comment
- * 
+ *
  */
 public class SelectExtraFeaturesToInstallWizardPage extends WizardPage {
 
@@ -72,7 +72,7 @@ public class SelectExtraFeaturesToInstallWizardPage extends WizardPage {
 
     /**
      * Create the wizard.
-     * 
+     *
      * @param updateWizardModel
      * @wbp.parser.constructor
      */
@@ -85,7 +85,7 @@ public class SelectExtraFeaturesToInstallWizardPage extends WizardPage {
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see org.eclipse.jface.wizard.WizardPage#canFlipToNextPage()
      */
     @Override
@@ -96,7 +96,7 @@ public class SelectExtraFeaturesToInstallWizardPage extends WizardPage {
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see org.eclipse.jface.wizard.WizardPage#isPageComplete()
      */
     @Override
@@ -106,7 +106,7 @@ public class SelectExtraFeaturesToInstallWizardPage extends WizardPage {
 
     /**
      * Create contents of the wizard.
-     * 
+     *
      * @param parent
      */
     @SuppressWarnings("unchecked")
@@ -131,7 +131,7 @@ public class SelectExtraFeaturesToInstallWizardPage extends WizardPage {
 
                     /*
                      * (non-Javadoc)
-                     * 
+                     *
                      * @see org.eclipse.jface.viewers.ViewerComparator#category(java.lang.Object)
                      */
                     @Override
@@ -141,7 +141,7 @@ public class SelectExtraFeaturesToInstallWizardPage extends WizardPage {
 
                     /*
                      * (non-Javadoc)
-                     * 
+                     *
                      * @see org.eclipse.jface.viewers.ViewerComparator#compare(org.eclipse.jface.viewers.Viewer,
                      * java.lang.Object, java.lang.Object)
                      */
@@ -282,7 +282,7 @@ public class SelectExtraFeaturesToInstallWizardPage extends WizardPage {
     /**
      * when an element is added to the feature list this get called so that the selected state of the item gets
      * automatically set according to it's mustBeInstalled value
-     * 
+     *
      * @param arg0
      */
     protected void updateSelectedState(Set<ExtraFeature> features) {

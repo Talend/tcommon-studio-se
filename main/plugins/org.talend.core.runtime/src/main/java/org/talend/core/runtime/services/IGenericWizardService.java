@@ -1,6 +1,6 @@
 // ============================================================================
 //
-// Copyright (C) 2006-2018 Talend Inc. - www.talend.com
+// Copyright (C) 2006-2019 Talend Inc. - www.talend.com
 //
 // This source code is available under agreement available at
 // %InstallDIR%\features\org.talend.rcp.branding.%PRODUCTNAME%\%PRODUCTNAME%license.txt
@@ -125,9 +125,9 @@ public interface IGenericWizardService extends IService {
     public List<ComponentProperties> getAllComponentProperties(Connection connection, String tableLabel);
 
     public List<ComponentProperties> getAllComponentProperties(Connection connection, String tableLabel, boolean withEvaluator);
-    
+
     public List<ComponentProperties> getAllComponentProperties(Connection connection, String tableLabel, boolean withEvaluator,
-            boolean forComponentValue, Map<Object, Object> contextMap); 
+            boolean forComponentValue, Map<Object, Object> contextMap);
 
     /**
      * Get the new repository type (the type from component framework) by the old repository type name.

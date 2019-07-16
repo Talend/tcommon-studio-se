@@ -1,6 +1,6 @@
 // ============================================================================
 //
-// Copyright (C) 2006-2018 Talend Inc. - www.talend.com
+// Copyright (C) 2006-2019 Talend Inc. - www.talend.com
 //
 // This source code is available under agreement available at
 // %InstallDIR%\features\org.talend.rcp.branding.%PRODUCTNAME%\%PRODUCTNAME%license.txt
@@ -118,14 +118,14 @@ public class ImportBasicHandler extends AbstractImportExecutableHandler {
 
     /**
      * set by extension point, will be the base path which relative to import project.
-     * 
+     *
      * for example, for job designer, will be "process"; for xml file connections, will be "metadata/fileXml"
      */
     protected final Set<String> checkedBasePathes = new HashSet<String>();
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see
      * org.eclipse.core.runtime.IExecutableExtension#setInitializationData(org.eclipse.core.runtime.IConfigurationElement
      * , java.lang.String, java.lang.Object)
@@ -151,7 +151,7 @@ public class ImportBasicHandler extends AbstractImportExecutableHandler {
     }
 
     /**
-     * 
+     *
      * check the file is valid to import or not.
      */
     protected boolean isValidFile(IPath path) {
@@ -181,7 +181,7 @@ public class ImportBasicHandler extends AbstractImportExecutableHandler {
     }
 
     /**
-     * 
+     *
      * Check the relative path (relative import project).
      */
     protected boolean validRelativePath(IPath relativePath) {
@@ -200,7 +200,7 @@ public class ImportBasicHandler extends AbstractImportExecutableHandler {
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see
      * org.talend.repository.items.importexport.handlers.imports.IImportItemsHandler#valid(org.talend.repository.items
      * .importexport.handlers.model.ImportItem)
@@ -212,7 +212,7 @@ public class ImportBasicHandler extends AbstractImportExecutableHandler {
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see org.talend.repository.items.importexport.handlers.imports.IImportItemsHandler#createImportItem(org.eclipse.
      * core. runtime.IProgressMonitor,
      * org.talend.repository.items.importexport.ui.wizard.imports.managers.ResourcesManager,
@@ -279,7 +279,7 @@ public class ImportBasicHandler extends AbstractImportExecutableHandler {
 
     /**
      * mzhao load resource with item record.
-     * 
+     *
      * @param manager
      * @param importItem
      * @param resource
@@ -313,9 +313,9 @@ public class ImportBasicHandler extends AbstractImportExecutableHandler {
     }
 
     /**
-     * 
+     *
      * mzhao get extensions needed to create a resource.
-     * 
+     *
      * @return
      */
     protected String[] getResourceNeededExtensions() {
@@ -334,7 +334,7 @@ public class ImportBasicHandler extends AbstractImportExecutableHandler {
         return StringUtils.equals(importItem1.getProperty().getId(), importItem2.getProperty().getId())
                 && StringUtils.equals(importItem1.getProperty().getVersion(), importItem2.getProperty().getVersion());
     }
-    
+
     public String getPropertyLabel(String name) {
         String label = name;
         for (String toReplace : RepositoryConstants.ITEM_FORBIDDEN_IN_LABEL) {
@@ -344,7 +344,7 @@ public class ImportBasicHandler extends AbstractImportExecutableHandler {
     }
 
     /**
-     * 
+     *
      * check the item is valid or not。
      */
     public boolean checkItem(ResourcesManager resManager, ImportItem importItem, boolean overwrite) {
@@ -488,7 +488,7 @@ public class ImportBasicHandler extends AbstractImportExecutableHandler {
     }
 
     /**
-     * 
+     *
      * item with same name.
      */
     protected boolean isSameName(ImportItem importItem, IRepositoryViewObject repObject) {
@@ -558,7 +558,7 @@ public class ImportBasicHandler extends AbstractImportExecutableHandler {
 
     /**
      * DOC hcw Comment method "checkIfLocked".
-     * 
+     *
      * @param importItem
      * @return
      * @throws PersistenceException
@@ -675,7 +675,7 @@ public class ImportBasicHandler extends AbstractImportExecutableHandler {
 
     /**
      * DOC ycbai Comment method "checkMigrationTasks".
-     * 
+     *
      * @param currentProject
      * @param importedProject
      * @param importItem
@@ -734,7 +734,7 @@ public class ImportBasicHandler extends AbstractImportExecutableHandler {
         // old task, added for an old version of TOS, not used anymore.
         toReturn.add("org.talend.repository.migration.ReplaceOldContextScriptCodeMigrationTask"); //$NON-NLS-1$
         toReturn.add("org.talend.designer.core.model.process.migration.SynchronizeSchemaOnlyForPerlDemo"); //$NON-NLS-1$
-        toReturn.add("org.talend.repository.model.migration.RenametFSFilterRow"); //$NON-NLS-1$        
+        toReturn.add("org.talend.repository.model.migration.RenametFSFilterRow"); //$NON-NLS-1$
         return toReturn;
     }
 
@@ -745,7 +745,7 @@ public class ImportBasicHandler extends AbstractImportExecutableHandler {
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see
      * org.talend.repository.items.importexport.handlers.imports.IImportItemsHandler#importItemRecord(org.eclipse.core
      * .runtime .IProgressMonitor, org.talend.repository.items.importexport.manager.ResourcesManager,
@@ -930,9 +930,9 @@ public class ImportBasicHandler extends AbstractImportExecutableHandler {
     }
 
     /**
-     * 
+     *
      * DOC ggu Comment method "checkAndCreatePath". if the path is not existed, will create.
-     * 
+     *
      * @param selectedImportItem
      * @param destinationPath
      * @param contentType
@@ -968,12 +968,12 @@ public class ImportBasicHandler extends AbstractImportExecutableHandler {
                 }
                 /*
                  * FIXME,TUP-2422, temp, won't reset the item path for DQ items only.
-                 * 
+                 *
                  * In fact, need unify the type of folder with FOLDER/SYSTEM_FOLDER/STABLE_SYSTEM_FOLDER. So means, if
                  * the ERepositoryObjectType is resource, the type should be STABLE_SYSTEM_FOLDER. Else it's "system"
                  * folder, will be SYSTEM_FOLDER, like "system" of routine. "Generic","Hiv","Generic/system",
                  * "Generic/UserDefined", etc for SQL Templates.
-                 * 
+                 *
                  * Also for DQ, the "TDQ_Libraries" and "TDQ_Libraries\Indicators" are STABLE_SYSTEM_FOLDER. but for the
                  * "TDQ_Libraries/Indicators/System Indicators" and "TDQ_Libraries/Indicators/User Defined Indicators",
                  * etc. should be SYSTEM_FOLDER.
@@ -1026,7 +1026,7 @@ public class ImportBasicHandler extends AbstractImportExecutableHandler {
     }
 
     /**
-     * 
+     *
      * most like the RestoreAction for folder item.
      */
     private void restoreFolderItem(FolderItem folderItem) {
@@ -1184,11 +1184,11 @@ public class ImportBasicHandler extends AbstractImportExecutableHandler {
     }
 
     /**
-     * 
+     *
      * cLi Comment method "resetItemReference".
-     * 
+     *
      * resolve the encode some special character(bug 6252), maybe, It's not better to resolve this by manually.
-     * 
+     *
      * such as, "[" is "%5B", "]" is "%5D", etc.
      */
     @SuppressWarnings("unchecked")
@@ -1261,7 +1261,7 @@ public class ImportBasicHandler extends AbstractImportExecutableHandler {
 
     /**
      * DOC ycbai Comment method "applyMigrationTasks".
-     * 
+     *
      * @param importItem
      * @param monitor
      */
@@ -1300,7 +1300,7 @@ public class ImportBasicHandler extends AbstractImportExecutableHandler {
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see
      * org.talend.repository.items.importexport.handlers.imports.IImportItemsHandler#afterImportingItemRecords(org.talend
      * .repository.items.importexport.ui.wizard.imports.models.ItemRecord)

@@ -1,6 +1,6 @@
 // ============================================================================
 //
-// Copyright (C) 2006-2018 Talend Inc. - www.talend.com
+// Copyright (C) 2006-2019 Talend Inc. - www.talend.com
 //
 // This source code is available under agreement available at
 // %InstallDIR%\features\org.talend.rcp.branding.%PRODUCTNAME%\%PRODUCTNAME%license.txt
@@ -44,7 +44,7 @@ public class ContextTableCellModifier extends AbstractContextCellModifier {
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see org.eclipse.jface.viewers.ICellModifier#canModify(java.lang.Object, java.lang.String)
      */
     @Override
@@ -71,7 +71,7 @@ public class ContextTableCellModifier extends AbstractContextCellModifier {
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see org.eclipse.jface.viewers.ICellModifier#getValue(java.lang.Object, java.lang.String)
      */
     @Override
@@ -122,7 +122,7 @@ public class ContextTableCellModifier extends AbstractContextCellModifier {
 
     /**
      * zwang Comment method "getRealParameter".
-     * 
+     *
      * @param property
      * @param templatePara
      * @return
@@ -191,7 +191,7 @@ public class ContextTableCellModifier extends AbstractContextCellModifier {
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see org.eclipse.jface.viewers.ICellModifier#modify(java.lang.Object, java.lang.String, java.lang.Object)
      */
     @Override
@@ -273,7 +273,7 @@ public class ContextTableCellModifier extends AbstractContextCellModifier {
 
     /**
      * To look up all nodes that have the same variable name from input model.
-     * 
+     *
      * @param nodeName
      * @return
      */

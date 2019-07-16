@@ -1,6 +1,6 @@
 // ============================================================================
 //
-// Copyright (C) 2006-2018 Talend Inc. - www.talend.com
+// Copyright (C) 2006-2019 Talend Inc. - www.talend.com
 //
 // This source code is available under agreement available at
 // %InstallDIR%\features\org.talend.rcp.branding.%PRODUCTNAME%\%PRODUCTNAME%license.txt
@@ -16,22 +16,22 @@ import org.apache.log4j.Logger;
 
 /**
  * @author scorreia
- * 
- * 
+ *
+ *
  * Simple timer to trace time taken when calling a piece of code. Nesting the calls is possible : indentation of traces.
  * if done automatically NOTE that it is the user responsability to produce matching statement.
- * 
+ *
  * EXAMPLE OF USAGE :
- * 
+ *
  * TimeTracer timeTracer = new TimeTracer( "BASE" , logger) ; // at object level //
  * <p>
  * also new TimeTracer( "BASE" , null ) ; // log on console only
- * 
- * 
+ *
+ *
  * int nbTest = 10 ; timeTracer.start(" ALL") ; // nested level 0 for ( int i = 0 ; i < nbTest ; i++ ) {
  * timeTracer.start(" INS") ; // nested level 1 mytest() ; timeTracer.end( " ONE" ) ; // nested level 1 }
  * timeTracer.end( " FIN ALL" , nbTest ) ; // nested level 0
- * 
+ *
  * Adapted from a code from Jerome JEAN-CHARLES.
  */
 public class TimeTracer {
@@ -64,7 +64,7 @@ public class TimeTracer {
 
     /**
      * CST.
-     * 
+     *
      * @param aName : could be null. If not, it will be printed in front of each trace of this TimeTracer.
      * @param aLog : if null then trace shall be done on System.out
      */
@@ -86,7 +86,7 @@ public class TimeTracer {
     /**
      * If text not empty (null or length 0 ) : - will print the text and the time of call ( with indentation
      * corresponding to nesting else - will only remember calling time to show it when end() is called.
-     * 
+     *
      * @param text marker from caller
      */
     public void start(String text) {
@@ -128,7 +128,7 @@ public class TimeTracer {
      * if text not empty (null or no length) will print the <code>text</code> will print the name of the class will
      * show the time elapsed with eventually average if nbTest significant (>=2) prints are done according to the logger
      * if any otherwise using System.println.
-     * 
+     *
      * @param text marker from caller
      * @param nbTest number of test ( or call) from caller used for averaging
      * @return the spent time.

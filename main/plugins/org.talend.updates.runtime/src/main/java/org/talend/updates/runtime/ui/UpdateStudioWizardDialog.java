@@ -1,6 +1,6 @@
 // ============================================================================
 //
-// Copyright (C) 2006-2018 Talend Inc. - www.talend.com
+// Copyright (C) 2006-2019 Talend Inc. - www.talend.com
 //
 // This source code is available under agreement available at
 // %InstallDIR%\features\org.talend.rcp.branding.%PRODUCTNAME%\%PRODUCTNAME%license.txt
@@ -28,13 +28,13 @@ import org.talend.updates.runtime.i18n.Messages;
 
 /**
  * created by sgandon on 26 sept. 2013 Detailled comment
- * 
+ *
  */
 class UpdateStudioWizardDialog extends WizardDialog {
 
     /**
      * DOC sgandon WizardDialogExtension constructor comment.
-     * 
+     *
      * @param parentShell
      * @param newWizard
      * @param updateStudioWizard TODO
@@ -96,7 +96,7 @@ class UpdateStudioWizardDialog extends WizardDialog {
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see org.eclipse.jface.dialogs.Dialog#create()
      */
     @Override

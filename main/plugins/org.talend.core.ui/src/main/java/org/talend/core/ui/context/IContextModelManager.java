@@ -1,6 +1,6 @@
 // ============================================================================
 //
-// Copyright (C) 2006-2018 Talend Inc. - www.talend.com
+// Copyright (C) 2006-2019 Talend Inc. - www.talend.com
 //
 // This source code is available under agreement available at
 // %InstallDIR%\features\org.talend.rcp.branding.%PRODUCTNAME%\%PRODUCTNAME%license.txt
@@ -22,7 +22,7 @@ import org.talend.core.model.process.IProcess2;
 
 /**
  * DOC bqian class global comment. Detailled comment <br/>
- * 
+ *
  */
 public interface IContextModelManager {
 
@@ -45,7 +45,7 @@ public interface IContextModelManager {
      * Added by Marvin Wang on Mar.8, 2012 for re-naming the variables of context with the given parameters, the one who
      * implements this method needs to iterate the contexts from {@link IContextManager#getListContext()} to rename the
      * variable name.
-     * 
+     *
      * @param contextManager
      * @param sourceId
      * @param oldName
@@ -63,7 +63,7 @@ public interface IContextModelManager {
      * Added by Marvin Wang on Mar.7, 2012 for removing the <code>IContextParameter</code> with the specified
      * {@link IContextParameter#getName()} and {@link IContextParameter#getSource()}, the one who implements this method
      * needs to iterate the contexts from {@link IContextManager#getListContext()} to remove the context parameter.
-     * 
+     *
      * @param contextManager
      * @param paramName
      * @param sourceId
@@ -72,7 +72,7 @@ public interface IContextModelManager {
 
     /**
      * Should use paraName and sourceId to identify which context parameter can be removed.
-     * 
+     *
      * @param contextManager
      * @param paramNames
      * @param sourceId

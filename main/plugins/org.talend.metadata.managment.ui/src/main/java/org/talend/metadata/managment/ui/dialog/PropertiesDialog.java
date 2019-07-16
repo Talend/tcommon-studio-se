@@ -1,6 +1,6 @@
 // ============================================================================
 //
-// Copyright (C) 2006-2018 Talend Inc. - www.talend.com
+// Copyright (C) 2006-2019 Talend Inc. - www.talend.com
 //
 // This source code is available under agreement available at
 // %InstallDIR%\features\org.talend.rcp.branding.%PRODUCTNAME%\%PRODUCTNAME%license.txt
@@ -44,7 +44,7 @@ import org.talend.metadata.managment.ui.props.PropertiesFieldModel;
 import org.talend.metadata.managment.ui.props.PropertiesTableView;
 
 /**
- * 
+ *
  * created by ycbai on 2015年1月4日 Detailled comment
  *
  */
@@ -134,7 +134,7 @@ public class PropertiesDialog extends TitleAreaDialog {
     }
 
     protected String getDesc() {
-        return Messages.getString("PropertiesDialog.desc"); //$NON-NLS-1$ 
+        return Messages.getString("PropertiesDialog.desc"); //$NON-NLS-1$
     }
 
     protected int getMarginWidth() {
@@ -228,9 +228,9 @@ public class PropertiesDialog extends TitleAreaDialog {
      * <p>
      * Apply the latest properties to the model.
      * </p>
-     * 
+     *
      * DOC ycbai Comment method "applyProperties".
-     * 
+     *
      * @param latestProperties
      */
     protected void applyProperties(List<Map<String, Object>> latestProperties) {

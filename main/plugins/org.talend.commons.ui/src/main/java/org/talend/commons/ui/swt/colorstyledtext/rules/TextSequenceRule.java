@@ -1,6 +1,6 @@
 // ============================================================================
 //
-// Copyright (C) 2006-2018 Talend Inc. - www.talend.com
+// Copyright (C) 2006-2019 Talend Inc. - www.talend.com
 //
 // This source code is available under agreement available at
 // %InstallDIR%\features\org.talend.rcp.branding.%PRODUCTNAME%\%PRODUCTNAME%license.txt
@@ -20,9 +20,9 @@ import org.eclipse.jface.text.rules.Token;
 
 /**
  * DOC nrousseau class global comment. Detailled comment <br/>
- * 
+ *
  * $Id: TextSequenceRule.java 7038 2007-11-15 14:05:48Z plegall $
- * 
+ *
  */
 public class TextSequenceRule extends Object implements IPredicateRule {
 
@@ -31,7 +31,7 @@ public class TextSequenceRule extends Object implements IPredicateRule {
      * tokens with specific words. That is, not only can the rule be used to provide tokens for exact matches, but also
      * for the generalized notion of a word in the context in which it is used. A word rules uses a word detector to
      * determine what a word is.
-     * 
+     *
      * @see IWordDetector
      */
     protected static final int UNDEFINED = -1;
@@ -60,7 +60,7 @@ public class TextSequenceRule extends Object implements IPredicateRule {
     /**
      * Sets a column constraint for this rule. If set, the rule's token will only be returned if the pattern is detected
      * starting at the specified column. If the column is smaller then 0, the column constraint is considered removed.
-     * 
+     *
      * @param column the column in which the pattern starts
      */
     public void setColumnConstraint(int column) {
@@ -79,7 +79,7 @@ public class TextSequenceRule extends Object implements IPredicateRule {
 
     /**
      * Returns the characters in the buffer to the scanner.
-     * 
+     *
      * @param scanner the scanner to be used
      */
     protected void unreadBuffer(ICharacterScanner scanner) {
@@ -103,7 +103,7 @@ public class TextSequenceRule extends Object implements IPredicateRule {
 
     /**
      * Evaluates this rules without considering any column constraints.
-     * 
+     *
      * @param scanner the character scanner to be used
      * @return the token resulting from this evaluation
      */
@@ -114,7 +114,7 @@ public class TextSequenceRule extends Object implements IPredicateRule {
     /**
      * Evaluates this rules without considering any column constraints. Resumes detection, i.e. look sonly for the end
      * sequence required by this rule if the <code>resume</code> flag is set.
-     * 
+     *
      * @param scanner the character scanner to be used
      * @param resume <code>true</code> if detection should be resumed, <code>false</code> otherwise
      * @return the token resulting from this evaluation
@@ -145,7 +145,7 @@ public class TextSequenceRule extends Object implements IPredicateRule {
      * Returns whether the next characters to be read by the character scanner are an exact match with the given
      * sequence. No escape characters are allowed within the sequence. If specified the sequence is considered to be
      * found when reading the EOF character.
-     * 
+     *
      * @param scanner the character scanner to be used
      * @param sequence the sequence to be detected
      * @param eofAllowed indicated whether EOF terminates the pattern

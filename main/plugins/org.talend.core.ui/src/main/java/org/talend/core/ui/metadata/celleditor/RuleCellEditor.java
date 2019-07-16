@@ -1,6 +1,6 @@
 // ============================================================================
 //
-// Copyright (C) 2006-2018 Talend Inc. - www.talend.com
+// Copyright (C) 2006-2019 Talend Inc. - www.talend.com
 //
 // This source code is available under agreement available at
 // %InstallDIR%\features\org.talend.rcp.branding.%PRODUCTNAME%\%PRODUCTNAME%license.txt
@@ -85,7 +85,7 @@ public class RuleCellEditor extends DialogCellEditor {
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see org.eclipse.jface.viewers.DialogCellEditor#openDialogBox(org.eclipse.swt.widgets.Control)
      */
     @Override
@@ -138,8 +138,8 @@ public class RuleCellEditor extends DialogCellEditor {
             String itemId;
             RulesItem rulesItem = null;
             AbstractRlueOperationChoice ruleChoiceDialog = null;
-            if (node.getElementParameter("REPOSITORY_PROPERTY_TYPE") != null //$NON-NLS-1$ 
-                    && node.getElementParameter("PROPERTY_TYPE").getValue().toString().equals("REPOSITORY")) { //$NON-NLS-1$ //$NON-NLS-2$ 
+            if (node.getElementParameter("REPOSITORY_PROPERTY_TYPE") != null //$NON-NLS-1$
+                    && node.getElementParameter("PROPERTY_TYPE").getValue().toString().equals("REPOSITORY")) { //$NON-NLS-1$ //$NON-NLS-2$
                 itemId = node.getElementParameter("REPOSITORY_PROPERTY_TYPE").getValue().toString(); //$NON-NLS-1$
                 IRepositoryViewObject obj = CoreUIPlugin.getDefault().getProxyRepositoryFactory().getLastVersion(itemId);
                 if (obj.getProperty().getItem() != null && obj.getProperty().getItem() instanceof RulesItem) {

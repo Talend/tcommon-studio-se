@@ -1,6 +1,6 @@
 // ============================================================================
 //
-// Copyright (C) 2006-2018 Talend Inc. - www.talend.com
+// Copyright (C) 2006-2019 Talend Inc. - www.talend.com
 //
 // This source code is available under agreement available at
 // %InstallDIR%\features\org.talend.rcp.branding.%PRODUCTNAME%\%PRODUCTNAME%license.txt
@@ -154,7 +154,7 @@ public class ProjectRepositoryNode extends RepositoryNode implements IProjectRep
 
     /**
      * DOC nrousseau ProjectRepositoryNode constructor comment.
-     * 
+     *
      * @param object
      * @param parent
      * @param type
@@ -277,7 +277,7 @@ public class ProjectRepositoryNode extends RepositoryNode implements IProjectRep
     private void deleteHiddenNodes(List<IRepositoryNode> nodes) {
 
         if (GlobalServiceRegister.getDefault().isServiceRegistered(IBrandingService.class)) {
-            IBrandingService service = (IBrandingService) GlobalServiceRegister.getDefault().getService(IBrandingService.class);
+            IBrandingService service = GlobalServiceRegister.getDefault().getService(IBrandingService.class);
             List<IRepositoryNode> hiddens = service.getBrandingConfiguration().getHiddenRepositoryCategory(this, "DI");
             for (IRepositoryNode node : hiddens) {
                 Iterator<IRepositoryNode> it = nodes.iterator();
@@ -326,6 +326,13 @@ public class ProjectRepositoryNode extends RepositoryNode implements IProjectRep
             }
         }
 
+    }
+
+    public void mapRootRepositoryNode(ERepositoryObjectType repObjType, IRepositoryNode node) {
+        if (!node.shouldCollectRepositoryNode() || repObjType == null) {
+            return;
+        }
+        repositoryNodeMap.put(repObjType.name(), (RepositoryNode) node);
     }
 
     private String[] getUserAuthorization() throws JSONException {
@@ -384,7 +391,7 @@ public class ProjectRepositoryNode extends RepositoryNode implements IProjectRep
     private void initNodesFromComponentSerivice(RepositoryNode curParentNode) {
         IGenericWizardService wizardService = null;
         if (GlobalServiceRegister.getDefault().isServiceRegistered(IGenericWizardService.class)) {
-            wizardService = (IGenericWizardService) GlobalServiceRegister.getDefault().getService(IGenericWizardService.class);
+            wizardService = GlobalServiceRegister.getDefault().getService(IGenericWizardService.class);
         }
         if (wizardService != null) {
             List<RepositoryNode> nodes = wizardService.createNodesFromComponentService(curParentNode);
@@ -453,7 +460,7 @@ public class ProjectRepositoryNode extends RepositoryNode implements IProjectRep
 
     /**
      * DOC nrousseau Comment method "initializeChildren".
-     * 
+     *
      * @param parent
      */
     public void initializeChildren(Object parent) {
@@ -547,8 +554,8 @@ public class ProjectRepositoryNode extends RepositoryNode implements IProjectRep
             RuntimeExceptionHandler.process(e);
         }
     }
-    
-    private void addExtraChildren(ERepositoryObjectType contentType, org.talend.core.model.general.Project newProject, 
+
+    private void addExtraChildren(ERepositoryObjectType contentType, org.talend.core.model.general.Project newProject,
             RepositoryNode repositoryNode) throws PersistenceException{
         if(contentType != ERepositoryObjectType.METADATA_CONNECTIONS){
             return;
@@ -556,7 +563,7 @@ public class ProjectRepositoryNode extends RepositoryNode implements IProjectRep
         List<ERepositoryObjectType> extraTypes = new ArrayList<ERepositoryObjectType>();
         IGenericDBService dbService = null;
         if (GlobalServiceRegister.getDefault().isServiceRegistered(IGenericDBService.class)) {
-            dbService = (IGenericDBService) GlobalServiceRegister.getDefault().getService(
+            dbService = GlobalServiceRegister.getDefault().getService(
                     IGenericDBService.class);
         }
         if(dbService != null){
@@ -624,14 +631,18 @@ public class ProjectRepositoryNode extends RepositoryNode implements IProjectRep
             String folderPath = null;
             final IPath fPath = new Path(fullPath);
             ERepositoryObjectType currentType = null;
+            int maxSegmentCount = -2;
             for (DynaEnum<? extends DynaEnum<?>> type : ERepositoryObjectType.values()) {
                 ERepositoryObjectType objectType = (ERepositoryObjectType) type;
                 if (objectType.isResouce()) {
                     IPath typePath = new Path(objectType.getFolder());
                     if (typePath.isPrefixOf(fPath)) {
-                        folderPath = fPath.makeRelativeTo(typePath).toString();
-                        currentType = objectType;
-                        break;
+                        int segmentCount = typePath.segmentCount();
+                        if (maxSegmentCount < segmentCount) {
+                            folderPath = fPath.makeRelativeTo(typePath).toString();
+                            currentType = objectType;
+                            maxSegmentCount = segmentCount;
+                        }
                     }
                 }
             }
@@ -645,7 +656,7 @@ public class ProjectRepositoryNode extends RepositoryNode implements IProjectRep
 
     /**
      * DOC nrousseau Comment method "addDeletedElements".
-     * 
+     *
      * @param project2
      * @param nodes
      */
@@ -654,7 +665,7 @@ public class ProjectRepositoryNode extends RepositoryNode implements IProjectRep
         List<IRepositoryViewObject> elements = new ArrayList<IRepositoryViewObject>();
         ITestContainerProviderService testContainerService = null;
         if (GlobalServiceRegister.getDefault().isServiceRegistered(ITestContainerProviderService.class)) {
-            testContainerService = (ITestContainerProviderService) GlobalServiceRegister.getDefault()
+            testContainerService = GlobalServiceRegister.getDefault()
                     .getService(ITestContainerProviderService.class);
         }
         for (IRepositoryViewObject currentObject : objects) {
@@ -687,7 +698,7 @@ public class ProjectRepositoryNode extends RepositoryNode implements IProjectRep
 
     /**
      * DOC nrousseau Comment method "addDeletedElements".
-     * 
+     *
      * @param project2
      * @param nodes
      */
@@ -695,7 +706,7 @@ public class ProjectRepositoryNode extends RepositoryNode implements IProjectRep
         List<IRepositoryNode> rootNodes = rootNode.getChildren();
         ITestContainerProviderService testContainerService = null;
         if (GlobalServiceRegister.getDefault().isServiceRegistered(ITestContainerProviderService.class)) {
-            testContainerService = (ITestContainerProviderService) GlobalServiceRegister.getDefault()
+            testContainerService = GlobalServiceRegister.getDefault()
                     .getService(ITestContainerProviderService.class);
         }
         for (IRepositoryViewObject currentObject : elements) {
@@ -726,7 +737,7 @@ public class ProjectRepositoryNode extends RepositoryNode implements IProjectRep
 
     /**
      * DOC hwang Comment method "getTestCaseParent".
-     * 
+     *
      * @param repositoryObjectType
      * @param path
      * @return
@@ -750,7 +761,7 @@ public class ProjectRepositoryNode extends RepositoryNode implements IProjectRep
 
     /**
      * DOC nrousseau Comment method "getFolder".
-     * 
+     *
      * @param repositoryObjectType
      * @param path
      * @return
@@ -804,7 +815,7 @@ public class ProjectRepositoryNode extends RepositoryNode implements IProjectRep
 
     /**
      * DOC nrousseau Comment method "buildFolders".
-     * 
+     *
      * @param currentType
      * @param path
      * @param nodes
@@ -912,7 +923,7 @@ public class ProjectRepositoryNode extends RepositoryNode implements IProjectRep
 
     /**
      * DOC nrousseau Comment method "addDeletedSubItems".
-     * 
+     *
      * @param item
      * @param currentParentNode
      */
@@ -962,7 +973,7 @@ public class ProjectRepositoryNode extends RepositoryNode implements IProjectRep
             Set<MetadataTable> tables = null;
             IGenericWizardService wizardService = null;
             if (GlobalServiceRegister.getDefault().isServiceRegistered(IGenericWizardService.class)) {
-                wizardService = (IGenericWizardService) GlobalServiceRegister.getDefault()
+                wizardService = GlobalServiceRegister.getDefault()
                         .getService(IGenericWizardService.class);
             }
             if (wizardService != null && wizardService.isGenericItem(item)) {
@@ -997,9 +1008,9 @@ public class ProjectRepositoryNode extends RepositoryNode implements IProjectRep
     }
 
     /**
-     * 
+     *
      * ggu Comment method "isGeneratedJobItem".
-     * 
+     *
      * feature 4393
      */
     private boolean isGeneratedJobItem(Item item) {
@@ -1062,7 +1073,7 @@ public class ProjectRepositoryNode extends RepositoryNode implements IProjectRep
             }
         }
     }
-    
+
     private void convert(org.talend.core.model.general.Project newProject, Container fromModel, RepositoryNode parent,
             ERepositoryObjectType type) {
         convert(newProject, fromModel, parent, type, false);
@@ -1128,7 +1139,7 @@ public class ProjectRepositoryNode extends RepositoryNode implements IProjectRep
                             break;
                         }
                     }
-                    IBrandingService breaningService = (IBrandingService) GlobalServiceRegister.getDefault()
+                    IBrandingService breaningService = GlobalServiceRegister.getDefault()
                             .getService(IBrandingService.class);
 
                     if (!existSystemFolder && !breaningService.isPoweredOnlyCamel()) {
@@ -1167,7 +1178,7 @@ public class ProjectRepositoryNode extends RepositoryNode implements IProjectRep
                             folder = new RepositoryNode(oFolder, parent, ENodeType.SIMPLE_FOLDER);
                             if (factory.getStatus(oFolder) != ERepositoryStatus.DELETED) {
                                 parent.getChildren().add(folder);
-                            } 
+                            }
                         }
                     }
                 } else {
@@ -1176,9 +1187,9 @@ public class ProjectRepositoryNode extends RepositoryNode implements IProjectRep
                         folder = new RepositoryNode(oFolder, parent, ENodeType.SIMPLE_FOLDER);
                         if (factory.getStatus(oFolder) != ERepositoryStatus.DELETED) {
                             parent.getChildren().add(folder);
-                        } 
+                        }
                     }
-                    
+
                 }
 
             }
@@ -1211,7 +1222,7 @@ public class ProjectRepositoryNode extends RepositoryNode implements IProjectRep
             }
         }
     }
-    
+
     private RepositoryNode avoidReCreateFolder(RepositoryNode parent, Folder oFolder, boolean extra){
         RepositoryNode folder = null;
         if(extra){
@@ -1325,7 +1336,7 @@ public class ProjectRepositoryNode extends RepositoryNode implements IProjectRep
             // node.setParent(recBinNode);
         } else {
             if (GlobalServiceRegister.getDefault().isServiceRegistered(IDesignerCoreService.class)) {
-                IDesignerCoreService designerCoreService = (IDesignerCoreService) GlobalServiceRegister.getDefault()
+                IDesignerCoreService designerCoreService = GlobalServiceRegister.getDefault()
                         .getService(IDesignerCoreService.class);
                 if (designerCoreService != null) {
                     for (IRepositoryNode repositoryNode : parent.getChildren()) {
@@ -1377,7 +1388,7 @@ public class ProjectRepositoryNode extends RepositoryNode implements IProjectRep
 
     /**
      * DOC tguiu Comment method "createTables".
-     * 
+     *
      * @param node
      * @param repositoryObjectType TODO
      * @param iMetadataConnection
@@ -1417,7 +1428,7 @@ public class ProjectRepositoryNode extends RepositoryNode implements IProjectRep
 
     /**
      * DOC cantoine Comment method "createTable".
-     * 
+     *
      * @param node
      * @param metadataTable
      * @param repositoryObjectType TODO
@@ -1635,7 +1646,7 @@ public class ProjectRepositoryNode extends RepositoryNode implements IProjectRep
                 DatabaseConnectionItem connectionItem = (DatabaseConnectionItem) item;
                 DatabaseConnection connection = (DatabaseConnection) connectionItem.getConnection();
                 if (PluginChecker.isCDCPluginLoaded()) {
-                    ICDCProviderService service = (ICDCProviderService) GlobalServiceRegister.getDefault()
+                    ICDCProviderService service = GlobalServiceRegister.getDefault()
                             .getService(ICDCProviderService.class);
                     if (service != null && service.canCreateCDCConnection(connection)) {
                         RepositoryNode cdcNode = new StableRepositoryNode(node,
@@ -1886,7 +1897,7 @@ public class ProjectRepositoryNode extends RepositoryNode implements IProjectRep
 
     /**
      * DOC YeXiaowei Comment method "createSAPFunctionNodes".
-     * 
+     *
      * @param metadataConnection
      * @param functionNode
      */
@@ -1926,7 +1937,7 @@ public class ProjectRepositoryNode extends RepositoryNode implements IProjectRep
 
     /**
      * DOC zli Comment method "createSAPIDocNodes".
-     * 
+     *
      * @param recBin
      * @param rebObj
      * @param metadataConnection
@@ -1961,7 +1972,7 @@ public class ProjectRepositoryNode extends RepositoryNode implements IProjectRep
 
     /**
      * DOC YeXiaowei Comment method "createSAPNode".
-     * 
+     *
      * @param rebObj
      * @param functionNode
      * @param unit
@@ -1987,7 +1998,7 @@ public class ProjectRepositoryNode extends RepositoryNode implements IProjectRep
 
     /**
      * DOC tguiu Comment method "createMetatable".
-     * 
+     *
      * @param node
      * @param table
      * @param repositoryObjectType TODO
@@ -2016,7 +2027,7 @@ public class ProjectRepositoryNode extends RepositoryNode implements IProjectRep
 
     /**
      * DOC cantoine Comment method "createQueryNode".
-     * 
+     *
      * @param node
      * @param repObj
      * @param query
@@ -2032,7 +2043,7 @@ public class ProjectRepositoryNode extends RepositoryNode implements IProjectRep
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see org.talend.repository.model.IProjectRepositoryNode#getProject()
      */
     @Override
@@ -2101,7 +2112,7 @@ public class ProjectRepositoryNode extends RepositoryNode implements IProjectRep
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see org.talend.repository.model.nodes.IProjectRepositoryNode#getRecBinNode()
      */
     @Override
@@ -2124,8 +2135,7 @@ public class ProjectRepositoryNode extends RepositoryNode implements IProjectRep
             String branch = ProjectManager.getInstance().getMainProjectBranch(project);
             if ("".equals(branch) || branch == null) { //$NON-NLS-1$
                 branch = null;
-            }
-            if (!branch.contains(SVNConstant.NAME_TRUNK) && !branch.contains(SVNConstant.NAME_BRANCHES)
+            } else if (!branch.contains(SVNConstant.NAME_TRUNK) && !branch.contains(SVNConstant.NAME_BRANCHES)
                     && !branch.contains(SVNConstant.NAME_TAGS)) {
                 branch = null;
             }
@@ -2295,9 +2305,9 @@ public class ProjectRepositoryNode extends RepositoryNode implements IProjectRep
     public IRepositoryNode removeCache(String key) {
         return nodeCache.removeCache(key);
     }
-    
+
     public void setOptions(int options) {
         this.options = options;
     }
-    
+
 }

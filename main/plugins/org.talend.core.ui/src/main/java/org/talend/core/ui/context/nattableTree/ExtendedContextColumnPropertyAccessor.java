@@ -1,6 +1,6 @@
 // ============================================================================
 //
-// Copyright (C) 2006-2018 Talend Inc. - www.talend.com
+// Copyright (C) 2006-2019 Talend Inc. - www.talend.com
 //
 // This source code is available under agreement available at
 // %InstallDIR%\features\org.talend.rcp.branding.%PRODUCTNAME%\%PRODUCTNAME%license.txt
@@ -356,7 +356,7 @@ public class ExtendedContextColumnPropertyAccessor<R> implements IColumnProperty
 
         /*
          * (non-Javadoc)
-         * 
+         *
          * @see org.eclipse.gef.commands.Command#execute()
          */
         @Override
@@ -393,7 +393,7 @@ public class ExtendedContextColumnPropertyAccessor<R> implements IColumnProperty
 
         /*
          * (non-Javadoc)
-         * 
+         *
          * @see org.eclipse.gef.commands.Command#undo()
          */
         @Override
@@ -450,7 +450,7 @@ public class ExtendedContextColumnPropertyAccessor<R> implements IColumnProperty
 
         /*
          * (non-Javadoc)
-         * 
+         *
          * @see org.eclipse.gef.commands.Command#execute()
          */
         @Override
@@ -473,7 +473,7 @@ public class ExtendedContextColumnPropertyAccessor<R> implements IColumnProperty
 
         /*
          * (non-Javadoc)
-         * 
+         *
          * @see org.eclipse.gef.commands.Command#undo()
          */
         @Override
@@ -511,7 +511,7 @@ public class ExtendedContextColumnPropertyAccessor<R> implements IColumnProperty
         }
 
     }
-    
+
     class setContextCommentCommand extends Command {
 
 
@@ -553,7 +553,7 @@ public class ExtendedContextColumnPropertyAccessor<R> implements IColumnProperty
 
         /*
          * (non-Javadoc)
-         * 
+         *
          * @see org.eclipse.gef.commands.Command#undo()
          */
         @Override
@@ -591,7 +591,7 @@ public class ExtendedContextColumnPropertyAccessor<R> implements IColumnProperty
             }
         }
     }
-    
+
 
     class SetContextNameCommand extends Command {
 
@@ -613,7 +613,7 @@ public class ExtendedContextColumnPropertyAccessor<R> implements IColumnProperty
 
         /*
          * (non-Javadoc)
-         * 
+         *
          * @see org.eclipse.gef.commands.Command#execute()
          */
         @Override
@@ -646,7 +646,7 @@ public class ExtendedContextColumnPropertyAccessor<R> implements IColumnProperty
 
         /*
          * (non-Javadoc)
-         * 
+         *
          * @see org.eclipse.gef.commands.Command#undo()
          */
         @Override

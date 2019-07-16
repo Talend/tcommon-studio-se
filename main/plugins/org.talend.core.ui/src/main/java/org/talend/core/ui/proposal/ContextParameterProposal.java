@@ -1,6 +1,6 @@
 // ============================================================================
 //
-// Copyright (C) 2006-2018 Talend Inc. - www.talend.com
+// Copyright (C) 2006-2019 Talend Inc. - www.talend.com
 //
 // This source code is available under agreement available at
 // %InstallDIR%\features\org.talend.rcp.branding.%PRODUCTNAME%\%PRODUCTNAME%license.txt
@@ -24,9 +24,9 @@ import org.talend.repository.ProjectManager;
 
 /**
  * Content proposal based on a IContextParameter. <br/>
- * 
+ *
  * $Id$
- * 
+ *
  */
 public class ContextParameterProposal implements IContentProposal {
 
@@ -43,7 +43,7 @@ public class ContextParameterProposal implements IContentProposal {
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see org.eclipse.jface.fieldassist.IContentProposal#getContent()
      */
     @Override
@@ -55,7 +55,7 @@ public class ContextParameterProposal implements IContentProposal {
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see org.eclipse.jface.fieldassist.IContentProposal#getCursorPosition()
      */
     @Override
@@ -65,7 +65,7 @@ public class ContextParameterProposal implements IContentProposal {
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see org.eclipse.jface.fieldassist.IContentProposal#getDescription()
      */
     @Override
@@ -97,7 +97,7 @@ public class ContextParameterProposal implements IContentProposal {
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see org.eclipse.jface.fieldassist.IContentProposal#getLabel()
      */
     @Override

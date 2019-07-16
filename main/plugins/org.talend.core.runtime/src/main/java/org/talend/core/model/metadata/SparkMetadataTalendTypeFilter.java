@@ -1,6 +1,6 @@
 // ============================================================================
 //
-// Copyright (C) 2006-2018 Talend Inc. - www.talend.com
+// Copyright (C) 2006-2019 Talend Inc. - www.talend.com
 //
 // This source code is available under agreement available at
 // %InstallDIR%\features\org.talend.rcp.branding.%PRODUCTNAME%\%PRODUCTNAME%license.txt
@@ -31,26 +31,26 @@ public class SparkMetadataTalendTypeFilter extends MetadataTalendTypeFilter {
     private final static String LOOKUPINPUTCASSANDRA_COMPONENT_NAME = "tCassandraLookupInput"; //$NON-NLS-1$
 
     private final static String OUTPUTCASSANDRA_COMPONENT_NAME = "tCassandraOutput"; //$NON-NLS-1$
-    
+
     private final static String INPUTKUDU_COMPONENT_NAME = "tKuduInput"; //$NON-NLS-1$
-    
+
     private final static String OUTPUTKUDU_COMPONENT_NAME = "tKuduOutput"; //$NON-NLS-1$
 
     protected final static Map<String, List<String>> COMPONENT_UNSUPPORTED_TYPES = new HashMap<>();
 
     protected final String mComponentName;
- 
+
     static {
         COMPONENT_UNSUPPORTED_TYPES.put(ROWGENERATOR_COMPONENT_NAME, Arrays.asList(new String[] { "Object" })); //$NON-NLS-1$
         COMPONENT_UNSUPPORTED_TYPES.put(INPUTPARQUET_COMPONENT_NAME, Arrays.asList(new String[] { "Object", "List", "Vector" })); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
         COMPONENT_UNSUPPORTED_TYPES.put(OUTPUTPARQUET_COMPONENT_NAME, Arrays.asList(new String[] { "Object", "List", "Vector" })); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
         COMPONENT_UNSUPPORTED_TYPES.put(INPUTSTREAMPARQUET_COMPONENT_NAME,
                 Arrays.asList(new String[] { "Object", "List", "Vector" })); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
-        COMPONENT_UNSUPPORTED_TYPES.put(INPUTCASSANDRA_COMPONENT_NAME, Arrays.asList(new String[] { "Object", "List", "Vector" })); //$NON-NLS-1$ //$NON-NLS-2$ 
-        COMPONENT_UNSUPPORTED_TYPES.put(LOOKUPINPUTCASSANDRA_COMPONENT_NAME, Arrays.asList(new String[] { "Object", "List", "Vector" })); //$NON-NLS-1$ //$NON-NLS-2$ 
-        COMPONENT_UNSUPPORTED_TYPES.put(OUTPUTCASSANDRA_COMPONENT_NAME, Arrays.asList(new String[] { "Object", "List", "Vector" })); //$NON-NLS-1$ //$NON-NLS-2$ 
-        COMPONENT_UNSUPPORTED_TYPES.put(INPUTKUDU_COMPONENT_NAME, Arrays.asList(new String[] { "Object", "List", "Vector", "byte[]", "BigDecimal" })); //$NON-NLS-1$ //$NON-NLS-2$ 
-        COMPONENT_UNSUPPORTED_TYPES.put(OUTPUTKUDU_COMPONENT_NAME, Arrays.asList(new String[] { "Object", "List", "Vector", "byte[]", "BigDecimal" })); //$NON-NLS-1$ //$NON-NLS-2$ 
+        COMPONENT_UNSUPPORTED_TYPES.put(INPUTCASSANDRA_COMPONENT_NAME, Arrays.asList(new String[] { "Object", "List", "Vector" })); //$NON-NLS-1$ //$NON-NLS-2$
+        COMPONENT_UNSUPPORTED_TYPES.put(LOOKUPINPUTCASSANDRA_COMPONENT_NAME, Arrays.asList(new String[] { "Object", "List", "Vector" })); //$NON-NLS-1$ //$NON-NLS-2$
+        COMPONENT_UNSUPPORTED_TYPES.put(OUTPUTCASSANDRA_COMPONENT_NAME, Arrays.asList(new String[] { "Object", "List", "Vector" })); //$NON-NLS-1$ //$NON-NLS-2$
+        COMPONENT_UNSUPPORTED_TYPES.put(INPUTKUDU_COMPONENT_NAME, Arrays.asList(new String[] { "Object", "List", "Vector", "byte[]", "BigDecimal" })); //$NON-NLS-1$ //$NON-NLS-2$
+        COMPONENT_UNSUPPORTED_TYPES.put(OUTPUTKUDU_COMPONENT_NAME, Arrays.asList(new String[] { "Object", "List", "Vector", "byte[]", "BigDecimal" })); //$NON-NLS-1$ //$NON-NLS-2$
     }
 
     public SparkMetadataTalendTypeFilter(String componentName) {

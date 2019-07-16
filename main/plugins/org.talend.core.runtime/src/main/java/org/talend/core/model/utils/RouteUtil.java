@@ -1,6 +1,6 @@
 // ============================================================================
 //
-// Copyright (C) 2006-2018 Talend Inc. - www.talend.com
+// Copyright (C) 2006-2019 Talend Inc. - www.talend.com
 //
 // This source code is available under agreement available at
 // %InstallDIR%\features\org.talend.rcp.branding.%PRODUCTNAME%\%PRODUCTNAME%license.txt
@@ -42,7 +42,7 @@ public final class RouteUtil {
         Property itemProperty = processItem.getProperty();
         String jobName = escapeFileName(itemProperty.getLabel()).toLowerCase();
         String version = itemProperty.getVersion();
-        return version == null ? jobName : jobName + '_' + version.replace('.', '_'); 
+        return version == null ? jobName : jobName + '_' + version.replace('.', '_');
     }
 
     private static String getProjectFolderName(Item processItem) {

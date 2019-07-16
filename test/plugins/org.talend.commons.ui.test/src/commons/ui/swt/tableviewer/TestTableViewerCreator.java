@@ -1,6 +1,6 @@
 // ============================================================================
 //
-// Copyright (C) 2006-2018 Talend Inc. - www.talend.com
+// Copyright (C) 2006-2019 Talend Inc. - www.talend.com
 //
 // This source code is available under agreement available at
 // %InstallDIR%\features\org.talend.rcp.branding.%PRODUCTNAME%\%PRODUCTNAME%license.txt
@@ -44,11 +44,11 @@ import org.talend.commons.utils.data.bean.IBeanPropertyAccessors;
 import commons.utils.DataObject;
 
 /**
- * 
+ *
  * Test class of <code>TableViewerCreator</code>. <br/>
- * 
+ *
  * $Id: TestTableViewerCreator.java 7038 2007-11-15 14:05:48Z plegall $
- * 
+ *
  */
 public final class TestTableViewerCreator {
 
@@ -88,12 +88,12 @@ public final class TestTableViewerCreator {
         //
         // public void addListener(ILabelProviderListener listener) {
         // // TODO Auto-generated method stub
-        //                
+        //
         // }
         //
         // public void dispose() {
         // // TODO Auto-generated method stub
-        //                
+        //
         // }
         //
         // public boolean isLabelProperty(Object element, String property) {
@@ -103,9 +103,9 @@ public final class TestTableViewerCreator {
         //
         // public void removeListener(ILabelProviderListener listener) {
         // // TODO Auto-generated method stub
-        //                
+        //
         // }
-        //            
+        //
         // });
 
         // tableEditor.setCheckboxInFirstColumn(true);
@@ -349,7 +349,7 @@ public final class TestTableViewerCreator {
         // if ((event.detail & SWT.SELECTED) != 0) {
         //
         // GC gc = event.gc;
-        //                    
+        //
         //
         // Rectangle rect = event.getBounds();
         //

@@ -1,6 +1,6 @@
 // ============================================================================
 //
-// Copyright (C) 2006-2018 Talend Inc. - www.talend.com
+// Copyright (C) 2006-2019 Talend Inc. - www.talend.com
 //
 // This source code is available under agreement available at
 // %InstallDIR%\features\org.talend.rcp.branding.%PRODUCTNAME%\%PRODUCTNAME%license.txt
@@ -63,7 +63,7 @@ import org.talend.repository.metadata.ui.wizards.form.AbstractRegexpFileStepForm
 
 /**
  * @author ocarbone
- * 
+ *
  */
 public class RegexpFileStep2Form extends AbstractRegexpFileStepForm implements IRefreshable {
 
@@ -135,7 +135,7 @@ public class RegexpFileStep2Form extends AbstractRegexpFileStepForm implements I
 
     /**
      * Constructor to use by RCP Wizard.
-     * 
+     *
      * @param Composite
      * @param Wizard
      * @param Style
@@ -147,7 +147,7 @@ public class RegexpFileStep2Form extends AbstractRegexpFileStepForm implements I
     }
 
     /**
-     * 
+     *
      * Initialize value, forceFocus first field.
      */
     @Override
@@ -216,7 +216,7 @@ public class RegexpFileStep2Form extends AbstractRegexpFileStepForm implements I
 
     /**
      * add Field to Group Regex File Settings.
-     * 
+     *
      * @param mainComposite
      * @param form
      * @param width
@@ -297,7 +297,7 @@ public class RegexpFileStep2Form extends AbstractRegexpFileStepForm implements I
 
     /**
      * add Field to Group Regex.
-     * 
+     *
      * @param mainComposite
      * @param form
      * @param width
@@ -341,7 +341,7 @@ public class RegexpFileStep2Form extends AbstractRegexpFileStepForm implements I
 
     /**
      * add field to Group Limit.
-     * 
+     *
      * @param mainComposite
      * @param form
      * @param width
@@ -378,7 +378,7 @@ public class RegexpFileStep2Form extends AbstractRegexpFileStepForm implements I
 
     /**
      * add Field to Group File Viewer.
-     * 
+     *
      * @param parent
      * @param form
      * @param width
@@ -460,11 +460,11 @@ public class RegexpFileStep2Form extends AbstractRegexpFileStepForm implements I
 
     /**
      * create ProcessDescription and set it.
-     * 
+     *
      * WARNING ::field FieldSeparator, RowSeparator, EscapeChar and TextEnclosure are surround by double quote.
-     * 
+     *
      * @param getConnection()
-     * 
+     *
      * @return processDescription
      */
     private ProcessDescription getProcessDescription(RegexpFileConnection originalValueConnection) {
@@ -508,9 +508,9 @@ public class RegexpFileStep2Form extends AbstractRegexpFileStepForm implements I
 
     /**
      * Subclass of SWTUIThreadProcessor to process the preview event. <br/>
-     * 
+     *
      * $Id: RegexpFileStep2Form.java 38013 2010-03-05 14:21:59Z mhirt $
-     * 
+     *
      */
     class PreviewProcessor extends SWTUIThreadProcessor {
 
@@ -715,7 +715,7 @@ public class RegexpFileStep2Form extends AbstractRegexpFileStepForm implements I
 
     /**
      * DOC ocarbone Comment method "setCharFlag".
-     * 
+     *
      * @param escapeCharFlag2
      * @param text
      */
@@ -1008,7 +1008,7 @@ public class RegexpFileStep2Form extends AbstractRegexpFileStepForm implements I
 
     /**
      * Ensures that fields are set. Update checkEnable / use to checkConnection().
-     * 
+     *
      * @return
      */
     @Override
@@ -1066,7 +1066,7 @@ public class RegexpFileStep2Form extends AbstractRegexpFileStepForm implements I
 
     /**
      * addButtonControls.
-     * 
+     *
      * @param cancelButton
      */
     @Override
@@ -1095,7 +1095,7 @@ public class RegexpFileStep2Form extends AbstractRegexpFileStepForm implements I
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see org.eclipse.swt.widgets.Control#setVisible(boolean)
      */
     @Override
@@ -1134,7 +1134,7 @@ public class RegexpFileStep2Form extends AbstractRegexpFileStepForm implements I
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see org.talend.repository.ui.swt.utils.IRefreshable#refresh()
      */
     @Override

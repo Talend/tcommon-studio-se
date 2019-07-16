@@ -1,6 +1,6 @@
 // ============================================================================
 //
-// Copyright (C) 2006-2018 Talend Inc. - www.talend.com
+// Copyright (C) 2006-2019 Talend Inc. - www.talend.com
 //
 // This source code is available under agreement available at
 // %InstallDIR%\features\org.talend.rcp.branding.%PRODUCTNAME%\%PRODUCTNAME%license.txt
@@ -39,7 +39,7 @@ public class PluginRequiredMissingJarsExtraUpdatesFactory extends AbstractExtraU
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see
      * org.talend.updates.runtime.engine.AbstractExtraUpdatesFactory#retrieveUninstalledExtraFeatures(org.eclipse.core
      * .runtime.IProgressMonitor, java.util.Set)
@@ -59,7 +59,7 @@ public class PluginRequiredMissingJarsExtraUpdatesFactory extends AbstractExtraU
          // fetch missing jar information from remote web site.
         ArrayList<ModuleToInstall> modulesRequiredToBeInstalled = new ArrayList<ModuleToInstall>();
         IRunnableWithProgress notInstalledModulesRunnable = RemoteModulesHelper.getInstance().getNotInstalledModulesRunnable(
-                allUninstalledModules, modulesRequiredToBeInstalled, true, !isCheckUpdateOnLine);// IRunnableWithProgress should not be part
+                allUninstalledModules, modulesRequiredToBeInstalled, true, !isCheckUpdateOnLine, false);// IRunnableWithProgress should not be part
                                                                            // of
         // jface because it adds graphical
         // dependencies.

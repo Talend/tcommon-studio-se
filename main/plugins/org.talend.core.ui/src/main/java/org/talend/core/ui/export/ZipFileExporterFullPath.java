@@ -1,6 +1,6 @@
 // ============================================================================
 //
-// Copyright (C) 2006-2018 Talend Inc. - www.talend.com
+// Copyright (C) 2006-2019 Talend Inc. - www.talend.com
 //
 // This source code is available under agreement available at
 // %InstallDIR%\features\org.talend.rcp.branding.%PRODUCTNAME%\%PRODUCTNAME%license.txt
@@ -33,7 +33,7 @@ public class ZipFileExporterFullPath implements IFileExporterFullPath {
 
     /**
      * Create an instance of this class.
-     * 
+     *
      * @param filename java.lang.String
      * @param compress boolean
      * @exception java.io.IOException
@@ -45,7 +45,7 @@ public class ZipFileExporterFullPath implements IFileExporterFullPath {
 
     /**
      * Do all required cleanup now that we're finished with the currently-open .zip
-     * 
+     *
      * @exception java.io.IOException
      */
     @Override
@@ -55,7 +55,7 @@ public class ZipFileExporterFullPath implements IFileExporterFullPath {
 
     /**
      * Write the contents of the file to the tar archive.
-     * 
+     *
      * @param entry
      * @param contents
      * @exception java.io.IOException
@@ -104,7 +104,7 @@ public class ZipFileExporterFullPath implements IFileExporterFullPath {
 
     /**
      * Write the passed resource to the current archive.
-     * 
+     *
      * @param resource org.eclipse.core.resources.IFile
      * @param destinationPath java.lang.String
      * @exception java.io.IOException
@@ -118,7 +118,7 @@ public class ZipFileExporterFullPath implements IFileExporterFullPath {
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see org.talend.core.ui.export.IFileExporterFullPath#writeFolder(java.lang.String)
      */
     @Override

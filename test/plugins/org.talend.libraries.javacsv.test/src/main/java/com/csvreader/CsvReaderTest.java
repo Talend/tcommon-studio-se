@@ -1,6 +1,6 @@
 // ============================================================================
 //
-// Copyright (C) 2006-2018 Talend Inc. - www.talend.com
+// Copyright (C) 2006-2019 Talend Inc. - www.talend.com
 //
 // This source code is available under agreement available at
 // %InstallDIR%\features\org.talend.rcp.branding.%PRODUCTNAME%\%PRODUCTNAME%license.txt
@@ -24,7 +24,7 @@ import org.junit.Test;
 
 /**
  * Unit tests for {@link com.csvreader.CsvReader}
- * 
+ *
  */
 public class CsvReaderTest {
 
@@ -50,7 +50,7 @@ public class CsvReaderTest {
 
     /**
      * Test method for {@link com.csvreader.CsvReader#getHeaders()}.
-     * 
+     *
      * @throws IOException
      */
     @Test
@@ -65,7 +65,7 @@ public class CsvReaderTest {
 
     /**
      * Test method for {@link com.csvreader.CsvReader#getValues()}.
-     * 
+     *
      * @throws IOException
      */
     @Test

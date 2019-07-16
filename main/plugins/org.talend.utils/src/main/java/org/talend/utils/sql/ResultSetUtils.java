@@ -1,6 +1,6 @@
 // ============================================================================
 //
-// Copyright (C) 2006-2018 Talend Inc. - www.talend.com
+// Copyright (C) 2006-2019 Talend Inc. - www.talend.com
 //
 // This source code is available under agreement available at
 // %InstallDIR%\features\org.talend.rcp.branding.%PRODUCTNAME%\%PRODUCTNAME%license.txt
@@ -24,7 +24,7 @@ import org.talend.utils.format.StringFormatUtil;
 
 /**
  * @author scorreia
- * 
+ *
  * Utility class for working with ResultSet.
  */
 public final class ResultSetUtils {
@@ -37,9 +37,9 @@ public final class ResultSetUtils {
     /**
      * Method "resultSetPrinter" prints the header, the column types and then the rows. Each row is formatted with a
      * fixed column width.
-     * 
+     *
      * Attention: set.next() is called up to the end of the result set.
-     * 
+     *
      * @param set a resultSet to print
      * @param width the width of the column for display
      * @throws SQLException
@@ -78,7 +78,7 @@ public final class ResultSetUtils {
 
     /**
      * Method "formatRow".
-     * 
+     *
      * @param set a result set
      * @param nbColumns the number of columns of the result set
      * @param width the fixed width of each column
@@ -95,9 +95,9 @@ public final class ResultSetUtils {
     }
 
     /**
-     * 
+     *
      * Get Object by special column index
-     * 
+     *
      * @param set
      * @param columnIndex
      * @return
@@ -133,9 +133,9 @@ public final class ResultSetUtils {
     }
 
     /**
-     * 
+     *
      * Get Object by special column index
-     * 
+     *
      * @param set
      * @param columnIndex
      * @return
@@ -171,9 +171,9 @@ public final class ResultSetUtils {
     }
 
     /**
-     * 
+     *
      * Get Object by special column index
-     * 
+     *
      * @param set
      * @param columnIndex
      * @return
@@ -195,9 +195,9 @@ public final class ResultSetUtils {
     }
 
     /**
-     * 
+     *
      * Get Object by special column name
-     * 
+     *
      * @param set
      * @param columnName
      * @return

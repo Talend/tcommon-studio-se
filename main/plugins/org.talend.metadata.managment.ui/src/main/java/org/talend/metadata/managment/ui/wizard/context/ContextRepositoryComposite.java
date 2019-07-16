@@ -1,6 +1,6 @@
 // ============================================================================
 //
-// Copyright (C) 2006-2018 Talend Inc. - www.talend.com
+// Copyright (C) 2006-2019 Talend Inc. - www.talend.com
 //
 // This source code is available under agreement available at
 // %InstallDIR%\features\org.talend.rcp.branding.%PRODUCTNAME%\%PRODUCTNAME%license.txt
@@ -27,9 +27,9 @@ import org.talend.core.ui.context.ContextComposite;
 
 /**
  * DOC nrousseau class global comment. Detailled comment <br/>
- * 
+ *
  * $Id: talend-code-templates.xml 1 2006-09-29 17:06:40 +0000 (ven., 29 sept. 2006) nrousseau $
- * 
+ *
  */
 public class ContextRepositoryComposite extends ContextComposite {
 
@@ -39,7 +39,7 @@ public class ContextRepositoryComposite extends ContextComposite {
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see
      * org.talend.core.ui.context.JobContextComposite#onContextAddParameter(org.talend.core.model.process.IContextManager
      * , org.talend.core.model.process.IContextParameter)
@@ -64,7 +64,7 @@ public class ContextRepositoryComposite extends ContextComposite {
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see
      * org.talend.core.ui.context.JobContextComposite#onContextRenameParameter(org.talend.core.model.process.IContextManager
      * , java.lang.String, java.lang.String)
@@ -123,7 +123,7 @@ public class ContextRepositoryComposite extends ContextComposite {
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see
      * org.talend.core.ui.context.JobContextComposite#onContextRemoveParameter(org.talend.core.model.process.IContextManager
      * , java.lang.String)
@@ -137,7 +137,7 @@ public class ContextRepositoryComposite extends ContextComposite {
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see
      * org.talend.core.ui.context.JobContextComposite#onContextChangeDefault(org.talend.core.model.process.IContextManager
      * , org.talend.core.model.process.IContext)
@@ -152,7 +152,7 @@ public class ContextRepositoryComposite extends ContextComposite {
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see org.talend.core.ui.context.ContextComposite#onContextModify(org.talend.core.model.process.IContextManager,
      * org.talend.core.model.process.IContextParameter)
      */
@@ -175,7 +175,7 @@ public class ContextRepositoryComposite extends ContextComposite {
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see org.talend.core.ui.context.JobContextComposite#onContextAdd(org.talend.core.ui.context.JobContextComposite,
      * org.talend.core.model.process.IContext, org.eclipse.swt.custom.CCombo)
      */
@@ -242,7 +242,7 @@ public class ContextRepositoryComposite extends ContextComposite {
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @seeorg.talend.core.ui.context.IContextModelManager#onContextRemoveParameter(org.talend.core.model.process.
      * IContextManager, java.util.List)
      */
@@ -279,7 +279,7 @@ public class ContextRepositoryComposite extends ContextComposite {
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see org.talend.core.ui.context.IContextModelManager#onContextRemoveParameter(org.talend.core.model.process.
      * IContextManager, java.lang.String, java.lang.String)
      */
@@ -292,7 +292,7 @@ public class ContextRepositoryComposite extends ContextComposite {
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see org.talend.core.ui.context.IContextModelManager#onContextRemoveParameter(org.talend.core.model.process.
      * IContextManager, java.util.Set, java.lang.String)
      */
@@ -314,7 +314,7 @@ public class ContextRepositoryComposite extends ContextComposite {
      * This method is used to remove the <code>JobContextParameter</code> in <code>JobContext</code>, using the
      * combination of <code>sourceId</code> and <code>name</code> can identify the unique
      * <code>JobContextParameter</code>.
-     * 
+     *
      * @param sourceId
      * @param name
      */
@@ -343,7 +343,7 @@ public class ContextRepositoryComposite extends ContextComposite {
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see org.talend.core.ui.context.IContextModelManager#onContextRenameParameter(org.talend.core.model.process.
      * IContextManager, java.lang.String, java.lang.String, java.lang.String)
      */

@@ -1,6 +1,6 @@
 // ============================================================================
 //
-// Copyright (C) 2006-2018 Talend Inc. - www.talend.com
+// Copyright (C) 2006-2019 Talend Inc. - www.talend.com
 //
 // This source code is available under agreement available at
 // %InstallDIR%\features\org.talend.rcp.branding.%PRODUCTNAME%\%PRODUCTNAME%license.txt
@@ -48,7 +48,7 @@ public interface IStormProcessService extends IService {
     /**
      * This method is responsible for creating additional information which are going to be registered in the Process
      * (and then in the Item). DOC rdubois Comment method "generateSparkStreamingInfosParameter".
-     * 
+     *
      * @param process the current process.
      */
     public void generateSparkStreamingInfosParameter(IProcess2 process);

@@ -1,6 +1,6 @@
 // ============================================================================
 //
-// Copyright (C) 2006-2018 Talend Inc. - www.talend.com
+// Copyright (C) 2006-2019 Talend Inc. - www.talend.com
 //
 // This source code is available under agreement available at
 // %InstallDIR%\features\org.talend.rcp.branding.%PRODUCTNAME%\%PRODUCTNAME%license.txt
@@ -39,7 +39,7 @@ public class OpenXSDFileDialog extends TitleAreaDialog {
 
     /**
      * Dialog to open XML files when dragging and dropping a xsd metadata xml item, added by nma, 17/07/2009.
-     * 
+     *
      * @param parentShell
      */
     public OpenXSDFileDialog(Shell parentShell) {
@@ -143,7 +143,7 @@ public class OpenXSDFileDialog extends TitleAreaDialog {
 
     /**
      * DOC Administrator Comment method "setPath".
-     * 
+     *
      * @param p
      */
     private Path p;

@@ -1,6 +1,6 @@
 // ============================================================================
 //
-// Copyright (C) 2006-2018 Talend Inc. - www.talend.com
+// Copyright (C) 2006-2019 Talend Inc. - www.talend.com
 //
 // This source code is available under agreement available at
 // %InstallDIR%\features\org.talend.rcp.branding.%PRODUCTNAME%\%PRODUCTNAME%license.txt
@@ -114,7 +114,7 @@ public class ExcelFileStep1Form extends AbstractExcelFileStepForm {
 
     /**
      * DOC yexiaowei ExcelFileStep1Form constructor comment.
-     * 
+     *
      * @param parent
      * @param connectionItem
      * @param existingNames
@@ -136,7 +136,7 @@ public class ExcelFileStep1Form extends AbstractExcelFileStepForm {
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see org.talend.repository.ui.swt.utils.AbstractForm#adaptFormToReadOnly()
      */
     @Override
@@ -148,7 +148,7 @@ public class ExcelFileStep1Form extends AbstractExcelFileStepForm {
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see org.talend.repository.ui.swt.utils.AbstractForm#addFields()
      */
     @Override
@@ -200,7 +200,7 @@ public class ExcelFileStep1Form extends AbstractExcelFileStepForm {
 
     /**
      * DOC YeXiaowei Comment method "createSheetsSelectViewer".
-     * 
+     *
      * @param group
      */
     private void createSheetsSelectViewer(Group group) {
@@ -371,7 +371,7 @@ public class ExcelFileStep1Form extends AbstractExcelFileStepForm {
 
     /**
      * DOC yexiaowei Comment method "createTableViewer".
-     * 
+     *
      * @param compositeExcelViewer
      */
     private void createTableViewer(Composite compositeExcelViewer) {
@@ -455,7 +455,7 @@ public class ExcelFileStep1Form extends AbstractExcelFileStepForm {
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see org.talend.repository.ui.swt.utils.AbstractForm#addFieldsListeners()
      */
     @Override
@@ -740,7 +740,7 @@ public class ExcelFileStep1Form extends AbstractExcelFileStepForm {
 
     /**
      * DOC yexiaowei Comment method "initSheetsCombo".
-     * 
+     *
      * @param sheets
      */
     private void initSheetsCombo(String[] sheets) {
@@ -771,7 +771,7 @@ public class ExcelFileStep1Form extends AbstractExcelFileStepForm {
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see org.talend.repository.ui.swt.utils.AbstractForm#addUtilsButtonListeners()
      */
     @Override
@@ -789,7 +789,7 @@ public class ExcelFileStep1Form extends AbstractExcelFileStepForm {
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see org.talend.repository.ui.swt.utils.AbstractForm#checkFieldsValue()
      */
     @Override
@@ -906,9 +906,9 @@ public class ExcelFileStep1Form extends AbstractExcelFileStepForm {
     private Group viewerGroup;
 
     /**
-     * 
+     *
      * DOC YeXiaowei ExcelFileStep1Form class global comment. Detailled comment <br/>
-     * 
+     *
      */
     public static class SheetNode {
 
@@ -925,7 +925,7 @@ public class ExcelFileStep1Form extends AbstractExcelFileStepForm {
 
         /**
          * Getter for label.
-         * 
+         *
          * @return the label
          */
         public String getLabel() {
@@ -934,7 +934,7 @@ public class ExcelFileStep1Form extends AbstractExcelFileStepForm {
 
         /**
          * Getter for parent.
-         * 
+         *
          * @return the parent
          */
         public SheetNode getParent() {
@@ -943,7 +943,7 @@ public class ExcelFileStep1Form extends AbstractExcelFileStepForm {
 
         /**
          * Getter for children.
-         * 
+         *
          * @return the children
          */
         public List<SheetNode> getChildren() {
@@ -952,7 +952,7 @@ public class ExcelFileStep1Form extends AbstractExcelFileStepForm {
 
         /**
          * Sets the children.
-         * 
+         *
          * @param children the children to set
          */
         public void setChildren(List<SheetNode> children) {
@@ -963,7 +963,7 @@ public class ExcelFileStep1Form extends AbstractExcelFileStepForm {
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see org.talend.repository.ui.swt.utils.AbstractForm#initialize()
      */
     @Override

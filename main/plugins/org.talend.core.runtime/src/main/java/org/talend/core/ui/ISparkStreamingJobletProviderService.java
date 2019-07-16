@@ -1,6 +1,6 @@
 // ============================================================================
 //
-// Copyright (C) 2006-2018 Talend Inc. - www.talend.com
+// Copyright (C) 2006-2019 Talend Inc. - www.talend.com
 //
 // This source code is available under agreement available at
 // %InstallDIR%\features\org.talend.rcp.branding.%PRODUCTNAME%\%PRODUCTNAME%license.txt
@@ -27,25 +27,25 @@ import org.talend.core.model.repository.IRepositoryEditorInput;
  * DOC hwang  class global comment. Detailled comment
  */
 public interface ISparkStreamingJobletProviderService extends IService{
-	
+
 	public boolean isSparkStreamingJobletEditor(IEditorPart activeEditor);
-    
+
     public boolean isSparkStreamingJobletItem(Item item);
 
     public boolean isSparkStreamingJobletComponent(INode node);
-    
+
     public IComponent instanceSparkStreamingJobletComponent(Object execObj);
-    
+
     public void clearSparkStreamingJobletComponent();
-    
+
     public IComponent createSparkStreamingJobletComponent();
-    
+
     public IComponent createSparkJobletInputOutputComponent(Object jobletNodeType);
-    
+
     public Element createSparkStreamingJobletContainer(INode node);
-    
+
     public IAdaptable createEditorPart(Object model);
-    
+
     public IRepositoryEditorInput createJobletEditor(JobletProcessItem processItem, Boolean load, Boolean lastVersion, Boolean readonly,Boolean openedInJob) throws PersistenceException;
-    
+
 }

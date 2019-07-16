@@ -1,6 +1,6 @@
 // ============================================================================
 //
-// Copyright (C) 2006-2018 Talend Inc. - www.talend.com
+// Copyright (C) 2006-2019 Talend Inc. - www.talend.com
 //
 // This source code is available under agreement available at
 // %InstallDIR%\features\org.talend.rcp.branding.%PRODUCTNAME%\%PRODUCTNAME%license.txt
@@ -26,7 +26,7 @@ public class ModuleNameExtractor {
      * Extracts all file names from the given collection. This method is suitable the case that collection includes not
      * only file names but also paths. And you just need a set only including file names. So this method cuts the
      * directory of a file only the file name remaining. Added by Marvin Wang on Nov 8, 2012.
-     * 
+     *
      * @param collection must not be <code>null<code>, otherwise, it will throw NPE.
      * @return a set that only includes file name.
      */

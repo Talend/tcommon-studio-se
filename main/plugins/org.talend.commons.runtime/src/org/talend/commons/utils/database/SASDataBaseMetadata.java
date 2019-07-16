@@ -1,6 +1,6 @@
 // ============================================================================
 //
-// Copyright (C) 2006-2018 Talend Inc. - www.talend.com
+// Copyright (C) 2006-2019 Talend Inc. - www.talend.com
 //
 // This source code is available under agreement available at
 // %InstallDIR%\features\org.talend.rcp.branding.%PRODUCTNAME%\%PRODUCTNAME%license.txt
@@ -35,7 +35,7 @@ public class SASDataBaseMetadata extends FakeDatabaseMetaData {
 
     /**
      * DOC bqian DB2ForZosDataBaseMetadata constructor comment.
-     * 
+     *
      * @param metaData
      */
     public SASDataBaseMetadata(Connection connection) {
@@ -44,7 +44,7 @@ public class SASDataBaseMetadata extends FakeDatabaseMetaData {
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see org.talend.commons.utils.database.FakeDatabaseMetaData#getConnection()
      */
     @Override
@@ -54,7 +54,7 @@ public class SASDataBaseMetadata extends FakeDatabaseMetaData {
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see org.talend.commons.utils.database.FakeDatabaseMetaData#getSchemas()
      */
     @Override
@@ -93,7 +93,7 @@ public class SASDataBaseMetadata extends FakeDatabaseMetaData {
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see org.talend.commons.utils.database.FakeDatabaseMetaData#getPrimaryKeys(java.lang.String, java.lang.String,
      * java.lang.String)
      */
@@ -104,7 +104,7 @@ public class SASDataBaseMetadata extends FakeDatabaseMetaData {
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see org.talend.commons.utils.database.FakeDatabaseMetaData#getTableTypes()
      */
     @Override
@@ -128,7 +128,7 @@ public class SASDataBaseMetadata extends FakeDatabaseMetaData {
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see org.talend.commons.utils.database.FakeDatabaseMetaData#getExportedKeys(java.lang.String, java.lang.String,
      * java.lang.String)
      */
@@ -139,7 +139,7 @@ public class SASDataBaseMetadata extends FakeDatabaseMetaData {
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see org.talend.commons.utils.database.FakeDatabaseMetaData#getTables(java.lang.String, java.lang.String,
      * java.lang.String, java.lang.String[])
      */
@@ -196,7 +196,7 @@ public class SASDataBaseMetadata extends FakeDatabaseMetaData {
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see org.talend.commons.utils.database.FakeDatabaseMetaData#supportsSchemasInDataManipulation()
      */
     @Override
@@ -206,7 +206,7 @@ public class SASDataBaseMetadata extends FakeDatabaseMetaData {
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see org.talend.commons.utils.database.FakeDatabaseMetaData#supportsSchemasInTableDefinitions()
      */
     @Override
@@ -221,7 +221,7 @@ public class SASDataBaseMetadata extends FakeDatabaseMetaData {
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see org.talend.commons.utils.database.FakeDatabaseMetaData#getColumns(java.lang.String, java.lang.String,
      * java.lang.String, java.lang.String)
      */

@@ -1,6 +1,6 @@
 // ============================================================================
 //
-// Copyright (C) 2006-2018 Talend Inc. - www.talend.com
+// Copyright (C) 2006-2019 Talend Inc. - www.talend.com
 //
 // This source code is available under agreement available at
 // %InstallDIR%\features\org.talend.rcp.branding.%PRODUCTNAME%\%PRODUCTNAME%license.txt
@@ -35,24 +35,24 @@ import org.eclipse.ui.navigator.PipelinedViewerUpdate;
  * this class has been create because of eclipse bug : https://bugs.eclipse.org/bugs/show_bug.cgi?id=82973 this can be
  * used by a dummy content provider definition based on a dummy property tester, in order to start the pluging and
  * register all the necessary adapters.
- * 
+ *
  * here is the content provider defintion:
- * 
+ *
  * @formatter:off <navigatorContent activeByDefault="true"
  * contentProvider="org.talend.repository.view.di.viewer.content.DummyContentProvider"
  * id="org.talend.repository.view.content.dummy.for.activation.di" name="name"> <enablement> <and> <instanceof
  * value="org.talend.repository.navigator.TalendRepositoryRoot"> </instanceof> <test forcePluginActivation="true" <!--
  * this is what make the plugin to get started and there for activator called if adapter need to be registered -->
  * property="org.talend.repository.node.alwaysFalse"> </test> </and> </enablement> </navigatorContent>
- * 
+ *
  * and here is the property tester definition, the class must be in the plugin that needs to be started and manifest
  * needs this line (Bundle-ActivationPolicy: lazy) <propertyTester class="org.talend.repository.tester.NodeTester"
  * id="org.talend.repository.view.di.activation.tester" namespace="org.talend.repository.node" properties="alwaysFalse"
  * type="org.talend.repository.navigator.TalendRepositoryRoot"> </propertyTester>
  * @formatter:on
- * 
- * 
- * 
+ *
+ *
+ *
  * */
 public class EmptyContentProvider implements IPipelinedTreeContentProvider {
 
@@ -91,7 +91,7 @@ public class EmptyContentProvider implements IPipelinedTreeContentProvider {
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see org.eclipse.ui.navigator.ICommonContentProvider#init(org.eclipse.ui.navigator.ICommonContentExtensionSite)
      */
     @Override
@@ -102,7 +102,7 @@ public class EmptyContentProvider implements IPipelinedTreeContentProvider {
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see org.eclipse.ui.navigator.IMementoAware#restoreState(org.eclipse.ui.IMemento)
      */
     @Override
@@ -113,7 +113,7 @@ public class EmptyContentProvider implements IPipelinedTreeContentProvider {
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see org.eclipse.ui.navigator.IMementoAware#saveState(org.eclipse.ui.IMemento)
      */
     @Override
@@ -124,7 +124,7 @@ public class EmptyContentProvider implements IPipelinedTreeContentProvider {
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see org.eclipse.ui.navigator.IPipelinedTreeContentProvider#getPipelinedChildren(java.lang.Object, java.util.Set)
      */
     @Override
@@ -181,7 +181,7 @@ public class EmptyContentProvider implements IPipelinedTreeContentProvider {
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see org.eclipse.ui.navigator.IPipelinedTreeContentProvider#getPipelinedElements(java.lang.Object, java.util.Set)
      */
     @Override
@@ -192,7 +192,7 @@ public class EmptyContentProvider implements IPipelinedTreeContentProvider {
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see org.eclipse.ui.navigator.IPipelinedTreeContentProvider#getPipelinedParent(java.lang.Object,
      * java.lang.Object)
      */
@@ -203,7 +203,7 @@ public class EmptyContentProvider implements IPipelinedTreeContentProvider {
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see org.eclipse.ui.navigator.IPipelinedTreeContentProvider#interceptAdd(org.eclipse.ui.navigator.
      * PipelinedShapeModification)
      */
@@ -214,7 +214,7 @@ public class EmptyContentProvider implements IPipelinedTreeContentProvider {
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see org.eclipse.ui.navigator.IPipelinedTreeContentProvider#interceptRemove(org.eclipse.ui.navigator.
      * PipelinedShapeModification)
      */
@@ -225,7 +225,7 @@ public class EmptyContentProvider implements IPipelinedTreeContentProvider {
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see org.eclipse.ui.navigator.IPipelinedTreeContentProvider#interceptRefresh(org.eclipse.ui.navigator.
      * PipelinedViewerUpdate)
      */
@@ -236,7 +236,7 @@ public class EmptyContentProvider implements IPipelinedTreeContentProvider {
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see
      * org.eclipse.ui.navigator.IPipelinedTreeContentProvider#interceptUpdate(org.eclipse.ui.navigator.PipelinedViewerUpdate
      * )

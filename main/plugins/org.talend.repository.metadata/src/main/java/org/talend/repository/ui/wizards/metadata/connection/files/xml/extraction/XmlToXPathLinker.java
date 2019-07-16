@@ -1,6 +1,6 @@
 // ============================================================================
 //
-// Copyright (C) 2006-2018 Talend Inc. - www.talend.com
+// Copyright (C) 2006-2019 Talend Inc. - www.talend.com
 //
 // This source code is available under agreement available at
 // %InstallDIR%\features\org.talend.rcp.branding.%PRODUCTNAME%\%PRODUCTNAME%license.txt
@@ -86,9 +86,9 @@ import org.w3c.dom.Node;
 
 /**
  * DOC amaumont class global comment. Detailled comment <br/>
- * 
+ *
  * $Id$
- * 
+ *
  */
 public class XmlToXPathLinker extends TreeToTablesLinker<Object, Object> {
 
@@ -118,7 +118,7 @@ public class XmlToXPathLinker extends TreeToTablesLinker<Object, Object> {
 
     /**
      * DOC amaumont XmlToMetadataTableLinker constructor comment.
-     * 
+     *
      * @param commonParent common main parent of tree and table, it and its children should have backgoundMode
      * configured with SWT.INHERIT_FORCE, same configuration for parents of tree and table.
      * @param tree
@@ -168,7 +168,7 @@ public class XmlToXPathLinker extends TreeToTablesLinker<Object, Object> {
 
     /**
      * DOC amaumont Comment method "init".
-     * 
+     *
      * @param tree
      */
     private void init() {
@@ -197,7 +197,7 @@ public class XmlToXPathLinker extends TreeToTablesLinker<Object, Object> {
 
     /**
      * DOC amaumont Comment method "initColors".
-     * 
+     *
      * @param display
      */
     private void initColors(Display display) {
@@ -297,7 +297,7 @@ public class XmlToXPathLinker extends TreeToTablesLinker<Object, Object> {
 
     /**
      * DOC amaumont Comment method "createFieldsLinkWithProgressDialog".
-     * 
+     *
      * @param monitorWrap
      * @param fieldsTableItems
      * @param totalWork
@@ -307,6 +307,7 @@ public class XmlToXPathLinker extends TreeToTablesLinker<Object, Object> {
             List<SchemaTarget> schemaTargetList, int startTableItem, int tableItemLength) {
         monitorWrap.beginTask(Messages.getString("XmlToXPathLinker.beginTask.fieldLinksCreation"), totalWork); //$NON-NLS-1$
 
+        loadItemDataForLazyLoad();
         TableItem[] fieldsTableItems = fieldsTableEditorView.getTable().getItems();
         for (int i = startTableItem, indexShemaTarget = 0; i < startTableItem + tableItemLength; i++, indexShemaTarget++) {
 
@@ -328,6 +329,21 @@ public class XmlToXPathLinker extends TreeToTablesLinker<Object, Object> {
         }
         getLinksManager().sortLinks(getDrawingLinksComparator());
         getBackgroundRefresher().refreshBackground();
+    }
+
+    private void loadItemDataForLazyLoad() {
+        if (!fieldsTableEditorView.getTableViewerCreator().isLazyLoad()) {
+            return;
+        }
+        List<SchemaTarget> beansList = fieldsTableEditorView.getExtendedTableModel().getBeansList();
+        Table table = fieldsTableEditorView.getTable();
+        for (TableItem tableItem : table.getItems()) {
+            if (tableItem.getData() == null) {
+                int index = table.indexOf(tableItem);
+                SchemaTarget schemaTarget = beansList.get(index);
+                tableItem.setData(schemaTarget);
+            }
+        }
     }
 
     /**
@@ -434,7 +450,7 @@ public class XmlToXPathLinker extends TreeToTablesLinker<Object, Object> {
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see org.talend.commons.ui.swt.linking.TreeToTableLinker#drawBackground(org.eclipse.swt.graphics.GC)
      */
     @Override
@@ -568,7 +584,7 @@ public class XmlToXPathLinker extends TreeToTablesLinker<Object, Object> {
 
     /**
      * DOC amaumont Comment method "addLink".
-     * 
+     *
      * @param treeItem
      * @param dataItem1
      * @param table
@@ -581,7 +597,7 @@ public class XmlToXPathLinker extends TreeToTablesLinker<Object, Object> {
 
     /**
      * DOC amaumont Comment method "addLink".
-     * 
+     *
      * @param treeItem
      * @param dataItem1
      * @param table
@@ -600,7 +616,7 @@ public class XmlToXPathLinker extends TreeToTablesLinker<Object, Object> {
 
     /**
      * DOC amaumont Comment method "addLink".
-     * 
+     *
      * @param treeItem
      * @param dataItem1
      * @param table
@@ -624,7 +640,7 @@ public class XmlToXPathLinker extends TreeToTablesLinker<Object, Object> {
 
     /**
      * DOC amaumont Comment method "onXPathValueChanged".
-     * 
+     *
      * @param table
      * @param newValue
      * @param itemIndex
@@ -646,7 +662,7 @@ public class XmlToXPathLinker extends TreeToTablesLinker<Object, Object> {
 
     /**
      * DOC amaumont Comment method "isLoopTable".
-     * 
+     *
      * @param table
      * @return
      */
@@ -656,9 +672,9 @@ public class XmlToXPathLinker extends TreeToTablesLinker<Object, Object> {
 
     /**
      * DOC amaumont Comment method "createLoopLinks".
-     * 
+     *
      * @param monitorWrap
-     * 
+     *
      * @param pathQuery
      * @param tableItem
      */
@@ -719,7 +735,7 @@ public class XmlToXPathLinker extends TreeToTablesLinker<Object, Object> {
 
     /**
      * DOC amaumont Comment method "addLinks".
-     * 
+     *
      * @param relativeXpath
      * @param tableItemTarget
      * @param progressMonitor
@@ -862,7 +878,7 @@ public class XmlToXPathLinker extends TreeToTablesLinker<Object, Object> {
 
     /**
      * Getter for tableEditorView.
-     * 
+     *
      * @return the tableEditorView
      */
     public ExtractionFieldsWithXPathEditorView getFieldsTableEditorView() {
@@ -871,7 +887,7 @@ public class XmlToXPathLinker extends TreeToTablesLinker<Object, Object> {
 
     /**
      * Getter for loopTableEditorView.
-     * 
+     *
      * @return the loopTableEditorView
      */
     public ExtractionLoopWithXPathEditorView getLoopTableEditorView() {
@@ -991,7 +1007,7 @@ public class XmlToXPathLinker extends TreeToTablesLinker<Object, Object> {
 
     /**
      * DOC amaumont Comment method "isFieldsTable".
-     * 
+     *
      * @param table
      * @return
      */
@@ -1015,7 +1031,7 @@ public class XmlToXPathLinker extends TreeToTablesLinker<Object, Object> {
 
     /**
      * DOC amaumont Comment method "getSelectedRelativeStyleLink".
-     * 
+     *
      * @param selectedLoopLinkColor
      */
     private void getSelectedRelativeStyleLink() {
@@ -1049,7 +1065,7 @@ public class XmlToXPathLinker extends TreeToTablesLinker<Object, Object> {
 
     /**
      * Getter for loopXpathNodes.
-     * 
+     *
      * @return the loopXpathNodes
      */
     public ArrayList<String> getLoopXpathNodes() {
@@ -1058,7 +1074,7 @@ public class XmlToXPathLinker extends TreeToTablesLinker<Object, Object> {
 
     /**
      * DOC amaumont Comment method "validateXPathExpression".
-     * 
+     *
      * @param newValue
      * @return null if expression is valid, else return the error message.
      */
@@ -1083,7 +1099,7 @@ public class XmlToXPathLinker extends TreeToTablesLinker<Object, Object> {
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see org.talend.commons.ui.swt.linking.TreeToTablesLinker#getDrawingLinksComparator()
      */
     @Override
@@ -1118,7 +1134,7 @@ public class XmlToXPathLinker extends TreeToTablesLinker<Object, Object> {
 
     /**
      * Getter for allLoopNodes.
-     * 
+     *
      * @return the allLoopNodes
      */
     public ArrayList<Node> getAllLoopNodes() {
@@ -1127,7 +1143,7 @@ public class XmlToXPathLinker extends TreeToTablesLinker<Object, Object> {
 
     /**
      * Getter for uniqueLoopNodes.
-     * 
+     *
      * @return the uniqueLoopNodes
      */
     public ArrayList<Node> getUniqueLoopNodes() {
@@ -1136,7 +1152,7 @@ public class XmlToXPathLinker extends TreeToTablesLinker<Object, Object> {
 
     /**
      * Getter for nodeRetriever.
-     * 
+     *
      * @return the nodeRetriever
      */
     public XmlNodeRetriever getNodeRetriever() {

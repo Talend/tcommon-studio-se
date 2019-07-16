@@ -1,6 +1,6 @@
 // ============================================================================
 //
-// Copyright (C) 2006-2018 Talend Inc. - www.talend.com
+// Copyright (C) 2006-2019 Talend Inc. - www.talend.com
 //
 // This source code is available under agreement available at
 // %InstallDIR%\features\org.talend.rcp.branding.%PRODUCTNAME%\%PRODUCTNAME%license.txt
@@ -17,9 +17,9 @@ import java.util.StringTokenizer;
 import org.talend.commons.i18n.internal.Messages;
 
 /**
- * 
+ *
  * @author smallet
- * 
+ *
  */
 public class Version implements Comparable<Version> {
 
@@ -35,7 +35,7 @@ public class Version implements Comparable<Version> {
 
     /**
      * Version initialized constructor.
-     * 
+     *
      * @param major
      * @param minor
      */
@@ -74,7 +74,7 @@ public class Version implements Comparable<Version> {
 
     /**
      * Getter for major.
-     * 
+     *
      * @return the major
      */
     public int getMajor() {
@@ -83,7 +83,7 @@ public class Version implements Comparable<Version> {
 
     /**
      * Getter for minor.
-     * 
+     *
      * @return the minor
      */
     public int getMinor() {

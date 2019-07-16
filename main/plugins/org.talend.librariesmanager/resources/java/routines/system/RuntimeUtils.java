@@ -1,6 +1,6 @@
 // ============================================================================
 //
-// Copyright (C) 2006-2018 Talend Inc. - www.talend.com
+// Copyright (C) 2006-2019 Talend Inc. - www.talend.com
 //
 // This source code is available under agreement available at
 // %InstallDIR%\features\org.talend.rcp.branding.%PRODUCTNAME%\%PRODUCTNAME%license.txt
@@ -8,7 +8,7 @@
 // You should have received a copy of the agreement
 // along with this program; if not, write to Talend SA
 // 9 rue Pages 92150 Suresnes, France
-//   
+//
 // ============================================================================
 package routines.system;
 
@@ -24,7 +24,7 @@ public class RuntimeUtils {
 
     /**
      * This function is in order to check the i type for "int i = 10".
-     * 
+     *
      * @param o
      * @return
      */
@@ -34,7 +34,7 @@ public class RuntimeUtils {
 
     /**
      * This function is in order to check the Date type in tRunJob when transmit the context to child job.
-     * 
+     *
      * @param o
      * @return
      */

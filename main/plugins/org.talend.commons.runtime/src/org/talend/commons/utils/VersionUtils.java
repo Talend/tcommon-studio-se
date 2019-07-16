@@ -1,6 +1,6 @@
 // ============================================================================
 //
-// Copyright (C) 2006-2018 Talend Inc. - www.talend.com
+// Copyright (C) 2006-2019 Talend Inc. - www.talend.com
 //
 // This source code is available under agreement available at
 // %InstallDIR%\features\org.talend.rcp.branding.%PRODUCTNAME%\%PRODUCTNAME%license.txt
@@ -15,10 +15,13 @@ package org.talend.commons.utils;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
+import java.io.InputStream;
 import java.net.URISyntaxException;
 import java.net.URL;
 import java.util.Properties;
+import java.util.regex.Pattern;
 
+import org.apache.commons.lang3.StringUtils;
 import org.apache.log4j.Logger;
 import org.eclipse.core.runtime.FileLocator;
 import org.eclipse.core.runtime.Path;
@@ -26,13 +29,15 @@ import org.eclipse.core.runtime.Platform;
 import org.eclipse.core.runtime.URIUtil;
 import org.osgi.framework.Bundle;
 import org.osgi.framework.FrameworkUtil;
+import org.talend.commons.CommonsPlugin;
+import org.talend.commons.exception.ExceptionHandler;
 import org.talend.commons.i18n.internal.Messages;
 
 /**
  * Represents a version. Contents a major and a minor version.<br/>
- * 
+ *
  * $Id: Version.java 1 2006-09-29 17:06:40 +0000 (ven., 29 sept. 2006) nrousseau $
- * 
+ *
  */
 public class VersionUtils {
 
@@ -77,9 +82,9 @@ public class VersionUtils {
     }
 
     /**
-     * 
+     *
      * DOC ggu Comment method "getEclipseProductFile".
-     * 
+     *
      * @return
      * @throws URISyntaxException
      */
@@ -133,7 +138,7 @@ public class VersionUtils {
 
     /**
      * DOC ycbai Comment method "getVersion".
-     * 
+     *
      * @deprecated Please use either getInternalVersion() or getDisplayVersion()
      * @return the studio version.
      */
@@ -144,13 +149,13 @@ public class VersionUtils {
 
     /**
      * DOC ycbai Comment method "getTalendVersion".
-     * 
+     *
      * return the internal version of the studio that may be different from the Studio version in OEM distribution. look
      * for version in org.talend.commons.runtime/talend.properties with the key talend.version if none found then return
      * the Studio version.
-     * 
+     *
      * @return the talend version or the Studio version or null if none found.
-     * 
+     *
      */
     public static String getTalendVersion() {
         if (talendVersion == null) {
@@ -208,6 +213,40 @@ public class VersionUtils {
                 for (int i = 0; i < 3 - split.length; i++) {
                     version += ".0"; //$NON-NLS-1$
                 }
+            }
+        }
+        return version;
+    }
+
+    public static String getMojoVersion(String mojoKey) {
+        String version = null;
+        String talendVersion = getTalendVersion();
+        Properties properties = new Properties();
+        File file = new Path(Platform.getConfigurationLocation().getURL().getPath()).append("mojo_version.properties").toFile(); //$NON-NLS-1$
+        if (file.exists()) {
+            try (InputStream inStream = new FileInputStream(file)) {
+                properties.load(inStream);
+                version = properties.getProperty(mojoKey);
+            } catch (IOException e) {
+                ExceptionHandler.process(e);
+            }
+            if (version != null && !version.startsWith(talendVersion)) {
+                ExceptionHandler
+                        .process(new Exception(
+                                "Incompatible Mojo version:" + mojoKey + "[" + version + "], use default version.")); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+                version = null;
+            }
+        }
+        // default version
+        if (StringUtils.isBlank(version)) {
+            version = talendVersion;
+            if (CommonsPlugin.isJUnitTest()) {
+                productVersion = null;
+            }
+            String productVersion = getInternalVersion();
+            String revision = StringUtils.substringAfterLast(productVersion, "-"); //$NON-NLS-1$
+            if (("SNAPSHOT").equals(revision) || Pattern.matches("M\\d{1}", revision)) { //$NON-NLS-1$ //$NON-NLS-2$
+                version += "-" + revision; //$NON-NLS-1$
             }
         }
         return version;

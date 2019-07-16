@@ -1,6 +1,6 @@
 // ============================================================================
 //
-// Copyright (C) 2006-2018 Talend Inc. - www.talend.com
+// Copyright (C) 2006-2019 Talend Inc. - www.talend.com
 //
 // This source code is available under agreement available at
 // %InstallDIR%\features\org.talend.rcp.branding.%PRODUCTNAME%\%PRODUCTNAME%license.txt
@@ -17,7 +17,7 @@ import org.talend.core.database.EDatabaseTypeName;
 
 /**
  * DOC rli class global comment. Detailled comment <br/>
- * 
+ *
  */
 public enum SupportDBUrlType {
     /**
@@ -278,7 +278,7 @@ public enum SupportDBUrlType {
 
     /**
      * SupportDBUrlType constructor.
-     * 
+     *
      * @param dbKey the key identifying the connection string in dburl.properties file
      * @param hostName the hostname
      * @param port the port
@@ -322,7 +322,7 @@ public enum SupportDBUrlType {
 
     /**
      * Getter for dbDriver.
-     * 
+     *
      * @return the dbDriver
      */
     public String getDbDriver() {
@@ -343,7 +343,7 @@ public enum SupportDBUrlType {
 
     /**
      * DOC bZhou Comment method "getDBTypeByKey".
-     * 
+     *
      * @param dbKey
      * @return
      */
@@ -367,7 +367,7 @@ public enum SupportDBUrlType {
 
     /**
      * DOC msjian Comment method "isMssql".
-     * 
+     *
      * @param dbKey
      * @return
      */
@@ -378,7 +378,7 @@ public enum SupportDBUrlType {
 
     /**
      * DOC msjian Comment method "hasCatalog". (just have catalog: mysql)
-     * 
+     *
      * @param dbKey
      * @return
      */
@@ -389,7 +389,7 @@ public enum SupportDBUrlType {
 
     /**
      * DOC msjian Comment method "hasSchema". (just have schema: oracle,teredata,ingres,DB2)
-     * 
+     *
      * @param dbKey
      * @return
      */

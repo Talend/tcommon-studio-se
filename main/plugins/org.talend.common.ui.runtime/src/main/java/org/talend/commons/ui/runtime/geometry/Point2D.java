@@ -1,6 +1,6 @@
 // ============================================================================
 //
-// Copyright (C) 2006-2018 Talend Inc. - www.talend.com
+// Copyright (C) 2006-2019 Talend Inc. - www.talend.com
 //
 // This source code is available under agreement available at
 // %InstallDIR%\features\org.talend.rcp.branding.%PRODUCTNAME%\%PRODUCTNAME%license.txt
@@ -35,11 +35,11 @@ package org.talend.commons.ui.runtime.geometry;
 import org.eclipse.swt.graphics.Rectangle;
 
 /**
- * 
+ *
  * DOC amaumont class global comment. Detailled comment <br/>
- * 
+ *
  * $Id: Point2D.java 7048 2007-11-16 02:36:17Z nrousseau $
- * 
+ *
  */
 public class Point2D {
 

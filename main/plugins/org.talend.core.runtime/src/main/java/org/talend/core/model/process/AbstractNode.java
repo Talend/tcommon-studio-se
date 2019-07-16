@@ -1,6 +1,6 @@
 // ============================================================================
 //
-// Copyright (C) 2006-2018 Talend Inc. - www.talend.com
+// Copyright (C) 2006-2019 Talend Inc. - www.talend.com
 //
 // This source code is available under agreement available at
 // %InstallDIR%\features\org.talend.rcp.branding.%PRODUCTNAME%\%PRODUCTNAME%license.txt
@@ -29,9 +29,9 @@ import org.talend.core.model.utils.ParameterValueUtil;
 
 /**
  * DOC nrousseau class global comment. Detailled comment <br/>
- * 
+ *
  * $Id: AbstractNode.java 51166 2010-11-11 06:09:01Z wchen $
- * 
+ *
  */
 public abstract class AbstractNode implements INode {
 
@@ -82,7 +82,7 @@ public abstract class AbstractNode implements INode {
     private INode designSubjobStartNode;
 
     private boolean isVirtualGenerateNode;
-    
+
     private INode realGraphicalNode;
 
     private EConnectionType virtualLinkTo;
@@ -227,7 +227,7 @@ public abstract class AbstractNode implements INode {
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see org.talend.core.model.process.INode#getReturns()
      */
     @Override
@@ -286,7 +286,7 @@ public abstract class AbstractNode implements INode {
      * first element with no active link from type Main/Ref/Iterate.<br>
      * <i><b>Note:</b></i> This function doesn't work if the node has several start points (will return a random start
      * node).
-     * 
+     *
      * @param withCondition
      * @return Start Node found.
      */
@@ -333,6 +333,8 @@ public abstract class AbstractNode implements INode {
                 if (!connec.getLineStyle().equals(EConnectionType.FLOW_REF)) {
                     return connec.getSource().getSubProcessStartNode(withConditions);
                 }
+            } else if (connec.getLineStyle().equals(EConnectionType.RUN_AFTER)) {
+            	return connec.getSource().getSubProcessStartNode(withConditions);
             }
         }
         return null;
@@ -371,7 +373,7 @@ public abstract class AbstractNode implements INode {
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see org.talend.core.model.process.INode#hasConditionnalOutputs()
      */
     @Override
@@ -381,7 +383,7 @@ public abstract class AbstractNode implements INode {
 
     /**
      * Sets the hasConditionnalOutputs.
-     * 
+     *
      * @param hasConditionalOutputs the hasConditionnalOutputs to set
      */
     public void setHasConditionalOutputs(boolean hasConditionalOutputs) {
@@ -390,7 +392,7 @@ public abstract class AbstractNode implements INode {
 
     /**
      * Getter for isMultiplyingOutputs.
-     * 
+     *
      * @return the isMultiplyingOutputs
      */
     @Override
@@ -400,7 +402,7 @@ public abstract class AbstractNode implements INode {
 
     /**
      * Sets the isMultiplyingOutputs.
-     * 
+     *
      * @param isMultiplyingOutputs the isMultiplyingOutputs to set
      */
     public void setIsMultiplyingOutputs(Boolean isMultiplyingOutputs) {
@@ -409,7 +411,7 @@ public abstract class AbstractNode implements INode {
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see java.lang.Object#toString()
      */
     @Override
@@ -437,7 +439,7 @@ public abstract class AbstractNode implements INode {
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see org.talend.core.model.process.INode#getLocation()
      */
     public Object getLocation() {
@@ -455,7 +457,7 @@ public abstract class AbstractNode implements INode {
 
     /**
      * Getter for isThereLinkWithHash.
-     * 
+     *
      * @return the isThereLinkWithHash
      */
     @Override
@@ -465,7 +467,7 @@ public abstract class AbstractNode implements INode {
 
     /**
      * Sets the isThereLinkWithHash.
-     * 
+     *
      * @param isThereLinkWithHash the isThereLinkWithHash to set
      */
     public void setThereLinkWithHash(boolean isThereLinkWithHash) {
@@ -530,7 +532,7 @@ public abstract class AbstractNode implements INode {
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see org.talend.core.model.process.INode#getOutgoingConnections(org.talend .core.model.process.EConnectionType)
      */
     @Override
@@ -540,7 +542,7 @@ public abstract class AbstractNode implements INode {
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see org.talend.core.model.process.INode#getOutgoingConnections(java.lang. String)
      */
     @Override
@@ -559,7 +561,7 @@ public abstract class AbstractNode implements INode {
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see org.talend.core.model.process.INode#renameData(java.lang.String, java.lang.String)
      */
     @Override
@@ -580,7 +582,7 @@ public abstract class AbstractNode implements INode {
      * see bug 4733
      * <p>
      * DOC YeXiaowei Comment method "isSQLQueryParameter".
-     * 
+     *
      * @param parameter
      * @return
      */
@@ -592,7 +594,7 @@ public abstract class AbstractNode implements INode {
      * bug TDM-409
      * <p>
      * DOC hwang Comment method "isTDMParameter".
-     * 
+     *
      * @param parameter
      * @return
      */
@@ -604,7 +606,7 @@ public abstract class AbstractNode implements INode {
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see org.talend.core.model.process.INode#useData(java.lang.String)
      */
     @Override
@@ -644,7 +646,7 @@ public abstract class AbstractNode implements INode {
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see org.talend.core.model.process.INode#getIncomingConnections(org.talend .core.model.process.EConnectionType)
      */
     @Override
@@ -658,7 +660,7 @@ public abstract class AbstractNode implements INode {
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see org.talend.core.model.process.INode#getLabel()
      */
     @Override
@@ -681,7 +683,7 @@ public abstract class AbstractNode implements INode {
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see org.talend.core.model.process.INode#getConnectorFromName(java.lang.String )
      */
     @Override
@@ -727,7 +729,7 @@ public abstract class AbstractNode implements INode {
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see org.talend.core.model.process.INode#reloadComponent(org.talend.core.model .components.IComponent,
      * java.util.Map)
      */
@@ -739,7 +741,7 @@ public abstract class AbstractNode implements INode {
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see org.talend.core.model.process.INode#getDesignSubjobStart()
      */
     @Override
@@ -754,7 +756,7 @@ public abstract class AbstractNode implements INode {
 
     /**
      * Sets the designSubjobStart.
-     * 
+     *
      * @param designSubjobStart the designSubjobStart to set
      */
     public void setDesignSubjobStartNode(INode designSubjobStartNode) {
@@ -763,7 +765,7 @@ public abstract class AbstractNode implements INode {
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see org.talend.core.model.process.INode#isDesignSubjobStartNode()
      */
     @Override
@@ -785,7 +787,7 @@ public abstract class AbstractNode implements INode {
 
     /**
      * Sets the listConnector.
-     * 
+     *
      * @param listConnector the listConnector to set
      */
     public void setListConnector(List<? extends INodeConnector> listConnector) {
@@ -837,7 +839,7 @@ public abstract class AbstractNode implements INode {
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see org.talend.core.model.process.INode#isELTComponent()
      */
     @Override
@@ -860,7 +862,7 @@ public abstract class AbstractNode implements INode {
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see org.talend.core.model.process.INode#getUniqueShortName()
      */
     @Override
@@ -870,7 +872,7 @@ public abstract class AbstractNode implements INode {
 
     /**
      * Sets the uniqueShortName.
-     * 
+     *
      * @param uniqueShortName the uniqueShortName to set
      */
     public void setUniqueShortName(String uniqueShortName) {
@@ -888,7 +890,7 @@ public abstract class AbstractNode implements INode {
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see org.talend.core.model.process.IElement#getElementName()
      */
     @Override
@@ -1120,7 +1122,7 @@ public abstract class AbstractNode implements INode {
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see org.talend.core.model.process.INode#isSubtreeStart()
      */
     @Override
@@ -1130,7 +1132,7 @@ public abstract class AbstractNode implements INode {
 
     /**
      * Getter for mrGroupId.
-     * 
+     *
      * @return the mrGroupId
      */
     public Integer getMRGroupId() {
@@ -1139,7 +1141,7 @@ public abstract class AbstractNode implements INode {
 
     /**
      * Sets the mrGroupId.
-     * 
+     *
      * @param mrGroupId the mrGroupId to set
      */
     public void setMRGroupId(Integer mrGroupId) {
@@ -1148,7 +1150,7 @@ public abstract class AbstractNode implements INode {
 
     /**
      * Getter for mrJobInGroupCount.
-     * 
+     *
      * @return the mrJobInGroupCount
      */
     public Integer getMRJobInGroupCount() {
@@ -1157,7 +1159,7 @@ public abstract class AbstractNode implements INode {
 
     /**
      * Sets the mrJobInGroupCount.
-     * 
+     *
      * @param mrJobInGroupCount the mrJobInGroupCount to set
      */
     public void setMRJobInGroupCount(Integer mrJobInGroupCount) {
@@ -1166,7 +1168,7 @@ public abstract class AbstractNode implements INode {
 
     /**
      * Getter for mrJobIDInGroup.
-     * 
+     *
      * @return the mrJobIDInGroup
      */
     public Integer getMrJobIDInGroup() {
@@ -1175,7 +1177,7 @@ public abstract class AbstractNode implements INode {
 
     /**
      * Sets the mrJobIDInGroup.
-     * 
+     *
      * @param mrJobIDInGroup the mrJobIDInGroup to set
      */
     public void setMrJobIDInGroup(Integer mrJobIDInGroup) {
@@ -1184,7 +1186,7 @@ public abstract class AbstractNode implements INode {
 
     /**
      * Getter for mrContainsReduce.
-     * 
+     *
      * @return the mrContainsReduce
      */
     public boolean isMrContainsReduce() {
@@ -1193,7 +1195,7 @@ public abstract class AbstractNode implements INode {
 
     /**
      * Sets the mrContainsReduce.
-     * 
+     *
      * @param mrContainsReduce the mrContainsReduce to set
      */
     public void setMrContainsReduce(boolean mrContainsReduce) {
@@ -1202,7 +1204,7 @@ public abstract class AbstractNode implements INode {
 
     /**
      * Getter for isThereLinkWithRef.
-     * 
+     *
      * @return the isThereLinkWithRef
      */
     public boolean isThereLinkWithRef() {
@@ -1211,7 +1213,7 @@ public abstract class AbstractNode implements INode {
 
     /**
      * Sets the isThereLinkWithRef.
-     * 
+     *
      * @param isThereLinkWithRef the isThereLinkWithRef to set
      */
     public void setThereLinkWithRef(boolean isThereLinkWithRef) {
@@ -1220,7 +1222,7 @@ public abstract class AbstractNode implements INode {
 
     /**
      * Getter for refNodes.
-     * 
+     *
      * @return the refNodes
      */
     public List<INode> getRefNodes() {
@@ -1229,7 +1231,7 @@ public abstract class AbstractNode implements INode {
 
     /**
      * Sets the refNodes.
-     * 
+     *
      * @param refNodes the refNodes to set
      */
     public void setRefNodes(List<INode> refNodes) {
@@ -1238,7 +1240,7 @@ public abstract class AbstractNode implements INode {
 
     /**
      * Getter for mapOnlyAfterReduce.
-     * 
+     *
      * @return the mapOnlyAfterReduce
      */
     public boolean isMapOnlyAfterReduce() {
@@ -1247,7 +1249,7 @@ public abstract class AbstractNode implements INode {
 
     /**
      * Sets the mapOnlyAfterReduce.
-     * 
+     *
      * @param mapOnlyAfterReduce the mapOnlyAfterReduce to set
      */
     public void setMapOnlyAfterReduce(boolean mapOnlyAfterReduce) {
@@ -1256,7 +1258,7 @@ public abstract class AbstractNode implements INode {
 
     /**
      * Getter for isRefNode.
-     * 
+     *
      * @return the isRefNode
      */
     public boolean isRefNode() {
@@ -1265,7 +1267,7 @@ public abstract class AbstractNode implements INode {
 
     /**
      * Sets the isRefNode.
-     * 
+     *
      * @param isRefNode the isRefNode to set
      */
     public void setRefNode(boolean isRefNode) {
@@ -1274,7 +1276,7 @@ public abstract class AbstractNode implements INode {
 
     /**
      * Getter for parallelIterator.
-     * 
+     *
      * @return the parallelIterator
      */
     public String getParallelIterator() {
@@ -1283,7 +1285,7 @@ public abstract class AbstractNode implements INode {
 
     /**
      * Sets the parallelIterator.
-     * 
+     *
      * @param parallelIterator the parallelIterator to set
      */
     public void setParallelIterator(String parallelIterator) {
@@ -1292,7 +1294,7 @@ public abstract class AbstractNode implements INode {
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see org.talend.core.model.process.IElement#isForceReadOnly()
      */
     @Override
@@ -1302,7 +1304,7 @@ public abstract class AbstractNode implements INode {
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see org.talend.core.model.process.IElement#setForceReadOnly(boolean)
      */
     @Override
@@ -1323,7 +1325,7 @@ public abstract class AbstractNode implements INode {
     public INode getRealGraphicalNode() {
         return realGraphicalNode;
     }
-  
+
     public void setRealGraphicalNode(INode realGraphicalNode) {
         this.realGraphicalNode = realGraphicalNode;
     }

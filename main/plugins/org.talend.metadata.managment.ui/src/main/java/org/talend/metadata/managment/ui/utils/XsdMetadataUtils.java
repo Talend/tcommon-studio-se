@@ -1,6 +1,6 @@
 // ============================================================================
 //
-// Copyright (C) 2006-2018 Talend Inc. - www.talend.com
+// Copyright (C) 2006-2019 Talend Inc. - www.talend.com
 //
 // This source code is available under agreement available at
 // %InstallDIR%\features\org.talend.rcp.branding.%PRODUCTNAME%\%PRODUCTNAME%license.txt
@@ -121,9 +121,9 @@ public final class XsdMetadataUtils {
     }
 
     /**
-     * 
+     *
      * DOC wchen Comment method "createMetadataFromXSD".
-     * 
+     *
      * @param parameter
      * @param connectionLabel
      * @param portTypeName
@@ -344,7 +344,11 @@ public final class XsdMetadataUtils {
                 xmlNode.setRelatedColumn(uniqueName);
                 metadataTable.getColumns().add(column);
             } else {
-                xmlNode.setAttribute("main"); //$NON-NLS-1$
+            	if(loopElementFound) {
+                	xmlNode.setAttribute("branch");//$NON-NLS-1$
+                }else {
+                	xmlNode.setAttribute("main"); //$NON-NLS-1$
+                }
             }
             break;
         case ATreeNode.NAMESPACE_TYPE:
@@ -357,13 +361,14 @@ public final class XsdMetadataUtils {
         case ATreeNode.OTHER_TYPE:
             break;
         }
+
         boolean subElementsInLoop = inLoop;
         // will try to get the first element (branch or main), and set it as loop.
         if ((!loopElementFound && path.split("/").length == 2 && node.getType() == ATreeNode.ELEMENT_TYPE) || subElementsInLoop) { //$NON-NLS-1$
             connection.getLoop().add(xmlNode);
             loopElementFound = true;
             subElementsInLoop = true;
-        } else {
+        }else {
             connection.getRoot().add(xmlNode);
         }
         if (node.getChildren().length > 0) {

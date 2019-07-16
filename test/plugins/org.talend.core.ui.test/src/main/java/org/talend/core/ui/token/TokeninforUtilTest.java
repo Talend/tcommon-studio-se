@@ -1,6 +1,6 @@
 // ============================================================================
 //
-// Copyright (C) 2006-2018 Talend Inc. - www.talend.com
+// Copyright (C) 2006-2019 Talend Inc. - www.talend.com
 //
 // This source code is available under agreement available at
 // %InstallDIR%\features\org.talend.rcp.branding.%PRODUCTNAME%\%PRODUCTNAME%license.txt
@@ -41,7 +41,7 @@ public class TokeninforUtilTest {
         array.put("a");
         source.put("key3", array);
         JSONObject target = new JSONObject();
-        
+
         TokenInforUtil.mergeJSON(source, target);
         assertEquals("test",target.get("key1"));
         assertEquals(5,target.getJSONObject("key2").getInt("myComponent"));
@@ -49,14 +49,14 @@ public class TokeninforUtilTest {
         assertEquals(1,target.getJSONArray("key3").length());
         assertEquals("a",target.getJSONArray("key3").get(0));
 
-    
+
         TokenInforUtil.mergeJSON(source, target);
         assertEquals("test",target.get("key1"));
         assertEquals(10,target.getJSONObject("key2").getInt("myComponent"));
         assertEquals(6,target.getJSONObject("key2").getJSONObject("subkey1").getInt("nb.test"));
         assertEquals(1,target.getJSONArray("key3").length());
         assertEquals("a",target.getJSONArray("key3").get(0));
-        
+
         source = new JSONObject();
         source.put("key1", "test2");
         source.put("key4", "test3");
@@ -70,7 +70,7 @@ public class TokeninforUtilTest {
         array.put("b");
         source.put("key3", array);
 
-        
+
         TokenInforUtil.mergeJSON(source, target);
         assertEquals("test2",target.get("key1"));
         assertEquals("test3",target.get("key4"));
@@ -91,8 +91,8 @@ public class TokeninforUtilTest {
         comp.put("count", 5);
         array.put(comp);
         source.put("components",array);
-        
-        
+
+
         JSONObject target = new JSONObject();
         target.put("key1", "test");
         array = new JSONArray();
@@ -101,15 +101,15 @@ public class TokeninforUtilTest {
         comp.put("count", 2);
         array.put(comp);
         target.put("components",array);
-        
-        
+
+
         TokenInforUtil.mergeJSON(source, target);
         assertEquals("test",target.get("key1"));
         array = target.getJSONArray("components");
         assertEquals(1,array.length());
         comp = array.getJSONObject(0);
         assertEquals("myComponent",comp.get("component_name"));
-        assertEquals(7,comp.get("count"));        
+        assertEquals(7,comp.get("count"));
     }
 
 }

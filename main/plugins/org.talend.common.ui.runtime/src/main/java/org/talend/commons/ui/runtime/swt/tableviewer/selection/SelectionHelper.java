@@ -1,6 +1,6 @@
 // ============================================================================
 //
-// Copyright (C) 2006-2018 Talend Inc. - www.talend.com
+// Copyright (C) 2006-2019 Talend Inc. - www.talend.com
 //
 // This source code is available under agreement available at
 // %InstallDIR%\features\org.talend.rcp.branding.%PRODUCTNAME%\%PRODUCTNAME%license.txt
@@ -23,9 +23,9 @@ import org.talend.commons.ui.runtime.swt.tableviewer.TableViewerCreatorNotModifi
 
 /**
  * DOC amaumont class global comment. Detailled comment <br/>
- * 
+ *
  * $Id: SelectionHelper.java 7038 2007-11-15 14:05:48Z plegall $
- * 
+ *
  */
 public class SelectionHelper {
 
@@ -45,7 +45,7 @@ public class SelectionHelper {
 
     /**
      * DOC amaumont SelectionHelper constructor comment.
-     * 
+     *
      * @param tableViewerCreator
      * @param mouseTableSelectionHelper
      */
@@ -132,9 +132,9 @@ public class SelectionHelper {
     }
 
     /**
-     * 
+     *
      * DOC amaumont Comment method "setSelection".
-     * 
+     *
      * @param selection
      * @param reveal
      * @see TableViewer#setSelection(ISelection, boolean)
@@ -149,9 +149,9 @@ public class SelectionHelper {
     }
 
     /**
-     * 
+     *
      * DOC amaumont Comment method "setSelection".
-     * 
+     *
      * @param selection
      * @see TableViewer#setSelection(ISelection)
      */
@@ -164,9 +164,9 @@ public class SelectionHelper {
     }
 
     /**
-     * 
+     *
      * DOC amaumont Comment method "setSelection".
-     * 
+     *
      * @param start
      * @param end
      * @see Table#setSelection(int, int)
@@ -180,9 +180,9 @@ public class SelectionHelper {
     }
 
     /**
-     * 
+     *
      * DOC amaumont Comment method "setSelection".
-     * 
+     *
      * @param index
      * @see Table#setSelection(int)
      */
@@ -196,9 +196,9 @@ public class SelectionHelper {
     }
 
     /**
-     * 
+     *
      * DOC amaumont Comment method "setSelection".
-     * 
+     *
      * @param indices
      * @see Table#setSelection(int[])
      */
@@ -212,9 +212,9 @@ public class SelectionHelper {
     }
 
     /**
-     * 
+     *
      * DOC amaumont Comment method "setSelection".
-     * 
+     *
      * @param item
      * @see Table#setSelection(TableItem)
      */
@@ -228,9 +228,9 @@ public class SelectionHelper {
     }
 
     /**
-     * 
+     *
      * DOC amaumont Comment method "setSelection".
-     * 
+     *
      * @param items
      * @see Table#setSelection(TableItem[])
      */
@@ -244,9 +244,9 @@ public class SelectionHelper {
     }
 
     /**
-     * 
+     *
      * DOC amaumont Comment method "deselect".
-     * 
+     *
      * @param start
      * @param end
      * @see Table#deselect(int, int)
@@ -261,9 +261,9 @@ public class SelectionHelper {
     }
 
     /**
-     * 
+     *
      * DOC amaumont Comment method "deselect".
-     * 
+     *
      * @param index
      * @see Table#deselect(int)
      */
@@ -277,9 +277,9 @@ public class SelectionHelper {
     }
 
     /**
-     * 
+     *
      * DOC amaumont Comment method "deselect".
-     * 
+     *
      * @param indices
      * @see Table#deselect(int[])
      */
@@ -293,9 +293,9 @@ public class SelectionHelper {
     }
 
     /**
-     * 
+     *
      * DOC amaumont Comment method "deselectAll".
-     * 
+     *
      * @see Table#deselectAll()
      */
     public void deselectAll() {
@@ -308,9 +308,9 @@ public class SelectionHelper {
     }
 
     /**
-     * 
+     *
      * DOC amaumont Comment method "select".
-     * 
+     *
      * @param start
      * @param end
      * @see Table#select(int, int)
@@ -325,9 +325,9 @@ public class SelectionHelper {
     }
 
     /**
-     * 
+     *
      * DOC amaumont Comment method "select".
-     * 
+     *
      * @param index
      * @see Table#select(int)
      */
@@ -341,9 +341,9 @@ public class SelectionHelper {
     }
 
     /**
-     * 
+     *
      * DOC amaumont Comment method "select".
-     * 
+     *
      * @param indices
      * @see Table#select(int[])
      */
@@ -357,9 +357,9 @@ public class SelectionHelper {
     }
 
     /**
-     * 
+     *
      * DOC amaumont Comment method "selectAll".
-     * 
+     *
      * @see Table#selectAll()
      */
     public void selectAll() {
@@ -372,11 +372,11 @@ public class SelectionHelper {
     }
 
     /**
-     * 
+     *
      * DOC amaumont Comment method "addSelectionListener".
-     * 
+     *
      * Listeners on <code>Table</code> and <code>TableViewer</code> are registered when number of listeners is 0.
-     * 
+     *
      * @param lineSelectionListener
      */
     public void addBeforeSelectionListener(ILineSelectionListener lineSelectionListener) {
@@ -387,10 +387,10 @@ public class SelectionHelper {
     }
 
     /**
-     * 
+     *
      * DOC amaumont Comment method "removeSelectionListener". Listeners on <code>Table</code> and
      * <code>TableViewer</code> are unregistered when number of listeners become 0.
-     * 
+     *
      * @param lineSelectionListener
      */
     public void removeBeforeSelectionListener(ILineSelectionListener lineSelectionListener) {
@@ -403,11 +403,11 @@ public class SelectionHelper {
     }
 
     /**
-     * 
+     *
      * DOC amaumont Comment method "addSelectionListener".
-     * 
+     *
      * Listeners on <code>Table</code> and <code>TableViewer</code> are registered when number of listeners is 0.
-     * 
+     *
      * @param lineSelectionListener
      */
     public void addAfterSelectionListener(ILineSelectionListener lineSelectionListener) {
@@ -418,10 +418,10 @@ public class SelectionHelper {
     }
 
     /**
-     * 
+     *
      * DOC amaumont Comment method "removeSelectionListener". Listeners on <code>Table</code> and
      * <code>TableViewer</code> are unregistered when number of listeners become 0.
-     * 
+     *
      * @param lineSelectionListener
      */
     public void removeAfterSelectionListener(ILineSelectionListener lineSelectionListener) {
@@ -441,9 +441,9 @@ public class SelectionHelper {
     }
 
     /**
-     * 
+     *
      * DOC amaumont Comment method "setActiveFireChanged". activeFireChanged is true by default.
-     * 
+     *
      * @param activeFireChanged
      */
     public void setActiveFireSelectionChanged(boolean activeFireChanged) {

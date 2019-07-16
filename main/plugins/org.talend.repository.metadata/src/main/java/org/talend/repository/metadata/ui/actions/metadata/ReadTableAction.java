@@ -1,6 +1,6 @@
 // ============================================================================
 //
-// Copyright (C) 2006-2018 Talend Inc. - www.talend.com
+// Copyright (C) 2006-2019 Talend Inc. - www.talend.com
 //
 // This source code is available under agreement available at
 // %InstallDIR%\features\org.talend.rcp.branding.%PRODUCTNAME%\%PRODUCTNAME%license.txt
@@ -43,9 +43,9 @@ import org.talend.repository.ui.views.IRepositoryView;
 
 /**
  * DOC smallet class global comment. Detailed comment <br/>
- * 
+ *
  * $Id$
- * 
+ *
  */
 public class ReadTableAction extends AbstractCreateTableAction {
 
@@ -138,14 +138,14 @@ public class ReadTableAction extends AbstractCreateTableAction {
         // init(node);
 
         ERepositoryObjectType nodeType = (ERepositoryObjectType) node.getProperties(EProperties.CONTENT_TYPE);
-        
+
         if (ERepositoryObjectType.METADATA_CON_COLUMN.equals(nodeType)) {
             IRepositoryViewObject obj = node.getObject();
             if (obj instanceof MetadataColumnRepositoryObject) {
                 node = node.getParent().getParent();
                 nodeType = (ERepositoryObjectType) node.getProperties(EProperties.CONTENT_TYPE);
             }
-        } 
+        }
 
         if (ERepositoryObjectType.METADATA_CON_TABLE.equals(nodeType)) {
             ConnectionItem connectionItem = (ConnectionItem) node.getObject().getProperty().getItem();

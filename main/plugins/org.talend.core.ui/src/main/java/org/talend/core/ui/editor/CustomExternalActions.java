@@ -1,6 +1,6 @@
 // ============================================================================
 //
-// Copyright (C) 2006-2018 Talend Inc. - www.talend.com
+// Copyright (C) 2006-2019 Talend Inc. - www.talend.com
 //
 // This source code is available under agreement available at
 // %InstallDIR%\features\org.talend.rcp.branding.%PRODUCTNAME%\%PRODUCTNAME%license.txt
@@ -58,14 +58,14 @@ public abstract class CustomExternalActions extends SelectionAction {
 
     /**
      * qzhang Comment method "getComponentType".
-     * 
+     *
      * @return
      */
     public abstract int getComponentType();
 
     /**
      * DOC qzhang Comment method "getInstances".
-     * 
+     *
      * @return
      */
     public static List<SelectionAction> getInstances(IWorkbenchPart part) {
@@ -99,7 +99,7 @@ public abstract class CustomExternalActions extends SelectionAction {
         IEditorPart activeEditor = PlatformUI.getWorkbench().getActiveWorkbenchWindow().getActivePage().getActiveEditor();
         return mrService.isMapReduceEditor(activeEditor);
     }
-    
+
     protected boolean isSParkJobletEditorActive() {
         if (!GlobalServiceRegister.getDefault().isServiceRegistered(ISparkJobletProviderService.class)) {
             return false;
@@ -111,7 +111,7 @@ public abstract class CustomExternalActions extends SelectionAction {
         IEditorPart activeEditor = PlatformUI.getWorkbench().getActiveWorkbenchWindow().getActivePage().getActiveEditor();
         return mrService.isSparkJobletEditor(activeEditor);
     }
-    
+
     protected boolean isStandardJobEditorActive() {
         if (!GlobalServiceRegister.getDefault().isServiceRegistered(IDesignerCoreService.class)) {
             return false;
@@ -123,7 +123,7 @@ public abstract class CustomExternalActions extends SelectionAction {
         IEditorPart activeEditor = PlatformUI.getWorkbench().getActiveWorkbenchWindow().getActivePage().getActiveEditor();
         return service.isTalendEditor(activeEditor);
     }
-    
+
     protected boolean isStandardJobletEditorActive() {
         if (!GlobalServiceRegister.getDefault().isServiceRegistered(IJobletProviderService.class)) {
             return false;
@@ -148,7 +148,7 @@ public abstract class CustomExternalActions extends SelectionAction {
         IEditorPart activeEditor = PlatformUI.getWorkbench().getActiveWorkbenchWindow().getActivePage().getActiveEditor();
         return mrService.isStormEditor(activeEditor);
     }
-    
+
     protected boolean isSParkStreamingJobletEditorActive() {
         if (!GlobalServiceRegister.getDefault().isServiceRegistered(ISparkStreamingJobletProviderService.class)) {
             return false;

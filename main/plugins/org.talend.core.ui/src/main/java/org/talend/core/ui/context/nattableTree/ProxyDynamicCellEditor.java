@@ -1,6 +1,6 @@
 // ============================================================================
 //
-// Copyright (C) 2006-2018 Talend Inc. - www.talend.com
+// Copyright (C) 2006-2019 Talend Inc. - www.talend.com
 //
 // This source code is available under agreement available at
 // %InstallDIR%\features\org.talend.rcp.branding.%PRODUCTNAME%\%PRODUCTNAME%license.txt
@@ -31,7 +31,7 @@ import org.talend.core.model.process.IContextParameter;
 import org.talend.core.ui.context.ContextTreeTable.ContextTreeNode;
 
 /**
- * 
+ *
  * This one is a proxy for dynamic cellEditor for different type.
  */
 public class ProxyDynamicCellEditor extends AbstractCellEditor {
@@ -46,7 +46,7 @@ public class ProxyDynamicCellEditor extends AbstractCellEditor {
 
     /**
      * DOC ldong ProxyDynamicCellEditor constructor comment.
-     * 
+     *
      * @param dataProvider
      * @param columnGroupModel
      * @param manager
@@ -60,7 +60,7 @@ public class ProxyDynamicCellEditor extends AbstractCellEditor {
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see org.eclipse.nebula.widgets.nattable.edit.editor.ICellEditor#getEditorValue()
      */
     @Override
@@ -73,7 +73,7 @@ public class ProxyDynamicCellEditor extends AbstractCellEditor {
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see org.eclipse.nebula.widgets.nattable.edit.editor.ICellEditor#setEditorValue(java.lang.Object)
      */
     @Override
@@ -84,7 +84,7 @@ public class ProxyDynamicCellEditor extends AbstractCellEditor {
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see org.eclipse.nebula.widgets.nattable.edit.editor.ICellEditor#getEditorControl()
      */
     @Override
@@ -94,7 +94,7 @@ public class ProxyDynamicCellEditor extends AbstractCellEditor {
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see
      * org.eclipse.nebula.widgets.nattable.edit.editor.ICellEditor#createEditorControl(org.eclipse.swt.widgets.Composite
      * )
@@ -106,7 +106,7 @@ public class ProxyDynamicCellEditor extends AbstractCellEditor {
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see
      * org.eclipse.nebula.widgets.nattable.edit.editor.AbstractCellEditor#activateCell(org.eclipse.swt.widgets.Composite
      * , java.lang.Object)
@@ -147,7 +147,7 @@ public class ProxyDynamicCellEditor extends AbstractCellEditor {
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see
      * org.eclipse.nebula.widgets.nattable.edit.editor.AbstractCellEditor#commit(org.eclipse.nebula.widgets.nattable
      * .selection.SelectionLayer.MoveDirectionEnum, boolean, boolean)

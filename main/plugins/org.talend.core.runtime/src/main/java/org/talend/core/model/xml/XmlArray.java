@@ -1,6 +1,6 @@
 // ============================================================================
 //
-// Copyright (C) 2006-2018 Talend Inc. - www.talend.com
+// Copyright (C) 2006-2019 Talend Inc. - www.talend.com
 //
 // This source code is available under agreement available at
 // %InstallDIR%\features\org.talend.rcp.branding.%PRODUCTNAME%\%PRODUCTNAME%license.txt
@@ -32,9 +32,9 @@ import org.xml.sax.SAXException;
 
 /**
  * DOC chuger class global comment. Detailled comment <br/>
- * 
+ *
  * $Id: XmlArray.java 38013 2010-03-05 14:21:59Z mhirt $
- * 
+ *
  */
 public class XmlArray {
 
@@ -51,7 +51,7 @@ public class XmlArray {
 
     /**
      * Set the value of row limit back to default in preference.
-     * 
+     *
      * yzhang Comment method "setLimitToDefault".
      */
     public static void setLimitToDefault() {
@@ -61,7 +61,7 @@ public class XmlArray {
 
     /**
      * Sets the rowLimit.
-     * 
+     *
      * @param rowLimit the rowLimit to set
      */
     public static void setRowLimit(int limit) {
@@ -74,7 +74,7 @@ public class XmlArray {
 
     /**
      * Getter for rowLimit.
-     * 
+     *
      * @return the rowLimit
      */
     public static int getRowLimit() {
@@ -92,7 +92,7 @@ public class XmlArray {
 
     /**
      * Getter for rows.
-     * 
+     *
      * @return the rows
      */
     public List<XmlRow> getRows() {
@@ -101,7 +101,7 @@ public class XmlArray {
 
     /**
      * Adds a row at the end of the array.
-     * 
+     *
      * @param row Row to add.
      */
     public void add(XmlRow row) {

@@ -1,6 +1,6 @@
 // ============================================================================
 //
-// Copyright (C) 2006-2018 Talend Inc. - www.talend.com
+// Copyright (C) 2006-2019 Talend Inc. - www.talend.com
 //
 // This source code is available under agreement available at
 // %InstallDIR%\features\org.talend.rcp.branding.%PRODUCTNAME%\%PRODUCTNAME%license.txt
@@ -62,9 +62,9 @@ import org.talend.core.ui.proposal.JavaSimpleDateFormatProposalProvider;
 
 /**
  * DOC amaumont class global comment. Detailled comment <br/>
- * 
+ *
  * $Id$
- * 
+ *
  * @param <B> Type of beans in table
  */
 public abstract class AbstractMetadataTableEditorView<B> extends AbstractDataTableEditorView<B> {
@@ -157,7 +157,7 @@ public abstract class AbstractMetadataTableEditorView<B> extends AbstractDataTab
 
     /**
      * DOC amaumont AbstractMetadataTableEditorView constructor comment.
-     * 
+     *
      * @param parentComposite
      * @param mainCompositeStyle
      * @param initGraphicsComponents
@@ -168,7 +168,7 @@ public abstract class AbstractMetadataTableEditorView<B> extends AbstractDataTab
 
     /**
      * DOC amaumont AbstractMetadataTableEditorView constructor comment.
-     * 
+     *
      * @param parentComposite
      * @param mainCompositeStyle
      * @param extendedTableModel
@@ -186,7 +186,7 @@ public abstract class AbstractMetadataTableEditorView<B> extends AbstractDataTab
 
     /**
      * DOC amaumont AbstractMetadataTableEditorView constructor comment.
-     * 
+     *
      * @param parentComposite
      * @param mainCompositeStyle
      * @param extendedTableModel
@@ -201,7 +201,7 @@ public abstract class AbstractMetadataTableEditorView<B> extends AbstractDataTab
 
     /**
      * DOC amaumont AbstractMetadataTableEditorView constructor comment.
-     * 
+     *
      * @param parentComposite
      * @param mainCompositeStyle
      * @param extendedTableModel
@@ -213,7 +213,7 @@ public abstract class AbstractMetadataTableEditorView<B> extends AbstractDataTab
 
     /**
      * DOC amaumont AbstractMetadataTableEditorView constructor comment.
-     * 
+     *
      * @param parentComposite
      * @param mainCompositeStyle
      */
@@ -223,7 +223,7 @@ public abstract class AbstractMetadataTableEditorView<B> extends AbstractDataTab
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see
      * org.talend.commons.ui.swt.advanced.dataeditor.AbstractDataTableEditorView#createColumns(org.talend.commons.ui
      * .swt.tableviewer.TableViewerCreator, org.eclipse.swt.widgets.Table)
@@ -358,7 +358,7 @@ public abstract class AbstractMetadataTableEditorView<B> extends AbstractDataTab
 
     /**
      * DOC amaumont Comment method "configureCommentColumn".
-     * 
+     *
      * @param tableViewerCreator
      */
     protected void configureCommentColumn(TableViewerCreator<B> tableViewerCreator) {
@@ -377,14 +377,14 @@ public abstract class AbstractMetadataTableEditorView<B> extends AbstractDataTab
 
     /**
      * DOC amaumont Comment method "getCommentAccessor".
-     * 
+     *
      * @return
      */
     protected abstract IBeanPropertyAccessors<B, String> getCommentAccessor();
 
     /**
      * DOC ldong Comment method "configureCommentColumn".
-     * 
+     *
      * @param tableViewerCreator
      */
     protected void configureOriginalLengthColumn(TableViewerCreator<B> tableViewerCreator) {
@@ -404,7 +404,7 @@ public abstract class AbstractMetadataTableEditorView<B> extends AbstractDataTab
 
     /**
      * DOC ldong Comment method "getCommentAccessor".
-     * 
+     *
      * @return
      */
     protected abstract IBeanPropertyAccessors<B, Integer> getOriginalLengthAccessor();
@@ -428,7 +428,7 @@ public abstract class AbstractMetadataTableEditorView<B> extends AbstractDataTab
 
     /**
      * DOC ldong Comment method "getCommentAccessor".
-     * 
+     *
      * @return
      */
     protected abstract IBeanPropertyAccessors<B, String> getAdditionalFieldAccessor(String field);
@@ -437,14 +437,14 @@ public abstract class AbstractMetadataTableEditorView<B> extends AbstractDataTab
 
     /**
      * DOC ldong Comment method "getCommentAccessor".
-     * 
+     *
      * @return
      */
     // protected abstract IBeanPropertyAccessors<B, String> getSignedDecimalAccessor();
 
     /**
      * DOC amaumont Comment method "configureDefaultColumn".
-     * 
+     *
      * @param tableViewerCreator
      */
     protected void configureDefaultColumn(TableViewerCreator<B> tableViewerCreator) {
@@ -468,7 +468,7 @@ public abstract class AbstractMetadataTableEditorView<B> extends AbstractDataTab
 
     /**
      * DOC amaumont Comment method "getDefaultValueAccessor".
-     * 
+     *
      * @return
      */
     protected abstract IBeanPropertyAccessors<B, String> getDefaultValueAccessor();
@@ -477,7 +477,7 @@ public abstract class AbstractMetadataTableEditorView<B> extends AbstractDataTab
 
     /**
      * DOC amaumont Comment method "configurePrecisionColumn".
-     * 
+     *
      * @param tableViewerCreator
      */
     protected void configurePrecisionColumn(TableViewerCreator<B> tableViewerCreator) {
@@ -497,7 +497,7 @@ public abstract class AbstractMetadataTableEditorView<B> extends AbstractDataTab
 
     /**
      * DOC amaumont Comment method "getPrecisionAccessor".
-     * 
+     *
      * @return
      */
     protected abstract IBeanPropertyAccessors<B, Integer> getPrecisionAccessor();
@@ -506,7 +506,7 @@ public abstract class AbstractMetadataTableEditorView<B> extends AbstractDataTab
 
     /**
      * DOC amaumont Comment method "configureLengthColumn".
-     * 
+     *
      * @param tableViewerCreator
      * @param positiveIntValueAdapter
      */
@@ -527,14 +527,14 @@ public abstract class AbstractMetadataTableEditorView<B> extends AbstractDataTab
 
     /**
      * DOC amaumont Comment method "getLengthAccessor".
-     * 
+     *
      * @return
      */
     protected abstract IBeanPropertyAccessors<B, Integer> getLengthAccessor();
 
     /**
      * DOC amaumont Comment method "configurePatternColumn".
-     * 
+     *
      * @param tableViewerCreator
      */
     protected void configurePatternColumn(TableViewerCreator<B> tableViewerCreator) {
@@ -577,7 +577,7 @@ public abstract class AbstractMetadataTableEditorView<B> extends AbstractDataTab
 
                 /*
                  * (non-Javadoc)
-                 * 
+                 *
                  * @see org.talend.commons.ui.swt.tableviewer.behavior.IColumnLabelProvider#getLabel(java.lang.Object)
                  */
                 @Override
@@ -604,14 +604,14 @@ public abstract class AbstractMetadataTableEditorView<B> extends AbstractDataTab
 
     /**
      * DOC amaumont Comment method "getPatternAccessor".
-     * 
+     *
      * @return
      */
     protected abstract IBeanPropertyAccessors<B, String> getPatternAccessor();
 
     /**
      * DOC amaumont Comment method "configureNullableColumn".
-     * 
+     *
      * @param tableViewerCreator
      */
     protected void configureNullableColumn(TableViewerCreator<B> tableViewerCreator) {
@@ -635,14 +635,14 @@ public abstract class AbstractMetadataTableEditorView<B> extends AbstractDataTab
 
     /**
      * DOC amaumont Comment method "getNullableAccessors".
-     * 
+     *
      * @return
      */
     protected abstract IBeanPropertyAccessors<B, Boolean> getNullableAccessor();
 
     /**
      * DOC amaumont Comment method "configureTypeColumns".
-     * 
+     *
      * @param tableViewerCreator
      * @param comboValueAdapter
      * @param arrayTalendTypes
@@ -667,7 +667,7 @@ public abstract class AbstractMetadataTableEditorView<B> extends AbstractDataTab
 
     /**
      * DOC amaumont Comment method "configureKeyColumn".
-     * 
+     *
      * @param tableViewerCreator
      */
     protected void configureKeyColumn(TableViewerCreator<B> tableViewerCreator) {
@@ -687,7 +687,7 @@ public abstract class AbstractMetadataTableEditorView<B> extends AbstractDataTab
 
     /**
      * DOC amaumont Comment method "getKeyAccesor".
-     * 
+     *
      * @return
      */
     protected abstract IBeanPropertyAccessors<B, Boolean> getKeyAccesor();
@@ -696,7 +696,7 @@ public abstract class AbstractMetadataTableEditorView<B> extends AbstractDataTab
 
     /**
      * DOC amaumont Comment method "configureNameColumn".
-     * 
+     *
      * @param tableViewerCreator
      */
     protected void configureNameColumn(TableViewerCreator<B> tableViewerCreator) {
@@ -778,7 +778,7 @@ public abstract class AbstractMetadataTableEditorView<B> extends AbstractDataTab
 
     /**
      * DOC amaumont Comment method "configureNameColumn".
-     * 
+     *
      * @param tableViewerCreator
      */
     protected void configureDbColumnName(TableViewerCreator<B> tableViewerCreator) {
@@ -824,7 +824,7 @@ public abstract class AbstractMetadataTableEditorView<B> extends AbstractDataTab
 
     /**
      * DOC amaumont Comment method "validateColumnName".
-     * 
+     *
      * @param newValue
      * @param beanPosition
      * @return
@@ -833,7 +833,7 @@ public abstract class AbstractMetadataTableEditorView<B> extends AbstractDataTab
 
     /**
      * DOC amaumont Comment method "getLabelAccessor".
-     * 
+     *
      * @return
      */
     protected abstract IBeanPropertyAccessors<B, String> getLabelAccessor();
@@ -846,7 +846,7 @@ public abstract class AbstractMetadataTableEditorView<B> extends AbstractDataTab
 
     /**
      * DOC amaumont Comment method "initTalendTypeColumn".
-     * 
+     *
      * @param tableViewerCreator
      * @param comboValueAdapter
      * @param arrayTalendTypes
@@ -897,14 +897,14 @@ public abstract class AbstractMetadataTableEditorView<B> extends AbstractDataTab
 
     /**
      * DOC amaumont Comment method "getTalendType".
-     * 
+     *
      * @return
      */
     protected abstract IBeanPropertyAccessors<B, String> getTalendTypeAccessor();
 
     /**
      * DOC amaumont Comment method "initDbTypeColumn".
-     * 
+     *
      * @param tableViewerCreator
      */
     private TableViewerCreatorColumn configureDbTypeColumn(final TableViewerCreator<B> tableViewerCreator) {
@@ -951,7 +951,7 @@ public abstract class AbstractMetadataTableEditorView<B> extends AbstractDataTab
 
     /**
      * DOC amaumont Comment method "getDbTypeAccessor".
-     * 
+     *
      * @return
      */
     protected abstract IBeanPropertyAccessors getDbTypeAccessor();
@@ -982,7 +982,7 @@ public abstract class AbstractMetadataTableEditorView<B> extends AbstractDataTab
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see
      * org.talend.commons.ui.swt.advanced.dataeditor.AbstractDataTableEditorView#setTableViewerCreatorOptions(org.talend
      * .commons.ui.swt.tableviewer.TableViewerCreator)
@@ -995,7 +995,7 @@ public abstract class AbstractMetadataTableEditorView<B> extends AbstractDataTab
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see org.talend.commons.ui.swt.advanced.dataeditor.AbstractDataTableEditorView#initToolBar()
      */
     @Override
@@ -1014,7 +1014,7 @@ public abstract class AbstractMetadataTableEditorView<B> extends AbstractDataTab
 
     /**
      * DOC ocarbone Comment method "setGridDataSize".
-     * 
+     *
      * @param minimumWidth
      * @param minimumHeight
      */
@@ -1031,7 +1031,7 @@ public abstract class AbstractMetadataTableEditorView<B> extends AbstractDataTab
 
     /**
      * Getter for showPatternColumn.
-     * 
+     *
      * @return the showPatternColumn
      */
     public boolean isShowPatternColumn() {
@@ -1040,7 +1040,7 @@ public abstract class AbstractMetadataTableEditorView<B> extends AbstractDataTab
 
     /**
      * Sets the showPatternColumn.
-     * 
+     *
      * @param showPatternColumn the showPatternColumn to set
      */
     public void setShowPatternColumn(boolean showPatternColumn) {
@@ -1049,7 +1049,7 @@ public abstract class AbstractMetadataTableEditorView<B> extends AbstractDataTab
 
     /**
      * DOC amaumont Comment method "currentBeanHasJavaDateType".
-     * 
+     *
      * @param element
      * @return
      */
@@ -1061,7 +1061,7 @@ public abstract class AbstractMetadataTableEditorView<B> extends AbstractDataTab
 
     /**
      * DOC ycbai Comment method "isCurrentBeanHasType".
-     * 
+     *
      * @param element
      * @param typeId
      * @return
@@ -1185,7 +1185,7 @@ public abstract class AbstractMetadataTableEditorView<B> extends AbstractDataTab
 
     /**
      * Getter for isSapSpecialSchema.
-     * 
+     *
      * @return the isSapSpecialSchema
      */
     public boolean isSapSpecialSchema() {
@@ -1194,7 +1194,7 @@ public abstract class AbstractMetadataTableEditorView<B> extends AbstractDataTab
 
     /**
      * Sets the isSapSpecialSchema.
-     * 
+     *
      * @param isSapSpecialSchema the isSapSpecialSchema to set
      */
     public void setSapSpecialSchema(boolean isSapSpecialSchema) {
@@ -1203,7 +1203,7 @@ public abstract class AbstractMetadataTableEditorView<B> extends AbstractDataTab
 
     /**
      * Getter for showDefaultColumn.
-     * 
+     *
      * @return the showDefaultColumn
      */
     public boolean isShowDefaultColumn() {
@@ -1212,7 +1212,7 @@ public abstract class AbstractMetadataTableEditorView<B> extends AbstractDataTab
 
     /**
      * Sets the showDefaultColumn.
-     * 
+     *
      * @param showDefaultColumn the showDefaultColumn to set
      */
     public void setShowDefaultColumn(boolean showDefaultColumn) {
@@ -1221,7 +1221,7 @@ public abstract class AbstractMetadataTableEditorView<B> extends AbstractDataTab
 
     /**
      * Sets the metadataTalendTypeFilter.
-     * 
+     *
      * @param metadataTalendTypeFilter the metadataTalendTypeFilter to set
      */
     public void setMetadataTalendTypeFilter(MetadataTalendTypeFilter metadataTalendTypeFilter) {

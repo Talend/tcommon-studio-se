@@ -1,6 +1,6 @@
 // ============================================================================
 //
-// Copyright (C) 2006-2018 Talend Inc. - www.talend.com
+// Copyright (C) 2006-2019 Talend Inc. - www.talend.com
 //
 // This source code is available under agreement available at
 // %InstallDIR%\features\org.talend.rcp.branding.%PRODUCTNAME%\%PRODUCTNAME%license.txt
@@ -114,9 +114,9 @@ import org.talend.repository.ui.views.IRepositoryView;
 
 /**
  * DOC ccarbone class global comment. Detailled comment <br/>
- * 
+ *
  * $Id$
- * 
+ *
  */
 @SuppressWarnings("restriction")
 public class ApplicationWorkbenchWindowAdvisor extends WorkbenchWindowAdvisor {
@@ -191,13 +191,13 @@ public class ApplicationWorkbenchWindowAdvisor extends WorkbenchWindowAdvisor {
             configurer
                     .setTitle(appName
                             + buildIdField
-                            + " | " + project.getLabel() + " (" //$NON-NLS-1$ //$NON-NLS-2$ 
+                            + " | " + project.getLabel() + " (" //$NON-NLS-1$ //$NON-NLS-2$
                             + Messages.getString("ApplicationWorkbenchWindowAdvisor.repositoryConnection") + ": " + ConnectionUserPerReader.getInstance().readLastConncetion() + ")"); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
         } else {
             configurer
                     .setTitle(appName
                             + buildIdField
-                            + " | " + repositoryContext.getUser() + " | " + project.getLabel() + " (" //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ 
+                            + " | " + repositoryContext.getUser() + " | " + project.getLabel() + " (" //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
                             + Messages.getString("ApplicationWorkbenchWindowAdvisor.repositoryConnection") + ": " + ConnectionUserPerReader.getInstance().readLastConncetion() + ")"); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
         }
         ActionBarBuildHelper helper = (ActionBarBuildHelper) brandingConfiguration.getHelper();
@@ -217,7 +217,7 @@ public class ApplicationWorkbenchWindowAdvisor extends WorkbenchWindowAdvisor {
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see org.eclipse.ui.application.WorkbenchWindowAdvisor#postWindowRestore()
      */
     @Override
@@ -228,7 +228,7 @@ public class ApplicationWorkbenchWindowAdvisor extends WorkbenchWindowAdvisor {
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see org.eclipse.ui.application.WorkbenchWindowAdvisor#postWindowOpen()
      */
     @Override
@@ -270,7 +270,7 @@ public class ApplicationWorkbenchWindowAdvisor extends WorkbenchWindowAdvisor {
 
         /**
          * PTODO need remove this, if there is not only merging ref-project option in the repository page.(feature 6725)
-         * 
+         *
          * @see org.talend.designer.core.ui.preferences.RepositoryPreferencePage
          */
         if (!PluginChecker.isRefProjectLoaded()) {
@@ -548,7 +548,7 @@ public class ApplicationWorkbenchWindowAdvisor extends WorkbenchWindowAdvisor {
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see org.eclipse.ui.application.WorkbenchWindowAdvisor#postWindowClose()
      */
     @Override
@@ -568,7 +568,7 @@ public class ApplicationWorkbenchWindowAdvisor extends WorkbenchWindowAdvisor {
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see org.eclipse.ui.application.WorkbenchWindowAdvisor#preWindowShellClose()
      */
 

@@ -2,7 +2,7 @@
 //
 // Talend Community Edition
 //
-// Copyright (C) 2006-2018 Talend Inc. - www.talend.com
+// Copyright (C) 2006-2019 Talend Inc. - www.talend.com
 //
 // This library is free software; you can redistribute it and/or
 // modify it under the terms of the GNU Lesser General Public
@@ -25,9 +25,9 @@ import org.eclipse.swt.SWT;
 
 /**
  * Facade to accomodate difference between RCP and RAP in SWT class <br/>
- * 
+ *
  * $Id: talend.epf 55206 2011-02-15 17:32:14Z sgandon $
- * 
+ *
  */
 public abstract class SWTFacade {
 

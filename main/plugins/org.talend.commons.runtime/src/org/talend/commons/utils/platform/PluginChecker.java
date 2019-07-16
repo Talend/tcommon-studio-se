@@ -1,6 +1,6 @@
 // ============================================================================
 //
-// Copyright (C) 2006-2018 Talend Inc. - www.talend.com
+// Copyright (C) 2006-2019 Talend Inc. - www.talend.com
 //
 // This source code is available under agreement available at
 // %InstallDIR%\features\org.talend.rcp.branding.%PRODUCTNAME%\%PRODUCTNAME%license.txt
@@ -31,7 +31,7 @@ public final class PluginChecker {
 
     /**
      * Check if specific plug-in is loaded.
-     * 
+     *
      * @return isLoaded
      */
     public static boolean isPluginLoaded(String pluginID) {
@@ -45,9 +45,9 @@ public final class PluginChecker {
 
     /**
      * DOC bZhou Comment method "isTDQLoaded".
-     * 
+     *
      * use it to test if the platform start by TDQ.
-     * 
+     *
      * @return
      */
     public static boolean isTDQLoaded() {
@@ -56,9 +56,9 @@ public final class PluginChecker {
 
     /**
      * DOC bZhou Comment method "isTDCPLoaded".
-     * 
+     *
      * use it to test if the platform start by TDCP.
-     * 
+     *
      * @return
      */
     public static boolean isTDCPLoaded() {
@@ -67,7 +67,7 @@ public final class PluginChecker {
 
     /**
      * Method "isOnlyTopLoaded".
-     * 
+     *
      * @return true when TOP is used standalone.
      */
     public static boolean isOnlyTopLoaded() {

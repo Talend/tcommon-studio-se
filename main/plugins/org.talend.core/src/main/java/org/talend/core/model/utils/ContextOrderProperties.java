@@ -1,6 +1,6 @@
 // ============================================================================
 //
-// Copyright (C) 2006-2018 Talend Inc. - www.talend.com
+// Copyright (C) 2006-2019 Talend Inc. - www.talend.com
 //
 // This source code is available under agreement available at
 // %InstallDIR%\features\org.talend.rcp.branding.%PRODUCTNAME%\%PRODUCTNAME%license.txt
@@ -43,7 +43,7 @@ import org.talend.repository.ProjectManager;
 
 /**
  * created by ldong on Aug 7, 2014 Detailled comment
- * 
+ *
  */
 public class ContextOrderProperties extends Properties {
 
@@ -105,7 +105,7 @@ public class ContextOrderProperties extends Properties {
 
     /**
      * Constructor.
-     * 
+     *
      * @param properties the java propertis.
      */
     public ContextOrderProperties(List<IContextParameter> parameterList) {
@@ -212,8 +212,8 @@ public class ContextOrderProperties extends Properties {
         keys.add(key);
         this.setProperty(key, value);
     }
-    
-    
+
+
 
     @Override
     public synchronized Object setProperty(String key, String value) {

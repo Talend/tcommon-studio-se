@@ -1,6 +1,6 @@
 // ============================================================================
 //
-// Copyright (C) 2006-2018 Talend Inc. - www.talend.com
+// Copyright (C) 2006-2019 Talend Inc. - www.talend.com
 //
 // This source code is available under agreement available at
 // %InstallDIR%\features\org.talend.rcp.branding.%PRODUCTNAME%\%PRODUCTNAME%license.txt
@@ -12,14 +12,14 @@
 // ============================================================================
 /*
  * $Id: LabelValueBean.java 471754 2006-11-06 14:55:09Z husted $
- * 
+ *
  * Licensed to the Apache Software Foundation (ASF) under one or more contributor license agreements. See the NOTICE
  * file distributed with this work for additional information regarding copyright ownership. The ASF licenses this file
  * to you under the Apache License, Version 2.0 (the "License"); you may not use this file except in compliance with the
  * License. You may obtain a copy of the License at
- * 
+ *
  * http://www.apache.org/licenses/LICENSE-2.0
- * 
+ *
  * Unless required by applicable law or agreed to in writing, software distributed under the License is distributed on
  * an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the License for the
  * specific language governing permissions and limitations under the License.
@@ -33,11 +33,11 @@ import java.util.Comparator;
  * A simple JavaBean to represent label-value pairs. This is most commonly used when constructing user interface
  * elements which have a label to be displayed to the user, and a corresponding value to be returned to the server. One
  * example is the <code>&lt;html:options&gt;</code> tag.
- * 
+ *
  * <p>
  * Note: this class has a natural ordering that is inconsistent with equals.
  * </p>
- * 
+ *
  * @version $Rev: 471754 $ $Date: 2005-05-07 12:11:38 -0400 (Sat, 07 May 2005) $
  */
 public class LabelValueBean implements Comparable, Serializable {
@@ -78,7 +78,7 @@ public class LabelValueBean implements Comparable, Serializable {
 
     /**
      * Construct an instance with the supplied property values.
-     * 
+     *
      * @param label The label to be displayed to the user.
      * @param value The value to be returned to the server.
      */
@@ -107,7 +107,7 @@ public class LabelValueBean implements Comparable, Serializable {
 
     /**
      * Compare LabelValueBeans based on the label, because that's the human viewable part of the object.
-     * 
+     *
      * @see Comparable
      */
     public int compareTo(Object o) {
@@ -134,7 +134,7 @@ public class LabelValueBean implements Comparable, Serializable {
 
     /**
      * LabelValueBeans are equal if their values are both null or equal.
-     * 
+     *
      * @see Object#equals(Object)
      */
     public boolean equals(Object obj) {
@@ -162,7 +162,7 @@ public class LabelValueBean implements Comparable, Serializable {
 
     /**
      * The hash code is based on the object's value.
-     * 
+     *
      * @see Object#hashCode()
      */
     public int hashCode() {

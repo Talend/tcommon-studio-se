@@ -1,6 +1,6 @@
 // ============================================================================
 //
-// Copyright (C) 2006-2018 Talend Inc. - www.talend.com
+// Copyright (C) 2006-2019 Talend Inc. - www.talend.com
 //
 // This source code is available under agreement available at
 // %InstallDIR%\features\org.talend.rcp.branding.%PRODUCTNAME%\%PRODUCTNAME%license.txt
@@ -59,7 +59,7 @@ import org.talend.salesforce.oauth.Token;
 
 /**
  * DOC YeXiaowei class global comment. Detailled comment <br/>
- * 
+ *
  */
 public class SalesforceStep1Form extends AbstractSalesforceStepForm {
 
@@ -72,13 +72,13 @@ public class SalesforceStep1Form extends AbstractSalesforceStepForm {
     private String batchSize = null;
 
     private String timeOut = null;
-    
+
     private String proxyHost = null;
 
     private String proxyPort = null;
-    
+
     private String proxyUsername = null;
-    
+
     private String proxyPassword = null;
 
     private LabelledText webServiceUrlText = null;
@@ -152,7 +152,7 @@ public class SalesforceStep1Form extends AbstractSalesforceStepForm {
     private Composite stackComposite;
 
     /*
-     * 
+     *
      */
 
     private Button checkButton = null;
@@ -183,7 +183,7 @@ public class SalesforceStep1Form extends AbstractSalesforceStepForm {
 
     /**
      * DOC YeXiaowei SalesforceStep1Form constructor comment.
-     * 
+     *
      * @param parent
      * @param connectionItem
      * @param existingNames
@@ -198,7 +198,7 @@ public class SalesforceStep1Form extends AbstractSalesforceStepForm {
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see org.talend.repository.ui.swt.utils.AbstractForm#adaptFormToReadOnly()
      */
     @Override
@@ -209,7 +209,7 @@ public class SalesforceStep1Form extends AbstractSalesforceStepForm {
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see org.talend.repository.ui.swt.utils.AbstractForm#addFields()
      */
     @Override
@@ -352,7 +352,7 @@ public class SalesforceStep1Form extends AbstractSalesforceStepForm {
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see org.talend.repository.ui.swt.utils.AbstractForm#addFieldsListeners()
      */
     @Override
@@ -609,7 +609,7 @@ public class SalesforceStep1Form extends AbstractSalesforceStepForm {
 
             /*
              * (non-Javadoc)
-             * 
+             *
              * @see org.eclipse.swt.events.SelectionAdapter#widgetSelected(org.eclipse.swt.events.SelectionEvent)
              */
             @Override
@@ -702,8 +702,8 @@ public class SalesforceStep1Form extends AbstractSalesforceStepForm {
                             } else {
                                 loginOk = true;
                                 MessageDialog.openInformation(getShell(),
-                                        Messages.getString("SalesforceForm.checkConnectionTitle"), //$NON-NLS-1$ 
-                                        Messages.getString("SalesforceForm.checkIsDone")); //$NON-NLS-1$  
+                                        Messages.getString("SalesforceForm.checkConnectionTitle"), //$NON-NLS-1$
+                                        Messages.getString("SalesforceForm.checkIsDone")); //$NON-NLS-1$
 
                             }
                         } else {
@@ -740,7 +740,7 @@ public class SalesforceStep1Form extends AbstractSalesforceStepForm {
         callbackHost = callbackHostText.getText();
         callbackPort = callbackPortText.getText();
         token = tokenText.getText();
-        
+
         // for bug TDI-32666
         if (useHttpBtn.getSelection()) {
         	proxyHost = proxyHostText.getText();
@@ -763,14 +763,14 @@ public class SalesforceStep1Form extends AbstractSalesforceStepForm {
             callbackHost = getContextModeManager().getOriginalValue(callbackHost);
             callbackPort = getContextModeManager().getOriginalValue(callbackPort);
             token = getContextModeManager().getOriginalValue(token);
-            
+
             if (useHttpBtn.getSelection()) {
             	proxyHost = getContextModeManager().getOriginalValue(proxyHost);
             	proxyPort = getContextModeManager().getOriginalValue(proxyPort);
             	proxyUsername = getContextModeManager().getOriginalValue(proxyUsername);
             	proxyPassword = getContextModeManager().getOriginalValue(proxyPassword);
             }
-            
+
         }
     }
 
@@ -827,7 +827,7 @@ public class SalesforceStep1Form extends AbstractSalesforceStepForm {
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see org.talend.repository.ui.swt.utils.AbstractForm#addUtilsButtonListeners()
      */
     @Override
@@ -863,7 +863,7 @@ public class SalesforceStep1Form extends AbstractSalesforceStepForm {
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see org.talend.repository.ui.swt.utils.AbstractForm#checkFieldsValue()
      */
     @Override
@@ -933,7 +933,7 @@ public class SalesforceStep1Form extends AbstractSalesforceStepForm {
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see org.talend.repository.ui.swt.utils.AbstractForm#initialize()
      */
     @Override

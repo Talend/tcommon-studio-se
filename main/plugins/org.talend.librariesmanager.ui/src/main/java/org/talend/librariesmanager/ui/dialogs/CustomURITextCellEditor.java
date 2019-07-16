@@ -1,6 +1,6 @@
 // ============================================================================
 //
-// Copyright (C) 2006-2018 Talend Inc. - www.talend.com
+// Copyright (C) 2006-2019 Talend Inc. - www.talend.com
 //
 // This source code is available under agreement available at
 // %InstallDIR%\features\org.talend.rcp.branding.%PRODUCTNAME%\%PRODUCTNAME%license.txt
@@ -27,7 +27,7 @@ public class CustomURITextCellEditor extends ExtendedTextCellEditor {
 
     /**
      * DOC wchen CustomURITextCellEditor constructor comment.
-     * 
+     *
      * @param parent
      * @param cellEditorBehavior
      */
@@ -37,7 +37,7 @@ public class CustomURITextCellEditor extends ExtendedTextCellEditor {
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see org.eclipse.jface.viewers.CellEditor#fireApplyEditorValue()
      */
     @Override
@@ -47,7 +47,7 @@ public class CustomURITextCellEditor extends ExtendedTextCellEditor {
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see org.eclipse.jface.viewers.CellEditor#activate()
      */
     @Override
@@ -58,7 +58,7 @@ public class CustomURITextCellEditor extends ExtendedTextCellEditor {
 
     /**
      * Getter for module.
-     * 
+     *
      * @return the module
      */
     public ModuleNeeded getModule() {
@@ -67,7 +67,7 @@ public class CustomURITextCellEditor extends ExtendedTextCellEditor {
 
     /**
      * Sets the module.
-     * 
+     *
      * @param module the module to set
      */
     public void setModule(ModuleNeeded module) {

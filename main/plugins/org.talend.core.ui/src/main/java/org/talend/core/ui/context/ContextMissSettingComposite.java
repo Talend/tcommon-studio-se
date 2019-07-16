@@ -1,6 +1,6 @@
 // ============================================================================
 //
-// Copyright (C) 2006-2018 Talend Inc. - www.talend.com
+// Copyright (C) 2006-2019 Talend Inc. - www.talend.com
 //
 // This source code is available under agreement available at
 // %InstallDIR%\features\org.talend.rcp.branding.%PRODUCTNAME%\%PRODUCTNAME%license.txt
@@ -32,7 +32,7 @@ import org.talend.core.ui.i18n.Messages;
 
 /**
  * created by ldong on Aug 18, 2014 Detailled comment
- * 
+ *
  */
 public class ContextMissSettingComposite extends Composite {
 
@@ -46,7 +46,7 @@ public class ContextMissSettingComposite extends Composite {
 
     /**
      * DOC ldong ContextMissSettingComposite constructor comment.
-     * 
+     *
      * @param parent
      * @param style
      */

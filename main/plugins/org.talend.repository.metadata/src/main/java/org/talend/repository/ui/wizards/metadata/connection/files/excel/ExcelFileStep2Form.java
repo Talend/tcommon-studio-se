@@ -1,6 +1,6 @@
 // ============================================================================
 //
-// Copyright (C) 2006-2018 Talend Inc. - www.talend.com
+// Copyright (C) 2006-2019 Talend Inc. - www.talend.com
 //
 // This source code is available under agreement available at
 // %InstallDIR%\features\org.talend.rcp.branding.%PRODUCTNAME%\%PRODUCTNAME%license.txt
@@ -69,13 +69,13 @@ import org.talend.repository.metadata.ui.wizards.form.AbstractExcelFileStepForm;
 
 /**
  * @author xye
- * 
+ *
  */
 public class ExcelFileStep2Form extends AbstractExcelFileStepForm implements IRefreshable {
 
     /**
      * DOC YeXiaowei ExcelFileStep2Form constructor comment.
-     * 
+     *
      * @param parent
      * @param connectionItem
      */
@@ -160,7 +160,7 @@ public class ExcelFileStep2Form extends AbstractExcelFileStepForm implements IRe
     private ExcelSchemaBean bean;
 
     /**
-     * 
+     *
      * Initialize value, forceFocus first field.
      */
     @Override
@@ -236,7 +236,7 @@ public class ExcelFileStep2Form extends AbstractExcelFileStepForm implements IRe
 
     /**
      * add Field to Group Delimited File Settings.
-     * 
+     *
      * @param mainComposite
      * @param form
      * @param width
@@ -334,14 +334,14 @@ public class ExcelFileStep2Form extends AbstractExcelFileStepForm implements IRe
 
         // Footer
         rowsToSkipFooterCheckboxCombo = new LabelledCheckboxCombo(compositeRowsToSkip, Messages.getString("FileStep2.footer"), //$NON-NLS-1$
-                Messages.getString("FileStep2.footerTip"), STRING_NUMBERS_DATA, 1, true, SWT.NONE); //$NON-NLS-1$      
+                Messages.getString("FileStep2.footerTip"), STRING_NUMBERS_DATA, 1, true, SWT.NONE); //$NON-NLS-1$
 
         group.pack();
     }
 
     /**
      * add field to Group Limit.
-     * 
+     *
      * @param mainComposite
      * @param form
      * @param width
@@ -377,7 +377,7 @@ public class ExcelFileStep2Form extends AbstractExcelFileStepForm implements IRe
 
     /**
      * add Field to Group File Viewer.
-     * 
+     *
      * @param parent
      * @param form
      * @param width
@@ -460,7 +460,7 @@ public class ExcelFileStep2Form extends AbstractExcelFileStepForm implements IRe
     /**
      * Set field advanced separator, decimal separator , thousand separator DOC YeXiaowei Comment method
      * "getProcessDescription".
-     * 
+     *
      * @return
      */
     private ProcessDescription getProcessDescription(FileExcelConnection originalValueConnection) {
@@ -641,7 +641,7 @@ public class ExcelFileStep2Form extends AbstractExcelFileStepForm implements IRe
 
     /**
      * DOC xye Comment method "setCharFlag".
-     * 
+     *
      * @param escapeCharFlag2
      * @param text
      */
@@ -825,7 +825,7 @@ public class ExcelFileStep2Form extends AbstractExcelFileStepForm implements IRe
 
             /*
              * (non-Javadoc)
-             * 
+             *
              * @see org.eclipse.swt.events.SelectionAdapter#widgetSelected(org.eclipse.swt.events.SelectionEvent)
              */
             @Override
@@ -870,7 +870,7 @@ public class ExcelFileStep2Form extends AbstractExcelFileStepForm implements IRe
 
     /**
      * Ensures that fields are set. Update checkEnable / use to checkConnection().
-     * 
+     *
      * @return
      */
     @Override
@@ -973,9 +973,9 @@ public class ExcelFileStep2Form extends AbstractExcelFileStepForm implements IRe
 
     /**
      * Subclass of SWTUIThreadProcessor to process the preview event. <br/>
-     * 
+     *
      * $Id: DelimitedFileStep2Form.java 8214 2008-01-19 02:15:27Z qwei $
-     * 
+     *
      */
     class PreviewProcessor extends SWTUIThreadProcessor {
 
@@ -1109,7 +1109,7 @@ public class ExcelFileStep2Form extends AbstractExcelFileStepForm implements IRe
 
     /**
      * addButtonControls.
-     * 
+     *
      * @param cancelButton
      */
     @Override
@@ -1139,7 +1139,7 @@ public class ExcelFileStep2Form extends AbstractExcelFileStepForm implements IRe
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see org.eclipse.swt.widgets.Control#setVisible(boolean)
      */
     @Override
@@ -1203,7 +1203,7 @@ public class ExcelFileStep2Form extends AbstractExcelFileStepForm implements IRe
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see org.talend.repository.ui.swt.utils.IRefreshable#refresh()
      */
     @Override

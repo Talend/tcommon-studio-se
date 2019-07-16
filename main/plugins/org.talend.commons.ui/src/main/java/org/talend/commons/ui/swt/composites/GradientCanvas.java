@@ -1,6 +1,6 @@
 // ============================================================================
 //
-// Copyright (C) 2006-2018 Talend Inc. - www.talend.com
+// Copyright (C) 2006-2019 Talend Inc. - www.talend.com
 //
 // This source code is available under agreement available at
 // %InstallDIR%\features\org.talend.rcp.branding.%PRODUCTNAME%\%PRODUCTNAME%license.txt
@@ -29,7 +29,7 @@ import org.eclipse.swt.widgets.Listener;
 /**
  * Based on {@link org.eclipse.equinox.internal.p2.ui.discovery.util.GradientCanvas} <br/>
  * If you can't find it, please refer to {@link org.eclipse.ui.internal.forms.widgets.FormHeading}.
- * 
+ *
  */
 public class GradientCanvas extends Canvas {
 
@@ -78,7 +78,7 @@ public class GradientCanvas extends Canvas {
 
     /**
      * Creates the form content control as a child of the provided parent.
-     * 
+     *
      * @param parent the parent widget
      */
     public GradientCanvas(Composite parent, int style) {

@@ -1,6 +1,6 @@
 // ============================================================================
 //
-// Copyright (C) 2006-2018 Talend Inc. - www.talend.com
+// Copyright (C) 2006-2019 Talend Inc. - www.talend.com
 //
 // This source code is available under agreement available at
 // %InstallDIR%\features\org.talend.rcp.branding.%PRODUCTNAME%\%PRODUCTNAME%license.txt
@@ -27,7 +27,7 @@ public abstract class TableEditorContent extends TableEditorContentNotModifiable
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see
      * org.talend.commons.ui.swt.tableviewer.tableeditor.TableEditorContentNotModifiable#initialize(org.eclipse.swt.
      * widgets.Table, org.eclipse.swt.custom.TableEditor,
@@ -38,7 +38,7 @@ public abstract class TableEditorContent extends TableEditorContentNotModifiable
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see
      * org.talend.commons.ui.swt.tableviewer.tableeditor.TableEditorContentNotModifiable#initialize(org.eclipse.swt.
      * widgets.Table, org.eclipse.swt.custom.TableEditor,

@@ -1,6 +1,6 @@
 // ============================================================================
 //
-// Copyright (C) 2006-2018 Talend Inc. - www.talend.com
+// Copyright (C) 2006-2019 Talend Inc. - www.talend.com
 //
 // This source code is available under agreement available at
 // %InstallDIR%\features\org.talend.rcp.branding.%PRODUCTNAME%\%PRODUCTNAME%license.txt
@@ -17,9 +17,9 @@ import org.talend.core.language.LanguageManager;
 
 /**
  * yzhang class global comment. Detailled comment <br/>
- * 
+ *
  * $Id: ObjectParameter.java 下午02:21:01 2007-8-7 +0000 (2007-8-7) yzhang $
- * 
+ *
  */
 public class ObjectParameter extends Parameter {
 
@@ -27,7 +27,7 @@ public class ObjectParameter extends Parameter {
 
     /**
      * yzhang Comment method "setValue".
-     * 
+     *
      * @param value
      */
     public void setValue(Object value) {
@@ -36,7 +36,7 @@ public class ObjectParameter extends Parameter {
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see org.talend.designer.rowgenerator.data.Parameter#sameParameterAs(org.talend.designer.rowgenerator.data.Parameter)
      */
     @Override
@@ -88,7 +88,7 @@ public class ObjectParameter extends Parameter {
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see org.talend.designer.rowgenerator.data.Parameter#setType(java.lang.String)
      */
     @Override

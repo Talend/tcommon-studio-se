@@ -1,6 +1,6 @@
 // ============================================================================
 //
-// Copyright (C) 2006-2018 Talend Inc. - www.talend.com
+// Copyright (C) 2006-2019 Talend Inc. - www.talend.com
 //
 // This source code is available under agreement available at
 // %InstallDIR%\features\org.talend.rcp.branding.%PRODUCTNAME%\%PRODUCTNAME%license.txt
@@ -23,7 +23,7 @@ import org.eclipse.swt.graphics.Rectangle;
 
 /**
  * created by ldong on Sep 22, 2014 Detailled comment
- * 
+ *
  */
 public class ContextColumnHeaderDecorator extends CellPainterWrapper {
 
@@ -40,7 +40,7 @@ public class ContextColumnHeaderDecorator extends CellPainterWrapper {
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see
      * org.eclipse.nebula.widgets.nattable.painter.cell.decorator.BeveledBorderDecorator#paintCell(org.eclipse.nebula
      * .widgets.nattable.layer.cell.ILayerCell, org.eclipse.swt.graphics.GC, org.eclipse.swt.graphics.Rectangle,

@@ -1,6 +1,6 @@
 // ============================================================================
 //
-// Copyright (C) 2006-2018 Talend Inc. - www.talend.com
+// Copyright (C) 2006-2019 Talend Inc. - www.talend.com
 //
 // This source code is available under agreement available at
 // %InstallDIR%\features\org.talend.rcp.branding.%PRODUCTNAME%\%PRODUCTNAME%license.txt
@@ -42,7 +42,7 @@ public final class StatusHelper {
         }
         return buf.toString();
     }
-    
+
     public static List<String> readString(String stringList) {
         if (stringList == null || "".equals(stringList)) //$NON-NLS-1$
             return EMPTY_STRING_LIST;
@@ -67,7 +67,7 @@ public final class StatusHelper {
         }
         return Collections.unmodifiableList(result);
     }
-    
+
     public static String flat(List<Status> list) {
         final List<String> strings = new ArrayList<String>(list.size());
         for (Status status: list) {
@@ -75,30 +75,30 @@ public final class StatusHelper {
         }
         return writeString(strings);
     }
-    
+
     public static final String getCode(String value) {
         check(value);
         int index = value.indexOf(CODE_LABEL_DELIMITER);
         return index < 0 ? "PB" : value.substring(0, index); //$NON-NLS-1$
     }
-    
+
     public static final String getLabel(String value) {
         check(value);
         int index = value.indexOf(CODE_LABEL_DELIMITER);
         return index < 0 ? "PB" : value.substring(index + 1); //$NON-NLS-1$
     }
-    
+
     public static final String getString(String code, String label) {
         check(code);
         check(label);
         return code + CODE_LABEL_DELIMITER + label;
     }
-    
+
     private static void check(String str) {
         if (str == null || str.equals("")) //$NON-NLS-1$
             throw new IllegalArgumentException();
     }
-    
+
     private StatusHelper() {
     }
 

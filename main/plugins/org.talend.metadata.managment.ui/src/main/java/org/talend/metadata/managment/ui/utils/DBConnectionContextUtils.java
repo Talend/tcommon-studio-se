@@ -1,6 +1,6 @@
 // ============================================================================
 //
-// Copyright (C) 2006-2018 Talend Inc. - www.talend.com
+// Copyright (C) 2006-2019 Talend Inc. - www.talend.com
 //
 // This source code is available under agreement available at
 // %InstallDIR%\features\org.talend.rcp.branding.%PRODUCTNAME%\%PRODUCTNAME%license.txt
@@ -69,7 +69,7 @@ public final class DBConnectionContextUtils {
     private static final ECodeLanguage LANGUAGE = LanguageManager.getCurrentLanguage();
 
     /**
-     * 
+     *
      */
     public enum EDBParamName implements IConnParamName {
         Login,
@@ -799,9 +799,9 @@ public final class DBConnectionContextUtils {
     }
 
     /**
-     * 
+     *
      * ggu Comment method "setManagerConnectionValues".
-     * 
+     *
      * set the ManagerConnection parameter and return the url string connection.
      */
     public static String setManagerConnectionValues(ManagerConnection managerConnection, ConnectionItem connectionItem,
@@ -866,9 +866,9 @@ public final class DBConnectionContextUtils {
     }
 
     /**
-     * 
+     *
      * ggu Comment method "getUrlConnectionString".
-     * 
+     *
      * if display is false, the string connection will be returned by default context.
      */
     public static String getUrlConnectionString(ConnectionItem connectionItem, boolean defaultContext) {
@@ -937,9 +937,9 @@ public final class DBConnectionContextUtils {
     }
 
     /**
-     * 
+     *
      * ggu Comment method "cloneOriginalValueConnection".
-     * 
+     *
      * perhaps, if connection is in context mode, will open dialog to choose context sets.
      */
     public static DatabaseConnection cloneOriginalValueConnection(DatabaseConnection dbConn) {
@@ -947,11 +947,11 @@ public final class DBConnectionContextUtils {
     }
 
     /**
-     * 
+     *
      * ggu Comment method "cloneOriginalValueConnection".
-     * 
+     *
      * only clone the properties of connection.
-     * 
+     *
      * @param selectedContext
      */
     public static DatabaseConnection cloneOriginalValueConnection(DatabaseConnection dbConn, boolean defaultContext,
@@ -1027,7 +1027,7 @@ public final class DBConnectionContextUtils {
         // cloneConn.getTables().addAll(dbConn.getTables());
         /*
          * mustn't be set, is flag for method convert in class ConvertionHelper.
-         * 
+         *
          * working for sql builder especially.
          */
         // cloneConn.setContextId(dbConn.getContextId());
@@ -1270,12 +1270,11 @@ public final class DBConnectionContextUtils {
 
         // TDI-28124:tdb2input can't guess schema from join sql on system table
         if (EDatabaseTypeName.IBMDB2.equals(EDatabaseTypeName.getTypeFromDbType(dbConn.getDatabaseType()))) {
-            String cursorForDb2 = "cursorSensitivity=2;";
-            String database = sidOrDatabase;
-            String newURL =
-                    DatabaseConnStrUtil.getURLString(cloneConn.getDatabaseType(), dbConn.getDbVersionString(), server,
-                            username, password, port, database, filePath.toLowerCase(), datasource, dbRootPath,
-                            additionParam) + cursorForDb2;
+            String cursorForDb2 = ":cursorSensitivity=2;";
+            String database = sidOrDatabase + cursorForDb2;
+            String newURL = DatabaseConnStrUtil
+                    .getURLString(cloneConn.getDatabaseType(), dbConn.getDbVersionString(), server, username, password,
+                            port, database, filePath.toLowerCase(), datasource, dbRootPath, additionParam);
             cloneConn.setURL(newURL);
             return cloneConn;
         }
@@ -1374,7 +1373,7 @@ public final class DBConnectionContextUtils {
 
     /**
      * Clones other parameters from the original parameters. Added by Marvin Wang on Aug 13, 2012.
-     * 
+     *
      * @param dbConn
      * @param cloneConn
      */
@@ -1679,7 +1678,7 @@ public final class DBConnectionContextUtils {
 
     /**
      * revert the name of Catalog or schema
-     * 
+     *
      * @param conn the target which need to revert
      * @param contextType the type of Context
      */
@@ -1769,12 +1768,12 @@ public final class DBConnectionContextUtils {
     }
 
     /**
-     * 
+     *
      * DOC zshen Comment method "setDatabaseConnectionParameter".
-     * 
+     *
      * @param conn
      * @param metadataConnection
-     * 
+     *
      * set parameter from metadataConnection to DatabaseConnection
      */
     public static void setDatabaseConnectionParameter(DatabaseConnection conn, IMetadataConnection metadataConnection) {

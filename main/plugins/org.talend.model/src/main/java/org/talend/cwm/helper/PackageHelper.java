@@ -1,6 +1,6 @@
 // ============================================================================
 //
-// Copyright (C) 2006-2018 Talend Inc. - www.talend.com
+// Copyright (C) 2006-2019 Talend Inc. - www.talend.com
 //
 // This source code is available under agreement available at
 // %InstallDIR%\features\org.talend.rcp.branding.%PRODUCTNAME%\%PRODUCTNAME%license.txt
@@ -38,7 +38,7 @@ public final class PackageHelper {
 
     /**
      * returns the table owned by this package and only this one
-     * 
+     *
      * @param thePackage a Catalog or Schema (must not be null)
      * @return the tables contained in the given element.
      */
@@ -49,7 +49,7 @@ public final class PackageHelper {
 
     /**
      * returns the views owned by this package and only this one
-     * 
+     *
      * @param thePackage a Catalog or Schema (must not be null)
      * @return the views contained in the given element.
      */
@@ -60,7 +60,7 @@ public final class PackageHelper {
 
     /**
      * Method "getTables" extracts the tables from the list.
-     * 
+     *
      * @param elements any elements that could contain TdTables
      * @return the list of TdTables found in the given list (never null, but can be empty).
      */
@@ -79,7 +79,7 @@ public final class PackageHelper {
 
     /**
      * DOC bZhou Comment method "getNmaedColumnSets".
-     * 
+     *
      * @param catOrSchema
      * @return
      */
@@ -104,7 +104,7 @@ public final class PackageHelper {
 
     /**
      * DOC sgandon Comment method "addColumnSets".
-     * 
+     *
      * @param columnSets
      * @param packageElement
      * @return
@@ -116,7 +116,7 @@ public final class PackageHelper {
 
     /**
      * DOC sgandon Comment method "addColumnSet".
-     * 
+     *
      * @param columnSet
      * @param packageElement
      * @return
@@ -128,7 +128,7 @@ public final class PackageHelper {
 
     /**
      * adds a MetadataTable to the package
-     * 
+     *
      * @param table table to be added
      * @param aPackage the package to add to
      * @return true if success
@@ -139,7 +139,7 @@ public final class PackageHelper {
 
     /**
      * adds a MetadataTable to the package
-     * 
+     *
      * @param tables tables to add
      * @param aPackage the package to add to
      * @return true if success
@@ -158,7 +158,7 @@ public final class PackageHelper {
 
     /**
      * the the package that hold the table if any or null.
-     * 
+     *
      * @param element never null
      * @return the Catalog or of Schema or null
      */
@@ -170,7 +170,7 @@ public final class PackageHelper {
 
     /**
      * the the package that hold the table if any or null.
-     * 
+     *
      * @param element never null
      * @return the Catalog or of Schema or null
      */
@@ -182,7 +182,7 @@ public final class PackageHelper {
 
     /**
      * This returs the table from this package and all the owned package of this package.
-     * 
+     *
      * @param pack the package to look for table and sub packages (never null)
      * @param resultSet the set filled with the Table found (never null)
      */
@@ -201,7 +201,7 @@ public final class PackageHelper {
     /**
      * Change return type from "Set" to"List" to keep the order of tables. Should notice that we can only use this
      * method if there is only one datapackage in the connection.
-     * 
+     *
      * @param pack the package to look for table and sub packages (never null)
      * @param resultSet the set filled with the Table found (never null)
      */
@@ -219,7 +219,7 @@ public final class PackageHelper {
 
     /**
      * adds package to package
-     * 
+     *
      * @param packAdded the added package (never null)
      * @param packOwner the packed that will own packAdded (never null)
      */

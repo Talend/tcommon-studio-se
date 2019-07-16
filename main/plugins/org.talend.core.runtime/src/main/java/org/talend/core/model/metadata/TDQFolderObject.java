@@ -1,6 +1,6 @@
 // ============================================================================
 //
-// Copyright (C) 2006-2018 Talend Inc. - www.talend.com
+// Copyright (C) 2006-2019 Talend Inc. - www.talend.com
 //
 // This source code is available under agreement available at
 // %InstallDIR%\features\org.talend.rcp.branding.%PRODUCTNAME%\%PRODUCTNAME%license.txt
@@ -84,7 +84,7 @@ public class TDQFolderObject extends RepositoryViewObject {
 
     /**
      * DOC klliu TDQFolder constructor comment.
-     * 
+     *
      * @param property
      * @param type
      */
@@ -95,7 +95,7 @@ public class TDQFolderObject extends RepositoryViewObject {
     }
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see org.talend.dq.nodes.foldernode.ITDQFolder#getFolderType()
      */
     public ETDQFolderType getFolderType() {
@@ -104,7 +104,7 @@ public class TDQFolderObject extends RepositoryViewObject {
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see
      * org.talend.dq.nodes.foldernode.ITDQFolder#setFolderType(org.talend.dq.nodes.foldernode.ITDQFolder.ETDQFolderType)
      */
@@ -114,7 +114,7 @@ public class TDQFolderObject extends RepositoryViewObject {
 
     /*
      * (non-Jsdoc)
-     * 
+     *
      * @see org.talend.dq.nodes.foldernode.ITDQFolder#getViewObject()
      */
     public IRepositoryViewObject getViewObject() {

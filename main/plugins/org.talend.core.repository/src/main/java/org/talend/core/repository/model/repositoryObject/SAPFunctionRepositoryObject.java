@@ -1,6 +1,6 @@
 // ============================================================================
 //
-// Copyright (C) 2006-2018 Talend Inc. - www.talend.com
+// Copyright (C) 2006-2019 Talend Inc. - www.talend.com
 //
 // This source code is available under agreement available at
 // %InstallDIR%\features\org.talend.rcp.branding.%PRODUCTNAME%\%PRODUCTNAME%license.txt
@@ -46,7 +46,7 @@ public class SAPFunctionRepositoryObject extends RepositoryObject implements ISu
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see org.talend.core.model.repository.IRepositoryObject#getType()
      */
     @Override
@@ -63,7 +63,7 @@ public class SAPFunctionRepositoryObject extends RepositoryObject implements ISu
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see org.talend.core.model.repository.RepositoryObject#getLabel()
      */
     @Override
@@ -90,7 +90,7 @@ public class SAPFunctionRepositoryObject extends RepositoryObject implements ISu
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see org.talend.repository.model.ISubRepositoryObject#getAbstractMetadataObject ()
      */
     @Override
@@ -100,7 +100,7 @@ public class SAPFunctionRepositoryObject extends RepositoryObject implements ISu
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see org.talend.repository.model.ISubRepositoryObject#removeFromParent()
      */
     @Override

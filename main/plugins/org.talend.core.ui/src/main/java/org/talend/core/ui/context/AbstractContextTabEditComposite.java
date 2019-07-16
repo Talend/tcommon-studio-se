@@ -1,6 +1,6 @@
 // ============================================================================
 //
-// Copyright (C) 2006-2018 Talend Inc. - www.talend.com
+// Copyright (C) 2006-2019 Talend Inc. - www.talend.com
 //
 // This source code is available under agreement available at
 // %InstallDIR%\features\org.talend.rcp.branding.%PRODUCTNAME%\%PRODUCTNAME%license.txt
@@ -21,13 +21,13 @@ import org.talend.core.ICoreService;
 
 /**
  * DOC YeXiaowei class global comment. Detailled comment <br/>
- * 
+ *
  */
 public abstract class AbstractContextTabEditComposite extends Composite {
 
     /**
      * DOC YeXiaowei AbstractContextTabEditComposite constructor comment.
-     * 
+     *
      * @param parent
      * @param style
      */
@@ -36,9 +36,9 @@ public abstract class AbstractContextTabEditComposite extends Composite {
     }
 
     /**
-     * 
+     *
      * cli Comment method "getPreferenceStore".
-     * 
+     *
      */
     public IPreferenceStore getPreferenceStore() {
         if (GlobalServiceRegister.getDefault().isServiceRegistered(ICoreService.class)) {
@@ -62,7 +62,7 @@ public abstract class AbstractContextTabEditComposite extends Composite {
 
     /**
      * Added by Marvin Wang on Mar.19, 2012 for verifying the current status.
-     * 
+     *
      * @return
      */
     public abstract boolean isGroupBySource();

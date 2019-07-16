@@ -1,6 +1,6 @@
 // ============================================================================
 //
-// Copyright (C) 2006-2018 Talend Inc. - www.talend.com
+// Copyright (C) 2006-2019 Talend Inc. - www.talend.com
 //
 // This source code is available under agreement available at
 // %InstallDIR%\features\org.talend.rcp.branding.%PRODUCTNAME%\%PRODUCTNAME%license.txt
@@ -62,7 +62,7 @@ public final class DefaultMavenRepositoryProvider {
             if (!zipFile.exists()) {
                 return;
             }
-            FilesUtils.unzip(zipFile.getAbsolutePath(), dest.getAbsolutePath());
+            FilesUtils.unzip(zipFile.getAbsolutePath(), dest.getAbsolutePath(), false);
         } catch (Exception e) {
             ExceptionHandler.process(e);
         }

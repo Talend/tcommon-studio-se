@@ -1,6 +1,6 @@
 // ============================================================================
 //
-// Copyright (C) 2006-2018 Talend Inc. - www.talend.com
+// Copyright (C) 2006-2019 Talend Inc. - www.talend.com
 //
 // This source code is available under agreement available at
 // %InstallDIR%\features\org.talend.rcp.branding.%PRODUCTNAME%\%PRODUCTNAME%license.txt
@@ -26,7 +26,7 @@ import org.talend.core.ui.i18n.Messages;
 
 /**
  * DOC nrousseau class global comment. Detailled comment <br/>
- * 
+ *
  */
 public class ExtendedTableResetDBTypesCommand extends Command implements IExtendedTableCommand {
 
@@ -50,7 +50,7 @@ public class ExtendedTableResetDBTypesCommand extends Command implements IExtend
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see org.talend.commons.ui.swt.advanced.dataeditor.commands.AbstractExtendedTableResetDBTypesCommand#execute()
      */
     @Override
@@ -89,7 +89,7 @@ public class ExtendedTableResetDBTypesCommand extends Command implements IExtend
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see org.talend.commons.ui.swt.advanced.dataeditor.commands.AbstractExtendedTableResetDBTypesCommand#undo()
      */
     @Override

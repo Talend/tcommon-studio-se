@@ -1,6 +1,6 @@
 // ============================================================================
 //
-// Copyright (C) 2006-2018 Talend Inc. - www.talend.com
+// Copyright (C) 2006-2019 Talend Inc. - www.talend.com
 //
 // This source code is available under agreement available at
 // %InstallDIR%\features\org.talend.rcp.branding.%PRODUCTNAME%\%PRODUCTNAME%license.txt
@@ -22,12 +22,12 @@ import org.eclipse.core.runtime.CoreException;
 public class TalendJobNature implements IProjectNature {
 
     public static final String ID = "org.talend.core.sourcesNature"; //$NON-NLS-1$
-    
+
     private IProject project;
 
     @Override
     public void configure() throws CoreException {
-        
+
     }
 
     @Override

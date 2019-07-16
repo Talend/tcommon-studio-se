@@ -1,6 +1,6 @@
 // ============================================================================
 //
-// Copyright (C) 2006-2018 Talend Inc. - www.talend.com
+// Copyright (C) 2006-2019 Talend Inc. - www.talend.com
 //
 // This source code is available under agreement available at
 // %InstallDIR%\features\org.talend.rcp.branding.%PRODUCTNAME%\%PRODUCTNAME%license.txt
@@ -83,10 +83,10 @@ public class ConnectionUserPerReader {
 
     /**
      * connetion.users=user1|user2|user3|user4 user1=local#Local#Default connection####false
-     * 
-     * 
+     *
+     *
      * DOC teileizeget Comment method "readConnections".
-     * 
+     *
      * @return
      * @throws DocumentException
      */
@@ -233,7 +233,7 @@ public class ConnectionUserPerReader {
 
     /**
      * DOC ycbai Comment method "readRegistFailTimes".
-     * 
+     *
      * @return
      */
     public String readRegistFailTimes() {
@@ -297,7 +297,7 @@ public class ConnectionUserPerReader {
 
     /**
      * DOC ycbai Comment method "saveRegistoryBean".
-     * 
+     *
      * @param propertyMap
      */
     public void saveRegistoryBean(Map<String, String> propertyMap) {

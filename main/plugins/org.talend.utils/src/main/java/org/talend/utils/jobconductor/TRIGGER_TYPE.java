@@ -1,6 +1,6 @@
 // ============================================================================
 //
-// Copyright (C) 2006-2018 Talend Inc. - www.talend.com
+// Copyright (C) 2006-2019 Talend Inc. - www.talend.com
 //
 // This source code is available under agreement available at
 // %InstallDIR%\features\org.talend.rcp.branding.%PRODUCTNAME%\%PRODUCTNAME%license.txt
@@ -16,7 +16,7 @@ package org.talend.utils.jobconductor;
 
 /**
  * DOC amaumont class global comment. Detailled comment <br/>
- * 
+ *
  */
 public enum TRIGGER_TYPE {
 
@@ -51,7 +51,7 @@ public enum TRIGGER_TYPE {
 
     /**
      * DOC amaumont Comment method "getMappingForward".
-     * 
+     *
      * @return
      */
     public String getTriggerTypeStr() {
@@ -71,7 +71,7 @@ public enum TRIGGER_TYPE {
 
     /**
      * Getter for timeTrigger.
-     * 
+     *
      * @return the timeTrigger
      */
     public boolean isTimeTrigger() {
@@ -80,7 +80,7 @@ public enum TRIGGER_TYPE {
 
     /**
      * Getter for FileTrigger.
-     * 
+     *
      * @return the FileTrigger
      */
     public boolean isFileTrigger() {

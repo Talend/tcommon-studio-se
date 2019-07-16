@@ -1,6 +1,6 @@
 // ============================================================================
 //
-// Copyright (C) 2006-2018 Talend Inc. - www.talend.com
+// Copyright (C) 2006-2019 Talend Inc. - www.talend.com
 //
 // This source code is available under agreement available at
 // %InstallDIR%\features\org.talend.rcp.branding.%PRODUCTNAME%\%PRODUCTNAME%license.txt
@@ -27,7 +27,7 @@ import org.eclipse.jface.util.Assert;
  * tokens with specific words. That is, not only can the rule be used to provide tokens for exact matches, but also for
  * the generalized notion of a word in the context in which it is used. A word rules uses a word detector to determine
  * what a word is.
- * 
+ *
  * @see IWordDetector
  */
 public class CasedWordRule implements IRule {
@@ -54,9 +54,9 @@ public class CasedWordRule implements IRule {
      * Creates a rule which, with the help of an word detector, will return the token associated with the detected word.
      * If no token has been associated, the scanner will be rolled back and an undefined token will be returned in order
      * to allow any subsequent rules to analyze the characters.
-     * 
+     *
      * @param detector the word detector to be used by this rule, may not be <code>null</code>
-     * 
+     *
      * @see #addWord
      */
     public CasedWordRule(IWordDetector detector) {
@@ -66,11 +66,11 @@ public class CasedWordRule implements IRule {
     /**
      * Creates a rule which, with the help of an word detector, will return the token associated with the detected word.
      * If no token has been associated, the specified default token will be returned.
-     * 
+     *
      * @param detector the word detector to be used by this rule, may not be <code>null</code>
      * @param defaultToken the default token to be returned on success if nothing else is specified, may not be
      * <code>null</code>
-     * 
+     *
      * @see #addWord
      */
     public CasedWordRule(IWordDetector detector, IToken defaultToken) {
@@ -87,7 +87,7 @@ public class CasedWordRule implements IRule {
 
     /**
      * Adds a word and the token to be returned if it is detected.
-     * 
+     *
      * @param word the word this rule will search for, may not be <code>null</code>
      * @param token the token to be returned if the word has been found, may not be <code>null</code>
      */
@@ -101,7 +101,7 @@ public class CasedWordRule implements IRule {
     /**
      * Sets a column constraint for this rule. If set, the rule's token will only be returned if the pattern is detected
      * starting at the specified column. If the column is smaller then 0, the column constraint is considered removed.
-     * 
+     *
      * @param column the column in which the pattern starts
      */
     public void setColumnConstraint(int column) {
@@ -146,7 +146,7 @@ public class CasedWordRule implements IRule {
 
     /**
      * Returns the characters in the buffer to the scanner.
-     * 
+     *
      * @param scanner the scanner to be used
      */
     protected void unreadBuffer(ICharacterScanner scanner) {

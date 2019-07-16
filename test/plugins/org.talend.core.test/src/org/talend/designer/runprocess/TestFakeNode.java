@@ -1,6 +1,6 @@
 // ============================================================================
 //
-// Copyright (C) 2006-2018 Talend Inc. - www.talend.com
+// Copyright (C) 2006-2019 Talend Inc. - www.talend.com
 //
 // This source code is available under agreement available at
 // %InstallDIR%\features\org.talend.rcp.branding.%PRODUCTNAME%\%PRODUCTNAME%license.txt
@@ -39,7 +39,7 @@ public class TestFakeNode extends Element implements INode {
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see org.talend.core.model.process.IElement#isReadOnly()
      */
     @Override
@@ -50,7 +50,7 @@ public class TestFakeNode extends Element implements INode {
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see org.talend.core.model.process.IElement#setReadOnly(boolean)
      */
     @Override
@@ -60,7 +60,7 @@ public class TestFakeNode extends Element implements INode {
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see org.talend.core.model.process.INode#getLabel()
      */
     @Override
@@ -71,7 +71,7 @@ public class TestFakeNode extends Element implements INode {
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see org.talend.core.model.process.INode#getUniqueName()
      */
     @Override
@@ -82,7 +82,7 @@ public class TestFakeNode extends Element implements INode {
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see org.talend.core.model.process.INode#getUniqueShortName()
      */
     @Override
@@ -93,7 +93,7 @@ public class TestFakeNode extends Element implements INode {
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see org.talend.core.model.process.INode#isStart()
      */
     @Override
@@ -104,7 +104,7 @@ public class TestFakeNode extends Element implements INode {
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see org.talend.core.model.process.INode#isActivate()
      */
     @Override
@@ -115,7 +115,7 @@ public class TestFakeNode extends Element implements INode {
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see org.talend.core.model.process.INode#isSubProcessStart()
      */
     @Override
@@ -126,7 +126,7 @@ public class TestFakeNode extends Element implements INode {
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see org.talend.core.model.process.INode#isSubProcessContainTraceBreakpoint()
      */
     @Override
@@ -137,7 +137,7 @@ public class TestFakeNode extends Element implements INode {
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see org.talend.core.model.process.INode#getIncomingConnections()
      */
     @Override
@@ -148,7 +148,7 @@ public class TestFakeNode extends Element implements INode {
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see org.talend.core.model.process.INode#getOutgoingConnections()
      */
     @Override
@@ -159,7 +159,7 @@ public class TestFakeNode extends Element implements INode {
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see org.talend.core.model.process.INode#hasConditionalOutputs()
      */
     @Override
@@ -170,7 +170,7 @@ public class TestFakeNode extends Element implements INode {
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see org.talend.core.model.process.INode#getBlocksCodeToClose()
      */
     @Override
@@ -181,7 +181,7 @@ public class TestFakeNode extends Element implements INode {
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see org.talend.core.model.process.INode#isMultiplyingOutputs()
      */
     @Override
@@ -192,7 +192,7 @@ public class TestFakeNode extends Element implements INode {
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see org.talend.core.model.process.INode#setPerformanceData(java.lang.String)
      */
     @Override
@@ -202,7 +202,7 @@ public class TestFakeNode extends Element implements INode {
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see org.talend.core.model.process.INode#getMetadataList()
      */
     @Override
@@ -213,7 +213,7 @@ public class TestFakeNode extends Element implements INode {
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see org.talend.core.model.process.INode#getReturns()
      */
     @Override
@@ -224,7 +224,7 @@ public class TestFakeNode extends Element implements INode {
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see org.talend.core.model.process.INode#getProcess()
      */
     @Override
@@ -235,7 +235,7 @@ public class TestFakeNode extends Element implements INode {
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see org.talend.core.model.process.INode#setProcess(org.talend.core.model.process.IProcess)
      */
     @Override
@@ -245,7 +245,7 @@ public class TestFakeNode extends Element implements INode {
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see org.talend.core.model.process.INode#getComponent()
      */
     @Override
@@ -256,7 +256,7 @@ public class TestFakeNode extends Element implements INode {
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see org.talend.core.model.process.INode#setComponent(org.talend.core.model.components.IComponent)
      */
     @Override
@@ -266,7 +266,7 @@ public class TestFakeNode extends Element implements INode {
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see org.talend.core.model.process.INode#getExternalNode()
      */
     @Override
@@ -277,7 +277,7 @@ public class TestFakeNode extends Element implements INode {
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see org.talend.core.model.process.INode#metadataInputChanged(org.talend.core.model.components.IODataComponent,
      * java.lang.String)
      */
@@ -288,7 +288,7 @@ public class TestFakeNode extends Element implements INode {
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see org.talend.core.model.process.INode#metadataOutputChanged(org.talend.core.model.components.IODataComponent,
      * java.lang.String)
      */
@@ -299,7 +299,7 @@ public class TestFakeNode extends Element implements INode {
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see org.talend.core.model.process.INode#getSubProcessStartNode(boolean)
      */
     @Override
@@ -310,7 +310,7 @@ public class TestFakeNode extends Element implements INode {
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see org.talend.core.model.process.INode#useData(java.lang.String)
      */
     @Override
@@ -321,7 +321,7 @@ public class TestFakeNode extends Element implements INode {
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see org.talend.core.model.process.INode#renameData(java.lang.String, java.lang.String)
      */
     @Override
@@ -331,7 +331,7 @@ public class TestFakeNode extends Element implements INode {
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see org.talend.core.model.process.INode#isThereLinkWithHash()
      */
     @Override
@@ -342,7 +342,7 @@ public class TestFakeNode extends Element implements INode {
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see org.talend.core.model.process.INode#getOutgoingSortedConnections()
      */
     @Override
@@ -353,7 +353,7 @@ public class TestFakeNode extends Element implements INode {
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see org.talend.core.model.process.INode#getOutgoingCamelSortedConnections()
      */
     @Override
@@ -364,7 +364,7 @@ public class TestFakeNode extends Element implements INode {
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see org.talend.core.model.process.INode#getMainOutgoingConnections()
      */
     @Override
@@ -375,7 +375,7 @@ public class TestFakeNode extends Element implements INode {
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see org.talend.core.model.process.INode#getOutgoingConnections(org.talend.core.model.process.EConnectionType)
      */
     @Override
@@ -386,7 +386,7 @@ public class TestFakeNode extends Element implements INode {
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see org.talend.core.model.process.INode#getIncomingConnections(org.talend.core.model.process.EConnectionType)
      */
     @Override
@@ -397,7 +397,7 @@ public class TestFakeNode extends Element implements INode {
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see org.talend.core.model.process.INode#getOutgoingConnections(java.lang.String)
      */
     @Override
@@ -408,7 +408,7 @@ public class TestFakeNode extends Element implements INode {
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see org.talend.core.model.process.INode#getLinkedMergeInfo()
      */
     @Override
@@ -419,7 +419,7 @@ public class TestFakeNode extends Element implements INode {
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see org.talend.core.model.process.INode#isThereLinkWithMerge()
      */
     @Override
@@ -430,7 +430,7 @@ public class TestFakeNode extends Element implements INode {
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see org.talend.core.model.process.INode#getMetadataFromConnector(java.lang.String)
      */
     @Override
@@ -441,7 +441,7 @@ public class TestFakeNode extends Element implements INode {
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see org.talend.core.model.process.INode#getConnectorFromName(java.lang.String)
      */
     @Override
@@ -452,7 +452,7 @@ public class TestFakeNode extends Element implements INode {
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see org.talend.core.model.process.INode#reloadComponent(org.talend.core.model.components.IComponent,
      * java.util.Map, boolean)
      */
@@ -463,7 +463,7 @@ public class TestFakeNode extends Element implements INode {
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see org.talend.core.model.process.INode#getDesignSubjobStartNode()
      */
     @Override
@@ -474,7 +474,7 @@ public class TestFakeNode extends Element implements INode {
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see org.talend.core.model.process.INode#isDesignSubjobStartNode()
      */
     @Override
@@ -485,7 +485,7 @@ public class TestFakeNode extends Element implements INode {
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see org.talend.core.model.process.INode#isVirtualGenerateNode()
      */
     @Override
@@ -496,7 +496,7 @@ public class TestFakeNode extends Element implements INode {
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see org.talend.core.model.process.INode#getVirtualLinkTo()
      */
     @Override
@@ -507,7 +507,7 @@ public class TestFakeNode extends Element implements INode {
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see org.talend.core.model.process.INode#setVirtualLinkTo(org.talend.core.model.process.EConnectionType)
      */
     @Override
@@ -517,7 +517,7 @@ public class TestFakeNode extends Element implements INode {
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see org.talend.core.model.process.INode#isGeneratedAsVirtualComponent()
      */
     @Override
@@ -528,7 +528,7 @@ public class TestFakeNode extends Element implements INode {
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see org.talend.core.model.process.INode#isELTComponent()
      */
     @Override
@@ -539,7 +539,7 @@ public class TestFakeNode extends Element implements INode {
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see org.talend.core.model.process.INode#isUseLoopOnConditionalOutput(java.lang.String)
      */
     @Override
@@ -550,7 +550,7 @@ public class TestFakeNode extends Element implements INode {
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see org.talend.core.model.process.INode#getExternalData()
      */
     @Override
@@ -561,7 +561,7 @@ public class TestFakeNode extends Element implements INode {
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see org.talend.core.model.process.INode#getListConnector()
      */
     @Override
@@ -572,7 +572,7 @@ public class TestFakeNode extends Element implements INode {
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see org.talend.core.model.process.INode#isDummy()
      */
     @Override
@@ -583,7 +583,7 @@ public class TestFakeNode extends Element implements INode {
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see org.talend.core.model.process.INode#fsComponentsInProgressBar()
      */
     @Override
@@ -594,7 +594,7 @@ public class TestFakeNode extends Element implements INode {
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see org.talend.core.model.process.INode#isExternalNode()
      */
     @Override
@@ -605,7 +605,7 @@ public class TestFakeNode extends Element implements INode {
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see org.talend.core.model.process.INode#addOutput(org.talend.core.model.process.IConnection)
      */
     @Override
@@ -615,7 +615,7 @@ public class TestFakeNode extends Element implements INode {
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see org.talend.core.model.process.INode#addInput(org.talend.core.model.process.IConnection)
      */
     @Override
@@ -625,7 +625,7 @@ public class TestFakeNode extends Element implements INode {
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see org.talend.core.model.process.INode#isTemplate()
      */
     @Override
@@ -636,7 +636,7 @@ public class TestFakeNode extends Element implements INode {
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see org.talend.core.model.process.INode#isGeneratedByJobscriptBool()
      */
     @Override
@@ -647,7 +647,7 @@ public class TestFakeNode extends Element implements INode {
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see org.talend.core.model.process.INode#removeOutput(org.talend.core.model.process.IConnection)
      */
     @Override
@@ -657,7 +657,7 @@ public class TestFakeNode extends Element implements INode {
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see org.talend.core.model.process.INode#removeInput(org.talend.core.model.process.IConnection)
      */
     @Override
@@ -667,7 +667,7 @@ public class TestFakeNode extends Element implements INode {
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see org.talend.core.model.process.INode#getMetadataTable(java.lang.String)
      */
     @Override
@@ -678,7 +678,7 @@ public class TestFakeNode extends Element implements INode {
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see org.talend.core.model.process.INode#getConnectorFromType(org.talend.core.model.process.EConnectionType)
      */
     @Override
@@ -689,7 +689,7 @@ public class TestFakeNode extends Element implements INode {
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see org.talend.core.model.process.INode#checkIfCanBeStart()
      */
     @Override
@@ -700,7 +700,7 @@ public class TestFakeNode extends Element implements INode {
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see org.talend.core.model.process.INode#setStart(boolean)
      */
     @Override
@@ -710,7 +710,7 @@ public class TestFakeNode extends Element implements INode {
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see org.talend.core.model.process.INode#checkNode()
      */
     @Override
@@ -720,7 +720,7 @@ public class TestFakeNode extends Element implements INode {
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see org.talend.core.model.process.INode#getSchemaParameterFromConnector(java.lang.String)
      */
     @Override
@@ -731,7 +731,7 @@ public class TestFakeNode extends Element implements INode {
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see org.talend.core.model.process.INode#hasRunIfLink()
      */
     @Override
@@ -742,7 +742,7 @@ public class TestFakeNode extends Element implements INode {
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see org.talend.core.model.process.INode#setMetadataList(java.util.List)
      */
     @Override
@@ -752,7 +752,7 @@ public class TestFakeNode extends Element implements INode {
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see org.talend.core.model.process.INode#setOutgoingConnections(java.util.List)
      */
     @Override
@@ -762,7 +762,7 @@ public class TestFakeNode extends Element implements INode {
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see org.talend.core.model.process.INode#setIncomingConnections(java.util.List)
      */
     @Override
@@ -772,7 +772,7 @@ public class TestFakeNode extends Element implements INode {
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see org.talend.core.model.process.INode#getProcessStartNode(boolean)
      */
     @Override
@@ -783,7 +783,7 @@ public class TestFakeNode extends Element implements INode {
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see org.talend.core.model.process.INode#isFileScaleComponent()
      */
     @Override
@@ -794,7 +794,7 @@ public class TestFakeNode extends Element implements INode {
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see org.talend.core.model.process.INode#sameProcessAs(org.talend.core.model.process.INode, boolean)
      */
     @Override
@@ -805,7 +805,7 @@ public class TestFakeNode extends Element implements INode {
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see org.talend.core.model.process.INode#setLabel(java.lang.String)
      */
     @Override
@@ -815,7 +815,7 @@ public class TestFakeNode extends Element implements INode {
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see org.talend.core.model.process.INode#getPosX()
      */
     @Override
@@ -826,7 +826,7 @@ public class TestFakeNode extends Element implements INode {
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see org.talend.core.model.process.INode#getPosY()
      */
     @Override
@@ -837,7 +837,7 @@ public class TestFakeNode extends Element implements INode {
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see org.talend.core.model.process.INode#getJobletNode()
      */
     @Override
@@ -848,7 +848,7 @@ public class TestFakeNode extends Element implements INode {
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see org.talend.core.model.process.INode#getJunitNode()
      */
     @Override
@@ -859,7 +859,7 @@ public class TestFakeNode extends Element implements INode {
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see org.talend.core.model.process.INode#getModulesNeeded()
      */
     @Override
@@ -870,7 +870,7 @@ public class TestFakeNode extends Element implements INode {
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see org.talend.core.model.process.INode#isSubtreeStart()
      */
     @Override
@@ -881,7 +881,7 @@ public class TestFakeNode extends Element implements INode {
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see org.talend.core.model.process.Element#getElementName()
      */
     @Override

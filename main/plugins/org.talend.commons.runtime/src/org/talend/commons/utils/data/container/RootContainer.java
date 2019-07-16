@@ -1,6 +1,6 @@
 // ============================================================================
 //
-// Copyright (C) 2006-2018 Talend Inc. - www.talend.com
+// Copyright (C) 2006-2019 Talend Inc. - www.talend.com
 //
 // This source code is available under agreement available at
 // %InstallDIR%\features\org.talend.rcp.branding.%PRODUCTNAME%\%PRODUCTNAME%license.txt
@@ -20,12 +20,12 @@ import org.eclipse.core.runtime.IPath;
 
 /**
  * PTODO SML Delete this class.
- * 
+ *
  * @param <K> - DOC SML
  * @param <V> - type the container manages
- * 
+ *
  * $Id$
- * 
+ *
  */
 public class RootContainer<K, V> extends Container<K, V> {
 
@@ -42,7 +42,7 @@ public class RootContainer<K, V> extends Container<K, V> {
     /**
      * This only public constructor is used to instantiate the structure root. Sub-containers must be create using
      * addSubContainer method.
-     * 
+     *
      * @param label - the label of the root
      */
     public RootContainer(String label) {
@@ -51,7 +51,7 @@ public class RootContainer<K, V> extends Container<K, V> {
 
     /**
      * Getter for rootMembers. Returns null for no root container.
-     * 
+     *
      * @return the rootMembers
      */
     public ContentList<K, V> getAbsoluteMembers() {
@@ -60,7 +60,7 @@ public class RootContainer<K, V> extends Container<K, V> {
 
     /**
      * Retrieve a member by its key in the entire structure.
-     * 
+     *
      * @param key - the key of the member to retrieve
      * @return the member with this id
      */
@@ -84,7 +84,7 @@ public class RootContainer<K, V> extends Container<K, V> {
 
     /**
      * DOC smallet Comment method "contains".
-     * 
+     *
      * @param key
      */
     public boolean contains(K key) {
@@ -93,7 +93,7 @@ public class RootContainer<K, V> extends Container<K, V> {
 
     /**
      * Returns the number of members in the entire structure.
-     * 
+     *
      * @return the number of members
      */
     public int absoluteSize() {
@@ -102,7 +102,7 @@ public class RootContainer<K, V> extends Container<K, V> {
 
     /**
      * Returns a set view of the ids contained in this structure.
-     * 
+     *
      * @return a set view of the ids contained in this structure.
      */
     public Set absoluteKeySet() {
@@ -111,7 +111,7 @@ public class RootContainer<K, V> extends Container<K, V> {
 
     /**
      * Allows parent retriving on a member. Returns null il this child cannot be found in the structure.
-     * 
+     *
      * @param child - the child to retrieve parent
      * @return the parent container of the child
      */
@@ -136,7 +136,7 @@ public class RootContainer<K, V> extends Container<K, V> {
 
     /**
      * Getter for properties.
-     * 
+     *
      * @return the properties
      */
     public Map<String, Object> getProperties() {
@@ -145,7 +145,7 @@ public class RootContainer<K, V> extends Container<K, V> {
 
     /**
      * Sets the properties.
-     * 
+     *
      * @param properties the properties to set
      */
     public void setProperties(Map<String, Object> properties) {

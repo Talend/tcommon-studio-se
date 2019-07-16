@@ -1,6 +1,6 @@
 // ============================================================================
 //
-// Copyright (C) 2006-2018 Talend Inc. - www.talend.com
+// Copyright (C) 2006-2019 Talend Inc. - www.talend.com
 //
 // This source code is available under agreement available at
 // %InstallDIR%\features\org.talend.rcp.branding.%PRODUCTNAME%\%PRODUCTNAME%license.txt
@@ -17,11 +17,11 @@ import java.util.concurrent.Executors;
 import java.util.concurrent.ThreadFactory;
 
 /**
- * 
+ *
  * Limit the execution of threads by verifying at call of <code>startIfExecutable</code> if the process can be
  * executable at this moment. If not the current process is aborted and the <code>execute</code> method is not called.
  * If yes the current process is executed by calling the <code>execute</code> method. <br/>
- * 
+ *
  */
 public abstract class ExecutionLimiterImproved {
 
@@ -54,9 +54,9 @@ public abstract class ExecutionLimiterImproved {
     }
 
     /**
-     * 
+     *
      * DOC amaumont ExecutionLimiter constructor comment.
-     * 
+     *
      * @param timeBeforeNewExecute time max between executions
      * @param finalExecute execute at end of time the treatment to ensure it is executed a least one time after last
      * call of startIfExecutable()
@@ -92,7 +92,7 @@ public abstract class ExecutionLimiterImproved {
     /**
      * Start execution if executable, after <code>timeBeforeNewExecute</code> is elapsed if
      * <code>executeAtEndOfTime</code> is true.
-     * 
+     *
      * @param executeAtEndOfTime if true call <code>execute()</code> now, else call <code>execute()</code> at end of
      * <code>timeBeforeNewExecute</code>
      * @return true if executable, false else
@@ -179,9 +179,9 @@ public abstract class ExecutionLimiterImproved {
     }
 
     /**
-     * 
+     *
      * DOC amaumont ExecutionLimiter class global comment. Detailled comment <br/>
-     * 
+     *
      */
     class FinalExecution extends Thread {
 
@@ -213,7 +213,7 @@ public abstract class ExecutionLimiterImproved {
 
     /**
      * DOC amaumont Comment method "callFinalExecute".
-     * 
+     *
      * @param data
      */
     private void callFinalExecute(Object data) {

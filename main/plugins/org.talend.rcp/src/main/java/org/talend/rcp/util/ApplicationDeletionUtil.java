@@ -1,6 +1,6 @@
 // ============================================================================
 //
-// Copyright (C) 2006-2018 Talend Inc. - www.talend.com
+// Copyright (C) 2006-2019 Talend Inc. - www.talend.com
 //
 // This source code is available under agreement available at
 // %InstallDIR%\features\org.talend.rcp.branding.%PRODUCTNAME%\%PRODUCTNAME%license.txt
@@ -40,7 +40,7 @@ public final class ApplicationDeletionUtil {
         if (window == null) {
             return;
         }
-        List<IPreferenceNode> prefsToDelete = new ArrayList<IPreferenceNode>(); 
+        List<IPreferenceNode> prefsToDelete = new ArrayList<IPreferenceNode>();
         List<IPreferenceNode> prefsToDeleteParents = new ArrayList<IPreferenceNode>();
         IWorkbench workbench = window.getWorkbench();
         if (workbench == null) {
@@ -48,19 +48,19 @@ public final class ApplicationDeletionUtil {
         }
         PreferenceManager preferenceManager = workbench.getPreferenceManager();
 
-        
+
         for (IPreferenceNode node : preferenceManager.getRootSubNodes()) {
             IPreferenceNode existPreferenceNode = existPreferenceNode(prefsToDeleteParents, null, node, prefsId);
             if (existPreferenceNode != null) {
                 prefsToDelete.add(existPreferenceNode);
             }
         }
-        
+
         // reset mdm preference ,see TMDM-3215
         if(needReset){
            resetMDMNode(preferenceManager,prefsToDeleteParents);
         }
-        
+
         if (!prefsToDelete.isEmpty()) {
             List<IPreferenceNode> tmpPrefsToDelete = new ArrayList<IPreferenceNode>();
             for (IPreferenceNode node : preferenceManager.getRootSubNodes()) {
@@ -85,22 +85,22 @@ public final class ApplicationDeletionUtil {
 
         IPreferenceNode mdmNode = null;
         IPreferenceNode newRepositoryNode = null;
-        
+
     	for (IPreferenceNode node : preferenceManager.getRootSubNodes()) {
-             String[] nPrefsId = { "org.talend.mdm.repository.ui.preferences.AutoDeployPreferencePage" }; //$NON-NLS-1$ 
+             String[] nPrefsId = { "org.talend.mdm.repository.ui.preferences.AutoDeployPreferencePage" }; //$NON-NLS-1$
              IPreferenceNode existPreferenceNode = existPreferenceNode(prefsToDeleteParents, null, node, Arrays.asList(nPrefsId));
              if (existPreferenceNode != null) {
-             	mdmNode = existPreferenceNode; 
+             	mdmNode = existPreferenceNode;
             }
         }
-         
+
         for (IPreferenceNode node : preferenceManager.getRootSubNodes()) {
-        	String[] nPrefsId = { "org.talend.mdm.repository.ui.preferences.RepositoryPreferencePage" }; //$NON-NLS-1$ 
+        	String[] nPrefsId = { "org.talend.mdm.repository.ui.preferences.RepositoryPreferencePage" }; //$NON-NLS-1$
             IPreferenceNode existPreferenceNode = existPreferenceNode(prefsToDeleteParents, null, node, Arrays.asList(nPrefsId));
             if (existPreferenceNode != null) {
-         	   newRepositoryNode = existPreferenceNode; 
+         	   newRepositoryNode = existPreferenceNode;
             }
-        } 
+        }
         if(newRepositoryNode!=null && mdmNode!=null)
             newRepositoryNode.add(mdmNode);
 	}

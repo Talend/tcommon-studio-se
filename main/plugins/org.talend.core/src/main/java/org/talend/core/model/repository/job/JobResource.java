@@ -1,6 +1,6 @@
 // ============================================================================
 //
-// Copyright (C) 2006-2018 Talend Inc. - www.talend.com
+// Copyright (C) 2006-2019 Talend Inc. - www.talend.com
 //
 // This source code is available under agreement available at
 // %InstallDIR%\features\org.talend.rcp.branding.%PRODUCTNAME%\%PRODUCTNAME%license.txt
@@ -26,11 +26,11 @@ import org.talend.core.model.utils.PerlResourcesHelper;
 
 /**
  * Reference to both jobs and its resources.
- * 
+ *
  * yzhang class global comment. Detailled comment <br/>
- * 
+ *
  * $Id: JobResource.java 下午03:41:44 2007-7-6 +0000 (2007-7-6) yzhang $
- * 
+ *
  */
 public class JobResource {
 
@@ -42,7 +42,7 @@ public class JobResource {
 
     /**
      * Constructor.
-     * 
+     *
      * yzhang JobResource constructor comment.
      */
     public JobResource() {
@@ -57,7 +57,7 @@ public class JobResource {
 
     /**
      * Getter for projectName.
-     * 
+     *
      * @return the projectName
      */
     public String getProjectName() {
@@ -66,7 +66,7 @@ public class JobResource {
 
     /**
      * Sets the projectName.
-     * 
+     *
      * @param projectName the projectName to set
      */
     public void setProjectName(String projectName) {
@@ -75,7 +75,7 @@ public class JobResource {
 
     /**
      * Get the unique resource name.
-     * 
+     *
      * yzhang Comment method "getResourceName".
      */
     public String getUniqueResourceName() {
@@ -84,9 +84,9 @@ public class JobResource {
 
     /**
      * Return the resource of current job.
-     * 
+     *
      * yzhang Comment method "getResorcePath".
-     * 
+     *
      * @return
      */
     public List<IResource> getResource() {

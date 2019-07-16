@@ -1,6 +1,6 @@
 // ============================================================================
 //
-// Copyright (C) 2006-2018 Talend Inc. - www.talend.com
+// Copyright (C) 2006-2019 Talend Inc. - www.talend.com
 //
 // This source code is available under agreement available at
 // %InstallDIR%\features\org.talend.rcp.branding.%PRODUCTNAME%\%PRODUCTNAME%license.txt
@@ -21,8 +21,11 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.HashMap;
+import java.util.HashSet;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 import org.apache.commons.lang.StringUtils;
 import org.eclipse.core.resources.IContainer;
@@ -147,7 +150,7 @@ public class ProjectDataJsonProvider {
                 }
             }
         }
-        
+
         return componentMap;
     }
 
@@ -175,7 +178,7 @@ public class ProjectDataJsonProvider {
     public static void loadProjectData(Project project, IContainer sourceProject, int loadContent) throws PersistenceException {
         loadProjectData(project, sourceProject.getLocation(), loadContent);
     }
-    
+
     public static void loadProjectData(Project project, IPath projectRootPath, InputStreamProvider inputStreamProvider)
             throws PersistenceException, IOException {
         if (projectRootPath == null) {
@@ -274,20 +277,37 @@ public class ProjectDataJsonProvider {
 
     public static void loadMigrationTaskSetting(Project project, InputStream input) throws PersistenceException {
         try {
+        	project.eSetDeliver(false);
             MigrationTaskSetting migrationTaskSetting = null;
             if (input != null) {
                 migrationTaskSetting = new ObjectMapper().readValue(input, MigrationTaskSetting.class);
             }
             if (migrationTaskSetting != null) {
                 MigrationTask fakeTask = createFakeMigrationTask();
-                List<MigrationTask> allRealTask = new ArrayList<MigrationTask>();
+                MigrationTask existingFakeTask = null;
                 for (int i = 0; i < project.getMigrationTask().size(); i++) {
                     MigrationTask task = (MigrationTask) project.getMigrationTask().get(i);
-                    if (!StringUtils.equals(fakeTask.getId(), task.getId())) {
-                        allRealTask.add(task);
+                    if (StringUtils.equals(fakeTask.getId(), task.getId())) {
+                    	existingFakeTask = task;
+                    	break;
                     }
                 }
-                project.getMigrationTask().removeAll(allRealTask);
+                // remove all the migrations from the project
+                project.getMigrationTask().clear();
+                if (existingFakeTask != null) {
+                	// keep only the fake migration task of 7.1.1 with new migration index
+                	// re-use the same instance to make sure we keep the same emf id.
+                	project.getMigrationTask().add(existingFakeTask);
+                }
+                Set<String> tasksIds = new HashSet<>();
+                Iterator<MigrationTaskJson> it = migrationTaskSetting.getMigrationTaskList().iterator();
+                while (it.hasNext()) { // remove duplicates to fix issues found in TUP-22735
+                	MigrationTaskJson task = it.next();
+                	if (tasksIds.contains(task.getId())) {
+                		it.remove();
+                	}
+                	tasksIds.add(task.getId());
+                }
                 project.getMigrationTasks().clear();
                 if (migrationTaskSetting.getMigrationTaskList() != null) {
                     for (MigrationTaskJson json : migrationTaskSetting.getMigrationTaskList()) {
@@ -305,6 +325,7 @@ public class ProjectDataJsonProvider {
         } catch (Exception e) {
             throw new PersistenceException(e);
         } finally {
+            project.eSetDeliver(true);
             closeInputStream(input);
         }
     }
@@ -478,7 +499,7 @@ public class ProjectDataJsonProvider {
             }
         }
     }
-    
+
     public static MigrationTask createFakeMigrationTask() {
         MigrationTask fakeTask = PropertiesFactoryImpl.eINSTANCE.createMigrationTask();
         fakeTask.setId(FAKE_TASK);

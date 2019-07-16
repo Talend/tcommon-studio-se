@@ -1,6 +1,6 @@
 // ============================================================================
 //
-// Copyright (C) 2006-2018 Talend Inc. - www.talend.com
+// Copyright (C) 2006-2019 Talend Inc. - www.talend.com
 //
 // This source code is available under agreement available at
 // %InstallDIR%\features\org.talend.rcp.branding.%PRODUCTNAME%\%PRODUCTNAME%license.txt
@@ -19,13 +19,13 @@ import org.eclipse.swt.widgets.Control;
 
 /**
  * DOC qiang.zhang class global comment. Detailled comment <br/>
- * 
+ *
  */
 public class DateCellEditor extends DialogCellEditor {
 
     /**
      * qiang.zhang DateCellEditor constructor comment.
-     * 
+     *
      * @param parent
      */
     public DateCellEditor(Composite parent) {
@@ -34,7 +34,7 @@ public class DateCellEditor extends DialogCellEditor {
 
     /**
      * qiang.zhang DateCellEditor constructor comment.
-     * 
+     *
      * @param parent
      * @param style
      */
@@ -44,7 +44,7 @@ public class DateCellEditor extends DialogCellEditor {
 
     /*
      * (non-Java)
-     * 
+     *
      * @see org.eclipse.jface.viewers.DialogCellEditor#openDialogBox(org.eclipse.swt.widgets.Control)
      */
     @Override

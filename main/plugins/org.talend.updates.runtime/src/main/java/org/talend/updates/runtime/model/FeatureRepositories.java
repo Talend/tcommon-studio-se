@@ -1,6 +1,6 @@
 // ============================================================================
 //
-// Copyright (C) 2006-2018 Talend Inc. - www.talend.com
+// Copyright (C) 2006-2019 Talend Inc. - www.talend.com
 //
 // This source code is available under agreement available at
 // %InstallDIR%\features\org.talend.rcp.branding.%PRODUCTNAME%\%PRODUCTNAME%license.txt
@@ -25,7 +25,7 @@ import org.talend.commons.utils.resource.UpdatesHelper;
 
 /**
  * This represent the repository that are used to fetch the extra feature to install
- * 
+ *
  */
 public class FeatureRepositories {
 
@@ -50,7 +50,7 @@ public class FeatureRepositories {
 
     /**
      * return the list of p2 repo URIs according to the kind of repo selected
-     * 
+     *
      * @return
      * @throws URISyntaxException
      */
@@ -117,7 +117,7 @@ public class FeatureRepositories {
 
     /**
      * Getter for updateSiteLocationType.
-     * 
+     *
      * @return the policy
      */
     public UpdateSiteLocationType getUpdateSiteLocationType() {
@@ -126,7 +126,7 @@ public class FeatureRepositories {
 
     /**
      * Sets the updateSiteLocationType.
-     * 
+     *
      * @param updateSiteLocationType the update Site Location Type to set
      */
     public void setUpdateSiteLocationType(UpdateSiteLocationType updateSiteLocationType) {
@@ -135,7 +135,7 @@ public class FeatureRepositories {
 
     /**
      * Getter for remoteRepoUriStr.
-     * 
+     *
      * @return the remoteRepoUriStr
      */
     public String getRemoteRepoUriStr() {
@@ -144,7 +144,7 @@ public class FeatureRepositories {
 
     /**
      * Sets the remoteRepoUriStr.
-     * 
+     *
      * @param remoteRepoUriStr the remoteRepoUriStr to set
      */
     public void setRemoteRepoUriStr(String remoteRepoUriStr) {
@@ -153,7 +153,7 @@ public class FeatureRepositories {
 
     /**
      * Getter for localRepoPathStr.
-     * 
+     *
      * @return the localRepoPathStr
      */
     public String getLocalRepoPathStr() {
@@ -162,7 +162,7 @@ public class FeatureRepositories {
 
     /**
      * Sets the localRepoPathStr.
-     * 
+     *
      * @param localRepoPathStr the localRepoPathStr to set
      */
     public void setLocalRepoPathStr(String localRepoPathStr) {

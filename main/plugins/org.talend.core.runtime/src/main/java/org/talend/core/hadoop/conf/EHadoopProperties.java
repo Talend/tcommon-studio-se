@@ -1,6 +1,6 @@
 // ============================================================================
 //
-// Copyright (C) 2006-2018 Talend Inc. - www.talend.com
+// Copyright (C) 2006-2019 Talend Inc. - www.talend.com
 //
 // This source code is available under agreement available at
 // %InstallDIR%\features\org.talend.rcp.branding.%PRODUCTNAME%\%PRODUCTNAME%license.txt
@@ -101,7 +101,7 @@ public enum EHadoopProperties {
     HD_AZURE_DEPLOYBOLB,
 
     HD_JOB_RESULT_FOLDER,
-    
+
     QUBOLE_API_TOKEN,
     QUBOLE_CLUSTER,
     QUBOLE_CLUSTER_LABEL,

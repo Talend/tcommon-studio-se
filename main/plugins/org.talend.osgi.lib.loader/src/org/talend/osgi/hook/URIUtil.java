@@ -1,6 +1,6 @@
 // ============================================================================
 //
-// Copyright (C) 2006-2018 Talend Inc. - www.talend.com
+// Copyright (C) 2006-2019 Talend Inc. - www.talend.com
 //
 // This source code is available under agreement available at
 // %InstallDIR%\features\org.talend.rcp.branding.%PRODUCTNAME%\%PRODUCTNAME%license.txt
@@ -32,7 +32,7 @@ public class URIUtil {
 
     /**
      * Appends the given extension to the path of the give base URI and returns the corresponding new path.
-     * 
+     *
      * @param base The base URI to append to
      * @param extension The path extension to be added
      * @return The appended URI
@@ -78,7 +78,7 @@ public class URIUtil {
 
     /**
      * Returns a URI corresponding to the given unencoded string.
-     * 
+     *
      * @throws URISyntaxException If the string cannot be formed into a valid URI
      */
     public static URI fromString(String uriString) throws URISyntaxException {
@@ -130,7 +130,7 @@ public class URIUtil {
 
     /**
      * Returns the URI as a local file, or <code>null</code> if the given URI does not represent a local file.
-     * 
+     *
      * @param uri The URI to return the file for
      * @return The local file corresponding to the given URI, or <code>null</code>
      */
@@ -155,7 +155,7 @@ public class URIUtil {
     /**
      * Returns a string representation of the given URI that doesn't have illegal characters encoded. This string is
      * suitable for later passing to {@link #fromString(String)}.
-     * 
+     *
      * @param uri The URI to convert to string format
      * @return An unencoded string representation of the URI
      */
@@ -202,7 +202,7 @@ public class URIUtil {
 
     /**
      * Returns a URI as a URL.
-     * 
+     *
      * @throws MalformedURLException
      */
     public static URL toURL(URI uri) throws MalformedURLException {
@@ -212,14 +212,14 @@ public class URIUtil {
     /**
      * look into the bundle classpath header from the generation param to find the mvn url associated with the jar path
      * in the class path if any. The mvn url must not contain any repository url. This may be of the form:
-     * 
+     *
      * <pre>
      * {@code
      * Bundle-ClassPath:
      * lib/any-existing.jar;mvn:org.talend.studio/any-existing/1.0.0,.
      * }
      * </pre>
-     * 
+     *
      * @param path of the jar in the Bundle-Classpath to look for.
      * @param generation, used to find the Bundle-ClassPath header
      * @param onlyLocalUri, this will add a special repository URI for pax to ignore remote resolution.
@@ -267,7 +267,7 @@ public class URIUtil {
 
     /**
      * look into uri and try ti find the version and add a -SNAPSHOT to it
-     * 
+     *
      * @param mvnUri
      * @return the replaced URI if version could be updated or the original one
      * @throws URISyntaxException

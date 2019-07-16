@@ -1,6 +1,6 @@
 // ============================================================================
 //
-// Copyright (C) 2006-2018 Talend Inc. - www.talend.com
+// Copyright (C) 2006-2019 Talend Inc. - www.talend.com
 //
 // This source code is available under agreement available at
 // %InstallDIR%\features\org.talend.rcp.branding.%PRODUCTNAME%\%PRODUCTNAME%license.txt
@@ -16,14 +16,14 @@ import java.util.List;
 
 /**
  * DOC ggu class global comment. Detailled comment <br/>
- * 
+ *
  * org.talend.core.model.metadata.builder.connection.MetadataColumn<br/>
- * 
+ *
  * org.talend.core.model.metadata.IMetadataColumn<br/>
- * 
+ *
  * @param <E> Type of beans, MetadataColumn and IMetadataColumn
- * 
- * 
+ *
+ *
  */
 public class MetadataColumnsAndDbmsId<E> {
 
@@ -33,7 +33,7 @@ public class MetadataColumnsAndDbmsId<E> {
 
     /**
      * DOC ggu MetadataColumnsAndDbmsId constructor comment.
-     * 
+     *
      * @param metadataColumns
      * @param dbmsId
      */
@@ -45,7 +45,7 @@ public class MetadataColumnsAndDbmsId<E> {
 
     /**
      * Getter for metadataColumns.
-     * 
+     *
      * @return the metadataColumns
      */
     public List<E> getMetadataColumns() {
@@ -54,7 +54,7 @@ public class MetadataColumnsAndDbmsId<E> {
 
     /**
      * Getter for dbmsId.
-     * 
+     *
      * @return the dbmsId
      */
     public String getDbmsId() {

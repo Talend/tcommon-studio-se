@@ -1,6 +1,6 @@
 // ============================================================================
 //
-// Copyright (C) 2006-2018 Talend Inc. - www.talend.com
+// Copyright (C) 2006-2019 Talend Inc. - www.talend.com
 //
 // This source code is available under agreement available at
 // %InstallDIR%\features\org.talend.rcp.branding.%PRODUCTNAME%\%PRODUCTNAME%license.txt
@@ -39,7 +39,7 @@ import org.talend.core.ui.metadata.dialog.DbTableSelectorObject.ObjectType;
 
 /**
  * qzhang class global comment. Detailled comment <br/>
- * 
+ *
  */
 public class DbTableSelectorDialog extends Dialog {
 
@@ -57,7 +57,7 @@ public class DbTableSelectorDialog extends Dialog {
 
     /**
      * qzhang DbTableSelectorDialog constructor comment.
-     * 
+     *
      * @param parentShell
      * @param object
      */
@@ -69,7 +69,7 @@ public class DbTableSelectorDialog extends Dialog {
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see org.eclipse.jface.window.Window#configureShell(org.eclipse.swt.widgets.Shell)
      */
     @Override
@@ -83,7 +83,7 @@ public class DbTableSelectorDialog extends Dialog {
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see org.eclipse.jface.dialogs.Dialog#createDialogArea(org.eclipse.swt.widgets.Composite)
      */
     @Override
@@ -127,7 +127,7 @@ public class DbTableSelectorDialog extends Dialog {
 
             /*
              * (non-Javadoc)
-             * 
+             *
              * @seeorg.eclipse.jface.viewers.ISelectionChangedListener#selectionChanged(org.eclipse.jface.viewers.
              * SelectionChangedEvent)
              */
@@ -154,7 +154,7 @@ public class DbTableSelectorDialog extends Dialog {
 
     /**
      * qzhang DbTableSelectorDialog class global comment. Detailled comment <br/>
-     * 
+     *
      */
     private class ListProvider extends LabelProvider implements IStructuredContentProvider, ITreeContentProvider {
 
@@ -183,7 +183,7 @@ public class DbTableSelectorDialog extends Dialog {
 
         /*
          * (non-Javadoc)
-         * 
+         *
          * @see org.eclipse.jface.viewers.LabelProvider#getText(java.lang.Object)
          */
         @Override
@@ -196,7 +196,7 @@ public class DbTableSelectorDialog extends Dialog {
 
         /*
          * (non-Javadoc)
-         * 
+         *
          * @see org.eclipse.jface.viewers.IContentProvider#inputChanged(org.eclipse.jface.viewers.Viewer,
          * java.lang.Object, java.lang.Object)
          */
@@ -207,7 +207,7 @@ public class DbTableSelectorDialog extends Dialog {
 
         /*
          * (non-Javadoc)
-         * 
+         *
          * @see org.eclipse.jface.viewers.IStructuredContentProvider#getElements(java.lang.Object)
          */
         @Override
@@ -223,7 +223,7 @@ public class DbTableSelectorDialog extends Dialog {
 
         /*
          * (non-Javadoc)
-         * 
+         *
          * @see org.eclipse.jface.viewers.ITreeContentProvider#getChildren(java.lang.Object)
          */
         @Override
@@ -233,7 +233,7 @@ public class DbTableSelectorDialog extends Dialog {
 
         /*
          * (non-Javadoc)
-         * 
+         *
          * @see org.eclipse.jface.viewers.ITreeContentProvider#getParent(java.lang.Object)
          */
         @Override
@@ -249,7 +249,7 @@ public class DbTableSelectorDialog extends Dialog {
 
         /*
          * (non-Javadoc)
-         * 
+         *
          * @see org.eclipse.jface.viewers.ITreeContentProvider#hasChildren(java.lang.Object)
          */
         @Override
@@ -260,7 +260,7 @@ public class DbTableSelectorDialog extends Dialog {
 
     /**
      * qzhang Comment method "getSelectName".
-     * 
+     *
      * @return
      */
     public String getSelectName() {

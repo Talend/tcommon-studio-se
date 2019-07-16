@@ -1,6 +1,6 @@
 // ============================================================================
 //
-// Copyright (C) 2006-2018 Talend Inc. - www.talend.com
+// Copyright (C) 2006-2019 Talend Inc. - www.talend.com
 //
 // This source code is available under agreement available at
 // %InstallDIR%\features\org.talend.rcp.branding.%PRODUCTNAME%\%PRODUCTNAME%license.txt
@@ -47,12 +47,12 @@ import org.talend.librariesmanager.ui.i18n.Messages;
 /**
  * This is the composite filled in the ModulesView. So it implemented the inferface IModulesViewComposite. Know more see
  * interface IModulesViewComposite.
- * 
+ *
  * yzhang class global comment. Detailled comment <br/>
- * 
+ *
  * $Id: PerlModulesViewComposite.java PerlModulesViewComposite 2007-1-26 下�?�1�7:53:04 +0000 (下�?�1�7:53:04, 2007-1-26
  * 2007) yzhang $
- * 
+ *
  */
 public class ModulesViewComposite extends Composite {
 
@@ -66,9 +66,9 @@ public class ModulesViewComposite extends Composite {
 
     /**
      * Construct a new Perl modules view composite.
-     * 
+     *
      * yzhang PerlModulesViewComposite constructor comment.
-     * 
+     *
      * @param parent
      * @param style
      */
@@ -268,7 +268,7 @@ public class ModulesViewComposite extends Composite {
 
     /**
      * DOC bqian Comment method "filterHidenModule".
-     * 
+     *
      * @param modules
      * @return
      */
@@ -284,7 +284,7 @@ public class ModulesViewComposite extends Composite {
 
     /*
      * Be called when the set focus of modules view was called.
-     * 
+     *
      * @see org.eclipse.swt.widgets.Composite#setFocus()
      */
     @Override
@@ -294,7 +294,7 @@ public class ModulesViewComposite extends Composite {
 
     /*
      * Be called when the refresh of modules view was called.
-     * 
+     *
      * @see org.talend.designer.codegen.perlmodule.ui.views.IModulesViewComposite#refresh()
      */
     public void refresh() {
@@ -306,7 +306,7 @@ public class ModulesViewComposite extends Composite {
 
     /**
      * Getter for tableViewerCreator.
-     * 
+     *
      * @return the tableViewerCreator
      */
     public static TableViewerCreator getTableViewerCreator() {

@@ -1,6 +1,6 @@
 // ============================================================================
 //
-// Copyright (C) 2006-2018 Talend Inc. - www.talend.com
+// Copyright (C) 2006-2019 Talend Inc. - www.talend.com
 //
 // This source code is available under agreement available at
 // %InstallDIR%\features\org.talend.rcp.branding.%PRODUCTNAME%\%PRODUCTNAME%license.txt
@@ -149,7 +149,7 @@ public abstract class AbstractExtraFeature implements ExtraFeature {
 
     /**
      * Sets the name.
-     * 
+     *
      * @param name the name to set
      */
     public void setName(String name) {
@@ -166,7 +166,7 @@ public abstract class AbstractExtraFeature implements ExtraFeature {
 
     /**
      * Getter for parentCategory.
-     * 
+     *
      * @return the parentCategory
      */
     @Override
@@ -176,7 +176,7 @@ public abstract class AbstractExtraFeature implements ExtraFeature {
 
     /**
      * Sets the parentCategory.
-     * 
+     *
      * @param parentCategory the parentCategory to set
      */
     @Override

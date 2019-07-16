@@ -1,6 +1,6 @@
 // ============================================================================
 //
-// Copyright (C) 2006-2018 Talend Inc. - www.talend.com
+// Copyright (C) 2006-2019 Talend Inc. - www.talend.com
 //
 // This source code is available under agreement available at
 // %InstallDIR%\features\org.talend.rcp.branding.%PRODUCTNAME%\%PRODUCTNAME%license.txt
@@ -21,9 +21,9 @@ import org.talend.core.model.metadata.builder.connection.XmlXPathLoopDescriptor;
 
 /**
  * DOC cantoine class global comment. Detailled comment <br/>
- * 
+ *
  * $Id: XmlExtractorSchemaModel.java 949 2006-12-11 15:03:40Z cantoine $
- * 
+ *
  */
 public class XmlExtractorLoopModel extends ExtendedTableModel<XmlXPathLoopDescriptor> {
 
@@ -44,7 +44,7 @@ public class XmlExtractorLoopModel extends ExtendedTableModel<XmlXPathLoopDescri
 
     /**
      * set XmlXPathLoopDescriptor.
-     * 
+     *
      * @param xmlXPathLoopDescriptor
      */
     public void setXmlXPathLoopDescriptor(XmlXPathLoopDescriptor xmlXPathLoopDescriptor) {
@@ -61,7 +61,7 @@ public class XmlExtractorLoopModel extends ExtendedTableModel<XmlXPathLoopDescri
 
     /**
      * DOC amaumont Comment method "createSchemaTarget".
-     * 
+     *
      * @return
      */
     public XmlXPathLoopDescriptor createXmlXPathLoopDescriptor() {

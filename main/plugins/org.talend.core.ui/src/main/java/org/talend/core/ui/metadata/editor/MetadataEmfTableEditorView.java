@@ -1,6 +1,6 @@
 // ============================================================================
 //
-// Copyright (C) 2006-2018 Talend Inc. - www.talend.com
+// Copyright (C) 2006-2019 Talend Inc. - www.talend.com
 //
 // This source code is available under agreement available at
 // %InstallDIR%\features\org.talend.rcp.branding.%PRODUCTNAME%\%PRODUCTNAME%license.txt
@@ -34,9 +34,9 @@ import orgomg.cwm.objectmodel.core.TaggedValue;
 /**
  * DOC amaumont class global comment. Detailled comment <br/>
  * TGU same purpose as MetadataTableEditorView but uses EMF model directly
- * 
+ *
  * $Id: MetadataEmfTableEditorView.java 46940 2010-08-18 06:58:15Z wyang $
- * 
+ *
  */
 public class MetadataEmfTableEditorView extends AbstractMetadataTableEditorView<MetadataColumn> {
 
@@ -44,7 +44,7 @@ public class MetadataEmfTableEditorView extends AbstractMetadataTableEditorView<
 
     /**
      * You must initialize graphicals components by calling <code>initGraphicComponents()</code>.
-     * 
+     *
      * @param parent
      * @param style
      */
@@ -55,7 +55,7 @@ public class MetadataEmfTableEditorView extends AbstractMetadataTableEditorView<
 
     /**
      * DOC amaumont MetadataEmfTableEditorView constructor comment.
-     * 
+     *
      * @param parentComposite
      * @param mainCompositeStyle
      * @param initGraphicsComponents
@@ -66,7 +66,7 @@ public class MetadataEmfTableEditorView extends AbstractMetadataTableEditorView<
 
     /**
      * Graphics components are automatically initialized.
-     * 
+     *
      * @param parentComposite
      * @param mainCompositeStyle
      * @param extendedTableModel
@@ -79,9 +79,9 @@ public class MetadataEmfTableEditorView extends AbstractMetadataTableEditorView<
     }
 
     /**
-     * 
+     *
      * DOC wchen MetadataEmfTableEditorView constructor comment.
-     * 
+     *
      * @param parentComposite
      * @param mainCompositeStyle
      * @param extendedTableModel
@@ -102,7 +102,7 @@ public class MetadataEmfTableEditorView extends AbstractMetadataTableEditorView<
 
     /**
      * Graphics components are automatically initialized.
-     * 
+     *
      * @param parentComposite
      * @param mainCompositeStyle
      * @param extendedTableModel
@@ -127,7 +127,7 @@ public class MetadataEmfTableEditorView extends AbstractMetadataTableEditorView<
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see org.talend.core.ui.metadata.editor.AbstractMetadataTableEditorView#getNullableAccessor()
      */
     @Override
@@ -332,7 +332,7 @@ public class MetadataEmfTableEditorView extends AbstractMetadataTableEditorView<
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see org.talend.core.ui.metadata.editor.AbstractMetadataTableEditorView#validateColumnName(java.lang.String, int)
      */
     @Override
@@ -429,7 +429,7 @@ public class MetadataEmfTableEditorView extends AbstractMetadataTableEditorView<
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see org.talend.commons.ui.swt.advanced.dataeditor.AbstractDataTableEditorView#initToolBar()
      */
     @Override
@@ -439,7 +439,7 @@ public class MetadataEmfTableEditorView extends AbstractMetadataTableEditorView<
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see
      * org.talend.core.ui.metadata.editor.AbstractMetadataTableEditorView#configureDefaultColumn(org.talend.commons.
      * ui.swt.tableviewer.TableViewerCreator)
@@ -553,7 +553,7 @@ public class MetadataEmfTableEditorView extends AbstractMetadataTableEditorView<
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see
      * org.talend.core.ui.metadata.editor.AbstractMetadataTableEditorView#setTableViewerCreatorOptions(org.talend.commons
      * .ui.swt.tableviewer.TableViewerCreator)
@@ -561,12 +561,12 @@ public class MetadataEmfTableEditorView extends AbstractMetadataTableEditorView<
     @Override
     protected void setTableViewerCreatorOptions(TableViewerCreator<MetadataColumn> newTableViewerCreator) {
         super.setTableViewerCreatorOptions(newTableViewerCreator);
-        newTableViewerCreator.setLazyLoad(true);
+        newTableViewerCreator.setLazyLoad(TableViewerCreator.getRecommandLazyLoad());
     }
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see org.talend.core.ui.metadata.editor.AbstractMetadataTableEditorView#getUsefulAccessor()
      */
     @Override

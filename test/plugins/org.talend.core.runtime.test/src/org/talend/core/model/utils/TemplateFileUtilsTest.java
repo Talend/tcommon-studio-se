@@ -1,6 +1,6 @@
 // ============================================================================
 //
-// Copyright (C) 2006-2018 Talend Inc. - www.talend.com
+// Copyright (C) 2006-2019 Talend Inc. - www.talend.com
 //
 // This source code is available under agreement available at
 // %InstallDIR%\features\org.talend.rcp.branding.%PRODUCTNAME%\%PRODUCTNAME%license.txt
@@ -39,7 +39,7 @@ import org.talend.core.utils.TemplateFileUtils;
  *
  */
 public class TemplateFileUtilsTest {
-	
+
 	@Test
     public void testHhandleAssemblyJobTemplate() throws URISyntaxException, IOException, DocumentException {
 		File file = getTemplateFile();
@@ -64,9 +64,9 @@ public class TemplateFileUtilsTest {
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
-		
+
 	}
-	
+
 	private void test1(String content, String launcher) throws DocumentException{
 		Map<String, Element> map = test(content, launcher);
 		Assert.assertTrue(map.size() == 3);
@@ -74,7 +74,7 @@ public class TemplateFileUtilsTest {
 		Assert.assertTrue(map.get(TemplateFileUtils.POWER_SHELL) != null);
 		Assert.assertTrue(map.get(TemplateFileUtils.UNIX_LAUNCHER) != null);
 	}
-	
+
 	private void test2(String content, String launcher) throws DocumentException{
 		Map<String, Element> map = test(content, launcher);
 		Assert.assertTrue(map.size() == 3);
@@ -88,28 +88,28 @@ public class TemplateFileUtilsTest {
 		Assert.assertTrue(map.size() == 1);
 		Assert.assertTrue(map.get(TemplateFileUtils.UNIX_LAUNCHER) != null);
 	}
-	
+
 	private void test4(String content, String launcher) throws DocumentException{
 		Map<String, Element> map = test(content, launcher);
 		Assert.assertTrue(map.size() == 2);
 		Assert.assertTrue(map.get(TemplateFileUtils.WINDOWS_LAUNCHER) != null);
 		Assert.assertTrue(map.get(TemplateFileUtils.POWER_SHELL) != null);
 	}
-	
+
 	private Map<String, Element> test(String content, String launcher) throws DocumentException{
 		Map<String, Element> map = new HashMap<String, Element>();
 		String result = TemplateFileUtils.handleAssemblyJobTemplate(content, launcher);
-		
+
 		ByteArrayInputStream source = new ByteArrayInputStream(result.getBytes());
-		SAXReader reader = new SAXReader();   
-		Document doc = reader.read(source);   
-		Element root = doc.getRootElement();   
+		SAXReader reader = new SAXReader();
+		Document doc = reader.read(source);
+		Element root = doc.getRootElement();
 		Element files = root.element("files"); //$NON-NLS-1$
-		
+
 		for (Iterator j = files.elementIterator("file"); j.hasNext();) { //$NON-NLS-1$
 			Element file = (Element) j.next();
 			Element destName = file.element("destName"); //$NON-NLS-1$
-			
+
 			if(destName.getStringValue().endsWith(TemplateFileUtils.WINDOWS_LAUNCHER)){
 				map.put(TemplateFileUtils.WINDOWS_LAUNCHER, file);
 			}
@@ -122,7 +122,7 @@ public class TemplateFileUtilsTest {
 		}
 		return map;
 	}
-	
+
 	private File getTemplateFile() throws URISyntaxException, IOException {
 		URI testFileToDeploy = FileLocator.toFileURL(this.getClass().getClassLoader().
 				getResource("resources/template.xml")).toURI();//$NON-NLS-1$

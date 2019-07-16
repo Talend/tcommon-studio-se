@@ -1,6 +1,6 @@
 // ============================================================================
 //
-// Copyright (C) 2006-2018 Talend Inc. - www.talend.com
+// Copyright (C) 2006-2019 Talend Inc. - www.talend.com
 //
 // This source code is available under agreement available at
 // %InstallDIR%\features\org.talend.rcp.branding.%PRODUCTNAME%\%PRODUCTNAME%license.txt
@@ -17,10 +17,10 @@ import org.eclipse.equinox.p2.metadata.IInstallableUnit;
 /**
  * this will use the p2 repository url found the licence to look for features that will have a specifal p2 property that
  * has the names of the product it is compatible with.
- * 
+ *
  */
 public class IuP2ExtraFeature extends P2ExtraFeature {
-    
+
     public IuP2ExtraFeature(String uri) {
         super(null, null, null, null, null, null, null, null, null, null, null, false, uri, false, false);
     }

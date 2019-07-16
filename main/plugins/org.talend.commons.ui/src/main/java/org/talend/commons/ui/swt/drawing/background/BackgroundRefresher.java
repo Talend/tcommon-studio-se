@@ -1,6 +1,6 @@
 // ============================================================================
 //
-// Copyright (C) 2006-2018 Talend Inc. - www.talend.com
+// Copyright (C) 2006-2019 Talend Inc. - www.talend.com
 //
 // This source code is available under agreement available at
 // %InstallDIR%\features\org.talend.rcp.branding.%PRODUCTNAME%\%PRODUCTNAME%license.txt
@@ -30,13 +30,14 @@ import org.talend.commons.ui.runtime.ws.WindowSystem;
 import org.talend.commons.utils.performance.IPerformanceEvaluatorListener;
 import org.talend.commons.utils.performance.PerformanceEvaluator;
 import org.talend.commons.utils.performance.PerformanceEvaluatorEvent;
+import org.talend.commons.utils.system.EnvironmentUtils;
 import org.talend.commons.utils.threading.ExecutionLimiterImproved;
 
 /**
  * DOC amaumont class global comment. Detailled comment <br/>
- * 
+ *
  * $Id$
- * 
+ *
  */
 public class BackgroundRefresher implements IBackgroundRefresher {
 
@@ -77,7 +78,7 @@ public class BackgroundRefresher implements IBackgroundRefresher {
 
     /**
      * DOC amaumont Linker constructor comment.
-     * 
+     *
      * @param drawableComposite
      */
     public BackgroundRefresher(IBgDrawableComposite drawableComposite) {
@@ -87,9 +88,9 @@ public class BackgroundRefresher implements IBackgroundRefresher {
     }
 
     /**
-     * 
+     *
      * DOC amaumont BackgroundRefresher constructor comment.
-     * 
+     *
      * @param drawableComposite
      * @param minimalTimeBetweenEachRefresh minimal time between each refresh
      */
@@ -105,7 +106,7 @@ public class BackgroundRefresher implements IBackgroundRefresher {
 
             /*
              * (non-Javadoc)
-             * 
+             *
              * @see org.talend.commons.utils.threading.ExecutionLimiter#execute(boolean)
              */
             @Override
@@ -282,7 +283,7 @@ public class BackgroundRefresher implements IBackgroundRefresher {
 
     /**
      * This method must be call one time by shell opened.
-     * 
+     *
      */
     protected void launchEvaluatingPerformanceLoop() {
         threadToEvaluatePerformance = new Thread() {
@@ -312,7 +313,7 @@ public class BackgroundRefresher implements IBackgroundRefresher {
 
     /**
      * Getter for backgroundColor.
-     * 
+     *
      * @return the backgroundColor
      */
     public Color getBackgroundColor() {
@@ -321,7 +322,7 @@ public class BackgroundRefresher implements IBackgroundRefresher {
 
     /**
      * Sets the backgroundColor.
-     * 
+     *
      * @param backgroundColor the backgroundColor to set
      */
     public void setBackgroundColor(Color backgroundColor) {
@@ -332,11 +333,13 @@ public class BackgroundRefresher implements IBackgroundRefresher {
         Point returnedPoint = new Point(point.x, point.y);
         while (child != drawableComposite.getBgDrawableComposite()) {
             Rectangle bounds = child.getBounds();
-            if (WindowSystem.isGTK() && child instanceof Table) {
+            if ((WindowSystem.isGTK() || EnvironmentUtils.isMacOsSytem()) && child instanceof Table) {
                 returnedPoint.y += ((Table) child).getHeaderHeight();
+                returnedPoint.y += ((Table) child).getItemHeight();
             }
-            if (WindowSystem.isGTK() && child instanceof Tree) {
+            if ((WindowSystem.isGTK() || EnvironmentUtils.isMacOsSytem()) && child instanceof Tree) {
                 returnedPoint.y += ((Tree) child).getHeaderHeight();
+                returnedPoint.y += ((Table) child).getItemHeight();
             }
             child = child.getParent();
             ScrollBar vScrollBar = child.getVerticalBar();
@@ -352,7 +355,7 @@ public class BackgroundRefresher implements IBackgroundRefresher {
 
     /**
      * Getter for antialiasActivated.
-     * 
+     *
      * @return the antialiasActivated
      */
     public boolean isAntialiasAllowed() {
@@ -368,7 +371,7 @@ public class BackgroundRefresher implements IBackgroundRefresher {
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see org.talend.commons.ui.swt.drawing.background.IBackgroundRefresher#dispose()
      */
     public void dispose() {

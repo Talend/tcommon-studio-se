@@ -1,6 +1,6 @@
 // ============================================================================
 //
-// Copyright (C) 2006-2018 Talend Inc. - www.talend.com
+// Copyright (C) 2006-2019 Talend Inc. - www.talend.com
 //
 // This source code is available under agreement available at
 // %InstallDIR%\features\org.talend.rcp.branding.%PRODUCTNAME%\%PRODUCTNAME%license.txt
@@ -31,7 +31,7 @@ import org.talend.librariesmanager.utils.RemoteModulesHelper;
 
 /**
  * created by WCHEN on 2012-9-18 Detailled comment
- * 
+ *
  */
 public class ModuleLicenseDialog extends Dialog {
 
@@ -47,7 +47,7 @@ public class ModuleLicenseDialog extends Dialog {
 
     /**
      * DOC WCHEN ModuleLicenseDialog constructor comment.
-     * 
+     *
      * @param parentShell
      */
     public ModuleLicenseDialog(Shell parentShell, String licenseType, String license, String name) {
@@ -60,7 +60,7 @@ public class ModuleLicenseDialog extends Dialog {
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see org.eclipse.jface.window.Window#configureShell(org.eclipse.swt.widgets.Shell)
      */
     @Override
@@ -71,7 +71,7 @@ public class ModuleLicenseDialog extends Dialog {
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see org.eclipse.jface.dialogs.Dialog#createDialogArea(org.eclipse.swt.widgets.Composite)
      */
     @Override
@@ -133,7 +133,7 @@ public class ModuleLicenseDialog extends Dialog {
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see org.eclipse.jface.dialogs.Dialog#okPressed()
      */
     @Override
@@ -144,7 +144,7 @@ public class ModuleLicenseDialog extends Dialog {
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see org.eclipse.jface.dialogs.Dialog#cancelPressed()
      */
     @Override

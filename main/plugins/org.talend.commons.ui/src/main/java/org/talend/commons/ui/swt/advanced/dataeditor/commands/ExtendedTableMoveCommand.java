@@ -1,6 +1,6 @@
 // ============================================================================
 //
-// Copyright (C) 2006-2018 Talend Inc. - www.talend.com
+// Copyright (C) 2006-2019 Talend Inc. - www.talend.com
 //
 // This source code is available under agreement available at
 // %InstallDIR%\features\org.talend.rcp.branding.%PRODUCTNAME%\%PRODUCTNAME%license.txt
@@ -24,9 +24,9 @@ import org.talend.commons.utils.data.list.ListenableList;
 
 /**
  * DOC amaumont class global comment. Detailled comment <br/>
- * 
+ *
  * $Id$
- * 
+ *
  */
 public class ExtendedTableMoveCommand extends Command implements IExtendedTableCommand {
 
@@ -56,7 +56,7 @@ public class ExtendedTableMoveCommand extends Command implements IExtendedTableC
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see org.eclipse.gef.commands.Command#execute()
      */
     @SuppressWarnings("unchecked")//$NON-NLS-1$
@@ -107,7 +107,7 @@ public class ExtendedTableMoveCommand extends Command implements IExtendedTableC
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see org.talend.commons.ui.command.CommonCommand#canExecute()
      */
     @Override
@@ -117,7 +117,7 @@ public class ExtendedTableMoveCommand extends Command implements IExtendedTableC
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see org.talend.commons.ui.command.CommonCommand#canUndo()
      */
     @Override
@@ -127,7 +127,7 @@ public class ExtendedTableMoveCommand extends Command implements IExtendedTableC
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see org.talend.commons.ui.command.CommonCommand#redo()
      */
     @SuppressWarnings("unchecked")//$NON-NLS-1$
@@ -138,7 +138,7 @@ public class ExtendedTableMoveCommand extends Command implements IExtendedTableC
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see org.talend.commons.ui.command.CommonCommand#undo()
      */
     @SuppressWarnings("unchecked")//$NON-NLS-1$

@@ -1,6 +1,6 @@
 // ============================================================================
 //
-// Copyright (C) 2006-2018 Talend Inc. - www.talend.com
+// Copyright (C) 2006-2019 Talend Inc. - www.talend.com
 //
 // This source code is available under agreement available at
 // %InstallDIR%\features\org.talend.rcp.branding.%PRODUCTNAME%\%PRODUCTNAME%license.txt
@@ -34,12 +34,12 @@ import org.talend.metadata.managment.connection.manager.DatabaseConnConstants;
  * <pre>
  * This factory is used to get the class loaders for hive by the different index.
  * </pre>
- * 
+ *
  * <pre>
- * <li>For hive server one, the index format should be like this: <B>HIVE:HORTONWORKS:HDP_1_0:EMBEDDED</B>. 
+ * <li>For hive server one, the index format should be like this: <B>HIVE:HORTONWORKS:HDP_1_0:EMBEDDED</B>.
  * <li>For hive server two, the index format should be like this: <B>HIVE2:HORTONWORKS:HDP_1_0:EMBEDDED</B>.
  * </pre>
- * 
+ *
  * Created by Marvin Wang on Mar 12, 2013.
  */
 public class HiveClassLoaderFactory {
@@ -54,7 +54,7 @@ public class HiveClassLoaderFactory {
     /**
      * Gets an instance of <code>HiveClassLoaderFactory</code>, which is synchronized. Added by Marvin Wang on Mar 12,
      * 2013.
-     * 
+     *
      * @return
      */
     public static synchronized HiveClassLoaderFactory getInstance() {
@@ -68,7 +68,7 @@ public class HiveClassLoaderFactory {
      * Gets an instance of <code>ClassLoader</code> by the given argument, it invokes {
      * {@link #getHive1ClassLoader(IMetadataConnection)} and {@link #getHive2ClassLoader(IMetadataConnection)}. Added by
      * Marvin Wang on Mar 13, 2013.
-     * 
+     *
      * @param metadataConn
      * @return
      */
@@ -97,11 +97,11 @@ public class HiveClassLoaderFactory {
 
     /**
      * DOC ycbai Comment method "appendExtraJars".
-     * 
+     *
      * <p>
      * Add the extra jars which hive connection needed like when creating a hive embedded connection with kerberos.
      * </p>
-     * 
+     *
      * @param metadataConn
      * @param classLoader
      */
@@ -184,7 +184,7 @@ public class HiveClassLoaderFactory {
     /**
      * Gets the class loader for different version by the given parameters for hive1 server. Added by Marvin Wang on Mar
      * 12, 2013.
-     * 
+     *
      * @param metadataConn
      * @return
      */
@@ -201,7 +201,7 @@ public class HiveClassLoaderFactory {
             String index = "HadoopCustomVersion:Hive:" + metadataConn.getId(); //$NON-NLS-1$
             loader = ClassLoaderFactory.getCustomClassLoader(index, jarsStr);
         } else {
-            String index = "HIVE" + ":" + distroKey + ":" + distroVersion + ":" + hiveModel; //$NON-NLS-1$  //$NON-NLS-2$  //$NON-NLS-3$ //$NON-NLS-4$ 
+            String index = "HIVE" + ":" + distroKey + ":" + distroVersion + ":" + hiveModel; //$NON-NLS-1$  //$NON-NLS-2$  //$NON-NLS-3$ //$NON-NLS-4$
             loader = ClassLoaderFactory.getClassLoader(index);
             // If there is no class loader gotten by index, then use the current classloader.
             if (loader == null) {
@@ -213,9 +213,9 @@ public class HiveClassLoaderFactory {
     }
 
     /**
-     * 
+     *
      * Added by Marvin Wang on Mar 27, 2013.
-     * 
+     *
      * @param metadataConn
      * @return
      */
@@ -232,7 +232,7 @@ public class HiveClassLoaderFactory {
             String index = "HadoopCustomVersion:Hive2:" + metadataConn.getId(); //$NON-NLS-1$
             loader = ClassLoaderFactory.getCustomClassLoader(index, jarsStr);
         } else {
-            String index = "HIVE2" + ":" + distroKey + ":" + distroVersion + ":" + hiveModel; //$NON-NLS-1$  //$NON-NLS-2$  //$NON-NLS-3$ //$NON-NLS-4$ 
+            String index = "HIVE2" + ":" + distroKey + ":" + distroVersion + ":" + hiveModel; //$NON-NLS-1$  //$NON-NLS-2$  //$NON-NLS-3$ //$NON-NLS-4$
             loader = ClassLoaderFactory.getClassLoader(index);
             // If there is no class loader gotten by index, then use the current classloader.
             if (loader == null) {

@@ -1,6 +1,6 @@
 // ============================================================================
 //
-// Copyright (C) 2006-2018 Talend Inc. - www.talend.com
+// Copyright (C) 2006-2019 Talend Inc. - www.talend.com
 //
 // This source code is available under agreement available at
 // %InstallDIR%\features\org.talend.rcp.branding.%PRODUCTNAME%\%PRODUCTNAME%license.txt
@@ -31,13 +31,13 @@ import org.talend.commons.utils.data.bean.IBeanPropertyAccessors;
 
 /**
  * <code>TableViewerCreatorColumn</code> represents a column to add to <code>TableViewerCreator</code>.
- * 
- * 
- * 
+ *
+ *
+ *
  * <br/>
- * 
+ *
  * $Id: TableViewerCreatorColumn.java 7038 2007-11-15 14:05:48Z plegall $
- * 
+ *
  * @param <B> type of bean conatined in TableViewerCreator
  * @param <V> type of value contained in column
  */
@@ -61,7 +61,7 @@ public class TableViewerCreatorColumnNotModifiable<B, V> implements Cloneable {
 
     /**
      * . <br/>
-     * 
+     *
      * @see SWT.LEFT
      * @see SWT.RIGHT
      * @see SWT.CENTER
@@ -131,9 +131,9 @@ public class TableViewerCreatorColumnNotModifiable<B, V> implements Cloneable {
     private ColumnCellModifier columnCellModifier;
 
     /**
-     * 
+     *
      * Use this constructor if you want add columns manually to <code>TableViewerCreator</code>.
-     * 
+     *
      * @see TableViewerCreatorNotModifiable#addColumn(TableViewerCreatorColumnNotModifiable)
      */
     public TableViewerCreatorColumnNotModifiable() {
@@ -142,7 +142,7 @@ public class TableViewerCreatorColumnNotModifiable<B, V> implements Cloneable {
     }
 
     /**
-     * 
+     *
      * @param tableViewerCreator
      */
     public TableViewerCreatorColumnNotModifiable(TableViewerCreatorNotModifiable<B> tableViewerCreator) {
@@ -161,7 +161,7 @@ public class TableViewerCreatorColumnNotModifiable<B, V> implements Cloneable {
 
     /**
      * Field used when column is created.
-     * 
+     *
      * @param alignment
      */
     public void setAlignment(ALIGNMENT alignment) {
@@ -177,9 +177,9 @@ public class TableViewerCreatorColumnNotModifiable<B, V> implements Cloneable {
     }
 
     /**
-     * 
+     *
      * DOC amaumont Comment method "getImage".
-     * 
+     *
      * @return
      */
     public Image getImageHeader() {
@@ -188,9 +188,9 @@ public class TableViewerCreatorColumnNotModifiable<B, V> implements Cloneable {
 
     /**
      * DOC amaumont Comment method "setImageHeader".
-     * 
+     *
      * Note: imageHeader is replaced by up or down arrow image when sorting.
-     * 
+     *
      * @param imageHeader
      * @see TableColumn#setImage(Image)
      */
@@ -204,7 +204,7 @@ public class TableViewerCreatorColumnNotModifiable<B, V> implements Cloneable {
 
     /**
      * Note: used only when the weight is set.
-     * 
+     *
      * @param minimumWidth
      */
     public void setMinimumWidth(int minimumWidth) {
@@ -273,7 +273,7 @@ public class TableViewerCreatorColumnNotModifiable<B, V> implements Cloneable {
 
     /**
      * Read the TableColumn 'width' if exists, else read the property of this instance.
-     * 
+     *
      * @return
      */
     public int getWidth() {
@@ -298,7 +298,7 @@ public class TableViewerCreatorColumnNotModifiable<B, V> implements Cloneable {
 
     /**
      * Use this method whether the type handled by CellEditor is not <code>String</code> .
-     * 
+     *
      * @param cellEditor
      * @param typeValueAdapter
      */
@@ -334,7 +334,7 @@ public class TableViewerCreatorColumnNotModifiable<B, V> implements Cloneable {
 
     /**
      * Should'nt be use by user of this class. This method is used by TableEditor
-     * 
+     *
      * @param tableColumn
      */
     public void setTableColumn(TableColumn tableColumn) {
@@ -356,9 +356,9 @@ public class TableViewerCreatorColumnNotModifiable<B, V> implements Cloneable {
     // }
 
     /**
-     * 
+     *
      * Clone superficially the current instance. Then you must add explicitly the new instance to TableEditor.
-     * 
+     *
      */
     @Override
     protected Object clone() throws CloneNotSupportedException {
@@ -404,9 +404,9 @@ public class TableViewerCreatorColumnNotModifiable<B, V> implements Cloneable {
     }
 
     /**
-     * 
+     *
      * This value is optional. It is obligatory if you use the same property in several columns.
-     * 
+     *
      * @param id
      */
     public void setId(String id) {
@@ -431,7 +431,7 @@ public class TableViewerCreatorColumnNotModifiable<B, V> implements Cloneable {
 
     /**
      * DOC amaumont Comment method "setDisplayedValue".
-     * 
+     *
      * @param object
      */
     public void setDisplayedValue(String displayedValue) {
@@ -459,14 +459,14 @@ public class TableViewerCreatorColumnNotModifiable<B, V> implements Cloneable {
     }
 
     /**
-     * 
+     *
      * <code>IColumnImageProvider</code> allow to set an Image provider for the current column.
-     * 
+     *
      * <p>
      * <b>Warning</b>: this Image provider won't work if you set a custom LabelProvider to
      * <code>TableViewerCreator</code>. So you can inherit <code>DefaultTableLabelProvider</code> and call super
      * methods into.
-     * 
+     *
      * @param columnImageProvider
      * @see IColumnImageProvider#getImage(Object, int) is used
      */
@@ -479,14 +479,14 @@ public class TableViewerCreatorColumnNotModifiable<B, V> implements Cloneable {
     }
 
     /**
-     * 
+     *
      * <code>IColumnImageProvider</code> allow to set an Image provider for the current column.
-     * 
+     *
      * <p>
      * <b>Warning</b>: this Image provider won't work if you set a custom LabelProvider to
      * <code>TableViewerCreator</code>. So you can inherit <code>DefaultTableLabelProvider</code> and call super
      * methods into.
-     * 
+     *
      * @param columnImageProvider
      * @see IColumnLabelProvider#getLabel(Object, int) is used
      */
@@ -496,7 +496,7 @@ public class TableViewerCreatorColumnNotModifiable<B, V> implements Cloneable {
 
     /**
      * "getIndex" method.
-     * 
+     *
      * @return the index of the column
      */
     public int getIndex() {
@@ -505,7 +505,7 @@ public class TableViewerCreatorColumnNotModifiable<B, V> implements Cloneable {
 
     /**
      * Index is set by <code>TableViewerCreator</code> at initialization.
-     * 
+     *
      * @param index
      */
     protected void setIndex(int index) {
@@ -518,7 +518,7 @@ public class TableViewerCreatorColumnNotModifiable<B, V> implements Cloneable {
 
     /**
      * Gets the colorProvider.
-     * 
+     *
      * @return
      */
     public IColumnColorProvider getColorProvider() {
@@ -527,7 +527,7 @@ public class TableViewerCreatorColumnNotModifiable<B, V> implements Cloneable {
 
     /**
      * Sets the colorProvider.
-     * 
+     *
      * @param colorProvider the colorProvider to set
      */
     public void setColorProvider(IColumnColorProvider colorProvider) {
@@ -536,7 +536,7 @@ public class TableViewerCreatorColumnNotModifiable<B, V> implements Cloneable {
 
     /**
      * DOC amaumont Comment method "setColumnCellModifier".
-     * 
+     *
      * @param columnCellModifier
      */
     public void setColumnCellModifier(ColumnCellModifier columnCellModifier) {

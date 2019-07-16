@@ -1,6 +1,6 @@
 // ============================================================================
 //
-// Copyright (C) 2006-2018 Talend Inc. - www.talend.com
+// Copyright (C) 2006-2019 Talend Inc. - www.talend.com
 //
 // This source code is available under agreement available at
 // %InstallDIR%\features\org.talend.rcp.branding.%PRODUCTNAME%\%PRODUCTNAME%license.txt
@@ -81,9 +81,9 @@ import org.talend.utils.ProductVersion;
 
 /**
  * DOC smallet class global comment. Detailled comment <br/>
- * 
+ *
  * $Id: talend.epf 1 2006-09-29 17:06:40 +0000 (ven., 29 sept. 2006) nrousseau $
- * 
+ *
  */
 public class MigrationToolService implements IMigrationToolService {
 
@@ -383,9 +383,9 @@ public class MigrationToolService implements IMigrationToolService {
                                                                         itemInfo = prop.toString();
                                                                     }
                                                                     appendToLogFile(project,
-                                                                            " * FAILED Task(s) on item: " + itemInfo + "\n"); //$NON-NLS-1$//$NON-NLS-2$ 
+                                                                            " * FAILED Task(s) on item: " + itemInfo + "\n"); //$NON-NLS-1$//$NON-NLS-2$
                                                                 }
-                                                                appendToLogFile(project, "      " + task.getName() + "\n"); //$NON-NLS-1$//$NON-NLS-2$ 
+                                                                appendToLogFile(project, "      " + task.getName() + "\n"); //$NON-NLS-1$//$NON-NLS-2$
                                                             }
 
                                                             break;
@@ -409,9 +409,9 @@ public class MigrationToolService implements IMigrationToolService {
                                                                     itemInfo = prop.toString();
                                                                 }
                                                                 appendToLogFile(project,
-                                                                        " * FAILED Task(s) on item: " + itemInfo + "\n"); //$NON-NLS-1$//$NON-NLS-2$ 
+                                                                        " * FAILED Task(s) on item: " + itemInfo + "\n"); //$NON-NLS-1$//$NON-NLS-2$
                                                             }
-                                                            appendToLogFile(project, "      " + task.getName() + "\n"); //$NON-NLS-1$//$NON-NLS-2$ 
+                                                            appendToLogFile(project, "      " + task.getName() + "\n"); //$NON-NLS-1$//$NON-NLS-2$
                                                         }
                                                         log.debug("Task \"" + task.getName() + "\" failed"); //$NON-NLS-1$ //$NON-NLS-2$
                                                     }
@@ -737,7 +737,7 @@ public class MigrationToolService implements IMigrationToolService {
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see org.talend.core.model.migration.IMigrationToolService#initNewProjectTasks()
      */
     @Override
@@ -756,7 +756,7 @@ public class MigrationToolService implements IMigrationToolService {
 
     /**
      * DOC smallet Comment method "saveProjectMigrationTasksDone".
-     * 
+     *
      * @param project
      * @param done
      */
@@ -772,7 +772,7 @@ public class MigrationToolService implements IMigrationToolService {
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see org.talend.core.model.migration.IMigrationToolService#executeWorspaceTasks()
      */
     @Override
@@ -827,7 +827,7 @@ public class MigrationToolService implements IMigrationToolService {
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see org.talend.core.model.migration.IMigrationToolService#initNewWorkspaceTasks()
      */
     public void initNewWorkspaceTasks() {
@@ -846,7 +846,7 @@ public class MigrationToolService implements IMigrationToolService {
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see org.talend.core.model.migration.IMigrationToolService#executeMigration()
      */
     @Override
@@ -856,7 +856,7 @@ public class MigrationToolService implements IMigrationToolService {
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see org.talend.core.model.migration.IMigrationToolService#needExecutemigration()
      */
     @Override
@@ -874,7 +874,7 @@ public class MigrationToolService implements IMigrationToolService {
 
     /**
      * Getter for doneThisSession.
-     * 
+     *
      * @return the doneThisSession
      */
     public List<IProjectMigrationTask> getDoneThisSession() {
@@ -896,7 +896,7 @@ public class MigrationToolService implements IMigrationToolService {
 
     /**
      * Getter for taskId.
-     * 
+     *
      * @return the taskId
      */
     @Override

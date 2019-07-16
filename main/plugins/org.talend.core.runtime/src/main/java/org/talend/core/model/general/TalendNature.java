@@ -1,6 +1,6 @@
 // ============================================================================
 //
-// Copyright (C) 2006-2018 Talend Inc. - www.talend.com
+// Copyright (C) 2006-2019 Talend Inc. - www.talend.com
 //
 // This source code is available under agreement available at
 // %InstallDIR%\features\org.talend.rcp.branding.%PRODUCTNAME%\%PRODUCTNAME%license.txt
@@ -18,9 +18,9 @@ import org.eclipse.core.runtime.CoreException;
 
 /**
  * The nature for Talend projects. <br/>
- * 
+ *
  * $Id: TalendNature.java 38013 2010-03-05 14:21:59Z mhirt $
- * 
+ *
  */
 public class TalendNature implements IProjectNature {
 

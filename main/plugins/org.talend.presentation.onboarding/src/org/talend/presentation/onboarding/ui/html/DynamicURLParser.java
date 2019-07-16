@@ -1,6 +1,6 @@
 // ============================================================================
 //
-// Copyright (C) 2006-2018 Talend Inc. - www.talend.com
+// Copyright (C) 2006-2019 Talend Inc. - www.talend.com
 //
 // This source code is available under agreement available at
 // %InstallDIR%\features\org.talend.rcp.branding.%PRODUCTNAME%\%PRODUCTNAME%license.txt
@@ -96,7 +96,7 @@ public class DynamicURLParser {
     /**
      * Checks to see if tha passed URL is an Intro URL. An intro URL is an http URL that has the intro plugin id as a
      * host. eg: "http://org.eclipse.ui.intro/test".
-     * 
+     *
      * @param url
      * @return true if url is an intro URL.
      */
@@ -132,7 +132,7 @@ public class DynamicURLParser {
     /**
      * Retruns the path attribute of the passed URL, stripped out of the leading "/". Returns null if the url does not
      * have a path.
-     * 
+     *
      * @param url
      * @return
      */
@@ -148,7 +148,7 @@ public class DynamicURLParser {
 
     /**
      * Retruns the Query part of the URL as an instance of a Properties class.
-     * 
+     *
      * @param url
      * @return
      */

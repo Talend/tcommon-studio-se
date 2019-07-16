@@ -1,6 +1,6 @@
 // ============================================================================
 //
-// Copyright (C) 2006-2018 Talend Inc. - www.talend.com
+// Copyright (C) 2006-2019 Talend Inc. - www.talend.com
 //
 // This source code is available under agreement available at
 // %InstallDIR%\features\org.talend.rcp.branding.%PRODUCTNAME%\%PRODUCTNAME%license.txt
@@ -18,9 +18,9 @@ import org.eclipse.swt.graphics.GC;
 
 /**
  * DOC amaumont class global comment. Detailled comment <br/>
- * 
+ *
  * $Id$
- * 
+ *
  */
 public class StyleLink implements IStyleLink {
 
@@ -45,11 +45,11 @@ public class StyleLink implements IStyleLink {
     protected int[] lineDash;
 
     /**
-     * 
+     *
      * Indicate direction of link. <br/>
-     * 
+     *
      * $Id$
-     * 
+     *
      */
     public enum EDirection {
         ONE_TO_TWO,
@@ -65,7 +65,7 @@ public class StyleLink implements IStyleLink {
 
     /**
      * Getter for direction.
-     * 
+     *
      * @return the direction
      */
     public EDirection getDirection() {
@@ -74,7 +74,7 @@ public class StyleLink implements IStyleLink {
 
     /**
      * Sets the direction.
-     * 
+     *
      * @param direction the direction to set
      */
     public void setDirection(EDirection direction) {
@@ -83,7 +83,7 @@ public class StyleLink implements IStyleLink {
 
     /**
      * Getter for backgroundColor.
-     * 
+     *
      * @return the backgroundColor
      */
     public Color getBackgroundColor() {
@@ -92,7 +92,7 @@ public class StyleLink implements IStyleLink {
 
     /**
      * Sets the backgroundColor.
-     * 
+     *
      * @param backgroundColor the backgroundColor to set
      */
     public void setBackgroundColor(Color backgroundColor) {
@@ -101,7 +101,7 @@ public class StyleLink implements IStyleLink {
 
     /**
      * Getter for foregroundColor.
-     * 
+     *
      * @return the foregroundColor
      */
     public Color getForegroundColor() {
@@ -110,7 +110,7 @@ public class StyleLink implements IStyleLink {
 
     /**
      * Sets the foregroundColor.
-     * 
+     *
      * @param foregroundColor the foregroundColor to set
      */
     public void setForegroundColor(Color foregroundColor) {
@@ -119,7 +119,7 @@ public class StyleLink implements IStyleLink {
 
     /**
      * Getter for extremity1.
-     * 
+     *
      * @return the extremity1
      */
     public IExtremityDrawableLink getExtremity1() {
@@ -128,7 +128,7 @@ public class StyleLink implements IStyleLink {
 
     /**
      * Sets the extremity1.
-     * 
+     *
      * @param extremity1 the extremity1 to set
      */
     public void setExtremity1(IExtremityDrawableLink extremity1) {
@@ -137,7 +137,7 @@ public class StyleLink implements IStyleLink {
 
     /**
      * Getter for extremity2.
-     * 
+     *
      * @return the extremity2
      */
     public IExtremityDrawableLink getExtremity2() {
@@ -146,7 +146,7 @@ public class StyleLink implements IStyleLink {
 
     /**
      * Sets the extremity2.
-     * 
+     *
      * @param extremity2 the extremity2 to set
      */
     public void setExtremity2(IExtremityDrawableLink extremity2) {
@@ -155,7 +155,7 @@ public class StyleLink implements IStyleLink {
 
     /**
      * Getter for drawableLink.
-     * 
+     *
      * @return the drawableLink
      */
     public IDrawableLink getDrawableLink() {
@@ -164,7 +164,7 @@ public class StyleLink implements IStyleLink {
 
     /**
      * Sets the drawableLink.
-     * 
+     *
      * @param drawableLink the drawableLink to set
      */
     public void setDrawableLink(IDrawableLink drawableLink) {
@@ -173,7 +173,7 @@ public class StyleLink implements IStyleLink {
 
     /**
      * Getter for lineCap.
-     * 
+     *
      * @return the lineCap
      * @see GC#getLineCap()
      */
@@ -183,7 +183,7 @@ public class StyleLink implements IStyleLink {
 
     /**
      * Sets the lineCap.
-     * 
+     *
      * @param lineCap the lineCap to set
      * @see GC#setLineCap(int)
      */
@@ -193,7 +193,7 @@ public class StyleLink implements IStyleLink {
 
     /**
      * Getter for lineDash.
-     * 
+     *
      * @return the lineDash
      * @see GC#getLineDash()
      */
@@ -203,7 +203,7 @@ public class StyleLink implements IStyleLink {
 
     /**
      * Sets the lineDash.
-     * 
+     *
      * @param lineDash the lineDash to set
      * @see GC#setLineDash(int[])
      */
@@ -213,7 +213,7 @@ public class StyleLink implements IStyleLink {
 
     /**
      * Getter for lineJoin. Note: this is only visible when using GC#drawPolygon(int[]) !
-     * 
+     *
      * @return the lineJoin
      * @see GC#getLineJoin()
      */
@@ -223,7 +223,7 @@ public class StyleLink implements IStyleLink {
 
     /**
      * Sets the lineJoin. Note: this is only visible when using GC#drawPolygon(int[]) !
-     * 
+     *
      * @param lineJoin the lineJoin to set
      * @see GC#setLineJoin(int)
      */
@@ -233,7 +233,7 @@ public class StyleLink implements IStyleLink {
 
     /**
      * Getter for lineStyle.
-     * 
+     *
      * @return the lineStyle
      * @see GC#getLineStyle()
      */
@@ -243,7 +243,7 @@ public class StyleLink implements IStyleLink {
 
     /**
      * Sets the lineStyle.
-     * 
+     *
      * @param lineStyle the lineStyle to set
      * @see GC#setLineStyle(int)
      */
@@ -253,7 +253,7 @@ public class StyleLink implements IStyleLink {
 
     /**
      * Getter for lineWidth.
-     * 
+     *
      * @return the lineWidth
      * @see GC#getLineWidth()
      */
@@ -263,7 +263,7 @@ public class StyleLink implements IStyleLink {
 
     /**
      * Sets the lineWidth.
-     * 
+     *
      * @param lineWidth the lineWidth to set
      * @see GC#setLineWidth(int)
      */
@@ -273,7 +273,7 @@ public class StyleLink implements IStyleLink {
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see org.talend.commons.ui.swt.drawing.link.IStyleLink#apply(org.eclipse.swt.graphics.GC)
      */
     public void apply(GC gc) {

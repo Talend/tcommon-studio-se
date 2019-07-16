@@ -1,6 +1,6 @@
 // ============================================================================
 //
-// Copyright (C) 2006-2018 Talend Inc. - www.talend.com
+// Copyright (C) 2006-2019 Talend Inc. - www.talend.com
 //
 // This source code is available under agreement available at
 // %InstallDIR%\features\org.talend.rcp.branding.%PRODUCTNAME%\%PRODUCTNAME%license.txt
@@ -23,8 +23,8 @@ import java.util.Map;
 import java.util.Set;
 
 import org.apache.maven.model.Model;
+import org.apache.maven.model.Parent;
 import org.eclipse.core.resources.IFile;
-import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IPath;
 import org.eclipse.core.runtime.IProgressMonitor;
@@ -44,10 +44,10 @@ import org.talend.designer.maven.launch.MavenPomCommandLauncher;
 import org.talend.designer.maven.model.BuildCacheInfo;
 import org.talend.designer.maven.model.TalendMavenConstants;
 import org.talend.designer.maven.utils.MavenProjectUtils;
+import org.talend.designer.maven.utils.PomIdsHelper;
 import org.talend.designer.maven.utils.PomUtil;
 import org.talend.designer.runprocess.IRunProcessService;
 import org.talend.repository.ProjectManager;
-import org.talend.repository.model.IRepositoryService;
 
 /**
  * DOC zwxue class global comment. Detailled comment
@@ -244,7 +244,7 @@ public class BuildCacheManager {
 
     /**
      * DOC nrousseau Comment method "needTempAggregator".
-     * 
+     *
      * @return
      */
     public boolean needTempAggregator() {
@@ -280,6 +280,7 @@ public class BuildCacheManager {
 
     public void clearAllCaches() {
         jobCache.clear();
+        clearCurrentJobletCache();
         jobletCache.clear();
         codesLastBuildCache.clear();
     }
@@ -315,7 +316,11 @@ public class BuildCacheManager {
         model.setModules(new ArrayList<String>());
         model.getModules().addAll(currentJobmodules);
         model.getModules().addAll(currentJobletmodules);
-
+        Parent parent = new Parent();      
+        parent.setGroupId(PomIdsHelper.getProjectGroupId());
+        parent.setArtifactId(PomIdsHelper.getProjectArtifactId());
+        parent.setVersion(PomIdsHelper.getProjectVersion());        
+        model.setParent(parent);
         PomUtil.savePom(null, model, pomFile);
     }
 
@@ -347,38 +352,9 @@ public class BuildCacheManager {
     }
 
     private String getModulePath(Property property) {
-        String modulePath = null;
-        IPath basePath = null;
         IPath jobProjectPath = AggregatorPomsHelper.getItemPomFolder(property).getLocation();
-        ProjectManager proManager = ProjectManager.getInstance();
-        if (!proManager.isInCurrentMainProject(property)) {
-            if (GlobalServiceRegister.getDefault().isServiceRegistered(IRepositoryService.class)) {
-                IRepositoryService service = (IRepositoryService) GlobalServiceRegister.getDefault()
-                        .getService(IRepositoryService.class);
-                if (service.isGIT()) {
-                    String refProjectTechName = proManager.getCurrentProject().getTechnicalLabel();
-                    String mainProjectBranch = proManager.getMainProjectBranch(refProjectTechName);
-                    if ("master".equals(mainProjectBranch)) {
-                        modulePath = "../../../../"; //$NON-NLS-1$
-                    } else {
-                        modulePath = "../../../../../"; //$NON-NLS-1$
-                    }
-                    basePath = ResourcesPlugin.getWorkspace().getRoot().getLocation().append("/.repositories"); //$NON-NLS-1$
-                } else if (service.isSVN()) {
-                    modulePath = "../../"; //$NON-NLS-1$
-                    basePath = ResourcesPlugin.getWorkspace().getRoot().getLocation();
-                }
-            }
-            if (modulePath == null || basePath == null) {
-                throw new RuntimeException("modulePath or basePath can not be null!"); //$NON-NLS-1$
-            }
-        } else {
-            modulePath = ""; //$NON-NLS-1$
-            basePath = getAggregatorPomsHelper().getProjectPomsFolder().getLocation();
-        }
-        jobProjectPath = jobProjectPath.makeRelativeTo(basePath);
-        modulePath += jobProjectPath.toPortableString();
-
+        IPath basePath = getAggregatorPomsHelper().getProjectPomsFolder().getLocation();
+        String modulePath = jobProjectPath.makeRelativeTo(basePath).toPortableString();
         return modulePath;
     }
 

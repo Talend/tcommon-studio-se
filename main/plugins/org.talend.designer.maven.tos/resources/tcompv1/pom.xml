@@ -4,14 +4,14 @@
     <parent>
         <groupId>org.talend.studio</groupId>
         <artifactId>studio-maven-repository-tos</artifactId>
-        <version>7.2.1-SNAPSHOT</version>
+        <version>7.3.1-SNAPSHOT</version>
         <relativePath>../</relativePath>
     </parent>
     <artifactId>studio-tcompv1-dependencies</artifactId>
     <packaging>pom</packaging>
     
     <properties>
-        <tcomp.version>1.1.9-SNAPSHOT</tcomp.version>
+        <tcomp.version>1.1.10</tcomp.version>
         <slf4j.version>1.7.25</slf4j.version>
     </properties>
     
@@ -79,6 +79,11 @@
         <dependency>
             <groupId>org.talend.sdk.component</groupId>
             <artifactId>component-runtime-di</artifactId>
+            <version>${tcomp.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.talend.sdk.component</groupId>
+            <artifactId>component-api</artifactId>
             <version>${tcomp.version}</version>
         </dependency>
         <dependency>

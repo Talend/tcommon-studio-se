@@ -1,6 +1,6 @@
 // ============================================================================
 //
-// Copyright (C) 2006-2018 Talend Inc. - www.talend.com
+// Copyright (C) 2006-2019 Talend Inc. - www.talend.com
 //
 // This source code is available under agreement available at
 // %InstallDIR%\features\org.talend.rcp.branding.%PRODUCTNAME%\%PRODUCTNAME%license.txt
@@ -20,9 +20,9 @@ import org.talend.core.model.process.EComponentCategory;
 
 /**
  * yzhang class global comment. Detailled comment <br/>
- * 
+ *
  * $Id: talend.epf 1 2006-09-29 17:06:40Z nrousseau $
- * 
+ *
  */
 public class TalendPropertyTabDescriptor implements IStructuredTabItem {
 
@@ -49,7 +49,7 @@ public class TalendPropertyTabDescriptor implements IStructuredTabItem {
 
     /**
      * Getter for category.
-     * 
+     *
      * @return the category
      */
     public EComponentCategory getCategory() {
@@ -61,7 +61,7 @@ public class TalendPropertyTabDescriptor implements IStructuredTabItem {
 
     /**
      * Getter for element.
-     * 
+     *
      * @return the element
      */
     public Object getData() {
@@ -70,7 +70,7 @@ public class TalendPropertyTabDescriptor implements IStructuredTabItem {
 
     /**
      * Sets the element.
-     * 
+     *
      * @param element the element to set
      */
     public void setData(Object data) {
@@ -79,7 +79,7 @@ public class TalendPropertyTabDescriptor implements IStructuredTabItem {
 
     /**
      * yzhang Comment method "addSubItme".
-     * 
+     *
      * @param item
      */
     public void addSubItem(IStructuredTabItem item) {
@@ -90,7 +90,7 @@ public class TalendPropertyTabDescriptor implements IStructuredTabItem {
 
     /**
      * Sets the isSubItem.
-     * 
+     *
      * @param isSubItem the isSubItem to set
      */
     public void setSubItem(boolean isSubItem) {
@@ -99,7 +99,7 @@ public class TalendPropertyTabDescriptor implements IStructuredTabItem {
 
     /**
      * Sets the composite.
-     * 
+     *
      * @param composite the composite to set
      */
     public void setPropertyComposite(IDynamicProperty part) {
@@ -108,7 +108,7 @@ public class TalendPropertyTabDescriptor implements IStructuredTabItem {
 
     /**
      * Getter for composite.
-     * 
+     *
      * @return the composite
      */
     public IDynamicProperty getPropertyComposite() {
@@ -117,7 +117,7 @@ public class TalendPropertyTabDescriptor implements IStructuredTabItem {
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see org.eclipse.ui.views.properties.tabbed.ITabItem#getImage()
      */
     public Image getImage() {
@@ -126,7 +126,7 @@ public class TalendPropertyTabDescriptor implements IStructuredTabItem {
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see org.eclipse.ui.views.properties.tabbed.ITabItem#getText()
      */
     public String getText() {
@@ -135,7 +135,7 @@ public class TalendPropertyTabDescriptor implements IStructuredTabItem {
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see org.eclipse.ui.views.properties.tabbed.ITabItem#isIndented()
      */
     public boolean isIndented() {
@@ -144,7 +144,7 @@ public class TalendPropertyTabDescriptor implements IStructuredTabItem {
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see org.eclipse.ui.views.properties.tabbed.ITabItem#isSelected()
      */
     public boolean isSelected() {
@@ -153,7 +153,7 @@ public class TalendPropertyTabDescriptor implements IStructuredTabItem {
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see org.talend.core.properties.tab.IStructuredTabItem#getSubItems()
      */
     public IStructuredTabItem[] getSubItems() {
@@ -162,7 +162,7 @@ public class TalendPropertyTabDescriptor implements IStructuredTabItem {
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see org.talend.core.properties.tab.IStructuredTabItem#hasSubItems()
      */
     public boolean hasSubItems() {
@@ -173,7 +173,7 @@ public class TalendPropertyTabDescriptor implements IStructuredTabItem {
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see org.talend.core.properties.tab.IStructuredTabItem#isExpanded()
      */
     public boolean isExpanded() {
@@ -182,7 +182,7 @@ public class TalendPropertyTabDescriptor implements IStructuredTabItem {
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see org.talend.core.properties.tab.IStructuredTabItem#setExpanded(boolean)
      */
     public void setExpanded(boolean expaned) {
@@ -192,7 +192,7 @@ public class TalendPropertyTabDescriptor implements IStructuredTabItem {
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see org.talend.core.properties.tab.IStructuredTabItem#isSubItem()
      */
     public boolean isSubItem() {

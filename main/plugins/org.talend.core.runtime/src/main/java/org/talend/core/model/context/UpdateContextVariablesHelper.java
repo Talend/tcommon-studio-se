@@ -1,6 +1,6 @@
 // ============================================================================
 //
-// Copyright (C) 2006-2018 Talend Inc. - www.talend.com
+// Copyright (C) 2006-2019 Talend Inc. - www.talend.com
 //
 // This source code is available under agreement available at
 // %InstallDIR%\features\org.talend.rcp.branding.%PRODUCTNAME%\%PRODUCTNAME%license.txt
@@ -44,9 +44,9 @@ import org.talend.designer.core.model.utils.emf.talendfile.ProcessType;
 public final class UpdateContextVariablesHelper {
 
     /**
-     * 
+     *
      * ggu Comment method "updateProcess".
-     * 
+     *
      * update parameters for the current opened job .
      */
     public static boolean updateProcessForRenamed(IProcess process, final String oldVarName, final String newVarName) {
@@ -97,11 +97,11 @@ public final class UpdateContextVariablesHelper {
     }
 
     /**
-     * 
+     *
      * ggu Comment method "updateProcess".
-     * 
+     *
      * update paramters for the job item file.
-     * 
+     *
      * renamedMap must be mapped from new to old.
      */
     public static boolean updateProcessForRenamed(ProcessType processType, final Map<String, String> renamedMap) {
@@ -256,9 +256,9 @@ public final class UpdateContextVariablesHelper {
     }
 
     /**
-     * 
+     *
      * ggu Comment method "retrieveRenamedScriptCodeMap".
-     * 
+     *
      * retrieve the renamed variables script code map.
      */
     private static Map<String, String> retrieveRenamedScriptCodeMap(final Map<String, String> renamedMap) {
@@ -295,9 +295,9 @@ public final class UpdateContextVariablesHelper {
     }
 
     /**
-     * 
+     *
      * ggu Comment method "retrieveReplacedScriptCodeMap".
-     * 
+     *
      * retrieve the new and old variables script code map.
      */
     @SuppressWarnings("unchecked")

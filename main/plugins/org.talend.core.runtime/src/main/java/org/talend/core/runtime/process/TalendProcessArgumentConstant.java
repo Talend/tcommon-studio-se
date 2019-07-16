@@ -1,6 +1,6 @@
 // ============================================================================
 //
-// Copyright (C) 2006-2018 Talend Inc. - www.talend.com
+// Copyright (C) 2006-2019 Talend Inc. - www.talend.com
 //
 // This source code is available under agreement available at
 // %InstallDIR%\features\org.talend.rcp.branding.%PRODUCTNAME%\%PRODUCTNAME%license.txt
@@ -57,10 +57,12 @@ public interface TalendProcessArgumentConstant {
     static final String ARG_NEED_PIGUDFS = "NEED_PIGUDFS";
 
     static final String ARG_BUILD_TYPE = "BUILD_TYPE";
-    
+
     static final String ARG_NEED_LAUNCHER = "NEED_LAUNCHER";
 
     static final String ARG_LAUNCHER_NAME = "LAUNCHER_NAME";
+
+    static final String ARG_AVOID_BRANCH_NAME = "AVOID_BRANCH_NAME";
 
     static final String CMD_ARG_STATS_PORT_PARAM = "stat_port";
 

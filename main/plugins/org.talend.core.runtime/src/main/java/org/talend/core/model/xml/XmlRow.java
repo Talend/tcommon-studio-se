@@ -1,6 +1,6 @@
 // ============================================================================
 //
-// Copyright (C) 2006-2018 Talend Inc. - www.talend.com
+// Copyright (C) 2006-2019 Talend Inc. - www.talend.com
 //
 // This source code is available under agreement available at
 // %InstallDIR%\features\org.talend.rcp.branding.%PRODUCTNAME%\%PRODUCTNAME%license.txt
@@ -17,9 +17,9 @@ import java.util.List;
 
 /**
  * DOC chuger class global comment. Detailled comment <br/>
- * 
+ *
  * $Id: XmlRow.java 38013 2010-03-05 14:21:59Z mhirt $
- * 
+ *
  */
 public class XmlRow {
 
@@ -35,7 +35,7 @@ public class XmlRow {
 
     /**
      * Getter for fields.
-     * 
+     *
      * @return the fields
      */
     public List<XmlField> getFields() {
@@ -44,7 +44,7 @@ public class XmlRow {
 
     /**
      * Adds a fields at the end of the row.
-     * 
+     *
      * @param field Field to add.
      */
     public void add(XmlField field) {

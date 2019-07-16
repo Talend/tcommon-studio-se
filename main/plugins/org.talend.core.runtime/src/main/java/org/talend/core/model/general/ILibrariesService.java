@@ -1,6 +1,6 @@
 // ============================================================================
 //
-// Copyright (C) 2006-2018 Talend Inc. - www.talend.com
+// Copyright (C) 2006-2019 Talend Inc. - www.talend.com
 //
 // This source code is available under agreement available at
 // %InstallDIR%\features\org.talend.rcp.branding.%PRODUCTNAME%\%PRODUCTNAME%license.txt
@@ -31,9 +31,9 @@ import org.talend.designer.codegen.PigTemplate;
 
 /**
  * DOC smallet class global comment. Detailled comment <br/>
- * 
+ *
  * $Id$
- * 
+ *
  */
 public interface ILibrariesService extends IService {
 
@@ -80,9 +80,9 @@ public interface ILibrariesService extends IService {
     public URL getSqlPatternTemplate();
 
     /**
-     * 
+     *
      * DOC wchen Comment method "getLibraryStatus".
-     * 
+     *
      * @deprecated better call the function getLibraryStatus(String libName, String mvnURI)
      * @param libName
      * @return
@@ -122,9 +122,9 @@ public interface ILibrariesService extends IService {
 
     /**
      * Listener used to fire that libraries status has been changed (new lib or new check install).
-     * 
+     *
      * $Id$
-     * 
+     *
      */
     public interface IChangedLibrariesListener {
 

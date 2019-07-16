@@ -1,6 +1,6 @@
 // ============================================================================
 //
-// Copyright (C) 2006-2018 Talend Inc. - www.talend.com
+// Copyright (C) 2006-2019 Talend Inc. - www.talend.com
 //
 // This source code is available under agreement available at
 // %InstallDIR%\features\org.talend.rcp.branding.%PRODUCTNAME%\%PRODUCTNAME%license.txt
@@ -14,9 +14,9 @@ package org.talend.designer.rowgenerator.data;
 
 /**
  * yzhang class global comment. Detailled comment <br/>
- * 
+ *
  * $Id: LongParameter.java 下午03:40:54 2007-8-7 +0000 (2007-8-7) yzhang $
- * 
+ *
  */
 public class LongParameter extends Parameter {
 
@@ -24,7 +24,7 @@ public class LongParameter extends Parameter {
 
     /**
      * Sets the longValue.
-     * 
+     *
      * @param longValue the longValue to set
      */
     public void setLongValue(long longValue) {
@@ -33,7 +33,7 @@ public class LongParameter extends Parameter {
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see org.talend.designer.rowgenerator.data.Parameter#sameParameterAs(org.talend.designer.rowgenerator.data.Parameter)
      */
     @Override

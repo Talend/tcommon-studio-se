@@ -2,7 +2,7 @@ Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
 Bundle-Name: Libraries Manager Plug-in
 Bundle-SymbolicName: org.talend.librariesmanager;singleton:=true
-Bundle-Version: 7.2.1.qualifier
+Bundle-Version: 7.3.1.qualifier
 Bundle-Vendor: .Talend SA.
 Bundle-Localization: plugin
 Require-Bundle: org.eclipse.core.runtime,
@@ -25,7 +25,8 @@ Require-Bundle: org.eclipse.core.runtime,
  javax.xml.bind,
  org.talend.model
 Eclipse-LazyStart: true
-Bundle-ClassPath: .
+Bundle-ClassPath: .,
+ lib/crypto-utils.jar
 Export-Package: org.talend.librariesmanager.emf.librariesindex,
  org.talend.librariesmanager.librarydata,
  org.talend.librariesmanager.maven,

@@ -1,6 +1,6 @@
 // ============================================================================
 //
-// Copyright (C) 2006-2018 Talend Inc. - www.talend.com
+// Copyright (C) 2006-2019 Talend Inc. - www.talend.com
 //
 // This source code is available under agreement available at
 // %InstallDIR%\features\org.talend.rcp.branding.%PRODUCTNAME%\%PRODUCTNAME%license.txt
@@ -138,7 +138,7 @@ public class P2Installer {
     }
 
     /**
-     * 
+     *
      * FIXME, Copied from the class @link NexusUpdateSiteManager#installPatchesByP2
      */
     protected Set<InstalledUnit> installPatchRepository(File metadataRepository, File artifactRepository)
@@ -216,7 +216,7 @@ public class P2Installer {
      * look for all {@link IInstallableUnit} and check that they are of type {@link InstallableUnit}. If that is so,
      * then their singletom state is set to false. WARNING : internal APIs of p2 are used because I could not find any
      * way around the limitation of P2 that does not allow 2 singletons to be deployed at the same time
-     * 
+     *
      * @param toInstall a set of {@link IInstallableUnit} to be set as not a singleton
      */
     private void setIuSingletonToFalse(Set<IInstallableUnit> toInstall) {
@@ -230,7 +230,7 @@ public class P2Installer {
     /**
      * look for all {@link IInstallableUnit} in the current installed p2 profile that have the same id as the toInstall
      * IUs. then their state is forced to be singleton=false so that multiple singleton may be installed.
-     * 
+     *
      * @param toInstall a set of {@link IInstallableUnit} to get the Id from
      * @param agent to get the current installed IUs
      */

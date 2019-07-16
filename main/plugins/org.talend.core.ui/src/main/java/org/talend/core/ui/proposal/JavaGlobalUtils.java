@@ -1,6 +1,6 @@
 // ============================================================================
 //
-// Copyright (C) 2006-2018 Talend Inc. - www.talend.com
+// Copyright (C) 2006-2019 Talend Inc. - www.talend.com
 //
 // This source code is available under agreement available at
 // %InstallDIR%\features\org.talend.rcp.branding.%PRODUCTNAME%\%PRODUCTNAME%license.txt
@@ -29,9 +29,9 @@ public class JavaGlobalUtils {
     }
 
     /**
-     * 
+     *
      * DOC ggu PerlGlobalUtils class global comment. Detailled comment <br/>
-     * 
+     *
      */
     static class JavaGlobalVariableProposal implements IContentProposal {
 
@@ -55,7 +55,7 @@ public class JavaGlobalUtils {
 
         /*
          * (non-Javadoc)
-         * 
+         *
          * @see org.eclipse.jface.fieldassist.IContentProposal#getContent()
          */
         @Override
@@ -66,7 +66,7 @@ public class JavaGlobalUtils {
 
         /*
          * (non-Javadoc)
-         * 
+         *
          * @see org.eclipse.jface.fieldassist.IContentProposal#getCursorPosition()
          */
         @Override
@@ -77,7 +77,7 @@ public class JavaGlobalUtils {
 
         /*
          * (non-Javadoc)
-         * 
+         *
          * @see org.eclipse.jface.fieldassist.IContentProposal#getDescription()
          */
         @Override
@@ -94,7 +94,7 @@ public class JavaGlobalUtils {
 
         /*
          * (non-Javadoc)
-         * 
+         *
          * @see org.eclipse.jface.fieldassist.IContentProposal#getLabel()
          */
         @Override

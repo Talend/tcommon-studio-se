@@ -1,6 +1,6 @@
 // ============================================================================
 //
-// Copyright (C) 2006-2018 Talend Inc. - www.talend.com
+// Copyright (C) 2006-2019 Talend Inc. - www.talend.com
 //
 // This source code is available under agreement available at
 // %InstallDIR%\features\org.talend.rcp.branding.%PRODUCTNAME%\%PRODUCTNAME%license.txt
@@ -85,7 +85,7 @@ public class KeywordsValidator {
             words.addAll(Arrays.asList(keywordMap.get("KEYWORD2"))); //$NON-NLS-1$
             words.addAll(Arrays.asList(keywordMap.get("KEYWORD3"))); //$NON-NLS-1$
             words.addAll(Arrays.asList(keywordMap.get("LITERAL2"))); //$NON-NLS-1$
-            words.addAll(Arrays.asList(keywordMap.get("INVALID"))); //$NON-NLS-1$         
+            words.addAll(Arrays.asList(keywordMap.get("INVALID"))); //$NON-NLS-1$
             keywords.put(lang, words);
         }
         return words;
@@ -98,7 +98,7 @@ public class KeywordsValidator {
 
     /**
      * DOC zli Comment method "isSqlKeyword".
-     * 
+     *
      * @param word
      * @param isOracle
      * @return

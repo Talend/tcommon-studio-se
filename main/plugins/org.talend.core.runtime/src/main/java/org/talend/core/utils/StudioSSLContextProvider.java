@@ -1,6 +1,6 @@
 // ============================================================================
 //
-// Copyright (C) 2006-2018 Talend Inc. - www.talend.com
+// Copyright (C) 2006-2019 Talend Inc. - www.talend.com
 //
 // This source code is available under agreement available at
 // %InstallDIR%\features\org.talend.rcp.branding.%PRODUCTNAME%\%PRODUCTNAME%license.txt
@@ -22,11 +22,11 @@ import org.eclipse.jface.preference.IPreferenceStore;
 import org.talend.commons.exception.ExceptionHandler;
 import org.talend.core.prefs.SSLPreferenceConstants;
 import org.talend.core.runtime.CoreRuntimePlugin;
+import org.talend.daikon.security.CryptoHelper;
 import org.talend.daikon.security.SSLContextProvider;
-import org.talend.utils.security.CryptoHelper;
 
 /**
- * 
+ *
  * created by wchen on Oct 24, 2016 Detailled comment
  *
  */

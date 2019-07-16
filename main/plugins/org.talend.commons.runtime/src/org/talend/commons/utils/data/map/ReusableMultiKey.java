@@ -1,6 +1,6 @@
 // ============================================================================
 //
-// Copyright (C) 2006-2018 Talend Inc. - www.talend.com
+// Copyright (C) 2006-2019 Talend Inc. - www.talend.com
 //
 // This source code is available under agreement available at
 // %InstallDIR%\features\org.talend.rcp.branding.%PRODUCTNAME%\%PRODUCTNAME%license.txt
@@ -41,11 +41,11 @@ import java.util.Arrays;
 
 import org.talend.commons.i18n.internal.Messages;
 
-/** 
+/**
  * A <code>MultiKey</code> allows multiple map keys to be merged together.
  * <p>
  * The purpose of this class is to avoid the need to write code to handle
- * maps of maps. An example might be the need to lookup a filename by 
+ * maps of maps. An example might be the need to lookup a filename by
  * key and locale. The typical solution might be nested maps. This class
  * can be used instead by creating an instance passing in the key and locale.
  * <p>
@@ -60,10 +60,10 @@ import org.talend.commons.i18n.internal.Messages;
  * MultiKey multiKey = new MultiKey(key, locale);
  * String localizedText = (String) map.get(multiKey);
  * </pre>
- * 
+ *
  * @since Commons Collections 3.0
  * @version $Revision: 1 $ $Date: 2006-09-29 17:06:40 +0000 (ven., 29 sept. 2006) $
- * 
+ *
  * @author Howard Lewis Ship
  * @author Stephen Colebourne
  */
@@ -77,26 +77,26 @@ public class ReusableMultiKey implements Serializable {
     private Object[] keys;
     /** The cached hashCode */
     private int hashCode;
-    
+
     /**
      * Constructor taking two keys.
      * <p>
      * The keys should be immutable
      * If they are not then they must not be changed after adding to the MultiKey.
-     * 
+     *
      * @param key1  the first key
      * @param key2  the second key
      */
     public ReusableMultiKey(Object key1, Object key2) {
         this(new Object[] {key1, key2}, false);
     }
-    
+
     /**
      * Constructor taking three keys.
      * <p>
      * The keys should be immutable
      * If they are not then they must not be changed after adding to the MultiKey.
-     * 
+     *
      * @param key1  the first key
      * @param key2  the second key
      * @param key3  the third key
@@ -104,13 +104,13 @@ public class ReusableMultiKey implements Serializable {
     public ReusableMultiKey(Object key1, Object key2, Object key3) {
         this(new Object[] {key1, key2, key3}, false);
     }
-    
+
     /**
      * Constructor taking four keys.
      * <p>
      * The keys should be immutable
      * If they are not then they must not be changed after adding to the MultiKey.
-     * 
+     *
      * @param key1  the first key
      * @param key2  the second key
      * @param key3  the third key
@@ -119,13 +119,13 @@ public class ReusableMultiKey implements Serializable {
     public ReusableMultiKey(Object key1, Object key2, Object key3, Object key4) {
         this(new Object[] {key1, key2, key3, key4}, false);
     }
-    
+
     /**
      * Constructor taking five keys.
      * <p>
      * The keys should be immutable
      * If they are not then they must not be changed after adding to the MultiKey.
-     * 
+     *
      * @param key1  the first key
      * @param key2  the second key
      * @param key3  the third key
@@ -135,7 +135,7 @@ public class ReusableMultiKey implements Serializable {
     public ReusableMultiKey(Object key1, Object key2, Object key3, Object key4, Object key5) {
         this(new Object[] {key1, key2, key3, key4, key5}, false);
     }
-    
+
     /**
      * Constructor taking an array of keys which is cloned.
      * <p>
@@ -150,7 +150,7 @@ public class ReusableMultiKey implements Serializable {
     public ReusableMultiKey(Object[] keys) {
         this(keys, true);
     }
-    
+
     /**
      * Constructor taking an array of keys which is cloned.
      * <p>
@@ -165,7 +165,7 @@ public class ReusableMultiKey implements Serializable {
     public ReusableMultiKey() {
         super();
     }
-    
+
     /**
      * Constructor taking an array of keys, optionally choosing whether to clone.
      * <p>
@@ -194,26 +194,26 @@ public class ReusableMultiKey implements Serializable {
         super();
         setKeys(keys, makeClone);
     }
-    
+
     //-----------------------------------------------------------------------
     /**
      * Gets a clone of the array of keys.
      * <p>
      * The keys should be immutable
      * If they are not then they must not be changed.
-     * 
+     *
      * @return the individual keys
      */
     public Object[] getKeys() {
         return (Object[]) keys.clone();
     }
-    
+
     /**
      * Gets the key at the specified index.
      * <p>
      * The key should be immutable.
      * If it is not then it must not be changed.
-     * 
+     *
      * @param index  the index to retrieve
      * @return the key at the index
      * @throws IndexOutOfBoundsException if the index is invalid
@@ -222,24 +222,24 @@ public class ReusableMultiKey implements Serializable {
     public Object getKey(int index) {
         return keys[index];
     }
-    
+
     /**
      * Gets the size of the list of keys.
-     * 
+     *
      * @return the size of the list of keys
      * @since Commons Collections 3.1
      */
     public int size() {
         return keys.length;
     }
-    
+
     //-----------------------------------------------------------------------
     /**
      * Compares this object to another.
      * <p>
      * To be equal, the other object must be a <code>MultiKey</code> with the
      * same number of keys which are also equal.
-     * 
+     *
      * @param other  the other object to compare to
      * @return true if equal
      */
@@ -258,10 +258,10 @@ public class ReusableMultiKey implements Serializable {
      * Gets the combined hash code that is computed from all the keys.
      * <p>
      * This value is computed once and then cached, so elements should not
-     * change their hash codes once created (note that this is the same 
+     * change their hash codes once created (note that this is the same
      * constraint that would be used if the individual keys elements were
      * themselves {@link java.util.Map Map} keys.
-     * 
+     *
      * @return the hash code
      */
     public int hashCode() {
@@ -270,7 +270,7 @@ public class ReusableMultiKey implements Serializable {
 
     /**
      * Gets a debugging string version of the key.
-     * 
+     *
      * @return a debugging string
      */
     public String toString() {
@@ -280,7 +280,7 @@ public class ReusableMultiKey implements Serializable {
     public void setKeys(Object[] keys) {
         setKeys(keys, false);
     }
-        
+
     public void setKeys(Object[] keys, boolean makeClone) {
         if (keys == null) {
             throw new IllegalArgumentException(Messages.getString("ReusableMultiKey.Keys.BeNull")); //$NON-NLS-1$
@@ -290,7 +290,7 @@ public class ReusableMultiKey implements Serializable {
         } else {
             this.keys = keys;
         }
-        
+
         int total = 0;
         for (int i = 0; i < keys.length; i++) {
             if (keys[i] != null) {
@@ -299,6 +299,6 @@ public class ReusableMultiKey implements Serializable {
         }
         hashCode = total;
     }
-    
+
 }
 

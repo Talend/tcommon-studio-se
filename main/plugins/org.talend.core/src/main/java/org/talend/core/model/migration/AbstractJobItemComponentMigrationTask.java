@@ -1,6 +1,6 @@
 // ============================================================================
 //
-// Copyright (C) 2006-2018 Talend Inc. - www.talend.com
+// Copyright (C) 2006-2019 Talend Inc. - www.talend.com
 //
 // This source code is available under agreement available at
 // %InstallDIR%\features\org.talend.rcp.branding.%PRODUCTNAME%\%PRODUCTNAME%license.txt
@@ -33,7 +33,7 @@ import org.talend.designer.core.model.utils.emf.talendfile.ProcessType;
  * \n, #
  * {@link AbstractJobItemComponentMigrationTask#findElementByName(List, String, Class)}
  * .
- * 
+ *
  * @author GaoZone
  */
 public abstract class AbstractJobItemComponentMigrationTask extends AbstractJobMigrationTask {
@@ -43,7 +43,7 @@ public abstract class AbstractJobItemComponentMigrationTask extends AbstractJobM
 
 	/*
 	 * (non-Javadoc)
-	 * 
+	 *
 	 * @see
 	 * org.talend.core.model.migration.AbstractItemMigrationTask#execute(org
 	 * .talend.core.model.properties.Item)
@@ -81,7 +81,7 @@ public abstract class AbstractJobItemComponentMigrationTask extends AbstractJobM
 
 	/**
 	 * Find component nodes equals given name.
-	 * 
+	 *
 	 * @param item
 	 *            the item
 	 * @param component
@@ -94,7 +94,7 @@ public abstract class AbstractJobItemComponentMigrationTask extends AbstractJobM
 
 	/**
 	 * Find component nodes match given regex.
-	 * 
+	 *
 	 * @param item
 	 *            the item
 	 * @param componentRegex
@@ -130,7 +130,7 @@ public abstract class AbstractJobItemComponentMigrationTask extends AbstractJobM
 
 	/**
 	 * Find element by name.
-	 * 
+	 *
 	 * @param <T>
 	 *            the generic type, same as <b>elementType</b>.
 	 * @param elements
@@ -170,7 +170,7 @@ public abstract class AbstractJobItemComponentMigrationTask extends AbstractJobM
 
 	/**
 	 * Execute migration task on node level.
-	 * 
+	 *
 	 * @param node
 	 *            the node need to do migration task.
 	 * @return true - if need save, or false - no changes on this node.
@@ -179,7 +179,7 @@ public abstract class AbstractJobItemComponentMigrationTask extends AbstractJobM
 
 	/**
 	 * the regex patten to filter component name.
-	 * 
+	 *
 	 * @return the component name regex
 	 */
 	protected abstract String getComponentNameRegex();

@@ -1,6 +1,6 @@
 // ============================================================================
 //
-// Copyright (C) 2006-2018 Talend Inc. - www.talend.com
+// Copyright (C) 2006-2019 Talend Inc. - www.talend.com
 //
 // This source code is available under agreement available at
 // %InstallDIR%\features\org.talend.rcp.branding.%PRODUCTNAME%\%PRODUCTNAME%license.txt
@@ -17,9 +17,9 @@ import java.util.Date;
 import org.talend.utils.IdGenerator;
 
 /**
- * 
+ *
  * DOC amaumont class global comment. Detailled comment <br/>
- * 
+ *
  */
 public final class TriggerNameHelper {
 
@@ -49,9 +49,9 @@ public final class TriggerNameHelper {
     }
 
     /**
-     * 
+     *
      * DOC amaumont Comment method "parseQuartzTriggerId".
-     * 
+     *
      * @param triggerName
      * @return the idQuartzTrigger if the triggerName contains a valid idQuartzTrigger, return null for case where
      * idQuartzTrigger can't be retrieved

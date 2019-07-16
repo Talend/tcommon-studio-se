@@ -1,6 +1,6 @@
 // ============================================================================
 //
-// Copyright (C) 2006-2018 Talend Inc. - www.talend.com
+// Copyright (C) 2006-2019 Talend Inc. - www.talend.com
 //
 // This source code is available under agreement available at
 // %InstallDIR%\features\org.talend.rcp.branding.%PRODUCTNAME%\%PRODUCTNAME%license.txt
@@ -15,7 +15,7 @@ package org.talend.utils.collections;
 
 /**
  * @author scorreia
- * 
+ *
  * MultipleKey class helps to build keys from an array of objects.
  */
 public class MultipleKey implements Comparable<MultipleKey> {
@@ -31,7 +31,7 @@ public class MultipleKey implements Comparable<MultipleKey> {
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see java.lang.Object#equals(java.lang.Object)
      */
     @Override
@@ -48,7 +48,7 @@ public class MultipleKey implements Comparable<MultipleKey> {
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see java.lang.Object#hashCode()
      */
     @Override
@@ -85,7 +85,7 @@ public class MultipleKey implements Comparable<MultipleKey> {
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see java.lang.Object#toString()
      */
     @Override

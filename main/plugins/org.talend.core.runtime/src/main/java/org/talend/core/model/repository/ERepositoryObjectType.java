@@ -1,6 +1,6 @@
 // ============================================================================
 //
-// Copyright (C) 2006-2018 Talend Inc. - www.talend.com
+// Copyright (C) 2006-2019 Talend Inc. - www.talend.com
 //
 // This source code is available under agreement available at
 // %InstallDIR%\features\org.talend.rcp.branding.%PRODUCTNAME%\%PRODUCTNAME%license.txt
@@ -93,13 +93,13 @@ public class ERepositoryObjectType extends DynaEnum<ERepositoryObjectType> {
 
     public final static ERepositoryObjectType GENERAL_FILE = new ERepositoryObjectType("repository.generalfile", "",
             "GENERAL_FILE", true, 1, new String[] { PROD_DI, PROD_DQ, PROD_MDM }, new String[] {}, false);
-    
+
     public final static ERepositoryObjectType PROJECT_SETTING = new ERepositoryObjectType("repository.talend.project.setting", "",
             "PROJECT_SETTING", true, 1, new String[] { PROD_DI, PROD_DQ, PROD_MDM }, new String[] {}, false);
-    
+
     public final static ERepositoryObjectType RELATION_SHIP = new ERepositoryObjectType("repository.talend.project.relationship", "",
             "RELATION_SHIP", true, 1, new String[] { PROD_DI, PROD_DQ, PROD_MDM }, new String[] {}, false);
-    
+
     public final static ERepositoryObjectType MIGRATION_TASK = new ERepositoryObjectType("repository.talend.project.migrationtask", "",
             "MIGRATION_TASK", true, 1, new String[] { PROD_DI, PROD_DQ, PROD_MDM }, new String[] {}, false);
 
@@ -456,7 +456,7 @@ public class ERepositoryObjectType extends DynaEnum<ERepositoryObjectType> {
 
     /**
      * Docs
-     * 
+     *
      * <font color="red">This value may be <b>null</b> in some licenses, <b>should add NPE check</b></font>
      */
     public final static ERepositoryObjectType DOCUMENTATION = ERepositoryObjectType.valueOf("DOCUMENTATION"); //$NON-NLS-1$
@@ -536,7 +536,7 @@ public class ERepositoryObjectType extends DynaEnum<ERepositoryObjectType> {
      * <font color="red">This value may be <b>null</b> in some licenses, <b>should add NPE check</b></font>
      */
     public final static ERepositoryObjectType PROCESS_ROUTE_MICROSERVICE = ERepositoryObjectType.valueOf("ROUTE_MICROSERVICE"); //$NON-NLS-1$
-    
+
     /**
      * <font color="red">This value may be <b>null</b> in some licenses, <b>should add NPE check</b></font>
      */
@@ -661,9 +661,9 @@ public class ERepositoryObjectType extends DynaEnum<ERepositoryObjectType> {
     }
 
     /**
-     * 
+     *
      * DOC ggu ERepositoryObjectType constructor comment.
-     * 
+     *
      * Used for GenericWizardInternalService to create Generic Types
      */
     ERepositoryObjectType(String type, String label, String alias, String folder, int ordinal, String[] products) {
@@ -732,7 +732,7 @@ public class ERepositoryObjectType extends DynaEnum<ERepositoryObjectType> {
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see org.talend.core.model.repository.DynaEnum#toString()
      */
     @Override
@@ -783,7 +783,7 @@ public class ERepositoryObjectType extends DynaEnum<ERepositoryObjectType> {
 
     /**
      * Getter for typeCacheById.
-     * 
+     *
      * @return the typeCacheById
      */
     public static Map<String, ERepositoryObjectType> getTypeCacheById() {
@@ -923,9 +923,9 @@ public class ERepositoryObjectType extends DynaEnum<ERepositoryObjectType> {
 
     /**
      * Please use instead the method : public static ERepositoryObjectType getType(Property property)<br>
-     * 
+     *
      * This method might change to private in the future, since many calls will have low performance.
-     * 
+     *
      * @param item
      * @return
      */
@@ -968,7 +968,7 @@ public class ERepositoryObjectType extends DynaEnum<ERepositoryObjectType> {
 
             /*
              * (non-Javadoc)
-             * 
+             *
              * @seeorg.talend.core.model.properties.util.PropertiesSwitch# caseJobDocumentationItem
              * (org.talend.core.model.properties.JobDocumentationItem)
              */
@@ -979,7 +979,7 @@ public class ERepositoryObjectType extends DynaEnum<ERepositoryObjectType> {
 
             /*
              * (non-Javadoc)
-             * 
+             *
              * @seeorg.talend.core.model.properties.util.PropertiesSwitch# caseJobletDocumentationItem
              * (org.talend.core.model.properties.JobletDocumentationItem)
              */
@@ -990,7 +990,7 @@ public class ERepositoryObjectType extends DynaEnum<ERepositoryObjectType> {
 
             /*
              * (non-Javadoc)
-             * 
+             *
              * @see
              * org.talend.core.model.properties.util.PropertiesSwitch#casePigudfItem(org.talend.core.model.properties
              * .PigudfItem)
@@ -1016,7 +1016,7 @@ public class ERepositoryObjectType extends DynaEnum<ERepositoryObjectType> {
 
             /*
              * (non-Javadoc)
-             * 
+             *
              * @seeorg.talend.core.model.properties.util.PropertiesSwitch# caseSQLPatternItem
              * (org.talend.core.model.properties.SQLPatternItem)
              */
@@ -1033,7 +1033,7 @@ public class ERepositoryObjectType extends DynaEnum<ERepositoryObjectType> {
 
             /*
              * (non-Javadoc)
-             * 
+             *
              * @seeorg.talend.core.model.properties.util.PropertiesSwitch# caseJobletProcessItem
              * (org.talend.core.model.properties.JobletProcessItem)
              */
@@ -1219,9 +1219,9 @@ public class ERepositoryObjectType extends DynaEnum<ERepositoryObjectType> {
 
     /**
      * DOC bZhou Comment method "isDQItemType".
-     * 
+     *
      * This method is to estimat a type is a TDQ item or not.
-     * 
+     *
      * @return
      */
     public boolean isDQItemType() {
@@ -1230,9 +1230,9 @@ public class ERepositoryObjectType extends DynaEnum<ERepositoryObjectType> {
 
     /**
      * DOC bZhou Comment method "isDIType".
-     * 
+     *
      * This method is to estimat a type belongs to Data Intergration.
-     * 
+     *
      * @param type
      * @return
      */
@@ -1242,9 +1242,9 @@ public class ERepositoryObjectType extends DynaEnum<ERepositoryObjectType> {
 
     /**
      * DOC bZhou Comment method "isSharedType".
-     * 
+     *
      * This method is to estimat a type belongs to both DQ and DI product.
-     * 
+     *
      * @param type
      * @return
      */
@@ -1254,7 +1254,7 @@ public class ERepositoryObjectType extends DynaEnum<ERepositoryObjectType> {
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see org.talend.core.model.repository.DynaEnum#name()
      */
     @Override
@@ -1370,11 +1370,11 @@ public class ERepositoryObjectType extends DynaEnum<ERepositoryObjectType> {
     }
 
     /**
-     * 
+     *
      * DOC ggu Comment method "valueOf".
-     * 
+     *
      * in order to adapte old codes. and enable to init this class at same times.
-     * 
+     *
      * @param clazz
      * @param name
      * @return

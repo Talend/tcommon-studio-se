@@ -1,6 +1,6 @@
 // ============================================================================
 //
-// Copyright (C) 2006-2018 Talend Inc. - www.talend.com
+// Copyright (C) 2006-2019 Talend Inc. - www.talend.com
 //
 // This source code is available under agreement available at
 // %InstallDIR%\features\org.talend.rcp.branding.%PRODUCTNAME%\%PRODUCTNAME%license.txt
@@ -30,9 +30,9 @@ import org.talend.commons.utils.workbench.extensions.IExtensionPointLimiter;
 
 /**
  * DOC smallet class global comment. Detailled comment <br/>
- * 
+ *
  * $Id: ActionsHelper.java 7038 2007-11-15 14:05:48Z plegall $
- * 
+ *
  */
 public class ActionsHelper {
 
@@ -150,7 +150,7 @@ public class ActionsHelper {
     }
 
     /**
-     * 
+     *
      * hywang ActionsHelper class global comment. Detailled comment
      */
     static class RepositoryContextualsActionGroup {
@@ -177,17 +177,17 @@ public class ActionsHelper {
     }
 
     /**
-     * 
+     *
      * DOC smallet ActionsHelper class global comment. Detailled comment <br/>
-     * 
+     *
      * $Id: ActionsHelper.java 7038 2007-11-15 14:05:48Z plegall $
-     * 
+     *
      */
     private static class ActionsLevelComparator implements Comparator<ITreeContextualAction> {
 
         /*
          * (non-Javadoc)
-         * 
+         *
          * @see java.util.Comparator#compare(java.lang.Object, java.lang.Object)
          */
         @Override
@@ -200,9 +200,9 @@ public class ActionsHelper {
     }
 
     /**
-     * 
+     *
      * DOC xye Comment method "getActionById".
-     * 
+     *
      * @param id
      * @return
      */

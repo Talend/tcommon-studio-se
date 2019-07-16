@@ -1,6 +1,6 @@
 // ============================================================================
 //
-// Copyright (C) 2006-2018 Talend Inc. - www.talend.com
+// Copyright (C) 2006-2019 Talend Inc. - www.talend.com
 //
 // This source code is available under agreement available at
 // %InstallDIR%\features\org.talend.rcp.branding.%PRODUCTNAME%\%PRODUCTNAME%license.txt
@@ -63,7 +63,7 @@ public class ConnectionContextHelperTest {
         assertFalse(ConnectionContextHelper.isContextMode(connection, testValue));
         assertTrue(ConnectionContextHelper.isContextMode(connection, testContextValue));
     }
-    
+
     @Test
     public void testCheckAndAddContextVariables(){
         JobContextManager contextManager = new JobContextManager();
@@ -86,19 +86,19 @@ public class ConnectionContextHelperTest {
         contextParameterType.setValue("abc");
         contextParameterType.setType(JavaTypesManager.getDefaultJavaType().getId());
         contextType.getContextParameter().add(contextParameterType);
-        
+
         contextParameterType = TalendFileFactory.eINSTANCE.createContextParameterType();
         contextParameterType.setName("new2");
         contextParameterType.setValue("abc");
         contextParameterType.setType(JavaTypesManager.getDefaultJavaType().getId());
         contextType.getContextParameter().add(contextParameterType);
-        
+
         contextParameterType = TalendFileFactory.eINSTANCE.createContextParameterType();
         contextParameterType.setName("new3");
         contextParameterType.setValue("abc");
         contextParameterType.setType(JavaTypesManager.getDefaultJavaType().getId());
         contextType.getContextParameter().add(contextParameterType);
-        
+
         ContextItem contextItem = PropertiesFactory.eINSTANCE.createContextItem();
         contextItem.getContext().add(contextType);
         Property myContextProperty = PropertiesFactory.eINSTANCE.createProperty();
@@ -107,7 +107,7 @@ public class ConnectionContextHelperTest {
         myContextProperty.setVersion("0.1");
         contextItem.setProperty(myContextProperty);
         contextItem.setDefaultContext("Default");
-        
+
         Set<String> set = ConnectionContextHelper.checkAndAddContextVariables(contextItem, contextManager, false);
         assertTrue(set.size() == 2);
     }

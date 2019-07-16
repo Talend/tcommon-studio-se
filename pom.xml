@@ -4,11 +4,14 @@
 	<parent>
 		<groupId>org.talend.studio</groupId>
 		<artifactId>parent-pom</artifactId>
-		<version>7.2.1-SNAPSHOT</version>
+		<version>7.3.1-SNAPSHOT</version>
 		<relativePath />
 	</parent>
 	<artifactId>tcommon-studio-se</artifactId>
 	<packaging>pom</packaging>
+	<properties>
+		<org.talend.daikon.crypto-utils.version>1.4.0_Studio</org.talend.daikon.crypto-utils.version>
+	</properties>
 	<repositories>
 		<repository>
 			<id>talend_open</id>
@@ -126,7 +129,6 @@
 		<module>main/plugins/org.talend.libraries.jboss.jars</module>
 		<module>main/plugins/org.talend.libraries.jxplorer</module>
 		<module>main/plugins/org.talend.libraries.mdm</module>
-		<module>main/plugins/org.talend.libraries.mdm.webservice.ce</module>
 		<module>main/plugins/org.talend.libraries.netsuite</module>
 		<module>main/plugins/org.talend.libraries.ui</module>
 		<module>main/plugins/org.talend.librariesmanager</module>
@@ -196,6 +198,17 @@
 				<artifactId>tycho-maven-plugin</artifactId>
 				<version>${tycho.version}</version>
 				<extensions>true</extensions>
+			</plugin>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-deploy-plugin</artifactId>
+				<version>2.8.2</version>
+				<executions>
+					<execution>
+						<id>default-deploy</id>
+						<phase>none</phase>
+					</execution>
+				</executions>
 			</plugin>
 		</plugins>
 	</build>

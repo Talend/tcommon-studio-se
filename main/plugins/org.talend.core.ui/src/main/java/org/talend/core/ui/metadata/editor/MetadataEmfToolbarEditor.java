@@ -1,6 +1,6 @@
 // ============================================================================
 //
-// Copyright (C) 2006-2018 Talend Inc. - www.talend.com
+// Copyright (C) 2006-2019 Talend Inc. - www.talend.com
 //
 // This source code is available under agreement available at
 // %InstallDIR%\features\org.talend.rcp.branding.%PRODUCTNAME%\%PRODUCTNAME%license.txt
@@ -37,10 +37,10 @@ import org.talend.core.ui.metadata.extended.command.MetadataEmfPasteCommand;
 
 /**
  * DOC amaumont class global comment. Detailled comment <br/>
- * 
+ *
  * TGU same purpose as MetadataToolbarEditorView but uses EMF model directly $Id: MetadataToolbarEditorView2.java,v 1.1
  * 2006/08/02 19:43:45 tguiu Exp $
- * 
+ *
  */
 public class MetadataEmfToolbarEditor extends ExtendedToolbarView {
 
@@ -48,7 +48,7 @@ public class MetadataEmfToolbarEditor extends ExtendedToolbarView {
 
     /**
      * DOC amaumont MatadataToolbarEditor constructor comment.
-     * 
+     *
      * @param parent
      * @param style
      * @param metadataEditorView
@@ -80,7 +80,7 @@ public class MetadataEmfToolbarEditor extends ExtendedToolbarView {
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see org.talend.core.ui.extended.ExtendedToolbarView#createAddPushButton()
      */
     @Override
@@ -99,7 +99,7 @@ public class MetadataEmfToolbarEditor extends ExtendedToolbarView {
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see org.talend.core.ui.extended.ExtendedToolbarView#createPastButton()
      */
     @Override
@@ -116,7 +116,7 @@ public class MetadataEmfToolbarEditor extends ExtendedToolbarView {
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see org.talend.core.ui.extended.ExtendedToolbarView#createExportPushButton()
      */
     @Override
@@ -133,7 +133,7 @@ public class MetadataEmfToolbarEditor extends ExtendedToolbarView {
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see org.talend.core.ui.extended.ExtendedToolbarView#createPastButton()
      */
     @Override

@@ -1,6 +1,6 @@
 // ============================================================================
 //
-// Copyright (C) 2006-2018 Talend Inc. - www.talend.com
+// Copyright (C) 2006-2019 Talend Inc. - www.talend.com
 //
 // This source code is available under agreement available at
 // %InstallDIR%\features\org.talend.rcp.branding.%PRODUCTNAME%\%PRODUCTNAME%license.txt
@@ -66,9 +66,9 @@ import org.talend.designer.core.IDesignerCoreService;
 
 /**
  * yzhang class global comment. Detail led comment <br/>
- * 
+ *
  * $Id: talend.epf 1 2006-09-29 17:06:40 +0000 (ææäº, 29 ä¹æ 2006) nrousseau $
- * 
+ *
  */
 public class ComponentsFormatPreferencePage extends PreferencePage implements IWorkbenchPreferencePage {
 
@@ -140,7 +140,7 @@ public class ComponentsFormatPreferencePage extends PreferencePage implements IW
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see org.eclipse.jface.preference.PreferencePage#createContents(org.eclipse.swt.widgets.Composite)
      */
     @Override
@@ -203,7 +203,7 @@ public class ComponentsFormatPreferencePage extends PreferencePage implements IW
 
     /**
      * yzhang Comment method "configTexts".
-     * 
+     *
      * @param text
      * @param preferenceType
      */
@@ -212,7 +212,7 @@ public class ComponentsFormatPreferencePage extends PreferencePage implements IW
 
             /*
              * (non-Javadoc)
-             * 
+             *
              * @see org.eclipse.swt.events.KeyAdapter#keyReleased(org.eclipse.swt.events.KeyEvent)
              */
             @Override
@@ -238,7 +238,7 @@ public class ComponentsFormatPreferencePage extends PreferencePage implements IW
 
     /**
      * yzhang Comment method "configListViewer".
-     * 
+     *
      * @param viewer
      */
     private void configViewer(TableViewer v) {
@@ -247,7 +247,7 @@ public class ComponentsFormatPreferencePage extends PreferencePage implements IW
 
             /*
              * (non-Javadoc)
-             * 
+             *
              * @see org.eclipse.jface.viewers.IStructuredContentProvider#getElements(java.lang.Object)
              */
             @Override
@@ -257,7 +257,7 @@ public class ComponentsFormatPreferencePage extends PreferencePage implements IW
 
             /*
              * (non-Javadoc)
-             * 
+             *
              * @see org.eclipse.jface.viewers.IContentProvider#dispose()
              */
             @Override
@@ -267,7 +267,7 @@ public class ComponentsFormatPreferencePage extends PreferencePage implements IW
 
             /*
              * (non-Javadoc)
-             * 
+             *
              * @see org.eclipse.jface.viewers.IContentProvider#inputChanged(org.eclipse.jface.viewers.Viewer,
              * java.lang.Object, java.lang.Object)
              */
@@ -343,7 +343,7 @@ public class ComponentsFormatPreferencePage extends PreferencePage implements IW
 
     /**
      * yzhang Comment method "refreshTextContent".
-     * 
+     *
      * @param selection
      */
     private void refreshTextContent() {
@@ -371,7 +371,7 @@ public class ComponentsFormatPreferencePage extends PreferencePage implements IW
 
     /**
      * yzhang Comment method "getLabelWithoutType".
-     * 
+     *
      * @param o
      * @return
      */
@@ -398,7 +398,7 @@ public class ComponentsFormatPreferencePage extends PreferencePage implements IW
 
     /**
      * yzhang Comment method "setTextsContents".
-     * 
+     *
      * @param formats
      */
     private void setTextsContents(List<DefaultFormat> formats) {
@@ -422,7 +422,7 @@ public class ComponentsFormatPreferencePage extends PreferencePage implements IW
 
     /**
      * yzhang Comment method "setText".
-     * 
+     *
      * @param text
      * @param content
      * @param flag
@@ -441,11 +441,11 @@ public class ComponentsFormatPreferencePage extends PreferencePage implements IW
 
     /**
      * qli Comment method "canRename".
-     * 
+     *
      * @param content
-     * 
+     *
      * @return canRename
-     * 
+     *
      */
     private boolean canRename(String content) {
         boolean canRename = true;
@@ -521,7 +521,7 @@ public class ComponentsFormatPreferencePage extends PreferencePage implements IW
 
     /**
      * yzhang Comment method "setDefaultValueToPreferenceCach".
-     * 
+     *
      * @param id
      * @param type
      * @param defaultValue
@@ -536,7 +536,7 @@ public class ComponentsFormatPreferencePage extends PreferencePage implements IW
 
     /**
      * yzhang Comment method "getDefaultPreference".
-     * 
+     *
      * @param labelID
      * @return
      */
@@ -563,7 +563,7 @@ public class ComponentsFormatPreferencePage extends PreferencePage implements IW
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see org.eclipse.ui.IWorkbenchPreferencePage#init(org.eclipse.ui.IWorkbench)
      */
     @Override
@@ -603,7 +603,7 @@ public class ComponentsFormatPreferencePage extends PreferencePage implements IW
 
     /**
      * yzhang Comment method "iteratePaletteEntriesToInitViewerInput".
-     * 
+     *
      * @param entry
      */
     private void iteratePaletteEntriesToInitViewerInput(PaletteEntry entry) {
@@ -685,7 +685,7 @@ public class ComponentsFormatPreferencePage extends PreferencePage implements IW
 
     /**
      * yzhang Comment method "setListViewerInput".
-     * 
+     *
      * @param selections
      */
     public void setViewerInput(ISelection selections) {
@@ -719,7 +719,7 @@ public class ComponentsFormatPreferencePage extends PreferencePage implements IW
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see org.eclipse.jface.preference.PreferencePage#performOk()
      */
     @Override
@@ -735,7 +735,7 @@ public class ComponentsFormatPreferencePage extends PreferencePage implements IW
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see org.eclipse.jface.preference.PreferencePage#performDefaults()
      */
     @Override
@@ -761,9 +761,9 @@ public class ComponentsFormatPreferencePage extends PreferencePage implements IW
 
     /**
      * yzhang ComponentsFormatPreferencePage class global comment. Detailled comment <br/>
-     * 
+     *
      * $Id: talend.epf 1 2006-09-29 17:06:40 +0000 (ææäº, 29 ä¹æ 2006) nrousseau $
-     * 
+     *
      */
     private class DefaultFormat {
 
@@ -779,7 +779,7 @@ public class ComponentsFormatPreferencePage extends PreferencePage implements IW
 
         /**
          * yzhang Comment method "equals".
-         * 
+         *
          * @param obj
          * @return
          */
@@ -807,7 +807,7 @@ public class ComponentsFormatPreferencePage extends PreferencePage implements IW
 
         /**
          * Getter for hint.
-         * 
+         *
          * @return the hint
          */
         public String getHint() {
@@ -816,7 +816,7 @@ public class ComponentsFormatPreferencePage extends PreferencePage implements IW
 
         /**
          * Sets the hint.
-         * 
+         *
          * @param hint the hint to set
          */
         public void setHint(String hint) {
@@ -825,7 +825,7 @@ public class ComponentsFormatPreferencePage extends PreferencePage implements IW
 
         /**
          * Getter for label.
-         * 
+         *
          * @return the label
          */
         public String getLabel() {
@@ -834,7 +834,7 @@ public class ComponentsFormatPreferencePage extends PreferencePage implements IW
 
         /**
          * Sets the label.
-         * 
+         *
          * @param label the label to set
          */
         public void setLabel(String label) {
@@ -843,7 +843,7 @@ public class ComponentsFormatPreferencePage extends PreferencePage implements IW
 
         /**
          * Getter for connection.
-         * 
+         *
          * @return the connection
          */
         public String getConnection() {
@@ -852,7 +852,7 @@ public class ComponentsFormatPreferencePage extends PreferencePage implements IW
 
         /**
          * Sets the connection.
-         * 
+         *
          * @param connection the connection to set
          */
         public void setConnection(String connection) {

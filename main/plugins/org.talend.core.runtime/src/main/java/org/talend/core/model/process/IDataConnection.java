@@ -1,6 +1,6 @@
 // ============================================================================
 //
-// Copyright (C) 2006-2018 Talend Inc. - www.talend.com
+// Copyright (C) 2006-2019 Talend Inc. - www.talend.com
 //
 // This source code is available under agreement available at
 // %InstallDIR%\features\org.talend.rcp.branding.%PRODUCTNAME%\%PRODUCTNAME%license.txt
@@ -19,14 +19,14 @@ public interface IDataConnection extends IConnection {
 
     /**
      * Only filled if the original link is a from lookup (to tell which is tMap linked for example).
-     * 
+     *
      * @return the linkedNodeForHash
      */
     public INode getLinkNodeForHash();
 
     /**
      * Only filled if the original link is a from lookup (to tell which is tMap linked for example).
-     * 
+     *
      * @param linkedNodeForHash the linkedNodeForHash to set
      */
     public void setLinkNodeForHash(INode linkedNodeForHash);

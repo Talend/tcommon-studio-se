@@ -1,6 +1,6 @@
 // ============================================================================
 //
-// Copyright (C) 2006-2018 Talend Inc. - www.talend.com
+// Copyright (C) 2006-2019 Talend Inc. - www.talend.com
 //
 // This source code is available under agreement available at
 // %InstallDIR%\features\org.talend.rcp.branding.%PRODUCTNAME%\%PRODUCTNAME%license.txt
@@ -25,9 +25,9 @@ import org.eclipse.swt.widgets.Control;
 
 /**
  * Dimensionned Button ( defined width & height OR use FillLayout).
- * 
+ *
  * $Id: UtilsButton.java 7038 2007-11-15 14:05:48Z plegall $
- * 
+ *
  */
 public class UtilsButton {
 
@@ -35,12 +35,12 @@ public class UtilsButton {
 
     /**
      * create Button width a RowData.
-     * 
+     *
      * @param Composite parent
      * @param String string
      * @param int width
      * @param int height
-     * 
+     *
      * @return Button
      */
     public UtilsButton(Composite parent, String string, int width, int height) {
@@ -51,11 +51,11 @@ public class UtilsButton {
 
     /**
      * create Button width a possible FillLayout.
-     * 
+     *
      * @param Composite parent
      * @param String string
      * @param boolean useFillLayout (use full space)
-     * 
+     *
      * @return Button
      */
     public UtilsButton(Composite parent, String string, boolean useFillLayout) {
@@ -64,7 +64,7 @@ public class UtilsButton {
 
     /**
      * create Button width image less FillLayout.
-     * 
+     *
      * @param Composite parent
      * @param Image image
      * @param String string
@@ -76,9 +76,9 @@ public class UtilsButton {
     }
 
     /**
-     * 
+     *
      * create Button with related layoutData.
-     * 
+     *
      * @param parent
      * @param string
      * @param layoutData
@@ -93,11 +93,11 @@ public class UtilsButton {
 
     /**
      * create Button width a possible FillLayout.
-     * 
+     *
      * @param Composite parent
      * @param String string
      * @param boolean useFillLayout (use full space)
-     * 
+     *
      * @return Button
      */
     private void createButton(Composite parent, String string, boolean useFillLayout) {
@@ -111,7 +111,7 @@ public class UtilsButton {
 
     /**
      * button.setEnabled().
-     * 
+     *
      * @param boolean
      */
     public void setEnabled(boolean b) {
@@ -120,7 +120,7 @@ public class UtilsButton {
 
     /**
      * setImage button.
-     * 
+     *
      * @param image
      */
     public void setImage(Image image) {
@@ -129,7 +129,7 @@ public class UtilsButton {
 
     /**
      * button.addSelectionListener().
-     * 
+     *
      * @param adapter
      */
     public void addSelectionListener(SelectionAdapter adapter) {
@@ -145,7 +145,7 @@ public class UtilsButton {
 
     /**
      * button.getEnabled ().
-     * 
+     *
      * @return
      */
     public boolean getEnabled() {
@@ -154,7 +154,7 @@ public class UtilsButton {
 
     /**
      * button.setToolTipText().
-     * 
+     *
      * @param string
      */
     public void setToolTipText(String string) {
@@ -163,7 +163,7 @@ public class UtilsButton {
 
     /**
      * button.setVisible().
-     * 
+     *
      * @param boolean
      */
     public void setVisible(boolean visible) {
@@ -172,7 +172,7 @@ public class UtilsButton {
 
     /**
      * button.setText().
-     * 
+     *
      * @param string
      */
     public void setText(String string) {
@@ -181,7 +181,7 @@ public class UtilsButton {
 
     /**
      * button.addMouseListener().
-     * 
+     *
      * @param adapter
      */
     public void addMouseListener(MouseAdapter adapter) {
@@ -190,7 +190,7 @@ public class UtilsButton {
 
     /**
      * button.getText().
-     * 
+     *
      * @return string
      */
     public String getText() {

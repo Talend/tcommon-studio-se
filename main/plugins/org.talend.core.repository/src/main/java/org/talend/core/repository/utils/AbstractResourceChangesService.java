@@ -1,6 +1,6 @@
 // ============================================================================
 //
-// Copyright (C) 2006-2018 Talend Inc. - www.talend.com
+// Copyright (C) 2006-2019 Talend Inc. - www.talend.com
 //
 // This source code is available under agreement available at
 // %InstallDIR%\features\org.talend.rcp.branding.%PRODUCTNAME%\%PRODUCTNAME%license.txt
@@ -59,7 +59,7 @@ public class AbstractResourceChangesService implements IService {
 
     /**
      * update the connection item's dependencies when the version changed.
-     * 
+     *
      * @param connItem
      * @param oldVersion
      * @param newVersion
@@ -68,9 +68,9 @@ public class AbstractResourceChangesService implements IService {
     }
 
     /**
-     * 
+     *
      * DOC gdbu Comment method "saveResourceByEMFShared".
-     * 
+     *
      * @param item
      * @throws PersistenceException
      */
@@ -79,7 +79,7 @@ public class AbstractResourceChangesService implements IService {
 
     /**
      * if move TDQReportItem, need to move the generated doc of it also.
-     * 
+     *
      * @param tdqItem
      * @param tarFolder
      */

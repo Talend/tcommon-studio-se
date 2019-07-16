@@ -1,6 +1,6 @@
 // ============================================================================
 //
-// Copyright (C) 2006-2018 Talend Inc. - www.talend.com
+// Copyright (C) 2006-2019 Talend Inc. - www.talend.com
 //
 // This source code is available under agreement available at
 // %InstallDIR%\features\org.talend.rcp.branding.%PRODUCTNAME%\%PRODUCTNAME%license.txt
@@ -49,7 +49,7 @@ public class RepoNodeActionProvider extends CommonActionProvider {
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see org.eclipse.ui.navigator.CommonActionProvider#init(org.eclipse.ui.navigator.ICommonActionExtensionSite)
      */
     @Override
@@ -61,7 +61,7 @@ public class RepoNodeActionProvider extends CommonActionProvider {
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see org.eclipse.ui.actions.ActionGroup#fillContextMenu(org.eclipse.jface.action.IMenuManager)
      */
     @Override
@@ -72,11 +72,11 @@ public class RepoNodeActionProvider extends CommonActionProvider {
     }
 
     /**
-     * 
+     *
      * DOC ggu Comment method "addActions".
-     * 
+     *
      * check and add all contextualsActions
-     * 
+     *
      * @param manager
      */
     protected void addActions(IMenuManager manager) {
@@ -201,7 +201,7 @@ public class RepoNodeActionProvider extends CommonActionProvider {
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see org.eclipse.ui.actions.ActionGroup#fillActionBars(org.eclipse.ui.IActionBars)
      */
     @Override

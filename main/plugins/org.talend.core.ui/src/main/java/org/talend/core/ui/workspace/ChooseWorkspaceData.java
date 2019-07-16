@@ -1,6 +1,6 @@
 // ============================================================================
 //
-// Copyright (C) 2006-2018 Talend Inc. - www.talend.com
+// Copyright (C) 2006-2019 Talend Inc. - www.talend.com
 //
 // This source code is available under agreement available at
 // %InstallDIR%\features\org.talend.rcp.branding.%PRODUCTNAME%\%PRODUCTNAME%license.txt
@@ -33,27 +33,27 @@ public class ChooseWorkspaceData {
     private static Logger log = Logger.getLogger(ChooseWorkspaceData.class);
 
     /**
-     * 
+     *
      */
     private static final String RECENT_WORKSPACES_PREF = "RECENT_WORKSPACES"; //$NON-NLS-1$
 
     /**
-     * 
+     *
      */
     private static final String MAX_RECENT_WORKSPACE_PREF = "MAX_RECENT_WORKSPACES"; //$NON-NLS-1$
 
     /**
-     * 
+     *
      */
     private static final String SHOW_WORKSPACE_SELECTION_DIALOG_PREF = "SHOW_WORKSPACE_SELECTION_DIALOG"; //$NON-NLS-1$
 
     /**
-     * 
+     *
      */
     public static final String ORG_TALEND_WORKSPACE_PREF_NODE = "org.eclipse.ui.ide"; //$NON-NLS-1$
 
     /**
-     * 
+     *
      */
     private static final String WORSPACE_PATH_SEPARATOR = "\n"; //$NON-NLS-1$
 
@@ -266,7 +266,7 @@ public class ChooseWorkspaceData {
 
     /**
      * Sets the showDialog.
-     * 
+     *
      * @param showDialog the showDialog to set
      */
     public void setShowDialog(boolean showDialog) {

@@ -1,6 +1,6 @@
 // ============================================================================
 //
-// Copyright (C) 2006-2018 Talend Inc. - www.talend.com
+// Copyright (C) 2006-2019 Talend Inc. - www.talend.com
 //
 // This source code is available under agreement available at
 // %InstallDIR%\features\org.talend.rcp.branding.%PRODUCTNAME%\%PRODUCTNAME%license.txt
@@ -60,9 +60,9 @@ import org.talend.core.ui.metadata.editor.MetadataTableEditorView;
 
 /**
  * DOC nrousseau class global comment. Detailled comment <br/>
- * 
+ *
  * $Id: MetadataDialog.java 4400 2007-07-10 07:59:06 +0000 (星期二, 10 七月 2007) bqian $
- * 
+ *
  */
 public class MetadataDialogForMerge extends Dialog {
 
@@ -553,7 +553,7 @@ public class MetadataDialogForMerge extends Dialog {
 
     /**
      * Returns input metadata.
-     * 
+     *
      * @return
      */
     public IMetadataTable getInputMetaData() {
@@ -565,7 +565,7 @@ public class MetadataDialogForMerge extends Dialog {
 
     /**
      * Returns all input metadata.
-     * 
+     *
      * @return
      */
     public Map<INode, Map<IMetadataTable, Boolean>> getAllInputMetaData() {
@@ -577,7 +577,7 @@ public class MetadataDialogForMerge extends Dialog {
 
     /**
      * Returns output metadata.
-     * 
+     *
      * @return
      */
     public IMetadataTable getOutputMetaData() {
@@ -594,7 +594,7 @@ public class MetadataDialogForMerge extends Dialog {
 
     /**
      * Getter for inputReadOnly.
-     * 
+     *
      * @return the inputReadOnly
      */
     public boolean isInputReadOnly() {
@@ -603,7 +603,7 @@ public class MetadataDialogForMerge extends Dialog {
 
     /**
      * Getter for outputReadOnly.
-     * 
+     *
      * @return the outputReadOnly
      */
     public boolean isOutputReadOnly() {

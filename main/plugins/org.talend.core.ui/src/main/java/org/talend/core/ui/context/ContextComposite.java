@@ -1,6 +1,6 @@
 // ============================================================================
 //
-// Copyright (C) 2006-2018 Talend Inc. - www.talend.com
+// Copyright (C) 2006-2019 Talend Inc. - www.talend.com
 //
 // This source code is available under agreement available at
 // %InstallDIR%\features\org.talend.rcp.branding.%PRODUCTNAME%\%PRODUCTNAME%license.txt
@@ -38,7 +38,7 @@ import org.talend.core.ui.editor.command.ContextTemplateModifyCommand;
 
 /**
  * This class must be extended for implementing the specific context composite. <br/>
- * 
+ *
  */
 public abstract class ContextComposite extends Composite implements IContextModelManager {
 
@@ -58,7 +58,7 @@ public abstract class ContextComposite extends Composite implements IContextMode
 
     /**
      * bqian ContextComposite constructor comment.
-     * 
+     *
      * @param parent
      * @param style
      */
@@ -124,9 +124,9 @@ public abstract class ContextComposite extends Composite implements IContextMode
     }
 
     /**
-     * 
+     *
      * DOC YeXiaowei Comment method "refreshContextEditComposite".
-     * 
+     *
      * @param composite
      */
     private void toolgeRefreshContextRelitiveComposite(AbstractContextTabEditComposite composite) {
@@ -177,7 +177,7 @@ public abstract class ContextComposite extends Composite implements IContextMode
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see org.talend.core.ui.context.IContextModelManager#getProcess()
      */
     @Override
@@ -187,7 +187,7 @@ public abstract class ContextComposite extends Composite implements IContextMode
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see org.talend.core.ui.context.IContextModelManager#getCommandStack()
      */
     @Override
@@ -197,7 +197,7 @@ public abstract class ContextComposite extends Composite implements IContextMode
 
     /**
      * Getter for isRepositoryContext.
-     * 
+     *
      * @return the isRepositoryContext
      */
     @Override
@@ -273,7 +273,7 @@ public abstract class ContextComposite extends Composite implements IContextMode
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @seeorg.talend.core.ui.context.IContextModelManager#onContextRemoveParameter(org.talend.core.model.process.
      * IContextManager, java.util.List)
      */
@@ -286,7 +286,7 @@ public abstract class ContextComposite extends Composite implements IContextMode
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see org.talend.core.ui.context.IContextModelManager#onContextRemoveParameter(org.talend.core.model.process.
      * IContextManager, java.lang.String, java.lang.String)
      */
@@ -298,7 +298,7 @@ public abstract class ContextComposite extends Composite implements IContextMode
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see org.talend.core.ui.context.IContextModelManager#onContextRemoveParameter(org.talend.core.model.process.
      * IContextManager, java.util.Set, java.lang.String)
      */

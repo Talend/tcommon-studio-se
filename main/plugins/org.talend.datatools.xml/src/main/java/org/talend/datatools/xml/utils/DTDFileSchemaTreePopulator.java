@@ -1,6 +1,6 @@
 // ============================================================================
 //
-// Copyright (C) 2006-2018 Talend Inc. - www.talend.com
+// Copyright (C) 2006-2019 Talend Inc. - www.talend.com
 //
 // This source code is available under agreement available at
 // %InstallDIR%\features\org.talend.rcp.branding.%PRODUCTNAME%\%PRODUCTNAME%license.txt
@@ -84,7 +84,7 @@ public class DTDFileSchemaTreePopulator {
 
     /**
      * getAllElements
-     * 
+     *
      * @return
      */
     public List<DTDElement> getAllElements() {
@@ -93,7 +93,7 @@ public class DTDFileSchemaTreePopulator {
 
     /**
      * getAllElementname
-     * 
+     *
      * @return
      */
     public List<String> getAllElementStrs() {
@@ -102,7 +102,7 @@ public class DTDFileSchemaTreePopulator {
 
     /**
      * getChildren
-     * 
+     *
      * @param dtd
      * @return
      */

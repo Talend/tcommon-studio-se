@@ -1,6 +1,6 @@
 // ============================================================================
 //
-// Copyright (C) 2006-2018 Talend Inc. - www.talend.com
+// Copyright (C) 2006-2019 Talend Inc. - www.talend.com
 //
 // This source code is available under agreement available at
 // %InstallDIR%\features\org.talend.rcp.branding.%PRODUCTNAME%\%PRODUCTNAME%license.txt
@@ -28,12 +28,12 @@ import org.eclipse.core.runtime.Platform;
 /**
  * Template implementation of a registry reader that creates objects representing registry contents. Typically, an
  * extension contains one element, but this reader handles multiple elements per extension.
- * 
+ *
  * To start reading the extensions from the registry for an extension point, call the method <code>readRegistry</code>.
- * 
+ *
  * To read children of an IConfigurationElement, call the method <code>readElementChildren</code> from your
  * implementation of the method <code>readElement</code>, as it will not be done by default.
- * 
+ *
  */
 public abstract class ExtensionRegistryReader {
 
@@ -51,9 +51,9 @@ public abstract class ExtensionRegistryReader {
 
     /**
      * DOC sgandon class global comment. Detailled comment <br/>
-     * 
+     *
      * $Id: talend.epf 55206 2011-02-15 17:32:14Z mhirt $
-     * 
+     *
      */
     public abstract class RegistrySafeRunnable implements ISafeRunnable {
 
@@ -75,7 +75,7 @@ public abstract class ExtensionRegistryReader {
 
     /**
      * This method extracts description as a subelement of the given element.
-     * 
+     *
      * @return description string if defined, or empty string if not.
      */
     protected String getDescription(IConfigurationElement config) {
@@ -99,11 +99,11 @@ public abstract class ExtensionRegistryReader {
 
     /*
      * Record an error against this plugin's log.
-     * 
+     *
      * @param aCode
-     * 
+     *
      * @param aMessage
-     * 
+     *
      * @param anException
      */
     public static void logError(int aCode, String aMessage, Throwable anException) {
@@ -160,7 +160,7 @@ public abstract class ExtensionRegistryReader {
      * Implement this method to read element's attributes. If children should also be read, then implementor is
      * responsible for calling <code>readElementChildren</code>. Implementor is also responsible for logging missing
      * attributes.
-     * 
+     *
      * @return true if element was recognized, false if not.
      */
     protected abstract boolean readElement(IConfigurationElement element);
@@ -175,7 +175,7 @@ public abstract class ExtensionRegistryReader {
 
     /**
      * Read each element one at a time by calling the subclass implementation of <code>readElement</code>.
-     * 
+     *
      * Logs an error if the element was not recognized.
      */
     protected void readElements(IConfigurationElement[] elements) {

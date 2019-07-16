@@ -1,6 +1,6 @@
 // ============================================================================
 //
-// Copyright (C) 2006-2018 Talend Inc. - www.talend.com
+// Copyright (C) 2006-2019 Talend Inc. - www.talend.com
 //
 // This source code is available under agreement available at
 // %InstallDIR%\features\org.talend.rcp.branding.%PRODUCTNAME%\%PRODUCTNAME%license.txt
@@ -35,7 +35,7 @@ public class MdmConceptWizardPage3 extends AbstractRetrieveConceptPage {
 
     /**
      * DOC Administrator MDMSchemaWizardPage constructor comment.
-     * 
+     *
      * @param pageName
      */
     protected MdmConceptWizardPage3(RepositoryNode node, ConnectionItem connectionItem, MetadataTable metadataTable,
@@ -48,7 +48,7 @@ public class MdmConceptWizardPage3 extends AbstractRetrieveConceptPage {
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see org.eclipse.jface.dialogs.IDialogPage#createControl(org.eclipse.swt.widgets.Composite)
      */
     public void createControl(Composite parent) {

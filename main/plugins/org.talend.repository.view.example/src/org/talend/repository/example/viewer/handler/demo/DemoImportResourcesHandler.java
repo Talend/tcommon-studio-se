@@ -1,6 +1,6 @@
 // ============================================================================
 //
-// Copyright (C) 2006-2018 Talend Inc. - www.talend.com
+// Copyright (C) 2006-2019 Talend Inc. - www.talend.com
 //
 // This source code is available under agreement available at
 // %InstallDIR%\features\org.talend.rcp.branding.%PRODUCTNAME%\%PRODUCTNAME%license.txt
@@ -25,7 +25,7 @@ public class DemoImportResourcesHandler implements IImportResourcesHandler {
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see
      * org.talend.repository.items.importexport.handlers.imports.IImportResourcesHandler#preImport(org.talend.repository
      * .items.importexport.manager.ResourcesManager)
@@ -42,7 +42,7 @@ public class DemoImportResourcesHandler implements IImportResourcesHandler {
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see
      * org.talend.repository.items.importexport.handlers.imports.IImportResourcesHandler#postImport(org.talend.repository
      * .items.importexport.manager.ResourcesManager)
@@ -54,7 +54,7 @@ public class DemoImportResourcesHandler implements IImportResourcesHandler {
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see
      * org.talend.repository.items.importexport.handlers.imports.IImportResourcesHandler#prePopulate(org.eclipse.core
      * .runtime.IProgressMonitor, org.talend.repository.items.importexport.manager.ResourcesManager)
@@ -67,7 +67,7 @@ public class DemoImportResourcesHandler implements IImportResourcesHandler {
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see
      * org.talend.repository.items.importexport.handlers.imports.IImportResourcesHandler#postPopulate(org.eclipse.core
      * .runtime.IProgressMonitor, org.talend.repository.items.importexport.manager.ResourcesManager,

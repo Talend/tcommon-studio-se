@@ -1,6 +1,6 @@
 // ============================================================================
 //
-// Copyright (C) 2006-2018 Talend Inc. - www.talend.com
+// Copyright (C) 2006-2019 Talend Inc. - www.talend.com
 //
 // This source code is available under agreement available at
 // %InstallDIR%\features\org.talend.rcp.branding.%PRODUCTNAME%\%PRODUCTNAME%license.txt
@@ -28,7 +28,7 @@ import org.apache.poi.openxml4j.exceptions.InvalidFormatException;
 import org.apache.poi.openxml4j.exceptions.OpenXML4JException;
 import org.apache.poi.openxml4j.opc.OPCPackage;
 import org.apache.poi.ss.usermodel.Row;
-import org.apache.poi.util.PackageHelper;
+import org.apache.poi.ooxml.util.PackageHelper;
 import org.apache.poi.util.TempFile;
 import org.apache.poi.xssf.eventusermodel.XSSFReader;
 import org.apache.poi.xssf.usermodel.XSSFSheet;
@@ -69,10 +69,10 @@ public class ExcelReader {
      * Maybe take long time
      * <p>
      * DOC yexiaowei ExcelReader constructor comment.
-     * 
+     *
      * @param excel
      * @throws BiffException
-     * 
+     *
      * @throws IOException
      */
     public ExcelReader(String excel) throws BiffException, IOException {
@@ -81,9 +81,9 @@ public class ExcelReader {
     }
 
     /**
-     * 
+     *
      * DOC wf ExcelReader constructor comment. add for bug TDI-26614
-     * 
+     *
      * @param excel
      * @param isSelect
      * @param isForUserMode
@@ -175,7 +175,7 @@ public class ExcelReader {
      * http://grepcode.com/file/repo1.maven.org/maven2/org.apache.poi/poi-ooxml/3.10.1/org/apache/poi/util/
      * PackageHelper.java?av=f <br>
      * The useage of "PackageHelper.createTempFile()" in our codes is added from TDI-24490
-     * 
+     *
      * @return
      * @throws IOException
      */
@@ -296,7 +296,7 @@ public class ExcelReader {
 
     /**
      * Getter for excelPath.
-     * 
+     *
      * @return the excelPath
      */
     public String getExcelPath() {
@@ -317,7 +317,7 @@ public class ExcelReader {
 
     /**
      * DOC zli Comment method "getColumnsTitle".
-     * 
+     *
      * @param s
      * @param rows
      * @return

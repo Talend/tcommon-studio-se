@@ -1,6 +1,6 @@
 // ============================================================================
 //
-// Copyright (C) 2006-2018 Talend Inc. - www.talend.com
+// Copyright (C) 2006-2019 Talend Inc. - www.talend.com
 //
 // This source code is available under agreement available at
 // %InstallDIR%\features\org.talend.rcp.branding.%PRODUCTNAME%\%PRODUCTNAME%license.txt
@@ -25,9 +25,9 @@ import org.eclipse.swt.widgets.Widget;
 
 /**
  * DOC amaumont class global comment. Detailled comment <br/>
- * 
+ *
  * $Id$
- * 
+ *
  */
 public class CommandStackForComposite extends CommandStack {
 
@@ -79,7 +79,7 @@ public class CommandStackForComposite extends CommandStack {
 
     /**
      * DOC amaumont Comment method "refControlIsParentOf".
-     * 
+     *
      * @param control
      * @return
      */
@@ -99,7 +99,7 @@ public class CommandStackForComposite extends CommandStack {
 
     /**
      * DOC amaumont Comment method "keyPressedExecute".
-     * 
+     *
      * @param e
      */
     protected void keyPressedExecute(Event e) {

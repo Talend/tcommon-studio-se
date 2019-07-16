@@ -1,6 +1,6 @@
 // ============================================================================
 //
-// Copyright (C) 2006-2018 Talend Inc. - www.talend.com
+// Copyright (C) 2006-2019 Talend Inc. - www.talend.com
 //
 // This source code is available under agreement available at
 // %InstallDIR%\features\org.talend.rcp.branding.%PRODUCTNAME%\%PRODUCTNAME%license.txt
@@ -70,17 +70,17 @@ public interface IESBService extends IService {
     /**
      * DOC dsergent Comment method "getDefaultGroupIdSuffix". Default group ids for deployment get a suffix according to
      * the kind of process (TESB-21282)
-     * 
+     *
      * @param property
      * @return Appropriate suffix for group id: route, job or service
      */
     public String getDefaultGroupIdSuffix(Property property);
-    
+
     public Object createJavaProcessor(IProcess process, Property property, boolean filenameFromLabel);
 
     /**
      * DOC sunchaoqun Comment method "createOSGIJavaProcessor".
-     * 
+     *
      * @param process
      * @param property
      * @param filenameFromLabel

@@ -1,6 +1,6 @@
 // ============================================================================
 //
-// Copyright (C) 2006-2018 Talend Inc. - www.talend.com
+// Copyright (C) 2006-2019 Talend Inc. - www.talend.com
 //
 // This source code is available under agreement available at
 // %InstallDIR%\features\org.talend.rcp.branding.%PRODUCTNAME%\%PRODUCTNAME%license.txt
@@ -36,9 +36,9 @@ import org.talend.core.model.general.Project;
 
 /**
  * Provides utilities methods on IResource.<br/>
- * 
+ *
  * $Id: ResourceUtils.java 54939 2011-02-11 01:34:57Z mhirt $
- * 
+ *
  */
 public final class ResourceUtils {
 
@@ -52,7 +52,7 @@ public final class ResourceUtils {
 
     /**
      * Load a project (IResource speaking) in the current workspace from a project (model speaking).
-     * 
+     *
      * @param project - the project to retrieve
      * @return the IProject matching the project
      * @throws PersistenceException if the IProject cannot be retrieve
@@ -63,7 +63,7 @@ public final class ResourceUtils {
 
     /**
      * Load a project in the current workspace.
-     * 
+     *
      * @param projectName - the name of the project to retrieve
      * @return the IProject with the right name
      * @throws PersistenceException if no project with that name exists in the workspace
@@ -81,7 +81,7 @@ public final class ResourceUtils {
 
     /**
      * Find all projects in the workspace having the given nature.
-     * 
+     *
      * @param natureId Nature id.
      * @return all projects in the workspace having the given nature.
      * @throws PersistenceException
@@ -109,7 +109,7 @@ public final class ResourceUtils {
 
     /**
      * Load a folder from the specified project.
-     * 
+     *
      * @param source - the source project
      * @param folderName - the name of the folder to retrieve
      * @param forceExists - true to throw a <code>ResourceNotFoundException</code> when does'nt exist
@@ -178,7 +178,7 @@ public final class ResourceUtils {
 
     /**
      * Load a file from the specified folder.
-     * 
+     *
      * @param source - the folder to looked for in
      * @param fileName - the file to retrieve
      * @param forceExists - if the file must exists
@@ -227,7 +227,7 @@ public final class ResourceUtils {
 
     /**
      * Create the file and close the stream.
-     * 
+     *
      * @param stream
      * @param file
      * @throws PersistenceException
@@ -236,7 +236,7 @@ public final class ResourceUtils {
         try {
             if (stream == null) {
                 String msg = Messages.getString(
-                        "resources.file.notCreated", file.getName(), Messages.getString("ResourceUtils.streamNull")); //$NON-NLS-1$ //$NON-NLS-2$ 
+                        "resources.file.notCreated", file.getName(), Messages.getString("ResourceUtils.streamNull")); //$NON-NLS-1$ //$NON-NLS-2$
                 throw new PersistenceException(msg);
             }
             file.create(stream, true, null);
@@ -256,7 +256,7 @@ public final class ResourceUtils {
 
     /**
      * Convenience method to delete a file.<br/>
-     * 
+     *
      * @param file - the file to delete
      * @throws PersistenceException - if the file canoot be deleted
      */
@@ -290,12 +290,12 @@ public final class ResourceUtils {
 
     /**
      * Use this method to test if two pathes are compatible for a move.<br/>
-     * 
+     *
      * Test mainly if pathes aren't equals and if source isn't a descendant of source (second test only if forFolder is
      * <code>false</code>.<br/>
-     * 
+     *
      * <i>Example : /aaa/ cannot be moved into /aaa/bbb/ but /aaa/file.xml can be moved in /aaa/bbb/file.xml</i>
-     * 
+     *
      * @param source - the source path
      * @param target - the target path
      * @param forFolder - <code>true</code> if the test is for a folder move or <code>false</code> if it's for a file

@@ -1,6 +1,6 @@
 // ============================================================================
 //
-// Copyright (C) 2006-2018 Talend Inc. - www.talend.com
+// Copyright (C) 2006-2019 Talend Inc. - www.talend.com
 //
 // This source code is available under agreement available at
 // %InstallDIR%\features\org.talend.rcp.branding.%PRODUCTNAME%\%PRODUCTNAME%license.txt
@@ -21,9 +21,9 @@ import org.talend.metadata.managment.ui.wizard.AbstractForm;
 
 /**
  * DOC nrousseau class global comment. Detailled comment <br/>
- * 
+ *
  * $Id: talend-code-templates.xml 1 2006-09-29 17:06:40 +0000 (ven., 29 sept. 2006) nrousseau $
- * 
+ *
  */
 public class ContextForm extends AbstractForm {
 
@@ -33,7 +33,7 @@ public class ContextForm extends AbstractForm {
 
     /**
      * DOC nrousseau ContextForm constructor comment.
-     * 
+     *
      * @param parent
      * @param style
      * @param existingNames
@@ -47,7 +47,7 @@ public class ContextForm extends AbstractForm {
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see org.talend.repository.ui.swt.utils.AbstractForm#adaptFormToReadOnly()
      */
     @Override
@@ -56,7 +56,7 @@ public class ContextForm extends AbstractForm {
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see org.talend.repository.ui.swt.utils.AbstractForm#addFields()
      */
     @Override
@@ -77,7 +77,7 @@ public class ContextForm extends AbstractForm {
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see org.talend.repository.ui.swt.utils.AbstractForm#addFieldsListeners()
      */
     @Override
@@ -88,7 +88,7 @@ public class ContextForm extends AbstractForm {
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see org.talend.repository.ui.swt.utils.AbstractForm#addUtilsButtonListeners()
      */
     @Override
@@ -99,7 +99,7 @@ public class ContextForm extends AbstractForm {
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see org.talend.repository.ui.swt.utils.AbstractForm#checkFieldsValue()
      */
     @Override
@@ -110,7 +110,7 @@ public class ContextForm extends AbstractForm {
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see org.talend.repository.ui.swt.utils.AbstractForm#initialize()
      */
     @Override

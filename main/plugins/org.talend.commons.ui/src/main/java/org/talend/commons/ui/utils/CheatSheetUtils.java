@@ -1,6 +1,6 @@
 // ============================================================================
 //
-// Copyright (C) 2006-2018 Talend Inc. - www.talend.com
+// Copyright (C) 2006-2019 Talend Inc. - www.talend.com
 //
 // This source code is available under agreement available at
 // %InstallDIR%\features\org.talend.rcp.branding.%PRODUCTNAME%\%PRODUCTNAME%license.txt
@@ -34,7 +34,7 @@ import org.eclipse.ui.internal.util.PrefUtil;
 
 /**
  * this class is used for cheatsheet view display.
- * 
+ *
  */
 @SuppressWarnings("restriction")
 public class CheatSheetUtils {
@@ -55,7 +55,7 @@ public class CheatSheetUtils {
 
     /**
      * Sets the isFirstTime.
-     * 
+     *
      * @param isFirstTime the isFirstTime to set
      */
     public void setFirstTime(boolean isFirstTime) {
@@ -64,7 +64,7 @@ public class CheatSheetUtils {
 
     /**
      * Getter for isFirstTime.
-     * 
+     *
      * @return the isFirstTime
      */
     public boolean isFirstTime() {
@@ -118,7 +118,7 @@ public class CheatSheetUtils {
 
     /**
      * maximum display CheatSheetView.
-     * 
+     *
      * @param view
      */
     public void maxDisplayCheatSheetView(CheatSheetView view) {
@@ -157,7 +157,7 @@ public class CheatSheetUtils {
 
     /**
      * DOC talend Comment method "restoreOtherViewAndEditor".
-     * 
+     *
      * @param part
      */
     protected void restoreOtherViewAndEditor(IWorkbenchPart part) {
@@ -194,7 +194,7 @@ public class CheatSheetUtils {
 
     /**
      * get the cheet sheet view.
-     * 
+     *
      * @return CheatSheetView
      */
     public CheatSheetView findCheetSheet(String cheatSheetID) {
@@ -220,7 +220,7 @@ public class CheatSheetUtils {
 
     /**
      * hide the cheet sheet view.
-     * 
+     *
      * @param cheetSheet
      */
     public void hideCheetSheet(CheatSheetView cheetSheet) {
@@ -233,7 +233,7 @@ public class CheatSheetUtils {
 
     /**
      * Getter for maxCheatSheetHasSHow.
-     * 
+     *
      * @return the maxCheatSheetHasSHow
      * */
     public boolean isMaxCheatSheetHasSHow() {
@@ -242,7 +242,7 @@ public class CheatSheetUtils {
 
     /**
      * Sets the maxCheatSheetHasSHow.
-     * 
+     *
      * @param maxCheatSheetHasSHow the maxCheatSheetHasSHow to set
      */
     public void setMaxCheatSheetHasSHow(boolean maxCheatSheetHasSHow) {
@@ -250,9 +250,9 @@ public class CheatSheetUtils {
     }
 
     /**
-     * 
+     *
      * judge if this cheat sheet view is closed.
-     * 
+     *
      * @return
      */
     public boolean isOpenedCheatSheet() {

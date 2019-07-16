@@ -4,7 +4,7 @@
 	<parent>
 		<groupId>org.talend.studio</groupId>
 		<artifactId>tcommon-studio-se</artifactId>
-		<version>7.2.1-SNAPSHOT</version>
+		<version>7.3.1-SNAPSHOT</version>
 		<relativePath>../../../</relativePath>
 	</parent>
 	<artifactId>org.talend.designer.maven.tos</artifactId>
@@ -25,6 +25,12 @@
         <dependency>
             <groupId>org.talend.studio</groupId>
             <artifactId>studio-tcompv1-dependencies</artifactId>
+            <version>${project.version}</version>
+            <type>pom</type>
+        </dependency>
+        <dependency>
+            <groupId>org.talend.studio</groupId>
+            <artifactId>studio-tacokit-dependencies</artifactId>
             <version>${project.version}</version>
             <type>pom</type>
         </dependency>
@@ -73,6 +79,12 @@
         <dependency>
             <groupId>org.talend.studio</groupId>
             <artifactId>studio-maven-repository-zip</artifactId>
+            <version>${project.version}</version>
+            <type>pom</type>
+        </dependency>
+        <dependency>        
+            <groupId>org.talend.studio</groupId>
+            <artifactId>build-helper-maven-plugin-3-0-0-tos</artifactId>
             <version>${project.version}</version>
             <type>pom</type>
         </dependency>

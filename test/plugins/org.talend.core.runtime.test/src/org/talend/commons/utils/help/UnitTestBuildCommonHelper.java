@@ -1,6 +1,6 @@
 // ============================================================================
 //
-// Copyright (C) 2006-2018 Talend Inc. - www.talend.com
+// Copyright (C) 2006-2019 Talend Inc. - www.talend.com
 //
 // This source code is available under agreement available at
 // %InstallDIR%\features\org.talend.rcp.branding.%PRODUCTNAME%\%PRODUCTNAME%license.txt
@@ -22,7 +22,7 @@ public class UnitTestBuildCommonHelper {
 
     /**
      * create a new file under the parent.
-     * 
+     *
      * @param parentPath parent path, if it is null create a new file under the default location
      * @param fileName file name with extension (don't include the path)
      * @param createIt create it if it is not exists
@@ -57,7 +57,7 @@ public class UnitTestBuildCommonHelper {
 
     /**
      * create a new folder under the parent.
-     * 
+     *
      * @param parentPath parent path, if it is null create a new folder under the default location
      * @param folderName file name (don't include the path)
      * @param createIt create it if it is not exists

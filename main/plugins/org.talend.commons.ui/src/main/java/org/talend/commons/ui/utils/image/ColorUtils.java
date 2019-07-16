@@ -1,6 +1,6 @@
 // ============================================================================
 //
-// Copyright (C) 2006-2018 Talend Inc. - www.talend.com
+// Copyright (C) 2006-2019 Talend Inc. - www.talend.com
 //
 // This source code is available under agreement available at
 // %InstallDIR%\features\org.talend.rcp.branding.%PRODUCTNAME%\%PRODUCTNAME%license.txt
@@ -88,9 +88,9 @@ public class ColorUtils {
     }
 
     /**
-     * 
+     *
      * ggu Comment method "parseStringToColor".
-     * 
+     *
      * can parse the "255,255,255" and "255;255;255".
      */
     private static RGB parseStringToRGB(String color, RGB defaultColor, boolean defaultEnable) {
@@ -128,9 +128,9 @@ public class ColorUtils {
     }
 
     /**
-     * 
+     *
      * ggu Comment method "transform".
-     * 
+     *
      * "255,255,255" (such as preference value) transform to "255;255;255"
      */
     public static String transform(String color) {

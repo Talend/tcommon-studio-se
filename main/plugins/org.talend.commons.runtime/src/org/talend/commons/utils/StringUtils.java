@@ -1,6 +1,6 @@
 // ============================================================================
 //
-// Copyright (C) 2006-2018 Talend Inc. - www.talend.com
+// Copyright (C) 2006-2019 Talend Inc. - www.talend.com
 //
 // This source code is available under agreement available at
 // %InstallDIR%\features\org.talend.rcp.branding.%PRODUCTNAME%\%PRODUCTNAME%license.txt
@@ -21,11 +21,11 @@ import java.util.regex.Pattern;
 import org.talend.commons.i18n.internal.Messages;
 
 /**
- * 
+ *
  * Utility class for strings. <br/>
- * 
+ *
  * $Id$
- * 
+ *
  */
 public class StringUtils {
 
@@ -64,7 +64,7 @@ public class StringUtils {
 
     /**
      * Extract string between the first delimiter and the second delimiter.
-     * 
+     *
      * @param text
      * @param delimiter
      * @return
@@ -279,9 +279,9 @@ public class StringUtils {
 
     /**
      * The same as routines.system.StringUtils.escapeChar(...).
-     * 
+     *
      * make \n to \\n. It will process these chars: \n, \r, \t, \f, \\, \", \', \b
-     * 
+     *
      */
     public static String escapeChar(String s) {
 
@@ -346,11 +346,11 @@ public class StringUtils {
      * Replace MessageFormat.format(..) because MessageFormat does'nt support single quote correctly This method replace
      * in the text all the patterns {0}, {1}, etc.. by all values in arguments array One or more values can be null, no
      * exception is thrown if a value is null.
-     * 
+     *
      * @param pattern
      * @param arguments
      * @return
-     * 
+     *
      */
     public static String replacePrms(String text, Object... arguments) {
 

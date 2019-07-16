@@ -1,6 +1,6 @@
 // ============================================================================
 //
-// Copyright (C) 2006-2018 Talend Inc. - www.talend.com
+// Copyright (C) 2006-2019 Talend Inc. - www.talend.com
 //
 // This source code is available under agreement available at
 // %InstallDIR%\features\org.talend.rcp.branding.%PRODUCTNAME%\%PRODUCTNAME%license.txt
@@ -85,7 +85,7 @@ public class CoreRuntimePlugin extends Plugin {
 
     /**
      * Getter for context.
-     * 
+     *
      * @return the context
      */
     public Context getContext() {
@@ -192,7 +192,7 @@ public class CoreRuntimePlugin extends Plugin {
 
     /**
      * DOC bZhou Comment method "isDataProfilePerspectiveSelected".
-     * 
+     *
      * @return
      */
     public boolean isDataProfilePerspectiveSelected() {
@@ -232,5 +232,5 @@ public class CoreRuntimePlugin extends Plugin {
         }
         return projectPreferenceManager;
     }
-    
+
 }

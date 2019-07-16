@@ -1,6 +1,6 @@
 // ============================================================================
 //
-// Copyright (C) 2006-2018 Talend Inc. - www.talend.com
+// Copyright (C) 2006-2019 Talend Inc. - www.talend.com
 //
 // This source code is available under agreement available at
 // %InstallDIR%\features\org.talend.rcp.branding.%PRODUCTNAME%\%PRODUCTNAME%license.txt
@@ -62,7 +62,7 @@ public class SetNameForm extends AbstractMDMFileStepForm {
 
     /**
      * DOC Administrator SetNameForm constructor comment.
-     * 
+     *
      * @param parent
      * @param style
      * @param existingNames
@@ -79,7 +79,7 @@ public class SetNameForm extends AbstractMDMFileStepForm {
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see org.talend.repository.ui.swt.utils.AbstractForm#adaptFormToReadOnly()
      */
     @Override
@@ -90,7 +90,7 @@ public class SetNameForm extends AbstractMDMFileStepForm {
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see org.talend.repository.ui.swt.utils.AbstractForm#addFields()
      */
     @Override
@@ -118,7 +118,7 @@ public class SetNameForm extends AbstractMDMFileStepForm {
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see org.talend.repository.ui.swt.utils.AbstractForm#addFieldsListeners()
      */
     @Override
@@ -133,7 +133,7 @@ public class SetNameForm extends AbstractMDMFileStepForm {
 
                 boolean canContinue = true;
                 String pattern = "^[a-zA-Z]+[a-zA-Z0-9\\_]*(\\{CURRENT_TABLE\\})[a-zA-Z0-9\\_]*$";//$NON-NLS-1$
-                String pattern1 = "^[a-zA-Z]+[a-zA-Z0-9\\_]*$";//$NON-NLS-1$     
+                String pattern1 = "^[a-zA-Z]+[a-zA-Z0-9\\_]*$";//$NON-NLS-1$
                 if (!Pattern.matches(pattern, textValue) && !Pattern.matches(pattern1, textValue)) {
                     canContinue = false;
                     updateStatus(IStatus.ERROR, Messages.getString("SetNameForm_entity_illegal")); //$NON-NLS-1$
@@ -222,7 +222,7 @@ public class SetNameForm extends AbstractMDMFileStepForm {
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see org.talend.repository.ui.swt.utils.AbstractForm#addUtilsButtonListeners()
      */
     @Override
@@ -233,7 +233,7 @@ public class SetNameForm extends AbstractMDMFileStepForm {
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see org.talend.repository.ui.swt.utils.AbstractForm#checkFieldsValue()
      */
     @Override
@@ -249,7 +249,7 @@ public class SetNameForm extends AbstractMDMFileStepForm {
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see org.talend.repository.ui.swt.utils.AbstractForm#initialize()
      */
     @Override

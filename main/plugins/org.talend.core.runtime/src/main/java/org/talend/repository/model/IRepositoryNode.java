@@ -1,6 +1,6 @@
 // ============================================================================
 //
-// Copyright (C) 2006-2018 Talend Inc. - www.talend.com
+// Copyright (C) 2006-2019 Talend Inc. - www.talend.com
 //
 // This source code is available under agreement available at
 // %InstallDIR%\features\org.talend.rcp.branding.%PRODUCTNAME%\%PRODUCTNAME%license.txt
@@ -25,9 +25,9 @@ public interface IRepositoryNode {
 
     /**
      * Represents differents type of node.<br/>
-     * 
+     *
      * $Id: RepositoryNode.java 914 2006-12-08 08:28:53 +0000 (鏄熸湡浜� 08 锟�?浜屾湀 2006) bqian $
-     * 
+     *
      */
     public enum ENodeType {
         SYSTEM_FOLDER,
@@ -47,11 +47,11 @@ public interface IRepositoryNode {
     }
 
     /**
-     * 
+     *
      * Represents available properties on a node.<br/>
-     * 
+     *
      * $Id: RepositoryNode.java 914 2006-12-08 08:28:53 +0000 (鏄熸湡浜� 08 锟�?浜屾湀 2006) bqian $
-     * 
+     *
      */
     public enum EProperties {
         LABEL,
@@ -87,9 +87,9 @@ public interface IRepositoryNode {
     public boolean isDisposed();
 
     /**
-     * 
+     *
      * if withDeleted is 'true',will get all children which contain logical delete elements.
-     * 
+     *
      * @param withDeleted
      * @return
      */
@@ -97,7 +97,7 @@ public interface IRepositoryNode {
 
     /**
      * get the display text show in the DQ Repostory view(now just used for DQ).
-     * 
+     *
      * @return
      */
     public String getDisplayText();

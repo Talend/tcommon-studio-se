@@ -1,6 +1,6 @@
 // ============================================================================
 //
-// Copyright (C) 2006-2018 Talend Inc. - www.talend.com
+// Copyright (C) 2006-2019 Talend Inc. - www.talend.com
 //
 // This source code is available under agreement available at
 // %InstallDIR%\features\org.talend.rcp.branding.%PRODUCTNAME%\%PRODUCTNAME%license.txt
@@ -48,7 +48,7 @@ import org.talend.core.runtime.maven.MavenArtifact;
 public class NexusServerUtils {
 
     /**
-     * 
+     *
      */
     public static final String ORG_TALEND_DESIGNER_CORE = "org.talend.designer.core"; //$NON-NLS-1$
 
@@ -58,9 +58,9 @@ public class NexusServerUtils {
     private static final int MAX_SEARCH_COUNT = 200;
 
     /**
-     * 
+     *
      * DOC check if the repository exist or not
-     * 
+     *
      * @param nexusUrl
      * @param repositoryId
      * @param userName

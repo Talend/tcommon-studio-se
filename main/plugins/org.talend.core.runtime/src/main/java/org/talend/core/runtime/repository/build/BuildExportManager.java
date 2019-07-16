@@ -1,6 +1,6 @@
 // ============================================================================
 //
-// Copyright (C) 2006-2018 Talend Inc. - www.talend.com
+// Copyright (C) 2006-2019 Talend Inc. - www.talend.com
 //
 // This source code is available under agreement available at
 // %InstallDIR%\features\org.talend.rcp.branding.%PRODUCTNAME%\%PRODUCTNAME%license.txt
@@ -22,7 +22,7 @@ import org.talend.repository.documentation.ExportFileResource;
 
 /**
  * DOC ggu class global comment. Detailled comment
- * 
+ *
  * in order to do junit, so remove the "final" modifier.
  */
 public/* final */class BuildExportManager {
@@ -61,7 +61,7 @@ public/* final */class BuildExportManager {
      * Calling this method will set export type to OSGI. The purpose is that any implementation of
      * "Build Export Provider" schema, will be able to know when the context is OSGI by calling
      * BuildExportManager.getInstance().getCurrentExportType().
-     * 
+     *
      * @see #getCurrentExportType()
      * @param resource
      * @param item
@@ -77,7 +77,7 @@ public/* final */class BuildExportManager {
 
     /**
      * Provide the context of the job export (i.e. OSGI or STANDARD export)
-     * 
+     *
      * @see #exportOSGIDependencies(ExportFileResource, ProcessItem)
      * @return context of the job export
      */

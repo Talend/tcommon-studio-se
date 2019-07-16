@@ -1,6 +1,6 @@
 // ============================================================================
 //
-// Copyright (C) 2006-2018 Talend Inc. - www.talend.com
+// Copyright (C) 2006-2019 Talend Inc. - www.talend.com
 //
 // This source code is available under agreement available at
 // %InstallDIR%\features\org.talend.rcp.branding.%PRODUCTNAME%\%PRODUCTNAME%license.txt
@@ -44,9 +44,9 @@ import org.talend.repository.model.IProxyRepositoryFactory;
 
 /**
  * Wizard to update a IDocumentation. <br/>
- * 
+ *
  * $Id: DocumentationUpdateWizard.java 44053 2010-06-12 09:14:16Z nma $
- * 
+ *
  */
 public class DocumentationUpdateWizard extends CheckLastVersionRepositoryWizard implements IDocumentationContext {
 
@@ -75,7 +75,7 @@ public class DocumentationUpdateWizard extends CheckLastVersionRepositoryWizard 
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see org.eclipse.jface.wizard.Wizard#addPages()
      */
     @Override
@@ -89,7 +89,7 @@ public class DocumentationUpdateWizard extends CheckLastVersionRepositoryWizard 
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see org.eclipse.jface.wizard.Wizard#performCancel()
      */
     @Override
@@ -104,7 +104,7 @@ public class DocumentationUpdateWizard extends CheckLastVersionRepositoryWizard 
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see org.eclipse.jface.wizard.Wizard#performFinish()
      */
     @Override
@@ -189,7 +189,7 @@ public class DocumentationUpdateWizard extends CheckLastVersionRepositoryWizard 
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see org.talend.repository.ui.wizards.IDocumentationContext#getDocFilePath()
      */
     public IPath getDocFilePath() {
@@ -198,7 +198,7 @@ public class DocumentationUpdateWizard extends CheckLastVersionRepositoryWizard 
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see org.talend.repository.ui.wizards.IDocumentationContext#setDocFilePath(org.eclipse.core.runtime.IPath)
      */
     public void setDocFilePath(IPath docFilePath) {
@@ -207,7 +207,7 @@ public class DocumentationUpdateWizard extends CheckLastVersionRepositoryWizard 
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see org.talend.repository.ui.wizards.IDocumentationContext#isDocNameEditable()
      */
     public boolean isDocNameEditable() {
@@ -216,7 +216,7 @@ public class DocumentationUpdateWizard extends CheckLastVersionRepositoryWizard 
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see org.talend.repository.ui.wizards.IDocumentationContext#isDocVersionEditable()
      */
     public boolean isDocVersionEditable() {
@@ -225,7 +225,7 @@ public class DocumentationUpdateWizard extends CheckLastVersionRepositoryWizard 
 
     /**
      * Getter for docOriginalExtension.
-     * 
+     *
      * @return the docOriginalExtension
      */
     public String getDocOriginalExtension() {
@@ -243,7 +243,7 @@ public class DocumentationUpdateWizard extends CheckLastVersionRepositoryWizard 
 
     /**
      * Sets the docOriginalExtension.
-     * 
+     *
      * @param docOriginalExtension the docOriginalExtension to set
      */
     public void setDocOriginalExtension(String docOriginalExtension) {
@@ -256,7 +256,7 @@ public class DocumentationUpdateWizard extends CheckLastVersionRepositoryWizard 
 
     /**
      * Getter for docOriginalName.
-     * 
+     *
      * @return the docOriginalName
      */
     public String getDocOriginalName() {
@@ -276,7 +276,7 @@ public class DocumentationUpdateWizard extends CheckLastVersionRepositoryWizard 
 
     /**
      * Sets the docOriginalName.
-     * 
+     *
      * @param docOriginalName the docOriginalName to set
      */
     public void setDocOriginalName(String docOriginalName) {

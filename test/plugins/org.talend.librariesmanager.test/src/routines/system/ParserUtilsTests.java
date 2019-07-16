@@ -1,6 +1,6 @@
 // ============================================================================
 //
-// Copyright (C) 2006-2018 Talend Inc. - www.talend.com
+// Copyright (C) 2006-2019 Talend Inc. - www.talend.com
 //
 // This source code is available under agreement available at
 // %InstallDIR%\features\org.talend.rcp.branding.%PRODUCTNAME%\%PRODUCTNAME%license.txt
@@ -52,7 +52,7 @@ public class ParserUtilsTests {
             assertTrue(e instanceof NumberFormatException);
         }
     }
-    
+
     private void testParseEpoch(Calendar calendar, Date date, int... args) {
         calendar.setTime(date);
         int[] fields = new int[] { Calendar.YEAR, Calendar.MONTH, Calendar.DAY_OF_MONTH,

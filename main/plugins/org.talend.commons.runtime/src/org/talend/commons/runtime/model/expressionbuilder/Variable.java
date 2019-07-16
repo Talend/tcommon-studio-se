@@ -1,6 +1,6 @@
 // ============================================================================
 //
-// Copyright (C) 2006-2018 Talend Inc. - www.talend.com
+// Copyright (C) 2006-2019 Talend Inc. - www.talend.com
 //
 // This source code is available under agreement available at
 // %InstallDIR%\features\org.talend.rcp.branding.%PRODUCTNAME%\%PRODUCTNAME%license.txt
@@ -14,11 +14,11 @@ package org.talend.commons.runtime.model.expressionbuilder;
 
 /**
  * Represents to the varialbes can be list in the table viewer.
- * 
+ *
  * yzhang class global comment. Detailled comment <br/>
- * 
+ *
  * $Id: Variable.java 下午04:07:16 2007-6-25 +0000 (2007-6-25) yzhang $
- * 
+ *
  */
 public class Variable {
 
@@ -46,7 +46,7 @@ public class Variable {
 
     /**
      * yzhang Variable constructor comment.
-     * 
+     *
      * @param name
      * @param value
      */
@@ -57,7 +57,7 @@ public class Variable {
 
     /**
      * yzhang Variable constructor comment.
-     * 
+     *
      * @param name
      * @param value
      */
@@ -70,7 +70,7 @@ public class Variable {
 
     /**
      * Getter for name.
-     * 
+     *
      * @return the name
      */
     public String getName() {
@@ -79,7 +79,7 @@ public class Variable {
 
     /**
      * Getter for value.
-     * 
+     *
      * @return the value
      */
     public String getValue() {
@@ -88,7 +88,7 @@ public class Variable {
 
     /**
      * yzhang Comment method "getTalendType".
-     * 
+     *
      * @return
      */
     public String getTalendType() {
@@ -97,7 +97,7 @@ public class Variable {
 
     /**
      * yzhang Comment method "isNullable".
-     * 
+     *
      * @return
      */
     public boolean isNullable() {
@@ -106,7 +106,7 @@ public class Variable {
 
     /**
      * Sets the name.
-     * 
+     *
      * @param name the name to set
      */
     public void setName(String name) {
@@ -115,7 +115,7 @@ public class Variable {
 
     /**
      * Sets the value.
-     * 
+     *
      * @param value the value to set
      */
     public void setValue(String value) {
@@ -124,7 +124,7 @@ public class Variable {
 
     /**
      * yzhang Comment method "setTalendType".
-     * 
+     *
      * @param typeId
      */
     public void setTalendType(String typeId) {
@@ -133,7 +133,7 @@ public class Variable {
 
     /**
      * yzhang Comment method "setNullable".
-     * 
+     *
      * @param nullable
      */
     public void setNullable(boolean nullable) {

@@ -1,6 +1,6 @@
 // ============================================================================
 //
-// Copyright (C) 2006-2018 Talend Inc. - www.talend.com
+// Copyright (C) 2006-2019 Talend Inc. - www.talend.com
 //
 // This source code is available under agreement available at
 // %InstallDIR%\features\org.talend.rcp.branding.%PRODUCTNAME%\%PRODUCTNAME%license.txt
@@ -168,7 +168,7 @@ public class MergeContextVariablesCommand extends Command {
 
     /**
      * add the variables from ctxParams into JobContext.
-     * 
+     *
      * @param addedVars the variables need to adding
      * @param ctxParams the list of IContextParameter
      * @param jobContext the JobContext
@@ -191,7 +191,7 @@ public class MergeContextVariablesCommand extends Command {
 
     /**
      * DOC xqliu Comment method "getContextNameParamsMap".
-     * 
+     *
      * @param contexts
      * @return
      */
@@ -218,7 +218,7 @@ public class MergeContextVariablesCommand extends Command {
 
     /**
      * add the variables from ctxParams into JobContext.
-     * 
+     *
      * @param contextItemId the ContextItem's property Id
      * @param addedVars the variables need to adding
      * @param ctxParams the list of IContextParameter

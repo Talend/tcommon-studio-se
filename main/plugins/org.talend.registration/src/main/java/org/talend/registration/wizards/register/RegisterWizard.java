@@ -1,6 +1,6 @@
 // ============================================================================
 //
-// Copyright (C) 2006-2018 Talend Inc. - www.talend.com
+// Copyright (C) 2006-2019 Talend Inc. - www.talend.com
 //
 // This source code is available under agreement available at
 // %InstallDIR%\features\org.talend.rcp.branding.%PRODUCTNAME%\%PRODUCTNAME%license.txt
@@ -40,7 +40,7 @@ public class RegisterWizard extends Wizard {
 
     /**
      * Constructs a new RegisterWizard.
-     * 
+     *
      * @param author Project author.
      * @param server
      * @param password
@@ -79,7 +79,7 @@ public class RegisterWizard extends Wizard {
 
     /**
      * Getter for country.
-     * 
+     *
      * @return the country
      */
     public String getCountry() {
@@ -88,7 +88,7 @@ public class RegisterWizard extends Wizard {
 
     /**
      * Sets the country.
-     * 
+     *
      * @param country the country to set
      */
     public void setCountry(String country) {
@@ -97,7 +97,7 @@ public class RegisterWizard extends Wizard {
 
     /**
      * Getter for email.
-     * 
+     *
      * @return the email
      */
     public String getEmail() {
@@ -106,7 +106,7 @@ public class RegisterWizard extends Wizard {
 
     /**
      * Sets the email.
-     * 
+     *
      * @param email the email to set
      */
     public void setEmail(String email) {

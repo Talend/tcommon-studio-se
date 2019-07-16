@@ -1,6 +1,6 @@
 // ============================================================================
 //
-// Copyright (C) 2006-2018 Talend Inc. - www.talend.com
+// Copyright (C) 2006-2019 Talend Inc. - www.talend.com
 //
 // This source code is available under agreement available at
 // %InstallDIR%\features\org.talend.rcp.branding.%PRODUCTNAME%\%PRODUCTNAME%license.txt
@@ -14,9 +14,9 @@ package org.talend.core.ui.preference.hidden;
 
 /**
  * DOC ggu class global comment. Detailled comment <br/>
- * 
+ *
  * $Id: talend.epf 55206 2011-02-15 17:32:14Z mhirt $
- * 
+ *
  */
 public class HidePreferencePageProvider {
 
@@ -33,7 +33,7 @@ public class HidePreferencePageProvider {
 
     /**
      * Getter for name.
-     * 
+     *
      * @return the name
      */
     public String getName() {
@@ -42,7 +42,7 @@ public class HidePreferencePageProvider {
 
     /**
      * Sets the name.
-     * 
+     *
      * @param name the name to set
      */
     void setName(String name) {
@@ -51,7 +51,7 @@ public class HidePreferencePageProvider {
 
     /**
      * Getter for desc.
-     * 
+     *
      * @return the desc
      */
     public String getDesc() {
@@ -60,7 +60,7 @@ public class HidePreferencePageProvider {
 
     /**
      * Sets the desc.
-     * 
+     *
      * @param desc the desc to set
      */
     void setDesc(String desc) {
@@ -69,7 +69,7 @@ public class HidePreferencePageProvider {
 
     /**
      * Getter for prefPageId.
-     * 
+     *
      * @return the prefPageId
      */
     public String getPrefPageId() {
@@ -78,7 +78,7 @@ public class HidePreferencePageProvider {
 
     /**
      * Sets the prefPageId.
-     * 
+     *
      * @param prefPageId the prefPageId to set
      */
     void setPrefPageId(String prefPageId) {
@@ -87,7 +87,7 @@ public class HidePreferencePageProvider {
 
     /**
      * Getter for validator.
-     * 
+     *
      * @return the validator if the validator is null, should be same as the the validator to retrurn true. and hide the
      * preference page
      */
@@ -97,7 +97,7 @@ public class HidePreferencePageProvider {
 
     /**
      * Sets the validator.
-     * 
+     *
      * @param validator the validator to set
      */
     void setValidator(IHidePreferencePageValidator validator) {

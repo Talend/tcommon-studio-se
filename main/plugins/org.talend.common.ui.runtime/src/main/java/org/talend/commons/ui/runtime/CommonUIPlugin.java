@@ -1,6 +1,6 @@
 // ============================================================================
 //
-// Copyright (C) 2006-2018 Talend Inc. - www.talend.com
+// Copyright (C) 2006-2019 Talend Inc. - www.talend.com
 //
 // This source code is available under agreement available at
 // %InstallDIR%\features\org.talend.rcp.branding.%PRODUCTNAME%\%PRODUCTNAME%license.txt
@@ -27,7 +27,7 @@ public class CommonUIPlugin implements BundleActivator {
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see org.osgi.framework.BundleActivator#start(org.osgi.framework.BundleContext)
      */
     @Override
@@ -38,7 +38,7 @@ public class CommonUIPlugin implements BundleActivator {
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see org.osgi.framework.BundleActivator#stop(org.osgi.framework.BundleContext)
      */
     @Override
@@ -50,7 +50,7 @@ public class CommonUIPlugin implements BundleActivator {
      * commandline, this one will return true)<br>
      * <br>
      * To rename later to isHeadless later once the other function is renamed as well.
-     * 
+     *
      * @return
      */
     public static boolean isFullyHeadless() {

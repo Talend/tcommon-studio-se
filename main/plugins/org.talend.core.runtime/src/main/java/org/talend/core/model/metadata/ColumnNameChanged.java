@@ -1,6 +1,6 @@
 // ============================================================================
 //
-// Copyright (C) 2006-2018 Talend Inc. - www.talend.com
+// Copyright (C) 2006-2019 Talend Inc. - www.talend.com
 //
 // This source code is available under agreement available at
 // %InstallDIR%\features\org.talend.rcp.branding.%PRODUCTNAME%\%PRODUCTNAME%license.txt
@@ -13,11 +13,11 @@
 package org.talend.core.model.metadata;
 
 /**
- * 
+ *
  * DOC smallet IODataComponentContainer class global comment. Detailled comment <br/>
- * 
+ *
  * $Id: IODataComponent.java 961 2006-12-12 04:42:46 +0000 (mar., 12 d茅c. 2006) nrousseau $
- * 
+ *
  */
 public class ColumnNameChanged {
 
@@ -27,7 +27,7 @@ public class ColumnNameChanged {
 
     /**
      * DOC smallet ColumnNameChanged constructor comment.
-     * 
+     *
      * @param oldName
      * @param newName
      */
@@ -39,7 +39,7 @@ public class ColumnNameChanged {
 
     /**
      * Getter for newName.
-     * 
+     *
      * @return the newName
      */
     public String getNewName() {
@@ -48,7 +48,7 @@ public class ColumnNameChanged {
 
     /**
      * Getter for oldName.
-     * 
+     *
      * @return the oldName
      */
     public String getOldName() {
@@ -57,7 +57,7 @@ public class ColumnNameChanged {
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see java.lang.Object#toString()
      */
     @Override

@@ -1,6 +1,6 @@
 // ============================================================================
 //
-// Copyright (C) 2006-2018 Talend Inc. - www.talend.com
+// Copyright (C) 2006-2019 Talend Inc. - www.talend.com
 //
 // This source code is available under agreement available at
 // %InstallDIR%\features\org.talend.rcp.branding.%PRODUCTNAME%\%PRODUCTNAME%license.txt
@@ -29,7 +29,7 @@ import org.talend.commons.ui.i18n.Messages;
 /**
  * Based on {@link org.eclipse.equinox.internal.p2.ui.discovery.util.ControlListItem} <br/>
  * If you can't find it, please refer to {@link org.eclipse.ui.internal.progress.ProgressInfoItem}.
- * 
+ *
  */
 @SuppressWarnings("restriction")
 public abstract class ControlListItem<T> extends Composite {
@@ -85,7 +85,7 @@ public abstract class ControlListItem<T> extends Composite {
 
     /**
      * Create a new instance of the receiver with the specified parent, style and info object/
-     * 
+     *
      * @param parent
      * @param style
      * @param element
@@ -192,7 +192,7 @@ public abstract class ControlListItem<T> extends Composite {
 
     /**
      * Set the color base on the index
-     * 
+     *
      * @param index
      */
     public void updateColors(int index) {
@@ -231,7 +231,7 @@ public abstract class ControlListItem<T> extends Composite {
 
     /**
      * Set the selection colors.
-     * 
+     *
      * @param select boolean that indicates whether or not to show selection.
      */
     public void setSelected(boolean select) {
@@ -241,7 +241,7 @@ public abstract class ControlListItem<T> extends Composite {
 
     /**
      * Set the listener for index changes.
-     * 
+     *
      * @param indexListener
      */
     void setIndexListener(IndexListener indexListener) {
@@ -250,7 +250,7 @@ public abstract class ControlListItem<T> extends Composite {
 
     /**
      * Return whether or not the receiver is selected.
-     * 
+     *
      * @return boolean
      */
     public boolean isSelected() {
@@ -259,7 +259,7 @@ public abstract class ControlListItem<T> extends Composite {
 
     /**
      * Set whether or not the receiver is being displayed based on the top and bottom of the currently visible area.
-     * 
+     *
      * @param top
      * @param bottom
      */
@@ -272,7 +272,7 @@ public abstract class ControlListItem<T> extends Composite {
 
     /**
      * Set whether or not the receiver is being displayed
-     * 
+     *
      * @param displayed
      */
     private void setDisplayed(boolean displayed) {

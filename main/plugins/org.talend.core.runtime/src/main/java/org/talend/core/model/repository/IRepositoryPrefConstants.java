@@ -1,6 +1,6 @@
 // ============================================================================
 //
-// Copyright (C) 2006-2018 Talend Inc. - www.talend.com
+// Copyright (C) 2006-2019 Talend Inc. - www.talend.com
 //
 // This source code is available under agreement available at
 // %InstallDIR%\features\org.talend.rcp.branding.%PRODUCTNAME%\%PRODUCTNAME%license.txt
@@ -46,7 +46,7 @@ public interface IRepositoryPrefConstants {
     public static final String USE_EXPORT_SAVE = "use_export_save_for_jobscript";
 
     public static final String ADD_CLASSPATH_JAR = "add_classpath_jar_for_export_job";
-    
+
     public static final String REBUILD_RELATIONSHIPS = "rebuild_relationships";
 
     public static final String ALLOW_SPECIFIC_CHARACTERS_FOR_SCHEMA_COLUMNS = "allow_specific_characters_for_schema_columns";

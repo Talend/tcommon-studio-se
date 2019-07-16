@@ -1,6 +1,6 @@
 // ============================================================================
 //
-// Copyright (C) 2006-2018 Talend Inc. - www.talend.com
+// Copyright (C) 2006-2019 Talend Inc. - www.talend.com
 //
 // This source code is available under agreement available at
 // %InstallDIR%\features\org.talend.rcp.branding.%PRODUCTNAME%\%PRODUCTNAME%license.txt
@@ -29,14 +29,14 @@ import org.talend.designer.runprocess.IRunProcessService;
 
 /**
  * DOC ggu class global comment. Detailled comment
- * 
+ *
  * should execute after generate codes, because the contexts files will be generated at same time.
  */
 public class SyncChildrenContextsResourcesProvider implements IBuildResourcesProvider {
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see
      * org.talend.core.runtime.repository.build.IBuildResourcesProvider#prepare(org.eclipse.core.runtime.IProgressMonitor
      * , java.util.Map)

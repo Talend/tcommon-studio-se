@@ -1,6 +1,6 @@
 // ============================================================================
 //
-// Copyright (C) 2006-2018 Talend Inc. - www.talend.com
+// Copyright (C) 2006-2019 Talend Inc. - www.talend.com
 //
 // This source code is available under agreement available at
 // %InstallDIR%\features\org.talend.rcp.branding.%PRODUCTNAME%\%PRODUCTNAME%license.txt
@@ -33,9 +33,9 @@ import org.talend.commons.ui.runtime.exception.ExceptionHandler;
 
 /**
  * bqian A SourceViewer Dialog. <br/>
- * 
+ *
  * $Id: SourceViewerDialog.java 1 May 21, 200711:02:56 AM +0000 $
- * 
+ *
  */
 public class SourceViewerDialog extends Dialog {
 
@@ -55,7 +55,7 @@ public class SourceViewerDialog extends Dialog {
 
     /**
      * SourceViewerDialog constructor.
-     * 
+     *
      * @param parentShell
      */
     public SourceViewerDialog(Shell parentShell, String title) {
@@ -66,7 +66,7 @@ public class SourceViewerDialog extends Dialog {
 
     /*
      * (non-Java)
-     * 
+     *
      * @see org.eclipse.jface.window.Window#configureShell(org.eclipse.swt.widgets.Shell)
      */
     @Override
@@ -77,7 +77,7 @@ public class SourceViewerDialog extends Dialog {
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see org.eclipse.jface.dialogs.Dialog#createDialogArea(org.eclipse.swt.widgets.Composite)
      */
     @Override
@@ -130,7 +130,7 @@ public class SourceViewerDialog extends Dialog {
 
     /**
      * Getter for document.
-     * 
+     *
      * @return the document
      */
     public IDocument getDocument() {
@@ -139,7 +139,7 @@ public class SourceViewerDialog extends Dialog {
 
     /**
      * Creates the vertical ruler to be used by this editor. Subclasses may re-implement this method.
-     * 
+     *
      * @return the vertical ruler
      */
     protected IVerticalRuler createVerticalRuler() {

@@ -1,6 +1,6 @@
 // ============================================================================
 //
-// Copyright (C) 2006-2018 Talend Inc. - www.talend.com
+// Copyright (C) 2006-2019 Talend Inc. - www.talend.com
 //
 // This source code is available under agreement available at
 // %InstallDIR%\features\org.talend.rcp.branding.%PRODUCTNAME%\%PRODUCTNAME%license.txt
@@ -24,7 +24,7 @@ import java.util.Map;
 
 /**
  * ResumeUtil.
- * 
+ *
  */
 public class ResumeUtil {
 
@@ -51,7 +51,7 @@ public class ResumeUtil {
     private static Map<String, SimpleCsvWriter> sharedWriterMap = new HashMap<String, SimpleCsvWriter>();
 
     private static Object lock = new Object();
-    
+
     // step1: init the log file name
     public ResumeUtil(String logFileName, boolean createNewFile, String root_pid) {
         if (logFileName == null || logFileName.equals("null")) {
@@ -62,7 +62,7 @@ public class ResumeUtil {
         if (this.root_pid == null) {
             this.root_pid = root_pid;
         }
-        
+
         this.logFileName = logFileName;
 
         synchronized (lock) {
@@ -71,10 +71,10 @@ public class ResumeUtil {
             try {
                 if (sharedWriter == null) {
                     this.csvWriter = new SimpleCsvWriter(new FileWriter(logFileName, createNewFile));
-    
+
                     // shared
                     sharedWriterMap.put(this.root_pid, this.csvWriter);
-    
+
                     // output the header part
                     if (file.length() == 0) {
                         if (genDynamicPart) {
@@ -146,7 +146,7 @@ public class ResumeUtil {
                 }
                 csvWriter.write(item.type);// type---------------->???
                 csvWriter.write(item.partName);// partName
-    
+
                 csvWriter.write(item.parentPart);// parentPart
                 if (genDynamicPart) {
                     csvWriter.write(commonInfo.project);// project
@@ -442,15 +442,15 @@ public class ResumeUtil {
 
     /**
      * this class is reference with CsvWriter.
-     * 
+     *
      * Because java.io.PrintWriter with this limit. {@link PrintWriter}, If automatic flushing is enabled it will be
      * done only when...
-     * 
+     *
      * This limit will affect parentJob/childrenJob operate the same csv writer file, they always hold data buffer
      * themselves, and flush() can't really flush.
-     * 
+     *
      * SimpleCsvWriter is without this problem.
-     * 
+     *
      * @author wyang
      */
     public class SimpleCsvWriter {

@@ -1,6 +1,6 @@
 // ============================================================================
 //
-// Copyright (C) 2006-2018 Talend Inc. - www.talend.com
+// Copyright (C) 2006-2019 Talend Inc. - www.talend.com
 //
 // This source code is available under agreement available at
 // %InstallDIR%\features\org.talend.rcp.branding.%PRODUCTNAME%\%PRODUCTNAME%license.txt
@@ -18,6 +18,7 @@ import org.eclipse.jface.util.Assert;
 import org.eclipse.jface.viewers.CellEditor;
 import org.eclipse.jface.viewers.ComboBoxCellEditor;
 import org.eclipse.swt.SWT;
+import org.eclipse.swt.custom.CCombo;
 import org.eclipse.swt.events.FocusAdapter;
 import org.eclipse.swt.events.FocusEvent;
 import org.eclipse.swt.events.KeyAdapter;
@@ -27,7 +28,6 @@ import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.events.TraverseEvent;
 import org.eclipse.swt.events.TraverseListener;
 import org.eclipse.swt.graphics.GC;
-import org.eclipse.swt.widgets.Combo;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
 
@@ -53,7 +53,7 @@ public class ComboxCellEditorImproved extends CellEditor {
     /**
      * The custom combo box control.
      */
-    Combo comboBox;
+    CCombo comboBox;
 
     /**
      * Default ComboBoxCellEditor style
@@ -62,7 +62,7 @@ public class ComboxCellEditorImproved extends CellEditor {
 
     /**
      * Creates a new cell editor with no control and no st of choices. Initially, the cell editor has no cell validator.
-     * 
+     *
      * @since 2.1
      * @see CellEditor#setStyle
      * @see CellEditor#create
@@ -77,7 +77,7 @@ public class ComboxCellEditorImproved extends CellEditor {
      * Creates a new cell editor with a combo containing the given list of choices and parented under the given control.
      * The cell editor value is the zero-based index of the selected item. Initially, the cell editor has no cell
      * validator and the first item in the list is selected.
-     * 
+     *
      * @param parent the parent control
      * @param items the list of strings for the combo box
      */
@@ -89,7 +89,7 @@ public class ComboxCellEditorImproved extends CellEditor {
      * Creates a new cell editor with a combo containing the given list of choices and parented under the given control.
      * The cell editor value is the zero-based index of the selected item. Initially, the cell editor has no cell
      * validator and the first item in the list is selected.
-     * 
+     *
      * @param parent the parent control
      * @param items the list of strings for the combo box
      * @param style the style bits
@@ -102,7 +102,7 @@ public class ComboxCellEditorImproved extends CellEditor {
 
     /**
      * Returns the list of choices for the combo box
-     * 
+     *
      * @return the list of choices for the combo box
      */
     public String[] getItems() {
@@ -111,7 +111,7 @@ public class ComboxCellEditorImproved extends CellEditor {
 
     /**
      * Sets the list of choices for the combo box
-     * 
+     *
      * @param items the list of choices for the combo box
      */
     public void setItems(String[] items) {
@@ -125,7 +125,7 @@ public class ComboxCellEditorImproved extends CellEditor {
      */
     protected Control createControl(Composite parent) {
 
-        comboBox = new Combo(parent, getStyle());
+        comboBox = new CCombo(parent, getStyle());
         comboBox.setFont(parent.getFont());
 
         comboBox.addKeyListener(new KeyAdapter() {
@@ -169,7 +169,7 @@ public class ComboxCellEditorImproved extends CellEditor {
     /**
      * The <code>ComboxCellEditorImproved</code> implementation of this <code>CellEditor</code> framework method returns
      * the zero-based index of the current selection.
-     * 
+     *
      * @return the zero-based index of the current selection wrapped as an <code>Integer</code>
      */
     protected Object doGetValue() {
@@ -205,7 +205,7 @@ public class ComboxCellEditorImproved extends CellEditor {
     /**
      * The <code>ComboxCellEditorImproved</code> implementation of this <code>CellEditor</code> framework method accepts
      * a zero-based index of a selection.
-     * 
+     *
      * @param value the zero-based index of the selection wrapped as an <code>Integer</code>
      */
     protected void doSetValue(Object value) {
@@ -258,7 +258,7 @@ public class ComboxCellEditorImproved extends CellEditor {
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see org.eclipse.jface.viewers.CellEditor#focusLost()
      */
     protected void focusLost() {
@@ -269,7 +269,7 @@ public class ComboxCellEditorImproved extends CellEditor {
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see org.eclipse.jface.viewers.CellEditor#keyReleaseOccured(org.eclipse.swt.events.KeyEvent)
      */
     protected void keyReleaseOccured(KeyEvent keyEvent) {

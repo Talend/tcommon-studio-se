@@ -1,6 +1,6 @@
 // ============================================================================
 //
-// Copyright (C) 2006-2018 Talend Inc. - www.talend.com
+// Copyright (C) 2006-2019 Talend Inc. - www.talend.com
 //
 // This source code is available under agreement available at
 // %InstallDIR%\features\org.talend.rcp.branding.%PRODUCTNAME%\%PRODUCTNAME%license.txt
@@ -20,9 +20,9 @@ import org.talend.core.model.metadata.MetadataTalendType;
 /**
  * DOC ggu class global comment. Detailled comment <br/>
  * <p>
- * 
+ *
  * This class was used to convert from old types to new ones. <br>
- * 
+ *
  * Generally, It was called when the project and other relationship (<i>such as: job design, schema, context,etc</i>)
  * were created on old version.
  */
@@ -50,7 +50,7 @@ public class PerlTypesManager {
     private static boolean initDone = false;
 
     /**
-     * 
+     *
      * DOC ggu PerlTypesManager constructor comment.
      */
     private PerlTypesManager() {
@@ -58,7 +58,7 @@ public class PerlTypesManager {
     }
 
     /**
-     * 
+     *
      * DOC ggu Comment method "initializePerlTypes".
      */
     public static void initializePerlTypes() {
@@ -87,9 +87,9 @@ public class PerlTypesManager {
     }
 
     /**
-     * 
+     *
      * DOC ggu Comment method "getTypeNameOldtoNew".
-     * 
+     *
      * @param oldType
      * @return relationship newType in Perl.
      */

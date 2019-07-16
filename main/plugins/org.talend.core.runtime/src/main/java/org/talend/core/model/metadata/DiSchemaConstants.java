@@ -1,6 +1,6 @@
 // ============================================================================
 //
-// Copyright (C) 2006-2018 Talend Inc. - www.talend.com
+// Copyright (C) 2006-2019 Talend Inc. - www.talend.com
 //
 // This source code is available under agreement available at
 // %InstallDIR%\features\org.talend.rcp.branding.%PRODUCTNAME%\%PRODUCTNAME%license.txt
@@ -34,7 +34,7 @@ public interface DiSchemaConstants {
     public final static String TALEND6_LABEL = "di.table.label"; //$NON-NLS-1$
 
     /** Property is present if readonly, otherwise not present. */
-    public final static String TALEND6_IS_READ_ONLY = SchemaConstants.TALEND_IS_LOCKED; 
+    public final static String TALEND6_IS_READ_ONLY = SchemaConstants.TALEND_IS_LOCKED;
 
     /** The key will have this as a prefix, pointing to the value. */
     public final static String TALEND6_ADDITIONAL_PROPERTIES = "di.prop."; //$NON-NLS-1$
@@ -52,7 +52,7 @@ public interface DiSchemaConstants {
      */
 
     /** Property is present if key, otherwise not present. */
-    public final static String TALEND6_COLUMN_IS_KEY = SchemaConstants.TALEND_COLUMN_IS_KEY; 
+    public final static String TALEND6_COLUMN_IS_KEY = SchemaConstants.TALEND_COLUMN_IS_KEY;
 
     public final static String TALEND6_COLUMN_SOURCE_TYPE = SchemaConstants.TALEND_COLUMN_DB_TYPE;
 
@@ -79,7 +79,7 @@ public interface DiSchemaConstants {
 
     /** cf TDKN-36. to link to the custom fields of the studio */
     public final static String TALEND6_COLUMN_CUSTOM = SchemaConstants.TALEND_FIELD_GENERATED;
-    
+
     public final static String AVRO_TECHNICAL_KEY = "AVRO_TECHNICAL_KEY";
 
     public final static String TALEND6_COLUMN_ORIGINAL_DB_COLUMN_NAME = SchemaConstants.TALEND_COLUMN_DB_COLUMN_NAME;
@@ -113,7 +113,7 @@ public interface DiSchemaConstants {
      * */
     public static final String LOGICAL_TIME_TYPE_AS = "LOGICAL_TIME_TYPE_AS";
     public static final String AS_TALEND_DATE = "TALEND_DATE";
-    
+
     /** Original Avro logical type timestamp */
     public final static String TALEND6_COLUMN_DATE_TIMESTAMP = "di.date.timestamp";
 

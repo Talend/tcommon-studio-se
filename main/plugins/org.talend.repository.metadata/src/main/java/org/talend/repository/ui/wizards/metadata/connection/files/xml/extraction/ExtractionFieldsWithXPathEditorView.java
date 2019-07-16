@@ -1,6 +1,6 @@
 // ============================================================================
 //
-// Copyright (C) 2006-2018 Talend Inc. - www.talend.com
+// Copyright (C) 2006-2019 Talend Inc. - www.talend.com
 //
 // This source code is available under agreement available at
 // %InstallDIR%\features\org.talend.rcp.branding.%PRODUCTNAME%\%PRODUCTNAME%license.txt
@@ -47,9 +47,9 @@ import org.talend.repository.metadata.i18n.Messages;
 /**
  * DOC amaumont class global comment. Detailled comment <br/>
  * TGU same purpose as TargetSchemaTableEditorView but uses EMF model directly
- * 
+ *
  * $Id: ExtractionFieldsWithXPathEditorView.java 44891 2010-07-05 05:35:49Z gldu $
- * 
+ *
  */
 public class ExtractionFieldsWithXPathEditorView extends AbstractDataTableEditorView<SchemaTarget> {
 
@@ -71,7 +71,7 @@ public class ExtractionFieldsWithXPathEditorView extends AbstractDataTableEditor
 
     /**
      * TargetSchemaTableEditorView2 constructor comment.
-     * 
+     *
      * @param parent
      * @param styleChild
      * @param showDbTypeColumn
@@ -83,7 +83,7 @@ public class ExtractionFieldsWithXPathEditorView extends AbstractDataTableEditor
 
     /**
      * Getter for xPathCellEditor.
-     * 
+     *
      * @return the xPathCellEditor
      */
     public TextCellEditorWithProposal getXPathCellEditor() {
@@ -92,7 +92,7 @@ public class ExtractionFieldsWithXPathEditorView extends AbstractDataTableEditor
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see
      * org.talend.commons.ui.swt.advanced.dataeditor.AbstractDataTableEditorView#handleBeforeListenableListOperationEvent
      * (org.talend.commons.utils.data.list.ListenableListEvent)
@@ -104,7 +104,7 @@ public class ExtractionFieldsWithXPathEditorView extends AbstractDataTableEditor
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see
      * org.talend.commons.ui.swt.extended.macrotable.AbstractExtendedTableViewer#handleListenableListEvent(org.talend
      * .commons.utils.data.list.ListenableListEvent)
@@ -121,7 +121,7 @@ public class ExtractionFieldsWithXPathEditorView extends AbstractDataTableEditor
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see
      * org.talend.commons.ui.swt.extended.macrotable.AbstractExtendedTableViewer#setTableViewerCreatorOptions(org.talend
      * .commons.ui.swt.tableviewer.TableViewerCreator)
@@ -134,7 +134,7 @@ public class ExtractionFieldsWithXPathEditorView extends AbstractDataTableEditor
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see
      * org.talend.commons.ui.swt.advanced.macrotable.AbstractExtendedTableViewer#createColumns(org.talend.commons.ui
      * .swt.tableviewer.TableViewerCreator, org.eclipse.swt.widgets.Table)
@@ -252,7 +252,7 @@ public class ExtractionFieldsWithXPathEditorView extends AbstractDataTableEditor
 
     /**
      * DOC chuang Comment method "createTagName".
-     * 
+     *
      * @param tableViewerCreator
      * @param column
      * @return
@@ -333,7 +333,7 @@ public class ExtractionFieldsWithXPathEditorView extends AbstractDataTableEditor
 
     /**
      * DOC hcw Comment method "setRowBackground".
-     * 
+     *
      * @param list
      * @param conflictNames
      */
@@ -358,7 +358,7 @@ public class ExtractionFieldsWithXPathEditorView extends AbstractDataTableEditor
 
     /**
      * Getter for xPathColumn.
-     * 
+     *
      * @return the xPathColumn
      */
     public TableViewerCreatorColumn getXPathColumn() {
@@ -367,7 +367,7 @@ public class ExtractionFieldsWithXPathEditorView extends AbstractDataTableEditor
 
     /**
      * DOC amaumont Comment method "setLinker".
-     * 
+     *
      * @param linker
      */
     public void setLinker(XmlToXPathLinker linker) {
@@ -376,7 +376,7 @@ public class ExtractionFieldsWithXPathEditorView extends AbstractDataTableEditor
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see org.talend.commons.ui.swt.advanced.dataeditor.AbstractDataTableEditorView#initToolBar()
      */
     @Override
@@ -410,7 +410,7 @@ public class ExtractionFieldsWithXPathEditorView extends AbstractDataTableEditor
 
             /*
              * (non-Javadoc)
-             * 
+             *
              * @see org.talend.core.ui.extended.ExtendedToolbarView#createPastePushButton()
              */
             @Override

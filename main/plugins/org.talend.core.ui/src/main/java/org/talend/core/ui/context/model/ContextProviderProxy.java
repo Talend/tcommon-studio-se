@@ -1,6 +1,6 @@
 // ============================================================================
 //
-// Copyright (C) 2006-2018 Talend Inc. - www.talend.com
+// Copyright (C) 2006-2019 Talend Inc. - www.talend.com
 //
 // This source code is available under agreement available at
 // %InstallDIR%\features\org.talend.rcp.branding.%PRODUCTNAME%\%PRODUCTNAME%license.txt
@@ -21,14 +21,14 @@ import org.eclipse.swt.graphics.Image;
 
 /**
  * A label and content provider for the treeviewer which groups the Contexts by source.
- * 
+ *
  */
 public abstract class ContextProviderProxy extends LabelProvider implements ITreeContentProvider, ITableLabelProvider,
         ITableColorProvider {
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see org.eclipse.jface.viewers.ITableLabelProvider#getColumnImage(java.lang.Object, int)
      */
     public Image getColumnImage(Object element, int columnIndex) {
@@ -37,7 +37,7 @@ public abstract class ContextProviderProxy extends LabelProvider implements ITre
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see org.eclipse.jface.viewers.IContentProvider#inputChanged(org.eclipse.jface.viewers.Viewer, java.lang.Object,
      * java.lang.Object)
      */

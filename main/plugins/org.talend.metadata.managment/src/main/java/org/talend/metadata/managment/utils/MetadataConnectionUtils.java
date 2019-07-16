@@ -1,6 +1,6 @@
 // ============================================================================
 //
-// Copyright (C) 2006-2018 Talend Inc. - www.talend.com
+// Copyright (C) 2006-2019 Talend Inc. - www.talend.com
 //
 // This source code is available under agreement available at
 // %InstallDIR%\features\org.talend.rcp.branding.%PRODUCTNAME%\%PRODUCTNAME%license.txt
@@ -72,6 +72,7 @@ import org.talend.utils.exceptions.MissingDriverException;
 import org.talend.utils.sql.ConnectionUtils;
 import org.talend.utils.sugars.ReturnCode;
 import org.talend.utils.sugars.TypedReturnCode;
+
 import orgomg.cwm.foundation.softwaredeployment.DataProvider;
 import orgomg.cwm.objectmodel.core.ModelElement;
 import orgomg.cwm.objectmodel.core.Package;
@@ -87,7 +88,7 @@ public class MetadataConnectionUtils {
 
     // MOD mzhao 2009-06-05 Bug 7571
     private static final Map<String, Driver> DRIVER_CACHE = new HashMap<String, Driver>();
-    
+
     private static final Map<String, String> SNOWFLACK_DBTYPEMap = new HashMap<String, String>();
 
     private static final SimpleDateFormat SMPL_DATE_FMT = new SimpleDateFormat("yyyyMMddhhmmss"); //$NON-NLS-1$
@@ -111,7 +112,7 @@ public class MetadataConnectionUtils {
 
     /**
      * check a Connection and at last will close the connection.
-     * 
+     *
      * @param metadataBean
      * @return
      */
@@ -121,7 +122,7 @@ public class MetadataConnectionUtils {
 
     /**
      * create a Connection and without close it.
-     * 
+     *
      * @param metadataBean
      * @return
      */
@@ -131,7 +132,7 @@ public class MetadataConnectionUtils {
 
     /**
      * create a Connection with the parameter whether close it.
-     * 
+     *
      * @param metadataBean
      * @param boolean close Connection or not
      * @return
@@ -229,7 +230,7 @@ public class MetadataConnectionUtils {
 
     /**
      * check a Connection and will at last close connection.
-     * 
+     *
      * @param databaseConnection
      * @return
      */
@@ -239,7 +240,7 @@ public class MetadataConnectionUtils {
 
     /**
      * create a Connection and will at last not close connection.
-     * 
+     *
      * @param databaseConnection
      * @return
      */
@@ -249,7 +250,7 @@ public class MetadataConnectionUtils {
 
     /**
      * create a Connection whether close it depends on closeConnection.
-     * 
+     *
      * @param databaseConnection
      * @param closeConnection
      * @return
@@ -322,7 +323,7 @@ public class MetadataConnectionUtils {
 
     /**
      * DOC xqliu Comment method "isOdbcPostgresql".
-     * 
+     *
      * @param connection
      * @return
      * @throws SQLException
@@ -343,7 +344,7 @@ public class MetadataConnectionUtils {
 
     /**
      * DOC zshen Comment method "isOdbcMssql". feature 10630
-     * 
+     *
      * @param connection
      * @return
      * @throws SQLException
@@ -363,9 +364,9 @@ public class MetadataConnectionUtils {
     }
 
     /**
-     * 
+     *
      * DOC qiongli Comment method "isAccess".
-     * 
+     *
      * @param connection
      * @return
      * @throws SQLException
@@ -384,7 +385,7 @@ public class MetadataConnectionUtils {
 
     /**
      * DOC zshen Comment method "isSybase".
-     * 
+     *
      * @param connection
      * @return decide to whether is sybase connection
      * @throws SQLException
@@ -409,7 +410,7 @@ public class MetadataConnectionUtils {
 
     /**
      * DOC xqliu Comment method "isTeradata".
-     * 
+     *
      * @param connection
      * @return
      */
@@ -436,7 +437,7 @@ public class MetadataConnectionUtils {
 
     /**
      * zshen Comment method "isOdbcConnection". feature 10630
-     * 
+     *
      * @param connection
      * @return
      * @throws SQLException
@@ -455,7 +456,7 @@ public class MetadataConnectionUtils {
 
     /**
      * zshen Comment method "isODBCCatalog".
-     * 
+     *
      * @param catalogName the name for need to be decided.
      * @param connection
      * @return if connection is a ODBC connection and catalogName isn't which be found then return ture, else return
@@ -524,7 +525,7 @@ public class MetadataConnectionUtils {
         }
         return false;
     }
-    
+
     public static Map<String, String> getSnowflakeDBTypeMap(){
     	if(SNOWFLACK_DBTYPEMap.isEmpty()){
     		SNOWFLACK_DBTYPEMap.put("TIMESTAMPLTZ", "TIMESTAMP_LTZ");
@@ -533,7 +534,7 @@ public class MetadataConnectionUtils {
     	}
     	return SNOWFLACK_DBTYPEMap;
     }
-    
+
     public static boolean isSnowflake(DatabaseMetaData connectionMetadata) throws SQLException {
         if (connectionMetadata.getDatabaseProductName() != null) {
             if ("Snowflake".equals(connectionMetadata.getDatabaseProductName().trim())) { //$NON-NLS-1$
@@ -542,7 +543,7 @@ public class MetadataConnectionUtils {
         }
         return false;
     }
-    
+
     public static boolean isSnowflake(java.sql.Connection connection) throws SQLException {
         return isSnowflake(ExtractMetaDataUtils.getInstance().getConnectionMetadata(connection));
     }
@@ -579,7 +580,7 @@ public class MetadataConnectionUtils {
      * yyi 2010-08-25 for 14851, Sybase DB has several names with different productions and versions. For example the
      * Sybase IQ with version 12.6 is called 'Sybase' getting by JDBC but the version 15+ it is changed to 'Sybase IQ'.
      * it is user by org.talend.cwm.db.connection.ConnectionUtils.isSybase
-     * 
+     *
      * @return All Sybase DB products name
      * ,"Adaptive Server Enterprise","Sybase Adaptive Server IQ","Sybase IQ","Sybase"
      */
@@ -597,7 +598,7 @@ public class MetadataConnectionUtils {
 
     /**
      * DOC qzhang Comment method "getClassDriver".
-     * 
+     *
      * @param driverClassName
      * @return
      * @throws IllegalAccessException
@@ -647,7 +648,7 @@ public class MetadataConnectionUtils {
 
     /**
      * get driver.
-     * 
+     *
      * @param metadataBean
      * @param driver
      * @return
@@ -692,7 +693,7 @@ public class MetadataConnectionUtils {
 
     /**
      * This method to get all database template supported by TDQ.
-     * 
+     *
      * @return
      */
     public static List<String> getTDQSupportDBTemplate() {
@@ -711,7 +712,7 @@ public class MetadataConnectionUtils {
 
     /**
      * This method try to return whether the conn is supported by TDQ.
-     * 
+     *
      * @return
      */
     public static boolean isTDQSupportDBTemplate(Connection conn) {
@@ -727,9 +728,9 @@ public class MetadataConnectionUtils {
     }
 
     /**
-     * 
+     *
      * DOC zshen Comment method "getCommonQueryStr".
-     * 
+     *
      * @param sqlConn
      * @return null only if conn is null.or can not find the
      * @deprecated {@link #getCommentQueryStr(String, String, String)} instead.
@@ -764,7 +765,7 @@ public class MetadataConnectionUtils {
 
     /**
      * get Comment Query Str.
-     * 
+     *
      * @param productName
      * @param tableName
      * @param catalogName
@@ -800,7 +801,7 @@ public class MetadataConnectionUtils {
 
     /**
      * DOC xqliu Comment method "createDataType".
-     * 
+     *
      * @param dataType
      * @param typeName
      * @param decimalDigits
@@ -817,9 +818,9 @@ public class MetadataConnectionUtils {
     }
 
     /**
-     * 
+     *
      * zshen Comment method "getXtentisBindingStub".
-     * 
+     *
      * @param metadataBean
      * @return
      * @throws ServiceException
@@ -840,9 +841,9 @@ public class MetadataConnectionUtils {
     }
 
     /**
-     * 
+     *
      * zshen Comment method "getXtentisBindingStub".
-     * 
+     *
      * @param dataProvider
      * @return
      * @throws ServiceException
@@ -858,9 +859,9 @@ public class MetadataConnectionUtils {
     }
 
     /**
-     * 
+     *
      * zshen Comment method "getXtentisBindingStub".
-     * 
+     *
      * @param url
      * @param universe
      * @param userName
@@ -895,7 +896,7 @@ public class MetadataConnectionUtils {
     /**
      * Method "createTechnicalName" creates a technical name used for file system storage. MOD mzhao make this method as
      * public access.
-     * 
+     *
      * @param functionalName the user friendly name
      * @return the technical name created from the user given name.
      */
@@ -988,9 +989,9 @@ public class MetadataConnectionUtils {
     }
 
     /**
-     * DOC connection created by TOS need to fill the basic information for useing in TOP.<br>
-     * 
-     * 
+     * DOC connection created by TOS need to fill the basic information for using in TOP.<br>
+     *
+     *
      * @param conn
      * @return
      */
@@ -1050,12 +1051,12 @@ public class MetadataConnectionUtils {
     }
 
     /**
-     * 
+     *
      * DOC zshen Comment method "setMDMConnectionParameter".
-     * 
+     *
      * @param conn
      * @param metadataConnection
-     * 
+     *
      * set the parameter of MDMConnection from metadataConnection
      */
     public static void setMDMConnectionParameter(MDMConnection conn, IMetadataConnection metadataConnection) {
@@ -1082,7 +1083,7 @@ public class MetadataConnectionUtils {
 
     /**
      * DOC xqliu Comment method "fillDbConnectionInformation".
-     * 
+     *
      * @param dbConn
      * @return
      */
@@ -1253,7 +1254,7 @@ public class MetadataConnectionUtils {
 
     /**
      * Check a package is the one of AS400. return false if it's not.
-     * 
+     *
      * @param packge
      * @return
      */
@@ -1277,7 +1278,7 @@ public class MetadataConnectionUtils {
     /**
      * return the MetadataColumn's name, the input object should be MetadataColumn, TdColumn or TdXmlElementType, if
      * not, return null.
-     * 
+     *
      * @param element MetadataColumn, TdColumn or TdXmlElementType
      * @return
      */
@@ -1301,7 +1302,7 @@ public class MetadataConnectionUtils {
 
     /**
      * Get column type name by {@link ResultSetMetaData}.
-     * 
+     *
      * @param connection is a jdbc connection.
      * @param tableName is the name of table which the column belongs to.
      * @param colIndex is the column index in the table (start with 1).
@@ -1328,7 +1329,7 @@ public class MetadataConnectionUtils {
         }
         return columnTypeName;
     }
-    
+
     public static String getDBType(String typeName, String mappingID){
         if(typeName == null){
             return typeName;

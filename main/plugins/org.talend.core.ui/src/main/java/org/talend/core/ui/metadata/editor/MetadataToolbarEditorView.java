@@ -1,6 +1,6 @@
 // ============================================================================
 //
-// Copyright (C) 2006-2018 Talend Inc. - www.talend.com
+// Copyright (C) 2006-2019 Talend Inc. - www.talend.com
 //
 // This source code is available under agreement available at
 // %InstallDIR%\features\org.talend.rcp.branding.%PRODUCTNAME%\%PRODUCTNAME%license.txt
@@ -42,13 +42,13 @@ import org.talend.repository.model.RepositoryNode;
 
 /**
  * $Id: MetadataToolbarEditorView.java 46952 2010-08-18 08:41:09Z nrousseau $
- * 
+ *
  */
 public class MetadataToolbarEditorView extends ExtendedToolbarView {
 
     /**
      * DOC amaumont MetadataToolbarEditorView constructor comment.
-     * 
+     *
      * @param parent
      * @param style
      * @param extendedTableViewer
@@ -72,7 +72,7 @@ public class MetadataToolbarEditorView extends ExtendedToolbarView {
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see org.talend.core.ui.extended.ExtendedToolbarView#createAddPushButton()
      */
     @Override
@@ -90,7 +90,7 @@ public class MetadataToolbarEditorView extends ExtendedToolbarView {
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see org.talend.core.ui.extended.ExtendedToolbarView#createPastButton()
      */
     @Override
@@ -107,7 +107,7 @@ public class MetadataToolbarEditorView extends ExtendedToolbarView {
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see org.talend.core.ui.extended.ExtendedToolbarView#createExportPushButton()
      */
     @Override
@@ -124,7 +124,7 @@ public class MetadataToolbarEditorView extends ExtendedToolbarView {
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see org.talend.core.ui.extended.ExtendedToolbarView#createPastButton()
      */
     @Override

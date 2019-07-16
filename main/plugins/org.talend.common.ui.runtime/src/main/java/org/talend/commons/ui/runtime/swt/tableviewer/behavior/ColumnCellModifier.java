@@ -1,6 +1,6 @@
 // ============================================================================
 //
-// Copyright (C) 2006-2018 Talend Inc. - www.talend.com
+// Copyright (C) 2006-2019 Talend Inc. - www.talend.com
 //
 // This source code is available under agreement available at
 // %InstallDIR%\features\org.talend.rcp.branding.%PRODUCTNAME%\%PRODUCTNAME%license.txt
@@ -16,7 +16,7 @@ import org.talend.commons.ui.runtime.swt.tableviewer.TableViewerCreatorColumnNot
 
 /**
  * DOC amaumont class global comment. Detailled comment <br/>
- * 
+ *
  */
 public class ColumnCellModifier implements IColumnCellModifier {
 
@@ -24,7 +24,7 @@ public class ColumnCellModifier implements IColumnCellModifier {
 
     /**
      * DOC amaumont ColumnCellModifier constructor comment.
-     * 
+     *
      * @param column
      */
     public ColumnCellModifier(TableViewerCreatorColumnNotModifiable column) {
@@ -33,7 +33,7 @@ public class ColumnCellModifier implements IColumnCellModifier {
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see org.talend.commons.ui.swt.tableviewer.behavior.IColumnCellModifier#canModify(java.lang.Object)
      */
     public boolean canModify(Object bean) {
@@ -42,7 +42,7 @@ public class ColumnCellModifier implements IColumnCellModifier {
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see org.talend.commons.ui.swt.tableviewer.behavior.IColumnCellModifier#getValue(java.lang.Object)
      */
     public Object getValue(Object bean) {
@@ -51,7 +51,7 @@ public class ColumnCellModifier implements IColumnCellModifier {
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see org.talend.commons.ui.swt.tableviewer.behavior.IColumnCellModifier#modify(java.lang.Object,
      * java.lang.Object)
      */

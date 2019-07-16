@@ -1,6 +1,6 @@
 // ============================================================================
 //
-// Copyright (C) 2006-2018 Talend Inc. - www.talend.com
+// Copyright (C) 2006-2019 Talend Inc. - www.talend.com
 //
 // This source code is available under agreement available at
 // %InstallDIR%\features\org.talend.rcp.branding.%PRODUCTNAME%\%PRODUCTNAME%license.txt
@@ -55,7 +55,7 @@ public final class ConnectionUtils {
 
     /**
      * Method "createConnection".
-     * 
+     *
      * @param url the database url
      * @param driverClassName the Driver classname
      * @param props properties passed to the driver manager for getting the connection (normally at least a "user" and
@@ -77,7 +77,7 @@ public final class ConnectionUtils {
 
     /**
      * zshen Method "createConnection".
-     * 
+     *
      * @param url the database url
      * @param driver Driver of database and can't be null
      * @param props properties passed to the driver manager for getting the connection (normally at least a "user" and
@@ -123,7 +123,7 @@ public final class ConnectionUtils {
 
     /**
      * if the url include "odbc", return true, else return false
-     * 
+     *
      * @param url
      * @return
      */
@@ -132,9 +132,9 @@ public final class ConnectionUtils {
     }
 
     /**
-     * 
+     *
      * from the url to check whether it is jdbc.
-     * 
+     *
      * @param url
      * @return
      */
@@ -144,7 +144,7 @@ public final class ConnectionUtils {
 
     /**
      * from the database type to check whether it is JDBC
-     * 
+     *
      * @param dbType
      * @return
      */
@@ -154,7 +154,7 @@ public final class ConnectionUtils {
 
     /**
      * if the url include "sybase", return true, else return false
-     * 
+     *
      * @param url
      * @return
      */
@@ -164,7 +164,7 @@ public final class ConnectionUtils {
 
     /**
      * if the url include "sqlserver", return true, else return false
-     * 
+     *
      * @param url
      * @return
      */
@@ -182,7 +182,7 @@ public final class ConnectionUtils {
 
     /**
      * Method "isAccess".
-     * 
+     *
      * @param url
      * @return if the url is a Access url
      */
@@ -195,7 +195,7 @@ public final class ConnectionUtils {
 
     /**
      * from the url to check whether it is hsql.
-     * 
+     *
      * @param url
      * @return
      */
@@ -210,7 +210,7 @@ public final class ConnectionUtils {
     /**
      * add ";shutdown=true" to the end of the hsql url when the url don't contain it. this is only used for hsql
      * database.(ConnectionUtils.isHsql(url))
-     * 
+     *
      * @param url
      * @param AdditionalParams
      * @return String the url after added
@@ -225,7 +225,7 @@ public final class ConnectionUtils {
 
     /**
      * execute ShutDown For HSQL connection.
-     * 
+     *
      * @param connection
      * @throws SQLException
      */
@@ -237,7 +237,7 @@ public final class ConnectionUtils {
 
     /**
      * from the url to check whether the hsql is Server Mode.
-     * 
+     *
      * @param url
      * @return
      */
@@ -255,7 +255,7 @@ public final class ConnectionUtils {
 
     /**
      * Method "isValid".
-     * 
+     *
      * @param connection the connection to test
      * @return a return code with the appropriate message (never null)
      */
@@ -294,7 +294,7 @@ public final class ConnectionUtils {
 
     /**
      * Method "closeConnection".
-     * 
+     *
      * @param connection the connection to close.
      * @return a ReturnCode with true if ok, false if problem. {@link ReturnCode#getMessage()} gives the error message
      * when there is a problem.
@@ -329,7 +329,7 @@ public final class ConnectionUtils {
 
     /**
      * DOC zshen Comment method "isSybase".
-     * 
+     *
      * @param connection
      * @return decide to whether is sybase connection
      * @throws SQLException
@@ -349,9 +349,9 @@ public final class ConnectionUtils {
 
     /**
      * @deprecated use ExtractMetaDataUtils#getConnectionMetadata(java.sql.Connection conn) instead.
-     * 
+     *
      * xqliu method "getConnectionMetadata". 2009-07-13 bug 7888.
-     * 
+     *
      * @param conn
      * @return
      * @throws SQLException
@@ -371,7 +371,7 @@ public final class ConnectionUtils {
 
     /**
      * Comment method "isDB2".
-     * 
+     *
      * @param metadata
      * @return
      * @throws SQLException
@@ -424,7 +424,7 @@ public final class ConnectionUtils {
 
     /**
      * DOC msjian Comment method "isSnowflake".
-     * 
+     *
      * @param metadata
      * @return
      * @throws SQLException
@@ -440,9 +440,9 @@ public final class ConnectionUtils {
     }
 
     /**
-     * 
+     *
      * DOC Comment method "isExasol".
-     * 
+     *
      * @param metadata
      * @return
      * @throws SQLException
@@ -461,7 +461,7 @@ public final class ConnectionUtils {
      * yyi 2010-08-25 for 14851, Sybase DB has several names with different productions and versions. For example the
      * Sybase IQ with version 12.6 is called 'Sybase' getting by JDBC but the version 15+ it is changed to 'Sybase IQ'.
      * it is user by org.talend.cwm.db.connection.ConnectionUtils.isSybase
-     * 
+     *
      * @return All Sybase DB products name ,"Adaptive Server Enterprise","Sybase Adaptive Server IQ"
      * ,"Sybase IQ","Sybase"
      */
@@ -480,7 +480,7 @@ public final class ConnectionUtils {
 
     /**
      * DOC klliu Comment method "isOdbcTeradata".
-     * 
+     *
      * @param metadata
      * @return
      * @throws SQLException
@@ -511,7 +511,7 @@ public final class ConnectionUtils {
 
     /**
      * return true if it is netezza.
-     * 
+     *
      * @param databaseMetaData
      * @return
      * @throws SQLException

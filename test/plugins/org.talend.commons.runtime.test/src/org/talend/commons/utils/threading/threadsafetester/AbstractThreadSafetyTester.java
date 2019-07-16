@@ -1,6 +1,6 @@
 // ============================================================================
 //
-// Copyright (C) 2006-2018 Talend Inc. - www.talend.com
+// Copyright (C) 2006-2019 Talend Inc. - www.talend.com
 //
 // This source code is available under agreement available at
 // %InstallDIR%\features\org.talend.rcp.branding.%PRODUCTNAME%\%PRODUCTNAME%license.txt
@@ -21,12 +21,12 @@ import java.util.concurrent.Executors;
 import java.util.concurrent.Future;
 
 /**
- * 
+ *
  * class AbstractThreadSafetyTester.
- * 
+ *
  * Abstract class to launch test with multiple operators. You can set several operators (<code>classOperators</code>).
  * Each operator may be launched by a given number of threads (<code>nOperatorsByClassOperator</code>).
- * 
+ *
  * @param T must implement the interface <code>IThreadSafetyOperator.class</code>
  */
 public abstract class AbstractThreadSafetyTester<T extends IThreadSafetyOperator> {
@@ -42,9 +42,9 @@ public abstract class AbstractThreadSafetyTester<T extends IThreadSafetyOperator
     private long duration;
 
     /**
-     * 
+     *
      * AbstractThreadSafetyTester constructor.
-     * 
+     *
      * @param nOperatorsByClassOperator it means number of threads by operator
      * @param classOperators variable arguments of the operators
      */
@@ -97,7 +97,7 @@ public abstract class AbstractThreadSafetyTester<T extends IThreadSafetyOperator
 
     /**
      * Getter for duration.
-     * 
+     *
      * @return the duration
      */
     public long getDuration() {
@@ -105,30 +105,30 @@ public abstract class AbstractThreadSafetyTester<T extends IThreadSafetyOperator
     }
 
     /**
-     * 
+     *
      * Method "initInstance".
-     * 
+     *
      * Used to initialize the useful variables of the operator.
-     * 
+     *
      * @param operatorInstance
      */
     protected abstract void initInstance(T operatorInstance);
 
     /**
-     * 
+     *
      * Method "assertFinal".
-     * 
+     *
      * Method executed when all operators have ended their operations. Add assertions into to verify that your class is
      * ThreadSafe.
-     * 
+     *
      * @throws Exception
      */
     protected abstract void assertFinal() throws Exception;
 
     /**
-     * 
+     *
      * ThreadSafetyOperatorHandler class.
-     * 
+     *
      * Wrapper for operator which will be submitted in the internal thread pool.
      */
     public class ThreadSafetyOperatorHandler<A extends IThreadSafetyOperator> implements Callable<Object> {
@@ -142,7 +142,7 @@ public abstract class AbstractThreadSafetyTester<T extends IThreadSafetyOperator
 
         /*
          * (non-Javadoc)
-         * 
+         *
          * @see java.util.concurrent.Callable#call()
          */
         @Override

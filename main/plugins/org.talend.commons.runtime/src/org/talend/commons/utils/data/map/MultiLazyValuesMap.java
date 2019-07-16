@@ -1,6 +1,6 @@
 // ============================================================================
 //
-// Copyright (C) 2006-2018 Talend Inc. - www.talend.com
+// Copyright (C) 2006-2019 Talend Inc. - www.talend.com
 //
 // This source code is available under agreement available at
 // %InstallDIR%\features\org.talend.rcp.branding.%PRODUCTNAME%\%PRODUCTNAME%license.txt
@@ -19,7 +19,7 @@ import java.util.Set;
 
 /**
  * DOC amaumont class global comment. Detailled comment <br/>
- * 
+ *
  */
 public abstract class MultiLazyValuesMap implements Map {
 
@@ -80,7 +80,7 @@ public abstract class MultiLazyValuesMap implements Map {
 
     /**
      * DOC amaumont Comment method "instanciateNewList".
-     * 
+     *
      * @return
      */
     public abstract Collection instanciateNewCollection();

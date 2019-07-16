@@ -1,6 +1,6 @@
 // ============================================================================
 //
-// Copyright (C) 2006-2018 Talend Inc. - www.talend.com
+// Copyright (C) 2006-2019 Talend Inc. - www.talend.com
 //
 // This source code is available under agreement available at
 // %InstallDIR%\features\org.talend.rcp.branding.%PRODUCTNAME%\%PRODUCTNAME%license.txt
@@ -31,7 +31,7 @@ import org.talend.repository.metadata.i18n.Messages;
 import org.talend.repository.model.IProxyRepositoryFactory;
 
 /**
- * 
+ *
  * DOC yexiaowei class global comment. Detailled comment
  */
 public class FileExcelTableWizard extends AbstractRepositoryFileTableWizard implements INewWizard {
@@ -45,9 +45,9 @@ public class FileExcelTableWizard extends AbstractRepositoryFileTableWizard impl
     private IMetadataTable oldMetadataTable;
 
     /**
-     * 
+     *
      * DOC yexiaowei FileExcelTableWizard constructor comment.
-     * 
+     *
      * @param workbench
      * @param creation
      * @param connectionItem

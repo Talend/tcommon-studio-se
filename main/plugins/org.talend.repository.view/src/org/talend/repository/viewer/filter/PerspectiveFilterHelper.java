@@ -1,6 +1,6 @@
 // ============================================================================
 //
-// Copyright (C) 2006-2018 Talend Inc. - www.talend.com
+// Copyright (C) 2006-2019 Talend Inc. - www.talend.com
 //
 // This source code is available under agreement available at
 // %InstallDIR%\features\org.talend.rcp.branding.%PRODUCTNAME%\%PRODUCTNAME%license.txt
@@ -74,7 +74,7 @@ public class PerspectiveFilterHelper {
 
     /**
      * filter on the given perspective
-     * 
+     *
      * @param perspectiveId
      * @param restoring
      */
@@ -91,8 +91,8 @@ public class PerspectiveFilterHelper {
 
     /**
      * Only activate the view content providers with the extension ID belonging to extensionIdsToActivate array.
-     * 
-     * 
+     *
+     *
      * @param extensionIdsToActivate
      * @param restoring, used because setting new selection cause renentrance and may create 2 action types when
      * restoring state

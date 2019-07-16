@@ -1,6 +1,6 @@
 // ============================================================================
 //
-// Copyright (C) 2006-2018 Talend Inc. - www.talend.com
+// Copyright (C) 2006-2019 Talend Inc. - www.talend.com
 //
 // This source code is available under agreement available at
 // %InstallDIR%\features\org.talend.rcp.branding.%PRODUCTNAME%\%PRODUCTNAME%license.txt
@@ -15,11 +15,11 @@ package org.talend.commons.utils.data.text;
 import org.apache.commons.lang.StringUtils;
 
 /**
- * 
+ *
  * DOC amaumont class global comment. Detailled comment <br/>
- * 
+ *
  * $Id$
- * 
+ *
  */
 public class StringHelper {
 
@@ -31,11 +31,11 @@ public class StringHelper {
      * Replace MessageFormat.format(..) because MessageFormat does'nt support single quote correctly This method replace
      * in the text all the patterns {0}, {1}, etc.. by all values in arguments array One or more values can be null, no
      * exception is thrown if a value is null.
-     * 
+     *
      * @param pattern
      * @param arguments
      * @return
-     * 
+     *
      */
     public static String replacePrms(String text, Object[] arguments) {
 
@@ -49,11 +49,11 @@ public class StringHelper {
      * Replace MessageFormat.format(..) because MessageFormat does'nt support single quote correctly This method replace
      * in the text all the patterns {0}, {1}, etc.. by all values in arguments array One or more values can be null, no
      * exception is thrown if a value is null.
-     * 
+     *
      * @param pattern
      * @param arguments
      * @return
-     * 
+     *
      */
     public static String replacePrms(String text, Object[] arguments, String strBeforeIndex, String strAfterIndex) {
 

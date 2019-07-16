@@ -1,6 +1,6 @@
 // ============================================================================
 //
-// Copyright (C) 2006-2018 Talend Inc. - www.talend.com
+// Copyright (C) 2006-2019 Talend Inc. - www.talend.com
 //
 // This source code is available under agreement available at
 // %InstallDIR%\features\org.talend.rcp.branding.%PRODUCTNAME%\%PRODUCTNAME%license.txt
@@ -20,13 +20,13 @@ import org.talend.core.model.metadata.IMetadataConnection;
 
 /**
  * @author zshen
- * 
+ *
  */
 public interface IDriverService extends IService {
 
     /**
      * get driver by metadataConnection information.
-     * 
+     *
      * @param metadataConnection contain the information which about driver.
      * @return if can't find the driver will get a null.
      */
@@ -35,7 +35,7 @@ public interface IDriverService extends IService {
 
     /**
      * This method to get all database template supported by TDQ.
-     * 
+     *
      * @return
      */
     public List<String> getTDQSupportDBTemplate();

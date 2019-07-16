@@ -1,6 +1,6 @@
 // ============================================================================
 //
-// Copyright (C) 2006-2018 Talend Inc. - www.talend.com
+// Copyright (C) 2006-2019 Talend Inc. - www.talend.com
 //
 // This source code is available under agreement available at
 // %InstallDIR%\features\org.talend.rcp.branding.%PRODUCTNAME%\%PRODUCTNAME%license.txt
@@ -316,7 +316,7 @@ public class LockerTest {
 
             /*
              * (non-Javadoc)
-             * 
+             *
              * @see
              * org.talend.commons.utils.threading.AbstractThreadSafetyTester#initInstance(org.talend.commons.utils.threading
              * .IThreadSafetyOperator)
@@ -329,7 +329,7 @@ public class LockerTest {
 
             /*
              * (non-Javadoc)
-             * 
+             *
              * @see org.talend.commons.utils.threading.AbstractThreadSafetyTester#assertFinal()
              */
             @Override
@@ -408,7 +408,7 @@ public class LockerTest {
 
             /*
              * (non-Javadoc)
-             * 
+             *
              * @see
              * org.talend.commons.utils.threading.AbstractThreadSafetyTester#initInstance(org.talend.commons.utils.threading
              * .IThreadSafetyOperator)
@@ -421,7 +421,7 @@ public class LockerTest {
 
             /*
              * (non-Javadoc)
-             * 
+             *
              * @see org.talend.commons.utils.threading.AbstractThreadSafetyTester#assertFinal()
              */
             @Override

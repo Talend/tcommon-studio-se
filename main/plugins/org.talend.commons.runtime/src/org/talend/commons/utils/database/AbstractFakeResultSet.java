@@ -1,6 +1,6 @@
 // ============================================================================
 //
-// Copyright (C) 2006-2018 Talend Inc. - www.talend.com
+// Copyright (C) 2006-2019 Talend Inc. - www.talend.com
 //
 // This source code is available under agreement available at
 // %InstallDIR%\features\org.talend.rcp.branding.%PRODUCTNAME%\%PRODUCTNAME%license.txt
@@ -22,9 +22,9 @@ import org.talend.fakejdbc.FakeResultSet;
 
 /**
  * DOC ggu class global comment. Detailled comment <br/>
- * 
+ *
  * $Id: talend.epf 55206 2011-02-15 17:32:14Z mhirt $
- * 
+ *
  */
 public abstract class AbstractFakeResultSet extends FakeResultSet {
 
@@ -49,7 +49,7 @@ public abstract class AbstractFakeResultSet extends FakeResultSet {
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see org.talend.commons.utils.database.FakeResultSet#next()
      */
     @Override
@@ -72,7 +72,7 @@ public abstract class AbstractFakeResultSet extends FakeResultSet {
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see org.talend.commons.utils.database.FakeResultSet#getString(java.lang.String)
      */
     @Override
@@ -88,7 +88,7 @@ public abstract class AbstractFakeResultSet extends FakeResultSet {
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see org.talend.commons.utils.database.FakeResultSet#getInt(java.lang.String)
      */
     @Override
@@ -110,7 +110,7 @@ public abstract class AbstractFakeResultSet extends FakeResultSet {
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see org.talend.commons.utils.database.FakeResultSet#getBoolean(java.lang.String)
      */
     @Override
@@ -121,7 +121,7 @@ public abstract class AbstractFakeResultSet extends FakeResultSet {
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see org.talend.commons.utils.database.FakeResultSet#getString(int)
      */
     @Override
@@ -130,7 +130,7 @@ public abstract class AbstractFakeResultSet extends FakeResultSet {
         columnIndex--;
 
         if (columnIndex < 0 || columnIndex > row.length) {
-            throw new SQLException(Messages.getString("AbstractFakeResultSet.parameterIndexOutOfRange", columnIndex)); //$NON-NLS-1$ 
+            throw new SQLException(Messages.getString("AbstractFakeResultSet.parameterIndexOutOfRange", columnIndex)); //$NON-NLS-1$
         }
         return row[columnIndex];
     }

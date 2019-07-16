@@ -1,6 +1,6 @@
 // ============================================================================
 //
-// Copyright (C) 2006-2018 Talend Inc. - www.talend.com
+// Copyright (C) 2006-2019 Talend Inc. - www.talend.com
 //
 // This source code is available under agreement available at
 // %InstallDIR%\features\org.talend.rcp.branding.%PRODUCTNAME%\%PRODUCTNAME%license.txt
@@ -45,13 +45,13 @@ import org.talend.repository.documentation.generation.IComponentHandler;
 
 /**
  * This abstract class is defined some common methods for generation HTML. <br/>
- * 
+ *
  */
 public abstract class AbstractComponentHandler implements IComponentHandler {
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see org.talend.repository.ui.wizards.genHTMLDoc.IComponentHandler#generateComponentInfo(org.dom4j.Element,
      * java.util.List)
      */
@@ -59,7 +59,7 @@ public abstract class AbstractComponentHandler implements IComponentHandler {
 
     /**
      * Gets the file path of component icon base on node.
-     * 
+     *
      * @return a string reprenenting component icon's path
      */
     protected String getComponentIconPath(INode node) {
@@ -93,7 +93,7 @@ public abstract class AbstractComponentHandler implements IComponentHandler {
 
     /**
      * Generates component details informaiton.
-     * 
+     *
      * @param isExternalNodeComponent
      * @param nodeElement
      * @param picFilePathMap
@@ -188,7 +188,7 @@ public abstract class AbstractComponentHandler implements IComponentHandler {
 
     /**
      * Gets the value of Label format.
-     * 
+     *
      * @param elementParameters
      * @return
      */
@@ -205,7 +205,7 @@ public abstract class AbstractComponentHandler implements IComponentHandler {
 
     /**
      * Gets the temporary folder.
-     * 
+     *
      * @return a string representing temporary folder
      */
     protected String getTmpFolder(INode node) {
@@ -220,7 +220,7 @@ public abstract class AbstractComponentHandler implements IComponentHandler {
 
     /**
      * This class is used for generating component schema information.
-     * 
+     *
      * @param node
      * @param componentElement
      */

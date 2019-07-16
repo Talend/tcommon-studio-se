@@ -1,6 +1,6 @@
 // ============================================================================
 //
-// Copyright (C) 2006-2018 Talend Inc. - www.talend.com
+// Copyright (C) 2006-2019 Talend Inc. - www.talend.com
 //
 // This source code is available under agreement available at
 // %InstallDIR%\features\org.talend.rcp.branding.%PRODUCTNAME%\%PRODUCTNAME%license.txt
@@ -22,9 +22,9 @@ import org.talend.core.ui.i18n.Messages;
 
 /**
  * Content proposal based on a INodeReturn. <br/>
- * 
+ *
  * $Id$
- * 
+ *
  */
 public class NodeReturnProposal implements IContentProposal {
 
@@ -44,7 +44,7 @@ public class NodeReturnProposal implements IContentProposal {
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see org.eclipse.jface.fieldassist.IContentProposal#getContent()
      */
     @Override
@@ -54,7 +54,7 @@ public class NodeReturnProposal implements IContentProposal {
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see org.eclipse.jface.fieldassist.IContentProposal#getCursorPosition()
      */
     @Override
@@ -64,7 +64,7 @@ public class NodeReturnProposal implements IContentProposal {
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see org.eclipse.jface.fieldassist.IContentProposal#getDescription()
      */
     @Override
@@ -85,7 +85,7 @@ public class NodeReturnProposal implements IContentProposal {
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see org.eclipse.jface.fieldassist.IContentProposal#getLabel()
      */
     @Override

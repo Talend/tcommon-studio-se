@@ -1,6 +1,6 @@
 // ============================================================================
 //
-// Copyright (C) 2006-2018 Talend Inc. - www.talend.com
+// Copyright (C) 2006-2019 Talend Inc. - www.talend.com
 //
 // This source code is available under agreement available at
 // %InstallDIR%\features\org.talend.rcp.branding.%PRODUCTNAME%\%PRODUCTNAME%license.txt
@@ -16,7 +16,7 @@ import java.util.List;
 
 /**
  * created by talend2 on 2013-10-17 Detailled comment
- * 
+ *
  */
 public class NestXMLTool {
 
@@ -73,18 +73,18 @@ public class NestXMLTool {
             }
         }
     }
-    
+
     //do some work after document has been generated
     public static void generateOk(routines.system.Document doc,boolean removeEmptyElement) {
         if(doc == null || doc.getDocument() == null) {
             return;
         }
-        
+
         replaceDefaultNameSpace(doc.getDocument().getRootElement(),null);
-        
+
         if(removeEmptyElement) {
             removeEmptyElement(doc.getDocument().getRootElement());
         }
     }
-    
+
 }

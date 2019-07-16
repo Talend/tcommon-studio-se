@@ -1,6 +1,6 @@
 // ============================================================================
 //
-// Copyright (C) 2006-2018 Talend Inc. - www.talend.com
+// Copyright (C) 2006-2019 Talend Inc. - www.talend.com
 //
 // This source code is available under agreement available at
 // %InstallDIR%\features\org.talend.rcp.branding.%PRODUCTNAME%\%PRODUCTNAME%license.txt
@@ -947,14 +947,14 @@ public class NodeUtil {
     public static String replaceCRLFInMEMO_SQL(String original) {
         return replaceCRLFInMEMO_SQL(original, true);
     }
-    
+
     /**
      *
      * DOC liuwu Comment method "replaceMEMO_SQL". aim: to resolve TDI-7487
-     * 
+     *
      * if splitAlways is true, will split the string always to avoid the huge string constant
      * if splitAlways is false, split only when the string constant reach the limit : 60000 bytes
-     * 
+     *
      * @param original
      * @return
      */
@@ -963,9 +963,9 @@ public class NodeUtil {
             return original;
         }
         StringBuilder result = new StringBuilder();
-        
+
         boolean needSplit = true;
-        
+
         if(!splitAlways) {
             try {
                 //there is 64k limit for string constant, we set the limit to 60000 for code format reason like auto new line for editor
@@ -973,11 +973,11 @@ public class NodeUtil {
             } catch (UnsupportedEncodingException e) {
             }
         }
-        
+
         Pattern invalid_unicode_character_regex = Pattern.compile("^.*(\\\\u[0-9a-fA-F]{0,3})$", Pattern.DOTALL);
         //now don't process the octal case for code performance, can enable it when real need from customer
         //Pattern invalid_octal_character_regex = Pattern.compile("^.*(\\\\[0-9]{1,2})$", Pattern.DOTALL);
-        
+
         int leftQuotes = original.indexOf("\"");
         int rightQuotes = original.indexOf("\"", leftQuotes + 1);
         int fakeRightQuotes = getFakeRightQuotes( original,leftQuotes);
@@ -990,7 +990,7 @@ public class NodeUtil {
       			if (leftQuotes > leftPrev) {//Outside of double quote
       				  result.append(original.substring(leftPrev, leftQuotes));
       			}
-      			
+
       			if (leftQuotes < rightQuotes) {//Inside of double quote
         				//split string for better appearance and avoid compile error when string exceed 64k
         			  if(needSplit) {
@@ -1002,7 +1002,7 @@ public class NodeUtil {
             				    Matcher matcher = invalid_unicode_character_regex.matcher(original.substring(current, current + Offset));
               				  if(matcher.matches()) {
               				      Offset = Offset - matcher.group(1).length();
-              				  } 
+              				  }
               				  /*
               				  else {
                   				  matcher = invalid_octal_character_regex.matcher(original.substring(current, current + Offset));
@@ -1011,18 +1011,18 @@ public class NodeUtil {
                             }
               				  }
               				  */
-            				  
+
               					while (original.charAt(current + Offset - 1) == '\\') {//avoid split special character e.g. \"
               						  Offset--;
               					}
-              					
+
               					if(count>500){//This is the code that really solve TDI-39968 others are only for good appearance.
                 						result.append(original.substring(current, current + Offset).replace("\r", "").replace("\n", "\\n")).append("\" + new String()\n+\"");
                 						count = 0;
               					}else{
               						  result.append(original.substring(current, current + Offset).replace("\r", "").replace("\n", "\\n")).append("\"\n+\"");
               					}
-              					
+
               					current += Offset;
               					Offset = 120;
               					count++;
@@ -1045,11 +1045,11 @@ public class NodeUtil {
         result.append(original.substring(leftPrev));
         return result.toString();
     }
-    
+
     /**
      * [] is the container for the string, not one part
      * ... mean other part of the string
-     * 
+     *
      * This method would avoid get wrong fakeRithQuotes index, like:
      * ["\\"...] the right quote is not fake one.
      * ["\"...] the right quote is a fake one
@@ -1177,7 +1177,7 @@ public class NodeUtil {
         }
         return new DummyMetadataTalendTypeFilter();
     }
-    
+
     /**
      * Used for GUI normally, to know which connector is valid during the job design / link creation.
      * @param node

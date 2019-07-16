@@ -1,6 +1,6 @@
 // ============================================================================
 //
-// Copyright (C) 2006-2018 Talend Inc. - www.talend.com
+// Copyright (C) 2006-2019 Talend Inc. - www.talend.com
 //
 // This source code is available under agreement available at
 // %InstallDIR%\features\org.talend.rcp.branding.%PRODUCTNAME%\%PRODUCTNAME%license.txt
@@ -38,7 +38,7 @@ public class EditProcessPropertiesWizard extends PropertiesWizard {
 
     /**
      * DOC marvin EditProcessPropertiesWizard constructor comment.
-     * 
+     *
      * @param repositoryViewObject
      * @param path
      * @param useLastVersion
@@ -104,7 +104,7 @@ public class EditProcessPropertiesWizard extends PropertiesWizard {
 
     /**
      * Getter for repositoryViewObject.
-     * 
+     *
      * @return the repositoryViewObject
      */
     public IRepositoryViewObject getRepositoryViewObject() {
@@ -113,7 +113,7 @@ public class EditProcessPropertiesWizard extends PropertiesWizard {
 
     /**
      * Sets the repositoryViewObject.
-     * 
+     *
      * @param repositoryViewObject the repositoryViewObject to set
      */
     public void setRepositoryViewObject(IRepositoryViewObject repositoryViewObject) {

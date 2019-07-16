@@ -1,6 +1,6 @@
 // ============================================================================
 //
-// Copyright (C) 2006-2018 Talend Inc. - www.talend.com
+// Copyright (C) 2006-2019 Talend Inc. - www.talend.com
 //
 // This source code is available under agreement available at
 // %InstallDIR%\features\org.talend.rcp.branding.%PRODUCTNAME%\%PRODUCTNAME%license.txt
@@ -29,9 +29,9 @@ import org.eclipse.swt.widgets.Text;
 
 /**
  * Create a Label and a Text.
- * 
+ *
  * $Id: LabelledText.java 7038 2007-11-15 14:05:48Z plegall $
- * 
+ *
  */
 public class LabelledText {
 
@@ -47,7 +47,7 @@ public class LabelledText {
 
     /**
      * Create a Label and a Text.
-     * 
+     *
      * @param composite
      * @param string
      */
@@ -57,7 +57,7 @@ public class LabelledText {
 
     /**
      * Create a Label and a Text.
-     * 
+     *
      * @param composite
      * @param string
      * @param isFill
@@ -68,7 +68,7 @@ public class LabelledText {
 
     /**
      * Create a Label and a Text width specific styleField.
-     * 
+     *
      * @param composite
      * @param string
      * @param int horizontalSpan
@@ -80,7 +80,7 @@ public class LabelledText {
 
     /**
      * Create a Label and a Text width specific styleField.
-     * 
+     *
      * @param composite
      * @param string
      * @param int horizontalSpan
@@ -91,7 +91,7 @@ public class LabelledText {
 
     /**
      * Create a Label and a Text width specific styleField.
-     * 
+     *
      * @param composite
      * @param string
      * @param int horizontalSpan
@@ -103,7 +103,7 @@ public class LabelledText {
 
     /**
      * Create a Label and a Text width Gridata option FILL.
-     * 
+     *
      * @param composite
      * @param string
      * @param styleField
@@ -116,7 +116,7 @@ public class LabelledText {
 
     /**
      * Create a Label and a Text width specific styleField and Gridata option FILL.
-     * 
+     *
      * @param composite
      * @param string
      * @param int horizontalSpan
@@ -129,7 +129,7 @@ public class LabelledText {
 
     /**
      * Create a Label and a Text width specific styleField and Gridata option FILL.
-     * 
+     *
      * @param composite
      * @param string
      * @param int horizontalSpan
@@ -180,7 +180,7 @@ public class LabelledText {
 
     /**
      * setTextLimit to Text Object.
-     * 
+     *
      * @param limit
      */
     public void setTextLimit(final int limit) {
@@ -189,7 +189,7 @@ public class LabelledText {
 
     /**
      * setToolTipText to Text Object.
-     * 
+     *
      * @param string
      */
     public void setToolTipText(final String string) {
@@ -198,7 +198,7 @@ public class LabelledText {
 
     /**
      * getText to Text Object.
-     * 
+     *
      * @return string
      */
     public String getText() {
@@ -207,7 +207,7 @@ public class LabelledText {
 
     /**
      * setText to Text Object.
-     * 
+     *
      * @param string
      */
     public void setText(final String string) {
@@ -220,7 +220,7 @@ public class LabelledText {
 
     /**
      * setText to Label Object.
-     * 
+     *
      * @param string
      */
     public void setLabelText(final String string) {
@@ -237,7 +237,7 @@ public class LabelledText {
 
     /**
      * setEditable to Text and Label Object.
-     * 
+     *
      * @param boolean
      */
     public void forceFocus() {
@@ -250,7 +250,7 @@ public class LabelledText {
 
     /**
      * setSelection to Text.
-     * 
+     *
      * @param index
      */
     public void setSelection(int index) {
@@ -259,7 +259,7 @@ public class LabelledText {
 
     /**
      * setSelection to Text.
-     * 
+     *
      * @param start
      * @param end
      */
@@ -269,7 +269,7 @@ public class LabelledText {
 
     /**
      * setEditable to Text and Label Object.
-     * 
+     *
      * @param boolean
      */
     public void setEditable(final boolean visible) {
@@ -279,7 +279,7 @@ public class LabelledText {
 
     /**
      * setReadOnly to Label Object.
-     * 
+     *
      * @param boolean
      */
     public void setReadOnly(final boolean visible) {
@@ -289,7 +289,7 @@ public class LabelledText {
 
     /**
      * setVisible to Text and Label Object.
-     * 
+     *
      * @param boolean
      */
     public void setVisible(final boolean visible) {
@@ -323,7 +323,7 @@ public class LabelledText {
 
     /**
      * addListener to Text Object.
-     * 
+     *
      * @param eventType
      * @param listener
      */
@@ -333,7 +333,7 @@ public class LabelledText {
 
     /**
      * addModifyListener to Text Object.
-     * 
+     *
      * @param listener
      */
     public void addModifyListener(ModifyListener listener) {
@@ -342,7 +342,7 @@ public class LabelledText {
 
     /**
      * getEditable to Text Object.
-     * 
+     *
      * @return boolean
      */
     public boolean getEditable() {
@@ -355,7 +355,7 @@ public class LabelledText {
 
     /**
      * getCharCount to Text Object.
-     * 
+     *
      * @return int
      */
     public int getCharCount() {
@@ -364,7 +364,7 @@ public class LabelledText {
 
     /**
      * setLabelWidth.
-     * 
+     *
      * @param width
      */
     public void setLabelWidth(int width) {
@@ -373,7 +373,7 @@ public class LabelledText {
 
     /**
      * DOC ocarbone Comment method "setSize".
-     * 
+     *
      * @param width
      * @param height
      */
@@ -383,7 +383,7 @@ public class LabelledText {
 
     /**
      * DOC ocarbone Comment method "setLayoutData".
-     * 
+     *
      * @param gridData
      */
     public void setLayoutData(GridData gridData) {
@@ -392,7 +392,7 @@ public class LabelledText {
 
     /**
      * DOC ocarbone Comment method "addKeyListener".
-     * 
+     *
      * @param adapter
      */
     public void addKeyListener(KeyAdapter adapter) {
@@ -401,7 +401,7 @@ public class LabelledText {
 
     /**
      * DOC ocarbone Comment method "getSelection()".
-     * 
+     *
      * @return Point
      */
     public Point getSelection() {
@@ -410,7 +410,7 @@ public class LabelledText {
 
     /**
      * Getter for lastSelection.
-     * 
+     *
      * @return the lastSelection
      */
     public Point getLastSelection() {
@@ -423,7 +423,7 @@ public class LabelledText {
 
     /**
      * DOC ocarbone Comment method "setEnable".
-     * 
+     *
      * @param visible
      */
     public void setEnabled(boolean visible) {
@@ -432,7 +432,7 @@ public class LabelledText {
 
     /**
      * DOC ocarbone Comment method "addFocusListener".
-     * 
+     *
      * @param listener
      */
     public void addFocusListener(FocusListener listener) {
@@ -441,9 +441,9 @@ public class LabelledText {
     }
 
     /**
-     * 
+     *
      * DOC YeXiaowei Comment method "getTextControl".
-     * 
+     *
      * @return
      */
     public Text getTextControl() {
@@ -451,9 +451,9 @@ public class LabelledText {
     }
 
     /**
-     * 
+     *
      * DOC YeXiaowei Comment method "hideWidgets".
-     * 
+     *
      * @param hide
      */
     public void setHideWidgets(final boolean hide) {

@@ -1,6 +1,6 @@
 // ============================================================================
 //
-// Copyright (C) 2006-2018 Talend Inc. - www.talend.com
+// Copyright (C) 2006-2019 Talend Inc. - www.talend.com
 //
 // This source code is available under agreement available at
 // %InstallDIR%\features\org.talend.rcp.branding.%PRODUCTNAME%\%PRODUCTNAME%license.txt
@@ -28,9 +28,9 @@ import org.talend.commons.ui.swt.tableviewer.TableViewerCreatorColumn;
 
 /**
  * Validate column value and show a dialog message if value is not valid.
- * 
+ *
  * $Id: DialogErrorForCellEditorListener.java 7038 2007-11-15 14:05:48Z plegall $
- * 
+ *
  */
 public abstract class DialogErrorForCellEditorListener implements ICellEditorListener {
 
@@ -42,7 +42,7 @@ public abstract class DialogErrorForCellEditorListener implements ICellEditorLis
 
     /**
      * DOC amaumont CellEditorListener constructor comment.
-     * 
+     *
      * @param column
      * @param cellEditor
      */
@@ -127,7 +127,7 @@ public abstract class DialogErrorForCellEditorListener implements ICellEditorLis
 
     /**
      * Implement this to execute treatments when new value is valid.
-     * 
+     *
      * @param itemIndex TODO
      * @param previousValue
      * @param newValue
@@ -138,7 +138,7 @@ public abstract class DialogErrorForCellEditorListener implements ICellEditorLis
 
     /**
      * DOC amaumont Comment method "validateValue".
-     * 
+     *
      * @param value to validate
      * @param beanPosition
      * @return error message if value is invalid, null else

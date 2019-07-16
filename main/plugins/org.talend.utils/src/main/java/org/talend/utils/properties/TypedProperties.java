@@ -1,6 +1,6 @@
 // ============================================================================
 //
-// Copyright (C) 2006-2018 Talend Inc. - www.talend.com
+// Copyright (C) 2006-2019 Talend Inc. - www.talend.com
 //
 // This source code is available under agreement available at
 // %InstallDIR%\features\org.talend.rcp.branding.%PRODUCTNAME%\%PRODUCTNAME%license.txt
@@ -25,7 +25,7 @@ import org.talend.utils.string.StringUtilities;
 
 /**
  * @author scorreia This class extends the Properties class and gives methods for getting typed values more easily.
- * 
+ *
  */
 public class TypedProperties extends Properties {
 
@@ -52,7 +52,7 @@ public class TypedProperties extends Properties {
 
     /**
      * DOC scorreia TypedProperties constructor comment.
-     * 
+     *
      * @param defaults
      */
     public TypedProperties(Properties defaults) {
@@ -61,7 +61,7 @@ public class TypedProperties extends Properties {
 
     /**
      * Method "getBooleanValue".
-     * 
+     *
      * @param <T> the class type that enters into the key definition
      * @param clazz the class
      * @param shortKey the end of the key
@@ -74,7 +74,7 @@ public class TypedProperties extends Properties {
 
     /**
      * Method "getBooleanValue".
-     * 
+     *
      * @param key the full key
      * @param defaultValue the default value if none is found
      * @return the value
@@ -99,7 +99,7 @@ public class TypedProperties extends Properties {
 
     /**
      * Method "getBooleanValue".
-     * 
+     *
      * @param key the full key
      * @return the value or null when not found
      */
@@ -113,9 +113,9 @@ public class TypedProperties extends Properties {
 
     /**
      * Method "getLongValue".
-     * 
+     *
      * The properties key is evaluated to {@link Class#getName()}+"."+shortKey
-     * 
+     *
      * @param <T> the class type that enters into the key definition
      * @param clazz the class
      * @param shortKey the end of the key
@@ -128,7 +128,7 @@ public class TypedProperties extends Properties {
 
     /**
      * DOC scorreia Comment method "getDoubleValue".
-     * 
+     *
      * @param <T>
      * @param clazz
      * @param shortKey
@@ -141,7 +141,7 @@ public class TypedProperties extends Properties {
 
     /**
      * DOC scorreia Comment method "getDoubleValue".
-     * 
+     *
      * @param key
      * @param defaultValue
      * @return
@@ -157,9 +157,9 @@ public class TypedProperties extends Properties {
 
     /**
      * Method "getIntValue".
-     * 
+     *
      * The key is the concatenation of the class name and the shortKey
-     * 
+     *
      * @param <T>
      * @param clazz
      * @param shortKey
@@ -176,7 +176,7 @@ public class TypedProperties extends Properties {
 
     /**
      * DOC scorreia Comment method "getStringValue".
-     * 
+     *
      * @param key
      * @param defaultValue
      * @return
@@ -192,7 +192,7 @@ public class TypedProperties extends Properties {
 
     /**
      * DOC scorreia Comment method "getLongValue".
-     * 
+     *
      * @param key
      * @param defaultValue
      * @return
@@ -209,7 +209,7 @@ public class TypedProperties extends Properties {
 
     /**
      * DOC scorreia Comment method "getIntValue".
-     * 
+     *
      * @param key
      * @param defaultValue
      * @return
@@ -226,7 +226,7 @@ public class TypedProperties extends Properties {
 
     /**
      * DOC scorreia Comment method "getValues".
-     * 
+     *
      * @param key
      * @param defaultValues
      * @param delimiters
@@ -240,7 +240,7 @@ public class TypedProperties extends Properties {
         } // else
         return StringUtilities.tokenize(value, delimiters);
     }
-    
+
     /**
      * https://jira.talendforge.org/browse/TDI-25753
      * DOC talend Comment method "getValuesWithoutWarning".
@@ -257,10 +257,10 @@ public class TypedProperties extends Properties {
         } // else
         return StringUtilities.tokenize(value, DEFAULT_DELIMITERS);
     }
-    
+
     /**
      * DOC scorreia Comment method "getValues".
-     * 
+     *
      * @param key
      * @param defaultValues
      * @return
@@ -271,7 +271,7 @@ public class TypedProperties extends Properties {
 
     /**
      * DOC scorreia Comment method "getValues".
-     * 
+     *
      * @param <T>
      * @param clazz
      * @param shortKey
@@ -284,7 +284,7 @@ public class TypedProperties extends Properties {
 
     /**
      * DOC scorreia Comment method "getValues".
-     * 
+     *
      * @param <T>
      * @param clazz
      * @param shortKey
@@ -298,7 +298,7 @@ public class TypedProperties extends Properties {
 
     /**
      * Method "buildKey".
-     * 
+     *
      * @param <T>
      * @param clazz
      * @param shortKey
@@ -313,11 +313,11 @@ public class TypedProperties extends Properties {
 
     /**
      * Method "logProperties".
-     * 
+     *
      * @param all if true, all properties will be returned (even the default ones)
      * @param main if true, the main properties are returned, not the default.
      * @return a string containing the requested properties
-     * 
+     *
      * If all and main are both true, the main properties will be returned twice. When all properties are returned, the
      * format: is one property per line. When the main properties are returned, the format is the that of the HashTable
      * (i.e. one line with properties separated by comma).

@@ -1,6 +1,6 @@
 // ============================================================================
 //
-// Copyright (C) 2006-2018 Talend Inc. - www.talend.com
+// Copyright (C) 2006-2019 Talend Inc. - www.talend.com
 //
 // This source code is available under agreement available at
 // %InstallDIR%\features\org.talend.rcp.branding.%PRODUCTNAME%\%PRODUCTNAME%license.txt
@@ -33,9 +33,9 @@ import org.talend.repository.model.IProxyRepositoryFactory;
 
 /**
  * DOC ocarbone class global comment.
- * 
+ *
  * $Id: FileXmlTableWizard.java 51998 2010-12-01 05:33:08Z hywang $
- * 
+ *
  */
 public class FileXmlTableWizard extends AbstractRepositoryFileTableWizard implements INewWizard {
 
@@ -49,7 +49,7 @@ public class FileXmlTableWizard extends AbstractRepositoryFileTableWizard implem
 
     /**
      * Constructor for TableWizard.
-     * 
+     *
      * @param ISelection
      */
     @SuppressWarnings("unchecked")//$NON-NLS-1$
@@ -130,7 +130,7 @@ public class FileXmlTableWizard extends AbstractRepositoryFileTableWizard implem
 
     /**
      * We will accept the selection in the workbench to see if we can initialize from it.
-     * 
+     *
      * @see IWorkbenchWizard#init(IWorkbench, IStructuredSelection)
      */
     public void init(final IWorkbench workbench, final IStructuredSelection selection) {

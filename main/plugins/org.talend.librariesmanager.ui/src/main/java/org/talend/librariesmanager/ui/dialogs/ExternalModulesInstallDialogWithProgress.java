@@ -1,6 +1,6 @@
 // ============================================================================
 //
-// Copyright (C) 2006-2018 Talend Inc. - www.talend.com
+// Copyright (C) 2006-2019 Talend Inc. - www.talend.com
 //
 // This source code is available under agreement available at
 // %InstallDIR%\features\org.talend.rcp.branding.%PRODUCTNAME%\%PRODUCTNAME%license.txt
@@ -17,8 +17,10 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 import java.util.concurrent.atomic.AtomicInteger;
 
 import org.apache.commons.lang.ArrayUtils;
@@ -47,13 +49,14 @@ import org.talend.commons.exception.ExceptionHandler;
 import org.talend.commons.utils.system.EclipseCommandLine;
 import org.talend.core.model.general.ModuleNeeded;
 import org.talend.core.model.general.ModuleToInstall;
+import org.talend.core.runtime.maven.MavenConstants;
 import org.talend.librariesmanager.ui.LibManagerUiPlugin;
 import org.talend.librariesmanager.utils.DownloadModuleRunnableWithLicenseDialog;
 import org.talend.librariesmanager.utils.RemoteModulesHelper;
 
 /**
  * adds a progress bar to Modules dialog. Mostly inspired by org.eclipse.jface.wizard.WizardDialog.
- * 
+ *
  */
 @SuppressWarnings("rawtypes")
 public class ExternalModulesInstallDialogWithProgress extends ExternalModulesInstallDialog {
@@ -76,7 +79,7 @@ public class ExternalModulesInstallDialogWithProgress extends ExternalModulesIns
      * <p>
      * The value <code>-1</code> indicates that the traverse listener needs to be installed.
      * </p>
-     * 
+     *
      * @since 3.6
      */
     private long timeWhenLastJobFinished = -1;
@@ -84,7 +87,7 @@ public class ExternalModulesInstallDialogWithProgress extends ExternalModulesIns
     /**
      * A delay in milliseconds that reduces the risk that the user accidentally triggers a button by pressing the
      * 'Enter' key immediately after a job has finished.
-     * 
+     *
      * @since 3.6
      */
     private static final int RESTORE_ENTER_DELAY = 500;
@@ -99,7 +102,7 @@ public class ExternalModulesInstallDialogWithProgress extends ExternalModulesIns
 
     /**
      * DOC sgandon ExternalModulesInstallDialogWithProgress constructor comment.
-     * 
+     *
      * @param shell
      * @param text
      * @param title
@@ -120,7 +123,7 @@ public class ExternalModulesInstallDialogWithProgress extends ExternalModulesIns
 
     /**
      * DOC sgandon ExternalModulesInstallDialogWithProgress constructor comment.
-     * 
+     *
      * @param shell
      * @param text
      * @param title
@@ -131,7 +134,7 @@ public class ExternalModulesInstallDialogWithProgress extends ExternalModulesIns
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see
      * org.talend.librariesmanager.ui.dialogs.ExternalModulesInstallDialog#createDialogArea(org.eclipse.swt.widgets.
      * Composite)
@@ -151,7 +154,7 @@ public class ExternalModulesInstallDialogWithProgress extends ExternalModulesIns
 
     /**
      * Create the progress monitor part in the receiver.
-     * 
+     *
      * @param composite
      * @param pmlayout
      * @return ProgressMonitorPart
@@ -163,7 +166,7 @@ public class ExternalModulesInstallDialogWithProgress extends ExternalModulesIns
 
             /*
              * (non-Javadoc)
-             * 
+             *
              * @see org.eclipse.jface.wizard.ProgressMonitorPart#setBlocked(org.eclipse.core.runtime.IStatus)
              */
             @Override
@@ -174,7 +177,7 @@ public class ExternalModulesInstallDialogWithProgress extends ExternalModulesIns
 
             /*
              * (non-Javadoc)
-             * 
+             *
              * @see org.eclipse.jface.wizard.ProgressMonitorPart#clearBlocked()
              */
             @Override
@@ -185,7 +188,7 @@ public class ExternalModulesInstallDialogWithProgress extends ExternalModulesIns
 
             /*
              * (non-Javadoc)
-             * 
+             *
              * @see org.eclipse.jface.wizard.ProgressMonitorPart#beginTask(java.lang.String, int)
              */
             @Override
@@ -196,7 +199,7 @@ public class ExternalModulesInstallDialogWithProgress extends ExternalModulesIns
 
             /*
              * (non-Javadoc)
-             * 
+             *
              * @see org.eclipse.jface.wizard.ProgressMonitorPart#setTaskName(java.lang.String)
              */
             @Override
@@ -207,7 +210,7 @@ public class ExternalModulesInstallDialogWithProgress extends ExternalModulesIns
 
             /*
              * (non-Javadoc)
-             * 
+             *
              * @see org.eclipse.jface.wizard.ProgressMonitorPart#subTask(java.lang.String)
              */
             @Override
@@ -224,7 +227,7 @@ public class ExternalModulesInstallDialogWithProgress extends ExternalModulesIns
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see org.eclipse.jface.dialogs.TrayDialog#close() can be called when the user click on close system button
      */
     @Override
@@ -265,14 +268,14 @@ public class ExternalModulesInstallDialogWithProgress extends ExternalModulesIns
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see org.eclipse.jface.dialogs.Dialog#buttonPressed(int)
      */
     @Override
     protected void buttonPressed(int buttonId) {
         if (IDialogConstants.CLOSE_ID == buttonId) {
             closePressed();
-        }// else cancel button has a listener already
+        } // else cancel button has a listener already
     }
 
     protected IProgressMonitor getProgressMonitor() {
@@ -284,11 +287,11 @@ public class ExternalModulesInstallDialogWithProgress extends ExternalModulesIns
      * has been run, regardless of the value of <code>fork</code>. It is recommended that <code>fork</code> is set to
      * true in most cases. If <code>fork</code> is set to <code>false</code>, the runnable will run in the UI thread and
      * it is the runnable's responsibility to call <code>Display.readAndDispatch()</code> to ensure UI responsiveness.
-     * 
+     *
      * UI state is saved prior to executing the long-running operation and is restored after the long-running operation
      * completes executing. Any attempt to change the UI state of the wizard in the long-running operation will be
      * nullified when original UI state is restored.
-     * 
+     *
      */
     public void run(IRunnableWithProgress runnable) throws InvocationTargetException, InterruptedException {
         // The operation can only be canceled if it is executed in a separate
@@ -321,7 +324,7 @@ public class ExternalModulesInstallDialogWithProgress extends ExternalModulesIns
     /**
      * About to start a long running operation triggered through the wizard. Shows the progress monitor and disables the
      * wizard's buttons and controls.
-     * 
+     *
      * @param enableCancelButton <code>true</code> if the Cancel button should be enabled, and <code>false</code> if it
      * should be disabled
      * @return the saved UI state
@@ -385,7 +388,7 @@ public class ExternalModulesInstallDialogWithProgress extends ExternalModulesIns
      * Creates the Cancel button for this wizard dialog. Creates a standard (<code>SWT.PUSH</code>) button and registers
      * for its selection events. Note that the number of columns in the button bar composite is incremented. The Cancel
      * button is created specially to give it a removeable listener.
-     * 
+     *
      * @param parent the parent button bar
      * @return the new Cancel button
      */
@@ -403,7 +406,7 @@ public class ExternalModulesInstallDialogWithProgress extends ExternalModulesIns
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see
      * org.talend.librariesmanager.ui.dialogs.ExternalModulesInstallDialog#createButtonsForButtonBar(org.eclipse.swt
      * .widgets.Composite)
@@ -416,7 +419,7 @@ public class ExternalModulesInstallDialogWithProgress extends ExternalModulesIns
 
     /**
      * Sets the given cursor for all shells currently active for this window's display.
-     * 
+     *
      * @param c the cursor
      */
     private void setDisplayCursor(Cursor c) {
@@ -430,7 +433,7 @@ public class ExternalModulesInstallDialogWithProgress extends ExternalModulesIns
      * Captures and returns the enabled/disabled state of the wizard dialog's buttons and the tree of controls for the
      * currently showing page. All these controls are disabled in the process, with the possible exception of the Cancel
      * button.
-     * 
+     *
      * @param keepCancelEnabled <code>true</code> if the Cancel button should remain enabled, and <code>false</code> if
      * it should be disabled
      * @return a map containing the saved state suitable for restoring later with <code>restoreUIState</code>
@@ -446,7 +449,7 @@ public class ExternalModulesInstallDialogWithProgress extends ExternalModulesIns
 
     /**
      * Saves the enabled/disabled state of the given control in the given map, which must be modifiable.
-     * 
+     *
      * @param w the control, or <code>null</code> if none
      * @param h the map (key type: <code>String</code>, element type: <code>Boolean</code>)
      * @param key the key
@@ -464,7 +467,7 @@ public class ExternalModulesInstallDialogWithProgress extends ExternalModulesIns
     /**
      * Restores the enabled/disabled state of the wizard dialog's buttons and the tree of controls for the currently
      * showing page.
-     * 
+     *
      * @param state a map containing the saved state as returned by <code>saveUIState</code>
      * @see #saveUIState
      */
@@ -476,7 +479,7 @@ public class ExternalModulesInstallDialogWithProgress extends ExternalModulesIns
 
     /**
      * Restores the enabled/disabled state of the given control.
-     * 
+     *
      * @param w the control
      * @param h the map (key type: <code>String</code>, element type: <code>Boolean</code>)
      * @param key the key
@@ -494,7 +497,7 @@ public class ExternalModulesInstallDialogWithProgress extends ExternalModulesIns
     /**
      * A long running operation triggered through the wizard was stopped either by user input or by normal end. Hides
      * the progress monitor and restores the enable state wizard's buttons and controls.
-     * 
+     *
      * @param savedState the saved UI state as returned by <code>aboutToStart</code>
      * @see #aboutToStart
      */
@@ -535,7 +538,7 @@ public class ExternalModulesInstallDialogWithProgress extends ExternalModulesIns
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see org.eclipse.jface.dialogs.Dialog#create()
      */
     @Override
@@ -557,7 +560,14 @@ public class ExternalModulesInstallDialogWithProgress extends ExternalModulesIns
 
                 installAllBtn.setEnabled(false);
                 try {
-                    run(new DownloadModuleRunnableWithLicenseDialog(toInstall, getShell()));
+                    DownloadModuleRunnableWithLicenseDialog downloadDialog = new DownloadModuleRunnableWithLicenseDialog(
+                            toInstall, getShell());
+                    run(downloadDialog);
+                    Set<String> downloadFailed = downloadDialog.getDownloadFailed();
+                    if (downloadFailed.size() > 0) {
+                        updateFailedButtonStatus(downloadFailed, downloadDialog.getInstalledModules());
+                        return;
+                    }
                     // close the dialog box when the download is done if it has not been canceled
                     if (!getProgressMonitor().isCanceled()) {
                         setReturnCode(CANCEL);
@@ -574,6 +584,26 @@ public class ExternalModulesInstallDialogWithProgress extends ExternalModulesIns
                         installAllBtn.setEnabled(true);
                     }
                 }
+            }
+        });
+    }
+    
+    private void updateFailedButtonStatus(Set<String> downloadFailed, Set<String> donwloadSuccessed) {
+        Display.getDefault().syncExec(new Runnable() {
+
+            @Override
+            public void run() {
+                List<ModuleToInstall> inputList2 = new ArrayList<ModuleToInstall>();
+                for (ModuleToInstall module : inputList) {
+                    if (downloadFailed.contains(module.getName())) {
+                        module.setDistribution(MavenConstants.DOWNLOAD_MANUAL);
+                        inputList2.add(module);
+                    } else if (!donwloadSuccessed.contains(module.getName())) {
+                        inputList2.add(module);
+                    }
+                }
+                inputList = inputList2;
+                initialRunnableDone();
             }
         });
     }
@@ -607,7 +637,7 @@ public class ExternalModulesInstallDialogWithProgress extends ExternalModulesIns
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see
      * org.talend.librariesmanager.ui.dialogs.ExternalModulesInstallDialog#launchIndividualDownload(java.util.concurrent
      * .atomic.AtomicInteger, org.talend.core.model.general.ModuleToInstall)
@@ -615,22 +645,31 @@ public class ExternalModulesInstallDialogWithProgress extends ExternalModulesIns
     @Override
     protected void launchIndividualDownload(final AtomicInteger enabledButtonCount, ModuleToInstall data, final Button button) {
         button.setEnabled(false);
-        enabledButtonCount.decrementAndGet();
+        boolean isDownloadSuccess = false;
         DownloadModuleRunnableWithLicenseDialog downloadModuleRunnable = new DownloadModuleRunnableWithLicenseDialog(
                 Collections.singletonList(data), getShell());
         try {
             run(downloadModuleRunnable);
+            if (downloadModuleRunnable.getDownloadFailed().size() == 0) {
+                enabledButtonCount.decrementAndGet();
+                isDownloadSuccess = true;
+            }
         } catch (InvocationTargetException e) {
-            individualDownloadFailed(enabledButtonCount, button);
+            individualDownloadFailed(enabledButtonCount, button, data);
             // an error occured when fetching the modules, so report it to the user.
             ExceptionHandler.process(e);
         } catch (InterruptedException e) {
-            individualDownloadFailed(enabledButtonCount, button);
+            individualDownloadFailed(enabledButtonCount, button, null);
             // the thread was interupted
             ExceptionHandler.process(e);
         } finally {// if button canceled then enable button
-            if (getProgressMonitor().isCanceled()) {
-                individualDownloadFailed(enabledButtonCount, button);
+            if (!isDownloadSuccess) {
+                if (getProgressMonitor().isCanceled()) {
+                    individualDownloadFailed(enabledButtonCount, button, null);
+                } else {
+                    individualDownloadFailed(enabledButtonCount, button, data);
+                }
+
             } else {// keep button disabled and make download all button disabled if that was the last
                 Display.getDefault().syncExec(new Runnable() {
 
@@ -650,19 +689,25 @@ public class ExternalModulesInstallDialogWithProgress extends ExternalModulesIns
 
     /**
      * DOC sgandon Comment method "individualDownloadFailed".
-     * 
+     *
      * @param enabledButtonCount
      * @param button
      */
-    protected void individualDownloadFailed(final AtomicInteger enabledButtonCount, final Button button) {
+    protected void individualDownloadFailed(final AtomicInteger enabledButtonCount, final Button button,
+            final ModuleToInstall data) {
         Display.getDefault().asyncExec(new Runnable() {
 
             @Override
             public void run() {
-                if (!button.isDisposed()) {
-                    button.setEnabled(true);
-                    enabledButtonCount.incrementAndGet();
-                    installAllBtn.setEnabled(true);
+                if (data == null) {
+                    if (!button.isDisposed()) {
+                        button.setEnabled(true);
+                        installAllBtn.setEnabled(true);
+                    }
+                } else {                 
+                    Set<String> failedSet = new HashSet<String>();
+                    failedSet.add(data.getName());
+                    updateFailedButtonStatus(failedSet, new HashSet<String>());
                 }
             }
         });
@@ -670,7 +715,7 @@ public class ExternalModulesInstallDialogWithProgress extends ExternalModulesIns
 
     /**
      * show the dialog
-     * 
+     *
      * @param block, whether the this method is blocked until the dialog is closed
      * @param requiredJars, list of required jars
      */
@@ -699,7 +744,7 @@ public class ExternalModulesInstallDialogWithProgress extends ExternalModulesIns
         // remove duplicated
         List<ModuleNeeded> required = new ArrayList<ModuleNeeded>(requiredModules);
         IRunnableWithProgress notInstalledModulesRunnable = RemoteModulesHelper.getInstance().getNotInstalledModulesRunnable(
-                required, inputList, true, false);
+                required, inputList, true, true, false);
         setBlockOnOpen(block);
         setInitialRunnable(notInstalledModulesRunnable);
         open();

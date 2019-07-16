@@ -1,6 +1,6 @@
 // ============================================================================
 //
-// Copyright (C) 2006-2018 Talend Inc. - www.talend.com
+// Copyright (C) 2006-2019 Talend Inc. - www.talend.com
 //
 // This source code is available under agreement available at
 // %InstallDIR%\features\org.talend.rcp.branding.%PRODUCTNAME%\%PRODUCTNAME%license.txt
@@ -41,7 +41,7 @@ public class TalendHtmlModelUtil {
 
     public static String TAG_OPTION = "option"; //$NON-NLS-1$
 
-    public static String TAG_IMG = "img"; //$NON-NLS-1$    
+    public static String TAG_IMG = "img"; //$NON-NLS-1$
 
     private static String TAG_PARAM = "param"; //$NON-NLS-1$
 

@@ -1,6 +1,6 @@
 // ============================================================================
 //
-// Copyright (C) 2006-2018 Talend Inc. - www.talend.com
+// Copyright (C) 2006-2019 Talend Inc. - www.talend.com
 //
 // This source code is available under agreement available at
 // %InstallDIR%\features\org.talend.rcp.branding.%PRODUCTNAME%\%PRODUCTNAME%license.txt
@@ -24,9 +24,9 @@ import org.talend.commons.ui.runtime.ws.WindowSystem;
 
 /**
  * DOC amaumont class global comment. Detailled comment <br/>
- * 
+ *
  * $Id: TableUtils.java 7183 2007-11-23 11:03:36Z amaumont $
- * 
+ *
  */
 public class TableUtils {
 
@@ -79,9 +79,9 @@ public class TableUtils {
     }
 
     /**
-     * 
+     *
      * DOC amaumont Comment method "getTableItemFromPosition".
-     * 
+     *
      * @param cursorPosition
      * @return
      */
@@ -102,7 +102,7 @@ public class TableUtils {
 
     /**
      * DOC amaumont Comment method "getCursorPositionFromTableOrigin".
-     * 
+     *
      * @param event
      * @return
      */
@@ -121,9 +121,9 @@ public class TableUtils {
     }
 
     /**
-     * 
+     *
      * DOC amaumont Comment method "getItemIndexWhereInsertFromPosition".
-     * 
+     *
      * @param table
      * @param cursorPosition
      * @return
@@ -155,7 +155,7 @@ public class TableUtils {
 
     /**
      * DOC amaumont Comment method "getTableItem".
-     * 
+     *
      * @param target
      */
     public static TableItem getTableItem(Table table, Object dataOfTableItem) {
@@ -169,7 +169,7 @@ public class TableUtils {
 
     /**
      * DOC amaumont Comment method "getTableItem".
-     * 
+     *
      * @param target
      */
     public static int getItemIndex(Table table, Object dataOfTableItem) {

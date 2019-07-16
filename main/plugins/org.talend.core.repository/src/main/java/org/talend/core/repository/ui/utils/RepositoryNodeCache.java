@@ -1,6 +1,6 @@
 // ============================================================================
 //
-// Copyright (C) 2006-2018 Talend Inc. - www.talend.com
+// Copyright (C) 2006-2019 Talend Inc. - www.talend.com
 //
 // This source code is available under agreement available at
 // %InstallDIR%\features\org.talend.rcp.branding.%PRODUCTNAME%\%PRODUCTNAME%license.txt
@@ -22,9 +22,9 @@ import org.talend.repository.model.IRepositoryNode.ENodeType;
  * Used to cache repository node and it's child folders
  */
 public class RepositoryNodeCache {
-    
+
     private IRepositoryNode repNode;
-    
+
     private Map<String, IRepositoryNode> folderCacheMap = new HashMap<String, IRepositoryNode>();
 
     public RepositoryNodeCache(IRepositoryNode repNode) {

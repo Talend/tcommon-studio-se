@@ -1,6 +1,6 @@
 // ============================================================================
 //
-// Copyright (C) 2006-2018 Talend Inc. - www.talend.com
+// Copyright (C) 2006-2019 Talend Inc. - www.talend.com
 //
 // This source code is available under agreement available at
 // %InstallDIR%\features\org.talend.rcp.branding.%PRODUCTNAME%\%PRODUCTNAME%license.txt
@@ -16,9 +16,9 @@ import org.talend.core.runtime.i18n.Messages;
 
 /**
  * Enum for available Code Languages in the application.
- * 
+ *
  * $Id: ECodeLanguage.java 38013 2010-03-05 14:21:59Z mhirt $
- * 
+ *
  */
 public enum ECodeLanguage {
     PERL("perl", "perl", "Perl"), //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
@@ -47,7 +47,7 @@ public enum ECodeLanguage {
 
     /**
      * Getter for extension.
-     * 
+     *
      * @return the extension
      */
     public String getExtension() {
@@ -56,7 +56,7 @@ public enum ECodeLanguage {
 
     /**
      * Sets the extension.
-     * 
+     *
      * @param extension the extension to set
      */
     public void setExtension(String extension) {
@@ -65,7 +65,7 @@ public enum ECodeLanguage {
 
     /**
      * Getter for name.
-     * 
+     *
      * @return the name
      */
     public String getName() {
@@ -74,7 +74,7 @@ public enum ECodeLanguage {
 
     /**
      * Sets the name.
-     * 
+     *
      * @param name the name to set
      */
     public void setName(String name) {

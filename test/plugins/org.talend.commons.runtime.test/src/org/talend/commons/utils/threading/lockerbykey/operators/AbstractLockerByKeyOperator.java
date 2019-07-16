@@ -1,6 +1,6 @@
 // ============================================================================
 //
-// Copyright (C) 2006-2018 Talend Inc. - www.talend.com
+// Copyright (C) 2006-2019 Talend Inc. - www.talend.com
 //
 // This source code is available under agreement available at
 // %InstallDIR%\features\org.talend.rcp.branding.%PRODUCTNAME%\%PRODUCTNAME%license.txt
@@ -34,7 +34,7 @@ public abstract class AbstractLockerByKeyOperator implements IThreadSafetyOperat
 
     /**
      * Getter for debug.
-     * 
+     *
      * @return the debug
      */
     public boolean isDebug() {
@@ -43,7 +43,7 @@ public abstract class AbstractLockerByKeyOperator implements IThreadSafetyOperat
 
     /**
      * Sets the debug.
-     * 
+     *
      * @param debug the debug to set
      */
     public void setDebug(boolean debug) {
@@ -52,7 +52,7 @@ public abstract class AbstractLockerByKeyOperator implements IThreadSafetyOperat
 
     /**
      * Sets the locker.
-     * 
+     *
      * @param locker the locker to set
      */
     public void setLocker(ILockerByKey locker) {
@@ -61,7 +61,7 @@ public abstract class AbstractLockerByKeyOperator implements IThreadSafetyOperat
 
     /**
      * Sets the nOperationsByOperator.
-     * 
+     *
      * @param nOperationsByOperator the nOperationsByOperator to set
      */
     public void setnOperationsByOperator(int nOperationsByOperator) {
@@ -71,7 +71,7 @@ public abstract class AbstractLockerByKeyOperator implements IThreadSafetyOperat
 
     /**
      * Sets the resultContainer.
-     * 
+     *
      * @param resultContainer the resultContainer to set
      */
     public void setResultContainer(ResultContainer resultContainer) {

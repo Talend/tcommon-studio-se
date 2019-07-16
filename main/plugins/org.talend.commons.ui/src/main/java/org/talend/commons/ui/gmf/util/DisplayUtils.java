@@ -1,6 +1,6 @@
 // ============================================================================
 //
-// Copyright (C) 2006-2018 Talend Inc. - www.talend.com
+// Copyright (C) 2006-2019 Talend Inc. - www.talend.com
 //
 // This source code is available under agreement available at
 // %InstallDIR%\features\org.talend.rcp.branding.%PRODUCTNAME%\%PRODUCTNAME%license.txt
@@ -20,10 +20,12 @@ import org.eclipse.swt.widgets.Shell;
 import org.eclipse.ui.IWorkbenchWindow;
 import org.eclipse.ui.PlatformUI;
 import org.talend.commons.exception.ExceptionHandler;
+import org.talend.commons.ui.i18n.Messages;
+import org.talend.commons.utils.system.EnvironmentUtils;
 
 /**
  * Utility methods to work with Display object
- * 
+ *
  * @author aboyko
  * @since 1.2
  */
@@ -32,7 +34,7 @@ public class DisplayUtils {
     /**
      * Returns a non-null instance of Display object. Tries to find the Display object for the current thread first and
      * if it fails tries to get: <li>Workbench display if the workbench running <li>Default display object
-     * 
+     *
      * @return non-null Display object
      * @since 1.2
      */
@@ -51,7 +53,7 @@ public class DisplayUtils {
      * <br/>
      * Attempts to return the default shell. If it cannot return the default shell, it returns the shell of the first
      * workbench window that has shell.
-     * 
+     *
      * @return The shell
      * @since 1.2
      */
@@ -106,7 +108,7 @@ public class DisplayUtils {
 
     /**
      * Clear the event queue
-     * 
+     *
      * @since 1.2
      */
     public static void clearEventLoop() {
@@ -119,7 +121,7 @@ public class DisplayUtils {
      * Simply run in a new created UI thread<br>
      * <br>
      * <b>NOTE!!</b> The runnable should be simple, can <b>NOT</b> call any UI element belongs to other UI thread.
-     * 
+     *
      * @param runnable
      * @throws Exception
      */
@@ -128,6 +130,13 @@ public class DisplayUtils {
     }
 
     public static void syncExecInNewUIThread(Runnable runnable, DeviceData deviceData) throws Exception {
+        /**
+         * Linux doesn't allow creating a display instance in a new thread after upgrading eclipse platform 4.10, we can
+         * remove this check if future eclipse version support it again
+         */
+        if (EnvironmentUtils.isLinuxUnixSystem()) {
+            throw new UnsupportedOperationException(Messages.getString("DisplayUtils.NotSupportedExceptionOnLinux"));//$NON-NLS-1$
+        }
         final Semaphore semaphore = new Semaphore(1, true);
         semaphore.acquire();
         Thread thread = new Thread(new Runnable() {

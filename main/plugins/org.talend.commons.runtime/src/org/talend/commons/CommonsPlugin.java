@@ -1,6 +1,6 @@
 // ============================================================================
 //
-// Copyright (C) 2006-2018 Talend Inc. - www.talend.com
+// Copyright (C) 2006-2019 Talend Inc. - www.talend.com
 //
 // This source code is available under agreement available at
 // %InstallDIR%\features\org.talend.rcp.branding.%PRODUCTNAME%\%PRODUCTNAME%license.txt
@@ -26,12 +26,13 @@ import org.osgi.framework.BundleContext;
 import org.osgi.framework.ServiceReference;
 import org.talend.commons.exception.ExceptionService;
 import org.talend.commons.runtime.debug.TalendDebugHandler;
+import org.talend.commons.utils.system.EclipseCommandLine;
 
 /**
  * Activator for Code Generator.
- * 
+ *
  * $Id$
- * 
+ *
  */
 public class CommonsPlugin implements BundleActivator {
 
@@ -101,10 +102,14 @@ public class CommonsPlugin implements BundleActivator {
         CommonsPlugin.headless = headless;
     }
 
+    public static boolean isScriptCmdlineMode() {
+        return System.getProperty(EclipseCommandLine.PROP_VM) == null;
+    }
+
     public static boolean isDebugMode() {
         return ArrayUtils.contains(Platform.getApplicationArgs(), TalendDebugHandler.TALEND_DEBUG);
     }
-    
+
     public static boolean isJUnitTest() {
         return Boolean.getBoolean("junit_test"); //$NON-NLS-1$
     }
@@ -113,7 +118,7 @@ public class CommonsPlugin implements BundleActivator {
     /**
      * Answer the file associated with name. This handles the case of running as a plugin and running standalone which
      * happens during testing.
-     * 
+     *
      * @param filename
      * @return File
      */
@@ -157,7 +162,7 @@ public class CommonsPlugin implements BundleActivator {
     public static void setESBMicorservice(boolean isESBMicorservice) {
         CommonsPlugin.isESBMicorservice = isESBMicorservice;
     }
-    
+
     public static void setMavenOfflineState(boolean state) {
     	InstanceScope.INSTANCE.getNode("org.eclipse.m2e.core").putBoolean("eclipse.m2.offline", state);
     }

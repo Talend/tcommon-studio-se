@@ -1,6 +1,6 @@
 // ============================================================================
 //
-// Copyright (C) 2006-2018 Talend Inc. - www.talend.com
+// Copyright (C) 2006-2019 Talend Inc. - www.talend.com
 //
 // This source code is available under agreement available at
 // %InstallDIR%\features\org.talend.rcp.branding.%PRODUCTNAME%\%PRODUCTNAME%license.txt
@@ -37,10 +37,10 @@ import org.talend.commons.ui.swt.extended.table.AbstractExtendedTableViewer;
 
 /**
  * DOC cantoine class global comment. Detailled comment <br/>
- * 
+ *
  * TGU same purpose as TargetSchemaToolbarEditorView2 but uses EMF model directly $Id:
  * TargetSchemaToolbarEditorView2.java,v 1.1 2006/08/02 19:43:45 cantoine Exp $
- * 
+ *
  */
 public class ExtendedToolbarView extends AbstractExtendedToolbar {
 
@@ -70,7 +70,7 @@ public class ExtendedToolbarView extends AbstractExtendedToolbar {
 
     /**
      * DOC amaumont MatadataToolbarEditor constructor comment.
-     * 
+     *
      * @param parent
      * @param style
      * @param targetSchemaEditorView
@@ -86,7 +86,7 @@ public class ExtendedToolbarView extends AbstractExtendedToolbar {
 
     /**
      * Override this method if needed to instanciate only the buttons of your choice.
-     * 
+     *
      */
     protected void createComponents(Composite parent) {
 
@@ -123,7 +123,7 @@ public class ExtendedToolbarView extends AbstractExtendedToolbar {
 
     /**
      * DOC YeXiaowei Comment method "createAddAllPushButton".
-     * 
+     *
      * @return
      */
     protected AddAllPushButton createAddAllPushButton() {
@@ -172,7 +172,7 @@ public class ExtendedToolbarView extends AbstractExtendedToolbar {
 
     /**
      * Getter for addButton.
-     * 
+     *
      * @return the addButton
      */
     public AddPushButton getAddButton() {
@@ -181,7 +181,7 @@ public class ExtendedToolbarView extends AbstractExtendedToolbar {
 
     /**
      * Getter for copyButton.
-     * 
+     *
      * @return the copyButton
      */
     public CopyPushButton getCopyButton() {
@@ -190,7 +190,7 @@ public class ExtendedToolbarView extends AbstractExtendedToolbar {
 
     /**
      * Getter for moveDownButton.
-     * 
+     *
      * @return the moveDownButton
      */
     public MoveDownPushButton getMoveDownButton() {
@@ -199,7 +199,7 @@ public class ExtendedToolbarView extends AbstractExtendedToolbar {
 
     /**
      * Getter for moveUpButton.
-     * 
+     *
      * @return the moveUpButton
      */
     public MoveUpPushButton getMoveUpButton() {
@@ -208,7 +208,7 @@ public class ExtendedToolbarView extends AbstractExtendedToolbar {
 
     /**
      * Getter for pastButton.
-     * 
+     *
      * @return the pastButton
      */
     public PastePushButton getPasteButton() {
@@ -217,7 +217,7 @@ public class ExtendedToolbarView extends AbstractExtendedToolbar {
 
     /**
      * Getter for removeButton.
-     * 
+     *
      * @return the removeButton
      */
     public RemovePushButton getRemoveButton() {
@@ -226,7 +226,7 @@ public class ExtendedToolbarView extends AbstractExtendedToolbar {
 
     /**
      * Getter for exportButton.
-     * 
+     *
      * @return the exportButton
      */
     public ExportPushButton getExportButton() {
@@ -235,7 +235,7 @@ public class ExtendedToolbarView extends AbstractExtendedToolbar {
 
     /**
      * Getter for importButton.
-     * 
+     *
      * @return the importButton
      */
     public ImportPushButton getImportButton() {
@@ -244,7 +244,7 @@ public class ExtendedToolbarView extends AbstractExtendedToolbar {
 
     /**
      * Getter for resetDBTypesButton.
-     * 
+     *
      * @return the resetDBTypesButton
      */
     public ResetDBTypesPushButton getResetDBTypesButton() {
@@ -257,7 +257,7 @@ public class ExtendedToolbarView extends AbstractExtendedToolbar {
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see org.talend.commons.ui.swt.advanced.dataeditor.AbstractExtendedToolbar#updateEnabledStateOfButtons()
      */
     @Override
@@ -274,7 +274,7 @@ public class ExtendedToolbarView extends AbstractExtendedToolbar {
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see org.talend.commons.ui.swt.advanced.dataeditor.AbstractExtendedToolbar#getButtons()
      */
     @Override
@@ -333,7 +333,7 @@ public class ExtendedToolbarView extends AbstractExtendedToolbar {
 
     /**
      * Getter for saveAsGenericSchemaButton.
-     * 
+     *
      * @return the saveAsGenericSchemaButton
      */
     public SaveAsGenericSchemaPushButton getSaveAsGenericSchemaButton() {
@@ -342,7 +342,7 @@ public class ExtendedToolbarView extends AbstractExtendedToolbar {
 
     /**
      * Getter for addallButton.
-     * 
+     *
      * @return the addallButton
      */
     public AddAllPushButton getAddallButton() {
@@ -350,4 +350,4 @@ public class ExtendedToolbarView extends AbstractExtendedToolbar {
     }
 }
 
-// 
+//

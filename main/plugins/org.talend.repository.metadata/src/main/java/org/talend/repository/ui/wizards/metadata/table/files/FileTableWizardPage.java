@@ -1,6 +1,6 @@
 // ============================================================================
 //
-// Copyright (C) 2006-2018 Talend Inc. - www.talend.com
+// Copyright (C) 2006-2019 Talend Inc. - www.talend.com
 //
 // This source code is available under agreement available at
 // %InstallDIR%\features\org.talend.rcp.branding.%PRODUCTNAME%\%PRODUCTNAME%license.txt
@@ -65,9 +65,9 @@ public class FileTableWizardPage extends WizardPage {
     /**
      * DatabaseWizardPage constructor (to instance IMetadataConnection OR MetaDataTableType). If MetaDataTableType
      * exist, it's an update of existing metadata else it's a new metadata.
-     * 
+     *
      * @param existingNames
-     * 
+     *
      * @param ISelection
      */
     public FileTableWizardPage(ConnectionItem connectionItem, MetadataTable metadataTable, boolean isRepositoryObjectEditable) {
@@ -79,7 +79,7 @@ public class FileTableWizardPage extends WizardPage {
 
     /**
      * Create the first composite, addComponentsAndControls and initialize TableWizardPage.
-     * 
+     *
      * @see IDialogPage#createControl(Composite)
      */
     public void createControl(final Composite parent) {
@@ -205,7 +205,7 @@ public class FileTableWizardPage extends WizardPage {
 
             /*
              * (non-Javadoc)
-             * 
+             *
              * @see
              * org.talend.core.model.metadata.builder.connection.util.ConnectionSwitch#caseWSDLSchemaConnection(org.
              * talend.core.model.metadata.builder.connection.WSDLSchemaConnection)

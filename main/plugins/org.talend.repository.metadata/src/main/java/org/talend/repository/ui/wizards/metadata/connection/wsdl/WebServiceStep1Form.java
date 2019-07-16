@@ -1,6 +1,6 @@
 // ============================================================================
 //
-// Copyright (C) 2006-2018 Talend Inc. - www.talend.com
+// Copyright (C) 2006-2019 Talend Inc. - www.talend.com
 //
 // This source code is available under agreement available at
 // %InstallDIR%\features\org.talend.rcp.branding.%PRODUCTNAME%\%PRODUCTNAME%license.txt
@@ -53,7 +53,7 @@ public class WebServiceStep1Form extends AbstractWSDLSchemaStepForm {
 
     /**
      * DOC Administrator WebServiceStep1Form constructor comment.
-     * 
+     *
      * @param parent
      * @param connectionItem
      * @param metadataTable
@@ -79,7 +79,7 @@ public class WebServiceStep1Form extends AbstractWSDLSchemaStepForm {
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see org.talend.repository.ui.swt.utils.AbstractForm#adaptFormToReadOnly()
      */
     @Override
@@ -100,7 +100,7 @@ public class WebServiceStep1Form extends AbstractWSDLSchemaStepForm {
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see org.talend.repository.ui.swt.utils.AbstractForm#addFields()
      */
     @Override
@@ -143,7 +143,7 @@ public class WebServiceStep1Form extends AbstractWSDLSchemaStepForm {
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see org.talend.repository.ui.swt.utils.AbstractForm#addFieldsListeners()
      */
     @Override
@@ -154,7 +154,7 @@ public class WebServiceStep1Form extends AbstractWSDLSchemaStepForm {
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see org.talend.repository.ui.swt.utils.AbstractForm#addUtilsButtonListeners()
      */
     @Override
@@ -165,7 +165,7 @@ public class WebServiceStep1Form extends AbstractWSDLSchemaStepForm {
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see org.talend.repository.ui.swt.utils.AbstractForm#checkFieldsValue()
      */
     @Override
@@ -195,7 +195,7 @@ public class WebServiceStep1Form extends AbstractWSDLSchemaStepForm {
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see org.talend.repository.ui.swt.utils.AbstractForm#initialize()
      */
     @Override

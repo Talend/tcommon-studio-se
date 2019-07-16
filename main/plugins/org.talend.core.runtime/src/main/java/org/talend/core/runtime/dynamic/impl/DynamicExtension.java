@@ -1,6 +1,6 @@
 // ============================================================================
 //
-// Copyright (C) 2006-2018 Talend Inc. - www.talend.com
+// Copyright (C) 2006-2019 Talend Inc. - www.talend.com
 //
 // This source code is available under agreement available at
 // %InstallDIR%\features\org.talend.rcp.branding.%PRODUCTNAME%\%PRODUCTNAME%license.txt
@@ -91,13 +91,13 @@ public class DynamicExtension extends AbstractDynamicElement implements IDynamic
     public static DynamicExtension fromXmlJson(JSONObject json) throws Exception {
 
         String jsonTagName = getTagNameFrom(json);
-        
+
         if (jsonTagName != null && !jsonTagName.isEmpty()) {
             if (!TAG_NAME.equals(jsonTagName)) {
                 throw new Exception(Messages.getString("DynamicElement.incorrectInstance", TAG_NAME, jsonTagName)); //$NON-NLS-1$
             }
         }
-        
+
         DynamicExtension dynamicExtension = new DynamicExtension();
 
         dynamicExtension.initAttributesFromXmlJson(json);
@@ -113,7 +113,7 @@ public class DynamicExtension extends AbstractDynamicElement implements IDynamic
         }
 
         return dynamicExtension;
-    
+
     }
 
 }

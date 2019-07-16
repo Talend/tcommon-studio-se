@@ -1,6 +1,6 @@
 // ============================================================================
 //
-// Copyright (C) 2006-2018 Talend Inc. - www.talend.com
+// Copyright (C) 2006-2019 Talend Inc. - www.talend.com
 //
 // This source code is available under agreement available at
 // %InstallDIR%\features\org.talend.rcp.branding.%PRODUCTNAME%\%PRODUCTNAME%license.txt
@@ -88,7 +88,7 @@ public abstract class AbstractComponentsProvider {
     /**
      * This method should return the original path where should be stored all the components in the provider.<br>
      * Means <bundle>/components.
-     * 
+     *
      * @return
      */
     protected abstract File getExternalComponentsLocation();
@@ -97,7 +97,7 @@ public abstract class AbstractComponentsProvider {
      * By default this one is the same as the getExternalComponentsLocation.<br>
      * But some components need to install components finally in another folder. Like the user components, these
      * components will be stored in the main provider instead.
-     * 
+     *
      * @return
      * @throws IOException
      */
@@ -111,7 +111,7 @@ public abstract class AbstractComponentsProvider {
 
     /**
      * DOC guanglong.du Comment method "getResourceBundle".
-     * 
+     *
      * @return
      */
     public ResourceBundle getResourceBundle(String label) {
@@ -122,7 +122,7 @@ public abstract class AbstractComponentsProvider {
 
     /**
      * Always false, except for components who are stored in the main provider (user or ecosystem components)
-     * 
+     *
      * @return
      */
     public boolean isUseLocalProvider() {

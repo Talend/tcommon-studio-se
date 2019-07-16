@@ -1,6 +1,6 @@
 // ============================================================================
 //
-// Copyright (C) 2006-2018 Talend Inc. - www.talend.com
+// Copyright (C) 2006-2019 Talend Inc. - www.talend.com
 //
 // This source code is available under agreement available at
 // %InstallDIR%\features\org.talend.rcp.branding.%PRODUCTNAME%\%PRODUCTNAME%license.txt
@@ -20,13 +20,13 @@ import org.eclipse.core.runtime.IProgressMonitor;
 
 /**
  * created by sgandon on 19 sept. 2013 Detailled comment
- * 
+ *
  */
 public class DownloadHelperWithProgress {
 
     /**
      * created by sgandon on 19 sept. 2013 Detailled comment
-     * 
+     *
      */
     protected final class DownloadListenerImplementation implements DownloadListener {
 
@@ -41,7 +41,7 @@ public class DownloadHelperWithProgress {
 
         /*
          * (non-Javadoc)
-         * 
+         *
          * @see org.talend.core.download.DownloadListener#downloadStart(int)
          */
         @Override
@@ -51,7 +51,7 @@ public class DownloadHelperWithProgress {
 
         /*
          * (non-Javadoc)
-         * 
+         *
          * @see org.talend.core.download.DownloadListener#downloadProgress(org.talend.core.download.DownloadHelper, int)
          */
         @Override
@@ -61,7 +61,7 @@ public class DownloadHelperWithProgress {
 
         /*
          * (non-Javadoc)
-         * 
+         *
          * @see org.talend.core.download.DownloadListener#downloadComplete()
          */
         @Override
@@ -77,7 +77,7 @@ public class DownloadHelperWithProgress {
 
     /**
      * download the content of the URL and save it into the destination file.
-     * 
+     *
      * @param componentUrl, url to download the data
      * @param destination, file destination
      * @param progressMonitor, to monitor the progress, must never be null
@@ -92,7 +92,7 @@ public class DownloadHelperWithProgress {
 
     /**
      * create a delegate helper that maintain the cancel state according to the monitor
-     * 
+     *
      * @param downloadProgress
      * @return
      */
@@ -101,7 +101,7 @@ public class DownloadHelperWithProgress {
 
             /*
              * (non-Javadoc)
-             * 
+             *
              * @see org.talend.core.download.DownloadHelper#isCancel()
              */
             @Override

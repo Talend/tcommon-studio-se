@@ -1,6 +1,6 @@
 // ============================================================================
 //
-// Copyright (C) 2006-2018 Talend Inc. - www.talend.com
+// Copyright (C) 2006-2019 Talend Inc. - www.talend.com
 //
 // This source code is available under agreement available at
 // %InstallDIR%\features\org.talend.rcp.branding.%PRODUCTNAME%\%PRODUCTNAME%license.txt
@@ -74,9 +74,9 @@ import org.w3c.dom.NodeList;
 
 /**
  * DOC smallet class global comment. Detailled comment <br/>
- * 
+ *
  * $Id: talend.epf 1 2006-09-29 17:06:40 +0000 (ven., 29 sept. 2006) nrousseau $
- * 
+ *
  */
 public class FilesUtils {
 
@@ -138,7 +138,7 @@ public class FilesUtils {
 
     /**
      * DOC nrousseau Comment method "copyFolder".
-     * 
+     *
      * @param source
      * @param target
      * @param emptyTargetBeforeCopy
@@ -374,7 +374,7 @@ public class FilesUtils {
 
     /**
      * DOC ycbai Comment method "getFiles".
-     * 
+     *
      * @param file
      * @param extension
      * @param excludedFile
@@ -408,7 +408,7 @@ public class FilesUtils {
 
     /**
      * DOC ycbai Comment method "getFileURLs".
-     * 
+     *
      * @param file
      * @param extension
      * @param excludedFile
@@ -429,7 +429,7 @@ public class FilesUtils {
 
     /**
      * DOC ycbai Comment method "getFileURLs".
-     * 
+     *
      * @param file
      * @return
      * @throws MalformedURLException
@@ -544,7 +544,7 @@ public class FilesUtils {
 
     /**
      * Load in a list all lines of the given file.
-     * 
+     *
      * @throws IOException
      */
     public static List<String> getContentLines(String filePath) throws IOException {
@@ -563,7 +563,7 @@ public class FilesUtils {
 
     /**
      * .
-     * 
+     *
      * @param path
      * @param pathIsFilePath if true the given path has a filename at last segment so this segment is not processed
      * @deprecated use instead {@link org.talend.utils.io.FilesUtils#createFoldersIfNotExists(String, boolean)}
@@ -594,7 +594,7 @@ public class FilesUtils {
 
     /**
      * DOC amaumont Comment method "removeDirectory".
-     * 
+     *
      * @param b
      */
     public static boolean removeFolder(String pathFolder, boolean recursiveRemove) {
@@ -607,7 +607,7 @@ public class FilesUtils {
 
     /**
      * DOC amaumont Comment method "removeFolder".
-     * 
+     *
      * @param current
      * @param removeRecursivly
      */
@@ -643,9 +643,9 @@ public class FilesUtils {
     }
 
     /**
-     * 
+     *
      * Method "extractPathFolderFromFilePath".
-     * 
+     *
      * @param filePath
      * @return
      * @deprecated use instead {@link org.talend.utils.io.FilesUtils#extractPathFolderFromFilePath(String)}
@@ -658,7 +658,7 @@ public class FilesUtils {
 
     /**
      * Unzip the component file to the user folder.
-     * 
+     *
      * @param zipFile The component zip file
      * @param targetFolder The user folder
      * @return
@@ -728,7 +728,7 @@ public class FilesUtils {
 
     /**
      * DOC sgandon Comment method "getAllFilesFromFolder".
-     * 
+     *
      * @param aFolder
      * @param fileList
      * @param filenameFilter
@@ -754,7 +754,7 @@ public class FilesUtils {
 
     /**
      * DOC according to the replace string map to migrate files of given folders from old content to new ones.
-     * 
+     *
      * @param migFolder folder to migrate
      * @param acceptFileExtentionNames extention name of the files which should to be migrated
      * @param replaceStringMap the replace string map {key=oldString, value=newString}
@@ -789,7 +789,7 @@ public class FilesUtils {
 
     /**
      * DOC according to the replace string map to migrate file from old content to new ones.
-     * 
+     *
      * @param sample
      * @param replaceStringMap
      * @param log
@@ -833,7 +833,7 @@ public class FilesUtils {
 
     /**
      * get all file from the folder.
-     * 
+     *
      * @param folder parrent folder
      * @param ext file's extention
      * @param recursive nested flag
@@ -919,7 +919,7 @@ public class FilesUtils {
     /**
      * copy the dirictory(include sub folders and files) from the source to the target, the copyed dirictory will be
      * under the target.
-     * 
+     *
      * @param source
      * @param target
      */
@@ -953,7 +953,7 @@ public class FilesUtils {
     /**
      * copy the dirictory(include sub folders and files, don't include ".svn" folders) from the source to the target,
      * the copyed dirictory will be under the target.
-     * 
+     *
      * @param source
      * @param target
      */
@@ -1024,7 +1024,7 @@ public class FilesUtils {
     }
 
     /**
-     * 
+     *
      * @param xmlFile
      * @return
      * @throws Exception
@@ -1038,9 +1038,9 @@ public class FilesUtils {
     }
 
     /**
-     * 
+     *
      * DOC qiongli Comment method "parse".
-     * 
+     *
      * @param file
      * @return
      * @throws Exception
@@ -1056,7 +1056,7 @@ public class FilesUtils {
     }
 
     /**
-     * 
+     *
      * @param xmlTree
      * @return
      */
@@ -1094,7 +1094,7 @@ public class FilesUtils {
 
     /**
      * rename the folder.
-     * 
+     *
      * @param srcfolder
      * @param targetfolder
      */
@@ -1121,7 +1121,7 @@ public class FilesUtils {
 
     /**
      * DOC xqliu Comment method "getAllFilesFromFolder".
-     * 
+     *
      * @param aFolder
      * @param filenameFilter
      * @return
@@ -1220,7 +1220,7 @@ public class FilesUtils {
         }
         return content;
     }
-    
+
     public static void writeContentToFile(String content, IFile file) {
         InputStream source = new ByteArrayInputStream(content.getBytes());
         try {

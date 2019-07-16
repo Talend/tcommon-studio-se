@@ -1,6 +1,6 @@
 // ============================================================================
 //
-// Copyright (C) 2006-2018 Talend Inc. - www.talend.com
+// Copyright (C) 2006-2019 Talend Inc. - www.talend.com
 //
 // This source code is available under agreement available at
 // %InstallDIR%\features\org.talend.rcp.branding.%PRODUCTNAME%\%PRODUCTNAME%license.txt
@@ -45,9 +45,9 @@ import org.w3c.dom.ls.LSSerializer;
 
 /**
  * DOC stephane class global comment. Detailled comment <br/>
- * 
+ *
  * $Id: talend.epf 1 2006-09-29 17:06:40Z nrousseau $
- * 
+ *
  */
 public final class FileUtils {
 
@@ -100,7 +100,7 @@ public final class FileUtils {
 
     /**
      * Method "checkBracketsInFile" checks whether the parentheses are well balanced on each line of the given file.
-     * 
+     *
      * @param path the path of the file to check
      * @return true when all lines contain well balanced parentheses.
      * @throws IOException
@@ -129,7 +129,7 @@ public final class FileUtils {
 
     /**
      * Iterate over a folder and append the files that match the filter to a list given in parameter.
-     * 
+     *
      * @param aFolder - the folder to iterate over.
      * @param fileList - the list to append into.
      * @param filenameFilter - the filename filter.
@@ -157,7 +157,7 @@ public final class FileUtils {
 
     /**
      * Iterate over a folder and append the files that match the filter to an empty list.
-     * 
+     *
      * @param aFolder - the folder to iterate over.
      * @param filenameFilter - the filename filter.
      * @return the list of files that match the filter.
@@ -171,7 +171,7 @@ public final class FileUtils {
     /**
      * Iterate over a folder and append the files that match the filters to an empty list. The filters are a Map where
      * the key is the file prefix
-     * 
+     *
      * @param aFolder - the folder to iterate over.
      * @param filterInfo - the filename filter.
      * @return the list of files that match the filter.
@@ -202,7 +202,7 @@ public final class FileUtils {
     /**
      * Iterates over a folder files (not recursive) and delete those for which the filename matches the condition given
      * in the {@link Function}
-     * 
+     *
      * @param folder the folder in which to delete the files
      * @param func a {@link Function} that will be used to filter on the files to delete, according to their name
      */
@@ -226,9 +226,9 @@ public final class FileUtils {
     }
 
     /**
-     * 
+     *
      * DOC ggu Comment method "createTmpFolder".
-     * 
+     *
      * @param prefix
      * @param suffix
      * @return
@@ -247,9 +247,9 @@ public final class FileUtils {
     }
 
     /**
-     * 
+     *
      * DOC ggu Comment method "createUserTmpFolder".
-     * 
+     *
      * @param folderName
      * @return
      */

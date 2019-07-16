@@ -1,6 +1,6 @@
 // ============================================================================
 //
-// Copyright (C) 2006-2018 Talend Inc. - www.talend.com
+// Copyright (C) 2006-2019 Talend Inc. - www.talend.com
 //
 // This source code is available under agreement available at
 // %InstallDIR%\features\org.talend.rcp.branding.%PRODUCTNAME%\%PRODUCTNAME%license.txt
@@ -102,7 +102,7 @@ import org.talend.cwm.helper.TaggedValueHelper;
 public class RepositoryToComponentProperty {
 
     public static Object getValue(Connection connection, String value, IMetadataTable table, String targetComponent, Map<Object, Object> contextMap) {
-        
+
         if (connection instanceof HL7Connection) {
             return getHL7Value((HL7Connection) connection, value);
         }
@@ -1458,7 +1458,7 @@ public class RepositoryToComponentProperty {
             return getAppropriateValue(connection, connection
                     .getValue(connection.getParameters().get(ConnParameterKeys.CONN_PARA_KEY_SSL_TRUST_STORE_PASSWORD), false));
         }
-        
+
         if (value.equals("NEED_CLIENT_AUTH") && EDatabaseTypeName.ORACLE_CUSTOM.getDisplayName().equals(databaseType)) {
             String message = connection.getParameters().get(ConnParameterKeys.CONN_PARA_KEY_NEED_CLIENT_AUTH);
             return Boolean.parseBoolean(message);

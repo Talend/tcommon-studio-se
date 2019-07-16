@@ -2,7 +2,7 @@
 //
 // Talend Community Edition
 //
-// Copyright (C) 2006-2018 Talend Inc. - www.talend.com
+// Copyright (C) 2006-2019 Talend Inc. - www.talend.com
 //
 // This library is free software; you can redistribute it and/or
 // modify it under the terms of the GNU Lesser General Public
@@ -32,15 +32,15 @@ import junit.framework.Assert;
 
 /**
  * DOC sgandon class global comment. Detailled comment <br/>
- * 
+ *
  * $Id: talend.epf 55206 2011-02-15 17:32:14Z mhirt $
- * 
+ *
  */
 public class EclipseCommandLineTest {
 
     static final String TALEND_PROJECT_TYPE_COMMAND = "-talendProjectType"; //$NON-NLS-1$
 
-    static final String TALEND_RESTART_COMMAND = "-talendRestart"; //$NON-NLS-1$        
+    static final String TALEND_RESTART_COMMAND = "-talendRestart"; //$NON-NLS-1$
 
     @Before
     public void resetProperties() {
@@ -146,7 +146,7 @@ public class EclipseCommandLineTest {
     /**
      * this recreates the Eclipse command line by add (or changing) the option -talendRestart false and removing the
      * -talendProjectType value
-     * 
+     *
      * @return
      */
     String buildRestartFalseCommandLine() {

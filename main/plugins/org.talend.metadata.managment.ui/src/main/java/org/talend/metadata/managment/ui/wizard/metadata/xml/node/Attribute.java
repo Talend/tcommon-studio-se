@@ -1,6 +1,6 @@
 // ============================================================================
 //
-// Copyright (C) 2006-2018 Talend Inc. - www.talend.com
+// Copyright (C) 2006-2019 Talend Inc. - www.talend.com
 //
 // This source code is available under agreement available at
 // %InstallDIR%\features\org.talend.rcp.branding.%PRODUCTNAME%\%PRODUCTNAME%license.txt
@@ -15,9 +15,9 @@ package org.talend.metadata.managment.ui.wizard.metadata.xml.node;
 
 /**
  * bqian XML attribute structure. <br/>
- * 
+ *
  * $Id: Attribute.java,v 1.1 2007/06/12 07:20:39 gke Exp $
- * 
+ *
  */
 public class Attribute extends FOXTreeNode {
 
@@ -36,7 +36,7 @@ public class Attribute extends FOXTreeNode {
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see org.talend.designer.fileoutputxml.data.FOXTreeNode#hasChildren()
      */
     @Override
@@ -46,7 +46,7 @@ public class Attribute extends FOXTreeNode {
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see org.talend.designer.fileoutputxml.data.FOXTreeNode#getValue()
      */
     @Override

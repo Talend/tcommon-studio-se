@@ -1,6 +1,6 @@
 // ============================================================================
 //
-// Copyright (C) 2006-2018 Talend Inc. - www.talend.com
+// Copyright (C) 2006-2019 Talend Inc. - www.talend.com
 //
 // This source code is available under agreement available at
 // %InstallDIR%\features\org.talend.rcp.branding.%PRODUCTNAME%\%PRODUCTNAME%license.txt
@@ -42,7 +42,7 @@ public class NexusDownloadHelperWithProgress extends DownloadHelperWithProgress 
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see org.talend.core.download.DownloadHelperWithProgress#download(java.net.URL, java.io.File,
      * org.eclipse.core.runtime.IProgressMonitor)
      */
@@ -119,7 +119,7 @@ public class NexusDownloadHelperWithProgress extends DownloadHelperWithProgress 
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see org.talend.core.download.DownloadHelperWithProgress#createDownloadHelperDelegate(org.talend.core.download.
      * DownloadHelperWithProgress.DownloadListenerImplementation)
      */
@@ -130,7 +130,7 @@ public class NexusDownloadHelperWithProgress extends DownloadHelperWithProgress 
 
             /*
              * (non-Javadoc)
-             * 
+             *
              * @see org.talend.core.download.DownloadHelper#isCancel()
              */
             @Override

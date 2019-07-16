@@ -1,6 +1,6 @@
 // ============================================================================
 //
-// Copyright (C) 2006-2018 Talend Inc. - www.talend.com
+// Copyright (C) 2006-2019 Talend Inc. - www.talend.com
 //
 // This source code is available under agreement available at
 // %InstallDIR%\features\org.talend.rcp.branding.%PRODUCTNAME%\%PRODUCTNAME%license.txt
@@ -19,9 +19,9 @@ import org.talend.commons.i18n.internal.Messages;
 
 /**
  * Implementation of exception handling strategy.<br/>
- * 
+ *
  * $Id: ExceptionHandler.java 7038 2007-11-15 14:05:48Z plegall $
- * 
+ *
  */
 public final class CommonExceptionHandler {
 
@@ -29,7 +29,7 @@ public final class CommonExceptionHandler {
 
     /**
      * Log message relative to ex param. Log level depends on exception type.
-     * 
+     *
      * @param ex - exception to log
      */
     public static void process(Throwable ex) {
@@ -54,7 +54,7 @@ public final class CommonExceptionHandler {
 
     /**
      * Return priority corresponding to the exception implementation.
-     * 
+     *
      * @param ex - the exception to evaluate priority
      * @return the priority corresponding to the exception implementation
      */

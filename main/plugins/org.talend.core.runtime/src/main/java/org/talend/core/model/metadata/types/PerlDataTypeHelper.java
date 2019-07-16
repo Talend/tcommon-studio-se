@@ -1,6 +1,6 @@
 // ============================================================================
 //
-// Copyright (C) 2006-2018 Talend Inc. - www.talend.com
+// Copyright (C) 2006-2019 Talend Inc. - www.talend.com
 //
 // This source code is available under agreement available at
 // %InstallDIR%\features\org.talend.rcp.branding.%PRODUCTNAME%\%PRODUCTNAME%license.txt
@@ -20,9 +20,9 @@ import org.apache.oro.text.regex.Perl5Matcher;
 /**
  * PerlDataTypeHelper is used to determine the Perl Type or the Talend Type of a string. TODO : This class don't
  * determine the type DATE.
- * 
+ *
  * $Id: PerlDataTypeHelper.java 38013 2010-03-05 14:21:59Z mhirt $
- * 
+ *
  */
 public final class PerlDataTypeHelper {
 
@@ -48,9 +48,9 @@ public final class PerlDataTypeHelper {
     private static final double DOUBLE_MAX = 1.7E308d;
 
     /**
-     * 
+     *
      * cLi Comment method "getNewTalendTypeOfValue".
-     * 
+     *
      * @return return new Perl Type, such as string, decimal, int
      */
     public static String getNewTalendTypeOfValue(final String value) {
@@ -68,7 +68,7 @@ public final class PerlDataTypeHelper {
 
     /**
      * getTypeOfValue return STRING, CHAR, NUMBER, LONG, FLOAT, DOUBLE.
-     * 
+     *
      * @param value
      * @return string or null if the value.equals("")
      * @deprecated
@@ -89,7 +89,7 @@ public final class PerlDataTypeHelper {
 
     /**
      * getTypeOfValue return String, Character, Integer, Long, Float, Double.
-     * 
+     *
      * @param value
      * @return string or null if the value.equals("")
      * @deprecated
@@ -154,11 +154,11 @@ public final class PerlDataTypeHelper {
                         }
                     }
                 } catch (Exception e) {
-                    // 
+                    //
                 }
 
             } catch (Exception e) {
-                // 
+                //
             }
         }
 
@@ -167,19 +167,19 @@ public final class PerlDataTypeHelper {
             Integer.parseInt(value);
             return "Integer"; //$NON-NLS-1$
         } catch (Exception e) {
-            // 
+            //
         }
         try {
             Long.parseLong(value);
             return "Long"; //$NON-NLS-1$
         } catch (Exception e) {
-            // 
+            //
         }
         try {
             Double.parseDouble(value);
             return "Double"; //$NON-NLS-1$
         } catch (Exception e) {
-            // 
+            //
         }
 
         // by default the type is string
@@ -188,7 +188,7 @@ public final class PerlDataTypeHelper {
 
     /**
      * getGlobalType compare two type and determine the common Type.
-     * 
+     *
      * @param type1
      * @param type2
      * @return

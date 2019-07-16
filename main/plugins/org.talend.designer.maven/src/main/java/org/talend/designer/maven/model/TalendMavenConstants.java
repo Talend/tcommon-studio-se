@@ -1,6 +1,6 @@
 // ============================================================================
 //
-// Copyright (C) 2006-2018 Talend Inc. - www.talend.com
+// Copyright (C) 2006-2019 Talend Inc. - www.talend.com
 //
 // This source code is available under agreement available at
 // %InstallDIR%\features\org.talend.rcp.branding.%PRODUCTNAME%\%PRODUCTNAME%license.txt
@@ -44,7 +44,7 @@ public interface TalendMavenConstants {
     static final String ASSEMBLY_FILE_NAME = IProjectSettingTemplateConstants.ASSEMBLY_FILE_NAME;
 
     /**
-     * 
+     *
      */
     static final String PREFIX_ARG = "-D";
 
@@ -117,7 +117,7 @@ public interface TalendMavenConstants {
     static final String PROFILE_INCLUDE_SURVIVORSHIP_RULES = "include-survivorship-rules";
 
     static final String PROFILE_CI_BUILDER = "ci-builder";
-    
+
     static final String PROFILE_SIGNATURE = "signature";
 
     static final String PROFILE_DOCKER = "docker";
@@ -129,13 +129,13 @@ public interface TalendMavenConstants {
     static final String ARG_MAIN_SKIP = "-Dmaven.main.skip=true";
 
     static final String ARG_SKIPTESTS = "-Dmaven.test.skip=true";
-    
+
     static final String ARG_TEST_FAILURE_IGNORE = "-Dmaven.test.failure.ignore=true";
-    
+
     static final String ARG_LICENSE_PATH = "-Dlicense.path";
-    
+
     static final String ARG_SESSION_ID = "-Dsession.id";
-    
+
     static final String ARG_SKIP_CI_BUILDER = "-Dci.builder.skip=true";
     /* same as the JavaUtils.JAVA_PROJECT_NAME */
     static final String PROJECT_NAME = ".Java";

@@ -2,7 +2,7 @@
 //
 // Talend Community Edition
 //
-// Copyright (C) 2006-2018 Talend Inc. - www.talend.com
+// Copyright (C) 2006-2019 Talend Inc. - www.talend.com
 //
 // This library is free software; you can redistribute it and/or
 // modify it under the terms of the GNU Lesser General Public
@@ -24,7 +24,7 @@ package preferences.test;
 
 /**
  * Class use to test javadoc renderer of templates.
- * 
+ *
  * Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Proin adipiscing neque ac felis. Duis a libero a nunc volutpat porta. Duis venenatis erat sed leo sollicitudin lacinia. Vivamus dapibus turpis. Proin et pede in purus lobortis congue. Donec sed felis eu ante euismod mattis. Suspendisse potenti. Nam mauris. Sed dolor dui, consequat a, convallis a, aliquet eu, nisl. Duis sit amet turpis eget quam consectetuer blandit. Nulla facilisi.
  *
  * Etiam nisi felis, posuere eu, malesuada eu, ullamcorper nec, ipsum. Nam arcu. Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia Curae; Fusce pharetra nisl. Nunc posuere libero quis metus. Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Duis dolor nibh, malesuada vulputate, ornare id, luctus commodo, nunc. Morbi vulputate, est ac lobortis facilisis, leo leo pretium nibh, a egestas ante enim sed velit. Nulla eros. Nunc semper tortor. Nullam ut eros a nisl eleifend commodo. Sed diam. Mauris vitae sapien. Nunc sapien mauris, tempor quis, nonummy sit amet, luctus at, dolor. Donec purus velit, convallis vitae, volutpat in, lacinia vitae, diam.

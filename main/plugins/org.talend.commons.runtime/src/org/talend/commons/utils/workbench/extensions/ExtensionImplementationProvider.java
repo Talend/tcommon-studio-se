@@ -1,6 +1,6 @@
 // ============================================================================
 //
-// Copyright (C) 2006-2018 Talend Inc. - www.talend.com
+// Copyright (C) 2006-2019 Talend Inc. - www.talend.com
 //
 // This source code is available under agreement available at
 // %InstallDIR%\features\org.talend.rcp.branding.%PRODUCTNAME%\%PRODUCTNAME%license.txt
@@ -25,9 +25,9 @@ import org.talend.commons.i18n.internal.Messages;
 
 /**
  * Utilities class uses to get implementation of extension points defined by plug-ins. <br/>
- * 
+ *
  * $Id$
- * 
+ *
  * @param <I> implementation of extension
  */
 public abstract class ExtensionImplementationProvider<I> {
@@ -44,7 +44,7 @@ public abstract class ExtensionImplementationProvider<I> {
 
     /**
      * DOC amaumont ExtensionImplementationProviders constructor comment.
-     * 
+     *
      * @param extensionPoint
      */
     public ExtensionImplementationProvider(IExtensionPointLimiter extensionPoint) {
@@ -53,7 +53,7 @@ public abstract class ExtensionImplementationProvider<I> {
 
     /**
      * DOC amaumont ExtensionImplementationProviders constructor comment.
-     * 
+     *
      * @param extensionPoint
      * @param plugInId filter extensions with this plugInId
      */
@@ -65,9 +65,9 @@ public abstract class ExtensionImplementationProvider<I> {
 
     /**
      * Method used to get implementation of a extension point that accepts a single plug-in.<br/>
-     * 
+     *
      * This method asserts that the param ext. point accept maximum one plug-in.<br/>
-     * 
+     *
      * @param <T> - the type of the implemantation returned
      * @param extensionPoint - the ext. point to searched implementation
      * @return the implementation found or <code>null</code> if none
@@ -79,7 +79,7 @@ public abstract class ExtensionImplementationProvider<I> {
 //                .getString("ExtensionImplementationProviders.ExtensionPointError")); //$NON-NLS-1$
 
         extensionPointLimiter.setMaxOcc(1);
-        
+
         List<T> list = new ClassExtensionImplementationProvider<T>(extensionPointLimiter, pluginId).createInstances();
 
         return (list.isEmpty() ? null : list.get(0));
@@ -88,7 +88,7 @@ public abstract class ExtensionImplementationProvider<I> {
     /**
      * Convenience method which call <code>getInstance(ISimpleExtensionPoint, String plugInId)</code> with
      * <code>null</code> as plugInId.<br/>
-     * 
+     *
      * @param <T> - the type of the implemantation returned
      * @param extensionPoint - the ext. point to searched implementation
      * @return a list (may be empty) of found plug-in using this ext. point
@@ -113,7 +113,7 @@ public abstract class ExtensionImplementationProvider<I> {
 
             /*
              * (non-Javadoc)
-             * 
+             *
              * @see org.talend.commons.utils.workbench.extensions.ExtensionImplementationProvider#createImplementation(org.eclipse.core.runtime.IExtension,
              * org.talend.commons.utils.workbench.extensions.IExtensionPointLimiter)
              */
@@ -130,7 +130,7 @@ public abstract class ExtensionImplementationProvider<I> {
 
     /**
      * Method used to get implementations of a extension point.<br/>
-     * 
+     *
      * @param <T> - the type of the implemantation returned
      * @param extPointLimiter - the ext. point to searched implementation
      * @param plugInId - use to search a specific plug-in. If <code>null</code>, all plug-in are returned.
@@ -145,7 +145,7 @@ public abstract class ExtensionImplementationProvider<I> {
 
     /**
      * Method used to get implementations of a extension point.<br/>
-     * 
+     *
      * @param <I> - the type of the implemantation returned
      * @param extensionPointLimiter - the ext. point to searched implementation
      * @param plugInId - use to search a specific plug-in. If <code>null</code>, all plug-in are returned.
@@ -198,7 +198,7 @@ public abstract class ExtensionImplementationProvider<I> {
 
     /**
      * DOC amaumont Comment method "createAndAddImplementation".
-     * 
+     *
      * @param toReturn
      * @param extension
      * @param extensionPointLimiter
@@ -215,7 +215,7 @@ public abstract class ExtensionImplementationProvider<I> {
 
     /**
      * Create and return an instance if needed else can return null.
-     * 
+     *
      * @param extension is the current extension
      * @param extensionPointLimiter is the current extensionPointLimiter
      * @param configurationElement is not null when a <code>configurationElementName</code> criteria is set in the

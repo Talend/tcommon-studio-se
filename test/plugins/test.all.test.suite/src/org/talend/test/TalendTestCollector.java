@@ -1,6 +1,6 @@
 // ============================================================================
 //
-// Copyright (C) 2006-2018 Talend Inc. - www.talend.com
+// Copyright (C) 2006-2019 Talend Inc. - www.talend.com
 //
 // This source code is available under agreement available at
 // %InstallDIR%\features\org.talend.rcp.branding.%PRODUCTNAME%\%PRODUCTNAME%license.txt
@@ -22,9 +22,9 @@ import test.common.BundleTestCollector;
 
 /**
  * DOC sgandon class global comment. Detailled comment <br/>
- * 
+ *
  * $Id: talend.epf 1 2006-09-29 17:06:40Z nrousseau $
- * 
+ *
  */
 public class TalendTestCollector {
 
@@ -33,7 +33,7 @@ public class TalendTestCollector {
     /**
      * System property key to specify string representing the prefix of plugin names to look for test classes, this may
      * be empty.
-     * 
+     *
      * @see GenericTestsJUnit4Suite.DEFAULT_PLUGIN_PREFIX
      */
     public static final String TEST_PLUGIN_PREFIX_SP = "test.plugin.prefix"; //$NON-NLS-1$
@@ -46,7 +46,7 @@ public class TalendTestCollector {
     /**
      * System property key to specify string representing the suffix of plugin names to look for test classes, this may
      * be empty
-     * 
+     *
      * @see GenericTestsJUnit4Suite.DEFAULT_PLUGIN_SUFFIX
      */
     public static final String TEST_PLUGIN_SUFFIX_SP = "test.plugin.suffix"; //$NON-NLS-1$
@@ -58,7 +58,7 @@ public class TalendTestCollector {
 
     /**
      * System property key to specify string representing the package prefix list value, this may be empty.
-     * 
+     *
      * @see GenericTestsJUnit4Suite.DEFAULT_PLUGIN_SUFFIX
      */
     public static final String TEST_PACKAGE_PREFIX_SP = "test.package.prefix"; //$NON-NLS-1$
@@ -70,7 +70,7 @@ public class TalendTestCollector {
 
     /**
      * System property key to specify string representing the filter to select test classes, you may use the * wildcard.
-     * 
+     *
      * @see GenericTestsJUnit4Suite.TEST_CLASS_FILTER_SP
      */
     public static final String TEST_CLASS_FILTER_SP = "test.class.filter"; //$NON-NLS-1$
@@ -83,7 +83,7 @@ public class TalendTestCollector {
     /**
      * System property key to specify a boolean (false or true) to use only Eclipse fragment instead of all plugins. the
      * default value is true
-     * 
+     *
      */
     public static final String ONLY_USE_FRAGMENT_SP = "test.only.fragments"; //$NON-NLS-1$
 

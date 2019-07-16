@@ -1,6 +1,6 @@
 // ============================================================================
 //
-// Copyright (C) 2006-2018 Talend Inc. - www.talend.com
+// Copyright (C) 2006-2019 Talend Inc. - www.talend.com
 //
 // This source code is available under agreement available at
 // %InstallDIR%\features\org.talend.rcp.branding.%PRODUCTNAME%\%PRODUCTNAME%license.txt
@@ -201,47 +201,47 @@ public class TalendQuoteUtilsTest {
         resultStr = TalendQuoteUtils.addPairQuotesIfNotExist(testStr);
         assertEquals("\"\\\"\"", resultStr);
     }
-    
+
     @Test
     public void testAddQuotesForComplexusString() {
         String input = "\"abcd\"";
         String pid = "test";
-        
+
         String resultStr = TalendQuoteUtils.addQuotesForComplexusString(input);
         assertTrue(input.equals(resultStr));
-        
+
         input = "\"abcd\""+ "+" + pid;
         resultStr = TalendQuoteUtils.addQuotesForComplexusString(input);
         assertTrue(input.equals(resultStr));
-        
+
         input = "abcd"+ "+" + pid;
         resultStr = TalendQuoteUtils.addQuotesForComplexusString(input);
         assertTrue("\"abcd+test\"".equals(resultStr));
-        
+
         input = pid + "+" + "\"abcd\"";
         resultStr = TalendQuoteUtils.addQuotesForComplexusString(input);
         assertTrue(input.equals(resultStr));
-        
+
         input = pid + "+" + "abcd";
         resultStr = TalendQuoteUtils.addQuotesForComplexusString(input);
         assertTrue("\"test+abcd\"".equals(resultStr));
-        
+
         input = pid + "+" + "\"abcd";
         resultStr = TalendQuoteUtils.addQuotesForComplexusString(input);
         assertTrue("\"test+\\\"abcd\"".equals(resultStr));
-        
+
         input = pid + "+" + "abcd\"";
         resultStr = TalendQuoteUtils.addQuotesForComplexusString(input);
         assertTrue("\"test+abcd\\\"\"".equals(resultStr));
-        
+
         input = "abcd\"";
         resultStr = TalendQuoteUtils.addQuotesForComplexusString(input);
         assertTrue("\"abcd\\\"\"".equals(resultStr));
-        
+
         input = "\"abcd";
         resultStr = TalendQuoteUtils.addQuotesForComplexusString(input);
         assertTrue("\"\\\"abcd\"".equals(resultStr));
-        
+
         input = "abcd";
         resultStr = TalendQuoteUtils.addQuotesForComplexusString(input);
         assertTrue("\"abcd\"".equals(resultStr));

@@ -1,6 +1,6 @@
 // ============================================================================
 //
-// Copyright (C) 2006-2018 Talend Inc. - www.talend.com
+// Copyright (C) 2006-2019 Talend Inc. - www.talend.com
 //
 // This source code is available under agreement available at
 // %InstallDIR%\features\org.talend.rcp.branding.%PRODUCTNAME%\%PRODUCTNAME%license.txt
@@ -21,16 +21,16 @@ import org.eclipse.swt.graphics.FontData;
 
 /**
  * Helper for fonts.
- * 
+ *
  * For now, it contains a method to get the font names.
- * 
+ *
  * @author wdiu, Wayne Diu
  * @canBeSeenBy %level1
  */
 public class FontHelper {
-    
+
     private static String[] FONT_NAMES;
-    
+
     /**
      * array of font sizes
      */
@@ -50,17 +50,17 @@ public class FontHelper {
         "36", //$NON-NLS-1$
         "48", //$NON-NLS-1$
         "72" }; //$NON-NLS-1$
-    
+
     /**
      * Return the font names for the default display.
-     *  
+     *
      * @return String array of font names as String objects for the default
-     * display. 
+     * display.
      */
     static public String[] getFontNames() {
         if (FONT_NAMES != null)
             return FONT_NAMES;
-        
+
         //add the names into a set to get a set of unique names
         Set<String> stringItems = new HashSet<String>();
         FontData[] fontDatas = DisplayUtils.getDisplay().getFontList(null, true);
@@ -69,25 +69,25 @@ public class FontHelper {
                 stringItems.add(fontDatas[i].getName());
             }
         }
-        
+
         //add strings into the array
         String strings[] = new String[stringItems.size()];
         int i = 0;
         for (String item : stringItems) {
             strings[i++] = item;
         }
-        
+
         //sort the array
         Arrays.sort(strings);
 
         return FONT_NAMES = strings;
     }
-    
+
     /**
      * @return - array of font sizes
      */
     public static final String[] getFontSizes(){
         return FONT_SIZES;
     }
-    
+
 }

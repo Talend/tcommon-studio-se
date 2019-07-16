@@ -1,6 +1,6 @@
 // ============================================================================
 //
-// Copyright (C) 2006-2018 Talend Inc. - www.talend.com
+// Copyright (C) 2006-2019 Talend Inc. - www.talend.com
 //
 // This source code is available under agreement available at
 // %InstallDIR%\features\org.talend.rcp.branding.%PRODUCTNAME%\%PRODUCTNAME%license.txt
@@ -25,9 +25,9 @@ import org.talend.metadata.managment.ui.i18n.Messages;
 
 /**
  * DOC amaumont class global comment. Detailled comment <br/>
- * 
+ *
  * $Id$
- * 
+ *
  * @param <R> result of preview
  */
 public abstract class StoppablePreviewLoader<R> {
@@ -45,7 +45,7 @@ public abstract class StoppablePreviewLoader<R> {
 
     /**
      * DOC amaumont StoppablePreviewLoader constructor comment.
-     * 
+     *
      * @param xmlFilePreview
      * @param infoLabel
      */
@@ -56,7 +56,7 @@ public abstract class StoppablePreviewLoader<R> {
 
     /**
      * DOC amaumont Comment method "load".
-     * 
+     *
      * @param processDescription
      */
     public void load(final ProcessDescription processDescription) {
@@ -101,7 +101,7 @@ public abstract class StoppablePreviewLoader<R> {
 
     /**
      * DOC amaumont Comment method "executePreviewHandlerEvent".
-     * 
+     *
      * @param event
      */
     private void executePreviewHandlerEvent(final PreviewHandlerEvent<R> event) {
@@ -186,14 +186,14 @@ public abstract class StoppablePreviewLoader<R> {
 
     /**
      * DOC amaumont Comment method "previewEnded".
-     * 
+     *
      * @param xmlArrayAsynchronousPreviewHandler<XmlArray>
      */
     protected abstract void previewEnded(R result);
 
     /**
      * DOC amaumont Comment method "previewInError".
-     * 
+     *
      * @param e
      */
     public abstract void previewInError(CoreException e);

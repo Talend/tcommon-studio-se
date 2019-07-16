@@ -1,6 +1,6 @@
 // ============================================================================
 //
-// Copyright (C) 2006-2018 Talend Inc. - www.talend.com
+// Copyright (C) 2006-2019 Talend Inc. - www.talend.com
 //
 // This source code is available under agreement available at
 // %InstallDIR%\features\org.talend.rcp.branding.%PRODUCTNAME%\%PRODUCTNAME%license.txt
@@ -27,14 +27,14 @@ import org.talend.commons.ui.swt.tableviewer.TableViewerCreator;
 import org.talend.commons.ui.swt.tableviewer.TableViewerCreatorColumn;
 
 /**
- * 
+ *
  * Default implementation of <code>ICellModifier</code> used by <code>TableViewerCreator</code>. This implementation
  * retrieve or modify values (using accesors defined in <code>TableViewerCreatorColumn</code>) on data object. <br/>
- * 
+ *
  * $Id: DefaultCellModifier.java 7038 2007-11-15 14:05:48Z plegall $
- * 
+ *
  * @see ICellModifier
- * 
+ *
  */
 public class DefaultCellModifier implements ICellModifier {
 
@@ -51,7 +51,7 @@ public class DefaultCellModifier implements ICellModifier {
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see org.eclipse.jface.viewers.ICellModifier#canModify(java.lang.Object, java.lang.String)
      */
     public boolean canModify(Object bean, String idColumn) {
@@ -64,7 +64,7 @@ public class DefaultCellModifier implements ICellModifier {
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see org.eclipse.jface.viewers.ICellModifier#getValue(java.lang.Object, java.lang.String)
      */
     @SuppressWarnings("unchecked")
@@ -99,7 +99,7 @@ public class DefaultCellModifier implements ICellModifier {
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see org.eclipse.jface.viewers.ICellModifier#modify(java.lang.Object, java.lang.String, java.lang.Object)
      */
     @SuppressWarnings("unchecked")
@@ -148,9 +148,9 @@ public class DefaultCellModifier implements ICellModifier {
     }
 
     /**
-     * 
+     *
      * DOC amaumont Comment method "fireCellEditorApplied".
-     * 
+     *
      * @param tableItem
      * @param bean
      * @param idColumn
@@ -180,7 +180,7 @@ public class DefaultCellModifier implements ICellModifier {
 
     /**
      * Getter for tableViewerCreator.
-     * 
+     *
      * @return the tableViewerCreator
      */
     public TableViewerCreatorNotModifiable getTableViewerCreator() {

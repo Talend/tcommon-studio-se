@@ -1,6 +1,6 @@
 // ============================================================================
 //
-// Copyright (C) 2006-2018 Talend Inc. - www.talend.com
+// Copyright (C) 2006-2019 Talend Inc. - www.talend.com
 //
 // This source code is available under agreement available at
 // %InstallDIR%\features\org.talend.rcp.branding.%PRODUCTNAME%\%PRODUCTNAME%license.txt
@@ -20,7 +20,7 @@ import org.talend.commons.ui.swt.extended.table.ExtendedTableModel;
 
 /**
  * DOC YeXiaowei class global comment. Detailled comment <br/>
- * 
+ *
  */
 public class ExtendTableAddAllCommand extends Command implements IExtendedTableCommand {
 
@@ -33,9 +33,9 @@ public class ExtendTableAddAllCommand extends Command implements IExtendedTableC
     public static final String LABEL = Messages.getString("ExtendedTableAddCommand.Add.Label"); //$NON-NLS-1$
 
     /**
-     * 
+     *
      * DOC YeXiaowei ExtendTableAddAllCommand constructor comment.
-     * 
+     *
      * @param extendedTable
      * @param beansToAdd
      * @param indexStartAdd
@@ -56,7 +56,7 @@ public class ExtendTableAddAllCommand extends Command implements IExtendedTableC
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see org.eclipse.gef.commands.Command#execute()
      */
     @Override
@@ -73,7 +73,7 @@ public class ExtendTableAddAllCommand extends Command implements IExtendedTableC
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see org.talend.commons.ui.command.CommonCommand#canUndo()
      */
     @Override
@@ -83,7 +83,7 @@ public class ExtendTableAddAllCommand extends Command implements IExtendedTableC
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see org.talend.commons.ui.command.CommonCommand#redo()
      */
     @Override
@@ -93,7 +93,7 @@ public class ExtendTableAddAllCommand extends Command implements IExtendedTableC
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see org.talend.commons.ui.command.CommonCommand#undo()
      */
     @SuppressWarnings("unchecked")//$NON-NLS-1$

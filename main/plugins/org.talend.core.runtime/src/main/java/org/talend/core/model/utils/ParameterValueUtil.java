@@ -1,6 +1,6 @@
 // ============================================================================
 //
-// Copyright (C) 2006-2018 Talend Inc. - www.talend.com
+// Copyright (C) 2006-2019 Talend Inc. - www.talend.com
 //
 // This source code is available under agreement available at
 // %InstallDIR%\features\org.talend.rcp.branding.%PRODUCTNAME%\%PRODUCTNAME%license.txt
@@ -41,11 +41,11 @@ import org.talend.core.model.process.EParameterFieldType;
 import org.talend.core.model.process.IContextParameter;
 import org.talend.core.model.process.IElementParameter;
 import org.talend.core.utils.TalendQuoteUtils;
+import org.talend.daikon.security.CryptoHelper;
 import org.talend.designer.core.model.utils.emf.talendfile.ContextParameterType;
 import org.talend.designer.core.model.utils.emf.talendfile.ElementParameterType;
 import org.talend.designer.core.model.utils.emf.talendfile.ElementValueType;
 import org.talend.repository.ProjectManager;
-import org.talend.utils.security.CryptoHelper;
 
 /**
  * cli class global comment. Detailled comment
@@ -77,21 +77,24 @@ public final class ParameterValueUtil {
                 }
             }
         } else if (param.getValue() instanceof List) { // for TABLE
-            List<Map<String, Object>> tableValues = (List<Map<String, Object>>) param.getValue();
-            for (Map<String, Object> line : tableValues) {
-                for (String key : line.keySet()) {
-                    Object cellValue = line.get(key);
-                    if (cellValue instanceof String) { // cell is text so
-                        // rename data if
-                        // needed
-                        String value = (String) cellValue;
-                        if (value.contains(oldName)) {
-                            // line.put(key, value.replaceAll(oldName,
-                            // newName));
-                            // String newValue = renameValues(value, oldName, newName, flag);
-                            String newValue = splitQueryData(oldName, newName, value);
-                            if (!value.equals(newValue)) {
-                                line.put(key, newValue);
+            List tableValues = (List) param.getValue();
+            for (Object current : tableValues) {
+                if (current != null && current instanceof Map) {
+                    Map<String, Object> line = (Map<String, Object>) current;
+                    for (String key : line.keySet()) {
+                        Object cellValue = line.get(key);
+                        if (cellValue instanceof String) { // cell is text so
+                            // rename data if
+                            // needed
+                            String value = (String) cellValue;
+                            if (value.contains(oldName)) {
+                                // line.put(key, value.replaceAll(oldName,
+                                // newName));
+                                // String newValue = renameValues(value, oldName, newName, flag);
+                                String newValue = splitQueryData(oldName, newName, value);
+                                if (!value.equals(newValue)) {
+                                    line.put(key, newValue);
+                                }
                             }
                         }
                     }
@@ -489,7 +492,7 @@ public final class ParameterValueUtil {
 
         /*
          * (non-Javadoc)
-         * 
+         *
          * @see java.lang.Object#toString()
          */
         @Override
@@ -503,7 +506,7 @@ public final class ParameterValueUtil {
 
     /**
      * DOC cmeng Comment method "doVaribleReplace".
-     * 
+     *
      * @param oldName
      * @param newName
      * @param value
@@ -619,7 +622,7 @@ public final class ParameterValueUtil {
 
     /**
      * DOC cmeng Comment method "isEscapeSequence".
-     * 
+     *
      * @param value
      * @param i
      * @return
@@ -721,13 +724,22 @@ public final class ParameterValueUtil {
                 return true;
             }
         } else if (param.getValue() instanceof List) { // for TABLE
-            List<Map<String, Object>> tableValues = (List<Map<String, Object>>) param.getValue();
-            for (Map<String, Object> line : tableValues) {
-                for (String key : line.keySet()) {
-                    Object cellValue = line.get(key);
-                    if (cellValue instanceof String) { // cell is text so
-                        // test data
-                        if (ParameterValueUtil.valueContains((String) cellValue, name)) {
+            List tableValues = (List) param.getValue();
+            for (Object current : tableValues) {
+                if (current != null) {
+                    if (current instanceof Map) {
+                        Map<String, Object> line = (Map<String, Object>) current;
+                        for (String key : line.keySet()) {
+                            Object cellValue = line.get(key);
+                            if (cellValue instanceof String) { // cell is text so
+                                // test data
+                                if (ParameterValueUtil.valueContains((String) cellValue, name)) {
+                                    return true;
+                                }
+                            }
+                        }
+                    } else if (current instanceof String) {
+                        if (ParameterValueUtil.valueContains((String) current, name)) {
                             return true;
                         }
                     }
@@ -900,7 +912,7 @@ public final class ParameterValueUtil {
 
     /**
      * add \ before \ and " in the string.
-     * 
+     *
      * @param str
      * @return
      */

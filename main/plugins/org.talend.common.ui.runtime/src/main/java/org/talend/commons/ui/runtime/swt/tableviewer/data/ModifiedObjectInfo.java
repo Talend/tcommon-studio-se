@@ -1,6 +1,6 @@
 // ============================================================================
 //
-// Copyright (C) 2006-2018 Talend Inc. - www.talend.com
+// Copyright (C) 2006-2019 Talend Inc. - www.talend.com
 //
 // This source code is available under agreement available at
 // %InstallDIR%\features\org.talend.rcp.branding.%PRODUCTNAME%\%PRODUCTNAME%license.txt
@@ -16,9 +16,9 @@ import org.talend.commons.ui.runtime.swt.tableviewer.TableViewerCreatorColumnNot
 
 /**
  * DOC amaumont class global comment. Detailled comment <br/>
- * 
+ *
  * $Id: ModifiedObjectInfo.java 7038 2007-11-15 14:05:48Z plegall $
- * 
+ *
  * @param <O> The object type which is modified in your list
  */
 public class ModifiedObjectInfo<O> {
@@ -96,7 +96,7 @@ public class ModifiedObjectInfo<O> {
 
     /**
      * DOC amaumont Comment method "setCurrentModifiedIndex".
-     * 
+     *
      * @param i
      */
     public void setCurrentModifiedIndex(int currentModifiedIndex) {

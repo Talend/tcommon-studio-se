@@ -1,6 +1,6 @@
 // ============================================================================
 //
-// Copyright (C) 2006-2018 Talend Inc. - www.talend.com
+// Copyright (C) 2006-2019 Talend Inc. - www.talend.com
 //
 // This source code is available under agreement available at
 // %InstallDIR%\features\org.talend.rcp.branding.%PRODUCTNAME%\%PRODUCTNAME%license.txt
@@ -18,9 +18,9 @@ import org.w3c.dom.Node;
 
 /**
  * Content proposal based on a IContextParameter. <br/>
- * 
+ *
  * $Id: EntryContentProposal.java 1 2006-09-29 17:06:40 +0000 (ven., 29 sept. 2006) nrousseau $
- * 
+ *
  */
 public class XPathContentProposal implements IContentProposal {
 
@@ -36,7 +36,7 @@ public class XPathContentProposal implements IContentProposal {
 
     /**
      * Constructs a new ContextParameterProposal.
-     * 
+     *
      * @param node
      */
     public XPathContentProposal(Node node) {
@@ -46,7 +46,7 @@ public class XPathContentProposal implements IContentProposal {
 
     /**
      * Constructs a new ContextParameterProposal.
-     * 
+     *
      * @param node
      */
     public XPathContentProposal(String comment) {
@@ -56,7 +56,7 @@ public class XPathContentProposal implements IContentProposal {
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see org.eclipse.jface.fieldassist.IContentProposal#getContent()
      */
     public String getContent() {
@@ -70,7 +70,7 @@ public class XPathContentProposal implements IContentProposal {
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see org.eclipse.jface.fieldassist.IContentProposal#getCursorPosition()
      */
     public int getCursorPosition() {
@@ -79,7 +79,7 @@ public class XPathContentProposal implements IContentProposal {
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see org.eclipse.jface.fieldassist.IContentProposal#getDescription()
      */
     public String getDescription() {
@@ -96,7 +96,7 @@ public class XPathContentProposal implements IContentProposal {
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see org.eclipse.jface.fieldassist.IContentProposal#getLabel()
      */
     public String getLabel() {
@@ -121,7 +121,7 @@ public class XPathContentProposal implements IContentProposal {
 
     /**
      * Getter for relative.
-     * 
+     *
      * @return the relative
      */
     public boolean isRelative() {
@@ -130,7 +130,7 @@ public class XPathContentProposal implements IContentProposal {
 
     /**
      * Sets the relative.
-     * 
+     *
      * @param relative the relative to set
      */
     public void setRelative(boolean relative) {
@@ -139,7 +139,7 @@ public class XPathContentProposal implements IContentProposal {
 
     /**
      * Getter for startOfExpression.
-     * 
+     *
      * @return the startOfExpression
      */
     public boolean isFirstRelativeNode() {
@@ -148,7 +148,7 @@ public class XPathContentProposal implements IContentProposal {
 
     /**
      * Sets the startOfExpression.
-     * 
+     *
      * @param startOfExpression the startOfExpression to set
      */
     public void setFirstRelativeNode(boolean startOfExpression) {

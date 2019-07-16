@@ -1,6 +1,6 @@
 // ============================================================================
 //
-// Copyright (C) 2006-2018 Talend Inc. - www.talend.com
+// Copyright (C) 2006-2019 Talend Inc. - www.talend.com
 //
 // This source code is available under agreement available at
 // %InstallDIR%\features\org.talend.rcp.branding.%PRODUCTNAME%\%PRODUCTNAME%license.txt
@@ -26,7 +26,7 @@ import org.talend.commons.ui.swt.tableviewer.TableViewerCreator;
 
 /**
  * DOC amaumont class global comment. Detailled comment <br/>
- * 
+ *
  * @param <B> beans
  */
 public abstract class AbstractPreferenceTableEditorView<B> extends FieldEditor {
@@ -37,7 +37,7 @@ public abstract class AbstractPreferenceTableEditorView<B> extends FieldEditor {
 
     /**
      * DOC amaumont AbstractPreferenceTableEditor constructor comment.
-     * 
+     *
      * @param name
      * @param labelText
      * @param parent
@@ -69,7 +69,7 @@ public abstract class AbstractPreferenceTableEditorView<B> extends FieldEditor {
 
     /**
      * DOC amaumont Comment method "initToolBar".
-     * 
+     *
      * @param extendedTableViewier
      * @return
      */
@@ -88,7 +88,7 @@ public abstract class AbstractPreferenceTableEditorView<B> extends FieldEditor {
 
     /**
      * DOC amaumont Comment method "loadData".
-     * 
+     *
      * @param stringList
      */
     private void loadData(String stringList) {
@@ -122,7 +122,7 @@ public abstract class AbstractPreferenceTableEditorView<B> extends FieldEditor {
 
     /**
      * DOC amaumont Comment method "getList".
-     * 
+     *
      * @return
      */
     private List<B> getList() {

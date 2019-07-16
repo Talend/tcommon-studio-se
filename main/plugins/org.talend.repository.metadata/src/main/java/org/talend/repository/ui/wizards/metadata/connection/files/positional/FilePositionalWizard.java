@@ -1,6 +1,6 @@
 // ============================================================================
 //
-// Copyright (C) 2006-2018 Talend Inc. - www.talend.com
+// Copyright (C) 2006-2019 Talend Inc. - www.talend.com
 //
 // This source code is available under agreement available at
 // %InstallDIR%\features\org.talend.rcp.branding.%PRODUCTNAME%\%PRODUCTNAME%license.txt
@@ -89,7 +89,7 @@ public class FilePositionalWizard extends CheckLastVersionRepositoryWizard imple
 
     /**
      * Sets the isToolbar.
-     * 
+     *
      * @param isToolbar the isToolbar to set
      */
     public void setToolbar(boolean isToolbar) {
@@ -98,7 +98,7 @@ public class FilePositionalWizard extends CheckLastVersionRepositoryWizard imple
 
     /**
      * Constructor for FileWizard.
-     * 
+     *
      * @param workbench
      * @param selection
      * @param strings
@@ -371,7 +371,7 @@ public class FilePositionalWizard extends CheckLastVersionRepositoryWizard imple
 
     /**
      * We will accept the selection in the workbench to see if we can initialize from it.
-     * 
+     *
      * @see IWorkbenchWizard#init(IWorkbench, IStructuredSelection)
      */
     @Override
@@ -381,7 +381,7 @@ public class FilePositionalWizard extends CheckLastVersionRepositoryWizard imple
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see org.talend.repository.ui.wizards.RepositoryWizard#getConnectionItem()
      */
     @Override

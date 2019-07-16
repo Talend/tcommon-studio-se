@@ -1,6 +1,6 @@
 // ============================================================================
 //
-// Copyright (C) 2006-2018 Talend Inc. - www.talend.com
+// Copyright (C) 2006-2019 Talend Inc. - www.talend.com
 //
 // This source code is available under agreement available at
 // %InstallDIR%\features\org.talend.rcp.branding.%PRODUCTNAME%\%PRODUCTNAME%license.txt
@@ -49,7 +49,7 @@ import orgomg.cwm.resource.relational.Schema;
 
 /**
  * @author scorreia
- * 
+ *
  * Utility class for handling (Td)Columns.
  */
 public final class ColumnHelper {
@@ -61,7 +61,7 @@ public final class ColumnHelper {
 
     /**
      * Method "createColumn" creates a column with the given name.
-     * 
+     *
      * @param name the name of the column
      * @return the created column.
      * @deprecated use createTdColumn() instead
@@ -73,7 +73,7 @@ public final class ColumnHelper {
 
     /**
      * Method "createColumn" creates a column with the given name.
-     * 
+     *
      * @param name the name of the column
      * @return the created column.
      */
@@ -86,7 +86,7 @@ public final class ColumnHelper {
 
     /**
      * Method "getColumns" returns the columns that are in the list.
-     * 
+     *
      * @param elements a list with various elements
      * @return the list of TdColumn contained in the given list
      */
@@ -105,7 +105,7 @@ public final class ColumnHelper {
 
     /**
      * Method "getColumnNames".
-     * 
+     *
      * @param columnSet
      * @return the list of column names (with their table names specified)
      */
@@ -116,7 +116,7 @@ public final class ColumnHelper {
 
     /**
      * Method "getColumnNames".
-     * 
+     *
      * @param columnSet
      * @return the list of column names (with their table names specified)
      */
@@ -132,7 +132,7 @@ public final class ColumnHelper {
 
     /**
      * Method "getFullName" the name of the column with the table (or view) name in front of it. E.g. "Table.TdColumn".
-     * 
+     *
      * @param column
      * @return the name of the column or null
      */
@@ -146,7 +146,7 @@ public final class ColumnHelper {
 
     /**
      * Method "getColumnSetFulName" the name of the container of the column. E.g. a table or a view.
-     * 
+     *
      * @param column a column
      * @return the name of the container of the column or null
      * @deprecated use getTableFullName()
@@ -158,7 +158,7 @@ public final class ColumnHelper {
 
     /**
      * The name of the container of the column. E.g. a table or a view.
-     * 
+     *
      * @param column a column
      * @return the name of the container of the column or null
      */
@@ -169,7 +169,7 @@ public final class ColumnHelper {
 
     /**
      * Method "getColumnSetOwner".
-     * 
+     *
      * @param column
      * @return the owner of the given column or null
      * @deprecated use {@link #getColumnOwnerAsColumnSet(ModelElement)}
@@ -181,7 +181,7 @@ public final class ColumnHelper {
 
     /**
      * return the owner of the column or null if none avaialble
-     * 
+     *
      * @param column to find the owner of
      * @return the owner of the given column or null
      */
@@ -202,7 +202,7 @@ public final class ColumnHelper {
 
     /**
      * return the owner of the column or null if none avaialble ADD yyi 2011-03-01 17871
-     * 
+     *
      * @param column to find the owner of
      * @return the owner of the given column or null
      */
@@ -223,7 +223,7 @@ public final class ColumnHelper {
     /**
      * return the table owning this colum if the is any or null.<br>
      * Null result may mean the colum has no owner or the owner of the column is not a table (it may be a view)
-     * 
+     *
      * @param column colum to fing the owner of, never null
      * @return the table containing this column or null
      */
@@ -235,7 +235,7 @@ public final class ColumnHelper {
     /**
      * return the metadata table owning this colum if the is any or null.<br>
      * Null result may mean the colum has no owner
-     * 
+     *
      * @param metadataColumnImpl
      * @return the table owner or null
      */
@@ -249,7 +249,7 @@ public final class ColumnHelper {
 
     /**
      * set the column to the given column set
-     * 
+     *
      * @param column the colum to be owned (never null)
      * @param colSet the Table or View to be the owner of the column may be null
      */
@@ -260,7 +260,7 @@ public final class ColumnHelper {
 
     /**
      * return the default value for the given column or null if none.<br>
-     * 
+     *
      * @param column a column
      * @return the default value of a column or null
      */
@@ -272,7 +272,7 @@ public final class ColumnHelper {
 
     /**
      * set the default value for the column
-     * 
+     *
      * @param column a column
      * @return the default value of a column or null
      */
@@ -288,7 +288,7 @@ public final class ColumnHelper {
 
     /**
      * Method "isPrimaryKey".
-     * 
+     *
      * @param column a column
      * @return true if the given column is a primary key
      */
@@ -299,7 +299,7 @@ public final class ColumnHelper {
 
     /**
      * return the PrimaryKey object related to this column
-     * 
+     *
      * @param column a column
      * @return the primary key object if this column is a primary key or null
      */
@@ -319,7 +319,7 @@ public final class ColumnHelper {
 
     /**
      * Method "removePrimaryKey".
-     * 
+     *
      * @param column
      * @return the primary key object or null
      * @deprecated use removeColumnFromTablePrimaryKey instead
@@ -335,9 +335,9 @@ public final class ColumnHelper {
     }
 
     /**
-     * 
+     *
      * DOC mzhao Comment method "isForeignKey",Feature 8690.
-     * 
+     *
      * @param column
      * @return
      */
@@ -347,9 +347,9 @@ public final class ColumnHelper {
     }
 
     /**
-     * 
+     *
      * DOC mzhao Comment method "getForeignKey",Feature 8690.
-     * 
+     *
      * @param column
      * @return
      */
@@ -370,7 +370,7 @@ public final class ColumnHelper {
 
     /**
      * Method "removeForeignKey".
-     * 
+     *
      * @param column
      * @return the removed Foreign key or null
      */
@@ -390,7 +390,7 @@ public final class ColumnHelper {
 
     /**
      * DOC bZhou Comment method "isFromSameConnection".
-     * 
+     *
      * @param columns
      * @return
      */
@@ -408,7 +408,7 @@ public final class ColumnHelper {
 
     /**
      * DOC bZhou Comment method "isFromSameTable".
-     * 
+     *
      * @param columns
      * @return
      */
@@ -425,7 +425,7 @@ public final class ColumnHelper {
 
     /**
      * DOC bZhou Comment method "getColumnFilter".
-     * 
+     *
      * @param element
      * @return
      */
@@ -440,7 +440,7 @@ public final class ColumnHelper {
 
     /**
      * DOC bZhou Comment method "setColumnFilter".
-     * 
+     *
      * @param filter
      * @param element
      */
@@ -450,7 +450,7 @@ public final class ColumnHelper {
 
     /**
      * DOC bZhou Comment method "getComment".
-     * 
+     *
      * @param element
      * @return
      */
@@ -464,7 +464,7 @@ public final class ColumnHelper {
 
     /**
      * DOC bZhou Comment method "setComment".
-     * 
+     *
      * @param comment
      * @param element
      */
@@ -476,7 +476,7 @@ public final class ColumnHelper {
      * This checks whether the column belongs to the primary key or not, if yes then do nothing. If it is not a primary
      * key, creates a PrimaryKey instance with no name (null), assign it to the column and to the associated table
      * Therefore This method must be called once the colSet is associated to a Table
-     * 
+     *
      * @param column the column to be considered a primary key
      */
     public static void addColumnToTablePrimaryKey(TdColumn column) {
@@ -496,7 +496,7 @@ public final class ColumnHelper {
 
     /**
      * This adds the primary key to the colum key references
-     * 
+     *
      * @param key the key to reference
      * @param column the column that need reference the key
      */
@@ -506,7 +506,7 @@ public final class ColumnHelper {
 
     /**
      * This removes the primary key from the colum key references
-     * 
+     *
      * @param key the key to reference
      * @param column the column that need reference the key
      */
@@ -516,7 +516,7 @@ public final class ColumnHelper {
 
     /**
      * This adds the foreign key to the colum key references
-     * 
+     *
      * @param key the key to reference
      * @param column the column that need reference the key
      */
@@ -526,7 +526,7 @@ public final class ColumnHelper {
 
     /**
      * This removes the foreign key from the colum key references
-     * 
+     *
      * @param key the key to reference
      * @param column the column that need reference the key
      */
@@ -537,7 +537,7 @@ public final class ColumnHelper {
     /**
      * Removes the column from the foreign key. This removes the reference to the foreign key in the column and removes
      * the foreign key ref from the table if it is the last one. <br>
-     * 
+     *
      * @param column the column to be removed from the foreign key
      */
     public static void removeColumnFromTableForeignKey(TdColumn column) {
@@ -563,7 +563,7 @@ public final class ColumnHelper {
      * Removes the column from the primary key. This removes the reference to the primary key in the column and removes
      * the Primary key ref from the table if it is the last one. <br>
      * //TODO handle the possible foreign keys that may be pointing to this primary key
-     * 
+     *
      * @param column the column to be removed from the primary key
      */
     public static void removeColumnFromTablePrimaryKey(TdColumn column) {
@@ -598,9 +598,9 @@ public final class ColumnHelper {
     }
 
     /**
-     * 
+     *
      * Get the column index by MetadataColumn.
-     * 
+     *
      * @param mColumn
      * @return
      */
@@ -620,11 +620,11 @@ public final class ColumnHelper {
     }
 
     /**
-     * 
+     *
      * Given connection and column set name, return a list of TdColumn.<BR>
      * Note that this method won't connect database, but iterate each existing element (catalog, schema,table) in
      * connection in order to get the columns.
-     * 
+     *
      * @param connection
      * @param columnSetName
      * @return
@@ -688,7 +688,7 @@ public final class ColumnHelper {
 
     /**
      * Check whether all of columns is belong to same table
-     * 
+     *
      * @param columns
      */
     public static boolean checkSameTable(ModelElement[] columns) {

@@ -1,6 +1,6 @@
 // ============================================================================
 //
-// Copyright (C) 2006-2018 Talend Inc. - www.talend.com
+// Copyright (C) 2006-2019 Talend Inc. - www.talend.com
 //
 // This source code is available under agreement available at
 // %InstallDIR%\features\org.talend.rcp.branding.%PRODUCTNAME%\%PRODUCTNAME%license.txt
@@ -14,9 +14,9 @@ package org.talend.core.model.process;
 
 /**
  * DOC nrousseau ProcessController class global comment. Detailled comment <br/>
- * 
+ *
  * $Id: talend-code-templates.xml 1 2006-09-29 17:06:40 +0000 (ven., 29 sept. 2006) nrousseau $
- * 
+ *
  */
 public class BasicJobInfo {
 
@@ -51,7 +51,7 @@ public class BasicJobInfo {
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see org.talend.designer.runprocess.IJobInfo#getContextName()
      */
     public String getContextName() {
@@ -60,7 +60,7 @@ public class BasicJobInfo {
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see org.talend.designer.runprocess.IJobInfo#setContextName(java.lang.String)
      */
     public void setContextName(String contextName) {
@@ -69,7 +69,7 @@ public class BasicJobInfo {
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see org.talend.designer.runprocess.IJobInfo#getJobId()
      */
     public String getJobId() {
@@ -78,7 +78,7 @@ public class BasicJobInfo {
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see org.talend.designer.runprocess.IJobInfo#setJobId(java.lang.String)
      */
     public void setJobId(String jobId) {
@@ -87,7 +87,7 @@ public class BasicJobInfo {
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see org.talend.designer.runprocess.IJobInfo#getProcess()
      */
     public IProcess getProcess() {
@@ -96,7 +96,7 @@ public class BasicJobInfo {
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see org.talend.designer.runprocess.IJobInfo#setProcess(org.talend.core.model.process.IProcess)
      */
     public void setProcess(IProcess process) {
@@ -105,7 +105,7 @@ public class BasicJobInfo {
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see org.talend.designer.runprocess.IJobInfo#getContext()
      */
     public IContext getContext() {
@@ -114,7 +114,7 @@ public class BasicJobInfo {
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see org.talend.designer.runprocess.IJobInfo#setContext(org.talend.core.model.process.IContext)
      */
     public void setContext(IContext context) {
@@ -123,7 +123,7 @@ public class BasicJobInfo {
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see org.talend.designer.runprocess.IJobInfo#getJobVersion()
      */
     public String getJobVersion() {
@@ -132,7 +132,7 @@ public class BasicJobInfo {
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see org.talend.designer.runprocess.IJobInfo#setJobVersion(java.lang.String)
      */
     public void setJobVersion(String jobVersion) {
@@ -141,7 +141,7 @@ public class BasicJobInfo {
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see org.talend.designer.runprocess.IJobInfo#isApplyContextToChildren()
      */
     public boolean isApplyContextToChildren() {
@@ -150,7 +150,7 @@ public class BasicJobInfo {
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see org.talend.designer.runprocess.IJobInfo#setApplyContextToChildren(boolean)
      */
     public void setApplyContextToChildren(boolean applyContextToChildren) {
@@ -159,7 +159,7 @@ public class BasicJobInfo {
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see org.talend.designer.runprocess.IJobInfo#getJobName()
      */
     public String getJobName() {
@@ -168,7 +168,7 @@ public class BasicJobInfo {
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see org.talend.designer.runprocess.IJobInfo#setJobName(java.lang.String)
      */
     public void setJobName(String jobName) {
@@ -234,7 +234,7 @@ public class BasicJobInfo {
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see org.talend.designer.runprocess.IJobInfo#getFatherJobInfo()
      */
     public BasicJobInfo getFatherJobInfo() {
@@ -243,7 +243,7 @@ public class BasicJobInfo {
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see org.talend.designer.runprocess.IJobInfo#setFatherJobInfo(org.talend.designer.runprocess.IJobInfo)
      */
     public void setFatherJobInfo(BasicJobInfo fatherJobInfo) {
@@ -252,7 +252,7 @@ public class BasicJobInfo {
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see org.talend.designer.runprocess.IJobInfo#isForceRegenerate()
      */
     public boolean isForceRegenerate() {
@@ -261,7 +261,7 @@ public class BasicJobInfo {
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see org.talend.designer.runprocess.IJobInfo#setForceRegenerate(boolean)
      */
     public void setForceRegenerate(boolean forceRegenerate) {
@@ -270,7 +270,7 @@ public class BasicJobInfo {
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see org.talend.designer.runprocess.IJobInfo#getProjectFolderName()
      */
     public String getProjectFolderName() {
@@ -279,7 +279,7 @@ public class BasicJobInfo {
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see org.talend.designer.runprocess.IJobInfo#setProjectFolderName(java.lang.String)
      */
     public void setProjectFolderName(String projectFolderName) {

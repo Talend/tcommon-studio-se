@@ -1,6 +1,6 @@
 // ============================================================================
 //
-// Copyright (C) 2006-2018 Talend Inc. - www.talend.com
+// Copyright (C) 2006-2019 Talend Inc. - www.talend.com
 //
 // This source code is available under agreement available at
 // %InstallDIR%\features\org.talend.rcp.branding.%PRODUCTNAME%\%PRODUCTNAME%license.txt
@@ -40,7 +40,7 @@ public class ShowSelectedContextDialog extends Dialog {
 
     /**
      * DOC ggu ShowSelectedContextDialog constructor comment.
-     * 
+     *
      * @param parentShell
      */
     protected ShowSelectedContextDialog(ContextItem contextItem, Shell parentShell) {
@@ -79,7 +79,7 @@ public class ShowSelectedContextDialog extends Dialog {
     }
 
     /**
-     * 
+     *
      * DOC ggu ShowSelectedContextDialog class global comment. Detailled comment
      */
     class ShowSelectedContextComposite extends ContextComposite {
@@ -126,7 +126,7 @@ public class ShowSelectedContextDialog extends Dialog {
 
         /*
          * (non-Javadoc)
-         * 
+         *
          * @see org.talend.core.ui.context.IContextModelManager#onContextRemoveParameter(org.talend.core.model.process.
          * IContextManager, java.lang.String, java.lang.String)
          */
@@ -138,7 +138,7 @@ public class ShowSelectedContextDialog extends Dialog {
 
         /*
          * (non-Javadoc)
-         * 
+         *
          * @see org.talend.core.ui.context.IContextModelManager#onContextRemoveParameter(org.talend.core.model.process.
          * IContextManager, java.util.Set, java.lang.String)
          */
@@ -150,7 +150,7 @@ public class ShowSelectedContextDialog extends Dialog {
 
         /*
          * (non-Javadoc)
-         * 
+         *
          * @see org.talend.core.ui.context.IContextModelManager#onContextRenameParameter(org.talend.core.model.process.
          * IContextManager, java.lang.String, java.lang.String, java.lang.String)
          */

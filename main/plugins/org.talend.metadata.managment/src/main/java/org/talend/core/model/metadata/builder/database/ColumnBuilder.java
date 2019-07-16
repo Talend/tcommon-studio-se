@@ -1,6 +1,6 @@
 // ============================================================================
 //
-// Copyright (C) 2006-2018 Talend Inc. - www.talend.com
+// Copyright (C) 2006-2019 Talend Inc. - www.talend.com
 //
 // This source code is available under agreement available at
 // %InstallDIR%\features\org.talend.rcp.branding.%PRODUCTNAME%\%PRODUCTNAME%license.txt
@@ -25,7 +25,7 @@ import org.talend.utils.sql.metadata.constants.GetColumn;
 
 /**
  * @author scorreia
- * 
+ *
  * This class creates TdColumn objects from a connection. The connection must be closed by the caller. It will not be
  * closed by the ColumnBuilder.
  */
@@ -35,7 +35,7 @@ public class ColumnBuilder extends CwmBuilder {
 
     /**
      * DOC scorreia ColumnBuilder constructor comment.
-     * 
+     *
      * @param conn
      * @throws SQLException
      */
@@ -50,7 +50,7 @@ public class ColumnBuilder extends CwmBuilder {
 
     /**
      * Method "getColumns".
-     * 
+     *
      * @param catalogName a catalog name; must match the catalog name as it is stored in the database; "" retrieves
      * those without a catalog; null means that the catalog name should not be used to narrow the search
      * @param schemaPattern a schema name pattern; must match the schema name as it is stored in the database; ""
@@ -197,9 +197,9 @@ public class ColumnBuilder extends CwmBuilder {
 
     /**
      * DOC scorreia Comment method "getComment".
-     * 
+     *
      * @param colName
-     * 
+     *
      * @param columns
      * @return
      * @throws SQLException

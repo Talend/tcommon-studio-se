@@ -1,6 +1,6 @@
 // ============================================================================
 //
-// Copyright (C) 2006-2018 Talend Inc. - www.talend.com
+// Copyright (C) 2006-2019 Talend Inc. - www.talend.com
 //
 // This source code is available under agreement available at
 // %InstallDIR%\features\org.talend.rcp.branding.%PRODUCTNAME%\%PRODUCTNAME%license.txt
@@ -49,9 +49,9 @@ import org.talend.repository.ui.login.connections.ConnectionUserPerReader;
 
 /**
  * DOC mhirt class global comment. Detailled comment <br/>
- * 
+ *
  * $Id: RegisterManagement.java 38235 2010-03-10 03:32:12Z nrousseau $
- * 
+ *
  */
 public class RegisterManagement {
 
@@ -267,8 +267,8 @@ public class RegisterManagement {
             }
 
             result = proxy.createUser53(email, pseudo, password, firstname, lastname, country, version,
-                    brandingService.getAcronym(), osName, osVersion, javaVersion, totalMemory + "", memRAM //$NON-NLS-1$ 
-                            + "", nbProc + "", uniqueId); //$NON-NLS-1$ //$NON-NLS-2$ 
+                    brandingService.getAcronym(), osName, osVersion, javaVersion, totalMemory + "", memRAM //$NON-NLS-1$
+                            + "", nbProc + "", uniqueId); //$NON-NLS-1$ //$NON-NLS-2$
             if (result.signum() > 0) {
                 PlatformUI.getPreferenceStore().setValue("REGISTRATION_DONE", 1); //$NON-NLS-1$
                 saveRegistoryBean();
@@ -502,7 +502,7 @@ public class RegisterManagement {
 
     /**
      * check the install is done or not, after call this method, will set install_done as true.
-     * 
+     *
      * @return
      */
     private boolean checkInstallDone() {
@@ -525,7 +525,7 @@ public class RegisterManagement {
 
     /**
      * DOC mhirt Comment method "isProductRegistered".
-     * 
+     *
      * @return
      */
     public boolean isProductRegistered() {
@@ -550,7 +550,7 @@ public class RegisterManagement {
 
     /**
      * DOC mhirt Comment method "init".
-     * 
+     *
      * @return
      */
     private void initPreferenceStore() {

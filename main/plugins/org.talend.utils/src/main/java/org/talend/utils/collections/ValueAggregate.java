@@ -1,6 +1,6 @@
 // ============================================================================
 //
-// Copyright (C) 2006-2018 Talend Inc. - www.talend.com
+// Copyright (C) 2006-2019 Talend Inc. - www.talend.com
 //
 // This source code is available under agreement available at
 // %InstallDIR%\features\org.talend.rcp.branding.%PRODUCTNAME%\%PRODUCTNAME%license.txt
@@ -19,7 +19,7 @@ import java.util.Set;
 
 /**
  * @author scorreia
- * 
+ *
  * This class helps to aggregate values. It can be subclassed.
  * @param <T> a comparable class used as key
  * @param <N> the numeric type to aggregate
@@ -38,16 +38,16 @@ public abstract class ValueAggregate<T, N> {
 
     /**
      * Method "addValue".
-     * 
+     *
      * @param key the key object to find the aggregated values
      * @param values the values to aggregate
      */
     public abstract void addValue(T key, N[] values);
 
-    
+
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see java.lang.Object#toString()
      */
     @Override

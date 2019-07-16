@@ -1,6 +1,6 @@
 // ============================================================================
 //
-// Copyright (C) 2006-2018 Talend Inc. - www.talend.com
+// Copyright (C) 2006-2019 Talend Inc. - www.talend.com
 //
 // This source code is available under agreement available at
 // %InstallDIR%\features\org.talend.rcp.branding.%PRODUCTNAME%\%PRODUCTNAME%license.txt
@@ -14,9 +14,9 @@ package org.talend.core.model.metadata;
 
 /**
  * DOC qwei class global comment. Detailled comment <br/>
- * 
+ *
  * $Id: talend.epf 1 2006-09-29 17:06:40 +0000 (ææäº, 29 ä¹æ 2006) nrousseau $
- * 
+ *
  */
 public class TalendTypePrecisionLength {
 
@@ -42,7 +42,7 @@ public class TalendTypePrecisionLength {
 
     /**
      * Getter for talendtype.
-     * 
+     *
      * @return the talendtype
      */
     public String getTalendtype() {
@@ -51,7 +51,7 @@ public class TalendTypePrecisionLength {
 
     /**
      * Sets the talendtype.
-     * 
+     *
      * @param talendtype the talendtype to set
      */
     public void setTalendtype(String talendtype) {
@@ -60,7 +60,7 @@ public class TalendTypePrecisionLength {
 
     /**
      * Getter for lengthMax.
-     * 
+     *
      * @return the lengthMax
      */
     public int getLengthMax() {
@@ -69,7 +69,7 @@ public class TalendTypePrecisionLength {
 
     /**
      * Sets the lengthMax.
-     * 
+     *
      * @param lengthMax the lengthMax to set
      */
     public void setLengthMax(int lengthMax) {
@@ -78,7 +78,7 @@ public class TalendTypePrecisionLength {
 
     /**
      * Getter for lengthMin.
-     * 
+     *
      * @return the lengthMin
      */
     public int getLengthMin() {
@@ -87,7 +87,7 @@ public class TalendTypePrecisionLength {
 
     /**
      * Sets the lengthMin.
-     * 
+     *
      * @param lengthMin the lengthMin to set
      */
     public void setLengthMin(int lengthMin) {
@@ -96,7 +96,7 @@ public class TalendTypePrecisionLength {
 
     /**
      * Getter for precMax.
-     * 
+     *
      * @return the precMax
      */
     public int getPrecMax() {
@@ -105,7 +105,7 @@ public class TalendTypePrecisionLength {
 
     /**
      * Sets the precMax.
-     * 
+     *
      * @param precMax the precMax to set
      */
     public void setPrecMax(int precMax) {
@@ -114,7 +114,7 @@ public class TalendTypePrecisionLength {
 
     /**
      * Getter for precMin.
-     * 
+     *
      * @return the precMin
      */
     public int getPrecMin() {
@@ -123,7 +123,7 @@ public class TalendTypePrecisionLength {
 
     /**
      * Sets the precMin.
-     * 
+     *
      * @param precMin the precMin to set
      */
     public void setPrecMin(int precMin) {

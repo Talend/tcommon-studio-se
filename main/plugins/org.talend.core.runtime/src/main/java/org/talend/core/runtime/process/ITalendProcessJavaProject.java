@@ -1,6 +1,6 @@
 // ============================================================================
 //
-// Copyright (C) 2006-2018 Talend Inc. - www.talend.com
+// Copyright (C) 2006-2019 Talend Inc. - www.talend.com
 //
 // This source code is available under agreement available at
 // %InstallDIR%\features\org.talend.rcp.branding.%PRODUCTNAME%\%PRODUCTNAME%license.txt
@@ -31,7 +31,7 @@ public interface ITalendProcessJavaProject {
     IJavaProject getJavaProject();
 
     IProject getProject();
-    
+
     Property getPropery();
 
     IFile getProjectPom();
@@ -107,13 +107,13 @@ public interface ITalendProcessJavaProject {
     IFolder getTempFolder();
 
     /**
-     * 
+     *
      * create sub folder under src/main/java.
      */
     IFolder getSrcSubFolder(IProgressMonitor monitor, String path);
 
     /**
-     * 
+     *
      * create sub folder under src/main/resources.
      */
     IFolder getResourceSubFolder(IProgressMonitor monitor, String path);
@@ -130,32 +130,32 @@ public interface ITalendProcessJavaProject {
 
     /**
      * update routines pom, if withBuild is true, will install routines jar with maven.
-     * 
+     *
      */
     void updateRoutinesPom(boolean withBuild, boolean inBackgroud);
 
     /**
-     * 
+     *
      * check and add the child module in project.
      */
     void addChildModules(boolean removeOld, String... childrenModules);
 
     /**
-     * 
+     *
      * build the modules jobs with arguments.
-     * 
+     *
      * if null, will build whole project. if empty (String[0]), willn't build any thing.
      */
     void buildModules(IProgressMonitor monitor, String[] childrenModules, Map<String, Object> argumentsMap) throws Exception;
 
     /**
-     * 
+     *
      * try to clean the pom_xxx.xml and the assembly_xxx.xml, also clean up the pom.xml, like modules, dependencies.
      */
     void cleanMavenFiles(IProgressMonitor monitor) throws Exception;
 
     /**
-     * 
+     *
      * Reset the main pom to empty the content of the job dependencies.
      */
     void regenerateMainProjectPom(IProgressMonitor monitor) throws Exception;
@@ -165,7 +165,7 @@ public interface ITalendProcessJavaProject {
     void setUseTempPom(boolean useTempPom);
 
     /**
-     * DOC sunchaoqun Comment method "getBundleResourcesFolder". store some feature files and related jar files 
+     * DOC sunchaoqun Comment method "getBundleResourcesFolder". store some feature files and related jar files
      * @return
      */
     IFolder getBundleResourcesFolder();

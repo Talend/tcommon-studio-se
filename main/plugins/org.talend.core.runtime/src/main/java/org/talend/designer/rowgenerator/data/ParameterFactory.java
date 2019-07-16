@@ -1,6 +1,6 @@
 // ============================================================================
 //
-// Copyright (C) 2006-2018 Talend Inc. - www.talend.com
+// Copyright (C) 2006-2019 Talend Inc. - www.talend.com
 //
 // This source code is available under agreement available at
 // %InstallDIR%\features\org.talend.rcp.branding.%PRODUCTNAME%\%PRODUCTNAME%license.txt
@@ -20,14 +20,14 @@ import org.talend.commons.exception.ExceptionHandler;
 
 /**
  * class global comment. Detailled comment <br/>
- * 
+ *
  * $Id: ParameterFactory.java,v 1.6 2007/01/31 05:20:51 pub Exp $
- * 
+ *
  */
 public class ParameterFactory {
 
     /**
-     * 
+     *
      */
     private static final String PARAMETER_TYPE_REGEX = "(^[^\\s^\\(]+)(\\s|\\()"; //$NON-NLS-1$
 
@@ -54,9 +54,9 @@ public class ParameterFactory {
     /**
      * s qzhang Comment method "getParameter". <br/>
      * .
-     * 
+     *
      * format is: {param} <type/>[(<default value or closed list values/>)] <name/>[ : <comment/>]
-     * 
+     *
      * @param string
      * @return
      */
@@ -93,7 +93,7 @@ public class ParameterFactory {
 
     /**
      * qzhang Comment method "setDefaultValue".
-     * 
+     *
      * @param p
      * @param value
      */
@@ -113,7 +113,7 @@ public class ParameterFactory {
 
     /**
      * qzhang Comment method "getType".
-     * 
+     *
      * @param string
      * @return
      */

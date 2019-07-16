@@ -1,6 +1,6 @@
 // ============================================================================
 //
-// Copyright (C) 2006-2018 Talend Inc. - www.talend.com
+// Copyright (C) 2006-2019 Talend Inc. - www.talend.com
 //
 // This source code is available under agreement available at
 // %InstallDIR%\features\org.talend.rcp.branding.%PRODUCTNAME%\%PRODUCTNAME%license.txt
@@ -21,9 +21,9 @@ import org.talend.repository.model.nodes.IProjectRepositoryNode;
 /**
  * Defines all methods a repository view must provides. Actually the only view implementing this interface is
  * RepositoryView.<br/>
- * 
+ *
  * $Id: IRepositoryView.java 797 2006-11-30 16:16:52 +0000 (星期四, 30 十一月 2006) amaumont $
- * 
+ *
  */
 public interface IRepositoryView extends IViewPart {
 

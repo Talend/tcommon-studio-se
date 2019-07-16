@@ -1,6 +1,6 @@
 // ============================================================================
 //
-// Copyright (C) 2006-2018 Talend Inc. - www.talend.com
+// Copyright (C) 2006-2019 Talend Inc. - www.talend.com
 //
 // This source code is available under agreement available at
 // %InstallDIR%\features\org.talend.rcp.branding.%PRODUCTNAME%\%PRODUCTNAME%license.txt
@@ -35,7 +35,7 @@ public class ProductVersion implements Comparable<ProductVersion> {
 
     /**
      * ProductVersion constructor.
-     * 
+     *
      * @param major
      * @param minor
      * @param micro
@@ -50,7 +50,7 @@ public class ProductVersion implements Comparable<ProductVersion> {
 
     /**
      * ProductVersion constructor.
-     * 
+     *
      * @param major
      * @param minor
      * @param micro
@@ -64,7 +64,7 @@ public class ProductVersion implements Comparable<ProductVersion> {
 
     /**
      * Method "fromString".
-     * 
+     *
      * @param version the version to parse
      * @param extendedVersion true if the version could be a 2 or 3 digit version
      * @return the product version
@@ -90,7 +90,7 @@ public class ProductVersion implements Comparable<ProductVersion> {
 
     /**
      * Method "fromString".
-     * 
+     *
      * @param version a version number in the format 1.2.3xx where xx can be anything else
      * @return the product version
      */

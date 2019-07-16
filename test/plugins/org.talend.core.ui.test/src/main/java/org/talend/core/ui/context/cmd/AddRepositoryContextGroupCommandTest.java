@@ -1,6 +1,6 @@
 // ============================================================================
 //
-// Copyright (C) 2006-2014 Talend Inc. - www.talend.com
+// Copyright (C) 2006-2019 Talend Inc. - www.talend.com
 //
 // This source code is available under agreement available at
 // %InstallDIR%\features\org.talend.rcp.branding.%PRODUCTNAME%\%PRODUCTNAME%license.txt
@@ -201,7 +201,7 @@ public class AddRepositoryContextGroupCommandTest {
 
         /*
          * (non-Javadoc)
-         * 
+         *
          * @see org.talend.core.ui.context.IContextModelManager#getContextManager()
          */
         @Override
@@ -214,7 +214,7 @@ public class AddRepositoryContextGroupCommandTest {
 
         /*
          * (non-Javadoc)
-         * 
+         *
          * @see org.talend.core.ui.context.IContextModelManager#getProcess()
          */
         @Override
@@ -225,7 +225,7 @@ public class AddRepositoryContextGroupCommandTest {
 
         /*
          * (non-Javadoc)
-         * 
+         *
          * @see org.talend.core.ui.context.IContextModelManager#refresh()
          */
         @Override
@@ -236,7 +236,7 @@ public class AddRepositoryContextGroupCommandTest {
 
         /*
          * (non-Javadoc)
-         * 
+         *
          * @see org.talend.core.ui.context.IContextModelManager#getCommandStack()
          */
         @Override
@@ -247,7 +247,7 @@ public class AddRepositoryContextGroupCommandTest {
 
         /*
          * (non-Javadoc)
-         * 
+         *
          * @see org.talend.core.ui.context.IContextModelManager#onContextChangeDefault(org.talend.core.model.process.
          * IContextManager, org.talend.core.model.process.IContext)
          */
@@ -259,7 +259,7 @@ public class AddRepositoryContextGroupCommandTest {
 
         /*
          * (non-Javadoc)
-         * 
+         *
          * @see org.talend.core.ui.context.IContextModelManager#onContextRenameParameter(org.talend.core.model.process.
          * IContextManager, java.lang.String, java.lang.String)
          */
@@ -271,7 +271,7 @@ public class AddRepositoryContextGroupCommandTest {
 
         /*
          * (non-Javadoc)
-         * 
+         *
          * @see org.talend.core.ui.context.IContextModelManager#onContextRenameParameter(org.talend.core.model.process.
          * IContextManager, java.lang.String, java.lang.String, java.lang.String)
          */
@@ -283,7 +283,7 @@ public class AddRepositoryContextGroupCommandTest {
 
         /*
          * (non-Javadoc)
-         * 
+         *
          * @see org.talend.core.ui.context.IContextModelManager#onContextModify(org.talend.core.model.process.
          * IContextManager, org.talend.core.model.process.IContextParameter)
          */
@@ -295,7 +295,7 @@ public class AddRepositoryContextGroupCommandTest {
 
         /*
          * (non-Javadoc)
-         * 
+         *
          * @see org.talend.core.ui.context.IContextModelManager#onContextAddParameter(org.talend.core.model.process.
          * IContextManager, org.talend.core.model.process.IContextParameter)
          */
@@ -307,7 +307,7 @@ public class AddRepositoryContextGroupCommandTest {
 
         /*
          * (non-Javadoc)
-         * 
+         *
          * @see org.talend.core.ui.context.IContextModelManager#onContextRemoveParameter(org.talend.core.model.process.
          * IContextManager, java.lang.String)
          */
@@ -319,7 +319,7 @@ public class AddRepositoryContextGroupCommandTest {
 
         /*
          * (non-Javadoc)
-         * 
+         *
          * @see org.talend.core.ui.context.IContextModelManager#onContextRemoveParameter(org.talend.core.model.process.
          * IContextManager, java.lang.String, java.lang.String)
          */
@@ -331,7 +331,7 @@ public class AddRepositoryContextGroupCommandTest {
 
         /*
          * (non-Javadoc)
-         * 
+         *
          * @see org.talend.core.ui.context.IContextModelManager#onContextRemoveParameter(org.talend.core.model.process.
          * IContextManager, java.util.Set, java.lang.String)
          */
@@ -343,7 +343,7 @@ public class AddRepositoryContextGroupCommandTest {
 
         /*
          * (non-Javadoc)
-         * 
+         *
          * @see org.talend.core.ui.context.IContextModelManager#onContextRemoveParameter(org.talend.core.model.process.
          * IContextManager, java.util.Set)
          */
@@ -355,7 +355,7 @@ public class AddRepositoryContextGroupCommandTest {
 
         /*
          * (non-Javadoc)
-         * 
+         *
          * @see org.talend.core.ui.context.IContextModelManager#isReadOnly()
          */
         @Override
@@ -366,7 +366,7 @@ public class AddRepositoryContextGroupCommandTest {
 
         /*
          * (non-Javadoc)
-         * 
+         *
          * @see org.talend.core.ui.context.IContextModelManager#isRepositoryContext()
          */
         @Override

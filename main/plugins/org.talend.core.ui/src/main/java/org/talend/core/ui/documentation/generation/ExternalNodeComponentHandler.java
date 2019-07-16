@@ -1,6 +1,6 @@
 // ============================================================================
 //
-// Copyright (C) 2006-2018 Talend Inc. - www.talend.com
+// Copyright (C) 2006-2019 Talend Inc. - www.talend.com
 //
 // This source code is available under agreement available at
 // %InstallDIR%\features\org.talend.rcp.branding.%PRODUCTNAME%\%PRODUCTNAME%license.txt
@@ -32,9 +32,9 @@ import org.talend.designer.core.IDesignerCoreService;
 
 /**
  * This class is external node component handler for generating HTML.
- * 
+ *
  * @author ftang
- * 
+ *
  */
 public class ExternalNodeComponentHandler extends AbstractComponentHandler {
 
@@ -62,7 +62,7 @@ public class ExternalNodeComponentHandler extends AbstractComponentHandler {
 
     /**
      * Contructor.
-     * 
+     *
      * @param picFilePathMap
      * @param externalNodeElement
      * @param allComponentsList
@@ -94,7 +94,7 @@ public class ExternalNodeComponentHandler extends AbstractComponentHandler {
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see org.talend.repository.ui.wizards.genHTMLDoc.IComponentHandler#generateComponentInfo(org.dom4j.Element,
      * java.util.List)
      */
@@ -130,7 +130,7 @@ public class ExternalNodeComponentHandler extends AbstractComponentHandler {
 
     /**
      * Generates parameter element information only for component external node component.
-     * 
+     *
      * @param parametersElement
      * @param elementParameterList
      */
@@ -152,7 +152,7 @@ public class ExternalNodeComponentHandler extends AbstractComponentHandler {
 
     /**
      * Checks if external node component directory is existing.
-     * 
+     *
      * @param resource
      * @return
      */
@@ -167,7 +167,7 @@ public class ExternalNodeComponentHandler extends AbstractComponentHandler {
 
     /**
      * Generates the element parameters information of component.
-     * 
+     *
      * @param parametersElement
      * @param elementParameterList
      */
@@ -241,7 +241,7 @@ public class ExternalNodeComponentHandler extends AbstractComponentHandler {
 
     /**
      * Gets the repository value.
-     * 
+     *
      * @param newList
      * @param repositoryName
      * @return
@@ -263,7 +263,7 @@ public class ExternalNodeComponentHandler extends AbstractComponentHandler {
 
     /**
      * Gets the repository value.
-     * 
+     *
      * @param newList
      * @param repositoryName
      * @return
@@ -289,7 +289,7 @@ public class ExternalNodeComponentHandler extends AbstractComponentHandler {
 
     /**
      * Gets the repository value.
-     * 
+     *
      * @param newList
      * @param repositoryName
      * @return

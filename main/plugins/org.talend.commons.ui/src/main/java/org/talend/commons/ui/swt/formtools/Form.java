@@ -1,6 +1,6 @@
 // ============================================================================
 //
-// Copyright (C) 2006-2018 Talend Inc. - www.talend.com
+// Copyright (C) 2006-2019 Talend Inc. - www.talend.com
 //
 // This source code is available under agreement available at
 // %InstallDIR%\features\org.talend.rcp.branding.%PRODUCTNAME%\%PRODUCTNAME%license.txt
@@ -22,17 +22,17 @@ import org.eclipse.swt.widgets.Label;
 /**
  * Utilities class uses to create swt forms. <br/>
  * swt Form add a statusLabel who is a default element of wizard
- * 
+ *
  * $Id: Form.java 7038 2007-11-15 14:05:48Z plegall $
  */
 public class Form {
 
     /**
      * create StatusBar.
-     * 
+     *
      * @param Composite parent
      * @param int color
-     * 
+     *
      * @return Group
      */
     // public static Label createStatusBar(Composite parent, Color color) {
@@ -43,10 +43,10 @@ public class Form {
     // }
     /**
      * create Group.
-     * 
+     *
      * @param Composite parent
      * @param int columns
-     * 
+     *
      * @return Group
      */
     public Group createGroup(Composite parent, int columns) {
@@ -55,11 +55,11 @@ public class Form {
 
     /**
      * create Group.
-     * 
+     *
      * @param Composite parent
      * @param int columns
      * @param String title
-     * 
+     *
      * @return Group
      */
     public static Group createGroup(Composite parent, int columns, String title) {
@@ -68,11 +68,11 @@ public class Form {
 
     /**
      * create Group.
-     * 
+     *
      * @param Composite parent
      * @param int columns
      * @param String title
-     * 
+     *
      * @return Group
      */
     public static Group createGroup(Composite parent, int columns, String title, int minimumHeight) {
@@ -92,11 +92,11 @@ public class Form {
 
     /**
      * create startNewGrid (width Columns) in a Composite.
-     * 
+     *
      * @param Composite parent
      * @param int numColums
      * @param boolean sameWidth
-     * 
+     *
      * @return Composite
      */
     public static Composite startNewGridLayout(Composite parent, int numColums) {
@@ -105,13 +105,13 @@ public class Form {
 
     /**
      * create startNewGrid (width Columns) in a Composite.
-     * 
+     *
      * @param Composite parent
      * @param int numColumns
      * @param boolean sameWidth
      * @param int styleHoryzontal
      * @param int styleVertical
-     * 
+     *
      * @return Composite
      */
     public static Composite startNewGridLayout(Composite parent, int numColumns, boolean sameWidth, int styleHoryzontal,
@@ -124,13 +124,13 @@ public class Form {
 
     /**
      * create Dimensionned NewGrid (width Columns) in a Composite.
-     * 
+     *
      * @param Composite parent
      * @param int numColumns
      * @param boolean sameWidth
      * @param int styleHoryzontal
      * @param int styleVertical
-     * 
+     *
      * @return Composite
      */
     public static Composite startNewDimensionnedGridLayout(Composite parent, int numColumns, int minimumWidth, int minimumHeight) {
@@ -141,14 +141,14 @@ public class Form {
 
     /**
      * create Dimensionned NewGrid (width Columns) in a Composite.
-     * 
+     *
      * @param Composite parent
      * @param int numColumns
      * @param boolean sameWidth
      * @param int styleHoryzontal
      * @param int styleVertical
      * @param boolean isFillBoth
-     * 
+     *
      * @return Composite
      */
     public static Composite startNewDimensionnedGridLayout(Composite parent, int numColumns, int minimumWidth, int minimumHeight,
@@ -166,9 +166,9 @@ public class Form {
 
     /**
      * create Horizontal Line in a Composite.
-     * 
+     *
      * @param Composite parent
-     * 
+     *
      */
     public void createHorizontalLine(Composite parent) {
         Label line = new Label(parent, SWT.SEPARATOR | SWT.HORIZONTAL);

@@ -1,6 +1,6 @@
 // ============================================================================
 //
-// Copyright (C) 2006-2018 Talend Inc. - www.talend.com
+// Copyright (C) 2006-2019 Talend Inc. - www.talend.com
 //
 // This source code is available under agreement available at
 // %InstallDIR%\features\org.talend.rcp.branding.%PRODUCTNAME%\%PRODUCTNAME%license.txt
@@ -88,7 +88,7 @@ public class RegexpFileWizard extends CheckLastVersionRepositoryWizard implement
 
     /**
      * Constructor for FileWizard.
-     * 
+     *
      * @param workbench
      * @param selection
      * @param strings
@@ -359,7 +359,7 @@ public class RegexpFileWizard extends CheckLastVersionRepositoryWizard implement
 
     /**
      * We will accept the selection in the workbench to see if we can initialize from it.
-     * 
+     *
      * @see IWorkbenchWizard#init(IWorkbench, IStructuredSelection)
      */
     @Override
@@ -369,7 +369,7 @@ public class RegexpFileWizard extends CheckLastVersionRepositoryWizard implement
 
     /**
      * yzhang Comment method "setToolbar".
-     * 
+     *
      * @param isToolbar
      */
     public void setToolbar(boolean isToolbar) {
@@ -378,7 +378,7 @@ public class RegexpFileWizard extends CheckLastVersionRepositoryWizard implement
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see org.talend.repository.ui.wizards.RepositoryWizard#getConnectionItem()
      */
     @Override

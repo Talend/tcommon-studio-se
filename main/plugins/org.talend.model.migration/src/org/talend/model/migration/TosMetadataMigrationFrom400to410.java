@@ -1,6 +1,6 @@
 // ============================================================================
 //
-// Copyright (C) 2006-2018 Talend Inc. - www.talend.com
+// Copyright (C) 2006-2019 Talend Inc. - www.talend.com
 //
 // This source code is available under agreement available at
 // %InstallDIR%\features\org.talend.rcp.branding.%PRODUCTNAME%\%PRODUCTNAME%license.txt
@@ -36,7 +36,7 @@ import org.talend.model.migration.i18n.Messages;
 
 /**
  * This perform the migration of TOS metadata file from version 4.0x to version 4.10
- * 
+ *
  */
 public class TosMetadataMigrationFrom400to410 {
 
@@ -81,7 +81,7 @@ public class TosMetadataMigrationFrom400to410 {
 
     /**
      * create ATL metamodels
-     * 
+     *
      * @throws ATLCoreException if metamodel could not be loaded
      */
     private void createMetamodels() throws ATLCoreException {
@@ -106,7 +106,7 @@ public class TosMetadataMigrationFrom400to410 {
 
     /**
      * This performs the migration in memory from the input Uri and return a resource for the user to persist
-     * 
+     *
      * @param inUri the input model URI to be migrated
      * @param monitor to monitor migration progress (untested)
      * @return the EMF Resource of the trasnformed model, for your convenience

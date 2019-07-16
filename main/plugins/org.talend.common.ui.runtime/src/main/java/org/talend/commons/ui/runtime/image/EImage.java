@@ -1,6 +1,6 @@
 // ============================================================================
 //
-// Copyright (C) 2006-2018 Talend Inc. - www.talend.com
+// Copyright (C) 2006-2019 Talend Inc. - www.talend.com
 //
 // This source code is available under agreement available at
 // %InstallDIR%\features\org.talend.rcp.branding.%PRODUCTNAME%\%PRODUCTNAME%license.txt
@@ -13,11 +13,11 @@
 package org.talend.commons.ui.runtime.image;
 
 /**
- * 
+ *
  * DOC smallet ImageProvider class global comment. Detailled comment <br/>
- * 
+ *
  * $Id: ImageProvider.java 418 2006-11-13 16:01:26 +0000 (lun., 13 nov. 2006) cantoine $
- * 
+ *
  */
 public enum EImage implements IImage {
 
@@ -110,7 +110,7 @@ public enum EImage implements IImage {
 
     LOCK_ICON("/icons/lock.gif"), //$NON-NLS-1$
     UNLOCK_ICON("/icons/unlock.gif"), //$NON-NLS-1$
-    FIND_ICON("/icons/find.gif"), //$NON-NLS-1$  
+    FIND_ICON("/icons/find.gif"), //$NON-NLS-1$
     JOB_ICON("/icons/process_icon.png"), //$NON-NLS-1$
     JOBLET_ICON("/icons/joblet_icon.png"), //$NON-NLS-1$
 
@@ -158,7 +158,7 @@ public enum EImage implements IImage {
 
     /**
      * Getter for path.
-     * 
+     *
      * @return the path
      */
     @Override
@@ -168,7 +168,7 @@ public enum EImage implements IImage {
 
     /**
      * Getter for clazz.
-     * 
+     *
      * @return the clazz
      */
     @Override

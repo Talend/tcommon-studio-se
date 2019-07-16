@@ -1,6 +1,6 @@
 // ============================================================================
 //
-// Copyright (C) 2006-2018 Talend Inc. - www.talend.com
+// Copyright (C) 2006-2019 Talend Inc. - www.talend.com
 //
 // This source code is available under agreement available at
 // %InstallDIR%\features\org.talend.rcp.branding.%PRODUCTNAME%\%PRODUCTNAME%license.txt
@@ -27,7 +27,7 @@ import org.talend.core.model.process.IContextParameter;
 
 /**
  * created by ldong on Sep 5, 2014 Detailled comment
- * 
+ *
  */
 public class CustomTextCellEditor extends AbstractCellEditor {
 
@@ -62,7 +62,7 @@ public class CustomTextCellEditor extends AbstractCellEditor {
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see
      * org.eclipse.nebula.widgets.nattable.edit.editor.ICellEditor#createEditorControl(org.eclipse.swt.widgets.Composite
      * )
@@ -120,7 +120,7 @@ public class CustomTextCellEditor extends AbstractCellEditor {
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see org.eclipse.nebula.widgets.nattable.edit.editor.ICellEditor#getEditorControl()
      */
     @Override
@@ -130,7 +130,7 @@ public class CustomTextCellEditor extends AbstractCellEditor {
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see org.eclipse.nebula.widgets.nattable.edit.editor.ICellEditor#getEditorValue()
      */
     @Override
@@ -140,7 +140,7 @@ public class CustomTextCellEditor extends AbstractCellEditor {
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see org.eclipse.nebula.widgets.nattable.edit.editor.ICellEditor#setEditorValue(java.lang.Object)
      */
     @Override
@@ -151,7 +151,7 @@ public class CustomTextCellEditor extends AbstractCellEditor {
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see
      * org.eclipse.nebula.widgets.nattable.edit.editor.AbstractCellEditor#activateCell(org.eclipse.swt.widgets.Composite
      * , java.lang.Object)
@@ -178,7 +178,7 @@ public class CustomTextCellEditor extends AbstractCellEditor {
 
     /**
      * Getter for freeEdit.
-     * 
+     *
      * @return the freeEdit
      */
     public boolean isFreeEdit() {
@@ -187,7 +187,7 @@ public class CustomTextCellEditor extends AbstractCellEditor {
 
     /**
      * Sets the freeEdit.
-     * 
+     *
      * @param freeEdit the freeEdit to set
      */
     public void setFreeEdit(boolean freeEdit) {

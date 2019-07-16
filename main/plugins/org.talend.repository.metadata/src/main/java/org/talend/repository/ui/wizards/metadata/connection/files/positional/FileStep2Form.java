@@ -1,6 +1,6 @@
 // ============================================================================
 //
-// Copyright (C) 2006-2018 Talend Inc. - www.talend.com
+// Copyright (C) 2006-2019 Talend Inc. - www.talend.com
 //
 // This source code is available under agreement available at
 // %InstallDIR%\features\org.talend.rcp.branding.%PRODUCTNAME%\%PRODUCTNAME%license.txt
@@ -63,7 +63,7 @@ import org.talend.repository.metadata.ui.wizards.form.AbstractPositionalFileStep
 
 /**
  * @author ocarbone
- * 
+ *
  */
 public class FileStep2Form extends AbstractPositionalFileStepForm implements IRefreshable {
 
@@ -129,7 +129,7 @@ public class FileStep2Form extends AbstractPositionalFileStepForm implements IRe
 
     /**
      * Constructor to use by RCP Wizard.
-     * 
+     *
      * @param Composite
      * @param Wizard
      * @param Style
@@ -141,7 +141,7 @@ public class FileStep2Form extends AbstractPositionalFileStepForm implements IRe
     }
 
     /**
-     * 
+     *
      * Initialize value, forceFocus first field.
      */
     @Override
@@ -196,7 +196,7 @@ public class FileStep2Form extends AbstractPositionalFileStepForm implements IRe
 
     /**
      * add Field to Group File Settings.
-     * 
+     *
      * @param mainComposite
      * @param form
      * @param width
@@ -276,7 +276,7 @@ public class FileStep2Form extends AbstractPositionalFileStepForm implements IRe
 
     /**
      * add field to Group Limit.
-     * 
+     *
      * @param mainComposite
      * @param form
      * @param width
@@ -314,7 +314,7 @@ public class FileStep2Form extends AbstractPositionalFileStepForm implements IRe
 
     /**
      * add Field to Group File Viewer.
-     * 
+     *
      * @param parent
      * @param form
      * @param width
@@ -395,11 +395,11 @@ public class FileStep2Form extends AbstractPositionalFileStepForm implements IRe
 
     /**
      * create ProcessDescription and set it.
-     * 
+     *
      * WARNING ::field FieldSeparator, RowSeparator, EscapeChar and TextEnclosure are surround by double quote.
-     * 
+     *
      * @param connection
-     * 
+     *
      * @return processDescription
      */
     private ProcessDescription getProcessDescription(PositionalFileConnection originalValueConnection) {
@@ -443,9 +443,9 @@ public class FileStep2Form extends AbstractPositionalFileStepForm implements IRe
 
     /**
      * Subclass of SWTUIThreadProcessor to process the preview event. <br/>
-     * 
+     *
      * $Id: FileStep2Form.java 38013 2010-03-05 14:21:59Z mhirt $
-     * 
+     *
      */
     class PreviewProcessor extends SWTUIThreadProcessor {
 
@@ -643,7 +643,7 @@ public class FileStep2Form extends AbstractPositionalFileStepForm implements IRe
 
     /**
      * DOC ocarbone Comment method "setCharFlag".
-     * 
+     *
      * @param escapeCharFlag2
      * @param text
      */
@@ -945,7 +945,7 @@ public class FileStep2Form extends AbstractPositionalFileStepForm implements IRe
 
     /**
      * Ensures that fields are set. Update checkEnable / use to checkConnection().
-     * 
+     *
      * @return
      */
     @Override
@@ -1008,7 +1008,7 @@ public class FileStep2Form extends AbstractPositionalFileStepForm implements IRe
 
     /**
      * addButtonControls.
-     * 
+     *
      * @param cancelButton
      */
     @Override
@@ -1037,7 +1037,7 @@ public class FileStep2Form extends AbstractPositionalFileStepForm implements IRe
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see org.eclipse.swt.widgets.Control#setVisible(boolean)
      */
     @Override
@@ -1069,7 +1069,7 @@ public class FileStep2Form extends AbstractPositionalFileStepForm implements IRe
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see org.talend.repository.ui.swt.utils.IRefreshable#refresh()
      */
     @Override

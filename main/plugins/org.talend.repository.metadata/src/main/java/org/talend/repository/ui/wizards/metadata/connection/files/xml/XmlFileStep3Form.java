@@ -1,6 +1,6 @@
 // ============================================================================
 //
-// Copyright (C) 2006-2018 Talend Inc. - www.talend.com
+// Copyright (C) 2006-2019 Talend Inc. - www.talend.com
 //
 // This source code is available under agreement available at
 // %InstallDIR%\features\org.talend.rcp.branding.%PRODUCTNAME%\%PRODUCTNAME%license.txt
@@ -80,7 +80,7 @@ import org.talend.repository.metadata.ui.wizards.form.AbstractXmlFileStepForm;
 
 /**
  * @author ocarbone
- * 
+ *
  */
 public class XmlFileStep3Form extends AbstractXmlFileStepForm {
 
@@ -108,7 +108,7 @@ public class XmlFileStep3Form extends AbstractXmlFileStepForm {
 
     /**
      * Constructor to use by RCP Wizard.
-     * 
+     *
      * @param Composite
      */
     public XmlFileStep3Form(Composite parent, ConnectionItem connectionItem, MetadataTable metadataTable, String[] existingNames) {
@@ -119,7 +119,7 @@ public class XmlFileStep3Form extends AbstractXmlFileStepForm {
     }
 
     /**
-     * 
+     *
      * Initialize value, forceFocus first field.
      */
     @Override
@@ -141,7 +141,7 @@ public class XmlFileStep3Form extends AbstractXmlFileStepForm {
 
     /**
      * DOC ocarbone Comment method "adaptFormToReadOnly".
-     * 
+     *
      */
     @Override
     protected void adaptFormToReadOnly() {
@@ -236,7 +236,7 @@ public class XmlFileStep3Form extends AbstractXmlFileStepForm {
 
     /**
      * getContextXmlPath.
-     * 
+     *
      * @return String
      */
     private String getContextXmlPath(XmlFileConnection connection) {
@@ -257,7 +257,7 @@ public class XmlFileStep3Form extends AbstractXmlFileStepForm {
 
     /**
      * addButtonControls.
-     * 
+     *
      * @param cancelButton
      */
     @Override
@@ -319,10 +319,10 @@ public class XmlFileStep3Form extends AbstractXmlFileStepForm {
 
     /**
      * create ProcessDescription and set it.
-     * 
+     *
      * WARNING ::field FieldSeparator, RowSeparator, EscapeChar and TextEnclosure are surround by double quote.
-     * 
-     * 
+     *
+     *
      * @return processDescription
      */
     private ProcessDescription getProcessDescription(boolean defaultContext) {
@@ -453,7 +453,7 @@ public class XmlFileStep3Form extends AbstractXmlFileStepForm {
 
     /**
      * DOC ocarbone Comment method "refreshMetaData".
-     * 
+     *
      * @param csvArray
      */
     public void refreshMetaDataTable(final CsvArray csvArray, List<SchemaTarget> schemaTarget, Boolean flag) {
@@ -636,7 +636,7 @@ public class XmlFileStep3Form extends AbstractXmlFileStepForm {
 
     /**
      * Ensures that fields are set. Update checkEnable / use to checkConnection().
-     * 
+     *
      * @return
      */
     @Override
@@ -667,7 +667,7 @@ public class XmlFileStep3Form extends AbstractXmlFileStepForm {
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see org.eclipse.swt.widgets.Control#setVisible(boolean)
      */
     @Override

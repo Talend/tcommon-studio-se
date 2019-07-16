@@ -1,6 +1,6 @@
 // ============================================================================
 //
-// Copyright (C) 2006-2018 Talend Inc. - www.talend.com
+// Copyright (C) 2006-2019 Talend Inc. - www.talend.com
 //
 // This source code is available under agreement available at
 // %InstallDIR%\features\org.talend.rcp.branding.%PRODUCTNAME%\%PRODUCTNAME%license.txt
@@ -69,7 +69,7 @@ public class ContextSetsSelectionDialog extends SelectionDialog {
 
     /**
      * DOC xqliu Comment method "initDialog".
-     * 
+     *
      * @param object
      * @param cancelFlag
      * @param message
@@ -102,7 +102,7 @@ public class ContextSetsSelectionDialog extends SelectionDialog {
 
     /**
      * DOC zli Comment method "calcShell".
-     * 
+     *
      * @return
      */
     protected static Shell calcShell() {

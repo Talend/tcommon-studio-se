@@ -1,6 +1,6 @@
 // ============================================================================
 //
-// Copyright (C) 2006-2018 Talend Inc. - www.talend.com
+// Copyright (C) 2006-2019 Talend Inc. - www.talend.com
 //
 // This source code is available under agreement available at
 // %InstallDIR%\features\org.talend.rcp.branding.%PRODUCTNAME%\%PRODUCTNAME%license.txt
@@ -60,7 +60,7 @@ public final class SQLPatternUtils {
 
     /**
      * yzhang Comment method "getSQLPatternItem".
-     * 
+     *
      * @param element
      * @param sqlpatternName
      * @return
@@ -126,7 +126,7 @@ public final class SQLPatternUtils {
 
     /**
      * yzhang Comment method "getLastVersionRepositoryObjectById".
-     * 
+     *
      * @param id
      * @return
      */

@@ -1,6 +1,6 @@
 // ============================================================================
 //
-// Copyright (C) 2006-2018 Talend Inc. - www.talend.com
+// Copyright (C) 2006-2019 Talend Inc. - www.talend.com
 //
 // This source code is available under agreement available at
 // %InstallDIR%\features\org.talend.rcp.branding.%PRODUCTNAME%\%PRODUCTNAME%license.txt
@@ -49,7 +49,7 @@ public final class PropertiesLoader {
     private static final String QUOTE = "'";
 
     private static TypedProperties curProp;
-    
+
 	private static Properties convertToProperties(Dictionary config) {
 		Enumeration keys = config.keys();
 		Properties props = new Properties();
@@ -59,7 +59,7 @@ public final class PropertiesLoader {
 		}
 		return props;
 	}
-    
+
     public static void setConfig(Dictionary config) {
     	Properties prop = convertToProperties(config);
     	curProp = new TypedProperties(prop);
@@ -67,7 +67,7 @@ public final class PropertiesLoader {
 
     /**
      * Method "quotedAbs" puts quotes around the path of the given file.
-     * 
+     *
      * @param in the file
      * @return the absolute path between quotes.
      */
@@ -77,7 +77,7 @@ public final class PropertiesLoader {
 
     /**
      * Method "getProperties".
-     * 
+     *
      * @return the properties loaded from the file given as JVM argument with
      * -D"talend_props=/home/myname/myfile.properties". Extra arguments to the JVM are default to the returned
      * Properties. All System properties are default value to the returned properties. this means, that the returned
@@ -95,7 +95,7 @@ public final class PropertiesLoader {
     /**
      * Method "getProperties". Loads a new TypedProperties from the file "propertiesFilename" that the classloader of
      * the given class "clazz" is able to find in its resources.
-     * 
+     *
      * @param clazz the class whose classloader will be used to get the properties file
      * @param propertiesFilename the properties file name (not the path)
      * @return typed properties loaded from the given file or empty typed properties if file could not be found
@@ -141,7 +141,7 @@ public final class PropertiesLoader {
 
     /**
      * DOC scorreia Comment method "initialize".
-     * 
+     *
      * @return the loaded properties or new empty Properties
      */
     private static synchronized TypedProperties initialize() {
@@ -157,7 +157,7 @@ public final class PropertiesLoader {
 
     /**
      * Method "initialize" initializes the given properties with the content of the given file.
-     * 
+     *
      * @param prop the output properties (filled in with the input file)
      * @param in a properties file
      * @return true if ok.
@@ -187,7 +187,7 @@ public final class PropertiesLoader {
 
     /**
      * DOC scorreia Comment method "loadPropertiesLow".
-     * 
+     *
      * @param filename
      * @return
      */

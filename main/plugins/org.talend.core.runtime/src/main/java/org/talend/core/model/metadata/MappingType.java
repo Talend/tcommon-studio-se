@@ -1,6 +1,6 @@
 // ============================================================================
 //
-// Copyright (C) 2006-2018 Talend Inc. - www.talend.com
+// Copyright (C) 2006-2019 Talend Inc. - www.talend.com
 //
 // This source code is available under agreement available at
 // %InstallDIR%\features\org.talend.rcp.branding.%PRODUCTNAME%\%PRODUCTNAME%license.txt
@@ -15,11 +15,11 @@ package org.talend.core.model.metadata;
 
 
 /**
- * 
+ *
  * DOC amaumont TypesManager class global comment. Detailled comment <br/>
- * 
+ *
  * $Id$
- * 
+ *
  */
 public class MappingType {
 
@@ -31,7 +31,7 @@ public class MappingType {
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see java.lang.Object#hashCode()
      */
     @Override
@@ -46,7 +46,7 @@ public class MappingType {
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see java.lang.Object#equals(java.lang.Object)
      */
     @Override
@@ -72,7 +72,7 @@ public class MappingType {
 
     /**
      * Getter for dbmsType.
-     * 
+     *
      * @return the dbmsType
      */
     public String getDbType() {
@@ -81,7 +81,7 @@ public class MappingType {
 
     /**
      * Sets the dbmsType.
-     * 
+     *
      * @param dbmsType the dbmsType to set
      */
     public void setDbType(String dbmsType) {
@@ -90,7 +90,7 @@ public class MappingType {
 
     /**
      * Getter for defaultSelected.
-     * 
+     *
      * @return the defaultSelected
      */
     public Boolean getDefaultSelected() {
@@ -99,7 +99,7 @@ public class MappingType {
 
     /**
      * Sets the defaultSelected.
-     * 
+     *
      * @param defaultSelected the defaultSelected to set
      */
     public void setDefaultSelected(Boolean defaultSelected) {
@@ -108,7 +108,7 @@ public class MappingType {
 
     /**
      * Getter for languageType.
-     * 
+     *
      * @return the languageType
      */
     public String getTalendType() {
@@ -117,7 +117,7 @@ public class MappingType {
 
     /**
      * Sets the languageType.
-     * 
+     *
      * @param talendTypeName the languageType to set
      */
     public void setTalendType(String talendTypeName) {
@@ -127,7 +127,7 @@ public class MappingType {
     /**
          * toString method: creates a String representation of the object
          * @return the String representation
-         * @author 
+         * @author
          */
         public String toString() {
             StringBuffer buffer = new StringBuffer();
@@ -139,7 +139,7 @@ public class MappingType {
             return buffer.toString();
         }
 
-    
-    
+
+
 }
 

@@ -1,6 +1,6 @@
 // ============================================================================
 //
-// Copyright (C) 2006-2018 Talend Inc. - www.talend.com
+// Copyright (C) 2006-2019 Talend Inc. - www.talend.com
 //
 // This source code is available under agreement available at
 // %InstallDIR%\features\org.talend.rcp.branding.%PRODUCTNAME%\%PRODUCTNAME%license.txt
@@ -31,7 +31,7 @@ public class TeradataResultSet extends FakeResultSet {
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see org.talend.commons.utils.database.FakeResultSet#next()
      */
     @Override
@@ -54,7 +54,7 @@ public class TeradataResultSet extends FakeResultSet {
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see org.talend.commons.utils.database.FakeResultSet#getString(java.lang.String)
      */
     @Override
@@ -70,7 +70,7 @@ public class TeradataResultSet extends FakeResultSet {
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see org.talend.commons.utils.database.FakeResultSet#getInt(java.lang.String)
      */
     @Override
@@ -92,7 +92,7 @@ public class TeradataResultSet extends FakeResultSet {
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see org.talend.commons.utils.database.FakeResultSet#getBoolean(java.lang.String)
      */
     @Override
@@ -103,7 +103,7 @@ public class TeradataResultSet extends FakeResultSet {
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see org.talend.commons.utils.database.FakeResultSet#getString(int)
      */
     @Override
@@ -118,7 +118,7 @@ public class TeradataResultSet extends FakeResultSet {
     }
 
     /**
-     * 
+     *
      * @param table_meta
      */
     public void setMetadata(String[] tableMeta) {
@@ -127,7 +127,7 @@ public class TeradataResultSet extends FakeResultSet {
     }
 
     /**
-     * 
+     *
      * @param tables
      */
     public void setData(List<String[]> data) {

@@ -1,6 +1,6 @@
 // ============================================================================
 //
-// Copyright (C) 2006-2018 Talend Inc. - www.talend.com
+// Copyright (C) 2006-2019 Talend Inc. - www.talend.com
 //
 // This source code is available under agreement available at
 // %InstallDIR%\features\org.talend.rcp.branding.%PRODUCTNAME%\%PRODUCTNAME%license.txt
@@ -21,7 +21,7 @@ import org.talend.commons.utils.data.bean.IBeanPropertyAccessors;
 
 /**
  * DOC amaumont class global comment. Detailled comment <br/>
- * 
+ *
  */
 public abstract class AbstractPreferencesHelperForTable {
 
@@ -52,7 +52,7 @@ public abstract class AbstractPreferencesHelperForTable {
      * <p>
      * Subclasses must implement this method.
      * </p>
-     * 
+     *
      * @param beans the list of items
      * @return the combined string
      * @see #readString
@@ -72,7 +72,7 @@ public abstract class AbstractPreferencesHelperForTable {
 
     /**
      * DOC amaumont Comment method "getBeanToString".
-     * 
+     *
      * @param b
      * @return
      */
@@ -92,7 +92,7 @@ public abstract class AbstractPreferencesHelperForTable {
 
     /**
      * DOC amaumont Comment method "getStringValue".
-     * 
+     *
      * @param column
      * @param bean
      * @return
@@ -106,7 +106,7 @@ public abstract class AbstractPreferencesHelperForTable {
      * <p>
      * Subclasses must implement this method.
      * </p>
-     * 
+     *
      * @param stringList the string
      * @return an array of <code>String</code>
      * @see #writeString
@@ -132,7 +132,7 @@ public abstract class AbstractPreferencesHelperForTable {
 
     /**
      * DOC amaumont Comment method "parseStringArray".
-     * 
+     *
      * @param strings
      * @return
      */
@@ -151,7 +151,7 @@ public abstract class AbstractPreferencesHelperForTable {
 
     /**
      * DOC amaumont Comment method "parseValue".
-     * 
+     *
      * @param strings
      * @param bean
      * @param i

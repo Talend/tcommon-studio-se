@@ -1,6 +1,6 @@
 // ============================================================================
 //
-// Copyright (C) 2006-2018 Talend Inc. - www.talend.com
+// Copyright (C) 2006-2019 Talend Inc. - www.talend.com
 //
 // This source code is available under agreement available at
 // %InstallDIR%\features\org.talend.rcp.branding.%PRODUCTNAME%\%PRODUCTNAME%license.txt
@@ -29,7 +29,7 @@ import junit.framework.TestCase;
  * @see ElapsedTimeTest#runWithInvalidAssertions for testing strange behavior of Dates
  * @see bug: "GregorianCalendar changes hour field when adding one day" at
  * http://bugs.sun.com/bugdatabase/view_bug.do?bug_id=4958050
- * 
+ *
  * MODSCA20051125 Java 5 changed the implementation of Calendar.clear() : fields cleared are undefined but not
  * necessarily set to 0!
  */
@@ -527,7 +527,7 @@ public class ElapsedTimeTest extends TestCase {
 
     /**
      * Tests 2 ways for computing the difference between 2 GregorianCalendar Dates
-     * 
+     *
      * @param inputNbDay
      * @param startTimeInMillis
      */
@@ -751,7 +751,7 @@ public class ElapsedTimeTest extends TestCase {
     /**
      * Same implementation as ElapsedTimeTest#getDays(Date, Date) except that I ADDED clear also Hour:
      * gc1.clear(Calendar.HOUR);
-     * 
+     *
      * @see ElapsedTimeTest#getDays(GregorianCalendar, GregorianCalendar)
      * @return positive or negative values
      */
@@ -804,15 +804,15 @@ public class ElapsedTimeTest extends TestCase {
     // /** Yet another algo from http://forum.java.sun.com/thread.jspa?forumID=54&threadID=558752 */
     // public static class DateInterval {
     // public static final long MILLIS_PER_DAY = 1000 * 60 * 60 * 24;
-    //	 
+    //
     // public static int daysBetween(Calendar fromCal, Calendar toCal) {
     // //make copies because we're going to rollback
     // fromCal = (Calendar) fromCal.clone();
     // toCal = (Calendar) toCal.clone();
-    //	 
+    //
     // rollBackToMidnight(fromCal);
     // rollBackToMidnight(toCal);
-    //	 
+    //
     // long fromMillis = fromCal.getTimeInMillis();
     // long toMillis = toCal.getTimeInMillis();
     // long diffMillis = toMillis-fromMillis;
@@ -826,7 +826,7 @@ public class ElapsedTimeTest extends TestCase {
     // }
     // return (int) diffDays;
     // }
-    //	 
+    //
     // public static void rollBackToMidnight(Calendar cal) {
     // cal.set(Calendar.HOUR_OF_DAY, 0);
     // cal.set(Calendar.MINUTE, 0);

@@ -1,6 +1,6 @@
 // ============================================================================
 //
-// Copyright (C) 2006-2018 Talend Inc. - www.talend.com
+// Copyright (C) 2006-2019 Talend Inc. - www.talend.com
 //
 // This source code is available under agreement available at
 // %InstallDIR%\features\org.talend.rcp.branding.%PRODUCTNAME%\%PRODUCTNAME%license.txt
@@ -119,7 +119,7 @@ public class FilesManager extends AbstractImportResourcesManager {
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see org.talend.repository.localprovider.imports.ResourcesManager#getProvider()
      */
     @Override
@@ -129,7 +129,7 @@ public class FilesManager extends AbstractImportResourcesManager {
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see org.talend.repository.localprovider.imports.ResourcesManager#closeResource()
      */
     @Override
@@ -140,7 +140,7 @@ public class FilesManager extends AbstractImportResourcesManager {
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see org.talend.repository.items.importexport.manager.ResourcesManager#getRoot()
      */
     @Override

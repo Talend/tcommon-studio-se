@@ -1,6 +1,6 @@
 // ============================================================================
 //
-// Copyright (C) 2006-2018 Talend Inc. - www.talend.com
+// Copyright (C) 2006-2019 Talend Inc. - www.talend.com
 //
 // This source code is available under agreement available at
 // %InstallDIR%\features\org.talend.rcp.branding.%PRODUCTNAME%\%PRODUCTNAME%license.txt
@@ -43,7 +43,7 @@ import org.talend.core.utils.TalendQuoteUtils;
 
 /**
  * qzhang class global comment. Detailled comment <br/>
- * 
+ *
  */
 public final class DefaultCellEditorFactory {
 
@@ -72,7 +72,7 @@ public final class DefaultCellEditorFactory {
 
             /*
              * (non-Javadoc)
-             * 
+             *
              * @see org.eclipse.gef.commands.Command#execute()
              */
             @Override
@@ -268,7 +268,7 @@ public final class DefaultCellEditorFactory {
 
     /**
      * chuang Comment method "onTextChange".
-     * 
+     *
      * @param editor
      */
     private void onTextChange(final CustomCellEditor editor) {
@@ -294,7 +294,7 @@ public final class DefaultCellEditorFactory {
 
             /*
              * (non-Javadoc)
-             * 
+             *
              * @see org.talend.core.ui.context.DefaultCellEditorFactory.CustomCellEditor#doSetValue(java.lang.Object)
              */
             // @Override
@@ -387,7 +387,7 @@ public final class DefaultCellEditorFactory {
 
     /**
      * qzhang Comment method "getAddQuoteString".
-     * 
+     *
      * @param path
      * @return
      */
@@ -401,7 +401,7 @@ public final class DefaultCellEditorFactory {
 
     /**
      * qzhang Comment method "getRemoveQuoteString".
-     * 
+     *
      * @param path
      * @return
      */
@@ -415,7 +415,7 @@ public final class DefaultCellEditorFactory {
 
     /**
      * qzhang Comment method "isBoolean".
-     * 
+     *
      * @param value
      * @return
      */
@@ -425,7 +425,7 @@ public final class DefaultCellEditorFactory {
 
     /**
      * qzhang Comment method "isDirectory".
-     * 
+     *
      * @param value
      * @return
      */
@@ -439,7 +439,7 @@ public final class DefaultCellEditorFactory {
 
     /**
      * qzhang Comment method "isDate".
-     * 
+     *
      * @param value
      * @return
      */
@@ -449,7 +449,7 @@ public final class DefaultCellEditorFactory {
 
     /**
      * qzhang Comment method "isFile".
-     * 
+     *
      * @param value
      * @return
      */
@@ -463,7 +463,7 @@ public final class DefaultCellEditorFactory {
 
     /**
      * qzhang DefaultCellEditorFactory class global comment. Detailled comment.
-     * 
+     *
      */
     private abstract class CustomCellEditor extends CustomDialogCellEditor {
 
@@ -473,7 +473,7 @@ public final class DefaultCellEditorFactory {
 
         /*
          * (non-Javadoc)
-         * 
+         *
          * @see org.talend.core.ui.context.CustomDialogCellEditor#doSetValue(java.lang.Object)
          */
         @Override

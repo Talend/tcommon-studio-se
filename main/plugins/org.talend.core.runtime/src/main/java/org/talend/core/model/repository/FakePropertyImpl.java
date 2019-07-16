@@ -1,6 +1,6 @@
 // ============================================================================
 //
-// Copyright (C) 2006-2018 Talend Inc. - www.talend.com
+// Copyright (C) 2006-2019 Talend Inc. - www.talend.com
 //
 // This source code is available under agreement available at
 // %InstallDIR%\features\org.talend.rcp.branding.%PRODUCTNAME%\%PRODUCTNAME%license.txt
@@ -26,7 +26,7 @@ import org.talend.core.runtime.CoreRuntimePlugin;
 
 /**
  * created by wchen on 2014-3-11 Detailled comment
- * 
+ *
  */
 public class FakePropertyImpl extends PropertyImpl {
 
@@ -34,7 +34,7 @@ public class FakePropertyImpl extends PropertyImpl {
 
     /**
      * DOC FakePropertyImpl constructor comment.
-     * 
+     *
      * @param id
      */
     public FakePropertyImpl() {
@@ -68,7 +68,7 @@ public class FakePropertyImpl extends PropertyImpl {
 
     /**
      * Sets the itemPath.
-     * 
+     *
      * @param itemPath the itemPath to set
      */
     public void setItemPath(IPath itemPath) {
@@ -77,7 +77,7 @@ public class FakePropertyImpl extends PropertyImpl {
 
     /**
      * Getter for itemPath.
-     * 
+     *
      * @return the itemPath
      */
     public IPath getItemPath() {

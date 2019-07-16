@@ -1,6 +1,6 @@
 // ============================================================================
 //
-// Copyright (C) 2006-2018 Talend Inc. - www.talend.com
+// Copyright (C) 2006-2019 Talend Inc. - www.talend.com
 //
 // This source code is available under agreement available at
 // %InstallDIR%\features\org.talend.rcp.branding.%PRODUCTNAME%\%PRODUCTNAME%license.txt
@@ -18,9 +18,9 @@ import org.eclipse.swt.graphics.Rectangle;
 
 /**
  * DOC amaumont class global comment. Detailled comment <br/>
- * 
+ *
  * $Id$
- * 
+ *
  */
 public abstract class AbstractDrawableLink implements IDrawableLink {
 
@@ -36,7 +36,7 @@ public abstract class AbstractDrawableLink implements IDrawableLink {
 
     /**
      * DOC amaumont AbstractDrawableLink constructor comment.
-     * 
+     *
      * @param style
      */
     public AbstractDrawableLink(IStyleLink style) {
@@ -51,7 +51,7 @@ public abstract class AbstractDrawableLink implements IDrawableLink {
 
     /**
      * DOC amaumont Comment method "drawExtremities".
-     * 
+     *
      * @param gc
      */
     protected void drawExtremities(GC gc) {
@@ -67,7 +67,7 @@ public abstract class AbstractDrawableLink implements IDrawableLink {
 
     /**
      * Getter for point1.
-     * 
+     *
      * @return the point1
      */
     public Point getPoint1() {
@@ -76,7 +76,7 @@ public abstract class AbstractDrawableLink implements IDrawableLink {
 
     /**
      * Sets the point1.
-     * 
+     *
      * @param point1 the point1 to set
      */
     public void setPoint1(Point point1) {
@@ -85,7 +85,7 @@ public abstract class AbstractDrawableLink implements IDrawableLink {
 
     /**
      * Getter for point2.
-     * 
+     *
      * @return the point2
      */
     public Point getPoint2() {
@@ -94,7 +94,7 @@ public abstract class AbstractDrawableLink implements IDrawableLink {
 
     /**
      * Sets the point2.
-     * 
+     *
      * @param point2 the point2 to set
      */
     public void setPoint2(Point point2) {
@@ -103,7 +103,7 @@ public abstract class AbstractDrawableLink implements IDrawableLink {
 
     /**
      * Getter for calculateBounds.
-     * 
+     *
      * @return the calculateBounds
      */
     public Rectangle getBoundsOfCalculate() {
@@ -112,7 +112,7 @@ public abstract class AbstractDrawableLink implements IDrawableLink {
 
     /**
      * Sets the calculateBounds.
-     * 
+     *
      * @param calculateBounds the calculateBounds to set
      */
     public void setBoundsOfCalculate(Rectangle calculateBounds) {
@@ -121,7 +121,7 @@ public abstract class AbstractDrawableLink implements IDrawableLink {
 
     /**
      * Getter for connectorWidth.
-     * 
+     *
      * @return the connectorWidth
      */
     public Integer getConnectorWidth() {
@@ -130,7 +130,7 @@ public abstract class AbstractDrawableLink implements IDrawableLink {
 
     /**
      * Sets the connectorWidth.
-     * 
+     *
      * @param connectorWidth the connectorWidth to set
      */
     public void setConnectorWidth(Integer connectorWidth) {
@@ -139,7 +139,7 @@ public abstract class AbstractDrawableLink implements IDrawableLink {
 
     /**
      * Getter for style.
-     * 
+     *
      * @return the style
      */
     public IStyleLink getStyle() {
@@ -148,7 +148,7 @@ public abstract class AbstractDrawableLink implements IDrawableLink {
 
     /**
      * Sets the style.
-     * 
+     *
      * @param style the style to set
      */
     public void setStyle(IStyleLink style) {

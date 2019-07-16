@@ -1,6 +1,6 @@
 // ============================================================================
 //
-// Copyright (C) 2006-2018 Talend Inc. - www.talend.com
+// Copyright (C) 2006-2019 Talend Inc. - www.talend.com
 //
 // This source code is available under agreement available at
 // %InstallDIR%\features\org.talend.rcp.branding.%PRODUCTNAME%\%PRODUCTNAME%license.txt
@@ -13,17 +13,17 @@
 package org.talend.repository.mdm.ui.viewer.content;
 
 /**
- * 
+ *
  * DOC ggu class global comment. Detailled comment
- * 
- * 
+ *
+ *
  * FIXME later, will enable it
  */
 public class MdmContentProvider /* extends AbstractMetadataContentProvider */{
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see
      * org.talend.repository.viewer.content.SingleTopLevelContentProvider#getTopLevelNode(org.talend.repository.model
      * .RepositoryNode)

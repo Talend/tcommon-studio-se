@@ -1,6 +1,6 @@
 // ============================================================================
 //
-// Copyright (C) 2006-2018 Talend Inc. - www.talend.com
+// Copyright (C) 2006-2019 Talend Inc. - www.talend.com
 //
 // This source code is available under agreement available at
 // %InstallDIR%\features\org.talend.rcp.branding.%PRODUCTNAME%\%PRODUCTNAME%license.txt
@@ -30,7 +30,7 @@ public final class MultiMapHelper {
     /**
      * Adds the object "value" in the list got from "key". The object is not added if the list already contains it. The
      * collection is implemented as an ArrayList.
-     * 
+     *
      * @param key an entry key of the given map
      * @param value the object to add to the given map
      * @param map the map of the type [key -> List ]
@@ -61,7 +61,7 @@ public final class MultiMapHelper {
      * Adds the object "value" in the list got from "key". The object is not added if the list already contains it OR an
      * object that is identical to it. The collection is implemented as an ArrayList and the objects are added in an
      * ASCENDING order.
-     * 
+     *
      * @param key an entry key of the given map
      * @param value the object to add to the given map
      * @param map the map of the type [key -> List ]
@@ -99,7 +99,7 @@ public final class MultiMapHelper {
     /**
      * Adds the object "value" in the collection got from "key". The object is not added if the list already contains
      * it. The collection is implemented as a HashSet.
-     * 
+     *
      * @param key an entry key of the given map
      * @param value the object to add to the given map
      * @param map the map of the type [key -> Collection ]
@@ -141,7 +141,7 @@ public final class MultiMapHelper {
 
     /**
      * Removes a value object from the collection obtained with the given key.
-     * 
+     *
      * @param key the key to access a collection of objects
      * @param toBeRemoved the object to remove from the collection
      * @param map the map [key -> collection of objects ]
@@ -162,7 +162,7 @@ public final class MultiMapHelper {
 
     /**
      * NOTE Same as removeObjectFromCollectionMap but remove key if Collection is empty.
-     * 
+     *
      * @param key point to the collection in which we must rmove an element
      * @param toBeRemoved the object to removed in collection refered by key
      * @param map the map of collection in which to do removal

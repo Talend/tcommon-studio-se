@@ -1,6 +1,6 @@
 // ============================================================================
 //
-// Copyright (C) 2006-2018 Talend Inc. - www.talend.com
+// Copyright (C) 2006-2019 Talend Inc. - www.talend.com
 //
 // This source code is available under agreement available at
 // %InstallDIR%\features\org.talend.rcp.branding.%PRODUCTNAME%\%PRODUCTNAME%license.txt
@@ -57,7 +57,7 @@ public class Nexus3RepositoryHandler extends AbstractArtifactRepositoryHandler {
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see org.talend.core.nexus.IRepositoryArtifactHandler#checkConnection()
      */
     @Override
@@ -67,7 +67,7 @@ public class Nexus3RepositoryHandler extends AbstractArtifactRepositoryHandler {
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see org.talend.core.nexus.IRepositoryArtifactHandler#checkConnection(boolean, boolean)
      */
     @Override
@@ -103,7 +103,7 @@ public class Nexus3RepositoryHandler extends AbstractArtifactRepositoryHandler {
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see org.talend.core.nexus.IRepositoryArtifactHandler#search(java.lang.String, java.lang.String,
      * java.lang.String, boolean, boolean)
      */
@@ -137,7 +137,9 @@ public class Nexus3RepositoryHandler extends AbstractArtifactRepositoryHandler {
                     try {
                         result = handler.search(repositoryId, groupIdToSearch, artifactId, versionToSearch);
                         currentQueryHandler = handler;
-                        LOGGER.info("Switch to new search handler,the handler version is:" + currentQueryHandler.getHandlerVersion());
+                        LOGGER.info(
+                                "Switch to new search handler,the handler version is:" + currentQueryHandler.getHandlerVersion());
+                        break;
                     } catch (Exception e) {
                         LOGGER.info("Try to switch search handler failed" + e.getMessage());
                     }
@@ -149,16 +151,16 @@ public class Nexus3RepositoryHandler extends AbstractArtifactRepositoryHandler {
 
     private INexus3SearchHandler getQueryHandler() {
         if (queryHandlerList.size() == 0) {
-            queryHandlerList.add(new Nexus3ScriptSearchHandler(serverBean));
-            queryHandlerList.add(new Nexus3BetaSearchHandler(serverBean));
             queryHandlerList.add(new Nexus3V1SearchHandler(serverBean));
+            queryHandlerList.add(new Nexus3BetaSearchHandler(serverBean));
+            queryHandlerList.add(new Nexus3ScriptSearchHandler(serverBean));
         }
         return queryHandlerList.get(0);
     }
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see org.talend.core.nexus.IRepositoryArtifactHandler#deploy(java.io.File, java.lang.String, java.lang.String,
      * java.lang.String, java.lang.String, java.lang.String)
      */

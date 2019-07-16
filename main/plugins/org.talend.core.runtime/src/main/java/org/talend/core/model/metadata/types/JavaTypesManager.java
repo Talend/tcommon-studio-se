@@ -1,6 +1,6 @@
 // ============================================================================
 //
-// Copyright (C) 2006-2018 Talend Inc. - www.talend.com
+// Copyright (C) 2006-2019 Talend Inc. - www.talend.com
 //
 // This source code is available under agreement available at
 // %InstallDIR%\features\org.talend.rcp.branding.%PRODUCTNAME%\%PRODUCTNAME%license.txt
@@ -32,9 +32,9 @@ import org.talend.core.runtime.i18n.Messages;
 
 /**
  * DOC amaumont class global comment. Detailled comment <br/>
- * 
+ *
  * $Id$
- * 
+ *
  */
 public final class JavaTypesManager {
 
@@ -195,7 +195,7 @@ public final class JavaTypesManager {
 
     /**
      * Add a java type to the common list.
-     * 
+     *
      * @param javaType
      */
     public static void addJavaType(JavaType javaType) {
@@ -221,9 +221,9 @@ public final class JavaTypesManager {
     }
 
     /**
-     * 
+     *
      * Search JavaType from short name (ex: "Double" or "double").
-     * 
+     *
      * @param typeName
      * @return JavaType if found, else null
      */
@@ -232,9 +232,9 @@ public final class JavaTypesManager {
     }
 
     /**
-     * 
+     *
      * DOC amaumont Comment method "getShortNameFromJavaType".
-     * 
+     *
      * @param javaType
      * @return primitive name if JavaType is primitive (boolean, int, etc.), else return Object type name (String, Date,
      * etc.)
@@ -248,9 +248,9 @@ public final class JavaTypesManager {
     }
 
     /**
-     * 
+     *
      * Search JavaType from label (ex: "double / Double" or "String").
-     * 
+     *
      * @param typeName
      * @return JavaType if found, else null
      */
@@ -259,9 +259,9 @@ public final class JavaTypesManager {
     }
 
     /**
-     * 
+     *
      * Search JavaType from label (ex: "double / Double" or "String").
-     * 
+     *
      * @param typeName
      * @return JavaType if found, else null
      */
@@ -289,9 +289,9 @@ public final class JavaTypesManager {
     }
 
     /**
-     * 
+     *
      * Search JavaType from short name (ex: "Double" or "double").
-     * 
+     *
      * @param typeName
      * @return JavaType if found, else null
      */
@@ -300,9 +300,9 @@ public final class JavaTypesManager {
     }
 
     /**
-     * 
+     *
      * Get primitive or object type according to id and nullable parameters.
-     * 
+     *
      * @param idType
      * @param nullable
      * @return canonical name of class (java.lang.String or int)
@@ -314,7 +314,7 @@ public final class JavaTypesManager {
 
     /**
      * DOC amaumont Comment method "getFinalType".
-     * 
+     *
      * @param javaType
      * @param nullable
      * @return
@@ -345,9 +345,9 @@ public final class JavaTypesManager {
     }
 
     /**
-     * 
+     *
      * Return true if given type represents a primitive java type.
-     * 
+     *
      * @param type
      * @return true if given type represents a primitive java type
      */
@@ -359,9 +359,9 @@ public final class JavaTypesManager {
     }
 
     /**
-     * 
+     *
      * Return true if given type represents a primitive java type.
-     * 
+     *
      * @param type
      * @return true if given type represents a primitive java type
      */
@@ -371,9 +371,9 @@ public final class JavaTypesManager {
     }
 
     /**
-     * 
+     *
      * Return true if given type represents a primitive java type.
-     * 
+     *
      * @param type
      * @return true if given type represents a primitive java type
      */
@@ -387,7 +387,7 @@ public final class JavaTypesManager {
      * <p>
      * int(Integer), float(Float), double(Double), long(Long), short(Short), byte(Byte), BigDecimal.
      * </p>
-     * 
+     *
      * @param type
      * @return true if given type represents a primitive java type
      * @deprecated use same method without boolean <code>nullable</code>
@@ -402,7 +402,7 @@ public final class JavaTypesManager {
      * <p>
      * int(Integer), float(Float), double(Double), long(Long), short(Short), byte(Byte), BigDecimal.
      * </p>
-     * 
+     *
      * @param type
      * @return true if given type represents a primitive java type
      */
@@ -415,7 +415,7 @@ public final class JavaTypesManager {
      * <p>
      * int(Integer), long(Long), short(Short), byte(Byte)
      * </p>
-     * 
+     *
      * @param type
      * @return true if given type represents a primitive java type
      */
@@ -424,9 +424,9 @@ public final class JavaTypesManager {
     }
 
     /**
-     * 
+     *
      * Return the default value for a given type.
-     * 
+     *
      * @param type
      * @return
      */
@@ -448,9 +448,9 @@ public final class JavaTypesManager {
     }
 
     /**
-     * 
+     *
      * Return the default value for a given type, if the given parameter "defaultValue" is set, this value is returned.
-     * 
+     *
      * @param type
      * @return string value if the case is valid or the default value is valid. If the type is primitive and the
      * <code>defaultValue</code> is not set, java null is returned.
@@ -465,9 +465,9 @@ public final class JavaTypesManager {
     }
 
     /**
-     * 
+     *
      * Return the default value for a given type.
-     * 
+     *
      * @param type
      * @return
      */
@@ -477,9 +477,9 @@ public final class JavaTypesManager {
     }
 
     /**
-     * 
+     *
      * Return the default value for a given type.
-     * 
+     *
      * @param type
      * @return
      */

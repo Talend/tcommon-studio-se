@@ -1,6 +1,6 @@
 // ============================================================================
 //
-// Copyright (C) 2006-2018 Talend Inc. - www.talend.com
+// Copyright (C) 2006-2019 Talend Inc. - www.talend.com
 //
 // This source code is available under agreement available at
 // %InstallDIR%\features\org.talend.rcp.branding.%PRODUCTNAME%\%PRODUCTNAME%license.txt
@@ -60,7 +60,7 @@ public class RepositorySelectionViewerTextFilter extends ViewerFilter {
 
     /**
      * The input object is the node of <code>Folder</code>. DOC Added by Marvin Wang on Feb 27, 2012.
-     * 
+     *
      * @param repNode
      * @return
      */
@@ -85,7 +85,7 @@ public class RepositorySelectionViewerTextFilter extends ViewerFilter {
     /**
      * To find the matched job excepting folder, if the given repository node has a matched job, return
      * <code>true</code>. Otherwise, return <code>false</code>. DOC Added by Marvin Wang on Feb 27, 2012.
-     * 
+     *
      * @param repNode
      * @return
      */

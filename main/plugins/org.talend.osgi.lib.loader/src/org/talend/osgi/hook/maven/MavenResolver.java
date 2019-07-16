@@ -1,6 +1,6 @@
 // ============================================================================
 //
-// Copyright (C) 2006-2018 Talend Inc. - www.talend.com
+// Copyright (C) 2006-2019 Talend Inc. - www.talend.com
 //
 // This source code is available under agreement available at
 // %InstallDIR%\features\org.talend.rcp.branding.%PRODUCTNAME%\%PRODUCTNAME%license.txt
@@ -25,7 +25,7 @@ public interface MavenResolver {
 
     /**
      * return the file location of the artifact pointed by the maven URI.
-     * 
+     *
      * @param mavenURI, the URI to locate the artifact.
      * @return the local file that was resolved (found or downloaded) identified by the maven uri.
      * @throws IOException

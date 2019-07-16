@@ -1,6 +1,6 @@
 // ============================================================================
 //
-// Copyright (C) 2006-2018 Talend Inc. - www.talend.com
+// Copyright (C) 2006-2019 Talend Inc. - www.talend.com
 //
 // This source code is available under agreement available at
 // %InstallDIR%\features\org.talend.rcp.branding.%PRODUCTNAME%\%PRODUCTNAME%license.txt
@@ -118,7 +118,7 @@ import ca.odell.glazedlists.TreeList;
 
 /**
  * created by ldong on Jul 10, 2014 Detailled comment
- * 
+ *
  */
 public class ContextTreeTable {
 
@@ -179,7 +179,7 @@ public class ContextTreeTable {
 
     /**
      * create the context NatTable
-     * 
+     *
      * @param parent
      * @return
      */
@@ -592,7 +592,7 @@ public class ContextTreeTable {
 
         /*
          * (non-Javadoc)
-         * 
+         *
          * @see ca.odell.glazedlists.TreeList.Format#getPath(java.util.List, java.lang.Object)
          */
         @Override
@@ -643,7 +643,7 @@ public class ContextTreeTable {
 
         /**
          * Getter for control.
-         * 
+         *
          * @return the control
          */
         public Control getControl() {
@@ -652,7 +652,7 @@ public class ContextTreeTable {
 
         /**
          * Sets the control.
-         * 
+         *
          * @param control the control to set
          */
         public void setControl(Control control) {
@@ -661,7 +661,7 @@ public class ContextTreeTable {
 
         /**
          * Getter for width.
-         * 
+         *
          * @return the width
          */
         public Integer getWidth() {
@@ -670,7 +670,7 @@ public class ContextTreeTable {
 
         /**
          * Sets the width.
-         * 
+         *
          * @param width the width to set
          */
         public void setWidth(Integer width) {

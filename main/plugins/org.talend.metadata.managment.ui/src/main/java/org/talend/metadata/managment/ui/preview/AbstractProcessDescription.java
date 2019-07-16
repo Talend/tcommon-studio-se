@@ -1,6 +1,6 @@
 // ============================================================================
 //
-// Copyright (C) 2006-2018 Talend Inc. - www.talend.com
+// Copyright (C) 2006-2019 Talend Inc. - www.talend.com
 //
 // This source code is available under agreement available at
 // %InstallDIR%\features\org.talend.rcp.branding.%PRODUCTNAME%\%PRODUCTNAME%license.txt
@@ -20,9 +20,9 @@ import org.talend.core.repository.model.preview.IProcessDescription;
 
 /**
  * Description of a Process.
- * 
+ *
  * $Id: IProcessDescription.java 663 2006-11-21 17:21:53 +0000 (星期二, 21 十一月 2006) cantoine $
- * 
+ *
  */
 public abstract class AbstractProcessDescription implements IProcessDescription {
 
@@ -84,7 +84,7 @@ public abstract class AbstractProcessDescription implements IProcessDescription 
 
     /**
      * Getter for escapeCharacter.
-     * 
+     *
      * @return the escapeCharacter
      */
     @Override
@@ -94,7 +94,7 @@ public abstract class AbstractProcessDescription implements IProcessDescription 
 
     /**
      * Sets the escapeCharacter.
-     * 
+     *
      * @param escapeCharacter the escapeCharacter to set
      */
     @Override
@@ -104,7 +104,7 @@ public abstract class AbstractProcessDescription implements IProcessDescription 
 
     /**
      * Getter for fieldSeparator.
-     * 
+     *
      * @return the fieldSeparator
      */
     @Override
@@ -114,7 +114,7 @@ public abstract class AbstractProcessDescription implements IProcessDescription 
 
     /**
      * Sets the fieldSeparator.
-     * 
+     *
      * @param fieldSeparator the fieldSeparator to set
      */
     @Override
@@ -124,7 +124,7 @@ public abstract class AbstractProcessDescription implements IProcessDescription 
 
     /**
      * Getter for filepath.
-     * 
+     *
      * @return the filepath
      */
     @Override
@@ -134,7 +134,7 @@ public abstract class AbstractProcessDescription implements IProcessDescription 
 
     /**
      * Sets the filepath.
-     * 
+     *
      * @param filepath the filepath to set
      */
     @Override
@@ -144,7 +144,7 @@ public abstract class AbstractProcessDescription implements IProcessDescription 
 
     /**
      * Getter for footerRow.
-     * 
+     *
      * @return the footerRow
      */
     @Override
@@ -154,7 +154,7 @@ public abstract class AbstractProcessDescription implements IProcessDescription 
 
     /**
      * Sets the footerRow.
-     * 
+     *
      * @param footerRow the footerRow to set
      */
     @Override
@@ -164,7 +164,7 @@ public abstract class AbstractProcessDescription implements IProcessDescription 
 
     /**
      * Getter for headerRow.
-     * 
+     *
      * @return the headerRow
      */
     @Override
@@ -174,7 +174,7 @@ public abstract class AbstractProcessDescription implements IProcessDescription 
 
     /**
      * Sets the headerRow.
-     * 
+     *
      * @param headerRow the headerRow to set
      */
     @Override
@@ -184,7 +184,7 @@ public abstract class AbstractProcessDescription implements IProcessDescription 
 
     /**
      * Getter for rowSeparator.
-     * 
+     *
      * @return the rowSeparator
      */
     @Override
@@ -194,7 +194,7 @@ public abstract class AbstractProcessDescription implements IProcessDescription 
 
     /**
      * Sets the rowSeparator.
-     * 
+     *
      * @param rowSeparator the rowSeparator to set
      */
     @Override
@@ -204,7 +204,7 @@ public abstract class AbstractProcessDescription implements IProcessDescription 
 
     /**
      * Getter for server.
-     * 
+     *
      * @return the server
      */
     @Override
@@ -214,7 +214,7 @@ public abstract class AbstractProcessDescription implements IProcessDescription 
 
     /**
      * Sets the server.
-     * 
+     *
      * @param server the server to set
      */
     @Override
@@ -224,7 +224,7 @@ public abstract class AbstractProcessDescription implements IProcessDescription 
 
     /**
      * Getter for textEnclosure.
-     * 
+     *
      * @return the textEnclosure
      */
     @Override
@@ -234,7 +234,7 @@ public abstract class AbstractProcessDescription implements IProcessDescription 
 
     /**
      * Sets the textEnclosure.
-     * 
+     *
      * @param textEnclosure the textEnclosure to set
      */
     @Override
@@ -244,7 +244,7 @@ public abstract class AbstractProcessDescription implements IProcessDescription 
 
     /**
      * Getter for limitRows.
-     * 
+     *
      * @return the limitRows
      */
     @Override
@@ -254,7 +254,7 @@ public abstract class AbstractProcessDescription implements IProcessDescription 
 
     /**
      * Sets the limitRows.
-     * 
+     *
      * @param limitRows the limitRows to set
      */
     @Override
@@ -264,7 +264,7 @@ public abstract class AbstractProcessDescription implements IProcessDescription 
 
     /**
      * DOC ocarbone Comment method "setRemoveEmptyRow".
-     * 
+     *
      * @param boolean
      */
     @Override
@@ -274,7 +274,7 @@ public abstract class AbstractProcessDescription implements IProcessDescription 
 
     /**
      * DOC ocarbone Comment method "getRemoveEmptyRowsToSkip".
-     * 
+     *
      * @return boolean
      */
     @Override
@@ -284,7 +284,7 @@ public abstract class AbstractProcessDescription implements IProcessDescription 
 
     /**
      * Getter for pattern.
-     * 
+     *
      * @return the pattern
      */
     @Override
@@ -294,7 +294,7 @@ public abstract class AbstractProcessDescription implements IProcessDescription 
 
     /**
      * Sets the pattern.
-     * 
+     *
      * @param pattern the pattern to set
      */
     @Override
@@ -304,7 +304,7 @@ public abstract class AbstractProcessDescription implements IProcessDescription 
 
     /**
      * Getter for encoding.
-     * 
+     *
      * @return the encoding
      */
     @Override
@@ -314,7 +314,7 @@ public abstract class AbstractProcessDescription implements IProcessDescription 
 
     /**
      * Sets the encoding.
-     * 
+     *
      * @param encoding the encoding to set
      */
     @Override
@@ -324,7 +324,7 @@ public abstract class AbstractProcessDescription implements IProcessDescription 
 
     /**
      * Getter for schema.
-     * 
+     *
      * @return the schema
      */
     @Override
@@ -334,7 +334,7 @@ public abstract class AbstractProcessDescription implements IProcessDescription 
 
     /**
      * Sets the schema.
-     * 
+     *
      * @param schema the schema to set
      */
     @Override
@@ -344,7 +344,7 @@ public abstract class AbstractProcessDescription implements IProcessDescription 
 
     /**
      * Getter for loopQuery.
-     * 
+     *
      * @return the loopQuery
      */
     @Override
@@ -354,7 +354,7 @@ public abstract class AbstractProcessDescription implements IProcessDescription 
 
     /**
      * Sets the loopQuery.
-     * 
+     *
      * @param loopQuery the loopQuery to set
      */
     @Override
@@ -364,7 +364,7 @@ public abstract class AbstractProcessDescription implements IProcessDescription 
 
     /**
      * Getter for loopQuery.
-     * 
+     *
      * @return the loopQuery
      */
     @Override
@@ -374,7 +374,7 @@ public abstract class AbstractProcessDescription implements IProcessDescription 
 
     /**
      * Sets the loopLimit.
-     * 
+     *
      * @param loopLimit the loopLimit to set
      */
     @Override
@@ -384,7 +384,7 @@ public abstract class AbstractProcessDescription implements IProcessDescription 
 
     /**
      * Getter for mapping.
-     * 
+     *
      * @return the mapping
      */
     @Override
@@ -394,7 +394,7 @@ public abstract class AbstractProcessDescription implements IProcessDescription 
 
     /**
      * Sets the mapping.
-     * 
+     *
      * @param mapping the mapping to set
      */
     @Override
@@ -404,7 +404,7 @@ public abstract class AbstractProcessDescription implements IProcessDescription 
 
     /**
      * Getter for splitRecord.
-     * 
+     *
      * @return the splitRecord
      */
     @Override
@@ -414,7 +414,7 @@ public abstract class AbstractProcessDescription implements IProcessDescription 
 
     /**
      * Sets the splitRecord.
-     * 
+     *
      * @param splitRecord the splitRecord to set
      */
     public void setSplitRecord(boolean splitRecord) {

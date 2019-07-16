@@ -1,6 +1,6 @@
 // ============================================================================
 //
-// Copyright (C) 2006-2018 Talend Inc. - www.talend.com
+// Copyright (C) 2006-2019 Talend Inc. - www.talend.com
 //
 // This source code is available under agreement available at
 // %InstallDIR%\features\org.talend.rcp.branding.%PRODUCTNAME%\%PRODUCTNAME%license.txt
@@ -59,9 +59,9 @@ public enum UpdateManagerProviderDetector {
     }
 
     /**
-     * 
+     *
      * DOC ggu Comment method "retrieveProcessUpdateResults".
-     * 
+     *
      * @param process check the process to detect the different.
      * @param type
      * @return
@@ -81,11 +81,11 @@ public enum UpdateManagerProviderDetector {
     }
 
     /**
-     * 
+     *
      * DOC ggu Comment method "getDisplayImage".
-     * 
+     *
      * mainly for label provider of update manager dialog.
-     * 
+     *
      * @param type
      * @return
      */
@@ -101,11 +101,11 @@ public enum UpdateManagerProviderDetector {
     }
 
     /**
-     * 
+     *
      * DOC ggu Comment method "getDisplayText".
-     * 
+     *
      * mainly for label provider of update manager dialog.
-     * 
+     *
      * @param element
      * @param columnIndex
      * @return
@@ -122,11 +122,11 @@ public enum UpdateManagerProviderDetector {
     }
 
     /**
-     * 
+     *
      * DOC ggu Comment method "getDisplayCategory".
-     * 
+     *
      * mainly for label provider of update manager dialog.
-     * 
+     *
      * @param result
      * @return
      */
@@ -142,11 +142,11 @@ public enum UpdateManagerProviderDetector {
     }
 
     /**
-     * 
+     *
      * DOC ggu Comment method "getResultName".
-     * 
+     *
      * the label of result.
-     * 
+     *
      * @param result
      * @return
      */
@@ -162,9 +162,9 @@ public enum UpdateManagerProviderDetector {
     }
 
     /**
-     * 
+     *
      * DOC ggu Comment method "doUpdate".
-     * 
+     *
      * @param monitor
      * @param result
      * @return
@@ -183,9 +183,9 @@ public enum UpdateManagerProviderDetector {
     }
 
     /**
-     * 
+     *
      * DOC ggu Comment method "needRefreshRelatedViews".
-     * 
+     *
      * @param results
      * @return
      */
@@ -202,11 +202,11 @@ public enum UpdateManagerProviderDetector {
     }
 
     /**
-     * 
+     *
      * DOC ggu Comment method "postUpdate".
-     * 
+     *
      * after update, will do something.
-     * 
+     *
      * @param results
      */
     public void postUpdate(List<UpdateResult> results) {
@@ -217,11 +217,11 @@ public enum UpdateManagerProviderDetector {
     }
 
     /**
-     * 
+     *
      * DOC ggu Comment method "validateAction".
-     * 
+     *
      * Worked for DetecteViewImpactAction
-     * 
+     *
      * @param viewer
      * @param selection
      * @return
@@ -237,11 +237,11 @@ public enum UpdateManagerProviderDetector {
     }
 
     /**
-     * 
+     *
      * DOC ggu Comment method "updateForRepository".
-     * 
+     *
      * Worked for DetecteViewImpactAction
-     * 
+     *
      * @param node
      * @return
      */
@@ -254,7 +254,7 @@ public enum UpdateManagerProviderDetector {
                     forcePropagation = true;
                 }
             }
-            
+
             if (!forcePropagation && needConfirm) {
                 IDesignerCoreService designerCoreService = CoreRuntimePlugin.getInstance().getDesignerCoreService();
                 boolean deactive = designerCoreService != null ? Boolean.parseBoolean(designerCoreService
@@ -331,7 +331,7 @@ public enum UpdateManagerProviderDetector {
         }
         return allRelations;
     }
-    
+
     private boolean doOldUpdates(IStructuredSelection selection) {
         Object firstElement = selection.getFirstElement();
         if (firstElement == null || !(firstElement instanceof RepositoryNode)) {

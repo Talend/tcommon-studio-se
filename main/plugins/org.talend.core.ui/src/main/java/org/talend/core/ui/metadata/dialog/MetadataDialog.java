@@ -1,6 +1,6 @@
 // ============================================================================
 //
-// Copyright (C) 2006-2018 Talend Inc. - www.talend.com
+// Copyright (C) 2006-2019 Talend Inc. - www.talend.com
 //
 // This source code is available under agreement available at
 // %InstallDIR%\features\org.talend.rcp.branding.%PRODUCTNAME%\%PRODUCTNAME%license.txt
@@ -74,9 +74,9 @@ import org.talend.designer.core.IDesignerCoreService;
 
 /**
  * DOC nrousseau class global comment. Detailled comment <br/>
- * 
+ *
  * $Id$
- * 
+ *
  */
 public class MetadataDialog extends Dialog {
 
@@ -622,7 +622,7 @@ public class MetadataDialog extends Dialog {
 
     /**
      * Returns input metadata.
-     * 
+     *
      * @return
      */
     public IMetadataTable getInputMetaData() {
@@ -634,7 +634,7 @@ public class MetadataDialog extends Dialog {
 
     /**
      * Returns output metadata.
-     * 
+     *
      * @return
      */
     public IMetadataTable getOutputMetaData() {
@@ -651,7 +651,7 @@ public class MetadataDialog extends Dialog {
 
     /**
      * Getter for inputReadOnly.
-     * 
+     *
      * @return the inputReadOnly
      */
     public boolean isInputReadOnly() {
@@ -660,7 +660,7 @@ public class MetadataDialog extends Dialog {
 
     /**
      * Getter for outputReadOnly.
-     * 
+     *
      * @return the outputReadOnly
      */
     public boolean isOutputReadOnly() {
@@ -677,7 +677,7 @@ public class MetadataDialog extends Dialog {
 
     /**
      * DOC Administrator Comment method "getMappingTypeLabelById".
-     * 
+     *
      * @param mappingTypeId
      * @return
      */
@@ -695,7 +695,7 @@ public class MetadataDialog extends Dialog {
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see org.eclipse.jface.dialogs.Dialog#okPressed()
      */
     @Override
@@ -747,14 +747,16 @@ public class MetadataDialog extends Dialog {
             }
         }
     }
-    
+
     private void updateTableOriginalColumns(IMetadataTable table) {
         if (table != null && table.getListColumns() != null) {
             List<String> columnNames = new ArrayList<String>();
             for (IMetadataColumn column : table.getListColumns()) {
                 columnNames.add(column.getLabel());
             }
-            table.setOriginalColumns(columnNames);
+            if(table.getOriginalColumns() == null || table.getOriginalColumns().isEmpty()) {
+            	table.setOriginalColumns(columnNames);
+            }
         }
     }
 
@@ -786,7 +788,7 @@ public class MetadataDialog extends Dialog {
 
         /*
          * (non-Javadoc)
-         * 
+         *
          * @see
          * org.talend.core.ui.metadata.editor.MetadataTableEditorView#setTableViewerCreatorOptions(org.talend.commons
          * .ui.swt.tableviewer.TableViewerCreator)
@@ -794,7 +796,7 @@ public class MetadataDialog extends Dialog {
         @Override
         protected void setTableViewerCreatorOptions(TableViewerCreator<IMetadataColumn> newTableViewerCreator) {
             super.setTableViewerCreatorOptions(newTableViewerCreator);
-            newTableViewerCreator.setLazyLoad(true);
+            newTableViewerCreator.setLazyLoad(TableViewerCreator.getRecommandLazyLoad());
         }
     }
 

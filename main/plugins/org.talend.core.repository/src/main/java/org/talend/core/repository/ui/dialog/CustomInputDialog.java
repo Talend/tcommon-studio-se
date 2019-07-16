@@ -1,6 +1,6 @@
 // ============================================================================
 //
-// Copyright (C) 2006-2018 Talend Inc. - www.talend.com
+// Copyright (C) 2006-2019 Talend Inc. - www.talend.com
 //
 // This source code is available under agreement available at
 // %InstallDIR%\features\org.talend.rcp.branding.%PRODUCTNAME%\%PRODUCTNAME%license.txt
@@ -28,7 +28,7 @@ import org.eclipse.swt.widgets.Shell;
 import org.eclipse.swt.widgets.Text;
 
 /**
- * 
+ *
  * created by hcyi on Jul 3, 2015 Detailled comment
  *
  */
@@ -80,7 +80,7 @@ public class CustomInputDialog extends Dialog {
      * <p>
      * Note that the <code>open</code> method blocks for input dialogs.
      * </p>
-     * 
+     *
      * @param parentShell the parent shell, or <code>null</code> to create a top-level shell
      * @param dialogTitle the dialog title, or <code>null</code> if none
      * @param dialogMessage the dialog message, or <code>null</code> if none
@@ -178,7 +178,7 @@ public class CustomInputDialog extends Dialog {
 
     /**
      * Returns the error message label.
-     * 
+     *
      * @return the error message label
      * @deprecated use setErrorMessage(String) instead
      */
@@ -189,7 +189,7 @@ public class CustomInputDialog extends Dialog {
 
     /**
      * Returns the ok button.
-     * 
+     *
      * @return the ok button
      */
     protected Button getOkButton() {
@@ -198,7 +198,7 @@ public class CustomInputDialog extends Dialog {
 
     /**
      * Returns the text area.
-     * 
+     *
      * @return the text area
      */
     protected Text getText() {
@@ -207,7 +207,7 @@ public class CustomInputDialog extends Dialog {
 
     /**
      * Returns the validator.
-     * 
+     *
      * @return the validator
      */
     protected IInputValidator getValidator() {
@@ -216,7 +216,7 @@ public class CustomInputDialog extends Dialog {
 
     /**
      * Returns the string typed into this input dialog.
-     * 
+     *
      * @return the input string
      */
     public String getValue() {
@@ -241,7 +241,7 @@ public class CustomInputDialog extends Dialog {
 
     /**
      * Sets or clears the error message. If not <code>null</code>, the OK button is disabled.
-     * 
+     *
      * @param errorMessage the error message, or <code>null</code> to clear
      * @since 3.0
      */
@@ -269,9 +269,9 @@ public class CustomInputDialog extends Dialog {
     /**
      * Returns the style bits that should be used for the input text field. Defaults to a single line entry. Subclasses
      * may override.
-     * 
+     *
      * @return the integer style bits that should be used when creating the input text
-     * 
+     *
      * @since 3.4
      */
     protected int getInputTextStyle() {

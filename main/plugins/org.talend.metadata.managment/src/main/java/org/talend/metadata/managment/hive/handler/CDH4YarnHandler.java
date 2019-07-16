@@ -1,6 +1,6 @@
 // ============================================================================
 //
-// Copyright (C) 2006-2018 Talend Inc. - www.talend.com
+// Copyright (C) 2006-2019 Talend Inc. - www.talend.com
 //
 // This source code is available under agreement available at
 // %InstallDIR%\features\org.talend.rcp.branding.%PRODUCTNAME%\%PRODUCTNAME%license.txt
@@ -20,13 +20,13 @@ import org.talend.core.model.metadata.builder.database.PluginConstant;
 
 /**
  * handle some hadoop parameters for hive connection with cdh4 yarn.
- * 
+ *
  */
 public class CDH4YarnHandler extends ClouderaHandler implements IHiveYarnHandler {
 
     /**
      * DOC qiongli HiveYarnHandler constructor comment.
-     * 
+     *
      * @param metadataConnection
      */
     public CDH4YarnHandler(IMetadataConnection metadataConnection) {

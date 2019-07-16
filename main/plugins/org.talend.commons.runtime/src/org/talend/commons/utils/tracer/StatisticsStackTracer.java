@@ -1,6 +1,6 @@
 // ============================================================================
 //
-// Copyright (C) 2006-2018 Talend Inc. - www.talend.com
+// Copyright (C) 2006-2019 Talend Inc. - www.talend.com
 //
 // This source code is available under agreement available at
 // %InstallDIR%\features\org.talend.rcp.branding.%PRODUCTNAME%\%PRODUCTNAME%license.txt
@@ -22,7 +22,7 @@ import java.util.Random;
 import java.util.Set;
 
 /**
- * 
+ *
  * DOC amaumont class global comment. Detailled comment
  */
 public class StatisticsStackTracer {
@@ -36,7 +36,7 @@ public class StatisticsStackTracer {
     private boolean stoppingDisplay;
 
     /**
-     * 
+     *
      * DOC amaumont StatisticsTracer class global comment. Detailled comment
      */
     static class KeyStatisticTracer {

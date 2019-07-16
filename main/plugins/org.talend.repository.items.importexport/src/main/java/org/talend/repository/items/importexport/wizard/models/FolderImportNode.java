@@ -1,6 +1,6 @@
 // ============================================================================
 //
-// Copyright (C) 2006-2018 Talend Inc. - www.talend.com
+// Copyright (C) 2006-2019 Talend Inc. - www.talend.com
 //
 // This source code is available under agreement available at
 // %InstallDIR%\features\org.talend.rcp.branding.%PRODUCTNAME%\%PRODUCTNAME%license.txt
@@ -35,7 +35,7 @@ public class FolderImportNode extends ImportNode {
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see org.talend.repository.items.importexport.ui.wizard.imports.models.IImportNode#getName()
      */
     @Override
@@ -54,7 +54,7 @@ public class FolderImportNode extends ImportNode {
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see org.talend.repository.items.importexport.ui.wizard.imports.models.ImportNode#getDisplayLabel()
      */
     @Override
@@ -81,7 +81,7 @@ public class FolderImportNode extends ImportNode {
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see
      * org.talend.repository.items.importexport.ui.wizard.imports.models.ImportNode#addChild(org.talend.repository.items
      * .importexport.ui.wizard.imports.models.ImportNode)
@@ -99,7 +99,7 @@ public class FolderImportNode extends ImportNode {
 
     /**
      * Getter for subFolders.
-     * 
+     *
      * @return the subFolders
      */
     protected Map<String, FolderImportNode> getSubFolders() {
@@ -108,7 +108,7 @@ public class FolderImportNode extends ImportNode {
 
     /**
      * Getter for items.
-     * 
+     *
      * @return the items
      */
     public List<ItemImportNode> getItems() {

@@ -1,6 +1,6 @@
 // ============================================================================
 //
-// Copyright (C) 2006-2018 Talend Inc. - www.talend.com
+// Copyright (C) 2006-2019 Talend Inc. - www.talend.com
 //
 // This source code is available under agreement available at
 // %InstallDIR%\features\org.talend.rcp.branding.%PRODUCTNAME%\%PRODUCTNAME%license.txt
@@ -34,7 +34,7 @@ import org.talend.repository.model.IProxyRepositoryFactory;
 
 /**
  * created by ggu on Mar 27, 2014 Detailled comment
- * 
+ *
  */
 public abstract class AbstractRepositoryUpdateManagerProvider implements IRepositoryUpdateManagerProvider {
 
@@ -44,7 +44,7 @@ public abstract class AbstractRepositoryUpdateManagerProvider implements IReposi
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see
      * org.talend.core.model.update.extension.IRepositoryUpdateManagerProvider#validateAction(org.eclipse.jface.viewers
      * .TreeViewer, org.eclipse.jface.viewers.IStructuredSelection)
@@ -68,7 +68,7 @@ public abstract class AbstractRepositoryUpdateManagerProvider implements IReposi
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see
      * org.talend.core.model.update.extension.IRepositoryUpdateManagerProvider#updateForRepository(IStructuredSelection)
      */
@@ -96,9 +96,9 @@ public abstract class AbstractRepositoryUpdateManagerProvider implements IReposi
     }
 
     /**
-     * 
+     *
      * DOC ggu Comment method "needPropagate".
-     * 
+     *
      * @return
      */
     @Override
@@ -117,9 +117,9 @@ public abstract class AbstractRepositoryUpdateManagerProvider implements IReposi
     }
 
     /**
-     * 
+     *
      * DOC ggu Comment method "retrieveUpdateResults".
-     * 
+     *
      * @param node
      * @return
      */
@@ -159,22 +159,22 @@ public abstract class AbstractRepositoryUpdateManagerProvider implements IReposi
     protected abstract Set<IUpdateItemType> getTypes();
 
     /**
-     * 
+     *
      * DOC ggu Comment method "retrieveUpdateResults".
-     * 
+     *
      * retrieve the result for current node.
-     * 
+     *
      * @param selection
      * @return
      */
     public abstract List<UpdateResult> retrieveUpdateResults(IProgressMonitor monitor, IStructuredSelection selection);
 
     /**
-     * 
+     *
      * DOC ggu Comment method "validResults".
-     * 
+     *
      * will do some validation for results, if need.
-     * 
+     *
      * @param updateResults
      * @return
      */
@@ -183,9 +183,9 @@ public abstract class AbstractRepositoryUpdateManagerProvider implements IReposi
     }
 
     /**
-     * 
+     *
      * DOC ggu Comment method "doUpdate".
-     * 
+     *
      * @param validResults
      * @return
      */
@@ -210,7 +210,7 @@ public abstract class AbstractRepositoryUpdateManagerProvider implements IReposi
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see org.talend.core.model.update.extension.IRepositoryUpdateManagerProvider#setEnableCheckItem(boolean)
      */
     @Override

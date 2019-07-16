@@ -1,6 +1,6 @@
 // ============================================================================
 //
-// Copyright (C) 2006-2018 Talend Inc. - www.talend.com
+// Copyright (C) 2006-2019 Talend Inc. - www.talend.com
 //
 // This source code is available under agreement available at
 // %InstallDIR%\features\org.talend.rcp.branding.%PRODUCTNAME%\%PRODUCTNAME%license.txt
@@ -47,11 +47,11 @@ import org.talend.repository.model.RepositoryNode;
 
 /**
  * created by xqliu on Jul 26, 2013 Detailled comment
- * 
+ *
  */
 public abstract class AbstractContextView extends ViewPart {
 
-    public static final String CTX_ID_DESIGNER = "org.talend.designer.core.ui.views.ContextsView"; //$NON-NLS-1$    
+    public static final String CTX_ID_DESIGNER = "org.talend.designer.core.ui.views.ContextsView"; //$NON-NLS-1$
 
     public static final String CTX_ID_TDQ = "org.talend.dataprofiler.core.ui.views.context.TdqContextView"; //$NON-NLS-1$
 
@@ -231,7 +231,7 @@ public abstract class AbstractContextView extends ViewPart {
 
     /**
      * bqian Comment method "getContextManager".
-     * 
+     *
      * @return
      */
     protected abstract IContextManager getContextManager();
@@ -312,7 +312,7 @@ public abstract class AbstractContextView extends ViewPart {
 
     /**
      * DOC xqliu Comment method "setCompositeReadonly".
-     * 
+     *
      * @param editorInput
      */
     protected abstract void setCompositeReadonly(IEditorInput editorInput);

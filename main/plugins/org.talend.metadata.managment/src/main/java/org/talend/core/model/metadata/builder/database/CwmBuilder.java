@@ -1,6 +1,6 @@
 // ============================================================================
 //
-// Copyright (C) 2006-2018 Talend Inc. - www.talend.com
+// Copyright (C) 2006-2019 Talend Inc. - www.talend.com
 //
 // This source code is available under agreement available at
 // %InstallDIR%\features\org.talend.rcp.branding.%PRODUCTNAME%\%PRODUCTNAME%license.txt
@@ -24,7 +24,7 @@ import org.apache.log4j.Logger;
 
 /**
  * @author scorreia
- * 
+ *
  * This class is used by children for converting a java.sql.connection into CWM classes.
  */
 abstract class CwmBuilder {
@@ -38,7 +38,7 @@ abstract class CwmBuilder {
 
     /**
      * CwmBuilder constructor.
-     * 
+     *
      * @param conn a connection
      */
     public CwmBuilder(Connection conn) {
@@ -67,7 +67,7 @@ abstract class CwmBuilder {
 
     /**
      * DOC scorreia Comment method "executeGetCommentStatement".
-     * 
+     *
      * @param queryStmt
      * @return
      */

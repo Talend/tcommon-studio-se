@@ -1,6 +1,6 @@
 // ============================================================================
 //
-// Copyright (C) 2006-2018 Talend Inc. - www.talend.com
+// Copyright (C) 2006-2019 Talend Inc. - www.talend.com
 //
 // This source code is available under agreement available at
 // %InstallDIR%\features\org.talend.rcp.branding.%PRODUCTNAME%\%PRODUCTNAME%license.txt
@@ -51,9 +51,9 @@ public final class ItemProductValuesHelper {
     }
 
     /**
-     * 
+     *
      * Set the created keys with date
-     * 
+     *
      */
     public static boolean setValuesWhenCreate(Property property, Date date) {
         if (property == null) {
@@ -81,7 +81,7 @@ public final class ItemProductValuesHelper {
     }
 
     /**
-     * 
+     *
      * Set the modified keys with date when save .properties file
      */
     public static boolean setValuesWhenModify(Property property, Date date) {
@@ -110,7 +110,7 @@ public final class ItemProductValuesHelper {
     }
 
     /**
-     * 
+     *
      * Try to migrate the created and modified date to keys.
      */
     public static boolean setValuesWhenMigrate(Property property) {
@@ -181,7 +181,7 @@ public final class ItemProductValuesHelper {
 
     /**
      * When import, try to add import keys and add migration keys if possibly.
-     * 
+     *
      */
     public static boolean setValuesWhenImport(Property property, Project project) {
         if (property == null || project == null) {
