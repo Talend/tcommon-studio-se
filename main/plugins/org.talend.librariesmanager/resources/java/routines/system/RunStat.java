@@ -518,7 +518,7 @@ public class RunStat implements Runnable {
     /**
      * work for avoiding the 65535 issue
      */
-    public synchronized void updateStatOnConnectionAndLog(Map<String, Object> globalMap, String iterateLoop, String iterateId, boolean execStat, boolean enableLogStash, int nbLine, String... connectionUniqueNames) {
+    public synchronized void updateStatOnConnectionAndLog(Map<String, Object> globalMap, int iterateLoop, String iterateId, boolean execStat, boolean enableLogStash, int nbLine, String... connectionUniqueNames) {
     	for(String connectionUniqueName : connectionUniqueNames) {
 	    	ConcurrentHashMap<Object, Object> concurrentHashMap = (ConcurrentHashMap) globalMap.get("concurrentHashMap");
 			concurrentHashMap.putIfAbsent(connectionUniqueName + iterateLoop,new java.util.concurrent.atomic.AtomicInteger(0));
@@ -539,7 +539,7 @@ public class RunStat implements Runnable {
     /**
      * work for avoiding the 65535 issue
      */
-    public synchronized void updateStatOnConnectionAndLog(Map<String, Object> resourceMap, Map<String, Object> globalMap, String iterateLoop, String iterateId, boolean execStat, boolean enableLogStash, int nbLine, String... connectionUniqueNames) {
+    public synchronized void updateStatOnConnectionAndLog(Map<String, Object> resourceMap, Map<String, Object> globalMap, int iterateLoop, String iterateId, boolean execStat, boolean enableLogStash, int nbLine, String... connectionUniqueNames) {
     	for(String connectionUniqueName : connectionUniqueNames) {
     		if(resourceMap.get("inIterateVComp") == null) {
 		    	ConcurrentHashMap<Object, Object> concurrentHashMap = (ConcurrentHashMap) globalMap.get("concurrentHashMap");
