@@ -1697,6 +1697,11 @@ public class RepositoryToComponentProperty {
                 return "STANDARD";
             }
         }
+        if (value.equals("DBTYPE")) {
+            String repositoryType = connection.getDatabaseType();
+            EDatabaseTypeName typeFromDisplayName = EDatabaseTypeName.getTypeFromDisplayName(repositoryType);
+            return typeFromDisplayName.getXMLType();
+        }
 
         return null;
 
