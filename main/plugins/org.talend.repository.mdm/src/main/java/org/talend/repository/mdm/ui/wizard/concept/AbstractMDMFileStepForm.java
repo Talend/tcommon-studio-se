@@ -16,12 +16,14 @@ import java.io.File;
 import java.util.Iterator;
 import java.util.List;
 
+import org.apache.commons.beanutils.BeanUtils;
 import org.eclipse.emf.common.util.EList;
 import org.eclipse.jface.viewers.TableViewer;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.xsd.XSDSchema;
 import org.talend.commons.ui.runtime.exception.ExceptionHandler;
+import org.talend.core.model.metadata.builder.connection.ConnectionFactory;
 import org.talend.core.model.metadata.builder.connection.MDMConnection;
 import org.talend.core.model.metadata.builder.connection.MetadataColumn;
 import org.talend.core.model.metadata.builder.connection.MetadataTable;
@@ -29,6 +31,7 @@ import org.talend.core.model.properties.ConnectionItem;
 import org.talend.datatools.xml.utils.ATreeNode;
 import org.talend.datatools.xml.utils.OdaException;
 import org.talend.datatools.xml.utils.XSDPopulationUtil2;
+import org.talend.metadata.managment.ui.utils.ConnectionContextHelper;
 import org.talend.metadata.managment.ui.wizard.metadata.xml.node.FOXTreeNode;
 import org.talend.metadata.managment.ui.wizard.metadata.xml.utils.TreeUtil;
 import org.talend.repository.mdm.util.MDMUtil;
@@ -115,6 +118,21 @@ public abstract class AbstractMDMFileStepForm extends AbstractXmlStepForm {
         // IPath temp = new Path(System.getProperty("user.dir")).append("temp");
         // xsdFilePath = temp.toOSString() + "\\template.xsd";
         MDMConnection mdmConn = (MDMConnection) connectionItem.getConnection();
+        if (mdmConn.isContextMode()) {
+            MDMConnection _mdmConn = ConnectionFactory.eINSTANCE.createMDMConnection();
+            try {
+                BeanUtils.copyProperties(_mdmConn, mdmConn);
+            } catch (Exception e) {
+                ExceptionHandler.process(e);
+            }
+            String username = ConnectionContextHelper.getParamValueOffContext(mdmConn, mdmConn.getUsername());
+            String password = ConnectionContextHelper.getParamValueOffContext(mdmConn, mdmConn.getPassword());
+            String serverurl = ConnectionContextHelper.getParamValueOffContext(mdmConn, mdmConn.getServerUrl());
+            _mdmConn.setUsername(username);
+            _mdmConn.setPassword(password);
+            _mdmConn.setServerUrl(serverurl);
+            mdmConn = _mdmConn;
+        }
         File file = MDMUtil.getTempTemplateXSDFile();
         xsdFilePath = file.getAbsolutePath();
         try {

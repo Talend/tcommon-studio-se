@@ -161,18 +161,6 @@ public class SetNameForm extends AbstractMDMFileStepForm {
 
             public void modifyText(ModifyEvent e) {
                 selectedEntity = entityCombo.getText();
-                String type = ""; //$NON-NLS-1$
-                switch (concept.getConceptType()) {
-                case INPUT:
-                    type = "In"; //$NON-NLS-1$
-                    break;
-                case OUTPUT:
-                    type = "Out"; //$NON-NLS-1$
-                    break;
-                case RECEIVE:
-                    type = "Receive"; //$NON-NLS-1$
-                    break;
-                }
 
                 selectedEntity = selectedEntity.trim();
 
@@ -186,17 +174,7 @@ public class SetNameForm extends AbstractMDMFileStepForm {
                     selectedEntity = "a" + selectedEntity; //$NON-NLS-1$
                 }
 
-                String name = selectedEntity + type;
-                int counter = 0;
-                boolean exists = true;
-                while (exists) {
-                    exists = !isValidName(name);
-                    if (!exists) {
-                        break;
-                    }
-                    counter++;
-                    name = name + counter;
-                }
+                String name = getNextName();
 
                 if (creation || firstTime != true) {
                     nameText.setText(name);
@@ -206,6 +184,34 @@ public class SetNameForm extends AbstractMDMFileStepForm {
                 checkFieldsValue();
             }
         });
+    }
+
+    private String getNextName() {
+        String type = ""; //$NON-NLS-1$
+        switch (concept.getConceptType()) {
+        case INPUT:
+            type = "In"; //$NON-NLS-1$
+            break;
+        case OUTPUT:
+            type = "Out"; //$NON-NLS-1$
+            break;
+        case RECEIVE:
+            type = "Receive"; //$NON-NLS-1$
+            break;
+        }
+
+        String name = selectedEntity + type;
+        int counter = 0;
+        boolean exists = true;
+        while (exists) {
+            exists = !isValidName(name);
+            if (!exists) {
+                break;
+            }
+            counter++;
+            name = name + counter;
+        }
+        return name;
     }
 
     private boolean isValidName(String name) {
@@ -316,6 +322,10 @@ public class SetNameForm extends AbstractMDMFileStepForm {
             }
 
         }
+    }
+
+    public void fireConceptTypeChange() {
+        nameText.setText(getNextName());
     }
 
     public String getSelectedEntity() {
