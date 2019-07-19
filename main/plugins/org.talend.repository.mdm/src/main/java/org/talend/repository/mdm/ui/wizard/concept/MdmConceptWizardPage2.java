@@ -12,8 +12,8 @@
 // ============================================================================
 package org.talend.repository.mdm.ui.wizard.concept;
 
-import org.eclipse.jface.wizard.IWizardPage;
 import org.eclipse.swt.widgets.Composite;
+import org.talend.core.model.metadata.builder.connection.MdmConceptType;
 import org.talend.core.model.metadata.builder.connection.MetadataTable;
 import org.talend.core.model.properties.ConnectionItem;
 import org.talend.metadata.managment.ui.wizard.AbstractForm;
@@ -24,6 +24,8 @@ import org.talend.repository.model.RepositoryNode;
  * DOC hwang class global comment. Detailled comment
  */
 public class MdmConceptWizardPage2 extends AbstractRetrieveConceptPage {
+
+    private MdmConceptType oldConceptType;
 
     private SetNameForm form;
 
@@ -38,6 +40,7 @@ public class MdmConceptWizardPage2 extends AbstractRetrieveConceptPage {
 
         this.existingNames = existingNames;
         this.isRepositoryObjectEditable = isRepositoryObjectEditable;
+        this.oldConceptType = getConcept().getConceptType();
     }
 
     /*
@@ -80,15 +83,20 @@ public class MdmConceptWizardPage2 extends AbstractRetrieveConceptPage {
         return form.getSelectedEntity();
     }
 
-    @Override
-    public IWizardPage getPreviousPage() {
-        return null;
-    }
+    // @Override
+    // public IWizardPage getPreviousPage() {
+    // return null;
+    // }
 
     @Override
     public void setVisible(boolean visible) {
         super.setVisible(visible);
         if (visible) {
+            MdmConceptType conceptType = concept.getConceptType();
+            if (conceptType != oldConceptType) {
+                form.fireConceptTypeChange();
+                oldConceptType = conceptType;
+            }
             ((CreateConceptWizard) getWizard()).setCurrentPage(this);
         }
     }

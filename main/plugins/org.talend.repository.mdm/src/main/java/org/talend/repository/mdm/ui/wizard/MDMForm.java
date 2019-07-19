@@ -274,10 +274,6 @@ public class MDMForm extends AbstractForm {
      */
     @Override
     protected boolean checkFieldsValue() {
-        if (isContextMode()) {
-            return true;
-        }
-
         if (mdmUsernameText.getCharCount() == 0) {
             updateStatus(IStatus.ERROR, Messages.getString("MDMForm_username_null")); //$NON-NLS-1$
             checkButton.setEnabled(false);
