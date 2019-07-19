@@ -684,6 +684,23 @@ public class AggregatorPomsHelper {
         new ProgressMonitorDialog(Display.getDefault().getActiveShell()).run(true, true, runnableWithProgress);
     }
 
+    public void syncParentJobPomsForPropertyChange(Property property) {
+        IRunProcessService runProcessService = getRunProcessService();
+        ProxyRepositoryFactory factory = ProxyRepositoryFactory.getInstance();
+        List<Relation> itemsHaveRelationWith = RelationshipItemBuilder.getInstance().getItemsHaveRelationWith(property.getId(),
+                property.getVersion());
+        try {
+            for (Relation relation : itemsHaveRelationWith) {
+                IRepositoryViewObject object = factory.getSpecificVersion(relation.getId(), relation.getVersion(), true);
+                if (runProcessService != null) {
+                    runProcessService.generatePom(object.getProperty().getItem());
+                }
+            }
+        } catch (Exception e) {
+            ExceptionHandler.process(e);
+        }
+    }
+
     private String getModulePath(IFile pomFile) {
         IFile parentPom = getProjectRootPom();
         if (parentPom != null) {
