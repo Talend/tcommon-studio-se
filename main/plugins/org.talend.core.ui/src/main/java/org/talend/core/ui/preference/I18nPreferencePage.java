@@ -47,7 +47,9 @@ import org.talend.commons.utils.VersionUtils;
 import org.talend.core.CorePlugin;
 import org.talend.core.model.genhtml.FileCopyUtils;
 import org.talend.core.prefs.ITalendCorePrefConstants;
+import org.talend.core.repository.model.ProxyRepositoryFactory;
 import org.talend.core.ui.i18n.Messages;
+import org.talend.repository.model.IProxyRepositoryFactory;
 
 public abstract class I18nPreferencePage extends FieldEditorPreferencePage implements IWorkbenchPreferencePage {
 
@@ -219,6 +221,8 @@ public abstract class I18nPreferencePage extends FieldEditorPreferencePage imple
                 }
             }
         });
+
+        handleUserReadOnlyStatus(composite);
     }
 
     private void applyBabiliResource(String zipFileName) {
@@ -649,4 +653,27 @@ public abstract class I18nPreferencePage extends FieldEditorPreferencePage imple
         fields.add(editor);
     }
 
+    /*
+     * (non-Javadoc)
+     * 
+     * @see org.eclipse.jface.preference.PreferencePage#contributeButtons(org.eclipse.swt.widgets.Composite)
+     */
+    @Override
+    protected void contributeButtons(Composite parent) {
+        super.contributeButtons(parent);
+        handleUserReadOnlyStatus(parent);
+    }
+
+    /**
+     * 
+     * When the user is read only for current project then setting composite is disable
+     * 
+     * @param mainComposite
+     */
+    public void handleUserReadOnlyStatus(Composite mainComposite) {
+        IProxyRepositoryFactory factory = ProxyRepositoryFactory.getInstance();
+        if (factory.isUserReadOnlyOnCurrentProject()) {
+            mainComposite.setEnabled(false);
+        }
+    }
 }

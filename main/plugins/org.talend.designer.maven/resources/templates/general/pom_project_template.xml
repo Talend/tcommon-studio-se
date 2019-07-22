@@ -36,17 +36,36 @@
 							<artifactId>tycho-compiler-jdt</artifactId>
 							<version>1.4.0</version>
 						</dependency>
+						<dependency>
+							<groupId>org.codehaus.plexus</groupId>
+							<artifactId>plexus-utils</artifactId>
+							<version>3.0.24</version>
+						</dependency>
 					</dependencies>
 				</plugin>
 				<plugin>
 					<groupId>org.apache.maven.plugins</groupId>
 					<artifactId>maven-resources-plugin</artifactId>
 					<version>3.0.2</version>
+					<dependencies>
+						<dependency>
+							<groupId>org.codehaus.plexus</groupId>
+							<artifactId>plexus-utils</artifactId>
+							<version>3.0.24</version>
+						</dependency>
+					</dependencies>
 				</plugin>
 				<plugin>
 					<groupId>org.apache.maven.plugins</groupId>
 					<artifactId>maven-jar-plugin</artifactId>
 					<version>3.0.2</version>
+					<dependencies>
+						<dependency>
+							<groupId>org.codehaus.plexus</groupId>
+							<artifactId>plexus-utils</artifactId>
+							<version>3.0.24</version>
+						</dependency>
+					</dependencies>
 					<configuration>
 						<archive>
 							<addMavenDescriptor>false</addMavenDescriptor>
@@ -57,11 +76,49 @@
 					<groupId>org.apache.maven.plugins</groupId>
 					<artifactId>maven-assembly-plugin</artifactId>
 					<version>3.0.0</version>
+					<dependencies>
+						<dependency>
+							<groupId>org.codehaus.plexus</groupId>
+							<artifactId>plexus-utils</artifactId>
+							<version>3.0.24</version>
+						</dependency>
+					</dependencies>
 				</plugin>
 				<plugin>
 					<groupId>org.apache.maven.plugins</groupId>
 					<artifactId>maven-surefire-plugin</artifactId>
 					<version>2.20</version>
+					<dependencies>
+						<dependency>
+							<groupId>org.codehaus.plexus</groupId>
+							<artifactId>plexus-utils</artifactId>
+							<version>3.0.24</version>
+						</dependency>
+					</dependencies>
+				</plugin>
+				<plugin>
+					<groupId>org.apache.maven.plugins</groupId>
+					<artifactId>maven-install-plugin</artifactId>
+					<version>2.5.1</version>
+					<dependencies>
+						<dependency>
+							<groupId>org.codehaus.plexus</groupId>
+							<artifactId>plexus-utils</artifactId>
+							<version>3.0.24</version>
+						</dependency>
+					</dependencies>
+				</plugin>
+				<plugin>
+					<groupId>org.apache.maven.plugins</groupId>
+					<artifactId>maven-deploy-plugin</artifactId>
+					<version>2.7</version>
+					<dependencies>
+						<dependency>
+							<groupId>org.codehaus.plexus</groupId>
+							<artifactId>plexus-utils</artifactId>
+							<version>3.0.24</version>
+						</dependency>
+					</dependencies>
 				</plugin>
 			</plugins>
 		</pluginManagement>

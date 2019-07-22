@@ -131,4 +131,22 @@ public class ProjectHelper {
         }
         return null;
     }
+
+    /**
+     * define the different value for the project types the string value in the licence files Matcht the java enum name
+     * this is a copy of org.talend.commons.model.KeyConstants.ProjectType to avoid adding the all library
+     *
+     */
+    public static enum ProjectType {
+        DI,
+        DQ,
+        MDM;
+    }
+
+    public static int getProjectTypeOrdinal(org.talend.core.model.properties.Project project) {
+        if (project != null && project.getType() != null) {
+            return ProjectType.valueOf(project.getType()).ordinal();
+        }
+        return 0;
+    }
 }

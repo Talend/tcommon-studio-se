@@ -23,6 +23,7 @@ import java.util.Map;
 import java.util.Set;
 
 import org.apache.maven.model.Model;
+import org.apache.maven.model.Parent;
 import org.eclipse.core.resources.IFile;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IPath;
@@ -43,6 +44,7 @@ import org.talend.designer.maven.launch.MavenPomCommandLauncher;
 import org.talend.designer.maven.model.BuildCacheInfo;
 import org.talend.designer.maven.model.TalendMavenConstants;
 import org.talend.designer.maven.utils.MavenProjectUtils;
+import org.talend.designer.maven.utils.PomIdsHelper;
 import org.talend.designer.maven.utils.PomUtil;
 import org.talend.designer.runprocess.IRunProcessService;
 import org.talend.repository.ProjectManager;
@@ -314,7 +316,11 @@ public class BuildCacheManager {
         model.setModules(new ArrayList<String>());
         model.getModules().addAll(currentJobmodules);
         model.getModules().addAll(currentJobletmodules);
-
+        Parent parent = new Parent();      
+        parent.setGroupId(PomIdsHelper.getProjectGroupId());
+        parent.setArtifactId(PomIdsHelper.getProjectArtifactId());
+        parent.setVersion(PomIdsHelper.getProjectVersion());        
+        model.setParent(parent);
         PomUtil.savePom(null, model, pomFile);
     }
 
