@@ -13,6 +13,8 @@
 package org.talend.repository.mdm.ui.wizard.concept;
 
 import org.eclipse.jface.wizard.IWizardPage;
+import org.eclipse.swt.SWT;
+import org.eclipse.swt.custom.StackLayout;
 import org.eclipse.swt.widgets.Composite;
 import org.talend.core.model.metadata.builder.connection.MdmConceptType;
 import org.talend.core.model.metadata.builder.connection.MetadataTable;
@@ -53,16 +55,9 @@ public class MdmConceptWizardPage3 extends AbstractRetrieveConceptPage {
      */
     public void createControl(Composite parent) {
         if (getConcept() != null) {
-            if (MdmConceptType.INPUT.equals(getConcept().getConceptType())) {
-                if (getPreviousPage() instanceof MdmConceptWizardPage2) {
-                    xsdFileForm = new MDMXSDFileForm(parent, connectionItem, metadataTable, getConcept(), this, creation);
-                }
-            } else if (MdmConceptType.OUTPUT.equals(getConcept().getConceptType())) {
-                xsdFileForm = new MDMOutputSchemaForm(parent, connectionItem, metadataTable, getConcept(), this, creation);
-            } else if (MdmConceptType.RECEIVE.equals(getConcept().getConceptType())) {
-                xsdFileForm = new MdmReceiveForm(parent, connectionItem, metadataTable, getConcept(), this, creation);
-            }
-            xsdFileForm.setReadOnly(!isRepositoryObjectEditable);
+            container = new Composite(parent, SWT.NONE);
+            StackLayout stackLayout = getContainerLayout();
+            container.setLayout(stackLayout);
 
             AbstractForm.ICheckListener listener = new AbstractForm.ICheckListener() {
 
@@ -77,11 +72,54 @@ public class MdmConceptWizardPage3 extends AbstractRetrieveConceptPage {
                     }
                 }
             };
-            xsdFileForm.setListener(listener);
-            this.setPageComplete(false);
-            setControl(xsdFileForm);
-            xsdFileForm.setPage(this);
+
+            mdmXsdFileForm = new MDMXSDFileForm(container, connectionItem, metadataTable, getConcept(), this, creation);
+            mdmOutputFileForm = new MDMOutputSchemaForm(container, connectionItem, metadataTable, getConcept(), this, creation);
+            mdmReceiveFileForm = new MdmReceiveForm(container, connectionItem, metadataTable, getConcept(), this, creation);
+
+            for (AbstractMDMFileStepForm fileForm : new AbstractMDMFileStepForm[] { mdmXsdFileForm, mdmOutputFileForm,
+                    mdmReceiveFileForm }) {
+                fileForm.setReadOnly(!isRepositoryObjectEditable);
+                fileForm.setListener(listener);
+                fileForm.setPage(this);
+            }
+
+            setTopControl();
+
+            setControl(container);
+            setPageComplete(false);
         }
+    }
+
+    private void setTopControl() {
+        StackLayout stackLayout = getContainerLayout();
+        if (MdmConceptType.INPUT.equals(getConcept().getConceptType())) {
+            if (getPreviousPage() instanceof MdmConceptWizardPage2) {
+                stackLayout.topControl = mdmXsdFileForm;
+            }
+        } else if (MdmConceptType.OUTPUT.equals(getConcept().getConceptType())) {
+            stackLayout.topControl = mdmOutputFileForm;
+        } else if (MdmConceptType.RECEIVE.equals(getConcept().getConceptType())) {
+            stackLayout.topControl = mdmReceiveFileForm;
+        }
+        xsdFileForm = (AbstractMDMFileStepForm) stackLayout.topControl;
+    }
+
+    private StackLayout stackLayout;
+
+    private MDMXSDFileForm mdmXsdFileForm;
+
+    private MDMOutputSchemaForm mdmOutputFileForm;
+
+    private MdmReceiveForm mdmReceiveFileForm;
+
+    private Composite container;
+
+    private StackLayout getContainerLayout() {
+        if (stackLayout == null) {
+            stackLayout = new StackLayout();
+        }
+        return stackLayout;
     }
 
     // public void setConceptName(String name) {
@@ -96,6 +134,8 @@ public class MdmConceptWizardPage3 extends AbstractRetrieveConceptPage {
     public void setVisible(boolean visible) {
         super.setVisible(visible);
         if (visible) {
+            setTopControl();
+            container.layout();
             ((CreateConceptWizard) getWizard()).setCurrentPage(this);
         }
     }
