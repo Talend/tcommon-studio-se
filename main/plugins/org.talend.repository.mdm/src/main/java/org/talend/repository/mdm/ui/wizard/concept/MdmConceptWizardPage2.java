@@ -83,11 +83,6 @@ public class MdmConceptWizardPage2 extends AbstractRetrieveConceptPage {
         return form.getSelectedEntity();
     }
 
-    // @Override
-    // public IWizardPage getPreviousPage() {
-    // return null;
-    // }
-
     @Override
     public void setVisible(boolean visible) {
         super.setVisible(visible);
