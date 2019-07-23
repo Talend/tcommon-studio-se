@@ -12,9 +12,11 @@
 // ============================================================================
 package org.talend.core.model.metadata.designerproperties;
 
-import static org.junit.Assert.*;
-import static org.mockito.Matchers.*;
-import static org.mockito.Mockito.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertTrue;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.when;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -26,7 +28,7 @@ import org.eclipse.emf.common.util.BasicEMap;
 import org.eclipse.emf.common.util.EList;
 import org.eclipse.emf.common.util.EMap;
 import org.junit.Test;
-import org.junit.runner.RunWith;
+import org.talend.core.database.EDatabaseTypeName;
 import org.talend.core.database.conn.ConnParameterKeys;
 import org.talend.core.model.metadata.IMetadataColumn;
 import org.talend.core.model.metadata.IMetadataTable;
@@ -35,10 +37,10 @@ import org.talend.core.model.metadata.builder.connection.ConceptTarget;
 import org.talend.core.model.metadata.builder.connection.Connection;
 import org.talend.core.model.metadata.builder.connection.DatabaseConnection;
 import org.talend.core.model.metadata.builder.connection.MDMConnection;
+import org.talend.core.model.metadata.builder.connection.impl.ConnectionFactoryImpl;
 import org.talend.core.model.metadata.types.JavaType;
 import org.talend.core.model.metadata.types.JavaTypesManager;
 import org.talend.core.model.process.IElementParameter;
-import org.talend.core.model.utils.ContextParameterUtils;
 
 /**
  * DOC ycbai class global comment. Detailled comment
@@ -169,6 +171,22 @@ public class RepositoryToComponentPropertyTest {
         checkIfWithoutQuotes(dbConnection, "context.keytab_path"); //$NON-NLS-1$
         Object result = RepositoryToComponentProperty.getValue(dbConnection, "USE_DATANODE_HOSTNAME", null); //$NON-NLS-1$
         assertTrue(result == null);
+    }
+
+    @Test
+    public void testGetValueOfCreateTable() {
+        DatabaseConnection dbConnection = ConnectionFactoryImpl.eINSTANCE.createDatabaseConnection();
+        dbConnection.setDatabaseType(EDatabaseTypeName.MSSQL.getDbType());
+        Object result = RepositoryToComponentProperty.getValue(dbConnection, "DBTYPE", null); //$NON-NLS-1$
+        assertEquals(EDatabaseTypeName.MSSQL.getXMLType(), result);
+
+        dbConnection.setDatabaseType(EDatabaseTypeName.ORACLE_OCI.getDbType());
+        Object result1 = RepositoryToComponentProperty.getValue(dbConnection, "DBTYPE", null); //$NON-NLS-1$
+        assertEquals(EDatabaseTypeName.ORACLE_OCI.getXMLType(), result1);
+
+        dbConnection.setDatabaseType(EDatabaseTypeName.INGRES.getDbType());
+        Object result2 = RepositoryToComponentProperty.getValue(dbConnection, "DBTYPE", null); //$NON-NLS-1$
+        assertEquals(EDatabaseTypeName.INGRES.getXMLType(), result2);
     }
 
     private void checkIfWithoutQuotes(DatabaseConnection connection, String value) {
