@@ -630,10 +630,6 @@ public class MdmReceiveForm extends AbstractMDMFileStepForm {
     }
 
     private void populateTree() {
-        // if (populated) {
-        // return;
-        // }
-        // populated = true;
         String selectedEntity = null;
         if (wizardPage != null && wizardPage.getPreviousPage() instanceof MdmConceptWizardPage2) {
             selectedEntity = ((MdmConceptWizardPage2) wizardPage.getPreviousPage()).getSelectedEntity();
