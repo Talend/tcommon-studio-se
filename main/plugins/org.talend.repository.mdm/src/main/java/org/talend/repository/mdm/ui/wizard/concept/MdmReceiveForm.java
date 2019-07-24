@@ -139,8 +139,6 @@ public class MdmReceiveForm extends AbstractMDMFileStepForm {
 
     private boolean creation;
 
-    private boolean populated;
-
     /**
      * Constructor to use by RCP Wizard.
      *
@@ -202,11 +200,6 @@ public class MdmReceiveForm extends AbstractMDMFileStepForm {
         } else {
             prefixCombo.setText(getXPathPrefix(concept.getXPathPrefix()));
         }
-
-        if (isContextMode()) {
-            adaptFormToEditable();
-        }
-
     }
 
     @Override
@@ -637,10 +630,10 @@ public class MdmReceiveForm extends AbstractMDMFileStepForm {
     }
 
     private void populateTree() {
-        if (populated) {
-            return;
-        }
-        populated = true;
+        // if (populated) {
+        // return;
+        // }
+        // populated = true;
         String selectedEntity = null;
         if (wizardPage != null && wizardPage.getPreviousPage() instanceof MdmConceptWizardPage2) {
             selectedEntity = ((MdmConceptWizardPage2) wizardPage.getPreviousPage()).getSelectedEntity();
@@ -668,11 +661,6 @@ public class MdmReceiveForm extends AbstractMDMFileStepForm {
             this.linker.createLinks();
         }
         checkFilePathAndManageIt();
-
-        if (isContextMode()) {
-            adaptFormToEditable();
-        }
-
     }
 
     private void resetStatusIfNecessary(String selectedEntity) {

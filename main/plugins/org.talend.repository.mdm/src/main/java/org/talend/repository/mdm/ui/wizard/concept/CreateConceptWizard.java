@@ -14,17 +14,12 @@ package org.talend.repository.mdm.ui.wizard.concept;
 
 import java.io.File;
 import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
 
 import org.eclipse.core.runtime.IPath;
 import org.eclipse.core.runtime.Path;
-import org.eclipse.emf.common.util.EList;
 import org.eclipse.emf.ecore.EObject;
-import org.eclipse.emf.ecore.util.EcoreUtil;
 import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.jface.wizard.IWizardPage;
 import org.eclipse.jface.wizard.WizardPage;
@@ -47,13 +42,10 @@ import org.talend.core.model.properties.ConnectionItem;
 import org.talend.core.model.properties.MDMConnectionItem;
 import org.talend.core.model.properties.PropertiesFactory;
 import org.talend.core.model.properties.Property;
-import org.talend.core.model.repository.ERepositoryObjectType;
 import org.talend.core.model.repository.IRepositoryViewObject;
-import org.talend.core.model.repository.RepositoryManager;
 import org.talend.core.model.update.RepositoryUpdateManager;
 import org.talend.core.repository.model.ProxyRepositoryFactory;
 import org.talend.core.runtime.CoreRuntimePlugin;
-import org.talend.cwm.helper.ConnectionHelper;
 import org.talend.datatools.xml.utils.ATreeNode;
 import org.talend.metadata.managment.ui.utils.ConnectionContextHelper;
 import org.talend.metadata.managment.ui.wizard.RepositoryWizard;
@@ -62,8 +54,6 @@ import org.talend.repository.model.IProxyRepositoryFactory;
 import org.talend.repository.model.IRepositoryService;
 import org.talend.repository.model.RepositoryNode;
 import org.talend.repository.model.RepositoryNodeUtilities;
-
-import orgomg.cwm.objectmodel.core.Package;
 
 /**
  * DOC hwang class global comment. Detailled comment
@@ -241,24 +231,28 @@ public class CreateConceptWizard extends RepositoryWizard implements INewWizard 
      */
     @Override
     public boolean performFinish() {
-        IPath sasPath = new Path(System.getProperty("user.dir")).append("temp");//$NON-NLS-1$ //$NON-NLS-2$
-        File sasDir = sasPath.toFile();
-        if (sasDir.exists()) {
-            delete(sasDir);
-        }
+        boolean success = false;
+
         if (creation && schemaPage.isPageComplete()) {
             // RepositoryUpdateManager.updateMultiSchema(connectionItem, oldMetadataTable, oldTableMap);
             schemaPage.createMetadataTable();
             updateRelation();
-            return true;
+            success = true;
         } else if (!creation && tablePage.isPageComplete()) {
             // applyCopy();
             EObject eObject = metadataTable.eContainer();
             RepositoryUpdateManager.updateMultiSchema(connectionItem, oldMetadataTable, oldTableMap);
             updateRelation();
-            return true;
+            success = true;
         }
-        return false;
+
+        IPath sasPath = new Path(System.getProperty("user.dir")).append("temp");//$NON-NLS-1$ //$NON-NLS-2$
+        File sasDir = sasPath.toFile();
+        if (sasDir.exists()) {
+            delete(sasDir);
+        }
+
+        return success;
     }
 
     // protected void applyCopy() {
