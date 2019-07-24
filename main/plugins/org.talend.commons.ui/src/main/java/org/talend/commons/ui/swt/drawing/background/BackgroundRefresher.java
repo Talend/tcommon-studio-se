@@ -22,6 +22,7 @@ import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.graphics.Point;
 import org.eclipse.swt.graphics.Rectangle;
 import org.eclipse.swt.widgets.Composite;
+import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.ScrollBar;
 import org.eclipse.swt.widgets.Table;
 import org.eclipse.swt.widgets.Tree;
@@ -111,7 +112,7 @@ public class BackgroundRefresher implements IBackgroundRefresher {
              */
             @Override
             protected void execute(final boolean isFinalExecution, Object data) {
-                drawableComposite.getBgDrawableComposite().getDisplay().syncExec(new Runnable() {
+                Display.getDefault().syncExec(new Runnable() {
 
                     public void run() {
                         if (isFinalExecution) {
