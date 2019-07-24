@@ -71,7 +71,12 @@ public class ItemCacheManager {
             processItem = getRefProcessItem(ProjectManager.getInstance().getCurrentProject(), parsedArray[1]);
         } else {
             Project project = ProjectManager.getInstance().getProjectFromProjectTechLabel(parsedArray[0]);
-            processItem = getProcessItem(project, parsedArray[1]);
+            if (project != null) {
+                processItem = getProcessItem(project, parsedArray[1]);
+            }
+            if (processItem == null) {
+                processItem = getRefProcessItem(ProjectManager.getInstance().getCurrentProject(), parsedArray[1]);
+            }
         }
         return processItem;
     }
@@ -112,7 +117,12 @@ public class ItemCacheManager {
             refProcessItem = getRefProcessItem(ProjectManager.getInstance().getCurrentProject(), parsedArray[1], version);
         } else {
             Project project = ProjectManager.getInstance().getProjectFromProjectTechLabel(parsedArray[0]);
-            refProcessItem = getProcessItem(project, parsedArray[1], version);
+            if (project != null) {
+                refProcessItem = getProcessItem(project, parsedArray[1], version);
+            }
+            if (refProcessItem == null) {
+                refProcessItem = getRefProcessItem(ProjectManager.getInstance().getCurrentProject(), parsedArray[1], version);
+            }
         }
         return refProcessItem;
     }

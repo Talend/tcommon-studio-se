@@ -19,6 +19,7 @@ import java.util.Set;
 
 import org.talend.core.model.general.ModuleNeeded;
 import org.talend.core.model.process.JobInfo;
+import org.talend.core.model.process.ProcessUtils;
 
 /**
  * DOC nrousseau class global comment. Detailled comment
@@ -78,7 +79,7 @@ public class LastGenerationInfo {
      * @return the modulesNeededPerJob
      */
     public Set<ModuleNeeded> getModulesNeededWithSubjobPerJob(String jobId, String jobVersion) {
-        String key = jobId + "_" + jobVersion; //$NON-NLS-1$
+        String key = this.getProcessKey(jobId, jobVersion);
         if (!modulesNeededWithSubjobPerJob.containsKey(key)) {
             modulesNeededWithSubjobPerJob.put(key, new HashSet<ModuleNeeded>());
         }
@@ -90,7 +91,7 @@ public class LastGenerationInfo {
      * @return the modulesNeededPerJob
      */
     public Set<ModuleNeeded> getModulesNeededPerJob(String jobId, String jobVersion) {
-        String key = jobId + "_" + jobVersion; //$NON-NLS-1$
+        String key = this.getProcessKey(jobId, jobVersion);
         if (!modulesNeededPerJob.containsKey(key)) {
             modulesNeededPerJob.put(key, new HashSet<ModuleNeeded>());
         }
@@ -103,7 +104,7 @@ public class LastGenerationInfo {
      * @return the contextPerJob
      */
     public Set<String> getContextPerJob(String jobId, String jobVersion) {
-        String key = jobId + "_" + jobVersion; //$NON-NLS-1$
+        String key = this.getProcessKey(jobId, jobVersion);
         if (!contextPerJob.containsKey(key)) {
             contextPerJob.put(key, new HashSet<String>());
         }
@@ -116,7 +117,7 @@ public class LastGenerationInfo {
      * @param modulesNeededPerJob the modulesNeededPerJob to set
      */
     public void setModulesNeededPerJob(String jobId, String jobVersion, Set<ModuleNeeded> modulesNeeded) {
-        String key = jobId + "_" + jobVersion; //$NON-NLS-1$
+        String key = this.getProcessKey(jobId, jobVersion); 
         modulesNeededPerJob.put(key, new HashSet<ModuleNeeded>(modulesNeeded));
     }
 
@@ -125,8 +126,8 @@ public class LastGenerationInfo {
      *
      * @param modulesNeededWithSubjobPerJob the modulesNeededWithSubjobPerJob to set
      */
-    public void setModulesNeededWithSubjobPerJob(String jobId, String jobVersion, Set<ModuleNeeded> modulesNeeded) {
-        String key = jobId + "_" + jobVersion; //$NON-NLS-1$
+    public void setModulesNeededWithSubjobPerJob(String jobId, String jobVersion, Set<ModuleNeeded> modulesNeeded) {      
+        String key = this.getProcessKey(jobId, jobVersion);
         if (modulesNeeded == null) {
             modulesNeededWithSubjobPerJob.put(key, null);
         } else {
@@ -140,17 +141,17 @@ public class LastGenerationInfo {
      * @param contextPerJob the contextPerJob to set
      */
     public void setContextPerJob(String jobId, String jobVersion, Set<String> contexts) {
-        String key = jobId + "_" + jobVersion; //$NON-NLS-1$
+        String key = this.getProcessKey(jobId, jobVersion); 
         contextPerJob.put(key, new HashSet<String>(contexts));
     }
 
     public void setUseDynamic(String jobId, String jobVersion, boolean dynamic) {
-        String key = jobId + "_" + jobVersion; //$NON-NLS-1$
+        String key = this.getProcessKey(jobId, jobVersion); 
         useDynamic.put(key, dynamic);
     }
 
     public boolean isUseDynamic(String jobId, String jobVersion) {
-        String key = jobId + "_" + jobVersion; //$NON-NLS-1$
+        String key = this.getProcessKey(jobId, jobVersion); 
         if (!useDynamic.containsKey(key)) {
             return false;
         }
@@ -162,12 +163,12 @@ public class LastGenerationInfo {
     }
 
     public void setUseRules(String jobId, String jobVersion, boolean useRules) {
-        String key = jobId + "_" + jobVersion; //$NON-NLS-1$
+        String key = this.getProcessKey(jobId, jobVersion); 
         this.useRules.put(key, useRules);
     }
 
     public boolean isUseRules(String jobId, String jobVersion) {
-        String key = jobId + "_" + jobVersion; //$NON-NLS-1$
+        String key = this.getProcessKey(jobId, jobVersion); 
         if (!useRules.containsKey(key)) {
             return false;
         }
@@ -179,12 +180,12 @@ public class LastGenerationInfo {
     }
 
     public void setUsePigUDFs(String jobId, String jobVersion, boolean useRules) {
-        String key = jobId + "_" + jobVersion; //$NON-NLS-1$
+        String key = this.getProcessKey(jobId, jobVersion); 
         this.usedPigUDFs.put(key, useRules);
     }
 
     public boolean isUsePigUDFs(String jobId, String jobVersion) {
-        String key = jobId + "_" + jobVersion; //$NON-NLS-1$
+        String key = this.getProcessKey(jobId, jobVersion); 
         if (!usedPigUDFs.containsKey(key)) {
             return false;
         }
@@ -251,7 +252,7 @@ public class LastGenerationInfo {
      * @return the modulesNeededPerJob
      */
     public Set<String> getRoutinesNeededPerJob(String jobId, String jobVersion) {
-        String key = jobId + "_" + jobVersion; //$NON-NLS-1$
+        String key = this.getProcessKey(jobId, jobVersion);
         if (!routinesNeededPerJob.containsKey(key)) {
             routinesNeededPerJob.put(key, new HashSet<String>());
         }
@@ -279,7 +280,8 @@ public class LastGenerationInfo {
     }
 
     private String getProcessKey(String jobId, String jobVersion) {
-        return jobId + "_" + jobVersion; //$NON-NLS-1$
+        String pureJobId = ProcessUtils.getPureItemId(jobId);
+        return pureJobId + "_" + jobVersion; //$NON-NLS-1$
     }
 
     /**
@@ -288,7 +290,7 @@ public class LastGenerationInfo {
      * @return the pigudfNeededPerJob
      */
     public Set<String> getPigudfNeededPerJob(String jobId, String jobVersion) {
-        String key = jobId + "_" + jobVersion; //$NON-NLS-1$
+        String key = this.getProcessKey(jobId, jobVersion);
         if (!pigudfNeededPerJob.containsKey(key)) {
             pigudfNeededPerJob.put(key, new HashSet<String>());
         }
@@ -302,7 +304,7 @@ public class LastGenerationInfo {
      * @param modulesNeededPerJob the modulesNeededPerJob to set
      */
     public void setRoutinesNeededPerJob(String jobId, String jobVersion, Set<String> modulesNeeded) {
-        String key = jobId + "_" + jobVersion; //$NON-NLS-1$
+        String key = this.getProcessKey(jobId, jobVersion);
         routinesNeededPerJob.put(key, new HashSet<String>(modulesNeeded));
     }
 
@@ -312,7 +314,7 @@ public class LastGenerationInfo {
      * @param pigudfNeededPerJob the pigudfNeededPerJob to set
      */
     public void setPigudfNeededPerJob(String jobId, String jobVersion, Set<String> modulesNeeded) {
-        String key = jobId + "_" + jobVersion; //$NON-NLS-1$
+        String key = this.getProcessKey(jobId, jobVersion);
         pigudfNeededPerJob.put(key, new HashSet<String>(modulesNeeded));
     }
 
@@ -321,7 +323,7 @@ public class LastGenerationInfo {
      * @return the modulesNeededPerJob
      */
     public Set<String> getRoutinesNeededWithSubjobPerJob(String jobId, String jobVersion) {
-        String key = jobId + "_" + jobVersion; //$NON-NLS-1$
+        String key = this.getProcessKey(jobId, jobVersion);
         if (!routinesNeededWithSubjobPerJob.containsKey(key)) {
             routinesNeededWithSubjobPerJob.put(key, new HashSet<String>());
         }
@@ -334,7 +336,7 @@ public class LastGenerationInfo {
      * @return the pigudfNeededWithSubjobPerJob
      */
     public Set<String> getPigudfNeededWithSubjobPerJob(String jobId, String jobVersion) {
-        String key = jobId + "_" + jobVersion; //$NON-NLS-1$
+        String key = this.getProcessKey(jobId, jobVersion);
         if (!pigudfNeededWithSubjobPerJob.containsKey(key)) {
             pigudfNeededWithSubjobPerJob.put(key, new HashSet<String>());
         }
@@ -348,7 +350,7 @@ public class LastGenerationInfo {
      * @param modulesNeededPerJob the modulesNeededPerJob to set
      */
     public void setRoutinesNeededWithSubjobPerJob(String jobId, String jobVersion, Set<String> modulesNeeded) {
-        String key = jobId + "_" + jobVersion; //$NON-NLS-1$
+        String key = this.getProcessKey(jobId, jobVersion);
         routinesNeededWithSubjobPerJob.put(key, new HashSet<String>(modulesNeeded));
     }
 
@@ -358,7 +360,7 @@ public class LastGenerationInfo {
      * @param pigudfNeededWithSubjobPerJob the pigudfNeededWithSubjobPerJob to set
      */
     public void setPigudfNeededWithSubjobPerJob(String jobId, String jobVersion, Set<String> modulesNeeded) {
-        String key = jobId + "_" + jobVersion; //$NON-NLS-1$
+        String key = this.getProcessKey(jobId, jobVersion);
         pigudfNeededWithSubjobPerJob.put(key, new HashSet<String>(modulesNeeded));
     }
 
