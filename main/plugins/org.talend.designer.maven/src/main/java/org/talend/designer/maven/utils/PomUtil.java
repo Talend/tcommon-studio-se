@@ -1108,4 +1108,20 @@ public class PomUtil {
                     || pathname.getName().equals("m2e-lastUpdated.properties"); //$NON-NLS-1$
         }
     };
+
+    public static boolean checkIfJobDependencyExist(IFile parentJobPom, Property property) throws Exception {
+        boolean found = false;
+        Model model = MavenPlugin.getMavenModelManager().readMavenModel(parentJobPom);
+        String groupId = PomIdsHelper.getJobGroupId(property);
+        String artifactId = PomIdsHelper.getJobArtifactId(property);
+        String version = PomIdsHelper.getJobVersion(property);
+        for (Dependency dependency : model.getDependencies()) {
+            if (dependency.getGroupId().equals(groupId) && dependency.getArtifactId().equals(artifactId)
+                    && dependency.getVersion().equals(version)) {
+                found = true;
+                break;
+            }
+        }
+        return found;
+    }
 }
