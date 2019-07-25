@@ -10,9 +10,13 @@ package org.talend.datatools.xml.utils;
 
 import java.io.File;
 import java.io.IOException;
+import java.io.Reader;
+import java.io.StringReader;
+import java.nio.file.Files;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Vector;
+import java.util.stream.Stream;
 
 import org.apache.xerces.parsers.SAXParser;
 import org.xml.sax.Attributes;
@@ -25,6 +29,8 @@ import org.xml.sax.helpers.DefaultHandler;
  * 
  */
 public class SaxParser extends DefaultHandler implements Runnable {
+
+    private static final String UTF8_BOM = "\uFEFF";
 
     // the xml file name
     private String fileName;
@@ -113,7 +119,17 @@ public class SaxParser extends DefaultHandler implements Runnable {
                     this.inputStream.init();
                     xr.parse(new InputSource(this.inputStream));
                 } else {
-                    xr.parse(new File(fileName).toURI().toString());
+                    StringBuilder strBuilder = new StringBuilder();
+                    try (Stream<String> lines = Files.lines(new File(fileName).toPath())) {
+                        lines.forEach(line -> strBuilder.append(line).append("\n"));
+                    }
+                    String str = strBuilder.toString();
+                    if (str.startsWith(UTF8_BOM)) {
+                        str = str.substring(1);
+                    }
+                    try (Reader reader = new StringReader(str)) {
+                        xr.parse(new InputSource(reader));
+                    }
                 }
             } catch (ThreadStopException tsE) {
                 // This exception is thrown out to stop the execution of current
