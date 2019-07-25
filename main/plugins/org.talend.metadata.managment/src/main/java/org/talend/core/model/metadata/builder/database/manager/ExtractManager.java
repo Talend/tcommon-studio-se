@@ -165,7 +165,7 @@ public class ExtractManager {
             tablesToFilter = new ArrayList<String>();
         }
         try {
-            Set<String> availableTableTypes = getAvailableTableTypes(dbMetaData);
+            Set<String> availableTableTypes = getTableTypes(dbMetaData);
             retrieveTables(dbMetaData, schema, medataTables, availableTableTypes, tablesToFilter, limit);
         } catch (SQLException e) {
             ExceptionHandler.process(e);
@@ -193,7 +193,7 @@ public class ExtractManager {
         ResultSet rsTableTypes = dbMetaData.getTableTypes();
         Set<String> availableTableTypes = new HashSet<String>();
         String[] neededTableTypes = { ETableTypes.TABLETYPE_TABLE.getName(), ETableTypes.TABLETYPE_VIEW.getName(),
-                ETableTypes.TABLETYPE_SYNONYM.getName() };
+                ETableTypes.TABLETYPE_SYNONYM.getName(), ETableTypes.EXTERNAL_TABLE.getName()};
 
         try {
             while (rsTableTypes.next()) {
@@ -210,6 +210,28 @@ public class ExtractManager {
             }
         } finally {
             rsTableTypes.close();// See bug 5029 Avoid "Invalid cursor exception"
+        }
+        return availableTableTypes;
+    }
+    
+    public Set<String> getTableTypes(DatabaseMetaData dbMetaData){
+    	Set<String> availableTableTypes = new HashSet<String>();
+    	availableTableTypes.add(ETableTypes.TABLETYPE_TABLE.getName());
+        availableTableTypes.add(ETableTypes.EXTERNAL_TABLE.getName());
+        availableTableTypes.add(ETableTypes.TABLETYPE_VIEW.getName());
+        availableTableTypes.add(ETableTypes.TABLETYPE_SYNONYM.getName());
+        
+        if (EDatabaseTypeName.HIVE.getDisplayName().equals(dbType.getDbType())) {
+        	availableTableTypes.add(ETableTypes.MANAGED_TABLE.getName());
+        	availableTableTypes.add(ETableTypes.INDEX_TABLE.getName());
+        	availableTableTypes.add(ETableTypes.VIRTUAL_VIEW.getName());
+        } else if (EDatabaseTypeName.SAPHana.getDisplayName().equals(dbType.getDbType())) {
+        	availableTableTypes.add(ETableTypes.TABLETYPE_CALCULATION_VIEW.getName());
+        } else if (EDatabaseTypeName.MYSQL.getDisplayName().equals(dbType.getDbType())) {
+        	availableTableTypes.add(ETableTypes.SYSTEM_TABLE.getName());
+        	availableTableTypes.add(ETableTypes.SYSTEM_VIEW.getName());
+        } else if (MetadataConnectionUtils.isOracle(dbMetaData)) {
+        	availableTableTypes.add(ETableTypes.TABLETYPE_ALL_SYNONYM.getName());
         }
         return availableTableTypes;
     }
