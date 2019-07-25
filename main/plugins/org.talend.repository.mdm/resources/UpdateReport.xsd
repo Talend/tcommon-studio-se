@@ -29,6 +29,7 @@
 			<xsd:element maxOccurs="1" minOccurs="0" name="DataModel" nillable="true" type="xsd:string"/>
 			<xsd:element maxOccurs="1" minOccurs="1" name="Concept" nillable="false" type="xsd:string"/>
 			<xsd:element maxOccurs="1" minOccurs="1" name="Key" nillable="false" type="xsd:string"/>
+			<xsd:element maxOccurs="1" minOccurs="0" name="PrimaryKeyInfo" nillable="true" type="xsd:string"/>
 			<xsd:element maxOccurs="unbounded" minOccurs="0" name="Item" nillable="false">
 				<xsd:complexType mixed="false">
 					<xsd:sequence maxOccurs="1" minOccurs="1">
