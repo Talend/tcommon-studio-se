@@ -339,7 +339,7 @@ public class BackgroundRefresher implements IBackgroundRefresher {
             }
             if ((WindowSystem.isGTK() || EnvironmentUtils.isMacOsSytem()) && child instanceof Tree) {
                 returnedPoint.y += ((Tree) child).getHeaderHeight();
-                returnedPoint.y += ((Table) child).getItemHeight();
+                returnedPoint.y += ((Tree) child).getItemHeight();
             }
             child = child.getParent();
             ScrollBar vScrollBar = child.getVerticalBar();
