@@ -90,7 +90,7 @@ public final class StringUtilities {
      * @return
      */
     public static String getRandomString(int length) {
-        return java.util.UUID.randomUUID().toString().replace("-", "").substring(8, length); //$NON-NLS-1$ //$NON-NLS-2$
+        return java.util.UUID.randomUUID().toString().replace("-", "").substring(8, 8 + length); //$NON-NLS-1$ //$NON-NLS-2$
     }
 
     public static String removeEndingString(String fullStr, String endingStr) {
