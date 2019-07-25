@@ -6,7 +6,7 @@
               context="plugin:org.talend.libraries.jdbc.as400"
               language="java"
               message="Needed for AS400 jdbc plugin"
-              name="jt400_V5R3.jar" mvn_uri="mvn:org.talend.libraries/jt400_V5R3/6.0.0" 
+              name="jt400-9.8.jar" mvn_uri="mvn:net.sf.jt400/jt400/9.8/jar" 
               required="true">
         </libraryNeeded>
     </extension>
