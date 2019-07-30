@@ -140,19 +140,27 @@ public abstract class I18nPreferencePage extends FieldEditorPreferencePage imple
             serbian = "Serbian"; //$NON-NLS-1$
         }
 
-        String[][] entryNamesAndValues =
-                { { Locale.ENGLISH.getDisplayLanguage(Locale.ENGLISH), Locale.ENGLISH.getLanguage() },
-                        { Locale.FRENCH.getDisplayLanguage(Locale.FRENCH), Locale.FRENCH.getLanguage() },
-                        { Locale.CHINESE.getDisplayLanguage(Locale.CHINESE), "zh_CN" },
-                        { Locale.GERMAN.getDisplayLanguage(Locale.GERMAN), Locale.GERMAN.getLanguage() },
-                        { Locale.JAPANESE.getDisplayLanguage(Locale.JAPANESE), Locale.JAPANESE.getLanguage() },
-                        { Locale.ITALIAN.getDisplayLanguage(Locale.ITALIAN), Locale.ITALIAN.getLanguage() },
-                        { "Brasil", "pt_BR" }, //$NON-NLS-1$ //$NON-NLS-2$
-                        { spanish, "es" }, { russian, "ru" }, //$NON-NLS-1$ //$NON-NLS-2$
-                        { Locale.KOREA.getDisplayLanguage(Locale.KOREA), "kr" }, { "Turkish", "tr" }, //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
-                        { greek, "el" }, { "Hrvatski", "hr" }, { arabic, "ar" }, { serbian, "sr" }, { "Polski", "pl" },
-                        { "Romanian", "ro" }, { "Netherlands", "nl" } }; //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$
-                                                                         // // /$NON-NLS-7$
+        String solvak = "Sloven\u0161\u010dina";//$NON-NLS-1$
+        try {
+            utf8Bytes = solvak.getBytes("UTF8");//$NON-NLS-1$
+            solvak = new String(utf8Bytes, "UTF8");//$NON-NLS-1$
+        } catch (UnsupportedEncodingException e2) {
+            solvak = "Solvak";//$NON-NLS-1$
+        }
+
+        String[][] entryNamesAndValues = { { Locale.ENGLISH.getDisplayLanguage(Locale.ENGLISH), Locale.ENGLISH.getLanguage() },
+                { Locale.FRENCH.getDisplayLanguage(Locale.FRENCH) + "(French)", Locale.FRENCH.getLanguage() }, //$NON-NLS-1$
+                { Locale.CHINESE.getDisplayLanguage(Locale.CHINESE) + "(Chinese)", "zh_CN" }, //$NON-NLS-1$ //$NON-NLS-2$
+                { Locale.GERMAN.getDisplayLanguage(Locale.GERMAN) + "(German)", Locale.GERMAN.getLanguage() }, //$NON-NLS-1$
+                { Locale.JAPANESE.getDisplayLanguage(Locale.JAPANESE) + "(Japanese)", Locale.JAPANESE.getLanguage() }, //$NON-NLS-1$
+                { Locale.ITALIAN.getDisplayLanguage(Locale.ITALIAN) + "(Italian)", Locale.ITALIAN.getLanguage() }, //$NON-NLS-1$
+                { "Brasil(Brazilian)", "pt_BR" }, //$NON-NLS-1$ //$NON-NLS-2$
+                { spanish + "(Spanish)", "es" }, { russian + "(Russion)", "ru" }, //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$
+                { Locale.KOREA.getDisplayLanguage(Locale.KOREA) + "(Korean)", "kr" }, { "Turkish(Turkish)", "tr" }, //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$
+                { greek + "(Greek)", "el" }, { "Hrvatski(Croatian)", "hr" }, { arabic + "(Arabic)", "ar" }, //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$//$NON-NLS-5$ //$NON-NLS-6$
+                { serbian + "(Serbian)", "sr" }, { "Polski(Polish)", "pl" }, { "Romanian(Romanian)", "ro" }, //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$//$NON-NLS-5$ //$NON-NLS-6$
+                { "Netherlands(Netherlands)", "nl" }, { solvak + "(Solvak)", "sk" }, //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$
+                { "Current OS Language", Locale.getDefault().getLanguage() } };//$NON-NLS-1$
         languageSelectionEditor = new OneLineComboFieldEditor(ITalendCorePrefConstants.LANGUAGE_SELECTOR,
                 Messages.getString("I18nPreferencePage.needRestart"), entryNamesAndValues, getFieldEditorParent()); //$NON-NLS-1$
         addField(languageSelectionEditor);
