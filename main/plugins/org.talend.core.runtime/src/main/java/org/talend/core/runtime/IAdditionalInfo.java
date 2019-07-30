@@ -23,6 +23,10 @@ public interface IAdditionalInfo {
 
     void onEvent(final String event, final Object... parameters);
 
+    default Object func(final String funcName, final Object... params) throws Exception {
+        throw new UnsupportedOperationException();
+    }
+
     void cloneAddionalInfoTo(final IAdditionalInfo targetAdditionalInfo);
 
 }
