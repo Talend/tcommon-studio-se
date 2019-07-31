@@ -95,7 +95,7 @@ public class JsonTreePopulator extends AbstractTreePopulator {
             SchemaPopulationUtil.fetchTreeNode((JsonTreeNode) selectedEntity, 1);
             treeNode = (ATreeNode) selectedEntity;
         } else {
-            treeNode = SchemaPopulationUtil.getSchemaTree(fileValue, limit);
+            treeNode = SchemaPopulationUtil.getSchemaTree(fileValue, getEncoding(), limit);
         }
         if (treeNode == null) {
             return false;

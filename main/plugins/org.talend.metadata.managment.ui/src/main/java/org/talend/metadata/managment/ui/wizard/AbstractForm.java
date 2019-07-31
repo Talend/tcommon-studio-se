@@ -36,7 +36,6 @@ import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.layout.RowLayout;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
-import org.eclipse.swt.widgets.Group;
 import org.eclipse.swt.widgets.Label;
 import org.talend.commons.ui.runtime.exception.ExceptionHandler;
 import org.talend.commons.ui.swt.formtools.Form;
@@ -633,5 +632,9 @@ public abstract class AbstractForm extends Composite {
                 control.getParent().layout();
             }
         }
+    }
+
+    public ConnectionItem getConnectionItem() {
+        return this.connectionItem;
     }
 }
