@@ -14,11 +14,15 @@ package org.talend.repository.ui.wizards.metadata.connection.files.json;
 
 import java.io.File;
 import java.io.IOException;
+import java.nio.charset.Charset;
+import java.nio.file.Files;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.Map.Entry;
 import java.util.Set;
+import java.util.stream.Stream;
 
+import org.apache.commons.lang.StringUtils;
 import org.talend.commons.exception.CommonExceptionHandler;
 
 import com.fasterxml.jackson.databind.JsonNode;
@@ -65,11 +69,21 @@ public class SchemaPopulationUtil {
         return null;
     }
 
-    public static JsonTreeNode getSchemaTree(File jsonFile, int numberOfElementsAccessiable) {
+    public static JsonTreeNode getSchemaTree(File jsonFile, String charset, int numberOfElementsAccessiable) {
         JsonTreeNode jsonTreeNode = null;
         try {
+            StringBuilder strBuilder = new StringBuilder();
+            Charset charSet = null;
+            if (StringUtils.isBlank(charset)) {
+                charSet = Charset.forName("UTF-8");
+            } else {
+                charSet = Charset.forName(charset);
+            }
+            try (Stream<String> lines = Files.lines(jsonFile.toPath(), charSet)) {
+                lines.forEach(line -> strBuilder.append(line).append("\n"));
+            }
             ObjectMapper objMapper = new ObjectMapper();
-            JsonNode jsonNode = objMapper.readTree(jsonFile);
+            JsonNode jsonNode = objMapper.readTree(strBuilder.toString());
             jsonTreeNode = new JsonTreeNode();
             jsonTreeNode.addValue(jsonNode);
             String label = "$"; //$NON-NLS-1$

@@ -22,6 +22,8 @@ import org.talend.datatools.xml.utils.ATreeNode;
  */
 public abstract class AbstractTreePopulator {
 
+    private String encoding;
+
     protected String filePath;
 
     protected static int limit;
@@ -35,6 +37,14 @@ public abstract class AbstractTreePopulator {
     abstract public TreeItem getTreeItem(String absolutePath);
 
     abstract public String getAbsoluteXPath(TreeItem treeItem);
+
+    public String getEncoding() {
+        return this.encoding;
+    }
+
+    public void setEncoding(String encoding) {
+        this.encoding = encoding;
+    }
 
     /**
      * Getter for filePath.

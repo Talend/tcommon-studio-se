@@ -16,7 +16,7 @@ import java.io.BufferedReader;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 
-import org.talend.commons.exception.WarningException;
+import org.talend.commons.exception.ExceptionHandler;
 
 /**
  * cli class global comment. Detailled comment
@@ -104,26 +104,31 @@ public final class ProcessStreamTrashReaderUtil {
 
     public static void readAndForget(final Process process) {
         try {
+            final String encoding = "UTF-8";
             // input stream thread
             new Thread() {
 
                 public void run() {
-                    InputStream is = process.getInputStream();
-                    InputStreamReader din = new InputStreamReader(is);
-                    BufferedReader reader = new BufferedReader(din);
                     try {
-                        String line = null;
-                        while ((line = reader.readLine()) != null) {
-                            System.out.println("getInputStream " + line); //$NON-NLS-1$
-                        }
-                    } catch (Exception ex) {
-                        // nothing to do
-                    } finally {
+                        InputStream is = process.getInputStream();
+                        InputStreamReader din = new InputStreamReader(is, encoding);
+                        BufferedReader reader = new BufferedReader(din);
                         try {
-                            is.close();
+                            String line = null;
+                            while ((line = reader.readLine()) != null) {
+                                System.out.println("getInputStream " + line); //$NON-NLS-1$
+                            }
                         } catch (Exception ex) {
                             // nothing to do
+                        } finally {
+                            try {
+                                is.close();
+                            } catch (Exception ex) {
+                                // nothing to do
+                            }
                         }
+                    } catch (Exception e) {
+                        ExceptionHandler.process(e);
                     }
                 }
             }.start();
@@ -132,23 +137,31 @@ public final class ProcessStreamTrashReaderUtil {
             new Thread() {
 
                 public void run() {
-                    InputStream is = process.getErrorStream();
-                    InputStreamReader din = new InputStreamReader(is);
-                    BufferedReader reader = new BufferedReader(din);
                     try {
-                        String line = null;
-                        while ((line = reader.readLine()) != null) {
-                            System.out.println("getErrorStream " + line); //$NON-NLS-1$
-                            throw new WarningException("AAAAA");
-                        }
-                    } catch (Exception ex) {
-                        // nothing to do
-                    } finally {
+                        InputStream is = process.getErrorStream();
+                        InputStreamReader din = new InputStreamReader(is, encoding);
+                        BufferedReader reader = new BufferedReader(din);
+                        StringBuilder strBuilder = new StringBuilder();
                         try {
-                            is.close();
+                            String line = null;
+                            while ((line = reader.readLine()) != null) {
+                                System.out.println("getErrorStream " + line); //$NON-NLS-1$
+                                strBuilder.append(line).append("\n");
+                            }
                         } catch (Exception ex) {
                             // nothing to do
+                        } finally {
+                            try {
+                                is.close();
+                            } catch (Exception ex) {
+                                // nothing to do
+                            }
                         }
+                        if (!strBuilder.toString().replaceAll("[\n]", " ").trim().isEmpty()) {
+                            throw new Exception(strBuilder.toString());
+                        }
+                    } catch (Exception e) {
+                        ExceptionHandler.process(e);
                     }
                 }
             }.start();
