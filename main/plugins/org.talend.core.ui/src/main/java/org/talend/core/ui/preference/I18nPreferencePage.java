@@ -149,17 +149,17 @@ public abstract class I18nPreferencePage extends FieldEditorPreferencePage imple
         }
 
         String[][] entryNamesAndValues = { { Locale.ENGLISH.getDisplayLanguage(Locale.ENGLISH), Locale.ENGLISH.getLanguage() },
-                { Locale.FRENCH.getDisplayLanguage(Locale.FRENCH) + "(French)", Locale.FRENCH.getLanguage() }, //$NON-NLS-1$
-                { Locale.CHINESE.getDisplayLanguage(Locale.CHINESE) + "(Chinese)", "zh_CN" }, //$NON-NLS-1$ //$NON-NLS-2$
-                { Locale.GERMAN.getDisplayLanguage(Locale.GERMAN) + "(German)", Locale.GERMAN.getLanguage() }, //$NON-NLS-1$
-                { Locale.JAPANESE.getDisplayLanguage(Locale.JAPANESE) + "(Japanese)", Locale.JAPANESE.getLanguage() }, //$NON-NLS-1$
-                { Locale.ITALIAN.getDisplayLanguage(Locale.ITALIAN) + "(Italian)", Locale.ITALIAN.getLanguage() }, //$NON-NLS-1$
-                { "Brasil(Brazilian)", "pt_BR" }, //$NON-NLS-1$ //$NON-NLS-2$
-                { spanish + "(Spanish)", "es" }, { russian + "(Russion)", "ru" }, //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$
-                { Locale.KOREA.getDisplayLanguage(Locale.KOREA) + "(Korean)", "kr" }, { "Turkish(Turkish)", "tr" }, //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$
-                { greek + "(Greek)", "el" }, { "Hrvatski(Croatian)", "hr" }, { arabic + "(Arabic)", "ar" }, //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$//$NON-NLS-5$ //$NON-NLS-6$
-                { serbian + "(Serbian)", "sr" }, { "Polski(Polish)", "pl" }, { "Romanian(Romanian)", "ro" }, //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$//$NON-NLS-5$ //$NON-NLS-6$
-                { "Netherlands(Netherlands)", "nl" }, { solvak + "(Solvak)", "sk" }, //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$
+                { Locale.FRENCH.getDisplayLanguage(Locale.FRENCH) + " (French)", Locale.FRENCH.getLanguage() }, //$NON-NLS-1$
+                { Locale.CHINESE.getDisplayLanguage(Locale.CHINESE) + " (Chinese)", "zh_CN" }, //$NON-NLS-1$ //$NON-NLS-2$
+                { Locale.GERMAN.getDisplayLanguage(Locale.GERMAN) + " (German)", Locale.GERMAN.getLanguage() }, //$NON-NLS-1$
+                { Locale.JAPANESE.getDisplayLanguage(Locale.JAPANESE) + " (Japanese)", Locale.JAPANESE.getLanguage() }, //$NON-NLS-1$
+                { Locale.ITALIAN.getDisplayLanguage(Locale.ITALIAN) + " (Italian)", Locale.ITALIAN.getLanguage() }, //$NON-NLS-1$
+                { "Brasil (Brazilian)", "pt_BR" }, //$NON-NLS-1$ //$NON-NLS-2$
+                { spanish + " (Spanish)", "es" }, { russian + " (Russion)", "ru" }, //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$
+                { Locale.KOREA.getDisplayLanguage(Locale.KOREA) + " (Korean)", "kr" }, { "Turkish (Turkish)", "tr" }, //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$
+                { greek + " (Greek)", "el" }, { "Hrvatski (Croatian)", "hr" }, { arabic + " (Arabic)", "ar" }, //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$//$NON-NLS-5$ //$NON-NLS-6$
+                { serbian + " (Serbian)", "sr" }, { "Polski (Polish)", "pl" }, { "Romanian (Romanian)", "ro" }, //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$//$NON-NLS-5$ //$NON-NLS-6$
+                { "Netherlands (Netherlands)", "nl" }, { solvak + " (Solvak)", "sk" }, //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$
                 { "Current OS Language", Locale.getDefault().getLanguage() } };//$NON-NLS-1$
         languageSelectionEditor = new OneLineComboFieldEditor(ITalendCorePrefConstants.LANGUAGE_SELECTOR,
                 Messages.getString("I18nPreferencePage.needRestart"), entryNamesAndValues, getFieldEditorParent()); //$NON-NLS-1$
