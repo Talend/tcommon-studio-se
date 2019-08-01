@@ -20,6 +20,7 @@ import org.talend.core.model.metadata.builder.connection.MdmConceptType;
 import org.talend.core.model.metadata.builder.connection.MetadataTable;
 import org.talend.core.model.properties.ConnectionItem;
 import org.talend.metadata.managment.ui.wizard.AbstractForm;
+import org.talend.metadata.managment.ui.wizard.AbstractForm.ICheckListener;
 import org.talend.repository.mdm.i18n.Messages;
 import org.talend.repository.model.RepositoryNode;
 
@@ -127,7 +128,10 @@ public class MdmConceptWizardPage3 extends AbstractRetrieveConceptPage {
     // }
     //
     public void createMetadataTable() {
+        ICheckListener listener = xsdFileForm.getListener();
+        xsdFileForm.setListener(null);
         xsdFileForm.createTable();
+        xsdFileForm.setListener(listener);
     }
 
     @Override

@@ -281,6 +281,10 @@ public abstract class AbstractForm extends Composite {
         this.listener = listener;
     }
 
+    public ICheckListener getListener() {
+        return listener;
+    }
+
     /**
      * update Status of the Wizard OR of the label Status.
      *
