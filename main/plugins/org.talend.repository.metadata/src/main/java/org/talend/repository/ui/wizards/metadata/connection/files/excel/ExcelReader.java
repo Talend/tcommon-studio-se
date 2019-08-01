@@ -225,7 +225,7 @@ public class ExcelReader {
             try {
                 com.talend.excel.xssf.event.ExcelReader reader = new com.talend.excel.xssf.event.ExcelReader();
                 reader.addSheetName(sheetName, false);
-                reader.parse(excelPath, "UTF-8");//$NON-NLS-1$
+                reader.parse(excelPath, "UTF-8", null);//$NON-NLS-1$
                 while (reader.hasNext()) {
                     if (recordReadRow >= maximumRowsToPreview) {
                         reader.stopRead();
