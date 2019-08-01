@@ -6623,10 +6623,12 @@ public class DatabaseForm extends AbstractForm {
                 schemaText.hide();
             }
         }
-        if(asRedshiftSSOVersionEnable()) {
-           passwordText.hide();
-           usernameText.hide();
-       }
+        if (asRedshiftSSOVersionEnable()) {
+            passwordText.hide();
+            usernameText.hide();
+            addContextParams(EDBParamName.Login, false);
+            addContextParams(EDBParamName.Password, false);
+        }
         doHiveUIContentsLayout();
         hbaseSettingGroup.layout();
         maprdbSettingGroup.layout();
