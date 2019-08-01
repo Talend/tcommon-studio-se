@@ -54,12 +54,16 @@ public class MdmConceptWizardPage4 extends WizardPage {
      *
      * @see IDialogPage#createControl(Composite)
      */
+    @Override
     public void createControl(final Composite parent) {
-        tableForm = new MDMTableForm(parent, connectionItem, metadataTable, TableHelper.getTableNames(connectionItem
+        tableForm = new MDMTableForm(parent, connectionItem, metadataTable,
+                TableHelper.getTableNames(connectionItem
                 .getConnection(), metadataTable.getLabel()));
+        tableForm.setPage(this);
         tableForm.setReadOnly(!isRepositoryObjectEditable);
         final AbstractForm.ICheckListener listener = new AbstractForm.ICheckListener() {
 
+            @Override
             public void checkPerformed(final AbstractForm source) {
                 if (source.isStatusOnError()) {
                     MdmConceptWizardPage4.this.setPageComplete(false);

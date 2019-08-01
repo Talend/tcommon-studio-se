@@ -14,9 +14,11 @@ package org.talend.repository.mdm.ui.wizard.concept;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 import org.apache.log4j.Logger;
 import org.eclipse.core.runtime.IStatus;
+import org.eclipse.emf.ecore.EObject;
 import org.eclipse.jface.dialogs.MessageDialog;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.KeyAdapter;
@@ -31,6 +33,7 @@ import org.eclipse.swt.widgets.Group;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Tree;
 import org.eclipse.swt.widgets.TreeItem;
+import org.eclipse.xsd.XSDSchema;
 import org.talend.commons.ui.swt.formtools.Form;
 import org.talend.commons.ui.swt.formtools.LabelledText;
 import org.talend.commons.ui.swt.formtools.UtilsButton;
@@ -43,13 +46,17 @@ import org.talend.core.model.metadata.builder.connection.Concept;
 import org.talend.core.model.metadata.builder.connection.ConceptTarget;
 import org.talend.core.model.metadata.builder.connection.ConnectionFactory;
 import org.talend.core.model.metadata.builder.connection.MDMConnection;
+import org.talend.core.model.metadata.builder.connection.MdmConceptType;
 import org.talend.core.model.metadata.builder.connection.MetadataColumn;
 import org.talend.core.model.metadata.builder.connection.MetadataTable;
+import org.talend.core.model.metadata.builder.connection.XMLFileNode;
 import org.talend.core.model.properties.ConnectionItem;
 import org.talend.core.ui.metadata.editor.MetadataEmfTableEditor;
 import org.talend.core.ui.metadata.editor.MetadataEmfTableEditorView;
 import org.talend.core.utils.TalendQuoteUtils;
 import org.talend.datatools.xml.utils.ATreeNode;
+import org.talend.datatools.xml.utils.OdaException;
+import org.talend.datatools.xml.utils.XSDPopulationUtil2;
 import org.talend.designer.core.model.utils.emf.talendfile.ContextType;
 import org.talend.metadata.managment.ui.utils.ConnectionContextHelper;
 import org.talend.repository.mdm.i18n.Messages;
@@ -62,7 +69,9 @@ import org.talend.repository.ui.wizards.metadata.connection.files.xml.TreePopula
  */
 public class MDMTableForm extends AbstractMDMFileStepForm {
 
-    private static Logger log = Logger.getLogger(MDMTableForm.class);
+    private static final String XS_PREFIX = "xs:";
+
+    private static final Logger LOG = Logger.getLogger(MDMTableForm.class);
 
     private static final int WIDTH_GRIDDATA_PIXEL = 750;
 
@@ -143,8 +152,8 @@ public class MDMTableForm extends AbstractMDMFileStepForm {
                 .setText(Messages.getString("FileStep3.informationLabel") + "                                                  "); //$NON-NLS-1$ //$NON-NLS-2$
         informationLabel.setSize(500, HEIGHT_BUTTON_PIXEL);
 
-        guessButton = new UtilsButton(compositeGuessButton,
-                Messages.getString("FileStep3.guess"), WIDTH_BUTTON_PIXEL, HEIGHT_BUTTON_PIXEL); //$NON-NLS-1$
+        guessButton = new UtilsButton(compositeGuessButton, Messages.getString("FileStep3.guess"), WIDTH_BUTTON_PIXEL, //$NON-NLS-1$
+                HEIGHT_BUTTON_PIXEL);
         guessButton.setToolTipText(Messages.getString("FileStep3.guessTip")); //$NON-NLS-1$
 
         // Composite MetadataTableEditorView
@@ -169,8 +178,9 @@ public class MDMTableForm extends AbstractMDMFileStepForm {
             concept.setLabel(newName);
             // Caz if the label of concept is empty, concept.getLabel() will get the concept name.
             concept.setName(newName);
-        } else
+        } else {
             concept.setLabel(newName);
+        }
     }
 
     /**
@@ -181,6 +191,7 @@ public class MDMTableForm extends AbstractMDMFileStepForm {
         // metadataNameText : Event modifyText
         metadataNameText.addModifyListener(new ModifyListener() {
 
+            @Override
             public void modifyText(final ModifyEvent e) {
                 MetadataToolHelper.validateSchema(metadataNameText.getText());
                 changeConceptName(metadataNameText.getText());
@@ -200,6 +211,7 @@ public class MDMTableForm extends AbstractMDMFileStepForm {
         // metadataCommentText : Event modifyText
         metadataCommentText.addModifyListener(new ModifyListener() {
 
+            @Override
             public void modifyText(final ModifyEvent e) {
                 metadataTable.setComment(metadataCommentText.getText());
             }
@@ -208,6 +220,7 @@ public class MDMTableForm extends AbstractMDMFileStepForm {
         // add listener to tableMetadata (listen the event of the toolbars)
         tableEditorView.getMetadataEditor().addAfterOperationListListener(new IListenableListListener() {
 
+            @Override
             public void handleEvent(ListenableListEvent event) {
                 checkFieldsValue();
             }
@@ -268,19 +281,39 @@ public class MDMTableForm extends AbstractMDMFileStepForm {
      * run a ShadowProcess to determined the Metadata.
      */
     protected void runShadowProcess() {
-        MDMConnection connection2 = getConnection();
-        refreshMetaDataTable(((Concept) connection2.getSchemas().get(0)).getConceptTargets());
+        Concept concept = ((MdmConceptWizardPage3) getPage().getWizard().getPages()[2]).getConcept();
+        refreshMetaDataTable(concept);
         checkFieldsValue();
         return;
     }
 
-    private void prepareColumnsFromXSD(List<MetadataColumn> columns, List<ConceptTarget> schemaTarget) {
+    private void prepareColumnsFromXSD(List<MetadataColumn> columns, Concept concept) {
         Composite composite = Form.startNewGridLayout(this, 2, false, SWT.CENTER, SWT.CENTER);
         composite.setVisible(false);
         TreePopulator treePopulator = new TreePopulator(new Tree(composite, SWT.None));
-        ATreeNode node = null;
+        XSDSchema xsdSchema = ((CreateConceptWizard) getPage().getWizard()).getXSDSchema();
+        if (xsdSchema != null) {
+            String entityName = ((MdmConceptWizardPage2) getPage().getWizard().getPages()[1]).getSelectedEntity();
+            try {
+                List<ATreeNode> allRootNodes = (new XSDPopulationUtil2()).getAllRootNodes(xsdSchema);
+                Optional<ATreeNode> treeNode = allRootNodes.stream().filter(n -> n.getDataType().equals(entityName)).findFirst();
+                ATreeNode selectedNode = treeNode.isPresent() ? treeNode.get() : allRootNodes.get(0);
+                treePopulator.populateTree(xsdSchema, selectedNode, null);
+            } catch (OdaException ex) {
+                LOG.error("Error occurred while parsing xsd schema.", ex);
+            }
+        }
+        MdmConceptType conceptType = concept.getConceptType();
+        if (conceptType == MdmConceptType.INPUT || conceptType == MdmConceptType.RECEIVE) {
+            genColumnsByConceptTarget(columns, concept, treePopulator);
+        } else if (conceptType == MdmConceptType.OUTPUT) {
+            genColumnsByLoops(columns, concept, treePopulator);
+        }
+    }
+
+    private void genColumnsByConceptTarget(List<MetadataColumn> columns, Concept concept, TreePopulator treePopulator) {
         MappingTypeRetriever retriever = MetadataTalendType.getMappingTypeRetriever("xsd_id"); //$NON-NLS-1$
-        for (ConceptTarget schema : schemaTarget) {
+        for (ConceptTarget schema : concept.getConceptTargets()) {
             String relativeXpath = schema.getRelativeLoopExpression();
             String fullPath = schema.getSchema().getLoopExpression();
             if (isContextMode()) {
@@ -310,10 +343,41 @@ public class MDMTableForm extends AbstractMDMFileStepForm {
                 if (curNode == null || retriever == null) {
                     metadataColumn.setTalendType(MetadataTalendType.getDefaultTalendType());
                 } else {
-
-                    metadataColumn.setTalendType(retriever.getDefaultSelectedTalendType("xs:" + curNode.getOriginalDataType())); //$NON-NLS-1$
-                }
+                    String originalDataType = curNode.getOriginalDataType();
+                    if (!originalDataType.startsWith(XS_PREFIX)) {
+                        originalDataType = XS_PREFIX + originalDataType;
+                    }
+                    metadataColumn.setTalendType(retriever.getDefaultSelectedTalendType( originalDataType));
                 columns.add(metadataColumn);
+                }
+            }
+        }
+    }
+
+    private void genColumnsByLoops(List<MetadataColumn> columns, Concept concept, TreePopulator treePopulator) {
+        MappingTypeRetriever retriever = MetadataTalendType.getMappingTypeRetriever("xsd_id"); //$NON-NLS-1$
+        for (EObject eobj : concept.eContents()) {
+            XMLFileNode node = (XMLFileNode) eobj;
+            if (!node.getRelatedColumn().equals("")) {
+                String fullPath = node.getXMLPath();
+                TreeItem treeItem = treePopulator.getTreeItem(fullPath);
+                if (treeItem != null) {
+                    ATreeNode curNode = (ATreeNode) treeItem.getData();
+                    MetadataColumn metadataColumn = ConnectionFactory.eINSTANCE.createMetadataColumn();
+                    metadataColumn
+                            .setLabel(tableEditorView.getMetadataEditor().getNextGeneratedColumnName(node.getRelatedColumn()));
+
+                    if (curNode == null || retriever == null) {
+                        metadataColumn.setTalendType(MetadataTalendType.getDefaultTalendType());
+                    } else {
+                        String originalDataType = curNode.getOriginalDataType();
+                        if (!originalDataType.startsWith(XS_PREFIX)) {
+                            originalDataType = XS_PREFIX + originalDataType;
+                        }
+                        metadataColumn.setTalendType(retriever.getDefaultSelectedTalendType(originalDataType));
+                    }
+                    columns.add(metadataColumn);
+                }
             }
         }
     }
@@ -323,7 +387,7 @@ public class MDMTableForm extends AbstractMDMFileStepForm {
      *
      * @param csvArray
      */
-    public void refreshMetaDataTable(List<ConceptTarget> schemaTarget) {
+    public void refreshMetaDataTable(Concept concept) {
         informationLabel.setText("   " + Messages.getString("FileStep3.guessIsDone")); //$NON-NLS-1$ //$NON-NLS-2$
 
         // clear all items
@@ -333,7 +397,7 @@ public class MDMTableForm extends AbstractMDMFileStepForm {
         if (isContextMode()) {
             ContextType contextType = ConnectionContextHelper.getContextTypeForContextMode(connectionItem.getConnection(), true);
         }
-        prepareColumnsFromXSD(columns, schemaTarget);
+        prepareColumnsFromXSD(columns, concept);
 
         tableEditorView.getMetadataEditor().addAll(columns);
         checkFieldsValue();
