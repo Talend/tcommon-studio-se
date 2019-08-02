@@ -347,8 +347,8 @@ public class MDMTableForm extends AbstractMDMFileStepForm {
                     if (!originalDataType.startsWith(XS_PREFIX)) {
                         originalDataType = XS_PREFIX + originalDataType;
                     }
-                    metadataColumn.setTalendType(retriever.getDefaultSelectedTalendType( originalDataType));
-                columns.add(metadataColumn);
+                    metadataColumn.setTalendType(retriever.getDefaultSelectedTalendType(originalDataType));
+                    columns.add(metadataColumn);
                 }
             }
         }
