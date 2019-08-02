@@ -35,6 +35,7 @@ import org.eclipse.core.resources.IProject;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IPath;
 import org.eclipse.core.runtime.Path;
+import org.talend.commons.exception.ExceptionHandler;
 import org.talend.commons.exception.PersistenceException;
 import org.talend.commons.utils.workbench.resources.ResourceUtils;
 import org.talend.core.model.properties.ImplicitContextSettings;
@@ -404,6 +405,38 @@ public class ProjectDataJsonProvider {
             }
         }
         return null;
+    }
+
+    public static boolean hasFilledProjectSettingFile(org.talend.core.model.general.Project project) {
+        FileInputStream InputStream = null;
+        boolean hasFilled = false;
+        try {
+            IProject physProject = ResourceUtils.getProject(project);
+            IPath location = physProject.getLocation();
+            File file = ProjectDataJsonProvider.getLoadingConfigurationFile(location, FileConstants.PROJECTSETTING_FILE_NAME);
+            if (file != null && file.exists()) {
+                InputStream = new FileInputStream(file);
+                ProjectSettings projectSetting = new ObjectMapper().readValue(new FileInputStream(file), ProjectSettings.class);
+                if (projectSetting != null) {
+                    ImplicitContextSettingJson implicitContextSettingJson = projectSetting.getImplicitContextSettingJson();
+                    if (implicitContextSettingJson != null) {
+                        ParametersTypeJson parametersTypeJson = implicitContextSettingJson.getParametersTypeJson();
+                        if (parametersTypeJson != null) {
+                            List<ElementParameterTypeJson> elementParameters = parametersTypeJson.getElementParameters();
+                            if (elementParameters.size() > 0) {
+                                hasFilled = true;
+                            }
+                        }
+
+                    }
+                }
+            }
+        } catch (Exception e1) {
+            ExceptionHandler.process(e1);
+        } finally {
+            closeInputStream(InputStream);
+        }
+        return hasFilled;
     }
 
     protected static ImplicitContextSettingJson getImplicitContextSettingJson(ImplicitContextSettings implicitContextSettings) {

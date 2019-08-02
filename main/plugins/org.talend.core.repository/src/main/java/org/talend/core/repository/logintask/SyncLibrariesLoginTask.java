@@ -16,6 +16,7 @@ import org.talend.commons.exception.PersistenceException;
 import org.talend.core.GlobalServiceRegister;
 import org.talend.core.ICoreService;
 import org.talend.core.repository.model.ProxyRepositoryFactory;
+import org.talend.core.repository.utils.ProjectDataJsonProvider;
 import org.talend.login.AbstractLoginTask;
 import org.talend.repository.ProjectManager;
 import org.talend.repository.RepositoryWorkUnit;
@@ -31,6 +32,9 @@ public class SyncLibrariesLoginTask extends AbstractLoginTask implements IRunnab
 
     @Override
     public void run(IProgressMonitor monitor) throws InvocationTargetException, InterruptedException {
+        if (ProjectDataJsonProvider.hasFilledProjectSettingFile(ProjectManager.getInstance().getCurrentProject())) {
+            return;
+        }
         ProxyRepositoryFactory.getInstance().executeRepositoryWorkUnit(new RepositoryWorkUnit<Void>("SyncLibrariesLoginTask") {
 
             @Override
@@ -53,7 +57,6 @@ public class SyncLibrariesLoginTask extends AbstractLoginTask implements IRunnab
                 }
             }
         });
-        System.out.println();
     }
 
 }
