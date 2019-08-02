@@ -84,6 +84,11 @@ public class MdmConceptWizardPage2 extends AbstractRetrieveConceptPage {
     }
 
     @Override
+    public boolean isPageComplete() {
+        return super.isPageComplete() || !isRepositoryObjectEditable;
+    }
+
+    @Override
     public void setVisible(boolean visible) {
         super.setVisible(visible);
         if (visible) {
