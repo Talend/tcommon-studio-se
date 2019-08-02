@@ -101,6 +101,11 @@ public class MdmConceptWizardPage3 extends AbstractRetrieveConceptPage {
     }
 
     @Override
+    public boolean isPageComplete() {
+        return super.isPageComplete() || !isRepositoryObjectEditable;
+    }
+
+    @Override
     public IWizardPage getNextPage() {
         if (!creation) {
             createMetadataTable();
