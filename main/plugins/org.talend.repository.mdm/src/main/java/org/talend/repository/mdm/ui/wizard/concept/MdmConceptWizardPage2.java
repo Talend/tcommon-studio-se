@@ -81,8 +81,8 @@ public class MdmConceptWizardPage2 extends AbstractRetrieveConceptPage {
     }
 
     @Override
-    public IWizardPage getPreviousPage() {
-        return null;
+    public boolean isPageComplete() {
+        return super.isPageComplete() || !isRepositoryObjectEditable;
     }
 
     @Override

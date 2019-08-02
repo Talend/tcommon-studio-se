@@ -72,6 +72,12 @@ public abstract class AbstractTreeNodeButton implements ISelectionChangedListene
         }
     }
 
+    public void removeTreeListeners() {
+        if (treeViewer != null && !treeViewer.getTree().isDisposed()) {
+            treeViewer.removeSelectionChangedListener(this);
+        }
+    }
+
     public Button getButton() {
         return this.button;
     }

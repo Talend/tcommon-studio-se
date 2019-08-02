@@ -154,6 +154,12 @@ public class MDMXSDFileForm extends AbstractMDMFileStepForm {
         setupForm();
     }
 
+    @Override
+    protected void adaptFormToReadOnly() {
+        loopTableEditorView.setReadOnly(isReadOnly());
+        fieldsTableEditorView.setReadOnly(isReadOnly());
+    }
+
     /**
      * 
      * Initialize value, forceFocus first field.

@@ -39,6 +39,8 @@ import org.eclipse.swt.events.ModifyEvent;
 import org.eclipse.swt.events.ModifyListener;
 import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
+import org.eclipse.swt.events.VerifyEvent;
+import org.eclipse.swt.events.VerifyListener;
 import org.eclipse.swt.graphics.Point;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
@@ -156,6 +158,19 @@ public class MdmReceiveForm extends AbstractMDMFileStepForm {
         this.concept = concept;
         this.creation = creation;
         setupForm();
+    }
+
+    @Override
+    protected void adaptFormToReadOnly() {
+        prefixCombo.addVerifyListener(new VerifyListener() {
+
+            @Override
+            public void verifyText(VerifyEvent e) {
+                e.doit = false;
+            }
+        });
+        loopTableEditorView.setReadOnly(isReadOnly());
+        fieldsTableEditorView.setReadOnly(isReadOnly());
     }
 
     /**
