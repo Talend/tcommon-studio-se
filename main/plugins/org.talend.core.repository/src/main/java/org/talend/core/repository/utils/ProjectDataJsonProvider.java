@@ -35,7 +35,6 @@ import org.eclipse.core.resources.IProject;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IPath;
 import org.eclipse.core.runtime.Path;
-import org.talend.commons.exception.ExceptionHandler;
 import org.talend.commons.exception.PersistenceException;
 import org.talend.commons.utils.workbench.resources.ResourceUtils;
 import org.talend.core.model.properties.ImplicitContextSettings;
@@ -407,7 +406,7 @@ public class ProjectDataJsonProvider {
         return null;
     }
 
-    public static boolean hasFilledProjectSettingFile(org.talend.core.model.general.Project project) {
+    public static boolean hasFilledProjectSettingFile(org.talend.core.model.general.Project project) throws PersistenceException {
         FileInputStream InputStream = null;
         boolean hasFilled = false;
         try {
@@ -432,7 +431,7 @@ public class ProjectDataJsonProvider {
                 }
             }
         } catch (Exception e1) {
-            ExceptionHandler.process(e1);
+            throw new PersistenceException(e1);
         } finally {
             closeInputStream(InputStream);
         }
