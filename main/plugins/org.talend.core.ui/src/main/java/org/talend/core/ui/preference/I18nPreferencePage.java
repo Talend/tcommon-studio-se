@@ -140,7 +140,7 @@ public abstract class I18nPreferencePage extends FieldEditorPreferencePage imple
             serbian = "Serbian"; //$NON-NLS-1$
         }
 
-        String slovak = "Sloven\u0161\u010dina";//$NON-NLS-1$
+        String slovak = "Sloven\u010dina";//$NON-NLS-1$
         try {
             utf8Bytes = slovak.getBytes("UTF8");//$NON-NLS-1$
             slovak = new String(utf8Bytes, "UTF8");//$NON-NLS-1$
