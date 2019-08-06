@@ -140,12 +140,12 @@ public abstract class I18nPreferencePage extends FieldEditorPreferencePage imple
             serbian = "Serbian"; //$NON-NLS-1$
         }
 
-        String solvak = "Sloven\u0161\u010dina";//$NON-NLS-1$
+        String slovak = "Sloven\u0161\u010dina";//$NON-NLS-1$
         try {
-            utf8Bytes = solvak.getBytes("UTF8");//$NON-NLS-1$
-            solvak = new String(utf8Bytes, "UTF8");//$NON-NLS-1$
+            utf8Bytes = slovak.getBytes("UTF8");//$NON-NLS-1$
+            slovak = new String(utf8Bytes, "UTF8");//$NON-NLS-1$
         } catch (UnsupportedEncodingException e2) {
-            solvak = "Solvak";//$NON-NLS-1$
+            slovak = "Slovak";//$NON-NLS-1$
         }
 
         String[][] entryNamesAndValues = { { Locale.ENGLISH.getDisplayLanguage(Locale.ENGLISH), Locale.ENGLISH.getLanguage() },
@@ -159,7 +159,7 @@ public abstract class I18nPreferencePage extends FieldEditorPreferencePage imple
                 { Locale.KOREA.getDisplayLanguage(Locale.KOREA) + " (Korean)", "kr" }, { "Turkish (Turkish)", "tr" }, //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$
                 { greek + " (Greek)", "el" }, { "Hrvatski (Croatian)", "hr" }, { arabic + " (Arabic)", "ar" }, //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$//$NON-NLS-5$ //$NON-NLS-6$
                 { serbian + " (Serbian)", "sr" }, { "Polski (Polish)", "pl" }, { "Romanian (Romanian)", "ro" }, //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$//$NON-NLS-5$ //$NON-NLS-6$
-                { "Netherlands (Netherlands)", "nl" }, { solvak + " (Solvak)", "sk" }, //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$
+                { "Netherlands (Netherlands)", "nl" }, { slovak + " (Slovak)", "sk" }, //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$
                 { "Current OS Language", Locale.getDefault().getLanguage() } };//$NON-NLS-1$
         languageSelectionEditor = new OneLineComboFieldEditor(ITalendCorePrefConstants.LANGUAGE_SELECTOR,
                 Messages.getString("I18nPreferencePage.needRestart"), entryNamesAndValues, getFieldEditorParent()); //$NON-NLS-1$
