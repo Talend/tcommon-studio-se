@@ -67,7 +67,7 @@ public class PluginOptionalMissingJarsExtraUpdatesFactory extends AbstractExtraU
             // jface because it adds graphical
             // dependencies.
             IRunnableWithProgress notInstalledModulesRunnable = RemoteModulesHelper.getInstance().getNotInstalledModulesRunnable(
-                    unistalledModulesNeeded, modulesRequiredToBeInstalled, true, true, true);
+                    unistalledModulesNeeded, modulesRequiredToBeInstalled, false, true, true);
             if (notInstalledModulesRunnable != null) {// some data need to be fetched
                 try {
                     notInstalledModulesRunnable.run(mainSubMonitor.newChild(1));
