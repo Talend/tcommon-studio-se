@@ -2026,7 +2026,15 @@ public class ProcessorUtilities {
     public static String[] getCommandLine(String targetPlatform, boolean skipClasspathJar, boolean externalUse,
             String processId, String contextName, int statisticPort, int tracePort, String... codeOptions)
             throws ProcessorException {
+        return getCommandLine(targetPlatform, skipClasspathJar, externalUse,
+                processId, contextName, statisticPort, tracePort, false, codeOptions);
+    }
 
+    //ignoreCustomJVMSetting mean will generate the java command without the job VM setting in studio "Run job" setting and studio preferences "Run/Debug" setting
+    //only use for TDI-42443 in tRunJob
+    public static String[] getCommandLine(String targetPlatform, boolean skipClasspathJar, boolean externalUse,
+            String processId, String contextName, int statisticPort, int tracePort, boolean ignoreCustomJVMSetting, String... codeOptions)
+            throws ProcessorException {
         IProcessor processor = findProcessorFromJobList(processId, contextName, null);
         if (processor != null && targetPlatform.equals(processor.getTargetPlatform())) {
             if (processor.isProcessUnloaded()) {
@@ -2035,7 +2043,7 @@ public class ProcessorUtilities {
             boolean oldSkipClasspathJar = processor.isSkipClasspathJar();
             processor.setSkipClasspathJar(skipClasspathJar);
             try {
-                return processor.getCommandLine(true, externalUse, statisticPort, tracePort, codeOptions);
+                return processor.getCommandLine(true, externalUse, statisticPort, tracePort, ignoreCustomJVMSetting, codeOptions);
             } finally {
                 processor.setSkipClasspathJar(oldSkipClasspathJar);
             }
@@ -2053,7 +2061,7 @@ public class ProcessorUtilities {
         }
         // because all jobs are based one new way, set the flag "oldBuildJob" to false.
         return getCommandLine(false, skipClasspathJar, targetPlatform, externalUse, process,
-                selectedProcessItem.getProperty(), contextName, true, statisticPort, tracePort, codeOptions);
+                selectedProcessItem.getProperty(), contextName, true, statisticPort, tracePort, ignoreCustomJVMSetting, codeOptions);
     }
 
     /**
@@ -2127,6 +2135,14 @@ public class ProcessorUtilities {
     public static String[] getCommandLine(boolean oldBuildJob, boolean skipClasspathJar, String targetPlatform,
             boolean externalUse, IProcess currentProcess, Property property, String contextName, boolean needContext,
             int statisticPort, int tracePort, String... codeOptions) throws ProcessorException {
+        return getCommandLine(oldBuildJob, skipClasspathJar, targetPlatform,
+                externalUse, currentProcess, property, contextName, needContext,
+                statisticPort, tracePort, false, codeOptions);
+    }
+    
+    private static String[] getCommandLine(boolean oldBuildJob, boolean skipClasspathJar, String targetPlatform,
+            boolean externalUse, IProcess currentProcess, Property property, String contextName, boolean needContext,
+            int statisticPort, int tracePort, boolean ignoreCustomJVMSetting, String... codeOptions) throws ProcessorException {
         if (currentProcess == null) {
             return new String[] {};
         }
@@ -2139,7 +2155,7 @@ public class ProcessorUtilities {
         processor.setSkipClasspathJar(skipClasspathJar);
         processor.setTargetPlatform(targetPlatform);
         processor.setOldBuildJob(oldBuildJob);
-        return processor.getCommandLine(needContext, externalUse, statisticPort, tracePort, codeOptions);
+        return processor.getCommandLine(needContext, externalUse, statisticPort, tracePort, ignoreCustomJVMSetting, codeOptions);
     }
 
     public static String[] getCommandLine(boolean oldBuildJob, String targetPlatform, boolean externalUse,

@@ -254,6 +254,9 @@ public interface IProcessor {
 
     public String[] getCommandLine(boolean needContext, boolean externalUse, int statOption, int traceOption,
             String... codeOptions);
+    
+    public String[] getCommandLine(boolean needContext, boolean externalUse, int statOption, int traceOption, boolean ignoreCustomJVMSetting,
+            String... codeOptions);
 
     public void setContext(IContext context);
 
