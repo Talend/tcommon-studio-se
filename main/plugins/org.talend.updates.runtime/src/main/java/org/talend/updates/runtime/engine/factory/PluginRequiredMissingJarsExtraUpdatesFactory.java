@@ -59,10 +59,8 @@ public class PluginRequiredMissingJarsExtraUpdatesFactory extends AbstractExtraU
          // fetch missing jar information from remote web site.
         ArrayList<ModuleToInstall> modulesRequiredToBeInstalled = new ArrayList<ModuleToInstall>();
         IRunnableWithProgress notInstalledModulesRunnable = RemoteModulesHelper.getInstance().getNotInstalledModulesRunnable(
-                allUninstalledModules, modulesRequiredToBeInstalled, true, !isCheckUpdateOnLine, false);// IRunnableWithProgress should not be part
-                                                                           // of
-        // jface because it adds graphical
-        // dependencies.
+                allUninstalledModules, modulesRequiredToBeInstalled, false, !isCheckUpdateOnLine, false);
+        // IRunnableWithProgress should not of jface because it adds graphical dependencies.
         if (notInstalledModulesRunnable != null) {// some data need to be fetched
             try {
                 notInstalledModulesRunnable.run(mainSubMonitor.newChild(1));
