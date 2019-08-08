@@ -161,6 +161,11 @@ public class MDMOutputDragAndDropHandler {
 
         public void dragOver(DropTargetEvent event) {
             Item targetItem = (Item) event.item;
+            if (linker.isReadOnly()) {
+                event.detail = DND.DROP_NONE;
+                return;
+            }
+
             if (targetItem == null) {
                 event.detail = DND.DROP_NONE;
                 return;
