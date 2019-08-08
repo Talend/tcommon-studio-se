@@ -241,24 +241,30 @@ public class CreateConceptWizard extends RepositoryWizard implements INewWizard 
      */
     @Override
     public boolean performFinish() {
-        IPath sasPath = new Path(System.getProperty("user.dir")).append("temp");//$NON-NLS-1$ //$NON-NLS-2$
-        File sasDir = sasPath.toFile();
-        if (sasDir.exists()) {
-            delete(sasDir);
+        boolean success = readonly;
+
+        if (!readonly) {
+            if (creation && schemaPage.isPageComplete()) {
+                // RepositoryUpdateManager.updateMultiSchema(connectionItem, oldMetadataTable, oldTableMap);
+                schemaPage.createMetadataTable();
+                updateRelation();
+                success = true;
+            } else if (!creation && tablePage.isPageComplete()) {
+                // applyCopy();
+                EObject eObject = metadataTable.eContainer();
+                RepositoryUpdateManager.updateMultiSchema(connectionItem, oldMetadataTable, oldTableMap);
+                updateRelation();
+                success = true;
+            }
+
+            IPath sasPath = new Path(System.getProperty("user.dir")).append("temp");//$NON-NLS-1$ //$NON-NLS-2$
+            File sasDir = sasPath.toFile();
+            if (sasDir.exists()) {
+                delete(sasDir);
+            }
         }
-        if (creation && schemaPage.isPageComplete()) {
-            // RepositoryUpdateManager.updateMultiSchema(connectionItem, oldMetadataTable, oldTableMap);
-            schemaPage.createMetadataTable();
-            updateRelation();
-            return true;
-        } else if (!creation && tablePage.isPageComplete()) {
-            // applyCopy();
-            EObject eObject = metadataTable.eContainer();
-            RepositoryUpdateManager.updateMultiSchema(connectionItem, oldMetadataTable, oldTableMap);
-            updateRelation();
-            return true;
-        }
-        return false;
+
+        return success;
     }
 
     // protected void applyCopy() {

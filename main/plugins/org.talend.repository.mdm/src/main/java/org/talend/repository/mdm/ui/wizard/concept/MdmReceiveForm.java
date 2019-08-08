@@ -168,7 +168,9 @@ public class MdmReceiveForm extends AbstractMDMFileStepForm {
             public void verifyText(VerifyEvent e) {
                 e.doit = false;
             }
+
         });
+
         loopTableEditorView.setReadOnly(isReadOnly());
         fieldsTableEditorView.setReadOnly(isReadOnly());
     }
