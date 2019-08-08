@@ -165,6 +165,13 @@ public final class HandlerUtil {
                 public InputStream createInputStream(URI uri, Map<?, ?> options) throws IOException {
                     InputStream inputStream = null;
                     EPackage ePackage = resourceSet.getPackageRegistry().getEPackage(uri.toString());
+                    if (ePackage == null && uri.path().contains("CamelProperties")) { //$NON-NLS-1$
+                        // org.eclipse.emf.ecore.xmi.impl.XMLHandler.getPackageForURI(String)
+                        // after createInputStream still create resource and load while ePackage is null
+                        // throw IOexception skip process, XMLHandler.getPackageForURI will judge EPackage
+                        // then to throw PackageNotFoundException
+                        throw new IOException();
+                    }
                     if (ePackage != null || !"http".equals(uri.scheme())) { //$NON-NLS-1$
                         inputStream = super.createInputStream(uri, options);
                     } else {
