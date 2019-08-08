@@ -183,6 +183,7 @@ public class MDMOutputSchemaForm extends AbstractMDMFileStepForm {
         removeNodeBtn.removeTreeListeners();
         moveUpBtn.removeTreeListeners();
         moveDown.removeTreeListeners();
+        linker.setReadOnly(isReadOnly());
     }
 
     @Override
