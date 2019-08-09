@@ -266,6 +266,7 @@ public class XmlToXPathLinker extends TreeToTablesLinker<Object, Object> {
                         originalValue = TalendQuoteUtils.removeQuotes(originalValue);
                     }
                     if (originalValue != null) {
+                        loadItemDataForLazyLoad(loopTableEditorView);
                         createLoopLinks(originalValue, tableItem, monitorWrap);
                     }
 
@@ -304,7 +305,7 @@ public class XmlToXPathLinker extends TreeToTablesLinker<Object, Object> {
     private void createFieldsLinkWithProgressMonitor(IProgressMonitor monitorWrap, int totalWork,
             List<SchemaTarget> schemaTargetList, int startTableItem, int tableItemLength) {
         monitorWrap.beginTask(Messages.getString("XmlToXPathLinker.beginTask.fieldLinksCreation"), totalWork); //$NON-NLS-1$
-
+        loadItemDataForLazyLoad(fieldsTableEditorView);
         TableItem[] fieldsTableItems = fieldsTableEditorView.getTable().getItems();
         for (int i = startTableItem, indexShemaTarget = 0; i < startTableItem + tableItemLength; i++, indexShemaTarget++) {
 
@@ -326,6 +327,7 @@ public class XmlToXPathLinker extends TreeToTablesLinker<Object, Object> {
         }
         getLinksManager().sortLinks(getDrawingLinksComparator());
         getBackgroundRefresher().refreshBackground();
+        fieldsTableEditorView.getTableViewerCreator().getTableViewer().refresh();
     }
 
     /**

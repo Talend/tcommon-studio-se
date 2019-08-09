@@ -33,6 +33,7 @@ import org.eclipse.swt.widgets.TreeItem;
 import org.talend.commons.ui.runtime.i18n.Messages;
 import org.talend.commons.ui.runtime.utils.TableUtils;
 import org.talend.commons.ui.runtime.ws.WindowSystem;
+import org.talend.commons.ui.swt.advanced.dataeditor.AbstractDataTableEditorView;
 import org.talend.commons.ui.swt.drawing.background.IBackgroundRefresher;
 import org.talend.commons.ui.swt.drawing.background.IBgDrawableComposite;
 import org.talend.commons.ui.swt.drawing.link.BezierHorizontalLink;
@@ -461,6 +462,21 @@ public class TreeToTablesLinker<D1, D2> extends BgDrawableComposite implements I
                 linkableTable.dispose();
             }
             linkableTableList.clear();
+        }
+    }
+
+    protected <B> void loadItemDataForLazyLoad(AbstractDataTableEditorView<B> tableEditorView) {
+        if (!tableEditorView.getTableViewerCreator().isLazyLoad()) {
+            return;
+        }
+        List<B> beansList = tableEditorView.getExtendedTableModel().getBeansList();
+        Table table = tableEditorView.getTable();
+        for (TableItem tableItem : table.getItems()) {
+            if (tableItem.getData() == null) {
+                int index = table.indexOf(tableItem);
+                B schemaTarget = beansList.get(index);
+                tableItem.setData(schemaTarget);
+            }
         }
     }
 
