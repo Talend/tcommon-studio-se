@@ -72,7 +72,7 @@ public class MDMSchema2TreeLinker extends TableToTreeLinker<Object, Object> {
 
     private Comparator<LinkDescriptor<Item, Object, Tree, Object>> drawingLinksComparator;
 
-    private boolean setReadOnly = false;
+    private boolean readOnly = false;
 
     public MDMSchema2TreeLinker(Composite commonParent) {
         super(commonParent);
@@ -402,10 +402,10 @@ public class MDMSchema2TreeLinker extends TableToTreeLinker<Object, Object> {
     }
 
     public void setReadOnly(boolean readOnly) {
-        this.setReadOnly = readOnly;
+        this.readOnly = readOnly;
     }
 
     public boolean isReadOnly() {
-        return setReadOnly;
+        return readOnly;
     }
 }
