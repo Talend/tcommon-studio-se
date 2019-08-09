@@ -26,6 +26,7 @@ import org.talend.core.model.properties.MDMConnectionItem;
 import org.talend.core.model.repository.ERepositoryObjectType;
 import org.talend.core.repository.model.ProxyRepositoryFactory;
 import org.talend.cwm.helper.ConnectionHelper;
+import org.talend.utils.security.CryptoHelperWrapper;
 
 /**
  * created by ggu on Sep 1, 2014 Detailled comment
@@ -51,6 +52,7 @@ public class UnifyPasswordEncryption4MDMConnectionMigrationTask extends Abstract
     public ExecutionResult execute(Item item) {
         if (item instanceof MDMConnectionItem) {
             Connection connection = ((MDMConnectionItem) item).getConnection();
+            connection.setEncryptAndDecryptFuncPair(CryptoHelperWrapper.encryptFunc(), CryptoHelperWrapper.decryptFunc());
             if (connection instanceof MDMConnection) {
                 MDMConnection mdmConn = (MDMConnection) connection;
                 try {

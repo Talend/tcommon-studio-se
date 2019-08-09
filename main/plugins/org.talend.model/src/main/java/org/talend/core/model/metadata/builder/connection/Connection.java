@@ -202,5 +202,15 @@ public interface Connection extends AbstractMetadataObject, DataProvider {
      * @generated NOT
      */
     String getValue(String value, boolean encrypt);
+    
+    
+    /**
+     * Set encryption and decryption functions which will be used inside getValue By default, getValue depends on
+     * StudioEncryption.encrypt/decrypt
+     * 
+     * @generated NOT
+     */
+    void setEncryptAndDecryptFuncPair(java.util.function.Function<String, String> encrypt,
+            java.util.function.Function<String, String> decrypt);
 
 } // Connection

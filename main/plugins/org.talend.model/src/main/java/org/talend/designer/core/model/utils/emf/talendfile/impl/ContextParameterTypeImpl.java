@@ -10,7 +10,7 @@ import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.impl.ENotificationImpl;
 import org.eclipse.emf.ecore.impl.EObjectImpl;
 import org.talend.commons.utils.PasswordEncryptUtil;
-import org.talend.daikon.security.CryptoHelper;
+import org.talend.utils.security.StudioEncryption;
 import org.talend.designer.core.model.utils.emf.talendfile.ContextParameterType;
 import org.talend.designer.core.model.utils.emf.talendfile.TalendFilePackage;
 
@@ -345,7 +345,7 @@ public class ContextParameterTypeImpl extends EObjectImpl implements ContextPara
 
     public String getRawValue() {
         if (value != null && value.length() > 0 && PasswordEncryptUtil.isPasswordType(getType())) {
-            String decryptValue = CryptoHelper.getDefault().decrypt(value);
+            String decryptValue = StudioEncryption.decrypt(value);
             if (decryptValue != null) {
                 return decryptValue;
             }
@@ -366,7 +366,7 @@ public class ContextParameterTypeImpl extends EObjectImpl implements ContextPara
 
     public void setRawValue(String newValue) {
         if (newValue != null && newValue.length() > 0 && PasswordEncryptUtil.isPasswordType(getType())) {
-            String encryptValue = CryptoHelper.getDefault().encrypt(newValue);
+            String encryptValue = StudioEncryption.encrypt(newValue);
             if (encryptValue != null) {
                 setValue(encryptValue);
                 return;

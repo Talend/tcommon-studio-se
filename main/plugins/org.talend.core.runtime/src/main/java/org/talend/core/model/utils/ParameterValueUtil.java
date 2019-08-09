@@ -41,7 +41,7 @@ import org.talend.core.model.process.EParameterFieldType;
 import org.talend.core.model.process.IContextParameter;
 import org.talend.core.model.process.IElementParameter;
 import org.talend.core.utils.TalendQuoteUtils;
-import org.talend.daikon.security.CryptoHelper;
+import org.talend.utils.security.StudioEncryption;
 import org.talend.designer.core.model.utils.emf.talendfile.ContextParameterType;
 import org.talend.designer.core.model.utils.emf.talendfile.ElementParameterType;
 import org.talend.designer.core.model.utils.emf.talendfile.ElementValueType;
@@ -842,7 +842,7 @@ public final class ParameterValueUtil {
         if (contextParam != null) {
             String docValue = contextParam.getValue();
             if (docValue != null) {
-                String encryptValue = CryptoHelper.getDefault().encrypt(docValue);
+                String encryptValue = StudioEncryption.encrypt(docValue);
                 if (encryptValue != null) {
                     return encryptValue;
                 }
@@ -878,7 +878,7 @@ public final class ParameterValueUtil {
         if (param != null) {
             Object docValue = param.getValue();
             if (docValue != null && docValue instanceof String) {
-                String encryptValue = CryptoHelper.getDefault().encrypt(docValue.toString());
+                String encryptValue = StudioEncryption.encrypt(docValue.toString());
                 if (encryptValue != null) {
                     return encryptValue;
                 }

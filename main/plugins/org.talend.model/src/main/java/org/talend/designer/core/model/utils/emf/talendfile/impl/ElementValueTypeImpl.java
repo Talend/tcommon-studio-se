@@ -9,7 +9,7 @@ import org.eclipse.emf.common.notify.Notification;
 import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.impl.ENotificationImpl;
 import org.eclipse.emf.ecore.impl.EObjectImpl;
-import org.talend.daikon.security.CryptoHelper;
+import org.talend.utils.security.StudioEncryption;
 import org.talend.designer.core.model.utils.emf.talendfile.ElementValueType;
 import org.talend.designer.core.model.utils.emf.talendfile.TalendFilePackage;
 
@@ -155,7 +155,7 @@ public class ElementValueTypeImpl extends EObjectImpl implements ElementValueTyp
 
     public String getRawValue() {
         if (value != null && value.length() > 0) {
-            String decrypt = CryptoHelper.getDefault().decrypt(value);
+            String decrypt = StudioEncryption.decrypt(value);
             if (decrypt != null) {
                 return decrypt;
             }
@@ -176,7 +176,7 @@ public class ElementValueTypeImpl extends EObjectImpl implements ElementValueTyp
 
     public void setValue(String value, boolean encrypt) {
         if (encrypt && value != null && value.length() > 0) {
-            String encryptValue = CryptoHelper.getDefault().encrypt(value);
+            String encryptValue = StudioEncryption.encrypt(value);
             if (encryptValue != null) {
                 setValue(encryptValue);
                 return;

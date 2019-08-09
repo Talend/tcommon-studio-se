@@ -43,7 +43,8 @@ import org.talend.cwm.relational.TdColumn;
 import org.talend.cwm.softwaredeployment.TdSoftwareSystem;
 import org.talend.cwm.xml.TdXmlElementType;
 import org.talend.cwm.xml.TdXmlSchema;
-import org.talend.daikon.security.CryptoHelper;
+import org.talend.utils.security.StudioEncryption;
+import org.talend.utils.security.CryptoHelperWrapper;
 
 import orgomg.cwm.foundation.softwaredeployment.Component;
 import orgomg.cwm.foundation.softwaredeployment.DataManager;
@@ -1111,8 +1112,8 @@ public class ConnectionHelper {
                 boolean cleanFromNewWay = false;
                 String originalValue = tempValue;
                 try {
-                    tempValue = getDecryptPassword(originalValue);
-                    String encryptFromTempValue = getEncryptPassword(tempValue);
+                    tempValue = CryptoHelperWrapper.decrypt(originalValue);
+                    String encryptFromTempValue = CryptoHelperWrapper.encrypt(tempValue);
                     if (!StringUtils.equals(originalValue, encryptFromTempValue)) {
                         cleanFromNewWay = true;
                     }
@@ -1164,7 +1165,7 @@ public class ConnectionHelper {
      * @return
      */
     public static String getDecryptPassword(String password) {
-        return CryptoHelper.getDefault().decrypt(password);
+        return StudioEncryption.decrypt(password);
     }
 
     /**
@@ -1174,7 +1175,7 @@ public class ConnectionHelper {
      * @return
      */
     public static String getEncryptPassword(String password) {
-        return CryptoHelper.getDefault().encrypt(password);
+        return StudioEncryption.encrypt(password);
     }
 
     /**

@@ -14,7 +14,7 @@ package org.talend.repository.ui.login.connections;
 
 import java.util.Properties;
 
-import org.talend.daikon.security.CryptoHelper;
+import org.talend.utils.security.StudioEncryption;
 
 
 /**
@@ -22,15 +22,9 @@ import org.talend.daikon.security.CryptoHelper;
  */
 public class EncryptedProperties extends Properties {
 
-    private CryptoHelper crypto;
-
-    public EncryptedProperties() {
-        crypto = new CryptoHelper("Il faudrait trouver une passphrase plus originale que celle-ci!");
-    }
-
     public String getProperty(String key) {
         try {
-            return crypto.decrypt(super.getProperty(key));
+            return StudioEncryption.decrypt(super.getProperty(key));
         } catch (Exception e) {
             throw new RuntimeException("Couldn't decrypt property");
         }
@@ -38,7 +32,7 @@ public class EncryptedProperties extends Properties {
 
     public synchronized Object setProperty(String key, String value) {
         try {
-            return super.setProperty(key, crypto.encrypt(value));
+            return super.setProperty(key, StudioEncryption.encrypt(value));
         } catch (Exception e) {
             throw new RuntimeException("Couldn't encrypt property");
         }

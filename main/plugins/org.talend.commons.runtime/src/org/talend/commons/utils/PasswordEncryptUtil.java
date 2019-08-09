@@ -21,7 +21,7 @@ import javax.crypto.SecretKeyFactory;
 import javax.crypto.spec.DESKeySpec;
 
 import org.apache.commons.codec.binary.Base64;
-import org.talend.utils.security.AESEncryption;
+import org.talend.utils.security.StudioEncryption;
 
 /**
  * DOC chuang class global comment. Detailled comment
@@ -99,7 +99,7 @@ public class PasswordEncryptUtil {
         if (input == null) {
             return input;
         }
-        return PREFIX_PASSWORD + AESEncryption.encryptPassword(input) + POSTFIX_PASSWORD;
+        return PREFIX_PASSWORD + StudioEncryption.encryptPassword(input) + POSTFIX_PASSWORD;
     }
 
     /**

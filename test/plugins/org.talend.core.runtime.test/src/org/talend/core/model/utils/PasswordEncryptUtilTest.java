@@ -19,7 +19,7 @@ import static org.junit.Assert.assertTrue;
 
 import org.junit.Test;
 import org.talend.commons.utils.PasswordEncryptUtil;
-import org.talend.utils.security.AESEncryption;
+import org.talend.utils.security.StudioEncryption;
 
 /**
  * DOC ggu class global comment. Detailled comment
@@ -109,7 +109,7 @@ public class PasswordEncryptUtilTest {
         }
         if (input.startsWith(PasswordEncryptUtil.PREFIX_PASSWORD) && input.endsWith(PasswordEncryptUtil.POSTFIX_PASSWORD)) {
             try {
-                return AESEncryption.decryptPassword(input.substring(PasswordEncryptUtil.PREFIX_PASSWORD.length(),
+                return StudioEncryption.decryptPassword(input.substring(PasswordEncryptUtil.PREFIX_PASSWORD.length(),
                         input.length() - PasswordEncryptUtil.POSTFIX_PASSWORD.length()));
             } catch (Exception e) {
                 // do nothing
