@@ -19,7 +19,6 @@ import java.util.Map;
 
 import org.eclipse.core.runtime.IPath;
 import org.eclipse.core.runtime.Path;
-import org.eclipse.emf.ecore.EObject;
 import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.jface.wizard.IWizardPage;
 import org.eclipse.jface.wizard.WizardPage;
@@ -235,13 +234,10 @@ public class CreateConceptWizard extends RepositoryWizard implements INewWizard 
 
         if (!readonly) {
             if (creation && schemaPage.isPageComplete()) {
-                // RepositoryUpdateManager.updateMultiSchema(connectionItem, oldMetadataTable, oldTableMap);
                 schemaPage.createMetadataTable();
                 updateRelation();
                 success = true;
             } else if (!creation && tablePage.isPageComplete()) {
-                // applyCopy();
-                EObject eObject = metadataTable.eContainer();
                 RepositoryUpdateManager.updateMultiSchema(connectionItem, oldMetadataTable, oldTableMap);
                 updateRelation();
                 success = true;
@@ -256,11 +252,6 @@ public class CreateConceptWizard extends RepositoryWizard implements INewWizard 
 
         return success;
     }
-
-    // protected void applyCopy() {
-    // metadataTable = metadataTableCopy;
-    // connectionItem.setConnection(connectionCopy);
-    // }
 
     private void updateRelation() {
         saveMetaData();
