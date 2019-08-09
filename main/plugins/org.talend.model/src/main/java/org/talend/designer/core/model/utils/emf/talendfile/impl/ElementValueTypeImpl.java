@@ -9,9 +9,9 @@ import org.eclipse.emf.common.notify.Notification;
 import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.impl.ENotificationImpl;
 import org.eclipse.emf.ecore.impl.EObjectImpl;
-import org.talend.daikon.security.CryptoHelper;
 import org.talend.designer.core.model.utils.emf.talendfile.ElementValueType;
 import org.talend.designer.core.model.utils.emf.talendfile.TalendFilePackage;
+import org.talend.utils.security.StudioEncryption;
 
 /**
  * <!-- begin-user-doc --> An implementation of the model object '<em><b>Element Value Type</b></em>'. <!-- end-user-doc
@@ -110,6 +110,8 @@ public class ElementValueTypeImpl extends EObjectImpl implements ElementValueTyp
      */
     protected boolean hexValue = HEX_VALUE_EDEFAULT;
 
+    private StudioEncryption se = StudioEncryption.getStudioEncryption(null);
+
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
      * @generated
@@ -155,7 +157,7 @@ public class ElementValueTypeImpl extends EObjectImpl implements ElementValueTyp
 
     public String getRawValue() {
         if (value != null && value.length() > 0) {
-            String decrypt = CryptoHelper.getDefault().decrypt(value);
+            String decrypt = se.decrypt(value);
             if (decrypt != null) {
                 return decrypt;
             }
@@ -176,7 +178,7 @@ public class ElementValueTypeImpl extends EObjectImpl implements ElementValueTyp
 
     public void setValue(String value, boolean encrypt) {
         if (encrypt && value != null && value.length() > 0) {
-            String encryptValue = CryptoHelper.getDefault().encrypt(value);
+            String encryptValue = se.encrypt(value);
             if (encryptValue != null) {
                 setValue(encryptValue);
                 return;
