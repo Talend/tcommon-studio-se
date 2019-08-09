@@ -176,7 +176,7 @@ public class P2Installer {
             // show the installation unit
             log.debug("ius to be installed:" + toInstall);
             if (!toInstall.isEmpty()) {
-                Version toInstallLatestVersion = toInstall.iterator().next().getVersion();
+                Version toInstallLatestVersion = null;
                 for (IInstallableUnit install : toInstall) {
                     Version installedVersion = install.getVersion();
                     if (installedVersion != null) {
