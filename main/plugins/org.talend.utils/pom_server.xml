@@ -17,9 +17,9 @@
     </parent>
 
     <properties>
-        <org.talend.daikon.crypto-utils.version>1.2.0</org.talend.daikon.crypto-utils.version>
+        <org.talend.daikon.crypto-utils.version>0.31.10-SNAPSHOT</org.talend.daikon.crypto-utils.version>
     </properties>
-
+    
     <dependencies>
         <dependency>
             <groupId>commons-codec</groupId>
@@ -58,6 +58,12 @@
             <version>0.2.0.RELEASE</version>
         </dependency>
         <dependency>
+			<groupId>org.talend.daikon</groupId>
+			<artifactId>crypto-utils</artifactId>
+			<version>${org.talend.daikon.crypto-utils.version}</version>
+			<classifier>bundle</classifier>
+        </dependency>
+        <dependency>
             <groupId>org.apache.commons</groupId>
             <artifactId>commons-text</artifactId>
             <version>1.1</version>
@@ -78,10 +84,15 @@
   			<version>1.7.10</version>
 		</dependency>
 		<dependency>
-  			<groupId>org.talend.daikon</groupId>
-  			<artifactId>crypto-utils</artifactId>
-  			<version>${org.talend.daikon.crypto-utils.version}</version>
-		</dependency>
+            <groupId>commons-beanutils</groupId>
+            <artifactId>commons-beanutils</artifactId>
+            <version>1.9.3</version>
+        </dependency>
+        <dependency>
+            <groupId>org.apache.commons</groupId>
+            <artifactId>commons-configuration2</artifactId>
+            <version>2.0</version>
+        </dependency>
     </dependencies>
 
     <build>

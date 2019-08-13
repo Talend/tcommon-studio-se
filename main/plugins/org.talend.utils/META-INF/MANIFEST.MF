@@ -28,13 +28,13 @@ Export-Package:
  org.talend.utils.time;uses:="org.apache.log4j",
  org.talend.utils.wsdl,
  org.talend.utils.xml
-Bundle-ClassPath: .,
- lib/crypto-utils.jar
+Bundle-ClassPath: .
 Require-Bundle: org.apache.commons.lang,
  org.talend.libraries.apache;visibility:=reexport,
  org.apache.log4j,
  org.apache.commons.io,
  org.talend.daikon;visibility:=reexport,
+ org.talend.daikon.crypto.utils;visibility:=reexport,
  org.bouncycastle.bcprov,
  org.apache.httpcomponents.httpclient,
  org.slf4j.api
