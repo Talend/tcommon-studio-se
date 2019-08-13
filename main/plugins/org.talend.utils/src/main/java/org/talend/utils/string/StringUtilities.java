@@ -96,7 +96,7 @@ public final class StringUtilities {
         Random random = new SecureRandom();
         StringBuilder sf = new StringBuilder();
         for (int i = 0; i < length; i++) {
-            int number = random.nextInt(62);// 0~61
+            int number = random.nextInt(str.length());// str.length() is 62, so 0~61
             sf.append(str.charAt(number));
         }
         return sf.toString();
