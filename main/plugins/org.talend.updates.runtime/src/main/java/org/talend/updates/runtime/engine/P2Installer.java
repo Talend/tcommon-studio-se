@@ -190,9 +190,6 @@ public class P2Installer {
                     }
                 }
                 newProductVersion = toInstallLatestVersion.toString();
-                if (!newProductVersion.endsWith("-patch")) {//$NON-NLS-1$
-                    newProductVersion = newProductVersion + "-patch";//$NON-NLS-1$
-                }
             }
 
             setIuSingletonToFalse(toInstall);
