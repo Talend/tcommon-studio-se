@@ -32,6 +32,7 @@ import org.eclipse.equinox.p2.engine.IProfile;
 import org.eclipse.equinox.p2.engine.IProfileRegistry;
 import org.eclipse.equinox.p2.engine.PhaseSetFactory;
 import org.eclipse.equinox.p2.metadata.IInstallableUnit;
+import org.eclipse.equinox.p2.metadata.Version;
 import org.eclipse.equinox.p2.operations.InstallOperation;
 import org.eclipse.equinox.p2.operations.ProfileModificationJob;
 import org.eclipse.equinox.p2.operations.ProvisioningSession;
@@ -175,7 +176,20 @@ public class P2Installer {
             // show the installation unit
             log.debug("ius to be installed:" + toInstall);
             if (!toInstall.isEmpty()) {
-                newProductVersion = toInstall.iterator().next().getVersion().toString();
+                Version toInstallLatestVersion = null;
+                for (IInstallableUnit install : toInstall) {
+                    Version installedVersion = install.getVersion();
+                    if (installedVersion != null) {
+                        if (toInstallLatestVersion == null) {
+                            toInstallLatestVersion = installedVersion;
+                        } else {
+                            if (toInstallLatestVersion.compareTo(installedVersion) < 0) {
+                                toInstallLatestVersion = installedVersion;
+                            }
+                        }
+                    }
+                }
+                newProductVersion = toInstallLatestVersion.toString();
             }
 
             setIuSingletonToFalse(toInstall);
