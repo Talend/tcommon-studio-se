@@ -50,9 +50,9 @@ public class SyncLibrariesLoginTask extends AbstractLoginTask implements IRunnab
                     IWorkspace workspace = ResourcesPlugin.getWorkspace();
                     IResourceRuleFactory ruleFactory = workspace.getRuleFactory();
                     ProjectManager projectManager = ProjectManager.getInstance();
-                    ISchedulingRule refreshRule = ruleFactory
-                            .refreshRule(projectManager.getResourceProject(getProject().getEmfProject()));
-                    workspace.run(new IWorkspaceRunnable() {
+                            ISchedulingRule refreshRule = ruleFactory.refreshRule(projectManager
+                                    .getResourceProject(projectManager.getCurrentProject().getEmfProject()));
+                            workspace.run(new IWorkspaceRunnable() {
 
                         @Override
                         public void run(IProgressMonitor monitor) throws CoreException {
