@@ -58,6 +58,7 @@ import org.talend.core.i18n.Messages;
 import org.talend.core.language.ECodeLanguage;
 import org.talend.core.language.LanguageManager;
 import org.talend.core.model.components.ComponentCategory;
+import org.talend.core.model.components.EComponentType;
 import org.talend.core.model.general.ModuleNeeded;
 import org.talend.core.model.metadata.IMetadataColumn;
 import org.talend.core.model.metadata.IMetadataTable;
@@ -611,6 +612,10 @@ public class ProcessorUtilities {
     public static boolean hasMetadataDynamic(IProcess currentProcess, JobInfo jobInfo) {
         boolean hasDynamicMetadata = false;
         out: for (INode node : (List<? extends INode>) currentProcess.getGeneratingNodes()) {
+        	if (node.getComponent() != null && node.getComponent().getComponentType() == EComponentType.GENERIC) {
+                // generic component, true always
+                return true;
+            }
             // to check if node is db component , maybe need modification
             boolean isDbNode = false;
             for (IElementParameter param : (List<? extends IElementParameter>) node.getElementParameters()) {
