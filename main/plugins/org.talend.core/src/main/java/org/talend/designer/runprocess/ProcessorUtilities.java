@@ -624,6 +624,10 @@ public class ProcessorUtilities {
                             ("FAMILY".equals(param.getName()) && param.getValue().toString().startsWith("Database"))){
                         isDbNode = true;
                         break;
+                    }else if("FAMILY".equals(param.getName()) && param.getValue() != null && param.getValue() instanceof String
+                            && !"".equals(param.getValue()) && ((String)param.getValue()).startsWith("Databases")) {
+                    	isDbNode = true;
+                        break;
                     }
                 }
             }
