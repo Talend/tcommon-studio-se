@@ -35,7 +35,7 @@ if(!primary.equals("")){
 }
 %>
 
-CREATE OR REPLACE TABLE <%= __TABLE_NAME_TARGET__ %>
+CREATE TABLE <%= __TABLE_NAME_TARGET__ %>
 (
 <%= fieldsCreated %>
 );
