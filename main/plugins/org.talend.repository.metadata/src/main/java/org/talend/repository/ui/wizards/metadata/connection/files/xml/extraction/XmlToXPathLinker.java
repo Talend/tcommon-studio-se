@@ -328,9 +328,9 @@ public class XmlToXPathLinker extends TreeToTablesLinker<Object, Object> {
             createFieldLinks(relativeXpathQuery, tableItem, monitorWrap, schemaTarget);
             monitorWrap.worked(1);
         }
+        fieldsTableEditorView.getTableViewerCreator().getTableViewer().refresh();
         getLinksManager().sortLinks(getDrawingLinksComparator());
         getBackgroundRefresher().refreshBackground();
-        fieldsTableEditorView.getTableViewerCreator().getTableViewer().refresh();
     }
 
     /**
