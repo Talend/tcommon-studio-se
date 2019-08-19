@@ -12,8 +12,10 @@
 // ============================================================================
 package org.talend.utils.string;
 
+import java.security.SecureRandom;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Random;
 import java.util.StringTokenizer;
 
 import org.talend.utils.sugars.ReturnCode;
@@ -90,7 +92,14 @@ public final class StringUtilities {
      * @return
      */
     public static String getRandomString(int length) {
-        return java.util.UUID.randomUUID().toString().replace("-", "").substring(8, 8 + length); //$NON-NLS-1$ //$NON-NLS-2$
+        String str = "abcdefghigklmnopkrstuvwxyzABCDEFGHIGKLMNOPQRSTUVWXYZ0123456789"; //$NON-NLS-1$
+        Random random = new SecureRandom();
+        StringBuilder sf = new StringBuilder();
+        for (int i = 0; i < length; i++) {
+            int number = random.nextInt(str.length());// str.length() is 62, so 0~61
+            sf.append(str.charAt(number));
+        }
+        return sf.toString();
     }
 
     public static String removeEndingString(String fullStr, String endingStr) {

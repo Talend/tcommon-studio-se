@@ -44,26 +44,27 @@ public class SyncLibrariesLoginTask extends AbstractLoginTask implements IRunnab
         ProxyRepositoryFactory.getInstance().executeRepositoryWorkUnit(
                 new RepositoryWorkUnit<Void>(Messages.getString("SyncLibrariesLoginTask.createStatsLogAndImplicitParamter")) {
 
-            @Override
-            protected void run() throws LoginException, PersistenceException {
-                try {
-                    IWorkspace workspace = ResourcesPlugin.getWorkspace();
-                    IResourceRuleFactory ruleFactory = workspace.getRuleFactory();
-                    ProjectManager projectManager = ProjectManager.getInstance();
-                    ISchedulingRule refreshRule = ruleFactory
-                            .refreshRule(projectManager.getResourceProject(getProject().getEmfProject()));
-                    workspace.run(new IWorkspaceRunnable() {
+                    @Override
+                    protected void run() throws LoginException, PersistenceException {
+                        try {
+                            IWorkspace workspace = ResourcesPlugin.getWorkspace();
+                            IResourceRuleFactory ruleFactory = workspace.getRuleFactory();
+                            ProjectManager projectManager = ProjectManager.getInstance();
+                            ISchedulingRule refreshRule = ruleFactory.refreshRule(
+                                    projectManager.getResourceProject(projectManager.getCurrentProject().getEmfProject()));
+                            workspace.run(new IWorkspaceRunnable() {
 
-                        @Override
-                        public void run(IProgressMonitor monitor) throws CoreException {
-                            coreService.createStatsLogAndImplicitParamter(ProjectManager.getInstance().getCurrentProject());
+                                @Override
+                                public void run(IProgressMonitor monitor) throws CoreException {
+                                    coreService
+                                            .createStatsLogAndImplicitParamter(ProjectManager.getInstance().getCurrentProject());
+                                }
+                            }, refreshRule, IWorkspace.AVOID_UPDATE, monitor);
+                        } catch (Exception e) {
+                            ExceptionHandler.process(e);
                         }
-                    }, refreshRule, IWorkspace.AVOID_UPDATE, monitor);
-                } catch (Exception e) {
-                    ExceptionHandler.process(e);
-                }
-            }
-        });
+                    }
+                });
     }
 
 }

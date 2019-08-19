@@ -165,7 +165,7 @@ public class ExtractManager {
             tablesToFilter = new ArrayList<String>();
         }
         try {
-            Set<String> availableTableTypes = getAvailableTableTypes(dbMetaData);
+            Set<String> availableTableTypes = getTableTypes(dbMetaData);
             retrieveTables(dbMetaData, schema, medataTables, availableTableTypes, tablesToFilter, limit);
         } catch (SQLException e) {
             ExceptionHandler.process(e);
@@ -193,7 +193,7 @@ public class ExtractManager {
         ResultSet rsTableTypes = dbMetaData.getTableTypes();
         Set<String> availableTableTypes = new HashSet<String>();
         String[] neededTableTypes = { ETableTypes.TABLETYPE_TABLE.getName(), ETableTypes.TABLETYPE_VIEW.getName(),
-                ETableTypes.TABLETYPE_SYNONYM.getName() };
+                ETableTypes.TABLETYPE_SYNONYM.getName(), ETableTypes.EXTERNAL_TABLE.getName()};
 
         try {
             while (rsTableTypes.next()) {
@@ -210,6 +210,48 @@ public class ExtractManager {
             }
         } finally {
             rsTableTypes.close();// See bug 5029 Avoid "Invalid cursor exception"
+        }
+        return availableTableTypes;
+    }
+    
+    public Set<String> getTableTypes(DatabaseMetaData dbMetaData) throws SQLException{
+    	ResultSet rsTableTypes = dbMetaData.getTableTypes();
+        Set<String> availableTableTypes = new HashSet<String>();
+        String[] neededTableTypes = { ETableTypes.TABLETYPE_TABLE.getName(), ETableTypes.TABLETYPE_VIEW.getName(),
+                ETableTypes.TABLETYPE_SYNONYM.getName(), ETableTypes.EXTERNAL_TABLE.getName()};
+        try {
+            while (rsTableTypes.next()) {
+                // StringUtils.trimToEmpty(name) is because bug 4547
+                String currentTableType = StringUtils.trimToEmpty(rsTableTypes.getString(ExtractManager.TABLE_TYPE));
+                // Because BASE TABLE which UniJDBCClientResultSet gets is not the support type of
+                // UniJDBCDatabaseMetaData, do this so as to dispose bug 17281.
+                if ("BASE TABLE".equalsIgnoreCase(currentTableType)) { //$NON-NLS-1$
+                    currentTableType = ETableTypes.TABLETYPE_TABLE.getName();
+                }
+                if (ArrayUtils.contains(neededTableTypes, currentTableType)) {
+                    availableTableTypes.add(currentTableType);
+                }
+            }
+        } finally {
+            rsTableTypes.close();// See bug 5029 Avoid "Invalid cursor exception"
+        }
+        
+        if (EDatabaseTypeName.HIVE.getDisplayName().equals(dbType.getDbType())) {
+        	availableTableTypes.add(ETableTypes.MANAGED_TABLE.getName());
+        	availableTableTypes.add(ETableTypes.INDEX_TABLE.getName());
+        	availableTableTypes.add(ETableTypes.VIRTUAL_VIEW.getName());
+        } else if (EDatabaseTypeName.SAPHana.getDisplayName().equals(dbType.getDbType())) {
+        	availableTableTypes.add(ETableTypes.TABLETYPE_CALCULATION_VIEW.getName());
+        } else if (EDatabaseTypeName.MYSQL.getDisplayName().equals(dbType.getDbType())) {
+        	availableTableTypes.add(ETableTypes.SYSTEM_TABLE.getName());
+        	availableTableTypes.add(ETableTypes.SYSTEM_VIEW.getName());
+        }else if (EDatabaseTypeName.AS400.getDisplayName().equals(dbType.getDbType())) {
+        	availableTableTypes.add(ETableTypes.TABLETYPE_TABLE.getName());
+            availableTableTypes.add(ETableTypes.EXTERNAL_TABLE.getName());
+            availableTableTypes.add(ETableTypes.TABLETYPE_VIEW.getName());
+            availableTableTypes.add(ETableTypes.TABLETYPE_SYNONYM.getName());
+        }else if (MetadataConnectionUtils.isOracle(dbMetaData)) {
+        	availableTableTypes.add(ETableTypes.TABLETYPE_ALL_SYNONYM.getName());
         }
         return availableTableTypes;
     }

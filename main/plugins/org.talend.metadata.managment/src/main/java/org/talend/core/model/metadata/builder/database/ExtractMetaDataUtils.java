@@ -1042,6 +1042,9 @@ public class ExtractMetaDataUtils {
                         }
                     }else{
                         String jarName = librairesManagerService.getJarNameFromMavenuri(driverJarPathArg);
+                        if (jarName == null) {
+                            jarName = driverJarPathArg.split("/")[1] + ".jar";
+                        }
                         if (!new File(getJavaLibPath() + jarName).exists()) {
                             librairesManagerService.retrieve(jarName, getJavaLibPath(), new NullProgressMonitor());
                         }
