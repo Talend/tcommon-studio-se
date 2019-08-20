@@ -175,10 +175,12 @@ public class JsonTreePopulator extends AbstractTreePopulator {
     }
 
     private TreeItem getTreeItem(TreeItem[] treeItems, String absolutePath) {
+    	TreeItem item = null;
         if (treeItems == null || treeItems.length == 0) {
             return null;
         }
         for (TreeItem treeItem : treeItems) {
+        	item = treeItem;
             Object obj = treeItem.getData();
             if (obj instanceof JsonTreeNode) {
                 String jsonPath = SchemaPopulationUtil.getFilteredJsonPath(((JsonTreeNode) obj).getJsonPath());
@@ -191,7 +193,7 @@ public class JsonTreePopulator extends AbstractTreePopulator {
                 }
             }
         }
-        return null;
+        return item;
     }
 
     @Override
