@@ -32,11 +32,13 @@ import org.eclipse.equinox.p2.core.IProvisioningAgent;
 import org.eclipse.equinox.p2.core.IProvisioningAgentProvider;
 import org.eclipse.equinox.p2.core.ProvisionException;
 import org.eclipse.equinox.p2.engine.IPhaseSet;
+import org.eclipse.equinox.p2.engine.IProfile;
 import org.eclipse.equinox.p2.engine.PhaseSetFactory;
 import org.eclipse.equinox.p2.metadata.IInstallableUnit;
 import org.eclipse.equinox.p2.operations.InstallOperation;
 import org.eclipse.equinox.p2.operations.ProfileModificationJob;
 import org.eclipse.equinox.p2.operations.ProvisioningSession;
+import org.eclipse.equinox.p2.operations.UninstallOperation;
 import org.eclipse.equinox.p2.query.IQuery;
 import org.eclipse.equinox.p2.query.QueryUtil;
 import org.osgi.framework.Bundle;
@@ -137,7 +139,8 @@ public class ComponentP2ExtraFeature extends P2ExtraFeature implements IP2Compon
 
         IProvisioningAgent agent = null;
         try {
-            agent = agentProvider.createAgent(getP2AgentUri());
+            IProfile profile = getProfile(agentProvider, progress);
+            agent = profile.getProvisioningAgent();
 
             updateRoamingProp(agent, agentProvider);
 
@@ -153,27 +156,50 @@ public class ComponentP2ExtraFeature extends P2ExtraFeature implements IP2Compon
                         getVersion(), Arrays.toString(allRepoUris.toArray(new URI[allRepoUris.size()])));
             }
 
+            IPhaseSet talendPhaseSet = PhaseSetFactory
+                    .createDefaultPhaseSetExcluding(new String[] { PhaseSetFactory.PHASE_CHECK_TRUST });
+            // uninstall first
+            Collection<IInstallableUnit> installedP2Feature = getInstalledP2Feature(profile, toInstall, subMonitor);
+            ProvisioningSession session = new ProvisioningSession(agent);
+            if (installedP2Feature != null && !installedP2Feature.isEmpty()) {
+                UninstallOperation uninstallOperation = new UninstallOperation(session, installedP2Feature);
+                uninstallOperation.setProfileId(getP2ProfileId());
+                IStatus resolveModal = uninstallOperation.resolveModal(subMonitor);
+                if (resolveModal.getSeverity() == IStatus.ERROR) {
+                    return Messages.createErrorStatus(null, "ComponentP2ExtraFeature.error.installing.new.components", //$NON-NLS-1$
+                            uninstallOperation.getResolutionDetails());
+                }
+                ProfileModificationJob provisioningJob = (ProfileModificationJob) uninstallOperation
+                        .getProvisioningJob(subMonitor.newChild(1));
+                if (subMonitor.isCanceled()) {
+                    return Messages.createCancelStatus("ComponentP2ExtraFeature.user.cancel.installation.of.components", //$NON-NLS-1$
+                            getP2IuId(), getVersion());
+                }
+                if (provisioningJob == null) {
+                    return Messages.createErrorStatus(null, "ComponentP2ExtraFeature.error.installing.new.components", //$NON-NLS-1$
+                            getP2IuId(), getVersion(), uninstallOperation.getResolutionDetails());
+                }
+                provisioningJob.setPhaseSet(talendPhaseSet);
+                provisioningJob.run(subMonitor.newChild(1));
+                agent.stop();
+                // update profile
+                profile = getProfile(agentProvider, subMonitor);
+                agent = profile.getProvisioningAgent();
+                updateRoamingProp(agent, agentProvider);
+                session = new ProvisioningSession(agent);
+            }
+
             // install
-            InstallOperation installOperation = new InstallOperation(new ProvisioningSession(agent), toInstall);
+            InstallOperation installOperation = new InstallOperation(session, toInstall);
             installOperation.setProfileId(getP2ProfileId());
             IStatus installResolvedStatus = installOperation.resolveModal(subMonitor.newChild(1));
-            if (subMonitor.isCanceled()) {
-                return Messages.createCancelStatus("ComponentP2ExtraFeature.user.cancel.installation.of.components", //$NON-NLS-1$
-                        getP2IuId(), getVersion());
-            }
             if (installResolvedStatus.getSeverity() == IStatus.ERROR) {
                 return Messages.createErrorStatus(null, "ComponentP2ExtraFeature.error.installing.new.components", getP2IuId(), //$NON-NLS-1$
                         getVersion(), installOperation.getResolutionDetails());
             } // else perform the installlation
-            IPhaseSet talendPhaseSet = PhaseSetFactory
-                    .createDefaultPhaseSetExcluding(new String[] { PhaseSetFactory.PHASE_CHECK_TRUST });
 
             ProfileModificationJob provisioningJob = (ProfileModificationJob) installOperation.getProvisioningJob(subMonitor
                     .newChild(1));
-            if (subMonitor.isCanceled()) {
-                return Messages.createCancelStatus("ComponentP2ExtraFeature.user.cancel.installation.of.components", //$NON-NLS-1$
-                        getP2IuId(), getVersion());
-            }
             if (provisioningJob == null) {
                 return Messages.createErrorStatus(null, "ComponentP2ExtraFeature.error.installing.new.components", //$NON-NLS-1$
                         getP2IuId(), getVersion(), installOperation.getResolutionDetails());
@@ -195,6 +221,9 @@ public class ComponentP2ExtraFeature extends P2ExtraFeature implements IP2Compon
         } catch (ProvisionException e) {
             return Messages.createErrorStatus(e,
                     "ComponentP2ExtraFeature.error.installing.components.uri.exception", getP2IuId(), //$NON-NLS-1$
+                    getVersion());
+        } catch (Exception e) {
+            return Messages.createErrorStatus(e, "ComponentP2ExtraFeature.error.installing.components.uri.exception", getP2IuId(), //$NON-NLS-1$
                     getVersion());
         } finally {
             if (agent != null) {// agent creation did not fail

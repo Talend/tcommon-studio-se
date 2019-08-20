@@ -24,6 +24,7 @@ import java.util.Arrays;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.HashMap;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -161,28 +162,8 @@ public class P2ExtraFeature extends AbstractExtraFeature implements IP2Feature {
         try {
 
             IQuery<IInstallableUnit> iuQuery = QueryUtil.createIUQuery(p2IuId2);
-            boolean interrupted = false;
-            IProfile profile = null;
-            // there seems to be a bug because if the agent is created too quickly then the profile is empty.
-            // so we loop until we get a proper profile
-            final String p2ProfileId = getP2ProfileId();
-            do {
-                try {
-                    Thread.sleep(50);
-                } catch (InterruptedException e) {
-                    interrupted = true;
-                }
-                if (agent != null) {
-                    agent.stop();
-                }
-                agent = agentProvider.createAgent(getP2AgentUri());
-                IProfileRegistry profRegistry = (IProfileRegistry) agent.getService(IProfileRegistry.SERVICE_NAME);
-                profile = profRegistry.getProfile(p2ProfileId);
-            } while (profile != null && profile.getTimestamp() == 0 && !interrupted && !subMonitor.isCanceled());
-
-            if (profile == null || subMonitor.isCanceled()) {
-                throw new ProvisionException("Could not find the p2 profile named " + p2ProfileId); //$NON-NLS-1$
-            }
+            IProfile profile = getProfile(agentProvider, subMonitor);
+            agent = profile.getProvisioningAgent();
             subMonitor.worked(1);
             IQueryResult<IInstallableUnit> iuQueryResult = profile.available(iuQuery, subMonitor.newChild(1));
             if (subMonitor.isCanceled()) {
@@ -194,6 +175,33 @@ public class P2ExtraFeature extends AbstractExtraFeature implements IP2Feature {
                 agent.stop();
             }
         }
+    }
+
+    protected IProfile getProfile(IProvisioningAgentProvider agentProvider, IProgressMonitor progress) throws ProvisionException {
+        IProvisioningAgent agent = null;
+        IProfile profile = null;
+        boolean interrupted = false;
+        // there seems to be a bug because if the agent is created too quickly then the profile is empty.
+        // so we loop until we get a proper profile
+        final String p2ProfileId = getP2ProfileId();
+        do {
+            try {
+                Thread.sleep(50);
+            } catch (InterruptedException e) {
+                interrupted = true;
+            }
+            if (agent != null) {
+                agent.stop();
+            }
+            agent = agentProvider.createAgent(getP2AgentUri());
+            IProfileRegistry profRegistry = (IProfileRegistry) agent.getService(IProfileRegistry.SERVICE_NAME);
+            profile = profRegistry.getProfile(p2ProfileId);
+        } while (profile != null && profile.getTimestamp() == 0 && !interrupted && !progress.isCanceled());
+
+        if (profile == null || progress.isCanceled()) {
+            throw new ProvisionException("Could not find the p2 profile named " + p2ProfileId); //$NON-NLS-1$
+        }
+        return profile;
     }
 
     /**
@@ -815,4 +823,14 @@ public class P2ExtraFeature extends AbstractExtraFeature implements IP2Feature {
     public boolean useP2Cache() {
         return this.useP2Cache;
     }
+
+    protected Collection<IInstallableUnit> getInstalledP2Feature(IProfile profile, Collection<IInstallableUnit> toInstalls,
+            IProgressMonitor monitor) throws Exception {
+        Collection<IQuery<IInstallableUnit>> queries = new LinkedList<>();
+        for (IInstallableUnit toInst : toInstalls) {
+            queries.add(QueryUtil.createIUQuery(toInst.getId()));
+        }
+        return profile.available(QueryUtil.createCompoundQuery(queries, false), monitor).toSet();
+    }
+
 }

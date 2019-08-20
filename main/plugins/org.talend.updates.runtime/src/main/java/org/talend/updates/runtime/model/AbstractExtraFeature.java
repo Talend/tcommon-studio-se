@@ -90,6 +90,7 @@ public abstract class AbstractExtraFeature implements ExtraFeature {
         this.degradable = degradable;
         this.types = types;
         this.categories = categories;
+        this.share = getRepositoryService().getProxyRepositoryFactory().isFullLogonFinished();
     }
 
     @Override
