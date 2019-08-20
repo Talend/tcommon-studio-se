@@ -26,6 +26,8 @@ import org.eclipse.core.runtime.NullProgressMonitor;
 import org.eclipse.core.runtime.OperationCanceledException;
 import org.eclipse.swt.graphics.Image;
 import org.talend.commons.exception.ExceptionHandler;
+import org.talend.core.GlobalServiceRegister;
+import org.talend.repository.model.IRepositoryService;
 import org.talend.updates.runtime.feature.model.Category;
 import org.talend.updates.runtime.feature.model.Type;
 import org.talend.updates.runtime.model.InstallationStatus.Status;
@@ -242,4 +244,7 @@ public interface ExtraFeature extends Comparable<Object> {
         return 0;
     }
 
+    default IRepositoryService getRepositoryService() {
+        return (IRepositoryService) GlobalServiceRegister.getDefault().getService(IRepositoryService.class);
+    }
 }
