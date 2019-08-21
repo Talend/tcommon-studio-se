@@ -26,8 +26,6 @@ import org.talend.datatools.xml.utils.ATreeNode;
  */
 public class JsonTreePopulator extends AbstractTreePopulator {
 
-    private TreeViewer treeViewer;
-
     private String jsonValue;
 
     public JsonTreePopulator(TreeViewer treeViewer) {

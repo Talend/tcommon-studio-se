@@ -47,8 +47,6 @@ import org.talend.repository.ui.wizards.metadata.connection.files.json.AbstractT
  */
 public class TreePopulator extends AbstractTreePopulator {
 
-    private final TreeViewer availableXmlTree;
-
     private final BidiMap xPathToTreeItem = new DualHashBidiMap();
 
     /**
@@ -61,10 +59,10 @@ public class TreePopulator extends AbstractTreePopulator {
     public TreePopulator(Tree tree) {
         super();
         // no virtual mode on this case.
-        availableXmlTree = new TreeViewer(tree);
-        availableXmlTree.setContentProvider(new ATreeNodeContentProvider());
-        availableXmlTree.setLabelProvider(new VirtualXmlTreeLabelProvider());
-        availableXmlTree.setUseHashlookup(true);
+        treeViewer = new TreeViewer(tree);
+        treeViewer.setContentProvider(new ATreeNodeContentProvider());
+        treeViewer.setLabelProvider(new VirtualXmlTreeLabelProvider());
+        treeViewer.setUseHashlookup(true);
     }
 
     /**
@@ -74,7 +72,7 @@ public class TreePopulator extends AbstractTreePopulator {
      */
     public TreePopulator(TreeViewer availableXmlTree) {
         super();
-        this.availableXmlTree = availableXmlTree;
+        this.treeViewer = availableXmlTree;
     }
 
     /**
@@ -160,11 +158,11 @@ public class TreePopulator extends AbstractTreePopulator {
                     if (selected == null && childs.length > 0) {
                         selected = childs[0];
                     }
-                    availableXmlTree.setInput(new Object[] { selected });
-                    availableXmlTree.expandToLevel(3);
+                    treeViewer.setInput(new Object[] { selected });
+                    treeViewer.expandToLevel(3);
                 } else {
-                    availableXmlTree.setInput(childs);
-                    availableXmlTree.expandToLevel(3);
+                	treeViewer.setInput(childs);
+                	treeViewer.expandToLevel(3);
                 }
                 this.filePath = filePath;
                 return true;
@@ -200,8 +198,8 @@ public class TreePopulator extends AbstractTreePopulator {
                 return false;
             } else {
                 Object[] childs = treeNode.getChildren();
-                availableXmlTree.setInput(childs);
-                availableXmlTree.expandToLevel(3);
+                treeViewer.setInput(childs);
+                treeViewer.expandToLevel(3);
                 return true;
             }
         }
@@ -238,8 +236,8 @@ public class TreePopulator extends AbstractTreePopulator {
             if (treeNode == null || treeNode.getChildren().length == 0) {
                 return false;
             } else {
-                availableXmlTree.setInput(new Object[] { treeNode });
-                availableXmlTree.expandToLevel(3);
+            	treeViewer.setInput(new Object[] { treeNode });
+            	treeViewer.expandToLevel(3);
                 return true;
             }
         }
@@ -248,7 +246,7 @@ public class TreePopulator extends AbstractTreePopulator {
 
     @Override
     public TreeItem getTreeItem(String absoluteXPath) {
-        TreeItem[] items = availableXmlTree.getTree().getItems();
+        TreeItem[] items = treeViewer.getTree().getItems();
         String path = absoluteXPath;
         String targetName = absoluteXPath;
         if (targetName.contains(UtilConstants.XPATH_SLASH)) {
@@ -310,10 +308,11 @@ public class TreePopulator extends AbstractTreePopulator {
 
     @Override
     public void configureDefaultTreeViewer() {
-        if (availableXmlTree.getContentProvider() != null) {
-            availableXmlTree.setInput(null);
+        if (treeViewer.getContentProvider() != null) {
+        	treeViewer.setInput(null);
         }
-        availableXmlTree.setContentProvider(new ATreeNodeContentProvider());
-        availableXmlTree.setLabelProvider(new VirtualXmlTreeLabelProvider());
+        treeViewer.setContentProvider(new ATreeNodeContentProvider());
+        treeViewer.setLabelProvider(new VirtualXmlTreeLabelProvider());
     }
+   
 }
