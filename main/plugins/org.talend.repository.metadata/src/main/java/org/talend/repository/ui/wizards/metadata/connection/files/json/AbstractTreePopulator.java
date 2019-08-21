@@ -12,6 +12,10 @@
 // ============================================================================
 package org.talend.repository.ui.wizards.metadata.connection.files.json;
 
+import java.util.ArrayList;
+import java.util.List;
+
+import org.eclipse.jface.viewers.TreeViewer;
 import org.eclipse.swt.widgets.TreeItem;
 import org.talend.core.model.utils.RepositoryManagerHelper;
 import org.talend.datatools.xml.utils.ATreeNode;
@@ -27,6 +31,8 @@ public abstract class AbstractTreePopulator {
     protected String filePath;
 
     protected static int limit;
+    
+    protected TreeViewer treeViewer;
 
     abstract public boolean populateTree(String filePath, ATreeNode treeNode);
 
@@ -80,5 +86,44 @@ public abstract class AbstractTreePopulator {
     public void setFilePath(String filePath) {
         this.filePath = filePath;
     }
+    
+	public List<ATreeNode> getAllNodes() {
+		List<ATreeNode> nodes = new ArrayList<ATreeNode>();
+		Object input = treeViewer.getInput();
+		if(input instanceof List) {
+			for(Object obj : (List)input) {
+				if(obj instanceof ATreeNode) {
+					addNode(((ATreeNode)obj), nodes);
+				}
+			}
+		}else if(input instanceof Object[]) {
+			for(Object obj : (Object[])input) {
+				if(obj instanceof ATreeNode) {
+					addNode(((ATreeNode)obj), nodes);
+				}
+			}
+		}
+		return nodes;
+	}
+	
+	private void addNode(ATreeNode node, List<ATreeNode> nodes){
+		nodes.add(node);
+		if(node.getChildren() != null && node.getChildren().length > 0) {
+			nodes.addAll(getChildren(node));
+		}
+	}
+	
+	private List<ATreeNode> getChildren(ATreeNode node){
+		List<ATreeNode> nodes = new ArrayList<ATreeNode>();
+		for(Object obj : node.getChildren()) {
+			if(obj instanceof ATreeNode){
+				nodes.add((ATreeNode)obj);
+				if(((ATreeNode)obj).getChildren() != null && ((ATreeNode)obj).getChildren().length > 0) {
+					nodes.addAll(getChildren((ATreeNode)obj));
+				}
+			}
+		}
+		return nodes;
+	}
 
 }
