@@ -16,7 +16,6 @@
 		<module>plugins/maven-install-plugin-2-5-1</module>
 		<module>plugins/talend-compiler-plugin</module>
 		<module>plugins/build-helper-maven-plugin-3-0-0</module>
-		<module>plugins/karaf-maven-plugin-4-2-4</module>
 	</modules>	
 	<dependencies>
 		<dependency>
