@@ -180,6 +180,9 @@ public class JsonTreePopulator extends AbstractTreePopulator {
         }
         for (TreeItem treeItem : treeItems) {
             Object obj = treeItem.getData();
+            if (obj == null) {
+                return treeItem;
+            }
             if (obj instanceof JsonTreeNode) {
                 String jsonPath = SchemaPopulationUtil.getFilteredJsonPath(((JsonTreeNode) obj).getJsonPath());
                 if (absolutePath.equals(jsonPath)) {
