@@ -922,7 +922,7 @@ public class LocalLibraryManager implements ILibraryManagerService, IChangedLibr
         // then try to resolve locally
         String localMavenUri = mvnUriStatusKey.replace("mvn:", "mvn:" + MavenConstants.LOCAL_RESOLUTION_URL + "!"); //$NON-NLS-1$ //$NON-NLS-2$
         try {
-            File resolvedJar = TalendMavenResolver.getMavenResolver().resolve(localMavenUri);
+            File resolvedJar = TalendMavenResolver.resolve(localMavenUri);
             if (resolvedJar != null) {
                 mavenJarInstalled.put(mvnUriStatusKey, resolvedJar.getAbsolutePath());
                 ModuleStatusProvider.putStatus(mvnUriStatusKey, ELibraryInstallStatus.INSTALLED);

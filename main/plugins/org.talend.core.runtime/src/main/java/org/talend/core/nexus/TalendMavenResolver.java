@@ -97,8 +97,12 @@ public class TalendMavenResolver {
 
     }
 
-    public static File resolve(String mvnUri) throws IOException, RuntimeException {
-        return getMavenResolver().resolve(mvnUri);
+    public static File resolve(String mvnUri) throws IOException {
+        try {
+            return getMavenResolver().resolve(mvnUri);
+        } catch (IOException e) {
+            throw ResolverExceptionHandler.hideCredential(e);
+        }
     }
 
     public static void upload(String groupId, String artifactId, String classifier, String extension, String version,
@@ -106,7 +110,11 @@ public class TalendMavenResolver {
         getMavenResolver().upload(groupId, artifactId, classifier, extension, version, artifact);
     }
 
-    public static MavenResolver getMavenResolver() throws RuntimeException {
+    public static void initMavenResovler() throws RuntimeException {
+        getMavenResolver();
+    }
+
+    private static MavenResolver getMavenResolver() throws RuntimeException {
         if (mavenResolver == null) {
             final BundleContext context = CoreRuntimePlugin.getInstance().getBundle().getBundleContext();
             ServiceReference<org.ops4j.pax.url.mvn.MavenResolver> mavenResolverService = context
