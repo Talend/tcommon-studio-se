@@ -547,7 +547,7 @@ public class PomUtil {
 
             File resolve = null;
             try {
-                resolve = TalendMavenResolver.getMavenResolver().resolve(localMavenUri);
+                resolve = TalendMavenResolver.resolve(localMavenUri);
             } catch (IOException | RuntimeException e) {
                 resolve = null;
             }
