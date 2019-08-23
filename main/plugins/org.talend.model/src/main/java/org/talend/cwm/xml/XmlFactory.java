@@ -17,48 +17,48 @@ import org.eclipse.emf.ecore.EFactory;
  */
 public interface XmlFactory extends EFactory {
 
-    /**
-     * The singleton instance of the factory.
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
-     * @generated
-     */
-    XmlFactory eINSTANCE = org.talend.cwm.xml.impl.XmlFactoryImpl.init();
+	/**
+	 * The singleton instance of the factory.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	XmlFactory eINSTANCE = org.talend.cwm.xml.impl.XmlFactoryImpl.init();
 
-    /**
-     * Returns a new object of class '<em>Td Xml Element Type</em>'.
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
-     * @return a new object of class '<em>Td Xml Element Type</em>'.
-     * @generated
-     */
-    TdXmlElementType createTdXmlElementType();
+	/**
+	 * Returns a new object of class '<em>Td Xml Element Type</em>'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return a new object of class '<em>Td Xml Element Type</em>'.
+	 * @generated
+	 */
+	TdXmlElementType createTdXmlElementType();
 
-    /**
-     * Returns a new object of class '<em>Td Xml Content</em>'.
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
-     * @return a new object of class '<em>Td Xml Content</em>'.
-     * @generated
-     */
-    TdXmlContent createTdXmlContent();
+	/**
+	 * Returns a new object of class '<em>Td Xml Content</em>'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return a new object of class '<em>Td Xml Content</em>'.
+	 * @generated
+	 */
+	TdXmlContent createTdXmlContent();
 
-    /**
-     * Returns a new object of class '<em>Td Xml Schema</em>'.
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
-     * @return a new object of class '<em>Td Xml Schema</em>'.
-     * @generated
-     */
-    TdXmlSchema createTdXmlSchema();
+	/**
+	 * Returns a new object of class '<em>Td Xml Schema</em>'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return a new object of class '<em>Td Xml Schema</em>'.
+	 * @generated
+	 */
+	TdXmlSchema createTdXmlSchema();
 
-    /**
-     * Returns the package supported by this factory.
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
-     * @return the package supported by this factory.
-     * @generated
-     */
-    XmlPackage getXmlPackage();
+	/**
+	 * Returns the package supported by this factory.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return the package supported by this factory.
+	 * @generated
+	 */
+	XmlPackage getXmlPackage();
 
 } //XmlFactory

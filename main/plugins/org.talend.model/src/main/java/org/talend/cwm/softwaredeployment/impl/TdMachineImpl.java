@@ -16,30 +16,28 @@ import orgomg.cwm.foundation.softwaredeployment.impl.MachineImpl;
  * <!-- begin-user-doc -->
  * An implementation of the model object '<em><b>Td Machine</b></em>'.
  * <!-- end-user-doc -->
- * <p>
- * </p>
  *
  * @generated
  */
 public class TdMachineImpl extends MachineImpl implements TdMachine {
 
-    /**
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
-     * @generated
-     */
-    protected TdMachineImpl() {
-        super();
-    }
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	protected TdMachineImpl() {
+		super();
+	}
 
-    /**
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
-     * @generated
-     */
-    @Override
-    protected EClass eStaticClass() {
-        return SoftwaredeploymentPackage.Literals.TD_MACHINE;
-    }
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	@Override
+	protected EClass eStaticClass() {
+		return SoftwaredeploymentPackage.Literals.TD_MACHINE;
+	}
 
 } //TdMachineImpl

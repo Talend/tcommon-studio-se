@@ -2845,6 +2845,10 @@ public class RepositoryToComponentProperty {
         if (value.equals("USE_ENCODING")) {
             return connection.isUseFileNameEncoding();
         }
+        
+        if(value.equals("CONNECTION_TIMEOUT")) {
+        	return connection.getTimeout();
+        }
 
         if (value.equals("ENCODING")) {
             if (isContextMode(connection, connection.getCustomEncode())) {
