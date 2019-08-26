@@ -36,6 +36,8 @@ public class StudioSSLContextProvider {
 
     private static final IPreferenceStore store = CoreRuntimePlugin.getInstance().getCoreService().getPreferenceStore();
 
+    private static StudioEncryption se = StudioEncryption.getStudioEncryption(null);
+
     public static synchronized SSLContext getContext() throws Exception {
         if (null == context) {
             buildContext();
@@ -50,8 +52,8 @@ public class StudioSSLContextProvider {
         String trustpath = store.getString(SSLPreferenceConstants.TRUSTSTORE_FILE);
         String trustpass = store.getString(SSLPreferenceConstants.TRUSTSTORE_PASSWORD);
         String trusttype = store.getString(SSLPreferenceConstants.TRUSTSTORE_TYPE);
-        keypass = StudioEncryption.decrypt(keypass);
-        trustpass = StudioEncryption.decrypt(trustpass);
+        keypass = se.decrypt(keypass);
+        trustpass = se.decrypt(trustpass);
         try {
             if (StringUtils.isEmpty(keypath) && StringUtils.isEmpty(trustpath)) {
                 context = null;
@@ -91,7 +93,7 @@ public class StudioSSLContextProvider {
         if (keyStore != null && !"".equals(keyStore.trim())) {
             System.setProperty(SSLPreferenceConstants.KEYSTORE_FILE, keyStore);
             System.setProperty(SSLPreferenceConstants.KEYSTORE_PASSWORD,
-                    StudioEncryption.decrypt(sslStore.getString(SSLPreferenceConstants.KEYSTORE_PASSWORD)));
+                    se.decrypt(sslStore.getString(SSLPreferenceConstants.KEYSTORE_PASSWORD)));
             System.setProperty(SSLPreferenceConstants.KEYSTORE_TYPE, sslStore.getString(SSLPreferenceConstants.KEYSTORE_TYPE));
         } else {
             System.clearProperty(SSLPreferenceConstants.KEYSTORE_FILE);
@@ -102,7 +104,7 @@ public class StudioSSLContextProvider {
         if (trustStore != null && !"".equals(trustStore.trim())) {
             System.setProperty(SSLPreferenceConstants.TRUSTSTORE_FILE, trustStore);
             System.setProperty(SSLPreferenceConstants.TRUSTSTORE_PASSWORD,
-                    StudioEncryption.decrypt(sslStore.getString(SSLPreferenceConstants.TRUSTSTORE_PASSWORD)));
+                    se.decrypt(sslStore.getString(SSLPreferenceConstants.TRUSTSTORE_PASSWORD)));
             System.setProperty(SSLPreferenceConstants.TRUSTSTORE_TYPE, sslStore.getString(SSLPreferenceConstants.TRUSTSTORE_TYPE));
         } else {
             System.clearProperty(SSLPreferenceConstants.TRUSTSTORE_FILE);

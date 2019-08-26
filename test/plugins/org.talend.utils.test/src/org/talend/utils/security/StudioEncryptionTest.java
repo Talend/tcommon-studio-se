@@ -12,26 +12,13 @@ package org.talend.utils.security;
 // 9 rue Pages 92150 Suresnes, France
 //
 // ============================================================================import org.junit.Test;
-import static org.junit.Assert.*;
-
-import java.io.File;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.Paths;
-import java.nio.file.StandardOpenOption;
-import java.util.Base64;
-
-import javax.crypto.KeyGenerator;
-import javax.crypto.SecretKey;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotEquals;
+import static org.junit.Assert.assertNotNull;
 
 import org.junit.Test;
-import org.talend.daikon.crypto.Encryption;
 
 public class StudioEncryptionTest {
-
-    static {
-        initStudioEncryption();
-    }
 
     private String input1 = "Talend";
 
@@ -67,17 +54,20 @@ public class StudioEncryptionTest {
 
     @Test
     public void testAESEncrypt() throws Exception {
-        assertNotEquals(input1, StudioEncryption.encrypt(input1));
-        assertEquals(input1, StudioEncryption.decrypt(StudioEncryption.encrypt(input1)));
+        assertNotEquals(input1, StudioEncryption.getStudioEncryption(null).encrypt(input1));
+        assertEquals(input1,
+                StudioEncryption.getStudioEncryption(null).decrypt(StudioEncryption.getStudioEncryption(null).encrypt(input1)));
 
-        assertNotEquals(input2, StudioEncryption.encrypt(input2));
-        assertEquals(input2, StudioEncryption.decrypt(StudioEncryption.encrypt(input2)));
+        assertNotEquals(input2, StudioEncryption.getStudioEncryption(null).encrypt(input2));
+        assertEquals(input2,
+                StudioEncryption.getStudioEncryption(null).decrypt(StudioEncryption.getStudioEncryption(null).encrypt(input2)));
 
-        assertNotEquals(input3, StudioEncryption.encrypt(input3));
-        assertEquals(input3, StudioEncryption.decrypt(StudioEncryption.encrypt(input3)));
+        assertNotEquals(input3, StudioEncryption.getStudioEncryption(null).encrypt(input3));
+        assertEquals(input3,
+                StudioEncryption.getStudioEncryption(null).decrypt(StudioEncryption.getStudioEncryption(null).encrypt(input3)));
 
         // ensure negative case
-        assertEquals(null, StudioEncryption.encrypt(null));
+        assertEquals(null, StudioEncryption.getStudioEncryption(null).encrypt(null));
     }
 
     @Test
@@ -89,50 +79,9 @@ public class StudioEncryptionTest {
     }
 
     @Test
-    public void testReadKeyFile() throws Exception {
-        byte[] keyData = getAESKeyData();
-        File keyFile = File.createTempFile("StudioEncryptionTest", "testReadKeyFile");
-        Path kp = Paths.get(keyFile.getAbsolutePath());
-        Files.write(kp, keyData, StandardOpenOption.WRITE);
-
-        byte[] readedData = StudioEncryption.readKeyFile(keyFile.getAbsolutePath());
-
-        assertArrayEquals("testReadKeyFile, unexpected key data readed", keyData, readedData);
-
-        try {
-            StudioEncryption.readKeyFile("not exist");
-        } catch (IllegalArgumentException e) {
-            assertTrue("", e.getMessage().contains("Invalid key"));
-        }
-    }
-
-    @Test
     public void testGetStudioEncryption() throws Exception {
 
-        byte[] keyData = getAESKeyData();
-        assertNotNull(StudioEncryption.getStudioEncryption(keyData));
+        assertNotNull(StudioEncryption.getStudioEncryption(null));
 
-    }
-
-    private static void initStudioEncryption() {
-        try {
-            byte[] keyData = getAESKeyData();
-            String keyStr = Base64.getEncoder().encodeToString(keyData);
-            System.setProperty("encryption.key", keyStr);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-    }
-
-    private static byte[] getAESKeyData() {
-        try {
-            KeyGenerator kg = KeyGenerator.getInstance("AES");
-            kg.init(128);
-            SecretKey key = kg.generateKey();
-            return key.getEncoded();
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-        return null;
     }
 }

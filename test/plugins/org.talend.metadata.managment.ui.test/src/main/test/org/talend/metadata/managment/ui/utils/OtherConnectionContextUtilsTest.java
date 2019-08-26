@@ -45,7 +45,8 @@ public class OtherConnectionContextUtilsTest {
         createContextParameter("SAPBW_Client", "001");
         createContextParameter("SAPBW_Host", "a.b.c.d");
         createContextParameter("SAPBW_Username", "Talend");
-        ContextParameterType param = createContextParameter("SAPBW_Password", StudioEncryption.encrypt("123456"));
+        ContextParameterType param = createContextParameter("SAPBW_Password",
+                StudioEncryption.getStudioEncryption(null).encrypt("123456"));
         param.setType("id_Password");
         param.setRawValue("123456");
         createContextParameter("SAPBW_SystemNumber", "00");

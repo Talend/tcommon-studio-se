@@ -1,13 +1,14 @@
 package org.talend.utils.security;
 
-import java.io.File;
-import java.io.IOException;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.Paths;
+import java.security.Provider;
+import java.security.Security;
 import java.util.Base64;
+import java.util.HashMap;
+import java.util.Map;
 
 import org.apache.log4j.Logger;
+import org.bouncycastle.jce.provider.BouncyCastleProvider;
+import org.talend.daikon.crypto.CipherSource;
 // ============================================================================
 //
 // Copyright (C) 2006-2019 Talend Inc. - www.talend.com
@@ -22,37 +23,105 @@ import org.apache.log4j.Logger;
 // ============================================================================
 import org.talend.daikon.crypto.CipherSources;
 import org.talend.daikon.crypto.Encryption;
+import org.talend.daikon.crypto.KeySource;
 import org.talend.daikon.crypto.KeySources;
 
 public class StudioEncryption {
 
-    //TODO We should remove default key after implements master key encryption algorithm
+    // TODO We should remove default key after implements master key encryption algorithm
     private static final String ENCRYPTION_KEY = "Talend_TalendKey";// The length of key should be 16, 24 or 32.
 
     private static Encryption defaultEncryption;
 
-    private static Encryption externalKeyEncryption;
+    private Encryption externalKeyEncryption;
 
     private static Logger logger = Logger.getLogger(StudioEncryption.class);
 
-    public static final String ENCRYPTION_KEY_PROPERTY = "encryption.key";
-
-    public static final String ENCRYPTION_KEY_FILE_PROPERTY = "encryption.key.file";
-
     static {
-        // get encryption from system property firstly
-        String keyDataStr = System.getProperty(ENCRYPTION_KEY_PROPERTY);
-        if (keyDataStr == null) {
-            String keyFilePath = System.getProperty(ENCRYPTION_KEY_FILE_PROPERTY, "");
-            byte[] keyData = readKeyFile(keyFilePath);
-            externalKeyEncryption = getStudioEncryption(keyData);
-        } else {
-            externalKeyEncryption = getStudioEncryption(decode64(keyDataStr));
+        if (null == Security.getProvider("BC")) {
+            Security.addProvider(new BouncyCastleProvider());
+        }
+    }
+    // Encryption key property names
+    public static final String KEY_SYSTEM = "system.encryption.key";
+
+    public static final String KEY_PROPERTY = "properties.encryption.key";
+
+    public static final String KEY_NEXUS = "tac.nexus.encryption.key";
+
+    private static final ThreadLocal<Map<String, KeySource>> localKeySources = ThreadLocal.withInitial(() -> {
+        Map<String, KeySource> cachedKeySources = new HashMap<String, KeySource>();
+        String[] keyNames = { KEY_SYSTEM, KEY_PROPERTY, KEY_NEXUS };
+        for (String keyName : keyNames) {
+            KeySource ks = loadKeySource(keyName);
+            if (ks != null) {
+                cachedKeySources.put(keyName, ks);
+            }
+        }
+        return cachedKeySources;
+    });
+
+    private StudioEncryption(String encryptionKeyName, String providerName) {
+
+        if (encryptionKeyName == null) {
+            encryptionKeyName = KEY_SYSTEM;
+        }
+        if (!encryptionKeyName.equals(KEY_SYSTEM) && !encryptionKeyName.equals(KEY_PROPERTY)
+                && !encryptionKeyName.equals(KEY_NEXUS)) {
+            RuntimeException e = new IllegalArgumentException("Invalid encryption key name: " + encryptionKeyName);
+            logger.error(e);
+            throw e;
         }
 
+        KeySource ks = localKeySources.get().get(encryptionKeyName);
+
+        if (ks == null) {
+            ks = loadKeySource(encryptionKeyName);
+        }
+        if (ks == null) {
+            RuntimeException e = new IllegalArgumentException("Can not load encryption key data: " + encryptionKeyName);
+            logger.error(e);
+            throw e;
+        }
+
+        localKeySources.get().put(encryptionKeyName, ks);
+        CipherSource cs = null;
+        if (providerName != null && !providerName.isEmpty()) {
+            Provider p = Security.getProvider(providerName);
+            cs = CipherSources.aes(p);
+        }
+
+        if (cs == null) {
+            cs = CipherSources.getDefault();
+        }
+
+        externalKeyEncryption = new Encryption(ks, cs);
     }
 
-    private StudioEncryption() {
+    private static KeySource loadKeySource(String encryptionKeyName) {
+        if (encryptionKeyName == null) {
+            encryptionKeyName = KEY_SYSTEM;
+        }
+
+        KeySource ks = KeySources.systemProperty(encryptionKeyName);
+
+        try {
+            if (ks.getKey() != null) {
+                return ks;
+            }
+        } catch (Exception e) {
+            logger.info("StudioEncryption, can not get encryption key from system property: " + encryptionKeyName);
+            ks = KeySources.file(encryptionKeyName);
+            try {
+                if (ks.getKey() != null) {
+                    return ks;
+                }
+            } catch (Exception ex) {
+                logger.info("StudioEncryption, can not get encryption key from file: " + encryptionKeyName);
+            }
+        }
+
+        return null;
     }
 
     public static String encryptPassword(String input, String key) throws Exception {
@@ -86,7 +155,7 @@ public class StudioEncryption {
         return new Encryption(KeySources.fixedKey(key), CipherSources.getDefault());
     }
 
-    public static String encrypt(String src) {
+    public String encrypt(String src) {
         // backward compatibility
         if (src == null) {
             return null;
@@ -100,7 +169,7 @@ public class StudioEncryption {
         return null;
     }
 
-    public static String decrypt(String src) {
+    public String decrypt(String src) {
         // backward compatibility
         if (src == null) {
             return null;
@@ -114,32 +183,27 @@ public class StudioEncryption {
         return null;
     }
 
+
     /**
-     * Read AES key data from given file
+     * Get instance of StudioEncryption with given encryption key name
+     * 
+     * keyName - encryption key name, supported names are
+     * StudioEncryption.KEY_SYSTEM,StudioEncryption.KEY_PROPERTY,StudioEncryption.KEY_NEXUS, by default, encrytion key
+     * name is StudioEncryption.KEY_SYSTEM
      */
-    public static byte[] readKeyFile(String keyFilePath) {
-        File f = new File(keyFilePath);
-        if (!f.exists()) {
-            IllegalArgumentException e = new IllegalArgumentException("Invalid key file: " + keyFilePath);
-            logger.error("readKeyFile error", e);
-            throw e;
-        }
-
-        Path path = Paths.get(f.getAbsolutePath());
-
-        try {
-            return Files.readAllBytes(path);
-        } catch (IOException e) {
-            logger.error("readKeyFile error", e);
-            throw new RuntimeException(e);
-        }
+    public static StudioEncryption getStudioEncryption(String keyName) {
+        return new StudioEncryption(keyName, null);
     }
 
     /**
-     * Get AES encryption according to the given AES key Data
+     * Get instance of StudioEncryption with given encryption key name, security provider is "BC"
+     * 
+     * keyName - encryption key name, supported names are
+     * StudioEncryption.KEY_SYSTEM,StudioEncryption.KEY_PROPERTY,StudioEncryption.KEY_NEXUS, by default, encrytion key
+     * name is StudioEncryption.KEY_SYSTEM
      */
-    public static Encryption getStudioEncryption(byte[] keyData) {
-        return new Encryption(() -> keyData, CipherSources.getDefault());
+    public static StudioEncryption getStudioBCEncryption(String keyName) {
+        return new StudioEncryption(keyName, "BC");
     }
 
     /**

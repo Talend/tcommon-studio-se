@@ -1201,12 +1201,13 @@ public class ConnectionImpl extends AbstractMetadataObjectImpl implements Connec
      */
     public String getValue(String value, boolean encrypt) {
         if (!isContextMode() && value != null && value.length() > 0) {
+            StudioEncryption se = StudioEncryption.getStudioEncryption(null);
             // Set default encrypt and decrypt methods
             if (this.encrypt == null) {
-                this.encrypt = (src) -> StudioEncryption.encrypt(src);
+                this.encrypt = (src) -> se.encrypt(src);
             }
             if (this.decrypt == null) {
-                this.decrypt = (src) -> StudioEncryption.decrypt(src);
+                this.decrypt = (src) -> se.decrypt(src);
             }
             String newValue = null;
             if (encrypt) {

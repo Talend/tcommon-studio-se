@@ -43,8 +43,8 @@ import org.talend.cwm.relational.TdColumn;
 import org.talend.cwm.softwaredeployment.TdSoftwareSystem;
 import org.talend.cwm.xml.TdXmlElementType;
 import org.talend.cwm.xml.TdXmlSchema;
-import org.talend.utils.security.StudioEncryption;
 import org.talend.utils.security.CryptoHelperWrapper;
+import org.talend.utils.security.StudioEncryption;
 
 import orgomg.cwm.foundation.softwaredeployment.Component;
 import orgomg.cwm.foundation.softwaredeployment.DataManager;
@@ -74,7 +74,7 @@ public class ConnectionHelper {
     // V9O6cZ2i374fVjdV76VX9g49DG1r3n90hT5c1"; //$NON-NLS-1$
 
     // ~
-
+    private static StudioEncryption se = StudioEncryption.getStudioEncryption(null);
     private static Logger log = Logger.getLogger(ConnectionHelper.class);
 
     /**
@@ -1165,7 +1165,7 @@ public class ConnectionHelper {
      * @return
      */
     public static String getDecryptPassword(String password) {
-        return StudioEncryption.decrypt(password);
+        return se.decrypt(password);
     }
 
     /**
@@ -1175,7 +1175,7 @@ public class ConnectionHelper {
      * @return
      */
     public static String getEncryptPassword(String password) {
-        return StudioEncryption.encrypt(password);
+        return se.encrypt(password);
     }
 
     /**

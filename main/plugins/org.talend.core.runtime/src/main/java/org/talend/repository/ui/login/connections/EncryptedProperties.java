@@ -22,9 +22,11 @@ import org.talend.utils.security.StudioEncryption;
  */
 public class EncryptedProperties extends Properties {
 
+    private StudioEncryption se = StudioEncryption.getStudioEncryption(StudioEncryption.KEY_PROPERTY);
+
     public String getProperty(String key) {
         try {
-            return StudioEncryption.decrypt(super.getProperty(key));
+            return se.decrypt(super.getProperty(key));
         } catch (Exception e) {
             throw new RuntimeException("Couldn't decrypt property");
         }
@@ -32,7 +34,7 @@ public class EncryptedProperties extends Properties {
 
     public synchronized Object setProperty(String key, String value) {
         try {
-            return super.setProperty(key, StudioEncryption.encrypt(value));
+            return super.setProperty(key, se.encrypt(value));
         } catch (Exception e) {
             throw new RuntimeException("Couldn't encrypt property");
         }

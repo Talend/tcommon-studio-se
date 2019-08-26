@@ -1,6 +1,6 @@
 package org.talend.core.model.metadata.designerproperties;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
 
 import org.junit.Test;
 import org.talend.core.model.metadata.builder.connection.ConnectionFactory;
@@ -20,7 +20,7 @@ public class RepositoryToComponentPropertyForPasswordTest {
     public void testGetPassword() {
         DatabaseConnection dbConnection = ConnectionFactory.eINSTANCE.createDatabaseConnection();
         dbConnection.setContextMode(false);
-        String encryptPassword = StudioEncryption.encrypt("thepassword"); //$NON-NLS-1$
+        String encryptPassword = StudioEncryption.getStudioEncryption(null).encrypt("thepassword"); //$NON-NLS-1$
         dbConnection.setPassword(encryptPassword);
         Object resultPassword = RepositoryToComponentProperty.getValue(dbConnection, "PASSWORD", null); //$NON-NLS-1$
         assertEquals("\"thepassword\"", resultPassword); //$NON-NLS-1$
