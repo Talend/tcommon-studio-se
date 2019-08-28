@@ -1190,12 +1190,22 @@ public class ProcessorUtilities {
     public static void cleanSourceFolder(IProgressMonitor progressMonitor, IProcess currentProcess,
             IProcessor processor) {
         try {
+            ITalendProcessJavaProject jobProject = processor.getTalendJavaProject();
+            // clean up source code
             IPath codePath = processor.getSrcCodePath().removeLastSegments(2);
-            IFolder srcFolder = processor.getTalendJavaProject().getProject().getFolder(codePath);
+            IFolder srcFolder = jobProject.getProject().getFolder(codePath);
             String jobPackageFolder = JavaResourcesHelper.getJobClassPackageFolder(currentProcess);
             for (IResource resource : srcFolder.members()) {
                 if (!resource.getProjectRelativePath().toPortableString().endsWith(jobPackageFolder)) {
                     resource.delete(true, progressMonitor);
+                }
+            }
+            // clean up resources folder if needed
+            if (ProcessorUtilities.isExportConfig() && !designerCoreService.isNeedContextInJar(currentProcess)) {
+                for (IResource resource : jobProject.getResourcesFolder().members()) {
+                    if (resource.exists()) {
+                        resource.delete(true, progressMonitor);
+                    }
                 }
             }
         } catch (CoreException e) {
