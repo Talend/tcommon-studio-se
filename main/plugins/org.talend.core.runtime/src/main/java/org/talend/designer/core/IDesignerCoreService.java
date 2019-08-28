@@ -195,4 +195,7 @@ public interface IDesignerCoreService extends IService {
     public void setTACReadTimeout(int timeout);
 
     boolean isDelegateNode(INode node);
+
+    boolean isNeedContextInJar(IProcess process);
+
 }
