@@ -331,7 +331,7 @@ public class SelectRepositoryContextDialog extends SelectionDialog {
                     if (showWarning) {
                         String message = null;
                         if (helper.existParameterForJob(existedParam)) {
-                            message = Messages.getString("SelectRepositoryContextDialog.ExistenceMessage", existedParam.getName(), //$NON-NLS-1$
+                            message = Messages.getString("SelectRepositoryContextDialog.ExistenceMessage", param.getName(), //$NON-NLS-1$
                                     selectedContextName);
                         } else {
                             message = Messages.getString("SelectRepositoryContextDialog.DuplicationMessage", //$NON-NLS-1$
@@ -429,7 +429,7 @@ public class SelectRepositoryContextDialog extends SelectionDialog {
             if (item != contextItem) {
                 ContextType type = helper.getDefaultContextType(contextItem);
                 for (ContextParameterType param : (List<ContextParameterType>) type.getContextParameter()) {
-                    if (param.getName().equals(paramType.getName()) && treeViewer.getChecked(param)) {
+                    if (param.getName().equalsIgnoreCase(paramType.getName()) && treeViewer.getChecked(param)) {
                         selectedContextName = contextItem.getProperty().getLabel();
                         return param;
                     }
