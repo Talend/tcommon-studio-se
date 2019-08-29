@@ -98,6 +98,15 @@ public class JobContext implements IContext, Cloneable {
         return true;
     }
 
+    public boolean containsSameParameterIgnoreCase(String parameterName) {
+        for (IContextParameter contextParam : contextParameterList) {
+            if (contextParam.getName() != null && contextParam.getName().equalsIgnoreCase(parameterName)) {
+                return true;
+            }
+        }
+        return false;
+    }
+
     /**
      * Commented by Marvin Wang on Mar.2, 2012, the user who invokes the method should notice that if the
      * <code>JobContext</code> has more than one <code>ContextParameter</code>s which names are same, this case will

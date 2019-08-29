@@ -1672,7 +1672,7 @@ public final class ConnectionContextHelper {
                     }
                 }
                 for (String var : neededVars) {
-                    if (context.getContextParameter(var) != null) {
+                    if (context.containsSameParameterIgnoreCase(var)) {
                         continue;
                     }
                     ContextParameterType param = ContextUtils.getContextParameterTypeByName(type, var);

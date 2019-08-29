@@ -62,4 +62,6 @@ public interface IContext {
     public IContext clone();
 
     public boolean sameAs(IContext context);
+
+    public boolean containsSameParameterIgnoreCase(String parameterName);
 }
