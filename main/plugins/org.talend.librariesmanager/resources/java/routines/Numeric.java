@@ -6,10 +6,11 @@
 package routines;
 
 import java.math.BigDecimal;
+import java.util.concurrent.ConcurrentHashMap;
 
 public class Numeric {
 
-    private static final java.util.Map<String, Integer> seq_Hash = new java.util.HashMap<String, Integer>();
+    private static final java.util.Map<String, Integer> seq_Hash = new ConcurrentHashMap<>();
 
     /**
      * return an incremented numeric id
@@ -30,13 +31,8 @@ public class Numeric {
      *
      */
     public static Integer sequence(String seqName, int startValue, int step) {
-        if (seq_Hash.containsKey(seqName)) {
-            seq_Hash.put(seqName, seq_Hash.get(seqName) + step);
-            return seq_Hash.get(seqName);
-        } else {
-            seq_Hash.put(seqName, startValue);
-            return startValue;
-        }
+        return seq_Hash.compute(seqName,
+                (String k,  Integer v) -> v == null ? startValue : v + step);
     }
 
     /**
