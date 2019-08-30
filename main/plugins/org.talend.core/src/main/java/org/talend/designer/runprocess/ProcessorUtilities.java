@@ -2587,8 +2587,21 @@ public class ProcessorUtilities {
         return doSupportDynamicHadoopConfLoading(property) && !isExportAsOSGI();
     }
 
-    public static boolean isEsbJob(String processId, String version) {
-        return esbJobs.contains(esbJobKey(processId, version));
+    public static boolean isEsbJob(IProcess process) {
+        if (process instanceof IProcess2) {
+            Set<JobInfo> infos = ProcessorUtilities.getChildrenJobInfo(((IProcess2) process).getProperty().getItem(), false);
+            for (JobInfo jobInfo : infos) {
+                ProcessType processType = jobInfo.getProcessItem().getProcess();
+                EList<NodeType> nodes = processType.getNode();
+                for (NodeType nodeType : nodes) {
+                    if (isEsbComponentName(nodeType.getComponentName())) {
+                        return true;
+                    }
+                }
+            }
+            return false;
+        }
+        return false;
     }
 
     private static void addEsbJob(JobInfo jobInfo) {
