@@ -715,6 +715,13 @@ public class SelectRepositoryContextDialog extends SelectionDialog {
                 if (param != null && param.isBuiltIn()) {
                     return false;
                 }
+                if (param == null) {
+                    boolean containsSameParameterIgnoreCase = manager.getDefaultContext()
+                            .containsSameParameterIgnoreCase(paramType.getName());
+                    if (containsSameParameterIgnoreCase) {
+                        return false;
+                    }
+                }
             }
             return true;
         }
