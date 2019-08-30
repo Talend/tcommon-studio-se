@@ -24,6 +24,7 @@ import java.util.Set;
 
 import org.apache.commons.lang3.StringUtils;
 import org.apache.log4j.Priority;
+import org.eclipse.emf.common.util.EList;
 import org.talend.commons.exception.ExceptionHandler;
 import org.talend.core.GlobalServiceRegister;
 import org.talend.core.model.metadata.builder.connection.Connection;
@@ -123,66 +124,99 @@ public class ChangeIdManager {
 
     public void changeIds() throws Exception {
         buildRefIds2ItemIdsMap();
-        for (Map.Entry<String, String> entry : oldId2NewIdMap.entrySet()) {
-            changeId(entry.getValue(), entry.getKey());
-        }
-    }
 
-    private void changeId(String newId, String oldId) throws Exception {
+        Map<String, Set<String>> changeIdMap = buildChangeIdMap();
 
-        if (newId == null || StringUtils.equals(newId, oldId)) {
-            return;
-        }
-
-        Set<String> relationIds = new HashSet<String>();
-        Collection<String> itemIds = refIds2ItemIdsMap.get(oldId);
-        if (itemIds != null && !itemIds.isEmpty()) {
-            relationIds.addAll(itemIds);
-        }
-
-        List<Relation> relations = getRelations(oldId);
-        for (Relation relation : relations) {
-            String projectLabel = ProcessUtils.getProjectLabelFromItemId(relation.getId());
-            if (projectLabel != null
-                    && !projectLabel.equals(ProjectManager.getInstance().getCurrentProject().getTechnicalLabel())) {
-                continue;
-            }
-            relationIds.add(ProcessUtils.getPureItemId(relation.getId()));
-        }
-
-        if (relationIds.isEmpty()) {
-            return;
-        }
-
-        Set<String> changedIds = new HashSet<String>();
-        for (String relationId : relationIds) {
-            String id = relationId;
-            if (!oldId2NewIdMap.containsKey(id)) {
+        for (Map.Entry<String, Set<String>> entry : changeIdMap.entrySet()) {
+            String oldEffectedId = entry.getKey();
+            if (!oldId2NewIdMap.containsKey(oldEffectedId)) {
                 // means didn't import this item
                 continue;
             }
-
-            if (changedIds.contains(id)) {
+            String newEffectedId = oldId2NewIdMap.get(oldEffectedId);
+            if (StringUtils.equals(oldEffectedId, newEffectedId)) {
                 continue;
-            } else {
-                changedIds.add(id);
             }
-
-            List<ImportItem> importItems = id2ImportItemsMap.get(id);
-            ERepositoryObjectType repType = importItems.get(0).getRepositoryType();
-            String newRelatedId = oldId2NewIdMap.get(id);
-            if (newRelatedId == null) {
+            if (StringUtils.isBlank(newEffectedId)) {
                 // means the id didn't be changed
-                newRelatedId = id;
+                newEffectedId = oldEffectedId;
             }
-            List<IRepositoryViewObject> repViewObjs = getAllVersion(newRelatedId, repType);
+            List<ImportItem> importItems = id2ImportItemsMap.get(oldEffectedId);
+            ERepositoryObjectType repType = importItems.get(0).getRepositoryType();
+            List<IRepositoryViewObject> repViewObjs = getAllVersion(newEffectedId, repType);
             if (repViewObjs != null && !repViewObjs.isEmpty()) {
                 for (IRepositoryViewObject repViewObj : repViewObjs) {
+                    Map<String, String> old2NewMap = new HashMap<>();
+                    for (String oldId : entry.getValue()) {
+                        String newId = oldId2NewIdMap.get(oldId);
+                        if (StringUtils.equals(newId, oldId)) {
+                            continue;
+                        }
+                        old2NewMap.put(oldId, newId);
+                    }
                     Property property = repViewObj.getProperty();
-                    changeRelated(newId, oldId, property, getCurrentProject());
+                    changeRelated(old2NewMap, property, getCurrentProject());
+                    String version = property.getVersion();
+                    for (ImportItem importItem : importItems) {
+                        if (StringUtils.equals(version, importItem.getItemVersion())) {
+                            // update property, it will be used in following steps
+                            importItem.setProperty(property);
+                            break;
+                        }
+                    }
                 }
             }
         }
+    }
+
+    private Map<String, Set<String>> buildChangeIdMap() {
+        Map<String, Set<String>> effectedIdsMap = new HashMap<>();
+
+        for (Map.Entry<String, String> entry : oldId2NewIdMap.entrySet()) {
+            String oldId = entry.getKey();
+            String newId = entry.getValue();
+            if (newId == null || StringUtils.equals(newId, oldId)) {
+                continue;
+            }
+
+            Set<String> relationIds = new HashSet<String>();
+            Collection<String> itemIds = refIds2ItemIdsMap.get(oldId);
+            if (itemIds != null && !itemIds.isEmpty()) {
+                relationIds.addAll(itemIds);
+            }
+
+            List<Relation> relations = getRelations(oldId);
+            for (Relation relation : relations) {
+                relationIds.add(ProcessUtils.getPureItemId(relation.getId()));
+            }
+
+            if (relationIds.isEmpty()) {
+                continue;
+            }
+
+            Set<String> idSet = effectedIdsMap.get(oldId);
+            if (idSet == null) {
+                idSet = new HashSet<>();
+                effectedIdsMap.put(oldId, idSet);
+            }
+            idSet.addAll(relationIds);
+        }
+
+        Map<String, Set<String>> changeIdMap = new HashMap<>();
+        for (Map.Entry<String, Set<String>> entry : effectedIdsMap.entrySet()) {
+            String oldId = entry.getKey();
+            Set<String> effectedIds = entry.getValue();
+
+            for (String effectedId : effectedIds) {
+                Set<String> changeSet = changeIdMap.get(effectedId);
+                if (changeSet == null) {
+                    changeSet = new HashSet<>();
+                    changeIdMap.put(effectedId, changeSet);
+                }
+                changeSet.add(oldId);
+            }
+        }
+        return changeIdMap;
     }
 
     private List<IRepositoryViewObject> getAllVersion(String id, ERepositoryObjectType repType) throws Exception {
@@ -253,16 +287,16 @@ public class ChangeIdManager {
         return relations;
     }
 
-    private void changeRelated(String newId, String oldId, Property property, org.talend.core.model.general.Project project)
-            throws Exception {
+    private void changeRelated(Map<String, String> old2NewMap, Property property,
+            org.talend.core.model.general.Project project) throws Exception {
         Item item = property.getItem();
         boolean modified = false;
         if (item instanceof ProcessItem) {
-            modified = changeRelatedProcess(newId, oldId, item);
+            modified = changeRelatedProcess(old2NewMap, item);
         } else if (item instanceof JobletProcessItem) {
-            modified = changeRelatedProcess(newId, oldId, item);
+            modified = changeRelatedProcess(old2NewMap, item);
         } else if (item instanceof ConnectionItem) {
-            modified = changeRelatedConnection(newId, oldId, (ConnectionItem) item);
+            modified = changeRelatedConnection(old2NewMap, (ConnectionItem) item);
         } else {
             throw new Exception("Unsupported id change: id[" + property.getId() + "], name[" + property.getLabel() + "]"); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
         }
@@ -272,21 +306,40 @@ public class ChangeIdManager {
         }
     }
 
-    private boolean changeRelatedConnection(String newId, String oldId, ConnectionItem item) throws Exception {
+    private boolean changeRelatedConnection(Map<String, String> old2NewMap, ConnectionItem item) throws Exception {
         boolean modified = false;
         Connection conn = item.getConnection();
         String ctxId = conn.getContextId();
-        if (StringUtils.equals(oldId, ctxId)) {
-            conn.setContextId(newId);
-            modified = true;
-        } else {
+        for (Map.Entry<String, String> entry : old2NewMap.entrySet()) {
+            if (StringUtils.equals(entry.getKey(), ctxId)) {
+                conn.setContextId(entry.getValue());
+                modified = true;
+            }
+        }
+        if (!modified) {
             throw new Exception("Unhandled case for import: " + item.toString()); //$NON-NLS-1$
         }
         return modified;
     }
 
-    private boolean changeRelatedProcess(String newId, String oldId, Item item) throws Exception {
+    private boolean changeRelatedProcess(Map<String, String> old2NewMap, Item item) throws Exception {
         boolean modified = false;
+
+        ProcessItem processItem = (ProcessItem) item;
+        ProcessType processType = processItem.getProcess();
+
+        /**
+         * change context repository id
+         */
+        if (processType != null) {
+            EList context = processType.getContext();
+            if (context != null) {
+                for (Map.Entry<String, String> entry : old2NewMap.entrySet()) {
+                    changeValue(context, entry.getKey(), entry.getValue());
+                }
+                modified = true;
+            }
+        }
 
         /**
          * designerCoreService must not be null
@@ -310,14 +363,18 @@ public class ChangeIdManager {
         // }
         IContextManager contextManager = process.getContextManager();
         if (contextManager != null) {
-            changeValue(contextManager.getListContext(), oldId, newId);
+            for (Map.Entry<String, String> entry : old2NewMap.entrySet()) {
+                changeValue(contextManager.getListContext(), entry.getKey(), entry.getValue());
+            }
             modified = true;
         }
 
         /**
          * 2. change elementParameters
          */
-        changeValue(process.getElementParameters(), oldId, newId);
+        for (Map.Entry<String, String> entry : old2NewMap.entrySet()) {
+            changeValue(process.getElementParameters(), entry.getKey(), entry.getValue());
+        }
         modified = true;
 
         /**
@@ -329,7 +386,9 @@ public class ChangeIdManager {
             while (nodeIter.hasNext()) {
                 INode node = nodeIter.next();
                 if (node != null) {
-                    changeParamValueOfNode(node, oldId, newId);
+                    for (Map.Entry<String, String> entry : old2NewMap.entrySet()) {
+                        changeParamValueOfNode(node, entry.getKey(), entry.getValue());
+                    }
                 }
             }
             modified = true;
@@ -337,7 +396,7 @@ public class ChangeIdManager {
 
         if (modified) {
             if (process instanceof IProcess2) {
-                ProcessType processType = ((IProcess2) process).saveXmlFile();
+                processType = ((IProcess2) process).saveXmlFile();
                 if (item instanceof ProcessItem) {
                     ((ProcessItem) item).setProcess(processType);
                 } else if (item instanceof JobletProcessItem) {

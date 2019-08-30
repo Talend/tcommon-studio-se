@@ -50,6 +50,9 @@ import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.events.TraverseEvent;
 import org.eclipse.swt.events.TraverseListener;
+import org.eclipse.swt.layout.FormAttachment;
+import org.eclipse.swt.layout.FormData;
+import org.eclipse.swt.layout.FormLayout;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Button;
@@ -57,6 +60,7 @@ import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.DirectoryDialog;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.FileDialog;
+import org.eclipse.swt.widgets.Group;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Text;
 import org.eclipse.swt.widgets.TreeItem;
@@ -140,6 +144,8 @@ public class ImportItemsWizardPage extends WizardPage {
     private IStructuredSelection selection;
 
     private final ImportExportHandlersManager importManager = new ImportExportHandlersManager();
+
+    private Button regenIdBtn;
 
     /**
      *
@@ -498,8 +504,29 @@ public class ImportItemsWizardPage extends WizardPage {
      * @param workArea
      */
     private void createAdditionArea(Composite workArea) {
+        Composite optionsArea = new Composite(workArea, SWT.NONE);
+        FormLayout optAreaLayout = new FormLayout();
+        optionsArea.setLayout(optAreaLayout);
+        GridData gridData = new GridData(GridData.GRAB_HORIZONTAL | GridData.GRAB_VERTICAL | GridData.FILL_BOTH);
+        optionsArea.setLayoutData(gridData);
+
+        Group internalIdGroup = new Group(optionsArea, SWT.NONE);
+        internalIdGroup.setText(Messages.getString("ImportItemsWizardPage_internalIdGroup"));
+        internalIdGroup.setLayout(new GridLayout(1, true));
+        FormData internalIdGroupLayoutData = new FormData();
+        internalIdGroupLayoutData.top = new FormAttachment(0);
+        internalIdGroupLayoutData.left = new FormAttachment(0);
+        internalIdGroup.setLayoutData(internalIdGroupLayoutData);
+
+        regenIdBtn = new Button(internalIdGroup, SWT.RADIO);
+        regenIdBtn.setText(Messages.getString("ImportItemsWizardPage_internalIdGroup_alwaysRegenId"));
+        regenIdBtn.setSelection(true);
+
+        Button keepOrigIdBtn = new Button(internalIdGroup, SWT.RADIO);
+        keepOrigIdBtn.setText(Messages.getString("ImportItemsWizardPage_internalIdGroup_keepOrigId"));
+
         // see feature 3949
-        this.overwriteButton = new Button(workArea, SWT.CHECK);
+        this.overwriteButton = new Button(optionsArea, SWT.CHECK);
         this.overwriteButton.setText(Messages.getString("ImportItemsWizardPage_overwriteItemsText")); //$NON-NLS-1$
         this.overwriteButton.addSelectionListener(new SelectionAdapter() {
 
@@ -511,6 +538,11 @@ public class ImportItemsWizardPage extends WizardPage {
             }
 
         });
+        FormData overwriteLayoutData = new FormData();
+        overwriteLayoutData.top = new FormAttachment(internalIdGroup, 5, SWT.BOTTOM);
+        overwriteLayoutData.left = new FormAttachment(internalIdGroup, 0, SWT.LEFT);
+        this.overwriteButton.setLayoutData(overwriteLayoutData);
+
     }
 
     protected boolean isEnableForExchange() {
@@ -982,6 +1014,7 @@ public class ImportItemsWizardPage extends WizardPage {
         }
 
         final boolean overwrite = overwriteButton.getSelection();
+        final boolean alwaysRegenId = regenIdBtn.getSelection();
         try {
             IRunnableWithProgress iRunnableWithProgress = new IRunnableWithProgress() {
 
@@ -1008,7 +1041,7 @@ public class ImportItemsWizardPage extends WizardPage {
                         EmfResourcesFactoryReader.INSTANCE.addOption(importOption, false);
 
                         importManager.importItemRecords(monitor, resManager, checkedItemRecords, overwrite,
-                                nodesBuilder.getAllImportItemRecords(), destinationPath);
+                                nodesBuilder.getAllImportItemRecords(), destinationPath, alwaysRegenId);
                     } finally {
                         EmfResourcesFactoryReader.INSTANCE.removOption(importOption, false);
                     }
