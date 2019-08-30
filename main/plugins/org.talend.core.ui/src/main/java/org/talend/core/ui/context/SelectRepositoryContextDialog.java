@@ -429,7 +429,7 @@ public class SelectRepositoryContextDialog extends SelectionDialog {
             if (item != contextItem) {
                 ContextType type = helper.getDefaultContextType(contextItem);
                 for (ContextParameterType param : (List<ContextParameterType>) type.getContextParameter()) {
-                    if (param.getName().equalsIgnoreCase(paramType.getName()) && treeViewer.getChecked(param)) {
+                    if (param.getName().equals(paramType.getName()) && treeViewer.getChecked(param)) {
                         selectedContextName = contextItem.getProperty().getLabel();
                         return param;
                     }
