@@ -26,8 +26,6 @@ import org.talend.datatools.xml.utils.ATreeNode;
  */
 public class JsonTreePopulator extends AbstractTreePopulator {
 
-    private TreeViewer treeViewer;
-
     private String jsonValue;
 
     public JsonTreePopulator(TreeViewer treeViewer) {
@@ -175,11 +173,16 @@ public class JsonTreePopulator extends AbstractTreePopulator {
     }
 
     private TreeItem getTreeItem(TreeItem[] treeItems, String absolutePath) {
+    	TreeItem item = null;
         if (treeItems == null || treeItems.length == 0) {
             return null;
         }
         for (TreeItem treeItem : treeItems) {
+        	item = treeItem;
             Object obj = treeItem.getData();
+            if (obj == null) {
+                return treeItem;
+            }
             if (obj instanceof JsonTreeNode) {
                 String jsonPath = SchemaPopulationUtil.getFilteredJsonPath(((JsonTreeNode) obj).getJsonPath());
                 if (absolutePath.equals(jsonPath)) {
@@ -191,7 +194,7 @@ public class JsonTreePopulator extends AbstractTreePopulator {
                 }
             }
         }
-        return null;
+        return item;
     }
 
     @Override

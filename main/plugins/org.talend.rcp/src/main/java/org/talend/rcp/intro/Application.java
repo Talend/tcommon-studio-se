@@ -16,6 +16,7 @@ import java.io.File;
 import java.io.IOException;
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.nio.file.Paths;
 
 import org.apache.commons.lang.ArrayUtils;
 import org.apache.commons.lang3.StringUtils;
@@ -81,6 +82,9 @@ public class Application implements IApplication {
     private static final String TALEND_FORCE_INITIAL_WORKSPACE_PROMPT_SYS_PROP =
             "talend.force.initial.workspace.prompt"; //$NON-NLS-1$
 
+    private static final String ENCRYPTION_KEY_FILE_SYS_PROP = "encryption.keys.file";
+
+    private static final String ENCRYPTION_KEY_FILE_NAME = "studio.keys";
     private static Logger log = Logger.getLogger(Application.class);
 
     /**
@@ -99,7 +103,12 @@ public class Application implements IApplication {
             return IApplication.EXIT_RELAUNCH;
         }
         System.setProperty(TalendPropertiesUtil.PROD_APP, this.getClass().getName());
+        File confDir = ConfigurationScope.INSTANCE.getLocation().toFile();
+        String encryptionKeyFilePath = Paths.get(confDir.getAbsolutePath(), ENCRYPTION_KEY_FILE_NAME).toString();
+        log.info("encryptionKeyFilePath: " + encryptionKeyFilePath);
 
+        System.setProperty(ENCRYPTION_KEY_FILE_SYS_PROP, encryptionKeyFilePath);
+        
         Display display = PlatformUI.createDisplay();
         try {
             // TUP-5816 don't put any code ahead of this part unless you make sure it won't trigger workspace
@@ -120,7 +129,7 @@ public class Application implements IApplication {
                 EclipseCommandLine.updateOrCreateExitDataPropertyWithCommand(EclipseCommandLine.CLEAN, null, false);
                 return IApplication.EXIT_RELAUNCH;
             }
-
+            
             StudioSSLContextProvider.setSSLSystemProperty();
             HttpProxyUtil.initializeHttpProxy();
             TalendProxySelector.getInstance();

@@ -35,10 +35,6 @@ public class StudioEncryption {
 
     private Encryption externalKeyEncryption;
 
-    public static String PREFIX_PASSWORD = "ENC:["; //$NON-NLS-1$
-
-    public static String POSTFIX_PASSWORD = "]"; //$NON-NLS-1$
-
     private static Logger logger = Logger.getLogger(StudioEncryption.class);
 
     static {
@@ -46,12 +42,17 @@ public class StudioEncryption {
             Security.addProvider(new BouncyCastleProvider());
         }
     }
+
+    public static String PREFIX_PASSWORD = "ENC:["; //$NON-NLS-1$
+
+    public static String POSTFIX_PASSWORD = "]"; //$NON-NLS-1$
+
     // Encryption key property names
-    public static final String KEY_SYSTEM = "system.encryption.key";
+    public static final String KEY_SYSTEM = "system.encryption.key.v1";
 
-    public static final String KEY_PROPERTY = "properties.encryption.key";
+    public static final String KEY_PROPERTY = "properties.encryption.key.v1";
 
-    public static final String KEY_NEXUS = "tac.nexus.encryption.key";
+    public static final String KEY_NEXUS = "tac.nexus.encryption.key.v1";
 
     private static final ThreadLocal<Map<String, KeySource>> localKeySources = ThreadLocal.withInitial(() -> {
         Map<String, KeySource> cachedKeySources = new HashMap<String, KeySource>();
@@ -81,6 +82,9 @@ public class StudioEncryption {
 
         if (ks == null) {
             ks = loadKeySource(encryptionKeyName);
+            if (ks != null) {
+                localKeySources.get().put(encryptionKeyName, ks);
+            }
         }
         if (ks == null) {
             RuntimeException e = new IllegalArgumentException("Can not load encryption key data: " + encryptionKeyName);
@@ -88,7 +92,6 @@ public class StudioEncryption {
             throw e;
         }
 
-        localKeySources.get().put(encryptionKeyName, ks);
         CipherSource cs = null;
         if (providerName != null && !providerName.isEmpty()) {
             Provider p = Security.getProvider(providerName);
@@ -181,14 +184,14 @@ public class StudioEncryption {
 
     public String decrypt(String src) {
         // backward compatibility
-        if (src == null) {
+        if (src == null || src.isEmpty()) {
             return null;
         }
         try {
             return externalKeyEncryption.decrypt(src);
         } catch (Exception e) {
             // backward compatibility
-            logger.error("decrypt error", e);
+            logger.info("decrypt error", e);
         }
         return null;
     }
@@ -231,6 +234,12 @@ public class StudioEncryption {
     }
 
     public static boolean isEncypted(String input) {
+        if (input == null || input.length() == 0) {
+            return false;
+        }
+        if (input.startsWith(PREFIX_PASSWORD) && input.endsWith(POSTFIX_PASSWORD)) {
+            return true;
+        }
         return false;
     }
 }

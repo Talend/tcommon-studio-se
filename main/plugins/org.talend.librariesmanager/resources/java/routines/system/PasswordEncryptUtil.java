@@ -55,7 +55,7 @@ public class PasswordEncryptUtil {
 
     private static Encryption getEncryption() {
         if (defaultEncryption == null) {
-            defaultEncryption = new Encryption(KeySources.fixedKey(ENCRYPTION_KEY), CipherSources.aes());
+            defaultEncryption = new Encryption(KeySources.fixedKey(ENCRYPTION_KEY), CipherSources.getDefault());
         }
         return defaultEncryption;
     }
