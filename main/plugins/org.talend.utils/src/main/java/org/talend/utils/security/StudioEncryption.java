@@ -1,14 +1,3 @@
-package org.talend.utils.security;
-
-import java.security.Provider;
-import java.security.Security;
-import java.util.Base64;
-import java.util.HashMap;
-import java.util.Map;
-
-import org.apache.log4j.Logger;
-import org.bouncycastle.jce.provider.BouncyCastleProvider;
-import org.talend.daikon.crypto.CipherSource;
 // ============================================================================
 //
 // Copyright (C) 2006-2019 Talend Inc. - www.talend.com
@@ -21,6 +10,17 @@ import org.talend.daikon.crypto.CipherSource;
 // 9 rue Pages 92150 Suresnes, France
 //
 // ============================================================================
+package org.talend.utils.security;
+
+import java.security.Provider;
+import java.security.Security;
+import java.util.Base64;
+import java.util.HashMap;
+import java.util.Map;
+
+import org.apache.log4j.Logger;
+import org.bouncycastle.jce.provider.BouncyCastleProvider;
+import org.talend.daikon.crypto.CipherSource;
 import org.talend.daikon.crypto.CipherSources;
 import org.talend.daikon.crypto.Encryption;
 import org.talend.daikon.crypto.KeySource;
@@ -34,6 +34,10 @@ public class StudioEncryption {
     private static Encryption defaultEncryption;
 
     private Encryption externalKeyEncryption;
+
+    public static String PREFIX_PASSWORD = "ENC:["; //$NON-NLS-1$
+
+    public static String POSTFIX_PASSWORD = "]"; //$NON-NLS-1$
 
     private static Logger logger = Logger.getLogger(StudioEncryption.class);
 
@@ -126,22 +130,28 @@ public class StudioEncryption {
 
     public static String encryptPassword(String input, String key) throws Exception {
         Encryption encryption = getEncryption(key);
-        return encryption.encrypt(input);
+        return PREFIX_PASSWORD + encryption.encrypt(input) + POSTFIX_PASSWORD;
     }
 
     public static String encryptPassword(String input) throws Exception {
         Encryption encryption = getEncryption();
-        return encryption.encrypt(input);
+        return PREFIX_PASSWORD + encryption.encrypt(input) + POSTFIX_PASSWORD;
     }
 
     public static String decryptPassword(String input, String key) throws Exception {
-        Encryption encryption = getEncryption(key);
-        return encryption.decrypt(input);
+        if (input.startsWith(PREFIX_PASSWORD) && input.endsWith(POSTFIX_PASSWORD)) {
+            Encryption encryption = getEncryption(key);
+            return encryption.decrypt(input);
+        }
+        return input;
     }
 
     public static String decryptPassword(String input) throws Exception {
-        Encryption encryption = getEncryption();
-        return encryption.decrypt(input);
+        if (input.startsWith(PREFIX_PASSWORD) && input.endsWith(POSTFIX_PASSWORD)) {
+            Encryption encryption = getEncryption();
+            return encryption.decrypt(input);
+        }
+        return input;
     }
 
     private static Encryption getEncryption() {
@@ -218,5 +228,9 @@ public class StudioEncryption {
      */
     public static byte[] decode64(String src) {
         return Base64.getDecoder().decode(src);
+    }
+
+    public static boolean isEncypted(String input) {
+        return false;
     }
 }
