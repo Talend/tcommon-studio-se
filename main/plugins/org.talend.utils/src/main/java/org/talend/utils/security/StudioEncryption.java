@@ -77,6 +77,9 @@ public class StudioEncryption {
 
         if (ks == null) {
             ks = loadKeySource(encryptionKeyName);
+            if (ks != null) {
+                localKeySources.get().put(encryptionKeyName, ks);
+            }
         }
         if (ks == null) {
             RuntimeException e = new IllegalArgumentException("Can not load encryption key data: " + encryptionKeyName);
@@ -84,7 +87,6 @@ public class StudioEncryption {
             throw e;
         }
 
-        localKeySources.get().put(encryptionKeyName, ks);
         CipherSource cs = null;
         if (providerName != null && !providerName.isEmpty()) {
             Provider p = Security.getProvider(providerName);
@@ -171,14 +173,14 @@ public class StudioEncryption {
 
     public String decrypt(String src) {
         // backward compatibility
-        if (src == null) {
+        if (src == null || src.isEmpty()) {
             return null;
         }
         try {
             return externalKeyEncryption.decrypt(src);
         } catch (Exception e) {
             // backward compatibility
-            logger.error("decrypt error", e);
+            logger.info("decrypt error", e);
         }
         return null;
     }
