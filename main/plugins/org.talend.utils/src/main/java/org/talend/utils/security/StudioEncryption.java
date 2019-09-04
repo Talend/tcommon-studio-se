@@ -12,6 +12,11 @@
 // ============================================================================
 package org.talend.utils.security;
 
+import java.io.File;
+import java.io.IOException;
+import java.io.InputStream;
+import java.nio.file.Files;
+import java.nio.file.StandardCopyOption;
 import java.security.Provider;
 import java.security.Security;
 import java.util.Base64;
@@ -28,6 +33,8 @@ import org.talend.daikon.crypto.KeySources;
 
 public class StudioEncryption {
 
+    private static Logger logger = Logger.getLogger(StudioEncryption.class);
+
     // TODO We should remove default key after implements master key encryption algorithm
     private static final String ENCRYPTION_KEY = "Talend_TalendKey";// The length of key should be 16, 24 or 32.
 
@@ -35,9 +42,15 @@ public class StudioEncryption {
 
     private Encryption externalKeyEncryption;
 
-    private static Logger logger = Logger.getLogger(StudioEncryption.class);
+    private static final String ENCRYPTION_KEY_FILE_NAME = "studo.keys";
+
+    private static final String ENCRYPTION_KEY_FILE_SYS_PROP = "encryption.keys.file";
 
     static {
+
+        // set up key file
+        updateConfig();
+
         if (null == Security.getProvider("BC")) {
             Security.addProvider(new BouncyCastleProvider());
         }
@@ -244,5 +257,17 @@ public class StudioEncryption {
             return true;
         }
         return false;
+    }
+
+    private static void updateConfig() {
+        File keyFile = new File(System.getProperty(ENCRYPTION_KEY_FILE_SYS_PROP));
+        if (!keyFile.exists()) {
+            // set up keys
+            try (InputStream fi = StudioEncryption.class.getResourceAsStream(ENCRYPTION_KEY_FILE_NAME)) {
+                Files.copy(fi, keyFile.toPath(), StandardCopyOption.REPLACE_EXISTING);
+            } catch (IOException e) {
+                logger.error("updateConfig error", e);
+            }
+        }
     }
 }
