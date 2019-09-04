@@ -71,8 +71,9 @@ public class StudioEncryption {
         if (encryptionKeyName == null) {
             encryptionKeyName = KEY_SYSTEM;
         }
+
         if (!encryptionKeyName.equals(KEY_SYSTEM) && !encryptionKeyName.equals(KEY_PROPERTY)
-                && !encryptionKeyName.equals(KEY_NEXUS)) {
+                && !encryptionKeyName.equals(KEY_NEXUS) && !encryptionKeyName.equals(KEY_ROUTINE)) {
             RuntimeException e = new IllegalArgumentException("Invalid encryption key name: " + encryptionKeyName);
             logger.error(e);
             throw e;
