@@ -26,30 +26,18 @@ public class StudioEncryptionTest {
 
     private String input3 = "Talend_123456";
 
+    private StudioEncryption se = StudioEncryption.getStudioEncryption(StudioEncryption.KEY_ROUTINE);
+
     @Test
     public void testDecryptPassword() throws Exception {
-        assertNotEquals(input1, StudioEncryption.encryptPassword(input1));
-        assertEquals(input1, StudioEncryption.decryptPassword(StudioEncryption.encryptPassword(input1)));
+        assertNotEquals(input1, se.encrypt(input1));
+        assertEquals(input1, se.decrypt(se.encrypt(input1)));
 
-        assertNotEquals(input2, StudioEncryption.encryptPassword(input2));
-        assertEquals(input2, StudioEncryption.decryptPassword(StudioEncryption.encryptPassword(input2)));
+        assertNotEquals(input2, se.encrypt(input2));
+        assertEquals(input2, se.decrypt(se.encrypt(input2)));
 
-        assertNotEquals(input3, StudioEncryption.encryptPassword(input3));
-        assertEquals(input3, StudioEncryption.decryptPassword(StudioEncryption.encryptPassword(input3)));
-    }
-
-    @Test
-    public void testDecryptPasswordUseKey() throws Exception {
-        String key = "1234567890123456";
-
-        assertNotEquals(input1, StudioEncryption.encryptPassword(input1, key));
-        assertEquals(input1, StudioEncryption.decryptPassword(StudioEncryption.encryptPassword(input1, key), key));
-
-        assertNotEquals(input2, StudioEncryption.encryptPassword(input2, key));
-        assertEquals(input2, StudioEncryption.decryptPassword(StudioEncryption.encryptPassword(input2, key), key));
-
-        assertNotEquals(input3, StudioEncryption.encryptPassword(input3, key));
-        assertEquals(input3, StudioEncryption.decryptPassword(StudioEncryption.encryptPassword(input3, key), key));
+        assertNotEquals(input3, se.encrypt(input3));
+        assertEquals(input3, se.decrypt(se.encrypt(input3)));
     }
 
     @Test
