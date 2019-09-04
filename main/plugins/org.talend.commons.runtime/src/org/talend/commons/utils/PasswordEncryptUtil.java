@@ -32,13 +32,11 @@ public class PasswordEncryptUtil {
 
     private static String rawKey = "Talend-Key"; //$NON-NLS-1$
 
-    public static String PREFIX_PASSWORD = "ENC:["; //$NON-NLS-1$
-
-    public static String POSTFIX_PASSWORD = "]"; //$NON-NLS-1$
-
     private static SecretKey key = null;
 
     private static SecureRandom secureRandom = new SecureRandom();
+
+    private static StudioEncryption se = StudioEncryption.getStudioEncryption(StudioEncryption.KEY_ROUTINE);
 
     private static SecretKey getSecretKey() throws Exception {
         if (key == null) {
@@ -90,7 +88,7 @@ public class PasswordEncryptUtil {
             byte[] clearByte = c.doFinal(dec);
             return new String(clearByte);
         }
-        return StudioEncryption.decryptPassword(input);
+        return se.decrypt(input);
     }
 
     /**
@@ -102,7 +100,7 @@ public class PasswordEncryptUtil {
         if (input == null) {
             return input;
         }
-        return PREFIX_PASSWORD + StudioEncryption.encryptPassword(input) + POSTFIX_PASSWORD;
+        return se.encrypt(input);
     }
 
     /**

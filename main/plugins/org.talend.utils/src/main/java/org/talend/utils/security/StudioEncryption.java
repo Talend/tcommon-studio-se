@@ -28,20 +28,9 @@ import org.talend.daikon.crypto.KeySources;
 
 public class StudioEncryption {
 
+    private static Logger logger = Logger.getLogger(StudioEncryption.class);
     // TODO We should remove default key after implements master key encryption algorithm
     private static final String ENCRYPTION_KEY = "Talend_TalendKey";// The length of key should be 16, 24 or 32.
-
-    private static Encryption defaultEncryption;
-
-    private Encryption externalKeyEncryption;
-
-    private static Logger logger = Logger.getLogger(StudioEncryption.class);
-
-    static {
-        if (null == Security.getProvider("BC")) {
-            Security.addProvider(new BouncyCastleProvider());
-        }
-    }
 
     public static String PREFIX_PASSWORD = "ENC:["; //$NON-NLS-1$
 
@@ -54,6 +43,16 @@ public class StudioEncryption {
 
     public static final String KEY_NEXUS = "tac.nexus.encryption.key.v1";
 
+    public static final String KEY_ROUTINE = "routine.encryption.key";
+
+    private Encryption defaultEncryption;
+
+    static {
+        if (null == Security.getProvider("BC")) {
+            Security.addProvider(new BouncyCastleProvider());
+        }
+    }
+
     private static final ThreadLocal<Map<String, KeySource>> localKeySources = ThreadLocal.withInitial(() -> {
         Map<String, KeySource> cachedKeySources = new HashMap<String, KeySource>();
         String[] keyNames = { KEY_SYSTEM, KEY_PROPERTY, KEY_NEXUS };
@@ -63,6 +62,7 @@ public class StudioEncryption {
                 cachedKeySources.put(keyName, ks);
             }
         }
+        cachedKeySources.put(KEY_ROUTINE, KeySources.fixedKey(ENCRYPTION_KEY));
         return cachedKeySources;
     });
 
@@ -102,7 +102,7 @@ public class StudioEncryption {
             cs = CipherSources.getDefault();
         }
 
-        externalKeyEncryption = new Encryption(ks, cs);
+        defaultEncryption = new Encryption(ks, cs);
     }
 
     private static KeySource loadKeySource(String encryptionKeyName) {
@@ -131,69 +131,37 @@ public class StudioEncryption {
         return null;
     }
 
-    public static String encryptPassword(String input, String key) throws Exception {
-        Encryption encryption = getEncryption(key);
-        return PREFIX_PASSWORD + encryption.encrypt(input) + POSTFIX_PASSWORD;
-    }
-
-    public static String encryptPassword(String input) throws Exception {
-        Encryption encryption = getEncryption();
-        return PREFIX_PASSWORD + encryption.encrypt(input) + POSTFIX_PASSWORD;
-    }
-
-    public static String decryptPassword(String input, String key) throws Exception {
-        if (input.startsWith(PREFIX_PASSWORD) && input.endsWith(POSTFIX_PASSWORD)) {
-            Encryption encryption = getEncryption(key);
-            return encryption.decrypt(input);
-        }
-        return input;
-    }
-
-    public static String decryptPassword(String input) throws Exception {
-        if (input.startsWith(PREFIX_PASSWORD) && input.endsWith(POSTFIX_PASSWORD)) {
-            Encryption encryption = getEncryption();
-            return encryption.decrypt(input);
-        }
-        return input;
-    }
-
-    private static Encryption getEncryption() {
-        if (defaultEncryption == null) {
-            defaultEncryption = getEncryption(ENCRYPTION_KEY);
-        }
-        return defaultEncryption;
-    }
-
-    private static Encryption getEncryption(String key) {
-        return new Encryption(KeySources.fixedKey(key), CipherSources.getDefault());
-    }
-
     public String encrypt(String src) {
         // backward compatibility
         if (src == null) {
-            return null;
+            return src;
         }
         try {
-            return externalKeyEncryption.encrypt(src);
+            if (!isEncypted(src)) {
+                return PREFIX_PASSWORD + defaultEncryption.encrypt(src) + POSTFIX_PASSWORD;
+            }
         } catch (Exception e) {
             // backward compatibility
             logger.error("encrypt error", e);
         }
-        return null;
+        return src;
     }
 
     public String decrypt(String src) {
         // backward compatibility
         if (src == null || src.isEmpty()) {
-            return null;
+            return src;
         }
         try {
-            return externalKeyEncryption.decrypt(src);
+            if (isEncypted(src)) {
+                return defaultEncryption
+                        .decrypt(src.substring(PREFIX_PASSWORD.length(), src.length() - POSTFIX_PASSWORD.length()));
+            }
         } catch (Exception e) {
             // backward compatibility
             logger.info("decrypt error", e);
         }
-        return null;
+        return src;
     }
 
 
