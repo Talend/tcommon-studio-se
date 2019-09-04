@@ -103,11 +103,8 @@ public class Application implements IApplication {
             return IApplication.EXIT_RELAUNCH;
         }
         System.setProperty(TalendPropertiesUtil.PROD_APP, this.getClass().getName());
-        File confDir = ConfigurationScope.INSTANCE.getLocation().toFile();
-        String encryptionKeyFilePath = Paths.get(confDir.getAbsolutePath(), ENCRYPTION_KEY_FILE_NAME).toString();
-        log.info("encryptionKeyFilePath: " + encryptionKeyFilePath);
 
-        System.setProperty(ENCRYPTION_KEY_FILE_SYS_PROP, encryptionKeyFilePath);
+        setEncryptions();
         
         Display display = PlatformUI.createDisplay();
         try {
@@ -312,6 +309,19 @@ public class Application implements IApplication {
             }
         }
 
+    }
+
+    private void setEncryptions() {
+        String keyFile = System.getProperty(ENCRYPTION_KEY_FILE_SYS_PROP);
+        if (keyFile == null || keyFile.isEmpty() || !new File(keyFile).exists()) {
+            File confDir = ConfigurationScope.INSTANCE.getLocation().toFile();
+            String encryptionKeyFilePath = Paths.get(confDir.getAbsolutePath(), ENCRYPTION_KEY_FILE_NAME).toString();
+            log.info("encryptionKeyFilePath: " + encryptionKeyFilePath);
+
+            System.setProperty(ENCRYPTION_KEY_FILE_SYS_PROP, encryptionKeyFilePath);
+        } else {
+            log.info("encryptionKeyFilePath: " + keyFile);
+        }
     }
 
     private void setRelaunchData() {
