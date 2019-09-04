@@ -153,6 +153,9 @@ public class StudioEncryption {
         if (src == null || src.isEmpty()) {
             return src;
         }
+        if (src.isEmpty()) {
+            return "";
+        }
         try {
             if (isEncypted(src)) {
                 return defaultEncryption
@@ -160,7 +163,7 @@ public class StudioEncryption {
             }
         } catch (Exception e) {
             // backward compatibility
-            logger.info("decrypt error", e);
+            logger.error("decrypt error", e);
         }
         return src;
     }
