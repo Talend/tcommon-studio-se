@@ -79,15 +79,18 @@ public class PasswordEncryptUtil {
      */
     @Deprecated
     public static String decryptPassword(String input) throws Exception, BadPaddingException {
-        if (input == null || input.length() == 0) {
-            return input;
+        if (!StudioEncryption.isEncypted(input)) {
+            if (input == null || input.length() == 0) {
+                return input;
+            }
+            byte[] dec = Base64.decodeBase64(input.getBytes());
+            SecretKey key = getSecretKey();
+            Cipher c = Cipher.getInstance("DES"); //$NON-NLS-1$
+            c.init(Cipher.DECRYPT_MODE, key, secureRandom);
+            byte[] clearByte = c.doFinal(dec);
+            return new String(clearByte);
         }
-        byte[] dec = Base64.decodeBase64(input.getBytes());
-        SecretKey key = getSecretKey();
-        Cipher c = Cipher.getInstance("DES"); //$NON-NLS-1$
-        c.init(Cipher.DECRYPT_MODE, key, secureRandom);
-        byte[] clearByte = c.doFinal(dec);
-        return new String(clearByte);
+        return StudioEncryption.decryptPassword(input);
     }
 
     /**
