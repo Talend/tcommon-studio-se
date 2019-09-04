@@ -173,14 +173,17 @@ public class StudioEncryption {
 
     public String decrypt(String src) {
         // backward compatibility
-        if (src == null || src.isEmpty()) {
+        if (src == null) {
             return null;
+        }
+        if (src.isEmpty()) {
+            return "";
         }
         try {
             return externalKeyEncryption.decrypt(src);
         } catch (Exception e) {
             // backward compatibility
-            logger.info("decrypt error", e);
+            logger.error("decrypt error", e);
         }
         return null;
     }
