@@ -54,9 +54,8 @@ public class MavenLibraryResolverProvider {
 
 
     private RepositorySystemSession defaultRepoSystemSession;
-    private RemoteRepository defaultRemoteRepository = null;
 
-    private RemoteRepository cloudreaRemoteRepository = null;;
+    private RemoteRepository defaultRemoteRepository = null;
 
     private RemoteRepository dynamicRemoteRepository = null;
 
@@ -84,17 +83,11 @@ public class MavenLibraryResolverProvider {
         ArtifactRepositoryBean talendServer = TalendLibsServerManager.getInstance().getTalentArtifactServer();
         if (talendServer.getUserName() == null && talendServer.getPassword() == null) {
             defaultRemoteRepository = new RemoteRepository.Builder("talend", "default", talendServer.getRepositoryURL()).build(); //$NON-NLS-1$ //$NON-NLS-2$
-            cloudreaRemoteRepository = new RemoteRepository.Builder("talend1", "default",
-                    "https://talend-update.talend.com/nexus/content/repositories/cdh-releases-rcs/").build();
-
         } else {
             Authentication authentication = new AuthenticationBuilder().addUsername(talendServer.getUserName())
                     .addPassword(talendServer.getPassword()).build();
             defaultRemoteRepository = new RemoteRepository.Builder("talend", "default", talendServer.getRepositoryURL()) //$NON-NLS-1$ //$NON-NLS-2$
                     .setAuthentication(authentication).build();
-            cloudreaRemoteRepository = new RemoteRepository.Builder("talend1", "default", //$NON-NLS-1$ //$NON-NLS-2$
-                    "https://talend-update.talend.com/nexus/content/repositories/cdh-releases-rcs/").setAuthentication(authentication).build();
-
         }
         Authentication authentication = new AuthenticationBuilder().addUsername("studio-dl-client")
                 .addPassword("studio-dl-client").build();
@@ -110,7 +103,6 @@ public class MavenLibraryResolverProvider {
                 aritfact.getType(), aritfact.getVersion());
         ArtifactRequest artifactRequest = new ArtifactRequest();
         artifactRequest.addRepository(defaultRemoteRepository);
-        // artifactRequest.addRepository(cloudreaRemoteRepository);
         artifactRequest.addRepository(dynamicRemoteRepository);
         artifactRequest.setArtifact(artifact);
         ArtifactResult result = defaultRepoSystem.resolveArtifact(defaultRepoSystemSession, artifactRequest);
