@@ -38,7 +38,7 @@ public class StudioEncryption {
     // TODO We should remove default key after implements master key encryption algorithm
     private static final String ENCRYPTION_KEY = "Talend_TalendKey";// The length of key should be 16, 24 or 32.
 
-    private static final String ENCRYPTION_KEY_FILE_NAME = "studo.keys";
+    private static final String ENCRYPTION_KEY_FILE_NAME = "studio.keys";
 
     private static final String ENCRYPTION_KEY_FILE_SYS_PROP = "encryption.keys.file";
 
@@ -233,11 +233,17 @@ public class StudioEncryption {
     private static void updateConfig() {
         File keyFile = new File(System.getProperty(ENCRYPTION_KEY_FILE_SYS_PROP));
         if (!keyFile.exists()) {
-            // set up keys
-            try (InputStream fi = StudioEncryption.class.getResourceAsStream(ENCRYPTION_KEY_FILE_NAME)) {
-                Files.copy(fi, keyFile.toPath(), StandardCopyOption.REPLACE_EXISTING);
-            } catch (IOException e) {
-                logger.error("updateConfig error", e);
+            String osgiFramework = System.getProperty("osgi.framework");
+            if (osgiFramework != null && osgiFramework.contains("eclipse")) {
+                // set up keys
+                try (InputStream fi = StudioEncryption.class.getResourceAsStream(ENCRYPTION_KEY_FILE_NAME)) {
+                    Files.copy(fi, keyFile.toPath(), StandardCopyOption.REPLACE_EXISTING);
+                } catch (IOException e) {
+                    logger.error("updateConfig error", e);
+                }
+                logger.info("updateConfig, studio environment, key file setup completed");
+            } else {
+                logger.info("updateConfig, non studio environment, skip setup of key file");
             }
         }
     }
