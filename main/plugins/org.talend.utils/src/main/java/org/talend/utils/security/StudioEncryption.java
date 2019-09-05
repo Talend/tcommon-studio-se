@@ -182,7 +182,6 @@ public class StudioEncryption {
             logger.error("decrypt error", e);
             return null;
         }
-        return src;
     }
 
 
