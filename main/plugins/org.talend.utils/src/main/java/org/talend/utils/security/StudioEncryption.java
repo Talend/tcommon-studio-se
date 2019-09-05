@@ -174,6 +174,8 @@ public class StudioEncryption {
             if (isEncypted(src)) {
                 return defaultEncryption
                         .decrypt(src.substring(PREFIX_PASSWORD.length(), src.length() - POSTFIX_PASSWORD.length()));
+            } else {
+                return defaultEncryption.decrypt(src);
             }
         } catch (Exception e) {
             // backward compatibility
