@@ -12,11 +12,15 @@
 // ============================================================================
 package org.talend.designer.maven.aether.util;
 
+import java.io.FileReader;
 import java.util.HashMap;
 import java.util.Map;
 
+import org.apache.commons.lang3.StringUtils;
 import org.apache.maven.model.License;
 import org.apache.maven.model.Model;
+import org.apache.maven.model.Parent;
+import org.apache.maven.model.io.xpp3.MavenXpp3Reader;
 import org.apache.maven.repository.internal.MavenRepositorySystemUtils;
 import org.eclipse.aether.DefaultRepositorySystemSession;
 import org.eclipse.aether.RepositorySystem;
@@ -48,9 +52,13 @@ public class MavenLibraryResolverProvider {
 
     private RepositorySystem defaultRepoSystem;
 
-    private RepositorySystemSession defaultRepoSystemSession;
 
+    private RepositorySystemSession defaultRepoSystemSession;
     private RemoteRepository defaultRemoteRepository = null;
+
+    private RemoteRepository cloudreaRemoteRepository = null;;
+
+    private RemoteRepository dynamicRemoteRepository = null;
 
     private static MavenLibraryResolverProvider instance;
 
@@ -76,20 +84,34 @@ public class MavenLibraryResolverProvider {
         ArtifactRepositoryBean talendServer = TalendLibsServerManager.getInstance().getTalentArtifactServer();
         if (talendServer.getUserName() == null && talendServer.getPassword() == null) {
             defaultRemoteRepository = new RemoteRepository.Builder("talend", "default", talendServer.getRepositoryURL()).build(); //$NON-NLS-1$ //$NON-NLS-2$
+            cloudreaRemoteRepository = new RemoteRepository.Builder("talend1", "default",
+                    "https://talend-update.talend.com/nexus/content/repositories/cdh-releases-rcs/").build();
+
         } else {
             Authentication authentication = new AuthenticationBuilder().addUsername(talendServer.getUserName())
                     .addPassword(talendServer.getPassword()).build();
             defaultRemoteRepository = new RemoteRepository.Builder("talend", "default", talendServer.getRepositoryURL()) //$NON-NLS-1$ //$NON-NLS-2$
                     .setAuthentication(authentication).build();
+            cloudreaRemoteRepository = new RemoteRepository.Builder("talend1", "default", //$NON-NLS-1$ //$NON-NLS-2$
+                    "https://talend-update.talend.com/nexus/content/repositories/cdh-releases-rcs/").setAuthentication(authentication).build();
+
         }
+        Authentication authentication = new AuthenticationBuilder().addUsername("studio-dl-client")
+                .addPassword("studio-dl-client").build();
+
+        dynamicRemoteRepository = new RemoteRepository.Builder("talend2", "default", //$NON-NLS-1$ //$NON-NLS-2$
+                "https://talend-update.talend.com/nexus/content/groups/dynamicdistribution/").setAuthentication(authentication).build();
+
     }
 
     public ArtifactResult resolveArtifact(MavenArtifact aritfact) throws Exception {
-        RemoteRepository remoteRepo = getRemoteRepositroy(aritfact);
+        // RemoteRepository remoteRepo = getRemoteRepositroy(aritfact);
         Artifact artifact = new DefaultArtifact(aritfact.getGroupId(), aritfact.getArtifactId(), aritfact.getClassifier(),
                 aritfact.getType(), aritfact.getVersion());
         ArtifactRequest artifactRequest = new ArtifactRequest();
-        artifactRequest.addRepository(remoteRepo);
+        artifactRequest.addRepository(defaultRemoteRepository);
+        // artifactRequest.addRepository(cloudreaRemoteRepository);
+        artifactRequest.addRepository(dynamicRemoteRepository);
         artifactRequest.setArtifact(artifact);
         ArtifactResult result = defaultRepoSystem.resolveArtifact(defaultRepoSystemSession, artifactRequest);
         return result;
@@ -102,19 +124,37 @@ public class MavenLibraryResolverProvider {
         ArtifactResult result = resolveArtifact(clonedArtifact);
         if (result != null && result.isResolved()) {
             properties = new HashMap<String, Object>();
-            Model model = MavenPlugin.getMavenModelManager().readMavenModel(result.getArtifact().getFile());
+            MavenXpp3Reader reader = new MavenXpp3Reader();
+            Model model = reader.read(new FileReader(result.getArtifact().getFile()));
+            // Model model = MavenPlugin.getMavenModelManager().readMavenModel(result.getArtifact().getFile());
             if (model != null) {
                 properties.put("type", model.getPackaging()); //$NON-NLS-1$
-                properties.put("license.count", model.getLicenses().size()); //$NON-NLS-1$
+
+                int licenseCount = 0;
                 if (model.getLicenses() != null) {
                     for (int i = 0; i < model.getLicenses().size(); i++) {
                         License license = model.getLicenses().get(i);
-                        properties.put("license." + i + ".name", license.getName()); //$NON-NLS-1$//$NON-NLS-2$
-                        properties.put("license." + i + ".url", license.getUrl()); //$NON-NLS-1$ //$NON-NLS-2$
-                        properties.put("license." + i + ".comments", license.getComments()); //$NON-NLS-1$ //$NON-NLS-2$
-                        properties.put("license." + i + ".distribution", license.getDistribution()); //$NON-NLS-1$ //$NON-NLS-2$
+                        if (StringUtils.isNotBlank(license.getName()) || StringUtils.isNotBlank(license.getUrl())) {
+                            properties.put("license." + i + ".name", license.getName()); //$NON-NLS-1$//$NON-NLS-2$
+                            properties.put("license." + i + ".url", license.getUrl()); //$NON-NLS-1$ //$NON-NLS-2$
+                            properties.put("license." + i + ".comments", license.getComments()); //$NON-NLS-1$ //$NON-NLS-2$
+                            properties.put("license." + i + ".distribution", license.getDistribution()); //$NON-NLS-1$ //$NON-NLS-2$
+                            licenseCount++;
+                        }
                     }
                 }
+                properties.put("license.count", licenseCount); //$NON-NLS-1$
+                Parent parent = model.getParent();
+                if (parent != null) {
+                    properties.put("parent.groupId", parent.getGroupId());
+                    properties.put("parent.version", parent.getVersion());
+                    properties.put("parent.artifactId", parent.getArtifactId());
+                } else {
+                    properties.remove("parent.groupId");
+                    properties.remove("parent.version");
+                    properties.remove("parent.artifactId");
+                }
+
             }
         }
         return properties;
