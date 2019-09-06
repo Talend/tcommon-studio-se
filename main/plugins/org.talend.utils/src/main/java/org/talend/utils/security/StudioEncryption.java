@@ -12,6 +12,11 @@
 // ============================================================================
 package org.talend.utils.security;
 
+import java.io.File;
+import java.io.IOException;
+import java.io.InputStream;
+import java.nio.file.Files;
+import java.nio.file.StandardCopyOption;
 import java.security.Provider;
 import java.security.Security;
 import java.util.Base64;
@@ -29,8 +34,13 @@ import org.talend.daikon.crypto.KeySources;
 public class StudioEncryption {
 
     private static Logger logger = Logger.getLogger(StudioEncryption.class);
+
     // TODO We should remove default key after implements master key encryption algorithm
     private static final String ENCRYPTION_KEY = "Talend_TalendKey";// The length of key should be 16, 24 or 32.
+
+    private static final String ENCRYPTION_KEY_FILE_NAME = "studio.keys";
+
+    private static final String ENCRYPTION_KEY_FILE_SYS_PROP = "encryption.keys.file";
 
     public static String PREFIX_PASSWORD = "ENC:["; //$NON-NLS-1$
 
@@ -45,13 +55,16 @@ public class StudioEncryption {
 
     public static final String KEY_ROUTINE = "routine.encryption.key";
 
-    private Encryption defaultEncryption;
-
     static {
+        // set up key file
+        updateConfig();
+
         if (null == Security.getProvider("BC")) {
             Security.addProvider(new BouncyCastleProvider());
         }
     }
+
+    private Encryption defaultEncryption;
 
     private static final ThreadLocal<Map<String, KeySource>> localKeySources = ThreadLocal.withInitial(() -> {
         Map<String, KeySource> cachedKeySources = new HashMap<String, KeySource>();
@@ -144,6 +157,7 @@ public class StudioEncryption {
         } catch (Exception e) {
             // backward compatibility
             logger.error("encrypt error", e);
+            return null;
         }
         return src;
     }
@@ -166,8 +180,8 @@ public class StudioEncryption {
         } catch (Exception e) {
             // backward compatibility
             logger.error("decrypt error", e);
+            return null;
         }
-        return src;
     }
 
 
@@ -215,5 +229,23 @@ public class StudioEncryption {
             return true;
         }
         return false;
+    }
+
+    private static void updateConfig() {
+        File keyFile = new File(System.getProperty(ENCRYPTION_KEY_FILE_SYS_PROP));
+        if (!keyFile.exists()) {
+            String osgiFramework = System.getProperty("osgi.framework");
+            if (osgiFramework != null && osgiFramework.contains("eclipse")) {
+                // set up keys
+                try (InputStream fi = StudioEncryption.class.getResourceAsStream(ENCRYPTION_KEY_FILE_NAME)) {
+                    Files.copy(fi, keyFile.toPath(), StandardCopyOption.REPLACE_EXISTING);
+                } catch (IOException e) {
+                    logger.error("updateConfig error", e);
+                }
+                logger.info("updateConfig, studio environment, key file setup completed");
+            } else {
+                logger.info("updateConfig, non studio environment, skip setup of key file");
+            }
+        }
     }
 }
