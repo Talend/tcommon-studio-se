@@ -547,14 +547,16 @@ public class ImportExportHandlersManager {
                                 }
                                 if (itemRecord.isValid()) {
                                     if (alwaysRegenId || itemRecord.getState() == State.ID_EXISTED
-                                            || itemRecord.getState() == State.NAME_AND_ID_EXISTED_BOTH) {
+                                            || itemRecord.getState() == State.NAME_AND_ID_EXISTED_BOTH
+                                            || itemRecord.getState() == State.NAME_EXISTED) {
                                         String id = nameToIdMap.get(itemRecord.getProperty().getLabel()
                                                 + ERepositoryObjectType.getItemType(itemRecord.getProperty().getItem())
                                                         .toString());
                                         if (id == null) {
                                             try {
                                                 boolean reuseExistingId = false;
-                                                if (overwrite && itemRecord.getState() == State.NAME_AND_ID_EXISTED_BOTH) {
+                                                if (overwrite && (itemRecord.getState() == State.NAME_AND_ID_EXISTED_BOTH
+                                                        || itemRecord.getState() == State.NAME_EXISTED)) {
                                                     // just try to reuse the id of the item which will be overwrited
                                                     reuseExistingId = true;
                                                 } else if (alwaysRegenId) {
