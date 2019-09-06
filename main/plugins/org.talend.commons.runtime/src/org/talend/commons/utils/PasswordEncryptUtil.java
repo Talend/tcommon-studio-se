@@ -77,7 +77,7 @@ public class PasswordEncryptUtil {
      */
     @Deprecated
     public static String decryptPassword(String input) throws Exception, BadPaddingException {
-        if (!StudioEncryption.isEncypted(input)) {
+        if (!StudioEncryption.hasEncryptionSymbol(input)) {
             if (input == null || input.length() == 0) {
                 return input;
             }

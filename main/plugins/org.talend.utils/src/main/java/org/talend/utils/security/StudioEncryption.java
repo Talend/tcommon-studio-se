@@ -138,7 +138,7 @@ public class StudioEncryption {
             return src;
         }
         try {
-            if (!isEncypted(src)) {
+            if (!hasEncryptionSymbol(src)) {
                 return PREFIX_PASSWORD + defaultEncryption.encrypt(src) + POSTFIX_PASSWORD;
             }
         } catch (Exception e) {
@@ -157,7 +157,7 @@ public class StudioEncryption {
             return "";
         }
         try {
-            if (isEncypted(src)) {
+            if (hasEncryptionSymbol(src)) {
                 return defaultEncryption
                         .decrypt(src.substring(PREFIX_PASSWORD.length(), src.length() - POSTFIX_PASSWORD.length()));
             } else {
@@ -207,7 +207,7 @@ public class StudioEncryption {
         return Base64.getDecoder().decode(src);
     }
 
-    public static boolean isEncypted(String input) {
+    public static boolean hasEncryptionSymbol(String input) {
         if (input == null || input.length() == 0) {
             return false;
         }
