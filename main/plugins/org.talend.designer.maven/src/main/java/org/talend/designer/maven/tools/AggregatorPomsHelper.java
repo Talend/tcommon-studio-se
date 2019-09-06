@@ -12,24 +12,22 @@
 // ============================================================================
 package org.talend.designer.maven.tools;
 
-import static org.talend.designer.maven.model.TalendJavaProjectConstants.DIR_AGGREGATORS;
-import static org.talend.designer.maven.model.TalendJavaProjectConstants.DIR_BEANS;
-import static org.talend.designer.maven.model.TalendJavaProjectConstants.DIR_CODES;
-import static org.talend.designer.maven.model.TalendJavaProjectConstants.DIR_JOBS;
-import static org.talend.designer.maven.model.TalendJavaProjectConstants.DIR_PIGUDFS;
-import static org.talend.designer.maven.model.TalendJavaProjectConstants.DIR_POMS;
-import static org.talend.designer.maven.model.TalendJavaProjectConstants.DIR_ROUTINES;
+import static org.talend.designer.maven.model.TalendJavaProjectConstants.*;
 
 import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
-import java.util.ListIterator;
 import java.util.Map;
 import java.util.Set;
 import java.util.function.Function;
+import java.util.stream.Collectors;
 
+import org.apache.commons.lang3.StringUtils;
+import org.apache.maven.model.Activation;
 import org.apache.maven.model.Model;
+import org.apache.maven.model.Profile;
 import org.eclipse.core.resources.IContainer;
 import org.eclipse.core.resources.IFile;
 import org.eclipse.core.resources.IFolder;
@@ -56,7 +54,6 @@ import org.talend.core.context.Context;
 import org.talend.core.context.RepositoryContext;
 import org.talend.core.model.general.ILibrariesService;
 import org.talend.core.model.general.ModuleNeeded;
-import org.talend.core.model.general.Project;
 import org.talend.core.model.process.ProcessUtils;
 import org.talend.core.model.properties.Item;
 import org.talend.core.model.properties.ProjectReference;
@@ -110,27 +107,29 @@ public class AggregatorPomsHelper {
         return projectTechName;
     }
 
-    public void createRootPom(List<String> modules, boolean force, IProgressMonitor monitor) throws Exception {
+    public void createRootPom(Model model, boolean force, IProgressMonitor monitor)
+            throws Exception {
         IFile pomFile = getProjectRootPom();
         if (force || !pomFile.exists()) {
-            Map<String, Object> parameters = new HashMap<String, Object>();
-            parameters.put(MavenTemplateManager.KEY_PROJECT_NAME, projectTechName);
-            Model model = MavenTemplateManager.getCodeProjectTemplateModel(parameters);
-            if (modules != null && !modules.isEmpty()) {
-                model.setModules(modules);
+            if (model == null) {
+                model = getCodeProjectTemplateModel();
             }
             PomUtil.savePom(monitor, model, pomFile);
         }
     }
 
     public void createRootPom(IProgressMonitor monitor) throws Exception {
+        Model newModel = getCodeProjectTemplateModel();
         IFile pomFile = getProjectRootPom();
-        List<String> modules = null;
         if (pomFile != null && pomFile.exists()) {
-            Model model = MavenPlugin.getMavenModelManager().readMavenModel(pomFile);
-            modules = model.getModules();
+            Model oldModel = MavenPlugin.getMavenModelManager().readMavenModel(pomFile);
+            List<Profile> profiles = oldModel.getProfiles().stream()
+                    .filter(profile -> StringUtils.startsWithIgnoreCase(profile.getId(), projectTechName))
+                    .collect(Collectors.toList());
+            newModel.setModules(oldModel.getModules());
+            newModel.getProfiles().addAll(profiles);
         }
-        createRootPom(modules, true, monitor);
+        createRootPom(newModel, true, monitor);
     }
 
     public void installRootPom(boolean force) throws Exception {
@@ -290,37 +289,38 @@ public class AggregatorPomsHelper {
         }
     }
 
-    public void updateRefProjectModules(List<ProjectReference> references) {
+    public void updateRefProjectModules(List<ProjectReference> references, IProgressMonitor monitor) {
         if (!needUpdateRefProjectModules()) {
             return;
         }
         try {
-            List<String> modules = new ArrayList<>();
-            for (ProjectReference reference : references) {
-                String refProjectTechName = reference.getReferencedProject().getTechnicalLabel();
-                String modulePath = "../../" + refProjectTechName + "/" + TalendJavaProjectConstants.DIR_POMS; //$NON-NLS-1$ //$NON-NLS-2$
-                modules.add(modulePath);
+            Model model = MavenPlugin.getMavenModelManager().readMavenModel(getProjectRootPom());
+            if (PomIdsHelper.useProfileModule()) {
+                List<Profile> profiles = collectRefProjectProfiles(references);
+                Iterator<Profile> iterator = model.getProfiles().listIterator();
+                iterator.forEachRemaining(profile -> {
+                    if (StringUtils.startsWithIgnoreCase(profile.getId(), projectTechName)) {
+                        iterator.remove();
+                    }
+                });
+                model.getProfiles().addAll(profiles);
+            } else {
+                List<String> refPrjectModules = new ArrayList<>();
+                references.forEach(reference -> {
+                    String refProjectTechName = reference.getReferencedProject().getTechnicalLabel();
+                    String modulePath = "../../" + refProjectTechName + "/" + TalendJavaProjectConstants.DIR_POMS; //$NON-NLS-1$ //$NON-NLS-2$
+                    refPrjectModules.add(modulePath);
+                });
+                List<String> modules = model.getModules();
+                Iterator<String> iterator = modules.listIterator();
+                iterator.forEachRemaining(modulePath -> {
+                    if (modulePath.startsWith("../../")) { //$NON-NLS-1$
+                        iterator.remove();
+                    }
+                });
+                modules.addAll(refPrjectModules);
             }
-
-            Project mainProject = ProjectManager.getInstance().getCurrentProject();
-            IFolder mainPomsFolder = new AggregatorPomsHelper(mainProject.getTechnicalLabel()).getProjectPomsFolder();
-            IFile mainPomFile = mainPomsFolder.getFile(TalendMavenConstants.POM_FILE_NAME);
-
-            Model model = MavenPlugin.getMavenModelManager().readMavenModel(mainPomFile);
-            List<String> oldModules = model.getModules();
-            if (oldModules == null) {
-                oldModules = new ArrayList<>();
-            }
-            ListIterator<String> iterator = oldModules.listIterator();
-            while (iterator.hasNext()) {
-                String modulePath = iterator.next();
-                if (modulePath.startsWith("../../")) { //$NON-NLS-1$
-                    iterator.remove();
-                }
-            }
-            oldModules.addAll(modules);
-
-            PomUtil.savePom(null, model, mainPomFile);
+            createRootPom(model, true, monitor);
         } catch (Exception e) {
             ExceptionHandler.process(e);
         }
@@ -710,47 +710,48 @@ public class AggregatorPomsHelper {
         return null;
     }
 
-    private void collectModules(List<String> modules) {
-        IRunProcessService service = getRunProcessService();
-        if (service != null) {
-            modules.add(
-                    getModulePath(service.getTalendCodeJavaProject(ERepositoryObjectType.ROUTINES).getProjectPom()));
-            if (ProcessUtils.isRequiredPigUDFs(null)) {
-                modules.add(
-                        getModulePath(service.getTalendCodeJavaProject(ERepositoryObjectType.PIG_UDF).getProjectPom()));
-            }
-            if (ProcessUtils.isRequiredBeans(null)) {
-                modules.add(getModulePath(service
-                        .getTalendCodeJavaProject(ERepositoryObjectType.valueOf("BEANS")) //$NON-NLS-1$
-                        .getProjectPom()));
-            }
+    private List<Profile> collectRefProjectProfiles(List<ProjectReference> references) throws CoreException {
+        if (!needUpdateRefProjectModules()) {
+            Model model = MavenPlugin.getMavenModelManager().readMavenModel(getProjectRootPom());
+            List<Profile> profiles = model.getProfiles();
+            return profiles.stream().filter(profile -> StringUtils.startsWithIgnoreCase(profile.getId(), projectTechName))
+                    .collect(Collectors.toList());
         }
-        if (needUpdateRefProjectModules()) {
-            List<ProjectReference> references =
-                    ProjectManager.getInstance().getCurrentProject().getProjectReferenceList(true);
-            for (ProjectReference reference : references) {
-                String refProjectTechName = reference.getReferencedProject().getTechnicalLabel();
-                String modulePath = "../../" + refProjectTechName + "/" + TalendJavaProjectConstants.DIR_POMS; //$NON-NLS-1$ //$NON-NLS-2$
-                modules.add(modulePath);
-            }
-        } else {
-            Project mainProject = ProjectManager.getInstance().getCurrentProject();
-            IFolder mainPomsFolder = new AggregatorPomsHelper(mainProject.getTechnicalLabel()).getProjectPomsFolder();
-            IFile mainPomFile = mainPomsFolder.getFile(TalendMavenConstants.POM_FILE_NAME);
-            try {
-                Model model = MavenPlugin.getMavenModelManager().readMavenModel(mainPomFile);
-                List<String> oldModules = model.getModules();
-                if (oldModules != null) {
-                    for (String modulePath : oldModules) {
-                        if (modulePath.startsWith("../../")) { //$NON-NLS-1$
-                            modules.add(modulePath);
-                        }
-                    }
-                }
-            } catch (CoreException e) {
-                ExceptionHandler.process(e);
-            }
+        if (references == null) {
+            references = ProjectManager.getInstance().getCurrentProject().getProjectReferenceList(true);
         }
+        List<Profile> profiles = new ArrayList<>();
+        references.forEach(reference -> {
+            String refProjectTechName = reference.getReferencedProject().getTechnicalLabel();
+            String modulePath = "../../" + refProjectTechName + "/" + TalendJavaProjectConstants.DIR_POMS; //$NON-NLS-1$ //$NON-NLS-2$
+            Profile profile = new Profile();
+            profile.setId((projectTechName + "_" + refProjectTechName).toLowerCase()); //$NON-NLS-1$
+            Activation activation = new Activation();
+            activation.setActiveByDefault(true);
+            profile.setActivation(activation);
+            profile.getModules().add(modulePath);
+            profiles.add(profile);
+        });
+        return profiles;
+    }
+
+    private List<String> collectRefProjectModules(List<ProjectReference> references) throws CoreException {
+        if (!needUpdateRefProjectModules()) {
+            Model model = MavenPlugin.getMavenModelManager().readMavenModel(getProjectRootPom());
+            return model.getModules().stream().filter(modulePath -> modulePath.startsWith("../../")) //$NON-NLS-1$
+                    .collect(Collectors.toList());
+        }
+        if (references == null) {
+            references = ProjectManager.getInstance().getCurrentProject().getProjectReferenceList(true);
+        }
+        List<String> modules = new ArrayList<>();
+        references.forEach(reference -> {
+            String refProjectTechName = reference.getReferencedProject().getTechnicalLabel();
+            String modulePath = "../../" + refProjectTechName + "/" + TalendJavaProjectConstants.DIR_POMS; //$NON-NLS-1$ //$NON-NLS-2$
+            modules.add(modulePath);
+        });
+        return modules;
+
     }
 
     public boolean needUpdateRefProjectModules() {
@@ -841,14 +842,36 @@ public class AggregatorPomsHelper {
         }
         // sync project pom again with all modules.
         monitor.subTask("Synchronize project pom with modules"); //$NON-NLS-1$
-        collectModules(modules);
-        createRootPom(modules, true, monitor);
+        collectCodeModules(modules);
+        Model model = getCodeProjectTemplateModel();
+        if (PomIdsHelper.useProfileModule()) {
+            model.getProfiles().addAll(collectRefProjectProfiles(null));
+        } else {
+            modules.addAll(collectRefProjectModules(null));
+        }
+        model.setModules(modules);
+        createRootPom(model, true, monitor);
         installRootPom(true);
         monitor.worked(1);
         if (monitor.isCanceled()) {
             return;
         }
         monitor.done();
+    }
+
+    private void collectCodeModules(List<String> modules) {
+        // collect codes modules
+        IRunProcessService service = getRunProcessService();
+        if (service != null) {
+            modules.add(getModulePath(service.getTalendCodeJavaProject(ERepositoryObjectType.ROUTINES).getProjectPom()));
+            if (ProcessUtils.isRequiredPigUDFs(null)) {
+                modules.add(getModulePath(service.getTalendCodeJavaProject(ERepositoryObjectType.PIG_UDF).getProjectPom()));
+            }
+            if (ProcessUtils.isRequiredBeans(null)) {
+                modules.add(getModulePath(service.getTalendCodeJavaProject(ERepositoryObjectType.valueOf("BEANS")) //$NON-NLS-1$
+                        .getProjectPom()));
+            }
+        }
     }
 
     /**
@@ -877,6 +900,12 @@ public class AggregatorPomsHelper {
             return runProcessService.getTalendCodeJavaProject(codeType);
         }
         return null;
+    }
+
+    private Model getCodeProjectTemplateModel() {
+        Map<String, Object> parameters = new HashMap<String, Object>();
+        parameters.put(MavenTemplateManager.KEY_PROJECT_NAME, projectTechName);
+        return MavenTemplateManager.getCodeProjectTemplateModel(parameters);
     }
 
     private static IRunProcessService getRunProcessService() {

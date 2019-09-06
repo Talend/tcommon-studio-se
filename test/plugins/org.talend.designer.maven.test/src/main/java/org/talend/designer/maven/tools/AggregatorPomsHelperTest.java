@@ -21,8 +21,11 @@ import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
+import org.apache.commons.lang.StringUtils;
 import org.apache.maven.model.Model;
+import org.apache.maven.model.Profile;
 import org.eclipse.core.resources.IFile;
 import org.eclipse.core.resources.IFolder;
 import org.eclipse.core.resources.IProject;
@@ -280,9 +283,43 @@ public class AggregatorPomsHelperTest {
             }
 
         };
-        _helper.updateRefProjectModules(references);
-        validatePomContent(helper.getProjectRootPom().getLocation().toFile(), defaultProjectGroupId, defaultProjectVersion,
-                modules);
+        _helper.updateRefProjectModules(references, new NullProgressMonitor());
+        validatePomContent(helper.getProjectRootPom().getLocation().toFile(), defaultProjectGroupId, null, defaultProjectVersion,
+                null, model.getModules(), null);
+    }
+
+    @Test
+    public void testUpdateRefProjectProfile() throws Exception {
+        needResetPom = true;
+        List<ProjectReference> references = new ArrayList<>();
+        {
+            ProjectReference reference = PropertiesFactory.eINSTANCE.createProjectReference();
+            Project project = PropertiesFactory.eINSTANCE.createProject();
+            project.setTechnicalLabel("TESTPROJECT1");
+            reference.setReferencedProject(project);
+            references.add(reference);
+        }
+        {
+            ProjectReference reference = PropertiesFactory.eINSTANCE.createProjectReference();
+            Project project = PropertiesFactory.eINSTANCE.createProject();
+            project.setTechnicalLabel("TESTPROJECT2");
+            reference.setReferencedProject(project);
+            references.add(reference);
+        }
+        AggregatorPomsHelper _helper = new AggregatorPomsHelper() {
+
+            @Override
+            public boolean needUpdateRefProjectModules() {
+                return true;
+            }
+
+        };
+        ProjectPreferenceManager preferenceManager = new ProjectPreferenceManager(
+                ProjectManager.getInstance().getCurrentProject(), DesignerMavenPlugin.PLUGIN_ID, false);
+        preferenceManager.setValue(MavenConstants.USE_PROFILE_MODULE, true);
+        _helper.updateRefProjectModules(references, new NullProgressMonitor());
+        validatePomContent(helper.getProjectRootPom().getLocation().toFile(), defaultProjectGroupId, null, defaultProjectVersion,
+                null, null, references);
     }
 
     /**
@@ -310,17 +347,17 @@ public class AggregatorPomsHelperTest {
 
         // check project pom.
         IFile projectPomFile = new AggregatorPomsHelper().getProjectRootPom();
-        validatePomContent(projectPomFile.getLocation().toFile(), projectGroupId, projectVersion, modules);
+        validatePomContent(projectPomFile.getLocation().toFile(), projectGroupId, null, projectVersion, null, modules, null);
         // check project pom install result.
         File installedProjectPom = getInstalledFileFromLocalRepo(projectGroupId,
                 TalendMavenConstants.DEFAULT_CODE_PROJECT_ARTIFACT_ID, projectVersion, MavenConstants.PACKAGING_POM);
-        validatePomContent(installedProjectPom, projectGroupId, projectVersion, modules);
+        validatePomContent(installedProjectPom, projectGroupId, null, projectVersion, null, modules, null);
 
         // check routine pom.
         IFile routinePomFile = runProcessService.getTalendCodeJavaProject(ERepositoryObjectType.ROUTINES).getProjectPom();
         String routineGroupId = PomIdsHelper.getCodesGroupId("code");
         String routineVersion = PomIdsHelper.getCodesVersion();
-        validatePomContent(routinePomFile.getLocation().toFile(), routineGroupId, routineVersion);
+        validatePomContent(routinePomFile.getLocation().toFile(), routineGroupId, null, routineVersion, null, null, null);
 
         // check routine install result.
         File installedRoutinePom = getInstalledFileFromLocalRepo(routineGroupId,
@@ -329,7 +366,7 @@ public class AggregatorPomsHelperTest {
 
         // check job pom.
         IFile jobPomFile = runProcessService.getTalendJobJavaProject(jobProperty).getProjectPom();
-        validatePomContent(jobPomFile.getLocation().toFile(), jobGroupId, projectGroupId, jobVersion, projectVersion, null);
+        validatePomContent(jobPomFile.getLocation().toFile(), jobGroupId, projectGroupId, jobVersion, projectVersion, null, null);
     }
 
     @Test
@@ -347,19 +384,11 @@ public class AggregatorPomsHelperTest {
 
         IFile jobPomFile = runProcessService.getTalendJobJavaProject(jobProperty).getProjectPom();
         validatePomContent(jobPomFile.getLocation().toFile(), customJobGroupId, defaultProjectGroupId, customJobVersion,
-                defaultProjectVersion, null);
-    }
-
-    private void validatePomContent(File pomFile, String groupId, String version) throws CoreException {
-        validatePomContent(pomFile, groupId, null, version, null, null);
-    }
-
-    private void validatePomContent(File pomFile, String groupId, String version, List<String> modules) throws CoreException {
-        validatePomContent(pomFile, groupId, null, version, null, modules);
+                defaultProjectVersion, null, null);
     }
 
     private void validatePomContent(File pomFile, String groupId, String parentGroupId, String version, String parentVersion,
-            List<String> modules)
+            List<String> modules, List<ProjectReference> references)
             throws CoreException {
         Model model = MavenPlugin.getMaven().readModel(pomFile);
         assertEquals(groupId, model.getGroupId());
@@ -376,6 +405,24 @@ public class AggregatorPomsHelperTest {
             for (String module : modules) {
                 assertTrue(currentModules.contains(module));
             }
+        } else {
+            assertEquals(0, model.getModules().stream().filter(module -> module.startsWith("../../")).count());
+        }
+
+        if (references != null) {
+            if (PomIdsHelper.useProfileModule()) {
+                List<Profile> refProjectProfiles = model.getProfiles().stream()
+                        .filter(profile -> StringUtils.startsWithIgnoreCase(profile.getId(), projectTechName))
+                        .collect(Collectors.toList());
+                assertEquals(references.size(), refProjectProfiles.size());
+                references.forEach(reference -> {
+                    String profileId = (projectTechName + "_" + reference.getReferencedProject().getTechnicalLabel())
+                            .toLowerCase();
+                    assertTrue(refProjectProfiles.stream().anyMatch(profile -> profile.getId().equals(profileId)));
+                });
+            }
+        } else {
+            assertEquals(0, model.getProfiles().stream().filter(profile -> profile.getId().startsWith(projectTechName)).count());
         }
     }
 
@@ -428,6 +475,7 @@ public class AggregatorPomsHelperTest {
         projectPreferenceManager.setValue(MavenConstants.PROJECT_VERSION, defaultProjectVersion);
         projectPreferenceManager.setValue(MavenConstants.NAME_PUBLISH_AS_SNAPSHOT, defaultUseSnapshot);
         projectPreferenceManager.setValue(MavenConstants.POM_FILTER, "");
+        projectPreferenceManager.setValue(MavenConstants.USE_PROFILE_MODULE, false);
         // reset all poms.
         if (needResetPom) {
             helper.syncAllPomsWithoutProgress(new NullProgressMonitor());
