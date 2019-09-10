@@ -95,6 +95,7 @@
                       <artifactSet>
                         <includes>
                             <include>org.talend.daikon</include>
+                            <include>org.bouncycastle</include>
                         </includes>
                       </artifactSet>
                     </configuration>
@@ -109,7 +110,6 @@
                     <source>1.8</source>
                     <target>1.8</target>
                     <excludes>
-                        <!--exclude>org/talend/utils/security/*.*</exclude-->
                         <exclude>org/talend/utils/sql/*.*</exclude>
                         <exclude>org/talend/utils/ssl/*.*</exclude>
                     </excludes>

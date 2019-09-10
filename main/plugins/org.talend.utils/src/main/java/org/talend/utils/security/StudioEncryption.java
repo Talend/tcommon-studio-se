@@ -15,6 +15,7 @@ package org.talend.utils.security;
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
+import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.StandardCopyOption;
 import java.security.Provider;
@@ -22,6 +23,7 @@ import java.security.Security;
 import java.util.Base64;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Properties;
 
 import org.apache.log4j.Logger;
 import org.bouncycastle.jce.provider.BouncyCastleProvider;
@@ -142,6 +144,21 @@ public class StudioEncryption {
             }
         }
 
+        // for others, tac,jobserver etc, load default keys from jars if they are not found in system properties
+        if (!isStudio()) {
+            try (InputStream fi = StudioEncryption.class.getResourceAsStream(ENCRYPTION_KEY_FILE_NAME)) {
+                Properties p = new Properties();
+                p.load(fi);
+                String key = p.getProperty(encryptionKeyName);
+                if (key != null) {
+                    byte[] keyData = Base64.getDecoder().decode(key.getBytes(StandardCharsets.UTF_8));
+                    return () -> keyData;
+                }
+            } catch (IOException e) {
+                logger.error("non studio, load keysource error", e);
+            }
+        }
+
         return null;
     }
 
@@ -166,9 +183,6 @@ public class StudioEncryption {
         // backward compatibility
         if (src == null || src.isEmpty()) {
             return src;
-        }
-        if (src.isEmpty()) {
-            return "";
         }
         try {
             if (hasEncryptionSymbol(src)) {
@@ -234,8 +248,7 @@ public class StudioEncryption {
     private static void updateConfig() {
         File keyFile = new File(System.getProperty(ENCRYPTION_KEY_FILE_SYS_PROP));
         if (!keyFile.exists()) {
-            String osgiFramework = System.getProperty("osgi.framework");
-            if (osgiFramework != null && osgiFramework.contains("eclipse")) {
+            if (isStudio()) {
                 // set up keys
                 try (InputStream fi = StudioEncryption.class.getResourceAsStream(ENCRYPTION_KEY_FILE_NAME)) {
                     Files.copy(fi, keyFile.toPath(), StandardCopyOption.REPLACE_EXISTING);
@@ -247,5 +260,13 @@ public class StudioEncryption {
                 logger.info("updateConfig, non studio environment, skip setup of key file");
             }
         }
+    }
+
+    private static boolean isStudio() {
+        String osgiFramework = System.getProperty("osgi.framework");
+        if (osgiFramework != null && osgiFramework.contains("eclipse")) {
+            return true;
+        }
+        return false;
     }
 }
