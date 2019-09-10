@@ -95,7 +95,6 @@
                       <artifactSet>
                         <includes>
                             <include>org.talend.daikon</include>
-                            <include>org.bouncycastle</include>
                         </includes>
                       </artifactSet>
                     </configuration>

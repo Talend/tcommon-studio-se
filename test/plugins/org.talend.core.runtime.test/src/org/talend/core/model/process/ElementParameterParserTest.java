@@ -27,24 +27,11 @@ import org.talend.utils.security.StudioEncryption;
  */
 public class ElementParameterParserTest {
 
-    public static String PREFIX_PASSWORD = "ENC:["; //$NON-NLS-1$
-
-    public static String POSTFIX_PASSWORD = "]"; //$NON-NLS-1$
-
     private static StudioEncryption se = StudioEncryption.getStudioEncryption(StudioEncryption.KEY_ROUTINE);
 
     private static String decryptPassword(String input) {
-        if (input == null || input.length() == 0) {
-            return input;
-        }
-        if (input.startsWith(PREFIX_PASSWORD) && input.endsWith(POSTFIX_PASSWORD)) {
-            try {
-                return se.decrypt(input.substring(PREFIX_PASSWORD.length(), input.length() - POSTFIX_PASSWORD.length()));
-            } catch (Exception e) {
-                // do nothing
-            }
-        }
-        return input;
+        input = input.replace("\"", "");
+        return se.decrypt(input);
     }
     @Test
     public void testCanEncrypt() {

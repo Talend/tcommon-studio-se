@@ -246,18 +246,21 @@ public class StudioEncryption {
     }
 
     private static void updateConfig() {
-        File keyFile = new File(System.getProperty(ENCRYPTION_KEY_FILE_SYS_PROP));
-        if (!keyFile.exists()) {
-            if (isStudio()) {
-                // set up keys
-                try (InputStream fi = StudioEncryption.class.getResourceAsStream(ENCRYPTION_KEY_FILE_NAME)) {
-                    Files.copy(fi, keyFile.toPath(), StandardCopyOption.REPLACE_EXISTING);
-                } catch (IOException e) {
-                    logger.error("updateConfig error", e);
+        String keyPath = System.getProperty(ENCRYPTION_KEY_FILE_SYS_PROP);
+        if (keyPath != null) {
+            File keyFile = new File(keyPath);
+            if (!keyFile.exists()) {
+                if (isStudio()) {
+                    // set up keys
+                    try (InputStream fi = StudioEncryption.class.getResourceAsStream(ENCRYPTION_KEY_FILE_NAME)) {
+                        Files.copy(fi, keyFile.toPath(), StandardCopyOption.REPLACE_EXISTING);
+                    } catch (IOException e) {
+                        logger.error("updateConfig error", e);
+                    }
+                    logger.info("updateConfig, studio environment, key file setup completed");
+                } else {
+                    logger.info("updateConfig, non studio environment, skip setup of key file");
                 }
-                logger.info("updateConfig, studio environment, key file setup completed");
-            } else {
-                logger.info("updateConfig, non studio environment, skip setup of key file");
             }
         }
     }
