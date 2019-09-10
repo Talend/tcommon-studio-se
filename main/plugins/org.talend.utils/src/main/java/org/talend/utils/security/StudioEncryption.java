@@ -26,7 +26,6 @@ import java.util.Map;
 import java.util.Properties;
 
 import org.apache.log4j.Logger;
-import org.bouncycastle.jce.provider.BouncyCastleProvider;
 import org.talend.daikon.crypto.CipherSource;
 import org.talend.daikon.crypto.CipherSources;
 import org.talend.daikon.crypto.Encryption;
@@ -60,10 +59,6 @@ public class StudioEncryption {
     static {
         // set up key file
         updateConfig();
-
-        if (null == Security.getProvider("BC")) {
-            Security.addProvider(new BouncyCastleProvider());
-        }
     }
 
     private Encryption defaultEncryption;
