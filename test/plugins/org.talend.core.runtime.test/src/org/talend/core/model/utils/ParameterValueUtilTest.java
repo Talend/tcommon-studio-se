@@ -545,7 +545,7 @@ public class ParameterValueUtilTest {
         Assert.assertEquals("", ParameterValueUtil.getValue4Doc(contextParamType));
 
         contextParamType.setRawValue("123");
-        Assert.assertEquals("/81ashGeQx8=", ParameterValueUtil.getValue4Doc(contextParamType));
+        Assert.assertEquals("123", se.decrypt(ParameterValueUtil.getValue4Doc(contextParamType)));
 
         //
         currentProject.setHidePassword(true);

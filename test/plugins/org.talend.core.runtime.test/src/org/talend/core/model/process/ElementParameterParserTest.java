@@ -85,34 +85,34 @@ public class ElementParameterParserTest {
 
         // "ab"
         when(parameter.getValue()).thenReturn("\"ab\"");
-        assertEquals("\"ab\"",
+        assertEquals("ab",
                 decryptPassword(ElementParameterParser.getEncryptedValue(node, paramName)));
         // "a\"b"
         when(parameter.getValue()).thenReturn("\"a\\\"b\"");
-        assertEquals("\"a\\\"b\"",
+        assertEquals("a\\\"b",
                 decryptPassword(ElementParameterParser.getEncryptedValue(node, paramName)));
         // "a\\b"
         when(parameter.getValue()).thenReturn("\"a\\\\b\"");
-        assertEquals("\"a\\\\b\"",
+        assertEquals("a\\\\b",
                 decryptPassword(ElementParameterParser.getEncryptedValue(node, paramName)));
         // "a\\\\b"
         when(parameter.getValue()).thenReturn("\"a\\\\\\\\b\"");
-        assertEquals("\"a\\\\\\\\b\"",
+        assertEquals("a\\\\\\\\b",
                 decryptPassword(ElementParameterParser.getEncryptedValue(node, paramName)));
         // "test"+context.mypassword + "a"
         when(parameter.getValue()).thenReturn("\"test\"+context.mypassword + \"a\"");
-        assertEquals("\"test\"+context.mypassword + \"a\"",
+        assertEquals("test\"+context.mypassword + \"a",
                 decryptPassword(ElementParameterParser.getEncryptedValue(node, paramName)));
         // "a" + "b"
         when(parameter.getValue()).thenReturn("\"a\" + \"b\"");
-        assertEquals("\"a\" + \"b\"", decryptPassword(ElementParameterParser.getEncryptedValue(node, paramName)));
+        assertEquals("a\" + \"b", decryptPassword(ElementParameterParser.getEncryptedValue(node, paramName)));
         // \\123456/
         when(parameter.getValue()).thenReturn("\"\\\\123456/\"");
-        assertEquals("\"\\\\123456/\"",
+        assertEquals("\\\\123456/",
                 decryptPassword(ElementParameterParser.getEncryptedValue(node, paramName)));
         // \123456/
         when(parameter.getValue()).thenReturn("\"\\123456/\"");
-        assertEquals("\"\\123456/\"",
+        assertEquals("\\123456/",
                 decryptPassword(ElementParameterParser.getEncryptedValue(node, paramName)));
     }
 }

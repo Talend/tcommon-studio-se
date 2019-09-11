@@ -40,15 +40,14 @@ public class PasswordEncryptUtilTest {
 
     @Test
     public void testEncryptPasswordHex() throws Exception {
+        StudioEncryption se = StudioEncryption.getStudioEncryption(StudioEncryption.KEY_ROUTINE);
         assertNull(PasswordEncryptUtil.encryptPasswordHex(null));
-        assertEquals(StudioEncryption.PREFIX_PASSWORD + "3wsOMnbk/woqdy5ZsU6GMg==" + StudioEncryption.POSTFIX_PASSWORD,
-                PasswordEncryptUtil.encryptPasswordHex(""));
-        assertEquals(StudioEncryption.PREFIX_PASSWORD + "DbNaSf740zWs/Wxk9uEQVg==" + StudioEncryption.POSTFIX_PASSWORD,
-                PasswordEncryptUtil.encryptPasswordHex("Talend"));
-        assertEquals(StudioEncryption.PREFIX_PASSWORD + "0VJ8+G+5+0GnM7gdwEg99A==" + StudioEncryption.POSTFIX_PASSWORD,
-                PasswordEncryptUtil.encryptPasswordHex("toor"));
-        assertEquals(StudioEncryption.PREFIX_PASSWORD + "KTndRHnWm9Iej7KMqWJ1fw==" + StudioEncryption.POSTFIX_PASSWORD,
-                PasswordEncryptUtil.encryptPasswordHex("Talend123"));
+        assertEquals("",
+                se.decrypt(PasswordEncryptUtil.encryptPasswordHex("")));
+        assertEquals("Talend",
+                se.decrypt(PasswordEncryptUtil.encryptPasswordHex("Talend")));
+        assertEquals("toor", se.decrypt(PasswordEncryptUtil.encryptPasswordHex("toor")));
+        assertEquals("Talend123", se.decrypt(PasswordEncryptUtil.encryptPasswordHex("Talend123")));
     }
 
     @Test
@@ -105,17 +104,6 @@ public class PasswordEncryptUtilTest {
     // This method copy from routines.system.PasswordEncryptUtil, to make sure the decryptPassword work well
     private String decryptPassword(String input) {
         StudioEncryption se = StudioEncryption.getStudioEncryption(StudioEncryption.KEY_ROUTINE);
-        if (input == null || input.length() == 0) {
-            return input;
-        }
-        if (input.startsWith(StudioEncryption.PREFIX_PASSWORD) && input.endsWith(StudioEncryption.POSTFIX_PASSWORD)) {
-            try {
-                return se.decrypt(input.substring(StudioEncryption.PREFIX_PASSWORD.length(),
-                        input.length() - StudioEncryption.POSTFIX_PASSWORD.length()));
-            } catch (Exception e) {
-                // do nothing
-            }
-        }
-        return input;
+        return se.decrypt(input);
     }
 }

@@ -128,7 +128,7 @@ public class StudioEncryption {
                 return ks;
             }
         } catch (Exception e) {
-            logger.info("StudioEncryption, can not get encryption key from system property: " + encryptionKeyName);
+            logger.debug("StudioEncryption, can not get encryption key from system property: " + encryptionKeyName);
             ks = KeySources.file(encryptionKeyName);
             try {
                 if (ks.getKey() != null) {
