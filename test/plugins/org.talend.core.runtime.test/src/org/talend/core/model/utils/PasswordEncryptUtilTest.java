@@ -83,10 +83,12 @@ public class PasswordEncryptUtilTest {
 
     @Test
     public void testDecryptPassword() {
-        String encryptPassword1 = StudioEncryption.PREFIX_PASSWORD + "3wsOMnbk/woqdy5ZsU6GMg=="
+        String encryptPassword1 = StudioEncryption.PREFIX_PASSWORD
+                + StudioEncryption.getStudioEncryption(StudioEncryption.KEY_ROUTINE).encrypt("")
                 + StudioEncryption.POSTFIX_PASSWORD;
         assertEquals("", decryptPassword(encryptPassword1));
-        String encryptPassword2 = StudioEncryption.PREFIX_PASSWORD + "KTndRHnWm9Iej7KMqWJ1fw=="
+        String encryptPassword2 = StudioEncryption.PREFIX_PASSWORD
+                + StudioEncryption.getStudioEncryption(StudioEncryption.KEY_ROUTINE).encrypt("Talend123")
                 + StudioEncryption.POSTFIX_PASSWORD;
         assertEquals("Talend123", decryptPassword(encryptPassword2));
 
@@ -103,7 +105,15 @@ public class PasswordEncryptUtilTest {
 
     // This method copy from routines.system.PasswordEncryptUtil, to make sure the decryptPassword work well
     private String decryptPassword(String input) {
-        StudioEncryption se = StudioEncryption.getStudioEncryption(StudioEncryption.KEY_ROUTINE);
-        return se.decrypt(input);
+        if (input == null || input.length() == 0) {
+            return input;
+        }
+        if (input.startsWith(StudioEncryption.PREFIX_PASSWORD) && input.endsWith(StudioEncryption.POSTFIX_PASSWORD)) {
+
+            StudioEncryption se = StudioEncryption.getStudioEncryption(StudioEncryption.KEY_ROUTINE);
+            return se.decrypt(input);
+        }
+
+        return input;
     }
 }
