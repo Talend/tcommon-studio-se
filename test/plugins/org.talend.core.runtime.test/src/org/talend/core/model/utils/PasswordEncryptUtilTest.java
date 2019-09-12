@@ -83,13 +83,9 @@ public class PasswordEncryptUtilTest {
 
     @Test
     public void testDecryptPassword() {
-        String encryptPassword1 = StudioEncryption.PREFIX_PASSWORD
-                + StudioEncryption.getStudioEncryption(StudioEncryption.KEY_ROUTINE).encrypt("")
-                + StudioEncryption.POSTFIX_PASSWORD;
+        String encryptPassword1 = StudioEncryption.getStudioEncryption(StudioEncryption.KEY_ROUTINE).encrypt("");
         assertEquals("", decryptPassword(encryptPassword1));
-        String encryptPassword2 = StudioEncryption.PREFIX_PASSWORD
-                + StudioEncryption.getStudioEncryption(StudioEncryption.KEY_ROUTINE).encrypt("Talend123")
-                + StudioEncryption.POSTFIX_PASSWORD;
+        String encryptPassword2 = StudioEncryption.getStudioEncryption(StudioEncryption.KEY_ROUTINE).encrypt("Talend123");
         assertEquals("Talend123", decryptPassword(encryptPassword2));
 
         String decryptPassword1 = "";

@@ -114,17 +114,13 @@ public class ElementParameterParserTest {
                 decryptPassword(ElementParameterParser.getEncryptedValue(node, paramName)));
         // "test"+context.mypassword + "a"
         val = "\"test\"+context.mypassword + \"a\"";
-        targetVal = TalendQuoteUtils.removeQuotes(val);
-        targetVal = TalendQuoteUtils.checkSlashAndRemoveQuotation(targetVal);
         when(parameter.getValue()).thenReturn(val);
-        assertEquals(targetVal,
-                decryptPassword(ElementParameterParser.getEncryptedValue(node, paramName)));
+        assertEquals(val,
+                ElementParameterParser.getEncryptedValue(node, paramName));
         // "a" + "b"
         val = "\"a\" + \"b\"";
-        targetVal = TalendQuoteUtils.removeQuotes(val);
-        targetVal = TalendQuoteUtils.checkSlashAndRemoveQuotation(targetVal);
         when(parameter.getValue()).thenReturn(val);
-        assertEquals(targetVal, decryptPassword(ElementParameterParser.getEncryptedValue(node, paramName)));
+        assertEquals(val, decryptPassword(ElementParameterParser.getEncryptedValue(node, paramName)));
         // \\123456/
         val = "\"\\\\123456/\"";
         targetVal = TalendQuoteUtils.removeQuotes(val);
