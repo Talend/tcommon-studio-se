@@ -120,7 +120,7 @@ public class ElementParameterParserTest {
         // "a" + "b"
         val = "\"a\" + \"b\"";
         when(parameter.getValue()).thenReturn(val);
-        assertEquals(val, decryptPassword(ElementParameterParser.getEncryptedValue(node, paramName)));
+        assertEquals(val, ElementParameterParser.getEncryptedValue(node, paramName));
         // \\123456/
         val = "\"\\\\123456/\"";
         targetVal = TalendQuoteUtils.removeQuotes(val);
