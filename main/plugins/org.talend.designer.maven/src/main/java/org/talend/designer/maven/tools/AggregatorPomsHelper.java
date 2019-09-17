@@ -111,9 +111,6 @@ public class AggregatorPomsHelper {
             throws Exception {
         IFile pomFile = getProjectRootPom();
         if (force || !pomFile.exists()) {
-            if (model == null) {
-                model = getCodeProjectTemplateModel();
-            }
             PomUtil.savePom(monitor, model, pomFile);
         }
     }
@@ -298,11 +295,12 @@ public class AggregatorPomsHelper {
             if (PomIdsHelper.useProfileModule()) {
                 List<Profile> profiles = collectRefProjectProfiles(references);
                 Iterator<Profile> iterator = model.getProfiles().listIterator();
-                iterator.forEachRemaining(profile -> {
+                while (iterator.hasNext()) {
+                    Profile profile = iterator.next();
                     if (StringUtils.startsWithIgnoreCase(profile.getId(), projectTechName)) {
                         iterator.remove();
                     }
-                });
+                }
                 model.getProfiles().addAll(profiles);
             } else {
                 List<String> refPrjectModules = new ArrayList<>();
@@ -313,11 +311,12 @@ public class AggregatorPomsHelper {
                 });
                 List<String> modules = model.getModules();
                 Iterator<String> iterator = modules.listIterator();
-                iterator.forEachRemaining(modulePath -> {
+                while (iterator.hasNext()) {
+                    String modulePath = iterator.next();
                     if (modulePath.startsWith("../../")) { //$NON-NLS-1$
                         iterator.remove();
                     }
-                });
+                }
                 modules.addAll(refPrjectModules);
             }
             createRootPom(model, true, monitor);
@@ -789,7 +788,13 @@ public class AggregatorPomsHelper {
         monitor.beginTask("", size); //$NON-NLS-1$
         // project pom
         monitor.subTask("Synchronize project pom"); //$NON-NLS-1$
-        createRootPom(null, true, monitor);
+        Model model = getCodeProjectTemplateModel();
+        if (PomIdsHelper.useProfileModule()) {
+            model.getProfiles().addAll(collectRefProjectProfiles(null));
+        } else {
+            model.getModules().addAll(collectRefProjectModules(null));
+        }
+        createRootPom(model, true, monitor);
         installRootPom(true);
         monitor.worked(1);
         if (monitor.isCanceled()) {
@@ -843,13 +848,7 @@ public class AggregatorPomsHelper {
         // sync project pom again with all modules.
         monitor.subTask("Synchronize project pom with modules"); //$NON-NLS-1$
         collectCodeModules(modules);
-        Model model = getCodeProjectTemplateModel();
-        if (PomIdsHelper.useProfileModule()) {
-            model.getProfiles().addAll(collectRefProjectProfiles(null));
-        } else {
-            modules.addAll(collectRefProjectModules(null));
-        }
-        model.setModules(modules);
+        model.getModules().addAll(modules);
         createRootPom(model, true, monitor);
         installRootPom(true);
         monitor.worked(1);

@@ -422,7 +422,8 @@ public class AggregatorPomsHelperTest {
                 });
             }
         } else {
-            assertEquals(0, model.getProfiles().stream().filter(profile -> profile.getId().startsWith(projectTechName)).count());
+            assertEquals(0, model.getProfiles().stream()
+                    .filter(profile -> StringUtils.startsWithIgnoreCase(profile.getId(), projectTechName)).count());
         }
     }
 
