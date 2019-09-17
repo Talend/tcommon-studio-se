@@ -403,8 +403,24 @@ public class StringUtils {
 
         return sb.toString();
     }
-
-
+    
+    /**
+     * check if string contains search string case-insensitivity
+     */
+    public static boolean containsIgnoreCase(final String str, final String searchStr) {
+        if (str == null || searchStr == null) {
+            return false;
+        }
+        final int len = searchStr.length();
+        final int max = str.length() - len;
+        for (int i = 0; i <= max; i++) {
+            if (str.regionMatches(true, i, searchStr, 0, len)) {
+                return true;
+            }
+        }
+        return false;
+    }
+    
     /**
      * return null value not "null" String when obj is null that is the only difference with String.valueOf(Object obj)
      *
