@@ -965,8 +965,7 @@ public final class DBConnectionContextUtils {
         // get values
         String server = ConnectionContextHelper.getOriginalValue(contextType, dbConn.getServerName());
         String username = ConnectionContextHelper.getOriginalValue(contextType, dbConn.getUsername());
-        // the password are not encrypted yet
-        String password = ConnectionContextHelper.getOriginalValue(contextType, dbConn.getPassword());
+        String password = ConnectionContextHelper.getOriginalValue(contextType, dbConn.getRawPassword());
         String port = ConnectionContextHelper.getOriginalValue(contextType, dbConn.getPort());
         String sidOrDatabase = ConnectionContextHelper.getOriginalValue(contextType, dbConn.getSID());
         String datasource = ConnectionContextHelper.getOriginalValue(contextType, dbConn.getDatasourceName());
@@ -987,7 +986,7 @@ public final class DBConnectionContextUtils {
         cloneConn.setDatasourceName(datasource);
         cloneConn.setDBRootPath(dbRootPath);
         cloneConn.setFileFieldName(filePath);
-        cloneConn.setPassword(password); // the password is raw.
+        cloneConn.setRawPassword(password); // the password is raw.
         cloneConn.setPort(port);
         cloneConn.setUiSchema(schemaOracle);
         cloneConn.setServerName(server);

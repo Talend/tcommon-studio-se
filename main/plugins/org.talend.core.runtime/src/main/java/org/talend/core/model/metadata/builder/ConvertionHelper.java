@@ -230,8 +230,7 @@ public final class ConvertionHelper {
         result.setId(connection.getId());
         result.setLabel(connection.getLabel());
         result.setNullChar(connection.getNullChar());
-        // does not encrypted yet
-        result.setPassword(connection.getPassword());
+        result.setPassword(connection.getRawPassword());
         result.setPort(connection.getPort());
         result.setServerName(connection.getServerName());
         result.setSqlSyntax(connection.getSqlSynthax());

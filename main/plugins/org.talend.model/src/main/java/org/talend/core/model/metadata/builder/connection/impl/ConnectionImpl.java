@@ -1207,7 +1207,12 @@ public class ConnectionImpl extends AbstractMetadataObjectImpl implements Connec
                 this.encrypt = (src) -> se.encrypt(src);
             }
             if (this.decrypt == null) {
-                this.decrypt = (src) -> se.decrypt(src);
+                this.decrypt = (src) -> {
+                    if (src != null && StudioEncryption.hasEncryptionSymbol(src)) {
+                        return se.decrypt(src);
+                    }
+                    return src;
+                };
             }
             String newValue = null;
             if (encrypt) {
