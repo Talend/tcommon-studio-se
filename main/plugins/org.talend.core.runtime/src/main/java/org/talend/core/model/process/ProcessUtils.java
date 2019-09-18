@@ -25,6 +25,7 @@ import org.talend.commons.exception.ExceptionHandler;
 import org.talend.commons.exception.PersistenceException;
 import org.talend.commons.utils.VersionUtils;
 import org.talend.core.GlobalServiceRegister;
+import org.talend.core.IESBService;
 import org.talend.core.ITDQItemService;
 import org.talend.core.PluginChecker;
 import org.talend.core.hadoop.IHadoopClusterService;
@@ -33,7 +34,6 @@ import org.talend.core.model.general.Project;
 import org.talend.core.model.properties.Item;
 import org.talend.core.model.properties.JobletProcessItem;
 import org.talend.core.model.properties.ProcessItem;
-import org.talend.core.model.properties.ProjectReference;
 import org.talend.core.model.properties.Property;
 import org.talend.core.model.properties.SQLPatternItem;
 import org.talend.core.model.relationship.Relation;
@@ -904,30 +904,7 @@ public final class ProcessUtils {
                 }
             }
         }
-
-        if (needBeans && GlobalServiceRegister.getDefault().isServiceRegistered(IProxyRepositoryService.class)) {
-            IProxyRepositoryService service = (IProxyRepositoryService) GlobalServiceRegister.getDefault()
-                    .getService(IProxyRepositoryService.class);
-            ERepositoryObjectType beansType = ERepositoryObjectType.valueOf("BEANS"); //$NON-NLS-1$
-            try {
-                IProxyRepositoryFactory factory = service.getProxyRepositoryFactory();
-                List<IRepositoryViewObject> all = factory.getAll(project, beansType);
-                List<ProjectReference> references = ProjectManager.getInstance().getCurrentProject()
-                        .getProjectReferenceList(true);
-                for (ProjectReference ref : references) {
-                    all.addAll(factory.getAll(new Project(ref.getReferencedProject()), beansType));
-                }
-//                if (!all.isEmpty()) { // has bean
-//                    return true;
-//                }
-
-                return true;
-
-            } catch (PersistenceException e) {
-                ExceptionHandler.process(e);
-            }
-        }
-        return false;
+        return needBeans && GlobalServiceRegister.getDefault().isServiceRegistered(IESBService.class);
     }
 
     public static boolean isRequiredPigUDFs(IProcess process) {
