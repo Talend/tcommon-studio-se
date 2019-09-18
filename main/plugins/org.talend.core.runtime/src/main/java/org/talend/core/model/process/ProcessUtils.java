@@ -20,11 +20,11 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 
-import org.eclipse.emf.common.util.EList;
 import org.talend.commons.exception.ExceptionHandler;
 import org.talend.commons.exception.PersistenceException;
 import org.talend.commons.utils.VersionUtils;
 import org.talend.core.GlobalServiceRegister;
+import org.talend.core.IESBService;
 import org.talend.core.ITDQItemService;
 import org.talend.core.PluginChecker;
 import org.talend.core.hadoop.IHadoopClusterService;
@@ -33,7 +33,6 @@ import org.talend.core.model.general.Project;
 import org.talend.core.model.properties.Item;
 import org.talend.core.model.properties.JobletProcessItem;
 import org.talend.core.model.properties.ProcessItem;
-import org.talend.core.model.properties.ProjectReference;
 import org.talend.core.model.properties.Property;
 import org.talend.core.model.properties.SQLPatternItem;
 import org.talend.core.model.relationship.Relation;
@@ -53,7 +52,6 @@ import org.talend.core.utils.BitwiseOptionUtils;
 import org.talend.designer.core.IDesignerCoreService;
 import org.talend.designer.core.model.utils.emf.talendfile.ContextParameterType;
 import org.talend.designer.core.model.utils.emf.talendfile.ContextType;
-import org.talend.designer.core.model.utils.emf.talendfile.ElementParameterType;
 import org.talend.designer.core.model.utils.emf.talendfile.MetadataType;
 import org.talend.designer.core.model.utils.emf.talendfile.NodeType;
 import org.talend.designer.core.model.utils.emf.talendfile.ProcessType;
@@ -897,36 +895,13 @@ public final class ProcessUtils {
                     ERepositoryObjectType itemType = ERepositoryObjectType.getItemType(property.getItem());
                     // route job
                     if (itemType != null && (itemType.equals(ERepositoryObjectType.PROCESS_ROUTE)
-                    		|| itemType.equals(ERepositoryObjectType.PROCESS_ROUTELET))) {
+                            || itemType.equals(ERepositoryObjectType.PROCESS_ROUTELET))) {
                         needBeans = true;
                     }
                 }
             }
         }
-
-        if (needBeans && GlobalServiceRegister.getDefault().isServiceRegistered(IProxyRepositoryService.class)) {
-            IProxyRepositoryService service = (IProxyRepositoryService) GlobalServiceRegister.getDefault()
-                    .getService(IProxyRepositoryService.class);
-            ERepositoryObjectType beansType = ERepositoryObjectType.valueOf("BEANS"); //$NON-NLS-1$
-            try {
-                IProxyRepositoryFactory factory = service.getProxyRepositoryFactory();
-                List<IRepositoryViewObject> all = factory.getAll(project, beansType);
-                List<ProjectReference> references = ProjectManager.getInstance().getCurrentProject()
-                        .getProjectReferenceList(true);
-                for (ProjectReference ref : references) {
-                    all.addAll(factory.getAll(new Project(ref.getReferencedProject()), beansType));
-                }
-//                if (!all.isEmpty()) { // has bean
-//                    return true;
-//                }
-
-                return true;
-
-            } catch (PersistenceException e) {
-                ExceptionHandler.process(e);
-            }
-        }
-        return false;
+        return needBeans && GlobalServiceRegister.getDefault().isServiceRegistered(IESBService.class);
     }
 
     public static boolean isRequiredPigUDFs(IProcess process) {
