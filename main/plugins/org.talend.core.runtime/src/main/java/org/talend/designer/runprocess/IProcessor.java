@@ -12,6 +12,7 @@
 // ============================================================================
 package org.talend.designer.runprocess;
 
+import java.util.Collection;
 import java.util.Map;
 import java.util.Set;
 
@@ -298,6 +299,8 @@ public interface IProcessor {
     String[] getJVMArgs();
 
     Set<ModuleNeeded> getNeededModules(int options);
+    
+    public void updateModulesAfterSetLog4j(Collection<ModuleNeeded> modulesNeeded);
 
     Set<JobInfo> getBuildChildrenJobs();
 
