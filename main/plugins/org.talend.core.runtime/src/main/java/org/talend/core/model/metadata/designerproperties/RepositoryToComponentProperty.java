@@ -2847,7 +2847,7 @@ public class RepositoryToComponentProperty {
         }
         
         if(value.equals("CONNECTION_TIMEOUT")) {
-        	return connection.getTimeout();
+            return connection.getTimeout();
         }
 
         if (value.equals("ENCODING")) {

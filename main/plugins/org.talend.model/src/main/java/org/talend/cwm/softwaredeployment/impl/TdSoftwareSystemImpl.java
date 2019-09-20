@@ -21,23 +21,23 @@ import orgomg.cwm.foundation.softwaredeployment.impl.SoftwareSystemImpl;
  */
 public class TdSoftwareSystemImpl extends SoftwareSystemImpl implements TdSoftwareSystem {
 
-	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
-	protected TdSoftwareSystemImpl() {
-		super();
-	}
+    /**
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     */
+    protected TdSoftwareSystemImpl() {
+        super();
+    }
 
-	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
-	@Override
-	protected EClass eStaticClass() {
-		return SoftwaredeploymentPackage.Literals.TD_SOFTWARE_SYSTEM;
-	}
+    /**
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     */
+    @Override
+    protected EClass eStaticClass() {
+        return SoftwaredeploymentPackage.Literals.TD_SOFTWARE_SYSTEM;
+    }
 
 } //TdSoftwareSystemImpl

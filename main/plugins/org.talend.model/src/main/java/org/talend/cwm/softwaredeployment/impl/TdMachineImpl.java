@@ -21,23 +21,23 @@ import orgomg.cwm.foundation.softwaredeployment.impl.MachineImpl;
  */
 public class TdMachineImpl extends MachineImpl implements TdMachine {
 
-	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
-	protected TdMachineImpl() {
-		super();
-	}
+    /**
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     */
+    protected TdMachineImpl() {
+        super();
+    }
 
-	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
-	@Override
-	protected EClass eStaticClass() {
-		return SoftwaredeploymentPackage.Literals.TD_MACHINE;
-	}
+    /**
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     */
+    @Override
+    protected EClass eStaticClass() {
+        return SoftwaredeploymentPackage.Literals.TD_MACHINE;
+    }
 
 } //TdMachineImpl

@@ -21,23 +21,23 @@ import orgomg.cwm.resource.relational.impl.TriggerImpl;
  */
 public class TdTriggerImpl extends TriggerImpl implements TdTrigger {
 
-	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
-	protected TdTriggerImpl() {
-		super();
-	}
+    /**
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     */
+    protected TdTriggerImpl() {
+        super();
+    }
 
-	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
-	@Override
-	protected EClass eStaticClass() {
-		return RelationalPackage.Literals.TD_TRIGGER;
-	}
+    /**
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     */
+    @Override
+    protected EClass eStaticClass() {
+        return RelationalPackage.Literals.TD_TRIGGER;
+    }
 
 } //TdTriggerImpl

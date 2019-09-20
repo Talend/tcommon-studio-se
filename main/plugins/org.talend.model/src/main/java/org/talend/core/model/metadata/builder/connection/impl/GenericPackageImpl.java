@@ -21,23 +21,23 @@ import orgomg.cwm.objectmodel.core.impl.PackageImpl;
  */
 public class GenericPackageImpl extends PackageImpl implements GenericPackage {
 
-	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
-	protected GenericPackageImpl() {
-		super();
-	}
+    /**
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     */
+    protected GenericPackageImpl() {
+        super();
+    }
 
-	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
-	@Override
-	protected EClass eStaticClass() {
-		return ConnectionPackage.Literals.GENERIC_PACKAGE;
-	}
+    /**
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     */
+    @Override
+    protected EClass eStaticClass() {
+        return ConnectionPackage.Literals.GENERIC_PACKAGE;
+    }
 
 } //GenericPackageImpl
