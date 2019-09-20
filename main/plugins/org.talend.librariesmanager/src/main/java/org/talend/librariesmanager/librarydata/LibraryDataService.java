@@ -63,7 +63,7 @@ public class LibraryDataService {
 
     private static final String LIBRARIES_DATA_FILE_NAME = "library_data.index"; //$NON-NLS-1$
 
-    private static final String UNRESOLVED_LICENSE_NAME = "UNKNOW"; //$NON-NLS-1$
+    private static final String UNRESOLVED_LICENSE_NAME = "UNKNOWN"; //$NON-NLS-1$
 
     private static boolean buildLibraryIfFileMissing = true;
 
