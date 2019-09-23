@@ -60,6 +60,15 @@ public interface IComponent {
 
     public String getOriginalName();
 
+    /**
+     * Only for component display (palette,search)
+     * 
+     * @return
+     */
+    default public String getDisplayName() {
+        return getName();
+    }
+
     public String getLongName();
 
     public String getOriginalFamilyName();
