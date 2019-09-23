@@ -406,6 +406,7 @@ public class StringUtils {
     
     /**
      * check if string contains search string case-insensitivity
+     * the code is copied from apache commons-lang3 StringUtils and do some adjust to avoid the useless code
      */
     public static boolean containsIgnoreCase(final String str, final String searchStr) {
         if (str == null || searchStr == null) {
