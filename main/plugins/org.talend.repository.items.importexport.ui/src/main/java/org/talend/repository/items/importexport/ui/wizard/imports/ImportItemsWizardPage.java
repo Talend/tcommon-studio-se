@@ -520,10 +520,10 @@ public class ImportItemsWizardPage extends WizardPage {
 
         regenIdBtn = new Button(internalIdGroup, SWT.RADIO);
         regenIdBtn.setText(Messages.getString("ImportItemsWizardPage_internalIdGroup_alwaysRegenId"));
-        regenIdBtn.setSelection(true);
 
         Button keepOrigIdBtn = new Button(internalIdGroup, SWT.RADIO);
         keepOrigIdBtn.setText(Messages.getString("ImportItemsWizardPage_internalIdGroup_keepOrigId"));
+        keepOrigIdBtn.setSelection(true);
 
         // see feature 3949
         this.overwriteButton = new Button(optionsArea, SWT.CHECK);
@@ -543,6 +543,7 @@ public class ImportItemsWizardPage extends WizardPage {
         overwriteLayoutData.left = new FormAttachment(internalIdGroup, 0, SWT.LEFT);
         this.overwriteButton.setLayoutData(overwriteLayoutData);
 
+        internalIdGroup.setVisible(false);
     }
 
     protected boolean isEnableForExchange() {
