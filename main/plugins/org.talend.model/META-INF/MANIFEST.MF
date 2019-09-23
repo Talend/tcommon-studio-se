@@ -2,18 +2,12 @@ Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
 Bundle-Name: %pluginName
 Bundle-SymbolicName: org.talend.model;singleton:=true
-Automatic-Module-Name: org.talend.model
 Bundle-Version: 7.3.1.qualifier
 Bundle-ClassPath: .
 Bundle-Vendor: %providerName
 Bundle-Localization: plugin
-Bundle-RequiredExecutionEnvironment: J2SE-1.5
-Export-Package: org.talend.core.model;
-  uses:="org.osgi.framework,
-   org.eclipse.core.runtime",
- org.talend.core.model.component_cache;
-  uses:="org.eclipse.emf.ecore,
-   org.eclipse.emf.common.util",
+Export-Package: org.talend.core.model;uses:="org.osgi.framework,org.eclipse.core.runtime",
+ org.talend.core.model.component_cache;uses:="org.eclipse.emf.ecore,org.eclipse.emf.common.util",
  org.talend.core.model.component_cache.impl;
   uses:="org.eclipse.emf.ecore,
    org.eclipse.emf.ecore.impl,
@@ -30,9 +24,7 @@ Export-Package: org.talend.core.model;
    org.eclipse.emf.ecore.resource,
    org.eclipse.emf.ecore.xmi.impl,
    org.talend.core.model.component_cache",
- org.talend.core.model.expression;
-  uses:="org.eclipse.emf.ecore,
-   org.eclipse.emf.common.util",
+ org.talend.core.model.expression;uses:="org.eclipse.emf.ecore,org.eclipse.emf.common.util",
  org.talend.core.model.expression.impl;
   uses:="org.eclipse.emf.ecore,
    org.eclipse.emf.ecore.impl,
@@ -80,9 +72,7 @@ Export-Package: org.talend.core.model;
    org.talend.designer.core.model.utils.emf.talendfile,
    org.talend.core.model.metadata.builder.connection,
    org.eclipse.gmf.runtime.notation",
- org.talend.core.model.properties.helper;
-  uses:="org.eclipse.emf.common.util,
-   org.eclipse.emf.ecore.resource.impl",
+ org.talend.core.model.properties.helper;uses:="org.eclipse.emf.common.util,org.eclipse.emf.ecore.resource.impl",
  org.talend.core.model.properties.impl;
   uses:="org.eclipse.emf.ecore,
    org.eclipse.emf.ecore.impl,
@@ -100,16 +90,9 @@ Export-Package: org.talend.core.model;
    org.talend.core.model.properties,
    org.eclipse.emf.common.notify,
    org.eclipse.emf.common.notify.impl",
- org.talend.core.model.resources;
-  uses:="org.eclipse.emf.ecore,
-   org.talend.core.model.properties",
- org.talend.cwm.constants;
-  uses:="org.eclipse.emf.ecore,
-   org.eclipse.emf.common.util",
- org.talend.cwm.constants.impl;
-  uses:="org.eclipse.emf.ecore,
-   org.eclipse.emf.ecore.impl,
-   org.talend.cwm.constants",
+ org.talend.core.model.resources;uses:="org.eclipse.emf.ecore,org.talend.core.model.properties",
+ org.talend.cwm.constants;uses:="org.eclipse.emf.ecore,org.eclipse.emf.common.util",
+ org.talend.cwm.constants.impl;uses:="org.eclipse.emf.ecore,org.eclipse.emf.ecore.impl,org.talend.cwm.constants",
  org.talend.cwm.helper;
   uses:="org.eclipse.emf.ecore,
    orgomg.cwm.foundation.businessinformation,
@@ -157,9 +140,7 @@ Export-Package: org.talend.core.model;
    org.eclipse.emf.common.notify.impl,
    org.talend.core.model.metadata.builder.connection,
    org.talend.cwm.relational",
- org.talend.cwm.softwaredeployment;
-  uses:="org.eclipse.emf.ecore,
-   orgomg.cwm.foundation.softwaredeployment",
+ org.talend.cwm.softwaredeployment;uses:="org.eclipse.emf.ecore,orgomg.cwm.foundation.softwaredeployment",
  org.talend.cwm.softwaredeployment.impl;
   uses:="org.eclipse.emf.ecore,
    org.eclipse.emf.ecore.impl,
@@ -172,10 +153,7 @@ Export-Package: org.talend.core.model;
    org.eclipse.emf.common.notify,
    org.eclipse.emf.common.notify.impl,
    org.talend.cwm.softwaredeployment",
- org.talend.cwm.xml;
-  uses:="org.eclipse.emf.ecore,
-   org.eclipse.emf.common.util,
-   orgomg.cwm.resource.xml",
+ org.talend.cwm.xml;uses:="org.eclipse.emf.ecore,org.eclipse.emf.common.util,orgomg.cwm.resource.xml",
  org.talend.cwm.xml.impl;
   uses:="org.eclipse.emf.ecore,
    org.eclipse.emf.ecore.impl,
@@ -190,9 +168,7 @@ Export-Package: org.talend.core.model;
    org.eclipse.emf.common.notify.impl,
    orgomg.cwm.resource.xml,
    org.talend.cwm.xml",
- org.talend.designer.business.model.business;
-  uses:="org.eclipse.emf.ecore,
-   org.eclipse.emf.common.util",
+ org.talend.designer.business.model.business;uses:="org.eclipse.emf.ecore,org.eclipse.emf.common.util",
  org.talend.designer.business.model.business.impl;
   uses:="org.eclipse.emf.ecore,
    org.eclipse.emf.ecore.impl,
@@ -204,10 +180,7 @@ Export-Package: org.talend.core.model;
    org.talend.designer.business.model.business,
    org.eclipse.emf.common.notify,
    org.eclipse.emf.common.notify.impl",
- org.talend.designer.core.model.utils.emf.component;
-  uses:="org.eclipse.emf.ecore,
-   org.eclipse.emf.common.util,
-   org.eclipse.emf.ecore.util",
+ org.talend.designer.core.model.utils.emf.component;uses:="org.eclipse.emf.ecore,org.eclipse.emf.common.util,org.eclipse.emf.ecore.util",
  org.talend.designer.core.model.utils.emf.component.impl;
   uses:="org.eclipse.emf.ecore,
    org.eclipse.emf.ecore.impl,
@@ -226,10 +199,7 @@ Export-Package: org.talend.core.model;
    org.eclipse.emf.ecore.resource,
    org.eclipse.emf.ecore.util,
    org.talend.designer.core.model.utils.emf.component",
- org.talend.designer.core.model.utils.emf.talendfile;
-  uses:="org.eclipse.emf.ecore,
-   org.eclipse.emf.common.util,
-   org.eclipse.emf.ecore.util",
+ org.talend.designer.core.model.utils.emf.talendfile;uses:="org.eclipse.emf.ecore,org.eclipse.emf.common.util,org.eclipse.emf.ecore.util",
  org.talend.designer.core.model.utils.emf.talendfile.impl;
   uses:="org.eclipse.emf.ecore,
    org.eclipse.emf.ecore.impl,
@@ -248,10 +218,7 @@ Export-Package: org.talend.core.model;
    org.eclipse.emf.common.notify,
    org.eclipse.emf.common.notify.impl,
    org.eclipse.emf.ecore.util",
- org.talend.designer.joblet.model;
-  uses:="org.eclipse.emf.ecore,
-   org.eclipse.emf.common.util,
-   org.talend.designer.core.model.utils.emf.talendfile",
+ org.talend.designer.joblet.model;uses:="org.eclipse.emf.ecore,org.eclipse.emf.common.util,org.talend.designer.core.model.utils.emf.talendfile",
  org.talend.designer.joblet.model.impl;
   uses:="org.eclipse.emf.ecore,
    org.eclipse.emf.ecore.impl,
@@ -270,18 +237,14 @@ Export-Package: org.talend.core.model;
    org.eclipse.emf.ecore.resource,
    org.eclipse.emf.common.notify,
    org.eclipse.emf.common.notify.impl",
- org.talend.model.bridge;
-  uses:="org.talend.core.model.properties,
-   org.eclipse.core.resources",
+ org.talend.model.bridge;uses:="org.talend.core.model.properties,org.eclipse.core.resources",
  org.talend.model.emf;
   uses:="org.eclipse.emf.common.util,
    org.talend.commons.runtime.model.emf,
    org.eclipse.emf.ecore.resource,
    org.eclipse.emf.ecore.xmi.impl,
    org.eclipse.emf.ecore.xmi",
- org.talend.model.recyclebin;
-  uses:="org.eclipse.emf.ecore,
-   org.eclipse.emf.common.util",
+ org.talend.model.recyclebin;uses:="org.eclipse.emf.ecore,org.eclipse.emf.common.util",
  org.talend.model.recyclebin.impl;
   uses:="org.eclipse.emf.ecore,
    org.eclipse.emf.ecore.impl,

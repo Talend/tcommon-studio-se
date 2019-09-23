@@ -17,21 +17,21 @@ import org.eclipse.emf.ecore.EFactory;
  */
 public interface ConstantsFactory extends EFactory {
 
-	/**
-	 * The singleton instance of the factory.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
-	ConstantsFactory eINSTANCE = org.talend.cwm.constants.impl.ConstantsFactoryImpl.init();
+    /**
+     * The singleton instance of the factory.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     */
+    ConstantsFactory eINSTANCE = org.talend.cwm.constants.impl.ConstantsFactoryImpl.init();
 
-	/**
-	 * Returns the package supported by this factory.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @return the package supported by this factory.
-	 * @generated
-	 */
-	ConstantsPackage getConstantsPackage();
+    /**
+     * Returns the package supported by this factory.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @return the package supported by this factory.
+     * @generated
+     */
+    ConstantsPackage getConstantsPackage();
 
 } //ConstantsFactory

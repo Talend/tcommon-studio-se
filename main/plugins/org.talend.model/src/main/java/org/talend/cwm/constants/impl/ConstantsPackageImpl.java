@@ -56,206 +56,201 @@ import orgomg.mof.model.ModelPackage;
  */
 public class ConstantsPackageImpl extends EPackageImpl implements ConstantsPackage {
 
-	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
-	private EEnum developmentStatusEEnum = null;
+    /**
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     */
+    private EEnum developmentStatusEEnum = null;
 
-	/**
-	 * Creates an instance of the model <b>Package</b>, registered with
-	 * {@link org.eclipse.emf.ecore.EPackage.Registry EPackage.Registry} by the package
-	 * package URI value.
-	 * <p>Note: the correct way to create the package is via the static
-	 * factory method {@link #init init()}, which also performs
-	 * initialization of the package, or returns the registered package,
-	 * if one already exists.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @see org.eclipse.emf.ecore.EPackage.Registry
-	 * @see org.talend.cwm.constants.ConstantsPackage#eNS_URI
-	 * @see #init()
-	 * @generated
-	 */
-	private ConstantsPackageImpl() {
-		super(eNS_URI, ConstantsFactory.eINSTANCE);
-	}
+    /**
+     * Creates an instance of the model <b>Package</b>, registered with
+     * {@link org.eclipse.emf.ecore.EPackage.Registry EPackage.Registry} by the package
+     * package URI value.
+     * <p>Note: the correct way to create the package is via the static
+     * factory method {@link #init init()}, which also performs
+     * initialization of the package, or returns the registered package,
+     * if one already exists.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @see org.eclipse.emf.ecore.EPackage.Registry
+     * @see org.talend.cwm.constants.ConstantsPackage#eNS_URI
+     * @see #init()
+     * @generated
+     */
+    private ConstantsPackageImpl() {
+        super(eNS_URI, ConstantsFactory.eINSTANCE);
+    }
 
-	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
-	private static boolean isInited = false;
+    /**
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     */
+    private static boolean isInited = false;
 
-	/**
-	 * Creates, registers, and initializes the <b>Package</b> for this model, and for any others upon which it depends.
-	 *
-	 * <p>This method is used to initialize {@link ConstantsPackage#eINSTANCE} when that field is accessed.
-	 * Clients should not invoke it directly. Instead, they should simply access that field to obtain the package.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @see #eNS_URI
-	 * @see #createPackageContents()
-	 * @see #initializePackageContents()
-	 * @generated
-	 */
-	public static ConstantsPackage init() {
-		if (isInited)
-			return (ConstantsPackage) EPackage.Registry.INSTANCE.getEPackage(ConstantsPackage.eNS_URI);
+    /**
+     * Creates, registers, and initializes the <b>Package</b> for this model, and for any others upon which it depends.
+     * 
+     * <p>This method is used to initialize {@link ConstantsPackage#eINSTANCE} when that field is accessed.
+     * Clients should not invoke it directly. Instead, they should simply access that field to obtain the package.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @see #eNS_URI
+     * @see #createPackageContents()
+     * @see #initializePackageContents()
+     * @generated
+     */
+    public static ConstantsPackage init() {
+        if (isInited)
+            return (ConstantsPackage) EPackage.Registry.INSTANCE.getEPackage(ConstantsPackage.eNS_URI);
 
-		// Obtain or create and register package
-		Object registeredConstantsPackage = EPackage.Registry.INSTANCE.get(eNS_URI);
-		ConstantsPackageImpl theConstantsPackage = registeredConstantsPackage instanceof ConstantsPackageImpl
-				? (ConstantsPackageImpl) registeredConstantsPackage
-				: new ConstantsPackageImpl();
+        // Obtain or create and register package
+        ConstantsPackageImpl theConstantsPackage = (ConstantsPackageImpl) (EPackage.Registry.INSTANCE.get(eNS_URI) instanceof ConstantsPackageImpl ? EPackage.Registry.INSTANCE
+                .get(eNS_URI) : new ConstantsPackageImpl());
 
-		isInited = true;
+        isInited = true;
 
-		// Initialize simple dependencies
-		CorePackage.eINSTANCE.eClass();
-		BehavioralPackage.eINSTANCE.eClass();
-		RelationshipsPackage.eINSTANCE.eClass();
-		InstancePackage.eINSTANCE.eClass();
-		BusinessinformationPackage.eINSTANCE.eClass();
-		DatatypesPackage.eINSTANCE.eClass();
-		ExpressionsPackage.eINSTANCE.eClass();
-		KeysindexesPackage.eINSTANCE.eClass();
-		SoftwaredeploymentPackage.eINSTANCE.eClass();
-		TypemappingPackage.eINSTANCE.eClass();
-		RelationalPackage.eINSTANCE.eClass();
-		RecordPackage.eINSTANCE.eClass();
-		MultidimensionalPackage.eINSTANCE.eClass();
-		XmlPackage.eINSTANCE.eClass();
-		TransformationPackage.eINSTANCE.eClass();
-		OlapPackage.eINSTANCE.eClass();
-		DataminingPackage.eINSTANCE.eClass();
-		InformationvisualizationPackage.eINSTANCE.eClass();
-		BusinessnomenclaturePackage.eINSTANCE.eClass();
-		WarehouseprocessPackage.eINSTANCE.eClass();
-		WarehouseoperationPackage.eINSTANCE.eClass();
-		ErPackage.eINSTANCE.eClass();
-		CoboldataPackage.eINSTANCE.eClass();
-		DmsiiPackage.eINSTANCE.eClass();
-		ImsdatabasePackage.eINSTANCE.eClass();
-		EssbasePackage.eINSTANCE.eClass();
-		ExpressPackage.eINSTANCE.eClass();
-		InformationsetPackage.eINSTANCE.eClass();
-		InformationreportingPackage.eINSTANCE.eClass();
-		CwmmipPackage.eINSTANCE.eClass();
-		ModelPackage.eINSTANCE.eClass();
+        // Initialize simple dependencies
+        CorePackage.eINSTANCE.eClass();
+        BehavioralPackage.eINSTANCE.eClass();
+        RelationshipsPackage.eINSTANCE.eClass();
+        InstancePackage.eINSTANCE.eClass();
+        BusinessinformationPackage.eINSTANCE.eClass();
+        DatatypesPackage.eINSTANCE.eClass();
+        ExpressionsPackage.eINSTANCE.eClass();
+        KeysindexesPackage.eINSTANCE.eClass();
+        SoftwaredeploymentPackage.eINSTANCE.eClass();
+        TypemappingPackage.eINSTANCE.eClass();
+        RelationalPackage.eINSTANCE.eClass();
+        RecordPackage.eINSTANCE.eClass();
+        MultidimensionalPackage.eINSTANCE.eClass();
+        XmlPackage.eINSTANCE.eClass();
+        TransformationPackage.eINSTANCE.eClass();
+        OlapPackage.eINSTANCE.eClass();
+        DataminingPackage.eINSTANCE.eClass();
+        InformationvisualizationPackage.eINSTANCE.eClass();
+        BusinessnomenclaturePackage.eINSTANCE.eClass();
+        WarehouseprocessPackage.eINSTANCE.eClass();
+        WarehouseoperationPackage.eINSTANCE.eClass();
+        ErPackage.eINSTANCE.eClass();
+        CoboldataPackage.eINSTANCE.eClass();
+        DmsiiPackage.eINSTANCE.eClass();
+        ImsdatabasePackage.eINSTANCE.eClass();
+        EssbasePackage.eINSTANCE.eClass();
+        ExpressPackage.eINSTANCE.eClass();
+        InformationsetPackage.eINSTANCE.eClass();
+        InformationreportingPackage.eINSTANCE.eClass();
+        CwmmipPackage.eINSTANCE.eClass();
+        ModelPackage.eINSTANCE.eClass();
 
-		// Obtain or create and register interdependencies
-		Object registeredPackage = EPackage.Registry.INSTANCE.getEPackage(ConnectionPackage.eNS_URI);
-		ConnectionPackageImpl theConnectionPackage = (ConnectionPackageImpl) (registeredPackage instanceof ConnectionPackageImpl
-				? registeredPackage
-				: ConnectionPackage.eINSTANCE);
-		registeredPackage = EPackage.Registry.INSTANCE.getEPackage(org.talend.cwm.relational.RelationalPackage.eNS_URI);
-		RelationalPackageImpl theRelationalPackage_1 = (RelationalPackageImpl) (registeredPackage instanceof RelationalPackageImpl
-				? registeredPackage
-				: org.talend.cwm.relational.RelationalPackage.eINSTANCE);
-		registeredPackage = EPackage.Registry.INSTANCE
-				.getEPackage(org.talend.cwm.softwaredeployment.SoftwaredeploymentPackage.eNS_URI);
-		SoftwaredeploymentPackageImpl theSoftwaredeploymentPackage_1 = (SoftwaredeploymentPackageImpl) (registeredPackage instanceof SoftwaredeploymentPackageImpl
-				? registeredPackage
-				: org.talend.cwm.softwaredeployment.SoftwaredeploymentPackage.eINSTANCE);
-		registeredPackage = EPackage.Registry.INSTANCE.getEPackage(org.talend.cwm.xml.XmlPackage.eNS_URI);
-		XmlPackageImpl theXmlPackage_1 = (XmlPackageImpl) (registeredPackage instanceof XmlPackageImpl
-				? registeredPackage
-				: org.talend.cwm.xml.XmlPackage.eINSTANCE);
+        // Obtain or create and register interdependencies
+        ConnectionPackageImpl theConnectionPackage = (ConnectionPackageImpl) (EPackage.Registry.INSTANCE
+                .getEPackage(ConnectionPackage.eNS_URI) instanceof ConnectionPackageImpl ? EPackage.Registry.INSTANCE
+                .getEPackage(ConnectionPackage.eNS_URI) : ConnectionPackage.eINSTANCE);
+        RelationalPackageImpl theRelationalPackage_1 = (RelationalPackageImpl) (EPackage.Registry.INSTANCE
+                .getEPackage(org.talend.cwm.relational.RelationalPackage.eNS_URI) instanceof RelationalPackageImpl ? EPackage.Registry.INSTANCE
+                .getEPackage(org.talend.cwm.relational.RelationalPackage.eNS_URI)
+                : org.talend.cwm.relational.RelationalPackage.eINSTANCE);
+        SoftwaredeploymentPackageImpl theSoftwaredeploymentPackage_1 = (SoftwaredeploymentPackageImpl) (EPackage.Registry.INSTANCE
+                .getEPackage(org.talend.cwm.softwaredeployment.SoftwaredeploymentPackage.eNS_URI) instanceof SoftwaredeploymentPackageImpl ? EPackage.Registry.INSTANCE
+                .getEPackage(org.talend.cwm.softwaredeployment.SoftwaredeploymentPackage.eNS_URI)
+                : org.talend.cwm.softwaredeployment.SoftwaredeploymentPackage.eINSTANCE);
+        XmlPackageImpl theXmlPackage_1 = (XmlPackageImpl) (EPackage.Registry.INSTANCE
+                .getEPackage(org.talend.cwm.xml.XmlPackage.eNS_URI) instanceof XmlPackageImpl ? EPackage.Registry.INSTANCE
+                .getEPackage(org.talend.cwm.xml.XmlPackage.eNS_URI) : org.talend.cwm.xml.XmlPackage.eINSTANCE);
 
-		// Create package meta-data objects
-		theConstantsPackage.createPackageContents();
-		theConnectionPackage.createPackageContents();
-		theRelationalPackage_1.createPackageContents();
-		theSoftwaredeploymentPackage_1.createPackageContents();
-		theXmlPackage_1.createPackageContents();
+        // Create package meta-data objects
+        theConstantsPackage.createPackageContents();
+        theConnectionPackage.createPackageContents();
+        theRelationalPackage_1.createPackageContents();
+        theSoftwaredeploymentPackage_1.createPackageContents();
+        theXmlPackage_1.createPackageContents();
 
-		// Initialize created meta-data
-		theConstantsPackage.initializePackageContents();
-		theConnectionPackage.initializePackageContents();
-		theRelationalPackage_1.initializePackageContents();
-		theSoftwaredeploymentPackage_1.initializePackageContents();
-		theXmlPackage_1.initializePackageContents();
+        // Initialize created meta-data
+        theConstantsPackage.initializePackageContents();
+        theConnectionPackage.initializePackageContents();
+        theRelationalPackage_1.initializePackageContents();
+        theSoftwaredeploymentPackage_1.initializePackageContents();
+        theXmlPackage_1.initializePackageContents();
 
-		// Mark meta-data to indicate it can't be changed
-		theConstantsPackage.freeze();
+        // Mark meta-data to indicate it can't be changed
+        theConstantsPackage.freeze();
 
-		// Update the registry and return the package
-		EPackage.Registry.INSTANCE.put(ConstantsPackage.eNS_URI, theConstantsPackage);
-		return theConstantsPackage;
-	}
+        // Update the registry and return the package
+        EPackage.Registry.INSTANCE.put(ConstantsPackage.eNS_URI, theConstantsPackage);
+        return theConstantsPackage;
+    }
 
-	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
-	public EEnum getDevelopmentStatus() {
-		return developmentStatusEEnum;
-	}
+    /**
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     */
+    public EEnum getDevelopmentStatus() {
+        return developmentStatusEEnum;
+    }
 
-	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
-	public ConstantsFactory getConstantsFactory() {
-		return (ConstantsFactory) getEFactoryInstance();
-	}
+    /**
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     */
+    public ConstantsFactory getConstantsFactory() {
+        return (ConstantsFactory) getEFactoryInstance();
+    }
 
-	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
-	private boolean isCreated = false;
+    /**
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     */
+    private boolean isCreated = false;
 
-	/**
-	 * Creates the meta-model objects for the package.  This method is
-	 * guarded to have no affect on any invocation but its first.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
-	public void createPackageContents() {
-		if (isCreated)
-			return;
-		isCreated = true;
+    /**
+     * Creates the meta-model objects for the package.  This method is
+     * guarded to have no affect on any invocation but its first.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     */
+    public void createPackageContents() {
+        if (isCreated)
+            return;
+        isCreated = true;
 
-		// Create enums
-		developmentStatusEEnum = createEEnum(DEVELOPMENT_STATUS);
-	}
+        // Create enums
+        developmentStatusEEnum = createEEnum(DEVELOPMENT_STATUS);
+    }
 
-	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
-	private boolean isInitialized = false;
+    /**
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     */
+    private boolean isInitialized = false;
 
-	/**
-	 * Complete the initialization of the package and its meta-model.  This
-	 * method is guarded to have no affect on any invocation but its first.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
-	public void initializePackageContents() {
-		if (isInitialized)
-			return;
-		isInitialized = true;
+    /**
+     * Complete the initialization of the package and its meta-model.  This
+     * method is guarded to have no affect on any invocation but its first.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     */
+    public void initializePackageContents() {
+        if (isInitialized)
+            return;
+        isInitialized = true;
 
-		// Initialize package
-		setName(eNAME);
-		setNsPrefix(eNS_PREFIX);
-		setNsURI(eNS_URI);
+        // Initialize package
+        setName(eNAME);
+        setNsPrefix(eNS_PREFIX);
+        setNsURI(eNS_URI);
 
-		// Initialize enums and add enum literals
-		initEEnum(developmentStatusEEnum, DevelopmentStatus.class, "DevelopmentStatus");
-		addEEnumLiteral(developmentStatusEEnum, DevelopmentStatus.DRAFT);
-		addEEnumLiteral(developmentStatusEEnum, DevelopmentStatus.PROD);
-	}
+        // Initialize enums and add enum literals
+        initEEnum(developmentStatusEEnum, DevelopmentStatus.class, "DevelopmentStatus");
+        addEEnumLiteral(developmentStatusEEnum, DevelopmentStatus.DRAFT);
+        addEEnumLiteral(developmentStatusEEnum, DevelopmentStatus.PROD);
+    }
 
 } //ConstantsPackageImpl

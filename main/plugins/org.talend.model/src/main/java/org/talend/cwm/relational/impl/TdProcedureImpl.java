@@ -16,28 +16,30 @@ import orgomg.cwm.resource.relational.impl.ProcedureImpl;
  * <!-- begin-user-doc -->
  * An implementation of the model object '<em><b>Td Procedure</b></em>'.
  * <!-- end-user-doc -->
+ * <p>
+ * </p>
  *
  * @generated
  */
 public class TdProcedureImpl extends ProcedureImpl implements TdProcedure {
 
-	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
-	protected TdProcedureImpl() {
-		super();
-	}
+    /**
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     */
+    protected TdProcedureImpl() {
+        super();
+    }
 
-	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
-	@Override
-	protected EClass eStaticClass() {
-		return RelationalPackage.Literals.TD_PROCEDURE;
-	}
+    /**
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     */
+    @Override
+    protected EClass eStaticClass() {
+        return RelationalPackage.Literals.TD_PROCEDURE;
+    }
 
 } //TdProcedureImpl

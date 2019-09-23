@@ -16,28 +16,30 @@ import orgomg.cwm.objectmodel.core.impl.PackageImpl;
  * <!-- begin-user-doc -->
  * An implementation of the model object '<em><b>Generic Package</b></em>'.
  * <!-- end-user-doc -->
+ * <p>
+ * </p>
  *
  * @generated
  */
 public class GenericPackageImpl extends PackageImpl implements GenericPackage {
 
-	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
-	protected GenericPackageImpl() {
-		super();
-	}
+    /**
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     */
+    protected GenericPackageImpl() {
+        super();
+    }
 
-	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
-	@Override
-	protected EClass eStaticClass() {
-		return ConnectionPackage.Literals.GENERIC_PACKAGE;
-	}
+    /**
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     */
+    @Override
+    protected EClass eStaticClass() {
+        return ConnectionPackage.Literals.GENERIC_PACKAGE;
+    }
 
 } //GenericPackageImpl
