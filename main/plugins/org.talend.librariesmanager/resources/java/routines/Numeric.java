@@ -7,6 +7,8 @@ package routines;
 
 import java.math.BigDecimal;
 
+import routines.system.RandomUtils;
+
 public class Numeric {
 
     private static final java.util.Map<String, Integer> seq_Hash = new java.util.HashMap<String, Integer>();
@@ -94,7 +96,7 @@ public class Numeric {
         if (max < min) {
             throw new RuntimeException("Max value should be bigger than min value");
         }
-        return ((Long) Math.round(min - 0.5 + (Math.random() * (max - min + 1)))).intValue();
+        return ((Long) Math.round(min - 0.5 + (RandomUtils.random() * (max - min + 1)))).intValue();
     }
 
     /**

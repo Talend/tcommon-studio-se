@@ -42,6 +42,8 @@ public interface MavenConstants {
 
     static final String POM_FILTER = "POM_FILTER";
 
+    static final String USE_PROFILE_MODULE = "USE_PROFILE_MODULE";
+
     /*
      * for lib
      */

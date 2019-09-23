@@ -116,6 +116,10 @@ public class ConfigModuleDialog extends TitleAreaDialog implements IConfigModule
     private String defaultURIValue = "";
 
     private Set<String> jarsAvailable;
+    
+    private boolean useCustom = false;
+    
+    private String customURI = null;
 
     /**
      * DOC wchen InstallModuleDialog constructor comment.
@@ -553,11 +557,13 @@ public class ConfigModuleDialog extends TitleAreaDialog implements IConfigModule
                 layoutWarningComposite(false, defaultUriTxt.getText());
                 if (useCustomBtn.getSelection()) {
                     customUriText.setEnabled(true);
+                    useCustom = true;
                     if ("".equals(customUriText.getText())) {
                         customUriText.setText(ModuleMavenURIUtils.MVNURI_TEMPLET);
                     }
                 } else {
                     customUriText.setEnabled(false);
+                    useCustom = false;
                 }
                 checkFieldsError();
             }
@@ -807,7 +813,6 @@ public class ConfigModuleDialog extends TitleAreaDialog implements IConfigModule
     @Override
     protected void okPressed() {
         String originalURI = null;
-        String customURI = null;
         originalURI = defaultUriTxt.getText().trim();
         defaultURI = originalURI;
         if (useCustomBtn.getSelection()) {
@@ -889,6 +894,9 @@ public class ConfigModuleDialog extends TitleAreaDialog implements IConfigModule
      */
     @Override
     public String getMavenURI() {
+    	if (useCustom && customURI != null) {
+    		return customURI;
+    	}
         return defaultURI;
     }
 

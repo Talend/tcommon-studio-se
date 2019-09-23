@@ -5,6 +5,8 @@
 // ============================================================================
 package routines;
 
+import routines.system.RandomUtils;
+
 public class Mathematical {
 
     /**
@@ -381,7 +383,7 @@ public class Mathematical {
      *
      */
     public static double RND(double a) {
-        return Math.random() * a;
+        return RandomUtils.random() * a;
     }
 
     /**
