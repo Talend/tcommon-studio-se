@@ -19,6 +19,7 @@ import java.io.InputStream;
 import java.net.URISyntaxException;
 import java.net.URL;
 import java.util.Properties;
+import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import org.apache.commons.lang3.StringUtils;
@@ -190,6 +191,27 @@ public class VersionUtils {
         }
 
         return talendVersion;
+    }
+
+    public static String getTalendPureVersion(String fullProductVersion) {
+        String version = fullProductVersion;
+        String[] splitStr = fullProductVersion.split("-"); //$NON-NLS-1$
+        Pattern pattern = Pattern.compile("((\\d+\\.){2}\\d.*)"); //$NON-NLS-1$
+        StringBuffer versionStr = new StringBuffer();
+        boolean find = false;
+        for (String str : splitStr) {
+            if (find) {
+                versionStr.append("-").append(str); //$NON-NLS-1$
+            }else {
+                Matcher matcher = pattern.matcher(str);
+                if (matcher.find()) {
+                    find = true;
+                    versionStr.append(str); // $NON-NLS-1$
+                }
+            }
+        }
+
+        return getTalendVersion(versionStr.toString());
     }
 
     public static String getTalendVersion(String productVersion) {
