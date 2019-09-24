@@ -19,6 +19,7 @@ import java.util.Collection;
 import java.util.Collections;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import org.eclipse.core.resources.IFile;
@@ -97,17 +98,24 @@ public abstract class AbstractRoutineSynchronizer implements ITalendSynchronizer
 
     private void getReferencedProjectRoutine(final Map<String, RoutineItem> beansList, final Project project,
             ERepositoryObjectType routineType, boolean syncRef) throws SystemException {
-        for (IRepositoryViewObject obj : getRepositoryService().getProxyRepositoryFactory().getAll(project, routineType)) {
-            final String key = obj.getProperty().getLabel();
-            // it does not have a routine with same name
-            if (!beansList.containsKey(key)) {
-                beansList.put(key, (RoutineItem) obj.getProperty().getItem());
-            }
-            if (syncRef) {
-                // sync routine
-                syncRoutine((RoutineItem) obj.getProperty().getItem(), false, true, true);
+        List<IRepositoryViewObject> list = getRepositoryService().getProxyRepositoryFactory().getAll(project, routineType);
+
+        if (list.size() == 0) {
+            getRunProcessService().getTalendCodeJavaProject(routineType, project.getTechnicalLabel());
+        } else {
+            for (IRepositoryViewObject obj : list) {
+                final String key = obj.getProperty().getLabel();
+                // it does not have a routine with same name
+                if (!beansList.containsKey(key)) {
+                    beansList.put(key, (RoutineItem) obj.getProperty().getItem());
+                }
+                if (syncRef) {
+                    // sync routine
+                    syncRoutine((RoutineItem) obj.getProperty().getItem(), false, true, true);
+                }
             }
         }
+
         if (syncRef) {
             // sync system routine
             syncSystemRoutine(project);

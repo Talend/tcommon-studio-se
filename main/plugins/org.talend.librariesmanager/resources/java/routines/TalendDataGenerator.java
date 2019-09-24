@@ -5,6 +5,8 @@
 // ============================================================================
 package routines;
 
+import routines.system.RandomUtils;
+
 public class TalendDataGenerator {
 
     /**
@@ -18,7 +20,7 @@ public class TalendDataGenerator {
         String[] list = { "Abraham", "Andrew", "Benjamin", "Bill", "Calvin", "Chester", "Dwight", "Franklin", "George", "Gerald", //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$ //$NON-NLS-5$ //$NON-NLS-6$ //$NON-NLS-7$ //$NON-NLS-8$ //$NON-NLS-9$ //$NON-NLS-10$
                 "Grover", "Harry", "Herbert", "James", "Jimmy", "John", "Lyndon", "Martin", "Millard", "Richard", "Ronald", //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$ //$NON-NLS-5$ //$NON-NLS-6$ //$NON-NLS-7$ //$NON-NLS-8$ //$NON-NLS-9$ //$NON-NLS-10$ //$NON-NLS-11$
                 "Rutherford", "Theodore", "Thomas", "Ulysses", "Warren", "William", "Woodrow", "Zachary" }; //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$ //$NON-NLS-5$ //$NON-NLS-6$ //$NON-NLS-7$ //$NON-NLS-8$
-        Integer random = 0 + ((Long) Math.round(Math.random() * (list.length - 1 - 0))).intValue();
+        Integer random = 0 + ((Long) Math.round(RandomUtils.random() * (list.length - 1 - 0))).intValue();
         return list[random];
     }
 
@@ -35,7 +37,7 @@ public class TalendDataGenerator {
                 "Madison", "Monroe", "Carter", "Adams", "Kennedy", "Quincy", "Adams", "Tyler", "Johnson", "Van Buren", //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$ //$NON-NLS-5$ //$NON-NLS-6$ //$NON-NLS-7$ //$NON-NLS-8$ //$NON-NLS-9$ //$NON-NLS-10$
                 "Fillmore", "Nixon", "Reagan", "Hayes", "Roosevelt", "Jefferson", "Grant", "Harding", "Harrison", "Taft", //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$ //$NON-NLS-5$ //$NON-NLS-6$ //$NON-NLS-7$ //$NON-NLS-8$ //$NON-NLS-9$ //$NON-NLS-10$
                 "McKinley", "Wilson", "Taylor" }; //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
-        Integer random = 0 + ((Long) Math.round(Math.random() * (list.length - 1 - 0))).intValue();
+        Integer random = 0 + ((Long) Math.round(RandomUtils.random() * (list.length - 1 - 0))).intValue();
         return list[random];
     }
 
@@ -60,7 +62,7 @@ public class TalendDataGenerator {
                 "San Simeon", "San Ysidro Blvd", "Santa Ana Freeway", "Santa Monica Road", "Santa Rosa North", //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$ //$NON-NLS-5$
                 "Santa Rosa South", "South Highway", "South Roosevelt Drive", "Steele Lane", "Tanger Blvd", "Timberlane Drive", //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$ //$NON-NLS-5$ //$NON-NLS-6$
                 "Tully Road East", "Via Real", "W. Russell St.", "Westside Freeway", "Woodson Rd." }; //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$ //$NON-NLS-5$
-        Integer random = 0 + ((Long) Math.round(Math.random() * (list.length - 1 - 0))).intValue();
+        Integer random = 0 + ((Long) Math.round(RandomUtils.random() * (list.length - 1 - 0))).intValue();
         return list[random];
     }
 
@@ -78,7 +80,7 @@ public class TalendDataGenerator {
                 "Saint Paul", "Jackson", "Jefferson City", "Helena", "Lincoln", "Carson City", "Concord", "Trenton", "Santa Fe", //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$ //$NON-NLS-5$ //$NON-NLS-6$ //$NON-NLS-7$ //$NON-NLS-8$ //$NON-NLS-9$
                 "Albany", "Columbus", "Oklahoma City", "Salem", "Harrisburg", "Providence", "Nashville", "Austin", //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$ //$NON-NLS-5$ //$NON-NLS-6$ //$NON-NLS-7$ //$NON-NLS-8$
                 "Salt Lake City", "Montpelier", "Richmond", "Charleston", "Olympia", "Madison", "Cheyenne" }; //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$ //$NON-NLS-5$ //$NON-NLS-6$ //$NON-NLS-7$
-        Integer random = 0 + ((Long) Math.round(Math.random() * (list.length - 1 - 0))).intValue();
+        Integer random = 0 + ((Long) Math.round(RandomUtils.random() * (list.length - 1 - 0))).intValue();
         return list[random];
     }
 
@@ -96,7 +98,7 @@ public class TalendDataGenerator {
                 "Michigan", "Minnesota", "Mississippi", "Missouri", "Montana", "Nebraska", "Nevada", "New Hampshire", //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$ //$NON-NLS-5$ //$NON-NLS-6$ //$NON-NLS-7$ //$NON-NLS-8$
                 "New Jersey", "New Mexico", "New York", "Ohio", "Oklahoma", "Oregon", "Pennsylvania", "Rhode Island", //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$ //$NON-NLS-5$ //$NON-NLS-6$ //$NON-NLS-7$ //$NON-NLS-8$
                 "Tennessee", "Texas", "Utah", "Vermont", "Virginia", "West Virginia", "Washington", "Wisconsin", "Wyoming" }; //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$ //$NON-NLS-5$ //$NON-NLS-6$ //$NON-NLS-7$ //$NON-NLS-8$ //$NON-NLS-9$
-        Integer random = 0 + ((Long) Math.round(Math.random() * (list.length - 1 - 0))).intValue();
+        Integer random = 0 + ((Long) Math.round(RandomUtils.random() * (list.length - 1 - 0))).intValue();
         return list[random];
     }
 
@@ -111,7 +113,7 @@ public class TalendDataGenerator {
         String[] list = { "AL", "AK", "AZ", "AR", "CA", "NC", "SC", "CO", "CT", "ND", "SD", "DE", "FL", "GA", "HI", "ID", "IL", //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$ //$NON-NLS-5$ //$NON-NLS-6$ //$NON-NLS-7$ //$NON-NLS-8$ //$NON-NLS-9$ //$NON-NLS-10$ //$NON-NLS-11$ //$NON-NLS-12$ //$NON-NLS-13$ //$NON-NLS-14$ //$NON-NLS-15$ //$NON-NLS-16$ //$NON-NLS-17$
                 "IN", "IA", "KS", "KY", "LA", "ME", "MD", "MA", "MI", "MN", "MS", "MO", "MT", "NE", "NV", "NH", "NJ", "NM", "NY", //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$ //$NON-NLS-5$ //$NON-NLS-6$ //$NON-NLS-7$ //$NON-NLS-8$ //$NON-NLS-9$ //$NON-NLS-10$ //$NON-NLS-11$ //$NON-NLS-12$ //$NON-NLS-13$ //$NON-NLS-14$ //$NON-NLS-15$ //$NON-NLS-16$ //$NON-NLS-17$ //$NON-NLS-18$ //$NON-NLS-19$
                 "OH", "OK", "OR", "PA", "RI", "TN", "TX", "UT", "VT", "VA", "WV", "WA", "WI", "WY" }; //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$ //$NON-NLS-5$ //$NON-NLS-6$ //$NON-NLS-7$ //$NON-NLS-8$ //$NON-NLS-9$ //$NON-NLS-10$ //$NON-NLS-11$ //$NON-NLS-12$ //$NON-NLS-13$ //$NON-NLS-14$
-        Integer random = 0 + ((Long) Math.round(Math.random() * (list.length - 1 - 0))).intValue();
+        Integer random = 0 + ((Long) Math.round(RandomUtils.random() * (list.length - 1 - 0))).intValue();
         return list[random];
     }
 }

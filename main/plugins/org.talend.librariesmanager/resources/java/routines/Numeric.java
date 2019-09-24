@@ -6,10 +6,13 @@
 package routines;
 
 import java.math.BigDecimal;
+import java.util.concurrent.ConcurrentHashMap;
+
+import routines.system.RandomUtils;
 
 public class Numeric {
 
-    private static final java.util.Map<String, Integer> seq_Hash = new java.util.HashMap<String, Integer>();
+    private static final java.util.Map<String, Integer> seq_Hash = new ConcurrentHashMap<>();
 
     /**
      * return an incremented numeric id
@@ -30,13 +33,8 @@ public class Numeric {
      *
      */
     public static Integer sequence(String seqName, int startValue, int step) {
-        if (seq_Hash.containsKey(seqName)) {
-            seq_Hash.put(seqName, seq_Hash.get(seqName) + step);
-            return seq_Hash.get(seqName);
-        } else {
-            seq_Hash.put(seqName, startValue);
-            return startValue;
-        }
+        return seq_Hash.compute(seqName,
+                (String k,  Integer v) -> v == null ? startValue : v + step);
     }
 
     /**
@@ -68,9 +66,7 @@ public class Numeric {
      */
 
     public static void removeSequence(String seqName) {
-        if (seq_Hash.containsKey(seqName)) {
-            seq_Hash.remove(seqName);
-        }
+        seq_Hash.remove(seqName);
     }
 
     /**
@@ -94,7 +90,7 @@ public class Numeric {
         if (max < min) {
             throw new RuntimeException("Max value should be bigger than min value");
         }
-        return ((Long) Math.round(min - 0.5 + (Math.random() * (max - min + 1)))).intValue();
+        return ((Long) Math.round(min - 0.5 + (RandomUtils.random() * (max - min + 1)))).intValue();
     }
 
     /**

@@ -472,7 +472,7 @@ public class ContextNebulaGridComposite extends AbstractContextTabEditComposite 
             paramNameFound = true;
             paramName = NEW_PARAM_NAME + numParam;
             for (int i = 0; i < listParams.size(); i++) {
-                if (paramName.equals(listParams.get(i).getName())) {
+                if (paramName.equalsIgnoreCase(listParams.get(i).getName())) {
                     paramNameFound = false;
                 }
             }

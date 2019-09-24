@@ -3251,8 +3251,7 @@ public class LocalRepositoryFactory extends AbstractEMFRepositoryFactory impleme
     protected void updatePreferenceProjectVersion(Project project) {
         String oldProductVersion = project.getEmfProject().getProductVersion();
         if (StringUtils.isNotBlank(oldProductVersion)) {
-            oldProductVersion = StringUtils.substringAfter(oldProductVersion, "-"); //$NON-NLS-1$
-            String oldVersion = VersionUtils.getTalendVersion(oldProductVersion);
+            String oldVersion = VersionUtils.getTalendPureVersion(oldProductVersion);
             String currentVersion = VersionUtils.getTalendVersion();
             if (!currentVersion.equals(oldVersion)) {
                 ProjectPreferenceManager prefManager = new ProjectPreferenceManager(project, "org.talend.designer.maven", false); //$NON-NLS-1$

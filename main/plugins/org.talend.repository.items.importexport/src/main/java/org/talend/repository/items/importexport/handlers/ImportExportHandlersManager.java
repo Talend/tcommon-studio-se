@@ -417,6 +417,16 @@ public class ImportExportHandlersManager {
     public void importItemRecords(final IProgressMonitor progressMonitor, final ResourcesManager resManager,
             final List<ImportItem> checkedItemRecords, final boolean overwrite, final ImportItem[] allImportItemRecords,
             final IPath destinationPath) throws InvocationTargetException {
+        importItemRecords(progressMonitor, resManager, checkedItemRecords, overwrite, allImportItemRecords, destinationPath,
+                /*
+                 * disable by default, but provide possibility to enable it
+                 */
+                Boolean.getBoolean("studio.import.option.alwaysRegenId"));
+    }
+
+    public void importItemRecords(final IProgressMonitor progressMonitor, final ResourcesManager resManager,
+            final List<ImportItem> checkedItemRecords, final boolean overwrite, final ImportItem[] allImportItemRecords,
+            final IPath destinationPath, final boolean alwaysRegenId) throws InvocationTargetException {
         TimeMeasure.display = CommonsPlugin.isDebugMode();
         TimeMeasure.displaySteps = CommonsPlugin.isDebugMode();
         TimeMeasure.measureActive = CommonsPlugin.isDebugMode();
@@ -536,15 +546,31 @@ public class ImportExportHandlersManager {
                                     return;
                                 }
                                 if (itemRecord.isValid()) {
-                                    if (itemRecord.getState() == State.ID_EXISTED
-                                            || itemRecord.getState() == State.NAME_AND_ID_EXISTED_BOTH) {
+                                    if (alwaysRegenId || itemRecord.getState() == State.ID_EXISTED
+                                            || itemRecord.getState() == State.NAME_AND_ID_EXISTED_BOTH
+                                            || itemRecord.getState() == State.NAME_EXISTED) {
                                         String id = nameToIdMap.get(itemRecord.getProperty().getLabel()
                                                 + ERepositoryObjectType.getItemType(itemRecord.getProperty().getItem())
                                                         .toString());
                                         if (id == null) {
                                             try {
-                                                if (overwrite && itemRecord.getState() == State.NAME_AND_ID_EXISTED_BOTH) {
+                                                boolean reuseExistingId = false;
+                                                if (overwrite && (itemRecord.getState() == State.NAME_AND_ID_EXISTED_BOTH
+                                                        || itemRecord.getState() == State.NAME_EXISTED)) {
                                                     // just try to reuse the id of the item which will be overwrited
+                                                    reuseExistingId = true;
+                                                } else if (alwaysRegenId) {
+                                                    switch (itemRecord.getState()) {
+                                                    case NAME_EXISTED:
+                                                    case NAME_AND_ID_EXISTED:
+                                                    case NAME_AND_ID_EXISTED_BOTH:
+                                                        reuseExistingId = true;
+                                                        break;
+                                                    default:
+                                                        break;
+                                                    }
+                                                }
+                                                if (reuseExistingId) {
                                                     IRepositoryViewObject object = itemRecord.getExistingItemWithSameName();
                                                     if (object != null) {
                                                         if (ProjectManager.getInstance().isInCurrentMainProject(

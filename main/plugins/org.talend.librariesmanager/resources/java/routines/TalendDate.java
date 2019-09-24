@@ -19,6 +19,7 @@ import java.util.TimeZone;
 
 import routines.system.FastDateParser;
 import routines.system.LocaleProvider;
+import routines.system.RandomUtils;
 import routines.system.TalendTimestampWithTZ;
 
 public class TalendDate {
@@ -1147,7 +1148,7 @@ public class TalendDate {
         maxCal.set(Calendar.DAY_OF_MONTH, maxDay);
 
         long random = minCal.getTimeInMillis()
-                + (long) ((maxCal.getTimeInMillis() - minCal.getTimeInMillis() + 1) * Math.random());
+                + (long) ((maxCal.getTimeInMillis() - minCal.getTimeInMillis() + 1) * RandomUtils.random());
         return new Date(random);
     }
 
