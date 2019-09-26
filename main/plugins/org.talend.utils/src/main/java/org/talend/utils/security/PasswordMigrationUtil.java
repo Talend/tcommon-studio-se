@@ -18,9 +18,9 @@ import org.talend.utils.security.StudioEncryption;
 
 public class PasswordMigrationUtil {
 
-    private final static StudioEncryption SE = StudioEncryption.getStudioEncryption(null);
+    private final static StudioEncryption SE = StudioEncryption.getStudioEncryption(StudioEncryption.EnryptionKeyName.SYSTEM);
 
-    public static String getDecryptPassword(String pass) throws Exception {
+    public static String decryptPassword(String pass) throws Exception {
         String cleanPass = pass;
         if (StringUtils.isNotEmpty(pass)) {
             if (StudioEncryption.hasEncryptionSymbol(pass)) {
@@ -36,8 +36,8 @@ public class PasswordMigrationUtil {
         return cleanPass;
     }
 
-    public static String getEncryptPasswordIfNeed(String pass) throws Exception {
-        String cleanPass = getDecryptPassword(pass);
+    public static String encryptPasswordIfNeeded(String pass) throws Exception {
+        String cleanPass = decryptPassword(pass);
         return SE.encrypt(cleanPass);
     }
 

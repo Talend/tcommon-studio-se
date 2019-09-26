@@ -28,20 +28,20 @@ import org.talend.utils.security.StudioEncryption;
  */
 public class PasswordEncryptUtil {
 
-    public static String ENCRYPT_KEY = "Encrypt"; //$NON-NLS-1$
+    public static final String ENCRYPT_KEY = "Encrypt"; //$NON-NLS-1$
 
-    private static String rawKey = "Talend-Key"; //$NON-NLS-1$
+    private static final String RAWKEY = "Talend-Key"; //$NON-NLS-1$
 
     private static SecretKey key = null;
 
-    private static SecureRandom secureRandom = new SecureRandom();
+    private static final SecureRandom SECURERANDOM = new SecureRandom();
 
     private static final StudioEncryption SE = StudioEncryption.getStudioEncryption(StudioEncryption.EnryptionKeyName.ROUTINE);
 
     private static SecretKey getSecretKey() throws Exception {
         if (key == null) {
 
-            byte rawKeyData[] = rawKey.getBytes();
+            byte rawKeyData[] = RAWKEY.getBytes();
             DESKeySpec dks = new DESKeySpec(rawKeyData);
             SecretKeyFactory keyFactory = SecretKeyFactory.getInstance("DES"); //$NON-NLS-1$
             key = keyFactory.generateSecret(dks);
@@ -63,7 +63,7 @@ public class PasswordEncryptUtil {
 
         SecretKey key = getSecretKey();
         Cipher c = Cipher.getInstance("DES"); //$NON-NLS-1$
-        c.init(Cipher.ENCRYPT_MODE, key, secureRandom);
+        c.init(Cipher.ENCRYPT_MODE, key, SECURERANDOM);
         byte[] cipherByte = c.doFinal(input.getBytes());
         String dec = new String(Base64.encodeBase64(cipherByte));
         return dec;
@@ -83,7 +83,7 @@ public class PasswordEncryptUtil {
         byte[] dec = Base64.decodeBase64(input.getBytes());
         SecretKey key = getSecretKey();
         Cipher c = Cipher.getInstance("DES"); //$NON-NLS-1$
-        c.init(Cipher.DECRYPT_MODE, key, secureRandom);
+        c.init(Cipher.DECRYPT_MODE, key, SECURERANDOM);
         byte[] clearByte = c.doFinal(dec);
         return new String(clearByte);
     }

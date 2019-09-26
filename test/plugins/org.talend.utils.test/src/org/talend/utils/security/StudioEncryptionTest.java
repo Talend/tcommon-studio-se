@@ -42,26 +42,26 @@ public class StudioEncryptionTest {
 
     @Test
     public void testAESEncrypt() throws Exception {
-        assertNotEquals(input1, StudioEncryption.getStudioEncryption(null).encrypt(input1));
+        assertNotEquals(input1, StudioEncryption.getStudioEncryption(StudioEncryption.EnryptionKeyName.SYSTEM).encrypt(input1));
         assertEquals(input1,
-                StudioEncryption.getStudioEncryption(null).decrypt(StudioEncryption.getStudioEncryption(null).encrypt(input1)));
+                StudioEncryption.getStudioEncryption(StudioEncryption.EnryptionKeyName.SYSTEM).decrypt(StudioEncryption.getStudioEncryption(StudioEncryption.EnryptionKeyName.SYSTEM).encrypt(input1)));
 
-        assertNotEquals(input2, StudioEncryption.getStudioEncryption(null).encrypt(input2));
+        assertNotEquals(input2, StudioEncryption.getStudioEncryption(StudioEncryption.EnryptionKeyName.SYSTEM).encrypt(input2));
         assertEquals(input2,
-                StudioEncryption.getStudioEncryption(null).decrypt(StudioEncryption.getStudioEncryption(null).encrypt(input2)));
+                StudioEncryption.getStudioEncryption(StudioEncryption.EnryptionKeyName.SYSTEM).decrypt(StudioEncryption.getStudioEncryption(StudioEncryption.EnryptionKeyName.SYSTEM).encrypt(input2)));
 
-        assertNotEquals(input3, StudioEncryption.getStudioEncryption(null).encrypt(input3));
+        assertNotEquals(input3, StudioEncryption.getStudioEncryption(StudioEncryption.EnryptionKeyName.SYSTEM).encrypt(input3));
         assertEquals(input3,
-                StudioEncryption.getStudioEncryption(null).decrypt(StudioEncryption.getStudioEncryption(null).encrypt(input3)));
+                StudioEncryption.getStudioEncryption(StudioEncryption.EnryptionKeyName.SYSTEM).decrypt(StudioEncryption.getStudioEncryption(StudioEncryption.EnryptionKeyName.SYSTEM).encrypt(input3)));
 
         // ensure negative case
-        assertEquals(null, StudioEncryption.getStudioEncryption(null).encrypt(null));
+        assertEquals(null, StudioEncryption.getStudioEncryption(StudioEncryption.EnryptionKeyName.SYSTEM).encrypt(null));
     }
 
     @Test
     public void testGetStudioEncryption() throws Exception {
 
-        assertNotNull(StudioEncryption.getStudioEncryption(null));
+        assertNotNull(StudioEncryption.getStudioEncryption(StudioEncryption.EnryptionKeyName.SYSTEM));
 
     }
 }

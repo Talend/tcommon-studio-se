@@ -293,9 +293,9 @@ public class ConnectionImpl extends AbstractMetadataObjectImpl implements Connec
 
     protected boolean readOnly = false;
 
-    protected java.util.function.Function<String, String> encrypt;
+    private java.util.function.Function<String, String> encrypt;
 
-    protected java.util.function.Function<String, String> decrypt;
+    private java.util.function.Function<String, String> decrypt;
 
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
@@ -1201,7 +1201,7 @@ public class ConnectionImpl extends AbstractMetadataObjectImpl implements Connec
      */
     public String getValue(String value, boolean encrypt) {
         if (!isContextMode() && value != null && value.length() > 0) {
-            StudioEncryption se = StudioEncryption.getStudioEncryption(null);
+            StudioEncryption se = StudioEncryption.getStudioEncryption(StudioEncryption.EnryptionKeyName.SYSTEM);
             // Set default encrypt and decrypt methods
             if (this.encrypt == null) {
                 this.encrypt = (src) -> se.encrypt(src);

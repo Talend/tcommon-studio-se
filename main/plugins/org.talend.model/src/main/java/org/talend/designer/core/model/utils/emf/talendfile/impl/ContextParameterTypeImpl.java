@@ -182,7 +182,7 @@ public class ContextParameterTypeImpl extends EObjectImpl implements ContextPara
      */
     protected String value = VALUE_EDEFAULT;
 
-    private StudioEncryption se = StudioEncryption.getStudioEncryption(null);
+    private StudioEncryption se = StudioEncryption.getStudioEncryption(StudioEncryption.EnryptionKeyName.SYSTEM);
 
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->

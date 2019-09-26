@@ -27,7 +27,7 @@ import org.talend.designer.core.model.utils.emf.talendfile.ContextParameterType;
 import org.talend.designer.core.model.utils.emf.talendfile.ElementParameterType;
 import org.talend.designer.core.model.utils.emf.talendfile.TalendFileFactory;
 import org.talend.repository.ProjectManager;
-import org.talend.utils.security.CryptoHelperWrapper;
+import org.talend.utils.security.CryptoMigrationUtil;
 import org.talend.utils.security.StudioEncryption;
 
 
@@ -41,7 +41,7 @@ import org.talend.utils.security.StudioEncryption;
 @SuppressWarnings({ "nls", "deprecation" })
 public class ParameterValueUtilTest {
 
-    private static final StudioEncryption SE = StudioEncryption.getStudioEncryption(null);
+    private static final StudioEncryption SE = StudioEncryption.getStudioEncryption(StudioEncryption.EnryptionKeyName.SYSTEM);
 
     @Test
     public void testSplitQueryData4SQL() {
@@ -782,13 +782,13 @@ public class ParameterValueUtilTest {
         // TDI-30227
 
         String decryptPassword1 = PasswordEncryptUtil.decryptPassword("dxlWbpCxXBw=");
-        String decryptPassword2 = CryptoHelperWrapper.decrypt("+ZE8yV1ehYi0jSmx94/wVA==");
+        String decryptPassword2 = CryptoMigrationUtil.decrypt("+ZE8yV1ehYi0jSmx94/wVA==");
         Assert.assertEquals("pr", decryptPassword1);
         Assert.assertEquals("EL3F4nt3", decryptPassword2);
 
         // redo again.
         decryptPassword1 = PasswordEncryptUtil.decryptPassword("dxlWbpCxXBw=");
-        decryptPassword2 = CryptoHelperWrapper.decrypt("+ZE8yV1ehYi0jSmx94/wVA==");
+        decryptPassword2 = CryptoMigrationUtil.decrypt("+ZE8yV1ehYi0jSmx94/wVA==");
         Assert.assertEquals("pr", decryptPassword1);
         Assert.assertEquals("EL3F4nt3", decryptPassword2);
     }
@@ -798,15 +798,15 @@ public class ParameterValueUtilTest {
         // TDI-30227
 
         String encryptPassword1 = PasswordEncryptUtil.encryptPassword("123");
-        String encryptPassword2 = CryptoHelperWrapper.encrypt("123");
+        String encryptPassword2 = CryptoMigrationUtil.encrypt("123");
         Assert.assertEquals("123", PasswordEncryptUtil.decryptPassword(encryptPassword1));
-        Assert.assertEquals("123", CryptoHelperWrapper.decrypt(encryptPassword2));
+        Assert.assertEquals("123", CryptoMigrationUtil.decrypt(encryptPassword2));
 
         // redo again.
         encryptPassword1 = PasswordEncryptUtil.encryptPassword("123");
-        encryptPassword2 = CryptoHelperWrapper.encrypt("123");
+        encryptPassword2 = CryptoMigrationUtil.encrypt("123");
         Assert.assertEquals("123", PasswordEncryptUtil.decryptPassword(encryptPassword1));
-        Assert.assertEquals("123", CryptoHelperWrapper.decrypt(encryptPassword2));
+        Assert.assertEquals("123", CryptoMigrationUtil.decrypt(encryptPassword2));
 
     }
 
@@ -815,29 +815,29 @@ public class ParameterValueUtilTest {
         // TDI-30227
 
         String decryptValue1 = PasswordEncryptUtil.decryptPassword("dxlWbpCxXBw=");
-        String decryptValue2 = CryptoHelperWrapper.decrypt("HiV5kR+6mPKhnI5NbYbw/Q==");
-        String decryptValue3 = CryptoHelperWrapper.decrypt("+ZE8yV1ehYi0jSmx94/wVA==");
+        String decryptValue2 = CryptoMigrationUtil.decrypt("HiV5kR+6mPKhnI5NbYbw/Q==");
+        String decryptValue3 = CryptoMigrationUtil.decrypt("+ZE8yV1ehYi0jSmx94/wVA==");
         Assert.assertEquals("pr", decryptValue1);
         Assert.assertEquals("aiXea2Va", decryptValue2);
         Assert.assertEquals("EL3F4nt3", decryptValue3);
 
         decryptValue1 = PasswordEncryptUtil.decryptPassword("dxlWbpCxXBw=");
-        decryptValue2 = CryptoHelperWrapper.decrypt("HiV5kR+6mPKhnI5NbYbw/Q==");
-        decryptValue3 = CryptoHelperWrapper.decrypt("+ZE8yV1ehYi0jSmx94/wVA==");
+        decryptValue2 = CryptoMigrationUtil.decrypt("HiV5kR+6mPKhnI5NbYbw/Q==");
+        decryptValue3 = CryptoMigrationUtil.decrypt("+ZE8yV1ehYi0jSmx94/wVA==");
         Assert.assertEquals("pr", decryptValue1);
         Assert.assertEquals("aiXea2Va", decryptValue2);
         Assert.assertEquals("EL3F4nt3", decryptValue3);
 
-        decryptValue2 = CryptoHelperWrapper.decrypt("HiV5kR+6mPKhnI5NbYbw/Q==");
-        decryptValue3 = CryptoHelperWrapper.decrypt("+ZE8yV1ehYi0jSmx94/wVA==");
+        decryptValue2 = CryptoMigrationUtil.decrypt("HiV5kR+6mPKhnI5NbYbw/Q==");
+        decryptValue3 = CryptoMigrationUtil.decrypt("+ZE8yV1ehYi0jSmx94/wVA==");
         decryptValue1 = PasswordEncryptUtil.decryptPassword("dxlWbpCxXBw=");
         Assert.assertEquals("pr", decryptValue1);
         Assert.assertEquals("aiXea2Va", decryptValue2);
         Assert.assertEquals("EL3F4nt3", decryptValue3);
 
-        decryptValue2 = CryptoHelperWrapper.decrypt("HiV5kR+6mPKhnI5NbYbw/Q==");
+        decryptValue2 = CryptoMigrationUtil.decrypt("HiV5kR+6mPKhnI5NbYbw/Q==");
         decryptValue1 = PasswordEncryptUtil.decryptPassword("dxlWbpCxXBw=");
-        decryptValue3 = CryptoHelperWrapper.decrypt("+ZE8yV1ehYi0jSmx94/wVA==");
+        decryptValue3 = CryptoMigrationUtil.decrypt("+ZE8yV1ehYi0jSmx94/wVA==");
         Assert.assertEquals("pr", decryptValue1);
         Assert.assertEquals("aiXea2Va", decryptValue2);
         Assert.assertEquals("EL3F4nt3", decryptValue3);
@@ -869,7 +869,7 @@ public class ParameterValueUtilTest {
             public void run() {
                 // "Oracle_notworkingLinux.item", "HiV5kR+6mPKhnI5NbYbw/Q=="
                 String testEncryptionValue2 = "HiV5kR+6mPKhnI5NbYbw/Q==";
-                String decryptValue2 = CryptoHelperWrapper.decrypt(testEncryptionValue2);
+                String decryptValue2 = CryptoMigrationUtil.decrypt(testEncryptionValue2);
                 Assert.assertNotNull(decryptValue2);
                 Assert.assertEquals("aiXea2Va", decryptValue2);
             }
@@ -882,7 +882,7 @@ public class ParameterValueUtilTest {
             public void run() {
                 // "Oracle_workingWindows.item", "+ZE8yV1ehYi0jSmx94/wVA=="
                 String testEncryptionValue2 = "+ZE8yV1ehYi0jSmx94/wVA==";
-                String decryptValue2 = CryptoHelperWrapper.decrypt(testEncryptionValue2);
+                String decryptValue2 = CryptoMigrationUtil.decrypt(testEncryptionValue2);
                 Assert.assertNotNull(decryptValue2);
                 Assert.assertEquals("EL3F4nt3", decryptValue2);
             }
@@ -920,7 +920,7 @@ public class ParameterValueUtilTest {
             public void run() {
                 // "Oracle_notworkingLinux.item", "HiV5kR+6mPKhnI5NbYbw/Q=="
                 String testEncryptionValue2 = "HiV5kR+6mPKhnI5NbYbw/Q==";
-                String decryptValue2 = CryptoHelperWrapper.decrypt(testEncryptionValue2);
+                String decryptValue2 = CryptoMigrationUtil.decrypt(testEncryptionValue2);
                 Assert.assertNotNull(decryptValue2);
                 Assert.assertEquals("aiXea2Va", decryptValue2);
             }
@@ -933,7 +933,7 @@ public class ParameterValueUtilTest {
             public void run() {
                 // "Oracle_workingWindows.item", "+ZE8yV1ehYi0jSmx94/wVA=="
                 String testEncryptionValue2 = "+ZE8yV1ehYi0jSmx94/wVA==";
-                String decryptValue2 = CryptoHelperWrapper.decrypt(testEncryptionValue2);
+                String decryptValue2 = CryptoMigrationUtil.decrypt(testEncryptionValue2);
                 Assert.assertNotNull(decryptValue2);
                 Assert.assertEquals("EL3F4nt3", decryptValue2);
             }
@@ -953,11 +953,11 @@ public class ParameterValueUtilTest {
      */
     @Test
     public void testTDI30227_NewDecryption4OldValue1() {
-        String decryptValue1 = CryptoHelperWrapper.decrypt("dxlWbpCxXBw="); // use new encryption to decrypt old
+        String decryptValue1 = CryptoMigrationUtil.decrypt("dxlWbpCxXBw="); // use new encryption to decrypt old
                                                                                   // one.
         Assert.assertNull(decryptValue1);
 
-        String decryptValue2 = CryptoHelperWrapper.decrypt("HiV5kR+6mPKhnI5NbYbw/Q==");
+        String decryptValue2 = CryptoMigrationUtil.decrypt("HiV5kR+6mPKhnI5NbYbw/Q==");
         /*
          * Because use the new decryption to decrypt the old encrypted value, will cause this problem. don't know what's
          * happen and why, need find one way to fix maybe. even thought, now all password have be unified for
@@ -969,32 +969,32 @@ public class ParameterValueUtilTest {
 
     @Test
     public void testTDI30227_NewDecryption4OldValue2() {
-        String decryptValue1 = CryptoHelperWrapper.decrypt("dxlWbpCxXBw="); // use new encryption to decrypt old
+        String decryptValue1 = CryptoMigrationUtil.decrypt("dxlWbpCxXBw="); // use new encryption to decrypt old
                                                                                   // one.
         Assert.assertNull(decryptValue1);
 
-        String decryptValue2 = CryptoHelperWrapper.decrypt("HiV5kR+6mPKhnI5NbYbw/Q==");
+        String decryptValue2 = CryptoMigrationUtil.decrypt("HiV5kR+6mPKhnI5NbYbw/Q==");
         // FIXM, ??????? will be failied first time for messy characters.
         // Assert.assertEquals("aiXea2Va", decryptValue2);
 
         // redo
-        decryptValue2 = CryptoHelperWrapper.decrypt("HiV5kR+6mPKhnI5NbYbw/Q==");
+        decryptValue2 = CryptoMigrationUtil.decrypt("HiV5kR+6mPKhnI5NbYbw/Q==");
         Assert.assertEquals("aiXea2Va", decryptValue2); // now it's ok
     }
 
     @Test
     public void testTDI30227_NewDecryption4OldValue3() {
-        String decryptValue1 = CryptoHelperWrapper.decrypt("dxlWbpCxXBw="); // use new encryption to decrypt old
+        String decryptValue1 = CryptoMigrationUtil.decrypt("dxlWbpCxXBw="); // use new encryption to decrypt old
                                                                                   // one.
         Assert.assertNull(decryptValue1);
 
-        String decryptValue2 = CryptoHelperWrapper.decrypt("+ZE8yV1ehYi0jSmx94/wVA==");
+        String decryptValue2 = CryptoMigrationUtil.decrypt("+ZE8yV1ehYi0jSmx94/wVA==");
         // FIXM, ??????? will be failied first time
         // Assert.assertEquals("EL3F4nt3", decryptValue2); // same as testTDI30227_NewDecryption4OldValue2, will be
         // messy characters
 
         // redo
-        decryptValue2 = CryptoHelperWrapper.decrypt("+ZE8yV1ehYi0jSmx94/wVA==");
+        decryptValue2 = CryptoMigrationUtil.decrypt("+ZE8yV1ehYi0jSmx94/wVA==");
         Assert.assertEquals("EL3F4nt3", decryptValue2); // now it's ok
     }
 
@@ -1016,7 +1016,7 @@ public class ParameterValueUtilTest {
             // e.printStackTrace();
         }
 
-        String decryptValue3 = CryptoHelperWrapper.decrypt("HiV5kR+6mPKhnI5NbYbw/Q==");
+        String decryptValue3 = CryptoMigrationUtil.decrypt("HiV5kR+6mPKhnI5NbYbw/Q==");
         Assert.assertNotNull(decryptValue3);
         Assert.assertEquals("aiXea2Va", decryptValue3);
     }
@@ -1041,7 +1041,7 @@ public class ParameterValueUtilTest {
             // e.printStackTrace();
         }
 
-        String decryptValue3 = CryptoHelperWrapper.decrypt("+ZE8yV1ehYi0jSmx94/wVA==");
+        String decryptValue3 = CryptoMigrationUtil.decrypt("+ZE8yV1ehYi0jSmx94/wVA==");
         Assert.assertNotNull(decryptValue3);
         Assert.assertEquals("EL3F4nt3", decryptValue3);
     }

@@ -110,7 +110,7 @@ public class ElementValueTypeImpl extends EObjectImpl implements ElementValueTyp
      */
     protected boolean hexValue = HEX_VALUE_EDEFAULT;
 
-    private StudioEncryption se = StudioEncryption.getStudioEncryption(null);
+    private StudioEncryption se = StudioEncryption.getStudioEncryption(StudioEncryption.EnryptionKeyName.SYSTEM);
 
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->

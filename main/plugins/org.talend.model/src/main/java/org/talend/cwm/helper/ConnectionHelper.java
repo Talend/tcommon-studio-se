@@ -42,7 +42,7 @@ import org.talend.cwm.relational.TdColumn;
 import org.talend.cwm.softwaredeployment.TdSoftwareSystem;
 import org.talend.cwm.xml.TdXmlElementType;
 import org.talend.cwm.xml.TdXmlSchema;
-import org.talend.utils.security.CryptoHelperWrapper;
+import org.talend.utils.security.CryptoMigrationUtil;
 import org.talend.utils.security.StudioEncryption;
 
 import orgomg.cwm.foundation.softwaredeployment.Component;
@@ -68,7 +68,7 @@ public class ConnectionHelper {
 
     public static final String DOT_STRING = "."; //$NON-NLS-1$
 
-    private static final StudioEncryption SE = StudioEncryption.getStudioEncryption(null);
+    private static final StudioEncryption SE = StudioEncryption.getStudioEncryption(StudioEncryption.EnryptionKeyName.SYSTEM);
 
     /**
      * Method "createTdDataProvider" creates a data provider with the given name.
@@ -1105,8 +1105,8 @@ public class ConnectionHelper {
                 boolean cleanFromNewWay = false;
                 String originalValue = tempValue;
                 try {
-                    tempValue = CryptoHelperWrapper.decrypt(originalValue);
-                    String encryptFromTempValue = CryptoHelperWrapper.encrypt(tempValue);
+                    tempValue = CryptoMigrationUtil.decrypt(originalValue);
+                    String encryptFromTempValue = CryptoMigrationUtil.encrypt(tempValue);
                     if (!StringUtils.equals(originalValue, encryptFromTempValue)) {
                         cleanFromNewWay = true;
                     }

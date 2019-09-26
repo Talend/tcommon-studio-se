@@ -22,7 +22,7 @@ import org.talend.utils.security.StudioEncryption;
  */
 public class EncryptedProperties extends Properties {
 
-    private StudioEncryption se = StudioEncryption.getStudioEncryption(null);
+    private StudioEncryption se = StudioEncryption.getStudioEncryption(StudioEncryption.EnryptionKeyName.SYSTEM);
 
     public String getProperty(String key) {
         try {

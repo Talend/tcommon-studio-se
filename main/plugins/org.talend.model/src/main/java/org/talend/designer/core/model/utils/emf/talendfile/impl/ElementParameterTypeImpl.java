@@ -159,7 +159,7 @@ public class ElementParameterTypeImpl extends EObjectImpl implements ElementPara
      */
     protected boolean show = SHOW_EDEFAULT;
 
-    private StudioEncryption se = StudioEncryption.getStudioEncryption(null);
+    private StudioEncryption se = StudioEncryption.getStudioEncryption(StudioEncryption.EnryptionKeyName.SYSTEM);
 
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->

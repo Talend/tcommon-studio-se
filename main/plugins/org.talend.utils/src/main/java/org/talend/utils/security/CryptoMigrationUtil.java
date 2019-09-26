@@ -20,9 +20,9 @@ import org.talend.daikon.security.CryptoHelper;
  * Created by bhe on Aug 13, 2019 This class is a wrapper class for CryptoHelper and is intended to be used by Migration
  * functionality only.
  */
-public class CryptoHelperWrapper {
+public class CryptoMigrationUtil {
 
-    private CryptoHelperWrapper() {
+    private CryptoMigrationUtil() {
 
     }
 

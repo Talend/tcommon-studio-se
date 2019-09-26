@@ -35,7 +35,7 @@ import org.talend.utils.StudioKeysFileCheck;
 
 public class StudioEncryption {
 
-    private static final Logger logger = Logger.getLogger(StudioEncryption.class);
+    private static final Logger LOGGER = Logger.getLogger(StudioEncryption.class);
 
     // TODO We should remove default key after implements master key encryption algorithm
     private static final String ENCRYPTION_KEY = "Talend_TalendKey";// The length of key should be 16, 24 or 32.
@@ -102,14 +102,14 @@ public class StudioEncryption {
         }
         if (ks == null) {
             RuntimeException e = new IllegalArgumentException("Can not load encryption key data: " + encryptionKeyName.name);
-            logger.error(e);
+            LOGGER.error(e);
             throw e;
         }
 
         CipherSource cs = null;
         if (providerName != null && !providerName.isEmpty()) {
             Provider p = Security.getProvider(providerName);
-            cs = CipherSources.aes(p);
+            cs = CipherSources.aesGcm(12, 16, p);
         }
 
         if (cs == null) {
@@ -120,10 +120,6 @@ public class StudioEncryption {
     }
 
     private static KeySource loadKeySource(EnryptionKeyName encryptionKeyName) {
-        if (encryptionKeyName == null) {
-            encryptionKeyName = EnryptionKeyName.SYSTEM;
-        }
-
         KeySource ks = KeySources.systemProperty(encryptionKeyName.name);
 
         try {
@@ -131,14 +127,14 @@ public class StudioEncryption {
                 return ks;
             }
         } catch (Exception e) {
-            logger.debug("StudioEncryption, can not get encryption key from system property: " + encryptionKeyName.name);
+            LOGGER.debug("StudioEncryption, can not get encryption key from system property: " + encryptionKeyName.name);
             ks = KeySources.file(encryptionKeyName.name);
             try {
                 if (ks.getKey() != null) {
                     return ks;
                 }
             } catch (Exception ex) {
-                logger.info("StudioEncryption, can not get encryption key from file: " + encryptionKeyName.name);
+                LOGGER.info("StudioEncryption, can not get encryption key from file: " + encryptionKeyName.name);
             }
         }
 
@@ -153,7 +149,7 @@ public class StudioEncryption {
                     return () -> keyData;
                 }
             } catch (IOException e) {
-                logger.error("non studio, load keysource error", e);
+                LOGGER.error("non studio, load keysource error", e);
             }
         }
 
@@ -171,7 +167,7 @@ public class StudioEncryption {
             }
         } catch (Exception e) {
             // backward compatibility
-            logger.error("encrypt error", e);
+            LOGGER.error("encrypt error", e);
             return null;
         }
         return src;
@@ -191,7 +187,7 @@ public class StudioEncryption {
             }
         } catch (Exception e) {
             // backward compatibility
-            logger.error("decrypt error", e);
+            LOGGER.error("decrypt error", e);
             return null;
         }
     }
@@ -233,11 +229,11 @@ public class StudioEncryption {
                     try (InputStream fi = StudioEncryption.class.getResourceAsStream(ENCRYPTION_KEY_FILE_NAME)) {
                         Files.copy(fi, keyFile.toPath(), StandardCopyOption.REPLACE_EXISTING);
                     } catch (IOException e) {
-                        logger.error("updateConfig error", e);
+                        LOGGER.error("updateConfig error", e);
                     }
-                    logger.info("updateConfig, studio environment, key file setup completed");
+                    LOGGER.info("updateConfig, studio environment, key file setup completed");
                 } else {
-                    logger.info("updateConfig, non studio environment, skip setup of key file");
+                    LOGGER.info("updateConfig, non studio environment, skip setup of key file");
                 }
             }
         }

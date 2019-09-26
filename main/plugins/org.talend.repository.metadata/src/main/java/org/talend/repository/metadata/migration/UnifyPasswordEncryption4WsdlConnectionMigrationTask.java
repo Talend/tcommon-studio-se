@@ -26,7 +26,7 @@ import org.talend.core.model.properties.WSDLSchemaConnectionItem;
 import org.talend.core.model.repository.ERepositoryObjectType;
 import org.talend.core.repository.model.ProxyRepositoryFactory;
 import org.talend.cwm.helper.ConnectionHelper;
-import org.talend.utils.security.CryptoHelperWrapper;
+import org.talend.utils.security.CryptoMigrationUtil;
 
 /**
  * created by ggu on Aug 29, 2014 Detailled comment
@@ -52,7 +52,7 @@ public class UnifyPasswordEncryption4WsdlConnectionMigrationTask extends Abstrac
     public ExecutionResult execute(Item item) {
         if (item instanceof WSDLSchemaConnectionItem) {
             Connection connection = ((WSDLSchemaConnectionItem) item).getConnection();
-            connection.setEncryptAndDecryptFuncPair(CryptoHelperWrapper.encryptFunc(), CryptoHelperWrapper.decryptFunc());
+            connection.setEncryptAndDecryptFuncPair(CryptoMigrationUtil.encryptFunc(), CryptoMigrationUtil.decryptFunc());
             if (connection instanceof WSDLSchemaConnection) {
                 WSDLSchemaConnection wsdlConn = (WSDLSchemaConnection) connection;
                 try {
