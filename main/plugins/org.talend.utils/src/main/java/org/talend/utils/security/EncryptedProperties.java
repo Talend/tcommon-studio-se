@@ -10,7 +10,7 @@
 // 9 rue Pages 92150 Suresnes, France
 //
 // ============================================================================
-package org.talend.repository.ui.login.connections;
+package org.talend.utils.security;
 
 import java.util.Properties;
 
@@ -22,7 +22,7 @@ import org.talend.utils.security.StudioEncryption;
  */
 public class EncryptedProperties extends Properties {
 
-    private StudioEncryption se = StudioEncryption.getStudioEncryption(StudioEncryption.KEY_PROPERTY);
+    private StudioEncryption se = StudioEncryption.getStudioEncryption(null);
 
     public String getProperty(String key) {
         try {

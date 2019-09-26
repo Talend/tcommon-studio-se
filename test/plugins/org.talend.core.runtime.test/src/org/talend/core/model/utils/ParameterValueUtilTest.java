@@ -41,7 +41,7 @@ import org.talend.utils.security.StudioEncryption;
 @SuppressWarnings({ "nls", "deprecation" })
 public class ParameterValueUtilTest {
 
-    private static StudioEncryption se = StudioEncryption.getStudioEncryption(null);
+    private static final StudioEncryption SE = StudioEncryption.getStudioEncryption(null);
 
     @Test
     public void testSplitQueryData4SQL() {
@@ -545,7 +545,7 @@ public class ParameterValueUtilTest {
         Assert.assertEquals("", ParameterValueUtil.getValue4Doc(contextParamType));
 
         contextParamType.setRawValue("123");
-        Assert.assertEquals("123", se.decrypt(ParameterValueUtil.getValue4Doc(contextParamType)));
+        Assert.assertEquals("123", SE.decrypt(ParameterValueUtil.getValue4Doc(contextParamType)));
 
         //
         currentProject.setHidePassword(true);
@@ -593,13 +593,13 @@ public class ParameterValueUtilTest {
         contextParam.setType(JavaTypesManager.PASSWORD.getId());
 
         contextParam.setValue(null);
-        Assert.assertEquals("", se.decrypt(ParameterValueUtil.getValue4Doc(contextParam)));
+        Assert.assertEquals("", SE.decrypt(ParameterValueUtil.getValue4Doc(contextParam)));
 
         contextParam.setValue("");// because empty need encrypt also.
-        Assert.assertEquals("", se.decrypt(ParameterValueUtil.getValue4Doc(contextParam)));
+        Assert.assertEquals("", SE.decrypt(ParameterValueUtil.getValue4Doc(contextParam)));
 
         contextParam.setValue("123");
-        Assert.assertEquals("123", se.decrypt(ParameterValueUtil.getValue4Doc(contextParam)));
+        Assert.assertEquals("123", SE.decrypt(ParameterValueUtil.getValue4Doc(contextParam)));
 
         //
         currentProject.setHidePassword(true);
@@ -626,10 +626,10 @@ public class ParameterValueUtilTest {
         Assert.assertNull(ParameterValueUtil.getEncryptValue(contextParam));
 
         contextParam.setValue("");// because empty need encrypt also.
-        Assert.assertEquals("", se.decrypt(ParameterValueUtil.getEncryptValue(contextParam)));
+        Assert.assertEquals("", SE.decrypt(ParameterValueUtil.getEncryptValue(contextParam)));
 
         contextParam.setValue("123");
-        Assert.assertEquals("123", se.decrypt(ParameterValueUtil.getEncryptValue(contextParam)));
+        Assert.assertEquals("123", SE.decrypt(ParameterValueUtil.getEncryptValue(contextParam)));
     }
 
     @Test
@@ -665,22 +665,22 @@ public class ParameterValueUtilTest {
         Assert.assertEquals("", ParameterValueUtil.getValue4Doc(param));
 
         param.setValue(""); // because don't hide password, and empty is encrypted also.
-        Assert.assertEquals("", se.decrypt(ParameterValueUtil.getValue4Doc(param).toString()));
+        Assert.assertEquals("", SE.decrypt(ParameterValueUtil.getValue4Doc(param).toString()));
 
         param.setValue("123");
-        Assert.assertEquals("123", se.decrypt(ParameterValueUtil.getValue4Doc(param).toString()));
+        Assert.assertEquals("123", SE.decrypt(ParameterValueUtil.getValue4Doc(param).toString()));
 
         // repository value
         param.setRepositoryValue("PASSWORD");
 
         param.setValue(null);
-        Assert.assertEquals("", se.decrypt(ParameterValueUtil.getValue4Doc(param).toString()));
+        Assert.assertEquals("", SE.decrypt(ParameterValueUtil.getValue4Doc(param).toString()));
 
         param.setValue(""); // because empty need encrypt also.
-        Assert.assertEquals("", se.decrypt(ParameterValueUtil.getValue4Doc(param).toString()));
+        Assert.assertEquals("", SE.decrypt(ParameterValueUtil.getValue4Doc(param).toString()));
 
         param.setValue("123");
-        Assert.assertEquals("123", se.decrypt(ParameterValueUtil.getValue4Doc(param).toString()));
+        Assert.assertEquals("123", SE.decrypt(ParameterValueUtil.getValue4Doc(param).toString()));
 
         //
         currentProject.setHidePassword(true);
@@ -711,10 +711,10 @@ public class ParameterValueUtilTest {
         Assert.assertNull(ParameterValueUtil.getEncryptValue(param));
 
         param.setValue(""); // because empty need encrypt also.
-        Assert.assertEquals("", se.decrypt(ParameterValueUtil.getEncryptValue(param)));
+        Assert.assertEquals("", SE.decrypt(ParameterValueUtil.getEncryptValue(param)));
 
         param.setValue("123");
-        Assert.assertEquals("123", se.decrypt(ParameterValueUtil.getEncryptValue(param)));
+        Assert.assertEquals("123", SE.decrypt(ParameterValueUtil.getEncryptValue(param)));
 
         param.setValue(new ArrayList<String>());
         Assert.assertNull(ParameterValueUtil.getEncryptValue(param));

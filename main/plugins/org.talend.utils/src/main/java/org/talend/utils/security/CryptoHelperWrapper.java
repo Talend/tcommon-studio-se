@@ -30,7 +30,7 @@ public class CryptoHelperWrapper {
      * Create an encrypt function which depends on CryptoHelper.getDefault().encrypt
      */
     public static Function<String, String> encryptFunc() {
-        return (src) -> CryptoHelper.getDefault().encrypt(src);
+        return (src) -> new CryptoHelper(CryptoHelper.PASSPHRASE).encrypt(src);
     }
 
     /**
@@ -39,21 +39,21 @@ public class CryptoHelperWrapper {
      * 
      */
     public static Function<String, String> decryptFunc() {
-        return (src) -> CryptoHelper.getDefault().decrypt(src);
+        return (src) -> new CryptoHelper(CryptoHelper.PASSPHRASE).decrypt(src);
     }
 
     /**
      * Encrypt input string with CryptoHelper.getDefault().encrypt
      */
     public static String encrypt(String src) {
-        return CryptoHelper.getDefault().encrypt(src);
+        return new CryptoHelper(CryptoHelper.PASSPHRASE).encrypt(src);
     }
 
     /**
      * Decrypt input string with CryptoHelper.getDefault().decrypt
      */
     public static String decrypt(String src) {
-        return CryptoHelper.getDefault().decrypt(src);
+        return new CryptoHelper(CryptoHelper.PASSPHRASE).decrypt(src);
     }
 
     /**

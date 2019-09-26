@@ -20,7 +20,6 @@ import java.util.List;
 import java.util.Set;
 
 import org.apache.commons.lang.StringUtils;
-import org.apache.log4j.Logger;
 import org.apache.log4j.Priority;
 import org.eclipse.emf.common.util.EList;
 import org.eclipse.emf.ecore.EObject;
@@ -69,13 +68,7 @@ public class ConnectionHelper {
 
     public static final String DOT_STRING = "."; //$NON-NLS-1$
 
-    // MOD xqliu 2011-07-04 feature 22201
-    // public static final String PASSPHRASE = "99ZwBDt1L9yMX2ApJx fnv94o99OeHbCGuIHTy22
-    // V9O6cZ2i374fVjdV76VX9g49DG1r3n90hT5c1"; //$NON-NLS-1$
-
-    // ~
-    private static StudioEncryption se = StudioEncryption.getStudioEncryption(null);
-    private static Logger log = Logger.getLogger(ConnectionHelper.class);
+    private static final StudioEncryption SE = StudioEncryption.getStudioEncryption(null);
 
     /**
      * Method "createTdDataProvider" creates a data provider with the given name.
@@ -1165,7 +1158,7 @@ public class ConnectionHelper {
      * @return
      */
     public static String getDecryptPassword(String password) {
-        return se.decrypt(password);
+        return SE.decrypt(password);
     }
 
     /**
@@ -1175,7 +1168,7 @@ public class ConnectionHelper {
      * @return
      */
     public static String getEncryptPassword(String password) {
-        return se.encrypt(password);
+        return SE.encrypt(password);
     }
 
     /**

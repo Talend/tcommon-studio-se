@@ -47,7 +47,7 @@ public class MavenUrlHelper {
 
     public static final String USER_PASSWORD_SPLITER = ":";
 
-    private static StudioEncryption se = StudioEncryption.getStudioEncryption(null);
+    private static final StudioEncryption SE = StudioEncryption.getStudioEncryption(null);
 
     public static MavenArtifact parseMvnUrl(String mvnUrl) {
         return parseMvnUrl(mvnUrl, true);
@@ -333,11 +333,11 @@ public class MavenUrlHelper {
     }
 
     public static String encryptPassword(String password) {
-        return se.encrypt(password);
+        return SE.encrypt(password);
     }
 
     public static String decryptPassword(String password) {
-        return se.decrypt(password);
+        return SE.decrypt(password);
     }
 
 	public static String generateModuleNameByMavenURI(String uri) {

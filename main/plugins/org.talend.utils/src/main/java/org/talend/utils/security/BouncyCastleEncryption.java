@@ -104,18 +104,4 @@ public class BouncyCastleEncryption {
         String decryptedData = new String(dec, UTF8);
         return decryptedData;
     }
-
-    public static void main(String[] args) {
-        BouncyCastleEncryption bouncyCastleEncryption = new BouncyCastleEncryption();
-        String[] arr = { "bt4AUzTV14kK8FwkcK/BNg==", "3IqdoqEElsy8Dzz9iP3HVQ==", "w4AXOA1a34afqqnlmVLB4A==",
-                "m9Ut0k3oP5pLE2BH1r9xQA==", "zPfoS7aDB2mNUrpRfbfwcOza/VXudqA9QYULYn4xTb8=",
-                "3mTjF2v1D4ZYqnJleFKl/wFybG4/24iyhCFKyEuveDY=" };
-        try {
-            for (String t : arr) {
-                System.out.println(bouncyCastleEncryption.decrypt(t));
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-    }
 }

@@ -26,7 +26,7 @@ public class StudioEncryptionTest {
 
     private String input3 = "Talend_123456";
 
-    private StudioEncryption se = StudioEncryption.getStudioEncryption(StudioEncryption.KEY_ROUTINE);
+    private StudioEncryption se = StudioEncryption.getStudioEncryption(StudioEncryption.EnryptionKeyName.ROUTINE);
 
     @Test
     public void testDecryptPassword() throws Exception {
@@ -56,14 +56,6 @@ public class StudioEncryptionTest {
 
         // ensure negative case
         assertEquals(null, StudioEncryption.getStudioEncryption(null).encrypt(null));
-    }
-
-    @Test
-    public void testAESEncode() throws Exception {
-
-        assertEquals(input1, new String(StudioEncryption.decode64(StudioEncryption.encode64(input1.getBytes()))));
-
-        assertEquals(input2, new String(StudioEncryption.decode64(StudioEncryption.encode64(input2.getBytes("UTF-8"))), "UTF-8"));
     }
 
     @Test

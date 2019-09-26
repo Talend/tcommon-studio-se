@@ -28,11 +28,11 @@ import org.talend.utils.security.StudioEncryption;
  */
 public class ElementParameterParserTest {
 
-    private static StudioEncryption se = StudioEncryption.getStudioEncryption(StudioEncryption.KEY_ROUTINE);
+    private static final StudioEncryption SE = StudioEncryption.getStudioEncryption(StudioEncryption.EnryptionKeyName.ROUTINE);
 
     private static String decryptPassword(String input) {
         input = input.replace("\"", "");
-        return se.decrypt(input);
+        return SE.decrypt(input);
     }
     @Test
     public void testCanEncrypt() {

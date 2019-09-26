@@ -36,7 +36,7 @@ public class PasswordEncryptUtil {
 
     private static SecureRandom secureRandom = new SecureRandom();
 
-    private static StudioEncryption se = StudioEncryption.getStudioEncryption(StudioEncryption.KEY_ROUTINE);
+    private static final StudioEncryption SE = StudioEncryption.getStudioEncryption(StudioEncryption.EnryptionKeyName.ROUTINE);
 
     private static SecretKey getSecretKey() throws Exception {
         if (key == null) {
@@ -77,18 +77,15 @@ public class PasswordEncryptUtil {
      */
     @Deprecated
     public static String decryptPassword(String input) throws Exception, BadPaddingException {
-        if (!StudioEncryption.hasEncryptionSymbol(input)) {
-            if (input == null || input.length() == 0) {
-                return input;
-            }
-            byte[] dec = Base64.decodeBase64(input.getBytes());
-            SecretKey key = getSecretKey();
-            Cipher c = Cipher.getInstance("DES"); //$NON-NLS-1$
-            c.init(Cipher.DECRYPT_MODE, key, secureRandom);
-            byte[] clearByte = c.doFinal(dec);
-            return new String(clearByte);
+        if (input == null || input.length() == 0) {
+            return input;
         }
-        return se.decrypt(input);
+        byte[] dec = Base64.decodeBase64(input.getBytes());
+        SecretKey key = getSecretKey();
+        Cipher c = Cipher.getInstance("DES"); //$NON-NLS-1$
+        c.init(Cipher.DECRYPT_MODE, key, secureRandom);
+        byte[] clearByte = c.doFinal(dec);
+        return new String(clearByte);
     }
 
     /**
@@ -100,7 +97,7 @@ public class PasswordEncryptUtil {
         if (input == null) {
             return input;
         }
-        return se.encrypt(input);
+        return SE.encrypt(input);
     }
 
     /**

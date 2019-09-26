@@ -31,30 +31,41 @@ import org.talend.daikon.crypto.CipherSources;
 import org.talend.daikon.crypto.Encryption;
 import org.talend.daikon.crypto.KeySource;
 import org.talend.daikon.crypto.KeySources;
+import org.talend.utils.StudioKeysFileCheck;
 
 public class StudioEncryption {
 
-    private static Logger logger = Logger.getLogger(StudioEncryption.class);
+    private static final Logger logger = Logger.getLogger(StudioEncryption.class);
 
     // TODO We should remove default key after implements master key encryption algorithm
     private static final String ENCRYPTION_KEY = "Talend_TalendKey";// The length of key should be 16, 24 or 32.
 
-    private static final String ENCRYPTION_KEY_FILE_NAME = "studio.keys";
+    private static final String ENCRYPTION_KEY_FILE_NAME = StudioKeysFileCheck.ENCRYPTION_KEY_FILE_NAME;
 
-    private static final String ENCRYPTION_KEY_FILE_SYS_PROP = "encryption.keys.file";
+    private static final String ENCRYPTION_KEY_FILE_SYS_PROP = StudioKeysFileCheck.ENCRYPTION_KEY_FILE_SYS_PROP;
 
-    public static String PREFIX_PASSWORD = "ENC:["; //$NON-NLS-1$
+    public static final String PREFIX_PASSWORD = "ENC:["; //$NON-NLS-1$
 
-    public static String POSTFIX_PASSWORD = "]"; //$NON-NLS-1$
+    public static final String POSTFIX_PASSWORD = "]"; //$NON-NLS-1$
 
     // Encryption key property names
     public static final String KEY_SYSTEM = "system.encryption.key.v1";
 
-    public static final String KEY_PROPERTY = "properties.encryption.key.v1";
-
-    public static final String KEY_NEXUS = "tac.nexus.encryption.key.v1";
+    public static final String KEY_MIGRATION_TOKEN = "migration.token.encryption.key";
 
     public static final String KEY_ROUTINE = "routine.encryption.key";
+
+    public enum EnryptionKeyName {
+        SYSTEM(KEY_SYSTEM),
+        ROUTINE(KEY_ROUTINE),
+        MIGRATION_TOKEN(KEY_MIGRATION_TOKEN);
+
+        private final String name;
+
+        EnryptionKeyName(String name) {
+            this.name = name;
+        }
+    }
 
     static {
         // set up key file
@@ -63,42 +74,34 @@ public class StudioEncryption {
 
     private Encryption defaultEncryption;
 
-    private static final ThreadLocal<Map<String, KeySource>> localKeySources = ThreadLocal.withInitial(() -> {
-        Map<String, KeySource> cachedKeySources = new HashMap<String, KeySource>();
-        String[] keyNames = { KEY_SYSTEM, KEY_PROPERTY, KEY_NEXUS };
-        for (String keyName : keyNames) {
+    private static final ThreadLocal<Map<EnryptionKeyName, KeySource>> LOCALCACHEDKEYSOURCES = ThreadLocal.withInitial(() -> {
+        Map<EnryptionKeyName, KeySource> cachedKeySources = new HashMap<EnryptionKeyName, KeySource>();
+        EnryptionKeyName[] keyNames = { EnryptionKeyName.SYSTEM, EnryptionKeyName.MIGRATION_TOKEN };
+        for (EnryptionKeyName keyName : keyNames) {
             KeySource ks = loadKeySource(keyName);
             if (ks != null) {
                 cachedKeySources.put(keyName, ks);
             }
         }
-        cachedKeySources.put(KEY_ROUTINE, KeySources.fixedKey(ENCRYPTION_KEY));
+        cachedKeySources.put(EnryptionKeyName.ROUTINE, KeySources.fixedKey(ENCRYPTION_KEY));
         return cachedKeySources;
     });
 
-    private StudioEncryption(String encryptionKeyName, String providerName) {
-
+    private StudioEncryption(EnryptionKeyName encryptionKeyName, String providerName) {
         if (encryptionKeyName == null) {
-            encryptionKeyName = KEY_SYSTEM;
+            encryptionKeyName = EnryptionKeyName.SYSTEM;
         }
 
-        if (!encryptionKeyName.equals(KEY_SYSTEM) && !encryptionKeyName.equals(KEY_PROPERTY)
-                && !encryptionKeyName.equals(KEY_NEXUS) && !encryptionKeyName.equals(KEY_ROUTINE)) {
-            RuntimeException e = new IllegalArgumentException("Invalid encryption key name: " + encryptionKeyName);
-            logger.error(e);
-            throw e;
-        }
-
-        KeySource ks = localKeySources.get().get(encryptionKeyName);
+        KeySource ks = LOCALCACHEDKEYSOURCES.get().get(encryptionKeyName);
 
         if (ks == null) {
             ks = loadKeySource(encryptionKeyName);
             if (ks != null) {
-                localKeySources.get().put(encryptionKeyName, ks);
+                LOCALCACHEDKEYSOURCES.get().put(encryptionKeyName, ks);
             }
         }
         if (ks == null) {
-            RuntimeException e = new IllegalArgumentException("Can not load encryption key data: " + encryptionKeyName);
+            RuntimeException e = new IllegalArgumentException("Can not load encryption key data: " + encryptionKeyName.name);
             logger.error(e);
             throw e;
         }
@@ -116,26 +119,26 @@ public class StudioEncryption {
         defaultEncryption = new Encryption(ks, cs);
     }
 
-    private static KeySource loadKeySource(String encryptionKeyName) {
+    private static KeySource loadKeySource(EnryptionKeyName encryptionKeyName) {
         if (encryptionKeyName == null) {
-            encryptionKeyName = KEY_SYSTEM;
+            encryptionKeyName = EnryptionKeyName.SYSTEM;
         }
 
-        KeySource ks = KeySources.systemProperty(encryptionKeyName);
+        KeySource ks = KeySources.systemProperty(encryptionKeyName.name);
 
         try {
             if (ks.getKey() != null) {
                 return ks;
             }
         } catch (Exception e) {
-            logger.debug("StudioEncryption, can not get encryption key from system property: " + encryptionKeyName);
-            ks = KeySources.file(encryptionKeyName);
+            logger.debug("StudioEncryption, can not get encryption key from system property: " + encryptionKeyName.name);
+            ks = KeySources.file(encryptionKeyName.name);
             try {
                 if (ks.getKey() != null) {
                     return ks;
                 }
             } catch (Exception ex) {
-                logger.info("StudioEncryption, can not get encryption key from file: " + encryptionKeyName);
+                logger.info("StudioEncryption, can not get encryption key from file: " + encryptionKeyName.name);
             }
         }
 
@@ -144,7 +147,7 @@ public class StudioEncryption {
             try (InputStream fi = StudioEncryption.class.getResourceAsStream(ENCRYPTION_KEY_FILE_NAME)) {
                 Properties p = new Properties();
                 p.load(fi);
-                String key = p.getProperty(encryptionKeyName);
+                String key = p.getProperty(encryptionKeyName.name);
                 if (key != null) {
                     byte[] keyData = Base64.getDecoder().decode(key.getBytes(StandardCharsets.UTF_8));
                     return () -> keyData;
@@ -197,47 +200,27 @@ public class StudioEncryption {
     /**
      * Get instance of StudioEncryption with given encryption key name
      * 
-     * keyName - encryption key name, supported names are
-     * StudioEncryption.KEY_SYSTEM,StudioEncryption.KEY_PROPERTY,StudioEncryption.KEY_NEXUS, by default, encrytion key
-     * name is StudioEncryption.KEY_SYSTEM
+     * keyName - see {@link StudioEncryption.EnryptionKeyName}, {@link StudioEncryption.EnryptionKeyName.SYSTEM} by
+     * default
      */
-    public static StudioEncryption getStudioEncryption(String keyName) {
+    public static StudioEncryption getStudioEncryption(EnryptionKeyName keyName) {
         return new StudioEncryption(keyName, null);
     }
 
     /**
      * Get instance of StudioEncryption with given encryption key name, security provider is "BC"
      * 
-     * keyName - encryption key name, supported names are
-     * StudioEncryption.KEY_SYSTEM,StudioEncryption.KEY_PROPERTY,StudioEncryption.KEY_NEXUS, by default, encrytion key
-     * name is StudioEncryption.KEY_SYSTEM
+     * keyName - see {@link StudioEncryption.EnryptionKeyName}
      */
-    public static StudioEncryption getStudioBCEncryption(String keyName) {
+    public static StudioEncryption getStudioBCEncryption(EnryptionKeyName keyName) {
         return new StudioEncryption(keyName, "BC");
-    }
-
-    /**
-     * Base64 encode given array to String
-     */
-    public static String encode64(byte[] src) {
-        return Base64.getEncoder().encodeToString(src);
-    }
-
-    /**
-     * Base64 decode given string to byte array
-     */
-    public static byte[] decode64(String src) {
-        return Base64.getDecoder().decode(src);
     }
 
     public static boolean hasEncryptionSymbol(String input) {
         if (input == null || input.length() == 0) {
             return false;
         }
-        if (input.startsWith(PREFIX_PASSWORD) && input.endsWith(POSTFIX_PASSWORD)) {
-            return true;
-        }
-        return false;
+        return input.startsWith(PREFIX_PASSWORD) && input.endsWith(POSTFIX_PASSWORD);
     }
 
     private static void updateConfig() {

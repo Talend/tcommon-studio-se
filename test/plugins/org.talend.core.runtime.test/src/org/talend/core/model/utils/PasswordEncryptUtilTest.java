@@ -40,7 +40,7 @@ public class PasswordEncryptUtilTest {
 
     @Test
     public void testEncryptPasswordHex() throws Exception {
-        StudioEncryption se = StudioEncryption.getStudioEncryption(StudioEncryption.KEY_ROUTINE);
+        StudioEncryption se = StudioEncryption.getStudioEncryption(StudioEncryption.EnryptionKeyName.ROUTINE);
         assertNull(PasswordEncryptUtil.encryptPasswordHex(null));
         assertEquals("",
                 se.decrypt(PasswordEncryptUtil.encryptPasswordHex("")));
@@ -83,9 +83,10 @@ public class PasswordEncryptUtilTest {
 
     @Test
     public void testDecryptPassword() {
-        String encryptPassword1 = StudioEncryption.getStudioEncryption(StudioEncryption.KEY_ROUTINE).encrypt("");
+        String encryptPassword1 = StudioEncryption.getStudioEncryption(StudioEncryption.EnryptionKeyName.ROUTINE).encrypt("");
         assertEquals("", decryptPassword(encryptPassword1));
-        String encryptPassword2 = StudioEncryption.getStudioEncryption(StudioEncryption.KEY_ROUTINE).encrypt("Talend123");
+        String encryptPassword2 = StudioEncryption.getStudioEncryption(StudioEncryption.EnryptionKeyName.ROUTINE)
+                .encrypt("Talend123");
         assertEquals("Talend123", decryptPassword(encryptPassword2));
 
         String decryptPassword1 = "";
@@ -106,7 +107,7 @@ public class PasswordEncryptUtilTest {
         }
         if (input.startsWith(StudioEncryption.PREFIX_PASSWORD) && input.endsWith(StudioEncryption.POSTFIX_PASSWORD)) {
 
-            StudioEncryption se = StudioEncryption.getStudioEncryption(StudioEncryption.KEY_ROUTINE);
+            StudioEncryption se = StudioEncryption.getStudioEncryption(StudioEncryption.EnryptionKeyName.ROUTINE);
             return se.decrypt(input);
         }
 
