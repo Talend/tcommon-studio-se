@@ -23,7 +23,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
-import org.apache.commons.lang.StringUtils;
 import org.apache.maven.model.Model;
 import org.apache.maven.model.Profile;
 import org.eclipse.core.resources.IFile;
@@ -412,7 +411,7 @@ public class AggregatorPomsHelperTest {
         if (references != null) {
             if (PomIdsHelper.useProfileModule()) {
                 List<Profile> refProjectProfiles = model.getProfiles().stream()
-                        .filter(profile -> StringUtils.startsWithIgnoreCase(profile.getId(), projectTechName))
+                        .filter(profile -> AggregatorPomsHelper.matchModuleProfile(profile.getId(), projectTechName))
                         .collect(Collectors.toList());
                 assertEquals(references.size(), refProjectProfiles.size());
                 references.forEach(reference -> {
@@ -423,7 +422,7 @@ public class AggregatorPomsHelperTest {
             }
         } else {
             assertEquals(0, model.getProfiles().stream()
-                    .filter(profile -> StringUtils.startsWithIgnoreCase(profile.getId(), projectTechName)).count());
+                    .filter(profile -> AggregatorPomsHelper.matchModuleProfile(profile.getId(), projectTechName)).count());
         }
     }
 
