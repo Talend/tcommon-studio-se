@@ -44,10 +44,10 @@ public class StudioKeysFileCheck {
         }
         String keyFile = System.getProperty(ENCRYPTION_KEY_FILE_SYS_PROP);
         if (keyFile == null || keyFile.isEmpty() || !new File(keyFile).exists()) {
-            String encryptionKeyFilePath = Paths.get(confDir.getAbsolutePath(), ENCRYPTION_KEY_FILE_NAME).toString();
-            logger.info("encryptionKeyFilePath: " + encryptionKeyFilePath);
-            System.setProperty(ENCRYPTION_KEY_FILE_SYS_PROP, encryptionKeyFilePath);
+            keyFile = Paths.get(confDir.getAbsolutePath(), ENCRYPTION_KEY_FILE_NAME).toString();
+            System.setProperty(ENCRYPTION_KEY_FILE_SYS_PROP, keyFile);
         }
+        logger.info("encryptionKeyFilePath: " + keyFile);
     }
 
 }
