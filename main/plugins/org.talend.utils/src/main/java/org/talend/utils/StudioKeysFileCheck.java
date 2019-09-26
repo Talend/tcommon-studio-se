@@ -16,7 +16,6 @@ import java.io.File;
 import java.nio.file.Paths;
 
 import org.apache.log4j.Logger;
-import org.talend.utils.security.StudioEncryption;
 
 /*
 * Created by bhe on Sep 25, 2019
@@ -27,7 +26,7 @@ public class StudioKeysFileCheck {
 
     public static final String ENCRYPTION_KEY_FILE_NAME = "studio.keys";
 
-    private static final Logger logger = Logger.getLogger(StudioEncryption.class);
+    private static final Logger LOGGER = Logger.getLogger(StudioKeysFileCheck.class);
 
     private StudioKeysFileCheck() {
 
@@ -39,7 +38,7 @@ public class StudioKeysFileCheck {
     public static void check(File confDir) {
         if (confDir == null) {
             IllegalArgumentException e = new IllegalArgumentException("Encryption keys file path invalid");
-            logger.error(e);
+            LOGGER.error(e);
             throw e;
         }
         String keyFile = System.getProperty(ENCRYPTION_KEY_FILE_SYS_PROP);
@@ -47,7 +46,7 @@ public class StudioKeysFileCheck {
             keyFile = Paths.get(confDir.getAbsolutePath(), ENCRYPTION_KEY_FILE_NAME).toString();
             System.setProperty(ENCRYPTION_KEY_FILE_SYS_PROP, keyFile);
         }
-        logger.info("encryptionKeyFilePath: " + keyFile);
+        LOGGER.info("encryptionKeyFilePath: " + keyFile);
     }
 
 }
