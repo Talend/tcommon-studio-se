@@ -34,6 +34,7 @@ import org.talend.core.model.update.RepositoryUpdateManager;
 import org.talend.repository.model.IRepositoryNode;
 import org.talend.repository.model.RepositoryNode;
 import org.talend.utils.sugars.ReturnCode;
+
 import orgomg.cwm.objectmodel.core.ModelElement;
 
 /**
@@ -213,4 +214,10 @@ public interface ITDQRepositoryService extends IService {
      * @param ruManager: RepositoryUpdateManager
      */
     void updateAllContextInAnalysisAndReport(RepositoryUpdateManager ruManager, Object parameter, boolean isUpdated);
+
+    /**
+     * @param chooseContext the context name which want to swtich
+     */
+    void popupSwitchContextFailedMessage(String chooseContext);
+
 }
