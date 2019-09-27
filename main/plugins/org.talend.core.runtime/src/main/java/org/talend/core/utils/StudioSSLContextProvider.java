@@ -34,7 +34,7 @@ public class StudioSSLContextProvider {
 
     private static SSLContext context;
 
-    private static final IPreferenceStore store = CoreRuntimePlugin.getInstance().getCoreService().getPreferenceStore();
+    private static final IPreferenceStore STORE = CoreRuntimePlugin.getInstance().getCoreService().getPreferenceStore();
 
     private static final StudioEncryption SE = StudioEncryption.getStudioEncryption(StudioEncryption.EnryptionKeyName.SYSTEM);
 
@@ -46,12 +46,12 @@ public class StudioSSLContextProvider {
     }
 
     public static synchronized void buildContext() throws Exception {
-        String keypath = store.getString(SSLPreferenceConstants.KEYSTORE_FILE);
-        String keypass = store.getString(SSLPreferenceConstants.KEYSTORE_PASSWORD);
-        String keytype = store.getString(SSLPreferenceConstants.KEYSTORE_TYPE);
-        String trustpath = store.getString(SSLPreferenceConstants.TRUSTSTORE_FILE);
-        String trustpass = store.getString(SSLPreferenceConstants.TRUSTSTORE_PASSWORD);
-        String trusttype = store.getString(SSLPreferenceConstants.TRUSTSTORE_TYPE);
+        String keypath = STORE.getString(SSLPreferenceConstants.KEYSTORE_FILE);
+        String keypass = STORE.getString(SSLPreferenceConstants.KEYSTORE_PASSWORD);
+        String keytype = STORE.getString(SSLPreferenceConstants.KEYSTORE_TYPE);
+        String trustpath = STORE.getString(SSLPreferenceConstants.TRUSTSTORE_FILE);
+        String trustpass = STORE.getString(SSLPreferenceConstants.TRUSTSTORE_PASSWORD);
+        String trusttype = STORE.getString(SSLPreferenceConstants.TRUSTSTORE_TYPE);
         keypass = SE.decrypt(keypass);
         trustpass = SE.decrypt(trustpass);
         try {

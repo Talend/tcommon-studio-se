@@ -38,7 +38,7 @@ public class BouncyCastleEncryption {
         }
     }
 
-    private static Logger log = Logger.getLogger(BouncyCastleEncryption.class);
+    private static final Logger LOGGER = Logger.getLogger(BouncyCastleEncryption.class);
 
     private static final String RANDOM_SHA1PRNG = "SHA1PRNG";
 
@@ -49,7 +49,7 @@ public class BouncyCastleEncryption {
     private static final String UTF8 = "UTF8";
 
     // 8-byte
-    private static final byte[] KeyValues = { (byte) 0xA9, (byte) 0x9B, (byte) 0xC8, (byte) 0x32, (byte) 0x56, (byte) 0x35,
+    private static final byte[] SEED = { (byte) 0xA9, (byte) 0x9B, (byte) 0xC8, (byte) 0x32, (byte) 0x56, (byte) 0x35,
             (byte) 0xE3, (byte) 0x03 };
 
     private Cipher ecipher;
@@ -69,7 +69,7 @@ public class BouncyCastleEncryption {
             KeyGenerator keyGen = KeyGenerator.getInstance(ENCRYPTION_ALGORITHM, p);
 
             SecureRandom random = SecureRandom.getInstance(RANDOM_SHA1PRNG);
-            random.setSeed(KeyValues);
+            random.setSeed(SEED);
             keyGen.init(128, random);
 
             Key key = keyGen.generateKey();
@@ -81,7 +81,7 @@ public class BouncyCastleEncryption {
             dcipher.init(Cipher.DECRYPT_MODE, key);
         } catch (Exception e) {
             // log the error to avoid that break GWT service
-            log.error(e.getMessage(), e);
+            LOGGER.error(e.getMessage(), e);
         }
     }
 
