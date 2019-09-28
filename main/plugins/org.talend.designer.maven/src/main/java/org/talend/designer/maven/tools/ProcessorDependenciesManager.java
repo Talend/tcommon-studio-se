@@ -44,7 +44,7 @@ public class ProcessorDependenciesManager {
      */
     public boolean updateDependencies(IProgressMonitor progressMonitor, Model model) throws ProcessorException {
         try {
-            List<Dependency> neededDependencies = new ArrayList<Dependency>();
+            List neededDependencies = new ArrayList<Dependency>();
 
             // add the job modules.
             Set<ModuleNeeded> neededLibraries = processor.getNeededModules();
@@ -57,6 +57,9 @@ public class ProcessorDependenciesManager {
                     neededDependencies.add(dependency);
                 }
             }
+
+            java.util.Collections.sort(neededDependencies);
+
             return updateDependencies(progressMonitor, model, neededDependencies, false);
 
         } catch (Exception e) {
