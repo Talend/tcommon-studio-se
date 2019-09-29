@@ -68,7 +68,7 @@ public class ConnectionHelper {
 
     public static final String DOT_STRING = "."; //$NON-NLS-1$
 
-    private static final StudioEncryption SE = StudioEncryption.getStudioEncryption(StudioEncryption.EnryptionKeyName.SYSTEM);
+    private static final StudioEncryption SE = StudioEncryption.getStudioEncryption(StudioEncryption.EncryptionKeyName.SYSTEM);
 
     /**
      * Method "createTdDataProvider" creates a data provider with the given name.

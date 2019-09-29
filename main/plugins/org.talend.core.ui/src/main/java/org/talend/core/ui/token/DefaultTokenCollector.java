@@ -47,7 +47,7 @@ public class DefaultTokenCollector extends AbstractTokenCollector {
     }
 
     public static String calcUniqueId() {
-        return TokenGenerator.generateMachineToken((src) -> StudioEncryption.getStudioEncryption(StudioEncryption.EnryptionKeyName.SYSTEM).encrypt(src));
+        return TokenGenerator.generateMachineToken((src) -> StudioEncryption.getStudioEncryption(StudioEncryption.EncryptionKeyName.SYSTEM).encrypt(src));
     }
 
     /*

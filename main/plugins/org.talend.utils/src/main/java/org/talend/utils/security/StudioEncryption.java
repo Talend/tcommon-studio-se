@@ -44,25 +44,25 @@ public class StudioEncryption {
 
     private static final String ENCRYPTION_KEY_FILE_SYS_PROP = StudioKeysFileCheck.ENCRYPTION_KEY_FILE_SYS_PROP;
 
-    public static final String PREFIX_PASSWORD = "ENC:["; //$NON-NLS-1$
+    private static final String PREFIX_PASSWORD = "ENC:["; //$NON-NLS-1$
 
-    public static final String POSTFIX_PASSWORD = "]"; //$NON-NLS-1$
+    private static final String POSTFIX_PASSWORD = "]"; //$NON-NLS-1$
 
     // Encryption key property names
-    public static final String KEY_SYSTEM = "system.encryption.key.v1";
+    private static final String KEY_SYSTEM = "system.encryption.key.v1";
 
-    public static final String KEY_MIGRATION_TOKEN = "migration.token.encryption.key";
+    private static final String KEY_MIGRATION_TOKEN = "migration.token.encryption.key";
 
-    public static final String KEY_ROUTINE = "routine.encryption.key";
+    private static final String KEY_ROUTINE = "routine.encryption.key";
 
-    public enum EnryptionKeyName {
+    public enum EncryptionKeyName {
         SYSTEM(KEY_SYSTEM),
         ROUTINE(KEY_ROUTINE),
         MIGRATION_TOKEN(KEY_MIGRATION_TOKEN);
 
         private final String name;
 
-        EnryptionKeyName(String name) {
+        EncryptionKeyName(String name) {
             this.name = name;
         }
     }
@@ -72,24 +72,24 @@ public class StudioEncryption {
         updateConfig();
     }
 
-    private Encryption defaultEncryption;
+    private Encryption encryption;
 
-    private static final ThreadLocal<Map<EnryptionKeyName, KeySource>> LOCALCACHEDKEYSOURCES = ThreadLocal.withInitial(() -> {
-        Map<EnryptionKeyName, KeySource> cachedKeySources = new HashMap<EnryptionKeyName, KeySource>();
-        EnryptionKeyName[] keyNames = { EnryptionKeyName.SYSTEM, EnryptionKeyName.MIGRATION_TOKEN };
-        for (EnryptionKeyName keyName : keyNames) {
+    private static final ThreadLocal<Map<EncryptionKeyName, KeySource>> LOCALCACHEDKEYSOURCES = ThreadLocal.withInitial(() -> {
+        Map<EncryptionKeyName, KeySource> cachedKeySources = new HashMap<EncryptionKeyName, KeySource>();
+        EncryptionKeyName[] keyNames = { EncryptionKeyName.SYSTEM, EncryptionKeyName.MIGRATION_TOKEN };
+        for (EncryptionKeyName keyName : keyNames) {
             KeySource ks = loadKeySource(keyName);
             if (ks != null) {
                 cachedKeySources.put(keyName, ks);
             }
         }
-        cachedKeySources.put(EnryptionKeyName.ROUTINE, KeySources.fixedKey(ENCRYPTION_KEY));
+        cachedKeySources.put(EncryptionKeyName.ROUTINE, KeySources.fixedKey(ENCRYPTION_KEY));
         return cachedKeySources;
     });
 
-    private StudioEncryption(EnryptionKeyName encryptionKeyName, String providerName) {
+    private StudioEncryption(EncryptionKeyName encryptionKeyName, String providerName) {
         if (encryptionKeyName == null) {
-            encryptionKeyName = EnryptionKeyName.SYSTEM;
+            encryptionKeyName = EncryptionKeyName.SYSTEM;
         }
 
         KeySource ks = LOCALCACHEDKEYSOURCES.get().get(encryptionKeyName);
@@ -116,10 +116,10 @@ public class StudioEncryption {
             cs = CipherSources.getDefault();
         }
 
-        defaultEncryption = new Encryption(ks, cs);
+        encryption = new Encryption(ks, cs);
     }
 
-    private static KeySource loadKeySource(EnryptionKeyName encryptionKeyName) {
+    private static KeySource loadKeySource(EncryptionKeyName encryptionKeyName) {
         KeySource ks = KeySources.systemProperty(encryptionKeyName.name);
 
         try {
@@ -134,7 +134,12 @@ public class StudioEncryption {
                     return ks;
                 }
             } catch (Exception ex) {
-                LOGGER.info("StudioEncryption, can not get encryption key from file: " + encryptionKeyName.name);
+                String msg = "StudioEncryption, can not get encryption key from file: " + encryptionKeyName.name;
+                if (!isStudio()) {
+                    LOGGER.debug(msg);
+                } else {
+                    LOGGER.info(msg);
+                }
             }
         }
 
@@ -163,7 +168,7 @@ public class StudioEncryption {
         }
         try {
             if (!hasEncryptionSymbol(src)) {
-                return PREFIX_PASSWORD + defaultEncryption.encrypt(src) + POSTFIX_PASSWORD;
+                return PREFIX_PASSWORD + encryption.encrypt(src) + POSTFIX_PASSWORD;
             }
         } catch (Exception e) {
             // backward compatibility
@@ -180,10 +185,10 @@ public class StudioEncryption {
         }
         try {
             if (hasEncryptionSymbol(src)) {
-                return defaultEncryption
+                return encryption
                         .decrypt(src.substring(PREFIX_PASSWORD.length(), src.length() - POSTFIX_PASSWORD.length()));
             } else {
-                return defaultEncryption.decrypt(src);
+                return encryption.decrypt(src);
             }
         } catch (Exception e) {
             // backward compatibility
@@ -196,19 +201,19 @@ public class StudioEncryption {
     /**
      * Get instance of StudioEncryption with given encryption key name
      * 
-     * keyName - see {@link StudioEncryption.EnryptionKeyName}, {@link StudioEncryption.EnryptionKeyName.SYSTEM} by
+     * keyName - see {@link StudioEncryption.EncryptionKeyName}, {@link StudioEncryption.EncryptionKeyName.SYSTEM} by
      * default
      */
-    public static StudioEncryption getStudioEncryption(EnryptionKeyName keyName) {
+    public static StudioEncryption getStudioEncryption(EncryptionKeyName keyName) {
         return new StudioEncryption(keyName, null);
     }
 
     /**
      * Get instance of StudioEncryption with given encryption key name, security provider is "BC"
      * 
-     * keyName - see {@link StudioEncryption.EnryptionKeyName}
+     * keyName - see {@link StudioEncryption.EncryptionKeyName}
      */
-    public static StudioEncryption getStudioBCEncryption(EnryptionKeyName keyName) {
+    public static StudioEncryption getStudioBCEncryption(EncryptionKeyName keyName) {
         return new StudioEncryption(keyName, "BC");
     }
 
@@ -241,9 +246,6 @@ public class StudioEncryption {
 
     private static boolean isStudio() {
         String osgiFramework = System.getProperty("osgi.framework");
-        if (osgiFramework != null && osgiFramework.contains("eclipse")) {
-            return true;
-        }
-        return false;
+        return osgiFramework != null && osgiFramework.contains("eclipse");
     }
 }

@@ -54,7 +54,7 @@ public final class ParameterValueUtil {
 
     public static final String EMPTY = ""; //$NON-NLS-1$
 
-    private static final StudioEncryption SE = StudioEncryption.getStudioEncryption(StudioEncryption.EnryptionKeyName.SYSTEM);
+    private static final StudioEncryption SE = StudioEncryption.getStudioEncryption(StudioEncryption.EncryptionKeyName.SYSTEM);
 
     private ParameterValueUtil() {
     }

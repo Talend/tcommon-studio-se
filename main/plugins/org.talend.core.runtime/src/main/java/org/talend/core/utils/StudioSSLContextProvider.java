@@ -36,7 +36,7 @@ public class StudioSSLContextProvider {
 
     private static final IPreferenceStore STORE = CoreRuntimePlugin.getInstance().getCoreService().getPreferenceStore();
 
-    private static final StudioEncryption SE = StudioEncryption.getStudioEncryption(StudioEncryption.EnryptionKeyName.SYSTEM);
+    private static final StudioEncryption SE = StudioEncryption.getStudioEncryption(StudioEncryption.EncryptionKeyName.SYSTEM);
 
     public static synchronized SSLContext getContext() throws Exception {
         if (null == context) {

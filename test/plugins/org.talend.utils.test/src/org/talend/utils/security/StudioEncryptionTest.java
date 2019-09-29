@@ -26,7 +26,7 @@ public class StudioEncryptionTest {
 
     private String input3 = "Talend_123456";
 
-    private StudioEncryption se = StudioEncryption.getStudioEncryption(StudioEncryption.EnryptionKeyName.ROUTINE);
+    private StudioEncryption se = StudioEncryption.getStudioEncryption(StudioEncryption.EncryptionKeyName.ROUTINE);
 
     @Test
     public void testDecryptPassword() throws Exception {
@@ -42,26 +42,26 @@ public class StudioEncryptionTest {
 
     @Test
     public void testAESEncrypt() throws Exception {
-        assertNotEquals(input1, StudioEncryption.getStudioEncryption(StudioEncryption.EnryptionKeyName.SYSTEM).encrypt(input1));
+        assertNotEquals(input1, StudioEncryption.getStudioEncryption(StudioEncryption.EncryptionKeyName.SYSTEM).encrypt(input1));
         assertEquals(input1,
-                StudioEncryption.getStudioEncryption(StudioEncryption.EnryptionKeyName.SYSTEM).decrypt(StudioEncryption.getStudioEncryption(StudioEncryption.EnryptionKeyName.SYSTEM).encrypt(input1)));
+                StudioEncryption.getStudioEncryption(StudioEncryption.EncryptionKeyName.SYSTEM).decrypt(StudioEncryption.getStudioEncryption(StudioEncryption.EncryptionKeyName.SYSTEM).encrypt(input1)));
 
-        assertNotEquals(input2, StudioEncryption.getStudioEncryption(StudioEncryption.EnryptionKeyName.SYSTEM).encrypt(input2));
+        assertNotEquals(input2, StudioEncryption.getStudioEncryption(StudioEncryption.EncryptionKeyName.SYSTEM).encrypt(input2));
         assertEquals(input2,
-                StudioEncryption.getStudioEncryption(StudioEncryption.EnryptionKeyName.SYSTEM).decrypt(StudioEncryption.getStudioEncryption(StudioEncryption.EnryptionKeyName.SYSTEM).encrypt(input2)));
+                StudioEncryption.getStudioEncryption(StudioEncryption.EncryptionKeyName.SYSTEM).decrypt(StudioEncryption.getStudioEncryption(StudioEncryption.EncryptionKeyName.SYSTEM).encrypt(input2)));
 
-        assertNotEquals(input3, StudioEncryption.getStudioEncryption(StudioEncryption.EnryptionKeyName.SYSTEM).encrypt(input3));
+        assertNotEquals(input3, StudioEncryption.getStudioEncryption(StudioEncryption.EncryptionKeyName.SYSTEM).encrypt(input3));
         assertEquals(input3,
-                StudioEncryption.getStudioEncryption(StudioEncryption.EnryptionKeyName.SYSTEM).decrypt(StudioEncryption.getStudioEncryption(StudioEncryption.EnryptionKeyName.SYSTEM).encrypt(input3)));
+                StudioEncryption.getStudioEncryption(StudioEncryption.EncryptionKeyName.SYSTEM).decrypt(StudioEncryption.getStudioEncryption(StudioEncryption.EncryptionKeyName.SYSTEM).encrypt(input3)));
 
         // ensure negative case
-        assertEquals(null, StudioEncryption.getStudioEncryption(StudioEncryption.EnryptionKeyName.SYSTEM).encrypt(null));
+        assertEquals(null, StudioEncryption.getStudioEncryption(StudioEncryption.EncryptionKeyName.SYSTEM).encrypt(null));
     }
 
     @Test
     public void testGetStudioEncryption() throws Exception {
 
-        assertNotNull(StudioEncryption.getStudioEncryption(StudioEncryption.EnryptionKeyName.SYSTEM));
+        assertNotNull(StudioEncryption.getStudioEncryption(StudioEncryption.EncryptionKeyName.SYSTEM));
 
     }
 }

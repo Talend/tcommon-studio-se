@@ -18,7 +18,7 @@ import org.talend.utils.security.StudioEncryption;
 
 public class PasswordMigrationUtil {
 
-    private final static StudioEncryption SE = StudioEncryption.getStudioEncryption(StudioEncryption.EnryptionKeyName.SYSTEM);
+    private final static StudioEncryption SE = StudioEncryption.getStudioEncryption(StudioEncryption.EncryptionKeyName.SYSTEM);
 
     public static String decryptPassword(String pass) throws Exception {
         String cleanPass = pass;

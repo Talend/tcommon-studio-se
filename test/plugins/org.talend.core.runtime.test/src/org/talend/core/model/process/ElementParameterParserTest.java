@@ -28,7 +28,7 @@ import org.talend.utils.security.StudioEncryption;
  */
 public class ElementParameterParserTest {
 
-    private static final StudioEncryption SE = StudioEncryption.getStudioEncryption(StudioEncryption.EnryptionKeyName.ROUTINE);
+    private static final StudioEncryption SE = StudioEncryption.getStudioEncryption(StudioEncryption.EncryptionKeyName.ROUTINE);
 
     private static String decryptPassword(String input) {
         input = input.replace("\"", "");

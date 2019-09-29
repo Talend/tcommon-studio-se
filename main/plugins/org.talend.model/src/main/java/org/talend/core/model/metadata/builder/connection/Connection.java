@@ -205,8 +205,12 @@ public interface Connection extends AbstractMetadataObject, DataProvider {
     
     
     /**
-     * Set encryption and decryption functions which will be used inside getValue By default, getValue depends on
-     * StudioEncryption.encrypt/decrypt
+     * <p>
+     * Set encryption and decryption functions which will be used inside getValue
+     * </p>
+     * <p>
+     * By default, getValue depends on encrypt/decrypt of {@link org.talend.utils.StudioEncryption}.
+     * </p>
      * 
      * @generated NOT
      */

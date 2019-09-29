@@ -41,7 +41,7 @@ import org.talend.utils.security.StudioEncryption;
 @SuppressWarnings({ "nls", "deprecation" })
 public class ParameterValueUtilTest {
 
-    private static final StudioEncryption SE = StudioEncryption.getStudioEncryption(StudioEncryption.EnryptionKeyName.SYSTEM);
+    private static final StudioEncryption SE = StudioEncryption.getStudioEncryption(StudioEncryption.EncryptionKeyName.SYSTEM);
 
     @Test
     public void testSplitQueryData4SQL() {
