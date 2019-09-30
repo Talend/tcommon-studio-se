@@ -21,7 +21,6 @@ import org.apache.maven.model.Dependency;
 import org.apache.maven.model.Model;
 import org.apache.maven.model.Plugin;
 import org.apache.maven.model.PluginExecution;
-import org.apache.xmlbeans.impl.xb.xsdschema.IncludeDocument.Include;
 import org.codehaus.plexus.util.xml.Xpp3Dom;
 import org.eclipse.core.resources.IFile;
 import org.eclipse.core.resources.IFolder;
