@@ -220,6 +220,29 @@ public abstract class AbstractMavenProcessorPom extends CreateMavenBundleTemplat
                     MavenArtifact mvnArtifact = MavenUrlHelper.parseMvnUrl(module.getMavenUri());
                     include.setValue(mvnArtifact.getGroupId() + ":" + mvnArtifact.getArtifactId()); //$NON-NLS-1$
                 }
+                
+                //removing digital signatures from uber jar
+                Xpp3Dom filters = new Xpp3Dom("filters"); //$NON-NLS-1$
+                Xpp3Dom filter = new Xpp3Dom("filter"); //$NON-NLS-1$
+                Xpp3Dom artifact = new Xpp3Dom("artifact"); //$NON-NLS-1$
+                artifact.setValue("*:*");
+                Xpp3Dom filterExcludes = new Xpp3Dom("excludes"); //$NON-NLS-1$
+                Xpp3Dom excludeSF = new Xpp3Dom("exclude");
+                excludeSF.setValue("META-INF/*.SF");
+                Xpp3Dom excludeDSA = new Xpp3Dom("exclude");
+                excludeDSA.setValue("META-INF/*.DSA");
+                Xpp3Dom excludeRSA = new Xpp3Dom("exclude");
+                excludeRSA.setValue("META-INF/*.RSA");
+
+                filterExcludes.addChild(excludeSF);
+                filterExcludes.addChild(excludeDSA);
+                filterExcludes.addChild(excludeRSA);
+                
+                filter.addChild(artifact);
+                filter.addChild(filterExcludes);
+                filters.addChild(filter);
+                configuration.addChild(filters);
+                
                 plugins.add(shade);
             }
         }
