@@ -54,8 +54,6 @@ public final class ParameterValueUtil {
 
     public static final String EMPTY = ""; //$NON-NLS-1$
 
-    private static final StudioEncryption SE = StudioEncryption.getStudioEncryption(StudioEncryption.EncryptionKeyName.SYSTEM);
-
     private ParameterValueUtil() {
     }
 
@@ -844,7 +842,8 @@ public final class ParameterValueUtil {
         if (contextParam != null) {
             String docValue = contextParam.getValue();
             if (docValue != null) {
-                String encryptValue = SE.encrypt(docValue);
+                String encryptValue = StudioEncryption.getStudioEncryption(StudioEncryption.EncryptionKeyName.SYSTEM)
+                        .encrypt(docValue);
                 if (encryptValue != null) {
                     return encryptValue;
                 }
@@ -880,7 +879,8 @@ public final class ParameterValueUtil {
         if (param != null) {
             Object docValue = param.getValue();
             if (docValue != null && docValue instanceof String) {
-                String encryptValue = SE.encrypt(docValue.toString());
+                String encryptValue = StudioEncryption.getStudioEncryption(StudioEncryption.EncryptionKeyName.SYSTEM)
+                        .encrypt(docValue.toString());
                 if (encryptValue != null) {
                     return encryptValue;
                 }

@@ -68,8 +68,6 @@ public class ConnectionHelper {
 
     public static final String DOT_STRING = "."; //$NON-NLS-1$
 
-    private static final StudioEncryption SE = StudioEncryption.getStudioEncryption(StudioEncryption.EncryptionKeyName.SYSTEM);
-
     /**
      * Method "createTdDataProvider" creates a data provider with the given name.
      *
@@ -1158,7 +1156,7 @@ public class ConnectionHelper {
      * @return
      */
     public static String getDecryptPassword(String password) {
-        return SE.decrypt(password);
+        return StudioEncryption.getStudioEncryption(StudioEncryption.EncryptionKeyName.SYSTEM).decrypt(password);
     }
 
     /**
@@ -1168,7 +1166,7 @@ public class ConnectionHelper {
      * @return
      */
     public static String getEncryptPassword(String password) {
-        return SE.encrypt(password);
+        return StudioEncryption.getStudioEncryption(StudioEncryption.EncryptionKeyName.SYSTEM).encrypt(password);
     }
 
     /**

@@ -36,8 +36,6 @@ public class PasswordEncryptUtil {
 
     private static final SecureRandom SECURERANDOM = new SecureRandom();
 
-    private static final StudioEncryption SE = StudioEncryption.getStudioEncryption(StudioEncryption.EncryptionKeyName.ROUTINE);
-
     private static SecretKey getSecretKey() throws Exception {
         if (key == null) {
 
@@ -97,7 +95,7 @@ public class PasswordEncryptUtil {
         if (input == null) {
             return input;
         }
-        return SE.encrypt(input);
+        return StudioEncryption.getStudioEncryption(StudioEncryption.EncryptionKeyName.ROUTINE).encrypt(input);
     }
 
     /**
