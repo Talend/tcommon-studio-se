@@ -13,8 +13,10 @@
 package org.talend.utils.security;
 
 import java.io.File;
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.OutputStream;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.StandardCopyOption;
@@ -120,41 +122,40 @@ public class StudioEncryption {
     }
 
     private static KeySource loadKeySource(EncryptionKeyName encryptionKeyName) {
-        KeySource ks = KeySources.systemProperty(encryptionKeyName.name);
-
-        try {
-            if (ks.getKey() != null) {
-                return ks;
-            }
-        } catch (Exception e) {
-            LOGGER.debug("StudioEncryption, can not get encryption key from system property: " + encryptionKeyName.name);
-            ks = KeySources.file(encryptionKeyName.name);
+        // EncryptionKeyName.SYSTEM, always load
+        // from system property firstly, then load from file
+        if (encryptionKeyName == EncryptionKeyName.SYSTEM) {
+            KeySource ks = KeySources.systemProperty(encryptionKeyName.name);
             try {
                 if (ks.getKey() != null) {
                     return ks;
                 }
-            } catch (Exception ex) {
-                String msg = "StudioEncryption, can not get encryption key from file: " + encryptionKeyName.name;
-                if (!isStudio()) {
-                    LOGGER.debug(msg);
-                } else {
-                    LOGGER.info(msg);
+            } catch (Exception e) {
+                LOGGER.debug("StudioEncryption, can not get encryption key from system property: " + encryptionKeyName.name);
+                ks = KeySources.file(encryptionKeyName.name);
+                try {
+                    if (ks.getKey() != null) {
+                        return ks;
+                    }
+                } catch (Exception ex) {
+                    String msg = "StudioEncryption, can not get encryption key from file: " + encryptionKeyName.name;
+                    if (!isStudio()) {
+                        LOGGER.debug(msg);
+                    } else {
+                        LOGGER.info(msg);
+                    }
                 }
             }
         }
-
         // for others, tac,jobserver etc, load default keys from jars if they are not found in system properties
-        if (!isStudio()) {
-            try (InputStream fi = StudioEncryption.class.getResourceAsStream(ENCRYPTION_KEY_FILE_NAME)) {
-                Properties p = new Properties();
-                p.load(fi);
-                String key = p.getProperty(encryptionKeyName.name);
-                if (key != null) {
-                    byte[] keyData = Base64.getDecoder().decode(key.getBytes(StandardCharsets.UTF_8));
-                    return () -> keyData;
+        if (!isStudio() || encryptionKeyName == EncryptionKeyName.MIGRATION_TOKEN) {
+            KeySource ks = ResourceKeyFileSource.file(encryptionKeyName.name);
+            try {
+                if (ks.getKey() != null) {
+                    return ks;
                 }
-            } catch (IOException e) {
-                LOGGER.error("non studio, load keysource error", e);
+            } catch (Exception e) {
+                LOGGER.warn("Can not load encryption key from jar", e);
             }
         }
 
@@ -230,11 +231,21 @@ public class StudioEncryption {
             File keyFile = new File(keyPath);
             if (!keyFile.exists()) {
                 if (isStudio()) {
-                    // set up keys
+                    // load all keys
+                    Properties p = new Properties();
                     try (InputStream fi = StudioEncryption.class.getResourceAsStream(ENCRYPTION_KEY_FILE_NAME)) {
-                        Files.copy(fi, keyFile.toPath(), StandardCopyOption.REPLACE_EXISTING);
+                        p.load(fi);
                     } catch (IOException e) {
-                        LOGGER.error("updateConfig error", e);
+                        LOGGER.error("load encryption keys error", e);
+                    }
+                    // EncryptionKeyName.MIGRATION_TOKEN are not allowed to be updated
+                    p.remove(EncryptionKeyName.MIGRATION_TOKEN.name);
+
+                    // persist keys to ~configuration/studio.keys
+                    try (OutputStream fo = new FileOutputStream(keyFile)) {
+                        p.store(fo, "studio encryption keys");
+                    } catch (IOException e) {
+                        LOGGER.error("persist encryption keys error", e);
                     }
                     LOGGER.info("updateConfig, studio environment, key file setup completed");
                 } else {
@@ -247,5 +258,40 @@ public class StudioEncryption {
     private static boolean isStudio() {
         String osgiFramework = System.getProperty("osgi.framework");
         return osgiFramework != null && osgiFramework.contains("eclipse");
+    }
+
+    static class ResourceKeyFileSource implements KeySource {
+
+        String keyName;
+
+        Properties keyProperties = new Properties();
+
+        ResourceKeyFileSource(String keyName) {
+            this.keyName = keyName;
+            // load from jar
+            try (InputStream fi = StudioEncryption.class.getResourceAsStream(ENCRYPTION_KEY_FILE_NAME)) {
+                keyProperties.load(fi);
+            } catch (IOException e) {
+                LOGGER.error(e);
+            }
+        }
+
+        public static KeySource file(String keyName) {
+            return new ResourceKeyFileSource(keyName);
+        }
+
+        @Override
+        public byte[] getKey() throws Exception {
+            // load key
+            String key = keyProperties.getProperty(this.keyName);
+            if (key == null) {
+                LOGGER.warn("Can not load " + this.keyName + " from jar");
+                throw new IllegalArgumentException("Invalid encryption key");
+            } else {
+                LOGGER.debug("Loaded " + this.keyName + " from jar");
+                byte[] keyData = Base64.getDecoder().decode(key.getBytes(StandardCharsets.UTF_8));
+                return keyData;
+            }
+        }
     }
 }
