@@ -329,12 +329,6 @@ public class DatabaseWizardPage extends WizardPage {
         return null;
     }
 
-    public ContextType getOriginalSelectedContextType() {
-        if (databaseForm != null) {
-            return databaseForm.getOriginalSelectedContextType();
-        }
-        return null;
-    }
 
     public Form getForm(){
         if(dynamicForm != null){

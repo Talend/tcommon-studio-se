@@ -106,7 +106,6 @@ import org.talend.core.hadoop.version.custom.HadoopCustomVersionDefineDialog;
 import org.talend.core.hadoop.version.custom.HadoopVersionControlUtils;
 import org.talend.core.language.ECodeLanguage;
 import org.talend.core.language.LanguageManager;
-import org.talend.core.model.context.ContextUtils;
 import org.talend.core.model.metadata.IMetadataConnection;
 import org.talend.core.model.metadata.MetadataTalendType;
 import org.talend.core.model.metadata.builder.ConvertionHelper;
@@ -119,7 +118,6 @@ import org.talend.core.model.metadata.builder.database.JavaSqlFactory;
 import org.talend.core.model.metadata.connection.hive.HiveModeInfo;
 import org.talend.core.model.metadata.connection.hive.HiveServerVersionInfo;
 import org.talend.core.model.properties.ConnectionItem;
-import org.talend.core.model.properties.ContextItem;
 import org.talend.core.model.repository.ERepositoryObjectType;
 import org.talend.core.model.repository.IRepositoryViewObject;
 import org.talend.core.model.utils.ContextParameterUtils;
@@ -345,8 +343,6 @@ public class DatabaseForm extends AbstractForm {
     private ScrolledComposite scrolledComposite;
 
     private ContextType selectedContextType;
-
-    private ContextType originalSelectedContextType;
 
     private final String originalUischema;
 
@@ -4051,9 +4047,6 @@ public class DatabaseForm extends AbstractForm {
         StringBuffer sgb = new StringBuffer();
         if (isContextMode()) { // context mode
             String connectionTypeName = connectionItem.getConnection().getConnectionTypeName();
-            ContextItem contextItem = ContextUtils.getContextItemById2(connectionItem.getConnection().getContextId());
-            originalSelectedContextType = ContextUtils
-                    .getContextTypeByName(contextItem, connectionItem.getConnection().getContextName(), false);
             if (connectionTypeName.equals(EDatabaseConnTemplate.HBASE.getDBDisplayName())
                     || connectionTypeName.equals(EDatabaseConnTemplate.HIVE.getDBDisplayName())) {
                 selectedContextType = ConnectionContextHelper.getContextTypeForContextMode(connectionItem.getConnection(), true);
@@ -8714,13 +8707,5 @@ public class DatabaseForm extends AbstractForm {
         scrolledComposite.setMinSize(newParent.computeSize(SWT.DEFAULT, SWT.DEFAULT));
     }
 
-    /**
-     * Getter for originalSelectedContextType.
-     * 
-     * @return the originalSelectedContextType
-     */
-    protected ContextType getOriginalSelectedContextType() {
-        return this.originalSelectedContextType;
-    }
 
 }

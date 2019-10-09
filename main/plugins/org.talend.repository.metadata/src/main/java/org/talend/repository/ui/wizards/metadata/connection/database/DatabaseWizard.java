@@ -53,6 +53,7 @@ import org.talend.core.database.conn.version.EDatabaseVersion4Drivers;
 import org.talend.core.hadoop.IHadoopClusterService;
 import org.talend.core.hadoop.IHadoopDistributionService;
 import org.talend.core.hadoop.repository.HadoopRepositoryUtil;
+import org.talend.core.model.context.ContextUtils;
 import org.talend.core.model.metadata.IMetadataConnection;
 import org.talend.core.model.metadata.IMetadataTable;
 import org.talend.core.model.metadata.builder.ConvertionHelper;
@@ -66,6 +67,7 @@ import org.talend.core.model.metadata.builder.database.PluginConstant;
 import org.talend.core.model.metadata.builder.database.dburl.SupportDBUrlType;
 import org.talend.core.model.metadata.connection.hive.HiveModeInfo;
 import org.talend.core.model.properties.ConnectionItem;
+import org.talend.core.model.properties.ContextItem;
 import org.talend.core.model.properties.PropertiesFactory;
 import org.talend.core.model.properties.Property;
 import org.talend.core.model.relationship.RelationshipItemBuilder;
@@ -151,6 +153,8 @@ public class DatabaseWizard extends CheckLastVersionRepositoryWizard implements 
 
     private ConnectionItem originalConnectionItem;
 
+    private ContextType originalSelectedContextType;
+
     /**
      * Constructor for DatabaseWizard. Analyse Iselection to extract DatabaseConnection and the pathToSave. Start the
      * Lock Strategy.
@@ -231,8 +235,13 @@ public class DatabaseWizard extends CheckLastVersionRepositoryWizard implements 
         connection.setId(propertyId);
 
         // initialize the context mode
-        ConnectionContextHelper.checkContextMode(connectionItem);
+        ContextItem checkContextMode = ConnectionContextHelper.checkContextMode(connectionItem);
         this.originalConnectionItem = connectionItem;
+        if (checkContextMode != null) {
+            ContextItem contextItem = ContextUtils.getContextItemById2(connectionItem.getConnection().getContextId());
+            originalSelectedContextType = ContextUtils
+                    .getContextTypeByName(contextItem, connectionItem.getConnection().getContextName(), false);
+        }
     }
 
     /**
@@ -309,8 +318,13 @@ public class DatabaseWizard extends CheckLastVersionRepositoryWizard implements 
         connection.setId(propertyId);
 
         // initialize the context mode
-        ConnectionContextHelper.checkContextMode(connectionItem);
+        ContextItem checkContextMode = ConnectionContextHelper.checkContextMode(connectionItem);
         this.originalConnectionItem = connectionItem;
+        if (checkContextMode != null) {
+            ContextItem contextItem = ContextUtils.getContextItemById2(connectionItem.getConnection().getContextId());
+            originalSelectedContextType = ContextUtils
+                    .getContextTypeByName(contextItem, connectionItem.getConnection().getContextName(), false);
+        }
     }
 
     /**
@@ -539,19 +553,20 @@ public class DatabaseWizard extends CheckLastVersionRepositoryWizard implements 
                     // not
                     // a good practice.
                     Boolean isSuccess = true;
-                    if (creation && getDatabaseConnection() != null) {
-                        handleCreation(getDatabaseConnection(), metadataConnection, tdqRepService);
-                    } else if (!creation && getDatabaseConnection() != null && connection.isContextMode()
-                            && isContextChanged()) {
-                        ContextType originalSelectedContextType = databaseWizardPage.getOriginalSelectedContextType();
-                        isSuccess = SwitchContextGroupNameImpl
-                                .getInstance()
-                                .updateContextGroup(connectionItem, contextName, originalSelectedContextType.getName());
-                        if (!isSuccess) {
-                            tdqRepService.popupSwitchContextFailedMessage(contextName);
+                    if (getDatabaseConnection() != null) {
+                        if (creation) {
+                            handleCreation(getDatabaseConnection(), metadataConnection, tdqRepService);
+                        } else if (connection.isContextMode() && originalSelectedContextType != null) {
+                            isSuccess = SwitchContextGroupNameImpl
+                                    .getInstance()
+                                    .updateContextGroup(connectionItem, contextName,
+                                            originalSelectedContextType.getName());
+                            if (!isSuccess) {
+                                tdqRepService.popupSwitchContextFailedMessage(contextName);
+                            }
+                        } else {
+                            isSuccess = handleUpdate(metadataConnection, tdqRepService);
                         }
-                    } else {
-                        isSuccess = handleUpdate(metadataConnection, tdqRepService);
                     }
                     if (!isSuccess) {
                         return false;
@@ -592,15 +607,6 @@ public class DatabaseWizard extends CheckLastVersionRepositoryWizard implements 
         } else {
             return false;
         }
-    }
-
-    private boolean isContextChanged() {
-        String contextName = connection.getContextName();
-        ContextType originalSelectedContextType = databaseWizardPage.getOriginalSelectedContextType();
-        if (originalSelectedContextType == null || contextName == null) {
-            return false;
-        }
-        return !contextName.equals(originalSelectedContextType.getName());
     }
 
     private void deleteSwitchTypeNode(){
