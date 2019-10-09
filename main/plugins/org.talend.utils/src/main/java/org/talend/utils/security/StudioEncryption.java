@@ -13,6 +13,7 @@
 package org.talend.utils.security;
 
 import java.io.File;
+import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
@@ -122,8 +123,7 @@ public class StudioEncryption {
     }
 
     private static KeySource loadKeySource(EncryptionKeyName encryptionKeyName) {
-        // EncryptionKeyName.SYSTEM, always load
-        // from system property firstly, then load from file
+        // EncryptionKeyName.SYSTEM, always load from system property firstly, then load from file
         if (encryptionKeyName == EncryptionKeyName.SYSTEM) {
             KeySource ks = KeySources.systemProperty(encryptionKeyName.name);
             try {
@@ -132,31 +132,17 @@ public class StudioEncryption {
                 }
             } catch (Exception e) {
                 LOGGER.debug("StudioEncryption, can not get encryption key from system property: " + encryptionKeyName.name);
-                ks = KeySources.file(encryptionKeyName.name);
-                try {
-                    if (ks.getKey() != null) {
-                        return ks;
-                    }
-                } catch (Exception ex) {
-                    String msg = "StudioEncryption, can not get encryption key from file: " + encryptionKeyName.name;
-                    if (!isStudio()) {
-                        LOGGER.debug(msg);
-                    } else {
-                        LOGGER.info(msg);
-                    }
-                }
             }
         }
-        // for others, tac,jobserver etc, load default keys from jars if they are not found in system properties
-        if (!isStudio() || encryptionKeyName == EncryptionKeyName.MIGRATION_TOKEN) {
-            KeySource ks = ResourceKeyFileSource.file(encryptionKeyName.name);
-            try {
-                if (ks.getKey() != null) {
-                    return ks;
-                }
-            } catch (Exception e) {
-                LOGGER.warn("Can not load encryption key from jar", e);
+        // for others, tac,jobserver etc, load default keys from system property file, then load from jars if they are
+        // not found in system properties
+        KeySource ks = ResourceKeyFileSource.file(encryptionKeyName.name);
+        try {
+            if (ks.getKey() != null) {
+                return ks;
             }
+        } catch (Exception e) {
+            LOGGER.warn("Can not load encryption key from file", e);
         }
 
         return null;
@@ -260,19 +246,32 @@ public class StudioEncryption {
         return osgiFramework != null && osgiFramework.contains("eclipse");
     }
 
-    static class ResourceKeyFileSource implements KeySource {
+    private static class ResourceKeyFileSource implements KeySource {
 
-        String keyName;
+        private final String keyName;
 
-        Properties keyProperties = new Properties();
+        private final Properties keyProperties = new Properties();
 
         ResourceKeyFileSource(String keyName) {
             this.keyName = keyName;
-            // load from jar
+            // load default keys from jar
             try (InputStream fi = StudioEncryption.class.getResourceAsStream(ENCRYPTION_KEY_FILE_NAME)) {
                 keyProperties.load(fi);
             } catch (IOException e) {
                 LOGGER.error(e);
+            }
+
+            // load from file set in system property, so as to override default keys
+            String keyPath = System.getProperty(ENCRYPTION_KEY_FILE_SYS_PROP);
+            if (keyPath != null) {
+                File keyFile = new File(keyPath);
+                if (keyFile.exists()) {
+                    try (InputStream fi = new FileInputStream(keyFile)) {
+                        keyProperties.load(fi);
+                    } catch (IOException e) {
+                        LOGGER.error(e);
+                    }
+                }
             }
         }
 
@@ -285,10 +284,10 @@ public class StudioEncryption {
             // load key
             String key = keyProperties.getProperty(this.keyName);
             if (key == null) {
-                LOGGER.warn("Can not load " + this.keyName + " from jar");
+                LOGGER.warn("Can not load " + this.keyName + " from file");
                 throw new IllegalArgumentException("Invalid encryption key");
             } else {
-                LOGGER.debug("Loaded " + this.keyName + " from jar");
+                LOGGER.debug("Loaded " + this.keyName + " from file");
                 byte[] keyData = Base64.getDecoder().decode(key.getBytes(StandardCharsets.UTF_8));
                 return keyData;
             }
