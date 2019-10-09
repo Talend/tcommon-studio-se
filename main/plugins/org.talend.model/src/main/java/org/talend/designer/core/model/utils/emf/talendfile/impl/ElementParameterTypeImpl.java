@@ -159,8 +159,6 @@ public class ElementParameterTypeImpl extends EObjectImpl implements ElementPara
      */
     protected boolean show = SHOW_EDEFAULT;
 
-    private StudioEncryption se = StudioEncryption.getStudioEncryption(StudioEncryption.EncryptionKeyName.SYSTEM);
-
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
      * @generated
@@ -299,7 +297,7 @@ public class ElementParameterTypeImpl extends EObjectImpl implements ElementPara
 
     public String getRawValue() {
         if (value != null && value.length() > 0 && PasswordEncryptUtil.isPasswordField(getField())) {
-            String decrypt = se.decrypt(value);
+            String decrypt = StudioEncryption.getStudioEncryption(StudioEncryption.EncryptionKeyName.SYSTEM).decrypt(value);
             if (decrypt != null) {
                 return decrypt;
             }
@@ -320,7 +318,8 @@ public class ElementParameterTypeImpl extends EObjectImpl implements ElementPara
 
     public void setRawValue(String newValue) {
         if (newValue != null && newValue.length() > 0 && PasswordEncryptUtil.isPasswordField(getField())) {
-            String encryptValue = se.encrypt(newValue);
+            String encryptValue = StudioEncryption.getStudioEncryption(StudioEncryption.EncryptionKeyName.SYSTEM)
+                    .encrypt(newValue);
             if (encryptValue != null) {
                 setValue(encryptValue);
                 return;

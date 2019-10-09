@@ -182,8 +182,6 @@ public class ContextParameterTypeImpl extends EObjectImpl implements ContextPara
      */
     protected String value = VALUE_EDEFAULT;
 
-    private StudioEncryption se = StudioEncryption.getStudioEncryption(StudioEncryption.EncryptionKeyName.SYSTEM);
-
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
      * @generated
@@ -347,7 +345,7 @@ public class ContextParameterTypeImpl extends EObjectImpl implements ContextPara
 
     public String getRawValue() {
         if (value != null && value.length() > 0 && PasswordEncryptUtil.isPasswordType(getType())) {
-            String decryptValue = se.decrypt(value);
+            String decryptValue = StudioEncryption.getStudioEncryption(StudioEncryption.EncryptionKeyName.SYSTEM).decrypt(value);
             if (decryptValue != null) {
                 return decryptValue;
             }
@@ -368,7 +366,8 @@ public class ContextParameterTypeImpl extends EObjectImpl implements ContextPara
 
     public void setRawValue(String newValue) {
         if (newValue != null && newValue.length() > 0 && PasswordEncryptUtil.isPasswordType(getType())) {
-            String encryptValue = se.encrypt(newValue);
+            String encryptValue = StudioEncryption.getStudioEncryption(StudioEncryption.EncryptionKeyName.SYSTEM)
+                    .encrypt(newValue);
             if (encryptValue != null) {
                 setValue(encryptValue);
                 return;

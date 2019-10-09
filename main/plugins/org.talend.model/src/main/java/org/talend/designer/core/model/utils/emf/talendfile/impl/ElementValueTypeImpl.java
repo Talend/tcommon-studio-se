@@ -110,8 +110,6 @@ public class ElementValueTypeImpl extends EObjectImpl implements ElementValueTyp
      */
     protected boolean hexValue = HEX_VALUE_EDEFAULT;
 
-    private StudioEncryption se = StudioEncryption.getStudioEncryption(StudioEncryption.EncryptionKeyName.SYSTEM);
-
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
      * @generated
@@ -157,7 +155,7 @@ public class ElementValueTypeImpl extends EObjectImpl implements ElementValueTyp
 
     public String getRawValue() {
         if (value != null && value.length() > 0) {
-            String decrypt = se.decrypt(value);
+            String decrypt = StudioEncryption.getStudioEncryption(StudioEncryption.EncryptionKeyName.SYSTEM).decrypt(value);
             if (decrypt != null) {
                 return decrypt;
             }
@@ -178,7 +176,7 @@ public class ElementValueTypeImpl extends EObjectImpl implements ElementValueTyp
 
     public void setValue(String value, boolean encrypt) {
         if (encrypt && value != null && value.length() > 0) {
-            String encryptValue = se.encrypt(value);
+            String encryptValue = StudioEncryption.getStudioEncryption(StudioEncryption.EncryptionKeyName.SYSTEM).encrypt(value);
             if (encryptValue != null) {
                 setValue(encryptValue);
                 return;
