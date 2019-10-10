@@ -684,16 +684,15 @@ public class NodeUtil {
             }
             List<? extends IConnection> listInConns = node.getIncomingConnections();
             if (listInConns != null && listInConns.size() > 0) {
-                String retResult = getPrivateConnClassName(listInConns.get(0));
-                if (retResult == null) {
-                    return conn.getName();
-                } else {
-                    return retResult;
+                for (IConnection connection : listInConns) {
+                    if (EConnectionCategory.MAIN == connection.getLineStyle().getCategory()) {
+                        String retResult = getPrivateConnClassName(connection);
+                        return retResult != null ? retResult : conn.getName();
+                    }
                 }
             }
         }
         return null;
-
     }
 
     /**
