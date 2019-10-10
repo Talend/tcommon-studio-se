@@ -98,7 +98,7 @@ public class ModuleNeededTest {
                 .toURI();
         ModuleNeeded module1 = new ModuleNeeded("tMysqlInput", "tRowGenerator.xml", "description", false, null, null,
                 "mvn:org.talend.libraries/tRowGenerator/6.0.0");
-        ILibraryManagerService libService = (ILibraryManagerService) GlobalServiceRegister.getDefault().getService(
+        ILibraryManagerService libService = GlobalServiceRegister.getDefault().getService(
                 ILibraryManagerService.class);
         libService.deploy(testFileToDeploy, module1.getMavenUri());
         Assert.assertEquals(module1.getStatus(), ELibraryInstallStatus.INSTALLED);
@@ -122,12 +122,12 @@ public class ModuleNeededTest {
     @Test
     public void testGetStatus1() throws URISyntaxException, IOException {
         // test jar installed in platform
-        String mavenURI = "mvn:org.talend.libraries/commons-logging-1.1.1-emr-2.4.0/6.0.0/jar";
-        String customURI = "mvn:org.talend.libraries/commons-logging-emr/6.0.0/jar";
-        String platformURL = "platform:/plugin/org.talend.libraries.hadoop/lib/commons-logging-1.1.1-emr-2.4.0.jar";
-        ILibraryManagerService libService = (ILibraryManagerService) GlobalServiceRegister.getDefault().getService(
+        String mavenURI = "mvn:org.talend.libraries/hadoop-core-1.0.0/6.0.0/jar";
+        String customURI = "mvn:org.talend.libraries/hadoop-core/6.0.0/jar";
+        String platformURL = "platform:/plugin/org.talend.libraries.hadoop/lib/hadoop-core-1.0.0.jar";
+        ILibraryManagerService libService = GlobalServiceRegister.getDefault().getService(
                 ILibraryManagerService.class);
-        ModuleNeeded module1 = new ModuleNeeded("", "commons-logging-1.1.1-emr-2.4.0.jar", "description", false, null, null,
+        ModuleNeeded module1 = new ModuleNeeded("", "hadoop-core-1.0.0.jar", "description", false, null, null,
                 mavenURI);
         module1.setModuleLocaion(platformURL);
         if (ELibraryInstallStatus.NOT_INSTALLED == module1.getStatus() || !libService.checkJarInstalledFromPlatform(platformURL)) {
