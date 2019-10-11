@@ -183,8 +183,17 @@ public interface INode extends IElement {
 
     public List<? extends IConnection> getOutgoingConnections(String connectorName);
     
+    /**
+     * Used to get the previous component from a node if it has only one incoming connection
+     * @return
+     */
     public IComponent getPreviousComponent();
     
+    /**
+     * Used to get the previous component at the index from the list of incoming connections
+     * @param index : the index of the previous component in the list of connection
+     * @return
+     */
     public IComponent getPreviousComponent(int index);
 
     /**
