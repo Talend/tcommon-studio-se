@@ -93,7 +93,7 @@ public class SwitchContextGroupNameImpl implements ISwitchContext {
             // TDQ-4559~
             String oldContextName = originalContext == null ? con.getContextName() : originalContext;
 
-            if (!isContextIsValid(selectedContext, con)) {
+            if (!isContextIsValid(selectedContext, oldContextName, con)) {
                 return false;
             }
             con.setContextName(selectedContext);
@@ -122,8 +122,7 @@ public class SwitchContextGroupNameImpl implements ISwitchContext {
      * @param selectedContext
      * @paramconn
      */
-    private boolean isContextIsValid(String selectedContext, Connection conn) {
-        String oldContextName = conn.getContextName();
+    private boolean isContextIsValid(String selectedContext, String oldContextName, Connection conn) {
         boolean retCode = false;
         if (conn instanceof DatabaseConnection) {
             EDatabaseTypeName dbType = EDatabaseTypeName.getTypeFromDbType(((DatabaseConnection) conn).getDatabaseType());
