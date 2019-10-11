@@ -13,9 +13,13 @@
 package org.talend.librariesmanager.nexus;
 
 import java.io.File;
+import java.io.UnsupportedEncodingException;
+import java.net.URLEncoder;
+import java.nio.charset.StandardCharsets;
 import java.util.Dictionary;
 import java.util.Hashtable;
 
+import org.apache.commons.lang.StringUtils;
 import org.talend.core.nexus.ArtifactRepositoryBean;
 import org.talend.core.nexus.IRepositoryArtifactHandler;
 import org.talend.core.nexus.NexusConstants;
@@ -62,10 +66,20 @@ public abstract class AbstractArtifactRepositoryHandler implements IRepositoryAr
         if (props == null) {
             props = new Hashtable<String, String>();
         }
+
+        String customUserName;
+        String customPassword;
+        try {
+            customUserName = URLEncoder.encode(serverBean.getUserName(), StandardCharsets.UTF_8.toString());
+            customPassword = URLEncoder.encode(serverBean.getPassword(), StandardCharsets.UTF_8.toString());
+        } catch (UnsupportedEncodingException e1) {
+            throw new RuntimeException(e1);
+        }
+
         String repositories = null;
         String custom_server = serverBean.getServer();
-        String custom_user = serverBean.getUserName();
-        String custom_pass = serverBean.getPassword();
+        String custom_user = StringUtils.isNotBlank(customUserName) ? customUserName : serverBean.getUserName();
+        String custom_pass = StringUtils.isNotBlank(customPassword) ? customPassword : serverBean.getPassword();
         String release_rep = serverBean.getRepositoryId();
         String snapshot_rep = serverBean.getSnapshotRepId();
         if (custom_server.endsWith(NexusConstants.SLASH)) {
