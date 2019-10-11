@@ -191,7 +191,7 @@ public interface INode extends IElement {
     
     /**
      * Get previous component by incoming connection index
-     * @param index : the index of the previous component in the list of connection
+     * @param index : the index of the previous component in the list of connections
      * @return
      */
     public IComponent getPreviousComponent(int index);
