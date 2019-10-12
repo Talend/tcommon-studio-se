@@ -756,7 +756,7 @@ public class ProcessorUtilities {
 
     public static boolean hasMetadataDynamic(IProcess currentProcess, JobInfo jobInfo) {
         boolean hasDynamicMetadata = false;
-        if (GlobalServiceRegister.getDefault().isServiceRegistered(IDesignerCoreService.class)) {
+        if (GlobalServiceRegister.getDefault().isServiceRegistered(IDesignerCoreService.class) && !isExportConfig()) {
             IDesignerCoreService designerCoreService =
                     (IDesignerCoreService) GlobalServiceRegister.getDefault().getService(IDesignerCoreService.class);
             for (INode node : currentProcess.getGraphicalNodes()) {

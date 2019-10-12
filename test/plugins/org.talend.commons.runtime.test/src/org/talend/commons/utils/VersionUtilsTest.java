@@ -118,6 +118,27 @@ public class VersionUtilsTest {
         }
     }
 
+    @Test
+    public void testGetTalendPureVersion() {
+        String expect = "7.2.1";
+        String test = "Talend Cloud Big Data-7.2.1.20190620_1446";
+        String result = VersionUtils.getTalendPureVersion(test);
+        assertEquals(expect,result);
+        
+        test = "Talend Cloud Real-Time Big Data Platform-7.2.1.20190620_1446";
+        result = VersionUtils.getTalendPureVersion(test);
+        assertEquals(expect, result);
+
+        expect = "7.3.1";
+        test = "Talend Cloud Big Data-7.3.1.20190917_1941-SNAPSHOT";
+        result = VersionUtils.getTalendPureVersion(test);
+        assertEquals(expect, result);
+
+        test = "Talend Cloud Real-Time Big Data Platform-7.3.1.20190917_1941-SNAPSHOT";
+        result = VersionUtils.getTalendPureVersion(test);
+        assertEquals(expect,result);
+    }
+
     @After
     public void tearDown() throws Exception {
         if (mojo_properties != null && mojo_properties.exists()) {
