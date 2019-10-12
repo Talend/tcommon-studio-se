@@ -17,14 +17,20 @@ import java.net.Proxy;
 import java.net.ProxySelector;
 import java.net.SocketAddress;
 import java.net.URI;
+import java.net.URISyntaxException;
 import java.security.AccessController;
 import java.security.PrivilegedAction;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 
+import org.apache.commons.lang.StringUtils;
+import org.talend.commons.CommonsPlugin;
 import org.talend.commons.exception.ExceptionHandler;
+import org.talend.commons.i18n.internal.Messages;
 
 /**
  * DOC cmeng  class global comment. Detailled comment
@@ -44,6 +50,7 @@ public class TalendProxySelector extends ProxySelector {
     private TalendProxySelector(final ProxySelector defaultSelector) {
         this.defaultSelector = defaultSelector;
         selectorProviders = new ArrayList<>();
+        selectorProviders.add(createDefaultProxySelectorProvider());
     }
 
     public static TalendProxySelector getInstance() {
@@ -159,9 +166,13 @@ public class TalendProxySelector extends ProxySelector {
 
     public static abstract class AbstractProxySelectorProvider implements IProxySelectorProvider {
 
+        private boolean isDebugMode = CommonsPlugin.isDebugMode();
+
         @Override
         public void connectFailed(final URI uri, final SocketAddress sa, final IOException ioe) {
-            // nothing to do
+            if (isDebugMode) {
+                ExceptionHandler.process(ioe);
+            }
         }
 
     }
@@ -174,6 +185,75 @@ public class TalendProxySelector extends ProxySelector {
 
         void connectFailed(final URI uri, final SocketAddress sa, final IOException ioe);
 
+    }
+
+    private IProxySelectorProvider createDefaultProxySelectorProvider() {
+        IProxySelectorProvider proxySelectorProvider = new TalendProxySelector.AbstractProxySelectorProvider() {
+
+            private static final String PROP_PROXY_MAP = "talend.studio.proxy.protocol.map";
+
+            private static final String PROP_PROXY_MAP_DEFAULT = "socket:https,";
+
+            private Map<String, String> protocolMap;
+
+            {
+
+                try {
+                    protocolMap = new HashMap<>();
+                    String property = System.getProperty(PROP_PROXY_MAP, PROP_PROXY_MAP_DEFAULT);
+                    String[] splits = property.split(",");
+                    for (String split : splits) {
+                        String[] entry = split.split(":");
+                        if (entry.length != 2) {
+                            ExceptionHandler.process(
+                                    new Exception(Messages.getString("TalendProxySelector.exception.badProtocolMap", split)));
+                            continue;
+                        }
+                        protocolMap.put(entry[0], entry[1]);
+                    }
+                } catch (Exception e) {
+                    ExceptionHandler.process(e);
+                }
+
+            }
+
+            @Override
+            public List<Proxy> select(URI uri) {
+                // return Collections.EMPTY_LIST;
+
+                List<Proxy> newProxys = new ArrayList<>();
+                if (uri == null) {
+                    return newProxys;
+                }
+
+                String schema = uri.getScheme();
+                if (schema != null) {
+                    String lowercasedProtocol = schema.toLowerCase();
+                    String preferedProtocol = protocolMap.get(lowercasedProtocol);
+                    if (StringUtils.isNotBlank(preferedProtocol)) {
+                        try {
+                            URI newUri = new URI(preferedProtocol, uri.getUserInfo(), uri.getHost(), uri.getPort(), uri.getPath(),
+                                    uri.getQuery(), uri.getFragment());
+                            List<Proxy> proxys = getDefaultProxySelector().select(newUri);
+                            if (proxys != null && !proxys.isEmpty()) {
+                                newProxys.addAll(proxys);
+                            }
+                        } catch (URISyntaxException e) {
+                            ExceptionHandler.process(e);
+                        }
+                    }
+                }
+                return newProxys;
+
+            }
+
+            @Override
+            public boolean canHandle(URI uri) {
+                return true;
+            }
+
+        };
+        return proxySelectorProvider;
     }
 
 }
