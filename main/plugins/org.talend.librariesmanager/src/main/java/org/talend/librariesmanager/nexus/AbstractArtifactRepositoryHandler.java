@@ -19,6 +19,7 @@ import java.nio.charset.StandardCharsets;
 import java.util.Dictionary;
 import java.util.Hashtable;
 
+import org.apache.commons.lang.StringUtils;
 import org.talend.core.nexus.ArtifactRepositoryBean;
 import org.talend.core.nexus.IRepositoryArtifactHandler;
 import org.talend.core.nexus.NexusConstants;
@@ -69,8 +70,12 @@ public abstract class AbstractArtifactRepositoryHandler implements IRepositoryAr
         String custom_user = serverBean.getUserName();
         String custom_pass = serverBean.getPassword();
         try {
-            custom_user = URLEncoder.encode(serverBean.getUserName(), StandardCharsets.UTF_8.toString());
-            custom_pass = URLEncoder.encode(serverBean.getPassword(), StandardCharsets.UTF_8.toString());
+            if (StringUtils.isNotBlank(custom_user)) {
+                custom_user = URLEncoder.encode(custom_user, StandardCharsets.UTF_8.toString());
+            }
+            if (StringUtils.isNotBlank(custom_pass)) {
+                custom_pass = URLEncoder.encode(custom_pass, StandardCharsets.UTF_8.toString());
+            }
         } catch (UnsupportedEncodingException e1) {
             throw new RuntimeException(e1);
         }
