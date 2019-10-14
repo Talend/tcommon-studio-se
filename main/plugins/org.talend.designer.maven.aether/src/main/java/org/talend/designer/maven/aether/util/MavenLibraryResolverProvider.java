@@ -97,23 +97,25 @@ public class MavenLibraryResolverProvider {
 
     }
 
-    public ArtifactResult resolveArtifact(MavenArtifact aritfact) throws Exception {
-        // RemoteRepository remoteRepo = getRemoteRepositroy(aritfact);
+    public ArtifactResult resolveArtifact(MavenArtifact aritfact, boolean is4Parent) throws Exception {
+        ArtifactRequest artifactRequest = new ArtifactRequest();
+        RemoteRepository remoteRepo = getRemoteRepositroy(aritfact);
+        artifactRequest.addRepository(remoteRepo);
+        if (is4Parent) {
+            artifactRequest.addRepository(dynamicRemoteRepository);
+        }
         Artifact artifact = new DefaultArtifact(aritfact.getGroupId(), aritfact.getArtifactId(), aritfact.getClassifier(),
                 aritfact.getType(), aritfact.getVersion());
-        ArtifactRequest artifactRequest = new ArtifactRequest();
-        artifactRequest.addRepository(defaultRemoteRepository);
-        artifactRequest.addRepository(dynamicRemoteRepository);
         artifactRequest.setArtifact(artifact);
         ArtifactResult result = defaultRepoSystem.resolveArtifact(defaultRepoSystemSession, artifactRequest);
         return result;
     }
 
-    public Map<String, Object> resolveDescProperties(MavenArtifact aritfact) throws Exception {
+    public Map<String, Object> resolveDescProperties(MavenArtifact aritfact, boolean is4Parent) throws Exception {
         Map<String, Object> properties = null;
         MavenArtifact clonedArtifact = aritfact.clone();
         clonedArtifact.setType("pom"); //$NON-NLS-1$
-        ArtifactResult result = resolveArtifact(clonedArtifact);
+        ArtifactResult result = resolveArtifact(clonedArtifact, is4Parent);
         if (result != null && result.isResolved()) {
             properties = new HashMap<String, Object>();
             MavenXpp3Reader reader = new MavenXpp3Reader();

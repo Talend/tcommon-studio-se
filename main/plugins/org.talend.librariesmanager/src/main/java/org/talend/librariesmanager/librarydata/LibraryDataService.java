@@ -161,7 +161,7 @@ public class LibraryDataService {
                     if (repeated > 0) {
                         Thread.sleep(1000); // To avoid server connection pool shut down
                     }
-                    Map<String, Object> properties = resolveDescProperties(artifact);
+                    Map<String, Object> properties = resolveDescProperties(artifact, false);
                     if (properties != null && properties.size() > 0) {
                         parseDescriptorResult(libraryObj, properties, false);
                         if (libraryObj.getLicenses().size() == 0) {
@@ -169,6 +169,9 @@ public class LibraryDataService {
                             libraryObj.getLicenses().add(unknownLicense);
                         }
                         libraryObj.setPomMissing(false);
+                        if (null == properties.get("type") || "".equals((String) properties.get("type"))) {
+                            libraryObj.setType(MavenConstants.PACKAGING_POM);
+                        }
                     }
                     isRetry = false;
                 } catch (Exception ex) {
@@ -185,7 +188,7 @@ public class LibraryDataService {
             if (buildLibraryJarFile) {
                 boolean jarMissing = false;
                 try {
-                    MavenLibraryResolverProvider.getInstance().resolveArtifact(artifact);
+                    MavenLibraryResolverProvider.getInstance().resolveArtifact(artifact, false);
                 } catch (Exception ex) {
                     jarMissing = true;
                 } finally {
@@ -212,14 +215,15 @@ public class LibraryDataService {
         dataProvider.saveLicenseData(mvnToLibraryMap);
     }
 
-    private Map<String, Object> resolveDescProperties(MavenArtifact artifact) throws Exception {
-        Map<String, Object> properties = MavenLibraryResolverProvider.getInstance().resolveDescProperties(artifact);
+    private Map<String, Object> resolveDescProperties(MavenArtifact artifact, boolean is4Parent) throws Exception {
+        Map<String, Object> properties = MavenLibraryResolverProvider.getInstance().resolveDescProperties(artifact, is4Parent);
         return properties;
     }
 
     public void fillLibraryDataByRemote(String mvnUrl, MavenArtifact artifact) {
         Library libraryObj = resolve(mvnUrl);
         fillLibraryData(libraryObj, artifact);
+        mvnToLibraryMap.put(getShortMvnUrl(mvnUrl), libraryObj);
     }
 
     public boolean fillLibraryDataUseCache(String mvnUrl, MavenArtifact artifact) {
@@ -299,7 +303,7 @@ public class LibraryDataService {
         parent.setVersion(parentVersion);
         parent.setClassifier(libraryObj.getClassifier());
         parent.setType(libraryObj.getType());
-        Map<String, Object> properties = resolveDescProperties(parent);
+        Map<String, Object> properties = resolveDescProperties(parent, true);
         parseDescriptorResult(libraryObj, properties, true);
     }
 
@@ -343,7 +347,7 @@ public class LibraryDataService {
                 artifact.setLicense(licenseName);
                 artifact.setLicenseUrl(bestLicense.getUrl());
             }
-
+            artifact.setType(object.getType());
             // URL
             if (StringUtils.isEmpty(artifact.getUrl()) && StringUtils.isNotEmpty(object.getUrl())) {
                 artifact.setUrl(object.getUrl());
