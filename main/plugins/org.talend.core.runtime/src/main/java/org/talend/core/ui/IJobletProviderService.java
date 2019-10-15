@@ -99,6 +99,8 @@ public interface IJobletProviderService extends IService {
     public IEditorPart openJobletItem(JobletProcessItem item);
 
     public boolean isJobletItem(Item item);
+    
+    public boolean isJobletProcess(IProcess process);
 
     public Action getMoveToJobletAction(IWorkbenchPart part, INode jobletNode, Map<INode, IConnection> nodeMap);
 

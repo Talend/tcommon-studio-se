@@ -8706,4 +8706,6 @@ public class DatabaseForm extends AbstractForm {
     private void adjustScrolledComHeight() {
         scrolledComposite.setMinSize(newParent.computeSize(SWT.DEFAULT, SWT.DEFAULT));
     }
+
+
 }

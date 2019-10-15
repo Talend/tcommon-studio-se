@@ -39,7 +39,7 @@ public abstract class AbstractNode implements INode {
 
     private ComponentProperties componentProperties;
 
-    List<? extends IElementParameter> elementParameters;
+    List<? extends IElementParameter> elementParameters = new ArrayList<IElementParameter>();
 
     private List<? extends IConnection> outgoingConnections = new ArrayList<IConnection>();
 
