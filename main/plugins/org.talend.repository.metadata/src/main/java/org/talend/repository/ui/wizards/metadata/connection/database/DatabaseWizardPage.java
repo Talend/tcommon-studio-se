@@ -136,7 +136,7 @@ public class DatabaseWizardPage extends WizardPage {
     private void createDynamicForm(){
         IGenericDBService dbService = null;
         if (GlobalServiceRegister.getDefault().isServiceRegistered(IGenericDBService.class)) {
-            dbService = (IGenericDBService) GlobalServiceRegister.getDefault().getService(
+            dbService = GlobalServiceRegister.getDefault().getService(
                     IGenericDBService.class);
         }
         if(dbService == null){
@@ -219,7 +219,7 @@ public class DatabaseWizardPage extends WizardPage {
         List<ERepositoryObjectType> extraTypes = new ArrayList<ERepositoryObjectType>();
         IGenericDBService dbService = null;
         if (GlobalServiceRegister.getDefault().isServiceRegistered(IGenericDBService.class)) {
-            dbService = (IGenericDBService) GlobalServiceRegister.getDefault().getService(
+            dbService = GlobalServiceRegister.getDefault().getService(
                     IGenericDBService.class);
         }
         if(dbService != null){
@@ -236,7 +236,7 @@ public class DatabaseWizardPage extends WizardPage {
     public boolean isGenericConn(ConnectionItem connItem){
         IGenericWizardService dbService = null;
         if (GlobalServiceRegister.getDefault().isServiceRegistered(IGenericWizardService.class)) {
-            dbService = (IGenericWizardService) GlobalServiceRegister.getDefault().getService(
+            dbService = GlobalServiceRegister.getDefault().getService(
                     IGenericWizardService.class);
         }
         if(dbService != null){
@@ -251,7 +251,7 @@ public class DatabaseWizardPage extends WizardPage {
         }
         IGenericDBService dbService = null;
         if (GlobalServiceRegister.getDefault().isServiceRegistered(IGenericDBService.class)) {
-            dbService = (IGenericDBService) GlobalServiceRegister.getDefault().getService(
+            dbService = GlobalServiceRegister.getDefault().getService(
                     IGenericDBService.class);
         }
         if(dbService != null){
@@ -329,11 +329,12 @@ public class DatabaseWizardPage extends WizardPage {
         return null;
     }
 
+
     public Form getForm(){
         if(dynamicForm != null){
             IGenericDBService dbService = null;
             if (GlobalServiceRegister.getDefault().isServiceRegistered(IGenericDBService.class)) {
-                dbService = (IGenericDBService) GlobalServiceRegister.getDefault().getService(
+                dbService = GlobalServiceRegister.getDefault().getService(
                         IGenericDBService.class);
             }
             if(dbService != null){

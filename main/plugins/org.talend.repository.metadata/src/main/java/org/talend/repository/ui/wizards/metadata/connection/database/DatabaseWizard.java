@@ -53,6 +53,7 @@ import org.talend.core.database.conn.version.EDatabaseVersion4Drivers;
 import org.talend.core.hadoop.IHadoopClusterService;
 import org.talend.core.hadoop.IHadoopDistributionService;
 import org.talend.core.hadoop.repository.HadoopRepositoryUtil;
+import org.talend.core.model.context.ContextUtils;
 import org.talend.core.model.metadata.IMetadataConnection;
 import org.talend.core.model.metadata.IMetadataTable;
 import org.talend.core.model.metadata.builder.ConvertionHelper;
@@ -66,6 +67,7 @@ import org.talend.core.model.metadata.builder.database.PluginConstant;
 import org.talend.core.model.metadata.builder.database.dburl.SupportDBUrlType;
 import org.talend.core.model.metadata.connection.hive.HiveModeInfo;
 import org.talend.core.model.properties.ConnectionItem;
+import org.talend.core.model.properties.ContextItem;
 import org.talend.core.model.properties.PropertiesFactory;
 import org.talend.core.model.properties.Property;
 import org.talend.core.model.relationship.RelationshipItemBuilder;
@@ -82,10 +84,12 @@ import org.talend.core.runtime.services.IGenericDBService;
 import org.talend.cwm.helper.ConnectionHelper;
 import org.talend.cwm.helper.SwitchHelpers;
 import org.talend.designer.core.IDesignerCoreService;
+import org.talend.designer.core.model.utils.emf.talendfile.ContextType;
 import org.talend.metadata.managment.connection.manager.HiveConnectionManager;
 import org.talend.metadata.managment.model.MetadataFillFactory;
 import org.talend.metadata.managment.ui.utils.ConnectionContextHelper;
 import org.talend.metadata.managment.ui.utils.DBConnectionContextUtils;
+import org.talend.metadata.managment.ui.utils.SwitchContextGroupNameImpl;
 import org.talend.metadata.managment.ui.wizard.CheckLastVersionRepositoryWizard;
 import org.talend.metadata.managment.ui.wizard.PropertiesWizardPage;
 import org.talend.metadata.managment.ui.wizard.metadata.connection.Step0WizardPage;
@@ -148,6 +152,8 @@ public class DatabaseWizard extends CheckLastVersionRepositoryWizard implements 
     private String propertyId;
 
     private ConnectionItem originalConnectionItem;
+
+    private ContextType originalSelectedContextType;
 
     /**
      * Constructor for DatabaseWizard. Analyse Iselection to extract DatabaseConnection and the pathToSave. Start the
@@ -229,8 +235,13 @@ public class DatabaseWizard extends CheckLastVersionRepositoryWizard implements 
         connection.setId(propertyId);
 
         // initialize the context mode
-        ConnectionContextHelper.checkContextMode(connectionItem);
+        ContextItem checkContextMode = ConnectionContextHelper.checkContextMode(connectionItem);
         this.originalConnectionItem = connectionItem;
+        if (checkContextMode != null) {
+            ContextItem contextItem = ContextUtils.getContextItemById2(connectionItem.getConnection().getContextId());
+            originalSelectedContextType = ContextUtils
+                    .getContextTypeByName(contextItem, connectionItem.getConnection().getContextName(), false);
+        }
     }
 
     /**
@@ -307,8 +318,13 @@ public class DatabaseWizard extends CheckLastVersionRepositoryWizard implements 
         connection.setId(propertyId);
 
         // initialize the context mode
-        ConnectionContextHelper.checkContextMode(connectionItem);
+        ContextItem checkContextMode = ConnectionContextHelper.checkContextMode(connectionItem);
         this.originalConnectionItem = connectionItem;
+        if (checkContextMode != null) {
+            ContextItem contextItem = ContextUtils.getContextItemById2(connectionItem.getConnection().getContextId());
+            originalSelectedContextType = ContextUtils
+                    .getContextTypeByName(contextItem, connectionItem.getConnection().getContextName(), false);
+        }
     }
 
     /**
@@ -410,7 +426,7 @@ public class DatabaseWizard extends CheckLastVersionRepositoryWizard implements 
 
     private IHadoopDistributionService getHadoopDistributionService() {
         if (GlobalServiceRegister.getDefault().isServiceRegistered(IHadoopDistributionService.class)) {
-            return (IHadoopDistributionService) GlobalServiceRegister.getDefault().getService(IHadoopDistributionService.class);
+            return GlobalServiceRegister.getDefault().getService(IHadoopDistributionService.class);
         }
         return null;
     }
@@ -436,7 +452,7 @@ public class DatabaseWizard extends CheckLastVersionRepositoryWizard implements 
             if(isTCOMType(getDBType(connectionItem))){
                 IGenericDBService dbService = null;
                 if (GlobalServiceRegister.getDefault().isServiceRegistered(IGenericDBService.class)) {
-                    dbService = (IGenericDBService) GlobalServiceRegister.getDefault().getService(
+                    dbService = GlobalServiceRegister.getDefault().getService(
                             IGenericDBService.class);
                 }
                 if(dbService == null){
@@ -447,7 +463,7 @@ public class DatabaseWizard extends CheckLastVersionRepositoryWizard implements 
                     boolean isNameModified = propertiesWizardPage.isNameModifiedByUser();
                     if (isNameModified) {
                         if (GlobalServiceRegister.getDefault().isServiceRegistered(IDesignerCoreService.class)) {
-                            IDesignerCoreService service = (IDesignerCoreService) GlobalServiceRegister.getDefault()
+                            IDesignerCoreService service = GlobalServiceRegister.getDefault()
                                     .getService(IDesignerCoreService.class);
                             if (service != null) {
                                 service.refreshComponentView(connectionItem);
@@ -524,35 +540,50 @@ public class DatabaseWizard extends CheckLastVersionRepositoryWizard implements 
             ITDQRepositoryService tdqRepService = null;
 
             if (GlobalServiceRegister.getDefault().isServiceRegistered(ITDQRepositoryService.class)) {
-                tdqRepService = (ITDQRepositoryService) GlobalServiceRegister.getDefault()
+                tdqRepService = GlobalServiceRegister.getDefault()
                         .getService(ITDQRepositoryService.class);
             }
 
             if (getDatabaseConnection() !=null && !connection.isContextMode()) {
                 handleUppercase(getDatabaseConnection(), metadataConnection);
             }
-            try {
-                // TODO use seperate subclass to handle the create and update logic , using a varable "creation" is not
-                // a good practice.
-                if (creation && getDatabaseConnection() != null) {
-                    handleCreation(getDatabaseConnection(), metadataConnection, tdqRepService);
-                } else {
-                    Boolean isSuccess = handleUpdate(metadataConnection, tdqRepService);
+            if (tdqRepService != null) {
+                try {
+                    // TODO use seperate subclass to handle the create and update logic , using a varable "creation" is
+                    // not
+                    // a good practice.
+                    Boolean isSuccess = true;
+                    if (getDatabaseConnection() != null) {
+                        if (creation) {
+                            handleCreation(getDatabaseConnection(), metadataConnection, tdqRepService);
+                        } else if (connection.isContextMode() && originalSelectedContextType != null) {
+                            isSuccess = SwitchContextGroupNameImpl
+                                    .getInstance()
+                                    .updateContextGroup(connectionItem, contextName,
+                                            originalSelectedContextType.getName());
+                            if (!isSuccess) {
+                                tdqRepService.popupSwitchContextFailedMessage(contextName);
+                            }
+                        } else {
+                            isSuccess = handleUpdate(metadataConnection, tdqRepService);
+                        }
+                    }
                     if (!isSuccess) {
                         return false;
                     }
+                } catch (Exception e) {
+                    String detailError = e.toString();
+                    new ErrorDialogWidthDetailArea(getShell(), PID,
+                            Messages.getString("CommonWizard.persistenceException"), //$NON-NLS-1$
+                            detailError);
+                    log.error(Messages.getString("CommonWizard.persistenceException") + "\n" + detailError); //$NON-NLS-1$ //$NON-NLS-2$
+                    return false;
                 }
-            } catch (Exception e) {
-                String detailError = e.toString();
-                new ErrorDialogWidthDetailArea(getShell(), PID, Messages.getString("CommonWizard.persistenceException"), //$NON-NLS-1$
-                        detailError);
-                log.error(Messages.getString("CommonWizard.persistenceException") + "\n" + detailError); //$NON-NLS-1$ //$NON-NLS-2$
-                return false;
             }
             List<IRepositoryViewObject> list = new ArrayList<IRepositoryViewObject>();
             list.add(repositoryObject);
             if (GlobalServiceRegister.getDefault().isServiceRegistered(IRepositoryService.class)) {
-                IRepositoryService service = (IRepositoryService) GlobalServiceRegister.getDefault().getService(
+                IRepositoryService service = GlobalServiceRegister.getDefault().getService(
                         IRepositoryService.class);
                 service.notifySQLBuilder(list);
             }
@@ -602,7 +633,7 @@ public class DatabaseWizard extends CheckLastVersionRepositoryWizard implements 
         List<ERepositoryObjectType> extraTypes = new ArrayList<ERepositoryObjectType>();
         IGenericDBService dbService = null;
         if (GlobalServiceRegister.getDefault().isServiceRegistered(IGenericDBService.class)) {
-            dbService = (IGenericDBService) GlobalServiceRegister.getDefault().getService(
+            dbService = GlobalServiceRegister.getDefault().getService(
                     IGenericDBService.class);
         }
         if(dbService != null){
@@ -662,7 +693,7 @@ public class DatabaseWizard extends CheckLastVersionRepositoryWizard implements 
             ITDQCompareService tdqCompareService = null;
 
             if (GlobalServiceRegister.getDefault().isServiceRegistered(ITDQCompareService.class)) {
-                tdqCompareService = (ITDQCompareService) GlobalServiceRegister.getDefault().getService(ITDQCompareService.class);
+                tdqCompareService = GlobalServiceRegister.getDefault().getService(ITDQCompareService.class);
             }
             if (tdqCompareService != null && ConnectionHelper.isUrlChanged(conn)
                     && MetadataConnectionUtils.isTDQSupportDBTemplate(conn)) {
@@ -716,7 +747,7 @@ public class DatabaseWizard extends CheckLastVersionRepositoryWizard implements 
 
         if (isNameModified) {
             if (GlobalServiceRegister.getDefault().isServiceRegistered(IDesignerCoreService.class)) {
-                IDesignerCoreService service = (IDesignerCoreService) GlobalServiceRegister.getDefault().getService(
+                IDesignerCoreService service = GlobalServiceRegister.getDefault().getService(
                         IDesignerCoreService.class);
                 if (service != null) {
                     service.refreshComponentView(connectionItem);
