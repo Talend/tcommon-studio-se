@@ -685,7 +685,7 @@ public class NodeUtil {
             List<? extends IConnection> listInConns = node.getIncomingConnections();
             if (listInConns != null && listInConns.size() > 0) {
                 for (IConnection connection : listInConns) {
-                    if (EConnectionCategory.MAIN == connection.getLineStyle().getCategory()) {
+                    if (EConnectionType.FLOW_REF != connection.getLineStyle()) {
                         String retResult = getPrivateConnClassName(connection);
                         return retResult != null ? retResult : conn.getName();
                     }
