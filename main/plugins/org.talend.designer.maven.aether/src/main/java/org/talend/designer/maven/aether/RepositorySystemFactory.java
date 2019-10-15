@@ -17,6 +17,12 @@ import java.util.HashMap;
 import java.util.Map;
 
 import org.apache.maven.repository.internal.MavenRepositorySystemUtils;
+import org.apache.maven.wagon.Wagon;
+import org.apache.maven.wagon.providers.file.FileWagon;
+import org.apache.maven.wagon.providers.http.HttpWagon;
+import org.codehaus.plexus.DefaultPlexusContainer;
+import org.codehaus.plexus.PlexusContainer;
+import org.codehaus.plexus.PlexusContainerException;
 import org.eclipse.aether.DefaultRepositorySystemSession;
 import org.eclipse.aether.RepositorySystem;
 import org.eclipse.aether.artifact.Artifact;
@@ -24,6 +30,8 @@ import org.eclipse.aether.artifact.DefaultArtifact;
 import org.eclipse.aether.connector.basic.BasicRepositoryConnectorFactory;
 import org.eclipse.aether.deployment.DeployRequest;
 import org.eclipse.aether.impl.DefaultServiceLocator;
+import org.eclipse.aether.internal.transport.wagon.PlexusWagonConfigurator;
+import org.eclipse.aether.internal.transport.wagon.PlexusWagonProvider;
 import org.eclipse.aether.repository.Authentication;
 import org.eclipse.aether.repository.LocalRepository;
 import org.eclipse.aether.repository.RemoteRepository;
@@ -31,6 +39,7 @@ import org.eclipse.aether.spi.connector.RepositoryConnectorFactory;
 import org.eclipse.aether.spi.connector.transport.TransporterFactory;
 import org.eclipse.aether.transport.file.FileTransporterFactory;
 import org.eclipse.aether.transport.http.HttpTransporterFactory;
+import org.eclipse.aether.transport.wagon.WagonTransporterFactory;
 import org.eclipse.aether.util.artifact.SubArtifact;
 import org.eclipse.aether.util.listener.ChainedRepositoryListener;
 import org.eclipse.aether.util.listener.ChainedTransferListener;
@@ -44,13 +53,20 @@ public class RepositorySystemFactory {
 
     private static Map<LocalRepository, DefaultRepositorySystemSession> sessions = new HashMap<LocalRepository, DefaultRepositorySystemSession>();
 
-    private static RepositorySystem system;
-
-    private static RepositorySystem newRepositorySystem() {
+    private static RepositorySystem newRepositorySystem() throws PlexusContainerException {
         DefaultServiceLocator locator = MavenRepositorySystemUtils.newServiceLocator();
         locator.addService(RepositoryConnectorFactory.class, BasicRepositoryConnectorFactory.class);
-        locator.addService(TransporterFactory.class, FileTransporterFactory.class);
-        locator.addService(TransporterFactory.class, HttpTransporterFactory.class);
+        // TUP-24695 change to wagon transporters
+        locator.addService(TransporterFactory.class, WagonTransporterFactory.class);
+
+        PlexusContainer pc = new DefaultPlexusContainer();
+
+        pc.addComponent(new HttpWagon(), Wagon.class, "http");
+        pc.addComponent(new FileWagon(), Wagon.class, "file");
+
+        WagonTransporterFactory tf = (WagonTransporterFactory) locator.getService(TransporterFactory.class);
+        tf.setWagonConfigurator(new PlexusWagonConfigurator(pc));
+        tf.setWagonProvider(new PlexusWagonProvider(pc));
 
         locator.setErrorHandler(new DefaultServiceLocator.ErrorHandler() {
 
@@ -63,13 +79,15 @@ public class RepositorySystemFactory {
         return locator.getService(RepositorySystem.class);
     }
 
-    private static DefaultRepositorySystemSession newRepositorySystemSession(String localRepositoryPath) {
+    private static DefaultRepositorySystemSession newRepositorySystemSession(String localRepositoryPath)
+            throws PlexusContainerException {
         LocalRepository localRepo = new LocalRepository(localRepositoryPath);
         DefaultRepositorySystemSession repositorySystemSession = sessions.get(localRepo);
         if (repositorySystemSession == null) {
             repositorySystemSession = MavenRepositorySystemUtils.newSession();
             repositorySystemSession
-                    .setLocalRepositoryManager(system.newLocalRepositoryManager(repositorySystemSession, localRepo));
+                    .setLocalRepositoryManager(
+                            newRepositorySystem().newLocalRepositoryManager(repositorySystemSession, localRepo));
             repositorySystemSession.setTransferListener(new ChainedTransferListener());
             repositorySystemSession.setRepositoryListener(new ChainedRepositoryListener());
         }
@@ -81,9 +99,7 @@ public class RepositorySystemFactory {
             String userName, String password, String groupId, String artifactId, String classifier, String extension,
             String version) throws Exception {
         DefaultRepositorySystemSession session = null;
-        if (system == null) {
-            system = newRepositorySystem();
-        }
+        RepositorySystem system = newRepositorySystem();
         session = newRepositorySystemSession(localRepository);
 
         DeployRequest deployRequest = new DeployRequest();
