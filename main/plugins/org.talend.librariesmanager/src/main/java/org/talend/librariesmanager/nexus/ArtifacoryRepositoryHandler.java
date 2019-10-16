@@ -33,6 +33,7 @@ import org.talend.core.nexus.NexusConstants;
 import org.talend.core.runtime.maven.MavenArtifact;
 import org.talend.core.runtime.maven.MavenUrlHelper;
 import org.talend.designer.maven.aether.RepositorySystemFactory;
+import org.talend.utils.thread.TimeoutManager;
 
 import net.sf.json.JSONArray;
 import net.sf.json.JSONObject;
@@ -86,6 +87,14 @@ public class ArtifacoryRepositoryHandler extends AbstractArtifactRepositoryHandl
         HttpGet get = new HttpGet(repositoryUrl);
         get.addHeader(authority);
         DefaultHttpClient httpclient = new DefaultHttpClient();
+        if(TimeoutManager.getSocketTimeout() != null) {
+            httpclient.getParams().setIntParameter(TimeoutManager.SOCKET_TIMEOUT, 
+                    TimeoutManager.getSocketTimeout());
+        }
+        if(TimeoutManager.getConnectionTimeout() != null) {
+            httpclient.getParams().setIntParameter(TimeoutManager.CONNECTION_TIMEOUT, 
+                    TimeoutManager.getConnectionTimeout());
+        }
         HttpResponse response = httpclient.execute(get);
         if (response.getStatusLine().getStatusCode() == 200) {
             return true;

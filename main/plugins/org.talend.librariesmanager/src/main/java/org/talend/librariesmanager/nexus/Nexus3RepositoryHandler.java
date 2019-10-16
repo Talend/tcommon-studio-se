@@ -35,6 +35,7 @@ import org.talend.librariesmanager.nexus.nexus3.handler.INexus3SearchHandler;
 import org.talend.librariesmanager.nexus.nexus3.handler.Nexus3BetaSearchHandler;
 import org.talend.librariesmanager.nexus.nexus3.handler.Nexus3ScriptSearchHandler;
 import org.talend.librariesmanager.nexus.nexus3.handler.Nexus3V1SearchHandler;
+import org.talend.utils.thread.TimeoutManager;
 
 /**
  * created by wchen on Aug 2, 2017 Detailled comment
@@ -94,6 +95,14 @@ public class Nexus3RepositoryHandler extends AbstractArtifactRepositoryHandler {
         HttpGet get = new HttpGet(repositoryUrl);
         get.addHeader(authority);
         DefaultHttpClient httpclient = new DefaultHttpClient();
+        if(TimeoutManager.getSocketTimeout() != null) {
+            httpclient.getParams().setIntParameter(TimeoutManager.SOCKET_TIMEOUT, 
+                    TimeoutManager.getSocketTimeout());
+        }
+        if(TimeoutManager.getConnectionTimeout() != null) {
+            httpclient.getParams().setIntParameter(TimeoutManager.CONNECTION_TIMEOUT, 
+                    TimeoutManager.getConnectionTimeout());
+        }
         HttpResponse response = httpclient.execute(get);
         if (response.getStatusLine().getStatusCode() == 200) {
             return true;

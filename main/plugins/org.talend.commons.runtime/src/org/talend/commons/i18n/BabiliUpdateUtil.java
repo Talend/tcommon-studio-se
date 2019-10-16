@@ -18,6 +18,7 @@ import java.util.List;
 import org.apache.commons.httpclient.HttpClient;
 import org.apache.commons.httpclient.methods.GetMethod;
 import org.eclipse.core.runtime.IProgressMonitor;
+import org.talend.utils.thread.TimeoutManager;
 
 /**
  * DOC wzhang class global comment. Detailled comment
@@ -59,6 +60,16 @@ public class BabiliUpdateUtil {
      */
     public static String sendGetRequest(String url) throws Exception {
         HttpClient httpclient = new HttpClient();
+        
+        if(TimeoutManager.getSocketTimeout() != null) {
+            httpclient.getParams().setIntParameter(TimeoutManager.SOCKET_TIMEOUT, 
+                    TimeoutManager.getSocketTimeout());
+        }
+        if(TimeoutManager.getConnectionTimeout() != null) {
+            httpclient.getParams().setIntParameter(TimeoutManager.CONNECTION_TIMEOUT, 
+                    TimeoutManager.getConnectionTimeout());
+        }
+        
         GetMethod getMethod = new GetMethod(url);
         httpclient.executeMethod(getMethod);
         String response = getMethod.getResponseBodyAsString();

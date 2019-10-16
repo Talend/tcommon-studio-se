@@ -44,6 +44,7 @@ import org.talend.core.runtime.CoreRuntimePlugin;
 import org.talend.core.runtime.maven.MavenArtifact;
 import org.talend.core.runtime.maven.MavenUrlHelper;
 import org.talend.designer.core.IDesignerCoreService;
+import org.talend.utils.thread.TimeoutManager;
 
 /**
  * DOC ggu class global comment. Detailled comment
@@ -144,6 +145,14 @@ public abstract class HttpClientTransport {
             IDesignerCoreService designerCoreService = CoreRuntimePlugin.getInstance().getDesignerCoreService();
             if (designerCoreService != null) {
                 timeout = designerCoreService.getTACConnectionTimeout() * 1000;
+            }
+            if(TimeoutManager.getSocketTimeout() != null) {
+                httpClient.getParams().setIntParameter(TimeoutManager.SOCKET_TIMEOUT, 
+                        TimeoutManager.getSocketTimeout());
+            }
+            if(TimeoutManager.getConnectionTimeout() != null) {
+                httpClient.getParams().setIntParameter(TimeoutManager.CONNECTION_TIMEOUT, 
+                        TimeoutManager.getConnectionTimeout());
             }
             HttpParams params = httpClient.getParams();
             params.setIntParameter(CoreConnectionPNames.CONNECTION_TIMEOUT, timeout);
