@@ -114,11 +114,9 @@ public class LibraryDataService {
     }
 
     public void buildLibraryLicenseData(Set<String> mvnUrlList) {
-        int resolvedCount = 0;
         for (String mvnUrl : mvnUrlList) {
             Library libraryObj = resolve(mvnUrl);
             if (!libraryObj.isLicenseMissing() || !libraryObj.isPomMissing()) {
-                resolvedCount++;
                 mvnToLibraryMap.put(getShortMvnUrl(mvnUrl), libraryObj);
             }
         }
@@ -134,9 +132,12 @@ public class LibraryDataService {
                     isRemoved = true;
                 }
             }
-            if (isRemoved && licenses.size() == 0 && !lib.isPomMissing()) {
-                lib.setLicenseMissing(true);
+            if (isRemoved && licenses.size() == 0) {
                 licenses.add(unknownLicense);
+                if (!lib.isPomMissing()) {
+                    // if pom exsit, then set licenseMissing true
+                    lib.setLicenseMissing(true);
+                }
             }
         }
         dataProvider.saveLicenseData(mvnToLibraryMap);
