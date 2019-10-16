@@ -28,6 +28,7 @@ import java.util.Map;
 import java.util.Set;
 
 import org.apache.commons.lang.StringUtils;
+import org.apache.log4j.Priority;
 import org.talend.commons.CommonsPlugin;
 import org.talend.commons.exception.ExceptionHandler;
 import org.talend.commons.i18n.internal.Messages;
@@ -39,6 +40,8 @@ public class TalendProxySelector extends ProxySelector {
 
     private static final String ECLIPSE_PROXY_SELECTOR = ".EclipseProxySelector"; //$NON-NLS-1$
 
+    private static final String PROP_PRINT_LOGS = "talend.studio.proxy.printLogs";
+
     private ProxySelector defaultSelector;
 
     final private List<IProxySelectorProvider> selectorProviders;
@@ -47,10 +50,13 @@ public class TalendProxySelector extends ProxySelector {
 
     private static Object instanceLock = new Object();
 
+    private boolean printProxyLog = false;
+
     private TalendProxySelector(final ProxySelector defaultSelector) {
         this.defaultSelector = defaultSelector;
         selectorProviders = new ArrayList<>();
         selectorProviders.add(createDefaultProxySelectorProvider());
+        printProxyLog = Boolean.valueOf(System.getProperty(PROP_PRINT_LOGS, "false"));
     }
 
     public static TalendProxySelector getInstance() {
@@ -119,6 +125,11 @@ public class TalendProxySelector extends ProxySelector {
             if (defaultProxys != null && !defaultProxys.isEmpty()) {
                 result.addAll(defaultProxys);
             }
+        }
+        if (printProxyLog) {
+            String proxys = result.toString();
+            ExceptionHandler.log("Selected proxys for " + uri + ", " + proxys);
+            ExceptionHandler.process(new Exception("Proxy call stacks"), Priority.INFO);
         }
         return result;
     }
