@@ -43,10 +43,12 @@ public class ModulesNeededProviderTest {
         routineItem.getProperty().setLabel("routineTest");
         IMPORTType importJar1 = ComponentFactory.eINSTANCE.createIMPORTType();
         importJar1.setMODULE(jarName1);
+        importJar1.setREQUIRED(true);
         importJar1.setNAME(routineItem.getProperty().getLabel());
         routineItem.getImports().add(importJar1);
         IMPORTType importJar2 = ComponentFactory.eINSTANCE.createIMPORTType();
         importJar2.setMODULE(jarName2);
+        importJar2.setREQUIRED(true);
         importJar2.setNAME(routineItem.getProperty().getLabel());
         routineItem.getImports().add(importJar2);
 
