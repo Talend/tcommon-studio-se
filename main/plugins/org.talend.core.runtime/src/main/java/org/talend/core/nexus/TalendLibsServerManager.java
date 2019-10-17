@@ -61,7 +61,15 @@ public class TalendLibsServerManager {
 
     public static final String KEY_SOFTWARE_UPDATE_REPOSITORY = "repositoryID";//$NON-NLS-1$
 
-    public static final String TALEND_LIB_SERVER = "https://talend-update.talend.com/nexus/";//$NON-NLS-1$
+    public static String TALEND_LIB_SERVER = "https://talend-update.talend.com/nexus/";//$NON-NLS-1$
+
+    public static final String NEXUS_PROXY_URL = "nexus.proxy.url";
+
+    public static final String NEXUS_PROXY_TYPE = "nexus.proxy.type";
+
+    public static final String NEXUS_PROXY_USERNAME = "nexus.proxy.username";
+
+    public static final String NEXUS_PROXY_PASSWORD = "nexus.proxy.password";
 
     public static final String TALEND_LIB_USER = "";//$NON-NLS-1$
 
@@ -167,6 +175,15 @@ public class TalendLibsServerManager {
 
     public ArtifactRepositoryBean getTalentArtifactServer() {
         ArtifactRepositoryBean serverBean = new ArtifactRepositoryBean();
+        String nexusProxy = System.getProperty(NEXUS_PROXY_URL);
+        String nexusType = System.getProperty(NEXUS_PROXY_TYPE);
+        if (nexusProxy != null) {
+            TALEND_LIB_SERVER = nexusProxy;
+        }
+        if (nexusType != null) {
+            serverBean.setType(nexusType);
+        }
+        System.out.println(nexusProxy);
         serverBean.setServer(System.getProperty(KEY_LIB_REPO_URL, TALEND_LIB_SERVER));
         serverBean.setUserName(TALEND_LIB_USER);
         serverBean.setPassword(TALEND_LIB_PASSWORD);
