@@ -132,10 +132,11 @@ public class LibraryDataService {
                     isRemoved = true;
                 }
             }
-            if ((isRemoved && licenses.size() == 0) || lib.isPomMissing()) {
-                licenses.add(unknownLicense);
-                if (!lib.isPomMissing()) {
-                    // if pom exsit, then set licenseMissing true
+            if(lib.isPomMissing()) {
+                lib.getLicenses().add(unknownLicense);
+            }else {
+                if ((isRemoved && licenses.size() == 0)) {
+                    licenses.add(unknownLicense);
                     lib.setLicenseMissing(true);
                 }
             }
