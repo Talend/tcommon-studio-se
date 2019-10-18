@@ -217,6 +217,8 @@ public interface IRunProcessService extends IService {
 
     ITalendProcessJavaProject getTalendJobJavaProject(Property property);
 
+    IFolder getCodeSrcFolder(ERepositoryObjectType type, String projectTechName);
+
     ITalendProcessJavaProject getTempJavaProject();
 
     void clearProjectRelatedSettings();

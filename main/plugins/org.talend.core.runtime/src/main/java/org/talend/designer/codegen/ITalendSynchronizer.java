@@ -45,7 +45,8 @@ public interface ITalendSynchronizer {
 
     void syncRoutine(RoutineItem routineItem, boolean copyToTemp, boolean forceUpdate) throws SystemException;
 
-    void syncRoutine(RoutineItem routineItem, boolean currentProject, boolean copyToTemp, boolean forceUpdate) throws SystemException;
+    void syncRoutine(RoutineItem routineItem, String projectTechName, boolean copyToTemp, boolean forceUpdate)
+            throws SystemException;
 
     IFile getFile(Item item) throws SystemException;
 

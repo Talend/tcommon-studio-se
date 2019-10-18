@@ -227,6 +227,10 @@ public final class ProjectManager {
      * return all the referenced projects of current project.
      */
     public List<Project> getAllReferencedProjects(boolean force) {
+        return getAllReferencedProjects(getCurrentProject(), force);
+    }
+
+    public List<Project> getAllReferencedProjects(Project targetProject, boolean force) {
         List<Project> allReferencedprojects = new ArrayList<Project>();
         if (GlobalServiceRegister.getDefault().isServiceRegistered(IProxyRepositoryService.class)) {
             if (this.getCurrentProject() == null) {
@@ -239,7 +243,7 @@ public final class ProjectManager {
             IProxyRepositoryFactory factory = service.getProxyRepositoryFactory();
             if (factory != null) {
                 List<org.talend.core.model.properties.Project> rProjects = factory
-                        .getReferencedProjects(this.getCurrentProject());
+                        .getReferencedProjects(targetProject);
                 if (rProjects != null) {
                     for (org.talend.core.model.properties.Project p : rProjects) {
                         Project project = new Project(p);
