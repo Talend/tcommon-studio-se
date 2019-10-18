@@ -26,6 +26,7 @@ import org.talend.core.model.properties.SalesforceSchemaConnectionItem;
 import org.talend.core.model.repository.ERepositoryObjectType;
 import org.talend.core.repository.model.ProxyRepositoryFactory;
 import org.talend.cwm.helper.ConnectionHelper;
+import org.talend.utils.security.CryptoMigrationUtil;
 
 /**
  * created by ggu on Aug 29, 2014 Detailled comment
@@ -51,6 +52,7 @@ public class UnifyPasswordEncryption4SalesforceSchemaConnectionMigrationTask ext
     public ExecutionResult execute(Item item) {
         if (item instanceof SalesforceSchemaConnectionItem) {
             Connection connection = ((SalesforceSchemaConnectionItem) item).getConnection();
+            connection.setEncryptAndDecryptFuncPair(CryptoMigrationUtil.encryptFunc(), CryptoMigrationUtil.decryptFunc());
             if (connection instanceof SalesforceSchemaConnection) {
                 SalesforceSchemaConnection ssConn = (SalesforceSchemaConnection) connection;
                 try {

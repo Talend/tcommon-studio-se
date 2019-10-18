@@ -294,20 +294,25 @@ public class M2eUserSettingForTalendLoginTask extends AbstractLoginTask {
         boolean isLocal = isLocalRepository();
         IPath localRepoPath = null;
         if (!isLocal) {
-            String mvnHome = System.getenv("M2_HOME"); //$NON-NLS-1$
-            if (mvnHome == null) {
-                mvnHome = System.getenv("MAVEN_HOME"); //$NON-NLS-1$
-            }
-            if (StringUtils.isNotBlank(mvnHome)) {
-                File globalSettings = new File(mvnHome).toPath().resolve("conf").resolve("settings.xml").toFile(); //$NON-NLS-1$ //$NON-NLS-2$
-                if (globalSettings.exists()) {
-                    DocumentBuilder builder = DocumentBuilderFactory.newInstance().newDocumentBuilder();
-                    Document document = builder.parse(globalSettings);
-                    Node node = document.getElementsByTagName("localRepository").item(0); //$NON-NLS-1$
-                    if (node != null) {
-                        String repoPath = node.getTextContent();
-                        if (StringUtils.isNotBlank(repoPath)) {
-                            localRepoPath = new Path(repoPath);
+            String customMavenRepoistory = System.getProperty("maven.local.repository");
+            if (customMavenRepoistory != null) {
+                localRepoPath = new Path(customMavenRepoistory);
+            } else {
+                String mvnHome = System.getenv("M2_HOME"); //$NON-NLS-1$
+                if (mvnHome == null) {
+                    mvnHome = System.getenv("MAVEN_HOME"); //$NON-NLS-1$
+                }
+                if (StringUtils.isNotBlank(mvnHome)) {
+                    File globalSettings = new File(mvnHome).toPath().resolve("conf").resolve("settings.xml").toFile(); //$NON-NLS-1$ //$NON-NLS-2$
+                    if (globalSettings.exists()) {
+                        DocumentBuilder builder = DocumentBuilderFactory.newInstance().newDocumentBuilder();
+                        Document document = builder.parse(globalSettings);
+                        Node node = document.getElementsByTagName("localRepository").item(0); //$NON-NLS-1$
+                        if (node != null) {
+                            String repoPath = node.getTextContent();
+                            if (StringUtils.isNotBlank(repoPath)) {
+                                localRepoPath = new Path(repoPath);
+                            }
                         }
                     }
                 }

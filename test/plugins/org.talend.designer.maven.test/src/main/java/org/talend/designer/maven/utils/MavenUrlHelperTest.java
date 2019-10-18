@@ -292,7 +292,8 @@ public class MavenUrlHelperTest {
 
         String url = MavenUrlHelper.generateMvnUrl(username, password, repository, group, artifact, version, null, null, true);
 
-        Assert.assertEquals(mvnUrl, url);
+        // Remove this because every time generates different encrypted value for the same input
+        // Assert.assertEquals(mvnUrl, url);
 
         MavenArtifact ma = MavenUrlHelper.parseMvnUrl(url);
 
@@ -305,7 +306,7 @@ public class MavenUrlHelperTest {
 
         final String repository2 = "http://user2:password2@localhost:8080/nexus";
         url = MavenUrlHelper.generateMvnUrl(username, password, repository2, group, artifact, version, null, null, true);
-        Assert.assertEquals(mvnUrl, url);
+        // Assert.assertEquals(mvnUrl, url);
 
         ma = MavenUrlHelper.parseMvnUrl(url);
 
