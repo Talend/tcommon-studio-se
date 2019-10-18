@@ -18,8 +18,8 @@ import org.talend.core.GlobalServiceRegister;
 import org.talend.core.prefs.ITalendCorePrefConstants;
 import org.talend.core.ui.CoreUIPlugin;
 import org.talend.core.ui.branding.IBrandingService;
-import org.talend.daikon.security.CryptoHelper;
 import org.talend.daikon.token.TokenGenerator;
+import org.talend.utils.security.StudioEncryption;
 
 import us.monoid.json.JSONObject;
 
@@ -47,7 +47,7 @@ public class DefaultTokenCollector extends AbstractTokenCollector {
     }
 
     public static String calcUniqueId() {
-        return TokenGenerator.generateMachineToken(new CryptoHelper(CryptoHelper.PASSPHRASE));
+        return TokenGenerator.generateMachineToken((src) -> StudioEncryption.getStudioEncryption(StudioEncryption.EncryptionKeyName.SYSTEM).encrypt(src));
     }
 
     /*

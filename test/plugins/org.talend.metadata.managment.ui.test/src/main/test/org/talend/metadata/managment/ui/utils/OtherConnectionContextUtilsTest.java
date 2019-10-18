@@ -1,28 +1,26 @@
 package org.talend.metadata.managment.ui.utils;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
 
 import org.junit.Before;
 import org.junit.Test;
 import org.talend.core.model.metadata.builder.connection.AdditionalConnectionProperty;
 import org.talend.core.model.metadata.builder.connection.ConnectionFactory;
 import org.talend.core.model.metadata.builder.connection.SAPConnection;
-import org.talend.daikon.security.CryptoHelper;
 import org.talend.designer.core.model.utils.emf.talendfile.ContextParameterType;
 import org.talend.designer.core.model.utils.emf.talendfile.ContextType;
 import org.talend.designer.core.model.utils.emf.talendfile.TalendFileFactory;
+import org.talend.utils.security.StudioEncryption;
 
 public class OtherConnectionContextUtilsTest {
 
     private ContextType context;
 
     private SAPConnection source;
-    
-    private CryptoHelper cryptoHelper;
 
     @Before
     public void setUp() throws Exception {
-        cryptoHelper = CryptoHelper.getDefault();
         context = createContextTypeForCloneSAPConnection();
         source = createConnectionForCloneSAPConnection();
     }
@@ -47,7 +45,8 @@ public class OtherConnectionContextUtilsTest {
         createContextParameter("SAPBW_Client", "001");
         createContextParameter("SAPBW_Host", "a.b.c.d");
         createContextParameter("SAPBW_Username", "Talend");
-        ContextParameterType param = createContextParameter("SAPBW_Password", cryptoHelper.encrypt("123456"));
+        ContextParameterType param = createContextParameter("SAPBW_Password",
+                StudioEncryption.getStudioEncryption(StudioEncryption.EncryptionKeyName.SYSTEM).encrypt("123456"));
         param.setType("id_Password");
         param.setRawValue("123456");
         createContextParameter("SAPBW_SystemNumber", "00");

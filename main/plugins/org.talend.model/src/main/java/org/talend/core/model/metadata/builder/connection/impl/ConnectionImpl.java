@@ -20,7 +20,8 @@ import org.eclipse.emf.ecore.util.InternalEList;
 import org.talend.core.model.metadata.builder.connection.Connection;
 import org.talend.core.model.metadata.builder.connection.ConnectionPackage;
 import org.talend.core.model.metadata.builder.connection.QueriesConnection;
-import org.talend.daikon.security.CryptoHelper;
+import org.talend.utils.security.StudioEncryption;
+
 import orgomg.cwm.foundation.softwaredeployment.Component;
 import orgomg.cwm.foundation.softwaredeployment.DataManager;
 import orgomg.cwm.foundation.softwaredeployment.DataProvider;
@@ -291,6 +292,10 @@ public class ConnectionImpl extends AbstractMetadataObjectImpl implements Connec
     protected String compProperties = COMP_PROPERTIES_EDEFAULT;
 
     protected boolean readOnly = false;
+
+    private java.util.function.Function<String, String> encrypt;
+
+    private java.util.function.Function<String, String> decrypt;
 
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
@@ -1196,16 +1201,39 @@ public class ConnectionImpl extends AbstractMetadataObjectImpl implements Connec
      */
     public String getValue(String value, boolean encrypt) {
         if (!isContextMode() && value != null && value.length() > 0) {
+            StudioEncryption se = StudioEncryption.getStudioEncryption(StudioEncryption.EncryptionKeyName.SYSTEM);
+            // Set default encrypt and decrypt methods
+            if (this.encrypt == null) {
+                this.encrypt = (src) -> se.encrypt(src);
+            }
+            if (this.decrypt == null) {
+                this.decrypt = (src) -> {
+                    if (src != null && StudioEncryption.hasEncryptionSymbol(src)) {
+                        return se.decrypt(src);
+                    }
+                    return src;
+                };
+            }
             String newValue = null;
             if (encrypt) {
-                newValue = CryptoHelper.getDefault().encrypt(value);
+                newValue = this.encrypt.apply(value);
             } else {
-                newValue = CryptoHelper.getDefault().decrypt(value);
+                newValue = this.decrypt.apply(value);
             }
             if (newValue != null) { // if enable to encrypt/decrypt will return the new value.
                 return newValue;
             }
         }
         return value;
+    }
+
+    /**
+     * @generated NOT
+     */
+    public void setEncryptAndDecryptFuncPair(java.util.function.Function<String, String> encrypt,
+            java.util.function.Function<String, String> decrypt) {
+        this.encrypt = encrypt;
+        this.decrypt = decrypt;
+
     }
 } // ConnectionImpl
