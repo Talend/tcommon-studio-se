@@ -20,7 +20,6 @@ import java.util.List;
 import java.util.Set;
 
 import org.apache.commons.lang.StringUtils;
-import org.apache.log4j.Logger;
 import org.apache.log4j.Priority;
 import org.eclipse.emf.common.util.EList;
 import org.eclipse.emf.ecore.EObject;
@@ -43,7 +42,8 @@ import org.talend.cwm.relational.TdColumn;
 import org.talend.cwm.softwaredeployment.TdSoftwareSystem;
 import org.talend.cwm.xml.TdXmlElementType;
 import org.talend.cwm.xml.TdXmlSchema;
-import org.talend.daikon.security.CryptoHelper;
+import org.talend.utils.security.CryptoMigrationUtil;
+import org.talend.utils.security.StudioEncryption;
 
 import orgomg.cwm.foundation.softwaredeployment.Component;
 import orgomg.cwm.foundation.softwaredeployment.DataManager;
@@ -67,14 +67,6 @@ import orgomg.cwm.resource.relational.Schema;
 public class ConnectionHelper {
 
     public static final String DOT_STRING = "."; //$NON-NLS-1$
-
-    // MOD xqliu 2011-07-04 feature 22201
-    // public static final String PASSPHRASE = "99ZwBDt1L9yMX2ApJx fnv94o99OeHbCGuIHTy22
-    // V9O6cZ2i374fVjdV76VX9g49DG1r3n90hT5c1"; //$NON-NLS-1$
-
-    // ~
-
-    private static Logger log = Logger.getLogger(ConnectionHelper.class);
 
     /**
      * Method "createTdDataProvider" creates a data provider with the given name.
@@ -1111,8 +1103,8 @@ public class ConnectionHelper {
                 boolean cleanFromNewWay = false;
                 String originalValue = tempValue;
                 try {
-                    tempValue = getDecryptPassword(originalValue);
-                    String encryptFromTempValue = getEncryptPassword(tempValue);
+                    tempValue = CryptoMigrationUtil.decrypt(originalValue);
+                    String encryptFromTempValue = CryptoMigrationUtil.encrypt(tempValue);
                     if (!StringUtils.equals(originalValue, encryptFromTempValue)) {
                         cleanFromNewWay = true;
                     }
@@ -1164,7 +1156,7 @@ public class ConnectionHelper {
      * @return
      */
     public static String getDecryptPassword(String password) {
-        return CryptoHelper.getDefault().decrypt(password);
+        return StudioEncryption.getStudioEncryption(StudioEncryption.EncryptionKeyName.SYSTEM).decrypt(password);
     }
 
     /**
@@ -1174,7 +1166,7 @@ public class ConnectionHelper {
      * @return
      */
     public static String getEncryptPassword(String password) {
-        return CryptoHelper.getDefault().encrypt(password);
+        return StudioEncryption.getStudioEncryption(StudioEncryption.EncryptionKeyName.SYSTEM).encrypt(password);
     }
 
     /**

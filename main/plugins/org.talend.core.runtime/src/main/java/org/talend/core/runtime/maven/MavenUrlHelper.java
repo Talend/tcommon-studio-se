@@ -19,7 +19,7 @@ import java.net.URLDecoder;
 import org.apache.commons.lang.StringUtils;
 import org.eclipse.core.runtime.Assert;
 import org.talend.commons.exception.ExceptionHandler;
-import org.talend.daikon.security.CryptoHelper;
+import org.talend.utils.security.StudioEncryption;
 
 /**
  * DOC ggu class global comment. Detailled comment
@@ -46,8 +46,6 @@ public class MavenUrlHelper {
     public static final String USER_PASSWORD_SEPARATOR = "@";
 
     public static final String USER_PASSWORD_SPLITER = ":";
-
-    private static CryptoHelper cryptoHelper;
 
     public static MavenArtifact parseMvnUrl(String mvnUrl) {
         return parseMvnUrl(mvnUrl, true);
@@ -332,19 +330,12 @@ public class MavenUrlHelper {
         return uri;
     }
 
-    private static CryptoHelper getCryptoHelper() {
-        if (cryptoHelper == null) {
-            cryptoHelper = CryptoHelper.getDefault();
-        }
-        return cryptoHelper;
-    }
-
     public static String encryptPassword(String password) {
-        return getCryptoHelper().encrypt(password);
+        return StudioEncryption.getStudioEncryption(StudioEncryption.EncryptionKeyName.SYSTEM).encrypt(password);
     }
 
     public static String decryptPassword(String password) {
-        return getCryptoHelper().decrypt(password);
+        return StudioEncryption.getStudioEncryption(StudioEncryption.EncryptionKeyName.SYSTEM).decrypt(password);
     }
 
 	public static String generateModuleNameByMavenURI(String uri) {
