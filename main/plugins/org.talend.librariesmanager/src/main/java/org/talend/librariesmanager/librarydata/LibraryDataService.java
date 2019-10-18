@@ -133,6 +133,7 @@ public class LibraryDataService {
                 }
             }
             if(lib.isPomMissing()) {
+                lib.getLicenses().clear();
                 lib.getLicenses().add(unknownLicense);
             }else {
                 if ((isRemoved && licenses.size() == 0)) {
