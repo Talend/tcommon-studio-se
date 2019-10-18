@@ -69,6 +69,7 @@ import org.talend.registration.wizards.license.LicenseWizardDialog;
 import org.talend.repository.ProjectManager;
 import org.talend.repository.model.IRepositoryService;
 import org.talend.repository.ui.login.LoginHelper;
+import org.talend.utils.StudioKeysFileCheck;
 
 /**
  * This class controls all aspects of the application's execution.
@@ -100,6 +101,8 @@ public class Application implements IApplication {
         }
         System.setProperty(TalendPropertiesUtil.PROD_APP, this.getClass().getName());
 
+        StudioKeysFileCheck.check(ConfigurationScope.INSTANCE.getLocation().toFile());
+        
         Display display = PlatformUI.createDisplay();
         try {
             // TUP-5816 don't put any code ahead of this part unless you make sure it won't trigger workspace
@@ -120,7 +123,7 @@ public class Application implements IApplication {
                 EclipseCommandLine.updateOrCreateExitDataPropertyWithCommand(EclipseCommandLine.CLEAN, null, false);
                 return IApplication.EXIT_RELAUNCH;
             }
-
+            
             StudioSSLContextProvider.setSSLSystemProperty();
             HttpProxyUtil.initializeHttpProxy();
             TalendProxySelector.getInstance();

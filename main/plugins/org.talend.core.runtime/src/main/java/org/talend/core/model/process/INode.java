@@ -182,19 +182,6 @@ public interface INode extends IElement {
     public List<? extends IConnection> getIncomingConnections(EConnectionType connectionType);
 
     public List<? extends IConnection> getOutgoingConnections(String connectorName);
-    
-    /**
-     * Get previous component from first incoming connection
-     * @return
-     */
-    public IComponent getPreviousComponent();
-    
-    /**
-     * Get previous component by incoming connection index
-     * @param index : the index of the previous component in the list of connections
-     * @return
-     */
-    public IComponent getPreviousComponent(int index);
 
     /**
      * the key is the Merge node, and value is inputId. if don't link with merge, it will return null.

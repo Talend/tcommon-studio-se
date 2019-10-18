@@ -202,5 +202,19 @@ public interface Connection extends AbstractMetadataObject, DataProvider {
      * @generated NOT
      */
     String getValue(String value, boolean encrypt);
+    
+    
+    /**
+     * <p>
+     * Set encryption and decryption functions which will be used inside getValue
+     * </p>
+     * <p>
+     * By default, getValue depends on encrypt/decrypt of {@link org.talend.utils.StudioEncryption}.
+     * </p>
+     * 
+     * @generated NOT
+     */
+    void setEncryptAndDecryptFuncPair(java.util.function.Function<String, String> encrypt,
+            java.util.function.Function<String, String> decrypt);
 
 } // Connection

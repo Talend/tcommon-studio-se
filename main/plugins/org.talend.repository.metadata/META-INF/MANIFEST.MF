@@ -36,7 +36,8 @@ Require-Bundle: org.apache.commons.lang,
  org.talend.repository.items.importexport,
  org.talend.libraries.dom4j-jaxen,
  org.talend.libraries.jackson,
- org.apache.xerces
+ org.apache.xerces,
+ org.talend.repository
 Bundle-ActivationPolicy: lazy
 Bundle-Localization: plugin
 Export-Package: org.talend.repository.metadata,

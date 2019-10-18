@@ -21,21 +21,24 @@ import org.talend.daikon.crypto.KeySources;
  */
 public class PasswordEncryptUtil {
 
-    public static String ENCRYPT_KEY = "Encrypt"; //$NON-NLS-1$
+    public static final String ENCRYPT_KEY = "Encrypt"; //$NON-NLS-1$
 
     private static final String ENCRYPTION_KEY = "Talend_TalendKey";
     
-    public static String PREFIX_PASSWORD = "ENC:["; //$NON-NLS-1$
+    private static final String PREFIX_PASSWORD = "ENC:["; //$NON-NLS-1$
     
-    public static String POSTFIX_PASSWORD = "]"; //$NON-NLS-1$
+    private static final String POSTFIX_PASSWORD = "]"; //$NON-NLS-1$
 
-    private static Encryption defaultEncryption;
+    private static final Encryption ENCRYPTION = new Encryption(KeySources.fixedKey(ENCRYPTION_KEY), CipherSources.getDefault());
+
+    private PasswordEncryptUtil() {
+    }
 
     public static String encryptPassword(String input) throws Exception {
         if (input == null) {
             return input;
         }
-        return PREFIX_PASSWORD + getEncryption().encrypt(input) + POSTFIX_PASSWORD;
+        return PREFIX_PASSWORD + ENCRYPTION.encrypt(input) + POSTFIX_PASSWORD;
     }
 
     public static String decryptPassword(String input) {
@@ -44,20 +47,13 @@ public class PasswordEncryptUtil {
         }
         if (input.startsWith(PREFIX_PASSWORD) && input.endsWith(POSTFIX_PASSWORD)) {
             try {
-                return getEncryption()
+                return ENCRYPTION
                         .decrypt(input.substring(PREFIX_PASSWORD.length(), input.length() - POSTFIX_PASSWORD.length()));
             } catch (Exception e) {
                 // do nothing
             }
         }
         return input;
-    }
-
-    private static Encryption getEncryption() {
-        if (defaultEncryption == null) {
-            defaultEncryption = new Encryption(KeySources.fixedKey(ENCRYPTION_KEY), CipherSources.aes());
-        }
-        return defaultEncryption;
     }
 
     public static final String PASSWORD_FOR_LOGS_VALUE = "...";

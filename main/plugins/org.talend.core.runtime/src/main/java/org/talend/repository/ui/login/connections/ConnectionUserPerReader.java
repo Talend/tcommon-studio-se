@@ -35,6 +35,7 @@ import org.talend.core.model.general.ConnectionBean;
 import org.talend.utils.json.JSONArray;
 import org.talend.utils.json.JSONException;
 import org.talend.utils.json.JSONObject;
+import org.talend.utils.security.EncryptedProperties;
 
 /**
  * DOC hwang class global comment. Detailled comment
@@ -126,8 +127,8 @@ public class ConnectionUserPerReader {
         if (!isHaveUserPer()) {
             createPropertyFile();
         }
-        try {
-            proper.load(new FileInputStream(perfile));
+        try (FileInputStream fi = new FileInputStream(perfile)) {
+            proper.load(fi);
             isRead = true;
         } catch (FileNotFoundException e) {
             e.printStackTrace();
@@ -176,9 +177,7 @@ public class ConnectionUserPerReader {
             }
             proper.setProperty("connection.define", usersJsonArray.toString());//$NON-NLS-1$
         }
-        try {
-
-            FileOutputStream out = new FileOutputStream(perfile);
+        try (FileOutputStream out = new FileOutputStream(perfile)) {
             proper.store(out, null);
         } catch (Exception e) {
             e.printStackTrace();
@@ -202,9 +201,8 @@ public class ConnectionUserPerReader {
                 proper.remove("connection.lastConnection"); //$NON-NLS-1$
             }
         }
-        FileOutputStream out;
-        try {
-            out = new FileOutputStream(perfile);
+        ;
+        try (FileOutputStream out = new FileOutputStream(perfile)) {
             proper.store(out, null);
         } catch (Exception e) {
             e.printStackTrace();
@@ -286,9 +284,7 @@ public class ConnectionUserPerReader {
         IPreferenceStore prefStore = PlatformUI.getPreferenceStore();
         proper.setProperty("connection.readRegistration", Integer.toString(prefStore.getInt("REGISTRATION_TRIES")));
         proper.setProperty("connection.readRegistrationDone", Integer.toString(prefStore.getInt("REGISTRATION_DONE")));
-        try {
-
-            FileOutputStream out = new FileOutputStream(perfile);
+        try (FileOutputStream out = new FileOutputStream(perfile)) {
             proper.store(out, null);
         } catch (Exception e) {
             e.printStackTrace();
@@ -317,8 +313,7 @@ public class ConnectionUserPerReader {
             String val = entry.getValue();
             proper.setProperty(key, val);
         }
-        try {
-            FileOutputStream out = new FileOutputStream(perfile);
+        try (FileOutputStream out = new FileOutputStream(perfile)) {
             proper.store(out, null);
         } catch (Exception e) {
             e.printStackTrace();
@@ -334,9 +329,7 @@ public class ConnectionUserPerReader {
         }
         IPreferenceStore prefStore = PlatformUI.getPreferenceStore();
         proper.setProperty("connection.licenseManagement", Integer.toString(prefStore.getInt("LICENSE_VALIDATION_DONE")));
-        try {
-
-            FileOutputStream out = new FileOutputStream(perfile);
+        try (FileOutputStream out = new FileOutputStream(perfile)) {
             proper.store(out, null);
         } catch (Exception e) {
             e.printStackTrace();
@@ -362,8 +355,7 @@ public class ConnectionUserPerReader {
             this.readProperties();
         }
         proper.setProperty("connection.installDone", Boolean.TRUE.toString()); //$NON-NLS-1$
-        try {
-            FileOutputStream out = new FileOutputStream(perfile);
+        try (FileOutputStream out = new FileOutputStream(perfile)) {
             proper.store(out, null);
         } catch (Exception e) {
             e.printStackTrace();

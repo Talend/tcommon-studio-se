@@ -21,29 +21,25 @@ import javax.crypto.SecretKeyFactory;
 import javax.crypto.spec.DESKeySpec;
 
 import org.apache.commons.codec.binary.Base64;
-import org.talend.utils.security.AESEncryption;
+import org.talend.utils.security.StudioEncryption;
 
 /**
  * DOC chuang class global comment. Detailled comment
  */
 public class PasswordEncryptUtil {
 
-    public static String ENCRYPT_KEY = "Encrypt"; //$NON-NLS-1$
+    public static final String ENCRYPT_KEY = "Encrypt"; //$NON-NLS-1$
 
-    private static String rawKey = "Talend-Key"; //$NON-NLS-1$
-
-    public static String PREFIX_PASSWORD = "ENC:["; //$NON-NLS-1$
-
-    public static String POSTFIX_PASSWORD = "]"; //$NON-NLS-1$
+    private static final String RAWKEY = "Talend-Key"; //$NON-NLS-1$
 
     private static SecretKey key = null;
 
-    private static SecureRandom secureRandom = new SecureRandom();
+    private static final SecureRandom SECURERANDOM = new SecureRandom();
 
     private static SecretKey getSecretKey() throws Exception {
         if (key == null) {
 
-            byte rawKeyData[] = rawKey.getBytes();
+            byte rawKeyData[] = RAWKEY.getBytes();
             DESKeySpec dks = new DESKeySpec(rawKeyData);
             SecretKeyFactory keyFactory = SecretKeyFactory.getInstance("DES"); //$NON-NLS-1$
             key = keyFactory.generateSecret(dks);
@@ -65,7 +61,7 @@ public class PasswordEncryptUtil {
 
         SecretKey key = getSecretKey();
         Cipher c = Cipher.getInstance("DES"); //$NON-NLS-1$
-        c.init(Cipher.ENCRYPT_MODE, key, secureRandom);
+        c.init(Cipher.ENCRYPT_MODE, key, SECURERANDOM);
         byte[] cipherByte = c.doFinal(input.getBytes());
         String dec = new String(Base64.encodeBase64(cipherByte));
         return dec;
@@ -85,7 +81,7 @@ public class PasswordEncryptUtil {
         byte[] dec = Base64.decodeBase64(input.getBytes());
         SecretKey key = getSecretKey();
         Cipher c = Cipher.getInstance("DES"); //$NON-NLS-1$
-        c.init(Cipher.DECRYPT_MODE, key, secureRandom);
+        c.init(Cipher.DECRYPT_MODE, key, SECURERANDOM);
         byte[] clearByte = c.doFinal(dec);
         return new String(clearByte);
     }
@@ -99,7 +95,7 @@ public class PasswordEncryptUtil {
         if (input == null) {
             return input;
         }
-        return PREFIX_PASSWORD + AESEncryption.encryptPassword(input) + POSTFIX_PASSWORD;
+        return StudioEncryption.getStudioEncryption(StudioEncryption.EncryptionKeyName.ROUTINE).encrypt(input);
     }
 
     /**

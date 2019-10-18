@@ -74,6 +74,16 @@ public class SwitchContextGroupNameImpl implements ISwitchContext {
      */
     @Override
     public boolean updateContextGroup(ConnectionItem connItem, String selectedContext) {
+        return updateContextGroup(connItem, selectedContext, null);
+    }
+
+    /*
+     * (non-Javadoc)
+     *
+     * @see org.talend.core.model.metadata.builder.database.ISwitchContext#updateContextGroup(org.talend.core.model.
+     * properties .ContextItem, org.talend.core.model.metadata.builder.connection.Connection)
+     */
+    public boolean updateContextGroup(ConnectionItem connItem, String selectedContext, String originalContext) {
         if (connItem == null) {
             return false;
         }
@@ -81,9 +91,9 @@ public class SwitchContextGroupNameImpl implements ISwitchContext {
         // MOD msjian 2012-2-13 TDQ-4559: make it support file/mdm connection
         if (con != null) {
             // TDQ-4559~
-            String oldContextName = con.getContextName();
+            String oldContextName = originalContext == null ? con.getContextName() : originalContext;
 
-            if (!isContextIsValid(selectedContext, con)) {
+            if (!isContextIsValid(selectedContext, oldContextName, con)) {
                 return false;
             }
             con.setContextName(selectedContext);
@@ -112,8 +122,7 @@ public class SwitchContextGroupNameImpl implements ISwitchContext {
      * @param selectedContext
      * @paramconn
      */
-    private boolean isContextIsValid(String selectedContext, Connection conn) {
-        String oldContextName = conn.getContextName();
+    private boolean isContextIsValid(String selectedContext, String oldContextName, Connection conn) {
         boolean retCode = false;
         if (conn instanceof DatabaseConnection) {
             EDatabaseTypeName dbType = EDatabaseTypeName.getTypeFromDbType(((DatabaseConnection) conn).getDatabaseType());

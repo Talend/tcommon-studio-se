@@ -35,6 +35,7 @@ public class ModulesNeededProviderTest {
     public void testUpdateModulesNeededForRoutine() throws Exception {
         String jarName1 = "testUpdateModulesNeededForRoutine1.jar";
         String jarName2 = "testUpdateModulesNeededForRoutine2.jar";
+        String jarName3 = "testUpdateModulesNeededForRoutine3.jar";
 
         String message = ModuleNeeded.UNKNOWN;
 
@@ -43,20 +44,26 @@ public class ModulesNeededProviderTest {
         routineItem.getProperty().setLabel("routineTest");
         IMPORTType importJar1 = ComponentFactory.eINSTANCE.createIMPORTType();
         importJar1.setMODULE(jarName1);
+        importJar1.setREQUIRED(true);
         importJar1.setNAME(routineItem.getProperty().getLabel());
         routineItem.getImports().add(importJar1);
         IMPORTType importJar2 = ComponentFactory.eINSTANCE.createIMPORTType();
         importJar2.setMODULE(jarName2);
+        importJar2.setREQUIRED(true);
         importJar2.setNAME(routineItem.getProperty().getLabel());
         routineItem.getImports().add(importJar2);
-
+        IMPORTType importJar3 = ComponentFactory.eINSTANCE.createIMPORTType();
+        importJar3.setMODULE(jarName3);
+        importJar3.setREQUIRED(false);
+        importJar3.setNAME(routineItem.getProperty().getLabel());
+        routineItem.getImports().add(importJar3);
         // remove old modules from the two lists before test
         String label = ERepositoryObjectType.getItemType(routineItem).getLabel();
         String currentContext = label + " " + routineItem.getProperty().getLabel();
         Set<ModuleNeeded> oldModules = new HashSet<ModuleNeeded>();
         for (ModuleNeeded existingModule : ModulesNeededProvider.getModulesNeeded()) {
             if (currentContext.equals(existingModule.getContext()) || jarName1.equals(existingModule.getModuleName())
-                    || jarName2.equals(existingModule.getModuleName())) {
+                    || jarName2.equals(existingModule.getModuleName()) || jarName3.equals(existingModule.getModuleName())) {
                 oldModules.add(existingModule);
             }
         }
@@ -64,7 +71,7 @@ public class ModulesNeededProviderTest {
         oldModules = new HashSet<ModuleNeeded>();
         for (ModuleNeeded existingModule : ModulesNeededProvider.getAllManagedModules()) {
             if (currentContext.equals(existingModule.getContext()) || jarName1.equals(existingModule.getModuleName())
-                    || jarName2.equals(existingModule.getModuleName())) {
+                    || jarName2.equals(existingModule.getModuleName()) || jarName3.equals(existingModule.getModuleName())) {
                 oldModules.add(existingModule);
             }
         }
@@ -75,7 +82,7 @@ public class ModulesNeededProviderTest {
         int originalAllSize = ModulesNeededProvider.getAllManagedModules().size();
 
         ModulesNeededProvider.updateModulesNeededForRoutine(routineItem);
-        // add two modules to needed list
+        // add 3 modules to needed list, but one of them is require false
         Assert.assertEquals(ModulesNeededProvider.getModulesNeeded().size(), originalNeededSize + 2);
         // add one + change one in the all list
         Assert.assertEquals(ModulesNeededProvider.getAllManagedModules().size(), originalAllSize + 1);

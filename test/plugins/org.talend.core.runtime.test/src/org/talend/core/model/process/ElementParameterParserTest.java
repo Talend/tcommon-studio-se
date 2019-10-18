@@ -19,6 +19,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.junit.Test;
+import org.talend.core.utils.TalendQuoteUtils;
+import org.talend.utils.security.StudioEncryption;
 
 /**
  * created by wchen on 2014-4-16 Detailled comment
@@ -26,6 +28,12 @@ import org.junit.Test;
  */
 public class ElementParameterParserTest {
 
+    private static final StudioEncryption SE = StudioEncryption.getStudioEncryption(StudioEncryption.EncryptionKeyName.ROUTINE);
+
+    private static String decryptPassword(String input) {
+        input = input.replace("\"", "");
+        return SE.decrypt(input);
+    }
     @Test
     public void testCanEncrypt() {
         String paramName = "__PASSWORD__";
@@ -63,7 +71,7 @@ public class ElementParameterParserTest {
     }
 
     @Test
-    public void testGetEncryptedValue() {
+    public void testGetEncryptedValue() throws Exception {
         String paramName = "__PASSWORD__";
         // mock parameter
         IElementParameter parameter = mock(IElementParameter.class);
@@ -77,28 +85,55 @@ public class ElementParameterParserTest {
         when(node.getElementParametersWithChildrens()).thenReturn(elementParametersWithChildrens);
 
         // "ab"
-        when(parameter.getValue()).thenReturn("\"ab\"");
-        assertEquals("\"ENC:[mhTO5ftbNXqfUMNXo3nHmg==]\"", ElementParameterParser.getEncryptedValue(node, paramName));
+        String val = "\"ab\"";
+        when(parameter.getValue()).thenReturn(val);
+        String targetVal = TalendQuoteUtils.removeQuotes(val);
+        targetVal = TalendQuoteUtils.checkSlashAndRemoveQuotation(targetVal);
+        assertEquals(targetVal,
+                decryptPassword(ElementParameterParser.getEncryptedValue(node, paramName)));
         // "a\"b"
-        when(parameter.getValue()).thenReturn("\"a\\\"b\"");
-        assertEquals("\"ENC:[5mxyOpkHaSqOq8z2V2INkQ==]\"", ElementParameterParser.getEncryptedValue(node, paramName));
+        val = "\"a\\\"b\"";
+        targetVal = TalendQuoteUtils.removeQuotes(val);
+        targetVal = TalendQuoteUtils.checkSlashAndRemoveQuotation(targetVal);
+        when(parameter.getValue()).thenReturn(val);
+        assertEquals(targetVal,
+                decryptPassword(ElementParameterParser.getEncryptedValue(node, paramName)));
         // "a\\b"
-        when(parameter.getValue()).thenReturn("\"a\\\\b\"");
-        assertEquals("\"ENC:[7GBfp1sX6vnzVV/sa7za6A==]\"", ElementParameterParser.getEncryptedValue(node, paramName));
+        val = "\"a\\\\b\"";
+        targetVal = TalendQuoteUtils.removeQuotes(val);
+        targetVal = TalendQuoteUtils.checkSlashAndRemoveQuotation(targetVal);
+        when(parameter.getValue()).thenReturn(val);
+        assertEquals(targetVal,
+                decryptPassword(ElementParameterParser.getEncryptedValue(node, paramName)));
         // "a\\\\b"
-        when(parameter.getValue()).thenReturn("\"a\\\\\\\\b\"");
-        assertEquals("\"ENC:[3x1Wn/yy2UiJwaPAMCJUOQ==]\"", ElementParameterParser.getEncryptedValue(node, paramName));
+        val = "\"a\\\\\\\\b\"";
+        targetVal = TalendQuoteUtils.removeQuotes(val);
+        targetVal = TalendQuoteUtils.checkSlashAndRemoveQuotation(targetVal);
+        when(parameter.getValue()).thenReturn(val);
+        assertEquals(targetVal,
+                decryptPassword(ElementParameterParser.getEncryptedValue(node, paramName)));
         // "test"+context.mypassword + "a"
-        when(parameter.getValue()).thenReturn("\"test\"+context.mypassword + \"a\"");
-        assertEquals("\"test\"+context.mypassword + \"a\"", ElementParameterParser.getEncryptedValue(node, paramName));
+        val = "\"test\"+context.mypassword + \"a\"";
+        when(parameter.getValue()).thenReturn(val);
+        assertEquals(val,
+                ElementParameterParser.getEncryptedValue(node, paramName));
         // "a" + "b"
-        when(parameter.getValue()).thenReturn("\"a\" + \"b\"");
-        assertEquals("\"a\" + \"b\"", ElementParameterParser.getEncryptedValue(node, paramName));
+        val = "\"a\" + \"b\"";
+        when(parameter.getValue()).thenReturn(val);
+        assertEquals(val, ElementParameterParser.getEncryptedValue(node, paramName));
         // \\123456/
-        when(parameter.getValue()).thenReturn("\"\\\\123456/\"");
-        assertEquals("\"ENC:[B7HIZB1mu4mrbvTqJk84XQ==]\"", ElementParameterParser.getEncryptedValue(node, paramName));
+        val = "\"\\\\123456/\"";
+        targetVal = TalendQuoteUtils.removeQuotes(val);
+        targetVal = TalendQuoteUtils.checkSlashAndRemoveQuotation(targetVal);
+        when(parameter.getValue()).thenReturn(val);
+        assertEquals(targetVal,
+                decryptPassword(ElementParameterParser.getEncryptedValue(node, paramName)));
         // \123456/
-        when(parameter.getValue()).thenReturn("\"\\123456/\"");
-        assertEquals("\"ENC:[bzSVFVjd9z6nk8jyKYi3iw==]\"", ElementParameterParser.getEncryptedValue(node, paramName));
+        val = "\"\\123456/\"";
+        targetVal = TalendQuoteUtils.removeQuotes(val);
+        targetVal = TalendQuoteUtils.checkSlashAndRemoveQuotation(targetVal);
+        when(parameter.getValue()).thenReturn(val);
+        assertEquals(targetVal,
+                decryptPassword(ElementParameterParser.getEncryptedValue(node, paramName)));
     }
 }
