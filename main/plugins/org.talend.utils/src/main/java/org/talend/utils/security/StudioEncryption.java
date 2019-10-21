@@ -19,8 +19,6 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.nio.charset.StandardCharsets;
-import java.nio.file.Files;
-import java.nio.file.StandardCopyOption;
 import java.security.Provider;
 import java.security.Security;
 import java.util.Base64;
@@ -40,16 +38,13 @@ public class StudioEncryption {
 
     private static final Logger LOGGER = Logger.getLogger(StudioEncryption.class);
 
-    // TODO We should remove default key after implements master key encryption algorithm
-    private static final String ENCRYPTION_KEY = "Talend_TalendKey";// The length of key should be 16, 24 or 32.
-
     private static final String ENCRYPTION_KEY_FILE_NAME = StudioKeysFileCheck.ENCRYPTION_KEY_FILE_NAME;
 
     private static final String ENCRYPTION_KEY_FILE_SYS_PROP = StudioKeysFileCheck.ENCRYPTION_KEY_FILE_SYS_PROP;
 
-    private static final String PREFIX_PASSWORD = "ENC:["; //$NON-NLS-1$
+    public static final String PREFIX_PASSWORD = "ENC:["; //$NON-NLS-1$
 
-    private static final String POSTFIX_PASSWORD = "]"; //$NON-NLS-1$
+    public static final String POSTFIX_PASSWORD = "]"; //$NON-NLS-1$
 
     // Encryption key property names
     private static final String KEY_SYSTEM = "system.encryption.key.v1";
@@ -86,7 +81,6 @@ public class StudioEncryption {
                 cachedKeySources.put(keyName, ks);
             }
         }
-        cachedKeySources.put(EncryptionKeyName.ROUTINE, KeySources.fixedKey(ENCRYPTION_KEY));
         return cachedKeySources;
     });
 
@@ -224,9 +218,9 @@ public class StudioEncryption {
                     } catch (IOException e) {
                         LOGGER.error("load encryption keys error", e);
                     }
-                    // EncryptionKeyName.MIGRATION_TOKEN are not allowed to be updated
+                    // EncryptionKeyName.MIGRATION_TOKEN and ROUTINE are not allowed to be updated
                     p.remove(EncryptionKeyName.MIGRATION_TOKEN.name);
-
+                    p.remove(EncryptionKeyName.ROUTINE.name);
                     // persist keys to ~configuration/studio.keys
                     try (OutputStream fo = new FileOutputStream(keyFile)) {
                         p.store(fo, "studio encryption keys");
