@@ -41,8 +41,10 @@ import org.eclipse.aether.transport.http.HttpTransporterFactory;
 import org.eclipse.aether.util.repository.AuthenticationBuilder;
 import org.eclipse.m2e.core.MavenPlugin;
 import org.talend.core.nexus.ArtifactRepositoryBean;
+import org.talend.core.nexus.NexusConstants;
 import org.talend.core.nexus.TalendLibsServerManager;
 import org.talend.core.runtime.maven.MavenArtifact;
+import org.talend.utils.security.StudioEncryption;
 
 public class MavenLibraryResolverProvider {
 
@@ -90,10 +92,16 @@ public class MavenLibraryResolverProvider {
                     .setAuthentication(authentication).build();
         }
         Authentication authentication = new AuthenticationBuilder().addUsername("studio-dl-client")
-                .addPassword("studio-dl-client").build();
-
+                .addPassword(StudioEncryption.getStudioEncryption(StudioEncryption.EncryptionKeyName.SYSTEM)
+                        .encrypt("studio-dl-client"))
+                .build();
+        String serverUrl = talendServer.getServer();
+        if (!serverUrl.endsWith(NexusConstants.SLASH)) {
+            serverUrl += NexusConstants.SLASH;
+        }
         dynamicRemoteRepository = new RemoteRepository.Builder("talend2", "default", //$NON-NLS-1$ //$NON-NLS-2$
-                "https://talend-update.talend.com/nexus/content/groups/dynamicdistribution/").setAuthentication(authentication).build();
+                serverUrl + NexusConstants.DYNAMIC_DISTRIBUTION).setAuthentication(authentication)
+                        .build();
 
     }
 
