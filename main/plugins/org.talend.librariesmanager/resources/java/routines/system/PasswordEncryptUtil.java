@@ -27,11 +27,11 @@ import org.talend.daikon.crypto.KeySource;
  */
 public class PasswordEncryptUtil {
 
-    public static String ENCRYPT_KEY = "Encrypt"; //$NON-NLS-1$
+    public static final String ENCRYPT_KEY = "Encrypt"; //$NON-NLS-1$
 
-    public static String PREFIX_PASSWORD = "ENC:["; //$NON-NLS-1$
+    public static final String PREFIX_PASSWORD = "ENC:["; //$NON-NLS-1$
 
-    public static String POSTFIX_PASSWORD = "]"; //$NON-NLS-1$
+    public static final String POSTFIX_PASSWORD = "]"; //$NON-NLS-1$
 
     private static Encryption defaultEncryption;
 
