@@ -21,6 +21,7 @@ import java.util.Properties;
 import org.talend.daikon.crypto.CipherSources;
 import org.talend.daikon.crypto.Encryption;
 import org.talend.daikon.crypto.KeySource;
+import org.talend.daikon.crypto.KeySources;
 
 /**
  * DOC chuang class global comment. Detailled comment
@@ -29,9 +30,9 @@ public class PasswordEncryptUtil {
 
     public static final String ENCRYPT_KEY = "Encrypt"; //$NON-NLS-1$
 
-    public static final String PREFIX_PASSWORD = "ENC:["; //$NON-NLS-1$
+    private  static final String PREFIX_PASSWORD = "ENC:["; //$NON-NLS-1$
 
-    public static final String POSTFIX_PASSWORD = "]"; //$NON-NLS-1$
+    private  static final String POSTFIX_PASSWORD = "]"; //$NON-NLS-1$
 
     private static Encryption defaultEncryption;
 
@@ -68,9 +69,17 @@ public class PasswordEncryptUtil {
 
     private static KeySource getKeySource() throws Exception {
         if (keySource == null) {
-            InputStream inputStream = PasswordEncryptUtil.class.getResourceAsStream("keys.properties");
-            keySource = new InputStreamKeySource(inputStream, "routine.encryption.key");
+            keySource = KeySources.systemProperty("routine.encryption.key");
+            try {
+                if (keySource != null && keySource.getKey() != null) {
+                    return keySource;
+                }
+            } catch (Exception e) {
+                // do nothing
+            }
         }
+        InputStream inputStream = PasswordEncryptUtil.class.getResourceAsStream("keys.properties");
+        keySource = new InputStreamKeySource(inputStream, "routine.encryption.key");
         return keySource;
     }
 
