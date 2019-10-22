@@ -42,9 +42,9 @@ public class StudioEncryption {
 
     private static final String ENCRYPTION_KEY_FILE_SYS_PROP = StudioKeysFileCheck.ENCRYPTION_KEY_FILE_SYS_PROP;
 
-    public static final String PREFIX_PASSWORD = "ENC:["; //$NON-NLS-1$
+    private static final String PREFIX_PASSWORD = "ENC:["; //$NON-NLS-1$
 
-    public static final String POSTFIX_PASSWORD = "]"; //$NON-NLS-1$
+    private static final String POSTFIX_PASSWORD = "]"; //$NON-NLS-1$
 
     // Encryption key property names
     private static final String KEY_SYSTEM = "system.encryption.key.v1";
@@ -118,7 +118,7 @@ public class StudioEncryption {
 
     private static KeySource loadKeySource(EncryptionKeyName encryptionKeyName) {
         // EncryptionKeyName.SYSTEM, always load from system property firstly, then load from file
-        if (encryptionKeyName == EncryptionKeyName.SYSTEM) {
+        if (encryptionKeyName == EncryptionKeyName.SYSTEM || encryptionKeyName == EncryptionKeyName.ROUTINE) {
             KeySource ks = KeySources.systemProperty(encryptionKeyName.name);
             try {
                 if (ks.getKey() != null) {
