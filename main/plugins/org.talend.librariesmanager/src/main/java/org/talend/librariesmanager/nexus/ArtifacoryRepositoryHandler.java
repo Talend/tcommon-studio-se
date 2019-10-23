@@ -20,9 +20,15 @@ import java.util.List;
 import org.apache.commons.codec.binary.Base64;
 import org.apache.http.Header;
 import org.apache.http.HttpResponse;
+import org.apache.http.auth.AuthScope;
+import org.apache.http.auth.UsernamePasswordCredentials;
 import org.apache.http.client.ClientProtocolException;
+import org.apache.http.client.CredentialsProvider;
+import org.apache.http.client.HttpClient;
+import org.apache.http.client.fluent.Executor;
 import org.apache.http.client.fluent.Request;
 import org.apache.http.client.methods.HttpGet;
+import org.apache.http.impl.client.BasicCredentialsProvider;
 import org.apache.http.impl.client.DefaultHttpClient;
 import org.apache.http.message.BasicHeader;
 import org.apache.http.util.EntityUtils;
@@ -79,13 +85,11 @@ public class ArtifacoryRepositoryHandler extends AbstractArtifactRepositoryHandl
         return connectionOk;
     }
 
-    private boolean doConnectionCheck(String repositoryUrl) throws ClientProtocolException, IOException {
-        String userPass = serverBean.getUserName() + ":" + serverBean.getPassword();
-        String basicAuth = "Basic " + new String(new Base64().encode(userPass.getBytes()));
-        Header authority = new BasicHeader("Authorization", basicAuth);
+    private boolean doConnectionCheck(String repositoryUrl) throws ClientProtocolException, IOException {        
         HttpGet get = new HttpGet(repositoryUrl);
-        get.addHeader(authority);
         DefaultHttpClient httpclient = new DefaultHttpClient();
+        UsernamePasswordCredentials credentials = new UsernamePasswordCredentials(serverBean.getUserName(), serverBean.getPassword());
+        httpclient.getCredentialsProvider().setCredentials(AuthScope.ANY, credentials);
         HttpResponse response = httpclient.execute(get);
         if (response.getStatusLine().getStatusCode() == 200) {
             return true;
@@ -144,13 +148,12 @@ public class ArtifacoryRepositoryHandler extends AbstractArtifactRepositoryHandl
         }
         searchUrl = searchUrl + query;
         Request request = Request.Get(searchUrl);
-        String userPass = serverBean.getUserName() + ":" + serverBean.getPassword();
-        String basicAuth = "Basic " + new String(new Base64().encode(userPass.getBytes()));
-        Header authority = new BasicHeader("Authorization", basicAuth);
-        request.addHeader(authority);
+    	Executor exec = Executor.newInstance();
+        UsernamePasswordCredentials credentials = new UsernamePasswordCredentials(serverBean.getUserName(), serverBean.getPassword());
+        exec.auth(credentials);
         List<MavenArtifact> resultList = new ArrayList<MavenArtifact>();
 
-        HttpResponse response = request.execute().returnResponse();
+        HttpResponse response = exec.execute(request).returnResponse();
         String content = EntityUtils.toString(response.getEntity());
         if (content.isEmpty()) {
             return resultList;
