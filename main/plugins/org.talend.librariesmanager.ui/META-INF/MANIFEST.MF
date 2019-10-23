@@ -23,4 +23,5 @@ Export-Package: org.talend.librariesmanager.ui,
  org.talend.librariesmanager.ui.views,
  org.talend.librariesmanager.utils
 Bundle-Vendor: .Talend SA.
-Import-Package: org.talend.osgi.hook.notification
+Import-Package: net.sf.json,
+ org.talend.osgi.hook.notification

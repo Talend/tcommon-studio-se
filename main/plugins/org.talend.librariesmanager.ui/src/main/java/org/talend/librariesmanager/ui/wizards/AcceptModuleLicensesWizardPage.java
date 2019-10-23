@@ -44,6 +44,7 @@ import org.talend.core.model.general.ModuleToInstall;
 import org.talend.core.model.utils.TalendPropertiesUtil;
 import org.talend.librariesmanager.ui.LibManagerUiPlugin;
 import org.talend.librariesmanager.ui.i18n.Messages;
+import org.talend.librariesmanager.utils.LicenseTextUtil;
 import org.talend.librariesmanager.utils.RemoteModulesHelper;
 
 /**
@@ -256,7 +257,9 @@ public class AcceptModuleLicensesWizardPage extends WizardPage {
                         licenseTextBox.setText(Messages.getString("AcceptModuleLicensesWizardPage.licenseContent.defaultDesc")); //$NON-NLS-1$
                     }
                 } else if (licenseText != null) {
-                    String licenseContent = RemoteModulesHelper.getInstance().getLicenseContentByUrl(url);
+//                    String licenseContent = RemoteModulesHelper.getInstance().getLicenseContentByUrl(url);
+                    String licenseContent = LicenseTextUtil.getLicenseTextByLicenseType(type);
+                    licenseText.setText(LicenseTextUtil.getLicenseTextByLicenseType(type));
                     if (licenseContent != null) {
                         licenseText.setText(licenseContent);
                     } else {
