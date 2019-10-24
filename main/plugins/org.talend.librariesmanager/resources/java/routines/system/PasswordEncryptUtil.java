@@ -12,7 +12,6 @@
 // ============================================================================
 package routines.system;
 
-import java.io.IOException;
 import java.io.InputStream;
 import java.nio.charset.StandardCharsets;
 import java.util.Base64;
@@ -30,11 +29,9 @@ public class PasswordEncryptUtil {
 
     public static final String ENCRYPT_KEY = "Encrypt"; //$NON-NLS-1$
 
-    private  static final String PREFIX_PASSWORD = "ENC:["; //$NON-NLS-1$
+    private static final String PREFIX_PASSWORD = "ENC:["; //$NON-NLS-1$
 
-    private  static final String POSTFIX_PASSWORD = "]"; //$NON-NLS-1$
-
-    private static Encryption defaultEncryption;
+    private static final String POSTFIX_PASSWORD = "]"; //$NON-NLS-1$
 
     private static KeySource keySource = null;
 
@@ -61,10 +58,7 @@ public class PasswordEncryptUtil {
     }
 
     private static Encryption getEncryption() throws Exception {
-        if (defaultEncryption == null) {
-            defaultEncryption = new Encryption(getKeySource(), CipherSources.getDefault());
-        }
-        return defaultEncryption;
+        return new Encryption(getKeySource(), CipherSources.getDefault());
     }
 
     private static KeySource getKeySource() throws Exception {
@@ -78,52 +72,51 @@ public class PasswordEncryptUtil {
                 // do nothing
             }
         }
-        InputStream inputStream = PasswordEncryptUtil.class.getResourceAsStream("keys.properties");
-        keySource = new InputStreamKeySource(inputStream, "routine.encryption.key");
+        if (keySource == null) {
+            InputStream inputStream = null;
+            try {
+                inputStream = PasswordEncryptUtil.class.getResourceAsStream("keys.properties");
+                keySource = new InputStreamKeySource(inputStream, "routine.encryption.key");
+            } finally {
+                inputStream.close();
+            }
+        }
         return keySource;
     }
 
     public static final String PASSWORD_FOR_LOGS_VALUE = "...";
 
-}
+    private static class InputStreamKeySource implements KeySource {
 
-class InputStreamKeySource implements KeySource {
+        private final InputStream inputStream;
 
-    private InputStream inputStream;
+        private final String keyName;
 
-    private String keyName;
+        private byte[] keyValue = null;
 
-    private byte[] keyValue = null;
+        public InputStreamKeySource(InputStream inputStream, String keyName) {
+            this.inputStream = inputStream;
+            this.keyName = keyName;
+        }
 
-    public InputStreamKeySource(InputStream inputStream, String keyName) {
-        this.inputStream = inputStream;
-        this.keyName = keyName;
-    }
-
-    @Override
-    public byte[] getKey() throws Exception {
-        if (keyValue != null) {
+        @Override
+        public byte[] getKey() throws Exception {
+            if (keyValue != null) {
+                return keyValue;
+            }
+            if (inputStream == null) {
+                throw new Exception("Input stream should not be null.");
+            }
+            Properties p = new Properties();
+            p.load(inputStream);
+            String value = p.getProperty(keyName);
+            if (value != null) {
+                keyValue = Base64.getDecoder().decode(value.getBytes(StandardCharsets.UTF_8));
+            } else {
+                throw new Exception("Can't find key name: " + keyName);
+            }
             return keyValue;
         }
-        if (inputStream == null) {
-            throw new Exception("Input stream should not be null.");
-        }
-        Properties p = new Properties();
-        try {
-            p.load(inputStream);
-        } finally {
-            try {
-                inputStream.close();
-            } catch (IOException e) {
-                // Ignore here
-            }
-        }
-        String value = p.getProperty(keyName);
-        if (value != null) {
-            keyValue = Base64.getDecoder().decode(value.getBytes(StandardCharsets.UTF_8));
-        } else {
-            throw new Exception("Can't find key name: " + keyName);
-        }
-        return keyValue;
     }
 }
+
