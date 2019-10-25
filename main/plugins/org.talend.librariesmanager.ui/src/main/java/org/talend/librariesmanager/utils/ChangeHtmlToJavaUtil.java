@@ -22,8 +22,7 @@ public class ChangeHtmlToJavaUtil {
     private static final String LICENSE_UNKNOWN = "UNKNOWN";
 
     public static void main(String[] args) {
-        // TODO Auto-generated method stub
-        addLineBreakMark("D:\\Apache License Version 2.txt");
+        addLineBreakMark("D:\\AGPL-3.0.txt");
         // JSONArray resolveIndexfileToJSONArray = resolveIndexfileToJSONArray("D:\\library_data（下载前）.index");
         // Map<String, String> map = new HashMap<String, String>();
         // putLicenseInfoIntoMap(map, resolveIndexfileToJSONArray);
@@ -123,7 +122,6 @@ public class ChangeHtmlToJavaUtil {
                     for (int j = 0; j < licenseList.size(); j++) {
                         JSONObject license = licenseList.getJSONObject(j);
                         String licenseName = license.getString(LIBRARY_DATA_NAME);
-                        System.out.println(obj.getString("mvnUrl") + "============== " + i);
                         if ("mvn:net.iharder/base64/2.3.8/jar".equals(obj.getString("mvnUrl"))) {
                             // this one has license info but no url
                             continue;
