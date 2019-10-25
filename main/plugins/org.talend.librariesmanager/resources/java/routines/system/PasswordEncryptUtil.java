@@ -63,7 +63,7 @@ public class PasswordEncryptUtil {
 
     private static class JobKeySourceProviderHolder {
 
-        private static JobKeySourceProvider instance = new JobKeySourceProvider();
+        private static final JobKeySourceProvider instance = new JobKeySourceProvider();
     }
 
     private static class JobKeySourceProvider {
@@ -95,7 +95,7 @@ public class PasswordEncryptUtil {
 
     private static class ClassPathKeySource implements KeySource {
 
-        private String keyName;
+        private final String keyName;
 
         private volatile static byte[] keyValue;
 
