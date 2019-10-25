@@ -33,7 +33,7 @@ public class PasswordEncryptUtil {
 
     private static final String POSTFIX_PASSWORD = "]"; //$NON-NLS-1$
 
-    private static KeySource keySource = null;
+    public static final String PASSWORD_FOR_LOGS_VALUE = "...";
 
     public static String encryptPassword(String input) throws Exception {
         if (input == null) {
@@ -58,65 +58,73 @@ public class PasswordEncryptUtil {
     }
 
     private static Encryption getEncryption() throws Exception {
-        return new Encryption(getKeySource(), CipherSources.getDefault());
+        return new Encryption(JobKeySourceProvider.getInstance().getKeySource(), CipherSources.getDefault());
     }
 
-    private static KeySource getKeySource() throws Exception {
-        if (keySource == null) {
-            keySource = KeySources.systemProperty("routine.encryption.key");
+    private static class JobKeySourceProviderHolder {
+
+        private static JobKeySourceProvider instance = new JobKeySourceProvider();
+    }
+
+    private static class JobKeySourceProvider {
+
+        private static KeySource keySource;
+
+        private JobKeySourceProvider() {
+            String keyName = "routine.encryption.key";
+            KeySource ks = KeySources.systemProperty(keyName);
             try {
-                if (keySource != null && keySource.getKey() != null) {
-                    return keySource;
+                if (ks != null && ks.getKey() != null) {
+                    keySource = ks;
+                    return;
                 }
             } catch (Exception e) {
                 // do nothing
             }
+            keySource = new ClassPathKeySource(keyName);
         }
-        if (keySource == null) {
-            InputStream inputStream = null;
-            try {
-                inputStream = PasswordEncryptUtil.class.getResourceAsStream("keys.properties");
-                keySource = new InputStreamKeySource(inputStream, "routine.encryption.key");
-            } finally {
-                inputStream.close();
-            }
+
+        public static JobKeySourceProvider getInstance() {
+            return JobKeySourceProviderHolder.instance;
         }
-        return keySource;
+
+        public KeySource getKeySource() {
+            return keySource;
+        }
     }
 
-    public static final String PASSWORD_FOR_LOGS_VALUE = "...";
+    private static class ClassPathKeySource implements KeySource {
 
-    private static class InputStreamKeySource implements KeySource {
+        private String keyName;
 
-        private final InputStream inputStream;
+        private volatile static byte[] keyValue;
 
-        private final String keyName;
-
-        private byte[] keyValue = null;
-
-        public InputStreamKeySource(InputStream inputStream, String keyName) {
-            this.inputStream = inputStream;
+        ClassPathKeySource(String keyName) {
             this.keyName = keyName;
         }
 
         @Override
         public byte[] getKey() throws Exception {
-            if (keyValue != null) {
-                return keyValue;
-            }
-            if (inputStream == null) {
-                throw new Exception("Input stream should not be null.");
-            }
-            Properties p = new Properties();
-            p.load(inputStream);
-            String value = p.getProperty(keyName);
-            if (value != null) {
-                keyValue = Base64.getDecoder().decode(value.getBytes(StandardCharsets.UTF_8));
-            } else {
-                throw new Exception("Can't find key name: " + keyName);
+            if (keyValue == null) {
+                synchronized (ClassPathKeySource.class) {
+                    if (keyValue == null) {
+                        try (InputStream inputStream = PasswordEncryptUtil.class.getResourceAsStream("keys.properties")) {
+                            if (inputStream == null) {
+                                throw new Exception("Input stream should not be null.");
+                            }
+                            Properties p = new Properties();
+                            p.load(inputStream);
+                            String value = p.getProperty(keyName);
+                            if (value != null) {
+                                keyValue = Base64.getDecoder().decode(value.getBytes(StandardCharsets.UTF_8));
+                            } else {
+                                throw new Exception("Can't find key name: " + keyName);
+                            }
+                        }
+                    }
+                }
             }
             return keyValue;
         }
     }
 }
-
