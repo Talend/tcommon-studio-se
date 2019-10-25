@@ -41,7 +41,6 @@ import org.eclipse.swt.widgets.TreeItem;
 import org.eclipse.ui.PlatformUI;
 import org.talend.commons.exception.ExceptionHandler;
 import org.talend.core.model.general.ModuleToInstall;
-import org.talend.core.model.utils.TalendPropertiesUtil;
 import org.talend.librariesmanager.ui.LibManagerUiPlugin;
 import org.talend.librariesmanager.ui.i18n.Messages;
 import org.talend.librariesmanager.utils.LicenseTextUtil;
@@ -182,7 +181,7 @@ public class AcceptModuleLicensesWizardPage extends WizardPage {
 
         Label label = new Label(composite, SWT.NONE);
         label.setText(Messages.getString("AcceptModuleLicensesWizardPage.licenseContent.label")); //$NON-NLS-1$
-        if (TalendPropertiesUtil.isEnabledUseBrowser()) {
+        if (false) {
             licenseTextBox = new Browser(composite, SWT.MULTI | SWT.BORDER | SWT.WRAP | SWT.READ_ONLY);
             licenseTextBox.setBackground(licenseTextBox.getDisplay().getSystemColor(SWT.COLOR_LIST_BACKGROUND));
 
@@ -250,7 +249,7 @@ public class AcceptModuleLicensesWizardPage extends WizardPage {
                 declineButton.setSelection(!isLicenseAccepted);
                 String url = license.getUrl();
 
-                if (TalendPropertiesUtil.isEnabledUseBrowser() && licenseTextBox != null) {
+                if (false && licenseTextBox != null) {
                     if (url != null && !url.trim().isEmpty()) {
                         licenseTextBox.setUrl(url);
                     } else {
