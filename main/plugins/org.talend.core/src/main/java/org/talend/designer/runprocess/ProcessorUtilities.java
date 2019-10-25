@@ -2606,6 +2606,35 @@ public class ProcessorUtilities {
         return false;
     }
 
+    public static boolean isEsbJob(IProcess process, boolean checkCurrentProcess) {
+
+        if (process instanceof IProcess2) {
+
+            if (checkCurrentProcess) {
+                for (INode n : process.getGraphicalNodes()) {
+                    if (isEsbComponentName(n.getComponent().getName())) {
+                        return true;
+                    }
+                }
+            } else {
+                Set<JobInfo> infos = ProcessorUtilities.getChildrenJobInfo(((IProcess2) process).getProperty().getItem(), false);
+
+                for (JobInfo jobInfo : infos) {
+                    ProcessType processType = jobInfo.getProcessItem().getProcess();
+                    EList<NodeType> nodes = processType.getNode();
+                    for (NodeType nodeType : nodes) {
+                        if (isEsbComponentName(nodeType.getComponentName())) {
+                            return true;
+                        }
+                    }
+                }
+            }
+            return false;
+        }
+
+        return false;
+    }
+
     private static void addEsbJob(JobInfo jobInfo) {
         if (esbJobs.contains(esbJobKey(jobInfo.getJobId(), jobInfo.getJobVersion()))) {
             return;
