@@ -152,11 +152,13 @@ public class CreateMavenStandardJobOSGiPom extends CreateMavenJobPom {
         model.addProperty("talend.job.finalName", "${talend.job.name}-bundle-${project.version}");
         Build build = model.getBuild();
         
-        IESBService service = (IESBService) GlobalServiceRegister.getDefault().getService(IESBService.class);
+        if (GlobalServiceRegister.getDefault().isServiceRegistered(IESBService.class)) {
+            IESBService service = (IESBService) GlobalServiceRegister.getDefault().getService(IESBService.class);
 
-        if (isServiceOperation || service.isRESTService((ProcessItem) getJobProcessor().getProperty().getItem())
-                || isRouteOperation(getJobProcessor().getProperty())) {
-            build.addPlugin(addSkipDockerMavenPlugin());
+            if (isServiceOperation || service.isRESTService((ProcessItem) getJobProcessor().getProperty().getItem())
+                    || isRouteOperation(getJobProcessor().getProperty())) {
+                build.addPlugin(addSkipDockerMavenPlugin());
+            }
         }
         
         if (isServiceOperation) {
@@ -283,25 +285,25 @@ public class CreateMavenStandardJobOSGiPom extends CreateMavenJobPom {
         List<IRepositoryViewObject> serviceRepoList = null;
 
         boolean isDataServiceOperation = false;
+        if (GlobalServiceRegister.getDefault().isServiceRegistered(IESBService.class)) {
+            IESBService service = (IESBService) GlobalServiceRegister.getDefault().getService(IESBService.class);
+            try {
+                IProxyRepositoryFactory factory = ProxyRepositoryFactory.getInstance();
+                serviceRepoList = factory.getAll(ERepositoryObjectType.valueOf(ERepositoryObjectType.class, "SERVICES"));
 
-        IESBService service = (IESBService) GlobalServiceRegister.getDefault().getService(IESBService.class);
-
-        try {
-            IProxyRepositoryFactory factory = ProxyRepositoryFactory.getInstance();
-            serviceRepoList = factory.getAll(ERepositoryObjectType.valueOf(ERepositoryObjectType.class, "SERVICES"));
-
-            for (IRepositoryViewObject serviceItem : serviceRepoList) {
-                if (service != null) {
-                    List<String> jobIds = service.getSerivceRelatedJobIds(serviceItem.getProperty().getItem());
-                    if (jobIds.contains(property.getId())) {
-                        isDataServiceOperation = true;
-                        break;
+                for (IRepositoryViewObject serviceItem : serviceRepoList) {
+                    if (service != null) {
+                        List<String> jobIds = service.getSerivceRelatedJobIds(serviceItem.getProperty().getItem());
+                        if (jobIds.contains(property.getId())) {
+                            isDataServiceOperation = true;
+                            break;
+                        }
                     }
                 }
-            }
 
-        } catch (PersistenceException e) {
-            ExceptionHandler.process(e);
+            } catch (PersistenceException e) {
+                ExceptionHandler.process(e);
+            }
         }
 
         return isDataServiceOperation;
@@ -311,32 +313,33 @@ public class CreateMavenStandardJobOSGiPom extends CreateMavenJobPom {
         List<IRepositoryViewObject> routeRepoList = null;
 
         boolean isRouteOperation = false;
+        if (GlobalServiceRegister.getDefault().isServiceRegistered(IESBService.class)) {
 
-        IESBService service = (IESBService) GlobalServiceRegister.getDefault().getService(IESBService.class);
+            IESBService service = (IESBService) GlobalServiceRegister.getDefault().getService(IESBService.class);
 
-        try {
-            IProxyRepositoryFactory factory = ProxyRepositoryFactory.getInstance();
-            routeRepoList = factory.getAll(ERepositoryObjectType.valueOf(ERepositoryObjectType.class, "ROUTE"));
+            try {
+                IProxyRepositoryFactory factory = ProxyRepositoryFactory.getInstance();
+                routeRepoList = factory.getAll(ERepositoryObjectType.valueOf(ERepositoryObjectType.class, "ROUTE"));
 
-            for (IRepositoryViewObject routeItem : routeRepoList) {
-                if (service != null) {
+                for (IRepositoryViewObject routeItem : routeRepoList) {
+                    if (service != null) {
 
-                    List<Relation> relations = RelationshipItemBuilder.getInstance().getItemsRelatedTo(routeItem.getId(),
-                            routeItem.getVersion(), RelationshipItemBuilder.JOB_RELATION);
-                    for (Relation relation : relations) {
-                        if (relation.getType() == RelationshipItemBuilder.JOB_RELATION) {
-                            if (relation.getId().equals(property.getId())) {
-                                isRouteOperation = true;
+                        List<Relation> relations = RelationshipItemBuilder.getInstance().getItemsRelatedTo(routeItem.getId(),
+                                routeItem.getVersion(), RelationshipItemBuilder.JOB_RELATION);
+                        for (Relation relation : relations) {
+                            if (relation.getType() == RelationshipItemBuilder.JOB_RELATION) {
+                                if (relation.getId().equals(property.getId())) {
+                                    isRouteOperation = true;
+                                }
                             }
                         }
                     }
                 }
+
+            } catch (PersistenceException e) {
+                ExceptionHandler.process(e);
             }
-
-        } catch (PersistenceException e) {
-            ExceptionHandler.process(e);
         }
-
         return isRouteOperation;
     }
 }
