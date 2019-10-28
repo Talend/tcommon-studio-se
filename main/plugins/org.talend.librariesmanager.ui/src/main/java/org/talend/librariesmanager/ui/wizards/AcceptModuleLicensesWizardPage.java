@@ -181,9 +181,12 @@ public class AcceptModuleLicensesWizardPage extends WizardPage {
 
         Label label = new Label(composite, SWT.NONE);
         label.setText(Messages.getString("AcceptModuleLicensesWizardPage.licenseContent.label")); //$NON-NLS-1$
-        licenseText = new Text(composite, SWT.MULTI | SWT.BORDER | SWT.READ_ONLY | SWT.V_SCROLL | SWT.H_SCROLL);
-        initializeDialogUnits(licenseText);
-        licenseText.setLayoutData(new GridData(GridData.FILL_BOTH));
+        licenseTextBox = new Browser(composite, SWT.MULTI | SWT.BORDER | SWT.WRAP | SWT.READ_ONLY);
+        licenseTextBox.setBackground(licenseTextBox.getDisplay().getSystemColor(SWT.COLOR_LIST_BACKGROUND));
+
+        initializeDialogUnits(licenseTextBox);
+        gd = new GridData(SWT.FILL, SWT.FILL, true, true);
+        licenseTextBox.setLayoutData(gd);
         createLicenseAcceptSection(composite);
 
         setControl(composite);
@@ -239,16 +242,12 @@ public class AcceptModuleLicensesWizardPage extends WizardPage {
                 acceptButton.setSelection(isLicenseAccepted);
                 declineButton.setSelection(!isLicenseAccepted);
                 String url = license.getUrl();
-
-                if (licenseText != null) {
-                    String licenseContent = LicenseTextUtil.getLicenseTextByLicenseType(type);
-                    licenseText.setText(LicenseTextUtil.getLicenseTextByLicenseType(type));
-                    if (licenseContent != null) {
-                        licenseText.setText(licenseContent);
-                    } else {
-                        licenseText.setText(Messages.getString("AcceptModuleLicensesWizardPage.licenseContent.defaultDesc")); //$NON-NLS-1$
-                    }
+                if (url != null && !url.trim().isEmpty()) {
+                    licenseTextBox.setUrl(LicenseTextUtil.getLicenseTextByType(type));
+                } else {
+                    licenseTextBox.setText(Messages.getString("AcceptModuleLicensesWizardPage.licenseContent.defaultDesc")); //$NON-NLS-1$
                 }
+                
             }
         }
     }
