@@ -75,6 +75,7 @@ import org.talend.core.runtime.services.IFilterService;
 import org.talend.core.ui.ITestContainerProviderService;
 import org.talend.designer.core.ICamelDesignerCoreService;
 import org.talend.designer.maven.launch.MavenPomCommandLauncher;
+import org.talend.designer.maven.model.MavenSystemFolders;
 import org.talend.designer.maven.model.TalendJavaProjectConstants;
 import org.talend.designer.maven.model.TalendMavenConstants;
 import org.talend.designer.maven.template.MavenTemplateManager;
@@ -491,6 +492,10 @@ public class AggregatorPomsHelper {
             return codesFolder.getFolder(DIR_BEANS);
         }
         return null;
+    }
+
+    public IFolder getCodeSrcFolder(ERepositoryObjectType codeType) {
+        return getCodeFolder(codeType).getFolder(MavenSystemFolders.JAVA.getPath());
     }
 
     public IFolder getProcessFolder(ERepositoryObjectType type) {

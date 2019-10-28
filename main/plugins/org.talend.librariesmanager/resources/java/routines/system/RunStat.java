@@ -503,6 +503,13 @@ public class RunStat implements Runnable {
     }
     
     /**
+     * TBD-9420 fix 
+     */
+    public synchronized void log(String iterateId, int mode, int nbLine, String connectionUniqueName) {
+		log(connectionUniqueName+iterateId, mode, nbLine);
+    }
+    
+    /**
      * work for avoiding the 65535 issue
      */
     public synchronized void updateStatAndLog(boolean execStat, boolean enableLogStash, String iterateId, int mode, int nbLine, String... connectionUniqueNames) {

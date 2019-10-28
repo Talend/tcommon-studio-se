@@ -19,8 +19,9 @@ import java.util.Collection;
 import java.util.Collections;
 import java.util.Date;
 import java.util.HashMap;
-import java.util.List;
+import java.util.HashSet;
 import java.util.Map;
+import java.util.Set;
 
 import org.eclipse.core.resources.IFile;
 import org.eclipse.core.resources.IFolder;
@@ -80,6 +81,8 @@ public abstract class AbstractRoutineSynchronizer implements ITalendSynchronizer
     }
 
     private Collection<RoutineItem> getAll(ERepositoryObjectType type, boolean syncRef) throws SystemException {
+        // init code project
+        getRunProcessService().getTalendCodeJavaProject(type);
         // remove routine with same name in reference project
         final Map<String, RoutineItem> beansList = new HashMap<String, RoutineItem>();
         for (IRepositoryViewObject obj : getRepositoryService().getProxyRepositoryFactory().getAll(type)) {
@@ -96,34 +99,37 @@ public abstract class AbstractRoutineSynchronizer implements ITalendSynchronizer
         return (IRepositoryService) GlobalServiceRegister.getDefault().getService(IRepositoryService.class);
     }
 
-    private void getReferencedProjectRoutine(final Map<String, RoutineItem> beansList, final Project project,
-            ERepositoryObjectType routineType, boolean syncRef) throws SystemException {
-        List<IRepositoryViewObject> list = getRepositoryService().getProxyRepositoryFactory().getAll(project, routineType);
-
-        if (list.size() == 0) {
+    private Set<IRepositoryViewObject> getReferencedProjectRoutine(final Map<String, RoutineItem> beansList,
+            final Project project, ERepositoryObjectType routineType, boolean syncRef) throws SystemException {
+        // init ref code project
+        if (syncRef) {
             getRunProcessService().getTalendCodeJavaProject(routineType, project.getTechnicalLabel());
-        } else {
-            for (IRepositoryViewObject obj : list) {
-                final String key = obj.getProperty().getLabel();
-                // it does not have a routine with same name
-                if (!beansList.containsKey(key)) {
-                    beansList.put(key, (RoutineItem) obj.getProperty().getItem());
-                }
-                if (syncRef) {
-                    // sync routine
-                    syncRoutine((RoutineItem) obj.getProperty().getItem(), false, true, true);
-                }
+        }
+        Set<IRepositoryViewObject> routines = new HashSet<>();
+        routines.addAll(getRepositoryService().getProxyRepositoryFactory().getAll(project, routineType));
+        for (IRepositoryViewObject obj : routines) {
+            final String key = obj.getProperty().getLabel();
+            // it does not have a routine with same name
+            if (!beansList.containsKey(key)) {
+                beansList.put(key, (RoutineItem) obj.getProperty().getItem());
             }
         }
-
+        for (ProjectReference projectReference : project.getProjectReferenceList()) {
+            routines.addAll(getReferencedProjectRoutine(beansList, new Project(projectReference.getReferencedProject()),
+                    routineType, syncRef));
+        }
         if (syncRef) {
+            routines.stream().forEach(obj -> {
+                try {
+                    syncRoutine((RoutineItem) obj.getProperty().getItem(), project.getTechnicalLabel(), true, true);
+                } catch (SystemException e) {
+                    ExceptionHandler.process(e);
+                }
+            });
             // sync system routine
             syncSystemRoutine(project);
         }
-
-        for (ProjectReference projectReference : project.getProjectReferenceList()) {
-            getReferencedProjectRoutine(beansList, new Project(projectReference.getReferencedProject()), routineType, syncRef);
-        }
+        return routines;
     }
 
     protected void syncSystemRoutine(Project project) throws SystemException {
@@ -136,24 +142,17 @@ public abstract class AbstractRoutineSynchronizer implements ITalendSynchronizer
     }
 
     protected IFile getRoutineFile(RoutineItem routineItem) throws SystemException {
-        return getRoutineFile(routineItem, true);
+        return getRoutineFile(routineItem, ProjectManager.getInstance().getCurrentProject().getTechnicalLabel());
     }
 
-    protected IFile getRoutineFile(RoutineItem routineItem, boolean currentProject) throws SystemException {
-        String projectTechName;
-        if (currentProject) {
-            projectTechName = ProjectManager.getInstance().getCurrentProject().getTechnicalLabel();
-        } else {
-            projectTechName = ProjectManager.getInstance().getProject(routineItem).getTechnicalLabel();
-        }
+    protected IFile getRoutineFile(RoutineItem routineItem, String projectTechName) throws SystemException {
         ITalendProcessJavaProject talendProcessJavaProject = getRunProcessService()
                 .getTalendCodeJavaProject(ERepositoryObjectType.getItemType(routineItem), projectTechName);
         if (talendProcessJavaProject == null) {
             return null;
         }
         IFolder routineFolder = talendProcessJavaProject.getSrcSubFolder(null, routineItem.getPackageType());
-        IFile file = routineFolder.getFile(routineItem.getProperty().getLabel() + JavaUtils.JAVA_EXTENSION);
-        return file;
+        return routineFolder.getFile(routineItem.getProperty().getLabel() + JavaUtils.JAVA_EXTENSION);
     }
 
     private IFile getProcessFile(ProcessItem item) throws SystemException {
@@ -201,30 +200,31 @@ public abstract class AbstractRoutineSynchronizer implements ITalendSynchronizer
 
     @Override
     public void syncRoutine(RoutineItem routineItem, boolean copyToTemp) throws SystemException {
-        syncRoutine(routineItem, true, copyToTemp, false);
+        syncRoutine(routineItem, ProjectManager.getInstance().getCurrentProject().getTechnicalLabel(), copyToTemp, false);
     }
 
     @Override
     public void syncRoutine(RoutineItem routineItem, boolean copyToTemp, boolean forceUpdate) throws SystemException {
-        syncRoutine(routineItem, true, copyToTemp, forceUpdate);
+        syncRoutine(routineItem, ProjectManager.getInstance().getCurrentProject().getTechnicalLabel(), copyToTemp, forceUpdate);
     }
 
     @Override
-    public void syncRoutine(RoutineItem routineItem, boolean currentProject, boolean copyToTemp, boolean forceUpdate) throws SystemException {
+    public void syncRoutine(RoutineItem routineItem, String projectTechName, boolean copyToTemp, boolean forceUpdate)
+            throws SystemException {
         boolean needSync = false;
         if (routineItem != null) {
             if (forceUpdate || !isRoutineUptodate(routineItem)) {
                 needSync = true;
             } else {
-                IFile file = getRoutineFile(routineItem, currentProject);
+                IFile file = getRoutineFile(routineItem, projectTechName);
                 if (file != null && !file.exists()) {
                     needSync = true;
                 }
             }
         }
         if (needSync) {
-            doSyncRoutine(routineItem, currentProject, copyToTemp);
-            if (currentProject) {
+            doSyncRoutine(routineItem, projectTechName, copyToTemp);
+            if (ProjectManager.getInstance().getCurrentProject().getTechnicalLabel().equals(projectTechName)) {
                 setRoutineAsUptodate(routineItem);
             }
         }
@@ -232,14 +232,14 @@ public abstract class AbstractRoutineSynchronizer implements ITalendSynchronizer
 
     public void syncRoutine(RoutineItem routineItem) throws SystemException {
         if (routineItem != null) {
-            doSyncRoutine(routineItem, true, true);
+            doSyncRoutine(routineItem, ProjectManager.getInstance().getCurrentProject().getTechnicalLabel(), true);
             setRoutineAsUptodate(routineItem);
         }
     }
 
-    private void doSyncRoutine(RoutineItem routineItem, boolean currentProject, boolean copyToTemp) throws SystemException {
+    private void doSyncRoutine(RoutineItem routineItem, String projectTechName, boolean copyToTemp) throws SystemException {
         try {
-            IFile file = getRoutineFile(routineItem, currentProject);
+            IFile file = getRoutineFile(routineItem, projectTechName);
             if (file == null) {
                 return;
             }
@@ -382,7 +382,7 @@ public abstract class AbstractRoutineSynchronizer implements ITalendSynchronizer
     @Override
     public void syncAllBeansForLogOn() throws SystemException {
         for (RoutineItem beanItem : getBeans(true)) {
-            syncRoutine(beanItem, true, true, true);
+            syncRoutine(beanItem, true, true);
         }
     }
 

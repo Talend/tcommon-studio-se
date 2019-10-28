@@ -286,7 +286,7 @@ public class Mathematical {
      *
      */
     public static double LN(double a) {
-        return Math.log(a) / Math.E;
+        return Math.log(a);
     }
 
     /**
