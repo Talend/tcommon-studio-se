@@ -36,10 +36,11 @@ import org.eclipse.aether.artifact.Artifact;
 import org.eclipse.aether.artifact.DefaultArtifact;
 import org.eclipse.aether.collection.CollectRequest;
 import org.eclipse.aether.collection.DependencySelector;
-import org.eclipse.aether.connector.basic.BasicRepositoryConnectorFactory;
 import org.eclipse.aether.graph.DefaultDependencyNode;
 import org.eclipse.aether.graph.Exclusion;
 import org.eclipse.aether.impl.DefaultServiceLocator;
+import org.eclipse.aether.internal.transport.wagon.PlexusWagonConfigurator;
+import org.eclipse.aether.internal.transport.wagon.PlexusWagonProvider;
 import org.eclipse.aether.repository.Authentication;
 import org.eclipse.aether.repository.LocalRepository;
 import org.eclipse.aether.repository.RemoteRepository;
@@ -48,10 +49,6 @@ import org.eclipse.aether.resolution.ArtifactRequest;
 import org.eclipse.aether.resolution.ArtifactResult;
 import org.eclipse.aether.resolution.VersionRangeRequest;
 import org.eclipse.aether.resolution.VersionRangeResult;
-import org.eclipse.aether.spi.connector.RepositoryConnectorFactory;
-import org.eclipse.aether.spi.connector.transport.TransporterFactory;
-import org.eclipse.aether.transport.file.FileTransporterFactory;
-import org.eclipse.aether.transport.http.HttpTransporterFactory;
 import org.eclipse.aether.util.artifact.JavaScopes;
 import org.eclipse.aether.util.graph.selector.AndDependencySelector;
 import org.eclipse.aether.util.graph.selector.OptionalDependencySelector;
@@ -111,11 +108,11 @@ public class DynamicDistributionAetherUtils {
 
         RepositorySystem repoSystem = null;
         if (multiThread) {
-            repoSystem = newRepositorySystem();
+            repoSystem = MavenLibraryResolverProvider.newRepositorySystem();
         } else {
             repoSystem = repoSystemMap.get(key);
             if (repoSystem == null) {
-                repoSystem = newRepositorySystem();
+                repoSystem = MavenLibraryResolverProvider.newRepositorySystem();
                 repoSystemMap.put(key, repoSystem);
             }
         }
@@ -283,7 +280,7 @@ public class DynamicDistributionAetherUtils {
         if (monitor == null) {
             monitor = new DummyDynamicMonitor();
         }
-        RepositorySystem repSystem = newRepositorySystem();
+        RepositorySystem repSystem = MavenLibraryResolverProvider.newRepositorySystem();
         RepositorySystemSession repSysSession = newSession(repSystem, localPath, monitor);
         updateDependencySelector((DefaultRepositorySystemSession) repSysSession, monitor);
 
@@ -329,7 +326,7 @@ public class DynamicDistributionAetherUtils {
         if (monitor == null) {
             monitor = new DummyDynamicMonitor();
         }
-        RepositorySystem repSystem = newRepositorySystem();
+        RepositorySystem repSystem = MavenLibraryResolverProvider.newRepositorySystem();
         RepositorySystemSession repSysSession = newSession(repSystem, localPath, monitor);
         updateDependencySelector((DefaultRepositorySystemSession) repSysSession, monitor);
 
@@ -410,15 +407,6 @@ public class DynamicDistributionAetherUtils {
     // getAllArtifact(dn, list);
     // }
     // }
-
-    private static RepositorySystem newRepositorySystem() {
-        DefaultServiceLocator locator = MavenRepositorySystemUtils.newServiceLocator();
-        locator.addService(RepositoryConnectorFactory.class, BasicRepositoryConnectorFactory.class);
-        locator.addService(TransporterFactory.class, FileTransporterFactory.class);
-        locator.addService(TransporterFactory.class, HttpTransporterFactory.class);
-
-        return locator.getService(RepositorySystem.class);
-    }
 
     private static RepositorySystemSession newSession(RepositorySystem system, String repositoryPath, IDynamicMonitor monitor)
             throws CoreException {
