@@ -61,14 +61,14 @@ public class PasswordEncryptUtil {
         return new Encryption(JobKeySourceProvider.getInstance().getKeySource(), CipherSources.getDefault());
     }
 
-    private static class JobKeySourceProviderHolder {
-
-        private static final JobKeySourceProvider instance = new JobKeySourceProvider();
-    }
-
     private static class JobKeySourceProvider {
 
         private static KeySource keySource;
+
+        private static class JobKeySourceProviderHolder {
+
+            private static final JobKeySourceProvider instance = new JobKeySourceProvider();
+        }
 
         private JobKeySourceProvider() {
             String keyName = "routine.encryption.key";
