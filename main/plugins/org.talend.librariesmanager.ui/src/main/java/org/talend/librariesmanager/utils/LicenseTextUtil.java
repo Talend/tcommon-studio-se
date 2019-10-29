@@ -15,10 +15,15 @@ public class LicenseTextUtil {
 
     private static final String EXT_TXT = ".txt";
 
+    private static final String UNKNOWN_LICENSE = "UNKNOWN";
+
 
     public static String getLicenseTextByType(String licenseType) {
         Bundle bundle = Platform.getBundle(PLUGIN_ID);
         URL resourceURL = bundle.getEntry(LICENSE_FOLDER + licenseType + EXT_TXT);
+        if (resourceURL == null) {
+            return UNKNOWN_LICENSE;
+        }
         try {
             File file = new File(FileLocator.toFileURL(resourceURL).getFile());
             if (file.exists()) {
@@ -27,6 +32,6 @@ public class LicenseTextUtil {
         } catch (Exception e) {
             e.printStackTrace();
         }
-        return null;
+        return UNKNOWN_LICENSE;
     }
 }

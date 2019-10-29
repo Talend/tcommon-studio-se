@@ -4,6 +4,7 @@ import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
 import java.io.FileWriter;
+import java.util.HashMap;
 import java.util.Map;
 
 import net.sf.json.JSONArray;
@@ -22,10 +23,10 @@ public class ChangeHtmlToJavaUtil {
     private static final String LICENSE_UNKNOWN = "UNKNOWN";
 
     public static void main(String[] args) {
-        addLineBreakMark("D:\\AGPL-3.0.txt");
-        // JSONArray resolveIndexfileToJSONArray = resolveIndexfileToJSONArray("D:\\library_data（下载前）.index");
-        // Map<String, String> map = new HashMap<String, String>();
-        // putLicenseInfoIntoMap(map, resolveIndexfileToJSONArray);
+        // addLineBreakMark("D:\\AGPL-3.0.txt");
+        JSONArray resolveIndexfileToJSONArray = resolveIndexfileToJSONArray("D:\\library_data.index");
+        Map<String, String> map = new HashMap<String, String>();
+        putLicenseInfoIntoMap(map, resolveIndexfileToJSONArray);
     }
 
     public static void addLineBreakMark(String filePath) {
