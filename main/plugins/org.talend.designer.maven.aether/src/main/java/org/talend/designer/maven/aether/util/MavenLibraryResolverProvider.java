@@ -24,7 +24,6 @@ import org.apache.maven.wagon.providers.http.HttpWagon;
 import org.codehaus.plexus.DefaultPlexusContainer;
 import org.codehaus.plexus.PlexusContainer;
 import org.codehaus.plexus.PlexusContainerException;
-import org.codehaus.plexus.component.repository.ComponentDescriptor;
 import org.eclipse.aether.DefaultRepositorySystemSession;
 import org.eclipse.aether.RepositorySystem;
 import org.eclipse.aether.RepositorySystemSession;
@@ -41,6 +40,8 @@ import org.eclipse.aether.resolution.ArtifactRequest;
 import org.eclipse.aether.resolution.ArtifactResult;
 import org.eclipse.aether.spi.connector.RepositoryConnectorFactory;
 import org.eclipse.aether.spi.connector.transport.TransporterFactory;
+import org.eclipse.aether.transport.file.FileTransporterFactory;
+import org.eclipse.aether.transport.http.HttpTransporterFactory;
 import org.eclipse.aether.transport.wagon.WagonTransporterFactory;
 import org.eclipse.aether.util.repository.AuthenticationBuilder;
 import org.eclipse.m2e.core.MavenPlugin;
@@ -53,6 +54,10 @@ public class MavenLibraryResolverProvider {
     public static final String KEY_LOCAL_MVN_REPOSITORY = "talend.mvn.repository"; //$NON-NLS-1$
 
     private static Map<String, RemoteRepository> urlToRepositoryMap = new HashMap<String, RemoteRepository>();
+
+    private RepositorySystem defaultRepoSystem;
+
+    private RepositorySystemSession defaultRepoSystemSession;
 
     private RemoteRepository defaultRemoteRepository = null;
 
@@ -75,8 +80,8 @@ public class MavenLibraryResolverProvider {
     }
 
     private MavenLibraryResolverProvider() throws PlexusContainerException {
-    	RepositorySystem defaultRepoSystem = newRepositorySystem();
-    	RepositorySystemSession defaultRepoSystemSession = newSession(defaultRepoSystem, getLocalMVNRepository());
+        defaultRepoSystem = newRepositorySystemForResolver();
+        defaultRepoSystemSession = newSession(defaultRepoSystem, getLocalMVNRepository());
         ArtifactRepositoryBean talendServer = TalendLibsServerManager.getInstance().getTalentArtifactServer();
         if (talendServer.getUserName() == null && talendServer.getPassword() == null) {
             defaultRemoteRepository = new RemoteRepository.Builder("talend", "default", talendServer.getRepositoryURL()).build(); //$NON-NLS-1$ //$NON-NLS-2$
@@ -89,8 +94,6 @@ public class MavenLibraryResolverProvider {
     }
 
     public ArtifactResult resolveArtifact(MavenArtifact aritfact) throws Exception {
-    	RepositorySystem defaultRepoSystem = newRepositorySystem();
-    	RepositorySystemSession defaultRepoSystemSession = newSession(defaultRepoSystem, getLocalMVNRepository());
         RemoteRepository remoteRepo = getRemoteRepositroy(aritfact);
         Artifact artifact = new DefaultArtifact(aritfact.getGroupId(), aritfact.getArtifactId(), aritfact.getClassifier(),
                 aritfact.getType(), aritfact.getVersion());
@@ -159,10 +162,29 @@ public class MavenLibraryResolverProvider {
         locator.addService(TransporterFactory.class, WagonTransporterFactory.class);
 
         PlexusContainer pc = new DefaultPlexusContainer();
-        
+
+        pc.addComponent(new HttpWagon(), Wagon.class, "http");
+        pc.addComponent(new FileWagon(), Wagon.class, "file");
+
         WagonTransporterFactory tf = (WagonTransporterFactory) locator.getService(TransporterFactory.class);
         tf.setWagonConfigurator(new PlexusWagonConfigurator(pc));
         tf.setWagonProvider(new PlexusWagonProvider(pc));
+
+        locator.setErrorHandler(new DefaultServiceLocator.ErrorHandler() {
+
+            @Override
+            public void serviceCreationFailed(Class<?> type, Class<?> impl, Throwable exception) {
+                exception.printStackTrace();
+            }
+        });
+        return locator.getService(RepositorySystem.class);
+    }
+
+    public static RepositorySystem newRepositorySystemForResolver() {
+        DefaultServiceLocator locator = MavenRepositorySystemUtils.newServiceLocator();
+        locator.addService(RepositoryConnectorFactory.class, BasicRepositoryConnectorFactory.class);
+        locator.addService(TransporterFactory.class, FileTransporterFactory.class);
+        locator.addService(TransporterFactory.class, HttpTransporterFactory.class);
 
         locator.setErrorHandler(new DefaultServiceLocator.ErrorHandler() {
 
