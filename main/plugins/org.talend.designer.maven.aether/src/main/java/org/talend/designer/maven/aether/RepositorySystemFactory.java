@@ -18,7 +18,6 @@ import java.util.Map;
 
 import org.apache.maven.repository.internal.MavenRepositorySystemUtils;
 import org.codehaus.plexus.PlexusContainerException;
-import org.codehaus.plexus.component.composition.CycleDetectedInComponentGraphException;
 import org.eclipse.aether.DefaultRepositorySystemSession;
 import org.eclipse.aether.RepositorySystem;
 import org.eclipse.aether.artifact.Artifact;
