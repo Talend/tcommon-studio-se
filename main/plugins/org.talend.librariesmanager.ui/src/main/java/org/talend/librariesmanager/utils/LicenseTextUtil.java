@@ -22,7 +22,7 @@ public class LicenseTextUtil {
         Bundle bundle = Platform.getBundle(PLUGIN_ID);
         URL resourceURL = bundle.getEntry(LICENSE_FOLDER + licenseType + EXT_TXT);
         if (resourceURL == null) {
-            return UNKNOWN_LICENSE;
+            resourceURL = bundle.getEntry(LICENSE_FOLDER + UNKNOWN_LICENSE + EXT_TXT);
         }
         try {
             File file = new File(FileLocator.toFileURL(resourceURL).getFile());
@@ -32,6 +32,6 @@ public class LicenseTextUtil {
         } catch (Exception e) {
             e.printStackTrace();
         }
-        return UNKNOWN_LICENSE;
+        return null;
     }
 }
