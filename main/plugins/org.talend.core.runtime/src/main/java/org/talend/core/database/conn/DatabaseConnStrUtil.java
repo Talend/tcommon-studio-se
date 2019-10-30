@@ -47,6 +47,8 @@ public class DatabaseConnStrUtil {
     // for match url has :<port> exist
     private static final String PATTERN_PORT = "(:\\d{1,5})";
 
+    private static final String DATABASE_STRING = "DATABASE=";
+
     private static String getStringReplace(final String init, final String before, final String after,
             final boolean supportContext) {
         return getStringReplace(init, before, after, supportContext, false);
@@ -126,6 +128,13 @@ public class DatabaseConnStrUtil {
                     s = getStringReplace(s, ":" + EDatabaseConnVar.PORT.getVariable(), port, supportContext);
                 } else {
                     s = getStringReplace(s, EDatabaseConnVar.PORT.getVariable(), port, supportContext);
+                }
+                if (EDatabaseConnTemplate.TERADATA.equals(connStr)) {
+                    if (StringUtils.isNotBlank(sid)) {
+                        s = getStringReplace(s, EDatabaseConnVar.SID.getVariable(), DATABASE_STRING + sid, supportContext);
+                    } else {
+                        s = getStringReplace(s, EDatabaseConnVar.SID.getVariable() + ",", sid, supportContext); //$NON-NLS-1$
+                    }
                 }
                 s = getStringReplace(s, EDatabaseConnVar.SID.getVariable(), sid, supportContext);
                 s = getStringReplace(s, EDatabaseConnVar.SERVICE_NAME.getVariable(), sid, supportContext);
@@ -565,7 +574,7 @@ public class DatabaseConnStrUtil {
         List<ERepositoryObjectType> extraTypes = new ArrayList<>();
         IGenericDBService dbService = null;
         if (GlobalServiceRegister.getDefault().isServiceRegistered(IGenericDBService.class)) {
-            dbService = (IGenericDBService) GlobalServiceRegister.getDefault().getService(IGenericDBService.class);
+            dbService = GlobalServiceRegister.getDefault().getService(IGenericDBService.class);
         }
         if (dbService != null) {
             extraTypes.addAll(dbService.getExtraTypes());
