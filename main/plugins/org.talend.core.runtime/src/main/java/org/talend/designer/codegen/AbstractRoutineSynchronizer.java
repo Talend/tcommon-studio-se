@@ -102,7 +102,9 @@ public abstract class AbstractRoutineSynchronizer implements ITalendSynchronizer
     private Set<IRepositoryViewObject> getReferencedProjectRoutine(final Map<String, RoutineItem> beansList,
             final Project project, ERepositoryObjectType routineType, boolean syncRef) throws SystemException {
         // init ref code project
-        getRunProcessService().getTalendCodeJavaProject(routineType, project.getTechnicalLabel());
+        if (syncRef) {
+            getRunProcessService().getTalendCodeJavaProject(routineType, project.getTechnicalLabel());
+        }
         Set<IRepositoryViewObject> routines = new HashSet<>();
         routines.addAll(getRepositoryService().getProxyRepositoryFactory().getAll(project, routineType));
         for (IRepositoryViewObject obj : routines) {
@@ -144,16 +146,12 @@ public abstract class AbstractRoutineSynchronizer implements ITalendSynchronizer
     }
 
     protected IFile getRoutineFile(RoutineItem routineItem, String projectTechName) throws SystemException {
-        IFolder srcFolder = getRunProcessService().getCodeSrcFolder(ERepositoryObjectType.getItemType(routineItem),
-                projectTechName);
-        IFolder routineFolder = srcFolder.getFolder(routineItem.getPackageType());
-        if (!routineFolder.exists()) {
-            try {
-                routineFolder.create(true, true, null);
-            } catch (CoreException e) {
-                ExceptionHandler.process(e);
-            }
+        ITalendProcessJavaProject talendProcessJavaProject = getRunProcessService()
+                .getTalendCodeJavaProject(ERepositoryObjectType.getItemType(routineItem), projectTechName);
+        if (talendProcessJavaProject == null) {
+            return null;
         }
+        IFolder routineFolder = talendProcessJavaProject.getSrcSubFolder(null, routineItem.getPackageType());
         return routineFolder.getFile(routineItem.getProperty().getLabel() + JavaUtils.JAVA_EXTENSION);
     }
 
