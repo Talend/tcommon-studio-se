@@ -549,9 +549,6 @@ public class DatabaseWizard extends CheckLastVersionRepositoryWizard implements 
             }
             if (tdqRepService != null) {
                 try {
-                    // TODO use seperate subclass to handle the create and update logic , using a varable "creation" is
-                    // not
-                    // a good practice.
                     Boolean isSuccess = true;
                     if (getDatabaseConnection() != null) {
                         if (creation) {
