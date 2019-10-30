@@ -1,15 +1,16 @@
 package org.talend.librariesmanager.utils;
 
+import java.io.BufferedReader;
 import java.io.File;
+import java.io.FileReader;
 import java.net.URL;
 
 import org.eclipse.core.runtime.FileLocator;
-import org.eclipse.core.runtime.Platform;
 import org.osgi.framework.Bundle;
+import org.talend.commons.exception.ExceptionHandler;
+import org.talend.librariesmanager.ui.LibManagerUiPlugin;
 
 public class LicenseTextUtil {
-
-    private static final String PLUGIN_ID = "org.talend.librariesmanager.ui";
 
     private static final String LICENSE_FOLDER = "licenseTexts/";
 
@@ -19,7 +20,7 @@ public class LicenseTextUtil {
 
 
     public static String getLicenseTextByType(String licenseType) {
-        Bundle bundle = Platform.getBundle(PLUGIN_ID);
+        Bundle bundle = LibManagerUiPlugin.BUNDLE;
         URL resourceURL = bundle.getEntry(LICENSE_FOLDER + licenseType + EXT_TXT);
         if (resourceURL == null) {
             resourceURL = bundle.getEntry(LICENSE_FOLDER + UNKNOWN_LICENSE + EXT_TXT);
@@ -27,11 +28,24 @@ public class LicenseTextUtil {
         try {
             File file = new File(FileLocator.toFileURL(resourceURL).getFile());
             if (file.exists()) {
-                return file.getAbsolutePath();
+                return getStringFromText(file);
             }
         } catch (Exception e) {
-            e.printStackTrace();
+            ExceptionHandler.process(e);
         }
         return null;
+    }
+
+    private static String getStringFromText(File file) throws Exception {
+        try (BufferedReader br = new BufferedReader(new FileReader(file))) {
+            StringBuilder sb = new StringBuilder();
+            String line = null;
+            while ((line = br.readLine()) != null) {
+                sb.append(line).append("\n");
+            }
+            return sb.toString();
+        } catch (Exception e) {
+            throw e;
+        }
     }
 }

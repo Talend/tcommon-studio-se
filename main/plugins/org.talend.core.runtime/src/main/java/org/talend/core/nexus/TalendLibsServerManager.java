@@ -175,7 +175,6 @@ public class TalendLibsServerManager {
 
     public ArtifactRepositoryBean getTalentArtifactServer() {
         ArtifactRepositoryBean serverBean = new ArtifactRepositoryBean();
-        // TODO maybe will let customer set nexus type later
         String nexusType = System.getProperty(NEXUS_PROXY_TYPE);
         if (nexusType != null) {
             serverBean.setType(nexusType);
