@@ -54,7 +54,11 @@ abstract public class DownloadModuleRunnable implements IRunnableWithProgress {
 
     private static final String DISABLE_LICENSE_ACCEPT = "disableLicenseAccept";
 
-    private static boolean DISABLE_LICENSE_ACCEPT_FLAG = false;
+    private static boolean disableLicenseAcceptFlag = false;
+
+    static {
+        disableLicenseAcceptFlag = Boolean.valueOf(System.getProperty(DISABLE_LICENSE_ACCEPT, "false"));
+    }
 
     /**
      * DOC sgandon DownloadModuleRunnable constructor comment.
@@ -102,7 +106,7 @@ abstract public class DownloadModuleRunnable implements IRunnableWithProgress {
                     boolean isLicenseAccepted = module.isFromCustomNexus()
                             || (LibManagerUiPlugin.getDefault().getPreferenceStore().contains(module.getLicenseType())
                                     && LibManagerUiPlugin.getDefault().getPreferenceStore().getBoolean(module.getLicenseType())
-                                    || DISABLE_LICENSE_ACCEPT_FLAG);
+                                    || disableLicenseAcceptFlag);
 
                     canDownload = isLicenseAccepted;
                     if (!canDownload) {
@@ -153,8 +157,7 @@ abstract public class DownloadModuleRunnable implements IRunnableWithProgress {
     }
 
     protected boolean hasLicensesToAccept() {
-        DISABLE_LICENSE_ACCEPT_FLAG = Boolean.valueOf(System.getProperty(DISABLE_LICENSE_ACCEPT, "false"));
-        if (toDownload != null && toDownload.size() > 0 && !DISABLE_LICENSE_ACCEPT_FLAG) {
+        if (toDownload != null && toDownload.size() > 0 && !disableLicenseAcceptFlag) {
             for (ModuleToInstall module : toDownload) {
                 // no need accept license if it is from custom nexus
                 if (module.isFromCustomNexus()) {
