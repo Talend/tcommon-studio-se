@@ -29,6 +29,8 @@
 			<dbType type="xs:time" ignoreLen="true" ignorePre="true"/>
 			<dbType type="xs:decimal" ignoreLen="true" ignorePre="true"/>
 			<dbType type="xs:QName" ignoreLen="true" ignorePre="true"/>
+			<dbType type="xs:list" ignoreLen="true" ignorePre="true"/>
+			<dbType type="xs:union" ignoreLen="true" ignorePre="true"/>
 		</dbTypes>
 
 		<language name="java">
@@ -140,6 +142,12 @@
 				</dbType>
 				<dbType type="xs:time">
 					<talendType type="id_Date" default="true" />
+				</dbType>
+				<dbType type="xs:list">
+					<talendType type="id_List" default="true" />
+				</dbType>
+				<dbType type="xs:union">
+					<talendType type="id_Object" default="true" />
 				</dbType>
 			</dbToTalendTypes>
 		</language>

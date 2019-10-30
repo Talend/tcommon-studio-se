@@ -43,8 +43,10 @@ import org.eclipse.xsd.XSDImport;
 import org.eclipse.xsd.XSDModelGroup;
 import org.eclipse.xsd.XSDParticle;
 import org.eclipse.xsd.XSDSchema;
+import org.eclipse.xsd.XSDSimpleTypeDefinition;
 import org.eclipse.xsd.XSDTerm;
 import org.eclipse.xsd.XSDTypeDefinition;
+import org.eclipse.xsd.XSDVariety;
 import org.eclipse.xsd.impl.XSDNamedComponentImpl;
 import org.eclipse.xsd.util.XSDConstants;
 import org.eclipse.xsd.util.XSDResourceImpl;
@@ -355,12 +357,15 @@ public class XSDPopulationUtil2 implements IXSDPopulationUtil {
                 }
             }
             if (!resolvedAsComplex) {
-                String dataType = xsdElementDeclarationParticle.getTypeDefinition().getQName();
+                XSDTypeDefinition typeDefinition = xsdElementDeclarationParticle.getTypeDefinition();
+                String dataType = typeDefinition.getQName();
                 if (!XSDConstants
-                        .isSchemaForSchemaNamespace(xsdElementDeclarationParticle.getTypeDefinition().getTargetNamespace())
-                        && xsdElementDeclarationParticle.getTypeDefinition().getBaseType() != null) {
-                    if (!"xs:anySimpleType".equals(xsdElementDeclarationParticle.getTypeDefinition().getBaseType().getQName())) {
-                        dataType = xsdElementDeclarationParticle.getTypeDefinition().getBaseType().getQName();
+                        .isSchemaForSchemaNamespace(typeDefinition.getTargetNamespace())
+                        && typeDefinition.getBaseType() != null) {
+                    if (!"xs:anySimpleType".equals(typeDefinition.getBaseType().getQName())) {
+                        dataType = typeDefinition.getBaseType().getQName();
+                    } else if (typeDefinition instanceof XSDSimpleTypeDefinition) {
+                        dataType = getVarietyType(((XSDSimpleTypeDefinition) typeDefinition).getVariety());
                     }
                 }
                 partNode.setDataType(dataType);
@@ -376,6 +381,16 @@ public class XSDPopulationUtil2 implements IXSDPopulationUtil {
                 addParticleDetail(xsdSchema, childParticle, node, currentPath);
             }
         }
+    }
+
+    private String getVarietyType(XSDVariety variety) {
+        String dataType = "xs:anyType";
+        if (XSDVariety.LIST_LITERAL.equals(variety)) {
+            dataType = "xs:list";
+        } else if (XSDVariety.UNION_LITERAL.equals(variety)) {
+            dataType = "xs:union";
+        }
+        return dataType;
     }
 
     private void handleOptionalAttribute(ATreeNode node, XSDParticle xsdParticle) {
@@ -485,6 +500,17 @@ public class XSDPopulationUtil2 implements IXSDPopulationUtil {
                 }
                 if (xsdTypeDefinition instanceof XSDComplexTypeDefinition) {
                     addComplexTypeDetails(xsdSchema, node, xsdTypeDefinition, prefix, namespace, "/" + elementName + "/");
+                } else if (xsdTypeDefinition instanceof XSDSimpleTypeDefinition) {
+                    String dataType = xsdTypeDefinition.getQName();
+                    if (!XSDConstants.isSchemaForSchemaNamespace(xsdTypeDefinition.getTargetNamespace())
+                            && xsdTypeDefinition.getBaseType() != null) {
+                        if (!"xs:anySimpleType".equals(xsdTypeDefinition.getBaseType().getQName())) {
+                            dataType = xsdTypeDefinition.getBaseType().getQName();
+                        } else if (xsdTypeDefinition instanceof XSDSimpleTypeDefinition) {
+                            dataType = getVarietyType(((XSDSimpleTypeDefinition) xsdTypeDefinition).getVariety());
+                        }
+                    }
+                    node.setDataType(dataType);
                 }
                 List<String> namespaceList = new ArrayList(namespaceToPrefix.keySet());
                 Collections.reverse(namespaceList);
@@ -565,7 +591,11 @@ public class XSDPopulationUtil2 implements IXSDPopulationUtil {
             particleToTreeNode.clear();
         }
 
-        return rootNodes.get(0);
+        if (rootNodes.isEmpty()) {
+            return null;
+        } else {
+            return rootNodes.get(0);
+        }
     }
 
     private void addSubstitutionDetails(XSDSchema xsdSchema, ATreeNode parentNode, XSDElementDeclaration elementDeclaration,
@@ -760,11 +790,14 @@ public class XSDPopulationUtil2 implements IXSDPopulationUtil {
             ATreeNode childNode = new ATreeNode();
             childNode.setValue(attributeDeclarationName);
             childNode.setType(ATreeNode.ATTRIBUTE_TYPE);
-            String dataType = xsdAttributeDeclaration.getTypeDefinition().getQName();
-            XSDTypeDefinition baseType = xsdAttributeDeclaration.getTypeDefinition().getBaseType();
-            if (!XSDConstants.isSchemaForSchemaNamespace(xsdAttributeDeclaration.getTypeDefinition().getTargetNamespace())) {
+            XSDSimpleTypeDefinition typeDefinition = xsdAttributeDeclaration.getTypeDefinition();
+            String dataType = typeDefinition.getQName();
+            XSDTypeDefinition baseType = typeDefinition.getBaseType();
+            if (!XSDConstants.isSchemaForSchemaNamespace(typeDefinition.getTargetNamespace())) {
                 if (baseType != null && !"xs:anySimpleType".equals(baseType.getQName())) { //$NON-NLS-1$
                     dataType = baseType.getQName();
+                } else if (typeDefinition instanceof XSDSimpleTypeDefinition) {
+                    dataType = getVarietyType(((XSDSimpleTypeDefinition) typeDefinition).getVariety());
                 }
             }
             if (dataType != null && dataType.length() > 0) {
