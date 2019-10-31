@@ -44,8 +44,6 @@ public class LicenseTextUtil {
                 sb.append(line).append("\n");
             }
             return sb.toString();
-        } catch (Exception e) {
-            throw e;
         }
     }
 }
