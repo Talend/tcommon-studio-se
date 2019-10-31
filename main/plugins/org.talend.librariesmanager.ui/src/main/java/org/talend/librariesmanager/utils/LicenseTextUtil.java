@@ -1,9 +1,10 @@
 package org.talend.librariesmanager.utils;
 
-import java.io.BufferedReader;
 import java.io.File;
-import java.io.FileReader;
 import java.net.URL;
+import java.nio.charset.StandardCharsets;
+import java.nio.file.Files;
+import java.util.List;
 
 import org.eclipse.core.runtime.FileLocator;
 import org.osgi.framework.Bundle;
@@ -37,13 +38,11 @@ public class LicenseTextUtil {
     }
 
     private static String getStringFromText(File file) throws Exception {
-        try (BufferedReader br = new BufferedReader(new FileReader(file))) {
-            StringBuilder sb = new StringBuilder();
-            String line = null;
-            while ((line = br.readLine()) != null) {
-                sb.append(line).append("\n");
-            }
-            return sb.toString();
+        StringBuilder sb = new StringBuilder();
+        List<String> lines = Files.readAllLines(file.toPath(), StandardCharsets.UTF_8);
+        for (String line : lines) {
+            sb.append(line).append("\n");
         }
+        return sb.toString();
     }
 }
