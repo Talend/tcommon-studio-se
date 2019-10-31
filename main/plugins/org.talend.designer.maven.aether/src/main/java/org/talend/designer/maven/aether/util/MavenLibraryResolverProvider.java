@@ -44,6 +44,8 @@ import org.eclipse.aether.resolution.ArtifactRequest;
 import org.eclipse.aether.resolution.ArtifactResult;
 import org.eclipse.aether.spi.connector.RepositoryConnectorFactory;
 import org.eclipse.aether.spi.connector.transport.TransporterFactory;
+import org.eclipse.aether.transport.file.FileTransporterFactory;
+import org.eclipse.aether.transport.http.HttpTransporterFactory;
 import org.eclipse.aether.transport.wagon.WagonTransporterFactory;
 import org.eclipse.aether.util.repository.AuthenticationBuilder;
 import org.eclipse.m2e.core.MavenPlugin;
@@ -87,7 +89,7 @@ public class MavenLibraryResolverProvider {
     }
 
     private MavenLibraryResolverProvider() throws PlexusContainerException {
-        defaultRepoSystem = newRepositorySystem();
+        defaultRepoSystem = newRepositorySystemForResolver();
         defaultRepoSystemSession = newSession(defaultRepoSystem, getLocalMVNRepository());
         ArtifactRepositoryBean talendServer = TalendLibsServerManager.getInstance().getTalentArtifactServer();
         if (talendServer.getUserName() == null && talendServer.getPassword() == null) {
@@ -209,6 +211,22 @@ public class MavenLibraryResolverProvider {
         WagonTransporterFactory tf = (WagonTransporterFactory) locator.getService(TransporterFactory.class);
         tf.setWagonConfigurator(new PlexusWagonConfigurator(pc));
         tf.setWagonProvider(new PlexusWagonProvider(pc));
+
+        locator.setErrorHandler(new DefaultServiceLocator.ErrorHandler() {
+
+            @Override
+            public void serviceCreationFailed(Class<?> type, Class<?> impl, Throwable exception) {
+                exception.printStackTrace();
+            }
+        });
+        return locator.getService(RepositorySystem.class);
+    }
+
+    public static RepositorySystem newRepositorySystemForResolver() {
+        DefaultServiceLocator locator = MavenRepositorySystemUtils.newServiceLocator();
+        locator.addService(RepositoryConnectorFactory.class, BasicRepositoryConnectorFactory.class);
+        locator.addService(TransporterFactory.class, FileTransporterFactory.class);
+        locator.addService(TransporterFactory.class, HttpTransporterFactory.class);
 
         locator.setErrorHandler(new DefaultServiceLocator.ErrorHandler() {
 

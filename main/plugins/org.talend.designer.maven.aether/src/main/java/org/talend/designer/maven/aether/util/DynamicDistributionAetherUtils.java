@@ -108,11 +108,11 @@ public class DynamicDistributionAetherUtils {
 
         RepositorySystem repoSystem = null;
         if (multiThread) {
-            repoSystem = MavenLibraryResolverProvider.newRepositorySystem();
+            repoSystem = MavenLibraryResolverProvider.newRepositorySystemForResolver();
         } else {
             repoSystem = repoSystemMap.get(key);
             if (repoSystem == null) {
-                repoSystem = MavenLibraryResolverProvider.newRepositorySystem();
+                repoSystem = MavenLibraryResolverProvider.newRepositorySystemForResolver();
                 repoSystemMap.put(key, repoSystem);
             }
         }
@@ -280,7 +280,7 @@ public class DynamicDistributionAetherUtils {
         if (monitor == null) {
             monitor = new DummyDynamicMonitor();
         }
-        RepositorySystem repSystem = MavenLibraryResolverProvider.newRepositorySystem();
+        RepositorySystem repSystem = MavenLibraryResolverProvider.newRepositorySystemForResolver();
         RepositorySystemSession repSysSession = newSession(repSystem, localPath, monitor);
         updateDependencySelector((DefaultRepositorySystemSession) repSysSession, monitor);
 
@@ -326,7 +326,7 @@ public class DynamicDistributionAetherUtils {
         if (monitor == null) {
             monitor = new DummyDynamicMonitor();
         }
-        RepositorySystem repSystem = MavenLibraryResolverProvider.newRepositorySystem();
+        RepositorySystem repSystem = MavenLibraryResolverProvider.newRepositorySystemForResolver();
         RepositorySystemSession repSysSession = newSession(repSystem, localPath, monitor);
         updateDependencySelector((DefaultRepositorySystemSession) repSysSession, monitor);
 

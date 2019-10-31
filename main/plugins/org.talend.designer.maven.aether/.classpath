@@ -1,5 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <classpath>
+	<classpathentry exported="true" kind="lib" path="lib/maven-resolver-transport-file.jar"/>
+	<classpathentry exported="true" kind="lib" path="lib/maven-resolver-transport-http.jar"/>
 	<classpathentry exported="true" kind="lib" path="lib/wagon-file.jar"/>
 	<classpathentry exported="true" kind="lib" path="lib/jsoup.jar"/>
 	<classpathentry exported="true" kind="lib" path="lib/wagon-http-shared.jar"/>
