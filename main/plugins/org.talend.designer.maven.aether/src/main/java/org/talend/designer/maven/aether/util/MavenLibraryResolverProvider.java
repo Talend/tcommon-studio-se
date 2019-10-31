@@ -21,6 +21,7 @@ import org.apache.maven.repository.internal.MavenRepositorySystemUtils;
 import org.apache.maven.wagon.Wagon;
 import org.apache.maven.wagon.providers.file.FileWagon;
 import org.apache.maven.wagon.providers.http.HttpWagon;
+import org.apache.maven.wagon.providers.http.LightweightHttpsWagon;
 import org.codehaus.plexus.DefaultPlexusContainer;
 import org.codehaus.plexus.PlexusContainer;
 import org.codehaus.plexus.PlexusContainerException;
@@ -163,6 +164,7 @@ public class MavenLibraryResolverProvider {
 
         PlexusContainer pc = new DefaultPlexusContainer();
 
+        pc.addComponent(new LightweightHttpsWagon(), Wagon.class, "https");
         pc.addComponent(new HttpWagon(), Wagon.class, "http");
         pc.addComponent(new FileWagon(), Wagon.class, "file");
 
