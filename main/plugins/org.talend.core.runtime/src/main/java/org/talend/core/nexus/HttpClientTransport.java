@@ -146,14 +146,6 @@ public abstract class HttpClientTransport {
             if (designerCoreService != null) {
                 timeout = designerCoreService.getTACConnectionTimeout() * 1000;
             }
-            if(TimeoutManager.getSocketTimeout() != null) {
-                httpClient.getParams().setIntParameter(TimeoutManager.SOCKET_TIMEOUT, 
-                        TimeoutManager.getSocketTimeout());
-            }
-            if(TimeoutManager.getConnectionTimeout() != null) {
-                httpClient.getParams().setIntParameter(TimeoutManager.CONNECTION_TIMEOUT, 
-                        TimeoutManager.getConnectionTimeout());
-            }
             HttpParams params = httpClient.getParams();
             params.setIntParameter(CoreConnectionPNames.CONNECTION_TIMEOUT, timeout);
             params.setIntParameter(CoreConnectionPNames.SO_TIMEOUT, timeout);
