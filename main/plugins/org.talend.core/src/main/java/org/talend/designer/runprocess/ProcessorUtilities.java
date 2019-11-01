@@ -613,28 +613,55 @@ public class ProcessorUtilities {
         return processor;
     }
 
-    private static boolean checkLoopDependencies(Relation mainJobInfo, Map<String, String> idToLastestVersionMap)
+    public static boolean checkLoopDependencies(Relation mainJobInfo, Map<String, String> idToLastestVersionMap)
             throws ProcessorException {
         List<Relation> itemsJobRelatedTo = getItemsRelation(mainJobInfo, idToLastestVersionMap);
         List<Relation> relationChecked = new ArrayList<>();
         relationChecked.add(mainJobInfo);
-        return checkLoopDependencies(mainJobInfo, itemsJobRelatedTo, relationChecked, idToLastestVersionMap);
+        return checkLoopDependencies(mainJobInfo, mainJobInfo, itemsJobRelatedTo, relationChecked, idToLastestVersionMap);
     }
 
-    private static boolean checkLoopDependencies(Relation mainRelation, List<Relation> itemsJobRelatedTo,
+    private static boolean checkLoopDependencies(Relation mainRelation, Relation currentRelation,
+            List<Relation> itemsJobRelatedTo,
             List<Relation> relationChecked, Map<String, String> idToLastestVersionMap) throws ProcessorException {
         boolean hasDependency = false;
         for (Relation relation : itemsJobRelatedTo) {
+            try {
+                // means the tRunjob deactivate, or one of the specific version tRunjon deactivate, skip
+                Map<String, Set<String>> actTrunjobHM = getActivateTRunjobMap(currentRelation.getId(),
+                        currentRelation.getVersion());
+                if (actTrunjobHM.get(relation.getId()) == null
+                        || !actTrunjobHM.get(relation.getId()).contains(relation.getVersion())) {
+                    continue;
+                }
+            } catch (Exception e) {
+                throw new ProcessorException(e);
+            }
+
             hasDependency = relation.getId().equals(mainRelation.getId())
                     && relation.getVersion().equals(mainRelation.getVersion());
             if (!hasDependency) {
                 List<Relation> itemsChildJob = getItemsRelation(relation, idToLastestVersionMap);
                 if (!relationChecked.contains(relation)) {
                     relationChecked.add(relation);
-                    hasDependency = checkLoopDependencies(mainRelation, itemsChildJob, relationChecked, idToLastestVersionMap);
+                    hasDependency = checkLoopDependencies(mainRelation, relation, itemsChildJob, relationChecked,
+                            idToLastestVersionMap);
                 }
                 if (!hasDependency) {
                     for (Relation childRelation : itemsChildJob) {
+
+                        try {
+                            // means the tRunjob deactivate, or one of the specific version tRunjon deactivate, skip
+                            Map<String, Set<String>> activateTRunjobMap = getActivateTRunjobMap(relation.getId(),
+                                    relation.getVersion());
+                            if (activateTRunjobMap.get(childRelation.getId()) == null
+                                    || !activateTRunjobMap.get(childRelation.getId()).contains(childRelation.getVersion())) {
+                                continue;
+                            }
+                        } catch (Exception e) {
+                            throw new ProcessorException(e);
+                        }
+
                         hasDependency = checkLoopDependencies(childRelation, idToLastestVersionMap);
                         if (hasDependency) {
                             break;
@@ -648,6 +675,73 @@ public class ProcessorUtilities {
         }
 
         return hasDependency;
+    }
+
+    private static Map<String, Set<String>> getActivateTRunjobMap(String id, String version) throws PersistenceException {
+        Map<String, Set<String>> actTrunjobHM = new HashMap<String, Set<String>>();
+        ProcessItem processItem = null;
+        try {
+            IRepositoryViewObject currentJobObject = ProxyRepositoryFactory.getInstance().getSpecificVersion(id, version, true);
+            if (currentJobObject != null) {
+                processItem = (ProcessItem) currentJobObject.getProperty().getItem();
+            }
+        } catch (PersistenceException e) {
+            ExceptionHandler.process(e);
+        }
+        if (processItem != null) {
+            List<Project> allProjects = new ArrayList<Project>();
+            allProjects.add(ProjectManager.getInstance().getCurrentProject());
+            allProjects.addAll(ProjectManager.getInstance().getAllReferencedProjects());
+
+            for (Object nodeObject : processItem.getProcess().getNode()) {
+                NodeType node = (NodeType) nodeObject;
+                if (!node.getComponentName().equals("tRunJob")) { // $NON-NLS-1$
+                    continue;
+                }
+                boolean nodeActivate = true;
+                String processIds = null;
+                String processVersion = null;
+                for (Object elementParam : node.getElementParameter()) {
+                    ElementParameterType elemParamType = (ElementParameterType) elementParam;
+                    if ("PROCESS:PROCESS_TYPE_PROCESS".equals(elemParamType.getName())) { // $NON-NLS-1$
+                        processIds = elemParamType.getValue();
+                        if (StringUtils.isNotBlank(processIds)) {
+                            for (String jobId : processIds.split(ProcessorUtilities.COMMA)) {
+                                if (actTrunjobHM.get(jobId) == null) {
+                                    actTrunjobHM.put(jobId, new HashSet<String>());
+                                }
+                            }
+                        }
+                    } else if ("PROCESS:PROCESS_TYPE_VERSION".equals(elemParamType.getName())) { // $NON-NLS-1$
+                        processVersion = elemParamType.getValue();
+                    } else if ("ACTIVATE".equals(elemParamType.getName())) { // $NON-NLS-1$
+                        nodeActivate = Boolean.parseBoolean(elemParamType.getValue());
+                    }
+                }
+
+                if (nodeActivate) {
+                    for (String jobId : processIds.split(ProcessorUtilities.COMMA)) {
+                        // String pureId = ProcessUtils.getPureItemId(jobId);
+                        String actualVersion = processVersion;
+                        if (RelationshipItemBuilder.LATEST_VERSION.equals(processVersion)) {
+                            for (Project project : allProjects) {
+                                IRepositoryViewObject lastVersion = null;
+                                lastVersion = ProxyRepositoryFactory.getInstance().getLastVersion(project, jobId);
+                                if (lastVersion != null) {
+                                    actualVersion = lastVersion.getVersion();
+                                    break;
+                                }
+                            }
+                        }
+                        if (actTrunjobHM.get(jobId) != null) {
+                            actTrunjobHM.get(jobId).add(actualVersion);
+                        }
+
+                    }
+                }
+            }
+        }
+        return actTrunjobHM;
     }
 
     private static List<Relation> getItemsRelation(Relation mainJobInfo, Map<String, String> idToLastestVersionMap) throws ProcessorException {
@@ -1543,6 +1637,74 @@ public class ProcessorUtilities {
                 }
                 if (isEsbComponentName(componentName)) {
                     addEsbJob(jobInfo);
+                }
+            }
+        }
+    }
+
+    private static List<JobInfo> getJobWithAllSubJobInfo(JobInfo mainJobInfo) throws ProcessorException {
+        List<JobInfo> jobInfoList = new ArrayList<JobInfo>();
+        jobInfoList.add(mainJobInfo);
+        ProcessItem selectedProcessItem = mainJobInfo.getProcessItem();
+        IProcess currentProcess = null;
+        if (mainJobInfo.getProcess() == null) {
+            if (selectedProcessItem != null) {
+                IDesignerCoreService service = CorePlugin.getDefault().getDesignerCoreService();
+                currentProcess = service.getProcessFromProcessItem(selectedProcessItem);
+                mainJobInfo.setProcess(currentProcess);
+                if (currentProcess instanceof IProcess2) {
+                    ((IProcess2) currentProcess).setProperty(selectedProcessItem.getProperty());
+                }
+            }
+            if (currentProcess == null) {
+                return null;
+            }
+        } else {
+            currentProcess = mainJobInfo.getProcess();
+        }
+
+        return jobInfoList;
+    }
+
+    private static void addSubjobInfo(JobInfo mainJobInfo, IProcess currentProcess, List<JobInfo> jobInfoList)
+            throws ProcessorException {
+        for (INode node : currentProcess.getGeneratingNodes()) {
+            String componentName = node.getComponent().getName();
+            if (componentName.equals("tRunJob") || componentName.equals("cTalendJob") //$NON-NLS-1$ //$NON-NLS-2$
+                    || "Routelets".equals(node.getComponent().getOriginalFamilyName())) { //$NON-NLS-1$
+                // if the cTalendJob is configured by external Jar, then ignore it
+                if ("cTalendJob".equals(componentName)) { //$NON-NLS-1$
+                    if ((Boolean) node.getElementParameter("FROM_EXTERNAL_JAR").getValue()) { //$NON-NLS-1$
+                        continue;
+                    }
+                }
+
+                IElementParameter processIdparam = node.getElementParameter("PROCESS_TYPE_PROCESS"); //$NON-NLS-1$
+                final String jobIds = (String) processIdparam.getValue();
+                for (String jobId : jobIds.split(ProcessorUtilities.COMMA)) {
+                    if (StringUtils.isNotEmpty(jobId)) {
+                        String context = (String) node.getElementParameter("PROCESS_TYPE_CONTEXT").getValue(); //$NON-NLS-1$
+                        String version = (String) node.getElementParameter("PROCESS_TYPE_VERSION").getValue(); //$NON-NLS-1$
+                        final JobInfo subJobInfo = new JobInfo(jobId, context, version);
+                        final ProcessItem processItem = ItemCacheManager.getProcessItem(jobId, version);
+                        if (processItem == null) {
+                            throw new ProcessorException(node.getUniqueName() + " not setup or child job not found in the job:"
+                                    + currentProcess.getName());
+                        }
+
+                        subJobInfo.setProcessItem(processItem);
+                        subJobInfo.setJobVersion(processItem.getProperty().getVersion());
+                        subJobInfo.setJobName(processItem.getProperty().getLabel());
+                        subJobInfo.setFatherJobInfo(mainJobInfo);
+
+                        IProcessor processor = getProcessor(currentProcess, processItem.getProperty());
+                        IFile pomFile = processor.getTalendJavaProject().getProjectPom();
+                        IFile codeFile = processor.getTalendJavaProject().getProject().getFile(processor.getSrcCodePath());
+                        subJobInfo.setPomFile(pomFile);
+                        subJobInfo.setCodeFile(codeFile);
+
+                        jobInfoList.add(subJobInfo);
+                    }
                 }
             }
         }
