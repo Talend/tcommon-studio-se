@@ -30,5 +30,5 @@ public class NexusConstants {
 
     public static final String DISALLOW_RELEASES = "@noreleases";//$NON-NLS-1$
 
-    public static final String DYNAMIC_DISTRIBUTION = "content/groups/dynamicdistribution/";
+    public static final String DYNAMIC_DISTRIBUTION = "https://talend-update.talend.com/nexus/content/groups/dynamicdistribution/";
 }

@@ -53,7 +53,6 @@ import org.talend.core.nexus.ArtifactRepositoryBean;
 import org.talend.core.nexus.NexusConstants;
 import org.talend.core.nexus.TalendLibsServerManager;
 import org.talend.core.runtime.maven.MavenArtifact;
-import org.talend.utils.security.StudioEncryption;
 
 public class MavenLibraryResolverProvider {
 
@@ -63,8 +62,12 @@ public class MavenLibraryResolverProvider {
 
     private RepositorySystem defaultRepoSystem;
 
+    private RepositorySystem dynamicRepoSystem;
+
 
     private RepositorySystemSession defaultRepoSystemSession;
+    
+    private RepositorySystemSession dynamicRepoSystemSession;
 
     private RemoteRepository defaultRemoteRepository = null;
 
@@ -90,7 +93,9 @@ public class MavenLibraryResolverProvider {
 
     private MavenLibraryResolverProvider() throws PlexusContainerException {
         defaultRepoSystem = newRepositorySystemForResolver();
+        dynamicRepoSystem = newRepositorySystemForResolver();
         defaultRepoSystemSession = newSession(defaultRepoSystem, getLocalMVNRepository());
+        dynamicRepoSystemSession = newSession(dynamicRepoSystem, getLocalMVNRepository());
         ArtifactRepositoryBean talendServer = TalendLibsServerManager.getInstance().getTalentArtifactServer();
         if (talendServer.getUserName() == null && talendServer.getPassword() == null) {
             defaultRemoteRepository = new RemoteRepository.Builder("talend", "default", talendServer.getRepositoryURL()).build(); //$NON-NLS-1$ //$NON-NLS-2$
@@ -100,17 +105,16 @@ public class MavenLibraryResolverProvider {
             defaultRemoteRepository = new RemoteRepository.Builder("talend", "default", talendServer.getRepositoryURL()) //$NON-NLS-1$ //$NON-NLS-2$
                     .setAuthentication(authentication).build();
         }
-        Authentication authentication = new AuthenticationBuilder().addUsername("studio-dl-client")
-                .addPassword(StudioEncryption.getStudioEncryption(StudioEncryption.EncryptionKeyName.SYSTEM)
-                        .encrypt("studio-dl-client"))
+
+        Authentication authentication = new AuthenticationBuilder().addUsername("studio-dl-client").addPassword(
+                "studio-dl-client")
                 .build();
         String serverUrl = talendServer.getServer();
         if (!serverUrl.endsWith(NexusConstants.SLASH)) {
             serverUrl += NexusConstants.SLASH;
         }
-        dynamicRemoteRepository = new RemoteRepository.Builder("talend2", "default", //$NON-NLS-1$ //$NON-NLS-2$
-                serverUrl + NexusConstants.DYNAMIC_DISTRIBUTION).setAuthentication(authentication)
-                        .build();
+        dynamicRemoteRepository = new RemoteRepository.Builder("talend2", "default", 
+                NexusConstants.DYNAMIC_DISTRIBUTION).setAuthentication(authentication).build();
 
     }
 
@@ -124,7 +128,12 @@ public class MavenLibraryResolverProvider {
         Artifact artifact = new DefaultArtifact(aritfact.getGroupId(), aritfact.getArtifactId(), aritfact.getClassifier(),
                 aritfact.getType(), aritfact.getVersion());
         artifactRequest.setArtifact(artifact);
-        ArtifactResult result = defaultRepoSystem.resolveArtifact(defaultRepoSystemSession, artifactRequest);
+        ArtifactResult result = null;
+        if (is4Parent) {
+            result = dynamicRepoSystem.resolveArtifact(dynamicRepoSystemSession, artifactRequest);
+        } else {
+            result = defaultRepoSystem.resolveArtifact(defaultRepoSystemSession, artifactRequest);
+        }
         return result;
     }
 
