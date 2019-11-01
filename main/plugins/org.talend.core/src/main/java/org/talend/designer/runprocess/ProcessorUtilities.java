@@ -721,7 +721,6 @@ public class ProcessorUtilities {
 
                 if (nodeActivate) {
                     for (String jobId : processIds.split(ProcessorUtilities.COMMA)) {
-                        // String pureId = ProcessUtils.getPureItemId(jobId);
                         String actualVersion = processVersion;
                         if (RelationshipItemBuilder.LATEST_VERSION.equals(processVersion)) {
                             for (Project project : allProjects) {
