@@ -34,7 +34,10 @@ Bundle-ClassPath: .,
  lib/jsoup.jar,
  lib/wagon-http-shared.jar,
  lib/wagon-http.jar,
- lib/wagon-file.jar
+ lib/wagon-file.jar,
+ lib/maven-resolver-transport-file.jar,
+ lib/maven-resolver-transport-http.jar,
+ lib/wagon-http-lightweight.jar
 Export-Package: org.talend.designer.maven.aether,
  org.talend.designer.maven.aether.comparator,
  org.talend.designer.maven.aether.node,
