@@ -335,7 +335,10 @@ public class MavenUrlHelper {
     }
 
     public static String decryptPassword(String password) {
-        return StudioEncryption.getStudioEncryption(StudioEncryption.EncryptionKeyName.SYSTEM).decrypt(password);
+        if (StudioEncryption.hasEncryptionSymbol(password)) {
+            return StudioEncryption.getStudioEncryption(StudioEncryption.EncryptionKeyName.SYSTEM).decrypt(password);
+        }
+        return password;
     }
 
 	public static String generateModuleNameByMavenURI(String uri) {

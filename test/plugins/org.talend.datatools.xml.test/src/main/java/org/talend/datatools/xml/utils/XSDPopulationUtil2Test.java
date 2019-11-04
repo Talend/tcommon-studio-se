@@ -115,6 +115,46 @@ public class XSDPopulationUtil2Test {
 
     }
 
+    @Test
+    public void testSimpleNode_list() throws URISyntaxException, IOException, OdaException {
+        URL resource = this.getClass().getClassLoader().getResource("resources/simple_node_test.xsd");
+        File testFile = new File(FileLocator.toFileURL(resource).toURI());
+
+        XSDPopulationUtil2 populate = new XSDPopulationUtil2();
+        XSDSchema xsdSchema = populate.getXSDSchema(testFile.getAbsolutePath());
+        List<ATreeNode> allRootNodes = populate.getAllRootNodes(xsdSchema);
+        Assert.assertEquals(allRootNodes.size(), 2);
+
+        ATreeNode shiporder = allRootNodes.get(1);
+        shiporder = populate.getSchemaTree(xsdSchema, shiporder);
+        Assert.assertEquals(shiporder.getLabel(), "shiporder");
+
+        Object[] children = shiporder.getChildren();
+        Assert.assertEquals(children.length, 5);
+        ATreeNode myListNode = ((ATreeNode) children[4]);
+        Assert.assertEquals(myListNode.getLabel(), "myList");
+        Assert.assertEquals(myListNode.getDataType(), "xs:list");
+    }
+
+    @Test
+    public void testSimpleNode_root() throws URISyntaxException, IOException, OdaException {
+        URL resource = this.getClass().getClassLoader().getResource("resources/simple_node_test.xsd");
+        File testFile = new File(FileLocator.toFileURL(resource).toURI());
+
+        XSDPopulationUtil2 populate = new XSDPopulationUtil2();
+        XSDSchema xsdSchema = populate.getXSDSchema(testFile.getAbsolutePath());
+        List<ATreeNode> allRootNodes = populate.getAllRootNodes(xsdSchema);
+        Assert.assertEquals(allRootNodes.size(), 2);
+
+        ATreeNode day = allRootNodes.get(0);
+        day = populate.getSchemaTree(xsdSchema, day);
+        Assert.assertEquals(day.getLabel(), "day");
+
+        Object[] children = day.getChildren();
+        Assert.assertEquals(children.length, 0);
+        Assert.assertEquals(day.getDataType(), "xs:unsignedByte");
+    }
+
     private void testBranches(ATreeNode testBranchNode) {
         Object[] children = testBranchNode.getChildren();
         Assert.assertEquals(children.length, 1);

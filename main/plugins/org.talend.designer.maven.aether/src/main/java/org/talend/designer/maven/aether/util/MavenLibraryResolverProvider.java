@@ -12,12 +12,16 @@
 // ============================================================================
 package org.talend.designer.maven.aether.util;
 
+import java.io.FileReader;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.function.Consumer;
 
+import org.apache.commons.lang3.StringUtils;
 import org.apache.maven.model.License;
 import org.apache.maven.model.Model;
+import org.apache.maven.model.Parent;
+import org.apache.maven.model.io.xpp3.MavenXpp3Reader;
 import org.apache.maven.repository.internal.MavenRepositorySystemUtils;
 import org.apache.maven.wagon.Wagon;
 import org.apache.maven.wagon.providers.file.FileWagon;
@@ -50,6 +54,7 @@ import org.eclipse.aether.util.repository.AuthenticationBuilder;
 import org.eclipse.m2e.core.MavenPlugin;
 import org.talend.commons.exception.ExceptionHandler;
 import org.talend.core.nexus.ArtifactRepositoryBean;
+import org.talend.core.nexus.NexusConstants;
 import org.talend.core.nexus.TalendLibsServerManager;
 import org.talend.core.runtime.maven.MavenArtifact;
 
@@ -61,9 +66,16 @@ public class MavenLibraryResolverProvider {
 
     private RepositorySystem defaultRepoSystem;
 
+    private RepositorySystem dynamicRepoSystem;
+
+
     private RepositorySystemSession defaultRepoSystemSession;
+    
+    private RepositorySystemSession dynamicRepoSystemSession;
 
     private RemoteRepository defaultRemoteRepository = null;
+
+    private RemoteRepository dynamicRemoteRepository = null;
 
     private static MavenLibraryResolverProvider instance;
 
@@ -85,7 +97,9 @@ public class MavenLibraryResolverProvider {
 
     private MavenLibraryResolverProvider() throws PlexusContainerException {
         defaultRepoSystem = newRepositorySystemForResolver();
+        dynamicRepoSystem = newRepositorySystemForResolver();
         defaultRepoSystemSession = newSession(defaultRepoSystem, getLocalMVNRepository());
+        dynamicRepoSystemSession = newSession(dynamicRepoSystem, getLocalMVNRepository());
         ArtifactRepositoryBean talendServer = TalendLibsServerManager.getInstance().getTalentArtifactServer();
         if (talendServer.getUserName() == null && talendServer.getPassword() == null) {
             defaultRemoteRepository = new RemoteRepository.Builder("talend", "default", talendServer.getRepositoryURL()).build(); //$NON-NLS-1$ //$NON-NLS-2$
@@ -97,39 +111,78 @@ public class MavenLibraryResolverProvider {
         }
         defaultRemoteRepository = new RemoteRepository.Builder(defaultRemoteRepository)
                 .setProxy(new TalendAetherProxySelector().getProxy(defaultRemoteRepository)).build();
+
+        Authentication authentication = new AuthenticationBuilder().addUsername("studio-dl-client").addPassword(
+                "studio-dl-client")
+                .build();
+        String serverUrl = talendServer.getServer();
+        if (!serverUrl.endsWith(NexusConstants.SLASH)) {
+            serverUrl += NexusConstants.SLASH;
+        }
+        dynamicRemoteRepository = new RemoteRepository.Builder("talend2", "default", 
+                NexusConstants.DYNAMIC_DISTRIBUTION).setAuthentication(authentication).build();
+        dynamicRemoteRepository = new RemoteRepository.Builder(dynamicRemoteRepository)
+                .setProxy(new TalendAetherProxySelector().getProxy(dynamicRemoteRepository)).build();
+
     }
 
-    public ArtifactResult resolveArtifact(MavenArtifact aritfact) throws Exception {
+    public ArtifactResult resolveArtifact(MavenArtifact aritfact, boolean is4Parent) throws Exception {
+        ArtifactRequest artifactRequest = new ArtifactRequest();
         RemoteRepository remoteRepo = getRemoteRepositroy(aritfact);
+        artifactRequest.addRepository(remoteRepo);
+        if (is4Parent) {
+            artifactRequest.addRepository(dynamicRemoteRepository);
+        }
         Artifact artifact = new DefaultArtifact(aritfact.getGroupId(), aritfact.getArtifactId(), aritfact.getClassifier(),
                 aritfact.getType(), aritfact.getVersion());
-        ArtifactRequest artifactRequest = new ArtifactRequest();
-        artifactRequest.addRepository(remoteRepo);
         artifactRequest.setArtifact(artifact);
-        ArtifactResult result = defaultRepoSystem.resolveArtifact(defaultRepoSystemSession, artifactRequest);
+        ArtifactResult result = null;
+        if (is4Parent) {
+            result = dynamicRepoSystem.resolveArtifact(dynamicRepoSystemSession, artifactRequest);
+        } else {
+            result = defaultRepoSystem.resolveArtifact(defaultRepoSystemSession, artifactRequest);
+        }
         return result;
     }
 
-    public Map<String, Object> resolveDescProperties(MavenArtifact aritfact) throws Exception {
+    public Map<String, Object> resolveDescProperties(MavenArtifact aritfact, boolean is4Parent) throws Exception {
         Map<String, Object> properties = null;
         MavenArtifact clonedArtifact = aritfact.clone();
         clonedArtifact.setType("pom"); //$NON-NLS-1$
-        ArtifactResult result = resolveArtifact(clonedArtifact);
+        ArtifactResult result = resolveArtifact(clonedArtifact, is4Parent);
         if (result != null && result.isResolved()) {
             properties = new HashMap<String, Object>();
-            Model model = MavenPlugin.getMavenModelManager().readMavenModel(result.getArtifact().getFile());
+            MavenXpp3Reader reader = new MavenXpp3Reader();
+            Model model = reader.read(new FileReader(result.getArtifact().getFile()));
+            // Model model = MavenPlugin.getMavenModelManager().readMavenModel(result.getArtifact().getFile());
             if (model != null) {
                 properties.put("type", model.getPackaging()); //$NON-NLS-1$
-                properties.put("license.count", model.getLicenses().size()); //$NON-NLS-1$
+
+                int licenseCount = 0;
                 if (model.getLicenses() != null) {
                     for (int i = 0; i < model.getLicenses().size(); i++) {
                         License license = model.getLicenses().get(i);
-                        properties.put("license." + i + ".name", license.getName()); //$NON-NLS-1$//$NON-NLS-2$
-                        properties.put("license." + i + ".url", license.getUrl()); //$NON-NLS-1$ //$NON-NLS-2$
-                        properties.put("license." + i + ".comments", license.getComments()); //$NON-NLS-1$ //$NON-NLS-2$
-                        properties.put("license." + i + ".distribution", license.getDistribution()); //$NON-NLS-1$ //$NON-NLS-2$
+                        if (StringUtils.isNotBlank(license.getName()) || StringUtils.isNotBlank(license.getUrl())) {
+                            properties.put("license." + i + ".name", license.getName()); //$NON-NLS-1$//$NON-NLS-2$
+                            properties.put("license." + i + ".url", license.getUrl()); //$NON-NLS-1$ //$NON-NLS-2$
+                            properties.put("license." + i + ".comments", license.getComments()); //$NON-NLS-1$ //$NON-NLS-2$
+                            properties.put("license." + i + ".distribution", license.getDistribution()); //$NON-NLS-1$ //$NON-NLS-2$
+                            licenseCount++;
+                        }
                     }
                 }
+                properties.put("license.count", licenseCount); //$NON-NLS-1$
+                Parent parent = model.getParent();
+                if (parent != null) {
+                    properties.put("parent.groupId", parent.getGroupId());
+                    properties.put("parent.version", parent.getVersion());
+                    properties.put("parent.artifactId", parent.getArtifactId());
+                } else {
+                    properties.remove("parent.groupId");
+                    properties.remove("parent.version");
+                    properties.remove("parent.artifactId");
+                }
+
             }
         }
         return properties;
