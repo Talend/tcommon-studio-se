@@ -24,6 +24,7 @@ import org.apache.http.client.ClientProtocolException;
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.impl.client.DefaultHttpClient;
 import org.apache.http.message.BasicHeader;
+import org.apache.http.params.CoreConnectionPNames;
 import org.apache.log4j.Logger;
 import org.eclipse.m2e.core.MavenPlugin;
 import org.talend.commons.exception.ExceptionHandler;
@@ -36,7 +37,6 @@ import org.talend.librariesmanager.nexus.nexus3.handler.INexus3SearchHandler;
 import org.talend.librariesmanager.nexus.nexus3.handler.Nexus3BetaSearchHandler;
 import org.talend.librariesmanager.nexus.nexus3.handler.Nexus3ScriptSearchHandler;
 import org.talend.librariesmanager.nexus.nexus3.handler.Nexus3V1SearchHandler;
-import org.talend.utils.thread.TimeoutManager;
 
 /**
  * created by wchen on Aug 2, 2017 Detailled comment
@@ -97,8 +97,8 @@ public class Nexus3RepositoryHandler extends AbstractArtifactRepositoryHandler {
         get.addHeader(authority);
         DefaultHttpClient httpclient = new DefaultHttpClient();
         
-        httpclient.getParams().setIntParameter(TimeoutManager.SOCKET_TIMEOUT, NexusServerUtils.getTimeout());
-        httpclient.getParams().setIntParameter(TimeoutManager.CONNECTION_TIMEOUT, NexusServerUtils.getTimeout());
+        httpclient.getParams().setIntParameter(CoreConnectionPNames.CONNECTION_TIMEOUT, NexusServerUtils.getTimeout());
+        httpclient.getParams().setIntParameter(CoreConnectionPNames.SO_TIMEOUT, NexusServerUtils.getTimeout());
         
         HttpResponse response = httpclient.execute(get);
         if (response.getStatusLine().getStatusCode() == 200) {

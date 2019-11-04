@@ -25,6 +25,7 @@ import org.apache.http.client.fluent.Request;
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.impl.client.DefaultHttpClient;
 import org.apache.http.message.BasicHeader;
+import org.apache.http.params.CoreConnectionPNames;
 import org.apache.http.util.EntityUtils;
 import org.eclipse.m2e.core.MavenPlugin;
 import org.talend.commons.exception.ExceptionHandler;
@@ -34,7 +35,6 @@ import org.talend.core.nexus.NexusServerUtils;
 import org.talend.core.runtime.maven.MavenArtifact;
 import org.talend.core.runtime.maven.MavenUrlHelper;
 import org.talend.designer.maven.aether.RepositorySystemFactory;
-import org.talend.utils.thread.TimeoutManager;
 
 import net.sf.json.JSONArray;
 import net.sf.json.JSONObject;
@@ -88,8 +88,8 @@ public class ArtifacoryRepositoryHandler extends AbstractArtifactRepositoryHandl
         HttpGet get = new HttpGet(repositoryUrl);
         get.addHeader(authority);
         DefaultHttpClient httpclient = new DefaultHttpClient();
-        httpclient.getParams().setIntParameter(TimeoutManager.SOCKET_TIMEOUT, NexusServerUtils.getTimeout());
-        httpclient.getParams().setIntParameter(TimeoutManager.CONNECTION_TIMEOUT, NexusServerUtils.getTimeout());
+        httpclient.getParams().setIntParameter(CoreConnectionPNames.CONNECTION_TIMEOUT, NexusServerUtils.getTimeout());
+        httpclient.getParams().setIntParameter(CoreConnectionPNames.SO_TIMEOUT, NexusServerUtils.getTimeout());
         HttpResponse response = httpclient.execute(get);
         if (response.getStatusLine().getStatusCode() == 200) {
             return true;

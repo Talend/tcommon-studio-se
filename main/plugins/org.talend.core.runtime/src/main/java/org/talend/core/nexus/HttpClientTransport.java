@@ -44,7 +44,6 @@ import org.talend.core.runtime.CoreRuntimePlugin;
 import org.talend.core.runtime.maven.MavenArtifact;
 import org.talend.core.runtime.maven.MavenUrlHelper;
 import org.talend.designer.core.IDesignerCoreService;
-import org.talend.utils.thread.TimeoutManager;
 
 /**
  * DOC ggu class global comment. Detailled comment
