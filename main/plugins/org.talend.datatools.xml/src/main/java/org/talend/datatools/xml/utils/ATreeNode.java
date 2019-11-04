@@ -277,6 +277,9 @@ public class ATreeNode {
      * @throws OdaException
      */
     public void setDataType(String type) throws OdaException {
+        if (type == null) {
+            type = "";
+        }
         originalDataType = new String(type);
         this.dataType = getDataType(type);
     }

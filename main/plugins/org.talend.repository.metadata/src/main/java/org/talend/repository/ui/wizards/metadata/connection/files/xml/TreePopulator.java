@@ -233,7 +233,7 @@ public class TreePopulator extends AbstractTreePopulator {
                 ExceptionHandler.process(e);
                 return false;
             }
-            if (treeNode == null || treeNode.getChildren().length == 0) {
+            if (treeNode == null) {
                 return false;
             } else {
             	treeViewer.setInput(new Object[] { treeNode });
