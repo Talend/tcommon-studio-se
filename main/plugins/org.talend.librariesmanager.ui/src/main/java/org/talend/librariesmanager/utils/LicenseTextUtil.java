@@ -56,7 +56,7 @@ public class LicenseTextUtil {
                 StringBuilder sb = new StringBuilder();
                 List<String> lines = Files.readAllLines(file.toPath(), StandardCharsets.UTF_8);
                 for (String line : lines) {
-                    sb.append(line).append("\n");
+                    sb.append(line);
                 }
                 jsonArray = JSONArray.fromObject(sb.toString());
                 for (int i = 0; i < jsonArray.size(); i++) {
