@@ -28,6 +28,7 @@ import org.apache.log4j.Logger;
 import org.eclipse.m2e.core.MavenPlugin;
 import org.talend.commons.exception.ExceptionHandler;
 import org.talend.core.nexus.IRepositoryArtifactHandler;
+import org.talend.core.nexus.NexusServerUtils;
 import org.talend.core.runtime.maven.MavenArtifact;
 import org.talend.core.runtime.maven.MavenUrlHelper;
 import org.talend.designer.maven.aether.RepositorySystemFactory;
@@ -95,14 +96,10 @@ public class Nexus3RepositoryHandler extends AbstractArtifactRepositoryHandler {
         HttpGet get = new HttpGet(repositoryUrl);
         get.addHeader(authority);
         DefaultHttpClient httpclient = new DefaultHttpClient();
-        if(TimeoutManager.getSocketTimeout() != null) {
-            httpclient.getParams().setIntParameter(TimeoutManager.SOCKET_TIMEOUT, 
-                    TimeoutManager.getSocketTimeout());
-        }
-        if(TimeoutManager.getConnectionTimeout() != null) {
-            httpclient.getParams().setIntParameter(TimeoutManager.CONNECTION_TIMEOUT, 
-                    TimeoutManager.getConnectionTimeout());
-        }
+        
+        httpclient.getParams().setIntParameter(TimeoutManager.SOCKET_TIMEOUT, NexusServerUtils.getTimeout());
+        httpclient.getParams().setIntParameter(TimeoutManager.CONNECTION_TIMEOUT, NexusServerUtils.getTimeout());
+        
         HttpResponse response = httpclient.execute(get);
         if (response.getStatusLine().getStatusCode() == 200) {
             return true;
