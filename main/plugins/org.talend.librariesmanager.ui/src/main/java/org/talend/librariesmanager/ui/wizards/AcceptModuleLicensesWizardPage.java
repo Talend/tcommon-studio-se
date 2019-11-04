@@ -9,6 +9,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 
+import org.apache.commons.lang.StringUtils;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.jface.dialogs.Dialog;
 import org.eclipse.jface.dialogs.IDialogSettings;
@@ -238,8 +239,8 @@ public class AcceptModuleLicensesWizardPage extends WizardPage {
                 acceptButton.setSelection(isLicenseAccepted);
                 declineButton.setSelection(!isLicenseAccepted);
                 String url = license.getUrl();
-                if (licenseText != null) {
-                    String licenseContent = LicenseTextUtil.getLicenseTextByType(type);
+                if (licenseText != null && StringUtils.isNotEmpty(url)) {
+                    String licenseContent = LicenseTextUtil.getLicenseTextByUrl(url);
                     if (licenseContent != null) {
                         licenseText.setText(licenseContent);
                     } else {
