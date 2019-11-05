@@ -24,9 +24,8 @@ import org.eclipse.core.runtime.FileLocator;
 import org.osgi.framework.Bundle;
 import org.talend.commons.exception.ExceptionHandler;
 import org.talend.librariesmanager.ui.LibManagerUiPlugin;
-
-import net.sf.json.JSONArray;
-import net.sf.json.JSONObject;
+import org.talend.utils.json.JSONArray;
+import org.talend.utils.json.JSONObject;
 
 
 public class LicenseTextUtil {
@@ -48,7 +47,6 @@ public class LicenseTextUtil {
     }
 
     public static void getMapFromJson(Map<String, String> licenseMap) {
-        JSONArray jsonArray = new JSONArray();
         try {
             URL resourceURL = bundle.getEntry(LICENSE_FOLDER + LICENSE_MAP);
             File file = new File(FileLocator.toFileURL(resourceURL).getFile());
@@ -58,8 +56,8 @@ public class LicenseTextUtil {
                 for (String line : lines) {
                     sb.append(line);
                 }
-                jsonArray = JSONArray.fromObject(sb.toString());
-                for (int i = 0; i < jsonArray.size(); i++) {
+                JSONArray jsonArray = new JSONArray(sb.toString());
+                for (int i = 0; i < jsonArray.length(); i++) {
                     JSONObject jsonObject = jsonArray.getJSONObject(i);
                     String url = jsonObject.getString("licenseUrl");
                     String name = jsonObject.getString("licenseName");
