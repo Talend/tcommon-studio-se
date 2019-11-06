@@ -43,8 +43,6 @@ public class JobStructureCatcherUtils {
 
 		public Map<String, String> component_parameters;
 
-		public List<Map<String, String>> component_schema;
-
 		public String input_connectors;
 
 		public String output_connectors;
@@ -78,40 +76,31 @@ public class JobStructureCatcherUtils {
 		public String moment;
 
 		public String status;
+		
+		public String source_component_id;
+		public String source_component_name;
+		public String target_component_id;
+		public String target_component_name;
+		public List<Map<String, String>> component_schema;
+		
+		public MessageType message_type;
 
-		public JobStructureCatcherMessage(String component_id, String component_name,
-				Map<String, String> component_parameters, List<Map<String, String>> component_schema,
-				String input_connectors, String output_connectors,
-				Map<String, String> connector_name_2_connector_schema, String job_name, String job_id,
-				String job_version, boolean current_connector_as_input, String current_connector_type,
-				String current_connector, String currrent_row_content, long row_count, long total_row_number,
-				long start_time, long end_time, String status) {
-			this.component_id = component_id;
-			this.component_name = component_name;
-			this.component_parameters = component_parameters;
-			this.component_schema = component_schema;
-			this.input_connectors = input_connectors;
-			this.output_connectors = output_connectors;
-			this.connector_name_2_connector_schema = connector_name_2_connector_schema;
-
-			this.job_name = job_name;
-			this.job_version = job_version;
-			this.job_id = job_id;
-			this.systemPid = JobStructureCatcherUtils.getPid();
-
-			this.current_connector_as_input = current_connector_as_input;
-			this.current_connector_type = current_connector_type;
-			this.current_connector = current_connector;
-			this.currrent_row_content = currrent_row_content;
-			this.row_count = row_count;
-			this.total_row_number = total_row_number;
-			this.start_time = start_time;
-			this.end_time = end_time;
-
-			this.moment = sdf.format(new Date());
-			this.status = status;
+		public JobStructureCatcherMessage(MessageType message_type) {
+			this.message_type = message_type;
 		}
-
+		
+	}
+	
+	public enum MessageType {
+		
+		AUDIT_JOB_START,
+		AUDIT_JOB_END,
+		AUDIT_COMPONENT_MESSAGE,
+		AUDIT_CONNECTION_MESSAGE,
+		
+		RUNTIME_PARAMETER,
+		RUNTIME_SCHEMA
+		
 	}
 
 	java.util.List<JobStructureCatcherMessage> messages = java.util.Collections
@@ -128,39 +117,100 @@ public class JobStructureCatcherUtils {
 		this.job_id = jobId;
 		this.job_version = jobVersion;
 	}
-
-	private void addMessage(String component_id, String component_name, Map<String, String> component_parameters,
-			List<Map<String, String>> component_schema, String input_connectors, String output_connectors,
-			Map<String, String> connector_name_2_connector_schema, boolean current_connector_as_input,
-			String current_connector_type, String current_connector, String currrent_row_content, long row_count,
-			long total_row_number, long start_time, long end_time, String status) {
-		JobStructureCatcherMessage scm = new JobStructureCatcherMessage(component_id, component_name,
-				component_parameters, component_schema, input_connectors, output_connectors,
-				connector_name_2_connector_schema, this.job_name, this.job_id, this.job_version,
-				current_connector_as_input, current_connector_type, current_connector, currrent_row_content, row_count,
-				total_row_number, start_time, end_time, status);
-		messages.add(scm);
+	
+	public void addComponentParameterMessage(String component_id, String component_name, Map<String, String> component_parameters) {
+		JobStructureCatcherMessage scm = new JobStructureCatcherMessage(MessageType.RUNTIME_PARAMETER);
+		scm.job_name = this.job_name;
+		scm.job_id = this.job_id;
+		scm.job_version = this.job_version;
+		scm.component_id = component_id;
+		scm.component_name = component_name;
+		scm.systemPid = JobStructureCatcherUtils.getPid();
+		scm.moment = sdf.format(new Date());
+		
+		scm.component_parameters = component_parameters;
+		
+		this.messages.add(scm);
+	}
+	
+	public void addConnectionSchemaMessage(String source_component_id, String source_component_name, String target_component_id, String target_component_name, 
+			String current_connector, List<Map<String, String>> component_schema) {
+		JobStructureCatcherMessage scm = new JobStructureCatcherMessage(MessageType.RUNTIME_SCHEMA);
+		scm.job_name = this.job_name;
+		scm.job_id = this.job_id;
+		scm.job_version = this.job_version;
+		scm.systemPid = JobStructureCatcherUtils.getPid();
+		scm.moment = sdf.format(new Date());
+		
+		scm.current_connector = current_connector;
+		scm.component_schema = component_schema;
+		scm.source_component_id = source_component_id;
+		scm.source_component_name = source_component_name;
+		scm.target_component_id = target_component_id;
+		scm.target_component_name = target_component_name;
+		
+		this.messages.add(scm);
 	}
 
 	public void addConnectionMessage(String component_id, String component_name, boolean current_connector_as_input,
 			String current_connector_type, String current_connector, long total_row_number, long start_time,
 			long end_time) {
-		this.addMessage(component_id, component_name, null, null, null, null, null, current_connector_as_input,
-				current_connector_type, current_connector, null, 0, total_row_number, start_time, end_time, null);
+		JobStructureCatcherMessage scm = new JobStructureCatcherMessage(MessageType.AUDIT_CONNECTION_MESSAGE);
+		scm.job_name = this.job_name;
+		scm.job_id = this.job_id;
+		scm.job_version = this.job_version;
+		scm.component_id = component_id;
+		scm.component_name = component_name;
+		scm.systemPid = JobStructureCatcherUtils.getPid();
+		scm.moment = sdf.format(new Date());
+		
+		scm.current_connector_as_input = current_connector_as_input;
+		scm.current_connector_type = current_connector_type;
+		scm.current_connector = current_connector;
+		scm.total_row_number = total_row_number;
+		scm.start_time = start_time;
+		scm.end_time = end_time;
+		
+		this.messages.add(scm);
 	}
 
 	public void addCM(String component_id, String component_name) {
-		this.addMessage(component_id, component_name, null, null, null, null, null, false, null, null,
-				null, 0, 0, 0, 0, null);
+		JobStructureCatcherMessage scm = new JobStructureCatcherMessage(MessageType.AUDIT_COMPONENT_MESSAGE);
+		scm.job_name = this.job_name;
+		scm.job_id = this.job_id;
+		scm.job_version = this.job_version;
+		scm.component_id = component_id;
+		scm.component_name = component_name;
+		scm.systemPid = JobStructureCatcherUtils.getPid();
+		scm.moment = sdf.format(new Date());
+		
+		this.messages.add(scm);
 	}
 
 	public void addJobStartMessage() {
-		this.addMessage(null, null, null, null, null, null, null, false, null, null, null, 0, 0, 0, 0, null);
+		JobStructureCatcherMessage scm = new JobStructureCatcherMessage(MessageType.AUDIT_JOB_START);
+		scm.job_name = this.job_name;
+		scm.job_id = this.job_id;
+		scm.job_version = this.job_version;
+		scm.systemPid = JobStructureCatcherUtils.getPid();
+		scm.moment = sdf.format(new Date());
+		
+		this.messages.add(scm);
 	}
 
 	public void addJobEndMessage(long start_time, long end_time, String status) {
-		this.addMessage(null, null, null, null, null, null, null, false, null, null, null, 0, 0, start_time, end_time,
-				status == "" ? "end" : status);
+		JobStructureCatcherMessage scm = new JobStructureCatcherMessage(MessageType.AUDIT_JOB_END);
+		scm.job_name = this.job_name;
+		scm.job_id = this.job_id;
+		scm.job_version = this.job_version;
+		scm.systemPid = JobStructureCatcherUtils.getPid();
+		scm.moment = sdf.format(new Date());
+		
+		scm.start_time = start_time;
+		scm.end_time = end_time;
+		scm.status = status;
+		
+		this.messages.add(scm);
 	}
 
 	public java.util.List<JobStructureCatcherMessage> getMessages() {
