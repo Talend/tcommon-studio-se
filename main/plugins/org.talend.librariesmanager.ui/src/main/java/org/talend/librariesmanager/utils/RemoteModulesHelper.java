@@ -147,8 +147,8 @@ public class RemoteModulesHelper {
 
             Set<String> unavailableModules = new HashSet<String>();
             // if the network is not valid, all jars are not available.
-            boolean networkValid = NetworkUtil.isNetworkValid();
-            if (!networkValid) {
+            boolean officalOrProxyValid = NetworkUtil.isOfficalOrProxyValid();
+            if (!officalOrProxyValid) {
                 if (!alreadyWarnedAboutConnectionIssue) {
                     log.warn("failed to connect to internet");
                     alreadyWarnedAboutConnectionIssue = true;

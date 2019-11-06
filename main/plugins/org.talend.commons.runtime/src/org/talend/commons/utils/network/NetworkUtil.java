@@ -70,6 +70,29 @@ public class NetworkUtil {
         return true;
     }
 
+    public static boolean isOfficalOrProxyValid() {
+        return checkValidWithHttp(System.getProperty("nexus.proxy.url", HTTP_NETWORK_URL));
+    }
+
+    private static boolean checkValidWithHttp(String urlString) {
+        HttpURLConnection conn = null;
+        try {
+            URL url = new URL(urlString);
+            conn = (HttpURLConnection) url.openConnection();
+            conn.setConnectTimeout(4000);
+            conn.setReadTimeout(4000);
+            conn.setRequestMethod("HEAD"); //$NON-NLS-1$
+            conn.getResponseMessage();
+        } catch (Exception e) {
+            // if not reachable , will throw exception(time out/unknown host) .So if catched exception, make it a
+            // invalid server
+            return false;
+        } finally {
+            conn.disconnect();
+        }
+        return true;
+    }
+
     public static Authenticator getDefaultAuthenticator() {
         try {
             Field theAuthenticatorField = Authenticator.class.getDeclaredField("theAuthenticator");
