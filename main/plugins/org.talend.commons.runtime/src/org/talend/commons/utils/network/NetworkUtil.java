@@ -49,9 +49,10 @@ public class NetworkUtil {
         if ("true".equals(disableInternet)) { //$NON-NLS-1$
             return false;
         }
+        HttpURLConnection conn = null;
         try {
             URL url = new URL(HTTP_NETWORK_URL);
-            HttpURLConnection conn = (HttpURLConnection) url.openConnection();
+            conn = (HttpURLConnection) url.openConnection();
             conn.setConnectTimeout(4000);
             conn.setReadTimeout(4000);
 
@@ -63,9 +64,10 @@ public class NetworkUtil {
             if (strMessage.equals("OK")) { //$NON-NLS-1$
                 return true;
             }
-            conn.disconnect();
         } catch (Exception e) {
             return false;
+        } finally {
+            conn.disconnect();
         }
         return true;
     }
