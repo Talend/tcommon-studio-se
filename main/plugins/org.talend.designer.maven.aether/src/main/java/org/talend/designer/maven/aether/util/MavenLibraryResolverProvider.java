@@ -14,6 +14,7 @@ package org.talend.designer.maven.aether.util;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.function.Consumer;
 
 import org.apache.maven.model.License;
 import org.apache.maven.model.Model;
@@ -36,6 +37,7 @@ import org.eclipse.aether.transport.file.FileTransporterFactory;
 import org.eclipse.aether.transport.http.HttpTransporterFactory;
 import org.eclipse.aether.util.repository.AuthenticationBuilder;
 import org.eclipse.m2e.core.MavenPlugin;
+import org.talend.commons.exception.ExceptionHandler;
 import org.talend.core.nexus.ArtifactRepositoryBean;
 import org.talend.core.nexus.TalendLibsServerManager;
 import org.talend.core.runtime.maven.MavenArtifact;
@@ -82,6 +84,8 @@ public class MavenLibraryResolverProvider {
             defaultRemoteRepository = new RemoteRepository.Builder("talend", "default", talendServer.getRepositoryURL()) //$NON-NLS-1$ //$NON-NLS-2$
                     .setAuthentication(authentication).build();
         }
+        defaultRemoteRepository = new RemoteRepository.Builder(defaultRemoteRepository)
+                .setProxy(new TalendAetherProxySelector().getProxy(defaultRemoteRepository)).build();
     }
 
     public ArtifactResult resolveArtifact(MavenArtifact aritfact) throws Exception {
@@ -121,16 +125,28 @@ public class MavenLibraryResolverProvider {
     }
 
     public RemoteRepository getRemoteRepositroy(MavenArtifact aritfact) {
+        RemoteRepository remoteRepository = null;
+        Consumer<RemoteRepository> update = null;
         if (aritfact != null && aritfact.getRepositoryUrl() != null) {
             if (urlToRepositoryMap.containsKey(aritfact.getRepositoryUrl())) {
-                return urlToRepositoryMap.get(aritfact.getRepositoryUrl());
+                remoteRepository = urlToRepositoryMap.get(aritfact.getRepositoryUrl());
+            } else {
+                remoteRepository = buildRemoteRepository(aritfact);
+                urlToRepositoryMap.put(aritfact.getRepositoryUrl(), remoteRepository);
             }
-
-            RemoteRepository repository = buildRemoteRepository(aritfact);
-            urlToRepositoryMap.put(aritfact.getRepositoryUrl(), repository);
-            return repository;
+            update = (r) -> urlToRepositoryMap.put(aritfact.getRepositoryUrl(), r);
+        } else {
+            remoteRepository = defaultRemoteRepository;
+            update = (r) -> defaultRemoteRepository = r;
         }
-        return defaultRemoteRepository;
+        try {
+            remoteRepository = new RemoteRepository.Builder(remoteRepository)
+                    .setProxy(defaultRepoSystemSession.getProxySelector().getProxy(remoteRepository)).build();
+            update.accept(remoteRepository);
+        } catch (Exception e) {
+            ExceptionHandler.process(e);
+        }
+        return remoteRepository;
     }
 
     private RemoteRepository buildRemoteRepository(MavenArtifact aritfact) {
@@ -143,6 +159,8 @@ public class MavenLibraryResolverProvider {
             repository = new RemoteRepository.Builder("talend", "default", aritfact.getRepositoryUrl()) //$NON-NLS-1$ //$NON-NLS-2$
                     .setAuthentication(authentication).build();
         }
+        repository = new RemoteRepository.Builder(repository).setProxy(new TalendAetherProxySelector().getProxy(repository))
+                .build();
         return repository;
     }
 
@@ -160,6 +178,7 @@ public class MavenLibraryResolverProvider {
 
         LocalRepository localRepo = new LocalRepository( /* "target/local-repo" */target);
         session.setLocalRepositoryManager(system.newLocalRepositoryManager(session, localRepo));
+        session.setProxySelector(new TalendAetherProxySelector());
 
         return session;
     }
