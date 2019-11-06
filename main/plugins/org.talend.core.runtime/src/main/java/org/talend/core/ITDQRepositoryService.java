@@ -210,4 +210,9 @@ public interface ITDQRepositoryService extends IService {
      * @param ruManager: RepositoryUpdateManager
      */
     void updateAllContextInAnalysisAndReport(RepositoryUpdateManager ruManager, Object parameter, boolean isUpdated);
+
+    /**
+     * @param chooseContext the context name which want to swtich
+     */
+    void popupSwitchContextFailedMessage(String chooseContext);
 }

@@ -299,6 +299,17 @@ public class LocalLibraryManager implements ILibraryManagerService, IChangedLibr
         return retrieve(testModule, pathToStore, popUp, refresh);
     }
 
+	@Override
+	public boolean retrieve(String jarNeeded, String mavenUri, String pathToStore, IProgressMonitor... monitorWrap) {
+		ModuleNeeded testModule = new ModuleNeeded("", jarNeeded, "", true);
+		if(mavenUri != null) {
+			testModule.setMavenUri(mavenUri);
+		}
+        boolean refresh = true;
+        return retrieve(testModule, pathToStore, true, refresh);
+	}
+
+
     private boolean retrieve(ModuleNeeded module, String pathToStore, boolean showDialog, boolean refresh) {
         String jarNeeded = module.getModuleName();
         String sourcePath = null;

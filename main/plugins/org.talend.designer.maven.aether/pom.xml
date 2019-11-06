@@ -11,6 +11,7 @@
   <packaging>eclipse-plugin</packaging>
   <properties>
     <maven.resolver.version>1.3.1</maven.resolver.version>
+    <wagon.version>3.0.0</wagon.version>
   </properties>
 
   <dependencies>
@@ -45,10 +46,25 @@
       <version>${maven.resolver.version}</version>
     </dependency>
     <dependency>
-      <groupId>org.apache.maven.resolver</groupId>
+      <groupId>org.apache.maven.wagon</groupId>
+      <artifactId>wagon-file</artifactId>
+      <version>${wagon.version}</version>
+    </dependency>
+    <dependency>
+      <groupId>org.apache.maven.wagon</groupId>
+      <artifactId>wagon-http</artifactId>
+      <version>${wagon.version}</version>
+    </dependency>
+    <dependency>
+      <groupId>org.apache.maven.wagon</groupId>
+      <artifactId>wagon-http-lightweight</artifactId>
+      <version>${wagon.version}</version>
+    </dependency>
+    <dependency>
+    <groupId>org.apache.maven.resolver</groupId>
       <artifactId>maven-resolver-transport-file</artifactId>
       <version>${maven.resolver.version}</version>
-    </dependency>
+      </dependency>
     <dependency>
       <groupId>org.apache.maven.resolver</groupId>
       <artifactId>maven-resolver-transport-http</artifactId>

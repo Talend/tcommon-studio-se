@@ -19,7 +19,7 @@ import static org.junit.Assert.assertTrue;
 
 import org.junit.Test;
 import org.talend.commons.utils.PasswordEncryptUtil;
-import org.talend.utils.security.AESEncryption;
+import org.talend.utils.security.StudioEncryption;
 
 /**
  * DOC ggu class global comment. Detailled comment
@@ -40,15 +40,14 @@ public class PasswordEncryptUtilTest {
 
     @Test
     public void testEncryptPasswordHex() throws Exception {
+        StudioEncryption se = StudioEncryption.getStudioEncryption(StudioEncryption.EncryptionKeyName.ROUTINE);
         assertNull(PasswordEncryptUtil.encryptPasswordHex(null));
-        assertEquals(PasswordEncryptUtil.PREFIX_PASSWORD + "3wsOMnbk/woqdy5ZsU6GMg==" + PasswordEncryptUtil.POSTFIX_PASSWORD,
-                PasswordEncryptUtil.encryptPasswordHex(""));
-        assertEquals(PasswordEncryptUtil.PREFIX_PASSWORD + "DbNaSf740zWs/Wxk9uEQVg==" + PasswordEncryptUtil.POSTFIX_PASSWORD,
-                PasswordEncryptUtil.encryptPasswordHex("Talend"));
-        assertEquals(PasswordEncryptUtil.PREFIX_PASSWORD + "0VJ8+G+5+0GnM7gdwEg99A==" + PasswordEncryptUtil.POSTFIX_PASSWORD,
-                PasswordEncryptUtil.encryptPasswordHex("toor"));
-        assertEquals(PasswordEncryptUtil.PREFIX_PASSWORD + "KTndRHnWm9Iej7KMqWJ1fw==" + PasswordEncryptUtil.POSTFIX_PASSWORD,
-                PasswordEncryptUtil.encryptPasswordHex("Talend123"));
+        assertEquals("",
+                se.decrypt(PasswordEncryptUtil.encryptPasswordHex("")));
+        assertEquals("Talend",
+                se.decrypt(PasswordEncryptUtil.encryptPasswordHex("Talend")));
+        assertEquals("toor", se.decrypt(PasswordEncryptUtil.encryptPasswordHex("toor")));
+        assertEquals("Talend123", se.decrypt(PasswordEncryptUtil.encryptPasswordHex("Talend123")));
     }
 
     @Test
@@ -84,11 +83,10 @@ public class PasswordEncryptUtilTest {
 
     @Test
     public void testDecryptPassword() {
-        String encryptPassword1 = PasswordEncryptUtil.PREFIX_PASSWORD + "3wsOMnbk/woqdy5ZsU6GMg=="
-                + PasswordEncryptUtil.POSTFIX_PASSWORD;
+        String encryptPassword1 = StudioEncryption.getStudioEncryption(StudioEncryption.EncryptionKeyName.ROUTINE).encrypt("");
         assertEquals("", decryptPassword(encryptPassword1));
-        String encryptPassword2 = PasswordEncryptUtil.PREFIX_PASSWORD + "KTndRHnWm9Iej7KMqWJ1fw=="
-                + PasswordEncryptUtil.POSTFIX_PASSWORD;
+        String encryptPassword2 = StudioEncryption.getStudioEncryption(StudioEncryption.EncryptionKeyName.ROUTINE)
+                .encrypt("Talend123");
         assertEquals("Talend123", decryptPassword(encryptPassword2));
 
         String decryptPassword1 = "";
@@ -107,14 +105,12 @@ public class PasswordEncryptUtilTest {
         if (input == null || input.length() == 0) {
             return input;
         }
-        if (input.startsWith(PasswordEncryptUtil.PREFIX_PASSWORD) && input.endsWith(PasswordEncryptUtil.POSTFIX_PASSWORD)) {
-            try {
-                return AESEncryption.decryptPassword(input.substring(PasswordEncryptUtil.PREFIX_PASSWORD.length(),
-                        input.length() - PasswordEncryptUtil.POSTFIX_PASSWORD.length()));
-            } catch (Exception e) {
-                // do nothing
-            }
+        if (StudioEncryption.hasEncryptionSymbol(input)) {
+
+            StudioEncryption se = StudioEncryption.getStudioEncryption(StudioEncryption.EncryptionKeyName.ROUTINE);
+            return se.decrypt(input);
         }
+
         return input;
     }
 }

@@ -26,7 +26,7 @@ import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Group;
-import org.talend.commons.ui.runtime.exception.ExceptionHandler;
+import org.talend.commons.exception.ExceptionHandler;
 import org.talend.commons.ui.swt.formtools.LabelledCombo;
 import org.talend.commons.ui.swt.formtools.LabelledText;
 import org.talend.core.model.metadata.builder.connection.Concept;
@@ -160,19 +160,7 @@ public class SetNameForm extends AbstractMDMFileStepForm {
         entityCombo.addModifyListener(new ModifyListener() {
 
             public void modifyText(ModifyEvent e) {
-                selectedEntity = entityCombo.getText();
-
-                selectedEntity = selectedEntity.trim();
-
-                // if entity name has special char
-                String regex = "[^a-zA-Z&&[^0-9]&&[^\\_]]"; //$NON-NLS-1$
-                selectedEntity = selectedEntity.replaceAll(regex, "_"); //$NON-NLS-1$
-
-                // if entity name don't start with alphabet
-                final char charAt = selectedEntity.charAt(0);
-                if (charAt < 'A' || charAt > 'z' || charAt > 'Z' && charAt < 'a') {
-                    selectedEntity = "a" + selectedEntity; //$NON-NLS-1$
-                }
+                selectedEntity = entityCombo.getText().trim();
 
                 String name = getNextName();
 
@@ -187,6 +175,16 @@ public class SetNameForm extends AbstractMDMFileStepForm {
     }
 
     private String getNextName() {
+        // if entity name has special char
+        String regex = "[[^a-zA-Z]&&[^0-9]&&[^\\_]]"; //$NON-NLS-1$
+        String _selectedEntity = selectedEntity.replaceAll(regex, "_"); //$NON-NLS-1$
+
+        // if entity name don't start with alphabet
+        final char charAt = _selectedEntity.charAt(0);
+        if (charAt < 'A' || charAt > 'z' || charAt > 'Z' && charAt < 'a') {
+            _selectedEntity = "a" + _selectedEntity; //$NON-NLS-1$
+        }
+
         String type = ""; //$NON-NLS-1$
         switch (concept.getConceptType()) {
         case INPUT:
@@ -200,7 +198,7 @@ public class SetNameForm extends AbstractMDMFileStepForm {
             break;
         }
 
-        String name = selectedEntity + type;
+        String name = _selectedEntity + type;
         int counter = 0;
         boolean exists = true;
         while (exists) {
@@ -313,14 +311,9 @@ public class SetNameForm extends AbstractMDMFileStepForm {
                     updateStatus(IStatus.ERROR, Messages.getString("SetNameForm_get_entity_fail")); //$NON-NLS-1$
                 }
 
-            } catch (OdaException e) {
-                ExceptionHandler.process(e);
-            } catch (URISyntaxException e) {
-                ExceptionHandler.process(e);
-            } catch (IOException e) {
+            } catch (OdaException | URISyntaxException | IOException e) {
                 ExceptionHandler.process(e);
             }
-
         }
     }
 

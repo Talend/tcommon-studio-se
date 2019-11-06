@@ -877,7 +877,10 @@ public class TreeUtil {
                 }
                 String schemaLocation = xsdImport.getSchemaLocation();
                 File importFile = new File(schemaLocation);
-                String existedFile = null;
+                if (!importFile.isFile() && !importFile.isDirectory()) {
+                    // means should be something else like http url location, won't check
+                    continue;
+                }
                 if (importFile.isAbsolute()) {
                     if (!importFile.exists()) {
                         importRefSchemaNotExist.add(schemaLocation);

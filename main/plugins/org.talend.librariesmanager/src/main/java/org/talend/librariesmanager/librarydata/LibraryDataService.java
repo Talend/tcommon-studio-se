@@ -14,6 +14,7 @@ package org.talend.librariesmanager.librarydata;
 
 import java.io.File;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -62,7 +63,7 @@ public class LibraryDataService {
 
     private static final String LIBRARIES_DATA_FILE_NAME = "library_data.index"; //$NON-NLS-1$
 
-    private static final String UNRESOLVED_LICENSE_NAME = "UNKNOW"; //$NON-NLS-1$
+    private static final String UNRESOLVED_LICENSE_NAME = "UNKNOWN"; //$NON-NLS-1$
 
     private static boolean buildLibraryIfFileMissing = true;
 
@@ -115,8 +116,31 @@ public class LibraryDataService {
     public void buildLibraryLicenseData(Set<String> mvnUrlList) {
         for (String mvnUrl : mvnUrlList) {
             Library libraryObj = resolve(mvnUrl);
-            mvnToLibraryMap.put(getShortMvnUrl(mvnUrl), libraryObj);
-
+            if (!libraryObj.isLicenseMissing() || !libraryObj.isPomMissing()) {
+                mvnToLibraryMap.put(getShortMvnUrl(mvnUrl), libraryObj);
+            }
+        }
+        for (String key : mvnToLibraryMap.keySet()) {
+            Library lib = mvnToLibraryMap.get(key);
+            List<LibraryLicense> licenses = lib.getLicenses();
+            Iterator it = licenses.iterator();
+            boolean isRemoved = false;
+            while (it.hasNext()) {
+                LibraryLicense l = (LibraryLicense) it.next();
+                if (StringUtils.isEmpty(l.getName()) && StringUtils.isEmpty(l.getUrl())) {
+                    it.remove();
+                    isRemoved = true;
+                }
+            }
+            if(lib.isPomMissing()) {
+                lib.getLicenses().clear();
+                lib.getLicenses().add(unknownLicense);
+            }else {
+                if ((isRemoved && licenses.size() == 0)) {
+                    licenses.add(unknownLicense);
+                    lib.setLicenseMissing(true);
+                }
+            }
         }
         dataProvider.saveLicenseData(mvnToLibraryMap);
     }
@@ -140,10 +164,17 @@ public class LibraryDataService {
                     if (repeated > 0) {
                         Thread.sleep(1000); // To avoid server connection pool shut down
                     }
-                    Map<String, Object> properties = resolveDescProperties(artifact);
+                    Map<String, Object> properties = resolveDescProperties(artifact, false);
                     if (properties != null && properties.size() > 0) {
-                        parseDescriptorResult(libraryObj, properties);
+                        parseDescriptorResult(libraryObj, properties, false);
+                        if (libraryObj.getLicenses().size() == 0) {
+                            libraryObj.setLicenseMissing(true);
+                            libraryObj.getLicenses().add(unknownLicense);
+                        }
                         libraryObj.setPomMissing(false);
+                        if (null == properties.get("type") || "".equals((String) properties.get("type"))) {
+                            libraryObj.setType(MavenConstants.PACKAGING_POM);
+                        }
                     }
                     isRetry = false;
                 } catch (Exception ex) {
@@ -160,7 +191,7 @@ public class LibraryDataService {
             if (buildLibraryJarFile) {
                 boolean jarMissing = false;
                 try {
-                    MavenLibraryResolverProvider.getInstance().resolveArtifact(artifact);
+                    MavenLibraryResolverProvider.getInstance().resolveArtifact(artifact, false);
                 } catch (Exception ex) {
                     jarMissing = true;
                 } finally {
@@ -187,14 +218,15 @@ public class LibraryDataService {
         dataProvider.saveLicenseData(mvnToLibraryMap);
     }
 
-    private Map<String, Object> resolveDescProperties(MavenArtifact artifact) throws Exception {
-        Map<String, Object> properties = MavenLibraryResolverProvider.getInstance().resolveDescProperties(artifact);
+    private Map<String, Object> resolveDescProperties(MavenArtifact artifact, boolean is4Parent) throws Exception {
+        Map<String, Object> properties = MavenLibraryResolverProvider.getInstance().resolveDescProperties(artifact, is4Parent);
         return properties;
     }
 
     public void fillLibraryDataByRemote(String mvnUrl, MavenArtifact artifact) {
         Library libraryObj = resolve(mvnUrl);
         fillLibraryData(libraryObj, artifact);
+        mvnToLibraryMap.put(getShortMvnUrl(mvnUrl), libraryObj);
     }
 
     public boolean fillLibraryDataUseCache(String mvnUrl, MavenArtifact artifact) {
@@ -225,15 +257,23 @@ public class LibraryDataService {
         return false;
     }
 
-    private void parseDescriptorResult(Library libraryObj, Map<String, Object> properties) {
+    private void parseDescriptorResult(Library libraryObj, Map<String, Object> properties, boolean is4Parent) throws Exception {
         if (properties.size() == 0) {
             libraryObj.setPomMissing(true);
         }
-        libraryObj.setType(String.valueOf(properties.get("type"))); //$NON-NLS-1$
+        if (!is4Parent) {
+            libraryObj.setType(String.valueOf(properties.get("type"))); //$NON-NLS-1$
+        }
         int licenseCount = 0;
         if (properties.containsKey("license.count")) { //$NON-NLS-1$
             licenseCount = (int) properties.get("license.count"); //$NON-NLS-1$
         }
+        if (licenseCount > 0) {
+            if (libraryObj.getLicenses() != null) {
+                libraryObj.getLicenses().clear();
+            }
+        }
+
         for (int i = 0; i < licenseCount; i++) {
             String name = getStringValue(properties.get("license." + i + ".name")); //$NON-NLS-1$ //$NON-NLS-2$
             String url = getStringValue(properties.get("license." + i + ".url")); //$NON-NLS-1$ //$NON-NLS-2$
@@ -245,13 +285,29 @@ public class LibraryDataService {
             license.setUrl(url);
             license.setComments(comments);
             license.setDistribution(distribution);
-            libraryObj.getLicenses().add(license);
+            if (!"".equals(name) || !"".equals(url)) {
+                libraryObj.getLicenses().add(license);
+            }
         }
 
         if (libraryObj.getLicenses().size() == 0) {
-            libraryObj.setLicenseMissing(true);
-            libraryObj.getLicenses().add(unknownLicense);
+            if (properties.containsKey("parent.groupId")) {
+                fetchFromParent(libraryObj, (String) properties.get("parent.groupId"),
+                        (String) properties.get("parent.artifactId"), (String) properties.get("parent.version"));
+            }
         }
+    }
+
+    private void fetchFromParent(Library libraryObj, String parentGroupId, String parentArtifactId, String parentVersion)
+            throws Exception {
+        MavenArtifact parent = new MavenArtifact();
+        parent.setGroupId(parentGroupId);
+        parent.setArtifactId(parentArtifactId);
+        parent.setVersion(parentVersion);
+        parent.setClassifier(libraryObj.getClassifier());
+        parent.setType(libraryObj.getType());
+        Map<String, Object> properties = resolveDescProperties(parent, true);
+        parseDescriptorResult(libraryObj, properties, true);
     }
 
     private String getStringValue(Object value) {
@@ -294,7 +350,7 @@ public class LibraryDataService {
                 artifact.setLicense(licenseName);
                 artifact.setLicenseUrl(bestLicense.getUrl());
             }
-
+            artifact.setType(object.getType());
             // URL
             if (StringUtils.isEmpty(artifact.getUrl()) && StringUtils.isNotEmpty(object.getUrl())) {
                 artifact.setUrl(object.getUrl());

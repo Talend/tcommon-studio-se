@@ -17,10 +17,11 @@ import org.eclipse.emf.ecore.impl.EObjectImpl;
 import org.eclipse.emf.ecore.util.EObjectContainmentEList;
 import org.eclipse.emf.ecore.util.InternalEList;
 import org.talend.commons.utils.PasswordEncryptUtil;
-import org.talend.daikon.security.CryptoHelper;
 import org.talend.designer.core.model.utils.emf.talendfile.ElementParameterType;
 import org.talend.designer.core.model.utils.emf.talendfile.ElementValueType;
 import org.talend.designer.core.model.utils.emf.talendfile.TalendFilePackage;
+import org.talend.utils.security.CryptoMigrationUtil;
+import org.talend.utils.security.StudioEncryption;
 
 /**
  * <!-- begin-user-doc --> An implementation of the model object '<em><b>Element Parameter Type</b></em>'. <!--
@@ -297,7 +298,14 @@ public class ElementParameterTypeImpl extends EObjectImpl implements ElementPara
 
     public String getRawValue() {
         if (value != null && value.length() > 0 && PasswordEncryptUtil.isPasswordField(getField())) {
-            String decrypt = CryptoHelper.getDefault().decrypt(value);
+            String decrypt = null;
+            if (StudioEncryption.hasEncryptionSymbol(value)) {
+                decrypt = StudioEncryption.getStudioEncryption(StudioEncryption.EncryptionKeyName.SYSTEM).decrypt(value);
+            } else {
+                // Some migration task: GenerateJobPomMigrationTask invokes this method
+                decrypt = CryptoMigrationUtil.decrypt(value);
+            }
+
             if (decrypt != null) {
                 return decrypt;
             }
@@ -318,7 +326,8 @@ public class ElementParameterTypeImpl extends EObjectImpl implements ElementPara
 
     public void setRawValue(String newValue) {
         if (newValue != null && newValue.length() > 0 && PasswordEncryptUtil.isPasswordField(getField())) {
-            String encryptValue = CryptoHelper.getDefault().encrypt(newValue);
+            String encryptValue = StudioEncryption.getStudioEncryption(StudioEncryption.EncryptionKeyName.SYSTEM)
+                    .encrypt(newValue);
             if (encryptValue != null) {
                 setValue(encryptValue);
                 return;
