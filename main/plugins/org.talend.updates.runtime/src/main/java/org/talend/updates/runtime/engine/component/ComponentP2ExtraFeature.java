@@ -353,14 +353,4 @@ public class ComponentP2ExtraFeature extends P2ExtraFeature implements IP2Compon
         ((AbstractFeatureStorage) getStorage()).setFeatDownloadFolder(workFolder);
     }
 
-    @Override
-    public boolean isShareEnable() {
-        return share;
-    }
-
-    @Override
-    public void setShareEnable(boolean share) {
-        this.share = share;
-    }
-
 }

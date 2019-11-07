@@ -247,7 +247,7 @@ public class UpdateStudioWizard extends Wizard {
                                     throws InvocationTargetException, InterruptedException {
                                 ExtraFeaturesUpdatesFactory extraFeaturesFactory = new ExtraFeaturesUpdatesFactory(true);
                                 extraFeaturesFactory.retrieveUninstalledExtraFeatures(iprogressmonitor,
-                                        updateWizardModel.availableExtraFeatures, false);
+                                        updateWizardModel.availableExtraFeatures);
 
                             }
                         });

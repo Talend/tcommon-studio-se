@@ -77,16 +77,6 @@ public class PlainZipFeature extends AbstractExtraFeature {
     }
 
     @Override
-    public boolean isShareEnable() {
-        return share;
-    }
-
-    @Override
-    public void setShareEnable(boolean share) {
-        this.share = share;
-    }
-
-    @Override
     public boolean canBeInstalled(IProgressMonitor progress) throws ExtraFeatureException {
         try {
             InstallationStatus installationStatus = getInstallationStatus(progress);

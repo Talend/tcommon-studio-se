@@ -77,16 +77,6 @@ public class P2PatchFeature extends P2ExtraFeature {
     }
 
     @Override
-    public boolean isShareEnable() {
-        return share;
-    }
-
-    @Override
-    public void setShareEnable(boolean share) {
-        this.share = share;
-    }
-
-    @Override
     public IStatus install(IProgressMonitor progress, List<URI> allRepoUris) throws ExtraFeatureException {
         try {
             PatchComponent patchComponent = PatchComponentHelper.getPatchComponent();

@@ -31,7 +31,6 @@ import org.talend.repository.model.IRepositoryService;
 import org.talend.updates.runtime.feature.model.Category;
 import org.talend.updates.runtime.feature.model.Type;
 import org.talend.updates.runtime.model.InstallationStatus.Status;
-import org.talend.updates.runtime.nexus.component.ComponentsDeploymentManager;
 import org.talend.updates.runtime.storage.IFeatureStorage;
 import org.talend.updates.runtime.utils.PathUtils;
 import org.talend.utils.io.FilesUtils;
@@ -206,29 +205,9 @@ public interface ExtraFeature extends Comparable<Object> {
                 downloadedCompFile.delete();
                 progress.worked(1);
             }
-
-            shareComponent(progress, installedComponentFile);
         } catch (IOException e) {
             ExceptionHandler.process(e);
         }
-    }
-
-    default void shareComponent(IProgressMonitor progress, File installedCompFile) {
-        if (!isShareEnable()) {
-            return;
-        }
-        if (progress.isCanceled()) {
-            throw new OperationCanceledException();
-        }
-        new ComponentsDeploymentManager().deployComponentsToArtifactRepository(progress, installedCompFile);
-    }
-
-    default boolean isShareEnable() {
-        return false;
-    }
-
-    default void setShareEnable(boolean share) {
-        // do nothing
     }
 
     @Override

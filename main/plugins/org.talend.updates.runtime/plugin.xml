@@ -53,25 +53,11 @@
             id="org.talend.updates.TOSDynamicExtraFeaturesFactory"
             name="TOS Dynamic ExtraFeatures Factory">
       </factory>
-      <factory
-            class="org.talend.updates.runtime.engine.factory.ComponentsNexusInstallFactory"
-            desciption="Install components from Nexus"
-            id="org.talend.updates.ComponentsNexusInstallFactory"
-            name="Components ">
-      </factory>
    </extension>
    <extension
          point="org.talend.core.repository.login.task">
       <loginTask
             class="org.talend.updates.runtime.login.SyncComponentMavenRepoLoginTask"
-            priority="normal">
-      </loginTask>
-      <loginTask
-            class="org.talend.updates.runtime.login.DeployComponentsToLocalNexusLoginTask"
-            priority="normal">
-      </loginTask>
-      <loginTask
-            class="org.talend.updates.runtime.login.InstallLocalNexusComponentsLoginTask"
             priority="normal">
       </loginTask>
    </extension>
