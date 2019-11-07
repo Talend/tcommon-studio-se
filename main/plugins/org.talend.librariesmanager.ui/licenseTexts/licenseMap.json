@@ -35,5 +35,7 @@
 	{"licenseUrl":"http://www.talendforge.org/modules/licenses/VTIGER.txt","licenseName":"VPL"},
 	{"licenseUrl":"http://www.talendforge.org/modules/licenses/BSD-style-License.htm","licenseName":"BSD-STYLE"},
 	{"licenseUrl":"http://www.talendforge.org/modules/licenses/AMAZON.txt","licenseName":"AMAZON"},
-	{"licenseUrl":"http://www.talendforge.org/modules/licenses/UNKNOWN.txt","licenseName":"UNKNOWN"}
+	{"licenseUrl":"http://www.talendforge.org/modules/licenses/UNKNOWN.txt","licenseName":"UNKNOWN"},
+	{"licenseUrl":"http://www.apache.org/licenses/LICENSE-2.0","licenseName":"Apache-2.0"},
+	{"licenseUrl":"https://www.gnu.org/licenses/gpl.html","licenseName":"LGPL-3.0"}
 ]
