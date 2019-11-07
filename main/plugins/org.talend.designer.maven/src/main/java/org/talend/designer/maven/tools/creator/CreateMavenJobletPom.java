@@ -123,7 +123,9 @@ public class CreateMavenJobletPom extends AbstractMavenProcessorPom {
     @Override
     protected void addDependencies(Model model) {
         try {
-            getProcessorDependenciesManager().updateDependencies(null, model);
+            if (ERepositoryObjectType.JOBLET == ERepositoryObjectType.getType(getJobProcessor().getProperty())) {
+                getProcessorDependenciesManager().updateDependencies(null, model);
+            }
             addChildrenDependencies(model.getDependencies());
         } catch (ProcessorException e) {
             ExceptionHandler.process(e);
