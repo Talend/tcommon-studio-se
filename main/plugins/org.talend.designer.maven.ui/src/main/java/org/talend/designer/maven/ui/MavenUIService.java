@@ -14,6 +14,7 @@ package org.talend.designer.maven.ui;
 
 import java.util.Dictionary;
 import java.util.Hashtable;
+import java.util.Set;
 
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IProgressMonitor;
@@ -118,6 +119,17 @@ public class MavenUIService implements IMavenUIService {
         String studioUserSettingsFile = MavenPlugin.getMavenConfiguration().getUserSettingsFile();
         // apply the user settings to MavenResolver
         Dictionary<String, String> props = new Hashtable<String, String>();
+        Set<Object> keySet = System.getProperties().keySet();
+        if (keySet != null) {
+            for (Object keyObj : keySet) {
+                if (keyObj instanceof String) {
+                    String key = keyObj.toString();
+                    if (key.startsWith("org.ops4j.pax.url.mvn.")) {
+                        props.put(key, System.getProperty(key));
+                    }
+                }
+            }
+        }
         if (studioUserSettingsFile != null && !"".equals(studioUserSettingsFile)) {
             // change back to use the user settings after Pax-url-eather fix the space bug
             props.put("org.ops4j.pax.url.mvn.settings", studioUserSettingsFile);
