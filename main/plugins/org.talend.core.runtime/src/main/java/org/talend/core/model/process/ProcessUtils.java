@@ -898,7 +898,8 @@ public final class ProcessUtils {
                     ERepositoryObjectType itemType = ERepositoryObjectType.getItemType(property.getItem());
                     // route job
                     if (itemType != null && (itemType.equals(ERepositoryObjectType.PROCESS_ROUTE)
-                            || itemType.equals(ERepositoryObjectType.PROCESS_ROUTELET))) {
+                            || itemType.equals(ERepositoryObjectType.PROCESS_ROUTELET)
+                            || "CAMEL".equals(process.getComponentsType()))) {
                         needBeans = true;
                     }
                 }
