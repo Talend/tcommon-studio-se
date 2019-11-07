@@ -72,8 +72,11 @@ public class NetworkUtil {
         return true;
     }
 
-    public static boolean isOfficalOrProxyValid() {
-        return checkValidWithHttp(System.getProperty("nexus.proxy.url", HTTP_NETWORK_URL));
+    public static boolean isNetworkValid(String url) {
+        if (url == null) {
+            return isNetworkValid();
+        }
+        return checkValidWithHttp(url);
     }
 
     private static boolean checkValidWithHttp(String urlString) {
