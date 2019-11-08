@@ -4760,6 +4760,7 @@ public class DatabaseForm extends AbstractForm {
             }
         });
         hideDbVersion();
+        hidePasswordAndName();
         // additional parameters: Event modifyText
         additionParamText.addModifyListener(new ModifyListener() {
 
@@ -5066,6 +5067,7 @@ public class DatabaseForm extends AbstractForm {
             checkDatabaseProperties();
             checkFieldsValue();
             hideDbVersion();
+            hidePasswordAndName();
             // see bug 0005237: Create DB Connection issue.
             if (!schemaText.getEditable()) {
                 schemaText.setText(""); //$NON-NLS-1$
@@ -5244,7 +5246,13 @@ public class DatabaseForm extends AbstractForm {
     private void modifyFieldValue() {
         checkFieldsValue();
     }
+    private void hidePasswordAndName(){
+    	if(asRedshiftSSOVersionEnable()) {
+    	    	 passwordText.hide();
+    	         usernameText.hide();
+    	}
 
+    }
     /**
      * DOC YeXiaowei Comment method "hideDbVersion".
      */
@@ -6615,6 +6623,12 @@ public class DatabaseForm extends AbstractForm {
                 schemaText.hide();
             }
         }
+        if (asRedshiftSSOVersionEnable()) {
+            passwordText.hide();
+            usernameText.hide();
+            addContextParams(EDBParamName.Login, false);
+            addContextParams(EDBParamName.Password, false);
+        }
         doHiveUIContentsLayout();
         hbaseSettingGroup.layout();
         maprdbSettingGroup.layout();
@@ -6860,7 +6874,14 @@ public class DatabaseForm extends AbstractForm {
         return template != null && template == EDatabaseConnTemplate.SYBASEASE
                 && LanguageManager.getCurrentLanguage().equals(ECodeLanguage.JAVA);
     }
-
+    private boolean asRedshiftSSOVersionEnable() {
+        if (getConnectionDBType().length() <= 0) {
+            return false;
+        }
+        EDatabaseConnTemplate template = EDatabaseConnTemplate.indexOfTemplate(getConnectionDBType());
+        return template != null && template == EDatabaseConnTemplate.REDSHIFT_SSO
+                && LanguageManager.getCurrentLanguage().equals(ECodeLanguage.JAVA);
+    }
     /**
      *
      * DOC hwang Comment method "sasVersionEnable".
