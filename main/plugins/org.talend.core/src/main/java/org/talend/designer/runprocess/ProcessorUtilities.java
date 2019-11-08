@@ -504,7 +504,7 @@ public class ProcessorUtilities {
             mainRelation.setId(jobInfo.getJobId());
             mainRelation.setVersion(jobInfo.getJobVersion());
             mainRelation.setType(RelationshipItemBuilder.JOB_RELATION);
-            hasLoopDependency = checkLoopDependencies(mainRelation);
+            hasLoopDependency = checkLoopDependencies(mainRelation, new HashMap<String, String>());
             // clean the previous code in case it has deleted subjob
             cleanSourceFolder(progressMonitor, currentProcess, processor);
         }
@@ -598,28 +598,55 @@ public class ProcessorUtilities {
         return processor;
     }
 
-    private static boolean checkLoopDependencies(Relation mainJobInfo) throws ProcessorException {
-        List<Relation> itemsJobRelatedTo = getItemsRelation(mainJobInfo);
+    public static boolean checkLoopDependencies(Relation mainJobInfo, Map<String, String> idToLastestVersionMap)
+            throws ProcessorException {
+        List<Relation> itemsJobRelatedTo = getItemsRelation(mainJobInfo, idToLastestVersionMap);
         List<Relation> relationChecked = new ArrayList<>();
         relationChecked.add(mainJobInfo);
-        return checkLoopDependencies(mainJobInfo, itemsJobRelatedTo, relationChecked);
+        return checkLoopDependencies(mainJobInfo, mainJobInfo, itemsJobRelatedTo, relationChecked, idToLastestVersionMap);
     }
 
-    private static boolean checkLoopDependencies(Relation mainRelation, List<Relation> itemsJobRelatedTo,
-            List<Relation> relationChecked) throws ProcessorException {
+    private static boolean checkLoopDependencies(Relation mainRelation, Relation currentRelation,
+            List<Relation> itemsJobRelatedTo,
+            List<Relation> relationChecked, Map<String, String> idToLastestVersionMap) throws ProcessorException {
         boolean hasDependency = false;
         for (Relation relation : itemsJobRelatedTo) {
+            try {
+                // means the tRunjob deactivate, or one of the specific version tRunjon deactivate, skip
+                Map<String, Set<String>> actTrunjobHM = getActivateTRunjobMap(currentRelation.getId(),
+                        currentRelation.getVersion());
+                if (actTrunjobHM.get(relation.getId()) == null
+                        || !actTrunjobHM.get(relation.getId()).contains(relation.getVersion())) {
+                    continue;
+                }
+            } catch (Exception e) {
+                throw new ProcessorException(e);
+            }
+
             hasDependency = relation.getId().equals(mainRelation.getId())
                     && relation.getVersion().equals(mainRelation.getVersion());
             if (!hasDependency) {
-                List<Relation> itemsChildJob = getItemsRelation(relation);
+                List<Relation> itemsChildJob = getItemsRelation(relation, idToLastestVersionMap);
                 if (!relationChecked.contains(relation)) {
                     relationChecked.add(relation);
-                    hasDependency = checkLoopDependencies(mainRelation, itemsChildJob, relationChecked);
+                    hasDependency = checkLoopDependencies(mainRelation, relation, itemsChildJob, relationChecked,
+                            idToLastestVersionMap);
                 }
                 if (!hasDependency) {
                     for (Relation childRelation : itemsChildJob) {
-                        hasDependency = checkLoopDependencies(childRelation);
+                        try {
+                            // means the tRunjob deactivate, or one of the specific version tRunjon deactivate, skip
+                            Map<String, Set<String>> activateTRunjobMap = getActivateTRunjobMap(relation.getId(),
+                                    relation.getVersion());
+                            if (activateTRunjobMap.get(childRelation.getId()) == null
+                                    || !activateTRunjobMap.get(childRelation.getId()).contains(childRelation.getVersion())) {
+                                continue;
+                            }
+                        } catch (Exception e) {
+                            throw new ProcessorException(e);
+                        }
+
+                        hasDependency = checkLoopDependencies(childRelation, idToLastestVersionMap);
                         if (hasDependency) {
                             break;
                         }
@@ -634,7 +661,73 @@ public class ProcessorUtilities {
         return hasDependency;
     }
 
-    private static List<Relation> getItemsRelation(Relation mainJobInfo) throws ProcessorException {
+    private static Map<String, Set<String>> getActivateTRunjobMap(String id, String version) throws PersistenceException {
+        Map<String, Set<String>> actTrunjobHM = new HashMap<String, Set<String>>();
+        ProcessItem processItem = null;
+        try {
+            IRepositoryViewObject currentJobObject = ProxyRepositoryFactory.getInstance().getSpecificVersion(id, version, true);
+            if (currentJobObject != null) {
+                processItem = (ProcessItem) currentJobObject.getProperty().getItem();
+            }
+        } catch (PersistenceException e) {
+            ExceptionHandler.process(e);
+        }
+        if (processItem != null) {
+            List<Project> allProjects = new ArrayList<Project>();
+            allProjects.add(ProjectManager.getInstance().getCurrentProject());
+            allProjects.addAll(ProjectManager.getInstance().getAllReferencedProjects());
+
+            for (Object nodeObject : processItem.getProcess().getNode()) {
+                NodeType node = (NodeType) nodeObject;
+                if (!node.getComponentName().equals("tRunJob")) { // $NON-NLS-1$
+                    continue;
+                }
+                boolean nodeActivate = true;
+                String processIds = null;
+                String processVersion = null;
+                for (Object elementParam : node.getElementParameter()) {
+                    ElementParameterType elemParamType = (ElementParameterType) elementParam;
+                    if ("PROCESS:PROCESS_TYPE_PROCESS".equals(elemParamType.getName())) { // $NON-NLS-1$
+                        processIds = elemParamType.getValue();
+                        if (StringUtils.isNotBlank(processIds)) {
+                            for (String jobId : processIds.split(ProcessorUtilities.COMMA)) {
+                                if (actTrunjobHM.get(jobId) == null) {
+                                    actTrunjobHM.put(jobId, new HashSet<String>());
+                                }
+                            }
+                        }
+                    } else if ("PROCESS:PROCESS_TYPE_VERSION".equals(elemParamType.getName())) { // $NON-NLS-1$
+                        processVersion = elemParamType.getValue();
+                    } else if ("ACTIVATE".equals(elemParamType.getName())) { // $NON-NLS-1$
+                        nodeActivate = Boolean.parseBoolean(elemParamType.getValue());
+                    }
+                }
+
+                if (nodeActivate) {
+                    for (String jobId : processIds.split(ProcessorUtilities.COMMA)) {
+                        String actualVersion = processVersion;
+                        if (RelationshipItemBuilder.LATEST_VERSION.equals(processVersion)) {
+                            for (Project project : allProjects) {
+                                IRepositoryViewObject lastVersion = null;
+                                lastVersion = ProxyRepositoryFactory.getInstance().getLastVersion(project, jobId);
+                                if (lastVersion != null) {
+                                    actualVersion = lastVersion.getVersion();
+                                    break;
+                                }
+                            }
+                        }
+                        if (actTrunjobHM.get(jobId) != null) {
+                            actTrunjobHM.get(jobId).add(actualVersion);
+                        }
+
+                    }
+                }
+            }
+        }
+        return actTrunjobHM;
+    }
+
+    private static List<Relation> getItemsRelation(Relation mainJobInfo, Map<String, String> idToLastestVersionMap) throws ProcessorException {
         List<Relation> itemsJobRelatedTo = new ArrayList<Relation>();
         try {
             List<Project> allProjects = new ArrayList<Project>();
@@ -648,12 +741,17 @@ public class ProcessorUtilities {
                         mainJobInfo.getType(), RelationshipItemBuilder.JOBLET_RELATION));
                 for (Relation relation : itemsJobRelatedTo) {
                     if (relation.getVersion().equals(RelationshipItemBuilder.LATEST_VERSION)) {
-                        for (Project project : allProjects) {
-                            IRepositoryViewObject lastVersion = ProxyRepositoryFactory.getInstance().getLastVersion(project,
-                                    relation.getId());
-                            if (lastVersion != null) {
-                                relation.setVersion(lastVersion.getVersion());
-                                break;
+                        if (idToLastestVersionMap.containsKey(relation.getId())) {
+                            relation.setVersion(idToLastestVersionMap.get(relation.getId()));
+                        } else {
+                            for (Project project : allProjects) {
+                                IRepositoryViewObject lastVersion =
+                                        ProxyRepositoryFactory.getInstance().getLastVersion(project, relation.getId());
+                                if (lastVersion != null) {
+                                    relation.setVersion(lastVersion.getVersion());
+                                    idToLastestVersionMap.put(relation.getId(), relation.getVersion());
+                                    break;
+                                }
                             }
                         }
                     }
@@ -1014,7 +1112,7 @@ public class ProcessorUtilities {
                 mainRelation.setId(jobInfo.getJobId());
                 mainRelation.setVersion(jobInfo.getJobVersion());
                 mainRelation.setType(RelationshipItemBuilder.JOB_RELATION);
-                hasLoopDependency = checkLoopDependencies(mainRelation);
+                hasLoopDependency = checkLoopDependencies(mainRelation, new HashMap<String, String>());
                 // clean the previous code in case it has deleted subjob
                 cleanSourceFolder(progressMonitor, currentProcess, processor);
             }
