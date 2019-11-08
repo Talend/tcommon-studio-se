@@ -15,6 +15,7 @@ package org.talend.designer.runprocess;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.fail;
 import static org.mockito.ArgumentMatchers.anyObject;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
@@ -22,12 +23,15 @@ import static org.mockito.Mockito.when;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
+import org.eclipse.core.runtime.Path;
 import org.junit.Before;
 import org.junit.Test;
+import org.talend.commons.exception.PersistenceException;
 import org.talend.core.model.components.EComponentType;
 import org.talend.core.model.components.IComponent;
 import org.talend.core.model.general.ModuleNeeded;
@@ -39,8 +43,21 @@ import org.talend.core.model.process.IElementParameter;
 import org.talend.core.model.process.INode;
 import org.talend.core.model.process.IProcess;
 import org.talend.core.model.process.JobInfo;
+import org.talend.core.model.process.ProcessUtils;
+import org.talend.core.model.properties.ProcessItem;
+import org.talend.core.model.properties.PropertiesFactory;
+import org.talend.core.model.properties.Property;
+import org.talend.core.model.relationship.Relation;
+import org.talend.core.model.relationship.RelationshipItemBuilder;
+import org.talend.core.model.repository.IRepositoryViewObject;
 import org.talend.core.model.runprocess.shadow.ObjectElementParameter;
+import org.talend.core.repository.model.ProxyRepositoryFactory;
 import org.talend.core.runtime.process.LastGenerationInfo;
+import org.talend.designer.core.model.utils.emf.talendfile.ElementParameterType;
+import org.talend.designer.core.model.utils.emf.talendfile.NodeType;
+import org.talend.designer.core.model.utils.emf.talendfile.ProcessType;
+import org.talend.designer.core.model.utils.emf.talendfile.TalendFileFactory;
+import org.talend.repository.ProjectManager;
 
 /**
  * DOC ggu class global comment. Detailled comment
@@ -436,4 +453,107 @@ public class ProcessorUtilitiesTest {
         when(column2.getTalendType()).thenReturn("id_Dynamic");
         assertTrue("DB node in job. shoud be metadata dynamic", ProcessorUtilities.hasMetadataDynamic(proc, null));
     }
+
+    @Test
+    public void testCheckLoopDependencies() {
+        String projectTecLabel = ProjectManager.getInstance().getCurrentProject().getTechnicalLabel();
+        ProxyRepositoryFactory factory = ProxyRepositoryFactory.getInstance();
+        RelationshipItemBuilder relationshipItemBuilder = RelationshipItemBuilder.getInstance();
+
+        ProcessItem item = prepareProcessItem(factory.getNextId(), "test", "0.1");
+        ProcessItem item1 = prepareProcessItem(factory.getNextId(), "test1", "0.1");
+        ProcessItem item2 = prepareProcessItem(factory.getNextId(), "test2", "0.1");
+        prepareTRunjobNode(item, projectTecLabel, item1.getProperty().getId(), RelationshipItemBuilder.LATEST_VERSION);
+        prepareTRunjobNode(item1, projectTecLabel, item2.getProperty().getId(), RelationshipItemBuilder.LATEST_VERSION);
+        prepareTRunjobNode(item2, projectTecLabel, item.getProperty().getId(), RelationshipItemBuilder.LATEST_VERSION);
+
+        IRepositoryViewObject repositoryObject = null;
+        IRepositoryViewObject repositoryObject1 = null;
+        IRepositoryViewObject repositoryObject2 = null;
+        try {
+            factory.create(item, new Path(""));
+            factory.create(item1, new Path(""));
+            factory.create(item2, new Path(""));
+
+            repositoryObject = factory.getSpecificVersion(item.getProperty().getId(), item.getProperty().getVersion(), true);
+            repositoryObject1 = factory.getSpecificVersion(item1.getProperty().getId(), item1.getProperty().getVersion(), true);
+            repositoryObject2 = factory.getSpecificVersion(item2.getProperty().getId(), item2.getProperty().getVersion(), true);
+            if (repositoryObject != null) {
+                relationshipItemBuilder.addOrUpdateItem(repositoryObject.getProperty().getItem());
+            }
+            if (repositoryObject1 != null) {
+                relationshipItemBuilder.addOrUpdateItem(repositoryObject1.getProperty().getItem());
+            }
+            if (repositoryObject2 != null) {
+                relationshipItemBuilder.addOrUpdateItem(repositoryObject2.getProperty().getItem());
+            }
+
+            Relation mainRelation = new Relation();
+            mainRelation.setId(repositoryObject.getProperty().getId());
+            mainRelation.setVersion(repositoryObject.getProperty().getVersion());
+            mainRelation.setType(RelationshipItemBuilder.JOB_RELATION);
+            // job-->job1-->job2-->job hasLoop==true
+            boolean hasLoop = ProcessorUtilities.checkLoopDependencies(mainRelation, new HashMap<String, String>());
+            assertTrue(hasLoop);
+
+            // job-->job1-->job2-->job(tRunjob deactivate)
+            ProcessItem jobItem2 = (ProcessItem) repositoryObject2.getProperty().getItem();
+            for (Object nodeObject : jobItem2.getProcess().getNode()) {
+                NodeType node = (NodeType) nodeObject;
+                if (!node.getComponentName().equals("tRunJob")) { // $NON-NLS-1$
+                    continue;
+                }
+                ElementParameterType actParam = TalendFileFactory.eINSTANCE.createElementParameterType();
+                actParam.setField("CHECK");
+                actParam.setName("ACTIVATE");
+                actParam.setValue("false");
+                node.getElementParameter().add(actParam);
+            }
+            factory.save(jobItem2, false);
+            hasLoop = ProcessorUtilities.checkLoopDependencies(mainRelation, new HashMap<String, String>());
+            assertFalse(hasLoop);
+
+        } catch (Exception e) {
+            e.printStackTrace();
+            fail("Test CheckLoopDependencies failure.");
+        } finally {
+            try {
+                factory.deleteObjectPhysical(repositoryObject);
+                factory.deleteObjectPhysical(repositoryObject1);
+                factory.deleteObjectPhysical(repositoryObject2);
+            } catch (PersistenceException e) {
+                e.printStackTrace();
+                fail("Test CheckLoopDependencies failure.");
+            }
+        }
+    }
+
+    private ProcessItem prepareProcessItem(String id, String label, String version) {
+        Property property = PropertiesFactory.eINSTANCE.createProperty();
+        ProcessItem item = PropertiesFactory.eINSTANCE.createProcessItem();
+        ProcessType process = TalendFileFactory.eINSTANCE.createProcessType();
+        item.setProperty(property);
+        item.setProcess(process);
+        property.setId(id);
+        property.setLabel(label);
+        property.setVersion(version);
+        return item;
+    }
+
+    private void prepareTRunjobNode(ProcessItem item, String projectLabel, String subjobId, String subjobVersion) {
+        NodeType node = TalendFileFactory.eINSTANCE.createNodeType();
+        node.setComponentName("tRunJob");
+        item.getProcess().getNode().add(node);
+        ElementParameterType versionParam = TalendFileFactory.eINSTANCE.createElementParameterType();
+        versionParam.setField("TECHNICAL");
+        versionParam.setName("PROCESS:PROCESS_TYPE_VERSION");
+        versionParam.setValue(subjobVersion);
+        node.getElementParameter().add(versionParam);
+        ElementParameterType jobIdParam = TalendFileFactory.eINSTANCE.createElementParameterType();
+        jobIdParam.setField("TECHNICAL");
+        jobIdParam.setName("PROCESS:PROCESS_TYPE_PROCESS");
+        jobIdParam.setValue(projectLabel + ProcessUtils.PROJECT_ID_SEPARATOR + subjobId);
+        node.getElementParameter().add(jobIdParam);
+    }
+
 }
