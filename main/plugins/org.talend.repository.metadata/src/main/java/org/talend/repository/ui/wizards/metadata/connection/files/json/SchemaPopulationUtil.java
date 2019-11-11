@@ -93,7 +93,7 @@ public class SchemaPopulationUtil {
             jsonTreeNode.setLabel(label);
             jsonTreeNode.setJsonPath(label);
             fetchTreeNode(jsonTreeNode, numberOfElementsAccessiable - 1);
-        } catch (IOException e) {
+        } catch (Exception e) {
             CommonExceptionHandler.process(e);
         }
         return jsonTreeNode;
