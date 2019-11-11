@@ -51,11 +51,11 @@ public class PasswordEncryptUtil {
         if (input == null || input.length() == 0) {
             return input;
         }
-        if (input.startsWith(PREFIX_PASSWORD + KEY_FIXED + ":")) {
-            int idx = input.lastIndexOf(':');
+        String prefix = PREFIX_PASSWORD + KEY_FIXED + ":";
+        if (input.startsWith(prefix)) {
             try {
                 return ENCRYPTION
-                        .decrypt(input.substring(idx + 1));
+                        .decrypt(input.substring(prefix.length()));
             } catch (Exception e) {
                 // do nothing
             }
