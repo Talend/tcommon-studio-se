@@ -198,6 +198,7 @@ public class M2eUserSettingForTalendLoginTask extends AbstractLoginTask {
             // add one marker to check to sync or not.
             File repoFolder = new File(maven.getLocalRepositoryPath());
             File markerFile = new File(repoFolder, ".syncMarker"); //$NON-NLS-1$
+            System.setProperty("m2.syncmarker.path", markerFile.getAbsolutePath()); //$NON-NLS-1$
             Properties prop = new Properties();
             FileInputStream inStream = null;
             FileOutputStream outputStream = null;

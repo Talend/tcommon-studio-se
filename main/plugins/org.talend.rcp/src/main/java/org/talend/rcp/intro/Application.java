@@ -55,6 +55,7 @@ import org.talend.core.model.migration.IMigrationToolService;
 import org.talend.core.model.utils.TalendPropertiesUtil;
 import org.talend.core.repository.CoreRepositoryPlugin;
 import org.talend.core.runtime.services.IMavenUIService;
+import org.talend.core.service.IUpdateService;
 import org.talend.core.services.ICoreTisService;
 import org.talend.core.ui.branding.IBrandingService;
 import org.talend.core.ui.workspace.ChooseWorkspaceData;
@@ -159,8 +160,15 @@ public class Application implements IApplication {
                     (IMigrationToolService) GlobalServiceRegister.getDefault().getService(IMigrationToolService.class);
             service.executeWorspaceTasks();
             // saveConnectionBean(email);
-
             boolean needRelaunch = false;
+            if (GlobalServiceRegister.getDefault().isServiceRegistered(IUpdateService.class)) {
+                IUpdateService updateService = GlobalServiceRegister.getDefault().getService(IUpdateService.class);
+                needRelaunch = updateService.checkStudioUpdate(new NullProgressMonitor());
+            }
+            if (needRelaunch) {
+                setRelaunchData();
+                return IApplication.EXIT_RELAUNCH;
+            }
             final PatchComponent patchComponent = PatchComponentHelper.getPatchComponent();
             if (patchComponent != null) {
                 final boolean installed = patchComponent.install();

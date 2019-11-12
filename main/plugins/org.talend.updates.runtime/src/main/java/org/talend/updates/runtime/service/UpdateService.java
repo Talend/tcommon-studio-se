@@ -19,14 +19,18 @@ import java.util.Set;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.log4j.Logger;
 import org.eclipse.core.runtime.IProgressMonitor;
+import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.NullProgressMonitor;
+import org.eclipse.core.runtime.Platform;
 import org.talend.commons.CommonsPlugin;
 import org.talend.commons.exception.ExceptionHandler;
 import org.talend.core.nexus.ArtifactRepositoryBean;
 import org.talend.core.service.IUpdateService;
+import org.talend.updates.runtime.engine.P2UpdateManager;
 import org.talend.updates.runtime.engine.component.InstallComponentMessages;
 import org.talend.updates.runtime.engine.factory.ComponentsNexusInstallFactory;
 import org.talend.updates.runtime.model.ExtraFeature;
+import org.talend.updates.runtime.model.ExtraFeatureException;
 import org.talend.updates.runtime.model.FeatureCategory;
 import org.talend.updates.runtime.nexus.component.NexusServerManager;
 
@@ -98,6 +102,32 @@ public class UpdateService implements IUpdateService {
                 messages.setNeedRestart(feature.needRestart());
             }
         }
+    }
+
+    @Override
+    public boolean checkStudioUpdate(IProgressMonitor monitor) {
+        if (Platform.inDevelopmentMode()) {
+            return false;
+        }
+        if (monitor == null) {
+            monitor = new NullProgressMonitor();
+        }
+        try {
+            IStatus status = P2UpdateManager.getInstance().execute(monitor);
+            if (status != null) {
+                switch (status.getSeverity()) {
+                case IStatus.OK:
+                case IStatus.INFO:
+                case IStatus.WARNING:
+                    return true;
+                default:
+                    return false;
+                }
+            }
+        } catch (ExtraFeatureException e) {
+            ExceptionHandler.process(e);
+        }
+        return false;
     }
 
 }

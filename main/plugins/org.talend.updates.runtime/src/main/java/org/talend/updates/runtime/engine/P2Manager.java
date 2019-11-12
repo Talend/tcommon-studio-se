@@ -32,13 +32,11 @@ import org.eclipse.equinox.p2.query.QueryUtil;
 import org.eclipse.equinox.p2.repository.artifact.IArtifactRepositoryManager;
 import org.eclipse.equinox.p2.repository.metadata.IMetadataRepository;
 import org.eclipse.equinox.p2.repository.metadata.IMetadataRepositoryManager;
-import org.eclipse.ui.PlatformUI;
 import org.osgi.framework.Bundle;
 import org.osgi.framework.BundleContext;
 import org.osgi.framework.FrameworkUtil;
 import org.osgi.framework.ServiceReference;
 import org.talend.commons.exception.ExceptionHandler;
-import org.talend.commons.ui.runtime.update.PreferenceKeys;
 import org.talend.commons.utils.VersionUtils;
 import org.talend.commons.utils.io.FilesUtils;
 import org.talend.updates.runtime.i18n.Messages;
@@ -59,8 +57,6 @@ public class P2Manager {
     private IProfile p2Profile = null;
 
     private final Object p2ProfileLock = new Object();
-
-    private final Object clearOsgiLock = new Object();
 
     private P2Manager() {
         reset();
@@ -243,9 +239,4 @@ public class P2Manager {
         }
     }
 
-    public void clearOsgiCache() {
-        synchronized (clearOsgiLock) {
-            PlatformUI.getPreferenceStore().setValue(PreferenceKeys.NEED_OSGI_CLEAN, true);
-        }
-    }
 }

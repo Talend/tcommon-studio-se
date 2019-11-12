@@ -10,15 +10,16 @@
 // 9 rue Pages 92150 Suresnes, France
 //
 // ============================================================================
-package org.talend.core.service;
+package org.talend.updates.runtime;
 
-import org.eclipse.core.runtime.IProgressMonitor;
-import org.talend.core.IService;
+public interface P2UpdateConstants {
 
-public interface IUpdateService extends IService {
+    public static final String STUDIO_CORE_FEATURE_ID = "org.talend.tup.feature.feature.group"; //$NON-NLS-1$
 
-    boolean checkComponentNexusUpdate();
+    public static final String KEY_UPDATESITE_PATH = "updatesite.path"; //$NON-NLS-1$
 
-    boolean checkStudioUpdate(IProgressMonitor monitor);
+    public static final String KEY_FEATURES_TO_INSTALL = "features.to.install"; //$NON-NLS-1$
+
+    public static final String KEY_FEATURES_TO_UPDATE = "features.to.update"; //$NON-NLS-1$
 
 }
