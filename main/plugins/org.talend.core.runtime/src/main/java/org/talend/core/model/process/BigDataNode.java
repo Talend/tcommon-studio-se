@@ -22,6 +22,7 @@ import org.talend.core.model.components.IComponent;
 import org.talend.core.model.metadata.IMetadataColumn;
 import org.talend.core.model.metadata.IMetadataTable;
 import org.talend.core.model.metadata.MetadataTable;
+import org.talend.core.model.process.node.MapperExternalNode;
 
 /**
  * Concrete class to instanciate as an AbstractNode for the BigData code generators
