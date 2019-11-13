@@ -104,6 +104,7 @@ import org.talend.utils.json.JSONException;
 import org.talend.utils.json.JSONObject;
 import org.talend.utils.sql.ConnectionUtils;
 import org.talend.utils.sugars.ReturnCode;
+import org.talend.utils.sugars.TypedReturnCode;
 
 import orgomg.cwm.objectmodel.core.ModelElement;
 import orgomg.cwm.objectmodel.core.Package;
@@ -547,56 +548,36 @@ public class DatabaseWizard extends CheckLastVersionRepositoryWizard implements 
             if (getDatabaseConnection() !=null && !connection.isContextMode()) {
                 handleUppercase(getDatabaseConnection(), metadataConnection);
             }
-            if (tdqRepService != null) {
-                try {
+            try {
+                if (getDatabaseConnection() != null) {
                     Boolean isSuccess = true;
-                    if (getDatabaseConnection() != null) {
-                        if (creation) {
-                            handleCreation(getDatabaseConnection(), metadataConnection, tdqRepService);
-                        } else if (connection.isContextMode() && originalSelectedContextType != null) {
-                            isSuccess = SwitchContextGroupNameImpl
-                                    .getInstance()
-                                    .updateContextGroup(connectionItem, contextName,
-                                            originalSelectedContextType.getName());
-                            if (!isSuccess) {
-                                tdqRepService.popupSwitchContextFailedMessage(contextName);
-                            }
-                        } else {
-                            isSuccess = handleUpdate(metadataConnection, tdqRepService);
+                    if (creation) {
+                        handleCreation(getDatabaseConnection(), metadataConnection, tdqRepService);
+                    } else if (connection.isContextMode() && originalSelectedContextType != null) {
+                        isSuccess = SwitchContextGroupNameImpl
+                                .getInstance()
+                                .updateContextGroup(connectionItem, contextName, originalSelectedContextType.getName());
+                        if (!isSuccess && tdqRepService != null) {
+                            tdqRepService.popupSwitchContextFailedMessage(contextName);
+                           
                         }
+                    } else {
+                        // when connection is Database connection and creating==false and don't switch context
+                        isSuccess = handleDatabaseUpdate(metadataConnection, tdqRepService);
                     }
-                    if (!isSuccess) {
+                    if(!isSuccess) {
                         return false;
                     }
-                } catch (Exception e) {
-                    String detailError = e.toString();
-                    new ErrorDialogWidthDetailArea(getShell(), PID,
-                            Messages.getString("CommonWizard.persistenceException"), //$NON-NLS-1$
-                            detailError);
-                    log.error(Messages.getString("CommonWizard.persistenceException") + "\n" + detailError); //$NON-NLS-1$ //$NON-NLS-2$
-                    return false;
+                } else {
+                    // if connection is file connection or other type of connection(except database connection)
+                    handleCommonConnectionPart(tdqRepService, false);
                 }
-            } else {
-                try {
-                    // TODO use seperate subclass to handle the create and update logic , using a varable "creation" is
-                    // not
-                    // a good practice.
-                    if (creation && getDatabaseConnection() != null) {
-                        handleCreation(getDatabaseConnection(), metadataConnection, tdqRepService);
-                    } else {
-                        Boolean isSuccess = handleUpdate(metadataConnection, tdqRepService);
-                        if (!isSuccess) {
-                            return false;
-                        }
-                    }
-                } catch (Exception e) {
-                    String detailError = e.toString();
-                    new ErrorDialogWidthDetailArea(getShell(), PID,
-                            Messages.getString("CommonWizard.persistenceException"), //$NON-NLS-1$
-                            detailError);
-                    log.error(Messages.getString("CommonWizard.persistenceException") + "\n" + detailError); //$NON-NLS-1$ //$NON-NLS-2$
-                    return false;
-                }
+            } catch (Exception e) {
+                String detailError = e.toString();
+                new ErrorDialogWidthDetailArea(getShell(), PID, Messages.getString("CommonWizard.persistenceException"), //$NON-NLS-1$
+                        detailError);
+                log.error(Messages.getString("CommonWizard.persistenceException") + "\n" + detailError); //$NON-NLS-1$ //$NON-NLS-2$
+                return false;
             }
 
             List<IRepositoryViewObject> list = new ArrayList<IRepositoryViewObject>();
@@ -707,58 +688,34 @@ public class DatabaseWizard extends CheckLastVersionRepositoryWizard implements 
         }
     }
 
+   
+    private boolean handleDatabaseUpdate(IMetadataConnection metadataConnection, ITDQRepositoryService tdqRepService) throws Exception {
+        
+         TypedReturnCode<Boolean> handleDatabasePart = handleDatabasePart(metadataConnection, tdqRepService);
+         if(!handleDatabasePart.isOk()) {
+             //if update database connection is failed
+             return false;
+         }
+        handleCommonConnectionPart(tdqRepService, handleDatabasePart.getObject());
+        return true;
+        
+    }
+    
     /**
-     * DOC zhao Comment method "handleUpdate".
-     *
-     * @param metadataConnection
+     * 
+     * Comment method "handleCommonConnectionPart".
      * @param tdqRepService
-     * @return True if handled successfully.
+     * @param isNeedRefreshEditor
+     * @throws CoreException
+     * 
+     * Note that current method always return true then modify it as void
      */
-    private Boolean handleUpdate(IMetadataConnection metadataConnection, ITDQRepositoryService tdqRepService) throws Exception {
+    private void handleCommonConnectionPart(ITDQRepositoryService tdqRepService,
+            boolean isNeedRefreshEditor) throws CoreException {
         boolean isNameModified = propertiesWizardPage.isNameModifiedByUser();
-        // Add this parameter to control only ask user refresh the opened analysis once, TDQ-7438 20130628
-        // yyin
-        boolean isNeedRefreshEditor = false;// ~
-        if (connectionItem.getConnection() instanceof DatabaseConnection) {
-            DatabaseConnection conn = (DatabaseConnection) connectionItem.getConnection();
-            ReturnCode reloadCheck = new ReturnCode(false);
-            ITDQCompareService tdqCompareService = null;
-
-            if (GlobalServiceRegister.getDefault().isServiceRegistered(ITDQCompareService.class)) {
-                tdqCompareService = GlobalServiceRegister.getDefault().getService(ITDQCompareService.class);
-            }
-            if (tdqCompareService != null && ConnectionHelper.isUrlChanged(conn)
-                    && MetadataConnectionUtils.isTDQSupportDBTemplate(conn)) {
-                reloadCheck = openConfirmReloadConnectionDialog(Display.getCurrent().getActiveShell());
-                if (!reloadCheck.isOk()) {
-                    return false;
-                }
-            }
-            // bug 20700
-            if (reloadCheck.isOk()) {
-                if (needReload(reloadCheck.getMessage())) {
-                    if (tdqCompareService != null) {
-                        // When TDQ comparison service available, relaod the database.
-                        Boolean isReloadSuccess = reloadDatabase(isNameModified, tdqCompareService, tdqRepService);
-                        if (!isReloadSuccess) {
-                            return Boolean.FALSE;
-                        }
-                        isNeedRefreshEditor = true;
-                    }
-                }
-            } else {
-                DatabaseConnection dbConn = SwitchHelpers.DATABASECONNECTION_SWITCH.doSwitch(conn);
-                if (dbConn != null) {
-                    updateConnectionInformation(dbConn, metadataConnection);
-                }
-            }
-            // update
-            RepositoryUpdateManager.updateDBConnection(connectionItem);
-        }
-
         this.connection.setName(connectionProperty.getDisplayName());
         this.connection.setLabel(connectionProperty.getDisplayName());
-
+        
         // Modified by Marvin Wang on Apr. 40, 2012 for bug TDI-20744
         // factory.save(connectionItem);
         // 0005170: Schema renamed - new name not pushed out to dependant jobs
@@ -776,7 +733,7 @@ public class DatabaseWizard extends CheckLastVersionRepositoryWizard implements 
             tdqRepService.refreshCurrentAnalysisEditor(connectionItem);
         }
         // ~
-
+        
         if (isNameModified) {
             if (GlobalServiceRegister.getDefault().isServiceRegistered(IDesignerCoreService.class)) {
                 IDesignerCoreService service = GlobalServiceRegister.getDefault().getService(
@@ -785,9 +742,72 @@ public class DatabaseWizard extends CheckLastVersionRepositoryWizard implements 
                     service.refreshComponentView(connectionItem);
                 }
             }
-
+            
         }
-        return Boolean.TRUE;
+    }
+    
+    /**
+     * 
+     * Comment method "handleDatabasePart".
+     * @param metadataConnection
+     * @param tdqRepService
+     * @return
+     * @throws ClassNotFoundException
+     * @throws InstantiationException
+     * @throws IllegalAccessException
+     * @throws SQLException
+     * 
+     * Note that the variable isNeedRefreshEditor always same with return code but we split it yet. So that we can easy to understand the code
+     */
+    private TypedReturnCode<Boolean> handleDatabasePart(IMetadataConnection metadataConnection, ITDQRepositoryService tdqRepService)
+            throws ClassNotFoundException, InstantiationException, IllegalAccessException, SQLException {
+        boolean isNeedRefreshEditor = false;
+        boolean isNameModified = propertiesWizardPage.isNameModifiedByUser();
+        TypedReturnCode<Boolean> updateResult = new TypedReturnCode<Boolean>();
+        updateResult.setObject(isNeedRefreshEditor);
+        
+        // Add this parameter to control only ask user refresh the opened analysis once, TDQ-7438 20130628
+        // yyin
+        if (connectionItem.getConnection() instanceof DatabaseConnection) {
+            DatabaseConnection conn = (DatabaseConnection) connectionItem.getConnection();
+            ReturnCode reloadCheck = new ReturnCode(false);
+            ITDQCompareService tdqCompareService = null;
+            
+            if (GlobalServiceRegister.getDefault().isServiceRegistered(ITDQCompareService.class)) {
+                tdqCompareService = GlobalServiceRegister.getDefault().getService(ITDQCompareService.class);
+            }
+            if (tdqCompareService != null && ConnectionHelper.isUrlChanged(conn)
+                    && MetadataConnectionUtils.isTDQSupportDBTemplate(conn)) {
+                reloadCheck = openConfirmReloadConnectionDialog(Display.getCurrent().getActiveShell());
+                if (!reloadCheck.isOk()) {
+                    updateResult.setOk(false);
+                    return updateResult;
+                }
+            }
+            // bug 20700
+            if (reloadCheck.isOk()) {
+                if (needReload(reloadCheck.getMessage())) {
+                    if (tdqCompareService != null) {
+                        // When TDQ comparison service available, relaod the database.
+                        Boolean isReloadSuccess = reloadDatabase(isNameModified, tdqCompareService, tdqRepService);
+                        if (!isReloadSuccess) {
+                            updateResult.setOk(false);
+                            return updateResult;
+                        }
+                        isNeedRefreshEditor = true;
+                        updateResult.setObject(isNeedRefreshEditor);
+                    }
+                }
+            } else {
+                DatabaseConnection dbConn = SwitchHelpers.DATABASECONNECTION_SWITCH.doSwitch(conn);
+                if (dbConn != null) {
+                    updateConnectionInformation(dbConn, metadataConnection);
+                }
+            }
+            // update
+            RepositoryUpdateManager.updateDBConnection(connectionItem);
+        }
+        return updateResult;
     }
 
     /**
