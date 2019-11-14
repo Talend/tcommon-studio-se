@@ -45,6 +45,14 @@ public interface ISAPConstant {
 
     public static final String CHANGING = "CHANGING";//$NON-NLS-1$
 
+    public static final String PARAMETER_TYPE = "PARAMETER_TYPE";//$NON-NLS-1$
+
+    public static final String PARAMETER_TYPE_IMPORT = "IMPORT";//$NON-NLS-1$
+
+    public static final String PARAMETER_TYPE_CHANGING = "CHANGING";//$NON-NLS-1$
+
+    public static final String PARAMETER_TYPE_TABLES = "TABLES";//$NON-NLS-1$
+
     /*
      *
      */
