@@ -40,7 +40,7 @@ public class TalendProxySelector extends ProxySelector {
 
     private static final String ECLIPSE_PROXY_SELECTOR = ".EclipseProxySelector"; //$NON-NLS-1$
 
-    private static final String PROP_PRINT_LOGS = "talend.studio.proxy.printLogs";
+    public static final String PROP_PRINT_LOGS = "talend.studio.proxy.printLogs";
 
     private ProxySelector defaultSelector;
 
