@@ -250,10 +250,12 @@ public class TalendProxySelector extends ProxySelector {
                                 newProxys.addAll(proxys);
                             }
                         } catch (URISyntaxException e) {
-                            ExceptionHandler.process(
-                                    new Exception(Messages.getString("TalendProxySelector.exception.proxySelectionError", uri),
-                                            e),
-                                    Priority.WARN);
+                            if (printProxyLog) {
+                                ExceptionHandler.process(
+                                        new Exception(
+                                                Messages.getString("TalendProxySelector.exception.proxySelectionError", uri), e),
+                                        Priority.WARN);
+                            }
                         }
                     }
                 }
