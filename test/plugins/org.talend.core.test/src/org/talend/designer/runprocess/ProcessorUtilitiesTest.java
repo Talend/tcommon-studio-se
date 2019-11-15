@@ -44,7 +44,6 @@ import org.talend.core.model.process.INode;
 import org.talend.core.model.process.IProcess;
 import org.talend.core.model.process.JobInfo;
 import org.talend.core.model.process.ProcessUtils;
-import org.talend.core.model.properties.JobletProcessItem;
 import org.talend.core.model.properties.ProcessItem;
 import org.talend.core.model.properties.PropertiesFactory;
 import org.talend.core.model.properties.Property;
@@ -58,8 +57,6 @@ import org.talend.designer.core.model.utils.emf.talendfile.ElementParameterType;
 import org.talend.designer.core.model.utils.emf.talendfile.NodeType;
 import org.talend.designer.core.model.utils.emf.talendfile.ProcessType;
 import org.talend.designer.core.model.utils.emf.talendfile.TalendFileFactory;
-import org.talend.designer.joblet.model.JobletFactory;
-import org.talend.designer.joblet.model.JobletProcess;
 import org.talend.repository.ProjectManager;
 
 /**
@@ -466,32 +463,30 @@ public class ProcessorUtilitiesTest {
         ProcessItem item = prepareProcessItem(factory.getNextId(), "test", "0.1");
         ProcessItem item1 = prepareProcessItem(factory.getNextId(), "test1", "0.1");
         ProcessItem item2 = prepareProcessItem(factory.getNextId(), "test2", "0.1");
-        JobletProcessItem jobletItem = prepareJobletProcessItem(factory.getNextId(), "testjoblet", "0.1");
-        prepareTRunjobNode(item.getProcess(), projectTecLabel, item1.getProperty().getId(), RelationshipItemBuilder.LATEST_VERSION);
-        prepareTRunjobNode(item1.getProcess(), projectTecLabel, item2.getProperty().getId(), RelationshipItemBuilder.LATEST_VERSION);
-        prepareTRunjobNode(item2.getProcess(), projectTecLabel, item.getProperty().getId(), RelationshipItemBuilder.LATEST_VERSION);
-        prepareTRunjobNode(jobletItem.getJobletProcess(), projectTecLabel, item.getProperty().getId(),
-                RelationshipItemBuilder.LATEST_VERSION);
+        prepareTRunjobNode(item, projectTecLabel, item1.getProperty().getId(), RelationshipItemBuilder.LATEST_VERSION);
+        prepareTRunjobNode(item1, projectTecLabel, item2.getProperty().getId(), RelationshipItemBuilder.LATEST_VERSION);
+        prepareTRunjobNode(item2, projectTecLabel, item.getProperty().getId(), RelationshipItemBuilder.LATEST_VERSION);
 
         IRepositoryViewObject repositoryObject = null;
         IRepositoryViewObject repositoryObject1 = null;
         IRepositoryViewObject repositoryObject2 = null;
-        IRepositoryViewObject jobletObject = null;
         try {
             factory.create(item, new Path(""));
             factory.create(item1, new Path(""));
             factory.create(item2, new Path(""));
-            factory.create(jobletItem, new Path(""));
 
             repositoryObject = factory.getSpecificVersion(item.getProperty().getId(), item.getProperty().getVersion(), true);
             repositoryObject1 = factory.getSpecificVersion(item1.getProperty().getId(), item1.getProperty().getVersion(), true);
             repositoryObject2 = factory.getSpecificVersion(item2.getProperty().getId(), item2.getProperty().getVersion(), true);
-            jobletObject = factory.getSpecificVersion(jobletItem.getProperty().getId(), jobletItem.getProperty().getVersion(),
-                    true);
-            relationshipItemBuilder.addOrUpdateItem(repositoryObject.getProperty().getItem());
-            relationshipItemBuilder.addOrUpdateItem(repositoryObject1.getProperty().getItem());
-            relationshipItemBuilder.addOrUpdateItem(repositoryObject2.getProperty().getItem());
-            relationshipItemBuilder.addOrUpdateItem(jobletObject.getProperty().getItem());
+            if (repositoryObject != null) {
+                relationshipItemBuilder.addOrUpdateItem(repositoryObject.getProperty().getItem());
+            }
+            if (repositoryObject1 != null) {
+                relationshipItemBuilder.addOrUpdateItem(repositoryObject1.getProperty().getItem());
+            }
+            if (repositoryObject2 != null) {
+                relationshipItemBuilder.addOrUpdateItem(repositoryObject2.getProperty().getItem());
+            }
 
             Relation mainRelation = new Relation();
             mainRelation.setId(repositoryObject.getProperty().getId());
@@ -518,31 +513,6 @@ public class ProcessorUtilitiesTest {
             hasLoop = ProcessorUtilities.checkLoopDependencies(mainRelation, new HashMap<String, String>());
             assertFalse(hasLoop);
 
-            // job-->job1-->job2-->joblet-->job
-            prepareJobletNode(item2.getProcess(), jobletItem.getProperty().getLabel(), RelationshipItemBuilder.LATEST_VERSION);
-            factory.save(jobItem2, false);
-            relationshipItemBuilder.addOrUpdateItem(jobItem2);
-            hasLoop = ProcessorUtilities.checkLoopDependencies(mainRelation, new HashMap<String, String>());
-            assertTrue(hasLoop);
-
-            // job-->job1-->job2-->joblet-->job(tRunjob deactivate)
-            JobletProcessItem jobletProcessItem = (JobletProcessItem) jobletObject.getProperty().getItem();
-            for (Object nodeObject : jobletProcessItem.getJobletProcess().getNode()) {
-                NodeType node = (NodeType) nodeObject;
-                if (!node.getComponentName().equals("tRunJob")) { // $NON-NLS-1$
-                    continue;
-                }
-                ElementParameterType actParam = TalendFileFactory.eINSTANCE.createElementParameterType();
-                actParam.setField("CHECK");
-                actParam.setName("ACTIVATE");
-                actParam.setValue("false");
-                node.getElementParameter().add(actParam);
-            }
-            factory.save(jobletProcessItem, false);
-            hasLoop = ProcessorUtilities.checkLoopDependencies(mainRelation, new HashMap<String, String>());
-            assertFalse(hasLoop);
-
-
         } catch (Exception e) {
             e.printStackTrace();
             fail("Test CheckLoopDependencies failure.");
@@ -551,7 +521,6 @@ public class ProcessorUtilitiesTest {
                 factory.deleteObjectPhysical(repositoryObject);
                 factory.deleteObjectPhysical(repositoryObject1);
                 factory.deleteObjectPhysical(repositoryObject2);
-                factory.deleteObjectPhysical(jobletObject);
             } catch (PersistenceException e) {
                 e.printStackTrace();
                 fail("Test CheckLoopDependencies failure.");
@@ -571,22 +540,10 @@ public class ProcessorUtilitiesTest {
         return item;
     }
 
-    private JobletProcessItem prepareJobletProcessItem(String id, String label, String version) {
-        Property property = PropertiesFactory.eINSTANCE.createProperty();
-        JobletProcessItem jobletProcessItem = PropertiesFactory.eINSTANCE.createJobletProcessItem();
-        JobletProcess process = JobletFactory.eINSTANCE.createJobletProcess();
-        jobletProcessItem.setProperty(property);
-        jobletProcessItem.setJobletProcess((JobletProcess) process);
-        property.setId(id);
-        property.setLabel(label);
-        property.setVersion(version);
-        return jobletProcessItem;
-    }
-
-    private void prepareTRunjobNode(ProcessType processType, String projectLabel, String subjobId, String subjobVersion) {
+    private void prepareTRunjobNode(ProcessItem item, String projectLabel, String subjobId, String subjobVersion) {
         NodeType node = TalendFileFactory.eINSTANCE.createNodeType();
         node.setComponentName("tRunJob");
-        processType.getNode().add(node);
+        item.getProcess().getNode().add(node);
         ElementParameterType versionParam = TalendFileFactory.eINSTANCE.createElementParameterType();
         versionParam.setField("TECHNICAL");
         versionParam.setName("PROCESS:PROCESS_TYPE_VERSION");
@@ -597,16 +554,6 @@ public class ProcessorUtilitiesTest {
         jobIdParam.setName("PROCESS:PROCESS_TYPE_PROCESS");
         jobIdParam.setValue(projectLabel + ProcessUtils.PROJECT_ID_SEPARATOR + subjobId);
         node.getElementParameter().add(jobIdParam);
-    }
-
-    private void prepareJobletNode(ProcessType processType, String jobletName, String jobletVersion) {
-        NodeType node = TalendFileFactory.eINSTANCE.createNodeType();
-        node.setComponentName(jobletName);
-        ElementParameterType versionParam = TalendFileFactory.eINSTANCE.createElementParameterType();
-        versionParam.setField("CLOSED_LIST");
-        versionParam.setName("PROCESS_TYPE_VERSION");
-        versionParam.setValue(jobletVersion);
-        node.getElementParameter().add(versionParam);
     }
 
 }
