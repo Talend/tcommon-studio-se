@@ -551,15 +551,18 @@ public class DatabaseWizard extends CheckLastVersionRepositoryWizard implements 
             try {
                 if (getDatabaseConnection() != null) {
                     Boolean isSuccess = true;
+                    ContextItem contextItem = ContextUtils.getContextItemById2(connection.getContextId());
                     if (creation) {
                         handleCreation(getDatabaseConnection(), metadataConnection, tdqRepService);
-                    } else if (connection.isContextMode() && originalSelectedContextType != null) {
+                    } else if (connection.isContextMode() && contextItem != null && contextItem.getContext().size() > 1
+                            && originalSelectedContextType != null) {
                         isSuccess = SwitchContextGroupNameImpl
                                 .getInstance()
                                 .updateContextGroup(connectionItem, contextName, originalSelectedContextType.getName());
                         if (!isSuccess && tdqRepService != null) {
                             tdqRepService.popupSwitchContextFailedMessage(contextName);
-                           
+                        } else {
+                            isSuccess &= handleDatabaseUpdate(metadataConnection, tdqRepService);
                         }
                     } else {
                         // when connection is Database connection and creating==false and don't switch context
