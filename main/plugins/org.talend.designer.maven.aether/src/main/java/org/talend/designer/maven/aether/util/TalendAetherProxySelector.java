@@ -18,8 +18,8 @@ import org.eclipse.aether.repository.ProxySelector;
 import org.eclipse.aether.repository.RemoteRepository;
 import org.eclipse.aether.util.repository.AuthenticationBuilder;
 import org.eclipse.aether.util.repository.DefaultProxySelector;
-import org.talend.commons.CommonsPlugin;
 import org.talend.commons.exception.ExceptionHandler;
+import org.talend.commons.utils.network.TalendProxySelector;
 
 
 /**
@@ -30,7 +30,7 @@ public class TalendAetherProxySelector implements ProxySelector {
     private boolean isTalendDebug = false;
 
     public TalendAetherProxySelector() {
-        isTalendDebug = CommonsPlugin.isDebugMode();
+        isTalendDebug = Boolean.valueOf(System.getProperty(TalendProxySelector.PROP_PRINT_LOGS, "false"));
     }
 
     @Override

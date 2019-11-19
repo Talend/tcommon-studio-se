@@ -342,7 +342,7 @@ public class CharsetToolkit {
         return (buffer[0] == -2 && buffer[1] == -1);
     }
 
-    public static String getCharset(File file){
+    public static String getCharset(File file) {
         String charset = "UTF-8";
         byte[] fileContent = null;
         FileInputStream fin = null;
@@ -350,11 +350,18 @@ public class CharsetToolkit {
             fin = new FileInputStream(file.getPath());
             fileContent = new byte[(int) file.length()];
             fin.read(fileContent);
-
-            byte[] data =  fileContent;
+            byte[] data = fileContent;
             charset = getCharset(data);
         } catch (IOException e) {
             charset = "UTF-8";
+        } finally {
+            if (fin != null) {
+                try {
+                    fin.close();
+                } catch (IOException e) {
+                    // Ignore here
+                }
+            }
         }
         return charset;
     }
