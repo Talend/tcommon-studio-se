@@ -17,6 +17,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.apache.commons.lang.StringUtils;
 import org.eclipse.emf.common.util.EList;
 import org.eclipse.emf.common.util.EMap;
 import org.eclipse.gef.commands.Command;
@@ -152,8 +153,8 @@ public class RepositoryChangeMetadataForSAPBapi extends Command {
 
             String uinqueTableName = node.getProcess().generateUniqueConnectionName(
                     MultiSchemasUtil.getConnectionBaseName(newMetadatTable.getLabel()));
-            String paramType = getParamType(newMetadatTable, isInput);
-            if (paramType == null) {
+            String type = getType(newMetadatTable, isInput);
+            if (type == null) {
                 return;
             }
             if (selectionIndex != null && selectionIndex < paramValues.size()) {
@@ -165,18 +166,15 @@ public class RepositoryChangeMetadataForSAPBapi extends Command {
                 paramValues.add(valueMap);
             }
             valueMap.put(ISAPConstant.NAME, TalendQuoteUtils.addQuotes(newMetadatTable.getLabel()));
-            valueMap.put(ISAPConstant.TYPE, paramType);
+            valueMap.put(ISAPConstant.TYPE, type);
             valueMap.put(ISAPConstant.FIELD_SCHEMA, uinqueTableName);
             if (isInput) {
                 valueMap.put(ISAPConstant.PARENT_ROW, ""); //$NON-NLS-1$
-                if (functionUnit != null && functionUnit.getParamData() != null
-                        && functionUnit.getParamData().getInputRoot() != null) {
-                    for (SAPFunctionParameter param : functionUnit.getParamData().getInputRoot().getChildren()) {
-                        if (param.getName().equals(newMetadatTable.getTableName())) {
-                            valueMap.put(ISAPConstant.CHANGING, param.isChanging());
-                        }
-                    }
+                String inputParameterType = getInputParameterType(functionUnit, newMetadatTable);
+                if (StringUtils.isBlank(inputParameterType)) {
+                    inputParameterType = ISAPConstant.PARAMETER_TYPE_IMPORT;
                 }
+                valueMap.put(ISAPConstant.PARAMETER_TYPE, inputParameterType);
                 Map<String, String> properties = newMetadatTable.getAdditionalProperties();
                 if (properties != null) {
                     properties.put(ISINPUT, TRUE);
@@ -195,7 +193,37 @@ public class RepositoryChangeMetadataForSAPBapi extends Command {
         }
     }
 
-    private String getParamType(IMetadataTable table, boolean isInput) {
+    private String getInputParameterType(SAPFunctionUnit funcUnit, IMetadataTable newMetadatTable) {
+        String parameterType = "";
+        if (funcUnit != null && funcUnit.getParamData() != null && funcUnit.getParamData().getInputRoot() != null) {
+            SAPFunctionParameter foundParam = null;
+            String tableName = newMetadatTable.getTableName();
+            for (SAPFunctionParameter param : funcUnit.getParamData().getInputRoot().getChildren()) {
+                if (tableName.equals(param.getName())) {
+                    foundParam = param;
+                    break;
+                }
+            }
+            if (foundParam != null) {
+                if (foundParam.isChanging()) {
+                    parameterType = ISAPConstant.PARAMETER_TYPE_CHANGING;
+                } else {
+                    if (ISAPConstant.PARAM_TABLE.equals(foundParam.getType())) {
+                        if (foundParam.isTableResideInTables()) {
+                            parameterType = ISAPConstant.PARAMETER_TYPE_TABLES;
+                        } else {
+                            parameterType = ISAPConstant.PARAMETER_TYPE_IMPORT;
+                        }
+                    } else {
+                        parameterType = ISAPConstant.PARAMETER_TYPE_IMPORT;
+                    }
+                }
+            }
+        }
+        return parameterType;
+    }
+
+    private String getType(IMetadataTable table, boolean isInput) {
         if (functionUnit == null) {
             return null;
         }
