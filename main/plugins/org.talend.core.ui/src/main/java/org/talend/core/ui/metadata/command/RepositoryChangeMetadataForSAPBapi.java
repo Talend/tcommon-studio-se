@@ -170,11 +170,15 @@ public class RepositoryChangeMetadataForSAPBapi extends Command {
             valueMap.put(ISAPConstant.FIELD_SCHEMA, uinqueTableName);
             if (isInput) {
                 valueMap.put(ISAPConstant.PARENT_ROW, ""); //$NON-NLS-1$
+
                 String inputParameterType = getInputParameterType(functionUnit, newMetadatTable);
                 if (StringUtils.isBlank(inputParameterType)) {
                     inputParameterType = ISAPConstant.PARAMETER_TYPE_IMPORT;
                 }
                 valueMap.put(ISAPConstant.PARAMETER_TYPE, inputParameterType);
+
+                valueMap.put(ISAPConstant.CHANGING, ISAPConstant.PARAMETER_TYPE_CHANGING.equals(inputParameterType));
+
                 Map<String, String> properties = newMetadatTable.getAdditionalProperties();
                 if (properties != null) {
                     properties.put(ISINPUT, TRUE);
