@@ -41,6 +41,8 @@ public abstract class AbstractExtendedControlModel {
     private ListenerList listeners = new ListenerList();
 
     private String name;
+    
+    private boolean isAlias;
 
     /**
      * DOC amaumont AbstractExtendedControlModel constructor comment.
@@ -95,4 +97,14 @@ public abstract class AbstractExtendedControlModel {
 
     }
 
+    
+    public boolean isAlias() {
+        return isAlias;
+    }
+
+    
+    public void setAlias(boolean isAlias) {
+        this.isAlias = isAlias;
+    }
+    
 }

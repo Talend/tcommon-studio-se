@@ -264,7 +264,11 @@ public class ExtendedToolbarView extends AbstractExtendedToolbar {
     public void updateEnabledStateOfButtons() {
         List<ExtendedPushButton> buttons = getButtons();
         for (ExtendedPushButton button : buttons) {
-            boolean enabled = button.getEnabledState() && !extendedTableViewer.isReadOnly();
+            boolean isAlias = false;
+            if(extendedTableViewer.getExtendedControlModel() != null) {
+                isAlias = extendedTableViewer.getExtendedControlModel().isAlias();
+            }
+            boolean enabled = button.getEnabledState() && !extendedTableViewer.isReadOnly() && !isAlias;
             if (button == exportButton || button == saveAsGenericSchemaButton) {
                 enabled = button.getEnabledState();
             }
