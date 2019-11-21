@@ -37,18 +37,9 @@
             name="SharedDBConnectionLog4j">
          <library
                name="slf4j-api-1.7.25.jar">
-            <bundleId
-                  bundleId="">
-            </bundleId>
-         </library>
-         <library
-               name="slf4j-log4j12-1.7.25.jar">
-            <bundleId
-                  bundleId="">
-            </bundleId>
          </library>
       </systemRoutine>
-            <systemRoutine
+      <systemRoutine
             name="PasswordEncryptUtil">
          <library
                name="crypto-utils.jar">

@@ -1,15 +1,17 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
-  <modelVersion>4.0.0</modelVersion>
-  <parent>
-    <groupId>org.talend.studio</groupId>
-    <artifactId>tcommon-studio-se</artifactId>
-    <version>7.3.1-SNAPSHOT</version>
-    <relativePath>../../../</relativePath>
-  </parent>
-  <artifactId>org.talend.librariesmanager</artifactId>
-  <packaging>eclipse-plugin</packaging>
-  	<build>
+    <?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+	<parent>
+		<groupId>org.talend.studio</groupId>
+		<artifactId>tcommon-studio-se</artifactId>
+		<version>7.3.1-SNAPSHOT</version>
+		<relativePath>../../../</relativePath>
+	</parent>
+	<artifactId>org.talend.librariesmanager</artifactId>
+	<packaging>eclipse-plugin</packaging>
+	<build>
 		<plugins>
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
@@ -31,6 +33,24 @@
 									<groupId>org.talend.daikon</groupId>
 									<artifactId>crypto-utils</artifactId>
 									<version>${org.talend.daikon.crypto-utils.version}</version>
+									<overWrite>true</overWrite>
+								</artifactItem>
+							</artifactItems>
+						</configuration>
+					</execution>
+					<execution>
+						<id>copy-maven-repository2</id>
+						<phase>generate-sources</phase>
+						<goals>
+							<goal>copy</goal>
+						</goals>
+						<configuration>
+							<outputDirectory>${project.basedir}/lib</outputDirectory>
+							<artifactItems>
+								<artifactItem>
+									<groupId>org.slf4j</groupId>
+									<artifactId>slf4j-api</artifactId>
+									<version>1.7.25</version>
 									<overWrite>true</overWrite>
 								</artifactItem>
 							</artifactItems>
