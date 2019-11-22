@@ -31,6 +31,7 @@ import org.eclipse.aether.util.listener.ChainedRepositoryListener;
 import org.eclipse.aether.util.listener.ChainedTransferListener;
 import org.eclipse.aether.util.repository.AuthenticationBuilder;
 import org.talend.designer.maven.aether.util.MavenLibraryResolverProvider;
+import org.talend.designer.maven.aether.util.TalendAetherProxySelector;
 
 /**
  * created by wchen on Aug 10, 2017 Detailled comment
@@ -52,6 +53,7 @@ public class RepositorySystemFactory {
                                     localRepo));
             repositorySystemSession.setTransferListener(new ChainedTransferListener());
             repositorySystemSession.setRepositoryListener(new ChainedRepositoryListener());
+            repositorySystemSession.setProxySelector(new TalendAetherProxySelector());
         }
 
         return repositorySystemSession;
@@ -85,6 +87,7 @@ public class RepositorySystemFactory {
         Authentication auth = new AuthenticationBuilder().addUsername(userName).addPassword(password).build();
         RemoteRepository distRepo = new RemoteRepository.Builder(repositoryId, "default", repositoryUrl).setAuthentication(auth)
                 .build();
+        distRepo = new RemoteRepository.Builder(distRepo).setProxy(new TalendAetherProxySelector().getProxy(distRepo)).build();
 
         deployRequest.setRepository(distRepo);
 

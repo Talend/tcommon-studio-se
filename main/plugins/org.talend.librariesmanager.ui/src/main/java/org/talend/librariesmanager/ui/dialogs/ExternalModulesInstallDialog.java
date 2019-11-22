@@ -147,7 +147,7 @@ public class ExternalModulesInstallDialog extends TitleAreaDialog implements IMo
     }
 
     private void checkNetworkStatus() {
-        boolean networkValid = NetworkUtil.isNetworkValid();
+        boolean networkValid = NetworkUtil.isNetworkValid(System.getProperty("nexus.proxy.url"));
         if (!networkValid) {
             setErrorMessage(Messages.getString("ExternalModulesInstallDialog.networkUnavailable.msg")); //$NON-NLS-1$
         }

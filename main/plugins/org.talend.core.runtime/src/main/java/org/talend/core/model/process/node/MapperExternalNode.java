@@ -20,4 +20,8 @@ import org.talend.core.model.process.AbstractExternalNode;
  */
 public abstract class MapperExternalNode extends AbstractExternalNode {
 
+	public boolean getShouldGenerateDataset() {
+    	return false;
+    }
+	
 }

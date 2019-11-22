@@ -149,6 +149,7 @@ public class DynamicDistributionAetherUtils {
             builder = builder.setAuthentication(auth);
         }
         RemoteRepository central = builder.build();
+        central = new RemoteRepository.Builder(central).setProxy(new TalendAetherProxySelector().getProxy(central)).build();
 
         CollectRequest collectRequest = new CollectRequest();
         collectRequest.setRoot(dependency);
@@ -304,6 +305,7 @@ public class DynamicDistributionAetherUtils {
             builder = builder.setAuthentication(auth);
         }
         RemoteRepository central = builder.build();
+        central = new RemoteRepository.Builder(central).setProxy(new TalendAetherProxySelector().getProxy(central)).build();
 
         VersionRangeRequest verRangeRequest = new VersionRangeRequest();
         verRangeRequest.addRepository(central);
@@ -350,6 +352,7 @@ public class DynamicDistributionAetherUtils {
             builder = builder.setAuthentication(auth);
         }
         RemoteRepository central = builder.build();
+        central = new RemoteRepository.Builder(central).setProxy(new TalendAetherProxySelector().getProxy(central)).build();
 
         VersionRangeRequest verRangeRequest = new VersionRangeRequest();
         verRangeRequest.addRepository(central);
@@ -414,6 +417,7 @@ public class DynamicDistributionAetherUtils {
 
         LocalRepository localRepo = new LocalRepository(repositoryPath);
         session.setLocalRepositoryManager(system.newLocalRepositoryManager(session, localRepo));
+        session.setProxySelector(new TalendAetherProxySelector());
 
         updateDependencySelector(session, monitor);
 

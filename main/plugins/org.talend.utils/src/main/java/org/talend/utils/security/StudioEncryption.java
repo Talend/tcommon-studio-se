@@ -13,53 +13,55 @@
 package org.talend.utils.security;
 
 import java.io.File;
-import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
-import java.nio.charset.StandardCharsets;
-import java.nio.file.Files;
-import java.nio.file.StandardCopyOption;
 import java.security.Provider;
 import java.security.Security;
-import java.util.Base64;
-import java.util.HashMap;
-import java.util.Map;
 import java.util.Properties;
+import java.util.regex.Pattern;
 
 import org.apache.log4j.Logger;
 import org.talend.daikon.crypto.CipherSource;
 import org.talend.daikon.crypto.CipherSources;
 import org.talend.daikon.crypto.Encryption;
-import org.talend.daikon.crypto.KeySource;
-import org.talend.daikon.crypto.KeySources;
 import org.talend.utils.StudioKeysFileCheck;
 
 public class StudioEncryption {
 
     private static final Logger LOGGER = Logger.getLogger(StudioEncryption.class);
 
-    // TODO We should remove default key after implements master key encryption algorithm
-    private static final String ENCRYPTION_KEY = "Talend_TalendKey";// The length of key should be 16, 24 or 32.
-
     private static final String ENCRYPTION_KEY_FILE_NAME = StudioKeysFileCheck.ENCRYPTION_KEY_FILE_NAME;
 
     private static final String ENCRYPTION_KEY_FILE_SYS_PROP = StudioKeysFileCheck.ENCRYPTION_KEY_FILE_SYS_PROP;
 
-    private static final String PREFIX_PASSWORD = "ENC:["; //$NON-NLS-1$
+    private static final String PREFIX_PASSWORD_M3 = "ENC:[";
 
-    private static final String POSTFIX_PASSWORD = "]"; //$NON-NLS-1$
+    private static final String PREFIX_PASSWORD = "enc:"; //$NON-NLS-1$
 
-    // Encryption key property names
-    private static final String KEY_SYSTEM = "system.encryption.key.v1";
+    private static final Pattern REG_ENCRYPTED_DATA_SYSTEM = Pattern
+            .compile("^enc\\:system\\.encryption\\.key\\.v\\d\\:\\p{Print}+");
+
+    private static final Pattern REG_ENCRYPTED_DATA_MIGRATION = Pattern
+            .compile("^enc\\:migration\\.token\\.encryption\\.key\\:\\p{Print}+");
+
+    private static final Pattern REG_ENCRYPTED_DATA_ROUTINE = Pattern.compile("^enc\\:routine\\.encryption\\.key\\:\\p{Print}+");
+
+    // Encryption key name shipped in M3
+    private static final String KEY_SYSTEM_M3 = StudioKeySource.KEY_SYSTEM_PREFIX + "1";
 
     private static final String KEY_MIGRATION_TOKEN = "migration.token.encryption.key";
 
-    private static final String KEY_ROUTINE = "routine.encryption.key";
+    // TODO: this fixed key will be removed
+    private static final String KEY_ROUTINE = StudioKeySource.KEY_FIXED;
+
+    private EncryptionKeyName keyName;
+
+    private String securityProvider;
 
     public enum EncryptionKeyName {
-        SYSTEM(KEY_SYSTEM),
+        SYSTEM(KEY_SYSTEM_M3),
         ROUTINE(KEY_ROUTINE),
         MIGRATION_TOKEN(KEY_MIGRATION_TOKEN);
 
@@ -68,6 +70,10 @@ public class StudioEncryption {
         EncryptionKeyName(String name) {
             this.name = name;
         }
+
+        public String toString() {
+            return this.name;
+        }
     }
 
     static {
@@ -75,113 +81,85 @@ public class StudioEncryption {
         updateConfig();
     }
 
-    private Encryption encryption;
-
-    private static final ThreadLocal<Map<EncryptionKeyName, KeySource>> LOCALCACHEDKEYSOURCES = ThreadLocal.withInitial(() -> {
-        Map<EncryptionKeyName, KeySource> cachedKeySources = new HashMap<EncryptionKeyName, KeySource>();
-        EncryptionKeyName[] keyNames = { EncryptionKeyName.SYSTEM, EncryptionKeyName.MIGRATION_TOKEN };
-        for (EncryptionKeyName keyName : keyNames) {
-            KeySource ks = loadKeySource(keyName);
-            if (ks != null) {
-                cachedKeySources.put(keyName, ks);
-            }
-        }
-        cachedKeySources.put(EncryptionKeyName.ROUTINE, KeySources.fixedKey(ENCRYPTION_KEY));
-        return cachedKeySources;
+    private static final ThreadLocal<Properties> LOCALCACHEDALLKEYS = ThreadLocal.withInitial(() -> {
+        return StudioKeySource.loadAllKeys();
     });
 
     private StudioEncryption(EncryptionKeyName encryptionKeyName, String providerName) {
-        if (encryptionKeyName == null) {
-            encryptionKeyName = EncryptionKeyName.SYSTEM;
-        }
+        this.keyName = encryptionKeyName;
+        this.securityProvider = providerName;
+    }
 
-        KeySource ks = LOCALCACHEDKEYSOURCES.get().get(encryptionKeyName);
+    private static StudioKeySource getKeySource(String encryptionKeyName, boolean isEncrypt) {
+        Properties allKeys = LOCALCACHEDALLKEYS.get();
 
-        if (ks == null) {
-            ks = loadKeySource(encryptionKeyName);
-            if (ks != null) {
-                LOCALCACHEDKEYSOURCES.get().put(encryptionKeyName, ks);
+        StudioKeySource ks = StudioKeySource.key(allKeys, encryptionKeyName, isEncrypt);
+
+        try {
+            if (ks.getKey() != null) {
+                return ks;
             }
+        } catch (Exception e) {
+            LOGGER.error("Can not load encryption key: " + encryptionKeyName, e);
         }
-        if (ks == null) {
-            RuntimeException e = new IllegalArgumentException("Can not load encryption key data: " + encryptionKeyName.name);
-            LOGGER.error(e);
-            throw e;
-        }
+        RuntimeException e = new RuntimeException("Can not load encryption key: " + encryptionKeyName);
+        LOGGER.error("Can not load encryption key: " + encryptionKeyName, e);
+        throw e;
+    }
 
+    private Encryption getEncryption(StudioKeySource ks) {
         CipherSource cs = null;
-        if (providerName != null && !providerName.isEmpty()) {
-            Provider p = Security.getProvider(providerName);
+        if (this.securityProvider != null && !this.securityProvider.isEmpty()) {
+            Provider p = Security.getProvider(this.securityProvider);
             cs = CipherSources.aesGcm(12, 16, p);
         }
 
         if (cs == null) {
             cs = CipherSources.getDefault();
         }
-
-        encryption = new Encryption(ks, cs);
-    }
-
-    private static KeySource loadKeySource(EncryptionKeyName encryptionKeyName) {
-        // EncryptionKeyName.SYSTEM, always load from system property firstly, then load from file
-        if (encryptionKeyName == EncryptionKeyName.SYSTEM) {
-            KeySource ks = KeySources.systemProperty(encryptionKeyName.name);
-            try {
-                if (ks.getKey() != null) {
-                    return ks;
-                }
-            } catch (Exception e) {
-                LOGGER.debug("StudioEncryption, can not get encryption key from system property: " + encryptionKeyName.name);
-            }
-        }
-        // for others, tac,jobserver etc, load default keys from system property file, then load from jars if they are
-        // not found in system properties
-        KeySource ks = ResourceKeyFileSource.file(encryptionKeyName.name);
-        try {
-            if (ks.getKey() != null) {
-                return ks;
-            }
-        } catch (Exception e) {
-            LOGGER.warn("Can not load encryption key from file", e);
-        }
-
-        return null;
+        return new Encryption(ks, cs);
     }
 
     public String encrypt(String src) {
         // backward compatibility
-        if (src == null) {
+        if (src == null || hasEncryptionSymbol(src)) {
             return src;
         }
         try {
-            if (!hasEncryptionSymbol(src)) {
-                return PREFIX_PASSWORD + encryption.encrypt(src) + POSTFIX_PASSWORD;
-            }
+            StudioKeySource ks = getKeySource(this.keyName.name, true);
+            StringBuilder sb = new StringBuilder();
+            sb.append(PREFIX_PASSWORD);
+            sb.append(ks.getKeyName());
+            sb.append(":");
+            sb.append(getEncryption(ks).encrypt(src));
+            return sb.toString();
         } catch (Exception e) {
             // backward compatibility
             LOGGER.error("encrypt error", e);
-            return null;
         }
-        return src;
+        return null;
     }
 
     public String decrypt(String src) {
         // backward compatibility
-        if (src == null || src.isEmpty()) {
+        if (!hasEncryptionSymbol(src)) {
             return src;
         }
         try {
-            if (hasEncryptionSymbol(src)) {
-                return encryption
-                        .decrypt(src.substring(PREFIX_PASSWORD.length(), src.length() - POSTFIX_PASSWORD.length()));
-            } else {
-                return encryption.decrypt(src);
+            if (src.startsWith(PREFIX_PASSWORD)) {
+                String[] srcData = src.split("\\:");
+                StudioKeySource ks = getKeySource(srcData[1], false);
+                return this.getEncryption(ks).decrypt(srcData[2]);
             }
+            StudioKeySource ks = getKeySource(KEY_SYSTEM_M3, false);
+            // compatible with M3, decrypt by default key: system.encryption.key.v1
+            return this.getEncryption(ks).decrypt(src.substring(PREFIX_PASSWORD_M3.length(), src.length() - 1));
         } catch (Exception e) {
             // backward compatibility
             LOGGER.error("decrypt error", e);
-            return null;
         }
+
+        return null;
     }
 
 
@@ -205,10 +183,10 @@ public class StudioEncryption {
     }
 
     public static boolean hasEncryptionSymbol(String input) {
-        if (input == null || input.length() == 0) {
-            return false;
-        }
-        return input.startsWith(PREFIX_PASSWORD) && input.endsWith(POSTFIX_PASSWORD);
+        return input != null
+                && (REG_ENCRYPTED_DATA_SYSTEM.matcher(input).matches() || REG_ENCRYPTED_DATA_MIGRATION.matcher(input).matches()
+                        || REG_ENCRYPTED_DATA_ROUTINE.matcher(input).matches()
+                        || (input.startsWith(PREFIX_PASSWORD_M3) && input.endsWith("]")));
     }
 
     private static void updateConfig() {
@@ -244,53 +222,5 @@ public class StudioEncryption {
     private static boolean isStudio() {
         String osgiFramework = System.getProperty("osgi.framework");
         return osgiFramework != null && osgiFramework.contains("eclipse");
-    }
-
-    private static class ResourceKeyFileSource implements KeySource {
-
-        private final String keyName;
-
-        private final Properties keyProperties = new Properties();
-
-        ResourceKeyFileSource(String keyName) {
-            this.keyName = keyName;
-            // load default keys from jar
-            try (InputStream fi = StudioEncryption.class.getResourceAsStream(ENCRYPTION_KEY_FILE_NAME)) {
-                keyProperties.load(fi);
-            } catch (IOException e) {
-                LOGGER.error(e);
-            }
-
-            // load from file set in system property, so as to override default keys
-            String keyPath = System.getProperty(ENCRYPTION_KEY_FILE_SYS_PROP);
-            if (keyPath != null) {
-                File keyFile = new File(keyPath);
-                if (keyFile.exists()) {
-                    try (InputStream fi = new FileInputStream(keyFile)) {
-                        keyProperties.load(fi);
-                    } catch (IOException e) {
-                        LOGGER.error(e);
-                    }
-                }
-            }
-        }
-
-        public static KeySource file(String keyName) {
-            return new ResourceKeyFileSource(keyName);
-        }
-
-        @Override
-        public byte[] getKey() throws Exception {
-            // load key
-            String key = keyProperties.getProperty(this.keyName);
-            if (key == null) {
-                LOGGER.warn("Can not load " + this.keyName + " from file");
-                throw new IllegalArgumentException("Invalid encryption key");
-            } else {
-                LOGGER.debug("Loaded " + this.keyName + " from file");
-                byte[] keyData = Base64.getDecoder().decode(key.getBytes(StandardCharsets.UTF_8));
-                return keyData;
-            }
-        }
     }
 }

@@ -49,9 +49,10 @@ public class NetworkUtil {
         if ("true".equals(disableInternet)) { //$NON-NLS-1$
             return false;
         }
+        HttpURLConnection conn = null;
         try {
             URL url = new URL(HTTP_NETWORK_URL);
-            HttpURLConnection conn = (HttpURLConnection) url.openConnection();
+            conn = (HttpURLConnection) url.openConnection();
             conn.setConnectTimeout(4000);
             conn.setReadTimeout(4000);
 
@@ -63,9 +64,36 @@ public class NetworkUtil {
             if (strMessage.equals("OK")) { //$NON-NLS-1$
                 return true;
             }
-            conn.disconnect();
         } catch (Exception e) {
             return false;
+        } finally {
+            conn.disconnect();
+        }
+        return true;
+    }
+
+    public static boolean isNetworkValid(String url) {
+        if (url == null) {
+            return isNetworkValid();
+        }
+        return checkValidWithHttp(url);
+    }
+
+    private static boolean checkValidWithHttp(String urlString) {
+        HttpURLConnection conn = null;
+        try {
+            URL url = new URL(urlString);
+            conn = (HttpURLConnection) url.openConnection();
+            conn.setConnectTimeout(4000);
+            conn.setReadTimeout(4000);
+            conn.setRequestMethod("HEAD"); //$NON-NLS-1$
+            conn.getResponseMessage();
+        } catch (Exception e) {
+            // if not reachable , will throw exception(time out/unknown host) .So if catched exception, make it a
+            // invalid server
+            return false;
+        } finally {
+            conn.disconnect();
         }
         return true;
     }

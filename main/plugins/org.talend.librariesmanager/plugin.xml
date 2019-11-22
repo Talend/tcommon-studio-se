@@ -36,13 +36,10 @@
       <systemRoutine
             name="SharedDBConnectionLog4j">
          <library
-               name="log4j-1.2.17.jar">
-            <bundleId
-                  bundleId="">
-            </bundleId>
+               name="slf4j-api-1.7.25.jar">
          </library>
       </systemRoutine>
-            <systemRoutine
+      <systemRoutine
             name="PasswordEncryptUtil">
          <library
                name="crypto-utils.jar">

@@ -41,7 +41,10 @@ public class PasswordMigrationUtil {
 
     public static String encryptPasswordIfNeeded(String pass) throws Exception {
         String cleanPass = decryptPassword(pass);
-        return StudioEncryption.getStudioEncryption(StudioEncryption.EncryptionKeyName.SYSTEM).encrypt(cleanPass);
+        if (cleanPass != null) {
+            return StudioEncryption.getStudioEncryption(StudioEncryption.EncryptionKeyName.SYSTEM).encrypt(cleanPass);
+        }
+        return pass;
     }
 
     private PasswordMigrationUtil() {

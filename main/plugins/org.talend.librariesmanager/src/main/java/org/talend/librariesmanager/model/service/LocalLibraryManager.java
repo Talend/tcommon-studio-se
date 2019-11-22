@@ -68,6 +68,7 @@ import org.talend.core.model.general.ModuleStatusProvider;
 import org.talend.core.model.repository.ERepositoryObjectType;
 import org.talend.core.nexus.ArtifactRepositoryBean;
 import org.talend.core.nexus.IRepositoryArtifactHandler;
+import org.talend.core.nexus.NexusConstants;
 import org.talend.core.nexus.NexusServerUtils;
 import org.talend.core.nexus.RepositoryArtifactHandlerManager;
 import org.talend.core.nexus.TalendLibsServerManager;
@@ -111,6 +112,8 @@ public class LocalLibraryManager implements ILibraryManagerService, IChangedLibr
     private JarMissingObservable missingJarObservable;
 
     private MavenArtifactsHandler deployer;
+
+    private static final String DYNAMIC_DISTRIBUTION_HOST_URL = NexusConstants.DYNAMIC_DISTRIBUTION.substring(8);
 
     /**
      * DOC nrousseau LocalLibraryManager constructor comment.
@@ -1354,6 +1357,13 @@ public class LocalLibraryManager implements ILibraryManagerService, IChangedLibr
         }
     }
 
+    private static void addLibsToMavenUrlIndex(ModuleNeeded module, String mavenUrl, Map<String, String> libsToMavenUri) {
+        // filter out dynamic distribution url
+        if (!mavenUrl.contains(DYNAMIC_DISTRIBUTION_HOST_URL)) {
+            libsToMavenUri.put(module.getModuleName(), mavenUrl);
+        }
+    }
+
     private void calculateModulesIndex(List<ModuleNeeded> modules, Map<String, String> libsToRelativePath,
             Set<String> duplicateLocationJar, Map<String, String> libsToMavenUri, Set<String> duplicateMavenUri) {
 
@@ -1375,11 +1385,11 @@ public class LocalLibraryManager implements ILibraryManagerService, IChangedLibr
                     }
                     if (!found) {
                         String newUriToSave = existUri + MavenUrlHelper.MVN_INDEX_SEPARATOR + mavenUrl;
-                        libsToMavenUri.put(module.getModuleName(), newUriToSave);
+                        addLibsToMavenUrlIndex(module, newUriToSave, libsToMavenUri);
                     }
 
                 } else {
-                    libsToMavenUri.put(module.getModuleName(), mavenUrl);
+                    addLibsToMavenUrlIndex(module, mavenUrl, libsToMavenUri);
                 }
                 // check if jar name is setup based on maven uri
                 String generatedName = MavenUrlHelper.generateModuleNameByMavenURI(mavenUrl);

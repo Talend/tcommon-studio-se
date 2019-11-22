@@ -92,14 +92,21 @@ public class SwitchContextGroupNameImpl implements ISwitchContext {
         if (con != null) {
             // TDQ-4559~
             String oldContextName = originalContext == null ? con.getContextName() : originalContext;
+            
+            String newContextName = selectedContext;
+            if (newContextName == null) {
+                ContextType newContextType =
+                        ConnectionContextHelper.getContextTypeForContextMode(con, selectedContext, false);
+                newContextName = newContextType == null ? null : newContextType.getName();
+            }
 
-            if (!isContextIsValid(selectedContext, oldContextName, con)) {
+            if (!isContextIsValid(newContextName, oldContextName, con)) {
                 return false;
             }
-            con.setContextName(selectedContext);
+            con.setContextName(newContextName);
             if (con instanceof DatabaseConnection) {
                 DatabaseConnection dbConn = (DatabaseConnection) connItem.getConnection();
-                String newURL = getChangedURL(dbConn, selectedContext);
+                String newURL = getChangedURL(dbConn, newContextName);
                 dbConn.setURL(newURL);
 
                 updateConnectionForSidOrUiSchema(dbConn, oldContextName);

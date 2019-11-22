@@ -1,0 +1,470 @@
+TALEND, INC. MASTER END USER LICENSE AGREEMENT
+
+READ CAREFULLY THESE TERMS AND CONDITIONS, AS THEY, TOGETHER WITH THE TALEND ORDER FORM 
+ON WHICH THEY ARE REFERENCED (the "Order Form"), CONSITUTE A LEGALLY BINIDNG AGREEMENT AND 
+GOVERN YOUR USE OF THE TALEND SOFTWARE AND THE PROVISION BY TALEND OF ASSOCIATED SUPPORT 
+SERVICES. BY DOWNLOADING, INSTALLING AND/OR USING THE TALEND SOFTWARE, YOU ARE INDICATING 
+THAT YOU AGREE TO THESE TERMS AND CONDITIONS.  IF YOU DO NOT AGREE WITH THESE TERMS AND 
+CONDITIONS, YOU MAY NOT DOWNLOAD, INSTALL OR USE THE TALEND SOFTWARE.
+
+This Master End User License Agreement (this "Agreement") is entered into by and between Talend, Inc., a Delaware 
+corporation with offices located 5150 El Camino Real, Suite C-31, Los Altos, CA, 94022 ("Talend") and the customer, identified 
+on an Order Form, that is purchasing a Software Subscription and Support Services ("You" or "Customer"), and is effective as of 
+the date you download the Talend Software (the "Effective Date"). 
+
+
+
+1.  DEFINITIONS
+The following capitalized terms shall have the meaning set forth below.  Other defined terms shall have the meanings set forth 
+where they are first underlined.
+1.1    "Computational Objects" means blocks of computer code written in Java Script and other programming languages, 
+which may be provided as part of the Talend Software.
+1.2  "Design Components" means the components of the Talend Software that enable users to create Generated Code 
+Designs which when applied to the Computational Objects result in the output of Generated Code, and more generally allow 
+users to interface with the Talend Software to perform and execute various functions.
+1.3 "Documentation" means the documentation provided with the Talend Software to Customer hereunder, together with 
+any and all new releases, corrections, updates and applicable training materials furnished by Talend to Customer under this 
+Agreement.
+1.4 "Generated Code" means an independently executable program consisting of Computational Objects configured to 
+implement a Generated Code Design.
+1.5 "Generated Code Design" means a specific sequencing of Computational Objects created using the Design 
+Components of the Talend Software. 
+1.6  "License" means a license granted under Section 2.1.
+1.7 "License Type" means the type of License applicable to the Talend Software, as more fully described in Exhibit A. 
+1.8 "Open Source Software" means individual software components that are provided with the Talend Software, for which 
+the source code is made generally available, and that are licensed under the terms of various published open source software 
+license agreements or copyright notices accompanying such software components.
+1.9 "Order Form" means a Talend order form, pursuant to which Customer may order Talend Software and Support 
+Services from Talend. 
+1.10      "Software Subscription" means Customer's right to use the applicable Talend Software, subject to the License Type 
+restrictions, for which such right has been purchased.
+1.11    "Software Subscription Key" means a logical code that activates and controls a Software Subscription based on (i) the 
+applicable License Type, (ii) the Talend Software edition for which a Software Subscription has been purchased, and (iii) the 
+Software Subscription Term.  A Software Subscription Key is "attached" to a specific hardware machine identified by a MAC 
+address, and may be installed on only one machine at a time.
+1.12    "Software Subscription Term" means the period of time for which a Software Subscription is valid, as set forth in the 
+applicable Order Form.  Notwithstanding the foregoing, the Software Subscription Term for any Generated Code is always 
+perpetual. 
+1.13    "Support Services" means the technical support services related to the use of the Talend Software that are purchased by 
+Customer, as set forth on an applicable Order Form, and as further described in Talend's Support Services Policy located at 
+http://www.talend.com/legal/us_support_policy.php, as the same may be modified by Talend from time to time.  The Support 
+Services Policy is hereby incorporated into and made a part of this Agreement.
+1.14    "Talend Software" means the object code version of the Talend proprietary software for which Customer has purchased 
+a Software Subscription hereunder, as indicated on the applicable Order Form, along with any Updates thereto provided by 
+Talend to Customer hereunder, and including, without limitation, any Design Components, Computational Objects and Generated 
+Code. 
+1.15     "Update" means any Major Release, Minor Release, Service Pack and/or Patch (all as defined in the Support Services 
+Policy) of or for the Talend Software that is made generally available by Talend to customers during the term of this Agreement.
+2.  SOFTWARE LICENSE, DELIVERY, ACCEPTANCE AND RESTRICTIONS
+2.1 License Grants. Subject to the terms and conditions of this Agreement, including the payment of all applicable fees, 
+Talend  hereby grants to Customer, solely for Customer's internal business operations, a limited, non-exclusive, non-transferable 
+right and license  to the Talend Software to:
+(a) Use during the Software Subscription Term, subject to the applicable License Type restrictions (as specified on an Order 
+Form;  
+(b) Use any Generated Code in perpetuity subject to the restrictions set forth in subsections (i), (iii), (iv), (v) and (vi) of 
+Section 2.2 below;
+(c) Use, reproduce and distribute internally a reasonable number of copies of the Documentation, provided that Customer must 
+include on such copies all Talend trademarks, trade names, logos and notices present on the Documentation as originally 
+provided by Talend; 
+(d) Permit third party contractors performing services on Customer's behalf to use the Talend Software and Documentation in 
+accordance with the terms and conditions of this Agreement provided that; (i) such use must be solely for the benefit of Customer 
+and (ii) Customer shall be responsible for all acts and omissions of such contractors and;
+(e) Make a reasonable number of copies of the Talend Software for backup and/or archival purposes, excluding Hot and Warm 
+Backup purposes as such terms are defined in Exhibit A. 
+2.2 Reservation of Rights; Restrictions. Talend owns all right title and interest in and to the Talend Software and any 
+derivative works thereof, and no other license to the Talend Software is granted to Customer by implication, estoppel or 
+otherwise.  Customer understands and agrees that Customer's ability to use the Talend Software is determined by the Software 
+Subscription Key provided to Customer. Customer agrees not to: (i) prepare derivative works from, modify, copy or use the 
+Talend Software in any manner except as expressly permitted in this Agreement; (ii) attempt to circumvent, disable or defeat the 
+limitations on Customer's use of the Talend Software encoded into the Software Subscription Key, (iii) transfer, sell, rent, lease, 
+distribute, sublicense, loan or otherwise transfer the Talend Software in whole or in part (including, without limitation, Generated 
+Code) to any third party; (iv) use the Talend Software for providing time-sharing services, any software-as-a-service offering 
+("SaaS"), service bureau services or as part of an application services provider or as a service offering; (v) alter or remove any 
+proprietary notices in the Talend Software; or (vi) make available to any third party any analysis of the results of operation of the 
+Talend Software, including benchmarking results, without the prior written consent of Talend.     
+2.3 Delivery; Software Subscription Keys and Use Manager. The Talend Software is only available electronically via 
+download and will not be available in any other format.  Talend Software shall be deemed delivered to Customer upon Talend 
+making available to Customer the Software Subscription Key.  Customer understands and agrees that a Software Subscription 
+Key provided by Talend is required to enable the Talend Software and that Software Subscription Keys are valid only during the 
+Software Subscription Term.  Customer further understands and agrees that (i) Customer will be provided with a temporary 
+Software Subscription Key upon invoicing, and upon receipt by Talend of payment in full for the then-current Software 
+Subscription Term, Customer will be provided with a Software Subscription Key that is effective for the duration of such 
+Software Subscription Term, (ii) the Talend Software will, in the absence of any renewal of the Software Subscription Term, be 
+disabled automatically upon the expiration of the Software Subscription Term and (iii) the Software Subscription Key will 
+automatically prevent the use of the Talend Software in violation of the applicable License Type restrictions, as set forth in the 
+Order Form.  Finally, Customer understands and agrees that upon activation of the Talend Software, a software module ("Use 
+Manager") will provide certain information to Talend regarding the system environment in which the Talend Software is 
+operating, and will monitor the use and security of the Talend Software.  For example, the Use Manager uses HTTP protocol and 
+encryption to provide information about the Operating System, amount of RAM, type and number of CPUs and MAC address, as 
+well as the Customer name, license type, version of the Talend Software being used, start and end date of the Software 
+Subscription, and number of active users, provided, however, that under no circumstances does the Use Manager capture or 
+transmit to Talend any Customer data being processed by the Talend Software.  
+2.4 Source Code. Upon request, Talend will make available to Customer the source code version of the Talend Software.  
+Customer agrees that any source code for the Talend Software provided to Customer hereunder is the Confidential Information of 
+Talend, and subject to the provisions of Section 6 of this Agreement.  Talend hereby grants to Customer the right to prepare 
+derivative works from such source code,  compile such modified source code and use the object code compiled therefrom solely 
+in accordance with the license granted in Section 2.1 above, and subject to all of the restrictions set forth in Section 2.2 above, 
+provided that Customer acknowledges and agrees that Talend shall have no obligation to provide Support Services for any 
+compiled version of the Talend Software that is based on source that has been modified by or on behalf of Customer, and that 
+such compiled version of the Talend Software is without warranty of any kind.  Customer may not distribute or transfer the 
+source code to any third party, or use the source code other than for its internal business purposes.  For the avoidance of doubt, 
+Customer's use of the source code for any Open Source Software is subject to the applicable open source  license, which may set 
+forth terms and conditions that are in addition to or different than those set forth in this Agreement.
+2.5 Government Rights.  The Talend Software and accompanying Documentation are deemed to be "commercial computer 
+software" and "commercial computer software documentation", respectively, pursuant to DFAR Section 227.7202 and FAR 
+Section 12.212(b), as applicable.  Any use, modification, reproduction, release, performing, displaying or disclosing of the 
+Talend Software and Documentation by the U.S. Government shall be governed solely by the terms and conditions of this 
+Agreement.
+2.6 Protection Against Unauthorized Use.  Customer shall promptly notify Talend of any unauthorized use, reproduction or 
+distribution of the Talend Software or Documentation of which it becomes aware.  In the event of any unauthorized use, 
+reproduction or distribution by any of Customer's employees, agents or representatives, Customer shall use commercially 
+reasonable efforts to terminate any such unauthorized use and to retrieve any unauthorized copy of the Talend Software or 
+Documentation in the possession or control of the person or entity engaging in such unauthorized use.  Talend may, at its option 
+and expense, participate in any such proceeding and, in such an event, Customer shall provide such authority, information and 
+assistance related to such proceeding as Talend may reasonably request.
+3.  SUPPORT SERVICES 
+3.1 Provision of Support Services. Provided Customer has paid Talend the applicable fees, Talend will provide Customer 
+with the Support Services specified in the Order Form. Support Services are provided to Customer solely for Customer's internal 
+use and Customer may not use the Support Services to supply any consulting, support or training services to any third party.  
+Talend reserves the right to modify reasonably its Support Services Policy from time to time, provided that in no event will 
+Talend materially degrade or diminish the level and quality of Support Services provided under its Support Services Policy 
+during the term of this Agreement.  Talend shall have no obligation to support versions of the Talend Software that have been 
+modified by Customer.
+3.2 Customer Obligations.  Customer agrees to provide Talend with such cooperation, materials, information, access and 
+support which Talend deems to be reasonably required to allow Talend to successfully provide the Support Services.   Customer 
+understands and agrees that Talend's obligations to provide Support Services are expressly conditioned upon Customer providing 
+such cooperation, materials, information, access and support.
+4.  FEES, PAYMENT AND TAXES
+4.1 Fees.  Customer agrees to pay Talend the Software Subscription and Support Services fees stated on the Order Form. 
+4.2 Payment.  Unless otherwise specified on an Order Form, all invoices will be paid in U.S dollars and are due upon 
+receipt and will be paid within thirty (30) days of the date of the invoice. Payments will be made without right of set-off or 
+chargeback.   All monetary amounts are specified and shall be paid in the lawful currency of the United States of America.  
+Customer shall pay all amounts due under this Agreement to Talend at the address set forth herein or such other location as 
+Talend designates in writing. Any amount not paid when due may be subject to interest at the rate of one and one half percent 
+(1.5%) per month or, the maximum rate permitted by law, whichever is less, determined and compounded on a daily basis from 
+the date due until the date paid.
+4.3 Taxes.  All amounts payable by Customer to Talend under this Agreement are exclusive of any tax, levy or similar 
+governmental charge that may be assessed by any jurisdiction, whether based on gross revenue, the delivery, possession or use of 
+the Talend Software, the provision of Support Services, the execution or performance of this Agreement or otherwise, and 
+including without limitation all sales, use, excise, import or export, value added, governmental permit fees, license fees, and 
+customs; provided, however, that Customer shall have no liability for any net income, net worth or franchise taxes assessed on 
+Talend by the United States or any state thereof.  If, as a result of any tax or levy, Customer is required to withhold any amount 
+on any payment to Talend, then the amount of the payment to Talend shall be automatically increased to totally offset such tax, 
+so that the amount actually remitted to Talend, net of all taxes, equals the amount invoiced or otherwise due.  Customer will 
+promptly furnish Talend with the official receipt of payment of these taxes to the appropriate taxing authority.  Customer may 
+provide Talend with a certificate of exemption acceptable to the taxing authority. 
+4.4 Purchases through Resellers.  In the event Customer purchases licenses to the Talend Software and/or purchases the 
+Support Services (including renewals thereof) through authorized resellers of Talend, the terms and conditions of this Agreement 
+shall apply except for any terms and conditions herein related to delivery, pricing, payment or taxes.  Such terms and conditions 
+shall be negotiated solely by and between Customer and such authorized reseller.
+5.  TERM AND TERMINATION
+5.1 Term.  This Agreement shall commence on the Effective Date and shall, unless earlier terminated under Section 5.2 
+below, continue in force until the expiration of the Software Subscription Term. 
+5.2 Termination; Post Termination.  Either party may, upon written notice to the other party, terminate this Agreement for 
+material breach by the other party if such party has failed to cure such material breach within thirty (30) days of receiving written 
+notice of such material breach from the non-breaching party. Notwithstanding the foregoing, this Agreement shall automatically 
+terminate in the event that Customer intentionally breaches the scope of the license granted in Section 2.1 of this Agreement. 
+Upon termination of this Agreement, for any reason, Customer shall promptly cease the use of the Talend Software and 
+Documentation and destroy (and certify to Talend in writing the fact of such destruction), or return to Talend, all copies of the 
+Talend Software and Documentation then in Customer's possession or under Customer's control.
+5.3 Survival.  All payment obligations under Section 4, plus Sections 1, 2.2, 2.5, 2.6, 5.2, 5.3, and 6 - 10 shall survive any 
+termination or expiration of this Agreement.    
+6.  CONFIDENTIALITY
+6.1 Confidential Information.  "Confidential Information" means information or materials provided by one party to the 
+other which are in tangible form and labeled "confidential" or the like, or, information which a reasonable person would believe 
+to be confidential, including but not limited to the Talend Software, Documentation, employee and customer lists, customer 
+profiles, project plans, design documents, product strategies and pricing data, research, advertising plans, leads and sources of 
+supply, development activities, design and coding, interfaces with Talend Software, anything provided by Talend in connection 
+with its Support Services and other information of the parties which by its nature can be reasonably expected to be proprietary 
+and confidential, whether it is presented in oral, printed, written, graphic or photographic or other tangible form (including 
+information received, stored or transmitted electronically) even though specific designation as Confidential Information has not 
+been made. 
+6.2 Non-use and Non-disclosure. The parties shall at all times, both during the term of this Agreement and thereafter keep 
+in trust and confidence all Confidential Information of the other party and shall not use such Confidential Information other than 
+as necessary to carry out its duties under this Agreement, nor shall either party disclose any such Confidential Information to 
+third parties without the other party's prior written consent.  
+6.3 Non-Applicability.  The obligations of confidentiality shall not apply to information which (i) has entered the public 
+domain except where such entry is the result of a party's  breach of this Agreement; (ii) prior to disclosure hereunder was already 
+in the receiving party's possession without restriction; (iii) subsequent to disclosure hereunder is obtained by the receiving party 
+on a non-confidential basis from a third party who has the right to disclose such information; or (iv) was developed by  the 
+receiving party without use of the Confidential Information.  
+6.4 Disclosure Required by Law.  Notwithstanding anything to the contrary herein, each party may comply with an order 
+from a court or other governmental body of competent jurisdiction and disclose the other party's Confidential Information in 
+compliance with that order only if such party: (i) unless prohibited by law, gives the other party prior notice to such disclosure if 
+the time between that order and such disclosure reasonably permits or, if time does not permit, gives the other party notice of 
+such disclosure promptly after complying with that order and (ii) fully cooperates with the other party, at the other party's cost 
+and expense, in seeking a protective order, confidential treatment, or taking other measures to oppose or limit such disclosure. 
+Each party must not release any more of the other party's Confidential Information than is reasonably necessary to comply with 
+an applicable order.
+7.  WARRANTIES AND REMEDIES
+7.1 Software Performance Warranty and Remedy. Talend warrants to Customer that for a period of sixty (60) days from 
+the Effective Date ("Warranty Period"), the Talend Software will perform in all material respects in accordance with the 
+Documentation. Customer's exclusive remedy and Talend's sole obligation for any failure of the Talend Software to perform in 
+all material respects in accordance with its Documentation will be for Talend to use its commercially reasonable efforts to correct 
+such non-conformance. Such warranties do not apply to any defect resulting from misuse, casualty loss, use or combination of the 
+Talend Software with any products, goods, services or other items furnished by anyone other than Talend (unless recommended 
+by Talend in writing), any modification not made by or for Talend, or any use of the Talend Software by Customer in violation of 
+the terms of this Agreement.
+7.2 Warranty Disclaimer and Limitations. EXCEPT AS SET FORTH IN SECTION 7.1, THE SUPPORT SERVICES 
+AND THE TALEND SOFTWARE ARE PROVIDED "AS IS" WITHOUT WARRANTY OF ANY KIND, AND TALEND 
+AND ITS LICENSORS MAKE NO WARRANTIES WHETHER EXPRESSED, IMPLIED OR STATUTORY REGARDING 
+OR RELATING TO THE TALEND SOFTWARE, DOCUMENTATION, MATERIALS OR SUPPORT SERVICES 
+FURNISHED OR PROVIDED TO CUSTOMER UNDER THIS AGREEMENT.  TO THE MAXIMUM EXTENT 
+PERMITTED UNDER APPLICABLE LAW, TALEND AND ITS LICENSORS SPECIFICALLY DISCLAIM ALL IMPLIED 
+WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NON-INFRINGMENT WITH 
+RESPECT TO THE TALEND SOFTWARE, DOCUMENTATION AND SUPPORT SERVICES PROVIDED BY TALEND 
+HEREUNDER, AND WITH RESPECT TO THE USE OF THE FOREGOING.  FURTHER, TALEND DOES NOT 
+WARRANT RESULTS OF USE OR THAT THE TALEND SOFTWARE WILL BE ERROR FREE OR THAT THE 
+CUSTOMER'S USE OF THE TALEND SOFTWARE OR DELIVERABLES WILL BE UNINTERRUPTED.     
+8.  INTELLECTUAL PROPERTY INFRINGEMENT CLAIMS
+8.1 Obligation. Subject to the applicable conditions and limitations set forth in this Section 8 and the Support Services 
+Policy, Talend will, at its expense (i) defend, or at its option settle, a claim brought against Customer by an unaffiliated third 
+party alleging that the Talend Software infringes such party's patent registered in the United States, or any copyright or 
+trademark of such party registered in the jurisdiction of Customer's use of the Talend Software, or makes intentional, unlawful 
+use of such party's trade secret (each an "Infringement Claim") and (ii) pay any settlement of such Infringement Claim consented 
+to by Talend or pay any damages finally awarded to such third party by a court of competent jurisdiction as the result of such 
+Infringement Claim.
+8.2 Remedies. If during the Term the Talend Software is, or in Talend's reasonable opinion is likely to become, the subject 
+of an Infringement Claim, Talend may, at its expense and option: (i) obtain the right for Customer to continue to use the Talend 
+Software; (ii) modify the Talend Software so that it becomes non-infringing but is substantially functionally equivalent; or (iii) in 
+the event that neither (i) or (ii) are commercially reasonable options, terminate Customer's license to use the Talend Software and 
+promptly refund to Customer any pre-paid, but unused fees paid by Customer to Talend for a Software Subscription to the  
+Talend Software.
+8.3 Exclusions. Talend will have no obligation to Customer to the extent any Infringement Claim or resulting award is 
+based upon or results from: (i) Customer's use of any version of the Talend Software not made available directly through Talend 
+or an authorized Talend reseller; (ii) the failure of Customer to use an Update of the Talend Software; (iii) a modification of the 
+Talend Software that is not performed by Talend; (iv) the combination, operation, or use of the Talend Software with any other 
+products, services or equipment not provided by Talend; (v) damages attributable to the value of the use of a non-Talend product 
+or service or (vi) any third party Open Source Software.  Customer will reimburse Talend for any expenses, costs and/or damages 
+that result from any of the actions or situations described in 8.3(i) – (v) above.
+8.4 Conditions. The obligations of Talend in Section 8.1 are conditioned upon Customer (i) notifying Talend promptly of 
+any threatened or pending Infringement Claim, (ii) giving Talend, at Talend's expense, reasonable assistance and information 
+requested by Talend in connection with the defense or settlement of the Infringement Claim and (iii) tendering to Talend sole 
+control over the defense and settlement of the Infringement Claim. Customer's counsel will have the right to participate in the 
+defense of the Infringement Claim, at Customer's own expense. Customer will not, without the prior written consent of Talend, 
+settle, compromise or consent to the entry of any judgment with respect to any pending or threatened Infringement Claim.
+8.5 THE FOREGOING PROVISIONS OF THIS SECTION 8 STATE THE ENTIRE LIABILITY AND OBLIGATIONS 
+OF TALEND, AND THE EXCLUSIVE REMEDY OF CUSTOMER, WITH RESPECT TO ANY ACTUAL OR ALLEGED 
+INFRINGEMENT OF ANY PATENT, COPYRIGHT, TRADE SECRET, TRADEMARK OR OTHER INTELLECTUAL 
+PROPERTY RIGHT BY THE TALEND SOFTWARE.
+9.     LIMITATION OF LIABILITY
+9.1 Disclaimer of Certain Damages. IN NO EVENT SHALL CUSTOMER OR TALEND OR ITS LICENSORS BE 
+LIABLE FOR ANY LOSS OF PROFITS, LOSS OF USE, BUSINESS INTERRUPTION, LOSS OF DATA, COST OF 
+SUBSTITUTE GOODS OR SERVICES, OR FOR ANY INDIRECT, SPECIAL, INCIDENTAL OR CONSEQUENTIAL 
+DAMAGES OF ANY KIND IN CONNECTION WITH OR ARISING OUT OF THE USE OR INABILITY TO USE THE 
+TALEND SOFTWARE, OR THE PERFORMANCE OF OR FAILURE TO PERFORM THIS AGREEMENT, WHETHER 
+ALLEGED AS A BREACH OF CONTRACT OR TORTIOUS CONDUCT, INCLUDING NEGLIGENCE, EVEN IF A PARTY 
+HAS BEEN ADVISED OF THE POSSIBILITY OF SUCH DAMAGES.    THE LIMITATIONS OF LIABILITY SET FORTH 
+IN THIS SECTION 9.1 SHALL NOT APPLY TO A BREACH THROUGH GROSS NEGLIGENCE OR INTENTIONAL 
+MISCONDUCT BY CUSTOMER OF THE SCOPE OF THE LICENSE GRANTED IN SECTION 2.1 OR TO A BREACH BY 
+EITHER PARTY OF ITS OBLIGATIONS UNDER SECTION 6 OF THIS AGREEMENT.
+9.2 Damages Cap. EXCEPT AS OTHERWISE EXPRESSLY PROVIDED IN SECTION 8 OF THIS AGREEMENT, IN 
+NO EVENT SHALL TALEND'S OR ITS LICENSORS' AGGREGATE, CUMULATIVE LIABILITY UNDER THIS 
+AGREEMENT EXCEED THE AMOUNTS CUSTOMER WAS REQUIRED TO PAY TALEND UNDER THIS AGREEMENT 
+FOR THE TALEND SOFTWARE OR SUPPORT SERVICES GIVING RISE TO SUCH LIABILITY, IN THE TWELVE (12) 
+MONTHS IMMEDIATELY PRIOR TO THE EVENT GIVING RISE TO LIABILITY.  
+9.3 CUSTOMER AGREES THAT THE FOREGOING LIMITATIONS, EXCLUSIONS AND DISCLAIMERS ARE A 
+REASONABLE ALLOCATION OF THE RISK BETWEEN THE PARTIES AND WILL APPLY TO THE MAXIMUM 
+EXTENT PERMITTED BY APPLICABLE LAW, EVEN IF ANY REMEDY FAILS IN ITS ESSENTIAL PURPOSE.
+10. MISCELLANEOUS 
+10.1    Assignment.  Customer may not assign this Agreement, in whole or in part, without the prior written consent of Talend.  
+Any assignment in violation of this Section 10.1 shall be void and of no effect.  Subject to the foregoing, this Agreement is 
+binding upon, inures to the benefit of and is enforceable by the parties and their respective successors and assigns.
+10.2    Customer Identification.  Customer consents to Talend's identification of Customer as a user of the Talend Software 
+and/or the Services, as applicable, on its website, through a press release issued by Talend and in other promotional materials. 
+Customer also agrees to cooperate with Talend in writing a case study exposing how the Talend Software and/or the Services are 
+being used and the benefits the Customer is deriving from this use.
+10.3    Export Control. Customer acknowledges that the goods, software and technology acquired from Talend are subject to 
+U.S. export control laws and regulations, including but not limited to the International Traffic In Arms Regulations ("ITAR") (22 
+C.F.R. Parts 120-130 (2010)); the Export Administration Regulations ("EAR") (15 C.F.R. Parts 730-774 (2010)); the U.S. 
+antiboycott regulations in the EAR and U.S. Department of the Treasury regulations; the economic sanctions regulations and 
+guidelines of the U.S. Department of the Treasury, Office of Foreign Assets Control, and the USA Patriot Act (Title III of Pub. L. 
+107-56, signed into law October 26, 2001), as amended.  Customer is now and will remain in the future compliant with all 
+such export control laws and regulations, and will not export, re-export, otherwise transfer any Talend goods, software or 
+technology or disclose any Talend software or technology to any person contrary to such laws or regulations.  Customer 
+acknowledges that remote access to Talend Software may in certain circumstances be considered a re-export of Talend Software, 
+and accordingly, may not be granted in contravention of U.S. export control laws and regulations.
+10.4    Fees. In any judicial proceeding between Customer and Talend arising out of or relating to this Agreement, the 
+prevailing party shall be entitled to recover all reasonable expenses incurred as a result of the proceeding, including reasonable 
+attorneys' fees.
+10.5    Force Majeure. Neither party will be liable for, or be considered to be in breach of or default under this Agreement, 
+other than monetary obligations, as a result of any cause or condition beyond such party's reasonable control.
+10.6    Governing Law.  This Agreement will be governed by the laws of the State of California, without regard to its conflict 
+of laws principles. This Agreement shall not be governed by the 1980 UN Convention on Contracts for the International Sale of 
+Goods. All suits hereunder will be brought solely in Federal Court for the Northern District of California, or if that court lacks 
+subject matter jurisdiction, in any California State Court located in Santa Clara County.  The parties hereby irrevocably waive 
+any and all claims and defenses either might otherwise have in any such action or proceeding in any of such courts based upon 
+any alleged lack of personal jurisdiction, improper venue, forum non conveniens or any similar claim or defense.  A breach by 
+either party of Section 6 may cause irreparable harm for which the non-breaching party shall be entitled to seek injunctive relief 
+without the requirement of posting a bond or surety. If any provision(s) hereof is held unenforceable, this Agreement will 
+continue without said provision and be interpreted to reflect the original intent of the parties.  
+10.7    Notices.  Any notice or other communication under this Agreement given by either party to the other will be deemed to 
+be properly given if given in writing and delivered in person or facsimile, if acknowledged received by return facsimile or 
+followed within one day by a delivered or mailed copy of such notice, or if mailed, properly addressed and stamped with the 
+required postage, to the intended recipient at its address specified below the signatures on this Agreement. Either party may from 
+time to time change its address for notices under this Section by giving the other party notice of the change in accordance with 
+this Section 10.7.
+10.8    Non-waiver.  Any failure of either party to insist upon or enforce performance by the other party of any of the 
+provisions of this Agreement or to exercise any rights or remedies under this Agreement will not be interpreted or construed as a 
+waiver or relinquishment of such party's right to assert or rely upon such provision, right or remedy in that or any other instance.
+10.9    Entire Agreement. This Agreement, together with the Order Form executed by the parties that references this 
+Agreement (which is hereby incorporated herein by this reference), completely and exclusively state the entire agreement of the 
+parties regarding the subject matter herein, and it supersedes, and its terms govern, all prior proposals, agreements, or other 
+communications between the parties, oral or written, regarding such subject matter.  Without limiting the foregoing, this 
+Agreement will supersede any conflicting terms in any "click-to-accept" end user license agreement that may be embedded 
+within the Talend Software products, except for terms regarding Open Source Software which are referenced under Section 1.8 
+(Open Source Software).  The terms of this Agreement shall supersede and control over any conflicting or additional terms and 
+conditions of any purchase order, acknowledgement or confirmation or other document issued by Customer, unless the parties 
+execute a written agreement expressly indicating: (i) that such purchase order shall modify this Agreement; or (ii) that the terms 
+of such purchase order shall supersede and control in the event of any inconsistency.  
+
+
+EXHIBIT A
+LICENSE TYPES
+
+1.  In accordance with Section 2.1 herein, Customer shall have a License to use the Talend Software subject to the following 
+License Types and associated restrictions.
+
+----------------------------------------------------------------------------------------------------------------
+| License Type           | Description of License Type                                                         |
+|--------------------------------------------------------------------------------------------------------------|
+| Concurrent User        | A license to use the Talend Software for up to the total number of Concurrent Users |
+|                        | for which Customer has paid the applicable fees, as specified in an Order Form.     |
+|                        | Note: A "Concurrent User" means a nominated person identified by a valid e-mail     |
+|                        | address. A single Concurrent User may only be declared in one Repository at a time. |
+|                        | "Repository" means an individual metadata or database repository where projects are |
+|                        | defined and managed.                                                                |
+|--------------------------------------------------------------------------------------------------------------|
+| Interactive User       | A license to use the Talend Software for up to the total number of Interactive      | 
+|                        | Users for which Customer has paid the applicable fees, as specified in an Order     |
+|                        | Form. Note: An "Interactive User" means a Named or Concurrent User that may search, |
+|                        | read, write and delete master data, using the native web user interface in the      |
+|                        | Talend Software, including participation in workflow processes.                     |
+|--------------------------------------------------------------------------------------------------------------|
+| Named User             | A license to use the Talend Software for up to the total number of Named Users for  |
+|                        | which Customer has paid the applicable fees, as specified in an Order Form. Note: A |
+|                        | "Named User" means a specific individual identified by a valid e-mail address.  A   |
+|                        | single Named User may be declared in more than one Repository at a time.  Named     |
+|                        | Users may be further distinguished based on access and use rights as described in   |
+|                        | the applicable Documentation.                                                       |
+|--------------------------------------------------------------------------------------------------------------|
+| Per Node Limitation    | A license to use the Talend Software for up to the total number of Nodes for which  |
+|                        | Customer has paid the applicable fees, as specified in an Order Form ("Per Node     |
+|                        | Limitation").  Note:  A "Node" means a Physical Machine or Virtual Machine          |
+|                        | capable of running the Talend Software.                                             |
+|--------------------------------------------------------------------------------------------------------------|
+| Per Core Limitation    | A license to use the Talend Software for up to the total number of Cores or Virtual |
+|                        | Cores for which Customer has paid the applicable fees, subject to the limitations   |
+|                        | set forth herein and as specified in an Order Form, based on either Customers use   |
+|                        | within; (i) a single physical hardware system ("Physical Machine") or (ii) a        |
+|                        | Virtual Machine ("Per Core Limitation").  Note: "Cores" shall mean the units within |
+|                        | the central processing unit that can read and execute program instructions.         |
+|                        | "Virtual Cores" means the virtual processing power configured to a Virtual          | 
+|                        | Machine.  "Virtual Machine" means a software container that can run its own         |
+|                        | operating system and execute applications like a physical machine. Each license of  |
+|                        | the Talend Software is limited for use on a Physical Machine or Virtual Machine     |
+|                        | with up to the number of Cores or Virtual Cores specified in an Order               |
+|                        | Form.  Customer may run the Talend Software on a Physical Machine or Virtual        |
+|                        | Machine with more than the number of Cores or Virtual Cores that have been          |
+|                        | specified under an Order Form, provided however, Customer must purchase             |
+|                        | additional licenses of the Talend Software to do so.  In no event shall Customer be |
+|                        | permitted to split a single license between a Physical Machine and a Virtual        |
+|                        | Machine.  Customer may however, be permitted to split a single license across       |
+|                        | multiple Virtual Machines, so long as Customer does not exceed the Per Core         |
+|                        | Limitation for each license.                                                        |
+|--------------------------------------------------------------------------------------------------------------|
+| Non-Production Runtime | A license to use the Talend Software for any non-production purpose, including use  |
+|                        | as part of a Warm Backup, use in a development environment for proof of concept,    |
+|                        | quality-assurance, or other testing purposes ("Non-Production Runtime"), for which  |
+|                        | Customer has paid the applicable fees, subject to the applicable License Type       |
+|                        | restrictions, as set forth in an Order Form.  Note "Warm Backup" means use of the   |
+|                        | Talend Software for failover purposes where the Talend Software is installed on a   |
+|                        | system that is not actively supporting production activity until activated when the |
+|                        | primary system becomes non-operational.                                             |
+|--------------------------------------------------------------------------------------------------------------|
+| Production Runtime     | A license to use of the Talend Software for any production purpose in an active     |
+|                        | environment, including use as part of a Hot Backup ("Production Runtime"), for      |
+|                        | which Customer has paid the applicable fees, subject to the applicable License Type |
+|                        | restrictions, as set forth in an Order Form.  Note "Hot Backup" means use of the    |
+|                        | Talend Software for failover purposes where the Talend Software is installed on a   |
+|                        | system that is actively supporting production activity including any two systems    |
+|                        | that can process requests simultaneously ("active-active").                         |
+----------------------------------------------------------------------------------------------------------------
+
+
+2. Talend Software.  The following table sets forth the Talend Software and applicable License Types.  Customer may License 
+the then current version of the Talend Software made generally available by Talend.
+
+----------------------------------------------------------------------------------------------------------------
+| Talend Software                     | License Type           | Notes                                         |
+|--------------------------------------------------------------------------------------------------------------|
+| Talend Enterprise Big Data          | Named User             |                                               |
+|                                     | Concurrent User        |                                               |
+|--------------------------------------------------------------------------------------------------------------|
+| Talend Enterprise Data Integration  | Named User             |                                               |
+|                                     | Concurrent User        |                                               |
+|--------------------------------------------------------------------------------------------------------------|
+| Talend Enterprise ESB               | Named User             |                                               |
+|                                     | Concurrent User        |                                               |
+|                                     | Per Core Limitation    |                                               |
+|                                     | Production Runtime     |                                               |
+|                                     | Non-Production Runtime |                                               |
+|--------------------------------------------------------------------------------------------------------------|
+| Talend Platform for Data Management | Named User             | If Customer purchases Mission Critical Level  |
+|                                     | Concurrent User        | Support for the Talend Platform for Data      |
+|                                     |                        | Management, then additional Per Core          |
+|                                     |                        | Limitation fees shall apply for Production    |
+|                                     |                        | Runtime use, as set forth in an Order Form.   |
+|--------------------------------------------------------------------------------------------------------------|
+| Talend Platform for Big Data        | Named User             | If Customer purchases Mission Critical Level  |
+|                                     | Concurrent User        | Support for the Talend Platform for Big Data, |
+|                                     |                        | then additional Per Core and/or Per Node      |
+|                                     |                        | Limitation fees shall apply for Production    |
+|                                     |                        | Runtime use, as set forth in an Order Form.   |
+|--------------------------------------------------------------------------------------------------------------|
+| Talend Platform for Data Services   | Named User             |                                               |
+|                                     | Concurrent User        |                                               |
+|                                     | Per Core Limitation    |                                               |
+|                                     | Production Runtime     |                                               |
+|                                     | Non-Production Runtime |                                               |
+|--------------------------------------------------------------------------------------------------------------|
+| Talend Platform for Data Services   | Named User             | If Customer purchases Mission Critical Level  |
+| with Big Data                       | Concurrent User        | Support for the Talend Platform for Data      |
+|                                     | Per Node Limitation    | Services with Big Data, then additional Per   |
+|                                     | Per Core Limitation    | Node Limitation fees shall apply for          |
+|                                     | Production Runtime     | Production Runtime use, as set forth in an    |
+|                                     | Non-Production Runtime | Order Form.                                   |
+|--------------------------------------------------------------------------------------------------------------|
+| Talend Platform for MDM             | Named User             |                                               |
+|                                     | Interactive User       |                                               |
+|                                     | Per Core Limitation    |                                               |
+|                                     | Production Runtime     |                                               |
+|                                     | Non-Production Runtime |                                               |
+|--------------------------------------------------------------------------------------------------------------|
+| Talend Platform for MDM             | Named User             | If Customer purchases Mission Critical Level  |
+| with Big Data                       | Interactive User       | Support for the Talend Platform for MDM with  |
+|                                     | Per Core Limitation    | Big Data, then additional Per Node Limitation |
+|                                     | Production Runtime     | fees shall apply for Production Runtime use,  |
+|                                     | Non-Production Runtime | as set forth in an Order Form.                |
+|--------------------------------------------------------------------------------------------------------------|
+| Talend Platform for Enterprise      | Named User             |                                               |
+| Integration                         | Concurrent User        |                                               |
+|                                     | Per Core Limitation    |                                               |
+|                                     | Production Runtime     |                                               |
+|                                     | Non-Production Runtime |                                               |
+|--------------------------------------------------------------------------------------------------------------|
+| Talend Platform for Enterprise      | Named User             | If Customer purchases Mission Critical Level  |
+| Integration with Big Data           | Concurrent User        | Support for the Talend Platform for           |
+|                                     | Per Node Limitation    | Enterprise Integration with Big Data, then    |
+|                                     | Per Core Limitation    | additional Per Node Limitation fees shall     |
+|                                     | Production Runtime     | apply for Production Runtime use, as set      |
+|                                     | Non-Production Runtime | forth in an Order Form.                       |
+|--------------------------------------------------------------------------------------------------------------|
+| Talend Platform- Universal          | Named User             | If Customer purchases Mission Critical Level  |
+|                                     | Interactive User       | Support for the Talend Platform Universal,    |
+|                                     | Per Core Limitation    | then additional Per Node Limitation fees      |
+|                                     | Per Node Limitation    | shall apply for Production Runtime use, as    |
+|                                     | Production Runtime     | set forth in an Order Form.                   |
+|                                     | Non-Production Runtime |                                               |
+----------------------------------------------------------------------------------------------------------------
+Talend, Inc. EULA v5.2_0113_US

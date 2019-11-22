@@ -25,10 +25,10 @@ public class PasswordEncryptUtil {
 
     private static final String ENCRYPTION_KEY = "Talend_TalendKey";
     
-    private static final String PREFIX_PASSWORD = "ENC:["; //$NON-NLS-1$
-    
-    private static final String POSTFIX_PASSWORD = "]"; //$NON-NLS-1$
+    private static final String PREFIX_PASSWORD = "enc:"; //$NON-NLS-1$
 
+    private static final String KEY_FIXED = "routine.encryption.key";
+    
     private static final Encryption ENCRYPTION = new Encryption(KeySources.fixedKey(ENCRYPTION_KEY), CipherSources.getDefault());
 
     private PasswordEncryptUtil() {
@@ -38,17 +38,24 @@ public class PasswordEncryptUtil {
         if (input == null) {
             return input;
         }
-        return PREFIX_PASSWORD + ENCRYPTION.encrypt(input) + POSTFIX_PASSWORD;
+
+        StringBuilder sb = new StringBuilder();
+        sb.append(PREFIX_PASSWORD);
+        sb.append(KEY_FIXED);
+        sb.append(":");
+        sb.append(ENCRYPTION.encrypt(input));
+        return sb.toString();
     }
 
     public static String decryptPassword(String input) {
         if (input == null || input.length() == 0) {
             return input;
         }
-        if (input.startsWith(PREFIX_PASSWORD) && input.endsWith(POSTFIX_PASSWORD)) {
+        String prefix = PREFIX_PASSWORD + KEY_FIXED + ":";
+        if (input.startsWith(prefix)) {
             try {
                 return ENCRYPTION
-                        .decrypt(input.substring(PREFIX_PASSWORD.length(), input.length() - POSTFIX_PASSWORD.length()));
+                        .decrypt(input.substring(prefix.length()));
             } catch (Exception e) {
                 // do nothing
             }
