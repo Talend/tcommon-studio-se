@@ -14,6 +14,7 @@ package org.talend.commons.ui.swt.advanced.dataeditor.button;
 
 import org.talend.commons.ui.runtime.swt.tableviewer.selection.ILineSelectionListener;
 import org.talend.commons.ui.runtime.swt.tableviewer.selection.LineSelectionEvent;
+import org.talend.commons.ui.swt.extended.table.AbstractExtendedControlModel;
 import org.talend.commons.ui.swt.tableviewer.TableViewerCreator;
 
 /**
@@ -39,7 +40,12 @@ public class EnableStateListenerForTableButton {
         tableViewerCreator.getSelectionHelper().addAfterSelectionListener(new ILineSelectionListener() {
 
             public void handle(LineSelectionEvent e) {
-                if (tableViewerCreator.getTable().getSelectionCount() > 0 && button.getEnabledState()) {
+                AbstractExtendedControlModel model = button.getExtendedTableViewer().getExtendedControlModel();
+                boolean isAlias = false;
+                if(model != null) {
+                    isAlias = model.isAlias();
+                }
+                if (tableViewerCreator.getTable().getSelectionCount() > 0 && button.getEnabledState() && !isAlias) {
                     pushButton.getButton().setEnabled(true);
                 } else {
                     pushButton.getButton().setEnabled(false);
