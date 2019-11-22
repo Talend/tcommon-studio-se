@@ -207,9 +207,13 @@ public interface ILibraryManagerService extends IService {
      * @return
      */
     public boolean isJarNeedToBeDeployed(File jarFile);
+    
+    public boolean isSameFile(File f1, File f2);
 
     public void checkModuleStatus(ModuleNeeded module);
 
     public String getJarNameFromMavenuri(String mavenURI);
+    
+    public void guessMavenRUIFromIndex(File jarFile, Map<String, String> sourceAndMavenUri);
 
 }

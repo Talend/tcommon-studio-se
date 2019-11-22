@@ -33,6 +33,7 @@ import org.talend.core.nexus.TalendLibsServerManager;
 import org.talend.core.runtime.maven.MavenArtifact;
 import org.talend.core.runtime.maven.MavenUrlHelper;
 import org.talend.librariesmanager.i18n.Messages;
+import org.talend.librariesmanager.nexus.utils.VersionUtil;
 
 /**
  * created by Talend on 2015年7月31日 Detailled comment
@@ -61,6 +62,7 @@ public abstract class ShareLibrareisHelper {
                     return Status.CANCEL_STATUS;
                 }
                 SubMonitor mainSubMonitor = SubMonitor.convert(monitor, filesToShare.size());
+                VersionUtil versionUtil = new VersionUtil();
 
                 // collect groupId to search
                 Set<String> groupIds = new HashSet<String>();
@@ -105,7 +107,8 @@ public abstract class ShareLibrareisHelper {
                         String rArtifact = remoteAtifact.getArtifactId();
                         String rVersion = remoteAtifact.getVersion();
                         if (groupId != null && artifactId != null && version != null && groupId.equals(rGroup)
-                                && artifactId.equals(rArtifact) && version.equals(rVersion)) {
+                                && artifactId.equals(rArtifact) && (version.equals(rVersion) 
+                                        || version.equals(versionUtil.getSNAPSHOTVersion(rVersion)))) {
                             eixst = true;
                             break;
                         }
