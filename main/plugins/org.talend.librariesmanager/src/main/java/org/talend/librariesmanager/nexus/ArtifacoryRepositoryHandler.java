@@ -14,6 +14,7 @@ package org.talend.librariesmanager.nexus;
 
 import java.io.File;
 import java.io.IOException;
+import java.net.URI;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -29,6 +30,8 @@ import org.apache.http.params.CoreConnectionPNames;
 import org.apache.http.util.EntityUtils;
 import org.eclipse.m2e.core.MavenPlugin;
 import org.talend.commons.exception.ExceptionHandler;
+import org.talend.commons.utils.network.TalendProxySelector.IProxySelectorProvider;
+import org.talend.core.nexus.HttpClientTransport;
 import org.talend.core.nexus.IRepositoryArtifactHandler;
 import org.talend.core.nexus.NexusConstants;
 import org.talend.core.nexus.NexusServerUtils;
@@ -90,11 +93,22 @@ public class ArtifacoryRepositoryHandler extends AbstractArtifactRepositoryHandl
         DefaultHttpClient httpclient = new DefaultHttpClient();
         httpclient.getParams().setIntParameter(CoreConnectionPNames.CONNECTION_TIMEOUT, NexusServerUtils.getTimeout());
         httpclient.getParams().setIntParameter(CoreConnectionPNames.SO_TIMEOUT, NexusServerUtils.getTimeout());
-        HttpResponse response = httpclient.execute(get);
-        if (response.getStatusLine().getStatusCode() == 200) {
-            return true;
+        IProxySelectorProvider proxySelector = null;
+        try {
+            try {
+                proxySelector = HttpClientTransport.addProxy(httpclient, new URI(repositoryUrl));
+            } catch (Exception e) {
+                ExceptionHandler.process(e);
+            }
+            HttpResponse response = httpclient.execute(get);
+            if (response.getStatusLine().getStatusCode() == 200) {
+                return true;
+            }
+            return false;
+        } finally {
+            HttpClientTransport.removeProxy(proxySelector);
+            httpclient.getConnectionManager().shutdown();
         }
-        return false;
     }
 
     /*

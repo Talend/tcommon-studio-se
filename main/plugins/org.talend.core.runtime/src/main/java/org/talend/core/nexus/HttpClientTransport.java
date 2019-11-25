@@ -36,6 +36,7 @@ import org.eclipse.core.runtime.NullProgressMonitor;
 import org.eclipse.core.runtime.OperationCanceledException;
 import org.talend.commons.exception.BusinessException;
 import org.talend.commons.utils.network.TalendProxySelector;
+import org.talend.commons.utils.network.TalendProxySelector.IProxySelectorProvider;
 import org.talend.core.runtime.CoreRuntimePlugin;
 import org.talend.core.runtime.maven.MavenArtifact;
 import org.talend.core.runtime.maven.MavenUrlHelper;
@@ -45,6 +46,8 @@ import org.talend.designer.core.IDesignerCoreService;
  * DOC ggu class global comment. Detailled comment
  */
 public abstract class HttpClientTransport {
+
+    private static final String PROP_PROXY_HTTP_CLIENT_USE_DEFAULT_SETTINGS = "talend.proxy.HttpClient.useDefaultSettings"; //$NON-NLS-1$
 
     private String baseURI;
 
@@ -128,6 +131,7 @@ public abstract class HttpClientTransport {
         }
         DefaultHttpClient httpClient = new DefaultHttpClient();
 
+        IProxySelectorProvider proxySelectorProvider = null;
         try {
             if (StringUtils.isNotBlank(username)) { // set username
                 httpClient.getCredentialsProvider().setCredentials(new AuthScope(requestURI.getHost(), requestURI.getPort()),
@@ -142,7 +146,7 @@ public abstract class HttpClientTransport {
             params.setIntParameter(CoreConnectionPNames.CONNECTION_TIMEOUT, timeout);
             params.setIntParameter(CoreConnectionPNames.SO_TIMEOUT, timeout);
 
-            addProxy(httpClient, requestURI);
+            proxySelectorProvider = addProxy(httpClient, requestURI);
             HttpResponse response = execute(monitor, httpClient, requestURI);
 
             processResponseCode(response);
@@ -156,11 +160,16 @@ public abstract class HttpClientTransport {
             throw new Exception(requestURI.toString(), e);
         } finally {
             httpClient.getConnectionManager().shutdown();
+            removeProxy(proxySelectorProvider);
         }
     }
 
-    private void addProxy(final DefaultHttpClient httpClient, URI requestURI) {
+    public static IProxySelectorProvider addProxy(final DefaultHttpClient httpClient, URI requestURI) {
+        IProxySelectorProvider proxySelectorProvider = null;
         try {
+            if (Boolean.valueOf(System.getProperty(PROP_PROXY_HTTP_CLIENT_USE_DEFAULT_SETTINGS, Boolean.FALSE.toString()))) {
+                return proxySelectorProvider;
+            }
             final List<Proxy> proxyList = TalendProxySelector.getInstance().getDefaultProxySelector().select(requestURI);
             Proxy usedProxy = null;
             if (proxyList != null && !proxyList.isEmpty()) {
@@ -169,13 +178,14 @@ public abstract class HttpClientTransport {
 
             if (usedProxy != null) {
                 if (Type.DIRECT.equals(usedProxy.type())) {
-                    return;
+                    return proxySelectorProvider;
                 }
                 final Proxy finalProxy = usedProxy;
                 InetSocketAddress address = (InetSocketAddress) finalProxy.address();
                 String proxyServer = address.getHostName();
                 int proxyPort = address.getPort();
-                PasswordAuthentication proxyAuthentication = TalendProxySelector.getInstance().getHttpPasswordAuthentication();
+                TalendProxySelector proxySelector = TalendProxySelector.getInstance();
+                PasswordAuthentication proxyAuthentication = proxySelector.getHttpPasswordAuthentication();
                 if (proxyAuthentication != null) {
                     String proxyUser = proxyAuthentication.getUserName();
                     if(StringUtils.isNotBlank(proxyUser)){
@@ -190,9 +200,19 @@ public abstract class HttpClientTransport {
                 }
                 HttpHost proxyHost = new HttpHost(proxyServer, proxyPort);
                 httpClient.getParams().setParameter(ConnRoutePNames.DEFAULT_PROXY, proxyHost);
+                proxySelectorProvider = proxySelector.createDefaultProxySelectorProvider();
             }
+            return proxySelectorProvider;
         } finally {
-            // nothing to do
+            if (proxySelectorProvider != null) {
+                TalendProxySelector.getInstance().addProxySelectorProvider(proxySelectorProvider);
+            }
+        }
+    }
+
+    public static void removeProxy(IProxySelectorProvider proxySelectorProvider) {
+        if (proxySelectorProvider != null) {
+            TalendProxySelector.getInstance().removeProxySelectorProvider(proxySelectorProvider);
         }
     }
 
