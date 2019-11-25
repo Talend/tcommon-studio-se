@@ -716,6 +716,16 @@ public class ProcessorUtilities {
                 }
             }
 
+            String jobletPaletteType = null;
+            String frameWork = processType.getFramework();
+            if (StringUtils.isBlank(frameWork)) {
+                jobletPaletteType = ComponentCategory.CATEGORY_4_DI.getName();
+            } else if (frameWork.equals(HadoopConstants.FRAMEWORK_SPARK)) {
+                jobletPaletteType = ComponentCategory.CATEGORY_4_SPARK.getName();
+            } else if (frameWork.equals(HadoopConstants.FRAMEWORK_SPARK_STREAMING)) {
+                jobletPaletteType = ComponentCategory.CATEGORY_4_SPARKSTREAMING.getName();
+            }
+
             for (Object nodeObject : processType.getNode()) {
                 NodeType node = (NodeType) nodeObject;
                 // not tRunjob && not joblet then continue
@@ -763,10 +773,9 @@ public class ProcessorUtilities {
                             }
 
                         }
-                    } else if (componentsFactory != null) {
+                    } else if (componentsFactory != null && jobletPaletteType != null) {
                         // for joblet
-                        IComponent cc = componentsFactory.get(node.getComponentName(),
-                                ComponentCategory.CATEGORY_4_DI.getName());
+                        IComponent cc = componentsFactory.get(node.getComponentName(), jobletPaletteType);
                         if (GlobalServiceRegister.getDefault().isServiceRegistered(IJobletProviderService.class)) {
                             IJobletProviderService jobletService = (IJobletProviderService) GlobalServiceRegister.getDefault()
                                     .getService(IJobletProviderService.class);
