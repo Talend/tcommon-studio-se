@@ -47,7 +47,7 @@ public class InternalNodeComponentHandlerTest {
         List<ImportItem> projectRecords = importManager.populateImportingItems(resManager, true, new NullProgressMonitor());
         assertTrue(projectRecords.size() > 0);
         importManager.importItemRecords(new NullProgressMonitor(), resManager, projectRecords, true,
-                projectRecords.toArray(new ImportItem[0]), null);
+                projectRecords.toArray(new ImportItem[0]), null, false);
 
         IRepositoryViewObject obj = ProxyRepositoryFactory.getInstance().getLastVersion("_bFW5AAU9Eeagf6XEimuCGw");
         Item item = obj.getProperty().getItem();

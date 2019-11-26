@@ -386,7 +386,8 @@ public class RelationshipItemBuilder {
                     if (id.indexOf(" - ") != -1) { //$NON-NLS-1$
                         try {
                             tmpRelatedItem = (Relation) relatedItem.clone();
-                            tmpRelatedItem.setId(id.split(" - ")[0]); //$NON-NLS-1$
+                            id = id.split(" - ")[0]; //$NON-NLS-1$
+                            tmpRelatedItem.setId(id);
                         } catch (CloneNotSupportedException e) {
                             log.error(e);
                         }

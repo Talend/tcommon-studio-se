@@ -12,28 +12,31 @@
 // ============================================================================
 package org.talend.repository.items.importexport.manager;
 
+import java.lang.reflect.Field;
+import java.lang.reflect.Method;
+import java.lang.reflect.Modifier;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Iterator;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
+import java.util.Map.Entry;
 import java.util.Set;
+import java.util.Stack;
 
 import org.apache.commons.lang3.StringUtils;
 import org.apache.log4j.Priority;
-import org.eclipse.emf.common.util.EList;
+import org.eclipse.core.runtime.IProgressMonitor;
+import org.eclipse.emf.ecore.EObject;
+import org.talend.commons.CommonsPlugin;
 import org.talend.commons.exception.ExceptionHandler;
 import org.talend.core.GlobalServiceRegister;
-import org.talend.core.model.metadata.builder.connection.Connection;
-import org.talend.core.model.process.IContext;
-import org.talend.core.model.process.IContextManager;
-import org.talend.core.model.process.IContextParameter;
 import org.talend.core.model.process.IElementParameter;
 import org.talend.core.model.process.IGenericElementParameter;
-import org.talend.core.model.process.INode;
 import org.talend.core.model.process.IProcess;
 import org.talend.core.model.process.IProcess2;
 import org.talend.core.model.process.ProcessUtils;
@@ -48,13 +51,13 @@ import org.talend.core.model.relationship.RelationshipItemBuilder;
 import org.talend.core.model.repository.ERepositoryObjectType;
 import org.talend.core.model.repository.IRepositoryViewObject;
 import org.talend.core.repository.model.ProxyRepositoryFactory;
+import org.talend.core.utils.ReflectionUtils;
 import org.talend.designer.core.IDesignerCoreService;
-import org.talend.designer.core.model.utils.emf.talendfile.ContextParameterType;
-import org.talend.designer.core.model.utils.emf.talendfile.ContextType;
 import org.talend.designer.core.model.utils.emf.talendfile.ProcessType;
 import org.talend.designer.joblet.model.JobletProcess;
 import org.talend.repository.ProjectManager;
 import org.talend.repository.items.importexport.handlers.model.ImportItem;
+import org.talend.repository.items.importexport.i18n.Messages;
 import org.talend.repository.model.IProxyRepositoryFactory;
 
 /**
@@ -72,6 +75,8 @@ public class ChangeIdManager {
 
     private Map<String, String> oldId2NewIdMap = new HashMap<String, String>();
 
+    private Map<Object, String> item2IdMap = new HashMap<>();
+
     private Set<String> idsNeed2CheckRefs = new HashSet<String>();
 
     private org.talend.core.model.general.Project currentProject;
@@ -87,10 +92,14 @@ public class ChangeIdManager {
         refIds2ItemIdsMap.clear();
         oldId2NewIdMap.clear();
         idsNeed2CheckRefs.clear();
+        item2IdMap.clear();
         currentProject = null;
     }
 
     public void add(ImportItem importItem) {
+        if (importItem.isImported()) {
+            return;
+        }
 
         prepareRelationshipItemBuilder(importItem.getItemProject());
 
@@ -99,17 +108,22 @@ public class ChangeIdManager {
         if (property != null) {
             String id = property.getId();
             // record all importing id
-            oldId2NewIdMap.put(id, null);
+            if (!oldId2NewIdMap.containsKey(id)) {
+                oldId2NewIdMap.put(id, null);
+            }
+
+            // same id with different versions
             List<ImportItem> itemRecords = id2ImportItemsMap.get(id);
             if (itemRecords == null) {
                 itemRecords = new ArrayList<ImportItem>();
                 id2ImportItemsMap.put(id, itemRecords);
             }
-            itemRecords.add(importItem);
-
-            Item item = property.getItem();
-            if (item instanceof ConnectionItem) {
-                idsNeed2CheckRefs.add(id);
+            if (!itemRecords.contains(importItem)) {
+                itemRecords.add(importItem);
+                Item item = property.getItem();
+                if (item instanceof ConnectionItem) {
+                    idsNeed2CheckRefs.add(id);
+                }
             }
         }
     }
@@ -122,12 +136,13 @@ public class ChangeIdManager {
         }
     }
 
-    public void changeIds() throws Exception {
+    public void changeIds(IProgressMonitor monitor) throws Exception {
         buildRefIds2ItemIdsMap();
 
         Map<String, Set<String>> changeIdMap = buildChangeIdMap();
 
         for (Map.Entry<String, Set<String>> entry : changeIdMap.entrySet()) {
+            checkCancel(monitor);
             String oldEffectedId = entry.getKey();
             if (!oldId2NewIdMap.containsKey(oldEffectedId)) {
                 // means didn't import this item
@@ -146,16 +161,21 @@ public class ChangeIdManager {
             List<IRepositoryViewObject> repViewObjs = getAllVersion(newEffectedId, repType);
             if (repViewObjs != null && !repViewObjs.isEmpty()) {
                 for (IRepositoryViewObject repViewObj : repViewObjs) {
+                    checkCancel(monitor);
                     Map<String, String> old2NewMap = new HashMap<>();
                     for (String oldId : entry.getValue()) {
                         String newId = oldId2NewIdMap.get(oldId);
-                        if (StringUtils.equals(newId, oldId)) {
+                        if (newId == null || StringUtils.equals(newId, oldId)) {
                             continue;
                         }
                         old2NewMap.put(oldId, newId);
                     }
+                    if (old2NewMap.isEmpty()) {
+                        continue;
+                    }
                     Property property = repViewObj.getProperty();
-                    changeRelated(old2NewMap, property, getCurrentProject());
+                    monitor.subTask(Messages.getString("ChangeIdManager_ApplyingNewIds", property.getDisplayName()));
+                    changeRelated(monitor, old2NewMap, property, getCurrentProject());
                     String version = property.getVersion();
                     for (ImportItem importItem : importItems) {
                         if (StringUtils.equals(version, importItem.getItemVersion())) {
@@ -171,6 +191,7 @@ public class ChangeIdManager {
 
     private Map<String, Set<String>> buildChangeIdMap() {
         Map<String, Set<String>> effectedIdsMap = new HashMap<>();
+        Set<String> metadataItemOldIds = new HashSet<>();
 
         for (Map.Entry<String, String> entry : oldId2NewIdMap.entrySet()) {
             String oldId = entry.getKey();
@@ -179,18 +200,28 @@ public class ChangeIdManager {
                 continue;
             }
 
-            Set<String> relationIds = new HashSet<String>();
+            Set<String> effectedRelationIds = new HashSet<String>();
             Collection<String> itemIds = refIds2ItemIdsMap.get(oldId);
             if (itemIds != null && !itemIds.isEmpty()) {
-                relationIds.addAll(itemIds);
+                effectedRelationIds.addAll(itemIds);
             }
 
-            List<Relation> relations = getRelations(oldId);
-            for (Relation relation : relations) {
-                relationIds.add(ProcessUtils.getPureItemId(relation.getId()));
+            List<Relation> effectedRelations = getRelations(oldId);
+            for (Relation relation : effectedRelations) {
+                effectedRelationIds.add(ProcessUtils.getPureItemId(relation.getId()));
             }
 
-            if (relationIds.isEmpty()) {
+            List<ImportItem> importItems = id2ImportItemsMap.get(oldId);
+            if (importItems != null && !importItems.isEmpty()) {
+                ImportItem importItem = importItems.get(0);
+                if (importItem != null) {
+                    if (importItem.getItem() instanceof ConnectionItem) {
+                        metadataItemOldIds.add(oldId);
+                    }
+                }
+            }
+
+            if (effectedRelationIds.isEmpty()) {
                 continue;
             }
 
@@ -199,7 +230,7 @@ public class ChangeIdManager {
                 idSet = new HashSet<>();
                 effectedIdsMap.put(oldId, idSet);
             }
-            idSet.addAll(relationIds);
+            idSet.addAll(effectedRelationIds);
         }
 
         Map<String, Set<String>> changeIdMap = new HashMap<>();
@@ -215,6 +246,16 @@ public class ChangeIdManager {
                 }
                 changeSet.add(oldId);
             }
+        }
+
+        // record all metadata connections, because some metadata doesn't record relationships, like hadoop cluster
+        for (String metadataOldId : metadataItemOldIds) {
+            Set<String> set = changeIdMap.get(metadataOldId);
+            if (set == null) {
+                set = new HashSet<>();
+                changeIdMap.put(metadataOldId, set);
+            }
+            set.addAll(metadataItemOldIds);
         }
         return changeIdMap;
     }
@@ -287,114 +328,168 @@ public class ChangeIdManager {
         return relations;
     }
 
-    private void changeRelated(Map<String, String> old2NewMap, Property property,
+    private void changeRelated(IProgressMonitor monitor, Map<String, String> old2NewMap, Property property,
             org.talend.core.model.general.Project project) throws Exception {
+        checkCancel(monitor);
         Item item = property.getItem();
         boolean modified = false;
         if (item instanceof ProcessItem) {
-            modified = changeRelatedProcess(old2NewMap, item);
+            modified = changeRelatedProcess(monitor, old2NewMap, item);
         } else if (item instanceof JobletProcessItem) {
-            modified = changeRelatedProcess(old2NewMap, item);
+            modified = changeRelatedProcess(monitor, old2NewMap, item);
         } else if (item instanceof ConnectionItem) {
-            modified = changeRelatedConnection(old2NewMap, (ConnectionItem) item);
+            modified = changeRelatedConnection(monitor, old2NewMap, (ConnectionItem) item);
         } else {
             throw new Exception("Unsupported id change: id[" + property.getId() + "], name[" + property.getLabel() + "]"); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
         }
         if (modified) {
             ProxyRepositoryFactory.getInstance().save(project, item);
-            RelationshipItemBuilder.getInstance().addOrUpdateItem(property.getItem());
+            // RelationshipItemBuilder.getInstance().addOrUpdateItem(property.getItem());
         }
     }
 
-    private boolean changeRelatedConnection(Map<String, String> old2NewMap, ConnectionItem item) throws Exception {
-        boolean modified = false;
-        Connection conn = item.getConnection();
-        String ctxId = conn.getContextId();
+    private boolean changeRelatedConnection(IProgressMonitor monitor, Map<String, String> old2NewMap, ConnectionItem item)
+            throws Exception {
+        return changeRelatedObject(monitor, old2NewMap, item.getConnection(), new Stack<>(), new HashMap<>());
+    }
+
+    private boolean changeRelatedObject(IProgressMonitor monitor, Map<String, String> old2NewMap, Object conn,
+            Stack<Object> visitStack, Map<String, List<Object>> changedMap) throws Exception {
+        checkCancel(monitor);
+        if (conn == null) {
+            return false;
+        }
+        boolean isEmpty = true;
         for (Map.Entry<String, String> entry : old2NewMap.entrySet()) {
-            if (StringUtils.equals(entry.getKey(), ctxId)) {
-                conn.setContextId(entry.getValue());
-                modified = true;
+            if (entry.getValue() != null) {
+                isEmpty = false;
+                break;
             }
         }
-        if (!modified) {
-            throw new Exception("Unhandled case for import: " + item.toString()); //$NON-NLS-1$
+        if (isEmpty) {
+            return false;
+        }
+
+        if (conn instanceof Collection || conn instanceof Map) {
+            throw new Exception("Bad usage of function, can't be Collection or Map here!");
+        }
+        boolean modified = false;
+        Collection<Field> fields = ReflectionUtils.getAllDeclaredFields(conn.getClass());
+        for (Field field : fields) {
+            if (field.isEnumConstant() || field.getType().isPrimitive()) {
+                continue;
+            }
+            field.setAccessible(true);
+            Object obj = field.get(conn);
+            if (obj != null) {
+                if (visitStack.contains(obj)) {
+                    continue;
+                }
+                if (obj.getClass() == Object.class) {
+                    continue;
+                } else if (isBasicType(obj.getClass())) {
+                    continue;
+                } else if (field.getType() == String.class) {
+                    if (Modifier.isFinal(field.getModifiers())) {
+                        continue;
+                    }
+                    for (Map.Entry<String, String> entry : old2NewMap.entrySet()) {
+                        String key = entry.getKey();
+                        String value = entry.getValue();
+                        if (value == null || StringUtils.equals(key, value)) {
+                            continue;
+                        }
+                        // update latest value
+                        obj = field.get(conn);
+                        if (obj == null) {
+                            break;
+                        }
+                        String newValue = doReplace(obj.toString(), key, value);
+                        if (!StringUtils.equals(obj.toString(), newValue)) {
+                            field.set(conn, newValue);
+                        }
+                        modified = true;
+                    }
+                } else {
+                    try {
+                        for (Map.Entry<String, String> entry : old2NewMap.entrySet()) {
+                            String key = entry.getKey();
+                            String value = entry.getValue();
+                            if (value == null || StringUtils.equals(key, value)) {
+                                continue;
+                            }
+                            changeValue(monitor, obj, key, value, visitStack, changedMap);
+                            modified = true;
+                        }
+                    } catch (InterruptedException e) {
+                        throw e;
+                    } catch (UnsupportedOperationException e) {
+                        if (CommonsPlugin.isDebugMode()) {
+                            ExceptionHandler.process(e);
+                        }
+                    } catch (Exception e) {
+                        ExceptionHandler.process(e);
+                    }
+                }
+            }
         }
         return modified;
     }
 
-    private boolean changeRelatedProcess(Map<String, String> old2NewMap, Item item) throws Exception {
-        boolean modified = false;
+    private boolean isBasicType(Class clz) {
+        List<Class> basicTypes = Arrays.asList(Boolean.class, Character.class, Byte.class, Short.class, Integer.class, Long.class,
+                Float.class, Double.class, Void.class);
+        return basicTypes.contains(clz);
+    }
 
-        ProcessItem processItem = (ProcessItem) item;
-        ProcessType processType = processItem.getProcess();
-
-        /**
-         * change context repository id
-         */
-        if (processType != null) {
-            EList context = processType.getContext();
-            if (context != null) {
-                for (Map.Entry<String, String> entry : old2NewMap.entrySet()) {
-                    changeValue(context, entry.getKey(), entry.getValue());
-                }
-                modified = true;
+    private void setStringValue(Object model, Field field, String newValue) throws Exception {
+        String fieldName = field.getName();
+        String setMethodName = "set" + ("" + fieldName.charAt(0)).toUpperCase()
+                + (0 < fieldName.length() ? fieldName.substring(1) : "");
+        boolean hasSetMethod = false;
+        try {
+            Method method = model.getClass().getMethod(setMethodName, String.class);
+            hasSetMethod = (method != null);
+        } catch (Exception e) {
+            if (CommonsPlugin.isDebugMode()) {
+                ExceptionHandler.process(e);
             }
         }
+        if (hasSetMethod) {
+            ReflectionUtils.invokeMethod(model, setMethodName, new Object[] { newValue }, String.class);
+        } else {
+            field.set(model, newValue);
+        }
+    }
 
-        /**
-         * designerCoreService must not be null
-         */
-        IDesignerCoreService designerCoreService = (IDesignerCoreService) GlobalServiceRegister.getDefault()
-                .getService(IDesignerCoreService.class);
-
-        IProcess process = designerCoreService.getProcessFromItem(item);
-        if (process == null) {
-            throw new Exception("Can't get process of item: id[" + item.getProperty().getId() + "], name[" //$NON-NLS-1$ //$NON-NLS-2$
+    private boolean changeRelatedProcess(IProgressMonitor monitor, Map<String, String> old2NewMap, Item item) throws Exception {
+        checkCancel(monitor);
+        ProcessType processType = null;
+        if (item instanceof ProcessItem) {
+            ProcessItem processItem = (ProcessItem) item;
+            processType = processItem.getProcess();
+        } else if (item instanceof JobletProcessItem) {
+            JobletProcessItem processItem = (JobletProcessItem) item;
+            processType = processItem.getJobletProcess();
+        } else {
+            throw new Exception("Unhandled process type: id[" + item.getProperty().getId() + "], name[" //$NON-NLS-1$ //$NON-NLS-2$
                     + item.getProperty().getLabel() + "]"); //$NON-NLS-1$
         }
 
-        /**
-         * 1. change context
-         */
-        // List contexts = item.getProcess().getContext();
-        // if (contexts != null && !contexts.isEmpty()) {
-        // changeValue(contexts, oldId, newId);
-        // modified = true;
-        // }
-        IContextManager contextManager = process.getContextManager();
-        if (contextManager != null) {
-            for (Map.Entry<String, String> entry : old2NewMap.entrySet()) {
-                changeValue(contextManager.getListContext(), entry.getKey(), entry.getValue());
-            }
-            modified = true;
-        }
-
-        /**
-         * 2. change elementParameters
-         */
-        for (Map.Entry<String, String> entry : old2NewMap.entrySet()) {
-            changeValue(process.getElementParameters(), entry.getKey(), entry.getValue());
-        }
-        modified = true;
-
-        /**
-         * 3. change the nodes like tRunjob, tMysql
-         */
-        List<? extends INode> nodes = process.getGraphicalNodes();
-        if (nodes != null && !nodes.isEmpty()) {
-            Iterator<? extends INode> nodeIter = nodes.iterator();
-            while (nodeIter.hasNext()) {
-                INode node = nodeIter.next();
-                if (node != null) {
-                    for (Map.Entry<String, String> entry : old2NewMap.entrySet()) {
-                        changeParamValueOfNode(node, entry.getKey(), entry.getValue());
-                    }
-                }
-            }
-            modified = true;
-        }
+        boolean modified = changeRelatedObject(monitor, old2NewMap, processType, new Stack<>(), new HashMap<>());
 
         if (modified) {
+            /**
+             * designerCoreService must not be null
+             */
+            IDesignerCoreService designerCoreService = (IDesignerCoreService) GlobalServiceRegister.getDefault()
+                    .getService(IDesignerCoreService.class);
+
+            IProcess process = designerCoreService.getProcessFromItem(item);
+            if (process == null) {
+                throw new Exception("Can't get process of item: id[" + item.getProperty().getId() + "], name[" //$NON-NLS-1$ //$NON-NLS-2$
+                        + item.getProperty().getLabel() + "]"); //$NON-NLS-1$
+            }
             if (process instanceof IProcess2) {
                 processType = ((IProcess2) process).saveXmlFile();
                 if (item instanceof ProcessItem) {
@@ -414,167 +509,105 @@ public class ChangeIdManager {
 
     }
 
-    private boolean changeParamValueOfNode(INode node, String fromValue, String toValue) throws Exception {
-        boolean changed = false;
-        List<? extends IElementParameter> elementParameters = node.getElementParameters();
-        if (elementParameters != null && !elementParameters.isEmpty()) {
-            changeValue(elementParameters, fromValue, toValue);
-            changed = true;
+    private void changeValue(IProgressMonitor monitor, Object aim, String fromValue, String toValue, Stack<Object> visitStack,
+            Map<String, List<Object>> changedMap) throws Exception {
+        checkCancel(monitor);
+        if (toValue == null) {
+            /**
+             * toValue must be a string, do you need ""?
+             */
+            throw new IllegalArgumentException();
         }
-        return changed;
-    }
-
-    private void changeValue(Object aim, String fromValue, String toValue) throws Exception {
         if (aim == null) {
             return;
-        }
-        if (aim instanceof IElementParameter) {
-            if (aim instanceof IGenericElementParameter) {
-                ((IGenericElementParameter) aim).setAskPropagate(Boolean.TRUE);
-            }
-            IElementParameter elemParameter = (IElementParameter) aim;
-            Object elementParamValue = elemParameter.getValue();
-            if (elementParamValue != null) {
-                if (elementParamValue instanceof String) {
-                    elemParameter.setValue(doReplace(elementParamValue.toString(), fromValue, toValue));
-                } else {
-                    changeValue(elementParamValue, fromValue, toValue);
-                }
-            }
-            Map<String, IElementParameter> childParameters = elemParameter.getChildParameters();
-            if (childParameters != null && !childParameters.isEmpty()) {
-                changeValue(childParameters, fromValue, toValue);
-            }
-        } else if (aim instanceof ContextType) {
-            changeValue(((ContextType) aim).getContextParameter(), fromValue, toValue);
-        } else if (aim instanceof ContextParameterType) {
-            ContextParameterType ctxParamType = (ContextParameterType) aim;
-            String comment = ctxParamType.getComment();
-            if (comment != null) {
-                ctxParamType.setComment(doReplace(comment, fromValue, toValue));
-            }
-            String name = ctxParamType.getName();
-            if (name != null) {
-                ctxParamType.setName(doReplace(name, fromValue, toValue));
-            }
-            String prompt = ctxParamType.getPrompt();
-            if (prompt != null) {
-                ctxParamType.setPrompt(doReplace(prompt, fromValue, toValue));
-            }
-
-            // String rawValue = ctxParamType.getRawValue();
-            // if (rawValue != null) {
-            // ctxParamType.setRawValue(doReplace(rawValue, fromValue, toValue));
-            // }
-
-            String repCtxId = ctxParamType.getRepositoryContextId();
-            if (repCtxId != null) {
-                ctxParamType.setRepositoryContextId(doReplace(repCtxId, fromValue, toValue));
-            }
-
-            // String type = ctxParamType.getType();
-            // if (type != null) {
-            // ctxParamType.setType(doReplace(type, fromValue, toValue));
-            // }
-
-            String value = ctxParamType.getValue();
-            if (value != null) {
-                ctxParamType.setValue(doReplace(value, fromValue, toValue));
-            }
-        } else if (aim instanceof IContext) {
-            changeValue(((IContext) aim).getContextParameterList(), fromValue, toValue);
-        } else if (aim instanceof IContextParameter) {
-            IContextParameter contextParameter = (IContextParameter) aim;
-            String comment = contextParameter.getComment();
-            if (comment != null) {
-                contextParameter.setComment(doReplace(comment, fromValue, toValue));
-            }
-            String name = contextParameter.getName();
-            if (name != null) {
-                contextParameter.setName(doReplace(name, fromValue, toValue));
-            }
-            String prompt = contextParameter.getPrompt();
-            if (prompt != null) {
-                contextParameter.setPrompt(doReplace(prompt, fromValue, toValue));
-            }
-            String scriptCode = contextParameter.getScriptCode();
-            if (scriptCode != null) {
-                contextParameter.setScriptCode(doReplace(scriptCode, fromValue, toValue));
-            }
-            String source = contextParameter.getSource();
-            if (source != null) {
-                contextParameter.setSource(doReplace(source, fromValue, toValue));
-            }
-
-            // // reset type will clear the value
-            // String type = contextParameter.getType();
-            // if (type != null) {
-            // contextParameter.setType(doReplace(type, fromValue, toValue));
-            // }
-
-            String value = contextParameter.getValue();
-            if (value != null) {
-                contextParameter.setValue(doReplace(value, fromValue, toValue));
-            }
-            String[] values = contextParameter.getValueList();
-            if (values != null && 0 < values.length) {
-                List<String> list = Arrays.asList(values);
-                for (int i = 0; i < list.size(); i++) {
-                    list.set(i, doReplace(list.get(i), fromValue, toValue));
-                }
-                contextParameter.setValueList(list.toArray(values));
-            }
-        } else if (aim instanceof String) {
-            throw new Exception("Uncatched value type case!"); //$NON-NLS-1$
-        } else if (aim instanceof List) {
-            List aimList = (List) aim;
-            for (int i = 0; i < aimList.size(); i++) {
-                Object obj = aimList.get(i);
-                if (obj instanceof String) {
-                    aimList.set(i, doReplace(obj.toString(), fromValue, toValue));
-                } else {
-                    changeValue(obj, fromValue, toValue);
-                }
-            }
-        } else if (aim instanceof Map) {
-            Map aimMap = (Map) aim;
-            if (aimMap != null && !aimMap.isEmpty()) {
-                Object key1 = aimMap.keySet().iterator().next();
-                if (key1 instanceof String) {
-                    // maybe need to consider the order like LinkedHashMap
-                    Object value = aimMap.get(fromValue);
-                    if (value != null) {
-                        aimMap.remove(fromValue);
-                        aimMap.put(toValue, value);
-                    }
-                }
-                Iterator<Map.Entry> iter = aimMap.entrySet().iterator();
-                while (iter.hasNext()) {
-                    Map.Entry entry = iter.next();
-                    Object value = entry.getValue();
-                    if (value instanceof String) {
-                        entry.setValue(doReplace(value.toString(), fromValue, toValue));
-                    } else {
-                        changeValue(value, fromValue, toValue);
-                    }
-                }
-            }
-        } else if (aim instanceof Iterable) {
-            Iterator iter = ((Iterable) aim).iterator();
-            while (iter.hasNext()) {
-                // maybe not good
-                changeValue(iter.next(), fromValue, toValue);
-            }
-            ExceptionHandler.process(new Exception("Unchecked id change type: " + aim.getClass().toString()), Priority.WARN); //$NON-NLS-1$
-        } else if (aim instanceof Object[]) {
-            Object[] objs = (Object[]) aim;
-            for (Object obj : objs) {
-                changeValue(obj, fromValue, toValue);
-            }
+        } else if (visitStack.contains(aim)) {
+            return;
         } else {
-            // some types no need to be changed like Boolean
-            // throw new Exception("Unhandled type: " + aim.getClass().getName()); //$NON-NLS-1$
+            visitStack.push(aim);
         }
+        List<Object> changedListForKey = changedMap.get(fromValue);
+        if (changedListForKey == null) {
+            changedListForKey = new LinkedList<>();
+            changedMap.put(fromValue, changedListForKey);
+        }
+        try {
+            if (changedListForKey.contains(aim)) {
+                return;
+            }
+            if (aim instanceof IElementParameter) {
+                if (aim instanceof IGenericElementParameter) {
+                    ((IGenericElementParameter) aim).setAskPropagate(Boolean.TRUE);
+                }
+                Map<String, String> old2NewMap = new HashMap<>();
+                old2NewMap.put(fromValue, toValue);
+                changeRelatedObject(monitor, old2NewMap, aim, visitStack, changedMap);
+            } else if (aim instanceof EObject) {
+                Map<String, String> old2NewMap = new HashMap<>();
+                old2NewMap.put(fromValue, toValue);
+                changeRelatedObject(monitor, old2NewMap, aim, visitStack, changedMap);
+            } else if (aim instanceof List) {
+                List aimList = (List) aim;
+                for (int i = 0; i < aimList.size(); i++) {
+                    Object obj = aimList.get(i);
+                    if (obj instanceof String) {
+                        aimList.set(i, doReplace(obj.toString(), fromValue, toValue));
+                    } else {
+                        changeValue(monitor, obj, fromValue, toValue, visitStack, changedMap);
+                    }
+                }
+            } else if (aim instanceof Map) {
+                Map aimMap = (Map) aim;
+                if (aimMap != null && !aimMap.isEmpty()) {
+                    Object key1 = aimMap.keySet().iterator().next();
+                    if (key1 instanceof String) {
+                        // maybe need to consider the order like LinkedHashMap
+                        Object value = aimMap.get(fromValue);
+                        if (value != null) {
+                            aimMap.remove(fromValue);
+                            aimMap.put(toValue, value);
+                        }
+                    }
+                    Iterator<Map.Entry> iter = aimMap.entrySet().iterator();
+                    while (iter.hasNext()) {
+                        Map.Entry entry = iter.next();
+                        Object value = entry.getValue();
+                        if (value instanceof String) {
+                            entry.setValue(doReplace(value.toString(), fromValue, toValue));
+                        } else {
+                            changeValue(monitor, value, fromValue, toValue, visitStack, changedMap);
+                        }
+                    }
+                }
+            } else if (aim instanceof Map.Entry) {
+                Map.Entry aimEntry = (Entry) aim;
+                Object value = aimEntry.getValue();
+                if (value instanceof String) {
+                    aimEntry.setValue(doReplace((String) value, fromValue, toValue));
+                } else {
+                    changeValue(monitor, value, fromValue, toValue, visitStack, changedMap);
+                }
+
+            } else if (aim instanceof Iterable) {
+                Iterator iter = ((Iterable) aim).iterator();
+                while (iter.hasNext()) {
+                    // maybe not good
+                    changeValue(monitor, iter.next(), fromValue, toValue, visitStack, changedMap);
+                }
+                ExceptionHandler.process(new Exception("Unchecked id change type: " + aim.getClass().toString()), Priority.WARN); //$NON-NLS-1$
+            } else if (aim instanceof Object[]) {
+                Object[] objs = (Object[]) aim;
+                for (Object obj : objs) {
+                    changeValue(monitor, obj, fromValue, toValue, visitStack, changedMap);
+                }
+            }
+        } finally {
+            visitStack.pop();
+            changedListForKey.add(aim);
+        }
+    }
+
+    public void updateTestContainerParentId(IProgressMonitor monitor, Item testContainerItem) throws Exception {
+        changeRelatedObject(monitor, this.oldId2NewIdMap, testContainerItem, new Stack<>(), new HashMap<>());
     }
 
     private String doReplace(String aimString, String from, String to) {
@@ -596,4 +629,18 @@ public class ChangeIdManager {
         }
         return currentProject;
     }
+
+    public Map<Object, String> getItemToIdMap() {
+        return item2IdMap;
+    }
+
+    private void checkCancel(IProgressMonitor monitor) throws Exception {
+        if (monitor == null) {
+            return;
+        }
+        if (monitor.isCanceled() || Thread.currentThread().isInterrupted()) {
+            throw new InterruptedException(Messages.getString("IProgressMonitor_UserCancelled"));
+        }
+    }
+
 }

@@ -132,4 +132,6 @@ public interface IImportItemsHandler extends IExecutableExtension {
      *
      */
     void afterImportingItems(IProgressMonitor monitor, ResourcesManager resManager, ImportItem importItem) throws Exception;
+
+    void applyMigrationTasks(ImportItem importItem, IProgressMonitor monitor);
 }

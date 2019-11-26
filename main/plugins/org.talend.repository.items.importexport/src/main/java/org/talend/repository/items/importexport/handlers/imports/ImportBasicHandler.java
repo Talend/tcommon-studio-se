@@ -765,9 +765,6 @@ public class ImportBasicHandler extends AbstractImportExecutableHandler {
 
         String label = selectedImportItem.getLabel();
         TimeMeasure.step("importItemRecords", "Import item: " + label); //$NON-NLS-1$ //$NON-NLS-2$
-
-        applyMigrationTasks(selectedImportItem, monitor);
-        TimeMeasure.step("importItemRecords", "applyMigrationTasks: " + label); //$NON-NLS-1$//$NON-NLS-2$
     }
 
     protected void doImportItem(IProgressMonitor monitor, ResourcesManager resManager, ImportItem selectedImportItem,
@@ -1265,7 +1262,8 @@ public class ImportBasicHandler extends AbstractImportExecutableHandler {
      * @param importItem
      * @param monitor
      */
-    protected void applyMigrationTasks(ImportItem importItem, IProgressMonitor monitor) {
+    @Override
+    public void applyMigrationTasks(ImportItem importItem, IProgressMonitor monitor) {
         if (GlobalServiceRegister.getDefault().isServiceRegistered(IMigrationToolService.class)) {
             IMigrationToolService migrationService = (IMigrationToolService) GlobalServiceRegister.getDefault().getService(
                     IMigrationToolService.class);

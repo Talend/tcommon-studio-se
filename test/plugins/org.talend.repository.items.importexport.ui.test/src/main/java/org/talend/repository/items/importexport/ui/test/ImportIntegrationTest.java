@@ -209,7 +209,7 @@ public class ImportIntegrationTest {
     private void initialize() throws Exception {
         List<ImportItem> importItems = getImportItems1();
         manager.importItemRecords(new NullProgressMonitor(), resManager, importItems, true,
-                importItems.toArray(new ImportItem[0]), new Path(""));
+                importItems.toArray(new ImportItem[0]), new Path(""), false);
     }
 
     @Test
@@ -234,7 +234,7 @@ public class ImportIntegrationTest {
         boolean wrongImport = true;
         try {
             manager.importItemRecords(new NullProgressMonitor(), resManager, importItems, false,
-                    importItems.toArray(new ImportItem[0]), new Path(""));
+                    importItems.toArray(new ImportItem[0]), new Path(""), false);
         } catch (Exception e) {
             wrongImport = false;
         }
@@ -271,7 +271,7 @@ public class ImportIntegrationTest {
             }
         }
         manager.importItemRecords(new NullProgressMonitor(), resManager, importItems, true,
-                importItems.toArray(new ImportItem[0]), new Path(""));
+                importItems.toArray(new ImportItem[0]), new Path(""), false);
 
         // test result.
         // we should have item we imported replace the old one (so the test component added should be present).
@@ -326,7 +326,7 @@ public class ImportIntegrationTest {
         boolean wrongImport = false;
         try {
             manager.importItemRecords(new NullProgressMonitor(), resManager, importItems, false,
-                    importItems.toArray(new ImportItem[0]), new Path(""));
+                    importItems.toArray(new ImportItem[0]), new Path(""), false);
         } catch (Exception e) {
             wrongImport = true;
         }
@@ -378,7 +378,7 @@ public class ImportIntegrationTest {
         boolean wrongImport = true;
         try {
             manager.importItemRecords(new NullProgressMonitor(), resManager, importItems, false,
-                    importItems.toArray(new ImportItem[0]), new Path(""));
+                    importItems.toArray(new ImportItem[0]), new Path(""), false);
         } catch (Exception e) {
             wrongImport = false;
         }
@@ -395,7 +395,7 @@ public class ImportIntegrationTest {
             }
         }
         manager.importItemRecords(new NullProgressMonitor(), resManager, importItems, true,
-                importItems.toArray(new ImportItem[0]), new Path(""));
+                importItems.toArray(new ImportItem[0]), new Path(""), false);
 
         // test result.
         // we should have item we imported replace the old one (so the test component added should be present).
@@ -436,7 +436,7 @@ public class ImportIntegrationTest {
         // this one is directly test case of bug TDI-29063
         List<ImportItem> importItems = getImportItems4();
         manager.importItemRecords(new NullProgressMonitor(), resManager, importItems, true,
-                importItems.toArray(new ImportItem[0]), new Path(""));
+                importItems.toArray(new ImportItem[0]), new Path(""), false);
 
         importItems = getImportItems1();
         int nbFound = 0;
@@ -460,7 +460,7 @@ public class ImportIntegrationTest {
             throw new Exception("Items in the zip maybe changed, ids not found");
         }
         manager.importItemRecords(new NullProgressMonitor(), resManager, checkedItems, true,
-                importItems.toArray(new ImportItem[0]), new Path(""));
+                importItems.toArray(new ImportItem[0]), new Path(""), false);
         String newItemId = testedItem.getItemId();
 
         ProxyRepositoryFactory repositoryFactory = ProxyRepositoryFactory.getInstance();
@@ -524,7 +524,7 @@ public class ImportIntegrationTest {
     public void testItemDifferentNameSameIdWithDep2() throws Exception {
         List<ImportItem> importItems = getImportItems5();
         manager.importItemRecords(new NullProgressMonitor(), resManager, importItems, true,
-                importItems.toArray(new ImportItem[0]), new Path(""));
+                importItems.toArray(new ImportItem[0]), new Path(""), false);
 
         importItems = getImportItems1();
         int nbFound = 0;
@@ -557,7 +557,7 @@ public class ImportIntegrationTest {
         boolean wrongImport = false;
         try {
             manager.importItemRecords(new NullProgressMonitor(), resManager, checkedItems, false,
-                    importItems.toArray(new ImportItem[0]), new Path(""));
+                    importItems.toArray(new ImportItem[0]), new Path(""), false);
         } catch (Exception e) {
             wrongImport = true;
         }
@@ -662,7 +662,7 @@ public class ImportIntegrationTest {
     public void testItemSameNameDifferentIdWithDep() throws Exception {
         List<ImportItem> importItems = getImportItems6();
         manager.importItemRecords(new NullProgressMonitor(), resManager, importItems, true,
-                importItems.toArray(new ImportItem[0]), new Path(""));
+                importItems.toArray(new ImportItem[0]), new Path(""), false);
 
         importItems = getImportItems1();
         int nbFound = 0;
@@ -705,7 +705,7 @@ public class ImportIntegrationTest {
             throw new Exception("Items in the zip maybe changed, ids not found");
         }
         manager.importItemRecords(new NullProgressMonitor(), resManager, checkedItems, true,
-                importItems.toArray(new ImportItem[0]), new Path(""));
+                importItems.toArray(new ImportItem[0]), new Path(""), false);
 
         ProxyRepositoryFactory repositoryFactory = ProxyRepositoryFactory.getInstance();
 
@@ -828,7 +828,7 @@ public class ImportIntegrationTest {
     public void testDuplicateIdInSameImport() throws Exception {
         List<ImportItem> importItems = getImportItems7();
         manager.importItemRecords(new NullProgressMonitor(), resManager, importItems, false,
-                importItems.toArray(new ImportItem[0]), new Path(""));
+                importItems.toArray(new ImportItem[0]), new Path(""), false);
 
         String originalId = "_A7WlgP9BEeOBFtZnw6gdMg";
         ImportItem itemWithOrigId = null;

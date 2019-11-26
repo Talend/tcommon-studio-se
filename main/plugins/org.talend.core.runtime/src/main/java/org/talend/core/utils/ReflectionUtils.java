@@ -17,6 +17,10 @@ import java.lang.reflect.Constructor;
 import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
+import java.util.Arrays;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.LinkedList;
 
 import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
@@ -341,5 +345,18 @@ public class ReflectionUtils {
             log.error("", e);
         }
         return ownerClass;
+    }
+
+    public static Collection<Field> getAllDeclaredFields(Class clazz) {
+        if (clazz == Object.class) {
+            return Collections.EMPTY_LIST;
+        }
+        Collection<Field> allDeclaredFields = new LinkedList<>();
+        Field[] declaredFields = clazz.getDeclaredFields();
+        if (declaredFields != null && 0 < declaredFields.length) {
+            allDeclaredFields.addAll(Arrays.asList(declaredFields));
+        }
+        allDeclaredFields.addAll(getAllDeclaredFields(clazz.getSuperclass()));
+        return allDeclaredFields;
     }
 }

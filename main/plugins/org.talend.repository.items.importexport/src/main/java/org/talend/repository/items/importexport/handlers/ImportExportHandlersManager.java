@@ -18,7 +18,6 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.Comparator;
-import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
@@ -515,6 +514,8 @@ public class ImportExportHandlersManager {
             RepositoryWorkUnit repositoryWorkUnit = new RepositoryWorkUnit(
                     Messages.getString("ImportExportHandlersManager_importingItemsMessage")) { //$NON-NLS-1$
 
+                private boolean hasJoblet = false;
+
                 @Override
                 public void run() throws PersistenceException {
                     final IWorkspaceRunnable op = new IWorkspaceRunnable() {
@@ -539,115 +540,25 @@ public class ImportExportHandlersManager {
                             final Set<String> overwriteDeletedItems = new HashSet<String>();
                             final Set<String> idDeletedBeforeImport = new HashSet<String>();
 
-                            Map<String, String> nameToIdMap = new HashMap<String, String>();
-
-                            for (ImportItem itemRecord : checkedItemRecords) {
-                                if (monitor.isCanceled()) {
-                                    return;
-                                }
-                                if (itemRecord.isValid()) {
-                                    if (alwaysRegenId || itemRecord.getState() == State.ID_EXISTED
-                                            || itemRecord.getState() == State.NAME_AND_ID_EXISTED_BOTH
-                                            || itemRecord.getState() == State.NAME_EXISTED) {
-                                        String id = nameToIdMap.get(itemRecord.getProperty().getLabel()
-                                                + ERepositoryObjectType.getItemType(itemRecord.getProperty().getItem())
-                                                        .toString());
-                                        if (id == null) {
-                                            try {
-                                                boolean reuseExistingId = false;
-                                                if (overwrite && (itemRecord.getState() == State.NAME_AND_ID_EXISTED_BOTH
-                                                        || itemRecord.getState() == State.NAME_EXISTED)) {
-                                                    // just try to reuse the id of the item which will be overwrited
-                                                    reuseExistingId = true;
-                                                } else if (alwaysRegenId) {
-                                                    switch (itemRecord.getState()) {
-                                                    case NAME_EXISTED:
-                                                    case NAME_AND_ID_EXISTED:
-                                                    case NAME_AND_ID_EXISTED_BOTH:
-                                                        reuseExistingId = true;
-                                                        break;
-                                                    default:
-                                                        break;
-                                                    }
-                                                }
-                                                if (reuseExistingId) {
-                                                    IRepositoryViewObject object = itemRecord.getExistingItemWithSameName();
-                                                    if (object != null) {
-                                                        if (ProjectManager.getInstance().isInCurrentMainProject(
-                                                                object.getProperty())) {
-                                                            // in case it is in reference project
-                                                            id = object.getId();
-                                                        }
-                                                    }
-                                                }
-                                            } catch (Exception e) {
-                                                ExceptionHandler.process(e, Priority.WARN);
-                                            }
-                                            if (id == null) {
-                                                /*
-                                                 * if id exsist then need to genrate new id for this job,in this case
-                                                 * the job won't override the old one
-                                                 */
-                                                id = EcoreUtil.generateUUID();
-                                            }
-                                            nameToIdMap.put(itemRecord.getProperty().getLabel()
-                                                    + ERepositoryObjectType.getItemType(itemRecord.getProperty().getItem())
-                                                            .toString(), id);
-                                        }
-                                        String oldId = itemRecord.getProperty().getId();
-                                        itemRecord.getProperty().setId(id);
-                                        try {
-                                            changeIdManager.mapOldId2NewId(oldId, id);
-                                        } catch (Exception e) {
-                                            ExceptionHandler.process(e);
-                                        }
-                                    }
-                                }
-                            }
-
                             try {
                                 importItemRecordsWithRelations(monitor, resManager, checkedItemRecords, overwrite,
-                                        allImportItemRecords, destinationPath, overwriteDeletedItems, idDeletedBeforeImport);
+                                        allImportItemRecords, destinationPath, overwriteDeletedItems, idDeletedBeforeImport,
+                                        alwaysRegenId);
                             } catch (Exception e) {
                                 if (Platform.inDebugMode()) {
                                     ExceptionHandler.process(e);
                                 }
-                                throw new CoreException(new Status(IStatus.ERROR, FrameworkUtil.getBundle(this.getClass())
-                                        .getSymbolicName(),
-                                        Messages.getString("ImportExportHandlersManager_importingItemsError"), e)); //$NON-NLS-1$
+                                throw generateCoreException(e);
                             }
 
                             ImportCacheHelper.getInstance().checkDeletedFolders();
                             ImportCacheHelper.getInstance().checkDeletedItems();
                             monitor.done();
 
-                            TimeMeasure.step("importItemRecords", "before save"); //$NON-NLS-1$ //$NON-NLS-2$
-
-                            if (RelationshipItemBuilder.getInstance().isNeedSaveRelations()) {
-                                RelationshipItemBuilder.getInstance().saveRelations();
-
-                                TimeMeasure.step("importItemRecords", "save relations"); //$NON-NLS-1$ //$NON-NLS-2$
-                            } else {
-                                // only save the project here if no relation need to be saved, since project will
-                                // already be
-                                // saved
-                                // with relations
-                                try {
-                                    factory.saveProject(ProjectManager.getInstance().getCurrentProject());
-                                } catch (PersistenceException e) {
-                                    if (Platform.inDebugMode()) {
-                                        ExceptionHandler.process(e);
-                                    }
-                                    throw new CoreException(new Status(IStatus.ERROR, FrameworkUtil.getBundle(this.getClass())
-                                            .getSymbolicName(),
-                                            Messages.getString("ImportExportHandlersManager_importingItemsError"), e)); //$NON-NLS-1$
-                                }
-                                TimeMeasure.step("importItemRecords", "save project"); //$NON-NLS-1$//$NON-NLS-2$
-                            }
-
                             // import empty folders
                             if (!checkedFolders.isEmpty()) {
                                 for (EmptyFolderImportItem folder : checkedFolders) {
+                                    checkCancel(monitor);
                                     boolean exist = false;
                                     ERepositoryObjectType repositoryType = folder.getRepositoryType();
                                     IPath path = folder.getPath();
@@ -678,57 +589,98 @@ public class ImportExportHandlersManager {
                                     }
 
                                 }
+                                TimeMeasure.step("importItemRecords", "import empty folders"); //$NON-NLS-1$//$NON-NLS-2$
+                            }
+
+                            TimeMeasure.step("importItemRecords", "before allocate new ids"); //$NON-NLS-1$ //$NON-NLS-2$
+                            try {
+                                changeIdManager.changeIds(monitor);
+                            } catch (InterruptedException e) {
+                                throw generateCoreException(e);
+                            } catch (Exception e) {
+                                ExceptionHandler.process(e);
+                            }
+                            TimeMeasure.step("importItemRecords", "allocate new ids"); //$NON-NLS-1$//$NON-NLS-2$
+
+                            if (hasJoblet && PluginChecker.isJobLetPluginLoaded()) {
+                                checkCancel(monitor);
+                                monitor.subTask(Messages.getString("ImportExportHandlersManager_progressReloadingJoblets"));
+                                TimeMeasure.step("importItemRecords", "before reload joblets"); //$NON-NLS-1$//$NON-NLS-2$
+                                IJobletProviderService jobletService = (IJobletProviderService) GlobalServiceRegister.getDefault()
+                                        .getService(IJobletProviderService.class);
+                                if (jobletService != null) {
+                                    jobletService.loadComponentsFromProviders();
+                                }
+                                TimeMeasure.step("importItemRecords", "reload joblets"); //$NON-NLS-1$//$NON-NLS-2$
                             }
 
                             // post import
                             List<ImportItem> importedItemRecords = ImportCacheHelper.getInstance().getImportedItemRecords();
-                            postImport(monitor, resManager, importedItemRecords.toArray(new ImportItem[0]));
-                            try {
-                                changeIdManager.changeIds();
-                            } catch (Exception e) {
-                                ExceptionHandler.process(e);
+                            for (ImportItem importedItem : importedItemRecords) {
+                                checkCancel(monitor);
+                                String label = importedItem.getLabel();
+                                IImportItemsHandler importHandler = importedItem.getImportHandler();
+                                try {
+                                    monitor.subTask(
+                                            Messages.getString("ImportExportHandlersManager_progressApplyMigrationTasks", label));
+                                    importHandler.applyMigrationTasks(importedItem, progressMonitor);
+                                    TimeMeasure.step("importItemRecords", "applyMigrationTasks: " + label); //$NON-NLS-1$//$NON-NLS-2$
+                                } catch (Exception e) {
+                                    ExceptionHandler.process(e);
+                                }
+                                try {
+                                    monitor.subTask(
+                                            Messages.getString("ImportExportHandlersManager_progressDoFinalCheck", label));
+                                    importHandler.afterImportingItems(progressMonitor, resManager, importedItem);
+                                    TimeMeasure.step("importItemRecords", "operation after importing item: " + label); //$NON-NLS-1$ //$NON-NLS-2$
+                                } catch (Exception e) {
+                                    ExceptionHandler.process(e);
+                                }
                             }
+
+                            TimeMeasure.step("importItemRecords", "before save"); //$NON-NLS-1$ //$NON-NLS-2$
+                            if (RelationshipItemBuilder.getInstance().isNeedSaveRelations()) {
+                                RelationshipItemBuilder.getInstance().saveRelations();
+
+                                TimeMeasure.step("importItemRecords", "save relations"); //$NON-NLS-1$ //$NON-NLS-2$
+                            } else {
+                                // only save the project here if no relation need to be saved, since project will
+                                // already be
+                                // saved
+                                // with relations
+                                try {
+                                    monitor.subTask(Messages
+                                            .getString("ImportExportHandlersManager_progressSavingProjectConfigurations"));
+                                    factory.saveProject(ProjectManager.getInstance().getCurrentProject());
+                                } catch (PersistenceException e) {
+                                    if (Platform.inDebugMode()) {
+                                        ExceptionHandler.process(e);
+                                    }
+                                    throw new CoreException(
+                                            new Status(IStatus.ERROR, FrameworkUtil.getBundle(this.getClass()).getSymbolicName(),
+                                                    Messages.getString("ImportExportHandlersManager_importingItemsError"), e)); //$NON-NLS-1$
+                                }
+                                TimeMeasure.step("importItemRecords", "save project"); //$NON-NLS-1$//$NON-NLS-2$
+                            }
+
+                            postImport(monitor, resManager, importedItemRecords.toArray(new ImportItem[0]));
                         }
 
                         private void importItemRecordsWithRelations(final IProgressMonitor monitor,
                                 final ResourcesManager manager, final List<ImportItem> processingItemRecords,
                                 final boolean overwriting, ImportItem[] allPopulatedImportItemRecords, IPath destinationPath,
-                                final Set<String> overwriteDeletedItems, final Set<String> idDeletedBeforeImport)
-                                throws Exception {
-                            boolean hasJoblet = false;
-                            boolean jobletReloaded = false;
+                                final Set<String> overwriteDeletedItems, final Set<String> idDeletedBeforeImport,
+                                final boolean alwaysRegenId) throws Exception {
                             for (ImportItem itemRecord : processingItemRecords) {
-                                if (monitor.isCanceled()) {
-                                    return;
-                                }
+                                changeIdManager.add(itemRecord);
+                                allocateInternalId(itemRecord, false, overwrite, alwaysRegenId);
+                            }
+                            for (ImportItem itemRecord : processingItemRecords) {
+                                checkCancel(monitor);
                                 if (itemRecord.isImported()) {
                                     continue; // have imported
                                 }
 
-                                if ((ERepositoryObjectType.JOBLET == itemRecord.getRepositoryType())
-                                        || (ERepositoryObjectType.PROCESS_ROUTELET == itemRecord.getRepositoryType())
-                                        || (ERepositoryObjectType.SPARK_JOBLET == itemRecord.getRepositoryType())
-                                        || (ERepositoryObjectType.SPARK_STREAMING_JOBLET == itemRecord.getRepositoryType())) {
-                                    hasJoblet = true;
-                                }
-                                if (hasJoblet && !jobletReloaded) {
-                                    if (ERepositoryObjectType.JOBLET != itemRecord.getRepositoryType()
-                                            && ERepositoryObjectType.PROCESS_ROUTELET != itemRecord.getRepositoryType()
-                                            && ERepositoryObjectType.SPARK_JOBLET != itemRecord.getRepositoryType()
-                                            && ERepositoryObjectType.SPARK_STREAMING_JOBLET != itemRecord.getRepositoryType()) {
-                                        // fix for TUP-3032 ,processingItemRecords is a sorted list with joblet before
-                                        // jobs . we should load joblet component before import jobs to build the
-                                        // relationship.
-                                        jobletReloaded = true;
-                                        if (PluginChecker.isJobLetPluginLoaded()) {
-                                            IJobletProviderService jobletService = (IJobletProviderService) GlobalServiceRegister
-                                                    .getDefault().getService(IJobletProviderService.class);
-                                            if (jobletService != null) {
-                                                jobletService.loadComponentsFromProviders();
-                                            }
-                                        }
-                                    }
-                                }
                                 try {
                                     final IImportItemsHandler importHandler = itemRecord.getImportHandler();
                                     if (importHandler != null && itemRecord.isValid()) {
@@ -739,36 +691,43 @@ public class ImportExportHandlersManager {
                                             if (!relatedItemRecord.isEmpty()) {
                                                 importItemRecordsWithRelations(monitor, manager, relatedItemRecord, overwriting,
                                                         allPopulatedImportItemRecords, destinationPath, overwriteDeletedItems,
-                                                        idDeletedBeforeImport);
+                                                        idDeletedBeforeImport, alwaysRegenId);
                                             }
                                         }
-                                        if (monitor.isCanceled()) {
-                                            return;
-                                        }
 
+                                        changeIdManager.add(itemRecord);
+                                        allocateInternalId(itemRecord, true, overwrite, alwaysRegenId);
+                                        if ((ERepositoryObjectType.JOBLET == itemRecord.getRepositoryType())
+                                                || (ERepositoryObjectType.PROCESS_ROUTELET == itemRecord.getRepositoryType())
+                                                || (ERepositoryObjectType.SPARK_JOBLET == itemRecord.getRepositoryType())
+                                                || (ERepositoryObjectType.SPARK_STREAMING_JOBLET == itemRecord
+                                                        .getRepositoryType())) {
+                                            hasJoblet = true;
+                                        } else if (ERepositoryObjectType.TEST_CONTAINER == itemRecord.getRepositoryType()) {
+                                            ((ImportBasicHandler) itemRecord.getImportHandler()).resolveItem(manager, itemRecord);
+                                            changeIdManager.updateTestContainerParentId(monitor, itemRecord.getItem());
+                                        }
                                         // will import
                                         importHandler.doImport(monitor, manager, itemRecord, overwriting, destinationPath,
                                                 overwriteDeletedItems, idDeletedBeforeImport);
 
-                                        if (monitor.isCanceled()) {
-                                            return;
-                                        }
+                                        checkCancel(monitor);
                                         // if import related items behind current item
                                         if (!importHandler.isPriorImportRelatedItem()) {
                                             if (!relatedItemRecord.isEmpty()) {
                                                 importItemRecordsWithRelations(monitor, manager, relatedItemRecord, overwriting,
                                                         allPopulatedImportItemRecords, destinationPath, overwriteDeletedItems,
-                                                        idDeletedBeforeImport);
+                                                        idDeletedBeforeImport, alwaysRegenId);
                                             }
                                         }
-
-                                        importHandler.afterImportingItems(monitor, manager, itemRecord);
 
                                         // record the imported items with related items too.
                                         ImportCacheHelper.getInstance().getImportedItemRecords().add(itemRecord);
 
                                         monitor.worked(1);
                                     }
+                                } catch (InterruptedException e) {
+                                    throw e;
                                 } catch (Exception e) {
                                     // ???, PTODO if there one error, need throw error or not.
                                     if (Platform.inDebugMode()) {
@@ -780,14 +739,6 @@ public class ImportExportHandlersManager {
                                     }
                                 }
 
-                            }
-
-                            if (hasJoblet && !jobletReloaded && PluginChecker.isJobLetPluginLoaded()) {
-                                IJobletProviderService jobletService = (IJobletProviderService) GlobalServiceRegister
-                                        .getDefault().getService(IJobletProviderService.class);
-                                if (jobletService != null) {
-                                    jobletService.loadComponentsFromProviders();
-                                }
                             }
 
                         }
@@ -805,9 +756,26 @@ public class ImportExportHandlersManager {
                             ExceptionHandler.process(e);
                         }
                     }
+                    progressMonitor.subTask(Messages.getString("ImportExportHandlersManager_progressFireImportChanges"));
                     // fire import event out of workspace runnable
                     fireImportChange(ImportCacheHelper.getInstance().getImportedItemRecords());
                 }
+
+                private void checkCancel(IProgressMonitor monitor) throws CoreException {
+                    if (monitor == null) {
+                        return;
+                    }
+                    if (monitor.isCanceled() || Thread.currentThread().isInterrupted()) {
+                        throw generateCoreException(
+                                new InterruptedException(Messages.getString("IProgressMonitor_UserCancelled")));
+                    }
+                }
+
+                private CoreException generateCoreException(Exception e) {
+                    return new CoreException(new Status(IStatus.ERROR, FrameworkUtil.getBundle(this.getClass()).getSymbolicName(),
+                            Messages.getString("ImportExportHandlersManager_importingItemsError"), e)); //$NON-NLS-1$
+                }
+
             };
             repositoryWorkUnit.setAvoidUnloadResources(true);
             repositoryWorkUnit.setUnloadResourcesAfterRun(true);
@@ -952,4 +920,73 @@ public class ImportExportHandlersManager {
         importItem.setProperty(null);
         importItem.clear();
     }
+
+    private void allocateInternalId(ImportItem itemRecord, final boolean updateProperty, final boolean overwrite,
+            final boolean alwaysRegenId) {
+        if (itemRecord.isImported()) {
+            return;
+        }
+        if (alwaysRegenId || itemRecord.getState() == State.ID_EXISTED || itemRecord.getState() == State.NAME_AND_ID_EXISTED_BOTH
+                || itemRecord.getState() == State.NAME_EXISTED) {
+            Map<Object, String> itemToIdMap = changeIdManager.getItemToIdMap();
+            Property property = itemRecord.getProperty();
+            ERepositoryObjectType repObjType = ERepositoryObjectType.getItemType(property.getItem());
+
+            /**
+             * 1. Use path + label, because some repository type allow same name with different path<br/>
+             * 2. Don't use path from ImportItem, because there may be same item with different version<br/>
+             */
+            final String key = repObjType.toString() + "#" + property.getItem().getState().getPath() + "#" + property.getLabel();
+            String id = itemToIdMap.get(key);
+            if (id == null) {
+                try {
+                    boolean reuseExistingId = false;
+                    if (overwrite && (itemRecord.getState() == State.NAME_AND_ID_EXISTED_BOTH
+                            || itemRecord.getState() == State.NAME_EXISTED)) {
+                        // just try to reuse the id of the item which will be overwrited
+                        reuseExistingId = true;
+                    } else if (alwaysRegenId) {
+                        switch (itemRecord.getState()) {
+                        case NAME_EXISTED:
+                        case NAME_AND_ID_EXISTED:
+                        case NAME_AND_ID_EXISTED_BOTH:
+                            reuseExistingId = true;
+                            break;
+                        default:
+                            break;
+                        }
+                    }
+                    if (reuseExistingId) {
+                        IRepositoryViewObject object = itemRecord.getExistingItemWithSameName();
+                        if (object != null) {
+                            if (ProjectManager.getInstance().isInCurrentMainProject(object.getProperty())) {
+                                // in case it is in reference project
+                                id = object.getId();
+                            }
+                        }
+                    }
+                } catch (Exception e) {
+                    ExceptionHandler.process(e, Priority.WARN);
+                }
+                if (id == null) {
+                    /*
+                     * if id exsist then need to genrate new id for this job,in this case the job won't override the old
+                     * one
+                     */
+                    id = EcoreUtil.generateUUID();
+                }
+                itemToIdMap.put(key, id);
+            }
+            String oldId = itemRecord.getProperty().getId();
+            if (updateProperty) {
+                itemRecord.getProperty().setId(id);
+            }
+            try {
+                changeIdManager.mapOldId2NewId(oldId, id);
+            } catch (Exception e) {
+                ExceptionHandler.process(e);
+            }
+        }
+    }
+
 }
