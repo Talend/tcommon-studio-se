@@ -478,15 +478,9 @@ public class ProcessorUtilitiesTest {
             repositoryObject = factory.getSpecificVersion(item.getProperty().getId(), item.getProperty().getVersion(), true);
             repositoryObject1 = factory.getSpecificVersion(item1.getProperty().getId(), item1.getProperty().getVersion(), true);
             repositoryObject2 = factory.getSpecificVersion(item2.getProperty().getId(), item2.getProperty().getVersion(), true);
-            if (repositoryObject != null) {
-                relationshipItemBuilder.addOrUpdateItem(repositoryObject.getProperty().getItem());
-            }
-            if (repositoryObject1 != null) {
-                relationshipItemBuilder.addOrUpdateItem(repositoryObject1.getProperty().getItem());
-            }
-            if (repositoryObject2 != null) {
-                relationshipItemBuilder.addOrUpdateItem(repositoryObject2.getProperty().getItem());
-            }
+            relationshipItemBuilder.addOrUpdateItem(repositoryObject.getProperty().getItem());
+            relationshipItemBuilder.addOrUpdateItem(repositoryObject1.getProperty().getItem());
+            relationshipItemBuilder.addOrUpdateItem(repositoryObject2.getProperty().getItem());
 
             Relation mainRelation = new Relation();
             mainRelation.setId(repositoryObject.getProperty().getId());
