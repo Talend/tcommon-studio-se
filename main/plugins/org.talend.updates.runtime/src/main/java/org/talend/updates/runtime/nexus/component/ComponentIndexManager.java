@@ -13,14 +13,9 @@
 package org.talend.updates.runtime.nexus.component;
 
 import java.io.File;
-import java.io.FileOutputStream;
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Collections;
 import java.util.Enumeration;
-import java.util.Iterator;
-import java.util.List;
 import java.util.jar.JarEntry;
 import java.util.jar.JarFile;
 import java.util.jar.JarInputStream;
@@ -30,21 +25,12 @@ import java.util.zip.ZipException;
 import java.util.zip.ZipFile;
 
 import org.apache.commons.lang3.StringUtils;
-import org.dom4j.Document;
-import org.dom4j.DocumentException;
-import org.dom4j.DocumentFactory;
-import org.dom4j.Element;
-import org.dom4j.Node;
-import org.dom4j.io.OutputFormat;
-import org.dom4j.io.SAXReader;
-import org.dom4j.io.XMLWriter;
 import org.eclipse.core.runtime.IPath;
 import org.eclipse.core.runtime.Path;
 import org.talend.commons.CommonsPlugin;
 import org.talend.commons.exception.ExceptionHandler;
 import org.talend.commons.utils.resource.FileExtensions;
 import org.talend.commons.utils.resource.UpdatesHelper;
-import org.talend.core.runtime.maven.MavenArtifact;
 import org.talend.core.runtime.maven.MavenUrlHelper;
 import org.talend.updates.runtime.engine.P2Manager;
 import org.talend.updates.runtime.feature.model.Type;
@@ -74,227 +60,6 @@ public class ComponentIndexManager {
             super(s);
         }
 
-    }
-
-    /**
-     * get the full list of component index bean from the index file.
-     */
-    public List<ComponentIndexBean> parse(File indexFile) {
-        if (indexFile == null || !indexFile.exists() || indexFile.isDirectory()
-                || !indexFile.getName().endsWith(FileExtensions.XML_FILE_SUFFIX)) {
-            return Collections.emptyList();
-        }
-        SAXReader saxReader = new SAXReader();
-        try {
-            Document document = saxReader.read(indexFile);
-            return parse(document);
-        } catch (DocumentException e) {
-            if (CommonsPlugin.isDebugMode()) {
-                ExceptionHandler.process(e);
-            }
-        }
-        return Collections.emptyList();
-
-    }
-
-    @SuppressWarnings("rawtypes")
-    public List<ComponentIndexBean> parse(Document doc) {
-        if (doc == null) {
-            return Collections.emptyList();
-        }
-        List<ComponentIndexBean> indexBeans = new ArrayList<ComponentIndexBean>();
-
-        final List componentNodes = doc.selectNodes(XPATH_INDEX_COMPONENT);
-        if (componentNodes == null) {
-            return Collections.emptyList();
-        }
-        for (Iterator iter = componentNodes.iterator(); iter.hasNext();) {
-            Element element = (Element) iter.next();
-
-            ComponentIndexBean indexBean = new ComponentIndexBean();
-            // try {
-            readAttribute(ComponentIndexNames.name, element, indexBean);
-            readAttribute(ComponentIndexNames.bundle_id, element, indexBean);
-            readAttribute(ComponentIndexNames.version, element, indexBean);
-            readAttribute(ComponentIndexNames.mvn_uri, element, indexBean);
-            readAttribute(ComponentIndexNames.image_mvn_uri, element, indexBean);
-            readAttribute(ComponentIndexNames.product, element, indexBean);
-            readAttribute(ComponentIndexNames.license_uri, element, indexBean);
-            readAttribute(ComponentIndexNames.compatibleStudioVersion, element, indexBean);
-            readAttribute(ComponentIndexNames.types, element, indexBean);
-            readAttribute(ComponentIndexNames.categories, element, indexBean);
-            readAttribute(ComponentIndexNames.degradable, element, indexBean);
-
-            readChildContent(ComponentIndexNames.description, element, indexBean);
-            readChildContent(ComponentIndexNames.license, element, indexBean);
-            // } catch (MissingSettingException e) {
-            // ExceptionHandler.process(e);
-            // }
-
-            if (indexBean.validRequired()) {
-                indexBeans.add(indexBean);
-            }
-        }
-        return indexBeans;
-    }
-
-    void readAttribute(ComponentIndexNames name, Element element, ComponentIndexBean indexBean) {
-        final String value = element.attributeValue(name.getName());
-        if (name.isRequired() && StringUtils.isBlank(value)) {
-            throw new MissingSettingException("Missing the setting for attribute: " + name);
-        }
-        if (StringUtils.isNotBlank(value)) {
-            indexBean.setValue(name, value);
-        }
-    }
-
-    void readChildContent(ComponentIndexNames name, Element element, ComponentIndexBean indexBean) {
-        final Node node = element.selectSingleNode(name.getName());
-        final String value = node != null ? node.getText() : null;
-        if (name.isRequired() && StringUtils.isBlank(value)) {
-            throw new MissingSettingException("Missing the setting for attribute: " + name);
-        }
-        if (StringUtils.isNotBlank(value)) {
-            indexBean.setValue(name, value);
-        }
-    }
-
-    /**
-     * try to add/update the component index bean in index file.
-     *
-     * if same bundleId and version, try to update it. else will add new in index.
-     */
-    public boolean updateIndexFile(File indexFile, ComponentIndexBean indexBean) {
-        if (indexBean == null || indexFile == null || !indexFile.exists() || indexFile.isDirectory()
-                || !indexFile.getName().endsWith(FileExtensions.XML_FILE_SUFFIX)) {
-            return false;
-        }
-        try {
-            final List<ComponentIndexBean> existedIndexBeans = parse(new SAXReader().read(indexFile));
-
-            List<ComponentIndexBean> newIndexList = new ArrayList<ComponentIndexBean>(existedIndexBeans);
-
-            // if existed, remove the old one
-            if (newIndexList.contains(indexBean)) { // same name, buildId, version and mvn_uri
-                newIndexList.remove(indexBean);
-            }
-
-            // put the new one
-            newIndexList.add(indexBean);
-
-            // I think no need sort here, since the original order shows the installation order
-
-            return createIndexFile(indexFile, newIndexList);
-        } catch (Exception e) {
-            if (CommonsPlugin.isDebugMode()) {
-                ExceptionHandler.process(e);
-            }
-        }
-        return false;
-    }
-
-    public boolean createIndexFile(File indexFile, ComponentIndexBean indexBean) {
-        if (indexBean == null || indexFile == null) {
-            return false;
-        }
-
-        final ArrayList<ComponentIndexBean> newIndexList = new ArrayList<ComponentIndexBean>();
-        newIndexList.add(indexBean);
-        try {
-            return createIndexFile(indexFile, newIndexList);
-        } catch (IOException e) {
-            if (CommonsPlugin.isDebugMode()) {
-                ExceptionHandler.process(e);
-            }
-        }
-        return false;
-    }
-
-    public boolean createIndexFile(File indexFile, List<ComponentIndexBean> newIndexList) throws IOException {
-        if (newIndexList == null || newIndexList.isEmpty() || indexFile == null) {
-            return false;
-        }
-
-        XMLWriter xmlWriter = null;
-        boolean created = false;
-        try {
-            // write to index
-            final DocumentFactory docFactory = DocumentFactory.getInstance();
-            final Element components = docFactory.createElement(ELEM_COMPONENTS);
-            Document newDoc = docFactory.createDocument(components);
-            for (ComponentIndexBean b : newIndexList) {
-                final Element elem = createXmlElement(b);
-                if (elem != null) {
-                    components.add(elem);
-                }
-            }
-
-            // 4 spaces
-            OutputFormat format = new OutputFormat();
-            format.setEncoding("UTF-8"); //$NON-NLS-1$
-            format.setIndentSize(4);
-            format.setNewlines(true);
-            xmlWriter = new XMLWriter(new FileOutputStream(indexFile), format);
-
-            xmlWriter.write(newDoc);
-
-            created = true;
-            return true;
-        } finally {
-            if (xmlWriter != null) {
-                try {
-                    xmlWriter.close();
-                } catch (IOException e) {
-                    //
-                }
-            }
-            if (!created && indexFile.exists()) {
-                indexFile.delete(); // remove the wrong file.
-            }
-        }
-    }
-
-    Element createXmlElement(ComponentIndexBean indexBean) {
-
-        if (indexBean == null) {
-            return null;
-        }
-        if (!indexBean.validRequired()) {
-            return null; // no valid
-        }
-        final DocumentFactory docFactory = DocumentFactory.getInstance();
-        final Element component = docFactory.createElement(ComponentIndexManager.ELEM_COMPONENT);
-        for (ComponentIndexNames in : ComponentIndexNames.values()) {
-            final String value = indexBean.getValue(in);
-            if (StringUtils.isBlank(value)) {
-                continue; // not value
-            }
-            switch (in) {
-            case name:
-            case bundle_id:
-            case version:
-            case mvn_uri:
-            case license_uri:
-            case product:
-            case image_mvn_uri:
-            case types:
-            case categories:
-            case degradable:
-            case compatibleStudioVersion:
-            default:
-                // attribute
-                component.add(docFactory.createAttribute(component, in.getName(), value));
-                break;
-            case description:
-            case license:
-                // child element
-                final Element child = docFactory.createElement(in.getName());
-                child.setText(value);
-                component.add(child);
-                break;
-            }
-        }
-        return component;
     }
 
     public ComponentIndexBean createIndexBean4Patch(File patchZipFile, Type type) {
@@ -473,15 +238,6 @@ public class ComponentIndexManager {
             }
         }
         return null;
-    }
-
-    public MavenArtifact getIndexArtifact() {
-        MavenArtifact artifact = new MavenArtifact();
-        artifact.setGroupId(COMPONENT_GROUP_ID);
-        artifact.setArtifactId(INDEX);
-        artifact.setVersion(PathUtils.getTalendVersionStr());
-        artifact.setType(FileExtensions.XML_EXTENSION);
-        return artifact;
     }
 
 }

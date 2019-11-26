@@ -65,7 +65,7 @@ public class CheckExtraFeaturesToInstallJob extends Job {
          // check if there are features to update
         ExtraFeaturesUpdatesFactory extraFeaturesFactory = new ExtraFeaturesUpdatesFactory(isCheckUpdateOnLine);
         final Set<ExtraFeature> uninstalledExtraFeatures = new HashSet<ExtraFeature>();
-        extraFeaturesFactory.retrieveUninstalledExtraFeatures(monitor, uninstalledExtraFeatures, false);
+        extraFeaturesFactory.retrieveUninstalledExtraFeatures(monitor, uninstalledExtraFeatures);
         // if feature to update are available then show the update wizard
         if (monitor.isCanceled()) {
             return Status.CANCEL_STATUS;

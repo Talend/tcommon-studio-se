@@ -271,22 +271,6 @@ public class LocalComponentsInstallComponentTest {
                             return super.install(progress, allRepoUris);
                         }
 
-                        @Override
-                        public void shareComponent(IProgressMonitor progress, File installedCompFile) {
-
-                            File sharedCompFile = new File(sharedFolder, installedCompFile.getName());
-                            try {
-                                FilesUtils.copyFile(installedCompFile, sharedCompFile);
-                            } catch (IOException e) {
-                                //
-                            }
-                            boolean deleted = installedCompFile.delete();
-                            if (!deleted) {// failed to delete in time
-                                installedCompFile.deleteOnExit(); // try to delete when exit
-                            }
-
-                        }
-
                     };
                 }
 
