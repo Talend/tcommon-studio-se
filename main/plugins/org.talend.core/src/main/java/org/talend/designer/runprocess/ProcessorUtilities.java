@@ -64,6 +64,8 @@ import org.talend.core.language.LanguageManager;
 import org.talend.core.model.components.ComponentCategory;
 import org.talend.core.model.components.EComponentType;
 import org.talend.core.model.components.IComponent;
+import org.talend.core.model.components.IComponentsFactory;
+import org.talend.core.model.components.IComponentsService;
 import org.talend.core.model.general.ModuleNeeded;
 import org.talend.core.model.general.Project;
 import org.talend.core.model.metadata.IMetadataColumn;
@@ -81,6 +83,7 @@ import org.talend.core.model.process.JobInfo;
 import org.talend.core.model.process.ProcessUtils;
 import org.talend.core.model.process.ReplaceNodesInProcessProvider;
 import org.talend.core.model.properties.Item;
+import org.talend.core.model.properties.JobletProcessItem;
 import org.talend.core.model.properties.ProcessItem;
 import org.talend.core.model.properties.Property;
 import org.talend.core.model.relationship.Relation;
@@ -679,23 +682,54 @@ public class ProcessorUtilities {
 
     private static Map<String, Set<String>> getActivateTRunjobMap(String id, String version) throws PersistenceException {
         Map<String, Set<String>> actTrunjobHM = new HashMap<String, Set<String>>();
-        ProcessItem processItem = null;
+        ProcessType processType = null;
         try {
             IRepositoryViewObject currentJobObject = ProxyRepositoryFactory.getInstance().getSpecificVersion(id, version, true);
             if (currentJobObject != null) {
-                processItem = (ProcessItem) currentJobObject.getProperty().getItem();
+                Item item = currentJobObject.getProperty().getItem();
+                if (item instanceof ProcessItem) {
+                    processType = ((ProcessItem) item).getProcess();
+                } else if (item instanceof JobletProcessItem) {
+                    processType = ((JobletProcessItem) item).getJobletProcess();
+                }
             }
         } catch (PersistenceException e) {
             ExceptionHandler.process(e);
         }
-        if (processItem != null) {
+        if (processType != null) {
             List<Project> allProjects = new ArrayList<Project>();
             allProjects.add(ProjectManager.getInstance().getCurrentProject());
             allProjects.addAll(ProjectManager.getInstance().getAllReferencedProjects());
 
-            for (Object nodeObject : processItem.getProcess().getNode()) {
+            List<String> jobletsComponentsList = new ArrayList<String>();
+            IComponentsFactory componentsFactory = null;
+            if (GlobalServiceRegister.getDefault().isServiceRegistered(IComponentsService.class)) {
+                IComponentsService compService = (IComponentsService) GlobalServiceRegister.getDefault()
+                        .getService(IComponentsService.class);
+                if (compService != null) {
+                    componentsFactory = compService.getComponentsFactory();
+                    for (IComponent component : componentsFactory.readComponents()) {
+                        if (component.getComponentType() == EComponentType.JOBLET) {
+                            jobletsComponentsList.add(component.getName());
+                        }
+                    }
+                }
+            }
+
+            String jobletPaletteType = null;
+            String frameWork = processType.getFramework();
+            if (StringUtils.isBlank(frameWork)) {
+                jobletPaletteType = ComponentCategory.CATEGORY_4_DI.getName();
+            } else if (frameWork.equals(HadoopConstants.FRAMEWORK_SPARK)) {
+                jobletPaletteType = ComponentCategory.CATEGORY_4_SPARK.getName();
+            } else if (frameWork.equals(HadoopConstants.FRAMEWORK_SPARK_STREAMING)) {
+                jobletPaletteType = ComponentCategory.CATEGORY_4_SPARKSTREAMING.getName();
+            }
+
+            for (Object nodeObject : processType.getNode()) {
                 NodeType node = (NodeType) nodeObject;
-                if (!node.getComponentName().equals("tRunJob")) { // $NON-NLS-1$
+                // not tRunjob && not joblet then continue
+                if (!node.getComponentName().equals("tRunJob") && !jobletsComponentsList.contains(node.getComponentName())) { // $NON-NLS-1$
                     continue;
                 }
                 boolean nodeActivate = true;
@@ -712,7 +746,8 @@ public class ProcessorUtilities {
                                 }
                             }
                         }
-                    } else if ("PROCESS:PROCESS_TYPE_VERSION".equals(elemParamType.getName())) { // $NON-NLS-1$
+                    } else if ("PROCESS:PROCESS_TYPE_VERSION".equals(elemParamType.getName()) // $NON-NLS-1$
+                            || "PROCESS_TYPE_VERSION".equals(elemParamType.getName())) { // $NON-NLS-1$
                         processVersion = elemParamType.getValue();
                     } else if ("ACTIVATE".equals(elemParamType.getName())) { // $NON-NLS-1$
                         nodeActivate = Boolean.parseBoolean(elemParamType.getValue());
@@ -720,22 +755,51 @@ public class ProcessorUtilities {
                 }
 
                 if (nodeActivate) {
-                    for (String jobId : processIds.split(ProcessorUtilities.COMMA)) {
-                        String actualVersion = processVersion;
-                        if (RelationshipItemBuilder.LATEST_VERSION.equals(processVersion)) {
-                            for (Project project : allProjects) {
-                                IRepositoryViewObject lastVersion = null;
-                                lastVersion = ProxyRepositoryFactory.getInstance().getLastVersion(project, jobId);
-                                if (lastVersion != null) {
-                                    actualVersion = lastVersion.getVersion();
-                                    break;
+                    if (StringUtils.isNotBlank(processIds)) {
+                        for (String jobId : processIds.split(ProcessorUtilities.COMMA)) {
+                            String actualVersion = processVersion;
+                            if (RelationshipItemBuilder.LATEST_VERSION.equals(processVersion)) {
+                                for (Project project : allProjects) {
+                                    IRepositoryViewObject lastVersion = null;
+                                    lastVersion = ProxyRepositoryFactory.getInstance().getLastVersion(project, jobId);
+                                    if (lastVersion != null) {
+                                        actualVersion = lastVersion.getVersion();
+                                        break;
+                                    }
                                 }
                             }
-                        }
-                        if (actTrunjobHM.get(jobId) != null) {
-                            actTrunjobHM.get(jobId).add(actualVersion);
-                        }
+                            if (actTrunjobHM.get(jobId) != null) {
+                                actTrunjobHM.get(jobId).add(actualVersion);
+                            }
 
+                        }
+                    } else if (componentsFactory != null && jobletPaletteType != null) {
+                        // for joblet
+                        IComponent cc = componentsFactory.get(node.getComponentName(), jobletPaletteType);
+                        if (GlobalServiceRegister.getDefault().isServiceRegistered(IJobletProviderService.class)) {
+                            IJobletProviderService jobletService = (IJobletProviderService) GlobalServiceRegister.getDefault()
+                                    .getService(IJobletProviderService.class);
+                            Property property = jobletService.getJobletComponentItem(cc);
+                            if (property != null && StringUtils.isNotBlank(property.getId())) {
+                                String jobletId = property.getId();
+                                if (actTrunjobHM.get(jobletId) == null) {
+                                    actTrunjobHM.put(jobletId, new HashSet<String>());
+                                }
+                                String actualVersion = processVersion;
+                                if (RelationshipItemBuilder.LATEST_VERSION.equals(processVersion)) {
+                                    for (Project project : allProjects) {
+                                        IRepositoryViewObject lastVersion = null;
+                                        lastVersion = ProxyRepositoryFactory.getInstance().getLastVersion(project, jobletId);
+                                        if (lastVersion != null) {
+                                            actualVersion = lastVersion.getVersion();
+                                            break;
+                                        }
+                                    }
+                                }
+
+                                actTrunjobHM.get(jobletId).add(actualVersion);
+                            }
+                        }
                     }
                 }
             }
