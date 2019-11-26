@@ -71,8 +71,6 @@ public abstract class AbstractExtraFeature implements ExtraFeature {
 
     private Collection<Category> categories;
 
-    protected boolean share = true;
-
     public AbstractExtraFeature(String p2IuId, String name, String version, String description, String mvnUri, String imageMvnUri,
             String product, String compatibleStudioVersion, FeatureCategory parentCategory, Collection<Type> types,
             Collection<Category> categories, boolean degradable, boolean mustBeInstalled, boolean useLegacyP2Install) {
@@ -90,7 +88,6 @@ public abstract class AbstractExtraFeature implements ExtraFeature {
         this.degradable = degradable;
         this.types = types;
         this.categories = categories;
-        this.share = getRepositoryService().getProxyRepositoryFactory().isFullLogonFinished();
     }
 
     @Override
