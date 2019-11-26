@@ -17,7 +17,6 @@ import java.net.URISyntaxException;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.apache.commons.codec.binary.Base64;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.http.HttpResponse;
 import org.apache.http.HttpStatus;
@@ -186,12 +185,6 @@ public abstract class AbsNexus3SearchHandler implements INexus3SearchHandler {
             hasParameter = true;
         }
         return sb.toString();
-    }
-
-    protected String getAuthenticationItem() {
-        String userPass = serverBean.getUserName() + ":" + serverBean.getPassword(); //$NON-NLS-1$
-        String basicAuth = "Basic " + new String(new Base64().encode(userPass.getBytes())); //$NON-NLS-1$
-        return basicAuth;
     }
 
     protected int getNexus3SocketTimeout() {

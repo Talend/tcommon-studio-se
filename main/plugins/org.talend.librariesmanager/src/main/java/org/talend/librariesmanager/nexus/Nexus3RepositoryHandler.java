@@ -20,6 +20,8 @@ import java.util.List;
 import org.apache.commons.codec.binary.Base64;
 import org.apache.http.Header;
 import org.apache.http.HttpResponse;
+import org.apache.http.auth.AuthScope;
+import org.apache.http.auth.UsernamePasswordCredentials;
 import org.apache.http.client.ClientProtocolException;
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.impl.client.DefaultHttpClient;
@@ -88,12 +90,10 @@ public class Nexus3RepositoryHandler extends AbstractArtifactRepositoryHandler {
     }
 
     private boolean doConnectionCheck(String repositoryUrl) throws ClientProtocolException, IOException {
-        String userPass = serverBean.getUserName() + ":" + serverBean.getPassword();
-        String basicAuth = "Basic " + new String(new Base64().encode(userPass.getBytes()));
-        Header authority = new BasicHeader("Authorization", basicAuth);
         HttpGet get = new HttpGet(repositoryUrl);
-        get.addHeader(authority);
         DefaultHttpClient httpclient = new DefaultHttpClient();
+        UsernamePasswordCredentials credentials = new UsernamePasswordCredentials(serverBean.getUserName(), serverBean.getPassword());
+        httpclient.getCredentialsProvider().setCredentials(AuthScope.ANY, credentials);
         HttpResponse response = httpclient.execute(get);
         if (response.getStatusLine().getStatusCode() == 200) {
             return true;

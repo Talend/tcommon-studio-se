@@ -12,9 +12,12 @@
 // ============================================================================
 package org.talend.core.runtime.maven;
 
+import java.io.UnsupportedEncodingException;
 import java.net.URI;
 import java.net.URL;
 import java.net.URLDecoder;
+import java.net.URLEncoder;
+import java.nio.charset.StandardCharsets;
 
 import org.apache.commons.lang.StringUtils;
 import org.eclipse.core.runtime.Assert;
@@ -265,7 +268,13 @@ public class MavenUrlHelper {
                     if (encryptPassword) {
                         password = encryptPassword(password);
                     }
-                    String usernamePassword = username + USER_PASSWORD_SPLITER + password;
+                    String usernamePassword;
+					try {
+						usernamePassword = URLEncoder.encode(username, StandardCharsets.UTF_8.toString()) + USER_PASSWORD_SPLITER + URLEncoder.encode(password, StandardCharsets.UTF_8.toString());
+					} catch (UnsupportedEncodingException e1) {
+						usernamePassword = username + USER_PASSWORD_SPLITER + password;
+						ExceptionHandler.process(e1);
+					}
                     try {
                         URL repoWithoutUserPasswordUrl = new URL(repositoryId);
                         if (repoWithoutUserPasswordUrl != null) {

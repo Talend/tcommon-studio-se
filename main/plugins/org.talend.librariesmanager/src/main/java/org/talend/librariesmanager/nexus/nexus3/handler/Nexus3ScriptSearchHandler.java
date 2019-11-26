@@ -19,6 +19,8 @@ import java.util.List;
 import org.apache.http.Header;
 import org.apache.http.HttpResponse;
 import org.apache.http.HttpStatus;
+import org.apache.http.auth.UsernamePasswordCredentials;
+import org.apache.http.client.fluent.Executor;
 import org.apache.http.client.fluent.Request;
 import org.apache.http.entity.ContentType;
 import org.apache.http.message.BasicHeader;
@@ -56,7 +58,11 @@ public class Nexus3ScriptSearchHandler extends AbsNexus3SearchHandler {
         }
         request.bodyString(body.toString(),
                 ContentType.create(ContentType.APPLICATION_JSON.getMimeType(), StandardCharsets.UTF_8));
-        HttpResponse response = request.execute().returnResponse();
+    	Executor exec = Executor.newInstance();
+        UsernamePasswordCredentials credentials = new UsernamePasswordCredentials(serverBean.getUserName(), serverBean.getPassword());
+        exec.auth(credentials);
+        HttpResponse response = exec.execute(request).returnResponse();
+
         if (response.getStatusLine().getStatusCode() == HttpStatus.SC_OK) {
             String content = EntityUtils.toString(response.getEntity());
             if (content.isEmpty()) {
@@ -91,10 +97,8 @@ public class Nexus3ScriptSearchHandler extends AbsNexus3SearchHandler {
 
     protected Request getRequest(String searchUrl) {
         Request request = Request.Post(searchUrl);
-        Header authority = new BasicHeader("Authorization", getAuthenticationItem()); //$NON-NLS-1$
         Header contentType = new BasicHeader("Content-Type", "text/plain"); //$NON-NLS-1$ //$NON-NLS-2$
         request.addHeader(contentType);
-        request.addHeader(authority);
         request.socketTimeout(this.getNexus3SocketTimeout());
         return request;
     }
