@@ -51,7 +51,7 @@
          fragment="true"/>
 
    <plugin
-         id="org.talend.libraries.apache.lucene6"
+         id="org.talend.libraries.apache.lucene8"
          download-size="0"
          install-size="0"
          version="0.0.0"/>
