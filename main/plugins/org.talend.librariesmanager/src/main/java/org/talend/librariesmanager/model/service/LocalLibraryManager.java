@@ -1368,6 +1368,10 @@ public class LocalLibraryManager implements ILibraryManagerService, IChangedLibr
             Set<String> duplicateLocationJar, Map<String, String> libsToMavenUri, Set<String> duplicateMavenUri) {
 
         for (ModuleNeeded module : modules) {
+            if (module == null) {
+                ExceptionHandler.process(new Exception("null module found!"));
+                continue;
+            }
             String moduleLocation = module.getModuleLocaion();
             // take maven uri from configuration to save in the index , don't generate by module name automatically
             String mavenUrl = module.getMavenURIFromConfiguration();
