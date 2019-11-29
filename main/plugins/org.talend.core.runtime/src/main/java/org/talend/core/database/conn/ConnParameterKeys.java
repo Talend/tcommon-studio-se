@@ -302,4 +302,11 @@ public class ConnParameterKeys {
 
     public static final String CONN_PARA_KEY_DATABRICKS_DBFS_DEP_FOLDER="CONN_PARA_KEY_DATABRICKS_DBFS_DEP_FOLDER";
 
+    /**
+     * Override hadoop configuration
+     */
+    public static final String CONN_PARA_KEY_SET_HADOOP_CONF = "CONN_PARA_KEY_SET_HADOOP_CONF";
+
+    public static final String CONN_PARA_KEY_HADOOP_CONF_SPECIFIC_JAR = "CONN_PARA_KEY_HADOOP_CONF_SPECIFIC_JAR";
+
 }
