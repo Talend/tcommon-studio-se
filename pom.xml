@@ -103,7 +103,7 @@
 		<module>main/plugins/org.talend.libraries.apache.http</module>
 		<module>main/plugins/org.talend.libraries.apache.lucene</module>
 		<module>main/plugins/org.talend.libraries.apache.lucene4</module>
-		<module>main/plugins/org.talend.libraries.apache.lucene6</module>
+		<module>main/plugins/org.talend.libraries.apache.lucene8</module>
 		<module>main/plugins/org.talend.libraries.apache.xml</module>
 		<module>main/plugins/org.talend.libraries.csv</module>
 		<module>main/plugins/org.talend.libraries.dom4j-jaxen</module>
