@@ -12,14 +12,12 @@
 // ============================================================================
 package org.talend.core.nexus;
 
-import java.net.Authenticator;
 import java.net.InetSocketAddress;
 import java.net.PasswordAuthentication;
 import java.net.Proxy;
 import java.net.Proxy.Type;
 import java.net.URI;
 import java.net.URISyntaxException;
-import java.util.ArrayList;
 import java.util.List;
 
 import org.apache.commons.lang.StringUtils;
@@ -37,7 +35,6 @@ import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.NullProgressMonitor;
 import org.eclipse.core.runtime.OperationCanceledException;
 import org.talend.commons.exception.BusinessException;
-import org.talend.commons.exception.ExceptionHandler;
 import org.talend.commons.utils.network.TalendProxySelector;
 import org.talend.commons.utils.network.TalendProxySelector.IProxySelectorProvider;
 import org.talend.core.runtime.CoreRuntimePlugin;
@@ -167,7 +164,7 @@ public abstract class HttpClientTransport {
         }
     }
 
-    private IProxySelectorProvider addProxy(final DefaultHttpClient httpClient, URI requestURI) {
+    public static IProxySelectorProvider addProxy(final DefaultHttpClient httpClient, URI requestURI) {
         IProxySelectorProvider proxySelectorProvider = null;
         try {
             if (Boolean.valueOf(System.getProperty(PROP_PROXY_HTTP_CLIENT_USE_DEFAULT_SETTINGS, Boolean.FALSE.toString()))) {
@@ -187,8 +184,8 @@ public abstract class HttpClientTransport {
                 InetSocketAddress address = (InetSocketAddress) finalProxy.address();
                 String proxyServer = address.getHostName();
                 int proxyPort = address.getPort();
-                PasswordAuthentication proxyAuthentication = Authenticator.requestPasswordAuthentication(proxyServer,
-                        address.getAddress(), proxyPort, "Http Proxy", "Http proxy authentication", null);
+                TalendProxySelector proxySelector = TalendProxySelector.getInstance();
+                PasswordAuthentication proxyAuthentication = proxySelector.getHttpPasswordAuthentication();
                 if (proxyAuthentication != null) {
                     String proxyUser = proxyAuthentication.getUserName();
                     if(StringUtils.isNotBlank(proxyUser)){
@@ -203,7 +200,7 @@ public abstract class HttpClientTransport {
                 }
                 HttpHost proxyHost = new HttpHost(proxyServer, proxyPort);
                 httpClient.getParams().setParameter(ConnRoutePNames.DEFAULT_PROXY, proxyHost);
-                proxySelectorProvider = createProxySelectorProvider();
+                proxySelectorProvider = proxySelector.createDefaultProxySelectorProvider();
             }
             return proxySelectorProvider;
         } finally {
@@ -213,59 +210,10 @@ public abstract class HttpClientTransport {
         }
     }
 
-    private void removeProxy(IProxySelectorProvider proxySelectorProvider) {
+    public static void removeProxy(IProxySelectorProvider proxySelectorProvider) {
         if (proxySelectorProvider != null) {
             TalendProxySelector.getInstance().removeProxySelectorProvider(proxySelectorProvider);
         }
-    }
-
-    private IProxySelectorProvider createProxySelectorProvider() {
-        IProxySelectorProvider proxySelectorProvider = new TalendProxySelector.AbstractProxySelectorProvider() {
-
-            private Thread currentThread = Thread.currentThread();
-
-            @Override
-            public List<Proxy> select(URI uri) {
-                // return Collections.EMPTY_LIST;
-
-                List<Proxy> newProxys = new ArrayList<>();
-                if (uri == null) {
-                    return newProxys;
-                }
-                String schema = uri.getScheme();
-                if (schema != null && schema.toLowerCase().startsWith("socket")) { //$NON-NLS-1$
-                    try {
-                        URI newUri = new URI("https", uri.getUserInfo(), uri.getHost(), uri.getPort(), uri.getPath(),
-                                uri.getQuery(), uri.getFragment());
-                        List<Proxy> proxys = TalendProxySelector.getInstance().getDefaultProxySelector().select(newUri);
-                        if (proxys != null && !proxys.isEmpty()) {
-                            newProxys.addAll(proxys);
-                        } else {
-                            newUri = new URI("http", uri.getUserInfo(), uri.getHost(), uri.getPort(), uri.getPath(),
-                                    uri.getQuery(), uri.getFragment());
-                            proxys = TalendProxySelector.getInstance().getDefaultProxySelector().select(newUri);
-                            if (proxys != null && !proxys.isEmpty()) {
-                                newProxys.addAll(proxys);
-                            }
-                        }
-                    } catch (URISyntaxException e) {
-                        ExceptionHandler.process(e);
-                    }
-                }
-                return newProxys;
-
-            }
-
-            @Override
-            public boolean canHandle(URI uri) {
-                if (Thread.currentThread() == currentThread) {
-                    return true;
-                }
-                return false;
-            }
-
-        };
-        return proxySelectorProvider;
     }
 
     public void processResponseCode(HttpResponse response) throws BusinessException {

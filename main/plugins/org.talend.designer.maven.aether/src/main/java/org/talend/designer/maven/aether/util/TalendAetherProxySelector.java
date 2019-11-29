@@ -44,7 +44,8 @@ public class TalendAetherProxySelector implements ProxySelector {
                 if (repository != null) {
                     String proxyStr = "";
                     if (proxy != null) {
-                        proxyStr = proxy.toString() + ", proxy user: " + (proxy.getAuthentication() != null ? "..." : "<empty>");
+                        proxyStr = proxy.getType() + " " + proxy.toString() + ", proxy user: "
+                                + (proxy.getAuthentication() != null ? "..." : "<empty>");
                     }
                     ExceptionHandler.log("Aether proxy> host: " + repository.getHost() + ", proxy: " + proxyStr);
                 }
@@ -62,23 +63,28 @@ public class TalendAetherProxySelector implements ProxySelector {
     }
 
     private void javaDefaultProxy(DefaultProxySelector proxySelector) {
-        String proxyHost = System.getProperty("https.proxyHost");
-        String schema = proxyHost != null ? "https" : "http";
-        if (proxyHost == null) {
-            proxyHost = System.getProperty(schema + "." + "proxyHost");
+        String[] schemas = new String[] { "http", "https" };
+        for (String schema : schemas) {
+            Proxy proxy = createProxy(schema);
+            if (proxy != null) {
+                proxySelector.add(proxy, System.getProperty(schema + ".nonProxyHosts"));
+            }
         }
+    }
+
+    private org.eclipse.aether.repository.Proxy createProxy(String schema) {
+        String proxyHost = System.getProperty(schema + ".proxyHost");
         if (proxyHost == null) {
-            return;
+            return null;
         }
-        String proxyUser = System.getProperty(schema + "." + "proxyUser");
-        String proxyPassword = System.getProperty(schema + "." + "proxyPassword");
-        int proxyPort = Integer.parseInt(System.getProperty(schema + "." + "proxyPort", "8080"));
-        String nonProxyHosts = System.getProperty(schema + "." + "nonProxyHosts");
+        String proxyUser = System.getProperty(schema + ".proxyUser");
+        String proxyPassword = System.getProperty(schema + ".proxyPassword");
+        int proxyPort = Integer.parseInt(System.getProperty(schema + ".proxyPort", "8080"));
 
         Authentication authentication = createAuthentication(proxyUser, proxyPassword);
         org.eclipse.aether.repository.Proxy proxyObj = new org.eclipse.aether.repository.Proxy(schema, proxyHost, proxyPort,
                 authentication);
-        proxySelector.add(proxyObj, nonProxyHosts);
+        return proxyObj;
     }
 
     private Authentication createAuthentication(String proxyUser, String proxyPassword) {
