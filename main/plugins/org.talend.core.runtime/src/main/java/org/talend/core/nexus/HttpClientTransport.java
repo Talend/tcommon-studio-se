@@ -182,7 +182,7 @@ public abstract class HttpClientTransport {
                 }
                 final Proxy finalProxy = usedProxy;
                 InetSocketAddress address = (InetSocketAddress) finalProxy.address();
-                String proxyServer = address.getHostName();
+                String proxyServer = address.getHostString();
                 int proxyPort = address.getPort();
                 TalendProxySelector proxySelector = TalendProxySelector.getInstance();
                 PasswordAuthentication proxyAuthentication = proxySelector.getHttpPasswordAuthentication();
