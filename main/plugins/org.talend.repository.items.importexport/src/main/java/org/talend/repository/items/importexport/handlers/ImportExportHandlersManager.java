@@ -38,6 +38,7 @@ import org.eclipse.core.runtime.NullProgressMonitor;
 import org.eclipse.core.runtime.OperationCanceledException;
 import org.eclipse.core.runtime.Path;
 import org.eclipse.core.runtime.Platform;
+import org.eclipse.core.runtime.ProgressMonitorWrapper;
 import org.eclipse.core.runtime.Status;
 import org.eclipse.core.runtime.jobs.ISchedulingRule;
 import org.eclipse.emf.common.util.EList;
@@ -521,7 +522,22 @@ public class ImportExportHandlersManager {
                     final IWorkspaceRunnable op = new IWorkspaceRunnable() {
 
                         @Override
-                        public void run(final IProgressMonitor monitor) throws CoreException {
+                        public void run(IProgressMonitor monitor) throws CoreException {
+                            // NotCancelableProgressMonitor
+                            monitor = new ProgressMonitorWrapper(monitor) {
+
+                                @Override
+                                public boolean isCanceled() {
+                                    return false;
+                                }
+
+                                @Override
+                                public void setCanceled(boolean b) {
+                                    // ignore set cancel
+                                }
+
+                            };
+
                             try {
                                 // pre import
                                 preImport(monitor, resManager, checkedItemRecords.toArray(new ImportItem[0]),
@@ -607,7 +623,7 @@ public class ImportExportHandlersManager {
                             }
 
                             try {
-                                forceDeleteWithRelationsBeforeOverwriteImport(progressMonitor, resManager, allImportItemRecords,
+                                forceDeleteWithRelationsBeforeOverwriteImport(monitor, resManager, allImportItemRecords,
                                         checkedItemRecords, overwriteDeletedItems, idDeletedBeforeImport);
 
                                 importItemRecordsWithRelations(monitor, resManager, checkedItemRecords, overwrite,

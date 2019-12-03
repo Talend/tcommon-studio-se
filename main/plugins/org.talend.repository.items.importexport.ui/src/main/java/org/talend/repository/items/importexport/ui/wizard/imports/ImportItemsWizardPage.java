@@ -950,7 +950,8 @@ public class ImportItemsWizardPage extends WizardPage {
 
             // seems one time shows one error
             if (StringUtils.isBlank(errorMessage) && StringUtils.isNotBlank(itRecord.getProperty().getLabel())) {
-                ImportItem hasRecord = duplicateNameMap.put(itRecord.getProperty().getLabel().toLowerCase(), itRecord);
+                ImportItem hasRecord = duplicateNameMap
+                        .put(itRecord.getProperty().getLabel().toLowerCase() + itRecord.getProperty().getVersion(), itRecord);
                 if (hasRecord != null) {
                     errorMessage = Messages.getString("ImportItemsWizardPage_sameNameMessage", itRecord.getPath(), //$NON-NLS-1$
                             hasRecord.getPath());
