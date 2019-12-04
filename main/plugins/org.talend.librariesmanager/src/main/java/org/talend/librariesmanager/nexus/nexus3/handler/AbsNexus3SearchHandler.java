@@ -119,7 +119,7 @@ public abstract class AbsNexus3SearchHandler implements INexus3SearchHandler {
                 MavenArtifact artifact = new MavenArtifact();
                 artifact.setGroupId(jsonObject.getString("group")); //$NON-NLS-1$
                 artifact.setArtifactId(jsonObject.getString("name")); //$NON-NLS-1$
-                artifact.setVersion(jsonObject.getString("baseVersion")); //$NON-NLS-1$
+                artifact.setVersion(jsonObject.getString("version")); //$NON-NLS-1$
                 JSONArray assertsArray = jsonObject.getJSONArray("assets"); //$NON-NLS-1$
                 artifact.setType(getPackageType(assertsArray));
                 resultList.add(artifact);
