@@ -52,6 +52,8 @@ public class UpdateTools {
 
     public static String PATCH_PROPUCT_VERSION = "product.version"; //$NON-NLS-1$
 
+    private static final String SIGNATURE_FILE_NAME_SUFFIX = ".sig";
+
     public static void backupConfigFile() throws IOException {
         File configurationFile = getConfigurationFile();
         File tempFile = getTempConfigurationFile();
@@ -169,6 +171,13 @@ public class UpdateTools {
             targetFile.delete();
         }
         FilesUtils.copyFile(sourceFile, targetFile);
+        // sync signature
+        File sourceSigFile = new File(sourceFile.getAbsolutePath() + SIGNATURE_FILE_NAME_SUFFIX);
+        File targetSigFile = new File(targetFile.getAbsolutePath() + SIGNATURE_FILE_NAME_SUFFIX);
+        if (targetSigFile.exists()) {
+            targetSigFile.delete();
+        }
+        FilesUtils.copyFile(sourceSigFile, targetSigFile);
     }
 
     public static File getProductRootFolder() {
