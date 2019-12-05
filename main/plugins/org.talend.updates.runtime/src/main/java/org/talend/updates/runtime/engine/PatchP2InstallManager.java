@@ -138,7 +138,7 @@ public class PatchP2InstallManager {
                 UpdateTools.syncLibraries(installingPatchFolder);
                 UpdateTools.syncM2Repository(installingPatchFolder);
                 UpdateTools.installCars(monitor, installingPatchFolder, false);
-                UpdateTools.cleanupBundles(validInstall);
+                UpdateTools.collectDropBundles(validInstall);
                 break;
             }
         }

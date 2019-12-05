@@ -16,7 +16,11 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.nio.file.Files;
+import java.nio.file.StandardOpenOption;
+import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Properties;
 import java.util.Set;
 import java.util.stream.Collectors;
@@ -52,6 +56,8 @@ public class UpdateTools {
 
     public static String PATCH_PROPUCT_VERSION = "product.version"; //$NON-NLS-1$
 
+    private static final String LINE_SEPARATOR = System.getProperty("line.separator");
+    
     private static final String SIGNATURE_FILE_NAME_SUFFIX = ".sig";
 
     public static void backupConfigFile() throws IOException {
@@ -220,14 +226,44 @@ public class UpdateTools {
         }
     }
 
-    public static void cleanupBundles(Set<IInstallableUnit> validInstall) {
+    public static void collectDropBundles(Set<IInstallableUnit> validInstall) throws IOException {
         File pluginFolderFile = getProductRootFolder().toPath().resolve("plugins").toFile();
         if (!pluginFolderFile.exists() || !pluginFolderFile.isDirectory()) {
             return;
         }
         Set<File> plugins = Stream.of(pluginFolderFile.listFiles()).collect(Collectors.toSet());
-        validInstall.stream().forEach(iu -> plugins.stream().filter(f -> f.exists() && f.getName().startsWith(iu.getId() + "_"))
-                .sorted((e1, e2) -> e2.compareTo(e1)).skip(1).forEach(f -> f.delete()));
+        List<String> dropList = new ArrayList<>();
+        validInstall.forEach(iu -> {
+            List<String> list = plugins.stream()
+                    .filter(f -> f.exists() && f.getName().startsWith(iu.getId() + "_")
+                            && !f.getName().contains(iu.getId() + "_" + iu.getVersion()))
+                    .map(File::getAbsolutePath).collect(Collectors.toList());
+            dropList.addAll(list);
+        });
+        File dropFile = new File(pluginFolderFile, "droplist");
+        if (!dropFile.exists()) {
+            dropFile.createNewFile();
+        }
+        StringBuilder builder = new StringBuilder();
+        Stream.of(dropList, Files.readAllLines(dropFile.toPath())).distinct()
+                .forEach(s -> builder.append(s).append(LINE_SEPARATOR));
+        Files.write(dropFile.toPath(), builder.toString().getBytes(), StandardOpenOption.TRUNCATE_EXISTING);
+    }
+
+    public static void cleanUpDropBundles() throws IOException {
+        File pluginFolderFile = getProductRootFolder().toPath().resolve("plugins").toFile();
+        File dropFile = new File(pluginFolderFile, "droplist");
+        if (dropFile.exists()) {
+            StringBuilder builder = new StringBuilder();
+            Files.lines(dropFile.toPath()).map(File::new).filter(f -> !f.delete())
+                    .forEach(f -> builder.append(f.getAbsolutePath()).append(LINE_SEPARATOR));
+            if (builder.length() > 0) {
+                // deletion failed for some bundle
+                Files.write(dropFile.toPath(), builder.toString().getBytes(), StandardOpenOption.TRUNCATE_EXISTING);
+            } else {
+                dropFile.delete();
+            }
+        }
     }
 
 }
