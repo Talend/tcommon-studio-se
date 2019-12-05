@@ -16,6 +16,7 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
 
+import java.nio.charset.StandardCharsets;
 import java.security.NoSuchAlgorithmException;
 import java.util.Base64;
 import java.util.Properties;
@@ -41,6 +42,7 @@ public class StudioKeySourceTest {
         p.stringPropertyNames().forEach((k) -> {
             assertTrue("default keys: " + k,
                     k.startsWith(StudioKeySource.KEY_SYSTEM_PREFIX)
+                            || k.equals(StudioEncryption.EncryptionKeyName.MIGRATION.toString())
                             || k.equals(StudioEncryption.EncryptionKeyName.MIGRATION_TOKEN.toString())
                             || k.equals(StudioEncryption.EncryptionKeyName.ROUTINE.toString()));
         });
@@ -102,6 +104,15 @@ public class StudioKeySourceTest {
         assertEquals("routine key name not equal", StudioEncryption.EncryptionKeyName.ROUTINE.toString(), ks.getKeyName());
 
         assertNotNull(ks.getKey());
+    }
+
+    @Test
+    public void testMigrationEncryptionKey() throws Exception {
+        Properties p = StudioKeySource.loadAllKeys();
+        StudioKeySource ks = StudioKeySource.key(p, StudioEncryption.EncryptionKeyName.MIGRATION.toString(), true);
+        assertEquals("migration key name not equal", StudioEncryption.EncryptionKeyName.MIGRATION.toString(), ks.getKeyName());
+        assertNotNull(ks.getKey());
+        assertEquals("Talend-Key", new String(ks.getKey(), StandardCharsets.UTF_8));
     }
 
     public static Properties generateKeys() throws NoSuchAlgorithmException {

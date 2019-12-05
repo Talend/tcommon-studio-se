@@ -30,16 +30,14 @@ public class PasswordEncryptUtil {
 
     public static final String ENCRYPT_KEY = "Encrypt"; //$NON-NLS-1$
 
-    private static final String RAWKEY = "Talend-Key"; //$NON-NLS-1$
-
     private static SecretKey key = null;
 
     private static final SecureRandom SECURERANDOM = new SecureRandom();
 
     private static SecretKey getSecretKey() throws Exception {
         if (key == null) {
-
-            byte rawKeyData[] = RAWKEY.getBytes();
+            byte rawKeyData[] = StudioEncryption.getKeySource(StudioEncryption.EncryptionKeyName.MIGRATION.name(), false)
+                    .getKey();
             DESKeySpec dks = new DESKeySpec(rawKeyData);
             SecretKeyFactory keyFactory = SecretKeyFactory.getInstance("DES"); //$NON-NLS-1$
             key = keyFactory.generateSecret(dks);

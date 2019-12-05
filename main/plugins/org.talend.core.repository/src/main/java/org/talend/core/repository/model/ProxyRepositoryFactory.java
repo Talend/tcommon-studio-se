@@ -776,6 +776,20 @@ public final class ProxyRepositoryFactory implements IProxyRepositoryFactory {
 
     /*
      * (non-Javadoc)
+     * 
+     * @see
+     * org.talend.repository.model.IProxyRepositoryFactory#forceBatchDeleteObjectPhysical(org.talend.core.model.general.
+     * Project, java.util.List, boolean, boolean)
+     */
+    @Override
+    public void forceBatchDeleteObjectPhysical(Project project, List<IRepositoryViewObject> objToDeleteList,
+            boolean isDeleteAllVersion, boolean isDeleteOnRemote) throws PersistenceException {
+        this.repositoryFactoryFromProvider.batchDeleteObjectPhysical(project, objToDeleteList, isDeleteAllVersion,
+                isDeleteOnRemote);
+    }
+
+    /*
+     * (non-Javadoc)
      *
      * @seeorg.talend.repository.model.IProxyRepositoryFactory#deleteObjectPhysical(org.talend.core.model.repository.
      * IRepositoryViewObject)
@@ -932,7 +946,7 @@ public final class ProxyRepositoryFactory implements IProxyRepositoryFactory {
                     .getService(IRunProcessService.class);
             service.batchDeleteAllVersionTalendJobProject(idList);
         }
-        this.repositoryFactoryFromProvider.batchDeleteObjectPhysical(project, repositoryObjectList, false);
+        this.repositoryFactoryFromProvider.batchDeleteObjectPhysical(project, repositoryObjectList, true, false);
 
         // save project will handle git/svn update
         this.repositoryFactoryFromProvider.saveProject(project);
