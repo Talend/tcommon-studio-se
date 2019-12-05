@@ -24,7 +24,7 @@ public class MavenArtifact implements Cloneable {
     private static final char ARTIFACT_SEPARATOR = '-';
 
     private String repositoryUrl, groupId, artifactId, version, type, classifier, description, url, license, licenseUrl,
-            distribution, username, password, lastUpdated;
+            distribution, username, password, lastUpdated, sha1, md5;
 
     public String getLastUpdated() {
         return this.lastUpdated;
@@ -136,6 +136,22 @@ public class MavenArtifact implements Cloneable {
 
     public void setPassword(String password) {
         this.password = password;
+    }
+
+    public String getSha1() {
+        return sha1;
+    }
+
+    public void setSha1(String sha1) {
+        this.sha1 = sha1;
+    }
+
+    public String getMd5() {
+        return md5;
+    }
+
+    public void setMd5(String md5) {
+        this.md5 = md5;
     }
 
     /**

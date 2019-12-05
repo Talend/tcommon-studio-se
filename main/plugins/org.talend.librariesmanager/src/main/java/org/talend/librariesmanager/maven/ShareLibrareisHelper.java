@@ -13,6 +13,7 @@
 package org.talend.librariesmanager.maven;
 
 import java.io.File;
+import java.io.FileInputStream;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.Iterator;
@@ -20,19 +21,22 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
+import org.apache.commons.codec.digest.DigestUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
 import org.eclipse.core.runtime.SubMonitor;
 import org.eclipse.core.runtime.jobs.Job;
 import org.talend.core.model.general.ModuleNeeded;
-import org.talend.core.nexus.IRepositoryArtifactHandler;
 import org.talend.core.nexus.ArtifactRepositoryBean;
+import org.talend.core.nexus.IRepositoryArtifactHandler;
 import org.talend.core.nexus.RepositoryArtifactHandlerManager;
 import org.talend.core.nexus.TalendLibsServerManager;
 import org.talend.core.runtime.maven.MavenArtifact;
 import org.talend.core.runtime.maven.MavenUrlHelper;
 import org.talend.librariesmanager.i18n.Messages;
+import org.talend.librariesmanager.nexus.utils.VersionUtil;
 
 /**
  * created by Talend on 2015年7月31日 Detailled comment
@@ -104,10 +108,16 @@ public abstract class ShareLibrareisHelper {
                         String rGroup = remoteAtifact.getGroupId();
                         String rArtifact = remoteAtifact.getArtifactId();
                         String rVersion = remoteAtifact.getVersion();
-                        if (groupId != null && artifactId != null && version != null && groupId.equals(rGroup)
-                                && artifactId.equals(rArtifact) && version.equals(rVersion)) {
-                            eixst = true;
-                            break;
+                        if (rGroup != null && rArtifact != null && rGroup.equals(groupId) && rArtifact.equals(artifactId)) {
+                            if (isSnapshotVersion(version) && version.equals(VersionUtil.getSNAPSHOTVersion(rVersion))) {
+                                if (isSameFileWithRemote(file, remoteAtifact)) {
+                                    eixst = true;
+                                    break;
+                                }
+                            } else if (rVersion != null && rVersion.equals(version)) {
+                                eixst = true;
+                                break;
+                            }
                         }
                     }
                     if (eixst) {
@@ -129,6 +139,23 @@ public abstract class ShareLibrareisHelper {
 
         return status;
 
+    }
+
+    private boolean isSameFileWithRemote(File localFile, MavenArtifact remoteAtifact)
+            throws Exception {
+        String localFileShaCode = DigestUtils.shaHex(new FileInputStream(localFile));
+        String removeFileShaCode = remoteAtifact.getSha1();
+        if (StringUtils.equals(localFileShaCode, removeFileShaCode)) {
+            return true;
+        }
+        return false;
+    }
+
+    private boolean isSnapshotVersion(String version) {
+        if (version != null && version.toUpperCase().endsWith(MavenUrlHelper.VERSION_SNAPSHOT)) {
+            return true;
+        }
+        return false;
     }
 
     private void setJobName(Job job, String jobName) {

@@ -16,7 +16,9 @@ import java.io.File;
 import java.io.IOException;
 import java.net.URI;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.apache.commons.codec.binary.Base64;
 import org.apache.http.Header;
@@ -30,6 +32,7 @@ import org.apache.log4j.Logger;
 import org.eclipse.m2e.core.MavenPlugin;
 import org.talend.commons.exception.ExceptionHandler;
 import org.talend.commons.utils.network.TalendProxySelector.IProxySelectorProvider;
+import org.talend.core.nexus.ArtifactRepositoryBean;
 import org.talend.core.nexus.HttpClientTransport;
 import org.talend.core.nexus.IRepositoryArtifactHandler;
 import org.talend.core.nexus.NexusServerUtils;
@@ -53,6 +56,8 @@ public class Nexus3RepositoryHandler extends AbstractArtifactRepositoryHandler {
 
     private INexus3SearchHandler currentQueryHandler = null;
 
+    private static final Map<ArtifactRepositoryBean, INexus3SearchHandler> LAST_HANDLER_MAP = new HashMap<ArtifactRepositoryBean, INexus3SearchHandler>();
+    
     private static List<INexus3SearchHandler> queryHandlerList = new ArrayList<INexus3SearchHandler>();
 
     @Override
@@ -143,8 +148,12 @@ public class Nexus3RepositoryHandler extends AbstractArtifactRepositoryHandler {
 
     private List<MavenArtifact> doSearch(String repositoryId, String groupIdToSearch, String artifactId, String versionToSearch)
             throws Exception {
+        initQueryHandler();
         if (currentQueryHandler == null) {
-            currentQueryHandler = getQueryHandler();
+            currentQueryHandler = LAST_HANDLER_MAP.get(serverBean);
+            if (currentQueryHandler == null) {
+                currentQueryHandler = queryHandlerList.get(0);
+            }
         }
         List<MavenArtifact> result = new ArrayList<MavenArtifact>();
         try {
@@ -165,16 +174,16 @@ public class Nexus3RepositoryHandler extends AbstractArtifactRepositoryHandler {
                 }
             }
         }
+        LAST_HANDLER_MAP.put(serverBean, currentQueryHandler);
         return result;
     }
 
-    private INexus3SearchHandler getQueryHandler() {
+    private void initQueryHandler() {
         if (queryHandlerList.size() == 0) {
             queryHandlerList.add(new Nexus3V1SearchHandler(serverBean));
             queryHandlerList.add(new Nexus3BetaSearchHandler(serverBean));
             queryHandlerList.add(new Nexus3ScriptSearchHandler(serverBean));
         }
-        return queryHandlerList.get(0);
     }
 
     /*
