@@ -16,8 +16,10 @@ import java.io.File;
 import java.io.IOException;
 import java.net.URI;
 import java.util.Arrays;
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 import java.util.stream.Collectors;
 
@@ -83,24 +85,21 @@ public class PatchP2InstallManager {
         UpdateTools.setIuSingletonToFalse(toInstall);
         Set<IInstallableUnit> installed = UpdateTools.makeInstalledIuSingletonFrom(toInstall, agent);
         File featureIndexFile = new File(installingPatchFolder, UpdateTools.FILE_EXTRA_FEATURE_INDEX);
-        final Set<String> availableBundles = new HashSet<>();
+        Map<String, String> extraBundles = new HashMap<>();
         if (GlobalServiceRegister.getDefault().isServiceRegistered(ICoreTisService.class)) {
             ICoreTisService coreTisService = GlobalServiceRegister.getDefault().getService(ICoreTisService.class);
             try {
-                Set<String> extraBundles = coreTisService.getExtraBundlesFromPatch(featureIndexFile);
-                if (extraBundles != null && !extraBundles.isEmpty()) {
-                    availableBundles.addAll(extraBundles);
-                }
+                extraBundles.putAll(coreTisService.getExtraBundleInfo4Patch(featureIndexFile));
             } catch (IOException e) {
                 throw new ProvisionException(e.getMessage(), e.getCause());
             }
         }
-        availableBundles.addAll(installed.stream().map(IInstallableUnit::getId).collect(Collectors.toSet()));
+        Set<String> installedBundles = installed.stream().map(IInstallableUnit::getId).collect(Collectors.toSet());
 
         Set<IInstallableUnit> validInstall = new HashSet<>();
         Set<IInstallableUnit> invalidInstall = new HashSet<>();
         toInstall.stream().forEach(iu -> {
-            if (availableBundles.contains(iu.getId())) {
+            if (installedBundles.contains(iu.getId()) || extraBundles.containsKey(iu.getId())) {
                 validInstall.add(iu);
             } else {
                 invalidInstall.add(iu);
@@ -138,7 +137,7 @@ public class PatchP2InstallManager {
                 UpdateTools.syncLibraries(installingPatchFolder);
                 UpdateTools.syncM2Repository(installingPatchFolder);
                 UpdateTools.installCars(monitor, installingPatchFolder, false);
-                UpdateTools.collectDropBundles(validInstall);
+                UpdateTools.collectDropBundles(validInstall, extraBundles);
                 break;
             }
         }

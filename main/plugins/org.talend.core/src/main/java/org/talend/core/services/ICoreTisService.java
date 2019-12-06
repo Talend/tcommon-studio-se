@@ -15,6 +15,7 @@ package org.talend.core.services;
 import java.io.File;
 import java.io.IOException;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 
 import org.eclipse.core.runtime.IProgressMonitor;
@@ -71,7 +72,9 @@ public interface ICoreTisService extends IService {
 
     public void updateConfiguratorBundles(File configFile, File tempConfigFile) throws IOException;
 
-    Set<String> getExtraBundlesFromPatch(File featureIndexFile) throws IOException;
+    Map<String, String> getExtraBundleInfo4Patch(File featureIndexFile) throws IOException;
+
+    Map<String, String> getDropBundleInfo() throws IOException;
 
     Set<String> getComponentBlackList() throws Exception;
 

@@ -21,6 +21,7 @@ import java.nio.file.StandardOpenOption;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Map;
 import java.util.Properties;
 import java.util.Set;
 import java.util.stream.Collectors;
@@ -226,20 +227,29 @@ public class UpdateTools {
         }
     }
 
-    public static void collectDropBundles(Set<IInstallableUnit> validInstall) throws IOException {
+    public static void collectDropBundles(Set<IInstallableUnit> validInstall, Map<String, String> extraBundles) throws IOException {
         File pluginFolderFile = getProductRootFolder().toPath().resolve("plugins").toFile();
         if (!pluginFolderFile.exists() || !pluginFolderFile.isDirectory()) {
             return;
         }
         Set<File> plugins = Stream.of(pluginFolderFile.listFiles()).collect(Collectors.toSet());
         List<String> dropList = new ArrayList<>();
-        validInstall.forEach(iu -> {
+        // skip if from third-party bundles(version is not empty) in index, clean will be done by drop.bundle.info
+        validInstall.stream().filter(iu -> extraBundles.containsKey(iu.getId()) && extraBundles.get(iu.getId()).isEmpty())
+                .forEach(iu -> {
             List<String> list = plugins.stream()
                     .filter(f -> f.exists() && f.getName().startsWith(iu.getId() + "_")
                             && !f.getName().contains(iu.getId() + "_" + iu.getVersion()))
                     .map(File::getAbsolutePath).collect(Collectors.toList());
             dropList.addAll(list);
         });
+        // collect from drop.bundle.info
+        if (GlobalServiceRegister.getDefault().isServiceRegistered(ICoreTisService.class)) {
+            ICoreTisService coreTisService = GlobalServiceRegister.getDefault().getService(ICoreTisService.class);
+            Map<String, String> dropBundles = coreTisService.getDropBundleInfo();
+            dropBundles.forEach((b, v) -> plugins.stream().filter(f -> f.getName().contains(b + "_" + v))
+                    .forEach(f -> dropList.add(f.getAbsolutePath())));
+        }
         File dropFile = new File(pluginFolderFile, "droplist");
         if (!dropFile.exists()) {
             dropFile.createNewFile();
@@ -258,7 +268,7 @@ public class UpdateTools {
             Files.lines(dropFile.toPath()).map(File::new).filter(f -> !f.delete())
                     .forEach(f -> builder.append(f.getAbsolutePath()).append(LINE_SEPARATOR));
             if (builder.length() > 0) {
-                // deletion failed for some bundle
+                // if deletion for some bundle failed
                 Files.write(dropFile.toPath(), builder.toString().getBytes(), StandardOpenOption.TRUNCATE_EXISTING);
             } else {
                 dropFile.delete();
