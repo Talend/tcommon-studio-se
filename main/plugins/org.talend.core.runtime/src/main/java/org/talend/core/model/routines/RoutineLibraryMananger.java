@@ -151,12 +151,10 @@ public class RoutineLibraryMananger {
             TalendLibsServerManager manager = TalendLibsServerManager.getInstance();
             ArtifactRepositoryBean customNexusServer = manager.getCustomNexusServer();
             File jarFile = null;
-            if (customNexusServer != null) {
-                try {
-                    libManagerService.resolveJar(customNexusServer, mavUri);
-                } catch (Exception ex) {
-                    // Ignore here
-                }
+            try {
+                jarFile = libManagerService.resolveJar(customNexusServer, mavUri);
+            } catch (Exception ex) {
+                // Ignore here
             }
             boolean exist = (jarFile != null && jarFile.exists());
             if (exist) {

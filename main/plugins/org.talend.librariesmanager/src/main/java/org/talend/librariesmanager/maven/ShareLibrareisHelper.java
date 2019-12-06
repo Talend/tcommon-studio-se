@@ -15,6 +15,9 @@ package org.talend.librariesmanager.maven;
 import java.io.File;
 import java.io.FileInputStream;
 import java.util.ArrayList;
+import java.util.Comparator;
+import java.util.Date;
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
@@ -23,11 +26,13 @@ import java.util.Set;
 
 import org.apache.commons.codec.digest.DigestUtils;
 import org.apache.commons.lang3.StringUtils;
+import org.codehaus.jackson.map.util.ISO8601Utils;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
 import org.eclipse.core.runtime.SubMonitor;
 import org.eclipse.core.runtime.jobs.Job;
+import org.talend.commons.exception.ExceptionHandler;
 import org.talend.core.model.general.ModuleNeeded;
 import org.talend.core.nexus.ArtifactRepositoryBean;
 import org.talend.core.nexus.IRepositoryArtifactHandler;
@@ -53,9 +58,7 @@ public abstract class ShareLibrareisHelper {
         IStatus status = Status.OK_STATUS;
         // deploy to maven if needed and share to custom nexus
         try {
-            int searchLimit = 50;
             setJobName(job, Messages.getString("ShareLibsJob.message", TYPE_NEXUS));
-            final List<MavenArtifact> searchResults = new ArrayList<MavenArtifact>();
             ArtifactRepositoryBean customNexusServer = TalendLibsServerManager.getInstance().getCustomNexusServer();
             IRepositoryArtifactHandler customerRepHandler = RepositoryArtifactHandlerManager
                     .getRepositoryHandler(customNexusServer);
@@ -68,30 +71,47 @@ public abstract class ShareLibrareisHelper {
 
                 // collect groupId to search
                 Set<String> groupIds = new HashSet<String>();
+                Map<String, List<MavenArtifact>> snapshotArtifactMap = new HashMap<String, List<MavenArtifact>>();
+                Map<String, List<MavenArtifact>> releaseArtifactMap = new HashMap<String, List<MavenArtifact>>();
+                Set<String> snapshotGroupIdSet = new HashSet<String>();
+                Set<String> releaseGroupIdSet = new HashSet<String>();
                 for (ModuleNeeded module : filesToShare.keySet()) {
                     if (module.getMavenUri() != null) {
                         MavenArtifact parseMvnUrl = MavenUrlHelper.parseMvnUrl(module.getMavenUri());
                         if (parseMvnUrl != null) {
                             groupIds.add(parseMvnUrl.getGroupId());
+                            if (isSnapshotVersion(parseMvnUrl.getVersion())) {
+                                snapshotGroupIdSet.add(parseMvnUrl.getGroupId());
+                            } else {
+                                releaseGroupIdSet.add(parseMvnUrl.getGroupId());
+                            }
                         }
                     }
                 }
+                List<MavenArtifact> searchResults = new ArrayList<MavenArtifact>();
                 for (String groupId : groupIds) {
-                    searchResults.addAll(customerRepHandler.search(groupId, null, null, true, true));
+                    if (releaseGroupIdSet.contains(groupId)) {
+                        searchResults = customerRepHandler.search(groupId, null, null, true, false);
+                        if (searchResults != null) {
+                            for (MavenArtifact result : searchResults) {
+                                putArtifactToMap(result, releaseArtifactMap, false);
+                            }
+                        }
+                    }
+                    if (snapshotGroupIdSet.contains(groupId)) {
+                        searchResults = customerRepHandler.search(groupId, null, null, false, true);
+                        if (searchResults != null) {
+                            for (MavenArtifact result : searchResults) {
+                                putArtifactToMap(result, snapshotArtifactMap, true);
+                            }
+                        }
+                    }
                 }
-
-                int limit = searchLimit;
-                int shareIndex = 0;
                 Iterator<ModuleNeeded> iterator = filesToShare.keySet().iterator();
                 while (iterator.hasNext()) {
                     if (monitor.isCanceled()) {
                         return Status.CANCEL_STATUS;
                     }
-                    shareIndex++;
-                    if (shareIndex == limit) {
-                        limit += searchLimit;
-                    }
-
                     ModuleNeeded next = iterator.next();
                     File file = filesToShare.get(next);
                     String name = file.getName();
@@ -99,32 +119,21 @@ public abstract class ShareLibrareisHelper {
                     if (artifact == null) {
                         continue;
                     }
-
-                    boolean eixst = false;
-                    String groupId = artifact.getGroupId();
-                    String artifactId = artifact.getArtifactId();
-                    String version = artifact.getVersion();
-                    for (MavenArtifact remoteAtifact : searchResults) {
-                        String rGroup = remoteAtifact.getGroupId();
-                        String rArtifact = remoteAtifact.getArtifactId();
-                        String rVersion = remoteAtifact.getVersion();
-                        if (rGroup != null && rArtifact != null && rGroup.equals(groupId) && rArtifact.equals(artifactId)) {
-                            if (isSnapshotVersion(version) && version.equals(VersionUtil.getSNAPSHOTVersion(rVersion))) {
-                                if (isSameFileWithRemote(file, remoteAtifact)) {
-                                    eixst = true;
-                                    break;
-                                }
-                            } else if (rVersion != null && rVersion.equals(version)) {
-                                eixst = true;
-                                break;
-                            }
-                        }
-                    }
-                    if (eixst) {
-                        continue;
+                    boolean isSnapshotVersion = isSnapshotVersion(artifact.getVersion());
+                    String key = getArtifactKey(artifact, isSnapshotVersion);
+                    List<MavenArtifact> artifactList = null;
+                    if (isSnapshotVersion) {
+                        artifactList = snapshotArtifactMap.get(key);
+                    } else {
+                        artifactList = releaseArtifactMap.get(key);
                     }
                     mainSubMonitor.setTaskName(Messages.getString("ShareLibsJob.sharingLibraries", name));
-
+                    if (artifactList != null && artifactList.size() > 0) {
+                        if (isSameFileWithRemote(file, artifactList, customNexusServer)) {
+                            mainSubMonitor.worked(1);
+                            continue;
+                        }
+                    }
                     try {
                         shareToRepository(file, artifact);
                         mainSubMonitor.worked(1);
@@ -141,14 +150,83 @@ public abstract class ShareLibrareisHelper {
 
     }
 
-    private boolean isSameFileWithRemote(File localFile, MavenArtifact remoteAtifact)
-            throws Exception {
+    public void putArtifactToMap(MavenArtifact artifact, Map<String, List<MavenArtifact>> map, boolean isShapshot) {
+        String key = getArtifactKey(artifact, isShapshot);
+        List<MavenArtifact> list = map.get(key);
+        if (list == null) {
+            list = new ArrayList<MavenArtifact>();
+            map.put(key, list);
+        }
+        list.add(artifact);
+    }
+
+    private String getArtifactKey(MavenArtifact artifact, boolean isShapshot) {
+        StringBuilder sb = new StringBuilder();
+        sb.append(artifact.getGroupId()).append("-");
+        sb.append(artifact.getArtifactId()).append("-");
+        String version = artifact.getVersion();
+        if (isShapshot) {
+            version = VersionUtil.getSNAPSHOTVersion(version);
+        }
+        sb.append(version);
+        if (StringUtils.isNotEmpty(artifact.getClassifier())) {
+            sb.append("-").append(artifact.getClassifier());
+        }
+        return sb.toString();
+    }
+
+    private boolean isSameFileWithRemote(File localFile, List<MavenArtifact> artifactList,
+            ArtifactRepositoryBean customNexusServer) throws Exception {
         String localFileShaCode = DigestUtils.shaHex(new FileInputStream(localFile));
-        String removeFileShaCode = remoteAtifact.getSha1();
-        if (StringUtils.equals(localFileShaCode, removeFileShaCode)) {
+        MavenArtifact lastUpdatedArtifact = null;
+        if (ArtifactRepositoryBean.NexusType.ARTIFACTORY.name().equalsIgnoreCase(customNexusServer.getType())) {
+            lastUpdatedArtifact = getLateUpdatedMavenArtifact(artifactList);
+        } else {
+            lastUpdatedArtifact = artifactList.stream().max(Comparator.comparing(e -> e.getVersion())).get();
+        }
+        if (lastUpdatedArtifact != null && StringUtils.equals(localFileShaCode, lastUpdatedArtifact.getSha1())) {
             return true;
         }
         return false;
+    }
+
+    private MavenArtifact getLateUpdatedMavenArtifact(List<MavenArtifact> artifactList) {
+        if (artifactList.size() == 1) {
+            return artifactList.get(0);
+        }
+        MavenArtifact latestVersion = null;
+        Date lastUpdate = null;
+        for (MavenArtifact art : artifactList) {
+            if (latestVersion == null) {
+                if (art.getLastUpdated() != null) {
+                    latestVersion = art;
+                    lastUpdate = parsetDate(art.getLastUpdated());
+                }
+            } else if (art.getLastUpdated() != null && lastUpdate != null) {
+                Date artLastUpdate = parsetDate(art.getLastUpdated());
+                if (artLastUpdate != null && lastUpdate.getTime() < artLastUpdate.getTime()) {
+                    latestVersion = art;
+                    lastUpdate = artLastUpdate;
+                }
+            }
+        }
+        if (latestVersion != null) {
+            return latestVersion;
+        } else {
+            return artifactList.get(artifactList.size() - 1);
+        }
+    }
+
+    private Date parsetDate(String strDate) {
+        Date date = null;
+        if (strDate != null) {
+            try {
+                date = ISO8601Utils.parse(strDate);
+            } catch (Exception ex) {
+                ExceptionHandler.process(ex);
+            }
+        }
+        return date;
     }
 
     private boolean isSnapshotVersion(String version) {

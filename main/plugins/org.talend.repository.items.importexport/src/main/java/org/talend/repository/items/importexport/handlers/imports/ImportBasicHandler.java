@@ -101,8 +101,6 @@ import org.talend.designer.joblet.model.JobletPackage;
 import org.talend.designer.joblet.model.JobletProcess;
 import org.talend.model.emf.CwmResource;
 import org.talend.repository.ProjectManager;
-import org.talend.repository.RepositoryWorkUnit;
-import org.talend.repository.documentation.ERepositoryActionName;
 import org.talend.repository.items.importexport.handlers.HandlerUtil;
 import org.talend.repository.items.importexport.handlers.cache.RepositoryObjectCache;
 import org.talend.repository.items.importexport.handlers.model.ImportItem;
@@ -754,14 +752,13 @@ public class ImportBasicHandler extends AbstractImportExecutableHandler {
      */
     @Override
     public void doImport(IProgressMonitor monitor, ResourcesManager resManager, ImportItem selectedImportItem, boolean overwrite,
-            IPath destinationPath, Set<String> overwriteDeletedItems, Set<String> idDeletedBeforeImport) throws Exception {
+            IPath destinationPath) throws Exception {
         monitor.subTask(Messages.getString("AbstractImportHandler_importing", selectedImportItem.getItemName())); //$NON-NLS-1$
         resolveItem(resManager, selectedImportItem);
         if (!selectedImportItem.isValid()) {
             return;
         }
-        doImportItem(monitor, resManager, selectedImportItem, overwrite, destinationPath, overwriteDeletedItems,
-                idDeletedBeforeImport);
+        doImportItem(monitor, resManager, selectedImportItem, overwrite, destinationPath);
 
         String label = selectedImportItem.getLabel();
         TimeMeasure.step("importItemRecords", "Import item: " + label); //$NON-NLS-1$ //$NON-NLS-2$
@@ -771,7 +768,7 @@ public class ImportBasicHandler extends AbstractImportExecutableHandler {
     }
 
     protected void doImportItem(IProgressMonitor monitor, ResourcesManager resManager, ImportItem selectedImportItem,
-            boolean overwrite, IPath destinationPath, Set<String> overwriteDeletedItems, Set<String> idDeletedBeforeImport) {
+            boolean overwrite, IPath destinationPath) {
         final Item item = selectedImportItem.getItem();
         if (item != null) {
             final ProxyRepositoryFactory repFactory = ProxyRepositoryFactory.getInstance();
@@ -799,53 +796,8 @@ public class ImportBasicHandler extends AbstractImportExecutableHandler {
                                 || selectedImportItem.getState() == State.NAME_AND_ID_EXISTED || selectedImportItem.getState() == State.NAME_AND_ID_EXISTED_BOTH)
                         && !ImportCacheHelper.getInstance().getDeletedItems().contains(id)) {
 
-                    if (overwriteDeletedItems != null && !overwriteDeletedItems.contains(id)) { // bug 10520.
-                        ERepositoryStatus status = repFactory.getStatus(lastVersion);
-                        if (status == ERepositoryStatus.DELETED) {
-                            repFactory.restoreObject(lastVersion, path); // restore first.
-                        }
-                        overwriteDeletedItems.add(id);
-                    }
-
-                    /* only delete when name exsit rather than id exist */
-                    if (selectedImportItem.getState().equals(ImportItem.State.NAME_EXISTED)
-                            || selectedImportItem.getState().equals(ImportItem.State.NAME_AND_ID_EXISTED)
-                            || selectedImportItem.getState().equals(ImportItem.State.NAME_AND_ID_EXISTED_BOTH)) {
-                        final IRepositoryViewObject lastVersionBackup = lastVersion;
-                        if (idDeletedBeforeImport != null && !idDeletedBeforeImport.contains(id)) {
-                            // TDI-19535 (check if exists, delete all items with same id)
-                            final List<IRepositoryViewObject> allVersionToDelete = repFactory.getAllVersion(ProjectManager
-                                    .getInstance().getCurrentProject(), lastVersionBackup.getId(), false);
-                            String importingLabel = selectedImportItem.getProperty().getLabel();
-                            String existLabel = lastVersionBackup.getProperty().getLabel();
-                            final boolean isDeleteOnRemote = isNeedDeleteOnRemote(importingLabel, existLabel);
-                            RepositoryWorkUnit repositoryWorkUnit = new RepositoryWorkUnit(
-                                    Messages.getString("ImportExportHandlersManager_deletingItemsMessage")) {
-
-                                @Override
-                                public void run() throws PersistenceException {
-                                    if (ProxyRepositoryFactory.getInstance().isFullLogonFinished()) {
-                                        ProxyRepositoryFactory.getInstance().fireRepositoryPropertyChange(
-                                                ERepositoryActionName.DELETE_FOREVER.getName(), null, lastVersionBackup);
-                                    }
-                                    for (IRepositoryViewObject currentVersion : allVersionToDelete) {
-                                        repFactory.forceDeleteObjectPhysical(lastVersionBackup, currentVersion.getVersion(),
-                                                isDeleteOnRemote);
-                                    }
-                                }
-                            };
-                            if (isDeleteOnRemote) {
-                                repositoryWorkUnit.setForceTransaction(true);
-                            } else {
-                                repositoryWorkUnit.setForceTransaction(false);
-                            }
-
-                            repositoryWorkUnit.setRefreshRepository(false);
-                            repositoryWorkUnit.setAvoidUnloadResources(true);
-                            ProxyRepositoryFactory.getInstance().executeRepositoryWorkUnit(repositoryWorkUnit);
-                            idDeletedBeforeImport.add(id);
-                        }
-                    }
+                    // delete first then import, refer to ImportExportHandlersManager
+                    // forceDeleteBeforeOverwriteImport(IProgressMonitor, List<ImportItem>, Set<String>, Set<String>)
                     lastVersion = null;
                 }
 
@@ -938,7 +890,7 @@ public class ImportBasicHandler extends AbstractImportExecutableHandler {
      * @param contentType
      * @return
      */
-    protected IPath checkAndCreatePath(ImportItem selectedImportItem, IPath destinationPath) {
+    public IPath checkAndCreatePath(ImportItem selectedImportItem, IPath destinationPath) {
         final ProxyRepositoryFactory repFactory = ProxyRepositoryFactory.getInstance();
         final Item item = selectedImportItem.getItem();
         final ERepositoryObjectType curItemType = ERepositoryObjectType.getItemType(item);

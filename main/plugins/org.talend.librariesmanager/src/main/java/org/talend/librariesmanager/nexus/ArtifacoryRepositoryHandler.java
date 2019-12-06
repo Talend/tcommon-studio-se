@@ -187,6 +187,7 @@ public class ArtifacoryRepositoryHandler extends AbstractArtifactRepositoryHandl
             String resultUrl = serverUrl + SEARCH_RESULT_PREFIX;
             for (int i = 0; i < resultArray.size(); i++) {
                 JSONObject jsonObject = resultArray.getJSONObject(i);
+                String lastUpdated = jsonObject.getString("lastUpdated"); //$NON-NLS-1$
                 String uri = jsonObject.getString("uri"); //$NON-NLS-1$
                 uri = uri.substring(resultUrl.length(), uri.length());
                 String[] split = uri.split("/"); //$NON-NLS-1$
@@ -214,6 +215,7 @@ public class ArtifacoryRepositoryHandler extends AbstractArtifactRepositoryHandl
                             artifact.setArtifactId(a);
                             artifact.setVersion(v);
                             artifact.setType(type);
+                            artifact.setLastUpdated(lastUpdated);
                             fillChecksumData(jsonObject, artifact);
                             resultList.add(artifact);
                         }
