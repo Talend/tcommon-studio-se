@@ -936,7 +936,6 @@ public class ImportItemsWizardPage extends WizardPage {
     private String checkErrorFor2ItemsWithSameIdAndVersion(List<ImportItem> checkedElements) {
         String errorMessage = null;
         HashMap<String, ImportItem> duplicateCheckMap = new HashMap<String, ImportItem>();
-        HashMap<String, ImportItem> duplicateNameMap = new HashMap<String, ImportItem>();
         for (ImportItem itRecord : checkedElements) {
             if (itRecord instanceof EmptyFolderImportItem) {
                 continue;
@@ -947,16 +946,6 @@ public class ImportItemsWizardPage extends WizardPage {
                 errorMessage = Messages.getString(
                         "ImportItemsWizardPage_sameIdProblemMessage", itRecord.getPath(), otherRecord.getPath()); //$NON-NLS-1$
             }// else keep going
-
-            // seems one time shows one error
-            if (StringUtils.isBlank(errorMessage) && StringUtils.isNotBlank(itRecord.getProperty().getLabel())) {
-                ImportItem hasRecord = duplicateNameMap
-                        .put(itRecord.getProperty().getLabel().toLowerCase() + itRecord.getProperty().getVersion(), itRecord);
-                if (hasRecord != null) {
-                    errorMessage = Messages.getString("ImportItemsWizardPage_sameNameMessage", itRecord.getPath(), //$NON-NLS-1$
-                            hasRecord.getPath());
-                }
-            }
         }
         return errorMessage;
     }
