@@ -111,6 +111,7 @@ public abstract class FileItemImpl extends ItemImpl implements FileItem {
      * 
      * @generated
      */
+    @Override
     public String getName() {
         return name;
     }
@@ -120,11 +121,13 @@ public abstract class FileItemImpl extends ItemImpl implements FileItem {
      * 
      * @generated
      */
+    @Override
     public void setName(String newName) {
         String oldName = name;
         name = newName;
-        if (eNotificationRequired())
+        if (eNotificationRequired()) {
             eNotify(new ENotificationImpl(this, Notification.SET, PropertiesPackage.FILE_ITEM__NAME, oldName, name));
+        }
     }
 
     /**
@@ -132,6 +135,7 @@ public abstract class FileItemImpl extends ItemImpl implements FileItem {
      * 
      * @generated
      */
+    @Override
     public String getExtension() {
         return extension;
     }
@@ -141,11 +145,14 @@ public abstract class FileItemImpl extends ItemImpl implements FileItem {
      * 
      * @generated
      */
+    @Override
     public void setExtension(String newExtension) {
         String oldExtension = extension;
         extension = newExtension;
-        if (eNotificationRequired())
-            eNotify(new ENotificationImpl(this, Notification.SET, PropertiesPackage.FILE_ITEM__EXTENSION, oldExtension, extension));
+        if (eNotificationRequired()) {
+            eNotify(new ENotificationImpl(this, Notification.SET, PropertiesPackage.FILE_ITEM__EXTENSION, oldExtension,
+                    extension));
+        }
     }
 
     /**
@@ -153,14 +160,16 @@ public abstract class FileItemImpl extends ItemImpl implements FileItem {
      * 
      * @generated
      */
+    @Override
     public ByteArray getContent() {
         if (content != null && content.eIsProxy()) {
             InternalEObject oldContent = (InternalEObject) content;
             content = (ByteArray) eResolveProxy(oldContent);
             if (content != oldContent) {
-                if (eNotificationRequired())
-                    eNotify(new ENotificationImpl(this, Notification.RESOLVE, PropertiesPackage.FILE_ITEM__CONTENT, oldContent,
-                            content));
+                if (eNotificationRequired()) {
+                    eNotify(new ENotificationImpl(this, Notification.RESOLVE, PropertiesPackage.FILE_ITEM__CONTENT,
+                            oldContent, content));
+                }
             }
         }
         return content;
@@ -180,11 +189,14 @@ public abstract class FileItemImpl extends ItemImpl implements FileItem {
      * 
      * @generated
      */
+    @Override
     public void setContent(ByteArray newContent) {
         ByteArray oldContent = content;
         content = newContent;
-        if (eNotificationRequired())
-            eNotify(new ENotificationImpl(this, Notification.SET, PropertiesPackage.FILE_ITEM__CONTENT, oldContent, content));
+        if (eNotificationRequired()) {
+            eNotify(new ENotificationImpl(this, Notification.SET, PropertiesPackage.FILE_ITEM__CONTENT, oldContent,
+                    content));
+        }
     }
 
     /**
@@ -200,8 +212,9 @@ public abstract class FileItemImpl extends ItemImpl implements FileItem {
         case PropertiesPackage.FILE_ITEM__EXTENSION:
             return getExtension();
         case PropertiesPackage.FILE_ITEM__CONTENT:
-            if (resolve)
+            if (resolve) {
                 return getContent();
+            }
             return basicGetContent();
         }
         return super.eGet(featureID, resolve, coreType);
@@ -274,8 +287,9 @@ public abstract class FileItemImpl extends ItemImpl implements FileItem {
      */
     @Override
     public String toString() {
-        if (eIsProxy())
+        if (eIsProxy()) {
             return super.toString();
+        }
 
         StringBuffer result = new StringBuffer(super.toString());
         result.append(" (name: ");
@@ -304,7 +318,8 @@ public abstract class FileItemImpl extends ItemImpl implements FileItem {
         URIConverter theURIConverter = resourceSet.getURIConverter();
         URI normalizedURI = theURIConverter.normalize(resourceUri);
         // TUP-1814:because the routine proxyUri is File type,need handle with it.
-        if ((proxyUri.isPlatform() && proxyUri.segmentCount() > 1 && "resource".equals(proxyUri.segment(0))) || proxyUri.isFile()) {
+        if ((proxyUri.isPlatform() && proxyUri.segmentCount() > 1 && "resource".equals(proxyUri.segment(0)))
+                || proxyUri.isFile()) {
             List<Resource> resources = resourceSet.getResources();
             synchronized (resources) {
                 for (Resource resource : resources) {
@@ -313,6 +328,12 @@ public abstract class FileItemImpl extends ItemImpl implements FileItem {
                         break;
                     }
                 }
+            }
+
+            if (byteArrayResource != null && byteArrayResource.getContents().isEmpty()
+                    && byteArrayResource.isLoaded()) {
+                resources.remove(byteArrayResource);
+                byteArrayResource = null;
             }
 
             if (byteArrayResource == null) {
