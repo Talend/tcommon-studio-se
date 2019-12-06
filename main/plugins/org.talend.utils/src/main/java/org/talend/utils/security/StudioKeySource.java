@@ -35,12 +35,13 @@ public class StudioKeySource implements KeySource {
 
     public static final String KEY_SYSTEM_PREFIX = "system.encryption.key.v";
 
+    public static final String KEY_ROUTINE_PREFIX = "routine.encryption.key.v";
+
     public static final String KEY_FIXED = "routine.encryption.key";
 
-    // TODO: this fixed key will be removed shortly, jira:TUP-22966
-    private static final String FIXED_ENCRYPTION_KEY_DATA = "Talend_TalendKey";
-
     private String keyName;
+
+    private String routineKeyName;
 
     private final boolean isEncrypt;
 
@@ -55,6 +56,11 @@ public class StudioKeySource implements KeySource {
             // return highest version for system encryption key
             this.keyName = availableKeys.stringPropertyNames().stream().filter(e -> e.startsWith(KEY_SYSTEM_PREFIX))
                     .max(Comparator.comparing(e -> getVersion(e))).get();
+        }
+        if (this.isEncrypt && this.keyName.startsWith(KEY_ROUTINE_PREFIX)) {
+            // return highest version for routine encryption key
+            this.routineKeyName = availableKeys.stringPropertyNames().stream().filter(e -> e.startsWith(KEY_ROUTINE_PREFIX))
+                    .max(Comparator.comparing(e -> getVersion(e))).orElse(null);
         }
     }
 
@@ -103,6 +109,18 @@ public class StudioKeySource implements KeySource {
      * Get key name corresponding to the key source
      */
     public String getKeyName() {
+        if (this.isEncrypt) {
+            // return highest version for encryption key
+            if (this.keyName.startsWith(KEY_SYSTEM_PREFIX)) {
+                return this.keyName;
+            }
+            if (this.keyName.startsWith(KEY_ROUTINE_PREFIX)) {
+                if (this.routineKeyName != null) {
+                    return this.routineKeyName;
+                }
+                return StudioEncryption.KEY_ROUTINE;
+            }
+        }
         return this.keyName;
     }
 
@@ -139,13 +157,10 @@ public class StudioKeySource implements KeySource {
         // filter out non system encryption keys
         tempProperty.forEach((k, v) -> {
             String key = String.valueOf(k);
-            if (key.startsWith(KEY_SYSTEM_PREFIX)) {
+            if (key.startsWith(KEY_SYSTEM_PREFIX) || key.startsWith(KEY_ROUTINE_PREFIX)) {
                 allKeys.put(key, v);
             }
         });
-
-        // add fixed key
-        allKeys.put(KEY_FIXED, Base64.getEncoder().encodeToString(FIXED_ENCRYPTION_KEY_DATA.getBytes()));
 
         if (LOGGER.isDebugEnabled() || LOGGER.isTraceEnabled()) {
             allKeys.stringPropertyNames().forEach((k) -> LOGGER.debug(k));

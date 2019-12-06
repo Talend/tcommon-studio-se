@@ -13,7 +13,6 @@
 package org.talend.repository.items.importexport.handlers.imports;
 
 import java.util.List;
-import java.util.Set;
 
 import org.eclipse.core.runtime.IExecutableExtension;
 import org.eclipse.core.runtime.IPath;
@@ -115,7 +114,7 @@ public interface IImportItemsHandler extends IExecutableExtension {
      * recognize this destination path may import their items by ignoring this value.
      */
     void doImport(IProgressMonitor monitor, ResourcesManager resManager, ImportItem importItem, boolean overwrite,
-            IPath destinationPath, Set<String> overwriteDeletedItems, Set<String> idDeletedBeforeImport) throws Exception;
+            IPath destinationPath) throws Exception;
 
     /**
      * When there are some related items to be import, will use this flag.

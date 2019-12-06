@@ -461,6 +461,9 @@ public interface IProxyRepositoryFactory {
 
     public void forceDeleteObjectPhysical(IRepositoryViewObject objToDelete, String version, boolean isDeleteOnRemote) throws PersistenceException;
 
+    public void forceBatchDeleteObjectPhysical(Project project, List<IRepositoryViewObject> objToDeleteList,
+            boolean isDeleteAllVersion, boolean isDeleteOnRemote) throws PersistenceException;
+
     public Property getUptodateProperty(Project project, Property property) throws PersistenceException;
 
     public Property getUptodateProperty(Property property) throws PersistenceException;
