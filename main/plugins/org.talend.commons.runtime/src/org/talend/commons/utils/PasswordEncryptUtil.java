@@ -36,7 +36,7 @@ public class PasswordEncryptUtil {
 
     private static SecretKey getSecretKey() throws Exception {
         if (key == null) {
-            byte rawKeyData[] = StudioEncryption.getKeySource(StudioEncryption.EncryptionKeyName.MIGRATION.name(), false)
+            byte rawKeyData[] = StudioEncryption.getKeySource(StudioEncryption.EncryptionKeyName.MIGRATION.toString(), false)
                     .getKey();
             DESKeySpec dks = new DESKeySpec(rawKeyData);
             SecretKeyFactory keyFactory = SecretKeyFactory.getInstance("DES"); //$NON-NLS-1$
