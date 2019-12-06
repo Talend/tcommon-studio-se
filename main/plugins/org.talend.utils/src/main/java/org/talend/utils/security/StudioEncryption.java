@@ -46,7 +46,8 @@ public class StudioEncryption {
     private static final Pattern REG_ENCRYPTED_DATA_MIGRATION = Pattern
             .compile("^enc\\:migration\\.token\\.encryption\\.key\\:\\p{Print}+");
 
-    private static final Pattern REG_ENCRYPTED_DATA_ROUTINE = Pattern.compile("^enc\\:routine\\.encryption\\.key\\:\\p{Print}+");
+    private static final Pattern REG_ENCRYPTED_DATA_ROUTINE = Pattern
+            .compile("^enc\\:routine\\.encryption\\.key\\.v\\d\\:\\p{Print}+");
 
     // Encryption key name shipped in M3
     private static final String KEY_SYSTEM_M3 = StudioKeySource.KEY_SYSTEM_PREFIX + "1";
