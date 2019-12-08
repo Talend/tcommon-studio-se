@@ -235,7 +235,7 @@ public class UpdateTools {
         Set<File> plugins = Stream.of(pluginFolderFile.listFiles()).collect(Collectors.toSet());
         List<String> dropList = new ArrayList<>();
         // skip if from third-party bundles(version is not empty) in index, clean will be done by drop.bundle.info
-        validInstall.stream().filter(iu -> extraBundles.containsKey(iu.getId()) && extraBundles.get(iu.getId()).isEmpty())
+        validInstall.stream().filter(iu -> !extraBundles.containsKey(iu.getId()) || extraBundles.get(iu.getId()).isEmpty())
                 .forEach(iu -> {
             List<String> list = plugins.stream()
                     .filter(f -> f.exists() && f.getName().startsWith(iu.getId() + "_")
@@ -255,7 +255,7 @@ public class UpdateTools {
             dropFile.createNewFile();
         }
         StringBuilder builder = new StringBuilder();
-        Stream.of(dropList, Files.readAllLines(dropFile.toPath())).distinct()
+        Stream.concat(dropList.stream(), Files.readAllLines(dropFile.toPath()).stream()).distinct()
                 .forEach(s -> builder.append(s).append(LINE_SEPARATOR));
         Files.write(dropFile.toPath(), builder.toString().getBytes(), StandardOpenOption.TRUNCATE_EXISTING);
     }
