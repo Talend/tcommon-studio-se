@@ -108,7 +108,7 @@ public class TalendWebServiceUpdateExtraFeature implements ExtraFeature {
             Set<String> installedModules = downloadModule.getInstalledModules();
             if (!installedModules.isEmpty()) {
                 multiStatus.add( Messages.createOkStatus( "UpdateStudioWizard.some.jars.sucessfully.installed", //$NON-NLS-1$
-                        Arrays.toString( jarsFailedToDownload.toArray( new String[jarsFailedToDownload.size()] ) ) ) );
+                        Arrays.toString(installedModules.toArray(new String[installedModules.size()]))));
             }
             return multiStatus;
         }

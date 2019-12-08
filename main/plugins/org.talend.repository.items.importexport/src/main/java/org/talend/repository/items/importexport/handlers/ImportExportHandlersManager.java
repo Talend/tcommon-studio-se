@@ -38,6 +38,7 @@ import org.eclipse.core.runtime.NullProgressMonitor;
 import org.eclipse.core.runtime.OperationCanceledException;
 import org.eclipse.core.runtime.Path;
 import org.eclipse.core.runtime.Platform;
+import org.eclipse.core.runtime.ProgressMonitorWrapper;
 import org.eclipse.core.runtime.Status;
 import org.eclipse.core.runtime.jobs.ISchedulingRule;
 import org.eclipse.emf.common.util.EList;
@@ -47,6 +48,7 @@ import org.osgi.framework.FrameworkUtil;
 import org.talend.commons.CommonsPlugin;
 import org.talend.commons.exception.ExceptionHandler;
 import org.talend.commons.exception.PersistenceException;
+import org.talend.commons.runtime.model.repository.ERepositoryStatus;
 import org.talend.commons.utils.time.TimeMeasure;
 import org.talend.core.GlobalServiceRegister;
 import org.talend.core.PluginChecker;
@@ -520,7 +522,22 @@ public class ImportExportHandlersManager {
                     final IWorkspaceRunnable op = new IWorkspaceRunnable() {
 
                         @Override
-                        public void run(final IProgressMonitor monitor) throws CoreException {
+                        public void run(IProgressMonitor monitor) throws CoreException {
+                            // NotCancelableProgressMonitor
+                            monitor = new ProgressMonitorWrapper(monitor) {
+
+                                @Override
+                                public boolean isCanceled() {
+                                    return false;
+                                }
+
+                                @Override
+                                public void setCanceled(boolean b) {
+                                    // ignore set cancel
+                                }
+
+                            };
+
                             try {
                                 // pre import
                                 preImport(monitor, resManager, checkedItemRecords.toArray(new ImportItem[0]),
@@ -606,8 +623,11 @@ public class ImportExportHandlersManager {
                             }
 
                             try {
+                                forceDeleteWithRelationsBeforeOverwriteImport(monitor, resManager, allImportItemRecords,
+                                        checkedItemRecords, overwriteDeletedItems, idDeletedBeforeImport);
+
                                 importItemRecordsWithRelations(monitor, resManager, checkedItemRecords, overwrite,
-                                        allImportItemRecords, destinationPath, overwriteDeletedItems, idDeletedBeforeImport);
+                                        allImportItemRecords, destinationPath);
                             } catch (Exception e) {
                                 if (Platform.inDebugMode()) {
                                     ExceptionHandler.process(e);
@@ -692,8 +712,7 @@ public class ImportExportHandlersManager {
 
                         private void importItemRecordsWithRelations(final IProgressMonitor monitor,
                                 final ResourcesManager manager, final List<ImportItem> processingItemRecords,
-                                final boolean overwriting, ImportItem[] allPopulatedImportItemRecords, IPath destinationPath,
-                                final Set<String> overwriteDeletedItems, final Set<String> idDeletedBeforeImport)
+                                final boolean overwriting, ImportItem[] allPopulatedImportItemRecords, IPath destinationPath)
                                 throws Exception {
                             boolean hasJoblet = false;
                             boolean jobletReloaded = false;
@@ -738,8 +757,7 @@ public class ImportExportHandlersManager {
                                         if (importHandler.isPriorImportRelatedItem()) {
                                             if (!relatedItemRecord.isEmpty()) {
                                                 importItemRecordsWithRelations(monitor, manager, relatedItemRecord, overwriting,
-                                                        allPopulatedImportItemRecords, destinationPath, overwriteDeletedItems,
-                                                        idDeletedBeforeImport);
+                                                        allPopulatedImportItemRecords, destinationPath);
                                             }
                                         }
                                         if (monitor.isCanceled()) {
@@ -747,8 +765,7 @@ public class ImportExportHandlersManager {
                                         }
 
                                         // will import
-                                        importHandler.doImport(monitor, manager, itemRecord, overwriting, destinationPath,
-                                                overwriteDeletedItems, idDeletedBeforeImport);
+                                        importHandler.doImport(monitor, manager, itemRecord, overwriting, destinationPath);
 
                                         if (monitor.isCanceled()) {
                                             return;
@@ -757,8 +774,7 @@ public class ImportExportHandlersManager {
                                         if (!importHandler.isPriorImportRelatedItem()) {
                                             if (!relatedItemRecord.isEmpty()) {
                                                 importItemRecordsWithRelations(monitor, manager, relatedItemRecord, overwriting,
-                                                        allPopulatedImportItemRecords, destinationPath, overwriteDeletedItems,
-                                                        idDeletedBeforeImport);
+                                                        allPopulatedImportItemRecords, destinationPath);
                                             }
                                         }
 
@@ -790,6 +806,154 @@ public class ImportExportHandlersManager {
                                 }
                             }
 
+                        }
+
+                        private void forceDeleteWithRelationsBeforeOverwriteImport(final IProgressMonitor monitor,
+                                final ResourcesManager manager, final ImportItem[] allPopulatedImportItemRecords,
+                                final List<ImportItem> processingItemRecords, final Set<String> overwriteDeletedItems,
+                                final Set<String> idDeletedBeforeImport) {
+                            monitor.subTask(Messages.getString("ImportExportHandlersManager_overrideDelete")); //$NON-NLS-1$
+                            // Boolean - isDeleteOnRemote, List<IRepositoryViewObject> - object physical delete list
+                            Map<Boolean, List<IRepositoryViewObject>> physicalDeleteHM = new HashMap<Boolean, List<IRepositoryViewObject>>();
+                            physicalDeleteHM.put(true, new ArrayList<IRepositoryViewObject>());
+                            physicalDeleteHM.put(false, new ArrayList<IRepositoryViewObject>());
+
+                            collectPhysicalDeleteList4OverwriteImport(progressMonitor, manager, allPopulatedImportItemRecords,
+                                    processingItemRecords,
+                                    overwriteDeletedItems, idDeletedBeforeImport, physicalDeleteHM);
+
+                            for (Boolean key : physicalDeleteHM.keySet()) {
+                                if (!physicalDeleteHM.get(key).isEmpty()) {
+                                    doForceDeleteObjectPhysical(physicalDeleteHM.get(key), key);
+                                }
+                            }
+
+                        }
+
+                        private void doForceDeleteObjectPhysical(final List<IRepositoryViewObject> ObjectDeleteList,
+                                final boolean isDeleteOnRemote) {
+                            RepositoryWorkUnit repositoryWorkUnit = new RepositoryWorkUnit(
+                                    Messages.getString("ImportExportHandlersManager_deletingItemsMessage")) { //$NON-NLS-1$
+
+                                @Override
+                                public void run() throws PersistenceException {
+                                    ProxyRepositoryFactory.getInstance().forceBatchDeleteObjectPhysical(
+                                            ProjectManager.getInstance().getCurrentProject(), ObjectDeleteList, true,
+                                            isDeleteOnRemote);
+                                }
+                            };
+                            if (isDeleteOnRemote) {
+                                repositoryWorkUnit.setForceTransaction(true);
+                            } else {
+                                repositoryWorkUnit.setForceTransaction(false);
+                            }
+                            repositoryWorkUnit.setRefreshRepository(false);
+                            repositoryWorkUnit.setAvoidUnloadResources(true);
+                            ProxyRepositoryFactory.getInstance().executeRepositoryWorkUnit(repositoryWorkUnit);
+
+                        }
+
+                        private void collectPhysicalDeleteList4OverwriteImport(final IProgressMonitor monitor,
+                                final ResourcesManager manager, final ImportItem[] allPopulatedImportItemRecords,
+                                final List<ImportItem> processingItemRecords, final Set<String> overwriteDeletedItems,
+                                final Set<String> idDeletedBeforeImport,
+                                final Map<Boolean, List<IRepositoryViewObject>> physicalDeleteHM) {
+                            ProxyRepositoryFactory repFactory = ProxyRepositoryFactory.getInstance();
+                            for (ImportItem itemRecord : processingItemRecords) {
+                                if (monitor.isCanceled()) {
+                                    return;
+                                }
+
+                                if (itemRecord.isImported() || !itemRecord.isValid()) {
+                                    continue;
+                                }
+
+                                IPath path = new Path(itemRecord.getItem().getState().getPath());
+                                IImportItemsHandler importHandler = itemRecord.getImportHandler();
+                                List<ImportItem> relatedItemRecord = null;
+                                try {
+                                    relatedItemRecord = importHandler.findRelatedImportItems(monitor, manager, itemRecord,
+                                            allPopulatedImportItemRecords);
+                                } catch (Exception e1) {
+                                    // catch the exception, and don't block others
+                                    if (Platform.inDebugMode()) {
+                                        itemRecord.addError(e1.getMessage());
+                                        ImportCacheHelper.getInstance().setImportingError(true);
+                                        ExceptionHandler.process(e1);
+                                    }
+                                }
+
+                                if (relatedItemRecord != null && !relatedItemRecord.isEmpty()) {
+                                    collectPhysicalDeleteList4OverwriteImport(progressMonitor, resManager,
+                                            allPopulatedImportItemRecords, relatedItemRecord, overwriteDeletedItems,
+                                            idDeletedBeforeImport, physicalDeleteHM);
+                                }
+
+                                ImportBasicHandler importBasicHandler = null;
+                                if (itemRecord.getImportHandler() instanceof ImportBasicHandler) {
+                                    importBasicHandler = (ImportBasicHandler) importHandler;
+                                }
+                                if (importBasicHandler != null) {
+                                    path = importBasicHandler.checkAndCreatePath(itemRecord, destinationPath);
+                                }
+                                try {
+                                    String id = itemRecord.getProperty().getId();
+                                    IRepositoryViewObject lastVersion = itemRecord.getExistingItemWithSameId();
+                                    if (itemRecord.getState() == State.NAME_EXISTED
+                                            || itemRecord.getState() == State.NAME_AND_ID_EXISTED_BOTH) {
+                                        lastVersion = itemRecord.getExistingItemWithSameName();
+                                    }
+                                    if (lastVersion != null && overwrite && !itemRecord.isLocked()
+                                            && (itemRecord.getState() == State.ID_EXISTED
+                                                    || itemRecord.getState() == State.NAME_EXISTED
+                                                    || itemRecord.getState() == State.NAME_AND_ID_EXISTED
+                                                    || itemRecord.getState() == State.NAME_AND_ID_EXISTED_BOTH)
+                                            && !ImportCacheHelper.getInstance().getDeletedItems().contains(id)) {
+
+                                        if (overwriteDeletedItems != null && !overwriteDeletedItems.contains(id)) {
+                                            ERepositoryStatus status = repFactory.getStatus(lastVersion);
+                                            if (status == ERepositoryStatus.DELETED) {
+                                                repFactory.restoreObject(lastVersion, path); // restore first.
+                                            }
+                                            overwriteDeletedItems.add(id);
+                                        }
+
+                                        /* only delete when name exsit rather than id exist */
+                                        if (itemRecord.getState().equals(ImportItem.State.NAME_EXISTED)
+                                                || itemRecord.getState().equals(ImportItem.State.NAME_AND_ID_EXISTED)
+                                                || itemRecord.getState().equals(ImportItem.State.NAME_AND_ID_EXISTED_BOTH)) {
+                                            final IRepositoryViewObject lastVersionBackup = lastVersion;
+                                            if (idDeletedBeforeImport != null && !idDeletedBeforeImport.contains(id)) {
+                                                // TDI-19535 (check if exists, delete all items with same id)
+                                                // Record the latest version object
+                                                // to delete all when batchDeleteObjectPhysical
+                                                IRepositoryViewObject objectToDelete = repFactory.getLastVersion(
+                                                        ProjectManager.getInstance().getCurrentProject(),
+                                                        lastVersionBackup.getId());
+                                                if (ProxyRepositoryFactory.getInstance().isFullLogonFinished()) {
+                                                    ProxyRepositoryFactory.getInstance().fireRepositoryPropertyChange(
+                                                            ERepositoryActionName.DELETE_FOREVER.getName(), null,
+                                                            lastVersionBackup);
+                                                }
+                                                String importingLabel = itemRecord.getProperty().getLabel();
+                                                String existLabel = lastVersionBackup.getProperty().getLabel();
+                                                // refer to ImportBasicHandler.isNeedDeleteOnRemote
+                                                if (importingLabel != null && importingLabel.equalsIgnoreCase(importingLabel)
+                                                        && !importingLabel.equals(existLabel)) {
+                                                    physicalDeleteHM.get(true).add(objectToDelete);
+                                                } else {
+                                                    physicalDeleteHM.get(false).add(objectToDelete);
+                                                }
+                                                idDeletedBeforeImport.add(id);
+                                            }
+                                        }
+                                    }
+                                } catch (Exception e) {
+                                    itemRecord.addError(itemRecord.getItemName() + ";" + e.getMessage() + ";" + path);//$NON-NLS-1$
+                                    ImportCacheHelper.getInstance().setImportingError(true);
+                                    ExceptionHandler.process(e);
+                                }
+                            }
                         }
 
                     };

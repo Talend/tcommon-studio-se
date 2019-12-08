@@ -51,10 +51,11 @@ public class StudioEncryption {
     // Encryption key name shipped in M3
     private static final String KEY_SYSTEM_M3 = StudioKeySource.KEY_SYSTEM_PREFIX + "1";
 
+    static final String KEY_ROUTINE = StudioKeySource.KEY_ROUTINE_PREFIX + "1";
+
     private static final String KEY_MIGRATION_TOKEN = "migration.token.encryption.key";
 
-    // TODO: this fixed key will be removed
-    private static final String KEY_ROUTINE = StudioKeySource.KEY_FIXED;
+    private static final String KEY_MIGRATION = "migration.encryption.key";
 
     private EncryptionKeyName keyName;
 
@@ -63,7 +64,8 @@ public class StudioEncryption {
     public enum EncryptionKeyName {
         SYSTEM(KEY_SYSTEM_M3),
         ROUTINE(KEY_ROUTINE),
-        MIGRATION_TOKEN(KEY_MIGRATION_TOKEN);
+        MIGRATION_TOKEN(KEY_MIGRATION_TOKEN),
+        MIGRATION(KEY_MIGRATION); // This key only use to process migration data. Only for DES algorithm
 
         private final String name;
 
@@ -90,7 +92,7 @@ public class StudioEncryption {
         this.securityProvider = providerName;
     }
 
-    private static StudioKeySource getKeySource(String encryptionKeyName, boolean isEncrypt) {
+    public static StudioKeySource getKeySource(String encryptionKeyName, boolean isEncrypt) {
         Properties allKeys = LOCALCACHEDALLKEYS.get();
 
         StudioKeySource ks = StudioKeySource.key(allKeys, encryptionKeyName, isEncrypt);
@@ -202,9 +204,9 @@ public class StudioEncryption {
                     } catch (IOException e) {
                         LOGGER.error("load encryption keys error", e);
                     }
-                    // EncryptionKeyName.MIGRATION_TOKEN are not allowed to be updated
+                    // EncryptionKeyName.MIGRATION_TOKEN and MIGRATION are not allowed to be updated
+                    p.remove(EncryptionKeyName.MIGRATION.name);
                     p.remove(EncryptionKeyName.MIGRATION_TOKEN.name);
-
                     // persist keys to ~configuration/studio.keys
                     try (OutputStream fo = new FileOutputStream(keyFile)) {
                         p.store(fo, "studio encryption keys");

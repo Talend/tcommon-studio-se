@@ -14,6 +14,7 @@ package routines.system;
 
 import java.io.IOException;
 import java.io.ObjectInputStream;
+import java.util.HashMap;
 import java.util.List;
 
 import org.dom4j.Element;
@@ -72,9 +73,9 @@ public class GetJarsToRegister {
 
         if (isNeedAddLibsPath(crcMapPath)) {
             java.util.Map<String, String> crcMap = null;
-            java.io.ObjectInputStream ois = new ObjectInputStream(new java.io.FileInputStream(crcMapPath));
-            crcMap = (java.util.Map<String, String>) ois.readObject();
-            ois.close();
+            try (java.io.ObjectInputStream ois = new ObjectInputStream(new java.io.FileInputStream(crcMapPath))) {
+                crcMap = (java.util.Map<String, String>) ois.readObject();
+            }
             classPathLine = addLibsPath(originalClassPathLine, crcMap);
         } else if (this.isOozieRuntime) {
             if (this.oozieClasspathLine != null) {

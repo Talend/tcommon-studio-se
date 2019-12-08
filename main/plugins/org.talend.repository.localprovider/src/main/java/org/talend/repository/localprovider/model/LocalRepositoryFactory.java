@@ -29,6 +29,7 @@ import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 import org.apache.commons.collections.keyvalue.MultiKey;
 import org.apache.commons.lang.StringUtils;
@@ -138,6 +139,7 @@ import org.talend.core.model.properties.Status;
 import org.talend.core.model.properties.TDQItem;
 import org.talend.core.model.properties.User;
 import org.talend.core.model.properties.ValidationRulesConnectionItem;
+import org.talend.core.model.relationship.RelationshipItemBuilder;
 import org.talend.core.model.repository.ERepositoryObjectType;
 import org.talend.core.model.repository.Folder;
 import org.talend.core.model.repository.IRepositoryContentHandler;
@@ -901,6 +903,20 @@ public class LocalRepositoryFactory extends AbstractEMFRepositoryFactory impleme
 
         xmiResourceManager.saveResource(projectResource);
         project.getEmfProject().getMigrationTask().addAll(realMigrationTaskList);
+
+        // get all of tasks
+        List<MigrationTask> tasks = project.getEmfProject().getMigrationTask();
+
+        // filter out illegal migration task entries
+        List<MigrationTask> FilteredTasks = tasks.stream().filter((e) -> {
+            MigrationTask task = (MigrationTask) e;
+            return task.getId() != null;
+        }).collect(Collectors.toList());
+
+        // set filtered tasks back
+        project.getEmfProject().getMigrationTask().clear();
+        project.getEmfProject().getMigrationTask().addAll(FilteredTasks);
+
         ProjectDataJsonProvider.saveProjectData(project.getEmfProject());
     }
 
@@ -1715,11 +1731,27 @@ public class LocalRepositoryFactory extends AbstractEMFRepositoryFactory impleme
     @Override
     public void deleteObjectPhysical(Project project, IRepositoryViewObject objToDelete, String version,
             boolean fromEmptyRecycleBin, boolean isDeleteOnRemote) throws PersistenceException {
+        deleteObjectPhysical(project, objToDelete, version, fromEmptyRecycleBin, isDeleteOnRemote, false);
+    }
+
+    /**
+     * 
+     * @param project
+     * @param objToDelete
+     * @param version
+     * @param fromEmptyRecycleBin
+     * @param isDeleteOnRemote
+     * @param aviodSave - For batch delete, save relations and project later at one time.
+     * @throws PersistenceException
+     */
+    protected void deleteObjectPhysical(Project project, IRepositoryViewObject objToDelete, String version,
+            boolean fromEmptyRecycleBin, boolean isDeleteOnRemote, boolean aviodSave) throws PersistenceException {
         if ("".equals(version)) { //$NON-NLS-1$
             version = null; // for all version
         }
         // can only delete in the main project
         List<IRepositoryViewObject> allVersionToDelete = getAllVersion(project, objToDelete.getId(), false);
+        RelationshipItemBuilder relationsBuilder = RelationshipItemBuilder.getInstance();
 
         for (IRepositoryViewObject currentVersion : allVersionToDelete) {
             String currentVersionValue = currentVersion.getVersion();
@@ -1734,7 +1766,13 @@ public class LocalRepositoryFactory extends AbstractEMFRepositoryFactory impleme
                     Project currentProject = ProjectManager.getInstance().getCurrentProject();
                     if (coreSerivce.isAlreadyBuilt(project) && currentProject != null) {
                         if (currentVersion.getProperty() != null) {
-                            coreSerivce.removeItemRelations(currentVersion.getProperty().getItem());
+                            // coreSerivce.removeItemRelations(currentVersion.getProperty().getItem());
+                            boolean originalStatus = relationsBuilder.isAutoSave();
+                            if (aviodSave) {
+                                relationsBuilder.setAutoSave(false);
+                            }
+                            relationsBuilder.removeItemRelations(currentVersion.getProperty().getItem());
+                            relationsBuilder.setAutoSave(originalStatus);
                         }
                     }
                 }
@@ -1777,17 +1815,21 @@ public class LocalRepositoryFactory extends AbstractEMFRepositoryFactory impleme
         if (!allVersionToDelete.isEmpty()) {
             RecycleBinManager.getInstance().removeFromRecycleBin(project, allVersionToDelete.get(0).getProperty().getItem());
         }
-        if (!fromEmptyRecycleBin) {
+        if (!fromEmptyRecycleBin && !aviodSave) {
             saveProject(project);
         }
     }
 
     @Override
-    public void batchDeleteObjectPhysical(Project project, List<IRepositoryViewObject> objToDeleteList, boolean isDeleteOnRemote)
-            throws PersistenceException {
+    public void batchDeleteObjectPhysical(Project project, List<IRepositoryViewObject> objToDeleteList,
+            boolean isDeleteAllVersion, boolean isDeleteOnRemote) throws PersistenceException {
         for (IRepositoryViewObject object : objToDeleteList) {
-            deleteObjectPhysical(project, object, null, isDeleteOnRemote);
+            deleteObjectPhysical(project, object, isDeleteAllVersion == true ? null : object.getProperty().getVersion(), false,
+                    isDeleteOnRemote, true);
         }
+        RelationshipItemBuilder relationsBuilder = RelationshipItemBuilder.getInstance();
+        // there is save project in the saveRelations, won't save project again here
+        relationsBuilder.saveRelations();
     }
 
     @Override

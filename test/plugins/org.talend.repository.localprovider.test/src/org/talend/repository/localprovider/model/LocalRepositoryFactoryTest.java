@@ -41,6 +41,7 @@ import org.talend.core.model.metadata.builder.connection.ConnectionFactory;
 import org.talend.core.model.metadata.builder.connection.DatabaseConnection;
 import org.talend.core.model.properties.DatabaseConnectionItem;
 import org.talend.core.model.properties.FolderItem;
+import org.talend.core.model.properties.MigrationTask;
 import org.talend.core.model.properties.ProcessItem;
 import org.talend.core.model.properties.PropertiesFactory;
 import org.talend.core.model.properties.Property;
@@ -1154,5 +1155,46 @@ public class LocalRepositoryFactoryTest extends BaseRepositoryTest {
         // check File Not Exists
         checkFileNotExists(project, ERepositoryObjectType.METADATA_CONNECTIONS, "", "myJob", VersionUtils.DEFAULT_VERSION);
 
+    }
+
+    @Test
+    public void testSaveMigrationTasks() throws PersistenceException, CoreException, LoginException {
+        repositoryFactory.logOnProject(sampleProject);
+        sampleProject.getEmfProject().getMigrationTask().clear();
+
+        String testTaskId = "test.task";
+        MigrationTask migrationTask1 = PropertiesFactory.eINSTANCE.createMigrationTask();
+        migrationTask1.setId(testTaskId);
+        MigrationTask migrationTask2 = PropertiesFactory.eINSTANCE.createMigrationTask();
+        migrationTask2.setId(null);
+
+        sampleProject.getEmfProject().getMigrationTask().add(migrationTask1);
+        sampleProject.getEmfProject().getMigrationTask().add(migrationTask2);
+
+        repositoryFactory.saveProject(sampleProject);
+
+        repositoryFactory.reloadProject(sampleProject);
+
+        // the null id task should be there
+
+        List<MigrationTask> tasks = sampleProject.getEmfProject().getMigrationTask();
+        assertTrue(tasks.size() > 0);
+
+        // id is not null should be there
+        boolean task1Exist = false;
+        boolean task2Exist = false;
+        for (MigrationTask task : tasks) {
+            if (task.getId().equals(testTaskId)) {
+                task1Exist = true;
+            }
+            if (task.getId() == null) {
+                task2Exist = true;
+            }
+        }
+
+        // task1 should exist
+        assertTrue(task1Exist);
+        // task2 should not exist
+        assertTrue(!task2Exist);
     }
 }
