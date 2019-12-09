@@ -13,7 +13,6 @@
 package org.talend.core.model.routines;
 
 import java.io.File;
-import java.io.IOException;
 import java.net.URI;
 import java.net.URL;
 import java.util.ArrayList;
@@ -35,11 +34,6 @@ import org.talend.core.ILibraryManagerService;
 import org.talend.core.ISVNProviderServiceInCoreRuntime;
 import org.talend.core.PluginChecker;
 import org.talend.core.model.general.LibraryInfo;
-import org.talend.core.nexus.ArtifactRepositoryBean;
-import org.talend.core.nexus.TalendLibsServerManager;
-import org.talend.core.runtime.maven.MavenArtifact;
-import org.talend.core.runtime.maven.MavenConstants;
-import org.talend.core.runtime.maven.MavenUrlHelper;
 
 /**
  * wchen class global comment. Detailled comment
@@ -103,11 +97,8 @@ public class RoutineLibraryMananger {
                                     URL fileUrl = FileLocator.toFileURL(entry);
                                     if(fileUrl != null){
                                     	if (!"file".equals(fileUrl.getProtocol())) throw new IllegalArgumentException();
-                                    	File file = new File(fileUrl.getFile());
-                                    	if(needDeploy(fileUrl)) {
-                                    	    URI fileUri = file.toURI();
-                                    	    libManagerService.deploy(fileUri);
-                                    	}
+                                    	URI fileUri = new File(fileUrl.getFile()).toURI();
+                                        libManagerService.deploy(fileUri);
                                     }
                                 } catch (Exception e) {
                                     log.warn("Cannot deploy: " + bundleName + path);
@@ -121,55 +112,6 @@ public class RoutineLibraryMananger {
             }
             initialized = true;
         }
-    }
-    
-    private boolean needDeploy(URL fileUrl) throws IOException, Exception {
-        File file = new File(fileUrl.getFile());
-        ILibraryManagerService libManagerService = null;
-        if (GlobalServiceRegister.getDefault().isServiceRegistered(ILibraryManagerService.class)) {
-            libManagerService = (ILibraryManagerService) GlobalServiceRegister.getDefault().getService(
-                    ILibraryManagerService.class);
-        }
-        
-        if(libManagerService != null) {
-            
-            Map<String, String> sourceAndMavenUri = new HashMap<>();
-            libManagerService.guessMavenRUIFromIndex(file, sourceAndMavenUri);
-            String mavUri = null;
-            boolean isSnapshot = false;
-            for(String key : sourceAndMavenUri.keySet()) {
-                if(sourceAndMavenUri.get(key).equals(file.getPath())) {
-                    mavUri = key;
-                    break;
-                }
-            }
-            
-            if(mavUri == null) {
-                return true;
-            }
-
-            final MavenArtifact parseMvnUrl = MavenUrlHelper.parseMvnUrl(mavUri);
-            if (parseMvnUrl != null) {
-                if (parseMvnUrl.getVersion() != null && parseMvnUrl.getVersion().endsWith(MavenConstants.SNAPSHOT)) {
-                    isSnapshot = true;
-                }
-            }
-            TalendLibsServerManager manager = TalendLibsServerManager.getInstance();
-            ArtifactRepositoryBean customNexusServer = manager.getCustomNexusServer();
-            File jarFile = libManagerService.resolveJar(customNexusServer, mavUri);
-            boolean exist = (jarFile != null && jarFile.exists());
-            if(exist) {
-                if(isSnapshot) {
-                    boolean isSame = libManagerService.isSameFile(jarFile, file);
-                    if(!isSame) {
-                        return true;
-                    }
-                }
-            }else {
-                return true;
-            }
-        }
-        return false;
     }
 
     public Map<String, List<LibraryInfo>> getRoutineAndJars() {
