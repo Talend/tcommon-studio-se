@@ -211,5 +211,9 @@ public interface ILibraryManagerService extends IService {
     public void checkModuleStatus(ModuleNeeded module);
 
     public String getJarNameFromMavenuri(String mavenURI);
+    
+    public boolean isSameFile(File f1, File f2);
+    
+    public void guessMavenRUIFromIndex(File jarFile, Map<String, String> sourceAndMavenUri);
 
 }

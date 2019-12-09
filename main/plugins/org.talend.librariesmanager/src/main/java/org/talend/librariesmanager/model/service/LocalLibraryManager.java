@@ -223,7 +223,7 @@ public class LocalLibraryManager implements ILibraryManagerService, IChangedLibr
         }
     }
 
-    private void guessMavenRUIFromIndex(File jarFile, Map<String, String> sourceAndMavenUri) {
+    public void guessMavenRUIFromIndex(File jarFile, Map<String, String> sourceAndMavenUri) {
         // TODO????? should deploy with all versions
         String urisFromIndex = LibrariesIndexManager.getInstance().getMavenLibIndex().getJarsToRelativePath()
                 .get(jarFile.getName());
@@ -1603,7 +1603,7 @@ public class LocalLibraryManager implements ILibraryManagerService, IChangedLibr
         return isSameFile(jarFile, jarInLib);
     }
 
-    private boolean isSameFile(File f1, File f2) {
+    public boolean isSameFile(File f1, File f2) {
         if (f1 == null || f2 == null) {
             return false;
         }
