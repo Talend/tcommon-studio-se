@@ -153,8 +153,8 @@ public class StudioEncryption {
                 StudioKeySource ks = getKeySource(srcData[1], false);
                 return this.getEncryption(ks).decrypt(srcData[2]);
             }
-            StudioKeySource ks = getKeySource(KEY_SYSTEM_M3, false);
             // compatible with M3, decrypt by default key: system.encryption.key.v1
+            StudioKeySource ks = getKeySource(this.keyName.name, false);
             return this.getEncryption(ks).decrypt(src.substring(PREFIX_PASSWORD_M3.length(), src.length() - 1));
         } catch (Exception e) {
             // backward compatibility
