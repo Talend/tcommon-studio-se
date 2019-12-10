@@ -73,6 +73,8 @@ public class TalendLibsServerManager {
 
     public static final String NEXUS_PROXY_REPOSITORY_ID = "nexus.proxy.repository.id";
 
+    public static final String ENABLE_PROXY_SETTING = "nexus.proxy.enable";
+
     public static final String TALEND_LIB_USER = "";//$NON-NLS-1$
 
     public static final String TALEND_LIB_PASSWORD = "";//$NON-NLS-1$
