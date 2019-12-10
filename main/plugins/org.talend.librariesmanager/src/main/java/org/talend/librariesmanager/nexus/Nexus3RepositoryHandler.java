@@ -31,7 +31,7 @@ import org.apache.http.params.CoreConnectionPNames;
 import org.apache.log4j.Logger;
 import org.eclipse.m2e.core.MavenPlugin;
 import org.talend.commons.exception.ExceptionHandler;
-import org.talend.commons.utils.network.TalendProxySelector.IProxySelectorProvider;
+import org.talend.commons.utils.network.IProxySelectorProvider;
 import org.talend.core.nexus.ArtifactRepositoryBean;
 import org.talend.core.nexus.HttpClientTransport;
 import org.talend.core.nexus.IRepositoryArtifactHandler;

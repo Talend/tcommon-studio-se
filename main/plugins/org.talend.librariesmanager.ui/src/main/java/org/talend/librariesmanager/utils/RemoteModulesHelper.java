@@ -34,6 +34,7 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import java.util.regex.Pattern;
 
 import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
@@ -207,6 +208,7 @@ public class RemoteModulesHelper {
                     for (String groupId : snapshotgroupIds) {
                         List<MavenArtifact> searchResults = customerRepHandler.search(groupId, null, null, false, true);
                         monitor.worked(10);
+                        replaceTimeStampWithSnapShot(searchResults);
                         addModulesToCache(mavenUristoSearch, searchResults, localCache);
                     }
                 }
@@ -214,6 +216,24 @@ public class RemoteModulesHelper {
             } catch (Exception e1) {
                 ExceptionHandler.process(e1);
             }
+        }
+
+        private void replaceTimeStampWithSnapShot(List<MavenArtifact> searchResults) {
+            if (searchResults != null && searchResults.size() > 0) {
+                for (MavenArtifact m : searchResults) {
+                    String version = m.getVersion();
+                    if (version != null && !version.contains(MavenConstants.SNAPSHOT)
+                            && timeStampRegex(version)) {
+                        version = version.substring(0, version.indexOf("-")) + MavenConstants.SNAPSHOT;
+                        m.setVersion(version);
+                    }
+                }
+            }
+        }
+
+        private boolean timeStampRegex(String version) {
+            boolean match = Pattern.matches("\\S*[-]{1}[0-9]{8}[.]{1}[0-9]{6}[-]{1}\\S*", version);
+            return match;
         }
 
         private void searchFromLocalDataFile(Set<String> mavenUristoSearch, IProgressMonitor monitor) {

@@ -35,7 +35,6 @@ import java.util.Set;
 
 import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Priority;
-import org.talend.commons.CommonsPlugin;
 import org.talend.commons.exception.ExceptionHandler;
 import org.talend.commons.i18n.internal.Messages;
 
@@ -434,36 +433,6 @@ public class TalendProxySelector extends ProxySelector {
         return new DefaultProxySelectorProvider(host);
     }
 
-    public static interface IProxySelectorProvider {
-
-        Object getKey();
-
-        boolean canHandle(final URI uri);
-
-        List<Proxy> select(final URI uri);
-
-        void connectFailed(final URI uri, final SocketAddress sa, final IOException ioe);
-
-    }
-
-    public static abstract class AbstractProxySelectorProvider implements IProxySelectorProvider {
-
-        private boolean isDebugMode = CommonsPlugin.isDebugMode();
-
-        @Override
-        public Object getKey() {
-            return this;
-        }
-
-        @Override
-        public void connectFailed(final URI uri, final SocketAddress sa, final IOException ioe) {
-            if (isDebugMode) {
-                ExceptionHandler.process(ioe);
-            }
-        }
-
-    }
-
     public static Collection<Object> getPossibleKeys(URI uri) {
         Collection<Object> possibleKeys = new ArrayList<>();
         possibleKeys.add(Thread.currentThread());
@@ -476,7 +445,7 @@ public class TalendProxySelector extends ProxySelector {
         return possibleKeys;
     }
 
-    private class DefaultProxySelectorProvider extends TalendProxySelector.AbstractProxySelectorProvider {
+    private class DefaultProxySelectorProvider extends AbstractProxySelectorProvider {
 
         private Thread currentThread = null;
 
