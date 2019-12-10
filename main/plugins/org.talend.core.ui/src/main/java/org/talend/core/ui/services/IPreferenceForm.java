@@ -7,6 +7,6 @@ public interface IPreferenceForm {
 
     boolean performApply();
 
-    void performDefaults();
+    boolean performDefaults();
 
 }
