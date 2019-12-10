@@ -48,9 +48,9 @@ import net.sf.json.JSONObject;
  */
 public class ArtifacoryRepositoryHandler extends AbstractArtifactRepositoryHandler {
 
-    private String SEARCH_SERVICE = "api/search/gavc?";
+    private String SEARCH_SERVICE = "api/search/gavc?"; //$NON-NLS-1$
 
-    private String SEARCH_RESULT_PREFIX = "api/storage/";
+    private String SEARCH_RESULT_PREFIX = "api/storage/";//$NON-NLS-1$
 
     /*
      * (non-Javadoc)
@@ -85,9 +85,9 @@ public class ArtifacoryRepositoryHandler extends AbstractArtifactRepositoryHandl
     }
 
     private boolean doConnectionCheck(String repositoryUrl) throws ClientProtocolException, IOException {
-        String userPass = serverBean.getUserName() + ":" + serverBean.getPassword();
-        String basicAuth = "Basic " + new String(new Base64().encode(userPass.getBytes()));
-        Header authority = new BasicHeader("Authorization", basicAuth);
+        String userPass = serverBean.getUserName() + ":" + serverBean.getPassword(); //$NON-NLS-1$
+        String basicAuth = "Basic " + new String(new Base64().encode(userPass.getBytes())); //$NON-NLS-1$
+        Header authority = new BasicHeader("Authorization", basicAuth); //$NON-NLS-1$
         HttpGet get = new HttpGet(repositoryUrl);
         get.addHeader(authority);
         DefaultHttpClient httpclient = new DefaultHttpClient();
@@ -121,51 +121,53 @@ public class ArtifacoryRepositoryHandler extends AbstractArtifactRepositoryHandl
     public List<MavenArtifact> search(String groupIdToSearch, String artifactId, String versionToSearch, boolean fromRelease,
             boolean fromSnapshot) throws Exception {
         String serverUrl = serverBean.getServer();
-        if (!serverUrl.endsWith("/")) {
-            serverUrl = serverUrl + "/";
+        if (!serverUrl.endsWith("/")) { //$NON-NLS-1$
+            serverUrl = serverUrl + "/"; //$NON-NLS-1$
         }
         String searchUrl = serverUrl + SEARCH_SERVICE;
 
-        String repositoryId = "";
+        String repositoryId = ""; //$NON-NLS-1$
         if (fromRelease) {
             repositoryId = serverBean.getRepositoryId();
         }
         if (fromSnapshot) {
-            if ("".equals(repositoryId)) {
+            if ("".equals(repositoryId)) { //$NON-NLS-1$
                 repositoryId = serverBean.getSnapshotRepId();
             } else {
-                repositoryId = repositoryId + "," + serverBean.getSnapshotRepId();
+                repositoryId = repositoryId + "," + serverBean.getSnapshotRepId(); //$NON-NLS-1$
             }
         }
         String query = "";//$NON-NLS-1$
-        if (!"".equals(repositoryId)) {
+        if (!"".equals(repositoryId)) { //$NON-NLS-1$
             query = "repos=" + repositoryId;//$NON-NLS-1$
         }
         if (groupIdToSearch != null) {
-            if (!"".equals(query)) {
-                query = query + "&";
+            if (!"".equals(query)) { //$NON-NLS-1$
+                query = query + "&"; //$NON-NLS-1$
             }
             query = query + "g=" + groupIdToSearch;//$NON-NLS-1$
         }
         if (artifactId != null) {
-            if (!"".equals(query)) {
-                query = query + "&";
+            if (!"".equals(query)) { //$NON-NLS-1$
+                query = query + "&"; //$NON-NLS-1$
             }
             query = query + "a=" + artifactId;//$NON-NLS-1$
         }
 
         if (versionToSearch != null) {
-            if (!"".equals(query)) {
-                query = query + "&";
+            if (!"".equals(query)) { //$NON-NLS-1$
+                query = query + "&"; //$NON-NLS-1$
             }
             query = query + "v=" + versionToSearch;//$NON-NLS-1$
         }
         searchUrl = searchUrl + query;
         Request request = Request.Get(searchUrl);
-        String userPass = serverBean.getUserName() + ":" + serverBean.getPassword();
-        String basicAuth = "Basic " + new String(new Base64().encode(userPass.getBytes()));
-        Header authority = new BasicHeader("Authorization", basicAuth);
+        String userPass = serverBean.getUserName() + ":" + serverBean.getPassword(); //$NON-NLS-1$
+        String basicAuth = "Basic " + new String(new Base64().encode(userPass.getBytes())); //$NON-NLS-1$
+        Header authority = new BasicHeader("Authorization", basicAuth); //$NON-NLS-1$
         request.addHeader(authority);
+        Header resultDetailHeader = new BasicHeader("X-Result-Detail", "info"); //$NON-NLS-1$ //$NON-NLS-2$
+        request.addHeader(resultDetailHeader);
         List<MavenArtifact> resultList = new ArrayList<MavenArtifact>();
 
         HttpResponse response = request.execute().returnResponse();
@@ -173,11 +175,11 @@ public class ArtifacoryRepositoryHandler extends AbstractArtifactRepositoryHandl
         if (content.isEmpty()) {
             return resultList;
         }
-        JSONObject responseObject = new JSONObject().fromObject(content);
-        String resultStr = responseObject.getString("results");
+        JSONObject responseObject = JSONObject.fromObject(content);
+        String resultStr = responseObject.getString("results"); //$NON-NLS-1$
         JSONArray resultArray = null;
         try {
-            resultArray = new JSONArray().fromObject(resultStr);
+            resultArray = JSONArray.fromObject(resultStr);
         } catch (Exception e) {
             throw new Exception(resultStr);
         }
@@ -185,44 +187,55 @@ public class ArtifacoryRepositoryHandler extends AbstractArtifactRepositoryHandl
             String resultUrl = serverUrl + SEARCH_RESULT_PREFIX;
             for (int i = 0; i < resultArray.size(); i++) {
                 JSONObject jsonObject = resultArray.getJSONObject(i);
-                String uri = jsonObject.getString("uri");
+                String lastUpdated = jsonObject.getString("lastUpdated"); //$NON-NLS-1$
+                String uri = jsonObject.getString("uri"); //$NON-NLS-1$
                 uri = uri.substring(resultUrl.length(), uri.length());
-                String[] split = uri.split("/");
+                String[] split = uri.split("/"); //$NON-NLS-1$
                 if (split.length > 4) {
                     String fileName = split[split.length - 1];
-                    if (!fileName.endsWith("pom")) {
+                    if (!fileName.endsWith("pom")) { //$NON-NLS-1$
                         String type = null;
                         int dotIndex = fileName.lastIndexOf('.');
                         if (dotIndex > 0) {
                             type = fileName.substring(dotIndex + 1);
-
                         }
                         if (type != null) {
                             MavenArtifact artifact = new MavenArtifact();
                             String v = split[split.length - 2];
                             String a = split[split.length - 3];
-                            String g = "";
+                            String g = ""; //$NON-NLS-1$
                             for (int j = 1; j < split.length - 3; j++) {
-                                if ("".equals(g)) {
+                                if ("".equals(g)) { //$NON-NLS-1$
                                     g = split[j];
                                 } else {
-                                    g = g + "." + split[j];
+                                    g = g + "." + split[j]; //$NON-NLS-1$
                                 }
                             }
                             artifact.setGroupId(g);
                             artifact.setArtifactId(a);
                             artifact.setVersion(v);
                             artifact.setType(type);
+                            artifact.setLastUpdated(lastUpdated);
+                            fillChecksumData(jsonObject, artifact);
                             resultList.add(artifact);
                         }
                     }
-
                 }
-
             }
         }
-
         return resultList;
+    }
+
+    private void fillChecksumData(JSONObject responseObject, MavenArtifact artifact) {
+        if (responseObject.containsKey("checksums")) { //$NON-NLS-1$
+            JSONObject checkSum = responseObject.getJSONObject("checksums"); //$NON-NLS-1$
+            if (checkSum != null && checkSum.containsKey("sha1")) { //$NON-NLS-1$
+                artifact.setSha1(checkSum.getString("sha1")); //$NON-NLS-1$
+            }
+            if (checkSum != null && checkSum.containsKey("md5")) { //$NON-NLS-1$
+                artifact.setMd5(checkSum.getString("md5")); //$NON-NLS-1$
+            }
+        }
     }
 
     /*
@@ -234,7 +247,7 @@ public class ArtifacoryRepositoryHandler extends AbstractArtifactRepositoryHandl
     @Override
     public void deploy(File content, String groupId, String artifactId, String classifier, String extension, String version)
             throws Exception {
-        String repositoryId = "";
+        String repositoryId = ""; //$NON-NLS-1$
         boolean isRelease = !version.endsWith(MavenUrlHelper.VERSION_SNAPSHOT);
         if (isRelease) {
             repositoryId = serverBean.getRepositoryId();
@@ -256,7 +269,7 @@ public class ArtifacoryRepositoryHandler extends AbstractArtifactRepositoryHandl
     @Override
     public void deployWithPOM(File content, File pomFile, String groupId, String artifactId, String classifier, String extension,
             String version) throws Exception {
-        String repositoryId = "";
+        String repositoryId = ""; //$NON-NLS-1$
         boolean isRelease = !version.endsWith(MavenUrlHelper.VERSION_SNAPSHOT);
         if (isRelease) {
             repositoryId = serverBean.getRepositoryId();
