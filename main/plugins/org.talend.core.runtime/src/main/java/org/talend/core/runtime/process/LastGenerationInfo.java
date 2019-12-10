@@ -370,6 +370,15 @@ public class LastGenerationInfo {
         }
     }
 
+    /**
+     * Clear modules per job cache, not thread safe
+     */
+    public void clearModulesNeededPerJob() {
+        if (!modulesNeededPerJob.isEmpty()) {
+            modulesNeededPerJob.clear();
+        }
+    }
+
     public void clean() {
         modulesNeededPerJob.clear();
         routinesNeededPerJob.clear();
