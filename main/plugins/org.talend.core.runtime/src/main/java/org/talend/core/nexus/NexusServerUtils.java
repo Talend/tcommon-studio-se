@@ -38,6 +38,7 @@ import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.NullProgressMonitor;
 import org.eclipse.core.runtime.preferences.IEclipsePreferences;
 import org.eclipse.core.runtime.preferences.InstanceScope;
+import org.talend.commons.exception.ExceptionHandler;
 import org.talend.core.prefs.ITalendCorePrefConstants;
 import org.talend.core.runtime.maven.MavenArtifact;
 
@@ -115,6 +116,49 @@ public class NexusServerUtils {
             status[0] = false;
         }
         return status[0];
+    }
+    
+    public static HttpResponse getConnectionResponse(String nexusUrl, String repositoryId, final String userName,
+            final String password) {
+        if (StringUtils.isEmpty(nexusUrl) || StringUtils.isEmpty(repositoryId)) {
+            return null;
+        }
+
+        String newUrl = nexusUrl;
+        if (newUrl.endsWith(NexusConstants.SLASH)) {
+            newUrl = newUrl.substring(0, newUrl.length() - 1);
+        }
+        String urlToCheck = newUrl + NexusConstants.CONTENT_REPOSITORIES + repositoryId;
+
+        return getConnectionResponse(urlToCheck, userName, password);
+    }
+
+    public static HttpResponse getConnectionResponse(String nexusURL, String username, String password) {
+        if (StringUtils.isEmpty(nexusURL)) {
+            return null;
+        }
+        final List<HttpResponse> httpResponse = new ArrayList<>();
+        try {
+            NullProgressMonitor monitor = new NullProgressMonitor();
+            new HttpClientTransport(nexusURL, username, password) {
+
+                @Override
+                protected HttpResponse execute(IProgressMonitor monitor, DefaultHttpClient httpClient, URI targetURI)
+                        throws Exception {
+                    httpClient.getParams().setParameter(CoreConnectionPNames.CONNECTION_TIMEOUT, getTimeout());
+                    httpClient.getParams().setParameter(CoreConnectionPNames.SO_TIMEOUT, getTimeout());
+                    HttpHead httpHead = new HttpHead(targetURI);
+                    HttpResponse response = httpClient.execute(httpHead);
+                    httpResponse.add(response);
+                    return response;
+                }
+
+            }.doRequest(monitor, new URI(nexusURL));
+
+        } catch (Exception e) {
+            ExceptionHandler.process(e);
+        }
+        return httpResponse.get(0);
     }
 
     public static List<MavenArtifact> search(String nexusUrl, String userName, String password, String repositoryId,
