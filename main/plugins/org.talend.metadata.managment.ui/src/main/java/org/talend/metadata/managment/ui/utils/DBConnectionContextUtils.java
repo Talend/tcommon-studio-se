@@ -225,6 +225,7 @@ public final class DBConnectionContextUtils {
                     break;
                 case Sid:
                 case Database:
+                case Warehouse:
                 case ServiceName:
                     ConnectionContextHelper.createParameters(varList, paramName, conn.getSID());
                     break;
