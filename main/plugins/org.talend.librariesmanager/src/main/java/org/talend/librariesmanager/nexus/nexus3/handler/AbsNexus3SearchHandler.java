@@ -120,8 +120,9 @@ public abstract class AbsNexus3SearchHandler implements INexus3SearchHandler {
                 artifact.setGroupId(jsonObject.getString("group")); //$NON-NLS-1$
                 artifact.setArtifactId(jsonObject.getString("name")); //$NON-NLS-1$
                 artifact.setVersion(jsonObject.getString("version")); //$NON-NLS-1$
-                JSONArray assertsArray = jsonObject.getJSONArray("assets"); //$NON-NLS-1$
+                JSONArray assertsArray = jsonObject.getJSONArray("assets"); //$NON-NLS-1$                
                 artifact.setType(getPackageType(assertsArray));
+                fillCheckSumData(assertsArray, artifact);
                 resultList.add(artifact);
             }
         }
@@ -147,6 +148,27 @@ public abstract class AbsNexus3SearchHandler implements INexus3SearchHandler {
             }
         }
         return type;
+    }
+
+    private void fillCheckSumData(JSONArray assertsArray, MavenArtifact artifact) {
+        if (assertsArray != null) {
+            for (int i = 0; i < assertsArray.size(); i++) {
+                JSONObject jsonObject = assertsArray.getJSONObject(i);
+                if (jsonObject.containsKey("path")) { //$NON-NLS-1$
+                    String path = jsonObject.getString("path"); //$NON-NLS-1$
+                    if (path != null && path.endsWith(artifact.getType())) { // $NON-NLS-1$
+                        if (jsonObject.containsKey("checksum")) {
+                            JSONObject checksumObject = jsonObject.getJSONObject("checksum"); //$NON-NLS-1$
+                            if (checksumObject != null && checksumObject.containsKey("sha1")) {//$NON-NLS-1$
+                                artifact.setSha1(checksumObject.getString("sha1")); //$NON-NLS-1$
+                                artifact.setMd5(checksumObject.getString("md5")); //$NON-NLS-1$
+                                break;
+                            }
+                        }
+                    }
+                }
+            }
+        }
     }
 
     protected String getQueryParameter(String repositoryId, String groupIdToSearch, String artifactId, String versionToSearch,

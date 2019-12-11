@@ -15,7 +15,10 @@ package org.talend.core.services;
 import java.io.File;
 import java.io.IOException;
 import java.util.List;
+import java.util.Map;
+import java.util.Set;
 
+import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.emf.common.util.URI;
 import org.osgi.service.prefs.BackingStoreException;
 import org.talend.commons.exception.PersistenceException;
@@ -54,6 +57,9 @@ public interface ICoreTisService extends IService {
 
     public void downLoadAndInstallUpdates(String userName, String password, String adminUrl) throws Exception;
 
+    public void downLoadAndInstallUpdates(IProgressMonitor monitor, String userName, String password, String adminUrl)
+            throws Exception;
+
     public boolean isLicenseExpired();
 
     public boolean isTheSameType(String userName, String password, String adminUrl);
@@ -65,5 +71,11 @@ public interface ICoreTisService extends IService {
     public String generateSignerSessionId();
 
     public void updateConfiguratorBundles(File configFile, File tempConfigFile) throws IOException;
+
+    Map<String, String> getExtraBundleInfo4Patch(File featureIndexFile) throws IOException;
+
+    Map<String, String> getDropBundleInfo() throws IOException;
+
+    Set<String> getComponentBlackList() throws Exception;
 
 }

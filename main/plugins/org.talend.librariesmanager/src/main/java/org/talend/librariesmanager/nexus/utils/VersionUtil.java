@@ -10,15 +10,23 @@
 // 9 rue Pages 92150 Suresnes, France
 //
 // ============================================================================
-package org.talend.updates.runtime.engine;
+package org.talend.librariesmanager.nexus.utils;
+
+import org.talend.core.runtime.maven.MavenUrlHelper;
 
 /**
- * DOC ggu class global comment. Detailled comment
+ * DOC hwang  class global comment. Detailled comment
  */
-public class P2InstallerTest {
-
-    public static final String TEST_COMP_MYJIRA = "resources/components/components-myjira-0.16.0-SNAPSHOT-updatesite.zip";
-
-    public static final String TEST_COMP_FAKE_MYJIRA = "resources/components/components-myjira-0.16.0-SNAPSHOT-fake.zip";
+public class VersionUtil {
+    
+    public static String getSNAPSHOTVersion(String rVersion) {
+        if(rVersion == null) {
+            return rVersion;
+        }
+        if(rVersion.contains("-")) {
+            return rVersion.substring(0, rVersion.indexOf("-") + 1) + MavenUrlHelper.VERSION_SNAPSHOT;
+        }
+        return rVersion;
+    }
 
 }

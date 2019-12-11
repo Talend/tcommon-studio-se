@@ -10,12 +10,25 @@
 // 9 rue Pages 92150 Suresnes, France
 //
 // ============================================================================
-package org.talend.updates.runtime.model.interfaces;
+package org.talend.commons.utils.network;
 
+import java.io.IOException;
+import java.net.Proxy;
+import java.net.SocketAddress;
+import java.net.URI;
+import java.util.List;
 
 /**
  * DOC cmeng  class global comment. Detailled comment
  */
-public interface IP2ComponentFeature extends IComponentFeature, IP2Feature {
+public interface IProxySelectorProvider {
+
+    Object getKey();
+
+    boolean canHandle(final URI uri);
+
+    List<Proxy> select(final URI uri);
+
+    void connectFailed(final URI uri, final SocketAddress sa, final IOException ioe);
 
 }

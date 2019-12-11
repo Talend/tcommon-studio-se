@@ -57,7 +57,6 @@ import org.talend.updates.runtime.maven.MavenRepoSynchronizer;
 import org.talend.updates.runtime.model.P2ExtraFeature;
 import org.talend.updates.runtime.model.P2ExtraFeatureException;
 import org.talend.updates.runtime.model.UpdateSiteLocationType;
-import org.talend.updates.runtime.model.interfaces.IP2ComponentFeature;
 import org.talend.updates.runtime.nexus.component.ComponentIndexBean;
 import org.talend.updates.runtime.storage.AbstractFeatureStorage;
 import org.talend.updates.runtime.storage.IFeatureStorage;
@@ -69,7 +68,7 @@ import org.talend.utils.io.FilesUtils;
  * created by ycbai on 2017年5月18日 Detailled comment
  *
  */
-public class ComponentP2ExtraFeature extends P2ExtraFeature implements IP2ComponentFeature {
+public class ComponentP2ExtraFeature extends P2ExtraFeature {
 
     private boolean isLogin;
 

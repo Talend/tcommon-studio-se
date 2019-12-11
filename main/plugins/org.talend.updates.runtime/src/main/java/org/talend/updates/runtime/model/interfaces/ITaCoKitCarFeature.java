@@ -15,11 +15,12 @@ package org.talend.updates.runtime.model.interfaces;
 import java.io.File;
 
 import org.eclipse.core.runtime.IProgressMonitor;
+import org.talend.updates.runtime.model.ExtraFeature;
 
 /**
  * DOC cmeng  class global comment. Detailled comment
  */
-public interface ITaCoKitCarFeature extends IComponentFeature, Comparable<Object> {
+public interface ITaCoKitCarFeature extends ExtraFeature {
 
     File getCarFile(IProgressMonitor progress) throws Exception;
 
