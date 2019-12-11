@@ -19,6 +19,7 @@ import org.eclipse.core.runtime.Assert;
 import org.eclipse.emf.common.util.EList;
 import org.eclipse.emf.ecore.EAnnotation;
 import org.talend.commons.runtime.model.emf.EmfHelper;
+
 import orgomg.cwm.objectmodel.core.CoreFactory;
 import orgomg.cwm.objectmodel.core.CorePackage;
 import orgomg.cwm.objectmodel.core.ModelElement;
@@ -122,6 +123,8 @@ public final class TaggedValueHelper {
     public static final String REP_DBINFO_DBVERSION = "REP_DBINFO_DBVERSION"; //$NON-NLS-1$
 
     public static final String REP_DBINFO_DBNAME = "REP_DBINFO_DBNAME"; //$NON-NLS-1$
+
+    public static final String REP_DBINFO_WAREHOUSE = "REP_DBINFO_WAREHOUSE"; //$NON-NLS-1$
 
     public static final String REP_DBINFO_USER = "REP_DBINFO_USER"; //$NON-NLS-1$
 
