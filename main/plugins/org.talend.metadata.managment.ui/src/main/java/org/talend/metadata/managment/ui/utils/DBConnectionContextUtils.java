@@ -89,6 +89,7 @@ public final class DBConnectionContextUtils {
         // DQ datamart
         OutputFolder,
         LogoFile,
+        Warehouse,
         //
         Sid,
         Database,
