@@ -113,7 +113,7 @@ public class ArtifacoryRepositoryHandler extends AbstractArtifactRepositoryHandl
         }
     }
 
-    private HttpResponse doConnectionCheck(String repositoryUrl, boolean returnResponse)
+    private HttpResponse getConnectionResponse(String repositoryUrl)
             throws ClientProtocolException, IOException {
         String userPass = serverBean.getUserName() + ":" + serverBean.getPassword();
         String basicAuth = "Basic " + new String(new Base64().encode(userPass.getBytes()));
@@ -322,7 +322,7 @@ public class ArtifacoryRepositoryHandler extends AbstractArtifactRepositoryHandl
         TypedReturnCode<HttpResponse> rc = new TypedReturnCode<HttpResponse>();
         rc.setOk(false);
         try {
-            response = doConnectionCheck(getRepositoryURL(true), true);
+            response = getConnectionResponse(getRepositoryURL(true));
             if (200 == response.getStatusLine().getStatusCode()) {
                 rc.setOk(true);
                 rc.setObject(response);
