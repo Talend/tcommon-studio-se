@@ -202,6 +202,10 @@ public interface ILibraryManagerService extends IService {
      */
     public boolean isJarNeedToBeDeployed(File jarFile);
 
+    public boolean isSameFile(File f1, File f2);
+
     public void checkModuleStatus(ModuleNeeded module);
+
+    public void guessMavenRUIFromIndex(File jarFile, Map<String, String> sourceAndMavenUri);
 
 }
