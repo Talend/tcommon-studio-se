@@ -1745,7 +1745,7 @@ public class LocalRepositoryFactory extends AbstractEMFRepositoryFactory impleme
      * @throws PersistenceException
      */
     protected void deleteObjectPhysical(Project project, IRepositoryViewObject objToDelete, String version,
-            boolean fromEmptyRecycleBin, boolean isDeleteOnRemote, boolean aviodSave) throws PersistenceException {
+            boolean fromEmptyRecycleBin, boolean isDeleteOnRemote, boolean avoidSave) throws PersistenceException {
         if ("".equals(version)) { //$NON-NLS-1$
             version = null; // for all version
         }
@@ -1768,9 +1768,7 @@ public class LocalRepositoryFactory extends AbstractEMFRepositoryFactory impleme
                         if (currentVersion.getProperty() != null) {
                             // coreSerivce.removeItemRelations(currentVersion.getProperty().getItem());
                             boolean originalStatus = relationsBuilder.isAutoSave();
-                            if (aviodSave) {
-                                relationsBuilder.setAutoSave(false);
-                            }
+                            relationsBuilder.setAutoSave(false);
                             relationsBuilder.removeItemRelations(currentVersion.getProperty().getItem());
                             relationsBuilder.setAutoSave(originalStatus);
                         }
@@ -1815,7 +1813,7 @@ public class LocalRepositoryFactory extends AbstractEMFRepositoryFactory impleme
         if (!allVersionToDelete.isEmpty()) {
             RecycleBinManager.getInstance().removeFromRecycleBin(project, allVersionToDelete.get(0).getProperty().getItem());
         }
-        if (!fromEmptyRecycleBin && !aviodSave) {
+        if (!fromEmptyRecycleBin) {
             saveProject(project);
         }
     }
@@ -1827,9 +1825,9 @@ public class LocalRepositoryFactory extends AbstractEMFRepositoryFactory impleme
             deleteObjectPhysical(project, object, isDeleteAllVersion == true ? null : object.getProperty().getVersion(), false,
                     isDeleteOnRemote, true);
         }
-        RelationshipItemBuilder relationsBuilder = RelationshipItemBuilder.getInstance();
+        // RelationshipItemBuilder relationsBuilder = RelationshipItemBuilder.getInstance();
         // there is save project in the saveRelations, won't save project again here
-        relationsBuilder.saveRelations();
+        // relationsBuilder.saveRelations();
     }
 
     @Override
