@@ -114,6 +114,9 @@ public class CommonsPlugin implements BundleActivator {
         return Boolean.getBoolean("junit_test"); //$NON-NLS-1$
     }
 
+    public static boolean isTUJTest() {
+        return "org.talend.rcp.branding.tuj.product".equals(Platform.getProduct().getId()); //$NON-NLS-1$
+    }
 
     /**
      * Answer the file associated with name. This handles the case of running as a plugin and running standalone which
