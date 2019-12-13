@@ -86,6 +86,22 @@ public class LicenseTextUtil {
         return null;
     }
 
+    public static String getLicenseTextByName(String name) {
+        URL resourceURL = bundle.getEntry(LICENSE_FOLDER + name + EXT_TXT);
+        if (resourceURL == null) {
+            return null;
+        }
+        try {
+            File file = new File(FileLocator.toFileURL(resourceURL).getFile());
+            if (file.exists()) {
+                return getStringFromText(file);
+            }
+        } catch (Exception e) {
+            ExceptionHandler.process(e);
+        }
+        return null;
+    }
+
     private static String getStringFromText(File file) throws Exception {
         StringBuilder sb = new StringBuilder();
         List<String> lines = Files.readAllLines(file.toPath(), StandardCharsets.UTF_8);
