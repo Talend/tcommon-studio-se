@@ -46,24 +46,27 @@ public class StudioEncryption {
     private static final Pattern REG_ENCRYPTED_DATA_MIGRATION = Pattern
             .compile("^enc\\:migration\\.token\\.encryption\\.key\\:\\p{Print}+");
 
-    private static final Pattern REG_ENCRYPTED_DATA_ROUTINE = Pattern.compile("^enc\\:routine\\.encryption\\.key\\:\\p{Print}+");
+    private static final Pattern REG_ENCRYPTED_DATA_ROUTINE = Pattern
+            .compile("^enc\\:routine\\.encryption\\.key\\.v\\d\\:\\p{Print}+");
 
     // Encryption key name shipped in M3
-    private static final String KEY_SYSTEM_M3 = StudioKeySource.KEY_SYSTEM_PREFIX + "1";
+    private static final String KEY_SYSTEM_DEFAULT = StudioKeySource.KEY_SYSTEM_PREFIX + "1";
+
+    static final String KEY_ROUTINE = StudioKeySource.KEY_ROUTINE_PREFIX + "1";
 
     private static final String KEY_MIGRATION_TOKEN = "migration.token.encryption.key";
 
-    // TODO: this fixed key will be removed
-    private static final String KEY_ROUTINE = StudioKeySource.KEY_FIXED;
+    private static final String KEY_MIGRATION = "migration.encryption.key";
 
     private EncryptionKeyName keyName;
 
     private String securityProvider;
 
     public enum EncryptionKeyName {
-        SYSTEM(KEY_SYSTEM_M3),
+        SYSTEM(KEY_SYSTEM_DEFAULT),
         ROUTINE(KEY_ROUTINE),
-        MIGRATION_TOKEN(KEY_MIGRATION_TOKEN);
+        MIGRATION_TOKEN(KEY_MIGRATION_TOKEN),
+        MIGRATION(KEY_MIGRATION); // This key only use to process migration data. Only for DES algorithm
 
         private final String name;
 
@@ -90,7 +93,7 @@ public class StudioEncryption {
         this.securityProvider = providerName;
     }
 
-    private static StudioKeySource getKeySource(String encryptionKeyName, boolean isEncrypt) {
+    public static StudioKeySource getKeySource(String encryptionKeyName, boolean isEncrypt) {
         Properties allKeys = LOCALCACHEDALLKEYS.get();
 
         StudioKeySource ks = StudioKeySource.key(allKeys, encryptionKeyName, isEncrypt);
@@ -151,8 +154,8 @@ public class StudioEncryption {
                 StudioKeySource ks = getKeySource(srcData[1], false);
                 return this.getEncryption(ks).decrypt(srcData[2]);
             }
-            StudioKeySource ks = getKeySource(KEY_SYSTEM_M3, false);
-            // compatible with M3, decrypt by default key: system.encryption.key.v1
+            // decrypt by default key: system.encryption.key.v1 or migration.token.encryption.key
+            StudioKeySource ks = getKeySource(this.keyName.name, false);
             return this.getEncryption(ks).decrypt(src.substring(PREFIX_PASSWORD_M3.length(), src.length() - 1));
         } catch (Exception e) {
             // backward compatibility
@@ -202,9 +205,9 @@ public class StudioEncryption {
                     } catch (IOException e) {
                         LOGGER.error("load encryption keys error", e);
                     }
-                    // EncryptionKeyName.MIGRATION_TOKEN are not allowed to be updated
+                    // EncryptionKeyName.MIGRATION_TOKEN and MIGRATION are not allowed to be updated
+                    p.remove(EncryptionKeyName.MIGRATION.name);
                     p.remove(EncryptionKeyName.MIGRATION_TOKEN.name);
-
                     // persist keys to ~configuration/studio.keys
                     try (OutputStream fo = new FileOutputStream(keyFile)) {
                         p.store(fo, "studio encryption keys");

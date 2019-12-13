@@ -87,7 +87,7 @@ public class RunTrace implements Runnable {
         }
         try {
             askForStatus();
-            ois = new NoHeaderObjectInputStream(s.getInputStream());
+            ois = new NoHeaderObjectInputStream(s.getInputStream(), TraceDataBean.class, TraceStatusBean.class);
             TraceBean traceBean = (TraceBean) ois.readObject();
             return traceBean.equals(TraceStatusBean.NEXT_ROW);
         } catch (IOException e) {
@@ -105,7 +105,7 @@ public class RunTrace implements Runnable {
         }
         try {
             askForStatus();
-            ois = new NoHeaderObjectInputStream(s.getInputStream());
+            ois = new NoHeaderObjectInputStream(s.getInputStream(), TraceDataBean.class, TraceStatusBean.class);
             TraceBean traceBean = (TraceBean) ois.readObject();
             return traceBean.equals(TraceStatusBean.NEXT_BREAKPOINT);
         } catch (IOException e) {
@@ -125,7 +125,7 @@ public class RunTrace implements Runnable {
             boolean action = false;
             oos.writeObject(TraceStatusBean.UI_STATUS);
             do {
-                ois = new NoHeaderObjectInputStream(s.getInputStream());
+                ois = new NoHeaderObjectInputStream(s.getInputStream(), TraceDataBean.class, TraceStatusBean.class);
                 TraceBean traceBean = (TraceBean) ois.readObject();
                 if (traceBean.equals(TraceStatusBean.STATUS_WAITING)) {
                     oos.writeObject(TraceStatusBean.UI_STATUS);
@@ -147,7 +147,7 @@ public class RunTrace implements Runnable {
         }
         try {
             askForStatus();
-            ois = new NoHeaderObjectInputStream(s.getInputStream());
+            ois = new NoHeaderObjectInputStream(s.getInputStream(), TraceDataBean.class, TraceStatusBean.class);
             TraceBean traceBean = (TraceBean) ois.readObject();
             return traceBean.equals(TraceStatusBean.PAUSE);
         } catch (IOException e) {

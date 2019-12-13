@@ -13,7 +13,6 @@
 package org.talend.updates.runtime.model;
 
 import java.io.File;
-import java.io.FileInputStream;
 import java.io.IOException;
 import java.lang.reflect.InvocationHandler;
 import java.lang.reflect.Method;
@@ -62,9 +61,6 @@ import org.osgi.framework.BundleContext;
 import org.osgi.framework.FrameworkUtil;
 import org.osgi.framework.ServiceReference;
 import org.talend.commons.exception.ExceptionHandler;
-import org.talend.commons.runtime.utils.io.IOUtils;
-import org.talend.core.GlobalServiceRegister;
-import org.talend.core.services.ICoreTisService;
 import org.talend.updates.runtime.engine.P2Manager;
 import org.talend.updates.runtime.feature.model.Category;
 import org.talend.updates.runtime.feature.model.Type;
@@ -77,6 +73,7 @@ import org.talend.updates.runtime.service.ITaCoKitUpdateService;
 import org.talend.updates.runtime.service.ITaCoKitUpdateService.ICarInstallationResult;
 import org.talend.updates.runtime.storage.AbstractFeatureStorage;
 import org.talend.updates.runtime.storage.IFeatureStorage;
+import org.talend.updates.runtime.utils.UpdateTools;
 import org.talend.updates.runtime.utils.PathUtils;
 import org.talend.updates.runtime.utils.TaCoKitCarUtils;
 import org.talend.utils.files.FileUtils;
@@ -279,12 +276,11 @@ public class P2ExtraFeature extends AbstractExtraFeature implements IP2Feature {
     @Override
     public IStatus install(final IProgressMonitor progress, List<URI> allRepoUris) throws ExtraFeatureException {
         IStatus doInstallStatus = null;
-        File configIniBackupFile = null;
         Map<File, File> unzippedPatches = new HashMap<>();
         try {
             if (!isUseLegacyP2Install()) {
                 // backup the config.ini
-                configIniBackupFile = backupConfigFile();
+                UpdateTools.backupConfigFile();
             } // else legacy p2 install will update the config.ini
             doInstallStatus = installP2(progress, allRepoUris);
             if (doInstallStatus == null || !doInstallStatus.isOK()) {
@@ -334,9 +330,9 @@ public class P2ExtraFeature extends AbstractExtraFeature implements IP2Feature {
                 }
             }
             // restore the config.ini
-            if (configIniBackupFile != null) { // must existed backup file.
+            if (isInstalled) { // must existed backup file.
                 try {
-                    restoreConfigFile(configIniBackupFile, isInstalled);
+                    UpdateTools.restoreConfigFile();
                 } catch (IOException e) {
                     throw new P2ExtraFeatureException(
                             new ProvisionException(Messages.createErrorStatus(e, "ExtraFeaturesFactory.back.config.error"))); //$NON-NLS-1$
@@ -656,39 +652,6 @@ public class P2ExtraFeature extends AbstractExtraFeature implements IP2Feature {
         super.copyFieldInto(p2ExtraFeatureUpdate);
         if (p2ExtraFeatureUpdate instanceof P2ExtraFeature) {
             ((P2ExtraFeature) p2ExtraFeatureUpdate).baseRepoUriStr = baseRepoUriStr;
-        }
-    }
-
-    protected File backupConfigFile() throws IOException {
-        try {
-            File configurationFile = PathUtils.getStudioConfigFile();
-            File tempFile = File.createTempFile("config.ini", null); //$NON-NLS-1$
-            FilesUtils.copyFile(new FileInputStream(configurationFile), tempFile);
-            return tempFile;
-        } catch (Exception e) {
-            if (e instanceof IOException) {
-                throw (IOException) e;
-            }
-            throw new IOException(e);
-        }
-    }
-
-    protected void restoreConfigFile(File toResore, boolean isInstalled) throws IOException {
-        try {
-            File configurationFile = PathUtils.getStudioConfigFile();
-            if (isInstalled && !IOUtils.contentEquals(new FileInputStream(configurationFile), new FileInputStream(toResore))) {
-                if (GlobalServiceRegister.getDefault().isServiceRegistered(ICoreTisService.class)) {
-                    ICoreTisService coreTisService = (ICoreTisService) GlobalServiceRegister.getDefault()
-                            .getService(ICoreTisService.class);
-                    coreTisService.updateConfiguratorBundles(configurationFile, toResore);
-                }
-            }
-        } catch (Exception e) {
-            throw new IOException(e);
-        } finally {
-            if (toResore != null && toResore.exists()) {
-                toResore.delete();
-            }
         }
     }
 

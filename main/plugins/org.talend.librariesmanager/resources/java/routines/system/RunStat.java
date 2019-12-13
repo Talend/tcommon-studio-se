@@ -470,6 +470,15 @@ public class RunStat implements Runnable {
 	    	}
     	}
     }
+
+    /**
+     * work for avoiding the 65535 issue
+     */
+    public synchronized void log(Map<String, Object> resourceMap, String iterateId, int mode, int nbLine, String connectionUniqueName) {
+    	if(resourceMap.get("inIterateVComp") == null){
+	    	log(connectionUniqueName+iterateId, mode, nbLine);
+    	}
+    }
     
     /**
      * work for avoiding the 65535 issue

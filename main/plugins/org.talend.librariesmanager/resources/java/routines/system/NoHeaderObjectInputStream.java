@@ -14,8 +14,11 @@ package routines.system;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.InvalidClassException;
 import java.io.ObjectInputStream;
+import java.io.ObjectStreamClass;
 import java.io.StreamCorruptedException;
+import java.util.Arrays;
 
 /**
  * DOC bchen class global comment. Detailled comment <br/>
@@ -25,8 +28,26 @@ import java.io.StreamCorruptedException;
  */
 public class NoHeaderObjectInputStream extends ObjectInputStream {
 
+    /**
+     * Expected types for deserialized object (optional - for security purpose)
+     */
+    private Class<?>[] expectedTypes;
+
+    /**
+     * If {@link #expectedTypes} is set, flags if the class has already been checked
+     */
+    private boolean valid = false;
+
     public NoHeaderObjectInputStream(InputStream in) throws IOException {
         super(in);
+    }
+
+    public NoHeaderObjectInputStream(InputStream in, Class<?>... expectedTypes) throws IOException {
+        this(in);
+        if (expectedTypes != null) {
+            this.expectedTypes = new Class<?>[expectedTypes.length];
+            System.arraycopy(expectedTypes, 0, this.expectedTypes, 0, expectedTypes.length) ;
+        }
     }
 
     /**
@@ -43,5 +64,18 @@ public class NoHeaderObjectInputStream extends ObjectInputStream {
     @Override
     protected void readStreamHeader() throws IOException, StreamCorruptedException {
         // don't need to check the header
+    }
+
+    @Override
+    protected Class<?> resolveClass(ObjectStreamClass desc) throws IOException, ClassNotFoundException {
+        if (expectedTypes != null && !valid) {
+            if (Arrays.stream(expectedTypes)
+                    .anyMatch(c -> c.getName().equals(desc.getName()))) {
+                valid = true;
+            } else {
+                throw new InvalidClassException("Unauthorized deserialization attempt : " + desc.getName());
+            }
+        }
+        return super.resolveClass(desc);
     }
 }

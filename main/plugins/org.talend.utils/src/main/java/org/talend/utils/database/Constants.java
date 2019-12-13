@@ -21,6 +21,8 @@ public class Constants {
 
     public static final String JDBC_MSSQL_URL = "jdbc:jtds:sqlserver://";
 
+    public static final String JDBC_MSSQL_OFFICIAL_URL = "jdbc:sqlserver://";
+
     public static final String JDBC_ORACLE_URL = "jdbc:oracle:thin:";
 
     public static final String JDBC_H2_URL = "jdbc:h2";
@@ -30,6 +32,8 @@ public class Constants {
     public static final String JDBC_MYSQL_DRIVER = "com.mysql.cj.jdbc.Driver";
 
     public static final String JDBC_MSSQL_DRIVER = "net.sourceforge.jtds.jdbc.Driver";
+
+    public static final String JDBC_MSSQL_OFFICIAL_DRIVER = "com.microsoft.sqlserver.jdbc.SQLServerDriver";
 
     public static final String JDBC_ORACLE_DRIVER = "oracle.jdbc.OracleDriver";
 
@@ -47,6 +51,9 @@ public class Constants {
         }
         if (url.startsWith(JDBC_MSSQL_URL)) {
             return JDBC_MSSQL_DRIVER;
+        }
+        if (url.startsWith(JDBC_MSSQL_OFFICIAL_URL)) {
+            return JDBC_MSSQL_OFFICIAL_DRIVER;
         }
         if (url.startsWith(JDBC_ORACLE_URL)) {
             return JDBC_ORACLE_DRIVER;

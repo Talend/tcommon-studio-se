@@ -12,13 +12,10 @@
 // ============================================================================
 package org.talend.updates.runtime.model.interfaces;
 
-import org.talend.updates.runtime.model.ExtraFeature;
-
-
 /**
  * DOC cmeng  class global comment. Detailled comment
  */
-public interface IP2Feature extends ExtraFeature {
+public interface IP2Feature {
 
     void setUseP2Cache(boolean useP2Cache);
 

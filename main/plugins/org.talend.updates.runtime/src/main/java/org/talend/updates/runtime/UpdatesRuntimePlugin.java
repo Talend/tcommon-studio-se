@@ -12,6 +12,8 @@
 // ============================================================================
 package org.talend.updates.runtime;
 
+import org.eclipse.equinox.internal.p2.core.helpers.ServiceHelper;
+import org.eclipse.equinox.p2.core.IProvisioningAgent;
 import org.eclipse.ui.plugin.AbstractUIPlugin;
 import org.osgi.framework.BundleContext;
 
@@ -25,10 +27,14 @@ public class UpdatesRuntimePlugin extends AbstractUIPlugin {
 
     private static UpdatesRuntimePlugin plugin;
 
+    private IProvisioningAgent agent;
+
+    @SuppressWarnings("restriction")
     @Override
     public void start(BundleContext context) throws Exception {
         super.start(context);
         plugin = this;
+        agent = ServiceHelper.getService(context, IProvisioningAgent.class);
     }
 
     @Override
@@ -40,4 +46,9 @@ public class UpdatesRuntimePlugin extends AbstractUIPlugin {
     public static UpdatesRuntimePlugin getDefault() {
         return plugin;
     }
+
+    public IProvisioningAgent getProvisioningAgent() {
+        return agent;
+    }
+
 }
