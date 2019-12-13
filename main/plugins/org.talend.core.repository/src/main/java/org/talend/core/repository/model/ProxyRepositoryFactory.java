@@ -2078,7 +2078,9 @@ public final class ProxyRepositoryFactory implements IProxyRepositoryFactory {
                 try {
                     currentMonitor = subMonitor.newChild(1, SubMonitor.SUPPRESS_NONE);
                     currentMonitor.beginTask(Messages.getString("ProxyRepositoryFactory.load.sdk.componnents"), 1); // $NON-NLS-1$
-                    ITaCoKitService.getInstance().start();
+                    if (ITaCoKitService.getInstance() != null) {
+                        ITaCoKitService.getInstance().start();
+                    }
                 } catch (Exception e) {
                     ExceptionHandler.process(e);
                 }

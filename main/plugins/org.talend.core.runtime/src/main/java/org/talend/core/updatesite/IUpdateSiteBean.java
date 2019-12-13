@@ -12,6 +12,8 @@
 // ============================================================================
 package org.talend.core.updatesite;
 
+import org.talend.core.runtime.maven.MavenArtifact;
+
 /**
  * DOC hywang class global comment. Detailled comment
  */
@@ -29,6 +31,6 @@ public interface IUpdateSiteBean {
 
     public String getURL();
 
-    public Object getArtifact();
+    public MavenArtifact getArtifact();
 
 }

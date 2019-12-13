@@ -66,7 +66,7 @@ public class PluginChecker {
 
     private static final String GIT_PROVIDER_PLUGIN_ID = "org.talend.repository.gitprovider"; //$NON-NLS-1$
 
-    private static final String CORE_TIS_PLUGIN_ID = "org.talend.core.tis"; //$NON-NLS-1$
+    public static final String CORE_TIS_PLUGIN_ID = "org.talend.core.tis"; //$NON-NLS-1$
 
     private static final String HL7_PLUGIN_ID = "org.talend.repository.hl7"; //$NON-NLS-1$
 
