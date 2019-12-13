@@ -13,9 +13,14 @@
 package org.talend.designer.maven.aether.util;
 
 import java.io.File;
+import java.io.IOException;
 import java.io.PrintWriter;
 import java.io.StringWriter;
+import java.nio.file.FileVisitResult;
 import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.SimpleFileVisitor;
+import java.nio.file.attribute.BasicFileAttributes;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
@@ -369,89 +374,125 @@ public class DynamicDistributionAetherUtils {
         }
     }
 
-    public static TypedReturnCode<VersionRangeResult> checkConnection(String remoteUrl, String username, String password, String groupId,
+    public static TypedReturnCode checkConnection(String remoteUrl, String username, String password, String groupId,
             String artifactId, String baseVersion, String topVersion, IDynamicMonitor monitor) throws Exception {
         TypedReturnCode<VersionRangeResult> tc = new TypedReturnCode<VersionRangeResult>();
-        // maybe need a compatible limit using baseVersion and topVersion
-        if (monitor == null) {
-            monitor = new DummyDynamicMonitor();
-        }
-        //temp path
-        File tempDirectory = Files.createTempDirectory("nexusTemp_").toFile();
-        tempDirectory.deleteOnExit();
-        String localPath=tempDirectory.getPath();
-        RepositorySystem repSystem = MavenLibraryResolverProvider.newRepositorySystemForResolver();
-        RepositorySystemSession repSysSession = newSession(repSystem, localPath, monitor);
-        updateDependencySelector((DefaultRepositorySystemSession) repSysSession, monitor);
-
-        String base = baseVersion;
-        if (base == null || base.isEmpty()) {
-            base = "0"; //$NON-NLS-1$
-        }
-        String range = ":[" + base + ","; //$NON-NLS-1$ //$NON-NLS-2$
-        if (topVersion != null && !topVersion.isEmpty()) {
-            // :[0,1)
-            range = range + topVersion + ")"; //$NON-NLS-1$
-        } else {
-            // :[0,)
-            range = range + ")"; //$NON-NLS-1$
-        }
-
-        Artifact artifact = new DefaultArtifact(groupId + GAV_SEPERATOR + artifactId + range); 
-        Builder builder = new RemoteRepository.Builder("central", "default", remoteUrl); //$NON-NLS-1$ //$NON-NLS-2$
-        if (StringUtils.isNotEmpty(username)) {
-            Authentication auth = new AuthenticationBuilder().addUsername(username).addPassword(password).build();
-            builder = builder.setAuthentication(auth);
-        }
-        RemoteRepository central = builder.build();
-        central = new RemoteRepository.Builder(central).setProxy(new TalendAetherProxySelector().getProxy(central)).build();
-
-        VersionRangeRequest verRangeRequest = new VersionRangeRequest();
-        verRangeRequest.addRepository(central);
-        verRangeRequest.setArtifact(artifact);
-
-        checkCancelOrNot(monitor);
-        VersionRangeResult rangeResult = repSystem.resolveVersionRange(repSysSession, verRangeRequest);
-        if (rangeResult == null) {
-            return null;
-        } else {
-            //have version ragne >>  success
-            if (rangeResult.getHighestVersion() != null) {
-                tc.setOk(true);
-                tc.setObject(rangeResult);
-                return tc;
+        Path tempPath = null;
+        try {
+            if (monitor == null) {
+                monitor = new DummyDynamicMonitor();
             }
-            //no version
-            if (rangeResult.getExceptions() == null || rangeResult.getExceptions().size() < 1) {
+            // temp path
+            tempPath = Files.createTempDirectory("nexusTemp_");
+            File tempDirectory = tempPath.toFile();
+            String localPath = tempDirectory.getPath();
+            RepositorySystem repSystem = MavenLibraryResolverProvider.newRepositorySystemForResolver();
+            RepositorySystemSession repSysSession = newSession(repSystem, localPath, monitor);
+            updateDependencySelector((DefaultRepositorySystemSession) repSysSession, monitor);
+
+            String base = baseVersion;
+            if (base == null || base.isEmpty()) {
+                base = "0"; //$NON-NLS-1$
+            }
+            String range = ":[" + base + ","; //$NON-NLS-1$ //$NON-NLS-2$
+            if (topVersion != null && !topVersion.isEmpty()) {
+                // :[0,1)
+                range = range + topVersion + ")"; //$NON-NLS-1$
+            } else {
+                // :[0,)
+                range = range + ")"; //$NON-NLS-1$
+            }
+
+            Artifact artifact = new DefaultArtifact(groupId + GAV_SEPERATOR + artifactId + range);
+            Builder builder = new RemoteRepository.Builder("central", "default", remoteUrl); //$NON-NLS-1$ //$NON-NLS-2$
+            if (StringUtils.isNotEmpty(username)) {
+                Authentication auth = new AuthenticationBuilder().addUsername(username).addPassword(password).build();
+                builder = builder.setAuthentication(auth);
+            }
+            RemoteRepository central = builder.build();
+            central = new RemoteRepository.Builder(central).setProxy(new TalendAetherProxySelector().getProxy(central)).build();
+
+            VersionRangeRequest verRangeRequest = new VersionRangeRequest();
+            verRangeRequest.addRepository(central);
+            verRangeRequest.setArtifact(artifact);
+
+            checkCancelOrNot(monitor);
+            VersionRangeResult rangeResult = repSystem.resolveVersionRange(repSysSession, verRangeRequest);
+            if (rangeResult == null) {
                 tc.setOk(false);
-                tc.setObject(rangeResult);
                 return tc;
-            }
-            // 1. remoteRepository exception is MetadataNotFoundException: connected => check connection succeed
-            for (Exception e : rangeResult.getExceptions()) {
-                if (e instanceof MetadataNotFoundException
-                        && central.equals(((MetadataNotFoundException) e).getRepository())) {
+            } else {
+                // have version ragne >> success
+                if (rangeResult.getHighestVersion() != null) {
                     tc.setOk(true);
                     tc.setObject(rangeResult);
                     return tc;
                 }
-            }
-            // 2. remoteRepository exception is MetadataTransferException: connect failed
-            for (Exception e : rangeResult.getExceptions()) {
-                if (e instanceof MetadataTransferException
-                        && central.equals(((MetadataTransferException) e).getRepository())) {
+                // no version
+                if (rangeResult.getExceptions() == null || rangeResult.getExceptions().size() < 1) {
                     tc.setOk(false);
-                    tc.setObject(rangeResult);
-                    tc.setMessage(e.getCause().getMessage());
                     return tc;
                 }
+                // 1. remoteRepository exception is MetadataNotFoundException: connected => check connection succeed
+                for (Exception e : rangeResult.getExceptions()) {
+                    if (e instanceof MetadataNotFoundException
+                            && central.equals(((MetadataNotFoundException) e).getRepository())) {
+                        tc.setOk(true);
+                        return tc;
+                    }
+                }
+                // 2. remoteRepository exception is MetadataTransferException: connect failed
+                for (Exception e : rangeResult.getExceptions()) {
+                    if (e instanceof MetadataTransferException
+                            && central.equals(((MetadataTransferException) e).getRepository())) {
+                        tc.setOk(false);
+                        tc.setMessage(e.getCause().getMessage());
+                        return tc;
+                    }
+                }
+                // 3. no remoteRepository exception, throw first exception, log other exception
+                tc.setOk(false);
+                tc.setMessage(rangeResult.getExceptions().get(0).getMessage());
+                return tc;
             }
-            // 3. no remoteRepository exception, throw first exception, log other exception
-            tc.setOk(false);
-            tc.setObject(rangeResult);
-            tc.setMessage(rangeResult.getExceptions().get(0).getMessage());
-            return tc;
+        } finally {
+            if (tempPath != null) {
+                recursiveDeleteOnShutdownHook(tempPath);
+            }
         }
+
+    }
+
+    private static void recursiveDeleteOnShutdownHook(final Path path) {
+        Runtime.getRuntime().addShutdownHook(new Thread(new Runnable() {
+
+            @Override
+            public void run() {
+                try {
+                    Files.walkFileTree(path, new SimpleFileVisitor<Path>() {
+
+                        @Override
+                        public FileVisitResult visitFile(Path file, @SuppressWarnings("unused") BasicFileAttributes attrs)
+                                throws IOException {
+                            Files.delete(file);
+                            return FileVisitResult.CONTINUE;
+                        }
+
+                        @Override
+                        public FileVisitResult postVisitDirectory(Path dir, IOException e) throws IOException {
+                            if (e == null) {
+                                Files.delete(dir);
+                                return FileVisitResult.CONTINUE;
+                            }
+                            // directory iteration failed
+                            throw e;
+                        }
+                    });
+                } catch (IOException e) {
+                    throw new RuntimeException("Failed to delete nexus check connection temp dir: " + path, e);
+                }
+            }
+        }));
     }
 
     private static DependencyNode convert(org.eclipse.aether.graph.DependencyNode node, RemoteRepository remoteRepository)
