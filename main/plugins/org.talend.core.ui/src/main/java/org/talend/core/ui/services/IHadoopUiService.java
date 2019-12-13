@@ -14,8 +14,6 @@ package org.talend.core.ui.services;
 
 import org.eclipse.jface.preference.PreferencePage;
 import org.eclipse.swt.widgets.Composite;
-import org.talend.commons.exception.ExceptionHandler;
-import org.talend.core.GlobalServiceRegister;
 import org.talend.core.IService;
 
 
@@ -25,17 +23,5 @@ import org.talend.core.IService;
 public interface IHadoopUiService extends IService {
 
     IPreferenceForm createDynamicDistributionPrefForm(Composite parent, PreferencePage prefPage);
-
-    static IHadoopUiService getInstance() {
-        try {
-            GlobalServiceRegister serviceRegister = GlobalServiceRegister.getDefault();
-            if (serviceRegister.isServiceRegistered(IHadoopUiService.class)) {
-                return serviceRegister.getService(IHadoopUiService.class);
-            }
-        } catch (Exception e) {
-            ExceptionHandler.process(e);
-        }
-        return null;
-    }
 
 }

@@ -442,7 +442,7 @@ public class DynamicDistributionAetherUtils {
                         && central.equals(((MetadataTransferException) e).getRepository())) {
                     tc.setOk(false);
                     tc.setObject(rangeResult);
-                    tc.setMessage(e.getMessage());
+                    tc.setMessage(e.getCause().getMessage());
                     return tc;
                 }
             }
