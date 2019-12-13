@@ -25,8 +25,8 @@ import org.osgi.service.cm.ManagedService;
 import org.osgi.util.tracker.ServiceTracker;
 import org.osgi.util.tracker.ServiceTrackerCustomizer;
 import org.talend.commons.exception.ExceptionHandler;
+import org.talend.commons.utils.network.IProxySelectorProvider;
 import org.talend.commons.utils.network.TalendProxySelector;
-import org.talend.commons.utils.network.TalendProxySelector.IProxySelectorProvider;
 import org.talend.core.runtime.CoreRuntimePlugin;
 
 /**

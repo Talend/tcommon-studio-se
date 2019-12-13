@@ -215,8 +215,18 @@ public interface IRepositoryFactory {
     public void deleteObjectPhysical(Project project, IRepositoryViewObject objToDelete, String version,
             boolean fromEmptyRecycleBin, boolean isDeleteOnRemote) throws PersistenceException;
 
-    public void batchDeleteObjectPhysical(Project project, List<IRepositoryViewObject> objToDeleteList, boolean isDeleteOnRemote)
-            throws PersistenceException;
+    /**
+     * 
+     * Batch delete the object of the given object list.
+     * 
+     * @param project - The object's project.
+     * @param objToDeleteList - The objects list.
+     * @param isDeleteAllVersion - True: delete all version by object id; False: delete object by id and version.
+     * @param isDeleteOnRemote
+     * @throws PersistenceException
+     */
+    public void batchDeleteObjectPhysical(Project project, List<IRepositoryViewObject> objToDeleteList,
+            boolean isDeleteAllVersion, boolean isDeleteOnRemote) throws PersistenceException;
 
     /**
      * Restore a logically deleted object. <code>isDeleted</code> on this object will now returned <code>false</code>.

@@ -35,8 +35,8 @@ import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.NullProgressMonitor;
 import org.eclipse.core.runtime.OperationCanceledException;
 import org.talend.commons.exception.BusinessException;
+import org.talend.commons.utils.network.IProxySelectorProvider;
 import org.talend.commons.utils.network.TalendProxySelector;
-import org.talend.commons.utils.network.TalendProxySelector.IProxySelectorProvider;
 import org.talend.core.runtime.CoreRuntimePlugin;
 import org.talend.core.runtime.maven.MavenArtifact;
 import org.talend.core.runtime.maven.MavenUrlHelper;
@@ -182,7 +182,7 @@ public abstract class HttpClientTransport {
                 }
                 final Proxy finalProxy = usedProxy;
                 InetSocketAddress address = (InetSocketAddress) finalProxy.address();
-                String proxyServer = address.getHostName();
+                String proxyServer = address.getHostString();
                 int proxyPort = address.getPort();
                 TalendProxySelector proxySelector = TalendProxySelector.getInstance();
                 PasswordAuthentication proxyAuthentication = proxySelector.getHttpPasswordAuthentication();
