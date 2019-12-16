@@ -13,14 +13,9 @@
 package org.talend.designer.maven.aether.util;
 
 import java.io.File;
-import java.io.IOException;
 import java.io.PrintWriter;
 import java.io.StringWriter;
-import java.nio.file.FileVisitResult;
 import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.SimpleFileVisitor;
-import java.nio.file.attribute.BasicFileAttributes;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
@@ -72,6 +67,7 @@ import org.talend.designer.maven.aether.node.DependencyNode;
 import org.talend.designer.maven.aether.node.ExclusionNode;
 import org.talend.designer.maven.aether.selector.DynamicDependencySelector;
 import org.talend.designer.maven.aether.selector.DynamicExclusionDependencySelector;
+import org.talend.utils.io.FilesUtils;
 import org.talend.utils.sugars.TypedReturnCode;
 
 /**
@@ -377,14 +373,12 @@ public class DynamicDistributionAetherUtils {
     public static TypedReturnCode checkConnection(String remoteUrl, String username, String password, String groupId,
             String artifactId, String baseVersion, String topVersion, IDynamicMonitor monitor) throws Exception {
         TypedReturnCode<VersionRangeResult> tc = new TypedReturnCode<VersionRangeResult>();
-        Path tempPath = null;
+        File tempDirectory = null;
         try {
             if (monitor == null) {
                 monitor = new DummyDynamicMonitor();
             }
-            // temp path
-            tempPath = Files.createTempDirectory("nexusTemp_");
-            File tempDirectory = tempPath.toFile();
+            tempDirectory = Files.createTempDirectory("nexusTemp_").toFile();
             String localPath = tempDirectory.getPath();
             RepositorySystem repSystem = MavenLibraryResolverProvider.newRepositorySystemForResolver();
             RepositorySystemSession repSysSession = newSession(repSystem, localPath, monitor);
@@ -456,43 +450,11 @@ public class DynamicDistributionAetherUtils {
                 return tc;
             }
         } finally {
-            if (tempPath != null) {
-                recursiveDeleteOnShutdownHook(tempPath);
+            if (tempDirectory != null) {
+                FilesUtils.deleteFolder(tempDirectory, true);
             }
         }
 
-    }
-
-    private static void recursiveDeleteOnShutdownHook(final Path path) {
-        Runtime.getRuntime().addShutdownHook(new Thread(new Runnable() {
-
-            @Override
-            public void run() {
-                try {
-                    Files.walkFileTree(path, new SimpleFileVisitor<Path>() {
-
-                        @Override
-                        public FileVisitResult visitFile(Path file, @SuppressWarnings("unused") BasicFileAttributes attrs)
-                                throws IOException {
-                            Files.delete(file);
-                            return FileVisitResult.CONTINUE;
-                        }
-
-                        @Override
-                        public FileVisitResult postVisitDirectory(Path dir, IOException e) throws IOException {
-                            if (e == null) {
-                                Files.delete(dir);
-                                return FileVisitResult.CONTINUE;
-                            }
-                            // directory iteration failed
-                            throw e;
-                        }
-                    });
-                } catch (IOException e) {
-                    throw new RuntimeException("Failed to delete nexus check connection temp dir: " + path, e);
-                }
-            }
-        }));
     }
 
     private static DependencyNode convert(org.eclipse.aether.graph.DependencyNode node, RemoteRepository remoteRepository)
