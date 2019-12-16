@@ -61,7 +61,7 @@ public class LicenseTextUtil {
                     JSONObject jsonObject = jsonArray.getJSONObject(i);
                     String url = jsonObject.getString("licenseUrl");
                     String name = jsonObject.getString("licenseName");
-                    licenseMap.put(url.toLowerCase(), name);
+                    licenseMap.put(url.toLowerCase(), name.toUpperCase());
                 }
             }
         } catch (Exception e) {
@@ -87,7 +87,7 @@ public class LicenseTextUtil {
     }
 
     public static String getLicenseTextByName(String name) {
-        URL resourceURL = bundle.getEntry(LICENSE_FOLDER + name + EXT_TXT);
+        URL resourceURL = bundle.getEntry(LICENSE_FOLDER + name.toUpperCase() + EXT_TXT);
         if (resourceURL == null) {
             return null;
         }
