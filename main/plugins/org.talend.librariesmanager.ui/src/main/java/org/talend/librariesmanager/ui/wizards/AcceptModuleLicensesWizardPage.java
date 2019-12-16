@@ -239,7 +239,7 @@ public class AcceptModuleLicensesWizardPage extends WizardPage {
                 acceptButton.setSelection(isLicenseAccepted);
                 declineButton.setSelection(!isLicenseAccepted);
                 String url = license.getUrl();
-                if (licenseText != null && StringUtils.isNotEmpty(url)) {
+                if (licenseText != null && StringUtils.isNotEmpty(url) && StringUtils.isNotEmpty(type)) {
                     // get by name first
                     String licenseContent = null;
                     licenseContent = LicenseTextUtil.getLicenseTextByName(type);

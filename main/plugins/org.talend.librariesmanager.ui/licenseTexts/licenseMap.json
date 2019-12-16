@@ -37,5 +37,7 @@
 	{"licenseUrl":"http://www.talendforge.org/modules/licenses/AMAZON.txt","licenseName":"AMAZON"},
 	{"licenseUrl":"http://www.talendforge.org/modules/licenses/UNKNOWN.txt","licenseName":"UNKNOWN"},
 	{"licenseUrl":"http://www.apache.org/licenses/LICENSE-2.0","licenseName":"Apache-2.0"},
-	{"licenseUrl":"https://www.gnu.org/licenses/gpl.html","licenseName":"LGPL-3.0"}
+	{"licenseUrl":"https://www.gnu.org/licenses/gpl.html","licenseName":"LGPL-3.0"},
+	{"licenseUrl":"http://www.eclipse.org/org/documents/edl-v10.php","licenseName":"EDL-1.0"},
+	{"licenseUrl":"https://www.eclipse.org/org/documents/epl-2.0/EPL-2.0.txt","licenseName":"EPL-2.0"}
 ]
