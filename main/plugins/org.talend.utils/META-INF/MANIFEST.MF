@@ -16,6 +16,7 @@ Export-Package:
  org.talend.utils.io;uses:="org.talend.utils.sugars",
  org.talend.utils.jobconductor,
  org.talend.utils.json,
+ org.talend.utils.migration,
  org.talend.utils.network,
  org.talend.utils.properties,
  org.talend.utils.security;uses:="org.talend.daikon.security",
