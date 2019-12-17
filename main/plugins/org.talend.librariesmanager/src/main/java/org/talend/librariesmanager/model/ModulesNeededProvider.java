@@ -70,6 +70,7 @@ import org.talend.core.model.general.Project;
 import org.talend.core.model.process.IProcess;
 import org.talend.core.model.properties.Item;
 import org.talend.core.model.properties.ProcessItem;
+import org.talend.core.model.properties.ProjectReference;
 import org.talend.core.model.properties.Property;
 import org.talend.core.model.properties.RoutineItem;
 import org.talend.core.model.repository.ERepositoryObjectType;
@@ -581,7 +582,8 @@ public class ModulesNeededProvider {
             ERepositoryObjectType type) {
         if (service != null) {
             IProxyRepositoryFactory repositoryFactory = service.getProxyRepositoryFactory();
-            getRefRoutines(routines, ProjectManager.getInstance().getCurrentProject(), type);
+            Set<Project> visited = new HashSet<Project>();
+            getRefRoutines(routines, ProjectManager.getInstance().getCurrentProject(), type, visited);
             for (IRepositoryViewObject current : routines) {
                 if (repositoryFactory.getStatus(current) != ERepositoryStatus.DELETED) {
                     Item item = current.getProperty().getItem();
@@ -727,7 +729,8 @@ public class ModulesNeededProvider {
             IProxyRepositoryFactory repositoryFactory = service.getProxyRepositoryFactory();
             try {
                 List<IRepositoryViewObject> routines = repositoryFactory.getAll(type, true);
-                getRefRoutines(routines, ProjectManager.getInstance().getCurrentProject(), type);
+                Set<Project> visited = new HashSet<Project>();
+                getRefRoutines(routines, ProjectManager.getInstance().getCurrentProject(), type, visited);
                 for (IRepositoryViewObject current : routines) {
                     if (!current.isDeleted()) {
                         Item item = current.getProperty().getItem();
@@ -811,14 +814,21 @@ public class ModulesNeededProvider {
         return importNeedsListForBeans;
     }
 
-    private static void getRefRoutines(List<IRepositoryViewObject> routines, Project mainProject, ERepositoryObjectType type) {
+    private static void getRefRoutines(List<IRepositoryViewObject> routines, Project mainProject, ERepositoryObjectType type,
+            Set<Project> projects) {
         if (service != null) {
             IProxyRepositoryFactory repositoryFactory = service.getProxyRepositoryFactory();
             try {
-                if (mainProject.getProjectReferenceList().size() > 0) {
-                    for (Project referencedProject : ProjectManager.getInstance().getAllReferencedProjects()) {
-                        routines.addAll(repositoryFactory.getAll(referencedProject, type, true));
-                    }
+                // no referenced project or already visited
+                if (mainProject.getProjectReferenceList().size() == 0 || projects.contains(mainProject)) {
+                    return;
+                }
+                projects.add(mainProject);
+
+                for (ProjectReference referencedProject : mainProject.getProjectReferenceList()) {
+                    Project p = new Project(referencedProject.getReferencedProject());
+                    routines.addAll(repositoryFactory.getAll(p, type, true));
+                    getRefRoutines(routines, p, type, projects);
                 }
             } catch (PersistenceException e) {
                 CommonExceptionHandler.process(e);
