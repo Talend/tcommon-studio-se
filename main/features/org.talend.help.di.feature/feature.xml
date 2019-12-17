@@ -22,7 +22,7 @@
    </url>
 
    <requires>
-      <import feature="org.talend.help.tos.components.feature" version="0.0.0" match="greaterOrEqual/>
+      <import feature="org.talend.help.tos.components.feature" version="0.0.0" match="greaterOrEqual"/>
       <import plugin="org.talend.help"/>
    </requires>
 
