@@ -167,7 +167,7 @@ public class ProcessorDependenciesManager {
         if (modulesNeeded.isEmpty()) {
             modulesNeeded = processor.getNeededModules(TalendProcessOptionConstants.MODULES_WITH_JOBLET);
         }
-        processor.updateModulesAfterSetLog4j(modulesNeeded);
+        // processor.updateModulesAfterSetLog4j(modulesNeeded);
         neededLibraries.addAll(modulesNeeded);
 
         // add testcase modules
