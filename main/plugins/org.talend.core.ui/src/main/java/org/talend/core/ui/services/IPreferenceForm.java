@@ -8,5 +8,7 @@ public interface IPreferenceForm {
     boolean performApply();
 
     boolean performDefaults();
+    
+    boolean isComplete();
 
 }
