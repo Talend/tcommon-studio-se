@@ -239,4 +239,6 @@ public interface IRunProcessService extends IService {
     public void handleJobDependencyLoop(JobInfo mainJobInfo, List<JobInfo> listJobs, IProgressMonitor progressMonitor)
             throws Exception;
 
+    public boolean isSelectLog4j2();
+
 }

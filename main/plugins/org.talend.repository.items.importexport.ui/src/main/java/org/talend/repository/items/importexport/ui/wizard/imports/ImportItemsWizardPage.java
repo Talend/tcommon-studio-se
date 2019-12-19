@@ -22,6 +22,7 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Optional;
 import java.util.Set;
 import java.util.zip.ZipException;
 
@@ -77,14 +78,18 @@ import org.talend.commons.runtime.model.repository.ERepositoryStatus;
 import org.talend.core.GlobalServiceRegister;
 import org.talend.core.PluginChecker;
 import org.talend.core.model.properties.Item;
+import org.talend.core.model.properties.RoutineItem;
 import org.talend.core.model.repository.ERepositoryObjectType;
 import org.talend.core.model.repository.RepositoryViewObject;
 import org.talend.core.model.utils.TalendPropertiesUtil;
+import org.talend.core.repository.model.ProjectRepositoryNode;
 import org.talend.core.repository.model.ProxyRepositoryFactory;
 import org.talend.core.service.IExchangeService;
 import org.talend.core.ui.advanced.composite.FilteredCheckboxTree;
 import org.talend.core.ui.component.ComponentPaletteUtilities;
 import org.talend.designer.core.IMultiPageTalendEditor;
+import org.talend.designer.maven.tools.MavenPomSynchronizer;
+import org.talend.designer.runprocess.IRunProcessService;
 import org.talend.repository.items.importexport.handlers.ImportExportHandlersManager;
 import org.talend.repository.items.importexport.handlers.imports.ImportCacheHelper;
 import org.talend.repository.items.importexport.handlers.model.EmptyFolderImportItem;
@@ -104,6 +109,8 @@ import org.talend.repository.items.importexport.wizard.models.ImportNodesBuilder
 import org.talend.repository.items.importexport.wizard.models.ItemImportNode;
 import org.talend.repository.model.IProxyRepositoryFactory;
 import org.talend.repository.model.IRepositoryNode;
+import org.talend.repository.model.IRepositoryNode.ENodeType;
+import org.talend.repository.model.IRepositoryNode.EProperties;
 import org.talend.repository.model.RepositoryNode;
 import org.talend.repository.model.RepositoryNodeUtilities;
 import org.talend.repository.ui.dialog.AProgressMonitorDialogWithCancel;
@@ -113,6 +120,8 @@ import org.talend.repository.ui.dialog.AProgressMonitorDialogWithCancel;
  * DOC ggu class global comment. Detailled comment
  */
 public class ImportItemsWizardPage extends WizardPage {
+
+    private static final String TYPE_BEANS = "BEANS";
 
     private Button itemFromDirectoryRadio, itemFromArchiveRadio;
 
@@ -987,7 +996,7 @@ public class ImportItemsWizardPage extends WizardPage {
     public boolean performFinish() {
         final List<ImportItem> checkedItemRecords = getCheckedElements();
         final IProxyRepositoryFactory factory = ProxyRepositoryFactory.getInstance();
-
+        
         /*
          * ?? prepare to do import, unlock the existed one, and make sure the overwrite to work well.
          */
@@ -1063,7 +1072,42 @@ public class ImportItemsWizardPage extends WizardPage {
                             }
                         }
                     });
+                    
+                    RepositoryNode codeRepositoryNode = ProjectRepositoryNode.getInstance().getRootRepositoryNode(
+                            ERepositoryObjectType.CODE);
+                                    
+                    Optional<IRepositoryNode> beansNode = codeRepositoryNode.getChildren(false).stream().filter(item -> 
+                        ((ERepositoryObjectType)item.getProperties(EProperties.LABEL)).getType().equals(TYPE_BEANS)).findFirst();
 
+                    if (beansNode.isPresent()) {
+                        List<IRepositoryNode> beanNodes = beansNode.get().getChildren(false);
+                    
+                        GlobalServiceRegister globalServiceRegister = GlobalServiceRegister.getDefault();
+                        
+                        if (globalServiceRegister.isServiceRegistered(IRunProcessService.class)) {
+                            IRunProcessService runProcessService = globalServiceRegister.getService(IRunProcessService.class);
+                            
+                            MavenPomSynchronizer.addChangeLibrariesListener();
+                            
+                            updateLibrariesForBeans(beanNodes, runProcessService);
+                        }
+                    }
+                }
+                
+                private boolean updateLibrariesForBeans(List<IRepositoryNode> beanNodesNewList, IRunProcessService runProcessService) {
+                    if (beanNodesNewList != null) {
+                        for (IRepositoryNode importedBean : beanNodesNewList) {
+                            if (!importedBean.getType().equals(ENodeType.REPOSITORY_ELEMENT)) {
+                                if (updateLibrariesForBeans(importedBean.getChildren(), runProcessService)) {
+                                    return true;
+                                }
+                            } else {
+                                runProcessService.updateLibraries((RoutineItem) importedBean.getObject().getProperty().getItem());
+                                return true;
+                            }
+                        }
+                    }
+                    return false;
                 }
             };
 
