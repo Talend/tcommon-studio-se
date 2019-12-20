@@ -443,6 +443,7 @@ public class DynamicDistributionAetherUtils {
                             && central.equals(((MetadataTransferException) e).getRepository())) {
                         tc.setOk(false);
                         tc.setMessage(e.getCause().getMessage());
+                        ExceptionHandler.process(e);
                         return tc;
                     }
                 }
