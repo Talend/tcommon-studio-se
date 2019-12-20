@@ -764,7 +764,16 @@ public final class ConnectionContextHelper {
                     Connection hadoopClusterConnection = hadoopClusterItem.getConnection();
                     ContextItem hadoopClusterContextItem = ContextUtils.getContextItemById2(hadoopClusterConnection
                             .getContextId());
-                    Set<String> hcNeededVars = retrieveContextVar(elementParameters, hadoopClusterConnection, category, true);
+                    Set<String> hcNeededVars = retrieveContextVar(elementParameters, hadoopClusterConnection, category, false);
+                    List<? extends INode> nodesOfType = process.getNodesOfType("tSparkConfiguration"); //$NON-NLS-1$
+                    if (!nodesOfType.isEmpty()) {
+                        // The tSparkConfiguration is a singleton in a Spark job.
+                        Set<String> envirNeededVars = retrieveContextVar(nodesOfType.get(0).getElementParameters(),
+                                hadoopClusterConnection,
+                                category, false);
+                        hcNeededVars.addAll(envirNeededVars);
+                    }
+
                     List<ContextItem> contextItems = new ArrayList<>();
                     if (contextItem != null || hadoopClusterContextItem != null) {
                         // find added variables
