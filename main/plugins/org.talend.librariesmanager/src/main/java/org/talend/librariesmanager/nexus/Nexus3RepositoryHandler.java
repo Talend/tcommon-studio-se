@@ -246,7 +246,7 @@ public class Nexus3RepositoryHandler extends AbstractArtifactRepositoryHandler {
                 rc.setMessage(Messages.getString("NexusRepository.checkConnection.successMsg"));
                 return rc;
                 }
-            rc.setMessage(response.getStatusLine().getReasonPhrase());
+            rc.setMessage(response.getStatusLine().toString());
         } catch (Exception e) {
             rc.setOk(false);
             rc.setMessage(e.getMessage());

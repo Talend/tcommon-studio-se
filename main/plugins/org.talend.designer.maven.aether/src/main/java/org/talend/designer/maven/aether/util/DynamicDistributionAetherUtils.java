@@ -427,11 +427,13 @@ public class DynamicDistributionAetherUtils {
                     tc.setOk(false);
                     return tc;
                 }
-                // 1. remoteRepository exception is MetadataNotFoundException: connected => check connection succeed
+                // 1. remoteRepository exception is MetadataNotFoundException: connected => failed
                 for (Exception e : rangeResult.getExceptions()) {
                     if (e instanceof MetadataNotFoundException
                             && central.equals(((MetadataNotFoundException) e).getRepository())) {
-                        tc.setOk(true);
+                        tc.setOk(false);
+                        tc.setMessage(e.getMessage());
+                        ExceptionHandler.process(e);
                         return tc;
                     }
                 }
@@ -447,6 +449,9 @@ public class DynamicDistributionAetherUtils {
                 // 3. no remoteRepository exception, throw first exception, log other exception
                 tc.setOk(false);
                 tc.setMessage(rangeResult.getExceptions().get(0).getMessage());
+                for (Exception e : rangeResult.getExceptions()) {
+                    ExceptionHandler.process(e);
+                }
                 return tc;
             }
         } finally {
