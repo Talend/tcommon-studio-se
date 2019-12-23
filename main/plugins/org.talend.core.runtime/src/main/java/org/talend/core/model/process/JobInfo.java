@@ -33,7 +33,7 @@ public class JobInfo {
 
     private IContext context;
 
-    boolean applyContextToChildren = false;
+    boolean applyContextToChildren = Boolean.getBoolean("force_context_applychildren");
 
     private ProcessItem processItem;
 
