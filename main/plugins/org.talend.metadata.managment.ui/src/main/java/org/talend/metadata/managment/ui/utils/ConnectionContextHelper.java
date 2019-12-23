@@ -778,7 +778,9 @@ public final class ConnectionContextHelper {
                     for (INode node : nodesOfType) {
                         Set<String> envirNeededVars = retrieveContextVar(node.getElementParameters(), hadoopClusterConnection,
                                 category, false);
-                        hcNeededVars.addAll(envirNeededVars);
+                        if (envirNeededVars != null && !envirNeededVars.isEmpty()) {
+                            hcNeededVars.addAll(envirNeededVars);
+                        }
                     }
 
                     List<ContextItem> contextItems = new ArrayList<>();
