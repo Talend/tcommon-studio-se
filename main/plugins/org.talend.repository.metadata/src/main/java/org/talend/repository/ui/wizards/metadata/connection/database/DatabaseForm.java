@@ -540,6 +540,8 @@ public class DatabaseForm extends AbstractForm {
 
     private LabelledText hiveMetastoreUrisTxt;
 
+    private static final String DISTRIBUTION_QUBOLE = "Qubole";
+
     /**
      * Constructor to use by a Wizard to create a new database connection.
      *
@@ -1876,6 +1878,10 @@ public class DatabaseForm extends AbstractForm {
                 checkButton.setEnabled(false);
             } else {
                 checkButton.setEnabled(true);
+            }
+
+            if (this.hiveDistributionCombo.getText().equals(DISTRIBUTION_QUBOLE)) {
+                this.checkButton.setEnabled(false);
             }
         }
     }
