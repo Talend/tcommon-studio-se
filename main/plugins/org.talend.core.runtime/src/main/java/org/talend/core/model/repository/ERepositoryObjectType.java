@@ -1313,7 +1313,7 @@ public class ERepositoryObjectType extends DynaEnum<ERepositoryObjectType> {
 
     public boolean addExtraProducts(String[] productsArray) {
         if (productsArray != null && productsArray.length > 0) {
-            if (this.products == null && this.products.length == 0) {
+            if (this.products == null || this.products.length == 0) {
                 this.products = productsArray;
             } else {
                 String[] tmp = new String[this.products.length + productsArray.length];
