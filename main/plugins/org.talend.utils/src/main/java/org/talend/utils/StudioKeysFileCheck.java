@@ -57,9 +57,18 @@ public class StudioKeysFileCheck {
         LOGGER.info("encryptionKeyFilePath: " + keyFile);
     }
 
-    public static boolean javaVersionCheck() {
+    /**
+     * Validate java version, throw runtime exception if not satisfied.
+     */
+    public static void validateJavaVersion() {
         String currentVersion = System.getProperty(JAVA_VERSION_PROP);
         JavaVersion cv = new JavaVersion(currentVersion);
-        return cv.compareTo(JAVA_VERSION_MINIMAL) >= 0 ? true : false;
+        if (cv.compareTo(JAVA_VERSION_MINIMAL) < 0) {
+            RuntimeException e = new RuntimeException(
+                    "Java upgrade required, minimal required java version is " + JAVA_VERSION_MINIMAL_STRING
+                            + ", current version is " + currentVersion);
+            LOGGER.error(e);
+            throw e;
+        }
     }
 }
