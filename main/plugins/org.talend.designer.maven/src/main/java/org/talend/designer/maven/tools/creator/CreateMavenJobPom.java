@@ -871,29 +871,32 @@ public class CreateMavenJobPom extends AbstractMavenProcessorPom {
             IMaven maven = MavenPlugin.getMaven();
             ArtifactRepository repository = maven.getLocalRepository();
             Node filesNode = document.getElementsByTagName("files").item(0);
-            for (Entry<String, Set<Dependency>> entry : duplicateDependencies.entrySet()) {
-                Set<Dependency> dependencies = entry.getValue();
-                for (Dependency dependency : dependencies) {
-                    String sourceLocation = maven
-                            .getArtifactPath(repository, dependency.getGroupId(), dependency.getArtifactId(),
-                                    dependency.getVersion(), dependency.getType(), dependency.getClassifier());
-                    Path path = new File(repository.getBasedir()).toPath().resolve(sourceLocation);
-                    sourceLocation = path.toString();
-                    String destName = path.getFileName().toString();
-                    Node fileNode = document.createElement("file");
-                    filesNode.appendChild(fileNode);
-
-                    Node sourcesNode = document.createElement("source");
-                    sourcesNode.setTextContent(sourceLocation);
-                    fileNode.appendChild(sourcesNode);
-
-                    Node outputDirNode = document.createElement("outputDirectory");
-                    outputDirNode.setTextContent("lib");
-                    fileNode.appendChild(outputDirNode);
-
-                    Node destNameNode = document.createElement("destName");
-                    destNameNode.setTextContent(destName);
-                    fileNode.appendChild(destNameNode);
+            // TESB-27614:NPE while building a route
+            if (filesNode != null) {
+                for (Entry<String, Set<Dependency>> entry : duplicateDependencies.entrySet()) {
+                    Set<Dependency> dependencies = entry.getValue();
+                    for (Dependency dependency : dependencies) {
+                        String sourceLocation = maven
+                                .getArtifactPath(repository, dependency.getGroupId(), dependency.getArtifactId(),
+                                        dependency.getVersion(), dependency.getType(), dependency.getClassifier());
+                        Path path = new File(repository.getBasedir()).toPath().resolve(sourceLocation);
+                        sourceLocation = path.toString();
+                        String destName = path.getFileName().toString();
+                        Node fileNode = document.createElement("file");
+                        filesNode.appendChild(fileNode);
+    
+                        Node sourcesNode = document.createElement("source");
+                        sourcesNode.setTextContent(sourceLocation);
+                        fileNode.appendChild(sourcesNode);
+    
+                        Node outputDirNode = document.createElement("outputDirectory");
+                        outputDirNode.setTextContent("lib");
+                        fileNode.appendChild(outputDirNode);
+    
+                        Node destNameNode = document.createElement("destName");
+                        destNameNode.setTextContent(destName);
+                        fileNode.appendChild(destNameNode);
+                    }
                 }
             }
         } catch (CoreException e) {
