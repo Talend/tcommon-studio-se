@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <feature
       id="org.talend.help.di.feature"
-      label="Help Feature"
+      label="Talend DI help feature"
       version="7.3.1.qualifier"
       provider-name=".Talend SA.">
 
@@ -21,9 +21,9 @@
       <update label="CORE Talend update site for milestones" url="http://talendforge.org/core/updatesite/testing/"/>
    </url>
 
-   <requires>
-      <import feature="org.talend.help.tos.components.feature" version="0.0.0" match="greaterOrEqual"/>
-   </requires>
+   <includes
+         id="org.talend.help.tos.components.feature"
+         version="0.0.0"/>
 
    <plugin
          id="org.talend.help"
