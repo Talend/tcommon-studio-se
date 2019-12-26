@@ -467,10 +467,10 @@ public class ComponentToRepositoryProperty {
         // Redshift
         else if (EDatabaseTypeName.REDSHIFT.getProduct().equalsIgnoreCase((String) parameter.getValue())) {
             connection.setProductId(EDatabaseTypeName.REDSHIFT.getProduct());
-            parameter = node.getElementParameter("TYPE"); //$NON-NLS-1$
-            if ("Redshift SSO".equals(parameter.getValue())) {
+            IElementParameter paraJdbcUrl = node.getElementParameter("JDBC_URL");
+            if ("SSO".equals(paraJdbcUrl.getValue())) {
                 connection.setDatabaseType(EDatabaseTypeName.REDSHIFT_SSO.getDisplayName());
-            } else if ("Redshift".equals(parameter.getValue())) {
+            } else if ("STANDARD".equals(paraJdbcUrl.getValue())) {
                 connection.setDatabaseType(EDatabaseTypeName.REDSHIFT.getDisplayName());
             }
         }
