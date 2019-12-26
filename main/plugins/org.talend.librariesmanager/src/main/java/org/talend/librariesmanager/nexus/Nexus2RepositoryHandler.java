@@ -13,9 +13,12 @@
 package org.talend.librariesmanager.nexus;
 
 import java.io.File;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.apache.http.HttpResponse;
+import org.apache.http.client.ClientProtocolException;
 import org.eclipse.m2e.core.MavenPlugin;
 import org.talend.core.nexus.IRepositoryArtifactHandler;
 import org.talend.core.nexus.NexusConstants;
@@ -23,6 +26,8 @@ import org.talend.core.nexus.NexusServerUtils;
 import org.talend.core.runtime.maven.MavenArtifact;
 import org.talend.core.runtime.maven.MavenUrlHelper;
 import org.talend.designer.maven.aether.RepositorySystemFactory;
+import org.talend.librariesmanager.i18n.Messages;
+import org.talend.utils.sugars.TypedReturnCode;
 
 /**
  * created by wchen on Aug 2, 2017 Detailled comment
@@ -136,6 +141,42 @@ public class Nexus2RepositoryHandler extends AbstractArtifactRepositoryHandler {
         String localRepository = MavenPlugin.getMaven().getLocalRepositoryPath();
         RepositorySystemFactory.deployWithPOM(content, pomFile, localRepository, repositoryId, repositoryurl,
                 serverBean.getUserName(), serverBean.getPassword(), groupId, artifactId, classifier, extension, version);
+    }
+
+    @Override
+    public TypedReturnCode<HttpResponse> getConnectionResultAndCode() {
+        HttpResponse response = null;
+        TypedReturnCode<HttpResponse> rc = new TypedReturnCode<HttpResponse>();
+        rc.setOk(false);
+        try {
+            response = doConnectionCheck();
+            if (response != null) {
+                if (200 == response.getStatusLine().getStatusCode()) {
+                    rc.setOk(true);
+                    rc.setObject(response);
+                    rc.setMessage(Messages.getString("NexusRepository.checkConnection.successMsg"));
+                    return rc;
+                }
+                rc.setMessage(response.getStatusLine().getReasonPhrase());
+            } else {
+                // repository or server url is null
+                rc.setMessage(Messages.getString("NexusRepository.checkConnection.invalidParam"));
+            }
+        } catch (Exception e) {
+            rc.setOk(false);
+            rc.setMessage(e.getMessage());
+            return rc;
+        }
+        return rc;
+    }
+
+    private HttpResponse doConnectionCheck() throws ClientProtocolException, IOException {
+        HttpResponse response = null;
+        if (serverBean.getRepositoryId() != null) {
+            response = NexusServerUtils.getConnectionResponse(serverBean.getServer(), serverBean.getRepositoryId(),
+                    serverBean.getUserName(), serverBean.getPassword());
+        }
+        return response;
     }
 
 }

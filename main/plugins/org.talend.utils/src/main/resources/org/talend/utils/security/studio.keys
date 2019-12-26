@@ -1,4 +1,6 @@
 #talend OOTB encryption keys
 #Wed Sep 25 14:58:09 CST 2019
+migration.encryption.key=VGFsZW5kLUtleQ\=\=
 migration.token.encryption.key=RuMmdh0ytquXjEyG9kd8HJ++egQA9gm8sTvGEKJctMw\=
+routine.encryption.key.v1=YBoRMn8gwD1Kt3CcowOiGeoxRbC2eNNVm7Id6vA3hrk\=
 system.encryption.key.v1=ObIr3Je6QcJuxJEwErWaFWIxBzEjxIlBrtCPilSByJI\=

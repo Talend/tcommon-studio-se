@@ -60,6 +60,10 @@
             class="org.talend.updates.runtime.login.SyncComponentMavenRepoLoginTask"
             priority="normal">
       </loginTask>
+      <loginTask
+            class="org.talend.updates.runtime.login.CleanupDropBundlesLoginTask"
+            priority="lowest">
+      </loginTask>
    </extension>
    <extension
          point="org.eclipse.core.runtime.preferences">

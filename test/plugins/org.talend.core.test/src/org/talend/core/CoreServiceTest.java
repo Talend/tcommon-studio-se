@@ -1,6 +1,7 @@
 package org.talend.core;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
 
 import java.io.BufferedReader;
 import java.io.ByteArrayInputStream;
@@ -110,8 +111,14 @@ public class CoreServiceTest {
         service.syncLog4jSettings(talendProcessJavaProject);
 
         IFolder resourceFolder = talendProcessJavaProject.getExternalResourcesFolder();
-        IFile log4jFile = resourceFolder.getFile("log4j.xml");
-        if (log4jFile.exists()) {
+
+        IFile log4jFile = null;
+        if (runProcessService != null && runProcessService.isSelectLog4j2()) {
+            log4jFile = resourceFolder.getFile("log4j2.xml");
+        } else {
+            log4jFile = resourceFolder.getFile("log4j.xml");
+        }
+        if (log4jFile != null && log4jFile.exists()) {
             String content = "test modification";
             InputStream in = new ByteArrayInputStream(content.getBytes());
             log4jFile.setContents(in, true, false, null);

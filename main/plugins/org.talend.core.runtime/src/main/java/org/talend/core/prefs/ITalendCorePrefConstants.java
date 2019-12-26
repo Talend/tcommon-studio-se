@@ -101,6 +101,8 @@ public interface ITalendCorePrefConstants {
 
     public static final String FORBIDDEN_MAPPING_LENGTH_PREC_LOGIC = "forbidden_mapping_length_prec_logic"; //$NON-NLS-1$
 
+    public static final String METADATA_PREFERENCE_PAGE_ENABLE_BASIC = "metadata_preference_page_enable_basic"; //$NON-NLS-1$
+
     public static final String DATA_COLLECTOR_ENABLED = "active_data_collector"; //$NON-NLS-1$
 
     public static final String DATA_COLLECTOR_UPLOAD_PERIOD = "active_data_collector_times"; //$NON-NLS-1$
@@ -199,5 +201,9 @@ public interface ITalendCorePrefConstants {
     public static final String LEVENSHTEIN_WEIGHT = "LEVENSHTEIN_WEIGHT"; //$NON-NLS-1$
 
     public static final String JACCARD_WEIGHT = "JACCARD_WEIGHT"; //$NON-NLS-1$
+
+    public static final int DYNAMIC_DISTRIBUTION_SETTING = 0;
+
+    public static final int ARTIFACT_PROXY_SETTING = 1;
 
 }

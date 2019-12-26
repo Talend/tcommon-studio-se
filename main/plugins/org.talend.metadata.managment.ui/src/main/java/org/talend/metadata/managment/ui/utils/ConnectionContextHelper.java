@@ -764,7 +764,25 @@ public final class ConnectionContextHelper {
                     Connection hadoopClusterConnection = hadoopClusterItem.getConnection();
                     ContextItem hadoopClusterContextItem = ContextUtils.getContextItemById2(hadoopClusterConnection
                             .getContextId());
-                    Set<String> hcNeededVars = retrieveContextVar(elementParameters, hadoopClusterConnection, category, true);
+                    Set<String> hcNeededVars = retrieveContextVar(elementParameters, hadoopClusterConnection, category, false);
+                    // The tSparkConfiguration & tHadoopConfManager are singleton in process.
+                    List<INode> nodesOfType = new ArrayList<INode>();
+                    List<? extends INode> spakconfNodes = process.getNodesOfType("tSparkConfiguration"); //$NON-NLS-1$
+                    if (spakconfNodes != null && !spakconfNodes.isEmpty()) {
+                        nodesOfType.addAll(spakconfNodes);
+                    }
+                    List<? extends INode> hadoopconfNodes = process.getNodesOfType("tHadoopConfManager"); //$NON-NLS-1$
+                    if (hadoopconfNodes != null && !hadoopconfNodes.isEmpty()) {
+                        nodesOfType.addAll(hadoopconfNodes);
+                    }
+                    for (INode node : nodesOfType) {
+                        Set<String> envirNeededVars = retrieveContextVar(node.getElementParameters(), hadoopClusterConnection,
+                                category, false);
+                        if (envirNeededVars != null && !envirNeededVars.isEmpty()) {
+                            hcNeededVars.addAll(envirNeededVars);
+                        }
+                    }
+
                     List<ContextItem> contextItems = new ArrayList<>();
                     if (contextItem != null || hadoopClusterContextItem != null) {
                         // find added variables

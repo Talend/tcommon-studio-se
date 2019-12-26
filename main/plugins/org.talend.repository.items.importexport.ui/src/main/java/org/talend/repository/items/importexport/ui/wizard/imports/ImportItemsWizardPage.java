@@ -29,6 +29,7 @@ import org.apache.commons.lang.StringUtils;
 import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.core.runtime.IPath;
 import org.eclipse.core.runtime.IProgressMonitor;
+import org.eclipse.core.runtime.NullProgressMonitor;
 import org.eclipse.core.runtime.Path;
 import org.eclipse.jface.dialogs.Dialog;
 import org.eclipse.jface.dialogs.MessageDialog;
@@ -85,6 +86,8 @@ import org.talend.core.service.IExchangeService;
 import org.talend.core.ui.advanced.composite.FilteredCheckboxTree;
 import org.talend.core.ui.component.ComponentPaletteUtilities;
 import org.talend.designer.core.IMultiPageTalendEditor;
+import org.talend.designer.maven.tools.AggregatorPomsHelper;
+import org.talend.designer.maven.tools.MavenPomSynchronizer;
 import org.talend.repository.items.importexport.handlers.ImportExportHandlersManager;
 import org.talend.repository.items.importexport.handlers.imports.ImportCacheHelper;
 import org.talend.repository.items.importexport.handlers.model.EmptyFolderImportItem;
@@ -113,6 +116,8 @@ import org.talend.repository.ui.dialog.AProgressMonitorDialogWithCancel;
  * DOC ggu class global comment. Detailled comment
  */
 public class ImportItemsWizardPage extends WizardPage {
+
+    private static final String TYPE_BEANS = "BEANS";
 
     private Button itemFromDirectoryRadio, itemFromArchiveRadio;
 
@@ -936,7 +941,6 @@ public class ImportItemsWizardPage extends WizardPage {
     private String checkErrorFor2ItemsWithSameIdAndVersion(List<ImportItem> checkedElements) {
         String errorMessage = null;
         HashMap<String, ImportItem> duplicateCheckMap = new HashMap<String, ImportItem>();
-        HashMap<String, ImportItem> duplicateNameMap = new HashMap<String, ImportItem>();
         for (ImportItem itRecord : checkedElements) {
             if (itRecord instanceof EmptyFolderImportItem) {
                 continue;
@@ -947,16 +951,6 @@ public class ImportItemsWizardPage extends WizardPage {
                 errorMessage = Messages.getString(
                         "ImportItemsWizardPage_sameIdProblemMessage", itRecord.getPath(), otherRecord.getPath()); //$NON-NLS-1$
             }// else keep going
-
-            // seems one time shows one error
-            if (StringUtils.isBlank(errorMessage) && StringUtils.isNotBlank(itRecord.getProperty().getLabel())) {
-                ImportItem hasRecord = duplicateNameMap
-                        .put(itRecord.getProperty().getLabel().toLowerCase() + itRecord.getProperty().getVersion(), itRecord);
-                if (hasRecord != null) {
-                    errorMessage = Messages.getString("ImportItemsWizardPage_sameNameMessage", itRecord.getPath(), //$NON-NLS-1$
-                            hasRecord.getPath());
-                }
-            }
         }
         return errorMessage;
     }
@@ -998,7 +992,7 @@ public class ImportItemsWizardPage extends WizardPage {
     public boolean performFinish() {
         final List<ImportItem> checkedItemRecords = getCheckedElements();
         final IProxyRepositoryFactory factory = ProxyRepositoryFactory.getInstance();
-
+        
         /*
          * ?? prepare to do import, unlock the existed one, and make sure the overwrite to work well.
          */
@@ -1075,6 +1069,9 @@ public class ImportItemsWizardPage extends WizardPage {
                         }
                     });
 
+                    MavenPomSynchronizer.addChangeLibrariesListener();
+
+                    new AggregatorPomsHelper().updateCodeProjects(new NullProgressMonitor());
                 }
             };
 

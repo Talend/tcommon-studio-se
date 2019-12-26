@@ -22,6 +22,7 @@ public enum EParameterFieldType {
     TEXT,
     TEXT_AREA,
     PASSWORD,
+    LICENSEKEY, // xqliu TDQ-17742
     MEMO_SQL,
     MEMO_PERL,
     MEMO_JAVA,
