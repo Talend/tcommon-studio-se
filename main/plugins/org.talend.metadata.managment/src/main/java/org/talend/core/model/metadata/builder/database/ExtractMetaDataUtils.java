@@ -120,7 +120,7 @@ public class ExtractMetaDataUtils {
 
     public static final String SNOWFLAKE = "Snowflake"; //$NON-NLS-1$
 
-    private String SNOWFLAKE_DRIVER_JAR = "snowflake-jdbc-3.11.0.jar"; //$NON-NLS-1$
+    public static final String SNOWFLAKE_DRIVER_JAR = "snowflake-jdbc-3.11.0.jar"; //$NON-NLS-1$
 
     private ExtractMetaDataUtils() {
     }
@@ -947,6 +947,7 @@ public class ExtractMetaDataUtils {
                              driverNames.addAll(Arrays.asList(ORACLE_SSL_JARS));
                         }
                     } else if (SNOWFLAKE.equals(dbType)) { // $NON-NLS-1$
+                        // TDQ-17294 msjian Support of Snowflake for DQ Datamart
                         driverNames.add(SNOWFLAKE_DRIVER_JAR);
                     }
                     // fix for TUP-857 , to retreive needed jar one time
