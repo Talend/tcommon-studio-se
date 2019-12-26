@@ -217,18 +217,15 @@ public class HadoopClassLoaderFactory2 {
             String customConfsJarName = customConfsJar.map(b -> b.getCustomConfJarName()).orElse(null);
             Consumer<DynamicClassLoader> afterLoaded = null;
             if (confJarBean != null) {
-                if (confJarBean.isOverrideCustomConf()) {
-                    String overrideCustomConfPath = confJarBean.getOriginalOverrideCustomConfPath();
-                    if (StringUtils.isBlank(overrideCustomConfPath) || !new File(overrideCustomConfPath).exists()) {
-                        ExceptionHandler.process(
-                                new Exception("Set Hadoop configuration JAR path is invalid: " + overrideCustomConfPath));
-                    } else {
-                        afterLoaded = (t) -> t.addLibrary(overrideCustomConfPath);
-                    }
+                String overrideCustomConfPath = confJarBean.getOriginalOverrideCustomConfPath();
+                if (StringUtils.isBlank(overrideCustomConfPath) || !new File(overrideCustomConfPath).exists()) {
+                    ExceptionHandler
+                            .process(new Exception("Set Hadoop configuration JAR path is invalid: " + overrideCustomConfPath));
                 } else {
-                    if (StringUtils.isNotBlank(customConfsJarName)) {
-                        addedJars = new String[] { customConfsJarName };
-                    }
+                    afterLoaded = (t) -> t.addLibrary(overrideCustomConfPath);
+                }
+                if (StringUtils.isNotBlank(customConfsJarName)) {
+                    addedJars = new String[] { customConfsJarName };
                 }
                 excludedJars = securityJars;
             } else if (useKrb) {
