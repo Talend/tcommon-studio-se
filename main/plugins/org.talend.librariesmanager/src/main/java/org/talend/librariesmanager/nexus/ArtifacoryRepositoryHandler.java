@@ -38,6 +38,8 @@ import org.talend.core.nexus.NexusServerUtils;
 import org.talend.core.runtime.maven.MavenArtifact;
 import org.talend.core.runtime.maven.MavenUrlHelper;
 import org.talend.designer.maven.aether.RepositorySystemFactory;
+import org.talend.librariesmanager.i18n.Messages;
+import org.talend.utils.sugars.TypedReturnCode;
 
 import net.sf.json.JSONArray;
 import net.sf.json.JSONObject;
@@ -111,6 +113,30 @@ public class ArtifacoryRepositoryHandler extends AbstractArtifactRepositoryHandl
         }
     }
 
+    private HttpResponse getConnectionResponse(String repositoryUrl)
+            throws ClientProtocolException, IOException {
+        String userPass = serverBean.getUserName() + ":" + serverBean.getPassword();
+        String basicAuth = "Basic " + new String(new Base64().encode(userPass.getBytes()));
+        Header authority = new BasicHeader("Authorization", basicAuth);
+        HttpGet get = new HttpGet(repositoryUrl);
+        get.addHeader(authority);
+        DefaultHttpClient httpclient = new DefaultHttpClient();
+        httpclient.getParams().setIntParameter(CoreConnectionPNames.CONNECTION_TIMEOUT, NexusServerUtils.getTimeout());
+        httpclient.getParams().setIntParameter(CoreConnectionPNames.SO_TIMEOUT, NexusServerUtils.getTimeout());
+        IProxySelectorProvider proxySelector = null;
+        try {
+            try {
+                proxySelector = HttpClientTransport.addProxy(httpclient, new URI(repositoryUrl));
+            } catch (Exception e) {
+                ExceptionHandler.process(e);
+            }
+            HttpResponse response = httpclient.execute(get);
+            return response;
+        } finally {
+            HttpClientTransport.removeProxy(proxySelector);
+            httpclient.getConnectionManager().shutdown();
+        }
+    }
     /*
      * (non-Javadoc)
      *
@@ -301,6 +327,28 @@ public class ArtifacoryRepositoryHandler extends AbstractArtifactRepositoryHandl
     @Override
     public IRepositoryArtifactHandler clone() {
         return new ArtifacoryRepositoryHandler();
+    }
+
+    @Override
+    public TypedReturnCode<HttpResponse> getConnectionResultAndCode() {
+        HttpResponse response = null;
+        TypedReturnCode<HttpResponse> rc = new TypedReturnCode<HttpResponse>();
+        rc.setOk(false);
+        try {
+            response = getConnectionResponse(getRepositoryURL(true));
+            if (200 == response.getStatusLine().getStatusCode()) {
+                rc.setOk(true);
+                rc.setObject(response);
+                rc.setMessage(Messages.getString("NexusRepository.checkConnection.successMsg"));
+                return rc;
+            }
+            rc.setMessage(response.getStatusLine().getReasonPhrase());
+        } catch (Exception e) {
+            rc.setOk(false);
+            rc.setMessage(e.getMessage());
+            return rc;
+        }
+        return rc;
     }
 
 }

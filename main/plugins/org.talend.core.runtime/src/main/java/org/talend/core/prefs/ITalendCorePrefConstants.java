@@ -202,4 +202,8 @@ public interface ITalendCorePrefConstants {
 
     public static final String JACCARD_WEIGHT = "JACCARD_WEIGHT"; //$NON-NLS-1$
 
+    public static final int DYNAMIC_DISTRIBUTION_SETTING = 0;
+
+    public static final int ARTIFACT_PROXY_SETTING = 1;
+
 }
