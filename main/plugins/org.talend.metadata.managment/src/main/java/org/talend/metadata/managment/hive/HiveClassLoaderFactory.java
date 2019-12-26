@@ -132,19 +132,16 @@ public class HiveClassLoaderFactory {
 
             HadoopConfJarBean confJarBean = getCustomConfsJarName(clusterId);
             if (confJarBean != null) {
-                if (confJarBean.isOverrideCustomConf()) {
-                    String overrideCustomConfPath = confJarBean.getOriginalOverrideCustomConfPath();
-                    if (StringUtils.isBlank(overrideCustomConfPath) || !new File(overrideCustomConfPath).exists()) {
-                        ExceptionHandler.process(
-                                new Exception("Set Hadoop configuration JAR path is invalid: " + overrideCustomConfPath));
-                    } else {
-                        afterLoad = (t) -> t.addLibrary(overrideCustomConfPath);
-                    }
+                String overrideCustomConfPath = confJarBean.getOriginalOverrideCustomConfPath();
+                if (StringUtils.isBlank(overrideCustomConfPath) || !new File(overrideCustomConfPath).exists()) {
+                    ExceptionHandler
+                            .process(new Exception("Set Hadoop configuration JAR path is invalid: " + overrideCustomConfPath));
                 } else {
-                    String customConfsJarName = confJarBean.getCustomConfJarName();
-                    if (customConfsJarName != null) {
-                        configurationJars = new String[] { customConfsJarName };
-                    }
+                    afterLoad = (t) -> t.addLibrary(overrideCustomConfPath);
+                }
+                String customConfsJarName = confJarBean.getCustomConfJarName();
+                if (customConfsJarName != null) {
+                    configurationJars = new String[] { customConfsJarName };
                 }
             }
 
