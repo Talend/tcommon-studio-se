@@ -55,13 +55,13 @@ public class ModuleMavenURIUtils {
     private static Pattern pattern;
 
     // match mvn:group-id/artifact-id/version/type/classifier
-    public static final String expression1 = "(mvn:(\\w+.*/)(\\w+.*/)([0-9]+(\\.[0-9])+(-SNAPSHOT){0,1}/)(\\w+/)(\\w+))";//$NON-NLS-1$
+    public static final String expression1 = "(mvn:(\\w+.*/)(\\w+.*/)(\\d+\\.\\d.*?(/))(\\w+/)(\\w+))";//$NON-NLS-1$
 
     // match mvn:group-id/artifact-id/version/type
-    public static final String expression2 = "(mvn:(\\w+.*/)(\\w+.*/)([0-9]+(\\.[0-9])+(-SNAPSHOT){0,1}/)\\w+)";//$NON-NLS-1$
+    public static final String expression2 = "(mvn:(\\w+.*/)(\\w+.*/)(\\d+\\.\\d.*?(/))\\w+)";//$NON-NLS-1$
 
     // match mvn:group-id/artifact-id/version
-    public static final String expression3 = "(mvn:(\\w+.*/)(\\w+.*/)([0-9]+(\\.[0-9])+(-SNAPSHOT){0,1}))";//$NON-NLS-1$
+    public static final String expression3 = "(mvn:(\\w+.*/)(\\w+.*/)(\\d+\\.\\d[^/]*))";//$NON-NLS-1$
 
     public static final String MVNURI_TEMPLET = "mvn:<groupid>/<artifactId>/<version>/<type>";
 
