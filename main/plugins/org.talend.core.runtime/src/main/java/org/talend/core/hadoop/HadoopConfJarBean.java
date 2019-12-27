@@ -21,6 +21,8 @@ public class HadoopConfJarBean {
 
     private boolean isContextMode;
 
+    private boolean isUseDefaultCustomConfJar;
+
     /**
      * value saved in connection, it may be a context
      */
@@ -33,10 +35,11 @@ public class HadoopConfJarBean {
 
     private String customConfJarName;
 
-    public HadoopConfJarBean(boolean isContextMode, boolean overrideCustomConf, String overrideCustomConfPath,
-            String originalOverrideCustomConfPath, String customConfJarName) {
+    public HadoopConfJarBean(boolean isContextMode, boolean overrideCustomConf, boolean isUseDefaultCustomConfJar,
+            String overrideCustomConfPath, String originalOverrideCustomConfPath, String customConfJarName) {
         this.isContextMode = isContextMode;
         this.overrideCustomConf = overrideCustomConf;
+        this.isUseDefaultCustomConfJar = isUseDefaultCustomConfJar;
         this.overrideCustomConfPath = overrideCustomConfPath;
         this.originalOverrideCustomConfPath = originalOverrideCustomConfPath;
         this.customConfJarName = customConfJarName;
@@ -82,11 +85,20 @@ public class HadoopConfJarBean {
         this.customConfJarName = customConfJarName;
     }
 
+    public boolean isUseDefaultCustomConfJar() {
+        return isUseDefaultCustomConfJar;
+    }
+
+    public void setUseDefaultCustomConfJar(boolean isUseDefaultCustomConfJar) {
+        this.isUseDefaultCustomConfJar = isUseDefaultCustomConfJar;
+    }
+
     @Override
     public String toString() {
         return "HadoopConfJarBean [overrideCustomConf=" + overrideCustomConf + ", isContextMode=" + isContextMode
-                + ", overrideCustomConfPath=" + overrideCustomConfPath + ", originalOverrideCustomConfPath="
-                + originalOverrideCustomConfPath + ", customConfJarName=" + customConfJarName + "]";
+                + ", isUseDefaultCustomConfJar=" + isUseDefaultCustomConfJar + ", overrideCustomConfPath="
+                + overrideCustomConfPath + ", originalOverrideCustomConfPath=" + originalOverrideCustomConfPath
+                + ", customConfJarName=" + customConfJarName + "]";
     }
 
 }
