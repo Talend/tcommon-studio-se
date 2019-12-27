@@ -50,9 +50,11 @@ import org.eclipse.nebula.widgets.nattable.grid.layer.RowHeaderLayer;
 import org.eclipse.nebula.widgets.nattable.group.ColumnGroupExpandCollapseLayer;
 import org.eclipse.nebula.widgets.nattable.group.ColumnGroupHeaderLayer;
 import org.eclipse.nebula.widgets.nattable.group.ColumnGroupModel;
+import org.eclipse.nebula.widgets.nattable.group.ColumnGroupModel.ColumnGroup;
 import org.eclipse.nebula.widgets.nattable.group.ColumnGroupReorderLayer;
 import org.eclipse.nebula.widgets.nattable.hideshow.ColumnHideShowLayer;
 import org.eclipse.nebula.widgets.nattable.hideshow.RowHideShowLayer;
+import org.eclipse.nebula.widgets.nattable.hideshow.command.ColumnHideCommand;
 import org.eclipse.nebula.widgets.nattable.layer.DataLayer;
 import org.eclipse.nebula.widgets.nattable.layer.cell.ColumnOverrideLabelAccumulator;
 import org.eclipse.nebula.widgets.nattable.layer.config.DefaultColumnHeaderStyleConfiguration;
@@ -284,6 +286,10 @@ public class ContextTreeTable {
 
             addCustomColumnHeaderStyleBehaviour();
 
+            addCustomHideColumnsBehaviour(manager, columnGroupModel, bodyDataLayer);
+
+            getAllCheckPosBehaviour(manager, columnGroupModel);
+
             NatGridLayerPainter layerPainter = new NatGridLayerPainter(natTable);
             natTable.setLayerPainter(layerPainter);
 
@@ -417,6 +423,48 @@ public class ContextTreeTable {
                 currentNatTabSel = (IStructuredSelection) event.getSelection();
             }
         });
+    }
+
+    private List<Integer> getAllCheckPosBehaviour(IContextModelManager manager, ColumnGroupModel contextGroupModel) {
+        List<Integer> checkPos = new ArrayList<Integer>();
+        if (manager.getContextManager() != null) {
+            List<IContext> contexts = manager.getContextManager().getListContext();
+            for (IContext envContext : contexts) {
+                ColumnGroup group = contextGroupModel.getColumnGroupByName(envContext.getName());
+                int checkIndex = group.getMembers().get(1);
+                checkPos.add(checkIndex);
+            }
+        }
+        return checkPos;
+    }
+
+    private List<Integer> addCustomHideColumnsBehaviour(IContextModelManager modelManager, ColumnGroupModel contextGroupModel,
+            DataLayer dataLayer) {
+        List<Integer> hidePos = new ArrayList<Integer>();
+        if (modelManager.getContextManager() != null) {
+            List<IContext> contexts = modelManager.getContextManager().getListContext();
+            for (IContext envContext : contexts) {
+                boolean needHidePrompt = true;
+                ColumnGroup group = contextGroupModel.getColumnGroupByName(envContext.getName());
+                // get every context's prompt to see if need to hide or not,decide by the check of prompt
+                int promptIndex = group.getMembers().get(2);
+                List<IContextParameter> list = envContext.getContextParameterList();
+                if (list != null && list.size() > 0) {
+                    for (IContextParameter contextPara : list) {
+                        if (contextPara.isPromptNeeded()) {
+                            needHidePrompt = false;
+                            break;
+                        }
+                    }
+                }
+                if (needHidePrompt) {
+                    int hidePosition = dataLayer.getColumnPositionByIndex(promptIndex);
+                    hidePos.add(hidePosition);
+                    natTable.doCommand(new ColumnHideCommand(dataLayer, hidePosition));
+                }
+            }
+        }
+        return hidePos;
     }
 
     private void addCustomSelectionBehaviour(SelectionLayer layer) {
