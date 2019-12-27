@@ -50,17 +50,16 @@ import org.eclipse.nebula.widgets.nattable.grid.layer.RowHeaderLayer;
 import org.eclipse.nebula.widgets.nattable.group.ColumnGroupExpandCollapseLayer;
 import org.eclipse.nebula.widgets.nattable.group.ColumnGroupHeaderLayer;
 import org.eclipse.nebula.widgets.nattable.group.ColumnGroupModel;
-import org.eclipse.nebula.widgets.nattable.group.ColumnGroupModel.ColumnGroup;
 import org.eclipse.nebula.widgets.nattable.group.ColumnGroupReorderLayer;
 import org.eclipse.nebula.widgets.nattable.hideshow.ColumnHideShowLayer;
 import org.eclipse.nebula.widgets.nattable.hideshow.RowHideShowLayer;
-import org.eclipse.nebula.widgets.nattable.hideshow.command.ColumnHideCommand;
 import org.eclipse.nebula.widgets.nattable.layer.DataLayer;
 import org.eclipse.nebula.widgets.nattable.layer.cell.ColumnOverrideLabelAccumulator;
 import org.eclipse.nebula.widgets.nattable.layer.config.DefaultColumnHeaderStyleConfiguration;
 import org.eclipse.nebula.widgets.nattable.painter.cell.TextPainter;
 import org.eclipse.nebula.widgets.nattable.painter.layer.NatGridLayerPainter;
 import org.eclipse.nebula.widgets.nattable.reorder.ColumnReorderLayer;
+import org.eclipse.nebula.widgets.nattable.resize.command.InitializeAutoResizeColumnsCommand;
 import org.eclipse.nebula.widgets.nattable.selection.RowSelectionProvider;
 import org.eclipse.nebula.widgets.nattable.selection.SelectionLayer;
 import org.eclipse.nebula.widgets.nattable.selection.config.DefaultSelectionStyleConfiguration;
@@ -74,6 +73,7 @@ import org.eclipse.nebula.widgets.nattable.style.Style;
 import org.eclipse.nebula.widgets.nattable.tree.SortableTreeComparator;
 import org.eclipse.nebula.widgets.nattable.tree.TreeLayer;
 import org.eclipse.nebula.widgets.nattable.tree.config.DefaultTreeLayerConfiguration;
+import org.eclipse.nebula.widgets.nattable.util.GCFactory;
 import org.eclipse.nebula.widgets.nattable.util.GUIHelper;
 import org.eclipse.nebula.widgets.nattable.viewport.ViewportLayer;
 import org.eclipse.swt.SWT;
@@ -129,20 +129,12 @@ public class ContextTreeTable {
 
     private IStructuredSelection currentNatTabSel;
 
-    private final static String TREE_CONTEXT_ROOT = "";
-
-    private final static String TREE_DEFAULT_NODE = "node";
-
     // by default sort by the model id
     private final static String TREE_CONTEXT_ID = "orderId";
 
     private IContextModelManager manager;
 
-    private final static int fixedCheckBoxWidth = 30;
-
-    private final static int fixedTypeWidth = 90;
-
-    private final static int fixedHidePromptWidth = 1;
+    private DataLayer bodyDataLayer;
 
     public ContextTreeTable(IContextModelManager manager) {
         this.manager = manager;
@@ -175,6 +167,16 @@ public class ContextTreeTable {
             return;
         }
         natTable.refresh();
+        resizeColumns();
+    }
+
+    private void resizeColumns() {
+        int cn = this.bodyDataLayer.getColumnCount();
+        for (int ci = 1; ci < cn + 1; ci++) {
+            InitializeAutoResizeColumnsCommand command = new InitializeAutoResizeColumnsCommand(natTable, ci,
+                    natTable.getConfigRegistry(), new GCFactory(natTable));
+            natTable.doCommand(command);
+        }
     }
 
     /**
@@ -188,7 +190,6 @@ public class ContextTreeTable {
         ColumnGroupModel columnGroupModel = new ColumnGroupModel();
         configRegistry.registerConfigAttribute(SortConfigAttributes.SORT_COMPARATOR, DefaultComparator.getInstance());
         String[] propertyNames = ContextRowDataListFixture.getPropertyNames(manager);
-        int comWidth = parent.getParent().getClientArea().width - 15;
         // the data source for the context
         if (propertyNames.length > 0) {
             treeNodes.clear();
@@ -213,7 +214,7 @@ public class ContextTreeTable {
             final GlazedListsDataProvider<ContextTreeNode> bodyDataProvider = new GlazedListsDataProvider(treeList,
                     columnPropertyAccessor);
             // the main dataLayer
-            DataLayer bodyDataLayer = new DataLayer(bodyDataProvider);
+            bodyDataLayer = new DataLayer(bodyDataProvider);
 
             DetailGlazedListsEventLayer<ContextTreeNode> glazedListsEventLayer = new DetailGlazedListsEventLayer<ContextTreeNode>(
                     bodyDataLayer, treeList);
@@ -282,18 +283,6 @@ public class ContextTreeTable {
             natTable.addConfiguration(new SingleClickSortConfiguration());
 
             addCustomColumnHeaderStyleBehaviour();
-
-            List<Integer> hideColumnsPos = addCustomHideColumnsBehaviour(manager, columnGroupModel, bodyDataLayer);
-
-            List<Integer> checkColumnPos = getAllCheckPosBehaviour(manager, columnGroupModel);
-
-            int dataColumnsWidth = bodyDataLayer.getWidth();
-
-            int maxWidth = (comWidth > dataColumnsWidth) ? comWidth : dataColumnsWidth;
-
-            // for caculate the suitable column size for when maxmum or minmum the context tab
-
-            addCustomColumnsResizeBehaviour(bodyDataLayer, hideColumnsPos, checkColumnPos, cornerLayer.getWidth(), maxWidth);
 
             NatGridLayerPainter layerPainter = new NatGridLayerPainter(natTable);
             natTable.setLayerPainter(layerPainter);
@@ -428,93 +417,6 @@ public class ContextTreeTable {
                 currentNatTabSel = (IStructuredSelection) event.getSelection();
             }
         });
-    }
-
-    private List<Integer> getAllCheckPosBehaviour(IContextModelManager manager, ColumnGroupModel contextGroupModel) {
-        List<Integer> checkPos = new ArrayList<Integer>();
-        if (manager.getContextManager() != null) {
-            List<IContext> contexts = manager.getContextManager().getListContext();
-            for (IContext envContext : contexts) {
-                ColumnGroup group = contextGroupModel.getColumnGroupByName(envContext.getName());
-                int checkIndex = group.getMembers().get(1);
-                checkPos.add(checkIndex);
-            }
-        }
-        return checkPos;
-    }
-
-    private void addCustomColumnsResizeBehaviour(DataLayer dataLayer, List<Integer> hideColumnsPos,
-            List<Integer> checkColumnsPos, int cornerWidth, int maxWidth) {
-        dataLayer.setColumnsResizableByDefault(true);
-        int dataColumnsCount = dataLayer.getPreferredColumnCount();
-
-        if (dataColumnsCount == 2) {
-            int averageWidth = maxWidth / dataColumnsCount;
-            for (int i = 0; i < dataColumnsCount; i++) {
-                dataLayer.setColumnWidthByPosition(i, averageWidth);
-            }
-        } else {
-            int typeColumnPos = dataLayer.getColumnPositionByIndex(1);
-
-            int leftWidth = maxWidth - fixedTypeWidth - fixedCheckBoxWidth * checkColumnsPos.size() - cornerWidth * 2
-                    - fixedHidePromptWidth;
-
-            int currentColumnsCount = dataColumnsCount - hideColumnsPos.size() - checkColumnsPos.size() - 1;
-            int averageWidth = leftWidth / currentColumnsCount;
-            for (int i = 0; i < dataLayer.getColumnCount(); i++) {
-                boolean findHide = false;
-                boolean findCheck = false;
-                boolean findType = false;
-                if (typeColumnPos == i) {
-                    findType = true;
-                    dataLayer.setColumnWidthByPosition(i, fixedTypeWidth);
-                }
-                for (int hidePos : hideColumnsPos) {
-                    if (hidePos == i) {
-                        findHide = true;
-                        dataLayer.setColumnWidthByPosition(i, fixedHidePromptWidth);
-                    }
-                }
-                for (int checkPos : checkColumnsPos) {
-                    if (checkPos == i) {
-                        findCheck = true;
-                        dataLayer.setColumnWidthByPosition(i, fixedCheckBoxWidth);
-                    }
-                }
-                if (!findHide && !findCheck && !findType) {
-                    dataLayer.setColumnWidthByPosition(i, averageWidth);
-                }
-            }
-        }
-    }
-
-    private List<Integer> addCustomHideColumnsBehaviour(IContextModelManager modelManager, ColumnGroupModel contextGroupModel,
-            DataLayer dataLayer) {
-        List<Integer> hidePos = new ArrayList<Integer>();
-        if (modelManager.getContextManager() != null) {
-            List<IContext> contexts = modelManager.getContextManager().getListContext();
-            for (IContext envContext : contexts) {
-                boolean needHidePrompt = true;
-                ColumnGroup group = contextGroupModel.getColumnGroupByName(envContext.getName());
-                // get every context's prompt to see if need to hide or not,decide by the check of prompt
-                int promptIndex = group.getMembers().get(2);
-                List<IContextParameter> list = envContext.getContextParameterList();
-                if (list != null && list.size() > 0) {
-                    for (IContextParameter contextPara : list) {
-                        if (contextPara.isPromptNeeded()) {
-                            needHidePrompt = false;
-                            break;
-                        }
-                    }
-                }
-                if (needHidePrompt) {
-                    int hidePosition = dataLayer.getColumnPositionByIndex(promptIndex);
-                    hidePos.add(hidePosition);
-                    natTable.doCommand(new ColumnHideCommand(dataLayer, hidePosition));
-                }
-            }
-        }
-        return hidePos;
     }
 
     private void addCustomSelectionBehaviour(SelectionLayer layer) {
