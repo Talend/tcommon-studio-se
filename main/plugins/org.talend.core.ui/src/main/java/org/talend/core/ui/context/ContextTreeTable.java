@@ -58,6 +58,7 @@ import org.eclipse.nebula.widgets.nattable.hideshow.command.ColumnHideCommand;
 import org.eclipse.nebula.widgets.nattable.layer.DataLayer;
 import org.eclipse.nebula.widgets.nattable.layer.cell.ColumnOverrideLabelAccumulator;
 import org.eclipse.nebula.widgets.nattable.layer.config.DefaultColumnHeaderStyleConfiguration;
+import org.eclipse.nebula.widgets.nattable.layer.stack.DefaultBodyLayerStack;
 import org.eclipse.nebula.widgets.nattable.painter.cell.TextPainter;
 import org.eclipse.nebula.widgets.nattable.painter.layer.NatGridLayerPainter;
 import org.eclipse.nebula.widgets.nattable.reorder.ColumnReorderLayer;
@@ -138,6 +139,8 @@ public class ContextTreeTable {
 
     private DataLayer bodyDataLayer;
 
+    private ColumnGroupModel columnGroupModel;
+
     public ContextTreeTable(IContextModelManager manager) {
         this.manager = manager;
     }
@@ -168,8 +171,10 @@ public class ContextTreeTable {
         if (natTable == null) {
             return;
         }
+
         natTable.refresh();
         resizeColumns();
+        hidePromptColums();
     }
 
     private void resizeColumns() {
@@ -189,7 +194,7 @@ public class ContextTreeTable {
      */
     private TControl createTableControl(Composite parent) {
         ConfigRegistry configRegistry = new ConfigRegistry();
-        ColumnGroupModel columnGroupModel = new ColumnGroupModel();
+        columnGroupModel = new ColumnGroupModel();
         configRegistry.registerConfigAttribute(SortConfigAttributes.SORT_COMPARATOR, DefaultComparator.getInstance());
         String[] propertyNames = ContextRowDataListFixture.getPropertyNames(manager);
         // the data source for the context
@@ -285,10 +290,6 @@ public class ContextTreeTable {
             natTable.addConfiguration(new SingleClickSortConfiguration());
 
             addCustomColumnHeaderStyleBehaviour();
-
-            addCustomHideColumnsBehaviour(manager, columnGroupModel, bodyDataLayer);
-
-            getAllCheckPosBehaviour(manager, columnGroupModel);
 
             NatGridLayerPainter layerPainter = new NatGridLayerPainter(natTable);
             natTable.setLayerPainter(layerPainter);
@@ -425,27 +426,12 @@ public class ContextTreeTable {
         });
     }
 
-    private List<Integer> getAllCheckPosBehaviour(IContextModelManager manager, ColumnGroupModel contextGroupModel) {
-        List<Integer> checkPos = new ArrayList<Integer>();
-        if (manager.getContextManager() != null) {
+    private void hidePromptColums() {
+        if (this.manager.getContextManager() != null) {
             List<IContext> contexts = manager.getContextManager().getListContext();
             for (IContext envContext : contexts) {
-                ColumnGroup group = contextGroupModel.getColumnGroupByName(envContext.getName());
-                int checkIndex = group.getMembers().get(1);
-                checkPos.add(checkIndex);
-            }
-        }
-        return checkPos;
-    }
-
-    private List<Integer> addCustomHideColumnsBehaviour(IContextModelManager modelManager, ColumnGroupModel contextGroupModel,
-            DataLayer dataLayer) {
-        List<Integer> hidePos = new ArrayList<Integer>();
-        if (modelManager.getContextManager() != null) {
-            List<IContext> contexts = modelManager.getContextManager().getListContext();
-            for (IContext envContext : contexts) {
                 boolean needHidePrompt = true;
-                ColumnGroup group = contextGroupModel.getColumnGroupByName(envContext.getName());
+                ColumnGroup group = this.columnGroupModel.getColumnGroupByName(envContext.getName());
                 // get every context's prompt to see if need to hide or not,decide by the check of prompt
                 int promptIndex = group.getMembers().get(2);
                 List<IContextParameter> list = envContext.getContextParameterList();
@@ -458,13 +444,11 @@ public class ContextTreeTable {
                     }
                 }
                 if (needHidePrompt) {
-                    int hidePosition = dataLayer.getColumnPositionByIndex(promptIndex);
-                    hidePos.add(hidePosition);
-                    natTable.doCommand(new ColumnHideCommand(dataLayer, hidePosition));
+                    int hidePosition = this.bodyDataLayer.getColumnPositionByIndex(promptIndex);
+                    bodyDataLayer.setColumnWidthByPosition(hidePosition, 1);
                 }
             }
         }
-        return hidePos;
     }
 
     private void addCustomSelectionBehaviour(SelectionLayer layer) {
