@@ -100,9 +100,9 @@ public class Document implements java.io.Serializable{
         	xpathToTypeMap = docToFlat.getXpathToTypeMap();
         	xpathToPatternMap = docToFlat.getXpathToPatternMap();
         }
-        java.util.List<org.dom4j.tree.AbstractNode> nodes = docToFlat.getNodes();
+        java.util.List<org.dom4j.Node> nodes = docToFlat.getNodes();
 
-        for (org.dom4j.tree.AbstractNode node : nodes) {
+        for (org.dom4j.Node node : nodes) {
             boolean reject = false;
             // lookup action
             if(!"ALL_ROWS".equals(matchingMode)) {
