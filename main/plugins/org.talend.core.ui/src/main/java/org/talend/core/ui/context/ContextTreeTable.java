@@ -468,7 +468,7 @@ public class ContextTreeTable {
         natTable.addConfiguration(columnStyle);
     }
 
-    public void resizeColumns() {
+    private void resizeColumns() {
         int cn = this.bodyDataLayer.getColumnCount();
         for (int ci = 1; ci < cn + 1; ci++) {
             InitializeAutoResizeColumnsCommand command = new InitializeAutoResizeColumnsCommand(natTable, ci,
