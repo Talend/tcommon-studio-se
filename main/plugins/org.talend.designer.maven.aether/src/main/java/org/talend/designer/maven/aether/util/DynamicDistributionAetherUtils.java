@@ -15,6 +15,7 @@ package org.talend.designer.maven.aether.util;
 import java.io.File;
 import java.io.PrintWriter;
 import java.io.StringWriter;
+import java.nio.file.Files;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
@@ -38,9 +39,6 @@ import org.eclipse.aether.collection.CollectRequest;
 import org.eclipse.aether.collection.DependencySelector;
 import org.eclipse.aether.graph.DefaultDependencyNode;
 import org.eclipse.aether.graph.Exclusion;
-import org.eclipse.aether.impl.DefaultServiceLocator;
-import org.eclipse.aether.internal.transport.wagon.PlexusWagonConfigurator;
-import org.eclipse.aether.internal.transport.wagon.PlexusWagonProvider;
 import org.eclipse.aether.repository.Authentication;
 import org.eclipse.aether.repository.LocalRepository;
 import org.eclipse.aether.repository.RemoteRepository;
@@ -49,6 +47,8 @@ import org.eclipse.aether.resolution.ArtifactRequest;
 import org.eclipse.aether.resolution.ArtifactResult;
 import org.eclipse.aether.resolution.VersionRangeRequest;
 import org.eclipse.aether.resolution.VersionRangeResult;
+import org.eclipse.aether.transfer.MetadataNotFoundException;
+import org.eclipse.aether.transfer.MetadataTransferException;
 import org.eclipse.aether.util.artifact.JavaScopes;
 import org.eclipse.aether.util.graph.selector.AndDependencySelector;
 import org.eclipse.aether.util.graph.selector.OptionalDependencySelector;
@@ -67,6 +67,8 @@ import org.talend.designer.maven.aether.node.DependencyNode;
 import org.talend.designer.maven.aether.node.ExclusionNode;
 import org.talend.designer.maven.aether.selector.DynamicDependencySelector;
 import org.talend.designer.maven.aether.selector.DynamicExclusionDependencySelector;
+import org.talend.utils.io.FilesUtils;
+import org.talend.utils.sugars.TypedReturnCode;
 
 /**
  * DOC cmeng class global comment. Detailled comment
@@ -366,6 +368,99 @@ public class DynamicDistributionAetherUtils {
             Version highestVersion = rangeResult.getHighestVersion();
             return highestVersion.toString();
         }
+    }
+
+    public static TypedReturnCode checkConnection(String remoteUrl, String username, String password, String groupId,
+            String artifactId, String baseVersion, String topVersion, IDynamicMonitor monitor) throws Exception {
+        TypedReturnCode<VersionRangeResult> tc = new TypedReturnCode<VersionRangeResult>();
+        File tempDirectory = null;
+        try {
+            if (monitor == null) {
+                monitor = new DummyDynamicMonitor();
+            }
+            tempDirectory = Files.createTempDirectory("nexusTemp_").toFile();
+            String localPath = tempDirectory.getPath();
+            RepositorySystem repSystem = MavenLibraryResolverProvider.newRepositorySystemForResolver();
+            RepositorySystemSession repSysSession = newSession(repSystem, localPath, monitor);
+            updateDependencySelector((DefaultRepositorySystemSession) repSysSession, monitor);
+
+            String base = baseVersion;
+            if (base == null || base.isEmpty()) {
+                base = "0"; //$NON-NLS-1$
+            }
+            String range = ":[" + base + ","; //$NON-NLS-1$ //$NON-NLS-2$
+            if (topVersion != null && !topVersion.isEmpty()) {
+                // :[0,1)
+                range = range + topVersion + ")"; //$NON-NLS-1$
+            } else {
+                // :[0,)
+                range = range + ")"; //$NON-NLS-1$
+            }
+
+            Artifact artifact = new DefaultArtifact(groupId + GAV_SEPERATOR + artifactId + range);
+            Builder builder = new RemoteRepository.Builder("central", "default", remoteUrl); //$NON-NLS-1$ //$NON-NLS-2$
+            if (StringUtils.isNotEmpty(username)) {
+                Authentication auth = new AuthenticationBuilder().addUsername(username).addPassword(password).build();
+                builder = builder.setAuthentication(auth);
+            }
+            RemoteRepository central = builder.build();
+            central = new RemoteRepository.Builder(central).setProxy(new TalendAetherProxySelector().getProxy(central)).build();
+
+            VersionRangeRequest verRangeRequest = new VersionRangeRequest();
+            verRangeRequest.addRepository(central);
+            verRangeRequest.setArtifact(artifact);
+
+            checkCancelOrNot(monitor);
+            VersionRangeResult rangeResult = repSystem.resolveVersionRange(repSysSession, verRangeRequest);
+            if (rangeResult == null) {
+                tc.setOk(false);
+                return tc;
+            } else {
+                // have version ragne >> success
+                if (rangeResult.getHighestVersion() != null) {
+                    tc.setOk(true);
+                    tc.setObject(rangeResult);
+                    return tc;
+                }
+                // no version
+                if (rangeResult.getExceptions() == null || rangeResult.getExceptions().size() < 1) {
+                    tc.setOk(false);
+                    return tc;
+                }
+                // 1. remoteRepository exception is MetadataNotFoundException: connected => failed
+                for (Exception e : rangeResult.getExceptions()) {
+                    if (e instanceof MetadataNotFoundException
+                            && central.equals(((MetadataNotFoundException) e).getRepository())) {
+                        tc.setOk(false);
+                        tc.setMessage(e.getMessage());
+                        ExceptionHandler.process(e);
+                        return tc;
+                    }
+                }
+                // 2. remoteRepository exception is MetadataTransferException: connect failed
+                for (Exception e : rangeResult.getExceptions()) {
+                    if (e instanceof MetadataTransferException
+                            && central.equals(((MetadataTransferException) e).getRepository())) {
+                        tc.setOk(false);
+                        tc.setMessage(e.getCause().getMessage());
+                        ExceptionHandler.process(e);
+                        return tc;
+                    }
+                }
+                // 3. no remoteRepository exception, throw first exception, log other exception
+                tc.setOk(false);
+                tc.setMessage(rangeResult.getExceptions().get(0).getMessage());
+                for (Exception e : rangeResult.getExceptions()) {
+                    ExceptionHandler.process(e);
+                }
+                return tc;
+            }
+        } finally {
+            if (tempDirectory != null) {
+                FilesUtils.deleteFolder(tempDirectory, true);
+            }
+        }
+
     }
 
     private static DependencyNode convert(org.eclipse.aether.graph.DependencyNode node, RemoteRepository remoteRepository)

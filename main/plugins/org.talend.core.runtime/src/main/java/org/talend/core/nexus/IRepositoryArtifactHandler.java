@@ -16,7 +16,9 @@ import java.io.File;
 import java.util.Dictionary;
 import java.util.List;
 
+import org.apache.http.HttpResponse;
 import org.talend.core.runtime.maven.MavenArtifact;
+import org.talend.utils.sugars.TypedReturnCode;
 
 /**
  * created by wchen on Jul 31, 2017 Detailled comment
@@ -29,6 +31,8 @@ public interface IRepositoryArtifactHandler {
     public ArtifactRepositoryBean getArtifactServerBean();
 
     public boolean checkConnection();
+
+    public TypedReturnCode<HttpResponse> getConnectionResultAndCode();
 
     public boolean checkConnection(boolean checkRelease, boolean checkSnapshot);
 

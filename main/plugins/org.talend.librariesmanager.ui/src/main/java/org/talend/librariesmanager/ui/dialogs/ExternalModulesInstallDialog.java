@@ -176,7 +176,7 @@ public class ExternalModulesInstallDialog extends TitleAreaDialog implements IMo
 
         createJarNameColumn();
         createContextColumn();
-        createRequiredColumn();
+        // createRequiredColumn();
         createLicenseColumn();
         createMavenURIColumn();
 

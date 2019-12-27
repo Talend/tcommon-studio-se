@@ -14,6 +14,7 @@ package org.talend.core.nexus;
 
 import java.util.Date;
 
+import org.apache.commons.lang.StringUtils;
 import org.talend.commons.exception.ExceptionHandler;
 import org.talend.commons.exception.LoginException;
 import org.talend.commons.exception.PersistenceException;
@@ -21,6 +22,7 @@ import org.talend.core.GlobalServiceRegister;
 import org.talend.core.context.RepositoryContext;
 import org.talend.core.model.properties.User;
 import org.talend.core.runtime.CoreRuntimePlugin;
+import org.talend.core.runtime.projectsetting.ProjectPreferenceManager;
 import org.talend.core.service.IRemoteService;
 import org.talend.repository.model.IProxyRepositoryFactory;
 import org.talend.repository.model.RepositoryConstants;
@@ -30,6 +32,8 @@ import org.talend.repository.model.RepositoryConstants;
  *
  */
 public class TalendLibsServerManager {
+
+    private ProjectPreferenceManager prefManager;
 
     public static final String KEY_LIB_REPO_URL = "org.talend.libraries.repo.url";
 
@@ -72,6 +76,8 @@ public class TalendLibsServerManager {
     public static final String NEXUS_PROXY_PASSWORD = "nexus.proxy.password";
 
     public static final String NEXUS_PROXY_REPOSITORY_ID = "nexus.proxy.repository.id";
+
+    public static final String ENABLE_PROXY_SETTING = "nexus.proxy.enable";
 
     public static final String TALEND_LIB_USER = "";//$NON-NLS-1$
 
@@ -177,14 +183,36 @@ public class TalendLibsServerManager {
 
     public ArtifactRepositoryBean getTalentArtifactServer() {
         ArtifactRepositoryBean serverBean = new ArtifactRepositoryBean();
-        String nexusType = System.getProperty(NEXUS_PROXY_TYPE);
-        if (nexusType != null) {
-            serverBean.setType(nexusType);
+        // get from ini file first
+        String url = System.getProperty(NEXUS_PROXY_URL);
+        if (StringUtils.isNotEmpty(url)) {
+            serverBean.setServer(System.getProperty(NEXUS_PROXY_URL));
+            serverBean.setUserName(System.getProperty(NEXUS_PROXY_USERNAME));
+            serverBean.setPassword(System.getProperty(NEXUS_PROXY_PASSWORD));
+            serverBean.setRepositoryId(System.getProperty(NEXUS_PROXY_REPOSITORY_ID));
+            serverBean.setType(System.getProperty(NEXUS_PROXY_TYPE));
         }
-        serverBean.setServer(System.getProperty(NEXUS_PROXY_URL, TALEND_LIB_SERVER));
-        serverBean.setUserName(System.getProperty(NEXUS_PROXY_USERNAME, TALEND_LIB_USER));
-        serverBean.setPassword(System.getProperty(NEXUS_PROXY_PASSWORD, TALEND_LIB_PASSWORD));
-        serverBean.setRepositoryId(System.getProperty(NEXUS_PROXY_REPOSITORY_ID, TALEND_LIB_REPOSITORY));
+        // if not set in ini file ,get from project setting
+        boolean hasProxySetting = StringUtils.isNotEmpty(serverBean.getServer());
+        if (!hasProxySetting) {
+            prefManager = new ProjectPreferenceManager("org.talend.proxy.nexus", true);
+            boolean enableProxyFlag = prefManager.getBoolean(TalendLibsServerManager.ENABLE_PROXY_SETTING);
+            if (enableProxyFlag) {
+                serverBean.setServer(prefManager.getValue(TalendLibsServerManager.NEXUS_PROXY_URL));
+                serverBean.setUserName(prefManager.getValue(TalendLibsServerManager.NEXUS_PROXY_USERNAME));
+                serverBean.setPassword(prefManager.getValue(TalendLibsServerManager.NEXUS_PROXY_PASSWORD));
+                serverBean.setRepositoryId(prefManager.getValue(TalendLibsServerManager.NEXUS_PROXY_REPOSITORY_ID));
+                serverBean.setType(prefManager.getValue(TalendLibsServerManager.NEXUS_PROXY_TYPE));
+            }
+        }
+        hasProxySetting = StringUtils.isNotEmpty(serverBean.getServer());
+        // use default
+        if (!hasProxySetting) {
+            serverBean.setServer(TALEND_LIB_SERVER);
+            serverBean.setUserName(TALEND_LIB_USER);
+            serverBean.setPassword(TALEND_LIB_PASSWORD);
+            serverBean.setRepositoryId(TALEND_LIB_REPOSITORY);
+        }
         serverBean.setOfficial(true);
         return serverBean;
     }
