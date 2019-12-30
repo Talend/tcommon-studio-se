@@ -34,6 +34,7 @@ import org.eclipse.equinox.p2.metadata.IInstallableUnit;
 import org.eclipse.equinox.p2.metadata.Version;
 import org.junit.After;
 import org.junit.Before;
+import org.junit.Ignore;
 import org.junit.Test;
 import org.talend.utils.io.FilesUtils;
 
@@ -116,6 +117,10 @@ public class UpdateToolsTest {
     }
 
     @Test
+    @Ignore
+    /**
+     * can not test in Linux, all files can always be deleted.
+     */
     public void testCleanUpDropBundles_DeleteFail() throws Exception {
         File pluginFolder = UpdateTools.getProductRootFolder().toPath().resolve("plugins").toFile();
         File dropFile = new File(pluginFolder, "droplist");

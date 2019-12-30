@@ -505,7 +505,7 @@ public class PomUtil {
         return buffer.toString();
     }
 
-    public static String getAbsArtifactPathAsCP(MavenArtifact artifact) {
+    public static String getArtifactFullPath(MavenArtifact artifact) {
         String repoPath = MavenPlugin.getMaven().getLocalRepositoryPath();
         String artifactPath = getArtifactPath(artifact);
         return repoPath + "/" + artifactPath; //$NON-NLS-1$
