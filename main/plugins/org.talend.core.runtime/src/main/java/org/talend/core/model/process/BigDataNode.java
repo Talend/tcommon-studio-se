@@ -104,6 +104,9 @@ public class BigDataNode extends AbstractNode implements IBigDataNode {
                     IBigDataNode node = (IBigDataNode) outgoingConnections.get(0).getTarget();
                     String requiredInputType = node.getRequiredInputType();
                     return (requiredInputType != null && !node.isIdentity()) ? requiredInputType : node.getOutgoingType();
+                } else if (outConnection.getTarget() instanceof MapperExternalNode) {
+                	MapperExternalNode node = (MapperExternalNode) outConnection.getTarget();
+                	return node.getShouldGenerateDataset() ? "DATASET" : "KEYVALUE";
                 } else {
                     // We are on an external node => PairRDD
                     // TODO Maybe on the futur we need to handle RDD or DataFrame, but this required a big refactoring
