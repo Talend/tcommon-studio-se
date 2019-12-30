@@ -181,6 +181,47 @@ public class TalendLibsServerManager {
 
     }
 
+    /**
+     * 
+     * Check user library connection with the setting from remote administrator
+     * 
+     * @return
+     */
+    public boolean canConnectUserLibrary() {
+        boolean canConnect = false;
+        IProxyRepositoryFactory factory = CoreRuntimePlugin.getInstance().getProxyRepositoryFactory();
+        RepositoryContext repositoryContext = factory.getRepositoryContext();
+        try {
+            if (repositoryContext != null && repositoryContext.getFields() != null && !factory.isLocalConnectionProvider()
+                    && !repositoryContext.isOffline()) {
+                String adminUrl = repositoryContext.getFields().get(RepositoryConstants.REPOSITORY_URL);
+                String userName = null;
+                String password = null;
+                User user = repositoryContext.getUser();
+                if (user != null) {
+                    userName = user.getLogin();
+                    password = repositoryContext.getClearPassword();
+                }
+
+                if (StringUtils.isNotBlank(adminUrl) && StringUtils.isNotBlank(userName) && StringUtils.isNotBlank(password)
+                        && GlobalServiceRegister.getDefault().isServiceRegistered(IRemoteService.class)) {
+                    IRemoteService remoteService = (IRemoteService) GlobalServiceRegister.getDefault()
+                            .getService(IRemoteService.class);
+                    ArtifactRepositoryBean bean = remoteService.getLibNexusServer(userName, password, adminUrl);
+                    if (bean != null) {
+                        IRepositoryArtifactHandler handler = RepositoryArtifactHandlerManager.getRepositoryHandler(bean);
+                        if (handler.checkConnection()) {
+                            canConnect = true;
+                        }
+                    }
+                }
+            }
+        } catch (Exception e) {
+            ExceptionHandler.process(e);
+        }
+        return canConnect;
+    }
+
     public ArtifactRepositoryBean getTalentArtifactServer() {
         ArtifactRepositoryBean serverBean = new ArtifactRepositoryBean();
         // get from ini file first
