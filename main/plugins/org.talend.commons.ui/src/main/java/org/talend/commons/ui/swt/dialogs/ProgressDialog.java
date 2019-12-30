@@ -67,11 +67,15 @@ public abstract class ProgressDialog {
         if (parentShell != null) {
             display2 = parentShell.getDisplay();
         }
+        if (display2 == null) {
+            display2 = Display.getDefault();
+        }
         final Display display = display2;
         final InvocationTargetException[] iteHolder = new InvocationTargetException[1];
         try {
             final IRunnableWithProgress op = new IRunnableWithProgress() {
 
+                @Override
                 public void run(final IProgressMonitor monitor) throws InvocationTargetException, InterruptedException {
                     final InvocationTargetException[] iteHolder1 = new InvocationTargetException[1];
                     try {
@@ -96,6 +100,7 @@ public abstract class ProgressDialog {
             if (useAsync) {
                 display.asyncExec(new Runnable() {
 
+                    @Override
                     public void run() {
                         final ProgressMonitorDialog progressMonitorDialog = newProgressMonitorDialog(parentShell);
                         if (timeBeforeShowDialog > 0) {
@@ -106,6 +111,7 @@ public abstract class ProgressDialog {
                             AsynchronousThreading asynchronousThreading = new AsynchronousThreading(timeBeforeShowDialog, true,
                                     display, new Runnable() {
 
+                                        @Override
                                         public void run() {
                                             openDialog(progressMonitorDialog);
                                         }
@@ -128,6 +134,7 @@ public abstract class ProgressDialog {
             } else {
                 display.syncExec(new Runnable() {
 
+                    @Override
                     public void run() {
                         final ProgressMonitorDialog progressMonitorDialog = newProgressMonitorDialog(parentShell);
                         if (timeBeforeShowDialog > 0) {
@@ -138,6 +145,7 @@ public abstract class ProgressDialog {
                             AsynchronousThreading asynchronousThreading = new AsynchronousThreading(timeBeforeShowDialog, true,
                                     display, new Runnable() {
 
+                                        @Override
                                         public void run() {
                                             openDialog(progressMonitorDialog);
                                         }
