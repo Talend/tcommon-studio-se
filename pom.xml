@@ -79,6 +79,7 @@
 		<module>main/features/org.talend.jdt.feature</module>
 		<module>main/features/org.talend.m2e.feature</module>
 		<module>main/features/org.talend.platform.feature</module>
+		<module>main/features/org.talend.help.di.feature</module>
 		<module>main/plugins/org.talend.common.ui.runtime</module>
 		<module>main/plugins/org.talend.commons.runtime</module>
 		<module>main/plugins/org.talend.commons.ui</module>

@@ -19,8 +19,6 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
-import jxl.read.biff.BiffException;
-
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.jface.dialogs.ProgressMonitorDialog;
@@ -62,6 +60,8 @@ import org.talend.core.repository.model.preview.ExcelSchemaBean;
 import org.talend.core.utils.TalendQuoteUtils;
 import org.talend.repository.metadata.i18n.Messages;
 import org.talend.repository.metadata.ui.wizards.form.AbstractExcelFileStepForm;
+
+import jxl.read.biff.BiffException;
 
 /**
  * DOC yexiaowei class global comment. Detailled comment
@@ -474,38 +474,36 @@ public class ExcelFileStep1Form extends AbstractExcelFileStepForm {
 
             @Override
             public void modifyText(final ModifyEvent e) {
-                if (!isContextMode()) {
-                    if (isVisible()) {
-                        errorSet.remove(ERRORSET_FILEFIELD);
-                        try {
-                            viewExcelFile();
-                            restoreSelectedSheets();
-                            checkFieldsValue();
-                        } catch (BiffException e1) {
-                            getConnection().setFilePath(null);
-                            errorSet.add(ERRORSET_FILEFIELD);
-                            updateErrorStatus(e1.getMessage());
-                            makeViewerGroupAvailable(false);
-                        } catch (IOException e1) {
-                            getConnection().setFilePath(null);
-                            errorSet.add(ERRORSET_FILEFIELD);
-                            updateErrorStatus(e1.getMessage());
-                            makeViewerGroupAvailable(false);
-                        }
-                        if (isXlsx) {
-                            selectModeBtn.setSelection(true);
-                            modeCombo.setReadOnly(false);
-                        } else {
-                            selectModeBtn.setSelection(false);
-                            modeCombo.setReadOnly(true);
-                        }
-                        if ((EVENT_MODE).equals(generationMode)) {
-                            modeCombo.select(1);
-                        } else {
-                            modeCombo.select(0);
-                        }
-                        updateStatus();
+                if (isVisible()) {
+                    errorSet.remove(ERRORSET_FILEFIELD);
+                    try {
+                        viewExcelFile();
+                        restoreSelectedSheets();
+                        checkFieldsValue();
+                    } catch (BiffException e1) {
+                        getConnection().setFilePath(null);
+                        errorSet.add(ERRORSET_FILEFIELD);
+                        updateErrorStatus(e1.getMessage());
+                        makeViewerGroupAvailable(false);
+                    } catch (IOException e1) {
+                        getConnection().setFilePath(null);
+                        errorSet.add(ERRORSET_FILEFIELD);
+                        updateErrorStatus(e1.getMessage());
+                        makeViewerGroupAvailable(false);
                     }
+                    if (isXlsx) {
+                        selectModeBtn.setSelection(true);
+                        modeCombo.setReadOnly(false);
+                    } else {
+                        selectModeBtn.setSelection(false);
+                        modeCombo.setReadOnly(true);
+                    }
+                    if ((EVENT_MODE).equals(generationMode)) {
+                        modeCombo.select(1);
+                    } else {
+                        modeCombo.select(0);
+                    }
+                    updateStatus();
                 }
             }
 

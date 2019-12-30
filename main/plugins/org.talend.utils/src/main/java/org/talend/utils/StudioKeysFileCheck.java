@@ -30,6 +30,12 @@ public class StudioKeysFileCheck {
 
     private static final Logger LOGGER = Logger.getLogger(StudioKeysFileCheck.class);
 
+    private static final String JAVA_VERSION_PROP = "java.version";
+
+    private static final String JAVA_VERSION_MINIMAL_STRING = "1.8.0_161";
+
+    private static final JavaVersion JAVA_VERSION_MINIMAL = new JavaVersion(JAVA_VERSION_MINIMAL_STRING);
+
     private StudioKeysFileCheck() {
 
     }
@@ -51,4 +57,18 @@ public class StudioKeysFileCheck {
         LOGGER.info("encryptionKeyFilePath: " + keyFile);
     }
 
+    /**
+     * Validate java version, throw runtime exception if not satisfied.
+     */
+    public static void validateJavaVersion() {
+        String currentVersion = System.getProperty(JAVA_VERSION_PROP);
+        JavaVersion cv = new JavaVersion(currentVersion);
+        if (cv.compareTo(JAVA_VERSION_MINIMAL) < 0) {
+            RuntimeException e = new RuntimeException(
+                    "Java upgrade required, minimal required java version is " + JAVA_VERSION_MINIMAL_STRING
+                            + ", current version is " + currentVersion);
+            LOGGER.error(e);
+            throw e;
+        }
+    }
 }
