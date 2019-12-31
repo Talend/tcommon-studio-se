@@ -77,7 +77,6 @@
                         <includeGroupIds>
                             org.dom4j,jaxen
                         </includeGroupIds>
-                        <stripVersion>true</stripVersion>
                     </configuration>
                 </execution>
             </executions>
