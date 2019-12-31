@@ -51,6 +51,7 @@ public abstract class AbstractPersistentProjectSettingPage extends AbstractScrip
             isUserIdentified = true;
             if (generatePom) {
                 try {
+                    save();
                     new AggregatorPomsHelper().syncAllPoms();
                 } catch (Exception e) {
                     ExceptionHandler.process(e);
