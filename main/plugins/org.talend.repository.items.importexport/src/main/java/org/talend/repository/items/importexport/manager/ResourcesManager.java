@@ -61,7 +61,8 @@ public abstract class ResourcesManager implements InputStreamProvider {
     public void addFolder(String path) {
         boolean isEmptyFolder = true;
         for (IPath objectPath : path2Object.keySet()) {
-            if (objectPath.toPortableString().contains(path)) {
+            if (objectPath.toPortableString().contains(path)
+                    || objectPath.toPortableString().contains(new Path(path).removeFirstSegments(1).toPortableString())) {
                 isEmptyFolder = false;
                 break;
             }
