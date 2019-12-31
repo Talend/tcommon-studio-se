@@ -29,4 +29,5 @@ public interface INexusService extends IService {
 
     ArtifactRepositoryBean getPublishNexusServerBean(String repositoryId);
 
+    ArtifactRepositoryBean getArtifactRepositoryFromServer();
 }

@@ -352,4 +352,14 @@ public class ComponentP2ExtraFeature extends P2ExtraFeature {
         ((AbstractFeatureStorage) getStorage()).setFeatDownloadFolder(workFolder);
     }
 
+    @Override
+    public boolean isShareEnable() {
+        return share;
+    }
+
+    @Override
+    public void setShareEnable(boolean share) {
+        this.share = share;
+    }
+
 }
