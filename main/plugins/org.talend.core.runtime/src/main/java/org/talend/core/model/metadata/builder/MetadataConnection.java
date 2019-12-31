@@ -100,7 +100,10 @@ public class MetadataConnection implements IMetadataConnection {
 
     private String otherParameter;
 
-    private String dbName;
+    /**
+     * TDQ-17294: used for support snowflake warehouse.
+     */
+    private String warehouse;
 
     private String uiSchema;
 
@@ -671,12 +674,12 @@ public class MetadataConnection implements IMetadataConnection {
         this.otherParameter = otherParameter;
     }
 
-    public String getDbName() {
-        return dbName;
+    public String getWarehouse() {
+        return warehouse;
     }
 
-    public void setDbName(String dbName) {
-        this.dbName = dbName;
+    public void setWarehouse(String warehouse) {
+        this.warehouse = warehouse;
     }
 
     public String getUiSchema() {

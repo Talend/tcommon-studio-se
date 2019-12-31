@@ -167,9 +167,9 @@ public interface IMetadataConnection extends IMetadata {
 
     public void setOtherParameter(String otherParameter);
 
-    public String getDbName();
+    public String getWarehouse();
 
-    public void setDbName(String dbName);
+    public void setWarehouse(String warehouse);
 
     public String getUiSchema();
 
