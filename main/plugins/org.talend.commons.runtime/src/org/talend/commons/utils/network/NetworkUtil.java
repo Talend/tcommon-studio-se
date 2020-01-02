@@ -53,9 +53,10 @@ public class NetworkUtil {
         try {
             URL url = new URL(HTTP_NETWORK_URL);
             conn = (HttpURLConnection) url.openConnection();
+            conn.setDefaultUseCaches(false);
+            conn.setUseCaches(false);
             conn.setConnectTimeout(4000);
             conn.setReadTimeout(4000);
-
             conn.setRequestMethod("HEAD"); //$NON-NLS-1$
             String strMessage = conn.getResponseMessage();
             if (strMessage.compareTo("Not Found") == 0) { //$NON-NLS-1$
@@ -84,6 +85,8 @@ public class NetworkUtil {
         try {
             URL url = new URL(urlString);
             conn = (HttpURLConnection) url.openConnection();
+            conn.setDefaultUseCaches(false);
+            conn.setUseCaches(false);
             conn.setConnectTimeout(4000);
             conn.setReadTimeout(4000);
             conn.setRequestMethod("HEAD"); //$NON-NLS-1$
