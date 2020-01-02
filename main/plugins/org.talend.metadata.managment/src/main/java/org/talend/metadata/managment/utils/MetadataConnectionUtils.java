@@ -568,7 +568,27 @@ public class MetadataConnectionUtils {
 
     public static boolean isMysql(DatabaseMetaData connectionMetadata) throws SQLException {
         if (connectionMetadata.getDriverName() != null && connectionMetadata.getDatabaseProductName() != null) {
-            if (EDataBaseType.MySQL.getProductName().equals(connectionMetadata.getDatabaseProductName().trim())) {
+            if (EDataBaseType.MySQL.getProductName().equalsIgnoreCase(connectionMetadata.getDatabaseProductName().trim())) {
+                return true;
+
+            }
+        }
+        return false;
+    }
+    
+    public static boolean isSAPHana(DatabaseMetaData connectionMetadata) throws SQLException {
+        if (connectionMetadata.getDriverName() != null && connectionMetadata.getDatabaseProductName() != null) {
+            if ("HDB".equalsIgnoreCase(connectionMetadata.getDatabaseProductName().trim())) { //$NON-NLS-1$
+                return true;
+
+            }
+        }
+        return false;
+    }
+    
+    public static boolean isAS400(DatabaseMetaData connectionMetadata) throws SQLException {
+        if (connectionMetadata.getDriverName() != null && connectionMetadata.getDatabaseProductName() != null) {
+            if ("DB2 UDB for AS/400".equalsIgnoreCase(connectionMetadata.getDatabaseProductName().trim())) { //$NON-NLS-1$
                 return true;
 
             }

@@ -236,16 +236,20 @@ public class ExtractManager {
             rsTableTypes.close();// See bug 5029 Avoid "Invalid cursor exception"
         }
         
-        if (EDatabaseTypeName.HIVE.getDisplayName().equals(dbType.getDbType())) {
+        if (EDatabaseTypeName.HIVE.getDisplayName().equals(dbType.getDbType()) ||
+                MetadataConnectionUtils.isHive(dbMetaData)) {
         	availableTableTypes.add(ETableTypes.MANAGED_TABLE.getName());
         	availableTableTypes.add(ETableTypes.INDEX_TABLE.getName());
         	availableTableTypes.add(ETableTypes.VIRTUAL_VIEW.getName());
-        } else if (EDatabaseTypeName.SAPHana.getDisplayName().equals(dbType.getDbType())) {
+        } else if (EDatabaseTypeName.SAPHana.getDisplayName().equals(dbType.getDbType()) ||
+                MetadataConnectionUtils.isSAPHana(dbMetaData)) {
         	availableTableTypes.add(ETableTypes.TABLETYPE_CALCULATION_VIEW.getName());
-        } else if (EDatabaseTypeName.MYSQL.getDisplayName().equals(dbType.getDbType())) {
+        } else if (EDatabaseTypeName.MYSQL.getDisplayName().equals(dbType.getDbType()) ||
+                MetadataConnectionUtils.isMysql(dbMetaData)) {
         	availableTableTypes.add(ETableTypes.SYSTEM_TABLE.getName());
         	availableTableTypes.add(ETableTypes.SYSTEM_VIEW.getName());
-        }else if (EDatabaseTypeName.AS400.getDisplayName().equals(dbType.getDbType())) {
+        }else if (EDatabaseTypeName.AS400.getDisplayName().equals(dbType.getDbType()) ||
+                MetadataConnectionUtils.isAS400(dbMetaData)) {
         	availableTableTypes.add(ETableTypes.TABLETYPE_TABLE.getName());
             availableTableTypes.add(ETableTypes.EXTERNAL_TABLE.getName());
             availableTableTypes.add(ETableTypes.TABLETYPE_VIEW.getName());
