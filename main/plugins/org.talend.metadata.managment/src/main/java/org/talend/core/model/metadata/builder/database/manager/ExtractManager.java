@@ -165,7 +165,7 @@ public class ExtractManager {
             tablesToFilter = new ArrayList<String>();
         }
         try {
-            Set<String> availableTableTypes = getAvailableTableTypes(dbMetaData);
+            Set<String> availableTableTypes = getTableTypes(dbMetaData);
             retrieveTables(dbMetaData, schema, medataTables, availableTableTypes, tablesToFilter, limit);
         } catch (SQLException e) {
             ExceptionHandler.process(e);
