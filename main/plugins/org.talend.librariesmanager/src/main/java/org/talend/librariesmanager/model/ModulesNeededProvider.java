@@ -290,7 +290,8 @@ public class ModulesNeededProvider {
             for (ModuleNeeded neededLibrary : neededLibraries) {
                 boolean alreadyInImports = false;
                 for (ModuleNeeded module : getModulesNeeded()) {
-                    if (module.getModuleName().equals(neededLibrary.getModuleName())) {
+                    if (module != null && module.getModuleName() != null
+                            && module.getModuleName().equals(neededLibrary.getModuleName())) {
                         if (StringUtils.equals(module.getMavenUri(), neededLibrary.getMavenUri())) {
                             alreadyInImports = true;
                             break;

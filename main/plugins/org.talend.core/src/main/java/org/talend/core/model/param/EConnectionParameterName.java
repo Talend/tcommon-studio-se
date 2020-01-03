@@ -31,10 +31,21 @@ public enum EConnectionParameterName {
     DATASOURCE("DataSource"), //$NON-NLS-1$
     DRIVER_JAR("Driver jar"), //$NON-NLS-1$
     DRIVER_CLASS("Driver class"), //$NON-NLS-1$
-    LOCAL_SERVICE_NAME("Local Service Name"),
+    LOCAL_SERVICE_NAME("Local Service Name"), //$NON-NLS-1$
     URL("Url"), //$NON-NLS-1$
     HTTPS("https"), //$NON-NLS-1$
     DBPATH("DBPATH"),//$NON-NLS-1$
+
+    // TDQ-17294 msjian: for tSnowflakeInput
+    ACCOUNT("connection.account"), //$NON-NLS-1$
+    WAREHOUSE("connection.warehouse"), //$NON-NLS-1$
+    DB("connection.db"), //$NON-NLS-1$
+    SCHEMA_NAME("connection.schemaName"), //$NON-NLS-1$
+    JDBC_PARAMETER("connection.jdbcParameters"), //$NON-NLS-1$
+    USER_ID("connection.userPassword.userId"), //$NON-NLS-1$
+    USER_PASSWORD("connection.userPassword.password"), //$NON-NLS-1$
+    QUERY("query"), //$NON-NLS-1$
+    // TDQ-17294~
 
     GENERIC_TABLENAME("tableSelection.tablename"),//$NON-NLS-1$
     GENERIC_USERNAME("connection.userPassword.userId"),//$NON-NLS-1$
@@ -42,7 +53,8 @@ public enum EConnectionParameterName {
     GENERIC_URL("connection.jdbcUrl"),//$NON-NLS-1$
     GENERIC_DRIVER_JAR("connection.driverTable"),//$NON-NLS-1$
     GENERIC_DRIVER_CLASS("connection.driverClass"), //$NON-NLS-1$
-    GENERIC_MAPPING_FILE("mappingFile");
+    GENERIC_MAPPING_FILE("mappingFile"); //$NON-NLS-1$
+
 
     private String displayName;
 
