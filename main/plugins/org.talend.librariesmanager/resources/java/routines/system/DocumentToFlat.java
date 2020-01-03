@@ -5,8 +5,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.dom4j.Node;
 import org.dom4j.XPath;
-import org.dom4j.tree.AbstractNode;
 
 public class DocumentToFlat {
 	
@@ -28,7 +28,7 @@ public class DocumentToFlat {
 	private boolean defineNS = true;
 	private NameSpaceTool namespaceTool;
 	
-	private List<AbstractNode> nodes;
+    private List<Node> nodes;
 
 	//result show
 	private List<Map<String,String>> resultSet = new ArrayList<Map<String,String>>();
@@ -60,7 +60,7 @@ public class DocumentToFlat {
 				}
 			}
 			
-			for(AbstractNode node : nodes) {
+            for (Node node : nodes) {
 				//init row
 				Map<String,String> row = new HashMap<String,String>();
 				resultSet.add(row);
@@ -220,7 +220,7 @@ public class DocumentToFlat {
     	return content;
     }
 	
-	public List<AbstractNode> getNodes() {
+    public List<Node> getNodes() {
 		return nodes;
 	}
 	
