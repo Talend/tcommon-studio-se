@@ -73,7 +73,6 @@ import org.talend.commons.utils.generation.JavaUtils;
 import org.talend.commons.utils.workbench.resources.ResourceUtils;
 import org.talend.core.GlobalServiceRegister;
 import org.talend.core.ILibraryManagerService;
-import org.talend.core.model.general.ModuleNeeded;
 import org.talend.core.model.general.Project;
 import org.talend.core.model.process.IProcess;
 import org.talend.core.model.process.JobInfo;
@@ -330,19 +329,6 @@ public class PomUtil {
                     artifact.getClassifier());
         }
         return null;
-    }
-
-    public static MavenArtifact getMavenArtifact(ModuleNeeded module) {
-        String str = module.getMavenUri();
-        if (str == null) {
-            return null;
-        }
-        String mvnUrl = str;
-        if (!MavenUrlHelper.isMvnUrl(str)) {
-            mvnUrl = MavenUrlHelper.generateMvnUrlForJarName(str);
-        }
-
-        return MavenUrlHelper.parseMvnUrl(mvnUrl);
     }
 
     /**
