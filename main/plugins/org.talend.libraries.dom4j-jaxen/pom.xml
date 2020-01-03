@@ -43,6 +43,11 @@
             <artifactId>dom4j</artifactId>
             <version>2.1.1</version>
         </dependency>
+        <dependency>
+            <groupId>dom4j</groupId>
+            <artifactId>dom4j</artifactId>
+            <version>1.6.1</version>
+        </dependency>
   </dependencies>
   <build>
     <plugins>
@@ -75,7 +80,7 @@
                     <configuration>
                         <outputDirectory>${project.basedir}/lib</outputDirectory>
                         <includeGroupIds>
-                            org.dom4j,jaxen
+                            org.dom4j,jaxen,dom4j
                         </includeGroupIds>
                     </configuration>
                 </execution>
