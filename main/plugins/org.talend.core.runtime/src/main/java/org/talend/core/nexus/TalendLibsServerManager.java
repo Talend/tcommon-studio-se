@@ -22,6 +22,7 @@ import org.talend.core.GlobalServiceRegister;
 import org.talend.core.context.RepositoryContext;
 import org.talend.core.model.properties.User;
 import org.talend.core.runtime.CoreRuntimePlugin;
+import org.talend.core.runtime.i18n.Messages;
 import org.talend.core.runtime.projectsetting.ProjectPreferenceManager;
 import org.talend.core.service.IRemoteService;
 import org.talend.repository.model.IProxyRepositoryFactory;
@@ -212,6 +213,9 @@ public class TalendLibsServerManager {
                         IRepositoryArtifactHandler handler = RepositoryArtifactHandlerManager.getRepositoryHandler(bean);
                         if (handler.checkConnection()) {
                             canConnect = true;
+                        } else {
+                            ExceptionHandler.process(new Throwable(Messages.getString(
+                                    "TalendLibsServerManager.connectUserLibraryFailureMessage", bean.getServer()))); //$NON-NLS-1$
                         }
                     }
                 }
