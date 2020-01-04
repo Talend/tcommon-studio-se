@@ -78,6 +78,7 @@
 		<module>main/features/org.talend.utils.feature</module>
 		<module>main/features/org.talend.jdt.feature</module>
 		<module>main/features/org.talend.m2e.feature</module>
+		<module>main/features/org.talend.platform.eclipse.feature</module>
 		<module>main/features/org.talend.platform.feature</module>
 		<module>main/features/org.talend.help.di.feature</module>
 		<module>main/plugins/org.talend.common.ui.runtime</module>
