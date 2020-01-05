@@ -198,4 +198,6 @@ public interface IDesignerCoreService extends IService {
 
     boolean isNeedContextInJar(IProcess process);
 
+    public String[] getNeedRemoveModulesForLog4j();
+
 }

@@ -137,7 +137,10 @@ public class PatchP2InstallManager {
                 UpdateTools.syncLibraries(installingPatchFolder);
                 UpdateTools.syncM2Repository(installingPatchFolder);
                 UpdateTools.installCars(monitor, installingPatchFolder, false);
-                UpdateTools.collectDropBundles(validInstall, extraBundles);
+                if (GlobalServiceRegister.getDefault().isServiceRegistered(ICoreTisService.class)) {
+                    ICoreTisService coreTisService = GlobalServiceRegister.getDefault().getService(ICoreTisService.class);
+                    UpdateTools.collectDropBundles(validInstall, extraBundles, coreTisService.getDropBundleInfo());
+                }
                 break;
             }
         }

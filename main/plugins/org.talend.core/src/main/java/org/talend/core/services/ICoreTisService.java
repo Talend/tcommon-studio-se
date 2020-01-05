@@ -26,7 +26,7 @@ import org.talend.commons.exception.SystemException;
 import org.talend.core.IService;
 import org.talend.core.model.general.Project;
 import org.talend.core.model.process.INode;
-import org.talend.core.updatesite.IUpdateSiteBean;
+import org.talend.core.runtime.maven.MavenArtifact;
 
 /**
  * wchen class global comment. Detailled comment
@@ -39,7 +39,7 @@ public interface ICoreTisService extends IService {
 
     public boolean validProject(Project project, boolean flag) throws PersistenceException;
 
-    public List<IUpdateSiteBean> getPatchesInstalled() throws BackingStoreException;
+    public List<MavenArtifact> getInstalledPatchArtifacts() throws BackingStoreException;
 
     public boolean needRestartAfterUpdate();
 

@@ -227,7 +227,8 @@ public class UpdateTools {
         }
     }
 
-    public static void collectDropBundles(Set<IInstallableUnit> validInstall, Map<String, String> extraBundles) throws IOException {
+    public static void collectDropBundles(Set<IInstallableUnit> validInstall, Map<String, String> extraBundles,
+            Map<String, String> dropBundles) throws IOException {
         File pluginFolderFile = getProductRootFolder().toPath().resolve("plugins").toFile();
         if (!pluginFolderFile.exists() || !pluginFolderFile.isDirectory()) {
             return;
@@ -244,12 +245,8 @@ public class UpdateTools {
             dropList.addAll(list);
         });
         // collect from drop.bundle.info
-        if (GlobalServiceRegister.getDefault().isServiceRegistered(ICoreTisService.class)) {
-            ICoreTisService coreTisService = GlobalServiceRegister.getDefault().getService(ICoreTisService.class);
-            Map<String, String> dropBundles = coreTisService.getDropBundleInfo();
-            dropBundles.forEach((b, v) -> plugins.stream().filter(f -> f.getName().contains(b + "_" + v))
-                    .forEach(f -> dropList.add(f.getAbsolutePath())));
-        }
+        dropBundles.forEach((b, v) -> plugins.stream().filter(f -> f.getName().contains(b + "_" + v))
+                .forEach(f -> dropList.add(f.getAbsolutePath())));
         File dropFile = new File(pluginFolderFile, "droplist");
         if (!dropFile.exists()) {
             dropFile.createNewFile();
@@ -257,7 +254,7 @@ public class UpdateTools {
         StringBuilder builder = new StringBuilder();
         Stream.concat(dropList.stream(), Files.readAllLines(dropFile.toPath()).stream()).distinct()
                 .forEach(s -> builder.append(s).append(LINE_SEPARATOR));
-        Files.write(dropFile.toPath(), builder.toString().getBytes(), StandardOpenOption.TRUNCATE_EXISTING);
+        Files.write(dropFile.toPath(), builder.toString().getBytes());
     }
 
     public static void cleanUpDropBundles() throws IOException {
@@ -269,7 +266,7 @@ public class UpdateTools {
                     .forEach(f -> builder.append(f.getAbsolutePath()).append(LINE_SEPARATOR));
             if (builder.length() > 0) {
                 // if deletion for some bundle failed
-                Files.write(dropFile.toPath(), builder.toString().getBytes(), StandardOpenOption.TRUNCATE_EXISTING);
+                Files.write(dropFile.toPath(), builder.toString().getBytes());
             } else {
                 dropFile.delete();
             }
