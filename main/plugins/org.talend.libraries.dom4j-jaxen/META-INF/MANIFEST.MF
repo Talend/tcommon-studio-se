@@ -6,7 +6,7 @@ Bundle-Version: 7.3.1.qualifier
 Bundle-Vendor: .Talend SA.
 Bundle-ClassPath: .,
  lib/dom4j-2.1.1.jar,
- lib/jaxen-1.1.1.jar
+ lib/jaxen-1.1.6.jar
 Export-Package: org.dom4j,
  org.dom4j.bean,
  org.dom4j.datatype,

@@ -14,7 +14,7 @@
     <dependency>
         <groupId>jaxen</groupId>
         <artifactId>jaxen</artifactId>
-        <version>1.1.1</version>
+        <version>1.1.6</version>
             <exclusions>
                 <exclusion>
                     <groupId>dom4j</groupId>
@@ -37,17 +37,17 @@
                     <artifactId>xom</artifactId>
                 </exclusion>
             </exclusions>
-        </dependency>
-        <dependency>
-            <groupId>org.dom4j</groupId>
-            <artifactId>dom4j</artifactId>
-            <version>2.1.1</version>
-        </dependency>
-        <dependency>
-            <groupId>dom4j</groupId>
-            <artifactId>dom4j</artifactId>
-            <version>1.6.1</version>
-        </dependency>
+    </dependency>
+    <dependency>
+        <groupId>org.dom4j</groupId>
+        <artifactId>dom4j</artifactId>
+        <version>2.1.1</version>
+    </dependency>
+    <dependency>
+        <groupId>dom4j</groupId>
+        <artifactId>dom4j</artifactId>
+        <version>1.6.1</version>
+    </dependency>
   </dependencies>
   <build>
     <plugins>
@@ -60,7 +60,8 @@
                     <fileset>
                         <directory>${project.basedir}/lib</directory>
                         <includes>
-                            <include>*.jar</include>
+                            <include>dom4j*.jar</include>
+                            <include>jaxen-1.1.6.jar</include>
                         </includes>
                         <followSymlinks>false</followSymlinks>
                     </fileset>
