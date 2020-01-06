@@ -12,8 +12,13 @@
 // ============================================================================
 package org.talend.updates.runtime.maven;
 
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertNotNull;
+
 import java.io.File;
 
+import org.apache.maven.model.Dependency;
 import org.apache.maven.model.Model;
 import org.eclipse.core.runtime.IPath;
 import org.eclipse.core.runtime.Path;
@@ -105,6 +110,45 @@ public class MavenRepoSynchronizerTest {
         jarArtifact.setArtifactId("bundle-test");
         jarArtifact.setVersion("6.4.0");
         doTestLib(jarArtifact, "test jar for bundle packaging");
+    }
+
+    /**
+     * test keep original pom for maven plugin.
+     */
+    @Test
+    public void test_sync_withMavenPlugin() throws Exception {
+        final MavenArtifact jarArtifact = new MavenArtifact();
+        jarArtifact.setGroupId("org.talend.ci");
+        jarArtifact.setArtifactId("test-mojo");
+        jarArtifact.setVersion("7.3.1");
+
+        IMaven maven = MavenPlugin.getMaven();
+        String localRepositoryPath = maven.getLocalRepositoryPath();
+        Assert.assertNotNull(localRepositoryPath);
+        IPath libPath = new Path(localRepositoryPath).append(jarArtifact.getGroupId().replace(".", "/"))
+                .append(jarArtifact.getArtifactId()).append(jarArtifact.getVersion()).append(jarArtifact.getFileName(false));
+        File libFile = libPath.toFile();
+        if (libFile.exists()) {
+            libFile.delete();
+        }
+        File pomFile = libPath.removeFileExtension().addFileExtension(TalendMavenConstants.PACKAGING_POM).toFile();
+        if (pomFile.exists()) {
+            pomFile.delete();
+        }
+        // only test in local
+        MavenRepoSynchronizer sync = new MavenRepoSynchronizer(updatesiteLibFolder, false);
+        sync.installM2RepositoryLibs(updatesiteLibFolder);
+
+        Assert.assertTrue("sync lib for M2 repository failure", libFile.exists());
+        Assert.assertTrue(pomFile.exists());
+
+        Model model = MavenPlugin.getMaven().readModel(pomFile);
+        assertNotNull(model);
+        assertFalse(model.getDependencies().isEmpty());
+        Dependency dependency = model.getDependencies().get(0);
+        assertEquals("commons-io", dependency.getGroupId());
+        assertEquals("commons-io", dependency.getArtifactId());
+        assertEquals("2.5", dependency.getVersion());
     }
 
     private void doTestLib(MavenArtifact jarArtifact, String pomDesc) throws Exception {
