@@ -37,7 +37,6 @@ import org.talend.updates.runtime.model.FeatureRepositories;
 import org.talend.updates.runtime.model.P2ExtraFeature;
 import org.talend.updates.runtime.model.P2ExtraFeatureException;
 import org.talend.updates.runtime.model.UpdateSiteLocationType;
-import org.talend.updates.runtime.model.interfaces.IP2ComponentFeature;
 import org.talend.utils.io.FilesUtils;
 
 /**
@@ -49,7 +48,7 @@ public class NewComponentsInstallFactory extends AbstractExtraUpdatesFactory imp
 
     // private static Logger log = Logger.getLogger(NewComponentsInstallFactory.class);
 
-    static class ComponentInstallP2ExtraFeature extends P2ExtraFeature implements IP2ComponentFeature {
+    static class ComponentInstallP2ExtraFeature extends P2ExtraFeature {
 
         private boolean needRestart;
 
