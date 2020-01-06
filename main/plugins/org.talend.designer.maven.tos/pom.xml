@@ -96,7 +96,7 @@
 		</dependency>
 		<dependency>
 			<groupId>org.talend.studio</groupId>
-			<artifactId>talend-ci-osgihelper-maven-plugin</artifactId>
+			<artifactId>talend-ci-osgihelper-maven-plugin-tos</artifactId>
 			<version>${project.version}</version>
 			<type>pom</type>
 		</dependency>

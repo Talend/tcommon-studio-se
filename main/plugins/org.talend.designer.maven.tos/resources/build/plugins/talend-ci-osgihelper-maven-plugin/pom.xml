@@ -7,7 +7,7 @@
 		<version>7.3.1-SNAPSHOT</version>
 		<relativePath>../../../</relativePath>
 	</parent>
-	<artifactId>talend-ci-osgihelper-maven-plugin</artifactId>
+	<artifactId>talend-ci-osgihelper-maven-plugin-tos</artifactId>
 	<packaging>pom</packaging>
 	<dependencies>
         <dependency>
