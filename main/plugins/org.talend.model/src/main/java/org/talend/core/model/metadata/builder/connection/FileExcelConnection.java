@@ -15,6 +15,7 @@ import org.eclipse.emf.common.util.EList;
  *
  * <p>
  * The following features are supported:
+ * </p>
  * <ul>
  *   <li>{@link org.talend.core.model.metadata.builder.connection.FileExcelConnection#getSheetName <em>Sheet Name</em>}</li>
  *   <li>{@link org.talend.core.model.metadata.builder.connection.FileExcelConnection#getSheetColumns <em>Sheet Columns</em>}</li>
@@ -27,7 +28,6 @@ import org.eclipse.emf.common.util.EList;
  *   <li>{@link org.talend.core.model.metadata.builder.connection.FileExcelConnection#getSheetList <em>Sheet List</em>}</li>
  *   <li>{@link org.talend.core.model.metadata.builder.connection.FileExcelConnection#getGenerationMode <em>Generation Mode</em>}</li>
  * </ul>
- * </p>
  *
  * @see org.talend.core.model.metadata.builder.connection.ConnectionPackage#getFileExcelConnection()
  * @model

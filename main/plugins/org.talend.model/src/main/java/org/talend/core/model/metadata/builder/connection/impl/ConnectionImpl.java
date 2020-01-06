@@ -1177,7 +1177,7 @@ public class ConnectionImpl extends AbstractMetadataObjectImpl implements Connec
         if (eIsProxy())
             return super.toString();
 
-        StringBuffer result = new StringBuffer(super.toString());
+        StringBuilder result = new StringBuilder(super.toString());
         result.append(" (pathname: ");
         result.append(pathname);
         result.append(", isCaseSensitive: ");

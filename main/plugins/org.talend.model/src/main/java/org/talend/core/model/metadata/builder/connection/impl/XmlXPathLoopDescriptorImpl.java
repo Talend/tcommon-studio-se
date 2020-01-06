@@ -33,13 +33,13 @@ import org.talend.core.model.metadata.builder.connection.XmlXPathLoopDescriptor;
  * <!-- end-user-doc -->
  * <p>
  * The following features are implemented:
+ * </p>
  * <ul>
  *   <li>{@link org.talend.core.model.metadata.builder.connection.impl.XmlXPathLoopDescriptorImpl#getLimitBoucle <em>Limit Boucle</em>}</li>
  *   <li>{@link org.talend.core.model.metadata.builder.connection.impl.XmlXPathLoopDescriptorImpl#getAbsoluteXPathQuery <em>Absolute XPath Query</em>}</li>
  *   <li>{@link org.talend.core.model.metadata.builder.connection.impl.XmlXPathLoopDescriptorImpl#getConnection <em>Connection</em>}</li>
  *   <li>{@link org.talend.core.model.metadata.builder.connection.impl.XmlXPathLoopDescriptorImpl#getSchemaTargets <em>Schema Targets</em>}</li>
  * </ul>
- * </p>
  *
  * @generated
  */
@@ -155,7 +155,8 @@ public class XmlXPathLoopDescriptorImpl extends EObjectImpl implements XmlXPathL
         absoluteXPathQuery = newAbsoluteXPathQuery;
         if (eNotificationRequired())
             eNotify(new ENotificationImpl(this, Notification.SET,
-                    ConnectionPackage.XML_XPATH_LOOP_DESCRIPTOR__ABSOLUTE_XPATH_QUERY, oldAbsoluteXPathQuery, absoluteXPathQuery));
+                    ConnectionPackage.XML_XPATH_LOOP_DESCRIPTOR__ABSOLUTE_XPATH_QUERY, oldAbsoluteXPathQuery,
+                    absoluteXPathQuery));
     }
 
     /**
@@ -360,8 +361,8 @@ public class XmlXPathLoopDescriptorImpl extends EObjectImpl implements XmlXPathL
         case ConnectionPackage.XML_XPATH_LOOP_DESCRIPTOR__LIMIT_BOUCLE:
             return LIMIT_BOUCLE_EDEFAULT == null ? limitBoucle != null : !LIMIT_BOUCLE_EDEFAULT.equals(limitBoucle);
         case ConnectionPackage.XML_XPATH_LOOP_DESCRIPTOR__ABSOLUTE_XPATH_QUERY:
-            return ABSOLUTE_XPATH_QUERY_EDEFAULT == null ? absoluteXPathQuery != null : !ABSOLUTE_XPATH_QUERY_EDEFAULT
-                    .equals(absoluteXPathQuery);
+            return ABSOLUTE_XPATH_QUERY_EDEFAULT == null ? absoluteXPathQuery != null
+                    : !ABSOLUTE_XPATH_QUERY_EDEFAULT.equals(absoluteXPathQuery);
         case ConnectionPackage.XML_XPATH_LOOP_DESCRIPTOR__CONNECTION:
             return basicGetConnection() != null;
         case ConnectionPackage.XML_XPATH_LOOP_DESCRIPTOR__SCHEMA_TARGETS:
@@ -380,7 +381,7 @@ public class XmlXPathLoopDescriptorImpl extends EObjectImpl implements XmlXPathL
         if (eIsProxy())
             return super.toString();
 
-        StringBuffer result = new StringBuffer(super.toString());
+        StringBuilder result = new StringBuilder(super.toString());
         result.append(" (LimitBoucle: ");
         result.append(limitBoucle);
         result.append(", AbsoluteXPathQuery: ");

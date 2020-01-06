@@ -33,11 +33,11 @@ import org.talend.core.model.metadata.builder.connection.DatabaseConnection;
  * <!-- end-user-doc -->
  * <p>
  * The following features are implemented:
+ * </p>
  * <ul>
  *   <li>{@link org.talend.core.model.metadata.builder.connection.impl.CDCConnectionImpl#getConnection <em>Connection</em>}</li>
  *   <li>{@link org.talend.core.model.metadata.builder.connection.impl.CDCConnectionImpl#getCdcTypes <em>Cdc Types</em>}</li>
  * </ul>
- * </p>
  *
  * @generated
  */

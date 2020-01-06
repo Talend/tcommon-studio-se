@@ -20,6 +20,7 @@ import org.talend.core.model.metadata.builder.connection.RowSeparator;
  * <!-- end-user-doc -->
  * <p>
  * The following features are implemented:
+ * </p>
  * <ul>
  *   <li>{@link org.talend.core.model.metadata.builder.connection.impl.FileConnectionImpl#getServer <em>Server</em>}</li>
  *   <li>{@link org.talend.core.model.metadata.builder.connection.impl.FileConnectionImpl#getFilePath <em>File Path</em>}</li>
@@ -42,7 +43,6 @@ import org.talend.core.model.metadata.builder.connection.RowSeparator;
  *   <li>{@link org.talend.core.model.metadata.builder.connection.impl.FileConnectionImpl#getTextEnclosure <em>Text Enclosure</em>}</li>
  *   <li>{@link org.talend.core.model.metadata.builder.connection.impl.FileConnectionImpl#isCsvOption <em>Csv Option</em>}</li>
  * </ul>
- * </p>
  *
  * @generated
  */
@@ -680,8 +680,8 @@ public abstract class FileConnectionImpl extends ConnectionImpl implements FileC
         String oldHeaderValue = headerValue;
         headerValue = newHeaderValue;
         if (eNotificationRequired())
-            eNotify(new ENotificationImpl(this, Notification.SET, ConnectionPackage.FILE_CONNECTION__HEADER_VALUE,
-                    oldHeaderValue, headerValue));
+            eNotify(new ENotificationImpl(this, Notification.SET, ConnectionPackage.FILE_CONNECTION__HEADER_VALUE, oldHeaderValue,
+                    headerValue));
     }
 
     /**
@@ -724,8 +724,8 @@ public abstract class FileConnectionImpl extends ConnectionImpl implements FileC
         String oldFooterValue = footerValue;
         footerValue = newFooterValue;
         if (eNotificationRequired())
-            eNotify(new ENotificationImpl(this, Notification.SET, ConnectionPackage.FILE_CONNECTION__FOOTER_VALUE,
-                    oldFooterValue, footerValue));
+            eNotify(new ENotificationImpl(this, Notification.SET, ConnectionPackage.FILE_CONNECTION__FOOTER_VALUE, oldFooterValue,
+                    footerValue));
     }
 
     /**
@@ -1117,13 +1117,13 @@ public abstract class FileConnectionImpl extends ConnectionImpl implements FileC
         case ConnectionPackage.FILE_CONNECTION__ENCODING:
             return ENCODING_EDEFAULT == null ? encoding != null : !ENCODING_EDEFAULT.equals(encoding);
         case ConnectionPackage.FILE_CONNECTION__FIELD_SEPARATOR_VALUE:
-            return FIELD_SEPARATOR_VALUE_EDEFAULT == null ? fieldSeparatorValue != null : !FIELD_SEPARATOR_VALUE_EDEFAULT
-                    .equals(fieldSeparatorValue);
+            return FIELD_SEPARATOR_VALUE_EDEFAULT == null ? fieldSeparatorValue != null
+                    : !FIELD_SEPARATOR_VALUE_EDEFAULT.equals(fieldSeparatorValue);
         case ConnectionPackage.FILE_CONNECTION__ROW_SEPARATOR_TYPE:
             return rowSeparatorType != ROW_SEPARATOR_TYPE_EDEFAULT;
         case ConnectionPackage.FILE_CONNECTION__ROW_SEPARATOR_VALUE:
-            return ROW_SEPARATOR_VALUE_EDEFAULT == null ? rowSeparatorValue != null : !ROW_SEPARATOR_VALUE_EDEFAULT
-                    .equals(rowSeparatorValue);
+            return ROW_SEPARATOR_VALUE_EDEFAULT == null ? rowSeparatorValue != null
+                    : !ROW_SEPARATOR_VALUE_EDEFAULT.equals(rowSeparatorValue);
         case ConnectionPackage.FILE_CONNECTION__TEXT_IDENTIFIER:
             return TEXT_IDENTIFIER_EDEFAULT == null ? textIdentifier != null : !TEXT_IDENTIFIER_EDEFAULT.equals(textIdentifier);
         case ConnectionPackage.FILE_CONNECTION__USE_HEADER:
@@ -1164,7 +1164,7 @@ public abstract class FileConnectionImpl extends ConnectionImpl implements FileC
         if (eIsProxy())
             return super.toString();
 
-        StringBuffer result = new StringBuffer(super.toString());
+        StringBuilder result = new StringBuilder(super.toString());
         result.append(" (Server: ");
         result.append(server);
         result.append(", FilePath: ");

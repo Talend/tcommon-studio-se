@@ -193,8 +193,7 @@ public class VersionUtils {
         return talendVersion;
     }
 
-    public static String getTalendPureVersion(String fullProductVersion) {
-        String version = fullProductVersion;
+    public static String getProductVersionWithoutBranding(String fullProductVersion) {
         String[] splitStr = fullProductVersion.split("-"); //$NON-NLS-1$
         Pattern pattern = Pattern.compile("((\\d+\\.){2}\\d.*)"); //$NON-NLS-1$
         StringBuffer versionStr = new StringBuffer();
@@ -211,7 +210,21 @@ public class VersionUtils {
             }
         }
 
-        return getTalendVersion(versionStr.toString());
+        return versionStr.toString();
+    }
+
+    public static String getTalendPureVersion(String fullProductVersion) {
+        return getTalendVersion(getProductVersionWithoutBranding(fullProductVersion));
+    }
+
+    /**
+     * Check if studio version < other studio version record in remote project.
+     */
+    public static boolean isInvalidProductVersion(String remoteFullProductVersion) {
+        if (remoteFullProductVersion == null) {
+            return false;
+        }
+        return getInternalVersion().compareTo(getProductVersionWithoutBranding(remoteFullProductVersion)) < 0;
     }
 
     public static String getTalendVersion(String productVersion) {

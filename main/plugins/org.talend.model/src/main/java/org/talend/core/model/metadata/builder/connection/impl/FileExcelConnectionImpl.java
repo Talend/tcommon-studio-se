@@ -24,6 +24,7 @@ import org.talend.core.model.metadata.builder.connection.FileExcelConnection;
  * <!-- end-user-doc -->
  * <p>
  * The following features are implemented:
+ * </p>
  * <ul>
  *   <li>{@link org.talend.core.model.metadata.builder.connection.impl.FileExcelConnectionImpl#getSheetName <em>Sheet Name</em>}</li>
  *   <li>{@link org.talend.core.model.metadata.builder.connection.impl.FileExcelConnectionImpl#getSheetColumns <em>Sheet Columns</em>}</li>
@@ -36,7 +37,6 @@ import org.talend.core.model.metadata.builder.connection.FileExcelConnection;
  *   <li>{@link org.talend.core.model.metadata.builder.connection.impl.FileExcelConnectionImpl#getSheetList <em>Sheet List</em>}</li>
  *   <li>{@link org.talend.core.model.metadata.builder.connection.impl.FileExcelConnectionImpl#getGenerationMode <em>Generation Mode</em>}</li>
  * </ul>
- * </p>
  *
  * @generated
  */
@@ -597,11 +597,11 @@ public class FileExcelConnectionImpl extends FileConnectionImpl implements FileE
         case ConnectionPackage.FILE_EXCEL_CONNECTION__LAST_COLUMN:
             return LAST_COLUMN_EDEFAULT == null ? lastColumn != null : !LAST_COLUMN_EDEFAULT.equals(lastColumn);
         case ConnectionPackage.FILE_EXCEL_CONNECTION__THOUSAND_SEPARATOR:
-            return THOUSAND_SEPARATOR_EDEFAULT == null ? thousandSeparator != null : !THOUSAND_SEPARATOR_EDEFAULT
-                    .equals(thousandSeparator);
+            return THOUSAND_SEPARATOR_EDEFAULT == null ? thousandSeparator != null
+                    : !THOUSAND_SEPARATOR_EDEFAULT.equals(thousandSeparator);
         case ConnectionPackage.FILE_EXCEL_CONNECTION__DECIMAL_SEPARATOR:
-            return DECIMAL_SEPARATOR_EDEFAULT == null ? decimalSeparator != null : !DECIMAL_SEPARATOR_EDEFAULT
-                    .equals(decimalSeparator);
+            return DECIMAL_SEPARATOR_EDEFAULT == null ? decimalSeparator != null
+                    : !DECIMAL_SEPARATOR_EDEFAULT.equals(decimalSeparator);
         case ConnectionPackage.FILE_EXCEL_CONNECTION__ADVANCED_SPEARATOR:
             return advancedSpearator != ADVANCED_SPEARATOR_EDEFAULT;
         case ConnectionPackage.FILE_EXCEL_CONNECTION__SELECT_ALL_SHEETS:
@@ -624,7 +624,7 @@ public class FileExcelConnectionImpl extends FileConnectionImpl implements FileE
         if (eIsProxy())
             return super.toString();
 
-        StringBuffer result = new StringBuffer(super.toString());
+        StringBuilder result = new StringBuilder(super.toString());
         result.append(" (SheetName: ");
         result.append(sheetName);
         result.append(", sheetColumns: ");

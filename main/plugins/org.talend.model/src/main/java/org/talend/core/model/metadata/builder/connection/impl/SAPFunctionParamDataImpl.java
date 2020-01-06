@@ -21,11 +21,11 @@ import org.talend.core.model.metadata.builder.connection.SAPFunctionParameter;
  * <!-- end-user-doc -->
  * <p>
  * The following features are implemented:
+ * </p>
  * <ul>
  *   <li>{@link org.talend.core.model.metadata.builder.connection.impl.SAPFunctionParamDataImpl#getInputRoot <em>Input Root</em>}</li>
  *   <li>{@link org.talend.core.model.metadata.builder.connection.impl.SAPFunctionParamDataImpl#getOutputRoot <em>Output Root</em>}</li>
  * </ul>
- * </p>
  *
  * @generated
  */
@@ -81,11 +81,11 @@ public class SAPFunctionParamDataImpl extends EObjectImpl implements SAPFunction
             inputRoot = (SAPFunctionParameter) eResolveProxy(oldInputRoot);
             if (inputRoot != oldInputRoot) {
                 InternalEObject newInputRoot = (InternalEObject) inputRoot;
-                NotificationChain msgs = oldInputRoot.eInverseRemove(this, EOPPOSITE_FEATURE_BASE
-                        - ConnectionPackage.SAP_FUNCTION_PARAM_DATA__INPUT_ROOT, null, null);
+                NotificationChain msgs = oldInputRoot.eInverseRemove(this,
+                        EOPPOSITE_FEATURE_BASE - ConnectionPackage.SAP_FUNCTION_PARAM_DATA__INPUT_ROOT, null, null);
                 if (newInputRoot.eInternalContainer() == null) {
-                    msgs = newInputRoot.eInverseAdd(this, EOPPOSITE_FEATURE_BASE
-                            - ConnectionPackage.SAP_FUNCTION_PARAM_DATA__INPUT_ROOT, null, msgs);
+                    msgs = newInputRoot.eInverseAdd(this,
+                            EOPPOSITE_FEATURE_BASE - ConnectionPackage.SAP_FUNCTION_PARAM_DATA__INPUT_ROOT, null, msgs);
                 }
                 if (msgs != null)
                     msgs.dispatch();
@@ -134,11 +134,11 @@ public class SAPFunctionParamDataImpl extends EObjectImpl implements SAPFunction
         if (newInputRoot != inputRoot) {
             NotificationChain msgs = null;
             if (inputRoot != null)
-                msgs = ((InternalEObject) inputRoot).eInverseRemove(this, EOPPOSITE_FEATURE_BASE
-                        - ConnectionPackage.SAP_FUNCTION_PARAM_DATA__INPUT_ROOT, null, msgs);
+                msgs = ((InternalEObject) inputRoot).eInverseRemove(this,
+                        EOPPOSITE_FEATURE_BASE - ConnectionPackage.SAP_FUNCTION_PARAM_DATA__INPUT_ROOT, null, msgs);
             if (newInputRoot != null)
-                msgs = ((InternalEObject) newInputRoot).eInverseAdd(this, EOPPOSITE_FEATURE_BASE
-                        - ConnectionPackage.SAP_FUNCTION_PARAM_DATA__INPUT_ROOT, null, msgs);
+                msgs = ((InternalEObject) newInputRoot).eInverseAdd(this,
+                        EOPPOSITE_FEATURE_BASE - ConnectionPackage.SAP_FUNCTION_PARAM_DATA__INPUT_ROOT, null, msgs);
             msgs = basicSetInputRoot(newInputRoot, msgs);
             if (msgs != null)
                 msgs.dispatch();
@@ -158,11 +158,11 @@ public class SAPFunctionParamDataImpl extends EObjectImpl implements SAPFunction
             outputRoot = (SAPFunctionParameter) eResolveProxy(oldOutputRoot);
             if (outputRoot != oldOutputRoot) {
                 InternalEObject newOutputRoot = (InternalEObject) outputRoot;
-                NotificationChain msgs = oldOutputRoot.eInverseRemove(this, EOPPOSITE_FEATURE_BASE
-                        - ConnectionPackage.SAP_FUNCTION_PARAM_DATA__OUTPUT_ROOT, null, null);
+                NotificationChain msgs = oldOutputRoot.eInverseRemove(this,
+                        EOPPOSITE_FEATURE_BASE - ConnectionPackage.SAP_FUNCTION_PARAM_DATA__OUTPUT_ROOT, null, null);
                 if (newOutputRoot.eInternalContainer() == null) {
-                    msgs = newOutputRoot.eInverseAdd(this, EOPPOSITE_FEATURE_BASE
-                            - ConnectionPackage.SAP_FUNCTION_PARAM_DATA__OUTPUT_ROOT, null, msgs);
+                    msgs = newOutputRoot.eInverseAdd(this,
+                            EOPPOSITE_FEATURE_BASE - ConnectionPackage.SAP_FUNCTION_PARAM_DATA__OUTPUT_ROOT, null, msgs);
                 }
                 if (msgs != null)
                     msgs.dispatch();
@@ -211,11 +211,11 @@ public class SAPFunctionParamDataImpl extends EObjectImpl implements SAPFunction
         if (newOutputRoot != outputRoot) {
             NotificationChain msgs = null;
             if (outputRoot != null)
-                msgs = ((InternalEObject) outputRoot).eInverseRemove(this, EOPPOSITE_FEATURE_BASE
-                        - ConnectionPackage.SAP_FUNCTION_PARAM_DATA__OUTPUT_ROOT, null, msgs);
+                msgs = ((InternalEObject) outputRoot).eInverseRemove(this,
+                        EOPPOSITE_FEATURE_BASE - ConnectionPackage.SAP_FUNCTION_PARAM_DATA__OUTPUT_ROOT, null, msgs);
             if (newOutputRoot != null)
-                msgs = ((InternalEObject) newOutputRoot).eInverseAdd(this, EOPPOSITE_FEATURE_BASE
-                        - ConnectionPackage.SAP_FUNCTION_PARAM_DATA__OUTPUT_ROOT, null, msgs);
+                msgs = ((InternalEObject) newOutputRoot).eInverseAdd(this,
+                        EOPPOSITE_FEATURE_BASE - ConnectionPackage.SAP_FUNCTION_PARAM_DATA__OUTPUT_ROOT, null, msgs);
             msgs = basicSetOutputRoot(newOutputRoot, msgs);
             if (msgs != null)
                 msgs.dispatch();

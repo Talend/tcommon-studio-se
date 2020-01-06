@@ -21,10 +21,10 @@ import org.talend.core.model.metadata.builder.connection.SAPFunctionUnit;
  * <em><b>Input SAP Function Parameter Table</b></em>'. <!-- end-user-doc -->
  * <p>
  * The following features are implemented:
+ * </p>
  * <ul>
  *   <li>{@link org.talend.core.model.metadata.builder.connection.impl.InputSAPFunctionParameterTableImpl#getFunctionUnit <em>Function Unit</em>}</li>
  * </ul>
- * </p>
  *
  * @generated
  */
@@ -84,7 +84,8 @@ public class InputSAPFunctionParameterTableImpl extends SAPFunctionParameterTabl
      */
     public void setFunctionUnit(SAPFunctionUnit newFunctionUnit) {
         if (newFunctionUnit != eInternalContainer()
-                || (eContainerFeatureID() != ConnectionPackage.INPUT_SAP_FUNCTION_PARAMETER_TABLE__FUNCTION_UNIT && newFunctionUnit != null)) {
+                || (eContainerFeatureID() != ConnectionPackage.INPUT_SAP_FUNCTION_PARAMETER_TABLE__FUNCTION_UNIT
+                        && newFunctionUnit != null)) {
             if (EcoreUtil.isAncestor(this, newFunctionUnit))
                 throw new IllegalArgumentException("Recursive containment not allowed for " + toString());
             NotificationChain msgs = null;

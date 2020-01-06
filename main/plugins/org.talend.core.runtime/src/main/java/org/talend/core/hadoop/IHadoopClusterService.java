@@ -30,6 +30,7 @@ import org.talend.core.model.properties.ContextItem;
 import org.talend.core.model.properties.Item;
 import org.talend.core.model.repository.ERepositoryObjectType;
 import org.talend.core.model.repository.IRepositoryTypeProcessor;
+import org.talend.designer.core.model.utils.emf.talendfile.ContextType;
 import org.talend.repository.model.IRepositoryNode;
 
 /**
@@ -266,4 +267,5 @@ public interface IHadoopClusterService extends IService {
 
     public boolean updateConfJarsByContextGroup(ContextItem contextItem, Map<String, String> contextGroupRanamedMap);
 
+    public ContextType getHadoopClusterContextType(String id);
 }

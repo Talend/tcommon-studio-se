@@ -477,6 +477,7 @@
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute metadata.ecore#//FTPConnection/Proxypassword"/>
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute metadata.ecore#//FTPConnection/CustomEncode"/>
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute metadata.ecore#//FTPConnection/UseFileNameEncoding"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute metadata.ecore#//FTPConnection/Timeout"/>
     </genClasses>
     <genClasses ecoreClass="metadata.ecore#//BRMSConnection">
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute metadata.ecore#//BRMSConnection/xmlField"/>

@@ -110,7 +110,7 @@ public class XmlPackageImpl extends EPackageImpl implements XmlPackage {
 
     /**
      * Creates, registers, and initializes the <b>Package</b> for this model, and for any others upon which it depends.
-     * 
+     *
      * <p>This method is used to initialize {@link XmlPackage#eINSTANCE} when that field is accessed.
      * Clients should not invoke it directly. Instead, they should simply access that field to obtain the package.
      * <!-- begin-user-doc -->
@@ -125,8 +125,9 @@ public class XmlPackageImpl extends EPackageImpl implements XmlPackage {
             return (XmlPackage) EPackage.Registry.INSTANCE.getEPackage(XmlPackage.eNS_URI);
 
         // Obtain or create and register package
-        XmlPackageImpl theXmlPackage = (XmlPackageImpl) (EPackage.Registry.INSTANCE.get(eNS_URI) instanceof XmlPackageImpl ? EPackage.Registry.INSTANCE
-                .get(eNS_URI) : new XmlPackageImpl());
+        Object registeredXmlPackage = EPackage.Registry.INSTANCE.get(eNS_URI);
+        XmlPackageImpl theXmlPackage = registeredXmlPackage instanceof XmlPackageImpl ? (XmlPackageImpl) registeredXmlPackage
+                : new XmlPackageImpl();
 
         isInited = true;
 
@@ -164,20 +165,23 @@ public class XmlPackageImpl extends EPackageImpl implements XmlPackage {
         ModelPackage.eINSTANCE.eClass();
 
         // Obtain or create and register interdependencies
-        ConnectionPackageImpl theConnectionPackage = (ConnectionPackageImpl) (EPackage.Registry.INSTANCE
-                .getEPackage(ConnectionPackage.eNS_URI) instanceof ConnectionPackageImpl ? EPackage.Registry.INSTANCE
-                .getEPackage(ConnectionPackage.eNS_URI) : ConnectionPackage.eINSTANCE);
-        RelationalPackageImpl theRelationalPackage_1 = (RelationalPackageImpl) (EPackage.Registry.INSTANCE
-                .getEPackage(org.talend.cwm.relational.RelationalPackage.eNS_URI) instanceof RelationalPackageImpl ? EPackage.Registry.INSTANCE
-                .getEPackage(org.talend.cwm.relational.RelationalPackage.eNS_URI)
+        Object registeredPackage = EPackage.Registry.INSTANCE.getEPackage(ConnectionPackage.eNS_URI);
+        ConnectionPackageImpl theConnectionPackage = (ConnectionPackageImpl) (registeredPackage instanceof ConnectionPackageImpl
+                ? registeredPackage
+                : ConnectionPackage.eINSTANCE);
+        registeredPackage = EPackage.Registry.INSTANCE.getEPackage(org.talend.cwm.relational.RelationalPackage.eNS_URI);
+        RelationalPackageImpl theRelationalPackage_1 = (RelationalPackageImpl) (registeredPackage instanceof RelationalPackageImpl
+                ? registeredPackage
                 : org.talend.cwm.relational.RelationalPackage.eINSTANCE);
-        SoftwaredeploymentPackageImpl theSoftwaredeploymentPackage_1 = (SoftwaredeploymentPackageImpl) (EPackage.Registry.INSTANCE
-                .getEPackage(org.talend.cwm.softwaredeployment.SoftwaredeploymentPackage.eNS_URI) instanceof SoftwaredeploymentPackageImpl ? EPackage.Registry.INSTANCE
-                .getEPackage(org.talend.cwm.softwaredeployment.SoftwaredeploymentPackage.eNS_URI)
+        registeredPackage = EPackage.Registry.INSTANCE
+                .getEPackage(org.talend.cwm.softwaredeployment.SoftwaredeploymentPackage.eNS_URI);
+        SoftwaredeploymentPackageImpl theSoftwaredeploymentPackage_1 = (SoftwaredeploymentPackageImpl) (registeredPackage instanceof SoftwaredeploymentPackageImpl
+                ? registeredPackage
                 : org.talend.cwm.softwaredeployment.SoftwaredeploymentPackage.eINSTANCE);
-        ConstantsPackageImpl theConstantsPackage = (ConstantsPackageImpl) (EPackage.Registry.INSTANCE
-                .getEPackage(ConstantsPackage.eNS_URI) instanceof ConstantsPackageImpl ? EPackage.Registry.INSTANCE
-                .getEPackage(ConstantsPackage.eNS_URI) : ConstantsPackage.eINSTANCE);
+        registeredPackage = EPackage.Registry.INSTANCE.getEPackage(ConstantsPackage.eNS_URI);
+        ConstantsPackageImpl theConstantsPackage = (ConstantsPackageImpl) (registeredPackage instanceof ConstantsPackageImpl
+                ? registeredPackage
+                : ConstantsPackage.eINSTANCE);
 
         // Create package meta-data objects
         theXmlPackage.createPackageContents();
@@ -366,14 +370,13 @@ public class XmlPackageImpl extends EPackageImpl implements XmlPackage {
         initEClass(tdXmlElementTypeEClass, TdXmlElementType.class, "TdXmlElementType", !IS_ABSTRACT, !IS_INTERFACE,
                 IS_GENERATED_INSTANCE_CLASS);
         initEReference(getTdXmlElementType_XsdElementDeclaration(), ecorePackage.getEObject(), null, "xsdElementDeclaration",
-                null, 0, 1, TdXmlElementType.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_COMPOSITE,
-                IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+                null, 0, 1, TdXmlElementType.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_COMPOSITE, IS_RESOLVE_PROXIES,
+                !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
         initEReference(getTdXmlElementType_OwnedDocument(), this.getTdXmlSchema(), null, "ownedDocument", null, 0, 1,
                 TdXmlElementType.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_COMPOSITE, IS_RESOLVE_PROXIES,
                 !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
-        initEAttribute(getTdXmlElementType_JavaType(), theCorePackage.getString(), "javaType", null, 0, 1,
-                TdXmlElementType.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE,
-                !IS_DERIVED, IS_ORDERED);
+        initEAttribute(getTdXmlElementType_JavaType(), theCorePackage.getString(), "javaType", null, 0, 1, TdXmlElementType.class,
+                !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
         initEReference(getTdXmlElementType_XmlContent(), this.getTdXmlContent(), null, "xmlContent", null, 0, 1,
                 TdXmlElementType.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, IS_RESOLVE_PROXIES,
                 !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
@@ -406,18 +409,10 @@ public class XmlPackageImpl extends EPackageImpl implements XmlPackage {
      */
     protected void createGenModelAnnotations() {
         String source = "http://www.eclipse.org/emf/2002/GenModel";
-        addAnnotation(
-                tdXmlElementTypeEClass.getEOperations().get(0),
-                source,
-                new String[] {
-                        "documentation",
-                        "The type of the content of the xml element. This type is a meta-information either set by the user who knows what type of data is contained in the xml element, or infered from the data." });
-        addAnnotation(
-                tdXmlElementTypeEClass.getEOperations().get(1),
-                source,
-                new String[] {
-                        "documentation",
-                        "The type of the content of the xml element. This type is a meta-information either set by the user who knows what type of data is contained in the xml element, or infered from the data." });
+        addAnnotation(tdXmlElementTypeEClass.getEOperations().get(0), source, new String[] { "documentation",
+                "The type of the content of the xml element. This type is a meta-information either set by the user who knows what type of data is contained in the xml element, or infered from the data." });
+        addAnnotation(tdXmlElementTypeEClass.getEOperations().get(1), source, new String[] { "documentation",
+                "The type of the content of the xml element. This type is a meta-information either set by the user who knows what type of data is contained in the xml element, or infered from the data." });
     }
 
 } //XmlPackageImpl

@@ -18,10 +18,10 @@ import org.talend.core.model.metadata.builder.connection.MetadataColumn;
  *
  * <p>
  * The following features are supported:
+ * </p>
  * <ul>
  *   <li>{@link org.talend.cwm.relational.TdColumn#getSqlDataType <em>Sql Data Type</em>}</li>
  * </ul>
- * </p>
  *
  * @see org.talend.cwm.relational.RelationalPackage#getTdColumn()
  * @model
@@ -88,6 +88,7 @@ public interface TdColumn extends MetadataColumn {
      * @model kind="operation"
      * @generated
      */
+    @Deprecated
     int getJavaType();
 
 } // TdColumn

@@ -16,8 +16,6 @@ import orgomg.cwm.foundation.softwaredeployment.impl.MachineImpl;
  * <!-- begin-user-doc -->
  * An implementation of the model object '<em><b>Td Machine</b></em>'.
  * <!-- end-user-doc -->
- * <p>
- * </p>
  *
  * @generated
  */

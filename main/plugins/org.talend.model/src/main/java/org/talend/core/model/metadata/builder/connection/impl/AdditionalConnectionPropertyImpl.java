@@ -18,11 +18,11 @@ import org.talend.core.model.metadata.builder.connection.ConnectionPackage;
  * <!-- end-user-doc -->
  * <p>
  * The following features are implemented:
+ * </p>
  * <ul>
  *   <li>{@link org.talend.core.model.metadata.builder.connection.impl.AdditionalConnectionPropertyImpl#getPropertyName <em>Property Name</em>}</li>
  *   <li>{@link org.talend.core.model.metadata.builder.connection.impl.AdditionalConnectionPropertyImpl#getValue <em>Value</em>}</li>
  * </ul>
- * </p>
  *
  * @generated
  */
@@ -105,8 +105,8 @@ public class AdditionalConnectionPropertyImpl extends EObjectImpl implements Add
         String oldPropertyName = propertyName;
         propertyName = newPropertyName;
         if (eNotificationRequired())
-            eNotify(new ENotificationImpl(this, Notification.SET,
-                    ConnectionPackage.ADDITIONAL_CONNECTION_PROPERTY__PROPERTY_NAME, oldPropertyName, propertyName));
+            eNotify(new ENotificationImpl(this, Notification.SET, ConnectionPackage.ADDITIONAL_CONNECTION_PROPERTY__PROPERTY_NAME,
+                    oldPropertyName, propertyName));
     }
 
     /**
@@ -209,7 +209,7 @@ public class AdditionalConnectionPropertyImpl extends EObjectImpl implements Add
         if (eIsProxy())
             return super.toString();
 
-        StringBuffer result = new StringBuffer(super.toString());
+        StringBuilder result = new StringBuilder(super.toString());
         result.append(" (propertyName: ");
         result.append(propertyName);
         result.append(", Value: ");

@@ -12,11 +12,11 @@ package org.talend.core.model.metadata.builder.connection;
  *
  * <p>
  * The following features are supported:
+ * </p>
  * <ul>
  *   <li>{@link org.talend.core.model.metadata.builder.connection.EDIFACTColumn#getEDIColumnName <em>EDI Column Name</em>}</li>
  *   <li>{@link org.talend.core.model.metadata.builder.connection.EDIFACTColumn#getEDIXpath <em>EDI Xpath</em>}</li>
  * </ul>
- * </p>
  *
  * @see org.talend.core.model.metadata.builder.connection.ConnectionPackage#getEDIFACTColumn()
  * @model

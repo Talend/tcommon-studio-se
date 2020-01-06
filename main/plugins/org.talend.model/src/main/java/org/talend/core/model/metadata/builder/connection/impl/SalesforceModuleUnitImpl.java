@@ -31,13 +31,13 @@ import org.talend.core.model.metadata.builder.connection.SalesforceSchemaConnect
  * end-user-doc -->
  * <p>
  * The following features are implemented:
+ * </p>
  * <ul>
  *   <li>{@link org.talend.core.model.metadata.builder.connection.impl.SalesforceModuleUnitImpl#getMetadataTable <em>Metadata Table</em>}</li>
  *   <li>{@link org.talend.core.model.metadata.builder.connection.impl.SalesforceModuleUnitImpl#getConnection <em>Connection</em>}</li>
  *   <li>{@link org.talend.core.model.metadata.builder.connection.impl.SalesforceModuleUnitImpl#getTables <em>Tables</em>}</li>
  *   <li>{@link org.talend.core.model.metadata.builder.connection.impl.SalesforceModuleUnitImpl#getModuleName <em>Module Name</em>}</li>
  * </ul>
- * </p>
  *
  * @generated
  */
@@ -110,11 +110,11 @@ public class SalesforceModuleUnitImpl extends AbstractMetadataObjectImpl impleme
             metadataTable = (MetadataTable) eResolveProxy(oldMetadataTable);
             if (metadataTable != oldMetadataTable) {
                 InternalEObject newMetadataTable = (InternalEObject) metadataTable;
-                NotificationChain msgs = oldMetadataTable.eInverseRemove(this, EOPPOSITE_FEATURE_BASE
-                        - ConnectionPackage.SALESFORCE_MODULE_UNIT__METADATA_TABLE, null, null);
+                NotificationChain msgs = oldMetadataTable.eInverseRemove(this,
+                        EOPPOSITE_FEATURE_BASE - ConnectionPackage.SALESFORCE_MODULE_UNIT__METADATA_TABLE, null, null);
                 if (newMetadataTable.eInternalContainer() == null) {
-                    msgs = newMetadataTable.eInverseAdd(this, EOPPOSITE_FEATURE_BASE
-                            - ConnectionPackage.SALESFORCE_MODULE_UNIT__METADATA_TABLE, null, msgs);
+                    msgs = newMetadataTable.eInverseAdd(this,
+                            EOPPOSITE_FEATURE_BASE - ConnectionPackage.SALESFORCE_MODULE_UNIT__METADATA_TABLE, null, msgs);
                 }
                 if (msgs != null)
                     msgs.dispatch();
@@ -160,11 +160,11 @@ public class SalesforceModuleUnitImpl extends AbstractMetadataObjectImpl impleme
         if (newMetadataTable != metadataTable) {
             NotificationChain msgs = null;
             if (metadataTable != null)
-                msgs = ((InternalEObject) metadataTable).eInverseRemove(this, EOPPOSITE_FEATURE_BASE
-                        - ConnectionPackage.SALESFORCE_MODULE_UNIT__METADATA_TABLE, null, msgs);
+                msgs = ((InternalEObject) metadataTable).eInverseRemove(this,
+                        EOPPOSITE_FEATURE_BASE - ConnectionPackage.SALESFORCE_MODULE_UNIT__METADATA_TABLE, null, msgs);
             if (newMetadataTable != null)
-                msgs = ((InternalEObject) newMetadataTable).eInverseAdd(this, EOPPOSITE_FEATURE_BASE
-                        - ConnectionPackage.SALESFORCE_MODULE_UNIT__METADATA_TABLE, null, msgs);
+                msgs = ((InternalEObject) newMetadataTable).eInverseAdd(this,
+                        EOPPOSITE_FEATURE_BASE - ConnectionPackage.SALESFORCE_MODULE_UNIT__METADATA_TABLE, null, msgs);
             msgs = basicSetMetadataTable(newMetadataTable, msgs);
             if (msgs != null)
                 msgs.dispatch();
@@ -402,7 +402,7 @@ public class SalesforceModuleUnitImpl extends AbstractMetadataObjectImpl impleme
         if (eIsProxy())
             return super.toString();
 
-        StringBuffer result = new StringBuffer(super.toString());
+        StringBuilder result = new StringBuilder(super.toString());
         result.append(" (moduleName: ");
         result.append(moduleName);
         result.append(')');

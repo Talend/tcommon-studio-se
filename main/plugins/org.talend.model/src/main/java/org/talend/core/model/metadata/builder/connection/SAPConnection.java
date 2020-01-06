@@ -14,6 +14,7 @@ import org.eclipse.emf.common.util.EMap;
  *
  * <p>
  * The following features are supported:
+ * </p>
  * <ul>
  *   <li>{@link org.talend.core.model.metadata.builder.connection.SAPConnection#getHost <em>Host</em>}</li>
  *   <li>{@link org.talend.core.model.metadata.builder.connection.SAPConnection#getUsername <em>Username</em>}</li>
@@ -32,7 +33,6 @@ import org.eclipse.emf.common.util.EMap;
  *   <li>{@link org.talend.core.model.metadata.builder.connection.SAPConnection#getBWInfoCubes <em>BW Info Cubes</em>}</li>
  *   <li>{@link org.talend.core.model.metadata.builder.connection.SAPConnection#getBWInfoObjects <em>BW Info Objects</em>}</li>
  * </ul>
- * </p>
  *
  * @see org.talend.core.model.metadata.builder.connection.ConnectionPackage#getSAPConnection()
  * @model

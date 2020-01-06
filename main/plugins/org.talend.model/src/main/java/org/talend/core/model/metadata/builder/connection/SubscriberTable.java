@@ -14,10 +14,10 @@ import org.talend.cwm.relational.TdTable;
  *
  * <p>
  * The following features are supported:
+ * </p>
  * <ul>
  *   <li>{@link org.talend.core.model.metadata.builder.connection.SubscriberTable#isSystem <em>System</em>}</li>
  * </ul>
- * </p>
  *
  * @see org.talend.core.model.metadata.builder.connection.ConnectionPackage#getSubscriberTable()
  * @model

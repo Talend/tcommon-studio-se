@@ -16,8 +16,6 @@ import orgomg.cwm.resource.relational.impl.ProcedureImpl;
  * <!-- begin-user-doc -->
  * An implementation of the model object '<em><b>Td Procedure</b></em>'.
  * <!-- end-user-doc -->
- * <p>
- * </p>
  *
  * @generated
  */

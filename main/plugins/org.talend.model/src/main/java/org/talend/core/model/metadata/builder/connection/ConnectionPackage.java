@@ -233,9 +233,11 @@ public interface ConnectionPackage extends EPackage {
     /**
      * The feature id for the '<em><b>Properties</b></em>' attribute.
      * <!-- begin-user-doc --> <!-- end-user-doc -->
+     * @deprecated See {@link org.talend.core.model.metadata.builder.connection.AbstractMetadataObject#getProperties() model documentation} for details.
      * @generated
      * @ordered
      */
+    @Deprecated
     int ABSTRACT_METADATA_OBJECT__PROPERTIES = CorePackage.MODEL_ELEMENT_FEATURE_COUNT + 0;
 
     /**
@@ -471,9 +473,11 @@ public interface ConnectionPackage extends EPackage {
     /**
      * The feature id for the '<em><b>Properties</b></em>' attribute.
      * <!-- begin-user-doc --> <!-- end-user-doc -->
+     * @deprecated See {@link org.talend.core.model.metadata.builder.connection.AbstractMetadataObject#getProperties() model documentation} for details.
      * @generated
      * @ordered
      */
+    @Deprecated
     int METADATA__PROPERTIES = ABSTRACT_METADATA_OBJECT__PROPERTIES;
 
     /**
@@ -717,9 +721,11 @@ public interface ConnectionPackage extends EPackage {
     /**
      * The feature id for the '<em><b>Properties</b></em>' attribute.
      * <!-- begin-user-doc --> <!-- end-user-doc -->
+     * @deprecated See {@link org.talend.core.model.metadata.builder.connection.AbstractMetadataObject#getProperties() model documentation} for details.
      * @generated
      * @ordered
      */
+    @Deprecated
     int CONNECTION__PROPERTIES = ABSTRACT_METADATA_OBJECT__PROPERTIES;
 
     /**
@@ -1103,9 +1109,11 @@ public interface ConnectionPackage extends EPackage {
     /**
      * The feature id for the '<em><b>Properties</b></em>' attribute.
      * <!-- begin-user-doc --> <!-- end-user-doc -->
+     * @deprecated See {@link org.talend.core.model.metadata.builder.connection.AbstractMetadataObject#getProperties() model documentation} for details.
      * @generated
      * @ordered
      */
+    @Deprecated
     int METADATA_COLUMN__PROPERTIES = ABSTRACT_METADATA_OBJECT__PROPERTIES;
 
     /**
@@ -1342,9 +1350,11 @@ public interface ConnectionPackage extends EPackage {
     /**
      * The feature id for the '<em><b>Default Value</b></em>' attribute.
      * <!-- begin-user-doc --> <!-- end-user-doc -->
+     * @deprecated See {@link org.talend.core.model.metadata.builder.connection.MetadataColumn#getDefaultValue() model documentation} for details.
      * @generated
      * @ordered
      */
+    @Deprecated
     int METADATA_COLUMN__DEFAULT_VALUE = ABSTRACT_METADATA_OBJECT_FEATURE_COUNT + 22;
 
     /**
@@ -1382,9 +1392,11 @@ public interface ConnectionPackage extends EPackage {
     /**
      * The feature id for the '<em><b>Original Field</b></em>' attribute.
      * <!-- begin-user-doc --> <!-- end-user-doc -->
+     * @deprecated See {@link org.talend.core.model.metadata.builder.connection.MetadataColumn#getOriginalField() model documentation} for details.
      * @generated
      * @ordered
      */
+    @Deprecated
     int METADATA_COLUMN__ORIGINAL_FIELD = ABSTRACT_METADATA_OBJECT_FEATURE_COUNT + 27;
 
     /**
@@ -1615,9 +1627,11 @@ public interface ConnectionPackage extends EPackage {
     /**
      * The feature id for the '<em><b>Properties</b></em>' attribute.
      * <!-- begin-user-doc --> <!-- end-user-doc -->
+     * @deprecated See {@link org.talend.core.model.metadata.builder.connection.AbstractMetadataObject#getProperties() model documentation} for details.
      * @generated
      * @ordered
      */
+    @Deprecated
     int METADATA_TABLE__PROPERTIES = ABSTRACT_METADATA_OBJECT__PROPERTIES;
 
     /**
@@ -1816,9 +1830,11 @@ public interface ConnectionPackage extends EPackage {
     /**
      * The feature id for the '<em><b>Source Name</b></em>' attribute.
      * <!-- begin-user-doc --> <!-- end-user-doc -->
+     * @deprecated See {@link org.talend.core.model.metadata.builder.connection.MetadataTable#getSourceName() model documentation} for details.
      * @generated
      * @ordered
      */
+    @Deprecated
     int METADATA_TABLE__SOURCE_NAME = ABSTRACT_METADATA_OBJECT_FEATURE_COUNT + 17;
 
     /**
@@ -1856,9 +1872,11 @@ public interface ConnectionPackage extends EPackage {
     /**
      * The feature id for the '<em><b>Connection</b></em>' reference.
      * <!-- begin-user-doc --> <!-- end-user-doc -->
+     * @deprecated See {@link org.talend.core.model.metadata.builder.connection.MetadataTable#getConnection() model documentation} for details.
      * @generated
      * @ordered
      */
+    @Deprecated
     int METADATA_TABLE__CONNECTION = ABSTRACT_METADATA_OBJECT_FEATURE_COUNT + 22;
 
     /**
@@ -2055,9 +2073,11 @@ public interface ConnectionPackage extends EPackage {
     /**
      * The feature id for the '<em><b>Properties</b></em>' attribute.
      * <!-- begin-user-doc --> <!-- end-user-doc -->
+     * @deprecated See {@link org.talend.core.model.metadata.builder.connection.AbstractMetadataObject#getProperties() model documentation} for details.
      * @generated
      * @ordered
      */
+    @Deprecated
     int FILE_CONNECTION__PROPERTIES = CONNECTION__PROPERTIES;
 
     /**
@@ -2606,9 +2626,11 @@ public interface ConnectionPackage extends EPackage {
     /**
      * The feature id for the '<em><b>Properties</b></em>' attribute.
      * <!-- begin-user-doc --> <!-- end-user-doc -->
+     * @deprecated See {@link org.talend.core.model.metadata.builder.connection.AbstractMetadataObject#getProperties() model documentation} for details.
      * @generated
      * @ordered
      */
+    @Deprecated
     int DELIMITED_FILE_CONNECTION__PROPERTIES = FILE_CONNECTION__PROPERTIES;
 
     /**
@@ -3174,9 +3196,11 @@ public interface ConnectionPackage extends EPackage {
     /**
      * The feature id for the '<em><b>Properties</b></em>' attribute.
      * <!-- begin-user-doc --> <!-- end-user-doc -->
+     * @deprecated See {@link org.talend.core.model.metadata.builder.connection.AbstractMetadataObject#getProperties() model documentation} for details.
      * @generated
      * @ordered
      */
+    @Deprecated
     int POSITIONAL_FILE_CONNECTION__PROPERTIES = FILE_CONNECTION__PROPERTIES;
 
     /**
@@ -3725,9 +3749,11 @@ public interface ConnectionPackage extends EPackage {
     /**
      * The feature id for the '<em><b>Properties</b></em>' attribute.
      * <!-- begin-user-doc --> <!-- end-user-doc -->
+     * @deprecated See {@link org.talend.core.model.metadata.builder.connection.AbstractMetadataObject#getProperties() model documentation} for details.
      * @generated
      * @ordered
      */
+    @Deprecated
     int EBCDIC_CONNECTION__PROPERTIES = FILE_CONNECTION__PROPERTIES;
 
     /**
@@ -4319,9 +4345,11 @@ public interface ConnectionPackage extends EPackage {
     /**
      * The feature id for the '<em><b>Properties</b></em>' attribute.
      * <!-- begin-user-doc --> <!-- end-user-doc -->
+     * @deprecated See {@link org.talend.core.model.metadata.builder.connection.AbstractMetadataObject#getProperties() model documentation} for details.
      * @generated
      * @ordered
      */
+    @Deprecated
     int MDM_CONNECTION__PROPERTIES = CONNECTION__PROPERTIES;
 
     /**
@@ -4795,9 +4823,11 @@ public interface ConnectionPackage extends EPackage {
     /**
      * The feature id for the '<em><b>Properties</b></em>' attribute.
      * <!-- begin-user-doc --> <!-- end-user-doc -->
+     * @deprecated See {@link org.talend.core.model.metadata.builder.connection.AbstractMetadataObject#getProperties() model documentation} for details.
      * @generated
      * @ordered
      */
+    @Deprecated
     int DATABASE_CONNECTION__PROPERTIES = CONNECTION__PROPERTIES;
 
     /**
@@ -5393,9 +5423,11 @@ public interface ConnectionPackage extends EPackage {
     /**
      * The feature id for the '<em><b>Properties</b></em>' attribute.
      * <!-- begin-user-doc --> <!-- end-user-doc -->
+     * @deprecated See {@link org.talend.core.model.metadata.builder.connection.AbstractMetadataObject#getProperties() model documentation} for details.
      * @generated
      * @ordered
      */
+    @Deprecated
     int SAP_CONNECTION__PROPERTIES = CONNECTION__PROPERTIES;
 
     /**
@@ -5917,9 +5949,11 @@ public interface ConnectionPackage extends EPackage {
     /**
      * The feature id for the '<em><b>Properties</b></em>' attribute.
      * <!-- begin-user-doc --> <!-- end-user-doc -->
+     * @deprecated See {@link org.talend.core.model.metadata.builder.connection.AbstractMetadataObject#getProperties() model documentation} for details.
      * @generated
      * @ordered
      */
+    @Deprecated
     int SAP_FUNCTION_UNIT__PROPERTIES = ABSTRACT_METADATA_OBJECT__PROPERTIES;
 
     /**
@@ -6253,9 +6287,11 @@ public interface ConnectionPackage extends EPackage {
     /**
      * The feature id for the '<em><b>Properties</b></em>' attribute.
      * <!-- begin-user-doc --> <!-- end-user-doc -->
+     * @deprecated See {@link org.talend.core.model.metadata.builder.connection.AbstractMetadataObject#getProperties() model documentation} for details.
      * @generated
      * @ordered
      */
+    @Deprecated
     int SAPI_DOC_UNIT__PROPERTIES = ABSTRACT_METADATA_OBJECT__PROPERTIES;
 
     /**
@@ -6548,9 +6584,11 @@ public interface ConnectionPackage extends EPackage {
     /**
      * The feature id for the '<em><b>Properties</b></em>' attribute.
      * <!-- begin-user-doc --> <!-- end-user-doc -->
+     * @deprecated See {@link org.talend.core.model.metadata.builder.connection.AbstractMetadataObject#getProperties() model documentation} for details.
      * @generated
      * @ordered
      */
+    @Deprecated
     int SAP_FUNCTION_PARAMETER_COLUMN__PROPERTIES = ABSTRACT_METADATA_OBJECT__PROPERTIES;
 
     /**
@@ -6836,9 +6874,11 @@ public interface ConnectionPackage extends EPackage {
     /**
      * The feature id for the '<em><b>Properties</b></em>' attribute.
      * <!-- begin-user-doc --> <!-- end-user-doc -->
+     * @deprecated See {@link org.talend.core.model.metadata.builder.connection.AbstractMetadataObject#getProperties() model documentation} for details.
      * @generated
      * @ordered
      */
+    @Deprecated
     int SAP_FUNCTION_PARAMETER_TABLE__PROPERTIES = ABSTRACT_METADATA_OBJECT__PROPERTIES;
 
     /**
@@ -7083,9 +7123,11 @@ public interface ConnectionPackage extends EPackage {
     /**
      * The feature id for the '<em><b>Properties</b></em>' attribute.
      * <!-- begin-user-doc --> <!-- end-user-doc -->
+     * @deprecated See {@link org.talend.core.model.metadata.builder.connection.AbstractMetadataObject#getProperties() model documentation} for details.
      * @generated
      * @ordered
      */
+    @Deprecated
     int INPUT_SAP_FUNCTION_PARAMETER_TABLE__PROPERTIES = SAP_FUNCTION_PARAMETER_TABLE__PROPERTIES;
 
     /**
@@ -7339,9 +7381,11 @@ public interface ConnectionPackage extends EPackage {
     /**
      * The feature id for the '<em><b>Properties</b></em>' attribute.
      * <!-- begin-user-doc --> <!-- end-user-doc -->
+     * @deprecated See {@link org.talend.core.model.metadata.builder.connection.AbstractMetadataObject#getProperties() model documentation} for details.
      * @generated
      * @ordered
      */
+    @Deprecated
     int OUTPUT_SAP_FUNCTION_PARAMETER_TABLE__PROPERTIES = SAP_FUNCTION_PARAMETER_TABLE__PROPERTIES;
 
     /**
@@ -7595,9 +7639,11 @@ public interface ConnectionPackage extends EPackage {
     /**
      * The feature id for the '<em><b>Properties</b></em>' attribute.
      * <!-- begin-user-doc --> <!-- end-user-doc -->
+     * @deprecated See {@link org.talend.core.model.metadata.builder.connection.AbstractMetadataObject#getProperties() model documentation} for details.
      * @generated
      * @ordered
      */
+    @Deprecated
     int REGEXP_FILE_CONNECTION__PROPERTIES = FILE_CONNECTION__PROPERTIES;
 
     /**
@@ -8155,9 +8201,11 @@ public interface ConnectionPackage extends EPackage {
     /**
      * The feature id for the '<em><b>Properties</b></em>' attribute.
      * <!-- begin-user-doc --> <!-- end-user-doc -->
+     * @deprecated See {@link org.talend.core.model.metadata.builder.connection.AbstractMetadataObject#getProperties() model documentation} for details.
      * @generated
      * @ordered
      */
+    @Deprecated
     int XML_FILE_CONNECTION__PROPERTIES = CONNECTION__PROPERTIES;
 
     /**
@@ -8732,9 +8780,11 @@ public interface ConnectionPackage extends EPackage {
     /**
      * The feature id for the '<em><b>Properties</b></em>' attribute.
      * <!-- begin-user-doc --> <!-- end-user-doc -->
+     * @deprecated See {@link org.talend.core.model.metadata.builder.connection.AbstractMetadataObject#getProperties() model documentation} for details.
      * @generated
      * @ordered
      */
+    @Deprecated
     int QUERY__PROPERTIES = ABSTRACT_METADATA_OBJECT__PROPERTIES;
 
     /**
@@ -8994,9 +9044,11 @@ public interface ConnectionPackage extends EPackage {
     /**
      * The feature id for the '<em><b>Properties</b></em>' attribute.
      * <!-- begin-user-doc --> <!-- end-user-doc -->
+     * @deprecated See {@link org.talend.core.model.metadata.builder.connection.AbstractMetadataObject#getProperties() model documentation} for details.
      * @generated
      * @ordered
      */
+    @Deprecated
     int LDIF_FILE_CONNECTION__PROPERTIES = CONNECTION__PROPERTIES;
 
     /**
@@ -9420,9 +9472,11 @@ public interface ConnectionPackage extends EPackage {
     /**
      * The feature id for the '<em><b>Properties</b></em>' attribute.
      * <!-- begin-user-doc --> <!-- end-user-doc -->
+     * @deprecated See {@link org.talend.core.model.metadata.builder.connection.AbstractMetadataObject#getProperties() model documentation} for details.
      * @generated
      * @ordered
      */
+    @Deprecated
     int FILE_EXCEL_CONNECTION__PROPERTIES = FILE_CONNECTION__PROPERTIES;
 
     /**
@@ -10110,9 +10164,11 @@ public interface ConnectionPackage extends EPackage {
     /**
      * The feature id for the '<em><b>Properties</b></em>' attribute.
      * <!-- begin-user-doc --> <!-- end-user-doc -->
+     * @deprecated See {@link org.talend.core.model.metadata.builder.connection.AbstractMetadataObject#getProperties() model documentation} for details.
      * @generated
      * @ordered
      */
+    @Deprecated
     int GENERIC_SCHEMA_CONNECTION__PROPERTIES = CONNECTION__PROPERTIES;
 
     /**
@@ -10513,9 +10569,11 @@ public interface ConnectionPackage extends EPackage {
     /**
      * The feature id for the '<em><b>Properties</b></em>' attribute.
      * <!-- begin-user-doc --> <!-- end-user-doc -->
+     * @deprecated See {@link org.talend.core.model.metadata.builder.connection.AbstractMetadataObject#getProperties() model documentation} for details.
      * @generated
      * @ordered
      */
+    @Deprecated
     int LDAP_SCHEMA_CONNECTION__PROPERTIES = CONNECTION__PROPERTIES;
 
     /**
@@ -11086,9 +11144,11 @@ public interface ConnectionPackage extends EPackage {
     /**
      * The feature id for the '<em><b>Properties</b></em>' attribute.
      * <!-- begin-user-doc --> <!-- end-user-doc -->
+     * @deprecated See {@link org.talend.core.model.metadata.builder.connection.AbstractMetadataObject#getProperties() model documentation} for details.
      * @generated
      * @ordered
      */
+    @Deprecated
     int WSDL_SCHEMA_CONNECTION__PROPERTIES = CONNECTION__PROPERTIES;
 
     /**
@@ -11606,9 +11666,11 @@ public interface ConnectionPackage extends EPackage {
     /**
      * The feature id for the '<em><b>Properties</b></em>' attribute.
      * <!-- begin-user-doc --> <!-- end-user-doc -->
+     * @deprecated See {@link org.talend.core.model.metadata.builder.connection.AbstractMetadataObject#getProperties() model documentation} for details.
      * @generated
      * @ordered
      */
+    @Deprecated
     int SALESFORCE_SCHEMA_CONNECTION__PROPERTIES = CONNECTION__PROPERTIES;
 
     /**
@@ -12230,9 +12292,11 @@ public interface ConnectionPackage extends EPackage {
     /**
      * The feature id for the '<em><b>Properties</b></em>' attribute.
      * <!-- begin-user-doc --> <!-- end-user-doc -->
+     * @deprecated See {@link org.talend.core.model.metadata.builder.connection.AbstractMetadataObject#getProperties() model documentation} for details.
      * @generated
      * @ordered
      */
+    @Deprecated
     int CDC_TYPE__PROPERTIES = ABSTRACT_METADATA_OBJECT__PROPERTIES;
 
     /**
@@ -12500,9 +12564,11 @@ public interface ConnectionPackage extends EPackage {
     /**
      * The feature id for the '<em><b>Properties</b></em>' attribute.
      * <!-- begin-user-doc --> <!-- end-user-doc -->
+     * @deprecated See {@link org.talend.core.model.metadata.builder.connection.AbstractMetadataObject#getProperties() model documentation} for details.
      * @generated
      * @ordered
      */
+    @Deprecated
     int SUBSCRIBER_TABLE__PROPERTIES = RelationalPackage.TD_TABLE__PROPERTIES;
 
     /**
@@ -12701,9 +12767,11 @@ public interface ConnectionPackage extends EPackage {
     /**
      * The feature id for the '<em><b>Source Name</b></em>' attribute.
      * <!-- begin-user-doc --> <!-- end-user-doc -->
+     * @deprecated See {@link org.talend.core.model.metadata.builder.connection.MetadataTable#getSourceName() model documentation} for details.
      * @generated
      * @ordered
      */
+    @Deprecated
     int SUBSCRIBER_TABLE__SOURCE_NAME = RelationalPackage.TD_TABLE__SOURCE_NAME;
 
     /**
@@ -12741,9 +12809,11 @@ public interface ConnectionPackage extends EPackage {
     /**
      * The feature id for the '<em><b>Connection</b></em>' reference.
      * <!-- begin-user-doc --> <!-- end-user-doc -->
+     * @deprecated See {@link org.talend.core.model.metadata.builder.connection.MetadataTable#getConnection() model documentation} for details.
      * @generated
      * @ordered
      */
+    @Deprecated
     int SUBSCRIBER_TABLE__CONNECTION = RelationalPackage.TD_TABLE__CONNECTION;
 
     /**
@@ -13006,9 +13076,11 @@ public interface ConnectionPackage extends EPackage {
     /**
      * The feature id for the '<em><b>Properties</b></em>' attribute.
      * <!-- begin-user-doc --> <!-- end-user-doc -->
+     * @deprecated See {@link org.talend.core.model.metadata.builder.connection.AbstractMetadataObject#getProperties() model documentation} for details.
      * @generated
      * @ordered
      */
+    @Deprecated
     int SAP_TEST_INPUT_PARAMETER_TABLE__PROPERTIES = SAP_FUNCTION_PARAMETER_TABLE__PROPERTIES;
 
     /**
@@ -13262,9 +13334,11 @@ public interface ConnectionPackage extends EPackage {
     /**
      * The feature id for the '<em><b>Properties</b></em>' attribute.
      * <!-- begin-user-doc --> <!-- end-user-doc -->
+     * @deprecated See {@link org.talend.core.model.metadata.builder.connection.AbstractMetadataObject#getProperties() model documentation} for details.
      * @generated
      * @ordered
      */
+    @Deprecated
     int CONCEPT__PROPERTIES = RelationalPackage.TD_TABLE__PROPERTIES;
 
     /**
@@ -13463,9 +13537,11 @@ public interface ConnectionPackage extends EPackage {
     /**
      * The feature id for the '<em><b>Source Name</b></em>' attribute.
      * <!-- begin-user-doc --> <!-- end-user-doc -->
+     * @deprecated See {@link org.talend.core.model.metadata.builder.connection.MetadataTable#getSourceName() model documentation} for details.
      * @generated
      * @ordered
      */
+    @Deprecated
     int CONCEPT__SOURCE_NAME = RelationalPackage.TD_TABLE__SOURCE_NAME;
 
     /**
@@ -13503,9 +13579,11 @@ public interface ConnectionPackage extends EPackage {
     /**
      * The feature id for the '<em><b>Connection</b></em>' reference.
      * <!-- begin-user-doc --> <!-- end-user-doc -->
+     * @deprecated See {@link org.talend.core.model.metadata.builder.connection.MetadataTable#getConnection() model documentation} for details.
      * @generated
      * @ordered
      */
+    @Deprecated
     int CONCEPT__CONNECTION = RelationalPackage.TD_TABLE__CONNECTION;
 
     /**
@@ -13882,9 +13960,11 @@ public interface ConnectionPackage extends EPackage {
     /**
      * The feature id for the '<em><b>Properties</b></em>' attribute.
      * <!-- begin-user-doc --> <!-- end-user-doc -->
+     * @deprecated See {@link org.talend.core.model.metadata.builder.connection.AbstractMetadataObject#getProperties() model documentation} for details.
      * @generated
      * @ordered
      */
+    @Deprecated
     int HL7_CONNECTION__PROPERTIES = FILE_CONNECTION__PROPERTIES;
 
     /**
@@ -14469,9 +14549,11 @@ public interface ConnectionPackage extends EPackage {
     /**
      * The feature id for the '<em><b>Properties</b></em>' attribute.
      * <!-- begin-user-doc --> <!-- end-user-doc -->
+     * @deprecated See {@link org.talend.core.model.metadata.builder.connection.AbstractMetadataObject#getProperties() model documentation} for details.
      * @generated
      * @ordered
      */
+    @Deprecated
     int HEADER_FOOTER_CONNECTION__PROPERTIES = CONNECTION__PROPERTIES;
 
     /**
@@ -15306,9 +15388,11 @@ public interface ConnectionPackage extends EPackage {
      * The feature id for the '<em><b>Properties</b></em>' attribute.
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
+     * @deprecated See {@link org.talend.core.model.metadata.builder.connection.AbstractMetadataObject#getProperties() model documentation} for details.
      * @generated
      * @ordered
      */
+    @Deprecated
     int FTP_CONNECTION__PROPERTIES = CONNECTION__PROPERTIES;
 
     /**
@@ -15699,13 +15783,22 @@ public interface ConnectionPackage extends EPackage {
     int FTP_CONNECTION__USE_FILE_NAME_ENCODING = CONNECTION_FEATURE_COUNT + 19;
 
     /**
+     * The feature id for the '<em><b>Timeout</b></em>' attribute.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     * @ordered
+     */
+    int FTP_CONNECTION__TIMEOUT = CONNECTION_FEATURE_COUNT + 20;
+
+    /**
      * The number of structural features of the '<em>FTP Connection</em>' class.
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
      * @generated
      * @ordered
      */
-    int FTP_CONNECTION_FEATURE_COUNT = CONNECTION_FEATURE_COUNT + 20;
+    int FTP_CONNECTION_FEATURE_COUNT = CONNECTION_FEATURE_COUNT + 21;
 
     /**
      * The meta object id for the '{@link org.talend.core.model.metadata.builder.connection.impl.BRMSConnectionImpl <em>BRMS Connection</em>}' class.
@@ -15892,9 +15985,11 @@ public interface ConnectionPackage extends EPackage {
      * The feature id for the '<em><b>Properties</b></em>' attribute.
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
+     * @deprecated See {@link org.talend.core.model.metadata.builder.connection.AbstractMetadataObject#getProperties() model documentation} for details.
      * @generated
      * @ordered
      */
+    @Deprecated
     int BRMS_CONNECTION__PROPERTIES = CONNECTION__PROPERTIES;
 
     /**
@@ -16389,9 +16484,11 @@ public interface ConnectionPackage extends EPackage {
      * The feature id for the '<em><b>Properties</b></em>' attribute.
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
+     * @deprecated See {@link org.talend.core.model.metadata.builder.connection.AbstractMetadataObject#getProperties() model documentation} for details.
      * @generated
      * @ordered
      */
+    @Deprecated
     int VALIDATION_RULES_CONNECTION__PROPERTIES = CONNECTION__PROPERTIES;
 
     /**
@@ -17021,9 +17118,11 @@ public interface ConnectionPackage extends EPackage {
      * The feature id for the '<em><b>Properties</b></em>' attribute.
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
+     * @deprecated See {@link org.talend.core.model.metadata.builder.connection.AbstractMetadataObject#getProperties() model documentation} for details.
      * @generated
      * @ordered
      */
+    @Deprecated
     int EDIFACT_CONNECTION__PROPERTIES = CONNECTION__PROPERTIES;
 
     /**
@@ -17454,9 +17553,11 @@ public interface ConnectionPackage extends EPackage {
      * The feature id for the '<em><b>Properties</b></em>' attribute.
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
+     * @deprecated See {@link org.talend.core.model.metadata.builder.connection.AbstractMetadataObject#getProperties() model documentation} for details.
      * @generated
      * @ordered
      */
+    @Deprecated
     int EDIFACT_COLUMN__PROPERTIES = METADATA_COLUMN__PROPERTIES;
 
     /**
@@ -17715,9 +17816,11 @@ public interface ConnectionPackage extends EPackage {
      * The feature id for the '<em><b>Default Value</b></em>' attribute.
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
+     * @deprecated See {@link org.talend.core.model.metadata.builder.connection.MetadataColumn#getDefaultValue() model documentation} for details.
      * @generated
      * @ordered
      */
+    @Deprecated
     int EDIFACT_COLUMN__DEFAULT_VALUE = METADATA_COLUMN__DEFAULT_VALUE;
 
     /**
@@ -17760,9 +17863,11 @@ public interface ConnectionPackage extends EPackage {
      * The feature id for the '<em><b>Original Field</b></em>' attribute.
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
+     * @deprecated See {@link org.talend.core.model.metadata.builder.connection.MetadataColumn#getOriginalField() model documentation} for details.
      * @generated
      * @ordered
      */
+    @Deprecated
     int EDIFACT_COLUMN__ORIGINAL_FIELD = METADATA_COLUMN__ORIGINAL_FIELD;
 
     /**
@@ -18022,9 +18127,11 @@ public interface ConnectionPackage extends EPackage {
      * The feature id for the '<em><b>Properties</b></em>' attribute.
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
+     * @deprecated See {@link org.talend.core.model.metadata.builder.connection.AbstractMetadataObject#getProperties() model documentation} for details.
      * @generated
      * @ordered
      */
+    @Deprecated
     int SALESFORCE_MODULE_UNIT__PROPERTIES = ABSTRACT_METADATA_OBJECT__PROPERTIES;
 
     /**
@@ -18358,9 +18465,11 @@ public interface ConnectionPackage extends EPackage {
      * The feature id for the '<em><b>Properties</b></em>' attribute.
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
+     * @deprecated See {@link org.talend.core.model.metadata.builder.connection.AbstractMetadataObject#getProperties() model documentation} for details.
      * @generated
      * @ordered
      */
+    @Deprecated
     int SAP_TABLE__PROPERTIES = METADATA_TABLE__PROPERTIES;
 
     /**
@@ -18574,9 +18683,11 @@ public interface ConnectionPackage extends EPackage {
      * The feature id for the '<em><b>Source Name</b></em>' attribute.
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
+     * @deprecated See {@link org.talend.core.model.metadata.builder.connection.MetadataTable#getSourceName() model documentation} for details.
      * @generated
      * @ordered
      */
+    @Deprecated
     int SAP_TABLE__SOURCE_NAME = METADATA_TABLE__SOURCE_NAME;
 
     /**
@@ -18619,9 +18730,11 @@ public interface ConnectionPackage extends EPackage {
      * The feature id for the '<em><b>Connection</b></em>' reference.
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
+     * @deprecated See {@link org.talend.core.model.metadata.builder.connection.MetadataTable#getConnection() model documentation} for details.
      * @generated
      * @ordered
      */
+    @Deprecated
     int SAP_TABLE__CONNECTION = METADATA_TABLE__CONNECTION;
 
     /**
@@ -18826,9 +18939,11 @@ public interface ConnectionPackage extends EPackage {
      * The feature id for the '<em><b>Properties</b></em>' attribute.
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
+     * @deprecated See {@link org.talend.core.model.metadata.builder.connection.AbstractMetadataObject#getProperties() model documentation} for details.
      * @generated
      * @ordered
      */
+    @Deprecated
     int SAP_TABLE_FIELD__PROPERTIES = METADATA_COLUMN__PROPERTIES;
 
     /**
@@ -19087,9 +19202,11 @@ public interface ConnectionPackage extends EPackage {
      * The feature id for the '<em><b>Default Value</b></em>' attribute.
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
+     * @deprecated See {@link org.talend.core.model.metadata.builder.connection.MetadataColumn#getDefaultValue() model documentation} for details.
      * @generated
      * @ordered
      */
+    @Deprecated
     int SAP_TABLE_FIELD__DEFAULT_VALUE = METADATA_COLUMN__DEFAULT_VALUE;
 
     /**
@@ -19132,9 +19249,11 @@ public interface ConnectionPackage extends EPackage {
      * The feature id for the '<em><b>Original Field</b></em>' attribute.
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
+     * @deprecated See {@link org.talend.core.model.metadata.builder.connection.MetadataColumn#getOriginalField() model documentation} for details.
      * @generated
      * @ordered
      */
+    @Deprecated
     int SAP_TABLE_FIELD__ORIGINAL_FIELD = METADATA_COLUMN__ORIGINAL_FIELD;
 
     /**
@@ -19559,9 +19678,11 @@ public interface ConnectionPackage extends EPackage {
      * The feature id for the '<em><b>Properties</b></em>' attribute.
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
+     * @deprecated See {@link org.talend.core.model.metadata.builder.connection.AbstractMetadataObject#getProperties() model documentation} for details.
      * @generated
      * @ordered
      */
+    @Deprecated
     int SAPBW_TABLE__PROPERTIES = SAP_TABLE__PROPERTIES;
 
     /**
@@ -19775,9 +19896,11 @@ public interface ConnectionPackage extends EPackage {
      * The feature id for the '<em><b>Source Name</b></em>' attribute.
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
+     * @deprecated See {@link org.talend.core.model.metadata.builder.connection.MetadataTable#getSourceName() model documentation} for details.
      * @generated
      * @ordered
      */
+    @Deprecated
     int SAPBW_TABLE__SOURCE_NAME = SAP_TABLE__SOURCE_NAME;
 
     /**
@@ -19820,9 +19943,11 @@ public interface ConnectionPackage extends EPackage {
      * The feature id for the '<em><b>Connection</b></em>' reference.
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
+     * @deprecated See {@link org.talend.core.model.metadata.builder.connection.MetadataTable#getConnection() model documentation} for details.
      * @generated
      * @ordered
      */
+    @Deprecated
     int SAPBW_TABLE__CONNECTION = SAP_TABLE__CONNECTION;
 
     /**
@@ -20082,9 +20207,11 @@ public interface ConnectionPackage extends EPackage {
      * The feature id for the '<em><b>Properties</b></em>' attribute.
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
+     * @deprecated See {@link org.talend.core.model.metadata.builder.connection.AbstractMetadataObject#getProperties() model documentation} for details.
      * @generated
      * @ordered
      */
+    @Deprecated
     int SAPBW_TABLE_FIELD__PROPERTIES = SAP_TABLE_FIELD__PROPERTIES;
 
     /**
@@ -20343,9 +20470,11 @@ public interface ConnectionPackage extends EPackage {
      * The feature id for the '<em><b>Default Value</b></em>' attribute.
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
+     * @deprecated See {@link org.talend.core.model.metadata.builder.connection.MetadataColumn#getDefaultValue() model documentation} for details.
      * @generated
      * @ordered
      */
+    @Deprecated
     int SAPBW_TABLE_FIELD__DEFAULT_VALUE = SAP_TABLE_FIELD__DEFAULT_VALUE;
 
     /**
@@ -20388,9 +20517,11 @@ public interface ConnectionPackage extends EPackage {
      * The feature id for the '<em><b>Original Field</b></em>' attribute.
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
+     * @deprecated See {@link org.talend.core.model.metadata.builder.connection.MetadataColumn#getOriginalField() model documentation} for details.
      * @generated
      * @ordered
      */
+    @Deprecated
     int SAPBW_TABLE_FIELD__ORIGINAL_FIELD = SAP_TABLE_FIELD__ORIGINAL_FIELD;
 
     /**
@@ -20712,8 +20843,10 @@ public interface ConnectionPackage extends EPackage {
      * @return the meta object for the attribute '<em>Default Value</em>'.
      * @see org.talend.core.model.metadata.builder.connection.MetadataColumn#getDefaultValue()
      * @see #getMetadataColumn()
+     * @deprecated See {@link org.talend.core.model.metadata.builder.connection.MetadataColumn#getDefaultValue() model documentation} for details.
      * @generated
      */
+    @Deprecated
     EAttribute getMetadataColumn_DefaultValue();
 
     /**
@@ -20767,8 +20900,10 @@ public interface ConnectionPackage extends EPackage {
      * @return the meta object for the attribute '<em>Original Field</em>'.
      * @see org.talend.core.model.metadata.builder.connection.MetadataColumn#getOriginalField()
      * @see #getMetadataColumn()
+     * @deprecated See {@link org.talend.core.model.metadata.builder.connection.MetadataColumn#getOriginalField() model documentation} for details.
      * @generated
      */
+    @Deprecated
     EAttribute getMetadataColumn_OriginalField();
 
     /**
@@ -20841,8 +20976,10 @@ public interface ConnectionPackage extends EPackage {
      * @return the meta object for the attribute '<em>Properties</em>'.
      * @see org.talend.core.model.metadata.builder.connection.AbstractMetadataObject#getProperties()
      * @see #getAbstractMetadataObject()
+     * @deprecated See {@link org.talend.core.model.metadata.builder.connection.AbstractMetadataObject#getProperties() model documentation} for details.
      * @generated
      */
+    @Deprecated
     EAttribute getAbstractMetadataObject_Properties();
 
     /**
@@ -20928,6 +21065,7 @@ public interface ConnectionPackage extends EPackage {
      * @see #getMetadataTable()
      * @generated
      */
+    @Deprecated
     EAttribute getMetadataTable_SourceName();
 
     /**
@@ -20984,6 +21122,7 @@ public interface ConnectionPackage extends EPackage {
      * @see #getMetadataTable()
      * @generated
      */
+    @Deprecated
     EReference getMetadataTable_Connection();
 
     /**
@@ -24419,6 +24558,17 @@ public interface ConnectionPackage extends EPackage {
     EAttribute getFTPConnection_UseFileNameEncoding();
 
     /**
+     * Returns the meta object for the attribute '{@link org.talend.core.model.metadata.builder.connection.FTPConnection#getTimeout <em>Timeout</em>}'.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @return the meta object for the attribute '<em>Timeout</em>'.
+     * @see org.talend.core.model.metadata.builder.connection.FTPConnection#getTimeout()
+     * @see #getFTPConnection()
+     * @generated
+     */
+    EAttribute getFTPConnection_Timeout();
+
+    /**
      * Returns the meta object for class '{@link org.talend.core.model.metadata.builder.connection.BRMSConnection <em>BRMS Connection</em>}'.
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
@@ -24752,6 +24902,7 @@ public interface ConnectionPackage extends EPackage {
      * @see java.util.Map.Entry
      * @model keyDataType="org.eclipse.emf.ecore.EString"
      *        valueDataType="org.eclipse.emf.ecore.EString"
+     *        annotation="MapEntry"
      * @generated
      */
     EClass getAdditionalProperties();
@@ -25498,8 +25649,10 @@ public interface ConnectionPackage extends EPackage {
          * The meta object literal for the '<em><b>Default Value</b></em>' attribute feature.
          * <!-- begin-user-doc -->
          * <!-- end-user-doc -->
+         * @deprecated See {@link org.talend.core.model.metadata.builder.connection.MetadataColumn#getDefaultValue() model documentation} for details.
          * @generated
          */
+        @Deprecated
         EAttribute METADATA_COLUMN__DEFAULT_VALUE = eINSTANCE.getMetadataColumn_DefaultValue();
 
         /**
@@ -25538,8 +25691,10 @@ public interface ConnectionPackage extends EPackage {
          * The meta object literal for the '<em><b>Original Field</b></em>' attribute feature.
          * <!-- begin-user-doc -->
          * <!-- end-user-doc -->
+         * @deprecated See {@link org.talend.core.model.metadata.builder.connection.MetadataColumn#getOriginalField() model documentation} for details.
          * @generated
          */
+        @Deprecated
         EAttribute METADATA_COLUMN__ORIGINAL_FIELD = eINSTANCE.getMetadataColumn_OriginalField();
 
         /**
@@ -25595,8 +25750,10 @@ public interface ConnectionPackage extends EPackage {
          * The meta object literal for the '<em><b>Properties</b></em>' attribute feature.
          * <!-- begin-user-doc --> <!--
          * end-user-doc -->
+         * @deprecated See {@link org.talend.core.model.metadata.builder.connection.AbstractMetadataObject#getProperties() model documentation} for details.
          * @generated
          */
+        @Deprecated
         EAttribute ABSTRACT_METADATA_OBJECT__PROPERTIES = eINSTANCE.getAbstractMetadataObject_Properties();
 
         /**
@@ -25660,8 +25817,10 @@ public interface ConnectionPackage extends EPackage {
          * The meta object literal for the '<em><b>Source Name</b></em>' attribute feature.
          * <!-- begin-user-doc --> <!--
          * end-user-doc -->
+         * @deprecated See {@link org.talend.core.model.metadata.builder.connection.MetadataTable#getSourceName() model documentation} for details.
          * @generated
          */
+        @Deprecated
         EAttribute METADATA_TABLE__SOURCE_NAME = eINSTANCE.getMetadataTable_SourceName();
 
         /**
@@ -25700,8 +25859,10 @@ public interface ConnectionPackage extends EPackage {
          * The meta object literal for the '<em><b>Connection</b></em>' reference feature.
          * <!-- begin-user-doc --> <!--
          * end-user-doc -->
+         * @deprecated See {@link org.talend.core.model.metadata.builder.connection.MetadataTable#getConnection() model documentation} for details.
          * @generated
          */
+        @Deprecated
         EReference METADATA_TABLE__CONNECTION = eINSTANCE.getMetadataTable_Connection();
 
         /**
@@ -28337,6 +28498,14 @@ public interface ConnectionPackage extends EPackage {
          * @generated
          */
         EAttribute FTP_CONNECTION__USE_FILE_NAME_ENCODING = eINSTANCE.getFTPConnection_UseFileNameEncoding();
+
+        /**
+         * The meta object literal for the '<em><b>Timeout</b></em>' attribute feature.
+         * <!-- begin-user-doc -->
+         * <!-- end-user-doc -->
+         * @generated
+         */
+        EAttribute FTP_CONNECTION__TIMEOUT = eINSTANCE.getFTPConnection_Timeout();
 
         /**
          * The meta object literal for the '{@link org.talend.core.model.metadata.builder.connection.impl.BRMSConnectionImpl <em>BRMS Connection</em>}' class.

@@ -19,6 +19,7 @@ import org.talend.core.model.metadata.builder.connection.SAPBWTable;
  * <!-- end-user-doc -->
  * <p>
  * The following features are implemented:
+ * </p>
  * <ul>
  *   <li>{@link org.talend.core.model.metadata.builder.connection.impl.SAPBWTableImpl#getModelType <em>Model Type</em>}</li>
  *   <li>{@link org.talend.core.model.metadata.builder.connection.impl.SAPBWTableImpl#isActive <em>Active</em>}</li>
@@ -26,7 +27,6 @@ import org.talend.core.model.metadata.builder.connection.SAPBWTable;
  *   <li>{@link org.talend.core.model.metadata.builder.connection.impl.SAPBWTableImpl#getInfoAreaName <em>Info Area Name</em>}</li>
  *   <li>{@link org.talend.core.model.metadata.builder.connection.impl.SAPBWTableImpl#getInnerIOType <em>Inner IO Type</em>}</li>
  * </ul>
- * </p>
  *
  * @generated
  */
@@ -349,8 +349,8 @@ public class SAPBWTableImpl extends SAPTableImpl implements SAPBWTable {
         case ConnectionPackage.SAPBW_TABLE__ACTIVE:
             return active != ACTIVE_EDEFAULT;
         case ConnectionPackage.SAPBW_TABLE__SOURCE_SYSTEM_NAME:
-            return SOURCE_SYSTEM_NAME_EDEFAULT == null ? sourceSystemName != null : !SOURCE_SYSTEM_NAME_EDEFAULT
-                    .equals(sourceSystemName);
+            return SOURCE_SYSTEM_NAME_EDEFAULT == null ? sourceSystemName != null
+                    : !SOURCE_SYSTEM_NAME_EDEFAULT.equals(sourceSystemName);
         case ConnectionPackage.SAPBW_TABLE__INFO_AREA_NAME:
             return INFO_AREA_NAME_EDEFAULT == null ? infoAreaName != null : !INFO_AREA_NAME_EDEFAULT.equals(infoAreaName);
         case ConnectionPackage.SAPBW_TABLE__INNER_IO_TYPE:
@@ -369,7 +369,7 @@ public class SAPBWTableImpl extends SAPTableImpl implements SAPBWTable {
         if (eIsProxy())
             return super.toString();
 
-        StringBuffer result = new StringBuffer(super.toString());
+        StringBuilder result = new StringBuilder(super.toString());
         result.append(" (modelType: ");
         result.append(modelType);
         result.append(", active: ");

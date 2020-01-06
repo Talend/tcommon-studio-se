@@ -106,6 +106,10 @@ public class ExtendedNodeConnectionContextUtils {
         OozieUser,
         OozieEndpoint,
 
+        //
+        WebHDFSSSLTrustStorePath,
+        WebHDFSSSLTrustStorePassword,
+
         // Google Dataproc
         GoogleProjectId,
         GoogleClusterId,

@@ -26,12 +26,12 @@ import org.talend.core.model.metadata.builder.connection.ConnectionPackage;
  * <!-- end-user-doc -->
  * <p>
  * The following features are implemented:
+ * </p>
  * <ul>
  *   <li>{@link org.talend.core.model.metadata.builder.connection.impl.ConceptTargetImpl#getSchema <em>Schema</em>}</li>
  *   <li>{@link org.talend.core.model.metadata.builder.connection.impl.ConceptTargetImpl#getTargetName <em>Target Name</em>}</li>
  *   <li>{@link org.talend.core.model.metadata.builder.connection.impl.ConceptTargetImpl#getRelativeLoopExpression <em>Relative Loop Expression</em>}</li>
  * </ul>
- * </p>
  *
  * @generated
  */
@@ -148,7 +148,8 @@ public class ConceptTargetImpl extends EObjectImpl implements ConceptTarget {
             if (msgs != null)
                 msgs.dispatch();
         } else if (eNotificationRequired())
-            eNotify(new ENotificationImpl(this, Notification.SET, ConnectionPackage.CONCEPT_TARGET__SCHEMA, newSchema, newSchema));
+            eNotify(new ENotificationImpl(this, Notification.SET, ConnectionPackage.CONCEPT_TARGET__SCHEMA, newSchema,
+                    newSchema));
     }
 
     /**
@@ -330,7 +331,7 @@ public class ConceptTargetImpl extends EObjectImpl implements ConceptTarget {
         if (eIsProxy())
             return super.toString();
 
-        StringBuffer result = new StringBuffer(super.toString());
+        StringBuilder result = new StringBuilder(super.toString());
         result.append(" (targetName: ");
         result.append(targetName);
         result.append(", RelativeLoopExpression: ");

@@ -16,10 +16,10 @@ import orgomg.cwm.objectmodel.core.TaggedValue;
  * <!-- begin-user-doc --> An implementation of the model object '<em><b>Td Column</b></em>'. <!-- end-user-doc -->
  * <p>
  * The following features are implemented:
+ * </p>
  * <ul>
  *   <li>{@link org.talend.cwm.relational.impl.TdColumnImpl#getSqlDataType <em>Sql Data Type</em>}</li>
  * </ul>
- * </p>
  *
  * @generated
  */
@@ -62,8 +62,8 @@ public class TdColumnImpl extends MetadataColumnImpl implements TdColumn {
             sqlDataType = (TdSqlDataType) eResolveProxy(oldSqlDataType);
             if (sqlDataType != oldSqlDataType) {
                 InternalEObject newSqlDataType = (InternalEObject) sqlDataType;
-                NotificationChain msgs = oldSqlDataType.eInverseRemove(this, EOPPOSITE_FEATURE_BASE
-                        - RelationalPackage.TD_COLUMN__SQL_DATA_TYPE, null, null);
+                NotificationChain msgs = oldSqlDataType.eInverseRemove(this,
+                        EOPPOSITE_FEATURE_BASE - RelationalPackage.TD_COLUMN__SQL_DATA_TYPE, null, null);
                 if (newSqlDataType.eInternalContainer() == null) {
                     msgs = newSqlDataType.eInverseAdd(this, EOPPOSITE_FEATURE_BASE - RelationalPackage.TD_COLUMN__SQL_DATA_TYPE,
                             null, msgs);
@@ -112,11 +112,11 @@ public class TdColumnImpl extends MetadataColumnImpl implements TdColumn {
         if (newSqlDataType != sqlDataType) {
             NotificationChain msgs = null;
             if (sqlDataType != null)
-                msgs = ((InternalEObject) sqlDataType).eInverseRemove(this, EOPPOSITE_FEATURE_BASE
-                        - RelationalPackage.TD_COLUMN__SQL_DATA_TYPE, null, msgs);
+                msgs = ((InternalEObject) sqlDataType).eInverseRemove(this,
+                        EOPPOSITE_FEATURE_BASE - RelationalPackage.TD_COLUMN__SQL_DATA_TYPE, null, msgs);
             if (newSqlDataType != null)
-                msgs = ((InternalEObject) newSqlDataType).eInverseAdd(this, EOPPOSITE_FEATURE_BASE
-                        - RelationalPackage.TD_COLUMN__SQL_DATA_TYPE, null, msgs);
+                msgs = ((InternalEObject) newSqlDataType).eInverseAdd(this,
+                        EOPPOSITE_FEATURE_BASE - RelationalPackage.TD_COLUMN__SQL_DATA_TYPE, null, msgs);
             msgs = basicSetSqlDataType(newSqlDataType, msgs);
             if (msgs != null)
                 msgs.dispatch();

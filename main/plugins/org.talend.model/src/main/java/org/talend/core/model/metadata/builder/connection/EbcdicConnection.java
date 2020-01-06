@@ -12,6 +12,7 @@ package org.talend.core.model.metadata.builder.connection;
  *
  * <p>
  * The following features are supported:
+ * </p>
  * <ul>
  *   <li>{@link org.talend.core.model.metadata.builder.connection.EbcdicConnection#getMidFile <em>Mid File</em>}</li>
  *   <li>{@link org.talend.core.model.metadata.builder.connection.EbcdicConnection#getDataFile <em>Data File</em>}</li>
@@ -19,7 +20,6 @@ package org.talend.core.model.metadata.builder.connection;
  *   <li>{@link org.talend.core.model.metadata.builder.connection.EbcdicConnection#getSourceFileStart <em>Source File Start</em>}</li>
  *   <li>{@link org.talend.core.model.metadata.builder.connection.EbcdicConnection#getSourceFileEnd <em>Source File End</em>}</li>
  * </ul>
- * </p>
  *
  * @see org.talend.core.model.metadata.builder.connection.ConnectionPackage#getEbcdicConnection()
  * @model

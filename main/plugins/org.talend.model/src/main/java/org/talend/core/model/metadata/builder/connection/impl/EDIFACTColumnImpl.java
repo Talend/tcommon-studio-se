@@ -20,11 +20,11 @@ import org.talend.core.model.metadata.builder.connection.EDIFACTColumn;
  * <!-- end-user-doc -->
  * <p>
  * The following features are implemented:
+ * </p>
  * <ul>
  *   <li>{@link org.talend.core.model.metadata.builder.connection.impl.EDIFACTColumnImpl#getEDIColumnName <em>EDI Column Name</em>}</li>
  *   <li>{@link org.talend.core.model.metadata.builder.connection.impl.EDIFACTColumnImpl#getEDIXpath <em>EDI Xpath</em>}</li>
  * </ul>
- * </p>
  *
  * @generated
  */
@@ -211,7 +211,7 @@ public class EDIFACTColumnImpl extends MetadataColumnImpl implements EDIFACTColu
         if (eIsProxy())
             return super.toString();
 
-        StringBuffer result = new StringBuffer(super.toString());
+        StringBuilder result = new StringBuilder(super.toString());
         result.append(" (EDIColumnName: ");
         result.append(ediColumnName);
         result.append(", EDIXpath: ");

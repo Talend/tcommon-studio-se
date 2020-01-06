@@ -55,6 +55,7 @@ import org.talend.core.runtime.CoreRuntimePlugin;
 import org.talend.core.runtime.projectsetting.AbstractProjectSettingPage;
 import org.talend.core.runtime.projectsetting.IProjectSettingContainer;
 import org.talend.core.runtime.projectsetting.ProjectPreferenceManager;
+import org.talend.designer.maven.tools.AggregatorPomsHelper;
 import org.talend.designer.maven.ui.i18n.Messages;
 import org.talend.designer.maven.ui.setting.repository.RepositoryMavenSettingDialog;
 import org.talend.designer.maven.ui.utils.DesignerMavenUiHelper;
@@ -156,6 +157,15 @@ public abstract class FolderMavenSettingPage extends AbstractProjectSettingPage 
             @Override
             public void widgetSelected(SelectionEvent e) {
                 deleteMavenFiles();
+                boolean generatePom = MessageDialog.openQuestion(getShell(), "Question", //$NON-NLS-1$
+                        Messages.getString("AbstractPersistentProjectSettingPage.syncAllPoms")); //$NON-NLS-1$
+                if (generatePom) {
+                    try {
+                        new AggregatorPomsHelper().syncAllPoms();
+                    } catch (Exception ex) {
+                        ExceptionHandler.process(ex);
+                    }
+                }
             }
 
         });

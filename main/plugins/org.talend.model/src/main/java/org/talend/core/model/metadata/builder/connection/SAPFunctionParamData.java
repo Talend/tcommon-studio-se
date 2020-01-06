@@ -11,11 +11,11 @@ import org.eclipse.emf.ecore.EObject;
  *
  * <p>
  * The following features are supported:
+ * </p>
  * <ul>
  *   <li>{@link org.talend.core.model.metadata.builder.connection.SAPFunctionParamData#getInputRoot <em>Input Root</em>}</li>
  *   <li>{@link org.talend.core.model.metadata.builder.connection.SAPFunctionParamData#getOutputRoot <em>Output Root</em>}</li>
  * </ul>
- * </p>
  *
  * @see org.talend.core.model.metadata.builder.connection.ConnectionPackage#getSAPFunctionParamData()
  * @model

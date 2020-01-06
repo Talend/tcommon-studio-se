@@ -319,7 +319,7 @@ public class ComponentToRepositoryProperty {
         }
         IGenericDBService dbService = null;
         if (GlobalServiceRegister.getDefault().isServiceRegistered(IGenericDBService.class)) {
-            dbService = (IGenericDBService) GlobalServiceRegister.getDefault().getService(
+            dbService = GlobalServiceRegister.getDefault().getService(
                     IGenericDBService.class);
         }
         if(dbService == null){
@@ -467,10 +467,10 @@ public class ComponentToRepositoryProperty {
         // Redshift
         else if (EDatabaseTypeName.REDSHIFT.getProduct().equalsIgnoreCase((String) parameter.getValue())) {
             connection.setProductId(EDatabaseTypeName.REDSHIFT.getProduct());
-            parameter = node.getElementParameter("TYPE"); //$NON-NLS-1$
-            if ("Redshift SSO".equals(parameter.getValue())) {
+            IElementParameter paraJdbcUrl = node.getElementParameter("JDBC_URL");
+            if ("SSO".equals(paraJdbcUrl.getValue())) {
                 connection.setDatabaseType(EDatabaseTypeName.REDSHIFT_SSO.getDisplayName());
-            } else if ("Redshift".equals(parameter.getValue())) {
+            } else if ("STANDARD".equals(paraJdbcUrl.getValue())) {
                 connection.setDatabaseType(EDatabaseTypeName.REDSHIFT.getDisplayName());
             }
         }
@@ -622,7 +622,8 @@ public class ComponentToRepositoryProperty {
         if ("SCHEMA".equals(param.getRepositoryValue())) { //$NON-NLS-1$
             String value = getParameterValue(connection, node, param);
             if (value != null) {
-                if (connection.getDatabaseType().equals(EDatabaseTypeName.ORACLEFORSID.getDisplayName())) {
+                if (connection.getDatabaseType().equals(EDatabaseTypeName.ORACLEFORSID.getDisplayName())
+                        && !connection.isContextMode()) {
                     connection.setUiSchema(TalendQuoteUtils.removeQuotes(value.toUpperCase()));
                 } else {
                     connection.setUiSchema(TalendQuoteUtils.removeQuotes(value));

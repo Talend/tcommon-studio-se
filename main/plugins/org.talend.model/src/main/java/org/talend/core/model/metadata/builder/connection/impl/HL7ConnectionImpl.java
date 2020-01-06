@@ -28,13 +28,13 @@ import org.talend.core.model.metadata.builder.connection.HL7FileNode;
  * <!-- end-user-doc -->
  * <p>
  * The following features are implemented:
+ * </p>
  * <ul>
  *   <li>{@link org.talend.core.model.metadata.builder.connection.impl.HL7ConnectionImpl#getStartChar <em>Start Char</em>}</li>
  *   <li>{@link org.talend.core.model.metadata.builder.connection.impl.HL7ConnectionImpl#getEndChar <em>End Char</em>}</li>
  *   <li>{@link org.talend.core.model.metadata.builder.connection.impl.HL7ConnectionImpl#getRoot <em>Root</em>}</li>
  *   <li>{@link org.talend.core.model.metadata.builder.connection.impl.HL7ConnectionImpl#getOutputFilePath <em>Output File Path</em>}</li>
  * </ul>
- * </p>
  *
  * @generated
  */
@@ -169,7 +169,8 @@ public class HL7ConnectionImpl extends FileConnectionImpl implements HL7Connecti
         String oldEndChar = endChar;
         endChar = newEndChar;
         if (eNotificationRequired())
-            eNotify(new ENotificationImpl(this, Notification.SET, ConnectionPackage.HL7_CONNECTION__END_CHAR, oldEndChar, endChar));
+            eNotify(new ENotificationImpl(this, Notification.SET, ConnectionPackage.HL7_CONNECTION__END_CHAR, oldEndChar,
+                    endChar));
     }
 
     /**
@@ -321,7 +322,7 @@ public class HL7ConnectionImpl extends FileConnectionImpl implements HL7Connecti
         if (eIsProxy())
             return super.toString();
 
-        StringBuffer result = new StringBuffer(super.toString());
+        StringBuilder result = new StringBuilder(super.toString());
         result.append(" (StartChar: ");
         result.append(startChar);
         result.append(", EndChar: ");

@@ -23,10 +23,10 @@ import org.talend.core.model.metadata.builder.connection.Metadata;
  * <!-- end-user-doc -->
  * <p>
  * The following features are implemented:
+ * </p>
  * <ul>
  *   <li>{@link org.talend.core.model.metadata.builder.connection.impl.MetadataImpl#getConnections <em>Connections</em>}</li>
  * </ul>
- * </p>
  *
  * @generated
  */

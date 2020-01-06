@@ -24,6 +24,7 @@ import org.talend.core.model.metadata.builder.connection.MDMConnectionProtocol;
  * <!-- begin-user-doc --> An implementation of the model object '<em><b>MDM Connection</b></em>'. <!-- end-user-doc -->
  * <p>
  * The following features are implemented:
+ * </p>
  * <ul>
  *   <li>{@link org.talend.core.model.metadata.builder.connection.impl.MDMConnectionImpl#getUsername <em>Username</em>}</li>
  *   <li>{@link org.talend.core.model.metadata.builder.connection.impl.MDMConnectionImpl#getPassword <em>Password</em>}</li>
@@ -37,7 +38,6 @@ import org.talend.core.model.metadata.builder.connection.MDMConnectionProtocol;
  *   <li>{@link org.talend.core.model.metadata.builder.connection.impl.MDMConnectionImpl#getContext <em>Context</em>}</li>
  *   <li>{@link org.talend.core.model.metadata.builder.connection.impl.MDMConnectionImpl#getServerUrl <em>Server Url</em>}</li>
  * </ul>
- * </p>
  *
  * @generated
  */
@@ -466,7 +466,8 @@ public class MDMConnectionImpl extends ConnectionImpl implements MDMConnection {
         String oldContext = context;
         context = newContext;
         if (eNotificationRequired())
-            eNotify(new ENotificationImpl(this, Notification.SET, ConnectionPackage.MDM_CONNECTION__CONTEXT, oldContext, context));
+            eNotify(new ENotificationImpl(this, Notification.SET, ConnectionPackage.MDM_CONNECTION__CONTEXT, oldContext,
+                    context));
     }
 
     /**
@@ -669,7 +670,7 @@ public class MDMConnectionImpl extends ConnectionImpl implements MDMConnection {
         if (eIsProxy())
             return super.toString();
 
-        StringBuffer result = new StringBuffer(super.toString());
+        StringBuilder result = new StringBuilder(super.toString());
         result.append(" (Username: ");
         result.append(username);
         result.append(", Password: ");

@@ -27,10 +27,10 @@ import org.talend.core.model.metadata.builder.connection.SAPFunctionParameterTab
  * <!-- end-user-doc -->
  * <p>
  * The following features are implemented:
+ * </p>
  * <ul>
  *   <li>{@link org.talend.core.model.metadata.builder.connection.impl.SAPFunctionParameterTableImpl#getColumns <em>Columns</em>}</li>
  * </ul>
- * </p>
  *
  * @generated
  */

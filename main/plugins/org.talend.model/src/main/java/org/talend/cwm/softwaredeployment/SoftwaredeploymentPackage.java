@@ -335,7 +335,8 @@ public interface SoftwaredeploymentPackage extends EPackage {
      * @generated
      * @ordered
      */
-    int TD_DATA_MANAGER_FEATURE_COUNT = orgomg.cwm.foundation.softwaredeployment.SoftwaredeploymentPackage.DATA_MANAGER_FEATURE_COUNT + 0;
+    int TD_DATA_MANAGER_FEATURE_COUNT = orgomg.cwm.foundation.softwaredeployment.SoftwaredeploymentPackage.DATA_MANAGER_FEATURE_COUNT
+            + 0;
 
     /**
      * The meta object id for the '{@link org.talend.cwm.softwaredeployment.impl.TdSoftwareSystemImpl <em>Td Software System</em>}' class.
@@ -741,7 +742,8 @@ public interface SoftwaredeploymentPackage extends EPackage {
      * @generated
      * @ordered
      */
-    int TD_SOFTWARE_SYSTEM_FEATURE_COUNT = orgomg.cwm.foundation.softwaredeployment.SoftwaredeploymentPackage.SOFTWARE_SYSTEM_FEATURE_COUNT + 0;
+    int TD_SOFTWARE_SYSTEM_FEATURE_COUNT = orgomg.cwm.foundation.softwaredeployment.SoftwaredeploymentPackage.SOFTWARE_SYSTEM_FEATURE_COUNT
+            + 0;
 
     /**
      * The meta object id for the '{@link org.talend.cwm.softwaredeployment.impl.TdMachineImpl <em>Td Machine</em>}' class.

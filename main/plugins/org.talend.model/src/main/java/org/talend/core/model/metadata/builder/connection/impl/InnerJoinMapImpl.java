@@ -25,11 +25,11 @@ import org.talend.core.model.metadata.builder.connection.ConnectionPackage;
  * <!-- end-user-doc -->
  * <p>
  * The following features are implemented:
+ * </p>
  * <ul>
  *   <li>{@link org.talend.core.model.metadata.builder.connection.impl.InnerJoinMapImpl#getTypedKey <em>Key</em>}</li>
  *   <li>{@link org.talend.core.model.metadata.builder.connection.impl.InnerJoinMapImpl#getTypedValue <em>Value</em>}</li>
  * </ul>
- * </p>
  *
  * @generated
  */
@@ -214,7 +214,7 @@ public class InnerJoinMapImpl extends EObjectImpl implements BasicEMap.Entry<Str
         if (eIsProxy())
             return super.toString();
 
-        StringBuffer result = new StringBuffer(super.toString());
+        StringBuilder result = new StringBuilder(super.toString());
         result.append(" (key: ");
         result.append(key);
         result.append(", value: ");

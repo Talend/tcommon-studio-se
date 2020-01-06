@@ -20,12 +20,12 @@ import org.talend.core.model.metadata.builder.connection.Query;
  * <!-- begin-user-doc --> An implementation of the model object '<em><b>Query</b></em>'. <!-- end-user-doc -->
  * <p>
  * The following features are implemented:
+ * </p>
  * <ul>
  *   <li>{@link org.talend.core.model.metadata.builder.connection.impl.QueryImpl#getValue <em>Value</em>}</li>
  *   <li>{@link org.talend.core.model.metadata.builder.connection.impl.QueryImpl#getQueries <em>Queries</em>}</li>
  *   <li>{@link org.talend.core.model.metadata.builder.connection.impl.QueryImpl#isContextMode <em>Context Mode</em>}</li>
  * </ul>
- * </p>
  *
  * @generated
  */
@@ -215,8 +215,8 @@ public class QueryImpl extends AbstractMetadataObjectImpl implements Query {
     public NotificationChain eBasicRemoveFromContainerFeature(NotificationChain msgs) {
         switch (eContainerFeatureID()) {
         case ConnectionPackage.QUERY__QUERIES:
-            return eInternalContainer().eInverseRemove(this, ConnectionPackage.QUERIES_CONNECTION__QUERY,
-                    QueriesConnection.class, msgs);
+            return eInternalContainer().eInverseRemove(this, ConnectionPackage.QUERIES_CONNECTION__QUERY, QueriesConnection.class,
+                    msgs);
         }
         return super.eBasicRemoveFromContainerFeature(msgs);
     }
@@ -306,7 +306,7 @@ public class QueryImpl extends AbstractMetadataObjectImpl implements Query {
         if (eIsProxy())
             return super.toString();
 
-        StringBuffer result = new StringBuffer(super.toString());
+        StringBuilder result = new StringBuilder(super.toString());
         result.append(" (value: ");
         result.append(value);
         result.append(", contextMode: ");

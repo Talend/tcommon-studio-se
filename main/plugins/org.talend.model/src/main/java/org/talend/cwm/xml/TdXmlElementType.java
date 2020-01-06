@@ -16,13 +16,13 @@ import orgomg.cwm.resource.xml.ElementType;
  *
  * <p>
  * The following features are supported:
+ * </p>
  * <ul>
  *   <li>{@link org.talend.cwm.xml.TdXmlElementType#getXsdElementDeclaration <em>Xsd Element Declaration</em>}</li>
  *   <li>{@link org.talend.cwm.xml.TdXmlElementType#getOwnedDocument <em>Owned Document</em>}</li>
  *   <li>{@link org.talend.cwm.xml.TdXmlElementType#getJavaType <em>Java Type</em>}</li>
  *   <li>{@link org.talend.cwm.xml.TdXmlElementType#getXmlContent <em>Xml Content</em>}</li>
  * </ul>
- * </p>
  *
  * @see org.talend.cwm.xml.XmlPackage#getTdXmlElementType()
  * @model

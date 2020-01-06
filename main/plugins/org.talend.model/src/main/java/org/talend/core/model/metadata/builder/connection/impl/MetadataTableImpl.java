@@ -57,6 +57,7 @@ import orgomg.cwmx.resource.express.SimpleDimension;
  * <!-- begin-user-doc --> An implementation of the model object '<em><b>Metadata Table</b></em>'. <!-- end-user-doc -->
  * <p>
  * The following features are implemented:
+ * </p>
  * <ul>
  *   <li>{@link org.talend.core.model.metadata.builder.connection.impl.MetadataTableImpl#getOwnedElement <em>Owned Element</em>}</li>
  *   <li>{@link org.talend.core.model.metadata.builder.connection.impl.MetadataTableImpl#isIsAbstract <em>Is Abstract</em>}</li>
@@ -83,10 +84,10 @@ import orgomg.cwmx.resource.express.SimpleDimension;
  *   <li>{@link org.talend.core.model.metadata.builder.connection.impl.MetadataTableImpl#getConnection <em>Connection</em>}</li>
  *   <li>{@link org.talend.core.model.metadata.builder.connection.impl.MetadataTableImpl#getAdditionalProperties <em>Additional Properties</em>}</li>
  * </ul>
- * </p>
  *
  * @generated
  */
+@SuppressWarnings("deprecation")
 public class MetadataTableImpl extends AbstractMetadataObjectImpl implements MetadataTable {
 
     /**
@@ -278,9 +279,11 @@ public class MetadataTableImpl extends AbstractMetadataObjectImpl implements Met
      * <!-- begin-user-doc --> <!--
      * end-user-doc -->
      * @see #getSourceName()
+     * @deprecated See {@link org.talend.core.model.metadata.builder.connection.MetadataTable#getSourceName() model documentation} for details.
      * @generated
      * @ordered
      */
+    @Deprecated
     protected static final String SOURCE_NAME_EDEFAULT = null;
 
     /**
@@ -627,8 +630,10 @@ public class MetadataTableImpl extends AbstractMetadataObjectImpl implements Met
 
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
+     * @deprecated See {@link org.talend.core.model.metadata.builder.connection.MetadataTable#getConnection() model documentation} for details.
      * @generated
      */
+    @Deprecated
     public Connection getConnection() {
         Connection connection = basicGetConnection();
         return connection != null && connection.eIsProxy() ? (Connection) eResolveProxy((InternalEObject) connection)
@@ -1237,7 +1242,7 @@ public class MetadataTableImpl extends AbstractMetadataObjectImpl implements Met
         if (eIsProxy())
             return super.toString();
 
-        StringBuffer result = new StringBuffer(super.toString());
+        StringBuilder result = new StringBuilder(super.toString());
         result.append(" (isAbstract: ");
         result.append(isAbstract);
         result.append(", tableType: ");

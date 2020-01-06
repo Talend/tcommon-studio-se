@@ -24,6 +24,7 @@ import orgomg.cwm.resource.relational.impl.SQLSimpleTypeImpl;
  * <!-- end-user-doc -->
  * <p>
  * The following features are implemented:
+ * </p>
  * <ul>
  *   <li>{@link org.talend.cwm.relational.impl.TdSqlDataTypeImpl#getJavaDataType <em>Java Data Type</em>}</li>
  *   <li>{@link org.talend.cwm.relational.impl.TdSqlDataTypeImpl#getNullable <em>Nullable</em>}</li>
@@ -33,7 +34,6 @@ import orgomg.cwm.resource.relational.impl.SQLSimpleTypeImpl;
  *   <li>{@link org.talend.cwm.relational.impl.TdSqlDataTypeImpl#getLocalTypeName <em>Local Type Name</em>}</li>
  *   <li>{@link org.talend.cwm.relational.impl.TdSqlDataTypeImpl#getSearchable <em>Searchable</em>}</li>
  * </ul>
- * </p>
  *
  * @generated
  */
@@ -480,7 +480,7 @@ public class TdSqlDataTypeImpl extends SQLSimpleTypeImpl implements TdSqlDataTyp
         if (eIsProxy())
             return super.toString();
 
-        StringBuffer result = new StringBuffer(super.toString());
+        StringBuilder result = new StringBuilder(super.toString());
         result.append(" (javaDataType: ");
         result.append(javaDataType);
         result.append(", nullable: ");

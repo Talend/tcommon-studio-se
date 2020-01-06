@@ -21,14 +21,13 @@ import orgomg.cwm.objectmodel.core.impl.ExpressionImpl;
  * <!-- end-user-doc -->
  * <p>
  * The following features are implemented:
- * <ul>
- * <li>{@link org.talend.cwm.relational.impl.TdExpressionImpl#getVersion <em>Version</em>}</li>
- * <li>{@link org.talend.cwm.relational.impl.TdExpressionImpl#getModificationDate <em>Modification Date</em>}</li>
- * <li>{@link org.talend.cwm.relational.impl.TdExpressionImpl#getName <em>Name</em>}</li>
- * <li>{@link org.talend.cwm.relational.impl.TdExpressionImpl#getExpressionVariableMap <em>Expression Variable
- * Map</em>}</li>
- * </ul>
  * </p>
+ * <ul>
+ *   <li>{@link org.talend.cwm.relational.impl.TdExpressionImpl#getVersion <em>Version</em>}</li>
+ *   <li>{@link org.talend.cwm.relational.impl.TdExpressionImpl#getModificationDate <em>Modification Date</em>}</li>
+ *   <li>{@link org.talend.cwm.relational.impl.TdExpressionImpl#getName <em>Name</em>}</li>
+ *   <li>{@link org.talend.cwm.relational.impl.TdExpressionImpl#getExpressionVariableMap <em>Expression Variable Map</em>}</li>
+ * </ul>
  *
  * @generated
  */
@@ -38,7 +37,6 @@ public class TdExpressionImpl extends ExpressionImpl implements TdExpression {
      * The default value of the '{@link #getVersion() <em>Version</em>}' attribute.
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * 
      * @see #getVersion()
      * @generated
      * @ordered
@@ -49,7 +47,6 @@ public class TdExpressionImpl extends ExpressionImpl implements TdExpression {
      * The cached value of the '{@link #getVersion() <em>Version</em>}' attribute.
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * 
      * @see #getVersion()
      * @generated
      * @ordered
@@ -60,7 +57,6 @@ public class TdExpressionImpl extends ExpressionImpl implements TdExpression {
      * The default value of the '{@link #getModificationDate() <em>Modification Date</em>}' attribute.
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * 
      * @see #getModificationDate()
      * @generated
      * @ordered
@@ -71,7 +67,6 @@ public class TdExpressionImpl extends ExpressionImpl implements TdExpression {
      * The cached value of the '{@link #getModificationDate() <em>Modification Date</em>}' attribute.
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * 
      * @see #getModificationDate()
      * @generated
      * @ordered
@@ -82,7 +77,6 @@ public class TdExpressionImpl extends ExpressionImpl implements TdExpression {
      * The default value of the '{@link #getName() <em>Name</em>}' attribute.
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * 
      * @see #getName()
      * @generated
      * @ordered
@@ -93,7 +87,6 @@ public class TdExpressionImpl extends ExpressionImpl implements TdExpression {
      * The cached value of the '{@link #getName() <em>Name</em>}' attribute.
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * 
      * @see #getName()
      * @generated
      * @ordered
@@ -104,7 +97,6 @@ public class TdExpressionImpl extends ExpressionImpl implements TdExpression {
      * The cached value of the '{@link #getExpressionVariableMap() <em>Expression Variable Map</em>}' attribute.
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * 
      * @see #getExpressionVariableMap()
      * @generated
      * @ordered
@@ -114,7 +106,6 @@ public class TdExpressionImpl extends ExpressionImpl implements TdExpression {
     /**
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * 
      * @generated
      */
     protected TdExpressionImpl() {
@@ -124,7 +115,6 @@ public class TdExpressionImpl extends ExpressionImpl implements TdExpression {
     /**
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * 
      * @generated
      */
     @Override
@@ -135,7 +125,6 @@ public class TdExpressionImpl extends ExpressionImpl implements TdExpression {
     /**
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * 
      * @generated
      */
     @Override
@@ -146,23 +135,19 @@ public class TdExpressionImpl extends ExpressionImpl implements TdExpression {
     /**
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * 
      * @generated
      */
     @Override
     public void setVersion(String newVersion) {
         String oldVersion = version;
         version = newVersion;
-        if (eNotificationRequired()) {
-            eNotify(new ENotificationImpl(this, Notification.SET, RelationalPackage.TD_EXPRESSION__VERSION, oldVersion,
-                    version));
-        }
+        if (eNotificationRequired())
+            eNotify(new ENotificationImpl(this, Notification.SET, RelationalPackage.TD_EXPRESSION__VERSION, oldVersion, version));
     }
 
     /**
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * 
      * @generated
      */
     @Override
@@ -173,23 +158,20 @@ public class TdExpressionImpl extends ExpressionImpl implements TdExpression {
     /**
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * 
      * @generated
      */
     @Override
     public void setModificationDate(String newModificationDate) {
         String oldModificationDate = modificationDate;
         modificationDate = newModificationDate;
-        if (eNotificationRequired()) {
+        if (eNotificationRequired())
             eNotify(new ENotificationImpl(this, Notification.SET, RelationalPackage.TD_EXPRESSION__MODIFICATION_DATE,
                     oldModificationDate, modificationDate));
-        }
     }
 
     /**
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * 
      * @generated
      */
     @Override
@@ -200,23 +182,19 @@ public class TdExpressionImpl extends ExpressionImpl implements TdExpression {
     /**
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * 
      * @generated
      */
     @Override
     public void setName(String newName) {
         String oldName = name;
         name = newName;
-        if (eNotificationRequired()) {
-            eNotify(new ENotificationImpl(this, Notification.SET, RelationalPackage.TD_EXPRESSION__NAME, oldName,
-                    name));
-        }
+        if (eNotificationRequired())
+            eNotify(new ENotificationImpl(this, Notification.SET, RelationalPackage.TD_EXPRESSION__NAME, oldName, name));
     }
 
     /**
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * 
      * @generated
      */
     @Override
@@ -227,24 +205,20 @@ public class TdExpressionImpl extends ExpressionImpl implements TdExpression {
     /**
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * 
      * @generated
      */
     @Override
     public void setExpressionVariableMap(HashMap<String, String> newExpressionVariableMap) {
         HashMap<String, String> oldExpressionVariableMap = expressionVariableMap;
         expressionVariableMap = newExpressionVariableMap;
-        if (eNotificationRequired()) {
-            eNotify(new ENotificationImpl(this, Notification.SET,
-                    RelationalPackage.TD_EXPRESSION__EXPRESSION_VARIABLE_MAP, oldExpressionVariableMap,
-                    expressionVariableMap));
-        }
+        if (eNotificationRequired())
+            eNotify(new ENotificationImpl(this, Notification.SET, RelationalPackage.TD_EXPRESSION__EXPRESSION_VARIABLE_MAP,
+                    oldExpressionVariableMap, expressionVariableMap));
     }
 
     /**
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * 
      * @generated
      */
     @Override
@@ -265,7 +239,6 @@ public class TdExpressionImpl extends ExpressionImpl implements TdExpression {
     /**
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * 
      * @generated
      */
     @SuppressWarnings("unchecked")
@@ -291,7 +264,6 @@ public class TdExpressionImpl extends ExpressionImpl implements TdExpression {
     /**
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * 
      * @generated
      */
     @Override
@@ -316,7 +288,6 @@ public class TdExpressionImpl extends ExpressionImpl implements TdExpression {
     /**
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * 
      * @generated
      */
     @Override
@@ -338,16 +309,14 @@ public class TdExpressionImpl extends ExpressionImpl implements TdExpression {
     /**
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * 
      * @generated
      */
     @Override
     public String toString() {
-        if (eIsProxy()) {
+        if (eIsProxy())
             return super.toString();
-        }
 
-        StringBuffer result = new StringBuffer(super.toString());
+        StringBuilder result = new StringBuilder(super.toString());
         result.append(" (version: ");
         result.append(version);
         result.append(", modificationDate: ");

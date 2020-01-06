@@ -34,6 +34,7 @@ package org.talend.core.model.metadata.builder.connection;
  *   <li>{@link org.talend.core.model.metadata.builder.connection.FTPConnection#getProxypassword <em>Proxypassword</em>}</li>
  *   <li>{@link org.talend.core.model.metadata.builder.connection.FTPConnection#getCustomEncode <em>Custom Encode</em>}</li>
  *   <li>{@link org.talend.core.model.metadata.builder.connection.FTPConnection#isUseFileNameEncoding <em>Use File Name Encoding</em>}</li>
+ *   <li>{@link org.talend.core.model.metadata.builder.connection.FTPConnection#getTimeout <em>Timeout</em>}</li>
  * </ul>
  *
  * @see org.talend.core.model.metadata.builder.connection.ConnectionPackage#getFTPConnection()
@@ -561,5 +562,31 @@ public interface FTPConnection extends Connection {
      * @generated
      */
     void setUseFileNameEncoding(boolean value);
+
+    /**
+     * Returns the value of the '<em><b>Timeout</b></em>' attribute.
+     * <!-- begin-user-doc -->
+     * <p>
+     * If the meaning of the '<em>Timeout</em>' attribute isn't clear,
+     * there really should be more of a description here...
+     * </p>
+     * <!-- end-user-doc -->
+     * @return the value of the '<em>Timeout</em>' attribute.
+     * @see #setTimeout(String)
+     * @see org.talend.core.model.metadata.builder.connection.ConnectionPackage#getFTPConnection_Timeout()
+     * @model
+     * @generated
+     */
+    String getTimeout();
+
+    /**
+     * Sets the value of the '{@link org.talend.core.model.metadata.builder.connection.FTPConnection#getTimeout <em>Timeout</em>}' attribute.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @param value the new value of the '<em>Timeout</em>' attribute.
+     * @see #getTimeout()
+     * @generated
+     */
+    void setTimeout(String value);
 
 } // FTPConnection

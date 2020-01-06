@@ -29,11 +29,11 @@ import org.talend.core.model.metadata.builder.connection.Query;
  * <!-- end-user-doc -->
  * <p>
  * The following features are implemented:
+ * </p>
  * <ul>
  *   <li>{@link org.talend.core.model.metadata.builder.connection.impl.QueriesConnectionImpl#getConnection <em>Connection</em>}</li>
  *   <li>{@link org.talend.core.model.metadata.builder.connection.impl.QueriesConnectionImpl#getQuery <em>Query</em>}</li>
  * </ul>
- * </p>
  *
  * @generated
  */
@@ -109,8 +109,8 @@ public class QueriesConnectionImpl extends EObjectImpl implements QueriesConnect
             if (msgs != null)
                 msgs.dispatch();
         } else if (eNotificationRequired())
-            eNotify(new ENotificationImpl(this, Notification.SET, ConnectionPackage.QUERIES_CONNECTION__CONNECTION,
-                    newConnection, newConnection));
+            eNotify(new ENotificationImpl(this, Notification.SET, ConnectionPackage.QUERIES_CONNECTION__CONNECTION, newConnection,
+                    newConnection));
     }
 
     /**

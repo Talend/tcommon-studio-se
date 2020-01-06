@@ -15,6 +15,7 @@ package org.talend.commons.runtime.service;
 import java.io.File;
 import java.util.Collection;
 import java.util.Collections;
+import java.util.Map;
 
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.osgi.framework.BundleContext;
@@ -39,9 +40,7 @@ public interface ITaCoKitService {
 
     boolean isTaCoKitCar(File file, IProgressMonitor monitor) throws Exception;
 
-    boolean isNeedMigration(String projectLabel) throws Exception;
-
-    void checkMigration(final IProgressMonitor monitor) throws Exception;
+    boolean isNeedMigration(String componentName, Map<String, String> properties);
 
     public static ITaCoKitService getInstance() throws Exception {
         BundleContext bc = FrameworkUtil.getBundle(ITaCoKitService.class).getBundleContext();

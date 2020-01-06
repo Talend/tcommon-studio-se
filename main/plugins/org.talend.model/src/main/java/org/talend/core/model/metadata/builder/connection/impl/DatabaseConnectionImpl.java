@@ -23,6 +23,7 @@ import org.talend.core.model.metadata.builder.connection.DatabaseConnection;
  * end-user-doc -->
  * <p>
  * The following features are implemented:
+ * </p>
  * <ul>
  *   <li>{@link org.talend.core.model.metadata.builder.connection.impl.DatabaseConnectionImpl#getDatabaseType <em>Database Type</em>}</li>
  *   <li>{@link org.talend.core.model.metadata.builder.connection.impl.DatabaseConnectionImpl#getDriverJarPath <em>Driver Jar Path</em>}</li>
@@ -51,7 +52,6 @@ import org.talend.core.model.metadata.builder.connection.DatabaseConnection;
  *   <li>{@link org.talend.core.model.metadata.builder.connection.impl.DatabaseConnectionImpl#getUiSchema <em>Ui Schema</em>}</li>
  *   <li>{@link org.talend.core.model.metadata.builder.connection.impl.DatabaseConnectionImpl#getParameters <em>Parameters</em>}</li>
  * </ul>
- * </p>
  *
  * @generated
  */
@@ -921,8 +921,8 @@ public class DatabaseConnectionImpl extends ConnectionImpl implements DatabaseCo
         String oldProductId = productId;
         productId = newProductId;
         if (eNotificationRequired())
-            eNotify(new ENotificationImpl(this, Notification.SET, ConnectionPackage.DATABASE_CONNECTION__PRODUCT_ID,
-                    oldProductId, productId));
+            eNotify(new ENotificationImpl(this, Notification.SET, ConnectionPackage.DATABASE_CONNECTION__PRODUCT_ID, oldProductId,
+                    productId));
     }
 
     /**
@@ -1001,8 +1001,8 @@ public class DatabaseConnectionImpl extends ConnectionImpl implements DatabaseCo
         boolean oldSystemSQL = systemSQL;
         systemSQL = newSystemSQL;
         if (eNotificationRequired())
-            eNotify(new ENotificationImpl(this, Notification.SET, ConnectionPackage.DATABASE_CONNECTION__SYSTEM_SQL,
-                    oldSystemSQL, systemSQL));
+            eNotify(new ENotificationImpl(this, Notification.SET, ConnectionPackage.DATABASE_CONNECTION__SYSTEM_SQL, oldSystemSQL,
+                    systemSQL));
     }
 
     /**
@@ -1182,8 +1182,8 @@ public class DatabaseConnectionImpl extends ConnectionImpl implements DatabaseCo
         switch (featureID) {
         case ConnectionPackage.DATABASE_CONNECTION__CDC_CONNS:
             if (cdcConns != null)
-                msgs = ((InternalEObject) cdcConns).eInverseRemove(this, EOPPOSITE_FEATURE_BASE
-                        - ConnectionPackage.DATABASE_CONNECTION__CDC_CONNS, null, msgs);
+                msgs = ((InternalEObject) cdcConns).eInverseRemove(this,
+                        EOPPOSITE_FEATURE_BASE - ConnectionPackage.DATABASE_CONNECTION__CDC_CONNS, null, msgs);
             return basicSetCdcConns((CDCConnection) otherEnd, msgs);
         }
         return super.eInverseAdd(otherEnd, featureID, msgs);
@@ -1533,8 +1533,8 @@ public class DatabaseConnectionImpl extends ConnectionImpl implements DatabaseCo
         case ConnectionPackage.DATABASE_CONNECTION__URL:
             return URL_EDEFAULT == null ? url != null : !URL_EDEFAULT.equals(url);
         case ConnectionPackage.DATABASE_CONNECTION__DB_VERSION_STRING:
-            return DB_VERSION_STRING_EDEFAULT == null ? dbVersionString != null : !DB_VERSION_STRING_EDEFAULT
-                    .equals(dbVersionString);
+            return DB_VERSION_STRING_EDEFAULT == null ? dbVersionString != null
+                    : !DB_VERSION_STRING_EDEFAULT.equals(dbVersionString);
         case ConnectionPackage.DATABASE_CONNECTION__PORT:
             return PORT_EDEFAULT == null ? port != null : !PORT_EDEFAULT.equals(port);
         case ConnectionPackage.DATABASE_CONNECTION__USERNAME:
@@ -1562,8 +1562,8 @@ public class DatabaseConnectionImpl extends ConnectionImpl implements DatabaseCo
         case ConnectionPackage.DATABASE_CONNECTION__DB_ROOT_PATH:
             return DB_ROOT_PATH_EDEFAULT == null ? dbRootPath != null : !DB_ROOT_PATH_EDEFAULT.equals(dbRootPath);
         case ConnectionPackage.DATABASE_CONNECTION__ADDITIONAL_PARAMS:
-            return ADDITIONAL_PARAMS_EDEFAULT == null ? additionalParams != null : !ADDITIONAL_PARAMS_EDEFAULT
-                    .equals(additionalParams);
+            return ADDITIONAL_PARAMS_EDEFAULT == null ? additionalParams != null
+                    : !ADDITIONAL_PARAMS_EDEFAULT.equals(additionalParams);
         case ConnectionPackage.DATABASE_CONNECTION__STANDARD_SQL:
             return standardSQL != STANDARD_SQL_EDEFAULT;
         case ConnectionPackage.DATABASE_CONNECTION__SYSTEM_SQL:
@@ -1591,7 +1591,7 @@ public class DatabaseConnectionImpl extends ConnectionImpl implements DatabaseCo
         if (eIsProxy())
             return super.toString();
 
-        StringBuffer result = new StringBuffer(super.toString());
+        StringBuilder result = new StringBuilder(super.toString());
         result.append(" (DatabaseType: ");
         result.append(databaseType);
         result.append(", DriverJarPath: ");

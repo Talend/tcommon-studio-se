@@ -13,6 +13,7 @@ import org.eclipse.emf.ecore.EObject;
  *
  * <p>
  * The following features are supported:
+ * </p>
  * <ul>
  *   <li>{@link org.talend.core.model.metadata.builder.connection.SAPFunctionParameter#getName <em>Name</em>}</li>
  *   <li>{@link org.talend.core.model.metadata.builder.connection.SAPFunctionParameter#getType <em>Type</em>}</li>
@@ -23,7 +24,6 @@ import org.eclipse.emf.ecore.EObject;
  *   <li>{@link org.talend.core.model.metadata.builder.connection.SAPFunctionParameter#getChildren <em>Children</em>}</li>
  *   <li>{@link org.talend.core.model.metadata.builder.connection.SAPFunctionParameter#isTableResideInTables <em>Table Reside In Tables</em>}</li>
  * </ul>
- * </p>
  *
  * @see org.talend.core.model.metadata.builder.connection.ConnectionPackage#getSAPFunctionParameter()
  * @model

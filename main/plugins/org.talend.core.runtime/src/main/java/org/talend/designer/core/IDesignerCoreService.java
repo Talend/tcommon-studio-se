@@ -159,8 +159,6 @@ public interface IDesignerCoreService extends IService {
 
     public Set<ModuleNeeded> getNeededLibrariesForProcess(IProcess process, boolean withChildrens);
 
-    public Set<ModuleNeeded> getNeededLibrariesForProcessBeforeUpdateLog(IProcess process, boolean withChildrens);
-
     public Set<ModuleNeeded> getNeededModules(INode node, boolean withChildrens);
 
     public void switchToCurContextsView();
@@ -199,5 +197,7 @@ public interface IDesignerCoreService extends IService {
     boolean isDelegateNode(INode node);
 
     boolean isNeedContextInJar(IProcess process);
+
+    public String[] getNeedRemoveModulesForLog4j();
 
 }

@@ -91,7 +91,7 @@ public class ConstantsPackageImpl extends EPackageImpl implements ConstantsPacka
 
     /**
      * Creates, registers, and initializes the <b>Package</b> for this model, and for any others upon which it depends.
-     * 
+     *
      * <p>This method is used to initialize {@link ConstantsPackage#eINSTANCE} when that field is accessed.
      * Clients should not invoke it directly. Instead, they should simply access that field to obtain the package.
      * <!-- begin-user-doc -->
@@ -106,8 +106,10 @@ public class ConstantsPackageImpl extends EPackageImpl implements ConstantsPacka
             return (ConstantsPackage) EPackage.Registry.INSTANCE.getEPackage(ConstantsPackage.eNS_URI);
 
         // Obtain or create and register package
-        ConstantsPackageImpl theConstantsPackage = (ConstantsPackageImpl) (EPackage.Registry.INSTANCE.get(eNS_URI) instanceof ConstantsPackageImpl ? EPackage.Registry.INSTANCE
-                .get(eNS_URI) : new ConstantsPackageImpl());
+        Object registeredConstantsPackage = EPackage.Registry.INSTANCE.get(eNS_URI);
+        ConstantsPackageImpl theConstantsPackage = registeredConstantsPackage instanceof ConstantsPackageImpl
+                ? (ConstantsPackageImpl) registeredConstantsPackage
+                : new ConstantsPackageImpl();
 
         isInited = true;
 
@@ -145,20 +147,22 @@ public class ConstantsPackageImpl extends EPackageImpl implements ConstantsPacka
         ModelPackage.eINSTANCE.eClass();
 
         // Obtain or create and register interdependencies
-        ConnectionPackageImpl theConnectionPackage = (ConnectionPackageImpl) (EPackage.Registry.INSTANCE
-                .getEPackage(ConnectionPackage.eNS_URI) instanceof ConnectionPackageImpl ? EPackage.Registry.INSTANCE
-                .getEPackage(ConnectionPackage.eNS_URI) : ConnectionPackage.eINSTANCE);
-        RelationalPackageImpl theRelationalPackage_1 = (RelationalPackageImpl) (EPackage.Registry.INSTANCE
-                .getEPackage(org.talend.cwm.relational.RelationalPackage.eNS_URI) instanceof RelationalPackageImpl ? EPackage.Registry.INSTANCE
-                .getEPackage(org.talend.cwm.relational.RelationalPackage.eNS_URI)
+        Object registeredPackage = EPackage.Registry.INSTANCE.getEPackage(ConnectionPackage.eNS_URI);
+        ConnectionPackageImpl theConnectionPackage = (ConnectionPackageImpl) (registeredPackage instanceof ConnectionPackageImpl
+                ? registeredPackage
+                : ConnectionPackage.eINSTANCE);
+        registeredPackage = EPackage.Registry.INSTANCE.getEPackage(org.talend.cwm.relational.RelationalPackage.eNS_URI);
+        RelationalPackageImpl theRelationalPackage_1 = (RelationalPackageImpl) (registeredPackage instanceof RelationalPackageImpl
+                ? registeredPackage
                 : org.talend.cwm.relational.RelationalPackage.eINSTANCE);
-        SoftwaredeploymentPackageImpl theSoftwaredeploymentPackage_1 = (SoftwaredeploymentPackageImpl) (EPackage.Registry.INSTANCE
-                .getEPackage(org.talend.cwm.softwaredeployment.SoftwaredeploymentPackage.eNS_URI) instanceof SoftwaredeploymentPackageImpl ? EPackage.Registry.INSTANCE
-                .getEPackage(org.talend.cwm.softwaredeployment.SoftwaredeploymentPackage.eNS_URI)
+        registeredPackage = EPackage.Registry.INSTANCE
+                .getEPackage(org.talend.cwm.softwaredeployment.SoftwaredeploymentPackage.eNS_URI);
+        SoftwaredeploymentPackageImpl theSoftwaredeploymentPackage_1 = (SoftwaredeploymentPackageImpl) (registeredPackage instanceof SoftwaredeploymentPackageImpl
+                ? registeredPackage
                 : org.talend.cwm.softwaredeployment.SoftwaredeploymentPackage.eINSTANCE);
-        XmlPackageImpl theXmlPackage_1 = (XmlPackageImpl) (EPackage.Registry.INSTANCE
-                .getEPackage(org.talend.cwm.xml.XmlPackage.eNS_URI) instanceof XmlPackageImpl ? EPackage.Registry.INSTANCE
-                .getEPackage(org.talend.cwm.xml.XmlPackage.eNS_URI) : org.talend.cwm.xml.XmlPackage.eINSTANCE);
+        registeredPackage = EPackage.Registry.INSTANCE.getEPackage(org.talend.cwm.xml.XmlPackage.eNS_URI);
+        XmlPackageImpl theXmlPackage_1 = (XmlPackageImpl) (registeredPackage instanceof XmlPackageImpl ? registeredPackage
+                : org.talend.cwm.xml.XmlPackage.eINSTANCE);
 
         // Create package meta-data objects
         theConstantsPackage.createPackageContents();

@@ -14,6 +14,7 @@ import org.eclipse.emf.ecore.EObject;
  *
  * <p>
  * The following features are supported:
+ * </p>
  * <ul>
  *   <li>{@link org.talend.core.model.metadata.builder.connection.HL7FileNode#getFilePath <em>File Path</em>}</li>
  *   <li>{@link org.talend.core.model.metadata.builder.connection.HL7FileNode#getOrder <em>Order</em>}</li>
@@ -22,7 +23,6 @@ import org.eclipse.emf.ecore.EObject;
  *   <li>{@link org.talend.core.model.metadata.builder.connection.HL7FileNode#getRelatedColumn <em>Related Column</em>}</li>
  *   <li>{@link org.talend.core.model.metadata.builder.connection.HL7FileNode#isRepeatable <em>Repeatable</em>}</li>
  * </ul>
- * </p>
  *
  * @see org.talend.core.model.metadata.builder.connection.ConnectionPackage#getHL7FileNode()
  * @model

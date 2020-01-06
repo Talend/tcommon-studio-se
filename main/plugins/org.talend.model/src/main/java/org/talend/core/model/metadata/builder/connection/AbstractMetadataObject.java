@@ -20,6 +20,7 @@ import org.eclipse.emf.ecore.EObject;
  *
  * <p>
  * The following features are supported:
+ * </p>
  * <ul>
  *   <li>{@link org.talend.core.model.metadata.builder.connection.AbstractMetadataObject#getProperties <em>Properties</em>}</li>
  *   <li>{@link org.talend.core.model.metadata.builder.connection.AbstractMetadataObject#getId <em>Id</em>}</li>
@@ -29,7 +30,6 @@ import org.eclipse.emf.ecore.EObject;
  *   <li>{@link org.talend.core.model.metadata.builder.connection.AbstractMetadataObject#isSynchronised <em>Synchronised</em>}</li>
  *   <li>{@link org.talend.core.model.metadata.builder.connection.AbstractMetadataObject#isDivergency <em>Divergency</em>}</li>
  * </ul>
- * </p>
  *
  * @see org.talend.core.model.metadata.builder.connection.ConnectionPackage#getAbstractMetadataObject()
  * @model abstract="true"
@@ -57,6 +57,7 @@ public interface AbstractMetadataObject extends ModelElement {
      * @model default="" dataType="org.talend.core.model.metadata.builder.connection.Map" required="true"
      * @generated
      */
+    @Deprecated
     HashMap getProperties();
 
     /**
@@ -64,8 +65,10 @@ public interface AbstractMetadataObject extends ModelElement {
      * <!-- begin-user-doc --> <!-- end-user-doc -->
      * @param value the new value of the '<em>Properties</em>' attribute.
      * @see #getProperties()
+     * @deprecated See {@link org.talend.core.model.metadata.builder.connection.AbstractMetadataObject#getProperties() model documentation} for details.
      * @generated
      */
+    @Deprecated
     void setProperties(HashMap value);
 
     /**

@@ -28,6 +28,7 @@ import org.talend.core.model.metadata.builder.connection.SAPFunctionParameter;
  * <!-- end-user-doc -->
  * <p>
  * The following features are implemented:
+ * </p>
  * <ul>
  *   <li>{@link org.talend.core.model.metadata.builder.connection.impl.SAPFunctionParameterImpl#getName <em>Name</em>}</li>
  *   <li>{@link org.talend.core.model.metadata.builder.connection.impl.SAPFunctionParameterImpl#getType <em>Type</em>}</li>
@@ -38,7 +39,6 @@ import org.talend.core.model.metadata.builder.connection.SAPFunctionParameter;
  *   <li>{@link org.talend.core.model.metadata.builder.connection.impl.SAPFunctionParameterImpl#getChildren <em>Children</em>}</li>
  *   <li>{@link org.talend.core.model.metadata.builder.connection.impl.SAPFunctionParameterImpl#isTableResideInTables <em>Table Reside In Tables</em>}</li>
  * </ul>
- * </p>
  *
  * @generated
  */
@@ -317,8 +317,8 @@ public class SAPFunctionParameterImpl extends EObjectImpl implements SAPFunction
         boolean oldChanging = changing;
         changing = newChanging;
         if (eNotificationRequired())
-            eNotify(new ENotificationImpl(this, Notification.SET, ConnectionPackage.SAP_FUNCTION_PARAMETER__CHANGING,
-                    oldChanging, changing));
+            eNotify(new ENotificationImpl(this, Notification.SET, ConnectionPackage.SAP_FUNCTION_PARAMETER__CHANGING, oldChanging,
+                    changing));
     }
 
     /**
@@ -375,7 +375,8 @@ public class SAPFunctionParameterImpl extends EObjectImpl implements SAPFunction
         tableResideInTables = newTableResideInTables;
         if (eNotificationRequired())
             eNotify(new ENotificationImpl(this, Notification.SET,
-                    ConnectionPackage.SAP_FUNCTION_PARAMETER__TABLE_RESIDE_IN_TABLES, oldTableResideInTables, tableResideInTables));
+                    ConnectionPackage.SAP_FUNCTION_PARAMETER__TABLE_RESIDE_IN_TABLES, oldTableResideInTables,
+                    tableResideInTables));
     }
 
     /**
@@ -532,7 +533,7 @@ public class SAPFunctionParameterImpl extends EObjectImpl implements SAPFunction
         if (eIsProxy())
             return super.toString();
 
-        StringBuffer result = new StringBuffer(super.toString());
+        StringBuilder result = new StringBuilder(super.toString());
         result.append(" (name: ");
         result.append(name);
         result.append(", type: ");

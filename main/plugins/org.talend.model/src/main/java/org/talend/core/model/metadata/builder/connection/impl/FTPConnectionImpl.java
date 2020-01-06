@@ -42,6 +42,7 @@ import org.talend.core.model.metadata.builder.connection.FTPConnection;
  *   <li>{@link org.talend.core.model.metadata.builder.connection.impl.FTPConnectionImpl#getProxypassword <em>Proxypassword</em>}</li>
  *   <li>{@link org.talend.core.model.metadata.builder.connection.impl.FTPConnectionImpl#getCustomEncode <em>Custom Encode</em>}</li>
  *   <li>{@link org.talend.core.model.metadata.builder.connection.impl.FTPConnectionImpl#isUseFileNameEncoding <em>Use File Name Encoding</em>}</li>
+ *   <li>{@link org.talend.core.model.metadata.builder.connection.impl.FTPConnectionImpl#getTimeout <em>Timeout</em>}</li>
  * </ul>
  *
  * @generated
@@ -447,6 +448,26 @@ public class FTPConnectionImpl extends ConnectionImpl implements FTPConnection {
      * @ordered
      */
     protected boolean useFileNameEncoding = USE_FILE_NAME_ENCODING_EDEFAULT;
+
+    /**
+     * The default value of the '{@link #getTimeout() <em>Timeout</em>}' attribute.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @see #getTimeout()
+     * @generated
+     * @ordered
+     */
+    protected static final String TIMEOUT_EDEFAULT = null;
+
+    /**
+     * The cached value of the '{@link #getTimeout() <em>Timeout</em>}' attribute.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @see #getTimeout()
+     * @generated
+     * @ordered
+     */
+    protected String timeout = TIMEOUT_EDEFAULT;
 
     /**
      * <!-- begin-user-doc -->
@@ -906,6 +927,28 @@ public class FTPConnectionImpl extends ConnectionImpl implements FTPConnection {
      * <!-- end-user-doc -->
      * @generated
      */
+    public String getTimeout() {
+        return timeout;
+    }
+
+    /**
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     */
+    public void setTimeout(String newTimeout) {
+        String oldTimeout = timeout;
+        timeout = newTimeout;
+        if (eNotificationRequired())
+            eNotify(new ENotificationImpl(this, Notification.SET, ConnectionPackage.FTP_CONNECTION__TIMEOUT, oldTimeout,
+                    timeout));
+    }
+
+    /**
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     */
     @Override
     public Object eGet(int featureID, boolean resolve, boolean coreType) {
         switch (featureID) {
@@ -949,6 +992,8 @@ public class FTPConnectionImpl extends ConnectionImpl implements FTPConnection {
             return getCustomEncode();
         case ConnectionPackage.FTP_CONNECTION__USE_FILE_NAME_ENCODING:
             return isUseFileNameEncoding();
+        case ConnectionPackage.FTP_CONNECTION__TIMEOUT:
+            return getTimeout();
         }
         return super.eGet(featureID, resolve, coreType);
     }
@@ -1020,6 +1065,9 @@ public class FTPConnectionImpl extends ConnectionImpl implements FTPConnection {
             return;
         case ConnectionPackage.FTP_CONNECTION__USE_FILE_NAME_ENCODING:
             setUseFileNameEncoding((Boolean) newValue);
+            return;
+        case ConnectionPackage.FTP_CONNECTION__TIMEOUT:
+            setTimeout((String) newValue);
             return;
         }
         super.eSet(featureID, newValue);
@@ -1093,6 +1141,9 @@ public class FTPConnectionImpl extends ConnectionImpl implements FTPConnection {
         case ConnectionPackage.FTP_CONNECTION__USE_FILE_NAME_ENCODING:
             setUseFileNameEncoding(USE_FILE_NAME_ENCODING_EDEFAULT);
             return;
+        case ConnectionPackage.FTP_CONNECTION__TIMEOUT:
+            setTimeout(TIMEOUT_EDEFAULT);
+            return;
         }
         super.eUnset(featureID);
     }
@@ -1146,6 +1197,8 @@ public class FTPConnectionImpl extends ConnectionImpl implements FTPConnection {
             return CUSTOM_ENCODE_EDEFAULT == null ? customEncode != null : !CUSTOM_ENCODE_EDEFAULT.equals(customEncode);
         case ConnectionPackage.FTP_CONNECTION__USE_FILE_NAME_ENCODING:
             return useFileNameEncoding != USE_FILE_NAME_ENCODING_EDEFAULT;
+        case ConnectionPackage.FTP_CONNECTION__TIMEOUT:
+            return TIMEOUT_EDEFAULT == null ? timeout != null : !TIMEOUT_EDEFAULT.equals(timeout);
         }
         return super.eIsSet(featureID);
     }
@@ -1160,7 +1213,7 @@ public class FTPConnectionImpl extends ConnectionImpl implements FTPConnection {
         if (eIsProxy())
             return super.toString();
 
-        StringBuffer result = new StringBuffer(super.toString());
+        StringBuilder result = new StringBuilder(super.toString());
         result.append(" (Host: ");
         result.append(host);
         result.append(", Port: ");
@@ -1201,6 +1254,8 @@ public class FTPConnectionImpl extends ConnectionImpl implements FTPConnection {
         result.append(customEncode);
         result.append(", UseFileNameEncoding: ");
         result.append(useFileNameEncoding);
+        result.append(", Timeout: ");
+        result.append(timeout);
         result.append(')');
         return result.toString();
     }

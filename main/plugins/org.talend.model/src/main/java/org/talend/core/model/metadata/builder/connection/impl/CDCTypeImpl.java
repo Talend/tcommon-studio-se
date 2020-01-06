@@ -25,13 +25,13 @@ import org.talend.core.model.metadata.builder.connection.SubscriberTable;
  * <!-- begin-user-doc --> An implementation of the model object '<em><b>CDC Type</b></em>'. <!-- end-user-doc -->
  * <p>
  * The following features are implemented:
+ * </p>
  * <ul>
  *   <li>{@link org.talend.core.model.metadata.builder.connection.impl.CDCTypeImpl#getLinkDB <em>Link DB</em>}</li>
  *   <li>{@link org.talend.core.model.metadata.builder.connection.impl.CDCTypeImpl#getSubscribers <em>Subscribers</em>}</li>
  *   <li>{@link org.talend.core.model.metadata.builder.connection.impl.CDCTypeImpl#getCdcConnection <em>Cdc Connection</em>}</li>
  *   <li>{@link org.talend.core.model.metadata.builder.connection.impl.CDCTypeImpl#getJournalName <em>Journal Name</em>}</li>
  * </ul>
- * </p>
  *
  * @generated
  */
@@ -314,7 +314,7 @@ public class CDCTypeImpl extends AbstractMetadataObjectImpl implements CDCType {
         if (eIsProxy())
             return super.toString();
 
-        StringBuffer result = new StringBuffer(super.toString());
+        StringBuilder result = new StringBuilder(super.toString());
         result.append(" (linkDB: ");
         result.append(linkDB);
         result.append(", journalName: ");

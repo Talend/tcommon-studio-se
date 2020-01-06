@@ -29,6 +29,7 @@ import org.talend.core.model.metadata.builder.connection.XmlXPathLoopDescriptor;
  * <!-- end-user-doc -->
  * <p>
  * The following features are implemented:
+ * </p>
  * <ul>
  *   <li>{@link org.talend.core.model.metadata.builder.connection.impl.XmlFileConnectionImpl#getXsdFilePath <em>Xsd File Path</em>}</li>
  *   <li>{@link org.talend.core.model.metadata.builder.connection.impl.XmlFileConnectionImpl#getXmlFilePath <em>Xml File Path</em>}</li>
@@ -44,7 +45,6 @@ import org.talend.core.model.metadata.builder.connection.XmlXPathLoopDescriptor;
  *   <li>{@link org.talend.core.model.metadata.builder.connection.impl.XmlFileConnectionImpl#getFileContent <em>File Content</em>}</li>
  *   <li>{@link org.talend.core.model.metadata.builder.connection.impl.XmlFileConnectionImpl#getTargetNameSpace <em>Target Name Space</em>}</li>
  * </ul>
- * </p>
  *
  * @generated
  */
@@ -750,8 +750,8 @@ public class XmlFileConnectionImpl extends ConnectionImpl implements XmlFileConn
         case ConnectionPackage.XML_FILE_CONNECTION__FILE_CONTENT:
             return FILE_CONTENT_EDEFAULT == null ? fileContent != null : !FILE_CONTENT_EDEFAULT.equals(fileContent);
         case ConnectionPackage.XML_FILE_CONNECTION__TARGET_NAME_SPACE:
-            return TARGET_NAME_SPACE_EDEFAULT == null ? targetNameSpace != null : !TARGET_NAME_SPACE_EDEFAULT
-                    .equals(targetNameSpace);
+            return TARGET_NAME_SPACE_EDEFAULT == null ? targetNameSpace != null
+                    : !TARGET_NAME_SPACE_EDEFAULT.equals(targetNameSpace);
         }
         return super.eIsSet(featureID);
     }
@@ -766,7 +766,7 @@ public class XmlFileConnectionImpl extends ConnectionImpl implements XmlFileConn
         if (eIsProxy())
             return super.toString();
 
-        StringBuffer result = new StringBuffer(super.toString());
+        StringBuilder result = new StringBuilder(super.toString());
         result.append(" (XsdFilePath: ");
         result.append(xsdFilePath);
         result.append(", XmlFilePath: ");

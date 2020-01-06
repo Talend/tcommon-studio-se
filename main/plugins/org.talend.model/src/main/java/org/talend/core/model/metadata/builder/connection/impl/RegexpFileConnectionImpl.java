@@ -18,10 +18,10 @@ import org.talend.core.model.metadata.builder.connection.RegexpFileConnection;
  * <!-- end-user-doc -->
  * <p>
  * The following features are implemented:
+ * </p>
  * <ul>
  *   <li>{@link org.talend.core.model.metadata.builder.connection.impl.RegexpFileConnectionImpl#getFieldSeparatorType <em>Field Separator Type</em>}</li>
  * </ul>
- * </p>
  *
  * @generated
  */
@@ -156,7 +156,7 @@ public class RegexpFileConnectionImpl extends FileConnectionImpl implements Rege
         if (eIsProxy())
             return super.toString();
 
-        StringBuffer result = new StringBuffer(super.toString());
+        StringBuilder result = new StringBuilder(super.toString());
         result.append(" (FieldSeparatorType: ");
         result.append(fieldSeparatorType);
         result.append(')');

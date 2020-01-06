@@ -21,6 +21,7 @@ import orgomg.cwm.resource.relational.enumerations.NullableType;
  *
  * <p>
  * The following features are supported:
+ * </p>
  * <ul>
  *   <li>{@link org.talend.cwm.relational.TdSqlDataType#getJavaDataType <em>Java Data Type</em>}</li>
  *   <li>{@link org.talend.cwm.relational.TdSqlDataType#getNullable <em>Nullable</em>}</li>
@@ -30,7 +31,6 @@ import orgomg.cwm.resource.relational.enumerations.NullableType;
  *   <li>{@link org.talend.cwm.relational.TdSqlDataType#getLocalTypeName <em>Local Type Name</em>}</li>
  *   <li>{@link org.talend.cwm.relational.TdSqlDataType#getSearchable <em>Searchable</em>}</li>
  * </ul>
- * </p>
  *
  * @see org.talend.cwm.relational.RelationalPackage#getTdSqlDataType()
  * @model

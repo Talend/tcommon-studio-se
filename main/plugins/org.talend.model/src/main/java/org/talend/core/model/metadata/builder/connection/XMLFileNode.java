@@ -14,6 +14,7 @@ import org.eclipse.emf.ecore.EObject;
  *
  * <p>
  * The following features are supported:
+ * </p>
  * <ul>
  *   <li>{@link org.talend.core.model.metadata.builder.connection.XMLFileNode#getXMLPath <em>XML Path</em>}</li>
  *   <li>{@link org.talend.core.model.metadata.builder.connection.XMLFileNode#getRelatedColumn <em>Related Column</em>}</li>
@@ -22,7 +23,6 @@ import org.eclipse.emf.ecore.EObject;
  *   <li>{@link org.talend.core.model.metadata.builder.connection.XMLFileNode#getOrder <em>Order</em>}</li>
  *   <li>{@link org.talend.core.model.metadata.builder.connection.XMLFileNode#getType <em>Type</em>}</li>
  * </ul>
- * </p>
  *
  * @see org.talend.core.model.metadata.builder.connection.ConnectionPackage#getXMLFileNode()
  * @model

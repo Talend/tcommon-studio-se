@@ -25,13 +25,13 @@ import orgomg.cwm.resource.xml.impl.ElementTypeImpl;
  * <!-- end-user-doc -->
  * <p>
  * The following features are implemented:
+ * </p>
  * <ul>
  *   <li>{@link org.talend.cwm.xml.impl.TdXmlElementTypeImpl#getXsdElementDeclaration <em>Xsd Element Declaration</em>}</li>
  *   <li>{@link org.talend.cwm.xml.impl.TdXmlElementTypeImpl#getOwnedDocument <em>Owned Document</em>}</li>
  *   <li>{@link org.talend.cwm.xml.impl.TdXmlElementTypeImpl#getJavaType <em>Java Type</em>}</li>
  *   <li>{@link org.talend.cwm.xml.impl.TdXmlElementTypeImpl#getXmlContent <em>Xml Content</em>}</li>
  * </ul>
- * </p>
  *
  * @generated
  */
@@ -220,8 +220,8 @@ public class TdXmlElementTypeImpl extends ElementTypeImpl implements TdXmlElemen
             xmlContent = (TdXmlContent) eResolveProxy(oldXmlContent);
             if (xmlContent != oldXmlContent) {
                 InternalEObject newXmlContent = (InternalEObject) xmlContent;
-                NotificationChain msgs = oldXmlContent.eInverseRemove(this, EOPPOSITE_FEATURE_BASE
-                        - XmlPackage.TD_XML_ELEMENT_TYPE__XML_CONTENT, null, null);
+                NotificationChain msgs = oldXmlContent.eInverseRemove(this,
+                        EOPPOSITE_FEATURE_BASE - XmlPackage.TD_XML_ELEMENT_TYPE__XML_CONTENT, null, null);
                 if (newXmlContent.eInternalContainer() == null) {
                     msgs = newXmlContent.eInverseAdd(this, EOPPOSITE_FEATURE_BASE - XmlPackage.TD_XML_ELEMENT_TYPE__XML_CONTENT,
                             null, msgs);
@@ -273,11 +273,11 @@ public class TdXmlElementTypeImpl extends ElementTypeImpl implements TdXmlElemen
         if (newXmlContent != xmlContent) {
             NotificationChain msgs = null;
             if (xmlContent != null)
-                msgs = ((InternalEObject) xmlContent).eInverseRemove(this, EOPPOSITE_FEATURE_BASE
-                        - XmlPackage.TD_XML_ELEMENT_TYPE__XML_CONTENT, null, msgs);
+                msgs = ((InternalEObject) xmlContent).eInverseRemove(this,
+                        EOPPOSITE_FEATURE_BASE - XmlPackage.TD_XML_ELEMENT_TYPE__XML_CONTENT, null, msgs);
             if (newXmlContent != null)
-                msgs = ((InternalEObject) newXmlContent).eInverseAdd(this, EOPPOSITE_FEATURE_BASE
-                        - XmlPackage.TD_XML_ELEMENT_TYPE__XML_CONTENT, null, msgs);
+                msgs = ((InternalEObject) newXmlContent).eInverseAdd(this,
+                        EOPPOSITE_FEATURE_BASE - XmlPackage.TD_XML_ELEMENT_TYPE__XML_CONTENT, null, msgs);
             msgs = basicSetXmlContent(newXmlContent, msgs);
             if (msgs != null)
                 msgs.dispatch();
@@ -426,7 +426,7 @@ public class TdXmlElementTypeImpl extends ElementTypeImpl implements TdXmlElemen
         if (eIsProxy())
             return super.toString();
 
-        StringBuffer result = new StringBuffer(super.toString());
+        StringBuilder result = new StringBuilder(super.toString());
         result.append(" (javaType: ");
         result.append(javaType);
         result.append(')');

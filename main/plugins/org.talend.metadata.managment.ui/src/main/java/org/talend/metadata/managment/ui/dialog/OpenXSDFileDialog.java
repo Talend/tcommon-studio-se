@@ -15,6 +15,8 @@ package org.talend.metadata.managment.ui.dialog;
 import org.eclipse.core.runtime.Path;
 import org.eclipse.jface.dialogs.TitleAreaDialog;
 import org.eclipse.swt.SWT;
+import org.eclipse.swt.events.ModifyEvent;
+import org.eclipse.swt.events.ModifyListener;
 import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.events.SelectionListener;
 import org.eclipse.swt.graphics.Point;
@@ -94,10 +96,18 @@ public class OpenXSDFileDialog extends TitleAreaDialog {
         GridLayout layout = new GridLayout(14, false);
         container.setLayout(layout);
 
+        portableValue = new Path(p.toPortableString()).toOSString();
         final Label label = new Label(container, SWT.NONE);
         final Text text = new Text(container, SWT.BORDER);
         text.setText(new Path(p.toPortableString()).toOSString());
-        portableValue = new Path(p.toPortableString()).toOSString();
+        text.addModifyListener(new ModifyListener() {
+
+            @Override
+            public void modifyText(ModifyEvent e) {
+                portableValue = Path.fromOSString(text.getText()).toPortableString();
+            }
+        });
+
         Button findButton = new Button(container, SWT.NONE);
         findButton.setImage(ImageProvider.getImage(EImage.THREE_DOTS_ICON));
         findButton.addSelectionListener(new SelectionListener() {

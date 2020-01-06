@@ -17,10 +17,10 @@ import org.talend.core.model.metadata.builder.connection.SAPBWTableField;
  * <!-- end-user-doc -->
  * <p>
  * The following features are implemented:
+ * </p>
  * <ul>
  *   <li>{@link org.talend.core.model.metadata.builder.connection.impl.SAPBWTableFieldImpl#getLogicalName <em>Logical Name</em>}</li>
  * </ul>
- * </p>
  *
  * @generated
  */
@@ -155,7 +155,7 @@ public class SAPBWTableFieldImpl extends SAPTableFieldImpl implements SAPBWTable
         if (eIsProxy())
             return super.toString();
 
-        StringBuffer result = new StringBuffer(super.toString());
+        StringBuilder result = new StringBuilder(super.toString());
         result.append(" (logicalName: ");
         result.append(logicalName);
         result.append(')');

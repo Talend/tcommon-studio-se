@@ -16,10 +16,10 @@ import orgomg.cwm.resource.xml.Content;
  *
  * <p>
  * The following features are supported:
+ * </p>
  * <ul>
  *   <li>{@link org.talend.cwm.xml.TdXmlContent#getXmlElements <em>Xml Elements</em>}</li>
  * </ul>
- * </p>
  *
  * @see org.talend.cwm.xml.XmlPackage#getTdXmlContent()
  * @model

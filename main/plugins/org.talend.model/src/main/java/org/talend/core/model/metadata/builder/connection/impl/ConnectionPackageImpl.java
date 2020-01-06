@@ -584,7 +584,7 @@ public class ConnectionPackageImpl extends EPackageImpl implements ConnectionPac
 
     /**
      * Creates, registers, and initializes the <b>Package</b> for this model, and for any others upon which it depends.
-     * 
+     *
      * <p>This method is used to initialize {@link ConnectionPackage#eINSTANCE} when that field is accessed.
      * Clients should not invoke it directly. Instead, they should simply access that field to obtain the package.
      * <!-- begin-user-doc
@@ -599,8 +599,10 @@ public class ConnectionPackageImpl extends EPackageImpl implements ConnectionPac
             return (ConnectionPackage) EPackage.Registry.INSTANCE.getEPackage(ConnectionPackage.eNS_URI);
 
         // Obtain or create and register package
-        ConnectionPackageImpl theConnectionPackage = (ConnectionPackageImpl) (EPackage.Registry.INSTANCE.get(eNS_URI) instanceof ConnectionPackageImpl ? EPackage.Registry.INSTANCE
-                .get(eNS_URI) : new ConnectionPackageImpl());
+        Object registeredConnectionPackage = EPackage.Registry.INSTANCE.get(eNS_URI);
+        ConnectionPackageImpl theConnectionPackage = registeredConnectionPackage instanceof ConnectionPackageImpl
+                ? (ConnectionPackageImpl) registeredConnectionPackage
+                : new ConnectionPackageImpl();
 
         isInited = true;
 
@@ -638,20 +640,22 @@ public class ConnectionPackageImpl extends EPackageImpl implements ConnectionPac
         ModelPackage.eINSTANCE.eClass();
 
         // Obtain or create and register interdependencies
-        RelationalPackageImpl theRelationalPackage_1 = (RelationalPackageImpl) (EPackage.Registry.INSTANCE
-                .getEPackage(org.talend.cwm.relational.RelationalPackage.eNS_URI) instanceof RelationalPackageImpl ? EPackage.Registry.INSTANCE
-                .getEPackage(org.talend.cwm.relational.RelationalPackage.eNS_URI)
+        Object registeredPackage = EPackage.Registry.INSTANCE.getEPackage(org.talend.cwm.relational.RelationalPackage.eNS_URI);
+        RelationalPackageImpl theRelationalPackage_1 = (RelationalPackageImpl) (registeredPackage instanceof RelationalPackageImpl
+                ? registeredPackage
                 : org.talend.cwm.relational.RelationalPackage.eINSTANCE);
-        SoftwaredeploymentPackageImpl theSoftwaredeploymentPackage_1 = (SoftwaredeploymentPackageImpl) (EPackage.Registry.INSTANCE
-                .getEPackage(org.talend.cwm.softwaredeployment.SoftwaredeploymentPackage.eNS_URI) instanceof SoftwaredeploymentPackageImpl ? EPackage.Registry.INSTANCE
-                .getEPackage(org.talend.cwm.softwaredeployment.SoftwaredeploymentPackage.eNS_URI)
+        registeredPackage = EPackage.Registry.INSTANCE
+                .getEPackage(org.talend.cwm.softwaredeployment.SoftwaredeploymentPackage.eNS_URI);
+        SoftwaredeploymentPackageImpl theSoftwaredeploymentPackage_1 = (SoftwaredeploymentPackageImpl) (registeredPackage instanceof SoftwaredeploymentPackageImpl
+                ? registeredPackage
                 : org.talend.cwm.softwaredeployment.SoftwaredeploymentPackage.eINSTANCE);
-        ConstantsPackageImpl theConstantsPackage = (ConstantsPackageImpl) (EPackage.Registry.INSTANCE
-                .getEPackage(ConstantsPackage.eNS_URI) instanceof ConstantsPackageImpl ? EPackage.Registry.INSTANCE
-                .getEPackage(ConstantsPackage.eNS_URI) : ConstantsPackage.eINSTANCE);
-        XmlPackageImpl theXmlPackage_1 = (XmlPackageImpl) (EPackage.Registry.INSTANCE
-                .getEPackage(org.talend.cwm.xml.XmlPackage.eNS_URI) instanceof XmlPackageImpl ? EPackage.Registry.INSTANCE
-                .getEPackage(org.talend.cwm.xml.XmlPackage.eNS_URI) : org.talend.cwm.xml.XmlPackage.eINSTANCE);
+        registeredPackage = EPackage.Registry.INSTANCE.getEPackage(ConstantsPackage.eNS_URI);
+        ConstantsPackageImpl theConstantsPackage = (ConstantsPackageImpl) (registeredPackage instanceof ConstantsPackageImpl
+                ? registeredPackage
+                : ConstantsPackage.eINSTANCE);
+        registeredPackage = EPackage.Registry.INSTANCE.getEPackage(org.talend.cwm.xml.XmlPackage.eNS_URI);
+        XmlPackageImpl theXmlPackage_1 = (XmlPackageImpl) (registeredPackage instanceof XmlPackageImpl ? registeredPackage
+                : org.talend.cwm.xml.XmlPackage.eINSTANCE);
 
         // Create package meta-data objects
         theConnectionPackage.createPackageContents();
@@ -767,8 +771,10 @@ public class ConnectionPackageImpl extends EPackageImpl implements ConnectionPac
 
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
+     * @deprecated See {@link org.talend.core.model.metadata.builder.connection.MetadataColumn#getDefaultValue() model documentation} for details.
      * @generated
      */
+    @Deprecated
     public EAttribute getMetadataColumn_DefaultValue() {
         return (EAttribute) metadataColumnEClass.getEStructuralFeatures().get(1);
     }
@@ -807,8 +813,10 @@ public class ConnectionPackageImpl extends EPackageImpl implements ConnectionPac
 
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
+     * @deprecated See {@link org.talend.core.model.metadata.builder.connection.MetadataColumn#getOriginalField() model documentation} for details.
      * @generated
      */
+    @Deprecated
     public EAttribute getMetadataColumn_OriginalField() {
         return (EAttribute) metadataColumnEClass.getEStructuralFeatures().get(6);
     }
@@ -864,8 +872,10 @@ public class ConnectionPackageImpl extends EPackageImpl implements ConnectionPac
 
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
+     * @deprecated See {@link org.talend.core.model.metadata.builder.connection.AbstractMetadataObject#getProperties() model documentation} for details.
      * @generated
      */
+    @Deprecated
     public EAttribute getAbstractMetadataObject_Properties() {
         return (EAttribute) abstractMetadataObjectEClass.getEStructuralFeatures().get(0);
     }
@@ -928,8 +938,10 @@ public class ConnectionPackageImpl extends EPackageImpl implements ConnectionPac
 
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
+     * @deprecated See {@link org.talend.core.model.metadata.builder.connection.MetadataTable#getSourceName() model documentation} for details.
      * @generated
      */
+    @Deprecated
     public EAttribute getMetadataTable_SourceName() {
         return (EAttribute) metadataTableEClass.getEStructuralFeatures().get(0);
     }
@@ -968,8 +980,10 @@ public class ConnectionPackageImpl extends EPackageImpl implements ConnectionPac
 
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
+     * @deprecated See {@link org.talend.core.model.metadata.builder.connection.MetadataTable#getConnection() model documentation} for details.
      * @generated
      */
+    @Deprecated
     public EReference getMetadataTable_Connection() {
         return (EReference) metadataTableEClass.getEStructuralFeatures().get(5);
     }
@@ -3597,6 +3611,15 @@ public class ConnectionPackageImpl extends EPackageImpl implements ConnectionPac
     }
 
     /**
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     */
+    public EAttribute getFTPConnection_Timeout() {
+        return (EAttribute) ftpConnectionEClass.getEStructuralFeatures().get(20);
+    }
+
+    /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
      * @generated
      */
@@ -4368,6 +4391,7 @@ public class ConnectionPackageImpl extends EPackageImpl implements ConnectionPac
      * <!-- begin-user-doc --> <!-- end-user-doc -->
      * @generated
      */
+    @SuppressWarnings("deprecation")
     public void createPackageContents() {
         if (isCreated)
             return;
@@ -4777,6 +4801,7 @@ public class ConnectionPackageImpl extends EPackageImpl implements ConnectionPac
         createEAttribute(ftpConnectionEClass, FTP_CONNECTION__PROXYPASSWORD);
         createEAttribute(ftpConnectionEClass, FTP_CONNECTION__CUSTOM_ENCODE);
         createEAttribute(ftpConnectionEClass, FTP_CONNECTION__USE_FILE_NAME_ENCODING);
+        createEAttribute(ftpConnectionEClass, FTP_CONNECTION__TIMEOUT);
 
         brmsConnectionEClass = createEClass(BRMS_CONNECTION);
         createEAttribute(brmsConnectionEClass, BRMS_CONNECTION__XML_FIELD);
@@ -4990,8 +5015,8 @@ public class ConnectionPackageImpl extends EPackageImpl implements ConnectionPac
                 !IS_DERIVED, IS_ORDERED);
 
         initEClass(connectionEClass, Connection.class, "Connection", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
-        initEAttribute(getConnection_Version(), ecorePackage.getEString(), "version", null, 0, 1, Connection.class,
-                !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+        initEAttribute(getConnection_Version(), ecorePackage.getEString(), "version", null, 0, 1, Connection.class, !IS_TRANSIENT,
+                !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
         initEReference(getConnection_Queries(), this.getQueriesConnection(), this.getQueriesConnection_Connection(), "queries",
                 null, 0, 1, Connection.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, IS_RESOLVE_PROXIES,
                 !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
@@ -5069,9 +5094,8 @@ public class ConnectionPackageImpl extends EPackageImpl implements ConnectionPac
                 IS_TRANSIENT, IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
         initEAttribute(getMetadataTable_TableType(), ecorePackage.getEString(), "tableType", null, 0, 1, MetadataTable.class,
                 !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
-        initEAttribute(getMetadataTable_AttachedCDC(), ecorePackage.getEBoolean(), "attachedCDC", null, 0, 1,
-                MetadataTable.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED,
-                IS_ORDERED);
+        initEAttribute(getMetadataTable_AttachedCDC(), ecorePackage.getEBoolean(), "attachedCDC", null, 0, 1, MetadataTable.class,
+                !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
         initEAttribute(getMetadataTable_ActivatedCDC(), ecorePackage.getEBoolean(), "activatedCDC", null, 0, 1,
                 MetadataTable.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED,
                 IS_ORDERED);
@@ -5098,9 +5122,9 @@ public class ConnectionPackageImpl extends EPackageImpl implements ConnectionPac
         initEAttribute(getFileConnection_FieldSeparatorValue(), ecorePackage.getEString(), "FieldSeparatorValue", null, 1, 1,
                 FileConnection.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED,
                 IS_ORDERED);
-        initEAttribute(getFileConnection_RowSeparatorType(), this.getRowSeparator(), "RowSeparatorType", "Standart_EOL = 1", 1,
-                1, FileConnection.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE,
-                !IS_DERIVED, IS_ORDERED);
+        initEAttribute(getFileConnection_RowSeparatorType(), this.getRowSeparator(), "RowSeparatorType", "Standart_EOL = 1", 1, 1,
+                FileConnection.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED,
+                IS_ORDERED);
         initEAttribute(getFileConnection_RowSeparatorValue(), ecorePackage.getEString(), "RowSeparatorValue", null, 0, 1,
                 FileConnection.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED,
                 IS_ORDERED);
@@ -5170,8 +5194,8 @@ public class ConnectionPackageImpl extends EPackageImpl implements ConnectionPac
                 !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
         initEAttribute(getMDMConnection_Password(), ecorePackage.getEString(), "Password", null, 0, 1, MDMConnection.class,
                 !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
-        initEAttribute(getMDMConnection_Port(), ecorePackage.getEString(), "Port", null, 0, 1, MDMConnection.class,
-                !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+        initEAttribute(getMDMConnection_Port(), ecorePackage.getEString(), "Port", null, 0, 1, MDMConnection.class, !IS_TRANSIENT,
+                !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
         initEAttribute(getMDMConnection_Server(), ecorePackage.getEString(), "Server", null, 0, 1, MDMConnection.class,
                 !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
         initEAttribute(getMDMConnection_Universe(), ecorePackage.getEString(), "Universe", null, 0, 1, MDMConnection.class,
@@ -5273,8 +5297,8 @@ public class ConnectionPackageImpl extends EPackageImpl implements ConnectionPac
 
         initEClass(sapConnectionEClass, SAPConnection.class, "SAPConnection", !IS_ABSTRACT, !IS_INTERFACE,
                 IS_GENERATED_INSTANCE_CLASS);
-        initEAttribute(getSAPConnection_Host(), ecorePackage.getEString(), "Host", null, 0, 1, SAPConnection.class,
-                !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+        initEAttribute(getSAPConnection_Host(), ecorePackage.getEString(), "Host", null, 0, 1, SAPConnection.class, !IS_TRANSIENT,
+                !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
         initEAttribute(getSAPConnection_Username(), ecorePackage.getEString(), "Username", null, 0, 1, SAPConnection.class,
                 !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
         initEAttribute(getSAPConnection_Password(), ecorePackage.getEString(), "Password", null, 0, 1, SAPConnection.class,
@@ -5286,15 +5310,15 @@ public class ConnectionPackageImpl extends EPackageImpl implements ConnectionPac
                 IS_ORDERED);
         initEAttribute(getSAPConnection_Language(), ecorePackage.getEString(), "Language", null, 0, 1, SAPConnection.class,
                 !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
-        initEReference(getSAPConnection_Funtions(), this.getSAPFunctionUnit(), null, "Funtions", null, 0, -1,
-                SAPConnection.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, IS_RESOLVE_PROXIES,
-                !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+        initEReference(getSAPConnection_Funtions(), this.getSAPFunctionUnit(), null, "Funtions", null, 0, -1, SAPConnection.class,
+                !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE,
+                !IS_DERIVED, IS_ORDERED);
         initEAttribute(getSAPConnection_CurrentFucntion(), ecorePackage.getEString(), "currentFucntion", null, 0, 1,
                 SAPConnection.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED,
                 IS_ORDERED);
         initEReference(getSAPConnection_IDocs(), this.getSAPIDocUnit(), this.getSAPIDocUnit_Connection(), "IDocs", null, 0, -1,
-                SAPConnection.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, IS_RESOLVE_PROXIES,
-                !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+                SAPConnection.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, IS_RESOLVE_PROXIES, !IS_UNSETTABLE,
+                IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
         initEAttribute(getSAPConnection_JcoVersion(), ecorePackage.getEString(), "jcoVersion", null, 0, 1, SAPConnection.class,
                 !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
         initEReference(getSAPConnection_AdditionalProperties(), this.getAdditionalConnectionProperty(), null,
@@ -5304,34 +5328,34 @@ public class ConnectionPackageImpl extends EPackageImpl implements ConnectionPac
                 null, 0, -1, SAPConnection.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, IS_RESOLVE_PROXIES,
                 !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
         initEReference(getSAPConnection_BWDataSources(), this.getSAPBWTable(), null, "BWDataSources", null, 0, -1,
-                SAPConnection.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, IS_RESOLVE_PROXIES,
-                !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+                SAPConnection.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, IS_RESOLVE_PROXIES, !IS_UNSETTABLE,
+                IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
         initEReference(getSAPConnection_BWDataStoreObjects(), this.getSAPBWTable(), null, "BWDataStoreObjects", null, 0, -1,
-                SAPConnection.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, IS_RESOLVE_PROXIES,
-                !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+                SAPConnection.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, IS_RESOLVE_PROXIES, !IS_UNSETTABLE,
+                IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
         initEReference(getSAPConnection_BWInfoCubes(), this.getSAPBWTable(), null, "BWInfoCubes", null, 0, -1,
-                SAPConnection.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, IS_RESOLVE_PROXIES,
-                !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+                SAPConnection.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, IS_RESOLVE_PROXIES, !IS_UNSETTABLE,
+                IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
         initEReference(getSAPConnection_BWInfoObjects(), this.getSAPBWTable(), null, "BWInfoObjects", null, 0, -1,
-                SAPConnection.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, IS_RESOLVE_PROXIES,
-                !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+                SAPConnection.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, IS_RESOLVE_PROXIES, !IS_UNSETTABLE,
+                IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
         initEClass(sapFunctionUnitEClass, SAPFunctionUnit.class, "SAPFunctionUnit", !IS_ABSTRACT, !IS_INTERFACE,
                 IS_GENERATED_INSTANCE_CLASS);
         initEAttribute(getSAPFunctionUnit_OutputType(), ecorePackage.getEString(), "OutputType", null, 0, 1,
-                SAPFunctionUnit.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE,
-                !IS_DERIVED, IS_ORDERED);
+                SAPFunctionUnit.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED,
+                IS_ORDERED);
         initEAttribute(getSAPFunctionUnit_OutputTableName(), ecorePackage.getEString(), "OutputTableName", null, 0, 1,
-                SAPFunctionUnit.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE,
-                !IS_DERIVED, IS_ORDERED);
+                SAPFunctionUnit.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED,
+                IS_ORDERED);
         initEReference(getSAPFunctionUnit_InputParameterTable(), this.getInputSAPFunctionParameterTable(),
                 this.getInputSAPFunctionParameterTable_FunctionUnit(), "InputParameterTable", null, 0, 1, SAPFunctionUnit.class,
                 !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE,
                 !IS_DERIVED, IS_ORDERED);
         initEReference(getSAPFunctionUnit_OutputParameterTable(), this.getOutputSAPFunctionParameterTable(),
-                this.getOutputSAPFunctionParameterTable_FunctionUnit(), "OutputParameterTable", null, 0, 1,
-                SAPFunctionUnit.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, IS_RESOLVE_PROXIES,
-                !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+                this.getOutputSAPFunctionParameterTable_FunctionUnit(), "OutputParameterTable", null, 0, 1, SAPFunctionUnit.class,
+                !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE,
+                !IS_DERIVED, IS_ORDERED);
         initEReference(getSAPFunctionUnit_MetadataTable(), this.getMetadataTable(), null, "MetadataTable", null, 0, 1,
                 SAPFunctionUnit.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, IS_RESOLVE_PROXIES,
                 !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
@@ -5352,15 +5376,15 @@ public class ConnectionPackageImpl extends EPackageImpl implements ConnectionPac
                 SAPFunctionUnit.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, IS_RESOLVE_PROXIES,
                 !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
         initEAttribute(getSAPFunctionUnit_AsXmlSchema(), ecorePackage.getEBoolean(), "asXmlSchema", null, 0, 1,
-                SAPFunctionUnit.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE,
-                !IS_DERIVED, IS_ORDERED);
+                SAPFunctionUnit.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED,
+                IS_ORDERED);
 
         EOperation op = addEOperation(sapFunctionUnitEClass, null, "setDocument", 0, 1, IS_UNIQUE, IS_ORDERED);
         addEParameter(op, theCorePackage.getString(), "document", 0, 1, IS_UNIQUE, IS_ORDERED);
 
         initEClass(sapiDocUnitEClass, SAPIDocUnit.class, "SAPIDocUnit", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
-        initEReference(getSAPIDocUnit_Connection(), this.getSAPConnection(), this.getSAPConnection_IDocs(), "connection", null,
-                0, 1, SAPIDocUnit.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_COMPOSITE, IS_RESOLVE_PROXIES,
+        initEReference(getSAPIDocUnit_Connection(), this.getSAPConnection(), this.getSAPConnection_IDocs(), "connection", null, 0,
+                1, SAPIDocUnit.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_COMPOSITE, IS_RESOLVE_PROXIES,
                 !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
         initEAttribute(getSAPIDocUnit_ProgramId(), ecorePackage.getEString(), "programId", null, 0, 1, SAPIDocUnit.class,
                 !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
@@ -5371,14 +5395,13 @@ public class ConnectionPackageImpl extends EPackageImpl implements ConnectionPac
                 !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
         initEAttribute(getSAPIDocUnit_XmlFile(), ecorePackage.getEString(), "xmlFile", null, 0, 1, SAPIDocUnit.class,
                 !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
-        initEAttribute(getSAPIDocUnit_UseHtmlOutput(), ecorePackage.getEBoolean(), "useHtmlOutput", null, 0, 1,
-                SAPIDocUnit.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED,
-                IS_ORDERED);
+        initEAttribute(getSAPIDocUnit_UseHtmlOutput(), ecorePackage.getEBoolean(), "useHtmlOutput", null, 0, 1, SAPIDocUnit.class,
+                !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
         initEAttribute(getSAPIDocUnit_HtmlFile(), ecorePackage.getEString(), "htmlFile", null, 0, 1, SAPIDocUnit.class,
                 !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
-        initEClass(sapFunctionParameterColumnEClass, SAPFunctionParameterColumn.class, "SAPFunctionParameterColumn",
-                !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
+        initEClass(sapFunctionParameterColumnEClass, SAPFunctionParameterColumn.class, "SAPFunctionParameterColumn", !IS_ABSTRACT,
+                !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
         initEAttribute(getSAPFunctionParameterColumn_ParameterType(), ecorePackage.getEString(), "ParameterType", null, 0, 1,
                 SAPFunctionParameterColumn.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE,
                 !IS_DERIVED, IS_ORDERED);
@@ -5419,9 +5442,9 @@ public class ConnectionPackageImpl extends EPackageImpl implements ConnectionPac
         initEClass(outputSAPFunctionParameterTableEClass, OutputSAPFunctionParameterTable.class,
                 "OutputSAPFunctionParameterTable", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
         initEReference(getOutputSAPFunctionParameterTable_FunctionUnit(), this.getSAPFunctionUnit(),
-                this.getSAPFunctionUnit_OutputParameterTable(), "functionUnit", null, 0, 1,
-                OutputSAPFunctionParameterTable.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_COMPOSITE,
-                IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+                this.getSAPFunctionUnit_OutputParameterTable(), "functionUnit", null, 0, 1, OutputSAPFunctionParameterTable.class,
+                !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_COMPOSITE, IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE,
+                !IS_DERIVED, IS_ORDERED);
 
         initEClass(regexpFileConnectionEClass, RegexpFileConnection.class, "RegexpFileConnection", !IS_ABSTRACT, !IS_INTERFACE,
                 IS_GENERATED_INSTANCE_CLASS);
@@ -5444,7 +5467,8 @@ public class ConnectionPackageImpl extends EPackageImpl implements ConnectionPac
                 !IS_DERIVED, IS_ORDERED);
         initEReference(getXmlFileConnection_Schema(), this.getXmlXPathLoopDescriptor(),
                 this.getXmlXPathLoopDescriptor_Connection(), "schema", null, 0, -1, XmlFileConnection.class, !IS_TRANSIENT,
-                !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+                !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED,
+                IS_ORDERED);
         initEAttribute(getXmlFileConnection_Encoding(), ecorePackage.getEString(), "Encoding", null, 0, 1,
                 XmlFileConnection.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE,
                 !IS_DERIVED, IS_ORDERED);
@@ -5477,10 +5501,9 @@ public class ConnectionPackageImpl extends EPackageImpl implements ConnectionPac
                 IS_ORDERED);
         initEAttribute(getSchemaTarget_TagName(), ecorePackage.getEString(), "TagName", null, 0, 1, SchemaTarget.class,
                 !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
-        initEReference(getSchemaTarget_Schema(), this.getXmlXPathLoopDescriptor(),
-                this.getXmlXPathLoopDescriptor_SchemaTargets(), "schema", null, 0, 1, SchemaTarget.class, !IS_TRANSIENT,
-                !IS_VOLATILE, IS_CHANGEABLE, !IS_COMPOSITE, IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED,
-                IS_ORDERED);
+        initEReference(getSchemaTarget_Schema(), this.getXmlXPathLoopDescriptor(), this.getXmlXPathLoopDescriptor_SchemaTargets(),
+                "schema", null, 0, 1, SchemaTarget.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_COMPOSITE,
+                IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
         initEClass(queriesConnectionEClass, QueriesConnection.class, "QueriesConnection", !IS_ABSTRACT, !IS_INTERFACE,
                 IS_GENERATED_INSTANCE_CLASS);
@@ -5492,8 +5515,8 @@ public class ConnectionPackageImpl extends EPackageImpl implements ConnectionPac
                 !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
         initEClass(queryEClass, Query.class, "Query", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
-        initEAttribute(getQuery_Value(), ecorePackage.getEString(), "value", null, 0, 1, Query.class, !IS_TRANSIENT,
-                !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+        initEAttribute(getQuery_Value(), ecorePackage.getEString(), "value", null, 0, 1, Query.class, !IS_TRANSIENT, !IS_VOLATILE,
+                IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
         initEReference(getQuery_Queries(), this.getQueriesConnection(), this.getQueriesConnection_Query(), "queries", null, 0, 1,
                 Query.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_COMPOSITE, IS_RESOLVE_PROXIES, !IS_UNSETTABLE,
                 IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
@@ -5557,8 +5580,8 @@ public class ConnectionPackageImpl extends EPackageImpl implements ConnectionPac
                 1, XmlXPathLoopDescriptor.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE,
                 !IS_DERIVED, IS_ORDERED);
         initEReference(getXmlXPathLoopDescriptor_Connection(), this.getXmlFileConnection(), this.getXmlFileConnection_Schema(),
-                "connection", null, 0, 1, XmlXPathLoopDescriptor.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE,
-                !IS_COMPOSITE, IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+                "connection", null, 0, 1, XmlXPathLoopDescriptor.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_COMPOSITE,
+                IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
         initEReference(getXmlXPathLoopDescriptor_SchemaTargets(), this.getSchemaTarget(), this.getSchemaTarget_Schema(),
                 "schemaTargets", null, 0, -1, XmlXPathLoopDescriptor.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE,
                 IS_COMPOSITE, IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
@@ -5608,8 +5631,8 @@ public class ConnectionPackageImpl extends EPackageImpl implements ConnectionPac
         initEAttribute(getLDAPSchemaConnection_LimitValue(), ecorePackage.getEInt(), "LimitValue", null, 0, 1,
                 LDAPSchemaConnection.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE,
                 !IS_DERIVED, IS_ORDERED);
-        initEAttribute(getLDAPSchemaConnection_EncryptionMethodName(), ecorePackage.getEString(), "EncryptionMethodName", null,
-                0, 1, LDAPSchemaConnection.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE,
+        initEAttribute(getLDAPSchemaConnection_EncryptionMethodName(), ecorePackage.getEString(), "EncryptionMethodName", null, 0,
+                1, LDAPSchemaConnection.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE,
                 !IS_DERIVED, IS_ORDERED);
         initEAttribute(getLDAPSchemaConnection_Value(), ecorePackage.getEString(), "Value", null, 0, -1,
                 LDAPSchemaConnection.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE,
@@ -5632,8 +5655,8 @@ public class ConnectionPackageImpl extends EPackageImpl implements ConnectionPac
         initEAttribute(getLDAPSchemaConnection_BaseDNs(), ecorePackage.getEString(), "BaseDNs", null, 0, -1,
                 LDAPSchemaConnection.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE,
                 !IS_DERIVED, IS_ORDERED);
-        initEAttribute(getLDAPSchemaConnection_GetBaseDNsFromRoot(), ecorePackage.getEBoolean(), "GetBaseDNsFromRoot", null, 0,
-                1, LDAPSchemaConnection.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE,
+        initEAttribute(getLDAPSchemaConnection_GetBaseDNsFromRoot(), ecorePackage.getEBoolean(), "GetBaseDNsFromRoot", null, 0, 1,
+                LDAPSchemaConnection.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE,
                 !IS_DERIVED, IS_ORDERED);
         initEAttribute(getLDAPSchemaConnection_ReturnAttributes(), ecorePackage.getEString(), "ReturnAttributes", null, 0, -1,
                 LDAPSchemaConnection.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE,
@@ -5652,9 +5675,8 @@ public class ConnectionPackageImpl extends EPackageImpl implements ConnectionPac
         initEAttribute(getWSDLSchemaConnection_MethodName(), ecorePackage.getEString(), "methodName", null, 0, 1,
                 WSDLSchemaConnection.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE,
                 !IS_DERIVED, IS_ORDERED);
-        initEAttribute(getWSDLSchemaConnection_Parameters(), this.getList(), "parameters", null, 0, 1,
-                WSDLSchemaConnection.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE,
-                !IS_DERIVED, IS_ORDERED);
+        initEAttribute(getWSDLSchemaConnection_Parameters(), this.getList(), "parameters", null, 0, 1, WSDLSchemaConnection.class,
+                !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
         initEAttribute(getWSDLSchemaConnection_UserName(), ecorePackage.getEString(), "UserName", null, 0, 1,
                 WSDLSchemaConnection.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE,
                 !IS_DERIVED, IS_ORDERED);
@@ -5710,8 +5732,8 @@ public class ConnectionPackageImpl extends EPackageImpl implements ConnectionPac
                 WSDLSchemaConnection.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, IS_RESOLVE_PROXIES,
                 !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
-        initEClass(salesforceSchemaConnectionEClass, SalesforceSchemaConnection.class, "SalesforceSchemaConnection",
-                !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
+        initEClass(salesforceSchemaConnectionEClass, SalesforceSchemaConnection.class, "SalesforceSchemaConnection", !IS_ABSTRACT,
+                !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
         initEAttribute(getSalesforceSchemaConnection_WebServiceUrl(), ecorePackage.getEString(), "webServiceUrl", null, 0, 1,
                 SalesforceSchemaConnection.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE,
                 !IS_DERIVED, IS_ORDERED);
@@ -5776,8 +5798,8 @@ public class ConnectionPackageImpl extends EPackageImpl implements ConnectionPac
         initEAttribute(getSalesforceSchemaConnection_CallbackPort(), ecorePackage.getEString(), "callbackPort", null, 0, 1,
                 SalesforceSchemaConnection.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE,
                 !IS_DERIVED, IS_ORDERED);
-        initEAttribute(getSalesforceSchemaConnection_SalesforceVersion(), ecorePackage.getEString(), "salesforceVersion", null,
-                0, 1, SalesforceSchemaConnection.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID,
+        initEAttribute(getSalesforceSchemaConnection_SalesforceVersion(), ecorePackage.getEString(), "salesforceVersion", null, 0,
+                1, SalesforceSchemaConnection.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID,
                 IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
         initEAttribute(getSalesforceSchemaConnection_Token(), ecorePackage.getEString(), "token", null, 0, 1,
                 SalesforceSchemaConnection.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE,
@@ -5812,8 +5834,8 @@ public class ConnectionPackageImpl extends EPackageImpl implements ConnectionPac
         initEAttribute(getSubscriberTable_System(), ecorePackage.getEBoolean(), "system", null, 0, 1, SubscriberTable.class,
                 !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
-        initEClass(sapTestInputParameterTableEClass, SAPTestInputParameterTable.class, "SAPTestInputParameterTable",
-                !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
+        initEClass(sapTestInputParameterTableEClass, SAPTestInputParameterTable.class, "SAPTestInputParameterTable", !IS_ABSTRACT,
+                !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
         initEReference(getSAPTestInputParameterTable_FunctionUnit(), this.getSAPFunctionUnit(),
                 this.getSAPFunctionUnit_TestInputParameterTable(), "functionUnit", null, 0, 1, SAPTestInputParameterTable.class,
                 !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_COMPOSITE, IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE,
@@ -5850,9 +5872,9 @@ public class ConnectionPackageImpl extends EPackageImpl implements ConnectionPac
                 !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
         initEAttribute(getConceptTarget_TargetName(), ecorePackage.getEString(), "targetName", null, 0, 1, ConceptTarget.class,
                 !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
-        initEAttribute(getConceptTarget_RelativeLoopExpression(), ecorePackage.getEString(), "RelativeLoopExpression", null, 0,
-                1, ConceptTarget.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE,
-                !IS_DERIVED, IS_ORDERED);
+        initEAttribute(getConceptTarget_RelativeLoopExpression(), ecorePackage.getEString(), "RelativeLoopExpression", null, 0, 1,
+                ConceptTarget.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED,
+                IS_ORDERED);
 
         initEClass(hl7ConnectionEClass, HL7Connection.class, "HL7Connection", !IS_ABSTRACT, !IS_INTERFACE,
                 IS_GENERATED_INSTANCE_CLASS);
@@ -5932,16 +5954,16 @@ public class ConnectionPackageImpl extends EPackageImpl implements ConnectionPac
 
         initEClass(ftpConnectionEClass, FTPConnection.class, "FTPConnection", !IS_ABSTRACT, !IS_INTERFACE,
                 IS_GENERATED_INSTANCE_CLASS);
-        initEAttribute(getFTPConnection_Host(), ecorePackage.getEString(), "Host", null, 0, 1, FTPConnection.class,
-                !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
-        initEAttribute(getFTPConnection_Port(), ecorePackage.getEString(), "Port", null, 0, 1, FTPConnection.class,
-                !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+        initEAttribute(getFTPConnection_Host(), ecorePackage.getEString(), "Host", null, 0, 1, FTPConnection.class, !IS_TRANSIENT,
+                !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+        initEAttribute(getFTPConnection_Port(), ecorePackage.getEString(), "Port", null, 0, 1, FTPConnection.class, !IS_TRANSIENT,
+                !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
         initEAttribute(getFTPConnection_Username(), ecorePackage.getEString(), "Username", null, 0, 1, FTPConnection.class,
                 !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
         initEAttribute(getFTPConnection_Password(), ecorePackage.getEString(), "Password", null, 0, 1, FTPConnection.class,
                 !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
-        initEAttribute(getFTPConnection_Mode(), ecorePackage.getEString(), "Mode", null, 0, 1, FTPConnection.class,
-                !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+        initEAttribute(getFTPConnection_Mode(), ecorePackage.getEString(), "Mode", null, 0, 1, FTPConnection.class, !IS_TRANSIENT,
+                !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
         initEAttribute(getFTPConnection_Ecoding(), ecorePackage.getEString(), "Ecoding", null, 0, 1, FTPConnection.class,
                 !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
         initEAttribute(getFTPConnection_SFTP(), ecorePackage.getEBoolean(), "SFTP", null, 0, 1, FTPConnection.class,
@@ -5977,6 +5999,8 @@ public class ConnectionPackageImpl extends EPackageImpl implements ConnectionPac
         initEAttribute(getFTPConnection_UseFileNameEncoding(), ecorePackage.getEBoolean(), "UseFileNameEncoding", null, 0, 1,
                 FTPConnection.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED,
                 IS_ORDERED);
+        initEAttribute(getFTPConnection_Timeout(), ecorePackage.getEString(), "Timeout", null, 0, 1, FTPConnection.class,
+                !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
         initEClass(brmsConnectionEClass, BRMSConnection.class, "BRMSConnection", !IS_ABSTRACT, !IS_INTERFACE,
                 IS_GENERATED_INSTANCE_CLASS);
@@ -6065,7 +6089,8 @@ public class ConnectionPackageImpl extends EPackageImpl implements ConnectionPac
         initEAttribute(getConditionType_Value(), ecorePackage.getEString(), "value", null, 0, 1, ConditionType.class,
                 !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
-        initEClass(innerJoinMapEClass, Map.Entry.class, "InnerJoinMap", !IS_ABSTRACT, !IS_INTERFACE, !IS_GENERATED_INSTANCE_CLASS);
+        initEClass(innerJoinMapEClass, Map.Entry.class, "InnerJoinMap", !IS_ABSTRACT, !IS_INTERFACE,
+                !IS_GENERATED_INSTANCE_CLASS);
         initEAttribute(getInnerJoinMap_Key(), ecorePackage.getEString(), "key", null, 0, 1, Map.Entry.class, !IS_TRANSIENT,
                 !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
         initEAttribute(getInnerJoinMap_Value(), ecorePackage.getEString(), "value", null, 0, 1, Map.Entry.class, !IS_TRANSIENT,
@@ -6095,9 +6120,9 @@ public class ConnectionPackageImpl extends EPackageImpl implements ConnectionPac
                 SalesforceModuleUnit.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, IS_RESOLVE_PROXIES,
                 !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
         initEReference(getSalesforceModuleUnit_Connection(), this.getSalesforceSchemaConnection(),
-                this.getSalesforceSchemaConnection_Modules(), "connection", null, 0, 1, SalesforceModuleUnit.class,
-                !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_COMPOSITE, IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE,
-                !IS_DERIVED, IS_ORDERED);
+                this.getSalesforceSchemaConnection_Modules(), "connection", null, 0, 1, SalesforceModuleUnit.class, !IS_TRANSIENT,
+                !IS_VOLATILE, IS_CHANGEABLE, !IS_COMPOSITE, IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED,
+                IS_ORDERED);
         initEReference(getSalesforceModuleUnit_Tables(), this.getMetadataTable(), null, "tables", null, 0, -1,
                 SalesforceModuleUnit.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, IS_RESOLVE_PROXIES,
                 !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
@@ -6161,11 +6186,11 @@ public class ConnectionPackageImpl extends EPackageImpl implements ConnectionPac
         initEClass(additionalConnectionPropertyEClass, AdditionalConnectionProperty.class, "AdditionalConnectionProperty",
                 !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
         initEAttribute(getAdditionalConnectionProperty_PropertyName(), ecorePackage.getEString(), "propertyName", null, 0, 1,
-                AdditionalConnectionProperty.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID,
-                IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+                AdditionalConnectionProperty.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE,
+                !IS_DERIVED, IS_ORDERED);
         initEAttribute(getAdditionalConnectionProperty_Value(), ecorePackage.getEString(), "Value", null, 0, 1,
-                AdditionalConnectionProperty.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID,
-                IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+                AdditionalConnectionProperty.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE,
+                !IS_DERIVED, IS_ORDERED);
 
         initEClass(sapbwTableEClass, SAPBWTable.class, "SAPBWTable", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
         initEAttribute(getSAPBWTable_ModelType(), ecorePackage.getEString(), "modelType", null, 0, 1, SAPBWTable.class,
@@ -6183,8 +6208,8 @@ public class ConnectionPackageImpl extends EPackageImpl implements ConnectionPac
         initEClass(sapbwTableFieldEClass, SAPBWTableField.class, "SAPBWTableField", !IS_ABSTRACT, !IS_INTERFACE,
                 IS_GENERATED_INSTANCE_CLASS);
         initEAttribute(getSAPBWTableField_LogicalName(), ecorePackage.getEString(), "logicalName", null, 0, 1,
-                SAPBWTableField.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE,
-                !IS_DERIVED, IS_ORDERED);
+                SAPBWTableField.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED,
+                IS_ORDERED);
 
         // Initialize enums and add enum literals
         initEEnum(fileFormatEEnum, FileFormat.class, "FileFormat");
@@ -6268,131 +6293,96 @@ public class ConnectionPackageImpl extends EPackageImpl implements ConnectionPac
         String source = "http://www.eclipse.org/emf/2002/GenModel";
         addAnnotation(connectionEClass, source, new String[] { "documentation",
                 "base class tha represent a connection, may be to a database or a file or else" });
-        addAnnotation(getConnection_Queries(), source, new String[] { "documentation",
-                "This defines the SQL queries related to this connection" });
-        addAnnotation(getConnection_ContextMode(), source, new String[] { "documentation",
-                "whether this connection is defined using a context or is standalone" });
+        addAnnotation(getConnection_Queries(), source,
+                new String[] { "documentation", "This defines the SQL queries related to this connection" });
+        addAnnotation(getConnection_ContextMode(), source,
+                new String[] { "documentation", "whether this connection is defined using a context or is standalone" });
         addAnnotation(getConnection_ContextId(), source, new String[] { "documentation",
                 "Id of the context this connection is linked to, only used when ContextMode attribute is true" });
         addAnnotation(metadataColumnEClass, source, new String[] { "documentation",
                 "represents a metada column which contains source (such as DB) definitions as weel as Talend mappings" });
-        addAnnotation(
-                getMetadataColumn_SourceType(),
-                source,
-                new String[] {
-                        "documentation",
-                        "Schema DB type (VARCHAR for example ), can be initialised from DB  column type and modified by the user.)\r\nThis is maintained in synch with the TalendType (at least in the Table schema editor).\r\n" });
-        addAnnotation(
-                getMetadataColumn_DefaultValue(),
-                source,
-                new String[] {
-                        "documentation",
-                        "@deprecated Use initialValue  instead\r\n(This represents the default value for column. This may be changed by the user.)\r\n\r\n" });
-        addAnnotation(
-                getMetadataColumn_TalendType(),
-                source,
-                new String[] {
-                        "documentation",
-                        "java type used by Talend for handling this column elements; This seems to be synched with the sourceType.\r\nThis must be the case for schema used for Table creation." });
-        addAnnotation(
-                getMetadataColumn_Key(),
-                source,
-                new String[] {
-                        "documentation",
-                        "Whether this column is a considered a key, in a business meaning (This is not technical).\r\nThis may apply to file, xml or dB columns.\r\nMay be changed by the user.\r\nWhen retrieving Metadata from DB this will be set to true if the column belong to the primary key." });
-        addAnnotation(getMetadataColumn_Nullable(), source, new String[] { "documentation",
-                "whether this column supports null values. May be changed by the user." });
-        addAnnotation(getMetadataColumn_Table(), source, new String[] { "documentation",
-                "reference to the containing table or view" });
-        addAnnotation(getMetadataColumn_OriginalField(), source, new String[] { "documentation",
-                "@deprecated use g(s)etName\r\nLogical name of the column" });
+        addAnnotation(getMetadataColumn_SourceType(), source, new String[] { "documentation",
+                "Schema DB type (VARCHAR for example ), can be initialised from DB  column type and modified by the user.)\r\nThis is maintained in synch with the TalendType (at least in the Table schema editor).\r\n" });
+        addAnnotation(getMetadataColumn_DefaultValue(), source, new String[] { "documentation",
+                "@deprecated Use initialValue  instead\r\n(This represents the default value for column. This may be changed by the user.)\r\n\r\n" });
+        addAnnotation(getMetadataColumn_TalendType(), source, new String[] { "documentation",
+                "java type used by Talend for handling this column elements; This seems to be synched with the sourceType.\r\nThis must be the case for schema used for Table creation." });
+        addAnnotation(getMetadataColumn_Key(), source, new String[] { "documentation",
+                "Whether this column is a considered a key, in a business meaning (This is not technical).\r\nThis may apply to file, xml or dB columns.\r\nMay be changed by the user.\r\nWhen retrieving Metadata from DB this will be set to true if the column belong to the primary key." });
+        addAnnotation(getMetadataColumn_Nullable(), source,
+                new String[] { "documentation", "whether this column supports null values. May be changed by the user." });
+        addAnnotation(getMetadataColumn_Table(), source,
+                new String[] { "documentation", "reference to the containing table or view" });
+        addAnnotation(getMetadataColumn_OriginalField(), source,
+                new String[] { "documentation", "@deprecated use g(s)etName\r\nLogical name of the column" });
         addAnnotation(getMetadataColumn_Pattern(), source,
                 new String[] { "documentation", "pattern mainly used for date parsing" });
-        addAnnotation(abstractMetadataObjectEClass, source, new String[] { "documentation",
-                "base class for all the metadata model" });
-        addAnnotation(
-                getAbstractMetadataObject_Properties(),
-                source,
-                new String[] {
-                        "documentation",
-                        "@deprecated Use taggedValue instead\r\n(map of general purpose key/value that is available to all classes of the metamodel.)\r\n" });
+        addAnnotation(abstractMetadataObjectEClass, source,
+                new String[] { "documentation", "base class for all the metadata model" });
+        addAnnotation(getAbstractMetadataObject_Properties(), source, new String[] { "documentation",
+                "@deprecated Use taggedValue instead\r\n(map of general purpose key/value that is available to all classes of the metamodel.)\r\n" });
         addAnnotation(getAbstractMetadataObject_Id(), source, new String[] { "documentation", "logical identifier" });
-        addAnnotation(getAbstractMetadataObject_Comment(), source, new String[] { "documentation",
-                "free comment of this element, may be displayed to the user." });
-        addAnnotation(getAbstractMetadataObject_Label(), source, new String[] { "documentation",
-                "name to be displayed for the current object" });
+        addAnnotation(getAbstractMetadataObject_Comment(), source,
+                new String[] { "documentation", "free comment of this element, may be displayed to the user." });
+        addAnnotation(getAbstractMetadataObject_Label(), source,
+                new String[] { "documentation", "name to be displayed for the current object" });
         addAnnotation(metadataTableEClass, source, new String[] { "documentation", "representation of a of set of columns" });
         addAnnotation(getMetadataTable_SourceName(), source, new String[] { "documentation",
                 "@deprecated use g(s)etName()\r\nname of the table, that is actual DB table name for DB tables" });
-        addAnnotation(getMetadataTable_TableType(), source, new String[] { "documentation",
-                "of value of TABLE, VIEW, SYNONYM, ALL_SYNONYM" });
-        addAnnotation(getMetadataTable_AttachedCDC(), source, new String[] { "documentation",
-                "whether a CDC table is attached to this table" });
-        addAnnotation(getMetadataTable_ActivatedCDC(), source, new String[] { "documentation",
-                "whether CDC is activated, that is the trigger are set to record the changes" });
-        addAnnotation(
-                getMetadataTable_Columns(),
-                source,
-                new String[] { "documentation",
-                        "List of columns related to this table, this is a derived attribute from the feature attribute, thus volatile and transiant" });
+        addAnnotation(getMetadataTable_TableType(), source,
+                new String[] { "documentation", "of value of TABLE, VIEW, SYNONYM, ALL_SYNONYM" });
+        addAnnotation(getMetadataTable_AttachedCDC(), source,
+                new String[] { "documentation", "whether a CDC table is attached to this table" });
+        addAnnotation(getMetadataTable_ActivatedCDC(), source,
+                new String[] { "documentation", "whether CDC is activated, that is the trigger are set to record the changes" });
+        addAnnotation(getMetadataTable_Columns(), source, new String[] { "documentation",
+                "List of columns related to this table, this is a derived attribute from the feature attribute, thus volatile and transiant" });
         addAnnotation(getMetadataTable_Connection(), source, new String[] { "documentation",
                 "@deprecated use MetadataTableHelper.getFirstconnection()\r\nref to the connection that contains this table" });
-        addAnnotation(
-                mdmConnectionEClass.getEOperations().get(0),
-                source,
-                new String[] {
-                        "documentation",
-                        "return the connection string to connect to the MDM server,\r\nit is a concatenation of protocol, server, port and context.\r\nthe connection string returned may not be a valid URL if some of the concatenated elements are not properly set.\r\nNo checking is done." });
-        addAnnotation(getMDMConnection_Protocol(), source, new String[] { "documentation",
-                "protocol used for connecting to MDM server, initial protocol is HTTP" });
+        addAnnotation(mdmConnectionEClass.getEOperations().get(0), source, new String[] { "documentation",
+                "return the connection string to connect to the MDM server,\r\nit is a concatenation of protocol, server, port and context.\r\nthe connection string returned may not be a valid URL if some of the concatenated elements are not properly set.\r\nNo checking is done." });
+        addAnnotation(getMDMConnection_Protocol(), source,
+                new String[] { "documentation", "protocol used for connecting to MDM server, initial protocol is HTTP" });
         addAnnotation(getMDMConnection_Context(), source, new String[] { "documentation",
                 "part of the url for connecting to the server, \r\nthe last part that defined the MDM web app context" });
         addAnnotation(databaseConnectionEClass, source, new String[] { "documentation", "Defines a connection to a Database" });
-        addAnnotation(getDatabaseConnection_DatabaseType(), source, new String[] { "documentation",
-                "logical type of the DB (for instance MySQL)" });
-        addAnnotation(getDatabaseConnection_DriverJarPath(), source, new String[] { "documentation",
-                "absolute path to the jar that may be used for Generic JDBC connection" });
-        addAnnotation(getDatabaseConnection_DriverClass(), source, new String[] { "documentation",
-                "initial class for generic JDBC connection" });
-        addAnnotation(
-                getDatabaseConnection_URL(),
-                source,
-                new String[] {
-                        "documentation",
-                        "the connection base URL for JDBC protocol.\r\nIt is a concatenation of DatabaseType, ServerName, Port and other attributes of this class" });
+        addAnnotation(getDatabaseConnection_DatabaseType(), source,
+                new String[] { "documentation", "logical type of the DB (for instance MySQL)" });
+        addAnnotation(getDatabaseConnection_DriverJarPath(), source,
+                new String[] { "documentation", "absolute path to the jar that may be used for Generic JDBC connection" });
+        addAnnotation(getDatabaseConnection_DriverClass(), source,
+                new String[] { "documentation", "initial class for generic JDBC connection" });
+        addAnnotation(getDatabaseConnection_URL(), source, new String[] { "documentation",
+                "the connection base URL for JDBC protocol.\r\nIt is a concatenation of DatabaseType, ServerName, Port and other attributes of this class" });
         addAnnotation(getDatabaseConnection_DbVersionString(), source, new String[] { "documentation",
                 "may hold the version of the Database for a given Database type (for instance MySQL_4 or MySQL_5)" });
-        addAnnotation(getDatabaseConnection_Port(), source, new String[] { "documentation",
-                "port used for the Database Connection" });
-        addAnnotation(getDatabaseConnection_Username(), source, new String[] { "documentation",
-                "user name used for DB connection authentification" });
-        addAnnotation(getDatabaseConnection_Password(), source, new String[] { "documentation",
-                "password used for DB connection authentification" });
-        addAnnotation(getDatabaseConnection_ServerName(), source, new String[] { "documentation",
-                "IP adress or machine name of the DB server to connect to." });
-        addAnnotation(getDatabaseConnection_FileFieldName(), source, new String[] { "documentation",
-                "Database file used for DB such as SqlLite" });
+        addAnnotation(getDatabaseConnection_Port(), source,
+                new String[] { "documentation", "port used for the Database Connection" });
+        addAnnotation(getDatabaseConnection_Username(), source,
+                new String[] { "documentation", "user name used for DB connection authentification" });
+        addAnnotation(getDatabaseConnection_Password(), source,
+                new String[] { "documentation", "password used for DB connection authentification" });
+        addAnnotation(getDatabaseConnection_ServerName(), source,
+                new String[] { "documentation", "IP adress or machine name of the DB server to connect to." });
+        addAnnotation(getDatabaseConnection_FileFieldName(), source,
+                new String[] { "documentation", "Database file used for DB such as SqlLite" });
         addAnnotation(getDatabaseConnection_SID(), source, new String[] { "documentation", "Logical name of the Database" });
-        addAnnotation(getDatabaseConnection_AdditionalParams(), source, new String[] { "documentation",
-                "parameters that are to be added to the connection URL" });
-        addAnnotation(getDatabaseConnection_CdcConns(), source, new String[] { "documentation",
-                "reference to CDC definition for this connection" });
-        addAnnotation(sapFunctionUnitEClass.getEOperations().get(0), source, new String[] { "documentation",
-                "@deprecated use SAPFunctionHelper.getFirstDocument().g(s)etReference()" });
-        addAnnotation(sapFunctionParameterColumnEClass.getEOperations().get(0), source, new String[] { "documentation",
-                "@deprecated use ModelElementHelper.getFirstDescription().setBody()" });
-        addAnnotation(cdcConnectionEClass, source, new String[] { "documentation",
-                "defining Change Data Capture for a given connection" });
+        addAnnotation(getDatabaseConnection_AdditionalParams(), source,
+                new String[] { "documentation", "parameters that are to be added to the connection URL" });
+        addAnnotation(getDatabaseConnection_CdcConns(), source,
+                new String[] { "documentation", "reference to CDC definition for this connection" });
+        addAnnotation(sapFunctionUnitEClass.getEOperations().get(0), source,
+                new String[] { "documentation", "@deprecated use SAPFunctionHelper.getFirstDocument().g(s)etReference()" });
+        addAnnotation(sapFunctionParameterColumnEClass.getEOperations().get(0), source,
+                new String[] { "documentation", "@deprecated use ModelElementHelper.getFirstDescription().setBody()" });
+        addAnnotation(cdcConnectionEClass, source,
+                new String[] { "documentation", "defining Change Data Capture for a given connection" });
         addAnnotation(getCDCConnection_Connection(), source,
                 new String[] { "documentation", "the connection this CDC relates to" });
-        addAnnotation(getCDCType_LinkDB(), source, new String[] { "documentation",
-                "ID of the .properties file related to the CDC database" });
-        addAnnotation(
-                genericPackageEClass,
-                source,
-                new String[] {
-                        "documentation",
-                        "Default CWM package to use when none of the existing cwm packages fit the metadata to describe.\r\nThis is a container between Connection and MetadataTable" });
+        addAnnotation(getCDCType_LinkDB(), source,
+                new String[] { "documentation", "ID of the .properties file related to the CDC database" });
+        addAnnotation(genericPackageEClass, source, new String[] { "documentation",
+                "Default CWM package to use when none of the existing cwm packages fit the metadata to describe.\r\nThis is a container between Connection and MetadataTable" });
     }
 
     /**

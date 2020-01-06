@@ -29,10 +29,10 @@ import orgomg.cwm.resource.xml.impl.ContentImpl;
  * <!-- end-user-doc -->
  * <p>
  * The following features are implemented:
+ * </p>
  * <ul>
  *   <li>{@link org.talend.cwm.xml.impl.TdXmlContentImpl#getXmlElements <em>Xml Elements</em>}</li>
  * </ul>
- * </p>
  *
  * @generated
  */

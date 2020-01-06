@@ -12,6 +12,7 @@ package org.talend.core.model.metadata.builder.connection;
  *
  * <p>
  * The following features are supported:
+ * </p>
  * <ul>
  *   <li>{@link org.talend.core.model.metadata.builder.connection.FileConnection#getServer <em>Server</em>}</li>
  *   <li>{@link org.talend.core.model.metadata.builder.connection.FileConnection#getFilePath <em>File Path</em>}</li>
@@ -34,7 +35,6 @@ package org.talend.core.model.metadata.builder.connection;
  *   <li>{@link org.talend.core.model.metadata.builder.connection.FileConnection#getTextEnclosure <em>Text Enclosure</em>}</li>
  *   <li>{@link org.talend.core.model.metadata.builder.connection.FileConnection#isCsvOption <em>Csv Option</em>}</li>
  * </ul>
- * </p>
  *
  * @see org.talend.core.model.metadata.builder.connection.ConnectionPackage#getFileConnection()
  * @model abstract="true"

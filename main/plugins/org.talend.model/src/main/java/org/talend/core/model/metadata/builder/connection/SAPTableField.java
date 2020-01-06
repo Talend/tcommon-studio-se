@@ -14,11 +14,11 @@ import org.eclipse.emf.common.util.EList;
  *
  * <p>
  * The following features are supported:
+ * </p>
  * <ul>
  *   <li>{@link org.talend.core.model.metadata.builder.connection.SAPTableField#getBusinessName <em>Business Name</em>}</li>
  *   <li>{@link org.talend.core.model.metadata.builder.connection.SAPTableField#getRefTable <em>Ref Table</em>}</li>
  * </ul>
- * </p>
  *
  * @see org.talend.core.model.metadata.builder.connection.ConnectionPackage#getSAPTableField()
  * @model

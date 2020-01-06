@@ -227,8 +227,8 @@ public class SAPFunctionUnitImpl extends AbstractMetadataObjectImpl implements S
         String oldOutputType = outputType;
         outputType = newOutputType;
         if (eNotificationRequired())
-            eNotify(new ENotificationImpl(this, Notification.SET, ConnectionPackage.SAP_FUNCTION_UNIT__OUTPUT_TYPE,
-                    oldOutputType, outputType));
+            eNotify(new ENotificationImpl(this, Notification.SET, ConnectionPackage.SAP_FUNCTION_UNIT__OUTPUT_TYPE, oldOutputType,
+                    outputType));
     }
 
     /**
@@ -262,8 +262,8 @@ public class SAPFunctionUnitImpl extends AbstractMetadataObjectImpl implements S
             if (inputParameterTable != oldInputParameterTable) {
                 InternalEObject newInputParameterTable = (InternalEObject) inputParameterTable;
                 NotificationChain msgs = oldInputParameterTable.eInverseRemove(this,
-                        ConnectionPackage.INPUT_SAP_FUNCTION_PARAMETER_TABLE__FUNCTION_UNIT,
-                        InputSAPFunctionParameterTable.class, null);
+                        ConnectionPackage.INPUT_SAP_FUNCTION_PARAMETER_TABLE__FUNCTION_UNIT, InputSAPFunctionParameterTable.class,
+                        null);
                 if (newInputParameterTable.eInternalContainer() == null) {
                     msgs = newInputParameterTable.eInverseAdd(this,
                             ConnectionPackage.INPUT_SAP_FUNCTION_PARAMETER_TABLE__FUNCTION_UNIT,
@@ -316,12 +316,12 @@ public class SAPFunctionUnitImpl extends AbstractMetadataObjectImpl implements S
             NotificationChain msgs = null;
             if (inputParameterTable != null)
                 msgs = ((InternalEObject) inputParameterTable).eInverseRemove(this,
-                        ConnectionPackage.INPUT_SAP_FUNCTION_PARAMETER_TABLE__FUNCTION_UNIT,
-                        InputSAPFunctionParameterTable.class, msgs);
+                        ConnectionPackage.INPUT_SAP_FUNCTION_PARAMETER_TABLE__FUNCTION_UNIT, InputSAPFunctionParameterTable.class,
+                        msgs);
             if (newInputParameterTable != null)
                 msgs = ((InternalEObject) newInputParameterTable).eInverseAdd(this,
-                        ConnectionPackage.INPUT_SAP_FUNCTION_PARAMETER_TABLE__FUNCTION_UNIT,
-                        InputSAPFunctionParameterTable.class, msgs);
+                        ConnectionPackage.INPUT_SAP_FUNCTION_PARAMETER_TABLE__FUNCTION_UNIT, InputSAPFunctionParameterTable.class,
+                        msgs);
             msgs = basicSetInputParameterTable(newInputParameterTable, msgs);
             if (msgs != null)
                 msgs.dispatch();
@@ -377,7 +377,8 @@ public class SAPFunctionUnitImpl extends AbstractMetadataObjectImpl implements S
         outputParameterTable = newOutputParameterTable;
         if (eNotificationRequired()) {
             ENotificationImpl notification = new ENotificationImpl(this, Notification.SET,
-                    ConnectionPackage.SAP_FUNCTION_UNIT__OUTPUT_PARAMETER_TABLE, oldOutputParameterTable, newOutputParameterTable);
+                    ConnectionPackage.SAP_FUNCTION_UNIT__OUTPUT_PARAMETER_TABLE, oldOutputParameterTable,
+                    newOutputParameterTable);
             if (msgs == null)
                 msgs = notification;
             else
@@ -419,17 +420,17 @@ public class SAPFunctionUnitImpl extends AbstractMetadataObjectImpl implements S
             metadataTable = (MetadataTable) eResolveProxy(oldMetadataTable);
             if (metadataTable != oldMetadataTable) {
                 InternalEObject newMetadataTable = (InternalEObject) metadataTable;
-                NotificationChain msgs = oldMetadataTable.eInverseRemove(this, EOPPOSITE_FEATURE_BASE
-                        - ConnectionPackage.SAP_FUNCTION_UNIT__METADATA_TABLE, null, null);
+                NotificationChain msgs = oldMetadataTable.eInverseRemove(this,
+                        EOPPOSITE_FEATURE_BASE - ConnectionPackage.SAP_FUNCTION_UNIT__METADATA_TABLE, null, null);
                 if (newMetadataTable.eInternalContainer() == null) {
-                    msgs = newMetadataTable.eInverseAdd(this, EOPPOSITE_FEATURE_BASE
-                            - ConnectionPackage.SAP_FUNCTION_UNIT__METADATA_TABLE, null, msgs);
+                    msgs = newMetadataTable.eInverseAdd(this,
+                            EOPPOSITE_FEATURE_BASE - ConnectionPackage.SAP_FUNCTION_UNIT__METADATA_TABLE, null, msgs);
                 }
                 if (msgs != null)
                     msgs.dispatch();
                 if (eNotificationRequired())
-                    eNotify(new ENotificationImpl(this, Notification.RESOLVE,
-                            ConnectionPackage.SAP_FUNCTION_UNIT__METADATA_TABLE, oldMetadataTable, metadataTable));
+                    eNotify(new ENotificationImpl(this, Notification.RESOLVE, ConnectionPackage.SAP_FUNCTION_UNIT__METADATA_TABLE,
+                            oldMetadataTable, metadataTable));
             }
         }
         return metadataTable;
@@ -471,11 +472,11 @@ public class SAPFunctionUnitImpl extends AbstractMetadataObjectImpl implements S
         if (newMetadataTable != metadataTable) {
             NotificationChain msgs = null;
             if (metadataTable != null)
-                msgs = ((InternalEObject) metadataTable).eInverseRemove(this, EOPPOSITE_FEATURE_BASE
-                        - ConnectionPackage.SAP_FUNCTION_UNIT__METADATA_TABLE, null, msgs);
+                msgs = ((InternalEObject) metadataTable).eInverseRemove(this,
+                        EOPPOSITE_FEATURE_BASE - ConnectionPackage.SAP_FUNCTION_UNIT__METADATA_TABLE, null, msgs);
             if (newMetadataTable != null)
-                msgs = ((InternalEObject) newMetadataTable).eInverseAdd(this, EOPPOSITE_FEATURE_BASE
-                        - ConnectionPackage.SAP_FUNCTION_UNIT__METADATA_TABLE, null, msgs);
+                msgs = ((InternalEObject) newMetadataTable).eInverseAdd(this,
+                        EOPPOSITE_FEATURE_BASE - ConnectionPackage.SAP_FUNCTION_UNIT__METADATA_TABLE, null, msgs);
             msgs = basicSetMetadataTable(newMetadataTable, msgs);
             if (msgs != null)
                 msgs.dispatch();
@@ -619,9 +620,8 @@ public class SAPFunctionUnitImpl extends AbstractMetadataObjectImpl implements S
             if (msgs != null)
                 msgs.dispatch();
         } else if (eNotificationRequired())
-            eNotify(new ENotificationImpl(this, Notification.SET,
-                    ConnectionPackage.SAP_FUNCTION_UNIT__TEST_INPUT_PARAMETER_TABLE, newTestInputParameterTable,
-                    newTestInputParameterTable));
+            eNotify(new ENotificationImpl(this, Notification.SET, ConnectionPackage.SAP_FUNCTION_UNIT__TEST_INPUT_PARAMETER_TABLE,
+                    newTestInputParameterTable, newTestInputParameterTable));
     }
 
     /**
@@ -635,11 +635,11 @@ public class SAPFunctionUnitImpl extends AbstractMetadataObjectImpl implements S
             paramData = (SAPFunctionParamData) eResolveProxy(oldParamData);
             if (paramData != oldParamData) {
                 InternalEObject newParamData = (InternalEObject) paramData;
-                NotificationChain msgs = oldParamData.eInverseRemove(this, EOPPOSITE_FEATURE_BASE
-                        - ConnectionPackage.SAP_FUNCTION_UNIT__PARAM_DATA, null, null);
+                NotificationChain msgs = oldParamData.eInverseRemove(this,
+                        EOPPOSITE_FEATURE_BASE - ConnectionPackage.SAP_FUNCTION_UNIT__PARAM_DATA, null, null);
                 if (newParamData.eInternalContainer() == null) {
-                    msgs = newParamData.eInverseAdd(this, EOPPOSITE_FEATURE_BASE
-                            - ConnectionPackage.SAP_FUNCTION_UNIT__PARAM_DATA, null, msgs);
+                    msgs = newParamData.eInverseAdd(this,
+                            EOPPOSITE_FEATURE_BASE - ConnectionPackage.SAP_FUNCTION_UNIT__PARAM_DATA, null, msgs);
                 }
                 if (msgs != null)
                     msgs.dispatch();
@@ -688,11 +688,11 @@ public class SAPFunctionUnitImpl extends AbstractMetadataObjectImpl implements S
         if (newParamData != paramData) {
             NotificationChain msgs = null;
             if (paramData != null)
-                msgs = ((InternalEObject) paramData).eInverseRemove(this, EOPPOSITE_FEATURE_BASE
-                        - ConnectionPackage.SAP_FUNCTION_UNIT__PARAM_DATA, null, msgs);
+                msgs = ((InternalEObject) paramData).eInverseRemove(this,
+                        EOPPOSITE_FEATURE_BASE - ConnectionPackage.SAP_FUNCTION_UNIT__PARAM_DATA, null, msgs);
             if (newParamData != null)
-                msgs = ((InternalEObject) newParamData).eInverseAdd(this, EOPPOSITE_FEATURE_BASE
-                        - ConnectionPackage.SAP_FUNCTION_UNIT__PARAM_DATA, null, msgs);
+                msgs = ((InternalEObject) newParamData).eInverseAdd(this,
+                        EOPPOSITE_FEATURE_BASE - ConnectionPackage.SAP_FUNCTION_UNIT__PARAM_DATA, null, msgs);
             msgs = basicSetParamData(newParamData, msgs);
             if (msgs != null)
                 msgs.dispatch();
@@ -746,18 +746,18 @@ public class SAPFunctionUnitImpl extends AbstractMetadataObjectImpl implements S
         switch (featureID) {
         case ConnectionPackage.SAP_FUNCTION_UNIT__INPUT_PARAMETER_TABLE:
             if (inputParameterTable != null)
-                msgs = ((InternalEObject) inputParameterTable).eInverseRemove(this, EOPPOSITE_FEATURE_BASE
-                        - ConnectionPackage.SAP_FUNCTION_UNIT__INPUT_PARAMETER_TABLE, null, msgs);
+                msgs = ((InternalEObject) inputParameterTable).eInverseRemove(this,
+                        EOPPOSITE_FEATURE_BASE - ConnectionPackage.SAP_FUNCTION_UNIT__INPUT_PARAMETER_TABLE, null, msgs);
             return basicSetInputParameterTable((InputSAPFunctionParameterTable) otherEnd, msgs);
         case ConnectionPackage.SAP_FUNCTION_UNIT__OUTPUT_PARAMETER_TABLE:
             if (outputParameterTable != null)
-                msgs = ((InternalEObject) outputParameterTable).eInverseRemove(this, EOPPOSITE_FEATURE_BASE
-                        - ConnectionPackage.SAP_FUNCTION_UNIT__OUTPUT_PARAMETER_TABLE, null, msgs);
+                msgs = ((InternalEObject) outputParameterTable).eInverseRemove(this,
+                        EOPPOSITE_FEATURE_BASE - ConnectionPackage.SAP_FUNCTION_UNIT__OUTPUT_PARAMETER_TABLE, null, msgs);
             return basicSetOutputParameterTable((OutputSAPFunctionParameterTable) otherEnd, msgs);
         case ConnectionPackage.SAP_FUNCTION_UNIT__TEST_INPUT_PARAMETER_TABLE:
             if (testInputParameterTable != null)
-                msgs = ((InternalEObject) testInputParameterTable).eInverseRemove(this, EOPPOSITE_FEATURE_BASE
-                        - ConnectionPackage.SAP_FUNCTION_UNIT__TEST_INPUT_PARAMETER_TABLE, null, msgs);
+                msgs = ((InternalEObject) testInputParameterTable).eInverseRemove(this,
+                        EOPPOSITE_FEATURE_BASE - ConnectionPackage.SAP_FUNCTION_UNIT__TEST_INPUT_PARAMETER_TABLE, null, msgs);
             return basicSetTestInputParameterTable((SAPTestInputParameterTable) otherEnd, msgs);
         }
         return super.eInverseAdd(otherEnd, featureID, msgs);
@@ -934,8 +934,8 @@ public class SAPFunctionUnitImpl extends AbstractMetadataObjectImpl implements S
         case ConnectionPackage.SAP_FUNCTION_UNIT__OUTPUT_TYPE:
             return OUTPUT_TYPE_EDEFAULT == null ? outputType != null : !OUTPUT_TYPE_EDEFAULT.equals(outputType);
         case ConnectionPackage.SAP_FUNCTION_UNIT__OUTPUT_TABLE_NAME:
-            return OUTPUT_TABLE_NAME_EDEFAULT == null ? outputTableName != null : !OUTPUT_TABLE_NAME_EDEFAULT
-                    .equals(outputTableName);
+            return OUTPUT_TABLE_NAME_EDEFAULT == null ? outputTableName != null
+                    : !OUTPUT_TABLE_NAME_EDEFAULT.equals(outputTableName);
         case ConnectionPackage.SAP_FUNCTION_UNIT__INPUT_PARAMETER_TABLE:
             return inputParameterTable != null;
         case ConnectionPackage.SAP_FUNCTION_UNIT__OUTPUT_PARAMETER_TABLE:
@@ -967,7 +967,7 @@ public class SAPFunctionUnitImpl extends AbstractMetadataObjectImpl implements S
         if (eIsProxy())
             return super.toString();
 
-        StringBuffer result = new StringBuffer(super.toString());
+        StringBuilder result = new StringBuilder(super.toString());
         result.append(" (OutputType: ");
         result.append(outputType);
         result.append(", OutputTableName: ");

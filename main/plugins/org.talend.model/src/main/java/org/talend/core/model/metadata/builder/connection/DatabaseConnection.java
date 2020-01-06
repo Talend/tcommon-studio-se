@@ -750,7 +750,7 @@ public interface DatabaseConnection extends Connection {
      * <!-- end-user-doc -->
      * @return the value of the '<em>Parameters</em>' map.
      * @see org.talend.core.model.metadata.builder.connection.ConnectionPackage#getDatabaseConnection_Parameters()
-     * @model mapType="org.talend.core.model.metadata.builder.connection.AdditionalProperties<org.eclipse.emf.ecore.EString, org.eclipse.emf.ecore.EString>"
+     * @model mapType="org.talend.core.model.metadata.builder.connection.AdditionalProperties&lt;org.eclipse.emf.ecore.EString, org.eclipse.emf.ecore.EString&gt;"
      * @generated
      */
     EMap<String, String> getParameters();

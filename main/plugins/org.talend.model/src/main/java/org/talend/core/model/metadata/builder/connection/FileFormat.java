@@ -114,6 +114,8 @@ public enum FileFormat implements Enumerator {
      * Returns the '<em><b>File Format</b></em>' literal with the specified literal value.
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
+     * @param literal the literal.
+     * @return the matching enumerator or <code>null</code>.
      * @generated
      */
     public static FileFormat get(String literal) {
@@ -130,6 +132,8 @@ public enum FileFormat implements Enumerator {
      * Returns the '<em><b>File Format</b></em>' literal with the specified name.
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
+     * @param name the name.
+     * @return the matching enumerator or <code>null</code>.
      * @generated
      */
     public static FileFormat getByName(String name) {
@@ -146,6 +150,8 @@ public enum FileFormat implements Enumerator {
      * Returns the '<em><b>File Format</b></em>' literal with the specified integer value.
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
+     * @param value the integer value.
+     * @return the matching enumerator or <code>null</code>.
      * @generated
      */
     public static FileFormat get(int value) {

@@ -38,6 +38,7 @@ import org.talend.core.model.metadata.builder.connection.ValidationRulesConnecti
  * <!-- end-user-doc -->
  * <p>
  * The following features are implemented:
+ * </p>
  * <ul>
  *   <li>{@link org.talend.core.model.metadata.builder.connection.impl.ValidationRulesConnectionImpl#isIsSelect <em>Is Select</em>}</li>
  *   <li>{@link org.talend.core.model.metadata.builder.connection.impl.ValidationRulesConnectionImpl#isIsInsert <em>Is Insert</em>}</li>
@@ -56,7 +57,6 @@ import org.talend.core.model.metadata.builder.connection.ValidationRulesConnecti
  *   <li>{@link org.talend.core.model.metadata.builder.connection.impl.ValidationRulesConnectionImpl#isIsDisallow <em>Is Disallow</em>}</li>
  *   <li>{@link org.talend.core.model.metadata.builder.connection.impl.ValidationRulesConnectionImpl#isIsRejectLink <em>Is Reject Link</em>}</li>
  * </ul>
- * </p>
  *
  * @generated
  */
@@ -603,8 +603,8 @@ public class ValidationRulesConnectionImpl extends ConnectionImpl implements Val
         LogicalOperator oldLogicalOperator = logicalOperator;
         logicalOperator = newLogicalOperator == null ? LOGICAL_OPERATOR_EDEFAULT : newLogicalOperator;
         if (eNotificationRequired())
-            eNotify(new ENotificationImpl(this, Notification.SET,
-                    ConnectionPackage.VALIDATION_RULES_CONNECTION__LOGICAL_OPERATOR, oldLogicalOperator, logicalOperator));
+            eNotify(new ENotificationImpl(this, Notification.SET, ConnectionPackage.VALIDATION_RULES_CONNECTION__LOGICAL_OPERATOR,
+                    oldLogicalOperator, logicalOperator));
     }
 
     /**
@@ -919,7 +919,7 @@ public class ValidationRulesConnectionImpl extends ConnectionImpl implements Val
         if (eIsProxy())
             return super.toString();
 
-        StringBuffer result = new StringBuffer(super.toString());
+        StringBuilder result = new StringBuilder(super.toString());
         result.append(" (isSelect: ");
         result.append(isSelect);
         result.append(", isInsert: ");

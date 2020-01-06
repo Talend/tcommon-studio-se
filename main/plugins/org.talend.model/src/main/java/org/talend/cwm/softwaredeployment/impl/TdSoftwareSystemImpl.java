@@ -16,8 +16,6 @@ import orgomg.cwm.foundation.softwaredeployment.impl.SoftwareSystemImpl;
  * <!-- begin-user-doc -->
  * An implementation of the model object '<em><b>Td Software System</b></em>'.
  * <!-- end-user-doc -->
- * <p>
- * </p>
  *
  * @generated
  */

@@ -15,6 +15,7 @@ import org.eclipse.emf.ecore.EObject;
  *
  * <p>
  * The following features are supported:
+ * </p>
  * <ul>
  *   <li>{@link org.talend.core.model.metadata.builder.connection.SAPFunctionUnit#getOutputType <em>Output Type</em>}</li>
  *   <li>{@link org.talend.core.model.metadata.builder.connection.SAPFunctionUnit#getOutputTableName <em>Output Table Name</em>}</li>
@@ -28,7 +29,6 @@ import org.eclipse.emf.ecore.EObject;
  *   <li>{@link org.talend.core.model.metadata.builder.connection.SAPFunctionUnit#getParamData <em>Param Data</em>}</li>
  *   <li>{@link org.talend.core.model.metadata.builder.connection.SAPFunctionUnit#isAsXmlSchema <em>As Xml Schema</em>}</li>
  * </ul>
- * </p>
  *
  * @see org.talend.core.model.metadata.builder.connection.ConnectionPackage#getSAPFunctionUnit()
  * @model
@@ -97,6 +97,7 @@ public interface SAPFunctionUnit extends AbstractMetadataObject {
      * @model documentDataType="orgomg.cwm.objectmodel.core.String"
      * @generated
      */
+    @Deprecated
     void setDocument(String document);
 
     /**

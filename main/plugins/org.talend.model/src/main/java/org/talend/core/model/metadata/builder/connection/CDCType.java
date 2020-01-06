@@ -14,13 +14,13 @@ import org.eclipse.emf.common.util.EList;
  *
  * <p>
  * The following features are supported:
+ * </p>
  * <ul>
  *   <li>{@link org.talend.core.model.metadata.builder.connection.CDCType#getLinkDB <em>Link DB</em>}</li>
  *   <li>{@link org.talend.core.model.metadata.builder.connection.CDCType#getSubscribers <em>Subscribers</em>}</li>
  *   <li>{@link org.talend.core.model.metadata.builder.connection.CDCType#getCdcConnection <em>Cdc Connection</em>}</li>
  *   <li>{@link org.talend.core.model.metadata.builder.connection.CDCType#getJournalName <em>Journal Name</em>}</li>
  * </ul>
- * </p>
  *
  * @see org.talend.core.model.metadata.builder.connection.ConnectionPackage#getCDCType()
  * @model

@@ -24,12 +24,12 @@ import org.talend.core.model.metadata.builder.connection.XmlXPathLoopDescriptor;
  * <!-- end-user-doc -->
  * <p>
  * The following features are implemented:
+ * </p>
  * <ul>
  *   <li>{@link org.talend.core.model.metadata.builder.connection.impl.SchemaTargetImpl#getRelativeXPathQuery <em>Relative XPath Query</em>}</li>
  *   <li>{@link org.talend.core.model.metadata.builder.connection.impl.SchemaTargetImpl#getTagName <em>Tag Name</em>}</li>
  *   <li>{@link org.talend.core.model.metadata.builder.connection.impl.SchemaTargetImpl#getSchema <em>Schema</em>}</li>
  * </ul>
- * </p>
  *
  * @generated
  */
@@ -134,7 +134,8 @@ public class SchemaTargetImpl extends EObjectImpl implements SchemaTarget {
         String oldTagName = tagName;
         tagName = newTagName;
         if (eNotificationRequired())
-            eNotify(new ENotificationImpl(this, Notification.SET, ConnectionPackage.SCHEMA_TARGET__TAG_NAME, oldTagName, tagName));
+            eNotify(new ENotificationImpl(this, Notification.SET, ConnectionPackage.SCHEMA_TARGET__TAG_NAME, oldTagName,
+                    tagName));
     }
 
     /**
@@ -308,8 +309,8 @@ public class SchemaTargetImpl extends EObjectImpl implements SchemaTarget {
     public boolean eIsSet(int featureID) {
         switch (featureID) {
         case ConnectionPackage.SCHEMA_TARGET__RELATIVE_XPATH_QUERY:
-            return RELATIVE_XPATH_QUERY_EDEFAULT == null ? relativeXPathQuery != null : !RELATIVE_XPATH_QUERY_EDEFAULT
-                    .equals(relativeXPathQuery);
+            return RELATIVE_XPATH_QUERY_EDEFAULT == null ? relativeXPathQuery != null
+                    : !RELATIVE_XPATH_QUERY_EDEFAULT.equals(relativeXPathQuery);
         case ConnectionPackage.SCHEMA_TARGET__TAG_NAME:
             return TAG_NAME_EDEFAULT == null ? tagName != null : !TAG_NAME_EDEFAULT.equals(tagName);
         case ConnectionPackage.SCHEMA_TARGET__SCHEMA:
@@ -328,7 +329,7 @@ public class SchemaTargetImpl extends EObjectImpl implements SchemaTarget {
         if (eIsProxy())
             return super.toString();
 
-        StringBuffer result = new StringBuffer(super.toString());
+        StringBuilder result = new StringBuilder(super.toString());
         result.append(" (RelativeXPathQuery: ");
         result.append(relativeXPathQuery);
         result.append(", TagName: ");

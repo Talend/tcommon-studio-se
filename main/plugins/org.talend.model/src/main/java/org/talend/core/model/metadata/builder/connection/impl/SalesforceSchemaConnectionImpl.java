@@ -27,6 +27,7 @@ import org.talend.core.model.metadata.builder.connection.SalesforceSchemaConnect
  * <!-- end-user-doc -->
  * <p>
  * The following features are implemented:
+ * </p>
  * <ul>
  *   <li>{@link org.talend.core.model.metadata.builder.connection.impl.SalesforceSchemaConnectionImpl#getWebServiceUrl <em>Web Service Url</em>}</li>
  *   <li>{@link org.talend.core.model.metadata.builder.connection.impl.SalesforceSchemaConnectionImpl#getUserName <em>User Name</em>}</li>
@@ -53,7 +54,6 @@ import org.talend.core.model.metadata.builder.connection.SalesforceSchemaConnect
  *   <li>{@link org.talend.core.model.metadata.builder.connection.impl.SalesforceSchemaConnectionImpl#getToken <em>Token</em>}</li>
  *   <li>{@link org.talend.core.model.metadata.builder.connection.impl.SalesforceSchemaConnectionImpl#getLoginType <em>Login Type</em>}</li>
  * </ul>
- * </p>
  *
  * @generated
  */
@@ -566,8 +566,8 @@ public class SalesforceSchemaConnectionImpl extends ConnectionImpl implements Sa
         String oldWebServiceUrl = webServiceUrl;
         webServiceUrl = newWebServiceUrl;
         if (eNotificationRequired())
-            eNotify(new ENotificationImpl(this, Notification.SET,
-                    ConnectionPackage.SALESFORCE_SCHEMA_CONNECTION__WEB_SERVICE_URL, oldWebServiceUrl, webServiceUrl));
+            eNotify(new ENotificationImpl(this, Notification.SET, ConnectionPackage.SALESFORCE_SCHEMA_CONNECTION__WEB_SERVICE_URL,
+                    oldWebServiceUrl, webServiceUrl));
     }
 
     /**
@@ -654,8 +654,8 @@ public class SalesforceSchemaConnectionImpl extends ConnectionImpl implements Sa
         String oldQueryCondition = queryCondition;
         queryCondition = newQueryCondition;
         if (eNotificationRequired())
-            eNotify(new ENotificationImpl(this, Notification.SET,
-                    ConnectionPackage.SALESFORCE_SCHEMA_CONNECTION__QUERY_CONDITION, oldQueryCondition, queryCondition));
+            eNotify(new ENotificationImpl(this, Notification.SET, ConnectionPackage.SALESFORCE_SCHEMA_CONNECTION__QUERY_CONDITION,
+                    oldQueryCondition, queryCondition));
     }
 
     /**
@@ -887,7 +887,8 @@ public class SalesforceSchemaConnectionImpl extends ConnectionImpl implements Sa
     public EList<SalesforceModuleUnit> getModules() {
         if (modules == null) {
             modules = new EObjectContainmentWithInverseEList.Resolving<SalesforceModuleUnit>(SalesforceModuleUnit.class, this,
-                    ConnectionPackage.SALESFORCE_SCHEMA_CONNECTION__MODULES, ConnectionPackage.SALESFORCE_MODULE_UNIT__CONNECTION);
+                    ConnectionPackage.SALESFORCE_SCHEMA_CONNECTION__MODULES,
+                    ConnectionPackage.SALESFORCE_MODULE_UNIT__CONNECTION);
         }
         return modules;
     }
@@ -1043,8 +1044,8 @@ public class SalesforceSchemaConnectionImpl extends ConnectionImpl implements Sa
         String oldToken = token;
         token = newToken;
         if (eNotificationRequired())
-            eNotify(new ENotificationImpl(this, Notification.SET, ConnectionPackage.SALESFORCE_SCHEMA_CONNECTION__TOKEN,
-                    oldToken, token));
+            eNotify(new ENotificationImpl(this, Notification.SET, ConnectionPackage.SALESFORCE_SCHEMA_CONNECTION__TOKEN, oldToken,
+                    token));
     }
 
     /**
@@ -1380,8 +1381,8 @@ public class SalesforceSchemaConnectionImpl extends ConnectionImpl implements Sa
         case ConnectionPackage.SALESFORCE_SCHEMA_CONNECTION__CALLBACK_PORT:
             return CALLBACK_PORT_EDEFAULT == null ? callbackPort != null : !CALLBACK_PORT_EDEFAULT.equals(callbackPort);
         case ConnectionPackage.SALESFORCE_SCHEMA_CONNECTION__SALESFORCE_VERSION:
-            return SALESFORCE_VERSION_EDEFAULT == null ? salesforceVersion != null : !SALESFORCE_VERSION_EDEFAULT
-                    .equals(salesforceVersion);
+            return SALESFORCE_VERSION_EDEFAULT == null ? salesforceVersion != null
+                    : !SALESFORCE_VERSION_EDEFAULT.equals(salesforceVersion);
         case ConnectionPackage.SALESFORCE_SCHEMA_CONNECTION__TOKEN:
             return TOKEN_EDEFAULT == null ? token != null : !TOKEN_EDEFAULT.equals(token);
         case ConnectionPackage.SALESFORCE_SCHEMA_CONNECTION__LOGIN_TYPE:
@@ -1400,7 +1401,7 @@ public class SalesforceSchemaConnectionImpl extends ConnectionImpl implements Sa
         if (eIsProxy())
             return super.toString();
 
-        StringBuffer result = new StringBuffer(super.toString());
+        StringBuilder result = new StringBuilder(super.toString());
         result.append(" (webServiceUrl: ");
         result.append(webServiceUrl);
         result.append(", userName: ");

@@ -21,6 +21,7 @@ import org.talend.cwm.helper.ModelElementHelper;
  * end-user-doc -->
  * <p>
  * The following features are implemented:
+ * </p>
  * <ul>
  *   <li>{@link org.talend.core.model.metadata.builder.connection.impl.SAPFunctionParameterColumnImpl#getParameterType <em>Parameter Type</em>}</li>
  *   <li>{@link org.talend.core.model.metadata.builder.connection.impl.SAPFunctionParameterColumnImpl#getStructureOrTableName <em>Structure Or Table Name</em>}</li>
@@ -29,7 +30,6 @@ import org.talend.cwm.helper.ModelElementHelper;
  *   <li>{@link org.talend.core.model.metadata.builder.connection.impl.SAPFunctionParameterColumnImpl#getValue <em>Value</em>}</li>
  *   <li>{@link org.talend.core.model.metadata.builder.connection.impl.SAPFunctionParameterColumnImpl#getParameterTable <em>Parameter Table</em>}</li>
  * </ul>
- * </p>
  *
  * @generated
  */
@@ -168,8 +168,8 @@ public class SAPFunctionParameterColumnImpl extends AbstractMetadataObjectImpl i
         String oldParameterType = parameterType;
         parameterType = newParameterType;
         if (eNotificationRequired())
-            eNotify(new ENotificationImpl(this, Notification.SET,
-                    ConnectionPackage.SAP_FUNCTION_PARAMETER_COLUMN__PARAMETER_TYPE, oldParameterType, parameterType));
+            eNotify(new ENotificationImpl(this, Notification.SET, ConnectionPackage.SAP_FUNCTION_PARAMETER_COLUMN__PARAMETER_TYPE,
+                    oldParameterType, parameterType));
     }
 
     /**
@@ -289,7 +289,8 @@ public class SAPFunctionParameterColumnImpl extends AbstractMetadataObjectImpl i
      */
     public void setParameterTable(SAPFunctionParameterTable newParameterTable) {
         if (newParameterTable != eInternalContainer()
-                || (eContainerFeatureID() != ConnectionPackage.SAP_FUNCTION_PARAMETER_COLUMN__PARAMETER_TABLE && newParameterTable != null)) {
+                || (eContainerFeatureID() != ConnectionPackage.SAP_FUNCTION_PARAMETER_COLUMN__PARAMETER_TABLE
+                        && newParameterTable != null)) {
             if (EcoreUtil.isAncestor(this, newParameterTable))
                 throw new IllegalArgumentException("Recursive containment not allowed for " + toString());
             NotificationChain msgs = null;
@@ -456,8 +457,8 @@ public class SAPFunctionParameterColumnImpl extends AbstractMetadataObjectImpl i
         case ConnectionPackage.SAP_FUNCTION_PARAMETER_COLUMN__PARAMETER_TYPE:
             return PARAMETER_TYPE_EDEFAULT == null ? parameterType != null : !PARAMETER_TYPE_EDEFAULT.equals(parameterType);
         case ConnectionPackage.SAP_FUNCTION_PARAMETER_COLUMN__STRUCTURE_OR_TABLE_NAME:
-            return STRUCTURE_OR_TABLE_NAME_EDEFAULT == null ? structureOrTableName != null : !STRUCTURE_OR_TABLE_NAME_EDEFAULT
-                    .equals(structureOrTableName);
+            return STRUCTURE_OR_TABLE_NAME_EDEFAULT == null ? structureOrTableName != null
+                    : !STRUCTURE_OR_TABLE_NAME_EDEFAULT.equals(structureOrTableName);
         case ConnectionPackage.SAP_FUNCTION_PARAMETER_COLUMN__DATA_TYPE:
             return DATA_TYPE_EDEFAULT == null ? dataType != null : !DATA_TYPE_EDEFAULT.equals(dataType);
         case ConnectionPackage.SAP_FUNCTION_PARAMETER_COLUMN__LENGTH:
@@ -479,7 +480,7 @@ public class SAPFunctionParameterColumnImpl extends AbstractMetadataObjectImpl i
         if (eIsProxy())
             return super.toString();
 
-        StringBuffer result = new StringBuffer(super.toString());
+        StringBuilder result = new StringBuilder(super.toString());
         result.append(" (ParameterType: ");
         result.append(parameterType);
         result.append(", StructureOrTableName: ");

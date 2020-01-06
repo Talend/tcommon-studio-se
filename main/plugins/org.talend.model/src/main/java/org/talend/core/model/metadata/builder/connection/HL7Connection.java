@@ -14,13 +14,13 @@ import org.eclipse.emf.common.util.EList;
  *
  * <p>
  * The following features are supported:
+ * </p>
  * <ul>
  *   <li>{@link org.talend.core.model.metadata.builder.connection.HL7Connection#getStartChar <em>Start Char</em>}</li>
  *   <li>{@link org.talend.core.model.metadata.builder.connection.HL7Connection#getEndChar <em>End Char</em>}</li>
  *   <li>{@link org.talend.core.model.metadata.builder.connection.HL7Connection#getRoot <em>Root</em>}</li>
  *   <li>{@link org.talend.core.model.metadata.builder.connection.HL7Connection#getOutputFilePath <em>Output File Path</em>}</li>
  * </ul>
- * </p>
  *
  * @see org.talend.core.model.metadata.builder.connection.ConnectionPackage#getHL7Connection()
  * @model

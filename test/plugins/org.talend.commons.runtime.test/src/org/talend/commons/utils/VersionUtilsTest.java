@@ -139,6 +139,36 @@ public class VersionUtilsTest {
         assertEquals(expect,result);
     }
 
+    @Test
+    public void testGetProductVersionWithoutBranding() {
+        String expect = "7.3.1.20190620_1446";
+        String test = "Talend Cloud Big Data-7.3.1.20190620_1446";
+        String result = VersionUtils.getProductVersionWithoutBranding(test);
+        assertEquals(expect,result);
+        
+        test = "Talend Cloud Real-Time Big Data Platform-7.3.1.20190620_1446";
+        result = VersionUtils.getProductVersionWithoutBranding(test);
+        assertEquals(expect, result);
+
+        expect = "7.3.1.20190917_1941-SNAPSHOT";
+        test = "Talend Cloud Big Data-7.3.1.20190917_1941-SNAPSHOT";
+        result = VersionUtils.getProductVersionWithoutBranding(test);
+        assertEquals(expect, result);
+
+        test = "Talend Cloud Real-Time Big Data Platform-7.3.1.20190917_1941-SNAPSHOT";
+        result = VersionUtils.getProductVersionWithoutBranding(test);
+        assertEquals(expect,result);
+
+        expect = "7.3.1.20190919_1941-patch";
+        test = "Talend Cloud Big Data-7.3.1.20190919_1941-patch";
+        result = VersionUtils.getProductVersionWithoutBranding(test);
+        assertEquals(expect, result);
+
+        test = "Talend Cloud Real-Time Big Data Platform-7.3.1.20190919_1941-patch";
+        result = VersionUtils.getProductVersionWithoutBranding(test);
+        assertEquals(expect, result);
+    }
+
     @After
     public void tearDown() throws Exception {
         if (mojo_properties != null && mojo_properties.exists()) {

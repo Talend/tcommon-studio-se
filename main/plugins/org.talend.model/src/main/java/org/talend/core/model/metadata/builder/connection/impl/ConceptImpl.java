@@ -35,6 +35,7 @@ import org.talend.cwm.relational.impl.TdTableImpl;
  * <!-- end-user-doc -->
  * <p>
  * The following features are implemented:
+ * </p>
  * <ul>
  *   <li>{@link org.talend.core.model.metadata.builder.connection.impl.ConceptImpl#getLoopExpression <em>Loop Expression</em>}</li>
  *   <li>{@link org.talend.core.model.metadata.builder.connection.impl.ConceptImpl#getLoopLimit <em>Loop Limit</em>}</li>
@@ -46,7 +47,6 @@ import org.talend.cwm.relational.impl.TdTableImpl;
  *   <li>{@link org.talend.core.model.metadata.builder.connection.impl.ConceptImpl#getConceptType <em>Concept Type</em>}</li>
  *   <li>{@link org.talend.core.model.metadata.builder.connection.impl.ConceptImpl#getXPathPrefix <em>XPath Prefix</em>}</li>
  * </ul>
- * </p>
  *
  * @generated
  */
@@ -251,7 +251,8 @@ public class ConceptImpl extends TdTableImpl implements Concept {
         Integer oldLoopLimit = loopLimit;
         loopLimit = newLoopLimit;
         if (eNotificationRequired())
-            eNotify(new ENotificationImpl(this, Notification.SET, ConnectionPackage.CONCEPT__LOOP_LIMIT, oldLoopLimit, loopLimit));
+            eNotify(new ENotificationImpl(this, Notification.SET, ConnectionPackage.CONCEPT__LOOP_LIMIT, oldLoopLimit,
+                    loopLimit));
     }
 
     /**
@@ -557,7 +558,7 @@ public class ConceptImpl extends TdTableImpl implements Concept {
         if (eIsProxy())
             return super.toString();
 
-        StringBuffer result = new StringBuffer(super.toString());
+        StringBuilder result = new StringBuilder(super.toString());
         result.append(" (LoopExpression: ");
         result.append(loopExpression);
         result.append(", LoopLimit: ");

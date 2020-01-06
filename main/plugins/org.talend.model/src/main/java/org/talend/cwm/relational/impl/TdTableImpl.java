@@ -38,6 +38,7 @@ import orgomg.cwm.resource.relational.Trigger;
  * <!-- end-user-doc -->
  * <p>
  * The following features are implemented:
+ * </p>
  * <ul>
  *   <li>{@link org.talend.cwm.relational.impl.TdTableImpl#getUsingTrigger <em>Using Trigger</em>}</li>
  *   <li>{@link org.talend.cwm.relational.impl.TdTableImpl#getType <em>Type</em>}</li>
@@ -47,7 +48,6 @@ import orgomg.cwm.resource.relational.Trigger;
  *   <li>{@link org.talend.cwm.relational.impl.TdTableImpl#isIsSystem <em>Is System</em>}</li>
  *   <li>{@link org.talend.cwm.relational.impl.TdTableImpl#getTrigger <em>Trigger</em>}</li>
  * </ul>
- * </p>
  *
  * @generated
  */
@@ -241,12 +241,12 @@ public class TdTableImpl extends MetadataTableImpl implements TdTable {
             NotificationChain msgs = null;
             if (type != null)
                 msgs = ((InternalEObject) type).eInverseRemove(this,
-                        orgomg.cwm.resource.relational.RelationalPackage.SQL_STRUCTURED_TYPE__COLUMN_SET,
-                        SQLStructuredType.class, msgs);
+                        orgomg.cwm.resource.relational.RelationalPackage.SQL_STRUCTURED_TYPE__COLUMN_SET, SQLStructuredType.class,
+                        msgs);
             if (newType != null)
                 msgs = ((InternalEObject) newType).eInverseAdd(this,
-                        orgomg.cwm.resource.relational.RelationalPackage.SQL_STRUCTURED_TYPE__COLUMN_SET,
-                        SQLStructuredType.class, msgs);
+                        orgomg.cwm.resource.relational.RelationalPackage.SQL_STRUCTURED_TYPE__COLUMN_SET, SQLStructuredType.class,
+                        msgs);
             msgs = basicSetType(newType, msgs);
             if (msgs != null)
                 msgs.dispatch();
@@ -360,8 +360,8 @@ public class TdTableImpl extends MetadataTableImpl implements TdTable {
         case RelationalPackage.TD_TABLE__TYPE:
             if (type != null)
                 msgs = ((InternalEObject) type).eInverseRemove(this,
-                        orgomg.cwm.resource.relational.RelationalPackage.SQL_STRUCTURED_TYPE__COLUMN_SET,
-                        SQLStructuredType.class, msgs);
+                        orgomg.cwm.resource.relational.RelationalPackage.SQL_STRUCTURED_TYPE__COLUMN_SET, SQLStructuredType.class,
+                        msgs);
             return basicSetType((SQLStructuredType) otherEnd, msgs);
         case RelationalPackage.TD_TABLE__OPTION_SCOPE_COLUMN:
             return ((InternalEList<InternalEObject>) (InternalEList<?>) getOptionScopeColumn()).basicAdd(otherEnd, msgs);
@@ -609,7 +609,7 @@ public class TdTableImpl extends MetadataTableImpl implements TdTable {
         if (eIsProxy())
             return super.toString();
 
-        StringBuffer result = new StringBuffer(super.toString());
+        StringBuilder result = new StringBuilder(super.toString());
         result.append(" (isTemporary: ");
         result.append(isTemporary);
         result.append(", temporaryScope: ");

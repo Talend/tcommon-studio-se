@@ -24,11 +24,11 @@ import org.talend.core.model.metadata.builder.connection.ConnectionPackage;
  * <!-- end-user-doc -->
  * <p>
  * The following features are implemented:
+ * </p>
  * <ul>
  *   <li>{@link org.talend.core.model.metadata.builder.connection.impl.AdditionalPropertiesImpl#getTypedKey <em>Key</em>}</li>
  *   <li>{@link org.talend.core.model.metadata.builder.connection.impl.AdditionalPropertiesImpl#getTypedValue <em>Value</em>}</li>
  * </ul>
- * </p>
  *
  * @generated
  */
@@ -132,7 +132,8 @@ public class AdditionalPropertiesImpl extends EObjectImpl implements BasicEMap.E
         String oldValue = value;
         value = newValue;
         if (eNotificationRequired())
-            eNotify(new ENotificationImpl(this, Notification.SET, ConnectionPackage.ADDITIONAL_PROPERTIES__VALUE, oldValue, value));
+            eNotify(new ENotificationImpl(this, Notification.SET, ConnectionPackage.ADDITIONAL_PROPERTIES__VALUE, oldValue,
+                    value));
     }
 
     /**
@@ -213,7 +214,7 @@ public class AdditionalPropertiesImpl extends EObjectImpl implements BasicEMap.E
         if (eIsProxy())
             return super.toString();
 
-        StringBuffer result = new StringBuffer(super.toString());
+        StringBuilder result = new StringBuilder(super.toString());
         result.append(" (key: ");
         result.append(key);
         result.append(", value: ");

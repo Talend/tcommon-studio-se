@@ -20,13 +20,13 @@ import org.talend.core.model.metadata.builder.connection.HeaderFooterConnection;
  * <!-- end-user-doc -->
  * <p>
  * The following features are implemented:
+ * </p>
  * <ul>
  *   <li>{@link org.talend.core.model.metadata.builder.connection.impl.HeaderFooterConnectionImpl#isIsHeader <em>Is Header</em>}</li>
  *   <li>{@link org.talend.core.model.metadata.builder.connection.impl.HeaderFooterConnectionImpl#getImports <em>Imports</em>}</li>
  *   <li>{@link org.talend.core.model.metadata.builder.connection.impl.HeaderFooterConnectionImpl#getMainCode <em>Main Code</em>}</li>
  *   <li>{@link org.talend.core.model.metadata.builder.connection.impl.HeaderFooterConnectionImpl#getLibraries <em>Libraries</em>}</li>
  * </ul>
- * </p>
  *
  * @generated
  */
@@ -171,8 +171,8 @@ public class HeaderFooterConnectionImpl extends ConnectionImpl implements Header
         String oldImports = imports;
         imports = newImports;
         if (eNotificationRequired())
-            eNotify(new ENotificationImpl(this, Notification.SET, ConnectionPackage.HEADER_FOOTER_CONNECTION__IMPORTS,
-                    oldImports, imports));
+            eNotify(new ENotificationImpl(this, Notification.SET, ConnectionPackage.HEADER_FOOTER_CONNECTION__IMPORTS, oldImports,
+                    imports));
     }
 
     /**
@@ -317,7 +317,7 @@ public class HeaderFooterConnectionImpl extends ConnectionImpl implements Header
         if (eIsProxy())
             return super.toString();
 
-        StringBuffer result = new StringBuffer(super.toString());
+        StringBuilder result = new StringBuilder(super.toString());
         result.append(" (isHeader: ");
         result.append(isHeader);
         result.append(", imports: ");

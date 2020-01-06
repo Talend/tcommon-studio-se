@@ -261,6 +261,7 @@ public class ProcessorUtilities {
         exportConfig = false;
         exportAsOSGI = false;
         exportTimeStamp = null;
+        exportJobAsMicroService = false;
     }
 
     public static String getInterpreter() {

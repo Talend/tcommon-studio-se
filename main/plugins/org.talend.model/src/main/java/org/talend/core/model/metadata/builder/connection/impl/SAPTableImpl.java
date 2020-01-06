@@ -18,10 +18,10 @@ import org.talend.core.model.metadata.builder.connection.SAPTable;
  * <!-- end-user-doc -->
  * <p>
  * The following features are implemented:
+ * </p>
  * <ul>
  *   <li>{@link org.talend.core.model.metadata.builder.connection.impl.SAPTableImpl#getTableSearchType <em>Table Search Type</em>}</li>
  * </ul>
- * </p>
  *
  * @generated
  */
@@ -141,8 +141,8 @@ public class SAPTableImpl extends MetadataTableImpl implements SAPTable {
     public boolean eIsSet(int featureID) {
         switch (featureID) {
         case ConnectionPackage.SAP_TABLE__TABLE_SEARCH_TYPE:
-            return TABLE_SEARCH_TYPE_EDEFAULT == null ? tableSearchType != null : !TABLE_SEARCH_TYPE_EDEFAULT
-                    .equals(tableSearchType);
+            return TABLE_SEARCH_TYPE_EDEFAULT == null ? tableSearchType != null
+                    : !TABLE_SEARCH_TYPE_EDEFAULT.equals(tableSearchType);
         }
         return super.eIsSet(featureID);
     }
@@ -157,7 +157,7 @@ public class SAPTableImpl extends MetadataTableImpl implements SAPTable {
         if (eIsProxy())
             return super.toString();
 
-        StringBuffer result = new StringBuffer(super.toString());
+        StringBuilder result = new StringBuilder(super.toString());
         result.append(" (tableSearchType: ");
         result.append(tableSearchType);
         result.append(')');

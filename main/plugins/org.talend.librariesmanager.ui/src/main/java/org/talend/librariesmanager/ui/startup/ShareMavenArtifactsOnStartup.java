@@ -22,6 +22,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
+import org.apache.commons.lang.StringUtils;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.SubMonitor;
 import org.talend.commons.exception.ExceptionHandler;
@@ -59,6 +60,14 @@ public class ShareMavenArtifactsOnStartup extends ShareLibrareisHelper {
             if (monitor.isCanceled()) {
                 return null;
             }
+            // to skip dynamic distribution when startUp share
+            MavenArtifact artifact = MavenUrlHelper.parseMvnUrl(module.getMavenUri());
+            if (artifact != null) {
+                if (StringUtils.isNotBlank(artifact.getRepositoryUrl())) {
+                    continue;
+                }
+            }
+
             String jarPathFromMaven = librariesService.getJarPathFromMaven(module.getMavenUri());
             if (jarPathFromMaven == null) {
                 String moduleLocation = module.getModuleLocaion();

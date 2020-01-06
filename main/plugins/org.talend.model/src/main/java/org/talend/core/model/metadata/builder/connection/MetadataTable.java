@@ -17,6 +17,7 @@ import org.eclipse.emf.common.util.EMap;
  *
  * <p>
  * The following features are supported:
+ * </p>
  * <ul>
  *   <li>{@link org.talend.core.model.metadata.builder.connection.MetadataTable#getSourceName <em>Source Name</em>}</li>
  *   <li>{@link org.talend.core.model.metadata.builder.connection.MetadataTable#getTableType <em>Table Type</em>}</li>
@@ -26,7 +27,6 @@ import org.eclipse.emf.common.util.EMap;
  *   <li>{@link org.talend.core.model.metadata.builder.connection.MetadataTable#getConnection <em>Connection</em>}</li>
  *   <li>{@link org.talend.core.model.metadata.builder.connection.MetadataTable#getAdditionalProperties <em>Additional Properties</em>}</li>
  * </ul>
- * </p>
  *
  * @see org.talend.core.model.metadata.builder.connection.ConnectionPackage#getMetadataTable()
  * @model
@@ -49,6 +49,7 @@ public interface MetadataTable extends AbstractMetadataObject, orgomg.cwm.object
      * @model transient="true" volatile="true"
      * @generated
      */
+    @Deprecated
     String getSourceName();
 
     /**
@@ -56,8 +57,10 @@ public interface MetadataTable extends AbstractMetadataObject, orgomg.cwm.object
      * <!-- begin-user-doc --> <!-- end-user-doc -->
      * @param value the new value of the '<em>Source Name</em>' attribute.
      * @see #getSourceName()
+     * @deprecated See {@link org.talend.core.model.metadata.builder.connection.MetadataTable#getSourceName() model documentation} for details.
      * @generated
      */
+    @Deprecated
     void setSourceName(String value);
 
     /**
@@ -91,6 +94,7 @@ public interface MetadataTable extends AbstractMetadataObject, orgomg.cwm.object
      * @model transient="true" changeable="false" volatile="true"
      * @generated
      */
+    @Deprecated
     Connection getConnection();
 
     /**
@@ -105,7 +109,7 @@ public interface MetadataTable extends AbstractMetadataObject, orgomg.cwm.object
      * <!-- end-user-doc -->
      * @return the value of the '<em>Additional Properties</em>' map.
      * @see org.talend.core.model.metadata.builder.connection.ConnectionPackage#getMetadataTable_AdditionalProperties()
-     * @model mapType="org.talend.core.model.metadata.builder.connection.AdditionalProperties<org.eclipse.emf.ecore.EString, org.eclipse.emf.ecore.EString>"
+     * @model mapType="org.talend.core.model.metadata.builder.connection.AdditionalProperties&lt;org.eclipse.emf.ecore.EString, org.eclipse.emf.ecore.EString&gt;"
      * @generated
      */
     EMap<String, String> getAdditionalProperties();

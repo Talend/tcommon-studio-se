@@ -108,7 +108,7 @@ public enum Operator implements Enumerator {
      * </p>
      * <!-- end-user-doc -->
      * @see #GREATER
-     * @model name="Greater" literal=">"
+     * @model name="Greater" literal="&gt;"
      * @generated
      * @ordered
      */
@@ -123,7 +123,7 @@ public enum Operator implements Enumerator {
      * </p>
      * <!-- end-user-doc -->
      * @see #LOWER
-     * @model name="Lower" literal="<"
+     * @model name="Lower" literal="&lt;"
      * @generated
      * @ordered
      */
@@ -138,7 +138,7 @@ public enum Operator implements Enumerator {
      * </p>
      * <!-- end-user-doc -->
      * @see #GREATER_OR_EQUALS
-     * @model name="Greater_or_equals" literal=">="
+     * @model name="Greater_or_equals" literal="&gt;="
      * @generated
      * @ordered
      */
@@ -153,7 +153,7 @@ public enum Operator implements Enumerator {
      * </p>
      * <!-- end-user-doc -->
      * @see #LOWER_OR_EQUALS
-     * @model name="Lower_or_equals" literal="<="
+     * @model name="Lower_or_equals" literal="&lt;="
      * @generated
      * @ordered
      */
@@ -179,6 +179,8 @@ public enum Operator implements Enumerator {
      * Returns the '<em><b>Operator</b></em>' literal with the specified literal value.
      * <!-- begin-user-doc --> <!--
      * end-user-doc -->
+     * @param literal the literal.
+     * @return the matching enumerator or <code>null</code>.
      * @generated
      */
     public static Operator get(String literal) {
@@ -211,6 +213,8 @@ public enum Operator implements Enumerator {
      * Returns the '<em><b>Operator</b></em>' literal with the specified integer value.
      * <!-- begin-user-doc --> <!--
      * end-user-doc -->
+     * @param value the integer value.
+     * @return the matching enumerator or <code>null</code>.
      * @generated
      */
     public static Operator get(int value) {

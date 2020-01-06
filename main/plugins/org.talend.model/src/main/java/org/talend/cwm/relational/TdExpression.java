@@ -16,13 +16,13 @@ import orgomg.cwm.objectmodel.core.Expression;
  *
  * <p>
  * The following features are supported:
- * <ul>
- * <li>{@link org.talend.cwm.relational.TdExpression#getVersion <em>Version</em>}</li>
- * <li>{@link org.talend.cwm.relational.TdExpression#getModificationDate <em>Modification Date</em>}</li>
- * <li>{@link org.talend.cwm.relational.TdExpression#getName <em>Name</em>}</li>
- * <li>{@link org.talend.cwm.relational.TdExpression#getExpressionVariableMap <em>Expression Variable Map</em>}</li>
- * </ul>
  * </p>
+ * <ul>
+ *   <li>{@link org.talend.cwm.relational.TdExpression#getVersion <em>Version</em>}</li>
+ *   <li>{@link org.talend.cwm.relational.TdExpression#getModificationDate <em>Modification Date</em>}</li>
+ *   <li>{@link org.talend.cwm.relational.TdExpression#getName <em>Name</em>}</li>
+ *   <li>{@link org.talend.cwm.relational.TdExpression#getExpressionVariableMap <em>Expression Variable Map</em>}</li>
+ * </ul>
  *
  * @see org.talend.cwm.relational.RelationalPackage#getTdExpression()
  * @model
@@ -38,7 +38,6 @@ public interface TdExpression extends Expression {
      * there really should be more of a description here...
      * </p>
      * <!-- end-user-doc -->
-     * 
      * @return the value of the '<em>Version</em>' attribute.
      * @see #setVersion(String)
      * @see org.talend.cwm.relational.RelationalPackage#getTdExpression_Version()
@@ -51,7 +50,6 @@ public interface TdExpression extends Expression {
      * Sets the value of the '{@link org.talend.cwm.relational.TdExpression#getVersion <em>Version</em>}' attribute.
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * 
      * @param value the new value of the '<em>Version</em>' attribute.
      * @see #getVersion()
      * @generated
@@ -66,7 +64,6 @@ public interface TdExpression extends Expression {
      * there really should be more of a description here...
      * </p>
      * <!-- end-user-doc -->
-     * 
      * @return the value of the '<em>Modification Date</em>' attribute.
      * @see #setModificationDate(String)
      * @see org.talend.cwm.relational.RelationalPackage#getTdExpression_ModificationDate()
@@ -76,11 +73,9 @@ public interface TdExpression extends Expression {
     String getModificationDate();
 
     /**
-     * Sets the value of the '{@link org.talend.cwm.relational.TdExpression#getModificationDate <em>Modification
-     * Date</em>}' attribute.
+     * Sets the value of the '{@link org.talend.cwm.relational.TdExpression#getModificationDate <em>Modification Date</em>}' attribute.
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * 
      * @param value the new value of the '<em>Modification Date</em>' attribute.
      * @see #getModificationDate()
      * @generated
@@ -95,7 +90,6 @@ public interface TdExpression extends Expression {
      * there really should be more of a description here...
      * </p>
      * <!-- end-user-doc -->
-     * 
      * @return the value of the '<em>Name</em>' attribute.
      * @see #setName(String)
      * @see org.talend.cwm.relational.RelationalPackage#getTdExpression_Name()
@@ -108,7 +102,6 @@ public interface TdExpression extends Expression {
      * Sets the value of the '{@link org.talend.cwm.relational.TdExpression#getName <em>Name</em>}' attribute.
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * 
      * @param value the new value of the '<em>Name</em>' attribute.
      * @see #getName()
      * @generated
@@ -123,7 +116,6 @@ public interface TdExpression extends Expression {
      * there really should be more of a description here...
      * </p>
      * <!-- end-user-doc -->
-     * 
      * @return the value of the '<em>Expression Variable Map</em>' attribute.
      * @see #setExpressionVariableMap(HashMap)
      * @see org.talend.cwm.relational.RelationalPackage#getTdExpression_ExpressionVariableMap()
@@ -133,11 +125,9 @@ public interface TdExpression extends Expression {
     HashMap<String, String> getExpressionVariableMap();
 
     /**
-     * Sets the value of the '{@link org.talend.cwm.relational.TdExpression#getExpressionVariableMap <em>Expression
-     * Variable Map</em>}' attribute.
+     * Sets the value of the '{@link org.talend.cwm.relational.TdExpression#getExpressionVariableMap <em>Expression Variable Map</em>}' attribute.
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * 
      * @param value the new value of the '<em>Expression Variable Map</em>' attribute.
      * @see #getExpressionVariableMap()
      * @generated

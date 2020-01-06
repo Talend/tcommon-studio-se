@@ -16,8 +16,6 @@ import orgomg.cwm.foundation.softwaredeployment.impl.DataManagerImpl;
  * <!-- begin-user-doc -->
  * An implementation of the model object '<em><b>Td Data Manager</b></em>'.
  * <!-- end-user-doc -->
- * <p>
- * </p>
  *
  * @generated
  */

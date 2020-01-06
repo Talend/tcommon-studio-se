@@ -17,11 +17,11 @@ import org.talend.core.model.metadata.builder.connection.FieldSeparator;
  * end-user-doc -->
  * <p>
  * The following features are implemented:
+ * </p>
  * <ul>
  *   <li>{@link org.talend.core.model.metadata.builder.connection.impl.DelimitedFileConnectionImpl#getFieldSeparatorType <em>Field Separator Type</em>}</li>
  *   <li>{@link org.talend.core.model.metadata.builder.connection.impl.DelimitedFileConnectionImpl#isSplitRecord <em>Split Record</em>}</li>
  * </ul>
- * </p>
  *
  * @generated
  */
@@ -101,7 +101,8 @@ public class DelimitedFileConnectionImpl extends FileConnectionImpl implements D
         fieldSeparatorType = newFieldSeparatorType == null ? FIELD_SEPARATOR_TYPE_EDEFAULT : newFieldSeparatorType;
         if (eNotificationRequired())
             eNotify(new ENotificationImpl(this, Notification.SET,
-                    ConnectionPackage.DELIMITED_FILE_CONNECTION__FIELD_SEPARATOR_TYPE, oldFieldSeparatorType, fieldSeparatorType));
+                    ConnectionPackage.DELIMITED_FILE_CONNECTION__FIELD_SEPARATOR_TYPE, oldFieldSeparatorType,
+                    fieldSeparatorType));
     }
 
     /**
@@ -197,7 +198,7 @@ public class DelimitedFileConnectionImpl extends FileConnectionImpl implements D
         if (eIsProxy())
             return super.toString();
 
-        StringBuffer result = new StringBuffer(super.toString());
+        StringBuilder result = new StringBuilder(super.toString());
         result.append(" (FieldSeparatorType: ");
         result.append(fieldSeparatorType);
         result.append(", splitRecord: ");

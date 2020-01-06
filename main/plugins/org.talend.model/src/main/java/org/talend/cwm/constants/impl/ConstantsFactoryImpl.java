@@ -104,8 +104,8 @@ public class ConstantsFactoryImpl extends EFactoryImpl implements ConstantsFacto
     public DevelopmentStatus createDevelopmentStatusFromString(EDataType eDataType, String initialValue) {
         DevelopmentStatus result = DevelopmentStatus.get(initialValue);
         if (result == null)
-            throw new IllegalArgumentException("The value '" + initialValue + "' is not a valid enumerator of '"
-                    + eDataType.getName() + "'");
+            throw new IllegalArgumentException(
+                    "The value '" + initialValue + "' is not a valid enumerator of '" + eDataType.getName() + "'");
         return result;
     }
 

@@ -191,7 +191,7 @@ public class RelationalPackageImpl extends EPackageImpl implements RelationalPac
 
     /**
      * Creates, registers, and initializes the <b>Package</b> for this model, and for any others upon which it depends.
-     * 
+     *
      * <p>This method is used to initialize {@link RelationalPackage#eINSTANCE} when that field is accessed.
      * Clients should not invoke it directly. Instead, they should simply access that field to obtain the package.
      * <!-- begin-user-doc -->
@@ -206,8 +206,10 @@ public class RelationalPackageImpl extends EPackageImpl implements RelationalPac
             return (RelationalPackage) EPackage.Registry.INSTANCE.getEPackage(RelationalPackage.eNS_URI);
 
         // Obtain or create and register package
-        RelationalPackageImpl theRelationalPackage = (RelationalPackageImpl) (EPackage.Registry.INSTANCE.get(eNS_URI) instanceof RelationalPackageImpl ? EPackage.Registry.INSTANCE
-                .get(eNS_URI) : new RelationalPackageImpl());
+        Object registeredRelationalPackage = EPackage.Registry.INSTANCE.get(eNS_URI);
+        RelationalPackageImpl theRelationalPackage = registeredRelationalPackage instanceof RelationalPackageImpl
+                ? (RelationalPackageImpl) registeredRelationalPackage
+                : new RelationalPackageImpl();
 
         isInited = true;
 
@@ -245,19 +247,22 @@ public class RelationalPackageImpl extends EPackageImpl implements RelationalPac
         ModelPackage.eINSTANCE.eClass();
 
         // Obtain or create and register interdependencies
-        ConnectionPackageImpl theConnectionPackage = (ConnectionPackageImpl) (EPackage.Registry.INSTANCE
-                .getEPackage(ConnectionPackage.eNS_URI) instanceof ConnectionPackageImpl ? EPackage.Registry.INSTANCE
-                .getEPackage(ConnectionPackage.eNS_URI) : ConnectionPackage.eINSTANCE);
-        SoftwaredeploymentPackageImpl theSoftwaredeploymentPackage_1 = (SoftwaredeploymentPackageImpl) (EPackage.Registry.INSTANCE
-                .getEPackage(org.talend.cwm.softwaredeployment.SoftwaredeploymentPackage.eNS_URI) instanceof SoftwaredeploymentPackageImpl ? EPackage.Registry.INSTANCE
-                .getEPackage(org.talend.cwm.softwaredeployment.SoftwaredeploymentPackage.eNS_URI)
+        Object registeredPackage = EPackage.Registry.INSTANCE.getEPackage(ConnectionPackage.eNS_URI);
+        ConnectionPackageImpl theConnectionPackage = (ConnectionPackageImpl) (registeredPackage instanceof ConnectionPackageImpl
+                ? registeredPackage
+                : ConnectionPackage.eINSTANCE);
+        registeredPackage = EPackage.Registry.INSTANCE
+                .getEPackage(org.talend.cwm.softwaredeployment.SoftwaredeploymentPackage.eNS_URI);
+        SoftwaredeploymentPackageImpl theSoftwaredeploymentPackage_1 = (SoftwaredeploymentPackageImpl) (registeredPackage instanceof SoftwaredeploymentPackageImpl
+                ? registeredPackage
                 : org.talend.cwm.softwaredeployment.SoftwaredeploymentPackage.eINSTANCE);
-        ConstantsPackageImpl theConstantsPackage = (ConstantsPackageImpl) (EPackage.Registry.INSTANCE
-                .getEPackage(ConstantsPackage.eNS_URI) instanceof ConstantsPackageImpl ? EPackage.Registry.INSTANCE
-                .getEPackage(ConstantsPackage.eNS_URI) : ConstantsPackage.eINSTANCE);
-        XmlPackageImpl theXmlPackage_1 = (XmlPackageImpl) (EPackage.Registry.INSTANCE
-                .getEPackage(org.talend.cwm.xml.XmlPackage.eNS_URI) instanceof XmlPackageImpl ? EPackage.Registry.INSTANCE
-                .getEPackage(org.talend.cwm.xml.XmlPackage.eNS_URI) : org.talend.cwm.xml.XmlPackage.eINSTANCE);
+        registeredPackage = EPackage.Registry.INSTANCE.getEPackage(ConstantsPackage.eNS_URI);
+        ConstantsPackageImpl theConstantsPackage = (ConstantsPackageImpl) (registeredPackage instanceof ConstantsPackageImpl
+                ? registeredPackage
+                : ConstantsPackage.eINSTANCE);
+        registeredPackage = EPackage.Registry.INSTANCE.getEPackage(org.talend.cwm.xml.XmlPackage.eNS_URI);
+        XmlPackageImpl theXmlPackage_1 = (XmlPackageImpl) (registeredPackage instanceof XmlPackageImpl ? registeredPackage
+                : org.talend.cwm.xml.XmlPackage.eINSTANCE);
 
         // Create package meta-data objects
         theRelationalPackage.createPackageContents();
@@ -484,6 +489,7 @@ public class RelationalPackageImpl extends EPackageImpl implements RelationalPac
      * <!-- end-user-doc -->
      * @generated
      */
+    @SuppressWarnings("deprecation")
     public void createPackageContents() {
         if (isCreated)
             return;
@@ -642,40 +648,25 @@ public class RelationalPackageImpl extends EPackageImpl implements RelationalPac
     protected void createGenModelAnnotations() {
         String source = "http://www.eclipse.org/emf/2002/GenModel";
         addAnnotation(tdColumnEClass, source, new String[] { "documentation", "defines a DB related column" });
-        addAnnotation(
-                tdColumnEClass.getEOperations().get(0),
-                source,
-                new String[] {
-                        "documentation",
-                        "The type of the content of the column. This type is a meta-information either set by the user who knows what type of data is contained in the column, or infered from the data.\r\nThis is used for Datamining may be Nominal, Interval,...." });
-        addAnnotation(
-                tdColumnEClass.getEOperations().get(1),
-                source,
-                new String[] {
-                        "documentation",
-                        "The type of the content of the column. This type is a meta-information either set by the user who knows what type of data is contained in the column, or infered from the data." });
+        addAnnotation(tdColumnEClass.getEOperations().get(0), source, new String[] { "documentation",
+                "The type of the content of the column. This type is a meta-information either set by the user who knows what type of data is contained in the column, or infered from the data.\r\nThis is used for Datamining may be Nominal, Interval,...." });
+        addAnnotation(tdColumnEClass.getEOperations().get(1), source, new String[] { "documentation",
+                "The type of the content of the column. This type is a meta-information either set by the user who knows what type of data is contained in the column, or infered from the data." });
         addAnnotation(tdColumnEClass.getEOperations().get(2), source, new String[] { "documentation",
                 "@deprecated use getTdSqlDataType.javaDataType\r\nSQL data type from java.sql.Types." });
-        addAnnotation(
-                tdSqlDataTypeEClass,
-                source,
-                new String[] { "documentation",
-                        "defines the DB and java types and attributes of the column\r\nthe Name attribute is set to the JDBC TYPE_NAME value" });
-        addAnnotation(getTdSqlDataType_JavaDataType(), source, new String[] { "documentation",
-                "SQL data type from java.sql.Types.\r\nthis may not be changed by the user" });
-        addAnnotation(
-                getTdSqlDataType_Nullable(),
-                source,
-                new String[] {
-                        "documentation",
-                        "Is this column nullable, or not or unknow.\r\nThe value in one of\r\njava.sql.DatabaseMetaData.columnNoNulls \r\njava.sql.DatabaseMetaData.columnNullable \r\njava.sql.DatabaseMetaData.columnNullableUnknown \r\n\r\nThis may not be changed by the user" });
+        addAnnotation(tdSqlDataTypeEClass, source, new String[] { "documentation",
+                "defines the DB and java types and attributes of the column\r\nthe Name attribute is set to the JDBC TYPE_NAME value" });
+        addAnnotation(getTdSqlDataType_JavaDataType(), source,
+                new String[] { "documentation", "SQL data type from java.sql.Types.\r\nthis may not be changed by the user" });
+        addAnnotation(getTdSqlDataType_Nullable(), source, new String[] { "documentation",
+                "Is this column nullable, or not or unknow.\r\nThe value in one of\r\njava.sql.DatabaseMetaData.columnNoNulls \r\njava.sql.DatabaseMetaData.columnNullable \r\njava.sql.DatabaseMetaData.columnNullableUnknown \r\n\r\nThis may not be changed by the user" });
         addAnnotation(getTdSqlDataType_UnsignedAttribute(), source, new String[] { "documentation", "is it unsigned?" });
-        addAnnotation(getTdSqlDataType_AutoIncrement(), source, new String[] { "documentation",
-                "can it be used for an auto-increment value?" });
-        addAnnotation(getTdSqlDataType_LocalTypeName(), source, new String[] { "documentation",
-                "localized version of the type name (may be null)" });
-        addAnnotation(getTdSqlDataType_Searchable(), source, new String[] { "documentation",
-                "can you use \"WHERE\" based on this type." });
+        addAnnotation(getTdSqlDataType_AutoIncrement(), source,
+                new String[] { "documentation", "can it be used for an auto-increment value?" });
+        addAnnotation(getTdSqlDataType_LocalTypeName(), source,
+                new String[] { "documentation", "localized version of the type name (may be null)" });
+        addAnnotation(getTdSqlDataType_Searchable(), source,
+                new String[] { "documentation", "can you use \"WHERE\" based on this type." });
     }
 
 } //RelationalPackageImpl

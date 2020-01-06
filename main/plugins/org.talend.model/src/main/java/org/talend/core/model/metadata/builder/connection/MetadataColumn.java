@@ -18,6 +18,7 @@ import orgomg.cwm.resource.record.Field;
  *
  * <p>
  * The following features are supported:
+ * </p>
  * <ul>
  *   <li>{@link org.talend.core.model.metadata.builder.connection.MetadataColumn#getSourceType <em>Source Type</em>}</li>
  *   <li>{@link org.talend.core.model.metadata.builder.connection.MetadataColumn#getDefaultValue <em>Default Value</em>}</li>
@@ -32,7 +33,6 @@ import orgomg.cwm.resource.record.Field;
  *   <li>{@link org.talend.core.model.metadata.builder.connection.MetadataColumn#getRelatedEntity <em>Related Entity</em>}</li>
  *   <li>{@link org.talend.core.model.metadata.builder.connection.MetadataColumn#getRelationshipType <em>Relationship Type</em>}</li>
  * </ul>
- * </p>
  *
  * @see org.talend.core.model.metadata.builder.connection.ConnectionPackage#getMetadataColumn()
  * @model
@@ -89,6 +89,7 @@ public interface MetadataColumn extends AbstractMetadataObject, Field {
      * @model default="" transient="true" volatile="true"
      * @generated
      */
+    @Deprecated
     String getDefaultValue();
 
     /**
@@ -96,8 +97,10 @@ public interface MetadataColumn extends AbstractMetadataObject, Field {
      * <!-- begin-user-doc --> <!-- end-user-doc -->
      * @param value the new value of the '<em>Default Value</em>' attribute.
      * @see #getDefaultValue()
+     * @deprecated See {@link org.talend.core.model.metadata.builder.connection.MetadataColumn#getDefaultValue() model documentation} for details.
      * @generated
      */
+    @Deprecated
     void setDefaultValue(String value);
 
     /**
@@ -222,6 +225,7 @@ public interface MetadataColumn extends AbstractMetadataObject, Field {
      * @model default="" transient="true" volatile="true"
      * @generated
      */
+    @Deprecated
     String getOriginalField();
 
     /**
@@ -229,8 +233,10 @@ public interface MetadataColumn extends AbstractMetadataObject, Field {
      * <!-- begin-user-doc --> <!-- end-user-doc -->
      * @param value the new value of the '<em>Original Field</em>' attribute.
      * @see #getOriginalField()
+     * @deprecated See {@link org.talend.core.model.metadata.builder.connection.MetadataColumn#getOriginalField() model documentation} for details.
      * @generated
      */
+    @Deprecated
     void setOriginalField(String value);
 
     /**

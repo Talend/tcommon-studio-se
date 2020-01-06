@@ -24,13 +24,13 @@ import org.talend.core.model.metadata.builder.connection.Operator;
  * <!-- end-user-doc -->
  * <p>
  * The following features are implemented:
+ * </p>
  * <ul>
  *   <li>{@link org.talend.core.model.metadata.builder.connection.impl.ConditionTypeImpl#getInputColumn <em>Input Column</em>}</li>
  *   <li>{@link org.talend.core.model.metadata.builder.connection.impl.ConditionTypeImpl#getFunction <em>Function</em>}</li>
  *   <li>{@link org.talend.core.model.metadata.builder.connection.impl.ConditionTypeImpl#getOperator <em>Operator</em>}</li>
  *   <li>{@link org.talend.core.model.metadata.builder.connection.impl.ConditionTypeImpl#getValue <em>Value</em>}</li>
  * </ul>
- * </p>
  *
  * @generated
  */
@@ -320,7 +320,7 @@ public class ConditionTypeImpl extends EObjectImpl implements ConditionType {
         if (eIsProxy())
             return super.toString();
 
-        StringBuffer result = new StringBuffer(super.toString());
+        StringBuilder result = new StringBuilder(super.toString());
         result.append(" (inputColumn: ");
         result.append(inputColumn);
         result.append(", function: ");

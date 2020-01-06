@@ -14,6 +14,7 @@ import org.eclipse.emf.common.util.EList;
  *
  * <p>
  * The following features are supported:
+ * </p>
  * <ul>
  *   <li>{@link org.talend.core.model.metadata.builder.connection.MDMConnection#getUsername <em>Username</em>}</li>
  *   <li>{@link org.talend.core.model.metadata.builder.connection.MDMConnection#getPassword <em>Password</em>}</li>
@@ -27,7 +28,6 @@ import org.eclipse.emf.common.util.EList;
  *   <li>{@link org.talend.core.model.metadata.builder.connection.MDMConnection#getContext <em>Context</em>}</li>
  *   <li>{@link org.talend.core.model.metadata.builder.connection.MDMConnection#getServerUrl <em>Server Url</em>}</li>
  * </ul>
- * </p>
  *
  * @see org.talend.core.model.metadata.builder.connection.ConnectionPackage#getMDMConnection()
  * @model

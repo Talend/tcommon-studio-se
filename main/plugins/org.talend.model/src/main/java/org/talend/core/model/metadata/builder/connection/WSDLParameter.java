@@ -14,6 +14,7 @@ import org.eclipse.emf.ecore.EObject;
  *
  * <p>
  * The following features are supported:
+ * </p>
  * <ul>
  *   <li>{@link org.talend.core.model.metadata.builder.connection.WSDLParameter#getElement <em>Element</em>}</li>
  *   <li>{@link org.talend.core.model.metadata.builder.connection.WSDLParameter#getSource <em>Source</em>}</li>
@@ -22,7 +23,6 @@ import org.eclipse.emf.ecore.EObject;
  *   <li>{@link org.talend.core.model.metadata.builder.connection.WSDLParameter#getParameterInfo <em>Parameter Info</em>}</li>
  *   <li>{@link org.talend.core.model.metadata.builder.connection.WSDLParameter#getParameterInfoParent <em>Parameter Info Parent</em>}</li>
  * </ul>
- * </p>
  *
  * @see org.talend.core.model.metadata.builder.connection.ConnectionPackage#getWSDLParameter()
  * @model

@@ -248,9 +248,11 @@ public interface RelationalPackage extends EPackage {
      * The feature id for the '<em><b>Properties</b></em>' attribute.
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
+     * @deprecated See {@link org.talend.core.model.metadata.builder.connection.AbstractMetadataObject#getProperties() model documentation} for details.
      * @generated
      * @ordered
      */
+    @Deprecated
     int TD_TABLE__PROPERTIES = ConnectionPackage.METADATA_TABLE__PROPERTIES;
 
     /**
@@ -464,9 +466,11 @@ public interface RelationalPackage extends EPackage {
      * The feature id for the '<em><b>Source Name</b></em>' attribute.
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
+     * @deprecated See {@link org.talend.core.model.metadata.builder.connection.MetadataTable#getSourceName() model documentation} for details.
      * @generated
      * @ordered
      */
+    @Deprecated
     int TD_TABLE__SOURCE_NAME = ConnectionPackage.METADATA_TABLE__SOURCE_NAME;
 
     /**
@@ -509,9 +513,11 @@ public interface RelationalPackage extends EPackage {
      * The feature id for the '<em><b>Connection</b></em>' reference.
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
+     * @deprecated See {@link org.talend.core.model.metadata.builder.connection.MetadataTable#getConnection() model documentation} for details.
      * @generated
      * @ordered
      */
+    @Deprecated
     int TD_TABLE__CONNECTION = ConnectionPackage.METADATA_TABLE__CONNECTION;
 
     /**
@@ -780,9 +786,11 @@ public interface RelationalPackage extends EPackage {
      * The feature id for the '<em><b>Properties</b></em>' attribute.
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
+     * @deprecated See {@link org.talend.core.model.metadata.builder.connection.AbstractMetadataObject#getProperties() model documentation} for details.
      * @generated
      * @ordered
      */
+    @Deprecated
     int TD_VIEW__PROPERTIES = ConnectionPackage.METADATA_TABLE__PROPERTIES;
 
     /**
@@ -996,9 +1004,11 @@ public interface RelationalPackage extends EPackage {
      * The feature id for the '<em><b>Source Name</b></em>' attribute.
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
+     * @deprecated See {@link org.talend.core.model.metadata.builder.connection.MetadataTable#getSourceName() model documentation} for details.
      * @generated
      * @ordered
      */
+    @Deprecated
     int TD_VIEW__SOURCE_NAME = ConnectionPackage.METADATA_TABLE__SOURCE_NAME;
 
     /**
@@ -1041,9 +1051,11 @@ public interface RelationalPackage extends EPackage {
      * The feature id for the '<em><b>Connection</b></em>' reference.
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
+     * @deprecated See {@link org.talend.core.model.metadata.builder.connection.MetadataTable#getConnection() model documentation} for details.
      * @generated
      * @ordered
      */
+    @Deprecated
     int TD_VIEW__CONNECTION = ConnectionPackage.METADATA_TABLE__CONNECTION;
 
     /**
@@ -1303,9 +1315,11 @@ public interface RelationalPackage extends EPackage {
      * The feature id for the '<em><b>Properties</b></em>' attribute.
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
+     * @deprecated See {@link org.talend.core.model.metadata.builder.connection.AbstractMetadataObject#getProperties() model documentation} for details.
      * @generated
      * @ordered
      */
+    @Deprecated
     int TD_COLUMN__PROPERTIES = ConnectionPackage.METADATA_COLUMN__PROPERTIES;
 
     /**
@@ -1564,9 +1578,11 @@ public interface RelationalPackage extends EPackage {
      * The feature id for the '<em><b>Default Value</b></em>' attribute.
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
+     * @deprecated See {@link org.talend.core.model.metadata.builder.connection.MetadataColumn#getDefaultValue() model documentation} for details.
      * @generated
      * @ordered
      */
+    @Deprecated
     int TD_COLUMN__DEFAULT_VALUE = ConnectionPackage.METADATA_COLUMN__DEFAULT_VALUE;
 
     /**
@@ -1609,9 +1625,11 @@ public interface RelationalPackage extends EPackage {
      * The feature id for the '<em><b>Original Field</b></em>' attribute.
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
+     * @deprecated See {@link org.talend.core.model.metadata.builder.connection.MetadataColumn#getOriginalField() model documentation} for details.
      * @generated
      * @ordered
      */
+    @Deprecated
     int TD_COLUMN__ORIGINAL_FIELD = ConnectionPackage.METADATA_COLUMN__ORIGINAL_FIELD;
 
     /**
@@ -2988,7 +3006,7 @@ public interface RelationalPackage extends EPackage {
      * <!-- end-user-doc -->
      * @return the meta object for data type '<em>java Hash Map</em>'.
      * @see java.util.HashMap
-     * @model instanceClass="java.util.HashMap<java.lang.String, java.lang.String>"
+     * @model instanceClass="java.util.HashMap&lt;java.lang.String, java.lang.String&gt;"
      * @generated
      */
     EDataType getjavaHashMap();

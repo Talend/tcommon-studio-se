@@ -18,6 +18,7 @@ import org.talend.core.model.metadata.builder.connection.EbcdicConnection;
  * <!-- end-user-doc -->
  * <p>
  * The following features are implemented:
+ * </p>
  * <ul>
  *   <li>{@link org.talend.core.model.metadata.builder.connection.impl.EbcdicConnectionImpl#getMidFile <em>Mid File</em>}</li>
  *   <li>{@link org.talend.core.model.metadata.builder.connection.impl.EbcdicConnectionImpl#getDataFile <em>Data File</em>}</li>
@@ -25,7 +26,6 @@ import org.talend.core.model.metadata.builder.connection.EbcdicConnection;
  *   <li>{@link org.talend.core.model.metadata.builder.connection.impl.EbcdicConnectionImpl#getSourceFileStart <em>Source File Start</em>}</li>
  *   <li>{@link org.talend.core.model.metadata.builder.connection.impl.EbcdicConnectionImpl#getSourceFileEnd <em>Source File End</em>}</li>
  * </ul>
- * </p>
  *
  * @generated
  */
@@ -351,8 +351,8 @@ public class EbcdicConnectionImpl extends FileConnectionImpl implements EbcdicCo
         case ConnectionPackage.EBCDIC_CONNECTION__CODE_PAGE:
             return CODE_PAGE_EDEFAULT == null ? codePage != null : !CODE_PAGE_EDEFAULT.equals(codePage);
         case ConnectionPackage.EBCDIC_CONNECTION__SOURCE_FILE_START:
-            return SOURCE_FILE_START_EDEFAULT == null ? sourceFileStart != null : !SOURCE_FILE_START_EDEFAULT
-                    .equals(sourceFileStart);
+            return SOURCE_FILE_START_EDEFAULT == null ? sourceFileStart != null
+                    : !SOURCE_FILE_START_EDEFAULT.equals(sourceFileStart);
         case ConnectionPackage.EBCDIC_CONNECTION__SOURCE_FILE_END:
             return SOURCE_FILE_END_EDEFAULT == null ? sourceFileEnd != null : !SOURCE_FILE_END_EDEFAULT.equals(sourceFileEnd);
         }
@@ -369,7 +369,7 @@ public class EbcdicConnectionImpl extends FileConnectionImpl implements EbcdicCo
         if (eIsProxy())
             return super.toString();
 
-        StringBuffer result = new StringBuffer(super.toString());
+        StringBuilder result = new StringBuilder(super.toString());
         result.append(" (MidFile: ");
         result.append(midFile);
         result.append(", DataFile: ");

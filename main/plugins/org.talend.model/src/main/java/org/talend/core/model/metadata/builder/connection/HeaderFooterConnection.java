@@ -12,13 +12,13 @@ package org.talend.core.model.metadata.builder.connection;
  *
  * <p>
  * The following features are supported:
+ * </p>
  * <ul>
  *   <li>{@link org.talend.core.model.metadata.builder.connection.HeaderFooterConnection#isIsHeader <em>Is Header</em>}</li>
  *   <li>{@link org.talend.core.model.metadata.builder.connection.HeaderFooterConnection#getImports <em>Imports</em>}</li>
  *   <li>{@link org.talend.core.model.metadata.builder.connection.HeaderFooterConnection#getMainCode <em>Main Code</em>}</li>
  *   <li>{@link org.talend.core.model.metadata.builder.connection.HeaderFooterConnection#getLibraries <em>Libraries</em>}</li>
  * </ul>
- * </p>
  *
  * @see org.talend.core.model.metadata.builder.connection.ConnectionPackage#getHeaderFooterConnection()
  * @model

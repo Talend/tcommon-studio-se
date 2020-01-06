@@ -23,6 +23,7 @@ import org.talend.core.model.metadata.builder.connection.LDAPSchemaConnection;
  * <!-- end-user-doc -->
  * <p>
  * The following features are implemented:
+ * </p>
  * <ul>
  *   <li>{@link org.talend.core.model.metadata.builder.connection.impl.LDAPSchemaConnectionImpl#getHost <em>Host</em>}</li>
  *   <li>{@link org.talend.core.model.metadata.builder.connection.impl.LDAPSchemaConnectionImpl#getPort <em>Port</em>}</li>
@@ -48,7 +49,6 @@ import org.talend.core.model.metadata.builder.connection.LDAPSchemaConnection;
  *   <li>{@link org.talend.core.model.metadata.builder.connection.impl.LDAPSchemaConnectionImpl#getReturnAttributes <em>Return Attributes</em>}</li>
  *   <li>{@link org.talend.core.model.metadata.builder.connection.impl.LDAPSchemaConnectionImpl#getSelectedDN <em>Selected DN</em>}</li>
  * </ul>
- * </p>
  *
  * @generated
  */
@@ -563,8 +563,8 @@ public class LDAPSchemaConnectionImpl extends ConnectionImpl implements LDAPSche
         String oldProtocol = protocol;
         protocol = newProtocol;
         if (eNotificationRequired())
-            eNotify(new ENotificationImpl(this, Notification.SET, ConnectionPackage.LDAP_SCHEMA_CONNECTION__PROTOCOL,
-                    oldProtocol, protocol));
+            eNotify(new ENotificationImpl(this, Notification.SET, ConnectionPackage.LDAP_SCHEMA_CONNECTION__PROTOCOL, oldProtocol,
+                    protocol));
     }
 
     /**
@@ -1236,8 +1236,8 @@ public class LDAPSchemaConnectionImpl extends ConnectionImpl implements LDAPSche
         case ConnectionPackage.LDAP_SCHEMA_CONNECTION__LIMIT_VALUE:
             return limitValue != LIMIT_VALUE_EDEFAULT;
         case ConnectionPackage.LDAP_SCHEMA_CONNECTION__ENCRYPTION_METHOD_NAME:
-            return ENCRYPTION_METHOD_NAME_EDEFAULT == null ? encryptionMethodName != null : !ENCRYPTION_METHOD_NAME_EDEFAULT
-                    .equals(encryptionMethodName);
+            return ENCRYPTION_METHOD_NAME_EDEFAULT == null ? encryptionMethodName != null
+                    : !ENCRYPTION_METHOD_NAME_EDEFAULT.equals(encryptionMethodName);
         case ConnectionPackage.LDAP_SCHEMA_CONNECTION__VALUE:
             return value != null && !value.isEmpty();
         case ConnectionPackage.LDAP_SCHEMA_CONNECTION__SAVE_PASSWORD:
@@ -1272,7 +1272,7 @@ public class LDAPSchemaConnectionImpl extends ConnectionImpl implements LDAPSche
         if (eIsProxy())
             return super.toString();
 
-        StringBuffer result = new StringBuffer(super.toString());
+        StringBuilder result = new StringBuilder(super.toString());
         result.append(" (Host: ");
         result.append(host);
         result.append(", Port: ");

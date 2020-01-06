@@ -51,10 +51,10 @@ import org.osgi.service.prefs.BackingStoreException;
 import org.talend.commons.exception.ExceptionHandler;
 import org.talend.commons.utils.VersionUtils;
 import org.talend.core.GlobalServiceRegister;
+import org.talend.core.runtime.maven.MavenArtifact;
 import org.talend.core.runtime.services.IGenericService;
 import org.talend.core.services.ICoreTisService;
 import org.talend.core.ui.branding.IBrandingService;
-import org.talend.core.updatesite.IUpdateSiteBean;
 import org.talend.rcp.i18n.Messages;
 import org.talend.repository.ui.utils.ZipToFile;
 import org.talend.repository.ui.wizards.exportjob.util.ExportJobUtil;
@@ -312,18 +312,18 @@ public class ExportLogsWizardPage extends WizardPage {
         if (GlobalServiceRegister.getDefault().isServiceRegistered(ICoreTisService.class)) {
             ICoreTisService coreTisService = (ICoreTisService) GlobalServiceRegister.getDefault().getService(
                     ICoreTisService.class);
-            List<IUpdateSiteBean> installedPatches = null;
+            List<MavenArtifact> installedPatchArtifacts = null;
             try {
-                installedPatches = coreTisService.getPatchesInstalled();
+                installedPatchArtifacts = coreTisService.getInstalledPatchArtifacts();
             } catch (BackingStoreException e) {
                 info.append("Failed to get installed patches information...").append(NEW_LINE); //$NON-NLS-1$
                 ExceptionHandler.process(e);
             }
-            if (installedPatches != null) {
-                for (IUpdateSiteBean patch : installedPatches) {
-                    info.append("GroupId: ").append(patch.getGroupID()).append(BLANK); //$NON-NLS-1$
-                    info.append("Version: ").append(patch.getVersion()).append(BLANK); //$NON-NLS-1$
-                    info.append("ArtifactId: ").append(patch.getArtifactID()).append(NEW_LINE); //$NON-NLS-1$
+            if (installedPatchArtifacts != null) {
+                for (MavenArtifact artifact : installedPatchArtifacts) {
+                    info.append("GroupId: ").append(artifact.getGroupId()).append(BLANK); //$NON-NLS-1$
+                    info.append("Version: ").append(artifact.getVersion()).append(BLANK); //$NON-NLS-1$
+                    info.append("ArtifactId: ").append(artifact.getArtifactId()).append(NEW_LINE); //$NON-NLS-1$
                 }
             }
         }

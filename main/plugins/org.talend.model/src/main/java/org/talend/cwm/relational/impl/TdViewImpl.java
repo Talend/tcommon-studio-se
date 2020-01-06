@@ -40,6 +40,7 @@ import orgomg.cwm.resource.relational.View;
  * <!-- end-user-doc -->
  * <p>
  * The following features are implemented:
+ * </p>
  * <ul>
  *   <li>{@link org.talend.cwm.relational.impl.TdViewImpl#getUsingTrigger <em>Using Trigger</em>}</li>
  *   <li>{@link org.talend.cwm.relational.impl.TdViewImpl#getType <em>Type</em>}</li>
@@ -48,7 +49,6 @@ import orgomg.cwm.resource.relational.View;
  *   <li>{@link org.talend.cwm.relational.impl.TdViewImpl#isCheckOption <em>Check Option</em>}</li>
  *   <li>{@link org.talend.cwm.relational.impl.TdViewImpl#getQueryExpression <em>Query Expression</em>}</li>
  * </ul>
- * </p>
  *
  * @generated
  */
@@ -222,12 +222,12 @@ public class TdViewImpl extends MetadataTableImpl implements TdView {
             NotificationChain msgs = null;
             if (type != null)
                 msgs = ((InternalEObject) type).eInverseRemove(this,
-                        orgomg.cwm.resource.relational.RelationalPackage.SQL_STRUCTURED_TYPE__COLUMN_SET,
-                        SQLStructuredType.class, msgs);
+                        orgomg.cwm.resource.relational.RelationalPackage.SQL_STRUCTURED_TYPE__COLUMN_SET, SQLStructuredType.class,
+                        msgs);
             if (newType != null)
                 msgs = ((InternalEObject) newType).eInverseAdd(this,
-                        orgomg.cwm.resource.relational.RelationalPackage.SQL_STRUCTURED_TYPE__COLUMN_SET,
-                        SQLStructuredType.class, msgs);
+                        orgomg.cwm.resource.relational.RelationalPackage.SQL_STRUCTURED_TYPE__COLUMN_SET, SQLStructuredType.class,
+                        msgs);
             msgs = basicSetType(newType, msgs);
             if (msgs != null)
                 msgs.dispatch();
@@ -330,17 +330,17 @@ public class TdViewImpl extends MetadataTableImpl implements TdView {
         if (newQueryExpression != queryExpression) {
             NotificationChain msgs = null;
             if (queryExpression != null)
-                msgs = ((InternalEObject) queryExpression).eInverseRemove(this, EOPPOSITE_FEATURE_BASE
-                        - RelationalPackage.TD_VIEW__QUERY_EXPRESSION, null, msgs);
+                msgs = ((InternalEObject) queryExpression).eInverseRemove(this,
+                        EOPPOSITE_FEATURE_BASE - RelationalPackage.TD_VIEW__QUERY_EXPRESSION, null, msgs);
             if (newQueryExpression != null)
-                msgs = ((InternalEObject) newQueryExpression).eInverseAdd(this, EOPPOSITE_FEATURE_BASE
-                        - RelationalPackage.TD_VIEW__QUERY_EXPRESSION, null, msgs);
+                msgs = ((InternalEObject) newQueryExpression).eInverseAdd(this,
+                        EOPPOSITE_FEATURE_BASE - RelationalPackage.TD_VIEW__QUERY_EXPRESSION, null, msgs);
             msgs = basicSetQueryExpression(newQueryExpression, msgs);
             if (msgs != null)
                 msgs.dispatch();
         } else if (eNotificationRequired())
-            eNotify(new ENotificationImpl(this, Notification.SET, RelationalPackage.TD_VIEW__QUERY_EXPRESSION,
-                    newQueryExpression, newQueryExpression));
+            eNotify(new ENotificationImpl(this, Notification.SET, RelationalPackage.TD_VIEW__QUERY_EXPRESSION, newQueryExpression,
+                    newQueryExpression));
     }
 
     /**
@@ -357,8 +357,8 @@ public class TdViewImpl extends MetadataTableImpl implements TdView {
         case RelationalPackage.TD_VIEW__TYPE:
             if (type != null)
                 msgs = ((InternalEObject) type).eInverseRemove(this,
-                        orgomg.cwm.resource.relational.RelationalPackage.SQL_STRUCTURED_TYPE__COLUMN_SET,
-                        SQLStructuredType.class, msgs);
+                        orgomg.cwm.resource.relational.RelationalPackage.SQL_STRUCTURED_TYPE__COLUMN_SET, SQLStructuredType.class,
+                        msgs);
             return basicSetType((SQLStructuredType) otherEnd, msgs);
         case RelationalPackage.TD_VIEW__OPTION_SCOPE_COLUMN:
             return ((InternalEList<InternalEObject>) (InternalEList<?>) getOptionScopeColumn()).basicAdd(otherEnd, msgs);
@@ -589,7 +589,7 @@ public class TdViewImpl extends MetadataTableImpl implements TdView {
         if (eIsProxy())
             return super.toString();
 
-        StringBuffer result = new StringBuffer(super.toString());
+        StringBuilder result = new StringBuilder(super.toString());
         result.append(" (isReadOnly: ");
         result.append(isReadOnly);
         result.append(", checkOption: ");

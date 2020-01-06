@@ -21,10 +21,10 @@ import org.talend.core.model.metadata.builder.connection.SAPTestInputParameterTa
  * end-user-doc -->
  * <p>
  * The following features are implemented:
+ * </p>
  * <ul>
  *   <li>{@link org.talend.core.model.metadata.builder.connection.impl.SAPTestInputParameterTableImpl#getFunctionUnit <em>Function Unit</em>}</li>
  * </ul>
- * </p>
  *
  * @generated
  */
@@ -84,7 +84,8 @@ public class SAPTestInputParameterTableImpl extends SAPFunctionParameterTableImp
      */
     public void setFunctionUnit(SAPFunctionUnit newFunctionUnit) {
         if (newFunctionUnit != eInternalContainer()
-                || (eContainerFeatureID() != ConnectionPackage.SAP_TEST_INPUT_PARAMETER_TABLE__FUNCTION_UNIT && newFunctionUnit != null)) {
+                || (eContainerFeatureID() != ConnectionPackage.SAP_TEST_INPUT_PARAMETER_TABLE__FUNCTION_UNIT
+                        && newFunctionUnit != null)) {
             if (EcoreUtil.isAncestor(this, newFunctionUnit))
                 throw new IllegalArgumentException("Recursive containment not allowed for " + toString());
             NotificationChain msgs = null;
@@ -97,8 +98,8 @@ public class SAPTestInputParameterTableImpl extends SAPFunctionParameterTableImp
             if (msgs != null)
                 msgs.dispatch();
         } else if (eNotificationRequired())
-            eNotify(new ENotificationImpl(this, Notification.SET,
-                    ConnectionPackage.SAP_TEST_INPUT_PARAMETER_TABLE__FUNCTION_UNIT, newFunctionUnit, newFunctionUnit));
+            eNotify(new ENotificationImpl(this, Notification.SET, ConnectionPackage.SAP_TEST_INPUT_PARAMETER_TABLE__FUNCTION_UNIT,
+                    newFunctionUnit, newFunctionUnit));
     }
 
     /**

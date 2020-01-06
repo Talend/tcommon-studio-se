@@ -98,6 +98,12 @@ public class ConnParameterKeys {
 
     public static final String CONN_PARA_KEY_MAPRTICKET_MAPRHADOOPLOGIN = "CONN_PARA_KEY_MAPRTICKET_MAPRHADOOPLOGIN"; //$NON-NLS-1$
 
+    public static final String CONN_PARA_KEY_USE_WEBHDFS_SSL = "CONN_PARA_KEY_USE_WEBHDFS_SSL";//$NON-NLS-1$
+
+    public static final String CONN_PARA_KEY_WEBHDFS_SSL_TRUST_STORE_PATH = "CONN_PARA_KEY_WEBHDFS_SSL_TRUST_STORE_PATH"; //$NON-NLS-1$
+
+    public static final String CONN_PARA_KEY_WEBHDFS_SSL_TRUST_STORE_PASSWORD = "CONN_PARA_KEY_WEBHDFS_SSL_TRUST_STORE_PASSWORD"; //$NON-NLS-1$
+
     /**
      * Hive keys.
      */

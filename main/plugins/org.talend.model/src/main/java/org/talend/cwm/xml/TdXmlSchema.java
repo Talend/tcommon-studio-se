@@ -14,10 +14,10 @@ import orgomg.cwm.resource.xml.Schema;
  *
  * <p>
  * The following features are supported:
+ * </p>
  * <ul>
  *   <li>{@link org.talend.cwm.xml.TdXmlSchema#getXsdFilePath <em>Xsd File Path</em>}</li>
  * </ul>
- * </p>
  *
  * @see org.talend.cwm.xml.XmlPackage#getTdXmlSchema()
  * @model

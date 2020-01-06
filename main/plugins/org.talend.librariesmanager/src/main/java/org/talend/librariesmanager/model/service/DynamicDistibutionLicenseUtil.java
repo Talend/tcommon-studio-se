@@ -44,7 +44,7 @@ public class DynamicDistibutionLicenseUtil {
                     FileLocator
                             .toFileURL(
                                     DynamicDistibutionLicenseUtil.class.getClassLoader().getResource("distribution/license.json"))
-                            .toURI());
+                            .getPath());
             if (licenseFile.exists()) {
                 br = new BufferedReader(new FileReader(licenseFile));
                 StringBuffer buffer = new StringBuffer();

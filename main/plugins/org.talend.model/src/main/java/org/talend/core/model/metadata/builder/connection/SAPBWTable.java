@@ -11,6 +11,7 @@ import java.util.Date;
  *
  * <p>
  * The following features are supported:
+ * </p>
  * <ul>
  *   <li>{@link org.talend.core.model.metadata.builder.connection.SAPBWTable#getModelType <em>Model Type</em>}</li>
  *   <li>{@link org.talend.core.model.metadata.builder.connection.SAPBWTable#isActive <em>Active</em>}</li>
@@ -18,7 +19,6 @@ import java.util.Date;
  *   <li>{@link org.talend.core.model.metadata.builder.connection.SAPBWTable#getInfoAreaName <em>Info Area Name</em>}</li>
  *   <li>{@link org.talend.core.model.metadata.builder.connection.SAPBWTable#getInnerIOType <em>Inner IO Type</em>}</li>
  * </ul>
- * </p>
  *
  * @see org.talend.core.model.metadata.builder.connection.ConnectionPackage#getSAPBWTable()
  * @model

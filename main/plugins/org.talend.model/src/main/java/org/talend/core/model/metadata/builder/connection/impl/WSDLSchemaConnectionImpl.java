@@ -28,6 +28,7 @@ import org.talend.core.model.metadata.builder.connection.WSDLSchemaConnection;
  * end-user-doc -->
  * <p>
  * The following features are implemented:
+ * </p>
  * <ul>
  *   <li>{@link org.talend.core.model.metadata.builder.connection.impl.WSDLSchemaConnectionImpl#getWSDL <em>WSDL</em>}</li>
  *   <li>{@link org.talend.core.model.metadata.builder.connection.impl.WSDLSchemaConnectionImpl#isNeedAuth <em>Need Auth</em>}</li>
@@ -52,7 +53,6 @@ import org.talend.core.model.metadata.builder.connection.WSDLSchemaConnection;
  *   <li>{@link org.talend.core.model.metadata.builder.connection.impl.WSDLSchemaConnectionImpl#getParameterValue <em>Parameter Value</em>}</li>
  *   <li>{@link org.talend.core.model.metadata.builder.connection.impl.WSDLSchemaConnectionImpl#getOutputParameter <em>Output Parameter</em>}</li>
  * </ul>
- * </p>
  *
  * @generated
  */
@@ -594,8 +594,8 @@ public class WSDLSchemaConnectionImpl extends ConnectionImpl implements WSDLSche
         String oldPassword = password;
         password = newPassword;
         if (eNotificationRequired())
-            eNotify(new ENotificationImpl(this, Notification.SET, ConnectionPackage.WSDL_SCHEMA_CONNECTION__PASSWORD,
-                    oldPassword, password));
+            eNotify(new ENotificationImpl(this, Notification.SET, ConnectionPackage.WSDL_SCHEMA_CONNECTION__PASSWORD, oldPassword,
+                    password));
     }
 
     /**
@@ -745,8 +745,8 @@ public class WSDLSchemaConnectionImpl extends ConnectionImpl implements WSDLSche
         String oldEncoding = encoding;
         encoding = newEncoding;
         if (eNotificationRequired())
-            eNotify(new ENotificationImpl(this, Notification.SET, ConnectionPackage.WSDL_SCHEMA_CONNECTION__ENCODING,
-                    oldEncoding, encoding));
+            eNotify(new ENotificationImpl(this, Notification.SET, ConnectionPackage.WSDL_SCHEMA_CONNECTION__ENCODING, oldEncoding,
+                    encoding));
     }
 
     /**
@@ -1042,8 +1042,8 @@ public class WSDLSchemaConnectionImpl extends ConnectionImpl implements WSDLSche
         case ConnectionPackage.WSDL_SCHEMA_CONNECTION__IS_INPUT_MODEL:
             return isInputModel != IS_INPUT_MODEL_EDEFAULT;
         case ConnectionPackage.WSDL_SCHEMA_CONNECTION__SERVER_NAME_SPACE:
-            return SERVER_NAME_SPACE_EDEFAULT == null ? serverNameSpace != null : !SERVER_NAME_SPACE_EDEFAULT
-                    .equals(serverNameSpace);
+            return SERVER_NAME_SPACE_EDEFAULT == null ? serverNameSpace != null
+                    : !SERVER_NAME_SPACE_EDEFAULT.equals(serverNameSpace);
         case ConnectionPackage.WSDL_SCHEMA_CONNECTION__SERVER_NAME:
             return SERVER_NAME_EDEFAULT == null ? serverName != null : !SERVER_NAME_EDEFAULT.equals(serverName);
         case ConnectionPackage.WSDL_SCHEMA_CONNECTION__PORT_NAME_SPACE:
@@ -1067,7 +1067,7 @@ public class WSDLSchemaConnectionImpl extends ConnectionImpl implements WSDLSche
         if (eIsProxy())
             return super.toString();
 
-        StringBuffer result = new StringBuffer(super.toString());
+        StringBuilder result = new StringBuilder(super.toString());
         result.append(" (WSDL: ");
         result.append(wsdl);
         result.append(", needAuth: ");

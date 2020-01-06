@@ -207,6 +207,8 @@ public enum Function implements Enumerator {
      * Returns the '<em><b>Function</b></em>' literal with the specified literal value.
      * <!-- begin-user-doc --> <!--
      * end-user-doc -->
+     * @param literal the literal.
+     * @return the matching enumerator or <code>null</code>.
      * @generated
      */
     public static Function get(String literal) {
@@ -239,6 +241,8 @@ public enum Function implements Enumerator {
      * Returns the '<em><b>Function</b></em>' literal with the specified integer value.
      * <!-- begin-user-doc --> <!--
      * end-user-doc -->
+     * @param value the integer value.
+     * @return the matching enumerator or <code>null</code>.
      * @generated
      */
     public static Function get(int value) {

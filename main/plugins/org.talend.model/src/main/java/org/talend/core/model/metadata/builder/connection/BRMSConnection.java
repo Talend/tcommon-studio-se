@@ -15,6 +15,7 @@ import java.util.ArrayList;
  *
  * <p>
  * The following features are supported:
+ * </p>
  * <ul>
  *   <li>{@link org.talend.core.model.metadata.builder.connection.BRMSConnection#getXmlField <em>Xml Field</em>}</li>
  *   <li>{@link org.talend.core.model.metadata.builder.connection.BRMSConnection#getUrlName <em>Url Name</em>}</li>
@@ -26,7 +27,6 @@ import java.util.ArrayList;
  *   <li>{@link org.talend.core.model.metadata.builder.connection.BRMSConnection#getLoop <em>Loop</em>}</li>
  *   <li>{@link org.talend.core.model.metadata.builder.connection.BRMSConnection#getPackage <em>Package</em>}</li>
  * </ul>
- * </p>
  *
  * @see org.talend.core.model.metadata.builder.connection.ConnectionPackage#getBRMSConnection()
  * @model

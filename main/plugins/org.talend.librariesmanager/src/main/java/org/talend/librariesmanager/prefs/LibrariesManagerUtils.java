@@ -83,24 +83,36 @@ public class LibrariesManagerUtils {
 
     public static List<ModuleNeeded> getNotInstalledModules(INode node) {
         List<ModuleNeeded> updatedModules = new ArrayList<ModuleNeeded>();
-
+        IDesignerCoreService service = null;
         List<ModuleNeeded> nodeModulesList = null;
         if (GlobalServiceRegister.getDefault().isServiceRegistered(IDesignerCoreService.class)) {
-            IDesignerCoreService service = (IDesignerCoreService) GlobalServiceRegister.getDefault().getService(
+            service = (IDesignerCoreService) GlobalServiceRegister.getDefault().getService(
                     IDesignerCoreService.class);
             Set<ModuleNeeded> neededLibraries = service.getNeededModules(node, false);
             nodeModulesList = new ArrayList<ModuleNeeded>(neededLibraries);
         } else {
             nodeModulesList = node.getModulesNeeded();
         }
-
         for (ModuleNeeded module : nodeModulesList) {
             if (!module.isDynamic() && module.getStatus() == ELibraryInstallStatus.NOT_INSTALLED
                     && module.isRequired(node.getElementParameters())) {
-                updatedModules.add(module);
+                boolean isNeedtoBeRemoved = service == null ? false
+                        : isNeedtoBeRemoved(module, service.getNeedRemoveModulesForLog4j());
+                if (!isNeedtoBeRemoved) {
+                    updatedModules.add(module);
+                }
             }
 
         }
         return updatedModules;
+    }
+
+    private static boolean isNeedtoBeRemoved(ModuleNeeded module, String[] needRemoveModules) {
+        for (String modolname : needRemoveModules) {
+            if (module.getModuleName().matches(modolname)) {
+                return true;
+            }
+        }
+        return false;
     }
 }
