@@ -113,13 +113,13 @@ public class DatabaseTableFilterForm extends AbstractForm {
         getTableInfoParameters().changeType(ETableTypes.EXTERNAL_TABLE, tableCheck.getSelection());
         getTableInfoParameters().changeType(ETableTypes.TABLETYPE_VIEW, viewCheck.getSelection());
         getTableInfoParameters().changeType(ETableTypes.TABLETYPE_SYNONYM, synonymCheck.getSelection());
-        if (EDatabaseTypeName.HIVE.getDisplayName().equals(metadataconnection.getDbType())) {
+        if (isHive()) {
             getTableInfoParameters().changeType(ETableTypes.MANAGED_TABLE, tableCheck.getSelection());
             getTableInfoParameters().changeType(ETableTypes.INDEX_TABLE, tableCheck.getSelection());
             getTableInfoParameters().changeType(ETableTypes.VIRTUAL_VIEW, viewCheck.getSelection());
-        } else if (EDatabaseTypeName.SAPHana.getDisplayName().equals(metadataconnection.getDbType())) {
+        } else if (isSAPHana()) {
             getTableInfoParameters().changeType(ETableTypes.TABLETYPE_CALCULATION_VIEW, calculationViewCheck.getSelection());
-        } else if (EDatabaseTypeName.MYSQL.getDisplayName().equals(metadataconnection.getDbType())) {
+        } else if (isMysql()) {
             getTableInfoParameters().changeType(ETableTypes.SYSTEM_TABLE, tableCheck.getSelection());
             getTableInfoParameters().changeType(ETableTypes.SYSTEM_VIEW, viewCheck.getSelection());
         }
@@ -299,7 +299,7 @@ public class DatabaseTableFilterForm extends AbstractForm {
             publicSynonymCheck.setText(Messages.getString("DatabaseTableFilterForm.allSynonyms")); //$NON-NLS-1$
             publicSynonymCheck.setSelection(false);
             // ExtractMetaDataUtils.setVale(publicSynonymCheck.getSelection());
-        } else if (EDatabaseTypeName.SAPHana.getDisplayName().equals(metadataconnection.getDbType())) {
+        } else if (isSAPHana()) {
             calculationViewCheck = new Button(typesFilter, SWT.CHECK);
             calculationViewCheck.setText(Messages.getString("DatabaseTableFilterForm.calculationView")); //$NON-NLS-1$
             calculationViewCheck.setSelection(true);
@@ -426,10 +426,12 @@ public class DatabaseTableFilterForm extends AbstractForm {
                 // types are reqired, it could invoke like
                 // "DatabaseTableWizardPage.getTableInfoParameters().getTypes()".
                 getTableInfoParameters().changeType(ETableTypes.EXTERNAL_TABLE, tableCheck.getSelection());
-                if (EDatabaseTypeName.HIVE.getDisplayName().equals(metadataconnection.getDbType())) {
+                if (EDatabaseTypeName.HIVE.getDisplayName().equals(metadataconnection.getDbType()) ||
+                        isHive()) {
                     getTableInfoParameters().changeType(ETableTypes.MANAGED_TABLE, tableCheck.getSelection());
                     getTableInfoParameters().changeType(ETableTypes.INDEX_TABLE, tableCheck.getSelection());
-                } else if (EDatabaseTypeName.MYSQL.getDisplayName().equals(metadataconnection.getDbType())) {
+                } else if (EDatabaseTypeName.MYSQL.getDisplayName().equals(metadataconnection.getDbType()) || 
+                        isMysql()) {
                     getTableInfoParameters().changeType(ETableTypes.SYSTEM_TABLE, tableCheck.getSelection());
                 }
             }
@@ -681,6 +683,54 @@ public class DatabaseTableFilterForm extends AbstractForm {
      */
     public String[] getFilters() {
         return nameFilter.getItems();
+    }
+    
+    private boolean isMysql() {
+        if(metadataconnection == null) {
+            return false;
+        }
+        if(EDatabaseTypeName.MYSQL.getDisplayName().equals(metadataconnection.getDbType())) {
+            return true;
+        }else if(EDatabaseTypeName.GENERAL_JDBC.getProduct().equals(metadataconnection.getDbType())) {
+            String driver = metadataconnection.getDriverClass();
+            String dbtype = ExtractMetaDataUtils.getInstance().getDbTypeByClassName(driver);
+            if (EDatabaseTypeName.MYSQL.getDisplayName().equalsIgnoreCase(dbtype)) {
+                return true;
+            }
+        }
+        return false;
+    }
+    
+    private boolean isHive() {
+        if(metadataconnection == null) {
+            return false;
+        }
+        if(EDatabaseTypeName.HIVE.getDisplayName().equals(metadataconnection.getDbType())) {metadataconnection.getDriverClass();
+            return true;
+        }else if(EDatabaseTypeName.GENERAL_JDBC.getProduct().equals(metadataconnection.getDbType())) {
+            String driver = metadataconnection.getDriverClass();
+            String dbtype = ExtractMetaDataUtils.getInstance().getDbTypeByClassName(driver);
+            if (EDatabaseTypeName.HIVE.getDisplayName().equalsIgnoreCase(dbtype)) {
+                return true;
+            }
+        }
+        return false;
+    }
+    
+    private boolean isSAPHana() {
+        if(metadataconnection == null) {
+            return false;
+        }
+        if(EDatabaseTypeName.SAPHana.getDisplayName().equals(metadataconnection.getDbType())) {
+            return true;
+        }else if(EDatabaseTypeName.GENERAL_JDBC.getProduct().equals(metadataconnection.getDbType())) {
+            String driver = metadataconnection.getDriverClass();
+            String dbtype = ExtractMetaDataUtils.getInstance().getDbTypeByClassName(driver);
+            if (EDatabaseTypeName.SAPHana.getDisplayName().equalsIgnoreCase(dbtype)) {
+                return true;
+            }
+        }
+        return false;
     }
 
     private boolean isOracle() { // hywang add for 0007959
