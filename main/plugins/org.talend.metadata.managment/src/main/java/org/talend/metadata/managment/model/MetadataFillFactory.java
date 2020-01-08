@@ -242,6 +242,7 @@ public class MetadataFillFactory {
 
     public List<MetadataTable> fillAll(Package pack, DatabaseMetaData dbJDBCMetadata, IMetadataConnection metaConnection,
             List<String> tableFilter, String tablePattern, String[] tableType) {
+        log.info("function -- MetadataFillFactory.fillAll");
         return metadataFiller.fillAll(pack, dbJDBCMetadata, metaConnection, tableFilter, tablePattern, tableType);
     }
 

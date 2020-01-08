@@ -966,7 +966,7 @@ public class DBConnectionFillerImpl extends MetadataFillerImpl<DatabaseConnectio
     @Override
     public List<MetadataTable> fillAll(Package pack, DatabaseMetaData dbJDBCMetadata, IMetadataConnection metaConnection,
             List<String> tableFilter, String tablePattern, String[] tableType) {
-
+        log.info("function -- DBConnectionFillerImpl.fillAll");
         List<MetadataTable> list = new ArrayList<MetadataTable>();
         if (dbJDBCMetadata == null) {
             return null;
@@ -988,6 +988,9 @@ public class DBConnectionFillerImpl extends MetadataFillerImpl<DatabaseConnectio
                 catalogName = parentCatalog == null ? null : parentCatalog.getName();
             }
         }
+        
+        log.info("catalogName="+catalogName);
+        log.info("schemaPattern="+schemaPattern);
         try {
             // common
             boolean isOracle8i = true;
@@ -1022,6 +1025,11 @@ public class DBConnectionFillerImpl extends MetadataFillerImpl<DatabaseConnectio
                 // for CDH4 HIVE2 , the table type are MANAGED_TABLE and EXTERNAL_TABLE ......
                 // tableType = null;
             }
+            
+            log.info("DriverClass="+metaConnection.getDriverClass());
+            log.info("URL="+metaConnection.getUrl());
+            log.info("DriverJarPath="+metaConnection.getDriverJarPath());
+            
             ResultSet tables = dbJDBCMetadata.getTables(catalogName, schemaPattern, tablePattern, tableType);
 
             while (tables.next()) {

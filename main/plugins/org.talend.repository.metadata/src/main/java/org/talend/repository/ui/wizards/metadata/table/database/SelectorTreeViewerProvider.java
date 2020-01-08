@@ -23,6 +23,7 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
+import org.apache.log4j.Logger;
 import org.eclipse.jface.viewers.Viewer;
 import org.eclipse.swt.graphics.Image;
 import org.talend.commons.ui.runtime.exception.ExceptionHandler;
@@ -47,6 +48,7 @@ import org.talend.utils.sql.ConnectionUtils;
  * wzhang class global comment. Detailled comment
  */
 public class SelectorTreeViewerProvider extends AbstractMetadataExtractorViewProvider {
+    static Logger log = Logger.getLogger(SelectorTreeViewerProvider.class);
 
     public SelectorTreeViewerProvider() {
         super();
@@ -75,6 +77,7 @@ public class SelectorTreeViewerProvider extends AbstractMetadataExtractorViewPro
 
     @Override
     public Object[] getChildren(Object parentElement) {
+        log.info("function -- MetadataFillFactory.fillAll");
         TableNode tableNode = (TableNode) parentElement;
         List<TableNode> child = tableNode.getChildren();
         boolean extended = false;
