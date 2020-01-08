@@ -225,9 +225,10 @@ public class HadoopClassLoaderFactory2 {
                     } else {
                         afterLoaded = (t) -> t.addLibrary(overrideCustomConfPath);
                     }
-                }
-                if (StringUtils.isNotBlank(customConfsJarName)) {
-                    addedJars = new String[] { customConfsJarName };
+                } else {
+                    if (StringUtils.isNotBlank(customConfsJarName)) {
+                        addedJars = new String[] { customConfsJarName };
+                    }
                 }
                 excludedJars = securityJars;
             } else if (useKrb) {

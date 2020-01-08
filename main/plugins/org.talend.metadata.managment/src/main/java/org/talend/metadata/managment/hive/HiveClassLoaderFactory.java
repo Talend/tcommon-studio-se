@@ -140,10 +140,11 @@ public class HiveClassLoaderFactory {
                     } else {
                         afterLoad = (t) -> t.addLibrary(overrideCustomConfPath);
                     }
-                }
-                String customConfsJarName = confJarBean.getCustomConfJarName();
-                if (customConfsJarName != null) {
-                    configurationJars = new String[] { customConfsJarName };
+                } else {
+                    String customConfsJarName = confJarBean.getCustomConfJarName();
+                    if (customConfsJarName != null) {
+                        configurationJars = new String[] { customConfsJarName };
+                    }
                 }
             }
 
