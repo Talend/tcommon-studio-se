@@ -265,8 +265,7 @@ public class MigrationToolService implements IMigrationToolService {
         // force to re-generate all job poms
         MigrationUtil.removeMigrationTaskById(done, "org.talend.repository.model.migration.GenerateJobPomMigrationTask");
 
-        if (!VersionUtils.getTalendVersion()
-                .equals(VersionUtils.getTalendPureVersion(project.getEmfProject().getProductVersion()))) {
+        if (beforeLogon) {
             // for every migration, force reset to default maven template
             MigrationUtil.removeMigrationTaskById(done, "org.talend.repository.model.migration.ResetMavenTemplateMigrationTask");
         }
