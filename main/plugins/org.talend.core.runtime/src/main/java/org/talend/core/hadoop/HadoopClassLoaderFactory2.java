@@ -14,8 +14,6 @@ package org.talend.core.hadoop;
 
 import java.io.File;
 import java.net.MalformedURLException;
-import java.util.Arrays;
-import java.util.HashSet;
 import java.util.Optional;
 import java.util.Set;
 import java.util.function.Consumer;
@@ -232,9 +230,6 @@ public class HadoopClassLoaderFactory2 {
                     addedJars = new String[] { customConfsJarName };
                 }
                 excludedJars = securityJars;
-                Set<String> excludedJarSet = new HashSet<>(Arrays.asList(excludedJars));
-                excludedJarSet.remove(customConfsJarName);
-                excludedJars = excludedJarSet.toArray(new String[0]);
             } else if (useKrb) {
                 addedJars = securityJars;
                 excludedJars = new String[] { customConfsJarName };
