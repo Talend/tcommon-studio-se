@@ -22,6 +22,8 @@
             
             <dbType type="TIMESTAMP" ignoreLen="true" ignorePre="true" />
             <dbType type="STRING" ignoreLen="true" ignorePre="true" />
+            <dbType type="NUMERIC" ignoreLen="true" ignorePre="true" />
+            <dbType type="GEOGRAPHY" ignoreLen="true" ignorePre="true" />
             
 		</dbTypes>
 		<language name="java">
@@ -46,6 +48,7 @@
                     <dbType type="TIMESTAMP" />
                 </talendType>
                 <talendType type="id_BigDecimal">
+                    <dbType type="NUMERIC" default="true" />
                 </talendType>
                 <talendType type="id_Double">
                     <dbType type="FLOAT" default="true" />
@@ -68,6 +71,7 @@
                     <dbType type="TIME" />
                     <dbType type="TIMESTAMP" />
                     <dbType type="ARRAY" />
+                    <dbType type="GEOGRAPHY" />
                     <dbType type="RECORD" />
                 </talendType>
             </talendToDbTypes>
@@ -113,6 +117,12 @@
                     <talendType type="id_String" default="true" />
                 </dbType>
                 <dbType type="TIMESTAMP">
+                    <talendType type="id_String" default="true" />
+                </dbType>
+                <dbType type="NUMERIC">
+                    <talendType type="id_BigDecimal" default="true" />
+                </dbType>
+                <dbType type="GEOGRAPHY">
                     <talendType type="id_String" default="true" />
                 </dbType>
                 <dbType type="STRING">
