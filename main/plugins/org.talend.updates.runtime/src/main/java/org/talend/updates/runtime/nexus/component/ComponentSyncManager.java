@@ -34,9 +34,11 @@ import org.talend.core.runtime.services.IMavenUIService;
  */
 public class ComponentSyncManager {
 
-    private static final String REPOSITORY_ID_RELEASE = "release";
+    private static final String REPOSITORY_ID_RELEASE = "releases";
 
-    private static final String REPOSITORY_ID_SNAPSHOT = "snapshot";
+    private static final String REPOSITORY_ID_SNAPSHOT = "snapshots";
+
+    private static final String SNAPSHOT_SUFFIX = "-SNAPSHOT";
 
     private static boolean isTalendDebug = CommonsPlugin.isDebugMode();
 
@@ -46,7 +48,12 @@ public class ComponentSyncManager {
 
     private IRepositoryArtifactHandler snapshotRepositoryHandler;
 
-    public ComponentSyncManager() {
+    public ArtifactRepositoryBean getRepositoryServerBean(MavenArtifact artifact) {
+        if (isSnapshot(artifact)) {
+            return getSnapshotRepositoryHandler().getArtifactServerBean();
+        } else {
+            return getReleaseRepositoryHandler().getArtifactServerBean();
+        }
     }
 
     public List<MavenArtifact> search(MavenArtifact artifact) throws Exception {
@@ -138,7 +145,7 @@ public class ComponentSyncManager {
     }
 
     private boolean isSnapshot(MavenArtifact artifact) {
-        return artifact.getVersion().endsWith("-SNAPSHOT");
+        return artifact.getVersion().endsWith(SNAPSHOT_SUFFIX);
     }
 
     private IRepositoryArtifactHandler getReleaseRepositoryHandler() {

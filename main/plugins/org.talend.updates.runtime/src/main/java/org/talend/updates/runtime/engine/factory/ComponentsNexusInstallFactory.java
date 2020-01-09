@@ -129,7 +129,7 @@ public class ComponentsNexusInstallFactory extends AbstractExtraUpdatesFactory i
         return Collections.emptySet();
     }
 
-    Set<ExtraFeature> createFeatures(IProgressMonitor monitor, ArtifactRepositoryBean serverBean, Document doc,
+    protected Set<ExtraFeature> createFeatures(IProgressMonitor monitor, ArtifactRepositoryBean serverBean, Document doc,
             boolean ignoreUncompatibleProduct) {
         if (doc == null) {
             return Collections.emptySet();
