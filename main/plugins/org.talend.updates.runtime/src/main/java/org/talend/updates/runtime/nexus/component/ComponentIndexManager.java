@@ -66,6 +66,8 @@ public class ComponentIndexManager {
 
     public static final String XPATH_INDEX_COMPONENT = "//" + ELEM_COMPONENTS + '/' + ELEM_COMPONENT; //$NON-NLS-1$
 
+    private static final String SNAPSHOT_SUFFIX = "-SNAPSHOT";
+
     class MissingSettingException extends IllegalArgumentException {
 
         private static final long serialVersionUID = -4386085265203515607L;
@@ -479,7 +481,11 @@ public class ComponentIndexManager {
         MavenArtifact artifact = new MavenArtifact();
         artifact.setGroupId(COMPONENT_GROUP_ID);
         artifact.setArtifactId(INDEX);
-        artifact.setVersion(PathUtils.getTalendVersionStr());
+        String version = PathUtils.getTalendVersionStr();
+        if (!version.endsWith(SNAPSHOT_SUFFIX)) {
+            version = version + SNAPSHOT_SUFFIX;
+        }
+        artifact.setVersion(version);
         artifact.setType(FileExtensions.XML_EXTENSION);
         return artifact;
     }

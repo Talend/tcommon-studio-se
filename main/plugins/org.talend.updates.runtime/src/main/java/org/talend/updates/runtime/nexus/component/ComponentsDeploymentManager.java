@@ -13,24 +13,19 @@
 package org.talend.updates.runtime.nexus.component;
 
 import java.io.File;
+import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.Collection;
-import java.util.Dictionary;
-import java.util.Hashtable;
 import java.util.List;
 
-import org.apache.commons.lang3.StringUtils;
+import org.apache.log4j.Logger;
 import org.eclipse.core.runtime.IProgressMonitor;
-import org.eclipse.core.runtime.OperationCanceledException;
+import org.talend.commons.CommonsPlugin;
 import org.talend.commons.exception.ExceptionHandler;
 import org.talend.commons.utils.resource.UpdatesHelper;
 import org.talend.core.GlobalServiceRegister;
 import org.talend.core.nexus.ArtifactRepositoryBean;
-import org.talend.core.nexus.IRepositoryArtifactHandler;
-import org.talend.core.nexus.RepositoryArtifactHandlerManager;
-import org.talend.core.nexus.TalendMavenResolver;
 import org.talend.core.runtime.maven.MavenArtifact;
-import org.talend.core.runtime.services.IMavenUIService;
 import org.talend.updates.runtime.feature.model.Type;
 import org.talend.updates.runtime.model.interfaces.ITaCoKitCarFeature;
 import org.talend.updates.runtime.service.ITaCoKitUpdateService;
@@ -44,15 +39,20 @@ import org.talend.utils.io.FilesUtils;
  */
 public class ComponentsDeploymentManager {
 
-    private IRepositoryArtifactHandler repositoryHandler;
+    private static boolean isTalendDebug = CommonsPlugin.isDebugMode();
+
+    private static Logger log = Logger.getLogger(ComponentsDeploymentManager.class);
 
     private final ComponentIndexManager indexManager;
+
+    private ComponentSyncManager syncManager;
 
     private File workFolder;
 
     public ComponentsDeploymentManager() {
         super();
         indexManager = new ComponentIndexManager();
+        syncManager = new ComponentSyncManager();
     }
 
     public boolean deployComponentsToLocalNexus(IProgressMonitor progress, File componentZipFile) throws IOException {
@@ -73,13 +73,6 @@ public class ComponentsDeploymentManager {
 
     public boolean deployComponentsToArtifactRepository(IProgressMonitor progress, File componentFile) {
         if (componentFile == null || !componentFile.exists() || !componentFile.isFile()) {
-            return false;
-        }
-        IRepositoryArtifactHandler handler = getRepositoryHandler();
-        if (handler == null) {
-            return false;
-        }
-        if (!handler.checkConnection(true, false)) {
             return false;
         }
         boolean isCar = false;
@@ -132,41 +125,32 @@ public class ComponentsDeploymentManager {
             return false;
         }
         try {
-            List<MavenArtifact> search = handler.search(mvnArtifact.getGroupId(), mvnArtifact.getArtifactId(),
-                    mvnArtifact.getVersion(), true, true);
-            if (search != null && search.size() > 0) {
+            if (!syncManager.isRepositoryServerAvailable(progress, mvnArtifact)) {
+                debugLog("Failed to sync component: " + mvnArtifact);
                 return false;
             }
-            handler.deploy(componentFile, mvnArtifact.getGroupId(), mvnArtifact.getArtifactId(), mvnArtifact.getClassifier(),
-                    mvnArtifact.getType(), mvnArtifact.getVersion());
+            List<MavenArtifact> search = syncManager.search(mvnArtifact);
+            if (search != null && search.size() > 0) {
+                debugLog("Artifact already exists on server: " + mvnArtifact);
+                return false;
+            }
+            syncManager.deploy(componentFile, mvnArtifact);
 
             MavenArtifact indexArtifact = indexManager.getIndexArtifact();
             File indexFile = null;
 
             try {
-                ArtifactRepositoryBean artifactServerBean = handler.getArtifactServerBean();
-                char[] passwordChars = null;
-                String password = artifactServerBean.getPassword();
-                if (password != null) {
-                    passwordChars = password.toCharArray();
-                }
-
-                /**
-                 * don't use mvn.resolve to get the index file here, since the resolved file may come from local mvn
-                 * repository instead of nexus server
-                 */
-                final NexusComponentsTransport transport = new NexusComponentsTransport(artifactServerBean.getRepositoryURL(),
-                        artifactServerBean.getUserName(), passwordChars);
-                if (transport.isAvailable(progress, indexArtifact)) {
-                    if (progress.isCanceled()) {
-                        throw new OperationCanceledException();
+                try {
+                    indexFile = syncManager.downloadIndexFile(progress, indexArtifact);
+                } catch (FileNotFoundException e) {
+                    if (isTalendDebug) {
+                        log.error(e.getMessage(), e);
                     }
-                    indexFile = File.createTempFile("index", ".xml"); //$NON-NLS-1$ //$NON-NLS-2$
-                    transport.downloadFile(progress, indexArtifact, indexFile);
-                } else {
+                    // FileNotFoundException is means that file is not exists on server, so need to create one
                     indexFile = new File(getWorkFolder(), indexArtifact.getFileName(false));
                     boolean created = indexManager.createIndexFile(indexFile, compIndexBean);
                     if (!created) {
+                        debugLog("index file creation failed");
                         return false;
                     }
                 }
@@ -176,12 +160,13 @@ public class ComponentsDeploymentManager {
                     if (!updated) {
                         return false;
                     }
+                } else {
+                    debugLog("Can't get index file to update");
                 }
             } catch (Exception e) {
                 throw e;
             }
-            handler.deploy(indexFile, indexArtifact.getGroupId(), indexArtifact.getArtifactId(), indexArtifact.getClassifier(),
-                    indexArtifact.getType(), indexArtifact.getVersion());
+            syncManager.deploy(indexFile, indexArtifact);
 
             return true;
         } catch (Exception e) {
@@ -208,29 +193,10 @@ public class ComponentsDeploymentManager {
         return workFolder;
     }
 
-    private IRepositoryArtifactHandler getRepositoryHandler() {
-        ArtifactRepositoryBean artifactRepisotory = NexusServerManager.getInstance().getArtifactRepositoryFromTac();
-        if (artifactRepisotory == null) {
-            return null;
+    private void debugLog(String message) {
+        if (isTalendDebug) {
+            log.info(message);
         }
-        String repositoryId = NexusServerManager.getInstance().getRepositoryIdForShare();
-        if (StringUtils.isBlank(repositoryId)) {
-            return null;
-        }
-        artifactRepisotory.setRepositoryId(repositoryId);
-        if (repositoryHandler == null) {
-            repositoryHandler = RepositoryArtifactHandlerManager.getRepositoryHandler(artifactRepisotory);
-            Dictionary<String, String> properties = new Hashtable<String, String>();
-            if (GlobalServiceRegister.getDefault().isServiceRegistered(IMavenUIService.class)) {
-                IMavenUIService mavenUIService = (IMavenUIService) GlobalServiceRegister.getDefault()
-                        .getService(IMavenUIService.class);
-                if (mavenUIService != null) {
-                    properties = mavenUIService.getTalendMavenSetting();
-                }
-            }
-            repositoryHandler.updateMavenResolver(TalendMavenResolver.COMPONENT_MANANGER_RESOLVER, properties);
-        }
-        return repositoryHandler;
     }
 
 }
