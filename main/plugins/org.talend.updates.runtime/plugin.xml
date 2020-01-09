@@ -80,12 +80,6 @@
       </loginTask>
    </extension>
    <extension
-         point="org.eclipse.core.runtime.preferences">
-      <initializer
-            class="org.talend.updates.runtime.preference.UpdatesRuntimeInitializer">
-      </initializer>
-   </extension>
-   <extension
          point="org.talend.core.runtime.service">
       <Service
             class="org.talend.updates.runtime.service.UpdateService"

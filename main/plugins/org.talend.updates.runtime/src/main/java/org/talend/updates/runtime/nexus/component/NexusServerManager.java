@@ -22,10 +22,8 @@ import org.talend.core.model.general.INexusService;
 import org.talend.core.nexus.ArtifactRepositoryBean;
 import org.talend.core.nexus.ArtifactRepositoryBean.NexusType;
 import org.talend.core.runtime.CoreRuntimePlugin;
-import org.talend.core.runtime.projectsetting.ProjectPreferenceManager;
 import org.talend.repository.model.IProxyRepositoryFactory;
 import org.talend.repository.model.IRepositoryService;
-import org.talend.updates.runtime.UpdatesRuntimePlugin;
 
 /**
  * created by ycbai on 2017年5月22日 Detailled comment
@@ -129,15 +127,6 @@ public class NexusServerManager {
             }
         }
         return false;
-    }
-
-    public String getRepositoryIdForShare() {
-        ProjectPreferenceManager prefManager = new ProjectPreferenceManager(UpdatesRuntimePlugin.BUNDLE_ID);
-        boolean enableShare = prefManager.getBoolean("repository.share.enable"); //$NON-NLS-1$
-        if (enableShare) {
-            return prefManager.getValue("repository.share.repository.id"); //$NON-NLS-1$
-        }
-        return null;
     }
 
 }

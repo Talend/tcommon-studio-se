@@ -26,6 +26,8 @@ import org.eclipse.aether.deployment.DeployRequest;
 import org.eclipse.aether.repository.Authentication;
 import org.eclipse.aether.repository.LocalRepository;
 import org.eclipse.aether.repository.RemoteRepository;
+import org.eclipse.aether.resolution.ArtifactRequest;
+import org.eclipse.aether.resolution.ArtifactResult;
 import org.eclipse.aether.util.artifact.SubArtifact;
 import org.eclipse.aether.util.listener.ChainedRepositoryListener;
 import org.eclipse.aether.util.listener.ChainedTransferListener;
@@ -92,6 +94,32 @@ public class RepositorySystemFactory {
         deployRequest.setRepository(distRepo);
 
         system.deploy(session, deployRequest);
+    }
+
+    public static File resolve(String localRepository, String repositoryId, String repositoryUrl, String userName,
+            String password, String groupId, String artifactId, String classifier, String extension, String version)
+            throws Exception {
+        DefaultRepositorySystemSession session = null;
+        RepositorySystem system = MavenLibraryResolverProvider.newRepositorySystem();
+        session = newRepositorySystemSession(localRepository);
+
+        ArtifactRequest resolveRequest = new ArtifactRequest();
+        Artifact jarArtifact = new DefaultArtifact(groupId, artifactId, classifier, extension, version);
+        resolveRequest.setArtifact(jarArtifact);
+
+        Authentication auth = new AuthenticationBuilder().addUsername(userName).addPassword(password).build();
+        RemoteRepository distRepo = new RemoteRepository.Builder(repositoryId, "default", repositoryUrl).setAuthentication(auth)
+                .build();
+        distRepo = new RemoteRepository.Builder(distRepo).setProxy(new TalendAetherProxySelector().getProxy(distRepo)).build();
+
+        resolveRequest.addRepository(distRepo);
+
+        ArtifactResult result = system.resolveArtifact(session, resolveRequest);
+        if (result.isResolved()) {
+            return result.getArtifact().getFile();
+        } else {
+            return null;
+        }
     }
 
     public static void deploy(File content, String localRepository, String repositoryId, String repositoryUrl, String userName,

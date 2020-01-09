@@ -20,10 +20,14 @@ import java.util.Dictionary;
 import java.util.Hashtable;
 
 import org.apache.commons.lang.StringUtils;
+import org.eclipse.m2e.core.MavenPlugin;
 import org.talend.core.nexus.ArtifactRepositoryBean;
 import org.talend.core.nexus.IRepositoryArtifactHandler;
 import org.talend.core.nexus.NexusConstants;
 import org.talend.core.nexus.TalendMavenResolver;
+import org.talend.core.runtime.maven.MavenArtifact;
+import org.talend.core.runtime.maven.MavenUrlHelper;
+import org.talend.designer.maven.aether.RepositorySystemFactory;
 import org.talend.utils.string.StringUtilities;
 
 /**
@@ -119,6 +123,22 @@ public abstract class AbstractArtifactRepositoryHandler implements IRepositoryAr
             throw new RuntimeException("Failed to modifiy the service properties"); //$NON-NLS-1$
         }
 
+    }
+
+    @Override
+    public File resolve(MavenArtifact ma) throws Exception {
+        String repositoryId = "";
+        String version = ma.getVersion();
+        boolean isRelease = !version.endsWith(MavenUrlHelper.VERSION_SNAPSHOT);
+        if (isRelease) {
+            repositoryId = serverBean.getRepositoryId();
+        } else {
+            repositoryId = serverBean.getSnapshotRepId();
+        }
+        String repositoryurl = getRepositoryURL(isRelease);
+        String localRepository = MavenPlugin.getMaven().getLocalRepositoryPath();
+        return RepositorySystemFactory.resolve(localRepository, repositoryId, repositoryurl, serverBean.getUserName(),
+                serverBean.getPassword(), ma.getGroupId(), ma.getArtifactId(), ma.getClassifier(), ma.getType(), version);
     }
 
     /*

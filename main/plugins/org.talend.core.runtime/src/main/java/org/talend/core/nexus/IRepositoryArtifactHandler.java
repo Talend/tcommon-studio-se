@@ -57,6 +57,7 @@ public interface IRepositoryArtifactHandler {
     public void deployWithPOM(File content, File pomFile, String groupId, String artifactId, String classifier, String extension,
             String version) throws Exception;
 
+    public File resolve(MavenArtifact ma) throws Exception;
 
     public void updateMavenResolver(String resolverKey, Dictionary<String, String> props);
 

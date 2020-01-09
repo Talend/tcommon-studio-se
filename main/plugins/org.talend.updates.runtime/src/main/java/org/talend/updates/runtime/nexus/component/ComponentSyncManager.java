@@ -14,6 +14,7 @@ package org.talend.updates.runtime.nexus.component;
 
 import java.io.File;
 import java.io.FileNotFoundException;
+import java.nio.file.Files;
 import java.util.Dictionary;
 import java.util.Hashtable;
 import java.util.List;
@@ -27,6 +28,7 @@ import org.talend.core.nexus.IRepositoryArtifactHandler;
 import org.talend.core.nexus.RepositoryArtifactHandlerManager;
 import org.talend.core.nexus.TalendMavenResolver;
 import org.talend.core.runtime.maven.MavenArtifact;
+import org.talend.core.runtime.maven.MavenUrlHelper;
 import org.talend.core.runtime.services.IMavenUIService;
 
 /**
@@ -34,11 +36,11 @@ import org.talend.core.runtime.services.IMavenUIService;
  */
 public class ComponentSyncManager {
 
-    private static final String REPOSITORY_ID_RELEASE = "releases";
+    private static final String REPOSITORY_ID_RELEASE = "talend-custom-libs-release";
 
-    private static final String REPOSITORY_ID_SNAPSHOT = "snapshots";
+    private static final String REPOSITORY_ID_SNAPSHOT = "talend-custom-libs-snapshot";
 
-    private static final String SNAPSHOT_SUFFIX = "-SNAPSHOT";
+    private static final String SNAPSHOT_SUFFIX = "-" + MavenUrlHelper.VERSION_SNAPSHOT;
 
     private static boolean isTalendDebug = CommonsPlugin.isDebugMode();
 
@@ -121,27 +123,37 @@ public class ComponentSyncManager {
         } else {
             artifactHandler = getReleaseRepositoryHandler();
         }
-        ArtifactRepositoryBean artifactServerBean = artifactHandler.getArtifactServerBean();
-        char[] passwordChars = null;
-        String password = artifactServerBean.getPassword();
-        if (password != null) {
-            passwordChars = password.toCharArray();
-        }
 
-        /**
-         * don't use mvn.resolve to get the index file here, since the resolved file may come from local mvn repository
-         * instead of nexus server
-         */
-        final NexusComponentsTransport transport = new NexusComponentsTransport(artifactServerBean.getRepositoryURL(),
-                artifactServerBean.getUserName(), passwordChars);
-        boolean isAvailable = transport.isAvailable(progress, artifact);
-        if (isAvailable) {
-            File indexFile = File.createTempFile("index", ".xml"); //$NON-NLS-1$ //$NON-NLS-2$
-            transport.downloadFile(progress, artifact, indexFile);
-            return indexFile;
+        ArtifactRepositoryBean artifactServerBean = artifactHandler.getArtifactServerBean();
+        File indexFile = null;
+        if (isSnapshot) {
+            File originalFile = artifactHandler.resolve(artifact);
+            indexFile = File.createTempFile("index", ".xml"); //$NON-NLS-1$ //$NON-NLS-2$
+            indexFile.delete();
+            Files.copy(originalFile.toPath(), indexFile.toPath());
         } else {
+            char[] passwordChars = null;
+            String password = artifactServerBean.getPassword();
+            if (password != null) {
+                passwordChars = password.toCharArray();
+            }
+
+            /**
+             * don't use mvn.resolve to get the index file here, since the resolved file may come from local mvn
+             * repository instead of nexus server
+             */
+            final NexusComponentsTransport transport = new NexusComponentsTransport(artifactServerBean.getRepositoryURL(),
+                    artifactServerBean.getUserName(), passwordChars);
+            boolean isAvailable = transport.isAvailable(progress, artifact);
+            if (isAvailable) {
+                indexFile = File.createTempFile("index", ".xml"); //$NON-NLS-1$ //$NON-NLS-2$
+                transport.downloadFile(progress, artifact, indexFile);
+            }
+        }
+        if (indexFile == null) {
             throw new FileNotFoundException("Index file is not exists on server: " + artifactServerBean);
         }
+        return indexFile;
     }
 
     private boolean isSnapshot(MavenArtifact artifact) {

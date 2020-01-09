@@ -66,7 +66,7 @@ public class ComponentIndexManager {
 
     public static final String XPATH_INDEX_COMPONENT = "//" + ELEM_COMPONENTS + '/' + ELEM_COMPONENT; //$NON-NLS-1$
 
-    private static final String SNAPSHOT_SUFFIX = "-SNAPSHOT";
+    private static final String SNAPSHOT_SUFFIX = "-" + MavenUrlHelper.VERSION_SNAPSHOT;
 
     class MissingSettingException extends IllegalArgumentException {
 
