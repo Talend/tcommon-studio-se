@@ -29,7 +29,6 @@ import org.apache.http.impl.client.DefaultHttpClient;
 import org.apache.http.message.BasicHeader;
 import org.apache.http.params.CoreConnectionPNames;
 import org.apache.log4j.Logger;
-import org.eclipse.m2e.core.MavenPlugin;
 import org.talend.commons.exception.ExceptionHandler;
 import org.talend.commons.utils.network.IProxySelectorProvider;
 import org.talend.core.nexus.ArtifactRepositoryBean;
@@ -205,7 +204,7 @@ public class Nexus3RepositoryHandler extends AbstractArtifactRepositoryHandler {
             repositoryId = serverBean.getSnapshotRepId();
         }
         String repositoryurl = getRepositoryURL(isRelease);
-        String localRepository = MavenPlugin.getMaven().getLocalRepositoryPath();
+        String localRepository = getLocalRepositoryPath();
         RepositorySystemFactory.deploy(content, localRepository, repositoryId, repositoryurl, serverBean.getUserName(),
                 serverBean.getPassword(), groupId, artifactId, classifier, extension, version);
 
@@ -227,7 +226,7 @@ public class Nexus3RepositoryHandler extends AbstractArtifactRepositoryHandler {
             repositoryId = serverBean.getSnapshotRepId();
         }
         String repositoryurl = getRepositoryURL(isRelease);
-        String localRepository = MavenPlugin.getMaven().getLocalRepositoryPath();
+        String localRepository = getLocalRepositoryPath();
         RepositorySystemFactory.deployWithPOM(content, pomFile, localRepository, repositoryId, repositoryurl,
                 serverBean.getUserName(), serverBean.getPassword(), groupId, artifactId, classifier, extension, version);
 

@@ -42,6 +42,8 @@ public abstract class AbstractArtifactRepositoryHandler implements IRepositoryAr
 
     protected ArtifactRepositoryBean serverBean;
 
+    private String localRepositoryPath;
+
     /*
      * (non-Javadoc)
      *
@@ -136,9 +138,23 @@ public abstract class AbstractArtifactRepositoryHandler implements IRepositoryAr
             repositoryId = serverBean.getSnapshotRepId();
         }
         String repositoryurl = getRepositoryURL(isRelease);
-        String localRepository = MavenPlugin.getMaven().getLocalRepositoryPath();
+        String localRepository = getLocalRepositoryPath();
         return RepositorySystemFactory.resolve(localRepository, repositoryId, repositoryurl, serverBean.getUserName(),
                 serverBean.getPassword(), ma.getGroupId(), ma.getArtifactId(), ma.getClassifier(), ma.getType(), version);
+    }
+
+    @Override
+    public void setLocalRepositoryPath(String localRepositoryPath) {
+        this.localRepositoryPath = localRepositoryPath;
+    }
+
+    @Override
+    public String getLocalRepositoryPath() {
+        if (StringUtils.isBlank(this.localRepositoryPath)) {
+            return MavenPlugin.getMaven().getLocalRepositoryPath();
+        } else {
+            return this.localRepositoryPath;
+        }
     }
 
     /*

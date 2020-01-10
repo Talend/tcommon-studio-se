@@ -13,6 +13,7 @@
 package org.talend.designer.maven.aether;
 
 import java.io.File;
+import java.io.FileNotFoundException;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -27,11 +28,16 @@ import org.eclipse.aether.repository.Authentication;
 import org.eclipse.aether.repository.LocalRepository;
 import org.eclipse.aether.repository.RemoteRepository;
 import org.eclipse.aether.resolution.ArtifactRequest;
+import org.eclipse.aether.resolution.ArtifactResolutionException;
 import org.eclipse.aether.resolution.ArtifactResult;
+import org.eclipse.aether.resolution.VersionRequest;
+import org.eclipse.aether.resolution.VersionResult;
 import org.eclipse.aether.util.artifact.SubArtifact;
 import org.eclipse.aether.util.listener.ChainedRepositoryListener;
 import org.eclipse.aether.util.listener.ChainedTransferListener;
 import org.eclipse.aether.util.repository.AuthenticationBuilder;
+import org.talend.commons.CommonsPlugin;
+import org.talend.commons.exception.ExceptionHandler;
 import org.talend.designer.maven.aether.util.MavenLibraryResolverProvider;
 import org.talend.designer.maven.aether.util.TalendAetherProxySelector;
 
@@ -114,11 +120,22 @@ public class RepositorySystemFactory {
 
         resolveRequest.addRepository(distRepo);
 
-        ArtifactResult result = system.resolveArtifact(session, resolveRequest);
-        if (result.isResolved()) {
-            return result.getArtifact().getFile();
-        } else {
-            return null;
+        try {
+            ArtifactResult result = system.resolveArtifact(session, resolveRequest);
+            if (result.isResolved()) {
+                return result.getArtifact().getFile();
+            } else {
+                return null;
+            }
+        } catch (ArtifactResolutionException ae) {
+            if (ae.getResult().isMissing()) {
+                if (CommonsPlugin.isDebugMode()) {
+                    ExceptionHandler.process(ae);
+                }
+                throw new FileNotFoundException(ae.getMessage());
+            } else {
+                throw ae;
+            }
         }
     }
 

@@ -192,6 +192,11 @@ public class ComponentSyncManager {
             artifactRepository.setRepositoryId(repoId);
             artifactRepository.setSnapshotRepId(repoId);
             releaseRepositoryHandler = RepositoryArtifactHandlerManager.getRepositoryHandler(artifactRepository);
+            File localRepositoryFolder = Files.createTempDirectory("ReleaseLocalRepository_").toFile();
+            String localRepositoryPath = localRepositoryFolder.getCanonicalPath();
+            debugLog("ReleaseLocalRepository: " + localRepositoryPath);
+            releaseRepositoryHandler.setLocalRepositoryPath(localRepositoryPath);
+            localRepositoryFolder.deleteOnExit();
         }
         updateMavenSettings(releaseRepositoryHandler);
         return releaseRepositoryHandler;
@@ -208,6 +213,11 @@ public class ComponentSyncManager {
             artifactRepository.setRepositoryId(repoId);
             artifactRepository.setSnapshotRepId(repoId);
             snapshotRepositoryHandler = RepositoryArtifactHandlerManager.getRepositoryHandler(artifactRepository);
+            File localRepositoryFolder = Files.createTempDirectory("SnapshotLocalRepository_").toFile();
+            String localRepositoryPath = localRepositoryFolder.getCanonicalPath();
+            debugLog("SnapshotLocalRepository: " + localRepositoryPath);
+            snapshotRepositoryHandler.setLocalRepositoryPath(localRepositoryPath);
+            localRepositoryFolder.deleteOnExit();
         }
         updateMavenSettings(snapshotRepositoryHandler);
         return snapshotRepositoryHandler;

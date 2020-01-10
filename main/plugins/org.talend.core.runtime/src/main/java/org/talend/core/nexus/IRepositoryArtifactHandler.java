@@ -59,6 +59,10 @@ public interface IRepositoryArtifactHandler {
 
     public File resolve(MavenArtifact ma) throws Exception;
 
+    public void setLocalRepositoryPath(String localRepositoryPath);
+
+    public String getLocalRepositoryPath();
+
     public void updateMavenResolver(String resolverKey, Dictionary<String, String> props);
 
     public File resolve(String mvnUrl) throws Exception;
