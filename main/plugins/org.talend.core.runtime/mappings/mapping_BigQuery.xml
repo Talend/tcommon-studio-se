@@ -72,7 +72,6 @@
                     <dbType type="TIMESTAMP" />
                     <dbType type="ARRAY" />
                     <dbType type="GEOGRAPHY" />
-                    <dbType type="RECORD" />
                 </talendType>
             </talendToDbTypes>
             <dbToTalendTypes>
