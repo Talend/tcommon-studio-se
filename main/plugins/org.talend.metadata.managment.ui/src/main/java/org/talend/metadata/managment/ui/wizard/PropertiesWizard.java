@@ -30,6 +30,7 @@ import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
 import org.eclipse.core.runtime.jobs.ISchedulingRule;
 import org.eclipse.draw2d.ColorConstants;
+import org.eclipse.jface.dialogs.MessageDialog;
 import org.eclipse.jface.wizard.Wizard;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.layout.GridData;
@@ -41,6 +42,7 @@ import org.talend.commons.exception.BusinessException;
 import org.talend.commons.exception.LoginException;
 import org.talend.commons.exception.PersistenceException;
 import org.talend.commons.runtime.model.repository.ERepositoryStatus;
+import org.talend.commons.ui.gmf.util.DisplayUtils;
 import org.talend.commons.ui.runtime.exception.ExceptionHandler;
 import org.talend.commons.ui.runtime.exception.MessageBoxExceptionHandler;
 import org.talend.commons.ui.runtime.image.EImage;
@@ -297,6 +299,7 @@ public class PropertiesWizard extends Wizard {
                     ExpressionPersistance.getInstance().jobNameChanged(originaleObjectLabel, object.getLabel());
 
                     if (!originalVersion.equals(object.getVersion())) {
+                        showTestCaseWarning();
                         RelationshipItemBuilder.getInstance().addOrUpdateItem(object.getProperty().getItem());
                     }
                     proxyRepositoryFactory.saveProject(ProjectManager.getInstance().getCurrentProject());
@@ -322,6 +325,29 @@ public class PropertiesWizard extends Wizard {
         } catch (CoreException e) {
             MessageBoxExceptionHandler.process(e.getCause());
             return false;
+        }
+    }
+    
+    private void showTestCaseWarning() {
+        if(object == null) {
+            return;
+        }
+        if (GlobalServiceRegister.getDefault().isServiceRegistered(ITestContainerProviderService.class)) {
+            ITestContainerProviderService testContainerService = (ITestContainerProviderService) GlobalServiceRegister
+                    .getDefault().getService(ITestContainerProviderService.class);
+            if (testContainerService != null && object.getProperty() != null) {
+                Item item = object.getProperty().getItem();
+                if(item instanceof ProcessItem) {
+                    List<ProcessItem> testcases = testContainerService.getAllTestContainers((ProcessItem)item);
+                    if(testcases.isEmpty()) {
+                        return;
+                    }
+                    MessageDialog.openWarning(DisplayUtils.getDefaultShell(false),
+                            Messages.getString("PropertiesWizard.VersionTitle"), //$NON-NLS-1$
+                            Messages.getString("PropertiesWizard.PreviousVersion", object.getProperty().getLabel())); //$NON-NLS-1$
+                }
+                
+            }
         }
     }
 
