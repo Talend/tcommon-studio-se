@@ -265,6 +265,11 @@ public class MigrationToolService implements IMigrationToolService {
         // force to re-generate all job poms
         MigrationUtil.removeMigrationTaskById(done, "org.talend.repository.model.migration.GenerateJobPomMigrationTask");
 
+        if (beforeLogon) {
+            // for every migration, force reset to default maven template
+            MigrationUtil.removeMigrationTaskById(done, "org.talend.repository.model.migration.ResetMavenTemplateMigrationTask");
+        }
+
         boolean haveAnyBinFolder = false; // to avoid some problems of migration, sometimes
         for (ERepositoryObjectType type : (ERepositoryObjectType[]) ERepositoryObjectType.values()) {
             if (!type.hasFolder()) {

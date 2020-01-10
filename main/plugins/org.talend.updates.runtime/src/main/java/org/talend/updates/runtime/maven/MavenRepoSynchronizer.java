@@ -84,8 +84,9 @@ public class MavenRepoSynchronizer {
                     if (packaging == null) {
                         packaging = TalendMavenConstants.PACKAGING_JAR;
                     }
+                    boolean isMavenPlugin = packaging.equals("maven-plugin"); //$NON-NLS-1$
                     // use jar instead
-                    if (packaging.equals("bundle")) { //$NON-NLS-1$
+                    if (packaging.equals("bundle") || isMavenPlugin) { //$NON-NLS-1$
                         packaging = TalendMavenConstants.PACKAGING_JAR;
                     }
                     final String groupId = (model.getGroupId() != null ? model.getGroupId() : model.getParent().getGroupId());
@@ -105,8 +106,13 @@ public class MavenRepoSynchronizer {
 
                             // final String pomPath=pomFile.getAbsolutePath();
                             // TUP-17785, make sure generate new one always without any dependences, so null
-                            final String pomPath = PomUtil.generatePomInFolder(tempFolder, artifact);
-
+                            String pomPath;
+                            if (isMavenPlugin) {
+                                // use original pom to keep dependencies for maven plugins
+                                pomPath = pomFile.getAbsolutePath();
+                            } else {
+                                pomPath = PomUtil.generatePomInFolder(tempFolder, artifact);
+                            }
                             deployer.install(mvnUrl, jarPath, pomPath, deployToRemote);
                         } finally {
                             if (tempFolder.exists()) {

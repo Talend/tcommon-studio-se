@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <classpath>
+	<classpathentry exported="true" kind="lib" path="lib/jakarta.activation-1.2.1.jar"/>
 	<classpathentry exported="true" kind="lib" path="lib/cxf-rt-wsdl-3.3.4.jar"/>
 	<classpathentry exported="true" kind="lib" path="lib/jakarta.activation-api-1.2.1.jar"/>
 	<classpathentry exported="true" kind="lib" path="lib/jakarta.xml.bind-api-2.3.2.jar"/>

@@ -20,7 +20,8 @@ Bundle-ClassPath: .,
  lib/woodstox-core-asl-4.4.1.jar,
  lib/jakarta.xml.bind-api-2.3.2.jar,
  lib/jaxb-runtime-2.3.2.jar,
- lib/jakarta.activation-api-1.2.1.jar
+ lib/jakarta.activation-api-1.2.1.jar,
+ lib/jakarta.activation-1.2.1.jar
 Export-Package: javax.ws.rs,
  javax.ws.rs.client,
  javax.ws.rs.container,

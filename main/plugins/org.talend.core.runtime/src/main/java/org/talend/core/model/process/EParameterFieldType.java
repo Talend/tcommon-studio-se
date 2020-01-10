@@ -20,6 +20,7 @@ package org.talend.core.model.process;
  */
 public enum EParameterFieldType {
     TEXT,
+    NUMBERLIMITTEXT,
     TEXT_AREA,
     PASSWORD,
     LICENSEKEY, // xqliu TDQ-17742
