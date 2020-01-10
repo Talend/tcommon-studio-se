@@ -21,6 +21,7 @@ import java.util.List;
 
 import org.apache.log4j.Logger;
 import org.eclipse.core.runtime.IProgressMonitor;
+import org.eclipse.core.runtime.NullProgressMonitor;
 import org.talend.commons.CommonsPlugin;
 import org.talend.core.GlobalServiceRegister;
 import org.talend.core.nexus.ArtifactRepositoryBean;
@@ -111,11 +112,31 @@ public class ComponentSyncManager {
         return isAvailable;
     }
 
+    public File resolve(IProgressMonitor monitor, MavenArtifact artifact) throws Exception {
+        IProgressMonitor progress = monitor;
+        if (progress == null) {
+            progress = new NullProgressMonitor();
+        }
+        IRepositoryArtifactHandler artifactHandler = null;
+        boolean isSnapshot = isSnapshot(artifact);
+        if (isSnapshot) {
+            artifactHandler = getSnapshotRepositoryHandler();
+        } else {
+            artifactHandler = getReleaseRepositoryHandler();
+        }
+
+        return artifactHandler.resolve(artifact);
+    }
+
     /**
      * 
      * @throws FileNotFoundException if file is not exists on server
      */
-    public File downloadIndexFile(IProgressMonitor progress, MavenArtifact artifact) throws Exception {
+    public File downloadIndexFile(IProgressMonitor monitor, MavenArtifact artifact) throws Exception {
+        IProgressMonitor progress = monitor;
+        if (progress == null) {
+            progress = new NullProgressMonitor();
+        }
         IRepositoryArtifactHandler artifactHandler = null;
         boolean isSnapshot = isSnapshot(artifact);
         if (isSnapshot) {
@@ -128,9 +149,11 @@ public class ComponentSyncManager {
         File indexFile = null;
         if (isSnapshot) {
             File originalFile = artifactHandler.resolve(artifact);
-            indexFile = File.createTempFile("index", ".xml"); //$NON-NLS-1$ //$NON-NLS-2$
-            indexFile.delete();
-            Files.copy(originalFile.toPath(), indexFile.toPath());
+            if (originalFile != null) {
+                indexFile = File.createTempFile("index", ".xml"); //$NON-NLS-1$ //$NON-NLS-2$
+                indexFile.delete();
+                Files.copy(originalFile.toPath(), indexFile.toPath());
+            }
         } else {
             char[] passwordChars = null;
             String password = artifactServerBean.getPassword();

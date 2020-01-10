@@ -20,6 +20,7 @@ import java.util.Date;
 import java.util.GregorianCalendar;
 import java.util.LinkedHashSet;
 import java.util.Set;
+import java.util.function.Function;
 
 import org.apache.commons.lang3.StringUtils;
 import org.apache.log4j.Logger;
@@ -41,7 +42,7 @@ import org.talend.updates.runtime.model.FeatureCategory;
 import org.talend.updates.runtime.nexus.component.ComponentIndexBean;
 import org.talend.updates.runtime.nexus.component.ComponentSyncManager;
 import org.talend.updates.runtime.nexus.component.NexusServerManager;
-import org.talend.updates.runtime.storage.impl.NexusFeatureStorage;
+import org.talend.updates.runtime.storage.impl.NexusComponentStorage;
 import org.talend.updates.runtime.utils.OsgiBundleInstaller;
 
 /**
@@ -116,8 +117,14 @@ public class InstallLocalNexusComponentsLoginTask extends AbstractLoginTask {
             }
             if (feature != null) {
                 MavenArtifact artifact = MavenUrlHelper.parseMvnUrl(feature.getMvnUri());
-                ArtifactRepositoryBean repositoryServerBean = syncManager.getRepositoryServerBean(artifact);
-                NexusFeatureStorage storage = new NexusFeatureStorage(repositoryServerBean, feature.getMvnUri(),
+                Function<MavenArtifact, File> downloader = (ma) -> {
+                    try {
+                        return syncManager.resolve(monitor, artifact);
+                    } catch (Exception e) {
+                        throw new RuntimeException(e);
+                    }
+                };
+                NexusComponentStorage storage = new NexusComponentStorage(downloader, feature.getMvnUri(),
                         feature.getImageMvnUri());
                 feature.setStorage(storage);
             }
