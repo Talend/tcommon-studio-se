@@ -24,7 +24,6 @@ import org.talend.commons.CommonsPlugin;
 import org.talend.commons.exception.ExceptionHandler;
 import org.talend.commons.utils.resource.UpdatesHelper;
 import org.talend.core.GlobalServiceRegister;
-import org.talend.core.nexus.ArtifactRepositoryBean;
 import org.talend.core.runtime.maven.MavenArtifact;
 import org.talend.updates.runtime.feature.model.Type;
 import org.talend.updates.runtime.model.interfaces.ITaCoKitCarFeature;
@@ -52,23 +51,7 @@ public class ComponentsDeploymentManager {
     public ComponentsDeploymentManager() {
         super();
         indexManager = new ComponentIndexManager();
-        syncManager = new ComponentSyncManager();
-    }
-
-    public boolean deployComponentsToLocalNexus(IProgressMonitor progress, File componentZipFile) throws IOException {
-        ArtifactRepositoryBean localNexusServer = NexusServerManager.getInstance().getLocalNexusServer();
-        if (localNexusServer == null) {
-            return false;
-        }
-        NexusShareComponentsManager nexusShareComponentsManager = new NexusShareComponentsManager(localNexusServer);
-        if (nexusShareComponentsManager.getNexusTransport().isAvailable()) {
-            boolean deployed = nexusShareComponentsManager.deployComponent(progress, componentZipFile);
-            if (deployed) {
-                moveToSharedFolder(componentZipFile);
-                return true;
-            }
-        }
-        return false;
+        syncManager = new ComponentSyncManager(NexusServerManager.getInstance().getArtifactRepositoryFromTac());
     }
 
     public boolean deployComponentsToArtifactRepository(IProgressMonitor progress, File componentFile) {
@@ -167,6 +150,12 @@ public class ComponentsDeploymentManager {
                 throw e;
             }
             syncManager.deploy(indexFile, indexArtifact);
+
+            /**
+             * components won't be moved to shared folder anymore since ticket
+             * https://jira.talendforge.org/browse/TUP-23536
+             */
+            // moveToSharedFolder(componentFile);
 
             return true;
         } catch (Exception e) {

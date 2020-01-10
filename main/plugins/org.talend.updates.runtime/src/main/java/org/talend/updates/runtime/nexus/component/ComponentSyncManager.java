@@ -51,12 +51,10 @@ public class ComponentSyncManager {
 
     private IRepositoryArtifactHandler snapshotRepositoryHandler;
 
-    public ArtifactRepositoryBean getRepositoryServerBean(MavenArtifact artifact) {
-        if (isSnapshot(artifact)) {
-            return getSnapshotRepositoryHandler().getArtifactServerBean();
-        } else {
-            return getReleaseRepositoryHandler().getArtifactServerBean();
-        }
+    private ArtifactRepositoryBean serverBean;
+
+    public ComponentSyncManager(ArtifactRepositoryBean serverBean) {
+        this.serverBean = serverBean;
     }
 
     public List<MavenArtifact> search(MavenArtifact artifact) throws Exception {
@@ -95,7 +93,7 @@ public class ComponentSyncManager {
                 artifact.getType(), artifact.getVersion());
     }
 
-    public boolean isRepositoryServerAvailable(IProgressMonitor progress, MavenArtifact artifact) {
+    public boolean isRepositoryServerAvailable(IProgressMonitor progress, MavenArtifact artifact) throws Exception {
         IRepositoryArtifactHandler artifactHandler = null;
         boolean isSnapshot = isSnapshot(artifact);
         if (isSnapshot) {
@@ -183,9 +181,9 @@ public class ComponentSyncManager {
         return artifact.getVersion().endsWith(SNAPSHOT_SUFFIX);
     }
 
-    private IRepositoryArtifactHandler getReleaseRepositoryHandler() {
+    private IRepositoryArtifactHandler getReleaseRepositoryHandler() throws Exception {
         if (releaseRepositoryHandler == null) {
-            ArtifactRepositoryBean artifactRepository = NexusServerManager.getInstance().getArtifactRepositoryFromTac();
+            ArtifactRepositoryBean artifactRepository = getServerBean().clone();
             if (artifactRepository == null) {
                 debugLog("Can't get artifactRepository from server.");
                 return null;
@@ -199,9 +197,9 @@ public class ComponentSyncManager {
         return releaseRepositoryHandler;
     }
 
-    private IRepositoryArtifactHandler getSnapshotRepositoryHandler() {
+    private IRepositoryArtifactHandler getSnapshotRepositoryHandler() throws Exception {
         if (snapshotRepositoryHandler == null) {
-            ArtifactRepositoryBean artifactRepository = NexusServerManager.getInstance().getArtifactRepositoryFromTac();
+            ArtifactRepositoryBean artifactRepository = getServerBean().clone();
             if (artifactRepository == null) {
                 debugLog("Can't get artifactRepository from server.");
                 return null;
@@ -233,6 +231,10 @@ public class ComponentSyncManager {
 
     private String getSnapshotRepositoryId() {
         return REPOSITORY_ID_SNAPSHOT;
+    }
+
+    public ArtifactRepositoryBean getServerBean() {
+        return this.serverBean;
     }
 
     private void debugLog(String message) {

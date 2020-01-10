@@ -41,8 +41,8 @@ import org.junit.Test;
 import org.talend.commons.CommonsPlugin;
 import org.talend.commons.exception.BusinessException;
 import org.talend.commons.utils.resource.BundleFileUtil;
-import org.talend.core.nexus.HttpClientTransport;
 import org.talend.core.nexus.ArtifactRepositoryBean;
+import org.talend.core.nexus.HttpClientTransport;
 import org.talend.core.runtime.maven.MavenArtifact;
 import org.talend.updates.runtime.engine.P2InstallerTest;
 import org.talend.utils.io.FilesUtils;
@@ -74,8 +74,7 @@ public class NexusComponentsTransportTest {
         nexusTransport = new NexusComponentsTransportTestClass(nexusURL, nexusUser, nexusPass.toCharArray());
 
         // create without server, just want to get index artifact
-        NexusShareComponentsManager manager = new NexusShareComponentsManager(new ArtifactRepositoryBean());
-        indexArtifact = manager.getIndexArtifact();
+        indexArtifact = new ComponentIndexManager().getIndexArtifact();
     }
 
     @AfterClass
