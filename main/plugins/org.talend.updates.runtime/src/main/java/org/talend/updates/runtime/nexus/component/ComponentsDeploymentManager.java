@@ -51,7 +51,7 @@ public class ComponentsDeploymentManager {
     public ComponentsDeploymentManager() {
         super();
         indexManager = new ComponentIndexManager();
-        syncManager = new ComponentSyncManager(NexusServerManager.getInstance().getArtifactRepositoryFromTac());
+        syncManager = new ComponentSyncManager(NexusServerManager.getInstance().getComponentShareRepositoryFromServer());
     }
 
     public boolean deployComponentsToArtifactRepository(IProgressMonitor progress, File componentFile) {

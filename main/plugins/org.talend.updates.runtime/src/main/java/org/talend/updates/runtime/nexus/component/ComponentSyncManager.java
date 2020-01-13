@@ -37,10 +37,6 @@ import org.talend.core.runtime.services.IMavenUIService;
  */
 public class ComponentSyncManager {
 
-    private static final String REPOSITORY_ID_RELEASE = "talend-custom-libs-release";
-
-    private static final String REPOSITORY_ID_SNAPSHOT = "talend-custom-libs-snapshot";
-
     private static final String SNAPSHOT_SUFFIX = "-" + MavenUrlHelper.VERSION_SNAPSHOT;
 
     private static boolean isTalendDebug = CommonsPlugin.isDebugMode();
@@ -236,11 +232,11 @@ public class ComponentSyncManager {
     }
 
     private String getReleaseRepositoryId() {
-        return REPOSITORY_ID_RELEASE;
+        return getServerBean().getRepositoryId();
     }
 
     private String getSnapshotRepositoryId() {
-        return REPOSITORY_ID_SNAPSHOT;
+        return getServerBean().getSnapshotRepId();
     }
 
     public ArtifactRepositoryBean getServerBean() {

@@ -60,7 +60,7 @@ public class InstallLocalNexusComponentsLoginTask extends AbstractLoginTask {
         }
         try {
             ComponentsLocalNexusInstallFactory compInstallFactory = new ComponentsLocalNexusInstallFactory(
-                    NexusServerManager.getInstance().getArtifactRepositoryFromTac());
+                    NexusServerManager.getInstance().getComponentShareRepositoryFromServer());
 
             Set<ExtraFeature> uninstalledExtraFeatures = new LinkedHashSet<ExtraFeature>();
             InstallComponentMessages messages = new InstallComponentMessages();
