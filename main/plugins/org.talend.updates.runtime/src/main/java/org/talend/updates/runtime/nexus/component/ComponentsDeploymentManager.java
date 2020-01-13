@@ -109,7 +109,7 @@ public class ComponentsDeploymentManager {
         }
         try {
             if (!syncManager.isRepositoryServerAvailable(progress, mvnArtifact)) {
-                debugLog("Failed to sync component: " + mvnArtifact);
+                log.error("Failed to sync component: " + mvnArtifact);
                 return false;
             }
             List<MavenArtifact> search = syncManager.search(mvnArtifact);

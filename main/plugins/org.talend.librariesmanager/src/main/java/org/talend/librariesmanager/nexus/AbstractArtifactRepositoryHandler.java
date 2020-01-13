@@ -129,9 +129,14 @@ public abstract class AbstractArtifactRepositoryHandler implements IRepositoryAr
 
     @Override
     public File resolve(MavenArtifact ma) throws Exception {
-        String repositoryId = "";
         String version = ma.getVersion();
         boolean isRelease = !version.endsWith(MavenUrlHelper.VERSION_SNAPSHOT);
+        return resolve(ma, isRelease);
+    }
+
+    protected File resolve(MavenArtifact ma, boolean isRelease) throws Exception {
+        String repositoryId = "";
+        String version = ma.getVersion();
         if (isRelease) {
             repositoryId = serverBean.getRepositoryId();
         } else {

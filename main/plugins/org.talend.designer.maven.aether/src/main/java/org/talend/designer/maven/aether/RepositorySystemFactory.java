@@ -27,11 +27,10 @@ import org.eclipse.aether.deployment.DeployRequest;
 import org.eclipse.aether.repository.Authentication;
 import org.eclipse.aether.repository.LocalRepository;
 import org.eclipse.aether.repository.RemoteRepository;
+import org.eclipse.aether.repository.RepositoryPolicy;
 import org.eclipse.aether.resolution.ArtifactRequest;
 import org.eclipse.aether.resolution.ArtifactResolutionException;
 import org.eclipse.aether.resolution.ArtifactResult;
-import org.eclipse.aether.resolution.VersionRequest;
-import org.eclipse.aether.resolution.VersionResult;
 import org.eclipse.aether.util.artifact.SubArtifact;
 import org.eclipse.aether.util.listener.ChainedRepositoryListener;
 import org.eclipse.aether.util.listener.ChainedTransferListener;
@@ -114,8 +113,12 @@ public class RepositorySystemFactory {
         resolveRequest.setArtifact(jarArtifact);
 
         Authentication auth = new AuthenticationBuilder().addUsername(userName).addPassword(password).build();
+        RepositoryPolicy defaultPolicy = new RepositoryPolicy();
+        RepositoryPolicy snapshotPolicy = new RepositoryPolicy(true, RepositoryPolicy.UPDATE_POLICY_ALWAYS,
+                defaultPolicy.getChecksumPolicy());
+
         RemoteRepository distRepo = new RemoteRepository.Builder(repositoryId, "default", repositoryUrl).setAuthentication(auth)
-                .build();
+                .setSnapshotPolicy(snapshotPolicy).build();
         distRepo = new RemoteRepository.Builder(distRepo).setProxy(new TalendAetherProxySelector().getProxy(distRepo)).build();
 
         resolveRequest.addRepository(distRepo);

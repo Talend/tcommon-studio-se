@@ -58,6 +58,8 @@ public class ComponentIndexManager {
 
     public static final String INDEX = "index"; //$NON-NLS-1$
 
+    public static final String INDEX_EXTENSION = FileExtensions.XML_EXTENSION;
+
     public static final String COMPONENT_GROUP_ID = "org.talend.components"; //$NON-NLS-1$
 
     public static final String ELEM_COMPONENTS = "components"; //$NON-NLS-1$
@@ -67,6 +69,8 @@ public class ComponentIndexManager {
     public static final String XPATH_INDEX_COMPONENT = "//" + ELEM_COMPONENTS + '/' + ELEM_COMPONENT; //$NON-NLS-1$
 
     private static final String SNAPSHOT_SUFFIX = "-" + MavenUrlHelper.VERSION_SNAPSHOT;
+
+    private static final String PROP_DISABLE_SHARE_COMPONENT = "talend.studio.component.share.disable"; //$NON-NLS-1$
 
     class MissingSettingException extends IllegalArgumentException {
 
@@ -78,12 +82,15 @@ public class ComponentIndexManager {
 
     }
 
+    public static boolean isEnableShareComponent() {
+        return !Boolean.getBoolean(PROP_DISABLE_SHARE_COMPONENT);
+    }
+
     /**
      * get the full list of component index bean from the index file.
      */
     public List<ComponentIndexBean> parse(File indexFile) {
-        if (indexFile == null || !indexFile.exists() || indexFile.isDirectory()
-                || !indexFile.getName().endsWith(FileExtensions.XML_FILE_SUFFIX)) {
+        if (indexFile == null || !indexFile.exists() || indexFile.isDirectory()) {
             return Collections.emptyList();
         }
         SAXReader saxReader = new SAXReader();
@@ -167,8 +174,7 @@ public class ComponentIndexManager {
      * if same bundleId and version, try to update it. else will add new in index.
      */
     public boolean updateIndexFile(File indexFile, ComponentIndexBean indexBean) {
-        if (indexBean == null || indexFile == null || !indexFile.exists() || indexFile.isDirectory()
-                || !indexFile.getName().endsWith(FileExtensions.XML_FILE_SUFFIX)) {
+        if (indexBean == null || indexFile == null || !indexFile.exists() || indexFile.isDirectory()) {
             return false;
         }
         try {
@@ -486,7 +492,7 @@ public class ComponentIndexManager {
             version = version + SNAPSHOT_SUFFIX;
         }
         artifact.setVersion(version);
-        artifact.setType(FileExtensions.XML_EXTENSION);
+        artifact.setType(INDEX_EXTENSION);
         return artifact;
     }
 

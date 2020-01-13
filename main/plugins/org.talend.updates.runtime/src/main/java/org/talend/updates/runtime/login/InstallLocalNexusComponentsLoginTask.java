@@ -26,6 +26,7 @@ import org.talend.updates.runtime.engine.component.InstallComponentMessages;
 import org.talend.updates.runtime.engine.factory.ComponentsLocalNexusInstallFactory;
 import org.talend.updates.runtime.model.ExtraFeature;
 import org.talend.updates.runtime.model.FeatureCategory;
+import org.talend.updates.runtime.nexus.component.ComponentIndexManager;
 import org.talend.updates.runtime.nexus.component.NexusServerManager;
 import org.talend.updates.runtime.utils.OsgiBundleInstaller;
 
@@ -51,6 +52,10 @@ public class InstallLocalNexusComponentsLoginTask extends AbstractLoginTask {
     @Override
     public void run(IProgressMonitor monitor) throws InvocationTargetException, InterruptedException {
         if (!NexusServerManager.getInstance().isRemoteOnlineProject()) {
+            return;
+        }
+        if (!ComponentIndexManager.isEnableShareComponent()) {
+            log.info("Component share is disabled, won't check components update");
             return;
         }
         try {

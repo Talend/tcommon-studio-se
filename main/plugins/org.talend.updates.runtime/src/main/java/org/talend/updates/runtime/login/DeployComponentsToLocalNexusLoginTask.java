@@ -17,10 +17,12 @@ import java.lang.reflect.InvocationTargetException;
 import java.util.Date;
 import java.util.GregorianCalendar;
 
+import org.apache.log4j.Logger;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.talend.commons.CommonsPlugin;
 import org.talend.commons.exception.ExceptionHandler;
 import org.talend.login.AbstractLoginTask;
+import org.talend.updates.runtime.nexus.component.ComponentIndexManager;
 import org.talend.updates.runtime.nexus.component.ComponentsDeploymentManager;
 import org.talend.updates.runtime.nexus.component.NexusServerManager;
 import org.talend.updates.runtime.utils.PathUtils;
@@ -31,6 +33,8 @@ import org.talend.updates.runtime.utils.PathUtils;
  *
  */
 public class DeployComponentsToLocalNexusLoginTask extends AbstractLoginTask {
+
+    private static Logger log = Logger.getLogger(DeployComponentsToLocalNexusLoginTask.class);
 
     @Override
     public Date getOrder() {
@@ -45,6 +49,10 @@ public class DeployComponentsToLocalNexusLoginTask extends AbstractLoginTask {
 
     @Override
     public void run(IProgressMonitor monitor) throws InvocationTargetException, InterruptedException {
+        if (!ComponentIndexManager.isEnableShareComponent()) {
+            log.info("Component share is disabled, won't check installed components deployment.");
+            return;
+        }
         File installedComponentFolder = PathUtils.getComponentsInstalledFolder();
         depoloyComponentsFromFolder(monitor, installedComponentFolder);
     }
