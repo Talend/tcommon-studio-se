@@ -35,11 +35,13 @@
                     <dbType type="BOOLEAN" default="true" />
                 </talendType>
                 <talendType type="id_Byte">
+                    <dbType type="INTEGER" default="true" />
                 </talendType>
                 <talendType type="id_byte[]">
                 	<dbType type="BYTES" default="true" />
                 </talendType>
                 <talendType type="id_Character">
+                    <dbType type="STRING" default="true" />
                 </talendType>
                 <talendType type="id_Date">
                     <dbType type="DATETIME" />
@@ -54,15 +56,19 @@
                     <dbType type="FLOAT" default="true" />
                 </talendType>
                 <talendType type="id_Float">
+                    <dbType type="FLOAT" default="true" />
                 </talendType>
                 <talendType type="id_Integer">
+                    <dbType type="INTEGER" default="true" />
                 </talendType>
                 <talendType type="id_Long">
                     <dbType type="INTEGER" default="true" />
                 </talendType>
                 <talendType type="id_Object">
+                    <dbType type="STRING" default="true" />
                 </talendType>    
                 <talendType type="id_Short">
+                    <dbType type="INTEGER" default="true" />
                 </talendType>
                 <talendType type="id_String">
                     <dbType type="STRING" default="true" />
@@ -72,7 +78,7 @@
                     <dbType type="TIMESTAMP" />
                     <dbType type="ARRAY" />
                     <dbType type="GEOGRAPHY" />
-					<dbType type="RECORD" />
+                    <dbType type="RECORD" />
                 </talendType>
             </talendToDbTypes>
             <dbToTalendTypes>
