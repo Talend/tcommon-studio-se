@@ -25,6 +25,7 @@ import org.talend.updates.runtime.engine.component.InstallComponentMessages;
 import org.talend.updates.runtime.engine.factory.ComponentsLocalNexusInstallFactory;
 import org.talend.updates.runtime.model.ExtraFeature;
 import org.talend.updates.runtime.model.FeatureCategory;
+import org.talend.updates.runtime.nexus.component.ComponentIndexManager;
 import org.talend.updates.runtime.nexus.component.NexusServerManager;
 
 public class UpdateService implements IUpdateService {
@@ -35,6 +36,10 @@ public class UpdateService implements IUpdateService {
     public boolean checkComponentNexusUpdate() {
         IProgressMonitor monitor = new NullProgressMonitor();
         try {
+            if (!ComponentIndexManager.isEnableShareComponent()) {
+                log.info("Component share is disabled, won't check component update.");
+                return false;
+            }
             ArtifactRepositoryBean artifactRepisotory = NexusServerManager.getInstance().getPropertyNexusServer();
             ComponentsLocalNexusInstallFactory compInstallFactory = new ComponentsLocalNexusInstallFactory(artifactRepisotory);
 
