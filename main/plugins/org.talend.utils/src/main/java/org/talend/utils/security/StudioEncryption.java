@@ -13,14 +13,23 @@
 package org.talend.utils.security;
 
 import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
+import java.security.NoSuchAlgorithmException;
 import java.security.Provider;
 import java.security.Security;
+import java.util.Base64;
+import java.util.Map.Entry;
 import java.util.Properties;
+import java.util.Set;
 import java.util.regex.Pattern;
+
+import javax.crypto.KeyGenerator;
+import javax.crypto.SecretKey;
 
 import org.apache.log4j.Logger;
 import org.talend.daikon.crypto.CipherSource;
@@ -57,6 +66,10 @@ public class StudioEncryption {
     private static final String KEY_MIGRATION_TOKEN = "migration.token.encryption.key";
 
     private static final String KEY_MIGRATION = "migration.encryption.key";
+
+    private static final String ALG_KEY = "AES";
+
+    private static final int ALG_KEY_SIZE = 256;
 
     private EncryptionKeyName keyName;
 
@@ -195,10 +208,10 @@ public class StudioEncryption {
     private static void updateConfig() {
         String keyPath = System.getProperty(ENCRYPTION_KEY_FILE_SYS_PROP);
         if (keyPath != null) {
-            File keyFile = new File(keyPath);
-            if (!keyFile.exists()) {
-                if (isStudio()) {
-                    // load all keys
+            if (isStudio()) {
+                File keyFile = new File(keyPath);
+                if (!keyFile.exists()) {
+                    // load default keys
                     Properties p = new Properties();
                     try (InputStream fi = StudioEncryption.class.getResourceAsStream(ENCRYPTION_KEY_FILE_NAME)) {
                         p.load(fi);
@@ -216,8 +229,18 @@ public class StudioEncryption {
                     }
                     LOGGER.info("updateConfig, studio environment, key file setup completed");
                 } else {
-                    LOGGER.info("updateConfig, non studio environment, skip setup of key file");
+                    // key file exists, check whether to generate custom encryption keys
+                    try {
+                        if (generateEncryptionKeys(keyFile)) {
+                            LOGGER.warn(
+                                    "Customized encryption keys generated, please synchronize key file" + keyFile + " to TAC");
+                        }
+                    } catch (Exception e) {
+                        LOGGER.error("Generate customized encryption keys error", e);
+                    }
                 }
+            } else {
+                LOGGER.info("updateConfig, non studio environment, skip setup of key file");
             }
         }
     }
@@ -225,5 +248,44 @@ public class StudioEncryption {
     private static boolean isStudio() {
         String osgiFramework = System.getProperty("osgi.framework");
         return osgiFramework != null && osgiFramework.contains("eclipse");
+    }
+
+    /**
+     * Generate new encryption keys if encryption key is null or empty
+     * 
+     * @param keyFile input key file
+     */
+    public static boolean generateEncryptionKeys(File keyFile) throws Exception {
+        boolean propertyChanged = false;
+        Properties p = new Properties();
+        try (FileInputStream fi = new FileInputStream(keyFile)) {
+            p.load(fi);
+        }
+
+        Set<Entry<Object, Object>> entries = p.entrySet();
+        for (Entry<Object, Object> entry : entries) {
+            if (entry.getKey().toString().startsWith(StudioKeySource.KEY_SYSTEM_PREFIX)
+                    || entry.getKey().toString().startsWith(StudioKeySource.KEY_ROUTINE_PREFIX)) {
+                if (entry.getValue() == null || entry.getValue().toString().isEmpty()) {
+                    entry.setValue(newEncryptionKey());
+                    propertyChanged = true;
+                    LOGGER.debug("Customized encryption key is generated for " + entry.getKey().toString());
+                }
+            }
+        }
+
+        if (propertyChanged) {
+            try (FileOutputStream fo = new FileOutputStream(keyFile)) {
+                p.store(fo, "Generated customized encryption keys");
+            }
+        }
+        return propertyChanged;
+    }
+
+    private static String newEncryptionKey() throws NoSuchAlgorithmException {
+        KeyGenerator kg = KeyGenerator.getInstance(ALG_KEY);
+        kg.init(ALG_KEY_SIZE);
+        SecretKey key = kg.generateKey();
+        return Base64.getEncoder().encodeToString(key.getEncoded());
     }
 }
