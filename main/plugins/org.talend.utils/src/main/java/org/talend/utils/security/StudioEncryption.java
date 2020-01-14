@@ -18,7 +18,6 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
-import java.security.NoSuchAlgorithmException;
 import java.security.Provider;
 import java.security.Security;
 import java.util.Base64;
@@ -27,13 +26,11 @@ import java.util.Properties;
 import java.util.Set;
 import java.util.regex.Pattern;
 
-import javax.crypto.KeyGenerator;
-import javax.crypto.SecretKey;
-
 import org.apache.log4j.Logger;
 import org.talend.daikon.crypto.CipherSource;
 import org.talend.daikon.crypto.CipherSources;
 import org.talend.daikon.crypto.Encryption;
+import org.talend.daikon.crypto.KeySources;
 import org.talend.utils.StudioKeysFileCheck;
 
 public class StudioEncryption {
@@ -65,10 +62,6 @@ public class StudioEncryption {
     private static final String KEY_MIGRATION_TOKEN = "migration.token.encryption.key";
 
     private static final String KEY_MIGRATION = "migration.encryption.key";
-
-    private static final String ALG_KEY = "AES";
-
-    private static final int ALG_KEY_SIZE = 256;
 
     private EncryptionKeyName keyName;
 
@@ -266,7 +259,7 @@ public class StudioEncryption {
             if (entry.getKey().toString().startsWith(StudioKeySource.KEY_SYSTEM_PREFIX)
                     || entry.getKey().toString().startsWith(StudioKeySource.KEY_ROUTINE_PREFIX)) {
                 if (entry.getValue() == null || entry.getValue().toString().isEmpty()) {
-                    entry.setValue(newEncryptionKey());
+                    entry.setValue(Base64.getEncoder().encodeToString(KeySources.random(32).getKey()));
                     propertyChanged = true;
                     LOGGER.debug("Customized encryption key is generated for " + entry.getKey().toString());
                 }
@@ -279,12 +272,5 @@ public class StudioEncryption {
             }
         }
         return propertyChanged;
-    }
-
-    private static String newEncryptionKey() throws NoSuchAlgorithmException {
-        KeyGenerator kg = KeyGenerator.getInstance(ALG_KEY);
-        kg.init(ALG_KEY_SIZE);
-        SecretKey key = kg.generateKey();
-        return Base64.getEncoder().encodeToString(key.getEncoded());
     }
 }
