@@ -82,12 +82,6 @@
 			<version>${project.version}</version>
 			<type>pom</type>
 		</dependency>
-        <dependency>
-            <groupId>org.talend.studio</groupId>
-            <artifactId>studio-maven-repository-zip</artifactId>
-            <version>${project.version}</version>
-            <type>pom</type>
-        </dependency>
 		<dependency>
 			<groupId>org.talend.studio</groupId>
 			<artifactId>karaf-maven-plugin-4-2-4-tos</artifactId>
@@ -100,6 +94,12 @@
 			<version>${project.version}</version>
 			<type>pom</type>
 		</dependency>
+        <dependency>
+            <groupId>org.talend.studio</groupId>
+            <artifactId>studio-maven-repository-zip</artifactId>
+            <version>${project.version}</version>
+            <type>pom</type>
+        </dependency>
 	</dependencies>
 	<profiles>
 		<profile>
