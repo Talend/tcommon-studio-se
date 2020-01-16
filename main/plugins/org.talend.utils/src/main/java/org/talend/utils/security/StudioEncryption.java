@@ -224,8 +224,8 @@ public class StudioEncryption {
                     // key file exists, check whether to generate custom encryption keys
                     try {
                         if (generateEncryptionKeys(keyFile)) {
-                            LOGGER.info("Customized encryption keys generated, please synchronize key file" + keyFile
-                                    + " to TAC and Jobserver");
+                            LOGGER.info("Customized encryption keys generated, please synchronize key file " + keyFile
+                                    + " to Administrator and Jobserver");
                         }
                     } catch (Exception e) {
                         LOGGER.error("Generate customized encryption keys error", e);
