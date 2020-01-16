@@ -659,32 +659,50 @@ public abstract class AContextualAction extends Action implements ITreeContextua
         selection = null;
         final ISelection userSelection = getSelection();
 
-        RepositoryWorkUnit<Object> repositoryWorkUnit = new RepositoryWorkUnit<Object>(name, this) {
+
+        Thread thread = new Thread(new Runnable() {
 
             @Override
-            protected void run() throws LoginException, PersistenceException {
-                try {
-                    node = userSelectedNode;
-                    selection = userSelection;
-                    if (node != null && node.getObject() != null) {
-                        Property property = node.getObject().getProperty();
-                        // only avoid NPE if item has been deleted in svn
-                        if (property != null) {
-                            doRun();
-                        }
-                    } else {
-                        doRun();
+            public void run() {
+                RepositoryWorkUnit<Object> repositoryWorkUnit = new RepositoryWorkUnit<Object>(name, this) {
+
+                    @Override
+                    protected void run() throws LoginException, PersistenceException {
+
+                        Display.getDefault().asyncExec(new Runnable() {
+
+                            @Override
+                            public void run() {
+                                try {
+                                    node = userSelectedNode;
+                                    selection = userSelection;
+                                    if (node != null && node.getObject() != null) {
+                                        Property property = node.getObject().getProperty();
+                                        // only avoid NPE if item has been deleted in svn
+                                        if (property != null) {
+                                            doRun();
+                                        }
+                                    } else {
+                                        doRun();
+                                    }
+                                } finally {
+                                    node = null;
+                                    selection = null;
+                                }
+
+                            }
+                        });
+
                     }
-                } finally {
-                    node = null;
-                    selection = null;
-                }
+                };
+                repositoryWorkUnit.setAvoidUnloadResources(isAvoidUnloadResources());
+                repositoryWorkUnit.setUnloadResourcesAfterRun(isUnloadResourcesAfter());
+                CoreRuntimePlugin.getInstance().getProxyRepositoryFactory().executeRepositoryWorkUnit(repositoryWorkUnit);
+                oldItem = null;
             }
-        };
-        repositoryWorkUnit.setAvoidUnloadResources(isAvoidUnloadResources());
-        repositoryWorkUnit.setUnloadResourcesAfterRun(isUnloadResourcesAfter());
-        CoreRuntimePlugin.getInstance().getProxyRepositoryFactory().executeRepositoryWorkUnit(repositoryWorkUnit);
-        oldItem = null;
+        });
+        thread.start();
+        
     }
 
     protected abstract void doRun();
