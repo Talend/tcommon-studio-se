@@ -14,7 +14,7 @@
       <libraryNeeded
               context="plugin:org.talend.libraries.dom4j-jaxen"
               id="jaxen-1.1.6.jar"
-              mvn_uri="jaxen/jaxen/1.1.6"
+              mvn_uri="mvn:jaxen/jaxen/1.1.6"
               name="jaxen-1.1.6.jar"
               required="true"
               uripath="platform:/plugin/org.talend.libraries.dom4j-jaxen/lib/jaxen-1.1.6.jar">
