@@ -287,7 +287,7 @@ public class HadoopCustomLibrariesUtil {
                 }
             }
 
-            final DocumentBuilderFactory docBuilder = DocumentBuilderFactory.newInstance();
+            final DocumentBuilderFactory docBuilder = XmlUtils.getSecureDocumentBuilderFactory();
 
             final DocumentBuilder analyseur = docBuilder.newDocumentBuilder();
             analyseur.setErrorHandler(new ErrorHandler() {

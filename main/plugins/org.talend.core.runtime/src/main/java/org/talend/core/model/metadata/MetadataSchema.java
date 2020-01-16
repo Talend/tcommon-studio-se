@@ -441,7 +441,7 @@ public class MetadataSchema {
             throws ParserConfigurationException, SAXException, IOException {
         final List<org.talend.core.model.metadata.builder.connection.SchemaTarget> listSchemaTargets = new ArrayList<org.talend.core.model.metadata.builder.connection.SchemaTarget>();
         if (file != null) {
-            final DocumentBuilderFactory fabrique = DocumentBuilderFactory.newInstance();
+            final DocumentBuilderFactory fabrique = XmlUtils.getSecureDocumentBuilderFactory();
 
             final Bundle b = Platform.getBundle(CORE_RUNTIME_PLUGIN_ID);
             final URL url = FileLocator.toFileURL(FileLocator.find(b, new Path(TARGETSCHEMA_XSD), null));
@@ -509,7 +509,7 @@ public class MetadataSchema {
             ParserConfigurationException {
 
         if (file != null) {
-            final DocumentBuilderFactory fabrique = DocumentBuilderFactory.newInstance();
+            final DocumentBuilderFactory fabrique = XmlUtils.getSecureDocumentBuilderFactory();
 
             final Bundle b = Platform.getBundle(CORE_RUNTIME_PLUGIN_ID);
             final URL url = FileLocator.toFileURL(FileLocator.find(b, new Path(SCHEMA_XSD), null));
@@ -622,7 +622,7 @@ public class MetadataSchema {
             throws IOException, ParserConfigurationException {
 
         if (file != null) {
-            final DocumentBuilderFactory fabrique = DocumentBuilderFactory.newInstance();
+            final DocumentBuilderFactory fabrique = XmlUtils.getSecureDocumentBuilderFactory();
 
             final Bundle b = Platform.getBundle(CORE_RUNTIME_PLUGIN_ID);
             final URL url = FileLocator.toFileURL(FileLocator.find(b, new Path(TARGETSCHEMA_XSD), null));
@@ -706,7 +706,7 @@ public class MetadataSchema {
      */
     public boolean saveColumnsToFile(File file, IMetadataTable table) throws IOException, ParserConfigurationException {
         if (file != null) {
-            final DocumentBuilderFactory fabrique = DocumentBuilderFactory.newInstance();
+            final DocumentBuilderFactory fabrique = XmlUtils.getSecureDocumentBuilderFactory();
 
             final Bundle b = Platform.getBundle(CORE_RUNTIME_PLUGIN_ID);
             final URL url = FileLocator.toFileURL(FileLocator.find(b, new Path(SCHEMA_XSD), null));
