@@ -21,6 +21,7 @@ import java.io.OutputStream;
 import java.security.Provider;
 import java.security.Security;
 import java.util.Base64;
+import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Properties;
 import java.util.Set;
@@ -54,24 +55,16 @@ public class StudioEncryption {
     private static final Pattern REG_ENCRYPTED_DATA_ROUTINE = Pattern
             .compile("^enc\\:routine\\.encryption\\.key\\.v\\d\\:\\p{Print}+");
 
-    // Encryption key name shipped in M3
-    private static final String KEY_SYSTEM_DEFAULT = StudioKeySource.KEY_SYSTEM_PREFIX + "1";
-
-    static final String KEY_ROUTINE = StudioKeySource.KEY_ROUTINE_PREFIX + "1";
-
-    private static final String KEY_MIGRATION_TOKEN = "migration.token.encryption.key";
-
-    private static final String KEY_MIGRATION = "migration.encryption.key";
-
     private EncryptionKeyName keyName;
 
     private String securityProvider;
 
     public enum EncryptionKeyName {
-        SYSTEM(KEY_SYSTEM_DEFAULT),
-        ROUTINE(KEY_ROUTINE),
-        MIGRATION_TOKEN(KEY_MIGRATION_TOKEN),
-        MIGRATION(KEY_MIGRATION); // This key only use to process migration data. Only for DES algorithm
+
+        SYSTEM(StudioKeyName.KEY_SYSTEM_DEFAULT),
+        ROUTINE(StudioKeyName.KEY_ROUTINE),
+        MIGRATION_TOKEN(StudioKeyName.KEY_MIGRATION_TOKEN),
+        MIGRATION(StudioKeyName.KEY_MIGRATION); // This key only use to process migration data. Only for DES algorithm
 
         private final String name;
 
@@ -89,7 +82,7 @@ public class StudioEncryption {
         updateConfig();
     }
 
-    private static final ThreadLocal<Properties> LOCALCACHEDALLKEYS = ThreadLocal.withInitial(() -> {
+    private static final ThreadLocal<Map<StudioKeyName, String>> LOCALCACHEDALLKEYS = ThreadLocal.withInitial(() -> {
         return StudioKeySource.loadAllKeys();
     });
 
@@ -99,7 +92,7 @@ public class StudioEncryption {
     }
 
     public static StudioKeySource getKeySource(String encryptionKeyName, boolean isEncrypt) {
-        Properties allKeys = LOCALCACHEDALLKEYS.get();
+        Map<StudioKeyName, String> allKeys = LOCALCACHEDALLKEYS.get();
 
         StudioKeySource ks = StudioKeySource.key(allKeys, encryptionKeyName, isEncrypt);
 
@@ -256,13 +249,18 @@ public class StudioEncryption {
 
         Set<Entry<Object, Object>> entries = p.entrySet();
         for (Entry<Object, Object> entry : entries) {
-            if (entry.getKey().toString().startsWith(StudioKeySource.KEY_SYSTEM_PREFIX)
-                    || entry.getKey().toString().startsWith(StudioKeySource.KEY_ROUTINE_PREFIX)) {
-                if (entry.getValue() == null || entry.getValue().toString().isEmpty()) {
-                    entry.setValue(Base64.getEncoder().encodeToString(KeySources.random(32).getKey()));
-                    propertyChanged = true;
-                    LOGGER.debug("Customized encryption key is generated for " + entry.getKey().toString());
+            try {
+                StudioKeyName keyName = new StudioKeyName(entry.getKey().toString());
+                if (keyName.isSystemKey() || keyName.isRoutineKey()) {
+                    if (entry.getValue() == null || entry.getValue().toString().isEmpty()) {
+                        entry.setValue(Base64.getEncoder().encodeToString(KeySources.random(32).getKey()));
+                        propertyChanged = true;
+                        LOGGER.debug("Customized encryption key is generated for " + entry.getKey().toString());
+                    }
                 }
+            } catch (IllegalArgumentException e) {
+                // log invalid key
+                LOGGER.error(e);
             }
         }
 
