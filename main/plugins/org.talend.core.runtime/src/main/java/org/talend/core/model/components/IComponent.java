@@ -243,4 +243,14 @@ public interface IComponent {
     String getTemplateFolder();
 
     String getTemplateNamePrefix();
+
+    /**
+     * 
+     * DOC Only override by class ComponentModel now
+     * 
+     * @return
+     */
+    default boolean isMadeByTalend() {
+        return true;
+    }
 }

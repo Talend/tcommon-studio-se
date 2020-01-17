@@ -22,15 +22,18 @@ import java.util.Map.Entry;
 import org.apache.commons.lang.StringUtils;
 import org.talend.commons.exception.ExceptionHandler;
 import org.talend.core.GlobalServiceRegister;
+import org.talend.core.hadoop.HadoopClassLoaderUtil;
 import org.talend.core.hadoop.IHadoopClusterService;
 import org.talend.core.model.metadata.builder.connection.Connection;
 import org.talend.core.model.utils.ContextParameterUtils;
+import org.talend.core.prefs.SSLPreferenceConstants;
 import org.talend.core.service.IMetadataManagmentUiService;
 import org.talend.core.utils.TalendQuoteUtils;
 import org.talend.designer.core.model.utils.emf.talendfile.ContextType;
 import org.talend.utils.json.JSONArray;
 import org.talend.utils.json.JSONException;
 import org.talend.utils.json.JSONObject;
+import org.talend.utils.security.StudioEncryption;
 
 /**
  * created by ycbai on 2013-10-24 Detailled comment
@@ -175,7 +178,7 @@ public class HadoopRepositoryUtil {
         List<Map<String, Object>> properties = null;
         IMetadataManagmentUiService mmUIService = null;
         if (GlobalServiceRegister.getDefault().isServiceRegistered(IMetadataManagmentUiService.class)) {
-            mmUIService = (IMetadataManagmentUiService) GlobalServiceRegister.getDefault().getService(
+            mmUIService = GlobalServiceRegister.getDefault().getService(
                     IMetadataManagmentUiService.class);
         }
         ContextType contextType = null;
@@ -325,10 +328,23 @@ public class HadoopRepositoryUtil {
     public static IHadoopClusterService getHadoopClusterService() {
         IHadoopClusterService hadoopClusterService = null;
         if (GlobalServiceRegister.getDefault().isServiceRegistered(IHadoopClusterService.class)) {
-            hadoopClusterService = (IHadoopClusterService) GlobalServiceRegister.getDefault().getService(
+            hadoopClusterService = GlobalServiceRegister.getDefault().getService(
                     IHadoopClusterService.class);
         }
         return hadoopClusterService;
     }
 
+    public static void setSSLSystemProperty(boolean isUseSSL, String nameNodeURI, String trustStorePath,
+            String trustStorePassword) {
+        if (isUseSSL) {
+            System.setProperty(SSLPreferenceConstants.TRUSTSTORE_FILE, trustStorePath);
+            System.setProperty(SSLPreferenceConstants.TRUSTSTORE_PASSWORD,
+                    StudioEncryption.getStudioEncryption(StudioEncryption.EncryptionKeyName.SYSTEM).decrypt(trustStorePassword));
+        } else {
+            if (HadoopClassLoaderUtil.isWebHDFS(nameNodeURI)) {
+                System.clearProperty(SSLPreferenceConstants.TRUSTSTORE_FILE);
+                System.clearProperty(SSLPreferenceConstants.TRUSTSTORE_PASSWORD);
+            }
+        }
+    }
 }

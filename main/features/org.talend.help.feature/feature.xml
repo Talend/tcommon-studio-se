@@ -11,4 +11,10 @@
   <requires>
     <import feature="org.eclipse.help" version="0.0.0" match="greaterOrEqual"/>
   </requires>
+  <plugin
+         id="org.talend.help.external"
+         download-size="0"
+         install-size="0"
+         version="0.0.0"
+         unpack="false"/>
 </feature>

@@ -38,6 +38,7 @@ import org.talend.commons.exception.ExceptionHandler;
 import org.talend.commons.ui.runtime.update.PreferenceKeys;
 import org.talend.commons.utils.system.EclipseCommandLine;
 import org.talend.updates.runtime.Constants;
+import org.talend.updates.runtime.InstallFeatureObserver;
 import org.talend.updates.runtime.engine.ExtraFeaturesUpdatesFactory;
 import org.talend.updates.runtime.engine.InstallNewFeatureJob;
 import org.talend.updates.runtime.engine.component.ComponentNexusP2ExtraFeature;
@@ -122,8 +123,12 @@ public class UpdateStudioWizard extends Wizard {
         storeDoNotShowAgainPref();
         InstallNewFeatureJob installNewFeatureJob = new InstallNewFeatureJob(
                 new HashSet<ExtraFeature>(updateWizardModel.selectedExtraFeatures), updateWizardModel.getFeatureRepositories());
-
+        for (ExtraFeature feature : updateWizardModel.getSelectedExtraFeatures()) {
+            InstallFeatureObserver.getInstance().updateInstallFeatureStatus(feature.getName(),
+                    InstallFeatureObserver.FEATURE_STATUS_TO_INSTALL);
+        }
         installNewFeatureJob.schedule();
+
         // listen to the job end so that we can ask the user to restart the Studio
         installNewFeatureJob.addJobChangeListener(new JobChangeAdapter() {
 
@@ -247,7 +252,7 @@ public class UpdateStudioWizard extends Wizard {
                                     throws InvocationTargetException, InterruptedException {
                                 ExtraFeaturesUpdatesFactory extraFeaturesFactory = new ExtraFeaturesUpdatesFactory(true);
                                 extraFeaturesFactory.retrieveUninstalledExtraFeatures(iprogressmonitor,
-                                        updateWizardModel.availableExtraFeatures);
+                                        updateWizardModel.availableExtraFeatures, false);
 
                             }
                         });

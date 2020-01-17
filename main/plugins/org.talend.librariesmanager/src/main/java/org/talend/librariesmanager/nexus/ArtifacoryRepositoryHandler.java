@@ -16,9 +16,11 @@ import java.io.File;
 import java.io.IOException;
 import java.net.URI;
 import java.util.ArrayList;
+import java.util.LinkedList;
 import java.util.List;
 
 import org.apache.commons.codec.binary.Base64;
+import org.apache.commons.lang3.StringUtils;
 import org.apache.http.Header;
 import org.apache.http.HttpResponse;
 import org.apache.http.client.ClientProtocolException;
@@ -28,7 +30,7 @@ import org.apache.http.impl.client.DefaultHttpClient;
 import org.apache.http.message.BasicHeader;
 import org.apache.http.params.CoreConnectionPNames;
 import org.apache.http.util.EntityUtils;
-import org.eclipse.m2e.core.MavenPlugin;
+import org.talend.commons.CommonsPlugin;
 import org.talend.commons.exception.ExceptionHandler;
 import org.talend.commons.utils.network.IProxySelectorProvider;
 import org.talend.core.nexus.HttpClientTransport;
@@ -137,6 +139,7 @@ public class ArtifacoryRepositoryHandler extends AbstractArtifactRepositoryHandl
             httpclient.getConnectionManager().shutdown();
         }
     }
+
     /*
      * (non-Javadoc)
      *
@@ -146,6 +149,11 @@ public class ArtifacoryRepositoryHandler extends AbstractArtifactRepositoryHandl
     @Override
     public List<MavenArtifact> search(String groupIdToSearch, String artifactId, String versionToSearch, boolean fromRelease,
             boolean fromSnapshot) throws Exception {
+        return requestSearch(groupIdToSearch, artifactId, versionToSearch, fromRelease, fromSnapshot, false);
+    }
+
+    protected List<MavenArtifact> requestSearch(String groupIdToSearch, String artifactId, String versionToSearch,
+            boolean fromRelease, boolean fromSnapshot, boolean useSnapshotVersion) throws Exception {
         String serverUrl = serverBean.getServer();
         if (!serverUrl.endsWith("/")) { //$NON-NLS-1$
             serverUrl = serverUrl + "/"; //$NON-NLS-1$
@@ -227,9 +235,21 @@ public class ArtifacoryRepositoryHandler extends AbstractArtifactRepositoryHandl
                         }
                         if (type != null) {
                             MavenArtifact artifact = new MavenArtifact();
-                            String v = split[split.length - 2];
-                            String a = split[split.length - 3];
                             String g = ""; //$NON-NLS-1$
+                            String a = split[split.length - 3];
+                            String v = split[split.length - 2];
+                            if (fromSnapshot && useSnapshotVersion) {
+                                String jarName = split[split.length - 1];
+                                if (jarName.contains("-")) {
+                                    v = jarName.substring(jarName.indexOf("-") + 1);
+                                    v = v.substring(0, v.lastIndexOf("."));
+                                } else {
+                                    if (CommonsPlugin.isDebugMode()) {
+                                        ExceptionHandler
+                                                .process(new Exception("the jar name is not the usual style: " + jarName));
+                                    }
+                                }
+                            }
                             for (int j = 1; j < split.length - 3; j++) {
                                 if ("".equals(g)) { //$NON-NLS-1$
                                     g = split[j];
@@ -250,6 +270,25 @@ public class ArtifacoryRepositoryHandler extends AbstractArtifactRepositoryHandl
             }
         }
         return resultList;
+    }
+
+    @Override
+    public File resolve(MavenArtifact ma) throws Exception {
+        boolean isRelease = true;
+        String version = ma.getVersion();
+        if (StringUtils.isNotBlank(version)) {
+            isRelease = !version.endsWith("-" + MavenUrlHelper.VERSION_SNAPSHOT);
+        }
+        List<MavenArtifact> result = requestSearch(ma.getGroupId(), ma.getArtifactId(), ma.getVersion(), isRelease, !isRelease,
+                true);
+        if (result == null || result.isEmpty()) {
+            return null;
+        }
+        List<MavenArtifact> sortResult = new LinkedList<>(result);
+        sortResult.sort((a1, a2) -> {
+            return -1 * MavenArtifact.compareVersion(a1.getVersion(), a2.getVersion());
+        });
+        return resolve(sortResult.get(0), isRelease);
     }
 
     private void fillChecksumData(JSONObject responseObject, MavenArtifact artifact) {
@@ -281,7 +320,7 @@ public class ArtifacoryRepositoryHandler extends AbstractArtifactRepositoryHandl
             repositoryId = serverBean.getSnapshotRepId();
         }
         String repositoryurl = getRepositoryURL(isRelease);
-        String localRepository = MavenPlugin.getMaven().getLocalRepositoryPath();
+        String localRepository = getLocalRepositoryPath();
         RepositorySystemFactory.deploy(content, localRepository, repositoryId, repositoryurl, serverBean.getUserName(),
                 serverBean.getPassword(), groupId, artifactId, classifier, extension, version);
     }
@@ -303,7 +342,7 @@ public class ArtifacoryRepositoryHandler extends AbstractArtifactRepositoryHandl
             repositoryId = serverBean.getSnapshotRepId();
         }
         String repositoryurl = getRepositoryURL(isRelease);
-        String localRepository = MavenPlugin.getMaven().getLocalRepositoryPath();
+        String localRepository = getLocalRepositoryPath();
         RepositorySystemFactory.deployWithPOM(content, pomFile, localRepository, repositoryId, repositoryurl,
                 serverBean.getUserName(), serverBean.getPassword(), groupId, artifactId, classifier, extension, version);
 
