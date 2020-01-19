@@ -102,7 +102,7 @@ public enum EDatabaseVersion4Drivers {
 
     GREENPLUM(new DbVersion4Drivers(EDatabaseTypeName.GREENPLUM, "postgresql-8.4-703.jdbc4.jar")), //$NON-NLS-1$
 //    PSQL_V10(new DbVersion4Drivers(EDatabaseTypeName.PSQL, "v10", "V10", "postgresql-42.2.5.jar")),
-    PSQL_V9_X(new DbVersion4Drivers(EDatabaseTypeName.PSQL, "v9 and later", "V9_X", "postgresql-42.2.5.jar")), //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+    PSQL_V9_X(new DbVersion4Drivers(EDatabaseTypeName.PSQL, "v9 and later", "V9_X", "postgresql-42.2.9.jar")), //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
     PSQL_PRIOR_TO_V9(new DbVersion4Drivers(EDatabaseTypeName.PSQL, "Prior to v9", "PRIOR_TO_V9", "postgresql-8.4-703.jdbc4.jar")), //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
 
     PLUSPSQL_PRIOR_TO_V9(new DbVersion4Drivers(EDatabaseTypeName.PLUSPSQL,
