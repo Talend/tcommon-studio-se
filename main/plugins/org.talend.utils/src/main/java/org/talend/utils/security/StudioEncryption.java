@@ -253,9 +253,16 @@ public class StudioEncryption {
                 StudioKeyName keyName = new StudioKeyName(entry.getKey().toString());
                 if (keyName.isSystemKey() || keyName.isRoutineKey()) {
                     if (entry.getValue() == null || entry.getValue().toString().isEmpty()) {
-                        entry.setValue(Base64.getEncoder().encodeToString(KeySources.random(32).getKey()));
-                        propertyChanged = true;
-                        LOGGER.debug("Customized encryption key is generated for " + entry.getKey().toString());
+                        // default routine key is not allowed to be customized, reset it
+                        if (keyName.isDefaultRoutineKey()) {
+                            Properties defaulKeys = StudioKeySource.loadDefaultKeys();
+                            entry.setValue(defaulKeys.getProperty(keyName.getKeyName()));
+                            LOGGER.warn(keyName.getKeyName() + " customization is not allowed");
+                        } else {
+                            entry.setValue(Base64.getEncoder().encodeToString(KeySources.random(32).getKey()));
+                            propertyChanged = true;
+                            LOGGER.debug("Customized encryption key is generated for " + entry.getKey().toString());
+                        }
                     }
                 }
             } catch (IllegalArgumentException e) {

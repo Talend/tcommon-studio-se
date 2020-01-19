@@ -23,7 +23,6 @@ import java.util.Properties;
 import org.junit.Test;
 import org.talend.daikon.crypto.CipherSources;
 import org.talend.daikon.crypto.Encryption;
-import org.talend.daikon.crypto.KeySources;
 
 public class StudioEncryptionTest {
 
@@ -122,7 +121,30 @@ public class StudioEncryptionTest {
 
     @Test
     public void testDaikonEncryptionAndDecryption() throws Exception {
-        String keyStr = Base64.getEncoder().encodeToString(KeySources.random(32).getKey());
+
+        File keyFile = File.createTempFile(this.getClass().getSimpleName(), "testDaikonEncryptionAndDecryption");
+
+        Properties p = new Properties();
+        // put a empty key
+        String kn = StudioKeyName.KEY_SYSTEM_PREFIX + "1";
+        p.put(kn, "");
+        try (FileOutputStream fo = new FileOutputStream(keyFile)) {
+            p.store(fo, "");
+        }
+
+        // generate the encryption key
+        boolean gen = StudioEncryption.generateEncryptionKeys(keyFile);
+        assertTrue(gen);
+
+        // read the generated encryption key
+        p.clear();
+        try (FileInputStream fi = new FileInputStream(keyFile)) {
+            p.load(fi);
+        }
+
+        keyFile.delete();
+
+        String keyStr = p.getProperty(kn);
 
         assertNotNull(keyStr);
 

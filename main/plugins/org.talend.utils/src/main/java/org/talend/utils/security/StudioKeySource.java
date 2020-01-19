@@ -93,18 +93,27 @@ public class StudioKeySource implements KeySource {
     }
 
     /**
+     * Load default encryption keys from jar file
+     */
+    public static Properties loadDefaultKeys() {
+        Properties defaultKeys = new Properties();
+        // load default keys from jar
+        try (InputStream fi = StudioKeySource.class.getResourceAsStream(StudioKeysFileCheck.ENCRYPTION_KEY_FILE_NAME)) {
+            defaultKeys.load(fi);
+        } catch (IOException e) {
+            LOGGER.error(e);
+        }
+
+        return defaultKeys;
+    }
+    /**
      * Load all of keys into properties
      */
     public static Map<StudioKeyName, String> loadAllKeys() {
         Map<StudioKeyName, String> retMap = new HashMap<StudioKeyName, String>();
 
         Properties allKeys = new Properties();
-        // load default keys from jar
-        try (InputStream fi = StudioKeySource.class.getResourceAsStream(StudioKeysFileCheck.ENCRYPTION_KEY_FILE_NAME)) {
-            allKeys.load(fi);
-        } catch (IOException e) {
-            LOGGER.error(e);
-        }
+        allKeys.putAll(loadDefaultKeys());
 
         Properties tempProperty = new Properties();
 
@@ -126,9 +135,13 @@ public class StudioKeySource implements KeySource {
 
         // filter out non system encryption keys
         tempProperty.forEach((k, v) -> {
-            String key = String.valueOf(k);
-            if (key.startsWith(StudioKeyName.KEY_SYSTEM_PREFIX) || key.startsWith(StudioKeyName.KEY_ROUTINE_PREFIX)) {
-                allKeys.put(key, v);
+            try {
+                StudioKeyName key = new StudioKeyName(String.valueOf(k));
+                if (key.isSystemKey() || key.isRoutineKey()) {
+                    allKeys.put(key.getKeyName(), v);
+                }
+            } catch (IllegalArgumentException e) {
+                // just ignore, since lots of system properties are not valid key
             }
         });
 

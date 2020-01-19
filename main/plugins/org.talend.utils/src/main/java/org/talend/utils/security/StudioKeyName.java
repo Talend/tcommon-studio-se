@@ -33,7 +33,7 @@ public class StudioKeyName {
 
     public static final String KEY_MIGRATION = "migration.encryption.key";
 
-    private String keyName;
+    private final String keyName;
 
     /**
      * Studio encryption key class
@@ -102,6 +102,13 @@ public class StudioKeyName {
      */
     public boolean isSystemKey() {
         return this.keyName.startsWith(KEY_SYSTEM_PREFIX);
+    }
+
+    /**
+     * Check whether it is the default routine key
+     */
+    public boolean isDefaultRoutineKey() {
+        return this.keyName.equals(KEY_ROUTINE);
     }
 
     /**

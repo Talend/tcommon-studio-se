@@ -47,6 +47,14 @@ public class StudioKeyNameTest {
         } catch (IllegalArgumentException e) {
             assertNotNull(e);
         }
+
+        // version part is a negative number
+        try {
+            new StudioKeyName(StudioKeyName.KEY_SYSTEM_PREFIX + "-1");
+            fail("invalid key name, should fail");
+        } catch (IllegalArgumentException e) {
+            assertNotNull(e);
+        }
     }
 
     @Test
@@ -62,6 +70,9 @@ public class StudioKeyNameTest {
 
         StudioKeyName sn2 = new StudioKeyName(StudioKeyName.KEY_MIGRATION_TOKEN);
         assertEquals(0, sn2.getVersionNumber());
+
+        StudioKeyName sn3 = new StudioKeyName(StudioKeyName.KEY_SYSTEM_PREFIX + "11");
+        assertEquals(11, sn3.getVersionNumber());
     }
 
     @Test
