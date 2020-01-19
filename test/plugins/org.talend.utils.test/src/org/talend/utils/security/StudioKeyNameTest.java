@@ -80,21 +80,25 @@ public class StudioKeyNameTest {
         StudioKeyName sn1 = new StudioKeyName(StudioKeyName.KEY_SYSTEM_DEFAULT);
         assertTrue(sn1.isSystemKey());
         assertFalse(sn1.isRoutineKey());
+        assertFalse(sn1.isDefaultRoutineKey());
         assertEquals(StudioKeyName.KEY_SYSTEM_PREFIX, sn1.getKeyNamePrefix());
 
         StudioKeyName sn2 = new StudioKeyName(StudioKeyName.KEY_ROUTINE);
         assertFalse(sn2.isSystemKey());
         assertTrue(sn2.isRoutineKey());
+        assertTrue(sn2.isDefaultRoutineKey());
         assertEquals(StudioKeyName.KEY_ROUTINE_PREFIX, sn2.getKeyNamePrefix());
 
         StudioKeyName sn3 = new StudioKeyName(StudioKeyName.KEY_MIGRATION);
         assertFalse(sn3.isSystemKey());
         assertFalse(sn3.isRoutineKey());
+        assertFalse(sn3.isDefaultRoutineKey());
         assertEquals("", sn3.getKeyNamePrefix());
 
         StudioKeyName sn4 = new StudioKeyName(StudioKeyName.KEY_MIGRATION_TOKEN);
         assertFalse(sn4.isSystemKey());
         assertFalse(sn4.isRoutineKey());
+        assertFalse(sn4.isDefaultRoutineKey());
         assertEquals("", sn4.getKeyNamePrefix());
     }
 }

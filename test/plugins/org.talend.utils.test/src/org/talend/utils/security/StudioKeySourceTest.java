@@ -13,6 +13,7 @@
 package org.talend.utils.security;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
 
@@ -119,6 +120,16 @@ public class StudioKeySourceTest {
                 ks.getKeyName().getKeyName());
         assertNotNull(ks.getKey());
         assertEquals("Talend-Key", new String(ks.getKey(), StandardCharsets.UTF_8));
+    }
+
+    @Test
+    public void testLoadDefaultKeys() throws Exception {
+        Properties p = StudioKeySource.loadDefaultKeys();
+        assertNotNull(p);
+        assertFalse(p.getProperty(StudioKeyName.KEY_SYSTEM_DEFAULT).isEmpty());
+        assertFalse(p.getProperty(StudioKeyName.KEY_ROUTINE).isEmpty());
+        assertFalse(p.getProperty(StudioKeyName.KEY_MIGRATION_TOKEN).isEmpty());
+        assertFalse(p.getProperty(StudioKeyName.KEY_MIGRATION).isEmpty());
     }
 
     public static Map<StudioKeyName, String> generateKeys() throws NoSuchAlgorithmException {
