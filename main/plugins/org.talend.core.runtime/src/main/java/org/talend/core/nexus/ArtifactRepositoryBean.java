@@ -377,4 +377,12 @@ public class ArtifactRepositoryBean implements Cloneable {
     public ArtifactRepositoryBean clone() throws CloneNotSupportedException {
         return (ArtifactRepositoryBean) super.clone();
     }
+
+    @Override
+    public String toString() {
+        return "ArtifactRepositoryBean [server=" + server + ", userName=" + userName + ", repositoryId=" + repositoryId
+                + ", official=" + official + ", snapshotRepId=" + snapshotRepId + ", type=" + type + ", isAbsoluteURL="
+                + isAbsoluteURL + "]";
+    }
+
 }

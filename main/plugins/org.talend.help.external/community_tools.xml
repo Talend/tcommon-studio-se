@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?NLS TYPE="org.eclipse.help.toc"?>
+
+<toc label="Talend Online Tools">
+        <topic label="Talend Babili"     href="http://www.talendforge.org/babili/" />
+        <topic label="Talend Bugtracker" href="https://jira.talendforge.org/secure/Dashboard.jspa" />
+        <topic label="Talend Components" href="http://www.talendforge.org/components" />
+        <topic label="Talend Exchange"   href="https://exchange.talend.com/" />
+        <topic label="Talend Forum"      href="https://community.talend.com/" />
+        <topic label="Talend Sources"    href="https://www.talendforge.org/sources/" />
+        <topic label="Talend Tutorials"  href="https://community.talend.com/t5/custom/page/page-id/Tutorials" />
+</toc>
