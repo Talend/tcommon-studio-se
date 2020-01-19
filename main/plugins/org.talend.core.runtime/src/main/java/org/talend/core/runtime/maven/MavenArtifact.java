@@ -13,6 +13,8 @@
 package org.talend.core.runtime.maven;
 
 import org.apache.commons.lang3.StringUtils;
+import org.talend.commons.CommonsPlugin;
+import org.talend.commons.exception.ExceptionHandler;
 
 /**
  * DOC ggu class global comment. Detailled comment
@@ -187,6 +189,75 @@ public class MavenArtifact implements Cloneable {
             name.append(MavenConstants.TYPE_JAR);
         }
         return name.toString();
+    }
+
+    public static int compareVersion(String v1, String v2) {
+        if (v1 == null && v2 == null) {
+            return 0;
+        } else if (v1 == null) {
+            return -1;
+        } else if (v2 == null) {
+            return 1;
+        }
+        String[] split1 = v1.split("\\.", 4);
+        String[] split2 = v2.split("\\.", 4);
+        Integer compareResult = null;
+        for (int i = 0; i < split1.length && i < split2.length; i++) {
+            String n1 = split1[i];
+            String n2 = split2[i];
+
+            Integer tempResult = null;
+            try {
+                tempResult = Integer.valueOf(n1) - Integer.valueOf(n2);
+            } catch (Exception e) {
+                if (CommonsPlugin.isDebugMode()) {
+                    ExceptionHandler.process(new Exception("Can't compare: " + n1 + " <> " + n2, e));
+                }
+            }
+            if (tempResult == null) {
+                String prefix1 = n1;
+                String suffix1 = "";
+                int index = n1.indexOf("-");
+                if (0 <= index) {
+                    prefix1 = n1.substring(0, index);
+                    suffix1 = n1.substring(index + 1);
+                }
+
+                String prefix2 = n2;
+                String suffix2 = "";
+                index = n2.indexOf("-");
+                if (0 <= index) {
+                    prefix2 = n2.substring(0, index);
+                    suffix2 = n2.substring(index + 1);
+                }
+                try {
+                    tempResult = Integer.valueOf(prefix1) - Integer.valueOf(prefix2);
+                } catch (Exception e) {
+                    if (CommonsPlugin.isDebugMode()) {
+                        ExceptionHandler.process(new Exception("Can't compare: " + prefix1 + " <> " + prefix2, e));
+                    }
+                    tempResult = prefix1.compareTo(prefix2);
+                }
+                if (tempResult == 0) {
+                    try {
+                        tempResult = Integer.valueOf(suffix1) - Integer.valueOf(suffix2);
+                    } catch (Exception e) {
+                        if (CommonsPlugin.isDebugMode()) {
+                            ExceptionHandler.process(new Exception("Can't compare: " + suffix1 + " <> " + suffix2, e));
+                        }
+                        tempResult = suffix1.compareTo(suffix2);
+                    }
+                }
+            }
+            if (tempResult != 0) {
+                compareResult = tempResult;
+                break;
+            }
+        }
+        if (compareResult == null) {
+            compareResult = split1.length - split2.length;
+        }
+        return compareResult;
     }
 
     @Override

@@ -266,4 +266,6 @@ public interface IHadoopClusterService extends IService {
     public boolean updateConfJarsByContextGroup(ContextItem contextItem, Map<String, String> contextGroupRanamedMap);
 
     public ContextType getHadoopClusterContextType(String id);
+
+    public Map<String, String> getHadoopSSLParameters(String clusterId);
 }
