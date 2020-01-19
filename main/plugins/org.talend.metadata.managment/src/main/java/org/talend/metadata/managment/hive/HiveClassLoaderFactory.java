@@ -14,15 +14,19 @@ package org.talend.metadata.managment.hive;
 
 import java.io.File;
 import java.util.Set;
+import java.util.function.Consumer;
 
+import org.apache.commons.lang3.StringUtils;
 import org.eclipse.core.runtime.NullProgressMonitor;
 import org.eclipse.core.runtime.Platform;
+import org.talend.commons.exception.ExceptionHandler;
 import org.talend.core.GlobalServiceRegister;
 import org.talend.core.ILibraryManagerService;
 import org.talend.core.classloader.ClassLoaderFactory;
 import org.talend.core.classloader.DynamicClassLoader;
 import org.talend.core.database.conn.ConnParameterKeys;
 import org.talend.core.hadoop.EHadoopConfigurationJars;
+import org.talend.core.hadoop.HadoopConfJarBean;
 import org.talend.core.hadoop.IHadoopClusterService;
 import org.talend.core.hadoop.repository.HadoopRepositoryUtil;
 import org.talend.core.model.metadata.IMetadataConnection;
@@ -121,13 +125,29 @@ public class HiveClassLoaderFactory {
         }
 
         Object[] configurationJars = new String[0];
+        Consumer<DynamicClassLoader> afterLoad = null;
         String useCustomConfs = (String) metadataConn.getParameter(ConnParameterKeys.CONN_PARA_KEY_USE_CUSTOM_CONFS);
         if (Boolean.valueOf(useCustomConfs)) {
             String clusterId = (String) metadataConn.getParameter(ConnParameterKeys.CONN_PARA_KEY_HADOOP_CLUSTER_ID);
-            String customConfsJarName = getCustomConfsJarName(clusterId);
-            if (customConfsJarName != null) {
-                configurationJars = new String[] { customConfsJarName };
+
+            HadoopConfJarBean confJarBean = getCustomConfsJarName(clusterId);
+            if (confJarBean != null) {
+                if (confJarBean.isOverrideCustomConf()) {
+                    String overrideCustomConfPath = confJarBean.getOriginalOverrideCustomConfPath();
+                    if (StringUtils.isBlank(overrideCustomConfPath) || !new File(overrideCustomConfPath).exists()) {
+                        ExceptionHandler.process(
+                                new Exception("Set Hadoop configuration JAR path is invalid: " + overrideCustomConfPath));
+                    } else {
+                        afterLoad = (t) -> t.addLibrary(overrideCustomConfPath);
+                    }
+                } else {
+                    String customConfsJarName = confJarBean.getCustomConfJarName();
+                    if (customConfsJarName != null) {
+                        configurationJars = new String[] { customConfsJarName };
+                    }
+                }
             }
+
         } else {
             String useKrb = (String) metadataConn.getParameter(ConnParameterKeys.CONN_PARA_KEY_USE_KRB);
             if (Boolean.valueOf(useKrb)) {
@@ -158,12 +178,15 @@ public class HiveClassLoaderFactory {
                 loader.addLibrary(jarFile.getAbsolutePath());
             }
         }
+        if (afterLoad != null) {
+            afterLoad.accept(loader);
+        }
     }
 
-    private static String getCustomConfsJarName(String clusterId) {
+    private static HadoopConfJarBean getCustomConfsJarName(String clusterId) {
         IHadoopClusterService hadoopClusterService = HadoopRepositoryUtil.getHadoopClusterService();
         if (hadoopClusterService != null) {
-            return hadoopClusterService.getCustomConfsJarName(clusterId);
+            return hadoopClusterService.getCustomConfsJar(clusterId).orElse(null);
         }
         return null;
     }
