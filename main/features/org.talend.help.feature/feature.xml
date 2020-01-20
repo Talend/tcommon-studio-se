@@ -7,7 +7,6 @@
     <update label="CORE Talend update site for milestones" url="http://talendforge.org/core/updatesite/testing/"/>  
     <discovery label="Talend web site" url="http://www.talend.com"/> 
   </url>  
-  <includes id="org.talend.help.di.feature" version="0.0.0"/>
   <requires>
     <import feature="org.eclipse.help" version="0.0.0" match="greaterOrEqual"/>
   </requires>

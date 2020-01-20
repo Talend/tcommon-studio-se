@@ -12,9 +12,13 @@
 // ============================================================================
 package org.talend.core.hadoop;
 
+import java.io.File;
 import java.net.MalformedURLException;
+import java.util.Optional;
 import java.util.Set;
+import java.util.function.Consumer;
 
+import org.apache.commons.lang.StringUtils;
 import org.talend.commons.exception.ExceptionHandler;
 import org.talend.core.classloader.ClassLoaderFactory;
 import org.talend.core.classloader.DynamicClassLoader;
@@ -67,9 +71,18 @@ public class HadoopClassLoaderFactory2 {
         return getClassLoader(relatedClusterId, EHadoopCategory.HBASE, distribution, version, useKrb);
     }
 
-    public static ClassLoader getHadoopCustomClassLoader(String uid, Object customJars) {
-        return HadoopClassLoaderFactory2.builder().withTypePrefix(EHadoopCategory.CUSTOM.getName()).withUid(uid)
-                .build(customJars, true);
+    public static ClassLoader getHadoopCustomClassLoader(String uid, String relatedClusterId, EHadoopCategory category,
+            Object customJars, boolean useKrb) {
+        ClassLoader classLoader = HadoopClassLoaderFactory2.builder().withTypePrefix(EHadoopCategory.CUSTOM.getName())
+                .withUid(uid).build(customJars, true);
+        if (StringUtils.isNotBlank(relatedClusterId) && classLoader instanceof DynamicClassLoader) {
+            try {
+                classLoader = addExtraJars(relatedClusterId, category, (DynamicClassLoader) classLoader, useKrb);
+            } catch (MalformedURLException e) {
+                ExceptionHandler.process(e);
+            }
+        }
+        return classLoader;
     }
 
     public static ClassLoader getHCatalogClassLoader(String relatedClusterId, String distribution, String version, boolean useKrb) {
@@ -198,16 +211,35 @@ public class HadoopClassLoaderFactory2 {
             String[] addedJars = null;
             String[] excludedJars = null;
             String[] securityJars = getSecurityJars(category);
-            String customConfsJarName = hadoopClusterService.getCustomConfsJarName(relatedClusterId);
-            if (customConfsJarName != null) {
-                addedJars = new String[] { customConfsJarName };
+
+            Optional<HadoopConfJarBean> customConfsJar = hadoopClusterService.getCustomConfsJar(relatedClusterId);
+            HadoopConfJarBean confJarBean = customConfsJar.orElse(null);
+            String customConfsJarName = customConfsJar.map(b -> b.getCustomConfJarName()).orElse(null);
+            Consumer<DynamicClassLoader> afterLoaded = null;
+            if (confJarBean != null) {
+                if (confJarBean.isOverrideCustomConf()) {
+                    String overrideCustomConfPath = confJarBean.getOriginalOverrideCustomConfPath();
+                    if (StringUtils.isBlank(overrideCustomConfPath) || !new File(overrideCustomConfPath).exists()) {
+                        ExceptionHandler.process(
+                                new Exception("Set Hadoop configuration JAR path is invalid: " + overrideCustomConfPath));
+                    } else {
+                        afterLoaded = (t) -> t.addLibrary(overrideCustomConfPath);
+                    }
+                } else {
+                    if (StringUtils.isNotBlank(customConfsJarName)) {
+                        addedJars = new String[] { customConfsJarName };
+                    }
+                }
                 excludedJars = securityJars;
             } else if (useKrb) {
                 addedJars = securityJars;
                 excludedJars = new String[] { customConfsJarName };
             }
-            if (addedJars != null || excludedJars != null) {
+            if (addedJars != null || excludedJars != null || afterLoaded != null) {
                 cll = DynamicClassLoader.createNewOneBaseLoader(loader, addedJars, excludedJars);
+                if (afterLoaded != null) {
+                    afterLoaded.accept(cll);
+                }
             }
         }
 

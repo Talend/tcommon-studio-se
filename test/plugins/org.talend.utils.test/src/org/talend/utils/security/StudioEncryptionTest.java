@@ -12,12 +12,17 @@ package org.talend.utils.security;
 // 9 rue Pages 92150 Suresnes, France
 //
 // ============================================================================import org.junit.Test;
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotEquals;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.*;
+
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
+import java.util.Base64;
+import java.util.Properties;
 
 import org.junit.Test;
+import org.talend.daikon.crypto.CipherSources;
+import org.talend.daikon.crypto.Encryption;
 
 public class StudioEncryptionTest {
 
@@ -44,7 +49,8 @@ public class StudioEncryptionTest {
         assertNotEquals(input1, encrypted);
         // should match
         assertTrue(StudioEncryption.hasEncryptionSymbol(encrypted));
-        assertTrue(encrypted.startsWith("enc:" + StudioEncryption.EncryptionKeyName.SYSTEM.toString()));
+        assertTrue("encrypted: " + encrypted,
+                encrypted.startsWith("enc:" + StudioEncryption.EncryptionKeyName.SYSTEM.toString()));
         assertEquals(input1,
                 StudioEncryption.getStudioEncryption(StudioEncryption.EncryptionKeyName.SYSTEM).decrypt(encrypted));
 
@@ -68,5 +74,88 @@ public class StudioEncryptionTest {
 
         assertNotNull(StudioEncryption.getStudioEncryption(StudioEncryption.EncryptionKeyName.SYSTEM));
 
+    }
+
+    @Test
+    public void testGenerateEncryptionKeys() throws Exception {
+        File keyFile = File.createTempFile("StudioEncryptionTest", "testGenerateEncryptionKeys");
+
+        // empty file, nothing to generate
+        boolean gen = StudioEncryption.generateEncryptionKeys(keyFile);
+        assertFalse(gen);
+
+        // add two encryption keys, values exist, so nothing to generate
+        Properties p = new Properties();
+        p.put(StudioKeyName.KEY_SYSTEM_PREFIX + "1", "ObIr3Je6QcJuxJEwErWaFWIxBzEjxIlBrtCPilSByJI\\=");
+        p.put(StudioKeyName.KEY_ROUTINE_PREFIX + "1", "ObIr3Je6QcJuxJEwErWaFWIxBzEjxIlBrtCPilSByJI\\=");
+        try (FileOutputStream fo = new FileOutputStream(keyFile)) {
+            p.store(fo, "");
+        }
+
+        gen = StudioEncryption.generateEncryptionKeys(keyFile);
+        assertFalse(gen);
+
+        // add two empty encryption keys, need to generate two keys
+        p.put(StudioKeyName.KEY_SYSTEM_PREFIX + "2", "");
+        p.put(StudioKeyName.KEY_ROUTINE_PREFIX + "2", "");
+        try (FileOutputStream fo = new FileOutputStream(keyFile)) {
+            p.store(fo, "");
+        }
+
+        gen = StudioEncryption.generateEncryptionKeys(keyFile);
+        assertTrue(gen);
+
+        p.clear();
+        try (FileInputStream fi = new FileInputStream(keyFile)) {
+            p.load(fi);
+        }
+
+        assertTrue(p.getProperty(StudioKeyName.KEY_SYSTEM_PREFIX + "2").length() > 0);
+        assertTrue(p.getProperty(StudioKeyName.KEY_ROUTINE_PREFIX + "2").length() > 0);
+
+        assertEquals(p.getProperty(StudioKeyName.KEY_SYSTEM_PREFIX + "1"), "ObIr3Je6QcJuxJEwErWaFWIxBzEjxIlBrtCPilSByJI\\=");
+        assertEquals(p.getProperty(StudioKeyName.KEY_ROUTINE_PREFIX + "1"), "ObIr3Je6QcJuxJEwErWaFWIxBzEjxIlBrtCPilSByJI\\=");
+
+        keyFile.delete();
+    }
+
+    @Test
+    public void testDaikonEncryptionAndDecryption() throws Exception {
+
+        File keyFile = File.createTempFile(this.getClass().getSimpleName(), "testDaikonEncryptionAndDecryption");
+
+        Properties p = new Properties();
+        // put a empty key
+        String kn = StudioKeyName.KEY_SYSTEM_PREFIX + "1";
+        p.put(kn, "");
+        try (FileOutputStream fo = new FileOutputStream(keyFile)) {
+            p.store(fo, "");
+        }
+
+        // generate the encryption key
+        boolean gen = StudioEncryption.generateEncryptionKeys(keyFile);
+        assertTrue(gen);
+
+        // read the generated encryption key
+        p.clear();
+        try (FileInputStream fi = new FileInputStream(keyFile)) {
+            p.load(fi);
+        }
+
+        keyFile.delete();
+
+        String keyStr = p.getProperty(kn);
+
+        assertNotNull(keyStr);
+
+        Encryption encryptor = new Encryption(() -> Base64.getDecoder().decode(keyStr), CipherSources.getDefault());
+        assertNotNull(encryptor);
+
+        String clearText = "some secrets?";
+        String encrypted = encryptor.encrypt(clearText);
+        String decrypted = encryptor.decrypt(encrypted);
+
+        assertNotEquals(clearText, encrypted);
+        assertEquals(clearText, decrypted);
     }
 }
