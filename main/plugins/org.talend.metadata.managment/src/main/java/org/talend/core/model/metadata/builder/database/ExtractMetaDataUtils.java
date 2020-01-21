@@ -118,6 +118,10 @@ public class ExtractMetaDataUtils {
     private String[] ORACLE_SSL_JARS = new String[] { "oraclepki-12.2.0.1.jar", "osdt_cert-12.2.0.1.jar", //$NON-NLS-1$//$NON-NLS-2$
             "osdt_core-12.2.0.1.jar" }; //$NON-NLS-1$
 
+    public static final String SNOWFLAKE = "Snowflake"; //$NON-NLS-1$
+
+    public static final String SNOWFLAKE_DRIVER_JAR = "snowflake-jdbc-3.11.0.jar"; //$NON-NLS-1$
+
     private ExtractMetaDataUtils() {
     }
 
@@ -942,13 +946,18 @@ public class ExtractMetaDataUtils {
                         if (additionalParams.contains(SSLPreferenceConstants.TRUSTSTORE_TYPE)) {
                              driverNames.addAll(Arrays.asList(ORACLE_SSL_JARS));
                         }
+                    } else if (SNOWFLAKE.equals(dbType)) { // $NON-NLS-1$
+                        // TDQ-17294 msjian Support of Snowflake for DQ Datamart
+                        driverNames.add(SNOWFLAKE_DRIVER_JAR);
                     }
                     // fix for TUP-857 , to retreive needed jar one time
                     librairesManagerService.retrieve(driverNames, getJavaLibPath(), new NullProgressMonitor());
                     for (String jar : driverNames) {
                         jarPathList.add(getJavaLibPath() + jar);
                     }
-                    driverClassName = getDriverClassByDbType(dbType);
+                    if (!SNOWFLAKE.equals(dbType)) {
+                        driverClassName = getDriverClassByDbType(dbType);
+                    }
                     // feature TDI-22108
                     if (EDatabaseTypeName.VERTICA.getXmlName().equals(dbType)
                             && (EDatabaseVersion4Drivers.VERTICA_6.getVersionValue().equals(dbVersion)

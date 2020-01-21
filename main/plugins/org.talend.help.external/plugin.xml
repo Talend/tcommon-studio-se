@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?eclipse version="3.2"?>
+<plugin>
+   <extension point="org.eclipse.help.toc">
+      <toc file="community_tools.xml" primary="true"/>
+      <toc file="thc.xml" primary="true"/>
+   </extension>
+   <extension point="org.eclipse.help.contexts">
+      <contexts file="inlinehelp_context.xml"/>
+   </extension>
+</plugin>

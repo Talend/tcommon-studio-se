@@ -27,7 +27,7 @@ import org.talend.updates.runtime.nexus.component.NexusComponentsTransport;
 import org.talend.updates.runtime.storage.AbstractFeatureStorage;
 
 /**
- * DOC cmeng  class global comment. Detailled comment
+ * Can only used to download artifacts from RELEASE nexus
  */
 public class NexusFeatureStorage extends AbstractFeatureStorage {
 

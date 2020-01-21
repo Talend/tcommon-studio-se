@@ -212,7 +212,7 @@ public class ConvertJobsUtil {
     }
 
     public static enum JobBatchFramework {
-        MAPREDUCEFRAMEWORK("MapReduce", "_MAPREDUCE_FRAMEWORK_"), //$NON-NLS-1$ //$NON-NLS-2$
+        MAPREDUCEFRAMEWORK("MapReduce (deprecated)", "_MAPREDUCE_FRAMEWORK_"), //$NON-NLS-1$ //$NON-NLS-2$
         SPARKFRAMEWORK("Spark", "_SPARK_FRAMEWORK_"); //$NON-NLS-1$ //$NON-NLS-2$
 
         private String displayName;

@@ -13,6 +13,7 @@
 package org.talend.updates.runtime.engine;
 
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
 
@@ -25,6 +26,7 @@ import org.eclipse.core.runtime.jobs.Job;
 import org.eclipse.jface.window.Window;
 import org.eclipse.swt.widgets.Display;
 import org.talend.commons.ui.gmf.util.DisplayUtils;
+import org.talend.updates.runtime.InstallFeatureObserver;
 import org.talend.updates.runtime.i18n.Messages;
 import org.talend.updates.runtime.model.ExtraFeature;
 import org.talend.updates.runtime.model.FeatureRepositories;
@@ -68,6 +70,7 @@ public class InstallNewFeatureJob extends Job {
 
     private void installFeature(Set<ExtraFeature> featuresToInstall, final MultiStatus multiStatus, final SubMonitor subMon) {
         final Map<ExtraFeature, Exception> failedFeature = new HashMap<ExtraFeature, Exception>();
+        final Set<ExtraFeature> processedFeatureSet = new HashSet<ExtraFeature>();
         for (ExtraFeature newFeature : featuresToInstall) {
             try {
                 // launch the update
@@ -77,11 +80,21 @@ public class InstallNewFeatureJob extends Job {
                             newFeature.getName()));
                     break;
                 }
+                processedFeatureSet.add(newFeature);
+                InstallFeatureObserver.getInstance().updateInstallFeatureStatus(newFeature.getName(),
+                        InstallFeatureObserver.FEATURE_STATUS_INSTALLED_SUCESSFULLY);
             } catch (Exception e) {
                 failedFeature.put(newFeature, e);
+                InstallFeatureObserver.getInstance().updateInstallFeatureStatus(newFeature.getName(),
+                        InstallFeatureObserver.FEATURE_STATUS_INSTALLED_FAILED);
                 multiStatus.add(Messages.createErrorStatus(e, "InstallNewFeatureJob.failed.to.install", newFeature.getName())); //$NON-NLS-1$
             }
-
+        }
+        for (ExtraFeature newFeature : featuresToInstall) {
+            if (!processedFeatureSet.contains(newFeature)) {
+                InstallFeatureObserver.getInstance().updateInstallFeatureStatus(newFeature.getName(),
+                        InstallFeatureObserver.FEATURE_STATUS_CANCELED);
+            }
         }
         if (!failedFeature.isEmpty()) {
             final StringBuffer detailesMessage = new StringBuffer();

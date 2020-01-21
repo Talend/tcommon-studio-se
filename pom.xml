@@ -93,6 +93,7 @@
 		<module>main/plugins/org.talend.datatools.xml</module>
 		<module>main/plugins/org.talend.developpement</module>
 		<module>main/plugins/org.talend.helpers</module>
+		<module>main/plugins/org.talend.help.external</module>		
 		<module>main/plugins/org.talend.libraries.apache</module>
 		<module>main/plugins/org.talend.libraries.apache.axis2</module>
 		<module>main/plugins/org.talend.libraries.apache.batik</module>

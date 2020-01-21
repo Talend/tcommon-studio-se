@@ -5,10 +5,10 @@ Bundle-SymbolicName: org.talend.libraries.apache.lucene8
 Bundle-Version: 7.3.1.qualifier
 Bundle-Vendor: .Talend SA.
 Bundle-ActivationPolicy: lazy
-Bundle-ClassPath: lib/lucene-analyzers-common-8.3.0.jar,
- lib/lucene-core-8.3.0.jar,
- lib/lucene-queries-8.3.0.jar,
- lib/lucene-queryparser-8.3.0.jar
+Bundle-ClassPath: lib/lucene-analyzers-common-8.3.1.jar,
+ lib/lucene-core-8.3.1.jar,
+ lib/lucene-queries-8.3.1.jar,
+ lib/lucene-queryparser-8.3.1.jar
 Export-Package: org.apache.lucene,
  org.apache.lucene.analysis,
  org.apache.lucene.analysis.ar,

@@ -16,7 +16,6 @@ import java.io.ByteArrayInputStream;
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -75,8 +74,6 @@ public class CreateMavenStandardJobOSGiPom extends CreateMavenJobPom {
     public CreateMavenStandardJobOSGiPom(IProcessor jobProcessor, IFile pomFile) {
         super(jobProcessor, pomFile);
     }
-
-    private Model model;
 
     protected String getBundleTemplatePath() {
         return IProjectSettingTemplateConstants.PATH_OSGI_BUNDLE + '/'
@@ -163,26 +160,7 @@ public class CreateMavenStandardJobOSGiPom extends CreateMavenJobPom {
         
         if (isServiceOperation) {
             model.addProperty("cloud.publisher.skip", "true");
-            
-            build = model.getBuild();
-
-            List<Plugin> removePlugins = new ArrayList<Plugin>();
-            if (build != null) {
-
-                List<Plugin> plugins = build.getPlugins();
-                for (Plugin p : plugins) {
-                    if (p.getArtifactId().equals("maven-deploy-plugin")) {
-                        removePlugins.add(p);
-                    }
-                    if (p.getArtifactId().equals("maven-bundle-plugin")) {
-                        removePlugins.add(p);
-                    }
-                }
-            }
-
-            for (Plugin p : removePlugins) {
-                build.removePlugin(p);
-            }
+            model.setBuild(null);
         } else {
             model.setPackaging("bundle");
         }

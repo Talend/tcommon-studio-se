@@ -39,6 +39,14 @@
       <libraryNeeded
             context="plugin:org.talend.metadata.managment"
             language="java"
+            message="Needed for create snowflake connection"
+            mvn_uri="mvn:net.snowflake/snowflake-jdbc/3.11.0"
+            name="snowflake-jdbc-3.11.0.jar"
+            required="false">
+      </libraryNeeded>
+      <libraryNeeded
+            context="plugin:org.talend.metadata.managment"
+            language="java"
             message="Needed for plugin org.talend.metadata.managment"
             mvn_uri="mvn:org.talend.libraries/wsdl4j-1.5.1/6.0.0"
             name="wsdl4j-1.5.1.jar"

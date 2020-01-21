@@ -124,7 +124,19 @@ public class PluginChecker {
 
     public static final String ESBSE_PLUGIN_ID = "org.talend.camel.designer"; //$NON-NLS-1$
 
+    public static final String ESBEE_PLUGIN_ID = "org.talend.resources.apidesigner"; //$NON-NLS-1$
+
+    public static final String BDEE_PLUGIN_ID = "org.talend.designer.bigdata"; //$NON-NLS-1$
+
     public static final String DOCKER_PLUGIN_ID = "org.talend.designer.docker"; //$NON-NLS-1$
+
+    public static final String HELP_DI_EE_PLUGIN_ID = "org.talend.help.dataprep"; //$NON-NLS-1$
+
+    public static final String HELP_BD_PLUGIN_ID = "org.talend.help.marklogic"; //$NON-NLS-1$
+
+    public static final String HELP_ESB_PLUGIN_ID = "org.talend.esb.help"; //$NON-NLS-1$
+
+    public static final String HELP_PLUGIN_ID = "org.talend.help"; //$NON-NLS-1$
 
     /**
      * Check if specific plug-in is loaded.
