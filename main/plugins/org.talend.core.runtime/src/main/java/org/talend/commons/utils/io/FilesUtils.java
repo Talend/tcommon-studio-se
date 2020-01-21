@@ -578,6 +578,17 @@ public class FilesUtils {
         }
     }
 
+    public static void main(String[] args) {
+        try {
+            // createFoldersIfNotExists("c:\\test\\test1/test2", false);
+            // createFoldersIfNotExists("c:\\test10\\test11/test20/test.pl", true);
+            unzip("d:/tFileOutputPDF.zip", "d:/temp"); //$NON-NLS-1$ //$NON-NLS-2$
+        } catch (Exception e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }
+    }
+
     /**
      * DOC amaumont Comment method "removeDirectory".
      *
@@ -640,6 +651,18 @@ public class FilesUtils {
     public static String extractPathFolderFromFilePath(String filePath) {
         File completePath = new File(filePath);
         return completePath.getParent();
+    }
+
+    /**
+     * Unzip the component file to the user folder.
+     *
+     * @param zipFile The component zip file
+     * @param targetFolder The user folder
+     * @return
+     * @throws Exception
+     */
+    public static void unzip(String zipFile, String targetFolder) throws Exception {
+        org.talend.utils.io.FilesUtils.unzip(zipFile, targetFolder);
     }
 
     /**
