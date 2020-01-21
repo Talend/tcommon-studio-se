@@ -47,7 +47,8 @@ Import-Package: org.eclipse.jface.bindings.keys,
  org.eclipse.swt.layout,
  org.eclipse.swt.widgets,
  org.eclipse.ui.forms.events,
- org.eclipse.ui.forms.widgets
+ org.eclipse.ui.forms.widgets,
+ org.talend.utils.io
 Bundle-Activator: org.talend.commons.ui.runtime.CommonUIPlugin
 Bundle-ActivationPolicy: lazy
 Bundle-Vendor: .Talend SA.
