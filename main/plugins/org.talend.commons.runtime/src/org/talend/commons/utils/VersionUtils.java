@@ -46,6 +46,8 @@ public class VersionUtils {
 
     public static final String STUDIO_VERSION_PROP = "studio.version"; //$NON-NLS-1$
 
+    public static final String TALEND_STUDIO_VERSION_PROP = "talend.studio.version"; //$NON-NLS-1$
+
     public static final String TALEND_VERSION_PROP = "talend.version"; //$NON-NLS-1$
 
     private static final String COMMONS_PLUGIN_ID = "org.talend.commons.runtime"; //$NON-NLS-1$
@@ -98,7 +100,9 @@ public class VersionUtils {
 
     public static String getInternalVersion() {
         if (Platform.inDevelopmentMode()) {
-            return getDisplayVersion();
+            String version = getDisplayVersion();
+            updateTalendStudioVersionProp(version);
+            return version;
         }
         if (productVersion == null) {
             synchronized (VersionUtils.class) {
@@ -133,8 +137,13 @@ public class VersionUtils {
                     }
                 }
             }
+            updateTalendStudioVersionProp(productVersion);
         }
         return productVersion;
+    }
+
+    private static void updateTalendStudioVersionProp(String version) {
+        System.setProperty(TALEND_STUDIO_VERSION_PROP, version == null ? "" : version);
     }
 
     /**

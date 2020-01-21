@@ -44,6 +44,7 @@ public enum EConnectionParameterName {
     JDBC_PARAMETER("connection.jdbcParameters"), //$NON-NLS-1$
     USER_ID("connection.userPassword.userId"), //$NON-NLS-1$
     USER_PASSWORD("connection.userPassword.password"), //$NON-NLS-1$
+    SNOWFLAKE_SCHEMA("table.main.schema"), //$NON-NLS-1$
     QUERY("query"), //$NON-NLS-1$
     // TDQ-17294~
 

@@ -50,7 +50,8 @@ public class XSDValidator {
         fabrique.setAttribute(SCHEMA_VALIDATOR, fileXSD);
         fabrique.setAttribute(XMLConstants.ACCESS_EXTERNAL_SCHEMA, PROTOCOL_PLATFORM);
         fabrique.setAttribute(XMLConstants.ACCESS_EXTERNAL_DTD, PROTOCOL_FILE);
-        fabrique.setValidating(true);
+        fabrique.setValidating(false);
+        fabrique.setNamespaceAware(true);
 
         Document document = null;
         boolean retry = false;
