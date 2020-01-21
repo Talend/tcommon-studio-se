@@ -31,12 +31,15 @@ public class XmlUtils {
         TransformerFactory transFactory = TransformerFactory.newInstance();
         try {
             transFactory.setFeature(javax.xml.XMLConstants.FEATURE_SECURE_PROCESSING, Boolean.TRUE);
+        } catch (TransformerConfigurationException e) {
+            throw new RuntimeException(e);
+        }
+
+        try {
             transFactory.setAttribute(javax.xml.XMLConstants.ACCESS_EXTERNAL_DTD, "");
             transFactory.setAttribute(javax.xml.XMLConstants.ACCESS_EXTERNAL_STYLESHEET, "");
         } catch (IllegalArgumentException ex) {
             // Just catch this, as Xalan doesn't support the above
-        } catch (TransformerConfigurationException e) {
-            throw new RuntimeException(e);
         }
         return transFactory;
     }

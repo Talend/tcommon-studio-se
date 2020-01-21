@@ -11,7 +11,7 @@ package org.talend.utils.security;
 // along with this program; if not, write to Talend SA
 // 9 rue Pages 92150 Suresnes, France
 //
-// ============================================================================import org.junit.Test;
+// ============================================================================
 import static org.junit.Assert.*;
 
 import java.io.File;
