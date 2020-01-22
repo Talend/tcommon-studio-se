@@ -765,6 +765,7 @@ public class ModulesNeededProvider {
             importNeedsListForRoutes = new ArrayList<ModuleNeeded>();
             importNeedsListForRoutes.add(getComponentModuleById("CAMEL", "camel-core"));
             importNeedsListForRoutes.add(getComponentModuleById("CAMEL", "camel-spring"));
+            importNeedsListForRoutes.add(getComponentModuleById("CAMEL", "camel-spring-boot"));
             importNeedsListForRoutes.add(getComponentModuleById("CAMEL", "spring-context"));
             importNeedsListForRoutes.add(getComponentModuleById("CAMEL", "spring-beans"));
             importNeedsListForRoutes.add(getComponentModuleById("CAMEL", "spring-core"));
