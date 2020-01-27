@@ -2707,6 +2707,15 @@ public class ProcessorUtilities {
         }
         return null;
     }
+    
+    public static String getJavaProjectExternalResourcesFolderPath(IProcess process) {
+        if (GlobalServiceRegister.getDefault().isServiceRegistered(IRunProcessService.class)) {
+            IRunProcessService processService =
+                    (IRunProcessService) GlobalServiceRegister.getDefault().getService(IRunProcessService.class);
+            return processService.getJavaProjectExternalResourcesFolder(process).getLocation().toPortableString();
+        }
+        return null;
+    }
 
     public static boolean isExportAsOSGI() {
         return exportAsOSGI;
