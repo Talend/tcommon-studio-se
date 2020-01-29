@@ -13,8 +13,11 @@
 package org.talend.designer.runprocess;
 
 import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.OutputStream;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -25,10 +28,15 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import java.util.zip.ZipEntry;
+import java.util.zip.ZipOutputStream;
 
 import org.apache.commons.lang.ArrayUtils;
 import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
+import org.apache.logging.log4j.core.config.builder.api.ConfigurationBuilder;
+import org.apache.logging.log4j.core.config.builder.api.ConfigurationBuilderFactory;
+import org.apache.logging.log4j.core.config.builder.impl.BuiltConfiguration;
 import org.eclipse.core.resources.IFile;
 import org.eclipse.core.resources.IFolder;
 import org.eclipse.core.resources.IResource;
@@ -2850,5 +2858,31 @@ public class ProcessorUtilities {
 
     public static boolean isNeedProjectProcessId(String componentName) {
         return "tRunJob".equalsIgnoreCase(componentName) || "cTalendJob".equalsIgnoreCase(componentName);
+    }
+    
+    public static String buildLog4jConfigJar(IProcess process) throws IOException {
+        // Build log4j2 config file
+        ConfigurationBuilder<BuiltConfiguration> builder = ConfigurationBuilderFactory.newConfigurationBuilder();
+        String temporaryFolderPath = "to do";
+        File configFile = new File(temporaryFolderPath + "/log4j2.xml");
+        FileOutputStream configOs = new FileOutputStream(configFile);
+        // Add config here
+        builder.writeXmlConfiguration(configOs);
+        
+        // Put config file into a jar file
+        String jarFilePath = temporaryFolderPath + "/talend-studio-log4j2.xml.jar";
+        ZipOutputStream zipOs = new ZipOutputStream(new FileOutputStream(jarFilePath));
+        FileInputStream configIs = new FileInputStream(configFile);
+        ZipEntry zipEntry = new ZipEntry(configFile.getAbsolutePath());
+        zipOs.putNextEntry(zipEntry);
+        byte[] bytes = new byte[1024];
+        int length;
+        while ((length = configIs.read(bytes)) >= 0) {
+            zipOs.write(bytes, 0, length);
+        }
+
+        zipOs.closeEntry();
+        configIs.close();
+        return jarFilePath;
     }
 }
