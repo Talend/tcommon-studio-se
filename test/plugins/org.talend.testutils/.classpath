@@ -1,6 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <classpath>
-	<classpathentry kind="src" path="src"/>
+	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
+	<classpathentry kind="con" path="org.eclipse.pde.core.requiredPlugins"/>
+	<classpathentry kind="src" path="src/"/>
 	<classpathentry exported="true" kind="lib" path="lib/assertj-core-3.5.2.jar"/>
 	<classpathentry exported="true" kind="lib" path="lib/byte-buddy-1.9.10.jar"/>
 	<classpathentry exported="true" kind="lib" path="lib/byte-buddy-agent-1.9.10.jar"/>
@@ -14,7 +16,5 @@
 	<classpathentry exported="true" kind="lib" path="lib/powermock-module-junit4-2.0.0.jar"/>
 	<classpathentry exported="true" kind="lib" path="lib/powermock-module-junit4-common-2.0.0.jar"/>
 	<classpathentry exported="true" kind="lib" path="lib/powermock-reflect-2.0.0.jar"/>
-	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
-	<classpathentry kind="con" path="org.eclipse.pde.core.requiredPlugins"/>
-	<classpathentry kind="output" path="bin"/>
+	<classpathentry kind="output" path="target/classes"/>
 </classpath>
