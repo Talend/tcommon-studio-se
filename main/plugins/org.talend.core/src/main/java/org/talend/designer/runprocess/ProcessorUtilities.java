@@ -18,7 +18,6 @@ import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
-import java.io.OutputStream;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -29,8 +28,9 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import java.util.jar.JarEntry;
+import java.util.jar.JarOutputStream;
 import java.util.zip.ZipEntry;
-import java.util.zip.ZipOutputStream;
 
 import org.apache.commons.lang.ArrayUtils;
 import org.apache.commons.lang.StringUtils;
@@ -2881,32 +2881,38 @@ public class ProcessorUtilities {
         builder.add(rootLoggerBuilder);
         builder.writeXmlConfiguration(configOs);
     }
+
+    public static void addFileToJar(String configFile, String jarFile) throws FileNotFoundException, IOException {
+        JarOutputStream jarOs = new JarOutputStream(new FileOutputStream(jarFile));
+        FileInputStream configIs = new FileInputStream(configFile);
+        JarEntry jarEntry = new JarEntry("log4j2.xml");
+        jarOs.putNextEntry(jarEntry);
+        byte[] bytes = new byte[1024];
+        int length;
+        while ((length = configIs.read(bytes)) >= 0) {
+            jarOs.write(bytes, 0, length);
+        }
+        configIs.close();
+        jarOs.closeEntry();
+        jarOs.close();
+    }
     
     /**
      * Generate a jar containing a log4j2 config file
      * 
      * @param process job for which to generate jar
-     * @param level root logger level
+     * @param rootLevel root logger level
      * @return path of the generated jar
      * @throws IOException
      */
-    public static String buildLog4jConfigJar(IProcess process, Level level) throws IOException {
+    public static String buildLog4jConfigJar(IProcess process, String rootLevel) throws IOException {
         String externalResourcesFolderPath = getJavaProjectExternalResourcesFolderPath(process);
-        File configFile = new File(externalResourcesFolderPath + "/log4j2.xml");
-        ProcessorUtilities.writeLog4j2ConfToFile(configFile, level);
-        // Put config file into a jar file
+        String configFilePath = externalResourcesFolderPath + "/log4j2.xml";
         String jarFilePath = externalResourcesFolderPath + "/talend-studio-log4j2.xml.jar";
-        ZipOutputStream zipOs = new ZipOutputStream(new FileOutputStream(jarFilePath));
-        FileInputStream configIs = new FileInputStream(configFile);
-        ZipEntry zipEntry = new ZipEntry(configFile.getAbsolutePath());
-        zipOs.putNextEntry(zipEntry);
-        byte[] bytes = new byte[1024];
-        int length;
-        while ((length = configIs.read(bytes)) >= 0) {
-            zipOs.write(bytes, 0, length);
-        }
-        zipOs.closeEntry();
-        configIs.close();
+        // Create config file
+        ProcessorUtilities.writeLog4j2ConfToFile(new File(configFilePath), Level.getLevel(rootLevel));
+        // Put config file into jar
+        ProcessorUtilities.addFileToJar(configFilePath, jarFilePath);
         return jarFilePath;
     }
 }

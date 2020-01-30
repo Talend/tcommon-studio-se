@@ -21,6 +21,8 @@ import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
 import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
@@ -32,6 +34,8 @@ import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
+import java.util.jar.JarEntry;
+import java.util.jar.JarInputStream;
 import java.util.stream.Collectors;
 
 import org.apache.logging.log4j.Level;
@@ -562,7 +566,7 @@ public class ProcessorUtilitiesTest {
     @Test
     public void testWriteLog4j2ConfToFile() throws IOException {
         String configFilePath = System.getProperty("java.io.tmpdir") + "/log4j2.xml";
-        ProcessorUtilities.writeLog4j2ConfToFile(new File(configFilePath), Level.INFO);
+        ProcessorUtilities.writeLog4j2ConfToFile(new File(configFilePath), Level.getLevel("INFO"));
         String expectedContent = "<?xml version='1.0' encoding='UTF-8'?>\n" + 
                 "<Configuration>\n" + 
                 "  <Appenders>\n" + 
@@ -578,6 +582,18 @@ public class ProcessorUtilitiesTest {
                 "</Configuration>";
         String actualContent = Files.lines(Paths.get(configFilePath), StandardCharsets.UTF_8).collect(Collectors.joining("\n"));
         assertEquals(expectedContent, actualContent);
+    }
+    
+    @Test
+    public void testAddFileToJar() throws FileNotFoundException, IOException {
+        String configFilePath = System.getProperty("java.io.tmpdir") + "/log4j2.xml";
+        String jarFilePath = System.getProperty("java.io.tmpdir") + "/log4j2.xml.jar";
+        ProcessorUtilities.addFileToJar(configFilePath, jarFilePath);
+        JarInputStream jIs = new JarInputStream(new FileInputStream(jarFilePath));
+        JarEntry entry = jIs.getNextJarEntry();
+        jIs.closeEntry();
+        jIs.close();
+        assertEquals("log4j2.xml", entry.getName());
     }
 
 }
