@@ -131,6 +131,11 @@
 		</dependency>
 		<dependency>
 			<groupId>org.talend.components</groupId>
+			<artifactId>components-netsuite-runtime_2019_2</artifactId>
+			<version>${components.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>org.talend.components</groupId>
 			<artifactId>components-marketo-runtime</artifactId>
 			<version>${components.version}</version>
 		</dependency>

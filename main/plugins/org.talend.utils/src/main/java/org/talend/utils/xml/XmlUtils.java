@@ -1,5 +1,6 @@
 // ============================================================================
 //
+
 // Copyright (C) 2006-2019 Talend Inc. - www.talend.com
 //
 // This source code is available under agreement available at
@@ -26,21 +27,36 @@ public class XmlUtils {
         return transformer;
     }
 
-    public static TransformerFactory getXmlSecureTransformerFactory() throws TransformerConfigurationException {
+    public static TransformerFactory getXmlSecureTransformerFactory() {
         TransformerFactory transFactory = TransformerFactory.newInstance();
-        transFactory.setFeature(javax.xml.XMLConstants.FEATURE_SECURE_PROCESSING, Boolean.TRUE);
+        try {
+            transFactory.setFeature(javax.xml.XMLConstants.FEATURE_SECURE_PROCESSING, Boolean.TRUE);
+        } catch (TransformerConfigurationException e) {
+            throw new RuntimeException(e);
+        }
+
+        try {
+            transFactory.setAttribute(javax.xml.XMLConstants.ACCESS_EXTERNAL_DTD, "");
+            transFactory.setAttribute(javax.xml.XMLConstants.ACCESS_EXTERNAL_STYLESHEET, "");
+        } catch (IllegalArgumentException ex) {
+            // Just catch this, as Xalan doesn't support the above
+        }
         return transFactory;
     }
 
-    public static DocumentBuilderFactory getSecureDocumentBuilderFactory() throws ParserConfigurationException {
+    public static DocumentBuilderFactory getSecureDocumentBuilderFactory() {
         return getSecureDocumentBuilderFactory(true);
     }
 
-    public static DocumentBuilderFactory getSecureDocumentBuilderFactory(boolean disAllowDoctypeDecl) throws ParserConfigurationException {
+    public static DocumentBuilderFactory getSecureDocumentBuilderFactory(boolean disAllowDoctypeDecl) {
         DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
-        factory.setFeature(XMLConstants.FEATURE_SECURE_PROCESSING, true);
-        if (disAllowDoctypeDecl) {
-            factory.setFeature("http://apache.org/xml/features/disallow-doctype-decl", true); //$NON-NLS-1$
+        try {
+            factory.setFeature(XMLConstants.FEATURE_SECURE_PROCESSING, true);
+            if (disAllowDoctypeDecl) {
+                factory.setFeature("http://apache.org/xml/features/disallow-doctype-decl", true); //$NON-NLS-1$
+            }
+        } catch (ParserConfigurationException e) {
+            throw new RuntimeException(e);
         }
         return factory;
     }

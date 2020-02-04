@@ -27,6 +27,7 @@ import org.junit.Ignore;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.TemporaryFolder;
+import org.talend.utils.io.FilesUtils;
 import org.talend.utils.sugars.ReturnCode;
 
 public class FileUtilsTest {
@@ -187,5 +188,96 @@ public class FileUtilsTest {
 
         FileUtils.deleteFiles(folder1File, null);
         assertEquals(folder1File.listFiles().length, 1);
+    }
+
+    @Test
+    public void testValidateDestPath() throws Exception {
+
+        // positive cases
+
+        String targetDir = "/c/test/";
+        String destPathStr = "/c/test/file1.txt";
+
+        try {
+            FilesUtils.validateDestPath(targetDir, destPathStr);
+        } catch (IOException e) {
+            fail("validation should not fail");
+        }
+
+        targetDir = "/c/test/";
+        destPathStr = "/c/test/test1/../file1.txt";
+
+        try {
+            FilesUtils.validateDestPath(targetDir, destPathStr);
+        } catch (IOException e) {
+            fail("validation should not fail");
+        }
+
+        targetDir = "/c/test/../test1";
+        destPathStr = "/c/test/../test1/file1.txt";
+
+        try {
+            FilesUtils.validateDestPath(targetDir, destPathStr);
+        } catch (IOException e) {
+            fail("validation should not fail");
+        }
+
+        targetDir = "/c/test/../test1";
+        destPathStr = "/c/test/../test1/test2/";
+
+        try {
+            FilesUtils.validateDestPath(targetDir, destPathStr);
+        } catch (IOException e) {
+            fail("validation should not fail");
+        }
+
+        targetDir = "";
+        destPathStr = "";
+
+        try {
+            FilesUtils.validateDestPath(targetDir, destPathStr);
+        } catch (IOException e) {
+            fail("validation should not fail");
+        }
+
+        targetDir = null;
+        destPathStr = null;
+
+        try {
+            FilesUtils.validateDestPath(targetDir, destPathStr);
+        } catch (IOException e) {
+            fail("validation should not fail");
+        }
+
+        // negative test cases
+        targetDir = "/c/test/";
+        destPathStr = "/c/test/../test1/file1.txt";
+
+        try {
+            FilesUtils.validateDestPath(targetDir, destPathStr);
+            fail("validation should not pass");
+        } catch (IOException e) {
+            assertNotNull(e);
+        }
+
+        targetDir = "/c/test/";
+        destPathStr = "/c/test2/file1.txt";
+
+        try {
+            FilesUtils.validateDestPath(targetDir, destPathStr);
+            fail("validation should not pass");
+        } catch (IOException e) {
+            assertNotNull(e);
+        }
+
+        targetDir = "/c/test/";
+        destPathStr = "/c/test2/../test3/";
+
+        try {
+            FilesUtils.validateDestPath(targetDir, destPathStr);
+            fail("validation should not pass");
+        } catch (IOException e) {
+            assertNotNull(e);
+        }
     }
 }
