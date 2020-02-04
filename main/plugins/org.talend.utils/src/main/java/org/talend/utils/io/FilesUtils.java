@@ -794,10 +794,12 @@ public final class FilesUtils {
      * @param destPathStr destination file path
      */
     public static void validateDestPath(String targetDir, String destPathStr) throws IOException {
-        Path destPath = Paths.get(destPathStr);
-        Path destPathNormalized = destPath.normalize();
-        if (!destPathNormalized.toString().startsWith(targetDir + File.separator)) {
-            throw new IOException("Invalid output path: " + destPathStr);
+        if (targetDir != null && !targetDir.isEmpty() && destPathStr != null && !destPathStr.isEmpty()) {
+            Path targetPathNormalized = Paths.get(targetDir).normalize();
+            Path destPathNormalized = Paths.get(destPathStr).normalize();
+            if (!destPathNormalized.startsWith(targetPathNormalized)) {
+                throw new IOException("Invalid output path: " + destPathStr);
+            }
         }
     }
 
