@@ -45,8 +45,7 @@ public class NetworkUtil {
     private static final String HTTP_NETWORK_URL = "https://talend-update.talend.com";
 
     public static boolean isNetworkValid() {
-        String disableInternet = System.getProperty(TALEND_DISABLE_INTERNET);
-        if ("true".equals(disableInternet)) { //$NON-NLS-1$
+        if (isDisableInternet()) {
             return false;
         }
         HttpURLConnection conn = null;
@@ -212,6 +211,14 @@ public class NetworkUtil {
             e.printStackTrace();
         } catch (UnknownHostException e) {
             e.printStackTrace();
+        }
+        return false;
+    }
+    
+    public static boolean isDisableInternet() {
+        String disableInternet = System.getProperty(TALEND_DISABLE_INTERNET);
+        if ("true".equals(disableInternet)) { //$NON-NLS-1$
+            return true;
         }
         return false;
     }
