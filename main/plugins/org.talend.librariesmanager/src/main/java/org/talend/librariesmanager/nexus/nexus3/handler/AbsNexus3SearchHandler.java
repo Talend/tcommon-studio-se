@@ -136,6 +136,9 @@ public abstract class AbsNexus3SearchHandler implements INexus3SearchHandler {
             for (int i = 0; i < assertsArray.size(); i++) {
                 JSONObject jsonObject = assertsArray.getJSONObject(i);
                 String path = jsonObject.getString("path"); //$NON-NLS-1$
+                if (path != null && path.endsWith(".exe")) { //$NON-NLS-1$
+                    return "exe"; //$NON-NLS-1$
+                }
                 if (path != null && path.endsWith(".zip")) { //$NON-NLS-1$
                     return "zip"; //$NON-NLS-1$
                 }
