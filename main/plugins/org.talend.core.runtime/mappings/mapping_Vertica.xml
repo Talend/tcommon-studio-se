@@ -79,6 +79,7 @@
 					<dbType type="VARCHAR" default="true" />
 					<dbType type="CHARACTER VARYING"/>	
 					<dbType type="UUID" />
+					<dbType type="CHAR" />
 				</talendType>
 			</talendToDbTypes>
 			<dbToTalendTypes><!-- Adviced mappings  -->

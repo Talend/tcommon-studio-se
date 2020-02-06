@@ -125,6 +125,7 @@
 					<dbType type="MULTILINESTRING" />		
 					<dbType type="TEXT" />
 					<dbType type="TINYTEXT" />
+					<dbType type="CHAR" />
 				</talendType>
 			</talendToDbTypes>
 			<dbToTalendTypes>
