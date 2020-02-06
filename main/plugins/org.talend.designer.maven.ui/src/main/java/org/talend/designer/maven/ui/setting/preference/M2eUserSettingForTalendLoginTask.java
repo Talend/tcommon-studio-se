@@ -26,8 +26,6 @@ import java.util.List;
 import java.util.Properties;
 
 import javax.xml.parsers.DocumentBuilder;
-import javax.xml.parsers.DocumentBuilderFactory;
-
 import org.apache.commons.lang3.StringUtils;
 import org.apache.maven.cli.configuration.SettingsXmlConfigurationProcessor;
 import org.apache.maven.settings.Profile;
@@ -56,6 +54,7 @@ import org.talend.designer.maven.template.MavenTemplateManager;
 import org.talend.designer.maven.ui.DesignerMavenUiPlugin;
 import org.talend.login.AbstractLoginTask;
 import org.talend.utils.io.FilesUtils;
+import org.talend.utils.xml.XmlUtils;
 import org.w3c.dom.Document;
 import org.w3c.dom.Node;
 
@@ -305,7 +304,7 @@ public class M2eUserSettingForTalendLoginTask extends AbstractLoginTask {
                 if (StringUtils.isNotBlank(mvnHome)) {
                     File globalSettings = new File(mvnHome).toPath().resolve("conf").resolve("settings.xml").toFile(); //$NON-NLS-1$ //$NON-NLS-2$
                     if (globalSettings.exists()) {
-                        DocumentBuilder builder = DocumentBuilderFactory.newInstance().newDocumentBuilder();
+                        DocumentBuilder builder = XmlUtils.getSecureDocumentBuilderFactory().newDocumentBuilder();
                         Document document = builder.parse(globalSettings);
                         Node node = document.getElementsByTagName("localRepository").item(0); //$NON-NLS-1$
                         if (node != null) {

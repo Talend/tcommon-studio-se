@@ -50,6 +50,7 @@ import org.eclipse.xsd.XSDSchema;
 import org.talend.commons.exception.ExceptionHandler;
 import org.talend.core.model.metadata.types.JavaDataTypeHelper;
 import org.talend.core.model.metadata.types.JavaTypesManager;
+import org.talend.utils.xml.XmlUtils;
 
 /**
  * This class is used to offer GUI a utility to get an tree from certain xml/xsd file.
@@ -529,12 +530,7 @@ final class XSDFileSchemaTreePopulator {
     public static ATreeNode getSchemaTree(String fileName, boolean incAttr, boolean forMDM, List<String> attList)
             throws OdaException, MalformedURLException, URISyntaxException {
         includeAttribute = incAttr;
-        DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
-        try {
-            factory.setFeature(XMLConstants.FEATURE_SECURE_PROCESSING, true);
-        } catch (ParserConfigurationException e1) {
-            e1.printStackTrace();
-        }
+        DocumentBuilderFactory factory = XmlUtils.getSecureDocumentBuilderFactory();
 
         factory.setNamespaceAware(true);
         URI uri = null;
@@ -665,7 +661,7 @@ final class XSDFileSchemaTreePopulator {
     public static ATreeNode getSchemaTree(String fileName, boolean incAttr) throws OdaException, MalformedURLException,
             URISyntaxException {
         includeAttribute = incAttr;
-        DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
+        DocumentBuilderFactory factory = XmlUtils.getSecureDocumentBuilderFactory();
         factory.setNamespaceAware(true);
         URI uri = null;
         File f = new File(fileName);
@@ -856,7 +852,7 @@ final class XSDFileSchemaTreePopulator {
     }
 
     public static XSModel getXSModel(String fileName) throws URISyntaxException, MalformedURLException {
-        DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
+        DocumentBuilderFactory factory = XmlUtils.getSecureDocumentBuilderFactory();
         factory.setNamespaceAware(true);
         URI uri = null;
         File f = new File(fileName);

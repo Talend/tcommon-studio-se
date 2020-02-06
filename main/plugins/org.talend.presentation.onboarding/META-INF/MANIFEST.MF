@@ -25,3 +25,4 @@ Export-Package: org.talend.presentation.onboarding.interfaces,
  org.talend.presentation.onboarding.ui.managers,
  org.talend.presentation.onboarding.ui.runtimedata
 Bundle-Vendor: .Talend SA.
+Import-Package: org.talend.utils.xml
