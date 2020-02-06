@@ -789,7 +789,7 @@ public class PomUtil {
     public static Document loadAssemblyFile(IProgressMonitor monitor, IFile assemblyFile)
             throws ParserConfigurationException, SAXException, IOException {
         final File file = assemblyFile.getLocation().toFile();
-        DocumentBuilderFactory dbf = DocumentBuilderFactory.newInstance();
+        DocumentBuilderFactory dbf = XmlUtils.getSecureDocumentBuilderFactory();
         DocumentBuilder db = dbf.newDocumentBuilder();
         Document document = db.parse(file);
         return document;

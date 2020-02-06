@@ -147,16 +147,6 @@ public class CreateMavenStandardJobOSGiPom extends CreateMavenJobPom {
         }
         model.setName(model.getName() + " Bundle");
         model.addProperty("talend.job.finalName", "${talend.job.name}-bundle-${project.version}");
-        Build build = model.getBuild();
-        
-        if (GlobalServiceRegister.getDefault().isServiceRegistered(IESBService.class)) {
-            IESBService service = (IESBService) GlobalServiceRegister.getDefault().getService(IESBService.class);
-
-            if (isServiceOperation || service.isRESTService((ProcessItem) getJobProcessor().getProperty().getItem())
-                    || isRouteOperation(getJobProcessor().getProperty())) {
-                build.addPlugin(addSkipDockerMavenPlugin());
-            }
-        }
         
         if (isServiceOperation) {
             model.addProperty("cloud.publisher.skip", "true");
@@ -164,7 +154,6 @@ public class CreateMavenStandardJobOSGiPom extends CreateMavenJobPom {
         } else {
             model.setPackaging("bundle");
         }
-
         return model;
     }
 

@@ -110,7 +110,7 @@ public class ClasspathsJarGenerator {
         for (String cp : classpathArray) {
             Path path = new Path(cp);
             if ((path.lastSegment().startsWith("hadoop-common") || path.lastSegment().startsWith("hadoop-mapreduce-client-core") //$NON-NLS-1$//$NON-NLS-2$
-                    || path.lastSegment().startsWith("hadoop-core")) //$NON-NLS-1$
+                    || path.lastSegment().startsWith("hadoop-core") || path.lastSegment().startsWith("commons-lang3")) //$NON-NLS-1$//$NON-NLS-2$
                     && path.lastSegment().endsWith(".jar")) { //$NON-NLS-1$
                 // files should be start with /
                 if (!isRelativePath) {

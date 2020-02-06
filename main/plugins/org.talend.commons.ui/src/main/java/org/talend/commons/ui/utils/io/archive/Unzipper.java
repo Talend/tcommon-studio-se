@@ -77,6 +77,7 @@ public class Unzipper extends AbstractUnarchiver {
             } else {
                 filePath = parentAbsolutePath + "/" + ze.getName(); //$NON-NLS-1$
             }
+            FilesUtils.validateDestPath(targetFolder, filePath);
             FilesUtils.createFoldersIfNotExists(filePath, true);
             // System.out.println("Unzipping " + ze.getName());
             FileOutputStream fout = new FileOutputStream(filePath);

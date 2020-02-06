@@ -166,28 +166,15 @@ public class ModuleListCellEditor extends DialogCellEditor {
     @Override
     protected Object openDialogBox(Control cellEditorWindow) {
         String value = (String) getValue();
-        // TODO for cConfig , keep the same dialog as before ,need esb team help to check latter
-        IElementParameter componentName = param.getElement().getElementParameter("COMPONENT_NAME");
-        if (componentName != null && "cConfig".equals(componentName.getValue())) {
-            ModuleListDialog dialog = new ModuleListDialog(cellEditorWindow.getShell(), value, this.param, false);
-            if (dialog.open() == Window.OK) {
-                String selecteModule = dialog.getSelecteModule();
-                if (selecteModule != null && (value == null || !value.equals(selecteModule) || dialog.isSelectChanged())) {
-                    setModuleValue(selecteModule, dialog.getSelectedJarPath(), dialog.getSelectedJarVersion());
+        if (GlobalServiceRegister.getDefault().isServiceRegistered(ILibraryManagerUIService.class)) {
+            ILibraryManagerUIService libUiService = (ILibraryManagerUIService) GlobalServiceRegister.getDefault().getService(
+                   ILibraryManagerUIService.class);
+            IConfigModuleDialog dialog = libUiService.getConfigModuleDialog(cellEditorWindow.getShell(), "\"newLine\"".equals(value) ? "" : value);
+            if (dialog.open() == IDialogConstants.OK_ID) {
+                String selecteModule = dialog.getModuleName();
+                if (selecteModule != null && (value == null || !value.equals(selecteModule))) {
+                    setModuleValue(selecteModule, null, null);
                     return selecteModule;
-                }
-            }
-        } else {
-            if (GlobalServiceRegister.getDefault().isServiceRegistered(ILibraryManagerUIService.class)) {
-                ILibraryManagerUIService libUiService = (ILibraryManagerUIService) GlobalServiceRegister.getDefault().getService(
-                        ILibraryManagerUIService.class);
-                IConfigModuleDialog dialog = libUiService.getConfigModuleDialog(cellEditorWindow.getShell(), value);
-                if (dialog.open() == IDialogConstants.OK_ID) {
-                    String selecteModule = dialog.getModuleName();
-                    if (selecteModule != null && (value == null || !value.equals(selecteModule))) {
-                        setModuleValue(selecteModule, null, null);
-                        return selecteModule;
-                    }
                 }
             }
         }
