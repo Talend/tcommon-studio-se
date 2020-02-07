@@ -2521,7 +2521,6 @@ public class LocalRepositoryFactory extends AbstractEMFRepositoryFactory impleme
                 break;
             case PropertiesPackage.DOCUMENTATION_ITEM:
             case PropertiesPackage.ROUTINE_ITEM:
-            case PropertiesPackage.PIGUDF_ITEM:
             case PropertiesPackage.JOB_SCRIPT_ITEM:
             case PropertiesPackage.SQL_PATTERN_ITEM:
                 itemResource = save(resourceSet, (FileItem) item);
@@ -2912,9 +2911,6 @@ public class LocalRepositoryFactory extends AbstractEMFRepositoryFactory impleme
                 break;
             case PropertiesPackage.ROUTINE_ITEM:
                 itemResource = create(project2, (FileItem) item, path, ERepositoryObjectType.ROUTINES);
-                break;
-            case PropertiesPackage.PIGUDF_ITEM:
-                itemResource = create(project2, (FileItem) item, path, ERepositoryObjectType.PIG_UDF);
                 break;
             case PropertiesPackage.JOB_SCRIPT_ITEM:
                 itemResource = create(project2, (FileItem) item, path, ERepositoryObjectType.JOB_SCRIPT);

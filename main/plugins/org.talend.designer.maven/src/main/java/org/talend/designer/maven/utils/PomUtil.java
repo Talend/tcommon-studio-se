@@ -720,12 +720,6 @@ public class PomUtil {
         String routinesModule = PomUtil.getPomFileName(TalendMavenConstants.DEFAULT_ROUTINES_ARTIFACT_ID);
         codesModules.add(routinesModule);
 
-        // PigUDFs
-        if (ProcessUtils.isRequiredPigUDFs(process)) {
-            String pigudfsModule = PomUtil.getPomFileName(TalendMavenConstants.DEFAULT_PIGUDFS_ARTIFACT_ID);
-            codesModules.add(pigudfsModule);
-        }
-
         // Beans
         if (ProcessUtils.isRequiredBeans(process)) {
             String beansModule = PomUtil.getPomFileName(TalendMavenConstants.DEFAULT_BEANS_ARTIFACT_ID);
@@ -741,9 +735,9 @@ public class PomUtil {
         codesJars.add(JavaUtils.ROUTINES_JAR);
 
         // PigUDFs
-        if (ProcessUtils.isRequiredPigUDFs(process)) {
-            codesJars.add(JavaUtils.PIGUDFS_JAR);
-        }
+//        if (ProcessUtils.isRequiredPigUDFs(process)) {
+//            codesJars.add(JavaUtils.PIGUDFS_JAR);
+//        }
 
         // Beans
         if (ProcessUtils.isRequiredBeans(process)) {

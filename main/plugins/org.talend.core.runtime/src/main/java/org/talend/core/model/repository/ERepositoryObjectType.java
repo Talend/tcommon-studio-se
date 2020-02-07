@@ -1510,9 +1510,6 @@ public class ERepositoryObjectType extends DynaEnum<ERepositoryObjectType> {
         if (beansType != null) {
             allTypes.add(beansType);
         }
-        if (ERepositoryObjectType.PIG_UDF != null) {
-            allTypes.add(ERepositoryObjectType.PIG_UDF);
-        }
         return allTypes;
     }
 

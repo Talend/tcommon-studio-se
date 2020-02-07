@@ -501,9 +501,6 @@ public class ModulesNeededProvider {
         List<ModuleNeeded> modulesNeededForRoutines = ModulesNeededProvider.getModulesNeededForRoutines(processItem,
                 ERepositoryObjectType.ROUTINES);
         modulesNeeded.addAll(modulesNeededForRoutines);
-        List<ModuleNeeded> modulesNeededForPigudf = ModulesNeededProvider.getModulesNeededForRoutines(processItem,
-                ERepositoryObjectType.PIG_UDF);
-        modulesNeeded.addAll(modulesNeededForPigudf);
         if (ComponentCategory.CATEGORY_4_CAMEL.getName().equals(process.getComponentsType())) {
             // route do not save any relateionship with beans , so add all for now
             Set<ModuleNeeded> modulesNeededForBean = ModulesNeededProvider
@@ -1057,7 +1054,6 @@ public class ModulesNeededProvider {
 
         runningModules.addAll(getCodesModuleNeededs(ERepositoryObjectType.ROUTINES, false));
         runningModules.addAll(getCodesModuleNeededs(ERepositoryObjectType.getType("BEANS"), false)); //$NON-NLS-1$
-        runningModules.addAll(getCodesModuleNeededs(ERepositoryObjectType.PIG_UDF, false));
         return runningModules;
     }
 

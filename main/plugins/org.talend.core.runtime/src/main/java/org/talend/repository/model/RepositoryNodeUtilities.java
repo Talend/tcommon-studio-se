@@ -29,7 +29,6 @@ import org.talend.commons.exception.ExceptionHandler;
 import org.talend.commons.exception.PersistenceException;
 import org.talend.commons.ui.gmf.util.DisplayUtils;
 import org.talend.core.GlobalServiceRegister;
-import org.talend.core.PluginChecker;
 import org.talend.core.hadoop.IHadoopClusterService;
 import org.talend.core.hadoop.repository.HadoopRepositoryUtil;
 import org.talend.core.model.general.Project;
@@ -929,9 +928,6 @@ public class RepositoryNodeUtilities {
         IProxyRepositoryFactory factory = CoreRuntimePlugin.getInstance().getProxyRepositoryFactory();
         try {
             List<IRepositoryViewObject> all = factory.getAll(tempProject, ERepositoryObjectType.ROUTINES);
-            if (PluginChecker.isPigudfPluginLoaded()) {
-                all.addAll(factory.getAll(tempProject, ERepositoryObjectType.PIG_UDF));
-            }
             for (IRepositoryViewObject obj : all) {
                 if (obj != null && obj.getProperty() != null) {
                     Item item = obj.getProperty().getItem();

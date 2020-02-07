@@ -109,12 +109,15 @@ public final class CodeGeneratorRoutine {
         return new ArrayList<String>(neededRoutines);
     }
 
+    /**
+     * 
+     * Deprecate for won't use pigudf any more
+     * 
+     * @param process
+     * @return
+     */
+    @Deprecated
     public static List<String> getRequiredPigudfName(IProcess process) {
-        Set<String> neededRoutines = process.getNeededPigudf();
-        if (neededRoutines != null) {
-            return new ArrayList<String>(neededRoutines);
-        } else {
-            return Collections.EMPTY_LIST;
-        }
+        return Collections.EMPTY_LIST;
     }
 }

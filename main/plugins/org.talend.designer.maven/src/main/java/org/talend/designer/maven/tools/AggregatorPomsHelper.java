@@ -171,9 +171,6 @@ public class AggregatorPomsHelper {
             @Override
             protected void run() {
                 updateCodeProject(monitor, ERepositoryObjectType.ROUTINES, forceBuild);
-                if (ProcessUtils.isRequiredPigUDFs(null)) {
-                    updateCodeProject(monitor, ERepositoryObjectType.PIG_UDF, forceBuild);
-                }
                 if (ProcessUtils.isRequiredBeans(null)) {
                     updateCodeProject(monitor, ERepositoryObjectType.valueOf("BEANS"), forceBuild); //$NON-NLS-1$
                 }
@@ -198,8 +195,6 @@ public class AggregatorPomsHelper {
         if (type != null) {
             if (ERepositoryObjectType.ROUTINES == type) {
                 createRoutinesPom(pomFile, monitor);
-            } else if (ERepositoryObjectType.PIG_UDF == type) {
-                createPigUDFsPom(pomFile, monitor);
             } else {
                 if (GlobalServiceRegister.getDefault().isServiceRegistered(ICamelDesignerCoreService.class)) {
                     ICamelDesignerCoreService service =
@@ -216,9 +211,6 @@ public class AggregatorPomsHelper {
 
     public static void updateAllCodesProjectNeededModules(IProgressMonitor monitor) {
         updateCodesProjectNeededModulesByType(ERepositoryObjectType.ROUTINES, monitor);
-        if (ProcessUtils.isRequiredPigUDFs(null)) {
-            updateCodesProjectNeededModulesByType(ERepositoryObjectType.PIG_UDF, monitor);
-        }
         if (ProcessUtils.isRequiredBeans(null)) {
             updateCodesProjectNeededModulesByType(ERepositoryObjectType.valueOf("BEANS"), monitor); //$NON-NLS-1$
         }
@@ -485,9 +477,7 @@ public class AggregatorPomsHelper {
         if (codeType == ERepositoryObjectType.ROUTINES) {
             return codesFolder.getFolder(DIR_ROUTINES);
         }
-        if (codeType == ERepositoryObjectType.PIG_UDF) {
-            return codesFolder.getFolder(DIR_PIGUDFS);
-        }
+
         if (codeType == ERepositoryObjectType.valueOf("BEANS")) { //$NON-NLS-1$
             return codesFolder.getFolder(DIR_BEANS);
         }
@@ -868,9 +858,6 @@ public class AggregatorPomsHelper {
         IRunProcessService service = getRunProcessService();
         if (service != null) {
             modules.add(getModulePath(service.getTalendCodeJavaProject(ERepositoryObjectType.ROUTINES).getProjectPom()));
-            if (ProcessUtils.isRequiredPigUDFs(null)) {
-                modules.add(getModulePath(service.getTalendCodeJavaProject(ERepositoryObjectType.PIG_UDF).getProjectPom()));
-            }
             if (ProcessUtils.isRequiredBeans(null)) {
                 modules.add(getModulePath(service.getTalendCodeJavaProject(ERepositoryObjectType.valueOf("BEANS")) //$NON-NLS-1$
                         .getProjectPom()));

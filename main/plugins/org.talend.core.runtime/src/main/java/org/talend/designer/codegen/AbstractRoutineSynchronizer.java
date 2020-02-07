@@ -364,16 +364,6 @@ public abstract class AbstractRoutineSynchronizer implements ITalendSynchronizer
 
     }
 
-    /*
-     * (non-Javadoc)
-     *
-     * @see org.talend.designer.codegen.ITalendSynchronizer#syncAllPigudf()
-     */
-    @Override
-    public void syncAllPigudf() throws SystemException {
-        // TODO Auto-generated method stub
-
-    }
 
     @Override
     public void syncAllRoutinesForLogOn() throws SystemException {
@@ -386,9 +376,6 @@ public abstract class AbstractRoutineSynchronizer implements ITalendSynchronizer
         }
     }
 
-    @Override
-    public void syncAllPigudfForLogOn() throws SystemException {
-    }
 
     @Override
     public void syncAllBeans() throws SystemException {

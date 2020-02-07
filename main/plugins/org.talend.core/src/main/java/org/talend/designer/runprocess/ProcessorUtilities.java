@@ -115,7 +115,6 @@ import org.talend.designer.core.model.utils.emf.talendfile.ProcessType;
 import org.talend.repository.ProjectManager;
 import org.talend.repository.documentation.ExportFileResource;
 import org.talend.repository.model.IProxyRepositoryFactory;
-import org.talend.repository.model.IRepositoryService;
 import org.talend.utils.io.FilesUtils;
 
 /**
@@ -527,14 +526,6 @@ public class ProcessorUtilities {
         // | TalendProcessOptionConstants.CLEAN_DATA_SETS);
 
         generateJobInfo(jobInfo, isMainJob, currentProcess, selectedProcessItem);
-        // pigudf
-        Set<String> neededpigudf = currentProcess.getNeededPigudf();
-        if (neededpigudf != null) {
-            LastGenerationInfo.getInstance().setPigudfNeededPerJob(jobInfo.getJobId(), jobInfo.getJobVersion(),
-                    neededpigudf);
-            LastGenerationInfo.getInstance().setPigudfNeededWithSubjobPerJob(jobInfo.getJobId(),
-                    jobInfo.getJobVersion(), neededpigudf);
-        }
 
         Set<String> neededRoutines = currentProcess.getNeededRoutines();
         if (neededRoutines != null) {
@@ -551,7 +542,6 @@ public class ProcessorUtilities {
         }
         // TDI-26513:For the Dynamic schema,need to check the currentProcess(job or joblet)
         checkMetadataDynamic(currentProcess, jobInfo);
-        checkUsePigUDFs(currentProcess, jobInfo);
         Set<ModuleNeeded> neededLibraries =
                 CorePlugin.getDefault().getDesignerCoreService().getNeededLibrariesForProcess(currentProcess, false);
         if (neededLibraries != null) {
@@ -603,8 +593,6 @@ public class ProcessorUtilities {
 
         // for testContainer dataSet
         generateDataSet(currentProcess, processor);
-
-        generatePigudfInfor(jobInfo, selectedProcessItem, currentProcess, processor);
 
         /*
          * Set classpath for current job. If current job include some child-jobs, the child job SHARE farther job
@@ -850,29 +838,6 @@ public class ProcessorUtilities {
                 LastGenerationInfo.getInstance().isUseDynamic(jobInfo.getJobId(), jobInfo.getJobVersion()));
         argumentsMap.put(TalendProcessArgumentConstant.ARG_NEED_RULES,
                 LastGenerationInfo.getInstance().isUseRules(jobInfo.getJobId(), jobInfo.getJobVersion()));
-        argumentsMap.put(TalendProcessArgumentConstant.ARG_NEED_PIGUDFS,
-                LastGenerationInfo.getInstance().isUsePigUDFs(jobInfo.getJobId(), jobInfo.getJobVersion()));
-    }
-
-    private static void generatePigudfInfor(JobInfo jobInfo, ProcessItem selectedProcessItem, IProcess currentProcess,
-            IProcessor processor) throws ProcessorException {
-        // generate pigudf.jar before generate code
-        // update calss path before export pigudf
-        Set<ModuleNeeded> neededModules = LastGenerationInfo.getInstance().getModulesNeededWithSubjobPerJob(
-                jobInfo.getJobId(), jobInfo.getJobVersion());
-        Set<String> pigudfNeededWithSubjobPerJob = LastGenerationInfo.getInstance().getPigudfNeededWithSubjobPerJob(
-                jobInfo.getJobId(), jobInfo.getJobVersion());
-        String pigModuleName = null;
-        if (selectedProcessItem != null && !pigudfNeededWithSubjobPerJob.isEmpty()) {
-            CorePlugin.getDefault().getRunProcessService().updateLibraries(neededModules, currentProcess);
-            IRepositoryService service = CorePlugin.getDefault().getRepositoryService();
-            pigModuleName = service.exportPigudf(processor, selectedProcessItem.getProperty(), exportConfig);
-        }
-        Set<ModuleNeeded> test = LastGenerationInfo.getInstance().getModulesNeededWithSubjobPerJob(jobInfo.getJobId(),
-                jobInfo.getJobVersion());
-        if (test != null && pigModuleName != null) {
-            test.add(new ModuleNeeded(null, pigModuleName, null, true));
-        }
     }
 
     /**
@@ -902,14 +867,6 @@ public class ProcessorUtilities {
                 ExceptionHandler.process(e);
             }
         }
-    }
-
-    private static void checkUsePigUDFs(IProcess currentProcess, JobInfo jobInfo) {
-        // FIXME, after remove all PigUDFs, won't update the cache. so comment it.
-        // if (!LastGenerationInfo.getInstance().isUsePigUDFs(jobInfo.getJobId(), jobInfo.getJobVersion())) {
-        boolean usePigUDFs = ProcessUtils.isRequiredPigUDFs(currentProcess);
-        LastGenerationInfo.getInstance().setUsePigUDFs(jobInfo.getJobId(), jobInfo.getJobVersion(), usePigUDFs);
-        // }
     }
 
     public static boolean hasMetadataDynamic(IProcess currentProcess, JobInfo jobInfo) {
@@ -1249,14 +1206,6 @@ public class ProcessorUtilities {
             }
             generateJobInfo(jobInfo, isMainJob, currentProcess, selectedProcessItem);
             TimeMeasure.step(idTimer, "generateJobInfo");
-            // pigudf
-            Set<String> neededpigudf = currentProcess.getNeededPigudf();
-            if (neededpigudf != null) {
-                LastGenerationInfo.getInstance().setPigudfNeededPerJob(jobInfo.getJobId(), jobInfo.getJobVersion(),
-                        neededpigudf);
-                LastGenerationInfo.getInstance().setPigudfNeededWithSubjobPerJob(jobInfo.getJobId(),
-                        jobInfo.getJobVersion(), neededpigudf);
-            }
 
             Set<String> neededRoutines = currentProcess.getNeededRoutines();
             if (neededRoutines != null) {
@@ -1272,7 +1221,6 @@ public class ProcessorUtilities {
                 ((IProcess2) currentProcess).setProcessModified(true);
             }
             checkMetadataDynamic(currentProcess, jobInfo);
-            checkUsePigUDFs(currentProcess, jobInfo);
 
             Set<ModuleNeeded> neededLibraries =
                     CorePlugin.getDefault().getDesignerCoreService().getNeededLibrariesForProcess(currentProcess,
@@ -1337,8 +1285,6 @@ public class ProcessorUtilities {
 
             // for testContainer dataSet
             generateDataSet(currentProcess, processor);
-
-            generatePigudfInfor(jobInfo, selectedProcessItem, currentProcess, processor);
 
             TimeMeasure.step(idTimer, "generateContextInfo");
 
@@ -1709,14 +1655,10 @@ public class ProcessorUtilities {
     static void setGenerationInfoWithChildrenJob(INode node, JobInfo jobInfo, final JobInfo subJobInfo) {
         final LastGenerationInfo generationInfo = LastGenerationInfo.getInstance();
 
-        // always check the using function for dynamic type of metadata column, PigUDF, Rules.
+        // always check the using function for dynamic type of metadata column, Rules.
         if (!generationInfo.isUseDynamic(jobInfo.getJobId(), jobInfo.getJobVersion())) {
             generationInfo.setUseDynamic(jobInfo.getJobId(), jobInfo.getJobVersion(),
                     generationInfo.isUseDynamic(subJobInfo.getJobId(), subJobInfo.getJobVersion()));
-        }
-        if (!generationInfo.isUsePigUDFs(jobInfo.getJobId(), jobInfo.getJobVersion())) {
-            generationInfo.setUsePigUDFs(jobInfo.getJobId(), jobInfo.getJobVersion(),
-                    generationInfo.isUsePigUDFs(subJobInfo.getJobId(), subJobInfo.getJobVersion()));
         }
         if (!generationInfo.isUseRules(jobInfo.getJobId(), jobInfo.getJobVersion())) {
             generationInfo.setUseRules(jobInfo.getJobId(), jobInfo.getJobVersion(),
@@ -1761,11 +1703,6 @@ public class ProcessorUtilities {
                 generationInfo.getRoutinesNeededWithSubjobPerJob(subJobInfo.getJobId(), subJobInfo.getJobVersion());
         generationInfo.getRoutinesNeededWithSubjobPerJob(jobInfo.getJobId(), jobInfo.getJobVersion()).addAll(
                 subjobRoutineModules);
-
-        Set<String> subjobPigUDFModules =
-                generationInfo.getPigudfNeededWithSubjobPerJob(subJobInfo.getJobId(), subJobInfo.getJobVersion());
-        generationInfo.getPigudfNeededWithSubjobPerJob(jobInfo.getJobId(), jobInfo.getJobVersion()).addAll(
-                subjobPigUDFModules);
 
         // tLibraryLoad modules
         Set<ModuleNeeded> subjobHighPriorityModules = generationInfo.getHighPriorityModuleNeeded(subJobInfo.getJobId(),
@@ -1994,7 +1931,6 @@ public class ProcessorUtilities {
         }
         if (service != null && service.isProjectInSvnMode()) {
             RepositoryManager.syncRoutineAndJoblet(ERepositoryObjectType.ROUTINES);
-            RepositoryManager.syncRoutineAndJoblet(ERepositoryObjectType.PIG_UDF);
         }
         // achen modify to fix 0006107
         ProcessItem pItem = null;
@@ -2046,7 +1982,6 @@ public class ProcessorUtilities {
         }
         if (service != null && service.isProjectInSvnMode()) {
             RepositoryManager.syncRoutineAndJoblet(ERepositoryObjectType.ROUTINES);
-            RepositoryManager.syncRoutineAndJoblet(ERepositoryObjectType.PIG_UDF);
         }
         // achen modify to fix 0006107
         ProcessItem pItem = null;
@@ -2083,7 +2018,6 @@ public class ProcessorUtilities {
         }
         if (service != null && service.isProjectInSvnMode()) {
             RepositoryManager.syncRoutineAndJoblet(ERepositoryObjectType.ROUTINES);
-            RepositoryManager.syncRoutineAndJoblet(ERepositoryObjectType.PIG_UDF);
         }
 
         CorePlugin.getDefault().getRunProcessService().buildCodesJavaProject(progressMonitor);
@@ -2141,7 +2075,6 @@ public class ProcessorUtilities {
         }
         if (service != null && service.isProjectInSvnMode()) {
             RepositoryManager.syncRoutineAndJoblet(ERepositoryObjectType.ROUTINES);
-            RepositoryManager.syncRoutineAndJoblet(ERepositoryObjectType.PIG_UDF);
         }
         // achen modify to fix 0006107
         JobInfo jobInfo = new JobInfo(process, context);

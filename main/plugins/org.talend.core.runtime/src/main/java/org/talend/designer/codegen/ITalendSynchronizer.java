@@ -33,10 +33,6 @@ public interface ITalendSynchronizer {
 
     void syncAllRoutinesForLogOn() throws SystemException;
 
-    void syncAllPigudf() throws SystemException;
-
-    void syncAllPigudfForLogOn() throws SystemException;
-
     void syncAllBeans() throws SystemException;
 
     void syncAllBeansForLogOn() throws SystemException;

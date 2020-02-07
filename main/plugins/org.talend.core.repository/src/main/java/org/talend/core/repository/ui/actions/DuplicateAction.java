@@ -608,8 +608,6 @@ public class DuplicateAction extends AContextualAction {
                     item = PropertiesFactory.eINSTANCE.createProcessItem();
                 } else if (repositoryType == ERepositoryObjectType.ROUTINES) {
                     item = PropertiesFactory.eINSTANCE.createRoutineItem();
-                } else if (repositoryType == ERepositoryObjectType.PIG_UDF) {
-                    item = PropertiesFactory.eINSTANCE.createPigudfItem();
                 } else if (repositoryType == ERepositoryObjectType.JOB_SCRIPT) {
                     item = PropertiesFactory.eINSTANCE.createJobScriptItem();
                 } else if (repositoryType == ERepositoryObjectType.SNIPPETS) {

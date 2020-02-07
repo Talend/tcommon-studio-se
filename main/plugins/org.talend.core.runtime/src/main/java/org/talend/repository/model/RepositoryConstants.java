@@ -123,7 +123,7 @@ public class RepositoryConstants {
         } else if (ERepositoryObjectType.getAllTypesOfProcess().contains(type) || type == ERepositoryObjectType.JOBLET
                 || type == ERepositoryObjectType.JOB_SCRIPT) {
             return CODE_ITEM_PATTERN;
-        } else if (type == ERepositoryObjectType.ROUTINES || type == ERepositoryObjectType.PIG_UDF
+        } else if (type == ERepositoryObjectType.ROUTINES
                 || "BEANS".equals(type.getType())) {
             // for bug 10356
             return ROUTINES_ITEM_PATTERN;

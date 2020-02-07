@@ -54,7 +54,6 @@ import org.talend.core.model.metadata.QueryUtil;
 import org.talend.core.model.metadata.builder.ConvertionHelper;
 import org.talend.core.model.metadata.builder.connection.MetadataTable;
 import org.talend.core.model.process.ElementParameterParser;
-import org.talend.core.model.process.ProcessUtils;
 import org.talend.core.model.properties.Item;
 import org.talend.core.model.relationship.RelationshipItemBuilder;
 import org.talend.core.model.repository.IRepositoryViewObject;
@@ -281,9 +280,6 @@ public class CoreService implements ICoreService {
             ICodeGeneratorService codeGenService = (ICodeGeneratorService) GlobalServiceRegister.getDefault().getService(
                     ICodeGeneratorService.class);
             codeGenService.createRoutineSynchronizer().syncAllRoutinesForLogOn();
-            if (ProcessUtils.isRequiredPigUDFs(null)) {
-                codeGenService.createRoutineSynchronizer().syncAllPigudfForLogOn();
-            }
         }
     }
 
