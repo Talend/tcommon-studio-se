@@ -47,7 +47,6 @@ import org.talend.core.hadoop.repository.HadoopRepositoryUtil;
 import org.talend.core.model.properties.ConnectionItem;
 import org.talend.core.model.properties.Item;
 import org.talend.core.model.properties.JobletProcessItem;
-import org.talend.core.model.properties.PigudfItem;
 import org.talend.core.model.properties.ProcessItem;
 import org.talend.core.model.properties.Property;
 import org.talend.core.model.properties.RoutineItem;
@@ -471,24 +470,7 @@ public class CopyObjectAction {
         ICodeGeneratorService codeGenService = (ICodeGeneratorService) GlobalServiceRegister.getDefault().getService(
                 ICodeGeneratorService.class);
         if (codeGenService != null) {
-            if (item instanceof PigudfItem) {
-                codeGenService.createRoutineSynchronizer().renamePigudfClass((PigudfItem) item, oldLabel);
-            } else {
-                codeGenService.createRoutineSynchronizer().renameRoutineClass(item);
-            }
-            try {
-                codeGenService.createRoutineSynchronizer().syncRoutine(item, true);
-            } catch (SystemException e) {
-                ExceptionHandler.process(e);
-            }
-        }
-    }
-
-    private void synDuplicatedPigudf(PigudfItem item, String oldLabel) {
-        ICodeGeneratorService codeGenService = (ICodeGeneratorService) GlobalServiceRegister.getDefault().getService(
-                ICodeGeneratorService.class);
-        if (codeGenService != null) {
-            codeGenService.createRoutineSynchronizer().renamePigudfClass(item, oldLabel);
+            codeGenService.createRoutineSynchronizer().renameRoutineClass(item);
             try {
                 codeGenService.createRoutineSynchronizer().syncRoutine(item, true);
             } catch (SystemException e) {

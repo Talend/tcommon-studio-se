@@ -40,7 +40,6 @@ import org.talend.core.GlobalServiceRegister;
 import org.talend.core.IService;
 import org.talend.core.model.general.Project;
 import org.talend.core.model.properties.Item;
-import org.talend.core.model.properties.PigudfItem;
 import org.talend.core.model.properties.ProcessItem;
 import org.talend.core.model.properties.ProjectReference;
 import org.talend.core.model.properties.Property;
@@ -65,10 +64,6 @@ public abstract class AbstractRoutineSynchronizer implements ITalendSynchronizer
 
     protected Collection<RoutineItem> getRoutines(boolean syncRef) throws SystemException {
         return getAll(ERepositoryObjectType.ROUTINES, syncRef);
-    }
-
-    protected Collection<RoutineItem> getAllPigudf(boolean syncRef) throws SystemException {
-        return getAll(ERepositoryObjectType.PIG_UDF, syncRef);
     }
 
     protected Collection<RoutineItem> getBeans(boolean syncRef) throws SystemException {
@@ -358,12 +353,6 @@ public abstract class AbstractRoutineSynchronizer implements ITalendSynchronizer
     // qli modified to fix the bug 5400 and 6185.
     @Override
     public abstract void renameRoutineClass(RoutineItem routineItem);
-
-    @Override
-    public void renamePigudfClass(PigudfItem routineItem, String oldLabel) {
-
-    }
-
 
     @Override
     public void syncAllRoutinesForLogOn() throws SystemException {

@@ -80,7 +80,6 @@ import org.talend.designer.maven.model.TalendJavaProjectConstants;
 import org.talend.designer.maven.model.TalendMavenConstants;
 import org.talend.designer.maven.template.MavenTemplateManager;
 import org.talend.designer.maven.tools.creator.CreateMavenBeanPom;
-import org.talend.designer.maven.tools.creator.CreateMavenPigUDFPom;
 import org.talend.designer.maven.tools.creator.CreateMavenRoutinePom;
 import org.talend.designer.maven.utils.PomIdsHelper;
 import org.talend.designer.maven.utils.PomUtil;
@@ -236,12 +235,6 @@ public class AggregatorPomsHelper {
 
     public void createRoutinesPom(IFile pomFile, IProgressMonitor monitor) throws Exception {
         CreateMavenRoutinePom createTemplatePom = new CreateMavenRoutinePom(pomFile);
-        createTemplatePom.setProjectName(projectTechName);
-        createTemplatePom.create(monitor);
-    }
-
-    public void createPigUDFsPom(IFile pomFile, IProgressMonitor monitor) throws Exception {
-        CreateMavenPigUDFPom createTemplatePom = new CreateMavenPigUDFPom(pomFile);
         createTemplatePom.setProjectName(projectTechName);
         createTemplatePom.create(monitor);
     }
