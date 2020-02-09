@@ -95,12 +95,18 @@ public class LibrariesManagerUtils {
         }
 
         for (ModuleNeeded module : nodeModulesList) {
-            if (!module.isDynamic() && module.getStatus() == ELibraryInstallStatus.NOT_INSTALLED
-                    && module.isRequired(node.getElementParameters())) {
-                updatedModules.add(module);
-            }
-
+          	if (!module.isDynamic() && module.getStatus() == ELibraryInstallStatus.NOT_INSTALLED
+                	&& module.isRequired(node.getElementParameters())) {
+        		if(node.getComponent().getName().equals("cConfig")) {
+        			if(module.getMavenURIFromConfiguration() == null) {
+        				updatedModules.add(module);
+        			};
+        		} else {
+        			updatedModules.add(module);
+        		}
+        	}
         }
+        
         return updatedModules;
     }
 }
