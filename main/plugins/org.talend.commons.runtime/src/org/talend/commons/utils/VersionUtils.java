@@ -230,10 +230,31 @@ public class VersionUtils {
      * Check if studio version < other studio version record in remote project.
      */
     public static boolean isInvalidProductVersion(String remoteFullProductVersion) {
+        return isInvalidProductVersion(getInternalVersion(), remoteFullProductVersion);
+    }
+
+    protected static boolean isInvalidProductVersion(String localProductVersion, String remoteFullProductVersion) {
         if (remoteFullProductVersion == null) {
             return false;
         }
-        return getInternalVersion().compareTo(getProductVersionWithoutBranding(remoteFullProductVersion)) < 0;
+        if (localProductVersion == null) {
+            localProductVersion = getInternalVersion();
+        }
+        String separator = "-"; //$NON-NLS-1$
+        String localSuffix = StringUtils.substringAfterLast(localProductVersion, separator);
+
+        String remoteProductVersion = getProductVersionWithoutBranding(remoteFullProductVersion);
+        String remoteSuffix = StringUtils.substringAfterLast(remoteProductVersion, separator);
+
+        String nightly = "SNAPSHOT"; //$NON-NLS-1$
+        String milestone = "M"; //$NON-NLS-1$
+        if ((localSuffix.equals(nightly) || localSuffix.startsWith(milestone))
+                && (remoteSuffix.equals(nightly) || remoteSuffix.startsWith(milestone))) {
+            // skip checking between nightly/milestone build.
+            return false;
+        }
+
+        return localProductVersion.compareTo(remoteProductVersion) < 0;
     }
 
     public static String getTalendVersion(String productVersion) {

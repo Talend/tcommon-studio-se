@@ -13,6 +13,8 @@
 package org.talend.commons.utils;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertTrue;
 
 import java.io.File;
 import java.io.FileOutputStream;
@@ -167,6 +169,34 @@ public class VersionUtilsTest {
         test = "Talend Cloud Real-Time Big Data Platform-7.3.1.20190919_1941-patch";
         result = VersionUtils.getProductVersionWithoutBranding(test);
         assertEquals(expect, result);
+    }
+
+    @Test
+    public void testIsInvalidProductVersion() {
+        // test nightly/milestone build
+        // do not check
+        assertFalse(VersionUtils.isInvalidProductVersion("7.3.1.20200201_1941-SNAPSHOT",
+                "Talend Cloud Big Data-7.3.1.20200209_1446-SNAPSHOT"));
+        assertFalse(VersionUtils.isInvalidProductVersion("7.3.1.20200201_1941-M1",
+                "Talend Cloud Big Data-7.3.1.20200209_1446-SNAPSHOT"));
+        assertFalse(
+                VersionUtils.isInvalidProductVersion("7.3.1.20200201_1941-M1", "Talend Cloud Big Data-7.3.1.20200209_1446-M2"));
+        assertFalse(VersionUtils.isInvalidProductVersion("7.3.1.20200201_1941-SNAPSHOT",
+                "Talend Cloud Big Data-7.3.1.20200209_1446-M2"));
+        // do check
+        assertTrue(VersionUtils.isInvalidProductVersion("7.3.1.20200201_1941-SNAPSHOT",
+                "Talend Cloud Big Data-7.3.1.20200209_1446-patch"));
+        assertTrue(VersionUtils.isInvalidProductVersion("7.3.1.20200201_1941-M1",
+                "Talend Cloud Big Data-7.3.1.20200209_1446-patch"));
+
+        // test release build
+        assertTrue(
+                VersionUtils.isInvalidProductVersion("7.3.1.20200201_1941", "Talend Cloud Big Data-7.3.1.20200209_1446-patch"));
+        assertTrue(VersionUtils.isInvalidProductVersion("7.3.1.20200201_1941-patch",
+                "Talend Cloud Big Data-7.3.1.20200209_1446-patch"));
+        assertFalse(
+                VersionUtils.isInvalidProductVersion("7.3.1.20200209_1941-patch", "Talend Cloud Big Data-7.3.1.20200201_1446"));
+
     }
 
     @After
