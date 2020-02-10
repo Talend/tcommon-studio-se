@@ -55,7 +55,6 @@ public class SyncChildrenSourceCodeProvider implements IBuildResourcesProvider {
 
         final IFolder mainSrcFolder = processJavaProject.getSrcFolder();
         final File targetFolder = mainSrcFolder.getLocation().toFile();
-        final File reportTargetFolder = processJavaProject.getTargetFolder().getFolder("surefire-reports").getLocation().toFile();
 
         for (Object item : dependenciesItems) {
             if (item instanceof ProcessItem) {
@@ -65,10 +64,6 @@ public class SyncChildrenSourceCodeProvider implements IBuildResourcesProvider {
                     final IFolder childSrcFolder = childJavaProject.getSrcFolder();
                     if (childSrcFolder.exists()) {
                         FileCopyUtils.syncFolder(childSrcFolder.getLocation().toFile(), targetFolder, false);
-                    }
-                    final IFolder childReportFolder = childJavaProject.getTargetFolder().getFolder("surefire-reports");
-                    if (childReportFolder.exists()) {
-                        FileCopyUtils.syncFolder(childReportFolder.getLocation().toFile(), reportTargetFolder, false);
                     }
                 }
             }
