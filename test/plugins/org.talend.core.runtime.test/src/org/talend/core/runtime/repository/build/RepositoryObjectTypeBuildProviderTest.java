@@ -280,11 +280,6 @@ public class RepositoryObjectTypeBuildProviderTest {
         }
 
         @Override
-        public Set<String> getNeededPigudf() {
-            return null;
-        }
-
-        @Override
         public int getMergelinkOrder(INode node) {
             return 0;
         }

@@ -30,19 +30,15 @@ public class LastGenerationInfo {
 
     private HashMap<String, Set<String>> routinesNeededPerJob;
 
-    private HashMap<String, Set<String>> pigudfNeededPerJob;
-
     private HashMap<String, Set<ModuleNeeded>> modulesNeededWithSubjobPerJob;
 
     private HashMap<String, Set<ModuleNeeded>> highPriorityModuleNeeded;
 
     private HashMap<String, Set<String>> routinesNeededWithSubjobPerJob;
 
-    private HashMap<String, Set<String>> pigudfNeededWithSubjobPerJob;
-
     private HashMap<String, Set<String>> contextPerJob;
 
-    private HashMap<String, Boolean> useDynamic, useRules, usedPigUDFs;
+    private HashMap<String, Boolean> useDynamic, useRules;
 
     private static LastGenerationInfo instance;
 
@@ -59,12 +55,9 @@ public class LastGenerationInfo {
         highPriorityModuleNeeded = new HashMap<>();
         lastGeneratedjobs = new HashSet<JobInfo>();
         routinesNeededPerJob = new HashMap<String, Set<String>>();
-        pigudfNeededPerJob = new HashMap<String, Set<String>>();
         routinesNeededWithSubjobPerJob = new HashMap<String, Set<String>>();
-        pigudfNeededWithSubjobPerJob = new HashMap<String, Set<String>>();
         useDynamic = new HashMap<String, Boolean>();
         useRules = new HashMap<String, Boolean>();
-        usedPigUDFs = new HashMap<String, Boolean>();
     }
 
     public static LastGenerationInfo getInstance() {
@@ -179,23 +172,6 @@ public class LastGenerationInfo {
         return this.useRules;
     }
 
-    public void setUsePigUDFs(String jobId, String jobVersion, boolean useRules) {
-        String key = this.getProcessKey(jobId, jobVersion); 
-        this.usedPigUDFs.put(key, useRules);
-    }
-
-    public boolean isUsePigUDFs(String jobId, String jobVersion) {
-        String key = this.getProcessKey(jobId, jobVersion); 
-        if (!usedPigUDFs.containsKey(key)) {
-            return false;
-        }
-        return usedPigUDFs.get(key);
-    }
-
-    public HashMap<String, Boolean> getUsePigUDFsMap() {
-        return this.usedPigUDFs;
-    }
-
     /**
      * Getter for lastMainJob.
      *
@@ -285,20 +261,6 @@ public class LastGenerationInfo {
     }
 
     /**
-     * Getter for pigudfNeededPerJob.
-     *
-     * @return the pigudfNeededPerJob
-     */
-    public Set<String> getPigudfNeededPerJob(String jobId, String jobVersion) {
-        String key = this.getProcessKey(jobId, jobVersion);
-        if (!pigudfNeededPerJob.containsKey(key)) {
-            pigudfNeededPerJob.put(key, new HashSet<String>());
-        }
-        return pigudfNeededPerJob.get(key);
-
-    }
-
-    /**
      * Sets the routinesNeededPerJob.
      *
      * @param modulesNeededPerJob the modulesNeededPerJob to set
@@ -306,16 +268,6 @@ public class LastGenerationInfo {
     public void setRoutinesNeededPerJob(String jobId, String jobVersion, Set<String> modulesNeeded) {
         String key = this.getProcessKey(jobId, jobVersion);
         routinesNeededPerJob.put(key, new HashSet<String>(modulesNeeded));
-    }
-
-    /**
-     * Sets the pigudfNeededPerJob.
-     *
-     * @param pigudfNeededPerJob the pigudfNeededPerJob to set
-     */
-    public void setPigudfNeededPerJob(String jobId, String jobVersion, Set<String> modulesNeeded) {
-        String key = this.getProcessKey(jobId, jobVersion);
-        pigudfNeededPerJob.put(key, new HashSet<String>(modulesNeeded));
     }
 
     /**
@@ -331,20 +283,6 @@ public class LastGenerationInfo {
     }
 
     /**
-     * Getter for pigudfNeededWithSubjobPerJob.
-     *
-     * @return the pigudfNeededWithSubjobPerJob
-     */
-    public Set<String> getPigudfNeededWithSubjobPerJob(String jobId, String jobVersion) {
-        String key = this.getProcessKey(jobId, jobVersion);
-        if (!pigudfNeededWithSubjobPerJob.containsKey(key)) {
-            pigudfNeededWithSubjobPerJob.put(key, new HashSet<String>());
-        }
-        return pigudfNeededWithSubjobPerJob.get(key);
-
-    }
-
-    /**
      * Sets the routinesNeededPerJob.
      *
      * @param modulesNeededPerJob the modulesNeededPerJob to set
@@ -352,16 +290,6 @@ public class LastGenerationInfo {
     public void setRoutinesNeededWithSubjobPerJob(String jobId, String jobVersion, Set<String> modulesNeeded) {
         String key = this.getProcessKey(jobId, jobVersion);
         routinesNeededWithSubjobPerJob.put(key, new HashSet<String>(modulesNeeded));
-    }
-
-    /**
-     * Sets the pigudfNeededWithSubjobPerJob.
-     *
-     * @param pigudfNeededWithSubjobPerJob the pigudfNeededWithSubjobPerJob to set
-     */
-    public void setPigudfNeededWithSubjobPerJob(String jobId, String jobVersion, Set<String> modulesNeeded) {
-        String key = this.getProcessKey(jobId, jobVersion);
-        pigudfNeededWithSubjobPerJob.put(key, new HashSet<String>(modulesNeeded));
     }
 
     public void clearModulesNeededWithSubjobPerJob() {
@@ -382,15 +310,12 @@ public class LastGenerationInfo {
     public void clean() {
         modulesNeededPerJob.clear();
         routinesNeededPerJob.clear();
-        pigudfNeededPerJob.clear();
         modulesNeededWithSubjobPerJob.clear();
         highPriorityModuleNeeded.clear();
         routinesNeededWithSubjobPerJob.clear();
-        pigudfNeededWithSubjobPerJob.clear();
         contextPerJob.clear();
 
         getUseDynamicMap().clear();
-        getUsePigUDFsMap().clear();
         getUseRulesMap().clear();
 
         lastMainJob = null;

@@ -3,6 +3,14 @@
 	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	xsi:schemaLocation="http://maven.apache.org/SETTINGS/1.0.0 http://maven.apache.org/xsd/settings-1.0.0.xsd">
 
+    <mirrors>
+        <mirror>
+            <mirrorOf>central</mirrorOf>
+            <name>Central</name>
+            <url>https://repo1.maven.org/maven2/</url>
+            <id>central</id>
+        </mirror>
+    </mirrors>
 	<!-- localRepository | The path to the local repository maven will use to 
 		store artifacts. | | Default: ${user.home}/.m2/repository -->
 	<localRepository>${user.home}/.m2/repository</localRepository>

@@ -83,7 +83,7 @@ public class BuildCacheManager {
     private Set<String> currentJobletmodules = new HashSet<>();
 
     /**
-     * routines, pigudfs, beans cache
+     * routines, beans cache
      */
     private Map<ERepositoryObjectType, Date> codesLastChangeCache = new HashMap<>();
 

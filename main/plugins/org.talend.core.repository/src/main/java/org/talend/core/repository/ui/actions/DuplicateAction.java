@@ -65,7 +65,6 @@ import org.talend.core.model.properties.ConnectionItem;
 import org.talend.core.model.properties.DatabaseConnectionItem;
 import org.talend.core.model.properties.Item;
 import org.talend.core.model.properties.JobletProcessItem;
-import org.talend.core.model.properties.PigudfItem;
 import org.talend.core.model.properties.ProcessItem;
 import org.talend.core.model.properties.PropertiesFactory;
 import org.talend.core.model.properties.Property;
@@ -608,8 +607,6 @@ public class DuplicateAction extends AContextualAction {
                     item = PropertiesFactory.eINSTANCE.createProcessItem();
                 } else if (repositoryType == ERepositoryObjectType.ROUTINES) {
                     item = PropertiesFactory.eINSTANCE.createRoutineItem();
-                } else if (repositoryType == ERepositoryObjectType.PIG_UDF) {
-                    item = PropertiesFactory.eINSTANCE.createPigudfItem();
                 } else if (repositoryType == ERepositoryObjectType.JOB_SCRIPT) {
                     item = PropertiesFactory.eINSTANCE.createJobScriptItem();
                 } else if (repositoryType == ERepositoryObjectType.SNIPPETS) {
@@ -894,11 +891,7 @@ public class DuplicateAction extends AContextualAction {
         ICodeGeneratorService codeGenService = (ICodeGeneratorService) GlobalServiceRegister.getDefault().getService(
                 ICodeGeneratorService.class);
         if (codeGenService != null) {
-            if (item instanceof PigudfItem) {
-                codeGenService.createRoutineSynchronizer().renamePigudfClass((PigudfItem) item, oldLable);
-            } else {
-                codeGenService.createRoutineSynchronizer().renameRoutineClass(item);
-            }
+            codeGenService.createRoutineSynchronizer().renameRoutineClass(item);
             try {
                 codeGenService.createRoutineSynchronizer().syncRoutine(item, true);
             } catch (SystemException e) {

@@ -81,17 +81,7 @@ public final class RepositoryManager {
         if (type == null) {
             return;
         }
-        if (type.equals(ERepositoryObjectType.PIG_UDF)) {
-            if (GlobalServiceRegister.getDefault().isServiceRegistered(ICodeGeneratorService.class)) {
-                ICodeGeneratorService codeGenService = (ICodeGeneratorService) GlobalServiceRegister.getDefault().getService(
-                        ICodeGeneratorService.class);
-                try {
-                    codeGenService.createRoutineSynchronizer().syncAllPigudf();
-                } catch (SystemException e) {
-                    ExceptionHandler.process(e);
-                }
-            }
-        } else if (type.equals(ERepositoryObjectType.ROUTINES)) {
+        if (type.equals(ERepositoryObjectType.ROUTINES)) {
             if (GlobalServiceRegister.getDefault().isServiceRegistered(ICodeGeneratorService.class)) {
                 ICodeGeneratorService codeGenService = (ICodeGeneratorService) GlobalServiceRegister.getDefault().getService(
                         ICodeGeneratorService.class);

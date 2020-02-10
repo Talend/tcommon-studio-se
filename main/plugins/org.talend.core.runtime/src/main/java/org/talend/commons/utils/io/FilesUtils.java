@@ -42,9 +42,6 @@ import java.util.Enumeration;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.zip.ZipEntry;
-import java.util.zip.ZipFile;
-
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 
@@ -665,65 +662,7 @@ public class FilesUtils {
      * @throws Exception
      */
     public static void unzip(String zipFile, String targetFolder) throws Exception {
-        Exception exception = null;
-        ZipFile zip = new ZipFile(zipFile);
-        byte[] buf = new byte[8192];
-
-        try {
-            Enumeration<ZipEntry> enumeration = (Enumeration<ZipEntry>) zip.entries();
-            while (enumeration.hasMoreElements()) {
-                ZipEntry entry = enumeration.nextElement();
-
-                File file = new File(targetFolder, entry.getName());
-
-                if (entry.isDirectory()) {
-                    if (!file.exists()) {
-                        file.mkdir();
-                    }
-                } else {
-
-                    if (!file.getParentFile().exists()) {
-                        file.getParentFile().mkdirs();
-                    }
-
-                    InputStream zin = zip.getInputStream(entry);
-                    OutputStream fout = new FileOutputStream(file);
-                    // check if parent folder exists
-                    File dir = file.getParentFile();
-                    if (dir.isDirectory() && !dir.exists()) {
-                        dir.mkdirs();
-                    }
-
-                    try {
-                        while (true) {
-                            int bytesRead = zin.read(buf);
-                            if (bytesRead == -1) { // end of file
-                                break;
-                            }
-                            fout.write(buf, 0, bytesRead);
-
-                        }
-                        fout.flush();
-                    } catch (Exception e) {
-                        exception = e;
-                        // stop looping
-                        return;
-                    } finally {
-                        zin.close();
-                        fout.close();
-                    }
-                }
-            }
-        } catch (Exception e) {
-            exception = e;
-        } finally {
-            zip.close();
-
-            if (exception != null) {
-                // notify caller with exception
-                throw exception;
-            }
-        }
+        org.talend.utils.io.FilesUtils.unzip(zipFile, targetFolder);
     }
 
     /**

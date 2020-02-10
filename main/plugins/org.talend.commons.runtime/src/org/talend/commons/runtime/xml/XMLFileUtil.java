@@ -20,18 +20,16 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 
-import javax.xml.XMLConstants;
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
 import javax.xml.transform.Transformer;
-import javax.xml.transform.TransformerConfigurationException;
 import javax.xml.transform.TransformerException;
 import javax.xml.transform.TransformerFactory;
 import javax.xml.transform.dom.DOMSource;
 import javax.xml.transform.stream.StreamResult;
 
-import org.talend.commons.exception.ExceptionHandler;
+import org.talend.utils.xml.XmlUtils;
 import org.w3c.dom.Document;
 import org.xml.sax.SAXException;
 
@@ -40,15 +38,12 @@ import org.xml.sax.SAXException;
  * DOC ggu class global comment. Detailled comment
  */
 public final class XMLFileUtil {
-	private static final TransformerFactory TRANSFORMER_FACTORY = TransformerFactory.newInstance();
-	private static final DocumentBuilderFactory DOCBUILDER_FACTORY = DocumentBuilderFactory.newInstance();
-	static {
-		try {
-			TRANSFORMER_FACTORY.setFeature(XMLConstants.FEATURE_SECURE_PROCESSING, true);
-			DOCBUILDER_FACTORY.setFeature(XMLConstants.FEATURE_SECURE_PROCESSING, true);
-		} catch (Exception ex) {
-			ExceptionHandler.process(ex);
-		}
+
+    private static final TransformerFactory TRANSFORMER_FACTORY = XmlUtils.getXmlSecureTransformerFactory();
+
+    private static final DocumentBuilderFactory DOCBUILDER_FACTORY = XmlUtils.getSecureDocumentBuilderFactory();
+
+    static {
 		DOCBUILDER_FACTORY.setNamespaceAware(true);
 	}
 

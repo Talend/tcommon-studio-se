@@ -67,7 +67,6 @@ public abstract class ShareLibrareisHelper {
                 if (filesToShare == null) {
                     return Status.CANCEL_STATUS;
                 }
-                SubMonitor mainSubMonitor = SubMonitor.convert(monitor, filesToShare.size());
 
                 // collect groupId to search
                 Set<String> groupIds = new HashSet<String>();
@@ -108,16 +107,23 @@ public abstract class ShareLibrareisHelper {
                     }
                 }
                 Iterator<ModuleNeeded> iterator = filesToShare.keySet().iterator();
+                Map<File, MavenArtifact> shareFiles = new HashMap<>();
                 while (iterator.hasNext()) {
                     if (monitor.isCanceled()) {
                         return Status.CANCEL_STATUS;
                     }
                     ModuleNeeded next = iterator.next();
                     File file = filesToShare.get(next);
-                    String name = file.getName();
                     MavenArtifact artifact = MavenUrlHelper.parseMvnUrl(next.getMavenUri());
                     if (artifact == null) {
                         continue;
+                    }
+                    try {
+                        Integer.parseInt(artifact.getType());
+                        // FIXME unexpected type if it's an integer, should fix it in component module definition.
+                        continue;
+                    } catch (NumberFormatException e) {
+                        //
                     }
                     boolean isSnapshotVersion = isSnapshotVersion(artifact.getVersion());
                     String key = getArtifactKey(artifact, isSnapshotVersion);
@@ -126,21 +132,29 @@ public abstract class ShareLibrareisHelper {
                         artifactList = snapshotArtifactMap.get(key);
                     } else {
                         artifactList = releaseArtifactMap.get(key);
-                    }
-                    mainSubMonitor.setTaskName(Messages.getString("ShareLibsJob.sharingLibraries", name));
-                    if (artifactList != null && artifactList.size() > 0) {
-                        if (isSameFileWithRemote(file, artifactList, customNexusServer)) {
-                            mainSubMonitor.worked(1);
+                        // skip checksum for release artifact.
+                        if (artifactList != null && artifactList.contains(artifact)
+                                && !Boolean.getBoolean("force_libs_release_update")) {
                             continue;
                         }
                     }
+                    if (artifactList != null && artifactList.size() > 0) {
+                        if (isSameFileWithRemote(file, artifactList, customNexusServer)) {
+                            continue;
+                        }
+                    }
+                    shareFiles.put(file, artifact);
+                }
+                SubMonitor mainSubMonitor = SubMonitor.convert(monitor, shareFiles.size());
+                shareFiles.forEach((k, v) -> {
                     try {
-                        shareToRepository(file, artifact);
+                        mainSubMonitor.setTaskName(Messages.getString("ShareLibsJob.sharingLibraries", k.getName()));
+                        shareToRepository(k, v);
                         mainSubMonitor.worked(1);
                     } catch (Exception e) {
-                        continue;
+                        ExceptionHandler.process(e);
                     }
-                }
+                });
             }
         } catch (Exception e) {
             status = new Status(IStatus.ERROR, "unknown", IStatus.ERROR, "Share libraries failed !", e);
