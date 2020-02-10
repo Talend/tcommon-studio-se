@@ -31,7 +31,7 @@ public enum EDatabaseVersion4Drivers {
     ACCESS_2007(new DbVersion4Drivers(EDatabaseTypeName.ACCESS, "Access 2007", "Access_2007")), //$NON-NLS-1$ //$NON-NLS-2$
     // oracle
     ORACLE_18(new DbVersion4Drivers(new EDatabaseTypeName[] { EDatabaseTypeName.ORACLEFORSID, EDatabaseTypeName.ORACLESN,
-            EDatabaseTypeName.ORACLE_OCI, EDatabaseTypeName.ORACLE_CUSTOM }, "Oracle 18", "ORACLE_18", "ojdbc8-12.2.0.1.jar")),
+            EDatabaseTypeName.ORACLE_OCI, EDatabaseTypeName.ORACLE_CUSTOM }, "Oracle 18 and above", "ORACLE_18", "ojdbc8-19.3.0.0.jar")),
     ORACLE_12(new DbVersion4Drivers(new EDatabaseTypeName[] { EDatabaseTypeName.ORACLEFORSID, EDatabaseTypeName.ORACLESN,
             EDatabaseTypeName.ORACLE_OCI, EDatabaseTypeName.ORACLE_CUSTOM }, "Oracle 12", "ORACLE_12", "ojdbc7.jar")),
     ORACLE_11(new DbVersion4DriversForOracle11(new EDatabaseTypeName[] { EDatabaseTypeName.ORACLEFORSID,
@@ -78,7 +78,7 @@ public enum EDatabaseVersion4Drivers {
     // MYSQL, add for 9594
     MYSQL_8(new DbVersion4Drivers(EDatabaseTypeName.MYSQL, "MySQL 8", "MYSQL_8", "mysql-connector-java-8.0.18.jar")), //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
     MYSQL_5(new DbVersion4Drivers(EDatabaseTypeName.MYSQL, "MySQL 5", "MYSQL_5", "mysql-connector-java-5.1.30-bin.jar")), //$NON-NLS-1$  //$NON-NLS-2$ //$NON-NLS-3$
-    MARIADB(new DbVersion4Drivers(EDatabaseTypeName.MYSQL, "MariaDB", "MARIADB", "mariadb-java-client-1.1.7.jar")), //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+    MARIADB(new DbVersion4Drivers(EDatabaseTypeName.MYSQL, "MariaDB", "MARIADB", "mariadb-java-client-2.5.3.jar")), //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
     // add for 9594
     MSSQL(new DbVersion4Drivers(EDatabaseTypeName.MSSQL,"Open source JTDS", "JTDS", "jtds-1.3.1-patch-20190523.jar")), //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
     MSSQL_2012(new DbVersion4Drivers(EDatabaseTypeName.MSSQL,
@@ -86,7 +86,7 @@ public enum EDatabaseVersion4Drivers {
     MSSQL_PROP(new DbVersion4Drivers(EDatabaseTypeName.MSSQL,
             "Microsoft", "MSSQL_PROP", "mssql-jdbc.jar")), //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
 
-    VERTICA_9(new DbVersion4Drivers(EDatabaseTypeName.VERTICA, "VERTICA 9.X", "VERTICA_9_X", "vertica-jdbc-9.3.1-0.jar")), //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+    VERTICA_9(new DbVersion4Drivers(EDatabaseTypeName.VERTICA, "VERTICA 9.X", "VERTICA_9_0", "vertica-jdbc-9.3.1-0.jar")), //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
     VERTICA_7(new DbVersion4Drivers(EDatabaseTypeName.VERTICA, "VERTICA 7.0.x", "VERTICA_7_0_X", "vertica-jdbc-7.0.1-0.jar")), //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
     VERTICA_6_1_X(new DbVersion4Drivers(EDatabaseTypeName.VERTICA, "VERTICA 6.1.x", "VERTICA_6_1_X", "vertica-jdk5-6.1.2-0.jar")), //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
     VERTICA_6(new DbVersion4Drivers(EDatabaseTypeName.VERTICA, "VERTICA 6.0", "VERTICA_6_0", "vertica-jdk5-6.0.0-0.jar")), //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
