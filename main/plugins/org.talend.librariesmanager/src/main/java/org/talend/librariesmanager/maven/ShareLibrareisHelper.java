@@ -149,21 +149,21 @@ public abstract class ShareLibrareisHelper {
                     shareFiles.put(file, artifact);
                 }
                 SubMonitor mainSubMonitor = SubMonitor.convert(monitor, shareFiles.size());
-                shareFiles.forEach((k, v) -> {
+                for (Map.Entry<File, MavenArtifact> entry : shareFiles.entrySet()) {
+                    checkCancel(monitor);
                     try {
-                        checkCancel(monitor);
+                        File k = entry.getKey();
+                        MavenArtifact v = entry.getValue();
                         mainSubMonitor.setTaskName(Messages.getString("ShareLibsJob.sharingLibraries", k.getName()));
                         shareToRepository(k, v);
                         mainSubMonitor.worked(1);
                     } catch (Exception e) {
                         ExceptionHandler.process(e);
                     }
-                });
-                if (monitor.isCanceled()) {
-                    return Status.CANCEL_STATUS;
                 }
             }
         } catch (InterruptedException e) {
+            ExceptionHandler.process(e);
             status = Status.CANCEL_STATUS;
         } catch (Exception e) {
             status = new Status(IStatus.ERROR, "unknown", IStatus.ERROR, "Share libraries failed !", e);
