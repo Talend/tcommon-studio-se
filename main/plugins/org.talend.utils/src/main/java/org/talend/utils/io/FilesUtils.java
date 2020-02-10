@@ -28,6 +28,8 @@ import java.io.OutputStream;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.Enumeration;
 import java.util.List;
@@ -728,7 +730,7 @@ public final class FilesUtils {
                 ZipEntry entry = enumeration.nextElement();
 
                 File file = new File(targetFolder, entry.getName());
-
+                validateDestPath(targetFolder, file.getPath());
                 boolean exist = file.exists();
                 if (entry.isDirectory()) {
                     if (!exist) {
@@ -781,6 +783,22 @@ public final class FilesUtils {
             if (exception != null) {
                 // notify caller with exception
                 throw exception;
+            }
+        }
+    }
+
+    /**
+     * Validates whether destPathStr is inside targetDir or not.
+     * 
+     * @param targetDir target directory
+     * @param destPathStr destination file path
+     */
+    public static void validateDestPath(String targetDir, String destPathStr) throws IOException {
+        if (targetDir != null && !targetDir.isEmpty() && destPathStr != null && !destPathStr.isEmpty()) {
+            Path targetPathNormalized = Paths.get(targetDir).normalize();
+            Path destPathNormalized = Paths.get(destPathStr).normalize();
+            if (!destPathNormalized.startsWith(targetPathNormalized)) {
+                throw new IOException("Invalid output path: " + destPathStr);
             }
         }
     }

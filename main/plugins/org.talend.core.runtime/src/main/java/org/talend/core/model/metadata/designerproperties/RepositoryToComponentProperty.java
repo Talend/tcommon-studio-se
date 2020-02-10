@@ -21,6 +21,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
+import org.apache.commons.lang3.StringUtils;
 import org.eclipse.core.runtime.Path;
 import org.eclipse.emf.common.util.EList;
 import org.talend.commons.ui.runtime.exception.ExceptionHandler;
@@ -998,6 +999,11 @@ public class RepositoryToComponentProperty {
             if (isContextMode(connection, connection.getCdcTypeMode())) {
                 return connection.getCdcTypeMode();
             } else {
+                String version = connection.getDbVersionString();
+                if (EDatabaseVersion4Drivers.ORACLE_18.name().equals(version)) {
+                    if (StringUtils.equals(CDCTypeMode.LOG_MODE.getName(), connection.getCdcTypeMode()))
+                        return CDCTypeMode.LOG_UNSUPPORTED_MODE.getName();
+                }
                 return connection.getCdcTypeMode();
             }
         }

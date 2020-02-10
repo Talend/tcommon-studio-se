@@ -29,6 +29,7 @@ import java.util.jar.JarOutputStream;
 import org.apache.tools.zip.ZipEntry;
 import org.apache.tools.zip.ZipFile;
 import org.talend.commons.ui.runtime.exception.ExceptionHandler;
+import org.talend.utils.io.FilesUtils;
 
 public class ZipFileUtils {
 
@@ -127,7 +128,7 @@ public class ZipFileUtils {
             for (Enumeration entries = zipFile.getEntries(); entries.hasMoreElements();) {
                 ZipEntry entry = (ZipEntry) entries.nextElement();
                 destFile = new File(destFileName, entry.getName());
-
+                FilesUtils.validateDestPath(destFileName, destFile.getPath());
                 unZipFile(destFile, zipFile, entry);
             }
         } catch (Exception e) {

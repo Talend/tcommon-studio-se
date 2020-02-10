@@ -15,7 +15,6 @@ package org.talend.designer.codegen;
 import org.eclipse.core.resources.IFile;
 import org.talend.commons.exception.SystemException;
 import org.talend.core.model.properties.Item;
-import org.talend.core.model.properties.PigudfItem;
 import org.talend.core.model.properties.RoutineItem;
 import org.talend.core.model.repository.IRepositoryViewObject;
 
@@ -32,10 +31,6 @@ public interface ITalendSynchronizer {
     void syncAllRoutines() throws SystemException;
 
     void syncAllRoutinesForLogOn() throws SystemException;
-
-    void syncAllPigudf() throws SystemException;
-
-    void syncAllPigudfForLogOn() throws SystemException;
 
     void syncAllBeans() throws SystemException;
 
@@ -55,8 +50,6 @@ public interface ITalendSynchronizer {
     void forceSyncRoutine(RoutineItem routineItem);
 
     abstract void renameRoutineClass(RoutineItem routineItem);
-
-    abstract void renamePigudfClass(PigudfItem routineItem, String oldLabel);
 
     void deleteRoutinefile(IRepositoryViewObject objToDelete);
 

@@ -13,6 +13,7 @@
 package org.talend.designer.maven.aether;
 
 import java.io.File;
+import java.io.FileNotFoundException;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -26,10 +27,16 @@ import org.eclipse.aether.deployment.DeployRequest;
 import org.eclipse.aether.repository.Authentication;
 import org.eclipse.aether.repository.LocalRepository;
 import org.eclipse.aether.repository.RemoteRepository;
+import org.eclipse.aether.repository.RepositoryPolicy;
+import org.eclipse.aether.resolution.ArtifactRequest;
+import org.eclipse.aether.resolution.ArtifactResolutionException;
+import org.eclipse.aether.resolution.ArtifactResult;
 import org.eclipse.aether.util.artifact.SubArtifact;
 import org.eclipse.aether.util.listener.ChainedRepositoryListener;
 import org.eclipse.aether.util.listener.ChainedTransferListener;
 import org.eclipse.aether.util.repository.AuthenticationBuilder;
+import org.talend.commons.CommonsPlugin;
+import org.talend.commons.exception.ExceptionHandler;
 import org.talend.designer.maven.aether.util.MavenLibraryResolverProvider;
 import org.talend.designer.maven.aether.util.TalendAetherProxySelector;
 
@@ -92,6 +99,47 @@ public class RepositorySystemFactory {
         deployRequest.setRepository(distRepo);
 
         system.deploy(session, deployRequest);
+    }
+
+    public static File resolve(String localRepository, String repositoryId, String repositoryUrl, String userName,
+            String password, String groupId, String artifactId, String classifier, String extension, String version)
+            throws Exception {
+        DefaultRepositorySystemSession session = null;
+        RepositorySystem system = MavenLibraryResolverProvider.newRepositorySystem();
+        session = newRepositorySystemSession(localRepository);
+
+        ArtifactRequest resolveRequest = new ArtifactRequest();
+        Artifact jarArtifact = new DefaultArtifact(groupId, artifactId, classifier, extension, version);
+        resolveRequest.setArtifact(jarArtifact);
+
+        Authentication auth = new AuthenticationBuilder().addUsername(userName).addPassword(password).build();
+        RepositoryPolicy defaultPolicy = new RepositoryPolicy();
+        RepositoryPolicy snapshotPolicy = new RepositoryPolicy(true, RepositoryPolicy.UPDATE_POLICY_ALWAYS,
+                defaultPolicy.getChecksumPolicy());
+
+        RemoteRepository distRepo = new RemoteRepository.Builder(repositoryId, "default", repositoryUrl).setAuthentication(auth)
+                .setSnapshotPolicy(snapshotPolicy).build();
+        distRepo = new RemoteRepository.Builder(distRepo).setProxy(new TalendAetherProxySelector().getProxy(distRepo)).build();
+
+        resolveRequest.addRepository(distRepo);
+
+        try {
+            ArtifactResult result = system.resolveArtifact(session, resolveRequest);
+            if (result.isResolved()) {
+                return result.getArtifact().getFile();
+            } else {
+                return null;
+            }
+        } catch (ArtifactResolutionException ae) {
+            if (ae.getResult().isMissing()) {
+                if (CommonsPlugin.isDebugMode()) {
+                    ExceptionHandler.process(ae);
+                }
+                throw new FileNotFoundException(ae.getMessage());
+            } else {
+                throw ae;
+            }
+        }
     }
 
     public static void deploy(File content, String localRepository, String repositoryId, String repositoryUrl, String userName,

@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?eclipse version="3.4"?>
+<plugin>   
+      <extension
+         point="org.talend.core.runtime.librariesNeeded">
+      <libraryNeeded
+              context="plugin:org.talend.libraries.dom4j-jaxen"
+              id="dom4j-2.1.1.jar"
+              mvn_uri="mvn:org.dom4j/dom4j/2.1.1"
+              name="dom4j-2.1.1.jar"
+              required="true"
+              uripath="platform:/plugin/org.talend.libraries.dom4j-jaxen/lib/dom4j-2.1.1.jar">
+      </libraryNeeded>
+      <libraryNeeded
+              context="plugin:org.talend.libraries.dom4j-jaxen"
+              id="jaxen-1.1.6.jar"
+              mvn_uri="mvn:jaxen/jaxen/1.1.6"
+              name="jaxen-1.1.6.jar"
+              required="true"
+              uripath="platform:/plugin/org.talend.libraries.dom4j-jaxen/lib/jaxen-1.1.6.jar">
+      </libraryNeeded>
+    </extension>
+</plugin>

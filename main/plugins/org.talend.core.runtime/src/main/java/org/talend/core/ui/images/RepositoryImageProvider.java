@@ -44,8 +44,6 @@ public class RepositoryImageProvider {
             return ECoreImage.CODE_ICON;
         } else if (type == ERepositoryObjectType.ROUTINES) {
             return ECoreImage.ROUTINE_ICON;
-        } else if (type == ERepositoryObjectType.PIG_UDF) {
-            return ECoreImage.ROUTINE_ICON;
         } else if (type == ERepositoryObjectType.JOB_SCRIPT) {
             return ECoreImage.JOB_SCRIPTS_ICON;
         } else if (type == ERepositoryObjectType.SNIPPETS) {

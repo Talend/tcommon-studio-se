@@ -106,8 +106,6 @@ public class PluginChecker {
 
     private static final String MDM_BOS_PLUGIN_ID = "org.talend.mdm.bos";//$NON-NLS-1$
 
-    private static final String PIGUDF_PLUGIN_ID = "org.talend.repository.pigudf";//$NON-NLS-1$
-
     public static final String APACHE_FELIX_GOGO_RUNTIME_PLUGIN_ID = "org.apache.felix.gogo.runtime"; //$NON-NLS-1$
 
     public static final String EXPORT_ROUTE_PLUGIN_ID = "org.talend.resources.export.route"; //$NON-NLS-1$
@@ -124,7 +122,19 @@ public class PluginChecker {
 
     public static final String ESBSE_PLUGIN_ID = "org.talend.camel.designer"; //$NON-NLS-1$
 
+    public static final String ESBEE_PLUGIN_ID = "org.talend.resources.apidesigner"; //$NON-NLS-1$
+
+    public static final String BDEE_PLUGIN_ID = "org.talend.designer.bigdata"; //$NON-NLS-1$
+
     public static final String DOCKER_PLUGIN_ID = "org.talend.designer.docker"; //$NON-NLS-1$
+
+    public static final String HELP_DI_EE_PLUGIN_ID = "org.talend.help.dataprep"; //$NON-NLS-1$
+
+    public static final String HELP_BD_PLUGIN_ID = "org.talend.help.marklogic"; //$NON-NLS-1$
+
+    public static final String HELP_ESB_PLUGIN_ID = "org.talend.esb.help"; //$NON-NLS-1$
+
+    public static final String HELP_PLUGIN_ID = "org.talend.help"; //$NON-NLS-1$
 
     /**
      * Check if specific plug-in is loaded.
@@ -332,10 +342,6 @@ public class PluginChecker {
 
     public static boolean isAutoParalelPluginLoaded() {
         return isPluginLoaded(PARALEL_PLUGIN_ID);
-    }
-
-    public static boolean isPigudfPluginLoaded() {
-        return isPluginLoaded(PIGUDF_PLUGIN_ID);
     }
 
     public static boolean isBPMloaded() {

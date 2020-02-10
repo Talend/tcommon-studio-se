@@ -29,6 +29,7 @@ public final class PropertyConstants {
         LOG_MODE("LOG"), //$NON-NLS-1$
         TRIGGER_MODE("TRIGGER"), //$NON-NLS-1$
         XSTREAM_MODE("XSTREAM"), //$NON-NLS-1$
+        LOG_UNSUPPORTED_MODE("LOG_UNSUPPORTED"),//$NON-NLS-1$
         ;
 
         private String value;

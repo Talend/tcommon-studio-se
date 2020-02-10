@@ -76,9 +76,6 @@ public class ProcessorUtilitiesTest {
         assertFalse(generationInfo.isUseDynamic(jobInfo.getJobId(), jobInfo.getJobVersion()));
         assertFalse(generationInfo.isUseDynamic(childJobInfo.getJobId(), childJobInfo.getJobVersion()));
 
-        assertFalse(generationInfo.isUsePigUDFs(jobInfo.getJobId(), jobInfo.getJobVersion()));
-        assertFalse(generationInfo.isUsePigUDFs(childJobInfo.getJobId(), childJobInfo.getJobVersion()));
-
         assertFalse(generationInfo.isUseRules(jobInfo.getJobId(), jobInfo.getJobVersion()));
         assertFalse(generationInfo.isUseRules(childJobInfo.getJobId(), childJobInfo.getJobVersion()));
     }
@@ -106,16 +103,13 @@ public class ProcessorUtilitiesTest {
 
         // set false for main job, true for children job
         generationInfo.setUseDynamic(jobInfo.getJobId(), jobInfo.getJobVersion(), false);
-        generationInfo.setUsePigUDFs(jobInfo.getJobId(), jobInfo.getJobVersion(), false);
         generationInfo.setUseRules(jobInfo.getJobId(), jobInfo.getJobVersion(), false);
         generationInfo.setUseDynamic(childJobInfo.getJobId(), childJobInfo.getJobVersion(), true);
-        generationInfo.setUsePigUDFs(childJobInfo.getJobId(), childJobInfo.getJobVersion(), true);
         generationInfo.setUseRules(childJobInfo.getJobId(), childJobInfo.getJobVersion(), true);
 
         ProcessorUtilities.setGenerationInfoWithChildrenJob(null, jobInfo, childJobInfo);
 
         assertTrue(generationInfo.isUseDynamic(jobInfo.getJobId(), jobInfo.getJobVersion()));
-        assertTrue(generationInfo.isUsePigUDFs(jobInfo.getJobId(), jobInfo.getJobVersion()));
         assertTrue(generationInfo.isUseRules(jobInfo.getJobId(), jobInfo.getJobVersion()));
     }
 
@@ -128,16 +122,13 @@ public class ProcessorUtilitiesTest {
 
         // set false for main job, false for children job
         generationInfo.setUseDynamic(jobInfo.getJobId(), jobInfo.getJobVersion(), false);
-        generationInfo.setUsePigUDFs(jobInfo.getJobId(), jobInfo.getJobVersion(), false);
         generationInfo.setUseRules(jobInfo.getJobId(), jobInfo.getJobVersion(), false);
         generationInfo.setUseDynamic(childJobInfo.getJobId(), childJobInfo.getJobVersion(), false);
-        generationInfo.setUsePigUDFs(childJobInfo.getJobId(), childJobInfo.getJobVersion(), false);
         generationInfo.setUseRules(childJobInfo.getJobId(), childJobInfo.getJobVersion(), false);
 
         ProcessorUtilities.setGenerationInfoWithChildrenJob(null, jobInfo, childJobInfo);
 
         assertFalse(generationInfo.isUseDynamic(jobInfo.getJobId(), jobInfo.getJobVersion()));
-        assertFalse(generationInfo.isUsePigUDFs(jobInfo.getJobId(), jobInfo.getJobVersion()));
         assertFalse(generationInfo.isUseRules(jobInfo.getJobId(), jobInfo.getJobVersion()));
     }
 
@@ -150,24 +141,20 @@ public class ProcessorUtilitiesTest {
 
         // set true for main job, false for children job
         generationInfo.setUseDynamic(jobInfo.getJobId(), jobInfo.getJobVersion(), true);
-        generationInfo.setUsePigUDFs(jobInfo.getJobId(), jobInfo.getJobVersion(), true);
         generationInfo.setUseRules(jobInfo.getJobId(), jobInfo.getJobVersion(), true);
         generationInfo.setUseDynamic(childJobInfo.getJobId(), childJobInfo.getJobVersion(), false);
-        generationInfo.setUsePigUDFs(childJobInfo.getJobId(), childJobInfo.getJobVersion(), false);
         generationInfo.setUseRules(childJobInfo.getJobId(), childJobInfo.getJobVersion(), false);
 
         ProcessorUtilities.setGenerationInfoWithChildrenJob(null, jobInfo, childJobInfo);
 
         // if true, will be true always
         assertTrue(generationInfo.isUseDynamic(jobInfo.getJobId(), jobInfo.getJobVersion()));
-        assertTrue(generationInfo.isUsePigUDFs(jobInfo.getJobId(), jobInfo.getJobVersion()));
         assertTrue(generationInfo.isUseRules(jobInfo.getJobId(), jobInfo.getJobVersion()));
     }
 
     private void assertEmptyModules(JobInfo jobInfo) {
         assertTrue(generationInfo.getModulesNeededWithSubjobPerJob(jobInfo.getJobId(), jobInfo.getJobVersion()).isEmpty());
         assertTrue(generationInfo.getRoutinesNeededPerJob(jobInfo.getJobId(), jobInfo.getJobVersion()).isEmpty());
-        assertTrue(generationInfo.getPigudfNeededPerJob(jobInfo.getJobId(), jobInfo.getJobVersion()).isEmpty());
     }
 
     private INode createSubJobNode(boolean dynamicJob, boolean independent) {
@@ -183,8 +170,6 @@ public class ProcessorUtilitiesTest {
         generationInfo.setModulesNeededWithSubjobPerJob(childJobInfo.getJobId(), childJobInfo.getJobVersion(), subjobModules);
         generationInfo.setRoutinesNeededWithSubjobPerJob(childJobInfo.getJobId(), childJobInfo.getJobVersion(),
                 new HashSet<String>(Arrays.asList(new String[] { "core-1.0.jar", "abc_2.1.jar" })));
-        generationInfo.setPigudfNeededWithSubjobPerJob(childJobInfo.getJobId(), childJobInfo.getJobVersion(),
-                new HashSet<String>(Arrays.asList(new String[] { "pigudf-0.2.jar" })));
     }
 
     private void assertJobModules(JobInfo jobInfo) {
@@ -203,10 +188,6 @@ public class ProcessorUtilitiesTest {
         assertTrue(routineModules.contains("core-1.0.jar"));
         assertTrue(routineModules.contains("abc_2.1.jar"));
 
-        final Set<String> pigudfModules = generationInfo.getPigudfNeededWithSubjobPerJob(jobInfo.getJobId(),
-                jobInfo.getJobVersion());
-        assertEquals(1, pigudfModules.size());
-        assertTrue(pigudfModules.contains("pigudf-0.2.jar"));
     }
 
     @Test

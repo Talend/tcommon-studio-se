@@ -274,14 +274,6 @@ public abstract class AbstractMavenProcessorPom extends CreateMavenBundleTemplat
         Dependency routinesDependency = PomUtil.createDependency(routinesGroupId, routinesArtifactId, codeVersion, null);
         dependencies.add(routinesDependency);
 
-        // pigudfs
-        if (ProcessUtils.isRequiredPigUDFs(jobProcessor.getProcess())) {
-            String pigudfsGroupId = PomIdsHelper.getCodesGroupId(projectTechName, TalendMavenConstants.DEFAULT_PIGUDF);
-            String pigudfsArtifactId = TalendMavenConstants.DEFAULT_PIGUDFS_ARTIFACT_ID;
-            Dependency pigudfsDependency = PomUtil.createDependency(pigudfsGroupId, pigudfsArtifactId, codeVersion, null);
-            dependencies.add(pigudfsDependency);
-        }
-
         // beans
         if (ProcessUtils.isRequiredBeans(jobProcessor.getProcess())) {
             String beansGroupId = PomIdsHelper.getCodesGroupId(projectTechName, TalendMavenConstants.DEFAULT_BEAN);

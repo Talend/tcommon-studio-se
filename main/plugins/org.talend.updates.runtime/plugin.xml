@@ -35,7 +35,7 @@
          </command>
       </menuContribution>
    </extension>
-
+   
    <extension
          point="org.talend.updates.runtime.extraUpdatesFactory">
       <factory
@@ -53,6 +53,12 @@
             id="org.talend.updates.TOSDynamicExtraFeaturesFactory"
             name="TOS Dynamic ExtraFeatures Factory">
       </factory>
+      <factory
+            class="org.talend.updates.runtime.engine.factory.ComponentsNexusInstallFactory"
+            desciption="Install components from Nexus"
+            id="org.talend.updates.ComponentsNexusInstallFactory"
+            name="Components ">
+      </factory>
    </extension>
    <extension
          point="org.talend.core.repository.login.task">
@@ -64,12 +70,14 @@
             class="org.talend.updates.runtime.login.CleanupDropBundlesLoginTask"
             priority="lowest">
       </loginTask>
-   </extension>
-   <extension
-         point="org.eclipse.core.runtime.preferences">
-      <initializer
-            class="org.talend.updates.runtime.preference.UpdatesRuntimeInitializer">
-      </initializer>
+      <loginTask
+            class="org.talend.updates.runtime.login.DeployComponentsToLocalNexusLoginTask"
+            priority="normal">
+      </loginTask>
+      <loginTask
+            class="org.talend.updates.runtime.login.InstallLocalNexusComponentsLoginTask"
+            priority="normal">
+      </loginTask>
    </extension>
    <extension
          point="org.talend.core.runtime.service">

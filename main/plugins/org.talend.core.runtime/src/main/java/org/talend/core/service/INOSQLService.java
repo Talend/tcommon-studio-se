@@ -30,5 +30,5 @@ public interface INOSQLService extends IService {
 
     public String getMongoDBReplicaSets(Connection connection);
 
-
+    public boolean updateNoSqlConnection(Connection connection)  throws Exception;
 }

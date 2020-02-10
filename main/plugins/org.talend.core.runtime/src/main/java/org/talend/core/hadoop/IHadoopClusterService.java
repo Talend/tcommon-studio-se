@@ -14,6 +14,7 @@ package org.talend.core.hadoop;
 
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 
 import org.eclipse.core.runtime.IPath;
 import org.talend.commons.exception.BusinessException;
@@ -233,11 +234,12 @@ public interface IHadoopClusterService extends IService {
      */
     public Item getHadoopClusterItemById(String id);
 
-    public String getCustomConfsJarName(String id);
+    public Optional<HadoopConfJarBean> getCustomConfsJar(String id);
 
-    public String getCustomConfsJarName(String id, boolean createJarIfNotExist, boolean addExtraIds);
+    public Optional<HadoopConfJarBean> getCustomConfsJar(String id, boolean createJarIfNotExist, boolean addExtraIds);
 
-    public String getCustomConfsJarName(ConnectionItem connectionItem, boolean createJarIfNotExist, boolean addExtraIds);
+    public Optional<HadoopConfJarBean> getCustomConfsJar(ConnectionItem connectionItem, boolean createJarIfNotExist,
+            boolean addExtraIds);
 
     public void useCustomConfsJarIfNeeded(List<ModuleNeeded> modulesNeeded, String clusterId);
 
