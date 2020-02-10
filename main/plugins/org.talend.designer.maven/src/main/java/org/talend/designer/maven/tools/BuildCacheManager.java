@@ -225,7 +225,6 @@ public class BuildCacheManager {
 
                 String goal = (String) argumentsMap.get(TalendProcessArgumentConstant.ARG_GOAL);
                 MavenPomCommandLauncher mavenLauncher = new MavenPomCommandLauncher(pomFile, goal);
-                mavenLauncher.setSkipTests(true);
                 mavenLauncher.setArgumentsMap(argumentsMap);
                 mavenLauncher.execute(monitor);
             } finally {

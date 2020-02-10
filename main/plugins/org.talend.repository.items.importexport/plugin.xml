@@ -19,5 +19,9 @@
             id="org.talend.repository.items.importexport.handlers.exports.SyncChildrenSourceCodeProvider"
             provider="org.talend.repository.items.importexport.handlers.exports.SyncChildrenSourceCodeProvider">
       </resourcesProvider>
+      <resourcesProvider
+            id="org.talend.repository.items.importexport.handlers.exports.SyncChildrenTestReportsProvider"
+            provider="org.talend.repository.items.importexport.handlers.exports.SyncChildrenTestReportsProvider">
+      </resourcesProvider>
    </extension>
 </plugin>
