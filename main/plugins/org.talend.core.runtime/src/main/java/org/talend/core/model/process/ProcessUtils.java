@@ -60,7 +60,6 @@ import org.talend.designer.core.model.utils.emf.talendfile.RoutinesParameterType
 import org.talend.designer.runprocess.ItemCacheManager;
 import org.talend.repository.ProjectManager;
 import org.talend.repository.model.IProxyRepositoryFactory;
-import org.talend.repository.model.IProxyRepositoryService;
 
 /**
  * DOC bqian class global comment. Detailled comment
@@ -906,55 +905,6 @@ public final class ProcessUtils {
             }
         }
         return needBeans && GlobalServiceRegister.getDefault().isServiceRegistered(IESBService.class);
-    }
-
-    public static boolean isRequiredPigUDFs(IProcess process) {
-        return isRequiredPigUDFs(process, ProjectManager.getInstance().getCurrentProject());
-    }
-
-    public static boolean isRequiredPigUDFs(IProcess process, Project project) {
-        boolean needPigUDF = false;
-        if (process == null) {
-            needPigUDF = true; // only check have the pigudf items.
-        } else {
-            if (process instanceof IProcess2) {
-                Property property = ((IProcess2) process).getProperty();
-                if (property != null) { // same as isStandardJob in JavaProcessor
-                    // only for tPigMap?
-                    for (INode n : process.getGeneratingNodes()) {
-                        if (n.getComponent().getName().equals("tPigMap")) { //$NON-NLS-1$
-                            needPigUDF = true;
-                            break;
-                        }
-                    }
-                }
-            }
-        }
-
-        if (needPigUDF && GlobalServiceRegister.getDefault().isServiceRegistered(IProxyRepositoryService.class)) {
-            IProxyRepositoryService service = (IProxyRepositoryService) GlobalServiceRegister.getDefault()
-                    .getService(IProxyRepositoryService.class);
-            IProxyRepositoryFactory factory = service.getProxyRepositoryFactory();
-            try {
-                List<IRepositoryViewObject> pigUdfsObjects = factory.getAll(project, ERepositoryObjectType.PIG_UDF);
-                if (!pigUdfsObjects.isEmpty()) {
-                    /*
-                     * FIXME, don't know need check the this api or not. seem it's not useful. so return true so far
-                     * directly.
-                     */
-                    // Set<String> neededPigudf = process.getNeededPigudf();
-                    // if (neededPigudf != null && !neededPigudf.isEmpty()) {
-                    // return true;
-                    // }
-
-                    return true;
-                }
-            } catch (PersistenceException e) {
-                ExceptionHandler.process(e);
-            }
-        }
-
-        return false;
     }
 
     public static String getPureItemId(Object objectId) {

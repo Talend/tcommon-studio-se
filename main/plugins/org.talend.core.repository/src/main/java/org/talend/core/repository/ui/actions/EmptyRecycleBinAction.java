@@ -323,7 +323,7 @@ public class EmptyRecycleBinAction extends AContextualAction {
                         handler.deleteNode(objToDelete);
                     }
                     ERepositoryObjectType nodeType = (ERepositoryObjectType) currentNode.getProperties(EProperties.CONTENT_TYPE);
-                    if (nodeType == ERepositoryObjectType.ROUTINES || nodeType == ERepositoryObjectType.PIG_UDF) {
+                    if (nodeType == ERepositoryObjectType.ROUTINES) {
                         forceBuild = true;
                     }
                     if (!forceBuild) {

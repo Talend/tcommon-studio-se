@@ -299,14 +299,6 @@ public class MavenTemplateManager {
         return getCodesModelFromGeneralTemplate(defaultModel, projectTechName, "Beans", JavaUtils.JAVA_BEANS_DIRECTORY); //$NON-NLS-1$
     }
 
-    public static Model getPigUDFsTempalteModel(String projectTechName) {
-        Model defaultModel = createDefaultCodesTempalteModel(
-                PomIdsHelper.getCodesGroupId(projectTechName, TalendMavenConstants.DEFAULT_PIGUDF),
-                TalendMavenConstants.DEFAULT_PIGUDFS_ARTIFACT_ID, PomIdsHelper.getCodesVersion(projectTechName));
-        return getCodesModelFromGeneralTemplate(defaultModel, projectTechName, "PigUDFs", //$NON-NLS-1$
-                JavaUtils.JAVA_PIGUDF_DIRECTORY);
-    }
-
     private static Model createDefaultCodesTempalteModel(String groupId, String artifactId, String version) {
         Model templateRoutinesModel = new Model();
 

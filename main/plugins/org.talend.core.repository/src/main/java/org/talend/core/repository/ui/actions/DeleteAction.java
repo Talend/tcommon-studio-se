@@ -1439,7 +1439,7 @@ public class DeleteAction extends AContextualAction {
                             handler.deleteNode(objToDelete);
                         }
 
-                        if (nodeType == ERepositoryObjectType.ROUTINES || nodeType == ERepositoryObjectType.PIG_UDF) {
+                        if (nodeType == ERepositoryObjectType.ROUTINES) {
                             forceBuild = true;
                         }
                         if (!forceBuild) {

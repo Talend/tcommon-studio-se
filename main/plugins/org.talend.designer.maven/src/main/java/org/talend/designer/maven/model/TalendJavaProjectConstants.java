@@ -26,8 +26,6 @@ public class TalendJavaProjectConstants {
 
     public static final String DIR_ROUTINES = "routines"; //$NON-NLS-1$
 
-    public static final String DIR_PIGUDFS = "pigudf"; //$NON-NLS-1$
-
     public static final String DIR_BEANS = "beans"; //$NON-NLS-1$
 
     public static final String DIR_JOBS = "jobs"; //$NON-NLS-1$

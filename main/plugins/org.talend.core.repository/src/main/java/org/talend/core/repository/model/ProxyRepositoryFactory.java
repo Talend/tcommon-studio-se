@@ -854,7 +854,7 @@ public final class ProxyRepositoryFactory implements IProxyRepositoryFactory {
             }
         }
 
-        if (repositoryObjectType == ERepositoryObjectType.ROUTINES || repositoryObjectType == ERepositoryObjectType.PIG_UDF) {
+        if (repositoryObjectType == ERepositoryObjectType.ROUTINES) {
             try {
                 coreService.deleteRoutinefile(object);
             } catch (Exception e) {
@@ -921,7 +921,7 @@ public final class ProxyRepositoryFactory implements IProxyRepositoryFactory {
                 }
             }
 
-            if (repositoryObjectType == ERepositoryObjectType.ROUTINES || repositoryObjectType == ERepositoryObjectType.PIG_UDF) {
+            if (repositoryObjectType == ERepositoryObjectType.ROUTINES) {
                 try {
                     coreService.deleteRoutinefile(object);
                 } catch (Exception e) {

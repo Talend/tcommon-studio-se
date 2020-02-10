@@ -106,8 +106,6 @@ public class PluginChecker {
 
     private static final String MDM_BOS_PLUGIN_ID = "org.talend.mdm.bos";//$NON-NLS-1$
 
-    private static final String PIGUDF_PLUGIN_ID = "org.talend.repository.pigudf";//$NON-NLS-1$
-
     public static final String APACHE_FELIX_GOGO_RUNTIME_PLUGIN_ID = "org.apache.felix.gogo.runtime"; //$NON-NLS-1$
 
     public static final String EXPORT_ROUTE_PLUGIN_ID = "org.talend.resources.export.route"; //$NON-NLS-1$
@@ -344,10 +342,6 @@ public class PluginChecker {
 
     public static boolean isAutoParalelPluginLoaded() {
         return isPluginLoaded(PARALEL_PLUGIN_ID);
-    }
-
-    public static boolean isPigudfPluginLoaded() {
-        return isPluginLoaded(PIGUDF_PLUGIN_ID);
     }
 
     public static boolean isBPMloaded() {
