@@ -64,6 +64,13 @@
 					<dbType type="SMALLINT" />				
 				</talendType>
 				<talendType type="id_byte[]">
+				    <dbType type="VARBINARY" default="true" />
+				    <dbType type="BINARY" />
+				    <dbType type="BIT" />
+				    <dbType type="BLOB" />
+				    <dbType type="LONGBLOB" />
+				    <dbType type="MEDIUMBLOB" />
+				    <dbType type="TINYBLOB" />
 				</talendType>
 				<talendType type="id_Character">
 					<dbType type="CHAR" default="true" />
@@ -193,9 +200,11 @@
 				</dbType>
 				<dbType type="LONGBLOB">
 					<talendType type="id_byte[]" default="true" />
+					<talendType type="id_Object" />
 				</dbType>
 				<dbType type="MEDIUMBLOB">
 					<talendType type="id_byte[]" default="true" />
+					<talendType type="id_Object" />
 				</dbType>
 				<dbType type="MEDIUMINT">
 					<talendType type="id_Integer" default="true" />
@@ -238,6 +247,7 @@
 				</dbType>
 				<dbType type="TINYBLOB">
 					<talendType type="id_byte[]" default="true" />
+					<talendType type="id_Object" />
 				</dbType>
 				<dbType type="TINYINT">
 					<talendType type="id_Byte" default="true" />
