@@ -14,11 +14,13 @@ package org.talend.librariesmanager.nexus.nexus3.handler;
 // ============================================================================
 import java.net.URI;
 import java.net.URISyntaxException;
+import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.List;
 
 import org.apache.commons.codec.binary.Base64;
 import org.apache.commons.lang3.StringUtils;
+import org.apache.http.HttpHeaders;
 import org.apache.http.HttpResponse;
 import org.apache.http.HttpStatus;
 import org.apache.http.client.methods.HttpGet;
@@ -60,6 +62,7 @@ public abstract class AbsNexus3SearchHandler implements INexus3SearchHandler {
 
     protected abstract String getSearchUrl();
 
+    @Override
     public List<MavenArtifact> search(String repositoryId, String groupIdToSearch, String artifactId, String versionToSearch)
             throws Exception {
         List<MavenArtifact> resultList = new ArrayList<MavenArtifact>();
@@ -84,6 +87,13 @@ public abstract class AbsNexus3SearchHandler implements INexus3SearchHandler {
             protected HttpResponse execute(IProgressMonitor monitor, DefaultHttpClient httpClient, URI targetURI)
                     throws Exception {
                 HttpGet httpGet = new HttpGet(targetURI);
+                String userName = serverBean.getUserName();
+                if (StringUtils.isNotBlank(userName) && !Boolean.getBoolean("talend.studio.search.nexus3.disableBasicAuth")) {
+                    String auth = userName + ":" + serverBean.getPassword();
+                    String authHeader = "Basic " + new String(Base64.encodeBase64(auth.getBytes(StandardCharsets.UTF_8)));
+                    httpGet.setHeader(HttpHeaders.AUTHORIZATION, authHeader);
+                    httpClient.setCredentialsProvider(null);
+                }
                 HttpResponse response = httpClient.execute(httpGet);
                 if (response.getStatusLine().getStatusCode() == HttpStatus.SC_OK) {
                     sb.append(EntityUtils.toString(response.getEntity()));
