@@ -5,8 +5,8 @@
 		<dbTypes>
 			<dbType type="BIGINT" ignorePre="true"/>
 			<dbType type="BIGINT UNSIGNED" ignoreLen="true" ignorePre="true" />
-			<dbType type="BINARY" ignoreLen="true" ignorePre="true"/>
-			<dbType type="BIT" ignorePre="true" />
+			<dbType type="BINARY" ignorePre="true"/>
+			<dbType type="BIT" ignoreLen="true" ignorePre="true" />
 			<dbType type="BLOB" ignoreLen="true" ignorePre="true" />
 			<dbType type="CHAR" defaultLength="200" ignorePre="true"/>
 			<dbType type="DATE" ignoreLen="true" ignorePre="true" />
