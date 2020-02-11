@@ -55,3 +55,6 @@ Export-Package: org.talend.core,
  org.talend.core.views,
  org.talend.designer.runprocess
 Import-Package: org.apache.commons.collections4.map
+Bundle-ClassPath: lib/log4j-api-2.12.1.jar,
+ lib/log4j-core-2.12.1.jar,
+ .
