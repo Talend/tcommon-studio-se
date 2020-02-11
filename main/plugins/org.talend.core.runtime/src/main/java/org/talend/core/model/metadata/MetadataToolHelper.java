@@ -621,6 +621,7 @@ public final class MetadataToolHelper {
         target.getListColumns().addAll(columnsTAdd);
         target.sortCustomColumns();
         target.setLabel(source.getLabel());
+        target.setDbms(source.getDbms());
         setTargetOriginalColumns(source, target);
         // List<String> originalColumnsList = null;
         // if (source.getOriginalColumns() != null) {
