@@ -12,8 +12,8 @@
 // ============================================================================
 package org.talend.repository.utils;
 
-import static org.junit.Assert.*;
-import static org.mockito.Mockito.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
 
 import java.io.File;
 
@@ -21,16 +21,11 @@ import org.eclipse.core.runtime.IPath;
 import org.eclipse.core.runtime.Path;
 import org.eclipse.emf.ecore.util.EcoreUtil;
 import org.junit.Test;
-import org.talend.commons.runtime.model.repository.ERepositoryStatus;
 import org.talend.core.model.properties.Item;
 import org.talend.core.model.properties.PropertiesFactory;
 import org.talend.core.model.properties.Property;
-import org.talend.core.model.repository.ERepositoryObjectType;
-import org.talend.core.model.repository.RepositoryViewObject;
-import org.talend.core.repository.ui.actions.MoveObjectAction;
 import org.talend.core.repository.utils.ConvertJobsUtil;
 import org.talend.core.repository.utils.ConvertJobsUtil.JobType;
-import org.talend.repository.model.RepositoryNode;
 
 /**
  *
@@ -59,5 +54,12 @@ public class ConvertJobsUtilTest {
 
         IPath path4 =  ConvertJobsUtil.getTestCasePath(item, JobType.STANDARD.getDisplayName());
         assertTrue(path4.equals(new Path(JobType.STANDARD.getERepositoryObjectType().getFolder()+File.separator+id)));
+    }
+
+    @Test
+    public void testGetCleanFrameworkName() {
+        assertEquals(null, ConvertJobsUtil.getCleanFrameworkName(null));
+        assertEquals("Spark", ConvertJobsUtil.getCleanFrameworkName("Spark (Deprecated)"));
+        assertEquals("Spark", ConvertJobsUtil.getCleanFrameworkName("Spark"));
     }
 }

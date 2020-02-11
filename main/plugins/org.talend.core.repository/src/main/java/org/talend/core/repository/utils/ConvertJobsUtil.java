@@ -16,6 +16,7 @@ import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.apache.commons.lang.StringUtils;
 import org.eclipse.core.resources.IWorkspace;
 import org.eclipse.core.resources.IWorkspaceRunnable;
 import org.eclipse.core.resources.ResourcesPlugin;
@@ -747,5 +748,14 @@ public class ConvertJobsUtil {
             return true;
         }
         return false;
+    }
+
+    public static String getCleanFrameworkName(String name) {
+        String suffix = "(Deprecated)"; //$NON-NLS-1$
+        if (name != null) {
+            name = StringUtils.replace(name, suffix, StringUtils.EMPTY).trim();
+        }
+        return name;
+
     }
 }
