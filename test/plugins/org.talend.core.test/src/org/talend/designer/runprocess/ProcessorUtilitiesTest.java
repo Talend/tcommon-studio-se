@@ -34,6 +34,7 @@ import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
+import java.util.UUID;
 import java.util.jar.JarEntry;
 import java.util.jar.JarInputStream;
 import java.util.stream.Collectors;
@@ -69,8 +70,6 @@ import org.talend.designer.core.model.utils.emf.talendfile.NodeType;
 import org.talend.designer.core.model.utils.emf.talendfile.ProcessType;
 import org.talend.designer.core.model.utils.emf.talendfile.TalendFileFactory;
 import org.talend.repository.ProjectManager;
-
-import junit.framework.Assert;
 
 /**
  * DOC ggu class global comment. Detailled comment
@@ -546,7 +545,7 @@ public class ProcessorUtilitiesTest {
     
     @Test
     public void testWriteLog4j2ConfToFile() throws IOException {
-        String configFilePath = System.getProperty("java.io.tmpdir") + "/log4j2.xml";
+        String configFilePath = System.getProperty("java.io.tmpdir") + "/log4j2-"+UUID.randomUUID()+".xml";
         ProcessorUtilities.writeLog4j2ConfToFile(new File(configFilePath), Level.getLevel("INFO"));
         String expectedContent = "<?xml version='1.0' encoding='UTF-8'?>\n" + 
                 "<Configuration>\n" + 
@@ -567,7 +566,8 @@ public class ProcessorUtilitiesTest {
     
     @Test
     public void testAddFileToJar() throws FileNotFoundException, IOException {
-        String configFilePath = System.getProperty("java.io.tmpdir") + "/log4j2.xml";
+        String configFileName = "log4j2-"+UUID.randomUUID()+".xml";
+        String configFilePath = System.getProperty("java.io.tmpdir") + "/" + configFileName;
         ProcessorUtilities.writeLog4j2ConfToFile(new File(configFilePath), Level.getLevel("INFO"));
         String jarFilePath = System.getProperty("java.io.tmpdir") + "/log4j2.xml.jar";
         ProcessorUtilities.addFileToJar(configFilePath, jarFilePath);
