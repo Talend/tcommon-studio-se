@@ -32,6 +32,7 @@ public class JavaVersionTest {
         JavaVersion v5 = new JavaVersion("12");
         JavaVersion v6 = new JavaVersion("1.8.0_161");
         JavaVersion v7 = new JavaVersion("1.8.0_212-8u");
+        JavaVersion v8 = new JavaVersion("1.8.0_99-7c");
 
         assertTrue(v1.compareTo(v2) < 0);
         assertTrue(v2.compareTo(v3) < 0);
@@ -40,6 +41,7 @@ public class JavaVersionTest {
         assertTrue(v3.compareTo(v6) == 0);
         assertTrue(v7.compareTo(v4) > 0);
         assertTrue(v7.compareTo(v5) < 0);
+        assertTrue(v7.compareTo(v8) > 0);
 
         assertTrue(v3.equals(v6));
         assertTrue(v3.hashCode() == v6.hashCode());
