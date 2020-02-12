@@ -546,7 +546,8 @@ public class ProcessorUtilitiesTest {
     @Test
     public void testWriteLog4j2ConfToFile() throws IOException {
         String configFilePath = System.getProperty("java.io.tmpdir") + "/log4j2-"+UUID.randomUUID()+".xml";
-        ProcessorUtilities.writeLog4j2ConfToFile(new File(configFilePath), Level.getLevel("INFO"));
+        File configFile = new File(configFilePath);
+        ProcessorUtilities.writeLog4j2ConfToFile(configFile, Level.getLevel("INFO"));
         String expectedContent = "<?xml version='1.0' encoding='UTF-8'?>\n" + 
                 "<Configuration>\n" + 
                 "  <Appenders>\n" + 
@@ -562,13 +563,15 @@ public class ProcessorUtilitiesTest {
                 "</Configuration>";
         String actualContent = Files.lines(Paths.get(configFilePath), StandardCharsets.UTF_8).collect(Collectors.joining("\n"));
         assertEquals(expectedContent, actualContent);
+        configFile.delete();
     }
     
     @Test
     public void testAddFileToJar() throws FileNotFoundException, IOException {
         String configFileName = "log4j2-"+UUID.randomUUID()+".xml";
         String configFilePath = System.getProperty("java.io.tmpdir") + "/" + configFileName;
-        ProcessorUtilities.writeLog4j2ConfToFile(new File(configFilePath), Level.getLevel("INFO"));
+        File configFile = new File(configFilePath);
+        ProcessorUtilities.writeLog4j2ConfToFile(configFile, Level.getLevel("INFO"));
         String jarFilePath = System.getProperty("java.io.tmpdir") + "/log4j2.xml.jar";
         ProcessorUtilities.addFileToJar(configFilePath, jarFilePath);
         JarInputStream jIs = new JarInputStream(new FileInputStream(jarFilePath));
@@ -576,7 +579,7 @@ public class ProcessorUtilitiesTest {
         jIs.closeEntry();
         jIs.close();
         assertEquals("log4j2.xml", entry.getName());
-        new File(configFilePath).delete();
+        configFile.delete();
         new File(jarFilePath).delete();
     }
 
