@@ -74,26 +74,27 @@ public class InstallNewFeatureJob extends Job {
         for (ExtraFeature newFeature : featuresToInstall) {
             try {
                 // launch the update
-                multiStatus.merge(newFeature.install(subMon.newChild(1), featureRepositories.getAllRepoUris(newFeature)));
+                IStatus installStatus = newFeature.install(subMon.newChild(1), featureRepositories.getAllRepoUris(newFeature));
+                multiStatus.merge(installStatus);
+                fireInstallStatus(installStatus, newFeature);
                 if (subMon.isCanceled()) {// user canceled so stop the loop and return
-                    multiStatus.add(Messages.createCancelStatus("InstallNewFeatureJob.user.cancel.installation.of.feature", //$NON-NLS-1$
-                            newFeature.getName()));
+                    installStatus = Messages.createCancelStatus("InstallNewFeatureJob.user.cancel.installation.of.feature", //$NON-NLS-1$
+                            newFeature.getName());
+                    multiStatus.add(installStatus);
+                    for (ExtraFeature feature : featuresToInstall) {
+                        if (!processedFeatureSet.contains(feature)) {
+                            fireInstallStatus(installStatus, feature);
+                        }
+                    }
                     break;
                 }
                 processedFeatureSet.add(newFeature);
-                InstallFeatureObserver.getInstance().updateInstallFeatureStatus(newFeature.getName(),
-                        InstallFeatureObserver.FEATURE_STATUS_INSTALLED_SUCESSFULLY);
             } catch (Exception e) {
                 failedFeature.put(newFeature, e);
-                InstallFeatureObserver.getInstance().updateInstallFeatureStatus(newFeature.getName(),
-                        InstallFeatureObserver.FEATURE_STATUS_INSTALLED_FAILED);
-                multiStatus.add(Messages.createErrorStatus(e, "InstallNewFeatureJob.failed.to.install", newFeature.getName())); //$NON-NLS-1$
-            }
-        }
-        for (ExtraFeature newFeature : featuresToInstall) {
-            if (!processedFeatureSet.contains(newFeature)) {
-                InstallFeatureObserver.getInstance().updateInstallFeatureStatus(newFeature.getName(),
-                        InstallFeatureObserver.FEATURE_STATUS_CANCELED);
+                IStatus installStatus = Messages.createErrorStatus(e, "InstallNewFeatureJob.failed.to.install", //$NON-NLS-1$
+                        newFeature.getName());
+                multiStatus.add(installStatus);
+                fireInstallStatus(installStatus, newFeature);
             }
         }
         if (!failedFeature.isEmpty()) {
@@ -107,14 +108,26 @@ public class InstallNewFeatureJob extends Job {
                 public void run() {
                     ErrorDialogWithDetailAreaAndTryAgainButton errorDialog = new ErrorDialogWithDetailAreaAndTryAgainButton(
                             DisplayUtils.getDefaultShell(false), "org.talend.updates.runtime",
-                            Messages
-                                    .getString("InstallNewFeatureJob.failed.dialog.tryagin"), detailesMessage.toString());
+                            Messages.getString("InstallNewFeatureJob.failed.dialog.tryagin"), detailesMessage.toString());
                     if (Window.OK == errorDialog.getCodeOfButton()) {
                         installFeature(failedFeature.keySet(), multiStatus, subMon);
                     }
                 }
             });
 
+        }
+    }
+    
+    private void fireInstallStatus(IStatus status, ExtraFeature newFeature) {
+        if (IStatus.ERROR == status.getSeverity()) {
+            InstallFeatureObserver.getInstance().updateInstallFeatureStatus(newFeature.getName(),
+                    InstallFeatureObserver.FEATURE_STATUS_INSTALLED_FAILED);
+        } else if (IStatus.CANCEL == status.getSeverity()) {
+            InstallFeatureObserver.getInstance().updateInstallFeatureStatus(newFeature.getName(),
+                    InstallFeatureObserver.FEATURE_STATUS_CANCELED);
+        } else if (IStatus.OK == status.getSeverity()) {
+            InstallFeatureObserver.getInstance().updateInstallFeatureStatus(newFeature.getName(),
+                    InstallFeatureObserver.FEATURE_STATUS_INSTALLED_SUCESSFULLY);
         }
     }
 }
