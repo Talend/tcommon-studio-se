@@ -44,7 +44,17 @@ public class JavaVersion implements Comparable<JavaVersion> {
             this.minor = Integer.parseInt(version[1]);
         }
         if (version.length > 2) {
-            this.security = Integer.parseInt(version[version.length - 1]);
+            // strip non number part if any
+            String securityNumber = version[version.length - 1];
+            for (int i = 0; i < securityNumber.length(); i++) {
+                char c = securityNumber.charAt(i);
+                if (c > '9' || c < '0') {
+                    securityNumber = securityNumber.substring(0, i);
+                    break;
+                }
+            }
+
+            this.security = Integer.parseInt(securityNumber);
         }
     }
 
