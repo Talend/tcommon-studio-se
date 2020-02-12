@@ -101,12 +101,22 @@ public abstract class MavenCommandLauncher {
 
     private static final Pattern REGEX_TEST_CASE_FAILURES = Pattern.compile(REGEX_TEST_CASE_FAILURES_STR, Pattern.DOTALL);
 
+    private boolean ignoreTestFailure = false;
+
     public MavenCommandLauncher(String goals) {
         super();
         Assert.isNotNull(goals);
         this.goals = goals;
         // by default same as preference settings.
         this.debugOutput = MavenPlugin.getMavenConfiguration().isDebugOutput();
+    }
+
+    public boolean isIgnoreTestFailure() {
+        return ignoreTestFailure;
+    }
+
+    public void setIgnoreTestFailure(boolean ignoreTestFailure) {
+        this.ignoreTestFailure = ignoreTestFailure;
     }
 
     protected String getGoals() {
@@ -212,8 +222,9 @@ public abstract class MavenCommandLauncher {
             }
 
             // ignore test failures
-            workingCopy.setAttribute(IJavaLaunchConfigurationConstants.ATTR_VM_ARGUMENTS, "-Dmaven.test.failure.ignore=true "
-                    + workingCopy.getAttribute(IJavaLaunchConfigurationConstants.ATTR_VM_ARGUMENTS, ""));
+            // workingCopy.setAttribute(IJavaLaunchConfigurationConstants.ATTR_VM_ARGUMENTS,
+            // "-Dmaven.test.failure.ignore=true "
+            // + workingCopy.getAttribute(IJavaLaunchConfigurationConstants.ATTR_VM_ARGUMENTS, ""));
 
             String programArgs = getArgumentValue(TalendProcessArgumentConstant.ARG_PROGRAM_ARGUMENTS);
             if (StringUtils.isNotEmpty(programArgs)) {
@@ -328,13 +339,17 @@ public abstract class MavenCommandLauncher {
 
         if (TalendMavenConstants.GOAL_INSTALL.equals(launchConfiguration.getAttribute(MavenLaunchConstants.ATTR_GOALS, ""))) {
             if (errors.length() != 0) {
-                Matcher m = REGEX_TEST_CASE_FAILURES.matcher(errors);
-                int matchIdx = 0;
-                while (m.find()) {
-                    matchIdx = m.end();
+                String remainingErr = errors.toString();
+                if (this.ignoreTestFailure) {
+                    Matcher m = REGEX_TEST_CASE_FAILURES.matcher(errors);
+                    int matchIdx = 0;
+                    while (m.find()) {
+                        matchIdx = m.end();
+                    }
+                    remainingErr = errors.substring(matchIdx);
                 }
-                if (errors.substring(matchIdx).trim().length() > 0) {
-                    throw new Exception(errors.toString());
+                if (remainingErr.trim().length() > 0) {
+                    throw new Exception(remainingErr.toString());
                 }
             }
         }

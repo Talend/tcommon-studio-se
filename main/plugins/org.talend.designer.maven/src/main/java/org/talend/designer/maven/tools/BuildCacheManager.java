@@ -226,6 +226,7 @@ public class BuildCacheManager {
                 String goal = (String) argumentsMap.get(TalendProcessArgumentConstant.ARG_GOAL);
                 MavenPomCommandLauncher mavenLauncher = new MavenPomCommandLauncher(pomFile, goal);
                 mavenLauncher.setArgumentsMap(argumentsMap);
+                mavenLauncher.setIgnoreTestFailure(true);
                 mavenLauncher.execute(monitor);
             } finally {
                 deleteBuildAggregatorPom();
