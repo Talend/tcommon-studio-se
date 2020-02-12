@@ -201,7 +201,7 @@ public class BuildCacheManager {
         clearCurrentJobletCache();
     }
 
-    public void build(IProgressMonitor monitor, Map<String, Object> argumentsMap) throws Exception {
+    public void build(IProgressMonitor monitor, Map<String, Object> argumentsMap, boolean isBuildJob) throws Exception {
         if (needTempAggregator()) {
             createBuildAggregatorPom();
             try {
@@ -226,7 +226,11 @@ public class BuildCacheManager {
                 String goal = (String) argumentsMap.get(TalendProcessArgumentConstant.ARG_GOAL);
                 MavenPomCommandLauncher mavenLauncher = new MavenPomCommandLauncher(pomFile, goal);
                 mavenLauncher.setArgumentsMap(argumentsMap);
-                mavenLauncher.setIgnoreTestFailure(true);
+                if (isBuildJob) {
+                    mavenLauncher.setIgnoreTestFailure(true);
+                } else {
+                    mavenLauncher.setSkipTests(true);
+                }
                 mavenLauncher.execute(monitor);
             } finally {
                 deleteBuildAggregatorPom();
