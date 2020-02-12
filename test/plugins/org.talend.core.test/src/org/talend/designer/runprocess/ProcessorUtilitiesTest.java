@@ -20,6 +20,13 @@ import static org.mockito.ArgumentMatchers.anyObject;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.nio.charset.StandardCharsets;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
@@ -27,7 +34,11 @@ import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
+import java.util.jar.JarEntry;
+import java.util.jar.JarInputStream;
+import java.util.stream.Collectors;
 
+import org.apache.logging.log4j.Level;
 import org.eclipse.core.runtime.Path;
 import org.junit.Before;
 import org.junit.Test;
@@ -58,6 +69,8 @@ import org.talend.designer.core.model.utils.emf.talendfile.NodeType;
 import org.talend.designer.core.model.utils.emf.talendfile.ProcessType;
 import org.talend.designer.core.model.utils.emf.talendfile.TalendFileFactory;
 import org.talend.repository.ProjectManager;
+
+import junit.framework.Assert;
 
 /**
  * DOC ggu class global comment. Detailled comment
@@ -529,6 +542,39 @@ public class ProcessorUtilitiesTest {
         jobIdParam.setName("PROCESS:PROCESS_TYPE_PROCESS");
         jobIdParam.setValue(projectLabel + ProcessUtils.PROJECT_ID_SEPARATOR + subjobId);
         node.getElementParameter().add(jobIdParam);
+    }
+    
+    @Test
+    public void testWriteLog4j2ConfToFile() throws IOException {
+        String configFilePath = System.getProperty("java.io.tmpdir") + "/log4j2.xml";
+        ProcessorUtilities.writeLog4j2ConfToFile(new File(configFilePath), Level.getLevel("INFO"));
+        String expectedContent = "<?xml version='1.0' encoding='UTF-8'?>\n" + 
+                "<Configuration>\n" + 
+                "  <Appenders>\n" + 
+                "    <Console name=\"Console\" target=\"SYSTEM_OUT\">\n" + 
+                "      <PatternLayout pattern=\"[%-5level] %d{HH:mm:ss} %logger{36}- %msg%n\"/>\n" + 
+                "    </Console>\n" + 
+                "  </Appenders>\n" + 
+                "  <Loggers>\n" + 
+                "    <Root level=\"INFO\">\n" + 
+                "      <AppenderRef ref=\"Console\"/>\n" + 
+                "    </Root>\n" + 
+                "  </Loggers>\n" + 
+                "</Configuration>";
+        String actualContent = Files.lines(Paths.get(configFilePath), StandardCharsets.UTF_8).collect(Collectors.joining("\n"));
+        assertEquals(expectedContent, actualContent);
+    }
+    
+    @Test
+    public void testAddFileToJar() throws FileNotFoundException, IOException {
+        String configFilePath = System.getProperty("java.io.tmpdir") + "/log4j2.xml";
+        String jarFilePath = System.getProperty("java.io.tmpdir") + "/log4j2.xml.jar";
+        ProcessorUtilities.addFileToJar(configFilePath, jarFilePath);
+        JarInputStream jIs = new JarInputStream(new FileInputStream(jarFilePath));
+        JarEntry entry = jIs.getNextJarEntry();
+        jIs.closeEntry();
+        jIs.close();
+        assertEquals("log4j2.xml", entry.getName());
     }
 
 }

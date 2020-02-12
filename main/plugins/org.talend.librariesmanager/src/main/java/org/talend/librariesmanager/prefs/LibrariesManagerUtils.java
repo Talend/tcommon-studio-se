@@ -98,11 +98,18 @@ public class LibrariesManagerUtils {
                     && module.isRequired(node.getElementParameters())) {
                 boolean isNeedtoBeRemoved = service == null ? false
                         : isNeedtoBeRemoved(module, service.getNeedRemoveModulesForLog4j());
-                if (!isNeedtoBeRemoved) {
-                    updatedModules.add(module);
-                }
+        		if(node.getComponent().getName().equals("cConfig")) {
+        			if(module.getMavenURIFromConfiguration() == null) {
+                			if (!isNeedtoBeRemoved) {
+			                    updatedModules.add(module);
+			                }
+        			};
+        		} else {
+		                if (!isNeedtoBeRemoved) {
+		                    updatedModules.add(module);
+		                }
+        		}
             }
-
         }
         return updatedModules;
     }

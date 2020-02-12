@@ -1723,10 +1723,18 @@ public class LocalLibraryManager implements ILibraryManagerService, IChangedLibr
             if (jarsToMavenuri.get(key) == null) {
                 continue;
             }
-            if (TalendQuoteUtils.removeQuotesIfExist(jarsToMavenuri.get(key))
+            String mvnUrisFromIndex = TalendQuoteUtils.removeQuotesIfExist(jarsToMavenuri.get(key));
+            if (mvnUrisFromIndex
                     .equalsIgnoreCase(TalendQuoteUtils.removeQuotesIfExist(mavenURI))) {
                 return key;
             }
+            final String[] split = mvnUrisFromIndex.split(MavenUrlHelper.MVN_INDEX_SPLITER);
+            for(String mvnURI : split) {
+                if(mvnURI.equalsIgnoreCase(TalendQuoteUtils.removeQuotesIfExist(mavenURI))) {
+                    return key;
+                }
+            }
+            
         }
         return null;
     }

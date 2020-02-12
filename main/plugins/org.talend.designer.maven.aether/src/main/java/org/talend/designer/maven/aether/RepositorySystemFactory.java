@@ -61,6 +61,7 @@ public class RepositorySystemFactory {
             repositorySystemSession.setTransferListener(new ChainedTransferListener());
             repositorySystemSession.setRepositoryListener(new ChainedRepositoryListener());
             repositorySystemSession.setProxySelector(new TalendAetherProxySelector());
+            sessions.put(localRepo, repositorySystemSession);
         }
 
         return repositorySystemSession;

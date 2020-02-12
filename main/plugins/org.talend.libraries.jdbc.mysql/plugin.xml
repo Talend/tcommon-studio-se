@@ -21,7 +21,7 @@
               id="mariadb-java-client-2.5.3.jar"
               language="java"
               message="Needed for Mysql jdbc plugin"
-              mvn_uri="mvn:org.mariadb.jdbc/mariadb-java-client/2.5.3/6.0.0"
+              mvn_uri="mvn:org.mariadb.jdbc/mariadb-java-client/2.5.3"
               name="mariadb-java-client-2.5.3.jar"
               required="true">
         </libraryNeeded>

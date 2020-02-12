@@ -124,6 +124,7 @@
 					<dbType type="MEDIUMTEXT" />
 					<dbType type="MULTILINESTRING" />		
 					<dbType type="TEXT" />
+					<dbType type="CHAR" />
 				</talendType>
 			</talendToDbTypes>
 			<dbToTalendTypes>

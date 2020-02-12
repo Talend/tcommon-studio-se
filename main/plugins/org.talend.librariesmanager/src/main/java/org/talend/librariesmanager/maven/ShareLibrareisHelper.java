@@ -75,6 +75,7 @@ public abstract class ShareLibrareisHelper {
                 Set<String> snapshotGroupIdSet = new HashSet<String>();
                 Set<String> releaseGroupIdSet = new HashSet<String>();
                 for (ModuleNeeded module : filesToShare.keySet()) {
+                    checkCancel(monitor);
                     if (module.getMavenUri() != null) {
                         MavenArtifact parseMvnUrl = MavenUrlHelper.parseMvnUrl(module.getMavenUri());
                         if (parseMvnUrl != null) {
@@ -89,18 +90,22 @@ public abstract class ShareLibrareisHelper {
                 }
                 List<MavenArtifact> searchResults = new ArrayList<MavenArtifact>();
                 for (String groupId : groupIds) {
+                    checkCancel(monitor);
                     if (releaseGroupIdSet.contains(groupId)) {
                         searchResults = customerRepHandler.search(groupId, null, null, true, false);
                         if (searchResults != null) {
                             for (MavenArtifact result : searchResults) {
+                                checkCancel(monitor);
                                 putArtifactToMap(result, releaseArtifactMap, false);
                             }
                         }
                     }
+                    checkCancel(monitor);
                     if (snapshotGroupIdSet.contains(groupId)) {
                         searchResults = customerRepHandler.search(groupId, null, null, false, true);
                         if (searchResults != null) {
                             for (MavenArtifact result : searchResults) {
+                                checkCancel(monitor);
                                 putArtifactToMap(result, snapshotArtifactMap, true);
                             }
                         }
@@ -109,9 +114,7 @@ public abstract class ShareLibrareisHelper {
                 Iterator<ModuleNeeded> iterator = filesToShare.keySet().iterator();
                 Map<File, MavenArtifact> shareFiles = new HashMap<>();
                 while (iterator.hasNext()) {
-                    if (monitor.isCanceled()) {
-                        return Status.CANCEL_STATUS;
-                    }
+                    checkCancel(monitor);
                     ModuleNeeded next = iterator.next();
                     File file = filesToShare.get(next);
                     MavenArtifact artifact = MavenUrlHelper.parseMvnUrl(next.getMavenUri());
@@ -146,16 +149,22 @@ public abstract class ShareLibrareisHelper {
                     shareFiles.put(file, artifact);
                 }
                 SubMonitor mainSubMonitor = SubMonitor.convert(monitor, shareFiles.size());
-                shareFiles.forEach((k, v) -> {
+                for (Map.Entry<File, MavenArtifact> entry : shareFiles.entrySet()) {
+                    checkCancel(monitor);
                     try {
+                        File k = entry.getKey();
+                        MavenArtifact v = entry.getValue();
                         mainSubMonitor.setTaskName(Messages.getString("ShareLibsJob.sharingLibraries", k.getName()));
                         shareToRepository(k, v);
                         mainSubMonitor.worked(1);
                     } catch (Exception e) {
                         ExceptionHandler.process(e);
                     }
-                });
+                }
             }
+        } catch (InterruptedException e) {
+            ExceptionHandler.process(e);
+            status = Status.CANCEL_STATUS;
         } catch (Exception e) {
             status = new Status(IStatus.ERROR, "unknown", IStatus.ERROR, "Share libraries failed !", e);
         }
@@ -253,6 +262,12 @@ public abstract class ShareLibrareisHelper {
     private void setJobName(Job job, String jobName) {
         if (job != null) {
             job.setName(jobName);
+        }
+    }
+
+    protected void checkCancel(IProgressMonitor monitor) throws InterruptedException {
+        if (monitor.isCanceled()) {
+            throw new InterruptedException(Messages.getString("ShareLibsJob.monitor.cancelled"));
         }
     }
 

@@ -26,7 +26,6 @@ import org.eclipse.ui.application.IWorkbenchConfigurer;
 import org.eclipse.ui.application.IWorkbenchWindowConfigurer;
 import org.eclipse.ui.application.WorkbenchWindowAdvisor;
 import org.eclipse.ui.internal.ide.application.IDEWorkbenchAdvisor;
-import org.talend.commons.CommonsPlugin;
 import org.talend.commons.utils.system.EclipseCommandLine;
 import org.talend.core.GlobalServiceRegister;
 import org.talend.core.repository.utils.LoginTaskRegistryReader;
@@ -131,7 +130,6 @@ public class ApplicationWorkbenchAdvisor extends IDEWorkbenchAdvisor {
         }
 
         // PerspectiveReviewUtil.checkPerspectiveDisplayItems();
-        CommonsPlugin.setWorkbenchCreated(true);
     }
 
 }
