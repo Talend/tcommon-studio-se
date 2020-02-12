@@ -568,6 +568,7 @@ public class ProcessorUtilitiesTest {
     @Test
     public void testAddFileToJar() throws FileNotFoundException, IOException {
         String configFilePath = System.getProperty("java.io.tmpdir") + "/log4j2.xml";
+        ProcessorUtilities.writeLog4j2ConfToFile(new File(configFilePath), Level.getLevel("INFO"));
         String jarFilePath = System.getProperty("java.io.tmpdir") + "/log4j2.xml.jar";
         ProcessorUtilities.addFileToJar(configFilePath, jarFilePath);
         JarInputStream jIs = new JarInputStream(new FileInputStream(jarFilePath));
@@ -575,6 +576,8 @@ public class ProcessorUtilitiesTest {
         jIs.closeEntry();
         jIs.close();
         assertEquals("log4j2.xml", entry.getName());
+        new File(configFilePath).delete();
+        new File(jarFilePath).delete();
     }
 
 }
