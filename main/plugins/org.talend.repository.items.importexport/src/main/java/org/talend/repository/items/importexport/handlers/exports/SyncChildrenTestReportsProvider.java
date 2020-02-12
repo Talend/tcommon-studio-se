@@ -63,6 +63,7 @@ public class SyncChildrenTestReportsProvider implements IBuildResourcesProvider 
                 ITalendProcessJavaProject childJavaProject = runProcessService
                         .getTalendJobJavaProject(((ProcessItem) item).getProperty());
                 if (childJavaProject != null) {
+                    childJavaProject.getTargetFolder().refreshLocal(IResource.DEPTH_INFINITE, monitor);
                     final IFolder childReportFolder = childJavaProject.getTargetFolder().getFolder(TEST_REPORTS_FOLDER);
                     if (childReportFolder.exists()) {
                         FileCopyUtils.syncFolder(childReportFolder.getLocation().toFile(), reportTargetFolder, false);

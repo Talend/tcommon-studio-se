@@ -222,9 +222,10 @@ public abstract class MavenCommandLauncher {
             }
 
             // ignore test failures
-            // workingCopy.setAttribute(IJavaLaunchConfigurationConstants.ATTR_VM_ARGUMENTS,
-            // "-Dmaven.test.failure.ignore=true "
-            // + workingCopy.getAttribute(IJavaLaunchConfigurationConstants.ATTR_VM_ARGUMENTS, ""));
+            if (this.ignoreTestFailure) {
+                workingCopy.setAttribute(IJavaLaunchConfigurationConstants.ATTR_VM_ARGUMENTS, "-Dmaven.test.failure.ignore=true "
+                        + workingCopy.getAttribute(IJavaLaunchConfigurationConstants.ATTR_VM_ARGUMENTS, ""));
+            }
 
             String programArgs = getArgumentValue(TalendProcessArgumentConstant.ARG_PROGRAM_ARGUMENTS);
             if (StringUtils.isNotEmpty(programArgs)) {
