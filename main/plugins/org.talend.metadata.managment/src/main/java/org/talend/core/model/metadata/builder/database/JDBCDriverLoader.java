@@ -88,7 +88,7 @@ public class JDBCDriverLoader {
      * @return
      */
     public HotClassLoader getHotClassLoaderFromCache(String dbType, String dbVersion) {
-        HotClassLoader loader;
+        HotClassLoader loader = null;
         loader = (HotClassLoader) classLoadersMap.get(dbType, dbVersion);
         return loader;
     }
@@ -220,23 +220,20 @@ public class JDBCDriverLoader {
      * @return
      */
     public HotClassLoader getHotClassLoader(String[] jarPath, String dbType, String dbVersion) {
-
         if (EDatabaseTypeName.GENERAL_JDBC.getDisplayName().equals(dbType)) {
             return getHotClassLoaderFromCacheBasedOnLibraries(jarPath);
         }
 
-        HotClassLoader loader;
-        boolean flog = EDatabaseVersion4Drivers.containTypeAndVersion(dbType, dbVersion);
-        if (flog) {
-            loader = getHotClassLoaderFromCache(dbType, dbVersion);
-            if (loader == null) {
-                loader = new HotClassLoader();
-                classLoadersMap.put(dbType, dbVersion, loader);
-            }// else loader gotten from cache
-        } else {
+        // TDQ-17983 TDQ-17393 msjian: fix snowflake get "OutOfMemoryError: Metaspace" error
+        // by always get from cache in order to less new classLoader object.
+        HotClassLoader loader  = getHotClassLoaderFromCache(dbType, dbVersion);
+        if (loader == null) {
             loader = new HotClassLoader();
+            classLoadersMap.put(dbType, dbVersion, loader);
+            addPathsForClassLoader(jarPath, loader);
         }
-        addPathsForClassLoader(jarPath, loader);
+        // TDQ-17983 TDQ-17393~
+
         return loader;
     }
 
