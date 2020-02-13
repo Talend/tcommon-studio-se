@@ -549,7 +549,6 @@ public class ProcessorUtilitiesTest {
         File configFile = new File(configFilePath);
         ProcessorUtilities.writeLog4j2ConfToFile(configFile, Level.getLevel("INFO"));
         String actualContent = Files.lines(Paths.get(configFilePath), StandardCharsets.UTF_8).collect(Collectors.joining("\n"));
-        
         String encodingAttr = actualContent.contains("encoding") ? "encoding='UTF-8'" : ""; 
         String expectedContent = "<?xml version='1.0' "+encodingAttr+"?>\n" + 
                 "<Configuration>\n" + 
