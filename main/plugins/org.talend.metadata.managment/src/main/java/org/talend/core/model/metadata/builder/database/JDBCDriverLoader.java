@@ -88,8 +88,9 @@ public class JDBCDriverLoader {
      * @return
      */
     public HotClassLoader getHotClassLoaderFromCache(String dbType, String dbVersion) {
-        Object obj = classLoadersMap.get(dbType, dbVersion);
-        return obj == null ? null : (HotClassLoader) obj;
+        HotClassLoader loader = null;
+        loader = (HotClassLoader) classLoadersMap.get(dbType, dbVersion);
+        return loader;
     }
 
     private HotClassLoader getHotClassLoaderFromCacheBasedOnLibraries(String[] librariesPaths) {
