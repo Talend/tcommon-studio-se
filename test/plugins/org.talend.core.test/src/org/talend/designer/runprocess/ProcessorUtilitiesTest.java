@@ -548,7 +548,10 @@ public class ProcessorUtilitiesTest {
         String configFilePath = System.getProperty("java.io.tmpdir") + "/log4j2-"+UUID.randomUUID()+".xml";
         File configFile = new File(configFilePath);
         ProcessorUtilities.writeLog4j2ConfToFile(configFile, Level.getLevel("INFO"));
-        String expectedContent = "<?xml version='1.0' encoding='UTF-8'?>\n" + 
+        String actualContent = Files.lines(Paths.get(configFilePath), StandardCharsets.UTF_8).collect(Collectors.joining("\n"));
+        
+        String encodingAttr = actualContent.contains("encoding") ? "encoding='UTF-8'" : ""; 
+        String expectedContent = "<?xml version='1.0' "+encodingAttr+"?>\n" + 
                 "<Configuration>\n" + 
                 "  <Appenders>\n" + 
                 "    <Console name=\"Console\" target=\"SYSTEM_OUT\">\n" + 
@@ -561,7 +564,7 @@ public class ProcessorUtilitiesTest {
                 "    </Root>\n" + 
                 "  </Loggers>\n" + 
                 "</Configuration>";
-        String actualContent = Files.lines(Paths.get(configFilePath), StandardCharsets.UTF_8).collect(Collectors.joining("\n"));
+        
         assertEquals(expectedContent, actualContent);
         configFile.delete();
     }
