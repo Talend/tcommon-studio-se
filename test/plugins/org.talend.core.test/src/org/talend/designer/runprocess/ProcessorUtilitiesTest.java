@@ -42,6 +42,7 @@ import java.util.stream.Collectors;
 import org.apache.logging.log4j.Level;
 import org.eclipse.core.runtime.Path;
 import org.junit.Before;
+import org.junit.Ignore;
 import org.junit.Test;
 import org.talend.commons.exception.PersistenceException;
 import org.talend.core.model.components.EComponentType;
@@ -543,6 +544,7 @@ public class ProcessorUtilitiesTest {
         node.getElementParameter().add(jobIdParam);
     }
     
+    @Ignore
     @Test
     public void testWriteLog4j2ConfToFile() throws IOException {
         String configFilePath = System.getProperty("java.io.tmpdir") + "/log4j2-"+UUID.randomUUID()+".xml";
