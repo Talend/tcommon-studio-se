@@ -219,7 +219,8 @@ public class JDBCDriverLoader {
      * @return
      */
     public HotClassLoader getHotClassLoader(String[] jarPath, String dbType, String dbVersion) {
-        if (EDatabaseTypeName.GENERAL_JDBC.getDisplayName().equals(dbType)) {
+        if (EDatabaseTypeName.GENERAL_JDBC.getDisplayName().equals(dbType)
+                || EDatabaseTypeName.GENERAL_JDBC.getProduct().equals(dbType)) {
             return getHotClassLoaderFromCacheBasedOnLibraries(jarPath);
         }
 
