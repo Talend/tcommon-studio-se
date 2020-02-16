@@ -30,7 +30,6 @@ import java.util.Map;
 import java.util.Set;
 import java.util.jar.JarEntry;
 import java.util.jar.JarOutputStream;
-import java.util.zip.ZipEntry;
 
 import org.apache.commons.lang.ArrayUtils;
 import org.apache.commons.lang.StringUtils;
@@ -184,6 +183,8 @@ public class ProcessorUtilities {
     private static final Set<String> esbJobs = new HashSet<String>();
 
     private static boolean isDebug = false;
+
+    private static boolean isCIMode = false;
 
     private static JobInfo mainJobInfo;
 
@@ -1237,7 +1238,7 @@ public class ProcessorUtilities {
 
             Set<ModuleNeeded> neededLibraries =
                     CorePlugin.getDefault().getDesignerCoreService().getNeededLibrariesForProcess(currentProcess,
-                            false);
+                            isCIMode && BitwiseOptionUtils.containOption(option, GENERATE_MAIN_ONLY));
             if (neededLibraries != null) {
                 LastGenerationInfo.getInstance().setModulesNeededWithSubjobPerJob(jobInfo.getJobId(),
                         jobInfo.getJobVersion(), neededLibraries);
@@ -2848,4 +2849,9 @@ public class ProcessorUtilities {
         ProcessorUtilities.addFileToJar(configFilePath, jarFilePath);
         return jarFilePath;
     }
+
+    public static void setCIMode(boolean isCIMode) {
+        ProcessorUtilities.isCIMode = isCIMode;
+    }
+
 }
