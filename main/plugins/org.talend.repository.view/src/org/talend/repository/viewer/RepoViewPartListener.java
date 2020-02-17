@@ -15,8 +15,10 @@ package org.talend.repository.viewer;
 import org.eclipse.jface.viewers.ISelectionChangedListener;
 import org.eclipse.ui.IPartListener2;
 import org.eclipse.ui.IViewPart;
+import org.eclipse.ui.IWorkbenchPage;
 import org.eclipse.ui.IWorkbenchPart;
 import org.eclipse.ui.IWorkbenchPartReference;
+import org.eclipse.ui.IWorkbenchWindow;
 import org.eclipse.ui.PlatformUI;
 import org.eclipse.ui.navigator.CommonNavigator;
 import org.eclipse.ui.navigator.CommonViewer;
@@ -60,9 +62,13 @@ public class RepoViewPartListener implements IPartListener2 {
     @Override
     public void partClosed(IWorkbenchPartReference partRef) {
         if (partRef != null && IRepositoryView.VIEW_ID.equals(partRef.getId())) {
-            PlatformUI.getWorkbench().getActiveWorkbenchWindow().getPartService().removePartListener(this);
-            if (PlatformUI.getWorkbench().getActiveWorkbenchWindow().getActivePage() != null) {
-                IViewPart viewPart = PlatformUI.getWorkbench().getActiveWorkbenchWindow().getActivePage()
+            IWorkbenchWindow activeWin = PlatformUI.getWorkbench().getActiveWorkbenchWindow();
+            if(activeWin == null) {
+                return;
+            }
+            activeWin.getPartService().removePartListener(this);
+            if (activeWin.getActivePage() != null) {
+                IViewPart viewPart = activeWin.getActivePage()
                         .findView(IJobSettingsView.ID);
                 if (viewPart != null && viewPart instanceof ISelectionChangedListener) {
                     ISelectionChangedListener listener = (ISelectionChangedListener) viewPart;
