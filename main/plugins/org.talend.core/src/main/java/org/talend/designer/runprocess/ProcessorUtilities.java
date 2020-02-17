@@ -173,6 +173,8 @@ public class ProcessorUtilities {
 
     private static boolean isDebug = false;
 
+    private static boolean isCIMode = false;
+
     private static JobInfo mainJobInfo;
 
     public static void addOpenEditor(IEditorPart editor) {
@@ -1273,7 +1275,7 @@ public class ProcessorUtilities {
 
             Set<ModuleNeeded> neededLibraries =
                     CorePlugin.getDefault().getDesignerCoreService().getNeededLibrariesForProcess(currentProcess,
-                            false);
+                            isCIMode && BitwiseOptionUtils.containOption(option, GENERATE_MAIN_ONLY));
             if (neededLibraries != null) {
                 LastGenerationInfo.getInstance().setModulesNeededWithSubjobPerJob(jobInfo.getJobId(),
                         jobInfo.getJobVersion(), neededLibraries);
@@ -2841,4 +2843,9 @@ public class ProcessorUtilities {
     public static boolean isNeedProjectProcessId(String componentName) {
         return "tRunJob".equalsIgnoreCase(componentName) || "cTalendJob".equalsIgnoreCase(componentName);
     }
+
+    public static void setCIMode(boolean isCIMode) {
+        ProcessorUtilities.isCIMode = isCIMode;
+    }
+
 }
