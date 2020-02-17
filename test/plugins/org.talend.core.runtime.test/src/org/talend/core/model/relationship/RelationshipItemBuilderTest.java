@@ -186,4 +186,25 @@ public class RelationshipItemBuilderTest {
         assert (ProjectManager.getInstance().getCurrentProject() == RelationshipItemBuilder.getInstance().getAimProject());
 
     }
+
+    /**
+     * For TUP-26138
+     */
+    @Test
+    public void testBuildAndSaveIndex() {
+        Project currentProject = ProjectManager.getInstance().getCurrentProject();
+
+        int shouldBeSize = RelationshipItemBuilder.getInstance().getCurrentProjectItemsRelations().size();
+
+        // remove all of relations from index
+        RelationshipItemBuilder.getInstance().clearAllItemsRelations();
+        RelationshipItemBuilder.getInstance().saveRelations();
+
+        // regenerate index
+        RelationshipItemBuilder.getInstance().buildAndSaveIndex();
+
+        currentProject = RelationshipItemBuilder.getInstance().getAimProject();
+        int currentSize = currentProject.getEmfProject().getItemsRelations().size();
+        assert (shouldBeSize == currentSize);
+    }
 }
