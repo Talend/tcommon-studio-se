@@ -196,6 +196,8 @@ public class RelationshipItemBuilderTest {
 
         int shouldBeSize = RelationshipItemBuilder.getInstance().getCurrentProjectItemsRelations().size();
         currentProject = RelationshipItemBuilder.getInstance().getAimProject();
+        assert (shouldBeSize > 0);
+        System.out.println("testBuildAndSaveIndex, shouldBeSize: " + shouldBeSize);
 
         // remove all of relations from index
         RelationshipItemBuilder.getInstance().clearAllItemsRelations();
@@ -205,7 +207,6 @@ public class RelationshipItemBuilderTest {
 
         // regenerate index
         RelationshipItemBuilder.getInstance().buildAndSaveIndex();
-
 
         int currentSize = currentProject.getEmfProject().getItemsRelations().size();
         assert (shouldBeSize == currentSize);
