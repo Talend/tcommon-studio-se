@@ -970,7 +970,6 @@ public class RelationshipItemBuilder {
                     return;
                 }
             }
-            monitor.done();
         } catch (PersistenceException e) {
             ExceptionHandler.process(e);
         }
