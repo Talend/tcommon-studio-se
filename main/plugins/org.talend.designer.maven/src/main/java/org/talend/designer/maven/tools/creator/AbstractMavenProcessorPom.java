@@ -301,9 +301,6 @@ public abstract class AbstractMavenProcessorPom extends CreateMavenBundleTemplat
                     property = jobInfo.getProcessItem().getProperty();
                     groupId = PomIdsHelper.getJobGroupId(property);
                     artifactId = PomIdsHelper.getJobArtifactId(jobInfo);
-                    if ("OSGI".equals(property.getAdditionalProperties().get(TalendProcessArgumentConstant.ARG_BUILD_TYPE))) {
-                        artifactId = artifactId + "-bundle";
-                    }
 
                     version = PomIdsHelper.getJobVersion(property);
                     // try to get the pom version of children job and load from the pom file.

@@ -35,6 +35,18 @@
 		</repository>
 	</repositories>
 
+	<!-- Following dependency management block is a quickfix for 7.3.1 release. After release it should be removed and
+	couchbase-locales version should be fixed in couchbase component pom.xml-->
+	<dependencyManagement>
+		<dependencies>
+			<dependency>
+				<groupId>org.talend.components</groupId>
+				<artifactId>couchbase-locales</artifactId>
+				<version>1.6.5</version>
+			</dependency>
+		</dependencies>
+	</dependencyManagement>
+
 	<dependencies>
 		<dependency>
 			<groupId>org.talend.components</groupId>
