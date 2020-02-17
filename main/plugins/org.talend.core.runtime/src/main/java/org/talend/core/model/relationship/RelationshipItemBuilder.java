@@ -976,6 +976,7 @@ public class RelationshipItemBuilder {
     }
 
     public void buildAndSaveIndex() {
+        log.info("relationship.index generating");
         currentProjectItemsRelations = new ConcurrentHashMap<Relation, Set<Relation>>();
         referencesItemsRelations = new ConcurrentHashMap<Relation, Set<Relation>>();
         generateIndex(this.aimProject, allSupportedTypes(), false, new NullProgressMonitor());
@@ -984,7 +985,9 @@ public class RelationshipItemBuilder {
             synchronizeItemRelationToProject(this.aimProject);
             // persist index
             getProxyRepositoryFactory().saveProject(this.aimProject);
+            log.info("relationship.index generated");
         } catch (PersistenceException e) {
+            log.error("relationship.index generating error", e);
             ExceptionHandler.process(e);
         }
     }

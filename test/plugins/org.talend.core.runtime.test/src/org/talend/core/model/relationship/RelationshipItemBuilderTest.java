@@ -195,15 +195,18 @@ public class RelationshipItemBuilderTest {
         Project currentProject = ProjectManager.getInstance().getCurrentProject();
 
         int shouldBeSize = RelationshipItemBuilder.getInstance().getCurrentProjectItemsRelations().size();
+        currentProject = RelationshipItemBuilder.getInstance().getAimProject();
 
         // remove all of relations from index
         RelationshipItemBuilder.getInstance().clearAllItemsRelations();
         RelationshipItemBuilder.getInstance().saveRelations();
 
+        assert (currentProject.getEmfProject().getItemsRelations().size() == 0);
+
         // regenerate index
         RelationshipItemBuilder.getInstance().buildAndSaveIndex();
 
-        currentProject = RelationshipItemBuilder.getInstance().getAimProject();
+
         int currentSize = currentProject.getEmfProject().getItemsRelations().size();
         assert (shouldBeSize == currentSize);
     }
