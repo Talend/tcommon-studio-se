@@ -213,7 +213,7 @@ public class FileUtilsTest {
             fail("validation should not fail");
         }
 
-        targetDir = "/c/test/../test1";
+        targetDir = "/c/test1";
         destPathStr = "/c/test/../test1/file1.txt";
 
         try {
@@ -222,7 +222,7 @@ public class FileUtilsTest {
             fail("validation should not fail");
         }
 
-        targetDir = "/c/test/../test1";
+        targetDir = "/c/test1";
         destPathStr = "/c/test/../test1/test2/";
 
         try {
