@@ -43,7 +43,7 @@ public class RenameComponentConversion implements IComponentConversion {
         replaceAllInAllNodesParameterValue(item, oldNodeUniqueName, newNodeUniqueName);
     }
 
-    private static void replaceAllInAllNodesParameterValue(ProcessType item, String oldName, String newName) {
+    protected static void replaceAllInAllNodesParameterValue(ProcessType item, String oldName, String newName) {
         for (Object o : item.getNode()) {
             NodeType nt = (NodeType) o;
             ComponentUtilities.replaceInNodeParameterValue(nt, oldName, newName);
