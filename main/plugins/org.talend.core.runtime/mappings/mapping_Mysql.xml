@@ -142,12 +142,12 @@
 					<talendType type="id_Long" default="true" />
 				</dbType>
 				<dbType type="BINARY">
-					<talendType type="id_byte[]" default="true" />
-					<talendType type="id_Boolean" />
+					<talendType type="id_byte[]" />
+					<talendType type="id_Boolean" default="true" />
 				</dbType>
 				<dbType type="BIT">
-					<talendType type="id_byte[]" default="true" />
-					<talendType type="id_Boolean" />
+					<talendType type="id_byte[]" />
+					<talendType type="id_Boolean" default="true" />
 				</dbType>
 				<dbType type="BLOB">
 					<talendType type="id_byte[]" default="true" />

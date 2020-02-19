@@ -61,10 +61,10 @@ import org.talend.core.model.components.ComponentProviderInfo;
 import org.talend.core.model.components.IComponent;
 import org.talend.core.model.components.IComponentsService;
 import org.talend.core.model.general.ILibrariesService;
-import org.talend.core.model.general.ILibrariesService.IChangedLibrariesListener;
 import org.talend.core.model.general.ModuleNeeded;
-import org.talend.core.model.general.ModuleNeeded.ELibraryInstallStatus;
 import org.talend.core.model.general.ModuleStatusProvider;
+import org.talend.core.model.general.ILibrariesService.IChangedLibrariesListener;
+import org.talend.core.model.general.ModuleNeeded.ELibraryInstallStatus;
 import org.talend.core.model.repository.ERepositoryObjectType;
 import org.talend.core.nexus.ArtifactRepositoryBean;
 import org.talend.core.nexus.IRepositoryArtifactHandler;
@@ -1243,12 +1243,15 @@ public class LocalLibraryManager implements ILibraryManagerService, IChangedLibr
             }
         }
 
+        if (service != null) {
+            calculateModulesIndexFromComponentFolder(service, platformURLMap);
+        }
 
         saveMavenIndex(mavenURIMap, monitorWrap);
         savePlatfromURLIndex(platformURLMap, monitorWrap);
         
         if (service != null) {
-            deployLibsFromComponentFolder(service, platformURLMap);
+            deployLibsFromCustomComponents(service, platformURLMap);
         }
 
     }
@@ -1261,35 +1264,15 @@ public class LocalLibraryManager implements ILibraryManagerService, IChangedLibr
      * @param libsWithoutUri
      * @param platformURLMap
      */
-    private void deployLibsFromComponentFolder(IComponentsService service, Map<String, String> platformURLMap) {
-        Set<File> needToDeploy = new HashSet<>();
+    private void calculateModulesIndexFromComponentFolder(IComponentsService service, Map<String, String> platformURLMap) {
         List<ComponentProviderInfo> componentsFolders = service.getComponentsFactory().getComponentsProvidersInfo();
         for (ComponentProviderInfo providerInfo : componentsFolders) {
             String contributeID = providerInfo.getContributer();
             String id = providerInfo.getId();
             try {
-                File file = new File(providerInfo.getLocation());
-                if ("org.talend.designer.components.model.UserComponentsProvider".equals(id)
-                        || "org.talend.designer.components.exchange.ExchangeComponentsProvider".equals(id)) {
-                    if (file.isDirectory()) {
-                        List<File> jarFiles = FilesUtils.getJarFilesFromFolder(file, null);
-                        if (jarFiles.size() > 0) {
-                            for (File jarFile : jarFiles) {
-                                String name = jarFile.getName();
-                                if (platformURLMap.get(name) != null) {
-                                    continue;
-                                }
-                                needToDeploy.add(jarFile);
-                            }
-                        }
-                    } else {
-                        if (platformURLMap.get(file.getName()) != null) {
-                            continue;
-                        }
-                        needToDeploy.add(file);
-                    }
-                } else {
-                    // for other component provider ,add jars to the platform url index
+                if (!"org.talend.designer.components.model.UserComponentsProvider".equals(id)
+                        && !"org.talend.designer.components.exchange.ExchangeComponentsProvider".equals(id)) {
+                    File file = new File(providerInfo.getLocation());
                     List<File> jarFiles = FilesUtils.getJarFilesFromFolder(file, null, "ext");
                     if (jarFiles.size() > 0) {
                         for (File jarFile : jarFiles) {
@@ -1312,6 +1295,40 @@ public class LocalLibraryManager implements ILibraryManagerService, IChangedLibr
                             }
                             platformURLMap.put(name, moduleLocation);
                         }
+                    }
+                }
+            } catch (Exception e) {
+                ExceptionHandler.process(e);
+                continue;
+            }
+        }
+    }
+
+    private void deployLibsFromCustomComponents(IComponentsService service, Map<String, String> platformURLMap) {
+        Set<File> needToDeploy = new HashSet<>();
+        List<ComponentProviderInfo> componentsFolders = service.getComponentsFactory().getComponentsProvidersInfo();
+        for (ComponentProviderInfo providerInfo : componentsFolders) {
+            String id = providerInfo.getId();
+            try {
+                File file = new File(providerInfo.getLocation());
+                if ("org.talend.designer.components.model.UserComponentsProvider".equals(id)
+                        || "org.talend.designer.components.exchange.ExchangeComponentsProvider".equals(id)) {
+                    if (file.isDirectory()) {
+                        List<File> jarFiles = FilesUtils.getJarFilesFromFolder(file, null);
+                        if (jarFiles.size() > 0) {
+                            for (File jarFile : jarFiles) {
+                                String name = jarFile.getName();
+                                if (platformURLMap.get(name) != null) {
+                                    continue;
+                                }
+                                needToDeploy.add(jarFile);
+                            }
+                        }
+                    } else {
+                        if (platformURLMap.get(file.getName()) != null) {
+                            continue;
+                        }
+                        needToDeploy.add(file);
                     }
                 }
             } catch (Exception e) {
@@ -1350,11 +1367,12 @@ public class LocalLibraryManager implements ILibraryManagerService, IChangedLibr
                     install(file, null, true, true);
                 } catch (Exception e) {
                     ExceptionHandler.process(e);
+                    continue;
                 }
             }
+
         }
     }
-
     private void warnDuplicated(List<ModuleNeeded> modules, Set<String> duplicates, String type) {
         for (String lib : duplicates) {
             Set<String> components = new HashSet<>();

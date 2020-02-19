@@ -53,9 +53,9 @@ public class JDBCDriverLoader {
      * @param dbVersion
      */
     public void loadForHiveEmbedded(List<String> libraries, String dbType, String dbVersion) {
-        boolean flog = EDatabaseVersion4Drivers.containTypeAndVersion(dbType, dbVersion);
+        boolean flag = EDatabaseVersion4Drivers.containTypeAndVersion(dbType, dbVersion);
         HotClassLoader loader = null;
-        if (flog) {
+        if (flag) {
             loader = getHotClassLoaderFromCache(dbType, dbVersion);
             if (loader == null) {
                 loader = new HotClassLoader();
@@ -88,9 +88,8 @@ public class JDBCDriverLoader {
      * @return
      */
     public HotClassLoader getHotClassLoaderFromCache(String dbType, String dbVersion) {
-        HotClassLoader loader;
-        loader = (HotClassLoader) classLoadersMap.get(dbType, dbVersion);
-        return loader;
+        Object obj = classLoadersMap.get(dbType, dbVersion);
+        return obj == null ? null : (HotClassLoader) obj;
     }
 
     private HotClassLoader getHotClassLoaderFromCacheBasedOnLibraries(String[] librariesPaths) {
@@ -220,19 +219,19 @@ public class JDBCDriverLoader {
      * @return
      */
     public HotClassLoader getHotClassLoader(String[] jarPath, String dbType, String dbVersion) {
-
-        if (EDatabaseTypeName.GENERAL_JDBC.getDisplayName().equals(dbType)) {
+        if (EDatabaseTypeName.GENERAL_JDBC.getDisplayName().equals(dbType)
+                || EDatabaseTypeName.GENERAL_JDBC.getProduct().equals(dbType)) {
             return getHotClassLoaderFromCacheBasedOnLibraries(jarPath);
         }
 
         HotClassLoader loader;
-        boolean flog = EDatabaseVersion4Drivers.containTypeAndVersion(dbType, dbVersion);
-        if (flog) {
+        boolean flag = EDatabaseVersion4Drivers.containTypeAndVersion(dbType, dbVersion);
+        if (flag || ExtractMetaDataUtils.SNOWFLAKE.equals(dbType)) {
             loader = getHotClassLoaderFromCache(dbType, dbVersion);
             if (loader == null) {
                 loader = new HotClassLoader();
                 classLoadersMap.put(dbType, dbVersion, loader);
-            }// else loader gotten from cache
+            }
         } else {
             loader = new HotClassLoader();
         }

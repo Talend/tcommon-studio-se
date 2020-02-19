@@ -21,7 +21,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
-import org.apache.maven.model.Build;
 import org.apache.maven.model.Dependency;
 import org.apache.maven.model.Model;
 import org.apache.maven.model.Plugin;
@@ -31,13 +30,15 @@ import org.codehaus.plexus.util.xml.Xpp3Dom;
 import org.eclipse.core.resources.IFile;
 import org.eclipse.core.resources.IFolder;
 import org.eclipse.core.runtime.IProgressMonitor;
+import org.eclipse.core.runtime.Platform;
+import org.talend.commons.CommonsPlugin;
 import org.talend.commons.exception.ExceptionHandler;
 import org.talend.commons.exception.PersistenceException;
+import org.talend.commons.utils.VersionUtils;
 import org.talend.core.GlobalServiceRegister;
 import org.talend.core.IESBService;
 import org.talend.core.PluginChecker;
 import org.talend.core.model.process.JobInfo;
-import org.talend.core.model.properties.ProcessItem;
 import org.talend.core.model.properties.Property;
 import org.talend.core.model.relationship.Relation;
 import org.talend.core.model.relationship.RelationshipItemBuilder;
@@ -118,37 +119,34 @@ public class CreateMavenStandardJobOSGiPom extends CreateMavenJobPom {
 
         List<Profile> profiles = model.getProfiles();
 
-        for (Profile profile : profiles) {
-
-            if (profile.getId().equals("packaging-and-assembly")) {
-                List<Plugin> plugins = profile.getBuild().getPlugins();
-
-                for (Plugin plugin : plugins) {
-                    if (plugin.getArtifactId().equals("maven-assembly-plugin")) {
-                        PluginExecution pluginExecution = plugin.getExecutionsAsMap().get("default");
-                        Xpp3Dom configuration = (Xpp3Dom) pluginExecution.getConfiguration();
-
-                        Xpp3Dom archive = new Xpp3Dom("archive");
-                        Xpp3Dom manifestFile = new Xpp3Dom("manifestFile");
-                        manifestFile.setValue("${current.bundle.resources.dir}/META-INF/MANIFEST.MF");
-
-                        archive.addChild(manifestFile);
-
-                        configuration.addChild(archive);
-                    }
-                }
-            }
-
-            // remove deploy plugin for service operation
-            if (isServiceOperation && profile.getId().equals("deploy-nexus")) {
-                model.removeProfile(profile);
-                break;
-            }
-        }
+		for (Profile profile : profiles) {
+			if ("deploy-nexus".equals(profile.getId())) {
+				if (isServiceOperation) {
+					// remove deploy-nexus plugin for service operation
+					model.removeProfile(profile);
+				} else {
+					List<Plugin> plugins = profile.getBuild().getPlugins();
+					for (Plugin plugin : plugins) {
+						if ("osgihelper-maven-plugin".equals(plugin.getArtifactId())) {
+							String talendVersion = VersionUtils.getTalendVersion();
+							String productVersion = VersionUtils.getInternalVersion();
+							if (productVersion.endsWith("-SNAPSHOT") || CommonsPlugin.isJUnitTest() //$NON-NLS-1$
+									|| Platform.inDevelopmentMode()) {
+								talendVersion += "-SNAPSHOT"; //$NON-NLS-1$
+							}
+							plugin.setVersion(talendVersion);
+							break;
+						}
+					}
+				}
+				break;
+			}
+		}
         model.setName(model.getName() + " Bundle");
         model.addProperty("talend.job.finalName", "${talend.job.name}-bundle-${project.version}");
         
         if (isServiceOperation) {
+        	model.setArtifactId(model.getArtifactId() + "-bundle");
             model.addProperty("cloud.publisher.skip", "true");
             model.setBuild(null);
         } else {

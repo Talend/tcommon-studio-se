@@ -225,8 +225,13 @@ public class BuildCacheManager {
 
                 String goal = (String) argumentsMap.get(TalendProcessArgumentConstant.ARG_GOAL);
                 MavenPomCommandLauncher mavenLauncher = new MavenPomCommandLauncher(pomFile, goal);
-                mavenLauncher.setSkipTests(true);
                 mavenLauncher.setArgumentsMap(argumentsMap);
+                if (isBuildJob()) {
+                    mavenLauncher.setIgnoreTestFailure(true);
+                } else {
+                    // run job, still skip tests anyway
+                    mavenLauncher.setSkipTests(true);
+                }
                 mavenLauncher.execute(monitor);
             } finally {
                 deleteBuildAggregatorPom();
@@ -379,6 +384,15 @@ public class BuildCacheManager {
             aggregatorPomsHelper = new AggregatorPomsHelper();
         }
         return aggregatorPomsHelper;
+    }
+
+    private boolean isBuildJob() {
+        if (GlobalServiceRegister.getDefault().isServiceRegistered(IRunProcessService.class)) {
+            IRunProcessService service = (IRunProcessService) GlobalServiceRegister.getDefault()
+                    .getService(IRunProcessService.class);
+            return service.isExportConfig();
+        }
+        return false;
     }
 
 }
