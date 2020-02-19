@@ -13,6 +13,8 @@
 package org.talend.designer.maven.launch;
 
 import java.util.Map;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import org.apache.commons.lang.StringUtils;
 import org.eclipse.core.resources.IContainer;
@@ -95,12 +97,26 @@ public abstract class MavenCommandLauncher {
 
     private Map<String, Object> argumentsMap;
 
+    private static final String REGEX_TEST_CASE_FAILURES_STR = "\\[ERROR\\] Tests run:.*\\[ERROR\\] There are test\\p{Print}+\n";
+
+    private static final Pattern REGEX_TEST_CASE_FAILURES = Pattern.compile(REGEX_TEST_CASE_FAILURES_STR, Pattern.DOTALL);
+
+    private boolean ignoreTestFailure = false;
+
     public MavenCommandLauncher(String goals) {
         super();
         Assert.isNotNull(goals);
         this.goals = goals;
         // by default same as preference settings.
         this.debugOutput = MavenPlugin.getMavenConfiguration().isDebugOutput();
+    }
+
+    public boolean isIgnoreTestFailure() {
+        return ignoreTestFailure;
+    }
+
+    public void setIgnoreTestFailure(boolean ignoreTestFailure) {
+        this.ignoreTestFailure = ignoreTestFailure;
     }
 
     protected String getGoals() {
@@ -203,6 +219,12 @@ public abstract class MavenCommandLauncher {
             String vmargs = System.getProperty(mavenArgs);
             if (vmargs != null) {
                 workingCopy.setAttribute(IJavaLaunchConfigurationConstants.ATTR_VM_ARGUMENTS, vmargs);
+            }
+
+            // ignore test failures
+            if (this.ignoreTestFailure) {
+                workingCopy.setAttribute(IJavaLaunchConfigurationConstants.ATTR_VM_ARGUMENTS, "-Dmaven.test.failure.ignore=true "
+                        + workingCopy.getAttribute(IJavaLaunchConfigurationConstants.ATTR_VM_ARGUMENTS, ""));
             }
 
             String programArgs = getArgumentValue(TalendProcessArgumentConstant.ARG_PROGRAM_ARGUMENTS);
@@ -318,7 +340,18 @@ public abstract class MavenCommandLauncher {
 
         if (TalendMavenConstants.GOAL_INSTALL.equals(launchConfiguration.getAttribute(MavenLaunchConstants.ATTR_GOALS, ""))) {
             if (errors.length() != 0) {
-                throw new Exception(errors.toString());
+                String remainingErr = errors.toString();
+                if (this.ignoreTestFailure) {
+                    Matcher m = REGEX_TEST_CASE_FAILURES.matcher(errors);
+                    int matchIdx = 0;
+                    while (m.find()) {
+                        matchIdx = m.end();
+                    }
+                    remainingErr = errors.substring(matchIdx);
+                }
+                if (remainingErr.trim().length() > 0) {
+                    throw new Exception(remainingErr.toString());
+                }
             }
         }
     }
