@@ -795,8 +795,8 @@ public final class FilesUtils {
      */
     public static void validateDestPath(String targetDir, String destPathStr) throws IOException {
         if (targetDir != null && !targetDir.isEmpty() && destPathStr != null && !destPathStr.isEmpty()) {
-            Path targetPathNormalized = Paths.get(targetDir).normalize();
-            Path destPathNormalized = Paths.get(destPathStr).normalize();
+            Path targetPathNormalized = Paths.get(new File(targetDir).toPath().toString()).normalize();
+            Path destPathNormalized = Paths.get(new File(destPathStr).toPath().toString()).normalize();
             if (!destPathNormalized.startsWith(targetPathNormalized)) {
                 throw new IOException("Invalid output path: " + destPathStr);
             }
