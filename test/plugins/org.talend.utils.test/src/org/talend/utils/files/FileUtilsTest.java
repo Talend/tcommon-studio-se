@@ -231,6 +231,24 @@ public class FileUtilsTest {
             fail("validation should not fail");
         }
 
+        targetDir = "/c:/test/../test1";
+        destPathStr = targetDir + "/test2/";
+
+        try {
+            FilesUtils.validateDestPath(targetDir, destPathStr);
+        } catch (IOException e) {
+            fail("validation should not fail");
+        }
+
+        targetDir = "/c:/test/../test1";
+        destPathStr = targetDir + "/testfile";
+
+        try {
+            FilesUtils.validateDestPath(targetDir, destPathStr);
+        } catch (IOException e) {
+            fail("validation should not fail");
+        }
+
         targetDir = "";
         destPathStr = "";
 
@@ -272,6 +290,26 @@ public class FileUtilsTest {
 
         targetDir = "/c/test/";
         destPathStr = "/c/test2/../test3/";
+
+        try {
+            FilesUtils.validateDestPath(targetDir, destPathStr);
+            fail("validation should not pass");
+        } catch (IOException e) {
+            assertNotNull(e);
+        }
+
+        targetDir = "/c:/test/";
+        destPathStr = targetDir + "../test3/";
+
+        try {
+            FilesUtils.validateDestPath(targetDir, destPathStr);
+            fail("validation should not pass");
+        } catch (IOException e) {
+            assertNotNull(e);
+        }
+
+        targetDir = "/c:/test/";
+        destPathStr = targetDir + "../testfile.txt";
 
         try {
             FilesUtils.validateDestPath(targetDir, destPathStr);

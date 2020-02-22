@@ -19,6 +19,7 @@ import org.eclipse.ui.IPerspectiveListener3;
 import org.eclipse.ui.IPerspectiveListener4;
 import org.eclipse.ui.IWorkbenchPage;
 import org.eclipse.ui.IWorkbenchPartReference;
+import org.eclipse.ui.IWorkbenchWindow;
 import org.eclipse.ui.PlatformUI;
 import org.eclipse.ui.navigator.CommonNavigator;
 import org.eclipse.ui.navigator.CommonViewer;
@@ -146,8 +147,12 @@ public class RepoViewPerspectiveListener implements IPerspectiveListener, IPersp
     private void checkListener() {
         // if viewer is completly removed from all views then remove this from perspective listeners.
         CommonViewer commonViewer = getCommonViewer();
-        if (commonViewer.getControl().isDisposed()) {
-            PlatformUI.getWorkbench().getActiveWorkbenchWindow().removePerspectiveListener(this);
+        if (commonViewer.getControl().isDisposed() && PlatformUI.getWorkbench() != null) {
+            IWorkbenchWindow activeWin = PlatformUI.getWorkbench().getActiveWorkbenchWindow();
+            if(activeWin == null) {
+                return;
+            }
+            activeWin.removePerspectiveListener(this);
         }// else do nothing
     }
 

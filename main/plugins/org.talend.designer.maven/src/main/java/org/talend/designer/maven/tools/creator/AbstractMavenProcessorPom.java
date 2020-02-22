@@ -206,6 +206,17 @@ public abstract class AbstractMavenProcessorPom extends CreateMavenBundleTemplat
                 // Xpp3Dom minimizeJar = new Xpp3Dom("minimizeJar"); //$NON-NLS-1$
                 // minimizeJar.setValue("true"); //$NON-NLS-1$
                 // configuration.addChild(minimizeJar);
+
+                // TDQ-18049 when shaded,avoid to conflict the same name class from different jars. e.g,"ImagePreloader"
+                // in "fop-2.3.jar/META-INF/services/" and "xmlgraphics-commons-2.3.jar"
+                Xpp3Dom transforms = new Xpp3Dom("transformers"); //$NON-NLS-1$
+                Xpp3Dom transform = new Xpp3Dom("transform");
+                transform
+                        .setAttribute("implementation",
+                                "org.apache.maven.plugins.shade.resource.ServicesResourceTransformer");
+                transforms.addChild(transform);
+                configuration.addChild(transforms);
+
                 Xpp3Dom artifactSet = new Xpp3Dom("artifactSet"); //$NON-NLS-1$
                 configuration.addChild(artifactSet);
                 Xpp3Dom excludes = new Xpp3Dom("excludes"); //$NON-NLS-1$
