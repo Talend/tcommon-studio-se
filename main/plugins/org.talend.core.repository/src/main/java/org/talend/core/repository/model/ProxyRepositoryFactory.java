@@ -2054,10 +2054,6 @@ public final class ProxyRepositoryFactory implements IProxyRepositoryFactory {
                 SubMonitor subMonitor = SubMonitor.convert(monitor, MAX_TASKS);
                 SubMonitor currentMonitor = subMonitor.newChild(1, SubMonitor.SUPPRESS_NONE);
                 currentMonitor.beginTask(Messages.getString("ProxyRepositoryFactory.logonInProgress"), 1); //$NON-NLS-1$
-                // regenerate relationship index
-                if (project.getEmfProject().getItemsRelations().isEmpty()) {
-                    RelationshipItemBuilder.getInstance().buildAndSaveIndex();
-                }
 
                 project.setReferenceProjectProvider(null);
                 getRepositoryContext().setProject(null);
@@ -2236,6 +2232,11 @@ public final class ProxyRepositoryFactory implements IProxyRepositoryFactory {
                         tdqRepositoryService.initProxyRepository();
                     }
                 }
+                // regenerate relationship index
+                if (project.getEmfProject().getItemsRelations().isEmpty()) {
+                    RelationshipItemBuilder.getInstance().buildAndSaveIndex();
+                }
+
                 fullLogonFinished = true;
                 this.repositoryFactoryFromProvider.afterLogon(monitor);
             } finally {
