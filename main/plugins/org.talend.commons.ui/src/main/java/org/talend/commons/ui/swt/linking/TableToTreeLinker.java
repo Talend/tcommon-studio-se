@@ -311,10 +311,7 @@ public class TableToTreeLinker<D1, D2> extends BgDrawableComposite implements IB
                 // Added by Marvin Wang on Nov. 28, 2012 for bug TDI-23378. This is not the best way to fix this issue,
                 // but till now I have not found the root cause.
                 if (Platform.OS_LINUX.equals(Platform.getOS())) {
-                    pointEndCentralCurve.y = pointEndCentralCurve.y - tableItem.getBounds().height;
-                }
-                if (Platform.OS_MACOSX.equals(Platform.getOS())) {
-                    pointEndCentralCurve.y = pointEndCentralCurve.y + tableItem.getBounds(0).height;
+                    pointEndCentralCurve.y = pointEndCentralCurve.y - tableItem.getBounds().height - treeItemHeight / 2;
                 }
                 drawableLink.setPoint1(pointEndStraight);
                 drawableLink.setPoint2(pointEndCentralCurve);
