@@ -238,8 +238,10 @@ public class MavenLibraryResolverProvider {
 
         LightweightHttpsWagon https = new LightweightHttpsWagon();
         https.setAuthenticator(new LightweightHttpWagonAuthenticator());
+        https.setPreemptiveAuthentication(true);
         LightweightHttpWagon http = new LightweightHttpWagon();
         http.setAuthenticator(new LightweightHttpWagonAuthenticator());
+        http.setPreemptiveAuthentication(true);
 
         pc.addComponent(https, Wagon.class, "https");
         pc.addComponent(http, Wagon.class, "http");
