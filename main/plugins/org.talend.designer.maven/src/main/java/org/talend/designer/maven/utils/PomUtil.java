@@ -28,6 +28,7 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.LinkedHashMap;
 import java.util.LinkedHashSet;
 import java.util.List;
@@ -81,6 +82,7 @@ import org.talend.core.model.properties.ProcessItem;
 import org.talend.core.model.properties.Property;
 import org.talend.core.model.relationship.Relation;
 import org.talend.core.model.relationship.RelationshipItemBuilder;
+import org.talend.core.model.repository.ERepositoryObjectType;
 import org.talend.core.model.repository.IRepositoryViewObject;
 import org.talend.core.model.utils.JavaResourcesHelper;
 import org.talend.core.nexus.TalendMavenResolver;
@@ -96,6 +98,7 @@ import org.talend.designer.maven.template.MavenTemplateManager;
 import org.talend.designer.maven.tools.AggregatorPomsHelper;
 import org.talend.designer.maven.tools.ProcessorDependenciesManager;
 import org.talend.designer.runprocess.IProcessor;
+import org.talend.designer.runprocess.IRunProcessService;
 import org.talend.repository.ProjectManager;
 import org.talend.utils.xml.XmlUtils;
 import org.w3c.dom.Attr;
@@ -1132,5 +1135,19 @@ public class PomUtil {
             }
         }
         return found;
+    }
+
+    public static Set<Dependency> getCodesDependencies(ERepositoryObjectType codeType) throws CoreException {
+        Set<Dependency> dependencies = new HashSet<Dependency>();
+
+        if (GlobalServiceRegister.getDefault().isServiceRegistered(IRunProcessService.class)) {
+            IRunProcessService runProcessService = (IRunProcessService) GlobalServiceRegister.getDefault()
+                    .getService(IRunProcessService.class);
+            ITalendProcessJavaProject talendCodeJavaProject = runProcessService.getTalendCodeJavaProject(codeType);
+            IFile projectPom = talendCodeJavaProject.getProjectPom();
+            Model model = MODEL_MANAGER.readMavenModel(projectPom);
+            dependencies.addAll(model.getDependencies());
+        }
+        return dependencies;
     }
 }

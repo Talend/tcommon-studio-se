@@ -57,6 +57,7 @@ import org.talend.core.model.process.ProcessUtils;
 import org.talend.core.model.properties.ProcessItem;
 import org.talend.core.model.properties.Project;
 import org.talend.core.model.properties.Property;
+import org.talend.core.model.repository.ERepositoryObjectType;
 import org.talend.core.model.utils.JavaResourcesHelper;
 import org.talend.core.repository.utils.ItemResourceUtil;
 import org.talend.core.runtime.maven.MavenArtifact;
@@ -697,11 +698,14 @@ public class CreateMavenJobPom extends AbstractMavenProcessorPom {
 
         // add missing modules from the job generation of children
         Set<ModuleNeeded> fullModulesList = new HashSet<>();
+        Set<String> routinesList = new HashSet<>(); 
         for (JobInfo jobInfo : childrenJobInfo) {
             fullModulesList
                     .addAll(LastGenerationInfo
                             .getInstance()
                             .getModulesNeededWithSubjobPerJob(jobInfo.getJobId(), jobInfo.getJobVersion()));
+            routinesList.addAll(LastGenerationInfo.getInstance().getRoutinesNeededWithSubjobPerJob(jobInfo.getJobId(),
+                    jobInfo.getJobVersion()));
         }
         for (ModuleNeeded moduleNeeded : fullModulesList) {
             if (moduleNeeded.isExcluded()) {
@@ -725,6 +729,18 @@ public class CreateMavenJobPom extends AbstractMavenProcessorPom {
                 }
             }
         }
+        
+        try {
+            if (!routinesList.isEmpty()) {
+                Set<Dependency> codesDependencies = PomUtil.getCodesDependencies(ERepositoryObjectType.ROUTINES);
+                for (Dependency codeDependency : codesDependencies) {
+                    addToDuplicateLibs(duplicateLibs, codeDependency);
+                }
+            }
+        } catch (CoreException e1) {
+            ExceptionHandler.process(e1);
+        }
+
 
         Iterator<String> iterator = duplicateLibs.keySet().iterator();
         while (iterator.hasNext()) {
@@ -815,7 +831,17 @@ public class CreateMavenJobPom extends AbstractMavenProcessorPom {
             Set<Dependency> set = new HashSet<>();
             map.put(coordinate, set);
         }
-        map.get(coordinate).add(dependency);
+        boolean exist = false;
+        for (Dependency dep : map.get(coordinate)) {
+            if (dep.getGroupId().equals(dependency.getGroupId()) && dep.getArtifactId().equals(dependency.getArtifactId())
+                    && dep.getVersion().equals(dependency.getVersion()) && dep.getType().equals(dependency.getType())) {
+                exist = true;
+                break;
+            }
+        }
+        if (!exist) {
+            map.get(coordinate).add(dependency);
+        }
     }
 
     protected void setupDependencySetNode(Document document, Map<String, Dependency> libIncludes, String outputDir,
