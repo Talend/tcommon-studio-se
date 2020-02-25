@@ -2081,7 +2081,7 @@ public final class ProxyRepositoryFactory implements IProxyRepositoryFactory {
                     if (ITaCoKitService.getInstance() != null) {
                         ITaCoKitService.getInstance().start();
                     }
-                } catch (Exception e) {
+                } catch (Throwable e) {
                     ExceptionHandler.process(e);
                 }
 
