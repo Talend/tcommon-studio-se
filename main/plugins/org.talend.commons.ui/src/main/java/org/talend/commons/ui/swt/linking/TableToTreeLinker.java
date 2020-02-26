@@ -25,7 +25,9 @@ import org.eclipse.swt.graphics.Rectangle;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Display;
+import org.eclipse.swt.widgets.Event;
 import org.eclipse.swt.widgets.Item;
+import org.eclipse.swt.widgets.Listener;
 import org.eclipse.swt.widgets.Table;
 import org.eclipse.swt.widgets.TableItem;
 import org.eclipse.swt.widgets.Tree;
@@ -104,7 +106,15 @@ public class TableToTreeLinker<D1, D2> extends BgDrawableComposite implements IB
         this.source = sourceTable;
 
         dataToTableItemCache = new DataToTableItemCache(sourceTable);
+        if (Platform.OS_LINUX.equals(Platform.getOS())) {
+            this.source.addListener(SWT.EraseItem, new Listener() {
 
+                @Override
+                public void handleEvent(Event event) {
+                    drawBackground(event.gc);
+                }
+            });
+        }
     }
 
     protected IStyleLink getDefaultStyleLink() {
