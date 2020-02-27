@@ -24,9 +24,7 @@ import java.util.Set;
 import org.apache.maven.model.Dependency;
 import org.apache.maven.model.Model;
 import org.apache.maven.model.Plugin;
-import org.apache.maven.model.PluginExecution;
 import org.apache.maven.model.Profile;
-import org.codehaus.plexus.util.xml.Xpp3Dom;
 import org.eclipse.core.resources.IFile;
 import org.eclipse.core.resources.IFolder;
 import org.eclipse.core.runtime.IProgressMonitor;
@@ -198,8 +196,9 @@ public class CreateMavenStandardJobOSGiPom extends CreateMavenJobPom {
                 Property property = jobInfo.getProcessItem().getProperty();
                 String coordinate = getCoordinate(PomIdsHelper.getJobGroupId(property), PomIdsHelper.getJobArtifactId(jobInfo),
                         MavenConstants.PACKAGING_JAR, PomIdsHelper.getJobVersion(property));
-                Dependency dependency = getDependencyObject(PomIdsHelper.getJobGroupId(property), PomIdsHelper.getJobArtifactId(jobInfo), PomIdsHelper.getJobVersion(property),
-                                MavenConstants.PACKAGING_JAR, null);
+                Dependency dependency = PomUtil.createDependency(PomIdsHelper.getJobGroupId(property),
+                        PomIdsHelper.getJobArtifactId(jobInfo), PomIdsHelper.getJobVersion(property),
+                        MavenConstants.PACKAGING_JAR);
                 jobCoordinateMap.put(coordinate, dependency);
             }
         }
@@ -208,8 +207,9 @@ public class CreateMavenStandardJobOSGiPom extends CreateMavenJobPom {
         String parentCoordinate = getCoordinate(PomIdsHelper.getJobGroupId(parentProperty),
                 PomIdsHelper.getJobArtifactId(parentProperty), MavenConstants.PACKAGING_JAR,
                 PomIdsHelper.getJobVersion(parentProperty));
-        Dependency parentDependency = getDependencyObject(PomIdsHelper.getJobGroupId(parentProperty), PomIdsHelper.getJobArtifactId(parentProperty), PomIdsHelper.getJobVersion(parentProperty),
-                        MavenConstants.PACKAGING_JAR, null);
+        Dependency parentDependency = PomUtil.createDependency(PomIdsHelper.getJobGroupId(parentProperty),
+                PomIdsHelper.getJobArtifactId(parentProperty), PomIdsHelper.getJobVersion(parentProperty),
+                MavenConstants.PACKAGING_JAR);
         jobCoordinateMap.put(parentCoordinate, parentDependency);
         try {
             Document document = PomUtil.loadAssemblyFile(null, assemblyFile);

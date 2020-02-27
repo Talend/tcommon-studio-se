@@ -78,7 +78,6 @@ import org.talend.designer.maven.template.ETalendMavenVariables;
 import org.talend.designer.maven.template.MavenTemplateManager;
 import org.talend.designer.maven.utils.PomIdsHelper;
 import org.talend.designer.maven.utils.PomUtil;
-import org.talend.designer.maven.utils.SortableDependency;
 import org.talend.designer.runprocess.IProcessor;
 import org.talend.designer.runprocess.IRunProcessService;
 import org.talend.repository.ProjectManager;
@@ -633,8 +632,8 @@ public class CreateMavenJobPom extends AbstractMavenProcessorPom {
             String coordinate =
                     getCoordinate(PomIdsHelper.getJobGroupId(property), PomIdsHelper.getJobArtifactId(jobInfo),
                             MavenConstants.PACKAGING_JAR, PomIdsHelper.getJobVersion(property));
-            Dependency dependency = getDependencyObject(PomIdsHelper.getJobGroupId(property), PomIdsHelper.getJobArtifactId(jobInfo), PomIdsHelper.getJobVersion(property),
-                            MavenConstants.PACKAGING_JAR, null);
+            Dependency dependency = PomUtil.createDependency(PomIdsHelper.getJobGroupId(property),
+                    PomIdsHelper.getJobArtifactId(jobInfo), PomIdsHelper.getJobVersion(property), MavenConstants.PACKAGING_JAR);
             jobCoordinateMap.put(coordinate, dependency);
         }
 
@@ -643,8 +642,9 @@ public class CreateMavenJobPom extends AbstractMavenProcessorPom {
         String parentCoordinate =
                 getCoordinate(PomIdsHelper.getJobGroupId(parentProperty), PomIdsHelper.getJobArtifactId(parentProperty),
                         MavenConstants.PACKAGING_JAR, PomIdsHelper.getJobVersion(parentProperty));
-        Dependency parentDependency = getDependencyObject(PomIdsHelper.getJobGroupId(parentProperty), PomIdsHelper.getJobArtifactId(parentProperty), PomIdsHelper.getJobVersion(parentProperty),
-                        MavenConstants.PACKAGING_JAR, null);
+        Dependency parentDependency = PomUtil.createDependency(PomIdsHelper.getJobGroupId(parentProperty),
+                PomIdsHelper.getJobArtifactId(parentProperty), PomIdsHelper.getJobVersion(parentProperty),
+                MavenConstants.PACKAGING_JAR);
         jobCoordinateMap.put(parentCoordinate, parentDependency);
 
         // add talend libraries and codes
@@ -698,14 +698,11 @@ public class CreateMavenJobPom extends AbstractMavenProcessorPom {
 
         // add missing modules from the job generation of children
         Set<ModuleNeeded> fullModulesList = new HashSet<>();
-        Set<String> routinesList = new HashSet<>(); 
         for (JobInfo jobInfo : childrenJobInfo) {
             fullModulesList
                     .addAll(LastGenerationInfo
                             .getInstance()
                             .getModulesNeededWithSubjobPerJob(jobInfo.getJobId(), jobInfo.getJobVersion()));
-            routinesList.addAll(LastGenerationInfo.getInstance().getRoutinesNeededWithSubjobPerJob(jobInfo.getJobId(),
-                    jobInfo.getJobVersion()));
         }
         for (ModuleNeeded moduleNeeded : fullModulesList) {
             if (moduleNeeded.isExcluded()) {
@@ -716,7 +713,9 @@ public class CreateMavenJobPom extends AbstractMavenProcessorPom {
                     artifact.getVersion());
             if (!jobCoordinateMap.containsKey(coordinate) && !talendLibCoordinateMap.containsKey(coordinate)
                     && !_3rdDepLibMap.containsKey(coordinate)) {
-                Dependency dependencyObject = getDependencyObject(artifact.getGroupId(), artifact.getArtifactId(), artifact.getVersion(), artifact.getType(), artifact.getClassifier());
+//                Dependency dependencyObject = getDependencyObject(artifact.getGroupId(), artifact.getArtifactId(), artifact.getVersion(), artifact.getType(), artifact.getClassifier());
+                Dependency dependencyObject = PomUtil.createDependency(artifact.getGroupId(), artifact.getArtifactId(),
+                        artifact.getVersion(), artifact.getType(), artifact.getClassifier());
                 if (MavenConstants.DEFAULT_LIB_GROUP_ID.equals(artifact.getGroupId())
                         || artifact.getGroupId().startsWith(projectGroupId)) {
                     talendLibCoordinateMap.put(coordinate, dependencyObject);
@@ -731,11 +730,9 @@ public class CreateMavenJobPom extends AbstractMavenProcessorPom {
         }
         
         try {
-            if (!routinesList.isEmpty()) {
-                Set<Dependency> codesDependencies = PomUtil.getCodesDependencies(ERepositoryObjectType.ROUTINES);
-                for (Dependency codeDependency : codesDependencies) {
-                    addToDuplicateLibs(duplicateLibs, codeDependency);
-                }
+            Set<Dependency> codesDependencies = PomUtil.getCodesDependencies(ERepositoryObjectType.ROUTINES);
+            for (Dependency codeDependency : codesDependencies) {
+                addToDuplicateLibs(duplicateLibs, codeDependency);
             }
         } catch (CoreException e1) {
             ExceptionHandler.process(e1);
@@ -813,17 +810,6 @@ public class CreateMavenJobPom extends AbstractMavenProcessorPom {
         return coordinate;
     }
 
-    protected Dependency getDependencyObject(String groupId, String artifactId, String version, String type, String classifier) {
-        Dependency object = new SortableDependency();
-        object.setGroupId(groupId);
-        object.setArtifactId(artifactId);
-        object.setVersion(version);
-        object.setType(type);
-        object.setClassifier(classifier);
-
-        return object;
-    }
-
     private void addToDuplicateLibs(Map<String, Set<Dependency>> map, Dependency dependency) {
         String coordinate =
                 getCoordinate(dependency.getGroupId(), dependency.getArtifactId(), dependency.getType(), null);
@@ -833,8 +819,7 @@ public class CreateMavenJobPom extends AbstractMavenProcessorPom {
         }
         boolean exist = false;
         for (Dependency dep : map.get(coordinate)) {
-            if (dep.getGroupId().equals(dependency.getGroupId()) && dep.getArtifactId().equals(dependency.getArtifactId())
-                    && dep.getVersion().equals(dependency.getVersion()) && dep.getType().equals(dependency.getType())) {
+            if (dep.equals(dependency)) {
                 exist = true;
                 break;
             }
