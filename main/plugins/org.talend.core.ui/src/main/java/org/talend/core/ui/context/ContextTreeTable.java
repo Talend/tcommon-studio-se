@@ -15,8 +15,10 @@ package org.talend.core.ui.context;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
+import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Map;
 
 import org.eclipse.jface.layout.GridDataFactory;
 import org.eclipse.jface.viewers.ISelectionChangedListener;
@@ -128,6 +130,8 @@ public class ContextTreeTable {
 
     // for bug TDI-32821， use LinkedList to keep the original order of context parameter list.
     private List<ContextTreeNode> treeNodes = new LinkedList<ContextTreeNode>();
+
+    private static Map<String, Boolean> expandMap = new HashMap<>();
 
     private IStructuredSelection currentNatTabSel;
 
@@ -647,11 +651,17 @@ public class ContextTreeTable {
 
         @Override
         public boolean isExpanded(ContextTreeNode element, List<ContextTreeNode> path) {
+            if (element.getTreeData() instanceof ContextTableTabParentModel) {
+                ContextTableTabParentModel obj = (ContextTableTabParentModel) element.getTreeData();
+                return expandMap.getOrDefault(obj.getSourceId(), true);
+            }
             return true;
         }
 
         @Override
         public void setExpanded(ContextTreeNode element, List<ContextTreeNode> path, boolean expanded) {
+            ContextTableTabParentModel obj = (ContextTableTabParentModel) element.getTreeData();
+            expandMap.put(obj.getSourceId(), expanded);
         }
     }
 
