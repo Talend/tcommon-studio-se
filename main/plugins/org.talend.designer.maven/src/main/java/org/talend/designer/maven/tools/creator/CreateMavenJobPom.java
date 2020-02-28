@@ -730,9 +730,16 @@ public class CreateMavenJobPom extends AbstractMavenProcessorPom {
         }
         
         try {
-            Set<Dependency> codesDependencies = PomUtil.getCodesDependencies(ERepositoryObjectType.ROUTINES);
+            Set<Dependency> codesDependencies = new HashSet<Dependency>();
+            for (ERepositoryObjectType type : ERepositoryObjectType.getAllTypesOfCodes()) {
+                codesDependencies.addAll(PomUtil.getCodesDependencies(type));
+            }
             for (Dependency codeDependency : codesDependencies) {
-                addToDuplicateLibs(duplicateLibs, codeDependency);
+                Dependency dependency = PomUtil.createDependency(codeDependency.getGroupId(), codeDependency.getArtifactId(),
+                        codeDependency.getVersion(), codeDependency.getType(), codeDependency.getClassifier());
+                if (dependency != null) {
+                    addToDuplicateLibs(duplicateLibs, dependency);
+                }
             }
         } catch (CoreException e1) {
             ExceptionHandler.process(e1);

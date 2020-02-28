@@ -13,11 +13,11 @@ public class SortableDependency extends Dependency implements Comparable<Sortabl
     @Override
     public int hashCode() {
         int result = 17;
-        result = 31 * result + getGroupId().hashCode();
-        result = 31 * result + getArtifactId().hashCode();
-        result = 31 * result + getVersion().hashCode();
-        result = 31 * result + getType().hashCode();
-        result = 31 * result + getClassifier().hashCode();
+        result = 31 * result + (getGroupId() == null ? 0 : getGroupId().hashCode());
+        result = 31 * result + (getArtifactId() == null ? 0 : getArtifactId().hashCode());
+        result = 31 * result + (getVersion() == null ? 0 : getVersion().hashCode());
+        result = 31 * result + (getType() == null ? 0 : getType().hashCode());
+        result = 31 * result + (getClassifier() == null ? 0 : getClassifier().hashCode());
         return result;
     }
 
@@ -29,7 +29,7 @@ public class SortableDependency extends Dependency implements Comparable<Sortabl
         if (obj == null) {
             return false;
         }
-        if (obj instanceof SortableDependency) {
+        if (!(obj instanceof SortableDependency)) {
             return false;
         }
         SortableDependency caseobj = (SortableDependency) obj;
