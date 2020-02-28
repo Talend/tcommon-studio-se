@@ -607,6 +607,13 @@ public class ConfigModuleDialog extends TitleAreaDialog implements IConfigModule
     }
 
     private void handleDetectPressedForInstall() {
+        if (!useCustomBtn.getSelection()) {
+            String uri = defaultUriTxt.getText().trim();
+            if (StringUtils.isEmpty(uri)) {
+                setMessage(Messages.getString("InstallModuleDialog.error.invalidDefaultMvnURI"), IMessageProvider.ERROR);
+                return;
+            }
+        }     
         boolean deployed = checkInstalledStatusInMaven();
         if (deployed) {
             setMessage(Messages.getString("InstallModuleDialog.error.jarexsit"), IMessageProvider.ERROR);
@@ -894,9 +901,9 @@ public class ConfigModuleDialog extends TitleAreaDialog implements IConfigModule
      */
     @Override
     public String getMavenURI() {
-    	if (useCustom && customURI != null) {
-    		return customURI;
-    	}
+        if (useCustom && customURI != null) {
+            return customURI;
+        }
         return defaultURI;
     }
 
@@ -931,7 +938,7 @@ public class ConfigModuleDialog extends TitleAreaDialog implements IConfigModule
         if (cusormURIValue == null) {
             cusormURIValue = "";
         }
-        defaultUriTxt.setText(moduel.getDefaultMavenURI());
+        defaultUriTxt.setText(moduel.getDefaultMavenURI() == null ? "" : moduel.getDefaultMavenURI());
         boolean useCustom = !StringUtils.isEmpty(cusormURIValue);
         useCustomBtn.setSelection(useCustom);
         // customUriText.setEnabled(useCustom);
