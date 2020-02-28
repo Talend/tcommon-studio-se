@@ -377,6 +377,11 @@ public final class MetadataToolHelper {
 
     }
 
+    public static boolean verifyTableName(String tableName) {
+        String newTableName = validateTableName(tableName);
+        return newTableName.equals(tableName);
+    }
+
     /**
      * wzhang Comment method "validataValue".
      */
