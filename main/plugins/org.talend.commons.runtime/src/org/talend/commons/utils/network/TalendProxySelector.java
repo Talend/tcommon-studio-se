@@ -14,6 +14,7 @@ package org.talend.commons.utils.network;
 
 import java.io.IOException;
 import java.lang.reflect.Field;
+import java.lang.reflect.Method;
 import java.net.InetSocketAddress;
 import java.net.PasswordAuthentication;
 import java.net.Proxy;
@@ -36,6 +37,7 @@ import java.util.Set;
 
 import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Priority;
+import org.eclipse.core.internal.net.ProxyManager;
 import org.eclipse.core.net.proxy.IProxyService;
 import org.talend.commons.CommonsPlugin;
 import org.talend.commons.exception.ExceptionHandler;
@@ -86,6 +88,8 @@ public class TalendProxySelector extends ProxySelector {
     private static final String KEY_DEFAULT = ":default:";
 
     private static Field uriHostField;
+
+    private static Method proxyManagerUpdateSystemPropertiesFunc;
 
     /**
      * Note: eclipse default selector may be different between TOS and TIS, TOS may use jre one, TIS may use egit one
@@ -227,6 +231,12 @@ public class TalendProxySelector extends ProxySelector {
                     try {
                         uriHostField = URI.class.getDeclaredField("host");
                         uriHostField.setAccessible(true);
+                    } catch (Exception e) {
+                        ExceptionHandler.process(e);
+                    }
+                    try {
+                        proxyManagerUpdateSystemPropertiesFunc = ProxyManager.class.getDeclaredMethod("updateSystemProperties");
+                        proxyManagerUpdateSystemPropertiesFunc.setAccessible(true);
                     } catch (Exception e) {
                         ExceptionHandler.process(e);
                     }
@@ -538,13 +548,18 @@ public class TalendProxySelector extends ProxySelector {
              */
             if (updateSystemPropertiesForJre && ClassLoaderIsolatedSystemProperties.getInstance()
                     .isIsolated(Thread.currentThread().getContextClassLoader())) {
-                IProxyService proxyService = CommonsPlugin.getProxyService();
-                proxyService.setProxyData(proxyService.getProxyData());
                 if (printProxyLog) {
-                    ExceptionHandler.log("Updated jre proxy system properties for the isolated classloader");
+                    ExceptionHandler.log("Before update jre proxy system properties for the isolated classloader, http.proxyHost="
+                            + System.getProperty("http.proxyHost"));
+                }
+                IProxyService proxyService = CommonsPlugin.getProxyService();
+                proxyManagerUpdateSystemPropertiesFunc.invoke(proxyService);
+                if (printProxyLog) {
+                    ExceptionHandler.log("After updated jre proxy system properties for the isolated classloader, http.proxyHost="
+                            + System.getProperty("http.proxyHost"));
                 }
             }
-        } catch (Exception e) {
+        } catch (Throwable e) {
             ExceptionHandler.process(e);
         }
         return this.jreDefaultSelector;
