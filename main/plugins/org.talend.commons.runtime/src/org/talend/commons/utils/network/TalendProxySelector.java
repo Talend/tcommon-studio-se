@@ -36,8 +36,11 @@ import java.util.Set;
 
 import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Priority;
+import org.eclipse.core.net.proxy.IProxyService;
+import org.talend.commons.CommonsPlugin;
 import org.talend.commons.exception.ExceptionHandler;
 import org.talend.commons.i18n.internal.Messages;
+import org.talend.daikon.sandbox.properties.ClassLoaderIsolatedSystemProperties;
 
 import sun.net.spi.DefaultProxySelector;
 
@@ -55,6 +58,8 @@ public class TalendProxySelector extends ProxySelector {
     private static final String PROP_ALLOW_PROXY_REDIRECT_EXCLUDE = "talend.studio.proxy.redirect.whiteList";
 
     private static final String PROP_EXECUTE_CONNECTION_FAILED = "talend.studio.proxy.executeConnectionFailed";
+
+    private static final String PROP_UPDATE_SYSTEM_PROPERTIES_FOR_JRE = "talend.studio.proxy.jre.updateSystemProperties";
 
     private static final String PROP_VALIDATE_URI = "talend.studio.proxy.validateUri";
 
@@ -111,6 +116,8 @@ public class TalendProxySelector extends ProxySelector {
 
     private boolean executeConnectionFailed = true;
 
+    private boolean updateSystemPropertiesForJre = true;
+
     private TalendProxySelector(final ProxySelector eclipseDefaultSelector) {
         this.eclipseDefaultSelector = eclipseDefaultSelector;
         this.jreDefaultSelector = new DefaultProxySelector();
@@ -122,6 +129,8 @@ public class TalendProxySelector extends ProxySelector {
         printProxyLog = Boolean.valueOf(System.getProperty(PROP_PRINT_LOGS, Boolean.FALSE.toString()));
         validateUri = Boolean.valueOf(System.getProperty(PROP_VALIDATE_URI, Boolean.TRUE.toString()));
         executeConnectionFailed = Boolean.valueOf(System.getProperty(PROP_EXECUTE_CONNECTION_FAILED, Boolean.TRUE.toString()));
+        updateSystemPropertiesForJre = Boolean
+                .valueOf(System.getProperty(PROP_UPDATE_SYSTEM_PROPERTIES_FOR_JRE, Boolean.TRUE.toString()));
 
         switch (System.getProperty(PROP_PROXY_SELECTOR, PROP_PROXY_SELECTOR_DEFAULT).toLowerCase()) {
         case PROP_PROXY_SELECTOR_JRE:
@@ -270,7 +279,7 @@ public class TalendProxySelector extends ProxySelector {
                 /**
                  * If host is blank, force to use jre proxy selector to avoid the eclipse proxy selector bug
                  */
-                defaultProxys = this.jreDefaultSelector.select(newUri);
+                defaultProxys = getJreProxySelector().select(newUri);
             } else {
                 defaultProxys = defaultProxySelector.select(newUri);
             }
@@ -515,10 +524,27 @@ public class TalendProxySelector extends ProxySelector {
     public ProxySelector getDefaultProxySelector() {
         switch (eProxySelector) {
         case jre:
-            return jreDefaultSelector;
+            return getJreProxySelector();
         default:
             return eclipseDefaultSelector;
         }
+    }
+
+    private ProxySelector getJreProxySelector() {
+        try {
+            /**
+             * for tcompv0, daikon may create an isolated system properties for it, so proxies may be ignored in the new
+             * system properties; here we try to call the method to add proxies into the isolated system properties
+             */
+            if (updateSystemPropertiesForJre && ClassLoaderIsolatedSystemProperties.getInstance()
+                    .isIsolated(Thread.currentThread().getContextClassLoader())) {
+                IProxyService proxyService = CommonsPlugin.getProxyService();
+                proxyService.setProxyData(proxyService.getProxyData());
+            }
+        } catch (Exception e) {
+            ExceptionHandler.process(e);
+        }
+        return this.jreDefaultSelector;
     }
 
     public ProxySelector getEclipseDefaultSelector() {

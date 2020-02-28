@@ -13,7 +13,8 @@ Require-Bundle: org.apache.log4j;visibility:=reexport,
  org.talend.libraries.apache,
  com.ibm.icu,
  org.apache.commons.io,
- org.talend.utils
+ org.talend.utils,
+ org.eclipse.core.net
 Export-Package: org.talend.commons,
  org.talend.commons.exception,
  org.talend.commons.i18n,
