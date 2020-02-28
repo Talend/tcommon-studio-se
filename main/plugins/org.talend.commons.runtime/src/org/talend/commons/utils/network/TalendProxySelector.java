@@ -540,6 +540,9 @@ public class TalendProxySelector extends ProxySelector {
                     .isIsolated(Thread.currentThread().getContextClassLoader())) {
                 IProxyService proxyService = CommonsPlugin.getProxyService();
                 proxyService.setProxyData(proxyService.getProxyData());
+                if (printProxyLog) {
+                    ExceptionHandler.log("Updated jre proxy system properties for the isolated classloader");
+                }
             }
         } catch (Exception e) {
             ExceptionHandler.process(e);
