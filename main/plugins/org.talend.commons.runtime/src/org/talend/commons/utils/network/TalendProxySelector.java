@@ -63,6 +63,8 @@ public class TalendProxySelector extends ProxySelector {
 
     private static final String PROP_UPDATE_SYSTEM_PROPERTIES_FOR_JRE = "talend.studio.proxy.jre.updateSystemProperties";
 
+    private static final String PROP_CHECK_PROXY = "talend.studio.proxy.checkProxy";
+
     private static final String PROP_VALIDATE_URI = "talend.studio.proxy.validateUri";
 
     private static final String PROP_PROXY_SELECTOR = "talend.studio.proxy.selector";
@@ -90,6 +92,8 @@ public class TalendProxySelector extends ProxySelector {
     private static Field uriHostField;
 
     private static Method proxyManagerUpdateSystemPropertiesFunc;
+
+    private static boolean checkProxy = Boolean.valueOf(System.getProperty(PROP_CHECK_PROXY, Boolean.TRUE.toString()));
 
     /**
      * Note: eclipse default selector may be different between TOS and TIS, TOS may use jre one, TIS may use egit one
@@ -259,6 +263,17 @@ public class TalendProxySelector extends ProxySelector {
         }
 
         return instance;
+    }
+
+    public static void checkProxy() {
+        if (!checkProxy) {
+            return;
+        }
+        try {
+            TalendProxySelector.getInstance();
+        } catch (Exception e) {
+            ExceptionHandler.process(e);
+        }
     }
 
     @Override

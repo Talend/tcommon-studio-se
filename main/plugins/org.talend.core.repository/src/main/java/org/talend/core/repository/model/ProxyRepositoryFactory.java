@@ -2038,7 +2038,7 @@ public final class ProxyRepositoryFactory implements IProxyRepositoryFactory {
                 /**
                  * init/check proxy selector, in case default proxy selector is not registed yet
                  */
-                TalendProxySelector.getInstance();
+                TalendProxySelector.checkProxy();
 
                 System.getProperties().put("ReadOnlyUser", Boolean.FALSE.toString()); //$NON-NLS-1$
 
@@ -2415,7 +2415,12 @@ public final class ProxyRepositoryFactory implements IProxyRepositoryFactory {
     @Override
     @SuppressWarnings("unchecked")
     public void executeRepositoryWorkUnit(RepositoryWorkUnit workUnit) {
+        checkProxySettings();
         this.repositoryFactoryFromProvider.executeRepositoryWorkUnit(workUnit);
+    }
+
+    private void checkProxySettings() {
+        TalendProxySelector.checkProxy();
     }
 
     @Override
