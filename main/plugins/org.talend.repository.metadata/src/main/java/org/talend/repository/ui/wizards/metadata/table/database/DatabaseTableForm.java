@@ -1070,9 +1070,6 @@ public class DatabaseTableForm extends AbstractForm {
             } else if (existNames.contains(table.getLabel())) {
                 updateStatus(IStatus.ERROR, Messages.getString("CommonWizard.nameAlreadyExist") + " \"" + table.getLabel() + "\""); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
                 return false;
-            } else if (!MetadataToolHelper.verifyTableName(table.getLabel())) {
-                updateStatus(IStatus.ERROR, Messages.getString("DatabaseTableForm.illegalChar", table.getLabel())); //$NON-NLS-1$
-                return false;
             }
 
             // if (table.getColumns().size() == 0) {// this one has been removed,see bug 0016029
