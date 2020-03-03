@@ -713,7 +713,6 @@ public class CreateMavenJobPom extends AbstractMavenProcessorPom {
                     artifact.getVersion());
             if (!jobCoordinateMap.containsKey(coordinate) && !talendLibCoordinateMap.containsKey(coordinate)
                     && !_3rdDepLibMap.containsKey(coordinate)) {
-//                Dependency dependencyObject = getDependencyObject(artifact.getGroupId(), artifact.getArtifactId(), artifact.getVersion(), artifact.getType(), artifact.getClassifier());
                 Dependency dependencyObject = PomUtil.createDependency(artifact.getGroupId(), artifact.getArtifactId(),
                         artifact.getVersion(), artifact.getType(), artifact.getClassifier());
                 if (MavenConstants.DEFAULT_LIB_GROUP_ID.equals(artifact.getGroupId())
