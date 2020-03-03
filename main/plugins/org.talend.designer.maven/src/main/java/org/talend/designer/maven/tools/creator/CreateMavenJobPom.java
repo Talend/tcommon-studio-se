@@ -823,16 +823,7 @@ public class CreateMavenJobPom extends AbstractMavenProcessorPom {
             Set<Dependency> set = new HashSet<>();
             map.put(coordinate, set);
         }
-        boolean exist = false;
-        for (Dependency dep : map.get(coordinate)) {
-            if (dep.equals(dependency)) {
-                exist = true;
-                break;
-            }
-        }
-        if (!exist) {
-            map.get(coordinate).add(dependency);
-        }
+        map.get(coordinate).add(dependency);
     }
 
     protected void setupDependencySetNode(Document document, Map<String, Dependency> libIncludes, String outputDir,
