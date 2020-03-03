@@ -278,6 +278,9 @@ public class TalendProxySelector extends ProxySelector {
 
     @Override
     public List<Proxy> select(final URI uri) {
+        if (printProxyLog) {
+            ExceptionHandler.log("TalendProxySelector.select " + uri);
+        }
         if (uri == null) {
             return Collections.EMPTY_LIST;
         }
@@ -292,8 +295,14 @@ public class TalendProxySelector extends ProxySelector {
         } catch (Exception e) {
             ExceptionHandler.process(e);
         }
+        if (printProxyLog) {
+            ExceptionHandler.log("TalendProxySelector.resultFromProviders " + results);
+        }
 
         ProxySelector defaultProxySelector = getDefaultProxySelector();
+        if (printProxyLog) {
+            ExceptionHandler.log("TalendProxySelector.defaultProxySelector " + defaultProxySelector);
+        }
         if (defaultProxySelector != null) {
             /**
              * don't validate uri here, so that we can know whether it is an issue uri
@@ -307,6 +316,9 @@ public class TalendProxySelector extends ProxySelector {
                 defaultProxys = getJreProxySelector().select(newUri);
             } else {
                 defaultProxys = defaultProxySelector.select(newUri);
+            }
+            if (printProxyLog) {
+                ExceptionHandler.log("TalendProxySelector.defaultProxys " + defaultProxys);
             }
             try {
                 results.addAll(filterProxys(validatedUri, defaultProxys));
