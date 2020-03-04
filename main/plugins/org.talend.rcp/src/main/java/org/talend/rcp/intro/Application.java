@@ -34,6 +34,7 @@ import org.eclipse.osgi.service.datalocation.Location;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.browser.Browser;
 import org.eclipse.swt.widgets.Display;
+import org.eclipse.swt.widgets.MessageBox;
 import org.eclipse.swt.widgets.Shell;
 import org.eclipse.ui.IWorkbench;
 import org.eclipse.ui.PlatformUI;
@@ -104,6 +105,17 @@ public class Application implements IApplication {
         StudioKeysFileCheck.check(ConfigurationScope.INSTANCE.getLocation().toFile());
         
         Display display = PlatformUI.createDisplay();
+
+        try {
+            StudioKeysFileCheck.validateJavaVersion();
+        } catch (Exception e) {
+            Shell shell = new Shell(display, SWT.NONE);
+            MessageBox messageBox = new MessageBox(shell, SWT.ICON_ERROR | SWT.OK);
+            messageBox.setMessage(e.getMessage());
+            messageBox.open();
+            return IApplication.EXIT_RELAUNCH;
+        }
+
         try {
             // TUP-5816 don't put any code ahead of this part unless you make sure it won't trigger workspace
             // initialization.
