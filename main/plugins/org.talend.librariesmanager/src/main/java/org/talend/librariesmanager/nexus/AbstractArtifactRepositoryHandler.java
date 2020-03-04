@@ -218,4 +218,10 @@ public abstract class AbstractArtifactRepositoryHandler implements IRepositoryAr
 
     @Override
     public abstract IRepositoryArtifactHandler clone();
+    
+    @Override
+    public String resolveRemoteSha1(MavenArtifact artifact, boolean fromRelease) throws Exception {
+        return artifact.getSha1();
+    }
+        
 }
