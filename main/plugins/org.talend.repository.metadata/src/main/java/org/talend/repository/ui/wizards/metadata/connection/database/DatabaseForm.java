@@ -214,6 +214,8 @@ public class DatabaseForm extends AbstractForm {
      */
     private LabelledCombo hiveServerVersionCombo;
 
+    private LabelledCombo impalaDriverCombo;
+
     private LabelledText serverText;
 
     private LabelledText portText;
@@ -980,6 +982,7 @@ public class DatabaseForm extends AbstractForm {
                 .getString("DatabaseForm.dbversion.tip"), new String[0], 2, true); //$NON-NLS-1$
 
         createHiveServerVersionField(typeDbCompositeParent);
+        createImpalaDriverField(typeDbCompositeParent);
 
         setHideVersionInfoWidgets(true);
 
@@ -1826,7 +1829,7 @@ public class DatabaseForm extends AbstractForm {
     }
 
     private void showIfAdditionalJDBCSettings() {
-        setHidAdditionalJDBCSettings(!isSupportHiveAdditionalSettings());
+        setHidAdditionalJDBCSettings(!isSupportHiveAdditionalSettings() && !isImpalaDBConnSelected());
     }
 
     private void showIfHiveMetastore() {
@@ -3209,6 +3212,7 @@ public class DatabaseForm extends AbstractForm {
         hcPropertyTypeCombo.setReadOnly(isContextMode());
         hiveModeCombo.setReadOnly(isContextMode());
         hiveServerVersionCombo.setReadOnly(isContextMode());
+        impalaDriverCombo.setReadOnly(isContextMode());
 
         useKerberos.setEnabled(!isContextMode());
         useKeyTab.setEnabled(!isContextMode());
@@ -3743,6 +3747,14 @@ public class DatabaseForm extends AbstractForm {
                 new String[] {}, 2, true);
 
         hiveServerVersionCombo.setHideWidgets(true);
+    }
+
+    private void createImpalaDriverField(Composite parent) {
+        impalaDriverCombo = new LabelledCombo(parent, Messages.getString("DatabaseForm.impala.driverVersion"), //$NON-NLS-1$
+                Messages.getString("DatabaseForm.impala.driverVersion.tip"), //$NON-NLS-1$
+                new String[] {}, 2, true);
+
+        impalaDriverCombo.setHideWidgets(true);
     }
 
     /**
@@ -6525,7 +6537,8 @@ public class DatabaseForm extends AbstractForm {
                     passwordText.hide();
                 } else if (isImpala) {
                     // usernameText.hide();
-                    passwordText.hide();
+                    // passwordText.hide();
+                    impalaDriverCombo.setHideWidgets(false);
                 } else if (isHiveDBConnSelected()) {
                     if (isHiveEmbeddedMode()) {
                         // Need to revert if required, changed by Marvin Wang on Nov. 22, 2012.
@@ -7097,7 +7110,10 @@ public class DatabaseForm extends AbstractForm {
             authenticationComForImpala.getParent().layout();
         }
         impalaPrincipalTxt.setText(impalaPrincipla == null ? "impala/_HOST@EXAMPLE.COM" : impalaPrincipla); //$NON-NLS-1$
-
+        // only support HiveDriver ,so set fix value Hive2 for now
+        String[] impalaDriverDisplay = { "Hive2" };
+        impalaDriverCombo.getCombo().setItems(impalaDriverDisplay);
+        impalaDriverCombo.select(0);
     }
 
     /**
