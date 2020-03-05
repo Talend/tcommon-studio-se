@@ -17,6 +17,7 @@ import java.io.InputStream;
 import java.net.URL;
 
 import org.apache.commons.lang.ArrayUtils;
+import org.eclipse.core.net.proxy.IProxyService;
 import org.eclipse.core.runtime.FileLocator;
 import org.eclipse.core.runtime.Platform;
 import org.eclipse.core.runtime.preferences.InstanceScope;
@@ -24,6 +25,7 @@ import org.osgi.framework.Bundle;
 import org.osgi.framework.BundleActivator;
 import org.osgi.framework.BundleContext;
 import org.osgi.framework.ServiceReference;
+import org.osgi.util.tracker.ServiceTracker;
 import org.talend.commons.exception.ExceptionService;
 import org.talend.commons.runtime.debug.TalendDebugHandler;
 import org.talend.commons.utils.system.EclipseCommandLine;
@@ -54,6 +56,8 @@ public class CommonsPlugin implements BundleActivator {
 
     // TESB-17856: For commandline builds ESB Micorservice bundle
     private static boolean isESBMicorservice = false;
+
+    private static ServiceTracker proxyTracker;
 
     public static boolean isWorkbenchCreated() {
         return isWorkbenchCreated;
@@ -177,6 +181,15 @@ public class CommonsPlugin implements BundleActivator {
         }
         URL entry = bundle.getEntry("/"); //$NON-NLS-1$
         return FileLocator.toFileURL(entry);
+    }
+
+    public static IProxyService getProxyService() {
+        if (proxyTracker == null) {
+            proxyTracker = new ServiceTracker(Platform.getBundle(PLUGIN_ID).getBundleContext(), IProxyService.class.getName(),
+                    null);
+            proxyTracker.open();
+        }
+        return (IProxyService) proxyTracker.getService();
     }
 
 }
