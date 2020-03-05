@@ -25,7 +25,7 @@ import org.apache.maven.model.io.xpp3.MavenXpp3Reader;
 import org.apache.maven.repository.internal.MavenRepositorySystemUtils;
 import org.apache.maven.wagon.Wagon;
 import org.apache.maven.wagon.providers.file.FileWagon;
-import org.apache.maven.wagon.providers.http.HttpWagon;
+import org.apache.maven.wagon.providers.http.LightweightHttpWagon;
 import org.apache.maven.wagon.providers.http.LightweightHttpWagonAuthenticator;
 import org.apache.maven.wagon.providers.http.LightweightHttpsWagon;
 import org.codehaus.plexus.DefaultPlexusContainer;
@@ -238,9 +238,13 @@ public class MavenLibraryResolverProvider {
 
         LightweightHttpsWagon https = new LightweightHttpsWagon();
         https.setAuthenticator(new LightweightHttpWagonAuthenticator());
+        https.setPreemptiveAuthentication(true);
+        LightweightHttpWagon http = new LightweightHttpWagon();
+        http.setAuthenticator(new LightweightHttpWagonAuthenticator());
+        http.setPreemptiveAuthentication(true);
 
         pc.addComponent(https, Wagon.class, "https");
-        pc.addComponent(new HttpWagon(), Wagon.class, "http");
+        pc.addComponent(http, Wagon.class, "http");
         pc.addComponent(new FileWagon(), Wagon.class, "file");
 
         WagonTransporterFactory tf = (WagonTransporterFactory) locator.getService(TransporterFactory.class);
