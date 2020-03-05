@@ -32,7 +32,7 @@ public class StudioKeysFileCheck {
 
     private static final String JAVA_VERSION_PROP = "java.version";
 
-    private static final String JAVA_VERSION_MINIMAL_STRING = "1.8.0_161";
+    public static final String JAVA_VERSION_MINIMAL_STRING = "1.8.0_161";
 
     private static final JavaVersion JAVA_VERSION_MINIMAL = new JavaVersion(JAVA_VERSION_MINIMAL_STRING);
 
@@ -61,7 +61,7 @@ public class StudioKeysFileCheck {
      * Validate java version, throw runtime exception if not satisfied.
      */
     public static void validateJavaVersion() {
-        String currentVersion = System.getProperty(JAVA_VERSION_PROP);
+        String currentVersion = getJavaVersion();
         JavaVersion cv = new JavaVersion(currentVersion);
         if (cv.compareTo(JAVA_VERSION_MINIMAL) < 0) {
             RuntimeException e = new RuntimeException(
@@ -70,5 +70,9 @@ public class StudioKeysFileCheck {
             LOGGER.error(e);
             throw e;
         }
+    }
+
+    public static String getJavaVersion() {
+        return System.getProperty(JAVA_VERSION_PROP);
     }
 }

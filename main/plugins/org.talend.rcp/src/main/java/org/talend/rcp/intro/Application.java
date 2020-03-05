@@ -110,9 +110,9 @@ public class Application implements IApplication {
             StudioKeysFileCheck.validateJavaVersion();
         } catch (Exception e) {
             Shell shell = new Shell(display, SWT.NONE);
-            MessageBox messageBox = new MessageBox(shell, SWT.ICON_ERROR | SWT.OK);
-            messageBox.setMessage(e.getMessage());
-            messageBox.open();
+            MessageDialog.openError(shell, null, // $NON-NLS-1$
+                    Messages.getString("JavaVersion.CheckError", StudioKeysFileCheck.JAVA_VERSION_MINIMAL_STRING,
+                            StudioKeysFileCheck.getJavaVersion()));
             return IApplication.EXIT_RELAUNCH;
         }
 
