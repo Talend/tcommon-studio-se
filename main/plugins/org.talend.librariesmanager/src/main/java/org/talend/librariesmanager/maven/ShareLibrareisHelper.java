@@ -142,7 +142,7 @@ public abstract class ShareLibrareisHelper {
                         }
                     }
                     if (artifactList != null && artifactList.size() > 0) {
-                        if (isSameFileWithRemote(file, artifactList, customNexusServer)) {
+                        if (isSameFileWithRemote(file, artifactList, customNexusServer, customerRepHandler, isSnapshotVersion)) {
                             continue;
                         }
                     }
@@ -199,15 +199,30 @@ public abstract class ShareLibrareisHelper {
     }
 
     private boolean isSameFileWithRemote(File localFile, List<MavenArtifact> artifactList,
-            ArtifactRepositoryBean customNexusServer) throws Exception {
+            ArtifactRepositoryBean customNexusServer, IRepositoryArtifactHandler customerRepHandler, boolean isSnapshotVersion)
+            throws Exception {
         String localFileShaCode = DigestUtils.shaHex(new FileInputStream(localFile));
-        MavenArtifact lastUpdatedArtifact = null;
+        String remoteSha1 = null;
         if (ArtifactRepositoryBean.NexusType.ARTIFACTORY.name().equalsIgnoreCase(customNexusServer.getType())) {
-            lastUpdatedArtifact = getLateUpdatedMavenArtifact(artifactList);
+            MavenArtifact lastUpdatedArtifact = getLateUpdatedMavenArtifact(artifactList);
+            if (lastUpdatedArtifact != null) {
+                remoteSha1 = lastUpdatedArtifact.getSha1();
+            }
+        } else if (ArtifactRepositoryBean.NexusType.NEXUS_3.name().equalsIgnoreCase(customNexusServer.getType())) {
+            MavenArtifact lastUpdatedArtifact = artifactList.stream().max(Comparator.comparing(e -> e.getVersion())).get();
+            if (lastUpdatedArtifact != null) {
+                remoteSha1 = lastUpdatedArtifact.getSha1();
+            }
         } else {
-            lastUpdatedArtifact = artifactList.stream().max(Comparator.comparing(e -> e.getVersion())).get();
+            if (!isSnapshotVersion && !Boolean.getBoolean("force_libs_release_update")) {
+                return true;
+            }
+            MavenArtifact lastUpdatedArtifact = artifactList.get(0);
+            if (lastUpdatedArtifact != null) {
+                remoteSha1 = customerRepHandler.resolveRemoteSha1(lastUpdatedArtifact, !isSnapshotVersion);
+            }
         }
-        if (lastUpdatedArtifact != null && StringUtils.equals(localFileShaCode, lastUpdatedArtifact.getSha1())) {
+        if (StringUtils.equals(localFileShaCode, remoteSha1)) {
             return true;
         }
         return false;

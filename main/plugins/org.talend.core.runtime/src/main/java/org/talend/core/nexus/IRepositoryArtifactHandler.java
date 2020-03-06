@@ -70,5 +70,7 @@ public interface IRepositoryArtifactHandler {
     public IRepositoryArtifactHandler clone();
 
     public String getRepositoryURL(boolean isRelease);
+    
+    public String resolveRemoteSha1(MavenArtifact artifact, boolean fromRelease) throws Exception;
 
 }
