@@ -137,5 +137,11 @@ public class Nexus2RepositoryHandler extends AbstractArtifactRepositoryHandler {
         RepositorySystemFactory.deployWithPOM(content, pomFile, localRepository, repositoryId, repositoryurl,
                 serverBean.getUserName(), serverBean.getPassword(), groupId, artifactId, classifier, extension, version);
     }
-
+    
+    @Override
+    public String resolveRemoteSha1(MavenArtifact artifact, boolean fromRelease) throws Exception {
+        return NexusServerUtils.resolveSha1(serverBean.getServer(), serverBean.getUserName(), serverBean.getPassword(),
+                fromRelease ? serverBean.getRepositoryId() : serverBean.getSnapshotRepId(), artifact.getGroupId(),
+                artifact.getArtifactId(), artifact.getVersion(), artifact.getType());
+    }
 }
