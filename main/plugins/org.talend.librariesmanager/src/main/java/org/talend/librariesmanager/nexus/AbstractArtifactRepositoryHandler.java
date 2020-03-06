@@ -24,6 +24,7 @@ import org.talend.core.nexus.ArtifactRepositoryBean;
 import org.talend.core.nexus.IRepositoryArtifactHandler;
 import org.talend.core.nexus.NexusConstants;
 import org.talend.core.nexus.TalendMavenResolver;
+import org.talend.core.runtime.maven.MavenArtifact;
 import org.talend.utils.string.StringUtilities;
 
 /**
@@ -177,4 +178,10 @@ public abstract class AbstractArtifactRepositoryHandler implements IRepositoryAr
 
     @Override
     public abstract IRepositoryArtifactHandler clone();
+    
+    @Override
+    public String resolveRemoteSha1(MavenArtifact artifact, boolean fromRelease) throws Exception {
+        return artifact.getSha1();
+    }
+        
 }
