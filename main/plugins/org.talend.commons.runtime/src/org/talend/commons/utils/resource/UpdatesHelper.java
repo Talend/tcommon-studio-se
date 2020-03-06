@@ -58,6 +58,8 @@ public class UpdatesHelper {
 
     public static final String COMPONENT_SUFFIX = "_java.xml";
 
+    public static final String COMPONENT_TEMPLATES = "templates";
+
     public static final String NEW_COMPONENT_PREFIX = "installer$$";
 
     public static boolean existArtifacts(File base) {
@@ -296,6 +298,9 @@ public class UpdatesHelper {
 
     public static boolean isOldComponent(File f) {
         if (f != null && f.exists() && f.isDirectory()) {
+            if (f.getName().equals(COMPONENT_TEMPLATES)) {
+                return true;
+            }
             File[] listFiles = f.listFiles();
             if (listFiles != null) {
                 for (File subFile : listFiles) {

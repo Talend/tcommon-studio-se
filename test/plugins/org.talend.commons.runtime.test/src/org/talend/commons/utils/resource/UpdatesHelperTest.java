@@ -162,4 +162,12 @@ public class UpdatesHelperTest {
         compDefineFile.createNewFile();
         Assert.assertTrue(UpdatesHelper.isOldComponent(compDefineFolder));
     }
+
+    @Test
+    public void test_isOldComponent_templates() throws IOException {
+        File compDefineFolder = new File(workFolder, UpdatesHelper.COMPONENT_TEMPLATES);
+        compDefineFolder.mkdirs();
+        Assert.assertTrue(UpdatesHelper.isOldComponent(compDefineFolder));
+    }
+
 }
