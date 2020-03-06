@@ -188,40 +188,36 @@ public class TalendLibsServerManager {
      * 
      * @return
      */
-    public boolean canConnectUserLibrary() {
+    public boolean canConnectUserLibrary() throws Exception {
         boolean canConnect = false;
         IProxyRepositoryFactory factory = CoreRuntimePlugin.getInstance().getProxyRepositoryFactory();
         RepositoryContext repositoryContext = factory.getRepositoryContext();
-        try {
-            if (repositoryContext != null && repositoryContext.getFields() != null && !factory.isLocalConnectionProvider()
-                    && !repositoryContext.isOffline()) {
-                String adminUrl = repositoryContext.getFields().get(RepositoryConstants.REPOSITORY_URL);
-                String userName = null;
-                String password = null;
-                User user = repositoryContext.getUser();
-                if (user != null) {
-                    userName = user.getLogin();
-                    password = repositoryContext.getClearPassword();
-                }
+        if (repositoryContext != null && repositoryContext.getFields() != null && !factory.isLocalConnectionProvider()
+                && !repositoryContext.isOffline()) {
+            String adminUrl = repositoryContext.getFields().get(RepositoryConstants.REPOSITORY_URL);
+            String userName = null;
+            String password = null;
+            User user = repositoryContext.getUser();
+            if (user != null) {
+                userName = user.getLogin();
+                password = repositoryContext.getClearPassword();
+            }
 
-                if (StringUtils.isNotBlank(adminUrl) && StringUtils.isNotBlank(userName) && StringUtils.isNotBlank(password)
-                        && GlobalServiceRegister.getDefault().isServiceRegistered(IRemoteService.class)) {
-                    IRemoteService remoteService = (IRemoteService) GlobalServiceRegister.getDefault()
-                            .getService(IRemoteService.class);
-                    ArtifactRepositoryBean bean = remoteService.getLibNexusServer(userName, password, adminUrl);
-                    if (bean != null) {
-                        IRepositoryArtifactHandler handler = RepositoryArtifactHandlerManager.getRepositoryHandler(bean);
-                        if (handler.checkConnection()) {
-                            canConnect = true;
-                        } else {
-                            ExceptionHandler.process(new Throwable(Messages.getString(
-                                    "TalendLibsServerManager.connectUserLibraryFailureMessage", bean.getServer()))); //$NON-NLS-1$
-                        }
+            if (StringUtils.isNotBlank(adminUrl) && StringUtils.isNotBlank(userName) && StringUtils.isNotBlank(password)
+                    && GlobalServiceRegister.getDefault().isServiceRegistered(IRemoteService.class)) {
+                IRemoteService remoteService = (IRemoteService) GlobalServiceRegister.getDefault()
+                        .getService(IRemoteService.class);
+                ArtifactRepositoryBean bean = remoteService.getLibNexusServer(userName, password, adminUrl);
+                if (bean != null) {
+                    IRepositoryArtifactHandler handler = RepositoryArtifactHandlerManager.getRepositoryHandler(bean);
+                    if (handler.checkConnection()) {
+                        canConnect = true;
+                    } else {
+                        ExceptionHandler.process(new Throwable(Messages
+                                .getString("TalendLibsServerManager.connectUserLibraryFailureMessage", bean.getServer()))); //$NON-NLS-1$
                     }
                 }
             }
-        } catch (Exception e) {
-            ExceptionHandler.process(e);
         }
         return canConnect;
     }
