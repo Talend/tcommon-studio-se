@@ -56,6 +56,7 @@ public class ConnectionBean implements Cloneable {
 
     private static final String TOKEN = "token"; //$NON-NLS-1$
 
+    private static final String URL = "url"; //$NON-NLS-1$
     /**
      * DOC smallet ConnectionBean constructor comment.
      */
@@ -394,6 +395,17 @@ public class ConnectionBean implements Cloneable {
         } catch (JSONException e) {
             ExceptionHandler.process(e);
         }
+    }
+
+    public String getUrl() {
+        try {
+            if (conDetails.has(URL)) {
+                return conDetails.getString(URL);
+            }
+        } catch (JSONException e) {
+            ExceptionHandler.process(e);
+        }
+        return "";
     }
 
 }
