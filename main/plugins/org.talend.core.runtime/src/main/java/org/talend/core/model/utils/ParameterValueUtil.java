@@ -857,7 +857,7 @@ public final class ParameterValueUtil {
             Object docValue = param.getValue();
             if (docValue != null) {
                 if ((param.getRepositoryValue() != null && param.getRepositoryValue().toUpperCase().contains("PASSWORD") //$NON-NLS-1$
-                        || EParameterFieldType.PASSWORD.equals(param.getFieldType()))//
+                        || EParameterFieldType.isPassword(param.getFieldType()))//
                         && !ContextParameterUtils.containContextVariables((String) docValue)) {
 
                     if (isHidePassword()) { // if hide will display the *
@@ -893,7 +893,7 @@ public final class ParameterValueUtil {
         if (param != null) {
             String docValue = param.getValue();
             if (docValue != null) {
-                if (EParameterFieldType.PASSWORD.getName().equals(param.getField()) && isHidePassword()
+                if (EParameterFieldType.isPassword(param.getField()) && isHidePassword()
                         && !ContextParameterUtils.containContextVariables(docValue)) {
                     // the value has been raw, so just get dispaly value.
                     docValue = PasswordEncryptUtil.getPasswordDisplay(param.getRawValue());

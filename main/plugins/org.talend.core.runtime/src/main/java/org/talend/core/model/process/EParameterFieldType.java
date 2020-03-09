@@ -140,4 +140,13 @@ public enum EParameterFieldType {
         }
         return TEXT; // Default Value
     }
+
+    public static boolean isPassword(String field) {
+        return EParameterFieldType.PASSWORD.getName().equals(field)
+                || EParameterFieldType.LICENSEKEY.getName().equals(field);
+    }
+
+    public static boolean isPassword(EParameterFieldType type) {
+        return EParameterFieldType.PASSWORD.equals(type) || EParameterFieldType.LICENSEKEY.equals(type);
+    }
 }
