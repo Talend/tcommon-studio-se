@@ -50,6 +50,17 @@ import org.talend.librariesmanager.nexus.utils.VersionUtil;
  */
 public abstract class ShareLibrareisHelper {
 
+    /**
+     * {@value}
+     * <p>
+     * System property whether deploy component definition file to nexus, the default value is <b>false</b>.
+     */
+    protected static final String KEY_DEPLOY_COMPONENT_DEFINITION_FILE = "talend.deploy.component.definition.file"; //$NON-NLS-1$
+
+    protected final boolean isDeployComponentDefinitionFile = System.getProperty(KEY_DEPLOY_COMPONENT_DEFINITION_FILE) == null
+            ? true
+            : Boolean.getBoolean(KEY_DEPLOY_COMPONENT_DEFINITION_FILE);
+
     private final String TYPE_NEXUS = "nexus";
 
     protected MavenArtifactsHandler deployer = new MavenArtifactsHandler();
