@@ -41,6 +41,7 @@ import org.talend.core.nexus.TalendLibsServerManager;
 import org.talend.core.runtime.maven.MavenArtifact;
 import org.talend.core.runtime.maven.MavenUrlHelper;
 import org.talend.librariesmanager.i18n.Messages;
+import org.talend.librariesmanager.model.service.LocalLibraryManager;
 import org.talend.librariesmanager.nexus.utils.VersionUtil;
 
 /**
@@ -48,6 +49,17 @@ import org.talend.librariesmanager.nexus.utils.VersionUtil;
  *
  */
 public abstract class ShareLibrareisHelper {
+
+    /**
+     * {@value}
+     * <p>
+     * System property whether deploy component definition file to nexus, the default value is <b>false</b>.
+     */
+    protected static final String KEY_DEPLOY_COMPONENT_DEFINITION_FILE = "talend.deploy.component.definition.file"; //$NON-NLS-1$
+
+    protected final boolean isDeployComponentDefinitionFile = System.getProperty(KEY_DEPLOY_COMPONENT_DEFINITION_FILE) == null
+            ? true
+            : Boolean.getBoolean(KEY_DEPLOY_COMPONENT_DEFINITION_FILE);
 
     private final String TYPE_NEXUS = "nexus";
 
@@ -121,6 +133,13 @@ public abstract class ShareLibrareisHelper {
                     if (artifact == null) {
                         continue;
                     }
+                    // If from custom component definition file
+                    if (LocalLibraryManager.isSystemCacheFile(file.getName())
+                            || (LocalLibraryManager.isComponentDefinitionFileType(file.getName())
+                                    && !Boolean.getBoolean(KEY_DEPLOY_COMPONENT_DEFINITION_FILE))
+                                    && isTalendLibraryGroupId(artifact)) {
+                        continue;
+                    }
                     try {
                         Integer.parseInt(artifact.getType());
                         // FIXME unexpected type if it's an integer, should fix it in component module definition.
@@ -171,6 +190,13 @@ public abstract class ShareLibrareisHelper {
 
         return status;
 
+    }
+
+    private boolean isTalendLibraryGroupId(MavenArtifact artifact) {
+        if ("org.talend.libraries".equalsIgnoreCase(artifact.getGroupId())) {
+            return true;
+        }
+        return false;
     }
 
     public void putArtifactToMap(MavenArtifact artifact, Map<String, List<MavenArtifact>> map, boolean isShapshot) {
