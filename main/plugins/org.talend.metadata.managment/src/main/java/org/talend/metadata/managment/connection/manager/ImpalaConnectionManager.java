@@ -31,6 +31,7 @@ import org.talend.core.classloader.ClassLoaderFactory;
 import org.talend.core.classloader.DynamicClassLoader;
 import org.talend.core.database.EDatabase4DriverClassName;
 import org.talend.core.database.EDatabaseTypeName;
+import org.talend.core.database.EImpalaDriver;
 import org.talend.core.database.conn.ConnParameterKeys;
 import org.talend.core.hadoop.IHadoopDistributionService;
 import org.talend.core.hadoop.conf.EHadoopConfProperties;
@@ -38,6 +39,7 @@ import org.talend.core.model.metadata.IMetadataConnection;
 import org.talend.core.runtime.CoreRuntimePlugin;
 import org.talend.core.runtime.hd.IHDistribution;
 import org.talend.core.runtime.hd.IHDistributionVersion;
+import org.talend.core.runtime.hd.hive.HiveMetadataHelper;
 import org.talend.core.utils.ReflectionUtils;
 
 import metadata.managment.i18n.Messages;
@@ -71,15 +73,13 @@ public class ImpalaConnectionManager extends DataBaseConnectionManager {
                 String connURL = metadataConn.getUrl();
                 String username = metadataConn.getUsername();
                 String password = metadataConn.getPassword();
-
                 // 1. Get class loader.
                 ClassLoader currClassLoader = Thread.currentThread().getContextClassLoader();
                 ClassLoader impalaClassLoader = getClassLoader(metadataConn);
                 Thread.currentThread().setContextClassLoader(impalaClassLoader);
                 try {
                     // 2. Fetch the HiveDriver from the new classloader
-                    Class<?> driver = Class.forName(EDatabase4DriverClassName.IMPALA.getDriverClass(), true, impalaClassLoader);
-                    Driver hiveDriver = (Driver) driver.newInstance();
+                    String driverClass = EDatabase4DriverClassName.IMPALA.getDriverClass();
 
                     Map<String, Object> otherParametersMap = metadataConn.getOtherParameters();
                     if (otherParametersMap != null) {
@@ -92,7 +92,60 @@ public class ImpalaConnectionManager extends DataBaseConnectionManager {
                             ReflectionUtils.invokeStaticMethod("org.apache.hadoop.security.UserGroupInformation", //$NON-NLS-1$
                                     impalaClassLoader, "setConfiguration", new Object[] { conf }); //$NON-NLS-1$
                         }
+                        // addtional jdbc settings
+                        Object jdbcObj = otherParametersMap.get(ConnParameterKeys.CONN_PARA_KEY_HIVE_ADDITIONAL_JDBC_SETTINGS);
+                        if (jdbcObj != null) {
+                            String addJDBCSetting = String.valueOf(jdbcObj);
+                            if (!"".equals(addJDBCSetting.trim())) {
+                                if (!addJDBCSetting.startsWith(";")) {
+                                    addJDBCSetting = ";" + addJDBCSetting;
+                                }
+                                connURL += addJDBCSetting;
+                            }
+                        }
+                        IHadoopDistributionService hadoopService = getHadoopDistributionService();
+                        if ((hadoopService != null)) {
+                            // driver
+                            Object driverObj = otherParametersMap.get(ConnParameterKeys.IMPALA_DRIVER);
+                            String driverType = null;
+                            String impalaDriver = null;
+                            if (driverObj != null) {
+                                driverType = String.valueOf(driverObj);
+                            }
+                            // distribution
+                            Object distObj = otherParametersMap.get(ConnParameterKeys.CONN_PARA_KEY_IMPALA_DISTRIBUTION);
+                            String distribution = null;
+                            if (distObj != null) {
+                                distribution = String.valueOf(distObj);
+                            }
+                            // version
+                            Object versionObj = otherParametersMap.get(ConnParameterKeys.CONN_PARA_KEY_IMPALA_VERSION);
+                            String version = null;
+                            if (versionObj != null) {
+                                version = String.valueOf(versionObj);
+                            }
+                            IHDistribution impalaDistribution = hadoopService.getImpalaDistributionManager()
+                                    .getDistribution(distribution, false);
+                            if (distribution != null && version != null) {
+                                if (driverType != null && !"".equals(driverType.trim()) && (impalaDistribution.useCustom()
+                                        || HiveMetadataHelper.doSupportHive2(distribution, version, false))) {
+                                    if (EImpalaDriver.HIVE2.getDisplayName().equalsIgnoreCase(driverType)) {
+                                        driverClass = EImpalaDriver.HIVE2.getDriver();
+                                    }
+                                    if (EImpalaDriver.IMPALA40.getDisplayName().equalsIgnoreCase(driverType)) {
+                                        driverClass = EImpalaDriver.IMPALA40.getDriver();
+                                    }
+                                    if (EImpalaDriver.IMPALA41.getDisplayName().equalsIgnoreCase(driverType)) {
+                                        driverClass = EImpalaDriver.IMPALA41.getDriver();
+                                    }
+                                } else {
+                                    throw new IllegalArgumentException("impala can not work with Hive1");
+                                }
+                            }
+                        }
                     }
+                    Class<?> driver = Class.forName(driverClass, true, impalaClassLoader);
+                    Driver hiveDriver = (Driver) driver.newInstance();
 
                     // 3. Try to connect by driver
                     Properties info = new Properties();
