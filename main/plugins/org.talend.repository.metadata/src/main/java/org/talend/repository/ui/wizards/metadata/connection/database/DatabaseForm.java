@@ -1830,7 +1830,7 @@ public class DatabaseForm extends AbstractForm {
     }
 
     private void showIfAdditionalJDBCSettings() {
-        setHidAdditionalJDBCSettings(!isSupportHiveAdditionalSettings() && !isImpalaDBConnSelected());
+        setHidAdditionalJDBCSettings(!isSupportHiveAdditionalSettings() && !isSupportImpalaAdditionalSettings());
     }
 
     private void showIfHiveMetastore() {
@@ -1869,6 +1869,20 @@ public class DatabaseForm extends AbstractForm {
                     return false;
                 }
                 return true;
+            }
+        }
+        return false;
+    }
+
+    private boolean isSupportImpalaAdditionalSettings() {
+        if (isImpalaDBConnSelected()) {
+            IHDistribution hiveDistribution = getCurrentImpalaDistribution(true);
+            String hiveVerson = getImpalaVersionCombo().getText();
+            if (hiveDistribution != null && hiveVerson != null) {
+                if (!EImpalaDriver.isSupport(hiveDistribution.getDisplayName(), hiveVerson, true, "useCloudLauncher")
+                        && HiveMetadataHelper.doSupportHive2(hiveDistribution.getDisplayName(), hiveVerson, true)) {
+                    return true;
+                }
             }
         }
         return false;
@@ -6746,6 +6760,8 @@ public class DatabaseForm extends AbstractForm {
             addContextParams(EDBParamName.Port, true);
             addContextParams(EDBParamName.Database, true);
             addContextParams(EDBParamName.ImpalaPrincipal, useKerberosForImpala.getSelection());
+            addContextParams(EDBParamName.Password, true);
+            addContextParams(EDBParamName.hiveAdditionalJDBCParameters, isSupportImpalaAdditionalSettings());
         }
     }
 
@@ -7124,9 +7140,13 @@ public class DatabaseForm extends AbstractForm {
             if (impalaDistribution != null) {
                 hdVersion = impalaDistribution.getHDVersion(impalaVersion, false);
             }
-            // doHiveModeModify();
+            updateImpalaVersionPart(impalaDistribution);
             updateImpalaDriverAndMakeSelection(impalaDistribution, hdVersion);
         }
+        // addtional jdbc setting
+        String additionalJDBCSettings = connection.getParameters()
+                .get(ConnParameterKeys.CONN_PARA_KEY_HIVE_ADDITIONAL_JDBC_SETTINGS);
+        additionalJDBCSettingsText.setText(additionalJDBCSettings == null ? "" : additionalJDBCSettings);
     }
 
     /**
@@ -8136,6 +8156,18 @@ public class DatabaseForm extends AbstractForm {
         return hiveDistribution;
     }
 
+    private IHDistribution getCurrentImpalaDistribution(boolean withDefault) {
+        IHDistribution hiveDistribution = HiveMetadataHelper.getDistribution(impalaDistributionCombo.getText(), true);
+        IHadoopDistributionService hadoopService = getHadoopDistributionService();
+        if (withDefault && hiveDistribution == null && hadoopService != null) {
+            IHDistribution[] distributions = hadoopService.getImpalaDistributionManager().getDistributions();
+            if (distributions.length > 0) {
+                hiveDistribution = distributions[0];
+            }
+        }
+        return hiveDistribution;
+    }
+
     protected void updateHiveVersionAndMakeSelection(IHDistribution hiveDistribution, IHDistributionVersion hiveVersion) {
         if (hiveDistribution == null) {
             hiveDistribution = getCurrentHiveDistribution(true);
@@ -8731,6 +8763,10 @@ public class DatabaseForm extends AbstractForm {
 
     public LabelledCombo getHiveVersionCombo() {
         return this.hiveVersionCombo;
+    }
+
+    public LabelledCombo getImpalaVersionCombo() {
+        return this.impalaVersionCombo;
     }
 
     public ContextType getSelectedContextType() {
