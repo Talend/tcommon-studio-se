@@ -28,6 +28,8 @@ public interface INOSQLService extends IService {
 
     public boolean isUseReplicaSet(Connection connection);
 
+    public boolean isUseSSL(Connection connection);
+
     public String getMongoDBReplicaSets(Connection connection);
 
     public boolean updateNoSqlConnection(Connection connection)  throws Exception;
