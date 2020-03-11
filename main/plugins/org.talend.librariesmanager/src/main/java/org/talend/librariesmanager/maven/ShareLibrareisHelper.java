@@ -41,6 +41,7 @@ import org.talend.core.nexus.TalendLibsServerManager;
 import org.talend.core.runtime.maven.MavenArtifact;
 import org.talend.core.runtime.maven.MavenUrlHelper;
 import org.talend.librariesmanager.i18n.Messages;
+import org.talend.librariesmanager.model.service.LocalLibraryManager;
 import org.talend.librariesmanager.nexus.utils.VersionUtil;
 
 /**
@@ -121,6 +122,12 @@ public abstract class ShareLibrareisHelper {
                     if (artifact == null) {
                         continue;
                     }
+                    // If from custom component definition file
+                    if (LocalLibraryManager.isSystemCacheFile(file.getName())
+                            || (LocalLibraryManager.isComponentDefinitionFileType(file.getName())
+                                    && isTalendLibraryGroupId(artifact))) {
+                        continue;
+                    }
                     try {
                         Integer.parseInt(artifact.getType());
                         // FIXME unexpected type if it's an integer, should fix it in component module definition.
@@ -171,6 +178,13 @@ public abstract class ShareLibrareisHelper {
 
         return status;
 
+    }
+
+    private boolean isTalendLibraryGroupId(MavenArtifact artifact) {
+        if ("org.talend.libraries".equalsIgnoreCase(artifact.getGroupId())) {
+            return true;
+        }
+        return false;
     }
 
     public void putArtifactToMap(MavenArtifact artifact, Map<String, List<MavenArtifact>> map, boolean isShapshot) {

@@ -67,9 +67,7 @@ import org.talend.core.model.general.ModuleNeeded.ELibraryInstallStatus;
 import org.talend.core.model.general.ModuleStatusProvider;
 import org.talend.core.model.repository.ERepositoryObjectType;
 import org.talend.core.nexus.ArtifactRepositoryBean;
-import org.talend.core.nexus.IRepositoryArtifactHandler;
 import org.talend.core.nexus.NexusServerUtils;
-import org.talend.core.nexus.RepositoryArtifactHandlerManager;
 import org.talend.core.nexus.TalendLibsServerManager;
 import org.talend.core.nexus.TalendMavenResolver;
 import org.talend.core.prefs.ITalendCorePrefConstants;
@@ -111,7 +109,17 @@ public class LocalLibraryManager implements ILibraryManagerService, IChangedLibr
     private JarMissingObservable missingJarObservable;
 
     private MavenArtifactsHandler deployer;
-
+    
+    private static final List<String> COMPONENT_DEFINITION_FILE_TYPE_LIST = new ArrayList<String>() {
+        {
+            add(".javajet");
+            add(".png");
+            add(".jpg");
+            add("_java.xml");
+            add(".properties");
+            add(".txt");
+        }
+    };
     /**
      * DOC nrousseau LocalLibraryManager constructor comment.
      */
@@ -299,15 +307,15 @@ public class LocalLibraryManager implements ILibraryManagerService, IChangedLibr
         return retrieve(testModule, pathToStore, popUp, refresh);
     }
 
-	@Override
-	public boolean retrieve(String jarNeeded, String mavenUri, String pathToStore, IProgressMonitor... monitorWrap) {
-		ModuleNeeded testModule = new ModuleNeeded("", jarNeeded, "", true);
-		if(mavenUri != null) {
-			testModule.setMavenUri(mavenUri);
-		}
+    @Override
+    public boolean retrieve(String jarNeeded, String mavenUri, String pathToStore, IProgressMonitor... monitorWrap) {
+        ModuleNeeded testModule = new ModuleNeeded("", jarNeeded, "", true);
+        if (mavenUri != null) {
+            testModule.setMavenUri(mavenUri);
+        }
         boolean refresh = true;
         return retrieve(testModule, pathToStore, true, refresh);
-	}
+    }
 
 
     private boolean retrieve(ModuleNeeded module, String pathToStore, boolean showDialog, boolean refresh) {
@@ -385,6 +393,24 @@ public class LocalLibraryManager implements ILibraryManagerService, IChangedLibr
             CommonExceptionHandler.process(e);
         } catch (IOException e) {
             CommonExceptionHandler.process(new Exception("Can not copy: " + sourcePath + " to :" + pathToStore, e));
+        }
+        return false;
+    }
+
+    public static boolean isComponentDefinitionFileType(String fileName) {
+        if (fileName != null) {
+            for (String type : COMPONENT_DEFINITION_FILE_TYPE_LIST) {
+                if (fileName.toLowerCase().endsWith(type)) {
+                    return true;
+                }
+            }
+        }
+        return false;
+    }
+
+    public static boolean isSystemCacheFile(String fileName) {
+        if ("Thumbs.db".equals(fileName)) {
+            return true;
         }
         return false;
     }
@@ -1302,39 +1328,48 @@ public class LocalLibraryManager implements ILibraryManagerService, IChangedLibr
                 continue;
             }
         }
+    }
 
-        // deploy needed jars for User and Exchange component providers
-        if (!needToDeploy.isEmpty()) {
-            // search on nexus to avoid deploy the jar many times
-            Set<File> existFiles = new HashSet<>();
-            ArtifactRepositoryBean customNexusServer = TalendLibsServerManager.getInstance().getCustomNexusServer();
-            IRepositoryArtifactHandler customerRepHandler = RepositoryArtifactHandlerManager
-                    .getRepositoryHandler(customNexusServer);
-            if (customerRepHandler != null) {
-                List<MavenArtifact> searchResult = new ArrayList<>();
-                try {
-                    searchResult = customerRepHandler.search(MavenConstants.DEFAULT_LIB_GROUP_ID, null, null, true, true);
-                } catch (Exception e) {
-                    ExceptionHandler.process(e);
-                }
-                for (MavenArtifact artifact : searchResult) {
-                    for (File file : needToDeploy) {
-                        if (artifact.getFileName().equals(file.getName())) {
-                            existFiles.add(file);
+    private void deployLibsFromCustomComponents(IComponentsService service, Map<String, String> platformURLMap) {
+        Set<File> needToDeploy = new HashSet<>();
+        List<ComponentProviderInfo> componentsFolders = service.getComponentsFactory().getComponentsProvidersInfo();
+        for (ComponentProviderInfo providerInfo : componentsFolders) {
+            String id = providerInfo.getId();
+            try {
+                File file = new File(providerInfo.getLocation());
+                if ("org.talend.designer.components.model.UserComponentsProvider".equals(id)
+                        || "org.talend.designer.components.exchange.ExchangeComponentsProvider".equals(id)) {
+                    if (file.isDirectory()) {
+                        List<File> jarFiles = FilesUtils.getJarFilesFromFolder(file, null);
+                        if (jarFiles.size() > 0) {
+                            for (File jarFile : jarFiles) {
+                                String name = jarFile.getName();
+                                if (!canDeployFromCustomComponentFolder(name)
+                                        || platformURLMap.get(name) != null) {
+                                    continue;
+                                }
+                                needToDeploy.add(jarFile);
+                            }
                         }
+                    } else {
+                        if (platformURLMap.get(file.getName()) != null) {
+                            continue;
+                        }
+                        needToDeploy.add(file);
                     }
                 }
-
-            }
-            needToDeploy.removeAll(existFiles);
-            for (File file : needToDeploy) {
-                try {
-                    deploy(file.toURI());
-                } catch (Exception e) {
-                    ExceptionHandler.process(e);
-                }
+            } catch (Exception e) {
+                ExceptionHandler.process(e);
+                continue;
             }
         }
+    }
+
+    private boolean canDeployFromCustomComponentFolder(String fileName) {
+        if (isSystemCacheFile(fileName) || isComponentDefinitionFileType(fileName)) {
+            return false;
+        }
+        return true;
     }
 
     private void warnDuplicated(List<ModuleNeeded> modules, Set<String> duplicates, String type) {
