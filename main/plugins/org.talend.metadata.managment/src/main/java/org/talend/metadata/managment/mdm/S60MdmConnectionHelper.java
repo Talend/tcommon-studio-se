@@ -17,7 +17,6 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.OutputStreamWriter;
 import java.io.StringReader;
-import java.io.UnsupportedEncodingException;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -25,16 +24,15 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import javax.crypto.Cipher;
-import javax.crypto.ShortBufferException;
-import javax.crypto.spec.SecretKeySpec;
 import javax.xml.ws.BindingProvider;
 import javax.xml.ws.handler.MessageContext;
 
+import org.talend.core.GlobalServiceRegister;
 import org.talend.core.classloader.ClassLoaderFactory;
 import org.talend.core.classloader.DynamicClassLoader;
 import org.talend.core.model.metadata.builder.connection.MDMConnection;
 import org.talend.core.model.metadata.designerproperties.MDMVersions;
+import org.talend.core.service.IMDMWebServiceHook;
 import org.talend.core.utils.ReflectionUtils;
 
 /**
@@ -43,13 +41,7 @@ import org.talend.core.utils.ReflectionUtils;
  */
 public class S60MdmConnectionHelper extends AbsMdmConnectionHelper {
 
-    private static final String TOKEN_KEY = "t_stoken";
-
-    private static final String ALGORITHM = "DES";
-
-    private static final String SHAREDSECRET = "c1Stdio!";
-
-    private SecretKeySpec keySpec;
+    private IMDMWebServiceHook webServceHook;
 
     /*
      * (non-Javadoc)
@@ -116,67 +108,22 @@ public class S60MdmConnectionHelper extends AbsMdmConnectionHelper {
     }
 
     private void addPreRequestHeader(BindingProvider provider, String username) {
-        String studioToken = buildStudioToken(username);
+        IMDMWebServiceHook wsHook = getWebServiceHook();
+        if (wsHook != null) {
+            String studioToken = wsHook.buildStudioToken(username);
 
-        if (studioToken != null) {
             Map<String, List<String>> headers = new HashMap<String, List<String>>();
             List<String> values = Collections.singletonList(studioToken);
-            headers.put(TOKEN_KEY, values);
+            headers.put(wsHook.getTokenKey(), values);
             provider.getRequestContext().put(MessageContext.HTTP_REQUEST_HEADERS, headers);
         }
     }
 
-    private String buildStudioToken(String username) {
-        byte[] key = null;
-        try {
-            key = getEncryptKey();
-        } catch (ShortBufferException e) {
-            throw new RuntimeException(e);
+    private IMDMWebServiceHook getWebServiceHook() {
+        if (webServceHook == null && GlobalServiceRegister.getDefault().isServiceRegistered(IMDMWebServiceHook.class)) {
+            webServceHook = GlobalServiceRegister.getDefault().getService(IMDMWebServiceHook.class);
         }
-
-        keySpec = new SecretKeySpec(key, ALGORITHM);
-
-        byte[] encryptString = encryptString(username);
-        if (encryptString != null) {
-            String studioToken = toHex(encryptString);
-            return studioToken;
-        }
-
-        return null;
-    }
-
-    private byte[] getEncryptKey() throws ShortBufferException {
-        byte[] key = new byte[8];
-        byte[] bytes;
-        try {
-            bytes = SHAREDSECRET.getBytes("utf-8");
-        } catch (UnsupportedEncodingException uee) {
-            throw new ShortBufferException("The shared secret cannot be used as a key");
-        }
-        if (bytes.length < 8) {
-            throw new ShortBufferException("The shared secret is too short");
-        }
-        System.arraycopy(bytes, 0, key, 0, 8);
-        return key;
-    }
-
-    private byte[] encryptString(String text) {
-        try {
-            Cipher cipher = Cipher.getInstance(ALGORITHM);
-            cipher.init(Cipher.ENCRYPT_MODE, keySpec);
-            return cipher.doFinal(text.getBytes());
-        } catch (Exception e) {
-            return null;
-        }
-    }
-
-    public static String toHex(byte[] buf) {
-        char[] cbf = new char[buf.length * 2];
-        for (int jj = 0, kk = 0; jj < buf.length; jj++) {
-            cbf[kk++] = "0123456789ABCDEF".charAt((buf[jj] >> 4) & 0x0F);
-            cbf[kk++] = "0123456789ABCDEF".charAt(buf[jj] & 0x0F);
-        }
-        return new String(cbf);
+        return webServceHook;
     }
 
     /*

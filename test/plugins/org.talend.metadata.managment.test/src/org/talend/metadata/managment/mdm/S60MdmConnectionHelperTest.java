@@ -2,6 +2,7 @@ package org.talend.metadata.managment.mdm;
 
 import static org.junit.Assert.assertTrue;
 import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.ArgumentMatchers.same;
 
@@ -21,11 +22,13 @@ import org.powermock.api.mockito.PowerMockito;
 import org.powermock.core.classloader.annotations.PowerMockIgnore;
 import org.powermock.core.classloader.annotations.PrepareForTest;
 import org.powermock.modules.junit4.PowerMockRunner;
+import org.talend.core.GlobalServiceRegister;
+import org.talend.core.service.IMDMWebServiceHook;
 import org.talend.core.utils.ReflectionUtils;
 
 @RunWith(PowerMockRunner.class)
-@PrepareForTest({ ReflectionUtils.class, Logger.class })
-@PowerMockIgnore("javax.crypto.*")
+@PrepareForTest({ ReflectionUtils.class, Logger.class, GlobalServiceRegister.class })
+@PowerMockIgnore({ "javax.crypto.*", "org.eclipse.osgi.*" })
 public class S60MdmConnectionHelperTest {
 
     @Test
@@ -34,6 +37,7 @@ public class S60MdmConnectionHelperTest {
         final String password = "password";
         final String serverUrl = "http://localhost:8180/talendmdm/services?wsdl";
 
+        // mock BindingProvider
         Map<String, Object> requestContext = new HashMap<>();
         BindingProvider mockStub = Mockito.mock(BindingProvider.class);
         Mockito.when(mockStub.getRequestContext()).thenReturn(requestContext);
@@ -47,7 +51,19 @@ public class S60MdmConnectionHelperTest {
         PowerMockito.when(ReflectionUtils.class, "invokeMethod", same(mockServiceService), eq("getTMDMPort"), any(Object[].class),
                 any(Class[].class))
                 .thenReturn(mockStub);
+        
+        // mock IMDMWebServiceHook
+        IMDMWebServiceHook mockWebServiceHook = Mockito.mock(IMDMWebServiceHook.class);
+        PowerMockito.when(mockWebServiceHook.buildStudioToken(anyString())).thenReturn("AE6D37D6FA60B30F");
+        PowerMockito.when(mockWebServiceHook.getTokenKey()).thenReturn("t_stoken");
 
+        PowerMockito.mockStatic(GlobalServiceRegister.class);
+        GlobalServiceRegister mockGlobalServiceRegister = PowerMockito.mock(GlobalServiceRegister.class);
+        PowerMockito.when(GlobalServiceRegister.getDefault()).thenReturn(mockGlobalServiceRegister);
+        PowerMockito.when(GlobalServiceRegister.getDefault().isServiceRegistered(IMDMWebServiceHook.class)).thenReturn(true);
+        PowerMockito.when(GlobalServiceRegister.getDefault().getService(IMDMWebServiceHook.class)).thenReturn(mockWebServiceHook);
+
+        // call & verify
         S60MdmConnectionHelper helper = new S60MdmConnectionHelper();
         BindingProvider stub = (BindingProvider) helper.checkConnection(serverUrl, null, username, password);
         Map<String, Object> _requestContext = stub.getRequestContext();
