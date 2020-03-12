@@ -298,7 +298,7 @@ public final class MetadataToolHelper {
 
         boolean isKeyword = KeywordsValidator.isKeyword(originalColumnName);
 
-        String returnedColumnName = "";
+        StringBuilder sb = new StringBuilder();
         if (!isKeyword) {
             boolean isAllowSpecific = isAllowSpecificCharacters();
 
@@ -311,17 +311,17 @@ public final class MetadataToolHelper {
                     // other characters should have only a-z or A-Z or _ or 0-9
                     if (((car >= 'a') && (car <= 'z')) || ((car >= 'A') && (car <= 'Z')) || car == '_'
                             || ((car >= '0') && (car <= '9') && (i != 0))) {
-                        returnedColumnName += car;
+                        sb.append(car);
                     } else {
-                        returnedColumnName += underLine;
+                        sb.append(underLine);
                     }
                 } else {
-                    returnedColumnName += car;
+                    sb.append(car);
                 }
             }
         }
-        if (isKeyword || org.apache.commons.lang.StringUtils
-                .countMatches(returnedColumnName, underLine) > (originalColumnName.length() / 2)) {
+        String returnedColumnName = trimBeginEnd_(sb.toString());
+        if (isKeyword || "".equals(returnedColumnName)) {
             returnedColumnName = "Column" + index; //$NON-NLS-1$
         }
 
@@ -329,6 +329,22 @@ public final class MetadataToolHelper {
 
     }
 
+    public static String trimBeginEnd_(String columnName) {
+        if (columnName == null) {
+            return null;
+        }
+        int len = columnName.length();
+        int st = 0;
+        char[] val = columnName.toCharArray(); /* avoid getfield opcode */
+
+        while ((st < len) && (val[st] == '_')) {
+            st++;
+        }
+        while ((st < len) && (val[len - 1] == '_')) {
+            len--;
+        }
+        return ((st > 0) || (len < columnName.length())) ? columnName.substring(st, len) : columnName;
+    }
     public static String validateColumnName(final String columnName, final int index, List<String> labels) {
         String name = validateColumnName(columnName, index);
         UniqueStringGenerator<String> uniqueStringGenerator = new UniqueStringGenerator<String>(name, labels) {
