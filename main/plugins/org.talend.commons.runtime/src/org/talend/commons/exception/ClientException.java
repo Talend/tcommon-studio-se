@@ -14,8 +14,6 @@ package org.talend.commons.exception;
 
 public class ClientException extends PersistenceException {
     
-    private static final long serialVersionUID = 1L;
-
     private Integer httpCode;
 
     public ClientException(String message) {
