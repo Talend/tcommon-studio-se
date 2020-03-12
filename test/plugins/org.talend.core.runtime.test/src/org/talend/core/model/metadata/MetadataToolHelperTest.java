@@ -283,9 +283,6 @@ public class MetadataToolHelperTest {
         columnName = MetadataToolHelper.validateColumnName("________", 0);
         assertEquals("Column0", columnName);
 
-        columnName = MetadataToolHelper.validateColumnName("你好", 0);
-        assertEquals("Column0", columnName);
-
         columnName = MetadataToolHelper.validateColumnName("_test_______________________t", 0);
         assertEquals("test_______________________t", columnName);
 
