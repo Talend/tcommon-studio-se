@@ -79,6 +79,14 @@ public interface IJobSettingConstants {
     public static final String DBTABLE_IMPLICIT_CONTEXT = "DBTABLE_IMPLICIT_CONTEXT"; //$NON-NLS-1$
 
     public static final String QUERY_CONDITION_IMPLICIT_CONTEXT = "QUERY_CONDITION_IMPLICIT_CONTEXT"; //$NON-NLS-1$
+    
+    public static final String DRIVER_CLASS_IMPLICIT_CONTEXT = "DRIVER_CLASS_IMPLICIT_CONTEXT";//$NON-NLS-1$
+    
+    public static final String DRIVER_JAR_IMPLICIT_CONTEXT = "DRIVER_JAR_IMPLICIT_CONTEXT";//$NON-NLS-1$
+    
+    public static final String URL_IMPLICIT_CONTEXT = "URL_IMPLICIT_CONTEXT";//$NON-NLS-1$
+    
+    public static final String LOCAL_SERVICE_NAME_IMPLICIT_CONTEXT= "LOCAL_SERVICE_NAME_IMPLICIT_CONTEXT";//$NON-NLS-1$
 
     public static final String PRINT_OPERATIONS = "PRINT_OPERATIONS"; //$NON-NLS-1$
 
