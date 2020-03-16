@@ -304,6 +304,8 @@ public class ConnParameterKeys {
     /**DataBricks*/
     public static final String CONN_PARA_KEY_DATABRICKS_ENDPOINT="CONN_PARA_KEY_DATABRICKS_ENDPOINT";
 
+    public static final String CONN_PARA_KEY_DATABRICKS_CLOUD = "CONN_PARA_KEY_DATABRICKS_CLOUD";
+
     public static final String CONN_PARA_KEY_DATABRICKS_CLUSTER_ID="CONN_PARA_KEY_DATABRICKS_CLUSTER_ID";
 
     public static final String CONN_PARA_KEY_DATABRICKS_TOKEN="CONN_PARA_KEY_DATABRICKS_TOKEN";

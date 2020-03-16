@@ -135,6 +135,7 @@ public class ExtendedNodeConnectionContextUtils {
 
         // DataBricks
         DataBricksEndpoint,
+        DataBricksCloudProvider,
         DataBricksClusterId,
         DataBricksToken,
         DataBricksDBFSDepFolder
