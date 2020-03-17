@@ -1,18 +1,28 @@
+// ============================================================================
+//
+// Copyright (C) 2006-2019 Talend Inc. - www.talend.com
+//
+// This source code is available under agreement available at
+// %InstallDIR%\features\org.talend.rcp.branding.%PRODUCTNAME%\%PRODUCTNAME%license.txt
+//
+// You should have received a copy of the agreement
+// along with this program; if not, write to Talend SA
+// 9 rue Pages 92150 Suresnes, France
+//
+// ============================================================================
 package org.talend.metadata.managment.mdm;
 
-import static org.junit.Assert.assertTrue;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.ArgumentMatchers.same;
+import static org.mockito.Mockito.times;
 
 import java.net.URL;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 import javax.xml.ws.BindingProvider;
-import javax.xml.ws.handler.MessageContext;
 
 import org.apache.log4j.Logger;
 import org.junit.Test;
@@ -54,8 +64,6 @@ public class S60MdmConnectionHelperTest {
         
         // mock IMDMWebServiceHook
         IMDMWebServiceHook mockWebServiceHook = Mockito.mock(IMDMWebServiceHook.class);
-        PowerMockito.when(mockWebServiceHook.buildStudioToken(anyString())).thenReturn("AE6D37D6FA60B30F");
-        PowerMockito.when(mockWebServiceHook.getTokenKey()).thenReturn("t_stoken");
 
         PowerMockito.mockStatic(GlobalServiceRegister.class);
         GlobalServiceRegister mockGlobalServiceRegister = PowerMockito.mock(GlobalServiceRegister.class);
@@ -65,14 +73,7 @@ public class S60MdmConnectionHelperTest {
 
         // call & verify
         S60MdmConnectionHelper helper = new S60MdmConnectionHelper();
-        BindingProvider stub = (BindingProvider) helper.checkConnection(serverUrl, null, username, password);
-        Map<String, Object> _requestContext = stub.getRequestContext();
-        assertTrue(!_requestContext.isEmpty());
-        assertTrue(_requestContext.containsKey(MessageContext.HTTP_REQUEST_HEADERS));
-        Object obj = _requestContext.get(MessageContext.HTTP_REQUEST_HEADERS);
-        assertTrue(obj instanceof Map);
-        Map<String, List<String>> headers = (Map<String, List<String>>) obj;
-        assertTrue(headers.containsKey("t_stoken"));
-        assertTrue(!headers.get("t_stoken").isEmpty());
+        helper.checkConnection(serverUrl, null, username, password);
+        Mockito.verify(mockWebServiceHook, times(1)).preRequestSendingHook(any(Map.class), anyString());
     }
 }
