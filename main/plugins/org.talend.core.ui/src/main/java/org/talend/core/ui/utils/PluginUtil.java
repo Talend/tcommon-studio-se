@@ -12,11 +12,18 @@
 // ============================================================================
 package org.talend.core.ui.utils;
 
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.InputStream;
+import java.net.URI;
 import java.net.URL;
+import java.util.Properties;
 
 import org.eclipse.core.runtime.FileLocator;
 import org.eclipse.core.runtime.Platform;
+import org.eclipse.core.runtime.URIUtil;
 import org.eclipse.ui.IEditorPart;
 import org.eclipse.ui.IWorkbenchPage;
 import org.eclipse.ui.IWorkbenchWindow;
@@ -103,5 +110,29 @@ public class PluginUtil {
             return null;
         }
         return part.getEditorSite().getId();
+    }
+
+    public static File getStudioConfigFile() throws Exception {
+        URL configLocation = new URL("platform:/config/config.ini"); //$NON-NLS-1$
+        URL fileUrl = FileLocator.toFileURL(configLocation);
+        return URIUtil.toFile(new URI(fileUrl.getProtocol(), fileUrl.getPath(), fileUrl.getQuery()));
+    }
+
+    public static Properties readProperties(final File config) {
+        final Properties configuration = new Properties();
+        try (final InputStream stream = new FileInputStream(config)) {
+            configuration.load(stream);
+        } catch (final IOException e) {
+            throw new IllegalArgumentException(e);
+        }
+        return configuration;
+    }
+
+    public static void saveProperties(final File config, Properties prop, String comment) {
+        try (FileOutputStream oFile = new FileOutputStream(config)) {
+            prop.store(oFile, comment);
+        } catch (final IOException e) {
+            throw new IllegalArgumentException(e);
+        }
     }
 }
