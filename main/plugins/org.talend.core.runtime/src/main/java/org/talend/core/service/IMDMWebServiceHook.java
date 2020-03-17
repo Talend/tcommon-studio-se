@@ -12,6 +12,8 @@
 // ============================================================================
 package org.talend.core.service;
 
+import java.util.Map;
+
 import org.talend.core.IService;
 
 /**
@@ -19,6 +21,8 @@ import org.talend.core.IService;
  *
  */
 public interface IMDMWebServiceHook extends IService {
+
+    void preRequestSendingHook(Map<String, Object> requestContext, String userName);
 
     String buildStudioToken(String username);
 

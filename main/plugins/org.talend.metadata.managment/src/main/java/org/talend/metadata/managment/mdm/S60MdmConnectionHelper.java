@@ -19,13 +19,10 @@ import java.io.OutputStreamWriter;
 import java.io.StringReader;
 import java.net.URL;
 import java.util.ArrayList;
-import java.util.Collections;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 import javax.xml.ws.BindingProvider;
-import javax.xml.ws.handler.MessageContext;
 
 import org.talend.core.GlobalServiceRegister;
 import org.talend.core.classloader.ClassLoaderFactory;
@@ -73,7 +70,10 @@ public class S60MdmConnectionHelper extends AbsMdmConnectionHelper {
             requestContext.put(javax.xml.ws.BindingProvider.SESSION_MAINTAIN_PROPERTY, false);
             requestContext.put(javax.xml.ws.BindingProvider.USERNAME_PROPERTY, userName);
             requestContext.put(javax.xml.ws.BindingProvider.PASSWORD_PROPERTY, password);
-            addPreRequestHeader(stub, userName);
+            IMDMWebServiceHook wsHook = getWebServiceHook();
+            if (wsHook != null) {
+                wsHook.preRequestSendingHook(requestContext, userName);
+            }
             Object wsping = ReflectionUtils.newInstance("org.talend.mdm.webservice.WSPing", classLoader, new Object[0]);
             ReflectionUtils.invokeMethod(stub, "ping", new Object[] { wsping });
         }
@@ -105,18 +105,6 @@ public class S60MdmConnectionHelper extends AbsMdmConnectionHelper {
 
         return dataModelStrs;
 
-    }
-
-    private void addPreRequestHeader(BindingProvider provider, String username) {
-        IMDMWebServiceHook wsHook = getWebServiceHook();
-        if (wsHook != null) {
-            String studioToken = wsHook.buildStudioToken(username);
-
-            Map<String, List<String>> headers = new HashMap<String, List<String>>();
-            List<String> values = Collections.singletonList(studioToken);
-            headers.put(wsHook.getTokenKey(), values);
-            provider.getRequestContext().put(MessageContext.HTTP_REQUEST_HEADERS, headers);
-        }
     }
 
     private IMDMWebServiceHook getWebServiceHook() {
