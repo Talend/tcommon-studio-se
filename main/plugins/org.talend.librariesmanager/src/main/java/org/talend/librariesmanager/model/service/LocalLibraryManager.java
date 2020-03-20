@@ -113,6 +113,18 @@ public class LocalLibraryManager implements ILibraryManagerService, IChangedLibr
 
     private MavenArtifactsHandler deployer;
 
+    private static final List<String> COMPONENT_DEFINITION_FILE_TYPE_LIST = new ArrayList<String>() {
+
+        {
+            add(".javajet");
+            add(".png");
+            add(".jpg");
+            add("_java.xml");
+            add(".properties");
+            add(".txt");
+        }
+    };
+
     /**
      * DOC nrousseau LocalLibraryManager constructor comment.
      */
@@ -375,6 +387,24 @@ public class LocalLibraryManager implements ILibraryManagerService, IChangedLibr
             CommonExceptionHandler.process(e);
         } catch (IOException e) {
             CommonExceptionHandler.process(new Exception("Can not copy: " + sourcePath + " to :" + pathToStore, e));
+        }
+        return false;
+    }
+
+    public static boolean isComponentDefinitionFileType(String fileName) {
+        if (fileName != null) {
+            for (String type : COMPONENT_DEFINITION_FILE_TYPE_LIST) {
+                if (fileName.toLowerCase().endsWith(type)) {
+                    return true;
+                }
+            }
+        }
+        return false;
+    }
+
+    public static boolean isSystemCacheFile(String fileName) {
+        if ("Thumbs.db".equals(fileName)) {
+            return true;
         }
         return false;
     }
@@ -1224,7 +1254,10 @@ public class LocalLibraryManager implements ILibraryManagerService, IChangedLibr
 
         saveMavenIndex(mavenURIMap, monitorWrap);
         savePlatfromURLIndex(platformURLMap, monitorWrap);
-
+        
+        if (service != null) {
+            deployLibsFromCustomComponents(service, platformURLMap);
+        }
     }
 
     /**
@@ -1293,6 +1326,41 @@ public class LocalLibraryManager implements ILibraryManagerService, IChangedLibr
                 continue;
             }
         }
+    }
+
+    private void deployLibsFromCustomComponents(IComponentsService service, Map<String, String> platformURLMap) {
+        Set<File> needToDeploy = new HashSet<>();
+        List<ComponentProviderInfo> componentsFolders = service.getComponentsFactory().getComponentsProvidersInfo();
+        for (ComponentProviderInfo providerInfo : componentsFolders) {
+            String id = providerInfo.getId();
+            try {
+                File file = new File(providerInfo.getLocation());
+                if ("org.talend.designer.components.model.UserComponentsProvider".equals(id)
+                        || "org.talend.designer.components.exchange.ExchangeComponentsProvider".equals(id)) {
+                    if (file.isDirectory()) {
+                        List<File> jarFiles = FilesUtils.getJarFilesFromFolder(file, null);
+                        if (jarFiles.size() > 0) {
+                            for (File jarFile : jarFiles) {
+                                String name = jarFile.getName();
+                                if (!canDeployFromCustomComponentFolder(name)
+                                        || platformURLMap.get(name) != null) {
+                                    continue;
+                                }
+                                needToDeploy.add(jarFile);
+                            }
+                        }
+                    } else {
+                        if (platformURLMap.get(file.getName()) != null) {
+                            continue;
+                        }
+                        needToDeploy.add(file);
+                    }
+                }
+            } catch (Exception e) {
+                ExceptionHandler.process(e);
+                continue;
+            }
+        }
 
         // deploy needed jars for User and Exchange component providers
         if (!needToDeploy.isEmpty()) {
@@ -1326,6 +1394,13 @@ public class LocalLibraryManager implements ILibraryManagerService, IChangedLibr
                 }
             }
         }
+    }
+
+    private boolean canDeployFromCustomComponentFolder(String fileName) {
+        if (isSystemCacheFile(fileName) || isComponentDefinitionFileType(fileName)) {
+            return false;
+        }
+        return true;
     }
 
     private void warnDuplicated(List<ModuleNeeded> modules, Set<String> duplicates, String type) {
