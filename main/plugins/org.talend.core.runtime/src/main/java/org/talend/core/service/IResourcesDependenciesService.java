@@ -14,8 +14,6 @@ public interface IResourcesDependenciesService extends IService {
 
     public String getResourcePathForContext(IProcess process, String resourceContextValue);
 
-    public String getFullResourcePathForContext(IProcess process, String resourceContextValue);
-
     public String getResourceItemFilePath(String resourceContextValue);
 
     public void refreshDependencyViewer();
