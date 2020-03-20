@@ -108,7 +108,17 @@ public class LocalLibraryManager implements ILibraryManagerService, IChangedLibr
     private JarMissingObservable missingJarObservable;
 
     private MavenArtifactsHandler deployer;
-
+    
+    private static final List<String> COMPONENT_DEFINITION_FILE_TYPE_LIST = new ArrayList<String>() {
+        {
+            add(".javajet");
+            add(".png");
+            add(".jpg");
+            add("_java.xml");
+            add(".properties");
+            add(".txt");
+        }
+    };
     /**
      * DOC nrousseau LocalLibraryManager constructor comment.
      */
@@ -352,6 +362,24 @@ public class LocalLibraryManager implements ILibraryManagerService, IChangedLibr
             CommonExceptionHandler.process(e);
         } catch (IOException e) {
             CommonExceptionHandler.process(new Exception("Can not copy: " + sourcePath + " to :" + pathToStore, e));
+        }
+        return false;
+    }
+
+    public static boolean isComponentDefinitionFileType(String fileName) {
+        if (fileName != null) {
+            for (String type : COMPONENT_DEFINITION_FILE_TYPE_LIST) {
+                if (fileName.toLowerCase().endsWith(type)) {
+                    return true;
+                }
+            }
+        }
+        return false;
+    }
+
+    public static boolean isSystemCacheFile(String fileName) {
+        if ("Thumbs.db".equals(fileName)) {
+            return true;
         }
         return false;
     }
@@ -1167,7 +1195,7 @@ public class LocalLibraryManager implements ILibraryManagerService, IChangedLibr
         }
 
         if (service != null) {
-            deployLibsFromComponentFolder(service, platformURLMap);
+            deployLibsFromCustomComponents(service, platformURLMap);
         }
 
         saveMavenIndex(mavenURIMap, monitorWrap);
@@ -1175,19 +1203,10 @@ public class LocalLibraryManager implements ILibraryManagerService, IChangedLibr
 
     }
 
-    /**
-     * 
-     * The old components might use some jars in component folder and theres jars are not configured with platfrom URL
-     * 
-     * @param service
-     * @param libsWithoutUri
-     * @param platformURLMap
-     */
-    private void deployLibsFromComponentFolder(IComponentsService service, Map<String, String> platformURLMap) {
-        Set<File> needToDeploy = new HashSet<File>();
+    private void deployLibsFromCustomComponents(IComponentsService service, Map<String, String> platformURLMap) {
+        Set<File> needToDeploy = new HashSet<>();
         List<ComponentProviderInfo> componentsFolders = service.getComponentsFactory().getComponentsProvidersInfo();
         for (ComponentProviderInfo providerInfo : componentsFolders) {
-            String contributeID = providerInfo.getContributer();
             String id = providerInfo.getId();
             try {
                 File file = new File(providerInfo.getLocation());
@@ -1198,7 +1217,8 @@ public class LocalLibraryManager implements ILibraryManagerService, IChangedLibr
                         if (jarFiles.size() > 0) {
                             for (File jarFile : jarFiles) {
                                 String name = jarFile.getName();
-                                if (platformURLMap.get(name) != null) {
+                                if (!canDeployFromCustomComponentFolder(name)
+                                        || platformURLMap.get(name) != null) {
                                     continue;
                                 }
                                 needToDeploy.add(jarFile);
@@ -1210,31 +1230,6 @@ public class LocalLibraryManager implements ILibraryManagerService, IChangedLibr
                         }
                         needToDeploy.add(file);
                     }
-                } else {
-                    // for other component provider ,add jars to the platform url index
-                    List<File> jarFiles = FilesUtils.getJarFilesFromFolder(file, null, "ext");
-                    if (jarFiles.size() > 0) {
-                        for (File jarFile : jarFiles) {
-                            String name = jarFile.getName();
-                            String path = platformURLMap.get(name);
-                            int lengthBasePath = new Path(file.getParentFile().getAbsolutePath()).toPortableString().length();
-                            String relativePath = new Path(jarFile.getAbsolutePath()).toPortableString()
-                                    .substring(lengthBasePath);
-                            String moduleLocation = "platform:/plugin/" + contributeID + relativePath;
-                            if (path != null) {
-                                if (path.equals(moduleLocation)) {
-                                    continue;
-                                } else {
-                                    if (CommonsPlugin.isDebugMode()) {
-                                        CommonExceptionHandler
-                                                .warn(name + " is duplicated, locations:" + path + " and:" + moduleLocation);
-                                    }
-                                    continue;
-                                }
-                            }
-                            platformURLMap.put(name, moduleLocation);
-                        }
-                    }
                 }
             } catch (Exception e) {
                 ExceptionHandler.process(e);
@@ -1245,7 +1240,7 @@ public class LocalLibraryManager implements ILibraryManagerService, IChangedLibr
         // deploy needed jars for User and Exchange component providers
         if (!needToDeploy.isEmpty()) {
             // search on nexus to avoid deploy the jar many times
-            Set<File> existFiles = new HashSet<File>();
+            Set<File> existFiles = new HashSet<>();
             ArtifactRepositoryBean customNexusServer = TalendLibsServerManager.getInstance().getCustomNexusServer();
             IRepositoryArtifactHandler customerRepHandler = RepositoryArtifactHandlerManager
                     .getRepositoryHandler(customNexusServer);
@@ -1274,6 +1269,13 @@ public class LocalLibraryManager implements ILibraryManagerService, IChangedLibr
                 }
             }
         }
+    }
+
+    private boolean canDeployFromCustomComponentFolder(String fileName) {
+        if (isSystemCacheFile(fileName) || isComponentDefinitionFileType(fileName)) {
+            return false;
+        }
+        return true;
     }
 
     private void warnDuplicated(List<ModuleNeeded> modules, Set<String> duplicates, String type) {
