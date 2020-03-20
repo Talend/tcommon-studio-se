@@ -631,7 +631,7 @@ public class CreateMavenJobPom extends AbstractMavenProcessorPom {
             Property property = jobInfo.getProcessItem().getProperty();
             String coordinate =
                     getCoordinate(PomIdsHelper.getJobGroupId(property), PomIdsHelper.getJobArtifactId(jobInfo),
-                            MavenConstants.PACKAGING_JAR, PomIdsHelper.getJobVersion(property));
+                            MavenConstants.PACKAGING_JAR, PomIdsHelper.getJobVersion(property), null);
             Dependency dependency = PomUtil.createDependency(PomIdsHelper.getJobGroupId(property),
                     PomIdsHelper.getJobArtifactId(jobInfo), PomIdsHelper.getJobVersion(property), MavenConstants.PACKAGING_JAR);
             jobCoordinateMap.put(coordinate, dependency);
@@ -641,7 +641,7 @@ public class CreateMavenJobPom extends AbstractMavenProcessorPom {
         Property parentProperty = this.getJobProcessor().getProperty();
         String parentCoordinate =
                 getCoordinate(PomIdsHelper.getJobGroupId(parentProperty), PomIdsHelper.getJobArtifactId(parentProperty),
-                        MavenConstants.PACKAGING_JAR, PomIdsHelper.getJobVersion(parentProperty));
+                        MavenConstants.PACKAGING_JAR, PomIdsHelper.getJobVersion(parentProperty), null);
         Dependency parentDependency = PomUtil.createDependency(PomIdsHelper.getJobGroupId(parentProperty),
                 PomIdsHelper.getJobArtifactId(parentProperty), PomIdsHelper.getJobVersion(parentProperty),
                 MavenConstants.PACKAGING_JAR);
@@ -710,7 +710,7 @@ public class CreateMavenJobPom extends AbstractMavenProcessorPom {
             }
             MavenArtifact artifact = MavenUrlHelper.parseMvnUrl(moduleNeeded.getMavenUri());
             String coordinate = getCoordinate(artifact.getGroupId(), artifact.getArtifactId(), artifact.getType(),
-                    artifact.getVersion());
+                    artifact.getVersion(), artifact.getClassifier());
             if (!jobCoordinateMap.containsKey(coordinate) && !talendLibCoordinateMap.containsKey(coordinate)
                     && !_3rdDepLibMap.containsKey(coordinate)) {
                 Dependency dependencyObject = PomUtil.createDependency(artifact.getGroupId(), artifact.getArtifactId(),
@@ -781,10 +781,10 @@ public class CreateMavenJobPom extends AbstractMavenProcessorPom {
 
     private String getCoordinate(Dependency dependency) {
         return getCoordinate(dependency.getGroupId(), dependency.getArtifactId(), dependency.getType(),
-                dependency.getVersion());
+                dependency.getVersion(), dependency.getClassifier());
     }
 
-    protected String getCoordinate(String groupId, String artifactId, String type, String version) {
+    protected String getCoordinate(String groupId, String artifactId, String type, String version, String classifier) {
         String separator = ":"; //$NON-NLS-1$
         String coordinate = groupId + separator;
         coordinate += artifactId + separator;
@@ -794,6 +794,9 @@ public class CreateMavenJobPom extends AbstractMavenProcessorPom {
 
         if (version != null) {
             coordinate += separator + version;
+        }
+        if (StringUtils.isNotBlank(classifier)) {
+            coordinate += separator + classifier;
         }
 
         return coordinate;
@@ -818,7 +821,8 @@ public class CreateMavenJobPom extends AbstractMavenProcessorPom {
 
     private void addToDuplicateLibs(Map<String, Set<Dependency>> map, Dependency dependency) {
         String coordinate =
-                getCoordinate(dependency.getGroupId(), dependency.getArtifactId(), dependency.getType(), null);
+                getCoordinate(dependency.getGroupId(), dependency.getArtifactId(), dependency.getType(), null,
+                        dependency.getClassifier());
         if (!map.containsKey(coordinate)) {
             Set<Dependency> set = new HashSet<>();
             map.put(coordinate, set);
