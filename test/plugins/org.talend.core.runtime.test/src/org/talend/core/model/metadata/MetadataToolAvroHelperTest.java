@@ -244,7 +244,7 @@ public class MetadataToolAvroHelperTest {
             metadataTable.getColumns().add(metadataColumn);
         }
 
-        assertTrue(metadataTable.getColumns().get(0).getLabel().equals("long"));
+        assertTrue(metadataTable.getColumns().get(0).getLabel().equals("_long"));
         assertTrue(metadataTable.getColumns().get(0).getName().equals("long"));
         Iterator<TaggedValue> ite = metadataTable.getColumns().get(0).getTaggedValue().iterator();
         while (ite.hasNext()) {
@@ -277,7 +277,7 @@ public class MetadataToolAvroHelperTest {
             }
         }
 
-        assertTrue(metadataTable.getColumns().get(3).getLabel().equals("234"));
+        assertTrue(metadataTable.getColumns().get(3).getLabel().equals("_234"));
         assertTrue(metadataTable.getColumns().get(3).getName().equals("1234"));
         ite = metadataTable.getColumns().get(3).getTaggedValue().iterator();
         while (ite.hasNext()) {

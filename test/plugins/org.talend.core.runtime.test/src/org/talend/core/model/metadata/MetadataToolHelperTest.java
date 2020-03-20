@@ -260,7 +260,7 @@ public class MetadataToolHelperTest {
         assertEquals(columnName, "addr_ess");
 
         columnName = MetadataToolHelper.validateColumnName("9city", 0);
-        assertEquals(columnName, "city");
+        assertEquals(columnName, "_city");
 
         columnName = MetadataToolHelper.validateColumnName("country1", 0);
         assertEquals(columnName, "country1");
@@ -278,13 +278,13 @@ public class MetadataToolHelperTest {
         assertEquals("Column0", columnName);
 
         columnName = MetadataToolHelper.validateColumnName("____Tax__ID_____", 0);
-        assertEquals("Tax__ID", columnName);
+        assertEquals("_Tax__ID", columnName);
 
         columnName = MetadataToolHelper.validateColumnName("________", 0);
         assertEquals("Column0", columnName);
 
         columnName = MetadataToolHelper.validateColumnName("_test_______________________t", 0);
-        assertEquals("test_______________________t", columnName);
+        assertEquals("_test_______________________t", columnName);
 
         preferences.putBoolean(IRepositoryPrefConstants.ALLOW_SPECIFIC_CHARACTERS_FOR_SCHEMA_COLUMNS, true);
 

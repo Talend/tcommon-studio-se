@@ -329,6 +329,11 @@ public final class MetadataToolHelper {
 
     }
 
+    // __abc -> _abc
+    // __abc___ -> _abc
+    // abc -> abc
+    // _abc -> _abc
+    // _____ -> ""
     public static String trimBeginEnd_(String columnName) {
         if (columnName == null) {
             return null;
@@ -343,8 +348,20 @@ public final class MetadataToolHelper {
         while ((st < len) && (val[len - 1] == '_')) {
             len--;
         }
-        return ((st > 0) || (len < columnName.length())) ? columnName.substring(st, len) : columnName;
+        if ((st > 0) || (len < columnName.length())) {
+            if (st == columnName.length()) {
+                return "";
+            }
+            if (st > 0) {
+                return columnName.substring(st - 1, len);
+            } else {
+                return columnName.substring(st, len);
+            }
+        } else {
+            return columnName;
+        }
     }
+
     public static String validateColumnName(final String columnName, final int index, List<String> labels) {
         String name = validateColumnName(columnName, index);
         UniqueStringGenerator<String> uniqueStringGenerator = new UniqueStringGenerator<String>(name, labels) {
