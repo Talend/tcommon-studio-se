@@ -220,9 +220,10 @@ public class CreateMavenStandardJobOSGiPom extends CreateMavenJobPom {
             for (JobInfo jobInfo : childrenJobInfo) {
                 Property property = jobInfo.getProcessItem().getProperty();
                 String coordinate = getCoordinate(PomIdsHelper.getJobGroupId(property), PomIdsHelper.getJobArtifactId(jobInfo),
-                        MavenConstants.PACKAGING_JAR, PomIdsHelper.getJobVersion(property));
-                Dependency dependency = getDependencyObject(PomIdsHelper.getJobGroupId(property), PomIdsHelper.getJobArtifactId(jobInfo), PomIdsHelper.getJobVersion(property),
-                                MavenConstants.PACKAGING_JAR, null);
+                        MavenConstants.PACKAGING_JAR, PomIdsHelper.getJobVersion(property), null);
+                Dependency dependency = PomUtil.createDependency(PomIdsHelper.getJobGroupId(property),
+                        PomIdsHelper.getJobArtifactId(jobInfo), PomIdsHelper.getJobVersion(property),
+                        MavenConstants.PACKAGING_JAR);
                 jobCoordinateMap.put(coordinate, dependency);
             }
         }
@@ -230,9 +231,10 @@ public class CreateMavenStandardJobOSGiPom extends CreateMavenJobPom {
         Property parentProperty = this.getJobProcessor().getProperty();
         String parentCoordinate = getCoordinate(PomIdsHelper.getJobGroupId(parentProperty),
                 PomIdsHelper.getJobArtifactId(parentProperty), MavenConstants.PACKAGING_JAR,
-                PomIdsHelper.getJobVersion(parentProperty));
-        Dependency parentDependency = getDependencyObject(PomIdsHelper.getJobGroupId(parentProperty), PomIdsHelper.getJobArtifactId(parentProperty), PomIdsHelper.getJobVersion(parentProperty),
-                        MavenConstants.PACKAGING_JAR, null);
+                PomIdsHelper.getJobVersion(parentProperty), null);
+        Dependency parentDependency = PomUtil.createDependency(PomIdsHelper.getJobGroupId(parentProperty),
+                PomIdsHelper.getJobArtifactId(parentProperty), PomIdsHelper.getJobVersion(parentProperty),
+                MavenConstants.PACKAGING_JAR);
         jobCoordinateMap.put(parentCoordinate, parentDependency);
         try {
             Document document = PomUtil.loadAssemblyFile(null, assemblyFile);
