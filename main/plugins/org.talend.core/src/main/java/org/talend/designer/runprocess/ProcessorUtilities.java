@@ -107,10 +107,12 @@ import org.talend.core.model.repository.job.JobResource;
 import org.talend.core.model.repository.job.JobResourceManager;
 import org.talend.core.model.utils.JavaResourcesHelper;
 import org.talend.core.repository.model.ProxyRepositoryFactory;
+import org.talend.core.runtime.CoreRuntimePlugin;
 import org.talend.core.runtime.process.ITalendProcessJavaProject;
 import org.talend.core.runtime.process.LastGenerationInfo;
 import org.talend.core.runtime.process.TalendProcessArgumentConstant;
 import org.talend.core.runtime.process.TalendProcessOptionConstants;
+import org.talend.core.runtime.projectsetting.ProjectPreferenceManager;
 import org.talend.core.runtime.repository.build.BuildExportManager;
 import org.talend.core.service.IResourcesDependenciesService;
 import org.talend.core.services.ICoreTisService;
@@ -166,7 +168,7 @@ public class ProcessorUtilities {
     private static boolean exportJobAsMicroService = false;
 
     private static IDesignerCoreService designerCoreService =
-            (IDesignerCoreService) GlobalServiceRegister.getDefault().getService(IDesignerCoreService.class);
+            GlobalServiceRegister.getDefault().getService(IDesignerCoreService.class);
 
     private static Map<String, Integer> lastGeneratedWithStatsOrTrace = new HashMap<String, Integer>();
 
@@ -707,7 +709,7 @@ public class ProcessorUtilities {
             List<String> jobletsComponentsList = new ArrayList<String>();
             IComponentsFactory componentsFactory = null;
             if (GlobalServiceRegister.getDefault().isServiceRegistered(IComponentsService.class)) {
-                IComponentsService compService = (IComponentsService) GlobalServiceRegister.getDefault()
+                IComponentsService compService = GlobalServiceRegister.getDefault()
                         .getService(IComponentsService.class);
                 if (compService != null) {
                     componentsFactory = compService.getComponentsFactory();
@@ -780,7 +782,7 @@ public class ProcessorUtilities {
                         // for joblet
                         IComponent cc = componentsFactory.get(node.getComponentName(), jobletPaletteType);
                         if (GlobalServiceRegister.getDefault().isServiceRegistered(IJobletProviderService.class)) {
-                            IJobletProviderService jobletService = (IJobletProviderService) GlobalServiceRegister.getDefault()
+                            IJobletProviderService jobletService = GlobalServiceRegister.getDefault()
                                     .getService(IJobletProviderService.class);
                             Property property = jobletService.getJobletComponentItem(cc);
                             if (property != null && StringUtils.isNotBlank(property.getId())) {
@@ -870,11 +872,18 @@ public class ProcessorUtilities {
 
                     IFolder xmlMappingFolder = jobInfo.getProcessor().getTalendJavaProject().getResourceSubFolder(null,
                             JavaUtils.JAVA_XML_MAPPING);
-                    if (xmlMappingFolder.members().length == 0
+                    ProjectPreferenceManager manager = CoreRuntimePlugin.getInstance().getProjectPreferenceManager();
+                    boolean updated = manager.getBoolean(MetadataTalendType.UPDATED_MAPPING_FILES);
+                    if ((xmlMappingFolder.members().length == 0 || updated)
                             && GlobalServiceRegister.getDefault().isServiceRegistered(ICoreService.class)) {
                         ICoreService coreService =
-                                (ICoreService) GlobalServiceRegister.getDefault().getService(ICoreService.class);
+                                GlobalServiceRegister.getDefault().getService(ICoreService.class);
                         coreService.synchronizeMapptingXML(jobInfo.getProcessor().getTalendJavaProject());
+                        // reset
+                        if (updated) {
+                            manager.setValue(MetadataTalendType.UPDATED_MAPPING_FILES, false);
+                            manager.save();
+                        }
                     }
                 }
             } catch (Exception e) {
@@ -887,7 +896,7 @@ public class ProcessorUtilities {
         boolean hasDynamicMetadata = false;
         if (GlobalServiceRegister.getDefault().isServiceRegistered(IDesignerCoreService.class) && !isExportConfig()) {
             IDesignerCoreService designerCoreService =
-                    (IDesignerCoreService) GlobalServiceRegister.getDefault().getService(IDesignerCoreService.class);
+                    GlobalServiceRegister.getDefault().getService(IDesignerCoreService.class);
             for (INode node : currentProcess.getGraphicalNodes()) {
                 if (designerCoreService.isDelegateNode(node)) { // for jdbc, currently
                     return true;
@@ -897,7 +906,7 @@ public class ProcessorUtilities {
 
         ICoreTisService service = null;
         if (GlobalServiceRegister.getDefault().isServiceRegistered(ICoreTisService.class)) {
-            service = (ICoreTisService) GlobalServiceRegister.getDefault().getService(ICoreTisService.class);
+            service = GlobalServiceRegister.getDefault().getService(ICoreTisService.class);
         }
         for (INode node : (List<? extends INode>) currentProcess.getGeneratingNodes()) {
             if (node.getComponent() != null && node.getComponent().getComponentType() == EComponentType.GENERIC) {
@@ -1070,8 +1079,8 @@ public class ProcessorUtilities {
     private static void generateDataSet(IProcess process, IProcessor processor) {
         if (GlobalServiceRegister.getDefault().isServiceRegistered(ITestContainerProviderService.class)) {
             ITestContainerProviderService testContainerService =
-                    (ITestContainerProviderService) GlobalServiceRegister.getDefault().getService(
-                            ITestContainerProviderService.class);
+                    GlobalServiceRegister.getDefault().getService(
+                    ITestContainerProviderService.class);
             if (testContainerService != null) {
                 if (!testContainerService.isTestContainerProcess(process)) {
                     return;
@@ -1326,8 +1335,8 @@ public class ProcessorUtilities {
         Set<ModuleNeeded> neededLibraries = new HashSet<>();
         if (GlobalServiceRegister.getDefault().isServiceRegistered(ITestContainerProviderService.class)) {
             ITestContainerProviderService testcontainerService =
-                    (ITestContainerProviderService) GlobalServiceRegister.getDefault().getService(
-                            ITestContainerProviderService.class);
+                    GlobalServiceRegister.getDefault().getService(
+                    ITestContainerProviderService.class);
             if (!testcontainerService.isTestContainerItem(selectedProcessItem)) {
                 try {
                     neededLibraries.addAll(testcontainerService.getAllJobTestcaseModules(selectedProcessItem));
@@ -1408,7 +1417,7 @@ public class ProcessorUtilities {
         // 2.TDQ-14308 current drools file in 'src/resourcesmetadata/survivorship/' should be included to job jar.
         if (GlobalServiceRegister.getDefault().isServiceRegistered(ITDQItemService.class)) {
             ITDQItemService tdqItemService =
-                    (ITDQItemService) GlobalServiceRegister.getDefault().getService(ITDQItemService.class);
+                    GlobalServiceRegister.getDefault().getService(ITDQItemService.class);
             if (tdqItemService == null) {
                 return;
             }
@@ -1462,7 +1471,7 @@ public class ProcessorUtilities {
         }
         IProcess2 process = (IProcess2) currentProcess;
         if (GlobalServiceRegister.getDefault().isServiceRegistered(IResourcesDependenciesService.class)) {
-            IResourcesDependenciesService resourcesService = (IResourcesDependenciesService) GlobalServiceRegister.getDefault()
+            IResourcesDependenciesService resourcesService = GlobalServiceRegister.getDefault()
                     .getService(IResourcesDependenciesService.class);
             if (resourcesService == null) {
                 return;
@@ -1539,8 +1548,8 @@ public class ProcessorUtilities {
         if (BitwiseOptionUtils.containOption(option, GENERATE_TESTS) && jobInfo.getProcessItem() != null) {
             if (GlobalServiceRegister.getDefault().isServiceRegistered(ITestContainerProviderService.class)) {
                 ITestContainerProviderService testContainerService =
-                        (ITestContainerProviderService) GlobalServiceRegister.getDefault().getService(
-                                ITestContainerProviderService.class);
+                        GlobalServiceRegister.getDefault().getService(
+                        ITestContainerProviderService.class);
                 if (testContainerService != null) {
                     List<ProcessItem> testsItems =
                             testContainerService.getTestContainersByVersion(jobInfo.getProcessItem());
@@ -1941,7 +1950,7 @@ public class ProcessorUtilities {
             boolean contextProperties, boolean applyToChildren) throws ProcessorException {
         ISVNProviderService service = null;
         if (PluginChecker.isSVNProviderPluginLoaded()) {
-            service = (ISVNProviderService) GlobalServiceRegister.getDefault().getService(ISVNProviderService.class);
+            service = GlobalServiceRegister.getDefault().getService(ISVNProviderService.class);
         }
         if (service != null && service.isProjectInSvnMode()) {
             RepositoryManager.syncRoutineAndJoblet(ERepositoryObjectType.ROUTINES);
@@ -1992,7 +2001,7 @@ public class ProcessorUtilities {
         // added by nma, to refresh routines when generating code in SVN mode. 10225.
         ISVNProviderService service = null;
         if (PluginChecker.isSVNProviderPluginLoaded()) {
-            service = (ISVNProviderService) GlobalServiceRegister.getDefault().getService(ISVNProviderService.class);
+            service = GlobalServiceRegister.getDefault().getService(ISVNProviderService.class);
         }
         if (service != null && service.isProjectInSvnMode()) {
             RepositoryManager.syncRoutineAndJoblet(ERepositoryObjectType.ROUTINES);
@@ -2028,7 +2037,7 @@ public class ProcessorUtilities {
 
         ISVNProviderService service = null;
         if (PluginChecker.isSVNProviderPluginLoaded()) {
-            service = (ISVNProviderService) GlobalServiceRegister.getDefault().getService(ISVNProviderService.class);
+            service = GlobalServiceRegister.getDefault().getService(ISVNProviderService.class);
         }
         if (service != null && service.isProjectInSvnMode()) {
             RepositoryManager.syncRoutineAndJoblet(ERepositoryObjectType.ROUTINES);
@@ -2085,7 +2094,7 @@ public class ProcessorUtilities {
         // added by nma, to refresh routines when generating code in SVN mode. 10225.
         ISVNProviderService service = null;
         if (PluginChecker.isSVNProviderPluginLoaded()) {
-            service = (ISVNProviderService) GlobalServiceRegister.getDefault().getService(ISVNProviderService.class);
+            service = GlobalServiceRegister.getDefault().getService(ISVNProviderService.class);
         }
         if (service != null && service.isProjectInSvnMode()) {
             RepositoryManager.syncRoutineAndJoblet(ERepositoryObjectType.ROUTINES);
@@ -2379,8 +2388,8 @@ public class ProcessorUtilities {
         if (parentJobInfo.isTestContainer()
                 && GlobalServiceRegister.getDefault().isServiceRegistered(ITestContainerProviderService.class)) {
             ITestContainerProviderService testContainerService =
-                    (ITestContainerProviderService) GlobalServiceRegister.getDefault().getService(
-                            ITestContainerProviderService.class);
+                    GlobalServiceRegister.getDefault().getService(
+                    ITestContainerProviderService.class);
             if (testContainerService != null) {
             	getSubjobInfo(testContainerService.getOriginalNodes(ptype), ptype, parentJobInfo, jobInfos,firstChildOnly);
             }
@@ -2389,8 +2398,8 @@ public class ProcessorUtilities {
         if (!parentJobInfo.isTestContainer() && !parentJobInfo.isJoblet()
                 && GlobalServiceRegister.getDefault().isServiceRegistered(ITestContainerProviderService.class)) {
             ITestContainerProviderService testContainerService =
-                    (ITestContainerProviderService) GlobalServiceRegister.getDefault().getService(
-                            ITestContainerProviderService.class);
+                    GlobalServiceRegister.getDefault().getService(
+                    ITestContainerProviderService.class);
             if (testContainerService != null) {
                 List<ProcessItem> testsItems =
                         testContainerService.getTestContainersByVersion(parentJobInfo.getProcessItem());
@@ -2477,8 +2486,8 @@ public class ProcessorUtilities {
                 // for joblet node
                 if (jobletPaletteType != null && PluginChecker.isJobLetPluginLoaded()) {
                     IJobletProviderService service =
-                            (IJobletProviderService) GlobalServiceRegister.getDefault().getService(
-                                    IJobletProviderService.class);
+                            GlobalServiceRegister.getDefault().getService(
+                            IJobletProviderService.class);
                     if (service != null) {
                         IComponent jobletComponent = service.getJobletComponent(node, jobletPaletteType);
                         ProcessType jobletProcess = service.getJobletProcess(jobletComponent);
@@ -2552,8 +2561,8 @@ public class ProcessorUtilities {
         } else {
             if (GlobalServiceRegister.getDefault().isServiceRegistered(IJobletProviderService.class)) {
                 IJobletProviderService jobletService =
-                        (IJobletProviderService) GlobalServiceRegister.getDefault().getService(
-                                IJobletProviderService.class);
+                        GlobalServiceRegister.getDefault().getService(
+                        IJobletProviderService.class);
                 if (jobletService.isJobletItem(processItem)) {
                     processType = jobletService.getJobletProcess(processItem);
                     parentJobInfo = new JobInfo(processItem.getProperty(), processType.getDefaultContext());
@@ -2562,8 +2571,8 @@ public class ProcessorUtilities {
         }
         if (GlobalServiceRegister.getDefault().isServiceRegistered(ITestContainerProviderService.class)) {
             ITestContainerProviderService testContainerService =
-                    (ITestContainerProviderService) GlobalServiceRegister.getDefault().getService(
-                            ITestContainerProviderService.class);
+                    GlobalServiceRegister.getDefault().getService(
+                    ITestContainerProviderService.class);
             if (testContainerService.isTestContainerItem(processItem)) {
                 parentJobInfo.setTestContainer(true);
             }
@@ -2640,7 +2649,7 @@ public class ProcessorUtilities {
     public static File getJavaProjectLibFolder() {
         if (GlobalServiceRegister.getDefault().isServiceRegistered(IRunProcessService.class)) {
             IRunProcessService processService =
-                    (IRunProcessService) GlobalServiceRegister.getDefault().getService(IRunProcessService.class);
+                    GlobalServiceRegister.getDefault().getService(IRunProcessService.class);
             return processService.getJavaProjectLibFolder().getLocation().toFile();
         }
         return null;
@@ -2649,7 +2658,7 @@ public class ProcessorUtilities {
     public static String getJavaProjectLibFolderPath() {
         if (GlobalServiceRegister.getDefault().isServiceRegistered(IRunProcessService.class)) {
             IRunProcessService processService =
-                    (IRunProcessService) GlobalServiceRegister.getDefault().getService(IRunProcessService.class);
+                    GlobalServiceRegister.getDefault().getService(IRunProcessService.class);
             return processService.getJavaProjectLibFolder().getLocation().toPortableString();
         }
         return null;
@@ -2658,7 +2667,7 @@ public class ProcessorUtilities {
     public static String getJavaProjectExternalResourcesFolderPath(IProcess process) {
         if (GlobalServiceRegister.getDefault().isServiceRegistered(IRunProcessService.class)) {
             IRunProcessService processService =
-                    (IRunProcessService) GlobalServiceRegister.getDefault().getService(IRunProcessService.class);
+                    GlobalServiceRegister.getDefault().getService(IRunProcessService.class);
             return processService.getJavaProjectExternalResourcesFolder(process).getLocation().toPortableString();
         }
         return null;
