@@ -187,11 +187,13 @@ public class TalendLibsServerManager {
      * Check user library connection with the setting from remote administrator
      * 
      * @return
+     * @throws PersistenceException
      */
-    public boolean canConnectUserLibrary() {
+    public boolean canConnectUserLibrary() throws PersistenceException {
         boolean canConnect = false;
         IProxyRepositoryFactory factory = CoreRuntimePlugin.getInstance().getProxyRepositoryFactory();
         RepositoryContext repositoryContext = factory.getRepositoryContext();
+        ArtifactRepositoryBean bean = null;
         try {
             if (repositoryContext != null && repositoryContext.getFields() != null && !factory.isLocalConnectionProvider()
                     && !repositoryContext.isOffline()) {
@@ -208,7 +210,7 @@ public class TalendLibsServerManager {
                         && GlobalServiceRegister.getDefault().isServiceRegistered(IRemoteService.class)) {
                     IRemoteService remoteService = (IRemoteService) GlobalServiceRegister.getDefault()
                             .getService(IRemoteService.class);
-                    ArtifactRepositoryBean bean = remoteService.getLibNexusServer(userName, password, adminUrl);
+                    bean = remoteService.getLibNexusServer(userName, password, adminUrl);
                     if (bean != null) {
                         IRepositoryArtifactHandler handler = RepositoryArtifactHandlerManager.getRepositoryHandler(bean);
                         if (handler.checkConnection()) {
@@ -222,6 +224,9 @@ public class TalendLibsServerManager {
             }
         } catch (Exception e) {
             ExceptionHandler.process(e);
+        }
+        if (bean == null) {
+            throw new PersistenceException(Messages.getString("TalendLibsServerManager.cannotGetUserLibraryServer"));
         }
         return canConnect;
     }
