@@ -292,13 +292,13 @@ public class ConvertJobsUtil {
             String[] items = JobBatchFramework.getFrameworkToDispaly();
             frameworkCombo.setItems(items);
             if (items.length > 0) {
-                frameworkCombo.select(0);
+                frameworkCombo.setText(JobBatchFramework.SPARKFRAMEWORK.getDisplayName());
             }
         } else if (JobType.BIGDATASTREAMING.getDisplayName().equals(jobTypeValue)) {
             String[] items = JobStreamingFramework.getFrameworkToDispaly();
             frameworkCombo.setItems(items);
             if (items.length > 0) {
-                frameworkCombo.select(0);
+                frameworkCombo.setText(JobStreamingFramework.SPARKSTREAMINGFRAMEWORK.getDisplayName());
             }
         }
     }
