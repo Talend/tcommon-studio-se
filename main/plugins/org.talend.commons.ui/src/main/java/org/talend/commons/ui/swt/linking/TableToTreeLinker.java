@@ -312,6 +312,9 @@ public class TableToTreeLinker<D1, D2> extends BgDrawableComposite implements IB
                 if (Platform.OS_LINUX.equals(Platform.getOS())) {
                     pointEndCentralCurve.y = pointEndCentralCurve.y - tableItem.getBounds().height - treeItemHeight / 2;
                 }
+                if (Platform.OS_MACOSX.equals(Platform.getOS())) {
+                    pointEndCentralCurve.y = pointEndCentralCurve.y - tableItem.getBounds().height;
+                }
                 drawableLink.setPoint1(pointEndStraight);
                 drawableLink.setPoint2(pointEndCentralCurve);
 
