@@ -50,8 +50,7 @@ public class PluginOptionalMissingJarsExtraUpdatesFactory extends AbstractExtraU
     @Override
     public void retrieveUninstalledExtraFeatures(IProgressMonitor monitor, Set<ExtraFeature> uninstalledExtraFeatures)
             throws Exception {
-        String url = ProxyUrlUtils.getNexusUrl();
-        if (!NetworkUtil.isNetworkValid(url)) {
+        if (!NetworkUtil.isNetworkValid(ProxyUrlUtils.getNexusUrl())) {
     		return;
     	}
     	

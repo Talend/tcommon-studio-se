@@ -148,8 +148,7 @@ public class ExternalModulesInstallDialog extends TitleAreaDialog implements IMo
     }
 
     private void checkNetworkStatus() {
-        String url = ProxyUrlUtils.getNexusUrl();
-        boolean networkValid = NetworkUtil.isNetworkValid(url);
+        boolean networkValid = NetworkUtil.isNetworkValid(ProxyUrlUtils.getNexusUrl());
         if (!networkValid) {
             setErrorMessage(Messages.getString("ExternalModulesInstallDialog.networkUnavailable.msg")); //$NON-NLS-1$
         }
