@@ -91,6 +91,7 @@ import org.talend.librariesmanager.ui.LibManagerUiPlugin;
 import org.talend.librariesmanager.ui.actions.ImportExternalJarAction;
 import org.talend.librariesmanager.ui.i18n.Messages;
 import org.talend.librariesmanager.utils.DownloadModuleRunnableWithLicenseDialog;
+import org.talend.librariesmanager.utils.nexus.ProxyUrlUtils;
 
 /**
  * DOC wchen class global comment. Detailled comment
@@ -147,7 +148,8 @@ public class ExternalModulesInstallDialog extends TitleAreaDialog implements IMo
     }
 
     private void checkNetworkStatus() {
-        boolean networkValid = NetworkUtil.isNetworkValid(System.getProperty("nexus.proxy.url"));
+        String url = ProxyUrlUtils.getNexusUrl();
+        boolean networkValid = NetworkUtil.isNetworkValid(url);
         if (!networkValid) {
             setErrorMessage(Messages.getString("ExternalModulesInstallDialog.networkUnavailable.msg")); //$NON-NLS-1$
         }

@@ -24,6 +24,8 @@ import org.eclipse.jface.operation.IRunnableWithProgress;
 import org.talend.commons.utils.network.NetworkUtil;
 import org.talend.core.model.general.ModuleNeeded;
 import org.talend.core.model.general.ModuleToInstall;
+import org.talend.core.nexus.TalendLibsServerManager;
+import org.talend.core.runtime.projectsetting.ProjectPreferenceManager;
 import org.talend.librariesmanager.model.ModulesNeededProvider;
 import org.talend.librariesmanager.utils.RemoteModulesHelper;
 import org.talend.updates.runtime.i18n.Messages;
@@ -38,6 +40,8 @@ public class PluginOptionalMissingJarsExtraUpdatesFactory extends AbstractExtraU
 
     private static Logger log = Logger.getLogger(PluginOptionalMissingJarsExtraUpdatesFactory.class);
 
+    private static ProjectPreferenceManager prefManager = new ProjectPreferenceManager("org.talend.proxy.nexus", true);
+
     /*
      * (non-Javadoc)
      *
@@ -48,7 +52,8 @@ public class PluginOptionalMissingJarsExtraUpdatesFactory extends AbstractExtraU
     @Override
     public void retrieveUninstalledExtraFeatures(IProgressMonitor monitor, Set<ExtraFeature> uninstalledExtraFeatures)
             throws Exception {
-        if (!NetworkUtil.isNetworkValid(System.getProperty("nexus.proxy.url"))) {
+        String url = getNexusUrl();
+        if (!NetworkUtil.isNetworkValid(url)) {
     		return;
     	}
     	
@@ -95,6 +100,21 @@ public class PluginOptionalMissingJarsExtraUpdatesFactory extends AbstractExtraU
             }
         }// else nothing to install so nothing to install ;)
 
+    }
+
+    public static String getNexusUrl() {
+        String sysPropUrl = System.getProperty("nexus.proxy.url");
+        // the url in system property goes first
+        if (sysPropUrl == null) {
+            String prefProxyUrl = null;
+            boolean enableProxy = prefManager.getBoolean(TalendLibsServerManager.ENABLE_PROXY_SETTING);
+            if (enableProxy) {
+                prefProxyUrl = prefManager.getValue(TalendLibsServerManager.NEXUS_PROXY_URL);
+            }
+            return prefProxyUrl;
+        } else {
+            return sysPropUrl;
+        }
     }
 
 }
