@@ -10,7 +10,7 @@
 // 9 rue Pages 92150 Suresnes, France
 //
 // ============================================================================
-package org.talend.librariesmanager.utils.nexus;
+package org.talend.core.utils;
 
 import org.talend.core.nexus.TalendLibsServerManager;
 import org.talend.core.runtime.projectsetting.ProjectPreferenceManager;

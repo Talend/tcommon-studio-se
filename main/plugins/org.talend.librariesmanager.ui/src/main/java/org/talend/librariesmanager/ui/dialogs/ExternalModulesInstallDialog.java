@@ -86,12 +86,12 @@ import org.talend.core.model.general.ModuleNeeded.ELibraryInstallStatus;
 import org.talend.core.model.general.ModuleStatusProvider;
 import org.talend.core.model.general.ModuleToInstall;
 import org.talend.core.runtime.maven.MavenConstants;
+import org.talend.core.utils.ProxyUrlUtils;
 import org.talend.designer.core.IDesignerCoreService;
 import org.talend.librariesmanager.ui.LibManagerUiPlugin;
 import org.talend.librariesmanager.ui.actions.ImportExternalJarAction;
 import org.talend.librariesmanager.ui.i18n.Messages;
 import org.talend.librariesmanager.utils.DownloadModuleRunnableWithLicenseDialog;
-import org.talend.librariesmanager.utils.nexus.ProxyUrlUtils;
 
 /**
  * DOC wchen class global comment. Detailled comment

@@ -56,10 +56,10 @@ import org.talend.core.nexus.TalendLibsServerManager;
 import org.talend.core.runtime.maven.MavenArtifact;
 import org.talend.core.runtime.maven.MavenConstants;
 import org.talend.core.runtime.maven.MavenUrlHelper;
+import org.talend.core.utils.ProxyUrlUtils;
 import org.talend.librariesmanager.librarydata.LibraryDataService;
 import org.talend.librariesmanager.model.service.DynamicDistibutionLicenseUtil;
 import org.talend.librariesmanager.ui.i18n.Messages;
-import org.talend.librariesmanager.utils.nexus.ProxyUrlUtils;
 
 import us.monoid.json.JSONArray;
 import us.monoid.json.JSONException;
