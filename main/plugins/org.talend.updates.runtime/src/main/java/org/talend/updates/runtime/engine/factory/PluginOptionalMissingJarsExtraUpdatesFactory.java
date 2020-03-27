@@ -24,6 +24,7 @@ import org.eclipse.jface.operation.IRunnableWithProgress;
 import org.talend.commons.utils.network.NetworkUtil;
 import org.talend.core.model.general.ModuleNeeded;
 import org.talend.core.model.general.ModuleToInstall;
+import org.talend.core.nexus.TalendLibsServerManager;
 import org.talend.librariesmanager.model.ModulesNeededProvider;
 import org.talend.librariesmanager.utils.RemoteModulesHelper;
 import org.talend.updates.runtime.i18n.Messages;
@@ -38,6 +39,7 @@ public class PluginOptionalMissingJarsExtraUpdatesFactory extends AbstractExtraU
 
     private static Logger log = Logger.getLogger(PluginOptionalMissingJarsExtraUpdatesFactory.class);
 
+
     /*
      * (non-Javadoc)
      *
@@ -48,7 +50,7 @@ public class PluginOptionalMissingJarsExtraUpdatesFactory extends AbstractExtraU
     @Override
     public void retrieveUninstalledExtraFeatures(IProgressMonitor monitor, Set<ExtraFeature> uninstalledExtraFeatures)
             throws Exception {
-        if (!NetworkUtil.isNetworkValid(System.getProperty("nexus.proxy.url"))) {
+        if (!NetworkUtil.isNetworkValid(TalendLibsServerManager.getInstance().getTalentArtifactServer().getServer())) {
     		return;
     	}
     	
@@ -94,7 +96,5 @@ public class PluginOptionalMissingJarsExtraUpdatesFactory extends AbstractExtraU
                                 .getString("missing.optional.third.parties.libs.feature.description"), false/* mustInstall */)); //$NON-NLS-1$
             }
         }// else nothing to install so nothing to install ;)
-
     }
-
 }
