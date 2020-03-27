@@ -193,7 +193,7 @@ public class InternalNodeComponentHandler extends AbstractComponentHandler {
                 // }
                 else if (elemparameter.getRepositoryValue() != null
                         && elemparameter.getRepositoryValue().toUpperCase().contains("PASSWORD") //$NON-NLS-1$
-                        || elemparameter.getFieldType() == EParameterFieldType.PASSWORD) {
+                        || EParameterFieldType.isPassword(elemparameter.getFieldType())) {
                     name = elemparameter.getDisplayName();
                     value = ParameterValueUtil.getValue4Doc(elemparameter).toString();
                 } else {

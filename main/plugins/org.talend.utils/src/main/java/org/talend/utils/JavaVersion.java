@@ -12,10 +12,15 @@
 // ============================================================================
 package org.talend.utils;
 
+import java.util.logging.Level;
+import java.util.logging.Logger;
+
 /*
  * Created by bhe on Dec 24, 2019
  */
 public class JavaVersion implements Comparable<JavaVersion> {
+
+    private static final Logger LOGGER = Logger.getLogger(JavaVersion.class.getCanonicalName());
 
     private int major, minor, security;
 
@@ -41,7 +46,11 @@ public class JavaVersion implements Comparable<JavaVersion> {
         String[] version = v.split("[\\._]");
         this.major = Integer.parseInt(version[0]);
         if (version.length > 1) {
-            this.minor = Integer.parseInt(version[1]);
+            try {
+                this.minor = Integer.parseInt(version[1]);
+            } catch (Exception e) {
+                LOGGER.log(Level.WARNING, "Minor version parse error of " + v, e);
+            }
         }
         if (version.length > 2) {
             // strip non number part if any
@@ -53,8 +62,11 @@ public class JavaVersion implements Comparable<JavaVersion> {
                     break;
                 }
             }
-
-            this.security = Integer.parseInt(securityNumber);
+            try {
+                this.security = Integer.parseInt(securityNumber);
+            } catch (Exception e) {
+                LOGGER.log(Level.WARNING, "Security version parse error of " + v, e);
+            }
         }
     }
 

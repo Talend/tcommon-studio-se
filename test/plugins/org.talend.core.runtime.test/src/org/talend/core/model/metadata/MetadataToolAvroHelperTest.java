@@ -12,8 +12,11 @@
 // ============================================================================
 package org.talend.core.model.metadata;
 
-import static org.hamcrest.CoreMatchers.*;
-import static org.junit.Assert.*;
+import static org.hamcrest.CoreMatchers.is;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertThat;
+import static org.junit.Assert.assertTrue;
 
 import java.util.ArrayList;
 import java.util.Iterator;
@@ -39,7 +42,6 @@ import org.talend.core.prefs.ITalendCorePrefConstants;
 import org.talend.cwm.helper.TaggedValueHelper;
 import org.talend.daikon.avro.AvroUtils;
 import org.talend.daikon.avro.SchemaConstants;
-import org.talend.repository.model.IProxyRepositoryFactory;
 
 import orgomg.cwm.objectmodel.core.TaggedValue;
 
@@ -192,7 +194,7 @@ public class MetadataToolAvroHelperTest {
         assertEquals(map.size() + 1, table.getColumns().size());
         int i = 0;
         for (String talendType : map.keySet()) {
-            assertThat(table.getColumns().get(i).getLabel(), is(talendType.replace('[', '_').replace(']', '_')));
+            assertThat(table.getColumns().get(i).getLabel(), is(talendType.replace("[", "").replace("]", "")));
             assertThat(table.getColumns().get(i).getTalendType(), is(talendType));
             assertThat(table.getColumns().get(i).getPattern(), is("")); //$NON-NLS-1$
             assertThat(table.getColumns().get(i).getLength(), is(-1L));

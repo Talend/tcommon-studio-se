@@ -32,6 +32,7 @@ import org.eclipse.core.resources.IProject;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IPath;
 import org.eclipse.core.runtime.Path;
+import org.talend.commons.exception.ExceptionHandler;
 import org.talend.commons.exception.PersistenceException;
 import org.talend.commons.utils.workbench.resources.ResourceUtils;
 import org.talend.core.model.properties.ImplicitContextSettings;
@@ -140,9 +141,10 @@ public class ProjectDataJsonProvider {
             ProjectDataJsonProvider.loadProjectSettings(project, input);
         }
         IPath relationShipPath = settingFolderPath.append(FileConstants.RELATIONSHIP_FILE_NAME);
-        input = inputStreamProvider.getStream(relationShipPath);
-        if (input != null) {
-            ProjectDataJsonProvider.loadRelationShips(project, input);
+        try (InputStream is = inputStreamProvider.getStream(relationShipPath)) {
+            if (is != null) {
+                ProjectDataJsonProvider.loadRelationShips(project, is);
+            }
         }
         IPath migrationTaskPath = settingFolderPath.append(FileConstants.MIGRATION_TASK_FILE_NAME);
         input = inputStreamProvider.getStream(migrationTaskPath);
@@ -184,10 +186,11 @@ public class ProjectDataJsonProvider {
     private static void loadRelationShips(Project project, IPath projectFolderPath) throws PersistenceException {
         File file = getLoadingConfigurationFile(projectFolderPath, FileConstants.RELATIONSHIP_FILE_NAME);
         if (file != null && file.exists()) {
-            try {
-                loadRelationShips(project, new FileInputStream(file));
-            } catch (FileNotFoundException e) {
-                throw new PersistenceException(e);
+            try (FileInputStream fis = new FileInputStream(file)) {
+                loadRelationShips(project, fis);
+            } catch (Exception e) {
+                // ignore
+                ExceptionHandler.process(e);
             }
         }
     }
@@ -207,9 +210,8 @@ public class ProjectDataJsonProvider {
                 }
             }
         } catch (Exception e) {
-            throw new PersistenceException(e);
-        } finally {
-            closeInputStream(input);
+            // ignore
+            ExceptionHandler.process(e);
         }
     }
 

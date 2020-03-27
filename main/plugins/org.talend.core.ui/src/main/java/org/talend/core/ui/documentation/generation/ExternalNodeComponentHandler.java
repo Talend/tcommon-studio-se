@@ -225,7 +225,7 @@ public class ExternalNodeComponentHandler extends AbstractComponentHandler {
 
                 else if (elemparameter.getRepositoryValue() != null
                         && elemparameter.getRepositoryValue().toUpperCase().contains("PASSWORD") //$NON-NLS-1$
-                        || elemparameter.getFieldType() == EParameterFieldType.PASSWORD) {
+                        || EParameterFieldType.isPassword(elemparameter.getFieldType())) {
                     value = ParameterValueUtil.getValue4Doc(elemparameter).toString();
                 }
                 Element columnElement = parametersElement.addElement("column"); //$NON-NLS-1$

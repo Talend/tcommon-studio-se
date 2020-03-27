@@ -41,6 +41,7 @@ import org.talend.core.nexus.TalendLibsServerManager;
 import org.talend.core.runtime.maven.MavenArtifact;
 import org.talend.core.runtime.maven.MavenUrlHelper;
 import org.talend.librariesmanager.i18n.Messages;
+import org.talend.librariesmanager.model.service.LocalLibraryManager;
 import org.talend.librariesmanager.nexus.utils.VersionUtil;
 
 /**
@@ -121,6 +122,12 @@ public abstract class ShareLibrareisHelper {
                     if (artifact == null) {
                         continue;
                     }
+                    // If from custom component definition file
+                    if (LocalLibraryManager.isSystemCacheFile(file.getName())
+                            || (LocalLibraryManager.isComponentDefinitionFileType(file.getName())
+                                    && isTalendLibraryGroupId(artifact))) {
+                        continue;
+                    }
                     try {
                         Integer.parseInt(artifact.getType());
                         // FIXME unexpected type if it's an integer, should fix it in component module definition.
@@ -142,7 +149,7 @@ public abstract class ShareLibrareisHelper {
                         }
                     }
                     if (artifactList != null && artifactList.size() > 0) {
-                        if (isSameFileWithRemote(file, artifactList, customNexusServer)) {
+                        if (isSameFileWithRemote(file, artifactList, customNexusServer, customerRepHandler, isSnapshotVersion)) {
                             continue;
                         }
                     }
@@ -173,6 +180,13 @@ public abstract class ShareLibrareisHelper {
 
     }
 
+    private boolean isTalendLibraryGroupId(MavenArtifact artifact) {
+        if ("org.talend.libraries".equalsIgnoreCase(artifact.getGroupId())) {
+            return true;
+        }
+        return false;
+    }
+
     public void putArtifactToMap(MavenArtifact artifact, Map<String, List<MavenArtifact>> map, boolean isShapshot) {
         String key = getArtifactKey(artifact, isShapshot);
         List<MavenArtifact> list = map.get(key);
@@ -199,15 +213,30 @@ public abstract class ShareLibrareisHelper {
     }
 
     private boolean isSameFileWithRemote(File localFile, List<MavenArtifact> artifactList,
-            ArtifactRepositoryBean customNexusServer) throws Exception {
+            ArtifactRepositoryBean customNexusServer, IRepositoryArtifactHandler customerRepHandler, boolean isSnapshotVersion)
+            throws Exception {
         String localFileShaCode = DigestUtils.shaHex(new FileInputStream(localFile));
-        MavenArtifact lastUpdatedArtifact = null;
+        String remoteSha1 = null;
         if (ArtifactRepositoryBean.NexusType.ARTIFACTORY.name().equalsIgnoreCase(customNexusServer.getType())) {
-            lastUpdatedArtifact = getLateUpdatedMavenArtifact(artifactList);
+            MavenArtifact lastUpdatedArtifact = getLateUpdatedMavenArtifact(artifactList);
+            if (lastUpdatedArtifact != null) {
+                remoteSha1 = lastUpdatedArtifact.getSha1();
+            }
+        } else if (ArtifactRepositoryBean.NexusType.NEXUS_3.name().equalsIgnoreCase(customNexusServer.getType())) {
+            MavenArtifact lastUpdatedArtifact = artifactList.stream().max(Comparator.comparing(e -> e.getVersion())).get();
+            if (lastUpdatedArtifact != null) {
+                remoteSha1 = lastUpdatedArtifact.getSha1();
+            }
         } else {
-            lastUpdatedArtifact = artifactList.stream().max(Comparator.comparing(e -> e.getVersion())).get();
+            if (!isSnapshotVersion && !Boolean.getBoolean("force_libs_release_update")) {
+                return true;
+            }
+            MavenArtifact lastUpdatedArtifact = artifactList.get(0);
+            if (lastUpdatedArtifact != null) {
+                remoteSha1 = customerRepHandler.resolveRemoteSha1(lastUpdatedArtifact, !isSnapshotVersion);
+            }
         }
-        if (lastUpdatedArtifact != null && StringUtils.equals(localFileShaCode, lastUpdatedArtifact.getSha1())) {
+        if (StringUtils.equals(localFileShaCode, remoteSha1)) {
             return true;
         }
         return false;

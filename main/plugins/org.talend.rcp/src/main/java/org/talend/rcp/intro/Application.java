@@ -104,6 +104,17 @@ public class Application implements IApplication {
         StudioKeysFileCheck.check(ConfigurationScope.INSTANCE.getLocation().toFile());
         
         Display display = PlatformUI.createDisplay();
+
+        try {
+            StudioKeysFileCheck.validateJavaVersion();
+        } catch (Exception e) {
+            Shell shell = new Shell(display, SWT.NONE);
+            MessageDialog.openError(shell, null, // $NON-NLS-1$
+                    Messages.getString("JavaVersion.CheckError", StudioKeysFileCheck.JAVA_VERSION_MINIMAL_STRING,
+                            StudioKeysFileCheck.getJavaVersion()));
+            return IApplication.EXIT_RELAUNCH;
+        }
+
         try {
             // TUP-5816 don't put any code ahead of this part unless you make sure it won't trigger workspace
             // initialization.

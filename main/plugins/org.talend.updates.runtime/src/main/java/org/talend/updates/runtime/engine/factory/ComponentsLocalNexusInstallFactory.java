@@ -78,6 +78,13 @@ public class ComponentsLocalNexusInstallFactory extends ComponentsNexusInstallFa
         if (monitor.isCanceled()) {
             throw new OperationCanceledException();
         }
+
+        if (!syncManager.isRepositoryServerAvailable(monitor, getIndexArtifact())) {
+            if (isTalendDebug) {
+                log.info("Failed to sync component index file: " + getIndexArtifact());
+            }
+            return Collections.EMPTY_SET;
+        }
         File indexFile = null;
         try {
             indexFile = syncManager.downloadIndexFile(monitor, getIndexArtifact());

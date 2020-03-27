@@ -26,6 +26,7 @@ import org.talend.components.api.properties.ComponentProperties;
 import org.talend.core.GlobalServiceRegister;
 import org.talend.core.database.EDatabase4DriverClassName;
 import org.talend.core.database.EDatabaseTypeName;
+import org.talend.core.database.conn.ConnParameterKeys;
 import org.talend.core.database.conn.DatabaseConnStrUtil;
 import org.talend.core.database.conn.version.EDatabaseVersion4Drivers;
 import org.talend.core.model.components.EComponentType;
@@ -665,6 +666,18 @@ public class ComponentToRepositoryProperty {
             String value = getParameterValue(connection, node, param);
             if (value != null) {
                 connection.setServerName(value);
+            }
+        }
+        if ("IMPALA_DRIVER".equals(param.getRepositoryValue())) {
+            String value = getParameterValue(connection, node, param);
+            if (value != null) {
+                connection.getParameters().put(ConnParameterKeys.IMPALA_DRIVER, value);
+            }
+        }
+        if ("IMPALA_ADDITIONAL_JDBC".equals(param.getRepositoryValue())) {
+            String value = getParameterValue(connection, node, param);
+            if (value != null) {
+                connection.getParameters().put(ConnParameterKeys.CONN_PARA_KEY_HIVE_ADDITIONAL_JDBC_SETTINGS, value);
             }
         }
 

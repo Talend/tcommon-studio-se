@@ -449,7 +449,7 @@ public class DatabaseTableForm extends AbstractForm {
 
         // init the fields
         // nameText.setText(MetadataToolHelper.validateValue(metadataTable.getLabel()));
-        nameText.setText(MetadataToolHelper.validateTableName(metadataTable.getLabel()));
+        nameText.setText(metadataTable.getLabel());
         commentText.setText(metadataTable.getComment());
         if (metadataTable.getTableType() != null) {
             typeText.setText(Messages.getString("DatabaseTableForm.type", metadataTable.getTableType())); //$NON-NLS-1$
@@ -1069,9 +1069,6 @@ public class DatabaseTableForm extends AbstractForm {
                  */
             } else if (existNames.contains(table.getLabel())) {
                 updateStatus(IStatus.ERROR, Messages.getString("CommonWizard.nameAlreadyExist") + " \"" + table.getLabel() + "\""); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
-                return false;
-            } else if (!MetadataToolHelper.isValidSchemaName(table.getLabel())) {
-                updateStatus(IStatus.ERROR, Messages.getString("DatabaseTableForm.illegalChar", table.getLabel())); //$NON-NLS-1$
                 return false;
             }
 

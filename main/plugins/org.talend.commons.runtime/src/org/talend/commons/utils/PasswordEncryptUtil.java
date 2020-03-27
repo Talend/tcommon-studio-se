@@ -36,7 +36,8 @@ public class PasswordEncryptUtil {
 
     private static SecretKey getSecretKey() throws Exception {
         if (key == null) {
-            byte rawKeyData[] = StudioEncryption.getKeySource(StudioEncryption.EncryptionKeyName.MIGRATION.toString(), false)
+            byte rawKeyData[] = StudioEncryption
+                    .getKeySource(StudioEncryption.EncryptionKeyName.MIGRATION.toString(), false)
                     .getKey();
             DESKeySpec dks = new DESKeySpec(rawKeyData);
             SecretKeyFactory keyFactory = SecretKeyFactory.getInstance("DES"); //$NON-NLS-1$
@@ -106,7 +107,8 @@ public class PasswordEncryptUtil {
      * @return
      */
     public static boolean isPasswordType(String type) {
-        return "Password".equals(type) || "id_Password".equals(type); //$NON-NLS-1$   //$NON-NLS-2$
+        return "Password".equals(type) || "id_Password".equals(type) || "LicenseKey".equals(type) //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+                || "id_LicenseKey".equals(type); //$NON-NLS-1$
     }
 
     /**
@@ -119,7 +121,7 @@ public class PasswordEncryptUtil {
      * @return
      */
     public static boolean isPasswordField(String field) {
-        return "PASSWORD".equals(field); //$NON-NLS-1$
+        return "PASSWORD".equals(field) || "LICENSEKEY".equals(field); //$NON-NLS-1$ //$NON-NLS-2$
     }
 
     /**

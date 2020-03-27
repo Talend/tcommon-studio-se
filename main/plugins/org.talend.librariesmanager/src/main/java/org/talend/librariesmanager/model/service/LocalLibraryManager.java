@@ -61,10 +61,10 @@ import org.talend.core.model.components.ComponentProviderInfo;
 import org.talend.core.model.components.IComponent;
 import org.talend.core.model.components.IComponentsService;
 import org.talend.core.model.general.ILibrariesService;
-import org.talend.core.model.general.ModuleNeeded;
-import org.talend.core.model.general.ModuleStatusProvider;
 import org.talend.core.model.general.ILibrariesService.IChangedLibrariesListener;
+import org.talend.core.model.general.ModuleNeeded;
 import org.talend.core.model.general.ModuleNeeded.ELibraryInstallStatus;
+import org.talend.core.model.general.ModuleStatusProvider;
 import org.talend.core.model.repository.ERepositoryObjectType;
 import org.talend.core.nexus.ArtifactRepositoryBean;
 import org.talend.core.nexus.IRepositoryArtifactHandler;
@@ -114,6 +114,18 @@ public class LocalLibraryManager implements ILibraryManagerService, IChangedLibr
     private MavenArtifactsHandler deployer;
 
     private static final String DYNAMIC_DISTRIBUTION_HOST_URL = NexusConstants.DYNAMIC_DISTRIBUTION.substring(8);
+
+    private static final List<String> COMPONENT_DEFINITION_FILE_TYPE_LIST = new ArrayList<String>() {
+
+        {
+            add(".javajet");
+            add(".png");
+            add(".jpg");
+            add("_java.xml");
+            add(".properties");
+            add(".txt");
+        }
+    };
 
     /**
      * DOC nrousseau LocalLibraryManager constructor comment.
@@ -315,15 +327,15 @@ public class LocalLibraryManager implements ILibraryManagerService, IChangedLibr
         return retrieve(testModule, pathToStore, popUp, refresh);
     }
 
-	@Override
-	public boolean retrieve(String jarNeeded, String mavenUri, String pathToStore, IProgressMonitor... monitorWrap) {
-		ModuleNeeded testModule = new ModuleNeeded("", jarNeeded, "", true);
-		if(mavenUri != null) {
-			testModule.setMavenUri(mavenUri);
-		}
+    @Override
+    public boolean retrieve(String jarNeeded, String mavenUri, String pathToStore, IProgressMonitor... monitorWrap) {
+        ModuleNeeded testModule = new ModuleNeeded("", jarNeeded, "", true);
+        if (mavenUri != null) {
+            testModule.setMavenUri(mavenUri);
+        }
         boolean refresh = true;
         return retrieve(testModule, pathToStore, true, refresh);
-	}
+    }
 
 
     private boolean retrieve(ModuleNeeded module, String pathToStore, boolean showDialog, boolean refresh) {
@@ -401,6 +413,24 @@ public class LocalLibraryManager implements ILibraryManagerService, IChangedLibr
             CommonExceptionHandler.process(e);
         } catch (IOException e) {
             CommonExceptionHandler.process(new Exception("Can not copy: " + sourcePath + " to :" + pathToStore, e));
+        }
+        return false;
+    }
+
+    public static boolean isComponentDefinitionFileType(String fileName) {
+        if (fileName != null) {
+            for (String type : COMPONENT_DEFINITION_FILE_TYPE_LIST) {
+                if (fileName.toLowerCase().endsWith(type)) {
+                    return true;
+                }
+            }
+        }
+        return false;
+    }
+
+    public static boolean isSystemCacheFile(String fileName) {
+        if ("Thumbs.db".equals(fileName)) {
+            return true;
         }
         return false;
     }
@@ -1318,7 +1348,8 @@ public class LocalLibraryManager implements ILibraryManagerService, IChangedLibr
                         if (jarFiles.size() > 0) {
                             for (File jarFile : jarFiles) {
                                 String name = jarFile.getName();
-                                if (platformURLMap.get(name) != null) {
+                                if (!canDeployFromCustomComponentFolder(name)
+                                        || platformURLMap.get(name) != null) {
                                     continue;
                                 }
                                 needToDeploy.add(jarFile);
@@ -1373,6 +1404,14 @@ public class LocalLibraryManager implements ILibraryManagerService, IChangedLibr
 
         }
     }
+
+    private boolean canDeployFromCustomComponentFolder(String fileName) {
+        if (isSystemCacheFile(fileName) || isComponentDefinitionFileType(fileName)) {
+            return false;
+        }
+        return true;
+    }
+
     private void warnDuplicated(List<ModuleNeeded> modules, Set<String> duplicates, String type) {
         for (String lib : duplicates) {
             Set<String> components = new HashSet<>();

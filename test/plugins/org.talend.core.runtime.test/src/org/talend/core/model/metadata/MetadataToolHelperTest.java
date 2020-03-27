@@ -12,7 +12,10 @@
 // ============================================================================
 package org.talend.core.model.metadata;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertNull;
+import static org.junit.Assert.assertTrue;
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -48,8 +51,8 @@ import org.talend.cwm.helper.ConnectionHelper;
 import org.talend.cwm.helper.PackageHelper;
 import org.talend.cwm.helper.SAPBWTableHelper;
 import org.talend.cwm.helper.TaggedValueHelper;
-import org.talend.designer.core.model.utils.emf.talendfile.TalendFileFactory;
 import org.talend.repository.model.IProxyRepositoryFactory;
+
 import orgomg.cwm.objectmodel.core.TaggedValue;
 import orgomg.cwm.resource.record.RecordFactory;
 import orgomg.cwm.resource.record.RecordFile;
@@ -266,13 +269,22 @@ public class MetadataToolHelperTest {
         assertEquals(columnName, "probleme");
 
         columnName = MetadataToolHelper.validateColumnName("test(a)", 0);
-        assertEquals(columnName, "test_a_");
+        assertEquals(columnName, "test_a");
 
         columnName = MetadataToolHelper.validateColumnName("MyColumn_你好", 0);
-        assertEquals("MyColumn___", columnName);
+        assertEquals("MyColumn", columnName);
 
         columnName = MetadataToolHelper.validateColumnName("你好", 0);
         assertEquals("Column0", columnName);
+
+        columnName = MetadataToolHelper.validateColumnName("____Tax__ID_____", 0);
+        assertEquals("_Tax__ID", columnName);
+
+        columnName = MetadataToolHelper.validateColumnName("________", 0);
+        assertEquals("Column0", columnName);
+
+        columnName = MetadataToolHelper.validateColumnName("_test_______________________t", 0);
+        assertEquals("_test_______________________t", columnName);
 
         preferences.putBoolean(IRepositoryPrefConstants.ALLOW_SPECIFIC_CHARACTERS_FOR_SCHEMA_COLUMNS, true);
 
@@ -280,7 +292,7 @@ public class MetadataToolHelperTest {
         assertEquals("你好", columnName);
 
         columnName = MetadataToolHelper.validateColumnName("My Strange (?) Column !", 0);
-        assertEquals("My_Strange_____Column__", columnName);
+        assertEquals("My_Strange_____Column", columnName);
     }
 
     /**

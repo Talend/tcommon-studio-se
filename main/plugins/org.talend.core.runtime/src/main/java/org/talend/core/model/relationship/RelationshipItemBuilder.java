@@ -931,18 +931,26 @@ public class RelationshipItemBuilder {
 
     private void buildIndex(Map<Relation, Set<Relation>> itemRelations, Project project, IProgressMonitor monitor) {
         modified = true;
-
         if (!project.getEmfProject().getItemsRelations().isEmpty()) {
             loadRelations(itemRelations, project);
             if (loaded) { // check if already loaded successfully
                 return;
             }
         }
+        generateIndex(project, getTypes(), true, monitor);
+        if (modified) {
+            autoSaveRelations();
+        }
+        monitor.done();
+        loaded = true;
+    }
 
+    private void generateIndex(Project project, List<ERepositoryObjectType> supportedTypes, boolean fromMigration,
+            IProgressMonitor monitor) {
         IProxyRepositoryFactory factory = getProxyRepositoryFactory();
         List<IRepositoryViewObject> list = new ArrayList<IRepositoryViewObject>();
         try {
-            for (ERepositoryObjectType curTyp : getTypes()) {
+            for (ERepositoryObjectType curTyp : supportedTypes) {
                 if (curTyp != null) {
                     list.addAll(factory.getAll(project, curTyp, true, true));
                 }
@@ -956,19 +964,42 @@ public class RelationshipItemBuilder {
             for (IRepositoryViewObject object : list) {
                 Item item = object.getProperty().getItem();
                 monitor.subTask(Messages.getString("RelationshipItemBuilder.forItem") + item.getProperty().getLabel()); //$NON-NLS-1$
-                addOrUpdateItem(item, true);
+                findRelationItems(item, fromMigration);
                 monitor.worked(1);
                 if (monitor.isCanceled()) {
                     return;
                 }
             }
-            autoSaveRelations();
-            monitor.done();
-            loaded = true;
-
         } catch (PersistenceException e) {
             ExceptionHandler.process(e);
         }
+    }
+
+    public void buildAndSaveIndex() {
+        log.info("relationship.index generating");
+        currentProjectItemsRelations = new ConcurrentHashMap<Relation, Set<Relation>>();
+        referencesItemsRelations = new ConcurrentHashMap<Relation, Set<Relation>>();
+        generateIndex(this.aimProject, allSupportedTypes(), false, new NullProgressMonitor());
+        try {
+            // sync to project
+            synchronizeItemRelationToProject(this.aimProject);
+            // persist index
+            getProxyRepositoryFactory().saveProject(this.aimProject);
+            log.info("relationship.index generated");
+        } catch (PersistenceException e) {
+            log.error("relationship.index generating error", e);
+            ExceptionHandler.process(e);
+        }
+    }
+
+    private List<ERepositoryObjectType> allSupportedTypes() {
+        List<ERepositoryObjectType> toReturn = new ArrayList<ERepositoryObjectType>();
+        toReturn.addAll(ERepositoryObjectType.getAllTypesOfProcess());
+        toReturn.addAll(ERepositoryObjectType.getAllTypesOfProcess2());
+        toReturn.addAll(ERepositoryObjectType.getAllTypesOfTestContainer());
+        toReturn.addAll(ERepositoryObjectType.getAllTypesOfCodes());
+        toReturn.addAll(ERepositoryObjectType.getAllTypesOfJoblet());
+        return toReturn;
     }
 
     private List<ERepositoryObjectType> getTypes() {
@@ -1092,14 +1123,24 @@ public class RelationshipItemBuilder {
     }
 
     public void addOrUpdateItem(Item item, boolean fromMigration) {
-        if (!supportRelation(item)) {
-            return;
-        }
         if (!loaded) {
             loadRelations();
         }
+        boolean relationsModified = findRelationItems(item, fromMigration);
+        if (relationsModified && !modified) {
+            modified = true;
+        }
+        if (!fromMigration && modified) {
+            autoSaveRelations();
+        }
+    }
+
+    private boolean findRelationItems(Item item, boolean fromMigration) {
+        if (!supportRelation(item)) {
+            return false;
+        }
         if (item == null) {
-            return;
+            return false;
         }
 
         boolean relationsModified = true;
@@ -1143,12 +1184,7 @@ public class RelationshipItemBuilder {
                 currentProjectItemsRelations.get(relation).addAll(oldProjectRelations);
             }
         }
-        if (relationsModified && !modified) {
-            modified = true;
-        }
-        if (!fromMigration && modified) {
-            autoSaveRelations();
-        }
+        return relationsModified;
     }
 
     public Set<Relation> getItemRelations(Item item) {

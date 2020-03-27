@@ -70,6 +70,7 @@ import org.talend.commons.runtime.service.ITaCoKitService;
 import org.talend.commons.ui.gmf.util.DisplayUtils;
 import org.talend.commons.ui.runtime.exception.MessageBoxExceptionHandler;
 import org.talend.commons.utils.data.container.RootContainer;
+import org.talend.commons.utils.network.TalendProxySelector;
 import org.talend.commons.utils.time.TimeMeasure;
 import org.talend.commons.utils.workbench.resources.ResourceUtils;
 import org.talend.core.AbstractDQModelService;
@@ -107,6 +108,7 @@ import org.talend.core.model.properties.SpagoBiServer;
 import org.talend.core.model.properties.Status;
 import org.talend.core.model.properties.User;
 import org.talend.core.model.properties.impl.FolderItemImpl;
+import org.talend.core.model.relationship.RelationshipItemBuilder;
 import org.talend.core.model.repository.ERepositoryObjectType;
 import org.talend.core.model.repository.Folder;
 import org.talend.core.model.repository.IRepositoryContentHandler;
@@ -2034,6 +2036,11 @@ public final class ProxyRepositoryFactory implements IProxyRepositoryFactory {
 
             TimeMeasure.begin("logOnProject"); //$NON-NLS-1$
             try {
+                /**
+                 * init/check proxy selector, in case default proxy selector is not registed yet
+                 */
+                TalendProxySelector.checkProxy();
+
                 System.getProperties().put("ReadOnlyUser", Boolean.FALSE.toString()); //$NON-NLS-1$
 
                 // remove the auto-build to enhance the build speed and application's use
@@ -2053,6 +2060,7 @@ public final class ProxyRepositoryFactory implements IProxyRepositoryFactory {
                 SubMonitor subMonitor = SubMonitor.convert(monitor, MAX_TASKS);
                 SubMonitor currentMonitor = subMonitor.newChild(1, SubMonitor.SUPPRESS_NONE);
                 currentMonitor.beginTask(Messages.getString("ProxyRepositoryFactory.logonInProgress"), 1); //$NON-NLS-1$
+
                 project.setReferenceProjectProvider(null);
                 getRepositoryContext().setProject(null);
                 initEmfProjectContent();
@@ -2230,6 +2238,11 @@ public final class ProxyRepositoryFactory implements IProxyRepositoryFactory {
                         tdqRepositoryService.initProxyRepository();
                     }
                 }
+                // regenerate relationship index
+                if (project.getEmfProject().getItemsRelations().isEmpty()) {
+                    RelationshipItemBuilder.getInstance().buildAndSaveIndex();
+                }
+
                 fullLogonFinished = true;
                 this.repositoryFactoryFromProvider.afterLogon(monitor);
             } finally {
@@ -2409,7 +2422,12 @@ public final class ProxyRepositoryFactory implements IProxyRepositoryFactory {
     @Override
     @SuppressWarnings("unchecked")
     public void executeRepositoryWorkUnit(RepositoryWorkUnit workUnit) {
+        checkProxySettings();
         this.repositoryFactoryFromProvider.executeRepositoryWorkUnit(workUnit);
+    }
+
+    private void checkProxySettings() {
+        TalendProxySelector.checkProxy();
     }
 
     @Override

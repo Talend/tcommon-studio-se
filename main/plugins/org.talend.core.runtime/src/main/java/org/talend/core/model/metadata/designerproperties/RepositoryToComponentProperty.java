@@ -1708,9 +1708,18 @@ public class RepositoryToComponentProperty {
             EDatabaseTypeName typeFromDbType = EDatabaseTypeName.getTypeFromDbType(repositoryType);
             return typeFromDbType.getXMLType();
         }
-
+        if ("IMPALA_ADDITIONAL_JDBC".equals(value)) { //$NON-NLS-1$
+            String additionJdbc = connection.getParameters().get(ConnParameterKeys.CONN_PARA_KEY_HIVE_ADDITIONAL_JDBC_SETTINGS);
+            if (isContextMode(connection, additionJdbc)) {
+                return additionJdbc;
+            } else {
+                return TalendQuoteUtils.addQuotes(additionJdbc);
+            }
+        }
+        if ("IMPALA_DRIVER".equals(value)) {
+            return connection.getParameters().get(ConnParameterKeys.IMPALA_DRIVER);
+        }
         return null;
-
     }
 
     private static String getAppropriateValue(Connection connection, String rawValue) {

@@ -90,6 +90,9 @@ public class ComponentSyncManager {
     }
 
     public boolean isRepositoryServerAvailable(IProgressMonitor progress, MavenArtifact artifact) throws Exception {
+        if (getServerBean() == null) {
+            return false;
+        }
         IRepositoryArtifactHandler artifactHandler = null;
         boolean isSnapshot = isSnapshot(artifact);
         if (isSnapshot) {
