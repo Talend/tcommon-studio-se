@@ -56,7 +56,6 @@ import org.talend.core.nexus.TalendLibsServerManager;
 import org.talend.core.runtime.maven.MavenArtifact;
 import org.talend.core.runtime.maven.MavenConstants;
 import org.talend.core.runtime.maven.MavenUrlHelper;
-import org.talend.core.utils.ProxyUrlUtils;
 import org.talend.librariesmanager.librarydata.LibraryDataService;
 import org.talend.librariesmanager.model.service.DynamicDistibutionLicenseUtil;
 import org.talend.librariesmanager.ui.i18n.Messages;
@@ -149,7 +148,8 @@ public class RemoteModulesHelper {
 
             Set<String> unavailableModules = new HashSet<String>();
             // if the network is not valid, all jars are not available.
-            boolean networkValid = NetworkUtil.isNetworkValid(ProxyUrlUtils.getNexusUrl());
+            boolean networkValid = NetworkUtil
+                    .isNetworkValid(TalendLibsServerManager.getInstance().getTalentArtifactServer().getServer());
             if (!networkValid) {
                 if (!alreadyWarnedAboutConnectionIssue) {
                     log.warn("failed to connect to internet");
