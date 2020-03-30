@@ -13,14 +13,15 @@
 package org.talend.repository.items.importexport.handlers.exports;
 
 import java.io.File;
-import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 import org.eclipse.core.resources.IFolder;
 import org.eclipse.core.resources.IResource;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.talend.commons.runtime.utils.io.FileCopyUtils;
 import org.talend.core.GlobalServiceRegister;
+import org.talend.core.model.process.JobInfo;
 import org.talend.core.model.properties.ProcessItem;
 import org.talend.core.runtime.process.ITalendProcessJavaProject;
 import org.talend.core.runtime.repository.build.IBuildResourcesProvider;
@@ -41,6 +42,7 @@ public class SyncChildrenContextsResourcesProvider implements IBuildResourcesPro
      * org.talend.core.runtime.repository.build.IBuildResourcesProvider#prepare(org.eclipse.core.runtime.IProgressMonitor
      * , java.util.Map)
      */
+    @SuppressWarnings("unchecked")
     @Override
     public void prepare(IProgressMonitor monitor, Map<String, Object> parameters) throws Exception {
         if (parameters == null) {
@@ -55,7 +57,8 @@ public class SyncChildrenContextsResourcesProvider implements IBuildResourcesPro
         if (processItem == null) {
             return;
         }
-        final List dependenciesItems = (List) ParametersUtil.getObject(parameters, OBJ_ITEM_DEPENDENCIES, List.class);
+        final Set<JobInfo> dependenciesItems = (Set<JobInfo>) ParametersUtil.getObject(parameters, OBJ_ITEM_DEPENDENCIES,
+                Set.class);
         if (dependenciesItems == null || dependenciesItems.isEmpty()) {
             return;
         }
@@ -67,19 +70,15 @@ public class SyncChildrenContextsResourcesProvider implements IBuildResourcesPro
 
         final IFolder mainResourcesFolder = processJavaProject.getExternalResourcesFolder();
         final File targetFolder = mainResourcesFolder.getLocation().toFile();
-
-        for (Object item : dependenciesItems) {
-            if (item instanceof ProcessItem) {
-                ITalendProcessJavaProject childJavaProject = runProcessService.getTalendJobJavaProject(((ProcessItem) item)
-                        .getProperty());
-                if (childJavaProject != null) {
-                    final IFolder childResourcesFolder = childJavaProject.getExternalResourcesFolder();
-                    if (childResourcesFolder.exists()) {
-                        FileCopyUtils.syncFolder(childResourcesFolder.getLocation().toFile(), targetFolder, false);
-                    }
+        dependenciesItems.stream().filter(jobInfo -> !jobInfo.isJoblet()).map(JobInfo::getProcessItem).forEach(item -> {
+            ITalendProcessJavaProject childJavaProject = runProcessService.getTalendJobJavaProject(item.getProperty());
+            if (childJavaProject != null) {
+                final IFolder childResourcesFolder = childJavaProject.getExternalResourcesFolder();
+                if (childResourcesFolder.exists()) {
+                    FileCopyUtils.syncFolder(childResourcesFolder.getLocation().toFile(), targetFolder, false);
                 }
             }
-        }
+        });
 
         mainResourcesFolder.refreshLocal(IResource.DEPTH_INFINITE, monitor);
     }
