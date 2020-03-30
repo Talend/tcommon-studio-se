@@ -165,7 +165,6 @@ public class ProjectRepositoryNode extends RepositoryNode implements IProjectRep
         nodeCache = new ProjectRepositoryNodeCache();
         // for referenced project
         this.project = project;
-        setRoot(this);
     }
 
     public ProjectRepositoryNode(ProjectRepositoryNode projectNode) {
