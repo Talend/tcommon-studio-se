@@ -2309,4 +2309,11 @@ public class ProjectRepositoryNode extends RepositoryNode implements IProjectRep
         this.options = options;
     }
 
+    public IProjectRepositoryNode getRoot() {
+        if (super.getRoot() == null) {
+            return this;
+        }
+        return null;
+    }
+
 }
