@@ -216,6 +216,9 @@ public class RepositoryNode implements IRepositoryNode, IActionFilter {
      * @param parent the parent to set
      */
     public void setParent(RepositoryNode parent) {
+        if (this == parent || this.equals(parent)) {
+            return;
+        }
         this.parent = parent;
     }
 
