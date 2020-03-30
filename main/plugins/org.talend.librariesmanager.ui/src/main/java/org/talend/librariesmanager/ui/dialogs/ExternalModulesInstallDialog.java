@@ -85,6 +85,7 @@ import org.talend.core.model.general.ILibrariesService;
 import org.talend.core.model.general.ModuleNeeded.ELibraryInstallStatus;
 import org.talend.core.model.general.ModuleStatusProvider;
 import org.talend.core.model.general.ModuleToInstall;
+import org.talend.core.nexus.TalendLibsServerManager;
 import org.talend.core.runtime.maven.MavenConstants;
 import org.talend.designer.core.IDesignerCoreService;
 import org.talend.librariesmanager.ui.LibManagerUiPlugin;
@@ -147,7 +148,8 @@ public class ExternalModulesInstallDialog extends TitleAreaDialog implements IMo
     }
 
     private void checkNetworkStatus() {
-        boolean networkValid = NetworkUtil.isNetworkValid(System.getProperty("nexus.proxy.url"));
+        boolean networkValid = NetworkUtil
+                .isNetworkValid(TalendLibsServerManager.getInstance().getTalentArtifactServer().getServer());
         if (!networkValid) {
             setErrorMessage(Messages.getString("ExternalModulesInstallDialog.networkUnavailable.msg")); //$NON-NLS-1$
         }

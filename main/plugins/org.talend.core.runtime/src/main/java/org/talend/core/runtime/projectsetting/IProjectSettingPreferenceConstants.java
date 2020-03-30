@@ -76,5 +76,7 @@ public interface IProjectSettingPreferenceConstants {
      * docker profile
      */
     public static final String TEMPLATE_DOCKER_PROFILE_POM = "template_docker_profile_pom_script"; //$NON-NLS-1$
+    
+    public static final String USE_STRICT_REFERENCE_JOBLET = "use_strict_reference_joblet"; //$NON-NLS-1$
 
 }
