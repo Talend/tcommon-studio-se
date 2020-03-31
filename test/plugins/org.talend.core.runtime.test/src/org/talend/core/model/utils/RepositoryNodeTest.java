@@ -17,6 +17,8 @@ import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNull;
 
+import java.lang.reflect.Field;
+
 import org.junit.Test;
 import org.talend.core.model.repository.ERepositoryObjectType;
 import org.talend.core.repository.model.ProjectRepositoryNode;
@@ -63,12 +65,43 @@ public class RepositoryNodeTest {
 
         assertNotNull(prn);
 
+        assertNotNull(prn.getRoot());
+
+        assertEquals(prn, prn.getRoot());
+
+        assertRootField(null, prn);
+
+        ProjectRepositoryNode newPrj = new ProjectRepositoryNode(null, null, ENodeType.STABLE_SYSTEM_FOLDER);
+
+        prn.setRoot(newPrj);
+
         assertNull(prn.getRoot());
 
-        prn.setRoot(prn);
+        assertEquals(newPrj, prn.getRoot());
 
-        assertNull(prn.getRoot());
+        assertRootField(newPrj, prn);
 
+        RepositoryNode node1 = new RepositoryNode(null, null, ENodeType.STABLE_SYSTEM_FOLDER);
+        node1.setProperties(EProperties.LABEL, "system");
+        node1.setProperties(EProperties.CONTENT_TYPE, ERepositoryObjectType.PROCESS);
+        node1.setType(ENodeType.STABLE_SYSTEM_FOLDER);
+
+        assertNull(node1.getRoot());
+
+        node1.setRoot(newPrj);
+
+        assertNotNull(node1.getRoot());
+
+        assertRootField(newPrj, node1);
+
+    }
+
+    private static void assertRootField(Object expectedRoot, RepositoryNode node) throws Exception {
+        Field f = RepositoryNode.class.getDeclaredField("root");
+        f.setAccessible(true);
+        Object root = f.get(node);
+
+        assertEquals(expectedRoot, root);
     }
 
     @Test
