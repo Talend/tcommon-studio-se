@@ -71,16 +71,6 @@ public class RepositoryNodeTest {
 
         assertRootField(null, prn);
 
-        ProjectRepositoryNode newPrj = new ProjectRepositoryNode(null, null, ENodeType.STABLE_SYSTEM_FOLDER);
-
-        prn.setRoot(newPrj);
-
-        assertNull(prn.getRoot());
-
-        assertEquals(newPrj, prn.getRoot());
-
-        assertRootField(newPrj, prn);
-
         RepositoryNode node1 = new RepositoryNode(null, null, ENodeType.STABLE_SYSTEM_FOLDER);
         node1.setProperties(EProperties.LABEL, "system");
         node1.setProperties(EProperties.CONTENT_TYPE, ERepositoryObjectType.PROCESS);
@@ -88,17 +78,24 @@ public class RepositoryNodeTest {
 
         assertNull(node1.getRoot());
 
-        node1.setRoot(newPrj);
+        node1.setRoot(prn);
 
         assertNotNull(node1.getRoot());
 
-        assertRootField(newPrj, node1);
+        assertRootField(prn, node1);
 
     }
 
     private static void assertRootField(Object expectedRoot, RepositoryNode node) throws Exception {
-        Field f = RepositoryNode.class.getDeclaredField("root");
+        Field f = null;
+        if (node instanceof ProjectRepositoryNode) {
+            f = node.getClass().getSuperclass().getDeclaredField("root");
+        } else {
+            f = node.getClass().getDeclaredField("root");
+        }
+
         f.setAccessible(true);
+
         Object root = f.get(node);
 
         assertEquals(expectedRoot, root);
