@@ -7060,6 +7060,7 @@ public class DatabaseForm extends AbstractForm {
         if (isImpalaDBConnSelected()) {
             adaptImpalaHadoopPartEditable();
             updateHadoopProperties(!isContextMode());
+            additionalJDBCSettingsText.setEditable(!isContextMode());
         }
         if (isOracleCustomDBConnSelected()) {
             adaptOracleCustomPartEditable();
