@@ -444,6 +444,7 @@ public class RepoViewCommonViewer extends CommonViewer implements INavigatorCont
         super.dispose();
     }
 
+    @Override
     public void associate(Object element, Item item) {
         Object data = item.getData();
         if (data != element) {
