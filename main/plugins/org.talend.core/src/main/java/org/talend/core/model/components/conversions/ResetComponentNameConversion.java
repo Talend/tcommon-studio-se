@@ -16,13 +16,13 @@ import org.talend.core.model.components.ComponentUtilities;
 import org.talend.designer.core.model.utils.emf.talendfile.NodeType;
 import org.talend.designer.core.model.utils.emf.talendfile.ProcessType;
 
-public class RenameETLJDBCComponentConversion extends RenameComponentConversion{
+public class ResetComponentNameConversion extends RenameComponentConversion{
 
     private String newName;
     
     private String oldName;
 
-    public RenameETLJDBCComponentConversion(String newName, String oldName) {
+    public ResetComponentNameConversion(String newName, String oldName) {
         super(newName);
         this.newName = newName;
         this.oldName = oldName;
