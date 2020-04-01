@@ -92,9 +92,7 @@ public class RepositoryNode implements IRepositoryNode, IActionFilter {
         super();
         this.id = (object == null ? NO_ID : object.getId());
         this.object = object;
-        if (this != parent && !this.equals(parent)) {
-            this.parent = parent;
-        }
+        this.parent = parent;
         this.type = type;
 
         setRoot((parent == null ? null : parent.getRoot()));
@@ -216,9 +214,6 @@ public class RepositoryNode implements IRepositoryNode, IActionFilter {
      * @param parent the parent to set
      */
     public void setParent(RepositoryNode parent) {
-        if (this == parent || this.equals(parent)) {
-            return;
-        }
         this.parent = parent;
     }
 
@@ -459,10 +454,6 @@ public class RepositoryNode implements IRepositoryNode, IActionFilter {
      * @param root the root to set
      */
     public void setRoot(IProjectRepositoryNode root) {
-        // never set itself as root
-        if (this == root || this.equals(root)) {
-            return;
-        }
         this.root = root;
     }
 

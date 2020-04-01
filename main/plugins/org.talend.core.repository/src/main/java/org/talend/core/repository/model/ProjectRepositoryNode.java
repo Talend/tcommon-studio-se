@@ -165,6 +165,7 @@ public class ProjectRepositoryNode extends RepositoryNode implements IProjectRep
         nodeCache = new ProjectRepositoryNodeCache();
         // for referenced project
         this.project = project;
+        setRoot(this);
     }
 
     public ProjectRepositoryNode(ProjectRepositoryNode projectNode) {
@@ -2307,13 +2308,6 @@ public class ProjectRepositoryNode extends RepositoryNode implements IProjectRep
 
     public void setOptions(int options) {
         this.options = options;
-    }
-
-    public IProjectRepositoryNode getRoot() {
-        if (super.getRoot() == null) {
-            return this;
-        }
-        return null;
     }
 
 }
