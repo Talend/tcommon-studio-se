@@ -444,4 +444,21 @@ public class RepoViewCommonViewer extends CommonViewer implements INavigatorCont
         super.dispose();
     }
 
+    @Override
+    public void associate(Object element, Item item) {
+        Object data = item.getData();
+        if (data != element) {
+            if (data != null) {
+                disassociate(item);
+            }
+            item.setData(element);
+            mapElement(element, item);
+        } else {
+            // Always map the element, even if data == element,
+            // since unmapAllElements() can leave the map inconsistent
+            // See bug 2741 for details.
+            mapElement(element, item);
+        }
+    }
+
 }
