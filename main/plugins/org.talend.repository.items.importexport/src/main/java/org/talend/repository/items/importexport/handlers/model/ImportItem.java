@@ -73,6 +73,8 @@ public class ImportItem {
 
     private boolean removeProjectStatslog;
 
+    private String originProperyId;
+
     /**
      * add for tdm
      */
@@ -390,6 +392,14 @@ public class ImportItem {
 
     public void setSystemItem(boolean isSystemItem) {
         this.isSystemItem = isSystemItem;
+    }
+
+    public String getOriginProperyId() {
+        return originProperyId;
+    }
+
+    public void setOriginProperyId(String originProperyId) {
+        this.originProperyId = originProperyId;
     }
 
     @Override

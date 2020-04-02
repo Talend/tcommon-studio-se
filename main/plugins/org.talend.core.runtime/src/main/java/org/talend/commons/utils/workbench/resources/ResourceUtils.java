@@ -255,6 +255,34 @@ public final class ResourceUtils {
     }
 
     /**
+     * Comment method "setFileContent".
+     * 
+     * @param stream
+     * @param file
+     * @throws PersistenceException
+     */
+    public static void setFileContent(InputStream stream, IFile file) throws PersistenceException {
+        try {
+            if (stream == null) {
+                String msg = Messages.getString("resources.file.notCreated", file.getName(), //$NON-NLS-1$
+                        Messages.getString("ResourceUtils.streamNull")); //$NON-NLS-1$
+                throw new PersistenceException(msg);
+            }
+            file.setContents(stream, true, false, null);
+        } catch (CoreException e) {
+            String msg = Messages.getString("resources.file.notCreated", file.getName(), e.getMessage()); //$NON-NLS-1$
+            throw new PersistenceException(msg, e);
+        } finally {
+            try {
+                if (stream != null) {
+                    stream.close();
+                }
+            } catch (IOException e) {
+                CommonExceptionHandler.process(e);
+            }
+        }
+    }
+    /**
      * Convenience method to delete a file.<br/>
      *
      * @param file - the file to delete

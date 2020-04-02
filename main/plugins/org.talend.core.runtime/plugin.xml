@@ -53,4 +53,12 @@
             name="Talend">
       </category>
    </extension>
+   
+    <extension
+         point="org.talend.core.runtime.service">
+      <Service
+            class="org.talend.core.model.update.GeneralConnectionContextService"
+            serviceId="IRepositoryContextUpdateService">
+      </Service>
+   </extension>
 </plugin>
