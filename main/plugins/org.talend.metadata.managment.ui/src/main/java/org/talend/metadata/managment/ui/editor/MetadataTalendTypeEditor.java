@@ -72,6 +72,8 @@ import org.talend.core.model.metadata.MetadataTalendType;
 import org.talend.core.model.utils.ResourceModelHelper;
 import org.talend.core.model.utils.XSDValidater;
 import org.talend.core.repository.model.ProxyRepositoryFactory;
+import org.talend.core.runtime.CoreRuntimePlugin;
+import org.talend.core.runtime.projectsetting.ProjectPreferenceManager;
 import org.talend.metadata.managment.ui.MetadataManagmentUiPlugin;
 import org.talend.metadata.managment.ui.dialog.MappingFileCheckViewerDialog;
 import org.talend.metadata.managment.ui.i18n.Messages;
@@ -543,12 +545,12 @@ public class MetadataTalendTypeEditor extends FieldEditor {
             if (info != null) {
                 String id = null;
                 String infoName = info.fileName;
-                for (int i = 0; i < allDbms.length; i++) {
-                    if (allDbms[i].getLabel().equalsIgnoreCase(infoName.substring(0, infoName.indexOf(".")).replace("_", " "))) { //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
-                        id = allDbms[i].getId();
+                for (Dbms allDbm : allDbms) {
+                    if (allDbm.getLabel().equalsIgnoreCase(infoName.substring(0, infoName.indexOf(".")).replace("_", " "))) { //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+                        id = allDbm.getId();
                     }
                 }
-                setSelectId(id); //$NON-NLS-1$
+                setSelectId(id); 
             }
         }
     }
@@ -569,7 +571,7 @@ public class MetadataTalendTypeEditor extends FieldEditor {
         if (confirm) {
             ICoreService coreService = null;
             if (GlobalServiceRegister.getDefault().isServiceRegistered(ICoreService.class)) {
-                coreService = (ICoreService) GlobalServiceRegister.getDefault().getService(ICoreService.class);
+                coreService = GlobalServiceRegister.getDefault().getService(ICoreService.class);
                 coreService.syncMappingsFileFromSystemToProject();
                 tmpFileManager.reload();
             }
@@ -686,6 +688,9 @@ public class MetadataTalendTypeEditor extends FieldEditor {
         }
         if (needReload) {
             tmpFileManager.reload();
+            ProjectPreferenceManager manager = CoreRuntimePlugin.getInstance().getProjectPreferenceManager();
+            manager.setValue(MetadataTalendType.UPDATED_MAPPING_FILES, true);
+            manager.save();
         }
     }
 
