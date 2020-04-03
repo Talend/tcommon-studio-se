@@ -33,6 +33,13 @@ public class SyncChildrenSourceCodeProvider implements IBuildResourcesProvider {
     @SuppressWarnings("unchecked")
     @Override
     public void prepare(IProgressMonitor monitor, Map<String, Object> parameters) throws Exception {
+        if (GlobalServiceRegister.getDefault().isServiceRegistered(IRunProcessService.class)) {
+            IRunProcessService service = GlobalServiceRegister.getDefault().getService(IRunProcessService.class);
+            if (service.isCIMode()) {
+                // don't sync any children source code to parent job in CI.
+                return;
+            }
+        }
         if (parameters == null) {
             return;
         }
