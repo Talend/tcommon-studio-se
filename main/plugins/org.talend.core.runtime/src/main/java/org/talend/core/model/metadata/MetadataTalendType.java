@@ -76,6 +76,8 @@ public final class MetadataTalendType {
 
     public static final String PROJECT_MAPPING_FOLDER = ".settings/mappings"; //$NON-NLS-1$
 
+    public static final String UPDATED_MAPPING_FILES = "updated.mapping.files"; //$NON-NLS-1$
+
     private static ECodeLanguage codeLanguage;
 
     private static final String[] PERL_TYPES = new String[] { PerlTypesManager.BOOLEAN, PerlTypesManager.DATE,
@@ -476,7 +478,7 @@ public final class MetadataTalendType {
             if (!mappingFolder.exists() || mappingFolder.listFiles().length < 1) {
                 ICoreService service = null;
                 if (GlobalServiceRegister.getDefault().isServiceRegistered(ICoreService.class)) {
-                    service = (ICoreService) GlobalServiceRegister.getDefault().getService(ICoreService.class);
+                    service = GlobalServiceRegister.getDefault().getService(ICoreService.class);
                     service.syncMappingsFileFromSystemToProject();
                 }
             }
