@@ -28,13 +28,13 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.HashMap;
-import java.util.HashSet;
 import java.util.LinkedHashMap;
 import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Properties;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
@@ -1137,17 +1137,19 @@ public class PomUtil {
         return found;
     }
 
-    public static Set<Dependency> getCodesDependencies(ERepositoryObjectType codeType) throws CoreException {
-        Set<Dependency> dependencies = new HashSet<Dependency>();
-
+    public static Set<Dependency> getCodesDependencies(ERepositoryObjectType codeType) {
         if (GlobalServiceRegister.getDefault().isServiceRegistered(IRunProcessService.class)) {
-            IRunProcessService runProcessService = (IRunProcessService) GlobalServiceRegister.getDefault()
-                    .getService(IRunProcessService.class);
-            ITalendProcessJavaProject talendCodeJavaProject = runProcessService.getTalendCodeJavaProject(codeType);
-            IFile projectPom = talendCodeJavaProject.getProjectPom();
-            Model model = MODEL_MANAGER.readMavenModel(projectPom);
-            dependencies.addAll(model.getDependencies());
+            IRunProcessService runProcessService = GlobalServiceRegister.getDefault().getService(IRunProcessService.class);
+            try {
+                Model model = MODEL_MANAGER.readMavenModel(runProcessService.getTalendCodeJavaProject(codeType).getProjectPom());
+                return model.getDependencies().stream().map(
+                        d -> createDependency(d.getGroupId(), d.getArtifactId(), d.getVersion(), d.getType(), d.getClassifier()))
+                        .peek(d -> ((SortableDependency) d).setAssemblyOptional(true)).collect(Collectors.toSet());
+            } catch (CoreException e) {
+                ExceptionHandler.process(e);
+            }
         }
-        return dependencies;
+        return Collections.emptySet();
     }
+
 }

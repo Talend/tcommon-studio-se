@@ -18,14 +18,15 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.nio.file.Path;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
-import java.util.Map.Entry;
 import java.util.Properties;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 import org.apache.commons.lang3.BooleanUtils;
 import org.apache.commons.lang3.StringUtils;
@@ -60,9 +61,7 @@ import org.talend.core.model.properties.Property;
 import org.talend.core.model.repository.ERepositoryObjectType;
 import org.talend.core.model.utils.JavaResourcesHelper;
 import org.talend.core.repository.utils.ItemResourceUtil;
-import org.talend.core.runtime.maven.MavenArtifact;
 import org.talend.core.runtime.maven.MavenConstants;
-import org.talend.core.runtime.maven.MavenUrlHelper;
 import org.talend.core.runtime.process.ITalendProcessJavaProject;
 import org.talend.core.runtime.process.JobInfoProperties;
 import org.talend.core.runtime.process.LastGenerationInfo;
@@ -76,8 +75,10 @@ import org.talend.core.utils.TemplateFileUtils;
 import org.talend.designer.maven.model.TalendMavenConstants;
 import org.talend.designer.maven.template.ETalendMavenVariables;
 import org.talend.designer.maven.template.MavenTemplateManager;
+import org.talend.designer.maven.tools.ProcessorDependenciesManager;
 import org.talend.designer.maven.utils.PomIdsHelper;
 import org.talend.designer.maven.utils.PomUtil;
+import org.talend.designer.maven.utils.SortableDependency;
 import org.talend.designer.runprocess.IProcessor;
 import org.talend.designer.runprocess.IRunProcessService;
 import org.talend.repository.ProjectManager;
@@ -620,158 +621,91 @@ public class CreateMavenJobPom extends AbstractMavenProcessorPom {
     }
 
     protected void updateDependencySet(IFile assemblyFile) {
-        Map<String, Dependency> jobCoordinateMap = new HashMap<String, Dependency>();
-        Set<JobInfo> childrenJobInfo = new HashSet<>();
-        if (!hasLoopDependency()) {
-            childrenJobInfo = getJobProcessor().getBuildChildrenJobs();
-        }
-
-        // add children jobs
-        for (JobInfo jobInfo : childrenJobInfo) {
-            Property property = jobInfo.getProcessItem().getProperty();
-            String coordinate =
-                    getCoordinate(PomIdsHelper.getJobGroupId(property), PomIdsHelper.getJobArtifactId(jobInfo),
-                            MavenConstants.PACKAGING_JAR, PomIdsHelper.getJobVersion(property), null);
-            Dependency dependency = PomUtil.createDependency(PomIdsHelper.getJobGroupId(property),
-                    PomIdsHelper.getJobArtifactId(jobInfo), PomIdsHelper.getJobVersion(property), MavenConstants.PACKAGING_JAR);
-            jobCoordinateMap.put(coordinate, dependency);
-        }
-
-        // add parent job
-        Property parentProperty = this.getJobProcessor().getProperty();
-        String parentCoordinate =
-                getCoordinate(PomIdsHelper.getJobGroupId(parentProperty), PomIdsHelper.getJobArtifactId(parentProperty),
-                        MavenConstants.PACKAGING_JAR, PomIdsHelper.getJobVersion(parentProperty), null);
-        Dependency parentDependency = PomUtil.createDependency(PomIdsHelper.getJobGroupId(parentProperty),
-                PomIdsHelper.getJobArtifactId(parentProperty), PomIdsHelper.getJobVersion(parentProperty),
-                MavenConstants.PACKAGING_JAR);
-        jobCoordinateMap.put(parentCoordinate, parentDependency);
-
-        // add talend libraries and codes
-        Map<String, Dependency> talendLibCoordinateMap = new HashMap<String, Dependency>();
-        String projectTechName = ProjectManager.getInstance().getProject(parentProperty).getTechnicalLabel();
-        String projectGroupId = PomIdsHelper.getProjectGroupId(projectTechName);
-
-        // codes
-        List<Dependency> dependencies = new ArrayList<>();
-        addCodesDependencies(dependencies);
-        for (Dependency dependency : dependencies) {
-            talendLibCoordinateMap.put(getCoordinate(dependency), dependency);
-        }
-
-        // libraries
-        dependencies.clear();
-        Set<ModuleNeeded> modules = getJobProcessor()
-                .getNeededModules(TalendProcessOptionConstants.MODULES_WITH_JOBLET
-                        | TalendProcessOptionConstants.MODULES_EXCLUDE_SHADED);
-        for (ModuleNeeded module : modules) {
-            String mavenUri = module.getMavenUri();
-            Dependency dependency = PomUtil.createModuleDependency(mavenUri);
-            dependencies.add(dependency);
-        }
-        for (Dependency dependency : dependencies) {
-            if (MavenConstants.PACKAGING_POM.equals(dependency.getType())) {
-                continue;
-            }
-            String dependencyGroupId = dependency.getGroupId();
-            String coordinate = getCoordinate(dependency);
-            if (!jobCoordinateMap.containsKey(coordinate)) {
-                if (MavenConstants.DEFAULT_LIB_GROUP_ID.equals(dependencyGroupId)) {
-                    talendLibCoordinateMap.put(coordinate, dependency);
-                }
-            }
-        }
-
-        // add 3rd party libraries
-        Map<String, Dependency> _3rdDepLibMap = new HashMap<String, Dependency>();
+        Set<String> jobCoordinate = new HashSet<>();
+        Set<String> talendLibCoordinate = new HashSet<>();
+        Set<String> _3rdLibCoordinate = new HashSet<>();
         Map<String, Set<Dependency>> duplicateLibs = new HashMap<>();
-        for (Dependency dependency : dependencies) {
-            if (MavenConstants.PACKAGING_POM.equals(dependency.getType())) {
-                continue;
-            }
-            String coordinate = getCoordinate(dependency);
-            if (!jobCoordinateMap.containsKey(coordinate) && !talendLibCoordinateMap.containsKey(coordinate)) {
-                _3rdDepLibMap.put(coordinate, dependency);
-                addToDuplicateLibs(duplicateLibs, dependency);
-            }
-        }
+        IProcessor processor = getJobProcessor();
 
-        // add missing modules from the job generation of children
-        Set<ModuleNeeded> fullModulesList = new HashSet<>();
-        for (JobInfo jobInfo : childrenJobInfo) {
-            fullModulesList
-                    .addAll(LastGenerationInfo
-                            .getInstance()
-                            .getModulesNeededWithSubjobPerJob(jobInfo.getJobId(), jobInfo.getJobVersion()));
-        }
-        for (ModuleNeeded moduleNeeded : fullModulesList) {
-            if (moduleNeeded.isExcluded()) {
-                continue;
-            }
-            MavenArtifact artifact = MavenUrlHelper.parseMvnUrl(moduleNeeded.getMavenUri());
-            String coordinate = getCoordinate(artifact.getGroupId(), artifact.getArtifactId(), artifact.getType(),
-                    artifact.getVersion(), artifact.getClassifier());
-            if (!jobCoordinateMap.containsKey(coordinate) && !talendLibCoordinateMap.containsKey(coordinate)
-                    && !_3rdDepLibMap.containsKey(coordinate)) {
-                Dependency dependencyObject = PomUtil.createDependency(artifact.getGroupId(), artifact.getArtifactId(),
-                        artifact.getVersion(), artifact.getType(), artifact.getClassifier());
-                if (MavenConstants.DEFAULT_LIB_GROUP_ID.equals(artifact.getGroupId())
-                        || artifact.getGroupId().startsWith(projectGroupId)) {
-                    talendLibCoordinateMap.put(coordinate, dependencyObject);
-                } else {
-                    _3rdDepLibMap.put(coordinate, dependencyObject);
-                    Dependency dependency = PomUtil
-                            .createDependency(artifact.getGroupId(), artifact.getArtifactId(), artifact.getVersion(),
-                                    artifact.getType(), artifact.getClassifier());
-                    addToDuplicateLibs(duplicateLibs, dependency);
-                }
-            }
-        }
+        // current job
+        Property currentJobProperty = processor.getProperty();
+        jobCoordinate.add(getJobCoordinate(currentJobProperty));
         
-        try {
-            Set<Dependency> codesDependencies = new HashSet<Dependency>();
-            for (ERepositoryObjectType type : ERepositoryObjectType.getAllTypesOfCodes()) {
-                codesDependencies.addAll(PomUtil.getCodesDependencies(type));
-            }
-            for (Dependency codeDependency : codesDependencies) {
-                Dependency dependency = PomUtil.createDependency(codeDependency.getGroupId(), codeDependency.getArtifactId(),
-                        codeDependency.getVersion(), codeDependency.getType(), codeDependency.getClassifier());
-                if (dependency != null) {
-                    addToDuplicateLibs(duplicateLibs, dependency);
-                }
-            }
-        } catch (CoreException e1) {
-            ExceptionHandler.process(e1);
-        }
+        // children jobs
+        Set<JobInfo> childrenJobInfo = !hasLoopDependency() ? processor.getBuildChildrenJobs() : Collections.emptySet();
+        childrenJobInfo.forEach(j -> jobCoordinate.add(getJobCoordinate(j.getProcessItem().getProperty())));
 
+        // talend libraries and codes
+        String projectGroupId = PomIdsHelper.getProjectGroupId(ProjectManager.getInstance().getProject(currentJobProperty).getTechnicalLabel());
+
+        List<Dependency> dependencies = new ArrayList<>();
+        // codes
+        addCodesDependencies(dependencies);
+
+        // codes dependencies
+        ERepositoryObjectType.getAllTypesOfCodes().forEach(t -> dependencies.addAll(PomUtil.getCodesDependencies(t)));
+
+        // libraries of talend/3rd party
+        Set<ModuleNeeded> modules = processor.getNeededModules(TalendProcessOptionConstants.MODULES_EXCLUDE_SHADED);
+
+        // missing modules from the job generation of children
+        childrenJobInfo.forEach(j -> modules
+                .addAll(LastGenerationInfo.getInstance().getModulesNeededWithSubjobPerJob(j.getJobId(), j.getJobVersion())));
+
+        // testcase modules from children job
+        childrenJobInfo.forEach(
+                j -> modules.addAll(ProcessorDependenciesManager.getTestcaseNeededModules(j.getProcessItem().getProperty())));
+
+        // testcase modules from current job
+        modules.addAll(ProcessorDependenciesManager.getTestcaseNeededModules(currentJobProperty));
+
+        dependencies.addAll(
+                modules.stream().filter(m -> !m.isExcluded()).map(m -> createDenpendency(m)).collect(Collectors.toSet()));
+
+        dependencies.stream().filter(d -> !MavenConstants.PACKAGING_POM.equals(d.getType())).forEach(d -> {
+            String coordinate = getCoordinate(d);
+            String groupId = d.getGroupId();
+            boolean optional = ((SortableDependency) d).isAssemblyOptional();
+            if (jobCoordinate.contains(coordinate) || talendLibCoordinate.contains(coordinate)
+                    || _3rdLibCoordinate.contains(coordinate)) {
+                return;
+            }
+            if (MavenConstants.DEFAULT_LIB_GROUP_ID.equals(groupId) || groupId.startsWith(projectGroupId)) {
+                if (!optional) {
+                    talendLibCoordinate.add(coordinate);
+                }
+            } else {
+                if (!optional) {
+                    _3rdLibCoordinate.add(coordinate);
+                }
+                addToDuplicateLibs(duplicateLibs, d);
+            }
+        });
 
         Iterator<String> iterator = duplicateLibs.keySet().iterator();
         while (iterator.hasNext()) {
-            String key = iterator.next();
-            Set<Dependency> dupDependencies = duplicateLibs.get(key);
+            Set<Dependency> dupDependencies = duplicateLibs.get(iterator.next());
             if (dupDependencies.size() < 2) {
-                // remove non-duplicated dependencies
+                // remove unique dependency
                 iterator.remove();
             } else {
-                // remove duplicated dependencies from 3rd lib list
-                for (Dependency dependency : dupDependencies) {
-                    _3rdDepLibMap.remove(getCoordinate(dependency));
-                }
+                // remove duplicate dependencies from 3rd party libs
+                dupDependencies.stream().map(d -> getCoordinate(d)).forEach(c -> _3rdLibCoordinate.remove(c));
             }
         }
 
         try {
             Document document = PomUtil.loadAssemblyFile(null, assemblyFile);
             // add talend libs & codes
-            setupDependencySetNode(document, talendLibCoordinateMap, "lib", "${artifact.artifactId}.${artifact.extension}",
-                    false, false);
-            // add 3rd party libs <dependencySet>
-            setupDependencySetNode(document, _3rdDepLibMap, "lib", null, false, false);
+            setupDependencySetNode(document, talendLibCoordinate, "lib", "${artifact.artifactId}.${artifact.extension}", false,
+                    false);
+            // add 3rd party libs
+            setupDependencySetNode(document, _3rdLibCoordinate, "lib", null, false, false);
             // add jobs
-            setupDependencySetNode(document, jobCoordinateMap, "${talend.job.name}",
+            setupDependencySetNode(document, jobCoordinate, "${talend.job.name}",
                     "${artifact.build.finalName}.${artifact.extension}", true, false);
             // add duplicate dependencies if exists
-            setupFileNode(document, duplicateLibs);
+            setupFileNode(document, duplicateLibs.values().stream().flatMap(s -> s.stream()).collect(Collectors.toSet()));
 
             PomUtil.saveAssemblyFile(assemblyFile, document);
         } catch (Exception e) {
@@ -779,59 +713,49 @@ public class CreateMavenJobPom extends AbstractMavenProcessorPom {
         }
     }
 
+    private Dependency createDenpendency(ModuleNeeded moduleNeeded) {
+        SortableDependency dependency = (SortableDependency) PomUtil.createModuleDependency(moduleNeeded.getMavenUri());
+        boolean optional = (boolean) moduleNeeded.getExtraAttributes().getOrDefault(ModuleNeeded.ASSEMBLY_OPTIONAL, false);
+        dependency.setAssemblyOptional(optional);
+        return dependency;
+    }
+
     private String getCoordinate(Dependency dependency) {
         return getCoordinate(dependency.getGroupId(), dependency.getArtifactId(), dependency.getType(),
                 dependency.getVersion(), dependency.getClassifier());
     }
 
+    protected String getJobCoordinate(Property property) {
+        return getCoordinate(PomIdsHelper.getJobGroupId(property), PomIdsHelper.getJobArtifactId(property),
+                MavenConstants.PACKAGING_JAR, PomIdsHelper.getJobVersion(property), null);
+    }
+
     protected String getCoordinate(String groupId, String artifactId, String type, String version, String classifier) {
         String separator = ":"; //$NON-NLS-1$
-        String coordinate = groupId + separator;
-        coordinate += artifactId + separator;
-        if (type != null) {
-            coordinate += type;
-        }
-
-        if (version != null) {
-            coordinate += separator + version;
+        String coordinate = groupId + separator + artifactId;
+        if (StringUtils.isNotBlank(type)) {
+            coordinate += separator + type;
         }
         if (StringUtils.isNotBlank(classifier)) {
             coordinate += separator + classifier;
         }
-
-        return coordinate;
-    }
-
-    protected String getAssemblyCoordinate(Dependency dependency) {
-        String separator = ":"; //$NON-NLS-1$
-        String coordinate = dependency.getGroupId() + separator;
-        coordinate += dependency.getArtifactId() + separator;
-        if (dependency.getType() != null) {
-            coordinate += dependency.getType();
+        if (StringUtils.isNotBlank(version)) {
+            coordinate += separator + version;
         }
-        if (dependency.getClassifier() != null) {
-            coordinate += separator + "*";
-        }
-        if (dependency.getVersion() != null) {
-            coordinate += separator + dependency.getVersion();
-        }
-
         return coordinate;
     }
 
     private void addToDuplicateLibs(Map<String, Set<Dependency>> map, Dependency dependency) {
-        String coordinate =
-                getCoordinate(dependency.getGroupId(), dependency.getArtifactId(), dependency.getType(), null,
-                        dependency.getClassifier());
+        String coordinate = getCoordinate(dependency.getGroupId(), dependency.getArtifactId(), dependency.getType(), null,
+                dependency.getClassifier());
         if (!map.containsKey(coordinate)) {
-            Set<Dependency> set = new HashSet<>();
-            map.put(coordinate, set);
+            map.put(coordinate, new HashSet<>());
         }
         map.get(coordinate).add(dependency);
     }
 
-    protected void setupDependencySetNode(Document document, Map<String, Dependency> libIncludes, String outputDir,
-            String fileNameMapping, boolean useProjectArtifact, boolean unpack) {
+    protected void setupDependencySetNode(Document document, Set<String> libIncludes, String outputDir, String fileNameMapping,
+            boolean useProjectArtifact, boolean unpack) {
         if (libIncludes.isEmpty()) {
             return;
         }
@@ -851,9 +775,9 @@ public class CreateMavenJobPom extends AbstractMavenProcessorPom {
         Node includesNode = document.createElement("includes");
         dependencySetNode.appendChild(includesNode);
 
-        for (Dependency dependency : libIncludes.values()) {
+        for (String coodinate : libIncludes) {
             Node includeNode = document.createElement("include");
-            includeNode.setTextContent(getAssemblyCoordinate(dependency));
+            includeNode.setTextContent(coodinate);
             includesNode.appendChild(includeNode);
         }
 
@@ -875,44 +799,40 @@ public class CreateMavenJobPom extends AbstractMavenProcessorPom {
 
     }
 
-    private void setupFileNode(Document document, Map<String, Set<Dependency>> duplicateDependencies) {
+    private void setupFileNode(Document document, Set<Dependency> duplicateDependencies) throws CoreException {
+        Node filesNode = document.getElementsByTagName("files").item(0);
+        // TESB-27614:NPE while building a route
+        if (filesNode == null) {
+            return;
+        }
         if (duplicateDependencies.isEmpty()) {
             return;
         }
-        try {
-            IMaven maven = MavenPlugin.getMaven();
-            ArtifactRepository repository = maven.getLocalRepository();
-            Node filesNode = document.getElementsByTagName("files").item(0);
-            // TESB-27614:NPE while building a route
-            if (filesNode != null) {
-                for (Entry<String, Set<Dependency>> entry : duplicateDependencies.entrySet()) {
-                    Set<Dependency> dependencies = entry.getValue();
-                    for (Dependency dependency : dependencies) {
-                        String sourceLocation = maven
-                                .getArtifactPath(repository, dependency.getGroupId(), dependency.getArtifactId(),
-                                        dependency.getVersion(), dependency.getType(), dependency.getClassifier());
-                        Path path = new File(repository.getBasedir()).toPath().resolve(sourceLocation);
-                        sourceLocation = path.toString();
-                        String destName = path.getFileName().toString();
-                        Node fileNode = document.createElement("file");
-                        filesNode.appendChild(fileNode);
-    
-                        Node sourcesNode = document.createElement("source");
-                        sourcesNode.setTextContent(sourceLocation);
-                        fileNode.appendChild(sourcesNode);
-    
-                        Node outputDirNode = document.createElement("outputDirectory");
-                        outputDirNode.setTextContent("lib");
-                        fileNode.appendChild(outputDirNode);
-    
-                        Node destNameNode = document.createElement("destName");
-                        destNameNode.setTextContent(destName);
-                        fileNode.appendChild(destNameNode);
-                    }
-                }
+        IMaven maven = MavenPlugin.getMaven();
+        ArtifactRepository repository = maven.getLocalRepository();
+        for (Dependency dependency : duplicateDependencies) {
+            if (((SortableDependency) dependency).isAssemblyOptional()) {
+                continue;
             }
-        } catch (CoreException e) {
-            ExceptionHandler.process(e);
+            String sourceLocation = maven.getArtifactPath(repository, dependency.getGroupId(), dependency.getArtifactId(),
+                    dependency.getVersion(), dependency.getType(), dependency.getClassifier());
+            Path path = new File(repository.getBasedir()).toPath().resolve(sourceLocation);
+            sourceLocation = path.toString();
+            String destName = path.getFileName().toString();
+            Node fileNode = document.createElement("file");
+            filesNode.appendChild(fileNode);
+
+            Node sourcesNode = document.createElement("source");
+            sourcesNode.setTextContent(sourceLocation);
+            fileNode.appendChild(sourcesNode);
+
+            Node outputDirNode = document.createElement("outputDirectory");
+            outputDirNode.setTextContent("lib");
+            fileNode.appendChild(outputDirNode);
+
+            Node destNameNode = document.createElement("destName");
+            destNameNode.setTextContent(destName);
+            fileNode.appendChild(destNameNode);
         }
     }
 

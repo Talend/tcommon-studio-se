@@ -86,6 +86,8 @@ public class ModuleNeeded {
 
     public static final String UNKNOWN = "Unknown";
 
+    public static final String ASSEMBLY_OPTIONAL = "ASSEMBLY_OPTIONAL"; //$NON-NLS-1$
+
     /**
      * TODO This is a hot fix for 7.2.1 . if the maven url is not specified in component/extension point , we will
      * generate a release version with this flag=true .Need to improve it after release ,normally the studio should use

@@ -13,7 +13,7 @@
 package org.talend.designer.maven.tools;
 
 import java.util.ArrayList;
-import java.util.Collection;
+import java.util.Collections;
 import java.util.HashSet;
 import java.util.LinkedHashMap;
 import java.util.List;
@@ -24,12 +24,14 @@ import org.apache.maven.model.Dependency;
 import org.apache.maven.model.Exclusion;
 import org.apache.maven.model.Model;
 import org.eclipse.core.runtime.IProgressMonitor;
+import org.talend.commons.exception.ExceptionHandler;
 import org.talend.commons.exception.PersistenceException;
 import org.talend.core.GlobalServiceRegister;
 import org.talend.core.ILibraryManagerService;
 import org.talend.core.model.general.ModuleNeeded;
 import org.talend.core.model.process.IProcess2;
 import org.talend.core.model.properties.ProcessItem;
+import org.talend.core.model.properties.Property;
 import org.talend.core.runtime.process.LastGenerationInfo;
 import org.talend.core.runtime.process.TalendProcessOptionConstants;
 import org.talend.core.ui.ITestContainerProviderService;
@@ -45,29 +47,38 @@ public class ProcessorDependenciesManager {
 
     private final IProcessor processor;
 
+    private final Property property;
+
     public ProcessorDependenciesManager(IProcessor processor) {
         this.processor = processor;
+        property = processor.getProperty();
     }
 
     /**
      * Will add the dependencies to the maven model.
      */
+    @SuppressWarnings({ "rawtypes", "unchecked" })
     public boolean updateDependencies(IProgressMonitor progressMonitor, Model model) throws ProcessorException {
         try {
-            List neededDependencies = new ArrayList<Dependency>();
-            Set<ModuleNeeded> neededLibraries = getAllModuleNeededWithTestCase();
-            Set<String> uniquDependenciesSet = new HashSet<>();
-
+            Set<ModuleNeeded> neededLibraries = new HashSet<>();
+            Set<String> uniqueDependencies = new HashSet<>();
+            neededLibraries.addAll(getProcessNeededModules());
+            neededLibraries.addAll(getTestcaseNeededModules(property));
+            if (!neededLibraries.isEmpty()) {
+                if (GlobalServiceRegister.getDefault().isServiceRegistered(ILibraryManagerService.class)) {
+                    ILibraryManagerService repositoryBundleService = GlobalServiceRegister.getDefault()
+                            .getService(ILibraryManagerService.class);
+                    repositoryBundleService.installModules(neededLibraries, null);
+                }
+            }
+            List neededDependencies = new ArrayList<>();
             for (ModuleNeeded module : neededLibraries) {
-                Dependency dependency = null;
-                // if (module.getDeployStatus() == ELibraryInstallStatus.DEPLOYED) {
-                // }
                 final String mavenUri = module.getMavenUri();
-                if (uniquDependenciesSet.contains(mavenUri)) {
+                if (uniqueDependencies.contains(mavenUri)) {
                     continue; // must be same GAV, avoid the different other attrs for modules
                 }
-                uniquDependenciesSet.add(mavenUri);
-                dependency = PomUtil.createModuleDependency(mavenUri);
+                uniqueDependencies.add(mavenUri);
+                Dependency dependency = PomUtil.createModuleDependency(mavenUri);
                 if (dependency != null) {
                     if (module.isExcludeDependencies()) {
                         Exclusion exclusion = new Exclusion();
@@ -78,16 +89,13 @@ public class ProcessorDependenciesManager {
                     neededDependencies.add(dependency);
                 }
             }
-
-            java.util.Collections.sort(neededDependencies);
+            Collections.sort(neededDependencies);
             boolean fresh = false;
-            if (processor.getProperty() != null && processor.getProperty().getItem() != null
-                    && processor.getProcess() instanceof IProcess2) {
+            if (property != null && property.getItem() != null && processor.getProcess() instanceof IProcess2) {
                 // is standard job.
                 fresh = true;
             }
             return updateDependencies(progressMonitor, model, neededDependencies, fresh);
-
         } catch (Exception e) {
             throw new ProcessorException(e);
         }
@@ -159,35 +167,35 @@ public class ProcessorDependenciesManager {
         return changed;
     }
 
-    private Set<ModuleNeeded> getAllModuleNeededWithTestCase() throws PersistenceException {
-        // add the job modules.
-        Set<ModuleNeeded> neededLibraries = new HashSet<>();
-        Collection<ModuleNeeded> modulesNeeded = LastGenerationInfo.getInstance()
-                .getModulesNeededPerJob(processor.getProcess().getId(), processor.getProcess().getVersion());
-        if (modulesNeeded.isEmpty()) {
-            modulesNeeded = processor.getNeededModules(TalendProcessOptionConstants.MODULES_WITH_JOBLET);
+    private Set<ModuleNeeded> getProcessNeededModules() {
+        Set<ModuleNeeded> neededLibraries = LastGenerationInfo.getInstance().getModulesNeededPerJob(property.getId(),
+                property.getVersion());
+        if (neededLibraries.isEmpty()) {
+            neededLibraries = processor.getNeededModules(TalendProcessOptionConstants.MODULES_DEFAULT);
         }
-        neededLibraries.addAll(modulesNeeded);
+        return neededLibraries;
+    }
 
-        // add testcase modules
-        if (GlobalServiceRegister.getDefault().isServiceRegistered(ITestContainerProviderService.class)) {
-            ITestContainerProviderService testcontainerService = (ITestContainerProviderService) GlobalServiceRegister
-                    .getDefault().getService(ITestContainerProviderService.class);
-            Set<ModuleNeeded> testcaseModules = null;
-            if (processor.getProperty() != null && processor.getProperty().getItem() instanceof ProcessItem) {
-                ProcessItem item = (ProcessItem) processor.getProperty().getItem();
-                testcaseModules = testcontainerService.getAllJobTestcaseModules(item);
-                neededLibraries.addAll(testcaseModules);
-                if (testcaseModules != null) {
-                    if (GlobalServiceRegister.getDefault().isServiceRegistered(ILibraryManagerService.class)) {
-                        ILibraryManagerService repositoryBundleService = (ILibraryManagerService) GlobalServiceRegister
-                                .getDefault().getService(ILibraryManagerService.class);
-                        repositoryBundleService.installModules(neededLibraries, null);
+    public static Set<ModuleNeeded> getTestcaseNeededModules(Property property) {
+        Set<ModuleNeeded> testcaseModules = LastGenerationInfo.getInstance().getTestcaseModuleNeeded(property.getId(),
+                property.getVersion());
+        if (testcaseModules.isEmpty()) {
+            if (GlobalServiceRegister.getDefault().isServiceRegistered(ITestContainerProviderService.class)) {
+                ITestContainerProviderService testcontainerService = GlobalServiceRegister.getDefault()
+                        .getService(ITestContainerProviderService.class);
+                if (property != null && property.getItem() instanceof ProcessItem) {
+                    ProcessItem item = (ProcessItem) property.getItem();
+                    try {
+                        testcaseModules = testcontainerService.getAllJobTestcaseModules(item);
+                        LastGenerationInfo.getInstance().setTestcaseModuleNeeded(property.getId(), property.getVersion(),
+                                testcaseModules);
+                    } catch (PersistenceException e) {
+                        ExceptionHandler.process(e);
                     }
                 }
             }
         }
-        return neededLibraries;
+        return testcaseModules;
     }
 
 }
