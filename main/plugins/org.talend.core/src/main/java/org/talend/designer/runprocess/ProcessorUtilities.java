@@ -2848,10 +2848,9 @@ public class ProcessorUtilities {
      * @return path of the generated jar
      * @throws IOException
      */
-    public static String buildLog4jConfigJar(IProcess process, String rootLevel) throws IOException {
-        String externalResourcesFolderPath = getJavaProjectExternalResourcesFolderPath(process);
-        String configFilePath = externalResourcesFolderPath + "/log4j2.xml";
-        String jarFilePath = externalResourcesFolderPath + "/talend-studio-log4j2.xml.jar";
+    public static String buildLog4jConfigJar(String libFolder, String rootLevel) throws IOException {
+        String configFilePath = libFolder + "/log4j2.xml";
+        String jarFilePath = libFolder + "/talend-studio-log4j2.xml.jar";
         // Create config file
         ProcessorUtilities.writeLog4j2ConfToFile(new File(configFilePath), Level.getLevel(rootLevel));
         // Put config file into jar
