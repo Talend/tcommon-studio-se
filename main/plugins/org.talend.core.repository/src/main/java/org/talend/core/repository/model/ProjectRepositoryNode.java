@@ -22,6 +22,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
+import org.apache.commons.collections.CollectionUtils;
+import org.apache.commons.collections.PredicateUtils;
 import org.apache.commons.lang.ArrayUtils;
 import org.eclipse.core.runtime.IPath;
 import org.eclipse.core.runtime.ISafeRunnable;
@@ -626,6 +628,7 @@ public class ProjectRepositoryNode extends RepositoryNode implements IProjectRep
         // need to use the current project to avoid the cache influence
         List<String> folders = RecycleBinManager.getInstance()
                 .getDeletedFolders(ProjectManager.getInstance().getCurrentProject());
+        CollectionUtils.filter(folders, PredicateUtils.notNullPredicate());
         Collections.sort(folders);
         for (String fullPath : folders) {
             String folderPath = null;
