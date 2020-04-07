@@ -471,12 +471,16 @@ public class ImportExportHandlersManager {
 
             @Override
             public int compare(ImportItem o1, ImportItem o2) {
-                if (o1.getRepositoryType().getType().equals("SERVICES")) {
-                    return -1;
-                } else if (o2.getRepositoryType().getType().equals("SERVICES")) {
+                return getImportPriority(o1) - getImportPriority(o2);
+            }
+
+            private int getImportPriority(ImportItem item) {
+                if (ERepositoryObjectType.CONTEXT.getType().equals(item.getRepositoryType().getType())) {
                     return 1;
+                } else if ("SERVICES".equals(item.getRepositoryType().getType())) {
+                    return 2;
                 }
-                return 0;
+                return 100;
             }
         });
         ImportCacheHelper importCacheHelper = ImportCacheHelper.getInstance();
