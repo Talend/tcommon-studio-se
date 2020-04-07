@@ -4,10 +4,16 @@ import org.apache.maven.model.Dependency;
 
 public class SortableDependency extends Dependency implements Comparable<SortableDependency> {
 
+    private static final long serialVersionUID = -6295226523517981508L;
+
     @Override
     public int compareTo(SortableDependency o) {
+        int compare = getArtifactId().compareTo(o.getArtifactId());
+        if (compare == 0) {
+            return getVersion().compareTo(o.getVersion());
+        }
 
-        return getArtifactId().compareTo(o.getArtifactId());
+        return compare;
     }
 
     @Override
