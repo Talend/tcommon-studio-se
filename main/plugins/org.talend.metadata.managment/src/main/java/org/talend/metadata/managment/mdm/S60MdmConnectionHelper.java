@@ -65,7 +65,7 @@ public class S60MdmConnectionHelper extends AbsMdmConnectionHelper {
         ClassLoader oldContextClassLoader = Thread.currentThread().getContextClassLoader();
         try {
             Class<?> tMDMService_ServiceClass = Class.forName("org.talend.mdm.webservice.TMDMService_Service", true, classLoader);
-            Thread.currentThread().setContextClassLoader(tMDMService_ServiceClass.getClass().getClassLoader());
+            Thread.currentThread().setContextClassLoader(tMDMService_ServiceClass.getClassLoader());
             Object serviceService = ReflectionUtils.newInstance("org.talend.mdm.webservice.TMDMService_Service", classLoader,
                     new Object[] { new URL(newUrl) });
             Object invokeMethod = ReflectionUtils.invokeMethod(serviceService, "getTMDMPort", new Object[0]);
