@@ -17,7 +17,6 @@ import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.nio.file.Files;
-import java.nio.file.StandardOpenOption;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
@@ -262,7 +261,7 @@ public class UpdateTools {
         File dropFile = new File(pluginFolderFile, "droplist");
         if (dropFile.exists()) {
             StringBuilder builder = new StringBuilder();
-            Files.lines(dropFile.toPath()).map(File::new).filter(f -> !f.delete())
+            Files.lines(dropFile.toPath()).map(File::new).filter(f -> deleteBundle(f))
                     .forEach(f -> builder.append(f.getAbsolutePath()).append(LINE_SEPARATOR));
             if (builder.length() > 0) {
                 // if deletion for some bundle failed
@@ -271,6 +270,17 @@ public class UpdateTools {
                 dropFile.delete();
             }
         }
+    }
+
+    private static boolean deleteBundle(File file) {
+        if (!file.exists()) {
+            return false;
+        }
+        if (file.isDirectory()) {
+            FilesUtils.deleteFolder(file, true);
+            return file.exists();
+        }
+        return !file.delete();
     }
 
 }
