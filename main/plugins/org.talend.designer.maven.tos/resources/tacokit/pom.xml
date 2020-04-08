@@ -41,6 +41,11 @@
 			<artifactId>couchbase</artifactId>
 			<version>${tacokit.components.version}</version>
 		</dependency>
+		<dependency>
+			<groupId>org.talend.components</groupId>
+			<artifactId>cosmosDB</artifactId>
+			<version>${tacokit.components.version}</version>
+		</dependency>
         <dependency>
             <groupId>org.slf4j</groupId>
             <artifactId>slf4j-api</artifactId>
