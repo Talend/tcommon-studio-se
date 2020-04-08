@@ -57,12 +57,30 @@ public class JDBCUtil {
         throw new RuntimeException("Null value in non-Nullable column");
     }
 
+    /**
+     * getDate can be called with the resultSet having either a java.sql.Timestamp or a java.sql.Date
+     * the double try implementation is not something im proud of, but having two methods would require 
+     * a huge refactoring that in the end is the same as doing that
+     * @param rs
+     * @param index
+     * @return java.util.Date converted from java.sql.Timestamp/Date
+     * @throws java.sql.SQLException
+     */
     public static Date getDate(ResultSet rs, int index) throws java.sql.SQLException {
-        if(rs.getTimestamp(index) != null) {
-            return new Date(rs.getTimestamp(index).getTime());
+        Date result = null;
+        try {
+            if(rs.getTimestamp(index) != null) {
+                result = new Date(rs.getTimestamp(index).getTime());
+            }
+        } catch (java.sql.SQLException e) {
         }
-
-        return null;
+        try {
+            if(rs.getDate(index) != null) {
+                result = new Date(rs.getDate(index).getTime());
+            }
+        } catch (java.sql.SQLException e) {
+        }
+        return result;
     }
 
     //decrease the get method call number
