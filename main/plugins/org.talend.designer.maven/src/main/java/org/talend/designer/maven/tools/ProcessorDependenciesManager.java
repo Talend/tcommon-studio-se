@@ -168,8 +168,8 @@ public class ProcessorDependenciesManager {
     }
 
     private Set<ModuleNeeded> getProcessNeededModules() {
-        Set<ModuleNeeded> neededLibraries = LastGenerationInfo.getInstance().getModulesNeededPerJob(property.getId(),
-                property.getVersion());
+        Set<ModuleNeeded> neededLibraries = LastGenerationInfo.getInstance()
+                .getModulesNeededPerJob(processor.getProcess().getId(), processor.getProcess().getVersion());
         if (neededLibraries.isEmpty()) {
             neededLibraries = processor.getNeededModules(TalendProcessOptionConstants.MODULES_DEFAULT);
         }
@@ -177,21 +177,21 @@ public class ProcessorDependenciesManager {
     }
 
     public static Set<ModuleNeeded> getTestcaseNeededModules(Property property) {
+        if (property == null || !(property.getItem() instanceof ProcessItem)) {
+            return Collections.emptySet();
+        }
         Set<ModuleNeeded> testcaseModules = LastGenerationInfo.getInstance().getTestcaseModuleNeeded(property.getId(),
                 property.getVersion());
         if (testcaseModules.isEmpty()) {
             if (GlobalServiceRegister.getDefault().isServiceRegistered(ITestContainerProviderService.class)) {
                 ITestContainerProviderService testcontainerService = GlobalServiceRegister.getDefault()
                         .getService(ITestContainerProviderService.class);
-                if (property != null && property.getItem() instanceof ProcessItem) {
-                    ProcessItem item = (ProcessItem) property.getItem();
-                    try {
-                        testcaseModules = testcontainerService.getAllJobTestcaseModules(item);
-                        LastGenerationInfo.getInstance().setTestcaseModuleNeeded(property.getId(), property.getVersion(),
-                                testcaseModules);
-                    } catch (PersistenceException e) {
-                        ExceptionHandler.process(e);
-                    }
+                try {
+                    testcaseModules = testcontainerService.getAllJobTestcaseModules((ProcessItem) property.getItem());
+                    LastGenerationInfo.getInstance().setTestcaseModuleNeeded(property.getId(), property.getVersion(),
+                            testcaseModules);
+                } catch (PersistenceException e) {
+                    ExceptionHandler.process(e);
                 }
             }
         }
