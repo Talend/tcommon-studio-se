@@ -68,6 +68,8 @@ public interface IMetadataTable {
     public boolean sameMetadataAs(IMetadataTable meta);
 
     public boolean sameMetadataAs(IMetadataTable other, int options);
+    
+    public boolean sameMetadataAs(IMetadataTable other, int options, boolean order);
 
     public void sortCustomColumns();
 
