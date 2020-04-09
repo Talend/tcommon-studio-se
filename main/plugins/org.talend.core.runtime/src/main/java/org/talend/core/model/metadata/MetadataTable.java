@@ -474,7 +474,7 @@ public class MetadataTable implements IMetadataTable, Cloneable {
 
     @Override
     public boolean isRepository() {
-        return isRepository;
+        return this.isRepository;
     }
 
     public void setRepository(boolean isRepository) {
