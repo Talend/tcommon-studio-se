@@ -1039,7 +1039,7 @@ public class ExtractMetaDataUtils {
                     if (driverJarPathArg.contains(";")) {
                         String jars[] = driverJarPathArg.split(";");
                         for (String jar : jars) {
-                            String jarName = librairesManagerService.getJarNameFromMavenuri(driverJarPathArg);
+                            String jarName = librairesManagerService.getJarNameFromMavenuri(jar);
                             // TDQ-16842 msjian:sometimes for the import jdbc connection, the jarName is null
                             if (jarName == null) {
                                 jarName = jar.split("/")[1] + ".jar";
