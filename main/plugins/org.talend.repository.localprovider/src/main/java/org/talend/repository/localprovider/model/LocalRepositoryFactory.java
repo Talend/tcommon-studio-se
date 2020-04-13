@@ -90,6 +90,7 @@ import org.talend.commons.utils.io.FilesUtils;
 import org.talend.commons.utils.workbench.resources.ResourceUtils;
 import org.talend.core.GlobalServiceRegister;
 import org.talend.core.context.RepositoryContext;
+import org.talend.core.model.context.ContextLinkService;
 import org.talend.core.model.general.Project;
 import org.talend.core.model.general.TalendNature;
 import org.talend.core.model.metadata.MetadataManager;
@@ -1795,6 +1796,7 @@ public class LocalRepositoryFactory extends AbstractEMFRepositoryFactory impleme
                 for (Resource resource : affectedResources) {
                     deleteResource(resource, isDeleteOnRemote);
                 }
+                ContextLinkService.getInstance().deleteContextLink(currentProperty.getId());
 
                 // ADD msjian TDQ-6791 2013-2-20:when the resource is invalid(null), delete its file
                 EList<EObject> eCrossReferences = currentItem.eCrossReferences();
@@ -2657,6 +2659,11 @@ public class LocalRepositoryFactory extends AbstractEMFRepositoryFactory impleme
             }
             this.copyScreenshotFlag = false;
         }
+        saveContextLinkInfo(item);
+    }
+
+    private void saveContextLinkInfo(Item item) throws PersistenceException {
+        ContextLinkService.getInstance().saveContextLink(item);
     }
 
     @Override
