@@ -628,7 +628,6 @@ public class ProjectRepositoryNode extends RepositoryNode implements IProjectRep
         // need to use the current project to avoid the cache influence
         List<String> folders = RecycleBinManager.getInstance()
                 .getDeletedFolders(ProjectManager.getInstance().getCurrentProject());
-        CollectionUtils.filter(folders, PredicateUtils.notNullPredicate());
         Collections.sort(folders);
         for (String fullPath : folders) {
             String folderPath = null;
