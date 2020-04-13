@@ -43,6 +43,7 @@ import org.talend.core.model.properties.JobletProcessItem;
 import org.talend.core.model.properties.ProcessItem;
 import org.talend.core.model.repository.IRepositoryViewObject;
 import org.talend.core.runtime.CoreRuntimePlugin;
+import org.talend.cwm.helper.ResourceHelper;
 import org.talend.designer.core.model.utils.emf.talendfile.ContextParameterType;
 import org.talend.designer.core.model.utils.emf.talendfile.ContextType;
 import org.talend.designer.core.model.utils.emf.talendfile.ProcessType;
@@ -171,6 +172,21 @@ public class ContextUtils {
         ContextParameterType parameterType = null;
         for (ContextParameterType param : (List<ContextParameterType>) contextType.getContextParameter()) {
             if (param.getName().equals(paramName)) {
+                parameterType = param;
+                break;
+            }
+        }
+        return parameterType;
+    }
+
+    public static ContextParameterType getContextParameterTypeByUUId(ContextType contextType, final String uuId) {
+        if (contextType == null || uuId == null) {
+            return null;
+        }
+
+        ContextParameterType parameterType = null;
+        for (ContextParameterType param : (List<ContextParameterType>) contextType.getContextParameter()) {
+            if (uuId.equals(ResourceHelper.getUUID(param))) {
                 parameterType = param;
                 break;
             }

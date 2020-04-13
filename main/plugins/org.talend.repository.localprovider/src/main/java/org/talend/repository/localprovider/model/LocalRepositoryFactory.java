@@ -90,6 +90,7 @@ import org.talend.commons.utils.io.FilesUtils;
 import org.talend.commons.utils.workbench.resources.ResourceUtils;
 import org.talend.core.GlobalServiceRegister;
 import org.talend.core.context.RepositoryContext;
+import org.talend.core.model.context.ContextLinkService;
 import org.talend.core.model.general.Project;
 import org.talend.core.model.general.TalendNature;
 import org.talend.core.model.metadata.MetadataManager;
@@ -2657,6 +2658,11 @@ public class LocalRepositoryFactory extends AbstractEMFRepositoryFactory impleme
             }
             this.copyScreenshotFlag = false;
         }
+        saveContextLinkInfo(item);
+    }
+
+    private void saveContextLinkInfo(Item item) throws PersistenceException {
+        ContextLinkService.getInstance().saveContextLink(item);
     }
 
     @Override

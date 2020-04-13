@@ -53,7 +53,6 @@ public class JobContextManager implements IContextManager {
      */
     private Map<String, String> nameMap = new HashMap<String, String>();
 
-    private Map<ContextItem, Map<String, String>> repositoryRenamedMap = new HashMap<ContextItem, Map<String, String>>();
 
     /*
      * when modify(renamed var, removed var, modified value) the context, it will be true.
@@ -494,26 +493,6 @@ public class JobContextManager implements IContextManager {
      */
     public Set<String> getLostParameters() {
         return this.lostParameters;
-    }
-
-    public Map<ContextItem, Map<String, String>> getRepositoryRenamedMap() {
-        return this.repositoryRenamedMap;
-    }
-
-    public void setRepositoryRenamedMap(Map<ContextItem, Map<String, String>> repositoryRenamedMap) {
-        this.repositoryRenamedMap.clear();
-        if (repositoryRenamedMap == null) {
-            return;
-        }
-        for (ContextItem item : repositoryRenamedMap.keySet()) {
-            Map<String, String> map = repositoryRenamedMap.get(item);
-            Map<String, String> tmpMap = new HashMap<String, String>();
-            for (String newName : map.keySet()) {
-                tmpMap.put(newName, map.get(newName));
-            }
-            this.repositoryRenamedMap.put(item, tmpMap);
-        }
-
     }
 
     public void addNewParameters(String param) {
