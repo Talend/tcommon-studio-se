@@ -23,6 +23,8 @@ public interface IMultipleComponentConnection {
 
     public String getConnectionType();
 
+    public String getConnectorName();
+
     public void setConnectionType(String connectionType);
 
     public String getNameTarget();
