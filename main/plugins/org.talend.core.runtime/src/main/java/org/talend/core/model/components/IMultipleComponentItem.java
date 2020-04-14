@@ -14,6 +14,8 @@ package org.talend.core.model.components;
 
 import java.util.List;
 
+import org.talend.core.model.process.INode;
+
 /**
  * DOC nrousseau class global comment. Detailled comment <br/>
  *
@@ -33,4 +35,7 @@ public interface IMultipleComponentItem {
     public String getComponent();
 
     public void setComponent(String component);
+
+    public void updateNode(INode newNode, INode oldNode);
+
 }
