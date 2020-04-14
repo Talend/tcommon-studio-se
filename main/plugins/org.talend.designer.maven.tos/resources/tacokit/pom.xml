@@ -42,7 +42,7 @@
 			<dependency>
 				<groupId>org.talend.components</groupId>
 				<artifactId>couchbase-locales</artifactId>
-				<version>1.6.5</version>
+				<version>1.6.7</version>
 			</dependency>
 		</dependencies>
 	</dependencyManagement>
