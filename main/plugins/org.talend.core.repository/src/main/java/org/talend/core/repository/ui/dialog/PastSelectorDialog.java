@@ -13,6 +13,8 @@
 package org.talend.core.repository.ui.dialog;
 
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -30,6 +32,7 @@ import org.eclipse.swt.widgets.Shell;
 import org.eclipse.swt.widgets.Table;
 import org.eclipse.swt.widgets.TableColumn;
 import org.eclipse.swt.widgets.TableItem;
+import org.talend.commons.exception.PersistenceException;
 import org.talend.core.GlobalServiceRegister;
 import org.talend.core.model.properties.Item;
 import org.talend.core.model.properties.ProcessItem;
@@ -107,7 +110,7 @@ public class PastSelectorDialog extends Dialog {
         modificationTime.setWidth(200);
         modificationTime.setText("Modification Time");
 
-        for (IRepositoryViewObject object : versions) {
+        for (IRepositoryViewObject object : getSortVersion()) {
             TableItem item = new TableItem(table, SWT.NONE);
             item.setData(object);
             item.setText(0, object.getVersion());
@@ -186,6 +189,35 @@ public class PastSelectorDialog extends Dialog {
 
         });
         return composite;
+    }
+    
+    private List<IRepositoryViewObject> getSortVersion() {
+    	List<IRepositoryViewObject> temp = new ArrayList<IRepositoryViewObject>();
+        temp.addAll(this.versions);
+        
+        Collections.sort(temp, new Comparator<IRepositoryViewObject>() {
+
+            @Override
+            public int compare(IRepositoryViewObject o1, IRepositoryViewObject o2) {
+                String version1 = o1.getVersion();
+                String version2 = o2.getVersion();
+                if(version1 != null && version2 != null) {
+                	try {
+                		float v1 = Float.parseFloat(version1);
+                        float v2 = Float.parseFloat(version2);
+                        if(v1 > v2) {
+                        	return 1;
+                        }else if(v1 < v2) {
+                        	return -1;
+                        }
+                	} catch (Exception e) {
+                		return 0;
+                	}
+                }
+                return 0;
+            }
+        });
+        return temp;
     }
 
     public Set<IRepositoryViewObject> getSelectedVersionItems() {
