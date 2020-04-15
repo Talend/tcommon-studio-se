@@ -9,9 +9,6 @@
 	</parent>
 	<artifactId>tcommon-studio-se</artifactId>
 	<packaging>pom</packaging>
-	<properties>
-		<org.talend.daikon.crypto-utils.version>0.31.10</org.talend.daikon.crypto-utils.version>
-	</properties>
 	<repositories>
 		<repository>
 			<id>talend_open</id>

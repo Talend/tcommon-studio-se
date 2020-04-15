@@ -567,8 +567,10 @@ public class ProcessorUtilities {
                     neededLibraries);
 
             // get all job testcases needed modules
-            neededLibraries.addAll(getAllJobTestcaseModules(selectedProcessItem));
-
+            Set<ModuleNeeded> testcaseModules = getAllJobTestcaseModules(selectedProcessItem);
+            LastGenerationInfo.getInstance().setTestcaseModuleNeeded(jobInfo.getJobId(), jobInfo.getJobVersion(),
+                    testcaseModules);
+            neededLibraries.addAll(testcaseModules);
             // must install the needed libraries before generate codes with poms.
             CorePlugin.getDefault().getRunProcessService().updateLibraries(neededLibraries, currentProcess,
                     retrievedJarsForCurrentBuild);
@@ -1255,7 +1257,10 @@ public class ProcessorUtilities {
                         neededLibraries);
 
                 // get all job testcases needed modules
-                neededLibraries.addAll(getAllJobTestcaseModules(selectedProcessItem));
+                Set<ModuleNeeded> testcaseModules = getAllJobTestcaseModules(selectedProcessItem);
+                LastGenerationInfo.getInstance().setTestcaseModuleNeeded(jobInfo.getJobId(), jobInfo.getJobVersion(),
+                        testcaseModules);
+                neededLibraries.addAll(testcaseModules);
 
                 // must install the needed libraries before generate codes with poms.
                 CorePlugin.getDefault().getRunProcessService().updateLibraries(neededLibraries, currentProcess,
@@ -2857,6 +2862,10 @@ public class ProcessorUtilities {
         // Put config file into jar
         ProcessorUtilities.addFileToJar(configFilePath, jarFilePath);
         return jarFilePath;
+    }
+
+    public static boolean isCIMode() {
+        return isCIMode;
     }
 
     public static void setCIMode(boolean isCIMode) {
