@@ -814,7 +814,7 @@ public class ImportBasicHandler extends AbstractImportExecutableHandler {
                         tmpItem.getProperty().setAuthor(null);
                     }
                 }
-
+                path = changePathByNewID(path, tmpItem);
                 beforeCreatingItem(selectedImportItem);
 
                 final RepositoryObjectCache repObjectcache = ImportCacheHelper.getInstance().getRepObjectcache();
@@ -1028,6 +1028,10 @@ public class ImportBasicHandler extends AbstractImportExecutableHandler {
 
     protected void beforeCreatingItem(ImportItem selectedImportItem) {
         // noting to do specially.
+    }
+    
+    protected IPath changePathByNewID(IPath path, Item item) {
+        return path;
     }
 
     protected void afterCreatedItem(ResourcesManager resManager, ImportItem selectedImportItem) throws Exception {
