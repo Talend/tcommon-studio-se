@@ -35,6 +35,18 @@
 		</repository>
 	</repositories>
 
+	<dependencyManagement>
+		<dependencies>
+			<dependency>
+				<groupId>org.talend.components</groupId>
+				<artifactId>connectors-se</artifactId>
+				<version>${tacokit.components.version}</version>
+				<type>pom</type>
+				<scope>import</scope>
+			</dependency>
+		</dependencies>
+	</dependencyManagement>
+
 	<dependencies>
 		<dependency>
 			<groupId>org.talend.components</groupId>
