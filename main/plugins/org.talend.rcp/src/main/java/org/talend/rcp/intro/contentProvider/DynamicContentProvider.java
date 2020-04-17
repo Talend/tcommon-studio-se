@@ -308,8 +308,8 @@ public class DynamicContentProvider extends IntroProvider {
     	}
     	if(!file.exists()){
     		return null;
-    	}
-    	return file.getAbsolutePath();
+    	} 	
+    	return file.toURI().toString();
     }
 
     protected void createTopMessage(Document dom, Element parent) {
