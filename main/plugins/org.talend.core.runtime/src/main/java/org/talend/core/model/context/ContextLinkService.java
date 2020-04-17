@@ -18,8 +18,10 @@ import java.util.HashMap;
 import java.util.Map;
 
 import org.apache.commons.lang3.StringUtils;
+import org.eclipse.core.resources.IFile;
 import org.eclipse.core.resources.IFolder;
 import org.eclipse.core.resources.IProject;
+import org.eclipse.core.runtime.CoreException;
 import org.talend.commons.exception.PersistenceException;
 import org.talend.commons.utils.workbench.resources.ResourceUtils;
 import org.talend.core.model.metadata.builder.connection.Connection;
@@ -40,9 +42,9 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 
 public class ContextLinkService {
 
-    private static final String LINKS_FOLDER_NAME = "links";
+    public static final String LINKS_FOLDER_NAME = "links";
 
-    private static final String LINK_FILE_POSTFIX = ".link";
+    public static final String LINK_FILE_POSTFIX = ".link";
 
     private static ContextLinkService instance = new ContextLinkService();
 
@@ -91,7 +93,6 @@ public class ContextLinkService {
                     contextParamLink.setName(contextParameterType.getName());
                     contextParamLink.setId(ResourceHelper.getUUID(contextParameterType));
                     contextLink.getParameterList().add(contextParamLink);
-
                 }
             }
         }
@@ -163,23 +164,24 @@ public class ContextLinkService {
     }
 
     private synchronized void saveContextLink(String id, ItemContextLink itemContextLink) throws PersistenceException {
-        File linkFile = calContextLinkFile(id);
+        IFile linkFile = calContextLinkFile(id);
         ObjectMapper objectMapper = new ObjectMapper();
         try {
-            objectMapper.writerWithDefaultPrettyPrinter().writeValue(linkFile, itemContextLink);
+            objectMapper.writerWithDefaultPrettyPrinter().writeValue(linkFile.getLocation().toFile(), itemContextLink);
+            linkFile.refreshLocal(0, null);
         } catch (Exception e) {
             throw new PersistenceException(e);
         }
     }
 
     public synchronized ItemContextLink loadContextLink(String id) throws PersistenceException {
-        File linkFile = calContextLinkFile(id);
+        IFile linkFile = calContextLinkFile(id);
         if (linkFile == null || !linkFile.exists()) {
             return null;
         }
         ItemContextLink contextLink = null;
         try {
-            contextLink = new ObjectMapper().readValue(linkFile, ItemContextLink.class);
+            contextLink = new ObjectMapper().readValue(linkFile.getLocation().toFile(), ItemContextLink.class);
         } catch (IOException e) {
             throw new PersistenceException(e);
         }
@@ -187,17 +189,22 @@ public class ContextLinkService {
     }
 
     public synchronized void deleteContextLink(String id) throws PersistenceException {
-        File linkFile = calContextLinkFile(id);
+        IFile linkFile = calContextLinkFile(id);
         if (linkFile != null && linkFile.exists()) {
-            linkFile.delete();
+            try {
+                linkFile.delete(true, null);
+            } catch (CoreException e) {
+                throw new PersistenceException(e);
+            }
         }
     }
 
-    public File calContextLinkFile(String id) throws PersistenceException {
+    public IFile calContextLinkFile(String id) throws PersistenceException {
         if (StringUtils.isEmpty(id)) {
             return null;
         }
-        return new File(getLinksFolder(), calLinkFileName(id));
+        IFolder linksFolder = getLinksFolder();
+        return linksFolder.getFile(calLinkFileName(id));
     }
 
     private String calLinkFileName(String id) {
@@ -206,13 +213,31 @@ public class ContextLinkService {
         return sb.toString();
     }
 
-    public static File calLinksFile(File projectFolder, String id) {
-        File linksFolder = new File(projectFolder, RepositoryConstants.SETTING_DIRECTORY + File.separator + LINKS_FOLDER_NAME);
-        File linkFile = new File(linksFolder, id + LINK_FILE_POSTFIX);
-        return linkFile;
+    public static IFile calLinksFile(IFolder projectFolder, String id) {
+        IFolder settingFolder = projectFolder.getFolder(RepositoryConstants.SETTING_DIRECTORY);
+        IFolder linksFolder = settingFolder.getFolder(LINKS_FOLDER_NAME);
+        return linksFolder.getFile(getLinkFileName(id));
     }
 
-    private File getLinksFolder() throws PersistenceException {
+    public static String calLinksFilePath(String projectPath, String id) {
+        StringBuilder sb = new StringBuilder(projectPath);
+        sb.append(File.separator).append(RepositoryConstants.SETTING_DIRECTORY);
+        sb.append(File.separator).append(LINKS_FOLDER_NAME);
+        sb.append(File.separator).append(getLinkFileName(id));
+        return sb.toString();
+    }
+
+    public static IFile calLinksFile(IProject project, String id) {
+        IFolder settingFolder = project.getFolder(RepositoryConstants.SETTING_DIRECTORY);
+        IFolder linksFolder = settingFolder.getFolder(LINKS_FOLDER_NAME);
+        return linksFolder.getFile(getLinkFileName(id));
+    }
+
+    public static String getLinkFileName(String id) {
+        return id + LINK_FILE_POSTFIX;
+    }
+
+    private IFolder getLinksFolder() throws PersistenceException {
         IProject iProject = ResourceUtils.getProject(ProjectManager.getInstance().getCurrentProject().getTechnicalLabel());
         IFolder settingFolder = iProject.getFolder(RepositoryConstants.SETTING_DIRECTORY);
         if (!settingFolder.exists()) {
@@ -222,7 +247,7 @@ public class ContextLinkService {
         if (!linksFolder.exists()) {
             ResourceUtils.createFolder(linksFolder);
         }
-        return new File(linksFolder.getLocationURI());
+        return linksFolder;
     }
 
 }
