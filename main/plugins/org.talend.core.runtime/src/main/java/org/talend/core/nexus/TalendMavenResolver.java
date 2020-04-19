@@ -18,6 +18,7 @@ import java.util.Collection;
 import java.util.Dictionary;
 import java.util.Hashtable;
 
+import org.eclipse.m2e.core.MavenPlugin;
 import org.ops4j.pax.url.mvn.MavenResolver;
 import org.osgi.framework.BundleContext;
 import org.osgi.framework.ServiceReference;
@@ -46,6 +47,8 @@ public class TalendMavenResolver {
     private static String talendResolverKey = "";
 
     private static MavenResolver mavenResolver = null;
+
+    private static final String MVN_USER_SETTING_KEY = "org.ops4j.pax.url.mvn.settings";
 
     /**
      *
@@ -86,6 +89,13 @@ public class TalendMavenResolver {
         }
         if (props == null) {
             props = new Hashtable<String, String>();
+        }
+        // https://jira.talendforge.org/browse/TUP-26752
+        String configFile = props.get(MVN_USER_SETTING_KEY);
+        if (configFile == null || configFile.trim().isEmpty()) {
+            // set existing user settings file
+            String studioUserSettingsFile = MavenPlugin.getMavenConfiguration().getUserSettingsFile();
+            props.put(MVN_USER_SETTING_KEY, studioUserSettingsFile);
         }
         final BundleContext context = CoreRuntimePlugin.getInstance().getBundle().getBundleContext();
         Collection<ServiceReference<ManagedService>> managedServiceRefs = context.getServiceReferences(ManagedService.class,
