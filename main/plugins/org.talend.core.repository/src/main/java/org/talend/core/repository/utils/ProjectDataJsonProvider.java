@@ -117,7 +117,9 @@ public class ProjectDataJsonProvider {
             RecycleBin recycleBin = RecycleBinManager.getInstance().getRecycleBin(project);
             project.getDeletedFolders().clear();
             for (String element : recycleBin.getDeletedFolders()) {
-                project.getDeletedFolders().add(element);
+                if (element != null) {
+                    project.getDeletedFolders().add(element);
+                }
             }
         }
         if ((loadContent & CONTENT_MIGRATIONTASK) > 0) {

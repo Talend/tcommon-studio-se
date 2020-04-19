@@ -16,6 +16,7 @@ import java.util.HashMap;
 import java.util.HashSet;
 import java.util.LinkedHashSet;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 import org.talend.core.model.general.ModuleNeeded;
 import org.talend.core.model.process.JobInfo;
@@ -33,6 +34,8 @@ public class LastGenerationInfo {
     private HashMap<String, Set<ModuleNeeded>> modulesNeededWithSubjobPerJob;
 
     private HashMap<String, Set<ModuleNeeded>> highPriorityModuleNeeded;
+
+    private HashMap<String, Set<ModuleNeeded>> testcaseModuleNeeded;
 
     private HashMap<String, Set<String>> routinesNeededWithSubjobPerJob;
 
@@ -53,6 +56,7 @@ public class LastGenerationInfo {
         contextPerJob = new HashMap<String, Set<String>>();
         modulesNeededWithSubjobPerJob = new HashMap<String, Set<ModuleNeeded>>();
         highPriorityModuleNeeded = new HashMap<>();
+        testcaseModuleNeeded = new HashMap<>();
         lastGeneratedjobs = new HashSet<JobInfo>();
         routinesNeededPerJob = new HashMap<String, Set<String>>();
         routinesNeededWithSubjobPerJob = new HashMap<String, Set<String>>();
@@ -251,6 +255,20 @@ public class LastGenerationInfo {
         highPriorityModuleNeeded.get(key).addAll(moduleNeeded);
     }
 
+    public Set<ModuleNeeded> getTestcaseModuleNeeded(String jobId, String jobVersion) {
+        String key = getProcessKey(jobId, jobVersion);
+        if (!testcaseModuleNeeded.containsKey(key)) {
+            testcaseModuleNeeded.put(key, new HashSet<>());
+        }
+        return testcaseModuleNeeded.get(key);
+    }
+
+    public void setTestcaseModuleNeeded(String jobId, String jobVersion, Set<ModuleNeeded> modulesNeeded) {
+        Set<ModuleNeeded> set = modulesNeeded.stream().map(m -> m.clone())
+                .peek(m -> m.getExtraAttributes().put(ModuleNeeded.ASSEMBLY_OPTIONAL, true)).collect(Collectors.toSet());
+        testcaseModuleNeeded.put(getProcessKey(jobId, jobVersion), set);
+    }
+
     public void clearHighPriorityModuleNeeded() {
         highPriorityModuleNeeded.clear();
     }
@@ -292,19 +310,11 @@ public class LastGenerationInfo {
         routinesNeededWithSubjobPerJob.put(key, new HashSet<String>(modulesNeeded));
     }
 
-    public void clearModulesNeededWithSubjobPerJob() {
-        if (!modulesNeededWithSubjobPerJob.isEmpty()) {
-            modulesNeededWithSubjobPerJob.clear();
-        }
-    }
-
-    /**
-     * Clear modules per job cache, not thread safe
-     */
-    public void clearModulesNeededPerJob() {
-        if (!modulesNeededPerJob.isEmpty()) {
-            modulesNeededPerJob.clear();
-        }
+    public void clearCaches() {
+        clearHighPriorityModuleNeeded();
+        modulesNeededPerJob.clear();
+        modulesNeededWithSubjobPerJob.clear();
+        testcaseModuleNeeded.clear();
     }
 
     public void clean() {
@@ -312,6 +322,7 @@ public class LastGenerationInfo {
         routinesNeededPerJob.clear();
         modulesNeededWithSubjobPerJob.clear();
         highPriorityModuleNeeded.clear();
+        testcaseModuleNeeded.clear();
         routinesNeededWithSubjobPerJob.clear();
         contextPerJob.clear();
 

@@ -67,13 +67,25 @@ public class ContextSetsSelectionDialog extends SelectionDialog {
         initSets();
     }
 
-    /**
-     * DOC xqliu Comment method "initDialog".
-     *
-     * @param object
-     * @param cancelFlag
-     * @param message
-     */
+    public ContextSetsSelectionDialog(ContextItem contextItem) {
+        this(calcShell(), contextItem, false);
+    }
+
+    public ContextSetsSelectionDialog(List<ContextType> contexts, String defaultContextName, boolean canCancel) {
+        super(calcShell());
+        initDialog(contexts, canCancel, Messages.getString("ContextSetsSelectionDialog.ReportMessages")); //$NON-NLS-1$
+        this.defalutContext = defaultContextName;
+        initSets();
+    }
+
+    public ContextSetsSelectionDialog(Shell parentShell, Object source, boolean canCancel, String defaultContextName,
+            String message) {
+        super(parentShell == null ? calcShell() : parentShell);
+        initDialog(source, canCancel, message); // $NON-NLS-1$
+        this.defalutContext = defaultContextName;
+        initSets();
+    }
+
     private void initDialog(Object object, boolean cancelFlag, String message) {
         this.source = object;
         this.canCancel = cancelFlag;
@@ -87,17 +99,6 @@ public class ContextSetsSelectionDialog extends SelectionDialog {
     protected void configureShell(Shell newShell) {
         super.configureShell(newShell);
         newShell.setImage(ImageProvider.getImage(ECoreImage.CONTEXT_ICON));
-    }
-
-    public ContextSetsSelectionDialog(ContextItem contextItem) {
-        this(calcShell(), contextItem, false);
-    }
-
-    public ContextSetsSelectionDialog(List<ContextType> contexts, String defaultContextName, boolean canCancel) {
-        super(calcShell());
-        initDialog(contexts, canCancel, Messages.getString("ContextSetsSelectionDialog.ReportMessages")); //$NON-NLS-1$
-        this.defalutContext = defaultContextName;
-        initSets();
     }
 
     /**

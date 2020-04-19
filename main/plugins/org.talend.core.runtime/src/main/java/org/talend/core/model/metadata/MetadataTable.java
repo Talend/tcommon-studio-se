@@ -243,6 +243,11 @@ public class MetadataTable implements IMetadataTable, Cloneable {
      */
     @Override
     public boolean sameMetadataAs(IMetadataTable input, int options) {
+    	return sameMetadataAs(input, options, false);
+    }
+    
+    @Override
+    public boolean sameMetadataAs(IMetadataTable input, int options, boolean order) {
         if (this == input) {
             return true;
         }
@@ -263,7 +268,7 @@ public class MetadataTable implements IMetadataTable, Cloneable {
                 // test if standard columns (no custom, or same input / output)
                 for (int i = 0; i < inputColumnListWithUnselected.size(); i++) {
                     IMetadataColumn otherColumn = inputColumnListWithUnselected.get(i);
-                    if (isRepository) {
+                    if (isRepository && !order) {
                         boolean exist = false;
                         for (int j = 0; j < thisColumnListWithUnselected.size(); j++) {
                             IMetadataColumn myColumn = thisColumnListWithUnselected.get(j);

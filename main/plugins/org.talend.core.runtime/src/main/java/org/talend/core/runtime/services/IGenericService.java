@@ -15,7 +15,9 @@ package org.talend.core.runtime.services;
 import java.util.List;
 import java.util.Map;
 
+import org.talend.core.GlobalServiceRegister;
 import org.talend.core.IService;
+import org.talend.core.model.components.IComponent;
 import org.talend.core.model.process.IElementParameter;
 import org.talend.core.model.process.INode;
 
@@ -41,5 +43,14 @@ public interface IGenericService extends IService {
     public List<Map<String, String>> getAllGenericComponentsInfo();
 
     public void resetReferenceValue(INode curNode, String oldConnectionName, String newConnectionName);
+
+    public boolean isTcompv0(IComponent component);
+
+    public static IGenericService getService() {
+        if (GlobalServiceRegister.getDefault().isServiceRegistered(IGenericService.class)) {
+            return GlobalServiceRegister.getDefault().getService(IGenericService.class);
+        }
+        return null;
+    }
 
 }

@@ -64,7 +64,10 @@ public interface TalendProcessOptionConstants {
 
     public static final int MODULES_WITH_INDEPENDENT = 1 << 2;
 
-    // include joblet module but without joblet's dependencies
+    /**
+     * @Deprecated will get all modules of node inside joblet recursively, use {@link #MODULES_DEFAULT} instead.
+     */
+    @Deprecated
     public static final int MODULES_WITH_JOBLET = 1 << 3;
 
     public static final int MODULES_FOR_MR = 1 << 4;
