@@ -12,11 +12,6 @@
 // ============================================================================
 package org.talend.librariesmanager.model.service;
 
-import java.io.File;
-import java.io.IOException;
-import java.util.HashMap;
-import java.util.Map;
-
 import org.eclipse.core.runtime.Path;
 import org.eclipse.core.runtime.Platform;
 import org.eclipse.emf.common.util.URI;
@@ -32,6 +27,11 @@ import org.talend.librariesmanager.emf.librariesindex.LibrariesIndex;
 import org.talend.librariesmanager.emf.librariesindex.LibrariesindexFactory;
 import org.talend.librariesmanager.emf.librariesindex.LibrariesindexPackage;
 import org.talend.librariesmanager.emf.librariesindex.util.LibrariesindexResourceFactoryImpl;
+
+import java.io.File;
+import java.io.IOException;
+import java.util.HashMap;
+import java.util.Map;
 
 public class LibrariesIndexManager {
 
@@ -58,6 +58,7 @@ public class LibrariesIndexManager {
             if (!new File(getStudioIndexPath()).exists()) {
                 studioLibIndex = LibrariesindexFactory.eINSTANCE.createLibrariesIndex();
             } else {
+                //try to load the existing data
                 Resource resource = createLibrariesIndexResource(getIndexFileInstallFolder(), LIBRARIES_INDEX);
                 Map optionMap = new HashMap();
                 optionMap.put(XMLResource.OPTION_DEFER_ATTACHMENT, Boolean.TRUE);
@@ -65,14 +66,22 @@ public class LibrariesIndexManager {
                 optionMap.put(XMLResource.OPTION_USE_PARSER_POOL, new XMLParserPoolImpl());
                 optionMap.put(XMLResource.OPTION_USE_XML_NAME_TO_FEATURE_MAP, new HashMap());
                 optionMap.put(XMLResource.OPTION_USE_DEPRECATED_METHODS, Boolean.FALSE);
-                resource.load(optionMap);
-                studioLibIndex = (LibrariesIndex) EcoreUtil.getObjectByType(resource.getContents(),
-                        LibrariesindexPackage.eINSTANCE.getLibrariesIndex());
+                try {
+                    resource.load(optionMap);
+                    studioLibIndex = (LibrariesIndex) EcoreUtil.getObjectByType(resource.getContents(),
+                            LibrariesindexPackage.eINSTANCE.getLibrariesIndex());
+                } catch (Resource.IOWrappedException ioe) {
+                    //case of corrupted Index
+                    studioLibIndex = LibrariesindexFactory.eINSTANCE.createLibrariesIndex();
+                    createStudioIndexResource();
+                    throw ioe;
+                }
             }
 
             if (!new File(getMavenIndexPath()).exists()) {
                 mavenLibIndex = LibrariesindexFactory.eINSTANCE.createLibrariesIndex();
             } else {
+                //try to load the existing data
                 Resource resource = createLibrariesIndexResource(getIndexFileInstallFolder(), MAVEN_INDEX);
                 Map optionMap = new HashMap();
                 optionMap.put(XMLResource.OPTION_DEFER_ATTACHMENT, Boolean.TRUE);
@@ -80,9 +89,16 @@ public class LibrariesIndexManager {
                 optionMap.put(XMLResource.OPTION_USE_PARSER_POOL, new XMLParserPoolImpl());
                 optionMap.put(XMLResource.OPTION_USE_XML_NAME_TO_FEATURE_MAP, new HashMap());
                 optionMap.put(XMLResource.OPTION_USE_DEPRECATED_METHODS, Boolean.FALSE);
-                resource.load(optionMap);
-                mavenLibIndex = (LibrariesIndex) EcoreUtil.getObjectByType(resource.getContents(),
-                        LibrariesindexPackage.eINSTANCE.getLibrariesIndex());
+                try {
+                    resource.load(optionMap);
+                    mavenLibIndex = (LibrariesIndex) EcoreUtil.getObjectByType(resource.getContents(),
+                            LibrariesindexPackage.eINSTANCE.getLibrariesIndex());
+                } catch (Resource.IOWrappedException ioe) {
+                    //case of corrupted Index
+                    mavenLibIndex = LibrariesindexFactory.eINSTANCE.createLibrariesIndex();
+                    createMavenIndexResource();
+                    throw ioe;
+                }
             }
 
         } catch (IOException e) {
@@ -97,6 +113,14 @@ public class LibrariesIndexManager {
 
     public void saveMavenIndexResource() {
         saveResource(mavenLibIndex, MAVEN_INDEX);
+    }
+
+    public void createMavenIndexResource() {
+        createLibrariesIndexResource(getIndexFileInstallFolder(), MAVEN_INDEX);
+    }
+
+    public void createStudioIndexResource() {
+        createLibrariesIndexResource(getIndexFileInstallFolder(), LIBRARIES_INDEX);
     }
 
     private void saveResource(EObject eObject, String fileName) {

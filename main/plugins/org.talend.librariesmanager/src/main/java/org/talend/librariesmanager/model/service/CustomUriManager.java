@@ -12,14 +12,7 @@
 // ============================================================================
 package org.talend.librariesmanager.model.service;
 
-import java.io.BufferedReader;
-import java.io.File;
-import java.io.FileReader;
-import java.io.IOException;
-import java.util.Set;
-
 import net.sf.json.JSONObject;
-
 import org.codehaus.jackson.map.ObjectMapper;
 import org.eclipse.core.resources.IFolder;
 import org.eclipse.core.resources.IProject;
@@ -32,6 +25,12 @@ import org.talend.core.runtime.CoreRuntimePlugin;
 import org.talend.repository.ProjectManager;
 import org.talend.repository.RepositoryWorkUnit;
 import org.talend.repository.model.IProxyRepositoryFactory;
+
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileReader;
+import java.io.IOException;
+import java.util.Set;
 
 /**
  * created by wchen on Aug 18, 2017 Detailled comment
@@ -112,9 +111,12 @@ public class CustomUriManager {
     private String getResourcePath() {
         try {
             Project currentProject = ProjectManager.getInstance().getCurrentProject();
-            IProject project = ResourceUtils.getProject(currentProject);
-            IFolder settingsFolder = project.getFolder(".settings");
-            return settingsFolder.getLocation().toPortableString();
+            //when starting, the project could not be opened.
+            if (currentProject != null) {
+                IProject project = ResourceUtils.getProject(currentProject);
+                IFolder settingsFolder = project.getFolder(".settings");
+                return settingsFolder.getLocation().toPortableString();
+            }
         } catch (PersistenceException e) {
             ExceptionHandler.process(e);
         }
@@ -132,7 +134,7 @@ public class CustomUriManager {
 
     public String get(String key) {
         reloadCustomMapping();
-        if (customURIObject.containsKey(key)) {
+        if (customURIObject != null && customURIObject.containsKey(key)) {
             return customURIObject.getString(key);
         }
         return null;

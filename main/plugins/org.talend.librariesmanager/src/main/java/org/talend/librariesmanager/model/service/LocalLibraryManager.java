@@ -12,29 +12,6 @@
 // ============================================================================
 package org.talend.librariesmanager.model.service;
 
-import java.io.ByteArrayInputStream;
-import java.io.ByteArrayOutputStream;
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
-import java.io.IOException;
-import java.io.ObjectInputStream;
-import java.io.ObjectOutputStream;
-import java.net.MalformedURLException;
-import java.net.URI;
-import java.net.URL;
-import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.Collection;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
-
-import javax.xml.bind.DatatypeConverter;
-
 import org.apache.commons.codec.digest.DigestUtils;
 import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
@@ -66,13 +43,7 @@ import org.talend.core.model.general.ModuleNeeded;
 import org.talend.core.model.general.ModuleNeeded.ELibraryInstallStatus;
 import org.talend.core.model.general.ModuleStatusProvider;
 import org.talend.core.model.repository.ERepositoryObjectType;
-import org.talend.core.nexus.ArtifactRepositoryBean;
-import org.talend.core.nexus.IRepositoryArtifactHandler;
-import org.talend.core.nexus.NexusConstants;
-import org.talend.core.nexus.NexusServerUtils;
-import org.talend.core.nexus.RepositoryArtifactHandlerManager;
-import org.talend.core.nexus.TalendLibsServerManager;
-import org.talend.core.nexus.TalendMavenResolver;
+import org.talend.core.nexus.*;
 import org.talend.core.prefs.ITalendCorePrefConstants;
 import org.talend.core.runtime.maven.MavenArtifact;
 import org.talend.core.runtime.maven.MavenConstants;
@@ -81,11 +52,19 @@ import org.talend.core.runtime.services.IMavenUIService;
 import org.talend.core.utils.TalendQuoteUtils;
 import org.talend.designer.maven.tools.BuildCacheManager;
 import org.talend.designer.maven.utils.PomUtil;
+import org.talend.librariesmanager.emf.librariesindex.LibrariesIndex;
 import org.talend.librariesmanager.maven.MavenArtifactsHandler;
 import org.talend.librariesmanager.model.ExtensionModuleManager;
 import org.talend.librariesmanager.model.ModulesNeededProvider;
 import org.talend.librariesmanager.prefs.LibrariesManagerUtils;
 import org.talend.osgi.hook.notification.JarMissingObservable;
+
+import javax.xml.bind.DatatypeConverter;
+import java.io.*;
+import java.net.MalformedURLException;
+import java.net.URI;
+import java.net.URL;
+import java.util.*;
 
 /**
  * DOC ycbai class global comment. Detailled comment
@@ -141,7 +120,12 @@ public class LocalLibraryManager implements ILibraryManagerService, IChangedLibr
         File indexFile = new File(LibrariesIndexManager.getInstance().getStudioIndexPath());
         File mvnIndexFile = new File(LibrariesIndexManager.getInstance().getMavenIndexPath());
         if (indexFile.exists() && mvnIndexFile.exists()) {
-            return LibrariesIndexManager.getInstance().getStudioLibIndex().isInitialized();
+            //case of corrupted index.
+            if (LibrariesIndexManager.getInstance().getStudioLibIndex() == null) {
+                return false;
+            } else {
+                return LibrariesIndexManager.getInstance().getStudioLibIndex().isInitialized();
+            }
         }
         return false;
     }
@@ -1500,7 +1484,17 @@ public class LocalLibraryManager implements ILibraryManagerService, IChangedLibr
      */
     @Override
     public void savePlatfromURLIndex(Map<String, String> libsToRelativePath, IProgressMonitor... monitorWrap) {
-        EMap<String, String> jarsToRelative = LibrariesIndexManager.getInstance().getStudioLibIndex().getJarsToRelativePath();
+        LibrariesIndex studioLibrariesIndex = LibrariesIndexManager.getInstance().getStudioLibIndex();
+        //check the index exists, otherwise create it.
+        if (studioLibrariesIndex == null) {
+            LibrariesIndexManager.getInstance().createStudioIndexResource();
+        }
+        //hope this work or cancel (disk full)
+        studioLibrariesIndex = LibrariesIndexManager.getInstance().getStudioLibIndex();
+        if (studioLibrariesIndex == null) {
+            return;
+        }
+        EMap<String, String> jarsToRelative = studioLibrariesIndex.getJarsToRelativePath();
         boolean modified = false;
         for (String key : libsToRelativePath.keySet()) {
             if (checkJarInstalledFromPlatform(libsToRelativePath.get(key))) {
@@ -1521,7 +1515,19 @@ public class LocalLibraryManager implements ILibraryManagerService, IChangedLibr
      */
     @Override
     public void saveMavenIndex(Map<String, String> libsMavenUriToDeploy, IProgressMonitor... monitorWrap) {
-        EMap<String, String> jarsToMavenuri = LibrariesIndexManager.getInstance().getMavenLibIndex().getJarsToRelativePath();
+
+        LibrariesIndex libraryIndex = LibrariesIndexManager.getInstance().getMavenLibIndex();
+        //check the index exists, otherwise create it.
+        if (libraryIndex == null) {
+            LibrariesIndexManager.getInstance().createMavenIndexResource();
+        }
+        //hope this work or cancel (disk full)
+        libraryIndex = LibrariesIndexManager.getInstance().getMavenLibIndex();
+        if (libraryIndex == null) {
+            return;
+        }
+
+        EMap<String, String> jarsToMavenuri = libraryIndex.getJarsToRelativePath();
         boolean modified = false;
         for (String key : libsMavenUriToDeploy.keySet()) {
             String mvnUri = libsMavenUriToDeploy.get(key);
@@ -1624,8 +1630,14 @@ public class LocalLibraryManager implements ILibraryManagerService, IChangedLibr
      */
     @Override
     public String getMavenUriFromIndex(String jarName) {
-        EMap<String, String> jarsToMavenuri = LibrariesIndexManager.getInstance().getMavenLibIndex().getJarsToRelativePath();
-        return jarsToMavenuri.get(jarName);
+        LibrariesIndex mavenLibraryIndex = LibrariesIndexManager.getInstance().getMavenLibIndex();
+        if (mavenLibraryIndex != null) {
+            EMap<String, String> jarsToMavenuri = mavenLibraryIndex.getJarsToRelativePath();
+            if (jarsToMavenuri != null) {
+                jarsToMavenuri.get(jarName);
+            }
+        }
+        return null;
     }
 
     /*
@@ -1665,8 +1677,12 @@ public class LocalLibraryManager implements ILibraryManagerService, IChangedLibr
      */
     @Override
     public String getPlatformURLFromIndex(String jarName) {
-        EMap<String, String> platformURLMap = LibrariesIndexManager.getInstance().getStudioLibIndex().getJarsToRelativePath();
-        return platformURLMap.get(jarName);
+        LibrariesIndex librariesIndex = LibrariesIndexManager.getInstance().getStudioLibIndex();
+        if (librariesIndex != null) {
+            EMap<String, String> platformURLMap = librariesIndex.getJarsToRelativePath();
+            return platformURLMap.get(jarName);
+        }
+        return null;
     }
 
     @Override
