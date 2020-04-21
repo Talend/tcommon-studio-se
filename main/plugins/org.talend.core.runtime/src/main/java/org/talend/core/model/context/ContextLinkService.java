@@ -240,13 +240,7 @@ public class ContextLinkService {
     private IFolder getLinksFolder() throws PersistenceException {
         IProject iProject = ResourceUtils.getProject(ProjectManager.getInstance().getCurrentProject().getTechnicalLabel());
         IFolder settingFolder = iProject.getFolder(RepositoryConstants.SETTING_DIRECTORY);
-        if (!settingFolder.exists()) {
-            ResourceUtils.createFolder(settingFolder);
-        }
         IFolder linksFolder = settingFolder.getFolder(LINKS_FOLDER_NAME);
-        if (!linksFolder.exists()) {
-            ResourceUtils.createFolder(linksFolder);
-        }
         return linksFolder;
     }
 

@@ -34,6 +34,7 @@ import org.apache.commons.lang.ArrayUtils;
 import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Priority;
 import org.eclipse.core.resources.IFile;
+import org.eclipse.core.resources.IFolder;
 import org.eclipse.core.resources.IProject;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.FileLocator;
@@ -839,13 +840,13 @@ public class ImportBasicHandler extends AbstractImportExecutableHandler {
                     logError(e);
                 }
                 if (selectedImportItem.isImported()) {
-                    File linkFile = findSourceLinkFile(selectedImportItem);
+                    File linkFile = findSourceContextLinkFile(selectedImportItem);
                     selectedImportItem.setImportPath(path.toPortableString());
                     selectedImportItem.setRepositoryType(itemType);
                     selectedImportItem.setItemId(selectedImportItem.getProperty().getId());
                     selectedImportItem.setItemVersion(selectedImportItem.getProperty().getVersion());
                     if (linkFile != null && linkFile.exists()) {
-                        copyLinkFile(linkFile, selectedImportItem);
+                        copyContextLinkFile(linkFile, tmpItem.getProperty().getId());
                     }
                     repObjectcache.addToCache(tmpItem);
                 }
@@ -883,10 +884,10 @@ public class ImportBasicHandler extends AbstractImportExecutableHandler {
         }
     }
 
-    protected File findSourceLinkFile(ImportItem importItem) {
+    protected File findSourceContextLinkFile(ImportItem importItem) {
         String techLabel = importItem.getItemProject().getTechnicalLabel();
         File projectFolder = null, linkFile = null;
-        File file = new File(importItem.getItemPath());
+        File file = new File(importItem.getPath().toPortableString());
         while (file.getParentFile() != null) {
             if (file.getParentFile().getName().equals(techLabel)) {
                 projectFolder = file.getParentFile();
@@ -895,22 +896,29 @@ public class ImportBasicHandler extends AbstractImportExecutableHandler {
             file = file.getParentFile();
         }
         if (projectFolder != null) {
-            linkFile = new File(ContextLinkService.calLinksFilePath(projectFolder.getAbsolutePath(), importItem.getItemId()));
+            linkFile = new File(
+                    ContextLinkService.calLinksFilePath(projectFolder.getAbsolutePath(), importItem.getOriginProperyId()));
         }
-
         return linkFile;
     }
 
-    protected void copyLinkFile(File sourceLinkFile, ImportItem selectedImportItem)
+    protected void copyContextLinkFile(File sourceLinkFile, String targetId)
             throws IOException, PersistenceException, CoreException {
         String techLabel = ProjectManager.getInstance().getCurrentProject().getTechnicalLabel();
         IProject iProject = ResourceUtils.getProject(techLabel);
-        IFile targetLinkFile = ContextLinkService.calLinksFile(iProject,
-                selectedImportItem.getItemId());
-        if (!targetLinkFile.exists()) {
-            targetLinkFile.create(new FileInputStream(sourceLinkFile), true, null);
+        IFolder settingFolder = ResourceUtils.getFolder(iProject, RepositoryConstants.SETTING_DIRECTORY, false);
+        if (!settingFolder.exists()) {
+            settingFolder.create(true, true, null);
+        }
+        IFolder linksFolder = settingFolder.getFolder(ContextLinkService.LINKS_FOLDER_NAME);
+        if (!linksFolder.exists()) {
+            linksFolder.create(true, true, null);
+        }
+        IFile linkFile = linksFolder.getFile(ContextLinkService.getLinkFileName(targetId));
+        if (!linkFile.exists()) {
+            ResourceUtils.createFile(new FileInputStream(sourceLinkFile), linkFile);
         } else {
-            targetLinkFile.setContents(new FileInputStream(sourceLinkFile), true, true, null);
+            ResourceUtils.setFileContent(new FileInputStream(sourceLinkFile), linkFile);
         }
     }
 

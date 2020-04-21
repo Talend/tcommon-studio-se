@@ -476,15 +476,25 @@ public class ImportExportHandlersManager {
 
             private int getImportPriority(ImportItem item) {
                 if (ERepositoryObjectType.CONTEXT.getType().equals(item.getRepositoryType().getType())) {
-                    return 1;
+                    return 10;
                 } else if ("SERVICES".equals(item.getRepositoryType().getType())) {
-                    return 2;
+                    return 20;
+                } else if (ERepositoryObjectType.JOBLET.getType().equals(item.getRepositoryType().getType())) {
+                    return 30;
+                } else if (ERepositoryObjectType.PROCESS_ROUTELET.getType().equals(item.getRepositoryType().getType())) {
+                    return 40;
                 }
                 return 100;
             }
         });
         ImportCacheHelper importCacheHelper = ImportCacheHelper.getInstance();
         try {
+
+            for (ImportItem itemRecord : checkedItemRecords) {
+                if (itemRecord.getProperty() != null) {
+                    itemRecord.setOriginProperyId(itemRecord.getProperty().getId());
+                }
+            }
             // cache
             importCacheHelper.beforeImportItems();
 
