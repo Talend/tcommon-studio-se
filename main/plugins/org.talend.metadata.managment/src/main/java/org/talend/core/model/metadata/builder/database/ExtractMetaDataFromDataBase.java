@@ -42,6 +42,7 @@ import org.talend.commons.utils.workbench.extensions.IExtensionPointLimiter;
 import org.talend.core.database.EDatabase4DriverClassName;
 import org.talend.core.database.EDatabaseTypeName;
 import org.talend.core.database.conn.template.EDatabaseConnTemplate;
+import org.talend.core.database.conn.version.EDatabaseVersion4Drivers;
 import org.talend.core.model.metadata.IMetadataConnection;
 import org.talend.core.model.metadata.IMetadataTable;
 import org.talend.core.model.metadata.builder.ConvertionHelper;
@@ -334,7 +335,7 @@ public class ExtractMetaDataFromDataBase {
                     return connectionStatus;
                 }
             }
-            if (EDatabaseTypeName.SYBASEASE == EDatabaseTypeName.getTypeFromDisplayName(dbType)) {
+            if (StringUtils.equals(EDatabaseVersion4Drivers.SYBASEIQ_16.getVersionValue(), dbVersionString)) {
                 boolean exsitedSybaseDB = checkSybaseDB(connection, sidOrDatabase);
                 if (!exsitedSybaseDB) {
                     connectionStatus.setMessageException(
@@ -387,8 +388,10 @@ public class ExtractMetaDataFromDataBase {
             try {
                 stmt = connection.createStatement();
                 extractMeta.setQueryStatementTimeout(stmt);
-                resultSet = stmt.executeQuery("sp_helpdb " + database);
-                return true;
+                String sql = "select * from master.dbo.sysdatabases where name='"+database+"'";
+                resultSet = stmt.executeQuery(sql);
+                boolean next = resultSet.next();
+                return next;
             } catch (SQLException e) {
                 ExceptionHandler.process(e);
                 return false;
