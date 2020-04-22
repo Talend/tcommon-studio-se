@@ -17,6 +17,7 @@ import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
 
+import org.talend.commons.utils.Version;
 import org.talend.core.model.repository.IRepositoryViewObject;
 
 /**
@@ -36,17 +37,7 @@ public class RepositoryNodeSortUtil {
                 String version1 = o1.getVersion();
                 String version2 = o2.getVersion();
                 if(version1 != null && version2 != null) {
-                	try {
-                		float v1 = Float.parseFloat(version1);
-                        float v2 = Float.parseFloat(version2);
-                        if(v1 > v2) {
-                        	return 1;
-                        }else if(v1 < v2) {
-                        	return -1;
-                        }
-                	} catch (Exception e) {
-                		return 0;
-                	}
+                	return new Version(version1).compareTo(new Version(version2));
                 }
                 return 0;
             }
