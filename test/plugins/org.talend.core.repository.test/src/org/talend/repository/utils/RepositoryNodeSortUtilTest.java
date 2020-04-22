@@ -36,7 +36,7 @@ public class RepositoryNodeSortUtilTest {
     public void testGetSortVersion() {
 		Property property1 = PropertiesFactory.eINSTANCE.createProperty();
         property1.setId("property1"); //$NON-NLS-1$
-        property1.setVersion("0.1"); //$NON-NLS-1$
+        property1.setVersion("2.9"); //$NON-NLS-1$
         property1.setLabel("test1");//$NON-NLS-1$
         ProcessItem item1 = PropertiesFactory.eINSTANCE.createProcessItem();
         ItemState state = PropertiesFactory.eINSTANCE.createItemState();
@@ -58,7 +58,7 @@ public class RepositoryNodeSortUtilTest {
         
         property1 = PropertiesFactory.eINSTANCE.createProperty();
         property1.setId("property1"); //$NON-NLS-1$
-        property1.setVersion("0.2"); //$NON-NLS-1$
+        property1.setVersion("2.11"); //$NON-NLS-1$
         property1.setLabel("test1");//$NON-NLS-1$
         item1 = PropertiesFactory.eINSTANCE.createProcessItem();
         state = PropertiesFactory.eINSTANCE.createItemState();
@@ -67,52 +67,16 @@ public class RepositoryNodeSortUtilTest {
         property1.setItem(item1);
         IRepositoryViewObject object3 = new RepositoryViewObject(property1, true);
         
-        property1 = PropertiesFactory.eINSTANCE.createProperty();
-        property1.setId("property1"); //$NON-NLS-1$
-        property1.setVersion(null); //$NON-NLS-1$
-        property1.setLabel("test1");//$NON-NLS-1$
-        item1 = PropertiesFactory.eINSTANCE.createProcessItem();
-        state = PropertiesFactory.eINSTANCE.createItemState();
-        state.setDeleted(false);
-        item1.setState(state);
-        property1.setItem(item1);
-        IRepositoryViewObject object4 = new RepositoryViewObject(property1, true);
-        
-        property1 = PropertiesFactory.eINSTANCE.createProperty();
-        property1.setId("property1"); //$NON-NLS-1$
-        property1.setVersion("a"); //$NON-NLS-1$
-        property1.setLabel("test1");//$NON-NLS-1$
-        item1 = PropertiesFactory.eINSTANCE.createProcessItem();
-        state = PropertiesFactory.eINSTANCE.createItemState();
-        state.setDeleted(false);
-        item1.setState(state);
-        property1.setItem(item1);
-        IRepositoryViewObject object5 = new RepositoryViewObject(property1, true);
-        
         List<IRepositoryViewObject> temp = new ArrayList<IRepositoryViewObject>();
-        temp.add(object5);
-        temp.add(object1);
         RepositoryNodeSortUtil util = new RepositoryNodeSortUtil();
-        List<IRepositoryViewObject>  result = util.getSortVersion(temp);
-        assertTrue("a".equals(result.get(0).getVersion()));
-        assertTrue("0.1".equals(result.get(1).getVersion()));
-        
-        temp = new ArrayList<IRepositoryViewObject>();
-        temp.add(object4);
-        temp.add(object1);
-        util = new RepositoryNodeSortUtil();
-        result = util.getSortVersion(temp);
-        assertTrue(result.get(0).getVersion() == null);
-        assertTrue("0.1".equals(result.get(1).getVersion()));
         
         temp = new ArrayList<IRepositoryViewObject>();
         temp.add(object3);
         temp.add(object2);
         temp.add(object1);
-        util = new RepositoryNodeSortUtil();
-        result = util.getSortVersion(temp);
-        assertTrue("0.1".equals(result.get(0).getVersion()));
-        assertTrue("0.2".equals(result.get(1).getVersion()));
-        assertTrue("0.3".equals(result.get(2).getVersion()));
+        List<IRepositoryViewObject>  result = util.getSortVersion(temp);
+        assertTrue("0.3".equals(result.get(0).getVersion()));
+        assertTrue("2.9".equals(result.get(1).getVersion()));
+        assertTrue("2.11".equals(result.get(2).getVersion()));
 	}
 }
