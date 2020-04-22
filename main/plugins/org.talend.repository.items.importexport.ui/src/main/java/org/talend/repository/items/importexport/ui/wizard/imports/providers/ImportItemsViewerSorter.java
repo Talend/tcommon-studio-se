@@ -14,6 +14,7 @@ package org.talend.repository.items.importexport.ui.wizard.imports.providers;
 
 import org.eclipse.jface.viewers.Viewer;
 import org.eclipse.jface.viewers.ViewerSorter;
+import org.talend.commons.utils.Version;
 import org.talend.repository.items.importexport.wizard.models.FolderImportNode;
 import org.talend.repository.items.importexport.wizard.models.ImportNode;
 import org.talend.repository.items.importexport.wizard.models.ItemImportNode;
@@ -54,15 +55,6 @@ public class ImportItemsViewerSorter extends ViewerSorter {
      */
     @Override
     public int compare(Viewer viewer, Object o1, Object o2) {
-        // if (o1 instanceof TypeImportNode && o2 instanceof TypeImportNode) {
-        // // maybe it's not good to use the ordinal.
-        // return ((TypeImportNode) o2).getType().ordinal() - ((TypeImportNode) o1).getType().ordinal();
-        // } else if (o1 instanceof TypeImportNode) {
-        // return 1;
-        // } else if (o2 instanceof TypeImportNode) {
-        // return -1;
-        //
-        // }
     	if(o1 instanceof ImportNode && o2 instanceof ImportNode) {
 
     		if(((ImportNode)o1).getItemRecord() != null && ((ImportNode)o2).getItemRecord() != null 
@@ -86,17 +78,7 @@ public class ImportItemsViewerSorter extends ViewerSorter {
                     if (version2 == null) {
                         return 1;
                     }
-                    try {
-                		float v1 = Float.parseFloat(version1);
-                        float v2 = Float.parseFloat(version2);
-                        if(v1 > v2) {
-                        	return 1;
-                        }else if(v1 < v2) {
-                        	return -1;
-                        }
-                	} catch (Exception e) {
-                		return 0;
-                	}
+                    return new Version(version1).compareTo(new Version(version2));
                 }
             }
     	}
