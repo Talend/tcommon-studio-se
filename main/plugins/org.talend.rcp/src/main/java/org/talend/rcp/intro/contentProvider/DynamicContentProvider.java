@@ -12,6 +12,13 @@
 // ============================================================================
 package org.talend.rcp.intro.contentProvider;
 
+import java.io.BufferedReader;
+import java.io.BufferedWriter;
+import java.io.File;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.io.PrintWriter;
 import java.net.HttpURLConnection;
 import java.net.URL;
@@ -21,6 +28,8 @@ import java.util.Date;
 import java.util.List;
 import java.util.StringTokenizer;
 
+import org.eclipse.core.runtime.Path;
+import org.eclipse.core.runtime.Platform;
 import org.eclipse.jface.preference.IPreferenceStore;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.ui.forms.widgets.FormToolkit;
@@ -209,6 +218,8 @@ public class DynamicContentProvider extends IntroProvider {
             return;
         }
         HttpURLConnection urlConnection = null;
+        InputStream inStream = null;
+        String filePath = null;
         try {
             URL url = new URL(getOnlinePageURL(onlinePageUrl));
             urlConnection = (HttpURLConnection) url.openConnection();
@@ -217,7 +228,11 @@ public class DynamicContentProvider extends IntroProvider {
             urlConnection.setDoInput(true);
             urlConnection.setUseCaches(false);
             urlConnection.setReadTimeout(2000);
-            urlConnection.getInputStream();
+            int state = urlConnection.getResponseCode();
+            inStream = urlConnection.getInputStream();
+            if (state == HttpURLConnection.HTTP_OK) {
+            	filePath = downHtml(inStream);
+            }
             setDIVStyle(dom, true);
         } catch (Exception e) {
             setDIVStyle(dom, false);
@@ -225,9 +240,11 @@ public class DynamicContentProvider extends IntroProvider {
         } finally {
             urlConnection.disconnect();
         }
-
+        
+        if(filePath == null) {
+        	return;
+        }
         // online content
-
         Element tdElem = dom.createElement("td"); //$NON-NLS-1$
         setTDAttribute(tdElem);
         parent.appendChild(tdElem);
@@ -245,12 +262,54 @@ public class DynamicContentProvider extends IntroProvider {
         }
 
         Element iFrame = dom.createElement("iframe"); //$NON-NLS-1$
-        iFrame.setAttribute("src", getOnlinePageURL(onlinePageUrl)); //$NON-NLS-1$
+        iFrame.setAttribute("src", filePath); //$NON-NLS-1$
         iFrame.setAttribute("frameborder", "0"); //$NON-NLS-1$ //$NON-NLS-2$
         iFrame.setAttribute("width", "240px"); //$NON-NLS-1$ //$NON-NLS-2$
         iFrame.setAttribute("height", "370px"); //$NON-NLS-1$ //$NON-NLS-2$
         iFrame.appendChild(dom.createTextNode(" ")); //$NON-NLS-1$
         div.appendChild(iFrame);
+    }
+    
+    private String downHtml(InputStream inStream) {
+    	if(inStream == null) {
+    		return null;
+    	}
+        File file = null;
+        BufferedWriter output = null;
+        BufferedReader reader = null;
+    	try {
+    		String path = new Path(Platform.getConfigurationLocation().getURL().getPath()).toFile().getAbsolutePath();
+	        file = new File(path, "WelcomPage3.html");
+	        file.deleteOnExit();
+            
+            String result = null;
+        	reader = new BufferedReader(new InputStreamReader(inStream, "utf-8"));
+            String line = null;
+            while ((line = reader.readLine()) != null) {
+            	if(result==null){
+            		result=line;
+            	}else{
+            		result += line;
+            	}
+            }
+            
+            output = new BufferedWriter(new FileWriter(file));  
+            output.write(result);  
+            output.flush();
+    	} catch (Exception e) {
+    		return null;
+    	} finally {
+    		try {
+    			output.close();
+    			reader.close();
+    			inStream.close();
+			} catch (IOException e) {
+			}
+    	}
+    	if(!file.exists()){
+    		return null;
+    	} 	
+    	return file.toURI().toString();
     }
 
     protected void createTopMessage(Document dom, Element parent) {

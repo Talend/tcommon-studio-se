@@ -80,7 +80,7 @@ public class ContextLinkService {
                 return modified;
             }
             ContextLink contextLink = new ContextLink();
-            contextLink.setContextName(connection.getContextId());
+            contextLink.setContextName(connection.getContextName());
             contextLink.setRepoId(contextId);
             itemContextLink.getContextList().add(contextLink);
             

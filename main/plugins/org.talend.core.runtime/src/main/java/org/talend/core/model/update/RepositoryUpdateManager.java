@@ -771,6 +771,9 @@ public abstract class RepositoryUpdateManager {
     }
 
     public static void updateConnectionContextParam(RepositoryNode connNode) throws PersistenceException {
+        if (connNode.getObject() == null || connNode.getObject().getProperty() == null || connNode.getObject().getProperty().getItem() == null) {
+            return;
+        }
         ConnectionItem conntectionItem = (ConnectionItem) connNode.getObject().getProperty().getItem();
         Connection conn = conntectionItem.getConnection();
         if (conn.isContextMode()) {
