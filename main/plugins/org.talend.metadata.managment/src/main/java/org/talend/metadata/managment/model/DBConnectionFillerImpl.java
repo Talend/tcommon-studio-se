@@ -445,7 +445,8 @@ public class DBConnectionFillerImpl extends MetadataFillerImpl<DatabaseConnectio
             ResultSet catalogNames = null;
             if (dbJDBCMetadata instanceof SybaseDatabaseMetaData) {
                 // Whether in context mode or not, metaConnection can get the correct username always
-                catalogNames = ((SybaseDatabaseMetaData) dbJDBCMetadata).getCatalogs(metaConnection.getUsername());
+                String username = metaConnection == null ? dbConn.getUsername() : metaConnection.getUsername();
+                catalogNames = ((SybaseDatabaseMetaData) dbJDBCMetadata).getCatalogs(username);
             } else {
                 catalogNames = dbJDBCMetadata.getCatalogs();
             }
