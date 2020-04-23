@@ -98,12 +98,7 @@ public class MavenProjectUtils {
             IRunProcessService service = (IRunProcessService) GlobalServiceRegister.getDefault().getDefault()
                     .getService(IRunProcessService.class);
 
-            if (service.isdebug()) {
-                changeClasspath(monitor, project, MavenSystemFolders.ALL_DIRS_EXT);
-            } else {
-
-                changeClasspath(monitor, project);
-            }
+            changeClasspath(monitor, project, MavenSystemFolders.ALL_DIRS_EXT);
         }
 
         // only need this when pom has no parent.
