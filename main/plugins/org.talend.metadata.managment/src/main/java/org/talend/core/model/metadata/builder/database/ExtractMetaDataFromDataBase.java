@@ -335,14 +335,18 @@ public class ExtractMetaDataFromDataBase {
                     return connectionStatus;
                 }
             }
-            if (StringUtils.equals(EDatabaseVersion4Drivers.SYBASEIQ_16.getVersionValue(), dbVersionString)) {
-                boolean exsitedSybaseDB = checkSybaseDB(connection, sidOrDatabase);
-                if (!exsitedSybaseDB) {
-                    connectionStatus.setMessageException(
-                            Messages.getString("ExtractMetaDataFromDataBase.DatabaseNoPresent", sidOrDatabase)); //$NON-NLS-1$
-                    return connectionStatus;
-                }
-            }
+            String property = System.getProperty("disableCheckSybase16");//$NON-NLS-1$
+            Boolean disableCheckSybase16 = StringUtils.isEmpty(property)? false :Boolean.valueOf(property);
+			if (!disableCheckSybase16) {
+				if (StringUtils.equals(EDatabaseVersion4Drivers.SYBASEIQ_16.getVersionValue(), dbVersionString)) {
+					boolean exsitedSybaseDB = checkSybaseDB(connection, sidOrDatabase);
+					if (!exsitedSybaseDB) {
+						connectionStatus.setMessageException(
+								Messages.getString("ExtractMetaDataFromDataBase.DatabaseNoPresent", sidOrDatabase)); //$NON-NLS-1$
+						return connectionStatus;
+					}
+				}
+			}
 
             connectionStatus.setResult(true);
             connectionStatus.setMessageException(Messages.getString("ExtractMetaDataFromDataBase.connectionSuccessful")); //$NON-NLS-1$
@@ -388,10 +392,8 @@ public class ExtractMetaDataFromDataBase {
             try {
                 stmt = connection.createStatement();
                 extractMeta.setQueryStatementTimeout(stmt);
-                String sql = "select * from master.dbo.sysdatabases where name='"+database+"'";
-                resultSet = stmt.executeQuery(sql);
-                boolean next = resultSet.next();
-                return next;
+                resultSet = stmt.executeQuery("sp_helpdb " + database);
+                return true;
             } catch (SQLException e) {
                 ExceptionHandler.process(e);
                 return false;
