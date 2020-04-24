@@ -338,7 +338,7 @@ public class DBConnectionFillerImpl extends MetadataFillerImpl<DatabaseConnectio
                         }
                     }
 					if (isSybase16SA) {
-						if (metaConnection != null &&StringUtils.equals(metaConnection.getUsername(), schemaName)) {
+						if (metaConnection != null && StringUtils.equals(metaConnection.getUsername(), schemaName)) {
 							Schema schema = SchemaHelper.createSchema(schemaName);
 							returnSchemas.add(schema);
 							break;
