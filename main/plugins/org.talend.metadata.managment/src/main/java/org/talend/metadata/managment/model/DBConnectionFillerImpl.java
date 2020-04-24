@@ -252,17 +252,17 @@ public class DBConnectionFillerImpl extends MetadataFillerImpl<DatabaseConnectio
     public List<Package> fillSchemas(DatabaseConnection dbConn, DatabaseMetaData dbJDBCMetadata,
             IMetadataConnection metaConnection, List<String> schemaFilter) {
         List<Schema> returnSchemas = new ArrayList<Schema>();
-		boolean isSybase16SA = false;
-		if (dbConn != null) {
-			String dbVersionString = dbConn.getDbVersionString();
-			isSybase16SA = StringUtils.equals(EDatabaseVersion4Drivers.SYBASEIQ_16_SA.getVersionValue(),
-					dbVersionString);
-		}
-		if (!isSybase16SA
-				&& (dbJDBCMetadata == null || (dbConn != null && ConnectionHelper.getCatalogs(dbConn).size() > 0)
-						|| ConnectionUtils.isSybase(dbJDBCMetadata))) {
-			return null;
-		}
+        boolean isSybase16SA = false;
+        if (dbConn != null) {
+            String dbVersionString = dbConn.getDbVersionString();
+            isSybase16SA = StringUtils.equals(EDatabaseVersion4Drivers.SYBASEIQ_16_SA.getVersionValue(),
+                    dbVersionString);
+        }
+        if (!isSybase16SA
+                && (dbJDBCMetadata == null || (dbConn != null && ConnectionHelper.getCatalogs(dbConn).size() > 0)
+                        || ConnectionUtils.isSybase(dbJDBCMetadata))) {
+            return null;
+        }
         ResultSet schemas = null;
         // teradata use db name to filter schema
         // MOD jlolling TDI-34429 EXASol database behaves pretty much in the same way as Oracle
@@ -337,29 +337,29 @@ public class DBConnectionFillerImpl extends MetadataFillerImpl<DatabaseConnectio
                             uiSchemaOnConnWizard = getDatabaseName(dbConn);
                         }
                     }
-					if (isSybase16SA) {
-						if (metaConnection != null && StringUtils.equals(metaConnection.getUsername(), schemaName)) {
-							Schema schema = SchemaHelper.createSchema(schemaName);
-							returnSchemas.add(schema);
-							break;
-						}
-					} else {
-						EDatabaseTypeName dbTypeName = EDatabaseTypeName.getTypeFromDbType(dbConn.getDatabaseType());
-						if ((!StringUtils.isEmpty(uiSchemaOnConnWizard) && !isNullUiSchema(dbConn)) && dbConn != null) {
-							// If the UiSchema on ui is not empty, the schema name should be same to this
-							// UiSchema name.
-							Schema schema = SchemaHelper
-									.createSchema(TalendCWMService.getReadableName(dbConn, uiSchemaOnConnWizard));
-							returnSchemas.add(schema);
-							break;
-						} else if (isCreateElement(schemaFilter, schemaName,
-								ManagerConnection.isSchemaCaseSensitive(dbTypeName))) {
-							Schema schema = SchemaHelper.createSchema(schemaName);
-							returnSchemas.add(schema);
-						}
-					}
+                    if (isSybase16SA) {
+                        if (metaConnection != null && StringUtils.equals(metaConnection.getUsername(), schemaName)) {
+                            Schema schema = SchemaHelper.createSchema(schemaName);
+                            returnSchemas.add(schema);
+                            break;
+                        }
+                    } else {
+                        EDatabaseTypeName dbTypeName = EDatabaseTypeName.getTypeFromDbType(dbConn.getDatabaseType());
+                        if ((!StringUtils.isEmpty(uiSchemaOnConnWizard) && !isNullUiSchema(dbConn)) && dbConn != null) {
+                            // If the UiSchema on ui is not empty, the schema name should be same to this
+                            // UiSchema name.
+                            Schema schema = SchemaHelper
+                                    .createSchema(TalendCWMService.getReadableName(dbConn, uiSchemaOnConnWizard));
+                            returnSchemas.add(schema);
+                            break;
+                        } else if (isCreateElement(schemaFilter, schemaName,
+                                ManagerConnection.isSchemaCaseSensitive(dbTypeName))) {
+                            Schema schema = SchemaHelper.createSchema(schemaName);
+                            returnSchemas.add(schema);
+                        }
+                    }
 
-				}
+                }
                 schemas.close();
             }
         } catch (SQLException e) {
