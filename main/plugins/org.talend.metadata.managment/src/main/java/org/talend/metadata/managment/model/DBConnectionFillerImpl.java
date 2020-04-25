@@ -334,14 +334,11 @@ public class DBConnectionFillerImpl extends MetadataFillerImpl<DatabaseConnectio
 
                     EDatabaseTypeName dbTypeName = EDatabaseTypeName.getTypeFromDbType(dbConn.getDatabaseType());
                     if ((!StringUtils.isEmpty(uiSchemaOnConnWizard) && !isNullUiSchema(dbConn)) && dbConn != null) {
-                        // If the UiSchema on ui is not empty, the schema name should be same to this
-                        // UiSchema name.
-                        Schema schema = SchemaHelper
-                                .createSchema(TalendCWMService.getReadableName(dbConn, uiSchemaOnConnWizard));
+                        // If the UiSchema on ui is not empty, the schema name should be same to this UiSchema name.
+                        Schema schema = SchemaHelper.createSchema(TalendCWMService.getReadableName(dbConn, uiSchemaOnConnWizard));
                         returnSchemas.add(schema);
                         break;
-                    } else if (isCreateElement(schemaFilter, schemaName,
-                            ManagerConnection.isSchemaCaseSensitive(dbTypeName))) {
+                    } else if (isCreateElement(schemaFilter, schemaName,ManagerConnection.isSchemaCaseSensitive(dbTypeName))) {
                         Schema schema = SchemaHelper.createSchema(schemaName);
                         returnSchemas.add(schema);
                     }
