@@ -338,11 +338,10 @@ public class DBConnectionFillerImpl extends MetadataFillerImpl<DatabaseConnectio
                         Schema schema = SchemaHelper.createSchema(TalendCWMService.getReadableName(dbConn, uiSchemaOnConnWizard));
                         returnSchemas.add(schema);
                         break;
-                    } else if (isCreateElement(schemaFilter, schemaName,ManagerConnection.isSchemaCaseSensitive(dbTypeName))) {
+                    } else if (isCreateElement(schemaFilter, schemaName, ManagerConnection.isSchemaCaseSensitive(dbTypeName))) {
                         Schema schema = SchemaHelper.createSchema(schemaName);
                         returnSchemas.add(schema);
                     }
-
                 }
                 schemas.close();
             }
