@@ -37,6 +37,7 @@ import org.talend.commons.exception.ExceptionHandler;
 import org.talend.commons.utils.data.list.ListUtils;
 import org.talend.commons.utils.database.AS400DatabaseMetaData;
 import org.talend.commons.utils.database.DB2ForZosDataBaseMetadata;
+import org.talend.commons.utils.database.Sybase16SADatabaseMetaData;
 import org.talend.commons.utils.database.SybaseDatabaseMetaData;
 import org.talend.commons.utils.database.TeradataDataBaseMetadata;
 import org.talend.core.ICoreService;
@@ -252,15 +253,8 @@ public class DBConnectionFillerImpl extends MetadataFillerImpl<DatabaseConnectio
     public List<Package> fillSchemas(DatabaseConnection dbConn, DatabaseMetaData dbJDBCMetadata,
             IMetadataConnection metaConnection, List<String> schemaFilter) {
         List<Schema> returnSchemas = new ArrayList<Schema>();
-        boolean isSybase16SA = false;
-        if (dbConn != null) {
-            String dbVersionString = dbConn.getDbVersionString();
-            isSybase16SA = StringUtils.equals(EDatabaseVersion4Drivers.SYBASEIQ_16_SA.getVersionValue(),
-                    dbVersionString);
-        }
-        if (!isSybase16SA
-                && (dbJDBCMetadata == null || (dbConn != null && ConnectionHelper.getCatalogs(dbConn).size() > 0)
-                        || ConnectionUtils.isSybase(dbJDBCMetadata))) {
+        if (dbJDBCMetadata == null || (dbConn != null && ConnectionHelper.getCatalogs(dbConn).size() > 0)
+                        || ConnectionUtils.isSybase(dbJDBCMetadata)) {
             return null;
         }
         ResultSet schemas = null;
@@ -337,26 +331,19 @@ public class DBConnectionFillerImpl extends MetadataFillerImpl<DatabaseConnectio
                             uiSchemaOnConnWizard = getDatabaseName(dbConn);
                         }
                     }
-                    if (isSybase16SA) {
-                        if (metaConnection != null && StringUtils.equals(metaConnection.getUsername(), schemaName)) {
-                            Schema schema = SchemaHelper.createSchema(schemaName);
-                            returnSchemas.add(schema);
-                            break;
-                        }
-                    } else {
-                        EDatabaseTypeName dbTypeName = EDatabaseTypeName.getTypeFromDbType(dbConn.getDatabaseType());
-                        if ((!StringUtils.isEmpty(uiSchemaOnConnWizard) && !isNullUiSchema(dbConn)) && dbConn != null) {
-                            // If the UiSchema on ui is not empty, the schema name should be same to this
-                            // UiSchema name.
-                            Schema schema = SchemaHelper
-                                    .createSchema(TalendCWMService.getReadableName(dbConn, uiSchemaOnConnWizard));
-                            returnSchemas.add(schema);
-                            break;
-                        } else if (isCreateElement(schemaFilter, schemaName,
-                                ManagerConnection.isSchemaCaseSensitive(dbTypeName))) {
-                            Schema schema = SchemaHelper.createSchema(schemaName);
-                            returnSchemas.add(schema);
-                        }
+
+                    EDatabaseTypeName dbTypeName = EDatabaseTypeName.getTypeFromDbType(dbConn.getDatabaseType());
+                    if ((!StringUtils.isEmpty(uiSchemaOnConnWizard) && !isNullUiSchema(dbConn)) && dbConn != null) {
+                        // If the UiSchema on ui is not empty, the schema name should be same to this
+                        // UiSchema name.
+                        Schema schema = SchemaHelper
+                                .createSchema(TalendCWMService.getReadableName(dbConn, uiSchemaOnConnWizard));
+                        returnSchemas.add(schema);
+                        break;
+                    } else if (isCreateElement(schemaFilter, schemaName,
+                            ManagerConnection.isSchemaCaseSensitive(dbTypeName))) {
+                        Schema schema = SchemaHelper.createSchema(schemaName);
+                        returnSchemas.add(schema);
                     }
 
                 }
@@ -462,9 +449,16 @@ public class DBConnectionFillerImpl extends MetadataFillerImpl<DatabaseConnectio
                 return catalogList;
             }
             ResultSet catalogNames = null;
-            if (dbJDBCMetadata instanceof SybaseDatabaseMetaData) {
-                // Whether in context mode or not, metaConnection can get the correct username always
-                catalogNames = ((SybaseDatabaseMetaData) dbJDBCMetadata).getCatalogs(metaConnection.getUsername());
+            
+            if (dbJDBCMetadata instanceof Sybase16SADatabaseMetaData) {
+                String username = metaConnection == null ? dbConn.getUsername() : metaConnection.getUsername();
+                String database = metaConnection == null ? dbConn.getSID() : metaConnection.getDatabase();
+                catalogNames = ((Sybase16SADatabaseMetaData) dbJDBCMetadata).getCatalogs(username, database);
+            } else if (dbJDBCMetadata instanceof SybaseDatabaseMetaData) {
+                // Whether in context mode or not, metaConnection can get the correct username
+                // always
+                String username = metaConnection == null ? dbConn.getUsername() : metaConnection.getUsername();
+                catalogNames = ((SybaseDatabaseMetaData) dbJDBCMetadata).getCatalogs(username);
             } else {
                 catalogNames = dbJDBCMetadata.getCatalogs();
             }
