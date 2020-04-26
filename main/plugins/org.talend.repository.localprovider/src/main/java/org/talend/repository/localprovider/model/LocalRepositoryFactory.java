@@ -3063,7 +3063,7 @@ public class LocalRepositoryFactory extends AbstractEMFRepositoryFactory impleme
         xmiResourceManager.saveResource(screenshotsResource);
         xmiResourceManager.saveResource(itemResource);
         xmiResourceManager.saveResource(propertyResource);
-
+        saveContextLinkInfo(item);
         if (isImportItem.length == 0 || !isImportItem[0]) {
             saveProject(project);
         }

@@ -176,7 +176,9 @@ public class CreateConnectionAction extends AbstractCreateAction {
             Property property = node.getObject().getProperty();
             Property updatedProperty = null;
             try {
-                RepositoryUpdateManager.updateConnectionContextParam(node);
+                if (!creation) {
+                    RepositoryUpdateManager.updateConnectionContextParam(node);
+                }
                 updatedProperty = ProxyRepositoryFactory.getInstance().getUptodateProperty(
                         new Project(ProjectManager.getInstance().getProject(property.getItem())), property);
             } catch (PersistenceException e) {
