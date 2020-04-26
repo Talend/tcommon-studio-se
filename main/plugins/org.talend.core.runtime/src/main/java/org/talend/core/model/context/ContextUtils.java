@@ -21,8 +21,10 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
+import org.apache.log4j.Logger;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Platform;
+import org.eclipse.emf.common.util.EList;
 import org.eclipse.jdt.core.JavaConventions;
 import org.eclipse.jdt.core.JavaCore;
 import org.talend.commons.exception.ExceptionHandler;
@@ -30,6 +32,9 @@ import org.talend.commons.exception.PersistenceException;
 import org.talend.commons.utils.platform.PluginChecker;
 import org.talend.core.language.ECodeLanguage;
 import org.talend.core.language.LanguageManager;
+import org.talend.core.model.context.link.ContextLinkService;
+import org.talend.core.model.context.link.ContextParamLink;
+import org.talend.core.model.context.link.ItemContextLink;
 import org.talend.core.model.metadata.MetadataTalendType;
 import org.talend.core.model.metadata.MetadataToolHelper;
 import org.talend.core.model.metadata.types.ContextParameterJavaTypeManager;
@@ -54,6 +59,7 @@ import org.talend.repository.model.IProxyRepositoryFactory;
  */
 public class ContextUtils {
 
+    private static final Logger LOGGER = Logger.getLogger(ContextUtils.class);
     private static final Set<String> JAVA_KEYWORDS = new HashSet<String>(Arrays.asList("abstract", "continue", "for", "new", //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$
             "switch", "assert", "default", "goto", "package", "synchronized", "boolean", "do", "if", "private", "this", "break", //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$ //$NON-NLS-5$ //$NON-NLS-6$ //$NON-NLS-7$ //$NON-NLS-8$ //$NON-NLS-9$ //$NON-NLS-10$ //$NON-NLS-11$ //$NON-NLS-12$
             "double", "implements", "protected", "throw", "byte", "else", "import", "public", "throws", "case", "enum", //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$ //$NON-NLS-5$ //$NON-NLS-6$ //$NON-NLS-7$ //$NON-NLS-8$ //$NON-NLS-9$ //$NON-NLS-10$ //$NON-NLS-11$
@@ -83,12 +89,12 @@ public class ContextUtils {
      * update the JobContextParameter form repository ContextItem by context name.
      *
      */
-    public static boolean updateParameterFromRepository(ContextItem sourceItem, IContextParameter contextParam, String contextName) {
+    public static boolean updateParameterFromRepository(Item sourceItem, IContextParameter contextParam, String contextName) {
         if (sourceItem == null || contextParam == null) {
             return false;
         }
         // not found, use default.
-        ContextType contextType = getContextTypeByName(sourceItem, contextName, true);
+        ContextType contextType = getContextTypeByName(sourceItem, contextName);
 
         if (contextType != null) {
             ContextParameterType parameterType = getContextParameterTypeByName(contextType, contextParam.getName());
@@ -187,6 +193,28 @@ public class ContextUtils {
         ContextParameterType parameterType = null;
         for (ContextParameterType param : (List<ContextParameterType>) contextType.getContextParameter()) {
             if (uuId.equals(ResourceHelper.getUUID(param))) {
+                parameterType = param;
+                break;
+            }
+        }
+        return parameterType;
+    }
+
+    public static ContextParameterType getContextParameterTypeById(ContextType contextType, final String uuId,
+            boolean isFromContextItem) {
+        if (contextType == null || uuId == null) {
+            return null;
+        }
+
+        ContextParameterType parameterType = null;
+        for (ContextParameterType param : (List<ContextParameterType>) contextType.getContextParameter()) {
+            String paramId = null;
+            if (isFromContextItem) {
+                paramId = ResourceHelper.getUUID(param);
+            } else {
+                paramId = param.getInternalId();
+            }
+            if (uuId.equals(paramId)) {
                 parameterType = param;
                 break;
             }
@@ -388,6 +416,7 @@ public class ContextUtils {
         targetParam.setValue(sourceParam.getValue());
         targetParam.setPromptNeeded(sourceParam.isPromptNeeded());
         targetParam.setComment(sourceParam.getComment());
+        targetParam.setInternalId(sourceParam.getInternalId());
     }
 
     /**
@@ -427,7 +456,7 @@ public class ContextUtils {
         targetParam.setValue(sourceParam.getRawValue());
         targetParam.setPromptNeeded(sourceParam.isPromptNeeded());
         targetParam.setComment(sourceParam.getComment());
-
+        targetParam.setInternalId(sourceParam.getInternalId());
     }
 
     public static Map<String, Item> getRepositoryContextItemIdMapping() {
@@ -688,8 +717,114 @@ public class ContextUtils {
 
         contextParam.setPromptNeeded(contextParamType.isPromptNeeded());
         contextParam.setComment(contextParamType.getComment());
+        contextParam.setInternalId(contextParamType.getInternalId());
         contextParam.setSource(contextItem.getProperty().getId());
         return contextParam;
+    }
+
+    /**
+     * Get the context type from item (ContextItem/JobletProcessItem/ProcessItem), If the name is null will use default
+     * context
+     * 
+     * @param item
+     * @param contextName
+     * @return
+     */
+    public static ContextType getContextTypeByName(Item item, String contextName) {
+        if (item instanceof ContextItem) {
+            ContextItem contextItem = (ContextItem) item;
+            if (contextName == null) {
+                contextName = contextItem.getDefaultContext();
+            }
+            return ContextUtils.getContextTypeByName(contextItem, contextName, true);
+        } else if (item instanceof JobletProcessItem) {
+            JobletProcessItem jobletProcessItem = (JobletProcessItem) item;
+            return ContextUtils.getContextTypeByName((List<ContextType>) jobletProcessItem.getJobletProcess().getContext(),
+                    contextName, jobletProcessItem.getJobletProcess().getDefaultContext());
+        } else if (item instanceof ProcessItem) {
+            ProcessItem processItem = (ProcessItem) item;
+            return ContextUtils.getContextTypeByName((List<ContextType>) processItem.getProcess().getContext(), contextName,
+                    processItem.getProcess().getDefaultContext());
+        }
+        return null;
+    }
+
+    public static String getDefaultContextName(Item item) {
+        if (item instanceof ContextItem) {
+            ContextItem contextItem = (ContextItem) item;
+            return contextItem.getDefaultContext();
+        } else if (item instanceof JobletProcessItem) {
+            JobletProcessItem jobletProcessItem = (JobletProcessItem) item;
+            return jobletProcessItem.getJobletProcess().getDefaultContext();
+        } else if (item instanceof ProcessItem) {
+            ProcessItem processItem = (ProcessItem) item;
+            return processItem.getProcess().getDefaultContext();
+        }
+        return null;
+    }
+
+    public static EList getAllContextType(Item item) {
+        if (item instanceof ContextItem) {
+            ContextItem contextItem = (ContextItem) item;
+            return contextItem.getContext();
+        } else if (item instanceof JobletProcessItem) {
+            JobletProcessItem jobletProcessItem = (JobletProcessItem) item;
+            return jobletProcessItem.getJobletProcess().getContext();
+        } else if (item instanceof ProcessItem) {
+            ProcessItem processItem = (ProcessItem) item;
+            return processItem.getProcess().getContext();
+        }
+        return null;
+    }
+
+    /**
+     * 
+     * @param itemId
+     * @param contextType
+     * @return rename map. Key is new name and value is old name.
+     */
+    public static Map<String, String> calculateRenamedMapFromLinkFile(String itemId, IContext context,
+            Item repoContextItem) {
+        Map<String, String> renamedMap = new HashMap<String, String>();
+        Map<String, Item> idToItemMap = new HashMap<String, Item>();
+        if (repoContextItem != null) {
+            idToItemMap.put(repoContextItem.getProperty().getId(), repoContextItem);
+        }
+        try {
+            ItemContextLink itemContextLink = ContextLinkService.getInstance().loadContextLink(itemId);
+            if (itemContextLink != null) {
+                for (Object obj : context.getContextParameterList()) {
+                    if (obj instanceof IContextParameter) {
+                        IContextParameter parameterType = (IContextParameter) obj;
+                        ContextParamLink parameterLink = itemContextLink.findContextParamLink(parameterType.getSource(),
+                                context.getName(), parameterType.getName());
+                        if (parameterLink != null) {
+                            Item item = idToItemMap.get(parameterType.getSource());
+                            if (item == null) {
+                                item = getRepositoryContextItemById(parameterType.getSource());
+                                idToItemMap.put(parameterType.getSource(), item);
+                            }
+                            if (item != null) {
+                                ContextType contextType = ContextUtils.getContextTypeByName(item, context.getName());
+                                ContextParameterType repoParameterType = ContextUtils.getContextParameterTypeByName(contextType,
+                                        parameterLink.getName());
+                                if (repoParameterType == null) {
+                                    repoParameterType = ContextUtils.getContextParameterTypeById(contextType,
+                                            parameterLink.getId(), item instanceof ContextItem);
+                                    if (repoParameterType != null) {
+                                        renamedMap.put(repoParameterType.getName(), parameterType.getName());
+                                    }
+                                }
+
+                            }
+                        }
+                    }
+                }
+            }
+        } catch (PersistenceException e) {
+            ExceptionHandler.process(e);
+        }
+        return renamedMap;
     }
 
 }

@@ -90,7 +90,7 @@ import org.talend.commons.utils.io.FilesUtils;
 import org.talend.commons.utils.workbench.resources.ResourceUtils;
 import org.talend.core.GlobalServiceRegister;
 import org.talend.core.context.RepositoryContext;
-import org.talend.core.model.context.ContextLinkService;
+import org.talend.core.model.context.link.ContextLinkService;
 import org.talend.core.model.general.Project;
 import org.talend.core.model.general.TalendNature;
 import org.talend.core.model.metadata.MetadataManager;

@@ -22,8 +22,10 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Iterator;
+import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 import java.util.Properties;
 import java.util.Set;
 import java.util.stream.Collectors;
@@ -31,6 +33,7 @@ import java.util.stream.Collectors;
 import org.apache.commons.lang3.BooleanUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.maven.artifact.repository.ArtifactRepository;
+import org.apache.maven.artifact.versioning.ComparableVersion;
 import org.apache.maven.model.Activation;
 import org.apache.maven.model.Dependency;
 import org.apache.maven.model.Model;
@@ -631,8 +634,8 @@ public class CreateMavenJobPom extends AbstractMavenProcessorPom {
         Property currentJobProperty = processor.getProperty();
         jobCoordinate.add(getJobCoordinate(currentJobProperty));
         
-        // children jobs
-        Set<JobInfo> childrenJobInfo = !hasLoopDependency() ? processor.getBuildChildrenJobs() : Collections.emptySet();
+        // children jobs without test cases
+        Set<JobInfo> childrenJobInfo = !hasLoopDependency() ? processor.getBuildChildrenJobs().stream().filter(j -> !j.isTestContainer()).collect(Collectors.toSet()) : Collections.emptySet();
         childrenJobInfo.forEach(j -> jobCoordinate.add(getJobCoordinate(j.getProcessItem().getProperty())));
 
         // talend libraries and codes
@@ -642,25 +645,27 @@ public class CreateMavenJobPom extends AbstractMavenProcessorPom {
         // codes
         addCodesDependencies(dependencies);
 
-        // codes dependencies
+        // codes dependencies (optional)
         ERepositoryObjectType.getAllTypesOfCodes().forEach(t -> dependencies.addAll(PomUtil.getCodesDependencies(t)));
 
         // libraries of talend/3rd party
-        Set<ModuleNeeded> modules = processor.getNeededModules(TalendProcessOptionConstants.MODULES_EXCLUDE_SHADED);
+        dependencies.addAll(convertToDistinctedJobDependencies(currentJobProperty.getId(), currentJobProperty.getVersion(),
+                processor.getNeededModules(TalendProcessOptionConstants.MODULES_EXCLUDE_SHADED)));
 
         // missing modules from the job generation of children
-        childrenJobInfo.forEach(j -> modules
-                .addAll(LastGenerationInfo.getInstance().getModulesNeededWithSubjobPerJob(j.getJobId(), j.getJobVersion())));
+        childrenJobInfo.forEach(j -> dependencies.addAll(convertToDistinctedJobDependencies(j.getJobId(), j.getJobVersion(),
+                LastGenerationInfo.getInstance().getModulesNeededPerJob(j.getJobId(), j.getJobVersion()))));
 
-        // testcase modules from children job
+        Set<ModuleNeeded> modules = new HashSet<>();
+        // testcase modules from current job (optional)
+        modules.addAll(ProcessorDependenciesManager.getTestcaseNeededModules(currentJobProperty));
+
+        // testcase modules from children job (optional)
         childrenJobInfo.forEach(
                 j -> modules.addAll(ProcessorDependenciesManager.getTestcaseNeededModules(j.getProcessItem().getProperty())));
 
-        // testcase modules from current job
-        modules.addAll(ProcessorDependenciesManager.getTestcaseNeededModules(currentJobProperty));
-
         dependencies.addAll(
-                modules.stream().filter(m -> !m.isExcluded()).map(m -> createDenpendency(m)).collect(Collectors.toSet()));
+                modules.stream().filter(m -> !m.isExcluded()).map(m -> createDenpendency(m, true)).collect(Collectors.toSet()));
 
         dependencies.stream().filter(d -> !MavenConstants.PACKAGING_POM.equals(d.getType())).forEach(d -> {
             String coordinate = getCoordinate(d);
@@ -685,8 +690,12 @@ public class CreateMavenJobPom extends AbstractMavenProcessorPom {
         Iterator<String> iterator = duplicateLibs.keySet().iterator();
         while (iterator.hasNext()) {
             Set<Dependency> dupDependencies = duplicateLibs.get(iterator.next());
-            if (dupDependencies.size() < 2) {
-                // remove unique dependency
+            if (dupDependencies.size() < 2 // remove unique dependency
+            /* || dupDependencies.stream().filter(d -> !((SortableDependency) d).isAssemblyOptional()).count() == 1 */) {
+                // remove when only one required dependencies, means others are from codes/testcase
+                // don't do this now at least it won't have problem in studio
+                // in some case, the needed jar is not in main job pom, maven will get the nearest one which could be
+                // wrong
                 iterator.remove();
             } else {
                 // remove duplicate dependencies from 3rd party libs
@@ -722,9 +731,46 @@ public class CreateMavenJobPom extends AbstractMavenProcessorPom {
         }
     }
 
-    private Dependency createDenpendency(ModuleNeeded moduleNeeded) {
+    // remove duplicate job dependencies and only keep the latest one
+    // keep high priority dependencies if set by tLibraryLoad
+    private Set<Dependency> convertToDistinctedJobDependencies(String jobId, String jobVersion, Set<ModuleNeeded> neededModules) {
+        Set<Dependency> highPriorityDependencies = LastGenerationInfo.getInstance()
+                .getHighPriorityModuleNeededPerJob(jobId, jobVersion).stream().map(m -> createDenpendency(m, false))
+                .collect(Collectors.toSet());
+        Map<String, Dependency> highPriorityDependenciesMap = new HashMap<>();
+        highPriorityDependencies.forEach(d -> highPriorityDependenciesMap.putIfAbsent(getCheckDupCoordinate(d), d));
+
+        Set<Dependency> jobDependencies = neededModules.stream().filter(m -> !m.isExcluded()).map(m -> createDenpendency(m, false)).collect(Collectors.toSet());
+        Map<String, Set<Dependency>> jobDependenciesMap = new HashMap<>();
+        jobDependencies.forEach(d -> {
+            String coordinate = getCheckDupCoordinate(d);
+            if (jobDependenciesMap.get(coordinate) == null) {
+                jobDependenciesMap.put(coordinate, new LinkedHashSet<>());
+            }
+            jobDependenciesMap.get(coordinate).add(d);
+        });
+
+        Set<Dependency> filteredDependencies = new HashSet<>();
+        jobDependenciesMap.forEach((key, value) -> {
+            Optional<Dependency> target = null;
+            if (highPriorityDependenciesMap.containsKey(key)) {
+                Dependency highPriorityDependency = highPriorityDependenciesMap.get(key);
+                target = value.stream().filter(d -> getCoordinate(highPriorityDependency).equals(getCoordinate(d))).findFirst();
+            } else {
+                target = value.stream().sorted(
+                        (d1, d2) -> new ComparableVersion(d2.getVersion()).compareTo(new ComparableVersion(d1.getVersion())))
+                        .findFirst();
+            }
+            if (target.isPresent()) {
+                filteredDependencies.add(target.get());
+            }
+        });
+
+        return filteredDependencies;
+    }
+
+    private Dependency createDenpendency(ModuleNeeded moduleNeeded, boolean optional) {
         SortableDependency dependency = (SortableDependency) PomUtil.createModuleDependency(moduleNeeded.getMavenUri());
-        boolean optional = (boolean) moduleNeeded.getExtraAttributes().getOrDefault(ModuleNeeded.ASSEMBLY_OPTIONAL, false);
         dependency.setAssemblyOptional(optional);
         return dependency;
     }
@@ -732,6 +778,11 @@ public class CreateMavenJobPom extends AbstractMavenProcessorPom {
     private String getCoordinate(Dependency dependency) {
         return getCoordinate(dependency.getGroupId(), dependency.getArtifactId(), dependency.getType(),
                 dependency.getVersion(), dependency.getClassifier());
+    }
+
+    private String getCheckDupCoordinate(Dependency dependency) {
+        return getCoordinate(dependency.getGroupId(), dependency.getArtifactId(), dependency.getType(), null,
+                dependency.getClassifier());
     }
 
     protected String getJobCoordinate(Property property) {
@@ -755,8 +806,7 @@ public class CreateMavenJobPom extends AbstractMavenProcessorPom {
     }
 
     private void addToDuplicateLibs(Map<String, Set<Dependency>> map, Dependency dependency) {
-        String coordinate = getCoordinate(dependency.getGroupId(), dependency.getArtifactId(), dependency.getType(), null,
-                dependency.getClassifier());
+        String coordinate = getCheckDupCoordinate(dependency);
         if (!map.containsKey(coordinate)) {
             map.put(coordinate, new HashSet<>());
         }

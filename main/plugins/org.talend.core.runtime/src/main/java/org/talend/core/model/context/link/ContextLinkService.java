@@ -10,11 +10,14 @@
 // 9 rue Pages 92150 Suresnes, France
 //
 // ============================================================================
-package org.talend.core.model.context;
+package org.talend.core.model.context.link;
 
+import java.io.ByteArrayInputStream;
 import java.io.File;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import org.apache.commons.lang3.StringUtils;
@@ -22,8 +25,15 @@ import org.eclipse.core.resources.IFile;
 import org.eclipse.core.resources.IFolder;
 import org.eclipse.core.resources.IProject;
 import org.eclipse.core.runtime.CoreException;
+import org.eclipse.core.runtime.IConfigurationElement;
+import org.eclipse.core.runtime.IExtension;
+import org.eclipse.core.runtime.IExtensionPoint;
+import org.eclipse.core.runtime.IExtensionRegistry;
+import org.eclipse.core.runtime.Platform;
+import org.talend.commons.exception.ExceptionHandler;
 import org.talend.commons.exception.PersistenceException;
 import org.talend.commons.utils.workbench.resources.ResourceUtils;
+import org.talend.core.model.context.ContextUtils;
 import org.talend.core.model.metadata.builder.connection.Connection;
 import org.talend.core.model.process.IContextParameter;
 import org.talend.core.model.properties.ConnectionItem;
@@ -42,13 +52,18 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 
 public class ContextLinkService {
 
+    private static final String CREATOR_EXT_ID = "org.talend.core.runtime.context.ItemContextLinkService"; //$NON-NLS-1$
+
     public static final String LINKS_FOLDER_NAME = "links";
 
     public static final String LINK_FILE_POSTFIX = ".link";
 
+    private static final List<IItemContextLinkService> registeredService = new ArrayList<IItemContextLinkService>();
+
     private static ContextLinkService instance = new ContextLinkService();
 
     private ContextLinkService() {
+        initService();
     }
 
     public static ContextLinkService getInstance() {
@@ -66,6 +81,13 @@ public class ContextLinkService {
             ConnectionItem connectionItem = (ConnectionItem) item;
             return saveContextLink(connectionItem.getConnection(), item.getProperty().getId());
         }
+
+        for (IItemContextLinkService service : registeredService) {
+            if (service.accept(item)) {
+                return service.saveItemLink(item);
+            }
+        }
+
         return false;
     }
 
@@ -83,7 +105,7 @@ public class ContextLinkService {
             contextLink.setContextName(connection.getContextName());
             contextLink.setRepoId(contextId);
             itemContextLink.getContextList().add(contextLink);
-            
+
             ContextItem contextItem = ContextUtils.getContextItemById2(contextId);
             ContextType contextType = ContextUtils.getContextTypeByName(contextItem.getContext(), connection.getContextName());
             for (Object o : contextType.getContextParameter()) {
@@ -118,19 +140,31 @@ public class ContextLinkService {
                         ContextParameterType contextParameterType = (ContextParameterType) o;
                         String repositoryContextId = contextParameterType.getRepositoryContextId();
                         if (StringUtils.isEmpty(repositoryContextId) || IContextParameter.BUILT_IN.equals(repositoryContextId)) {
-                            continue;
+                            ContextLink contextLink = itemContextLink
+                                    .findContextLink(contextParameterType.getRepositoryContextId(), jobContextType.getName());
+                            if (contextLink == null) {
+                                contextLink = new ContextLink();
+                                contextLink.setContextName(jobContextType.getName());
+                                contextLink.setRepoId(id);
+                                itemContextLink.getContextList().add(contextLink);
+                            }
+                            ContextParamLink contextParamLink = createParamLink(repositoryContextId, jobContextType.getName(),
+                                    contextParameterType.getName(), contextParameterType.getInternalId(), tempCache);
+                            contextLink.getParameterList().add(contextParamLink);
+                        } else {
+                            ContextLink contextLink = itemContextLink
+                                    .findContextLink(contextParameterType.getRepositoryContextId(), jobContextType.getName());
+                            if (contextLink == null) {
+                                contextLink = new ContextLink();
+                                contextLink.setContextName(jobContextType.getName());
+                                contextLink.setRepoId(repositoryContextId);
+                                itemContextLink.getContextList().add(contextLink);
+                            }
+                            ContextParamLink contextParamLink = createParamLink(repositoryContextId, jobContextType.getName(),
+                                    contextParameterType.getName(), contextParameterType.getInternalId(), tempCache);
+                            contextLink.getParameterList().add(contextParamLink);
                         }
-                        ContextLink contextLink = itemContextLink.findContextLink(contextParameterType.getRepositoryContextId(),
-                                jobContextType.getName());
-                        if (contextLink == null) {
-                            contextLink = new ContextLink();
-                            contextLink.setContextName(jobContextType.getName());
-                            contextLink.setRepoId(repositoryContextId);
-                            itemContextLink.getContextList().add(contextLink);
-                        }
-                        ContextParamLink contextParamLink = createParamLink(repositoryContextId, jobContextType.getName(),
-                                contextParameterType.getName(), tempCache);
-                        contextLink.getParameterList().add(contextParamLink);
+
                     }
                 }
             }
@@ -145,10 +179,11 @@ public class ContextLinkService {
     }
 
     @SuppressWarnings("unchecked")
-    private ContextParamLink createParamLink(String repositoryContextId, String contextName, String paramName,
+    private ContextParamLink createParamLink(String repositoryContextId, String contextName, String paramName, String internalId,
             Map<String, ContextItem> tempCache) {
         ContextParamLink contextParamLink = new ContextParamLink();
         contextParamLink.setName(paramName);
+        contextParamLink.setId(internalId);
         ContextItem contextItem = tempCache.get(repositoryContextId);
         if (contextItem == null) {
             contextItem = ContextUtils.getContextItemById2(repositoryContextId);
@@ -158,17 +193,24 @@ public class ContextLinkService {
             ContextType contextType = ContextUtils.getContextTypeByName(contextItem.getContext(), contextName);
             ContextParameterType repoContextParameterType = ContextUtils.getContextParameterTypeByName(contextType, paramName);
             contextParamLink.setId(ResourceHelper.getUUID(repoContextParameterType));
-            return contextParamLink;
         }
         return contextParamLink;
     }
 
     private synchronized void saveContextLink(String id, ItemContextLink itemContextLink) throws PersistenceException {
+        IFolder linksFolder = getLinksFolder();
+        if (!linksFolder.exists()) {
+            ResourceUtils.createFolder(linksFolder);
+        }
         IFile linkFile = calContextLinkFile(id);
         ObjectMapper objectMapper = new ObjectMapper();
         try {
-            objectMapper.writerWithDefaultPrettyPrinter().writeValue(linkFile.getLocation().toFile(), itemContextLink);
-            linkFile.refreshLocal(0, null);
+            String content = objectMapper.writerWithDefaultPrettyPrinter().writeValueAsString(itemContextLink);
+            if (!linkFile.exists()) {
+                ResourceUtils.createFile(new ByteArrayInputStream(content.getBytes()), linkFile);
+            } else {
+                ResourceUtils.setFileContent(new ByteArrayInputStream(content.getBytes()), linkFile);
+            }
         } catch (Exception e) {
             throw new PersistenceException(e);
         }
@@ -244,4 +286,25 @@ public class ContextLinkService {
         return linksFolder;
     }
 
+    private static void initService() {
+        IExtensionRegistry extensionRegistry = Platform.getExtensionRegistry();
+        IExtensionPoint extensionPoint = extensionRegistry.getExtensionPoint(CREATOR_EXT_ID);
+        if (extensionPoint != null) {
+            IExtension[] extensions = extensionPoint.getExtensions();
+            for (IExtension extension : extensions) {
+                IConfigurationElement[] configurationElements = extension.getConfigurationElements();
+                for (IConfigurationElement configurationElement : configurationElements) {
+                    try {
+                        Object creator = configurationElement.createExecutableExtension("class"); //$NON-NLS-1$
+                        if (creator instanceof IItemContextLinkService) {
+                            IItemContextLinkService service = (IItemContextLinkService) creator;
+                            registeredService.add(service);
+                        }
+                    } catch (CoreException e) {
+                        ExceptionHandler.process(e);
+                    }
+                }
+            }
+        }
+    }
 }

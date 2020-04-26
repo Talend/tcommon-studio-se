@@ -1,5 +1,6 @@
 package org.talend.designer.maven.utils;
 
+import org.apache.maven.artifact.versioning.ComparableVersion;
 import org.apache.maven.model.Dependency;
 
 public class SortableDependency extends Dependency implements Comparable<SortableDependency> {
@@ -15,7 +16,20 @@ public class SortableDependency extends Dependency implements Comparable<Sortabl
     public int compareTo(SortableDependency o) {
         int compare = getArtifactId().compareTo(o.getArtifactId());
         if (compare == 0) {
-            return getVersion().compareTo(o.getVersion());
+            // FIXME according to Maven official Doc for dependencies:
+            // https://maven.apache.org/guides/introduction/introduction-to-dependency-mechanism.html
+            // when pom has duplicate version of dependencies, Maven should take the first one
+            // but in practice(maven 3.5.3 embedded), it always take the last one
+            // we only need job dependencies in final job zip rather than testcase's
+            // so we always put the latest job dependency at the bottom
+            // if maven fix it in future, we need to reverse the order as well.
+            if (isAssemblyOptional && !o.isAssemblyOptional) {
+                return -1;
+            }
+            if (!isAssemblyOptional && o.isAssemblyOptional) {
+                return 1;
+            }
+            return new ComparableVersion(getVersion()).compareTo(new ComparableVersion(o.getVersion()));
         }
         return compare;
     }

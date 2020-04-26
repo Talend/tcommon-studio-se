@@ -45,13 +45,15 @@ public class JobContextParameter implements IContextParameter, Cloneable {
 
     String[] valueList;
 
+    String internalId;
+
     /**
      * change to save id always for bug 13184.
      */
     String source = ""; //$NON-NLS-1$
 
     public JobContextParameter() {
-
+        System.out.println();
     }
 
     @Override
@@ -308,6 +310,14 @@ public class JobContextParameter implements IContextParameter, Cloneable {
     @Override
     public void setPromptNeeded(boolean promptNeeded) {
         this.promptNeeded = promptNeeded;
+    }
+
+    public String getInternalId() {
+        return internalId;
+    }
+
+    public void setInternalId(String internalId) {
+        this.internalId = internalId;
     }
 
     @Override

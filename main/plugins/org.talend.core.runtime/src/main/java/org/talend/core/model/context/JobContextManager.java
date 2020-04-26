@@ -19,8 +19,10 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
+import org.apache.commons.lang.StringUtils;
 import org.eclipse.emf.common.util.BasicEList;
 import org.eclipse.emf.common.util.EList;
+import org.eclipse.emf.ecore.util.EcoreUtil;
 import org.talend.core.model.metadata.MetadataTalendType;
 import org.talend.core.model.metadata.types.ContextParameterJavaTypeManager;
 import org.talend.core.model.process.IContext;
@@ -73,7 +75,7 @@ public class JobContextManager implements IContextManager {
      */
     private Set<String> originalParamerters = new HashSet<String>();
 
-    private Map<ContextItem, Set<String>> newParametersMap = new HashMap<ContextItem, Set<String>>();
+    private Map<Item, Set<String>> newParametersMap = new HashMap<Item, Set<String>>();
 
     /*
      * for context group
@@ -296,6 +298,7 @@ public class JobContextManager implements IContextManager {
                     contextParamType.setRawValue(contextParam.getValue());
                     contextParamType.setPromptNeeded(contextParam.isPromptNeeded());
                     contextParamType.setComment(contextParam.getComment());
+                    contextParamType.setInternalId(contextParam.getInternalId());
                     if (!contextParam.isBuiltIn()) {
                         Item item = ContextUtils.getRepositoryContextItemById(contextParam.getSource());
                         if (item != null) {
@@ -306,6 +309,12 @@ public class JobContextManager implements IContextManager {
                                 contextParamType.setRepositoryContextId(contextId);
                             }
                         }
+                    } else {
+                        String internalId = contextParamType.getInternalId();
+                        if (StringUtils.isEmpty(internalId)) {
+                            internalId = EcoreUtil.generateUUID();
+                        }
+                        contextParamType.setInternalId(internalId);
                     }
                 }
 
@@ -383,6 +392,7 @@ public class JobContextManager implements IContextManager {
                 contextParam.setContext(context);
                 contextParam.setName(contextParamType.getName());
                 contextParam.setPrompt(contextParamType.getPrompt());
+                contextParam.setInternalId(contextParamType.getInternalId());
                 originalParamerters.add(contextParam.getName());
                 boolean exists = true;
                 try {
@@ -519,11 +529,11 @@ public class JobContextManager implements IContextManager {
         }
     }
 
-    public Map<ContextItem, Set<String>> getNewParametersMap() {
+    public Map<Item, Set<String>> getNewParametersMap() {
         return newParametersMap;
     }
 
-    public void setNewParametersMap(Map<ContextItem, Set<String>> newParametersMap) {
+    public void setNewParametersMap(Map<Item, Set<String>> newParametersMap) {
         this.newParametersMap = newParametersMap;
     }
 

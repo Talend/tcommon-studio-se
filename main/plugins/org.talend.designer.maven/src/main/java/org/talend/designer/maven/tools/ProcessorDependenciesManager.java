@@ -36,6 +36,7 @@ import org.talend.core.runtime.process.LastGenerationInfo;
 import org.talend.core.runtime.process.TalendProcessOptionConstants;
 import org.talend.core.ui.ITestContainerProviderService;
 import org.talend.designer.maven.utils.PomUtil;
+import org.talend.designer.maven.utils.SortableDependency;
 import org.talend.designer.runprocess.IProcessor;
 import org.talend.designer.runprocess.ProcessorException;
 
@@ -62,8 +63,10 @@ public class ProcessorDependenciesManager {
         try {
             Set<ModuleNeeded> neededLibraries = new HashSet<>();
             Set<String> uniqueDependencies = new HashSet<>();
-            neededLibraries.addAll(getProcessNeededModules());
-            neededLibraries.addAll(getTestcaseNeededModules(property));
+            Set<ModuleNeeded> jobModules = getProcessNeededModules();
+            Set<ModuleNeeded> testcaseModules = getTestcaseNeededModules(property);
+            neededLibraries.addAll(jobModules);
+            neededLibraries.addAll(testcaseModules);
             if (!neededLibraries.isEmpty()) {
                 if (GlobalServiceRegister.getDefault().isServiceRegistered(ILibraryManagerService.class)) {
                     ILibraryManagerService repositoryBundleService = GlobalServiceRegister.getDefault()
@@ -72,23 +75,8 @@ public class ProcessorDependenciesManager {
                 }
             }
             List neededDependencies = new ArrayList<>();
-            for (ModuleNeeded module : neededLibraries) {
-                final String mavenUri = module.getMavenUri();
-                if (uniqueDependencies.contains(mavenUri)) {
-                    continue; // must be same GAV, avoid the different other attrs for modules
-                }
-                uniqueDependencies.add(mavenUri);
-                Dependency dependency = PomUtil.createModuleDependency(mavenUri);
-                if (dependency != null) {
-                    if (module.isExcludeDependencies()) {
-                        Exclusion exclusion = new Exclusion();
-                        exclusion.setGroupId("*"); //$NON-NLS-1$
-                        exclusion.setArtifactId("*"); //$NON-NLS-1$
-                        dependency.addExclusion(exclusion);
-                    }
-                    neededDependencies.add(dependency);
-                }
-            }
+            neededDependencies.addAll(convertToDependency(jobModules, uniqueDependencies, false));
+            neededDependencies.addAll(convertToDependency(testcaseModules, uniqueDependencies, true));
             Collections.sort(neededDependencies);
             boolean fresh = false;
             if (property != null && property.getItem() != null && processor.getProcess() instanceof IProcess2) {
@@ -99,6 +87,30 @@ public class ProcessorDependenciesManager {
         } catch (Exception e) {
             throw new ProcessorException(e);
         }
+    }
+
+    @SuppressWarnings({ "rawtypes", "unchecked" })
+    private List convertToDependency(Set<ModuleNeeded> neededLibraries, Set<String> uniqueDependencies, boolean optional) {
+        List neededDependencies = new ArrayList<>();
+        for (ModuleNeeded module : neededLibraries) {
+            final String mavenUri = module.getMavenUri();
+            if (uniqueDependencies.contains(mavenUri)) {
+                continue; // must be same GAV, avoid the different other attrs for modules
+            }
+            uniqueDependencies.add(mavenUri);
+            Dependency dependency = PomUtil.createModuleDependency(mavenUri);
+            if (dependency != null) {
+                ((SortableDependency) dependency).setAssemblyOptional(optional);
+                if (module.isExcludeDependencies()) {
+                    Exclusion exclusion = new Exclusion();
+                    exclusion.setGroupId("*"); //$NON-NLS-1$
+                    exclusion.setArtifactId("*"); //$NON-NLS-1$
+                    dependency.addExclusion(exclusion);
+                }
+                neededDependencies.add(dependency);
+            }
+        }
+        return neededDependencies;
     }
 
     /**

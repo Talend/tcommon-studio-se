@@ -10,7 +10,7 @@
 // 9 rue Pages 92150 Suresnes, France
 //
 // ============================================================================
-package org.talend.core.model.context;
+package org.talend.core.model.context.link;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -43,15 +43,6 @@ public class ItemContextLink {
         this.contextList = contextList;
     }
 
-    public ContextLink getContextLinkByName(String name) {
-        for (ContextLink link : contextList) {
-            if (StringUtils.equals(name, link.getContextName())) {
-                return link;
-            }
-        }
-        return null;
-    }
-
     public ContextParamLink findContextParamLink(String repoContextId, String contextName, String paramName) {
         ContextLink contextLink = findContextLink(repoContextId, contextName);
         if (contextLink != null) {
@@ -62,7 +53,7 @@ public class ItemContextLink {
 
     public ContextLink findContextLink(String repoContextId, String contextName) {
         for (ContextLink contextLink : contextList) {
-            if (StringUtils.equals(repoContextId, contextLink.getRepoId())
+            if ((StringUtils.isNotEmpty(repoContextId) && StringUtils.equals(repoContextId, contextLink.getRepoId()))
                     && StringUtils.equals(contextName, contextLink.getContextName())) {
                 return contextLink;
             }

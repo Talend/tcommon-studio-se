@@ -16,7 +16,6 @@ import java.util.HashMap;
 import java.util.HashSet;
 import java.util.LinkedHashSet;
 import java.util.Set;
-import java.util.stream.Collectors;
 
 import org.talend.core.model.general.ModuleNeeded;
 import org.talend.core.model.process.JobInfo;
@@ -32,6 +31,8 @@ public class LastGenerationInfo {
     private HashMap<String, Set<String>> routinesNeededPerJob;
 
     private HashMap<String, Set<ModuleNeeded>> modulesNeededWithSubjobPerJob;
+
+    private HashMap<String, Set<ModuleNeeded>> highPriorityModuleNeededPerJob;
 
     private HashMap<String, Set<ModuleNeeded>> highPriorityModuleNeeded;
 
@@ -55,6 +56,7 @@ public class LastGenerationInfo {
         modulesNeededPerJob = new HashMap<String, Set<ModuleNeeded>>();
         contextPerJob = new HashMap<String, Set<String>>();
         modulesNeededWithSubjobPerJob = new HashMap<String, Set<ModuleNeeded>>();
+        highPriorityModuleNeededPerJob = new HashMap<>();
         highPriorityModuleNeeded = new HashMap<>();
         testcaseModuleNeeded = new HashMap<>();
         lastGeneratedjobs = new HashSet<JobInfo>();
@@ -239,6 +241,22 @@ public class LastGenerationInfo {
         return routinesNeededPerJob.get(key);
     }
 
+    public Set<ModuleNeeded> getHighPriorityModuleNeededPerJob(String jobId, String jobVersion) {
+        String key = getProcessKey(jobId, jobVersion);
+        if (!highPriorityModuleNeededPerJob.containsKey(key)) {
+            highPriorityModuleNeededPerJob.put(key, new LinkedHashSet<>());
+        }
+        return highPriorityModuleNeededPerJob.get(key);
+    }
+
+    public void setHighPriorityModuleNeededPerJob(String jobId, String jobVersion, Set<ModuleNeeded> moduleNeeded) {
+        String key = getProcessKey(jobId, jobVersion);
+        if (!highPriorityModuleNeededPerJob.containsKey(key)) {
+            highPriorityModuleNeededPerJob.put(key, new LinkedHashSet<>());
+        }
+        highPriorityModuleNeededPerJob.get(key).addAll(moduleNeeded);
+    }
+
     public Set<ModuleNeeded> getHighPriorityModuleNeeded(String jobId, String jobVersion) {
         String key = getProcessKey(jobId, jobVersion);
         if (!highPriorityModuleNeeded.containsKey(key)) {
@@ -264,12 +282,11 @@ public class LastGenerationInfo {
     }
 
     public void setTestcaseModuleNeeded(String jobId, String jobVersion, Set<ModuleNeeded> modulesNeeded) {
-        Set<ModuleNeeded> set = modulesNeeded.stream().map(m -> m.clone())
-                .peek(m -> m.getExtraAttributes().put(ModuleNeeded.ASSEMBLY_OPTIONAL, true)).collect(Collectors.toSet());
-        testcaseModuleNeeded.put(getProcessKey(jobId, jobVersion), set);
+        testcaseModuleNeeded.put(getProcessKey(jobId, jobVersion), new HashSet<>(modulesNeeded));
     }
 
     public void clearHighPriorityModuleNeeded() {
+        highPriorityModuleNeededPerJob.clear();
         highPriorityModuleNeeded.clear();
     }
 
@@ -321,7 +338,7 @@ public class LastGenerationInfo {
         modulesNeededPerJob.clear();
         routinesNeededPerJob.clear();
         modulesNeededWithSubjobPerJob.clear();
-        highPriorityModuleNeeded.clear();
+        clearHighPriorityModuleNeeded();
         testcaseModuleNeeded.clear();
         routinesNeededWithSubjobPerJob.clear();
         contextPerJob.clear();

@@ -44,14 +44,14 @@ import org.talend.core.hadoop.BigDataBasicUtil;
 import org.talend.core.hadoop.HadoopConstants;
 import org.talend.core.hadoop.IHadoopClusterService;
 import org.talend.core.hadoop.repository.HadoopRepositoryUtil;
-import org.talend.core.model.context.ContextLink;
-import org.talend.core.model.context.ContextLinkService;
-import org.talend.core.model.context.ContextParamLink;
 import org.talend.core.model.context.ContextUtils;
-import org.talend.core.model.context.ItemContextLink;
 import org.talend.core.model.context.JobContext;
 import org.talend.core.model.context.JobContextManager;
 import org.talend.core.model.context.JobContextParameter;
+import org.talend.core.model.context.link.ContextLink;
+import org.talend.core.model.context.link.ContextLinkService;
+import org.talend.core.model.context.link.ContextParamLink;
+import org.talend.core.model.context.link.ItemContextLink;
 import org.talend.core.model.metadata.IMetadataColumn;
 import org.talend.core.model.metadata.IMetadataTable;
 import org.talend.core.model.metadata.MetadataSchemaType;
@@ -141,7 +141,7 @@ public abstract class RepositoryUpdateManager {
      */
     protected Object parameter;
 
-    private Map<ContextItem, Set<String>> newParametersMap = new HashMap<ContextItem, Set<String>>();
+    private Map<Item, Set<String>> newParametersMap = new HashMap<Item, Set<String>>();
 
     private boolean onlyOpeningJob = false;
 
@@ -802,7 +802,7 @@ public abstract class RepositoryUpdateManager {
             }
             ContextLink contextLink = null;
             if (itemContextLink != null) {
-                contextLink = itemContextLink.getContextLinkByName(conn.getContextName());
+                contextLink = itemContextLink.findContextLink(null, conn.getContextName());
             }
             if (contextLink != null) {
                 ContextType contextType = ContextUtils.getContextTypeByName(contextItem, conn.getContextName(), false);
@@ -827,6 +827,10 @@ public abstract class RepositoryUpdateManager {
                 }
             }
         }
+    }
+
+    public static Map<String, Map<String, String>> fillRenamedContextData(String itemId) {
+        return null;
     }
 
     public static IEditorReference[] getEditors() {
@@ -925,6 +929,7 @@ public abstract class RepositoryUpdateManager {
                                     jobParam.setSource(repositoryId);
                                     jobParam.setType(repoParam.getType());
                                     jobParam.setValue(repoParam.getValue());
+                                    jobParam.setInternalId(repoParam.getInternalId());
                                     jobContext.getContextParameterList().add(jobParam);
                                 }
                                 addContextGroupList.add(jobContext);
@@ -2010,7 +2015,7 @@ public abstract class RepositoryUpdateManager {
             repositoryUpdateManager.setContextRenamedMap(repositoryRenamedMap);
 
             // newly added parameters
-            Map<ContextItem, Set<String>> newParametersMap = new HashMap<ContextItem, Set<String>>();
+            Map<Item, Set<String>> newParametersMap = new HashMap<Item, Set<String>>();
             if (!repositoryContextManager.getNewParameters().isEmpty()) {
                 newParametersMap.put(item, repositoryContextManager.getNewParameters());
             }
@@ -2025,11 +2030,11 @@ public abstract class RepositoryUpdateManager {
         return repositoryUpdateManager.doWork(show, onlySimpleShow);
     }
 
-    public Map<ContextItem, Set<String>> getNewParametersMap() {
+    public Map<Item, Set<String>> getNewParametersMap() {
         return newParametersMap;
     }
 
-    public void setNewParametersMap(Map<ContextItem, Set<String>> newParametersMap) {
+    public void setNewParametersMap(Map<Item, Set<String>> newParametersMap) {
         this.newParametersMap = newParametersMap;
     }
 
