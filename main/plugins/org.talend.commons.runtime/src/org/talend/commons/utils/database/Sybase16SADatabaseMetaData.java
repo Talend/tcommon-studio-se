@@ -19,7 +19,9 @@ import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.apache.commons.lang3.StringUtils;
 import org.apache.log4j.Logger;
+
 
 /**
  * created by qiongli on 2013-11-13 Detailled comment
@@ -43,7 +45,10 @@ public class Sybase16SADatabaseMetaData extends SybaseDatabaseMetaData {
         List<String[]> list = new ArrayList<String[]>();
 
         List<String> catList = new ArrayList<String>();
-        catList.add(database);
+        if (!StringUtils.isEmpty(database)) {
+            catList.add(database);
+        }
+        
         for (String catalogName : catList) {
             String sql = createSqlByLoginAndCatalog(login, catalogName);
             ResultSet rs = null;
