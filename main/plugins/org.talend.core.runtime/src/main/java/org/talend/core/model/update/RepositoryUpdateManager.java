@@ -98,6 +98,7 @@ import org.talend.core.model.utils.UpdateRepositoryHelper;
 import org.talend.core.prefs.ITalendCorePrefConstants;
 import org.talend.core.runtime.CoreRuntimePlugin;
 import org.talend.core.runtime.i18n.Messages;
+import org.talend.core.runtime.services.IGenericDBService;
 import org.talend.core.service.IMRProcessService;
 import org.talend.core.service.IMetadataManagmentService;
 import org.talend.core.service.IStormProcessService;
@@ -690,10 +691,15 @@ public abstract class RepositoryUpdateManager {
         Set<String> set = valueMap.keySet();
         List<String> list = new ArrayList<String>(set);
         IProxyRepositoryFactory factory = CoreRuntimePlugin.getInstance().getProxyRepositoryFactory();
+        boolean foundCompProperties = false;
+        ConnectionItem dbConnectionItem = null;
+        Map<String, String> oldToNewHM = new HashMap<String, String>();
+
         for (String newValue : list) {
             String oldValue = valueMap.get(newValue);
             oldValue = "context." + oldValue;
             newValue = "context." + newValue;
+            oldToNewHM.put(oldValue, newValue);
             List<IRepositoryViewObject> dbConnList = factory.getAll(ERepositoryObjectType.METADATA_CONNECTIONS, true);
             for (IRepositoryViewObject obj : dbConnList) {
                 Item item = obj.getProperty().getItem();
@@ -707,6 +713,11 @@ public abstract class RepositoryUpdateManager {
                         if (citem == contextItem) {
                             if (conn instanceof DatabaseConnection) {
                                 DatabaseConnection dbConn = (DatabaseConnection) conn;
+                                String compProperties = dbConn.getCompProperties();
+                                if (!foundCompProperties && StringUtils.isNotBlank(compProperties)) {
+                                    foundCompProperties = true;
+                                    dbConnectionItem = (ConnectionItem) item;
+                                }
                                 if (dbConn.getAdditionalParams() != null && dbConn.getAdditionalParams().equals(oldValue)) {
                                     dbConn.setAdditionalParams(newValue);
                                 } else if (dbConn.getUsername() != null && dbConn.getUsername().equals(oldValue)) {
@@ -1098,6 +1109,11 @@ public abstract class RepositoryUpdateManager {
             }
         }
 
+        if (foundCompProperties && GlobalServiceRegister.getDefault().isServiceRegistered(IGenericDBService.class)) {
+            IGenericDBService service = GlobalServiceRegister.getDefault().getService(IGenericDBService.class);
+            service.updateCompPropertiesForContextMode(dbConnectionItem.getConnection(), oldToNewHM);
+            factory.save(dbConnectionItem);
+        }
     }
 
     private void updateParameters(DatabaseConnection dbConn, String oldValue, String newValue) {
