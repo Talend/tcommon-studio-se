@@ -52,7 +52,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 
 public class ContextLinkService {
 
-    private static final String CREATOR_EXT_ID = "org.talend.core.runtime.context.ItemContextLinkService"; //$NON-NLS-1$
+    private static final String CREATOR_EXT_ID = "org.talend.core.runtime.saveItemContextLinkService"; //$NON-NLS-1$
 
     public static final String LINKS_FOLDER_NAME = "links";
 
