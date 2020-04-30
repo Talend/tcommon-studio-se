@@ -53,7 +53,7 @@ public class ItemContextLink {
 
     public ContextLink findContextLink(String repoContextId, String contextName) {
         for (ContextLink contextLink : contextList) {
-            if ((StringUtils.isNotEmpty(repoContextId) && StringUtils.equals(repoContextId, contextLink.getRepoId()))
+            if ((repoContextId == null || StringUtils.equals(repoContextId, contextLink.getRepoId()))
                     && StringUtils.equals(contextName, contextLink.getContextName())) {
                 return contextLink;
             }

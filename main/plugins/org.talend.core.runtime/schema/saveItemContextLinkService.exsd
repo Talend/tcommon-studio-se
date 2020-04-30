@@ -7,7 +7,7 @@
       </appinfo>
       <documentation>
          Save the context link data for item which contain ContextType object
-The extension point is: org.talend.core.runtime.context.ItemContextLinkService
+The extension point must implements interface : org.talend.core.model.context.link.IItemContextLinkService
       </documentation>
    </annotation>
 
@@ -18,6 +18,9 @@ The extension point is: org.talend.core.runtime.context.ItemContextLinkService
          </appinfo>
       </annotation>
       <complexType>
+         <sequence minOccurs="1" maxOccurs="unbounded">
+            <element ref="creator" minOccurs="1" maxOccurs="unbounded"/>
+         </sequence>
          <attribute name="point" type="string" use="required">
             <annotation>
                <documentation>
@@ -83,9 +86,9 @@ The extension point is: org.talend.core.runtime.context.ItemContextLinkService
          <meta.section type="apiinfo"/>
       </appinfo>
       <documentation>
-             boolean accept(Item item);
+         boolean accept(Item item);
 
-    boolean saveItemLink(Item item);
+boolean saveItemLink(Item item);
       </documentation>
    </annotation>
 

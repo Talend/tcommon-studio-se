@@ -21,6 +21,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
+import org.apache.commons.lang3.StringUtils;
 import org.apache.log4j.Logger;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Platform;
@@ -46,6 +47,7 @@ import org.talend.core.model.properties.ContextItem;
 import org.talend.core.model.properties.Item;
 import org.talend.core.model.properties.JobletProcessItem;
 import org.talend.core.model.properties.ProcessItem;
+import org.talend.core.model.properties.Property;
 import org.talend.core.model.repository.IRepositoryViewObject;
 import org.talend.core.runtime.CoreRuntimePlugin;
 import org.talend.cwm.helper.ResourceHelper;
@@ -775,6 +777,68 @@ public class ContextUtils {
             return processItem.getProcess().getContext();
         }
         return null;
+    }
+
+    public static Map<String, String> getContextParamterRenamedMap(Item processItem) {
+        Map<String, String> renamedMap = new HashMap<String, String>();
+        List<ContextType> contextTypeList = getAllContextType(processItem);
+        if (contextTypeList != null && contextTypeList.size() > 0) {
+            ItemContextLink itemContextLink = null;
+            try {
+                itemContextLink = ContextLinkService.getInstance().loadContextLink(processItem.getProperty().getId());
+            } catch (PersistenceException e) {
+                ExceptionHandler.process(e);
+            }
+            if (itemContextLink != null) {
+                Map<String, Item> tempItemMap = new HashMap<String, Item>();
+                for (ContextType contextType : contextTypeList) {
+                    for (Object obj : contextType.getContextParameter()) {
+                        if (obj instanceof ContextParameterType) {
+                            ContextParameterType contextParameterType = (ContextParameterType) obj;
+                            ContextParamLink paramLink = itemContextLink.findContextParamLink(
+                                    contextParameterType.getRepositoryContextId(), contextType.getName(),
+                                    contextParameterType.getName());
+                            if (paramLink != null) {
+                                Item item = tempItemMap.get(contextParameterType.getRepositoryContextId());
+                                if (item == null) {
+                                    item = ContextUtils
+                                            .getRepositoryContextItemById(contextParameterType.getRepositoryContextId());
+                                    tempItemMap.put(contextParameterType.getRepositoryContextId(), item);
+                                }
+                                if (item != null) {
+                                    final ContextType repoContextType = ContextUtils.getContextTypeByName(item,
+                                            contextType.getName());
+                                    ContextParameterType repoContextParam = ContextUtils.getContextParameterTypeById(
+                                            repoContextType, paramLink.getId(), item instanceof ContextItem);
+                                    if (repoContextParam != null
+                                            && !StringUtils.equals(repoContextParam.getName(), contextParameterType.getName())) {
+                                        renamedMap.put(repoContextParam.getName(), contextParameterType.getName());
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+
+        return renamedMap;
+    }
+
+    public static Map<String, String> getContextParamterRenamedMap(String processId) {
+        IProxyRepositoryFactory factory = CoreRuntimePlugin.getInstance().getProxyRepositoryFactory();
+        IRepositoryViewObject processObject = null;
+        try {
+            processObject = factory.getLastVersion(processId);
+        } catch (PersistenceException e) {
+            ExceptionHandler.process(e);
+        }
+        if (processObject != null) {
+            Property property = processObject.getProperty();
+            Item processItem = property.getItem();
+            return getContextParamterRenamedMap(processItem);
+        }
+        return Collections.EMPTY_MAP;
     }
 
     /**

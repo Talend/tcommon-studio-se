@@ -83,6 +83,7 @@ import org.talend.core.model.relationship.RelationshipItemBuilder;
 import org.talend.core.model.repository.ERepositoryObjectType;
 import org.talend.core.model.repository.IRepositoryViewObject;
 import org.talend.core.model.update.extension.UpdateManagerProviderDetector;
+import org.talend.core.model.utils.ContextParameterUtils;
 import org.talend.core.model.utils.UpdateRepositoryHelper;
 import org.talend.core.prefs.ITalendCorePrefConstants;
 import org.talend.core.runtime.CoreRuntimePlugin;
@@ -757,8 +758,6 @@ public abstract class RepositoryUpdateManager {
         boolean isModified = false;
         for (String newValue : newToOldValueMap.keySet()) {
             String oldValue = newToOldValueMap.get(newValue);
-            oldValue = "context." + oldValue;
-            newValue = "context." + newValue;
             boolean result = updateConnectionContextParam(conntectionItem, oldValue, newValue, isHadoopConnectionType);
             isModified = isModified || result;
         }
@@ -815,8 +814,8 @@ public abstract class RepositoryUpdateManager {
                         if (paramType == null) {
                             paramType = ContextUtils.getContextParameterTypeByUUId(contextType, paramLink.getId());
                             if (paramType != null) {
-                                boolean result = updateServce.updateContextParameter(conn, paramLink.getName(),
-                                        paramType.getName());
+                                boolean result = updateServce.updateContextParameter(conn,
+                                        addContextParamPrefix(paramLink.getName()), addContextParamPrefix(paramType.getName()));
                                 isModified = isModified || result;
                             }
                         }
@@ -827,6 +826,13 @@ public abstract class RepositoryUpdateManager {
                 }
             }
         }
+    }
+
+    private static String addContextParamPrefix(String value) {
+        if (!value.startsWith(ContextParameterUtils.JAVA_NEW_CONTEXT_PREFIX)) {
+            value = ContextParameterUtils.JAVA_NEW_CONTEXT_PREFIX + value;
+        }
+        return value;
     }
 
     public static Map<String, Map<String, String>> fillRenamedContextData(String itemId) {

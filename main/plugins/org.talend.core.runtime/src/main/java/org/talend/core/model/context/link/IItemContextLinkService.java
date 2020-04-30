@@ -12,12 +12,13 @@
 // ============================================================================
 package org.talend.core.model.context.link;
 
+import org.talend.commons.exception.PersistenceException;
 import org.talend.core.model.properties.Item;
 
 public interface IItemContextLinkService {
 
     boolean accept(Item item);
 
-    boolean saveItemLink(Item item);
+    boolean saveItemLink(Item item) throws PersistenceException;
 
 }
