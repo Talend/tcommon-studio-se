@@ -39,7 +39,7 @@ import org.talend.utils.io.FilesUtils;
 
 /**
  *
- * created by ycbai on 2017骞�5鏈�23鏃� Detailled comment
+ * created by ycbai on 2017年5月23日 Detailled comment
  *
  */
 public class ComponentsDeploymentManager {
