@@ -874,6 +874,9 @@ public final class ProxyRepositoryFactory implements IProxyRepositoryFactory {
         }
 
         this.repositoryFactoryFromProvider.deleteObjectPhysical(project, object, version, fromEmptyRecycleBin);
+        if (isFullLogonFinished()) {
+            fireRepositoryPropertyChange(ERepositoryActionName.AFTER_DELETE.getName(), null, object);
+        }
         // i18n
         // log.info("Physical deletion [" + objToDelete + "] by " + getRepositoryContext().getUser() + ".");
         String str[] = new String[] { object.toString(), getRepositoryContext().getUser().toString() };
