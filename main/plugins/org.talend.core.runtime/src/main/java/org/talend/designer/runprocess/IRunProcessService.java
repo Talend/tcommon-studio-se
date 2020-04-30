@@ -25,6 +25,7 @@ import org.eclipse.jdt.core.IJavaProject;
 import org.eclipse.jface.action.IAction;
 import org.eclipse.jface.preference.IPreferenceStore;
 import org.eclipse.jface.viewers.IStructuredSelection;
+import org.talend.core.GlobalServiceRegister;
 import org.talend.core.IService;
 import org.talend.core.language.ECodeLanguage;
 import org.talend.core.language.ICodeProblemsChecker;
@@ -244,5 +245,12 @@ public interface IRunProcessService extends IService {
     public IFolder getJavaProjectExternalResourcesFolder(IProcess process);
 
     public boolean isCIMode();
+
+    public static IRunProcessService get() {
+        if (GlobalServiceRegister.getDefault().isServiceRegistered(IRunProcessService.class)) {
+            return GlobalServiceRegister.getDefault().getService(IRunProcessService.class);
+        }
+        return null;
+    }
 
 }
