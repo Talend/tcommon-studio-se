@@ -13,6 +13,8 @@
 package org.talend.core.repository.ui.dialog;
 
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -30,12 +32,14 @@ import org.eclipse.swt.widgets.Shell;
 import org.eclipse.swt.widgets.Table;
 import org.eclipse.swt.widgets.TableColumn;
 import org.eclipse.swt.widgets.TableItem;
+import org.talend.commons.exception.PersistenceException;
 import org.talend.core.GlobalServiceRegister;
 import org.talend.core.model.properties.Item;
 import org.talend.core.model.properties.ProcessItem;
 import org.talend.core.model.properties.Property;
 import org.talend.core.model.repository.IRepositoryObject;
 import org.talend.core.model.repository.IRepositoryViewObject;
+import org.talend.core.repository.utils.RepositoryNodeSortUtil;
 import org.talend.core.ui.ITestContainerProviderService;
 import org.talend.repository.model.RepositoryNode;
 import org.talend.repository.model.IRepositoryNode.EProperties;
@@ -107,7 +111,8 @@ public class PastSelectorDialog extends Dialog {
         modificationTime.setWidth(200);
         modificationTime.setText("Modification Time");
 
-        for (IRepositoryViewObject object : versions) {
+        RepositoryNodeSortUtil util = new RepositoryNodeSortUtil();
+        for (IRepositoryViewObject object : util.getSortVersion(versions)) {
             TableItem item = new TableItem(table, SWT.NONE);
             item.setData(object);
             item.setText(0, object.getVersion());
@@ -187,7 +192,7 @@ public class PastSelectorDialog extends Dialog {
         });
         return composite;
     }
-
+    
     public Set<IRepositoryViewObject> getSelectedVersionItems() {
         return this.selectedVersionItems;
     }

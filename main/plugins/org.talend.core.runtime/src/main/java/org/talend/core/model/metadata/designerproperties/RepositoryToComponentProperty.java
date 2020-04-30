@@ -917,6 +917,8 @@ public class RepositoryToComponentProperty {
                 return EDatabaseTypeName.ORACLE_CUSTOM.getXmlName();
             } else if (databaseType.equals(EDatabaseTypeName.MSSQL.getDisplayName())) {
                 return EDatabaseTypeName.MSSQL.getXMLType(); // for component
+            } else if (databaseType.equals(EDatabaseTypeName.REDSHIFT_SSO.getDisplayName())) {
+                return EDatabaseTypeName.REDSHIFT_SSO.getXmlName(); // for component
             }
 
             else {

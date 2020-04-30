@@ -64,4 +64,8 @@ public interface IGenericDBService extends IService{
 
     public ERepositoryObjectType getExtraDBType(ERepositoryObjectType type);
 
+    public void updateCompPropertiesForContextMode(Connection connection, Map<String, String> contextVarMap);
+
+    public List<ERepositoryObjectType> getAllGenericMetadataDBRepositoryType();
+
 }

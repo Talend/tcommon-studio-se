@@ -23,6 +23,7 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.zip.GZIPOutputStream;
 
+import org.apache.log4j.Level;
 import org.apache.log4j.Logger;
 import org.apache.log4j.Priority;
 import org.eclipse.core.runtime.CoreException;
@@ -195,6 +196,19 @@ public final class TokenCollectorFactory {
         }
 
         return result;
+    }
+
+    public void processWithoutWait() {
+        try {
+            log.log(Level.INFO, "Start to collect data");
+            priorCollect();
+            log.log(Level.INFO, "End of collect data");
+            log.log(Level.INFO, "Start to send data");
+            send();
+            log.log(Level.INFO, "End of send data");
+        } catch (Exception e) {
+            ExceptionHandler.process(e);
+        }
     }
 
     public void send() {
