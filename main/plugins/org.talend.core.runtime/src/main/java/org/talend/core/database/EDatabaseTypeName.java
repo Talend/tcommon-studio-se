@@ -53,6 +53,8 @@ public enum EDatabaseTypeName {
             "IBM DB2 ZOS", "IBM DB2 ZOS", Boolean.TRUE, "IBM_DB2", "DB2", EDatabaseSchemaOrCatalogMapping.Sid, EDatabaseSchemaOrCatalogMapping.Schema), //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$
     SYBASEASE(
             "SybaseASE", "Sybase (ASE and IQ)", Boolean.TRUE, "SYBASE", EDatabaseSchemaOrCatalogMapping.Sid, EDatabaseSchemaOrCatalogMapping.None), //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+    SYBASEASE_SA(
+            "SybaseASE", "SQL Anywhere", Boolean.TRUE, "SYBASE", EDatabaseSchemaOrCatalogMapping.Sid, EDatabaseSchemaOrCatalogMapping.None), //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
 
     // this Sybase IQ not used.
     SYBASEIQ(
