@@ -1130,6 +1130,7 @@ public abstract class RepositoryUpdateManager {
                                     if (StringUtils.isNotBlank(compProperties)) {
                                         foundCompProperties = true;
                                         dbConnectionItem = (ConnectionItem) item;
+                                        break;
                                     }
                                 }
                             }
