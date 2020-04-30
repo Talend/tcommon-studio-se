@@ -1136,6 +1136,9 @@ public abstract class RepositoryUpdateManager {
                             }
                         }
                     }
+                    if (foundCompProperties) {
+                        break;
+                    }
                 }
             }
 
