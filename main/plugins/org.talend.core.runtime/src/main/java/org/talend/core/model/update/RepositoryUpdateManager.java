@@ -1109,10 +1109,43 @@ public abstract class RepositoryUpdateManager {
             }
         }
 
-        if (foundCompProperties && GlobalServiceRegister.getDefault().isServiceRegistered(IGenericDBService.class)) {
+        if (GlobalServiceRegister.getDefault().isServiceRegistered(IGenericDBService.class)) {
             IGenericDBService service = GlobalServiceRegister.getDefault().getService(IGenericDBService.class);
-            service.updateCompPropertiesForContextMode(dbConnectionItem.getConnection(), oldToNewHM);
-            factory.save(dbConnectionItem);
+            // if not found, search from generic metadata
+            if (!foundCompProperties) {
+                List<ERepositoryObjectType> repoTypeList = service.getAllGenericMetadataDBRepositoryType();
+                for (ERepositoryObjectType type : repoTypeList) {
+                    List<IRepositoryViewObject> repositoryObjects = factory.getAll(type);
+                    for (IRepositoryViewObject object : repositoryObjects) {
+                        Item item = object.getProperty().getItem();
+                        if (item instanceof ConnectionItem) {
+                            Connection conn = ((ConnectionItem) item).getConnection();
+                            if (conn.isContextMode()) {
+                                ContextItem contextItem = ContextUtils.getContextItemById2(conn.getContextId());
+                                if (contextItem == null) {
+                                    continue;
+                                }
+                                if (citem == contextItem) {
+                                    String compProperties = conn.getCompProperties();
+                                    if (StringUtils.isNotBlank(compProperties)) {
+                                        foundCompProperties = true;
+                                        dbConnectionItem = (ConnectionItem) item;
+                                        break;
+                                    }
+                                }
+                            }
+                        }
+                    }
+                    if (foundCompProperties) {
+                        break;
+                    }
+                }
+            }
+
+            if (foundCompProperties) {
+                service.updateCompPropertiesForContextMode(dbConnectionItem.getConnection(), oldToNewHM);
+                factory.save(dbConnectionItem);
+            }
         }
     }
 
