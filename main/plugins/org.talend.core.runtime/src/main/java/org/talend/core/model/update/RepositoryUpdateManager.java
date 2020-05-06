@@ -849,10 +849,6 @@ public abstract class RepositoryUpdateManager {
         return value;
     }
 
-    public static Map<String, Map<String, String>> fillRenamedContextData(String itemId) {
-        return null;
-    }
-
     public static IEditorReference[] getEditors() {
         if (CommonsPlugin.isHeadless() || !FACTORY.isFullLogonFinished()) {
             return new IEditorReference[0];
@@ -2181,7 +2177,7 @@ public abstract class RepositoryUpdateManager {
                     .findAllService(IRepositoryContextUpdateService.class);
         }
         for (IRepositoryContextUpdateService updater : CONTEXT_UPDATE_SERVICE_LIST) {
-            if (updater.isAccept(connection)) {
+            if (updater.accept(connection)) {
                 return updater;
             }
         }

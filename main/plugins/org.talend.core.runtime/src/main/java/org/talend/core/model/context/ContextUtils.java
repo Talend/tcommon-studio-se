@@ -630,7 +630,7 @@ public class ContextUtils {
                                 }
                             }
                             if (modified) {
-                                processJobManager.saveToEmf(processType.getContext());
+                                processJobManager.saveToEmf(processType.getContext(), true);
                                 added = true;
                             }
                         }
@@ -909,7 +909,6 @@ public class ContextUtils {
                                         renamedMap.put(repoParameterType.getName(), parameterType.getName());
                                     }
                                 }
-
                             }
                         }
                     }
@@ -920,5 +919,4 @@ public class ContextUtils {
         }
         return renamedMap;
     }
-
 }

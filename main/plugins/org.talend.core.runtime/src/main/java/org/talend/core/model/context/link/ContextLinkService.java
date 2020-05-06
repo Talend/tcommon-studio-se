@@ -69,7 +69,7 @@ public class ContextLinkService {
         return instance;
     }
 
-    public boolean saveContextLink(Item item) throws PersistenceException {
+    public synchronized boolean saveContextLink(Item item) throws PersistenceException {
         for (IItemContextLinkService service : registeredService) {
             if (service.accept(item)) {
                 return service.saveItemLink(item);
@@ -89,7 +89,7 @@ public class ContextLinkService {
     }
 
     @SuppressWarnings("unchecked")
-    public boolean saveContextLink(Connection connection, String id) throws PersistenceException {
+    public synchronized boolean saveContextLink(Connection connection, String id) throws PersistenceException {
         boolean modified = false;
         ItemContextLink itemContextLink = new ItemContextLink();
         itemContextLink.setItemId(id);
@@ -124,13 +124,13 @@ public class ContextLinkService {
         return modified;
     }
 
-    public static boolean saveContextLink(List<ContextType> contextListType, String id) throws PersistenceException {
+    public static synchronized boolean saveContextLink(List<ContextType> contextTypeList, String id) throws PersistenceException {
         boolean modified = false;
         ItemContextLink itemContextLink = new ItemContextLink();
         itemContextLink.setItemId(id);
         Map<String, ContextItem> tempCache = new HashMap<String, ContextItem>();
-        if (contextListType != null) {
-            for (Object object : contextListType) {
+        if (contextTypeList != null) {
+            for (Object object : contextTypeList) {
                 if (object instanceof ContextType) {
                     ContextType jobContextType = (ContextType) object;
                     for (Object o : jobContextType.getContextParameter()) {
@@ -140,14 +140,14 @@ public class ContextLinkService {
                             if (StringUtils.isEmpty(repositoryContextId)
                                     || IContextParameter.BUILT_IN.equals(repositoryContextId)) {
                                 ContextLink contextLink = itemContextLink
-                                        .findContextLink(contextParameterType.getRepositoryContextId(), jobContextType.getName());
+                                        .findContextLink(id, jobContextType.getName());
                                 if (contextLink == null) {
                                     contextLink = new ContextLink();
                                     contextLink.setContextName(jobContextType.getName());
                                     contextLink.setRepoId(id);
                                     itemContextLink.getContextList().add(contextLink);
                                 }
-                                ContextParamLink contextParamLink = createParamLink(repositoryContextId, jobContextType.getName(),
+                                ContextParamLink contextParamLink = createParamLink(id, jobContextType.getName(),
                                         contextParameterType.getName(), contextParameterType.getInternalId(), tempCache);
                                 contextLink.getParameterList().add(contextParamLink);
                             } else {

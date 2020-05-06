@@ -235,7 +235,7 @@ public class ContextWizard extends CheckLastVersionRepositoryWizard implements I
                 if (creation) {
                     String nextId = factory.getNextId();
                     contextProperty.setId(nextId);
-                    contextManager.saveToEmf(contextItem.getContext());
+                    contextManager.saveToEmf(contextItem.getContext(), false);
                     contextItem.setDefaultContext(contextManager.getDefaultContext().getName());
                     final IPath path = contextWizardPage0.getDestinationPath();
                     final IWorkspaceRunnable op = new IWorkspaceRunnable() {

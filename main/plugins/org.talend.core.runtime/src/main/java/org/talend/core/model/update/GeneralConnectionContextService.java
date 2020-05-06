@@ -81,7 +81,7 @@ public class GeneralConnectionContextService extends AbstractRepositoryContextUp
                     dbConn.setUiSchema(newValue);
                     isModified = true;
                 } else {
-                    updateParameters(dbConn, oldValue, newValue);
+                    isModified = updateParameters(dbConn, oldValue, newValue);
                 }
             }
 
@@ -328,7 +328,8 @@ public class GeneralConnectionContextService extends AbstractRepositoryContextUp
         return isModified;
     }
 
-    private void updateParameters(DatabaseConnection dbConn, String oldValue, String newValue) {
+    private boolean updateParameters(DatabaseConnection dbConn, String oldValue, String newValue) {
+        boolean isModified = false;
         EMap<String, String> parameters = dbConn.getParameters();
         if (parameters != null && !parameters.isEmpty()) {
             for (Entry<String, String> entry : parameters.entrySet()) {
@@ -336,15 +337,18 @@ public class GeneralConnectionContextService extends AbstractRepositoryContextUp
                     String value = entry.getValue();
                     if (StringUtils.equals(value, oldValue)) {
                         entry.setValue(newValue);
+                        isModified = true;
                     }
                 }
             }
         }
 
-        updateHadoopPropertiesForDbConnection(dbConn, oldValue, newValue);
+        boolean hadoopUpdateResult = updateHadoopPropertiesForDbConnection(dbConn, oldValue, newValue);
+        return isModified || hadoopUpdateResult;
     }
 
-    private void updateHadoopPropertiesForDbConnection(DatabaseConnection dbConn, String oldValue, String newValue) {
+    private boolean updateHadoopPropertiesForDbConnection(DatabaseConnection dbConn, String oldValue, String newValue) {
+        boolean isModified = false;
         EMap<String, String> parameters = dbConn.getParameters();
         String databaseType = parameters.get(ConnParameterKeys.CONN_PARA_KEY_DB_TYPE);
         String hadoopProperties = "";
@@ -362,22 +366,27 @@ public class GeneralConnectionContextService extends AbstractRepositoryContextUp
                     String propertyValue = (String) propertyMap.get("VALUE");
                     if (propertyValue.equals(oldValue)) {
                         propertyMap.put("VALUE", newValue);
+                        isModified = true;
                     }
                 }
                 String hadoopPropertiesJson = HadoopRepositoryUtil.getHadoopPropertiesJsonStr(hadoopPropertiesList);
                 if (EDatabaseConnTemplate.HIVE.getDBDisplayName().equals(databaseType)) {
                     dbConn.getParameters().put(ConnParameterKeys.CONN_PARA_KEY_HIVE_PROPERTIES, hadoopPropertiesJson);
+                    isModified = true;
                 } else if (EDatabaseConnTemplate.HBASE.getDBDisplayName().equals(databaseType)) {
                     dbConn.getParameters().put(ConnParameterKeys.CONN_PARA_KEY_HBASE_PROPERTIES, hadoopPropertiesJson);
+                    isModified = true;
                 } else if (EDatabaseConnTemplate.MAPRDB.getDBDisplayName().equals(databaseType)) {
                     dbConn.getParameters().put(ConnParameterKeys.CONN_PARA_KEY_MAPRDB_PROPERTIES, hadoopPropertiesJson);
+                    isModified = true;
                 }
             }
         }
+        return isModified;
     }
 
     @Override
-    public boolean isAccept(Connection connection) {
+    public boolean accept(Connection connection) {
         if (connection instanceof DatabaseConnection || connection instanceof FileExcelConnection
                 || connection instanceof DelimitedFileConnection || connection instanceof RegexpFileConnection
                 || connection instanceof LdifFileConnection || connection instanceof PositionalFileConnection
