@@ -53,7 +53,6 @@ public class JobContextParameter implements IContextParameter, Cloneable {
     String source = ""; //$NON-NLS-1$
 
     public JobContextParameter() {
-        System.out.println();
     }
 
     @Override

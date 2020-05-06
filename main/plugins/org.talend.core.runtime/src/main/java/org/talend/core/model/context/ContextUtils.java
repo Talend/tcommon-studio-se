@@ -779,49 +779,79 @@ public class ContextUtils {
         return null;
     }
 
-    public static Map<String, String> getContextParamterRenamedMap(Item processItem) {
+    public static Map<String, String> getContextParamterRenamedMap(Item item) {
+        ItemContextLink itemContextLink = null;
+        try {
+            itemContextLink = ContextLinkService.getInstance().loadContextLink(item.getProperty().getId());
+        } catch (PersistenceException e) {
+            ExceptionHandler.process(e);
+        }
+        if (itemContextLink != null) {
+            if (item instanceof ConnectionItem) {
+                return compareConnectionContextParamName((ConnectionItem)item, itemContextLink);
+            } else {
+                return compareProcessContextParamName(item, itemContextLink);
+            }
+        }
+
+        return Collections.EMPTY_MAP;
+    }
+
+    private static Map<String, String> compareProcessContextParamName(Item processItem, ItemContextLink itemContextLink) {
         Map<String, String> renamedMap = new HashMap<String, String>();
         List<ContextType> contextTypeList = getAllContextType(processItem);
-        if (contextTypeList != null && contextTypeList.size() > 0) {
-            ItemContextLink itemContextLink = null;
-            try {
-                itemContextLink = ContextLinkService.getInstance().loadContextLink(processItem.getProperty().getId());
-            } catch (PersistenceException e) {
-                ExceptionHandler.process(e);
-            }
-            if (itemContextLink != null) {
-                Map<String, Item> tempItemMap = new HashMap<String, Item>();
-                for (ContextType contextType : contextTypeList) {
-                    for (Object obj : contextType.getContextParameter()) {
-                        if (obj instanceof ContextParameterType) {
-                            ContextParameterType contextParameterType = (ContextParameterType) obj;
-                            ContextParamLink paramLink = itemContextLink.findContextParamLink(
-                                    contextParameterType.getRepositoryContextId(), contextType.getName(),
-                                    contextParameterType.getName());
-                            if (paramLink != null) {
-                                Item item = tempItemMap.get(contextParameterType.getRepositoryContextId());
-                                if (item == null) {
-                                    item = ContextUtils
-                                            .getRepositoryContextItemById(contextParameterType.getRepositoryContextId());
-                                    tempItemMap.put(contextParameterType.getRepositoryContextId(), item);
-                                }
-                                if (item != null) {
-                                    final ContextType repoContextType = ContextUtils.getContextTypeByName(item,
-                                            contextType.getName());
-                                    ContextParameterType repoContextParam = ContextUtils.getContextParameterTypeById(
-                                            repoContextType, paramLink.getId(), item instanceof ContextItem);
-                                    if (repoContextParam != null
-                                            && !StringUtils.equals(repoContextParam.getName(), contextParameterType.getName())) {
-                                        renamedMap.put(repoContextParam.getName(), contextParameterType.getName());
-                                    }
-                                }
+        Map<String, Item> tempItemMap = new HashMap<String, Item>();
+        for (ContextType contextType : contextTypeList) {
+            for (Object obj : contextType.getContextParameter()) {
+                if (obj instanceof ContextParameterType) {
+                    ContextParameterType contextParameterType = (ContextParameterType) obj;
+                    ContextParamLink paramLink = itemContextLink.findContextParamLinkByName(
+                            contextParameterType.getRepositoryContextId(), contextType.getName(), contextParameterType.getName());
+                    if (paramLink != null) {
+                        Item item = tempItemMap.get(contextParameterType.getRepositoryContextId());
+                        if (item == null) {
+                            item = ContextUtils.getRepositoryContextItemById(contextParameterType.getRepositoryContextId());
+                            tempItemMap.put(contextParameterType.getRepositoryContextId(), item);
+                        }
+                        if (item != null) {
+                            final ContextType repoContextType = ContextUtils.getContextTypeByName(item, contextType.getName());
+                            ContextParameterType repoContextParam = ContextUtils.getContextParameterTypeById(repoContextType,
+                                    paramLink.getId(), item instanceof ContextItem);
+                            if (repoContextParam != null
+                                    && !StringUtils.equals(repoContextParam.getName(), contextParameterType.getName())) {
+                                renamedMap.put(repoContextParam.getName(), contextParameterType.getName());
                             }
                         }
                     }
                 }
             }
         }
+        return renamedMap;
+    }
 
+    private static Map<String, String> compareConnectionContextParamName(ConnectionItem connectionItem,
+            ItemContextLink itemContextLink) {
+        Map<String, String> renamedMap = new HashMap<String, String>();
+        if (connectionItem.getConnection().isContextMode()) {
+            ContextItem contextItem = ContextUtils.getContextItemById2(connectionItem.getConnection().getContextId());
+            if (contextItem != null) {
+                ContextType contextType = ContextUtils.getContextTypeByName(contextItem,
+                        connectionItem.getConnection().getContextName(), false);
+                if (contextType != null) {
+                    for (Object obj : contextType.getContextParameter()) {
+                        if (obj instanceof ContextParameterType) {
+                            ContextParameterType paramType = (ContextParameterType) obj;
+                            ContextParamLink paramLink = itemContextLink.findContextParamLinkById(
+                                    connectionItem.getConnection().getContextId(),
+                                    connectionItem.getConnection().getContextName(), ResourceHelper.getUUID(paramType));
+                            if (paramLink != null && !StringUtils.equals(paramType.getName(), paramLink.getName())) {
+                                renamedMap.put(paramType.getName(), paramLink.getName());
+                            }
+                        }
+                    }
+                }
+            }
+        }
         return renamedMap;
     }
 
@@ -860,7 +890,7 @@ public class ContextUtils {
                 for (Object obj : context.getContextParameterList()) {
                     if (obj instanceof IContextParameter) {
                         IContextParameter parameterType = (IContextParameter) obj;
-                        ContextParamLink parameterLink = itemContextLink.findContextParamLink(parameterType.getSource(),
+                        ContextParamLink parameterLink = itemContextLink.findContextParamLinkByName(parameterType.getSource(),
                                 context.getName(), parameterType.getName());
                         if (parameterLink != null) {
                             Item item = idToItemMap.get(parameterType.getSource());

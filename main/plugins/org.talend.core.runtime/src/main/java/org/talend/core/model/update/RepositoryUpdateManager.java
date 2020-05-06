@@ -271,12 +271,23 @@ public abstract class RepositoryUpdateManager {
         MessageDialog.openInformation(Display.getCurrent().getActiveShell(), title, messages);
     }
 
+    private boolean openRenameCheckedDialog() {
+        return MessageDialog.openQuestion(Display.getCurrent().getActiveShell(),
+                Messages.getString("RepositoryUpdateManager.RenameContextTitle"), //$NON-NLS-1$
+                Messages.getString("RepositoryUpdateManager.RenameContextMessages")); //$NON-NLS-1$
+
+    }
+
     public boolean doWork() {
         return doWork(true, false);
     }
 
     public boolean needForcePropagation() {
         return getSchemaRenamedMap() != null && !getSchemaRenamedMap().isEmpty();
+    }
+
+    private boolean needForcePropagationForContext() {
+        return getContextRenamedMap() != null && !getContextRenamedMap().isEmpty();
     }
 
     public boolean doWork(boolean show, final boolean onlyImpactAnalysis) {
@@ -289,7 +300,10 @@ public abstract class RepositoryUpdateManager {
         boolean checked = true;
         boolean showed = false;
         if (show) {
-            if (parameter != null && !needForcePropagation()) {
+            if (needForcePropagationForContext()) {
+                checked = openRenameCheckedDialog(); // bug 4988
+                showed = true;
+            } else if (parameter != null && !needForcePropagation()) {
                 // see feature 4786
                 IDesignerCoreService designerCoreService = CoreRuntimePlugin.getInstance().getDesignerCoreService();
                 boolean deactive = designerCoreService != null
@@ -773,7 +787,7 @@ public abstract class RepositoryUpdateManager {
             IRepositoryContextUpdateService updater = null;
             updater = findContextParameterUpdater(conn);
             if (updater != null) {
-                return updater.updateContextParameter(conn, oldValue, newValue);
+                return updater.updateContextParameter(conn, addContextParamPrefix(oldValue), addContextParamPrefix(newValue));
             }
         }
         return false;
@@ -907,6 +921,7 @@ public abstract class RepositoryUpdateManager {
                 IContextManager contextManager = process2.getContextManager();
                 if (contextManager instanceof JobContextManager) {
                     JobContextManager jobContextManager = (JobContextManager) contextManager;
+                    jobContextManager.setRepositoryRenamedMap(getContextRenamedMap());
                     jobContextManager.setNewParametersMap(getNewParametersMap());
                     Map<ContextItem, List<IContext>> repositoryAddGroupContext = getRepositoryAddGroupContext();
                     jobContextManager.setConfigContextGroup(isConfigContextGroup);

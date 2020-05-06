@@ -43,10 +43,18 @@ public class ItemContextLink {
         this.contextList = contextList;
     }
 
-    public ContextParamLink findContextParamLink(String repoContextId, String contextName, String paramName) {
+    public ContextParamLink findContextParamLinkByName(String repoContextId, String contextName, String paramName) {
         ContextLink contextLink = findContextLink(repoContextId, contextName);
         if (contextLink != null) {
             return contextLink.getParamLinkByName(paramName);
+        }
+        return null;
+    }
+
+    public ContextParamLink findContextParamLinkById(String repoContextId, String contextName, String paramId) {
+        ContextLink contextLink = findContextLink(repoContextId, contextName);
+        if (contextLink != null) {
+            return contextLink.getParamLinkById(paramId);
         }
         return null;
     }

@@ -63,4 +63,13 @@ public class ContextLink {
         return null;
     }
 
+    public ContextParamLink getParamLinkById(String id) {
+        for (ContextParamLink paramLink : parameterList) {
+            if (StringUtils.equals(paramLink.getId(), id)) {
+                return paramLink;
+            }
+        }
+        return null;
+    }
+
 }

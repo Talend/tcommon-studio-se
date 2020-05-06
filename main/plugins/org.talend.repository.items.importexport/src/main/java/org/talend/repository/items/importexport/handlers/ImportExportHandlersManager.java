@@ -479,9 +479,11 @@ public class ImportExportHandlersManager {
                     return 10;
                 } else if ("SERVICES".equals(item.getRepositoryType().getType())) {
                     return 20;
-                } else if (ERepositoryObjectType.JOBLET.getType().equals(item.getRepositoryType().getType())) {
+                } else if (ERepositoryObjectType.JOBLET != null
+                        && ERepositoryObjectType.JOBLET.getType().equals(item.getRepositoryType().getType())) {
                     return 30;
-                } else if (ERepositoryObjectType.PROCESS_ROUTELET.getType().equals(item.getRepositoryType().getType())) {
+                } else if (ERepositoryObjectType.PROCESS_ROUTELET != null
+                        && ERepositoryObjectType.PROCESS_ROUTELET.getType().equals(item.getRepositoryType().getType())) {
                     return 40;
                 }
                 return 100;
