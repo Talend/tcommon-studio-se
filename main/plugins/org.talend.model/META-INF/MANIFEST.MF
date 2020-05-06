@@ -3,7 +3,7 @@ Bundle-ManifestVersion: 2
 Bundle-Name: %pluginName
 Bundle-SymbolicName: org.talend.model;singleton:=true
 Automatic-Module-Name: org.talend.model
-Bundle-Version: 7.3.2.qualifier
+Bundle-Version: 7.3.1.qualifier
 Bundle-ClassPath: .
 Bundle-Vendor: %providerName
 Bundle-Localization: plugin

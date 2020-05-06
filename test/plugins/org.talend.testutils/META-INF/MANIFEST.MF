@@ -2,7 +2,7 @@ Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
 Bundle-Name: Mockito
 Bundle-SymbolicName: org.talend.testutils
-Bundle-Version: 7.3.2.qualifier
+Bundle-Version: 7.3.1.qualifier
 Bundle-ClassPath: .,
  lib/assertj-core-3.5.2.jar,
  lib/byte-buddy-1.9.10.jar,

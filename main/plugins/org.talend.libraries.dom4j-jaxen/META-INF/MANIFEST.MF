@@ -2,7 +2,7 @@ Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
 Bundle-Name: talend Dom4j library
 Bundle-SymbolicName: org.talend.libraries.dom4j-jaxen;singleton:=true
-Bundle-Version: 7.3.2.qualifier
+Bundle-Version: 7.3.1.qualifier
 Bundle-Vendor: .Talend SA.
 Bundle-ClassPath: .,
  lib/dom4j-2.1.1.jar,

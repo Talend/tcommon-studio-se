@@ -2,7 +2,7 @@ Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
 Bundle-Name: Apache Lucene 8 Library
 Bundle-SymbolicName: org.talend.libraries.apache.lucene8
-Bundle-Version: 7.3.2.qualifier
+Bundle-Version: 7.3.1.qualifier
 Bundle-Vendor: .Talend SA.
 Bundle-ActivationPolicy: lazy
 Bundle-ClassPath: lib/lucene-analyzers-common-8.3.1.jar,

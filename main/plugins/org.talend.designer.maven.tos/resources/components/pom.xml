@@ -4,13 +4,13 @@
     <parent>
         <groupId>org.talend.studio</groupId>
         <artifactId>studio-maven-repository-tos</artifactId>
-        <version>7.3.2-SNAPSHOT</version>
+        <version>7.3.1-PATCH</version>
         <relativePath>../</relativePath>
     </parent>
 	<artifactId>studio-components-dependencies</artifactId>
 	<packaging>pom</packaging>
 	<properties>
-		<components.version>0.28.4-SNAPSHOT</components.version>
+		<components.version>0.28.3</components.version>
 	</properties>
 	<repositories>
 		<repository>
