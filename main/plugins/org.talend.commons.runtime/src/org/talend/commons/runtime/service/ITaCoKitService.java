@@ -42,6 +42,8 @@ public interface ITaCoKitService {
 
     boolean isNeedMigration(String componentName, Map<String, String> properties);
 
+    boolean isTaCoKitType(Object repoType);
+
     public static ITaCoKitService getInstance() throws Exception {
         BundleContext bc = FrameworkUtil.getBundle(ITaCoKitService.class).getBundleContext();
         Collection<ServiceReference<ITaCoKitService>> tacokitServices = Collections.emptyList();
