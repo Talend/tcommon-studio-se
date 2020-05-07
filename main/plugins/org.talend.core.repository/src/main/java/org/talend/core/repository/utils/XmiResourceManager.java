@@ -69,6 +69,7 @@ import org.talend.core.model.properties.ValidationRulesConnectionItem;
 import org.talend.core.model.properties.helper.ByteArrayResource;
 import org.talend.core.model.repository.ERepositoryObjectType;
 import org.talend.core.repository.constants.FileConstants;
+import org.talend.core.repository.model.ProxyRepositoryFactory;
 import org.talend.core.repository.utils.ResourceFilenameHelper.FileName;
 import org.talend.core.ui.ITestContainerProviderService;
 import org.talend.designer.core.model.utils.emf.talendfile.ProcessType;
@@ -111,7 +112,16 @@ public class XmiResourceManager {
             unloadResource(uri.toString());
         }
 
-        Resource resource = getResourceSet().getResource(uri, true);
+        Resource resource = null;
+        try {
+            resource = getResourceSet().getResource(uri, true);
+        } catch (Exception e) {
+            reCreateProjectResource(project);
+        }
+
+        if (resource == null) {
+            throw new PersistenceException("Project resource not found");
+        }
         Project emfProject = (Project) EcoreUtil.getObjectByType(resource.getContents(),
                 PropertiesPackage.eINSTANCE.getProject());
         emfProject.eResource().setTrackingModification(true);
@@ -119,6 +129,17 @@ public class XmiResourceManager {
         ProjectDataJsonProvider.loadProjectData(emfProject, project, ProjectDataJsonProvider.CONTENT_ALL);
 
         return emfProject;
+    }
+
+    public void reCreateProjectResource(IProject project) throws PersistenceException {
+        URI uri = getProjectResourceUri(project);
+        unloadResource(uri.toString());
+        //RemoteRepositoryFactory.delegateBeforeLogon got curProject update to context
+        Project emfProject = ProxyRepositoryFactory.getInstance().getRepositoryContext().getProject().getEmfProject();
+        Resource projectResource = createProjectResource(project);
+        projectResource.getContents().add(emfProject);
+        projectResource.getContents().add(emfProject.getAuthor());
+        saveResource(projectResource);
     }
 
     public boolean hasTalendProjectFile(IProject project) {
