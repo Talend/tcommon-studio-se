@@ -58,7 +58,11 @@
     <extension
          point="org.talend.core.runtime.service">
       <Service
-            class="org.talend.core.model.update.GeneralConnectionContextService"
+            class="org.talend.core.model.update.RepositoryContextUpdateService"
+            serviceId="IRepositoryContextUpdateService">
+      </Service>
+      <Service
+            class="org.talend.core.model.update.GenericDbContextUpdateService"
             serviceId="IRepositoryContextUpdateService">
       </Service>
    </extension>

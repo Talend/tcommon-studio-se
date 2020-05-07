@@ -37,7 +37,7 @@ import org.talend.core.model.metadata.builder.connection.WSDLSchemaConnection;
 import org.talend.core.model.metadata.builder.connection.XmlFileConnection;
 import org.talend.core.model.metadata.builder.connection.XmlXPathLoopDescriptor;
 
-public class GeneralConnectionContextService extends AbstractRepositoryContextUpdateService {
+public class RepositoryContextUpdateService extends AbstractRepositoryContextUpdateService {
 
     @Override
     public boolean updateContextParameter(Connection conn, String oldValue, String newValue) {

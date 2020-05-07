@@ -88,6 +88,7 @@ import org.talend.core.model.utils.UpdateRepositoryHelper;
 import org.talend.core.prefs.ITalendCorePrefConstants;
 import org.talend.core.runtime.CoreRuntimePlugin;
 import org.talend.core.runtime.i18n.Messages;
+import org.talend.core.runtime.services.IGenericDBService;
 import org.talend.core.service.IMRProcessService;
 import org.talend.core.service.IMetadataManagmentService;
 import org.talend.core.service.IStormProcessService;
@@ -762,6 +763,19 @@ public abstract class RepositoryUpdateManager {
                 Item item = obj.getProperty().getItem();
                 if (item instanceof ConnectionItem) {
                     updateConnectionContextParam((ConnectionItem) item, valueMap, true);
+                }
+            }
+        }
+
+        if (GlobalServiceRegister.getDefault().isServiceRegistered(IGenericDBService.class)) {
+            IGenericDBService service = GlobalServiceRegister.getDefault().getService(IGenericDBService.class);
+            for (ERepositoryObjectType objectType : service.getAllGenericMetadataDBRepositoryType()) {
+                List<IRepositoryViewObject> repositoryObjects = FACTORY.getAll(objectType);
+                for (IRepositoryViewObject object : repositoryObjects) {
+                    Item item = object.getProperty().getItem();
+                    if (item instanceof ConnectionItem) {
+                        updateConnectionContextParam((ConnectionItem) item, valueMap, true);
+                    }
                 }
             }
         }

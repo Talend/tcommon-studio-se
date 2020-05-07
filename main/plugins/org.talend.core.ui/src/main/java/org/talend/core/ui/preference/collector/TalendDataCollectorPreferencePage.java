@@ -15,6 +15,12 @@ package org.talend.core.ui.preference.collector;
 import org.eclipse.jface.preference.BooleanFieldEditor;
 import org.eclipse.jface.preference.FieldEditorPreferencePage;
 import org.eclipse.jface.preference.IPreferenceStore;
+import org.eclipse.swt.SWT;
+import org.eclipse.swt.events.SelectionEvent;
+import org.eclipse.swt.events.SelectionListener;
+import org.eclipse.swt.layout.GridData;
+import org.eclipse.swt.widgets.Button;
+import org.eclipse.swt.widgets.Composite;
 import org.eclipse.ui.IWorkbench;
 import org.eclipse.ui.IWorkbenchPreferencePage;
 import org.talend.core.prefs.ITalendCorePrefConstants;
@@ -28,6 +34,7 @@ import org.talend.core.ui.token.TokenCollectorFactory;
 public class TalendDataCollectorPreferencePage extends FieldEditorPreferencePage implements IWorkbenchPreferencePage {
 
     public TalendDataCollectorPreferencePage() {
+        super(GRID);
         setPreferenceStore(CoreUIPlugin.getDefault().getPreferenceStore());
         setDescription(Messages.getString("TalendDataCollectorPreferencePage_Description")); //$NON-NLS-1$
     }
@@ -41,6 +48,30 @@ public class TalendDataCollectorPreferencePage extends FieldEditorPreferencePage
     protected void createFieldEditors() {
         addField(new BooleanFieldEditor(ITalendCorePrefConstants.DATA_COLLECTOR_ENABLED,
                 Messages.getString("TalendDataCollectorPreferencePage_EnableCapture"), getFieldEditorParent())); //$NON-NLS-1$
+        if (Boolean.getBoolean("talend.DataCollector.visibleSendButton")) {//$NON-NLS-1$
+            createSendDataButton(getFieldEditorParent());
+        }
+    }
+
+    private static void createSendDataButton(Composite parent) {
+        GridData gd = new GridData();
+        gd.horizontalSpan = 1;
+        Button button = new Button(parent, SWT.PUSH | SWT.LEFT);
+        button.setFont(parent.getFont());
+        button.setLayoutData(gd);
+        button.setText("Send Data"); //$NON-NLS-1$
+        button.addSelectionListener(new SelectionListener() {
+
+            @Override
+            public void widgetSelected(SelectionEvent e) {
+                TokenCollectorFactory.getFactory().processWithoutWait();
+            }
+
+            @Override
+            public void widgetDefaultSelected(SelectionEvent e) {
+                // TODO Auto-generated method stub
+            }
+        });
     }
 
     /*
