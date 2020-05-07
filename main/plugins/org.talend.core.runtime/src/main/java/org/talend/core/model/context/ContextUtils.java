@@ -909,6 +909,7 @@ public class ContextUtils {
                                         renamedMap.put(repoParameterType.getName(), parameterType.getName());
                                     }
                                 }
+
                             }
                         }
                     }
@@ -918,5 +919,95 @@ public class ContextUtils {
             ExceptionHandler.process(e);
         }
         return renamedMap;
+    }
+
+    /**
+     *
+     * DOC hcw ProcessUpdateManager class global comment. Detailled comment
+     */
+    public static class ContextItemParamMap {
+
+        private Map<Item, Set<String>> map = new HashMap<Item, Set<String>>();
+
+        public void add(Item item, String param) {
+            Set<String> params = map.get(item);
+            if (params == null) {
+                params = new HashSet<String>();
+                map.put(item, params);
+            }
+            params.add(param);
+        }
+
+        @SuppressWarnings("unchecked")
+        public Set<String> get(Item item) {
+            Set<String> params = map.get(item);
+            return (params == null) ? Collections.EMPTY_SET : params;
+
+        }
+
+        public boolean isEmpty() {
+            return map.isEmpty();
+        }
+
+        public Set<Item> getContexts() {
+            return map.keySet();
+        }
+    }
+
+    public static boolean compareContextParameter(Item contextItem, ContextType contextType, IContextParameter param,
+            ContextParamLink paramLink, Map<Item, Map<String, String>> repositoryRenamedMap, Map<Item, Set<String>> existedParams,
+            ContextItemParamMap unsameMap, ContextItemParamMap deleteParams, boolean onlySimpleShow) {
+        boolean builtin = true;
+        String paramId = getParamId(param, paramLink);
+        if (paramId != null && contextType != null) {// Compare use UUID
+            ContextParameterType contextParameterType = null;
+            contextParameterType = getContextParameterTypeById(contextType, paramId, contextItem instanceof ContextItem);
+            String paramName = param.getName();
+            if (contextParameterType != null) {
+                if (!StringUtils.equals(contextParameterType.getName(), paramName)) {
+                    Map<String, String> renameMap = repositoryRenamedMap.get(contextItem);
+                    if (renameMap == null) {
+                        renameMap = new HashMap<String, String>();
+                        repositoryRenamedMap.put(contextItem, renameMap);
+                    }
+                    renameMap.put(contextParameterType.getName(), paramName);
+                } else {
+                    if (existedParams.get(contextItem) == null) {
+                        existedParams.put(contextItem, new HashSet<String>());
+                    }
+                    existedParams.get(contextItem).add(paramName);
+                    if (onlySimpleShow || !samePropertiesForContextParameter(param, contextParameterType)) {
+                        unsameMap.add(contextItem, paramName);
+                    }
+                }
+                builtin = false;
+            } else {
+                // delete context variable
+                if (isPropagateContextVariable()) {
+                    deleteParams.add(contextItem, paramName);
+                    builtin = false;
+                }
+            }
+        }
+        return builtin;
+    }
+
+    public static String getParamId(IContextParameter param, ContextParamLink paramLink) {
+        if (paramLink != null) {
+            return paramLink.getId();
+        }
+        if (param != null) {
+            return param.getInternalId();
+        }
+        return null;
+    }
+
+    public static Item findContextItem(List<ContextItem> allContextItem, String source) {
+        for (ContextItem contextItem : allContextItem) {
+            if (StringUtils.equals(contextItem.getProperty().getId(), source)) {
+                return contextItem;
+            }
+        }
+        return getRepositoryContextItemById(source);
     }
 }
