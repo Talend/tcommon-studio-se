@@ -954,7 +954,7 @@ public class ContextUtils {
         }
     }
 
-    public boolean compareContextParameter(Item contextItem, ContextType contextType, IContextParameter param,
+    public static boolean compareContextParameter(Item contextItem, ContextType contextType, IContextParameter param,
             ContextParamLink paramLink, Map<Item, Map<String, String>> repositoryRenamedMap,
             Map<Item, Set<String>> existedParams, ContextItemParamMap unsameMap, ContextItemParamMap deleteParams,
             boolean onlySimpleShow) {
@@ -963,7 +963,7 @@ public class ContextUtils {
         if (paramId != null && contextType != null) {// Compare use UUID
             ContextParameterType contextParameterType = null;
             contextParameterType =
-                    ContextUtils.getContextParameterTypeById(contextType, paramId, contextItem instanceof ContextItem);
+                    getContextParameterTypeById(contextType, paramId, contextItem instanceof ContextItem);
             String paramName = param.getName();
             if (contextParameterType != null) {
                 if (!StringUtils.equals(contextParameterType.getName(), paramName)) {
@@ -979,14 +979,14 @@ public class ContextUtils {
                     }
                     existedParams.get(contextItem).add(paramName);
                     if (onlySimpleShow
-                            || !ContextUtils.samePropertiesForContextParameter(param, contextParameterType)) {
+                            || !samePropertiesForContextParameter(param, contextParameterType)) {
                         unsameMap.add(contextItem, paramName);
                     }
                 }
                 builtin = false;
             } else {
                 // delete context variable
-                if (ContextUtils.isPropagateContextVariable()) {
+                if (isPropagateContextVariable()) {
                     deleteParams.add(contextItem, paramName);
                     builtin = false;
                 }
@@ -995,7 +995,7 @@ public class ContextUtils {
         return builtin;
     }
 
-    private static String getParamId(IContextParameter param, ContextParamLink paramLink) {
+    public static String getParamId(IContextParameter param, ContextParamLink paramLink) {
         if (paramLink != null) {
             return paramLink.getId();
         }
@@ -1003,5 +1003,14 @@ public class ContextUtils {
             return param.getInternalId();
         }
         return null;
+    }
+
+    public static Item findContextItem(List<ContextItem> allContextItem, String source) {
+        for (ContextItem contextItem : allContextItem) {
+            if (StringUtils.equals(contextItem.getProperty().getId(), source)) {
+                return contextItem;
+            }
+        }
+        return getRepositoryContextItemById(source);
     }
 }
