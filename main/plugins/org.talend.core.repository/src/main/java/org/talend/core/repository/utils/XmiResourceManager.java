@@ -26,6 +26,7 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
+import org.apache.log4j.Level;
 import org.eclipse.core.resources.IFile;
 import org.eclipse.core.resources.IFolder;
 import org.eclipse.core.resources.IProject;
@@ -116,7 +117,9 @@ public class XmiResourceManager {
         try {
             resource = getResourceSet().getResource(uri, true);
         } catch (Exception e) {
-            reCreateProjectResource(project);
+            ExceptionHandler.process(new Throwable("Load project resource fail, will be recreated", e),
+                    Level.WARN);
+            resource = reCreateProjectResource(project);
         }
 
         if (resource == null) {
@@ -131,7 +134,7 @@ public class XmiResourceManager {
         return emfProject;
     }
 
-    public void reCreateProjectResource(IProject project) throws PersistenceException {
+    public Resource reCreateProjectResource(IProject project) throws PersistenceException {
         URI uri = getProjectResourceUri(project);
         unloadResource(uri.toString());
         //RemoteRepositoryFactory.delegateBeforeLogon got curProject update to context
@@ -140,6 +143,7 @@ public class XmiResourceManager {
         projectResource.getContents().add(emfProject);
         projectResource.getContents().add(emfProject.getAuthor());
         saveResource(projectResource);
+        return projectResource;
     }
 
     public boolean hasTalendProjectFile(IProject project) {
