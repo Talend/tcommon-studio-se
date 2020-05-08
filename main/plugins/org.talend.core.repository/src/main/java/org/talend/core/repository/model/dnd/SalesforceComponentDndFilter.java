@@ -12,10 +12,14 @@
 // ============================================================================
 package org.talend.core.repository.model.dnd;
 
+import java.util.Collection;
 import java.util.Iterator;
 import java.util.List;
 
+import org.talend.core.GlobalServiceRegister;
 import org.talend.core.model.components.IComponent;
+import org.talend.core.model.components.IComponentsService;
+import org.talend.core.model.properties.ConnectionItem;
 import org.talend.core.model.properties.Item;
 import org.talend.core.model.properties.SalesforceSchemaConnectionItem;
 import org.talend.core.model.repository.ERepositoryObjectType;
@@ -27,6 +31,8 @@ import org.talend.repository.model.RepositoryNode;
  *
  */
 public class SalesforceComponentDndFilter extends DefaultRepositoryComponentDndFilter {
+
+    public static final String SALSEFORCE = "salesforce"; //$NON-NLS-1$
 
     public static final String COMPONENT_T_SALSEFORCE_CONNECTION = "tSalesforceConnection"; //$NON-NLS-1$
 
@@ -98,7 +104,16 @@ public class SalesforceComponentDndFilter extends DefaultRepositoryComponentDndF
                     }
                 }
             }
-
+        }
+        if (item instanceof ConnectionItem && SALSEFORCE.equalsIgnoreCase(((ConnectionItem) item).getTypeName())) {
+            // Special for Javajet components: tSalesforceEinsteinBulkExec/tSalesforceEinsteinOutputBulkExec
+            IComponentsService service = GlobalServiceRegister.getDefault().getService(IComponentsService.class);
+            Collection<IComponent> componentAll = service.getComponentsFactory().readComponents();
+            for (IComponent component : componentAll) {
+                if (component.getName().startsWith("tSalesforceEinstein") && !components.contains(component)) { //$NON-NLS-1$
+                    components.add(component);
+                }
+            }
         }
         return components;
     }
