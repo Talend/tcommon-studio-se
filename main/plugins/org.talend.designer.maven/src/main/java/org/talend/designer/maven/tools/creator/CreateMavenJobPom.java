@@ -938,9 +938,7 @@ public class CreateMavenJobPom extends AbstractMavenProcessorPom {
         try (Scanner scanner = new Scanner(src)) {
             while (scanner.hasNextLine()) {
                 String line = scanner.nextLine();
-                if (line.startsWith("java")) {
-                    line = StringUtils.normalizeSpace(line);
-                }
+                line = StringUtils.normalizeSpace(line);
                 sb.append(line);
                 sb.append(System.lineSeparator());
             }
