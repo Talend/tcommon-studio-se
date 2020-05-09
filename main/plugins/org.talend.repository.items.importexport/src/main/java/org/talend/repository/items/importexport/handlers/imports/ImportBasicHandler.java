@@ -846,7 +846,7 @@ public class ImportBasicHandler extends AbstractImportExecutableHandler {
                     selectedImportItem.setItemId(selectedImportItem.getProperty().getId());
                     selectedImportItem.setItemVersion(selectedImportItem.getProperty().getVersion());
                     if (linkFile != null && linkFile.exists()) {
-                        copyContextLinkFile(linkFile, tmpItem.getProperty().getId());
+                        copyContextLinkFile(linkFile, tmpItem);
                     }
                     repObjectcache.addToCache(tmpItem);
                 }
@@ -902,7 +902,7 @@ public class ImportBasicHandler extends AbstractImportExecutableHandler {
         return linkFile;
     }
 
-    protected void copyContextLinkFile(File sourceLinkFile, String targetId)
+    protected void copyContextLinkFile(File sourceLinkFile, Item item)
             throws IOException, PersistenceException, CoreException {
         String techLabel = ProjectManager.getInstance().getCurrentProject().getTechnicalLabel();
         IProject iProject = ResourceUtils.getProject(techLabel);
@@ -914,7 +914,7 @@ public class ImportBasicHandler extends AbstractImportExecutableHandler {
         if (!linksFolder.exists()) {
             linksFolder.create(true, true, null);
         }
-        IFile linkFile = linksFolder.getFile(ContextLinkService.getLinkFileName(targetId));
+        IFile linkFile = linksFolder.getFile(ContextLinkService.getLinkFileName(item.getProperty().getId()));
         if (!linkFile.exists()) {
             ResourceUtils.createFile(new FileInputStream(sourceLinkFile), linkFile);
         } else {

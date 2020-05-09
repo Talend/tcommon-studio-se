@@ -27,6 +27,7 @@ import org.apache.log4j.Priority;
 import org.eclipse.emf.common.util.EList;
 import org.talend.commons.exception.ExceptionHandler;
 import org.talend.core.GlobalServiceRegister;
+import org.talend.core.model.context.link.ContextLinkService;
 import org.talend.core.model.metadata.builder.connection.Connection;
 import org.talend.core.model.process.IContext;
 import org.talend.core.model.process.IContextManager;
@@ -300,6 +301,7 @@ public class ChangeIdManager {
         } else {
             throw new Exception("Unsupported id change: id[" + property.getId() + "], name[" + property.getLabel() + "]"); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
         }
+        ContextLinkService.getInstance().changeRepositoryId(item, old2NewMap);
         if (modified) {
             ProxyRepositoryFactory.getInstance().save(project, item);
             RelationshipItemBuilder.getInstance().addOrUpdateItem(property.getItem());
