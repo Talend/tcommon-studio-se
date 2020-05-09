@@ -1796,7 +1796,7 @@ public class LocalRepositoryFactory extends AbstractEMFRepositoryFactory impleme
                 for (Resource resource : affectedResources) {
                     deleteResource(resource, isDeleteOnRemote);
                 }
-                ContextLinkService.getInstance().deleteContextLink(currentProperty.getItem());
+                ContextLinkService.getInstance().deleteContextLinkJsonFile(currentProperty.getItem());
 
                 // ADD msjian TDQ-6791 2013-2-20:when the resource is invalid(null), delete its file
                 EList<EObject> eCrossReferences = currentItem.eCrossReferences();

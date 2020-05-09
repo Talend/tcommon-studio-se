@@ -822,7 +822,7 @@ public abstract class RepositoryUpdateManager {
             ContextItem contextItem = ContextUtils.getContextItemById2(conn.getContextId());
             ItemContextLink itemContextLink = null;
             try {
-                itemContextLink = ContextLinkService.getInstance().loadContextLink(conntectionItem);
+                itemContextLink = ContextLinkService.getInstance().loadContextLinkFromJson(conntectionItem);
             } catch (PersistenceException e) {
                 ExceptionHandler.process(e);
             }

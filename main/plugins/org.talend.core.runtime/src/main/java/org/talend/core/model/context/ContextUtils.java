@@ -766,7 +766,7 @@ public class ContextUtils {
     public static Map<String, String> getContextParamterRenamedMap(Item item) {
         ItemContextLink itemContextLink = null;
         try {
-            itemContextLink = ContextLinkService.getInstance().loadContextLink(item);
+            itemContextLink = ContextLinkService.getInstance().loadContextLinkFromJson(item);
         } catch (PersistenceException e) {
             ExceptionHandler.process(e);
         }
@@ -853,7 +853,7 @@ public class ContextUtils {
             idToItemMap.put(repoContextItem.getProperty().getId(), repoContextItem);
         }
         try {
-            ItemContextLink itemContextLink = ContextLinkService.getInstance().loadContextLink(projectLabel, itemId);
+            ItemContextLink itemContextLink = ContextLinkService.getInstance().loadContextLinkFromJson(projectLabel, itemId);
             if (itemContextLink != null) {
                 for (Object obj : context.getContextParameterList()) {
                     if (obj instanceof IContextParameter) {

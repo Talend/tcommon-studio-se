@@ -92,7 +92,8 @@ public class ContextLinkService {
     }
 
     @SuppressWarnings("unchecked")
-    public synchronized boolean saveContextLink(Connection connection, Item item) throws PersistenceException {
+    public synchronized boolean saveContextLink(Connection connection, Item item)
+            throws PersistenceException {
         boolean hasLinkFile = false;
         ItemContextLink itemContextLink = new ItemContextLink();
         itemContextLink.setItemId(item.getProperty().getId());
@@ -119,21 +120,23 @@ public class ContextLinkService {
             }
         }
         if (itemContextLink.getContextList().size() > 0) {
-            ContextLinkService.getInstance().saveContextLink(item, itemContextLink);
+            saveContextLinkToJson(item, itemContextLink);
             hasLinkFile = true;
         } else {
-            deleteContextLink(item);
+            deleteContextLinkJsonFile(item);
         }
         return hasLinkFile;
     }
 
-    public static synchronized boolean saveContextLink(List<ContextType> contextTypeList, Item item) throws PersistenceException {
+    public synchronized boolean saveContextLink(List<ContextType> contextTypeList, Item item)
+            throws PersistenceException {
         boolean hasLinkFile = false;
         String itemId = item.getProperty().getId();
         ItemContextLink itemContextLink = new ItemContextLink();
         itemContextLink.setItemId(itemId);
         Map<String, ContextItem> tempCache = new HashMap<String, ContextItem>();
         if (contextTypeList != null) {
+            ItemContextLink backupContextLink = this.loadContextLinkFromJson(item);
             for (Object object : contextTypeList) {
                 if (object instanceof ContextType) {
                     ContextType jobContextType = (ContextType) object;
@@ -152,7 +155,8 @@ public class ContextLinkService {
                                     itemContextLink.getContextList().add(contextLink);
                                 }
                                 ContextParamLink contextParamLink = createParamLink(itemId, jobContextType.getName(),
-                                        contextParameterType.getName(), contextParameterType.getInternalId(), tempCache);
+                                        contextParameterType.getName(), contextParameterType.getInternalId(), tempCache,
+                                        backupContextLink);
                                 contextLink.getParameterList().add(contextParamLink);
                             } else {
                                 ContextLink contextLink = itemContextLink
@@ -164,7 +168,8 @@ public class ContextLinkService {
                                     itemContextLink.getContextList().add(contextLink);
                                 }
                                 ContextParamLink contextParamLink = createParamLink(repositoryContextId, jobContextType.getName(),
-                                        contextParameterType.getName(), contextParameterType.getInternalId(), tempCache);
+                                        contextParameterType.getName(), contextParameterType.getInternalId(), tempCache,
+                                        backupContextLink);
                                 contextLink.getParameterList().add(contextParamLink);
                             }
 
@@ -174,17 +179,17 @@ public class ContextLinkService {
             }
         }
         if (itemContextLink.getContextList().size() > 0) {
-            ContextLinkService.getInstance().saveContextLink(item, itemContextLink);
+            saveContextLinkToJson(item, itemContextLink);
             hasLinkFile = true;
         } else {
-            deleteContextLink(item);
+            deleteContextLinkJsonFile(item);
         }
         return hasLinkFile;
     }
 
     @SuppressWarnings("unchecked")
-    private static ContextParamLink createParamLink(String repositoryContextId, String contextName, String paramName,
-            String internalId, Map<String, ContextItem> tempCache) {
+    private ContextParamLink createParamLink(String repositoryContextId, String contextName, String paramName,
+            String internalId, Map<String, ContextItem> tempCache, ItemContextLink oldContextLink) {
         ContextParamLink contextParamLink = new ContextParamLink();
         contextParamLink.setName(paramName);
         contextParamLink.setId(internalId);
@@ -196,12 +201,20 @@ public class ContextLinkService {
         if (contextItem != null) {
             ContextType contextType = ContextUtils.getContextTypeByName(contextItem.getContext(), contextName);
             ContextParameterType repoContextParameterType = ContextUtils.getContextParameterTypeByName(contextType, paramName);
-            contextParamLink.setId(ResourceHelper.getUUID(repoContextParameterType));
+            String uuID = ResourceHelper.getUUID(repoContextParameterType);
+            if (repoContextParameterType == null && oldContextLink != null) {
+                ContextParamLink oldParamLink = oldContextLink.findContextParamLinkByName(repositoryContextId, contextName,
+                        paramName);
+                if (oldParamLink != null) {
+                    uuID = oldParamLink.getId();
+                }
+            }
+            contextParamLink.setId(uuID);
         }
         return contextParamLink;
     }
 
-    private synchronized void saveContextLink(Item item, ItemContextLink itemContextLink) throws PersistenceException {
+    private synchronized void saveContextLinkToJson(Item item, ItemContextLink itemContextLink) throws PersistenceException {
         IFolder linksFolder = getLinksFolder(getItemProjectLabel(item));
         if (!linksFolder.exists()) {
             ResourceUtils.createFolder(linksFolder);
@@ -220,17 +233,34 @@ public class ContextLinkService {
         }
     }
 
-    public synchronized ItemContextLink loadContextLink(Item item) throws PersistenceException {
+    public synchronized boolean changeRepositoryId(Item item, Map<String, String> old2NewMap) throws PersistenceException {
+        boolean isModofied = false;
+        ItemContextLink itemContextLink = loadContextLinkFromJson(item);
+        if (itemContextLink != null) {
+            for (ContextLink contextLink : itemContextLink.getContextList()) {
+                if (old2NewMap.containsKey(contextLink.getRepoId())) {
+                    contextLink.setRepoId(old2NewMap.get(contextLink.getRepoId()));
+                    isModofied = true;
+                }
+            }
+        }
+        if (isModofied) {
+            this.saveContextLinkToJson(item, itemContextLink);
+        }
+        return isModofied;
+    }
+
+    public synchronized ItemContextLink loadContextLinkFromJson(Item item) throws PersistenceException {
         IFile linkFile = calContextLinkFile(item);
-        return loadContextLink(linkFile);
+        return loadContextLinkFromFile(linkFile);
     }
 
-    public synchronized ItemContextLink loadContextLink(String projectLabel, String id) throws PersistenceException {
+    public synchronized ItemContextLink loadContextLinkFromJson(String projectLabel, String id) throws PersistenceException {
         IFile linkFile = calContextLinkFile(projectLabel, id);
-        return loadContextLink(linkFile);
+        return loadContextLinkFromFile(linkFile);
     }
 
-    public synchronized ItemContextLink loadContextLink(IFile linkFile) throws PersistenceException {
+    public synchronized ItemContextLink loadContextLinkFromFile(IFile linkFile) throws PersistenceException {
         if (linkFile == null || !linkFile.exists()) {
             return null;
         }
@@ -243,7 +273,7 @@ public class ContextLinkService {
         return contextLink;
     }
 
-    public synchronized static void deleteContextLink(Item item) throws PersistenceException {
+    public synchronized void deleteContextLinkJsonFile(Item item) throws PersistenceException {
         IFile linkFile = calContextLinkFile(item);
         if (linkFile != null && linkFile.exists()) {
             try {
