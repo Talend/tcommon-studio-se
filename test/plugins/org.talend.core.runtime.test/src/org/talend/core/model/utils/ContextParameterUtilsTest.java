@@ -311,6 +311,8 @@ public class ContextParameterUtilsTest {
 
     @Test
     public void testIsValidParameterName() {
+        IEclipsePreferences coreUIPluginNode = new InstanceScope().getNode(ITalendCorePrefConstants.CoreUIPlugin_ID);
+        coreUIPluginNode.putBoolean(IRepositoryPrefConstants.ALLOW_SPECIFIC_CHARACTERS_FOR_SCHEMA_COLUMNS, true);
         assertTrue(ContextParameterUtils.isValidParameterName("abc"));
         assertTrue(ContextParameterUtils.isValidParameterName("abc123"));
         assertTrue(ContextParameterUtils.isValidParameterName("abc_123"));
@@ -320,6 +322,22 @@ public class ContextParameterUtilsTest {
         assertFalse(ContextParameterUtils.isValidParameterName("abc%de"));
         assertFalse(ContextParameterUtils.isValidParameterName("a*&^e"));
         assertFalse(ContextParameterUtils.isValidParameterName("123abc"));
+        assertTrue(ContextParameterUtils.isValidParameterName("中文"));
+        assertTrue(ContextParameterUtils.isValidParameterName("日本語"));
+        assertTrue(ContextParameterUtils.isValidParameterName("Ελληνική"));
+        assertTrue(ContextParameterUtils.isValidParameterName("Français"));
+        assertTrue(ContextParameterUtils.isValidParameterName("Podgląd"));
+        assertTrue(ContextParameterUtils.isValidParameterName("Română"));
+        assertTrue(ContextParameterUtils.isValidParameterName("русский"));
+
+        coreUIPluginNode.putBoolean(IRepositoryPrefConstants.ALLOW_SPECIFIC_CHARACTERS_FOR_SCHEMA_COLUMNS, false);
+        assertFalse(ContextParameterUtils.isValidParameterName("中文"));
+        assertFalse(ContextParameterUtils.isValidParameterName("日本語"));
+        assertFalse(ContextParameterUtils.isValidParameterName("Ελληνική"));
+        assertFalse(ContextParameterUtils.isValidParameterName("Français"));
+        assertFalse(ContextParameterUtils.isValidParameterName("Podgląd"));
+        assertFalse(ContextParameterUtils.isValidParameterName("Română"));
+        assertFalse(ContextParameterUtils.isValidParameterName("русский"));
     }
 
     @Test
