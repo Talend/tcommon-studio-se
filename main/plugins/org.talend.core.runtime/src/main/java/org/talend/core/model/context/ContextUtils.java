@@ -47,7 +47,6 @@ import org.talend.core.model.properties.ContextItem;
 import org.talend.core.model.properties.Item;
 import org.talend.core.model.properties.JobletProcessItem;
 import org.talend.core.model.properties.ProcessItem;
-import org.talend.core.model.properties.Property;
 import org.talend.core.model.repository.IRepositoryViewObject;
 import org.talend.core.runtime.CoreRuntimePlugin;
 import org.talend.cwm.helper.ResourceHelper;
@@ -180,21 +179,6 @@ public class ContextUtils {
         ContextParameterType parameterType = null;
         for (ContextParameterType param : (List<ContextParameterType>) contextType.getContextParameter()) {
             if (param.getName().equals(paramName)) {
-                parameterType = param;
-                break;
-            }
-        }
-        return parameterType;
-    }
-
-    public static ContextParameterType getContextParameterTypeByUUId(ContextType contextType, final String uuId) {
-        if (contextType == null || uuId == null) {
-            return null;
-        }
-
-        ContextParameterType parameterType = null;
-        for (ContextParameterType param : (List<ContextParameterType>) contextType.getContextParameter()) {
-            if (uuId.equals(ResourceHelper.getUUID(param))) {
                 parameterType = param;
                 break;
             }
@@ -782,7 +766,7 @@ public class ContextUtils {
     public static Map<String, String> getContextParamterRenamedMap(Item item) {
         ItemContextLink itemContextLink = null;
         try {
-            itemContextLink = ContextLinkService.getInstance().loadContextLink(item.getProperty().getId());
+            itemContextLink = ContextLinkService.getInstance().loadContextLink(item);
         } catch (PersistenceException e) {
             ExceptionHandler.process(e);
         }
@@ -855,29 +839,13 @@ public class ContextUtils {
         return renamedMap;
     }
 
-    public static Map<String, String> getContextParamterRenamedMap(String processId) {
-        IProxyRepositoryFactory factory = CoreRuntimePlugin.getInstance().getProxyRepositoryFactory();
-        IRepositoryViewObject processObject = null;
-        try {
-            processObject = factory.getLastVersion(processId);
-        } catch (PersistenceException e) {
-            ExceptionHandler.process(e);
-        }
-        if (processObject != null) {
-            Property property = processObject.getProperty();
-            Item processItem = property.getItem();
-            return getContextParamterRenamedMap(processItem);
-        }
-        return Collections.EMPTY_MAP;
-    }
-
     /**
      * 
      * @param itemId
      * @param contextType
      * @return rename map. Key is new name and value is old name.
      */
-    public static Map<String, String> calculateRenamedMapFromLinkFile(String itemId, IContext context,
+    public static Map<String, String> calculateRenamedMapFromLinkFile(String projectLabel, String itemId, IContext context,
             Item repoContextItem) {
         Map<String, String> renamedMap = new HashMap<String, String>();
         Map<String, Item> idToItemMap = new HashMap<String, Item>();
@@ -885,7 +853,7 @@ public class ContextUtils {
             idToItemMap.put(repoContextItem.getProperty().getId(), repoContextItem);
         }
         try {
-            ItemContextLink itemContextLink = ContextLinkService.getInstance().loadContextLink(itemId);
+            ItemContextLink itemContextLink = ContextLinkService.getInstance().loadContextLink(projectLabel, itemId);
             if (itemContextLink != null) {
                 for (Object obj : context.getContextParameterList()) {
                     if (obj instanceof IContextParameter) {

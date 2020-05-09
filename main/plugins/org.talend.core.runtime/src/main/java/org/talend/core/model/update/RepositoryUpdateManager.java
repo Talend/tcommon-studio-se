@@ -688,14 +688,14 @@ public abstract class RepositoryUpdateManager {
         for (IRepositoryViewObject obj : dbConnList) {
             Item item = obj.getProperty().getItem();
             if (item instanceof ConnectionItem) {
-                updateConnectionContextParam((ConnectionItem) item, valueMap, false);
+                updateConnectionContextParam((ConnectionItem) item, valueMap);
             }
         }
         List<IRepositoryViewObject> excelConnList = FACTORY.getAll(ERepositoryObjectType.METADATA_FILE_EXCEL, true);
         for (IRepositoryViewObject obj : excelConnList) {
             Item item = obj.getProperty().getItem();
             if (item instanceof ConnectionItem) {
-                updateConnectionContextParam((ConnectionItem) item, valueMap, false);
+                updateConnectionContextParam((ConnectionItem) item, valueMap);
             }
         }
 
@@ -703,49 +703,49 @@ public abstract class RepositoryUpdateManager {
         for (IRepositoryViewObject obj : deliConnList) {
             Item item = obj.getProperty().getItem();
             if (item instanceof ConnectionItem) {
-                updateConnectionContextParam((ConnectionItem) item, valueMap, false);
+                updateConnectionContextParam((ConnectionItem) item, valueMap);
             }
         }
         List<IRepositoryViewObject> regConnList = FACTORY.getAll(ERepositoryObjectType.METADATA_FILE_REGEXP, true);
         for (IRepositoryViewObject obj : regConnList) {
             Item item = obj.getProperty().getItem();
             if (item instanceof ConnectionItem) {
-                updateConnectionContextParam((ConnectionItem) item, valueMap, false);
+                updateConnectionContextParam((ConnectionItem) item, valueMap);
             }
         }
         List<IRepositoryViewObject> ldifConnList = FACTORY.getAll(ERepositoryObjectType.METADATA_FILE_LDIF, true);
         for (IRepositoryViewObject obj : ldifConnList) {
             Item item = obj.getProperty().getItem();
             if (item instanceof ConnectionItem) {
-                updateConnectionContextParam((ConnectionItem) item, valueMap, false);
+                updateConnectionContextParam((ConnectionItem) item, valueMap);
             }
         }
         List<IRepositoryViewObject> posiConnList = FACTORY.getAll(ERepositoryObjectType.METADATA_FILE_POSITIONAL, true);
         for (IRepositoryViewObject obj : posiConnList) {
             Item item = obj.getProperty().getItem();
             if (item instanceof ConnectionItem) {
-                updateConnectionContextParam((ConnectionItem) item, valueMap, false);
+                updateConnectionContextParam((ConnectionItem) item, valueMap);
             }
         }
         List<IRepositoryViewObject> xmlConnList = FACTORY.getAll(ERepositoryObjectType.METADATA_FILE_XML, true);
         for (IRepositoryViewObject obj : xmlConnList) {
             Item item = obj.getProperty().getItem();
             if (item instanceof ConnectionItem) {
-                updateConnectionContextParam((ConnectionItem) item, valueMap, false);
+                updateConnectionContextParam((ConnectionItem) item, valueMap);
             }
         }
         List<IRepositoryViewObject> saleConnList = FACTORY.getAll(ERepositoryObjectType.METADATA_SALESFORCE_SCHEMA, true);
         for (IRepositoryViewObject obj : saleConnList) {
             Item item = obj.getProperty().getItem();
             if (item instanceof ConnectionItem) {
-                updateConnectionContextParam((ConnectionItem) item, valueMap, false);
+                updateConnectionContextParam((ConnectionItem) item, valueMap);
             }
         }
         List<IRepositoryViewObject> wsdlConnList = FACTORY.getAll(ERepositoryObjectType.METADATA_WSDL_SCHEMA, true);
         for (IRepositoryViewObject obj : wsdlConnList) {
             Item item = obj.getProperty().getItem();
             if (item instanceof ConnectionItem) {
-                updateConnectionContextParam((ConnectionItem) item, valueMap, false);
+                updateConnectionContextParam((ConnectionItem) item, valueMap);
             }
         }
 
@@ -753,7 +753,7 @@ public abstract class RepositoryUpdateManager {
         for (IRepositoryViewObject obj : sapConnList) {
             Item item = obj.getProperty().getItem();
             if (item instanceof ConnectionItem) {
-                updateConnectionContextParam((ConnectionItem) item, valueMap, false);
+                updateConnectionContextParam((ConnectionItem) item, valueMap);
             }
         }
         for (String updateType : UpdateRepositoryHelper.getAllHadoopConnectionTypes()) {
@@ -762,7 +762,7 @@ public abstract class RepositoryUpdateManager {
             for (IRepositoryViewObject obj : hadoopConnList) {
                 Item item = obj.getProperty().getItem();
                 if (item instanceof ConnectionItem) {
-                    updateConnectionContextParam((ConnectionItem) item, valueMap, true);
+                    updateConnectionContextParam((ConnectionItem) item, valueMap);
                 }
             }
         }
@@ -774,19 +774,19 @@ public abstract class RepositoryUpdateManager {
                 for (IRepositoryViewObject object : repositoryObjects) {
                     Item item = object.getProperty().getItem();
                     if (item instanceof ConnectionItem) {
-                        updateConnectionContextParam((ConnectionItem) item, valueMap, true);
+                        updateConnectionContextParam((ConnectionItem) item, valueMap);
                     }
                 }
             }
         }
     }
 
-    private static void updateConnectionContextParam(ConnectionItem conntectionItem, Map<String, String> newToOldValueMap,
-            boolean isHadoopConnectionType) throws PersistenceException {
+    private static void updateConnectionContextParam(ConnectionItem conntectionItem, Map<String, String> newToOldValueMap)
+            throws PersistenceException {
         boolean isModified = false;
         for (String newValue : newToOldValueMap.keySet()) {
             String oldValue = newToOldValueMap.get(newValue);
-            boolean result = updateConnectionContextParam(conntectionItem, oldValue, newValue, isHadoopConnectionType);
+            boolean result = updateConnectionContextParam(conntectionItem, oldValue, newValue);
             isModified = isModified || result;
         }
         if (isModified) {
@@ -794,8 +794,7 @@ public abstract class RepositoryUpdateManager {
         }
     }
 
-    private static boolean updateConnectionContextParam(ConnectionItem conntectionItem, String oldValue, String newValue,
-            boolean isHadoopConnectionType) {
+    private static boolean updateConnectionContextParam(ConnectionItem conntectionItem, String oldValue, String newValue) {
         Connection conn = conntectionItem.getConnection();
         if (conn.isContextMode()) {
             IRepositoryContextUpdateService updater = null;
@@ -823,7 +822,7 @@ public abstract class RepositoryUpdateManager {
             ContextItem contextItem = ContextUtils.getContextItemById2(conn.getContextId());
             ItemContextLink itemContextLink = null;
             try {
-                itemContextLink = ContextLinkService.getInstance().loadContextLink(conntectionItem.getProperty().getId());
+                itemContextLink = ContextLinkService.getInstance().loadContextLink(conntectionItem);
             } catch (PersistenceException e) {
                 ExceptionHandler.process(e);
             }
@@ -840,7 +839,7 @@ public abstract class RepositoryUpdateManager {
                         ContextParameterType paramType = ContextUtils.getContextParameterTypeByName(contextType,
                                 paramLink.getName());
                         if (paramType == null) {
-                            paramType = ContextUtils.getContextParameterTypeByUUId(contextType, paramLink.getId());
+                            paramType = ContextUtils.getContextParameterTypeById(contextType, paramLink.getId(), true);
                             if (paramType != null) {
                                 boolean result = updateServce.updateContextParameter(conn,
                                         addContextParamPrefix(paramLink.getName()), addContextParamPrefix(paramType.getName()));

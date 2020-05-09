@@ -12,32 +12,25 @@
 // ============================================================================
 package org.talend.metadata.managment.ui.utils;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertTrue;
 
+import java.util.HashMap;
 import java.util.List;
 import java.util.Set;
 
-import org.eclipse.core.runtime.Path;
 import org.eclipse.emf.common.util.BasicEList;
 import org.eclipse.emf.common.util.EList;
 import org.junit.Test;
-import org.talend.commons.utils.VersionUtils;
-import org.talend.core.context.Context;
-import org.talend.core.context.RepositoryContext;
-import org.talend.core.model.context.JobContext;
 import org.talend.core.model.context.JobContextManager;
 import org.talend.core.model.context.JobContextParameter;
 import org.talend.core.model.metadata.builder.connection.Connection;
 import org.talend.core.model.metadata.builder.connection.ConnectionFactory;
 import org.talend.core.model.metadata.types.JavaTypesManager;
-import org.talend.core.model.process.IContext;
-import org.talend.core.model.process.IContextManager;
 import org.talend.core.model.process.IContextParameter;
 import org.talend.core.model.properties.ContextItem;
-import org.talend.core.model.properties.ItemState;
 import org.talend.core.model.properties.PropertiesFactory;
 import org.talend.core.model.properties.Property;
-import org.talend.core.runtime.CoreRuntimePlugin;
 import org.talend.designer.core.model.utils.emf.talendfile.ContextParameterType;
 import org.talend.designer.core.model.utils.emf.talendfile.ContextType;
 import org.talend.designer.core.model.utils.emf.talendfile.TalendFileFactory;
@@ -108,7 +101,8 @@ public class ConnectionContextHelperTest {
         contextItem.setProperty(myContextProperty);
         contextItem.setDefaultContext("Default");
 
-        Set<String> set = ConnectionContextHelper.checkAndAddContextVariables(contextItem, contextManager, false);
+        Set<String> set = ConnectionContextHelper.checkAndAddContextVariables(contextItem, contextManager, false,
+                new HashMap<String, String>());
         assertTrue(set.size() == 2);
     }
 
