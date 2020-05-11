@@ -55,19 +55,20 @@ public class DefaultTokenCollector extends AbstractTokenCollector {
     }
     
     public static String calcUniqueIdByEmail() {
-    	if(PluginChecker.isTIS()) {
-    		ExchangeUser exUser = ProxyRepositoryFactory.getInstance().getRepositoryContext().getProject().getExchangeUser();
-    		if(exUser != null && exUser.getLogin() != null && exUser.getLogin().length() > 0) {
-    			String email = exUser.getLogin();
-    			return StudioEncryption.getStudioEncryption(StudioEncryption.EncryptionKeyName.SYSTEM).encrypt(email);
-    		}
-    	}else {
-    		User user = ProxyRepositoryFactory.getInstance().getRepositoryContext().getUser();
-    		if(user != null && user.getLogin() != null && user.getLogin().length() > 0) {
-    			String email = user.getLogin();
-    			return StudioEncryption.getStudioEncryption(StudioEncryption.EncryptionKeyName.SYSTEM).encrypt(email);
-    		}
-    	}
+    	ExchangeUser exUser = ProxyRepositoryFactory.getInstance().getRepositoryContext().getProject().getExchangeUser();
+		if(exUser != null && exUser.getLogin() != null && exUser.getLogin().length() > 0) {
+			String email = exUser.getLogin();
+			if(!"notused".equals(email)) {
+				return StudioEncryption.getStudioEncryption(StudioEncryption.EncryptionKeyName.SYSTEM).encrypt(email);
+			}
+			
+		}
+		
+		User user = ProxyRepositoryFactory.getInstance().getRepositoryContext().getUser();
+		if(user != null && user.getLogin() != null && user.getLogin().length() > 0) {
+			String email = user.getLogin();
+			return StudioEncryption.getStudioEncryption(StudioEncryption.EncryptionKeyName.SYSTEM).encrypt(email);
+		}
     	return calcUniqueId();
     }
     
