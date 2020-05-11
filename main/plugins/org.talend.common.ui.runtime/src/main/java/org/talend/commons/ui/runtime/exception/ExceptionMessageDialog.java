@@ -21,6 +21,7 @@ import org.eclipse.swt.SWT;
 import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.graphics.Point;
 import org.eclipse.swt.layout.GridData;
+import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Shell;
@@ -37,6 +38,8 @@ public class ExceptionMessageDialog extends MessageDialog {
     private Throwable ex;
 
     private String exceptionString = null;
+
+    private int[] diabledButtonIndex = new int[] {};
 
     public ExceptionMessageDialog(Shell parentShell, String dialogTitle, Image dialogTitleImage, String dialogMessage,
             int dialogImageType, String[] dialogButtonLabels, int defaultIndex, Throwable ex) {
@@ -146,5 +149,22 @@ public class ExceptionMessageDialog extends MessageDialog {
     public void setExceptionString(String exceptionString) {
         this.exceptionString = exceptionString;
     }
+
+    public void setDisabledButtons(int[] index) {
+        this.diabledButtonIndex = index;
+    }
+
+    @Override
+    protected void createButtonsForButtonBar(Composite parent) {
+        super.createButtonsForButtonBar(parent);
+        if (diabledButtonIndex == null) {
+            return;
+        }
+        for (int index : diabledButtonIndex) {
+            Button button = super.getButton(index);
+            button.setEnabled(false);
+        }
+    }
+
 
 }
