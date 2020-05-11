@@ -71,6 +71,8 @@ public class ChangeIdManager {
     private Map<String, Collection<String>> refIds2ItemIdsMap = new HashMap<String, Collection<String>>();
 
     private Map<String, String> oldId2NewIdMap = new HashMap<String, String>();
+    
+    public static Map<String, String> oldANDNewIdMap = new HashMap<String, String>();
 
     private Set<String> idsNeed2CheckRefs = new HashSet<String>();
 
