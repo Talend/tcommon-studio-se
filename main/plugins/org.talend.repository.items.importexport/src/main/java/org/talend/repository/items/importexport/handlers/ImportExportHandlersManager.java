@@ -616,7 +616,6 @@ public class ImportExportHandlersManager {
                                         itemRecord.getProperty().setId(id);
                                         try {
                                             changeIdManager.mapOldId2NewId(oldId, id);
-                                            ChangeIdManager.oldANDNewIdMap.put(oldId, id);
                                         } catch (Exception e) {
                                             ExceptionHandler.process(e);
                                         }
@@ -1009,8 +1008,6 @@ public class ImportExportHandlersManager {
             TimeMeasure.display = false;
             TimeMeasure.displaySteps = false;
             TimeMeasure.measureActive = false;
-            
-            ChangeIdManager.oldANDNewIdMap.clear();
         }
     }
 
