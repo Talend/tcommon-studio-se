@@ -12,14 +12,11 @@
 // ============================================================================
 package org.talend.core.ui.token;
 
+import org.apache.commons.codec.digest.DigestUtils;
 import org.eclipse.jface.preference.IPreferenceStore;
 import org.talend.commons.utils.VersionUtils;
 import org.talend.core.GlobalServiceRegister;
-import org.talend.core.PluginChecker;
-import org.talend.core.model.properties.ExchangeUser;
-import org.talend.core.model.properties.User;
 import org.talend.core.prefs.ITalendCorePrefConstants;
-import org.talend.core.repository.model.ProxyRepositoryFactory;
 import org.talend.core.ui.CoreUIPlugin;
 import org.talend.core.ui.branding.IBrandingService;
 import org.talend.daikon.token.TokenGenerator;
@@ -54,22 +51,8 @@ public class DefaultTokenCollector extends AbstractTokenCollector {
         return TokenGenerator.generateMachineToken((src) -> StudioEncryption.getStudioEncryption(StudioEncryption.EncryptionKeyName.SYSTEM).encrypt(src));
     }
     
-    public static String calcUniqueIdByEmail() {
-    	ExchangeUser exUser = ProxyRepositoryFactory.getInstance().getRepositoryContext().getProject().getExchangeUser();
-		if(exUser != null && exUser.getLogin() != null && exUser.getLogin().length() > 0) {
-			String email = exUser.getLogin();
-			if(!"notused".equals(email)) {
-				return StudioEncryption.getStudioEncryption(StudioEncryption.EncryptionKeyName.SYSTEM).encrypt(email);
-			}
-			
-		}
-		
-		User user = ProxyRepositoryFactory.getInstance().getRepositoryContext().getUser();
-		if(user != null && user.getLogin() != null && user.getLogin().length() > 0) {
-			String email = user.getLogin();
-			return StudioEncryption.getStudioEncryption(StudioEncryption.EncryptionKeyName.SYSTEM).encrypt(email);
-		}
-    	return calcUniqueId();
+    public static String hashUniqueId() {
+    	return TokenGenerator.generateMachineToken((src) -> DigestUtils.sha256Hex(src));
     }
     
     /*
@@ -83,7 +66,7 @@ public class DefaultTokenCollector extends AbstractTokenCollector {
         // version
         tokenStudioObject.put(VERSION.getKey(), VersionUtils.getInternalVersion());
         // uniqueId
-        tokenStudioObject.put(UNIQUE_ID.getKey(), calcUniqueIdByEmail());
+        tokenStudioObject.put(UNIQUE_ID.getKey(), hashUniqueId());
 
         // typeStudio
         if (GlobalServiceRegister.getDefault().isServiceRegistered(IBrandingService.class)) {
