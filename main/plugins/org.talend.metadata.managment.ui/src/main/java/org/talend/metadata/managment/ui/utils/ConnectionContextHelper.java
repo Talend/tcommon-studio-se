@@ -685,7 +685,7 @@ public final class ConnectionContextHelper {
             // get the context variables from the node parameters.
             Set<String> neededVars = retrieveContextVar(elementParameters, connection, category);
             boolean isGeneric = isGenericConnection(connection);
-            Map<String, String> renamedMap = ContextUtils.getContextParamterRenamedMap(connItem);
+            Map<String, String> renamedMap = ContextUtils.getContextParamterRenamedMap(process.getProperty().getItem());
             if (neededVars != null && !neededVars.isEmpty() || isGeneric) {
                 ContextItem contextItem = ContextUtils.getContextItemById2(connection.getContextId());
                 if (contextItem != null) {
@@ -786,7 +786,8 @@ public final class ConnectionContextHelper {
 
                     List<ContextItem> contextItems = new ArrayList<>();
                     if (contextItem != null || hadoopClusterContextItem != null) {
-                        Map<String, String> renamedMap = ContextUtils.getContextParamterRenamedMap(connItem);
+                        Map<String, String> renamedMap = ContextUtils
+                                .getContextParamterRenamedMap(process.getProperty().getItem());
                         // find added variables
                         Set<String> connAddedVars = null;
                         Set<String> hcAddedVars = null;

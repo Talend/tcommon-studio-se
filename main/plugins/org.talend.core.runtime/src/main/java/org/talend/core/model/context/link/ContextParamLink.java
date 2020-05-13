@@ -38,4 +38,11 @@ public class ContextParamLink {
         this.name = name;
     }
 
+    public ContextParamLink cloneObj() {
+        ContextParamLink obj = new ContextParamLink();
+        obj.setId(id);
+        obj.setName(name);
+        return obj;
+    }
+
 }

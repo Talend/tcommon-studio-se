@@ -92,7 +92,7 @@ public class ContextLinkService {
     }
 
     @SuppressWarnings("unchecked")
-    public synchronized boolean saveContextLink(Connection connection, Item item)
+    private synchronized boolean saveContextLink(Connection connection, Item item)
             throws PersistenceException {
         boolean hasLinkFile = false;
         ItemContextLink itemContextLink = new ItemContextLink();
@@ -251,6 +251,11 @@ public class ContextLinkService {
     }
 
     public synchronized ItemContextLink loadContextLinkFromJson(Item item) throws PersistenceException {
+        for (IItemContextLinkService service : registeredService) {
+            if (service.accept(item)) {
+                return service.loadItemLink(item);
+            }
+        }
         IFile linkFile = calContextLinkFile(item);
         return loadContextLinkFromFile(linkFile);
     }
