@@ -866,7 +866,7 @@ public class ContextUtils {
             idToItemMap.put(repoContextItem.getProperty().getId(), repoContextItem);
         }
         try {
-            ItemContextLink itemContextLink = ContextLinkService.getInstance().loadContextLinkFromJson(projectLabel, itemId);
+            ItemContextLink itemContextLink = ContextLinkService.getInstance().doLoadContextLinkFromJson(projectLabel, itemId);
             if (itemContextLink != null) {
                 for (Object obj : context.getContextParameterList()) {
                     if (obj instanceof IContextParameter) {
