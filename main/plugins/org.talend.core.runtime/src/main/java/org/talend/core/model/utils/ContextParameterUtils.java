@@ -36,6 +36,8 @@ import org.apache.oro.text.regex.Perl5Compiler;
 import org.apache.oro.text.regex.Perl5Matcher;
 import org.apache.oro.text.regex.Perl5Substitution;
 import org.apache.oro.text.regex.Util;
+import org.eclipse.core.runtime.preferences.IEclipsePreferences;
+import org.eclipse.core.runtime.preferences.InstanceScope;
 import org.talend.commons.utils.PasswordEncryptUtil;
 import org.talend.core.GlobalServiceRegister;
 import org.talend.core.language.ECodeLanguage;
@@ -48,6 +50,8 @@ import org.talend.core.model.metadata.types.JavaTypesManager;
 import org.talend.core.model.process.IContext;
 import org.talend.core.model.process.IContextManager;
 import org.talend.core.model.process.IContextParameter;
+import org.talend.core.model.repository.IRepositoryPrefConstants;
+import org.talend.core.prefs.ITalendCorePrefConstants;
 import org.talend.core.runtime.services.IGenericDBService;
 import org.talend.core.utils.TalendQuoteUtils;
 import org.talend.designer.core.model.utils.emf.talendfile.ContextParameterType;
@@ -595,13 +599,22 @@ public final class ContextParameterUtils {
             if (ContextUtils.isJavaKeyWords(name)) {
                 return false;
             }
-
-            Pattern regex = Pattern.compile(RepositoryConstants.CONTEXT_AND_VARIABLE_PATTERN, Pattern.UNICODE_CHARACTER_CLASS);
+            Pattern regex = null;
+            if (isAllowSpecificCharacters()) {
+                regex = Pattern.compile(RepositoryConstants.CONTEXT_AND_VARIABLE_PATTERN, Pattern.UNICODE_CHARACTER_CLASS);
+            } else {
+                regex = Pattern.compile(RepositoryConstants.COLUMN_NAME_PATTERN, Pattern.UNICODE_CHARACTER_CLASS);
+            }
             Matcher regexMatcher = regex.matcher(name);
 
             return regexMatcher.matches();
         }
         return false;
+    }
+
+    private static boolean isAllowSpecificCharacters() {
+        IEclipsePreferences coreUIPluginNode = new InstanceScope().getNode(ITalendCorePrefConstants.CoreUIPlugin_ID);
+        return coreUIPluginNode.getBoolean(IRepositoryPrefConstants.ALLOW_SPECIFIC_CHARACTERS_FOR_SCHEMA_COLUMNS, false);
     }
 
     public static boolean isEmptyParameter(String source) {

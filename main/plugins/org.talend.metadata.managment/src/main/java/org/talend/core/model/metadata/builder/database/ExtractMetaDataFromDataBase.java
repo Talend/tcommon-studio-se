@@ -42,6 +42,7 @@ import org.talend.commons.utils.workbench.extensions.IExtensionPointLimiter;
 import org.talend.core.database.EDatabase4DriverClassName;
 import org.talend.core.database.EDatabaseTypeName;
 import org.talend.core.database.conn.template.EDatabaseConnTemplate;
+import org.talend.core.database.conn.version.EDatabaseVersion4Drivers;
 import org.talend.core.model.metadata.IMetadataConnection;
 import org.talend.core.model.metadata.IMetadataTable;
 import org.talend.core.model.metadata.builder.ConvertionHelper;
@@ -334,12 +335,16 @@ public class ExtractMetaDataFromDataBase {
                     return connectionStatus;
                 }
             }
-            if (EDatabaseTypeName.SYBASEASE == EDatabaseTypeName.getTypeFromDisplayName(dbType)) {
-                boolean exsitedSybaseDB = checkSybaseDB(connection, sidOrDatabase);
-                if (!exsitedSybaseDB) {
-                    connectionStatus.setMessageException(
-                            Messages.getString("ExtractMetaDataFromDataBase.DatabaseNoPresent", sidOrDatabase)); //$NON-NLS-1$
-                    return connectionStatus;
+            String property = System.getProperty("disableCheckSybase16");//$NON-NLS-1$
+            Boolean disableCheckSybase16 = StringUtils.isEmpty(property) ? false : Boolean.valueOf(property);
+            if (!disableCheckSybase16) {
+                if (StringUtils.equals(EDatabaseVersion4Drivers.SYBASEIQ_16.getVersionValue(), dbVersionString)) {
+                    boolean exsitedSybaseDB = checkSybaseDB(connection, sidOrDatabase);
+                    if (!exsitedSybaseDB) {
+                        connectionStatus.setMessageException(
+                                Messages.getString("ExtractMetaDataFromDataBase.DatabaseNoPresent", sidOrDatabase)); //$NON-NLS-1$
+                        return connectionStatus;
+                    }
                 }
             }
 

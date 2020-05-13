@@ -281,6 +281,17 @@ public final class TalendQuoteUtils {
         return text;
     }
 
+    public static boolean isEnclosed(String text) {
+        if (text == null) {
+            return false;
+        }
+        text = text.trim();
+        if (text.length() < 2) {
+            return false;
+        }
+        return text.startsWith(QUOTATION_MARK) && text.endsWith(QUOTATION_MARK);
+    }
+
     /**
      *
      * ggu Comment method "addQuotesForSQLString".

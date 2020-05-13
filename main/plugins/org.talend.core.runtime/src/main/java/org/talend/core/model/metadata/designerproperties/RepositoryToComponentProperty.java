@@ -87,6 +87,7 @@ import org.talend.core.model.repository.DragAndDropManager;
 import org.talend.core.model.update.UpdatesConstants;
 import org.talend.core.model.utils.IDragAndDropServiceHandler;
 import org.talend.core.runtime.CoreRuntimePlugin;
+import org.talend.core.runtime.services.IGenericWizardService;
 import org.talend.core.service.IMetadataManagmentService;
 import org.talend.core.service.IMetadataManagmentUiService;
 import org.talend.core.utils.KeywordsValidator;
@@ -155,12 +156,12 @@ public class RepositoryToComponentProperty {
             return getEDIFACTSchemaValue((EDIFACTConnection) connection, value);
         }
 
-        for (IDragAndDropServiceHandler handler : DragAndDropManager.getHandlers()) {
-            if (handler.canHandle(connection)) {
-                return handler.getComponentValue(connection, value, table, targetComponent, contextMap);
-            }
+        // Special for Javajet components: tSalesforceEinsteinBulkExec/tSalesforceEinsteinOutputBulkExec
+        if (targetComponent != null && targetComponent.startsWith("tSalesforceEinstein")) { //$NON-NLS-1$
+            return getSpecialGenericValue(connection, value, table, targetComponent, contextMap);
         }
-        return null;
+
+        return getHandlerComponentValue(connection, value, table, targetComponent, contextMap);
 
     }
 
@@ -213,8 +214,7 @@ public class RepositoryToComponentProperty {
             return;
         }
         SAPFunctionUnit unit = null;
-        for (int i = 0; i < conn.getFuntions().size(); i++) {
-            SAPFunctionUnit tmp = conn.getFuntions().get(i);
+        for (SAPFunctionUnit tmp : conn.getFuntions()) {
             if (tmp.getLabel().equals(functionLabel)) {
                 unit = tmp;
                 break;
@@ -230,9 +230,8 @@ public class RepositoryToComponentProperty {
         if (isInput) {
             mergeColumn(table, table.getChildren(), value2);
         } else {
-            for (int i = 0; i < table.getChildren().size(); i++) {
+            for (SAPFunctionParameter column : table.getChildren()) {
                 Map<String, Object> map = new HashMap<String, Object>();
-                SAPFunctionParameter column = table.getChildren().get(i);
                 // this part maybe no use , didn't find OUTPUT_PARAMS in sap component
                 map.put("SAP_PARAMETER_TYPE", column.getType().replace('.', '_')); //$NON-NLS-1$
                 map.put("SAP_TABLE_NAME", TalendQuoteUtils.addQuotes("")); //$NON-NLS-1$
@@ -298,8 +297,8 @@ public class RepositoryToComponentProperty {
         if (conn == null) {
             return null;
         }
-        for (int i = 0; i < conn.getFuntions().size(); i++) {
-            unit = conn.getFuntions().get(i);
+        for (SAPFunctionUnit element : conn.getFuntions()) {
+            unit = element;
             if (unit.getLabel().equals(functionLabel)) {
                 break;
             }
@@ -626,6 +625,50 @@ public class RepositoryToComponentProperty {
         return null;
     }
 
+    private static Object getSpecialGenericValue(Connection connection, String value, IMetadataTable table,
+            String targetComponent,
+            Map<Object, Object> contextMap) {
+        if (GlobalServiceRegister.getDefault().isServiceRegistered(IGenericWizardService.class)) {
+            IGenericWizardService wizardService = GlobalServiceRegister.getDefault().getService(IGenericWizardService.class);
+            if (wizardService != null && wizardService.isGenericConnection(connection)) {
+                if (value != null) {
+                    if ("ENDPOINT".equals(value)) { //$NON-NLS-1$
+                        value = "connection.endpoint"; //$NON-NLS-1$
+                    } else if ("USER_NAME".equals(value)) { //$NON-NLS-1$
+                        value = "connection.userPassword.userId"; //$NON-NLS-1$
+                    } else if ("PASSWORD".equals(value)) { //$NON-NLS-1$
+                        // salesforce javajet component:pwd = pwd + token
+                        value = "connection.userPassword.password"; //$NON-NLS-1$
+                        Object password = getHandlerComponentValue(connection, value, table, targetComponent, contextMap);
+                        String skValue = "connection.userPassword.securityKey"; //$NON-NLS-1$
+                        Object securityKey = getHandlerComponentValue(connection, skValue, table, targetComponent, contextMap);
+                        if (securityKey != null) {
+                            if (isContextMode(connection, String.valueOf(password))) {
+                                return String.valueOf(password) + "+" + String.valueOf(securityKey); //$NON-NLS-1$
+                            } else {
+                                return TalendQuoteUtils.addQuotes(TalendQuoteUtils.removeQuotesIfExist(String.valueOf(password))
+                                        + TalendQuoteUtils.removeQuotesIfExist(String.valueOf(securityKey)));
+                            }
+                        }
+                        return password;
+                    }
+                    return getHandlerComponentValue(connection, value, table, targetComponent, contextMap);
+                }
+            }
+        }
+        return null;
+    }
+
+    private static Object getHandlerComponentValue(Connection connection, String value, IMetadataTable table,
+            String targetComponent, Map<Object, Object> contextMap) {
+        for (IDragAndDropServiceHandler handler : DragAndDropManager.getHandlers()) {
+            if (handler.canHandle(connection)) {
+                return handler.getComponentValue(connection, value, table, targetComponent, contextMap);
+            }
+        }
+        return null;
+    }
+
     private static SalesforceModuleUnit getSaleforceModuleUnitByTable(IMetadataTable table,
             EList<SalesforceModuleUnit> moduleList) {
         for (SalesforceModuleUnit unit : moduleList) {
@@ -746,9 +789,9 @@ public class RepositoryToComponentProperty {
 
     public static List<Map<String, String>> getOutputWSDLValue(EList list) {
         List<Map<String, String>> newList = new ArrayList<Map<String, String>>();
-        for (int i = 0; i < list.size(); i++) {
+        for (Object element : list) {
             Map<String, String> map = new HashMap<String, String>();
-            WSDLParameter node = (WSDLParameter) list.get(i);
+            WSDLParameter node = (WSDLParameter) element;
             map.put("EXPRESSION", node.getExpression());
             map.put("COLUMN", node.getColumn());
             map.put("SOURCE", node.getSource());
@@ -1003,8 +1046,9 @@ public class RepositoryToComponentProperty {
             } else {
                 String version = connection.getDbVersionString();
                 if (EDatabaseVersion4Drivers.ORACLE_18.name().equals(version)) {
-                    if (StringUtils.equals(CDCTypeMode.LOG_MODE.getName(), connection.getCdcTypeMode()))
+                    if (StringUtils.equals(CDCTypeMode.LOG_MODE.getName(), connection.getCdcTypeMode())) {
                         return CDCTypeMode.LOG_UNSUPPORTED_MODE.getName();
+                    }
                 }
                 return connection.getCdcTypeMode();
             }
@@ -1493,7 +1537,7 @@ public class RepositoryToComponentProperty {
                 String clusterID = connection.getParameters().get(ConnParameterKeys.CONN_PARA_KEY_HADOOP_CLUSTER_ID);
                 if (clusterID != null) {
                     if (GlobalServiceRegister.getDefault().isServiceRegistered(IHadoopClusterService.class)) {
-                        IHadoopClusterService hadoopClusterService = (IHadoopClusterService) GlobalServiceRegister.getDefault()
+                        IHadoopClusterService hadoopClusterService = GlobalServiceRegister.getDefault()
                                 .getService(IHadoopClusterService.class);
                         Map<String, String> hadoopCustomLibraries = hadoopClusterService.getHadoopCustomLibraries(clusterID);
 
@@ -1746,7 +1790,7 @@ public class RepositoryToComponentProperty {
     private static boolean isContextMode(Connection connection, String value) {
         IMetadataManagmentUiService mmService = null;
         if (GlobalServiceRegister.getDefault().isServiceRegistered(IMetadataManagmentUiService.class)) {
-            mmService = (IMetadataManagmentUiService) GlobalServiceRegister.getDefault()
+            mmService = GlobalServiceRegister.getDefault()
                     .getService(IMetadataManagmentUiService.class);
         }
         if (mmService != null) {
@@ -2033,7 +2077,7 @@ public class RepositoryToComponentProperty {
                 Path p = new Path(connection.getXmlFilePath());
                 if ((p.toPortableString()).endsWith("xsd")) { //$NON-NLS-1$
                     if (GlobalServiceRegister.getDefault().isServiceRegistered(IMetadataManagmentUiService.class)) {
-                        IMetadataManagmentUiService mmUIService = (IMetadataManagmentUiService) GlobalServiceRegister.getDefault()
+                        IMetadataManagmentUiService mmUIService = GlobalServiceRegister.getDefault()
                                 .getService(IMetadataManagmentUiService.class);
                         String newPath = mmUIService.getAndOpenXSDFileDialog(p);
                         if (newPath != null) {
@@ -2153,9 +2197,9 @@ public class RepositoryToComponentProperty {
 
     public static List<Map<String, String>> getOutputXmlValue(EList list) {
         List<Map<String, String>> newList = new ArrayList<Map<String, String>>();
-        for (int i = 0; i < list.size(); i++) {
+        for (Object element : list) {
             Map<String, String> map = new HashMap<String, String>();
-            XMLFileNode node = (XMLFileNode) list.get(i);
+            XMLFileNode node = (XMLFileNode) element;
             String defaultValue = node.getDefaultValue();
             if (defaultValue == null) {
                 defaultValue = ""; //$NON-NLS-1$
@@ -2399,7 +2443,7 @@ public class RepositoryToComponentProperty {
 
                 } else {
                     if (GlobalServiceRegister.getDefault().isServiceRegistered(IMetadataManagmentService.class)) {
-                        IMetadataManagmentService mmService = (IMetadataManagmentService) GlobalServiceRegister.getDefault()
+                        IMetadataManagmentService mmService = GlobalServiceRegister.getDefault()
                                 .getService(IMetadataManagmentService.class);
                         IMetadataTable convert = mmService.convertMetadataTable(repTable);
                         String uinqueTableName = node.getProcess()
@@ -2654,8 +2698,7 @@ public class RepositoryToComponentProperty {
                         boolean foundColumn = false;
                         Map<String, Object> map = new HashMap<String, Object>();
                         map.put("QUERY", null); //$NON-NLS-1$
-                        for (int i = 0; i < schemaTargets.size(); i++) {
-                            SchemaTarget sch = schemaTargets.get(i);
+                        for (SchemaTarget sch : schemaTargets) {
                             if (col.getLabel().equals(sch.getTagName())) {
                                 // map.put("SCHEMA_COLUMN", sch.getTagName());
                                 foundColumn = true;
@@ -2664,8 +2707,7 @@ public class RepositoryToComponentProperty {
                         }
                         if (!foundColumn && colRenameMap != null && !colRenameMap.isEmpty()) {
                             Set<String> newNameSet = colRenameMap.keySet();
-                            for (int i = 0; i < schemaTargets.size(); i++) {
-                                SchemaTarget sch = schemaTargets.get(i);
+                            for (SchemaTarget sch : schemaTargets) {
                                 if (newNameSet.contains(sch.getTagName())) {
                                     String oldColLabel = colRenameMap.get(sch.getTagName());
                                     if (col.getLabel().equals(oldColLabel)) {
@@ -2724,8 +2766,7 @@ public class RepositoryToComponentProperty {
                         for (IMetadataColumn col : metadataTable.getListColumns()) {
                             Map<String, Object> map = new HashMap<String, Object>();
                             map.put("QUERY", null); //$NON-NLS-1$
-                            for (int i = 0; i < conceptTargets.size(); i++) {
-                                ConceptTarget cpt = conceptTargets.get(i);
+                            for (ConceptTarget cpt : conceptTargets) {
                                 if (col.getLabel().equals(cpt.getTargetName())) {
                                     // map.put("SCHEMA_COLUMN", sch.getTagName());
                                     map.put("QUERY", TalendQuoteUtils.addQuotes(cpt.getRelativeLoopExpression())); //$NON-NLS-1$

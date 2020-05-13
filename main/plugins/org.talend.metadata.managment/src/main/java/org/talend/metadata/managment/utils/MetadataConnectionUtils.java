@@ -576,6 +576,16 @@ public class MetadataConnectionUtils {
         return false;
     }
     
+    public static boolean isSybase16SA(IMetadataConnection connectionMetadata) throws SQLException {
+        boolean isSybase16SA = false;
+        if(connectionMetadata!=null) {
+            String dbVersionString = connectionMetadata.getDbVersionString();
+            isSybase16SA = StringUtils.equals(EDatabaseVersion4Drivers.SYBASEIQ_16_SA.getVersionValue(),
+                    dbVersionString);
+        }
+        return isSybase16SA;
+    }
+    
     public static boolean isSAPHana(DatabaseMetaData connectionMetadata) throws SQLException {
         if (connectionMetadata.getDriverName() != null && connectionMetadata.getDatabaseProductName() != null) {
             if ("HDB".equalsIgnoreCase(connectionMetadata.getDatabaseProductName().trim())) { //$NON-NLS-1$

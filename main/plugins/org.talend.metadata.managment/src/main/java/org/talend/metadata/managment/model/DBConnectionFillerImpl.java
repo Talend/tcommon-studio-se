@@ -37,11 +37,13 @@ import org.talend.commons.exception.ExceptionHandler;
 import org.talend.commons.utils.data.list.ListUtils;
 import org.talend.commons.utils.database.AS400DatabaseMetaData;
 import org.talend.commons.utils.database.DB2ForZosDataBaseMetadata;
+import org.talend.commons.utils.database.Sybase16SADatabaseMetaData;
 import org.talend.commons.utils.database.SybaseDatabaseMetaData;
 import org.talend.commons.utils.database.TeradataDataBaseMetadata;
 import org.talend.core.ICoreService;
 import org.talend.core.database.EDatabase4DriverClassName;
 import org.talend.core.database.EDatabaseTypeName;
+import org.talend.core.database.conn.version.EDatabaseVersion4Drivers;
 import org.talend.core.model.metadata.IMetadataConnection;
 import org.talend.core.model.metadata.MappingTypeRetriever;
 import org.talend.core.model.metadata.MetadataTalendType;
@@ -252,7 +254,7 @@ public class DBConnectionFillerImpl extends MetadataFillerImpl<DatabaseConnectio
             IMetadataConnection metaConnection, List<String> schemaFilter) {
         List<Schema> returnSchemas = new ArrayList<Schema>();
         if (dbJDBCMetadata == null || (dbConn != null && ConnectionHelper.getCatalogs(dbConn).size() > 0)
-                || ConnectionUtils.isSybase(dbJDBCMetadata)) {
+                        || ConnectionUtils.isSybase(dbJDBCMetadata)) {
             return null;
         }
         ResultSet schemas = null;
@@ -443,9 +445,16 @@ public class DBConnectionFillerImpl extends MetadataFillerImpl<DatabaseConnectio
                 return catalogList;
             }
             ResultSet catalogNames = null;
-            if (dbJDBCMetadata instanceof SybaseDatabaseMetaData) {
-                // Whether in context mode or not, metaConnection can get the correct username always
-                catalogNames = ((SybaseDatabaseMetaData) dbJDBCMetadata).getCatalogs(metaConnection.getUsername());
+            
+            if (dbJDBCMetadata instanceof Sybase16SADatabaseMetaData) {
+                String username = metaConnection == null ? dbConn.getUsername() : metaConnection.getUsername();
+                String database = metaConnection == null ? dbConn.getSID() : metaConnection.getDatabase();
+                catalogNames = ((Sybase16SADatabaseMetaData) dbJDBCMetadata).getCatalogs(username, database);
+            } else if (dbJDBCMetadata instanceof SybaseDatabaseMetaData) {
+                // Whether in context mode or not, metaConnection can get the correct username
+                // always
+                String username = metaConnection == null ? dbConn.getUsername() : metaConnection.getUsername();
+                catalogNames = ((SybaseDatabaseMetaData) dbJDBCMetadata).getCatalogs(username);
             } else {
                 catalogNames = dbJDBCMetadata.getCatalogs();
             }

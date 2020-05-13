@@ -1346,11 +1346,17 @@ public class LocalRepositoryFactory extends AbstractEMFRepositoryFactory impleme
 
         // Getting the folder :
         try {
-            IFolder folder = ResourceUtils.getFolder(fsProject, completePath, true);
+            IFolder folder = null;
+            try {
+                folder = ResourceUtils.getFolder(fsProject, completePath, true);
+            } catch (PersistenceException e) {
+            }
             // changed by hqzhang for TDI-20600, FolderHelper.deleteFolder will fire the DeletedFolderListener in
             // ProjectRepoAbstractContentProvider class to refresh the node, if don't delete resource first, the deleted
             // foler display in repository view
-            deleteResource(folder);
+            if (folder != null && folder.exists()) {
+                deleteResource(folder);
+            }
         }  finally {
             // even if the folder do not exist anymore, clean the list on the project
             getFolderHelper(project.getEmfProject()).deleteFolder(completePath);
