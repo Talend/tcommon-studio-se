@@ -199,7 +199,9 @@ public class ProductVersion implements Comparable<ProductVersion> {
         result = prime * result + major;
         result = prime * result + micro;
         result = prime * result + minor;
-        result = prime * result + extraInfo.hashCode();
+        if (setExtraInfo) {
+            result = prime * result + extraInfo.length();
+        }
         return result;
     }
 
@@ -225,7 +227,6 @@ public class ProductVersion implements Comparable<ProductVersion> {
             return false;
         }
         if (setExtraInfo && other.setExtraInfo) {
-
             if (!extraInfo.equals(other.extraInfo)) {
                 return false;
             }
