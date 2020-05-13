@@ -275,7 +275,7 @@ public abstract class RepositoryUpdateManager {
     private boolean openRenameCheckedDialog() {
         return MessageDialog.openQuestion(Display.getCurrent().getActiveShell(),
                 Messages.getString("RepositoryUpdateManager.RenameContextTitle"), //$NON-NLS-1$
-                Messages.getString("RepositoryUpdateManager.RenameContextMessages")); //$NON-NLS-1$
+                Messages.getString("RepositoryUpdateManager.RenameContextMessagesNoBuiltIn")); //$NON-NLS-1$
 
     }
 

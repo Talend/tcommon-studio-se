@@ -68,4 +68,13 @@ public class ItemContextLink {
         }
         return null;
     }
+
+    public ItemContextLink cloneObj() {
+        ItemContextLink obj = new ItemContextLink();
+        obj.setItemId(itemId);
+        for (ContextLink c : contextList) {
+            obj.getContextList().add(c.cloneObj());
+        }
+        return obj;
+    }
 }

@@ -72,4 +72,14 @@ public class ContextLink {
         return null;
     }
 
+    public ContextLink cloneObj() {
+        ContextLink obj = new ContextLink();
+        obj.setContextName(contextName);
+        obj.setRepoId(repoId);
+        for (ContextParamLink p : parameterList) {
+            obj.getParameterList().add(p.cloneObj());
+        }
+        return obj;
+    }
+
 }
