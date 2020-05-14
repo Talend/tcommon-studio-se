@@ -788,16 +788,21 @@ public class ContextUtils {
             if (item instanceof ConnectionItem) {
                 return compareConnectionContextParamName((ConnectionItem) item, itemContextLink);
             } else {
-                return compareProcessContextParamName(item, itemContextLink);
+                return compareContextParamName(item, itemContextLink);
             }
         }
 
         return Collections.EMPTY_MAP;
     }
 
-    private static Map<String, String> compareProcessContextParamName(Item processItem, ItemContextLink itemContextLink) {
-        Map<String, String> renamedMap = new HashMap<String, String>();
+    private static Map<String, String> compareContextParamName(Item processItem, ItemContextLink itemContextLink) {
         List<ContextType> contextTypeList = getAllContextType(processItem);
+        return compareContextParamName(contextTypeList, itemContextLink);
+    }
+
+    public static Map<String, String> compareContextParamName(List<ContextType> contextTypeList,
+            ItemContextLink itemContextLink) {
+        Map<String, String> renamedMap = new HashMap<String, String>();
         Map<String, Item> tempItemMap = new HashMap<String, Item>();
         for (ContextType contextType : contextTypeList) {
             for (Object obj : contextType.getContextParameter()) {
@@ -974,7 +979,7 @@ public class ContextUtils {
         } else { // Compare use Name
             final ContextParameterType contextParameterType = ContextUtils.getContextParameterTypeByName(contextType, paramName);
             if (contextParameterType != null) {
-                ContextItem repositoryContext = (ContextItem) contextItem;
+                Item repositoryContext = contextItem;
                 if (isDefaultContext) {
                     if (existedParams.get(contextItem) == null) {
                         existedParams.put(repositoryContext, new HashSet<String>());
@@ -1008,9 +1013,11 @@ public class ContextUtils {
     }
 
     public static Item findContextItem(List<ContextItem> allContextItem, String source) {
-        for (ContextItem contextItem : allContextItem) {
-            if (StringUtils.equals(contextItem.getProperty().getId(), source)) {
-                return contextItem;
+        if (allContextItem != null) {
+            for (ContextItem contextItem : allContextItem) {
+                if (StringUtils.equals(contextItem.getProperty().getId(), source)) {
+                    return contextItem;
+                }
             }
         }
         return getRepositoryContextItemById(source);
