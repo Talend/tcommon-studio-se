@@ -114,7 +114,7 @@ public enum EDatabaseVersion4Drivers {
             "db2jcc_license_cisuz.jar" })), //$NON-NLS-1$
     SYBASEASE(new DbVersion4Drivers(EDatabaseTypeName.SYBASEASE, "Sybase 12/15", "SYBSEIQ_12_15", "jconn3.jar")), //$NON-NLS-1$
     SYBASEIQ_16(new DbVersion4Drivers(EDatabaseTypeName.SYBASEASE, "Sybase 16", "SYBSEIQ_16", "jconn4.jar")), //$NON-NLS-1$
-    SYBASEIQ_16_SA(new DbVersion4Drivers(EDatabaseTypeName.SYBASEASE, "Sybase 16 (SQL Anywhere)", "SYBSEIQ_16_SA", "sajdbc4.jar")),
+    SYBASEIQ_16_SA(new DbVersion4Drivers(EDatabaseTypeName.SYBASEASE, "Sybase 16 (SQL Anywhere)", "SYBSEIQ_16_SA", "sajdbc4-17.0.0.jar")),
     SYBASEIQ(new DbVersion4Drivers(EDatabaseTypeName.SYBASEIQ, "jconn3.jar")), //$NON-NLS-1$
 
     // for bug 0013127
