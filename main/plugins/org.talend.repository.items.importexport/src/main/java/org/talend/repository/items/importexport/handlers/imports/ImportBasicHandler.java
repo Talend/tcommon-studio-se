@@ -61,6 +61,7 @@ import org.talend.commons.utils.workbench.resources.ResourceUtils;
 import org.talend.core.GlobalServiceRegister;
 import org.talend.core.context.Context;
 import org.talend.core.context.RepositoryContext;
+import org.talend.core.model.context.ContextUtils;
 import org.talend.core.model.context.link.ContextLinkService;
 import org.talend.core.model.metadata.builder.connection.Connection;
 import org.talend.core.model.metadata.builder.connection.ConnectionPackage;
@@ -102,6 +103,8 @@ import org.talend.core.runtime.services.IGenericWizardService;
 import org.talend.core.utils.WorkspaceUtils;
 import org.talend.designer.business.model.business.BusinessPackage;
 import org.talend.designer.business.model.business.BusinessProcess;
+import org.talend.designer.core.model.utils.emf.talendfile.ContextParameterType;
+import org.talend.designer.core.model.utils.emf.talendfile.ContextType;
 import org.talend.designer.core.model.utils.emf.talendfile.ProcessType;
 import org.talend.designer.core.model.utils.emf.talendfile.TalendFilePackage;
 import org.talend.designer.joblet.model.JobletPackage;
@@ -884,6 +887,40 @@ public class ImportBasicHandler extends AbstractImportExecutableHandler {
         }
     }
 
+    protected void synchContextParmeterId(ImportItem selectedImportItem) {
+        Item importingItem = selectedImportItem.getItem();
+        if (importingItem instanceof ContextItem) {
+            return;
+        }
+        List<ContextType> contextTypeList = ContextUtils.getAllContextType(importingItem);
+        Item existItem = null;
+        if (contextTypeList != null && contextTypeList.size() > 0) {
+            existItem = ContextUtils.getRepositoryContextItemById(importingItem.getProperty().getId());
+            for (ContextType c : contextTypeList) {
+                for (Object obj : c.getContextParameter()) {
+                    if (obj instanceof ContextParameterType) {
+                        ContextParameterType paramType = (ContextParameterType) obj;
+                        if (ContextUtils.isBuildInParameter(paramType)) {
+                            if (StringUtils.isEmpty(paramType.getInternalId()) && existItem != null) {
+                                ContextType existContextType = ContextUtils.getContextTypeByName(existItem, c.getName());
+                                if (existContextType != null) {
+                                    ContextParameterType existParam = ContextUtils.getContextParameterTypeByName(existContextType,
+                                            paramType.getName());
+                                    if (existParam != null) {
+                                        paramType.setInternalId(existParam.getInternalId());
+                                    }
+                                }
+                            }
+                            if (StringUtils.isEmpty(paramType.getInternalId())) {
+                                paramType.setInternalId(ProxyRepositoryFactory.getInstance().getNextId());
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+
     protected File findSourceContextLinkFile(ImportItem importItem) {
         String techLabel = importItem.getItemProject().getTechnicalLabel();
         File projectFolder = null, linkFile = null;
@@ -1035,7 +1072,7 @@ public class ImportBasicHandler extends AbstractImportExecutableHandler {
     }
 
     protected void beforeCreatingItem(ImportItem selectedImportItem) {
-        // noting to do specially.
+        synchContextParmeterId(selectedImportItem); // Before import, copy the context parameter internal id from exist                                                // object
     }
 
     protected void afterCreatedItem(ResourcesManager resManager, ImportItem selectedImportItem) throws Exception {
