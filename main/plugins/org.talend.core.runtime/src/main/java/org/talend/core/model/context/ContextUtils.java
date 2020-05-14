@@ -788,16 +788,21 @@ public class ContextUtils {
             if (item instanceof ConnectionItem) {
                 return compareConnectionContextParamName((ConnectionItem) item, itemContextLink);
             } else {
-                return compareProcessContextParamName(item, itemContextLink);
+                return compareContextParamName(item, itemContextLink);
             }
         }
 
         return Collections.EMPTY_MAP;
     }
 
-    private static Map<String, String> compareProcessContextParamName(Item processItem, ItemContextLink itemContextLink) {
-        Map<String, String> renamedMap = new HashMap<String, String>();
+    private static Map<String, String> compareContextParamName(Item processItem, ItemContextLink itemContextLink) {
         List<ContextType> contextTypeList = getAllContextType(processItem);
+        return compareContextParamName(contextTypeList, itemContextLink);
+    }
+
+    public static Map<String, String> compareContextParamName(List<ContextType> contextTypeList,
+            ItemContextLink itemContextLink) {
+        Map<String, String> renamedMap = new HashMap<String, String>();
         Map<String, Item> tempItemMap = new HashMap<String, Item>();
         for (ContextType contextType : contextTypeList) {
             for (Object obj : contextType.getContextParameter()) {
