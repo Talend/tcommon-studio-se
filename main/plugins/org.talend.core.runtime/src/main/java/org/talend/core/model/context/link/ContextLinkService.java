@@ -112,13 +112,15 @@ public class ContextLinkService {
 
             ContextItem contextItem = ContextUtils.getContextItemById2(contextId);
             ContextType contextType = ContextUtils.getContextTypeByName(contextItem.getContext(), connection.getContextName());
-            for (Object o : contextType.getContextParameter()) {
-                if (o instanceof ContextParameterType) {
-                    ContextParameterType contextParameterType = (ContextParameterType) o;
-                    ContextParamLink contextParamLink = new ContextParamLink();
-                    contextParamLink.setName(contextParameterType.getName());
-                    contextParamLink.setId(ResourceHelper.getUUID(contextParameterType));
-                    contextLink.getParameterList().add(contextParamLink);
+            if (contextType != null) {
+                for (Object o : contextType.getContextParameter()) {
+                    if (o instanceof ContextParameterType) {
+                        ContextParameterType contextParameterType = (ContextParameterType) o;
+                        ContextParamLink contextParamLink = new ContextParamLink();
+                        contextParamLink.setName(contextParameterType.getName());
+                        contextParamLink.setId(ResourceHelper.getUUID(contextParameterType));
+                        contextLink.getParameterList().add(contextParamLink);
+                    }
                 }
             }
         }
@@ -206,7 +208,7 @@ public class ContextLinkService {
             String uuID = null;
             if (contextItem instanceof ContextItem) {
                 uuID = ResourceHelper.getUUID(repoContextParameterType);
-            } else {
+            } else if (repoContextParameterType.getInternalId() != null) {
                 uuID = repoContextParameterType.getInternalId();
             }
             if (repoContextParameterType == null && oldContextLink != null) {

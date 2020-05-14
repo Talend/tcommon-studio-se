@@ -61,6 +61,7 @@ import org.talend.repository.model.IProxyRepositoryFactory;
 public class ContextUtils {
 
     private static final Logger LOGGER = Logger.getLogger(ContextUtils.class);
+
     private static final Set<String> JAVA_KEYWORDS = new HashSet<String>(Arrays.asList("abstract", "continue", "for", "new", //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$
             "switch", "assert", "default", "goto", "package", "synchronized", "boolean", "do", "if", "private", "this", "break", //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$ //$NON-NLS-5$ //$NON-NLS-6$ //$NON-NLS-7$ //$NON-NLS-8$ //$NON-NLS-9$ //$NON-NLS-10$ //$NON-NLS-11$ //$NON-NLS-12$
             "double", "implements", "protected", "throw", "byte", "else", "import", "public", "throws", "case", "enum", //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$ //$NON-NLS-5$ //$NON-NLS-6$ //$NON-NLS-7$ //$NON-NLS-8$ //$NON-NLS-9$ //$NON-NLS-10$ //$NON-NLS-11$
@@ -582,8 +583,8 @@ public class ContextUtils {
         }
 
         // preference name must match TalendDesignerPrefConstants.PROPAGATE_CONTEXT_VARIABLE
-        return Boolean.parseBoolean(CoreRuntimePlugin.getInstance().getDesignerCoreService()
-                .getPreferenceStore("propagateContextVariable")); //$NON-NLS-1$
+        return Boolean.parseBoolean(
+                CoreRuntimePlugin.getInstance().getDesignerCoreService().getPreferenceStore("propagateContextVariable")); //$NON-NLS-1$
     }
 
     /**
@@ -617,10 +618,10 @@ public class ContextUtils {
 
                             boolean modified = false;
                             for (String varName : set) {
-                                ContextParameterType contextParameterType = ContextUtils.getContextParameterTypeByName(
-                                        contextType, varName);
-                                IContextParameter contextParameter = processJobManager.getDefaultContext().getContextParameter(
-                                        varName);
+                                ContextParameterType contextParameterType = ContextUtils
+                                        .getContextParameterTypeByName(contextType, varName);
+                                IContextParameter contextParameter = processJobManager.getDefaultContext()
+                                        .getContextParameter(varName);
                                 if (contextParameter == null) { // added
                                     addContextParameterType(processJobManager, contextItem, contextParameterType);
                                     modified = true;
@@ -785,7 +786,7 @@ public class ContextUtils {
         }
         if (itemContextLink != null) {
             if (item instanceof ConnectionItem) {
-                return compareConnectionContextParamName((ConnectionItem)item, itemContextLink);
+                return compareConnectionContextParamName((ConnectionItem) item, itemContextLink);
             } else {
                 return compareProcessContextParamName(item, itemContextLink);
             }
@@ -899,7 +900,6 @@ public class ContextUtils {
         return renamedMap;
     }
 
-
     /**
      *
      * DOC hcw ProcessUpdateManager class global comment. Detailled comment
@@ -937,11 +937,11 @@ public class ContextUtils {
             ContextParamLink paramLink, Map<Item, Map<String, String>> repositoryRenamedMap, Map<Item, Set<String>> existedParams,
             ContextItemParamMap unsameMap, ContextItemParamMap deleteParams, boolean onlySimpleShow, boolean isDefaultContext) {
         boolean builtin = true;
-        String paramId = getParamId(param, paramLink);
+        String paramId = paramLink.getId();
+        String paramName = param.getName();
         if (paramId != null && contextType != null) {// Compare use UUID
             ContextParameterType contextParameterType = null;
             contextParameterType = getContextParameterTypeById(contextType, paramId, contextItem instanceof ContextItem);
-            String paramName = param.getName();
             if (contextParameterType != null) {
                 if (!StringUtils.equals(contextParameterType.getName(), paramName)) {
                     if (isDefaultContext) {
@@ -971,6 +971,28 @@ public class ContextUtils {
                     builtin = false;
                 }
             }
+        } else { // Compare use Name
+            final ContextParameterType contextParameterType = ContextUtils.getContextParameterTypeByName(contextType, paramName);
+            if (contextParameterType != null) {
+                ContextItem repositoryContext = (ContextItem) contextItem;
+                if (isDefaultContext) {
+                    if (existedParams.get(contextItem) == null) {
+                        existedParams.put(repositoryContext, new HashSet<String>());
+                    }
+                    existedParams.get(repositoryContext).add(paramName);
+                }
+                if (onlySimpleShow || !ContextUtils.samePropertiesForContextParameter(param, contextParameterType)) {
+                    unsameMap.add(contextItem, paramName);
+                }
+                builtin = false;
+            } else {
+                // delete context variable
+                if (ContextUtils.isPropagateContextVariable()) {
+                    deleteParams.add(contextItem, paramName);
+                    builtin = false;
+                }
+            }
+
         }
         return builtin && isDefaultContext;
     }
@@ -1004,5 +1026,12 @@ public class ContextUtils {
             }
         }
         return null;
+    }
+
+    public static boolean isBuildInParameter(ContextParameterType paramType) {
+        if (paramType.getRepositoryContextId() == null || IContextParameter.BUILT_IN.equals(paramType.getRepositoryContextId())) {
+            return true;
+        }
+        return false;
     }
 }
