@@ -68,6 +68,7 @@ import org.talend.core.model.properties.ReferenceFileItem;
 import org.talend.core.model.properties.TDQItem;
 import org.talend.core.model.properties.ValidationRulesConnectionItem;
 import org.talend.core.model.properties.helper.ByteArrayResource;
+import org.talend.core.model.relationship.RelationshipItemBuilder;
 import org.talend.core.model.repository.ERepositoryObjectType;
 import org.talend.core.repository.constants.FileConstants;
 import org.talend.core.repository.model.ProxyRepositoryFactory;
@@ -139,6 +140,7 @@ public class XmiResourceManager {
         unloadResource(uri.toString());
         //RemoteRepositoryFactory.delegateBeforeLogon got curProject update to context
         Project emfProject = ProxyRepositoryFactory.getInstance().getRepositoryContext().getProject().getEmfProject();
+        emfProject.setItemsRelationVersion(RelationshipItemBuilder.INDEX_VERSION);
         Resource projectResource = createProjectResource(project);
         projectResource.getContents().add(emfProject);
         projectResource.getContents().add(emfProject.getAuthor());
