@@ -1048,6 +1048,7 @@ public class ExtractMetaDataUtils {
                 }else if(driverJarPathArg.contains("/")){
                     if (driverJarPathArg.contains(";")) {
                         String jars[] = driverJarPathArg.split(";");
+                        List<String> jarNames = new ArrayList<>();
                         for (String jar : jars) {
                             String jarName = librairesManagerService.getJarNameFromMavenuri(jar);
                             // TDQ-16842 msjian:sometimes for the import jdbc connection, the jarName is null
@@ -1056,8 +1057,11 @@ public class ExtractMetaDataUtils {
                             }
                             // TDQ-16842~
                             if (!new File(getJavaLibPath() + jarName).exists()) {
-                                librairesManagerService.retrieve(jarName, getJavaLibPath(), new NullProgressMonitor());
+                                jarNames.add(jarName);
                             }
+                        }
+                        librairesManagerService.retrieve(jarNames, getJavaLibPath(), new NullProgressMonitor());
+                        for(String jarName: jarNames) {
                             jarPathList.add(getJavaLibPath() + jarName);
                         }
                     }else{
