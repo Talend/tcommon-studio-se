@@ -92,6 +92,24 @@
             <version>${tcomp.version}</version>
         </dependency>
         <dependency>
+            <groupId>org.talend.sdk.component</groupId>
+            <artifactId>component-runtime</artifactId>
+            <type>pom</type>
+            <version>${tcomp.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.talend.sdk.component</groupId>
+            <artifactId>component-studio</artifactId>
+            <type>pom</type>
+            <version>${tcomp.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.talend.sdk.component</groupId>
+            <artifactId>container</artifactId>
+            <type>pom</type>
+            <version>${tcomp.version}</version>
+        </dependency>
+        <dependency>
             <groupId>org.slf4j</groupId>
             <artifactId>slf4j-jdk14</artifactId>
             <version>${slf4j.version}</version>
