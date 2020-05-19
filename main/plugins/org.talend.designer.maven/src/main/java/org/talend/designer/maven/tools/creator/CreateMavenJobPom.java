@@ -27,6 +27,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 import java.util.Properties;
+import java.util.Scanner;
 import java.util.Set;
 import java.util.stream.Collectors;
 
@@ -535,7 +536,7 @@ public class CreateMavenJobPom extends AbstractMavenProcessorPom {
                                 "${talend.job.bat.addition}" },
                         new String[] { jvmArgsStr.toString().trim(), getWindowsClasspath(), jobClass,
                                 windowsScriptAdditionValue.toString() });
-
+        batContent = normalizeSpaces(batContent);
         String shContent = MavenTemplateManager.getProjectSettingValue(IProjectSettingPreferenceConstants.TEMPLATE_SH,
                 templateParameters);
         shContent = StringUtils
@@ -544,7 +545,7 @@ public class CreateMavenJobPom extends AbstractMavenProcessorPom {
                                 "${talend.job.sh.addition}" },
                         new String[] { jvmArgsStr.toString().trim(), getUnixClasspath(), jobClass,
                                 unixScriptAdditionValue.toString() });
-
+        shContent = normalizeSpaces(shContent);
         String psContent = MavenTemplateManager.getProjectSettingValue(IProjectSettingPreferenceConstants.TEMPLATE_PS,
                 templateParameters);
         psContent = StringUtils
@@ -553,7 +554,7 @@ public class CreateMavenJobPom extends AbstractMavenProcessorPom {
                                 "${talend.job.class}", "${talend.job.bat.addition}" },
                         new String[] { jvmArgsStrPs1.toString().trim(), getWindowsClasspathForPs1(), jobClass,
                                 windowsScriptAdditionValue.toString() });
-
+        psContent = normalizeSpaces(psContent);
         String jobInfoContent = MavenTemplateManager
                 .getProjectSettingValue(IProjectSettingPreferenceConstants.TEMPLATE_JOB_INFO, templateParameters);
         String projectTechName = ProjectManager.getInstance().getProject(property).getTechnicalLabel();
@@ -649,12 +650,13 @@ public class CreateMavenJobPom extends AbstractMavenProcessorPom {
         ERepositoryObjectType.getAllTypesOfCodes().forEach(t -> dependencies.addAll(PomUtil.getCodesDependencies(t)));
 
         // libraries of talend/3rd party
-        dependencies.addAll(convertToDistinctedJobDependencies(currentJobProperty.getId(), currentJobProperty.getVersion(),
-                processor.getNeededModules(TalendProcessOptionConstants.MODULES_EXCLUDE_SHADED)));
+        dependencies.addAll(processor.getNeededModules(TalendProcessOptionConstants.MODULES_EXCLUDE_SHADED).stream()
+                .filter(m -> !m.isExcluded()).map(m -> createDenpendency(m, false)).collect(Collectors.toSet()));
 
         // missing modules from the job generation of children
-        childrenJobInfo.forEach(j -> dependencies.addAll(convertToDistinctedJobDependencies(j.getJobId(), j.getJobVersion(),
-                LastGenerationInfo.getInstance().getModulesNeededPerJob(j.getJobId(), j.getJobVersion()))));
+        childrenJobInfo.forEach(j -> dependencies
+                .addAll(LastGenerationInfo.getInstance().getModulesNeededPerJob(j.getJobId(), j.getJobVersion()).stream()
+                        .filter(m -> !m.isExcluded()).map(m -> createDenpendency(m, false)).collect(Collectors.toSet())));
 
         Set<ModuleNeeded> modules = new HashSet<>();
         // testcase modules from current job (optional)
@@ -733,6 +735,8 @@ public class CreateMavenJobPom extends AbstractMavenProcessorPom {
 
     // remove duplicate job dependencies and only keep the latest one
     // keep high priority dependencies if set by tLibraryLoad
+    // FIXME not used now since tacokit component use specific dependency version. so we must include all job dependencies.
+    // but problem will remain for CI when need to download jars from nexus, maven will only resolve one of them.
     private Set<Dependency> convertToDistinctedJobDependencies(String jobId, String jobVersion, Set<ModuleNeeded> neededModules) {
         Set<Dependency> highPriorityDependencies = LastGenerationInfo.getInstance()
                 .getHighPriorityModuleNeededPerJob(jobId, jobVersion).stream().map(m -> createDenpendency(m, false))
@@ -929,6 +933,24 @@ public class CreateMavenJobPom extends AbstractMavenProcessorPom {
 
         return plugin;
 
+    }
+
+    // https://jira.talendforge.org/browse/TUP-27053
+    public static String normalizeSpaces(String src) {
+        StringBuffer sb = new StringBuffer();
+        try (Scanner scanner = new Scanner(src)) {
+            while (scanner.hasNextLine()) {
+                String line = scanner.nextLine();
+                line = StringUtils.normalizeSpace(line.trim());
+                if (!line.isEmpty()) {
+                    sb.append(line);
+                }
+                sb.append('\n');
+            }
+        } catch (Exception e) {
+
+        }
+        return sb.toString();
     }
 
 }

@@ -114,7 +114,7 @@ public enum EDatabaseVersion4Drivers {
             "db2jcc_license_cisuz.jar" })), //$NON-NLS-1$
     SYBASEASE(new DbVersion4Drivers(EDatabaseTypeName.SYBASEASE, "Sybase 12/15", "SYBSEIQ_12_15", "jconn3.jar")), //$NON-NLS-1$
     SYBASEIQ_16(new DbVersion4Drivers(EDatabaseTypeName.SYBASEASE, "Sybase 16", "SYBSEIQ_16", "jconn4.jar")), //$NON-NLS-1$
-    SYBASEIQ_16_SA(new DbVersion4Drivers(EDatabaseTypeName.SYBASEASE, "Sybase 16 (SQL Anywhere)", "SYBSEIQ_16_SA", "sajdbc4.jar")),
+    SYBASEIQ_16_SA(new DbVersion4Drivers(EDatabaseTypeName.SYBASEASE, "Sybase 16 (SQL Anywhere)", "SYBSEIQ_16_SA", "sajdbc4-17.0.0.jar")),
     SYBASEIQ(new DbVersion4Drivers(EDatabaseTypeName.SYBASEIQ, "jconn3.jar")), //$NON-NLS-1$
 
     // for bug 0013127
@@ -166,9 +166,9 @@ public enum EDatabaseVersion4Drivers {
     REDSHIFT(new DbVersion4Drivers(EDatabaseTypeName.REDSHIFT, "redshift", "REDSHIFT", //$NON-NLS-1$ //$NON-NLS-2$
             "redshift-jdbc42-no-awssdk-1.2.37.1061.jar")), //$NON-NLS-1$
     REDSHIFT_SSO(new DbVersion4Drivers(EDatabaseTypeName.REDSHIFT_SSO, "redshift sso", "REDSHIFT_SSO", //$NON-NLS-1$ //$NON-NLS-2$
-            new String[] { "redshift-jdbc42-no-awssdk-1.2.37.1061.jar", "aws-java-sdk-1.11.406.jar", "jackson-core-2.9.9.jar", //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
-                    "jackson-databind-2.9.9.jar", "jackson-annotations-2.9.0.jar", "httpcore-4.4.9.jar", "httpclient-4.5.5.jar", //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$//$NON-NLS-4$
-                    "joda-time-2.8.1.jar", "commons-logging-1.1.3.jar", "commons-codec-1.6.jar" })), //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+            new String[] { "redshift-jdbc42-no-awssdk-1.2.37.1061.jar", "aws-java-sdk-1.11.729.jar", "jackson-core-2.10.1.jar", //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+                    "jackson-databind-2.10.1.jar", "jackson-annotations-2.10.1.jar", "httpcore-4.4.11.jar", "httpclient-4.5.9.jar", //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$//$NON-NLS-4$
+                    "joda-time-2.8.1.jar", "commons-logging-1.2.jar", "commons-codec-1.11.jar" })), //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
 
     AMAZON_AURORA(new DbVersion4Drivers(EDatabaseTypeName.AMAZON_AURORA, "mysql-connector-java-5.1.30-bin.jar")); //$NON-NLS-1$
 

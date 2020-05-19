@@ -49,7 +49,7 @@ import org.talend.repository.UpdateRepositoryUtils;
  */
 public class ShowAddedContextdialog extends SelectionDialog {
 
-    private static final String TITILE = Messages.getString("ShowAddedContextdialog.Title"); //$NON-NLS-1$
+    private static final String TITILE = Messages.getString("ShowAddedContextdialog.dialogTitle"); //$NON-NLS-1$
 
     private final List<AddedContextBean> addedVarBeans = new ArrayList<AddedContextBean>();
 
@@ -71,7 +71,7 @@ public class ShowAddedContextdialog extends SelectionDialog {
         setBlockOnOpen(true);
         // setDefaultImage(ImageProvider.getImage(ECoreImage.CONTEXT_ICON));
         setTitle(TITILE);
-        setMessage(Messages.getString("ShowAddedContextdialog.Messages")); //$NON-NLS-1$
+        setMessage(Messages.getString("ShowAddedContextdialog.dialogMessages")); //$NON-NLS-1$
         setHelpAvailable(false);
     }
 

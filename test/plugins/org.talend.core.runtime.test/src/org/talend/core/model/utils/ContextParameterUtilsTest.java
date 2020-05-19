@@ -12,11 +12,16 @@
 // ============================================================================
 package org.talend.core.model.utils;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertNull;
+import static org.junit.Assert.assertTrue;
 
 import java.util.ArrayList;
 import java.util.List;
 
+import org.eclipse.core.runtime.preferences.IEclipsePreferences;
+import org.eclipse.core.runtime.preferences.InstanceScope;
 import org.junit.Assert;
 import org.junit.Test;
 import org.talend.core.model.context.JobContext;
@@ -25,6 +30,8 @@ import org.talend.core.model.context.JobContextParameter;
 import org.talend.core.model.metadata.types.JavaTypesManager;
 import org.talend.core.model.process.IContext;
 import org.talend.core.model.process.IContextParameter;
+import org.talend.core.model.repository.IRepositoryPrefConstants;
+import org.talend.core.prefs.ITalendCorePrefConstants;
 import org.talend.designer.core.model.utils.emf.talendfile.ContextParameterType;
 import org.talend.designer.core.model.utils.emf.talendfile.ContextType;
 import org.talend.designer.core.model.utils.emf.talendfile.TalendFileFactory;
@@ -97,6 +104,8 @@ public class ContextParameterUtilsTest {
 
     @Test
     public void testGetVariableFromCode4String() {
+        IEclipsePreferences coreUIPluginNode = new InstanceScope().getNode(ITalendCorePrefConstants.CoreUIPlugin_ID);
+        coreUIPluginNode.putBoolean(IRepositoryPrefConstants.ALLOW_SPECIFIC_CHARACTERS_FOR_SCHEMA_COLUMNS, true);
         Assert.assertNull(ContextParameterUtils.getVariableFromCode(""));
         Assert.assertNull(ContextParameterUtils.getVariableFromCode("abc"));
         Assert.assertNull(ContextParameterUtils.getVariableFromCode("123"));
@@ -116,10 +125,21 @@ public class ContextParameterUtilsTest {
         Assert.assertEquals("Podgląd", ContextParameterUtils.getVariableFromCode("context.Podgląd"));
         Assert.assertEquals("Română", ContextParameterUtils.getVariableFromCode("context.Română"));
         Assert.assertEquals("русский", ContextParameterUtils.getVariableFromCode("context.русский"));
+
+        coreUIPluginNode.putBoolean(IRepositoryPrefConstants.ALLOW_SPECIFIC_CHARACTERS_FOR_SCHEMA_COLUMNS, false);
+        Assert.assertNull(ContextParameterUtils.getVariableFromCode("context.汉语"));
+        Assert.assertNull(ContextParameterUtils.getVariableFromCode("context.日本語"));
+        Assert.assertNull(ContextParameterUtils.getVariableFromCode("context.Ελληνική"));
+        Assert.assertNull(ContextParameterUtils.getVariableFromCode("context.Français"));
+        Assert.assertNull(ContextParameterUtils.getVariableFromCode("context.Podgląd"));
+        Assert.assertNull(ContextParameterUtils.getVariableFromCode("context.Română"));
+        Assert.assertNull(ContextParameterUtils.getVariableFromCode("context.русский"));
     }
 
     @Test
     public void testGetVariableFromCode4Context() {
+        IEclipsePreferences coreUIPluginNode = new InstanceScope().getNode(ITalendCorePrefConstants.CoreUIPlugin_ID);
+        coreUIPluginNode.putBoolean(IRepositoryPrefConstants.ALLOW_SPECIFIC_CHARACTERS_FOR_SCHEMA_COLUMNS, true);
         String var = ContextParameterUtils.getVariableFromCode("context.abc");
         Assert.assertEquals("abc", var);
 
@@ -254,6 +274,16 @@ public class ContextParameterUtilsTest {
 
         var = ContextParameterUtils.getVariableFromCode("context.русский-123");
         Assert.assertEquals("русский", var);
+
+        coreUIPluginNode.putBoolean(IRepositoryPrefConstants.ALLOW_SPECIFIC_CHARACTERS_FOR_SCHEMA_COLUMNS, false);
+        Assert.assertNull(ContextParameterUtils.getVariableFromCode("context.マイSQL"));
+        Assert.assertNull(ContextParameterUtils.getVariableFromCode("context.汉语"));
+        Assert.assertNull(ContextParameterUtils.getVariableFromCode("context.Ελληνική"));
+        Assert.assertNull(ContextParameterUtils.getVariableFromCode("context.Română_123"));
+        Assert.assertNull(ContextParameterUtils.getVariableFromCode("context.русский"));
+        Assert.assertNull(ContextParameterUtils.getVariableFromCode("context.マイSQL"));
+        Assert.assertNull(ContextParameterUtils.getVariableFromCode("context.Podgląd"));
+
     }
 
     @Test
@@ -281,6 +311,8 @@ public class ContextParameterUtilsTest {
 
     @Test
     public void testIsValidParameterName() {
+        IEclipsePreferences coreUIPluginNode = new InstanceScope().getNode(ITalendCorePrefConstants.CoreUIPlugin_ID);
+        coreUIPluginNode.putBoolean(IRepositoryPrefConstants.ALLOW_SPECIFIC_CHARACTERS_FOR_SCHEMA_COLUMNS, true);
         assertTrue(ContextParameterUtils.isValidParameterName("abc"));
         assertTrue(ContextParameterUtils.isValidParameterName("abc123"));
         assertTrue(ContextParameterUtils.isValidParameterName("abc_123"));
@@ -290,6 +322,22 @@ public class ContextParameterUtilsTest {
         assertFalse(ContextParameterUtils.isValidParameterName("abc%de"));
         assertFalse(ContextParameterUtils.isValidParameterName("a*&^e"));
         assertFalse(ContextParameterUtils.isValidParameterName("123abc"));
+        assertTrue(ContextParameterUtils.isValidParameterName("中文"));
+        assertTrue(ContextParameterUtils.isValidParameterName("日本語"));
+        assertTrue(ContextParameterUtils.isValidParameterName("Ελληνική"));
+        assertTrue(ContextParameterUtils.isValidParameterName("Français"));
+        assertTrue(ContextParameterUtils.isValidParameterName("Podgląd"));
+        assertTrue(ContextParameterUtils.isValidParameterName("Română"));
+        assertTrue(ContextParameterUtils.isValidParameterName("русский"));
+
+        coreUIPluginNode.putBoolean(IRepositoryPrefConstants.ALLOW_SPECIFIC_CHARACTERS_FOR_SCHEMA_COLUMNS, false);
+        assertFalse(ContextParameterUtils.isValidParameterName("中文"));
+        assertFalse(ContextParameterUtils.isValidParameterName("日本語"));
+        assertFalse(ContextParameterUtils.isValidParameterName("Ελληνική"));
+        assertFalse(ContextParameterUtils.isValidParameterName("Français"));
+        assertFalse(ContextParameterUtils.isValidParameterName("Podgląd"));
+        assertFalse(ContextParameterUtils.isValidParameterName("Română"));
+        assertFalse(ContextParameterUtils.isValidParameterName("русский"));
     }
 
     @Test

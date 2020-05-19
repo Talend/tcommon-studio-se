@@ -12,6 +12,7 @@
 // ============================================================================
 package org.talend.core.ui.token;
 
+import org.apache.commons.codec.digest.DigestUtils;
 import org.eclipse.jface.preference.IPreferenceStore;
 import org.talend.commons.utils.VersionUtils;
 import org.talend.core.GlobalServiceRegister;
@@ -49,7 +50,11 @@ public class DefaultTokenCollector extends AbstractTokenCollector {
     public static String calcUniqueId() {
         return TokenGenerator.generateMachineToken((src) -> StudioEncryption.getStudioEncryption(StudioEncryption.EncryptionKeyName.SYSTEM).encrypt(src));
     }
-
+    
+    public static String hashUniqueId() {
+    	return TokenGenerator.generateMachineToken((src) -> DigestUtils.sha256Hex(src));
+    }
+    
     /*
      * (non-Javadoc)
      *
@@ -61,7 +66,7 @@ public class DefaultTokenCollector extends AbstractTokenCollector {
         // version
         tokenStudioObject.put(VERSION.getKey(), VersionUtils.getInternalVersion());
         // uniqueId
-        tokenStudioObject.put(UNIQUE_ID.getKey(), calcUniqueId());
+        tokenStudioObject.put(UNIQUE_ID.getKey(), hashUniqueId());
 
         // typeStudio
         if (GlobalServiceRegister.getDefault().isServiceRegistered(IBrandingService.class)) {
