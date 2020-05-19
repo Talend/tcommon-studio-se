@@ -225,7 +225,7 @@ public abstract class ExtendedPushButton implements IExtendedPushButton {
         if (extendedControlModel == null) {
             return false;
         } else {
-            return true;
+            return !extendedControlModel.isReadonly();
         }
     }
 
