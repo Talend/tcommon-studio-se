@@ -32,6 +32,7 @@ import org.talend.core.model.process.IContextParameter;
 import org.talend.core.model.properties.ContextItem;
 import org.talend.core.model.properties.Item;
 import org.talend.core.model.utils.ContextParameterUtils;
+import org.talend.cwm.helper.ResourceHelper;
 import org.talend.designer.core.model.utils.emf.talendfile.ContextParameterType;
 import org.talend.designer.core.model.utils.emf.talendfile.ContextType;
 import org.talend.designer.core.model.utils.emf.talendfile.TalendFileFactory;
@@ -522,6 +523,7 @@ public class JobContextManager implements IContextManager {
         }
 
         EList newcontextTypeList = new BasicEList();
+        Map<String, Item> idToItemMap = new HashMap<String, Item>();
         for (int i = 0; i < listContext.size(); i++) {
             IContext context = listContext.get(i);
             String contextGroupName = renameGroupContext.get(context);
@@ -561,9 +563,23 @@ public class JobContextManager implements IContextManager {
                     contextParamType.setComment(contextParam.getComment());
                     contextParamType.setInternalId(contextParam.getInternalId());
                     if (!contextParam.isBuiltIn()) {
-                        Item item = ContextUtils.getRepositoryContextItemById(contextParam.getSource());
+                        Item item = idToItemMap.get(contextParam.getSource());
+                        if (item == null) {
+                            item = ContextUtils.getRepositoryContextItemById(contextParam.getSource());
+                            idToItemMap.put(contextParam.getSource(), item);
+                        }
                         if (item != null) {
                             contextParamType.setRepositoryContextId(item.getProperty().getId());
+                            if (item instanceof ContextItem) {
+                                ContextType repoContextType = ContextUtils.getContextTypeByName(item, contextType.getName());
+                                if (repoContextType != null) {
+                                    ContextParameterType repoContextParam = ContextUtils
+                                            .getContextParameterTypeByName(repoContextType, contextParam.getName());
+                                    if (repoContextParam != null) {
+                                        ResourceHelper.setUUid(contextParamType, ResourceHelper.getUUID(repoContextParam));
+                                    }
+                                }
+                            }
                         } else {
                             String contextId = contextParam.getSource();
                             if (!IContextParameter.BUILT_IN.equals(contextId)) {

@@ -942,9 +942,9 @@ public class ContextUtils {
             ContextParamLink paramLink, Map<Item, Map<String, String>> repositoryRenamedMap, Map<Item, Set<String>> existedParams,
             ContextItemParamMap unsameMap, ContextItemParamMap deleteParams, boolean onlySimpleShow, boolean isDefaultContext) {
         boolean builtin = true;
-        String paramId = paramLink.getId();
         String paramName = param.getName();
-        if (paramId != null && contextType != null) {// Compare use UUID
+        if (paramLink != null && paramLink.getId() != null && contextType != null) {// Compare use UUID
+            String paramId = paramLink.getId();
             ContextParameterType contextParameterType = null;
             contextParameterType = getContextParameterTypeById(contextType, paramId, contextItem instanceof ContextItem);
             if (contextParameterType != null) {
