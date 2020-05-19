@@ -2119,6 +2119,55 @@ public class SelectorTableForm extends AbstractForm {
         }
         return false;
     }
+    
+    private TableNode getTableNode(TableNode tableNode) {
+    	TableNode parent = tableNode.getParent();
+    	if(parent != null) {
+    		if(parent.getType() == TableNode.TABLE) {
+    			return parent;
+    		}else {
+    			return getTableNode(parent);
+    		}
+    	}
+    	return null;
+    }
+    
+    private boolean hasExistColumn(TableNode tableNode) {
+        if (tableNode != null && tableNode.getType() == TableNode.COLUMN_FAMILY) {
+            TableNode parent = getTableNode(tableNode);
+            if (parent != null && parent.getType() == TableNode.TABLE) {
+                for (Object obj : ConnectionHelper.getTables(getConnection())) {
+                    if (obj == null) {
+                        continue;
+                    }
+                    MetadataTable table = (MetadataTable) obj;
+                    if (table.getLabel().equalsIgnoreCase(parent.getValue())) {
+                    	if(!table.getColumns().isEmpty()) {
+                    		return true;
+                    	}
+                    }
+                }
+            }
+        }else if (tableNode != null && tableNode.getType() == TableNode.COLUMN) {
+        	TableNode parent = getTableNode(tableNode);
+        	if (parent != null && parent.getType() == TableNode.TABLE) {
+                for (Object obj : ConnectionHelper.getTables(getConnection())) {
+                    if (obj == null) {
+                        continue;
+                    }
+                    MetadataTable table = (MetadataTable) obj;
+                    if (table.getLabel().equals(parent.getValue())) {
+                    	for(MetadataColumn column : table.getColumns()) {
+                    		if(column.getLabel().equalsIgnoreCase(tableNode.getValue())) {
+                    			return true;
+                    		}
+                    	}
+                    }
+                }
+            }
+        }
+        return false;
+    }
 
     private boolean isContainModelElement(EList<ModelElement> ownedElement, String tableName) {
         if (ownedElement == null) {
@@ -2523,6 +2572,12 @@ public class SelectorTableForm extends AbstractForm {
                     if (isExistTable(node)) {
                         return true;
                     } else {
+                        return false;
+                    }
+                }else if(node.getType() == TableNode.COLUMN_FAMILY || node.getType() == TableNode.COLUMN) {
+                	if(hasExistColumn(node)) {
+                		return true;
+                	} else {
                         return false;
                     }
                 }
