@@ -1,13 +1,45 @@
 package org.talend.designer.maven.utils;
 
+import org.apache.maven.artifact.versioning.ComparableVersion;
 import org.apache.maven.model.Dependency;
 
 public class SortableDependency extends Dependency implements Comparable<SortableDependency> {
 
+    private static final long serialVersionUID = -6295226523517981508L;
+
+    /**
+     * dependencies in testcase/routines/beans no need to be assembled in final zip.
+     */
+    private boolean isAssemblyOptional;
+
     @Override
     public int compareTo(SortableDependency o) {
+        int compare = getArtifactId().compareTo(o.getArtifactId());
+        if (compare == 0) {
+            // FIXME according to Maven official Doc for dependencies:
+            // https://maven.apache.org/guides/introduction/introduction-to-dependency-mechanism.html
+            // when pom has duplicate version of dependencies, Maven should take the first one
+            // but in practice(maven 3.5.3 embedded), it always take the last one
+            // we only need job dependencies in final job zip rather than testcase's
+            // so we always put the latest job dependency at the bottom
+            // if maven fix it in future, we need to reverse the order as well.
+            if (isAssemblyOptional && !o.isAssemblyOptional) {
+                return -1;
+            }
+            if (!isAssemblyOptional && o.isAssemblyOptional) {
+                return 1;
+            }
+            return new ComparableVersion(getVersion()).compareTo(new ComparableVersion(o.getVersion()));
+        }
+        return compare;
+    }
 
-        return getArtifactId().compareTo(o.getArtifactId());
+    public boolean isAssemblyOptional() {
+        return isAssemblyOptional;
+    }
+
+    public void setAssemblyOptional(boolean isAssemblyOptional) {
+        this.isAssemblyOptional = isAssemblyOptional;
     }
 
     @Override
@@ -18,6 +50,7 @@ public class SortableDependency extends Dependency implements Comparable<Sortabl
         result = 31 * result + (getVersion() == null ? 0 : getVersion().hashCode());
         result = 31 * result + (getType() == null ? 0 : getType().hashCode());
         result = 31 * result + (getClassifier() == null ? 0 : getClassifier().hashCode());
+        result = 31 * result + (isAssemblyOptional() ? 1231 : 1237);
         return result;
     }
 
@@ -40,7 +73,8 @@ public class SortableDependency extends Dependency implements Comparable<Sortabl
                 && (getVersion() == caseobj.getVersion() || (getVersion() != null && getVersion().equals(caseobj.getVersion())))
                 && (getType() == caseobj.getType() || (getType() != null && getType().equals(caseobj.getType())))
                 && (getClassifier() == caseobj.getClassifier()
-                        || (getClassifier() != null && getClassifier().equals(caseobj.getClassifier())));
+                        || (getClassifier() != null && getClassifier().equals(caseobj.getClassifier())))
+                && (isAssemblyOptional() == caseobj.isAssemblyOptional());
     }
 
 }

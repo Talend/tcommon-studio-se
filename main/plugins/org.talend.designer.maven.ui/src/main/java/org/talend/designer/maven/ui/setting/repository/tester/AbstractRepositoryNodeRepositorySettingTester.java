@@ -33,6 +33,9 @@ public abstract class AbstractRepositoryNodeRepositorySettingTester implements I
                 if (contentType.equals(getType())) {
                     return true;
                 }
+                if (contentType.equals(ERepositoryObjectType.PROCESS_ROUTE_DESIGN)) {
+                    return true;
+                }
             }
         }
         return false;

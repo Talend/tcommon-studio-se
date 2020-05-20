@@ -32,7 +32,11 @@ public class LastGenerationInfo {
 
     private HashMap<String, Set<ModuleNeeded>> modulesNeededWithSubjobPerJob;
 
+    private HashMap<String, Set<ModuleNeeded>> highPriorityModuleNeededPerJob;
+
     private HashMap<String, Set<ModuleNeeded>> highPriorityModuleNeeded;
+
+    private HashMap<String, Set<ModuleNeeded>> testcaseModuleNeeded;
 
     private HashMap<String, Set<String>> routinesNeededWithSubjobPerJob;
 
@@ -52,7 +56,9 @@ public class LastGenerationInfo {
         modulesNeededPerJob = new HashMap<String, Set<ModuleNeeded>>();
         contextPerJob = new HashMap<String, Set<String>>();
         modulesNeededWithSubjobPerJob = new HashMap<String, Set<ModuleNeeded>>();
+        highPriorityModuleNeededPerJob = new HashMap<>();
         highPriorityModuleNeeded = new HashMap<>();
+        testcaseModuleNeeded = new HashMap<>();
         lastGeneratedjobs = new HashSet<JobInfo>();
         routinesNeededPerJob = new HashMap<String, Set<String>>();
         routinesNeededWithSubjobPerJob = new HashMap<String, Set<String>>();
@@ -235,6 +241,22 @@ public class LastGenerationInfo {
         return routinesNeededPerJob.get(key);
     }
 
+    public Set<ModuleNeeded> getHighPriorityModuleNeededPerJob(String jobId, String jobVersion) {
+        String key = getProcessKey(jobId, jobVersion);
+        if (!highPriorityModuleNeededPerJob.containsKey(key)) {
+            highPriorityModuleNeededPerJob.put(key, new LinkedHashSet<>());
+        }
+        return highPriorityModuleNeededPerJob.get(key);
+    }
+
+    public void setHighPriorityModuleNeededPerJob(String jobId, String jobVersion, Set<ModuleNeeded> moduleNeeded) {
+        String key = getProcessKey(jobId, jobVersion);
+        if (!highPriorityModuleNeededPerJob.containsKey(key)) {
+            highPriorityModuleNeededPerJob.put(key, new LinkedHashSet<>());
+        }
+        highPriorityModuleNeededPerJob.get(key).addAll(moduleNeeded);
+    }
+
     public Set<ModuleNeeded> getHighPriorityModuleNeeded(String jobId, String jobVersion) {
         String key = getProcessKey(jobId, jobVersion);
         if (!highPriorityModuleNeeded.containsKey(key)) {
@@ -251,7 +273,20 @@ public class LastGenerationInfo {
         highPriorityModuleNeeded.get(key).addAll(moduleNeeded);
     }
 
+    public Set<ModuleNeeded> getTestcaseModuleNeeded(String jobId, String jobVersion) {
+        String key = getProcessKey(jobId, jobVersion);
+        if (!testcaseModuleNeeded.containsKey(key)) {
+            testcaseModuleNeeded.put(key, new HashSet<>());
+        }
+        return testcaseModuleNeeded.get(key);
+    }
+
+    public void setTestcaseModuleNeeded(String jobId, String jobVersion, Set<ModuleNeeded> modulesNeeded) {
+        testcaseModuleNeeded.put(getProcessKey(jobId, jobVersion), new HashSet<>(modulesNeeded));
+    }
+
     public void clearHighPriorityModuleNeeded() {
+        highPriorityModuleNeededPerJob.clear();
         highPriorityModuleNeeded.clear();
     }
 
@@ -292,26 +327,19 @@ public class LastGenerationInfo {
         routinesNeededWithSubjobPerJob.put(key, new HashSet<String>(modulesNeeded));
     }
 
-    public void clearModulesNeededWithSubjobPerJob() {
-        if (!modulesNeededWithSubjobPerJob.isEmpty()) {
-            modulesNeededWithSubjobPerJob.clear();
-        }
-    }
-
-    /**
-     * Clear modules per job cache, not thread safe
-     */
-    public void clearModulesNeededPerJob() {
-        if (!modulesNeededPerJob.isEmpty()) {
-            modulesNeededPerJob.clear();
-        }
+    public void clearCaches() {
+        clearHighPriorityModuleNeeded();
+        modulesNeededPerJob.clear();
+        modulesNeededWithSubjobPerJob.clear();
+        testcaseModuleNeeded.clear();
     }
 
     public void clean() {
         modulesNeededPerJob.clear();
         routinesNeededPerJob.clear();
         modulesNeededWithSubjobPerJob.clear();
-        highPriorityModuleNeeded.clear();
+        clearHighPriorityModuleNeeded();
+        testcaseModuleNeeded.clear();
         routinesNeededWithSubjobPerJob.clear();
         contextPerJob.clear();
 

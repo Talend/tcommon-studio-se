@@ -90,7 +90,7 @@ import org.talend.commons.utils.io.FilesUtils;
 import org.talend.commons.utils.workbench.resources.ResourceUtils;
 import org.talend.core.GlobalServiceRegister;
 import org.talend.core.context.RepositoryContext;
-import org.talend.core.model.context.ContextLinkService;
+import org.talend.core.model.context.link.ContextLinkService;
 import org.talend.core.model.general.Project;
 import org.talend.core.model.general.TalendNature;
 import org.talend.core.model.metadata.MetadataManager;
@@ -1352,11 +1352,17 @@ public class LocalRepositoryFactory extends AbstractEMFRepositoryFactory impleme
 
         // Getting the folder :
         try {
-            IFolder folder = ResourceUtils.getFolder(fsProject, completePath, true);
+            IFolder folder = null;
+            try {
+                folder = ResourceUtils.getFolder(fsProject, completePath, true);
+            } catch (PersistenceException e) {
+            }
             // changed by hqzhang for TDI-20600, FolderHelper.deleteFolder will fire the DeletedFolderListener in
             // ProjectRepoAbstractContentProvider class to refresh the node, if don't delete resource first, the deleted
             // foler display in repository view
-            deleteResource(folder);
+            if (folder != null && folder.exists()) {
+                deleteResource(folder);
+            }
         }  finally {
             // even if the folder do not exist anymore, clean the list on the project
             getFolderHelper(project.getEmfProject()).deleteFolder(completePath);
@@ -1414,7 +1420,7 @@ public class LocalRepositoryFactory extends AbstractEMFRepositoryFactory impleme
                 FolderItem children = (FolderItem) children2;
                 IPath sPath = sourcePath.append(children.getProperty().getLabel());
                 if(isFolderExist(type, sPath)){
-                	moveFolder(type, sPath, targetPath.append(emfFolder.getProperty().getLabel()));
+                    moveFolder(type, sPath, targetPath.append(emfFolder.getProperty().getLabel()));
                 }
             } else {
                 moveOldContentToNewFolder(project, completeNewPath, emfFolder, newFolder, children2);
@@ -1534,7 +1540,7 @@ public class LocalRepositoryFactory extends AbstractEMFRepositoryFactory impleme
                             FolderItem children = (FolderItem) children2;
                             IPath sPath = sourcePath.append(children.getProperty().getLabel());
                             if(isFolderExist(type, sPath)){
-                            	moveFolder(type, sPath, targetPath.append(newFolder.getProperty().getLabel()));
+                                moveFolder(type, sPath, targetPath.append(newFolder.getProperty().getLabel()));
                             }
                         } else {
                             moveOldContentToNewFolder(project, completeNewPath, emfFolder, newFolder, children2);
@@ -1594,11 +1600,11 @@ public class LocalRepositoryFactory extends AbstractEMFRepositoryFactory impleme
     }
     
     private boolean isFolderExist(final ERepositoryObjectType type, final IPath sourcePath) throws PersistenceException {
-    	String completePath = new Path(ERepositoryObjectType.getFolderName(type)).append(sourcePath).toString();
-    	Project project = getRepositoryContext().getProject();
-    	IProject fsProject = ResourceUtils.getProject(project);
-    	IFolder processFolder = fsProject.getFolder(completePath);
-    	return processFolder.exists();
+        String completePath = new Path(ERepositoryObjectType.getFolderName(type)).append(sourcePath).toString();
+        Project project = getRepositoryContext().getProject();
+        IProject fsProject = ResourceUtils.getProject(project);
+        IFolder processFolder = fsProject.getFolder(completePath);
+        return processFolder.exists();
     }
 
     @Override

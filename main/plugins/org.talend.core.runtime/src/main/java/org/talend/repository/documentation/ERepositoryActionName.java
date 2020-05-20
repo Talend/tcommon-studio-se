@@ -30,6 +30,7 @@ public enum ERepositoryActionName {
 
     DELETE_TO_RECYCLE_BIN("delete to recycle bin"), //$NON-NLS-1$
     DELETE_FOREVER("delete forever"), //$NON-NLS-1$
+    AFTER_DELETE("after delete"), //$NON-NLS-1$
 
     // these actions bellow are only for jobs and joblet actually, need to review.
 

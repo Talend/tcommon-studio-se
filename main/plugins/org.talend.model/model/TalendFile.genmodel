@@ -44,6 +44,7 @@
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute TalendFile.ecore#//ContextParameterType/repositoryContextId"/>
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute TalendFile.ecore#//ContextParameterType/type"/>
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute TalendFile.ecore#//ContextParameterType/value"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute TalendFile.ecore#//ContextParameterType/internalId"/>
     </genClasses>
     <genClasses ecoreClass="TalendFile.ecore#//ContextType">
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference TalendFile.ecore#//ContextType/contextParameter"/>

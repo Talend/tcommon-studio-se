@@ -24,6 +24,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
+import org.apache.commons.collections.CollectionUtils;
+import org.apache.commons.collections.PredicateUtils;
 import org.eclipse.core.resources.IProject;
 import org.eclipse.core.runtime.IPath;
 import org.eclipse.emf.common.util.EList;
@@ -75,7 +77,9 @@ public class RecycleBinManager {
     }
 
     public List<String> getDeletedFolders(Project project) {
-        return new ArrayList<String>(project.getEmfProject().getDeletedFolders());
+        List<String> folders = new ArrayList<String>(project.getEmfProject().getDeletedFolders());
+        CollectionUtils.filter(folders, PredicateUtils.notNullPredicate());
+        return folders;
     }
 
     public void clearCache() {
@@ -230,7 +234,9 @@ public class RecycleBinManager {
         if (isSynchronizeToProject) {
             project.getDeletedFolders().clear();
             for (String deletedFolder : recycleBin.getDeletedFolders()) {
-                project.getDeletedFolders().add(deletedFolder);
+                if (deletedFolder != null) {
+                    project.getDeletedFolders().add(deletedFolder);
+                }
             }
         }
     }

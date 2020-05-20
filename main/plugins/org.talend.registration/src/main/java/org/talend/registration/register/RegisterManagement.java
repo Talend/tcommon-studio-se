@@ -252,7 +252,7 @@ public class RegisterManagement {
         String version = VersionUtils.getVersion();
 
         // UNIQUE_ID
-        String uniqueId = DefaultTokenCollector.calcUniqueId();
+        String uniqueId = DefaultTokenCollector.hashUniqueId();
 
         RegisterUserPortTypeProxy proxy = new RegisterUserPortTypeProxy();
         proxy.setEndpoint("https://www.talend.com/TalendRegisterWS/registerws.php"); //$NON-NLS-1$
@@ -464,7 +464,7 @@ public class RegisterManagement {
         URL registURL = null;
         try {
             // UNIQUE_ID
-            String uniqueId = DefaultTokenCollector.calcUniqueId();
+            String uniqueId = DefaultTokenCollector.hashUniqueId();
             uniqueId = uniqueId.replace("#", "%23");
             uniqueId = uniqueId.replace("$", "%24");
             uniqueId = uniqueId.replace("%", "%25");

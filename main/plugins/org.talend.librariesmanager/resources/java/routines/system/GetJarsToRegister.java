@@ -14,7 +14,6 @@ package routines.system;
 
 import java.io.IOException;
 import java.io.ObjectInputStream;
-import java.util.HashMap;
 import java.util.List;
 
 import org.dom4j.Element;
@@ -110,26 +109,31 @@ public class GetJarsToRegister {
     private String addLibsPath(String line, java.util.Map<String, String> crcMap) {
         for (java.util.Map.Entry<String, String> entry : crcMap.entrySet()) {
             line = adaptLibPaths(line, entry);
+            if (new java.io.File(line).exists()) {
+                break;
+            }
         }
         return line;
     }
 
     private String adaptLibPaths(String line, java.util.Map.Entry<String, String> entry) {
+        line = line.replace("\\", "/");
         String jarName = entry.getValue();
         String crc = entry.getKey();
         String libStringFinder = "../lib/" + jarName;
         String libStringFinder2 = "./" + jarName; // for the job jar itself.
+        String replacement = "../../../cache/lib/" + crc + "/" + jarName;
 
         if (line.contains(libStringFinder)) {
-            line = line.replace(libStringFinder, "../../../cache/lib/" + crc + "/" + jarName);
+            line = line.replace(libStringFinder, replacement);
         } else if (line.toLowerCase().contains(libStringFinder2)) {
-            line = line.toLowerCase().replace(libStringFinder2, "../../../cache/lib/" + crc + "/" + jarName);
+            line = line.toLowerCase().replace(libStringFinder2, replacement);
         } else if (line.toLowerCase().equals(jarName)) {
-            line = "../../../cache/lib/" + crc + "/" + jarName;
+            line = replacement;
         } else if (line.contains(":$ROOT_PATH/" + jarName + ":")) {
-            line = line.replace(":$ROOT_PATH/" + jarName + ":", ":$ROOT_PATH/../../../cache/lib/" + crc + "/" + jarName + ":");
+            line = line.replace(":$ROOT_PATH/" + jarName + ":", ":$ROOT_PATH/" + replacement + ":");
         } else if (line.contains(";" + jarName + ";")) {
-            line = line.replace(";" + jarName + ";", ";../../../cache/lib/" + crc + "/" + jarName + ";");
+            line = line.replace(";" + jarName + ";", ";" + replacement + ";");
         }
         return line;
     }
