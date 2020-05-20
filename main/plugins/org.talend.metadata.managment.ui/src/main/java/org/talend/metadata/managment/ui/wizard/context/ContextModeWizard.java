@@ -203,7 +203,7 @@ public class ContextModeWizard extends CheckLastVersionRepositoryWizard implemen
                 this.originalPurpose = contextItem.getProperty().getPurpose();
                 this.originalStatus = contextItem.getProperty().getStatusCode();
                 contextProperty = contextItem.getProperty();
-                contextManager = new JobContextManager(contextItem.getContext(), contextItem.getDefaultContext());
+                contextManager = new JobContextManager(contextItem, contextItem.getDefaultContext());
             }
         }
         initLockStrategy();

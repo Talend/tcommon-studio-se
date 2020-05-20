@@ -97,6 +97,7 @@ public class JobContextManager implements IContextManager {
 
     private Map<ContextItem, List<IContext>> renameContextGroupMap = new HashMap<ContextItem, List<IContext>>();
 
+    private String contextRepoId = null;
     public Map<ContextItem, List<IContext>> getAddContextGroupMap() {
         return this.addContextGroupMap;
     }
@@ -127,6 +128,13 @@ public class JobContextManager implements IContextManager {
 
     public JobContextManager(EList contextTypeList, String defaultContextName) {
         loadFromEmf(contextTypeList, defaultContextName);
+    }
+
+    public JobContextManager(ContextItem contextItem, String defaultContextName) {
+        if (contextItem != null && contextItem.getProperty() != null) {
+            contextRepoId = contextItem.getProperty().getId();
+        }
+        loadFromEmf(contextItem.getContext(), defaultContextName);
     }
 
     @Override
@@ -338,8 +346,12 @@ public class JobContextManager implements IContextManager {
 
                 contextParam.setPromptNeeded(contextParamType.isPromptNeeded());
                 contextParam.setComment(contextParamType.getComment());
-
-                String repositoryContextId = contextParamType.getRepositoryContextId();
+                String repositoryContextId = null;
+                if (contextRepoId != null) {
+                    repositoryContextId = contextRepoId;
+                } else {
+                    repositoryContextId = contextParamType.getRepositoryContextId();
+                }
                 String source = IContextParameter.BUILT_IN;
                 if (repositoryContextId != null && !"".equals(repositoryContextId)) { //$NON-NLS-1$
                     Item item = ContextUtils.getContextItemById(contextItemList, repositoryContextId);
