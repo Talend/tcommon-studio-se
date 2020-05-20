@@ -142,7 +142,7 @@ public class ContextLinkService {
         ItemContextLink itemContextLink = new ItemContextLink();
         itemContextLink.setItemId(itemId);
         Map<String, Item> tempCache = new HashMap<String, Item>();
-        if (contextTypeList != null) {
+        if (contextTypeList != null && contextTypeList.size() > 0) {
             ItemContextLink backupContextLink = this.loadContextLinkFromJson(item);
             for (Object object : contextTypeList) {
                 if (object instanceof ContextType) {
