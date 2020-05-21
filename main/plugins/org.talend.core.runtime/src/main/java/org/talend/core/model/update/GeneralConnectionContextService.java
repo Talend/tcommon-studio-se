@@ -377,7 +377,7 @@ public class GeneralConnectionContextService extends AbstractRepositoryContextUp
     }
 
     @Override
-    public boolean isAccept(Connection connection) {
+    public boolean accept(Connection connection) {
         if (connection instanceof DatabaseConnection || connection instanceof FileExcelConnection
                 || connection instanceof DelimitedFileConnection || connection instanceof RegexpFileConnection
                 || connection instanceof LdifFileConnection || connection instanceof PositionalFileConnection

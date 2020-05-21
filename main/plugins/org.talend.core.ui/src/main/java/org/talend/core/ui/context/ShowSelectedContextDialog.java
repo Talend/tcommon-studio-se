@@ -48,7 +48,7 @@ public class ShowSelectedContextDialog extends Dialog {
         // setDefaultImage(ImageProvider.getImage(ECoreImage.CONTEXT_ICON));
         setShellStyle(getShellStyle() | SWT.RESIZE);
         this.contextItem = contextItem;
-        this.contextManager = new JobContextManager(contextItem, contextItem.getDefaultContext());
+        this.contextManager = new JobContextManager(contextItem.getContext(), contextItem.getDefaultContext());
     }
 
     @Override

@@ -43,7 +43,7 @@ public class AutoConversionProposalProvider implements IContentProposalProvider 
         List<IContextParameter> ctxParams = new ArrayList<>();
         if (allContextItem != null) {
             for (ContextItem item : allContextItem) {
-                List<IContextParameter> tmpParams = new JobContextManager(item, item.getDefaultContext())
+                List<IContextParameter> tmpParams = new JobContextManager(item.getContext(), item.getDefaultContext())
                         .getDefaultContext().getContextParameterList();
                 ctxParams.addAll(tmpParams);
             }
