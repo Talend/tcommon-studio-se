@@ -191,7 +191,7 @@ public class ApplicationWorkbenchWindowAdvisor extends WorkbenchWindowAdvisor {
         	IInstalledPatchService pachService = (IInstalledPatchService) GlobalServiceRegister
                     .getDefault().getService(IInstalledPatchService.class);
             if (pachService != null) {
-                String patchVersion = pachService.getLatestInstalledVersion();
+                String patchVersion = pachService.getLatestInstalledVersion(true);
                 if(patchVersion != null) {
                 	buildIdField = " (" + patchVersion + ")"; //$NON-NLS-1$ //$NON-NLS-2$;
                 }

@@ -20,6 +20,6 @@ import org.talend.core.IService;
  */
 public interface IInstalledPatchService extends IService {
 
-	public String getLatestInstalledVersion();
+	public String getLatestInstalledVersion(boolean isBar);
 
 }
