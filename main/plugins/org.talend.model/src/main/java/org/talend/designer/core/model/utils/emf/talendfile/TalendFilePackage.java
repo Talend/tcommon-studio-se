@@ -415,13 +415,22 @@ public interface TalendFilePackage extends EPackage {
     int CONTEXT_PARAMETER_TYPE__VALUE = 6;
 
     /**
+     * The feature id for the '<em><b>Internal Id</b></em>' attribute.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     * @ordered
+     */
+    int CONTEXT_PARAMETER_TYPE__INTERNAL_ID = 7;
+
+    /**
      * The number of structural features of the '<em>Context Parameter Type</em>' class.
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
      * @generated
      * @ordered
      */
-    int CONTEXT_PARAMETER_TYPE_FEATURE_COUNT = 7;
+    int CONTEXT_PARAMETER_TYPE_FEATURE_COUNT = 8;
 
     /**
      * The meta object id for the '{@link org.talend.designer.core.model.utils.emf.talendfile.impl.ContextTypeImpl <em>Context Type</em>}' class.
@@ -2178,6 +2187,17 @@ public interface TalendFilePackage extends EPackage {
     EAttribute getContextParameterType_Value();
 
     /**
+     * Returns the meta object for the attribute '{@link org.talend.designer.core.model.utils.emf.talendfile.ContextParameterType#getInternalId <em>Internal Id</em>}'.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @return the meta object for the attribute '<em>Internal Id</em>'.
+     * @see org.talend.designer.core.model.utils.emf.talendfile.ContextParameterType#getInternalId()
+     * @see #getContextParameterType()
+     * @generated
+     */
+    EAttribute getContextParameterType_InternalId();
+
+    /**
      * Returns the meta object for class '{@link org.talend.designer.core.model.utils.emf.talendfile.ContextType <em>Context Type</em>}'.
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
@@ -3474,6 +3494,7 @@ public interface TalendFilePackage extends EPackage {
      * @see java.util.Map.Entry
      * @model keyDataType="org.eclipse.emf.ecore.EString"
      *        valueDataType="org.eclipse.emf.ecore.xml.type.Base64Binary"
+     *        annotation="MapEntry"
      * @generated
      */
     EClass getScreenshotsMap();
@@ -3508,6 +3529,7 @@ public interface TalendFilePackage extends EPackage {
      * @see java.util.Map.Entry
      * @model keyDataType="org.eclipse.emf.ecore.EString"
      *        valueDataType="org.eclipse.emf.ecore.EString"
+     *        annotation="MapEntry"
      * @generated
      */
     EClass getAdditionalFieldMap();
@@ -3857,6 +3879,14 @@ public interface TalendFilePackage extends EPackage {
          * @generated
          */
         EAttribute CONTEXT_PARAMETER_TYPE__VALUE = eINSTANCE.getContextParameterType_Value();
+
+        /**
+         * The meta object literal for the '<em><b>Internal Id</b></em>' attribute feature.
+         * <!-- begin-user-doc -->
+         * <!-- end-user-doc -->
+         * @generated
+         */
+        EAttribute CONTEXT_PARAMETER_TYPE__INTERNAL_ID = eINSTANCE.getContextParameterType_InternalId();
 
         /**
          * The meta object literal for the '{@link org.talend.designer.core.model.utils.emf.talendfile.impl.ContextTypeImpl <em>Context Type</em>}' class.

@@ -222,7 +222,7 @@ public class TalendFilePackageImpl extends EPackageImpl implements TalendFilePac
 
     /**
      * Creates, registers, and initializes the <b>Package</b> for this model, and for any others upon which it depends.
-     * 
+     *
      * <p>This method is used to initialize {@link TalendFilePackage#eINSTANCE} when that field is accessed.
      * Clients should not invoke it directly. Instead, they should simply access that field to obtain the package.
      * <!-- begin-user-doc
@@ -236,7 +236,8 @@ public class TalendFilePackageImpl extends EPackageImpl implements TalendFilePac
         if (isInited) return (TalendFilePackage)EPackage.Registry.INSTANCE.getEPackage(TalendFilePackage.eNS_URI);
 
         // Obtain or create and register package
-        TalendFilePackageImpl theTalendFilePackage = (TalendFilePackageImpl)(EPackage.Registry.INSTANCE.get(eNS_URI) instanceof TalendFilePackageImpl ? EPackage.Registry.INSTANCE.get(eNS_URI) : new TalendFilePackageImpl());
+        Object registeredTalendFilePackage = EPackage.Registry.INSTANCE.get(eNS_URI);
+        TalendFilePackageImpl theTalendFilePackage = registeredTalendFilePackage instanceof TalendFilePackageImpl ? (TalendFilePackageImpl)registeredTalendFilePackage : new TalendFilePackageImpl();
 
         isInited = true;
 
@@ -252,7 +253,6 @@ public class TalendFilePackageImpl extends EPackageImpl implements TalendFilePac
         // Mark meta-data to indicate it can't be changed
         theTalendFilePackage.freeze();
 
-  
         // Update the registry and return the package
         EPackage.Registry.INSTANCE.put(TalendFilePackage.eNS_URI, theTalendFilePackage);
         return theTalendFilePackage;
@@ -557,6 +557,15 @@ public class TalendFilePackageImpl extends EPackageImpl implements TalendFilePac
      */
     public EAttribute getContextParameterType_Value() {
         return (EAttribute)contextParameterTypeEClass.getEStructuralFeatures().get(6);
+    }
+
+    /**
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     */
+    public EAttribute getContextParameterType_InternalId() {
+        return (EAttribute)contextParameterTypeEClass.getEStructuralFeatures().get(7);
     }
 
     /**
@@ -1640,6 +1649,7 @@ public class TalendFilePackageImpl extends EPackageImpl implements TalendFilePac
         createEAttribute(contextParameterTypeEClass, CONTEXT_PARAMETER_TYPE__REPOSITORY_CONTEXT_ID);
         createEAttribute(contextParameterTypeEClass, CONTEXT_PARAMETER_TYPE__TYPE);
         createEAttribute(contextParameterTypeEClass, CONTEXT_PARAMETER_TYPE__VALUE);
+        createEAttribute(contextParameterTypeEClass, CONTEXT_PARAMETER_TYPE__INTERNAL_ID);
 
         contextTypeEClass = createEClass(CONTEXT_TYPE);
         createEReference(contextTypeEClass, CONTEXT_TYPE__CONTEXT_PARAMETER);
@@ -1855,6 +1865,7 @@ public class TalendFilePackageImpl extends EPackageImpl implements TalendFilePac
         initEAttribute(getContextParameterType_RepositoryContextId(), theXMLTypePackage.getString(), "repositoryContextId", null, 0, 1, ContextParameterType.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
         initEAttribute(getContextParameterType_Type(), theXMLTypePackage.getString(), "type", null, 0, 1, ContextParameterType.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
         initEAttribute(getContextParameterType_Value(), theXMLTypePackage.getString(), "value", null, 0, 1, ContextParameterType.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+        initEAttribute(getContextParameterType_InternalId(), theXMLTypePackage.getString(), "internalId", null, 0, 1, ContextParameterType.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
         initEClass(contextTypeEClass, ContextType.class, "ContextType", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
         initEReference(getContextType_ContextParameter(), this.getContextParameterType(), null, "contextParameter", null, 0, -1, ContextType.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
@@ -2022,1046 +2033,1054 @@ public class TalendFilePackageImpl extends EPackageImpl implements TalendFilePac
      * @generated
      */
     protected void createExtendedMetaDataAnnotations() {
-        String source = "http:///org/eclipse/emf/ecore/util/ExtendedMetaData";	
+        String source = "http:///org/eclipse/emf/ecore/util/ExtendedMetaData";
         addAnnotation
-          (this, 
-           source, 
+          (this,
+           source,
            new String[] {
-             "qualified", "false"
-           });	
+               "qualified", "false"
+           });
         addAnnotation
-          (columnTypeEClass, 
-           source, 
+          (columnTypeEClass,
+           source,
            new String[] {
-             "name", "Column_._type",
-             "kind", "elementOnly"
-           });	
+               "name", "Column_._type",
+               "kind", "elementOnly"
+           });
         addAnnotation
-          (getColumnType_Comment(), 
-           source, 
+          (getColumnType_Comment(),
+           source,
            new String[] {
-             "kind", "element",
-             "name", "Comment",
-             "namespace", "##targetNamespace"
-           });	
+               "kind", "element",
+               "name", "Comment",
+               "namespace", "##targetNamespace"
+           });
         addAnnotation
-          (getColumnType_DefaultValue(), 
-           source, 
+          (getColumnType_DefaultValue(),
+           source,
            new String[] {
-             "kind", "attribute",
-             "name", "defaultValue",
-             "namespace", "##targetNamespace"
-           });	
+               "kind", "attribute",
+               "name", "defaultValue",
+               "namespace", "##targetNamespace"
+           });
         addAnnotation
-          (getColumnType_Key(), 
-           source, 
+          (getColumnType_Key(),
+           source,
            new String[] {
-             "kind", "attribute",
-             "name", "key",
-             "namespace", "##targetNamespace"
-           });	
+               "kind", "attribute",
+               "name", "key",
+               "namespace", "##targetNamespace"
+           });
         addAnnotation
-          (getColumnType_Length(), 
-           source, 
+          (getColumnType_Length(),
+           source,
            new String[] {
-             "kind", "attribute",
-             "name", "length",
-             "namespace", "##targetNamespace"
-           });	
+               "kind", "attribute",
+               "name", "length",
+               "namespace", "##targetNamespace"
+           });
         addAnnotation
-          (getColumnType_Name(), 
-           source, 
+          (getColumnType_Name(),
+           source,
            new String[] {
-             "kind", "attribute",
-             "name", "name",
-             "namespace", "##targetNamespace"
-           });	
+               "kind", "attribute",
+               "name", "name",
+               "namespace", "##targetNamespace"
+           });
         addAnnotation
-          (getColumnType_Nullable(), 
-           source, 
+          (getColumnType_Nullable(),
+           source,
            new String[] {
-             "kind", "attribute",
-             "name", "nullable",
-             "namespace", "##targetNamespace"
-           });	
+               "kind", "attribute",
+               "name", "nullable",
+               "namespace", "##targetNamespace"
+           });
         addAnnotation
-          (getColumnType_OriginalDbColumnName(), 
-           source, 
+          (getColumnType_OriginalDbColumnName(),
+           source,
            new String[] {
-             "kind", "attribute",
-             "name", "originalDbColumnName",
-             "namespace", "##targetNamespace"
-           });	
+               "kind", "attribute",
+               "name", "originalDbColumnName",
+               "namespace", "##targetNamespace"
+           });
         addAnnotation
-          (getColumnType_Pattern(), 
-           source, 
+          (getColumnType_Pattern(),
+           source,
            new String[] {
-             "kind", "attribute",
-             "name", "pattern",
-             "namespace", "##targetNamespace"
-           });	
+               "kind", "attribute",
+               "name", "pattern",
+               "namespace", "##targetNamespace"
+           });
         addAnnotation
-          (getColumnType_Precision(), 
-           source, 
+          (getColumnType_Precision(),
+           source,
            new String[] {
-             "kind", "attribute",
-             "name", "precision",
-             "namespace", "##targetNamespace"
-           });	
+               "kind", "attribute",
+               "name", "precision",
+               "namespace", "##targetNamespace"
+           });
         addAnnotation
-          (getColumnType_SourceType(), 
-           source, 
+          (getColumnType_SourceType(),
+           source,
            new String[] {
-             "kind", "attribute",
-             "name", "sourceType",
-             "namespace", "##targetNamespace"
-           });	
+               "kind", "attribute",
+               "name", "sourceType",
+               "namespace", "##targetNamespace"
+           });
         addAnnotation
-          (getColumnType_Type(), 
-           source, 
+          (getColumnType_Type(),
+           source,
            new String[] {
-             "kind", "attribute",
-             "name", "type",
-             "namespace", "##targetNamespace"
-           });	
+               "kind", "attribute",
+               "name", "type",
+               "namespace", "##targetNamespace"
+           });
         addAnnotation
-          (getColumnType_RelatedEntity(), 
-           source, 
-           new String[] {
-             "kind", "attribute",
-             "name", "relatedEntity",
-             "namespace", "##targetNamespace"
-           });	
+          (getColumnType_RelatedEntity(),
+           source,
+           new String[] {
+               "kind", "attribute",
+               "name", "relatedEntity",
+               "namespace", "##targetNamespace"
+           });
         addAnnotation
-          (getColumnType_RelationshipType(), 
-           source, 
-           new String[] {
-             "kind", "attribute",
-             "name", "relationshipType",
-             "namespace", "##targetNamespace"
-           });	
+          (getColumnType_RelationshipType(),
+           source,
+           new String[] {
+               "kind", "attribute",
+               "name", "relationshipType",
+               "namespace", "##targetNamespace"
+           });
         addAnnotation
-          (connectionTypeEClass, 
-           source, 
+          (connectionTypeEClass,
+           source,
            new String[] {
-             "name", "Connection_._type",
-             "kind", "elementOnly"
-           });	
+               "name", "Connection_._type",
+               "kind", "elementOnly"
+           });
         addAnnotation
-          (getConnectionType_ElementParameter(), 
-           source, 
+          (getConnectionType_ElementParameter(),
+           source,
            new String[] {
-             "kind", "element",
-             "name", "ElementParameter",
-             "namespace", "##targetNamespace"
-           });	
+               "kind", "element",
+               "name", "ElementParameter",
+               "namespace", "##targetNamespace"
+           });
         addAnnotation
-          (getConnectionType_ConnectorName(), 
-           source, 
+          (getConnectionType_ConnectorName(),
+           source,
            new String[] {
-             "kind", "attribute",
-             "name", "connectorName",
-             "namespace", "##targetNamespace"
-           });	
+               "kind", "attribute",
+               "name", "connectorName",
+               "namespace", "##targetNamespace"
+           });
         addAnnotation
-          (getConnectionType_Label(), 
-           source, 
+          (getConnectionType_Label(),
+           source,
            new String[] {
-             "kind", "attribute",
-             "name", "label",
-             "namespace", "##targetNamespace"
-           });	
+               "kind", "attribute",
+               "name", "label",
+               "namespace", "##targetNamespace"
+           });
         addAnnotation
-          (getConnectionType_LineStyle(), 
-           source, 
+          (getConnectionType_LineStyle(),
+           source,
            new String[] {
-             "kind", "attribute",
-             "name", "lineStyle",
-             "namespace", "##targetNamespace"
-           });	
+               "kind", "attribute",
+               "name", "lineStyle",
+               "namespace", "##targetNamespace"
+           });
         addAnnotation
-          (getConnectionType_MergeOrder(), 
-           source, 
+          (getConnectionType_MergeOrder(),
+           source,
            new String[] {
-             "kind", "attribute",
-             "name", "mergeOrder",
-             "namespace", "##targetNamespace"
-           });	
+               "kind", "attribute",
+               "name", "mergeOrder",
+               "namespace", "##targetNamespace"
+           });
         addAnnotation
-          (getConnectionType_Metaname(), 
-           source, 
+          (getConnectionType_Metaname(),
+           source,
            new String[] {
-             "kind", "attribute",
-             "name", "metaname",
-             "namespace", "##targetNamespace"
-           });	
+               "kind", "attribute",
+               "name", "metaname",
+               "namespace", "##targetNamespace"
+           });
         addAnnotation
-          (getConnectionType_OffsetLabelX(), 
-           source, 
+          (getConnectionType_OffsetLabelX(),
+           source,
            new String[] {
-             "kind", "attribute",
-             "name", "offsetLabelX",
-             "namespace", "##targetNamespace"
-           });	
+               "kind", "attribute",
+               "name", "offsetLabelX",
+               "namespace", "##targetNamespace"
+           });
         addAnnotation
-          (getConnectionType_OffsetLabelY(), 
-           source, 
+          (getConnectionType_OffsetLabelY(),
+           source,
            new String[] {
-             "kind", "attribute",
-             "name", "offsetLabelY",
-             "namespace", "##targetNamespace"
-           });	
+               "kind", "attribute",
+               "name", "offsetLabelY",
+               "namespace", "##targetNamespace"
+           });
         addAnnotation
-          (getConnectionType_OutputId(), 
-           source, 
+          (getConnectionType_OutputId(),
+           source,
            new String[] {
-             "kind", "attribute",
-             "name", "outputId",
-             "namespace", "##targetNamespace"
-           });	
+               "kind", "attribute",
+               "name", "outputId",
+               "namespace", "##targetNamespace"
+           });
         addAnnotation
-          (getConnectionType_Source(), 
-           source, 
+          (getConnectionType_Source(),
+           source,
            new String[] {
-             "kind", "attribute",
-             "name", "source",
-             "namespace", "##targetNamespace"
-           });	
+               "kind", "attribute",
+               "name", "source",
+               "namespace", "##targetNamespace"
+           });
         addAnnotation
-          (getConnectionType_Target(), 
-           source, 
+          (getConnectionType_Target(),
+           source,
            new String[] {
-             "kind", "attribute",
-             "name", "target",
-             "namespace", "##targetNamespace"
-           });	
+               "kind", "attribute",
+               "name", "target",
+               "namespace", "##targetNamespace"
+           });
         addAnnotation
-          (contextParameterTypeEClass, 
-           source, 
+          (contextParameterTypeEClass,
+           source,
            new String[] {
-             "name", "ContextParameter_._type",
-             "kind", "empty"
-           });	
+               "name", "ContextParameter_._type",
+               "kind", "empty"
+           });
         addAnnotation
-          (getContextParameterType_Comment(), 
-           source, 
+          (getContextParameterType_Comment(),
+           source,
            new String[] {
-             "kind", "attribute",
-             "name", "comment",
-             "namespace", "##targetNamespace"
-           });	
+               "kind", "attribute",
+               "name", "comment",
+               "namespace", "##targetNamespace"
+           });
         addAnnotation
-          (getContextParameterType_Name(), 
-           source, 
+          (getContextParameterType_Name(),
+           source,
            new String[] {
-             "kind", "attribute",
-             "name", "name",
-             "namespace", "##targetNamespace"
-           });	
+               "kind", "attribute",
+               "name", "name",
+               "namespace", "##targetNamespace"
+           });
         addAnnotation
-          (getContextParameterType_Prompt(), 
-           source, 
+          (getContextParameterType_Prompt(),
+           source,
            new String[] {
-             "kind", "attribute",
-             "name", "prompt",
-             "namespace", "##targetNamespace"
-           });	
+               "kind", "attribute",
+               "name", "prompt",
+               "namespace", "##targetNamespace"
+           });
         addAnnotation
-          (getContextParameterType_PromptNeeded(), 
-           source, 
+          (getContextParameterType_PromptNeeded(),
+           source,
            new String[] {
-             "kind", "attribute",
-             "name", "promptNeeded",
-             "namespace", "##targetNamespace"
-           });	
+               "kind", "attribute",
+               "name", "promptNeeded",
+               "namespace", "##targetNamespace"
+           });
         addAnnotation
-          (getContextParameterType_RepositoryContextId(), 
-           source, 
+          (getContextParameterType_RepositoryContextId(),
+           source,
            new String[] {
-             "kind", "attribute",
-             "name", "repositoryContextId",
-             "namespace", "##targetNamespace"
-           });	
+               "kind", "attribute",
+               "name", "repositoryContextId",
+               "namespace", "##targetNamespace"
+           });
         addAnnotation
-          (getContextParameterType_Type(), 
-           source, 
+          (getContextParameterType_Type(),
+           source,
            new String[] {
-             "kind", "attribute",
-             "name", "type",
-             "namespace", "##targetNamespace"
-           });	
+               "kind", "attribute",
+               "name", "type",
+               "namespace", "##targetNamespace"
+           });
         addAnnotation
-          (getContextParameterType_Value(), 
-           source, 
+          (getContextParameterType_Value(),
+           source,
            new String[] {
-             "kind", "attribute",
-             "name", "value",
-             "namespace", "##targetNamespace"
-           });	
+               "kind", "attribute",
+               "name", "value",
+               "namespace", "##targetNamespace"
+           });
         addAnnotation
-          (contextTypeEClass, 
-           source, 
+          (getContextParameterType_InternalId(),
+           source,
            new String[] {
-             "name", "Context_._type",
-             "kind", "elementOnly"
-           });	
+               "kind", "attribute",
+               "name", "inernalId",
+               "namespace", "##targetNamespace"
+           });
         addAnnotation
-          (getContextType_ContextParameter(), 
-           source, 
+          (contextTypeEClass,
+           source,
            new String[] {
-             "kind", "element",
-             "name", "ContextParameter",
-             "namespace", "##targetNamespace"
-           });	
+               "name", "Context_._type",
+               "kind", "elementOnly"
+           });
         addAnnotation
-          (getContextType_ConfirmationNeeded(), 
-           source, 
+          (getContextType_ContextParameter(),
+           source,
            new String[] {
-             "kind", "attribute",
-             "name", "confirmationNeeded",
-             "namespace", "##targetNamespace"
-           });	
+               "kind", "element",
+               "name", "ContextParameter",
+               "namespace", "##targetNamespace"
+           });
         addAnnotation
-          (getContextType_Name(), 
-           source, 
+          (getContextType_ConfirmationNeeded(),
+           source,
            new String[] {
-             "kind", "attribute",
-             "name", "name",
-             "namespace", "##targetNamespace"
-           });	
+               "kind", "attribute",
+               "name", "confirmationNeeded",
+               "namespace", "##targetNamespace"
+           });
         addAnnotation
-          (documentRootEClass, 
-           source, 
+          (getContextType_Name(),
+           source,
            new String[] {
-             "name", "",
-             "kind", "mixed"
-           });	
+               "kind", "attribute",
+               "name", "name",
+               "namespace", "##targetNamespace"
+           });
         addAnnotation
-          (getDocumentRoot_Mixed(), 
-           source, 
+          (documentRootEClass,
+           source,
            new String[] {
-             "kind", "elementWildcard",
-             "name", ":mixed"
-           });	
+               "name", "",
+               "kind", "mixed"
+           });
         addAnnotation
-          (getDocumentRoot_XMLNSPrefixMap(), 
-           source, 
+          (getDocumentRoot_Mixed(),
+           source,
            new String[] {
-             "kind", "attribute",
-             "name", "xmlns:prefix"
-           });	
+               "kind", "elementWildcard",
+               "name", ":mixed"
+           });
         addAnnotation
-          (getDocumentRoot_XSISchemaLocation(), 
-           source, 
+          (getDocumentRoot_XMLNSPrefixMap(),
+           source,
            new String[] {
-             "kind", "attribute",
-             "name", "xsi:schemaLocation"
-           });	
+               "kind", "attribute",
+               "name", "xmlns:prefix"
+           });
         addAnnotation
-          (getDocumentRoot_Connection(), 
-           source, 
+          (getDocumentRoot_XSISchemaLocation(),
+           source,
            new String[] {
-             "kind", "element",
-             "name", "Connection",
-             "namespace", "##targetNamespace"
-           });	
+               "kind", "attribute",
+               "name", "xsi:schemaLocation"
+           });
         addAnnotation
-          (getDocumentRoot_Context(), 
-           source, 
+          (getDocumentRoot_Connection(),
+           source,
            new String[] {
-             "kind", "element",
-             "name", "Context",
-             "namespace", "##targetNamespace"
-           });	
+               "kind", "element",
+               "name", "Connection",
+               "namespace", "##targetNamespace"
+           });
         addAnnotation
-          (getDocumentRoot_ElementParameter(), 
-           source, 
+          (getDocumentRoot_Context(),
+           source,
            new String[] {
-             "kind", "element",
-             "name", "ElementParameter",
-             "namespace", "##targetNamespace"
-           });	
+               "kind", "element",
+               "name", "Context",
+               "namespace", "##targetNamespace"
+           });
         addAnnotation
-          (getDocumentRoot_Node(), 
-           source, 
+          (getDocumentRoot_ElementParameter(),
+           source,
            new String[] {
-             "kind", "element",
-             "name", "Node",
-             "namespace", "##targetNamespace"
-           });	
+               "kind", "element",
+               "name", "ElementParameter",
+               "namespace", "##targetNamespace"
+           });
         addAnnotation
-          (getDocumentRoot_Note(), 
-           source, 
+          (getDocumentRoot_Node(),
+           source,
            new String[] {
-             "kind", "element",
-             "name", "Note",
-             "namespace", "##targetNamespace"
-           });	
+               "kind", "element",
+               "name", "Node",
+               "namespace", "##targetNamespace"
+           });
         addAnnotation
-          (getDocumentRoot_Parameters(), 
-           source, 
+          (getDocumentRoot_Note(),
+           source,
            new String[] {
-             "kind", "element",
-             "name", "Parameters",
-             "namespace", "##targetNamespace"
-           });	
+               "kind", "element",
+               "name", "Note",
+               "namespace", "##targetNamespace"
+           });
         addAnnotation
-          (getDocumentRoot_Process(), 
-           source, 
+          (getDocumentRoot_Parameters(),
+           source,
            new String[] {
-             "kind", "element",
-             "name", "Process",
-             "namespace", "##targetNamespace"
-           });	
+               "kind", "element",
+               "name", "Parameters",
+               "namespace", "##targetNamespace"
+           });
         addAnnotation
-          (getDocumentRoot_Required(), 
-           source, 
+          (getDocumentRoot_Process(),
+           source,
            new String[] {
-             "kind", "element",
-             "name", "Required",
-             "namespace", "##targetNamespace"
-           });	
+               "kind", "element",
+               "name", "Process",
+               "namespace", "##targetNamespace"
+           });
         addAnnotation
-          (getDocumentRoot_Subjob(), 
-           source, 
+          (getDocumentRoot_Required(),
+           source,
            new String[] {
-             "kind", "element",
-             "name", "Subjob",
-             "namespace", "##targetNamespace"
-           });	
+               "kind", "element",
+               "name", "Required",
+               "namespace", "##targetNamespace"
+           });
         addAnnotation
-          (elementParameterTypeEClass, 
-           source, 
+          (getDocumentRoot_Subjob(),
+           source,
            new String[] {
-             "name", "ElementParameter_._type",
-             "kind", "elementOnly"
-           });	
+               "kind", "element",
+               "name", "Subjob",
+               "namespace", "##targetNamespace"
+           });
         addAnnotation
-          (getElementParameterType_ElementValue(), 
-           source, 
+          (elementParameterTypeEClass,
+           source,
            new String[] {
-             "kind", "element",
-             "name", "ElementValue",
-             "namespace", "##targetNamespace"
-           });	
+               "name", "ElementParameter_._type",
+               "kind", "elementOnly"
+           });
         addAnnotation
-          (getElementParameterType_Field(), 
-           source, 
+          (getElementParameterType_ElementValue(),
+           source,
            new String[] {
-             "kind", "attribute",
-             "name", "field",
-             "namespace", "##targetNamespace"
-           });	
+               "kind", "element",
+               "name", "ElementValue",
+               "namespace", "##targetNamespace"
+           });
         addAnnotation
-          (getElementParameterType_Name(), 
-           source, 
+          (getElementParameterType_Field(),
+           source,
            new String[] {
-             "kind", "attribute",
-             "name", "name",
-             "namespace", "##targetNamespace"
-           });	
+               "kind", "attribute",
+               "name", "field",
+               "namespace", "##targetNamespace"
+           });
         addAnnotation
-          (getElementParameterType_Value(), 
-           source, 
+          (getElementParameterType_Name(),
+           source,
            new String[] {
-             "kind", "attribute",
-             "name", "value",
-             "namespace", "##targetNamespace"
-           });	
+               "kind", "attribute",
+               "name", "name",
+               "namespace", "##targetNamespace"
+           });
         addAnnotation
-          (getElementParameterType_ContextMode(), 
-           source, 
+          (getElementParameterType_Value(),
+           source,
            new String[] {
-             "kind", "attribute",
-             "name", "contextMode",
-             "namespace", "##targetNamespace"
-           });	
+               "kind", "attribute",
+               "name", "value",
+               "namespace", "##targetNamespace"
+           });
         addAnnotation
-          (elementValueTypeEClass, 
-           source, 
+          (getElementParameterType_ContextMode(),
+           source,
            new String[] {
-             "name", "ElementValue_._type",
-             "kind", "empty"
-           });	
+               "kind", "attribute",
+               "name", "contextMode",
+               "namespace", "##targetNamespace"
+           });
         addAnnotation
-          (getElementValueType_ElementRef(), 
-           source, 
+          (elementValueTypeEClass,
+           source,
            new String[] {
-             "kind", "attribute",
-             "name", "elementRef",
-             "namespace", "##targetNamespace"
-           });	
+               "name", "ElementValue_._type",
+               "kind", "empty"
+           });
         addAnnotation
-          (getElementValueType_Value(), 
-           source, 
+          (getElementValueType_ElementRef(),
+           source,
            new String[] {
-             "kind", "attribute",
-             "name", "value",
-             "namespace", "##targetNamespace"
-           });	
+               "kind", "attribute",
+               "name", "elementRef",
+               "namespace", "##targetNamespace"
+           });
         addAnnotation
-          (jobTypeEClass, 
-           source, 
+          (getElementValueType_Value(),
+           source,
            new String[] {
-             "name", "Job_._type",
-             "kind", "empty"
-           });	
+               "kind", "attribute",
+               "name", "value",
+               "namespace", "##targetNamespace"
+           });
         addAnnotation
-          (getJobType_Context(), 
-           source, 
+          (jobTypeEClass,
+           source,
            new String[] {
-             "kind", "attribute",
-             "name", "context",
-             "namespace", "##targetNamespace"
-           });	
+               "name", "Job_._type",
+               "kind", "empty"
+           });
         addAnnotation
-          (getJobType_Name(), 
-           source, 
+          (getJobType_Context(),
+           source,
            new String[] {
-             "kind", "attribute",
-             "name", "name",
-             "namespace", "##targetNamespace"
-           });	
+               "kind", "attribute",
+               "name", "context",
+               "namespace", "##targetNamespace"
+           });
         addAnnotation
-          (logsTypeEClass, 
-           source, 
+          (getJobType_Name(),
+           source,
            new String[] {
-             "name", "Logs_._type",
-             "kind", "elementOnly"
-           });	
+               "kind", "attribute",
+               "name", "name",
+               "namespace", "##targetNamespace"
+           });
         addAnnotation
-          (getLogsType_LogToFile(), 
-           source, 
+          (logsTypeEClass,
+           source,
            new String[] {
-             "kind", "element",
-             "name", "LogToFile",
-             "namespace", "##targetNamespace"
-           });	
+               "name", "Logs_._type",
+               "kind", "elementOnly"
+           });
         addAnnotation
-          (getLogsType_LogToDatabase(), 
-           source, 
+          (getLogsType_LogToFile(),
+           source,
            new String[] {
-             "kind", "element",
-             "name", "LogToDatabase",
-             "namespace", "##targetNamespace"
-           });	
+               "kind", "element",
+               "name", "LogToFile",
+               "namespace", "##targetNamespace"
+           });
         addAnnotation
-          (getLogsType_LogToStdOut(), 
-           source, 
+          (getLogsType_LogToDatabase(),
+           source,
            new String[] {
-             "kind", "element",
-             "name", "LogToStdOut",
-             "namespace", "##targetNamespace"
-           });	
+               "kind", "element",
+               "name", "LogToDatabase",
+               "namespace", "##targetNamespace"
+           });
         addAnnotation
-          (logToDatabaseTypeEClass, 
-           source, 
+          (getLogsType_LogToStdOut(),
+           source,
            new String[] {
-             "name", "LogToDatabase_._type",
-             "kind", "empty"
-           });	
+               "kind", "element",
+               "name", "LogToStdOut",
+               "namespace", "##targetNamespace"
+           });
         addAnnotation
-          (getLogToDatabaseType_Database(), 
-           source, 
+          (logToDatabaseTypeEClass,
+           source,
            new String[] {
-             "kind", "attribute",
-             "name", "database",
-             "namespace", "##targetNamespace"
-           });	
+               "name", "LogToDatabase_._type",
+               "kind", "empty"
+           });
         addAnnotation
-          (getLogToDatabaseType_Level(), 
-           source, 
+          (getLogToDatabaseType_Database(),
+           source,
            new String[] {
-             "kind", "attribute",
-             "name", "level",
-             "namespace", "##targetNamespace"
-           });	
+               "kind", "attribute",
+               "name", "database",
+               "namespace", "##targetNamespace"
+           });
         addAnnotation
-          (getLogToDatabaseType_Selected(), 
-           source, 
+          (getLogToDatabaseType_Level(),
+           source,
            new String[] {
-             "kind", "attribute",
-             "name", "selected",
-             "namespace", "##targetNamespace"
-           });	
+               "kind", "attribute",
+               "name", "level",
+               "namespace", "##targetNamespace"
+           });
         addAnnotation
-          (logToFileTypeEClass, 
-           source, 
+          (getLogToDatabaseType_Selected(),
+           source,
            new String[] {
-             "name", "LogToFile_._type",
-             "kind", "empty"
-           });	
+               "kind", "attribute",
+               "name", "selected",
+               "namespace", "##targetNamespace"
+           });
         addAnnotation
-          (getLogToFileType_Filename(), 
-           source, 
+          (logToFileTypeEClass,
+           source,
            new String[] {
-             "kind", "attribute",
-             "name", "filename",
-             "namespace", "##targetNamespace"
-           });	
+               "name", "LogToFile_._type",
+               "kind", "empty"
+           });
         addAnnotation
-          (getLogToFileType_Level(), 
-           source, 
+          (getLogToFileType_Filename(),
+           source,
            new String[] {
-             "kind", "attribute",
-             "name", "level",
-             "namespace", "##targetNamespace"
-           });	
+               "kind", "attribute",
+               "name", "filename",
+               "namespace", "##targetNamespace"
+           });
         addAnnotation
-          (getLogToFileType_Selected(), 
-           source, 
+          (getLogToFileType_Level(),
+           source,
            new String[] {
-             "kind", "attribute",
-             "name", "selected",
-             "namespace", "##targetNamespace"
-           });	
+               "kind", "attribute",
+               "name", "level",
+               "namespace", "##targetNamespace"
+           });
         addAnnotation
-          (logToStdOutTypeEClass, 
-           source, 
+          (getLogToFileType_Selected(),
+           source,
            new String[] {
-             "name", "LogToStdOut_._type",
-             "kind", "empty"
-           });	
+               "kind", "attribute",
+               "name", "selected",
+               "namespace", "##targetNamespace"
+           });
         addAnnotation
-          (getLogToStdOutType_Level(), 
-           source, 
+          (logToStdOutTypeEClass,
+           source,
            new String[] {
-             "kind", "attribute",
-             "name", "level",
-             "namespace", "##targetNamespace"
-           });	
+               "name", "LogToStdOut_._type",
+               "kind", "empty"
+           });
         addAnnotation
-          (getLogToStdOutType_Selected(), 
-           source, 
+          (getLogToStdOutType_Level(),
+           source,
            new String[] {
-             "kind", "attribute",
-             "name", "selected",
-             "namespace", "##targetNamespace"
-           });	
+               "kind", "attribute",
+               "name", "level",
+               "namespace", "##targetNamespace"
+           });
         addAnnotation
-          (metadataTypeEClass, 
-           source, 
+          (getLogToStdOutType_Selected(),
+           source,
            new String[] {
-             "name", "Metadata_._type",
-             "kind", "elementOnly"
-           });	
+               "kind", "attribute",
+               "name", "selected",
+               "namespace", "##targetNamespace"
+           });
         addAnnotation
-          (getMetadataType_Column(), 
-           source, 
+          (metadataTypeEClass,
+           source,
            new String[] {
-             "kind", "element",
-             "name", "Column",
-             "namespace", "##targetNamespace"
-           });	
+               "name", "Metadata_._type",
+               "kind", "elementOnly"
+           });
         addAnnotation
-          (getMetadataType_Comment(), 
-           source, 
+          (getMetadataType_Column(),
+           source,
            new String[] {
-             "kind", "element",
-             "name", "Comment",
-             "namespace", "##targetNamespace"
-           });	
+               "kind", "element",
+               "name", "Column",
+               "namespace", "##targetNamespace"
+           });
         addAnnotation
-          (getMetadataType_Connector(), 
-           source, 
+          (getMetadataType_Comment(),
+           source,
            new String[] {
-             "kind", "attribute",
-             "name", "connector",
-             "namespace", "##targetNamespace"
-           });	
+               "kind", "element",
+               "name", "Comment",
+               "namespace", "##targetNamespace"
+           });
         addAnnotation
-          (getMetadataType_Label(), 
-           source, 
+          (getMetadataType_Connector(),
+           source,
            new String[] {
-             "kind", "attribute",
-             "name", "label",
-             "namespace", "##targetNamespace"
-           });	
+               "kind", "attribute",
+               "name", "connector",
+               "namespace", "##targetNamespace"
+           });
         addAnnotation
-          (getMetadataType_Name(), 
-           source, 
+          (getMetadataType_Label(),
+           source,
            new String[] {
-             "kind", "attribute",
-             "name", "name",
-             "namespace", "##targetNamespace"
-           });	
+               "kind", "attribute",
+               "name", "label",
+               "namespace", "##targetNamespace"
+           });
         addAnnotation
-          (getMetadataType_Source(), 
-           source, 
+          (getMetadataType_Name(),
+           source,
            new String[] {
-             "kind", "attribute",
-             "name", "source",
-             "namespace", "##targetNamespace"
-           });	
+               "kind", "attribute",
+               "name", "name",
+               "namespace", "##targetNamespace"
+           });
         addAnnotation
-          (nodeTypeEClass, 
-           source, 
+          (getMetadataType_Source(),
+           source,
            new String[] {
-             "name", "Node_._type",
-             "kind", "elementOnly"
-           });	
+               "kind", "attribute",
+               "name", "source",
+               "namespace", "##targetNamespace"
+           });
         addAnnotation
-          (getNodeType_ElementParameter(), 
-           source, 
+          (nodeTypeEClass,
+           source,
            new String[] {
-             "kind", "element",
-             "name", "ElementParameter",
-             "namespace", "##targetNamespace"
-           });	
+               "name", "Node_._type",
+               "kind", "elementOnly"
+           });
         addAnnotation
-          (getNodeType_Metadata(), 
-           source, 
+          (getNodeType_ElementParameter(),
+           source,
            new String[] {
-             "kind", "element",
-             "name", "Metadata",
-             "namespace", "##targetNamespace"
-           });	
+               "kind", "element",
+               "name", "ElementParameter",
+               "namespace", "##targetNamespace"
+           });
         addAnnotation
-          (getNodeType_BinaryData(), 
-           source, 
+          (getNodeType_Metadata(),
+           source,
            new String[] {
-             "kind", "element",
-             "name", "BinaryData",
-             "namespace", "##targetNamespace"
-           });	
+               "kind", "element",
+               "name", "Metadata",
+               "namespace", "##targetNamespace"
+           });
         addAnnotation
-          (getNodeType_StringData(), 
-           source, 
+          (getNodeType_BinaryData(),
+           source,
            new String[] {
-             "kind", "element",
-             "name", "StringData",
-             "namespace", "##targetNamespace"
-           });	
+               "kind", "element",
+               "name", "BinaryData",
+               "namespace", "##targetNamespace"
+           });
         addAnnotation
-          (getNodeType_ComponentName(), 
-           source, 
+          (getNodeType_StringData(),
+           source,
            new String[] {
-             "kind", "attribute",
-             "name", "componentName",
-             "namespace", "##targetNamespace"
-           });	
+               "kind", "element",
+               "name", "StringData",
+               "namespace", "##targetNamespace"
+           });
         addAnnotation
-          (getNodeType_ComponentVersion(), 
-           source, 
+          (getNodeType_ComponentName(),
+           source,
            new String[] {
-             "kind", "attribute",
-             "name", "componentVersion",
-             "namespace", "##targetNamespace"
-           });	
+               "kind", "attribute",
+               "name", "componentName",
+               "namespace", "##targetNamespace"
+           });
         addAnnotation
-          (getNodeType_OffsetLabelX(), 
-           source, 
+          (getNodeType_ComponentVersion(),
+           source,
            new String[] {
-             "kind", "attribute",
-             "name", "offsetLabelX",
-             "namespace", "##targetNamespace"
-           });	
+               "kind", "attribute",
+               "name", "componentVersion",
+               "namespace", "##targetNamespace"
+           });
         addAnnotation
-          (getNodeType_OffsetLabelY(), 
-           source, 
+          (getNodeType_OffsetLabelX(),
+           source,
            new String[] {
-             "kind", "attribute",
-             "name", "offsetLabelY",
-             "namespace", "##targetNamespace"
-           });	
+               "kind", "attribute",
+               "name", "offsetLabelX",
+               "namespace", "##targetNamespace"
+           });
         addAnnotation
-          (getNodeType_PosX(), 
-           source, 
+          (getNodeType_OffsetLabelY(),
+           source,
            new String[] {
-             "kind", "attribute",
-             "name", "posX",
-             "namespace", "##targetNamespace"
-           });	
+               "kind", "attribute",
+               "name", "offsetLabelY",
+               "namespace", "##targetNamespace"
+           });
         addAnnotation
-          (getNodeType_PosY(), 
-           source, 
+          (getNodeType_PosX(),
+           source,
            new String[] {
-             "kind", "attribute",
-             "name", "posY",
-             "namespace", "##targetNamespace"
-           });	
+               "kind", "attribute",
+               "name", "posX",
+               "namespace", "##targetNamespace"
+           });
         addAnnotation
-          (getNodeType_SizeX(), 
-           source, 
+          (getNodeType_PosY(),
+           source,
            new String[] {
-             "kind", "attribute",
-             "name", "sizeX",
-             "namespace", "##targetNamespace"
-           });	
+               "kind", "attribute",
+               "name", "posY",
+               "namespace", "##targetNamespace"
+           });
         addAnnotation
-          (getNodeType_SizeY(), 
-           source, 
+          (getNodeType_SizeX(),
+           source,
            new String[] {
-             "kind", "attribute",
-             "name", "sizeY",
-             "namespace", "##targetNamespace"
-           });	
+               "kind", "attribute",
+               "name", "sizeX",
+               "namespace", "##targetNamespace"
+           });
         addAnnotation
-          (noteTypeEClass, 
-           source, 
+          (getNodeType_SizeY(),
+           source,
            new String[] {
-             "name", "Note_._type",
-             "kind", "empty"
-           });	
+               "kind", "attribute",
+               "name", "sizeY",
+               "namespace", "##targetNamespace"
+           });
         addAnnotation
-          (getNoteType_Opaque(), 
-           source, 
+          (noteTypeEClass,
+           source,
            new String[] {
-             "kind", "attribute",
-             "name", "opaque",
-             "namespace", "##targetNamespace"
-           });	
+               "name", "Note_._type",
+               "kind", "empty"
+           });
         addAnnotation
-          (getNoteType_PosX(), 
-           source, 
+          (getNoteType_Opaque(),
+           source,
            new String[] {
-             "kind", "attribute",
-             "name", "posX",
-             "namespace", "##targetNamespace"
-           });	
+               "kind", "attribute",
+               "name", "opaque",
+               "namespace", "##targetNamespace"
+           });
         addAnnotation
-          (getNoteType_PosY(), 
-           source, 
+          (getNoteType_PosX(),
+           source,
            new String[] {
-             "kind", "attribute",
-             "name", "posY",
-             "namespace", "##targetNamespace"
-           });	
+               "kind", "attribute",
+               "name", "posX",
+               "namespace", "##targetNamespace"
+           });
         addAnnotation
-          (getNoteType_SizeHeight(), 
-           source, 
+          (getNoteType_PosY(),
+           source,
            new String[] {
-             "kind", "attribute",
-             "name", "sizeHeight",
-             "namespace", "##targetNamespace"
-           });	
+               "kind", "attribute",
+               "name", "posY",
+               "namespace", "##targetNamespace"
+           });
         addAnnotation
-          (getNoteType_SizeWidth(), 
-           source, 
+          (getNoteType_SizeHeight(),
+           source,
            new String[] {
-             "kind", "attribute",
-             "name", "sizeWidth",
-             "namespace", "##targetNamespace"
-           });	
+               "kind", "attribute",
+               "name", "sizeHeight",
+               "namespace", "##targetNamespace"
+           });
         addAnnotation
-          (getNoteType_Text(), 
-           source, 
+          (getNoteType_SizeWidth(),
+           source,
            new String[] {
-             "kind", "attribute",
-             "name", "text",
-             "namespace", "##targetNamespace"
-           });	
+               "kind", "attribute",
+               "name", "sizeWidth",
+               "namespace", "##targetNamespace"
+           });
         addAnnotation
-          (parametersTypeEClass, 
-           source, 
+          (getNoteType_Text(),
+           source,
            new String[] {
-             "name", "Parameters_._type",
-             "kind", "elementOnly"
-           });	
+               "kind", "attribute",
+               "name", "text",
+               "namespace", "##targetNamespace"
+           });
         addAnnotation
-          (getParametersType_ElementParameter(), 
-           source, 
+          (parametersTypeEClass,
+           source,
            new String[] {
-             "kind", "element",
-             "name", "ElementParameter",
-             "namespace", "##targetNamespace"
-           });	
+               "name", "Parameters_._type",
+               "kind", "elementOnly"
+           });
         addAnnotation
-          (processTypeEClass, 
-           source, 
+          (getParametersType_ElementParameter(),
+           source,
            new String[] {
-             "name", "Process_._type",
-             "kind", "elementOnly"
-           });	
+               "kind", "element",
+               "name", "ElementParameter",
+               "namespace", "##targetNamespace"
+           });
         addAnnotation
-          (getProcessType_Description(), 
-           source, 
+          (processTypeEClass,
+           source,
            new String[] {
-             "kind", "element",
-             "name", "Description",
-             "namespace", "##targetNamespace"
-           });	
+               "name", "Process_._type",
+               "kind", "elementOnly"
+           });
         addAnnotation
-          (getProcessType_Required(), 
-           source, 
+          (getProcessType_Description(),
+           source,
            new String[] {
-             "kind", "element",
-             "name", "Required",
-             "namespace", "##targetNamespace"
-           });	
+               "kind", "element",
+               "name", "Description",
+               "namespace", "##targetNamespace"
+           });
         addAnnotation
-          (getProcessType_Context(), 
-           source, 
+          (getProcessType_Required(),
+           source,
            new String[] {
-             "kind", "element",
-             "name", "Context",
-             "namespace", "##targetNamespace"
-           });	
+               "kind", "element",
+               "name", "Required",
+               "namespace", "##targetNamespace"
+           });
         addAnnotation
-          (getProcessType_Parameters(), 
-           source, 
+          (getProcessType_Context(),
+           source,
            new String[] {
-             "kind", "element",
-             "name", "Parameters",
-             "namespace", "##targetNamespace"
-           });	
+               "kind", "element",
+               "name", "Context",
+               "namespace", "##targetNamespace"
+           });
         addAnnotation
-          (getProcessType_Node(), 
-           source, 
+          (getProcessType_Parameters(),
+           source,
            new String[] {
-             "kind", "element",
-             "name", "Node",
-             "namespace", "##targetNamespace"
-           });	
+               "kind", "element",
+               "name", "Parameters",
+               "namespace", "##targetNamespace"
+           });
         addAnnotation
-          (getProcessType_Connection(), 
-           source, 
+          (getProcessType_Node(),
+           source,
            new String[] {
-             "kind", "element",
-             "name", "Connection",
-             "namespace", "##targetNamespace"
-           });	
+               "kind", "element",
+               "name", "Node",
+               "namespace", "##targetNamespace"
+           });
         addAnnotation
-          (getProcessType_Note(), 
-           source, 
+          (getProcessType_Connection(),
+           source,
            new String[] {
-             "kind", "element",
-             "name", "Note",
-             "namespace", "##targetNamespace"
-           });	
+               "kind", "element",
+               "name", "Connection",
+               "namespace", "##targetNamespace"
+           });
         addAnnotation
-          (getProcessType_Logs(), 
-           source, 
+          (getProcessType_Note(),
+           source,
            new String[] {
-             "kind", "element",
-             "name", "Logs",
-             "namespace", "##targetNamespace"
-           });	
+               "kind", "element",
+               "name", "Note",
+               "namespace", "##targetNamespace"
+           });
         addAnnotation
-          (getProcessType_Author(), 
-           source, 
+          (getProcessType_Logs(),
+           source,
            new String[] {
-             "kind", "attribute",
-             "name", "author",
-             "namespace", "##targetNamespace"
-           });	
+               "kind", "element",
+               "name", "Logs",
+               "namespace", "##targetNamespace"
+           });
         addAnnotation
-          (getProcessType_Comment(), 
-           source, 
+          (getProcessType_Author(),
+           source,
            new String[] {
-             "kind", "attribute",
-             "name", "comment",
-             "namespace", "##targetNamespace"
-           });	
+               "kind", "attribute",
+               "name", "author",
+               "namespace", "##targetNamespace"
+           });
         addAnnotation
-          (getProcessType_DefaultContext(), 
-           source, 
+          (getProcessType_Comment(),
+           source,
            new String[] {
-             "kind", "attribute",
-             "name", "defaultContext",
-             "namespace", "##targetNamespace"
-           });	
+               "kind", "attribute",
+               "name", "comment",
+               "namespace", "##targetNamespace"
+           });
         addAnnotation
-          (getProcessType_Name(), 
-           source, 
+          (getProcessType_DefaultContext(),
+           source,
            new String[] {
-             "kind", "attribute",
-             "name", "name",
-             "namespace", "##targetNamespace"
-           });	
+               "kind", "attribute",
+               "name", "defaultContext",
+               "namespace", "##targetNamespace"
+           });
         addAnnotation
-          (getProcessType_Purpose(), 
-           source, 
+          (getProcessType_Name(),
+           source,
            new String[] {
-             "kind", "attribute",
-             "name", "purpose",
-             "namespace", "##targetNamespace"
-           });	
+               "kind", "attribute",
+               "name", "name",
+               "namespace", "##targetNamespace"
+           });
         addAnnotation
-          (getProcessType_RepositoryContextId(), 
-           source, 
+          (getProcessType_Purpose(),
+           source,
            new String[] {
-             "kind", "attribute",
-             "name", "repositoryContextId",
-             "namespace", "##targetNamespace"
-           });	
+               "kind", "attribute",
+               "name", "purpose",
+               "namespace", "##targetNamespace"
+           });
         addAnnotation
-          (getProcessType_Status(), 
-           source, 
+          (getProcessType_RepositoryContextId(),
+           source,
            new String[] {
-             "kind", "attribute",
-             "name", "status",
-             "namespace", "##targetNamespace"
-           });	
+               "kind", "attribute",
+               "name", "repositoryContextId",
+               "namespace", "##targetNamespace"
+           });
         addAnnotation
-          (getProcessType_Version(), 
-           source, 
+          (getProcessType_Status(),
+           source,
            new String[] {
-             "kind", "attribute",
-             "name", "version",
-             "namespace", "##targetNamespace"
-           });	
+               "kind", "attribute",
+               "name", "status",
+               "namespace", "##targetNamespace"
+           });
         addAnnotation
-          (getProcessType_Subjob(), 
-           source, 
+          (getProcessType_Version(),
+           source,
            new String[] {
-             "kind", "element",
-             "name", "Subjob",
-             "namespace", "##targetNamespace"
-           });	
+               "kind", "attribute",
+               "name", "version",
+               "namespace", "##targetNamespace"
+           });
         addAnnotation
-          (getProcessType_JobType(), 
-           source, 
+          (getProcessType_Subjob(),
+           source,
            new String[] {
-             "kind", "attribute",
-             "name", "name",
-             "namespace", "##targetNamespace"
-           });	
+               "kind", "element",
+               "name", "Subjob",
+               "namespace", "##targetNamespace"
+           });
         addAnnotation
-          (getProcessType_Framework(), 
-           source, 
+          (getProcessType_JobType(),
+           source,
            new String[] {
-             "kind", "attribute",
-             "name", "name",
-             "namespace", "##targetNamespace"
-           });	
+               "kind", "attribute",
+               "name", "name",
+               "namespace", "##targetNamespace"
+           });
         addAnnotation
-          (requiredTypeEClass, 
-           source, 
+          (getProcessType_Framework(),
+           source,
            new String[] {
-             "name", "Required_._type",
-             "kind", "elementOnly"
-           });	
+               "kind", "attribute",
+               "name", "name",
+               "namespace", "##targetNamespace"
+           });
         addAnnotation
-          (getRequiredType_Job(), 
-           source, 
+          (requiredTypeEClass,
+           source,
            new String[] {
-             "kind", "element",
-             "name", "Job",
-             "namespace", "##targetNamespace"
-           });	
+               "name", "Required_._type",
+               "kind", "elementOnly"
+           });
         addAnnotation
-          (subjobTypeEClass, 
-           source, 
+          (getRequiredType_Job(),
+           source,
            new String[] {
-             "name", "Subjob_._type",
-             "kind", "elementOnly"
-           });	
+               "kind", "element",
+               "name", "Job",
+               "namespace", "##targetNamespace"
+           });
         addAnnotation
-          (getSubjobType_ElementParameter(), 
-           source, 
+          (subjobTypeEClass,
+           source,
            new String[] {
-             "kind", "element",
-             "name", "ElementParameter",
-             "namespace", "##targetNamespace"
-           });	
+               "name", "Subjob_._type",
+               "kind", "elementOnly"
+           });
         addAnnotation
-          (getNodeContainerType_ElementParameter(), 
-           source, 
+          (getSubjobType_ElementParameter(),
+           source,
            new String[] {
-             "kind", "element",
-             "name", "ElementParameter",
-             "namespace", "##targetNamespace"
+               "kind", "element",
+               "name", "ElementParameter",
+               "namespace", "##targetNamespace"
+           });
+        addAnnotation
+          (getNodeContainerType_ElementParameter(),
+           source,
+           new String[] {
+               "kind", "element",
+               "name", "ElementParameter",
+               "namespace", "##targetNamespace"
            });
     }
 
@@ -3071,14 +3090,14 @@ public class TalendFilePackageImpl extends EPackageImpl implements TalendFilePac
      * @generated
      */
     protected void createExtendedMetaData_1Annotations() {
-        String source = "ExtendedMetaData";	
+        String source = "ExtendedMetaData";
         addAnnotation
-          (getNoteType_ElementParameter(), 
-           source, 
+          (getNoteType_ElementParameter(),
+           source,
            new String[] {
-             "kind", "element",
-             "name", "ElementParameterType",
-             "namespace", "##targetNamespace"
+               "kind", "element",
+               "name", "ElementParameterType",
+               "namespace", "##targetNamespace"
            });
     }
 
@@ -3089,15 +3108,15 @@ public class TalendFilePackageImpl extends EPackageImpl implements TalendFilePac
      * @generated
      */
     protected void createMapEntryAnnotations() {
-        String source = "MapEntry";	
+        String source = "MapEntry";
         addAnnotation
-          (screenshotsMapEClass, 
-           source, 
+          (screenshotsMapEClass,
+           source,
            new String[] {
-           });	
+           });
         addAnnotation
-          (additionalFieldMapEClass, 
-           source, 
+          (additionalFieldMapEClass,
+           source,
            new String[] {
            });
     }
