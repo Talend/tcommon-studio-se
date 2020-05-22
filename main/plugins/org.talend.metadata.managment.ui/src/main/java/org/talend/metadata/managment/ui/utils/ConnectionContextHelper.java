@@ -690,6 +690,8 @@ public final class ConnectionContextHelper {
                 ContextItem contextItem = ContextUtils.getContextItemById2(connection.getContextId());
                 if (contextItem != null) {
                     // find added variables
+                    neededVars.removeAll(renamedMap.keySet());
+                    neededVars.addAll(renamedMap.values());
                     Set<String> tempVars = null;
                     if(isGeneric){
                         tempVars = checkAndAddContextVariables(contextItem, process.getContextManager(),
@@ -1071,6 +1073,7 @@ public final class ConnectionContextHelper {
             }
         }
     }
+
 
     public static Set<String> retrieveContextVar(List<? extends IElementParameter> elementParameters, Connection connection,
             EComponentCategory category) {
@@ -1642,14 +1645,14 @@ public final class ConnectionContextHelper {
                     if (context.getContextParameter(param.getName()) != null) {
                         continue;
                     }
-                    String oldVar = renamedMap.get(paramName);
-                    if (oldVar != null) {
-                        IContextParameter contextParamter = context.getContextParameter(oldVar);
-                        if (contextParamter != null) {
-                            contextParamter.setName(paramName); // Update renamed context parameter
-                            continue;
-                        }
-                    }
+//                    String oldVar = renamedMap.get(paramName);
+//                    if (oldVar != null) {
+//                        IContextParameter contextParamter = context.getContextParameter(oldVar);
+//                        if (contextParamter != null) {
+//                            contextParamter.setName(paramName); // Update renamed context parameter
+//                            continue;
+//                        }
+//                    }
                     if(added){
                         JobContextParameter contextParam = new JobContextParameter();
 
@@ -1697,14 +1700,14 @@ public final class ConnectionContextHelper {
                     if (context.containsSameParameterIgnoreCase(var)) {
                         continue;
                     }
-                    String oldVar = renamedMap.get(var);
-                    if (oldVar != null) {
-                        IContextParameter contextParamter = context.getContextParameter(oldVar);
-                        if (contextParamter != null) {
-                            contextParamter.setName(var); // Update renamed context parameter
-                            continue;
-                        }
-                    }
+//                    String oldVar = renamedMap.get(var);
+//                    if (oldVar != null) {
+//                        IContextParameter contextParamter = context.getContextParameter(oldVar);
+//                        if (contextParamter != null) {
+//                            contextParamter.setName(var); // Update renamed context parameter
+//                            continue;
+//                        }
+//                    }
                     ContextParameterType param = ContextUtils.getContextParameterTypeByName(type, var);
                     if (param != null) {
                         //
