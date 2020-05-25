@@ -78,6 +78,4 @@ public interface ICoreTisService extends IService {
 
     Set<String> getComponentBlackList();
     
-    public String getLatestInstalledVersion();
-
 }
