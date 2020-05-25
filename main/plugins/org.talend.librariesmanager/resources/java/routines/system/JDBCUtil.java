@@ -58,11 +58,22 @@ public class JDBCUtil {
     }
 
     public static Date getDate(ResultSet rs, int index) throws java.sql.SQLException {
-        if(rs.getTimestamp(index) != null) {
-            return new Date(rs.getTimestamp(index).getTime());
+        Date result = null;
+        try {
+            if(rs.getTimestamp(index) != null) {
+                result = new Date(rs.getTimestamp(index).getTime());
+                return result;
+            }
+        } catch (java.sql.SQLException e) {
         }
-
-        return null;
+        try {
+            if(rs.getDate(index) != null) {
+                result = new Date(rs.getDate(index).getTime());
+                return result;
+            }
+        } catch (java.sql.SQLException e) {
+        }
+        return result;
     }
 
     //decrease the get method call number
