@@ -176,7 +176,6 @@ public class RepositoryContextUpdateService extends AbstractRepositoryContextUpd
 		} else {
 			isModified = updateParameters(dbConn, oldValue, newValue);
 		}
-
 		return isModified || compPropertiesResult;
 	}
 
