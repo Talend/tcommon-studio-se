@@ -12,17 +12,21 @@
 // ============================================================================
 package org.talend.core;
 
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.apache.commons.lang3.StringUtils;
 import org.talend.core.hadoop.repository.HadoopRepositoryUtil;
+import org.talend.core.model.metadata.builder.connection.Connection;
+import org.talend.core.runtime.services.IGenericDBService;
 
 /**
  * created by ldong on Mar 23, 2015 Detailled comment
  *
  */
 public abstract class AbstractRepositoryContextUpdateService implements IRepositoryContextUpdateService {
-
+    protected IGenericDBService service = GlobalServiceRegister.getDefault().getService(IGenericDBService.class);
     protected String updateHadoopProperties(List<Map<String, Object>> hadoopProperties, String oldValue, String newValue) {
         String finalProperties = null;
         boolean isModified = false;
@@ -39,6 +43,18 @@ public abstract class AbstractRepositoryContextUpdateService implements IReposit
             }
         }
         return finalProperties;
+    }
+    
+    protected boolean updateCompPropertiesContextParameter(Connection conn, String oldValue, String newValue) {
+        boolean isModified = false;
+        Map<String, String> oldToNewHM = new HashMap<String, String>();
+        oldToNewHM.put(oldValue, newValue);
+        String compProperties = conn.getCompProperties();
+        if (service != null && StringUtils.isNotBlank(compProperties)) {
+            service.updateCompPropertiesForContextMode(conn, oldToNewHM);
+            isModified = true;
+        }
+        return isModified;
     }
 
 }

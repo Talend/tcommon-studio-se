@@ -12,10 +12,6 @@
 // ============================================================================
 package org.talend.core.model.update;
 
-import java.util.HashMap;
-import java.util.Map;
-
-import org.apache.commons.lang3.StringUtils;
 import org.talend.core.AbstractRepositoryContextUpdateService;
 import org.talend.core.GlobalServiceRegister;
 import org.talend.core.model.metadata.builder.connection.Connection;
@@ -32,15 +28,7 @@ public class GenericDbContextUpdateService extends AbstractRepositoryContextUpda
 
     @Override
     public boolean updateContextParameter(Connection conn, String oldValue, String newValue) {
-        boolean isModified = false;
-        Map<String, String> oldToNewHM = new HashMap<String, String>();
-        oldToNewHM.put(oldValue, newValue);
-        String compProperties = conn.getCompProperties();
-        if (StringUtils.isNotBlank(compProperties)) {
-            service.updateCompPropertiesForContextMode(conn, oldToNewHM);
-            isModified = true;
-        }
-        return isModified;
+        return updateCompPropertiesContextParameter(conn, oldValue, newValue);
     }
 
 }
