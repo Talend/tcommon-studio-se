@@ -134,49 +134,50 @@ public class RepositoryContextUpdateService extends AbstractRepositoryContextUpd
         return isModified;
     }
 
-    private boolean updateDatabaseConnectinParam(DatabaseConnection dbConn, String oldValue, String newValue) {
-        boolean isModified = false;
-        if (dbConn.getAdditionalParams() != null && dbConn.getAdditionalParams().equals(oldValue)) {
-            dbConn.setAdditionalParams(newValue);
-            isModified = true;
-        } else if (dbConn.getUsername() != null && dbConn.getUsername().equals(oldValue)) {
-            dbConn.setUsername(newValue);
-            isModified = true;
-        } else if (dbConn.getPassword() != null && dbConn.getPassword().equals(oldValue)) {
-            dbConn.setPassword(newValue);
-            isModified = true;
-        } else if (dbConn.getServerName() != null && dbConn.getServerName().equals(oldValue)) {
-            dbConn.setServerName(newValue);
-            isModified = true;
-        } else if (dbConn.getPort() != null && dbConn.getPort().equals(oldValue)) {
-            dbConn.setPort(newValue);
-            isModified = true;
-        } else if (dbConn.getSID() != null && dbConn.getSID().equals(oldValue)) {
-            dbConn.setSID(newValue);
-            isModified = true;
-        } else if (dbConn.getDbmsId() != null && dbConn.getDbmsId().equals(oldValue)) {
-            dbConn.setDbmsId(newValue);
-            isModified = true;
-        } else if (dbConn.getDriverClass() != null && dbConn.getDriverClass().equals(oldValue)) {
-            dbConn.setDriverClass(newValue);
-            isModified = true;
-        } else if (dbConn.getDriverJarPath() != null && dbConn.getDriverJarPath().equals(oldValue)) {
-            dbConn.setDriverJarPath(newValue);
-            isModified = true;
-        } else if (dbConn.getURL() != null && dbConn.getURL().equals(oldValue)) {
-            dbConn.setURL(newValue);
-            isModified = true;
-        } else if (dbConn.getUiSchema() != null && dbConn.getUiSchema().equals(oldValue)) {
-            // Added by Marvin Wang on Nov.7, 2012 for bug TDI-12596, because schema can not be
-            // propagated to metadata db.
-            dbConn.setUiSchema(newValue);
-            isModified = true;
-        } else {
-            isModified = updateParameters(dbConn, oldValue, newValue);
-        }
+	private boolean updateDatabaseConnectinParam(DatabaseConnection dbConn, String oldValue, String newValue) {
+		boolean isModified = updateCompPropertiesContextParameter(dbConn, oldValue, newValue);
+		if (dbConn.getAdditionalParams() != null && dbConn.getAdditionalParams().equals(oldValue)) {
+			dbConn.setAdditionalParams(newValue);
+			isModified = true;
+		} else if (dbConn.getUsername() != null && dbConn.getUsername().equals(oldValue)) {
+			dbConn.setUsername(newValue);
+			isModified = true;
+		} else if (dbConn.getPassword() != null && dbConn.getPassword().equals(oldValue)) {
+			dbConn.setPassword(newValue);
+			isModified = true;
+		} else if (dbConn.getServerName() != null && dbConn.getServerName().equals(oldValue)) {
+			dbConn.setServerName(newValue);
+			isModified = true;
+		} else if (dbConn.getPort() != null && dbConn.getPort().equals(oldValue)) {
+			dbConn.setPort(newValue);
+			isModified = true;
+		} else if (dbConn.getSID() != null && dbConn.getSID().equals(oldValue)) {
+			dbConn.setSID(newValue);
+			isModified = true;
+		} else if (dbConn.getDbmsId() != null && dbConn.getDbmsId().equals(oldValue)) {
+			dbConn.setDbmsId(newValue);
+			isModified = true;
+		} else if (dbConn.getDriverClass() != null && dbConn.getDriverClass().equals(oldValue)) {
+			dbConn.setDriverClass(newValue);
+			isModified = true;
+		} else if (dbConn.getDriverJarPath() != null && dbConn.getDriverJarPath().equals(oldValue)) {
+			dbConn.setDriverJarPath(newValue);
+			isModified = true;
+		} else if (dbConn.getURL() != null && dbConn.getURL().equals(oldValue)) {
+			dbConn.setURL(newValue);
+			isModified = true;
+		} else if (dbConn.getUiSchema() != null && dbConn.getUiSchema().equals(oldValue)) {
+			// Added by Marvin Wang on Nov.7, 2012 for bug TDI-12596, because schema can not
+			// be
+			// propagated to metadata db.
+			dbConn.setUiSchema(newValue);
+			isModified = true;
+		} else {
+			isModified = updateParameters(dbConn, oldValue, newValue);
+		}
 
-        return isModified;
-    }
+		return isModified;
+	}
 
     private boolean updateFileExcelConnectionParam(FileExcelConnection conn, String oldValue, String newValue) {
         boolean isModified = false;
