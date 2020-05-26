@@ -254,7 +254,7 @@ public class JobContextManager implements IContextManager {
      */
     @Override
     public void saveToEmf(EList contextTypeList) {
-        saveToEmf(contextTypeList, true);
+        saveToEmf(contextTypeList, false);
     }
 
     private ContextType findContextType(EList contextTypeList, String contextName) {
@@ -561,7 +561,6 @@ public class JobContextManager implements IContextManager {
                     contextParamType.setRawValue(contextParam.getValue());
                     contextParamType.setPromptNeeded(contextParam.isPromptNeeded());
                     contextParamType.setComment(contextParam.getComment());
-                    contextParamType.setInternalId(contextParam.getInternalId());
                     if (!contextParam.isBuiltIn()) {
                         Item item = idToItemMap.get(contextParam.getSource());
                         if (item == null) {
@@ -587,14 +586,16 @@ public class JobContextManager implements IContextManager {
                             }
                         }
                     } else if (useInternalId) {
-                        String internalId = contextParamType.getInternalId();
+                        String internalId = contextParam.getInternalId();
                         if (StringUtils.isEmpty(internalId)) {
                             internalId = EcoreUtil.generateUUID();
+                            contextParamType.setInternalId(internalId);
+                            contextParam.setInternalId(internalId);
+                        } else {
+                            contextParamType.setInternalId(internalId);
                         }
-                        contextParamType.setInternalId(internalId);
                     }
                 }
-
                 contextTypeParamList.clear(); // remove old
                 contextTypeParamList.addAll(newContextTypeParamList);
             }
