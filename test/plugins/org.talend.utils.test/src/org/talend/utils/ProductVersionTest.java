@@ -12,9 +12,9 @@ package org.talend.utils;
 //
 // ============================================================================
 
-import junit.framework.TestCase;
+import java.util.Calendar;
 
-import org.talend.utils.ProductVersion;
+import junit.framework.TestCase;
 
 /***/
 public class ProductVersionTest extends TestCase {
@@ -28,6 +28,14 @@ public class ProductVersionTest extends TestCase {
     }
 
     public void testParse() {
+        assertEquals(new ProductVersion(7, 3, 1, "20200417_1111-patch"),
+                ProductVersion.fromString("7.3.1.20200417_1111-patch", true, true));
+        assertEquals(new ProductVersion(7, 3, 1, "20200507"), ProductVersion.fromString("7.3.1.20200507", true, true));
+
+        assertEquals(new ProductVersion(7, 3, 1), ProductVersion.fromString("7.3.1.20200417_1111-patch", true));
+        assertEquals(new ProductVersion(7, 3, 1), ProductVersion.fromString("7.3.1.20200507", true));
+
+
         assertEquals(new ProductVersion(1, 2, 3), ProductVersion.fromString("1.2.3"));
         assertEquals(new ProductVersion(1, 2, 3), ProductVersion.fromString("1.2.3.r12345"));
         assertEquals(new ProductVersion(1, 2, 3), ProductVersion.fromString("1.2.3RC1"));
@@ -40,6 +48,7 @@ public class ProductVersionTest extends TestCase {
         assertEquals(new ProductVersion(9, 2), ProductVersion.fromString("Oracle9i Release 9.2.0.1.0 - Production", true));
         assertEquals(new ProductVersion(9, 2), ProductVersion.fromString("Oracle9i Release 9.2.0.1.0 - Production\n"
                 + "JServer Release 9.2.0.1.0 - Production", true));
+        
     }
 
     public void testCompare() {
@@ -71,5 +80,18 @@ public class ProductVersionTest extends TestCase {
             fail();
         }
 
+        ProductVersion productVersion1 = new ProductVersion(7, 3, 1, "20200417_1111-patch");
+        ProductVersion productVersion2 = new ProductVersion(7, 3, 1, "20200507");
+        ProductVersion productVersion3 = ProductVersion.fromString("7.3.1.20200417_1111-patch", true, true);
+        ProductVersion productVersion4 = new ProductVersion(7, 3, 1);
+        Calendar calender = Calendar.getInstance();
+        calender.set(2020, 4, 7);
+        ProductVersion productVersion5 = new ProductVersion(productVersion4, calender.getTime());
+        assertTrue(productVersion1.compareTo(productVersion2) < 0);
+        assertTrue(productVersion1.compareTo(productVersion3) == 0);
+        assertTrue(productVersion1.compareTo(productVersion4) > 0);
+        assertTrue(productVersion2.compareTo(productVersion4) > 0);
+        assertTrue(productVersion2.compareTo(productVersion5) == 0);
+        assertTrue(productVersion1.compareTo(productVersion5) < 0);
     }
 }

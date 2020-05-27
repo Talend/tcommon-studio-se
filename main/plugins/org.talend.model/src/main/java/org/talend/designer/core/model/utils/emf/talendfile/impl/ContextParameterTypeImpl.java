@@ -19,6 +19,7 @@ import org.talend.utils.security.StudioEncryption;
  * end-user-doc -->
  * <p>
  * The following features are implemented:
+ * </p>
  * <ul>
  *   <li>{@link org.talend.designer.core.model.utils.emf.talendfile.impl.ContextParameterTypeImpl#getComment <em>Comment</em>}</li>
  *   <li>{@link org.talend.designer.core.model.utils.emf.talendfile.impl.ContextParameterTypeImpl#getName <em>Name</em>}</li>
@@ -27,8 +28,8 @@ import org.talend.utils.security.StudioEncryption;
  *   <li>{@link org.talend.designer.core.model.utils.emf.talendfile.impl.ContextParameterTypeImpl#getRepositoryContextId <em>Repository Context Id</em>}</li>
  *   <li>{@link org.talend.designer.core.model.utils.emf.talendfile.impl.ContextParameterTypeImpl#getType <em>Type</em>}</li>
  *   <li>{@link org.talend.designer.core.model.utils.emf.talendfile.impl.ContextParameterTypeImpl#getValue <em>Value</em>}</li>
+ *   <li>{@link org.talend.designer.core.model.utils.emf.talendfile.impl.ContextParameterTypeImpl#getInternalId <em>Internal Id</em>}</li>
  * </ul>
- * </p>
  *
  * @generated
  */
@@ -181,6 +182,26 @@ public class ContextParameterTypeImpl extends EObjectImpl implements ContextPara
      * @ordered
      */
     protected String value = VALUE_EDEFAULT;
+
+    /**
+     * The default value of the '{@link #getInternalId() <em>Internal Id</em>}' attribute.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @see #getInternalId()
+     * @generated
+     * @ordered
+     */
+    protected static final String INTERNAL_ID_EDEFAULT = null;
+
+    /**
+     * The cached value of the '{@link #getInternalId() <em>Internal Id</em>}' attribute.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @see #getInternalId()
+     * @generated
+     * @ordered
+     */
+    protected String internalId = INTERNAL_ID_EDEFAULT;
 
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
@@ -364,6 +385,27 @@ public class ContextParameterTypeImpl extends EObjectImpl implements ContextPara
             eNotify(new ENotificationImpl(this, Notification.SET, TalendFilePackage.CONTEXT_PARAMETER_TYPE__VALUE, oldValue, value));
     }
 
+    /**
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     */
+    public String getInternalId() {
+        return internalId;
+    }
+
+    /**
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     */
+    public void setInternalId(String newInternalId) {
+        String oldInternalId = internalId;
+        internalId = newInternalId;
+        if (eNotificationRequired())
+            eNotify(new ENotificationImpl(this, Notification.SET, TalendFilePackage.CONTEXT_PARAMETER_TYPE__INTERNAL_ID, oldInternalId, internalId));
+    }
+
     public void setRawValue(String newValue) {
         if (newValue != null && newValue.length() > 0 && PasswordEncryptUtil.isPasswordType(getType())) {
             String encryptValue = StudioEncryption.getStudioEncryption(StudioEncryption.EncryptionKeyName.SYSTEM)
@@ -396,6 +438,8 @@ public class ContextParameterTypeImpl extends EObjectImpl implements ContextPara
                 return getType();
             case TalendFilePackage.CONTEXT_PARAMETER_TYPE__VALUE:
                 return getValue();
+            case TalendFilePackage.CONTEXT_PARAMETER_TYPE__INTERNAL_ID:
+                return getInternalId();
         }
         return super.eGet(featureID, resolve, coreType);
     }
@@ -426,6 +470,9 @@ public class ContextParameterTypeImpl extends EObjectImpl implements ContextPara
                 return;
             case TalendFilePackage.CONTEXT_PARAMETER_TYPE__VALUE:
                 setValue((String)newValue);
+                return;
+            case TalendFilePackage.CONTEXT_PARAMETER_TYPE__INTERNAL_ID:
+                setInternalId((String)newValue);
                 return;
         }
         super.eSet(featureID, newValue);
@@ -458,6 +505,9 @@ public class ContextParameterTypeImpl extends EObjectImpl implements ContextPara
             case TalendFilePackage.CONTEXT_PARAMETER_TYPE__VALUE:
                 setValue(VALUE_EDEFAULT);
                 return;
+            case TalendFilePackage.CONTEXT_PARAMETER_TYPE__INTERNAL_ID:
+                setInternalId(INTERNAL_ID_EDEFAULT);
+                return;
         }
         super.eUnset(featureID);
     }
@@ -482,6 +532,8 @@ public class ContextParameterTypeImpl extends EObjectImpl implements ContextPara
                 return TYPE_EDEFAULT == null ? type != null : !TYPE_EDEFAULT.equals(type);
             case TalendFilePackage.CONTEXT_PARAMETER_TYPE__VALUE:
                 return VALUE_EDEFAULT == null ? value != null : !VALUE_EDEFAULT.equals(value);
+            case TalendFilePackage.CONTEXT_PARAMETER_TYPE__INTERNAL_ID:
+                return INTERNAL_ID_EDEFAULT == null ? internalId != null : !INTERNAL_ID_EDEFAULT.equals(internalId);
         }
         return super.eIsSet(featureID);
     }
@@ -508,6 +560,8 @@ public class ContextParameterTypeImpl extends EObjectImpl implements ContextPara
         result.append(type);
         result.append(", value: ");
         result.append(value);
+        result.append(", internalId: ");
+        result.append(internalId);
         result.append(')');
         return result.toString();
     }

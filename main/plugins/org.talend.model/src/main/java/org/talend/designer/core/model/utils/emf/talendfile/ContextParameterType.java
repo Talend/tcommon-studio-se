@@ -13,6 +13,7 @@ import org.eclipse.emf.ecore.EObject;
  *
  * <p>
  * The following features are supported:
+ * </p>
  * <ul>
  *   <li>{@link org.talend.designer.core.model.utils.emf.talendfile.ContextParameterType#getComment <em>Comment</em>}</li>
  *   <li>{@link org.talend.designer.core.model.utils.emf.talendfile.ContextParameterType#getName <em>Name</em>}</li>
@@ -21,8 +22,8 @@ import org.eclipse.emf.ecore.EObject;
  *   <li>{@link org.talend.designer.core.model.utils.emf.talendfile.ContextParameterType#getRepositoryContextId <em>Repository Context Id</em>}</li>
  *   <li>{@link org.talend.designer.core.model.utils.emf.talendfile.ContextParameterType#getType <em>Type</em>}</li>
  *   <li>{@link org.talend.designer.core.model.utils.emf.talendfile.ContextParameterType#getValue <em>Value</em>}</li>
+ *   <li>{@link org.talend.designer.core.model.utils.emf.talendfile.ContextParameterType#getInternalId <em>Internal Id</em>}</li>
  * </ul>
- * </p>
  *
  * @see org.talend.designer.core.model.utils.emf.talendfile.TalendFilePackage#getContextParameterType()
  * @model extendedMetaData="name='ContextParameter_._type' kind='empty'"
@@ -244,6 +245,29 @@ public interface ContextParameterType extends EObject {
      * @generated
      */
     void setValue(String value);
+
+    /**
+     * Returns the value of the '<em><b>Internal Id</b></em>' attribute.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @return the value of the '<em>Internal Id</em>' attribute.
+     * @see #setInternalId(String)
+     * @see org.talend.designer.core.model.utils.emf.talendfile.TalendFilePackage#getContextParameterType_InternalId()
+     * @model dataType="org.eclipse.emf.ecore.xml.type.String"
+     *        extendedMetaData="kind='attribute' name='inernalId' namespace='##targetNamespace'"
+     * @generated
+     */
+    String getInternalId();
+
+    /**
+     * Sets the value of the '{@link org.talend.designer.core.model.utils.emf.talendfile.ContextParameterType#getInternalId <em>Internal Id</em>}' attribute.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @param value the new value of the '<em>Internal Id</em>' attribute.
+     * @see #getInternalId()
+     * @generated
+     */
+    void setInternalId(String value);
 
     /**
      * Specially for Password type of context, and the value should be encrypt always.
