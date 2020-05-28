@@ -19,6 +19,7 @@
    <extension-point id="hadoopConnectionCreator" name="Hadoop Connection Creator" schema="schema/hadoopConnectionCreator.exsd"/>
    <extension-point id="artifact_handler" name="Artifact Repository Handler" schema="schema/artifact_handler.exsd"/>
    <extension-point id="actionFilterDelegate" name="Action Filter delegate" schema="schema/actionFilterDelegate.exsd"/>
+   <extension-point id="saveItemContextLinkService" name="Save Item Context Link Service" schema="schema/saveItemContextLinkService.exsd"/>
 
       <extension
          point="org.talend.core.runtime.repositoryComponent_provider">
@@ -52,5 +53,17 @@
             id="talend"
             name="Talend">
       </category>
+   </extension>
+   
+    <extension
+         point="org.talend.core.runtime.service">
+      <Service
+            class="org.talend.core.model.update.RepositoryContextUpdateService"
+            serviceId="IRepositoryContextUpdateService">
+      </Service>
+      <Service
+            class="org.talend.core.model.update.GenericDbContextUpdateService"
+            serviceId="IRepositoryContextUpdateService">
+      </Service>
    </extension>
 </plugin>

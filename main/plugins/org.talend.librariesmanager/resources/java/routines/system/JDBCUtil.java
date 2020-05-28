@@ -71,12 +71,14 @@ public class JDBCUtil {
         try {
             if(rs.getTimestamp(index) != null) {
                 result = new Date(rs.getTimestamp(index).getTime());
+                return result;
             }
         } catch (java.sql.SQLException e) {
         }
         try {
             if(rs.getDate(index) != null) {
                 result = new Date(rs.getDate(index).getTime());
+                return result;
             }
         } catch (java.sql.SQLException e) {
         }

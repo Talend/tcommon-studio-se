@@ -14,6 +14,8 @@ package org.talend.repository.items.importexport.handlers.imports;
 
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
+import java.io.File;
+import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
@@ -31,6 +33,9 @@ import java.util.stream.Collectors;
 import org.apache.commons.lang.ArrayUtils;
 import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Priority;
+import org.eclipse.core.resources.IFile;
+import org.eclipse.core.resources.IFolder;
+import org.eclipse.core.resources.IProject;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.FileLocator;
 import org.eclipse.core.runtime.IConfigurationElement;
@@ -52,9 +57,11 @@ import org.talend.commons.runtime.model.repository.ERepositoryStatus;
 import org.talend.commons.runtime.utils.io.FileCopyUtils;
 import org.talend.commons.utils.VersionUtils;
 import org.talend.commons.utils.time.TimeMeasure;
+import org.talend.commons.utils.workbench.resources.ResourceUtils;
 import org.talend.core.GlobalServiceRegister;
 import org.talend.core.context.Context;
 import org.talend.core.context.RepositoryContext;
+import org.talend.core.model.context.link.ContextLinkService;
 import org.talend.core.model.metadata.builder.connection.Connection;
 import org.talend.core.model.metadata.builder.connection.ConnectionPackage;
 import org.talend.core.model.migration.IMigrationToolService;
@@ -808,7 +815,7 @@ public class ImportBasicHandler extends AbstractImportExecutableHandler {
                         tmpItem.getProperty().setAuthor(null);
                     }
                 }
-
+                path = changePathByNewID(path, tmpItem);
                 beforeCreatingItem(selectedImportItem);
 
                 final RepositoryObjectCache repObjectcache = ImportCacheHelper.getInstance().getRepObjectcache();
@@ -833,11 +840,14 @@ public class ImportBasicHandler extends AbstractImportExecutableHandler {
                     logError(e);
                 }
                 if (selectedImportItem.isImported()) {
+                    File linkFile = findSourceContextLinkFile(selectedImportItem);
                     selectedImportItem.setImportPath(path.toPortableString());
                     selectedImportItem.setRepositoryType(itemType);
                     selectedImportItem.setItemId(selectedImportItem.getProperty().getId());
                     selectedImportItem.setItemVersion(selectedImportItem.getProperty().getVersion());
-
+                    if (linkFile != null && linkFile.exists()) {
+                        copyContextLinkFile(linkFile, tmpItem);
+                    }
                     repObjectcache.addToCache(tmpItem);
                 }
 
@@ -874,11 +884,42 @@ public class ImportBasicHandler extends AbstractImportExecutableHandler {
         }
     }
 
-    private boolean isNeedDeleteOnRemote(String importingLabel, String existLabel) {
-        if (importingLabel != null && importingLabel.equalsIgnoreCase(importingLabel) && !importingLabel.equals(existLabel)) {
-            return true;
+    protected File findSourceContextLinkFile(ImportItem importItem) {
+        String techLabel = importItem.getItemProject().getTechnicalLabel();
+        File projectFolder = null, linkFile = null;
+        File file = new File(importItem.getPath().toPortableString());
+        while (file.getParentFile() != null) {
+            if (file.getParentFile().getName().equals(techLabel)) {
+                projectFolder = file.getParentFile();
+                break;
+            }
+            file = file.getParentFile();
         }
-        return false;
+        if (projectFolder != null) {
+            linkFile = new File(
+                    ContextLinkService.calLinksFilePath(projectFolder.getAbsolutePath(), importItem.getOriginProperyId()));
+        }
+        return linkFile;
+    }
+
+    protected void copyContextLinkFile(File sourceLinkFile, Item item)
+            throws IOException, PersistenceException, CoreException {
+        String techLabel = ProjectManager.getInstance().getCurrentProject().getTechnicalLabel();
+        IProject iProject = ResourceUtils.getProject(techLabel);
+        IFolder settingFolder = ResourceUtils.getFolder(iProject, RepositoryConstants.SETTING_DIRECTORY, false);
+        if (!settingFolder.exists()) {
+            settingFolder.create(true, true, null);
+        }
+        IFolder linksFolder = settingFolder.getFolder(ContextLinkService.LINKS_FOLDER_NAME);
+        if (!linksFolder.exists()) {
+            linksFolder.create(true, true, null);
+        }
+        IFile linkFile = linksFolder.getFile(ContextLinkService.getLinkFileName(item.getProperty().getId()));
+        if (!linkFile.exists()) {
+            ResourceUtils.createFile(new FileInputStream(sourceLinkFile), linkFile);
+        } else {
+            ResourceUtils.setFileContent(new FileInputStream(sourceLinkFile), linkFile);
+        }
     }
 
     /**
@@ -994,7 +1035,10 @@ public class ImportBasicHandler extends AbstractImportExecutableHandler {
     }
 
     protected void beforeCreatingItem(ImportItem selectedImportItem) {
-        // noting to do specially.
+    }
+    
+    protected IPath changePathByNewID(IPath path, Item item) {
+        return path;
     }
 
     protected void afterCreatedItem(ResourcesManager resManager, ImportItem selectedImportItem) throws Exception {
