@@ -293,6 +293,8 @@ public class CreateMavenJobPom extends AbstractMavenProcessorPom {
         checkPomProperty(properties, "talend.product.version", ETalendMavenVariables.ProductVersion,
                 jobInfoProp.getProperty(JobInfoProperties.COMMANDLINE_VERSION, VersionUtils.getVersion()));
         String finalNameStr = JavaResourcesHelper.getJobJarName(property.getLabel(), property.getVersion());
+        String projectFolderName = JavaResourcesHelper.getProjectFolderName(property.getItem());
+        finalNameStr = projectFolderName + "_" + finalNameStr;
         checkPomProperty(properties, "talend.job.finalName", ETalendMavenVariables.JobFinalName, finalNameStr);
 
         if (getJobProcessor() != null) {
