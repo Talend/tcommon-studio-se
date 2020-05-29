@@ -585,15 +585,18 @@ public class JobContextManager implements IContextManager {
                                 contextParamType.setRepositoryContextId(contextId);
                             }
                         }
-                    } else if (useInternalId) {
-                        String internalId = contextParam.getInternalId();
-                        if (StringUtils.isEmpty(internalId)) {
-                            internalId = EcoreUtil.generateUUID();
-                            contextParamType.setInternalId(internalId);
-                            contextParam.setInternalId(internalId);
-                        } else {
-                            contextParamType.setInternalId(internalId);
+                    } else {
+                        if (useInternalId) {
+                            String internalId = contextParam.getInternalId();
+                            if (StringUtils.isEmpty(internalId)) {
+                                internalId = EcoreUtil.generateUUID();
+                                contextParamType.setInternalId(internalId);
+                                contextParam.setInternalId(internalId);
+                            } else {
+                                contextParamType.setInternalId(internalId);
+                            }
                         }
+                        contextParamType.setRepositoryContextId(contextParam.getSource());
                     }
                 }
                 contextTypeParamList.clear(); // remove old
