@@ -33,6 +33,8 @@ public class RepositoryConstants {
 
     public static final String PROJECT_BRANCH_ID = "repository.project.branch"; //$NON-NLS-1$
 
+    public static final String PROJECT_ID = "repository.project.id";
+
     public static final String IMG_DIRECTORY = "images"; //$NON-NLS-1$
 
     public static final String IMG_DIRECTORY_OF_JOB_OUTLINE = "images/job_outlines"; //$NON-NLS-1$

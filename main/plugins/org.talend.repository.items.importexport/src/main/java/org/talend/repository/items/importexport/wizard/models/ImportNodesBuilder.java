@@ -29,6 +29,7 @@ import org.talend.core.PluginChecker;
 import org.talend.core.hadoop.IHadoopClusterService;
 import org.talend.core.hadoop.repository.HadoopRepositoryUtil;
 import org.talend.core.model.properties.Item;
+import org.talend.core.model.properties.ItemState;
 import org.talend.core.model.properties.Project;
 import org.talend.core.model.repository.ERepositoryObjectType;
 import org.talend.core.ui.ITestContainerProviderService;
@@ -234,9 +235,12 @@ public class ImportNodesBuilder {
                 parentImportNode = findAndCreateFolderNode(typeImportNode, path);
                 parentImportNode.setItemRecord(itemRecord);
             } else {
-                String path = item.getState().getPath();
-                if (StringUtils.isNotEmpty(path)) { // if has path, will find the real path node.
-                    parentImportNode = findAndCreateFolderNode(typeImportNode, new Path(path));
+                ItemState state = item.getState();
+                if (state != null) {
+                    String path = state.getPath();
+                    if (StringUtils.isNotEmpty(path)) { // if has path, will find the real path node.
+                        parentImportNode = findAndCreateFolderNode(typeImportNode, new Path(path));
+                    }
                 }
                 ItemImportNode itemNode = new ItemImportNode(itemRecord);
                 parentImportNode.addChild(itemNode);
