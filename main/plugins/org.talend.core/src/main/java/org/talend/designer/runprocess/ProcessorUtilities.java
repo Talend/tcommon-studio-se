@@ -2813,57 +2813,6 @@ public class ProcessorUtilities {
         return "tRunJob".equalsIgnoreCase(componentName) || "cTalendJob".equalsIgnoreCase(componentName);
     }
     
-    /**
-     * Generate a log4j2 config and write it into file
-     * 
-     * @param configFile target file where config will be written
-     * @param rootLevel root logger level to be used
-     */
-    public static void writeLog4j2ConfToFile(File configFile, Level rootLevel) throws IOException {
-        ConfigurationBuilder<BuiltConfiguration> builder = ConfigurationBuilderFactory.newConfigurationBuilder();
-        FileOutputStream configOs = new FileOutputStream(configFile);
-        final AppenderComponentBuilder appenderBuilder = builder.newAppender("Console", "Console").addAttribute("target", ConsoleAppender.Target.SYSTEM_OUT);
-        appenderBuilder.add(builder.newLayout("PatternLayout").addAttribute("pattern", "[%-5level] %d{HH:mm:ss} %logger{36}- %msg%n"));
-        final RootLoggerComponentBuilder rootLoggerBuilder = builder.newRootLogger(rootLevel).add(builder.newAppenderRef("Console"));
-        builder.add(appenderBuilder);
-        builder.add(rootLoggerBuilder);
-        builder.writeXmlConfiguration(configOs);
-    }
-
-    public static void addFileToJar(String configFile, String jarFile) throws FileNotFoundException, IOException {
-        JarOutputStream jarOs = new JarOutputStream(new FileOutputStream(jarFile));
-        FileInputStream configIs = new FileInputStream(configFile);
-        JarEntry jarEntry = new JarEntry("log4j2.xml");
-        jarOs.putNextEntry(jarEntry);
-        byte[] bytes = new byte[1024];
-        int length;
-        while ((length = configIs.read(bytes)) >= 0) {
-            jarOs.write(bytes, 0, length);
-        }
-        configIs.close();
-        jarOs.closeEntry();
-        jarOs.close();
-    }
-    
-    /**
-     * Generate a jar containing a log4j2 config file
-     * 
-     * @param process job for which to generate jar
-     * @param rootLevel root logger level
-     * @return path of the generated jar
-     * @throws IOException
-     */
-    public static String buildLog4jConfigJar(IProcess process, String rootLevel) throws IOException {
-        String externalResourcesFolderPath = getJavaProjectExternalResourcesFolderPath(process);
-        String configFilePath = externalResourcesFolderPath + "/log4j2.xml";
-        String jarFilePath = externalResourcesFolderPath + "/talend-studio-log4j2.xml.jar";
-        // Create config file
-        ProcessorUtilities.writeLog4j2ConfToFile(new File(configFilePath), Level.getLevel(rootLevel));
-        // Put config file into jar
-        ProcessorUtilities.addFileToJar(configFilePath, jarFilePath);
-        return jarFilePath;
-    }
-
     public static boolean isCIMode() {
         return isCIMode;
     }

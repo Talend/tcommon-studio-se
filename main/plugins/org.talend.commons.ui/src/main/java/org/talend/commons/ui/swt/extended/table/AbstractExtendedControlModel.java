@@ -94,5 +94,9 @@ public abstract class AbstractExtendedControlModel {
         }
 
     }
+    
+    public boolean isReadonly() {
+    	return false;
+    }
 
 }

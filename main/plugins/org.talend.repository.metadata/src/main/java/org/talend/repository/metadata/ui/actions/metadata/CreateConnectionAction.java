@@ -33,6 +33,7 @@ import org.talend.core.model.properties.DatabaseConnectionItem;
 import org.talend.core.model.properties.Property;
 import org.talend.core.model.repository.ERepositoryObjectType;
 import org.talend.core.model.repository.RepositoryObject;
+import org.talend.core.model.update.RepositoryUpdateManager;
 import org.talend.core.repository.model.ProxyRepositoryFactory;
 import org.talend.core.repository.ui.actions.metadata.AbstractCreateAction;
 import org.talend.core.runtime.services.IGenericDBService;
@@ -175,12 +176,14 @@ public class CreateConnectionAction extends AbstractCreateAction {
             Property property = node.getObject().getProperty();
             Property updatedProperty = null;
             try {
+                if (!creation) {
+                    RepositoryUpdateManager.updateConnectionContextParam(node);
+                }
                 updatedProperty = ProxyRepositoryFactory.getInstance().getUptodateProperty(
                         new Project(ProjectManager.getInstance().getProject(property.getItem())), property);
             } catch (PersistenceException e) {
                 ExceptionHandler.process(e);
             }
-
         }
 
         DatabaseWizard databaseWizard;

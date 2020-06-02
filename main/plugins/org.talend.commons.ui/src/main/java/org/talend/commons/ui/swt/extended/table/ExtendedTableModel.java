@@ -398,4 +398,9 @@ public class ExtendedTableModel<B> extends AbstractExtendedControlModel {
         this.tableViewer = tableViewer;
     }
 
+	@Override
+	public boolean isReadonly() {
+		return super.isReadonly();
+	}
+
 }

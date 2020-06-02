@@ -219,4 +219,13 @@ public class MetadataTableEditor extends ExtendedTableModel<IMetadataColumn> {
 
         return metadataColumn;
     }
+
+	@Override
+	public boolean isReadonly() {
+		if (this.metadataTable != null) {
+			return this.metadataTable.isReadOnly();
+		}
+		return super.isReadonly();
+	}
+    
 }

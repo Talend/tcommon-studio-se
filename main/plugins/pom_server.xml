@@ -15,7 +15,7 @@
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <talend.nexus.url>https://artifacts-zl.talend.com</talend.nexus.url>
-        <org.talend.daikon.crypto-utils.version>1.7.0</org.talend.daikon.crypto-utils.version>
+        <org.talend.daikon.crypto-utils.version>1.15.0</org.talend.daikon.crypto-utils.version>
     </properties>
 
     <modules>

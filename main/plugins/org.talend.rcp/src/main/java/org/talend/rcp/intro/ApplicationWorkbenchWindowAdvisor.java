@@ -91,8 +91,8 @@ import org.talend.core.model.utils.TalendPropertiesUtil;
 import org.talend.core.prefs.IDEInternalPreferences;
 import org.talend.core.prefs.ITalendCorePrefConstants;
 import org.talend.core.repository.model.ProxyRepositoryFactory;
-import org.talend.core.services.ICoreTisService;
 import org.talend.core.ui.CoreUIPlugin;
+import org.talend.core.ui.IInstalledPatchService;
 import org.talend.core.ui.branding.IBrandingConfiguration;
 import org.talend.core.ui.branding.IBrandingService;
 import org.talend.core.ui.perspective.RestoreAllRegisteredPerspectivesProvider;
@@ -187,11 +187,11 @@ public class ApplicationWorkbenchWindowAdvisor extends WorkbenchWindowAdvisor {
         }
         
         String buildIdField = " (" + VersionUtils.getVersion() + ")"; //$NON-NLS-1$ //$NON-NLS-2$
-        if (GlobalServiceRegister.getDefault().isServiceRegistered(ICoreTisService.class)) {
-        	ICoreTisService pachService = (ICoreTisService) GlobalServiceRegister
-                    .getDefault().getService(ICoreTisService.class);
+        if (GlobalServiceRegister.getDefault().isServiceRegistered(IInstalledPatchService.class)) {
+        	IInstalledPatchService pachService = (IInstalledPatchService) GlobalServiceRegister
+                    .getDefault().getService(IInstalledPatchService.class);
             if (pachService != null) {
-                String patchVersion = pachService.getLatestInstalledVersion();
+                String patchVersion = pachService.getLatestInstalledVersion(true);
                 if(patchVersion != null) {
                 	buildIdField = " (" + patchVersion + ")"; //$NON-NLS-1$ //$NON-NLS-2$;
                 }
