@@ -27,6 +27,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 import java.util.Properties;
+import java.util.Scanner;
 import java.util.Set;
 import java.util.stream.Collectors;
 
@@ -535,6 +536,7 @@ public class CreateMavenJobPom extends AbstractMavenProcessorPom {
                                 "${talend.job.bat.addition}" },
                         new String[] { jvmArgsStr.toString().trim(), getWindowsClasspath(), jobClass,
                                 windowsScriptAdditionValue.toString() });
+        batContent = normalizeSpaces(batContent);
 
         String shContent = MavenTemplateManager.getProjectSettingValue(IProjectSettingPreferenceConstants.TEMPLATE_SH,
                 templateParameters);
@@ -544,6 +546,7 @@ public class CreateMavenJobPom extends AbstractMavenProcessorPom {
                                 "${talend.job.sh.addition}" },
                         new String[] { jvmArgsStr.toString().trim(), getUnixClasspath(), jobClass,
                                 unixScriptAdditionValue.toString() });
+        shContent = normalizeSpaces(shContent);
 
         String psContent = MavenTemplateManager.getProjectSettingValue(IProjectSettingPreferenceConstants.TEMPLATE_PS,
                 templateParameters);
@@ -553,6 +556,7 @@ public class CreateMavenJobPom extends AbstractMavenProcessorPom {
                                 "${talend.job.class}", "${talend.job.bat.addition}" },
                         new String[] { jvmArgsStrPs1.toString().trim(), getWindowsClasspathForPs1(), jobClass,
                                 windowsScriptAdditionValue.toString() });
+        psContent = normalizeSpaces(psContent);
 
         String jobInfoContent = MavenTemplateManager
                 .getProjectSettingValue(IProjectSettingPreferenceConstants.TEMPLATE_JOB_INFO, templateParameters);
@@ -586,6 +590,24 @@ public class CreateMavenJobPom extends AbstractMavenProcessorPom {
         MavenTemplateManager.saveContent(shFile, shContent, overwrite);
         MavenTemplateManager.saveContent(psFile, psContent, overwrite);
         MavenTemplateManager.saveContent(infoFile, jobInfoContent, overwrite);
+    }
+
+    // https://jira.talendforge.org/browse/TUP-27053
+    public static String normalizeSpaces(String src) {
+        StringBuffer sb = new StringBuffer();
+        try (Scanner scanner = new Scanner(src)) {
+            while (scanner.hasNextLine()) {
+                String line = scanner.nextLine();
+                line = StringUtils.normalizeSpace(line.trim());
+                if (!line.isEmpty()) {
+                    sb.append(line);
+                }
+                sb.append('\n');
+            }
+        } catch (Exception e) {
+
+        }
+        return sb.toString();
     }
 
     protected ITalendProcessJavaProject getTalendJobJavaProject(JobInfo jobInfo) {
