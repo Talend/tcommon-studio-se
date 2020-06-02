@@ -341,7 +341,8 @@ public class JobContextManager implements IContextManager {
 
                 String repositoryContextId = contextParamType.getRepositoryContextId();
                 String source = IContextParameter.BUILT_IN;
-                if (repositoryContextId != null && !"".equals(repositoryContextId)) { //$NON-NLS-1$
+                if (repositoryContextId != null && !"".equals(repositoryContextId) //$NON-NLS-1$
+                        && !IContextParameter.BUILT_IN.equals(repositoryContextId)) {
                     Item item = ContextUtils.getContextItemById(contextItemList, repositoryContextId);
                     if (item == null) {
                         item = ContextUtils.getRepositoryContextItemById(repositoryContextId);
