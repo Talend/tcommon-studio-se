@@ -110,7 +110,8 @@ public class RecycleBinManager {
         List<IRepositoryViewObject> deletedObjects = new ArrayList<IRepositoryViewObject>();
         final EList<TalendItem> deletedItems = projectRecyclebins.get(project.getTechnicalLabel()).getDeletedItems();
         List<TalendItem> notDeletedItems = new ArrayList<TalendItem>();
-        for (TalendItem deletedItem : deletedItems) {
+        List<TalendItem> dup_deletedItems = new ArrayList<>(deletedItems);
+        for (TalendItem deletedItem : dup_deletedItems) {
             try {
                 final ERepositoryObjectType type = ERepositoryObjectType.getType(deletedItem.getType());
                 // ignore the generated doc in recycle bin
