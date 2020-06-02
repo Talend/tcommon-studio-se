@@ -426,6 +426,11 @@ public class ERepositoryObjectType extends DynaEnum<ERepositoryObjectType> {
      */
     public final static ERepositoryObjectType JOBLET = ERepositoryObjectType.valueOf("JOBLET"); //$NON-NLS-1$
 
+    /**
+     * <font color="red">This value may be <b>null</b> in some products, <b>should add NPE check</b></font>
+     */
+    public final static ERepositoryObjectType SERVICES = ERepositoryObjectType.valueOf("SERVICES"); //$NON-NLS-1$
+
     public final static ERepositoryObjectType JOBLET_DESIGNS = ERepositoryObjectType.valueOf("JOBLET_DESIGNS"); //$NON-NLS-1$
 
     public final static ERepositoryObjectType SPARK_JOBLET = ERepositoryObjectType.valueOf("SPARK_JOBLET"); //$NON-NLS-1$
@@ -437,6 +442,8 @@ public class ERepositoryObjectType extends DynaEnum<ERepositoryObjectType> {
     public final static ERepositoryObjectType CODE = ERepositoryObjectType.valueOf("CODE"); //$NON-NLS-1$
 
     public final static ERepositoryObjectType ROUTINES = ERepositoryObjectType.valueOf("ROUTINES"); //$NON-NLS-1$
+
+    public final static ERepositoryObjectType BEANS = ERepositoryObjectType.valueOf("BEANS"); //$NON-NLS-1$
 
     public final static ERepositoryObjectType METADATA_HEADER_FOOTER = ERepositoryObjectType.valueOf("METADATA_HEADER_FOOTER"); //$NON-NLS-1$
 
