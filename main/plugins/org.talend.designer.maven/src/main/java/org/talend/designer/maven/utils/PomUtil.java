@@ -63,6 +63,7 @@ import org.eclipse.core.runtime.IPath;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.NullProgressMonitor;
 import org.eclipse.core.runtime.jobs.ISchedulingRule;
+import org.eclipse.core.runtime.jobs.Job;
 import org.eclipse.core.runtime.jobs.MultiRule;
 import org.eclipse.m2e.core.MavenPlugin;
 import org.eclipse.m2e.core.embedder.MavenModelManager;
@@ -563,20 +564,39 @@ public class PomUtil {
 
     public static String generatePom(MavenArtifact artifact) {
         try {
+            IProgressMonitor monitor = new NullProgressMonitor();
             Project project = ProjectManager.getInstance().getCurrentProject();
             IProject fsProject = ResourceUtils.getProject(project);
             IFolder tmpFolder = fsProject.getFolder("temp");
             if (!tmpFolder.exists()) {
-                tmpFolder.create(true, true, null);
+                executeFolderAction(monitor, fsProject, new IWorkspaceRunnable() {
+
+                    @Override
+                    public void run(IProgressMonitor monitor) throws CoreException {
+                        tmpFolder.create(true, true, null);
+                    }
+                });
             }
             File createTempFile = File.createTempFile(TalendMavenConstants.PACKAGING_POM, "");
             createTempFile.delete();
             String tmpFolderName = createTempFile.getName();
             IFolder folder = tmpFolder.getFolder(tmpFolderName);
-            folder.create(true, true, null);
+            executeFolderAction(monitor, tmpFolder, new IWorkspaceRunnable() {
+
+                @Override
+                public void run(IProgressMonitor monitor) throws CoreException {
+                    folder.create(true, true, null);
+                }
+            });
             IFile pomFile = folder.getFile(TalendMavenConstants.POM_FILE_NAME);
 
-            MODEL_MANAGER.createMavenModel(pomFile, createModel(artifact));
+            executeFolderAction(monitor, folder, new IWorkspaceRunnable() {
+
+                @Override
+                public void run(IProgressMonitor monitor) throws CoreException {
+                    MODEL_MANAGER.createMavenModel(pomFile, createModel(artifact));
+                }
+            });
             return pomFile.getLocation().toPortableString();
         } catch (PersistenceException e) {
             ExceptionHandler.process(e);
@@ -586,6 +606,35 @@ public class PomUtil {
             ExceptionHandler.process(e);
         }
         return null;
+    }
+
+    private static void executeFolderAction(IProgressMonitor monitor, IResource parentFolder, IWorkspaceRunnable run)
+            throws CoreException {
+        if (Job.getJobManager().currentRule() == null) {
+            IWorkspace workspace = ResourcesPlugin.getWorkspace();
+            ISchedulingRule defaultRule = workspace.getRuleFactory().modifyRule(parentFolder);
+            ISchedulingRule noBlockRule = new ISchedulingRule() {
+
+                @Override
+                public boolean isConflicting(ISchedulingRule rule) {
+                    return this.contains(rule);
+                }
+
+                @Override
+                public boolean contains(ISchedulingRule rule) {
+                    if (this.equals(rule)) {
+                        return true;
+                    }
+                    if (defaultRule.contains(rule)) {
+                        return true;
+                    }
+                    return false;
+                }
+            };
+            workspace.run(run, noBlockRule, IWorkspace.AVOID_UPDATE, monitor);
+        } else {
+            run.run(monitor);
+        }
     }
 
     private static Model createModel(MavenArtifact artifact) {
