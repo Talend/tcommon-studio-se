@@ -712,7 +712,7 @@ public class CreateMavenJobPom extends AbstractMavenProcessorPom {
 
             // add jobs
             setupDependencySetNode(document, jobCoordinate, "${talend.job.name}",
-                    "${artifact.build.finalName}.${artifact.extension}", true, false);
+                    "${artifact.build.finalName}.${artifact.extension}", true, true);
             // add duplicate dependencies if exists
             setupFileNode(document, duplicateLibs.values().stream().flatMap(s -> s.stream()).collect(Collectors.toSet()));
 
