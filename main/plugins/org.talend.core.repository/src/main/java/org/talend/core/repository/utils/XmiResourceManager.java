@@ -26,7 +26,6 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
-import org.apache.log4j.Level;
 import org.eclipse.core.resources.IFile;
 import org.eclipse.core.resources.IFolder;
 import org.eclipse.core.resources.IProject;
@@ -68,10 +67,8 @@ import org.talend.core.model.properties.ReferenceFileItem;
 import org.talend.core.model.properties.TDQItem;
 import org.talend.core.model.properties.ValidationRulesConnectionItem;
 import org.talend.core.model.properties.helper.ByteArrayResource;
-import org.talend.core.model.relationship.RelationshipItemBuilder;
 import org.talend.core.model.repository.ERepositoryObjectType;
 import org.talend.core.repository.constants.FileConstants;
-import org.talend.core.repository.model.ProxyRepositoryFactory;
 import org.talend.core.repository.utils.ResourceFilenameHelper.FileName;
 import org.talend.core.ui.ITestContainerProviderService;
 import org.talend.designer.core.model.utils.emf.talendfile.ProcessType;
@@ -114,18 +111,7 @@ public class XmiResourceManager {
             unloadResource(uri.toString());
         }
 
-        Resource resource = null;
-        try {
-            resource = getResourceSet().getResource(uri, true);
-        } catch (Exception e) {
-            ExceptionHandler.process(new Throwable("Load project resource fail, will be recreated", e),
-                    Level.WARN);
-            resource = reCreateProjectResource(project);
-        }
-
-        if (resource == null) {
-            throw new PersistenceException("Project resource not found");
-        }
+        Resource resource = getResourceSet().getResource(uri, true);
         Project emfProject = (Project) EcoreUtil.getObjectByType(resource.getContents(),
                 PropertiesPackage.eINSTANCE.getProject());
         emfProject.eResource().setTrackingModification(true);
@@ -133,19 +119,6 @@ public class XmiResourceManager {
         ProjectDataJsonProvider.loadProjectData(emfProject, project, ProjectDataJsonProvider.CONTENT_ALL);
 
         return emfProject;
-    }
-
-    public Resource reCreateProjectResource(IProject project) throws PersistenceException {
-        URI uri = getProjectResourceUri(project);
-        unloadResource(uri.toString());
-        //RemoteRepositoryFactory.delegateBeforeLogon got curProject update to context
-        Project emfProject = ProxyRepositoryFactory.getInstance().getRepositoryContext().getProject().getEmfProject();
-        emfProject.setItemsRelationVersion(RelationshipItemBuilder.INDEX_VERSION);
-        Resource projectResource = createProjectResource(project);
-        projectResource.getContents().add(emfProject);
-        projectResource.getContents().add(emfProject.getAuthor());
-        saveResource(projectResource);
-        return projectResource;
     }
 
     public boolean hasTalendProjectFile(IProject project) {

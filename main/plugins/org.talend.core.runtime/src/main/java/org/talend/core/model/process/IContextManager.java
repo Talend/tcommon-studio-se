@@ -44,6 +44,8 @@ public interface IContextManager {
 
     public void saveToEmf(EList contextTypeList);
 
+    public void saveToEmf(EList contextTypeList, boolean useInternalId);
+
     public void loadFromEmf(EList contextTypeList, String defaultContextName);
 
     public boolean sameAs(IContextManager contextManager);

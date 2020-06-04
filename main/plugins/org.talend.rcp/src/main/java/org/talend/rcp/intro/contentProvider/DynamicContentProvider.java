@@ -196,7 +196,7 @@ public class DynamicContentProvider extends IntroProvider {
         if (activeDataCollector && version != null && edition != null) {
             // uuid
             DefaultTokenCollector dtc = new DefaultTokenCollector();
-            url.append("?version=").append(sb.toString()).append("&uid=").append(dtc.calcUniqueId()).append("&edition=") //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+            url.append("?version=").append(sb.toString()).append("&uid=").append(dtc.hashUniqueId()).append("&edition=") //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
                     .append(edition);
         } else if (!activeDataCollector && version != null && edition != null) {
             url.append("?version=").append(sb.toString()).append("&edition=").append(edition); //$NON-NLS-1$ //$NON-NLS-2$

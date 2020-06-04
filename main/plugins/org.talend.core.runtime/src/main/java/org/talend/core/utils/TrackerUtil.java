@@ -46,4 +46,8 @@ public class TrackerUtil {
 		Version version = new Version(strVersion);
 		return getStrVersion(version);
 	}
+	
+	public static String getRedshiftTracker() {
+		return "--Talend -v " + getVersion();
+	}
 }

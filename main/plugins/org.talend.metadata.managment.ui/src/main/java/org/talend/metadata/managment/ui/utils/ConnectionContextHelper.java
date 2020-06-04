@@ -685,17 +685,20 @@ public final class ConnectionContextHelper {
             // get the context variables from the node parameters.
             Set<String> neededVars = retrieveContextVar(elementParameters, connection, category);
             boolean isGeneric = isGenericConnection(connection);
+            Map<String, String> renamedMap = ContextUtils.getContextParamterRenamedMap(process.getProperty().getItem());
             if (neededVars != null && !neededVars.isEmpty() || isGeneric) {
                 ContextItem contextItem = ContextUtils.getContextItemById2(connection.getContextId());
                 if (contextItem != null) {
                     // find added variables
+                    neededVars.removeAll(renamedMap.keySet());
+                    neededVars.addAll(renamedMap.values());
                     Set<String> tempVars = null;
                     if(isGeneric){
                         tempVars = checkAndAddContextVariables(contextItem, process.getContextManager(),
-                                false);
+                                false, renamedMap);
                     }else{
                         tempVars = checkAndAddContextVariables(contextItem, neededVars, process.getContextManager(),
-                                false);
+                                false, renamedMap);
                     }
                     Set<String> addedVars = tempVars;
 
@@ -785,17 +788,19 @@ public final class ConnectionContextHelper {
 
                     List<ContextItem> contextItems = new ArrayList<>();
                     if (contextItem != null || hadoopClusterContextItem != null) {
+                        Map<String, String> renamedMap = ContextUtils
+                                .getContextParamterRenamedMap(process.getProperty().getItem());
                         // find added variables
                         Set<String> connAddedVars = null;
                         Set<String> hcAddedVars = null;
                         if (contextItem != null) {
                             connAddedVars = checkAndAddContextVariables(contextItem, neededVars, process.getContextManager(),
-                                    false);
+                                    false, renamedMap);
                             contextItems.add(contextItem);
                         }
                         if (hadoopClusterContextItem != null) {
                             hcAddedVars = checkAndAddContextVariables(hadoopClusterContextItem, hcNeededVars,
-                                    process.getContextManager(), false);
+                                    process.getContextManager(), false, renamedMap);
                             contextItems.add(hadoopClusterContextItem);
                         }
 
@@ -846,7 +851,9 @@ public final class ConnectionContextHelper {
 
     private static void addContextVarsToExistVariable(IProcess2 process, ContextItem contextItem, Set<String> addedVars,
             IContextManager contextMgr) {
-        Set<String> addedContext = ConnectionContextHelper.checkAndAddContextVariables(contextItem, addedVars, contextMgr, false);
+        Map<String, String> renamedMap = ContextUtils.getContextParamterRenamedMap(process.getProperty().getItem());
+        Set<String> addedContext = ConnectionContextHelper.checkAndAddContextVariables(contextItem, addedVars, contextMgr, false,
+                renamedMap);
         if (addedContext != null && addedContext.size() > 0) {
             ConnectionContextHelper.addContextVarForJob(process, contextItem, addedVars);
         }
@@ -904,8 +911,9 @@ public final class ConnectionContextHelper {
         ShowAddedContextdialog showDialog = new ShowAddedContextdialog(addedVarsMap, true);
         if (showDialog.open() == Window.OK) {
             if (ConnectionContextHelper.containsVariable(contextManager)) {
+                Map<String, String> renamedMap = ContextUtils.getContextParamterRenamedMap(process.getProperty().getItem());
                 Set<String> addedContext = ConnectionContextHelper.checkAndAddContextVariables(contextItem, addedVars,
-                        contextManager, false);
+                        contextManager, false, renamedMap);
                 if (addedContext != null && addedContext.size() > 0) {
                     ConnectionContextHelper.addContextVarForJob(process, contextItem, addedVars);
                 }
@@ -967,6 +975,7 @@ public final class ConnectionContextHelper {
         //
         if (!varsMap.isEmpty()) {
             Map<String, Set<String>> addedVarsMap = new HashMap<String, Set<String>>();
+            Map<String, String> renamedMap = ContextUtils.getContextParamterRenamedMap(process.getProperty().getItem());
             for (String id : varsMap.keySet()) {
                 ConnectionItem connItem = UpdateRepositoryUtils.getConnectionItemByItemId(id);
                 if (connItem != null) {
@@ -974,7 +983,7 @@ public final class ConnectionContextHelper {
                     if (contextItem != null) {
                         // add needed vars into job
                         Set<String> addedVars = checkAndAddContextVariables(contextItem, varsMap.get(id),
-                                process.getContextManager(), false);
+                                process.getContextManager(), false, renamedMap);
                         if (addedVars != null && !addedVars.isEmpty()) {
                             String source = UpdateRepositoryUtils.getRepositorySourceName(connItem);
                             addedVarsMap.put(source, addedVars);
@@ -1064,6 +1073,7 @@ public final class ConnectionContextHelper {
             }
         }
     }
+
 
     public static Set<String> retrieveContextVar(List<? extends IElementParameter> elementParameters, Connection connection,
             EComponentCategory category) {
@@ -1568,20 +1578,6 @@ public final class ConnectionContextHelper {
     }
 
     /**
-     * add the context from contextItem into the ctxManager: add the variables and the context groups.
-     *
-     * @param contextItem
-     * @param ctxManager
-     * @param addedVars the variables need to adding
-     * @param contextGoupNameSet the context group need to adding
-     */
-    public static void checkAndAddContextVariables(ContextItem contextItem, IContextManager ctxManager, Set<String> addedVars,
-            Set<String> contextGoupNameSet) {
-        mergeContextVariables(contextItem.getContext(), contextItem.getDefaultContext(), contextItem.getProperty().getId(),
-                ctxManager, addedVars, contextGoupNameSet, false);
-    }
-
-    /**
      * add the variables from ctxParams into JobContext.
      *
      * @param contextItem
@@ -1630,13 +1626,13 @@ public final class ConnectionContextHelper {
      * ggu Comment method "checkAndAddContextVariables".
      */
     public static Set<String> checkAndAddContextVariables(final ContextItem contextItem, final Set<String> neededVars,
-            final IContextManager ctxManager, boolean added) {
+            final IContextManager ctxManager, boolean added, Map<String, String> renamedMap) {
         return checkAndAddContextVariables(contextItem.getContext(), contextItem.getDefaultContext(), contextItem.getProperty()
-                .getId(), neededVars, ctxManager, added);
+                .getId(), neededVars, ctxManager, added, renamedMap);
     }
 
     public static Set<String> checkAndAddContextVariables(final ContextItem contextItem,
-            final IContextManager ctxManager, boolean added) {
+            final IContextManager ctxManager, boolean added, Map<String, String> renamedMap) {
         List<ContextType> contexts = contextItem.getContext();
         String defaultContextName = contextItem.getDefaultContext();
         String contextItemId = contextItem.getProperty().getId();
@@ -1645,8 +1641,16 @@ public final class ConnectionContextHelper {
             ContextType type = ContextUtils.getContextTypeByName(contexts, context.getName(), defaultContextName);
             if (type != null) {
                 for (ContextParameterType param :(List<ContextParameterType>)type.getContextParameter()){
+                    String paramName = param.getName();
                     if (context.getContextParameter(param.getName()) != null) {
                         continue;
+                    }
+                    String oldVar = renamedMap.get(paramName);
+                    if (oldVar != null) {
+                        IContextParameter contextParamter = context.getContextParameter(oldVar);
+                        if (contextParamter != null) {
+                            continue;
+                        }
                     }
                     if(added){
                         JobContextParameter contextParam = new JobContextParameter();
@@ -1678,20 +1682,29 @@ public final class ConnectionContextHelper {
      * @return
      */
     public static Set<String> checkAndAddContextVariables(final List<ContextType> contexts, final String defaultContextName,
-            final String contextItemId, final Set<String> neededVars, final IContextManager ctxManager, boolean added) {
+            final String contextItemId, final Set<String> neededVars, final IContextManager ctxManager, boolean added,
+            Map<String, String> renamedMap) {
         Set<String> addedVars = new HashSet<String>();
         for (IContext context : ctxManager.getListContext()) {
             ContextType type = ContextUtils.getContextTypeByName(contexts, context.getName(), defaultContextName);
             if (type != null) {
                 for (IContextParameter jobParam : context.getContextParameterList()) {
                     if (contextItemId.equals(jobParam.getSource())
-                            && ContextUtils.getContextParameterTypeByName(type, jobParam.getName()) == null) {
+                            && (ContextUtils.getContextParameterTypeByName(type, jobParam.getName()) == null
+                                    && !renamedMap.values().contains(jobParam.getName()))) {
                         jobParam.setSource(IContextParameter.BUILT_IN);
                     }
                 }
                 for (String var : neededVars) {
                     if (context.containsSameParameterIgnoreCase(var)) {
                         continue;
+                    }
+                    String oldVar = renamedMap.get(var);
+                    if (oldVar != null) {
+                        IContextParameter contextParamter = context.getContextParameter(oldVar);
+                        if (contextParamter != null) {
+                            continue;
+                        }
                     }
                     ContextParameterType param = ContextUtils.getContextParameterTypeByName(type, var);
                     if (param != null) {

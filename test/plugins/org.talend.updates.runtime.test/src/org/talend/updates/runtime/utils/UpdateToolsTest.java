@@ -163,6 +163,8 @@ public class UpdateToolsTest {
         } else {
             bundle = new File(pluginFolder, fileName);
             bundle.mkdir();
+            File testFile = new File(bundle, "test.txt");
+            testFile.createNewFile();
         }
         testFiles.add(bundle);
     }

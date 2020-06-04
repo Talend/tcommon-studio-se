@@ -90,6 +90,7 @@ import org.talend.commons.utils.io.FilesUtils;
 import org.talend.commons.utils.workbench.resources.ResourceUtils;
 import org.talend.core.GlobalServiceRegister;
 import org.talend.core.context.RepositoryContext;
+import org.talend.core.model.context.link.ContextLinkService;
 import org.talend.core.model.general.Project;
 import org.talend.core.model.general.TalendNature;
 import org.talend.core.model.metadata.MetadataManager;
@@ -170,7 +171,12 @@ import org.talend.core.runtime.maven.MavenConstants;
 import org.talend.core.runtime.projectsetting.ProjectPreferenceManager;
 import org.talend.core.ui.branding.IBrandingService;
 import org.talend.cwm.helper.ConnectionHelper;
+import org.talend.cwm.helper.ResourceHelper;
 import org.talend.cwm.helper.SubItemHelper;
+import org.talend.designer.core.model.utils.emf.talendfile.ContextParameterType;
+import org.talend.designer.core.model.utils.emf.talendfile.ContextType;
+import org.talend.designer.core.model.utils.emf.talendfile.impl.ContextTypeImpl;
+import org.talend.designer.core.model.utils.emf.talendfile.impl.TalendFilePackageImpl;
 import org.talend.repository.ProjectManager;
 import org.talend.repository.RepositoryWorkUnit;
 import org.talend.repository.localprovider.exceptions.IncorrectFileException;
@@ -1796,6 +1802,7 @@ public class LocalRepositoryFactory extends AbstractEMFRepositoryFactory impleme
                 for (Resource resource : affectedResources) {
                     deleteResource(resource, isDeleteOnRemote);
                 }
+                ContextLinkService.getInstance().deleteContextLinkJsonFile(currentProperty.getItem());
 
                 // ADD msjian TDQ-6791 2013-2-20:when the resource is invalid(null), delete its file
                 EList<EObject> eCrossReferences = currentItem.eCrossReferences();
@@ -2371,8 +2378,37 @@ public class LocalRepositoryFactory extends AbstractEMFRepositoryFactory impleme
 
     private Resource create(IProject project, ContextItem item, IPath path) throws PersistenceException {
         Resource itemResource = xmiResourceManager.createItemResource(project, item, path, ERepositoryObjectType.CONTEXT, false);
-        itemResource.getContents().addAll(item.getContext());
+        Map<String, String> contextIdMaps = new HashMap<String, String>();
+        Map<String, Map<String, String>> paramIdMaps = new HashMap<String, Map<String, String>>();
+        EList list = item.getContext();
+        for (Object obj : list) {
+            if (obj instanceof ContextType) {
+                ContextType contextType = (ContextType) obj;
+                contextIdMaps.put(contextType.getName(), ResourceHelper.getUUID(contextType));
+                Map<String, String> idMap = new HashMap<String, String>();
+                paramIdMaps.put(contextType.getName(), idMap);
+                for (Object op : contextType.getContextParameter()) {
+                    if (op instanceof ContextParameterType) {
+                        ContextParameterType p = (ContextParameterType) op;
+                        idMap.put(p.getName(), ResourceHelper.getUUID(p));
+                    }
+                }
+            }
+        }
 
+        itemResource.getContents().addAll(item.getContext());
+        ContextType[] newContextArray = EcoreUtil
+                .getObjectsByType(itemResource.getContents(), TalendFilePackageImpl.eINSTANCE.getContextType())
+                .toArray(new ContextType[0]);
+        for (int i = 0; i < newContextArray.length; i++) {
+            ContextTypeImpl newContextType = (ContextTypeImpl) newContextArray[i];
+            ResourceHelper.setUUid(newContextType, contextIdMaps.get(newContextType.getName()));
+            Map<String, String> idMap = paramIdMaps.get(newContextType.getName());
+            for (int j = 0; j < newContextType.getContextParameter().size(); j++) {
+                ContextParameterType newParam = (ContextParameterType) newContextType.getContextParameter().get(j);
+                ResourceHelper.setUUid(newParam, idMap.get(newParam.getName()));
+            }
+        }
         return itemResource;
     }
 
@@ -2629,6 +2665,11 @@ public class LocalRepositoryFactory extends AbstractEMFRepositoryFactory impleme
             }
             this.copyScreenshotFlag = false;
         }
+        saveContextLinkInfo(item);
+    }
+
+    private void saveContextLinkInfo(Item item) throws PersistenceException {
+        ContextLinkService.getInstance().saveContextLink(item);
     }
 
     @Override
@@ -3028,7 +3069,7 @@ public class LocalRepositoryFactory extends AbstractEMFRepositoryFactory impleme
         xmiResourceManager.saveResource(screenshotsResource);
         xmiResourceManager.saveResource(itemResource);
         xmiResourceManager.saveResource(propertyResource);
-
+        saveContextLinkInfo(item);
         if (isImportItem.length == 0 || !isImportItem[0]) {
             saveProject(project);
         }

@@ -73,21 +73,6 @@ public class VersionUtilsTest {
         assertEquals(talendVersion, VersionUtils.getMojoVersion("ci.builder.version"));
     }
 
-    @Test
-    public void testGetPluginVersion__MojoProperties() throws Exception {
-        String talendVersion = VersionUtils.getTalendVersion();
-        assertEquals(talendVersion + "-SNAPSHOT", VersionUtils.getMojoVersion("ci.builder.version"));
-        if (mojo_properties.exists()) {
-            mojo_properties.delete();
-        }
-        mojo_properties.createNewFile();
-        setPropertiesValue(mojo_properties, "ci.builder.version", talendVersion + "-patch1");
-        assertEquals(talendVersion + "-patch1", VersionUtils.getMojoVersion("ci.builder.version"));
-
-        setPropertiesValue(mojo_properties, "ci.builder.version", "6.0.0");
-        assertEquals(talendVersion + "-SNAPSHOT", VersionUtils.getMojoVersion("ci.builder.version"));
-    }
-
     private void setPropertiesValue(File propertiesFile, String key, String value) throws Exception {
         Properties properties = new Properties();
         properties.setProperty(key, value);

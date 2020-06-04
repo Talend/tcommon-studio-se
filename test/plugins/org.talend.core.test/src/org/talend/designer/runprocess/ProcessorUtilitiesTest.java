@@ -544,47 +544,4 @@ public class ProcessorUtilitiesTest {
         node.getElementParameter().add(jobIdParam);
     }
     
-    @Ignore
-    @Test
-    public void testWriteLog4j2ConfToFile() throws IOException {
-        String configFilePath = System.getProperty("java.io.tmpdir") + "/log4j2-"+UUID.randomUUID()+".xml";
-        File configFile = new File(configFilePath);
-        ProcessorUtilities.writeLog4j2ConfToFile(configFile, Level.getLevel("INFO"));
-        String actualContent = Files.lines(Paths.get(configFilePath), StandardCharsets.UTF_8).collect(Collectors.joining("\n"));
-        String encodingAttr = actualContent.contains("encoding") ? "encoding='UTF-8'" : ""; 
-        String expectedContent = "<?xml version='1.0' "+encodingAttr+"?>\n" + 
-                "<Configuration>\n" + 
-                "  <Appenders>\n" + 
-                "    <Console name=\"Console\" target=\"SYSTEM_OUT\">\n" + 
-                "      <PatternLayout pattern=\"[%-5level] %d{HH:mm:ss} %logger{36}- %msg%n\"/>\n" + 
-                "    </Console>\n" + 
-                "  </Appenders>\n" + 
-                "  <Loggers>\n" + 
-                "    <Root level=\"INFO\">\n" + 
-                "      <AppenderRef ref=\"Console\"/>\n" + 
-                "    </Root>\n" + 
-                "  </Loggers>\n" + 
-                "</Configuration>";
-        
-        assertEquals(expectedContent, actualContent);
-        configFile.delete();
-    }
-    
-    @Test
-    public void testAddFileToJar() throws FileNotFoundException, IOException {
-        String configFileName = "log4j2-"+UUID.randomUUID()+".xml";
-        String configFilePath = System.getProperty("java.io.tmpdir") + "/" + configFileName;
-        File configFile = new File(configFilePath);
-        ProcessorUtilities.writeLog4j2ConfToFile(configFile, Level.getLevel("INFO"));
-        String jarFilePath = System.getProperty("java.io.tmpdir") + "/log4j2.xml.jar";
-        ProcessorUtilities.addFileToJar(configFilePath, jarFilePath);
-        JarInputStream jIs = new JarInputStream(new FileInputStream(jarFilePath));
-        JarEntry entry = jIs.getNextJarEntry();
-        jIs.closeEntry();
-        jIs.close();
-        assertEquals("log4j2.xml", entry.getName());
-        configFile.delete();
-        new File(jarFilePath).delete();
-    }
-
 }

@@ -471,16 +471,32 @@ public class ImportExportHandlersManager {
 
             @Override
             public int compare(ImportItem o1, ImportItem o2) {
-                if (o1.getRepositoryType().getType().equals("SERVICES")) {
-                    return -1;
-                } else if (o2.getRepositoryType().getType().equals("SERVICES")) {
-                    return 1;
+                return getImportPriority(o1) - getImportPriority(o2);
+            }
+
+            private int getImportPriority(ImportItem item) {
+                if (ERepositoryObjectType.CONTEXT.getType().equals(item.getRepositoryType().getType())) {
+                    return 10;
+                } else if ("SERVICES".equals(item.getRepositoryType().getType())) {
+                    return 20;
+                } else if (ERepositoryObjectType.JOBLET != null
+                        && ERepositoryObjectType.JOBLET.getType().equals(item.getRepositoryType().getType())) {
+                    return 30;
+                } else if (ERepositoryObjectType.PROCESS_ROUTELET != null
+                        && ERepositoryObjectType.PROCESS_ROUTELET.getType().equals(item.getRepositoryType().getType())) {
+                    return 40;
                 }
-                return 0;
+                return 100;
             }
         });
         ImportCacheHelper importCacheHelper = ImportCacheHelper.getInstance();
         try {
+
+            for (ImportItem itemRecord : checkedItemRecords) {
+                if (itemRecord.getProperty() != null) {
+                    itemRecord.setOriginProperyId(itemRecord.getProperty().getId());
+                }
+            }
             // cache
             importCacheHelper.beforeImportItems();
 
@@ -616,6 +632,7 @@ public class ImportExportHandlersManager {
                                         itemRecord.getProperty().setId(id);
                                         try {
                                             changeIdManager.mapOldId2NewId(oldId, id);
+                                            ChangeIdManager.oldANDNewIdMap.put(oldId, id);
                                         } catch (Exception e) {
                                             ExceptionHandler.process(e);
                                         }
@@ -1008,6 +1025,8 @@ public class ImportExportHandlersManager {
             TimeMeasure.display = false;
             TimeMeasure.displaySteps = false;
             TimeMeasure.measureActive = false;
+            
+            ChangeIdManager.oldANDNewIdMap.clear();
         }
     }
 

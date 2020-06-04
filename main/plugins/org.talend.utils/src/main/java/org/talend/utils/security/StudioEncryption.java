@@ -44,7 +44,7 @@ public class StudioEncryption {
 
     private static final String PREFIX_PASSWORD_M3 = "ENC:[";
 
-    private static final String PREFIX_PASSWORD = "enc:"; //$NON-NLS-1$
+    public static final String PREFIX_PASSWORD = "enc:"; //$NON-NLS-1$
 
     private static final Pattern REG_ENCRYPTED_DATA_SYSTEM = Pattern
             .compile("^enc\\:system\\.encryption\\.key\\.v\\d\\:\\p{Print}+");

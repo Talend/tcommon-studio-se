@@ -21,6 +21,7 @@ import java.util.Locale;
 import java.util.Map;
 import java.util.Set;
 
+import org.apache.commons.lang.StringUtils;
 import org.eclipse.core.resources.IFile;
 import org.eclipse.core.resources.IProject;
 import org.eclipse.core.resources.ResourcesPlugin;
@@ -91,11 +92,14 @@ public final class ProjectManager {
 
     private Set<Object> updatedRemoteHandlerRecords;
 
+    private Set<Project> tempProjects;
+
     private ProjectManager() {
         beforeLogonRecords = new HashSet<String>();
         logonRecords = new HashSet<String>();
         migrationRecords = new HashSet<String>();
         updatedRemoteHandlerRecords = new HashSet<Object>();
+        tempProjects = new HashSet<>();
         initCurrentProject();
     }
 
@@ -104,6 +108,18 @@ public final class ProjectManager {
             singleton = new ProjectManager();
         }
         return singleton;
+    }
+
+    public void clearTempProjects() {
+        tempProjects.clear();
+    }
+
+    public boolean removeTempProject(Project project) {
+        return tempProjects.remove(project);
+    }
+
+    public boolean addTempProject(Project project) {
+        return tempProjects.add(project);
     }
 
     public Project getProjectFromProjectLabel(String label) {
@@ -116,6 +132,12 @@ public final class ProjectManager {
         }
         for (Project project : getAllReferencedProjects()) {
             if (project.getLabel().equals(label)) {
+                return project;
+            }
+        }
+        
+        for (Project project : tempProjects) {
+            if (StringUtils.equals(project.getLabel(), label)) {
                 return project;
             }
         }
@@ -133,6 +155,11 @@ public final class ProjectManager {
         }
         for (Project project : getAllReferencedProjects(true)) {
             if (project.getTechnicalLabel().equals(label)) {
+                return project;
+            }
+        }
+        for (Project project : tempProjects) {
+            if (StringUtils.equals(project.getTechnicalLabel(), label)) {
                 return project;
             }
         }
