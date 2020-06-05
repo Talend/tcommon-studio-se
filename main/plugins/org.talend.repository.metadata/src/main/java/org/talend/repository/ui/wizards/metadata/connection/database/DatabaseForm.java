@@ -3896,8 +3896,8 @@ public class DatabaseForm extends AbstractForm {
 
     private List<String> getMSSQLVersionDrivers(String dbType) {
         List<String> result = new ArrayList<String>();
-        result.add(EDatabaseVersion4Drivers.MSSQL.getVersionDisplay());
         result.add(EDatabaseVersion4Drivers.MSSQL_PROP.getVersionDisplay());
+        result.add(EDatabaseVersion4Drivers.MSSQL.getVersionDisplay());
         return result;
     }
 
