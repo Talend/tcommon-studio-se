@@ -651,10 +651,15 @@ public class CreateMavenJobPom extends AbstractMavenProcessorPom {
         Set<String> _3rdLibCoordinate = new HashSet<>();
         Map<String, Set<Dependency>> duplicateLibs = new HashMap<>();
         IProcessor processor = getJobProcessor();
+        boolean isMS = false;
 
         // current job
         Property currentJobProperty = processor.getProperty();
         jobCoordinate.add(getJobCoordinate(currentJobProperty));
+        if ("REST_MS".equals(currentJobProperty.getAdditionalProperties().get(TalendProcessArgumentConstant.ARG_BUILD_TYPE)) ||
+            "ROUTE_MICROSERVICE".equals(currentJobProperty.getAdditionalProperties().get(TalendProcessArgumentConstant.ARG_BUILD_TYPE))) {
+                isMS = true;
+        }
         
         // children jobs without test cases
         Set<JobInfo> childrenJobInfo = !hasLoopDependency() ? processor.getBuildChildrenJobs().stream().filter(j -> !j.isTestContainer()).collect(Collectors.toSet()) : Collections.emptySet();
@@ -744,7 +749,7 @@ public class CreateMavenJobPom extends AbstractMavenProcessorPom {
 
             // add jobs
             setupDependencySetNode(document, jobCoordinate, "${talend.job.name}",
-                    "${artifact.build.finalName}.${artifact.extension}", true, false);
+                    "${artifact.build.finalName}.${artifact.extension}", true, isMS);
             // add duplicate dependencies if exists
             setupFileNode(document, duplicateLibs.values().stream().flatMap(s -> s.stream()).collect(Collectors.toSet()));
 
