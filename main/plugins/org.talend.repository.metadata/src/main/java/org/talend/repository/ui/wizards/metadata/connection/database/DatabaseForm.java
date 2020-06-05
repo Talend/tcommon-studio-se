@@ -8800,9 +8800,12 @@ public class DatabaseForm extends AbstractForm {
     @Override
     protected void exportAsContext() {
         if (EDatabaseConnTemplate.isSchemaNeeded(getConnection().getDatabaseType()) && schemaText != null
-                && StringUtils.isEmpty(schemaText.getText())) {
-            MessageDialog.openWarning(getShell(), Messages.getString("AbstractForm.ExportAsContext"),//$NON-NLS-1$
+                && StringUtils.isBlank(schemaText.getText())) {
+            boolean confirm = MessageDialog.openConfirm(getShell(), Messages.getString("AbstractForm.ExportAsContext"),//$NON-NLS-1$
                     Messages.getString("DatabaseForm.checkSchema"));//$NON-NLS-1$
+            if(!confirm) {
+                return;
+            }
         }
         collectContextParams();
         super.exportAsContext();
