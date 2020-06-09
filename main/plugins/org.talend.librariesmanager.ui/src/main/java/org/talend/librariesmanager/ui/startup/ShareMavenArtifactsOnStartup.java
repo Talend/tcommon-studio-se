@@ -91,6 +91,7 @@ public class ShareMavenArtifactsOnStartup extends ShareLibrareisHelper {
         addMojoArtifact(files, "org.talend.ci", "builder-maven-plugin", "ci.builder.version"); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
         addMojoArtifact(files, "org.talend.ci", "cloudpublisher-maven-plugin", "cloud.publisher.version"); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
         addMojoArtifact(files, "org.talend.ci", "signer-maven-plugin", "signer.version"); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+        addMojoArtifact(files, "org.talend.ci", "osgihelper-maven-plugin", "osgihelper.version"); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
 
         mainSubMonitor.worked(1);
         return files;
