@@ -178,8 +178,8 @@
 				</dbType>
     <dbType type="INTEGER">
      <talendType type="id_Integer" default="true" />
-     <talendType type="id_Short" />
-     <talendType type="id_Long" />
+     <talendType type="id_Short"/>
+     <talendType type="id_Long"/>
     </dbType>
 				<dbType type="NUMERIC">
 					<talendType type="id_Double"/>
