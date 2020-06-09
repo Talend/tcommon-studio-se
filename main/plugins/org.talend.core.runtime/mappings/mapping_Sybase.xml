@@ -16,6 +16,7 @@
             <dbType type="UNSIGNED INT" ignoreLen="true" ignorePre="true" />
 			<dbType type="FLOAT" ignoreLen="true" ignorePre="true" />
 			<dbType type="INT" ignoreLen="true" ignorePre="true" />
+		 <dbType type="INTEGER" ignoreLen="true" ignorePre="true" />
 			<dbType type="NUMERIC" defaultLength="20" defaultPrecision="10"/>
 			<dbType type="REAL" />
 			<dbType type="SMALLINT" ignoreLen="true" ignorePre="true" />
@@ -175,6 +176,11 @@
 					<talendType type="id_Short"/>
 					<talendType type="id_Long"/>
 				</dbType>
+   <dbType type="INTEGER">
+    <talendType type="id_Integer" default="true" />
+    <talendType type="id_Short"/>
+    <talendType type="id_Long"/>
+   </dbType>
 				<dbType type="NUMERIC">
 					<talendType type="id_Double"/>
 					<talendType type="id_Float"/>
