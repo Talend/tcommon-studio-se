@@ -274,7 +274,7 @@ public class ContextModeWizard extends CheckLastVersionRepositoryWizard implemen
                     }
                 } else {
                     contextItem = contextModePage.getReuseItem();
-                    contextItem.getContext().clear();
+                    // contextItem.getContext().clear();
                     contextManager = reuseContextManager;
                     contextManager.saveToEmf(contextItem.getContext());
                     contextItem.setDefaultContext(contextManager.getDefaultContext().getName());
