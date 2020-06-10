@@ -16,7 +16,7 @@
             <dbType type="UNSIGNED INT" ignoreLen="true" ignorePre="true" />
 			<dbType type="FLOAT" ignoreLen="true" ignorePre="true" />
 			<dbType type="INT" ignoreLen="true" ignorePre="true" />
-			<dbType type="INTEGER" ignoreLen="true" ignorePre="true" />
+			<dbType type="INTEGER" defaultLength="10" ignorePre="false"  />
 			<dbType type="NUMERIC" defaultLength="20" defaultPrecision="10"/>
 			<dbType type="REAL" />
 			<dbType type="SMALLINT" ignoreLen="true" ignorePre="true" />
