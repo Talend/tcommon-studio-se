@@ -51,6 +51,16 @@ public class RunStat implements Runnable {
     public static String TYPE0_JOB = "0";
 
     public static String TYPE1_CONNECTION = "1";
+    
+    public RunStat() {
+        jscu = null;
+    }
+    
+    private final JobStructureCatcherUtils jscu;
+    
+    public RunStat(JobStructureCatcherUtils jscu) {
+    	this.jscu = jscu;
+    }
 
     private class StatBean {
 
@@ -332,38 +342,31 @@ public class RunStat implements Runnable {
 
     private Map<String, StatBean> processStats4Meter = new HashMap<String, StatBean>();
 
-    private List<String> keysList4Meter = new LinkedList<String>();
-
+    private final static long INTERVAL = 500;
+    
+    private long lastLogUpdate = 0;
+    
+    public synchronized boolean log(String connectionId, int mode, int nbLine, 
+        String sourceId, String sourceLabel, String sourceComponentName,
+        String targetId, String targetLabel, String targetComponentName) {
+        boolean emit = false;
+        
+        StatBean stateBean = log(connectionId, mode, nbLine);
+        
+        long currentLogUpdate = System.currentTimeMillis();
+        if (lastLogUpdate == 0 || lastLogUpdate + INTERVAL < currentLogUpdate) {
+            lastLogUpdate = currentLogUpdate;
+            jscu.addConnectionMessage4PerformanceMonitor(
+                connectionId, sourceId, sourceLabel, sourceComponentName, targetId, targetLabel, targetComponentName, stateBean.nbLine, stateBean.startTime, currentLogUpdate);
+            emit = true;
+        }
+        
+        return emit;
+    }
+    
     public synchronized StatBean log(String connectionId, int mode, int nbLine) {
         StatBean bean;
         String key = connectionId;
-        if (connectionId.contains(".")) {
-            String firstKey = null;
-            String connectionName = connectionId.split("\\.")[0];
-            int nbKeys = 0;
-            for (String myKey : keysList4Meter) {
-                if (myKey.startsWith(connectionName + ".")) {
-                    if (firstKey == null) {
-                        firstKey = myKey;
-                    }
-                    nbKeys++;
-                    if (nbKeys == 4) {
-                        break;
-                    }
-                }
-            }
-            if (nbKeys == 4) {
-            	keysList4Meter.remove(firstKey);
-            }
-        }
-
-        if (keysList4Meter.contains(key)) {
-            int keyNb = keysList4Meter.indexOf(key);
-            keysList4Meter.remove(key);
-            keysList4Meter.add(keyNb, key);
-        } else {
-        	keysList4Meter.add(key);
-        }
 
         if (processStats4Meter.containsKey(key)) {
             bean = processStats4Meter.get(key);
@@ -371,7 +374,10 @@ public class RunStat implements Runnable {
             bean = new StatBean(connectionId);
         }
 
+        bean.setState(mode);
         bean.setNbLine(bean.getNbLine() + nbLine);
+        //not set it, to avoid too many call as System.currentTimeMillis() is not fast
+        //bean.setEndTime(System.currentTimeMillis());
         processStats4Meter.put(key, bean);
 
         if (mode == BEGIN) {
@@ -379,25 +385,29 @@ public class RunStat implements Runnable {
             bean.setStartTime(System.currentTimeMillis());
         } else if(mode == END) {
         	bean.setEndTime(System.currentTimeMillis());
-
-    		processStats4Meter.remove(key);
-
-        	keysList4Meter.clear();
+            processStats4Meter.remove(key);
         }
 
         return bean;
     }
     
     public synchronized boolean log(Map<String, Object> resourceMap, String iterateId, String connectionUniqueName, int mode, int nbLine, 
-    		JobStructureCatcherUtils jscu, String sourceNodeId, String sourceNodeComponent, String targetNodeId, String targetNodeComponent, String lineType) {
+    		String sourceNodeId, String sourceNodeLabel, String sourceNodeComponent, String targetNodeId, String targetNodeLabel, String targetNodeComponent, String lineType) {
     	if(resourceMap.get("inIterateVComp") == null || !((Boolean)resourceMap.get("inIterateVComp"))) {
-	    	StatBean bean = log(connectionUniqueName, mode, nbLine);
+	    	StatBean bean = log(connectionUniqueName, mode, nbLine);//TODO use connectionUniqueName + iterateId here?
+	    	
+	    	String connectionId = connectionUniqueName+iterateId;
+	    	
+	    	jscu.addConnectionMessage4PerformanceMonitor(
+	                connectionId, sourceNodeId, sourceNodeLabel, sourceNodeComponent, targetNodeId, targetNodeLabel, targetNodeComponent, bean.nbLine, bean.startTime, bean.endTime);
+	    	
 	    	jscu.addConnectionMessage(
-	    		sourceNodeId, 
+	    		sourceNodeId,
+	    		sourceNodeLabel,
 	    		sourceNodeComponent, 
 			    false,
 			    lineType,
-			    connectionUniqueName+iterateId,
+			    connectionId,
 			    bean.getNbLine(),
 			    bean.getStartTime(),
 			    bean.getEndTime()
@@ -405,10 +415,11 @@ public class RunStat implements Runnable {
 			
 	 		jscu.addConnectionMessage(
 				targetNodeId, 
+				targetNodeLabel,
 				targetNodeComponent, 
 			    true,
 			    "input",
-			    connectionUniqueName+iterateId,
+			    connectionId,
 			    bean.getNbLine(),
 			    bean.getStartTime(),
 			    bean.getEndTime()
@@ -435,14 +446,14 @@ public class RunStat implements Runnable {
      * work for avoiding the 65535 issue
      */
     public synchronized boolean updateStatAndLog(boolean execStat, boolean enableLogStash, Map<String, Object> resourceMap, String iterateId, String connectionUniqueName, int mode, int nbLine, 
-    		JobStructureCatcherUtils jscu, String sourceNodeId, String sourceNodeComponent, String targetNodeId, String targetNodeComponent, String lineType) {
+    		String sourceNodeId, String sourceNodeLabel, String sourceNodeComponent, String targetNodeId, String targetNodeLabel, String targetNodeComponent, String lineType) {
     	if(execStat) {
     		updateStat(resourceMap, iterateId, mode, nbLine, connectionUniqueName);
     	}
     	
     	if(enableLogStash) {
     		return log(resourceMap, iterateId, connectionUniqueName, mode, nbLine, 
-    	    		jscu, sourceNodeId, sourceNodeComponent, targetNodeId, targetNodeComponent, lineType);
+    	    		sourceNodeId, sourceNodeLabel, sourceNodeComponent, targetNodeId, targetNodeLabel, targetNodeComponent, lineType);
     	}
     	
     	
@@ -503,12 +514,50 @@ public class RunStat implements Runnable {
     }
     
     /**
+     * update stats
+     * @param execStat
+     * @param enableLogStash
+     * @param iterateId
+     * @param mode
+     * @param nbLine
+     * @param connectionUniqueNames
+     */
+    private synchronized void updateStat(String iterateId, int mode, int nbLine, String... informationGroup) {
+    	for(int i=0;i<informationGroup.length;i++) {
+    		if((i % 7) == 0) {
+    			updateStatOnConnection(informationGroup[i]+iterateId, mode, nbLine);
+    		}
+    	}
+    }
+    
+    /**
      * work for avoiding the 65535 issue
      */
     public synchronized void log(String iterateId, int mode, int nbLine, String... connectionUniqueNames) {
     	for(String connectionUniqueName : connectionUniqueNames) {
     		log(connectionUniqueName+iterateId, mode, nbLine);
     	}
+    }
+    
+    /**
+     * update logs for performance monitor
+     * @param execStat
+     * @param enableLogStash
+     * @param iterateId
+     * @param mode
+     * @param nbLine
+     * @param connectionUniqueNames
+     */
+    public synchronized boolean updateLog(String iterateId, int mode, int nbLine, String... informationGroup) {
+    	boolean emit = false;
+    	for(int i=0;i<informationGroup.length;i++) {
+    		if((i % 7) == 0) {
+    			//informationGroup ==> [connectionid, sourceid, sourcelabel, sourcecomponentname, targetid, targetlabel, targetcomponentname, ...]
+    			emit |= log(informationGroup[i]+iterateId, mode, nbLine, 
+    					informationGroup[i+1], informationGroup[i+2], informationGroup[i+3],informationGroup[i+4], informationGroup[i+5], informationGroup[i+6]);
+    		}
+    	}
+    	return emit;
     }
     
     /**
@@ -529,6 +578,28 @@ public class RunStat implements Runnable {
     	if(enableLogStash) {
     		log(iterateId, mode, nbLine, connectionUniqueNames);
     	}
+    }
+    
+    /**
+     * update states, and logs for performance monitor
+     * @param execStat
+     * @param enableLogStash
+     * @param iterateId
+     * @param mode
+     * @param nbLine
+     * @param connectionUniqueNames
+     */
+    public synchronized boolean update(boolean execStat, boolean enableLogStash, String iterateId, int mode, int nbLine, String... informationGroup) {
+    	if(execStat) {
+    		updateStat(iterateId, mode, nbLine, informationGroup);
+    	}
+    	
+    	if(enableLogStash) {
+    		boolean emit = updateLog(iterateId, mode, nbLine, informationGroup);
+    		return emit;
+    	}
+    	
+    	return false;
     }
     
     /**
