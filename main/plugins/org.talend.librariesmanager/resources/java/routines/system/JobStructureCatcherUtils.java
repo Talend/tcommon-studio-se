@@ -38,6 +38,8 @@ public class JobStructureCatcherUtils {
 	public class JobStructureCatcherMessage {
 
 		public String component_id;
+		
+		public String component_label;
 
 		public String component_name;
 
@@ -57,7 +59,7 @@ public class JobStructureCatcherUtils {
 
 		public String job_version;
 
-		public Long systemPid;
+		public Long systemPid = JobStructureCatcherUtils.getPid();
 
 		public boolean current_connector_as_input;
 
@@ -66,6 +68,13 @@ public class JobStructureCatcherUtils {
 		public String current_connector;
 
 		public String currrent_row_content;
+		
+		public String sourceId;
+		public String sourceLabel;
+		public String sourceComponentName;
+		public String targetId;
+		public String targetLabel;
+		public String targetComponentName;
 
 		public long row_count;
 
@@ -75,43 +84,24 @@ public class JobStructureCatcherUtils {
 
 		public long end_time;
 
-		public String moment;
+		public String moment = sdf.format(new Date());
 
 		public String status;
+		
+		public LogType log_type;
 
-		public JobStructureCatcherMessage(String component_id, String component_name,
-				Map<String, String> component_parameters, List<Map<String, String>> component_schema,
-				String input_connectors, String output_connectors,
-				Map<String, String> connector_name_2_connector_schema, String job_name, String job_id,
-				String job_version, boolean current_connector_as_input, String current_connector_type,
-				String current_connector, String currrent_row_content, long row_count, long total_row_number,
-				long start_time, long end_time, String status) {
-			this.component_id = component_id;
-			this.component_name = component_name;
-			this.component_parameters = component_parameters;
-			this.component_schema = component_schema;
-			this.input_connectors = input_connectors;
-			this.output_connectors = output_connectors;
-			this.connector_name_2_connector_schema = connector_name_2_connector_schema;
-
-			this.job_name = job_name;
-			this.job_version = job_version;
-			this.job_id = job_id;
-			this.systemPid = JobStructureCatcherUtils.getPid();
-
-			this.current_connector_as_input = current_connector_as_input;
-			this.current_connector_type = current_connector_type;
-			this.current_connector = current_connector;
-			this.currrent_row_content = currrent_row_content;
-			this.row_count = row_count;
-			this.total_row_number = total_row_number;
-			this.start_time = start_time;
-			this.end_time = end_time;
-
-			this.moment = sdf.format(new Date());
-			this.status = status;
+		public JobStructureCatcherMessage() {
 		}
 
+	}
+	
+	public static enum LogType {
+		JOBSTART,
+		JOBEND,
+		RUNCOMPONENT,
+		FLOWINPUT,
+		FLOWOUTPUT,
+		PERFORMANCE
 	}
 
 	java.util.List<JobStructureCatcherMessage> messages = java.util.Collections
@@ -129,38 +119,72 @@ public class JobStructureCatcherUtils {
 		this.job_version = jobVersion;
 	}
 
-	private void addMessage(String component_id, String component_name, Map<String, String> component_parameters,
-			List<Map<String, String>> component_schema, String input_connectors, String output_connectors,
-			Map<String, String> connector_name_2_connector_schema, boolean current_connector_as_input,
-			String current_connector_type, String current_connector, String currrent_row_content, long row_count,
-			long total_row_number, long start_time, long end_time, String status) {
-		JobStructureCatcherMessage scm = new JobStructureCatcherMessage(component_id, component_name,
-				component_parameters, component_schema, input_connectors, output_connectors,
-				connector_name_2_connector_schema, this.job_name, this.job_id, this.job_version,
-				current_connector_as_input, current_connector_type, current_connector, currrent_row_content, row_count,
-				total_row_number, start_time, end_time, status);
+	public void addConnectionMessage(String component_id, String component_label, String component_name, boolean current_connector_as_input,
+			String current_connector_type, String current_connector, long total_row_number, long start_time,
+			long end_time) {
+		JobStructureCatcherMessage scm = new JobStructureCatcherMessage();
+		scm.job_name = this.job_name;
+		scm.job_id = this.job_id;
+		scm.job_version = this.job_version;
+
+		scm.component_id = component_id;
+		scm.component_label = component_label;
+		scm.component_name = component_name;
+		scm.current_connector_as_input = current_connector_as_input;
+		scm.current_connector_type = current_connector_type;
+		scm.current_connector = current_connector;
+		scm.total_row_number = total_row_number;
+		scm.start_time = start_time;
+		scm.end_time = end_time;
+		
+		if(current_connector_as_input) {
+			scm.log_type = LogType.FLOWINPUT;
+		} else {
+			scm.log_type = LogType.FLOWOUTPUT;
+		}
+		
 		messages.add(scm);
 	}
 
-	public void addConnectionMessage(String component_id, String component_name, boolean current_connector_as_input,
-			String current_connector_type, String current_connector, long total_row_number, long start_time,
-			long end_time) {
-		this.addMessage(component_id, component_name, null, null, null, null, null, current_connector_as_input,
-				current_connector_type, current_connector, null, 0, total_row_number, start_time, end_time, null);
-	}
+	public void addCM(String component_id, String component_label, String component_name) {
+		JobStructureCatcherMessage scm = new JobStructureCatcherMessage();
+		scm.job_name = this.job_name;
+		scm.job_id = this.job_id;
+		scm.job_version = this.job_version;
 
-	public void addCM(String component_id, String component_name) {
-		this.addMessage(component_id, component_name, null, null, null, null, null, false, null, null,
-				null, 0, 0, 0, 0, null);
+		scm.component_id = component_id;
+		scm.component_label = component_label;
+		scm.component_name = component_name;
+		
+		scm.log_type = LogType.RUNCOMPONENT;
+		
+		messages.add(scm);
 	}
 
 	public void addJobStartMessage() {
-		this.addMessage(null, null, null, null, null, null, null, false, null, null, null, 0, 0, 0, 0, null);
+		JobStructureCatcherMessage scm = new JobStructureCatcherMessage();
+		scm.job_name = this.job_name;
+		scm.job_id = this.job_id;
+		scm.job_version = this.job_version;
+		
+		scm.log_type = LogType.JOBSTART;
+
+		messages.add(scm);
 	}
 
 	public void addJobEndMessage(long start_time, long end_time, String status) {
-		this.addMessage(null, null, null, null, null, null, null, false, null, null, null, 0, 0, start_time, end_time,
-				status == "" ? "end" : status);
+		JobStructureCatcherMessage scm = new JobStructureCatcherMessage();
+		scm.job_name = this.job_name;
+		scm.job_id = this.job_id;
+		scm.job_version = this.job_version;
+
+		scm.status = (status == "" ? "end" : status);
+		scm.start_time = start_time;
+		scm.end_time = end_time;
+		
+		scm.log_type = LogType.JOBEND;
+		
+		messages.add(scm);
 	}
 
 	public java.util.List<JobStructureCatcherMessage> getMessages() {
@@ -182,5 +206,33 @@ public class JobStructureCatcherUtils {
 		} else {
 			return Thread.currentThread().getId();
 		}
+	}
+
+	public void addConnectionMessage4PerformanceMonitor(String current_connector, String sourceId, String sourceLabel,
+			String sourceComponentName, String targetId, String targetLabel, String targetComponentName, int row_count,
+			long start_time, long end_time) {
+		JobStructureCatcherMessage scm = new JobStructureCatcherMessage();
+		scm.job_name = this.job_name;
+		scm.job_id = this.job_id;
+		scm.job_version = this.job_version;
+		
+		scm.current_connector = current_connector;
+		
+		scm.sourceId = sourceId;
+		scm.sourceLabel = sourceLabel;
+		scm.sourceComponentName = sourceComponentName;
+		
+		scm.targetId = targetId;
+		scm.targetLabel = targetLabel;
+		scm.targetComponentName = targetComponentName;
+		
+		scm.row_count = row_count;
+		scm.start_time = start_time;
+		scm.end_time = end_time;
+		
+		scm.log_type = LogType.PERFORMANCE;
+		
+		messages.add(scm);
+		
 	}
 }

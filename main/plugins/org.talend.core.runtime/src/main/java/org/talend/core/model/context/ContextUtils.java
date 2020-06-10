@@ -540,10 +540,7 @@ public class ContextUtils {
             return true;
         }
         if (targetParamType != null && sourceParam != null) {
-            // if (!sourceParam.getName().equals(targetParamType.getName())) {
-            // return false;
-            // }
-            if (StringUtils.equals(sourceParam.getName(), targetParamType.getName())) {
+            if (!StringUtils.equals(sourceParam.getName(), targetParamType.getName())) {
                 return false;
             }
             if (sourceParam.getComment() == null) {
