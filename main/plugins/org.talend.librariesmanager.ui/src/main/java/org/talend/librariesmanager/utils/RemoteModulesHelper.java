@@ -148,7 +148,9 @@ public class RemoteModulesHelper {
 
             Set<String> unavailableModules = new HashSet<String>();
             // if the network is not valid, all jars are not available.
-            boolean networkValid = NetworkUtil.isNetworkValid();
+            boolean networkValid = NetworkUtil
+                    .isNetworkValid(TalendLibsServerManager.getInstance().getTalentArtifactServer().getServer(),
+                            NetworkUtil.getNexusTimeout());
             if (!networkValid) {
                 if (!alreadyWarnedAboutConnectionIssue) {
                     log.warn("failed to connect to internet");

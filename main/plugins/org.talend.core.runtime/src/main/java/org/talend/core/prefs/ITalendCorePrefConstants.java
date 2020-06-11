@@ -12,6 +12,8 @@
 // ============================================================================
 package org.talend.core.prefs;
 
+import org.talend.commons.utils.network.ITalendNexusPrefConstants;
+
 /**
  * Core preferences. Detailled comment <br/>
  *
@@ -188,7 +190,7 @@ public interface ITalendCorePrefConstants {
 
     public static final String PERFORMANCE_JAVA_PROCESS_CODE_FORMATE_TIMEOUT = "PERFORMANCE_JAVA_PROCESS_CODE_FORMATE_TIMEOUT"; //$NON-NLS-1$
 
-    public static final String NEXUS_TIMEOUT = "NEXUS_TIMEOUT"; //$NON-NLS-1$
+    public static final String NEXUS_TIMEOUT = ITalendNexusPrefConstants.NEXUS_TIMEOUT;
 
     public static final String NEXUS_REFRESH_FREQUENCY = "NEXUS_REFRESH_FREQUENCY"; //$NON-NLS-1$
 

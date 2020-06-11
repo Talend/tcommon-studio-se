@@ -26,6 +26,9 @@ import java.util.Enumeration;
 import java.util.regex.Pattern;
 
 import org.apache.commons.lang.StringUtils;
+import org.eclipse.core.runtime.preferences.IEclipsePreferences;
+import org.eclipse.core.runtime.preferences.InstanceScope;
+import org.talend.commons.exception.ExceptionHandler;
 import org.talend.commons.runtime.utils.io.FileCopyUtils;
 
 /**
@@ -44,7 +47,17 @@ public class NetworkUtil {
 
     private static final String HTTP_NETWORK_URL = "https://talend-update.talend.com";
 
+    private static final int DEFAULT_TIMEOUT = 4000;
+
+    private static final int DEFAULT_NEXUS_TIMEOUT = 20000;// same as preference value
+
+    public static final String ORG_TALEND_DESIGNER_CORE = "org.talend.designer.core"; //$NON-NLS-1$
+
     public static boolean isNetworkValid() {
+        return isNetworkValid(DEFAULT_TIMEOUT);
+    }
+
+    public static boolean isNetworkValid(Integer timeout) {
         String disableInternet = System.getProperty(TALEND_DISABLE_INTERNET);
         if ("true".equals(disableInternet)) { //$NON-NLS-1$
             return false;
@@ -52,8 +65,9 @@ public class NetworkUtil {
         try {
             URL url = new URL(HTTP_NETWORK_URL);
             HttpURLConnection conn = (HttpURLConnection) url.openConnection();
-            conn.setConnectTimeout(4000);
-            conn.setReadTimeout(4000);
+            int conntimeout = timeout != null ? timeout.intValue() : DEFAULT_TIMEOUT;
+            conn.setConnectTimeout(conntimeout);
+            conn.setReadTimeout(conntimeout);
 
             conn.setRequestMethod("HEAD"); //$NON-NLS-1$
             String strMessage = conn.getResponseMessage();
@@ -68,6 +82,47 @@ public class NetworkUtil {
             return false;
         }
         return true;
+    }
+    
+    public static boolean isNetworkValid(String url, Integer timeout) {
+        if (url == null) {
+            return isNetworkValid(timeout);
+        }
+        return checkValidWithHttp(url, timeout);
+    }
+
+    private static boolean checkValidWithHttp(String urlString, Integer timeout) {
+        HttpURLConnection conn = null;
+        try {
+            URL url = new URL(urlString);
+            conn = (HttpURLConnection) url.openConnection();
+            conn.setDefaultUseCaches(false);
+            conn.setUseCaches(false);
+            int conntimeout = timeout != null ? timeout.intValue() : DEFAULT_TIMEOUT;
+            conn.setConnectTimeout(conntimeout);
+            conn.setReadTimeout(conntimeout);
+            conn.setRequestMethod("HEAD"); //$NON-NLS-1$
+            conn.getResponseMessage();
+        } catch (Exception e) {
+            // if not reachable , will throw exception(time out/unknown host) .So if catched exception, make it a
+            // invalid server
+            return false;
+        } finally {
+            conn.disconnect();
+        }
+        return true;
+    }
+
+    public static int getNexusTimeout() {
+        int timeout = DEFAULT_NEXUS_TIMEOUT;
+        try {
+            IEclipsePreferences node = InstanceScope.INSTANCE.getNode(ORG_TALEND_DESIGNER_CORE);
+            timeout = node.getInt(ITalendNexusPrefConstants.NEXUS_TIMEOUT, DEFAULT_NEXUS_TIMEOUT);
+        } catch (Throwable e) {
+            ExceptionHandler.process(e);
+        }
+
+        return timeout;
     }
 
     public static Authenticator getDefaultAuthenticator() {
