@@ -18,13 +18,16 @@ import java.util.List;
 import java.util.Map;
 
 import org.apache.commons.lang3.StringUtils;
+import org.talend.commons.exception.ExceptionHandler;
 import org.talend.commons.exception.PersistenceException;
+import org.talend.core.GlobalServiceRegister;
 import org.talend.core.model.context.ContextUtils;
 import org.talend.core.model.properties.ContextItem;
 import org.talend.core.model.properties.Item;
 import org.talend.cwm.helper.ResourceHelper;
 import org.talend.designer.core.model.utils.emf.talendfile.ContextParameterType;
 import org.talend.designer.core.model.utils.emf.talendfile.ContextType;
+import org.talend.repository.model.IRepositoryService;
 
 
 public abstract class AbstractItemContextLinkService implements IItemContextLinkService {
@@ -58,12 +61,18 @@ public abstract class AbstractItemContextLinkService implements IItemContextLink
                                     contextLink = new ContextLink();
                                     contextLink.setContextName(jobContextType.getName());
                                     contextLink.setRepoId(repositoryContextId);
-                                    itemContextLink.getContextList().add(contextLink);
                                 }
                                 ContextParamLink contextParamLink = createParamLink(repositoryContextId, jobContextType.getName(),
                                         contextParameterType.getName(), contextParameterType.getInternalId(), tempCache,
                                         backupContextLink, remoteContextLink);
-                                contextLink.getParameterList().add(contextParamLink);
+                                if (contextParamLink != null) {
+                                    contextLink.getParameterList().add(contextParamLink);
+                                }
+
+                                if (contextLink.getParameterList().size() > 0
+                                        && !itemContextLink.getContextList().contains(contextLink)) {
+                                    itemContextLink.getContextList().add(contextLink);
+                                }
                             }
 
                         }
@@ -87,9 +96,14 @@ public abstract class AbstractItemContextLinkService implements IItemContextLink
 
     private ContextParamLink createParamLink(String repositoryContextId, String contextName, String paramName, String internalId,
             Map<String, Item> tempCache, ItemContextLink oldContextLink, ItemContextLink remoteContextLink) {
-        ContextParamLink contextParamLink = new ContextParamLink();
-        contextParamLink.setName(paramName);
-        contextParamLink.setId(internalId);
+        ContextParamLink contextParamLink = null;
+
+        if (StringUtils.isNotBlank(internalId)) {
+            contextParamLink = new ContextParamLink();
+            contextParamLink.setName(paramName);
+            contextParamLink.setId(internalId);
+        }
+
         Item contextItem = tempCache.get(repositoryContextId);
         if (contextItem == null) {
             contextItem = ContextUtils.getRepositoryContextItemById(repositoryContextId);
@@ -98,6 +112,15 @@ public abstract class AbstractItemContextLinkService implements IItemContextLink
         if (contextItem != null) {
             ContextType contextType = ContextUtils.getContextTypeByName(contextItem, contextName);
             ContextParameterType repoContextParameterType = ContextUtils.getContextParameterTypeByName(contextType, paramName);
+            if (repoContextParameterType.eResource() == null) {
+                // processItem save before than contextItem, caused eResource null
+                IRepositoryService repositoryService = GlobalServiceRegister.getDefault().getService(IRepositoryService.class);
+                try {
+                    repositoryService.getProxyRepositoryFactory().save(contextItem, false);
+                } catch (PersistenceException e) {
+                    ExceptionHandler.process(e);
+                }
+            }
             String uuID = null;
             boolean isFromContextItem = (contextItem instanceof ContextItem);
             if (repoContextParameterType != null) {
@@ -122,7 +145,12 @@ public abstract class AbstractItemContextLinkService implements IItemContextLink
                     uuID = oldParamLink.getId();
                 }
             }
-            contextParamLink.setId(uuID);
+
+            if (StringUtils.isNotBlank(uuID)) {
+                contextParamLink = new ContextParamLink();
+                contextParamLink.setName(paramName);
+                contextParamLink.setId(uuID);
+            }
         }
         return contextParamLink;
     }
