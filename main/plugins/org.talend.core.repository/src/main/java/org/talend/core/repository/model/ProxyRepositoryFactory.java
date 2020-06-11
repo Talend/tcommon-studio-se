@@ -131,6 +131,7 @@ import org.talend.core.runtime.repository.item.ItemProductKeys;
 import org.talend.core.runtime.services.IMavenUIService;
 import org.talend.core.runtime.util.ItemDateParser;
 import org.talend.core.service.ICoreUIService;
+import org.talend.core.service.IUpdateService;
 import org.talend.cwm.helper.SubItemHelper;
 import org.talend.cwm.helper.TableHelper;
 import org.talend.designer.runprocess.IRunProcessService;
@@ -2152,6 +2153,11 @@ public final class ProxyRepositoryFactory implements IProxyRepositoryFactory {
                 }
 
                 fireRepositoryPropertyChange(ERepositoryActionName.PROJECT_PREFERENCES_RELOAD.getName(), null, null);
+
+                if (GlobalServiceRegister.getDefault().isServiceRegistered(IUpdateService.class)) {
+                    IUpdateService updateService = GlobalServiceRegister.getDefault().getService(IUpdateService.class);
+                    updateService.syncComponentM2Jars(currentMonitor);
+                }
 
                 IRunProcessService runProcessService = getRunProcessService();
                 if (runProcessService != null) {
