@@ -12,6 +12,7 @@
 // ============================================================================
 package org.talend.updates.runtime.service;
 
+import java.io.File;
 import java.util.LinkedHashSet;
 import java.util.Set;
 
@@ -23,10 +24,13 @@ import org.talend.core.nexus.ArtifactRepositoryBean;
 import org.talend.core.service.IUpdateService;
 import org.talend.updates.runtime.engine.component.InstallComponentMessages;
 import org.talend.updates.runtime.engine.factory.ComponentsLocalNexusInstallFactory;
+import org.talend.updates.runtime.maven.MavenRepoSynchronizer;
 import org.talend.updates.runtime.model.ExtraFeature;
 import org.talend.updates.runtime.model.FeatureCategory;
 import org.talend.updates.runtime.nexus.component.ComponentIndexManager;
 import org.talend.updates.runtime.nexus.component.NexusServerManager;
+import org.talend.updates.runtime.utils.PathUtils;
+import org.talend.utils.io.FilesUtils;
 
 public class UpdateService implements IUpdateService {
 
@@ -78,6 +82,20 @@ public class UpdateService implements IUpdateService {
                 messages.analyzeStatus(feature.install(monitor, null));
                 messages.setNeedRestart(feature.needRestart());
             }
+        }
+    }
+
+    @Override
+    public void syncComponentM2Jars(IProgressMonitor monitor) {
+        final File tempM2RepoFolder = PathUtils.getComponentsM2TempFolder();
+        try {
+            if (tempM2RepoFolder != null && tempM2RepoFolder.exists()) {
+                MavenRepoSynchronizer synchronizer = new MavenRepoSynchronizer(tempM2RepoFolder);
+                synchronizer.sync();
+            }
+        } finally {
+            // clean
+            FilesUtils.deleteFolder(tempM2RepoFolder, true);
         }
     }
 

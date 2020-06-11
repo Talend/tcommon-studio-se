@@ -12,10 +12,13 @@
 // ============================================================================
 package org.talend.core.service;
 
+import org.eclipse.core.runtime.IProgressMonitor;
 import org.talend.core.IService;
 
 public interface IUpdateService extends IService {
 
     boolean checkComponentNexusUpdate();
+
+    void syncComponentM2Jars(IProgressMonitor monitor);
 
 }

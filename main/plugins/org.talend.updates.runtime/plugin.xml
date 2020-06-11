@@ -63,10 +63,6 @@
    <extension
          point="org.talend.core.repository.login.task">
       <loginTask
-            class="org.talend.updates.runtime.login.SyncComponentMavenRepoLoginTask"
-            priority="normal">
-      </loginTask>
-      <loginTask
             class="org.talend.updates.runtime.login.CleanupDropBundlesLoginTask"
             priority="lowest">
       </loginTask>
