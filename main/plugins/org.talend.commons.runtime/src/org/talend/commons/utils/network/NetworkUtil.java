@@ -26,6 +26,9 @@ import java.util.Enumeration;
 import java.util.regex.Pattern;
 
 import org.apache.commons.lang.StringUtils;
+import org.eclipse.core.runtime.preferences.IEclipsePreferences;
+import org.eclipse.core.runtime.preferences.InstanceScope;
+import org.talend.commons.exception.ExceptionHandler;
 import org.talend.commons.runtime.utils.io.FileCopyUtils;
 
 /**
@@ -44,6 +47,10 @@ public class NetworkUtil {
 
     private static final String HTTP_NETWORK_URL = "https://talend-update.talend.com";
 
+    private static final int DEFAULT_TIMEOUT = 4000;
+
+    private static final String ORG_TALEND_DESIGNER_CORE = "org.talend.designer.core";
+
     public static boolean isNetworkValid() {
         String disableInternet = System.getProperty(TALEND_DISABLE_INTERNET);
         if ("true".equals(disableInternet)) { //$NON-NLS-1$
@@ -55,8 +62,9 @@ public class NetworkUtil {
             conn = (HttpURLConnection) url.openConnection();
             conn.setDefaultUseCaches(false);
             conn.setUseCaches(false);
-            conn.setConnectTimeout(4000);
-            conn.setReadTimeout(4000);
+            int timeout = getTimeout();
+            conn.setConnectTimeout(timeout);
+            conn.setReadTimeout(timeout);
             conn.setRequestMethod("HEAD"); //$NON-NLS-1$
             String strMessage = conn.getResponseMessage();
             if (strMessage.compareTo("Not Found") == 0) { //$NON-NLS-1$
@@ -87,8 +95,9 @@ public class NetworkUtil {
             conn = (HttpURLConnection) url.openConnection();
             conn.setDefaultUseCaches(false);
             conn.setUseCaches(false);
-            conn.setConnectTimeout(4000);
-            conn.setReadTimeout(4000);
+            int timeout = getTimeout();
+            conn.setConnectTimeout(timeout);
+            conn.setReadTimeout(timeout);
             conn.setRequestMethod("HEAD"); //$NON-NLS-1$
             conn.getResponseMessage();
         } catch (Exception e) {
@@ -99,6 +108,18 @@ public class NetworkUtil {
             conn.disconnect();
         }
         return true;
+    }
+
+    private static int getTimeout() {
+        int timeout = DEFAULT_TIMEOUT;
+        try {
+            IEclipsePreferences node = InstanceScope.INSTANCE.getNode(ORG_TALEND_DESIGNER_CORE);
+            timeout = node.getInt(ITalendNexusPrefConstants.NEXUS_TIMEOUT, 20000);
+        } catch (Throwable e) {
+            ExceptionHandler.process(e);
+        }
+
+        return timeout;
     }
 
     public static Authenticator getDefaultAuthenticator() {
