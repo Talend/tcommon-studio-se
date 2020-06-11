@@ -945,41 +945,35 @@ public class ContextUtils {
             ContextItemParamMap unsameMap, ContextItemParamMap deleteParams, boolean onlySimpleShow, boolean isDefaultContext) {
         boolean builtin = true;
         String paramName = param.getName();
-        if (paramLink != null && paramLink.getId() != null && contextType != null) {// Compare use UUID
-            String paramId = paramLink.getId();
-            ContextParameterType contextParameterType = null;
-            contextParameterType = getContextParameterTypeById(contextType, paramId, contextItem instanceof ContextItem);
-            if (contextParameterType != null) {
-                if (!StringUtils.equals(contextParameterType.getName(), paramName)) {
-                    if (isDefaultContext) {
-                        Map<String, String> renameMap = repositoryRenamedMap.get(contextItem);
-                        if (renameMap == null) {
-                            renameMap = new HashMap<String, String>();
-                            repositoryRenamedMap.put(contextItem, renameMap);
-                        }
-                        renameMap.put(contextParameterType.getName(), paramName);
+        ContextParameterType contextParameterType = null;
+        if (paramLink != null && paramLink.getId() != null && contextType != null) {
+            contextParameterType = getContextParameterTypeById(contextType, paramLink.getId(),
+                    contextItem instanceof ContextItem);
+        }
+        if (contextParameterType != null) {// Compare use UUID
+            if (!StringUtils.equals(contextParameterType.getName(), paramName)) {
+                if (isDefaultContext) {
+                    Map<String, String> renameMap = repositoryRenamedMap.get(contextItem);
+                    if (renameMap == null) {
+                        renameMap = new HashMap<String, String>();
+                        repositoryRenamedMap.put(contextItem, renameMap);
                     }
-                } else {
-                    if (isDefaultContext) {
-                        if (existedParams.get(contextItem) == null) {
-                            existedParams.put(contextItem, new HashSet<String>());
-                        }
-                        existedParams.get(contextItem).add(paramName);
-                    }
-                    if (onlySimpleShow || !samePropertiesForContextParameter(param, contextParameterType)) {
-                        unsameMap.add(contextItem, paramName);
-                    }
+                    renameMap.put(contextParameterType.getName(), paramName);
                 }
-                builtin = false;
             } else {
-                // delete context variable
-                if (isPropagateContextVariable() && isDefaultContext) {
-                    deleteParams.add(contextItem, paramName);
-                    builtin = false;
+                if (isDefaultContext) {
+                    if (existedParams.get(contextItem) == null) {
+                        existedParams.put(contextItem, new HashSet<String>());
+                    }
+                    existedParams.get(contextItem).add(paramName);
+                }
+                if (onlySimpleShow || !samePropertiesForContextParameter(param, contextParameterType)) {
+                    unsameMap.add(contextItem, paramName);
                 }
             }
+            builtin = false;
         } else { // Compare use Name
-            final ContextParameterType contextParameterType = ContextUtils.getContextParameterTypeByName(contextType, paramName);
+            contextParameterType = ContextUtils.getContextParameterTypeByName(contextType, paramName);
             if (contextParameterType != null) {
                 Item repositoryContext = contextItem;
                 if (isDefaultContext) {
