@@ -40,7 +40,6 @@ import org.eclipse.equinox.p2.query.IQueryResult;
 import org.eclipse.equinox.p2.query.QueryUtil;
 import org.talend.commons.CommonsPlugin;
 import org.talend.commons.runtime.utils.io.FileCopyUtils;
-import org.talend.commons.runtime.utils.io.IOUtils;
 import org.talend.commons.utils.resource.UpdatesHelper;
 import org.talend.core.GlobalServiceRegister;
 import org.talend.core.services.ICoreTisService;
@@ -78,14 +77,10 @@ public class UpdateTools {
             File configurationFile = getConfigurationFile();
             if (CommonsPlugin.isJUnitTest()) {
                 FilesUtils.copyFile(new FileInputStream(tempFile), configurationFile);
-            } else {
-                if (!IOUtils.contentEquals(new FileInputStream(configurationFile), new FileInputStream(tempFile))) {
-                    if (GlobalServiceRegister.getDefault().isServiceRegistered(ICoreTisService.class)) {
-                        ICoreTisService coreTisService = (ICoreTisService) GlobalServiceRegister.getDefault()
-                                .getService(ICoreTisService.class);
-                        coreTisService.updateConfiguratorBundles(configurationFile, tempFile);
-                    }
-                }
+            } else if (GlobalServiceRegister.getDefault().isServiceRegistered(ICoreTisService.class)) {
+                ICoreTisService coreTisService = (ICoreTisService) GlobalServiceRegister.getDefault()
+                        .getService(ICoreTisService.class);
+                coreTisService.updateConfiguratorBundles(configurationFile, tempFile);
             }
         } catch (Exception e) {
             throw new IOException(e);
