@@ -10,7 +10,7 @@
 	<artifactId>studio-components-dependencies</artifactId>
 	<packaging>pom</packaging>
 	<properties>
-		<components.version>0.28.4</components.version>
+		<components.version>0.28.5</components.version>
 	</properties>
 	<repositories>
 		<repository>
