@@ -101,6 +101,7 @@ import org.talend.core.model.properties.Property;
 import org.talend.core.model.relationship.Relation;
 import org.talend.core.model.relationship.RelationshipItemBuilder;
 import org.talend.core.model.repository.ERepositoryObjectType;
+import org.talend.core.model.repository.IRepositoryObject;
 import org.talend.core.model.repository.IRepositoryViewObject;
 import org.talend.core.model.repository.RepositoryManager;
 import org.talend.core.model.repository.job.JobResource;
@@ -884,7 +885,7 @@ public class ProcessorUtilities {
             }
         }
     }
-
+    
     public static boolean hasMetadataDynamic(IProcess currentProcess, JobInfo jobInfo) {
         boolean hasDynamicMetadata = false;
         if (GlobalServiceRegister.getDefault().isServiceRegistered(IDesignerCoreService.class) && !isExportConfig()) {
@@ -1843,6 +1844,28 @@ public class ProcessorUtilities {
         hasLoopDependency = false;
         mainJobInfo = null;
         IProcessor result = generateCode(jobInfo, contextName, statistics, trace, true, GENERATE_ALL_CHILDS, monitor);
+        jobList.clear();
+        hasLoopDependency = false;
+        mainJobInfo = null;
+        return result;
+    }
+
+    public static IProcessor generateCode(ProcessItem process, String contextName, boolean statistics, boolean trace,
+                                          boolean applyContextToChildren, int option, IProgressMonitor... monitors) throws ProcessorException {
+        IProgressMonitor monitor = null;
+        if (monitors != null && monitors.length > 0) {
+            monitor = monitors[0];
+        }
+        if (monitor == null) {
+            monitor = new NullProgressMonitor();
+        }
+        JobInfo jobInfo = new JobInfo(process, contextName);
+        jobInfo.setApplyContextToChildren(applyContextToChildren);
+        jobList.clear();
+        esbJobs.clear();
+        hasLoopDependency = false;
+        mainJobInfo = null;
+        IProcessor result = generateCode(jobInfo, contextName, statistics, trace, true, option, monitor);
         jobList.clear();
         hasLoopDependency = false;
         mainJobInfo = null;
@@ -2861,6 +2884,28 @@ public class ProcessorUtilities {
 
     public static void setCIMode(boolean isCIMode) {
         ProcessorUtilities.isCIMode = isCIMode;
+    }
+
+    public static boolean hasRoutelet(ProcessItem prItem, String routelet) {
+        EList<NodeType> nodeList = prItem.getProcess().getNode();
+
+        for (NodeType nodeType : nodeList) {
+            if (nodeType.getComponentName().contentEquals(routelet)) {
+                return true;
+            }
+        }
+
+        return false;
+    }
+
+    public static boolean isRoutelet(IRepositoryObject object) {
+        if (object != null) {
+            Property p = object.getProperty();
+            if (p != null) {
+                return ERepositoryObjectType.getType(p).equals(ERepositoryObjectType.PROCESS_ROUTELET);
+            }
+        }
+        return false;
     }
 
 }

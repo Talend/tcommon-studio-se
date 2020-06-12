@@ -12,12 +12,7 @@
 // ============================================================================
 package org.talend.metadata.managment.ui.wizard;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Comparator;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 import java.util.regex.Pattern;
 
 import org.eclipse.core.resources.IWorkspace;
@@ -47,7 +42,6 @@ import org.talend.commons.ui.runtime.exception.ExceptionHandler;
 import org.talend.commons.ui.runtime.exception.MessageBoxExceptionHandler;
 import org.talend.commons.ui.runtime.image.EImage;
 import org.talend.commons.ui.runtime.image.ImageProvider;
-import org.talend.commons.utils.VersionUtils;
 import org.talend.core.GlobalServiceRegister;
 import org.talend.core.ICoreService;
 import org.talend.core.IESBService;
@@ -98,7 +92,7 @@ public class PropertiesWizard extends Wizard {
     protected String lastVersionFound;
 
     private boolean unlockRequired = true;// A flag to indicate if the item which property is edit is required to
-                                          // unlock.
+    // unlock.
 
     public PropertiesWizard(IRepositoryViewObject repositoryViewObject, IPath path, boolean useLastVersion) {
         super();
@@ -346,7 +340,6 @@ public class PropertiesWizard extends Wizard {
                             Messages.getString("PropertiesWizard.VersionTitle"), //$NON-NLS-1$
                             Messages.getString("PropertiesWizard.PreviousVersion", object.getProperty().getLabel())); //$NON-NLS-1$
                 }
-                
             }
         }
     }
@@ -408,7 +401,7 @@ public class PropertiesWizard extends Wizard {
         if (!alreadyEditedByUser) {
             object.getProperty().setVersion(this.originalVersion);
             object.getProperty().setLabel(this.originaleObjectLabel);
-            object.getProperty().setDisplayName(originaleObjectLabel);
+            object.getProperty().setDisplayName(this.originaleObjectLabel);
             object.getProperty().setDescription(this.originalDescription);
             object.getProperty().setPurpose(this.originalPurpose);
             object.getProperty().setStatusCode(this.originalStatus);
@@ -513,4 +506,5 @@ public class PropertiesWizard extends Wizard {
     public void setAlreadyEditedByUser(boolean alreadyEditedByUser) {
         this.alreadyEditedByUser = alreadyEditedByUser;
     }
+
 }
