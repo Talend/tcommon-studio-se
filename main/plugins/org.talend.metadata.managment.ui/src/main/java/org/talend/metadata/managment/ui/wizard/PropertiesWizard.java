@@ -98,7 +98,7 @@ public class PropertiesWizard extends Wizard {
     protected String lastVersionFound;
 
     private boolean unlockRequired = true;// A flag to indicate if the item which property is edit is required to
-                                          // unlock.
+    // unlock.
 
     public PropertiesWizard(IRepositoryViewObject repositoryViewObject, IPath path, boolean useLastVersion) {
         super();
@@ -327,7 +327,7 @@ public class PropertiesWizard extends Wizard {
             return false;
         }
     }
-    
+
     private void showTestCaseWarning() {
         if(object == null) {
             return;
@@ -346,7 +346,7 @@ public class PropertiesWizard extends Wizard {
                             Messages.getString("PropertiesWizard.VersionTitle"), //$NON-NLS-1$
                             Messages.getString("PropertiesWizard.PreviousVersion", object.getProperty().getLabel())); //$NON-NLS-1$
                 }
-                
+
             }
         }
     }
