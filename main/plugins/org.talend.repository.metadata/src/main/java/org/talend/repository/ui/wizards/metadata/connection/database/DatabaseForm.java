@@ -26,6 +26,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Properties;
+import java.util.Set;
 import java.util.concurrent.Callable;
 import java.util.regex.Pattern;
 
@@ -140,6 +141,7 @@ import org.talend.metadata.managment.repository.ManagerConnection;
 import org.talend.metadata.managment.ui.dialog.HadoopPropertiesDialog;
 import org.talend.metadata.managment.ui.dialog.HiveJDBCPropertiesDialog;
 import org.talend.metadata.managment.ui.dialog.MappingFileSelectDialog;
+import org.talend.metadata.managment.ui.model.IConnParamName;
 import org.talend.metadata.managment.ui.utils.ConnectionContextHelper;
 import org.talend.metadata.managment.ui.utils.DBConnectionContextUtils;
 import org.talend.metadata.managment.ui.utils.DBConnectionContextUtils.EDBParamName;
@@ -8799,11 +8801,24 @@ public class DatabaseForm extends AbstractForm {
      */
     @Override
     protected void exportAsContext() {
-        if (EDatabaseConnTemplate.isSchemaNeeded(getConnection().getDatabaseType()) && schemaText != null
+        String labelText = "";
+        boolean needConfirmDialog = false;
+        if (EDatabaseConnTemplate.EXASOL.getDBDisplayName().equals(getConnectionDBType()) && sidOrDatabaseText != null
+                && StringUtils.isBlank(sidOrDatabaseText.getText())) {
+            labelText = sidOrDatabaseText.getLabelText();
+            needConfirmDialog = true;
+        }
+        Set<IConnParamName> conetxtParams = getConetxtParams();
+        boolean contains = conetxtParams.contains(EDBParamName.Schema);
+        if ((contains || EDatabaseConnTemplate.isSchemaNeeded(getConnection().getDatabaseType()))
                 && StringUtils.isBlank(schemaText.getText())) {
-            boolean confirm = MessageDialog.openConfirm(getShell(), Messages.getString("AbstractForm.ExportAsContext"),//$NON-NLS-1$
-                    Messages.getString("DatabaseForm.checkSchema"));//$NON-NLS-1$
-            if(!confirm) {
+            labelText = schemaText.getLabelText();
+            needConfirmDialog = true;
+        }
+        if (needConfirmDialog) {
+            boolean confirm = MessageDialog.openConfirm(getShell(), Messages.getString("AbstractForm.ExportAsContext"), //$NON-NLS-1$
+                    Messages.getString("DatabaseForm.checkSchema", labelText));//$NON-NLS-1$
+            if (!confirm) {
                 return;
             }
         }
