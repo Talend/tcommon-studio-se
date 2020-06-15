@@ -39,7 +39,8 @@ public abstract class AbstractItemContextLinkService implements IItemContextLink
         return saveContextLink(contextTypeList, item, backupContextLink, remoteContextLink);
     }
     
-    private synchronized boolean saveContextLink(List<ContextType> contextTypeList, Item item, ItemContextLink backupContextLink, ItemContextLink remoteContextLink)
+    public synchronized boolean saveContextLink(List<ContextType> contextTypeList, Item item,
+            ItemContextLink backupContextLink, ItemContextLink remoteContextLink)
             throws PersistenceException {
         boolean hasLinkFile = false;
         String itemId = item.getProperty().getId();
