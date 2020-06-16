@@ -19,15 +19,18 @@ import java.io.FilenameFilter;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.HashSet;
+import java.util.Properties;
 import java.util.Set;
 import java.util.jar.JarEntry;
 import java.util.jar.JarInputStream;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipFile;
 
+import org.apache.commons.io.FilenameUtils;
 import org.eclipse.core.runtime.IPath;
 import org.eclipse.core.runtime.NullProgressMonitor;
 import org.eclipse.core.runtime.Path;
+import org.eclipse.core.runtime.Platform;
 import org.talend.commons.exception.ExceptionHandler;
 import org.talend.commons.runtime.service.ITaCoKitService;
 
@@ -61,6 +64,10 @@ public class UpdatesHelper {
     public static final String COMPONENT_TEMPLATES = "templates";
 
     public static final String NEW_COMPONENT_PREFIX = "installer$$";
+
+    public static final String PRE_TALEND_PATCH = "talend.patch";
+
+    public static final String RECORD_SEPERATOR = ",";
 
     public static boolean existArtifacts(File base) {
         return new File(base, FILE_ARTIFACTS).exists() || new File(base, FILE_JAR_ARTIFACTS).exists()
@@ -166,20 +173,22 @@ public class UpdatesHelper {
      */
     public static File[] findUpdateFiles(File baseFile) {
         Set<File> foundUpdateFiles = new HashSet<File>();
+        Set<String> installedPathNames = getPatchesInstalled();
         if (baseFile != null && baseFile.exists()) {
-            findUpdateBaseFile(foundUpdateFiles, baseFile);
+            findUpdateBaseFile(foundUpdateFiles, baseFile, installedPathNames);
         }
         return foundUpdateFiles.toArray(new File[0]);
     }
 
-    private static void findUpdateBaseFile(Set<File> foundUpdateFiles, File baseFile) {
-        if (isPlainUpdate(baseFile) || isUpdateSite(baseFile) && !isComponentUpdateSite(baseFile)) {
+    private static void findUpdateBaseFile(Set<File> foundUpdateFiles, File baseFile, Set<String> installedPathNames) {
+        if (isPlainUpdate(baseFile)
+                || isUpdateSite(baseFile) && !skipPatchFile(baseFile, installedPathNames) && !isComponentUpdateSite(baseFile)) {
             foundUpdateFiles.add(baseFile);
         } else if (baseFile.isDirectory()) {
             final File[] listFiles = baseFile.listFiles();
             if (listFiles != null) {
                 for (File subFile : listFiles) {
-                    findUpdateBaseFile(foundUpdateFiles, subFile);
+                    findUpdateBaseFile(foundUpdateFiles, subFile, installedPathNames);
                 }
             }
         }
@@ -309,6 +318,52 @@ public class UpdatesHelper {
                     }
                 }
             }
+        }
+        return false;
+    }
+
+    public static File getProductFile() {
+        try {
+            return new File(Platform.getInstallLocation().getDataArea(FILE_ECLIPSE_PRODUCT).getPath());
+        } catch (IOException e) {
+            //
+        }
+        return null;
+    }
+
+    public static Properties loadProductProperties() {
+        Properties prop = new Properties();
+        File productFile = getProductFile();
+        if (productFile != null && productFile.exists()) {
+            try (FileInputStream fis = new FileInputStream(productFile)) {
+                prop.load(fis);
+            } catch (Exception e) {
+                ExceptionHandler.process(e);
+            }
+        }
+        return prop;
+    }
+
+    public static Set<String> getPatchesInstalled() {
+        Set<String> installed = new HashSet<String>();
+        Properties props = loadProductProperties();
+        props.forEach((k, v) -> {
+            String key = String.valueOf(k);
+            if (key.startsWith(PRE_TALEND_PATCH)) {
+                String val = String.valueOf(v);
+                String[] vals = val.split(RECORD_SEPERATOR);
+                if (vals.length > 1) {
+                    installed.add(vals[1]);
+                }
+            }
+        });
+        return installed;
+    }
+
+    public static boolean skipPatchFile(File patchFile, Set<String> installedPathes) {
+        if (patchFile != null && patchFile.isFile()) {
+            String patchName = FilenameUtils.getBaseName(patchFile.getName());
+            return installedPathes.contains(patchName);
         }
         return false;
     }
