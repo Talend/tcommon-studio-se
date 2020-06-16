@@ -49,9 +49,15 @@ public class NetworkUtil {
 
     private static final int DEFAULT_TIMEOUT = 4000;
 
+    private static final int DEFAULT_NEXUS_TIMEOUT = 20000;// same as preference value
+
     private static final String ORG_TALEND_DESIGNER_CORE = "org.talend.designer.core";
 
     public static boolean isNetworkValid() {
+        return isNetworkValid(DEFAULT_TIMEOUT);
+    }
+
+    public static boolean isNetworkValid(Integer timeout) {
         String disableInternet = System.getProperty(TALEND_DISABLE_INTERNET);
         if ("true".equals(disableInternet)) { //$NON-NLS-1$
             return false;
@@ -62,9 +68,9 @@ public class NetworkUtil {
             conn = (HttpURLConnection) url.openConnection();
             conn.setDefaultUseCaches(false);
             conn.setUseCaches(false);
-            int timeout = getTimeout();
-            conn.setConnectTimeout(timeout);
-            conn.setReadTimeout(timeout);
+            int conntimeout = timeout != null ? timeout.intValue() : DEFAULT_TIMEOUT;
+            conn.setConnectTimeout(conntimeout);
+            conn.setReadTimeout(conntimeout);
             conn.setRequestMethod("HEAD"); //$NON-NLS-1$
             String strMessage = conn.getResponseMessage();
             if (strMessage.compareTo("Not Found") == 0) { //$NON-NLS-1$
@@ -81,23 +87,23 @@ public class NetworkUtil {
         return true;
     }
 
-    public static boolean isNetworkValid(String url) {
+    public static boolean isNetworkValid(String url, Integer timeout) {
         if (url == null) {
-            return isNetworkValid();
+            return isNetworkValid(timeout);
         }
-        return checkValidWithHttp(url);
+        return checkValidWithHttp(url, timeout);
     }
 
-    private static boolean checkValidWithHttp(String urlString) {
+    private static boolean checkValidWithHttp(String urlString, Integer timeout) {
         HttpURLConnection conn = null;
         try {
             URL url = new URL(urlString);
             conn = (HttpURLConnection) url.openConnection();
             conn.setDefaultUseCaches(false);
             conn.setUseCaches(false);
-            int timeout = getTimeout();
-            conn.setConnectTimeout(timeout);
-            conn.setReadTimeout(timeout);
+            int conntimeout = timeout != null ? timeout.intValue() : DEFAULT_TIMEOUT;
+            conn.setConnectTimeout(conntimeout);
+            conn.setReadTimeout(conntimeout);
             conn.setRequestMethod("HEAD"); //$NON-NLS-1$
             conn.getResponseMessage();
         } catch (Exception e) {
@@ -110,11 +116,11 @@ public class NetworkUtil {
         return true;
     }
 
-    private static int getTimeout() {
-        int timeout = DEFAULT_TIMEOUT;
+    public static int getNexusTimeout() {
+        int timeout = DEFAULT_NEXUS_TIMEOUT;
         try {
             IEclipsePreferences node = InstanceScope.INSTANCE.getNode(ORG_TALEND_DESIGNER_CORE);
-            timeout = node.getInt(ITalendNexusPrefConstants.NEXUS_TIMEOUT, 20000);
+            timeout = node.getInt(ITalendNexusPrefConstants.NEXUS_TIMEOUT, DEFAULT_NEXUS_TIMEOUT);
         } catch (Throwable e) {
             ExceptionHandler.process(e);
         }
