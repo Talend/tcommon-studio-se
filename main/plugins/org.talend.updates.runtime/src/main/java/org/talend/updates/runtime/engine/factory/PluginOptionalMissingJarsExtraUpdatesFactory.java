@@ -50,7 +50,8 @@ public class PluginOptionalMissingJarsExtraUpdatesFactory extends AbstractExtraU
     @Override
     public void retrieveUninstalledExtraFeatures(IProgressMonitor monitor, Set<ExtraFeature> uninstalledExtraFeatures)
             throws Exception {
-        if (!NetworkUtil.isNetworkValid(TalendLibsServerManager.getInstance().getTalentArtifactServer().getServer())) {
+        if (!NetworkUtil.isNetworkValid(TalendLibsServerManager.getInstance().getTalentArtifactServer().getServer(),
+                NetworkUtil.getNexusTimeout())) {
     		return;
     	}
     	
