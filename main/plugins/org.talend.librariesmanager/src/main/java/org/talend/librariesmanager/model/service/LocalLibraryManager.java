@@ -69,7 +69,6 @@ import org.talend.core.model.repository.ERepositoryObjectType;
 import org.talend.core.nexus.ArtifactRepositoryBean;
 import org.talend.core.nexus.IRepositoryArtifactHandler;
 import org.talend.core.nexus.NexusConstants;
-import org.talend.core.nexus.NexusServerUtils;
 import org.talend.core.nexus.RepositoryArtifactHandlerManager;
 import org.talend.core.nexus.TalendLibsServerManager;
 import org.talend.core.nexus.TalendMavenResolver;
@@ -554,7 +553,7 @@ public class LocalLibraryManager implements ILibraryManagerService, IChangedLibr
      * @return
      */
     public boolean isResolveAllowed(String uri) {
-        IEclipsePreferences node = InstanceScope.INSTANCE.getNode(NexusServerUtils.ORG_TALEND_DESIGNER_CORE);
+        IEclipsePreferences node = InstanceScope.INSTANCE.getNode("org.talend.designer.core");
         int refreshTime = node.getInt(ITalendCorePrefConstants.NEXUS_REFRESH_FREQUENCY, 0);
         if (refreshTime == 0) {
             return true;
