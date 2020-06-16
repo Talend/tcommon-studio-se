@@ -1765,6 +1765,9 @@ public class RepositoryToComponentProperty {
         if ("IMPALA_DRIVER".equals(value)) {
             return connection.getParameters().get(ConnParameterKeys.IMPALA_DRIVER);
         }
+        if (StringUtils.equals("MAPPING", value)) {
+            return connection.getDbmsId();
+        }
         return null;
     }
 
