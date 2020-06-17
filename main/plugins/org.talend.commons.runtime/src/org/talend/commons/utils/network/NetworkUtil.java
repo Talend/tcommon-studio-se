@@ -51,7 +51,7 @@ public class NetworkUtil {
 
     private static final int DEFAULT_NEXUS_TIMEOUT = 20000;// same as preference value
 
-    private static final String ORG_TALEND_DESIGNER_CORE = "org.talend.designer.core";
+    public static final String ORG_TALEND_DESIGNER_CORE = "org.talend.designer.core"; //$NON-NLS-1$
 
     public static boolean isNetworkValid() {
         return isNetworkValid(DEFAULT_TIMEOUT);
