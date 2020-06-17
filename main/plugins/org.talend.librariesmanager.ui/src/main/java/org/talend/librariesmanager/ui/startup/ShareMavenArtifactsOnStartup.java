@@ -26,7 +26,6 @@ import org.apache.commons.lang.StringUtils;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.SubMonitor;
 import org.talend.commons.exception.ExceptionHandler;
-import org.talend.commons.utils.VersionUtils;
 import org.talend.core.GlobalServiceRegister;
 import org.talend.core.ILibraryManagerService;
 import org.talend.core.model.general.ModuleNeeded;
@@ -88,10 +87,10 @@ public class ShareMavenArtifactsOnStartup extends ShareLibrareisHelper {
             }
         }
 
-        addMojoArtifact(files, "org.talend.ci", "builder-maven-plugin", "ci.builder.version"); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
-        addMojoArtifact(files, "org.talend.ci", "cloudpublisher-maven-plugin", "cloud.publisher.version"); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
-        addMojoArtifact(files, "org.talend.ci", "signer-maven-plugin", "signer.version"); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
-        addMojoArtifact(files, "org.talend.ci", "osgihelper-maven-plugin", "osgihelper.version"); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+        addMojoArtifact(files, "org.talend.ci", "builder-maven-plugin", "7.3.2"); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+        addMojoArtifact(files, "org.talend.ci", "cloudpublisher-maven-plugin", "7.3.1"); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+        addMojoArtifact(files, "org.talend.ci", "signer-maven-plugin", "7.3.1"); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+        addMojoArtifact(files, "org.talend.ci", "osgihelper-maven-plugin", "7.3.1"); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
 
         mainSubMonitor.worked(1);
         return files;
@@ -124,8 +123,8 @@ public class ShareMavenArtifactsOnStartup extends ShareLibrareisHelper {
         // deployer.deploy(pomFile, artifact);
     }
 
-    private void addMojoArtifact(Map<ModuleNeeded, File> files, String groupId, String artifactId, String versionKey) {
-        String mvnUrl = MavenUrlHelper.generateMvnUrl(groupId, artifactId, VersionUtils.getMojoVersion(versionKey), null, null);
+    private void addMojoArtifact(Map<ModuleNeeded, File> files, String groupId, String artifactId, String version) {
+        String mvnUrl = MavenUrlHelper.generateMvnUrl(groupId, artifactId, version, null, null);
         // try to resolve locally
         String localMvnUrl = mvnUrl.replace(MavenUrlHelper.MVN_PROTOCOL,
                 MavenUrlHelper.MVN_PROTOCOL + MavenConstants.LOCAL_RESOLUTION_URL + MavenUrlHelper.REPO_SEPERATOR);
