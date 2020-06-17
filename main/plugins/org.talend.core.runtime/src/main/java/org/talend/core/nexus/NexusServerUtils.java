@@ -46,6 +46,8 @@ import org.talend.core.runtime.maven.MavenArtifact;
  */
 public class NexusServerUtils {
 
+    public static final String ORG_TALEND_DESIGNER_CORE = NetworkUtil.ORG_TALEND_DESIGNER_CORE;
+
     public static final int CONNECTION_OK = 200;
 
     // the max search result is 200 by defult from nexus
