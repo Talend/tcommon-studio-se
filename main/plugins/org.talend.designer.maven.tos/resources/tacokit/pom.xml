@@ -10,7 +10,7 @@
 	<artifactId>studio-tacokit-dependencies</artifactId>
 	<packaging>pom</packaging>
 	<properties>
-		<tacokit.components.version>1.10.0-SNAPSHOT</tacokit.components.version>
+		<tacokit.components.version>1.11.0-SNAPSHOT</tacokit.components.version>
 	</properties>
 	<repositories>
 		<repository>
