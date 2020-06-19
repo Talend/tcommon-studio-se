@@ -433,7 +433,7 @@ public class ConnectionParameters {
      * @param password the password to set
      */
     public void setPassword(String password) {
-        this.password = TextUtil.removeQuots(password);
+        this.password = TextUtil.removeQuots(password).replaceAll("\\\\\"", "\"");
         if (!isShowDialog) {
             isShowDialog = ContextParameterUtils.isContainContextParam(password);
         }

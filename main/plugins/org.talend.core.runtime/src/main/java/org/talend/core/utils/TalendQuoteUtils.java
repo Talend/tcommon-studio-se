@@ -142,10 +142,10 @@ public final class TalendQuoteUtils {
         if (text == null) {
             return null;
         }
-        if (!text.startsWith(quote)) {
+        if (!text.startsWith(quote)||text.startsWith("\\\"")) {
             text = quote + text;
         }
-        if (!text.endsWith(quote) || (quote != null && quote.equals(text))) {
+        if (!text.endsWith(quote)||text.endsWith("\\\"") || (quote != null && quote.equals(text))) {
             text = text + quote;
         }
         return text;
