@@ -201,10 +201,10 @@ public class TextUtil {
         }
         if (ConnectionParameters.isJavaProject()) {
             if (query.startsWith("\"") && query.endsWith("\"") && query.length() > 1) { //$NON-NLS-1$ //$NON-NLS-2$
-                if (query.startsWith("\"") && !query.startsWith("\\\"")) {//$NON-NLS-1$ //$NON-NLS-2$
+                if (!query.startsWith("\\\"")) {//$NON-NLS-1$ //$NON-NLS-2$
                     query = query.substring(1, query.length());
                 }
-                if (query.endsWith("\"") && !query.endsWith("\\\"")) {//$NON-NLS-1$ //$NON-NLS-2$
+                if (!query.endsWith("\\\"")) {//$NON-NLS-1$ //$NON-NLS-2$
                     query = query.substring(0, query.length() - 1);
                 }
                 return query;
