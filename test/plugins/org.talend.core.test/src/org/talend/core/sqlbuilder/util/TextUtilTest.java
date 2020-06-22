@@ -139,6 +139,21 @@ public class TextUtilTest {
 
         assertEquals(expectString, TextUtil.removeQuots("\"select * from test\""));
     }
+    
+    @Test
+    public void testRemoveQuotsInPassword() {
+        String expectString = "password";
+
+        assertEquals("", TextUtil.removeQuotsInPassword(null,false));
+
+        assertNotNull(TextUtil.removeQuotsInPassword("password",false));
+
+        assertEquals(expectString, TextUtil.removeQuotsInPassword("password",false));
+
+        assertNotNull(TextUtil.removeQuotsInPassword("\"password\"",false));
+
+        assertEquals(expectString, TextUtil.removeQuotsInPassword("\"password\"",false));
+      }
 
     /**
      * Test method for {@link org.talend.core.sqlbuilder.util.TextUtil#getDialogTitle()}.
