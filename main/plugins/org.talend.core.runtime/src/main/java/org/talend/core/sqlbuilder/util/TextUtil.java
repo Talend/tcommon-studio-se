@@ -201,13 +201,7 @@ public class TextUtil {
         }
         if (ConnectionParameters.isJavaProject()) {
             if (query.startsWith("\"") && query.endsWith("\"") && query.length() > 1) { //$NON-NLS-1$ //$NON-NLS-2$
-                if (!query.startsWith("\\\"")) {//$NON-NLS-1$ //$NON-NLS-2$
-                    query = query.substring(1, query.length());
-                }
-                if (!query.endsWith("\\\"")) {//$NON-NLS-1$ //$NON-NLS-2$
-                    query = query.substring(0, query.length() - 1);
-                }
-                return query;
+                return query.substring(1, query.length() - 1);
             } else {
                 return query;
             }
@@ -218,6 +212,28 @@ public class TextUtil {
                 return query;
             }
 
+        }
+    }
+
+    public static String removeQuotsInPassword(String query,boolean containContextParam) {
+        if (query == null) {
+            return ""; //$NON-NLS-1$
+        }
+       
+        if (ConnectionParameters.isJavaProject()) {
+            if (!containContextParam && query.startsWith("\"") && query.endsWith("\"") && query.length() > 1) { //$NON-NLS-1$ //$NON-NLS-2$
+                if (query.startsWith("\"") && !query.startsWith("\\\"")) {//$NON-NLS-1$ //$NON-NLS-2$
+                    query = query.substring(1, query.length());
+                }
+                if (query.endsWith("\"") && !query.endsWith("\\\"")) {//$NON-NLS-1$ //$NON-NLS-2$
+                    query = query.substring(0, query.length() - 1);
+                }
+                return query;
+            } else {
+                return query;
+            }
+        } else {
+            return query;
         }
     }
 
