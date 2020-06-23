@@ -22,6 +22,8 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import java.util.concurrent.Semaphore;
+import java.util.concurrent.atomic.AtomicBoolean;
 
 import org.apache.commons.lang3.StringUtils;
 import org.apache.maven.model.Dependency;
@@ -30,10 +32,17 @@ import org.eclipse.core.resources.IFile;
 import org.eclipse.core.resources.IFolder;
 import org.eclipse.core.resources.IProject;
 import org.eclipse.core.resources.IResource;
+import org.eclipse.core.resources.IWorkspace;
 import org.eclipse.core.resources.IWorkspaceRoot;
+import org.eclipse.core.resources.IWorkspaceRunnable;
 import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.core.runtime.CoreException;
+import org.eclipse.core.runtime.IProgressMonitor;
+import org.eclipse.core.runtime.IStatus;
+import org.eclipse.core.runtime.NullProgressMonitor;
 import org.eclipse.core.runtime.Path;
+import org.eclipse.core.runtime.Status;
+import org.eclipse.core.runtime.jobs.Job;
 import org.eclipse.m2e.core.MavenPlugin;
 import org.junit.Assert;
 import org.junit.Test;
@@ -44,6 +53,7 @@ import org.talend.core.model.properties.Property;
 import org.talend.core.nexus.TalendMavenResolver;
 import org.talend.core.runtime.maven.MavenArtifact;
 import org.talend.core.runtime.maven.MavenConstants;
+import org.talend.core.runtime.maven.MavenUrlHelper;
 import org.talend.designer.maven.model.TalendJavaProjectConstants;
 import org.talend.designer.maven.model.TalendMavenConstants;
 import org.talend.designer.maven.template.MavenTemplateManager;
@@ -595,6 +605,96 @@ public class PomUtilTest {
         Assert.assertEquals(PomUtil.generateMvnUrl(modelMain.getDependencies().get(2)), subjob2DepStr);
 
         testFolder.delete(true, null);
+    }
+
+    @Test
+    public void test_generatePom_DeadLock() throws Throwable {
+        final Semaphore lock = new Semaphore(1);
+        try {
+            lock.acquire();
+            IWorkspace workspace = ResourcesPlugin.getWorkspace();
+            Throwable ex[] = new Throwable[1];
+            final AtomicBoolean job1Started = new AtomicBoolean(false);
+            Job job1 = new Job("Lock thread") {
+
+                @Override
+                protected IStatus run(IProgressMonitor monitor) {
+                    try {
+                        job1Started.set(true);
+                        lock.acquire();
+                    } catch (Throwable e) {
+                        ex[0] = e;
+                    } finally {
+                        lock.release();
+                    }
+                    return Status.OK_STATUS;
+                }
+            };
+            job1.setRule(workspace.getRoot());
+            job1.schedule();
+            while (!job1Started.get()) {
+                Thread.sleep(100);
+            }
+            if (ex[0] != null) {
+                throw ex[0];
+            }
+
+            Job job2 = new Job("Test thread") {
+
+                @Override
+                protected IStatus run(IProgressMonitor monitor) {
+                    try {
+                        MavenArtifact mavenArtifact = MavenUrlHelper.parseMvnUrl("mvn:org.talend.test/subJob1/1.0.0/jar");
+                        String pomPath = PomUtil.generatePom(mavenArtifact);
+                        File pomFile = new File(pomPath);
+                        if (!pomFile.exists()) {
+                            throw new Exception("Generate pom file failed!");
+                        }
+                    } catch (Throwable e) {
+                        ex[0] = e;
+                    }
+                    return Status.OK_STATUS;
+                }
+            };
+            job2.schedule();
+            /**
+             * Normally 10s is enough for PomUtil#generatePom, unless the disk is very very slow.
+             */
+            boolean succeed = job2.join(10000, new NullProgressMonitor());
+            if (ex[0] != null) {
+                throw ex[0];
+            }
+            job2.cancel();
+            Assert.assertTrue("Dead lock again!", succeed);
+        } finally {
+            lock.release();
+        }
+    }
+
+    @Test
+    public void test_generatePom_runInWorkspaceRunnable() throws Throwable {
+        IWorkspace workspace = ResourcesPlugin.getWorkspace();
+        Throwable ex[] = new Throwable[1];
+        workspace.run(new IWorkspaceRunnable() {
+
+            @Override
+            public void run(IProgressMonitor monitor) throws CoreException {
+                try {
+                    MavenArtifact mavenArtifact = MavenUrlHelper.parseMvnUrl("mvn:org.talend.test/subJob1/1.0.0/jar");
+                    String pomPath = PomUtil.generatePom(mavenArtifact);
+                    File pomFile = new File(pomPath);
+                    if (!pomFile.exists()) {
+                        throw new Exception("Generate pom file failed!");
+                    }
+                } catch (Throwable e) {
+                    ex[0] = e;
+                }
+            }
+        }, workspace.getRoot(), IWorkspace.AVOID_UPDATE, new NullProgressMonitor());
+        if (ex[0] != null) {
+            throw ex[0];
+        }
+        Assert.assertTrue("As long as no exception, succeed", true);
     }
 
     private Model creatModel(String artifactId) {
