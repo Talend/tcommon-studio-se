@@ -173,28 +173,31 @@ public class UpdatesHelper {
      */
     public static File[] findUpdateFiles(File baseFile) {
         Set<File> foundUpdateFiles = new HashSet<File>();
-        Set<String> installedPathNames = getPatchesInstalled();
         if (baseFile != null && baseFile.exists()) {
-            findUpdateBaseFile(foundUpdateFiles, baseFile, installedPathNames);
+            findUpdateBaseFile(foundUpdateFiles, baseFile);
         }
         return foundUpdateFiles.toArray(new File[0]);
     }
 
-    private static void findUpdateBaseFile(Set<File> foundUpdateFiles, File baseFile, Set<String> installedPathNames) {
+    private static void findUpdateBaseFile(Set<File> foundUpdateFiles, File baseFile) {
         if (isPlainUpdate(baseFile)
-                || isUpdateSite(baseFile) && !skipPatchFile(baseFile, installedPathNames) && !isComponentUpdateSite(baseFile)) {
+                || isUpdateSite(baseFile) && !isComponentUpdateSite(baseFile)) {
             foundUpdateFiles.add(baseFile);
         } else if (baseFile.isDirectory()) {
             final File[] listFiles = baseFile.listFiles();
             if (listFiles != null) {
                 for (File subFile : listFiles) {
-                    findUpdateBaseFile(foundUpdateFiles, subFile, installedPathNames);
+                    findUpdateBaseFile(foundUpdateFiles, subFile);
                 }
             }
         }
     }
 
     public static boolean isComponentUpdateSite(File file) {
+        Set<String> installedPathNames = getPatchesInstalled();
+        if(skipPatchFile(file, installedPathNames) ) {
+            return false;
+        }
         if (file != null && file.exists()) {
             if (file.isFile() && file.getName().endsWith(FileExtensions.ZIP_FILE_SUFFIX)) {
                 ZipFileStatus status = new ZipFileStatus(file) {
