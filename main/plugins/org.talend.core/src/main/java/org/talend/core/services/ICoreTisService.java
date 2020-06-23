@@ -77,5 +77,7 @@ public interface ICoreTisService extends IService {
     Map<String, String> getDropBundleInfo() throws IOException;
 
     Set<String> getComponentBlackList();
+
+    Set<String> getBundlesIdFromLicense();
     
 }
