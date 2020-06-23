@@ -164,6 +164,8 @@ public class ArtifacoryRepositoryHandler extends AbstractArtifactRepositoryHandl
         String basicAuth = "Basic " + new String(new Base64().encode(userPass.getBytes()));
         Header authority = new BasicHeader("Authorization", basicAuth);
         request.addHeader(authority);
+        Header resultDetailHeader = new BasicHeader("X-Result-Detail", "info"); //$NON-NLS-1$ //$NON-NLS-2$
+        request.addHeader(resultDetailHeader);
         List<MavenArtifact> resultList = new ArrayList<MavenArtifact>();
 
         HttpResponse response = request.execute().returnResponse();
