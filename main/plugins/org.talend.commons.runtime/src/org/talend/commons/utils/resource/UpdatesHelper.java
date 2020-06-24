@@ -92,6 +92,9 @@ public class UpdatesHelper {
      * will check that existed the plugins folder only.
      */
     public static boolean isPlainUpdate(File file) {
+        if (skipPatchFile(file)) {
+            return false;
+        }
         if (file != null && file.exists()) {
             if (file.isFile() && file.getName().endsWith(FileExtensions.ZIP_FILE_SUFFIX)) {
                 ZipFileStatus status = new ZipFileStatus(file);
@@ -119,6 +122,9 @@ public class UpdatesHelper {
      * need check that contain "artifacts.xml", "content.xml" and "plugins" folder in same place.
      */
     public static boolean isUpdateSite(File file) {
+        if (skipPatchFile(file)) {
+            return false;
+        }
         if (file != null && file.exists()) {
             if (file.isFile() && file.getName().endsWith(FileExtensions.ZIP_FILE_SUFFIX)) {
 
@@ -194,8 +200,8 @@ public class UpdatesHelper {
     }
 
     public static boolean isComponentUpdateSite(File file) {
-        Set<String> installedPathNames = getPatchesInstalled();
-        if(skipPatchFile(file, installedPathNames) ) {
+
+        if (skipPatchFile(file)) {
             return false;
         }
         if (file != null && file.exists()) {
@@ -357,16 +363,19 @@ public class UpdatesHelper {
                 String[] vals = val.split(RECORD_SEPERATOR);
                 if (vals.length > 1) {
                     installed.add(vals[1]);
+                } else {
+                    installed.add(val);
                 }
             }
         });
         return installed;
     }
 
-    public static boolean skipPatchFile(File patchFile, Set<String> installedPathes) {
+    public static boolean skipPatchFile(File patchFile) {
+        Set<String> installedPathNames = getPatchesInstalled();
         if (patchFile != null && patchFile.isFile()) {
             String patchName = FilenameUtils.getBaseName(patchFile.getName());
-            return installedPathes.contains(patchName);
+            return installedPathNames.contains(patchName);
         }
         return false;
     }
