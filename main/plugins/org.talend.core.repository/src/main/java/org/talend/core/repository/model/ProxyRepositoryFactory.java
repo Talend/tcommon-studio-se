@@ -123,6 +123,7 @@ import org.talend.core.repository.constants.Constant;
 import org.talend.core.repository.constants.FileConstants;
 import org.talend.core.repository.i18n.Messages;
 import org.talend.core.repository.recyclebin.RecycleBinManager;
+import org.talend.core.repository.utils.ProjectDataJsonProvider;
 import org.talend.core.repository.utils.RepositoryPathProvider;
 import org.talend.core.repository.utils.XmiResourceManager;
 import org.talend.core.runtime.CoreRuntimePlugin;
@@ -2052,6 +2053,7 @@ public final class ProxyRepositoryFactory implements IProxyRepositoryFactory {
                     project.setEmfProject(getEmfProjectContent(project.getTechnicalLabel()));
                 }
                 getRepositoryContext().setProject(project);
+                ProjectDataJsonProvider.checkAndRectifyRelationShipSetting(project.getEmfProject());
 
                 currentMonitor = subMonitor.newChild(1, SubMonitor.SUPPRESS_NONE);
                 currentMonitor.beginTask(Messages.getString("ProxyRepositoryFactory.initializeProjectConnection"), 1); //$NON-NLS-1$

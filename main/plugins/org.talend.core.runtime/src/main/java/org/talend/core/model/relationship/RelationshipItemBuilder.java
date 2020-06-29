@@ -43,6 +43,7 @@ import org.talend.core.model.properties.ProcessItem;
 import org.talend.core.model.properties.PropertiesFactory;
 import org.talend.core.model.repository.ERepositoryObjectType;
 import org.talend.core.model.repository.IRepositoryViewObject;
+import org.talend.core.model.routines.RoutinesUtil;
 import org.talend.core.runtime.CoreRuntimePlugin;
 import org.talend.core.runtime.i18n.Messages;
 import org.talend.designer.core.model.utils.emf.talendfile.ElementParameterType;
@@ -129,6 +130,8 @@ public class RelationshipItemBuilder {
     private Map<Relation, Set<Relation>> currentProjectItemsRelations;
 
     private Map<Relation, Set<Relation>> referencesItemsRelations;
+
+    private Map<String, String> systemRoutinesMap;
 
     private boolean loaded = false;
 
@@ -217,6 +220,28 @@ public class RelationshipItemBuilder {
 
     public void setProxyRepositoryFactory(IProxyRepositoryFactory proxyRepositoryFactory) {
         this.proxyRepositoryFactory = proxyRepositoryFactory;
+    }
+
+    /**
+     * 
+     * Current System Routines Map, key: routine id, value: routine name
+     * 
+     * @return
+     */
+    public Map<String, String> getCurrentSystemRoutinesMap() {
+        if (systemRoutinesMap != null && !systemRoutinesMap.isEmpty()) {
+            return systemRoutinesMap;
+        }
+
+        if (systemRoutinesMap == null) {
+            systemRoutinesMap = new HashMap<String, String>();
+        }
+        List<IRepositoryViewObject> currentSystemRoutines = RoutinesUtil.getCurrentSystemRoutines();
+        for (IRepositoryViewObject object : currentSystemRoutines) {
+            systemRoutinesMap.put(object.getProperty().getId(), object.getProperty().getLabel());
+        }
+
+        return systemRoutinesMap;
     }
 
     /**

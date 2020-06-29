@@ -46,6 +46,7 @@ import org.talend.core.model.properties.Project;
 import org.talend.core.model.properties.StatAndLogsSettings;
 import org.talend.core.model.properties.Status;
 import org.talend.core.model.properties.impl.PropertiesFactoryImpl;
+import org.talend.core.model.relationship.RelationshipItemBuilder;
 import org.talend.core.repository.constants.FileConstants;
 import org.talend.core.repository.recyclebin.RecycleBinManager;
 import org.talend.designer.core.model.utils.emf.talendfile.ElementParameterType;
@@ -261,6 +262,68 @@ public class ProjectDataJsonProvider {
             throw new PersistenceException(e);
         } finally {
             closeInputStream(input);
+        }
+    }
+
+    public static void checkAndRectifyRelationShipSetting(Project project) throws PersistenceException {
+        File file = getSavingConfigurationFile(project.getTechnicalLabel(), FileConstants.RELATIONSHIP_FILE_NAME);
+        if (file == null || !file.exists()) {
+            return;
+        }
+
+        List<ItemRelationsJson> itemRelationsJsonsList = null;
+        TypeReference<List<ItemRelationsJson>> typeReference = new TypeReference<List<ItemRelationsJson>>() {
+        };
+        FileInputStream input = null;
+        try {
+            input = new FileInputStream(file);
+            itemRelationsJsonsList = new ObjectMapper().readValue(new FileInputStream(file), typeReference);
+        } catch (Exception e) {
+            throw new PersistenceException(e);
+        } finally {
+            closeInputStream(input);
+        }
+
+        if (itemRelationsJsonsList == null || itemRelationsJsonsList.isEmpty()) {
+            return;
+        }
+
+        Set<String> idVersionSet = new HashSet<String>();
+        List<ItemRelationsJson> relationJsonList = new ArrayList<ItemRelationsJson>();
+        Map<String, String> currentSystemRoutinesMap = RelationshipItemBuilder.getInstance().getCurrentSystemRoutinesMap();
+        boolean needModify = false;
+        for (ItemRelationsJson relationJson : itemRelationsJsonsList) {
+            ItemRelationJson baseItem = relationJson.getBaseItem();
+            String idversion = baseItem.getId() + ";" + baseItem.getVersion();
+            if (idVersionSet.contains(idversion)) {
+                // in case duplicate
+                needModify = true;
+                continue;
+            }
+            // remove system routines relation
+            int originalSize = relationJson.getRelatedItems().size();
+            relationJson.getRelatedItems()
+                    .removeIf(relatedItem -> RelationshipItemBuilder.ROUTINE_RELATION.equals(relatedItem.getType())
+                            && currentSystemRoutinesMap.containsValue(relatedItem.getId()));
+            if (relationJson.getRelatedItems().size() != originalSize) {
+                needModify = true;
+            }
+            if (!relationJson.getRelatedItems().isEmpty()) {
+                relationJsonList.add(relationJson);
+            }
+            idVersionSet.add(idversion);
+        }
+
+        if (needModify) {
+            // re-load to project
+            if (relationJsonList != null && !relationJsonList.isEmpty()) {
+                project.getItemsRelations().clear();
+                for (ItemRelationsJson json : relationJsonList) {
+                    project.getItemsRelations().add(json.toEmfObject());
+                }
+            }
+            // re-save relationship setting json file
+            saveRelationShips(project);
         }
     }
 
