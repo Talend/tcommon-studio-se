@@ -762,7 +762,8 @@ public class RelationshipItemBuilder {
             for (ItemRelations relations : oldRelations) {
                 boolean isIdSame = relations.getBaseItem().getId().equals(relation.getId());
                 boolean isVersionSame = StringUtils.equals(relations.getBaseItem().getVersion(), relation.getVersion());
-                if (isIdSame && isVersionSame) {
+                boolean isTypeSame = StringUtils.equals(relations.getBaseItem().getType(), relation.getType());
+                if (isIdSame && isVersionSame && isTypeSame) {
                     usedList.add(relations);
                     itemRelations = relations;
                     exist = true;
