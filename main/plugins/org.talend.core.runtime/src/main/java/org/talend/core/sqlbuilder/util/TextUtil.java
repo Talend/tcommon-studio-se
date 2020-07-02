@@ -215,6 +215,22 @@ public class TextUtil {
         }
     }
 
+    public static String removeQuotsInPassword(String query,boolean containContextParam) {
+        if (query == null) {
+            return ""; //$NON-NLS-1$
+        }
+       
+        if (ConnectionParameters.isJavaProject()) {
+            if (!containContextParam && query.startsWith("\"") && query.endsWith("\"") && query.length() > 1) { //$NON-NLS-1$ //$NON-NLS-2$
+                return query.substring(1, query.length() - 1);
+            } else {
+                return query;
+            }
+        } else {
+            return query;
+        }
+    }
+
     public static String getDialogTitle() {
         return dialogTitle;
     }

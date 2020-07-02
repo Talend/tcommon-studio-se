@@ -15,12 +15,13 @@ package org.talend.core.model.context.link;
 import java.io.ByteArrayInputStream;
 import java.io.File;
 import java.io.IOException;
+import java.io.InputStream;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 import org.apache.commons.lang3.StringUtils;
+import org.apache.log4j.Logger;
 import org.eclipse.core.resources.IFile;
 import org.eclipse.core.resources.IFolder;
 import org.eclipse.core.resources.IProject;
@@ -34,23 +35,22 @@ import org.talend.commons.exception.ExceptionHandler;
 import org.talend.commons.exception.PersistenceException;
 import org.talend.commons.utils.workbench.resources.ResourceUtils;
 import org.talend.core.model.context.ContextUtils;
-import org.talend.core.model.metadata.builder.connection.Connection;
-import org.talend.core.model.process.IContextParameter;
-import org.talend.core.model.properties.ConnectionItem;
-import org.talend.core.model.properties.ContextItem;
 import org.talend.core.model.properties.Item;
-import org.talend.core.model.properties.JobletProcessItem;
-import org.talend.core.model.properties.ProcessItem;
 import org.talend.core.model.properties.Project;
-import org.talend.cwm.helper.ResourceHelper;
+import org.talend.core.model.relationship.Relation;
+import org.talend.core.model.relationship.RelationshipItemBuilder;
+import org.talend.core.runtime.CoreRuntimePlugin;
 import org.talend.designer.core.model.utils.emf.talendfile.ContextParameterType;
 import org.talend.designer.core.model.utils.emf.talendfile.ContextType;
 import org.talend.repository.ProjectManager;
+import org.talend.repository.model.IProxyRepositoryFactory;
 import org.talend.repository.model.RepositoryConstants;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 public class ContextLinkService {
+
+    private static final Logger LOGGER = Logger.getLogger(ContextLinkService.class);
 
     private static final String CREATOR_EXT_ID = "org.talend.core.runtime.saveItemContextLinkService"; //$NON-NLS-1$
 
@@ -78,162 +78,38 @@ public class ContextLinkService {
                 return service.saveItemLink(item);
             }
         }
-        return doSaveContextLink(item);
+        return false;
     }
 
-    public synchronized boolean doSaveContextLink(Item item) throws PersistenceException {
-        if (item instanceof ProcessItem) {
-            ProcessItem processItem = (ProcessItem) item;
-            return saveContextLink(processItem.getProcess().getContext(), item);
-        } else if (item instanceof JobletProcessItem) {
-            JobletProcessItem jobletItem = (JobletProcessItem) item;
-            return saveContextLink(jobletItem.getJobletProcess().getContext(), item);
-        } else if (item instanceof ConnectionItem) {
-            ConnectionItem connectionItem = (ConnectionItem) item;
-            return saveContextLink(connectionItem.getConnection(), item);
+    public synchronized boolean mergeContextLink(Item item, ItemContextLink backupContextLink, InputStream remoteLinkFile)
+            throws PersistenceException {
+        for (IItemContextLinkService service : registeredService) {
+            if (service.accept(item)) {
+                return service.mergeItemLink(item, backupContextLink, remoteLinkFile);
+            }
         }
         return false;
     }
 
-    @SuppressWarnings("unchecked")
-    private synchronized boolean saveContextLink(Connection connection, Item item) throws PersistenceException {
-        boolean hasLinkFile = false;
-        ItemContextLink itemContextLink = new ItemContextLink();
-        itemContextLink.setItemId(item.getProperty().getId());
-        if (connection.isContextMode()) {
-            String contextId = connection.getContextId();
-            if (StringUtils.isEmpty(contextId) || IContextParameter.BUILT_IN.equals(contextId)) {
-                return hasLinkFile;
-            }
-            ContextLink contextLink = new ContextLink();
-            contextLink.setContextName(connection.getContextName());
-            contextLink.setRepoId(contextId);
-            itemContextLink.getContextList().add(contextLink);
-
-            ContextItem contextItem = ContextUtils.getContextItemById2(contextId);
-            if (contextItem != null) {
-                ContextType contextType = ContextUtils.getContextTypeByName(contextItem.getContext(),
-                        connection.getContextName());
-                if (contextType != null) {
-                    for (Object o : contextType.getContextParameter()) {
-                        if (o instanceof ContextParameterType) {
-                            ContextParameterType contextParameterType = (ContextParameterType) o;
-                            ContextParamLink contextParamLink = new ContextParamLink();
-                            contextParamLink.setName(contextParameterType.getName());
-                            contextParamLink.setId(ResourceHelper.getUUID(contextParameterType));
-                            contextLink.getParameterList().add(contextParamLink);
-                        }
-                    }
-                }
+    public boolean isSupportContextLink(Item item) {
+        for (IItemContextLinkService service : registeredService) {
+            if (service.accept(item)) {
+                return true;
             }
         }
-        if (itemContextLink.getContextList().size() > 0) {
-            saveContextLinkToJson(item, itemContextLink);
-            hasLinkFile = true;
-        } else {
-            deleteContextLinkJsonFile(item);
-        }
-        return hasLinkFile;
+        return false;
     }
 
-    public synchronized boolean saveContextLink(List<ContextType> contextTypeList, Item item) throws PersistenceException {
-        boolean hasLinkFile = false;
-        String itemId = item.getProperty().getId();
-        ItemContextLink itemContextLink = new ItemContextLink();
-        itemContextLink.setItemId(itemId);
-        Map<String, Item> tempCache = new HashMap<String, Item>();
-        if (contextTypeList != null && contextTypeList.size() > 0) {
-            ItemContextLink backupContextLink = this.loadContextLinkFromJson(item);
-            for (Object object : contextTypeList) {
-                if (object instanceof ContextType) {
-                    ContextType jobContextType = (ContextType) object;
-                    for (Object o : jobContextType.getContextParameter()) {
-                        if (o instanceof ContextParameterType) {
-                            ContextParameterType contextParameterType = (ContextParameterType) o;
-                            String repositoryContextId = contextParameterType.getRepositoryContextId();
-                            if (StringUtils.isEmpty(repositoryContextId)
-                                    || IContextParameter.BUILT_IN.equals(repositoryContextId)) {
-                                ContextLink contextLink = itemContextLink.findContextLink(item.getProperty().getId(),
-                                        jobContextType.getName());
-                                if (contextLink == null) {
-                                    contextLink = new ContextLink();
-                                    contextLink.setContextName(jobContextType.getName());
-                                    contextLink.setRepoId(itemId);
-                                    itemContextLink.getContextList().add(contextLink);
-                                }
-                                ContextParamLink contextParamLink = createParamLink(itemId, jobContextType.getName(),
-                                        contextParameterType.getName(), contextParameterType.getInternalId(), tempCache,
-                                        backupContextLink);
-                                contextLink.getParameterList().add(contextParamLink);
-                            } else {
-                                ContextLink contextLink = itemContextLink
-                                        .findContextLink(contextParameterType.getRepositoryContextId(), jobContextType.getName());
-                                if (contextLink == null) {
-                                    contextLink = new ContextLink();
-                                    contextLink.setContextName(jobContextType.getName());
-                                    contextLink.setRepoId(repositoryContextId);
-                                    itemContextLink.getContextList().add(contextLink);
-                                }
-                                ContextParamLink contextParamLink = createParamLink(repositoryContextId, jobContextType.getName(),
-                                        contextParameterType.getName(), contextParameterType.getInternalId(), tempCache,
-                                        backupContextLink);
-                                contextLink.getParameterList().add(contextParamLink);
-                            }
-
-                        }
-                    }
-                }
-            }
-        }
-        if (itemContextLink.getContextList().size() > 0) {
-            saveContextLinkToJson(item, itemContextLink);
-            hasLinkFile = true;
-        } else {
-            deleteContextLinkJsonFile(item);
-        }
-        return hasLinkFile;
-    }
-
-    @SuppressWarnings("unchecked")
-    private ContextParamLink createParamLink(String repositoryContextId, String contextName, String paramName, String internalId,
-            Map<String, Item> tempCache, ItemContextLink oldContextLink) {
-        ContextParamLink contextParamLink = new ContextParamLink();
-        contextParamLink.setName(paramName);
-        contextParamLink.setId(internalId);
-        Item contextItem = tempCache.get(repositoryContextId);
-        if (contextItem == null) {
-            contextItem = ContextUtils.getRepositoryContextItemById(repositoryContextId);
-            tempCache.put(repositoryContextId, contextItem);
-        }
-        if (contextItem != null) {
-            ContextType contextType = ContextUtils.getContextTypeByName(contextItem, contextName);
-            ContextParameterType repoContextParameterType = ContextUtils.getContextParameterTypeByName(contextType, paramName);
-            String uuID = null;
-            if(repoContextParameterType != null) {
-                if (contextItem instanceof ContextItem) {
-                    uuID = ResourceHelper.getUUID(repoContextParameterType);
-                } else if (repoContextParameterType.getInternalId() != null) {
-                    uuID = repoContextParameterType.getInternalId();
-                }
-            }
-            if (repoContextParameterType == null && oldContextLink != null) {
-                ContextParamLink oldParamLink = oldContextLink.findContextParamLinkByName(repositoryContextId, contextName,
-                        paramName);
-                if (oldParamLink != null) {
-                    uuID = oldParamLink.getId();
-                }
-            }
-            contextParamLink.setId(uuID);
-        }
-        return contextParamLink;
-    }
-
-    private synchronized void saveContextLinkToJson(Item item, ItemContextLink itemContextLink) throws PersistenceException {
+    public synchronized void saveContextLinkToJson(Item item, ItemContextLink itemContextLink) throws PersistenceException {
         IFolder linksFolder = getLinksFolder(getItemProjectLabel(item));
         if (!linksFolder.exists()) {
             ResourceUtils.createFolder(linksFolder);
         }
         IFile linkFile = calContextLinkFile(item);
+        saveContextLinkToJson(linkFile, itemContextLink);
+    }
+
+    public synchronized void saveContextLinkToJson(IFile linkFile, ItemContextLink itemContextLink) throws PersistenceException {
         ObjectMapper objectMapper = new ObjectMapper();
         try {
             String content = objectMapper.writerWithDefaultPrettyPrinter().writeValueAsString(itemContextLink);
@@ -296,6 +172,25 @@ public class ContextLinkService {
         return contextLink;
     }
 
+    public synchronized ItemContextLink doLoadContextLinkFromFile(InputStream inputStream) throws PersistenceException {
+        if (inputStream == null) {
+            return null;
+        }
+        ItemContextLink contextLink = null;
+        try {
+            contextLink = new ObjectMapper().readValue(inputStream, ItemContextLink.class);
+        } catch (IOException e) {
+            throw new PersistenceException(e);
+        } finally {
+            try {
+                inputStream.close();
+            } catch (IOException e) {
+                LOGGER.info("Close input stream failed.");
+            }
+        }
+        return contextLink;
+    }
+
     public synchronized void deleteContextLinkJsonFile(Item item) throws PersistenceException {
         IFile linkFile = calContextLinkFile(item);
         if (linkFile != null && linkFile.exists()) {
@@ -304,6 +199,74 @@ public class ContextLinkService {
             } catch (CoreException e) {
                 throw new PersistenceException(e);
             }
+        }
+    }
+
+    public synchronized void updateRelatedContextParameterId(String sourceId, Map<String, String> repositoryIdChangedMap,
+            Map<String, Map<String, String>> changedContextParameterId) throws PersistenceException {
+        List<Relation> relationList = RelationshipItemBuilder.getInstance()
+                .getItemsHaveRelationWith(sourceId, RelationshipItemBuilder.LATEST_VERSION, false);
+        for (Relation relation : relationList) {
+            String id = relation.getId();
+            IFile linkFile = calContextLinkFile(ProjectManager.getInstance().getCurrentProject().getTechnicalLabel(), id);
+            ItemContextLink itemContextLink = doLoadContextLinkFromFile(linkFile);
+            String newRepoId = null;
+            boolean isModified = false;
+            if (repositoryIdChangedMap != null && repositoryIdChangedMap.containsKey(sourceId)) {
+                newRepoId = repositoryIdChangedMap.get(sourceId);
+            }
+            if (itemContextLink != null) {
+                for (ContextLink contextLink : itemContextLink.getContextList()) {
+                    for (String repoId : changedContextParameterId.keySet()) {
+                        if (StringUtils.equals(repoId, contextLink.getRepoId())) {
+                            Map<String, String> oldToNewId = changedContextParameterId.get(repoId);
+                            for (String oldId : oldToNewId.keySet()) {
+                                ContextParamLink paramLink = contextLink.getParamLinkById(oldId);
+                                if (paramLink != null) {
+                                    paramLink.setId(oldToNewId.get(oldId));
+                                    isModified = true;
+                                }
+                            }
+                        }
+                        if (sourceId.equals(repoId) && newRepoId != null) {
+                            isModified = true;
+                            contextLink.setRepoId(newRepoId);
+                        }
+                    }
+                }
+                if (isModified) {
+                    saveContextLinkToJson(linkFile, itemContextLink);
+                }
+            }
+            isModified = false;
+            if (newRepoId != null) {
+                Item relatedItem = ContextUtils.getRepositoryContextItemById(id);
+                if (relatedItem != null) {
+                    List contextTypes = ContextUtils.getAllContextType(relatedItem);
+                    if (contextTypes != null) {
+                        for (Object object : contextTypes) {
+                            if (object instanceof ContextType) {
+                                ContextType context = (ContextType) object;
+                                for (Object obj : context.getContextParameter()) {
+                                    if (obj instanceof ContextParameterType) {
+                                        ContextParameterType parameterType = (ContextParameterType) obj;
+                                        if (!ContextUtils.isBuildInParameter(parameterType)
+                                                && sourceId.equals(parameterType.getRepositoryContextId())) {
+                                            parameterType.setRepositoryContextId(newRepoId);
+                                            isModified = true;
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+                if (isModified) {
+                    IProxyRepositoryFactory factory = CoreRuntimePlugin.getInstance().getProxyRepositoryFactory();
+                    factory.save(relatedItem, false);
+                }
+            }
+
         }
     }
 

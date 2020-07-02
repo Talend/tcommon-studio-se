@@ -66,4 +66,16 @@
             serviceId="IRepositoryContextUpdateService">
       </Service>
    </extension>
+   <extension
+          point="org.talend.core.runtime.saveItemContextLinkService">
+       <creator
+             class="org.talend.core.model.context.link.ProcessItemContextLinkService">
+       </creator>
+    </extension>
+   <extension
+          point="org.talend.core.runtime.saveItemContextLinkService">
+       <creator
+             class="org.talend.core.model.context.link.ConnectionItemContextLinkService">
+       </creator>
+    </extension>
 </plugin>

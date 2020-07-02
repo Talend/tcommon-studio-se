@@ -1019,7 +1019,7 @@ public class RepositoryToComponentProperty {
         // return getAppropriateValue(connection, connection.getUsername());
         // }
         if (value.equals("PASSWORD")) { //$NON-NLS-1$
-            return getAppropriateValue(connection, connection.getValue(connection.getPassword(), false));
+            return getAppropriateValue(connection,connection.getValue(connection.getPassword(), false).replace("\"", "\\\""));
         }
         if (value.equals("NULL_CHAR")) { //$NON-NLS-1$
             return getAppropriateValue(connection, connection.getNullChar());
@@ -1764,6 +1764,9 @@ public class RepositoryToComponentProperty {
         }
         if ("IMPALA_DRIVER".equals(value)) {
             return connection.getParameters().get(ConnParameterKeys.IMPALA_DRIVER);
+        }
+        if (StringUtils.equals("MAPPING", value)) {//$NON-NLS-1$
+            return connection.getDbmsId();
         }
         return null;
     }

@@ -20,9 +20,23 @@ import org.talend.core.model.process.INode;
 public interface ITDQCryptoFileService extends IService {
 
     /**
-     *
-     * @param node
+     *  Get Original value if it is context variable
      */
-    public void generateCryptoFile(INode node);
+    public String getOriginalValue(INode node, String input);
+
+    /**
+     * Check whether all the parameter is validation
+     */
+    public boolean checkParameterValidation(String cryptoFilePath, String passwordM1);
+
+    /**
+     * Get the name of encrypty method
+     */
+    public String getCryptoMethod();
+
+    /**
+     * Generate Encrypty file
+     */
+    public void generateCryptoFile(String passwordM1, String cryptoMethod, String cryptoFilePath);
 
 }

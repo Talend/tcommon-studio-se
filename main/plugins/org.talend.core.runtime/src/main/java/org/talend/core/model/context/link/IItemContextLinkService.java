@@ -12,6 +12,8 @@
 // ============================================================================
 package org.talend.core.model.context.link;
 
+import java.io.InputStream;
+
 import org.talend.commons.exception.PersistenceException;
 import org.talend.core.model.properties.Item;
 
@@ -22,5 +24,8 @@ public interface IItemContextLinkService {
     boolean saveItemLink(Item item) throws PersistenceException;
 
     ItemContextLink loadItemLink(Item item) throws PersistenceException;
+
+    boolean mergeItemLink(Item item, ItemContextLink backupContextLink, InputStream otherVersionLinkFile)
+            throws PersistenceException;
 
 }

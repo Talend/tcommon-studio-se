@@ -307,6 +307,13 @@ public class RepositoryUpdateManagerHelper {
                 processRep.addAll(factory.getAll(sparkStreamJoblet, true));
             }
 
+            List<ERepositoryObjectType> testcases = ERepositoryObjectType.getAllTypesOfTestContainer();
+            for (ERepositoryObjectType testcase : testcases) {
+                if (testcase != null) {
+                    processRep.addAll(factory.getAll(testcase, true));
+                }
+            }
+
         } catch (PersistenceException e) {
             ExceptionHandler.process(e);
         }

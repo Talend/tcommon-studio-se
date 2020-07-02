@@ -750,6 +750,17 @@ public abstract class RepositoryUpdateManager {
             }
         }
 
+        ERepositoryObjectType jsonType = ERepositoryObjectType.valueOf("json");
+        if (jsonType != null) {
+            List<IRepositoryViewObject> jsonConnList = FACTORY.getAll(jsonType);
+            for (IRepositoryViewObject obj : jsonConnList) {
+                Item item = obj.getProperty().getItem();
+                if (item instanceof ConnectionItem) {
+                    updateConnectionContextParam((ConnectionItem) item, citem, valueMap);
+                }
+            }
+        }
+
         List<IRepositoryViewObject> sapConnList = FACTORY.getAll(ERepositoryObjectType.METADATA_SAPCONNECTIONS, true);
         for (IRepositoryViewObject obj : sapConnList) {
             Item item = obj.getProperty().getItem();

@@ -242,6 +242,10 @@ public class RelationshipItemBuilder {
      * @return
      */
     public List<Relation> getItemsHaveRelationWith(String itemId, String version) {
+        return getItemsHaveRelationWith(itemId, version, true);
+    }
+
+    public List<Relation> getItemsHaveRelationWith(String itemId, String version, boolean withReferenceProject) {
         if (!loaded) {
             loadRelations();
         }
@@ -251,12 +255,13 @@ public class RelationshipItemBuilder {
         if (itemsRelations != null) {
             relations.addAll(itemsRelations);
         }
-        itemsRelations = getItemsHaveRelationWith(referencesItemsRelations, itemId, version);
-        if (itemsRelations != null) {
-            relations.addAll(itemsRelations);
+        if (withReferenceProject) {
+            itemsRelations = getItemsHaveRelationWith(referencesItemsRelations, itemId, version);
+            if (itemsRelations != null) {
+                relations.addAll(itemsRelations);
+            }
         }
         return new ArrayList<Relation>(relations);
-
     }
 
     /**
