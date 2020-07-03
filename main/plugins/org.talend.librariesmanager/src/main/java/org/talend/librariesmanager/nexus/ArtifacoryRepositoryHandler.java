@@ -50,8 +50,6 @@ public class ArtifacoryRepositoryHandler extends AbstractArtifactRepositoryHandl
 
     private String SEARCH_SERVICE = "api/search/gavc?"; //$NON-NLS-1$
 
-    private String SEARCH_RESULT_PREFIX = "api/storage/";//$NON-NLS-1$
-
     /*
      * (non-Javadoc)
      *
@@ -184,13 +182,11 @@ public class ArtifacoryRepositoryHandler extends AbstractArtifactRepositoryHandl
             throw new Exception(resultStr);
         }
         if (resultArray != null) {
-            String resultUrl = serverUrl + SEARCH_RESULT_PREFIX;
             for (int i = 0; i < resultArray.size(); i++) {
                 JSONObject jsonObject = resultArray.getJSONObject(i);
                 String lastUpdated = jsonObject.getString("lastUpdated"); //$NON-NLS-1$
-                String uri = jsonObject.getString("uri"); //$NON-NLS-1$
-                uri = uri.substring(resultUrl.length(), uri.length());
-                String[] split = uri.split("/"); //$NON-NLS-1$
+                String artifactPath = jsonObject.getString("path"); //$NON-NLS-1$
+                String[] split = artifactPath.split("/"); //$NON-NLS-1$
                 if (split.length > 4) {
                     String fileName = split[split.length - 1];
                     if (!fileName.endsWith("pom")) { //$NON-NLS-1$
