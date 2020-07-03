@@ -2053,7 +2053,6 @@ public final class ProxyRepositoryFactory implements IProxyRepositoryFactory {
                     project.setEmfProject(getEmfProjectContent(project.getTechnicalLabel()));
                 }
                 getRepositoryContext().setProject(project);
-                ProjectDataJsonProvider.checkAndRectifyRelationShipSetting(project.getEmfProject());
 
                 currentMonitor = subMonitor.newChild(1, SubMonitor.SUPPRESS_NONE);
                 currentMonitor.beginTask(Messages.getString("ProxyRepositoryFactory.initializeProjectConnection"), 1); //$NON-NLS-1$
@@ -2064,6 +2063,8 @@ public final class ProxyRepositoryFactory implements IProxyRepositoryFactory {
                 this.repositoryFactoryFromProvider.beforeLogon(project);
                 ProjectManager.getInstance().getBeforeLogonRecords().clear();
                 ProjectManager.getInstance().getUpdatedRemoteHandlerRecords().clear();
+
+                ProjectDataJsonProvider.checkAndRectifyRelationShipSetting(project.getEmfProject());
 
                 // init dynamic distirbution after `beforeLogon`, before loading libraries.
                 initDynamicDistribution(monitor);
