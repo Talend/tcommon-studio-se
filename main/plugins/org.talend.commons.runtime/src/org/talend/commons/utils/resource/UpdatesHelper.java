@@ -354,7 +354,8 @@ public class UpdatesHelper {
 
     public static Set<String> getPatchesInstalled() {
         Set<String> installed = new HashSet<String>();
-        Properties props = loadProductProperties();
+        File productFile = getProductFile();
+        Properties props = loadProductProperties(productFile);
         props.forEach((k, v) -> {
             String key = String.valueOf(k);
             if (key.startsWith(PRE_TALEND_PATCH)) {
