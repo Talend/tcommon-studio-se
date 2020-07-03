@@ -340,9 +340,8 @@ public class UpdatesHelper {
         return null;
     }
 
-    public static Properties loadProductProperties() {
+    public static Properties loadProductProperties(File productFile) {
         Properties prop = new Properties();
-        File productFile = getProductFile();
         if (productFile != null && productFile.exists()) {
             try (FileInputStream fis = new FileInputStream(productFile)) {
                 prop.load(fis);
