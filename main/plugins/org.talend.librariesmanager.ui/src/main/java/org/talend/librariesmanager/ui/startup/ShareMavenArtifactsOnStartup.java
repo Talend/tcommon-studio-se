@@ -21,11 +21,14 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import java.util.stream.Stream;
 
 import org.apache.commons.lang.StringUtils;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.SubMonitor;
 import org.talend.commons.exception.ExceptionHandler;
+import org.talend.commons.utils.MojoType;
+import org.talend.commons.utils.VersionUtils;
 import org.talend.core.GlobalServiceRegister;
 import org.talend.core.ILibraryManagerService;
 import org.talend.core.model.general.ModuleNeeded;
@@ -33,6 +36,7 @@ import org.talend.core.nexus.TalendMavenResolver;
 import org.talend.core.runtime.maven.MavenArtifact;
 import org.talend.core.runtime.maven.MavenConstants;
 import org.talend.core.runtime.maven.MavenUrlHelper;
+import org.talend.designer.maven.model.TalendMavenConstants;
 import org.talend.designer.maven.utils.PomUtil;
 import org.talend.librariesmanager.maven.ShareLibrareisHelper;
 import org.talend.librariesmanager.model.ModulesNeededProvider;
@@ -87,10 +91,24 @@ public class ShareMavenArtifactsOnStartup extends ShareLibrareisHelper {
             }
         }
 
-        addMojoArtifact(files, "org.talend.ci", "builder-maven-plugin", "7.3.2"); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
-        addMojoArtifact(files, "org.talend.ci", "cloudpublisher-maven-plugin", "7.3.1"); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
-        addMojoArtifact(files, "org.talend.ci", "signer-maven-plugin", "7.3.1"); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
-        addMojoArtifact(files, "org.talend.ci", "osgihelper-maven-plugin", "7.3.1"); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+        // get plugin artifacts to share
+        Stream.of(MojoType.values()).forEach(m -> {
+            String mvnUrl = MavenUrlHelper.generateMvnUrl(TalendMavenConstants.DEFAULT_CI_GROUP_ID, m.getArtifactId(),
+                    VersionUtils.getMojoVersion(m), null, null);
+            // try to resolve locally
+            String localMvnUrl = mvnUrl.replace(MavenUrlHelper.MVN_PROTOCOL,
+                    MavenUrlHelper.MVN_PROTOCOL + MavenConstants.LOCAL_RESOLUTION_URL + MavenUrlHelper.REPO_SEPERATOR);
+            File file = null;
+            try {
+                file = TalendMavenResolver.resolve(localMvnUrl);
+            } catch (IOException | RuntimeException e) {
+                ExceptionHandler.process(e);
+            }
+            if (file != null) {
+                ModuleNeeded module = new ModuleNeeded("", mvnUrl, "", true);
+                files.put(module, file);
+            }
+        });
 
         mainSubMonitor.worked(1);
         return files;
@@ -121,23 +139,6 @@ public class ShareMavenArtifactsOnStartup extends ShareLibrareisHelper {
         deployer.deploy(file, artifact);
         // artifact.setType(MavenConstants.PACKAGING_POM);
         // deployer.deploy(pomFile, artifact);
-    }
-
-    private void addMojoArtifact(Map<ModuleNeeded, File> files, String groupId, String artifactId, String version) {
-        String mvnUrl = MavenUrlHelper.generateMvnUrl(groupId, artifactId, version, null, null);
-        // try to resolve locally
-        String localMvnUrl = mvnUrl.replace(MavenUrlHelper.MVN_PROTOCOL,
-                MavenUrlHelper.MVN_PROTOCOL + MavenConstants.LOCAL_RESOLUTION_URL + MavenUrlHelper.REPO_SEPERATOR);
-        File file = null;
-        try {
-            file = TalendMavenResolver.resolve(localMvnUrl);
-        } catch (IOException | RuntimeException e) {
-            ExceptionHandler.process(e);
-        }
-        if (file != null) {
-            ModuleNeeded module = new ModuleNeeded("", mvnUrl, "", true);
-            files.put(module, file);
-        }
     }
 
 }
