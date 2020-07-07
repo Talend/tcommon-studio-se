@@ -59,6 +59,18 @@ public class ItemContextLink {
         return null;
     }
 
+    public ContextParamLink findContextParamLinkByIdIgnoreContextName(String repoContextId, String paramId) {
+        for (ContextLink contextLink : contextList) {
+            if (StringUtils.equals(repoContextId, contextLink.getRepoId())) {
+                ContextParamLink paramLink = contextLink.getParamLinkById(paramId);
+                if (paramLink != null) {
+                    return paramLink;
+                }
+            }
+        }
+        return null;
+    }
+
     public ContextLink findContextLink(String repoContextId, String contextName) {
         for (ContextLink contextLink : contextList) {
             if ((repoContextId == null || StringUtils.equals(repoContextId, contextLink.getRepoId()))
