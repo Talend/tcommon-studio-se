@@ -16,8 +16,11 @@ import java.util.List;
 import java.util.Map;
 
 import org.apache.log4j.Logger;
+import org.eclipse.jface.dialogs.MessageDialog;
 import org.talend.commons.exception.ExceptionHandler;
 import org.talend.commons.exception.PersistenceException;
+import org.talend.core.GlobalServiceRegister;
+import org.talend.core.ITDQRepositoryService;
 import org.talend.core.database.EDatabaseTypeName;
 import org.talend.core.database.conn.DatabaseConnStrUtil;
 import org.talend.core.hadoop.IHadoopClusterService;
@@ -100,7 +103,7 @@ public class SwitchContextGroupNameImpl implements ISwitchContext {
                 newContextName = newContextType == null ? null : newContextType.getName();
             }
 
-            if (!isContextIsValid(newContextName, oldContextName, con)) {
+            if (!isContextIsValidAndInUse(newContextName, oldContextName, connItem)) {
                 return false;
             }
             con.setContextName(newContextName);
@@ -129,8 +132,9 @@ public class SwitchContextGroupNameImpl implements ISwitchContext {
      * @param selectedContext
      * @paramconn
      */
-    private boolean isContextIsValid(String selectedContext, String oldContextName, Connection conn) {
+    private boolean isContextIsValidAndInUse(String selectedContext, String oldContextName, ConnectionItem connItem) {
         boolean retCode = false;
+        Connection conn = connItem.getConnection();
         if (conn instanceof DatabaseConnection) {
             EDatabaseTypeName dbType = EDatabaseTypeName.getTypeFromDbType(((DatabaseConnection) conn).getDatabaseType());
 
@@ -161,6 +165,15 @@ public class SwitchContextGroupNameImpl implements ISwitchContext {
             retCode = true;
         }
 
+        if (!retCode && GlobalServiceRegister.getDefault().isServiceRegistered(ITDQRepositoryService.class)) {
+        	ITDQRepositoryService tdqRepService = GlobalServiceRegister.getDefault()
+                    .getService(ITDQRepositoryService.class);
+        	MessageDialog.openConfirm(null, "1","check");
+        	if (!tdqRepService.hasClientDependences(connItem)) {
+        		retCode = true;
+            }
+        }
+        
         return retCode;
 
     }
