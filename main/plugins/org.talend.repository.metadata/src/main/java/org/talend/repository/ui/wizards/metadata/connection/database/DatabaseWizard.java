@@ -561,13 +561,10 @@ public class DatabaseWizard extends CheckLastVersionRepositoryWizard implements 
                         isSuccess = SwitchContextGroupNameImpl
                                 .getInstance()
                                 .updateContextGroup(connectionItem, contextName, originalSelectedContextType.getName());
-                            MessageDialog.openConfirm(null, "1","is success = "+isSuccess);
-                        if (!isSuccess) {
+                         if (!isSuccess) {
                         	isSuccess = tdqRepService.popupSwitchContextFailedMessage(contextName);
-                        	MessageDialog.openConfirm(null, "1","check result:"+isSuccess);
                         }else {
                             isSuccess &= handleDatabaseUpdate(metadataConnection, tdqRepService);
-                            MessageDialog.openConfirm(null, "2","check result 2:"+isSuccess);
                         }
                     } else {
                         // when connection is Database connection and creating==false and don't switch context

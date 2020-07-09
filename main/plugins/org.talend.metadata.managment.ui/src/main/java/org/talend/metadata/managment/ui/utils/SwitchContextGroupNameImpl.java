@@ -168,8 +168,7 @@ public class SwitchContextGroupNameImpl implements ISwitchContext {
         if (!retCode && GlobalServiceRegister.getDefault().isServiceRegistered(ITDQRepositoryService.class)) {
         	ITDQRepositoryService tdqRepService = GlobalServiceRegister.getDefault()
                     .getService(ITDQRepositoryService.class);
-        	MessageDialog.openConfirm(null, "1","check");
-        	if (!tdqRepService.hasClientDependences(connItem)) {
+         	if (!tdqRepService.hasClientDependences(connItem)) {
         		retCode = true;
             }
         }
