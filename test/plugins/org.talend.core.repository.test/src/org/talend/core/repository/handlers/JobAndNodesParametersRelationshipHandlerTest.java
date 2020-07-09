@@ -12,6 +12,10 @@
 // ============================================================================
 package org.talend.core.repository.handlers;
 
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.spy;
+import static org.mockito.Mockito.when;
+
 import java.util.Map;
 import java.util.Set;
 
@@ -25,12 +29,13 @@ import org.talend.core.model.properties.PropertiesFactory;
 import org.talend.core.model.properties.Property;
 import org.talend.core.model.relationship.Relation;
 import org.talend.core.model.relationship.RelationshipItemBuilder;
+import org.talend.core.repository.model.ProxyRepositoryFactory;
+import org.talend.designer.core.model.utils.emf.talendfile.ElementParameterType;
+import org.talend.designer.core.model.utils.emf.talendfile.NodeType;
 import org.talend.designer.core.model.utils.emf.talendfile.ProcessType;
 import org.talend.designer.core.model.utils.emf.talendfile.TalendFileFactory;
 import org.talend.designer.joblet.model.JobletFactory;
 import org.talend.designer.joblet.model.JobletProcess;
-
-import static org.mockito.Mockito.*;
 
 /**
  * DOC ggu class global comment. Detailled comment
@@ -114,16 +119,47 @@ public class JobAndNodesParametersRelationshipHandlerTest {
 
         Map<Relation, Set<Relation>> relations = handler.find(item);
         Assert.assertNotNull(relations);
-        Assert.assertTrue(relations.size() > 0);
+        Assert.assertTrue(relations.values().isEmpty());
 
-        Relation processRelation = relations.keySet().iterator().next();
-        Assert.assertNotNull(processRelation);
-        Assert.assertEquals(AbstractProcessItemRelationshipHandlerTest.ITEM_ID, processRelation.getId());
-        Assert.assertEquals("0.1", processRelation.getVersion());
-        Assert.assertEquals(RelationshipItemBuilder.JOB_RELATION, processRelation.getType());
+    }
 
-        Set<Relation> set = relations.get(processRelation);
-        Assert.assertNotNull(set);
-        Assert.assertTrue(set.isEmpty()); // no relations
+    @Test
+    public void testFindParameters() {
+        ProcessItem item = PropertiesFactory.eINSTANCE.createProcessItem();
+        Property property = PropertiesFactory.eINSTANCE.createProperty();
+        property.setId(AbstractProcessItemRelationshipHandlerTest.ITEM_ID);
+        property.setVersion("0.1");
+        item.setProperty(property);
+        ProcessType process = TalendFileFactory.eINSTANCE.createProcessType();
+        item.setProcess(process);
+
+        NodeType node = TalendFileFactory.eINSTANCE.createNodeType();
+        ElementParameterType param = TalendFileFactory.eINSTANCE.createElementParameterType();
+        param.setName("PROCESS:PROCESS_TYPE_VERSION");
+        param.setValue(RelationshipItemBuilder.LATEST_VERSION);
+        String relatedId = "project" + ":" + ProxyRepositoryFactory.getInstance().getNextId();
+        ElementParameterType param1 = TalendFileFactory.eINSTANCE.createElementParameterType();
+        param1.setName("PROCESS:PROCESS_TYPE_PROCESS");
+        param1.setValue(relatedId);
+
+        node.getElementParameter().add(param);
+        node.getElementParameter().add(param1);
+        process.getNode().add(node);
+
+        Map<Relation, Set<Relation>> relationsMap = handler.find(item);
+        Assert.assertNotNull(relationsMap);
+        Assert.assertTrue(relationsMap.values().size() > 0);
+        Relation baseRelation = relationsMap.keySet().iterator().next();
+        Assert.assertNotNull(baseRelation);
+        Assert.assertEquals(property.getId(), baseRelation.getId());
+        Assert.assertEquals(property.getVersion(), baseRelation.getVersion());
+        Assert.assertEquals(RelationshipItemBuilder.JOB_RELATION, baseRelation.getType());
+        Set<Relation> relatedRelations = relationsMap.get(baseRelation);
+        Assert.assertNotNull(relatedRelations);
+        Assert.assertTrue(relatedRelations.size() > 0);
+        Relation relatedRelation = relatedRelations.iterator().next();
+        Assert.assertEquals(relatedId, relatedRelation.getId());
+        Assert.assertEquals(RelationshipItemBuilder.LATEST_VERSION, relatedRelation.getVersion());
+        Assert.assertEquals(RelationshipItemBuilder.JOB_RELATION, relatedRelation.getType());
     }
 }
