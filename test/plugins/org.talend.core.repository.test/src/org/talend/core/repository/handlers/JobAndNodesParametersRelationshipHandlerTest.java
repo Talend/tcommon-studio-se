@@ -129,11 +129,13 @@ public class JobAndNodesParametersRelationshipHandlerTest {
         Property property = PropertiesFactory.eINSTANCE.createProperty();
         property.setId(AbstractProcessItemRelationshipHandlerTest.ITEM_ID);
         property.setVersion("0.1");
+        property.setLabel("test");
         item.setProperty(property);
         ProcessType process = TalendFileFactory.eINSTANCE.createProcessType();
         item.setProcess(process);
 
         NodeType node = TalendFileFactory.eINSTANCE.createNodeType();
+        node.setComponentName("tRunJob");
         ElementParameterType param = TalendFileFactory.eINSTANCE.createElementParameterType();
         param.setName("PROCESS:PROCESS_TYPE_VERSION");
         param.setValue(RelationshipItemBuilder.LATEST_VERSION);
