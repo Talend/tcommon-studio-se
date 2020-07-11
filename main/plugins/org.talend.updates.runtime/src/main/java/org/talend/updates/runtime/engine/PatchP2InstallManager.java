@@ -80,14 +80,6 @@ public class PatchP2InstallManager {
         String newProductVersion = ""; //$NON-NLS-1$
         Set<IInstallableUnit> toInstall = queryFromP2Repository(monitor, QueryUtil.createIUAnyQuery(),
                 Arrays.asList(installingPatchFolder.toURI()));
-
-        // filter bundles that out of license and extra features
-        if (GlobalServiceRegister.getDefault().isServiceRegistered(ICoreTisService.class)) {
-            ICoreTisService coreTisService = GlobalServiceRegister.getDefault().getService(ICoreTisService.class);
-            Set<String> licenseBundles = coreTisService.getBundlesIdFromLicense();
-            toInstall = toInstall.stream().filter(iu -> licenseBundles.contains(iu.getId())).collect(Collectors.toSet());
-        }
-
         // show the installation unit
         log.debug("ius to be installed:" + toInstall);
         UpdateTools.setIuSingletonToFalse(toInstall);
