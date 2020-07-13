@@ -19,15 +19,18 @@ import java.io.FilenameFilter;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.HashSet;
+import java.util.Properties;
 import java.util.Set;
 import java.util.jar.JarEntry;
 import java.util.jar.JarInputStream;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipFile;
 
+import org.apache.commons.io.FilenameUtils;
 import org.eclipse.core.runtime.IPath;
 import org.eclipse.core.runtime.NullProgressMonitor;
 import org.eclipse.core.runtime.Path;
+import org.eclipse.core.runtime.Platform;
 import org.talend.commons.exception.ExceptionHandler;
 import org.talend.commons.runtime.service.ITaCoKitService;
 
@@ -62,6 +65,10 @@ public class UpdatesHelper {
 
     public static final String NEW_COMPONENT_PREFIX = "installer$$";
 
+    public static final String PRE_TALEND_PATCH = "talend.patch";
+
+    public static final String RECORD_SEPERATOR = ",";
+
     public static boolean existArtifacts(File base) {
         return new File(base, FILE_ARTIFACTS).exists() || new File(base, FILE_JAR_ARTIFACTS).exists()
                 || new File(base, FILE_XZ_ARTIFACTS).exists();
@@ -85,6 +92,9 @@ public class UpdatesHelper {
      * will check that existed the plugins folder only.
      */
     public static boolean isPlainUpdate(File file) {
+        if (skipPatchFile(file)) {
+            return false;
+        }
         if (file != null && file.exists()) {
             if (file.isFile() && file.getName().endsWith(FileExtensions.ZIP_FILE_SUFFIX)) {
                 ZipFileStatus status = new ZipFileStatus(file);
@@ -112,6 +122,9 @@ public class UpdatesHelper {
      * need check that contain "artifacts.xml", "content.xml" and "plugins" folder in same place.
      */
     public static boolean isUpdateSite(File file) {
+        if (skipPatchFile(file)) {
+            return false;
+        }
         if (file != null && file.exists()) {
             if (file.isFile() && file.getName().endsWith(FileExtensions.ZIP_FILE_SUFFIX)) {
 
@@ -173,7 +186,8 @@ public class UpdatesHelper {
     }
 
     private static void findUpdateBaseFile(Set<File> foundUpdateFiles, File baseFile) {
-        if (isPlainUpdate(baseFile) || isUpdateSite(baseFile) && !isComponentUpdateSite(baseFile)) {
+        if (isPlainUpdate(baseFile)
+                || isUpdateSite(baseFile) && !isComponentUpdateSite(baseFile)) {
             foundUpdateFiles.add(baseFile);
         } else if (baseFile.isDirectory()) {
             final File[] listFiles = baseFile.listFiles();
@@ -186,6 +200,10 @@ public class UpdatesHelper {
     }
 
     public static boolean isComponentUpdateSite(File file) {
+
+        if (skipPatchFile(file)) {
+            return false;
+        }
         if (file != null && file.exists()) {
             if (file.isFile() && file.getName().endsWith(FileExtensions.ZIP_FILE_SUFFIX)) {
                 ZipFileStatus status = new ZipFileStatus(file) {
@@ -309,6 +327,55 @@ public class UpdatesHelper {
                     }
                 }
             }
+        }
+        return false;
+    }
+
+    public static File getProductFile() {
+        try {
+            return new File(Platform.getInstallLocation().getDataArea(FILE_ECLIPSE_PRODUCT).getPath());
+        } catch (IOException e) {
+            //
+        }
+        return null;
+    }
+
+    public static Properties loadProductProperties(File productFile) {
+        Properties prop = new Properties();
+        if (productFile != null && productFile.exists()) {
+            try (FileInputStream fis = new FileInputStream(productFile)) {
+                prop.load(fis);
+            } catch (Exception e) {
+                ExceptionHandler.process(e);
+            }
+        }
+        return prop;
+    }
+
+    public static Set<String> getPatchesInstalled() {
+        Set<String> installed = new HashSet<String>();
+        File productFile = getProductFile();
+        Properties props = loadProductProperties(productFile);
+        props.forEach((k, v) -> {
+            String key = String.valueOf(k);
+            if (key.startsWith(PRE_TALEND_PATCH)) {
+                String val = String.valueOf(v);
+                String[] vals = val.split(RECORD_SEPERATOR);
+                if (vals.length > 1) {
+                    installed.add(vals[1]);
+                } else {
+                    installed.add(val);
+                }
+            }
+        });
+        return installed;
+    }
+
+    public static boolean skipPatchFile(File patchFile) {
+        Set<String> installedPathNames = getPatchesInstalled();
+        if (patchFile != null && patchFile.isFile()) {
+            String patchName = FilenameUtils.getBaseName(patchFile.getName());
+            return installedPathNames.contains(patchName);
         }
         return false;
     }

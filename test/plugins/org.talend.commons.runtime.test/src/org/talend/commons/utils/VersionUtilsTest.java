@@ -15,10 +15,11 @@ package org.talend.commons.utils;
 import static org.junit.Assert.assertEquals;
 
 import java.io.File;
-import java.io.FileOutputStream;
-import java.io.OutputStream;
-import java.util.Properties;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.stream.Stream;
 
+import org.apache.commons.lang3.StringUtils;
 import org.eclipse.core.runtime.Path;
 import org.eclipse.core.runtime.Platform;
 import org.eclipse.core.runtime.URIUtil;
@@ -37,8 +38,13 @@ public class VersionUtilsTest {
 
     private File eclipseproductFile;
 
+    private Map<String, String> originalMojoVersions;
+
     @Before
     public void setUp() throws Exception {
+        originalMojoVersions = new HashMap<>();
+        Stream.of(MojoType.values()).map(MojoType::getVersionKey).filter(v -> System.getProperty(v) != null)
+                .forEach(v -> originalMojoVersions.put(v, System.getProperty(v)));
         mojo_properties = new Path(Platform.getConfigurationLocation().getURL().getPath()).append("mojo_version.properties") //$NON-NLS-1$
                 .toFile();
         backupEcilpseproductFile();
@@ -55,28 +61,29 @@ public class VersionUtilsTest {
     }
 
     @Test
-    public void testGetPluginVersion__Eclipseproduct() throws Exception {
-        String talendVersion = VersionUtils.getTalendVersion();
-        setPropertiesValue(eclipseproductFile, "version", talendVersion + ".20190500_1200-SNAPSHOT");
-        assertEquals(talendVersion + "-SNAPSHOT", VersionUtils.getMojoVersion("ci.builder.version"));
-
-        setPropertiesValue(eclipseproductFile, "version", talendVersion + ".20190500_1200-M5");
-        assertEquals(talendVersion + "-M5", VersionUtils.getMojoVersion("ci.builder.version"));
-
-        setPropertiesValue(eclipseproductFile, "version", talendVersion + ".20190500_1200");
-        assertEquals(talendVersion, VersionUtils.getMojoVersion("ci.builder.version"));
-
-        // for other revision, use release version as default.
-        setPropertiesValue(eclipseproductFile, "version", talendVersion + ".20190500_1200-RC1");
-        assertEquals(talendVersion, VersionUtils.getMojoVersion("ci.builder.version"));
+    public void testGetMojoVersion() throws Exception {
+        testMojoVersion(MojoType.CI_BUILDER, "-SNAPSHOT");
+        testMojoVersion(MojoType.CI_BUILDER, "-M3");
+        testMojoVersion(MojoType.CI_BUILDER, "");
     }
 
-    private void setPropertiesValue(File propertiesFile, String key, String value) throws Exception {
-        Properties properties = new Properties();
-        properties.setProperty(key, value);
-        try (OutputStream out = new FileOutputStream(propertiesFile)) {
-            properties.store(out, "From junit");
-        }
+    private void testMojoVersion(MojoType mojoType, String testVersion) throws Exception {
+        System.setProperty(mojoType.getVersionKey(), "");
+
+        String talendVersion = VersionUtils.getTalendVersion();
+        File artifactIdFolder = new File(mojoType.getMojoArtifactIdFolder());
+        String majorVersion = StringUtils.substringBeforeLast(talendVersion, ".");
+        String minorVersion = StringUtils.substringAfterLast(talendVersion, ".");
+        minorVersion = (Integer.valueOf(minorVersion) + 2) + "";
+        testVersion = majorVersion + "." + minorVersion + testVersion;
+        File versionFolder = new File(artifactIdFolder, testVersion);
+        versionFolder.mkdir();
+        new File(versionFolder, mojoType.getArtifactId() + "-" + testVersion + ".jar").createNewFile();
+        new File(versionFolder, mojoType.getArtifactId() + "-" + testVersion + ".pom").createNewFile();
+
+        assertEquals(testVersion, VersionUtils.getMojoVersion(mojoType));
+
+        FilesUtils.deleteFolder(versionFolder, true);
     }
 
     private void backupEcilpseproductFile() throws Exception {
@@ -159,6 +166,8 @@ public class VersionUtilsTest {
         if (mojo_properties != null && mojo_properties.exists()) {
             mojo_properties.delete();
         }
+        originalMojoVersions.forEach(System::setProperty);
+
         restoreEclipseproductFile();
     }
 

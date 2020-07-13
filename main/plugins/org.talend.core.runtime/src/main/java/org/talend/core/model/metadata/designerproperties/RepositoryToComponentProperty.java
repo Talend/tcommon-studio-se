@@ -1752,7 +1752,9 @@ public class RepositoryToComponentProperty {
             EDatabaseTypeName typeFromDbType = EDatabaseTypeName.getTypeFromDbType(repositoryType);
             return typeFromDbType.getXMLType();
         }
-
+        if (StringUtils.equals("MAPPING", value)) {//$NON-NLS-1$
+            return connection.getDbmsId();
+        }
         return null;
 
     }

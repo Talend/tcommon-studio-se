@@ -9,9 +9,6 @@
     </parent>
 	<artifactId>studio-components-dependencies</artifactId>
 	<packaging>pom</packaging>
-	<properties>
-		<components.version>0.28.5</components.version>
-	</properties>
 	<repositories>
 		<repository>
 			<id>talend_open</id>

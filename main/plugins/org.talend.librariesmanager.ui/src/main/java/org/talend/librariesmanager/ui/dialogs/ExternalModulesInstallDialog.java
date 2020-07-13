@@ -149,7 +149,8 @@ public class ExternalModulesInstallDialog extends TitleAreaDialog implements IMo
 
     private void checkNetworkStatus() {
         boolean networkValid = NetworkUtil
-                .isNetworkValid(TalendLibsServerManager.getInstance().getTalentArtifactServer().getServer());
+                .isNetworkValid(TalendLibsServerManager.getInstance().getTalentArtifactServer().getServer(),
+                        NetworkUtil.getNexusTimeout());
         if (!networkValid) {
             setErrorMessage(Messages.getString("ExternalModulesInstallDialog.networkUnavailable.msg")); //$NON-NLS-1$
         }

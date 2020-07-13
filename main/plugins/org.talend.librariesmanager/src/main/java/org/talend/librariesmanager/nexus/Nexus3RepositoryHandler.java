@@ -16,9 +16,8 @@ import java.io.File;
 import java.io.IOException;
 import java.net.URI;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
 
 import org.apache.commons.codec.binary.Base64;
 import org.apache.http.Header;
@@ -39,6 +38,7 @@ import org.talend.core.runtime.maven.MavenArtifact;
 import org.talend.core.runtime.maven.MavenUrlHelper;
 import org.talend.designer.maven.aether.RepositorySystemFactory;
 import org.talend.librariesmanager.i18n.Messages;
+import org.talend.librariesmanager.nexus.nexus3.handler.AbsNexus3SearchHandler;
 import org.talend.librariesmanager.nexus.nexus3.handler.INexus3SearchHandler;
 import org.talend.librariesmanager.nexus.nexus3.handler.Nexus3BetaSearchHandler;
 import org.talend.librariesmanager.nexus.nexus3.handler.Nexus3ScriptSearchHandler;
@@ -55,10 +55,10 @@ public class Nexus3RepositoryHandler extends AbstractArtifactRepositoryHandler {
 
     private String REP_PREFIX_PATH = "/repository/";
 
-    private INexus3SearchHandler currentQueryHandler = null;
+    private ThreadLocal<INexus3SearchHandler> currentQueryHandlerCopy = new ThreadLocal<INexus3SearchHandler>();
 
-    private static final Map<ArtifactRepositoryBean, INexus3SearchHandler> LAST_HANDLER_MAP = new HashMap<ArtifactRepositoryBean, INexus3SearchHandler>();
-    
+    private static final ConcurrentHashMap<ArtifactRepositoryBean, INexus3SearchHandler> LAST_HANDLER_MAP = new ConcurrentHashMap<ArtifactRepositoryBean, INexus3SearchHandler>();
+
     private static List<INexus3SearchHandler> queryHandlerList = new ArrayList<INexus3SearchHandler>();
 
     @Override
@@ -105,7 +105,7 @@ public class Nexus3RepositoryHandler extends AbstractArtifactRepositoryHandler {
         HttpGet get = new HttpGet(repositoryUrl);
         get.addHeader(authority);
         DefaultHttpClient httpclient = new DefaultHttpClient();
-        
+
         httpclient.getParams().setIntParameter(CoreConnectionPNames.CONNECTION_TIMEOUT, NexusServerUtils.getTimeout());
         httpclient.getParams().setIntParameter(CoreConnectionPNames.SO_TIMEOUT, NexusServerUtils.getTimeout());
         IProxySelectorProvider proxySelector = null;
@@ -149,11 +149,11 @@ public class Nexus3RepositoryHandler extends AbstractArtifactRepositoryHandler {
 
     private List<MavenArtifact> doSearch(String repositoryId, String groupIdToSearch, String artifactId, String versionToSearch)
             throws Exception {
-        initQueryHandler();
+        INexus3SearchHandler currentQueryHandler = currentQueryHandlerCopy.get();
         if (currentQueryHandler == null) {
             currentQueryHandler = LAST_HANDLER_MAP.get(serverBean);
             if (currentQueryHandler == null) {
-                currentQueryHandler = queryHandlerList.get(0);
+                currentQueryHandler = createQueryHandler(0);
             }
         }
         List<MavenArtifact> result = new ArrayList<MavenArtifact>();
@@ -161,7 +161,7 @@ public class Nexus3RepositoryHandler extends AbstractArtifactRepositoryHandler {
             result = currentQueryHandler.search(repositoryId, groupIdToSearch, artifactId, versionToSearch);
         } catch (Exception ex) {
             for (int i = 0; i < queryHandlerList.size(); i++) {// Try to other version
-                INexus3SearchHandler handler = queryHandlerList.get(i);
+                INexus3SearchHandler handler = createQueryHandler(i);
                 if (handler != currentQueryHandler) {
                     try {
                         result = handler.search(repositoryId, groupIdToSearch, artifactId, versionToSearch);
@@ -175,16 +175,24 @@ public class Nexus3RepositoryHandler extends AbstractArtifactRepositoryHandler {
                 }
             }
         }
+        currentQueryHandlerCopy.set(currentQueryHandler);
         LAST_HANDLER_MAP.put(serverBean, currentQueryHandler);
         return result;
     }
 
-    private void initQueryHandler() {
-        if (queryHandlerList.size() == 0) {
-            queryHandlerList.add(new Nexus3V1SearchHandler(serverBean));
-            queryHandlerList.add(new Nexus3BetaSearchHandler(serverBean));
-            queryHandlerList.add(new Nexus3ScriptSearchHandler(serverBean));
+    private AbsNexus3SearchHandler createQueryHandler(int seq) {
+        AbsNexus3SearchHandler retHandler;
+        switch (seq) {
+        case 1:
+            retHandler = new Nexus3BetaSearchHandler(serverBean);
+            break;
+        case 2:
+            retHandler = new Nexus3ScriptSearchHandler(serverBean);
+            break;
+        default:
+            retHandler = new Nexus3V1SearchHandler(serverBean);
         }
+        return retHandler;
     }
 
     /*
@@ -244,7 +252,7 @@ public class Nexus3RepositoryHandler extends AbstractArtifactRepositoryHandler {
                 rc.setObject(response);
                 rc.setMessage(Messages.getString("NexusRepository.checkConnection.successMsg"));
                 return rc;
-                }
+            }
             rc.setMessage(response.getStatusLine().toString());
         } catch (Exception e) {
             rc.setOk(false);
@@ -254,8 +262,7 @@ public class Nexus3RepositoryHandler extends AbstractArtifactRepositoryHandler {
         return rc;
     }
 
-    private HttpResponse getConnectionResponse(String repositoryUrl)
-            throws ClientProtocolException, IOException {
+    private HttpResponse getConnectionResponse(String repositoryUrl) throws ClientProtocolException, IOException {
         String userPass = serverBean.getUserName() + ":" + serverBean.getPassword();
         String basicAuth = "Basic " + new String(new Base64().encode(userPass.getBytes()));
         Header authority = new BasicHeader("Authorization", basicAuth);

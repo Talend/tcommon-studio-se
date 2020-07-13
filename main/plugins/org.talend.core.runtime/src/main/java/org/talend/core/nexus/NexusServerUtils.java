@@ -36,10 +36,8 @@ import org.dom4j.io.SAXReader;
 import org.dom4j.io.XMLWriter;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.NullProgressMonitor;
-import org.eclipse.core.runtime.preferences.IEclipsePreferences;
-import org.eclipse.core.runtime.preferences.InstanceScope;
 import org.talend.commons.exception.ExceptionHandler;
-import org.talend.core.prefs.ITalendCorePrefConstants;
+import org.talend.commons.utils.network.NetworkUtil;
 import org.talend.core.runtime.maven.MavenArtifact;
 
 /**
@@ -48,10 +46,7 @@ import org.talend.core.runtime.maven.MavenArtifact;
  */
 public class NexusServerUtils {
 
-    /**
-     *
-     */
-    public static final String ORG_TALEND_DESIGNER_CORE = "org.talend.designer.core"; //$NON-NLS-1$
+    public static final String ORG_TALEND_DESIGNER_CORE = NetworkUtil.ORG_TALEND_DESIGNER_CORE;
 
     public static final int CONNECTION_OK = 200;
 
@@ -69,9 +64,7 @@ public class NexusServerUtils {
      * @return
      */
     public static int getTimeout() {
-        IEclipsePreferences node = InstanceScope.INSTANCE.getNode(ORG_TALEND_DESIGNER_CORE);
-        int timeout = node.getInt(ITalendCorePrefConstants.NEXUS_TIMEOUT, 20000);
-        return timeout;
+        return NetworkUtil.getNexusTimeout();
     }
 
     public static boolean checkConnectionStatus(String nexusUrl, String repositoryId, final String userName, final String password) {
