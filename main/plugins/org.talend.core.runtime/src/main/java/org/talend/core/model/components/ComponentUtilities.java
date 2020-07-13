@@ -113,6 +113,12 @@ public final class ComponentUtilities {
             if (value != null) {
                 String replaceAll = value.replaceAll(oldName2, newName);
                 t.setValue(replaceAll);
+                if (!"UNIQUE_NAME".equals(t.getName())) {
+                    if (replaceAll.contains(oldName)) {
+                        replaceAll = replaceAll.replaceAll(oldName, newName);
+                        t.setValue(replaceAll);
+                    }
+                }
             }
         }
     }
