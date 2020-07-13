@@ -1368,7 +1368,7 @@ public class LocalLibraryManager implements ILibraryManagerService, IChangedLibr
         Map<String, List<MavenArtifact>> snapshotArtifactMap = new HashMap<String, List<MavenArtifact>>();
         Map<String, List<MavenArtifact>> releaseArtifactMap = new HashMap<String, List<MavenArtifact>>();
         if (!needToDeploy.isEmpty()) {
-            // search on nexus to avoid deploy the jars many times
+            // search on nexus to avoid deploy the jar many times
             Set<File> existFiles = new HashSet<>();
             ArtifactRepositoryBean customNexusServer = TalendLibsServerManager.getInstance().getCustomNexusServer();
             IRepositoryArtifactHandler customerRepHandler = RepositoryArtifactHandlerManager
