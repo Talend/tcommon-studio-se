@@ -13,10 +13,7 @@
 package org.talend.librariesmanager.maven;
 
 import java.io.File;
-import java.io.FileInputStream;
 import java.util.ArrayList;
-import java.util.Comparator;
-import java.util.Date;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Iterator;
@@ -24,10 +21,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
-import org.apache.commons.codec.digest.DigestUtils;
-import org.apache.commons.lang3.StringUtils;
 import org.apache.log4j.Logger;
-import org.codehaus.jackson.map.util.ISO8601Utils;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
@@ -43,7 +37,7 @@ import org.talend.core.runtime.maven.MavenArtifact;
 import org.talend.core.runtime.maven.MavenUrlHelper;
 import org.talend.librariesmanager.i18n.Messages;
 import org.talend.librariesmanager.model.service.LocalLibraryManager;
-import org.talend.librariesmanager.nexus.utils.VersionUtil;
+import org.talend.librariesmanager.nexus.utils.ShareLibrariesUtil;
 
 /**
  * created by Talend on 2015年7月31日 Detailled comment
@@ -103,7 +97,8 @@ public abstract class ShareLibrareisHelper {
                                 + groupId);
                         if (searchResults != null) {
                             for (MavenArtifact result : searchResults) {
-                                putArtifactToMap(result, releaseArtifactMap, false);
+                                checkCancel(monitor);
+                                ShareLibrariesUtil.putArtifactToMap(result, releaseArtifactMap, false);
                             }
                         }
                     }
@@ -113,7 +108,8 @@ public abstract class ShareLibrareisHelper {
                                 + ", groupId: " + groupId);
                         if (searchResults != null) {
                             for (MavenArtifact result : searchResults) {
-                                putArtifactToMap(result, snapshotArtifactMap, true);
+                                checkCancel(monitor);
+                                ShareLibrariesUtil.putArtifactToMap(result, snapshotArtifactMap, true);
                             }
                         }
                     }
@@ -144,7 +140,7 @@ public abstract class ShareLibrareisHelper {
                         //
                     }
                     boolean isSnapshotVersion = isSnapshotVersion(artifact.getVersion());
-                    String key = getArtifactKey(artifact, isSnapshotVersion);
+                    String key = ShareLibrariesUtil.getArtifactKey(artifact, isSnapshotVersion);
                     List<MavenArtifact> artifactList = null;
                     if (isSnapshotVersion) {
                         artifactList = snapshotArtifactMap.get(key);
@@ -157,7 +153,8 @@ public abstract class ShareLibrareisHelper {
                         }
                     }
                     if (artifactList != null && artifactList.size() > 0) {
-                        if (isSameFileWithRemote(file, artifactList, customNexusServer)) {
+                        if (ShareLibrariesUtil.isSameFileWithRemote(file, artifactList, customNexusServer, customerRepHandler,
+                                isSnapshotVersion)) {
                             continue;
                         }
                     }
@@ -193,92 +190,12 @@ public abstract class ShareLibrareisHelper {
         return false;
     }
 
-    public void putArtifactToMap(MavenArtifact artifact, Map<String, List<MavenArtifact>> map, boolean isShapshot) {
-        String key = getArtifactKey(artifact, isShapshot);
-        List<MavenArtifact> list = map.get(key);
-        if (list == null) {
-            list = new ArrayList<MavenArtifact>();
-            map.put(key, list);
-        }
-        list.add(artifact);
-    }
-
-    private String getArtifactKey(MavenArtifact artifact, boolean isShapshot) {
-        StringBuilder sb = new StringBuilder();
-        sb.append(artifact.getGroupId()).append("-");
-        sb.append(artifact.getArtifactId()).append("-");
-        String version = artifact.getVersion();
-        if (isShapshot) {
-            version = VersionUtil.getSNAPSHOTVersion(version);
-        }
-        sb.append(version);
-        if (StringUtils.isNotEmpty(artifact.getClassifier())) {
-            sb.append("-").append(artifact.getClassifier());
-        }
-        return sb.toString();
-    }
-
-    private boolean isSameFileWithRemote(File localFile, List<MavenArtifact> artifactList,
-            ArtifactRepositoryBean customNexusServer) throws Exception {
-        String localFileShaCode = DigestUtils.shaHex(new FileInputStream(localFile));
-        MavenArtifact lastUpdatedArtifact = null;
-        if (ArtifactRepositoryBean.NexusType.ARTIFACTORY.name().equalsIgnoreCase(customNexusServer.getType())) {
-            lastUpdatedArtifact = getLateUpdatedMavenArtifact(artifactList);
-        } else {
-            lastUpdatedArtifact = artifactList.stream().max(Comparator.comparing(e -> e.getVersion())).get();
-        }
-        if (lastUpdatedArtifact != null && StringUtils.equals(localFileShaCode, lastUpdatedArtifact.getSha1())) {
-            return true;
-        }
-        return false;
-    }
-
-    private MavenArtifact getLateUpdatedMavenArtifact(List<MavenArtifact> artifactList) {
-        if (artifactList.size() == 1) {
-            return artifactList.get(0);
-        }
-        MavenArtifact latestVersion = null;
-        Date lastUpdate = null;
-        for (MavenArtifact art : artifactList) {
-            if (latestVersion == null) {
-                if (art.getLastUpdated() != null) {
-                    latestVersion = art;
-                    lastUpdate = parsetDate(art.getLastUpdated());
-                }
-            } else if (art.getLastUpdated() != null && lastUpdate != null) {
-                Date artLastUpdate = parsetDate(art.getLastUpdated());
-                if (artLastUpdate != null && lastUpdate.getTime() < artLastUpdate.getTime()) {
-                    latestVersion = art;
-                    lastUpdate = artLastUpdate;
-                }
-            }
-        }
-        if (latestVersion != null) {
-            return latestVersion;
-        } else {
-            return artifactList.get(artifactList.size() - 1);
-        }
-    }
-
-    private Date parsetDate(String strDate) {
-        Date date = null;
-        if (strDate != null) {
-            try {
-                date = ISO8601Utils.parse(strDate);
-            } catch (Exception ex) {
-                ExceptionHandler.process(ex);
-            }
-        }
-        return date;
-    }
-
     private boolean isSnapshotVersion(String version) {
         if (version != null && version.toUpperCase().endsWith(MavenUrlHelper.VERSION_SNAPSHOT)) {
             return true;
         }
         return false;
     }
-
     private void setJobName(Job job, String jobName) {
         if (job != null) {
             job.setName(jobName);
