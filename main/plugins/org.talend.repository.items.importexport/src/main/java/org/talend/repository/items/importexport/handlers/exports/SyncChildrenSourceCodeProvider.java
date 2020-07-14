@@ -31,6 +31,9 @@ public class SyncChildrenSourceCodeProvider implements IBuildResourcesProvider {
 
     @Override
     public void prepare(IProgressMonitor monitor, Map<String, Object> parameters) throws Exception {
+        if (Boolean.getBoolean("build.ci.mode")) {
+            return;
+        }
         if (parameters == null) {
             return;
         }
