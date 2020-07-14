@@ -90,16 +90,28 @@ public class LibraryDataService {
         buildLibraryIfLicenseMissing = Boolean
                 .valueOf(System.getProperty(KEY_BUILD_LIBRARY_IF_LICENSE_MISSING, Boolean.FALSE.toString()));
         buildLibraryJarFile = Boolean.valueOf(System.getProperty(KEY_LIBRARIES_BUILD_JAR, Boolean.FALSE.toString()));
-        File libraryDataFile = getLibraryDataFile();
+        File studioLibraryDataFile = getStudioLibraryDataFile();
         if (buildLibraryLicense) {
-            if (libraryDataFile.exists()) {
-                libraryDataFile.delete();
+            if (studioLibraryDataFile.exists()) {
+                studioLibraryDataFile.delete();
             }
         }
         unknownLicense = new LibraryLicense();
         unknownLicense.setName(UNRESOLVED_LICENSE_NAME);
-        dataProvider = new LibraryDataJsonProvider(libraryDataFile);
-        mvnToLibraryMap.putAll(dataProvider.loadLicenseData());
+        dataProvider = new LibraryDataJsonProvider(studioLibraryDataFile);
+        File currentUserDataFile = getCurrentUserLibraryDataFile();
+        Map<String, Library> studioLibraryDataMap = dataProvider.loadLicenseData();
+        if (!StringUtils.equals(currentUserDataFile.getAbsolutePath(), studioLibraryDataFile.getAbsolutePath())) {
+            dataProvider = new LibraryDataJsonProvider(currentUserDataFile);
+            Map<String, Library> userLibraryMap = dataProvider.loadLicenseData();
+            if (userLibraryMap.size() == 0) {
+                mvnToLibraryMap.putAll(studioLibraryDataMap);
+            } else {
+                mvnToLibraryMap.putAll(userLibraryMap);
+            }
+        } else {
+            mvnToLibraryMap.putAll(studioLibraryDataMap);
+        }
     }
 
     public static LibraryDataService getInstance() {
@@ -321,13 +333,22 @@ public class LibraryDataService {
         if (buildLibraryLicense) {
             return true;
         }
-        if (buildLibraryIfFileMissing && !getLibraryDataFile().exists()) {
+        if (buildLibraryIfFileMissing && !getStudioLibraryDataFile().exists()) {
             return true;
         }
         return false;
     }
 
-    private File getLibraryDataFile() {
+    /**
+     * For shared studio, user's library data file not same with studio one
+     * 
+     * @return
+     */
+    private File getCurrentUserLibraryDataFile() {
+        return new File(Platform.getConfigurationLocation().getURL().getPath(), LIBRARIES_DATA_FILE_NAME);
+    }
+
+    private File getStudioLibraryDataFile() {
         String folder = System.getProperty(KEY_LIBRARIES_DATA_FOLDER);
         if (folder == null) {
             folder = new File(Platform.getInstallLocation().getURL().getPath(), "configuration").getAbsolutePath(); //$NON-NLS-1$
