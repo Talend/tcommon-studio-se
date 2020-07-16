@@ -1809,6 +1809,12 @@ public class DBConnectionFillerImpl extends MetadataFillerImpl<DatabaseConnectio
                         column.setTalendType(talendType);
                         String defaultSelectedDbType = mappingTypeRetriever.getDefaultSelectedDbType(talendType);
                         column.setSourceType(defaultSelectedDbType);
+                        if (JavaTypesManager.DATE.getId().equals(talendType)
+                                || PerlTypesManager.DATE.equals(talendType)) {
+                            String pattern1 = mappingTypeRetriever.getDefaultPattern(dbmsId, defaultSelectedDbType);
+                            column.setPattern(StringUtils.isNotBlank(pattern1) ? TalendQuoteUtils.addQuotes(pattern1)
+                                    : TalendQuoteUtils.addQuotes("dd-MM-yyyy"));//$NON-NLS-1$
+                        }
                     }
 
                     // Comment
