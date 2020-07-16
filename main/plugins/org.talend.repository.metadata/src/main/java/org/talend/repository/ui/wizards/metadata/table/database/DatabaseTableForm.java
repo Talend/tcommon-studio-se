@@ -79,6 +79,7 @@ import org.talend.core.database.EDatabaseTypeName;
 import org.talend.core.language.ECodeLanguage;
 import org.talend.core.language.LanguageManager;
 import org.talend.core.model.metadata.IMetadataConnection;
+import org.talend.core.model.metadata.MappingTypeRetriever;
 import org.talend.core.model.metadata.MetadataTalendType;
 import org.talend.core.model.metadata.MetadataToolHelper;
 import org.talend.core.model.metadata.builder.connection.ConnectionFactory;
@@ -1151,7 +1152,15 @@ public class DatabaseTableForm extends AbstractForm {
                 }
 
                 tableEditorView.getMetadataEditor().removeAll();
-
+                String dbmsId = metadataconnection.getMapping();
+                MappingTypeRetriever mappingTypeRetriever = MetadataTalendType.getMappingTypeRetriever(dbmsId);
+                if (mappingTypeRetriever == null) {
+                    @SuppressWarnings("null")
+                    EDatabaseTypeName dbType = EDatabaseTypeName.getTypeFromDbType(metadataconnection.getDbType(), false);
+                    if (dbType != null) {
+                        mappingTypeRetriever = MetadataTalendType.getMappingTypeRetrieverByProduct(dbType.getProduct());
+                    }
+                }
                 List<MetadataColumn> metadataColumnsValid = new ArrayList<MetadataColumn>();
                 Iterator iterate = metadataColumns.iterator();
                 while (iterate.hasNext()) {
@@ -1159,7 +1168,15 @@ public class DatabaseTableForm extends AbstractForm {
                     if (metadataColumn.getTalendType().equals(JavaTypesManager.DATE.getId())
                             || metadataColumn.getTalendType().equals(PerlTypesManager.DATE)) {
                         if ("".equals(metadataColumn.getPattern())) { //$NON-NLS-1$
-                            metadataColumn.setPattern(TalendQuoteUtils.addQuotes("dd-MM-yyyy")); //$NON-NLS-1$
+                            if (mappingTypeRetriever != null) {
+                                String pattern = mappingTypeRetriever.getDefaultPattern(dbmsId,
+                                        metadataColumn.getSourceType());
+                                metadataColumn.setPattern(
+                                        StringUtils.isNotBlank(pattern) ? TalendQuoteUtils.addQuotes(pattern)
+                                                : TalendQuoteUtils.addQuotes("dd-MM-yyyy"));//$NON-NLS-1$
+                            } else {
+                                metadataColumn.setPattern(TalendQuoteUtils.addQuotes("dd-MM-yyyy")); //$NON-NLS-1$
+                            }
                             if (EDatabaseTypeName.MSSQL.getDisplayName().equals(metadataconnection.getDbType())) {
                                 if ("TIME".equals(metadataColumn.getSourceType())) {
                                     metadataColumn.setPattern(TalendQuoteUtils.addQuotes("HH:mm:ss")); //$NON-NLS-1$

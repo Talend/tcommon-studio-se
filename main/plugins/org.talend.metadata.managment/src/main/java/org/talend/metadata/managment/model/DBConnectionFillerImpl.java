@@ -60,6 +60,8 @@ import org.talend.core.model.metadata.builder.database.JavaSqlFactory;
 import org.talend.core.model.metadata.builder.database.PluginConstant;
 import org.talend.core.model.metadata.builder.database.TableInfoParameters;
 import org.talend.core.model.metadata.builder.database.manager.ExtractManager;
+import org.talend.core.model.metadata.types.JavaTypesManager;
+import org.talend.core.model.metadata.types.PerlTypesManager;
 import org.talend.core.runtime.CoreRuntimePlugin;
 import org.talend.core.service.TalendCWMService;
 import org.talend.core.utils.TalendQuoteUtils;
@@ -156,7 +158,8 @@ public class DBConnectionFillerImpl extends MetadataFillerImpl<DatabaseConnectio
             }
 
             DatabaseMetaData dbMetadata = null;
-            // Added by Marvin Wang on Mar. 13, 2013 for loading hive jars dynamically, refer to TDI-25072.
+            // Added by Marvin Wang on Mar. 13, 2013 for loading hive jars dynamically,
+            // refer to TDI-25072.
             if (EDatabaseTypeName.HIVE.getXmlName().equalsIgnoreCase(metadataBean.getDbType())) {
                 dbMetadata = HiveConnectionManager.getInstance().extractDatabaseMetaData(metadataBean);
             } else {
@@ -166,7 +169,8 @@ public class DBConnectionFillerImpl extends MetadataFillerImpl<DatabaseConnectio
             }
 
             if (dbMetadata != null) {
-                // MOD sizhaoliu TDQ-6316 The 2 tagged values should be added for all database including Hive
+                // MOD sizhaoliu TDQ-6316 The 2 tagged values should be added for all database
+                // including Hive
                 String productName = dbMetadata.getDatabaseProductName() == null ? PluginConstant.EMPTY_STRING
                         : dbMetadata.getDatabaseProductName();
                 String productVersion = dbMetadata.getDatabaseProductVersion() == null ? PluginConstant.EMPTY_STRING
@@ -180,7 +184,8 @@ public class DBConnectionFillerImpl extends MetadataFillerImpl<DatabaseConnectio
                         productVersion = rs.getString(1);
                     }
                 }
-                // TDI-35419 TDQ-11853: make sure the redshift connection save the productName is redshift, not use the
+                // TDI-35419 TDQ-11853: make sure the redshift connection save the productName
+                // is redshift, not use the
                 // postgresql.becauses we use this value to create dbmslauguage
                 boolean isRedshift = EDatabaseTypeName.REDSHIFT.getDisplayName().equals(databaseType);
                 if (isRedshift) {
@@ -218,8 +223,8 @@ public class DBConnectionFillerImpl extends MetadataFillerImpl<DatabaseConnectio
                 ConnectionUtils.closeConnection(sqlConnection);
             }
             try {
-                if (driver != null && MetadataConnectionUtils
-                        .isDerbyRelatedDb(metadataBean.getDriverClass(), metadataBean.getDbType())) {
+                if (driver != null && MetadataConnectionUtils.isDerbyRelatedDb(metadataBean.getDriverClass(),
+                        metadataBean.getDbType())) {
                     driver.connect("jdbc:derby:;shutdown=true", null); //$NON-NLS-1$
                 }
                 if (stmt != null) {
@@ -240,8 +245,9 @@ public class DBConnectionFillerImpl extends MetadataFillerImpl<DatabaseConnectio
     }
 
     /**
-     * From r94372 , we should never give a null parameter "IMetadataConnection metaConnection" , because we used this
-     * parameter for some kind of databases...
+     * From r94372 , we should never give a null parameter "IMetadataConnection
+     * metaConnection" , because we used this parameter for some kind of
+     * databases...
      */
     @Override
     @Deprecated
@@ -254,12 +260,13 @@ public class DBConnectionFillerImpl extends MetadataFillerImpl<DatabaseConnectio
             IMetadataConnection metaConnection, List<String> schemaFilter) {
         List<Schema> returnSchemas = new ArrayList<Schema>();
         if (dbJDBCMetadata == null || (dbConn != null && ConnectionHelper.getCatalogs(dbConn).size() > 0)
-                        || ConnectionUtils.isSybase(dbJDBCMetadata)) {
+                || ConnectionUtils.isSybase(dbJDBCMetadata)) {
             return null;
         }
         ResultSet schemas = null;
         // teradata use db name to filter schema
-        // MOD jlolling TDI-34429 EXASol database behaves pretty much in the same way as Oracle
+        // MOD jlolling TDI-34429 EXASol database behaves pretty much in the same way as
+        // Oracle
         if (dbConn != null && EDatabaseTypeName.TERADATA.getProduct().equals(dbConn.getProductId())) {
             if (!dbConn.isContextMode()) {
                 String sid = getDatabaseName(dbConn);
@@ -277,7 +284,8 @@ public class DBConnectionFillerImpl extends MetadataFillerImpl<DatabaseConnectio
                 }
             }
         }
-        // TDI-17172 : if the schema is not fill, as the db context model, should clear "schemaFilter" .
+        // TDI-17172 : if the schema is not fill, as the db context model, should clear
+        // "schemaFilter" .
         if (dbConn != null && dbConn.isContextMode()) {
             if (EDatabaseTypeName.ORACLEFORSID.getProduct().equals(dbConn.getProductId())
                     || EDatabaseTypeName.IBMDB2.getProduct().equals(dbConn.getProductId())) {
@@ -300,7 +308,8 @@ public class DBConnectionFillerImpl extends MetadataFillerImpl<DatabaseConnectio
             }
             schemas = dbJDBCMetadata.getSchemas();
         } catch (SQLException e) {
-            // TDI-34429, jlolling we do not get an exception if the database simply do not have schemas!
+            // TDI-34429, jlolling we do not get an exception if the database simply do not
+            // have schemas!
             // in this case the resultset is empty
             log.error("Retrieve schema from database failed: " + e.getMessage(), e); //$NON-NLS-1$
         }
@@ -334,11 +343,14 @@ public class DBConnectionFillerImpl extends MetadataFillerImpl<DatabaseConnectio
 
                     EDatabaseTypeName dbTypeName = EDatabaseTypeName.getTypeFromDbType(dbConn.getDatabaseType());
                     if ((!StringUtils.isEmpty(uiSchemaOnConnWizard) && !isNullUiSchema(dbConn)) && dbConn != null) {
-                        // If the UiSchema on ui is not empty, the schema name should be same to this UiSchema name.
-                        Schema schema = SchemaHelper.createSchema(TalendCWMService.getReadableName(dbConn, uiSchemaOnConnWizard));
+                        // If the UiSchema on ui is not empty, the schema name should be same to this
+                        // UiSchema name.
+                        Schema schema = SchemaHelper
+                                .createSchema(TalendCWMService.getReadableName(dbConn, uiSchemaOnConnWizard));
                         returnSchemas.add(schema);
                         break;
-                    } else if (isCreateElement(schemaFilter, schemaName, ManagerConnection.isSchemaCaseSensitive(dbTypeName))) {
+                    } else if (isCreateElement(schemaFilter, schemaName,
+                            ManagerConnection.isSchemaCaseSensitive(dbTypeName))) {
                         Schema schema = SchemaHelper.createSchema(schemaName);
                         returnSchemas.add(schema);
                     }
@@ -353,7 +365,8 @@ public class DBConnectionFillerImpl extends MetadataFillerImpl<DatabaseConnectio
         // ResultSet catalogs = dbJDBCMetadata.getCatalogs();
         // ~18975
         if (!hasSchema) {
-            // TDI-30715: Only here handle the lightweight db which no catalogs and no schemas(such as Sqlite)
+            // TDI-30715: Only here handle the lightweight db which no catalogs and no
+            // schemas(such as Sqlite)
             fillSqliteFakeSchemas(returnSchemas);
         }
         // MOD gdbu 2011-4-12 bug : 18975
@@ -363,7 +376,8 @@ public class DBConnectionFillerImpl extends MetadataFillerImpl<DatabaseConnectio
         if (dbConn != null) {
             tableSet.addAll(ConnectionHelper.getTables(dbConn));
         }
-        // oldSchemas is use for record tables when click finish,then tables will be replace and null.
+        // oldSchemas is use for record tables when click finish,then tables will be
+        // replace and null.
         List<Schema> oldSchemas = new ArrayList<Schema>();
         for (MetadataTable table : tableSet) {
             EObject eContainer = table.eContainer();
@@ -392,7 +406,8 @@ public class DBConnectionFillerImpl extends MetadataFillerImpl<DatabaseConnectio
     }
 
     /**
-     * fill the fake schemas into sqlite database connection since Sqlite no catalogs and no schemas.
+     * fill the fake schemas into sqlite database connection since Sqlite no
+     * catalogs and no schemas.
      *
      * @param fakeSchemas
      * @return
@@ -402,7 +417,8 @@ public class DBConnectionFillerImpl extends MetadataFillerImpl<DatabaseConnectio
     }
 
     @Override
-    public List<Catalog> fillCatalogs(DatabaseConnection dbConn, DatabaseMetaData dbJDBCMetadata, List<String> catalogFilter) {
+    public List<Catalog> fillCatalogs(DatabaseConnection dbConn, DatabaseMetaData dbJDBCMetadata,
+            List<String> catalogFilter) {
         return fillCatalogs(dbConn, dbJDBCMetadata, null, catalogFilter);
     }
 
@@ -418,7 +434,8 @@ public class DBConnectionFillerImpl extends MetadataFillerImpl<DatabaseConnectio
             return fillPostgresqlCatalogs(metaConnection, dbConn, dbJDBCMetadata, catalogList);
         }
 
-        // TDI-17172 : if the catalog is not fill, as the db context model, should clear "catalogFilter" .
+        // TDI-17172 : if the catalog is not fill, as the db context model, should clear
+        // "catalogFilter" .
         if (dbConn != null && dbConn.isContextMode()) {
             if (EDatabaseTypeName.MYSQL.getProduct().equals(dbConn.getProductId())
                     || EDatabaseTypeName.MSSQL.getProduct().equals(dbConn.getProductId())
@@ -445,7 +462,7 @@ public class DBConnectionFillerImpl extends MetadataFillerImpl<DatabaseConnectio
                 return catalogList;
             }
             ResultSet catalogNames = null;
-            
+
             if (dbJDBCMetadata instanceof Sybase16SADatabaseMetaData) {
                 String username = metaConnection == null ? dbConn.getUsername() : metaConnection.getUsername();
                 String database = metaConnection == null ? dbConn.getSID() : metaConnection.getDatabase();
@@ -490,20 +507,25 @@ public class DBConnectionFillerImpl extends MetadataFillerImpl<DatabaseConnectio
                             catalogName = ""; //$NON-NLS-1$
                         }
                     }
-                    // Changed by Marvin Wang on Jan. 6, 2012 for bug TDI-24222. I haved discussed with Shen Ze about
-                    // the fix,it is okay for them. What we did is to avoid creating a new catalog when catalogName is
+                    // Changed by Marvin Wang on Jan. 6, 2012 for bug TDI-24222. I haved discussed
+                    // with Shen Ze about
+                    // the fix,it is okay for them. What we did is to avoid creating a new catalog
+                    // when catalogName is
                     // "null" for DB2.
                     if (catalogName != null) {
                         // MOD xqliu 2010-03-03 feature 11412
 
                         if (!isNullSID(dbConn) && dbConn != null
                                 && !dbConn.getDatabaseType().equals(EDatabaseTypeName.AS400.getDisplayName())
-                                && !dbConn.getDatabaseType().equals(EDatabaseTypeName.HSQLDB_IN_PROGRESS.getDisplayName())
+                                && !dbConn.getDatabaseType()
+                                        .equals(EDatabaseTypeName.HSQLDB_IN_PROGRESS.getDisplayName())
                                 && !dbConn.getDatabaseType().equals(EDatabaseTypeName.HSQLDB_SERVER.getDisplayName())
-                                && !dbConn.getDatabaseType().equals(EDatabaseTypeName.HSQLDB_WEBSERVER.getDisplayName())) {
+                                && !dbConn.getDatabaseType()
+                                        .equals(EDatabaseTypeName.HSQLDB_WEBSERVER.getDisplayName())) {
                             String databaseOnConnWizard = getDatabaseName(dbConn);
 
-                            // If the SID on ui is not empty, the catalog name should be same to this SID name.
+                            // If the SID on ui is not empty, the catalog name should be same to this SID
+                            // name.
                             postFillCatalog(catalogList, catalogFilter, schemaFilterList,
                                     TalendCWMService.getReadableName(dbConn, databaseOnConnWizard), dbConn);
                             break;
@@ -538,7 +560,8 @@ public class DBConnectionFillerImpl extends MetadataFillerImpl<DatabaseConnectio
                 }
 
                 Set<MetadataTable> tableSet = ConnectionHelper.getTables(dbConn);
-                // replaceCatalogs is use for record tables when click finish, then set to current connection.
+                // replaceCatalogs is use for record tables when click finish, then set to
+                // current connection.
                 List<Catalog> replaceCatalogs = new ArrayList<Catalog>();
                 List<String> catalogName = new ArrayList<String>();
                 for (MetadataTable table : tableSet) {
@@ -565,7 +588,8 @@ public class DBConnectionFillerImpl extends MetadataFillerImpl<DatabaseConnectio
                                             if (schemaFilterList.contains(schema.getName())) {
                                                 filterSchemas.add(schema);
                                                 schemaName.add(schema.getName());
-                                            } else if (schema.getOwnedElement() != null && !schema.getOwnedElement().isEmpty()) {
+                                            } else if (schema.getOwnedElement() != null
+                                                    && !schema.getOwnedElement().isEmpty()) {
                                                 filterSchemas.add(schema);
                                                 schemaName.add(schema.getName());
                                             }
@@ -621,8 +645,8 @@ public class DBConnectionFillerImpl extends MetadataFillerImpl<DatabaseConnectio
     }
 
     /**
-     * return the database name of the DatabaseConnection, if the dbtype is jdbc should get the database name form the
-     * url.
+     * return the database name of the DatabaseConnection, if the dbtype is jdbc
+     * should get the database name form the url.
      *
      * @param dbConn
      * @return
@@ -638,7 +662,8 @@ public class DBConnectionFillerImpl extends MetadataFillerImpl<DatabaseConnectio
      * @return
      */
     private boolean isDbSupportCatalogNames(DatabaseMetaData dbJDBCMetadata) throws SQLException {
-        // Now here that OracleForSid,db2,OdbcTeradata,Exasol dosen't support the catalog name.
+        // Now here that OracleForSid,db2,OdbcTeradata,Exasol dosen't support the
+        // catalog name.
         if (ConnectionUtils.isOracleForSid(dbJDBCMetadata, EDatabaseTypeName.ORACLEFORSID.getProduct())
                 || ConnectionUtils.isDB2(dbJDBCMetadata) || ConnectionUtils.isOdbcTeradata(dbJDBCMetadata)
                 || ConnectionUtils.isExasol(dbJDBCMetadata)) {
@@ -654,7 +679,8 @@ public class DBConnectionFillerImpl extends MetadataFillerImpl<DatabaseConnectio
      * @return
      */
     private boolean isDbHasCatalogs(DatabaseMetaData dbJDBCMetadata) throws SQLException {
-        // Although Sqlite support 'dbJDBCMetadata.getCatalogs()',but in fact it has no catalogs,just return.
+        // Although Sqlite support 'dbJDBCMetadata.getCatalogs()',but in fact it has no
+        // catalogs,just return.
         if (ConnectionUtils.isSqlite(dbJDBCMetadata, EDatabaseTypeName.SQLITE.getProduct())) {
             return false;
         }
@@ -712,6 +738,7 @@ public class DBConnectionFillerImpl extends MetadataFillerImpl<DatabaseConnectio
         }
         return catalog;
     }
+
     /**
      * judge whether SID is null or empty string whatever context mode or nor
      *
@@ -749,8 +776,8 @@ public class DBConnectionFillerImpl extends MetadataFillerImpl<DatabaseConnectio
         return false;
     }
 
-    private List<String> postFillCatalog(List<Catalog> catalogList, List<String> catalogFilterList, List<String> scheamFilterList,
-            String catalogName, Connection dbConn) {
+    private List<String> postFillCatalog(List<Catalog> catalogList, List<String> catalogFilterList,
+            List<String> scheamFilterList, String catalogName, Connection dbConn) {
         Catalog catalog = CatalogHelper.createCatalog(catalogName);
         catalogList.add(catalog);
         DatabaseConnection dbConnection = (DatabaseConnection) dbConn;
@@ -760,7 +787,8 @@ public class DBConnectionFillerImpl extends MetadataFillerImpl<DatabaseConnectio
             // TDI-17986
             IMetadataConnection iMetadataCon = ConvertionHelper.convert(dbConnection);
             if (iMetadataCon != null) {
-                if (!StringUtils.isEmpty(iMetadataCon.getDatabase()) && !catalogFilterList.contains(iMetadataCon.getDatabase())) {
+                if (!StringUtils.isEmpty(iMetadataCon.getDatabase())
+                        && !catalogFilterList.contains(iMetadataCon.getDatabase())) {
                     // TDI-23485:filter database for AS400,should not use schema filter
                     catalogFilterList.add(iMetadataCon.getDatabase());
                 }
@@ -793,8 +821,8 @@ public class DBConnectionFillerImpl extends MetadataFillerImpl<DatabaseConnectio
     }
 
     @Deprecated
-    private List<String> postFillCatalog(IMetadataConnection metaConnection, List<Catalog> catalogList, List<String> filterList,
-            String catalogName, Connection dbConn) {
+    private List<String> postFillCatalog(IMetadataConnection metaConnection, List<Catalog> catalogList,
+            List<String> filterList, String catalogName, Connection dbConn) {
         Catalog catalog = CatalogHelper.createCatalog(catalogName);
         catalogList.add(catalog);
         DatabaseConnection dbConnection = (DatabaseConnection) dbConn;
@@ -804,7 +832,8 @@ public class DBConnectionFillerImpl extends MetadataFillerImpl<DatabaseConnectio
             // TDI-17986
             IMetadataConnection iMetadataCon = ConvertionHelper.convert(dbConnection);
             if (iMetadataCon != null) {
-                if (!StringUtils.isEmpty(iMetadataCon.getDatabase()) && !filterList.contains(iMetadataCon.getDatabase())) {
+                if (!StringUtils.isEmpty(iMetadataCon.getDatabase())
+                        && !filterList.contains(iMetadataCon.getDatabase())) {
                     filterList.add(iMetadataCon.getDatabase());
                 }
                 String pattern = ExtractMetaDataUtils.getInstance()
@@ -880,7 +909,8 @@ public class DBConnectionFillerImpl extends MetadataFillerImpl<DatabaseConnectio
                             schemaRs = dbJDBCMetadata.getSchemas();
                         }
                     } catch (Throwable t) {
-                        // some drivers don't support getSchemas(catalog, pattern), if exception occurs, just try again
+                        // some drivers don't support getSchemas(catalog, pattern), if exception occurs,
+                        // just try again
                         // with getSchemas()
                         schemaRs = dbJDBCMetadata.getSchemas();
                     }
@@ -935,7 +965,8 @@ public class DBConnectionFillerImpl extends MetadataFillerImpl<DatabaseConnectio
 
     protected Schema createSchemaByUiSchema(DatabaseConnection dbConn) {
         String uiSchemaOnConnWizard = dbConn.getUiSchema();
-        // If the UiSchema on ui is not empty, the shema name should be same to this UiSchema name.
+        // If the UiSchema on ui is not empty, the shema name should be same to this
+        // UiSchema name.
         return SchemaHelper.createSchema(TalendCWMService.getReadableName(dbConn, uiSchemaOnConnWizard));
     }
 
@@ -945,7 +976,8 @@ public class DBConnectionFillerImpl extends MetadataFillerImpl<DatabaseConnectio
         try {
             schemaName = schemaRs.getString(MetaDataConstants.TABLE_SCHEM.name());
             // MOD klliu bug 19004 2011-03-31
-            if (!(MetadataConnectionUtils.isPostgresql(dbJDBCMetadata) || MetadataConnectionUtils.isSybase(dbJDBCMetadata))) {
+            if (!(MetadataConnectionUtils.isPostgresql(dbJDBCMetadata)
+                    || MetadataConnectionUtils.isSybase(dbJDBCMetadata))) {
                 catalogName = schemaRs.getString(MetaDataConstants.TABLE_CATALOG.name());
             }
 
@@ -973,8 +1005,8 @@ public class DBConnectionFillerImpl extends MetadataFillerImpl<DatabaseConnectio
     }
 
     @Override
-    public List<MetadataTable> fillAll(Package pack, DatabaseMetaData dbJDBCMetadata, IMetadataConnection metaConnection,
-            List<String> tableFilter, String tablePattern, String[] tableType) {
+    public List<MetadataTable> fillAll(Package pack, DatabaseMetaData dbJDBCMetadata,
+            IMetadataConnection metaConnection, List<String> tableFilter, String tablePattern, String[] tableType) {
 
         List<MetadataTable> list = new ArrayList<MetadataTable>();
         if (dbJDBCMetadata == null) {
@@ -991,7 +1023,8 @@ public class DBConnectionFillerImpl extends MetadataFillerImpl<DatabaseConnectio
                 catalogName = catalogOrSchema.getName();
             } else {// schema
                 Package parentCatalog = PackageHelper.getParentPackage(catalogOrSchema);
-                // in the fillSchema, we set one default schema with " ", but this one doesn't exist, so we should
+                // in the fillSchema, we set one default schema with " ", but this one doesn't
+                // exist, so we should
                 // replace to get the tables from all schemas instead
                 schemaPattern = " ".equals(catalogOrSchema.getName()) ? null : catalogOrSchema.getName(); //$NON-NLS-1$
                 catalogName = parentCatalog == null ? null : parentCatalog.getName();
@@ -1012,7 +1045,8 @@ public class DBConnectionFillerImpl extends MetadataFillerImpl<DatabaseConnectio
                 if ((isOracleJdbc || isOracle) && !isOracle8i) {// oracle and not oracle8
                     Statement stmt;
                     try {
-                        // MOD qiongli TDQ-4732 use the common method to create statement both DI and DQ,avoid Exception
+                        // MOD qiongli TDQ-4732 use the common method to create statement both DI and
+                        // DQ,avoid Exception
                         // for top.
                         stmt = dbJDBCMetadata.getConnection().createStatement();
                         ResultSet rsTables = stmt.executeQuery(TableInfoParameters.ORACLE_10G_RECBIN_SQL);
@@ -1054,21 +1088,24 @@ public class DBConnectionFillerImpl extends MetadataFillerImpl<DatabaseConnectio
                 if (tableName == null || tablesToFilter.contains(tableName)) {
                     continue;
                 }
-                // if (!isOracle && !isOracle8i && !isOracleJdbc && tableName.startsWith("/")) { //$NON-NLS-1$
+                // if (!isOracle && !isOracle8i && !isOracleJdbc && tableName.startsWith("/")) {
+                // //$NON-NLS-1$
                 // continue;
                 // }
                 if (!isOracle8i) {
                     tableComment = getTableComment(dbJDBCMetadata, tables, tableName, catalogName, schemaPattern);
                 }
                 MetadataTable metadatatable = null;
-                if (TableType.VIEW.toString().equals(temptableType) || ETableTypes.VIRTUAL_VIEW.getName().equals(temptableType)) {
+                if (TableType.VIEW.toString().equals(temptableType)
+                        || ETableTypes.VIRTUAL_VIEW.getName().equals(temptableType)) {
                     metadatatable = RelationalFactory.eINSTANCE.createTdView();
                 } else {
                     metadatatable = RelationalFactory.eINSTANCE.createTdTable();
                 }
 
                 metadatatable.setName(tableName);
-                // Added by Marvin Wang on Feb. 6, 2012 for bug TDI-24413, it is just for hive external table.
+                // Added by Marvin Wang on Feb. 6, 2012 for bug TDI-24413, it is just for hive
+                // external table.
                 if (ETableTypes.EXTERNAL_TABLE.getName().equals(temptableType)
                         || ETableTypes.MANAGED_TABLE.getName().equals(temptableType)
                         || ETableTypes.INDEX_TABLE.getName().equals(temptableType)
@@ -1118,7 +1155,8 @@ public class DBConnectionFillerImpl extends MetadataFillerImpl<DatabaseConnectio
                         String schemaname = schemaPattern + ".sysobjects"; //$NON-NLS-1$
                         String sql = "select name from " + schemaname + " where xtype='SN'"; //$NON-NLS-1$//$NON-NLS-2$
                         if ("dbo".equalsIgnoreCase(schemaPattern)) { //$NON-NLS-1$
-                            // SELECT name AS object_name ,SCHEMA_NAME(schema_id) AS schema_name FROM sys.objects where
+                            // SELECT name AS object_name ,SCHEMA_NAME(schema_id) AS schema_name FROM
+                            // sys.objects where
                             // type='SN'
                             ResultSet rsTables = stmt.executeQuery(sql);
                             while (rsTables.next()) {
@@ -1141,7 +1179,8 @@ public class DBConnectionFillerImpl extends MetadataFillerImpl<DatabaseConnectio
                     if (element.equals("SYNONYM")) { //$NON-NLS-1$
                         Statement stmt = extractMeta.getConn().createStatement();
                         extractMeta.setQueryStatementTimeout(stmt);
-                        String sql = "SELECT NAME FROM SYSIBM.SYSTABLES where TYPE='A' and BASE_SCHEMA = '" + schemaPattern + "'"; //$NON-NLS-1$ //$NON-NLS-2$
+                        String sql = "SELECT NAME FROM SYSIBM.SYSTABLES where TYPE='A' and BASE_SCHEMA = '" //$NON-NLS-1$
+                                + schemaPattern + "'"; //$NON-NLS-1$
                         ResultSet rsTables = stmt.executeQuery(sql);
                         while (rsTables.next()) {
                             String nameKey = rsTables.getString("NAME").trim(); //$NON-NLS-1$
@@ -1178,14 +1217,14 @@ public class DBConnectionFillerImpl extends MetadataFillerImpl<DatabaseConnectio
      * @param schemaPattern
      * @return
      */
-    private String getTableComment(DatabaseMetaData dbJDBCMetadata, ResultSet tables, String tableName, String catalogName,
-            String schemaPattern) {
+    private String getTableComment(DatabaseMetaData dbJDBCMetadata, ResultSet tables, String tableName,
+            String catalogName, String schemaPattern) {
         String tableComment = getRemarksFromResultSet(tables);
         try {
             String productName = dbJDBCMetadata.getDatabaseProductName();
             if (StringUtils.isBlank(tableComment)) {
-                String selectRemarkOnTable = MetadataConnectionUtils.getCommentQueryStr(productName, tableName, catalogName,
-                        schemaPattern);
+                String selectRemarkOnTable = MetadataConnectionUtils.getCommentQueryStr(productName, tableName,
+                        catalogName, schemaPattern);
                 if (selectRemarkOnTable != null) {
                     tableComment = executeGetCommentStatement(selectRemarkOnTable, dbJDBCMetadata.getConnection());
                 }
@@ -1206,8 +1245,8 @@ public class DBConnectionFillerImpl extends MetadataFillerImpl<DatabaseConnectio
      * @param schemaPattern
      * @return
      */
-    private String getColumnComment(DatabaseMetaData dbJDBCMetadata, ResultSet columns, String tableName, String columnName,
-            String schemaPattern) {
+    private String getColumnComment(DatabaseMetaData dbJDBCMetadata, ResultSet columns, String tableName,
+            String columnName, String schemaPattern) {
         String columnComment = getRemarksFromResultSet(columns);
         try {
             if (StringUtils.isBlank(columnComment) && MetadataConnectionUtils.isOracle(dbJDBCMetadata)) {
@@ -1231,8 +1270,8 @@ public class DBConnectionFillerImpl extends MetadataFillerImpl<DatabaseConnectio
     }
 
     @Override
-    public List<TdTable> fillTables(Package pack, DatabaseMetaData dbJDBCMetadata, List<String> tableFilter, String tablePattern,
-            String[] tableType) {
+    public List<TdTable> fillTables(Package pack, DatabaseMetaData dbJDBCMetadata, List<String> tableFilter,
+            String tablePattern, String[] tableType) {
         List<TdTable> tableList = new ArrayList<TdTable>();
         if (dbJDBCMetadata == null) {
             return null;
@@ -1268,7 +1307,8 @@ public class DBConnectionFillerImpl extends MetadataFillerImpl<DatabaseConnectio
                 if ((isOracle || isOracleJdbc) && !flag) {// oracle and not oracle8
                     Statement stmt;
                     try {
-                        // MOD qiongli TDQ-4732 use the common method to create statement both DI and DQ,avoid Exception
+                        // MOD qiongli TDQ-4732 use the common method to create statement both DI and
+                        // DQ,avoid Exception
                         // for top.
                         stmt = dbJDBCMetadata.getConnection().createStatement();
                         ResultSet rsTables = stmt.executeQuery(TableInfoParameters.ORACLE_10G_RECBIN_SQL);
@@ -1328,8 +1368,8 @@ public class DBConnectionFillerImpl extends MetadataFillerImpl<DatabaseConnectio
     }
 
     @Override
-    public List<TdView> fillViews(Package pack, DatabaseMetaData dbJDBCMetadata, List<String> viewFilter, String viewPattern,
-            String[] tableType) {
+    public List<TdView> fillViews(Package pack, DatabaseMetaData dbJDBCMetadata, List<String> viewFilter,
+            String viewPattern, String[] tableType) {
         List<TdView> viewList = new ArrayList<TdView>();
         if (dbJDBCMetadata == null) {
             return null;
@@ -1394,8 +1434,9 @@ public class DBConnectionFillerImpl extends MetadataFillerImpl<DatabaseConnectio
     }
 
     /**
-     * Add try/catch, some DB donot support some strings, like :REMARKS. (TDQ-9344) and it should not break any
-     * operations, if some string can not be get from the resultset, just continue to get others.
+     * Add try/catch, some DB donot support some strings, like :REMARKS. (TDQ-9344)
+     * and it should not break any operations, if some string can not be get from
+     * the resultset, just continue to get others.
      *
      * @param tables
      * @param tableComment
@@ -1432,8 +1473,8 @@ public class DBConnectionFillerImpl extends MetadataFillerImpl<DatabaseConnectio
     }
 
     @Override
-    public List<TdColumn> fillColumns(ColumnSet colSet, IMetadataConnection iMetadataConnection, DatabaseMetaData dbJDBCMetadata,
-            List<String> columnFilter, String columnPattern) {
+    public List<TdColumn> fillColumns(ColumnSet colSet, IMetadataConnection iMetadataConnection,
+            DatabaseMetaData dbJDBCMetadata, List<String> columnFilter, String columnPattern) {
         if (colSet == null || dbJDBCMetadata == null) {
             return null;
         }
@@ -1484,7 +1525,8 @@ public class DBConnectionFillerImpl extends MetadataFillerImpl<DatabaseConnectio
                 String fetchTableName = extractMeta.getStringMetaDataInfo(columns, ExtractManager.TABLE_NAME, null);
                 fetchTableName = ManagementTextUtils.filterSpecialChar(fetchTableName);
                 String databaseType = iMetadataConnection.getDbType();
-                if (fetchTableName.equals(tablePattern) || databaseType.equals(EDatabaseTypeName.SQLITE.getDisplayName())) {
+                if (fetchTableName.equals(tablePattern)
+                        || databaseType.equals(EDatabaseTypeName.SQLITE.getDisplayName())) {
                     String columnName = getStringFromResultSet(columns, GetColumn.COLUMN_NAME.name());
                     TdColumn column = ColumnHelper.createTdColumn(columnName);
 
@@ -1505,13 +1547,14 @@ public class DBConnectionFillerImpl extends MetadataFillerImpl<DatabaseConnectio
                     if (!extractMeta.needFakeDatabaseMetaData(iMetadataConnection)) {
                         dataType = getIntFromResultSet(columns, GetColumn.DATA_TYPE.name());
                     }
-                    // MOD scorreia 2010-07-24 removed the call to column.getSQLDataType() here because obviously the
+                    // MOD scorreia 2010-07-24 removed the call to column.getSQLDataType() here
+                    // because obviously the
                     // sql
                     // data type it is null and results in a NPE
                     typeName = getStringFromResultSet(columns, GetColumn.TYPE_NAME.name());
                     if (EDatabaseTypeName.INFORMIX.getDisplayName().equals(iMetadataConnection.getDbType())) {
-                        String tn = MetadataConnectionUtils.getColumnTypeName(dbJDBCMetadata.getConnection(), fetchTableName,
-                                index + 1);
+                        String tn = MetadataConnectionUtils.getColumnTypeName(dbJDBCMetadata.getConnection(),
+                                fetchTableName, index + 1);
                         if (tn != null) {
                             typeName = tn;
                         }
@@ -1527,22 +1570,24 @@ public class DBConnectionFillerImpl extends MetadataFillerImpl<DatabaseConnectio
                         if (typeName.toLowerCase().equals("date")) { //$NON-NLS-1$
                             dataType = 91;
                             pattern = TalendQuoteUtils.addQuotes("dd-MM-yyyy");
-                            // MOD scorreia 2010-07-24 removed the call to column.getSQLDataType() here because
+                            // MOD scorreia 2010-07-24 removed the call to column.getSQLDataType() here
+                            // because
                             // obviously
                             // the sql
                             // data type it is null and results in a NPE
                         } else if (typeName.toLowerCase().equals("time")) { //$NON-NLS-1$
                             dataType = 92;
                             pattern = TalendQuoteUtils.addQuotes("HH:mm:ss");
-                            // MOD scorreia 2010-07-24 removed the call to column.getSQLDataType() here because
+                            // MOD scorreia 2010-07-24 removed the call to column.getSQLDataType() here
+                            // because
                             // obviously
                             // the sql
                             // data type it is null and results in a NPE
                         }
-                    }else if(MetadataConnectionUtils.isSnowflake(dbJDBCMetadata)){
-                    	if(MetadataConnectionUtils.getSnowflakeDBTypeMap().containsKey(typeName)){
-                    		typeName = MetadataConnectionUtils.getSnowflakeDBTypeMap().get(typeName);
-                    	}
+                    } else if (MetadataConnectionUtils.isSnowflake(dbJDBCMetadata)) {
+                        if (MetadataConnectionUtils.getSnowflakeDBTypeMap().containsKey(typeName)) {
+                            typeName = MetadataConnectionUtils.getSnowflakeDBTypeMap().get(typeName);
+                        }
                     }
                     try {
                         int column_size = getIntFromResultSet(columns, GetColumn.COLUMN_SIZE.name());
@@ -1551,7 +1596,8 @@ public class DBConnectionFillerImpl extends MetadataFillerImpl<DatabaseConnectio
 
                         if (isHive && typeName.equalsIgnoreCase("DECIMAL") && columnPattern == null
                                 && getStringFromResultSet(columns, GetColumn.DECIMAL_DIGITS.name()) == null) {
-                            ResultSet result = dbJDBCMetadata.getColumns(catalogName, schemaPattern, tablePattern, columnName);
+                            ResultSet result = dbJDBCMetadata.getColumns(catalogName, schemaPattern, tablePattern,
+                                    columnName);
                             while (result.next()) {
                                 decimalDigits = getIntFromResultSet(result, GetColumn.DECIMAL_DIGITS.name());
                             }
@@ -1567,8 +1613,8 @@ public class DBConnectionFillerImpl extends MetadataFillerImpl<DatabaseConnectio
                     }
 
                     // SqlDataType
-                    TdSqlDataType sqlDataType = MetadataConnectionUtils.createDataType(dataType, typeName, decimalDigits,
-                            numPrecRadix);
+                    TdSqlDataType sqlDataType = MetadataConnectionUtils.createDataType(dataType, typeName,
+                            decimalDigits, numPrecRadix);
                     column.setSqlDataType(sqlDataType);
                     if (pattern != null) {
                         column.setPattern(pattern);
@@ -1589,23 +1635,27 @@ public class DBConnectionFillerImpl extends MetadataFillerImpl<DatabaseConnectio
                     } catch (Exception e1) {
                         log.warn(e1, e1);
                     }
-                    String defaultStr = (defaultValueObject != null) ? String.valueOf(defaultValueObject) : defaultValue;
+                    String defaultStr = (defaultValueObject != null) ? String.valueOf(defaultValueObject)
+                            : defaultValue;
                     defaultStr = ManagementTextUtils.filterSpecialChar(defaultStr);
                     TdExpression defExpression = createTdExpression(GetColumn.COLUMN_DEF.name(), defaultStr);
                     column.setInitialValue(defExpression);
 
                     DatabaseConnection dbConnection = (DatabaseConnection) ConnectionHelper.getConnection(colSet);
                     String dbmsId = dbConnection == null ? null : dbConnection.getDbmsId();
-                    if(EDatabaseTypeName.GENERAL_JDBC.getXMLType().equals(dbConnection.getDatabaseType())&&(dbmsId ==null||"".equals(dbmsId) )){
-                        dbmsId ="mysql_id";
+                    if (EDatabaseTypeName.GENERAL_JDBC.getXMLType().equals(dbConnection.getDatabaseType())
+                            && (dbmsId == null || "".equals(dbmsId))) {
+                        dbmsId = "mysql_id";
                     }
                     if (dbmsId != null) {
                         MappingTypeRetriever mappingTypeRetriever = MetadataTalendType.getMappingTypeRetriever(dbmsId);
                         if (mappingTypeRetriever == null) {
                             @SuppressWarnings("null")
-                            EDatabaseTypeName dbType = EDatabaseTypeName.getTypeFromDbType(dbConnection.getDatabaseType(), false);
+                            EDatabaseTypeName dbType = EDatabaseTypeName
+                                    .getTypeFromDbType(dbConnection.getDatabaseType(), false);
                             if (dbType != null) {
-                                mappingTypeRetriever = MetadataTalendType.getMappingTypeRetrieverByProduct(dbType.getProduct());
+                                mappingTypeRetriever = MetadataTalendType
+                                        .getMappingTypeRetrieverByProduct(dbType.getProduct());
                             }
                         }
                         if (mappingTypeRetriever != null) {
@@ -1614,6 +1664,13 @@ public class DBConnectionFillerImpl extends MetadataFillerImpl<DatabaseConnectio
                                     ExtractMetaDataUtils.getInstance().getIntMetaDataInfo(columns, "DECIMAL_DIGITS"));
                             column.setTalendType(talendType);
                             column.setSourceType(typeName);
+                            if (JavaTypesManager.DATE.getId().equals(talendType)
+                                    || PerlTypesManager.DATE.equals(talendType)) {
+                                String pattern1 = mappingTypeRetriever.getDefaultPattern(dbmsId, typeName);
+                                column.setPattern(StringUtils.isNotBlank(pattern1) ? TalendQuoteUtils.addQuotes(pattern1)
+                                        : TalendQuoteUtils.addQuotes("dd-MM-yyyy"));//$NON-NLS-1$
+                            }
+
                         }
                     }
                     try {
@@ -1622,12 +1679,15 @@ public class DBConnectionFillerImpl extends MetadataFillerImpl<DatabaseConnectio
                         // do nothing
                     }
 
-                    // Comment, getColumnComment() method should be called at the end of this loop, because if the
+                    // Comment, getColumnComment() method should be called at the end of this loop,
+                    // because if the
                     // database
-                    // type is oracle 12c, when call this method will close the stream of the columns ResultSet which
+                    // type is oracle 12c, when call this method will close the stream of the
+                    // columns ResultSet which
                     // create
                     // by dbJDBCMetadata.getColumns()
-                    String colComment = getColumnComment(dbJDBCMetadata, columns, tablePattern, column.getName(), schemaPattern);
+                    String colComment = getColumnComment(dbJDBCMetadata, columns, tablePattern, column.getName(),
+                            schemaPattern);
                     colComment = ManagementTextUtils.filterSpecialChar(colComment);
                     column.setComment(colComment);
                     ColumnHelper.setComment(colComment, column);
@@ -1679,7 +1739,8 @@ public class DBConnectionFillerImpl extends MetadataFillerImpl<DatabaseConnectio
             // MOD qiongli 2012-8-15 TDQ-5898,Odbc Terdata don't support some API.
             boolean isOdbcTeradata = ConnectionUtils.isOdbcTeradata(dbJDBCMetadata);
 
-            // get the MappingTypeRetriever according to the DbmsId of the DatabaseConnection
+            // get the MappingTypeRetriever according to the DbmsId of the
+            // DatabaseConnection
             MappingTypeRetriever mappingTypeRetriever = null;
             DatabaseConnection dbConnection = (DatabaseConnection) ConnectionHelper.getConnection(colSet);
             String dbmsId = JavaSqlFactory.getDbmsId(dbConnection);
@@ -1702,13 +1763,15 @@ public class DBConnectionFillerImpl extends MetadataFillerImpl<DatabaseConnectio
                 String fetchTableName = extractMeta.getStringMetaDataInfo(columns, ExtractManager.TABLE_NAME, null);
                 fetchTableName = ManagementTextUtils.filterSpecialChar(fetchTableName);
                 String databaseType = dbConnection.getDatabaseType();
-                if (fetchTableName.equals(tablePattern) || databaseType.equals(EDatabaseTypeName.SQLITE.getDisplayName())) {
+                if (fetchTableName.equals(tablePattern)
+                        || databaseType.equals(EDatabaseTypeName.SQLITE.getDisplayName())) {
                     String columnName = getStringFromResultSet(columns, GetColumn.COLUMN_NAME.name());
                     TdColumn column = ColumnHelper.createTdColumn(columnName);
 
                     int dataType = 0;
                     try {
-                        // MOD scorreia 2010-07-24 removed the call to column.getSQLDataType() here because obviously
+                        // MOD scorreia 2010-07-24 removed the call to column.getSQLDataType() here
+                        // because obviously
                         // the
                         // sql
                         // data type it is null and results in a NPE
@@ -1738,13 +1801,15 @@ public class DBConnectionFillerImpl extends MetadataFillerImpl<DatabaseConnectio
                         if (MetadataConnectionUtils.isMssql(dbJDBCMetadata)) {
                             if (typeName.toLowerCase().equals("date")) { //$NON-NLS-1$
                                 dataType = 91;
-                                // MOD scorreia 2010-07-24 removed the call to column.getSQLDataType() here because
+                                // MOD scorreia 2010-07-24 removed the call to column.getSQLDataType() here
+                                // because
                                 // obviously
                                 // the sql
                                 // data type it is null and results in a NPE
                             } else if (typeName.toLowerCase().equals("time")) { //$NON-NLS-1$
                                 dataType = 92;
-                                // MOD scorreia 2010-07-24 removed the call to column.getSQLDataType() here because
+                                // MOD scorreia 2010-07-24 removed the call to column.getSQLDataType() here
+                                // because
                                 // obviously
                                 // the sql
                                 // data type it is null and results in a NPE
@@ -1763,13 +1828,14 @@ public class DBConnectionFillerImpl extends MetadataFillerImpl<DatabaseConnectio
                     }
 
                     // SqlDataType
-                    TdSqlDataType sqlDataType = MetadataConnectionUtils.createDataType(dataType, typeName, decimalDigits,
-                            numPrecRadix);
+                    TdSqlDataType sqlDataType = MetadataConnectionUtils.createDataType(dataType, typeName,
+                            decimalDigits, numPrecRadix);
                     column.setSqlDataType(sqlDataType);
 
                     // Null able
                     int nullable = 0;
-                    if (dbJDBCMetadata instanceof DB2ForZosDataBaseMetadata || dbJDBCMetadata instanceof TeradataDataBaseMetadata
+                    if (dbJDBCMetadata instanceof DB2ForZosDataBaseMetadata
+                            || dbJDBCMetadata instanceof TeradataDataBaseMetadata
                             || dbJDBCMetadata instanceof EmbeddedHiveDataBaseMetadata) {
                         String isNullable = getStringFromResultSet(columns, "IS_NULLABLE");//$NON-NLS-1$
                         if (!isNullable.equals("Y")) { //$NON-NLS-1$
@@ -1806,11 +1872,14 @@ public class DBConnectionFillerImpl extends MetadataFillerImpl<DatabaseConnectio
 
                     // Comment
                     // MOD msjian TDQ-8546: fix the oracle type database column's comment is wrong
-                    // getColumnComment() method should be called at the end of this loop, because if the database type
+                    // getColumnComment() method should be called at the end of this loop, because
+                    // if the database type
                     // is
-                    // oracle 12c, when call this method will close the stream of the columns ResultSet which create by
+                    // oracle 12c, when call this method will close the stream of the columns
+                    // ResultSet which create by
                     // dbJDBCMetadata.getColumns()
-                    String colComment = getColumnComment(dbJDBCMetadata, columns, tablePattern, column.getName(), schemaPattern);
+                    String colComment = getColumnComment(dbJDBCMetadata, columns, tablePattern, column.getName(),
+                            schemaPattern);
                     ColumnHelper.setComment(colComment, column);
 
                     try {
@@ -1885,8 +1954,10 @@ public class DBConnectionFillerImpl extends MetadataFillerImpl<DatabaseConnectio
             if (orgomg.cwm.resource.relational.RelationalPackage.eINSTANCE.getTable().isSuperTypeOf(colSet.eClass())) {
                 try {
                     // primary key
-                    // MOD qiongli 2011-2-21,bug 18828 ,Access database dosen't support 'getPrimaryKeys(...)'.
-                    if (MetadataConnectionUtils.isOdbcExcel(dbJDBCMetadata) || MetadataConnectionUtils.isAccess(dbJDBCMetadata)
+                    // MOD qiongli 2011-2-21,bug 18828 ,Access database dosen't support
+                    // 'getPrimaryKeys(...)'.
+                    if (MetadataConnectionUtils.isOdbcExcel(dbJDBCMetadata)
+                            || MetadataConnectionUtils.isAccess(dbJDBCMetadata)
                             || MetadataConnectionUtils.isHive(dbJDBCMetadata)) {
                         log.info("This database don't support primary key and foreign key"); //$NON-NLS-1$
                         return;
@@ -1924,15 +1995,16 @@ public class DBConnectionFillerImpl extends MetadataFillerImpl<DatabaseConnectio
                             String fkname = fkResult.getString(GetForeignKey.FK_NAME.name());
                             String colName = fkResult.getString(GetForeignKey.FKCOLUMN_NAME.name());
                             if (foreignKey == null || foreignKeysMap.get(fkname) == null) {
-                                foreignKey = orgomg.cwm.resource.relational.RelationalFactory.eINSTANCE.createForeignKey();
+                                foreignKey = orgomg.cwm.resource.relational.RelationalFactory.eINSTANCE
+                                        .createForeignKey();
                                 foreignKey.setName(fkname);
                                 foreignKeysMap.put(fkname, foreignKey);
                             }
                             columnMap.get(colName).getKeyRelationship().add(foreignKey);
                         }
                         fkResult.close();
-                        TableHelper.addForeignKeys((TdTable) colSet,
-                                Arrays.asList(foreignKeysMap.values().toArray(new ForeignKey[foreignKeysMap.values().size()])));
+                        TableHelper.addForeignKeys((TdTable) colSet, Arrays.asList(
+                                foreignKeysMap.values().toArray(new ForeignKey[foreignKeysMap.values().size()])));
                     }
                 } catch (SQLException e) {
                     log.error(e, e);
@@ -1978,7 +2050,8 @@ public class DBConnectionFillerImpl extends MetadataFillerImpl<DatabaseConnectio
 
     private void replaceTablesForDbConn(Connection dbConn, List<Catalog> catalogList, List<String> schemaFilterList) {
         Set<MetadataTable> tableSet = ConnectionHelper.getTables(dbConn);
-        // replaceCatalogs is use for record tables when click finish, then set to current connection.
+        // replaceCatalogs is use for record tables when click finish, then set to
+        // current connection.
         List<Catalog> replaceCatalogs = new ArrayList<Catalog>();
         List<String> catalogName = new ArrayList<String>();
         for (MetadataTable table : tableSet) {
@@ -2005,7 +2078,8 @@ public class DBConnectionFillerImpl extends MetadataFillerImpl<DatabaseConnectio
                                     if (schemaFilterList.contains(schema.getName())) {
                                         filterSchemas.add(schema);
                                         schemaName.add(schema.getName());
-                                    } else if (schema.getOwnedElement() != null && !schema.getOwnedElement().isEmpty()) {
+                                    } else if (schema.getOwnedElement() != null
+                                            && !schema.getOwnedElement().isEmpty()) {
                                         filterSchemas.add(schema);
                                         schemaName.add(schema.getName());
                                     }
