@@ -19,7 +19,8 @@ import java.util.HashSet;
 import java.util.Random;
 import java.util.Set;
 
-import org.apache.log4j.Logger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  * DOC amaumont class global comment. Detailled comment <br/>
@@ -27,7 +28,7 @@ import org.apache.log4j.Logger;
  */
 public class FreePortFinder {
 
-    private static Logger log = Logger.getLogger(FreePortFinder.class);
+    private static Logger log = LoggerFactory.getLogger(FreePortFinder.class);
 
     private static Random random = new Random(System.currentTimeMillis());
 

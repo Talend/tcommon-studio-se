@@ -12,14 +12,15 @@
 // ============================================================================
 package org.talend.utils.security;
 
-import org.apache.log4j.Logger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /*
  * Created by bhe on Jan 17, 2020
  */
 public class StudioKeyName {
 
-    private static final Logger LOGGER = Logger.getLogger(StudioKeySource.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(StudioKeySource.class);
 
     public static final String KEY_SYSTEM_PREFIX = "system.encryption.key.v";
 

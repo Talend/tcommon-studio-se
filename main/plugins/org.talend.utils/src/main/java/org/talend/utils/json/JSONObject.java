@@ -29,7 +29,8 @@ import java.util.Iterator;
 import java.util.Map;
 import java.util.TreeSet;
 
-import org.apache.log4j.Logger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  * A JSONObject is an unordered collection of name/value pairs. Its external form is a string wrapped in curly braces
@@ -74,7 +75,7 @@ import org.apache.log4j.Logger;
  */
 public class JSONObject {
 
-    private static Logger log = Logger.getLogger(JSONObject.class);
+    private static Logger log = LoggerFactory.getLogger(JSONObject.class);
 
     /**
      * JSONObject.NULL is equivalent to the value that JavaScript calls null, whilst Java's null is equivalent to the

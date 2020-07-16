@@ -16,15 +16,11 @@ import java.io.IOException;
 import java.net.ServerSocket;
 import java.util.Random;
 
-import org.apache.log4j.Logger;
-
 /**
  * DOC amaumont class global comment. Detailled comment <br/>
  *
  */
 public class ServerSocketFreePortOpener {
-
-    private static Logger log = Logger.getLogger(ServerSocketFreePortOpener.class);
 
     private static Random random = new Random(System.currentTimeMillis());
 

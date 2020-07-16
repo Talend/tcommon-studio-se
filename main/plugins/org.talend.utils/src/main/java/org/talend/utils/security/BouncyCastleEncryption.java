@@ -24,7 +24,8 @@ import javax.crypto.IllegalBlockSizeException;
 import javax.crypto.KeyGenerator;
 
 import org.apache.commons.codec.binary.Base64;
-import org.apache.log4j.Logger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.bouncycastle.jce.provider.BouncyCastleProvider;
 
 /**
@@ -38,7 +39,7 @@ public class BouncyCastleEncryption {
         }
     }
 
-    private static final Logger LOGGER = Logger.getLogger(BouncyCastleEncryption.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(BouncyCastleEncryption.class);
 
     private static final String RANDOM_SHA1PRNG = "SHA1PRNG";
 

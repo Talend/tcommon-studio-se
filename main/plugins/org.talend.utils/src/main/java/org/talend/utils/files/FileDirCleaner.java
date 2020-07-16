@@ -16,7 +16,8 @@ import java.io.File;
 import java.util.Arrays;
 import java.util.Comparator;
 
-import org.apache.log4j.Logger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  * FileDirCleaner.
@@ -26,7 +27,7 @@ import org.apache.log4j.Logger;
  */
 public class FileDirCleaner {
 
-    private static Logger log = Logger.getLogger(FileDirCleaner.class);
+    private static Logger log = LoggerFactory.getLogger(FileDirCleaner.class);
 
     private long currentTime;
 

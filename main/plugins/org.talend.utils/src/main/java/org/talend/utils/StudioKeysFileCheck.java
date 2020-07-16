@@ -15,7 +15,8 @@ package org.talend.utils;
 import java.io.File;
 import java.nio.file.Paths;
 
-import org.apache.log4j.Logger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /*
 * Created by bhe on Sep 25, 2019
@@ -28,7 +29,7 @@ public class StudioKeysFileCheck {
 
     public static final String ENCRYPTION_KEY_FILE_NAME = "studio.keys";
 
-    private static final Logger LOGGER = Logger.getLogger(StudioKeysFileCheck.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(StudioKeysFileCheck.class);
 
     private static final String JAVA_VERSION_PROP = "java.version";
 
@@ -46,7 +47,7 @@ public class StudioKeysFileCheck {
     public static void check(File confDir) {
         if (confDir == null) {
             IllegalArgumentException e = new IllegalArgumentException("Encryption keys file path invalid");
-            LOGGER.error(e);
+            LOGGER.error(e.getMessage(), e);
             throw e;
         }
         String keyFile = System.getProperty(ENCRYPTION_KEY_FILE_SYS_PROP);
@@ -67,7 +68,7 @@ public class StudioKeysFileCheck {
             RuntimeException e = new RuntimeException(
                     "Java upgrade required, minimal required java version is " + JAVA_VERSION_MINIMAL_STRING
                             + ", current version is " + currentVersion);
-            LOGGER.error(e);
+            LOGGER.error(e.getMessage(), e);
             throw e;
         }
     }

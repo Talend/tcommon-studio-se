@@ -12,7 +12,8 @@
 // ============================================================================
 package org.talend.utils.thread;
 
-import org.apache.log4j.Logger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  *
@@ -22,7 +23,7 @@ import org.apache.log4j.Logger;
  */
 public abstract class TimeoutOperationHandler<R> {
 
-    private static Logger log = Logger.getLogger(TimeoutOperationHandler.class);
+    private static Logger log = LoggerFactory.getLogger(TimeoutOperationHandler.class);
 
     private R result;
 

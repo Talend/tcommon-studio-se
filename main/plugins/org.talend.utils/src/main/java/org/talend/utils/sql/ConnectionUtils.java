@@ -23,7 +23,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Properties;
 
-import org.apache.log4j.Logger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.talend.utils.sugars.ReturnCode;
 
 /**
@@ -31,7 +32,7 @@ import org.talend.utils.sugars.ReturnCode;
  */
 public final class ConnectionUtils {
 
-    private static Logger log = Logger.getLogger(ConnectionUtils.class);
+    private static Logger log = LoggerFactory.getLogger(ConnectionUtils.class);
 
     private static List<String> sybaseDBProductsNames;
 
@@ -108,7 +109,7 @@ public final class ConnectionUtils {
                 try {
                     connection = driver.connect(url, props);
                 } catch (Exception exception) {
-                    log.info(exception);
+                    log.info(exception.getMessage(), exception);
                     throw new RuntimeException(exception);
                 }
             }
@@ -321,7 +322,7 @@ public final class ConnectionUtils {
                     connection.close();
                 }
             } catch (SQLException e) {
-                log.warn(e, e);
+                log.warn(e.getMessage(), e);
             }
         }
         return rc;
@@ -527,7 +528,7 @@ public final class ConnectionUtils {
                 return true;
             }
         } catch (SQLException e) {
-            log.warn(e);
+            log.warn(e.getMessage(), e);
         }
         return false;
     }

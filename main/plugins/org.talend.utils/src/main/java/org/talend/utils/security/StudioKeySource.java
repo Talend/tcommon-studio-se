@@ -23,7 +23,8 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Properties;
 
-import org.apache.log4j.Logger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.talend.daikon.crypto.KeySource;
 import org.talend.utils.StudioKeysFileCheck;
 
@@ -33,7 +34,7 @@ import org.talend.utils.StudioKeysFileCheck;
 */
 public class StudioKeySource implements KeySource {
 
-    private static final Logger LOGGER = Logger.getLogger(StudioKeySource.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(StudioKeySource.class);
 
     private StudioKeyName keyName;
 
@@ -101,7 +102,7 @@ public class StudioKeySource implements KeySource {
         try (InputStream fi = StudioKeySource.class.getResourceAsStream(StudioKeysFileCheck.ENCRYPTION_KEY_FILE_NAME)) {
             defaultKeys.load(fi);
         } catch (IOException e) {
-            LOGGER.error(e);
+            LOGGER.error(e.getMessage(), e);
         }
 
         return defaultKeys;
@@ -125,7 +126,7 @@ public class StudioKeySource implements KeySource {
                 try (InputStream fi = new FileInputStream(keyFile)) {
                     tempProperty.load(fi);
                 } catch (IOException e) {
-                    LOGGER.error(e);
+                    LOGGER.error(e.getMessage(), e);
                 }
             }
         }
@@ -155,7 +156,7 @@ public class StudioKeySource implements KeySource {
                 retMap.put(new StudioKeyName(String.valueOf(k)), String.valueOf(v));
             } catch (IllegalArgumentException e) {
                 // illegal key, just ignore and log error message
-                LOGGER.error(e);
+                LOGGER.error(e.getMessage(), e);
             }
         });
 

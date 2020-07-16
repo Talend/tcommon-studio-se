@@ -27,7 +27,8 @@ import java.util.Properties;
 import java.util.Set;
 import java.util.regex.Pattern;
 
-import org.apache.log4j.Logger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.talend.daikon.crypto.CipherSource;
 import org.talend.daikon.crypto.CipherSources;
 import org.talend.daikon.crypto.Encryption;
@@ -36,7 +37,7 @@ import org.talend.utils.StudioKeysFileCheck;
 
 public class StudioEncryption {
 
-    private static final Logger LOGGER = Logger.getLogger(StudioEncryption.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(StudioEncryption.class);
 
     private static final String ENCRYPTION_KEY_FILE_NAME = StudioKeysFileCheck.ENCRYPTION_KEY_FILE_NAME;
 
@@ -267,7 +268,7 @@ public class StudioEncryption {
                 }
             } catch (IllegalArgumentException e) {
                 // log invalid key
-                LOGGER.error(e);
+                LOGGER.error(e.getMessage(), e);
             }
         }
 
