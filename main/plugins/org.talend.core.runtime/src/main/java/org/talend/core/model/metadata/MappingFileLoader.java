@@ -125,10 +125,12 @@ public class MappingFileLoader {
                 // search and load preBeforelen nodes
                 ArrayList<String> dbTypes = new ArrayList<String>();
                 ArrayList<DbDefaultLengthAndPrecision> dbDefault = new ArrayList<DbDefaultLengthAndPrecision>();
+                ArrayList<DbDefaultDatePattern> dbDefaultPattern = new ArrayList<DbDefaultDatePattern>();
                 ArrayList<DbIgnoreLengthAndPrecision> dbIgnore = new ArrayList<DbIgnoreLengthAndPrecision>();
                 ArrayList<DbPreBeforeLength> dbPbeforeLList = new ArrayList<DbPreBeforeLength>();
                 dbms.setDbmsTypes(dbTypes);
                 dbms.setDefaultLengthPrecision(dbDefault);
+                dbms.setDefaultPattern(dbDefaultPattern);
                 dbms.setIgnoreLengthPrecision(dbIgnore);
                 dbms.setPrebeforelength(dbPbeforeLList);
                 List<Node> typeNodes = getChildElementNodes(dbTypesNode);
@@ -149,19 +151,25 @@ public class MappingFileLoader {
                     dbTypes.add(typeValue);
                     hAllDbTypes.add(typeValue);
                     DbDefaultLengthAndPrecision dbDefaultLP = new DbDefaultLengthAndPrecision();
+                    DbDefaultDatePattern dbDefaultPt = new DbDefaultDatePattern();
                     DbIgnoreLengthAndPrecision dbIgnoreLP = new DbIgnoreLengthAndPrecision();
                     DbPreBeforeLength dbPBeforeL = new DbPreBeforeLength();
                     // default length and precision
                     Node defaultLengthItem = typeNodeAtttributes.getNamedItem("defaultLength"); //$NON-NLS-1$
                     Node defaultPrecision = typeNodeAtttributes.getNamedItem("defaultPrecision"); //$NON-NLS-1$
+                    Node defaultPattern = typeNodeAtttributes.getNamedItem("defaultPattern"); //$NON-NLS-1$
 
                     if (defaultLengthItem != null)
                         dbDefaultLP.setDefaultLength(Integer.parseInt(defaultLengthItem.getNodeValue()));
                     if (defaultPrecision != null)
                         dbDefaultLP.setDefaultPrecision(Integer.parseInt(defaultPrecision.getNodeValue()));
+                    if (defaultPattern != null)
+                        dbDefaultPt.setDefaultPattern(defaultPattern.getNodeValue());
 
                     dbDefaultLP.setDbTypeName(typeValue);
+                    dbDefaultPt.setDbTypeName(typeValue);
                     dbDefault.add(dbDefaultLP);
+                    dbDefaultPattern.add(dbDefaultPt);
 
                     // ignore Length and Precision
                     Node ignoreLength = typeNodeAtttributes.getNamedItem("ignoreLen"); //$NON-NLS-1$
