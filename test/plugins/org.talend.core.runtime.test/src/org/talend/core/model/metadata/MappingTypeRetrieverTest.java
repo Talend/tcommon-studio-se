@@ -75,7 +75,7 @@ public class MappingTypeRetrieverTest {
         String dbType = "DATE";
         MappingTypeRetriever mappingType = MetadataTalendType.getMappingTypeRetriever(dbmsId);
         String defaultPattern1 = mappingType.getDefaultPattern(dbmsId, dbType);
-        assertTrue("yyyy-mm hh:mm".equalsIgnoreCase(defaultPattern1));
+        assertTrue("dd-MM-yyyy".equalsIgnoreCase(defaultPattern1));
     }
 
 }
