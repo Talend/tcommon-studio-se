@@ -31,8 +31,6 @@
 									<artifactId>derby</artifactId>
 									<version>10.15.2.0</version>
 								</artifactItem>
-							</artifactItems>
-							<artifactItems>
 								<artifactItem>
 									<groupId>org.apache.derby</groupId>
 									<artifactId>derbyclient</artifactId>
