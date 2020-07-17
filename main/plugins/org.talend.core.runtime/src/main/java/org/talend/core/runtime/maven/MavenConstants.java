@@ -44,6 +44,8 @@ public interface MavenConstants {
 
     static final String USE_PROFILE_MODULE = "USE_PROFILE_MODULE";
 
+    static final String EXCLUDE_DELETED_ITEMS = "EXCLUDE_DELETED_ITEMS";
+
     /*
      * for lib
      */

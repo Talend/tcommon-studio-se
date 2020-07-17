@@ -45,7 +45,7 @@ public abstract class AbstractPersistentProjectSettingPage extends AbstractScrip
     @Override
     public boolean performOk() {
         boolean ok = super.performOk();
-        if (ok && getScriptTxt() != null && !getScriptTxt().isDisposed() && !isUserIdentified) {
+        if (ok && getScriptTxt() != null && !getScriptTxt().isDisposed() && !isUserIdentified && !isSyncAllPomDone()) {
             boolean generatePom = MessageDialog.openQuestion(getShell(), "Question", //$NON-NLS-1$
                     Messages.getString("AbstractPersistentProjectSettingPage.syncAllPoms")); //$NON-NLS-1$
             isUserIdentified = true;
@@ -53,6 +53,7 @@ public abstract class AbstractPersistentProjectSettingPage extends AbstractScrip
                 try {
                     save();
                     new AggregatorPomsHelper().syncAllPoms();
+                    setSyncAllPomDone(true);
                 } catch (Exception e) {
                     ExceptionHandler.process(e);
                 }

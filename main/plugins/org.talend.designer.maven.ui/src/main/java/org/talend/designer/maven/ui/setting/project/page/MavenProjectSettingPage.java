@@ -13,6 +13,7 @@
 package org.talend.designer.maven.ui.setting.project.page;
 
 import org.apache.commons.lang.StringUtils;
+import org.eclipse.jface.dialogs.MessageDialog;
 import org.eclipse.jface.preference.IPreferenceStore;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.ModifyEvent;
@@ -52,6 +53,8 @@ public class MavenProjectSettingPage extends AbstractProjectSettingPage {
 
     private Button useProfileModuleCheckbox;
 
+    private Button excludeDeletedItemsCheckbox;
+
 	public MavenProjectSettingPage() {
 		noDefaultAndApplyButton();
 	}
@@ -90,6 +93,10 @@ public class MavenProjectSettingPage extends AbstractProjectSettingPage {
         useProfileModuleCheckbox.setText(Messages.getString("MavenProjectSettingPage.refModuleText")); //$NON-NLS-1$
         useProfileModuleCheckbox.setSelection(preferenceStore.getBoolean(MavenConstants.USE_PROFILE_MODULE));
 
+        excludeDeletedItemsCheckbox = new Button(parent, SWT.CHECK);
+        excludeDeletedItemsCheckbox.setText(Messages.getString("MavenProjectSettingPage.excludeDeletedItems")); //$NON-NLS-1$
+        excludeDeletedItemsCheckbox.setSelection(preferenceStore.getBoolean(MavenConstants.EXCLUDE_DELETED_ITEMS));
+
         filterText.setText(filter);
 		filterText.addModifyListener(new ModifyListener() {
 
@@ -122,6 +129,7 @@ public class MavenProjectSettingPage extends AbstractProjectSettingPage {
 				try {
                     preferenceStore.setValue(MavenConstants.POM_FILTER, getRealVersionFilter(filter));
                     preferenceStore.setValue(MavenConstants.USE_PROFILE_MODULE, useProfileModuleCheckbox.getSelection());
+                    preferenceStore.setValue(MavenConstants.EXCLUDE_DELETED_ITEMS, excludeDeletedItemsCheckbox.getSelection());
 					new AggregatorPomsHelper().syncAllPoms();
 				} catch (Exception e) {
 					ExceptionHandler.process(e);
@@ -141,6 +149,20 @@ public class MavenProjectSettingPage extends AbstractProjectSettingPage {
 		if (preferenceStore != null) {
             preferenceStore.setValue(MavenConstants.POM_FILTER, getRealVersionFilter(filter));
             preferenceStore.setValue(MavenConstants.USE_PROFILE_MODULE, useProfileModuleCheckbox.getSelection());
+            if (excludeDeletedItemsCheckbox.getSelection() != preferenceStore.getBoolean(MavenConstants.EXCLUDE_DELETED_ITEMS)) {
+                preferenceStore.setValue(MavenConstants.EXCLUDE_DELETED_ITEMS, excludeDeletedItemsCheckbox.getSelection());
+                boolean generatePom = MessageDialog.openQuestion(getShell(), "Question", //$NON-NLS-1$
+                        Messages.getString("AbstractPersistentProjectSettingPage.syncAllPoms")); //$NON-NLS-1$
+                if (generatePom) {
+                    try {
+                        // Maven node of project setting ahead of those node belongs to Maven, will syncAllPoms already
+                        new AggregatorPomsHelper().syncAllPoms();
+                        setSyncAllPomDone(true);
+                    } catch (Exception e) {
+                        ExceptionHandler.process(e);
+                    }
+                }
+            }
 		}
 		return ok;
 	}

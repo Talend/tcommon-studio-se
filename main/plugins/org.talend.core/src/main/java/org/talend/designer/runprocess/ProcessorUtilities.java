@@ -1560,6 +1560,10 @@ public class ProcessorUtilities {
                     List<ProcessItem> testsItems =
                             testContainerService.getTestContainersByVersion(jobInfo.getProcessItem());
                     for (ProcessItem testItem : testsItems) {
+                        if (testItem.getProperty().getItem().getState().isDeleted()
+                                && IRunProcessService.get().isExcludeDeletedItems()) {
+                            continue;
+                        }
                         JobInfo subJobInfo = new JobInfo(testItem, testItem.getProcess().getDefaultContext());
                         subJobInfo.setTestContainer(true);
                         subJobInfo.setFatherJobInfo(jobInfo);
