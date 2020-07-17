@@ -14,6 +14,8 @@ package org.talend.core.model.metadata;
 
 import static org.junit.Assert.*;
 
+import java.util.List;
+
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
@@ -65,6 +67,15 @@ public class MappingTypeRetrieverTest {
         String dbType = "int";
         MappingTypeRetriever mappingType = MetadataTalendType.getMappingTypeRetriever(dbmsId);
         assertTrue(mappingType.isPrecisionIgnored(dbmsId, dbType));
+    }
+    
+    @Test
+    public void testGetDefaultPattern() {
+        String dbmsId = "sybase_id";
+        String dbType = "DATE";
+        MappingTypeRetriever mappingType = MetadataTalendType.getMappingTypeRetriever(dbmsId);
+        String defaultPattern1 = mappingType.getDefaultPattern(dbmsId, dbType);
+        assertTrue("yyyy-mm hh:mm".equalsIgnoreCase(defaultPattern1));
     }
 
 }
