@@ -48,6 +48,7 @@ import org.eclipse.core.runtime.IPath;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.m2e.core.MavenPlugin;
 import org.eclipse.m2e.core.embedder.IMaven;
+import org.talend.commons.exception.CommonExceptionHandler;
 import org.talend.commons.exception.ExceptionHandler;
 import org.talend.commons.exception.PersistenceException;
 import org.talend.commons.utils.VersionUtils;
@@ -875,6 +876,7 @@ public class CreateMavenJobPom extends AbstractMavenProcessorPom {
         }
         IMaven maven = MavenPlugin.getMaven();
         ArtifactRepository repository = maven.getLocalRepository();
+        boolean isDIJob = ERepositoryObjectType.getItemType(getJobProcessor().getProperty().getItem()) == ERepositoryObjectType.PROCESS;
         for (Dependency dependency : duplicateDependencies) {
             if (((SortableDependency) dependency).isAssemblyOptional()) {
                 continue;
@@ -883,6 +885,10 @@ public class CreateMavenJobPom extends AbstractMavenProcessorPom {
                     dependency.getVersion(), dependency.getType(), dependency.getClassifier());
             Path path = new File(repository.getBasedir()).toPath().resolve(sourceLocation);
             sourceLocation = path.toString();
+            if (isDIJob && !new File(sourceLocation).exists()) {
+                CommonExceptionHandler.warn("Job dependency [" + sourceLocation + "] does not exist!");
+                continue;
+            }
             String destName = path.getFileName().toString();
             Node fileNode = document.createElement("file");
             filesNode.appendChild(fileNode);
