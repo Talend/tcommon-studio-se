@@ -47,7 +47,7 @@ Export-Package: org.apache.commons.cli2,
  org.apache.commons.text.similarity,
  org.apache.commons.validator;version="1.5.1",
  org.apache.commons.validator.routines;version="1.5.1"
-Require-Bundle: org.apache.commons.beanutils;visibility:=reexport,
+Require-Bundle: org.apache.commons.commons-beanutils;visibility:=reexport,
  org.apache.commons.logging;bundle-version="1.2.0";visibility:=reexport,
  org.apache.commons.lang3;bundle-version="3.4.0";visibility:=reexport
 Bundle-ActivationPolicy: lazy
