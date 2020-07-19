@@ -42,7 +42,8 @@
             message="wizard for PostgresPlus"
             mvn_uri="mvn:org.postgresql/postgresql/42.2.14"
             name="postgresql-42.2.14.jar"
-            required="true">
+            required="true"
+            uripath="platform:/plugin/org.talend.libraries.jdbc.postgresql/lib/postgresql-42.2.14.jar">
       </libraryNeeded>
       <libraryNeeded
             context="plugin:org.talend.metadata.managment"
