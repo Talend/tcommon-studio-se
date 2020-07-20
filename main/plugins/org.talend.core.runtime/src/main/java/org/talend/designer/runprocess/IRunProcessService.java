@@ -246,7 +246,7 @@ public interface IRunProcessService extends IService {
 
     public boolean isCIMode();
 
-    public boolean isExcludeDeletedItems();
+    public boolean isExcludeDeletedItems(Property property);
 
     public static IRunProcessService get() {
         if (GlobalServiceRegister.getDefault().isServiceRegistered(IRunProcessService.class)) {

@@ -272,6 +272,12 @@ public class PomIdsHelper {
         return manager.getBoolean(MavenConstants.EXCLUDE_DELETED_ITEMS);
     }
 
+    public static boolean getIfExcludeDeletedItems(Property property) {
+        String projectTechName = ProjectManager.getInstance().getProject(property).getTechnicalLabel();
+        ProjectPreferenceManager manager = getPreferenceManager(projectTechName);
+        return manager.getBoolean(MavenConstants.EXCLUDE_DELETED_ITEMS);
+    }
+
     private static String getGroupId(String projectTechName, String baseName, Property property) {
         if (projectTechName == null) {
             projectTechName = ProjectManager.getInstance().getCurrentProject().getTechnicalLabel();

@@ -1606,7 +1606,7 @@ public class ProcessorUtilities {
                             testContainerService.getTestContainersByVersion(jobInfo.getProcessItem());
                     for (ProcessItem testItem : testsItems) {
                         if (testItem.getProperty().getItem().getState().isDeleted()
-                                && IRunProcessService.get().isExcludeDeletedItems()) {
+                                && IRunProcessService.get().isExcludeDeletedItems(testItem.getProperty())) {
                             continue;
                         }
                         JobInfo subJobInfo = new JobInfo(testItem, testItem.getProcess().getDefaultContext());
