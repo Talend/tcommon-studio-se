@@ -5,10 +5,13 @@ Bundle-SymbolicName: org.talend.utils
 Bundle-Version: 7.4.1.qualifier
 Bundle-Vendor: .Talend SA.
 Export-Package: 
+ org.talend.commons.utils,
+ org.talend.commons.utils.threading.lockerbykey,
  org.talend.utils,
  org.talend.utils.cache,
  org.talend.utils.collections,
  org.talend.utils.color,
+ org.talend.utils.database,
  org.talend.utils.dates;uses:="org.apache.log4j",
  org.talend.utils.exceptions,
  org.talend.utils.files;uses:="org.talend.utils.sugars",
@@ -29,7 +32,8 @@ Export-Package:
  org.talend.utils.time;uses:="org.apache.log4j",
  org.talend.utils.wsdl,
  org.talend.utils.xml
-Bundle-ClassPath: .
+Bundle-ClassPath: .,
+ lib/studio-utils-1.0.0-SNAPSHOT.jar
 Require-Bundle: org.apache.commons.lang,
  org.talend.libraries.apache;visibility:=reexport,
  org.apache.log4j,
