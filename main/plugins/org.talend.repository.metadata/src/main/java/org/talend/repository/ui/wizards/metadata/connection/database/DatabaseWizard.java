@@ -27,6 +27,7 @@ import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.Path;
 import org.eclipse.emf.common.util.EList;
 import org.eclipse.emf.common.util.EMap;
+import org.eclipse.jface.dialogs.MessageDialog;
 import org.eclipse.jface.viewers.ISelection;
 import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.jface.window.Window;
@@ -560,8 +561,8 @@ public class DatabaseWizard extends CheckLastVersionRepositoryWizard implements 
                         isSuccess = SwitchContextGroupNameImpl
                                 .getInstance()
                                 .updateContextGroup(connectionItem, contextName, originalSelectedContextType.getName());
-                        if (!isSuccess) {
-                            tdqRepService.popupSwitchContextFailedMessage(contextName);
+                         if (!isSuccess) {
+                        	isSuccess = tdqRepService.popupSwitchContextFailedMessage(contextName);
                         }else {
                             isSuccess &= handleDatabaseUpdate(metadataConnection, tdqRepService);
                         }
