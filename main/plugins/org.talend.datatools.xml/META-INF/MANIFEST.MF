@@ -4,7 +4,7 @@ Bundle-Name: Datatools XML Plug-in
 Bundle-SymbolicName: org.talend.datatools.xml
 Bundle-Version: 7.4.1.qualifier
 Require-Bundle: org.eclipse.xsd,
- org.apache.commons.beanutils,
+ org.apache.commons.commons-beanutils,
  org.apache.commons.lang,
  javax.wsdl;bundle-version="1.6.2",
  org.talend.libraries.apache.axis2,

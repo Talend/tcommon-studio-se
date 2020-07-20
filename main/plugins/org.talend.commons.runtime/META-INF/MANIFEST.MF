@@ -4,7 +4,7 @@ Bundle-Name: Common Runtime Plug-in
 Bundle-SymbolicName: org.talend.commons.runtime;singleton:=true
 Bundle-Version: 7.4.1.qualifier
 Require-Bundle: org.apache.log4j;visibility:=reexport,
- org.apache.commons.beanutils,
+ org.apache.commons.commons-beanutils,
  org.apache.commons.collections,
  org.apache.commons.httpclient,
  org.apache.commons.lang;visibility:=reexport,

@@ -9,7 +9,6 @@ Bundle-ClassPath: .,
  lib/castor-1.0.3.jar,
  lib/jakarta-oro-2.0.8.jar,
  lib/xmlbeans-2.3.0.jar,
- lib/xercesImpl.jar,
  lib/xml-apis.jar
 Bundle-Vendor: .Talend SA.
 Require-Bundle: org.apache.log4j;resolution:=optional,
