@@ -29,8 +29,6 @@ public abstract class AbstractProjectSettingPage extends FieldEditorPreferencePa
 
     private String prefNodeId;
 
-    private boolean syncAllPomsDone = false;
-
     public AbstractProjectSettingPage() {
         super();
 
@@ -42,25 +40,6 @@ public abstract class AbstractProjectSettingPage extends FieldEditorPreferencePa
 
     public void setPrefNodeId(String prefNodeId) {
         this.prefNodeId = prefNodeId;
-    }
-
-    /**
-     * Apply will called performOk of every node of project setting, get if any node have execute syncAllPoms, normally
-     * should not execute again
-     * 
-     * @return the syncAllPomsDone
-     */
-    public boolean isSyncAllPomDone() {
-        return syncAllPomsDone;
-    }
-
-    /**
-     * Sets the syncAllPomDone.
-     * 
-     * @param syncAllPomDone the syncAllPomDone to set
-     */
-    public void setSyncAllPomDone(boolean syncAllPomsDone) {
-        this.syncAllPomsDone = syncAllPomsDone;
     }
 
     /*
