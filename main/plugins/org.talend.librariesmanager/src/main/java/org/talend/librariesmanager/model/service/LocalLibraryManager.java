@@ -1385,7 +1385,7 @@ public class LocalLibraryManager implements ILibraryManagerService, IChangedLibr
                 snapshotResult = customerRepHandler.search(MavenConstants.DEFAULT_LIB_GROUP_ID, null, null, false, true);
                 if (snapshotResult != null) {
                     for (MavenArtifact result : snapshotResult) {
-                        ShareLibrariesUtil.putArtifactToMap(result, releaseArtifactMap, true);
+                        ShareLibrariesUtil.putArtifactToMap(result, snapshotArtifactMap, true);
                     }
                 }
                 releaseResult = customerRepHandler.search(MavenConstants.DEFAULT_LIB_GROUP_ID, null, null, true, false);

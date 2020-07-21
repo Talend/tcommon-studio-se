@@ -214,5 +214,5 @@ public interface ITDQRepositoryService extends IService {
     /**
      * @param chooseContext the context name which want to swtich
      */
-    void popupSwitchContextFailedMessage(String chooseContext);
+    boolean popupSwitchContextFailedMessage(String chooseContext);
 }
