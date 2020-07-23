@@ -117,6 +117,7 @@ public class JobAndNodesParametersRelationshipHandler implements IItemRelationsh
                 }
             }
         }
+        relationsMap.values().removeIf(value -> value.isEmpty());
         return relationsMap;
 
     }
