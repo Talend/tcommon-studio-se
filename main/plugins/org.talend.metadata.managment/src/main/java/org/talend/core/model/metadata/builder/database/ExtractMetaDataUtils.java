@@ -61,6 +61,8 @@ import org.talend.commons.utils.workbench.resources.ResourceUtils;
 import org.talend.core.GlobalServiceRegister;
 import org.talend.core.ILibraryManagerService;
 import org.talend.core.ILibraryManagerUIService;
+import org.talend.core.classloader.ClassLoaderFactory;
+import org.talend.core.classloader.DynamicClassLoader;
 import org.talend.core.database.EDatabase4DriverClassName;
 import org.talend.core.database.EDatabaseTypeName;
 import org.talend.core.database.conn.ConnParameterKeys;
@@ -1170,7 +1172,13 @@ public class ExtractMetaDataUtils {
             // Don't use DriverManager
 
             try {
-                Class<?> klazz = Class.forName(driverClassName);
+                //IMPALA:CLOUDERA:Cloudera_CDH5_13_0?USE_KRB
+                DynamicClassLoader impalaClassLoader = ClassLoaderFactory.getClassLoader("IMPALA:CLOUDERA:Cloudera_CDH5_13_0?USE_KRB");
+                //org.apache.hive.jdbc.HiveDriver
+                Class<?> driver = Class.forName(driverClassName, true, impalaClassLoader);
+                Driver hiveDriver = (Driver) driver.newInstance();
+                
+//                Class<?> klazz = Class.forName(driverClassName);
 
                 Properties info = new Properties();
                 info.put("user", username); //$NON-NLS-1$
@@ -1181,7 +1189,8 @@ public class ExtractMetaDataUtils {
                         info.put("charSet", systemCharset.displayName()); //$NON-NLS-1$
                     }
                 }
-                connection = ((Driver) klazz.newInstance()).connect(url, info);
+                //jdbc:hive2://tal-qa12.talend.lan:21050/default;principal=impala/_HOST@CDHBJ.CN
+                connection = ((Driver) hiveDriver).connect(url, info);
             } catch (ClassNotFoundException e) {
                 String errorMessage = Messages.getString("ExtractMetaDataUtils.missDriver.1") + driverClassName; //$NON-NLS-1$
                 if (driverJarPath != null && driverJarPath.length > 0) {
