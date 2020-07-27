@@ -206,13 +206,15 @@ public class MavenRepoSynchronizer {
         // check sha1
         for (MavenArtifact art : releaseArts) {
             File pomFile = artifact2Poms.get(art);
-            IPath libPath = new Path(pomFile.getAbsolutePath()).removeFileExtension().addFileExtension(art.getType());
-            final File libFile = libPath.toFile();
-            if (libFile.exists()) {
-                String sha1 = getSHA1(libFile);
-                if (art.getSha1() != null && art.getSha1().equals(sha1)) {
-                    // already deployed
-                    ret.add(pomFile);
+            if (pomFile != null) {
+                IPath libPath = new Path(pomFile.getAbsolutePath()).removeFileExtension().addFileExtension(art.getType());
+                final File libFile = libPath.toFile();
+                if (libFile.exists()) {
+                    String sha1 = getSHA1(libFile);
+                    if (art.getSha1() != null && art.getSha1().equals(sha1)) {
+                        // already deployed
+                        ret.add(pomFile);
+                    }
                 }
             }
         }
