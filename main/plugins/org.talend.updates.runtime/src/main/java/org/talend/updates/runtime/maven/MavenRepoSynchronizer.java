@@ -172,13 +172,18 @@ public class MavenRepoSynchronizer {
         
         Map<MavenArtifact, File> artifact2Poms = new HashMap<MavenArtifact, File>();
         Set<String> releaseGroupIds = new HashSet<String>();
+        Set<String> snapshotGroupIds = new HashSet<String>();
         for (File pomFile : allPomFiles) {
             ExtendedMavenArtifact eart = parseArtifact(pomFile);
 
             if (eart != null && eart.getArtifact() != null) {
                 MavenArtifact art = eart.getArtifact();
                 artifact2Poms.put(art, pomFile);
-                if (art.getVersion() == null || !art.getVersion().toUpperCase().endsWith(MavenUrlHelper.VERSION_SNAPSHOT)) {
+                if (art.getVersion() != null && art.getVersion().toUpperCase().endsWith(MavenUrlHelper.VERSION_SNAPSHOT)) {
+                    if (art.getGroupId() != null) {
+                        snapshotGroupIds.add(art.getGroupId());
+                    }
+                } else {
                     if (art.getGroupId() != null) {
                         releaseGroupIds.add(art.getGroupId());
                     }
@@ -186,7 +191,7 @@ public class MavenRepoSynchronizer {
             }
         }
         
-        Set<MavenArtifact> releaseArts = new HashSet<MavenArtifact>();
+        Set<MavenArtifact> deployedArts = new HashSet<MavenArtifact>();
         // search release repository of remote artifactory server
         ArtifactRepositoryBean artifactServer = TalendLibsServerManager.getInstance().getCustomNexusServer();
         IRepositoryArtifactHandler artifactHandler = RepositoryArtifactHandlerManager.getRepositoryHandler(artifactServer);
@@ -195,7 +200,13 @@ public class MavenRepoSynchronizer {
                 for (String gid : releaseGroupIds) {
                     List<MavenArtifact> searchResults = artifactHandler.search(gid, null, null, true, false);
                     if (searchResults != null && !searchResults.isEmpty()) {
-                        releaseArts.addAll(searchResults);
+                        deployedArts.addAll(searchResults);
+                    }
+                }
+                for (String gid : snapshotGroupIds) {
+                    List<MavenArtifact> searchResults = artifactHandler.search(gid, null, null, false, true);
+                    if (searchResults != null && !searchResults.isEmpty()) {
+                        deployedArts.addAll(searchResults);
                     }
                 }
             } catch (Exception e) {
@@ -204,7 +215,7 @@ public class MavenRepoSynchronizer {
         }
 
         // check sha1
-        for (MavenArtifact art : releaseArts) {
+        for (MavenArtifact art : deployedArts) {
             File pomFile = artifact2Poms.get(art);
             if (pomFile != null) {
                 IPath libPath = new Path(pomFile.getAbsolutePath()).removeFileExtension().addFileExtension(art.getType());
