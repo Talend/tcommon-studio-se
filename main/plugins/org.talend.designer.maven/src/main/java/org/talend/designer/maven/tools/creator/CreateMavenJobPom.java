@@ -18,7 +18,6 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.nio.file.Path;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Iterator;
@@ -49,6 +48,7 @@ import org.eclipse.core.runtime.IPath;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.m2e.core.MavenPlugin;
 import org.eclipse.m2e.core.embedder.IMaven;
+import org.talend.commons.exception.CommonExceptionHandler;
 import org.talend.commons.exception.ExceptionHandler;
 import org.talend.commons.exception.PersistenceException;
 import org.talend.commons.utils.VersionUtils;
@@ -657,8 +657,11 @@ public class CreateMavenJobPom extends AbstractMavenProcessorPom {
         jobCoordinate.add(getJobCoordinate(currentJobProperty));
         
         // children jobs without test cases
-        Set<JobInfo> childrenJobInfo = !hasLoopDependency() ? processor.getBuildChildrenJobs().stream().filter(j -> !j.isTestContainer()).collect(Collectors.toSet()) : Collections.emptySet();
-        childrenJobInfo.forEach(j -> jobCoordinate.add(getJobCoordinate(j.getProcessItem().getProperty())));
+        Set<JobInfo> childrenJobInfo = processor.getBuildChildrenJobs().stream().filter(j -> !j.isTestContainer())
+                .collect(Collectors.toSet());
+        if (!hasLoopDependency()) {
+            childrenJobInfo.forEach(j -> jobCoordinate.add(getJobCoordinate(j.getProcessItem().getProperty())));
+        }
 
         // talend libraries and codes
         String projectGroupId = PomIdsHelper.getProjectGroupId(ProjectManager.getInstance().getProject(currentJobProperty).getTechnicalLabel());
@@ -894,6 +897,7 @@ public class CreateMavenJobPom extends AbstractMavenProcessorPom {
         }
         IMaven maven = MavenPlugin.getMaven();
         ArtifactRepository repository = maven.getLocalRepository();
+        boolean isDIJob = ERepositoryObjectType.getItemType(getJobProcessor().getProperty().getItem()) == ERepositoryObjectType.PROCESS;
         for (Dependency dependency : duplicateDependencies) {
             if (((SortableDependency) dependency).isAssemblyOptional()) {
                 continue;
@@ -902,6 +906,10 @@ public class CreateMavenJobPom extends AbstractMavenProcessorPom {
                     dependency.getVersion(), dependency.getType(), dependency.getClassifier());
             Path path = new File(repository.getBasedir()).toPath().resolve(sourceLocation);
             sourceLocation = path.toString();
+            if (isDIJob && !new File(sourceLocation).exists()) {
+                CommonExceptionHandler.warn("Job dependency [" + sourceLocation + "] does not exist!");
+                continue;
+            }
             String destName = path.getFileName().toString();
             Node fileNode = document.createElement("file");
             filesNode.appendChild(fileNode);

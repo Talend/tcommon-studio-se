@@ -22,6 +22,7 @@ import java.util.Comparator;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 
 import org.apache.commons.lang.StringUtils;
@@ -32,6 +33,7 @@ import org.eclipse.core.resources.IProject;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IPath;
 import org.eclipse.core.runtime.Path;
+import org.talend.commons.exception.ExceptionHandler;
 import org.talend.commons.exception.PersistenceException;
 import org.talend.commons.utils.workbench.resources.ResourceUtils;
 import org.talend.core.model.properties.ImplicitContextSettings;
@@ -43,6 +45,7 @@ import org.talend.core.model.properties.Project;
 import org.talend.core.model.properties.StatAndLogsSettings;
 import org.talend.core.model.properties.Status;
 import org.talend.core.model.properties.impl.PropertiesFactoryImpl;
+import org.talend.core.model.relationship.RelationshipItemBuilder;
 import org.talend.core.repository.constants.FileConstants;
 import org.talend.core.repository.recyclebin.RecycleBinManager;
 import org.talend.designer.core.model.utils.emf.talendfile.ElementParameterType;
@@ -140,9 +143,10 @@ public class ProjectDataJsonProvider {
             ProjectDataJsonProvider.loadProjectSettings(project, input);
         }
         IPath relationShipPath = settingFolderPath.append(FileConstants.RELATIONSHIP_FILE_NAME);
-        input = inputStreamProvider.getStream(relationShipPath);
-        if (input != null) {
-            ProjectDataJsonProvider.loadRelationShips(project, input);
+        try (InputStream is = inputStreamProvider.getStream(relationShipPath)) {
+            if (is != null) {
+                ProjectDataJsonProvider.loadRelationShips(project, is);
+            }
         }
         IPath migrationTaskPath = settingFolderPath.append(FileConstants.MIGRATION_TASK_FILE_NAME);
         input = inputStreamProvider.getStream(migrationTaskPath);
@@ -184,10 +188,11 @@ public class ProjectDataJsonProvider {
     private static void loadRelationShips(Project project, IPath projectFolderPath) throws PersistenceException {
         File file = getLoadingConfigurationFile(projectFolderPath, FileConstants.RELATIONSHIP_FILE_NAME);
         if (file != null && file.exists()) {
-            try {
-                loadRelationShips(project, new FileInputStream(file));
-            } catch (FileNotFoundException e) {
-                throw new PersistenceException(e);
+            try (FileInputStream fis = new FileInputStream(file)) {
+                loadRelationShips(project, fis);
+            } catch (Exception e) {
+                // ignore
+                ExceptionHandler.process(e);
             }
         }
     }
@@ -207,9 +212,70 @@ public class ProjectDataJsonProvider {
                 }
             }
         } catch (Exception e) {
+            // ignore
+            ExceptionHandler.process(e);
+        }
+    }
+
+    public static void checkAndRectifyRelationShipSetting(Project project) throws PersistenceException {
+        File file = getSavingConfigurationFile(project.getTechnicalLabel(), FileConstants.RELATIONSHIP_FILE_NAME);
+        if (file == null || !file.exists()) {
+            return;
+        }
+
+        List<ItemRelationsJson> itemRelationsJsonsList = null;
+        TypeReference<List<ItemRelationsJson>> typeReference = new TypeReference<List<ItemRelationsJson>>() {
+        };
+        FileInputStream input = null;
+        try {
+            input = new FileInputStream(file);
+            itemRelationsJsonsList = new ObjectMapper().readValue(new FileInputStream(file), typeReference);
+        } catch (Exception e) {
             throw new PersistenceException(e);
         } finally {
             closeInputStream(input);
+        }
+
+        if (itemRelationsJsonsList == null || itemRelationsJsonsList.isEmpty()) {
+            return;
+        }
+
+        Set<String> idVersionSet = new HashSet<String>();
+        List<ItemRelationsJson> relationJsonList = new ArrayList<ItemRelationsJson>();
+        Map<String, String> currentSystemRoutinesMap = RelationshipItemBuilder.getInstance().getCurrentSystemRoutinesMap();
+        boolean needModify = false;
+        for (ItemRelationsJson relationJson : itemRelationsJsonsList) {
+            ItemRelationJson baseItem = relationJson.getBaseItem();
+            String idversion = baseItem.getId() + ";" + baseItem.getVersion();
+            if (idVersionSet.contains(idversion)) {
+                // in case duplicate
+                needModify = true;
+                continue;
+            }
+            // remove system routines relation
+            int originalSize = relationJson.getRelatedItems().size();
+            relationJson.getRelatedItems()
+                    .removeIf(relatedItem -> RelationshipItemBuilder.ROUTINE_RELATION.equals(relatedItem.getType())
+                            && currentSystemRoutinesMap.containsValue(relatedItem.getId()));
+            if (relationJson.getRelatedItems().size() != originalSize) {
+                needModify = true;
+            }
+            if (!relationJson.getRelatedItems().isEmpty()) {
+                relationJsonList.add(relationJson);
+            }
+            idVersionSet.add(idversion);
+        }
+
+        if (needModify) {
+            // re-load to project
+            if (relationJsonList != null && !relationJsonList.isEmpty()) {
+                project.getItemsRelations().clear();
+                for (ItemRelationsJson json : relationJsonList) {
+                    project.getItemsRelations().add(json.toEmfObject());
+                }
+            }
+            // re-save relationship setting json file
+            saveRelationShips(project);
         }
     }
 

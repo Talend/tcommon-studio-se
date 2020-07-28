@@ -108,6 +108,7 @@ import org.talend.core.model.properties.SpagoBiServer;
 import org.talend.core.model.properties.Status;
 import org.talend.core.model.properties.User;
 import org.talend.core.model.properties.impl.FolderItemImpl;
+import org.talend.core.model.relationship.RelationshipItemBuilder;
 import org.talend.core.model.repository.ERepositoryObjectType;
 import org.talend.core.model.repository.Folder;
 import org.talend.core.model.repository.IRepositoryContentHandler;
@@ -123,6 +124,7 @@ import org.talend.core.repository.constants.Constant;
 import org.talend.core.repository.constants.FileConstants;
 import org.talend.core.repository.i18n.Messages;
 import org.talend.core.repository.recyclebin.RecycleBinManager;
+import org.talend.core.repository.utils.ProjectDataJsonProvider;
 import org.talend.core.repository.utils.RepositoryPathProvider;
 import org.talend.core.repository.utils.XmiResourceManager;
 import org.talend.core.runtime.CoreRuntimePlugin;
@@ -2063,6 +2065,7 @@ public final class ProxyRepositoryFactory implements IProxyRepositoryFactory {
                 SubMonitor subMonitor = SubMonitor.convert(monitor, MAX_TASKS);
                 SubMonitor currentMonitor = subMonitor.newChild(1, SubMonitor.SUPPRESS_NONE);
                 currentMonitor.beginTask(Messages.getString("ProxyRepositoryFactory.logonInProgress"), 1); //$NON-NLS-1$
+
                 project.setReferenceProjectProvider(null);
                 getRepositoryContext().setProject(null);
                 initEmfProjectContent();
@@ -2080,6 +2083,8 @@ public final class ProxyRepositoryFactory implements IProxyRepositoryFactory {
                 this.repositoryFactoryFromProvider.beforeLogon(project);
                 ProjectManager.getInstance().getBeforeLogonRecords().clear();
                 ProjectManager.getInstance().getUpdatedRemoteHandlerRecords().clear();
+
+                ProjectDataJsonProvider.checkAndRectifyRelationShipSetting(project.getEmfProject());
 
                 // init dynamic distirbution after `beforeLogon`, before loading libraries.
                 initDynamicDistribution(monitor);
@@ -2245,6 +2250,11 @@ public final class ProxyRepositoryFactory implements IProxyRepositoryFactory {
                         tdqRepositoryService.initProxyRepository();
                     }
                 }
+                // regenerate relationship index
+                if (project.getEmfProject().getItemsRelations().isEmpty()) {
+                    RelationshipItemBuilder.getInstance().buildAndSaveIndex();
+                }
+
                 fullLogonFinished = true;
                 this.repositoryFactoryFromProvider.afterLogon(monitor);
             } finally {

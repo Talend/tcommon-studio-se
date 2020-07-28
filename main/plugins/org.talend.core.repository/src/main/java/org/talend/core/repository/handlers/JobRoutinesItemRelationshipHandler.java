@@ -14,6 +14,7 @@ package org.talend.core.repository.handlers;
 
 import java.util.Collections;
 import java.util.HashSet;
+import java.util.Map;
 import java.util.Set;
 
 import org.talend.core.model.properties.Item;
@@ -43,8 +44,13 @@ public class JobRoutinesItemRelationshipHandler extends AbstractJobItemRelations
         Set<Relation> relationSet = new HashSet<Relation>();
 
         if (processType.getParameters() != null && processType.getParameters().getRoutinesParameter() != null) {
+            Map<String, String> currentSystemRoutinesMap = RelationshipItemBuilder.getInstance().getCurrentSystemRoutinesMap();
             for (Object o : processType.getParameters().getRoutinesParameter()) {
                 RoutinesParameterType itemInfor = (RoutinesParameterType) o;
+                if (currentSystemRoutinesMap.containsValue(itemInfor.getName())) {
+                    // exclude system routines relation
+                    continue;
+                }
 
                 Relation addedRelation = new Relation();
                 addedRelation.setId(itemInfor.getName());

@@ -238,7 +238,8 @@ public class UpdateTools {
         validInstall.stream().filter(iu -> !extraBundles.containsKey(iu.getId()) || extraBundles.get(iu.getId()).isEmpty())
                 .forEach(iu -> {
             List<String> list = plugins.stream()
-                    .filter(f -> f.exists() && f.getName().startsWith(iu.getId() + "_")
+                            .filter(f -> f.getName().startsWith(iu.getId()
+                                    + "_")
                             && !f.getName().contains(iu.getId() + "_" + iu.getVersion()))
                     .map(File::getAbsolutePath).collect(Collectors.toList());
             dropList.addAll(list);
