@@ -47,6 +47,7 @@ import org.talend.core.model.process.INode;
 import org.talend.core.model.process.INodeConnector;
 import org.talend.core.model.process.IProcess;
 import org.talend.core.runtime.IAdditionalInfo;
+import org.talend.core.runtime.projectsetting.RuntimeLineageManager;
 import org.talend.designer.core.ICamelDesignerCoreService;
 
 /**
@@ -1189,7 +1190,7 @@ public class NodeUtil {
         } else if (ComponentCategory.CATEGORY_4_CAMEL.getName().equals(node.getComponent().getType())) {
             INodeConnector tmp = null;
             if (GlobalServiceRegister.getDefault().isServiceRegistered(ICamelDesignerCoreService.class)) {
-                ICamelDesignerCoreService camelService = (ICamelDesignerCoreService) GlobalServiceRegister.getDefault()
+                ICamelDesignerCoreService camelService = GlobalServiceRegister.getDefault()
                         .getService(ICamelDesignerCoreService.class);
                 tmp = node.getConnectorFromType(camelService.getTargetConnectionType(node));
             } else {
@@ -1231,5 +1232,14 @@ public class NodeUtil {
         }
 
         return true;
+    }
+
+    public static boolean isJobUsingRuntimeLineage(IProcess process) {
+        RuntimeLineageManager runtimeLineageManager = new RuntimeLineageManager();
+        if (runtimeLineageManager.getDynamicFields().isEmpty()) {
+            runtimeLineageManager.load();
+        }
+        return runtimeLineageManager.isUseRuntimeLineageAll()
+                || runtimeLineageManager.isRuntimeLineageSetting(process.getId(), process.getVersion());
     }
 }
