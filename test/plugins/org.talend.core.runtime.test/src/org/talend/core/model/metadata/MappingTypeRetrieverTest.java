@@ -16,6 +16,7 @@ import static org.junit.Assert.*;
 
 import java.util.List;
 
+import org.apache.commons.lang3.StringUtils;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
@@ -76,6 +77,11 @@ public class MappingTypeRetrieverTest {
         MappingTypeRetriever mappingType = MetadataTalendType.getMappingTypeRetriever(dbmsId);
         String defaultPattern1 = mappingType.getDefaultPattern(dbmsId, dbType);
         assertTrue("dd-MM-yyyy".equalsIgnoreCase(defaultPattern1));
+        
+        dbType = "DATETIME";
+        mappingType = MetadataTalendType.getMappingTypeRetriever(dbmsId);
+        String defaultPattern2 = mappingType.getDefaultPattern(dbmsId, dbType);
+        assertTrue(StringUtils.isBlank(defaultPattern2));
     }
 
 }
