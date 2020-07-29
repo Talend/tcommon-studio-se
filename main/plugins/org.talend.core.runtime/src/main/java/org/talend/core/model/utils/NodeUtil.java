@@ -1236,10 +1236,12 @@ public class NodeUtil {
 
     public static boolean isJobUsingRuntimeLineage(IProcess process) {
         RuntimeLineageManager runtimeLineageManager = new RuntimeLineageManager();
+        if (runtimeLineageManager.isUseRuntimeLineageAll()) {
+            return true;
+        }
         if (runtimeLineageManager.getDynamicFields().isEmpty()) {
             runtimeLineageManager.load();
         }
-        return runtimeLineageManager.isUseRuntimeLineageAll()
-                || runtimeLineageManager.isRuntimeLineageSetting(process.getId(), process.getVersion());
+        return runtimeLineageManager.isRuntimeLineageSetting(process.getId(), process.getVersion());
     }
 }

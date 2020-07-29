@@ -138,4 +138,8 @@ public class RuntimeLineageManager {
     public boolean isUseRuntimeLineageAll() {
         return this.useRuntimeLineageAll;
     }
+
+    public ProjectPreferenceManager getPrefManager() {
+        return this.prefManager;
+    }
 }
