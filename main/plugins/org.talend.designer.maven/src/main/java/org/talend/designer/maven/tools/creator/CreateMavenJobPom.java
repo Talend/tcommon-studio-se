@@ -737,8 +737,17 @@ public class CreateMavenJobPom extends AbstractMavenProcessorPom {
             Document document = PomUtil.loadAssemblyFile(null, assemblyFile);
             setupDependencySetNode(document, talendLibCoordinate, "lib", "${artifact.artifactId}.${artifact.extension}", false,
                     false);
-            // add 3rd party libs
-            setupDependencySetNode(document, _3rdLibCoordinate, "lib", null, false, false);
+            // add 3rd party libs: groupId:artifactId:type:version
+            setupDependencySetNode(document,
+                    _3rdLibCoordinate.stream().filter(s -> s.split(":").length == 4).collect(Collectors.toSet()), "lib", null,
+                    false, false);
+            // add 3rd party libs with classifier: groupId:artifactId:type:classifier:version
+            setupDependencySetNode(document,
+                    _3rdLibCoordinate.stream().filter(s -> s.split(":").length == 5).collect(Collectors.toSet()), "lib", null,
+                    false, false);
+
+            // FIXME if later add classifier for org.talend.libraries libs, code and job artifact, need to handle it
+            // like 3rd libs as well
 
             // add jobs
             setupDependencySetNode(document, jobCoordinate,
