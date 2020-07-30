@@ -118,7 +118,12 @@ public final class RepositoryManager {
                         ICodeGeneratorService codeGenService = (ICodeGeneratorService) GlobalServiceRegister.getDefault()
                                 .getService(ICodeGeneratorService.class);
                         try {
-                            codeGenService.createRoutineSynchronizer().syncAllBeans();
+                            //TESB-29071
+                            if (PluginChecker.isSVNProviderPluginLoaded() || PluginChecker.isGITProviderPluginLoaded()) {
+                                codeGenService.createRoutineSynchronizer().syncAllBeansForLogOn();
+                            } else {
+                                codeGenService.createRoutineSynchronizer().syncAllBeans();
+                            }
                         } catch (SystemException e) {
                             ExceptionHandler.process(e);
                         }
