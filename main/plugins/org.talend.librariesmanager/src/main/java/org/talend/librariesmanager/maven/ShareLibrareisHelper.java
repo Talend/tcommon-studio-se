@@ -26,6 +26,7 @@ import java.util.Set;
 
 import org.apache.commons.codec.digest.DigestUtils;
 import org.apache.commons.lang3.StringUtils;
+import org.apache.log4j.Logger;
 import org.codehaus.jackson.map.util.ISO8601Utils;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.IStatus;
@@ -52,6 +53,7 @@ public abstract class ShareLibrareisHelper {
 
     private final String TYPE_NEXUS = "nexus";
 
+    private final Logger LOGGER = Logger.getLogger(ShareLibrareisHelper.class);
     protected MavenArtifactsHandler deployer = new MavenArtifactsHandler();
 
     public IStatus shareLibs(Job job, IProgressMonitor monitor) {
@@ -61,10 +63,13 @@ public abstract class ShareLibrareisHelper {
         try {
             setJobName(job, Messages.getString("ShareLibsJob.message", TYPE_NEXUS));
             ArtifactRepositoryBean customNexusServer = TalendLibsServerManager.getInstance().getCustomNexusServer();
+            LOGGER.info("customNexusServer: " + customNexusServer.toString());
             IRepositoryArtifactHandler customerRepHandler = RepositoryArtifactHandlerManager
                     .getRepositoryHandler(customNexusServer);
+            LOGGER.info("customerRepHandler: " + customerRepHandler.toString());
             if (customerRepHandler != null) {
                 filesToShare = getFilesToShare(monitor);
+                LOGGER.info("filesToShare size: " + (filesToShare == null ? 0 : filesToShare.size()));
                 if (filesToShare == null) {
                     return Status.CANCEL_STATUS;
                 }
@@ -89,10 +94,15 @@ public abstract class ShareLibrareisHelper {
                         }
                     }
                 }
+                LOGGER.info("snapshotGroupIdSet size: " + snapshotGroupIdSet.size() + ", releaseGroupIdSet size: "
+                        + releaseGroupIdSet.size());
                 List<MavenArtifact> searchResults = new ArrayList<MavenArtifact>();
                 for (String groupId : groupIds) {
                     if (releaseGroupIdSet.contains(groupId)) {
                         searchResults = customerRepHandler.search(groupId, null, null, true, false);
+                        LOGGER.info("release searchResults size: " + (searchResults == null ? 0 : searchResults.size())
+                                + ", groupId: "
+                                + groupId);
                         if (searchResults != null) {
                             for (MavenArtifact result : searchResults) {
                                 putArtifactToMap(result, releaseArtifactMap, false);
@@ -101,6 +111,8 @@ public abstract class ShareLibrareisHelper {
                     }
                     if (snapshotGroupIdSet.contains(groupId)) {
                         searchResults = customerRepHandler.search(groupId, null, null, false, true);
+                        LOGGER.info("snapshot searchResults size: " + (searchResults == null ? 0 : searchResults.size())
+                                + ", groupId: " + groupId);
                         if (searchResults != null) {
                             for (MavenArtifact result : searchResults) {
                                 putArtifactToMap(result, snapshotArtifactMap, true);
@@ -153,6 +165,7 @@ public abstract class ShareLibrareisHelper {
                     }
                     shareFiles.put(file, artifact);
                 }
+                LOGGER.info("shareFiles size: " + shareFiles.size());
                 SubMonitor mainSubMonitor = SubMonitor.convert(monitor, shareFiles.size());
                 shareFiles.forEach((k, v) -> {
                     try {
