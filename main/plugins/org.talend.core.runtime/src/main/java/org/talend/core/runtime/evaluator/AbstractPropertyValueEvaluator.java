@@ -15,6 +15,7 @@ package org.talend.core.runtime.evaluator;
 import java.util.List;
 
 import org.apache.commons.lang3.StringEscapeUtils;
+import org.talend.core.model.utils.ContextParameterUtils;
 import org.talend.core.runtime.util.GenericTypeUtils;
 import org.talend.core.utils.TalendQuoteUtils;
 import org.talend.daikon.properties.property.Property;
@@ -28,6 +29,10 @@ import org.talend.daikon.properties.property.StringProperty;
 public abstract class AbstractPropertyValueEvaluator implements PropertyValueEvaluator {
 
     public Object getTypedValue(Property property, Object rawValue) {
+        return getTypedValue(property, null, rawValue);
+    }
+
+    public Object getTypedValue(Property property, Object storedValue, Object rawValue) {
         if (GenericTypeUtils.isSchemaType(property)) {
             return rawValue;
         }
@@ -105,6 +110,12 @@ public abstract class AbstractPropertyValueEvaluator implements PropertyValueEva
                 String stringStoredValue = TalendQuoteUtils.removeQuotes(stringValue);
                 for (Object possibleValue : possibleValues) {
                     if (possibleValue.toString().equals(stringStoredValue)) {
+                        // Update since enum type set as context for tcompv0 .
+                        String currentStoredValue = String.valueOf(storedValue);
+                        if (storedValue != null && ContextParameterUtils.isContainContextParam(currentStoredValue)) {
+                            property.setTaggedValue("IS_CONTEXT_MODE", false);
+                            property.setValue(possibleValue);
+                        }
                         return possibleValue;
                     }
                 }

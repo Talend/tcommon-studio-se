@@ -20,7 +20,8 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.TimeZone;
 
-import org.apache.log4j.Logger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  *
@@ -28,7 +29,7 @@ import org.apache.log4j.Logger;
  */
 public final class DateUtils {
 
-    protected static Logger log = Logger.getLogger(DateUtils.class);
+    protected static Logger log = LoggerFactory.getLogger(DateUtils.class);
 
     public static final String PATTERN_1 = "MM/dd/yyyy";//$NON-NLS-1$
 
@@ -113,7 +114,7 @@ public final class DateUtils {
             dateFormat.setTimeZone(TimeZone.getDefault());
             result = dateFormat.parse(dateStr);
         } catch (ParseException e) {
-            log.error(e);
+            log.error(e.getMessage(), e);
         }
         return result;
     }
@@ -129,7 +130,7 @@ public final class DateUtils {
         try {
             calendarDate = DateUtils.parse(DateUtils.PATTERN_3, DateUtils.formatTimeStamp(DateUtils.PATTERN_3, calendarDate.getTime()));
         } catch (ParseException e) {
-            log.warn(e);
+            log.warn(e.getMessage(), e);
         }
         return calendarDate;
     }

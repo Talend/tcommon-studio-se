@@ -18,7 +18,6 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.nio.file.Path;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Iterator;
@@ -636,8 +635,11 @@ public class CreateMavenJobPom extends AbstractMavenProcessorPom {
         jobCoordinate.add(getJobCoordinate(currentJobProperty));
         
         // children jobs without test cases
-        Set<JobInfo> childrenJobInfo = !hasLoopDependency() ? processor.getBuildChildrenJobs().stream().filter(j -> !j.isTestContainer()).collect(Collectors.toSet()) : Collections.emptySet();
-        childrenJobInfo.forEach(j -> jobCoordinate.add(getJobCoordinate(j.getProcessItem().getProperty())));
+        Set<JobInfo> childrenJobInfo = processor.getBuildChildrenJobs().stream().filter(j -> !j.isTestContainer())
+                .collect(Collectors.toSet());
+        if (!hasLoopDependency()) {
+            childrenJobInfo.forEach(j -> jobCoordinate.add(getJobCoordinate(j.getProcessItem().getProperty())));
+        }
 
         // talend libraries and codes
         String projectGroupId = PomIdsHelper.getProjectGroupId(ProjectManager.getInstance().getProject(currentJobProperty).getTechnicalLabel());

@@ -36,7 +36,6 @@ Bundle-ClassPath: .,
  lib/studio-utils-7.4.1-SNAPSHOT.jar
 Require-Bundle: org.apache.commons.lang,
  org.talend.libraries.apache;visibility:=reexport,
- org.apache.log4j,
  org.apache.commons.io,
  org.talend.daikon;visibility:=reexport,
  org.talend.daikon.crypto.utils;visibility:=reexport,

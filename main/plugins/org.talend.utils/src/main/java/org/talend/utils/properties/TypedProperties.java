@@ -20,7 +20,8 @@ import java.util.List;
 import java.util.Properties;
 import java.util.Set;
 
-import org.apache.log4j.Logger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.talend.utils.string.StringUtilities;
 
 /**
@@ -29,7 +30,7 @@ import org.talend.utils.string.StringUtilities;
  */
 public class TypedProperties extends Properties {
 
-    private static Logger log = Logger.getLogger(TypedProperties.class);
+    private static Logger log = LoggerFactory.getLogger(TypedProperties.class);
 
     /**
      * A generated serial ID.

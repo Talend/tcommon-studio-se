@@ -21,7 +21,8 @@ import java.util.Dictionary;
 import java.util.Enumeration;
 import java.util.Properties;
 
-import org.apache.log4j.Logger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  * @author scorreia <br>
@@ -30,7 +31,7 @@ import org.apache.log4j.Logger;
  */
 public final class PropertiesLoader {
 
-    private static Logger log = Logger.getLogger(PropertiesLoader.class);
+    private static Logger log = LoggerFactory.getLogger(PropertiesLoader.class);
 
     /**
      * Use as a JVM argument for loading properties file. <br>
