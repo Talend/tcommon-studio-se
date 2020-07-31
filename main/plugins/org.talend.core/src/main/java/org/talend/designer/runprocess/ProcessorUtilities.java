@@ -1988,9 +1988,7 @@ public class ProcessorUtilities {
         return result;
     }
 	
-    private static void updateCodeSources() throws ProcessorException {
-
-	// added by nma, to refresh routines when generating code in SVN mode. 10225.
+    public static boolean isRemoteProject() {
         ISVNProviderService svnService = null;
         if (PluginChecker.isSVNProviderPluginLoaded()) {
             svnService = GlobalServiceRegister.getDefault().getService(ISVNProviderService.class);
@@ -2003,7 +2001,14 @@ public class ProcessorUtilities {
         }
         
         if ((svnService != null && svnService.isProjectInSvnMode()) || (gitService != null && gitService.isProjectInGitMode()) ) {
-            // TESB-29071
+            return true;
+        }
+        
+        return false;
+    }
+	
+    private static void updateCodeSources() throws ProcessorException {
+        if (isRemoteProject()) {
             try {
                 ProxyRepositoryFactory.getInstance().initialize();
             } catch (PersistenceException e) {
