@@ -54,6 +54,8 @@ public class EclipseCommandLine {
      */
     static public final String TALEND_RELOAD_COMMAND = "-talendReload"; //$NON-NLS-1$
 
+    static public final String TALEND_RELOAD_FOR_PROJECT = "-talendReload4Project"; //$NON-NLS-1$
+
     static public final String ARG_TALEND_BUNDLES_CLEANED = "-talend.studio.bundles.cleaned"; //$NON-NLS-1$
 
     static public final String PROP_TALEND_BUNDLES_DO_CLEAN = "-talend.studio.bundles.doclean"; //$NON-NLS-1$
