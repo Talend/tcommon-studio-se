@@ -122,6 +122,8 @@ public abstract class AbstractNode implements INode {
     // for MR, tag this component is the ref(lookup) start node
     private boolean isRefNode = false;
 
+    private IReplaceNodeHandler replaceNodeHandler;
+
     public String getComponentName() {
         return componentName;
     }
@@ -1320,6 +1322,15 @@ public abstract class AbstractNode implements INode {
     @Override
     public ComponentProperties getComponentProperties() {
         return componentProperties;
+    }
+
+    @Override
+    public IReplaceNodeHandler getReplaceNodeHandler() {
+        return replaceNodeHandler;
+    }
+
+    public void setReplaceNodeHandler(IReplaceNodeHandler replaceNodeHandler) {
+        this.replaceNodeHandler = replaceNodeHandler;
     }
 
     public INode getRealGraphicalNode() {
