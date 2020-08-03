@@ -191,6 +191,24 @@ public class MappingTypeRetriever {
         }// end for
         return false;
     }
+    
+    public String getDefaultPattern(String dbmsId, String dbType) {
+        Dbms dbms = MetadataTalendType.getDbms(dbmsId);
+        List<DbDefaultDatePattern> defaultPattern =  dbms.getDefaultPattern();
+        String pattern = new String(""); //$NON-NLS-1$
+        for (int i = 0; i < defaultPattern.size(); i++) {
+            DbDefaultDatePattern dbPattern = (DbDefaultDatePattern) defaultPattern.get(i);
+            if (dbPattern.getDbTypeName().equalsIgnoreCase(dbType)) {
+                pattern = dbPattern.getDefaultPattern();
+                if (pattern == null) {
+                    return "";
+                }  else {
+                    return pattern;
+                }
+            }// end if
+        }// end for
+        return pattern;
+    }
 
     private boolean isExtensionPrecisionIgnored(String dbmsId, String dbType) {
         Map<String, Map<String, List<DBTypeUtil>>> javaTypeMappingFromExtension = JavaTypesManager
