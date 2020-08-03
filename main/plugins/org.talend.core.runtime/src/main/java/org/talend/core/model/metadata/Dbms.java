@@ -41,6 +41,8 @@ public class Dbms {
 	private Set<MappingType> talendToDbTypes;
 
 	private List<DbDefaultLengthAndPrecision> defaultLengthPrecision;
+	
+	private List<DbDefaultDatePattern> defaultPattern;
 
 	private List<DbIgnoreLengthAndPrecision> ignoreLengthPrecision;
 
@@ -62,6 +64,14 @@ public class Dbms {
 			List<DbDefaultLengthAndPrecision> defaultLengthPrecision) {
 		this.defaultLengthPrecision = defaultLengthPrecision;
 	}
+	public List<DbDefaultDatePattern> getDefaultPattern() {
+        return defaultPattern;
+    }
+
+    public void setDefaultPattern(
+            List<DbDefaultDatePattern> defaultLengthPrecision) {
+        this.defaultPattern = defaultLengthPrecision;
+    }
 
 	/**
 	 * DOC amaumont Dbms constructor comment.
