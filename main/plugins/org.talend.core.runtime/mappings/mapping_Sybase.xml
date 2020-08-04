@@ -9,7 +9,7 @@
 			<dbType type="CHAR" defaultLength="50" ignorePre="true"/>
 			<dbType type="CHARACTER" ignoreLen="true" ignorePre="true" />
 			<dbType type="CHARACTER VARYING" ignoreLen="true" ignorePre="true" />
-			<dbType type="DATE" ignoreLen="true" ignorePre="true" />
+			<dbType type="DATE" ignoreLen="true" ignorePre="true" defaultPattern="dd-MM-yyyy" />
 			<dbType type="DATETIME" ignoreLen="true" ignorePre="true" />
 			<dbType type="DECIMAL" defaultLength="20" defaultPrecision="10" />
 			<dbType type="DOUBLE PRECISION" ignoreLen="true" ignorePre="true" />

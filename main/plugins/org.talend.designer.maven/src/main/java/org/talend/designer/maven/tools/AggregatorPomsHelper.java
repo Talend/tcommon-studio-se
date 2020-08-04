@@ -810,6 +810,9 @@ public class AggregatorPomsHelper {
                 }
             }
             if (object.getProperty() != null && object.getProperty().getItem() != null) {
+                if (object.isDeleted() && PomIdsHelper.getIfExcludeDeletedItems()) {
+                    continue;
+                }
                 Item item = object.getProperty().getItem();
                 if (ProjectManager.getInstance().isInCurrentMainProject(item)) {
                     monitor.subTask("Synchronize job pom: " + item.getProperty().getLabel() //$NON-NLS-1$

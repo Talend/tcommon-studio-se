@@ -60,6 +60,8 @@ import org.talend.core.model.metadata.builder.database.JavaSqlFactory;
 import org.talend.core.model.metadata.builder.database.PluginConstant;
 import org.talend.core.model.metadata.builder.database.TableInfoParameters;
 import org.talend.core.model.metadata.builder.database.manager.ExtractManager;
+import org.talend.core.model.metadata.types.JavaTypesManager;
+import org.talend.core.model.metadata.types.PerlTypesManager;
 import org.talend.core.runtime.CoreRuntimePlugin;
 import org.talend.core.service.TalendCWMService;
 import org.talend.core.utils.TalendQuoteUtils;
@@ -1613,6 +1615,12 @@ public class DBConnectionFillerImpl extends MetadataFillerImpl<DatabaseConnectio
                                     ExtractMetaDataUtils.getInstance().getIntMetaDataInfo(columns, "DECIMAL_DIGITS"));
                             column.setTalendType(talendType);
                             column.setSourceType(typeName);
+                            if (JavaTypesManager.DATE.getId().equals(talendType)
+                                    || PerlTypesManager.DATE.equals(talendType)) {
+                                String pattern1 = mappingTypeRetriever.getDefaultPattern(dbmsId, typeName);
+                                column.setPattern(StringUtils.isNotBlank(pattern1) ? TalendQuoteUtils.addQuotes(pattern1)
+                                        : TalendQuoteUtils.addQuotes("dd-MM-yyyy"));//$NON-NLS-1$
+                            }
                         }
                     }
                     try {
@@ -1801,6 +1809,12 @@ public class DBConnectionFillerImpl extends MetadataFillerImpl<DatabaseConnectio
                         column.setTalendType(talendType);
                         String defaultSelectedDbType = mappingTypeRetriever.getDefaultSelectedDbType(talendType);
                         column.setSourceType(defaultSelectedDbType);
+                        if (JavaTypesManager.DATE.getId().equals(talendType)
+                                || PerlTypesManager.DATE.equals(talendType)) {
+                            String pattern1 = mappingTypeRetriever.getDefaultPattern(dbmsId, defaultSelectedDbType);
+                            column.setPattern(StringUtils.isNotBlank(pattern1) ? TalendQuoteUtils.addQuotes(pattern1)
+                                    : TalendQuoteUtils.addQuotes("dd-MM-yyyy"));//$NON-NLS-1$
+                        }
                     }
 
                     // Comment
