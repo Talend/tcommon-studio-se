@@ -96,9 +96,11 @@ public class RuntimeLineageManager {
             if (!all) {
                 for (RepositoryNode node : checkedObjects) {
                     JSONObject jobJson = new JSONObject();
-                    jobJson.put(JOB_ID, node.getId());
-                    jobJson.put(JOB_VERSION, node.getObject().getVersion());
-                    jobsJson.put(jobJson);
+                    if (!jobsJson.toString().contains(node.getId())) {
+                        jobJson.put(JOB_ID, node.getId());
+                        jobJson.put(JOB_VERSION, node.getObject().getVersion());
+                        jobsJson.put(jobJson);
+                    }
                 }
             }
             prefManager.setValue(RUNTIMELINEAGE_ALL, all);
