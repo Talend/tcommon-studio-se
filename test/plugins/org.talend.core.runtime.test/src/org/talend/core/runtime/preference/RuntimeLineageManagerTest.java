@@ -72,7 +72,6 @@ public class RuntimeLineageManagerTest {
             JSONArray jobsJson = new JSONArray();
             JSONObject jobJson = new JSONObject();
             jobJson.put(runtimeLineageManager.JOB_ID, "_HT5BMNFmEeqhpr5Qh0-X9g");
-            jobJson.put(runtimeLineageManager.JOB_VERSION, "0.1");
             jobsJson.put(jobJson);
             prefManager.setValue(runtimeLineageManager.RUNTIMELINEAGE_ALL, false);
             prefManager.setValue(runtimeLineageManager.RUNTIMELINEAGE_SELECTED, jobsJson.toString());
@@ -87,12 +86,12 @@ public class RuntimeLineageManagerTest {
         runtimeLineageManager.save(null, true);
         runtimeLineageManager.load();
 
-        Assert.assertEquals(0, runtimeLineageManager.getDynamicFields().size());
+        Assert.assertEquals(0, runtimeLineageManager.getSelectedJobIds().size());
     }
 
     @Test
     public void testIsRuntimeLineageSetting4NULL() {
-        Assert.assertFalse(runtimeLineageManager.isRuntimeLineageSetting(null, null));
+        Assert.assertFalse(runtimeLineageManager.isRuntimeLineageSetting(null));
     }
 
     @Test
@@ -100,7 +99,7 @@ public class RuntimeLineageManagerTest {
         init();
         runtimeLineageManager.load();
 
-        Assert.assertTrue(runtimeLineageManager.isRuntimeLineageSetting("_HT5BMNFmEeqhpr5Qh0-X9g", "0.1")); //$NON-NLS-1$ //$NON-NLS-2$
+        Assert.assertTrue(runtimeLineageManager.isRuntimeLineageSetting("_HT5BMNFmEeqhpr5Qh0-X9g")); //$NON-NLS-1$
     }
 
     @Test

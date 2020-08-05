@@ -1239,9 +1239,9 @@ public class NodeUtil {
         if (runtimeLineageManager.isUseRuntimeLineageAll()) {
             return true;
         }
-        if (runtimeLineageManager.getDynamicFields().isEmpty()) {
+        if (runtimeLineageManager.getSelectedJobIds().isEmpty()) {
             runtimeLineageManager.load();
         }
-        return runtimeLineageManager.isRuntimeLineageSetting(process.getId(), process.getVersion());
+        return runtimeLineageManager.isRuntimeLineageSetting(process.getId());
     }
 }

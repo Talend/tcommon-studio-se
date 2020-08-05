@@ -12,10 +12,9 @@
 // ============================================================================
 package org.talend.core.runtime.projectsetting;
 
-import java.util.HashMap;
+import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
-import java.util.Map;
 
 import org.apache.commons.lang3.StringUtils;
 import org.eclipse.core.resources.IFile;
@@ -46,9 +45,7 @@ public class RuntimeLineageManager {
 
     public static final String JOB_ID = "id"; //$NON-NLS-1$
 
-    public static final String JOB_VERSION = "version"; //$NON-NLS-1$
-
-    private Map<String, String> dynamicFields = new HashMap<String, String>();
+    private List<String> selectedJobIds = new ArrayList<String>();
 
     private ProjectPreferenceManager prefManager = null;
 
@@ -71,17 +68,14 @@ public class RuntimeLineageManager {
                     JSONObject jobJson = new JSONObject(String.valueOf(jobJsonObj));
                     Iterator sortedKeys = jobJson.sortedKeys();
                     String jobId = null;
-                    String jobVersion = null;
                     while (sortedKeys.hasNext()) {
                         String key = (String) sortedKeys.next();
                         if (JOB_ID.equals(key)) {
                             jobId = jobJson.getString(key);
-                        } else if (JOB_VERSION.equals(key)) {
-                            jobVersion = jobJson.getString(key);
                         }
                     }
-                    if (jobId != null && jobVersion != null) {
-                        dynamicFields.put(jobId, jobVersion);
+                    if (jobId != null) {
+                        selectedJobIds.add(jobId);
                     }
                 }
             }
@@ -98,7 +92,6 @@ public class RuntimeLineageManager {
                     JSONObject jobJson = new JSONObject();
                     if (!jobsJson.toString().contains(node.getId())) {
                         jobJson.put(JOB_ID, node.getId());
-                        jobJson.put(JOB_VERSION, node.getObject().getVersion());
                         jobsJson.put(jobJson);
                     }
                 }
@@ -111,8 +104,8 @@ public class RuntimeLineageManager {
         }
     }
 
-    public boolean isRuntimeLineageSetting(String id, String version) {
-        return dynamicFields.containsKey(id) && dynamicFields.containsValue(version);
+    public boolean isRuntimeLineageSetting(String id) {
+        return selectedJobIds.contains(id);
     }
 
     public boolean isRuntimeLineagePrefsExist() {
@@ -129,19 +122,19 @@ public class RuntimeLineageManager {
         return false;
     }
 
-    public Map<String, String> getDynamicFields() {
-        return dynamicFields;
-    }
-
-    public void setDynamicFields(Map<String, String> dynamicFields) {
-        this.dynamicFields = dynamicFields;
-    }
-
     public boolean isUseRuntimeLineageAll() {
         return this.useRuntimeLineageAll;
     }
 
     public ProjectPreferenceManager getPrefManager() {
         return this.prefManager;
+    }
+
+    public List<String> getSelectedJobIds() {
+        return this.selectedJobIds;
+    }
+
+    public void setSelectedJobIds(List<String> selectedJobIds) {
+        this.selectedJobIds = selectedJobIds;
     }
 }
