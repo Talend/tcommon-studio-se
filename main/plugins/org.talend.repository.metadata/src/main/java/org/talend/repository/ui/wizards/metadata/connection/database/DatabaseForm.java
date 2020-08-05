@@ -45,8 +45,6 @@ import org.eclipse.jface.window.Window;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.custom.SashForm;
 import org.eclipse.swt.custom.ScrolledComposite;
-import org.eclipse.swt.events.ControlAdapter;
-import org.eclipse.swt.events.ControlEvent;
 import org.eclipse.swt.events.FocusEvent;
 import org.eclipse.swt.events.FocusListener;
 import org.eclipse.swt.events.KeyAdapter;
@@ -905,13 +903,6 @@ public class DatabaseForm extends AbstractForm {
 
         addCheckAndStandardButtons(width, compositeGroupDbSettings);
 
-        scrolledComposite.addControlListener(new ControlAdapter() {
-
-            @Override
-            public void controlResized(ControlEvent e) {
-                scrolledComposite.setMinSize(newParent.computeSize(SWT.DEFAULT, SWT.DEFAULT));
-            }
-        });
     }
 
     /*
