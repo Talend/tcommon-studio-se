@@ -63,10 +63,8 @@ public abstract class ShareLibrareisHelper {
         try {
             setJobName(job, Messages.getString("ShareLibsJob.message", TYPE_NEXUS));
             ArtifactRepositoryBean customNexusServer = TalendLibsServerManager.getInstance().getCustomNexusServer();
-            LOGGER.info("customNexusServer: " + customNexusServer.toString());
             IRepositoryArtifactHandler customerRepHandler = RepositoryArtifactHandlerManager
                     .getRepositoryHandler(customNexusServer);
-            LOGGER.info("customerRepHandler: " + customerRepHandler.toString());
             if (customerRepHandler != null) {
                 filesToShare = getFilesToShare(monitor);
                 LOGGER.info("filesToShare size: " + (filesToShare == null ? 0 : filesToShare.size()));
