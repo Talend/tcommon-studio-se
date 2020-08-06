@@ -32,6 +32,7 @@ import org.talend.designer.maven.template.AbstractMavenTemplateManager;
 import org.talend.designer.maven.template.MavenTemplateManager;
 import org.talend.designer.maven.tools.extension.PomExtensionRegistry;
 import org.talend.designer.maven.ui.DesignerMavenUiPlugin;
+import org.talend.designer.maven.utils.PomUtil;
 
 /**
  * DOC ggu class global comment. Detailled comment
@@ -68,6 +69,7 @@ public class MavenScriptsProjectSettingInitializer extends AbstractProjectPrefer
                 Model model = MavenPlugin.getMavenModelManager().readMavenModel(stream);
                 PomExtensionRegistry.getInstance().updatePomTemplate(model);
                 ByteArrayOutputStream out = new ByteArrayOutputStream();
+                PomUtil.sortModules(model);
                 MavenPlugin.getMaven().writeModel(model, out);
                 String content = out.toString(TalendMavenConstants.DEFAULT_ENCODING);
                 if (content != null) {

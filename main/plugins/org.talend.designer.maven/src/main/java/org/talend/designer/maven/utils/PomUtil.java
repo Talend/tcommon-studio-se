@@ -30,6 +30,7 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.LinkedHashSet;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 import java.util.Properties;
@@ -136,6 +137,7 @@ public class PomUtil {
          * copied the codes from createMavenModel of MavenModelManager
          */
         ByteArrayOutputStream buf = new ByteArrayOutputStream();
+        sortModules(model);
         MavenPlugin.getMaven().writeModel(model, buf);
 
         ByteArrayInputStream source = new ByteArrayInputStream(buf.toByteArray());
@@ -157,6 +159,7 @@ public class PomUtil {
         properties.putAll(model.getProperties());
         model.setProperties(properties);
         ByteArrayOutputStream buf = new ByteArrayOutputStream();
+        sortModules(model);
         MavenPlugin.getMaven().writeModel(model, buf);
 
         ByteArrayInputStream source = new ByteArrayInputStream(buf.toByteArray());
@@ -175,6 +178,17 @@ public class PomUtil {
         } finally {
             safeClose(br);
             safeClose(bw);
+        }
+    }
+
+    public static void sortModules(Model model) {
+        if (model != null) {
+            List<String> modules = model.getModules();
+            if (modules != null && !modules.isEmpty()) {
+                List<String> sortedModules = new LinkedList<>(modules);
+                Collections.sort(sortedModules);
+                model.setModules(sortedModules);
+            }
         }
     }
 
@@ -617,7 +631,9 @@ public class PomUtil {
         File pomFile = new File(baseFolder, TalendMavenConstants.POM_FILE_NAME);
 
         ByteArrayOutputStream buf = new ByteArrayOutputStream();
-        MavenPlugin.getMaven().writeModel(createModel(artifact), buf);
+        Model model = createModel(artifact);
+        sortModules(model);
+        MavenPlugin.getMaven().writeModel(model, buf);
 
         DocumentBuilderFactory documentBuilderFactory = XmlUtils.getSecureDocumentBuilderFactory();
         documentBuilderFactory.setNamespaceAware(false);
