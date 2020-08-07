@@ -297,6 +297,9 @@ public class FileDirCleaner {
                                 if (checkFilter(fileDirJob)) {
                                     if (doAction) {
                                         org.apache.commons.io.FileUtils.deleteDirectory(fileDirJob);
+                                        if (log.isDebugEnabled()) {
+                                            log.debug("Deleted directory: " + fileDirJob);
+                                        }
                                     } else {
                                         StringBuilder reason = new StringBuilder();
                                         String sep = "";
@@ -321,6 +324,9 @@ public class FileDirCleaner {
                                 if (checkFilter(fileDirJob)) {
                                     if (doAction) {
                                         org.apache.commons.io.FileUtils.forceDelete(fileDirJob);
+                                        if (log.isDebugEnabled()) {
+                                            log.debug("Deleted file: " + fileDirJob);
+                                        }
                                     } else {
                                         StringBuilder reason = new StringBuilder();
                                         String sep = "";
