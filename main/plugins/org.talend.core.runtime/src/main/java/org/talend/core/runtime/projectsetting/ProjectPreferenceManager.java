@@ -213,6 +213,9 @@ public class ProjectPreferenceManager {
             } catch (PersistenceException e) {
                 ExceptionHandler.process(e);
             }
+            if (runProcessService != null) {
+                runProcessService.syncAllPoms();
+            }
         }
     }
 
