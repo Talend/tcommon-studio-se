@@ -255,4 +255,5 @@ public interface IRunProcessService extends IService {
         return null;
     }
 
+    public void syncAllPoms();
 }
