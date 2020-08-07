@@ -1990,7 +1990,7 @@ public class ProcessorUtilities {
 
     public static IProcessor generateCode(IProcess process, IContext context, boolean statistics, boolean trace,
             boolean contextProperties, boolean applyToChildren) throws ProcessorException {
-    	updateCodeSources();
+        updateCodeSources();
         // achen modify to fix 0006107
         ProcessItem pItem = null;
 
@@ -2064,7 +2064,7 @@ public class ProcessorUtilities {
     public static IProcessor generateCode(IProcessor processor, IProcess process, IContext context, boolean statistics,
             boolean trace, boolean properties, IProgressMonitor progressMonitor) throws ProcessorException {
 
-    	updateCodeSources();
+        updateCodeSources();
 
         CorePlugin.getDefault().getRunProcessService().buildCodesJavaProject(progressMonitor);
 
@@ -2114,7 +2114,7 @@ public class ProcessorUtilities {
 
     public static IProcessor generateCode(IProcess process, IContext context, boolean statistics, boolean trace,
             boolean properties, int option) throws ProcessorException {
-    	updateCodeSources();
+        updateCodeSources();
         // achen modify to fix 0006107
         JobInfo jobInfo = new JobInfo(process, context);
         jobList.clear();
