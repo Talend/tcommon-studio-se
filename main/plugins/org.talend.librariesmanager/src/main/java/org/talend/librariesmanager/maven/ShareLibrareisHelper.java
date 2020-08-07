@@ -98,7 +98,13 @@ public abstract class ShareLibrareisHelper {
                     if (artifact == null) {
                         continue;
                     }
-
+                    try {
+                        Integer.parseInt(artifact.getType());
+                        // FIXME unexpected type if it's an integer, should fix it in component module definition.
+                        continue;
+                    } catch (NumberFormatException e) {
+                        //
+                    }
                     boolean eixst = false;
                     String groupId = artifact.getGroupId();
                     String artifactId = artifact.getArtifactId();
