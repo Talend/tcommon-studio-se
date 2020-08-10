@@ -1616,11 +1616,14 @@ public class DBConnectionFillerImpl extends MetadataFillerImpl<DatabaseConnectio
                                     ExtractMetaDataUtils.getInstance().getIntMetaDataInfo(columns, "DECIMAL_DIGITS"));
                             column.setTalendType(talendType);
                             column.setSourceType(typeName);
-                            if (JavaTypesManager.DATE.getId().equals(talendType)
-                                    || PerlTypesManager.DATE.equals(talendType)) {
-                                String pattern1 = mappingTypeRetriever.getDefaultPattern(dbmsId, typeName);
-                                column.setPattern(StringUtils.isNotBlank(pattern1) ? TalendQuoteUtils.addQuotes(pattern1)
-                                        : TalendQuoteUtils.addQuotes("dd-MM-yyyy"));//$NON-NLS-1$
+                            if (StringUtils.isBlank(column.getPattern())) {
+                                if (JavaTypesManager.DATE.getId().equals(talendType)
+                                        || PerlTypesManager.DATE.equals(talendType)) {
+                                    String pattern1 = mappingTypeRetriever.getDefaultPattern(dbmsId, typeName);
+                                    column.setPattern(
+                                            StringUtils.isNotBlank(pattern1) ? TalendQuoteUtils.addQuotes(pattern1)
+                                                    : TalendQuoteUtils.addQuotes("dd-MM-yyyy"));//$NON-NLS-1$
+                                }
                             }
                         }
                     }
@@ -1808,12 +1811,16 @@ public class DBConnectionFillerImpl extends MetadataFillerImpl<DatabaseConnectio
                         column.setTalendType(talendType);
                         String defaultSelectedDbType = mappingTypeRetriever.getDefaultSelectedDbType(talendType);
                         column.setSourceType(defaultSelectedDbType);
-                        if (JavaTypesManager.DATE.getId().equals(talendType)
-                                || PerlTypesManager.DATE.equals(talendType)) {
-                            String pattern1 = mappingTypeRetriever.getDefaultPattern(dbmsId, defaultSelectedDbType);
-                            column.setPattern(StringUtils.isNotBlank(pattern1) ? TalendQuoteUtils.addQuotes(pattern1)
-                                    : TalendQuoteUtils.addQuotes("dd-MM-yyyy"));//$NON-NLS-1$
+                        if (StringUtils.isBlank(column.getPattern())) {
+                            if (JavaTypesManager.DATE.getId().equals(talendType)
+                                    || PerlTypesManager.DATE.equals(talendType)) {
+                                String pattern1 = mappingTypeRetriever.getDefaultPattern(dbmsId, defaultSelectedDbType);
+                                column.setPattern(
+                                        StringUtils.isNotBlank(pattern1) ? TalendQuoteUtils.addQuotes(pattern1)
+                                                : TalendQuoteUtils.addQuotes("dd-MM-yyyy"));//$NON-NLS-1$
+                            }
                         }
+                       
                     }
 
                     // Comment
