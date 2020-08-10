@@ -1335,9 +1335,11 @@ public class LocalLibraryManager implements ILibraryManagerService, IChangedLibr
                 }
                 for (File file : needToDeploy) {
                     try {
-                        deploy(file.toURI());
+                        // deploy as release version if can't find mvn url from index
+                        install(file, null, true, true);
                     } catch (Exception e) {
                         ExceptionHandler.process(e);
+                        continue;
                     }
                 }
             }
