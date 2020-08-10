@@ -362,6 +362,11 @@ public class AggregatorPomsHelper {
                     return false;
                 }
             }
+
+            // for import won't add for exclude option
+            if (property.getItem().getState().isDeleted() && PomIdsHelper.getIfExcludeDeletedItems(property)) {
+                return false;
+            }
         }
 
         if (checkFilter) {
@@ -373,12 +378,6 @@ public class AggregatorPomsHelper {
                 }
             }
         }
-
-        // for import won't add for exclude option
-        if (property.getItem().getState().isDeleted() && PomIdsHelper.getIfExcludeDeletedItems(property)) {
-            return false;
-        }
-
         return true;
     }
 
