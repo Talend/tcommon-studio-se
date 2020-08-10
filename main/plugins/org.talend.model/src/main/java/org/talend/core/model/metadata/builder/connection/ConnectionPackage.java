@@ -5043,12 +5043,21 @@ public interface ConnectionPackage extends EPackage {
     int DATABASE_CONNECTION__DRIVER_JAR_PATH = CONNECTION_FEATURE_COUNT + 1;
 
     /**
+     * The feature id for the '<em><b>Driver Jar Uri</b></em>' attribute.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     * @ordered
+     */
+    int DATABASE_CONNECTION__DRIVER_JAR_URI = CONNECTION_FEATURE_COUNT + 2;
+
+    /**
      * The feature id for the '<em><b>Driver Class</b></em>' attribute.
      * <!-- begin-user-doc --> <!-- end-user-doc -->
      * @generated
      * @ordered
      */
-    int DATABASE_CONNECTION__DRIVER_CLASS = CONNECTION_FEATURE_COUNT + 2;
+    int DATABASE_CONNECTION__DRIVER_CLASS = CONNECTION_FEATURE_COUNT + 3;
 
     /**
      * The feature id for the '<em><b>URL</b></em>' attribute.
@@ -5056,7 +5065,7 @@ public interface ConnectionPackage extends EPackage {
      * @generated
      * @ordered
      */
-    int DATABASE_CONNECTION__URL = CONNECTION_FEATURE_COUNT + 3;
+    int DATABASE_CONNECTION__URL = CONNECTION_FEATURE_COUNT + 4;
 
     /**
      * The feature id for the '<em><b>Db Version String</b></em>' attribute. <!-- begin-user-doc --> <!-- end-user-doc
@@ -5065,7 +5074,7 @@ public interface ConnectionPackage extends EPackage {
      * @generated
      * @ordered
      */
-    int DATABASE_CONNECTION__DB_VERSION_STRING = CONNECTION_FEATURE_COUNT + 4;
+    int DATABASE_CONNECTION__DB_VERSION_STRING = CONNECTION_FEATURE_COUNT + 5;
 
     /**
      * The feature id for the '<em><b>Port</b></em>' attribute.
@@ -5073,7 +5082,7 @@ public interface ConnectionPackage extends EPackage {
      * @generated
      * @ordered
      */
-    int DATABASE_CONNECTION__PORT = CONNECTION_FEATURE_COUNT + 5;
+    int DATABASE_CONNECTION__PORT = CONNECTION_FEATURE_COUNT + 6;
 
     /**
      * The feature id for the '<em><b>Username</b></em>' attribute.
@@ -5081,7 +5090,7 @@ public interface ConnectionPackage extends EPackage {
      * @generated
      * @ordered
      */
-    int DATABASE_CONNECTION__USERNAME = CONNECTION_FEATURE_COUNT + 6;
+    int DATABASE_CONNECTION__USERNAME = CONNECTION_FEATURE_COUNT + 7;
 
     /**
      * The feature id for the '<em><b>Password</b></em>' attribute.
@@ -5089,7 +5098,7 @@ public interface ConnectionPackage extends EPackage {
      * @generated
      * @ordered
      */
-    int DATABASE_CONNECTION__PASSWORD = CONNECTION_FEATURE_COUNT + 7;
+    int DATABASE_CONNECTION__PASSWORD = CONNECTION_FEATURE_COUNT + 8;
 
     /**
      * The feature id for the '<em><b>Server Name</b></em>' attribute.
@@ -5097,7 +5106,7 @@ public interface ConnectionPackage extends EPackage {
      * @generated
      * @ordered
      */
-    int DATABASE_CONNECTION__SERVER_NAME = CONNECTION_FEATURE_COUNT + 8;
+    int DATABASE_CONNECTION__SERVER_NAME = CONNECTION_FEATURE_COUNT + 9;
 
     /**
      * The feature id for the '<em><b>Datasource Name</b></em>' attribute.
@@ -5105,7 +5114,7 @@ public interface ConnectionPackage extends EPackage {
      * @generated
      * @ordered
      */
-    int DATABASE_CONNECTION__DATASOURCE_NAME = CONNECTION_FEATURE_COUNT + 9;
+    int DATABASE_CONNECTION__DATASOURCE_NAME = CONNECTION_FEATURE_COUNT + 10;
 
     /**
      * The feature id for the '<em><b>File Field Name</b></em>' attribute.
@@ -5113,7 +5122,7 @@ public interface ConnectionPackage extends EPackage {
      * @generated
      * @ordered
      */
-    int DATABASE_CONNECTION__FILE_FIELD_NAME = CONNECTION_FEATURE_COUNT + 10;
+    int DATABASE_CONNECTION__FILE_FIELD_NAME = CONNECTION_FEATURE_COUNT + 11;
 
     /**
      * The feature id for the '<em><b>SID</b></em>' attribute.
@@ -5121,7 +5130,7 @@ public interface ConnectionPackage extends EPackage {
      * @generated
      * @ordered
      */
-    int DATABASE_CONNECTION__SID = CONNECTION_FEATURE_COUNT + 11;
+    int DATABASE_CONNECTION__SID = CONNECTION_FEATURE_COUNT + 12;
 
     /**
      * The feature id for the '<em><b>Sql Synthax</b></em>' attribute.
@@ -5129,7 +5138,7 @@ public interface ConnectionPackage extends EPackage {
      * @generated
      * @ordered
      */
-    int DATABASE_CONNECTION__SQL_SYNTHAX = CONNECTION_FEATURE_COUNT + 12;
+    int DATABASE_CONNECTION__SQL_SYNTHAX = CONNECTION_FEATURE_COUNT + 13;
 
     /**
      * The feature id for the '<em><b>String Quote</b></em>' attribute.
@@ -5137,7 +5146,7 @@ public interface ConnectionPackage extends EPackage {
      * @generated
      * @ordered
      */
-    int DATABASE_CONNECTION__STRING_QUOTE = CONNECTION_FEATURE_COUNT + 13;
+    int DATABASE_CONNECTION__STRING_QUOTE = CONNECTION_FEATURE_COUNT + 14;
 
     /**
      * The feature id for the '<em><b>Null Char</b></em>' attribute.
@@ -5145,7 +5154,7 @@ public interface ConnectionPackage extends EPackage {
      * @generated
      * @ordered
      */
-    int DATABASE_CONNECTION__NULL_CHAR = CONNECTION_FEATURE_COUNT + 14;
+    int DATABASE_CONNECTION__NULL_CHAR = CONNECTION_FEATURE_COUNT + 15;
 
     /**
      * The feature id for the '<em><b>Dbms Id</b></em>' attribute.
@@ -5153,7 +5162,7 @@ public interface ConnectionPackage extends EPackage {
      * @generated
      * @ordered
      */
-    int DATABASE_CONNECTION__DBMS_ID = CONNECTION_FEATURE_COUNT + 15;
+    int DATABASE_CONNECTION__DBMS_ID = CONNECTION_FEATURE_COUNT + 16;
 
     /**
      * The feature id for the '<em><b>Product Id</b></em>' attribute.
@@ -5161,7 +5170,7 @@ public interface ConnectionPackage extends EPackage {
      * @generated
      * @ordered
      */
-    int DATABASE_CONNECTION__PRODUCT_ID = CONNECTION_FEATURE_COUNT + 16;
+    int DATABASE_CONNECTION__PRODUCT_ID = CONNECTION_FEATURE_COUNT + 17;
 
     /**
      * The feature id for the '<em><b>DB Root Path</b></em>' attribute.
@@ -5169,7 +5178,7 @@ public interface ConnectionPackage extends EPackage {
      * @generated
      * @ordered
      */
-    int DATABASE_CONNECTION__DB_ROOT_PATH = CONNECTION_FEATURE_COUNT + 17;
+    int DATABASE_CONNECTION__DB_ROOT_PATH = CONNECTION_FEATURE_COUNT + 18;
 
     /**
      * The feature id for the '<em><b>Additional Params</b></em>' attribute. <!-- begin-user-doc --> <!-- end-user-doc
@@ -5178,7 +5187,7 @@ public interface ConnectionPackage extends EPackage {
      * @generated
      * @ordered
      */
-    int DATABASE_CONNECTION__ADDITIONAL_PARAMS = CONNECTION_FEATURE_COUNT + 18;
+    int DATABASE_CONNECTION__ADDITIONAL_PARAMS = CONNECTION_FEATURE_COUNT + 19;
 
     /**
      * The feature id for the '<em><b>Standard SQL</b></em>' attribute.
@@ -5186,7 +5195,7 @@ public interface ConnectionPackage extends EPackage {
      * @generated
      * @ordered
      */
-    int DATABASE_CONNECTION__STANDARD_SQL = CONNECTION_FEATURE_COUNT + 19;
+    int DATABASE_CONNECTION__STANDARD_SQL = CONNECTION_FEATURE_COUNT + 20;
 
     /**
      * The feature id for the '<em><b>System SQL</b></em>' attribute.
@@ -5194,7 +5203,7 @@ public interface ConnectionPackage extends EPackage {
      * @generated
      * @ordered
      */
-    int DATABASE_CONNECTION__SYSTEM_SQL = CONNECTION_FEATURE_COUNT + 20;
+    int DATABASE_CONNECTION__SYSTEM_SQL = CONNECTION_FEATURE_COUNT + 21;
 
     /**
      * The feature id for the '<em><b>Cdc Conns</b></em>' containment reference.
@@ -5203,7 +5212,7 @@ public interface ConnectionPackage extends EPackage {
      * @generated
      * @ordered
      */
-    int DATABASE_CONNECTION__CDC_CONNS = CONNECTION_FEATURE_COUNT + 21;
+    int DATABASE_CONNECTION__CDC_CONNS = CONNECTION_FEATURE_COUNT + 22;
 
     /**
      * The feature id for the '<em><b>Cdc Type Mode</b></em>' attribute.
@@ -5211,7 +5220,7 @@ public interface ConnectionPackage extends EPackage {
      * @generated
      * @ordered
      */
-    int DATABASE_CONNECTION__CDC_TYPE_MODE = CONNECTION_FEATURE_COUNT + 22;
+    int DATABASE_CONNECTION__CDC_TYPE_MODE = CONNECTION_FEATURE_COUNT + 23;
 
     /**
      * The feature id for the '<em><b>SQL Mode</b></em>' attribute.
@@ -5219,7 +5228,7 @@ public interface ConnectionPackage extends EPackage {
      * @generated
      * @ordered
      */
-    int DATABASE_CONNECTION__SQL_MODE = CONNECTION_FEATURE_COUNT + 23;
+    int DATABASE_CONNECTION__SQL_MODE = CONNECTION_FEATURE_COUNT + 24;
 
     /**
      * The feature id for the '<em><b>Ui Schema</b></em>' attribute.
@@ -5227,7 +5236,7 @@ public interface ConnectionPackage extends EPackage {
      * @generated
      * @ordered
      */
-    int DATABASE_CONNECTION__UI_SCHEMA = CONNECTION_FEATURE_COUNT + 24;
+    int DATABASE_CONNECTION__UI_SCHEMA = CONNECTION_FEATURE_COUNT + 25;
 
     /**
      * The feature id for the '<em><b>Parameters</b></em>' map.
@@ -5236,7 +5245,7 @@ public interface ConnectionPackage extends EPackage {
      * @generated
      * @ordered
      */
-    int DATABASE_CONNECTION__PARAMETERS = CONNECTION_FEATURE_COUNT + 25;
+    int DATABASE_CONNECTION__PARAMETERS = CONNECTION_FEATURE_COUNT + 26;
 
     /**
      * The number of structural features of the '<em>Database Connection</em>' class.
@@ -5245,7 +5254,7 @@ public interface ConnectionPackage extends EPackage {
      * @generated
      * @ordered
      */
-    int DATABASE_CONNECTION_FEATURE_COUNT = CONNECTION_FEATURE_COUNT + 26;
+    int DATABASE_CONNECTION_FEATURE_COUNT = CONNECTION_FEATURE_COUNT + 27;
 
     /**
      * The meta object id for the '{@link org.talend.core.model.metadata.builder.connection.impl.SAPConnectionImpl <em>SAP Connection</em>}' class.
@@ -21633,6 +21642,17 @@ public interface ConnectionPackage extends EPackage {
     EAttribute getDatabaseConnection_DriverJarPath();
 
     /**
+     * Returns the meta object for the attribute '{@link org.talend.core.model.metadata.builder.connection.DatabaseConnection#getDriverJarUri <em>Driver Jar Uri</em>}'.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @return the meta object for the attribute '<em>Driver Jar Uri</em>'.
+     * @see org.talend.core.model.metadata.builder.connection.DatabaseConnection#getDriverJarUri()
+     * @see #getDatabaseConnection()
+     * @generated
+     */
+    EAttribute getDatabaseConnection_DriverJarUri();
+
+    /**
      * Returns the meta object for the attribute '{@link org.talend.core.model.metadata.builder.connection.DatabaseConnection#getDriverClass <em>Driver Class</em>}'.
      * <!-- begin-user-doc --> <!-- end-user-doc -->
      * @return the meta object for the attribute '<em>Driver Class</em>'.
@@ -26057,7 +26077,8 @@ public interface ConnectionPackage extends EPackage {
          * --> <!-- end-user-doc -->
          * @generated
          */
-        EAttribute DELIMITED_FILE_CONNECTION__FIELD_SEPARATOR_TYPE = eINSTANCE.getDelimitedFileConnection_FieldSeparatorType();
+        EAttribute DELIMITED_FILE_CONNECTION__FIELD_SEPARATOR_TYPE = eINSTANCE
+                .getDelimitedFileConnection_FieldSeparatorType();
 
         /**
          * The meta object literal for the '<em><b>Split Record</b></em>' attribute feature.
@@ -26246,6 +26267,14 @@ public interface ConnectionPackage extends EPackage {
          * @generated
          */
         EAttribute DATABASE_CONNECTION__DRIVER_JAR_PATH = eINSTANCE.getDatabaseConnection_DriverJarPath();
+
+        /**
+         * The meta object literal for the '<em><b>Driver Jar Uri</b></em>' attribute feature.
+         * <!-- begin-user-doc -->
+         * <!-- end-user-doc -->
+         * @generated
+         */
+        EAttribute DATABASE_CONNECTION__DRIVER_JAR_URI = eINSTANCE.getDatabaseConnection_DriverJarUri();
 
         /**
          * The meta object literal for the '<em><b>Driver Class</b></em>' attribute feature.
@@ -26542,7 +26571,8 @@ public interface ConnectionPackage extends EPackage {
          * <!-- end-user-doc -->
          * @generated
          */
-        EReference SAP_CONNECTION__BW_ADVANCED_DATA_STORE_OBJECTS = eINSTANCE.getSAPConnection_BWAdvancedDataStoreObjects();
+        EReference SAP_CONNECTION__BW_ADVANCED_DATA_STORE_OBJECTS = eINSTANCE
+                .getSAPConnection_BWAdvancedDataStoreObjects();
 
         /**
          * The meta object literal for the '<em><b>BW Data Sources</b></em>' containment reference list feature.
@@ -26654,7 +26684,8 @@ public interface ConnectionPackage extends EPackage {
          * <!-- begin-user-doc --> <!-- end-user-doc -->
          * @generated
          */
-        EReference SAP_FUNCTION_UNIT__TEST_INPUT_PARAMETER_TABLE = eINSTANCE.getSAPFunctionUnit_TestInputParameterTable();
+        EReference SAP_FUNCTION_UNIT__TEST_INPUT_PARAMETER_TABLE = eINSTANCE
+                .getSAPFunctionUnit_TestInputParameterTable();
 
         /**
          * The meta object literal for the '<em><b>Param Data</b></em>' containment reference feature.
@@ -26752,7 +26783,8 @@ public interface ConnectionPackage extends EPackage {
          * <!-- end-user-doc -->
          * @generated
          */
-        EAttribute SAP_FUNCTION_PARAMETER_COLUMN__PARAMETER_TYPE = eINSTANCE.getSAPFunctionParameterColumn_ParameterType();
+        EAttribute SAP_FUNCTION_PARAMETER_COLUMN__PARAMETER_TYPE = eINSTANCE
+                .getSAPFunctionParameterColumn_ParameterType();
 
         /**
          * The meta object literal for the '<em><b>Structure Or Table Name</b></em>' attribute feature. <!--
@@ -26793,7 +26825,8 @@ public interface ConnectionPackage extends EPackage {
          * 
          * @generated
          */
-        EReference SAP_FUNCTION_PARAMETER_COLUMN__PARAMETER_TABLE = eINSTANCE.getSAPFunctionParameterColumn_ParameterTable();
+        EReference SAP_FUNCTION_PARAMETER_COLUMN__PARAMETER_TABLE = eINSTANCE
+                .getSAPFunctionParameterColumn_ParameterTable();
 
         /**
          * The meta object literal for the '{@link org.talend.core.model.metadata.builder.connection.impl.SAPFunctionParameterTableImpl <em>SAP Function Parameter Table</em>}' class.
@@ -26827,7 +26860,8 @@ public interface ConnectionPackage extends EPackage {
          * 
          * @generated
          */
-        EReference INPUT_SAP_FUNCTION_PARAMETER_TABLE__FUNCTION_UNIT = eINSTANCE.getInputSAPFunctionParameterTable_FunctionUnit();
+        EReference INPUT_SAP_FUNCTION_PARAMETER_TABLE__FUNCTION_UNIT = eINSTANCE
+                .getInputSAPFunctionParameterTable_FunctionUnit();
 
         /**
          * The meta object literal for the '{@link org.talend.core.model.metadata.builder.connection.impl.OutputSAPFunctionParameterTableImpl <em>Output SAP Function Parameter Table</em>}' class.
@@ -26862,7 +26896,8 @@ public interface ConnectionPackage extends EPackage {
          * --> <!-- end-user-doc -->
          * @generated
          */
-        EAttribute REGEXP_FILE_CONNECTION__FIELD_SEPARATOR_TYPE = eINSTANCE.getRegexpFileConnection_FieldSeparatorType();
+        EAttribute REGEXP_FILE_CONNECTION__FIELD_SEPARATOR_TYPE = eINSTANCE
+                .getRegexpFileConnection_FieldSeparatorType();
 
         /**
          * The meta object literal for the '{@link org.talend.core.model.metadata.builder.connection.impl.XmlFileConnectionImpl <em>Xml File Connection</em>}' class.
@@ -27229,7 +27264,8 @@ public interface ConnectionPackage extends EPackage {
          * --> <!-- end-user-doc -->
          * @generated
          */
-        EAttribute XML_XPATH_LOOP_DESCRIPTOR__ABSOLUTE_XPATH_QUERY = eINSTANCE.getXmlXPathLoopDescriptor_AbsoluteXPathQuery();
+        EAttribute XML_XPATH_LOOP_DESCRIPTOR__ABSOLUTE_XPATH_QUERY = eINSTANCE
+                .getXmlXPathLoopDescriptor_AbsoluteXPathQuery();
 
         /**
          * The meta object literal for the '<em><b>Connection</b></em>' container reference feature.
@@ -27262,7 +27298,8 @@ public interface ConnectionPackage extends EPackage {
          * --> <!-- end-user-doc -->
          * @generated
          */
-        EAttribute GENERIC_SCHEMA_CONNECTION__MAPPING_TYPE_USED = eINSTANCE.getGenericSchemaConnection_MappingTypeUsed();
+        EAttribute GENERIC_SCHEMA_CONNECTION__MAPPING_TYPE_USED = eINSTANCE
+                .getGenericSchemaConnection_MappingTypeUsed();
 
         /**
          * The meta object literal for the '<em><b>Mapping Type Id</b></em>' attribute feature.
@@ -27383,7 +27420,8 @@ public interface ConnectionPackage extends EPackage {
          * 
          * @generated
          */
-        EAttribute LDAP_SCHEMA_CONNECTION__ENCRYPTION_METHOD_NAME = eINSTANCE.getLDAPSchemaConnection_EncryptionMethodName();
+        EAttribute LDAP_SCHEMA_CONNECTION__ENCRYPTION_METHOD_NAME = eINSTANCE
+                .getLDAPSchemaConnection_EncryptionMethodName();
 
         /**
          * The meta object literal for the '<em><b>Value</b></em>' attribute list feature.
@@ -27447,7 +27485,8 @@ public interface ConnectionPackage extends EPackage {
          * 
          * @generated
          */
-        EAttribute LDAP_SCHEMA_CONNECTION__GET_BASE_DNS_FROM_ROOT = eINSTANCE.getLDAPSchemaConnection_GetBaseDNsFromRoot();
+        EAttribute LDAP_SCHEMA_CONNECTION__GET_BASE_DNS_FROM_ROOT = eINSTANCE
+                .getLDAPSchemaConnection_GetBaseDNsFromRoot();
 
         /**
          * The meta object literal for the '<em><b>Return Attributes</b></em>' attribute list feature. <!--
@@ -27665,7 +27704,8 @@ public interface ConnectionPackage extends EPackage {
          * <!-- end-user-doc -->
          * @generated
          */
-        EAttribute SALESFORCE_SCHEMA_CONNECTION__WEB_SERVICE_URL = eINSTANCE.getSalesforceSchemaConnection_WebServiceUrl();
+        EAttribute SALESFORCE_SCHEMA_CONNECTION__WEB_SERVICE_URL = eINSTANCE
+                .getSalesforceSchemaConnection_WebServiceUrl();
 
         /**
          * The meta object literal for the '<em><b>User Name</b></em>' attribute feature.
@@ -27697,7 +27737,8 @@ public interface ConnectionPackage extends EPackage {
          * <!-- end-user-doc -->
          * @generated
          */
-        EAttribute SALESFORCE_SCHEMA_CONNECTION__QUERY_CONDITION = eINSTANCE.getSalesforceSchemaConnection_QueryCondition();
+        EAttribute SALESFORCE_SCHEMA_CONNECTION__QUERY_CONDITION = eINSTANCE
+                .getSalesforceSchemaConnection_QueryCondition();
 
         /**
          * The meta object literal for the '<em><b>Use Custom Module Name</b></em>' attribute feature. <!--
@@ -27738,7 +27779,8 @@ public interface ConnectionPackage extends EPackage {
          * <!-- end-user-doc -->
          * @generated
          */
-        EAttribute SALESFORCE_SCHEMA_CONNECTION__PROXY_USERNAME = eINSTANCE.getSalesforceSchemaConnection_ProxyUsername();
+        EAttribute SALESFORCE_SCHEMA_CONNECTION__PROXY_USERNAME = eINSTANCE
+                .getSalesforceSchemaConnection_ProxyUsername();
 
         /**
          * The meta object literal for the '<em><b>Proxy Password</b></em>' attribute feature.
@@ -27746,7 +27788,8 @@ public interface ConnectionPackage extends EPackage {
          * <!-- end-user-doc -->
          * @generated
          */
-        EAttribute SALESFORCE_SCHEMA_CONNECTION__PROXY_PASSWORD = eINSTANCE.getSalesforceSchemaConnection_ProxyPassword();
+        EAttribute SALESFORCE_SCHEMA_CONNECTION__PROXY_PASSWORD = eINSTANCE
+                .getSalesforceSchemaConnection_ProxyPassword();
 
         /**
          * The meta object literal for the '<em><b>Batch Size</b></em>' attribute feature.
@@ -27762,7 +27805,8 @@ public interface ConnectionPackage extends EPackage {
          * <!-- end-user-doc -->
          * @generated
          */
-        EAttribute SALESFORCE_SCHEMA_CONNECTION__USE_HTTP_PROXY = eINSTANCE.getSalesforceSchemaConnection_UseHttpProxy();
+        EAttribute SALESFORCE_SCHEMA_CONNECTION__USE_HTTP_PROXY = eINSTANCE
+                .getSalesforceSchemaConnection_UseHttpProxy();
 
         /**
          * The meta object literal for the '<em><b>Use Alphbet</b></em>' attribute feature.
@@ -27811,7 +27855,8 @@ public interface ConnectionPackage extends EPackage {
          * <!-- end-user-doc -->
          * @generated
          */
-        EAttribute SALESFORCE_SCHEMA_CONNECTION__CONSUME_SECRET = eINSTANCE.getSalesforceSchemaConnection_ConsumeSecret();
+        EAttribute SALESFORCE_SCHEMA_CONNECTION__CONSUME_SECRET = eINSTANCE
+                .getSalesforceSchemaConnection_ConsumeSecret();
 
         /**
          * The meta object literal for the '<em><b>Callback Host</b></em>' attribute feature.
@@ -27835,7 +27880,8 @@ public interface ConnectionPackage extends EPackage {
          * <!-- end-user-doc -->
          * @generated
          */
-        EAttribute SALESFORCE_SCHEMA_CONNECTION__SALESFORCE_VERSION = eINSTANCE.getSalesforceSchemaConnection_SalesforceVersion();
+        EAttribute SALESFORCE_SCHEMA_CONNECTION__SALESFORCE_VERSION = eINSTANCE
+                .getSalesforceSchemaConnection_SalesforceVersion();
 
         /**
          * The meta object literal for the '<em><b>Token</b></em>' attribute feature.
@@ -27951,7 +27997,8 @@ public interface ConnectionPackage extends EPackage {
          * 
          * @generated
          */
-        EReference SAP_TEST_INPUT_PARAMETER_TABLE__FUNCTION_UNIT = eINSTANCE.getSAPTestInputParameterTable_FunctionUnit();
+        EReference SAP_TEST_INPUT_PARAMETER_TABLE__FUNCTION_UNIT = eINSTANCE
+                .getSAPTestInputParameterTable_FunctionUnit();
 
         /**
          * The meta object literal for the '{@link org.talend.core.model.metadata.builder.connection.impl.ConceptImpl <em>Concept</em>}' class.
@@ -28883,7 +28930,8 @@ public interface ConnectionPackage extends EPackage {
          * <!-- end-user-doc -->
          * @generated
          */
-        EAttribute SAP_FUNCTION_PARAMETER__TABLE_RESIDE_IN_TABLES = eINSTANCE.getSAPFunctionParameter_TableResideInTables();
+        EAttribute SAP_FUNCTION_PARAMETER__TABLE_RESIDE_IN_TABLES = eINSTANCE
+                .getSAPFunctionParameter_TableResideInTables();
 
         /**
          * The meta object literal for the '{@link org.talend.core.model.metadata.builder.connection.impl.SAPFunctionParamDataImpl <em>SAP Function Param Data</em>}' class.
@@ -28927,7 +28975,8 @@ public interface ConnectionPackage extends EPackage {
          * <!-- end-user-doc -->
          * @generated
          */
-        EAttribute ADDITIONAL_CONNECTION_PROPERTY__PROPERTY_NAME = eINSTANCE.getAdditionalConnectionProperty_PropertyName();
+        EAttribute ADDITIONAL_CONNECTION_PROPERTY__PROPERTY_NAME = eINSTANCE
+                .getAdditionalConnectionProperty_PropertyName();
 
         /**
          * The meta object literal for the '<em><b>Value</b></em>' attribute feature.
@@ -29087,7 +29136,8 @@ public interface ConnectionPackage extends EPackage {
          * <!-- end-user-doc -->
          * @generated
          */
-        EAttribute VALIDATION_RULES_CONNECTION__BASE_COLUMN_NAMES = eINSTANCE.getValidationRulesConnection_BaseColumnNames();
+        EAttribute VALIDATION_RULES_CONNECTION__BASE_COLUMN_NAMES = eINSTANCE
+                .getValidationRulesConnection_BaseColumnNames();
 
         /**
          * The meta object literal for the '<em><b>Ref Schema</b></em>' attribute feature.
@@ -29103,7 +29153,8 @@ public interface ConnectionPackage extends EPackage {
          * <!-- end-user-doc -->
          * @generated
          */
-        EAttribute VALIDATION_RULES_CONNECTION__REF_COLUMN_NAMES = eINSTANCE.getValidationRulesConnection_RefColumnNames();
+        EAttribute VALIDATION_RULES_CONNECTION__REF_COLUMN_NAMES = eINSTANCE
+                .getValidationRulesConnection_RefColumnNames();
 
         /**
          * The meta object literal for the '<em><b>Java Condition</b></em>' attribute feature.
@@ -29127,7 +29178,8 @@ public interface ConnectionPackage extends EPackage {
          * <!-- end-user-doc -->
          * @generated
          */
-        EAttribute VALIDATION_RULES_CONNECTION__LOGICAL_OPERATOR = eINSTANCE.getValidationRulesConnection_LogicalOperator();
+        EAttribute VALIDATION_RULES_CONNECTION__LOGICAL_OPERATOR = eINSTANCE
+                .getValidationRulesConnection_LogicalOperator();
 
         /**
          * The meta object literal for the '<em><b>Conditions</b></em>' containment reference list feature.

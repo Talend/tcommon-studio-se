@@ -224,6 +224,7 @@ public final class ConvertionHelper {
             result.setDbType(connection.getDatabaseType());
         }
         result.setDriverJarPath(connection.getDriverJarPath());
+        result.setDriverJarUri(connection.getDriverJarUri());
         result.setDbVersionString(connection.getDbVersionString());
         result.setDriverClass(connection.getDriverClass());
         result.setFileFieldName(connection.getFileFieldName());

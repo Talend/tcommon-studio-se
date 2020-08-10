@@ -163,6 +163,7 @@
     <genClasses ecoreClass="metadata.ecore#//DatabaseConnection">
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute metadata.ecore#//DatabaseConnection/DatabaseType"/>
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute metadata.ecore#//DatabaseConnection/DriverJarPath"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute metadata.ecore#//DatabaseConnection/DriverJarUri"/>
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute metadata.ecore#//DatabaseConnection/DriverClass"/>
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute metadata.ecore#//DatabaseConnection/URL"/>
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute metadata.ecore#//DatabaseConnection/dbVersionString"/>

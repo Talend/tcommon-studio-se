@@ -112,6 +112,31 @@ public interface DatabaseConnection extends Connection {
     void setDriverJarPath(String value);
 
     /**
+     * Returns the value of the '<em><b>Driver Jar Uri</b></em>' attribute.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * <!-- begin-model-doc -->
+     * absolute path uri to the jar that may be used for Generic JDBC connection
+     * <!-- end-model-doc -->
+     * @return the value of the '<em>Driver Jar Uri</em>' attribute.
+     * @see #setDriverJarUri(String)
+     * @see org.talend.core.model.metadata.builder.connection.ConnectionPackage#getDatabaseConnection_DriverJarUri()
+     * @model
+     * @generated
+     */
+    String getDriverJarUri();
+
+    /**
+     * Sets the value of the '{@link org.talend.core.model.metadata.builder.connection.DatabaseConnection#getDriverJarUri <em>Driver Jar Uri</em>}' attribute.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @param value the new value of the '<em>Driver Jar Uri</em>' attribute.
+     * @see #getDriverJarUri()
+     * @generated
+     */
+    void setDriverJarUri(String value);
+
+    /**
      * Returns the value of the '<em><b>Driver Class</b></em>' attribute. <!-- begin-user-doc -->
      * <p>
      * If the meaning of the '<em>Driver Class</em>' attribute isn't clear, there really should be more of a description

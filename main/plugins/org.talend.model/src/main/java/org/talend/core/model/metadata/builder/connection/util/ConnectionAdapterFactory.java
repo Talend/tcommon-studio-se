@@ -121,7 +121,6 @@ public class ConnectionAdapterFactory extends AdapterFactoryImpl {
      */
 
     protected ConnectionSwitch<Adapter> modelSwitch = new ConnectionSwitch<Adapter>() {
-
         @Override
         public Adapter caseMetadata(Metadata object) {
             return createMetadataAdapter();

@@ -98,6 +98,8 @@ public class ManagerConnection {
     private String driverClassName;
 
     private String driverJarPath;
+    
+    private String driverJarUri;
 
     private Map<String, Object> otherParameters;
 
@@ -116,7 +118,7 @@ public class ManagerConnection {
      */
     public void setValue(Integer id, final String dbType, final String url, final String server, final String username,
             final String password, final String sidOrDatabase, final String port, final String file, final String datasource,
-            final String schemaOracle, final String additionalParams, final String driverClassName, final String driverJarPath,
+            final String schemaOracle, final String additionalParams, final String driverClassName, final String driverJarPath,final String driverJarUri,
             final String dbVersionString) {
         this.id = id;
         this.dbTypeString = dbType;
@@ -132,6 +134,7 @@ public class ManagerConnection {
         this.additionalParams = additionalParams;
         this.driverClassName = driverClassName;
         this.driverJarPath = driverJarPath;
+        this.driverJarUri = driverJarUri;
         this.dbVersionString = dbVersionString;
 
     }
@@ -141,7 +144,7 @@ public class ManagerConnection {
             final String schemaOracle, final String additionalParams, final String driverClassName, final String driverJarPath,
             final String dbVersionString, Map<String, Object> otherParameters) {
         setValue(id, dbType, url, server, username, password, sidOrDatabase, port, file, datasource, schemaOracle,
-                additionalParams, driverClassName, driverJarPath, dbVersionString);
+                additionalParams, driverClassName, driverJarPath,driverJarPath, dbVersionString);
         this.otherParameters = otherParameters;
     }
 
@@ -288,7 +291,7 @@ public class ManagerConnection {
             }
             // test the connection
             testConnection = ExtractMetaDataFromDataBase.testConnection(dbTypeString, urlConnectionString, username, password,
-                    schemaName, driverClassName, driverJarPath, dbVersionString, additionalParams, retProposedSchema,
+                    schemaName, driverClassName, driverJarPath,driverJarPath, dbVersionString, additionalParams, retProposedSchema,
                     sidOrDatabase);
             isValide = testConnection.getResult();
             messageException = testConnection.getMessageException();
@@ -387,7 +390,7 @@ public class ManagerConnection {
                 testConnection = ExtractMetaDataFromDataBase.testConnection(metadataConnection.getDbType(),
                         metadataConnection.getUrl(), metadataConnection.getUsername(), metadataConnection.getPassword(),
                         metadataConnection.getSchema(), metadataConnection.getDriverClass(),
-                        metadataConnection.getDriverJarPath(), metadataConnection.getDbVersionString(),
+                        metadataConnection.getDriverJarPath(),metadataConnection.getDriverJarUri(), metadataConnection.getDbVersionString(),
                         metadataConnection.getAdditionalParams(), retProposedSchema, metadataConnection.getDatabase());
             }
             // qli

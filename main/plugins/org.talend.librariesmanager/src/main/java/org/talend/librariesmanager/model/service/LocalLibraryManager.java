@@ -78,8 +78,10 @@ import org.talend.core.prefs.ITalendCorePrefConstants;
 import org.talend.core.runtime.maven.MavenArtifact;
 import org.talend.core.runtime.maven.MavenConstants;
 import org.talend.core.runtime.maven.MavenUrlHelper;
+import org.talend.core.runtime.services.IGenericDBService;
 import org.talend.core.runtime.services.IMavenUIService;
 import org.talend.core.utils.TalendQuoteUtils;
+import org.talend.daikon.properties.Properties;
 import org.talend.designer.maven.tools.BuildCacheManager;
 import org.talend.designer.maven.utils.PomUtil;
 import org.talend.librariesmanager.maven.MavenArtifactsHandler;
@@ -674,7 +676,64 @@ public class LocalLibraryManager implements ILibraryManagerService, IChangedLibr
 
         return allIsOK;
     }
+    
+    public boolean retrieve(Map<String,String> jarNameToUri, String pathToStore, boolean showDialog,
+            IProgressMonitor... monitorWrap) {
+        if (jarNameToUri == null || jarNameToUri.size() == 0) {
+            return false;
+        }
+        List<ModuleNeeded> modulesNotFound = new ArrayList<>();
 
+        boolean allIsOK = true;
+        Set<String> jarNameSet = jarNameToUri.keySet();
+        for (String jar : jarNameSet) {
+            ModuleNeeded moduleNeeded = null;
+            if (jar != null && !jar.toUpperCase().endsWith(".JAR")) {
+                moduleNeeded = ModulesNeededProvider.getModuleNeededById(jar);
+            }
+            boolean found = false;
+            if (moduleNeeded != null) {
+                found = retrieve(moduleNeeded, pathToStore, false, monitorWrap);
+            } else {
+                moduleNeeded = new ModuleNeeded("", jar, "", true);
+                moduleNeeded.setMavenUri(jarNameToUri.get(jar));
+                found = retrieve(moduleNeeded, pathToStore, false, monitorWrap);
+            }
+            if (!found) {
+                
+                modulesNotFound.add(moduleNeeded);
+                allIsOK = false;
+            }
+        }
+        if (showDialog && !modulesNotFound.isEmpty() && !CommonsPlugin.isHeadless()) {
+            if (GlobalServiceRegister.getDefault().isServiceRegistered(ILibraryManagerUIService.class)) {
+                ILibraryManagerUIService libUiService = GlobalServiceRegister.getDefault()
+                        .getService(ILibraryManagerUIService.class);
+                libUiService.installModules(modulesNotFound);
+                List<ModuleNeeded> retrievedModules = new ArrayList<>(modulesNotFound);
+                modulesNotFound.clear();
+                allIsOK = true;
+                boolean needResetModulesNeeded = false;
+                for (ModuleNeeded module : retrievedModules) {
+                    if (!retrieve(module, pathToStore, false, false)) {
+                        modulesNotFound.add(module);
+                        allIsOK = false;
+                    } else {
+                        needResetModulesNeeded = true;
+                    }
+                }
+                if (needResetModulesNeeded) {
+                    if (GlobalServiceRegister.getDefault().isServiceRegistered(ILibrariesService.class)) {
+                        ILibrariesService librariesService = GlobalServiceRegister.getDefault()
+                                .getService(ILibrariesService.class);
+                        librariesService.checkLibraries();
+                    }
+                }
+            }
+        }
+
+        return allIsOK;
+    }
     /*
      * (non-Javadoc)
      *
@@ -684,6 +743,11 @@ public class LocalLibraryManager implements ILibraryManagerService, IChangedLibr
     @Override
     public boolean retrieve(Collection<String> jarsNeeded, String pathToStore, IProgressMonitor... monitorWrap) {
         return retrieve(jarsNeeded, pathToStore, true, monitorWrap);
+    }
+
+    @Override
+    public boolean retrieve(Map<String,String> jarNameToUri, String pathToStore, IProgressMonitor... monitorWrap) {
+        return retrieve(jarNameToUri, pathToStore, true, monitorWrap);
     }
 
     @Override

@@ -76,11 +76,19 @@ import org.talend.core.model.metadata.connection.hive.HiveModeInfo;
 import org.talend.core.model.metadata.types.JavaTypesManager;
 import org.talend.core.prefs.SSLPreferenceConstants;
 import org.talend.core.runtime.CoreRuntimePlugin;
+import org.talend.core.runtime.maven.MavenArtifact;
+import org.talend.core.runtime.maven.MavenUrlHelper;
+import org.talend.core.runtime.services.IGenericDBService;
+import org.talend.core.runtime.services.IGenericWizardService;
+import org.talend.core.runtime.util.GenericTypeUtils;
 import org.talend.core.utils.TalendQuoteUtils;
+import org.talend.daikon.NamedThing;
+import org.talend.daikon.properties.property.Property;
 import org.talend.designer.core.IDesignerCoreService;
 import org.talend.metadata.managment.connection.manager.HiveConnectionManager;
 import org.talend.metadata.managment.hive.EmbeddedHiveDataBaseMetadata;
 import org.talend.metadata.managment.utils.MetadataConnectionUtils;
+import org.talend.migration.IMigrationTask.ExecutionResult;
 import org.talend.repository.ProjectManager;
 import org.talend.utils.exceptions.MissingDriverException;
 import org.talend.utils.sql.ConnectionUtils;
@@ -826,7 +834,7 @@ public class ExtractMetaDataUtils {
      * @param String schemaBase
      */
     public List getConnection(String dbType, String url, String username, String pwd, String dataBase, String schemaBase,
-            final String driverClassName, final String driverJarPath, String dbVersion, String additionalParams) {
+            final String driverClassName, final String driverJarPath,final String driverJarUri, String dbVersion, String additionalParams) {
         boolean isColsed = false;
         List conList = new ArrayList();
         try {
@@ -844,7 +852,7 @@ public class ExtractMetaDataUtils {
                 closeConnection(true); // colse before connection.
                 checkDBConnectionTimeout();
 
-                list = connect(dbType, url, username, pwd, driverClassName, driverJarPath, dbVersion, additionalParams);
+                list = connect(dbType, url, username, pwd, driverClassName, driverJarPath,driverJarUri, dbVersion, additionalParams);
                 if (list != null && list.size() > 0) {
                     for (int i = 0; i < list.size(); i++) {
                         if (list.get(i) instanceof Connection) {
@@ -936,7 +944,7 @@ public class ExtractMetaDataUtils {
      * @throws Exception
      */
     public List connect(String dbType, String url, String username, String pwd, final String driverClassNameArg,
-            final String driverJarPathArg, String dbVersion, String additionalParams) throws Exception {
+            final String driverJarPathArg,final String driverJarUriArg, String dbVersion, String additionalParams) throws Exception {
         Connection connection = null;
         DriverShim wapperDriver = null;
         List conList = new ArrayList();
@@ -1046,42 +1054,55 @@ public class ExtractMetaDataUtils {
                         }
                     }
                 }else if(driverJarPathArg.contains("/")){
+                    Map<String, String> allJarToUriMap = getJarToUriMap(driverJarUriArg);
+                    Map<String,String> noInstalledJarNameToMavenUri = new HashMap<>();
                     if (driverJarPathArg.contains(";")) {
                         String jars[] = driverJarPathArg.split(";");
                         List<String> jarNames = new ArrayList<>();
                         for (String jar : jars) {
-                            String jarName = librairesManagerService.getJarNameFromMavenuri(jar);
+                            String jarName = getDriverJarPath(jar);
                             // TDQ-16842 msjian:sometimes for the import jdbc connection, the jarName is null
                             if (jarName == null) {
                                 jarName = jar.split("/")[1] + ".jar";
                             }
                             // TDQ-16842~
                             if (!new File(getJavaLibPath() + jarName).exists()) {
-                                jarNames.add(jarName);
+                                noInstalledJarNameToMavenUri.put(jarName, allJarToUriMap.get(jarName));
+
                             }
                             jarPathList.add(getJavaLibPath() + jarName);
                         }
-                        librairesManagerService.retrieve(jarNames, getJavaLibPath(), new NullProgressMonitor());
+                        librairesManagerService.retrieve(noInstalledJarNameToMavenUri, getJavaLibPath(), new NullProgressMonitor());
+
                     }else{
-                        String jarName = librairesManagerService.getJarNameFromMavenuri(driverJarPathArg);
+                        String jarName = getDriverJarPath(driverJarPathArg);
                         if (jarName == null) {
                             jarName = driverJarPathArg.split("/")[1] + ".jar";
                         }
                         if (!new File(getJavaLibPath() + jarName).exists()) {
-                            librairesManagerService.retrieve(jarName, getJavaLibPath(), new NullProgressMonitor());
+                            noInstalledJarNameToMavenUri.put(jarName, allJarToUriMap.get(jarName));
+                            librairesManagerService.retrieve(noInstalledJarNameToMavenUri, getJavaLibPath(), new NullProgressMonitor());
                         }
                         jarPathList.add(getJavaLibPath() + jarName);
                     }
                 } else {
+                    Map<String, String> allJarToUriMap = getJarToUriMap(driverJarUriArg);
+                    Map<String,String> noInstalledJarNameToMavenUri = new HashMap<>();
                     if (driverJarPathArg.contains(";")) {
                         String jars[] = driverJarPathArg.split(";");
-                        librairesManagerService.retrieve(Arrays.asList(jars), getJavaLibPath(), new NullProgressMonitor());
+                        for (String jar : jars) {
+                            if (!new File(getJavaLibPath() + jar).exists()) {
+                                noInstalledJarNameToMavenUri.put(jar, allJarToUriMap.get(jar));
+                            } 
+                        }
+                        librairesManagerService.retrieve(noInstalledJarNameToMavenUri, getJavaLibPath(), new NullProgressMonitor());
                         for (String jar : jars) {
                             jarPathList.add(getJavaLibPath() + jar);
                         }
                     } else {
                         if (!new File(getJavaLibPath() + driverJarPathArg).exists()) {
-                            librairesManagerService.retrieve(driverJarPathArg, getJavaLibPath(), new NullProgressMonitor());
+                            noInstalledJarNameToMavenUri.put(driverJarPathArg, allJarToUriMap.get(driverJarPathArg));
+                            librairesManagerService.retrieve(noInstalledJarNameToMavenUri, getJavaLibPath(), new NullProgressMonitor());
                         }
                         jarPathList.add(getJavaLibPath() + driverJarPathArg);
                     }
@@ -1207,6 +1228,37 @@ public class ExtractMetaDataUtils {
         return conList;
     }
 
+    
+    public static String getDriverJarPath(String mvnPath){
+        String mvnUrl = TalendQuoteUtils.removeQuotesIfExist(mvnPath);
+      return MavenUrlHelper.generateModuleNameByMavenURI(mvnUrl);
+    }
+    
+    
+    public Map<String, String> getJarToUriMap(String driverJarUriArg) {
+        Map<String, String> jarNameToMavenUri = new HashMap<>();
+        if (driverJarUriArg != null) {
+            if(driverJarUriArg.contains(";")) {
+                String jarUris[] = driverJarUriArg.split(";");
+                for (String uri : jarUris) {
+                    String removeQuotesUri = TalendQuoteUtils.removeQuotesIfExist(uri);
+                    if (MavenUrlHelper.isMvnUrl(removeQuotesUri)) {
+                        MavenArtifact parseMvnUrl = MavenUrlHelper.parseMvnUrl(removeQuotesUri);
+                        jarNameToMavenUri.put(parseMvnUrl.getFileName(), removeQuotesUri);
+                    }
+                } 
+            }else {
+                String removeQuotesUri = TalendQuoteUtils.removeQuotesIfExist(driverJarUriArg);
+                if (MavenUrlHelper.isMvnUrl(removeQuotesUri)) {
+                    MavenArtifact parseMvnUrl = MavenUrlHelper.parseMvnUrl(removeQuotesUri);
+                    jarNameToMavenUri.put(parseMvnUrl.getFileName(), removeQuotesUri);
+                }
+            }
+            
+        }
+        return jarNameToMavenUri;
+    }
+    
     /**
      * DOC PLV Comment method "setDriverCache".
      *
@@ -1252,7 +1304,7 @@ public class ExtractMetaDataUtils {
     public List getConnectionList(IMetadataConnection metadataConnection) {
         List list = getConnection(metadataConnection.getDbType(), metadataConnection.getUrl(), metadataConnection.getUsername(),
                 metadataConnection.getPassword(), metadataConnection.getDatabase(), metadataConnection.getSchema(),
-                metadataConnection.getDriverClass(), metadataConnection.getDriverJarPath(),
+                metadataConnection.getDriverClass(), metadataConnection.getDriverJarPath(), metadataConnection.getDriverJarUri(),
                 metadataConnection.getDbVersionString(), metadataConnection.getAdditionalParams());
         return list;
     }

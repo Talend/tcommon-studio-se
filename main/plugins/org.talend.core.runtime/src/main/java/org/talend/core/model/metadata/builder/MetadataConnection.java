@@ -35,6 +35,8 @@ public class MetadataConnection implements IMetadataConnection {
     private String driverClass;
 
     private String driverJarPath;
+    
+    private String driverJarUri;
 
     private String url;
 
@@ -495,7 +497,25 @@ public class MetadataConnection implements IMetadataConnection {
     public void setDriverJarPath(String driverJarPath) {
         this.driverJarPath = driverJarPath;
     }
+    
+    /**
+     * Getter for driverJarPath.
+     *
+     * @return the driverJarPath
+     */
+    public String getDriverJarUri() {
+        return this.driverJarUri;
+    }
 
+    /**
+     * Sets the driverJarPath.
+     *
+     * @param driverJarPath the driverJarPath to set
+     */
+    public void setDriverJarUri(String driverJarUri) {
+        this.driverJarUri = driverJarUri;
+    }
+    
     /**
      * Getter for dbVersionString.
      *

@@ -44,6 +44,10 @@ public interface IMetadataConnection extends IMetadata {
     public String getDriverJarPath();
 
     public void setDriverJarPath(String driverJarPath);
+    
+    public String getDriverJarUri();
+
+    public void setDriverJarUri(String driverJarUri);
 
     public String getDriverClass();
 

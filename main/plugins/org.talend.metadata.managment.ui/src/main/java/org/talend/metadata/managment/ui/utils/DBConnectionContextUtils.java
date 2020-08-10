@@ -829,6 +829,7 @@ public final class DBConnectionContextUtils {
         String additionParam = ConnectionContextHelper.getOriginalValue(contextType, dbConn.getAdditionalParams());
         String driverClassName = ConnectionContextHelper.getOriginalValue(contextType, dbConn.getDriverClass());
         String driverJarPath = ConnectionContextHelper.getOriginalValue(contextType, dbConn.getDriverJarPath());
+        String driverJarUri = ConnectionContextHelper.getOriginalValue(contextType, dbConn.getDriverJarUri());
         String dbVersionString = ConnectionContextHelper.getOriginalValue(contextType, dbConn.getDbVersionString());
 
         filePath = TalendQuoteUtils.removeQuotes(filePath);
@@ -856,7 +857,7 @@ public final class DBConnectionContextUtils {
         }
         // set the value
         managerConnection.setValue(0, dbType, urlConnection, server, username, password, sidOrDatabase, port, filePath,
-                datasource, schemaOracle, additionParam, driverClassName, driverJarPath, dbVersionString);
+                datasource, schemaOracle, additionParam, driverClassName, driverJarPath,driverJarUri, dbVersionString);
         managerConnection.setDbRootPath(dbRootPath);
 
         return urlConnection;
@@ -978,7 +979,7 @@ public final class DBConnectionContextUtils {
         String url = ConnectionContextHelper.getOriginalValue(contextType, dbConn.getURL());
         String className = ConnectionContextHelper.getOriginalValue(contextType, dbConn.getDriverClass());
         String jarPath = ConnectionContextHelper.getOriginalValue(contextType, dbConn.getDriverJarPath());
-
+        String jarUri = ConnectionContextHelper.getOriginalValue(contextType, dbConn.getDriverJarUri());
         // hyWang add for bug 0007252
         String dbmsID = ConnectionContextHelper.getOriginalValue(contextType, dbConn.getDbmsId());
 
@@ -995,6 +996,7 @@ public final class DBConnectionContextUtils {
         cloneConn.setSID(sidOrDatabase);
         cloneConn.setUsername(username);
         cloneConn.setDriverJarPath(jarPath);
+        cloneConn.setDriverJarUri(jarUri);
 
         cloneConn.setComment(dbConn.getComment());
         cloneConn.setDatabaseType(dbConn.getDatabaseType());

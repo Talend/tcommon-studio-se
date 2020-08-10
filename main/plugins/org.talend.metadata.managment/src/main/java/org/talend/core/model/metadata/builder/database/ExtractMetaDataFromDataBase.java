@@ -298,13 +298,13 @@ public class ExtractMetaDataFromDataBase {
      * @return ConnectionStatus : the result of connection(boolean Result, String messageException)
      */
     public static ConnectionStatus testConnection(String dbType, String url, String username, String pwd, String schema,
-            final String driverClassName, final String driverJarPath, String dbVersionString, String additionalParam) {
-        return testConnection(dbType, url, username, pwd, schema, driverClassName, driverJarPath, dbVersionString,
+            final String driverClassName, final String driverJarPath,final String driverJarUri, String dbVersionString, String additionalParam) {
+        return testConnection(dbType, url, username, pwd, schema, driverClassName, driverJarPath,driverJarUri, dbVersionString,
                 additionalParam, null, null);
     }
 
     public static ConnectionStatus testConnection(String dbType, String url, String username, String pwd, String schema,
-            final String driverClassName, final String driverJarPath, String dbVersionString, String additionalParam,
+            final String driverClassName, final String driverJarPath,final String driverJarUri, String dbVersionString, String additionalParam,
             StringBuffer retProposedSchema, String sidOrDatabase) {
         Connection connection = null;
         ConnectionStatus connectionStatus = new ConnectionStatus();
@@ -313,7 +313,7 @@ public class ExtractMetaDataFromDataBase {
         try {
             List list = new ArrayList();
 
-            list = ExtractMetaDataUtils.getInstance().connect(dbType, url, username, pwd, driverClassName, driverJarPath,
+            list = ExtractMetaDataUtils.getInstance().connect(dbType, url, username, pwd, driverClassName, driverJarPath,driverJarUri,
                     dbVersionString, additionalParam);
             if (list != null && list.size() > 0) {
                 for (int i = 0; i < list.size(); i++) {
@@ -496,7 +496,7 @@ public class ExtractMetaDataFromDataBase {
 
         List list = metaData.getConnection(iMetadataConnection.getDbType(), url, iMetadataConnection.getUsername(),
                 iMetadataConnection.getPassword(), iMetadataConnection.getDatabase(), iMetadataConnection.getSchema(),
-                iMetadataConnection.getDriverClass(), iMetadataConnection.getDriverJarPath(),
+                iMetadataConnection.getDriverClass(), iMetadataConnection.getDriverJarPath(),iMetadataConnection.getDriverJarUri(),
                 iMetadataConnection.getDbVersionString(), iMetadataConnection.getAdditionalParams());
         Connection conn = null;
         DriverShim wapperDriver = null;
@@ -580,7 +580,7 @@ public class ExtractMetaDataFromDataBase {
         ExtractMetaDataUtils extractMeta = ExtractMetaDataUtils.getInstance();
         List list = extractMeta.getConnection(iMetadataConnection.getDbType(), iMetadataConnection.getUrl(),
                 iMetadataConnection.getUsername(), iMetadataConnection.getPassword(), iMetadataConnection.getDatabase(),
-                iMetadataConnection.getSchema(), iMetadataConnection.getDriverClass(), iMetadataConnection.getDriverJarPath(),
+                iMetadataConnection.getSchema(), iMetadataConnection.getDriverClass(), iMetadataConnection.getDriverJarPath(),iMetadataConnection.getDriverJarUri(),
                 iMetadataConnection.getDbVersionString(), iMetadataConnection.getAdditionalParams());
         DriverShim wapperDriver = null;
         if (list != null && list.size() > 0) {

@@ -27,6 +27,7 @@ import org.talend.core.model.metadata.builder.connection.DatabaseConnection;
  * <ul>
  *   <li>{@link org.talend.core.model.metadata.builder.connection.impl.DatabaseConnectionImpl#getDatabaseType <em>Database Type</em>}</li>
  *   <li>{@link org.talend.core.model.metadata.builder.connection.impl.DatabaseConnectionImpl#getDriverJarPath <em>Driver Jar Path</em>}</li>
+ *   <li>{@link org.talend.core.model.metadata.builder.connection.impl.DatabaseConnectionImpl#getDriverJarUri <em>Driver Jar Uri</em>}</li>
  *   <li>{@link org.talend.core.model.metadata.builder.connection.impl.DatabaseConnectionImpl#getDriverClass <em>Driver Class</em>}</li>
  *   <li>{@link org.talend.core.model.metadata.builder.connection.impl.DatabaseConnectionImpl#getURL <em>URL</em>}</li>
  *   <li>{@link org.talend.core.model.metadata.builder.connection.impl.DatabaseConnectionImpl#getDbVersionString <em>Db Version String</em>}</li>
@@ -96,6 +97,26 @@ public class DatabaseConnectionImpl extends ConnectionImpl implements DatabaseCo
      * @ordered
      */
     protected String driverJarPath = DRIVER_JAR_PATH_EDEFAULT;
+
+    /**
+     * The default value of the '{@link #getDriverJarUri() <em>Driver Jar Uri</em>}' attribute.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @see #getDriverJarUri()
+     * @generated
+     * @ordered
+     */
+    protected static final String DRIVER_JAR_URI_EDEFAULT = null;
+
+    /**
+     * The cached value of the '{@link #getDriverJarUri() <em>Driver Jar Uri</em>}' attribute.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @see #getDriverJarUri()
+     * @generated
+     * @ordered
+     */
+    protected String driverJarUri = DRIVER_JAR_URI_EDEFAULT;
 
     /**
      * The default value of the '{@link #getDriverClass() <em>Driver Class</em>}' attribute.
@@ -616,8 +637,30 @@ public class DatabaseConnectionImpl extends ConnectionImpl implements DatabaseCo
         String oldDriverJarPath = driverJarPath;
         driverJarPath = newDriverJarPath;
         if (eNotificationRequired())
-            eNotify(new ENotificationImpl(this, Notification.SET, ConnectionPackage.DATABASE_CONNECTION__DRIVER_JAR_PATH,
-                    oldDriverJarPath, driverJarPath));
+            eNotify(new ENotificationImpl(this, Notification.SET,
+                    ConnectionPackage.DATABASE_CONNECTION__DRIVER_JAR_PATH, oldDriverJarPath, driverJarPath));
+    }
+
+    /**
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     */
+    public String getDriverJarUri() {
+        return driverJarUri;
+    }
+
+    /**
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     */
+    public void setDriverJarUri(String newDriverJarUri) {
+        String oldDriverJarUri = driverJarUri;
+        driverJarUri = newDriverJarUri;
+        if (eNotificationRequired())
+            eNotify(new ENotificationImpl(this, Notification.SET, ConnectionPackage.DATABASE_CONNECTION__DRIVER_JAR_URI,
+                    oldDriverJarUri, driverJarUri));
     }
 
     /**
@@ -656,7 +699,8 @@ public class DatabaseConnectionImpl extends ConnectionImpl implements DatabaseCo
         String oldURL = url;
         url = newURL;
         if (eNotificationRequired())
-            eNotify(new ENotificationImpl(this, Notification.SET, ConnectionPackage.DATABASE_CONNECTION__URL, oldURL, url));
+            eNotify(new ENotificationImpl(this, Notification.SET, ConnectionPackage.DATABASE_CONNECTION__URL, oldURL,
+                    url));
     }
 
     /**
@@ -675,8 +719,8 @@ public class DatabaseConnectionImpl extends ConnectionImpl implements DatabaseCo
         String oldDbVersionString = dbVersionString;
         dbVersionString = newDbVersionString;
         if (eNotificationRequired())
-            eNotify(new ENotificationImpl(this, Notification.SET, ConnectionPackage.DATABASE_CONNECTION__DB_VERSION_STRING,
-                    oldDbVersionString, dbVersionString));
+            eNotify(new ENotificationImpl(this, Notification.SET,
+                    ConnectionPackage.DATABASE_CONNECTION__DB_VERSION_STRING, oldDbVersionString, dbVersionString));
     }
 
     /**
@@ -695,7 +739,8 @@ public class DatabaseConnectionImpl extends ConnectionImpl implements DatabaseCo
         String oldPort = port;
         port = newPort;
         if (eNotificationRequired())
-            eNotify(new ENotificationImpl(this, Notification.SET, ConnectionPackage.DATABASE_CONNECTION__PORT, oldPort, port));
+            eNotify(new ENotificationImpl(this, Notification.SET, ConnectionPackage.DATABASE_CONNECTION__PORT, oldPort,
+                    port));
     }
 
     /**
@@ -714,8 +759,8 @@ public class DatabaseConnectionImpl extends ConnectionImpl implements DatabaseCo
         String oldUsername = username;
         username = newUsername;
         if (eNotificationRequired())
-            eNotify(new ENotificationImpl(this, Notification.SET, ConnectionPackage.DATABASE_CONNECTION__USERNAME, oldUsername,
-                    username));
+            eNotify(new ENotificationImpl(this, Notification.SET, ConnectionPackage.DATABASE_CONNECTION__USERNAME,
+                    oldUsername, username));
     }
 
     /**
@@ -738,8 +783,8 @@ public class DatabaseConnectionImpl extends ConnectionImpl implements DatabaseCo
         String oldPassword = password;
         password = newPassword;
         if (eNotificationRequired())
-            eNotify(new ENotificationImpl(this, Notification.SET, ConnectionPackage.DATABASE_CONNECTION__PASSWORD, oldPassword,
-                    password));
+            eNotify(new ENotificationImpl(this, Notification.SET, ConnectionPackage.DATABASE_CONNECTION__PASSWORD,
+                    oldPassword, password));
     }
 
     public void setRawPassword(String value) {
@@ -782,8 +827,8 @@ public class DatabaseConnectionImpl extends ConnectionImpl implements DatabaseCo
         String oldDatasourceName = datasourceName;
         datasourceName = newDatasourceName;
         if (eNotificationRequired())
-            eNotify(new ENotificationImpl(this, Notification.SET, ConnectionPackage.DATABASE_CONNECTION__DATASOURCE_NAME,
-                    oldDatasourceName, datasourceName));
+            eNotify(new ENotificationImpl(this, Notification.SET,
+                    ConnectionPackage.DATABASE_CONNECTION__DATASOURCE_NAME, oldDatasourceName, datasourceName));
     }
 
     /**
@@ -802,8 +847,8 @@ public class DatabaseConnectionImpl extends ConnectionImpl implements DatabaseCo
         String oldFileFieldName = fileFieldName;
         fileFieldName = newFileFieldName;
         if (eNotificationRequired())
-            eNotify(new ENotificationImpl(this, Notification.SET, ConnectionPackage.DATABASE_CONNECTION__FILE_FIELD_NAME,
-                    oldFileFieldName, fileFieldName));
+            eNotify(new ENotificationImpl(this, Notification.SET,
+                    ConnectionPackage.DATABASE_CONNECTION__FILE_FIELD_NAME, oldFileFieldName, fileFieldName));
     }
 
     /**
@@ -822,7 +867,8 @@ public class DatabaseConnectionImpl extends ConnectionImpl implements DatabaseCo
         String oldSID = sid;
         sid = newSID;
         if (eNotificationRequired())
-            eNotify(new ENotificationImpl(this, Notification.SET, ConnectionPackage.DATABASE_CONNECTION__SID, oldSID, sid));
+            eNotify(new ENotificationImpl(this, Notification.SET, ConnectionPackage.DATABASE_CONNECTION__SID, oldSID,
+                    sid));
     }
 
     /**
@@ -881,8 +927,8 @@ public class DatabaseConnectionImpl extends ConnectionImpl implements DatabaseCo
         String oldNullChar = nullChar;
         nullChar = newNullChar;
         if (eNotificationRequired())
-            eNotify(new ENotificationImpl(this, Notification.SET, ConnectionPackage.DATABASE_CONNECTION__NULL_CHAR, oldNullChar,
-                    nullChar));
+            eNotify(new ENotificationImpl(this, Notification.SET, ConnectionPackage.DATABASE_CONNECTION__NULL_CHAR,
+                    oldNullChar, nullChar));
     }
 
     /**
@@ -901,8 +947,8 @@ public class DatabaseConnectionImpl extends ConnectionImpl implements DatabaseCo
         String oldDbmsId = dbmsId;
         dbmsId = newDbmsId;
         if (eNotificationRequired())
-            eNotify(new ENotificationImpl(this, Notification.SET, ConnectionPackage.DATABASE_CONNECTION__DBMS_ID, oldDbmsId,
-                    dbmsId));
+            eNotify(new ENotificationImpl(this, Notification.SET, ConnectionPackage.DATABASE_CONNECTION__DBMS_ID,
+                    oldDbmsId, dbmsId));
     }
 
     /**
@@ -921,8 +967,8 @@ public class DatabaseConnectionImpl extends ConnectionImpl implements DatabaseCo
         String oldProductId = productId;
         productId = newProductId;
         if (eNotificationRequired())
-            eNotify(new ENotificationImpl(this, Notification.SET, ConnectionPackage.DATABASE_CONNECTION__PRODUCT_ID, oldProductId,
-                    productId));
+            eNotify(new ENotificationImpl(this, Notification.SET, ConnectionPackage.DATABASE_CONNECTION__PRODUCT_ID,
+                    oldProductId, productId));
     }
 
     /**
@@ -961,8 +1007,8 @@ public class DatabaseConnectionImpl extends ConnectionImpl implements DatabaseCo
         String oldAdditionalParams = additionalParams;
         additionalParams = newAdditionalParams;
         if (eNotificationRequired())
-            eNotify(new ENotificationImpl(this, Notification.SET, ConnectionPackage.DATABASE_CONNECTION__ADDITIONAL_PARAMS,
-                    oldAdditionalParams, additionalParams));
+            eNotify(new ENotificationImpl(this, Notification.SET,
+                    ConnectionPackage.DATABASE_CONNECTION__ADDITIONAL_PARAMS, oldAdditionalParams, additionalParams));
     }
 
     /**
@@ -1001,8 +1047,8 @@ public class DatabaseConnectionImpl extends ConnectionImpl implements DatabaseCo
         boolean oldSystemSQL = systemSQL;
         systemSQL = newSystemSQL;
         if (eNotificationRequired())
-            eNotify(new ENotificationImpl(this, Notification.SET, ConnectionPackage.DATABASE_CONNECTION__SYSTEM_SQL, oldSystemSQL,
-                    systemSQL));
+            eNotify(new ENotificationImpl(this, Notification.SET, ConnectionPackage.DATABASE_CONNECTION__SYSTEM_SQL,
+                    oldSystemSQL, systemSQL));
     }
 
     /**
@@ -1018,13 +1064,14 @@ public class DatabaseConnectionImpl extends ConnectionImpl implements DatabaseCo
                 NotificationChain msgs = oldCdcConns.eInverseRemove(this, ConnectionPackage.CDC_CONNECTION__CONNECTION,
                         CDCConnection.class, null);
                 if (newCdcConns.eInternalContainer() == null) {
-                    msgs = newCdcConns.eInverseAdd(this, ConnectionPackage.CDC_CONNECTION__CONNECTION, CDCConnection.class, msgs);
+                    msgs = newCdcConns.eInverseAdd(this, ConnectionPackage.CDC_CONNECTION__CONNECTION,
+                            CDCConnection.class, msgs);
                 }
                 if (msgs != null)
                     msgs.dispatch();
                 if (eNotificationRequired())
-                    eNotify(new ENotificationImpl(this, Notification.RESOLVE, ConnectionPackage.DATABASE_CONNECTION__CDC_CONNS,
-                            oldCdcConns, cdcConns));
+                    eNotify(new ENotificationImpl(this, Notification.RESOLVE,
+                            ConnectionPackage.DATABASE_CONNECTION__CDC_CONNS, oldCdcConns, cdcConns));
             }
         }
         return cdcConns;
@@ -1073,8 +1120,8 @@ public class DatabaseConnectionImpl extends ConnectionImpl implements DatabaseCo
             if (msgs != null)
                 msgs.dispatch();
         } else if (eNotificationRequired())
-            eNotify(new ENotificationImpl(this, Notification.SET, ConnectionPackage.DATABASE_CONNECTION__CDC_CONNS, newCdcConns,
-                    newCdcConns));
+            eNotify(new ENotificationImpl(this, Notification.SET, ConnectionPackage.DATABASE_CONNECTION__CDC_CONNS,
+                    newCdcConns, newCdcConns));
     }
 
     /**
@@ -1115,8 +1162,8 @@ public class DatabaseConnectionImpl extends ConnectionImpl implements DatabaseCo
         boolean oldSQLModeESet = sqlModeESet;
         sqlModeESet = true;
         if (eNotificationRequired())
-            eNotify(new ENotificationImpl(this, Notification.SET, ConnectionPackage.DATABASE_CONNECTION__SQL_MODE, oldSQLMode,
-                    sqlMode, !oldSQLModeESet));
+            eNotify(new ENotificationImpl(this, Notification.SET, ConnectionPackage.DATABASE_CONNECTION__SQL_MODE,
+                    oldSQLMode, sqlMode, !oldSQLModeESet));
     }
 
     /**
@@ -1129,8 +1176,8 @@ public class DatabaseConnectionImpl extends ConnectionImpl implements DatabaseCo
         sqlMode = SQL_MODE_EDEFAULT;
         sqlModeESet = false;
         if (eNotificationRequired())
-            eNotify(new ENotificationImpl(this, Notification.UNSET, ConnectionPackage.DATABASE_CONNECTION__SQL_MODE, oldSQLMode,
-                    SQL_MODE_EDEFAULT, oldSQLModeESet));
+            eNotify(new ENotificationImpl(this, Notification.UNSET, ConnectionPackage.DATABASE_CONNECTION__SQL_MODE,
+                    oldSQLMode, SQL_MODE_EDEFAULT, oldSQLModeESet));
     }
 
     /**
@@ -1157,8 +1204,8 @@ public class DatabaseConnectionImpl extends ConnectionImpl implements DatabaseCo
         String oldUiSchema = uiSchema;
         uiSchema = newUiSchema;
         if (eNotificationRequired())
-            eNotify(new ENotificationImpl(this, Notification.SET, ConnectionPackage.DATABASE_CONNECTION__UI_SCHEMA, oldUiSchema,
-                    uiSchema));
+            eNotify(new ENotificationImpl(this, Notification.SET, ConnectionPackage.DATABASE_CONNECTION__UI_SCHEMA,
+                    oldUiSchema, uiSchema));
     }
 
     /**
@@ -1214,6 +1261,8 @@ public class DatabaseConnectionImpl extends ConnectionImpl implements DatabaseCo
             return getDatabaseType();
         case ConnectionPackage.DATABASE_CONNECTION__DRIVER_JAR_PATH:
             return getDriverJarPath();
+        case ConnectionPackage.DATABASE_CONNECTION__DRIVER_JAR_URI:
+            return getDriverJarUri();
         case ConnectionPackage.DATABASE_CONNECTION__DRIVER_CLASS:
             return getDriverClass();
         case ConnectionPackage.DATABASE_CONNECTION__URL:
@@ -1282,6 +1331,8 @@ public class DatabaseConnectionImpl extends ConnectionImpl implements DatabaseCo
             return getDatabaseType();
         case ConnectionPackage.DATABASE_CONNECTION__DRIVER_JAR_PATH:
             return getDriverJarPath();
+        case ConnectionPackage.DATABASE_CONNECTION__DRIVER_JAR_URI:
+            return getDriverJarUri();
         case ConnectionPackage.DATABASE_CONNECTION__DRIVER_CLASS:
             return getDriverClass();
         case ConnectionPackage.DATABASE_CONNECTION__URL:
@@ -1351,6 +1402,9 @@ public class DatabaseConnectionImpl extends ConnectionImpl implements DatabaseCo
             return;
         case ConnectionPackage.DATABASE_CONNECTION__DRIVER_JAR_PATH:
             setDriverJarPath((String) newValue);
+            return;
+        case ConnectionPackage.DATABASE_CONNECTION__DRIVER_JAR_URI:
+            setDriverJarUri((String) newValue);
             return;
         case ConnectionPackage.DATABASE_CONNECTION__DRIVER_CLASS:
             setDriverClass((String) newValue);
@@ -1441,6 +1495,9 @@ public class DatabaseConnectionImpl extends ConnectionImpl implements DatabaseCo
         case ConnectionPackage.DATABASE_CONNECTION__DRIVER_JAR_PATH:
             setDriverJarPath(DRIVER_JAR_PATH_EDEFAULT);
             return;
+        case ConnectionPackage.DATABASE_CONNECTION__DRIVER_JAR_URI:
+            setDriverJarUri(DRIVER_JAR_URI_EDEFAULT);
+            return;
         case ConnectionPackage.DATABASE_CONNECTION__DRIVER_CLASS:
             setDriverClass(DRIVER_CLASS_EDEFAULT);
             return;
@@ -1527,7 +1584,11 @@ public class DatabaseConnectionImpl extends ConnectionImpl implements DatabaseCo
         case ConnectionPackage.DATABASE_CONNECTION__DATABASE_TYPE:
             return DATABASE_TYPE_EDEFAULT == null ? databaseType != null : !DATABASE_TYPE_EDEFAULT.equals(databaseType);
         case ConnectionPackage.DATABASE_CONNECTION__DRIVER_JAR_PATH:
-            return DRIVER_JAR_PATH_EDEFAULT == null ? driverJarPath != null : !DRIVER_JAR_PATH_EDEFAULT.equals(driverJarPath);
+            return DRIVER_JAR_PATH_EDEFAULT == null ? driverJarPath != null
+                    : !DRIVER_JAR_PATH_EDEFAULT.equals(driverJarPath);
+        case ConnectionPackage.DATABASE_CONNECTION__DRIVER_JAR_URI:
+            return DRIVER_JAR_URI_EDEFAULT == null ? driverJarUri != null
+                    : !DRIVER_JAR_URI_EDEFAULT.equals(driverJarUri);
         case ConnectionPackage.DATABASE_CONNECTION__DRIVER_CLASS:
             return DRIVER_CLASS_EDEFAULT == null ? driverClass != null : !DRIVER_CLASS_EDEFAULT.equals(driverClass);
         case ConnectionPackage.DATABASE_CONNECTION__URL:
@@ -1544,9 +1605,11 @@ public class DatabaseConnectionImpl extends ConnectionImpl implements DatabaseCo
         case ConnectionPackage.DATABASE_CONNECTION__SERVER_NAME:
             return SERVER_NAME_EDEFAULT == null ? serverName != null : !SERVER_NAME_EDEFAULT.equals(serverName);
         case ConnectionPackage.DATABASE_CONNECTION__DATASOURCE_NAME:
-            return DATASOURCE_NAME_EDEFAULT == null ? datasourceName != null : !DATASOURCE_NAME_EDEFAULT.equals(datasourceName);
+            return DATASOURCE_NAME_EDEFAULT == null ? datasourceName != null
+                    : !DATASOURCE_NAME_EDEFAULT.equals(datasourceName);
         case ConnectionPackage.DATABASE_CONNECTION__FILE_FIELD_NAME:
-            return FILE_FIELD_NAME_EDEFAULT == null ? fileFieldName != null : !FILE_FIELD_NAME_EDEFAULT.equals(fileFieldName);
+            return FILE_FIELD_NAME_EDEFAULT == null ? fileFieldName != null
+                    : !FILE_FIELD_NAME_EDEFAULT.equals(fileFieldName);
         case ConnectionPackage.DATABASE_CONNECTION__SID:
             return SID_EDEFAULT == null ? sid != null : !SID_EDEFAULT.equals(sid);
         case ConnectionPackage.DATABASE_CONNECTION__SQL_SYNTHAX:
@@ -1596,6 +1659,8 @@ public class DatabaseConnectionImpl extends ConnectionImpl implements DatabaseCo
         result.append(databaseType);
         result.append(", DriverJarPath: ");
         result.append(driverJarPath);
+        result.append(", DriverJarUri: ");
+        result.append(driverJarUri);
         result.append(", DriverClass: ");
         result.append(driverClass);
         result.append(", URL: ");

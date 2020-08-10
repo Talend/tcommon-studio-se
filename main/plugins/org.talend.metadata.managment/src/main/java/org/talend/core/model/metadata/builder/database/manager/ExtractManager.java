@@ -468,7 +468,7 @@ public class ExtractManager {
                 List list = extractMeta.getConnection(metadataConnection.getDbType(), metadataConnection.getUrl(),
                         metadataConnection.getUsername(), metadataConnection.getPassword(), metadataConnection.getDatabase(),
                         metadataConnection.getSchema(), metadataConnection.getDriverClass(),
-                        metadataConnection.getDriverJarPath(), metadataConnection.getDbVersionString(),
+                        metadataConnection.getDriverJarPath(),metadataConnection.getDriverJarUri(), metadataConnection.getDbVersionString(),
                         metadataConnection.getAdditionalParams());
                 if (list != null && list.size() > 0) {
                     for (int i = 0; i < list.size(); i++) {
@@ -572,7 +572,7 @@ public class ExtractManager {
                 List list = extractMeta.getConnection(metadataConnection.getDbType(), metadataConnection.getUrl(),
                         metadataConnection.getUsername(), metadataConnection.getPassword(), metadataConnection.getDatabase(),
                         metadataConnection.getSchema(), metadataConnection.getDriverClass(),
-                        metadataConnection.getDriverJarPath(), metadataConnection.getDbVersionString(),
+                        metadataConnection.getDriverJarPath(),metadataConnection.getDriverJarUri(), metadataConnection.getDbVersionString(),
                         metadataConnection.getAdditionalParams());
                 if (list != null && list.size() > 0) {
                     for (int i = 0; i < list.size(); i++) {
@@ -1062,7 +1062,7 @@ public class ExtractManager {
         ExtractMetaDataUtils extractMeta = ExtractMetaDataUtils.getInstance();
         List connList = extractMeta.getConnection(metadataConnection.getDbType(), metadataConnection.getUrl(),
                 metadataConnection.getUsername(), metadataConnection.getPassword(), metadataConnection.getDatabase(),
-                metadataConnection.getSchema(), metadataConnection.getDriverClass(), metadataConnection.getDriverJarPath(),
+                metadataConnection.getSchema(), metadataConnection.getDriverClass(), metadataConnection.getDriverJarPath(),metadataConnection.getDriverJarUri(),
                 metadataConnection.getDbVersionString(), metadataConnection.getAdditionalParams());
         try {
             if (!tableInfoParameters.isUsedName()) {
