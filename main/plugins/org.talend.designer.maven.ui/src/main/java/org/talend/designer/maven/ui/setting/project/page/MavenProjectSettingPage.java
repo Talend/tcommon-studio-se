@@ -25,6 +25,7 @@ import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Text;
+import org.eclipse.ui.forms.IMessage;
 import org.talend.commons.exception.ExceptionHandler;
 import org.talend.core.GlobalServiceRegister;
 import org.talend.core.PluginChecker;
@@ -51,6 +52,8 @@ public class MavenProjectSettingPage extends AbstractProjectSettingPage {
 	private IPreferenceStore preferenceStore;
 
     private Button useProfileModuleCheckbox;
+
+    private Button excludeDeletedItemsCheckbox;
 
 	public MavenProjectSettingPage() {
 		noDefaultAndApplyButton();
@@ -89,12 +92,31 @@ public class MavenProjectSettingPage extends AbstractProjectSettingPage {
         useProfileModuleCheckbox = new Button(parent, SWT.CHECK);
         useProfileModuleCheckbox.setText(Messages.getString("MavenProjectSettingPage.refModuleText")); //$NON-NLS-1$
         useProfileModuleCheckbox.setSelection(preferenceStore.getBoolean(MavenConstants.USE_PROFILE_MODULE));
+        useProfileModuleCheckbox.addSelectionListener(new SelectionAdapter() {
+
+            @Override
+            public void widgetSelected(SelectionEvent e) {
+                addSyncWarning();
+            }
+        });
+
+        excludeDeletedItemsCheckbox = new Button(parent, SWT.CHECK);
+        excludeDeletedItemsCheckbox.setText(Messages.getString("MavenProjectSettingPage.excludeDeletedItems")); //$NON-NLS-1$
+        excludeDeletedItemsCheckbox.setSelection(preferenceStore.getBoolean(MavenConstants.EXCLUDE_DELETED_ITEMS));
+        excludeDeletedItemsCheckbox.addSelectionListener(new SelectionAdapter() {
+
+            @Override
+            public void widgetSelected(SelectionEvent e) {
+                addSyncWarning();
+            }
+        });
 
         filterText.setText(filter);
 		filterText.addModifyListener(new ModifyListener() {
 
 			@Override
 			public void modifyText(ModifyEvent e) {
+                addSyncWarning();
 				if (GlobalServiceRegister.getDefault().isServiceRegistered(IFilterService.class)) {
 					IFilterService service = (IFilterService) GlobalServiceRegister.getDefault()
 							.getService(IFilterService.class);
@@ -122,6 +144,7 @@ public class MavenProjectSettingPage extends AbstractProjectSettingPage {
 				try {
                     preferenceStore.setValue(MavenConstants.POM_FILTER, getRealVersionFilter(filter));
                     preferenceStore.setValue(MavenConstants.USE_PROFILE_MODULE, useProfileModuleCheckbox.getSelection());
+                    preferenceStore.setValue(MavenConstants.EXCLUDE_DELETED_ITEMS, excludeDeletedItemsCheckbox.getSelection());
 					new AggregatorPomsHelper().syncAllPoms();
 				} catch (Exception e) {
 					ExceptionHandler.process(e);
@@ -135,12 +158,17 @@ public class MavenProjectSettingPage extends AbstractProjectSettingPage {
 
 	}
 
+    private void addSyncWarning() {
+        setMessage(Messages.getString("MavenProjectSettingPage.syncAllPomsWarning"), IMessage.WARNING); //$NON-NLS-1$
+    }
+
 	@Override
 	public boolean performOk() {
 		boolean ok = super.performOk();
 		if (preferenceStore != null) {
             preferenceStore.setValue(MavenConstants.POM_FILTER, getRealVersionFilter(filter));
             preferenceStore.setValue(MavenConstants.USE_PROFILE_MODULE, useProfileModuleCheckbox.getSelection());
+            preferenceStore.setValue(MavenConstants.EXCLUDE_DELETED_ITEMS, excludeDeletedItemsCheckbox.getSelection());
 		}
 		return ok;
 	}

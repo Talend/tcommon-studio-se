@@ -312,6 +312,10 @@ public interface INode extends IElement {
 
     public boolean isSubtreeStart();
 
+    default public IReplaceNodeHandler getReplaceNodeHandler() {
+        return null;
+    }
+
     public void setComponentProperties(ComponentProperties props);
 
     public ComponentProperties getComponentProperties();
