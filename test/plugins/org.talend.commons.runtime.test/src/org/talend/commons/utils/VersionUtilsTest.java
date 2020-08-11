@@ -60,32 +60,6 @@ public class VersionUtilsTest {
         assertEquals(studioVersion, talendVersion);
     }
 
-    @Test
-    public void testGetMojoVersion() throws Exception {
-        testMojoVersion(MojoType.CI_BUILDER, "-SNAPSHOT");
-        testMojoVersion(MojoType.CI_BUILDER, "-M3");
-        testMojoVersion(MojoType.CI_BUILDER, "");
-    }
-
-    private void testMojoVersion(MojoType mojoType, String testVersion) throws Exception {
-        System.setProperty(mojoType.getVersionKey(), "");
-
-        String talendVersion = VersionUtils.getTalendVersion();
-        File artifactIdFolder = new File(mojoType.getMojoArtifactIdFolder());
-        String majorVersion = StringUtils.substringBeforeLast(talendVersion, ".");
-        String minorVersion = StringUtils.substringAfterLast(talendVersion, ".");
-        minorVersion = (Integer.valueOf(minorVersion) + 2) + "";
-        testVersion = majorVersion + "." + minorVersion + testVersion;
-        File versionFolder = new File(artifactIdFolder, testVersion);
-        versionFolder.mkdir();
-        new File(versionFolder, mojoType.getArtifactId() + "-" + testVersion + ".jar").createNewFile();
-        new File(versionFolder, mojoType.getArtifactId() + "-" + testVersion + ".pom").createNewFile();
-
-        assertEquals(testVersion, VersionUtils.getMojoVersion(mojoType));
-
-        FilesUtils.deleteFolder(versionFolder, true);
-    }
-
     private void backupEcilpseproductFile() throws Exception {
         File installFolder = URIUtil.toFile(URIUtil.toURI(Platform.getInstallLocation().getURL()));
         eclipseproductFile = new File(installFolder, ".eclipseproduct");//$NON-NLS-1$
