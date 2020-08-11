@@ -586,7 +586,7 @@ public class ModuleNeeded {
                 if (mvnUrisFromIndex != null) {
                     mavenUri = MavenUrlHelper.addTypeForMavenUri(mvnUrisFromIndex, getModuleName());
                 } else {
-                    mavenUri = MavenUrlHelper.generateMvnUrlForJarName(getModuleName(), true, true);
+                    mavenUri = MavenUrlHelper.generateMvnUrlForJarName(getModuleName(), true, !useReleaseVersion);
                 }
             } else {
                 mavenUri = mavenUriFromConfiguration;
