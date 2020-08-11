@@ -83,7 +83,7 @@
       <systemRoutine
             name="Document">
          <library
-               name="dom4j-2.1.1.jar">
+               name="dom4j-2.1.3.jar">
             <bundleId
                   bundleId="org.apache.servicemix.bundles.dom4j">
             </bundleId>
@@ -92,7 +92,7 @@
       <systemRoutine
             name="DocumentHelper">
          <library
-               name="dom4j-2.1.1.jar">
+               name="dom4j-2.1.3.jar">
             <bundleId
                   bundleId="org.apache.servicemix.bundles.dom4j">
             </bundleId>
@@ -101,7 +101,7 @@
       <systemRoutine
             name="DocumentToFlat">
          <library
-               name="dom4j-2.1.1.jar">
+               name="dom4j-2.1.3.jar">
             <bundleId
                   bundleId="org.apache.servicemix.bundles.dom4j">
             </bundleId>
@@ -110,7 +110,7 @@
       <systemRoutine
             name="NameSpaceTool">
          <library
-               name="dom4j-2.1.1.jar">
+               name="dom4j-2.1.3.jar">
             <bundleId
                   bundleId="org.apache.servicemix.bundles.dom4j">
             </bundleId>
@@ -119,7 +119,7 @@
       <systemRoutine
             name="ParserUtils">
          <library
-               name="dom4j-2.1.1.jar">
+               name="dom4j-2.1.3.jar">
             <bundleId
                   bundleId="org.apache.servicemix.bundles.dom4j">
             </bundleId>
@@ -128,7 +128,7 @@
       <systemRoutine
             name="TalendMDMJob">
          <library
-               name="dom4j-2.1.1.jar">
+               name="dom4j-2.1.3.jar">
             <bundleId
                   bundleId="org.apache.servicemix.bundles.dom4j">
             </bundleId>
