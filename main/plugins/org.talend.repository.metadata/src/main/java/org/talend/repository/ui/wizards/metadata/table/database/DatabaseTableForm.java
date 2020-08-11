@@ -1310,8 +1310,14 @@ public class DatabaseTableForm extends AbstractForm {
     private String getPatternFromMapping(MappingTypeRetriever mappingTypeRetriever, String dbType) {
         boolean isMyssql = EDatabaseTypeName.MSSQL.getDisplayName().equals(metadataconnection.getDbType());
         String pattern1 = mappingTypeRetriever.getDefaultPattern(metadataconnection.getMapping(), dbType);
+        if (isMyssql) {
+            if ("TIME".equals(dbType)) {
+                return StringUtils.isNotBlank(pattern1) ? TalendQuoteUtils.addQuotes(pattern1)
+                        : TalendQuoteUtils.addQuotes("HH:mm:ss");//$NON-NLS-1$
+            }
+        }
         return StringUtils.isNotBlank(pattern1) ? TalendQuoteUtils.addQuotes(pattern1)
-                : isMyssql ? TalendQuoteUtils.addQuotes("HH:mm:ss"):TalendQuoteUtils.addQuotes("dd-MM-yyyy");//$NON-NLS-1$ 
+                : TalendQuoteUtils.addQuotes("dd-MM-yyyy");//$NON-NLS-1$
     }
 
     /*
