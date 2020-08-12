@@ -17,6 +17,7 @@ import java.io.IOException;
 import java.net.URI;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.ConcurrentHashMap;
 
 import org.apache.commons.codec.binary.Base64;
 import org.apache.http.Header;
@@ -30,12 +31,14 @@ import org.apache.log4j.Logger;
 import org.eclipse.m2e.core.MavenPlugin;
 import org.talend.commons.exception.ExceptionHandler;
 import org.talend.commons.utils.network.TalendProxySelector.IProxySelectorProvider;
+import org.talend.core.nexus.ArtifactRepositoryBean;
 import org.talend.core.nexus.HttpClientTransport;
 import org.talend.core.nexus.IRepositoryArtifactHandler;
 import org.talend.core.nexus.NexusServerUtils;
 import org.talend.core.runtime.maven.MavenArtifact;
 import org.talend.core.runtime.maven.MavenUrlHelper;
 import org.talend.designer.maven.aether.RepositorySystemFactory;
+import org.talend.librariesmanager.nexus.nexus3.handler.AbsNexus3SearchHandler;
 import org.talend.librariesmanager.nexus.nexus3.handler.INexus3SearchHandler;
 import org.talend.librariesmanager.nexus.nexus3.handler.Nexus3BetaSearchHandler;
 import org.talend.librariesmanager.nexus.nexus3.handler.Nexus3ScriptSearchHandler;
@@ -51,10 +54,10 @@ public class Nexus3RepositoryHandler extends AbstractArtifactRepositoryHandler {
 
     private String REP_PREFIX_PATH = "/repository/";
 
-    private INexus3SearchHandler currentQueryHandler = null;
+    private ThreadLocal<INexus3SearchHandler> currentQueryHandlerCopy = new ThreadLocal<INexus3SearchHandler>();
 
-    private static List<INexus3SearchHandler> queryHandlerList = new ArrayList<INexus3SearchHandler>();
-
+    private static final ConcurrentHashMap<ArtifactRepositoryBean, INexus3SearchHandler> LAST_HANDLER_MAP = new ConcurrentHashMap<ArtifactRepositoryBean, INexus3SearchHandler>();
+    
     @Override
     public IRepositoryArtifactHandler clone() {
         return new Nexus3RepositoryHandler();
@@ -143,15 +146,19 @@ public class Nexus3RepositoryHandler extends AbstractArtifactRepositoryHandler {
 
     private List<MavenArtifact> doSearch(String repositoryId, String groupIdToSearch, String artifactId, String versionToSearch)
             throws Exception {
+        INexus3SearchHandler currentQueryHandler = currentQueryHandlerCopy.get();
         if (currentQueryHandler == null) {
-            currentQueryHandler = getQueryHandler();
+            currentQueryHandler = LAST_HANDLER_MAP.get(serverBean);
+            if (currentQueryHandler == null) {
+                currentQueryHandler = createQueryHandler(0);
+            }
         }
         List<MavenArtifact> result = new ArrayList<MavenArtifact>();
         try {
             result = currentQueryHandler.search(repositoryId, groupIdToSearch, artifactId, versionToSearch);
         } catch (Exception ex) {
-            for (int i = 0; i < queryHandlerList.size(); i++) {// Try to other version
-                INexus3SearchHandler handler = queryHandlerList.get(i);
+            for (int i = 0; i < 3; i++) {// Try to other version
+                INexus3SearchHandler handler = createQueryHandler(i);
                 if (handler != currentQueryHandler) {
                     try {
                         result = handler.search(repositoryId, groupIdToSearch, artifactId, versionToSearch);
@@ -165,16 +172,24 @@ public class Nexus3RepositoryHandler extends AbstractArtifactRepositoryHandler {
                 }
             }
         }
+        currentQueryHandlerCopy.set(currentQueryHandler);
+        LAST_HANDLER_MAP.put(serverBean, currentQueryHandler);
         return result;
     }
 
-    private INexus3SearchHandler getQueryHandler() {
-        if (queryHandlerList.size() == 0) {
-            queryHandlerList.add(new Nexus3V1SearchHandler(serverBean));
-            queryHandlerList.add(new Nexus3BetaSearchHandler(serverBean));
-            queryHandlerList.add(new Nexus3ScriptSearchHandler(serverBean));
+    private AbsNexus3SearchHandler createQueryHandler(int seq) {
+        AbsNexus3SearchHandler retHandler;
+        switch (seq) {
+        case 1:
+            retHandler = new Nexus3BetaSearchHandler(serverBean);
+            break;
+        case 2:
+            retHandler = new Nexus3ScriptSearchHandler(serverBean);
+            break;
+        default:
+            retHandler = new Nexus3V1SearchHandler(serverBean);
         }
-        return queryHandlerList.get(0);
+        return retHandler;
     }
 
     /*

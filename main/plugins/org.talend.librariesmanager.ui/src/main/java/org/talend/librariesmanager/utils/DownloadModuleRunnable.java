@@ -13,6 +13,7 @@
 package org.talend.librariesmanager.utils;
 
 import java.net.URL;
+import java.util.Arrays;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -46,6 +47,8 @@ abstract public class DownloadModuleRunnable implements IRunnableWithProgress {
     protected Set<String> installedModules;
 
     private boolean checkLibraries;
+
+    private boolean showErrorInDialog = true;
 
     /**
      * DOC sgandon DownloadModuleRunnable constructor comment.
@@ -130,6 +133,13 @@ abstract public class DownloadModuleRunnable implements IRunnableWithProgress {
                 downloadFailed.add(module.getName());
             }
         }
+
+        if (showErrorInDialog && !downloadFailed.isEmpty()) {
+            Exception ex = new Exception(Messages.getString("DownloadModuleRunnable.jar.download.failed",
+                    Arrays.toString(downloadFailed.toArray(new String[downloadFailed.size()]))));
+            MessageBoxExceptionHandler.process(ex);
+        }
+
         if (checkLibraries) {
             ILibrariesService librariesService = (ILibrariesService) GlobalServiceRegister.getDefault()
                     .getService(ILibrariesService.class);

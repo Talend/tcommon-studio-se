@@ -20,6 +20,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
+import org.apache.log4j.Logger;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.SubMonitor;
 import org.talend.core.GlobalServiceRegister;
@@ -40,6 +41,7 @@ import org.talend.utils.io.FilesUtils;
  */
 public class ShareMavenArtifactsOnStartup extends ShareLibrareisHelper {
 
+    private static final Logger LOGGER = Logger.getLogger(ShareMavenArtifactsOnStartup.class);
     @Override
     public Map<ModuleNeeded, File> getFilesToShare(IProgressMonitor monitor) {
         Map<ModuleNeeded, File> files = new HashMap<ModuleNeeded, File>();
@@ -92,6 +94,7 @@ public class ShareMavenArtifactsOnStartup extends ShareLibrareisHelper {
             FilesUtils.copyFile(generatedPom, pomFile);
             FilesUtils.deleteFolder(generatedPom.getParentFile(), true);
         }
+        LOGGER.info("ShareMavenArtifactsOnStartup, shareToRepository, file: " + file);
         deployer.deploy(file, artifact);
         // artifact.setType(MavenConstants.PACKAGING_POM);
         // deployer.deploy(pomFile, artifact);
