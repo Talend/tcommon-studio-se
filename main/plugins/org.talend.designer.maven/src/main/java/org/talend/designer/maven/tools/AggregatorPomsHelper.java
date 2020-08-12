@@ -538,7 +538,9 @@ public class AggregatorPomsHelper {
         String jobFolderName = getJobProjectFolderName(property.getLabel(), version);
         ERepositoryObjectType type = ERepositoryObjectType.getItemType(property.getItem());
         IFolder jobFolder = helper.getProcessFolder(type).getFolder(itemRelativePath).getFolder(jobFolderName);
-        createFoldersIfNeeded(jobFolder);
+        if (ERepositoryObjectType.PROCESS == type) {
+            createFoldersIfNeeded(jobFolder);
+        }
         return jobFolder;
     }
 
