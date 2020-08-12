@@ -26,6 +26,7 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
+import org.apache.log4j.Priority;
 import org.eclipse.core.resources.IFile;
 import org.eclipse.core.resources.IFolder;
 import org.eclipse.core.resources.IProject;
@@ -37,6 +38,7 @@ import org.eclipse.core.runtime.IPath;
 import org.eclipse.core.runtime.NullProgressMonitor;
 import org.eclipse.core.runtime.Path;
 import org.eclipse.core.runtime.Platform;
+import org.eclipse.emf.common.util.EList;
 import org.eclipse.emf.common.util.URI;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.resource.Resource;
@@ -69,6 +71,7 @@ import org.talend.core.model.properties.ValidationRulesConnectionItem;
 import org.talend.core.model.properties.helper.ByteArrayResource;
 import org.talend.core.model.repository.ERepositoryObjectType;
 import org.talend.core.repository.constants.FileConstants;
+import org.talend.core.repository.model.ProxyRepositoryFactory;
 import org.talend.core.repository.utils.ResourceFilenameHelper.FileName;
 import org.talend.core.ui.ITestContainerProviderService;
 import org.talend.designer.core.model.utils.emf.talendfile.ProcessType;
@@ -647,6 +650,20 @@ public class XmiResourceManager {
     }
 
     public void saveResource(Resource resource) throws PersistenceException {
+        try {
+            Object objectByType = EcoreUtil.getObjectByType(resource.getContents(), PropertiesPackage.eINSTANCE.getProject());
+            if (objectByType != null) {
+                Project project = (Project) objectByType;
+                EList migrationTasks = project.getMigrationTask();
+                if (migrationTasks != null && 1 < migrationTasks.size()) {
+                    org.talend.commons.exception.ExceptionHandler.process(new Exception("Bad saving logic for Project"), Priority.WARN);
+                    ProxyRepositoryFactory.getInstance().saveProject(new org.talend.core.model.general.Project(project));
+                    return;
+                }
+            }
+        } catch (Throwable e) {
+            org.talend.commons.exception.ExceptionHandler.process(e);
+        }
         EmfHelper.saveResource(resource);
     }
 
