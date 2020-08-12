@@ -75,7 +75,7 @@ public class VersionUtilsTest {
         File artifactIdFolder = new File(mojoType.getMojoArtifactIdFolder());
         String majorVersion = StringUtils.substringBeforeLast(talendVersion, ".");
         String minorVersion = StringUtils.substringAfterLast(talendVersion, ".");
-        minorVersion = (Integer.valueOf(minorVersion) + 2) + "";
+        minorVersion = (Integer.valueOf(minorVersion) + 200) + "";
         testVersion = majorVersion + "." + minorVersion + testVersion;
         File versionFolder = new File(artifactIdFolder, testVersion);
         versionFolder.mkdir();
