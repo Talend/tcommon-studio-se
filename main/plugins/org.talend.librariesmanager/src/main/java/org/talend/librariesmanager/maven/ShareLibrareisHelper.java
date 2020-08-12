@@ -27,6 +27,7 @@ import java.util.Set;
 import org.apache.commons.codec.digest.DigestUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.codehaus.jackson.map.util.ISO8601Utils;
+import org.apache.log4j.Logger;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
@@ -43,6 +44,7 @@ import org.talend.core.runtime.maven.MavenUrlHelper;
 import org.talend.librariesmanager.i18n.Messages;
 import org.talend.librariesmanager.model.service.LocalLibraryManager;
 import org.talend.librariesmanager.nexus.utils.VersionUtil;
+import org.talend.librariesmanager.nexus.utils.ShareLibrariesUtil;
 
 /**
  * created by Talend on 2015年7月31日 Detailled comment
@@ -52,6 +54,7 @@ public abstract class ShareLibrareisHelper {
 
     private final String TYPE_NEXUS = "nexus";
 
+    private final Logger LOGGER = Logger.getLogger(ShareLibrareisHelper.class);
     protected MavenArtifactsHandler deployer = new MavenArtifactsHandler();
 
     public IStatus shareLibs(Job job, IProgressMonitor monitor) {
@@ -65,6 +68,7 @@ public abstract class ShareLibrareisHelper {
                     .getRepositoryHandler(customNexusServer);
             if (customerRepHandler != null) {
                 filesToShare = getFilesToShare(monitor);
+                LOGGER.info("filesToShare size: " + (filesToShare == null ? 0 : filesToShare.size()));
                 if (filesToShare == null) {
                     return Status.CANCEL_STATUS;
                 }
@@ -89,25 +93,31 @@ public abstract class ShareLibrareisHelper {
                         }
                     }
                 }
+                LOGGER.info("snapshotGroupIdSet size: " + snapshotGroupIdSet.size() + ", releaseGroupIdSet size: "
+                        + releaseGroupIdSet.size());
                 List<MavenArtifact> searchResults = new ArrayList<MavenArtifact>();
                 for (String groupId : groupIds) {
                     checkCancel(monitor);
                     if (releaseGroupIdSet.contains(groupId)) {
                         searchResults = customerRepHandler.search(groupId, null, null, true, false);
+                        LOGGER.info("release searchResults size: " + (searchResults == null ? 0 : searchResults.size())
+                                + ", groupId: "
+                                + groupId);
                         if (searchResults != null) {
                             for (MavenArtifact result : searchResults) {
                                 checkCancel(monitor);
-                                putArtifactToMap(result, releaseArtifactMap, false);
+                                ShareLibrariesUtil.putArtifactToMap(result, releaseArtifactMap, false);
                             }
                         }
                     }
-                    checkCancel(monitor);
                     if (snapshotGroupIdSet.contains(groupId)) {
                         searchResults = customerRepHandler.search(groupId, null, null, false, true);
+                        LOGGER.info("snapshot searchResults size: " + (searchResults == null ? 0 : searchResults.size())
+                                + ", groupId: " + groupId);
                         if (searchResults != null) {
                             for (MavenArtifact result : searchResults) {
                                 checkCancel(monitor);
-                                putArtifactToMap(result, snapshotArtifactMap, true);
+                                ShareLibrariesUtil.putArtifactToMap(result, snapshotArtifactMap, true);
                             }
                         }
                     }
@@ -116,6 +126,9 @@ public abstract class ShareLibrareisHelper {
                 Map<File, MavenArtifact> shareFiles = new HashMap<>();
                 while (iterator.hasNext()) {
                     checkCancel(monitor);
+                    if (monitor.isCanceled()) {
+                        return Status.CANCEL_STATUS;
+                    }
                     ModuleNeeded next = iterator.next();
                     File file = filesToShare.get(next);
                     MavenArtifact artifact = MavenUrlHelper.parseMvnUrl(next.getMavenUri());
@@ -136,7 +149,7 @@ public abstract class ShareLibrareisHelper {
                         //
                     }
                     boolean isSnapshotVersion = isSnapshotVersion(artifact.getVersion());
-                    String key = getArtifactKey(artifact, isSnapshotVersion);
+                    String key = ShareLibrariesUtil.getArtifactKey(artifact, isSnapshotVersion);
                     List<MavenArtifact> artifactList = null;
                     if (isSnapshotVersion) {
                         artifactList = snapshotArtifactMap.get(key);
@@ -149,25 +162,24 @@ public abstract class ShareLibrareisHelper {
                         }
                     }
                     if (artifactList != null && artifactList.size() > 0) {
-                        if (isSameFileWithRemote(file, artifactList, customNexusServer, customerRepHandler, isSnapshotVersion)) {
+                        if (ShareLibrariesUtil.isSameFileWithRemote(file, artifactList, customNexusServer, customerRepHandler,
+                                isSnapshotVersion)) {
                             continue;
                         }
                     }
                     shareFiles.put(file, artifact);
                 }
+                LOGGER.info("shareFiles size: " + shareFiles.size());
                 SubMonitor mainSubMonitor = SubMonitor.convert(monitor, shareFiles.size());
-                for (Map.Entry<File, MavenArtifact> entry : shareFiles.entrySet()) {
-                    checkCancel(monitor);
+                shareFiles.forEach((k, v) -> {
                     try {
-                        File k = entry.getKey();
-                        MavenArtifact v = entry.getValue();
                         mainSubMonitor.setTaskName(Messages.getString("ShareLibsJob.sharingLibraries", k.getName()));
                         shareToRepository(k, v);
                         mainSubMonitor.worked(1);
                     } catch (Exception e) {
                         ExceptionHandler.process(e);
                     }
-                }
+                });
             }
         } catch (InterruptedException e) {
             ExceptionHandler.process(e);
@@ -182,61 +194,6 @@ public abstract class ShareLibrareisHelper {
 
     private boolean isTalendLibraryGroupId(MavenArtifact artifact) {
         if ("org.talend.libraries".equalsIgnoreCase(artifact.getGroupId())) {
-            return true;
-        }
-        return false;
-    }
-
-    public void putArtifactToMap(MavenArtifact artifact, Map<String, List<MavenArtifact>> map, boolean isShapshot) {
-        String key = getArtifactKey(artifact, isShapshot);
-        List<MavenArtifact> list = map.get(key);
-        if (list == null) {
-            list = new ArrayList<MavenArtifact>();
-            map.put(key, list);
-        }
-        list.add(artifact);
-    }
-
-    private String getArtifactKey(MavenArtifact artifact, boolean isShapshot) {
-        StringBuilder sb = new StringBuilder();
-        sb.append(artifact.getGroupId()).append("-");
-        sb.append(artifact.getArtifactId()).append("-");
-        String version = artifact.getVersion();
-        if (isShapshot) {
-            version = VersionUtil.getSNAPSHOTVersion(version);
-        }
-        sb.append(version);
-        if (StringUtils.isNotEmpty(artifact.getClassifier())) {
-            sb.append("-").append(artifact.getClassifier());
-        }
-        return sb.toString();
-    }
-
-    private boolean isSameFileWithRemote(File localFile, List<MavenArtifact> artifactList,
-            ArtifactRepositoryBean customNexusServer, IRepositoryArtifactHandler customerRepHandler, boolean isSnapshotVersion)
-            throws Exception {
-        String localFileShaCode = DigestUtils.shaHex(new FileInputStream(localFile));
-        String remoteSha1 = null;
-        if (ArtifactRepositoryBean.NexusType.ARTIFACTORY.name().equalsIgnoreCase(customNexusServer.getType())) {
-            MavenArtifact lastUpdatedArtifact = getLateUpdatedMavenArtifact(artifactList);
-            if (lastUpdatedArtifact != null) {
-                remoteSha1 = lastUpdatedArtifact.getSha1();
-            }
-        } else if (ArtifactRepositoryBean.NexusType.NEXUS_3.name().equalsIgnoreCase(customNexusServer.getType())) {
-            MavenArtifact lastUpdatedArtifact = artifactList.stream().max(Comparator.comparing(e -> e.getVersion())).get();
-            if (lastUpdatedArtifact != null) {
-                remoteSha1 = lastUpdatedArtifact.getSha1();
-            }
-        } else {
-            if (!isSnapshotVersion && !Boolean.getBoolean("force_libs_release_update")) {
-                return true;
-            }
-            MavenArtifact lastUpdatedArtifact = artifactList.get(0);
-            if (lastUpdatedArtifact != null) {
-                remoteSha1 = customerRepHandler.resolveRemoteSha1(lastUpdatedArtifact, !isSnapshotVersion);
-            }
-        }
-        if (StringUtils.equals(localFileShaCode, remoteSha1)) {
             return true;
         }
         return false;
