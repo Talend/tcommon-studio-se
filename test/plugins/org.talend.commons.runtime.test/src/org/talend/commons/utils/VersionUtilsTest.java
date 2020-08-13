@@ -62,8 +62,9 @@ public class VersionUtilsTest {
 
     @Test
     public void testGetMojoVersion() throws Exception {
-        testMojoVersion(MojoType.CI_BUILDER, "-SNAPSHOT");
-        testMojoVersion(MojoType.CI_BUILDER, "-M3");
+        // testMojoVersion(MojoType.CI_BUILDER, "-SNAPSHOT");
+        // testMojoVersion(MojoType.CI_BUILDER, "-M3");
+        // only return latest version now
         testMojoVersion(MojoType.CI_BUILDER, "");
     }
 
@@ -74,7 +75,7 @@ public class VersionUtilsTest {
         File artifactIdFolder = new File(mojoType.getMojoArtifactIdFolder());
         String majorVersion = StringUtils.substringBeforeLast(talendVersion, ".");
         String minorVersion = StringUtils.substringAfterLast(talendVersion, ".");
-        minorVersion = (Integer.valueOf(minorVersion) + 2) + "";
+        minorVersion = (Integer.valueOf(minorVersion) + 200) + "";
         testVersion = majorVersion + "." + minorVersion + testVersion;
         File versionFolder = new File(artifactIdFolder, testVersion);
         versionFolder.mkdir();
