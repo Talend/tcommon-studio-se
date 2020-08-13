@@ -40,9 +40,7 @@ import org.eclipse.ui.PlatformUI;
 import org.osgi.service.prefs.BackingStoreException;
 import org.osgi.service.prefs.Preferences;
 import org.talend.commons.exception.BusinessException;
-import org.talend.commons.runtime.helper.LocalComponentInstallHelper;
 import org.talend.commons.runtime.helper.PatchComponentHelper;
-import org.talend.commons.runtime.service.ComponentsInstallComponent;
 import org.talend.commons.runtime.service.PatchComponent;
 import org.talend.commons.ui.runtime.update.PreferenceKeys;
 import org.talend.commons.ui.swt.dialogs.ErrorDialogWidthDetailArea;
@@ -191,29 +189,6 @@ public class Application implements IApplication {
                 }
             }
 
-            final ComponentsInstallComponent installComponent = LocalComponentInstallHelper.getComponent();
-            if (installComponent != null) {
-                try {
-                    // install component silently
-                    installComponent.setLogin(true);
-                    if (installComponent.install()) {
-                        final String installedMessages = installComponent.getInstalledMessages();
-                        if (installedMessages != null) {
-                            log.log(Level.INFO, installedMessages);
-                            MessageDialog.openInformation(Display.getDefault().getActiveShell(), "Installing Components",
-                                    installedMessages);
-                        }
-                        if (installComponent.needRelaunch()) {
-                            needRelaunch = true;
-                        }
-                    }
-                    if (StringUtils.isNotEmpty(installComponent.getFailureMessage())) {
-                        log.log(Level.ERROR, installComponent.getFailureMessage());
-                    }
-                } finally {
-                    installComponent.setLogin(false);
-                }
-            }
             if (needRelaunch) {
                 setRelaunchData();
                 return IApplication.EXIT_RELAUNCH;
