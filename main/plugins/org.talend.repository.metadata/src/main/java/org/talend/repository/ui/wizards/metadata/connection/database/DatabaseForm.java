@@ -89,6 +89,7 @@ import org.talend.core.GlobalServiceRegister;
 import org.talend.core.ILibraryManagerService;
 import org.talend.core.ILibraryManagerUIService;
 import org.talend.core.database.EDatabaseTypeName;
+import org.talend.core.database.EImpalaDriver;
 import org.talend.core.database.conn.ConnParameterKeys;
 import org.talend.core.database.conn.DatabaseConnStrUtil;
 import org.talend.core.database.conn.EDatabaseConnVar;
@@ -213,6 +214,8 @@ public class DatabaseForm extends AbstractForm {
      * Let user select which hive server to use. Including HiveServer1, and HiveServer2 now.
      */
     private LabelledCombo hiveServerVersionCombo;
+
+    private LabelledCombo impalaDriverCombo;
 
     private LabelledText serverText;
 
@@ -980,6 +983,7 @@ public class DatabaseForm extends AbstractForm {
                 .getString("DatabaseForm.dbversion.tip"), new String[0], 2, true); //$NON-NLS-1$
 
         createHiveServerVersionField(typeDbCompositeParent);
+        createImpalaDriverField(typeDbCompositeParent);
 
         setHideVersionInfoWidgets(true);
 
@@ -1826,7 +1830,7 @@ public class DatabaseForm extends AbstractForm {
     }
 
     private void showIfAdditionalJDBCSettings() {
-        setHidAdditionalJDBCSettings(!isSupportHiveAdditionalSettings());
+        setHidAdditionalJDBCSettings(!isSupportHiveAdditionalSettings() && !isSupportImpalaAdditionalSettings());
     }
 
     private void showIfHiveMetastore() {
@@ -1865,6 +1869,20 @@ public class DatabaseForm extends AbstractForm {
                     return false;
                 }
                 return true;
+            }
+        }
+        return false;
+    }
+
+    private boolean isSupportImpalaAdditionalSettings() {
+        if (isImpalaDBConnSelected()) {
+            IHDistribution hiveDistribution = getCurrentImpalaDistribution(true);
+            String hiveVerson = getImpalaVersionCombo().getText();
+            if (hiveDistribution != null && hiveVerson != null) {
+                if (!EImpalaDriver.isSupport(hiveDistribution.getDisplayName(), hiveVerson, true, "useCloudLauncher")
+                        && HiveMetadataHelper.doSupportHive2(hiveDistribution.getDisplayName(), hiveVerson, true)) {
+                    return true;
+                }
             }
         }
         return false;
@@ -3209,6 +3227,7 @@ public class DatabaseForm extends AbstractForm {
         hcPropertyTypeCombo.setReadOnly(isContextMode());
         hiveModeCombo.setReadOnly(isContextMode());
         hiveServerVersionCombo.setReadOnly(isContextMode());
+        impalaDriverCombo.setReadOnly(isContextMode());
 
         useKerberos.setEnabled(!isContextMode());
         useKeyTab.setEnabled(!isContextMode());
@@ -3743,6 +3762,14 @@ public class DatabaseForm extends AbstractForm {
                 new String[] {}, 2, true);
 
         hiveServerVersionCombo.setHideWidgets(true);
+    }
+
+    private void createImpalaDriverField(Composite parent) {
+        impalaDriverCombo = new LabelledCombo(parent, Messages.getString("DatabaseForm.impala.driverVersion"), //$NON-NLS-1$
+                Messages.getString("DatabaseForm.impala.driverVersion.tip"), //$NON-NLS-1$
+                new String[] {}, 2, true);
+
+        impalaDriverCombo.setHideWidgets(true);
     }
 
     /**
@@ -5085,6 +5112,8 @@ public class DatabaseForm extends AbstractForm {
             }
             if (isImpalaDBConnSelected()) {
                 fillDefaultsWhenImpalaVersionChanged();
+            } else {
+                doImpalaNotSelected();
             }
         }
 
@@ -5551,7 +5580,9 @@ public class DatabaseForm extends AbstractForm {
                 handleHadoopCustomVersion(ECustomVersionType.HIVE);
             }
         });
+        regHiveRelatedWidgetImpalaDriverComboListener();
     }
+
 
     private void handleHadoopCustomVersion(final ECustomVersionType type) {
         HadoopCustomVersionDefineDialog customVersionDialog = new HadoopCustomVersionDefineDialog(getShell(),
@@ -6525,7 +6556,8 @@ public class DatabaseForm extends AbstractForm {
                     passwordText.hide();
                 } else if (isImpala) {
                     // usernameText.hide();
-                    passwordText.hide();
+                    // passwordText.hide();
+                    impalaDriverCombo.setHideWidgets(false);
                 } else if (isHiveDBConnSelected()) {
                     if (isHiveEmbeddedMode()) {
                         // Need to revert if required, changed by Marvin Wang on Nov. 22, 2012.
@@ -6728,6 +6760,8 @@ public class DatabaseForm extends AbstractForm {
             addContextParams(EDBParamName.Port, true);
             addContextParams(EDBParamName.Database, true);
             addContextParams(EDBParamName.ImpalaPrincipal, useKerberosForImpala.getSelection());
+            addContextParams(EDBParamName.Password, true);
+            addContextParams(EDBParamName.hiveAdditionalJDBCParameters, isSupportImpalaAdditionalSettings());
         }
     }
 
@@ -7026,6 +7060,7 @@ public class DatabaseForm extends AbstractForm {
         if (isImpalaDBConnSelected()) {
             adaptImpalaHadoopPartEditable();
             updateHadoopProperties(!isContextMode());
+            additionalJDBCSettingsText.setEditable(!isContextMode());
         }
         if (isOracleCustomDBConnSelected()) {
             adaptOracleCustomPartEditable();
@@ -7085,7 +7120,6 @@ public class DatabaseForm extends AbstractForm {
 
         String useKrb = connection.getParameters().get(ConnParameterKeys.CONN_PARA_KEY_USE_KRB);
         String impalaPrincipla = connection.getParameters().get(ConnParameterKeys.IMPALA_AUTHENTICATION_PRINCIPLA);
-
         if (Boolean.valueOf(useKrb)) {
             useKerberosForImpala.setSelection(true);
             GridData hadoopData = (GridData) authenticationComForImpala.getLayoutData();
@@ -7097,7 +7131,23 @@ public class DatabaseForm extends AbstractForm {
             authenticationComForImpala.getParent().layout();
         }
         impalaPrincipalTxt.setText(impalaPrincipla == null ? "impala/_HOST@EXAMPLE.COM" : impalaPrincipla); //$NON-NLS-1$
-
+        String distributionObj = connection.getParameters().get(ConnParameterKeys.CONN_PARA_KEY_IMPALA_DISTRIBUTION);
+        String impalaVersion = connection.getParameters().get(ConnParameterKeys.CONN_PARA_KEY_IMPALA_VERSION);
+        IHadoopDistributionService hadoopService = getHadoopDistributionService();
+        if (hadoopService != null) {
+            IHDistribution impalaDistribution = hadoopService.getImpalaDistributionManager().getDistribution(distributionObj,
+                    false);
+            IHDistributionVersion hdVersion = null;
+            if (impalaDistribution != null) {
+                hdVersion = impalaDistribution.getHDVersion(impalaVersion, false);
+            }
+            updateImpalaVersionPart(impalaDistribution);
+            updateImpalaDriverAndMakeSelection(impalaDistribution, hdVersion);
+        }
+        // addtional jdbc setting
+        String additionalJDBCSettings = connection.getParameters()
+                .get(ConnParameterKeys.CONN_PARA_KEY_HIVE_ADDITIONAL_JDBC_SETTINGS);
+        additionalJDBCSettingsText.setText(additionalJDBCSettings == null ? "" : additionalJDBCSettings);
     }
 
     /**
@@ -7479,6 +7529,16 @@ public class DatabaseForm extends AbstractForm {
                 showIfHiveMetastore();
                 showIfSupportEncryption();
                 showIfAuthentication();
+            }
+        });
+    }
+
+    private void regHiveRelatedWidgetImpalaDriverComboListener() {
+        impalaDriverCombo.getCombo().addSelectionListener(new SelectionAdapter() {
+
+            @Override
+            public void widgetSelected(SelectionEvent e) {
+                doImpalaDriverSelected();
             }
         });
     }
@@ -8068,6 +8128,14 @@ public class DatabaseForm extends AbstractForm {
         updateHiveServerAndMakeSelection(hiveDistribution, hiveVersion);
     }
 
+    protected void doImpalaDriverSelected() {
+        if (!isContextMode()) {
+            modifyFieldValue();
+            getConnection().getParameters().put(ConnParameterKeys.IMPALA_DRIVER,
+                    EImpalaDriver.getByDisplay(impalaDriverCombo.getText()).getName());
+        }
+    }
+
     protected void updateHiveDistributionAndMakeSelection(IHDistribution hiveDistribution) {
         hiveDistributionCombo.getCombo().setItems(HiveMetadataHelper.getDistributionsDisplay());
         if (hiveDistribution != null) {
@@ -8082,6 +8150,18 @@ public class DatabaseForm extends AbstractForm {
         IHadoopDistributionService hadoopService = getHadoopDistributionService();
         if (withDefault && hiveDistribution == null && hadoopService != null) {
             IHDistribution[] distributions = hadoopService.getHiveDistributionManager().getDistributions();
+            if (distributions.length > 0) {
+                hiveDistribution = distributions[0];
+            }
+        }
+        return hiveDistribution;
+    }
+
+    private IHDistribution getCurrentImpalaDistribution(boolean withDefault) {
+        IHDistribution hiveDistribution = HiveMetadataHelper.getDistribution(impalaDistributionCombo.getText(), true);
+        IHadoopDistributionService hadoopService = getHadoopDistributionService();
+        if (withDefault && hiveDistribution == null && hadoopService != null) {
+            IHDistribution[] distributions = hadoopService.getImpalaDistributionManager().getDistributions();
             if (distributions.length > 0) {
                 hiveDistribution = distributions[0];
             }
@@ -8171,6 +8251,43 @@ public class DatabaseForm extends AbstractForm {
         }
     }
 
+    protected void updateImpalaDriverAndMakeSelection(IHDistribution hiveDistribution,
+            IHDistributionVersion hiveVersion) {
+        if (hiveDistribution == null) {
+            hiveDistribution = getCurrentHiveDistribution(true);
+        }
+        IHadoopDistributionService hadoopDistributionService = getHadoopDistributionService();
+        if (hiveDistribution == null || hadoopDistributionService == null) {
+            return;
+        }
+        IHDistributionVersion[] hdVersions = hiveDistribution.getHDVersions();
+        if (hiveVersion == null && hdVersions.length > 0) {
+            hiveVersion = hdVersions[0];
+        }
+
+        DatabaseConnection conn = getConnection();
+        String[] impalaDriverDisplay = EImpalaDriver.getImpalaDriverDisplay(hiveDistribution.getName(),
+                hiveVersion == null ? null : hiveVersion.getVersion(), false);
+        if (impalaDriverDisplay != null && impalaDriverDisplay.length == 0) {
+            // hive2 by default
+            impalaDriverCombo.getCombo().setItems(EImpalaDriver.HIVE2.getDisplayName());
+        } else {
+            impalaDriverCombo.getCombo().setItems(impalaDriverDisplay);
+        }
+        String impalaDriver = conn.getParameters().get(ConnParameterKeys.IMPALA_DRIVER);
+        if (impalaDriver != null) {
+            EImpalaDriver driver = EImpalaDriver.getByName(impalaDriver);
+            if (driver != null) {
+                impalaDriverCombo.setText(driver.getDisplayName());
+            } else {
+                impalaDriverCombo.select(0);
+            }
+        } else {
+            impalaDriverCombo.select(0);
+        }
+        getConnection().getParameters().put(ConnParameterKeys.IMPALA_DRIVER,
+                EImpalaDriver.getByDisplay(impalaDriverCombo.getText()).getName());
+    }
     /**
      * It is invoked when the mode STANDALONE is selected. Added by Marvin Wang on Aug. 3, 2012.
      */
@@ -8304,6 +8421,9 @@ public class DatabaseForm extends AbstractForm {
         doHiveUIContentsLayout();
     }
 
+    protected void doImpalaNotSelected() {
+        impalaDriverCombo.setHideWidgets(true);
+    }
     /**
      * This method is used to handle the groups including version info, hadoop info and metastore info are hide or
      * visible. Added by Marvin Wang on Oct 16, 2012.
@@ -8644,6 +8764,10 @@ public class DatabaseForm extends AbstractForm {
 
     public LabelledCombo getHiveVersionCombo() {
         return this.hiveVersionCombo;
+    }
+
+    public LabelledCombo getImpalaVersionCombo() {
+        return this.impalaVersionCombo;
     }
 
     public ContextType getSelectedContextType() {
