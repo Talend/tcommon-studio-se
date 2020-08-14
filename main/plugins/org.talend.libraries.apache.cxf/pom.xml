@@ -54,7 +54,27 @@
         		<optionalDependencies>ignore</optionalDependencies>
       		</dependency-resolution>
         </configuration>
-      </plugin>     
+      </plugin>
+      <plugin>
+			<groupId>org.apache.maven.plugins</groupId>
+			<artifactId>maven-dependency-plugin</artifactId>
+			<version>3.0.2</version>
+			<executions>
+				<execution>
+					<id>copy-dependencies</id>
+					<phase>generate-resources</phase>
+					<goals>
+						<goal>copy-dependencies</goal>
+					</goals>
+					<configuration>
+						<excludeTypes>pom</excludeTypes>
+						<excludeTransitive>true</excludeTransitive>
+						<outputDirectory>${project.basedir}/lib</outputDirectory>
+						<includeGroupIds>org.apache.cxf</includeGroupIds>
+					</configuration>
+				</execution>
+				</executions>
+		</plugin>     
     </plugins>
   </build>
 </project>
