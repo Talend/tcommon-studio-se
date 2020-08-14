@@ -12,6 +12,11 @@
 // ============================================================================
 package org.talend.core.ui.context.nattableTree;
 
+import java.util.HashMap;
+import java.util.Iterator;
+import java.util.Map;
+
+import org.apache.commons.lang.StringUtils;
 import org.eclipse.nebula.widgets.nattable.config.IConfigRegistry;
 import org.eclipse.nebula.widgets.nattable.data.IDataProvider;
 import org.eclipse.nebula.widgets.nattable.extension.glazedlists.GlazedListsDataProvider;
@@ -23,6 +28,7 @@ import org.eclipse.swt.graphics.GC;
 import org.eclipse.swt.graphics.Rectangle;
 import org.talend.core.ui.context.ContextTreeTable.ContextTreeNode;
 import org.talend.core.ui.context.model.ContextTabChildModel;
+import org.talend.core.ui.context.model.ContextTabParentModel;
 import org.talend.core.ui.context.model.table.ContextTableTabParentModel;
 
 /**
@@ -32,6 +38,8 @@ import org.talend.core.ui.context.model.table.ContextTableTabParentModel;
 public class ContextNatTableBackGroudPainter extends BackgroundPainter {
 
     private IDataProvider dataProvider;
+
+    private Map<String, String> rowNames = new HashMap<String, String>();
 
     public ContextNatTableBackGroudPainter(ICellPainter painter, IDataProvider dataProvider) {
         super(painter);
@@ -53,9 +61,11 @@ public class ContextNatTableBackGroudPainter extends BackgroundPainter {
             ContextTabChildModel rowChildModel = (ContextTabChildModel) rowNode.getTreeData();
             if (rowChildModel != null) {
                 ((ContextAutoResizeTextPainter) getWrappedPainter()).setChangeBackgroundColor(true);
+                checkContainsRowName(rowNode, rowChildModel);
             }
         }
         super.paintCell(cell, gc, bounds, configRegistry);
+        ((ContextAutoResizeTextPainter) getWrappedPainter()).setContainsRowName(false);
     }
 
     @Override
@@ -63,4 +73,34 @@ public class ContextNatTableBackGroudPainter extends BackgroundPainter {
         return super.getBackgroundColour(cell, configRegistry);
     }
 
+    private void checkContainsRowName(ContextTreeNode rowNode, ContextTabChildModel rowChildModel) {
+        // Check any duplicate / similar variable from different context to show in red .
+        String rowName = rowNode.getName();
+        String parentSourceName = null;
+        ContextTabParentModel rowTabParentModel = rowChildModel.getParent();
+        if (rowTabParentModel != null && rowTabParentModel instanceof ContextTableTabParentModel) {
+            ContextTableTabParentModel rowTableTabParentModel = (ContextTableTabParentModel) rowTabParentModel;
+            parentSourceName = rowTableTabParentModel.getSourceName();
+        }
+        if (StringUtils.isNotBlank(rowName) && StringUtils.isNotBlank(parentSourceName)) {
+            rowName = rowName.toUpperCase();
+            parentSourceName = parentSourceName.toUpperCase();
+            if (rowNames.containsValue(rowName)) {
+                Iterator<String> iterator = rowNames.keySet().iterator();
+                while (iterator.hasNext()) {
+                    String key = iterator.next();
+                    String value = rowNames.get(key);
+                    if (rowName.equalsIgnoreCase(value)) {
+                        if (!parentSourceName.equalsIgnoreCase(key)) {
+                            ((ContextAutoResizeTextPainter) getWrappedPainter()).setContainsRowName(true);
+                            break;
+                        }
+                        break;
+                    }
+                }
+            } else {
+                rowNames.put(parentSourceName, rowName);
+            }
+        }
+    }
 }
