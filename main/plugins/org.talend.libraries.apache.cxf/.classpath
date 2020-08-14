@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <classpath>
 	<classpathentry exported="true" kind="lib" path="lib/jakarta.activation-1.2.1.jar"/>
-	<classpathentry exported="true" kind="lib" path="lib/cxf-rt-wsdl-3.3.4.jar"/>
+	<classpathentry exported="true" kind="lib" path="lib/cxf-rt-wsdl-3.3.6.jar"/>
 	<classpathentry exported="true" kind="lib" path="lib/jakarta.activation-api-1.2.1.jar"/>
 	<classpathentry exported="true" kind="lib" path="lib/jakarta.xml.bind-api-2.3.2.jar"/>
 	<classpathentry exported="true" kind="lib" path="lib/jaxb-runtime-2.3.2.jar"/>
@@ -10,11 +10,11 @@
 	<classpathentry exported="true" kind="lib" path="lib/stax2-api-3.1.4.jar"/>
 	<classpathentry exported="true" kind="lib" path="lib/neethi-3.1.1.jar"/>
 	<classpathentry exported="true" kind="lib" path="lib/jakarta.ws.rs-api-2.1.5.jar"/>
-	<classpathentry exported="true" kind="lib" path="lib/cxf-core-3.3.4.jar"/>
-	<classpathentry exported="true" kind="lib" path="lib/cxf-rt-bindings-xml-3.3.4.jar"/>
-	<classpathentry exported="true" kind="lib" path="lib/cxf-rt-frontend-jaxrs-3.3.4.jar"/>
-	<classpathentry exported="true" kind="lib" path="lib/cxf-rt-rs-client-3.3.4.jar"/>
-	<classpathentry exported="true" kind="lib" path="lib/cxf-rt-transports-http-3.3.4.jar"/>
+	<classpathentry exported="true" kind="lib" path="lib/cxf-core-3.3.6.jar"/>
+	<classpathentry exported="true" kind="lib" path="lib/cxf-rt-bindings-xml-3.3.6.jar"/>
+	<classpathentry exported="true" kind="lib" path="lib/cxf-rt-frontend-jaxrs-3.3.6.jar"/>
+	<classpathentry exported="true" kind="lib" path="lib/cxf-rt-rs-client-3.3.6.jar"/>
+	<classpathentry exported="true" kind="lib" path="lib/cxf-rt-transports-http-3.3.6.jar"/>
 	<classpathentry exported="true" kind="lib" path="lib/jaxws-api-2.3.1.jar"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
 	<classpathentry kind="con" path="org.eclipse.pde.core.requiredPlugins"/>
