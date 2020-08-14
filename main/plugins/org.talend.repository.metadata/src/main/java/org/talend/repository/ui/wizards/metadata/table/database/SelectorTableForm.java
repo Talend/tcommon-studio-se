@@ -933,7 +933,7 @@ public class SelectorTableForm extends AbstractForm {
                                     canAdd = false;
                                 }
                             } else {
-                                if (!s.getName().toLowerCase().equals(specifiedSchema.toLowerCase())) {
+                                if (!s.getName().equalsIgnoreCase(specifiedSchema)) {
                                     canAdd = false;
                                 }
                             }

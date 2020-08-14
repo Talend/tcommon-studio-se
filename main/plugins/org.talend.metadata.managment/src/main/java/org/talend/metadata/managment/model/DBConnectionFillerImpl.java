@@ -1524,14 +1524,14 @@ public class DBConnectionFillerImpl extends MetadataFillerImpl<DatabaseConnectio
                     typeName = MetadataToolHelper.validateValueForDBType(typeName);
                     String pattern = null;
                     if (MetadataConnectionUtils.isMssql(dbJDBCMetadata)) {
-                        if (typeName.toLowerCase().equals("date")) { //$NON-NLS-1$
+                        if (typeName.equalsIgnoreCase("date")) { //$NON-NLS-1$
                             dataType = 91;
                             pattern = TalendQuoteUtils.addQuotes("dd-MM-yyyy");
                             // MOD scorreia 2010-07-24 removed the call to column.getSQLDataType() here because
                             // obviously
                             // the sql
                             // data type it is null and results in a NPE
-                        } else if (typeName.toLowerCase().equals("time")) { //$NON-NLS-1$
+                        } else if (typeName.equalsIgnoreCase("time")) { //$NON-NLS-1$
                             dataType = 92;
                             pattern = TalendQuoteUtils.addQuotes("HH:mm:ss");
                             // MOD scorreia 2010-07-24 removed the call to column.getSQLDataType() here because
@@ -1736,19 +1736,19 @@ public class DBConnectionFillerImpl extends MetadataFillerImpl<DatabaseConnectio
                             }
                         }
                         if (MetadataConnectionUtils.isMssql(dbJDBCMetadata)) {
-                            if (typeName.toLowerCase().equals("date")) { //$NON-NLS-1$
+                            if (typeName.equalsIgnoreCase("date")) { //$NON-NLS-1$
                                 dataType = 91;
                                 // MOD scorreia 2010-07-24 removed the call to column.getSQLDataType() here because
                                 // obviously
                                 // the sql
                                 // data type it is null and results in a NPE
-                            } else if (typeName.toLowerCase().equals("time")) { //$NON-NLS-1$
+                            } else if (typeName.equalsIgnoreCase("time")) { //$NON-NLS-1$
                                 dataType = 92;
                                 // MOD scorreia 2010-07-24 removed the call to column.getSQLDataType() here because
                                 // obviously
                                 // the sql
                                 // data type it is null and results in a NPE
-                            } else if (typeName.toLowerCase().equals("datetime2")) { //$NON-NLS-1$
+                            } else if (typeName.equalsIgnoreCase("datetime2")) { //$NON-NLS-1$
                                 dataType = 93;
                             }
                         }

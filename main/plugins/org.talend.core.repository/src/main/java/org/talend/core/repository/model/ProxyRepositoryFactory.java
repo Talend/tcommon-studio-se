@@ -1442,7 +1442,7 @@ public final class ProxyRepositoryFactory implements IProxyRepositoryFactory {
             String folderName = parentPath.append(folderLabel).toString();
             boolean found = false;
             for (String existedFolder : folders) {
-                if (folderName.toUpperCase().equals(existedFolder.toUpperCase())) {
+                if (folderName.equalsIgnoreCase(existedFolder)) {
                     found = true;
                     break;
                 }
