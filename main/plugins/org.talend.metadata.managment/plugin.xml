@@ -36,6 +36,88 @@
    </extension>
    <extension
          point="org.talend.core.runtime.librariesNeeded">
+         <libraryNeeded
+              context="plugin:org.talend.libraries.jdbc.teradata"
+              language="java"
+              message="Needed for Teradata jdbc plugin"
+              name="terajdbc4-16.20.00.02.jar" mvn_uri="mvn:com.teradata/terajdbc4/16.20.00.02" 
+              required="true">
+        </libraryNeeded>
+        <libraryNeeded
+              context="plugin:org.talend.libraries.jdbc.teradata"
+              language="java"
+              message="Needed for Teradata jdbc plugin"
+              name="tdgssconfig-16.20.00.02.jar" mvn_uri="mvn:com.teradata/tdgssconfig/16.20.00.02" 
+              required="true">
+        </libraryNeeded>
+         <libraryNeeded
+              context="plugin:org.talend.libraries.jdbc.oracle"
+              language="java"
+              message="Needed for Oracle jdbc plugin"
+              name="ojdbc14.jar" mvn_uri="mvn:org.talend.libraries/ojdbc14/6.0.0" 
+              required="true">
+        </libraryNeeded>
+        <libraryNeeded
+              context="plugin:org.talend.libraries.jdbc.oracle"
+              language="java"
+              message="Needed for Oracle jdbc plugin"
+              mvn_uri="mvn:org.talend.libraries/talend-oracle-timestamptz/6.0.0"
+              name="talend-oracle-timestamptz.jar"
+              required="true">
+        </libraryNeeded>
+        <libraryNeeded
+              context="plugin:org.talend.libraries.jdbc.oracle"
+              language="java"
+              message="Needed for Oracle jdbc plugin"
+              mvn_uri="mvn:org.talend.libraries/ojdbc7/6.0.0"
+              name="ojdbc7.jar"
+              required="true">
+        </libraryNeeded>
+        <libraryNeeded
+              context="plugin:org.talend.libraries.jdbc.oracle"
+              language="java"
+              message="Needed for Oracle jdbc plugin"
+              mvn_uri="mvn:org.talend.libraries/ojdbc14-9i/6.0.0"
+              name="ojdbc14-9i.jar"
+              required="true">
+        </libraryNeeded>
+        <libraryNeeded
+              context="plugin:org.talend.libraries.jdbc.oracle"
+              language="java"
+              message="Needed for Oracle jdbc plugin"
+              mvn_uri="mvn:org.talend.libraries/ojdbc12/6.0.0"
+              name="ojdbc12.jar"
+              required="true">
+        </libraryNeeded>
+        <libraryNeeded
+              context="plugin:org.talend.libraries.jdbc.oracle"
+              language="java"
+              message="Needed for Oracle jdbc plugin"
+              mvn_uri="mvn:org.talend.libraries/ojdbc6/6.0.0"
+              name="ojdbc6.jar"
+              required="true">
+        </libraryNeeded>
+      <libraryNeeded
+          context="plugin:org.talend.libraries.jdbc.ingres"
+          language="java"
+          message="Needed for Ingres jdbc plugin"
+          name="iijdbc.jar" mvn_uri="mvn:org.talend.libraries/iijdbc/6.0.0" 
+          required="true">
+      </libraryNeeded>
+      <libraryNeeded
+              context="plugin:org.talend.libraries.jdbc.as400"
+              language="java"
+              message="Needed for AS400 jdbc plugin"
+              name="jt400-9.8.jar" mvn_uri="mvn:net.sf.jt400/jt400/9.8/jar" 
+              required="true">
+      </libraryNeeded>   
+      <libraryNeeded
+              context="plugin:org.talend.libraries.jdbc.access"
+              language="java"
+              message="Needed for Access jdbc plugin"
+              name="ucanaccess-2.0.9.5.jar" mvn_uri="mvn:org.talend.libraries/ucanaccess-2.0.9.5/6.0.0" 
+              required="true">
+      </libraryNeeded>
       <libraryNeeded
             context="plugin:org.talend.metadata.managment"
             language="java"
