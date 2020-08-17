@@ -212,4 +212,8 @@ public class CommonTextCellEditorWithProposal {
         return this.contentProposalAdapter;
     }
 
+    public int getPreviousActivatedIndex() {
+        return previousActivatedIndex;
+    }
+
 }

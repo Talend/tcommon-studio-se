@@ -1168,10 +1168,10 @@ public class DatabaseTableForm extends AbstractForm {
                                 metadataColumn.setPattern(pattern);// $NON-NLS-1$
                             } else {
                                 metadataColumn.setPattern(TalendQuoteUtils.addQuotes("dd-MM-yyyy")); //$NON-NLS-1$
-                            }
-                            if (EDatabaseTypeName.MSSQL.getDisplayName().equals(metadataconnection.getDbType())) {
-                                if ("TIME".equals(metadataColumn.getSourceType())) {
-                                    metadataColumn.setPattern(TalendQuoteUtils.addQuotes("HH:mm:ss")); //$NON-NLS-1$
+                                if (EDatabaseTypeName.MSSQL.getDisplayName().equals(metadataconnection.getDbType())) {
+                                    if ("TIME".equals(metadataColumn.getSourceType())) {
+                                        metadataColumn.setPattern(TalendQuoteUtils.addQuotes("HH:mm:ss")); //$NON-NLS-1$
+                                    }
                                 }
                             }
                         }
@@ -1253,11 +1253,14 @@ public class DatabaseTableForm extends AbstractForm {
                             }
                             oneColum.setSourceType(dbType);
                             if (mappingTypeRetriever != null) {
-                                if (JavaTypesManager.DATE.getId().equals(talendType)
-                                        || PerlTypesManager.DATE.equals(talendType)) {
-                                    String pattern1 = getPatternFromMapping(mappingTypeRetriever, dbType);
-                                    oneColum.setPattern(pattern1);// $NON-NLS-1$
+                                if (StringUtils.isBlank(oneColum.getPattern())) {
+                                    if (JavaTypesManager.DATE.getId().equals(talendType)
+                                            || PerlTypesManager.DATE.equals(talendType)) {
+                                        String pattern1 = getPatternFromMapping(mappingTypeRetriever, dbType);
+                                        oneColum.setPattern(pattern1);// $NON-NLS-1$
+                                    }
                                 }
+                               
                             }
                         }
                     }
@@ -1305,8 +1308,15 @@ public class DatabaseTableForm extends AbstractForm {
     }
     
     private String getPatternFromMapping(MappingTypeRetriever mappingTypeRetriever, String dbType) {
-        String pattern1 = mappingTypeRetriever.getDefaultPattern(metadataconnection.getMapping(), dbType);
-        return StringUtils.isNotBlank(pattern1) ? TalendQuoteUtils.addQuotes(pattern1)
+        boolean isMssql = EDatabaseTypeName.MSSQL.getDisplayName().equals(metadataconnection.getDbType());
+        String pattern = mappingTypeRetriever.getDefaultPattern(metadataconnection.getMapping(), dbType);
+        if (isMssql) {
+            if ("TIME".equals(dbType)) {//$NON-NLS-1$
+                return StringUtils.isNotBlank(pattern) ? TalendQuoteUtils.addQuotes(pattern)
+                        : TalendQuoteUtils.addQuotes("HH:mm:ss");//$NON-NLS-1$
+            }
+        }
+        return StringUtils.isNotBlank(pattern) ? TalendQuoteUtils.addQuotes(pattern)
                 : TalendQuoteUtils.addQuotes("dd-MM-yyyy");//$NON-NLS-1$
     }
 
