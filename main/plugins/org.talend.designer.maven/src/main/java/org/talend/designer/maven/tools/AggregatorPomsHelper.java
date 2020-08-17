@@ -364,7 +364,8 @@ public class AggregatorPomsHelper {
             }
 
             // for import won't add for exclude option
-            if (property.getItem().getState().isDeleted() && PomIdsHelper.getIfExcludeDeletedItems(property)) {
+            if (property.getItem() != null && property.getItem().getState() != null && property.getItem().getState().isDeleted()
+                    && PomIdsHelper.getIfExcludeDeletedItems(property)) {
                 return false;
             }
         }
