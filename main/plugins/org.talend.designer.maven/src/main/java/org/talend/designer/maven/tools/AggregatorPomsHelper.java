@@ -17,6 +17,7 @@ import static org.talend.designer.maven.model.TalendJavaProjectConstants.*;
 import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
@@ -328,26 +329,10 @@ public class AggregatorPomsHelper {
     }
 
     public static void addToParentModules(IFile pomFile, Property property, boolean checkFilter) throws Exception {
-        // Check relation for ESB service job, should not be added into main pom
-        if (property != null) {
-            List<Relation> relations = RelationshipItemBuilder.getInstance().getItemsRelatedTo(property.getId(),
-                    property.getVersion(), RelationshipItemBuilder.JOB_RELATION);
-            for (Relation relation : relations) {
-                if (RelationshipItemBuilder.SERVICES_RELATION.equals(relation.getType())) {
-                    return;
-                }
-            }
+        if (!checkIfCanAddToParentModules(property, checkFilter)) {
+            return;
         }
 
-        if (checkFilter) {
-            if (GlobalServiceRegister.getDefault().isServiceRegistered(IFilterService.class)) {
-                IFilterService filterService = (IFilterService) GlobalServiceRegister.getDefault()
-                        .getService(IFilterService.class);
-                if (property != null && !filterService.isFilterAccepted(property.getItem(), PomIdsHelper.getPomFilter())) {
-                    return;
-                }
-            }
-        }
         IFile parentPom = getParentModulePomFile(pomFile);
         if (parentPom != null) {
             if (!parentPom.isSynchronized(IResource.DEPTH_ZERO)) {
@@ -367,6 +352,36 @@ public class AggregatorPomsHelper {
         }
     }
 
+    private static boolean checkIfCanAddToParentModules(Property property, boolean checkFilter) {
+        // Check relation for ESB service job, should not be added into main pom
+        if (property != null) {
+            List<Relation> relations = RelationshipItemBuilder.getInstance().getItemsRelatedTo(property.getId(),
+                    property.getVersion(), RelationshipItemBuilder.JOB_RELATION);
+            for (Relation relation : relations) {
+                if (RelationshipItemBuilder.SERVICES_RELATION.equals(relation.getType())) {
+                    return false;
+                }
+            }
+
+            // for import won't add for exclude option
+            if (property.getItem() != null && property.getItem().getState() != null && property.getItem().getState().isDeleted()
+                    && PomIdsHelper.getIfExcludeDeletedItems(property)) {
+                return false;
+            }
+        }
+
+        if (checkFilter) {
+            if (GlobalServiceRegister.getDefault().isServiceRegistered(IFilterService.class)) {
+                IFilterService filterService = (IFilterService) GlobalServiceRegister.getDefault()
+                        .getService(IFilterService.class);
+                if (property != null && !filterService.isFilterAccepted(property.getItem(), PomIdsHelper.getPomFilter())) {
+                    return false;
+                }
+            }
+        }
+        return true;
+    }
+
     public static void removeFromParentModules(IFile pomFile) throws Exception {
         IFile parentPom = getParentModulePomFile(pomFile);
         if (parentPom != null) {
@@ -382,6 +397,69 @@ public class AggregatorPomsHelper {
                 PomUtil.savePom(null, model, parentPom);
             }
         }
+    }
+
+    public static void removeAllVersionsFromParentModules(Property property) throws Exception {
+        IFile parentPom = getParentModulePomFile(
+                AggregatorPomsHelper.getItemPomFolder(property).getFile(TalendMavenConstants.POM_FILE_NAME));
+        if (parentPom == null) {
+            return;
+        }
+
+        List<String> relativePathList = new ArrayList<String>();
+        List<IRepositoryViewObject> allVersion = ProxyRepositoryFactory.getInstance().getAllVersion(property.getId());
+        for (IRepositoryViewObject object : allVersion) {
+            IFile pomFile = AggregatorPomsHelper.getItemPomFolder(object.getProperty())
+                    .getFile(TalendMavenConstants.POM_FILE_NAME);
+            String relativePath = pomFile.getParent().getLocation().makeRelativeTo(parentPom.getParent().getLocation())
+                    .toPortableString();
+            if (StringUtils.isNotBlank(relativePath)) {
+                relativePathList.add(relativePath);
+            }
+        }
+
+        Model model = MavenPlugin.getMaven().readModel(parentPom.getContents());
+        List<String> modules = model.getModules();
+        if (modules != null && modules.size() > 0) {
+            modules.removeAll(relativePathList);
+            PomUtil.savePom(null, model, parentPom);
+        }
+    }
+    
+    public static void restoreAllVersionsFromParentModules(Property property) throws Exception {
+        IFile parentPom = getParentModulePomFile(
+                AggregatorPomsHelper.getItemPomFolder(property).getFile(TalendMavenConstants.POM_FILE_NAME));
+        if (parentPom == null) {
+            return;
+        }
+        
+        List<String> relativePathList = new ArrayList<String>();
+        Model model = MavenPlugin.getMaven().readModel(parentPom.getContents());
+        List<String> modules = model.getModules();
+        if (modules == null) {
+            modules = new ArrayList<>();
+            model.setModules(modules);
+        }
+
+        List<IRepositoryViewObject> allVersion = ProxyRepositoryFactory.getInstance().getAllVersion(property.getId());
+        for (IRepositoryViewObject object : allVersion) {
+            Property itemProperty = object.getProperty();
+            if (!checkIfCanAddToParentModules(itemProperty, true)) {
+                continue;
+            }
+            IFile pomFile = AggregatorPomsHelper.getItemPomFolder(object.getProperty(), object.getVersion())
+                    .getFile(TalendMavenConstants.POM_FILE_NAME);
+
+            String relativePath = pomFile.getParent().getLocation().makeRelativeTo(parentPom.getParent().getLocation())
+                    .toPortableString();
+            if (StringUtils.isNoneBlank(relativePath) && !modules.contains(relativePath)) {
+                relativePathList.add(relativePath);
+            }
+        }
+        Collections.sort(relativePathList);
+        modules.addAll(relativePathList);
+        PomUtil.savePom(null, model, parentPom);
+
     }
 
     private static IFile getParentModulePomFile(IFile pomFile) {
