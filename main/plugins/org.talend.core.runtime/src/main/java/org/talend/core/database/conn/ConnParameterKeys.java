@@ -267,6 +267,8 @@ public class ConnParameterKeys {
 
     public static final String IMPALA_AUTHENTICATION_PRINCIPLA = "IMPALA_AUTHENTICATION_PRINCIPLA";//$NON-NLS-1$
 
+    public static final String IMPALA_DRIVER = "IMPALA_DRIVER";
+
     /**
      * Google Dataproc keys.
      */

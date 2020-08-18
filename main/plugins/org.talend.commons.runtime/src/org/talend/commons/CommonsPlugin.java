@@ -111,7 +111,8 @@ public class CommonsPlugin implements BundleActivator {
     }
 
     public static boolean isDebugMode() {
-        return ArrayUtils.contains(Platform.getApplicationArgs(), TalendDebugHandler.TALEND_DEBUG);
+        return Boolean.getBoolean("talendDebug") //$NON-NLS-1$
+                || ArrayUtils.contains(Platform.getApplicationArgs(), TalendDebugHandler.TALEND_DEBUG);
     }
 
     public static boolean isJUnitTest() {

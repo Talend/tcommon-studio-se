@@ -1634,6 +1634,10 @@ public final class DBConnectionContextUtils {
             String impalaPrin = conn.getParameters().get(ConnParameterKeys.IMPALA_AUTHENTICATION_PRINCIPLA);
             conn.getParameters().put(ConnParameterKeys.IMPALA_AUTHENTICATION_PRINCIPLA,
                     ContextParameterUtils.getOriginalValue(contextType, impalaPrin));
+            String addtionalJDBCParameters = conn.getParameters()
+                    .get(ConnParameterKeys.CONN_PARA_KEY_HIVE_ADDITIONAL_JDBC_SETTINGS);
+            conn.getParameters().put(ConnParameterKeys.CONN_PARA_KEY_HIVE_ADDITIONAL_JDBC_SETTINGS,
+                    ContextParameterUtils.getOriginalValue(contextType, addtionalJDBCParameters));
         }
 
         if (EDatabaseTypeName.ORACLE_CUSTOM.equals(EDatabaseTypeName.getTypeFromDbType(conn.getDatabaseType()))) {
