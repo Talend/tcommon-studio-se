@@ -120,7 +120,7 @@
 						<excludeTypes>pom</excludeTypes>
 						<excludeTransitive>true</excludeTransitive>
 						<outputDirectory>${project.basedir}/lib</outputDirectory>
-						<includeGroupIds>org.apache.cxf</includeGroupIds>
+						<includeGroupIds>org.apache.cxf,com.sun.activation,jakarta.activation,jakarta.ws.rs,jakarta.xml.bind,javax.annotation,org.glassfish.jaxb,javax.xml.ws,org.apache.neethi,org.codehaus.woodstox</includeGroupIds>
 					</configuration>
 				</execution>
 				</executions>
