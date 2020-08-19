@@ -93,7 +93,6 @@ public class ContextNatTableBackGroudPainter extends BackgroundPainter {
                     if (rowName.equalsIgnoreCase(value)) {
                         if (!parentSourceName.equalsIgnoreCase(key)) {
                             ((ContextAutoResizeTextPainter) getWrappedPainter()).setContainsRowName(true);
-                            break;
                         }
                         break;
                     }
