@@ -49,6 +49,10 @@ public class EclipseCommandLine {
      */
     static public final String TALEND_PROJECT_TYPE_COMMAND = "-talendProjectType"; //$NON-NLS-1$
 
+    static public final String TALEND_LICENCE_PATH = "talend.licence.path"; //$NON-NLS-1$
+
+    static public final String ARG_TALEND_LICENCE_PATH = "-" + TALEND_LICENCE_PATH; //$NON-NLS-1$
+
     /**
      * for relaunch of the plugins when relaunching the Studio
      */

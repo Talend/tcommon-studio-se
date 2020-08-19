@@ -78,7 +78,13 @@ public interface ICoreTisService extends IService {
     Map<String, String> getDropBundleInfo() throws IOException;
 
     Set<String> getComponentBlackList();
-    
+
+    boolean hasNewPatchInPatchesFolder();
+
+    boolean isDefaultLicenseAndProjectType();
+
+    void refreshPatchesFolderCache();
+
     static ICoreTisService get() {
         if (GlobalServiceRegister.getDefault().isServiceRegistered(ICoreTisService.class)) {
             return GlobalServiceRegister.getDefault().getService(ICoreTisService.class);
