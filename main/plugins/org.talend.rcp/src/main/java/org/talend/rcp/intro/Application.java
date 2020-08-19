@@ -40,9 +40,6 @@ import org.eclipse.ui.PlatformUI;
 import org.osgi.service.prefs.BackingStoreException;
 import org.osgi.service.prefs.Preferences;
 import org.talend.commons.exception.BusinessException;
-import org.talend.commons.model.KeyConstants.ProjectType;
-import org.talend.commons.model.TalendObject;
-import org.talend.commons.runtime.helper.LocalComponentInstallHelper;
 import org.talend.commons.runtime.helper.PatchComponentHelper;
 import org.talend.commons.runtime.service.PatchComponent;
 import org.talend.commons.ui.runtime.update.PreferenceKeys;
@@ -50,9 +47,6 @@ import org.talend.commons.ui.swt.dialogs.ErrorDialogWidthDetailArea;
 import org.talend.commons.utils.network.NetworkUtil;
 import org.talend.commons.utils.network.TalendProxySelector;
 import org.talend.commons.utils.system.EclipseCommandLine;
-import org.talend.configurator.common.utils.ConfiguratorHelper;
-import org.talend.configurator.common.utils.PatchesFolderDetector;
-import org.talend.configurator.common.utils.Utils;
 import org.talend.core.BrandingChecker;
 import org.talend.core.GlobalServiceRegister;
 import org.talend.core.model.migration.IMigrationToolService;
@@ -286,19 +280,19 @@ public class Application implements IApplication {
     }
 
     private boolean installLocalPatches() {
-        PatchesFolderDetector patchesFolderDetector = null;
         try {
-            patchesFolderDetector = PatchesFolderDetector.getInstance();
-            if (patchesFolderDetector.hasFileToBeChecked()) {
-                File curUsingLicense = org.talend.configurator.common.utils.Utils.getObjectFile();
-                File defaultLicense = org.talend.configurator.common.utils.Utils.getDefaultObjectFile();
-                ProjectType pType = ConfiguratorHelper.getProductTypeFromLicense(new TalendObject(defaultLicense));
-                String productType = System.getProperty("talend.branding.type"); //$NON-NLS-1$
-                if (!curUsingLicense.equals(defaultLicense) || !pType.name().equals(productType)) {
-                    EclipseCommandLine.updateOrCreateExitDataPropertyWithCommand(EclipseCommandLine.TALEND_PROJECT_TYPE_COMMAND,
-                            "", true);
-                    EclipseCommandLine.updateOrCreateExitDataPropertyWithCommand(Utils.ARG_TALEND_LICENCE_PATH, "", true);
-                    return true;
+            ICoreTisService tisService = ICoreTisService.get();
+            if (tisService != null) {
+                if (tisService.hasNewPatchInPatchesFolder()) {
+                    if (!tisService.isDefaultLicenseAndProjectType()) {
+                        EclipseCommandLine.updateOrCreateExitDataPropertyWithCommand(
+                                EclipseCommandLine.TALEND_PROJECT_TYPE_COMMAND, "", true);
+                        EclipseCommandLine.updateOrCreateExitDataPropertyWithCommand(EclipseCommandLine.ARG_TALEND_LICENCE_PATH,
+                                "", true);
+                        return true;
+                    }
+                } else {
+                    return false;
                 }
             } else {
                 return false;
@@ -315,8 +309,7 @@ public class Application implements IApplication {
                 final String installedMessages = patchComponent.getInstalledMessages();
                 if (installedMessages != null) {
                     log.log(Level.INFO, installedMessages);
-                    MessageDialog.openInformation(Display.getDefault().getActiveShell(), "Installing Patches",
-                            installedMessages);
+                    MessageDialog.openInformation(Display.getDefault().getActiveShell(), "Installing Patches", installedMessages);
                 }
                 if (patchComponent.needRelaunch()) {
                     needRelaunch = true;
@@ -332,12 +325,13 @@ public class Application implements IApplication {
             updateService.syncComponentM2Jars(new NullProgressMonitor());
         }
 
-        if (patchesFolderDetector != null) {
-            try {
-                patchesFolderDetector.refreshCheckedFiles();
-            } catch (Throwable e) {
-                log.error(e.getLocalizedMessage(), e);
+        try {
+            ICoreTisService tisService = ICoreTisService.get();
+            if (tisService != null) {
+                tisService.refreshPatchesFolderCache();
             }
+        } catch (Throwable e) {
+            log.error(e.getLocalizedMessage(), e);
         }
         return needRelaunch;
     }
