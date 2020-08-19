@@ -116,6 +116,7 @@ import org.talend.core.runtime.projectsetting.ProjectPreferenceManager;
 import org.talend.core.runtime.repository.build.BuildExportManager;
 import org.talend.core.service.IResourcesDependenciesService;
 import org.talend.core.services.ICoreTisService;
+import org.talend.core.services.IGITProviderService;
 import org.talend.core.services.ISVNProviderService;
 import org.talend.core.ui.IJobletProviderService;
 import org.talend.core.ui.ITestContainerProviderService;
@@ -1559,6 +1560,10 @@ public class ProcessorUtilities {
                     List<ProcessItem> testsItems =
                             testContainerService.getTestContainersByVersion(jobInfo.getProcessItem());
                     for (ProcessItem testItem : testsItems) {
+                        if (testItem.getProperty().getItem().getState().isDeleted()
+                                && IRunProcessService.get().isExcludeDeletedItems(testItem.getProperty())) {
+                            continue;
+                        }
                         JobInfo subJobInfo = new JobInfo(testItem, testItem.getProcess().getDefaultContext());
                         subJobInfo.setTestContainer(true);
                         subJobInfo.setFatherJobInfo(jobInfo);
@@ -1937,6 +1942,38 @@ public class ProcessorUtilities {
         }
         return result;
     }
+    
+    public static boolean isRemoteProject() {
+        ISVNProviderService svnService = null;
+        if (PluginChecker.isSVNProviderPluginLoaded()) {
+        	svnService = GlobalServiceRegister.getDefault().getService(ISVNProviderService.class);
+        }
+        
+        
+        IGITProviderService gitService = null;
+        if (PluginChecker.isGITProviderPluginLoaded()) {
+        	gitService = GlobalServiceRegister.getDefault().getService(IGITProviderService.class);
+        }
+        
+        if ((svnService != null && svnService.isProjectInSvnMode()) || (gitService != null && gitService.isProjectInGitMode()) ) {
+        	return true;
+        }
+        
+        return false;
+    }
+    
+    private static void updateCodeSources() throws ProcessorException {
+        if (isRemoteProject()) {
+        	// TESB-29071
+        	try {
+                ProxyRepositoryFactory.getInstance().initialize();
+            } catch (PersistenceException e) {
+                ExceptionHandler.process(e);
+            }
+            RepositoryManager.syncRoutineAndJoblet(ERepositoryObjectType.ROUTINES);
+            RepositoryManager.syncRoutineAndJoblet(ERepositoryObjectType.BEANS);
+        }  	
+    }
 
     public static IProcessor generateCode(ProcessItem process, String contextName, boolean statistics, boolean trace)
             throws ProcessorException {
@@ -1953,13 +1990,7 @@ public class ProcessorUtilities {
 
     public static IProcessor generateCode(IProcess process, IContext context, boolean statistics, boolean trace,
             boolean contextProperties, boolean applyToChildren) throws ProcessorException {
-        ISVNProviderService service = null;
-        if (PluginChecker.isSVNProviderPluginLoaded()) {
-            service = GlobalServiceRegister.getDefault().getService(ISVNProviderService.class);
-        }
-        if (service != null && service.isProjectInSvnMode()) {
-            RepositoryManager.syncRoutineAndJoblet(ERepositoryObjectType.ROUTINES);
-        }
+        updateCodeSources();
         // achen modify to fix 0006107
         ProcessItem pItem = null;
 
@@ -2003,14 +2034,7 @@ public class ProcessorUtilities {
 
     public static IProcessor generateCode(IProcess process, IContext context, boolean statistics, boolean trace,
             boolean properties, IProgressMonitor progressMonitor) throws ProcessorException {
-        // added by nma, to refresh routines when generating code in SVN mode. 10225.
-        ISVNProviderService service = null;
-        if (PluginChecker.isSVNProviderPluginLoaded()) {
-            service = GlobalServiceRegister.getDefault().getService(ISVNProviderService.class);
-        }
-        if (service != null && service.isProjectInSvnMode()) {
-            RepositoryManager.syncRoutineAndJoblet(ERepositoryObjectType.ROUTINES);
-        }
+        updateCodeSources();
         // achen modify to fix 0006107
         ProcessItem pItem = null;
 
@@ -2040,13 +2064,7 @@ public class ProcessorUtilities {
     public static IProcessor generateCode(IProcessor processor, IProcess process, IContext context, boolean statistics,
             boolean trace, boolean properties, IProgressMonitor progressMonitor) throws ProcessorException {
 
-        ISVNProviderService service = null;
-        if (PluginChecker.isSVNProviderPluginLoaded()) {
-            service = GlobalServiceRegister.getDefault().getService(ISVNProviderService.class);
-        }
-        if (service != null && service.isProjectInSvnMode()) {
-            RepositoryManager.syncRoutineAndJoblet(ERepositoryObjectType.ROUTINES);
-        }
+        updateCodeSources();
 
         CorePlugin.getDefault().getRunProcessService().buildCodesJavaProject(progressMonitor);
 
@@ -2096,14 +2114,7 @@ public class ProcessorUtilities {
 
     public static IProcessor generateCode(IProcess process, IContext context, boolean statistics, boolean trace,
             boolean properties, int option) throws ProcessorException {
-        // added by nma, to refresh routines when generating code in SVN mode. 10225.
-        ISVNProviderService service = null;
-        if (PluginChecker.isSVNProviderPluginLoaded()) {
-            service = GlobalServiceRegister.getDefault().getService(ISVNProviderService.class);
-        }
-        if (service != null && service.isProjectInSvnMode()) {
-            RepositoryManager.syncRoutineAndJoblet(ERepositoryObjectType.ROUTINES);
-        }
+        updateCodeSources();
         // achen modify to fix 0006107
         JobInfo jobInfo = new JobInfo(process, context);
         jobList.clear();

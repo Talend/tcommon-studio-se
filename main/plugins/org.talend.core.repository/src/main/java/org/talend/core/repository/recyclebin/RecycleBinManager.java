@@ -281,7 +281,8 @@ public class RecycleBinManager {
                 resource = createRecycleBinResource(project);
             }
             resource.getContents().clear();
-            recycleBin.setLastUpdate(new Date());
+            // set date to null to avoid timezone conflict
+            recycleBin.setLastUpdate(null);
             resource.getContents().add(recycleBin);
             EmfHelper.saveResource(resource);
             lastSavedRecycleBinMap.put(recycleBin, EcoreUtil.copy(recycleBin));

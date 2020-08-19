@@ -186,8 +186,7 @@ public class UpdatesHelper {
     }
 
     private static void findUpdateBaseFile(Set<File> foundUpdateFiles, File baseFile) {
-        if (isPlainUpdate(baseFile)
-                || isUpdateSite(baseFile) && !isComponentUpdateSite(baseFile)) {
+        if (isPlainUpdate(baseFile) || isUpdateSite(baseFile)) {
             foundUpdateFiles.add(baseFile);
         } else if (baseFile.isDirectory()) {
             final File[] listFiles = baseFile.listFiles();
