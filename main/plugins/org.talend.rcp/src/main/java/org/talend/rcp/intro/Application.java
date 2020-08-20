@@ -171,6 +171,10 @@ public class Application implements IApplication {
             // saveConnectionBean(email);
 
             boolean needRelaunch = installLocalPatches();
+            if (GlobalServiceRegister.getDefault().isServiceRegistered(IUpdateService.class)) {
+                IUpdateService updateService = GlobalServiceRegister.getDefault().getService(IUpdateService.class);
+                updateService.syncComponentM2Jars(new NullProgressMonitor());
+            }
             if (needRelaunch) {
                 setRelaunchData();
                 return IApplication.EXIT_RELAUNCH;
@@ -318,11 +322,6 @@ public class Application implements IApplication {
             if (StringUtils.isNotEmpty(patchComponent.getFailureMessage())) {
                 log.log(Level.ERROR, patchComponent.getFailureMessage());
             }
-        }
-
-        if (GlobalServiceRegister.getDefault().isServiceRegistered(IUpdateService.class)) {
-            IUpdateService updateService = GlobalServiceRegister.getDefault().getService(IUpdateService.class);
-            updateService.syncComponentM2Jars(new NullProgressMonitor());
         }
 
         try {
