@@ -141,5 +141,19 @@ public interface IBigDataNode extends INode {
      * Loading and processing should be separated because conditions can be dependent on future component (in subjob order)
      */
     public void processDatasetConditions();
+    
+    /**
+     * 
+     * @param connectionTypes
+     * @return connections according to multiple EConnectionType
+     */
+    public List<? extends IConnection> getIncomingConnections(EConnectionType... connectionTypes);
+    
+    /**
+     * 
+     * @param connectionTypes
+     * @return connections according to multiple EConnectionType
+     */
+    public List<? extends IConnection> getOutgoingConnections(EConnectionType... connectionTypes);
 
 }
