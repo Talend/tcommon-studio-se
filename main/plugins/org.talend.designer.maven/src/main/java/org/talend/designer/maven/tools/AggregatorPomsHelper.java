@@ -931,7 +931,8 @@ public class AggregatorPomsHelper {
                     }
                     IFile pomFile = getItemPomFolder(item.getProperty()).getFile(TalendMavenConstants.POM_FILE_NAME);
                     // filter esb data service node
-                    if (!isDataServiceOperation(object.getProperty()) && pomFile.exists()) {
+                    if (!isDataServiceOperation(object.getProperty()) && checkIfCanAddToParentModules(object.getProperty(), true)
+                            && pomFile.exists()) {
                         modules.add(getModulePath(pomFile));
                     }
                 }
