@@ -58,6 +58,7 @@ import org.talend.core.model.general.ILibrariesService;
 import org.talend.core.model.general.ModuleNeeded;
 import org.talend.core.model.process.ProcessUtils;
 import org.talend.core.model.properties.Item;
+import org.talend.core.model.properties.JobletProcessItem;
 import org.talend.core.model.properties.ProjectReference;
 import org.talend.core.model.properties.Property;
 import org.talend.core.model.relationship.Relation;
@@ -95,6 +96,8 @@ import org.talend.repository.model.RepositoryConstants;
 public class AggregatorPomsHelper {
 
     private String projectTechName;
+
+    public static final String SYS_PROP_INCLUDE_REFERENCED_JOBLETS_ONLY = "build.referenced.joblets.only";
 
     public AggregatorPomsHelper() {
         projectTechName = ProjectManager.getInstance().getCurrentProject().getTechnicalLabel();
@@ -368,6 +371,29 @@ public class AggregatorPomsHelper {
                     && PomIdsHelper.getIfExcludeDeletedItems(property)) {
                 return false;
             }
+
+            if (Boolean.getBoolean(SYS_PROP_INCLUDE_REFERENCED_JOBLETS_ONLY)) {
+
+                Map<Relation, Set<Relation>> allrelations = RelationshipItemBuilder.getInstance()
+                        .getCurrentProjectItemsRelations();
+                boolean found = false;
+                Item item = property.getItem();
+                if (item != null && item instanceof JobletProcessItem) {
+                    for (Set<Relation> relationItems : allrelations.values()) {
+                        for (Relation relation : relationItems) {
+                            if (property.getId().equals(relation.getId())
+                                    && property.getVersion().equals(relation.getVersion())) {
+                                found = true;
+                            }
+                        }
+                    }
+
+                    if (!found) {
+                        return false;
+                    }
+                }
+            }
+
         }
 
         if (checkFilter) {
