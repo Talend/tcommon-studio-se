@@ -19,6 +19,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
@@ -1012,6 +1013,34 @@ public class AggregatorPomsHelper {
             return runProcessService;
         }
         return null;
+    }
+
+    public boolean containsMultipleVersionJoblet() {
+        final IFile pomFile = getProjectRootPom();
+        try {
+            Model model = MavenPlugin.getMaven().readModel(pomFile.getContents());
+            List<String> modules = model.getModules();
+            Set<String> joblets = new HashSet<String>();
+            for (String mod : modules) {
+                if (mod.contains("/joblets/")) {
+                    int idx = mod.lastIndexOf('_');
+                    if (idx == -1) {
+                        continue;
+                    }
+                    String jobletWithoutVersion = mod.substring(0, idx);
+                    if (joblets.contains(jobletWithoutVersion)) {
+                        return true;
+                    } else {
+                        joblets.add(jobletWithoutVersion);
+                    }
+                }
+            }
+
+        } catch (CoreException e) {
+            ExceptionHandler.process(e);
+        }
+
+        return false;
     }
 
 }

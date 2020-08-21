@@ -28,7 +28,6 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.HashMap;
-import java.util.HashSet;
 import java.util.LinkedHashMap;
 import java.util.LinkedHashSet;
 import java.util.LinkedList;
@@ -1216,35 +1215,6 @@ public class PomUtil {
             }
         }
         return Collections.emptySet();
-    }
-
-    public static boolean containsMultipleVersionJoblet(ITalendProcessJavaProject talendProject) {
-        final IProject project = talendProject.getProject();
-        final IFile pomFile = project.getFile(TalendMavenConstants.POM_FILE_NAME);
-        try {
-            Model model = MavenPlugin.getMaven().readModel(pomFile.getContents());
-            List<String> modules = model.getModules();
-            Set<String> joblets = new HashSet<String>();
-            for (String mod : modules) {
-                if (mod.contains("/joblets/")) {
-                    int idx = mod.lastIndexOf('_');
-                    if (idx == -1) {
-                        continue;
-                    }
-                    String jobletWithoutVersion = mod.substring(0, idx);
-                    if (joblets.contains(jobletWithoutVersion)) {
-                        return true;
-                    } else {
-                        joblets.add(jobletWithoutVersion);
-                    }
-                }
-            }
-
-        } catch (CoreException e) {
-            ExceptionHandler.process(e);
-        }
-
-        return false;
     }
 
 }
