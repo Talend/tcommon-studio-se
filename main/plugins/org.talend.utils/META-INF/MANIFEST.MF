@@ -33,7 +33,7 @@ Export-Package:
  org.talend.utils.wsdl,
  org.talend.utils.xml
 Bundle-ClassPath: .,
- lib/studio-utils-1.0.0.jar
+ lib/studio-utils.jar
 Require-Bundle: org.apache.commons.lang,
  org.talend.libraries.apache;visibility:=reexport,
  org.apache.commons.io,
