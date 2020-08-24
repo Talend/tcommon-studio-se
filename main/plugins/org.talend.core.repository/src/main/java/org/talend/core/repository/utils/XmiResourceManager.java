@@ -651,14 +651,17 @@ public class XmiResourceManager {
 
     public void saveResource(Resource resource) throws PersistenceException {
         try {
-            Object objectByType = EcoreUtil.getObjectByType(resource.getContents(), PropertiesPackage.eINSTANCE.getProject());
-            if (objectByType != null) {
-                Project project = (Project) objectByType;
-                EList migrationTasks = project.getMigrationTask();
-                if (migrationTasks != null && 1 < migrationTasks.size()) {
-                    org.talend.commons.exception.ExceptionHandler.process(new Exception("Bad saving logic for Project"), Priority.WARN);
-                    ProxyRepositoryFactory.getInstance().saveProject(new org.talend.core.model.general.Project(project));
-                    return;
+            if (resource != null) {
+                Object objectByType = EcoreUtil.getObjectByType(resource.getContents(), PropertiesPackage.eINSTANCE.getProject());
+                if (objectByType != null) {
+                    Project project = (Project) objectByType;
+                    EList migrationTasks = project.getMigrationTask();
+                    if (migrationTasks != null && 1 < migrationTasks.size()) {
+                        org.talend.commons.exception.ExceptionHandler.process(new Exception("Bad saving logic for Project"),
+                                Priority.WARN);
+                        ProxyRepositoryFactory.getInstance().saveProject(new org.talend.core.model.general.Project(project));
+                        return;
+                    }
                 }
             }
         } catch (Throwable e) {
