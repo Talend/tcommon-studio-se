@@ -84,6 +84,7 @@ import org.talend.core.context.Context;
 import org.talend.core.context.RepositoryContext;
 import org.talend.core.exception.TalendInternalPersistenceException;
 import org.talend.core.hadoop.BigDataBasicUtil;
+import org.talend.core.model.general.ILibrariesService;
 import org.talend.core.model.general.ModuleNeeded;
 import org.talend.core.model.general.Project;
 import org.talend.core.model.metadata.MetadataTalendType;
@@ -226,6 +227,13 @@ public final class ProxyRepositoryFactory implements IProxyRepositoryFactory {
         return null;
     }
 
+    private ILibrariesService getLibrariesService() {
+        if (GlobalServiceRegister.getDefault().isServiceRegistered(ILibrariesService.class)) {
+            return GlobalServiceRegister.getDefault().getService(ILibrariesService.class);
+        }
+        return null;
+    }
+    
     /*
      * (non-Javadoc)
      *
@@ -2083,6 +2091,10 @@ public final class ProxyRepositoryFactory implements IProxyRepositoryFactory {
                 this.repositoryFactoryFromProvider.beforeLogon(project);
                 ProjectManager.getInstance().getBeforeLogonRecords().clear();
                 ProjectManager.getInstance().getUpdatedRemoteHandlerRecords().clear();
+                ILibrariesService librariesService = getLibrariesService();
+                if (librariesService != null) {
+                	librariesService.setForceReloadCustomUri();
+                }
 
                 ProjectDataJsonProvider.checkAndRectifyRelationShipSetting(project.getEmfProject());
 
