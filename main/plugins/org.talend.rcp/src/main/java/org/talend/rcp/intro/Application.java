@@ -53,7 +53,6 @@ import org.talend.core.model.migration.IMigrationToolService;
 import org.talend.core.model.utils.TalendPropertiesUtil;
 import org.talend.core.repository.CoreRepositoryPlugin;
 import org.talend.core.runtime.services.IMavenUIService;
-import org.talend.core.service.IUpdateService;
 import org.talend.core.services.ICoreTisService;
 import org.talend.core.ui.branding.IBrandingService;
 import org.talend.core.ui.workspace.ChooseWorkspaceData;
@@ -188,11 +187,6 @@ public class Application implements IApplication {
                 if (StringUtils.isNotEmpty(patchComponent.getFailureMessage())) {
                     log.log(Level.ERROR, patchComponent.getFailureMessage());
                 }
-            }
-            
-            if (GlobalServiceRegister.getDefault().isServiceRegistered(IUpdateService.class)) {
-                IUpdateService updateService = GlobalServiceRegister.getDefault().getService(IUpdateService.class);
-                updateService.syncComponentM2Jars(new NullProgressMonitor());
             }
 
             if (needRelaunch) {
