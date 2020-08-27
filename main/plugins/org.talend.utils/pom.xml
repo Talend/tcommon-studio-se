@@ -46,9 +46,9 @@
   			<version>1.7.10</version>
 		</dependency>
         <dependency>
-            <groupId>org.talend</groupId>
+            <groupId>org.talend.studio</groupId>
             <artifactId>studio-utils</artifactId>
-            <version>1.0.0-SNAPSHOT</version>
+            <version>${studio-utils.version}</version>
         </dependency>
 	</dependencies>
 	<build>
