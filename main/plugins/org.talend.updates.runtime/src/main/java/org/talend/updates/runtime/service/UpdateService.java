@@ -90,7 +90,7 @@ public class UpdateService implements IUpdateService {
         final File tempM2RepoFolder = PathUtils.getComponentsM2TempFolder();
         try {
             if (tempM2RepoFolder != null && tempM2RepoFolder.exists()) {
-                MavenRepoSynchronizer synchronizer = new MavenRepoSynchronizer(tempM2RepoFolder);
+                MavenRepoSynchronizer synchronizer = new MavenRepoSynchronizer(tempM2RepoFolder, false);
                 synchronizer.sync();
             }
         } finally {
