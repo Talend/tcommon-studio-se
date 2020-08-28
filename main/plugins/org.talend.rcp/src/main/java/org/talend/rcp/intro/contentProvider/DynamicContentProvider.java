@@ -197,14 +197,9 @@ public class DynamicContentProvider extends IntroProvider {
     }
 
     protected void createNewsPage(Document dom, Element parent) {
-        createOnlinePage(dom, parent, ONLINE_PAGE_URL, Messages.getString("DynamicContentProvider.TalendNewsTitle")); //$NON-NLS-1$
-    }
-
-    protected void createCloudPage(Document dom, Element parent) {
-        createOnlinePage(dom, parent, CLOUD_PAGE_URL, null);
         // to avoid call createOnlinePage twice
         if (flag) {
-            createOnlinePage(dom, parent, CLOUD_PAGE_URL, null);
+            createOnlinePage(dom, parent, ONLINE_PAGE_URL, Messages.getString("DynamicContentProvider.TalendNewsTitle")); //$NON-NLS-1$
         }
         // the createCloudPage will be called twice
         // 1.when create control part
@@ -212,6 +207,14 @@ public class DynamicContentProvider extends IntroProvider {
         // we can't change the two cases of calling createCloudPage, so we control it here
         // the method will be called by the same object twice, the the second time will finish the whole page so we do
         // nothing when first time enter this method , and only the second time to create the online page
+        flag = true;
+    }
+
+    protected void createCloudPage(Document dom, Element parent) {
+        // to avoid call createOnlinePage twice
+        if (flag) {
+            createOnlinePage(dom, parent, CLOUD_PAGE_URL, null);
+        }
         flag = true;
     }
 
