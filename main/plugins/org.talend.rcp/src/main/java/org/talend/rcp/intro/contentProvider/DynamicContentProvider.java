@@ -12,13 +12,6 @@
 // ============================================================================
 package org.talend.rcp.intro.contentProvider;
 
-import java.io.BufferedReader;
-import java.io.BufferedWriter;
-import java.io.File;
-import java.io.FileWriter;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
 import java.io.PrintWriter;
 import java.net.HttpURLConnection;
 import java.net.URL;
@@ -28,8 +21,6 @@ import java.util.Date;
 import java.util.List;
 import java.util.StringTokenizer;
 
-import org.eclipse.core.runtime.Path;
-import org.eclipse.core.runtime.Platform;
 import org.eclipse.jface.preference.IPreferenceStore;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.ui.forms.widgets.FormToolkit;
@@ -38,7 +29,6 @@ import org.talend.commons.exception.PersistenceException;
 import org.talend.commons.ui.html.TalendHtmlModelUtil;
 import org.talend.commons.ui.runtime.exception.ExceptionHandler;
 import org.talend.commons.utils.VersionUtils;
-import org.talend.commons.utils.network.NetworkUtil;
 import org.talend.core.CorePlugin;
 import org.talend.core.GlobalServiceRegister;
 import org.talend.core.PluginChecker;
@@ -72,6 +62,8 @@ public class DynamicContentProvider extends IntroProvider {
     public static final String TRY_CLOUD_URL = "https://iam.integrationcloud.talend.com/idp/trial-registration?utm_medium=studio&utm_source=banner&utm_campaign="; //$NON-NLS-1$
 
     private static final String LEVEL_SEPARATOR = "."; //$NON-NLS-1$
+
+    private boolean flag = false;
 
     /*
      * (non-Javadoc)
@@ -210,16 +202,21 @@ public class DynamicContentProvider extends IntroProvider {
 
     protected void createCloudPage(Document dom, Element parent) {
         createOnlinePage(dom, parent, CLOUD_PAGE_URL, null);
+        // to avoid call createOnlinePage twice
+        if (flag) {
+            createOnlinePage(dom, parent, CLOUD_PAGE_URL, null);
+        }
+        // the createCloudPage will be called twice
+        // 1.when create control part
+        // 2.after the control was created ,will catpure a event by zoomChangeListener
+        // we can't change the two cases of calling createCloudPage, so we control it here
+        // the method will be called by the same object twice, the the second time will finish the whole page so we do
+        // nothing when first time enter this method , and only the second time to create the online page
+        flag = true;
     }
 
     protected void createOnlinePage(Document dom, Element parent, String onlinePageUrl, String title) {
-        if (!NetworkUtil.isNetworkValid()) {
-            setDIVStyle(dom, false);
-            return;
-        }
         HttpURLConnection urlConnection = null;
-        InputStream inStream = null;
-        String filePath = null;
         try {
             URL url = new URL(getOnlinePageURL(onlinePageUrl));
             urlConnection = (HttpURLConnection) url.openConnection();
@@ -228,11 +225,7 @@ public class DynamicContentProvider extends IntroProvider {
             urlConnection.setDoInput(true);
             urlConnection.setUseCaches(false);
             urlConnection.setReadTimeout(2000);
-            int state = urlConnection.getResponseCode();
-            inStream = urlConnection.getInputStream();
-            if (state == HttpURLConnection.HTTP_OK) {
-            	filePath = downHtml(inStream);
-            }
+            urlConnection.getInputStream();
             setDIVStyle(dom, true);
         } catch (Exception e) {
             setDIVStyle(dom, false);
@@ -240,19 +233,13 @@ public class DynamicContentProvider extends IntroProvider {
         } finally {
             urlConnection.disconnect();
         }
-        
-        if(filePath == null) {
-        	return;
-        }
         // online content
         Element tdElem = dom.createElement("td"); //$NON-NLS-1$
         setTDAttribute(tdElem);
         parent.appendChild(tdElem);
-
         Element div = dom.createElement("div"); //$NON-NLS-1$
         div.setAttribute("style", "overflow:auto;height:400px;width:260px;padding-left:20px;"); //$NON-NLS-1$ //$NON-NLS-2$
         tdElem.appendChild(div);
-
         if (title != null) {
             Element spanElem = dom.createElement("span"); //$NON-NLS-1$
             spanElem.setAttribute("class", "style_1 style_2 style_3"); //$NON-NLS-1$ //$NON-NLS-2$
@@ -260,9 +247,8 @@ public class DynamicContentProvider extends IntroProvider {
             div.appendChild(spanElem);
             div.appendChild(dom.createElement("br")); //$NON-NLS-1$
         }
-
         Element iFrame = dom.createElement("iframe"); //$NON-NLS-1$
-        iFrame.setAttribute("src", filePath); //$NON-NLS-1$
+        iFrame.setAttribute("src", getOnlinePageURL(onlinePageUrl)); //$NON-NLS-1$
         iFrame.setAttribute("frameborder", "0"); //$NON-NLS-1$ //$NON-NLS-2$
         iFrame.setAttribute("width", "240px"); //$NON-NLS-1$ //$NON-NLS-2$
         iFrame.setAttribute("height", "370px"); //$NON-NLS-1$ //$NON-NLS-2$
@@ -270,48 +256,6 @@ public class DynamicContentProvider extends IntroProvider {
         div.appendChild(iFrame);
     }
     
-    private String downHtml(InputStream inStream) {
-    	if(inStream == null) {
-    		return null;
-    	}
-        File file = null;
-        BufferedWriter output = null;
-        BufferedReader reader = null;
-    	try {
-    		String path = new Path(Platform.getConfigurationLocation().getURL().getPath()).toFile().getAbsolutePath();
-	        file = new File(path, "WelcomPage3.html");
-	        file.deleteOnExit();
-            
-            String result = null;
-        	reader = new BufferedReader(new InputStreamReader(inStream, "utf-8"));
-            String line = null;
-            while ((line = reader.readLine()) != null) {
-            	if(result==null){
-            		result=line;
-            	}else{
-            		result += line;
-            	}
-            }
-            
-            output = new BufferedWriter(new FileWriter(file));  
-            output.write(result);  
-            output.flush();
-    	} catch (Exception e) {
-    		return null;
-    	} finally {
-    		try {
-    			output.close();
-    			reader.close();
-    			inStream.close();
-			} catch (IOException e) {
-			}
-    	}
-    	if(!file.exists()){
-    		return null;
-    	} 	
-    	return file.toURI().toString();
-    }
-
     protected void createTopMessage(Document dom, Element parent) {
         Element topMessageElem = dom.createElement("div"); //$NON-NLS-1$
         topMessageElem.setAttribute("style", //$NON-NLS-1$
