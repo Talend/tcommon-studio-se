@@ -47,6 +47,7 @@ import org.talend.core.model.properties.ContextItem;
 import org.talend.core.model.properties.Item;
 import org.talend.core.model.properties.JobletProcessItem;
 import org.talend.core.model.properties.ProcessItem;
+import org.talend.core.model.repository.ERepositoryObjectType;
 import org.talend.core.model.repository.IRepositoryViewObject;
 import org.talend.core.runtime.CoreRuntimePlugin;
 import org.talend.cwm.helper.ResourceHelper;
@@ -288,7 +289,7 @@ public class ContextUtils {
 
         IProxyRepositoryFactory factory = CoreRuntimePlugin.getInstance().getProxyRepositoryFactory();
         try {
-            final IRepositoryViewObject lastVersion = factory.getLastVersion(contextId);
+            final IRepositoryViewObject lastVersion = factory.getLastVersion(contextId, ERepositoryObjectType.CONTEXT);
             if (lastVersion != null) {
                 final Item item = lastVersion.getProperty().getItem();
                 if (item != null && item instanceof ContextItem) {
@@ -507,7 +508,7 @@ public class ContextUtils {
 
         IProxyRepositoryFactory factory = CoreRuntimePlugin.getInstance().getProxyRepositoryFactory();
         try {
-            final IRepositoryViewObject lastVersion = factory.getLastVersion(contextId);
+            final IRepositoryViewObject lastVersion = factory.getLastVersion(contextId, ERepositoryObjectType.CONTEXT);
             if (lastVersion != null) {
                 final Item item = lastVersion.getProperty().getItem();
                 if (item != null) {
