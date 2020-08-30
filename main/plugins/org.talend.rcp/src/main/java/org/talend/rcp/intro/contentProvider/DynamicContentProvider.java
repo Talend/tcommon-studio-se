@@ -218,24 +218,38 @@ public class DynamicContentProvider extends IntroProvider {
         flag = true;
     }
 
+    private static Boolean accessable = null;
+
     protected void createOnlinePage(Document dom, Element parent, String onlinePageUrl, String title) {
         HttpURLConnection urlConnection = null;
-        try {
-            URL url = new URL(getOnlinePageURL(onlinePageUrl));
-            urlConnection = (HttpURLConnection) url.openConnection();
-            urlConnection.setRequestMethod("GET"); //$NON-NLS-1$
-            urlConnection.setDoOutput(true);
-            urlConnection.setDoInput(true);
-            urlConnection.setUseCaches(false);
-            urlConnection.setReadTimeout(2000);
-            urlConnection.getInputStream();
+        if (accessable == null) {
+            try {
+                URL url = new URL(getOnlinePageURL(onlinePageUrl));
+                urlConnection = (HttpURLConnection) url.openConnection();
+                urlConnection.setRequestMethod("GET"); //$NON-NLS-1$
+                urlConnection.setDoOutput(true);
+                urlConnection.setDoInput(true);
+                urlConnection.setUseCaches(false);
+                urlConnection.setConnectTimeout(3000);
+                if (urlConnection.getResponseCode() == HttpURLConnection.HTTP_OK) {
+                    accessable = true;
+                }
+            } catch (Exception e) {
+
+            } finally {
+                if (accessable == null) {
+                    accessable = false;
+                }
+                urlConnection.disconnect();
+            }
+        }
+        if (accessable) {
             setDIVStyle(dom, true);
-        } catch (Exception e) {
+        } else {
             setDIVStyle(dom, false);
             return;
-        } finally {
-            urlConnection.disconnect();
         }
+
         // online content
         Element tdElem = dom.createElement("td"); //$NON-NLS-1$
         setTDAttribute(tdElem);
