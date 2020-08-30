@@ -41,6 +41,7 @@ import org.osgi.service.prefs.BackingStoreException;
 import org.osgi.service.prefs.Preferences;
 import org.talend.commons.exception.BusinessException;
 import org.talend.commons.runtime.helper.LocalComponentInstallHelper;
+import org.talend.commons.exception.ExceptionHandler;
 import org.talend.commons.runtime.helper.PatchComponentHelper;
 import org.talend.commons.runtime.service.ComponentsInstallComponent;
 import org.talend.commons.runtime.service.PatchComponent;
@@ -51,6 +52,7 @@ import org.talend.commons.utils.network.TalendProxySelector;
 import org.talend.commons.utils.system.EclipseCommandLine;
 import org.talend.core.BrandingChecker;
 import org.talend.core.GlobalServiceRegister;
+import org.talend.core.PluginChecker;
 import org.talend.core.model.migration.IMigrationToolService;
 import org.talend.core.model.utils.TalendPropertiesUtil;
 import org.talend.core.repository.CoreRepositoryPlugin;
@@ -271,21 +273,27 @@ public class Application implements IApplication {
 
     private boolean installLocalPatches() {
         try {
-            ICoreTisService tisService = ICoreTisService.get();
-            if (tisService != null) {
-                if (tisService.hasNewPatchInPatchesFolder()) {
-                    if (!tisService.isDefaultLicenseAndProjectType()) {
-                        EclipseCommandLine.updateOrCreateExitDataPropertyWithCommand(
-                                EclipseCommandLine.TALEND_PROJECT_TYPE_COMMAND, "", true);
-                        EclipseCommandLine.updateOrCreateExitDataPropertyWithCommand(EclipseCommandLine.ARG_TALEND_LICENCE_PATH,
-                                "", true);
-                        return true;
+            final boolean forceCheck = Boolean.getBoolean("talend.studio.localpatch.forcecheck");
+            if (!forceCheck) {
+                ICoreTisService tisService = ICoreTisService.get();
+                if (tisService != null) {
+                    if (tisService.hasNewPatchInPatchesFolder()) {
+                        if (!tisService.isDefaultLicenseAndProjectType()) {
+                            EclipseCommandLine.updateOrCreateExitDataPropertyWithCommand(
+                                    EclipseCommandLine.TALEND_PROJECT_TYPE_COMMAND, "", true);
+                            EclipseCommandLine.updateOrCreateExitDataPropertyWithCommand(
+                                    EclipseCommandLine.ARG_TALEND_LICENCE_PATH, "", true);
+                            return true;
+                        }
+                    } else {
+                        return false;
                     }
-                } else {
+                } else if (PluginChecker.isTIS()) {
+                    ExceptionHandler.process(new Exception("Can't check patch in patches folder due to missing CoreTisService"));
                     return false;
+                } else {
+                    // it's TOS here, just force to check it everytime.
                 }
-            } else {
-                return false;
             }
         } catch (Throwable e) {
             log.error(e.getLocalizedMessage(), e);
