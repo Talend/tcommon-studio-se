@@ -840,10 +840,6 @@ public abstract class AbstractEMFRepositoryFactory extends AbstractRepositoryFac
             // look in all folders for this item type
             serializableAllVersion = getSerializableFromFolder(project, fullFolder, id, type, false, false, true, true, true);
         }
-        if (serializableAllVersion.isEmpty()) {
-            // look in all folders
-            serializableAllVersion = getSerializable(project, id, false, false);
-        }
         int size = serializableAllVersion.size();
 
         if (size > 1) {
