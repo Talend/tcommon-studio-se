@@ -29,6 +29,8 @@ public class ContextAutoResizeTextPainter extends TextPainter {
 
     private boolean changeBackgroundColor = false;
 
+    private boolean containsRowName = false;
+
     public ContextAutoResizeTextPainter(boolean wrapText, boolean paintBg, boolean calculate) {
         super(wrapText, paintBg, calculate);
     }
@@ -43,6 +45,8 @@ public class ContextAutoResizeTextPainter extends TextPainter {
         super.setupGCFromConfig(gc, cellStyle);
         if (cellStyle.getAttributeValue(CellStyleAttributes.FOREGROUND_COLOR).equals(GUIHelper.COLOR_RED)) {
             gc.setForeground(GUIHelper.COLOR_BLACK);
+        } else if (containsRowName) {
+            gc.setForeground(GUIHelper.COLOR_RED);
         } else if (changeBackgroundColor) {
             gc.setForeground(GUIHelper.COLOR_WIDGET_DARK_SHADOW);
         }
@@ -52,6 +56,9 @@ public class ContextAutoResizeTextPainter extends TextPainter {
         changeBackgroundColor = isChange;
     }
 
+    public void setContainsRowName(boolean containsRowName) {
+        this.containsRowName = containsRowName;
+    }
 
 	@Override
 	protected void setNewMinLength(ILayerCell cell, int contentWidth) {

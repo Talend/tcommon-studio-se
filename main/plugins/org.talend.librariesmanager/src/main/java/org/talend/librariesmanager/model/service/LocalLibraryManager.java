@@ -82,6 +82,7 @@ import org.talend.core.runtime.services.IMavenUIService;
 import org.talend.core.utils.TalendQuoteUtils;
 import org.talend.designer.maven.tools.BuildCacheManager;
 import org.talend.designer.maven.utils.PomUtil;
+import org.talend.designer.runprocess.IRunProcessService;
 import org.talend.librariesmanager.maven.MavenArtifactsHandler;
 import org.talend.librariesmanager.model.ExtensionModuleManager;
 import org.talend.librariesmanager.model.ModulesNeededProvider;
@@ -1054,7 +1055,13 @@ public class LocalLibraryManager implements ILibraryManagerService, IChangedLibr
             MavenArtifact ma = MavenUrlHelper.parseMvnUrl(mvnUri);
             if (ma != null) {
                 String repositoryUrl = ma.getRepositoryUrl();
-                if (repositoryUrl == null || repositoryUrl.trim().isEmpty()
+                boolean isCIMode = false;
+                if (GlobalServiceRegister.getDefault().isServiceRegistered(IRunProcessService.class)) {
+                    IRunProcessService runProcessService = GlobalServiceRegister.getDefault()
+                            .getService(IRunProcessService.class);
+                    isCIMode = runProcessService.isCIMode();
+                }
+                if (isCIMode || repositoryUrl == null || repositoryUrl.trim().isEmpty()
                         || MavenConstants.LOCAL_RESOLUTION_URL.equalsIgnoreCase(repositoryUrl)) {
                     return;
                 }
