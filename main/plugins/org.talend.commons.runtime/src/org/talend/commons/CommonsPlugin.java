@@ -20,9 +20,9 @@ import org.apache.commons.lang.ArrayUtils;
 import org.eclipse.core.net.proxy.IProxyService;
 import org.eclipse.core.runtime.FileLocator;
 import org.eclipse.core.runtime.Platform;
-import org.eclipse.core.runtime.Plugin;
 import org.eclipse.core.runtime.preferences.InstanceScope;
 import org.osgi.framework.Bundle;
+import org.osgi.framework.BundleActivator;
 import org.osgi.framework.BundleContext;
 import org.osgi.framework.ServiceReference;
 import org.osgi.util.tracker.ServiceTracker;
@@ -36,7 +36,7 @@ import org.talend.commons.utils.system.EclipseCommandLine;
  * $Id$
  *
  */
-public class CommonsPlugin extends Plugin {
+public class CommonsPlugin implements BundleActivator {
 
     // The plug-in ID
     public static final String PLUGIN_ID = "org.talend.commons.runtime"; //$NON-NLS-1$
@@ -149,14 +149,8 @@ public class CommonsPlugin extends Plugin {
         this.context = context;
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.eclipse.ui.plugin.AbstractUIPlugin#stop(org.osgi.framework.BundleContext)
-     */
+    @Override
     public void stop(BundleContext context) throws Exception {
-        plugin = null;
-        super.stop(context);
     }
 
     public ExceptionService getExceptionService() {
