@@ -10,68 +10,27 @@
 // 9 rue Pages 92150 Suresnes, France
 //
 // ============================================================================
-package org.talend.commons;
+package org.talend.commons.utils.time;
 
 import java.util.Enumeration;
 import java.util.Properties;
 
-import org.apache.log4j.Appender;
-import org.apache.log4j.Category;
 import org.apache.log4j.Hierarchy;
 import org.apache.log4j.Level;
 import org.apache.log4j.Logger;
 import org.apache.log4j.PropertyConfigurator;
 import org.apache.log4j.RollingFileAppender;
-import org.apache.log4j.spi.HierarchyEventListener;
 import org.apache.log4j.spi.LoggerFactory;
 import org.apache.log4j.spi.RootLogger;
 import org.eclipse.core.runtime.IPath;
 import org.eclipse.core.runtime.Platform;
-import org.eclipse.core.runtime.Plugin;
 
-/**
- * PluginLogManager
- * This class encapsulates a Log4J Hierarchy and centralizes all Logger access.
- * @author Manoel Marques
- */
 public class PerformanceLogManager {
 
 	private Hierarchy hierarchy;
 	
-	private class PluginEventListener implements HierarchyEventListener {
-		
-		/**
-		 * Called when a new appender is added for a particular level.
-		 * Internally it checks if the appender is one of our custom ones
-		 * and sets its custom properties. 
-		 * @param category level
-		 * @param appender appender added for this level
-		 */
-		public void addAppenderEvent(Category cat, Appender appender) {
-			if (appender instanceof PerformanceFileAppender) {
-				((PerformanceFileAppender)appender).activateOptions();
-			}
-		}
-		
-		/**
-		 * Called when a appender is removed from for a particular level.
-		 * Does nothing.
-		 * @param category level
-		 * @param appender appender added for this level
-		 */
-		public void removeAppenderEvent(Category cat, Appender appender) {
-		}
-	}
-	
-	/**
-	 * Creates a new PluginLogManager. Saves the plug-in log and state location.
-	 * Creates a new Hierarchy and add a new PluginEventListener to it.
-	 * Configure the hierarchy with the properties passed.
-	 * Add this object to the lits of acctive plug-in log managers. 
-	 * @param plugin the plug-in object
-	 * @param properties log configuration properties
-	 */
-	public PerformanceLogManager(Plugin plugin,Properties properties) {
+	public PerformanceLogManager() {
+	    Properties properties = new Properties();
 	    properties.put("log4j.rootCategory", ", A1");
 	    properties.put("log4j.appender.A1", RollingFileAppender.class.getName());
 	    IPath performanceLogPath = Platform.getLogFileLocation().removeLastSegments(1).append("performance.log");
@@ -80,8 +39,7 @@ public class PerformanceLogManager {
 	    properties.put("log4j.appender.A1.layout.ConversionPattern", "%d %-5p %c %x - %m%n");
 	    
 		this.hierarchy = new Hierarchy(new RootLogger(Level.INFO));
-		this.hierarchy.addHierarchyEventListener(new PluginEventListener());
-		new PropertyConfigurator().doConfigure(properties,this.hierarchy);	
+		new PropertyConfigurator().doConfigure(properties,hierarchy);	
 	}
 	
 	/**
@@ -141,36 +99,16 @@ public class PerformanceLogManager {
 		return this.hierarchy.getLogger(name,factory);
 	}
 
-	/**
-	 * Returns the root of this hierarchy.
-	 * @return Logger
-	 */
 	public Logger getRootLogger() {
 		return this.hierarchy.getRootLogger();
 	}
 
-	/**
-	 * Checks if this logger exists.
-	 * @return Logger
-	 */
 	public Logger exists(String name) {
 		return this.hierarchy.exists(name);
 	}
 	
-	/**
-	 * Removes appenders and disposes the logger hierarchy
-	 *
-	 */
 	public void shutdown() {
-		internalShutdown();
-	}
-	
-	/**
-	 * Used by LoggingPlugin to shutdown without removing it from the LoggingPlugin list
-	 *
-	 */
-	void internalShutdown() {
-		this.hierarchy.shutdown();
+	    this.hierarchy.shutdown();
 	}
 	
 	/**
@@ -181,10 +119,6 @@ public class PerformanceLogManager {
 		return this.hierarchy.getCurrentLoggers();
 	}
 
-	/**
-	 * Resets configuration values to its defaults.
-	 * 
-	 */
 	public void resetConfiguration() {
 		this.hierarchy.resetConfiguration();
 	}

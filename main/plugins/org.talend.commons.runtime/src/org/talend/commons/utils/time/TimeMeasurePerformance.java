@@ -15,13 +15,12 @@ package org.talend.commons.utils.time;
 import java.util.HashMap;
 
 import org.apache.log4j.Logger;
-import org.talend.commons.CommonsPlugin;
 
 /**
  * DOC sbliu  class global comment. Detailled comment
  */
 public class TimeMeasurePerformance extends TimeMeasure{
-    static private Logger logger = CommonsPlugin.getLogManager().getLogger(TimeMeasurePerformance.class.getName());
+    static private Logger logger;
     
     private static HashMap<String, TimeStack> timers;
 
@@ -43,7 +42,10 @@ public class TimeMeasurePerformance extends TimeMeasure{
         if (timers == null) {
             timers = new HashMap<String, TimeStack>();
         }
-
+        
+        if(logger == null) {
+            configureLogger();
+        }
     }
 
     private static void log (String message) {
@@ -90,6 +92,15 @@ public class TimeMeasurePerformance extends TimeMeasure{
                     + "-> '" + timerStepName + "', elapsed time since previous step: " + time + " ms"); //$NON-NLS-1$  //$NON-NLS-2$  //$NON-NLS-3$
             
             return time;
+        }
+    }
+    
+    private static void configureLogger() {
+        try {
+            PerformanceLogManager logManager = new PerformanceLogManager();
+            logger = logManager.getLogger(TimeMeasurePerformance.class.getName());
+        } catch (Exception e) {
+            throw new RuntimeException("Error while initializing log properties.", e);
         }
     }
 }
