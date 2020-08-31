@@ -15,14 +15,17 @@ package org.talend.commons;
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.URL;
+import java.util.Properties;
 
 import org.apache.commons.lang.ArrayUtils;
 import org.eclipse.core.net.proxy.IProxyService;
 import org.eclipse.core.runtime.FileLocator;
+import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Platform;
+import org.eclipse.core.runtime.Plugin;
+import org.eclipse.core.runtime.Status;
 import org.eclipse.core.runtime.preferences.InstanceScope;
 import org.osgi.framework.Bundle;
-import org.osgi.framework.BundleActivator;
 import org.osgi.framework.BundleContext;
 import org.osgi.framework.ServiceReference;
 import org.osgi.util.tracker.ServiceTracker;
@@ -36,7 +39,7 @@ import org.talend.commons.utils.system.EclipseCommandLine;
  * $Id$
  *
  */
-public class CommonsPlugin implements BundleActivator {
+public class CommonsPlugin extends Plugin {
 
     // The plug-in ID
     public static final String PLUGIN_ID = "org.talend.commons.runtime"; //$NON-NLS-1$
@@ -86,6 +89,8 @@ public class CommonsPlugin implements BundleActivator {
     private ExceptionService service;
 
     private BundleContext context;
+
+    private PerformanceLogManager logManager;
 
     /**
      * Default Constructor.
@@ -147,10 +152,43 @@ public class CommonsPlugin implements BundleActivator {
     @Override
     public void start(BundleContext context) throws Exception {
         this.context = context;
+        configure();
     }
 
-    @Override
+    private void configure() {
+        
+        try {
+          Properties props = new Properties();
+          this.logManager = new PerformanceLogManager(this, props);
+        } 
+        catch (Exception e) {
+          String message = "Error while initializing log properties." + 
+                           e.getMessage();
+          IStatus status = new Status(IStatus.ERROR,
+                  getDefault().getBundle().getSymbolicName(),
+                  IStatus.ERROR, message, e);
+          getLog().log(status);
+          throw new RuntimeException(
+               "Error while initializing log properties.",e);
+        }         
+      }
+    
+    public static PerformanceLogManager getLogManager() {
+        return getDefault().logManager; 
+    }
+
+    /*
+     * (non-Javadoc)
+     * 
+     * @see org.eclipse.ui.plugin.AbstractUIPlugin#stop(org.osgi.framework.BundleContext)
+     */
     public void stop(BundleContext context) throws Exception {
+        plugin = null;
+        if (this.logManager != null) {
+            this.logManager.shutdown();
+            this.logManager = null;
+        }   
+        super.stop(context);
     }
 
     public ExceptionService getExceptionService() {

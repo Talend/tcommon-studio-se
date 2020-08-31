@@ -14,6 +14,7 @@ package org.talend.rcp.exportLogs;
 
 import java.io.File;
 import java.io.FileOutputStream;
+import java.io.FilenameFilter;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.LineNumberReader;
@@ -26,6 +27,7 @@ import java.util.Map.Entry;
 import java.util.Properties;
 
 import org.eclipse.core.resources.ResourcesPlugin;
+import org.eclipse.core.runtime.IPath;
 import org.eclipse.core.runtime.Path;
 import org.eclipse.core.runtime.Platform;
 import org.eclipse.jface.dialogs.MessageDialog;
@@ -90,6 +92,11 @@ public class ExportLogsWizardPage extends WizardPage {
     private static final String NEW_LINE = System.lineSeparator();
 
     private static final String BLANK = "  "; //$NON-NLS-1$
+    
+    /** The extension used for log files */
+    private static final String LOG_EXT = ".log"; //$NON-NLS-1$
+    /** The extension markup to use for backup log files*/
+    private static final String BACKUP_MARK = ".bak_"; //$NON-NLS-1$
 
     protected ExportLogsWizardPage(String pageName) {
         super(pageName);
@@ -214,6 +221,7 @@ public class ExportLogsWizardPage extends WizardPage {
         try {
             exportSysconfig(new File(lastPath));
             exportLogs(new File(lastPath));
+            exportPerformanceLogs(new File(lastPath));
             exportStudioInfo(new File(lastPath));
         } catch (Exception e) {
             ExceptionHandler.process(e);
@@ -241,16 +249,70 @@ public class ExportLogsWizardPage extends WizardPage {
         String zipFile = dest.getAbsolutePath();
 
         String tmpFolder = ExportJobUtil.getTmpFolder();
+        IPath logFileLocation = Platform.getLogFileLocation();
+        String logFile = logFileLocation.toOSString();
+        zipLogFile(zipFile, tmpFolder, logFile);// zip .log 
+        
+        //
+        String logFileName = logFileLocation.lastSegment();
+        if (logFileName.toLowerCase().endsWith(LOG_EXT)) {
+            logFileName = logFileName.substring(0, logFileName.length() - LOG_EXT.length());
+        }
+        String _backlogPattern = logFileName + BACKUP_MARK + "\\d+";
+        if (logFileLocation.lastSegment().toLowerCase().endsWith(LOG_EXT)) {
+            _backlogPattern += LOG_EXT;
+        }
+        
+        final String backlogPattern = _backlogPattern;
+        IPath parentPath = logFileLocation.removeLastSegments(1);
+        String[] back_logs = parentPath.makeAbsolute().toFile().list(new FilenameFilter() {
+            @Override
+            public boolean accept(File dir, String name) {
+                return name.matches(backlogPattern);
+            }
+        });
+        
+        for(String logfile:back_logs) {
+            String backlogFile = parentPath.append(logfile).toOSString();
+            zipLogFile(zipFile, tmpFolder, backlogFile);//zip .bak_X.log
+        }
+    }
+
+    private void zipLogFile(String zipFile, String tmpFolder, String logFile) throws Exception {
         try {
-            String logFile = Platform.getLogFileLocation().toOSString();
             String destFile = new File(tmpFolder + File.separator + new File(logFile).getName()).getAbsolutePath();
             ZipToFile.copyFile(logFile, destFile);
             ZipToFile.zipFile(tmpFolder, zipFile);
         } catch (Exception e) {
-            e.printStackTrace();
+            ExceptionHandler.process(e);
         }
     }
 
+    private void exportPerformanceLogs(File dest) throws Exception {
+        String zipFile = dest.getAbsolutePath();
+
+        String tmpFolder = ExportJobUtil.getTmpFolder();
+        
+        IPath logFileLocation = Platform.getLogFileLocation();
+        IPath parentPath = logFileLocation.removeLastSegments(1);
+        
+        String performanceLogFile = "performance.log";
+        IPath performanceLog = parentPath.append(performanceLogFile);
+        zipLogFile(zipFile, tmpFolder, performanceLog.toOSString());//zip performance.log
+        
+        final String backlogPattern = performanceLogFile + "\\.\\d+";
+        String[] back_logs = parentPath.makeAbsolute().toFile().list(new FilenameFilter() {
+            @Override
+            public boolean accept(File dir, String name) {
+                return name.matches(backlogPattern);
+            }
+        });
+        for(String logfile:back_logs) {
+            String backlogFile = parentPath.append(logfile).toOSString();
+            zipLogFile(zipFile, tmpFolder, backlogFile);//zip performance.log.X file
+        }
+    }
+    
     private void exportStudioInfo(File dest) {
 
         StringBuffer info = new StringBuffer();
