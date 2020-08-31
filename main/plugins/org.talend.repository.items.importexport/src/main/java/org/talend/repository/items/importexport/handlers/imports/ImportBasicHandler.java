@@ -23,6 +23,7 @@ import java.io.InputStream;
 import java.io.OutputStream;
 import java.net.URL;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
@@ -32,6 +33,7 @@ import java.util.stream.Collectors;
 
 import org.apache.commons.lang.ArrayUtils;
 import org.apache.commons.lang.StringUtils;
+import org.apache.log4j.Logger;
 import org.apache.log4j.Priority;
 import org.eclipse.core.resources.IFile;
 import org.eclipse.core.resources.IFolder;
@@ -61,6 +63,7 @@ import org.talend.commons.utils.workbench.resources.ResourceUtils;
 import org.talend.core.GlobalServiceRegister;
 import org.talend.core.context.Context;
 import org.talend.core.context.RepositoryContext;
+import org.talend.core.model.context.ContextUtils;
 import org.talend.core.model.context.link.ContextLinkService;
 import org.talend.core.model.metadata.builder.connection.Connection;
 import org.talend.core.model.metadata.builder.connection.ConnectionPackage;
@@ -102,6 +105,8 @@ import org.talend.core.runtime.services.IGenericWizardService;
 import org.talend.core.utils.WorkspaceUtils;
 import org.talend.designer.business.model.business.BusinessPackage;
 import org.talend.designer.business.model.business.BusinessProcess;
+import org.talend.designer.core.model.utils.emf.talendfile.ContextParameterType;
+import org.talend.designer.core.model.utils.emf.talendfile.ContextType;
 import org.talend.designer.core.model.utils.emf.talendfile.ProcessType;
 import org.talend.designer.core.model.utils.emf.talendfile.TalendFilePackage;
 import org.talend.designer.joblet.model.JobletPackage;
@@ -120,7 +125,7 @@ import org.talend.repository.model.RepositoryConstants;
  * DOC ggu class global comment. Detailled comment
  */
 public class ImportBasicHandler extends AbstractImportExecutableHandler {
-
+	private static final Logger LOGGER = Logger.getLogger(ImportBasicHandler.class);
     /**
      * set by extension point, will be the base path which relative to import project.
      *
@@ -350,7 +355,7 @@ public class ImportBasicHandler extends AbstractImportExecutableHandler {
 
     /**
      *
-     * check the item is valid or not。
+     * check the item is valid or not銆�
      */
     public boolean checkItem(ResourcesManager resManager, ImportItem importItem, boolean overwrite) {
         try {
@@ -1310,6 +1315,7 @@ public class ImportBasicHandler extends AbstractImportExecutableHandler {
                 object = factory.getSpecificVersion(importItem.getItemId(), importItem.getItemVersion(), true);
                 property = object.getProperty();
             }
+            createContextLink(importItem.getRepositoryType(), property.getItem());
             RelationshipItemBuilder.getInstance().addOrUpdateItem(property.getItem(), true);
             // importItem.setProperty(null);
             // factory.unloadResources(property);
@@ -1317,6 +1323,91 @@ public class ImportBasicHandler extends AbstractImportExecutableHandler {
             ExceptionHandler.process(e);
         }
 
+    }
+    
+	protected void createContextLink(ERepositoryObjectType repositoryType, Item item) {
+		if (getAllSupportContextLinkTypes().contains(repositoryType) && item != null) {
+			boolean modified = false;
+			try {
+				List<ContextType> contextTypeList = ContextUtils.getAllContextType(item);
+				if (contextTypeList != null && contextTypeList.size() > 0) {
+					Map<String, Item> idToItemMap = new HashMap<String, Item>();
+					for (ContextType contextType : contextTypeList) {
+						for (Object obj : contextType.getContextParameter()) {
+							if (obj instanceof ContextParameterType) {
+								ContextParameterType paramType = (ContextParameterType) obj;
+								if (!ContextUtils.isBuildInParameter(paramType)) {
+									String repoId = paramType.getRepositoryContextId();
+									Item repoItem = idToItemMap.get(repoId);
+									if (repoItem == null) {
+										repoItem = ContextUtils.getRepositoryContextItemById(repoId);
+										idToItemMap.put(repoId, repoItem);
+									}
+									if (repoItem != null) {
+										if (!(repoItem instanceof ContextItem)) {
+											ContextType repoContextType = ContextUtils
+													.getContextTypeByName(repoItem, contextType.getName());
+											if (repoContextType != null) {
+												ContextParameterType repoParamType = ContextUtils
+														.getContextParameterTypeByName(repoContextType,
+																paramType.getName());
+												if (repoParamType != null) {
+													paramType.setInternalId(repoParamType.getInternalId());
+												} else {
+													LOGGER.warn("Can't find context repository parameter type repo:"
+															+ repoId + " parameter name:" + paramType.getName());
+												}
+											} else {
+												LOGGER.warn("Can't find context repository context type repo:"
+														+ repoId + " context type name:" + contextType.getName());
+											}
+										}
+									} else {
+										LOGGER.warn("Can't find context repository item:" + repoId);
+									}
+								} else {
+									if (StringUtils.isEmpty(paramType.getInternalId())) {
+										paramType.setInternalId(ProxyRepositoryFactory.getInstance().getNextId());
+										modified = true;
+									}
+								}
+							}
+						}
+					}
+				}
+				boolean hasLinkFile = ContextLinkService.getInstance().saveContextLink(item);
+				modified = modified || hasLinkFile;
+			} catch (Exception ex) {
+				ExceptionHandler.process(ex);
+			}
+			if (modified) {
+				try {
+					ProxyRepositoryFactory.getInstance().save(item, true);
+				} catch (Exception ex) {
+					ExceptionHandler.process(ex);
+				}
+			}
+		}
+	}
+    
+    protected List<ERepositoryObjectType> getAllSupportContextLinkTypes() {
+        List<ERepositoryObjectType> toReturn = new ArrayList<ERepositoryObjectType>();
+        toReturn.addAll(ERepositoryObjectType.getAllTypesOfProcess());
+        toReturn.addAll(ERepositoryObjectType.getAllTypesOfProcess2());
+        toReturn.addAll(ERepositoryObjectType.getAllTypesOfTestContainer());
+        toReturn.addAll(getAllMetaDataType());
+        return toReturn;
+    }
+    
+    private List<ERepositoryObjectType> getAllMetaDataType() {
+        List<ERepositoryObjectType> list = new ArrayList<ERepositoryObjectType>();
+        ERepositoryObjectType[] allTypes = (ERepositoryObjectType[]) ERepositoryObjectType.values();
+        for (ERepositoryObjectType object : allTypes) {
+            if (object.isChildTypeOf(ERepositoryObjectType.METADATA)) {
+                list.add(object);
+            }
+        }
+        return list;
     }
 
     protected IPath getReferenceItemPath(IPath importItemPath, ReferenceFileItem rfItem) {
