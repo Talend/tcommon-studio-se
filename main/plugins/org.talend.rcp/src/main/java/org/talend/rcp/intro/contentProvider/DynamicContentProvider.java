@@ -218,11 +218,11 @@ public class DynamicContentProvider extends IntroProvider {
         flag = true;
     }
 
-    private static Boolean accessable = null;
+    private static Boolean accessible = null;
 
     protected void createOnlinePage(Document dom, Element parent, String onlinePageUrl, String title) {
         HttpURLConnection urlConnection = null;
-        if (accessable == null) {
+        if (accessible == null) {
             try {
                 URL url = new URL(getOnlinePageURL(onlinePageUrl));
                 urlConnection = (HttpURLConnection) url.openConnection();
@@ -232,18 +232,18 @@ public class DynamicContentProvider extends IntroProvider {
                 urlConnection.setUseCaches(false);
                 urlConnection.setConnectTimeout(3000);
                 if (urlConnection.getResponseCode() == HttpURLConnection.HTTP_OK) {
-                    accessable = true;
+                    accessible = true;
                 }
             } catch (Exception e) {
 
             } finally {
-                if (accessable == null) {
-                    accessable = false;
+                if (accessible == null) {
+                    accessible = false;
                 }
                 urlConnection.disconnect();
             }
         }
-        if (accessable) {
+        if (accessible) {
             setDIVStyle(dom, true);
         } else {
             setDIVStyle(dom, false);
