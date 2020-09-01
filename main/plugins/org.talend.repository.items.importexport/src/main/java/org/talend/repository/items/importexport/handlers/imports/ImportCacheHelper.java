@@ -77,6 +77,8 @@ public final class ImportCacheHelper {
     private final List<String> importErrors = new ArrayList<String>();
 
     private List<ImportItem> importedItemRecords = new ArrayList<ImportItem>();
+    
+    private Map<String, Item> cachedContextIdToItemMap = new HashMap<String, Item>();
 
     public RepositoryObjectCache getRepObjectcache() {
         return this.repObjectcache;
@@ -154,6 +156,7 @@ public final class ImportCacheHelper {
         restoreFolder.clear();
         importedItemRecords.clear();
         importErrors.clear();
+        cachedContextIdToItemMap.clear();
     }
 
     public synchronized void beforeImportItems() {
@@ -208,4 +211,7 @@ public final class ImportCacheHelper {
         return this.importedItemRecords;
     }
 
+	public Map<String, Item> getCachedContextIdToItemMap() {
+		return cachedContextIdToItemMap;
+	}
 }
