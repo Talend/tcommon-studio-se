@@ -71,7 +71,6 @@ import org.talend.commons.ui.gmf.util.DisplayUtils;
 import org.talend.commons.ui.runtime.exception.MessageBoxExceptionHandler;
 import org.talend.commons.utils.data.container.RootContainer;
 import org.talend.commons.utils.network.TalendProxySelector;
-import org.talend.commons.utils.time.TimeMeasure;
 import org.talend.commons.utils.time.TimeMeasurePerformance;
 import org.talend.commons.utils.workbench.resources.ResourceUtils;
 import org.talend.core.AbstractDQModelService;
@@ -2035,11 +2034,6 @@ public final class ProxyRepositoryFactory implements IProxyRepositoryFactory {
      */
     public void logOnProject(Project project, IProgressMonitor monitor) throws LoginException, PersistenceException {
         try {
-            TimeMeasure.display = CommonsPlugin.isDebugMode();
-            TimeMeasure.displaySteps = CommonsPlugin.isDebugMode();
-            TimeMeasure.measureActive = CommonsPlugin.isDebugMode();
-
-            TimeMeasure.begin("logOnProject"); //$NON-NLS-1$
             TimeMeasurePerformance.begin("logOnProject"); //$NON-NLS-1$
             try {
                 /**
@@ -2107,7 +2101,6 @@ public final class ProxyRepositoryFactory implements IProxyRepositoryFactory {
                     throw new OperationCanceledException(""); //$NON-NLS-1$
                 }
                 // monitorWrap.worked(1);
-                TimeMeasure.step("logOnProject", "beforeLogon"); //$NON-NLS-1$ //$NON-NLS-2$
                 TimeMeasurePerformance.step("logOnProject", "beforeLogon"); //$NON-NLS-1$ //$NON-NLS-2$
 
                 // Check project compatibility
@@ -2126,7 +2119,6 @@ public final class ProxyRepositoryFactory implements IProxyRepositoryFactory {
                     currentMonitor = subMonitor.newChild(1, SubMonitor.SUPPRESS_NONE);
                     currentMonitor.beginTask(Messages.getString("ProxyRepositoryFactory.synchronizeLibraries"), 1); //$NON-NLS-1$
                     coreService.syncLibraries(currentMonitor);
-                    TimeMeasure.step("logOnProject", "Sync components libraries"); //$NON-NLS-1$
                     TimeMeasurePerformance.step("logOnProject", "Sync components libraries"); //$NON-NLS-1$
                 }
 
@@ -2136,7 +2128,6 @@ public final class ProxyRepositoryFactory implements IProxyRepositoryFactory {
                 executeMigrations(project, true, currentMonitor);
                 ProjectManager.getInstance().getMigrationRecords().clear();
                 // monitorWrap.worked(1);
-                TimeMeasure.step("logOnProject", "executeMigrations(beforeLogonTasks)"); //$NON-NLS-1$ //$NON-NLS-2$
                 TimeMeasurePerformance.step("logOnProject", "executeMigrations(beforeLogonTasks)"); //$NON-NLS-1$ //$NON-NLS-2$
 
                 currentMonitor = subMonitor.newChild(1, SubMonitor.SUPPRESS_NONE);
@@ -2145,7 +2136,6 @@ public final class ProxyRepositoryFactory implements IProxyRepositoryFactory {
                 this.repositoryFactoryFromProvider.logOnProject(project);
                 ProjectManager.getInstance().getLogonRecords().clear();
                 // monitorWrap.worked(1);
-                TimeMeasure.step("logOnProject", "logOnProject"); //$NON-NLS-1$ //$NON-NLS-2$
                 TimeMeasurePerformance.step("logOnProject", "logOnProject"); //$NON-NLS-1$ //$NON-NLS-2$
 
                 emptyTempFolder(project);
@@ -2172,7 +2162,6 @@ public final class ProxyRepositoryFactory implements IProxyRepositoryFactory {
                 ProjectManager.getInstance().getMigrationRecords().clear();
                 executeMigrations(project, false, currentMonitor);
                 ProjectManager.getInstance().getMigrationRecords().clear();
-                TimeMeasure.step("logOnProject", "executeMigrations(afterLogonTasks)"); //$NON-NLS-1$ //$NON-NLS-2$
                 TimeMeasurePerformance.step("logOnProject", "executeMigrations(afterLogonTasks)"); //$NON-NLS-1$ //$NON-NLS-2$
                 if (monitor != null && monitor.isCanceled()) {
                     throw new OperationCanceledException(""); //$NON-NLS-1$
@@ -2189,13 +2178,11 @@ public final class ProxyRepositoryFactory implements IProxyRepositoryFactory {
                     // clean workspace
                     currentMonitor.beginTask(Messages.getString("ProxyRepositoryFactory.cleanWorkspace"), 1); //$NON-NLS-1$
 
-                    TimeMeasure.step("logOnProject", "clean Java project"); //$NON-NLS-1$ //$NON-NLS-2$
                     TimeMeasurePerformance.step("logOnProject", "clean Java project"); //$NON-NLS-1$ //$NON-NLS-2$
 
                     if (workspace instanceof Workspace) {
                         ((Workspace) workspace).getFileSystemManager().getHistoryStore().clean(currentMonitor);
                     }
-                    TimeMeasure.step("logOnProject", "clean workspace history"); //$NON-NLS-1$ //$NON-NLS-2$
                     TimeMeasurePerformance.step("logOnProject", "clean workspace history"); //$NON-NLS-1$ //$NON-NLS-2$
 
                     currentMonitor = subMonitor.newChild(1, SubMonitor.SUPPRESS_NONE);
@@ -2222,13 +2209,11 @@ public final class ProxyRepositoryFactory implements IProxyRepositoryFactory {
                 if (monitor != null && monitor.isCanceled()) {
                     throw new OperationCanceledException(""); //$NON-NLS-1$
                 }
-                TimeMeasure.step("logOnProject", "sync repository (routines/rules/beans)"); //$NON-NLS-1$ //$NON-NLS-2$
                 TimeMeasurePerformance.step("logOnProject", "sync repository (routines/rules/beans)"); //$NON-NLS-1$ //$NON-NLS-2$
 
                 // log4j prefs
                 if (coreUiService != null && coreService != null) {
                     coreService.syncLog4jSettings(null);
-                    TimeMeasure.step("logOnProject", "sync log4j"); //$NON-NLS-1$ //$NON-NLS-2$
                     TimeMeasurePerformance.step("logOnProject", "sync log4j"); //$NON-NLS-1$ //$NON-NLS-2$
                 }
 
@@ -2246,7 +2231,6 @@ public final class ProxyRepositoryFactory implements IProxyRepositoryFactory {
                 if (runProcessService != null && !isCommandLineLocalRefProject) {
                     runProcessService.initializeRootPoms(monitor);
 
-                    TimeMeasure.step("logOnProject", "install / setup root poms"); //$NON-NLS-1$ //$NON-NLS-2$
                     TimeMeasurePerformance.step("logOnProject", "install / setup root poms"); //$NON-NLS-1$ //$NON-NLS-2$
                 }
                 if (GlobalServiceRegister.getDefault().isServiceRegistered(ITDQRepositoryService.class)) {
@@ -2264,11 +2248,7 @@ public final class ProxyRepositoryFactory implements IProxyRepositoryFactory {
                 fullLogonFinished = true;
                 this.repositoryFactoryFromProvider.afterLogon(monitor);
             } finally {
-                TimeMeasure.end("logOnProject"); //$NON-NLS-1$
                 TimeMeasurePerformance.end("logOnProject"); //$NON-NLS-1$
-                TimeMeasure.display = false;
-                TimeMeasure.displaySteps = false;
-                TimeMeasure.measureActive = false;
             }
             String str[] = new String[] { getRepositoryContext().getUser() + "", projectManager.getCurrentProject() + "" }; //$NON-NLS-1$ //$NON-NLS-2$
             log.info(Messages.getString("ProxyRepositoryFactory.log.loggedOn", str)); //$NON-NLS-1$
