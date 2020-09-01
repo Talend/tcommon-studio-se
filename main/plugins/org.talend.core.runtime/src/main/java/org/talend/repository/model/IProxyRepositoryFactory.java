@@ -272,6 +272,8 @@ public interface IProxyRepositoryFactory {
     public abstract IRepositoryViewObject getLastVersion(String id, String folderPath, ERepositoryObjectType type)  throws PersistenceException;
     
     public abstract IRepositoryViewObject getLastVersion(String id, ERepositoryObjectType type)  throws PersistenceException;
+    
+    public abstract IRepositoryViewObject getLastVersion(String id, List<ERepositoryObjectType> types)  throws PersistenceException;
 
     public abstract IRepositoryViewObject getLastVersion(Project project, String id) throws PersistenceException;
 

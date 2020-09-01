@@ -12,6 +12,7 @@
 // ============================================================================
 package org.talend.core.model.context;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.Collections;
@@ -54,6 +55,7 @@ import org.talend.cwm.helper.ResourceHelper;
 import org.talend.designer.core.model.utils.emf.talendfile.ContextParameterType;
 import org.talend.designer.core.model.utils.emf.talendfile.ContextType;
 import org.talend.designer.core.model.utils.emf.talendfile.ProcessType;
+import org.talend.migration.IMigrationTask.ExecutionResult;
 import org.talend.repository.model.IProxyRepositoryFactory;
 
 /**
@@ -498,28 +500,32 @@ public class ContextUtils {
      *
      * get the repository context item,now contextId can be either joblet node or context node.
      */
-    public static Item getRepositoryContextItemById(String contextId) {
-        if (IContextParameter.BUILT_IN.equals(contextId)) {
-            return null;
-        }
-        if (checkObject(contextId)) {
-            return null;
-        }
+	public static Item getRepositoryContextItemById(String contextId) {
+		if (IContextParameter.BUILT_IN.equals(contextId)) {
+			return null;
+		}
+		if (checkObject(contextId)) {
+			return null;
+		}
 
-        IProxyRepositoryFactory factory = CoreRuntimePlugin.getInstance().getProxyRepositoryFactory();
-        try {
-            final IRepositoryViewObject lastVersion = factory.getLastVersion(contextId, ERepositoryObjectType.CONTEXT);
-            if (lastVersion != null) {
-                final Item item = lastVersion.getProperty().getItem();
-                if (item != null) {
-                    return item;
-                }
-            }
-        } catch (PersistenceException e) {
-            ExceptionHandler.process(e);
-        }
-        return null;
-    }
+		List<ERepositoryObjectType> possibleTypes = new ArrayList<ERepositoryObjectType>();
+		possibleTypes.add(ERepositoryObjectType.CONTEXT);
+		possibleTypes.addAll(ERepositoryObjectType.getAllTypesOfJoblet());
+		possibleTypes.addAll(ERepositoryObjectType.getAllTypesOfProcess());
+		try {
+			IRepositoryViewObject lastVersion = CoreRuntimePlugin.getInstance().getProxyRepositoryFactory()
+					.getLastVersion(contextId, possibleTypes);
+			if (lastVersion != null) {
+				final Item item = lastVersion.getProperty().getItem();
+				if (item != null) {
+					return item;
+				}
+			}
+		} catch (PersistenceException e) {
+			ExceptionHandler.process(e);
+		}
+		return null;
+	}
 
     /**
      *
@@ -1056,5 +1062,98 @@ public class ContextUtils {
             return true;
         }
         return false;
+    }
+    
+	public static ExecutionResult createContextLinkForItem(Item item) {
+		IProxyRepositoryFactory proxyRepositoryFactory = CoreRuntimePlugin.getInstance().getProxyRepositoryFactory();
+		boolean modified = false;
+		try {
+			List<ContextType> contextTypeList = ContextUtils.getAllContextType(item);
+			if (contextTypeList != null && contextTypeList.size() > 0) {
+				Map<String, Item> idToItemMap = new HashMap<String, Item>();
+				for (ContextType contextType : contextTypeList) {
+					for (Object obj : contextType.getContextParameter()) {
+						if (obj instanceof ContextParameterType) {
+							ContextParameterType paramType = (ContextParameterType) obj;
+							if (!ContextUtils.isBuildInParameter(paramType)) {
+								String repoId = paramType.getRepositoryContextId();
+								Item repoItem = idToItemMap.get(repoId);
+								if (repoItem == null) {
+									repoItem = ContextUtils.getRepositoryContextItemById(repoId);
+									idToItemMap.put(repoId, repoItem);
+								}
+								if (repoItem != null) {
+									if (!(repoItem instanceof ContextItem)) {
+										ContextType repoContextType = ContextUtils.getContextTypeByName(repoItem,
+												contextType.getName());
+										if (repoContextType != null) {
+											ContextParameterType repoParamType = ContextUtils
+													.getContextParameterTypeByName(repoContextType,
+															paramType.getName());
+											if (repoParamType != null) {
+												paramType.setInternalId(repoParamType.getInternalId());
+											} else {
+												LOGGER.warn("Can't find context repository parameter type repo:"
+														+ repoId + " parameter name:" + paramType.getName());
+											}
+										} else {
+											LOGGER.warn("Can't find context repository context type repo:" + repoId
+													+ " context type name:" + contextType.getName());
+										}
+									}
+								} else {
+									LOGGER.warn("Can't find context repository item:" + repoId);
+								}
+							} else {
+								if (StringUtils.isEmpty(paramType.getInternalId())) {
+									paramType.setInternalId(proxyRepositoryFactory.getNextId());
+									modified = true;
+								}
+							}
+						}
+					}
+				}
+			}
+			boolean hasLinkFile = ContextLinkService.getInstance().saveContextLink(item);
+			modified = modified || hasLinkFile;
+		} catch (Exception ex) {
+			ExceptionHandler.process(ex);
+			return ExecutionResult.FAILURE;
+		}
+		if (modified) {
+			try {
+				return ExecutionResult.SUCCESS_NO_ALERT;
+			} catch (Exception ex) {
+				ExceptionHandler.process(ex);
+			}
+		}
+		return ExecutionResult.NOTHING_TO_DO;
+	}
+    
+	public static ExecutionResult createContextLinkForItem(ERepositoryObjectType repositoryType, Item item) {
+		if (item != null && getAllSupportContextLinkTypes().contains(repositoryType)) {
+			return createContextLinkForItem(item);
+		}
+		return ExecutionResult.NOTHING_TO_DO;
+	}
+    
+    public static List<ERepositoryObjectType> getAllSupportContextLinkTypes() {
+        List<ERepositoryObjectType> toReturn = new ArrayList<ERepositoryObjectType>();
+        toReturn.addAll(ERepositoryObjectType.getAllTypesOfProcess());
+        toReturn.addAll(ERepositoryObjectType.getAllTypesOfProcess2());
+        toReturn.addAll(ERepositoryObjectType.getAllTypesOfTestContainer());
+        toReturn.addAll(getAllMetaDataType());
+        return toReturn;
+    }
+    
+    private static List<ERepositoryObjectType> getAllMetaDataType() {
+        List<ERepositoryObjectType> list = new ArrayList<ERepositoryObjectType>();
+        ERepositoryObjectType[] allTypes = (ERepositoryObjectType[]) ERepositoryObjectType.values();
+        for (ERepositoryObjectType object : allTypes) {
+            if (object.isChildTypeOf(ERepositoryObjectType.METADATA)) {
+                list.add(object);
+            }
+        }
+        return list;
     }
 }
