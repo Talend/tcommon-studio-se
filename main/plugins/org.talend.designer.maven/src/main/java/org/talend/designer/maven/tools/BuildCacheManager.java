@@ -395,4 +395,24 @@ public class BuildCacheManager {
         return false;
     }
 
+    public boolean containsMultipleVersionModules() {
+        return containsMultipleVersionModules(currentJobletmodules) || containsMultipleVersionModules(currentJobmodules);
+    }
+
+    private static boolean containsMultipleVersionModules(Set<String> mods) {
+        Set<String> joblets = new HashSet<String>();
+        for (String mod : mods) {
+            int idx = mod.lastIndexOf('_');
+            if (idx == -1) {
+                continue;
+            }
+            String jobletWithoutVersion = mod.substring(0, idx);
+            if (joblets.contains(jobletWithoutVersion)) {
+                return true;
+            } else {
+                joblets.add(jobletWithoutVersion);
+            }
+        }
+        return false;
+    }
 }
