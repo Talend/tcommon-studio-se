@@ -1313,7 +1313,7 @@ public class ImportBasicHandler extends AbstractImportExecutableHandler {
                 property = object.getProperty();
             }
 			if (factory.isFullLogonFinished()) {// Import items into current opening project
-				ContextUtils.createContextLinkForItem(importItem.getRepositoryType(), property.getItem(), ImportCacheHelper.getInstance().getCachedContextIdToItemMap());
+				ContextUtils.doCreateContextLinkMigration(importItem.getRepositoryType(), property.getItem(), ImportCacheHelper.getInstance().getCachedContextIdToItemMap());
 			}
             RelationshipItemBuilder.getInstance().addOrUpdateItem(property.getItem(), true);
             // importItem.setProperty(null);

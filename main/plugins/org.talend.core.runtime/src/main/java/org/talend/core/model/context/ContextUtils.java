@@ -1073,7 +1073,7 @@ public class ContextUtils {
         return false;
     }
 
-    public static ExecutionResult createContextLinkForItem(Item item, Map<String, Item> contextIdToItemMap) {
+    public static ExecutionResult doCreateContextLinkMigration(Item item, Map<String, Item> contextIdToItemMap) {
         IProxyRepositoryFactory proxyRepositoryFactory = CoreRuntimePlugin.getInstance().getProxyRepositoryFactory();
         boolean modified = false;
         try {
@@ -1134,15 +1134,21 @@ public class ContextUtils {
             return ExecutionResult.FAILURE;
         }
         if (modified) {
-            return ExecutionResult.SUCCESS_NO_ALERT;
+            try {
+                proxyRepositoryFactory.save(item, true);
+                return ExecutionResult.SUCCESS_NO_ALERT;
+            } catch (Exception ex) {
+                ExceptionHandler.process(ex);
+                return ExecutionResult.FAILURE;
+            }
         }
         return ExecutionResult.NOTHING_TO_DO;
     }
 
-    public static ExecutionResult createContextLinkForItem(ERepositoryObjectType repositoryType, Item item,
+    public static ExecutionResult doCreateContextLinkMigration(ERepositoryObjectType repositoryType, Item item,
             Map<String, Item> contextIdToItemMap) {
         if (item != null && getAllSupportContextLinkTypes().contains(repositoryType)) {
-            return createContextLinkForItem(item, contextIdToItemMap);
+            return doCreateContextLinkMigration(item, contextIdToItemMap);
         }
         return ExecutionResult.NOTHING_TO_DO;
     }
