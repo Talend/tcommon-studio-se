@@ -15,6 +15,7 @@ package org.talend.core.repository.model;
 import java.beans.PropertyChangeListener;
 import java.beans.PropertyChangeSupport;
 import java.io.File;
+import java.lang.reflect.InvocationTargetException;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.Date;
@@ -123,6 +124,7 @@ import org.talend.core.repository.constants.Constant;
 import org.talend.core.repository.constants.FileConstants;
 import org.talend.core.repository.i18n.Messages;
 import org.talend.core.repository.recyclebin.RecycleBinManager;
+import org.talend.core.repository.utils.LoginTaskRegistryReader;
 import org.talend.core.repository.utils.RepositoryPathProvider;
 import org.talend.core.repository.utils.XmiResourceManager;
 import org.talend.core.runtime.CoreRuntimePlugin;
@@ -133,6 +135,7 @@ import org.talend.core.service.ICoreUIService;
 import org.talend.cwm.helper.SubItemHelper;
 import org.talend.cwm.helper.TableHelper;
 import org.talend.designer.runprocess.IRunProcessService;
+import org.talend.login.ILoginTask;
 import org.talend.repository.ProjectManager;
 import org.talend.repository.ReferenceProjectProblemManager;
 import org.talend.repository.ReferenceProjectProvider;
@@ -173,6 +176,8 @@ public final class ProxyRepositoryFactory implements IProxyRepositoryFactory {
     private Map<String, org.talend.core.model.properties.Project> emfProjectContentMap = new HashMap<>();
 
     private boolean isCancelled;
+
+    private static final LoginTaskRegistryReader LOGIN_TASK_REGISTRY_READER = new LoginTaskRegistryReader();
 
     @Override
     public synchronized void addPropertyChangeListener(PropertyChangeListener l) {
@@ -2638,5 +2643,14 @@ public final class ProxyRepositoryFactory implements IProxyRepositoryFactory {
 
     public RepositoryWorkUnit getWorkUnitInProgress() {
         return repositoryFactoryFromProvider.getWorkUnitInProgress();
+    }
+
+    public void executeRequiredLoginTasks(IProgressMonitor monitor) throws InvocationTargetException, InterruptedException {
+        ILoginTask[] allLoginTasks = LOGIN_TASK_REGISTRY_READER.getAllTaskListInstance();
+        for (ILoginTask task : allLoginTasks) {
+            if (task.isRequiredAlways()) {
+                task.run(monitor);
+            }
+        }
     }
 }
