@@ -66,19 +66,15 @@ public class ContextUtils {
 
     private static final Logger LOGGER = Logger.getLogger(ContextUtils.class);
 
-    private static final Set<String> JAVA_KEYWORDS = new HashSet<String>(Arrays.asList("abstract", "continue", "for", //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
-            "new", //$NON-NLS-1$
-            "switch", "assert", "default", "goto", "package", "synchronized", "boolean", "do", "if", "private", "this", //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$ //$NON-NLS-5$ //$NON-NLS-6$ //$NON-NLS-7$ //$NON-NLS-8$ //$NON-NLS-9$ //$NON-NLS-10$ //$NON-NLS-11$
-            "break", //$NON-NLS-1$
+    private static final Set<String> JAVA_KEYWORDS = new HashSet<String>(Arrays.asList("abstract", "continue", "for", "new", //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$
+            "switch", "assert", "default", "goto", "package", "synchronized", "boolean", "do", "if", "private", "this", "break", //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$ //$NON-NLS-5$ //$NON-NLS-6$ //$NON-NLS-7$ //$NON-NLS-8$ //$NON-NLS-9$ //$NON-NLS-10$ //$NON-NLS-11$ //$NON-NLS-12$
             "double", "implements", "protected", "throw", "byte", "else", "import", "public", "throws", "case", "enum", //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$ //$NON-NLS-5$ //$NON-NLS-6$ //$NON-NLS-7$ //$NON-NLS-8$ //$NON-NLS-9$ //$NON-NLS-10$ //$NON-NLS-11$
-            "instanceof", "return", "transient", "catch", "extends", "int", "short", "try", "char", "final", //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$ //$NON-NLS-5$ //$NON-NLS-6$ //$NON-NLS-7$ //$NON-NLS-8$ //$NON-NLS-9$ //$NON-NLS-10$
-            "interface", //$NON-NLS-1$
-            "static", "void", "class", "finally", "long", "strictfp", "volatile", "const", "float", "native", "super", //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$ //$NON-NLS-5$ //$NON-NLS-6$ //$NON-NLS-7$ //$NON-NLS-8$ //$NON-NLS-9$ //$NON-NLS-10$ //$NON-NLS-11$
-            "while")); //$NON-NLS-1$
+            "instanceof", "return", "transient", "catch", "extends", "int", "short", "try", "char", "final", "interface", //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$ //$NON-NLS-5$ //$NON-NLS-6$ //$NON-NLS-7$ //$NON-NLS-8$ //$NON-NLS-9$ //$NON-NLS-10$ //$NON-NLS-11$
+            "static", "void", "class", "finally", "long", "strictfp", "volatile", "const", "float", "native", "super", "while")); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$ //$NON-NLS-5$ //$NON-NLS-6$ //$NON-NLS-7$ //$NON-NLS-8$ //$NON-NLS-9$ //$NON-NLS-10$ //$NON-NLS-11$ //$NON-NLS-12$
 
-    private static final Set<String> SECURE_SENSITIVE_CONTEXT_NAMES_EXP = new HashSet<String>(
-            Arrays.asList("resource_flow_temp_folder", "resource_webhook_payload", "resource_file_[\\w]+",
-                    "resource_directory_[\\w]+", "connection_[a-zA-Z0-9]+_[\\w]"));
+    private static final Set<String> SECURE_SENSITIVE_CONTEXT_NAMES_EXP = new HashSet<String>(Arrays.asList("resource_flow_temp_folder", "resource_webhook_payload", "resource_file_[\\w]+", 
+           "resource_directory_[\\w]+", "connection_[a-zA-Z0-9]+_[\\w]"));
+    
 
     /**
      *
@@ -92,26 +88,25 @@ public class ContextUtils {
             if (status.getSeverity() == IStatus.ERROR) {
                 return true;
             }
-        } else {// MOD sizhaoliu TDQ-9679 avoid calling JavaCore class when this method is
-                // called in components
+        } else {// MOD sizhaoliu TDQ-9679 avoid calling JavaCore class when this method is called in components
             return name == null ? false : JAVA_KEYWORDS.contains(name.toLowerCase());
         }
         return false;
     }
 
     /**
-     *
-     * ggu Comment method "isSecureSensitiveParam".
-     *
-     */
-    public static boolean isSecureSensitiveParam(final String name) {
-
+    *
+    * ggu Comment method "isSecureSensitiveParam".
+    *
+    */
+    public static boolean isSecureSensitiveParam (final String name) {
+       
         for (String regexp : SECURE_SENSITIVE_CONTEXT_NAMES_EXP) {
             if (name.matches(regexp)) {
                 return true;
             }
         }
-
+        
         return false;
     }
 
@@ -194,8 +189,7 @@ public class ContextUtils {
         ContextType contextType = null;
         ContextType defaultContextType = null;
         for (ContextType type : contextTypeList) {
-            // Modified by Marvin Wang on Jun. 21, 2012 for bug TDI-21009. To avoid case
-            // sensitive.
+            // Modified by Marvin Wang on Jun. 21, 2012 for bug TDI-21009. To avoid case sensitive.
             if (contextName != null && type.getName() != null && type.getName().toLowerCase().equals(contextName.toLowerCase())) {
                 contextType = type;
             } else if (defaultContextName != null && type.getName() != null
@@ -1073,7 +1067,7 @@ public class ContextUtils {
         return false;
     }
 
-    public static ExecutionResult createContextLinkForItem(Item item, Map<String, Item> contextIdToItemMap) {
+    public static ExecutionResult doCreateContextLinkMigration(Item item, Map<String, Item> contextIdToItemMap) {
         IProxyRepositoryFactory proxyRepositoryFactory = CoreRuntimePlugin.getInstance().getProxyRepositoryFactory();
         boolean modified = false;
         try {
@@ -1134,15 +1128,21 @@ public class ContextUtils {
             return ExecutionResult.FAILURE;
         }
         if (modified) {
-            return ExecutionResult.SUCCESS_NO_ALERT;
+            try {
+                proxyRepositoryFactory.save(item, true);
+                return ExecutionResult.SUCCESS_NO_ALERT;
+            } catch (Exception ex) {
+                ExceptionHandler.process(ex);
+                return ExecutionResult.FAILURE;
+            }
         }
         return ExecutionResult.NOTHING_TO_DO;
     }
 
-    public static ExecutionResult createContextLinkForItem(ERepositoryObjectType repositoryType, Item item,
+    public static ExecutionResult doCreateContextLinkMigration(ERepositoryObjectType repositoryType, Item item,
             Map<String, Item> contextIdToItemMap) {
         if (item != null && getAllSupportContextLinkTypes().contains(repositoryType)) {
-            return createContextLinkForItem(item, contextIdToItemMap);
+            return doCreateContextLinkMigration(item, contextIdToItemMap);
         }
         return ExecutionResult.NOTHING_TO_DO;
     }

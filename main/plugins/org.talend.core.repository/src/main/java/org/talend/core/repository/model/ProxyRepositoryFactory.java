@@ -1221,18 +1221,18 @@ public final class ProxyRepositoryFactory implements IProxyRepositoryFactory {
     }
     
     @Override
-	public IRepositoryViewObject getLastVersion(String id, List<ERepositoryObjectType> types) throws PersistenceException {
-		if (types != null) {
-			IRepositoryViewObject object = null;
-			for (ERepositoryObjectType type : types) {
-				object = getLastVersion(id, type);
-				if (object != null) {
-					return object;
-				}
-			}
-		}
-		return null;
-	}
+    public IRepositoryViewObject getLastVersion(String id, List<ERepositoryObjectType> types) throws PersistenceException {
+        if (types != null) {
+            IRepositoryViewObject object = null;
+            for (ERepositoryObjectType type : types) {
+                object = getLastVersion(id, type);
+                if (object != null) {
+                    return object;
+                }
+            }
+        }
+        return null;
+    }
 
     @Override
     public IRepositoryViewObject getLastVersion(String id, String folderPath, ERepositoryObjectType type)
