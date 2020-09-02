@@ -29,7 +29,10 @@ import org.eclipse.jface.dialogs.IDialogConstants;
 import org.eclipse.jface.dialogs.IMessageProvider;
 import org.eclipse.jface.dialogs.ProgressMonitorDialog;
 import org.eclipse.jface.dialogs.TitleAreaDialog;
+import org.eclipse.jface.fieldassist.AutoCompleteField;
+import org.eclipse.jface.fieldassist.ComboContentAdapter;
 import org.eclipse.jface.operation.IRunnableWithProgress;
+import org.eclipse.jface.util.BidiUtils;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.ModifyEvent;
 import org.eclipse.swt.events.ModifyListener;
@@ -89,9 +92,7 @@ public class ConfigModuleDialog extends TitleAreaDialog implements IConfigModule
 
     private Button browseButton;
 
-    private Button findByNameRadioBtn;
-
-    private Button findByURIRadioBtn;
+    private Label findByNameLabel;
 
     private Text findByURITxt;
 
@@ -167,6 +168,7 @@ public class ConfigModuleDialog extends TitleAreaDialog implements IConfigModule
         data = new GridData(GridData.FILL_HORIZONTAL | GridData.GRAB_HORIZONTAL);
         radioContainer.setLayoutData(data);
         createPlatformGroup(radioContainer);
+        createInstallNew(radioContainer);
         createRepositoryGroup(radioContainer, container);
 
         createMavenURIGroup(container);
@@ -191,8 +193,6 @@ public class ConfigModuleDialog extends TitleAreaDialog implements IConfigModule
         if (!StringUtils.isEmpty(moduleName) && !jarsAvailable.contains(moduleName)) {
             setPlatformGroupEnabled(false);
             installRadioBtn.setSelection(false);
-            findByURIRadioBtn.setSelection(false);
-            findByNameRadioBtn.setSelection(true);
             nameTxt.setText(moduleName);
             setRepositoryGroupEnabled(true);
         } else {
@@ -250,13 +250,15 @@ public class ConfigModuleDialog extends TitleAreaDialog implements IConfigModule
         platfromRadioBtn = new Button(composite, SWT.RADIO);
         platfromRadioBtn.setText(Messages.getString("ConfigModuleDialog.platfromBtn"));
 
-        platformCombo = new Combo(composite, SWT.READ_ONLY);
+        platformCombo = new Combo(composite, SWT.SINGLE | SWT.BORDER);
         platformCombo.setLayoutData(new GridData(GridData.FILL_BOTH | GridData.GRAB_HORIZONTAL));
+
         platfromRadioBtn.addSelectionListener(new SelectionAdapter() {
 
             @Override
             public void widgetSelected(SelectionEvent e) {
                 setPlatformGroupEnabled(true);
+                setInstallNewGroupEnabled(false);
                 setRepositoryGroupEnabled(false);
                 setupMavenURIByModuleName(platformCombo.getText());
             }
@@ -279,19 +281,9 @@ public class ConfigModuleDialog extends TitleAreaDialog implements IConfigModule
         };
         Arrays.sort(moduleValueArray, comprarator);
         platformCombo.setItems(moduleValueArray);
-        if (!StringUtils.isEmpty(moduleName) && jarsAvailable.contains(moduleName)) {
-            platformCombo.setText(moduleName);
-        } else {
-            platformCombo.setText(moduleValueArray[0]);
-        }
-        platformCombo.addModifyListener(new ModifyListener() {
 
-            @Override
-            public void modifyText(ModifyEvent e) {
-                moduleName = platformCombo.getText();
-                setupMavenURIByModuleName(platformCombo.getText());
-            }
-        });
+        new AutoCompleteField(platformCombo, new ComboContentAdapter(), moduleValueArray);
+
     }
 
     private void setPlatformGroupEnabled(boolean enable) {
@@ -325,17 +317,14 @@ public class ConfigModuleDialog extends TitleAreaDialog implements IConfigModule
         data.horizontalIndent = 30;
         repGroupSubComp.setLayoutData(data);
 
-        createInstallNew(repGroupSubComp);
-
         createFindByName(repGroupSubComp);
-
-        createFindByURI(repGroupSubComp);
 
         repositoryRadioBtn.addSelectionListener(new SelectionAdapter() {
 
             @Override
             public void widgetSelected(SelectionEvent e) {
                 setPlatformGroupEnabled(false);
+                setInstallNewGroupEnabled(false);
                 setRepositoryGroupEnabled(true);
             }
         });
@@ -377,63 +366,61 @@ public class ConfigModuleDialog extends TitleAreaDialog implements IConfigModule
             @Override
             public void widgetSelected(SelectionEvent e) {
                 setInstallNewGroupEnabled(installRadioBtn.getSelection());
+                setPlatformGroupEnabled(false);
+                setRepositoryGroupEnabled(false);
             }
         });
     }
 
     private void createFindByName(Composite repGroupSubComp) {
-        findByNameRadioBtn = new Button(repGroupSubComp, SWT.RADIO);
-        findByNameRadioBtn.setText(Messages.getString("ConfigModuleDialog.findExistByNameBtn"));
+        Composite findComp = new Composite(repGroupSubComp, SWT.NONE);
+        GridData findCompLayout = new GridData(GridData.FILL_HORIZONTAL | GridData.GRAB_HORIZONTAL);
+        findCompLayout.horizontalSpan = 4;
+        findComp.setLayoutData(findCompLayout);
 
-        nameTxt = new Text(repGroupSubComp, SWT.BORDER);
+        findByNameLabel = new Label(findComp, SWT.NONE);
+        findByNameLabel.setText(Messages.getString("ConfigModuleDialog.findExistByNameBtn"));
+
+        nameTxt = new Text(findComp, SWT.BORDER);
         GridData data = new GridData(GridData.FILL_HORIZONTAL | GridData.GRAB_HORIZONTAL);
-        data.horizontalSpan = 2;
+        data.horizontalSpan = 3;
         nameTxt.setLayoutData(data);
 
-        nameTxt.addModifyListener(new ModifyListener() {
+        Button searchLocalBtn = new Button(findComp, SWT.BORDER);
+        searchLocalBtn.setText("search local");
 
-            @Override
-            public void modifyText(ModifyEvent e) {
-                moduleName = nameTxt.getText().trim();
-                setupMavenURIByModuleName(moduleName);
-                checkErrorForFindExistingByName();
-            }
-        });
-        findByNameRadioBtn.addSelectionListener(new SelectionAdapter() {
+        Button searchRemoteBtn = new Button(findComp, SWT.BORDER);
+        searchRemoteBtn.setText("search remote");
 
-            @Override
-            public void widgetSelected(SelectionEvent e) {
-                setFindByNameGroupEnabled(findByNameRadioBtn.getSelection());
-            }
+        Combo searchResultCombo = new Combo(repGroupSubComp, SWT.BORDER);
 
-        });
     }
 
-    private void createFindByURI(Composite repGroupSubComp) {
-        findByURIRadioBtn = new Button(repGroupSubComp, SWT.RADIO);
-        findByURIRadioBtn.setText(Messages.getString("ConfigModuleDialog.findExistByURIBtn"));
-
-        GridData data = new GridData(GridData.FILL_HORIZONTAL | GridData.GRAB_HORIZONTAL);
-        data.horizontalSpan = 2;
-        findByURITxt = new Text(repGroupSubComp, SWT.BORDER);
-        findByURITxt.setLayoutData(data);
-        findByURITxt.addModifyListener(new ModifyListener() {
-
-            @Override
-            public void modifyText(ModifyEvent e) {
-                findByMvnURI();
-                checkInstallStatusErrorForFindExisting();
-            }
-        });
-        findByURIRadioBtn.addSelectionListener(new SelectionAdapter() {
-
-            @Override
-            public void widgetSelected(SelectionEvent e) {
-                setFindByURIGroupEnabled(findByURIRadioBtn.getSelection());
-            }
-
-        });
-    }
+    // private void createFindByURI(Composite repGroupSubComp) {
+    // findByURIRadioBtn = new Button(repGroupSubComp, SWT.RADIO);
+    // findByURIRadioBtn.setText(Messages.getString("ConfigModuleDialog.findExistByURIBtn"));
+    //
+    // GridData data = new GridData(GridData.FILL_HORIZONTAL | GridData.GRAB_HORIZONTAL);
+    // data.horizontalSpan = 2;
+    // findByURITxt = new Text(repGroupSubComp, SWT.BORDER);
+    // findByURITxt.setLayoutData(data);
+    // findByURITxt.addModifyListener(new ModifyListener() {
+    //
+    // @Override
+    // public void modifyText(ModifyEvent e) {
+    // findByMvnURI();
+    // checkInstallStatusErrorForFindExisting();
+    // }
+    // });
+    // findByURIRadioBtn.addSelectionListener(new SelectionAdapter() {
+    //
+    // @Override
+    // public void widgetSelected(SelectionEvent e) {
+    // setFindByURIGroupEnabled(findByURIRadioBtn.getSelection());
+    // }
+    //
+    // });
+    // }
 
     private void setInstallNewGroupEnabled(boolean enable) {
         jarPathTxt.setEnabled(enable);
@@ -678,16 +665,6 @@ public class ConfigModuleDialog extends TitleAreaDialog implements IConfigModule
                 if (!statusOK) {
                     return false;
                 }
-            } else if (findByNameRadioBtn.getSelection()) {
-                boolean statusOK = checkErrorForFindExistingByName();
-                if (!statusOK) {
-                    return false;
-                }
-            } else if (findByURIRadioBtn.getSelection()) {
-                boolean statusOK = checkInstallStatusErrorForFindExisting();
-                if (!statusOK) {
-                    return false;
-                }
             }
 
         }
@@ -796,19 +773,13 @@ public class ConfigModuleDialog extends TitleAreaDialog implements IConfigModule
     private void setRepositoryGroupEnabled(boolean enable) {
         repositoryRadioBtn.setSelection(enable);
         installRadioBtn.setEnabled(enable);
-        findByNameRadioBtn.setEnabled(enable);
-        findByURIRadioBtn.setEnabled(enable);
         if (enable) {
             detectButton.setEnabled(true);
-            boolean hasDefaultSelection = installRadioBtn.getSelection() || findByNameRadioBtn.getSelection()
-                    || findByURIRadioBtn.getSelection();
+            boolean hasDefaultSelection = installRadioBtn.getSelection();
             setInstallNewGroupEnabled(!hasDefaultSelection || installRadioBtn.getSelection());
-            setFindByNameGroupEnabled(findByNameRadioBtn.getSelection());
-            setFindByURIGroupEnabled(findByURIRadioBtn.getSelection());
         } else {
             setInstallNewGroupEnabled(enable);
             setFindByNameGroupEnabled(enable);
-            setFindByURIGroupEnabled(enable);
         }
     }
 
