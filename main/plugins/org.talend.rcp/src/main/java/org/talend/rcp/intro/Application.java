@@ -40,7 +40,9 @@ import org.eclipse.ui.PlatformUI;
 import org.osgi.service.prefs.BackingStoreException;
 import org.osgi.service.prefs.Preferences;
 import org.talend.commons.exception.BusinessException;
+import org.talend.commons.runtime.helper.LocalComponentInstallHelper;
 import org.talend.commons.runtime.helper.PatchComponentHelper;
+import org.talend.commons.runtime.service.ComponentsInstallComponent;
 import org.talend.commons.runtime.service.PatchComponent;
 import org.talend.commons.ui.runtime.update.PreferenceKeys;
 import org.talend.commons.ui.swt.dialogs.ErrorDialogWidthDetailArea;
@@ -53,7 +55,6 @@ import org.talend.core.model.migration.IMigrationToolService;
 import org.talend.core.model.utils.TalendPropertiesUtil;
 import org.talend.core.repository.CoreRepositoryPlugin;
 import org.talend.core.runtime.services.IMavenUIService;
-import org.talend.core.service.IUpdateService;
 import org.talend.core.services.ICoreTisService;
 import org.talend.core.ui.branding.IBrandingService;
 import org.talend.core.ui.workspace.ChooseWorkspaceData;
@@ -190,11 +191,30 @@ public class Application implements IApplication {
                 }
             }
             
-            if (GlobalServiceRegister.getDefault().isServiceRegistered(IUpdateService.class)) {
-                IUpdateService updateService = GlobalServiceRegister.getDefault().getService(IUpdateService.class);
-                updateService.syncComponentM2Jars(new NullProgressMonitor());
+            final ComponentsInstallComponent installComponent = LocalComponentInstallHelper.getComponent();
+            if (installComponent != null) {
+                try {
+                    // install component silently
+                    installComponent.setLogin(true);
+                    if (installComponent.install()) {
+                        final String installedMessages = installComponent.getInstalledMessages();
+                        if (installedMessages != null) {
+                            log.log(Level.INFO, installedMessages);
+                            MessageDialog.openInformation(Display.getDefault().getActiveShell(), "Installing Components",
+                                    installedMessages);
+                        }
+                        if (installComponent.needRelaunch()) {
+                            needRelaunch = true;
+                        }
+                    }
+                    if (StringUtils.isNotEmpty(installComponent.getFailureMessage())) {
+                        log.log(Level.ERROR, installComponent.getFailureMessage());
+                    }
+                } finally {
+                    installComponent.setLogin(false);
+                }
             }
-
+            
             if (needRelaunch) {
                 setRelaunchData();
                 return IApplication.EXIT_RELAUNCH;
