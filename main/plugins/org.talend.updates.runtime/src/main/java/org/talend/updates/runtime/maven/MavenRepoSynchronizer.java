@@ -105,15 +105,15 @@ public class MavenRepoSynchronizer {
                             pomPath = PomUtil.generatePomInFolder(tempFolder, artifact.getArtifact());
                         }
                         
-                        if(deployToRemote) {
+                        boolean deploy = deployToRemote;
+                        if(deploy) {
                             Set<File> deployedPomFiles = getDeployedPomFiles(allPomFiles);
                             
-                            boolean deploy = deployToRemote;
                             if (deployedPomFiles.contains(pomFile)) {
                                 deploy = false;
                             }
-                            deployer.install(artifact.getMvnUrl(), jarPath, pomPath, deploy);
                         }
+                        deployer.install(artifact.getMvnUrl(), jarPath, pomPath, deploy);
                     } finally {
                         if (tempFolder.exists()) {
                             FilesUtils.deleteFolder(tempFolder, true);
