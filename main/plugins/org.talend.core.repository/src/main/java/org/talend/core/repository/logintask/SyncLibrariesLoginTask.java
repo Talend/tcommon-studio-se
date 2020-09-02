@@ -23,4 +23,9 @@ public class SyncLibrariesLoginTask extends AbstractLoginTask implements IRunnab
         coreService.createStatsLogAndImplicitParamter(ProjectManager.getInstance().getCurrentProject());
     }
 
+    @Override
+    public boolean isRequiredAlways() {
+        return true;
+    }
+
 }

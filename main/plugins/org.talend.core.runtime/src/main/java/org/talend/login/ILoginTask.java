@@ -27,4 +27,10 @@ public interface ILoginTask {
     public boolean isCommandlineTask();
 
     public void run(IProgressMonitor monitor) throws InvocationTargetException, InterruptedException;
+
+    /**
+     * Which indicates the task will be executed for each logon of a project, by default return false(execute only once
+     * at the time of logon studio).
+     */
+    boolean isRequiredAlways();
 }
