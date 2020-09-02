@@ -27,7 +27,6 @@ import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.Path;
 import org.eclipse.emf.common.util.EList;
 import org.eclipse.emf.common.util.EMap;
-import org.eclipse.jface.dialogs.MessageDialog;
 import org.eclipse.jface.viewers.ISelection;
 import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.jface.window.Window;
@@ -555,17 +554,25 @@ public class DatabaseWizard extends CheckLastVersionRepositoryWizard implements 
                     ContextItem contextItem = ContextUtils.getContextItemById2(connection.getContextId());
                     Boolean isSuccess = true;
                     if (creation) {
+                        // to create a new connection no need to consider dependency and other modify on the original
+                        // one
                         handleCreation(getDatabaseConnection(), metadataConnection, tdqRepService);
                     } else if (tdqRepService != null&&connection.isContextMode() &&contextItem != null && contextItem.getContext().size() > 1
                             && originalSelectedContextType != null) {
+                        // modify case and it is with context mode and we know the source and target when do context
+                        // switch
                         isSuccess = SwitchContextGroupNameImpl
                                 .getInstance()
                                 .updateContextGroup(connectionItem, contextName, originalSelectedContextType.getName());
                          if (!isSuccess) {
+                            // Open dialog to let customer choose continue or not when update connection
+                            // failed(catalog/schema is null and has analysis dependency on the
+                            // connection)
                         	isSuccess = tdqRepService.popupSwitchContextFailedMessage(contextName);
-                        }else {
-                            isSuccess &= handleDatabaseUpdate(metadataConnection, tdqRepService);
                         }
+                        // reload connection if customer want to continue else do nothing
+                        isSuccess = isSuccess && handleDatabaseUpdate(metadataConnection, tdqRepService);
+
                     } else {
                         // when connection is Database connection and creating==false and don't switch context
                         isSuccess = handleDatabaseUpdate(metadataConnection, tdqRepService);

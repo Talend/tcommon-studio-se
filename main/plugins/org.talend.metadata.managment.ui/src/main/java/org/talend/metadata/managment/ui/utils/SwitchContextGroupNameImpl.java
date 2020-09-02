@@ -16,7 +16,6 @@ import java.util.List;
 import java.util.Map;
 
 import org.apache.log4j.Logger;
-import org.eclipse.jface.dialogs.MessageDialog;
 import org.talend.commons.exception.ExceptionHandler;
 import org.talend.commons.exception.PersistenceException;
 import org.talend.core.GlobalServiceRegister;
@@ -103,7 +102,8 @@ public class SwitchContextGroupNameImpl implements ISwitchContext {
                 newContextName = newContextType == null ? null : newContextType.getName();
             }
 
-            if (!isContextIsValidAndInUse(newContextName, oldContextName, connItem)) {
+            if (!isContextIsValid(newContextName, oldContextName, connItem) && hasDependency(connItem)) {
+                // can not update connection when context is invalid(catalog or schema is null) and has dependecy
                 return false;
             }
             con.setContextName(newContextName);
@@ -111,7 +111,7 @@ public class SwitchContextGroupNameImpl implements ISwitchContext {
                 DatabaseConnection dbConn = (DatabaseConnection) connItem.getConnection();
                 String newURL = getChangedURL(dbConn, newContextName);
                 dbConn.setURL(newURL);
-
+                // do nothing when schema or catalog is null
                 updateConnectionForSidOrUiSchema(dbConn, oldContextName);
             }
 
@@ -126,13 +126,25 @@ public class SwitchContextGroupNameImpl implements ISwitchContext {
         return false;
     }
 
+    private boolean hasDependency(ConnectionItem connItem) {
+        // Added TDQ-18565
+        if (GlobalServiceRegister.getDefault().isServiceRegistered(ITDQRepositoryService.class)) {
+            ITDQRepositoryService tdqRepService =
+                    GlobalServiceRegister.getDefault().getService(ITDQRepositoryService.class);
+            if (tdqRepService.hasClientDependences(connItem)) {
+                return true;
+            }
+        }
+        return false;
+    }
+
     /**
      * DOC talend Comment method "checkContextIsValid".
      *
      * @param selectedContext
      * @paramconn
      */
-    private boolean isContextIsValidAndInUse(String selectedContext, String oldContextName, ConnectionItem connItem) {
+    private boolean isContextIsValid(String selectedContext, String oldContextName, ConnectionItem connItem) {
         boolean retCode = false;
         Connection conn = connItem.getConnection();
         if (conn instanceof DatabaseConnection) {
@@ -164,14 +176,7 @@ public class SwitchContextGroupNameImpl implements ISwitchContext {
 				}else {//some db didnot have catelog and schema
 					retCode = true;
 				}
-				// Added TDQ-18565
-				if (!retCode && GlobalServiceRegister.getDefault().isServiceRegistered(ITDQRepositoryService.class)) {
-					ITDQRepositoryService tdqRepService = GlobalServiceRegister.getDefault()
-							.getService(ITDQRepositoryService.class);
-					if (!tdqRepService.hasClientDependences(connItem)) {
-						retCode = true;
-					}
-				}
+
 			}
         } else if (conn instanceof FileConnection) {
             retCode = true;
