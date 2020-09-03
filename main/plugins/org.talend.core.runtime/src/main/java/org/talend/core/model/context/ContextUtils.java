@@ -57,6 +57,7 @@ import org.talend.designer.core.model.utils.emf.talendfile.ContextParameterType;
 import org.talend.designer.core.model.utils.emf.talendfile.ContextType;
 import org.talend.designer.core.model.utils.emf.talendfile.ProcessType;
 import org.talend.migration.IMigrationTask.ExecutionResult;
+import org.talend.repository.ProjectManager;
 import org.talend.repository.model.IProxyRepositoryFactory;
 
 /**
@@ -246,7 +247,6 @@ public class ContextUtils {
         return parameterType;
     }
 
-    @SuppressWarnings("unchecked")
     private static boolean checkObject(Object obj) {
         if (obj == null) {
             return true;
@@ -1069,7 +1069,7 @@ public class ContextUtils {
 
     public static ExecutionResult doCreateContextLinkMigration(Item item, Map<String, Item> contextIdToItemMap) {
         IProxyRepositoryFactory proxyRepositoryFactory = CoreRuntimePlugin.getInstance().getProxyRepositoryFactory();
-        boolean modified = false;
+        boolean modified = false, hasLinkFile = false;
         try {
             List<ContextType> contextTypeList = ContextUtils.getAllContextType(item);
             if (contextTypeList != null && contextTypeList.size() > 0) {
@@ -1083,6 +1083,15 @@ public class ContextUtils {
                                 if (repoItem == null) {
                                     repoItem = ContextUtils.getRepositoryContextItemById(repoId);
                                     contextIdToItemMap.put(repoId, repoItem);
+                                    if (repoItem != null && checkRepoItemContextParamInternalId(repoItem)
+                                            && ProjectManager.getInstance().isInCurrentMainProject(repoItem)) {
+                                        try {
+                                            proxyRepositoryFactory.save(repoItem, true); // We need to save repoItem, In
+                                                                                         // case the internal id is null
+                                        } catch (Exception ex) {
+                                            ExceptionHandler.process(ex);
+                                        }
+                                    }
                                 }
                                 if (repoItem != null) {
                                     if (!(repoItem instanceof ContextItem)) {
@@ -1121,15 +1130,16 @@ public class ContextUtils {
                     }
                 }
             }
-            boolean hasLinkFile = ContextLinkService.getInstance().saveContextLink(item);
-            modified = modified || hasLinkFile;
+            hasLinkFile = ContextLinkService.getInstance().saveContextLink(item);
         } catch (Exception ex) {
             ExceptionHandler.process(ex);
             return ExecutionResult.FAILURE;
         }
-        if (modified) {
+        if (modified || hasLinkFile) {
             try {
-                proxyRepositoryFactory.save(item, true);
+                if (modified) {
+                    proxyRepositoryFactory.save(item, true);
+                }
                 return ExecutionResult.SUCCESS_NO_ALERT;
             } catch (Exception ex) {
                 ExceptionHandler.process(ex);
@@ -1137,6 +1147,31 @@ public class ContextUtils {
             }
         }
         return ExecutionResult.NOTHING_TO_DO;
+    }
+    
+    private static boolean checkRepoItemContextParamInternalId(Item item) {
+        boolean isModified = false;
+        if (item instanceof ContextItem) {
+            EList<?> contextTypeList = ContextUtils.getAllContextType(item);
+            if (contextTypeList != null) {
+                for (Object typeObj : contextTypeList) {
+                    if (typeObj instanceof ContextType) {
+                        ContextType type = (ContextType) typeObj;
+                        for (Object obj : type.getContextParameter()) {
+                            if (obj instanceof ContextParameterType) {
+                                ContextParameterType contextParam = (ContextParameterType) obj;
+                                if (isBuildInParameter(contextParam) && StringUtils.isEmpty(contextParam.getInternalId())) {
+                                    contextParam.setInternalId(
+                                            CoreRuntimePlugin.getInstance().getProxyRepositoryFactory().getNextId());
+                                    isModified = true;
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+        return isModified;
     }
 
     public static ExecutionResult doCreateContextLinkMigration(ERepositoryObjectType repositoryType, Item item,
