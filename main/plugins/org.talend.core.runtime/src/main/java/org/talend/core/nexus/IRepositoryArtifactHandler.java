@@ -73,4 +73,6 @@ public interface IRepositoryArtifactHandler {
     
     public String resolveRemoteSha1(MavenArtifact artifact, boolean fromRelease) throws Exception;
 
+    public List<MavenArtifact> search(String name, boolean fromSnapshot) throws Exception;
+
 }

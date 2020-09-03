@@ -242,4 +242,19 @@ public abstract class AbsNexus3SearchHandler implements INexus3SearchHandler {
         }
         return socketTimeout;
     }
+
+    public List<MavenArtifact> search(String name) throws Exception {
+        List<MavenArtifact> resultList = new ArrayList<MavenArtifact>();
+        String searchUrl = getSearchUrl();
+        String continuationToken = null;
+        while (true) {
+            String query = "name=*" + name + "*";
+            String content = doRequest(searchUrl + query);
+            continuationToken = parseResult(content, resultList);
+            if (continuationToken == null) {
+                break;
+            }
+        }
+        return resultList;
+    }
 }

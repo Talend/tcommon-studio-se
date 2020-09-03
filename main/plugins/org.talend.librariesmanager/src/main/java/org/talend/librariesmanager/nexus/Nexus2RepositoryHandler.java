@@ -185,4 +185,8 @@ public class Nexus2RepositoryHandler extends AbstractArtifactRepositoryHandler {
                 artifact.getArtifactId(), artifact.getVersion(), artifact.getType());
     }
 
+    public List<MavenArtifact> search(String name, boolean fromSnapshot) throws Exception {
+        return null;
+    }
+
 }

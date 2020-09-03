@@ -59,8 +59,6 @@ public class Nexus3RepositoryHandler extends AbstractArtifactRepositoryHandler {
 
     private static final ConcurrentHashMap<ArtifactRepositoryBean, INexus3SearchHandler> LAST_HANDLER_MAP = new ConcurrentHashMap<ArtifactRepositoryBean, INexus3SearchHandler>();
 
-    private static List<INexus3SearchHandler> queryHandlerList = new ArrayList<INexus3SearchHandler>();
-
     @Override
     public IRepositoryArtifactHandler clone() {
         return new Nexus3RepositoryHandler();
@@ -160,7 +158,7 @@ public class Nexus3RepositoryHandler extends AbstractArtifactRepositoryHandler {
         try {
             result = currentQueryHandler.search(repositoryId, groupIdToSearch, artifactId, versionToSearch);
         } catch (Exception ex) {
-            for (int i = 0; i < queryHandlerList.size(); i++) {// Try to other version
+            for (int i = 0; i < 3; i++) {// Try to other version
                 INexus3SearchHandler handler = createQueryHandler(i);
                 if (handler != currentQueryHandler) {
                     try {
@@ -285,6 +283,10 @@ public class Nexus3RepositoryHandler extends AbstractArtifactRepositoryHandler {
             HttpClientTransport.removeProxy(proxySelector);
             httpclient.getConnectionManager().shutdown();
         }
+    }
+
+    public List<MavenArtifact> search(String name, boolean fromSnapshot) throws Exception {
+        return null;
     }
 
 }

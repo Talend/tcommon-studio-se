@@ -23,4 +23,5 @@ public interface INexus3SearchHandler {
 
     public String getHandlerVersion();
 
+    public List<MavenArtifact> search(String name) throws Exception;
 }

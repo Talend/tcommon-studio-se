@@ -268,6 +268,92 @@ public class ArtifacoryRepositoryHandler extends AbstractArtifactRepositoryHandl
         return resultList;
     }
 
+    protected List<MavenArtifact> doSearch(String query, boolean fromRelease, boolean fromSnapshot) throws Exception {
+        String serverUrl = serverBean.getServer();
+        if (!serverUrl.endsWith("/")) { //$NON-NLS-1$
+            serverUrl = serverUrl + "/"; //$NON-NLS-1$
+        }
+        String searchUrl = serverUrl + SEARCH_SERVICE;
+
+        String repositoryId = ""; //$NON-NLS-1$
+        if (fromRelease) {
+            repositoryId = serverBean.getRepositoryId();
+        }
+        if (fromSnapshot) {
+            if ("".equals(repositoryId)) { //$NON-NLS-1$
+                repositoryId = serverBean.getSnapshotRepId();
+            } else {
+                repositoryId = repositoryId + "," + serverBean.getSnapshotRepId(); //$NON-NLS-1$
+            }
+        }
+        if (!"".equals(repositoryId)) { //$NON-NLS-1$
+            query = "repos=" + repositoryId;//$NON-NLS-1$
+        }
+
+        searchUrl = searchUrl + query;
+        Request request = Request.Get(searchUrl);
+        String userPass = serverBean.getUserName() + ":" + serverBean.getPassword(); //$NON-NLS-1$
+        String basicAuth = "Basic " + new String(new Base64().encode(userPass.getBytes())); //$NON-NLS-1$
+        Header authority = new BasicHeader("Authorization", basicAuth); //$NON-NLS-1$
+        request.addHeader(authority);
+        Header resultDetailHeader = new BasicHeader("X-Result-Detail", "info"); //$NON-NLS-1$ //$NON-NLS-2$
+        request.addHeader(resultDetailHeader);
+        List<MavenArtifact> resultList = new ArrayList<MavenArtifact>();
+
+        HttpResponse response = request.execute().returnResponse();
+        String content = EntityUtils.toString(response.getEntity());
+        if (content.isEmpty()) {
+            return resultList;
+        }
+        JSONObject responseObject = JSONObject.fromObject(content);
+        String resultStr = responseObject.getString("results"); //$NON-NLS-1$
+        JSONArray resultArray = null;
+        try {
+            resultArray = JSONArray.fromObject(resultStr);
+        } catch (Exception e) {
+            throw new Exception(resultStr);
+        }
+        if (resultArray != null) {
+            for (int i = 0; i < resultArray.size(); i++) {
+                JSONObject jsonObject = resultArray.getJSONObject(i);
+                String lastUpdated = jsonObject.getString("lastUpdated"); //$NON-NLS-1$
+                String artifactPath = jsonObject.getString("path"); //$NON-NLS-1$
+                String[] split = artifactPath.split("/"); //$NON-NLS-1$
+                if (split.length > 4) {
+                    String fileName = split[split.length - 1];
+                    if (!fileName.endsWith("pom")) { //$NON-NLS-1$
+                        String type = null;
+                        int dotIndex = fileName.lastIndexOf('.');
+                        if (dotIndex > 0) {
+                            type = fileName.substring(dotIndex + 1);
+                        }
+                        if (type != null) {
+                            MavenArtifact artifact = new MavenArtifact();
+                            String g = ""; //$NON-NLS-1$
+                            String a = split[split.length - 3];
+                            String v = split[split.length - 2];
+                            for (int j = 1; j < split.length - 3; j++) {
+                                if ("".equals(g)) { //$NON-NLS-1$
+                                    g = split[j];
+                                } else {
+                                    g = g + "." + split[j]; //$NON-NLS-1$
+                                }
+                            }
+                            artifact.setGroupId(g);
+                            artifact.setArtifactId(a);
+                            artifact.setVersion(v);
+                            artifact.setType(type);
+                            artifact.setLastUpdated(lastUpdated);
+                            fillChecksumData(jsonObject, artifact);
+                            resultList.add(artifact);
+                        }
+                    }
+                }
+            }
+        }
+        return resultList;
+    }
+
     @Override
     public File resolve(MavenArtifact ma) throws Exception {
         boolean isRelease = true;
@@ -386,4 +472,8 @@ public class ArtifacoryRepositoryHandler extends AbstractArtifactRepositoryHandl
         return rc;
     }
 
+    public List<MavenArtifact> search(String name, boolean fromSnapshot) throws Exception {
+        String query = "name=" + name;
+        return doSearch(query, true, fromSnapshot);
+    }
 }
