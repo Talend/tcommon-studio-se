@@ -75,9 +75,9 @@ public class ComponentsSettingsHelper {
                 hiddenComponents.put(component.getPaletteType(), new HashMap<String, Set<String>>());
             }
             if (!component.isVisibleInComponentDefinition()) {
-                hiddenComponents.get(component.getPaletteType()).put(component.getName(), new HashSet<String>());
+                hiddenComponents.get(component.getPaletteType()).put(component.getDisplayName(), new HashSet<String>());
                 for (String family : component.getOriginalFamilyName().split(ComponentsFactoryProvider.FAMILY_SEPARATOR_REGEX)) {
-                    hiddenComponents.get(component.getPaletteType()).get(component.getName()).add(family);
+                    hiddenComponents.get(component.getPaletteType()).get(component.getDisplayName()).add(family);
                 }
             }
         }
@@ -168,8 +168,8 @@ public class ComponentsSettingsHelper {
         }
 
         if (hiddenComponents.containsKey(component.getPaletteType())) {
-            if (hiddenComponents.get(component.getPaletteType()).containsKey(component.getName())) {
-                if (hiddenComponents.get(component.getPaletteType()).get(component.getName()).contains(family)) {
+            if (hiddenComponents.get(component.getPaletteType()).containsKey(component.getDisplayName())) {
+                if (hiddenComponents.get(component.getPaletteType()).get(component.getDisplayName()).contains(family)) {
                     // not visible if in the hidden component list;
                     return false;
                 }
@@ -225,7 +225,7 @@ public class ComponentsSettingsHelper {
         EList list = emfProject.getComponentsSettings();
         if (!list.isEmpty()) {
             list.clear();
-            IRepositoryService service = (IRepositoryService) GlobalServiceRegister.getDefault().getService(
+            IRepositoryService service = GlobalServiceRegister.getDefault().getService(
                     IRepositoryService.class);
 
             IProxyRepositoryFactory prf = service.getProxyRepositoryFactory();

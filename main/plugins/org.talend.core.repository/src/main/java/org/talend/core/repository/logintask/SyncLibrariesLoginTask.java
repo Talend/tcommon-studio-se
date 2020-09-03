@@ -67,4 +67,9 @@ public class SyncLibrariesLoginTask extends AbstractLoginTask implements IRunnab
                 });
     }
 
+    @Override
+    public boolean isRequiredAlways() {
+        return true;
+    }
+
 }
