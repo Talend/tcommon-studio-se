@@ -1077,51 +1077,7 @@ public class ContextUtils {
                     for (Object obj : contextType.getContextParameter()) {
                         if (obj instanceof ContextParameterType) {
                             ContextParameterType paramType = (ContextParameterType) obj;
-                            if (!ContextUtils.isBuildInParameter(paramType)) {
-                                String repoId = paramType.getRepositoryContextId();
-                                Item repoItem = contextIdToItemMap.get(repoId);
-                                if (repoItem == null) {
-                                    repoItem = ContextUtils.getRepositoryContextItemById(repoId);
-                                    contextIdToItemMap.put(repoId, repoItem);
-                                    if (repoItem != null && !(repoItem instanceof ContextItem)
-                                            && ProjectManager.getInstance().isInCurrentMainProject(repoItem)
-                                            && checkRepoItemContextParamInternalId(repoItem)) {
-                                        try {
-                                            proxyRepositoryFactory.save(repoItem, true); // We need to save repoItem, In
-                                                                                         // case the internal id is null
-                                        } catch (Exception ex) {
-                                            ExceptionHandler.process(ex);
-                                        }
-                                    }
-                                }
-                                if (repoItem != null) {
-                                    if (!(repoItem instanceof ContextItem)) {
-                                        ContextType repoContextType = ContextUtils.getContextTypeByName(repoItem,
-                                                contextType.getName());
-                                        if (repoContextType != null) {
-                                            ContextParameterType repoParamType = ContextUtils
-                                                    .getContextParameterTypeByName(repoContextType, paramType.getName());
-                                            if (repoParamType != null) {
-                                                paramType.setInternalId(repoParamType.getInternalId());
-                                            } else {
-                                                if (CommonsPlugin.isDebugMode()) {
-                                                    LOGGER.warn("Can't find context repository parameter type repo:" + repoId
-                                                            + " parameter name:" + paramType.getName());
-                                                }
-                                            }
-                                        } else {
-                                            if (CommonsPlugin.isDebugMode()) {
-                                                LOGGER.warn("Can't find context repository context type repo:" + repoId
-                                                        + " context type name:" + contextType.getName());
-                                            }
-                                        }
-                                    }
-                                } else {
-                                    if (CommonsPlugin.isDebugMode()) {
-                                        LOGGER.warn("Can't find context repository item:" + repoId);
-                                    }
-                                }
-                            } else {
+                            if (ContextUtils.isBuildInParameter(paramType)) {
                                 if (StringUtils.isEmpty(paramType.getInternalId())) {
                                     paramType.setInternalId(proxyRepositoryFactory.getNextId());
                                     modified = true;
@@ -1148,29 +1104,6 @@ public class ContextUtils {
             }
         }
         return ExecutionResult.NOTHING_TO_DO;
-    }
-    
-    private static boolean checkRepoItemContextParamInternalId(Item item) {
-        boolean isModified = false;
-        EList<?> contextTypeList = ContextUtils.getAllContextType(item);
-        if (contextTypeList != null) {
-            for (Object typeObj : contextTypeList) {
-                if (typeObj instanceof ContextType) {
-                    ContextType type = (ContextType) typeObj;
-                    for (Object obj : type.getContextParameter()) {
-                        if (obj instanceof ContextParameterType) {
-                            ContextParameterType contextParam = (ContextParameterType) obj;
-                            if (isBuildInParameter(contextParam) && StringUtils.isEmpty(contextParam.getInternalId())) {
-                                contextParam.setInternalId(
-                                        CoreRuntimePlugin.getInstance().getProxyRepositoryFactory().getNextId());
-                                isModified = true;
-                            }
-                        }
-                    }
-                }
-            }
-        } 
-        return isModified;
     }
 
     public static ExecutionResult doCreateContextLinkMigration(ERepositoryObjectType repositoryType, Item item,
