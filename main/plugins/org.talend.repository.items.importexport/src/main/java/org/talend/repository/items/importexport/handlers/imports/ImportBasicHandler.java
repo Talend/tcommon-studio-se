@@ -1308,20 +1308,27 @@ public class ImportBasicHandler extends AbstractImportExecutableHandler {
         IRepositoryViewObject object;
         try {
             Property property = importItem.getProperty();
+            boolean isReloaded = false;
             if (property == null) {
                 object = factory.getSpecificVersion(importItem.getItemId(), importItem.getItemVersion(), true);
                 property = object.getProperty();
+                isReloaded = true;
             }
-			if (factory.isFullLogonFinished()) {// Import items into current opening project
-				ContextUtils.doCreateContextLinkMigration(importItem.getRepositoryType(), property.getItem(), ImportCacheHelper.getInstance().getCachedContextIdToItemMap());
-			}
+            if (factory.isFullLogonFinished() && importItem.isImported()
+                    && ContextUtils.getAllSupportContextLinkTypes().contains(importItem.getRepositoryType())) {
+                if (!isReloaded) {
+                    object = factory.getSpecificVersion(importItem.getItemId(), importItem.getItemVersion(), true);
+                    property = object.getProperty();
+                }
+                ContextUtils.doCreateContextLinkMigration(importItem.getRepositoryType(), property.getItem(),
+                        ImportCacheHelper.getInstance().getCachedContextIdToItemMap());
+            }
             RelationshipItemBuilder.getInstance().addOrUpdateItem(property.getItem(), true);
             // importItem.setProperty(null);
             // factory.unloadResources(property);
         } catch (PersistenceException e) {
             ExceptionHandler.process(e);
         }
-
     }
 
     protected IPath getReferenceItemPath(IPath importItemPath, ReferenceFileItem rfItem) {
