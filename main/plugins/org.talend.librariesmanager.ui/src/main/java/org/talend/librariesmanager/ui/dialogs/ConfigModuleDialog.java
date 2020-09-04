@@ -15,7 +15,9 @@ package org.talend.librariesmanager.ui.dialogs;
 import java.io.File;
 import java.io.IOException;
 import java.lang.reflect.InvocationTargetException;
+import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.Comparator;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -24,7 +26,7 @@ import java.util.Map;
 import java.util.Set;
 import java.util.concurrent.TimeoutException;
 
-import org.apache.commons.lang.StringUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.Path;
@@ -48,6 +50,7 @@ import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.FileDialog;
 import org.eclipse.swt.widgets.Label;
+import org.eclipse.swt.widgets.MessageBox;
 import org.eclipse.swt.widgets.Shell;
 import org.eclipse.swt.widgets.Text;
 import org.eclipse.ui.PlatformUI;
@@ -61,6 +64,7 @@ import org.talend.core.ILibraryManagerService;
 import org.talend.core.model.general.ModuleNeeded;
 import org.talend.core.model.general.ModuleNeeded.ELibraryInstallStatus;
 import org.talend.core.model.general.ModuleStatusProvider;
+import org.talend.core.model.general.ModuleToInstall;
 import org.talend.core.nexus.ArtifactRepositoryBean;
 import org.talend.core.nexus.TalendLibsServerManager;
 import org.talend.core.runtime.maven.MavenArtifact;
@@ -69,6 +73,7 @@ import org.talend.librariesmanager.model.ModulesNeededProvider;
 import org.talend.librariesmanager.ui.LibManagerUiPlugin;
 import org.talend.librariesmanager.ui.i18n.Messages;
 import org.talend.librariesmanager.utils.ConfigModuleHelper;
+import org.talend.librariesmanager.utils.DownloadModuleRunnableWithLicenseDialog;
 import org.talend.librariesmanager.utils.JarDetector;
 import org.talend.librariesmanager.utils.ModuleMavenURIUtils;
 
@@ -107,8 +112,6 @@ public class ConfigModuleDialog extends TitleAreaDialog implements IConfigModule
 
     private Button useCustomBtn;
 
-    private Button detectButton;
-
     private String urlToUse;
 
     private String defaultURI;
@@ -132,6 +135,8 @@ public class ConfigModuleDialog extends TitleAreaDialog implements IConfigModule
     private Combo searchResultCombo;
 
     private AutoCompleteField resultField;
+
+    private boolean isLocalSearch;
 
     /**
      * DOC wchen InstallModuleDialog constructor comment.
@@ -265,7 +270,8 @@ public class ConfigModuleDialog extends TitleAreaDialog implements IConfigModule
                 setPlatformGroupEnabled(true);
                 setInstallNewGroupEnabled(false);
                 setRepositoryGroupEnabled(false);
-                setupMavenURIByModuleName(platformCombo.getText());
+                moduleName = platformCombo.getText();
+                setupMavenURIByModuleName(moduleName);
             }
         });
 
@@ -293,8 +299,8 @@ public class ConfigModuleDialog extends TitleAreaDialog implements IConfigModule
 
             @Override
             public void modifyText(ModifyEvent e) {
-                String txt = platformCombo.getText();
-                setupMavenURIByModuleName(txt);
+                moduleName = platformCombo.getText();
+                setupMavenURIByModuleName(moduleName);
             }
         });
 
@@ -304,7 +310,6 @@ public class ConfigModuleDialog extends TitleAreaDialog implements IConfigModule
         platfromRadioBtn.setSelection(enable);
         platformCombo.setEnabled(enable);
         if (enable) {
-            detectButton.setEnabled(false);
             moduleName = platformCombo.getText();
             setupMavenURIByModuleName(moduleName);
             useCustomBtn.setEnabled(false);
@@ -427,8 +432,8 @@ public class ConfigModuleDialog extends TitleAreaDialog implements IConfigModule
 
             @Override
             public void modifyText(ModifyEvent e) {
-                String txt = searchResultCombo.getText();
-                setupMavenURIByModuleName(txt);
+                moduleName = searchResultCombo.getText();
+                setupMavenURIByModuleName(moduleName);
             }
         });
 
@@ -490,13 +495,6 @@ public class ConfigModuleDialog extends TitleAreaDialog implements IConfigModule
             customUriText.setText(cusormURIValue);
         }
 
-        detectButton = new Button(composite, SWT.NONE);
-        detectButton.setText(Messages.getString("InstallModuleDialog.detectButton.text"));
-        detectButton.setEnabled(false);
-        gdData = new GridData(GridData.FILL_HORIZONTAL | GridData.GRAB_HORIZONTAL);
-        gdData.horizontalSpan = 3;
-        detectButton.setLayoutData(gdData);
-
         useCustomBtn.addSelectionListener(new SelectionAdapter() {
 
             @Override
@@ -525,13 +523,6 @@ public class ConfigModuleDialog extends TitleAreaDialog implements IConfigModule
             }
         });
 
-        detectButton.addSelectionListener(new SelectionAdapter() {
-
-            @Override
-            public void widgetSelected(SelectionEvent e) {
-                handleDetectPressed();
-            }
-        });
         copyURIButton.addSelectionListener(new SelectionAdapter() {
 
             /*
@@ -544,39 +535,6 @@ public class ConfigModuleDialog extends TitleAreaDialog implements IConfigModule
                 ModuleMavenURIUtils.copyDefaultMavenURI(defaultUriTxt.getText());
             }
         });
-    }
-
-    private void handleDetectPressed() {
-        if (installRadioBtn.getSelection()) {
-            handleDetectPressedForInstall();
-        } else {
-            handleDetectPressedForFindExsting();
-        }
-    }
-
-    private void handleDetectPressedForInstall() {
-        if (!useCustomBtn.getSelection()) {
-            String uri = defaultUriTxt.getText().trim();
-            if (StringUtils.isEmpty(uri)) {
-                setMessage(Messages.getString("InstallModuleDialog.error.invalidDefaultMvnURI"), IMessageProvider.ERROR);
-                return;
-            }
-        }     
-        boolean deployed = checkInstalledStatusInMaven();
-        if (deployed) {
-            setMessage(Messages.getString("InstallModuleDialog.error.jarexsit"), IMessageProvider.ERROR);
-        } else {
-            setMessage(Messages.getString("ConfigModuleDialog.install.message", moduleName), IMessageProvider.INFORMATION);
-        }
-    }
-
-    private void handleDetectPressedForFindExsting() {
-        boolean deployed = checkInstalledStatusInMaven();
-        if (deployed) {
-            setMessage(Messages.getString("ConfigModuleDialog.message", moduleName), IMessageProvider.INFORMATION);
-        } else {
-            setMessage(Messages.getString("ConfigModuleDialog.jarNotInstalled.error"), IMessageProvider.ERROR);
-        }
     }
 
     private boolean checkInstalledStatusInMaven() {
@@ -642,6 +600,7 @@ public class ConfigModuleDialog extends TitleAreaDialog implements IConfigModule
 
     private void handleSearch(boolean local) {
         String name = nameTxt.getText();
+        isLocalSearch = local;
         final IRunnableWithProgress progress = new IRunnableWithProgress() {
 
             @Override
@@ -660,6 +619,11 @@ public class ConfigModuleDialog extends TitleAreaDialog implements IConfigModule
                                 ret = ConfigModuleHelper.searchRemoteArtifacts(name);
                             }
                             String[] items = ConfigModuleHelper.toArray(ret);
+                            Map<String, MavenArtifact> data = new HashMap<String, MavenArtifact>();
+                            for (MavenArtifact art : ret) {
+                                data.put(art.getFileName(false), art);
+                            }
+                            searchResultCombo.setData(data);
                             if (items.length > 0) {
                                 searchResultCombo.setItems(items);
                                 resultField.setProposals(items);
@@ -717,8 +681,6 @@ public class ConfigModuleDialog extends TitleAreaDialog implements IConfigModule
         }
         String originalText = defaultUriTxt.getText().trim();
         String customURIWithType = MavenUrlHelper.addTypeForMavenUri(customUriText.getText(), moduleName);
-        ELibraryInstallStatus status = null;
-        String mvnURI2Detect = "";
         if (useCustomBtn.getSelection()) {
             // if use custom uri:validate custom uri + check deploy status
             String errorMessage = ModuleMavenURIUtils.validateCustomMvnURI(originalText, customURIWithType);
@@ -726,26 +688,6 @@ public class ConfigModuleDialog extends TitleAreaDialog implements IConfigModule
                 setMessage(errorMessage, IMessageProvider.ERROR);
                 return false;
             }
-
-            status = ModuleStatusProvider.getDeployStatus(customURIWithType);
-            if (status == ELibraryInstallStatus.DEPLOYED) {
-                setMessage(Messages.getString("InstallModuleDialog.error.jarexsit"), IMessageProvider.ERROR);
-                return false;
-            }
-            mvnURI2Detect = customURIWithType;
-        } else {
-            status = ModuleStatusProvider.getDeployStatus(originalText);
-            if (status == ELibraryInstallStatus.DEPLOYED) {
-                setMessage(Messages.getString("InstallModuleDialog.error.jarexsit"), IMessageProvider.ERROR);
-                return false;
-            }
-            mvnURI2Detect = originalText;
-        }
-
-        // check deploy status from remote
-        boolean statusOK = checkDetectButtonStatus(status, mvnURI2Detect);
-        if (!statusOK) {
-            return false;
         }
 
         setMessage(Messages.getString("InstallModuleDialog.message"), IMessageProvider.INFORMATION);
@@ -818,72 +760,91 @@ public class ConfigModuleDialog extends TitleAreaDialog implements IConfigModule
      */
     @Override
     protected void okPressed() {
-        String originalURI = null;
-        originalURI = defaultUriTxt.getText().trim();
-        defaultURI = originalURI;
+        defaultURI = defaultUriTxt.getText().trim();
+        customURI = customUriText.getText().trim();
+        urlToUse = defaultURI;
         if (useCustomBtn.getSelection()) {
             customURI = MavenUrlHelper.addTypeForMavenUri(customUriText.getText().trim(), moduleName);
+            urlToUse = !StringUtils.isEmpty(customURI) ? customURI : defaultURI;
         }
-        urlToUse = !StringUtils.isEmpty(customURI) ? customURI : originalURI;
-        if (repositoryRadioBtn.getSelection()) {
-            if (installRadioBtn.getSelection()) {
-                final File file = new File(jarPathTxt.getText().trim());
-                final IRunnableWithProgress acceptOursProgress = new IRunnableWithProgress() {
 
-                    @Override
-                    public void run(IProgressMonitor monitor) throws InvocationTargetException, InterruptedException {
-                        monitor.beginTask("Install module " + file.getName(), 100);
-                        monitor.worked(10);
-                        DisplayUtils.getDisplay().syncExec(new Runnable() {
+        if (installRadioBtn.getSelection()) {
+            if (!checkErrorForInstall()) {
+                return;
+            }
+            File jarFile = new File(jarPathTxt.getText().trim());
+            MavenArtifact art = MavenUrlHelper.parseMvnUrl(urlToUse);
+            String sha1New = ConfigModuleHelper.getSHA1(jarFile);
+            art.setSha1(sha1New);
+            // resolve jar locally
+            File localFile = ConfigModuleHelper.resolveLocal(urlToUse);
+            boolean install = false;
+            if (localFile != null && localFile.exists()) {
+                String sha1Local = ConfigModuleHelper.getSHA1(localFile);
+                // already installed with different jar
+                if (!sha1Local.equals(sha1New)) {
+                    install = true;
+                }
+            } else {
+                // just install
+                install = true;
+            }
 
-                            @Override
-                            public void run() {
-                                try {
-                                    LibManagerUiPlugin.getDefault().getLibrariesService().deployLibrary(file.toURL(), urlToUse);
-                                } catch (IOException e) {
-                                    ExceptionHandler.process(e);
-                                }
-                            }
-                        });
-                        monitor.done();
-                    }
-                };
-
-                ProgressMonitorDialog dialog = new ProgressMonitorDialog(PlatformUI.getWorkbench().getActiveWorkbenchWindow()
-                        .getShell());
+            if (install) {
+                boolean deploy = true;
+                // check remote
+                List<MavenArtifact> remoteArtifacts = null;
                 try {
-                    dialog.run(true, true, acceptOursProgress);
-                } catch (Throwable e) {
-                    if (!(e instanceof TimeoutException)) {
-                        ExceptionHandler.process(e);
+                    remoteArtifacts = ConfigModuleHelper.searchRemoteArtifacts(art.getGroupId(), art.getArtifactId(),
+                            art.getVersion());
+                } catch (Exception e) {
+                    ExceptionHandler.process(e);
+                }
+
+                if (remoteArtifacts != null && !remoteArtifacts.isEmpty()) {
+                    if (ConfigModuleHelper.canFind(new HashSet<MavenArtifact>(remoteArtifacts), art)) {
+                        deploy = false;
+                    } else {
+                        // popup and ask, reinstall?
+                        MessageBox mbx = new MessageBox(super.getShell(), SWT.ICON_WARNING | SWT.YES | SWT.NO);
+                        mbx.setMessage(Messages.getString("ConfigModuleDialog.shareInfo"));
+                        deploy = (SWT.NO == mbx.open());
+                    }
+                }
+
+                try {
+                    ConfigModuleHelper.install(jarFile, urlToUse, deploy);
+                } catch (Exception e) {
+                    ExceptionHandler.process(e);
+                }
+            }
+
+        } else if (repositoryRadioBtn.getSelection()) {
+            if (!isLocalSearch) {
+                // resolve jar locally
+                File localFile = ConfigModuleHelper.resolveLocal(urlToUse);
+                if (localFile != null && localFile.exists()) {
+                    // check sha1
+                    String sha1Local = ConfigModuleHelper.getSHA1(localFile);
+                    Map<String, MavenArtifact> data = (Map<String, MavenArtifact>) searchResultCombo.getData();
+                    MavenArtifact art = data.get(moduleName);
+                    if (!sha1Local.equals(art.getSha1())) {
+                        // download
+                        ModuleToInstall mod = new ModuleToInstall();
+                        mod.setRequired(true);
+                        mod.setMavenUri(defaultURI);
+                        mod.setName(moduleName);
+
+                        List<ModuleToInstall> toInstall = new ArrayList<ModuleToInstall>();
+                        toInstall.add(mod);
+                        DownloadModuleRunnableWithLicenseDialog downloadModuleRunnable = new DownloadModuleRunnableWithLicenseDialog(
+                                toInstall, getShell());
+                        runProgress(downloadModuleRunnable);
                     }
                 }
             }
         }
 
-        ModuleNeeded testModule = new ModuleNeeded("", "", true, originalURI);
-        String oldCustomUri = testModule.getCustomMavenUri();
-        boolean saveCustomMap = !StringUtils.equals(customURI, oldCustomUri);
-        Set<String> modulesNeededNames = ModulesNeededProvider.getAllManagedModuleNames();
-        boolean isCutomJar = !ModulesNeededProvider.getAllModuleNamesFromIndex().contains(moduleName);
-        if (isCutomJar && customURI == null) {
-            // key and value will be the same for custom jar if without custom uri
-            customURI = urlToUse;
-        }
-        if (!modulesNeededNames.contains(moduleName)) {
-            ModulesNeededProvider.addUnknownModules(moduleName, originalURI, false);
-            saveCustomMap = true;
-        }
-
-        // change the custom uri
-        if (saveCustomMap&&ModulesNeededProvider.getAllModuleNamesFromIndex().contains(moduleName)) {
-            testModule.setCustomMavenUri(customURI);
-            ILibraryManagerService libManagerService = (ILibraryManagerService) GlobalServiceRegister.getDefault().getService(
-                    ILibraryManagerService.class);
-            libManagerService.saveCustomMavenURIMap();
-        }
-
-        LibManagerUiPlugin.getDefault().getLibrariesService().checkLibraries();
         setReturnCode(OK);
         close();
     }

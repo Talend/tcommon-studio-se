@@ -13,19 +13,42 @@
 package org.talend.librariesmanager.utils;
 
 import java.io.File;
+import java.io.FileInputStream;
+import java.io.InputStream;
+import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
+import java.util.concurrent.TimeoutException;
+import java.util.logging.Level;
 
 import javax.xml.parsers.DocumentBuilderFactory;
 
+import org.apache.commons.codec.digest.DigestUtils;
 import org.apache.commons.io.FilenameUtils;
 import org.apache.commons.lang3.StringUtils;
+import org.eclipse.core.runtime.IProgressMonitor;
+import org.eclipse.jface.dialogs.ProgressMonitorDialog;
+import org.eclipse.jface.operation.IRunnableWithProgress;
 import org.eclipse.m2e.core.MavenPlugin;
+import org.eclipse.ui.PlatformUI;
+import org.talend.commons.exception.ExceptionHandler;
+import org.talend.commons.ui.gmf.util.DisplayUtils;
+import org.talend.core.GlobalServiceRegister;
+import org.talend.core.ILibraryManagerService;
+import org.talend.core.model.general.ModuleStatusProvider;
+import org.talend.core.model.general.ModuleNeeded.ELibraryInstallStatus;
 import org.talend.core.nexus.ArtifactRepositoryBean;
 import org.talend.core.nexus.IRepositoryArtifactHandler;
 import org.talend.core.nexus.RepositoryArtifactHandlerManager;
 import org.talend.core.nexus.TalendLibsServerManager;
 import org.talend.core.runtime.maven.MavenArtifact;
+import org.talend.core.runtime.maven.MavenUrlHelper;
+import org.talend.designer.maven.utils.PomUtil;
+import org.talend.librariesmanager.maven.MavenArtifactsHandler;
+import org.talend.librariesmanager.ui.LibManagerUiPlugin;
+import org.talend.utils.files.FileUtils;
+import org.talend.utils.io.FilesUtils;
 import org.talend.utils.xml.XmlUtils;
 
 import com.sun.org.apache.xalan.internal.xsltc.compiler.Pattern;
@@ -131,4 +154,93 @@ public class ConfigModuleHelper {
         }
         return art;
     }
+
+    public static File resolveLocal(String uri) {
+        ILibraryManagerService libManagerService = (ILibraryManagerService) GlobalServiceRegister.getDefault()
+                .getService(ILibraryManagerService.class);
+        String jarPathFromMaven = libManagerService.getJarPathFromMaven(uri);
+        if (jarPathFromMaven != null) {
+            return new File(jarPathFromMaven);
+        }
+
+        try {
+            File resolvedJar = libManagerService.resolveJar(null, uri);
+            return resolvedJar;
+        } catch (Exception e) {
+
+        }
+        return null;
+    }
+
+    public static String getSHA1(File f) {
+        try (InputStream fi = new FileInputStream(f)) {
+            return DigestUtils.shaHex(fi);
+        } catch (Exception e) {
+        }
+        return null;
+    }
+    
+    public static void install(File jarFile, String mvnUrl, boolean deploy) throws Exception {
+        MavenArtifactsHandler deployer =  new MavenArtifactsHandler();
+        MavenArtifact artifact = MavenUrlHelper.parseMvnUrl(mvnUrl);
+        
+        final File tempFolder = FileUtils.createTmpFolder("generate", "pom"); //$NON-NLS-1$ //$NON-NLS-2$
+        try {
+
+            final String jarPath = jarFile.getAbsolutePath();
+
+            String pomPath = PomUtil.generatePomInFolder(tempFolder, artifact);
+            
+            deployer.install(artifact.getUrl(), jarPath, pomPath, deploy);
+        } finally {
+            if (tempFolder.exists()) {
+                FilesUtils.deleteFolder(tempFolder, true);
+            }
+        }
+    }
+    
+    public static boolean canFind(Set<MavenArtifact> artifacts, File jarFile, String mvnUrl) {
+        if (artifacts == null || artifacts.isEmpty()) {
+            return false;
+        }
+        
+        String jarSha1 = getSHA1(jarFile);
+        MavenArtifact jarArt = MavenUrlHelper.parseMvnUrl(mvnUrl);
+        jarArt.setSha1(jarSha1);
+
+        return canFind(artifacts, jarArt);
+    }
+    
+    public static boolean canFind(Set<MavenArtifact> artifacts, MavenArtifact artifact) {
+        if (artifacts == null || artifacts.isEmpty()) {
+            return false;
+        }
+
+        for (MavenArtifact art : artifacts) {
+            if (StringUtils.equals(art.getGroupId(), artifact.getGroupId())
+                    && StringUtils.equals(art.getArtifactId(), artifact.getArtifactId())
+                    && StringUtils.equals(art.getVersion(), artifact.getVersion())
+                    && StringUtils.equals(art.getClassifier(), artifact.getClassifier())
+                    && StringUtils.equals(art.getType(), artifact.getType())
+                    && StringUtils.equals(art.getSha1(), artifact.getSha1())) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    public static List<MavenArtifact> searchRemoteArtifacts(String g, String a, String v) throws Exception {
+        ArtifactRepositoryBean customNexusServer = TalendLibsServerManager.getInstance().getCustomNexusServer();
+        IRepositoryArtifactHandler customerRepHandler = RepositoryArtifactHandlerManager.getRepositoryHandler(customNexusServer);
+        if (customerRepHandler != null) {
+            boolean fromSnapshot = false;
+            if (v != null && v.endsWith(MavenUrlHelper.VERSION_SNAPSHOT)) {
+                fromSnapshot = true;
+            }
+            List<MavenArtifact> ret = customerRepHandler.search(g, a, g, true, fromSnapshot);
+            return ret;
+        }
+        return new ArrayList<MavenArtifact>();
+    }
+
 }
