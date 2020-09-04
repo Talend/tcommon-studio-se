@@ -122,7 +122,6 @@ import org.talend.repository.model.RepositoryConstants;
  * DOC ggu class global comment. Detailled comment
  */
 public class ImportBasicHandler extends AbstractImportExecutableHandler {
-	private static final Logger LOGGER = Logger.getLogger(ImportBasicHandler.class);
     /**
      * set by extension point, will be the base path which relative to import project.
      *
@@ -1320,8 +1319,7 @@ public class ImportBasicHandler extends AbstractImportExecutableHandler {
                     object = factory.getSpecificVersion(importItem.getItemId(), importItem.getItemVersion(), true);
                     property = object.getProperty();
                 }
-                ContextUtils.doCreateContextLinkMigration(importItem.getRepositoryType(), property.getItem(),
-                        ImportCacheHelper.getInstance().getCachedContextIdToItemMap());
+                ContextUtils.doCreateContextLinkMigration(importItem.getRepositoryType(), property.getItem());
             }
             RelationshipItemBuilder.getInstance().addOrUpdateItem(property.getItem(), true);
             // importItem.setProperty(null);

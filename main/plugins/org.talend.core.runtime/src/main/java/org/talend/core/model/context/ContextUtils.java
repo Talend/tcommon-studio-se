@@ -29,7 +29,6 @@ import org.eclipse.core.runtime.Platform;
 import org.eclipse.emf.common.util.EList;
 import org.eclipse.jdt.core.JavaConventions;
 import org.eclipse.jdt.core.JavaCore;
-import org.talend.commons.CommonsPlugin;
 import org.talend.commons.exception.ExceptionHandler;
 import org.talend.commons.exception.PersistenceException;
 import org.talend.commons.utils.platform.PluginChecker;
@@ -57,7 +56,6 @@ import org.talend.designer.core.model.utils.emf.talendfile.ContextParameterType;
 import org.talend.designer.core.model.utils.emf.talendfile.ContextType;
 import org.talend.designer.core.model.utils.emf.talendfile.ProcessType;
 import org.talend.migration.IMigrationTask.ExecutionResult;
-import org.talend.repository.ProjectManager;
 import org.talend.repository.model.IProxyRepositoryFactory;
 
 /**
@@ -1067,7 +1065,7 @@ public class ContextUtils {
         return false;
     }
 
-    public static ExecutionResult doCreateContextLinkMigration(Item item, Map<String, Item> contextIdToItemMap) {
+    public static ExecutionResult doCreateContextLinkMigration(Item item) {
         IProxyRepositoryFactory proxyRepositoryFactory = CoreRuntimePlugin.getInstance().getProxyRepositoryFactory();
         boolean modified = false, hasLinkFile = false;
         try {
@@ -1106,10 +1104,9 @@ public class ContextUtils {
         return ExecutionResult.NOTHING_TO_DO;
     }
 
-    public static ExecutionResult doCreateContextLinkMigration(ERepositoryObjectType repositoryType, Item item,
-            Map<String, Item> contextIdToItemMap) {
+    public static ExecutionResult doCreateContextLinkMigration(ERepositoryObjectType repositoryType, Item item) {
         if (item != null && getAllSupportContextLinkTypes().contains(repositoryType)) {
-            return doCreateContextLinkMigration(item, contextIdToItemMap);
+            return doCreateContextLinkMigration(item);
         }
         return ExecutionResult.NOTHING_TO_DO;
     }
