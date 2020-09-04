@@ -87,6 +87,7 @@ import org.talend.designer.core.IDesignerCoreService;
 import org.talend.designer.core.model.utils.emf.talendfile.ContextType;
 import org.talend.metadata.managment.connection.manager.HiveConnectionManager;
 import org.talend.metadata.managment.model.MetadataFillFactory;
+import org.talend.metadata.managment.repository.ManagerConnection;
 import org.talend.metadata.managment.ui.utils.ConnectionContextHelper;
 import org.talend.metadata.managment.ui.utils.DBConnectionContextUtils;
 import org.talend.metadata.managment.ui.utils.SwitchContextGroupNameImpl;
@@ -831,6 +832,17 @@ public class DatabaseWizard extends CheckLastVersionRepositoryWizard implements 
             connectionProperty.setLabel(tempName);
             connectionProperty.setDisplayName(tempName);
         }// ~
+          // keep hive connection exist correctly uiSchema after reload
+        DatabaseConnection dbConnection = SwitchHelpers.DATABASECONNECTION_SWITCH.doSwitch(connection);
+        if (dbConnection != null) {
+            String uiSchema = null;
+            String databaseType = dbConnection.getDatabaseType();
+            if (ManagerConnection.isSchemaFromSidOrDatabase(EDatabaseTypeName.getTypeFromDbType(databaseType))) {
+                uiSchema = dbConnection.getSID();
+                dbConnection.setUiSchema(uiSchema);
+            }
+        }
+        // ~
         if (!retCode.isOk()) {
             return Boolean.FALSE;
         } else {
