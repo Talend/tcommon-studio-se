@@ -905,9 +905,9 @@ public class NodeUtil {
                     printedColumnExist = true;
 
                     value.append(column.getKey());
-                    value.append("=\").append(");
+                    value.append("=\").append(String.valueOf(");
                     value.append(getRuntimeParameterValue(column.getValue(), types.get(column.getKey()), true));
-                    value.append(").append(\"");
+                    value.append(")).append(\"");
 
                     if (columnsIter.hasNext()) {
                         value.append(", ");
