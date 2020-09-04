@@ -42,4 +42,9 @@ public abstract class AbstractLoginTask implements ILoginTask {
         return gc.getTime();
     }
 
+    @Override
+    public boolean isRequiredAlways() {
+        return false;
+    }
+
 }
