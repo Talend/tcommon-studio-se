@@ -199,12 +199,12 @@ public class TDColumnAttributeHelper {
         // MOD zshen when the database is mssql,the datatype for "date" and "time" is "-9" and "-2"
         // ,respective.so change them to "91" and "92" for adapt to Java2SqlType.
         if (typeName != null && isMssql()) {
-            if (typeName.toLowerCase().equals("date")) {
+            if (typeName.equalsIgnoreCase("date")) {
                 dataType = 91;
                 // MOD scorreia 2010-07-24 removed the call to column.getSQLDataType() here because obviously
                 // the sql
                 // data type it is null and results in a NPE
-            } else if (typeName.toLowerCase().equals("time")) {
+            } else if (typeName.equalsIgnoreCase("time")) {
                 dataType = 92;
                 // MOD scorreia 2010-07-24 removed the call to column.getSQLDataType() here because obviously
                 // the sql

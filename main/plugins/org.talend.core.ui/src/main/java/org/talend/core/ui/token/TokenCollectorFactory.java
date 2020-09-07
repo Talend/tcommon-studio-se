@@ -14,15 +14,39 @@ package org.talend.core.ui.token;
 
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
-import java.lang.reflect.Field;
-import java.net.Authenticator;
+import java.net.HttpURLConnection;
+import java.net.InetSocketAddress;
+import java.net.PasswordAuthentication;
+import java.net.Proxy;
+import java.net.Proxy.Type;
+import java.net.URI;
+import java.net.URISyntaxException;
+import java.nio.charset.StandardCharsets;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.zip.GZIPOutputStream;
 
+import org.apache.commons.lang3.StringUtils;
+import org.apache.http.HttpEntity;
+import org.apache.http.HttpHost;
+import org.apache.http.StatusLine;
+import org.apache.http.auth.AuthScope;
+import org.apache.http.auth.UsernamePasswordCredentials;
+import org.apache.http.client.config.RequestConfig;
+import org.apache.http.client.methods.CloseableHttpResponse;
+import org.apache.http.client.methods.HttpPost;
+import org.apache.http.client.protocol.HttpClientContext;
+import org.apache.http.entity.mime.MultipartEntityBuilder;
+import org.apache.http.entity.mime.content.ByteArrayBody;
+import org.apache.http.impl.client.BasicCredentialsProvider;
+import org.apache.http.impl.client.CloseableHttpClient;
+import org.apache.http.impl.client.HttpClientBuilder;
+import org.apache.http.impl.client.HttpClients;
+import org.apache.http.util.EntityUtils;
 import org.apache.log4j.Level;
 import org.apache.log4j.Logger;
 import org.apache.log4j.Priority;
@@ -37,17 +61,13 @@ import org.eclipse.jface.preference.IPreferenceStore;
 import org.eclipse.ui.preferences.ScopedPreferenceStore;
 import org.talend.commons.exception.ExceptionHandler;
 import org.talend.commons.utils.network.NetworkUtil;
+import org.talend.commons.utils.network.TalendProxySelector;
 import org.talend.core.GlobalServiceRegister;
 import org.talend.core.prefs.ITalendCorePrefConstants;
 import org.talend.core.ui.CoreUIPlugin;
 import org.talend.core.ui.branding.IBrandingService;
 
 import us.monoid.json.JSONObject;
-import us.monoid.web.AbstractContent;
-import us.monoid.web.FormData;
-import us.monoid.web.Resty;
-import us.monoid.web.TextResource;
-import us.monoid.web.mime.MultipartContent;
 
 /**
  * ggu class global comment. Detailled comment
@@ -219,7 +239,7 @@ public final class TokenCollectorFactory {
         boolean isPoweredbyTalend = false;
 
         if (GlobalServiceRegister.getDefault().isServiceRegistered(IBrandingService.class)) {
-            IBrandingService service = (IBrandingService) GlobalServiceRegister.getDefault().getService(IBrandingService.class);
+            IBrandingService service = GlobalServiceRegister.getDefault().getService(IBrandingService.class);
             isPoweredbyTalend = service.isPoweredbyTalend();
         }
         if (isPoweredbyTalend) {
@@ -228,26 +248,18 @@ public final class TokenCollectorFactory {
                 @Override
                 protected IStatus run(IProgressMonitor monitor) {
                     if (NetworkUtil.isNetworkValid()) {
-                        Authenticator defaultAuth = NetworkUtil.getDefaultAuthenticator();
                         try {
                             JSONObject tokenInfors = collectTokenInfors();
-                            Resty r = new Resty();
-                            // set back the rath for Resty.
-                            Field rathField = Resty.class.getDeclaredField("rath"); //$NON-NLS-1$
-                            rathField.setAccessible(true);
-                            Authenticator auth = (Authenticator) rathField.get(null);
-                            Authenticator.setDefault(auth);
 
                             ByteArrayOutputStream baos = new ByteArrayOutputStream();
                             GZIPOutputStream gzos = new GZIPOutputStream(baos);
                             gzos.write(tokenInfors.toString().getBytes());
                             gzos.close();
-                            AbstractContent ac = Resty.content(baos.toByteArray());
+                            byte[] data = baos.toByteArray();
                             baos.close();
-                            MultipartContent mpc = Resty.form(new FormData("data", ac)); //$NON-NLS-1$
 
-                            TextResource result = r.text("https://www.talend.com/TalendRegisterWS/tokenstudio_v2.php", mpc); //$NON-NLS-1$
-                            String resultStr = new JSONObject(result.toString()).getString("result"); //$NON-NLS-1$
+                            String responseString = sendData(data);
+                            String resultStr = new JSONObject(responseString).getString("result"); //$NON-NLS-1$
                             boolean okReturned = (resultStr != null && resultStr.endsWith("OK")); //$NON-NLS-1$
                             if (okReturned) {
                                 // set new days
@@ -267,7 +279,6 @@ public final class TokenCollectorFactory {
                         } catch (Exception e) {
                             ExceptionHandler.process(e);
                         } finally {
-                            Authenticator.setDefault(defaultAuth);
                         }
                     }
                     return org.eclipse.core.runtime.Status.OK_STATUS;
@@ -288,4 +299,84 @@ public final class TokenCollectorFactory {
             }
         }
     }
+
+    private void addProxy(String url, HttpClientBuilder clientBuilder) throws URISyntaxException {
+        TalendProxySelector proxySelector = TalendProxySelector.getInstance();
+        final List<Proxy> proxyList = proxySelector.getDefaultProxySelector().select(new URI(url));
+        Proxy usedProxy = null;
+        if (proxyList != null && !proxyList.isEmpty()) {
+            usedProxy = proxyList.get(0);
+        }
+
+        if (usedProxy != null) {
+            if (!Type.DIRECT.equals(usedProxy.type())) {
+                final Proxy finalProxy = usedProxy;
+                InetSocketAddress address = (InetSocketAddress) finalProxy.address();
+                String proxyServer = address.getHostString();
+                int proxyPort = address.getPort();
+                PasswordAuthentication proxyAuthentication = proxySelector.getHttpPasswordAuthentication();
+                if (proxyAuthentication != null) {
+                    String proxyUser = proxyAuthentication.getUserName();
+                    if (StringUtils.isNotBlank(proxyUser)) {
+                        String proxyPassword = "";
+                        char[] passwordChars = proxyAuthentication.getPassword();
+                        if (passwordChars != null) {
+                            proxyPassword = new String(passwordChars);
+                        }
+                        BasicCredentialsProvider credProvider = new BasicCredentialsProvider();
+                        credProvider.setCredentials(new AuthScope(proxyServer, proxyPort),
+                                new UsernamePasswordCredentials(proxyUser, proxyPassword));
+                        clientBuilder.setDefaultCredentialsProvider(credProvider);
+                    }
+                }
+                HttpHost proxyHost = new HttpHost(proxyServer, proxyPort);
+                clientBuilder.setProxy(proxyHost);
+            }
+        }
+    }
+
+    private String sendData(byte[] data) throws Exception {
+        CloseableHttpClient client = null;
+        CloseableHttpResponse response = null;
+        try {
+            final String url = "https://www.talend.com/TalendRegisterWS/tokenstudio_v2.php";
+
+            HttpClientBuilder clientBuilder = HttpClients.custom();
+            clientBuilder.disableCookieManagement();
+            addProxy(url, clientBuilder);
+            client = clientBuilder.build();
+
+            HttpPost httpPost = new HttpPost(url);
+            httpPost.setConfig(RequestConfig.DEFAULT);
+
+            MultipartEntityBuilder dataBuilder = MultipartEntityBuilder.create();
+            dataBuilder.addPart("data", new ByteArrayBody(data, null));
+            HttpEntity reqEntity = dataBuilder.build();
+            httpPost.setEntity(reqEntity);
+
+            response = client.execute(httpPost, HttpClientContext.create());
+            StatusLine statusLine = response.getStatusLine();
+            String responseStr = EntityUtils.toString(response.getEntity(), StandardCharsets.UTF_8);
+            if (HttpURLConnection.HTTP_OK != statusLine.getStatusCode()) {
+                throw new Exception(statusLine.toString() + ", server message: [" + responseStr + "]");
+            }
+            return responseStr;
+        } finally {
+            if (response != null) {
+                try {
+                    response.close();
+                } catch (Throwable e) {
+                    ExceptionHandler.process(e);
+                }
+            }
+            if (client != null) {
+                try {
+                    client.close();
+                } catch (Throwable e) {
+                    ExceptionHandler.process(e);
+                }
+            }
+        }
+    }
+
 }

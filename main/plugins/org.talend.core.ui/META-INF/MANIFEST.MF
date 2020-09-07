@@ -31,7 +31,9 @@ Require-Bundle: org.apache.commons.lang,
  org.talend.themes.core,
  ca.odell.glazedlists,
  org.talend.core,
- org.apache.commons.io
+ org.apache.commons.io,
+ org.apache.httpcomponents.httpcore,
+ org.apache.httpcomponents.httpclient
 Import-Package: org.eclipse.jdt.internal.ui.workingsets
 Export-Package: org.talend.core.ui,
  org.talend.core.ui.actions,

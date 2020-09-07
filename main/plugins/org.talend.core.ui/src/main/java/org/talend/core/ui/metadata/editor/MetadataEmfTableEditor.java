@@ -124,10 +124,10 @@ public class MetadataEmfTableEditor extends ExtendedTableModel<MetadataColumn> {
         for (int i = 0; i < lstSize; i++) {
             if (columnName.equals(metadataColumns.get(i).getLabel()) && i != beanPosition) {
                 return Messages.getString("MetadataEmfTableEditor.ColumnNameExists", columnName); //$NON-NLS-1$
-            } else if (columnName.toLowerCase().equals(metadataColumns.get(i).getLabel().toLowerCase()) && i != beanPosition) {
+            } else if (columnName.equalsIgnoreCase(metadataColumns.get(i).getLabel()) && i != beanPosition) {
                 String index = columnName.substring(0, 1);
                 String last = metadataColumns.get(i).getLabel().substring(0, 1);
-                if (index.toLowerCase().equals(last.toLowerCase())) {
+                if (index.equalsIgnoreCase(last)) {
                     return Messages.getString("MetadataTableEditor.ColumnNameIsInvalid", columnName);
                 }
             }
