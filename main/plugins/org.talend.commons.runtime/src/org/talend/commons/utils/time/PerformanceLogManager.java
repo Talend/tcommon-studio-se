@@ -35,6 +35,8 @@ public class PerformanceLogManager {
 	    properties.put("log4j.appender.A1", RollingFileAppender.class.getName());
 	    IPath performanceLogPath = Platform.getLogFileLocation().removeLastSegments(1).append("performance.log");
 	    properties.put("log4j.appender.A1.File", performanceLogPath.toOSString());
+	    properties.put("log4j.appender.A1.MaxBackupIndex", "10");// same as .log's max backup log file count
+	    properties.put("log4j.appender.A1.MaxFileSize", "1000000");//1000*1000 byte, same as .log's max file size
 	    properties.put("log4j.appender.A1.layout", "org.apache.log4j.PatternLayout");
 	    properties.put("log4j.appender.A1.layout.ConversionPattern", "%d %-5p %c %x - %m%n");
 	    
