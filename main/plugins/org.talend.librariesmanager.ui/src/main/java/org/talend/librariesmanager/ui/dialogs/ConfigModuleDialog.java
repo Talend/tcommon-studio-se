@@ -301,6 +301,7 @@ public class ConfigModuleDialog extends TitleAreaDialog implements IConfigModule
             public void modifyText(ModifyEvent e) {
                 moduleName = platformCombo.getText();
                 setupMavenURIByModuleName(moduleName);
+                checkPlatformError();
             }
         });
 
@@ -566,9 +567,10 @@ public class ConfigModuleDialog extends TitleAreaDialog implements IConfigModule
         }
 
         String result = dialog.open();
-        if (result != null) {
-            this.jarPathTxt.setText(result);
+        if (result == null) {
+            return;
         }
+        this.jarPathTxt.setText(result);
         File file = new File(result);
 
         final IRunnableWithProgress detectProgress = new IRunnableWithProgress() {
@@ -739,9 +741,20 @@ public class ConfigModuleDialog extends TitleAreaDialog implements IConfigModule
         return true;
     }
 
-    private boolean checkDetectButtonStatus(ELibraryInstallStatus localStatus, String mavenURI) {
+    private boolean checkPlatformError() {
+        String selectedModule = platformCombo.getText().trim();
+        if (StringUtils.isEmpty(selectedModule)) {
+            setMessage(Messages.getString("ConfigModuleDialog.platformCombo.error.missingModule"), IMessageProvider.ERROR);
+            getButton(IDialogConstants.OK_ID).setEnabled(false);
+            return false;
+        }
+        getButton(IDialogConstants.OK_ID).setEnabled(true);
+        return true;
+    }
+
+    private boolean checkDetectButtonStatus(String mavenURI) {
         ArtifactRepositoryBean customNexusServer = TalendLibsServerManager.getInstance().getCustomNexusServer();
-        if (customNexusServer != null || localStatus == null) {
+        if (customNexusServer != null) {
             setMessage(Messages.getString("InstallModuleDialog.error.detectMvnURI", mavenURI), IMessageProvider.ERROR);
             return false;
         }
@@ -767,8 +780,13 @@ public class ConfigModuleDialog extends TitleAreaDialog implements IConfigModule
             customURI = MavenUrlHelper.addTypeForMavenUri(customUriText.getText().trim(), moduleName);
             urlToUse = !StringUtils.isEmpty(customURI) ? customURI : defaultURI;
         }
-
-        if (installRadioBtn.getSelection()) {
+        if (platfromRadioBtn.getSelection()) {
+            String selectedModule = platformCombo.getText().trim();
+            if (StringUtils.isEmpty(selectedModule)) {
+                setMessage(Messages.getString("ConfigModuleDialog.platformCombo.error.missingModule"), IMessageProvider.ERROR);
+                return;
+            }
+        } else if (installRadioBtn.getSelection()) {
             if (!checkErrorForInstall()) {
                 return;
             }
