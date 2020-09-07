@@ -46,6 +46,8 @@ import org.talend.core.model.process.IElementParameter;
 import org.talend.core.model.process.INode;
 import org.talend.core.model.process.INodeConnector;
 import org.talend.core.model.process.IProcess;
+import org.talend.core.model.process.IProcess2;
+import org.talend.core.model.process.ProcessUtils;
 import org.talend.core.runtime.IAdditionalInfo;
 import org.talend.core.runtime.projectsetting.RuntimeLineageManager;
 import org.talend.designer.core.ICamelDesignerCoreService;
@@ -1376,7 +1378,10 @@ public class NodeUtil {
     public static boolean isJobUsingRuntimeLineage(IProcess process) {
         RuntimeLineageManager runtimeLineageManager = new RuntimeLineageManager();
         if (runtimeLineageManager.isUseRuntimeLineageAll()) {
-            return true;
+            if (process instanceof IProcess2 && ComponentCategory.CATEGORY_4_DI.getName().equals(process.getComponentsType())
+                    && !ProcessUtils.isTestContainer(process)) {
+                return true;
+            }
         }
         if (runtimeLineageManager.getSelectedJobIds().isEmpty()) {
             runtimeLineageManager.load();
