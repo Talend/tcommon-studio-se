@@ -937,6 +937,8 @@ public class NodeUtil {
             value = "";
         }
         
+        value = value.trim();
+        
         List<EParameterFieldType> needRemoveCRLFList = Arrays.asList(EParameterFieldType.MEMO, EParameterFieldType.MEMO_JAVA,
                 EParameterFieldType.MEMO_SQL, EParameterFieldType.MEMO_IMPORT, EParameterFieldType.MEMO_MESSAGE);
         if (needRemoveCRLFList.contains(ep.getFieldType())) {
@@ -963,15 +965,25 @@ public class NodeUtil {
             if ("*".equals(value)) {
                 value = "\"" + value + "\"";
             }
-            if (value != null && value.endsWith(";")) {
+            if (value.endsWith(";")) {
                 value = value.substring(0, value.length() - 1);
+            }
+        }
+        
+        if("".equals(value)) {
+            return "\"\"";
+        } else if("null".equals(value)) {
+            return "(Object)null";
+        }
+        
+        if (!itemFromTable && "PATTERN".equals(ep.getName()) && !org.talend.core.model.utils.ContextParameterUtils.isDynamic(value)) {
+            if(!value.startsWith("\"") && !value.endsWith("\"")) {
+                return "\"" + value + "\"";
             }
         }
 
         // copied it from Log4jFileUtil.javajet but need more comment for this script
-        if (value == null || "".equals(value.trim())) {// for the value which empty
-            value = "\"\"";
-        } else if ("\"\\n\"".equals(value) || "\"\\r\"".equals(value) || "\"\\r\\n\"".equals(value)) {
+        if ("\"\\n\"".equals(value) || "\"\\r\"".equals(value) || "\"\\r\\n\"".equals(value)) {
             // for the value is "\n" "\r" "\r\n"
             value = value.replaceAll("\\\\", "\\\\\\\\");
         } else if ("\"\"\"".equals(value)) {
@@ -991,6 +1003,7 @@ public class NodeUtil {
         } else if (value.endsWith("*")) {
             value = value.substring(0, value.length() - 1) + "\"*\"";
         }
+        
         return value;
     }
 
