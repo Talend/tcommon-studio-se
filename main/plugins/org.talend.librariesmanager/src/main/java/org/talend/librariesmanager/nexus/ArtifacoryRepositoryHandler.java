@@ -269,6 +269,10 @@ public class ArtifacoryRepositoryHandler extends AbstractArtifactRepositoryHandl
     }
 
     protected List<MavenArtifact> doSearch(String query, boolean fromRelease, boolean fromSnapshot) throws Exception {
+        String q = query;
+        if (q == null || q.trim().isEmpty()) {
+            q = "";
+        }
         String serverUrl = serverBean.getServer();
         if (!serverUrl.endsWith("/")) { //$NON-NLS-1$
             serverUrl = serverUrl + "/"; //$NON-NLS-1$
@@ -287,10 +291,13 @@ public class ArtifacoryRepositoryHandler extends AbstractArtifactRepositoryHandl
             }
         }
         if (!"".equals(repositoryId)) { //$NON-NLS-1$
-            query = "repos=" + repositoryId;//$NON-NLS-1$
+            if (!q.isEmpty()) {
+                q += "&";
+            }
+            q += "repos=" + repositoryId;//$NON-NLS-1$
         }
 
-        searchUrl = searchUrl + query;
+        searchUrl = searchUrl + q;
         Request request = Request.Get(searchUrl);
         String userPass = serverBean.getUserName() + ":" + serverBean.getPassword(); //$NON-NLS-1$
         String basicAuth = "Basic " + new String(new Base64().encode(userPass.getBytes())); //$NON-NLS-1$

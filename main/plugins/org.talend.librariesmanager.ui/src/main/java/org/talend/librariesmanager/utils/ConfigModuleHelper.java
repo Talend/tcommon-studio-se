@@ -15,43 +15,26 @@ package org.talend.librariesmanager.utils;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.InputStream;
-import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
-import java.util.concurrent.TimeoutException;
-import java.util.logging.Level;
 
 import javax.xml.parsers.DocumentBuilderFactory;
 
 import org.apache.commons.codec.digest.DigestUtils;
 import org.apache.commons.io.FilenameUtils;
 import org.apache.commons.lang3.StringUtils;
-import org.eclipse.core.runtime.IProgressMonitor;
-import org.eclipse.jface.dialogs.ProgressMonitorDialog;
-import org.eclipse.jface.operation.IRunnableWithProgress;
 import org.eclipse.m2e.core.MavenPlugin;
-import org.eclipse.ui.PlatformUI;
-import org.talend.commons.exception.ExceptionHandler;
-import org.talend.commons.ui.gmf.util.DisplayUtils;
 import org.talend.core.GlobalServiceRegister;
 import org.talend.core.ILibraryManagerService;
-import org.talend.core.model.general.ModuleStatusProvider;
-import org.talend.core.model.general.ModuleNeeded.ELibraryInstallStatus;
 import org.talend.core.nexus.ArtifactRepositoryBean;
 import org.talend.core.nexus.IRepositoryArtifactHandler;
 import org.talend.core.nexus.RepositoryArtifactHandlerManager;
 import org.talend.core.nexus.TalendLibsServerManager;
 import org.talend.core.runtime.maven.MavenArtifact;
 import org.talend.core.runtime.maven.MavenUrlHelper;
-import org.talend.designer.maven.utils.PomUtil;
 import org.talend.librariesmanager.maven.MavenArtifactsHandler;
-import org.talend.librariesmanager.ui.LibManagerUiPlugin;
-import org.talend.utils.files.FileUtils;
-import org.talend.utils.io.FilesUtils;
 import org.talend.utils.xml.XmlUtils;
-
-import com.sun.org.apache.xalan.internal.xsltc.compiler.Pattern;
 
 /*
  * Created by bhe on Sep 3, 2020
@@ -182,21 +165,8 @@ public class ConfigModuleHelper {
     
     public static void install(File jarFile, String mvnUrl, boolean deploy) throws Exception {
         MavenArtifactsHandler deployer =  new MavenArtifactsHandler();
-        MavenArtifact artifact = MavenUrlHelper.parseMvnUrl(mvnUrl);
-        
-        final File tempFolder = FileUtils.createTmpFolder("generate", "pom"); //$NON-NLS-1$ //$NON-NLS-2$
-        try {
-
-            final String jarPath = jarFile.getAbsolutePath();
-
-            String pomPath = PomUtil.generatePomInFolder(tempFolder, artifact);
-            
-            deployer.install(artifact.getUrl(), jarPath, pomPath, deploy);
-        } finally {
-            if (tempFolder.exists()) {
-                FilesUtils.deleteFolder(tempFolder, true);
-            }
-        }
+        final String jarPath = jarFile.getAbsolutePath();
+        deployer.install(mvnUrl, jarPath, null, deploy);
     }
     
     public static boolean canFind(Set<MavenArtifact> artifacts, File jarFile, String mvnUrl) {
