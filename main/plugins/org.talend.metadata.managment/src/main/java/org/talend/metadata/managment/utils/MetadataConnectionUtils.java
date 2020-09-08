@@ -1264,7 +1264,7 @@ public class MetadataConnectionUtils {
         if (metadata != null) {
             try {
                 String name = metadata.getDatabaseProductName();
-                if (name != null && name.toUpperCase().equals(EDatabaseTypeName.ORACLEFORSID.getProduct().toUpperCase())) {
+                if (name != null && name.equalsIgnoreCase(EDatabaseTypeName.ORACLEFORSID.getProduct())) {
                     return true;
                 }
             } catch (SQLException e) {

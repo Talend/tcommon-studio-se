@@ -39,11 +39,11 @@ import org.eclipse.equinox.p2.query.IQuery;
 import org.eclipse.equinox.p2.query.IQueryResult;
 import org.eclipse.equinox.p2.query.QueryUtil;
 import org.talend.commons.CommonsPlugin;
-import org.talend.commons.runtime.utils.io.FileCopyUtils;
 import org.talend.commons.utils.resource.UpdatesHelper;
 import org.talend.core.GlobalServiceRegister;
 import org.talend.core.services.ICoreTisService;
 import org.talend.librariesmanager.prefs.LibrariesManagerUtils;
+import org.talend.updates.runtime.maven.MavenRepoSynchronizer;
 import org.talend.updates.runtime.service.ITaCoKitUpdateService;
 import org.talend.utils.io.FilesUtils;
 
@@ -214,10 +214,8 @@ public class UpdateTools {
         // sync to the local m2 repository, if need try to deploy to remote TAC Nexus.
         File m2Folder = new File(installingPatchFolder, PathUtils.FOLDER_M2_REPOSITORY);
         if (m2Folder.exists() && m2Folder.isDirectory() && m2Folder.listFiles().length > 0) {
-            // if have remote nexus, install component too early and before logon project , will cause the problem
-            // (TUP-17604)
-            // prepare to install lib after logon. so copy all to temp folder also.
-            FileCopyUtils.copyFolder(m2Folder, new File(PathUtils.getComponentsM2TempFolder(), PathUtils.FOLDER_M2_REPOSITORY));
+            MavenRepoSynchronizer synchronizer = new MavenRepoSynchronizer(m2Folder, false);
+            synchronizer.sync();
         }
     }
 
