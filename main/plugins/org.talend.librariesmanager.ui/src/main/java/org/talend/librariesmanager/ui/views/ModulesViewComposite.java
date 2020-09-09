@@ -40,6 +40,7 @@ import org.talend.core.GlobalServiceRegister;
 import org.talend.core.ILibraryManagerService;
 import org.talend.core.model.general.ModuleNeeded;
 import org.talend.librariesmanager.model.ModulesNeededProvider;
+import org.talend.librariesmanager.model.service.CustomUriManager;
 import org.talend.librariesmanager.ui.dialogs.CustomURITextCellEditor;
 import org.talend.librariesmanager.ui.dialogs.InstallModuleDialog;
 import org.talend.librariesmanager.ui.i18n.Messages;
@@ -298,6 +299,7 @@ public class ModulesViewComposite extends Composite {
      * @see org.talend.designer.codegen.perlmodule.ui.views.IModulesViewComposite#refresh()
      */
     public void refresh() {
+        CustomUriManager.getInstance().setForeceReloadCustomUri();
         List<ModuleNeeded> modulesNeeded = new ArrayList<ModuleNeeded>();
         modulesNeeded.addAll(ModulesNeededProvider.getAllManagedModules());
         ModulesViewComposite.getTableViewerCreator().init(modulesNeeded);
