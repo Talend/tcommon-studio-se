@@ -428,7 +428,10 @@ public class ConfigModuleDialog extends TitleAreaDialog implements IConfigModule
             @Override
             public void modifyText(ModifyEvent e) {
                 moduleName = searchResultCombo.getText();
-                setupMavenURIByModuleName(moduleName);
+                @SuppressWarnings("unchecked")
+                Map<String, MavenArtifact> data = (Map<String, MavenArtifact>) searchResultCombo.getData();
+                MavenArtifact art = data.get(moduleName);
+                setupMavenURIByArtifact(art);
             }
         });
 
@@ -455,7 +458,6 @@ public class ConfigModuleDialog extends TitleAreaDialog implements IConfigModule
         searchResultCombo.setEnabled(enable);
         if (enable) {
             moduleName = nameTxt.getText().trim();
-            setupMavenURIByModuleName(moduleName);
             useCustomBtn.setEnabled(false);
             customUriText.setEnabled(false);
             validateInputFields();
@@ -787,6 +789,7 @@ public class ConfigModuleDialog extends TitleAreaDialog implements IConfigModule
 
         } else if (repositoryRadioBtn.getSelection()) {
             if (!isLocalSearch) {
+                boolean download = true;
                 // resolve jar locally
                 File localFile = ConfigModuleHelper.resolveLocal(urlToUse);
                 if (localFile != null && localFile.exists()) {
@@ -795,19 +798,23 @@ public class ConfigModuleDialog extends TitleAreaDialog implements IConfigModule
                     @SuppressWarnings("unchecked")
                     Map<String, MavenArtifact> data = (Map<String, MavenArtifact>) searchResultCombo.getData();
                     MavenArtifact art = data.get(moduleName);
-                    if (!sha1Local.equals(art.getSha1())) {
-                        // download
-                        ModuleToInstall mod = new ModuleToInstall();
-                        mod.setRequired(true);
-                        mod.setMavenUri(defaultURI);
-                        mod.setName(moduleName);
-
-                        List<ModuleToInstall> toInstall = new ArrayList<ModuleToInstall>();
-                        toInstall.add(mod);
-                        DownloadModuleRunnableWithLicenseDialog downloadModuleRunnable = new DownloadModuleRunnableWithLicenseDialog(
-                                toInstall, getShell());
-                        runProgress(downloadModuleRunnable);
+                    if (sha1Local.equals(art.getSha1())) {
+                        download = false;
                     }
+                }
+                if (download) {
+                    // download
+                    ModuleToInstall mod = new ModuleToInstall();
+                    mod.setRequired(true);
+                    mod.setMavenUri(defaultURI);
+                    mod.setName(moduleName);
+                    mod.setFromCustomNexus(true);
+
+                    List<ModuleToInstall> toInstall = new ArrayList<ModuleToInstall>();
+                    toInstall.add(mod);
+                    DownloadModuleRunnableWithLicenseDialog downloadModuleRunnable = new DownloadModuleRunnableWithLicenseDialog(
+                            toInstall, getShell());
+                    runProgress(downloadModuleRunnable);
                 }
             }
         }
@@ -869,6 +876,14 @@ public class ConfigModuleDialog extends TitleAreaDialog implements IConfigModule
         boolean useCustom = !StringUtils.isEmpty(cusormURIValue);
         useCustomBtn.setSelection(useCustom);
         // customUriText.setEnabled(useCustom);
+        customUriText.setText(cusormURIValue);
+    }
+
+    private void setupMavenURIByArtifact(MavenArtifact art) {
+        defaultURIValue = MavenUrlHelper.generateMvnUrl(art);
+        defaultUriTxt.setText(defaultURIValue);
+        boolean useCustom = !StringUtils.isEmpty(cusormURIValue);
+        useCustomBtn.setSelection(useCustom);
         customUriText.setText(cusormURIValue);
     }
 

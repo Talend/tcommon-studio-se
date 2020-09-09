@@ -19,8 +19,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
 
-import javax.xml.parsers.DocumentBuilderFactory;
-
 import org.apache.commons.codec.digest.DigestUtils;
 import org.apache.commons.io.FilenameUtils;
 import org.apache.commons.lang3.StringUtils;
@@ -34,14 +32,12 @@ import org.talend.core.nexus.TalendLibsServerManager;
 import org.talend.core.runtime.maven.MavenArtifact;
 import org.talend.core.runtime.maven.MavenUrlHelper;
 import org.talend.librariesmanager.maven.MavenArtifactsHandler;
-import org.talend.utils.xml.XmlUtils;
 
 /*
  * Created by bhe on Sep 3, 2020
  */
 public class ConfigModuleHelper {
 
-    private static final DocumentBuilderFactory docFactory = XmlUtils.getSecureDocumentBuilderFactory(true);
 
     private static final String LOCAL_M2 = MavenPlugin.getMaven().getLocalRepositoryPath();
 
@@ -207,7 +203,7 @@ public class ConfigModuleHelper {
             if (v != null && v.endsWith(MavenUrlHelper.VERSION_SNAPSHOT)) {
                 fromSnapshot = true;
             }
-            List<MavenArtifact> ret = customerRepHandler.search(g, a, g, true, fromSnapshot);
+            List<MavenArtifact> ret = customerRepHandler.search(g, a, v, true, fromSnapshot);
             return ret;
         }
         return new ArrayList<MavenArtifact>();
