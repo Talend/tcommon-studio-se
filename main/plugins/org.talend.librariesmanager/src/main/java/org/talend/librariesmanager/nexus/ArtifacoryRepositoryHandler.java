@@ -54,6 +54,8 @@ public class ArtifacoryRepositoryHandler extends AbstractArtifactRepositoryHandl
 
     private String SEARCH_SERVICE = "api/search/gavc?"; //$NON-NLS-1$
 
+    private static final String SEARCH_NAME = "api/search/artifact?";
+
     /*
      * (non-Javadoc)
      *
@@ -268,7 +270,8 @@ public class ArtifacoryRepositoryHandler extends AbstractArtifactRepositoryHandl
         return resultList;
     }
 
-    protected List<MavenArtifact> doSearch(String query, boolean fromRelease, boolean fromSnapshot) throws Exception {
+    protected List<MavenArtifact> doSearch(String query, String apiPath, boolean fromRelease, boolean fromSnapshot)
+            throws Exception {
         String q = query;
         if (q == null || q.trim().isEmpty()) {
             q = "";
@@ -277,7 +280,7 @@ public class ArtifacoryRepositoryHandler extends AbstractArtifactRepositoryHandl
         if (!serverUrl.endsWith("/")) { //$NON-NLS-1$
             serverUrl = serverUrl + "/"; //$NON-NLS-1$
         }
-        String searchUrl = serverUrl + SEARCH_SERVICE;
+        String searchUrl = serverUrl + apiPath;
 
         String repositoryId = ""; //$NON-NLS-1$
         if (fromRelease) {
@@ -481,6 +484,6 @@ public class ArtifacoryRepositoryHandler extends AbstractArtifactRepositoryHandl
 
     public List<MavenArtifact> search(String name, boolean fromSnapshot) throws Exception {
         String query = "name=" + name;
-        return doSearch(query, true, fromSnapshot);
+        return doSearch(query, SEARCH_NAME, true, fromSnapshot);
     }
 }

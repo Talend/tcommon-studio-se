@@ -30,6 +30,7 @@ import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.Path;
 import org.eclipse.jface.dialogs.IDialogConstants;
 import org.eclipse.jface.dialogs.IMessageProvider;
+import org.eclipse.jface.dialogs.MessageDialog;
 import org.eclipse.jface.dialogs.ProgressMonitorDialog;
 import org.eclipse.jface.dialogs.TitleAreaDialog;
 import org.eclipse.jface.fieldassist.AutoCompleteField;
@@ -48,7 +49,6 @@ import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.FileDialog;
 import org.eclipse.swt.widgets.Label;
-import org.eclipse.swt.widgets.MessageBox;
 import org.eclipse.swt.widgets.Shell;
 import org.eclipse.swt.widgets.Text;
 import org.eclipse.ui.PlatformUI;
@@ -59,7 +59,6 @@ import org.talend.commons.ui.runtime.image.ImageProvider;
 import org.talend.commons.ui.swt.dialogs.IConfigModuleDialog;
 import org.talend.core.model.general.ModuleNeeded;
 import org.talend.core.model.general.ModuleNeeded.ELibraryInstallStatus;
-import org.talend.core.model.general.ModuleStatusProvider;
 import org.talend.core.model.general.ModuleToInstall;
 import org.talend.core.runtime.maven.MavenArtifact;
 import org.talend.core.runtime.maven.MavenUrlHelper;
@@ -163,7 +162,7 @@ public class ConfigModuleDialog extends TitleAreaDialog implements IConfigModule
         layout.marginTop = 10;
         layout.marginLeft = 20;
         layout.marginRight = 20;
-        layout.marginBottom = 100;
+        layout.marginBottom = 60;
         layout.marginHeight = 0;
         container.setLayout(layout);
         GridData data = new GridData(GridData.FILL_BOTH);
@@ -393,6 +392,14 @@ public class ConfigModuleDialog extends TitleAreaDialog implements IConfigModule
         GridData data = new GridData(GridData.FILL_HORIZONTAL | GridData.GRAB_HORIZONTAL);
         nameTxt.setLayoutData(data);
 
+        nameTxt.addModifyListener(new ModifyListener() {
+
+            @Override
+            public void modifyText(ModifyEvent e) {
+                validateInputForSearch();
+            }
+        });
+
         searchLocalBtn = new Button(repGroupSubComp, SWT.PUSH);
         searchLocalBtn.setText(Messages.getString("ConfigModuleDialog.searchLocalBtn"));
         searchLocalBtn.addSelectionListener(new SelectionAdapter() {
@@ -563,7 +570,7 @@ public class ConfigModuleDialog extends TitleAreaDialog implements IConfigModule
                     public void run() {
                         try {
                             MavenArtifact art = JarDetector.parse(file);
-                            String mvnUrl = JarDetector.getMavenURL(art);
+                            String mvnUrl = MavenUrlHelper.generateMvnUrl(art);
                             defaultUriTxt.setText(mvnUrl);
                             if (StringUtils.isEmpty(defaultUriTxt.getText())) {
                                 // default uri is empty
@@ -595,7 +602,7 @@ public class ConfigModuleDialog extends TitleAreaDialog implements IConfigModule
 
             @Override
             public void run(IProgressMonitor monitor) throws InvocationTargetException, InterruptedException {
-                monitor.beginTask("Search local " + name, 100);
+                monitor.beginTask("Search " + name, 100);
                 monitor.worked(10);
                 DisplayUtils.getDisplay().syncExec(new Runnable() {
 
@@ -688,6 +695,13 @@ public class ConfigModuleDialog extends TitleAreaDialog implements IConfigModule
     }
 
     private boolean validateInputForSearch() {
+        boolean disable = nameTxt.getText().trim().isEmpty();
+        searchLocalBtn.setEnabled(!disable);
+        searchRemoteBtn.setEnabled(!disable);
+        if (disable) {
+            setMessage(Messages.getString("ConfigModuleDialog.error.missingName"), IMessageProvider.ERROR);
+            return false;
+        }
         moduleName = searchResultCombo.getText().trim();
         boolean found = false;
         for (String item : searchResultCombo.getItems()) {
@@ -774,17 +788,35 @@ public class ConfigModuleDialog extends TitleAreaDialog implements IConfigModule
                         deploy = false;
                     } else {
                         // popup and ask, reinstall?
-                        MessageBox mbx = new MessageBox(super.getShell(), SWT.ICON_WARNING | SWT.YES | SWT.NO);
-                        mbx.setMessage(Messages.getString("ConfigModuleDialog.shareInfo"));
-                        deploy = (SWT.NO == mbx.open());
+                        deploy = MessageDialog.open(MessageDialog.CONFIRM, super.getShell(), "",
+                                Messages.getString("ConfigModuleDialog.shareInfo"), SWT.NONE);
                     }
                 }
 
-                try {
-                    ConfigModuleHelper.install(jarFile, urlToUse, deploy);
-                } catch (Exception e) {
-                    ExceptionHandler.process(e);
-                }
+                final boolean share = deploy;
+                final IRunnableWithProgress progress = new IRunnableWithProgress() {
+
+                    @Override
+                    public void run(IProgressMonitor monitor) throws InvocationTargetException, InterruptedException {
+                        monitor.beginTask("Install and share " + jarFile, 100);
+                        monitor.worked(10);
+                        DisplayUtils.getDisplay().syncExec(new Runnable() {
+
+                            @Override
+                            public void run() {
+                                try {
+                                    ConfigModuleHelper.install(jarFile, urlToUse, share);
+                                } catch (Exception e) {
+                                    ExceptionHandler.process(e);
+                                }
+                            }
+                        });
+                        monitor.done();
+                    }
+                };
+
+                runProgress(progress);
+
             }
 
         } else if (repositoryRadioBtn.getSelection()) {

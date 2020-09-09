@@ -26,6 +26,8 @@ import javax.xml.parsers.DocumentBuilderFactory;
 
 import org.apache.commons.lang3.StringUtils;
 import org.talend.core.runtime.maven.MavenArtifact;
+import org.talend.core.runtime.maven.MavenConstants;
+import org.talend.core.runtime.maven.MavenUrlHelper;
 import org.talend.utils.xml.XmlUtils;
 import org.w3c.dom.Document;
 import org.xml.sax.InputSource;
@@ -68,6 +70,14 @@ public class JarDetector {
                 }
             }
         }
+        if (!p.isEmpty()) {
+            MavenArtifact art = new MavenArtifact();
+            art.setGroupId(p.getProperty("groupId"));
+            art.setArtifactId(p.getProperty("artifactId"));
+            art.setVersion(p.getProperty("version"));
+            art.setType(MavenConstants.TYPE_JAR);
+            return art;
+        }
         if (doc != null) {
             PomParser pp = new PomParser(doc);
             MavenArtifact art = new MavenArtifact();
@@ -75,14 +85,6 @@ public class JarDetector {
             art.setArtifactId(pp.getArtifactId());
             art.setVersion(pp.getVersion());
             art.setType(pp.getPackaging());
-            return art;
-        }
-        if (!p.isEmpty()) {
-            MavenArtifact art = new MavenArtifact();
-            art.setGroupId(p.getProperty("groupId"));
-            art.setArtifactId(p.getProperty("artifactId"));
-            art.setVersion(p.getProperty("version"));
-            art.setType("jar");
             return art;
         }
 
