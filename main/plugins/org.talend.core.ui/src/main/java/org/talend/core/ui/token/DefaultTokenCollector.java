@@ -22,6 +22,13 @@ import org.talend.core.ui.branding.IBrandingService;
 import org.talend.daikon.token.TokenGenerator;
 import org.talend.utils.security.StudioEncryption;
 
+import oshi.SystemInfo;
+import oshi.hardware.Baseboard;
+import oshi.hardware.CentralProcessor;
+import oshi.hardware.CentralProcessor.ProcessorIdentifier;
+import oshi.hardware.ComputerSystem;
+import oshi.hardware.GlobalMemory;
+import oshi.hardware.HardwareAbstractionLayer;
 import us.monoid.json.JSONObject;
 
 /**
@@ -81,6 +88,22 @@ public class DefaultTokenCollector extends AbstractTokenCollector {
         jsonObject.put("os.arch", System.getProperty("os.arch"));
         jsonObject.put("os.version", System.getProperty("os.version"));
         tokenStudioObject.put(OS.getKey(), jsonObject);
+        
+        JSONObject jsonObject2 = new JSONObject();
+        
+        SystemInfo si = new SystemInfo();
+        HardwareAbstractionLayer hal = si.getHardware();
+        CentralProcessor processor = hal.getProcessor();
+        ProcessorIdentifier processorIdentifier = processor.getProcessorIdentifier();
+        ComputerSystem cs = hal.getComputerSystem();//computer system
+        Baseboard baseboard = cs.getBaseboard();//motherboard
+        GlobalMemory memory = hal.getMemory();
+        
+        jsonObject2.put("board vendor", baseboard.getManufacturer());
+        jsonObject2.put("board version", baseboard.getVersion());
+        jsonObject2.put("processor", processorIdentifier.getName());
+        jsonObject2.put("total memory", Math.ceil((memory.getTotal() /(1024d*1024*1024))) + "GB");
+        tokenStudioObject.put("hardware", jsonObject2);
 
         final IPreferenceStore preferenceStore = CoreUIPlugin.getDefault().getPreferenceStore();
         long syncNb = preferenceStore.getLong(COLLECTOR_SYNC_NB);

@@ -9,4 +9,36 @@
   </parent>
   <artifactId>org.talend.core.ui</artifactId>
   <packaging>eclipse-plugin</packaging>
+  
+  <dependencies>
+  	<dependency>
+	  	<groupId>com.github.oshi</groupId>
+		<artifactId>oshi-core</artifactId>
+		<version>5.2.5</version>
+	  </dependency>
+  </dependencies>
+  
+  <build>
+     	<plugins>
+	      <plugin>
+	        <groupId>org.apache.maven.plugins</groupId>
+	        <artifactId>maven-dependency-plugin</artifactId>
+	        <version>3.0.2</version>
+	        <executions>
+	          <execution>
+	            <id>copy-dependencies</id>
+	            <phase>generate-resources</phase>
+	            <goals>
+	              <goal>copy-dependencies</goal>
+	            </goals>
+	            <configuration>
+	              <includeScope>runtime</includeScope>
+	              <outputDirectory>${project.basedir}/lib</outputDirectory>
+	              <stripVersion>true</stripVersion>
+	            </configuration>
+	          </execution>
+	        </executions>
+	      </plugin>
+      </plugins>
+     </build>
 </project>
