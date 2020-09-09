@@ -45,6 +45,8 @@ public class RuntimeLineageManager {
 
     public static final String JOB_ID = "id"; //$NON-NLS-1$
 
+    public static final String RUNTIMELINEAGE_OUTPUT_PATH = "-Druntime.lineage.outputpath="; //$NON-NLS-1$
+
     public static final String OUTPUT_PATH = "output.path"; //$NON-NLS-1$
 
     private List<String> selectedJobIds = new ArrayList<String>();
