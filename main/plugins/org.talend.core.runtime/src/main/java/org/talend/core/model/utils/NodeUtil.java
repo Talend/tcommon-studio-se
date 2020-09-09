@@ -1020,7 +1020,7 @@ public class NodeUtil {
         return value;
     }
     
-    public static String checkStringQuotationMarks(String str) {
+    private static String checkStringQuotationMarks(String str) {
         String result = str;
         if (result.contains("\"")) {
             result = result.replace("\"", "\\\"");
