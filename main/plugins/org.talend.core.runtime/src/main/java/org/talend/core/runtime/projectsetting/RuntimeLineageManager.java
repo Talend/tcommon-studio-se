@@ -45,17 +45,22 @@ public class RuntimeLineageManager {
 
     public static final String JOB_ID = "id"; //$NON-NLS-1$
 
+    public static final String OUTPUT_PATH = "output.path"; //$NON-NLS-1$
+
     private List<String> selectedJobIds = new ArrayList<String>();
 
     private ProjectPreferenceManager prefManager = null;
 
     private boolean useRuntimeLineageAll = false;
 
+    private String outputPath = null;
+
     public RuntimeLineageManager() {
         if (prefManager == null) {
             prefManager = new ProjectPreferenceManager(RUNTIMELINEAGE_RESOURCES, true);
         }
         useRuntimeLineageAll = prefManager.getBoolean(RUNTIMELINEAGE_ALL);
+        outputPath = prefManager.getValue(OUTPUT_PATH);
     }
 
     public void load() {
@@ -98,6 +103,7 @@ public class RuntimeLineageManager {
             }
             prefManager.setValue(RUNTIMELINEAGE_ALL, all);
             prefManager.setValue(RUNTIMELINEAGE_SELECTED, jobsJson.toString());
+            prefManager.setValue(OUTPUT_PATH, outputPath);
             prefManager.save();
         } catch (Exception e) {
             ExceptionHandler.process(e);
@@ -136,5 +142,13 @@ public class RuntimeLineageManager {
 
     public void setSelectedJobIds(List<String> selectedJobIds) {
         this.selectedJobIds = selectedJobIds;
+    }
+
+    public String getOutputPath() {
+        return this.outputPath;
+    }
+
+    public void setOutputPath(String outputPath) {
+        this.outputPath = outputPath;
     }
 }

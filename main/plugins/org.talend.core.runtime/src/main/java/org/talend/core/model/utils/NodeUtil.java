@@ -1376,12 +1376,16 @@ public class NodeUtil {
     }
 
     public static boolean isJobUsingRuntimeLineage(IProcess process) {
+        // Just support DI jobs now
+        boolean isSupport = process != null && process instanceof IProcess2
+                && ComponentCategory.CATEGORY_4_DI.getName().equals(process.getComponentsType())
+                && !ProcessUtils.isTestContainer(process);
+        if (!isSupport) {
+            return false;
+        }
         RuntimeLineageManager runtimeLineageManager = new RuntimeLineageManager();
         if (runtimeLineageManager.isUseRuntimeLineageAll()) {
-            if (process instanceof IProcess2 && ComponentCategory.CATEGORY_4_DI.getName().equals(process.getComponentsType())
-                    && !ProcessUtils.isTestContainer(process)) {
-                return true;
-            }
+            return true;
         }
         if (runtimeLineageManager.getSelectedJobIds().isEmpty()) {
             runtimeLineageManager.load();
