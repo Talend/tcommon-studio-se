@@ -941,11 +941,15 @@ public class NodeUtil {
         
         value = value.trim();
         
+        boolean isMemo = false;
+        
         List<EParameterFieldType> needRemoveCRLFList = Arrays.asList(EParameterFieldType.MEMO, EParameterFieldType.MEMO_JAVA,
                 EParameterFieldType.MEMO_SQL, EParameterFieldType.MEMO_IMPORT, EParameterFieldType.MEMO_MESSAGE);
         if (needRemoveCRLFList.contains(ep.getFieldType())) {
+            isMemo = true;
             value = value.replaceAll("[\r\n]", " ");
         }
+        
         List<EParameterFieldType> needQuoteList = Arrays.asList(EParameterFieldType.CLOSED_LIST,
                 EParameterFieldType.COMPONENT_LIST, EParameterFieldType.COLUMN_LIST, EParameterFieldType.PREV_COLUMN_LIST,
                 EParameterFieldType.CONNECTION_LIST, EParameterFieldType.LOOKUP_COLUMN_LIST,
@@ -960,12 +964,12 @@ public class NodeUtil {
                 || needQuoteListByName.contains(ep.getName()) || ep.isRaw()) {
             value = value.replaceAll("\\\\", "\\\\\\\\");
             value = value.replaceAll("\\\"", "\\\\\\\"");
-            value = "\"" + value + "\"";
+            return "\"" + value + "\"";
         }
 
         if (itemFromTable) {
             if ("*".equals(value)) {
-                value = "\"" + value + "\"";
+                return "\"" + value + "\"";
             }
             if (value.endsWith(";")) {
                 value = value.substring(0, value.length() - 1);
@@ -978,35 +982,50 @@ public class NodeUtil {
             return "(Object)null";
         }
         
-        if (!itemFromTable && "PATTERN".equals(ep.getName()) && !org.talend.core.model.utils.ContextParameterUtils.isDynamic(value)) {
-            if(!value.startsWith("\"") && !value.endsWith("\"")) {
-                return "\"" + value + "\"";
-            }
-        }
-
         // copied it from Log4jFileUtil.javajet but need more comment for this script
         if ("\"\\n\"".equals(value) || "\"\\r\"".equals(value) || "\"\\r\\n\"".equals(value)) {
             // for the value is "\n" "\r" "\r\n"
-            value = value.replaceAll("\\\\", "\\\\\\\\");
+            return value.replaceAll("\\\\", "\\\\\\\\");
         } else if ("\"\"\"".equals(value)) {
-            value = "\"" + "\\" + "\"" + "\"";
+            return "\"" + "\\" + "\"" + "\"";
         } else if ("\"\"\\r\\n\"\"".equals(value)) {
-            value = "\"\\\\r\\\\n\"";
+            return "\"\\\\r\\\\n\"";
         } else if ("\"\"\\r\"\"".equals(value)) {
-            value = "\"\\\\r\"";
+            return "\"\\\\r\"";
         } else if ("\"\"\\n\"\"".equals(value)) {
-            value = "\"\\\\n\"";
+            return "\"\\\\n\"";
         }
         // ftom 20141008 - patch to fix javajet compilation errors due to hard-coded studio TableEditor mechanism
         // linked to BUILDIN properties checks, this item is a boolean set to TRUE or FALSE
         // fix is just transforming into true or false to make logging OK
         else if ("BUILDIN".equals(ep.getName())) {
-            value = value.toLowerCase();
-        } else if (value.endsWith("*")) {
-            value = value.substring(0, value.length() - 1) + "\"*\"";
+            return value.toLowerCase();
+        }
+        
+        //suppose all memo fields are processed well already, no need to go though this with dangerous
+        if (!isMemo && !org.talend.core.model.utils.ContextParameterUtils.isDynamic(value)) {
+            if(value.length() > 1 && value.startsWith("\"") && value.endsWith("\"")) {
+                //do nothing if quote already
+                return value;
+            } else {
+            	return "\"" + checkStringQuotationMarks(value) + "\"";
+            }
+        }
+        
+        //TODO remove it
+        if (value.endsWith("*")) {
+            return value.substring(0, value.length() - 1) + "\"*\"";
         }
         
         return value;
+    }
+    
+    public static String checkStringQuotationMarks(String str) {
+        String result = str;
+        if (result.contains("\"")) {
+            result = result.replace("\"", "\\\"");
+        }
+        return result;
     }
 
     public static String getNormalizeParameterValue(INode node, IElementParameter ep) {
