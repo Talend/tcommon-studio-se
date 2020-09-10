@@ -773,29 +773,7 @@ public class ConfigModuleDialog extends TitleAreaDialog implements IConfigModule
             }
 
             if (install) {
-                boolean deploy = true;
-                // check remote
-                List<MavenArtifact> remoteArtifacts = null;
-                try {
-                    remoteArtifacts = ConfigModuleHelper.searchRemoteArtifacts(art.getGroupId(), art.getArtifactId(),
-                            art.getVersion());
-                } catch (Exception e) {
-                    ExceptionHandler.process(e);
-                }
-
-                if (remoteArtifacts != null && !remoteArtifacts.isEmpty()) {
-                    if (ConfigModuleHelper.canFind(new HashSet<MavenArtifact>(remoteArtifacts), art)) {
-                        deploy = false;
-                    } else {
-                        // popup and ask, reinstall?
-                        deploy = MessageDialog.open(MessageDialog.CONFIRM, super.getShell(), "",
-                                Messages.getString("ConfigModuleDialog.shareInfo"), SWT.NONE);
-                    }
-                }
-
-                final boolean share = deploy;
                 final IRunnableWithProgress progress = new IRunnableWithProgress() {
-
                     @Override
                     public void run(IProgressMonitor monitor) throws InvocationTargetException, InterruptedException {
                         monitor.beginTask("Install and share " + jarFile, 100);
@@ -805,7 +783,27 @@ public class ConfigModuleDialog extends TitleAreaDialog implements IConfigModule
                             @Override
                             public void run() {
                                 try {
-                                    ConfigModuleHelper.install(jarFile, urlToUse, share);
+                                    boolean deploy = true;
+                                    // check remote
+                                    List<MavenArtifact> remoteArtifacts = null;
+                                    try {
+                                        remoteArtifacts = ConfigModuleHelper.searchRemoteArtifacts(art.getGroupId(),
+                                                art.getArtifactId(), art.getVersion());
+                                    } catch (Exception e) {
+                                        ExceptionHandler.process(e);
+                                    }
+
+                                    if (remoteArtifacts != null && !remoteArtifacts.isEmpty()) {
+                                        if (ConfigModuleHelper.canFind(new HashSet<MavenArtifact>(remoteArtifacts), art)) {
+                                            deploy = false;
+                                        } else {
+                                            // popup and ask, reinstall?
+                                            deploy = MessageDialog.open(MessageDialog.CONFIRM, getShell(), "",
+                                                    Messages.getString("ConfigModuleDialog.shareInfo"), SWT.NONE);
+                                        }
+                                    }
+
+                                    ConfigModuleHelper.install(jarFile, urlToUse, deploy);
                                 } catch (Exception e) {
                                     ExceptionHandler.process(e);
                                 }

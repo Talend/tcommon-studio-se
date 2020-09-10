@@ -25,6 +25,8 @@ import org.apache.commons.lang3.StringUtils;
 import org.eclipse.m2e.core.MavenPlugin;
 import org.talend.core.GlobalServiceRegister;
 import org.talend.core.ILibraryManagerService;
+import org.talend.core.model.general.ModuleStatusProvider;
+import org.talend.core.model.general.ModuleNeeded.ELibraryInstallStatus;
 import org.talend.core.nexus.ArtifactRepositoryBean;
 import org.talend.core.nexus.IRepositoryArtifactHandler;
 import org.talend.core.nexus.RepositoryArtifactHandlerManager;
@@ -148,6 +150,7 @@ public class ConfigModuleHelper {
         } catch (Exception e) {
 
         }
+        ModuleStatusProvider.putStatus(uri, ELibraryInstallStatus.NOT_INSTALLED);
         return null;
     }
 
