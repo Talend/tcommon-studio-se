@@ -24,6 +24,7 @@ import java.util.StringTokenizer;
 import org.eclipse.jface.preference.IPreferenceStore;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.ui.forms.widgets.FormToolkit;
+import org.eclipse.ui.internal.intro.impl.presentations.BrowserIntroPartImplementation;
 import org.eclipse.ui.intro.config.IIntroContentProviderSite;
 import org.talend.commons.exception.PersistenceException;
 import org.talend.commons.ui.html.TalendHtmlModelUtil;
@@ -63,7 +64,7 @@ public class DynamicContentProvider extends IntroProvider {
 
     private static final String LEVEL_SEPARATOR = "."; //$NON-NLS-1$
 
-    private boolean flag = false;
+    private IIntroContentProviderSite site;
 
     /*
      * (non-Javadoc)
@@ -197,34 +198,21 @@ public class DynamicContentProvider extends IntroProvider {
     }
 
     protected void createNewsPage(Document dom, Element parent) {
-        // to avoid call createOnlinePage twice
-        if (flag) {
-            createOnlinePage(dom, parent, ONLINE_PAGE_URL, Messages.getString("DynamicContentProvider.TalendNewsTitle")); //$NON-NLS-1$
-        }
-        // the createCloudPage will be called twice
-        // 1.when create control part
-        // 2.after the control was created ,will catpure a event by zoomChangeListener
-        // we can't change the two cases of calling createCloudPage, so we control it here
-        // the method will be called by the same object twice, the the second time will finish the whole page so we do
-        // nothing when first time enter this method , and only the second time to create the online page
-        flag = true;
+        createOnlinePage(dom, parent, ONLINE_PAGE_URL, Messages.getString("DynamicContentProvider.TalendNewsTitle")); //$NON-NLS-1$
     }
 
     protected void createCloudPage(Document dom, Element parent) {
-        // to avoid call createOnlinePage twice
-        if (flag) {
-            createOnlinePage(dom, parent, CLOUD_PAGE_URL, null);
-        }
-        flag = true;
+        createOnlinePage(dom, parent, CLOUD_PAGE_URL, null);
     }
 
     private static Boolean accessible = null;
 
     protected void createOnlinePage(Document dom, Element parent, String onlinePageUrl, String title) {
         HttpURLConnection urlConnection = null;
+        String realOnlinePageURL = getOnlinePageURL(onlinePageUrl);
         if (accessible == null) {
             try {
-                URL url = new URL(getOnlinePageURL(onlinePageUrl));
+                URL url = new URL(realOnlinePageURL);
                 urlConnection = (HttpURLConnection) url.openConnection();
                 urlConnection.setRequestMethod("GET"); //$NON-NLS-1$
                 urlConnection.setDoOutput(true);
@@ -265,12 +253,22 @@ public class DynamicContentProvider extends IntroProvider {
             div.appendChild(dom.createElement("br")); //$NON-NLS-1$
         }
         Element iFrame = dom.createElement("iframe"); //$NON-NLS-1$
-        iFrame.setAttribute("src", getOnlinePageURL(onlinePageUrl)); //$NON-NLS-1$
+        iFrame.setAttribute("src", realOnlinePageURL); //$NON-NLS-1$
         iFrame.setAttribute("frameborder", "0"); //$NON-NLS-1$ //$NON-NLS-2$
         iFrame.setAttribute("width", "240px"); //$NON-NLS-1$ //$NON-NLS-2$
         iFrame.setAttribute("height", "370px"); //$NON-NLS-1$ //$NON-NLS-2$
         iFrame.appendChild(dom.createTextNode(" ")); //$NON-NLS-1$
         div.appendChild(iFrame);
+
+        updateHistory(realOnlinePageURL);
+
+    }
+
+    // update history to avoid call createOnlinePage twice
+    private void updateHistory(String realOnlinePageURL) {
+        if (site instanceof BrowserIntroPartImplementation) {
+            ((BrowserIntroPartImplementation) site).updateHistory(realOnlinePageURL);
+        }
     }
     
     protected void createTopMessage(Document dom, Element parent) {
@@ -419,6 +417,7 @@ public class DynamicContentProvider extends IntroProvider {
      */
     @Override
     public void init(IIntroContentProviderSite site) {
+        this.site = site;
     }
 
 }
