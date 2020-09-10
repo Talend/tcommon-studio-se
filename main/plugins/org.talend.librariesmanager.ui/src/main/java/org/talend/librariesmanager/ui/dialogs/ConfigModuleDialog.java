@@ -639,10 +639,10 @@ public class ConfigModuleDialog extends TitleAreaDialog implements IConfigModule
     }
 
     private void runProgress(IRunnableWithProgress progress) {
-        ProgressMonitorDialog detectDialog = new ProgressMonitorDialog(
+        ProgressMonitorDialog progressDialog = new ProgressMonitorDialog(
                 PlatformUI.getWorkbench().getActiveWorkbenchWindow().getShell());
         try {
-            detectDialog.run(true, true, progress);
+            progressDialog.run(true, true, progress);
         } catch (Throwable e) {
             if (!(e instanceof TimeoutException)) {
                 ExceptionHandler.process(e);
