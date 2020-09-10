@@ -312,13 +312,22 @@ public class MigrationToolService implements IMigrationToolService {
 
                                         @Override
                                         public int compare(ERepositoryObjectType arg0, ERepositoryObjectType arg1) {
-                                            if (arg0 == ERepositoryObjectType.PROCESS) {
-                                                return 1;
+                                            return getImportPriority(arg0) - getImportPriority(arg1);
+                                        }
+                                        
+                                        private int getImportPriority(ERepositoryObjectType objectType) {
+                                            if (ERepositoryObjectType.CONTEXT.getType().equals(objectType)) {
+                                                return 10;
+                                            } else if ("SERVICES".equals(objectType)) {
+                                                return 20;
+                                            } else if (ERepositoryObjectType.JOBLET != null
+                                                    && ERepositoryObjectType.JOBLET.getType().equals(objectType)) {
+                                                return 30;
+                                            } else if (ERepositoryObjectType.PROCESS_ROUTELET != null
+                                                    && ERepositoryObjectType.PROCESS_ROUTELET.getType().equals(objectType)) {
+                                                return 40;
                                             }
-                                            if (arg0 == ERepositoryObjectType.JOBLET) {
-                                                return 1;
-                                            }
-                                            return 0;
+                                            return 100;
                                         }
                                     });
 

@@ -32,6 +32,7 @@ import java.util.stream.Collectors;
 
 import org.apache.commons.lang.ArrayUtils;
 import org.apache.commons.lang.StringUtils;
+import org.apache.log4j.Logger;
 import org.apache.log4j.Priority;
 import org.eclipse.core.resources.IFile;
 import org.eclipse.core.resources.IFolder;
@@ -61,6 +62,7 @@ import org.talend.commons.utils.workbench.resources.ResourceUtils;
 import org.talend.core.GlobalServiceRegister;
 import org.talend.core.context.Context;
 import org.talend.core.context.RepositoryContext;
+import org.talend.core.model.context.ContextUtils;
 import org.talend.core.model.context.link.ContextLinkService;
 import org.talend.core.model.metadata.builder.connection.Connection;
 import org.talend.core.model.metadata.builder.connection.ConnectionPackage;
@@ -120,7 +122,6 @@ import org.talend.repository.model.RepositoryConstants;
  * DOC ggu class global comment. Detailled comment
  */
 public class ImportBasicHandler extends AbstractImportExecutableHandler {
-
     /**
      * set by extension point, will be the base path which relative to import project.
      *
@@ -350,7 +351,7 @@ public class ImportBasicHandler extends AbstractImportExecutableHandler {
 
     /**
      *
-     * check the item is valid or not。
+     * check the item is valid or not銆�
      */
     public boolean checkItem(ResourcesManager resManager, ImportItem importItem, boolean overwrite) {
         try {
@@ -1310,9 +1311,19 @@ public class ImportBasicHandler extends AbstractImportExecutableHandler {
         IRepositoryViewObject object;
         try {
             Property property = importItem.getProperty();
+            boolean isReloaded = false;
             if (property == null) {
                 object = factory.getSpecificVersion(importItem.getItemId(), importItem.getItemVersion(), true);
                 property = object.getProperty();
+                isReloaded = true;
+            }
+            if (factory.isFullLogonFinished() && importItem.isImported()
+                    && ContextUtils.getAllSupportContextLinkTypes().contains(importItem.getRepositoryType())) {
+                if (!isReloaded) {
+                    object = factory.getSpecificVersion(importItem.getItemId(), importItem.getItemVersion(), true);
+                    property = object.getProperty();
+                }
+                ContextUtils.doCreateContextLinkMigration(importItem.getRepositoryType(), property.getItem());
             }
             RelationshipItemBuilder.getInstance().addOrUpdateItem(property.getItem(), true);
             // importItem.setProperty(null);
@@ -1320,7 +1331,6 @@ public class ImportBasicHandler extends AbstractImportExecutableHandler {
         } catch (PersistenceException e) {
             ExceptionHandler.process(e);
         }
-
     }
 
     protected IPath getReferenceItemPath(IPath importItemPath, ReferenceFileItem rfItem) {
