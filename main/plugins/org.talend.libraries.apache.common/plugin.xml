@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?eclipse version="3.4"?>
+<plugin>   
+      <extension
+         point="org.talend.core.runtime.librariesNeeded">
+      <libraryNeeded
+              context="plugin:org.talend.libraries.apache.common"
+              id="commons-codec-1.6.jar"
+              mvn_uri="mvn:commons-codec/commons-codec/1.6"
+              name="commons-codec-1.6.jar"
+              required="true">
+      </libraryNeeded>
+      <libraryNeeded
+              context="plugin:org.talend.libraries.apache.common"
+              id="commons-digester-2.1.jar"
+              mvn_uri="mvn:commons-digester/commons-digester/2.1"
+              name="commons-digester-2.1.jar"
+              required="true">
+      </libraryNeeded>
+      <libraryNeeded
+              context="plugin:org.talend.libraries.apache.common"
+              id="commons-math3-3.3.jar"
+              mvn_uri="mvn:org.talend.libraries/commons-math3-3.3/6.0.0"
+              name="commons-math3-3.3.jar"
+              required="true">
+      </libraryNeeded>
+      <libraryNeeded
+              context="plugin:org.talend.libraries.apache.common"
+              id="commons-validator-1.5.1.jar"
+              mvn_uri="mvn:commons-validator/commons-validator/1.5.1"
+              name="commons-validator-1.5.1.jar"
+              required="true">
+      </libraryNeeded>
+      <libraryNeeded
+              context="plugin:org.talend.libraries.apache.common"
+              id="commons-pool2-2.4.2.jar"
+              mvn_uri="mvn:org.talend.libraries/commons-pool2-2.4.2/6.0.0"
+              name="commons-pool2-2.4.2.jar"
+              required="true">
+      </libraryNeeded>     
+    </extension>
+</plugin>
