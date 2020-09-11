@@ -25,14 +25,16 @@
 						<configuration>
 							<outputDirectory>${project.basedir}/lib</outputDirectory>
 							<artifactItems>
-								  <groupId>org.apache.httpcomponents</groupId>
-  								  <artifactId>httpcore</artifactId>
-  								  <version>4.4.6</version>
-							</artifactItems>
-							<artifactItems>
-								  <groupId>org.apache.httpcomponents</groupId>
+								<artifactItem>
+									<groupId>org.apache.httpcomponents</groupId>
+  								  	<artifactId>httpcore</artifactId>
+  								 	<version>4.4.6</version>
+								</artifactItem>
+								<artifactItem>
+									<groupId>org.apache.httpcomponents</groupId>
   									<artifactId>httpclient</artifactId>
   									<version>4.5.3</version>
+								</artifactItem>
 							</artifactItems>
 						</configuration>
 					</execution>
