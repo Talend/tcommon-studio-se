@@ -51,7 +51,7 @@ public class PerformanceTokenCollector extends AbstractTokenCollector {
         jsonObjectHDInfo.put("board vendor", baseboard.getManufacturer());
         jsonObjectHDInfo.put("board version", baseboard.getVersion());
         jsonObjectHDInfo.put("processor", processorIdentifier.getName());
-        jsonObjectHDInfo.put("total memory", Math.ceil((memory.getTotal() /(1024d*1024*1024))) + "GB");
+        jsonObjectHDInfo.put("physical memory", Math.ceil((memory.getTotal() /(1024d*1024*1024))) + "GB");
         tokenStudioObject.put("hardware", jsonObjectHDInfo);
         
         //
