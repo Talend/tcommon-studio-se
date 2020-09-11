@@ -38,7 +38,7 @@ public class PerformanceStatisticUtil {
 
     private static final int KILOBYTE = 1024;// kb=1024 byte
 
-    private static final int numOfBlocks = 512;
+    private static final int numOfBlocks = 256;
 
     private static final int blockSizeKb = 512;
 
@@ -192,14 +192,13 @@ public class PerformanceStatisticUtil {
             store(file, props);
         }
     }
-
+    
     private static void measureWrite(Properties props, File testFile) {
-        BlockSequence blockSequence = BlockSequence.RANDOM;
-
         int blockSize = blockSizeKb * KILOBYTE;
 
         long startTime = System.nanoTime();
-        long totalBytesWrittenInMark = writeIO(numOfBlocks, blockSequence, blockSize, testFile);
+        long totalBytesWrittenInMark = writeIO(numOfBlocks, BlockSequence.RANDOM, blockSize, testFile);
+        totalBytesWrittenInMark = totalBytesWrittenInMark + writeIO(numOfBlocks, BlockSequence.SEQUENTIAL, blockSize, testFile);
         long endTime = System.nanoTime();
 
         long elapsedTimeNs = endTime - startTime;
@@ -270,13 +269,11 @@ public class PerformanceStatisticUtil {
     }
 
     public static void measureRead(Properties props, File testFile) {
-        BlockSequence blockSequence = BlockSequence.RANDOM;
-
         int blockSize = blockSizeKb * KILOBYTE;
 
         long startTime = System.nanoTime();
-
-        long totalBytesReadInMark = readIO(numOfBlocks, blockSequence, blockSize, testFile);
+        long totalBytesReadInMark = readIO(numOfBlocks, BlockSequence.RANDOM, blockSize, testFile);
+        totalBytesReadInMark = totalBytesReadInMark + readIO(numOfBlocks, BlockSequence.SEQUENTIAL, blockSize, testFile);
         long endTime = System.nanoTime();
         long elapsedTimeNs = endTime - startTime;
         double sec = (double) elapsedTimeNs / (double) 1000000000;
