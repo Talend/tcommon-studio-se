@@ -5,13 +5,6 @@
          point="org.talend.core.runtime.librariesNeeded">
       <libraryNeeded
               context="plugin:org.talend.libraries.apache.common"
-              id="commons-codec-1.6.jar"
-              mvn_uri="mvn:commons-codec/commons-codec/1.6"
-              name="commons-codec-1.6.jar"
-              required="true">
-      </libraryNeeded>
-      <libraryNeeded
-              context="plugin:org.talend.libraries.apache.common"
               id="commons-digester-2.1.jar"
               mvn_uri="mvn:commons-digester/commons-digester/2.1"
               name="commons-digester-2.1.jar"
