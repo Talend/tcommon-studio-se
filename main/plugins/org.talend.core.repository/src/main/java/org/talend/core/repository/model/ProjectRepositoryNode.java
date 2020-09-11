@@ -1066,6 +1066,9 @@ public class ProjectRepositoryNode extends RepositoryNode implements IProjectRep
         }
         if (newProject != null && newProject.getEmfProject() != null) {
             List<FolderItem> folderItems = ProjectManager.getInstance().getFolders(newProject.getEmfProject());
+            if (folderItems != null) {
+                folderItems = new ArrayList<>(folderItems);
+            }
             for (FolderItem folder : folderItems) {
                 String folderName = folder.getProperty().getLabel();
                 if (("process".equals(folderName) || "joblets".equals(folderName)) && folder.getChildren() != null
