@@ -30,6 +30,11 @@
 									<artifactId>commons-beanutils</artifactId>
 									<version>1.9.4</version>
 								</artifactItem>
+								<artifactItem>
+									<groupId>commons-codec</groupId>
+									<artifactId>commons-codec</artifactId>
+									<version>1.6</version>
+								</artifactItem>
 							</artifactItems>
 						</configuration>
 					</execution>
