@@ -828,6 +828,12 @@ public class ConfigModuleDialog extends TitleAreaDialog implements IConfigModule
                     @SuppressWarnings("unchecked")
                     Map<String, MavenArtifact> data = (Map<String, MavenArtifact>) searchResultCombo.getData();
                     MavenArtifact art = data.get(moduleName);
+                    try {
+                        // for nexus2 only
+                        ConfigModuleHelper.resolveSha1(art);
+                    } catch (Exception e) {
+                        ExceptionHandler.process(e);
+                    }
                     if (sha1Local.equals(art.getSha1())) {
                         download = false;
                     }

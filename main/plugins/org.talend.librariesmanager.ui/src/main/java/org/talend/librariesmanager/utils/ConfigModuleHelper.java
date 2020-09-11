@@ -207,9 +207,35 @@ public class ConfigModuleHelper {
                 fromSnapshot = true;
             }
             List<MavenArtifact> ret = customerRepHandler.search(g, a, v, true, fromSnapshot);
+
+            if (customNexusServer.getType() == ArtifactRepositoryBean.NexusType.NEXUS_2.name()) {
+                // resolve sha1
+                for (MavenArtifact art : ret) {
+                    String sha1 = customerRepHandler.resolveRemoteSha1(art, !fromSnapshot);
+                    if (sha1 != null) {
+                        art.setSha1(sha1);
+                    }
+                }
+            }
             return ret;
         }
         return new ArrayList<MavenArtifact>();
     }
 
+    public static void resolveSha1(MavenArtifact art) throws Exception {
+        ArtifactRepositoryBean customNexusServer = TalendLibsServerManager.getInstance().getCustomNexusServer();
+        IRepositoryArtifactHandler customerRepHandler = RepositoryArtifactHandlerManager.getRepositoryHandler(customNexusServer);
+        if ((art.getSha1() == null || art.getSha1().trim().isEmpty()) && customerRepHandler != null
+                && customNexusServer.getType() == ArtifactRepositoryBean.NexusType.NEXUS_2.name()) {
+            boolean fromSnapshot = false;
+            if (art.getVersion() != null && art.getVersion().endsWith(MavenUrlHelper.VERSION_SNAPSHOT)) {
+                fromSnapshot = true;
+            }
+            // resolve sha1
+            String sha1 = customerRepHandler.resolveRemoteSha1(art, !fromSnapshot);
+            if (sha1 != null) {
+                art.setSha1(sha1);
+            }
+        }
+    }
 }
