@@ -12,13 +12,6 @@
 // ============================================================================
 package org.talend.rcp.intro.contentProvider;
 
-import java.io.BufferedReader;
-import java.io.BufferedWriter;
-import java.io.File;
-import java.io.FileWriter;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
 import java.io.PrintWriter;
 import java.net.HttpURLConnection;
 import java.net.URL;
@@ -28,17 +21,15 @@ import java.util.Date;
 import java.util.List;
 import java.util.StringTokenizer;
 
-import org.eclipse.core.runtime.Path;
-import org.eclipse.core.runtime.Platform;
 import org.eclipse.jface.preference.IPreferenceStore;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.ui.forms.widgets.FormToolkit;
+import org.eclipse.ui.internal.intro.impl.presentations.BrowserIntroPartImplementation;
 import org.eclipse.ui.intro.config.IIntroContentProviderSite;
 import org.talend.commons.exception.PersistenceException;
 import org.talend.commons.ui.html.TalendHtmlModelUtil;
 import org.talend.commons.ui.runtime.exception.ExceptionHandler;
 import org.talend.commons.utils.VersionUtils;
-import org.talend.commons.utils.network.NetworkUtil;
 import org.talend.core.CorePlugin;
 import org.talend.core.GlobalServiceRegister;
 import org.talend.core.PluginChecker;
@@ -72,6 +63,8 @@ public class DynamicContentProvider extends IntroProvider {
     public static final String TRY_CLOUD_URL = "https://iam.integrationcloud.talend.com/idp/trial-registration?utm_medium=studio&utm_source=banner&utm_campaign="; //$NON-NLS-1$
 
     private static final String LEVEL_SEPARATOR = "."; //$NON-NLS-1$
+
+    private IIntroContentProviderSite site;
 
     /*
      * (non-Javadoc)
@@ -212,47 +205,46 @@ public class DynamicContentProvider extends IntroProvider {
         createOnlinePage(dom, parent, CLOUD_PAGE_URL, null);
     }
 
+    private static Boolean accessible = null;
+
     protected void createOnlinePage(Document dom, Element parent, String onlinePageUrl, String title) {
-        if (!NetworkUtil.isNetworkValid()) {
-            setDIVStyle(dom, false);
-            return;
-        }
         HttpURLConnection urlConnection = null;
-        InputStream inStream = null;
-        String filePath = null;
-        try {
-            URL url = new URL(getOnlinePageURL(onlinePageUrl));
-            urlConnection = (HttpURLConnection) url.openConnection();
-            urlConnection.setRequestMethod("GET"); //$NON-NLS-1$
-            urlConnection.setDoOutput(true);
-            urlConnection.setDoInput(true);
-            urlConnection.setUseCaches(false);
-            urlConnection.setReadTimeout(2000);
-            int state = urlConnection.getResponseCode();
-            inStream = urlConnection.getInputStream();
-            if (state == HttpURLConnection.HTTP_OK) {
-            	filePath = downHtml(inStream);
+        String realOnlinePageURL = getOnlinePageURL(onlinePageUrl);
+        if (accessible == null) {
+            try {
+                URL url = new URL(realOnlinePageURL);
+                urlConnection = (HttpURLConnection) url.openConnection();
+                urlConnection.setRequestMethod("GET"); //$NON-NLS-1$
+                urlConnection.setDoOutput(true);
+                urlConnection.setDoInput(true);
+                urlConnection.setUseCaches(false);
+                urlConnection.setConnectTimeout(3000);
+                if (urlConnection.getResponseCode() == HttpURLConnection.HTTP_OK) {
+                    accessible = true;
+                }
+            } catch (Exception e) {
+
+            } finally {
+                if (accessible == null) {
+                    accessible = false;
+                }
+                urlConnection.disconnect();
             }
+        }
+        if (accessible) {
             setDIVStyle(dom, true);
-        } catch (Exception e) {
+        } else {
             setDIVStyle(dom, false);
             return;
-        } finally {
-            urlConnection.disconnect();
         }
-        
-        if(filePath == null) {
-        	return;
-        }
+
         // online content
         Element tdElem = dom.createElement("td"); //$NON-NLS-1$
         setTDAttribute(tdElem);
         parent.appendChild(tdElem);
-
         Element div = dom.createElement("div"); //$NON-NLS-1$
         div.setAttribute("style", "overflow:auto;height:400px;width:260px;padding-left:20px;"); //$NON-NLS-1$ //$NON-NLS-2$
         tdElem.appendChild(div);
-
         if (title != null) {
             Element spanElem = dom.createElement("span"); //$NON-NLS-1$
             spanElem.setAttribute("class", "style_1 style_2 style_3"); //$NON-NLS-1$ //$NON-NLS-2$
@@ -260,58 +252,25 @@ public class DynamicContentProvider extends IntroProvider {
             div.appendChild(spanElem);
             div.appendChild(dom.createElement("br")); //$NON-NLS-1$
         }
-
         Element iFrame = dom.createElement("iframe"); //$NON-NLS-1$
-        iFrame.setAttribute("src", filePath); //$NON-NLS-1$
+        iFrame.setAttribute("src", realOnlinePageURL); //$NON-NLS-1$
         iFrame.setAttribute("frameborder", "0"); //$NON-NLS-1$ //$NON-NLS-2$
         iFrame.setAttribute("width", "240px"); //$NON-NLS-1$ //$NON-NLS-2$
         iFrame.setAttribute("height", "370px"); //$NON-NLS-1$ //$NON-NLS-2$
         iFrame.appendChild(dom.createTextNode(" ")); //$NON-NLS-1$
         div.appendChild(iFrame);
-    }
-    
-    private String downHtml(InputStream inStream) {
-    	if(inStream == null) {
-    		return null;
-    	}
-        File file = null;
-        BufferedWriter output = null;
-        BufferedReader reader = null;
-    	try {
-    		String path = new Path(Platform.getConfigurationLocation().getURL().getPath()).toFile().getAbsolutePath();
-	        file = new File(path, "WelcomPage3.html");
-	        file.deleteOnExit();
-            
-            String result = null;
-        	reader = new BufferedReader(new InputStreamReader(inStream, "utf-8"));
-            String line = null;
-            while ((line = reader.readLine()) != null) {
-            	if(result==null){
-            		result=line;
-            	}else{
-            		result += line;
-            	}
-            }
-            
-            output = new BufferedWriter(new FileWriter(file));  
-            output.write(result);  
-            output.flush();
-    	} catch (Exception e) {
-    		return null;
-    	} finally {
-    		try {
-    			output.close();
-    			reader.close();
-    			inStream.close();
-			} catch (IOException e) {
-			}
-    	}
-    	if(!file.exists()){
-    		return null;
-    	} 	
-    	return file.toURI().toString();
+
+        updateHistory(realOnlinePageURL);
+
     }
 
+    // update history to avoid call createOnlinePage twice
+    private void updateHistory(String realOnlinePageURL) {
+        if (site instanceof BrowserIntroPartImplementation) {
+            ((BrowserIntroPartImplementation) site).updateHistory(realOnlinePageURL);
+        }
+    }
+    
     protected void createTopMessage(Document dom, Element parent) {
         Element topMessageElem = dom.createElement("div"); //$NON-NLS-1$
         topMessageElem.setAttribute("style", //$NON-NLS-1$
@@ -458,6 +417,7 @@ public class DynamicContentProvider extends IntroProvider {
      */
     @Override
     public void init(IIntroContentProviderSite site) {
+        this.site = site;
     }
 
 }
