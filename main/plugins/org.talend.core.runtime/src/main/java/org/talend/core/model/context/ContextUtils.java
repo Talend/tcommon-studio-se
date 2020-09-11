@@ -12,6 +12,7 @@
 // ============================================================================
 package org.talend.core.model.context;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.Collections;
@@ -47,12 +48,14 @@ import org.talend.core.model.properties.ContextItem;
 import org.talend.core.model.properties.Item;
 import org.talend.core.model.properties.JobletProcessItem;
 import org.talend.core.model.properties.ProcessItem;
+import org.talend.core.model.repository.ERepositoryObjectType;
 import org.talend.core.model.repository.IRepositoryViewObject;
 import org.talend.core.runtime.CoreRuntimePlugin;
 import org.talend.cwm.helper.ResourceHelper;
 import org.talend.designer.core.model.utils.emf.talendfile.ContextParameterType;
 import org.talend.designer.core.model.utils.emf.talendfile.ContextType;
 import org.talend.designer.core.model.utils.emf.talendfile.ProcessType;
+import org.talend.migration.IMigrationTask.ExecutionResult;
 import org.talend.repository.model.IProxyRepositoryFactory;
 
 /**
@@ -67,6 +70,7 @@ public class ContextUtils {
             "double", "implements", "protected", "throw", "byte", "else", "import", "public", "throws", "case", "enum", //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$ //$NON-NLS-5$ //$NON-NLS-6$ //$NON-NLS-7$ //$NON-NLS-8$ //$NON-NLS-9$ //$NON-NLS-10$ //$NON-NLS-11$
             "instanceof", "return", "transient", "catch", "extends", "int", "short", "try", "char", "final", "interface", //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$ //$NON-NLS-5$ //$NON-NLS-6$ //$NON-NLS-7$ //$NON-NLS-8$ //$NON-NLS-9$ //$NON-NLS-10$ //$NON-NLS-11$
             "static", "void", "class", "finally", "long", "strictfp", "volatile", "const", "float", "native", "super", "while")); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$ //$NON-NLS-5$ //$NON-NLS-6$ //$NON-NLS-7$ //$NON-NLS-8$ //$NON-NLS-9$ //$NON-NLS-10$ //$NON-NLS-11$ //$NON-NLS-12$
+
 
     /**
      *
@@ -222,7 +226,6 @@ public class ContextUtils {
         return parameterType;
     }
 
-    @SuppressWarnings("unchecked")
     private static boolean checkObject(Object obj) {
         if (obj == null) {
             return true;
@@ -269,7 +272,7 @@ public class ContextUtils {
 
         IProxyRepositoryFactory factory = CoreRuntimePlugin.getInstance().getProxyRepositoryFactory();
         try {
-            final IRepositoryViewObject lastVersion = factory.getLastVersion(contextId);
+            final IRepositoryViewObject lastVersion = factory.getLastVersion(contextId, ERepositoryObjectType.CONTEXT);
             if (lastVersion != null) {
                 final Item item = lastVersion.getProperty().getItem();
                 if (item != null && item instanceof ContextItem) {
@@ -486,9 +489,13 @@ public class ContextUtils {
             return null;
         }
 
-        IProxyRepositoryFactory factory = CoreRuntimePlugin.getInstance().getProxyRepositoryFactory();
+        List<ERepositoryObjectType> possibleTypes = new ArrayList<ERepositoryObjectType>();
+        possibleTypes.add(ERepositoryObjectType.CONTEXT);
+        possibleTypes.addAll(ERepositoryObjectType.getAllTypesOfJoblet());
+        possibleTypes.addAll(ERepositoryObjectType.getAllTypesOfProcess());
         try {
-            final IRepositoryViewObject lastVersion = factory.getLastVersion(contextId);
+            IRepositoryViewObject lastVersion = CoreRuntimePlugin.getInstance().getProxyRepositoryFactory()
+                    .getLastVersion(contextId, possibleTypes);
             if (lastVersion != null) {
                 final Item item = lastVersion.getProperty().getItem();
                 if (item != null) {
@@ -582,7 +589,8 @@ public class ContextUtils {
             return false;
         }
 
-        // preference name must match TalendDesignerPrefConstants.PROPAGATE_CONTEXT_VARIABLE
+        // preference name must match
+        // TalendDesignerPrefConstants.PROPAGATE_CONTEXT_VARIABLE
         return Boolean.parseBoolean(
                 CoreRuntimePlugin.getInstance().getDesignerCoreService().getPreferenceStore("propagateContextVariable")); //$NON-NLS-1$
     }
@@ -1036,5 +1044,71 @@ public class ContextUtils {
             return true;
         }
         return false;
+    }
+
+    public static ExecutionResult doCreateContextLinkMigration(Item item) {
+        IProxyRepositoryFactory proxyRepositoryFactory = CoreRuntimePlugin.getInstance().getProxyRepositoryFactory();
+        boolean modified = false, hasLinkFile = false;
+        try {
+            List<ContextType> contextTypeList = ContextUtils.getAllContextType(item);
+            if (contextTypeList != null && contextTypeList.size() > 0) {
+                for (ContextType contextType : contextTypeList) {
+                    for (Object obj : contextType.getContextParameter()) {
+                        if (obj instanceof ContextParameterType) {
+                            ContextParameterType paramType = (ContextParameterType) obj;
+                            if (ContextUtils.isBuildInParameter(paramType)) {
+                                if (StringUtils.isEmpty(paramType.getInternalId())) {
+                                    paramType.setInternalId(proxyRepositoryFactory.getNextId());
+                                    modified = true;
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+            hasLinkFile = ContextLinkService.getInstance().saveContextLink(item);
+        } catch (Exception ex) {
+            ExceptionHandler.process(ex);
+            return ExecutionResult.FAILURE;
+        }
+        if (modified || hasLinkFile) {
+            try {
+                if (modified) {
+                    proxyRepositoryFactory.save(item, true);
+                }
+                return ExecutionResult.SUCCESS_NO_ALERT;
+            } catch (Exception ex) {
+                ExceptionHandler.process(ex);
+                return ExecutionResult.FAILURE;
+            }
+        }
+        return ExecutionResult.NOTHING_TO_DO;
+    }
+
+    public static ExecutionResult doCreateContextLinkMigration(ERepositoryObjectType repositoryType, Item item) {
+        if (item != null && getAllSupportContextLinkTypes().contains(repositoryType)) {
+            return doCreateContextLinkMigration(item);
+        }
+        return ExecutionResult.NOTHING_TO_DO;
+    }
+
+    public static List<ERepositoryObjectType> getAllSupportContextLinkTypes() {
+        List<ERepositoryObjectType> toReturn = new ArrayList<ERepositoryObjectType>();
+        toReturn.addAll(ERepositoryObjectType.getAllTypesOfProcess());
+        toReturn.addAll(ERepositoryObjectType.getAllTypesOfProcess2());
+        toReturn.addAll(ERepositoryObjectType.getAllTypesOfTestContainer());
+        toReturn.addAll(getAllMetaDataType());
+        return toReturn;
+    }
+
+    private static List<ERepositoryObjectType> getAllMetaDataType() {
+        List<ERepositoryObjectType> list = new ArrayList<ERepositoryObjectType>();
+        ERepositoryObjectType[] allTypes = (ERepositoryObjectType[]) ERepositoryObjectType.values();
+        for (ERepositoryObjectType object : allTypes) {
+            if (object.isChildTypeOf(ERepositoryObjectType.METADATA)) {
+                list.add(object);
+            }
+        }
+        return list;
     }
 }

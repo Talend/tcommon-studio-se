@@ -1225,6 +1225,28 @@ public final class ProxyRepositoryFactory implements IProxyRepositoryFactory {
         return this.repositoryFactoryFromProvider.getLastVersion(project, ProcessUtils.getPureItemId(id), folderPath, type);
     }
 
+
+    @Override
+    public IRepositoryViewObject getLastVersion(String id, ERepositoryObjectType type)
+            throws PersistenceException {
+        return getLastVersion(id , "", type);
+    }
+    
+    @Override
+    public IRepositoryViewObject getLastVersion(String id, List<ERepositoryObjectType> types) throws PersistenceException {
+        if (types != null) {
+            IRepositoryViewObject object = null;
+            for (ERepositoryObjectType type : types) {
+                object = getLastVersion(id, type);
+                if (object != null) {
+                    return object;
+                }
+            }
+        }
+        return null;
+    }
+
+    @Override
     public IRepositoryViewObject getLastVersion(String id, String folderPath, ERepositoryObjectType type)
             throws PersistenceException {
         String objId = id;
@@ -1236,7 +1258,25 @@ public final class ProxyRepositoryFactory implements IProxyRepositoryFactory {
                 return this.repositoryFactoryFromProvider.getLastVersion(project, objId, folderPath, type);
             }
         }
-        return this.repositoryFactoryFromProvider.getLastVersion(projectManager.getCurrentProject(), objId , folderPath, type);
+        return getLastRefVersion(projectManager.getCurrentProject(), objId , folderPath, type);
+    }
+    
+    @Override
+    public IRepositoryViewObject getLastRefVersion(Project project, String id, String folderPath, ERepositoryObjectType type) throws PersistenceException {
+        String projectLabel = ProcessUtils.getProjectLabelFromItemId(id);
+        IRepositoryViewObject lastVersion = getLastVersion(project, ProcessUtils.getPureItemId(id), folderPath, type);
+        if (lastVersion == null) {
+            for (Project p : projectManager.getReferencedProjects(project)) {
+                if (projectLabel != null && !projectLabel.equals(p.getTechnicalLabel())) {
+                    continue;
+                }
+                lastVersion = getLastRefVersion(p, id);
+                if (lastVersion != null) {
+                    break;
+                }
+            }
+        }
+        return lastVersion;
     }
 
     @Override
@@ -1558,14 +1598,15 @@ public final class ProxyRepositoryFactory implements IProxyRepositoryFactory {
 
     @Override
     public void save(Project project, Item item, boolean... isMigrationTask) throws PersistenceException {
-        this.repositoryFactoryFromProvider.save(project, item);
         if (isMigrationTask == null || isMigrationTask.length == 0 || !isMigrationTask[0]) {
+            this.repositoryFactoryFromProvider.save(project, item);
             boolean avoidGenerateProm = false;
             if (isMigrationTask != null && isMigrationTask.length == 2) {
                 avoidGenerateProm = isMigrationTask[1];
             }
             fireRepositoryPropertyChange(ERepositoryActionName.SAVE.getName(), avoidGenerateProm, item);
-
+        } else {
+            this.repositoryFactoryFromProvider.save(project, item, true);
         }
     }
 
