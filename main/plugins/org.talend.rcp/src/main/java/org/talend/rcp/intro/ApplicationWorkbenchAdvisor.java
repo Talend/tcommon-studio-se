@@ -27,6 +27,7 @@ import org.eclipse.ui.application.IWorkbenchWindowConfigurer;
 import org.eclipse.ui.application.WorkbenchWindowAdvisor;
 import org.eclipse.ui.internal.ide.application.IDEWorkbenchAdvisor;
 import org.talend.commons.utils.system.EclipseCommandLine;
+import org.talend.commons.utils.time.TimeMeasurePerformance;
 import org.talend.core.GlobalServiceRegister;
 import org.talend.core.repository.utils.LoginTaskRegistryReader;
 import org.talend.core.ui.branding.IBrandingConfiguration;
@@ -125,6 +126,8 @@ public class ApplicationWorkbenchAdvisor extends IDEWorkbenchAdvisor {
     public void postStartup() {
         super.postStartup();
 
+        TimeMeasurePerformance.afterStartup();
+        
         if (!ArrayUtils.contains(Platform.getApplicationArgs(), EclipseCommandLine.TALEND_DISABLE_LOGINDIALOG_COMMAND)) {
             RegisterManagement.getInstance().validateRegistration();
         }
