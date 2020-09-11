@@ -976,7 +976,7 @@ public class NodeUtil {
             }
         }
         
-        if("".equals(value)) {
+        if("".equals(value) || "\"\"".equals(value)) {
             return "\"\"";
         } else if("null".equals(value)) {
             return "(Object)null";
@@ -1005,8 +1005,14 @@ public class NodeUtil {
         //suppose all memo fields are processed well already, no need to go though this with dangerous
         if (!isMemo && !org.talend.core.model.utils.ContextParameterUtils.isDynamic(value)) {
             if(value.length() > 1 && value.startsWith("\"") && value.endsWith("\"")) {
-                //do nothing if quote already
-                return value;
+                if(itemFromTable && "ARGS".equals(ep.getName())) {
+                    value = value.substring(1, value.length());
+                    value = value.substring(0, value.length() - 1);
+                    return "\"" + checkStringQuotationMarks(value) + "\"";
+                } else {
+                    //do nothing
+                    return value;
+                }
             } else {
             	return "\"" + checkStringQuotationMarks(value) + "\"";
             }
