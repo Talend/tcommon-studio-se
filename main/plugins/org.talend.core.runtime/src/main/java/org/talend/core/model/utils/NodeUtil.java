@@ -48,6 +48,7 @@ import org.talend.core.model.process.INodeConnector;
 import org.talend.core.model.process.IProcess;
 import org.talend.core.model.process.IProcess2;
 import org.talend.core.model.process.ProcessUtils;
+import org.talend.core.model.properties.Property;
 import org.talend.core.runtime.IAdditionalInfo;
 import org.talend.core.runtime.projectsetting.RuntimeLineageManager;
 import org.talend.designer.core.ICamelDesignerCoreService;
@@ -1402,9 +1403,7 @@ public class NodeUtil {
 
     public static boolean isJobUsingRuntimeLineage(IProcess process) {
         // Just support DI jobs now
-        boolean isSupport = process != null && process instanceof IProcess2
-                && ComponentCategory.CATEGORY_4_DI.getName().equals(process.getComponentsType())
-                && !ProcessUtils.isTestContainer(process);
+        boolean isSupport = isStandardJob(process) && !ProcessUtils.isTestContainer(process) && !isGuessSchemaJob(process);
         if (!isSupport) {
             return false;
         }
@@ -1416,5 +1415,22 @@ public class NodeUtil {
             runtimeLineageManager.load();
         }
         return runtimeLineageManager.isRuntimeLineageSetting(process.getId());
+    }
+
+    public static boolean isStandardJob(IProcess process) {
+        if (process != null && process instanceof IProcess2) {
+            Property property = ((IProcess2) process).getProperty();
+            return property != null && property.getItem() != null
+                    && ComponentCategory.CATEGORY_4_DI.getName().equals(process.getComponentsType());
+        }
+        return false;
+    }
+
+    public static boolean isGuessSchemaJob(IProcess process) {
+        if (process != null && process instanceof IProcess2) {
+            Property property = ((IProcess2) process).getProperty();
+            return property != null && "ID".equals(property.getId()) && "Mock_job_for_Guess_schema".equals(property.getLabel()); //$NON-NLS-1$ //$NON-NLS-2$
+        }
+        return false;
     }
 }
