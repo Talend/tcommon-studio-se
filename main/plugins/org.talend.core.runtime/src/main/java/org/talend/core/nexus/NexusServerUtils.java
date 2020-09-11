@@ -370,4 +370,37 @@ public class NexusServerUtils {
 
     }
 
+    public static List<MavenArtifact> search(String nexusUrl, String userName, String password, String repositoryId, String name)
+            throws Exception {
+        List<MavenArtifact> artifacts = new ArrayList<MavenArtifact>();
+
+        int totalCount = 0;
+        String service = NexusConstants.SERVICES_SEARCH + getSearchQuery(repositoryId, null, null, null, 0, MAX_SEARCH_COUNT)
+                + "&q=" + name;
+
+        URI requestURI = getSearchURI(nexusUrl, service);
+        Document document = downloadDocument(requestURI, userName, password);
+        if (document != null) {
+            Node countNode = document.selectSingleNode("/searchNGResponse/totalCount");
+            if (countNode != null) {
+                try {
+                    totalCount = Integer.parseInt(countNode.getText());
+                } catch (NumberFormatException e) {
+                    totalCount = 0;
+                }
+            }
+            int searchDone = readDocument(document, artifacts);
+            while (searchDone < totalCount) {
+                service = NexusConstants.SERVICES_SEARCH
+                        + getSearchQuery(repositoryId, null, null, null, searchDone, MAX_SEARCH_COUNT) + "&q=" + name;
+                requestURI = getSearchURI(nexusUrl, service);
+
+                document = downloadDocument(requestURI, userName, password);
+                searchDone = searchDone + readDocument(document, artifacts);
+            }
+        }
+
+        return artifacts;
+    }
+
 }

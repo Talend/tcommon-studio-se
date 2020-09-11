@@ -16,7 +16,10 @@ Require-Bundle: org.eclipse.core.runtime,
  org.talend.commons.ui,
  org.talend.core.runtime,
  org.talend.librariesmanager,
- org.talend.designer.maven
+ org.talend.designer.maven,
+ org.apache.commons.io,
+ org.eclipse.m2e.core,
+ org.eclipse.m2e.maven.runtime
 Bundle-ActivationPolicy: lazy
 Export-Package: org.talend.librariesmanager.ui,
  org.talend.librariesmanager.ui.dialogs,
