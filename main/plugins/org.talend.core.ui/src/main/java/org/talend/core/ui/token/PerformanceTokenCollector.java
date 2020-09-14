@@ -15,6 +15,7 @@ package org.talend.core.ui.token;
 import java.util.Properties;
 
 import org.talend.commons.utils.time.PerformanceStatisticUtil;
+import org.talend.commons.utils.time.PerformanceStatisticUtil.StatisticKeys;
 
 import oshi.SystemInfo;
 import oshi.hardware.Baseboard;
@@ -57,10 +58,12 @@ public class PerformanceTokenCollector extends AbstractTokenCollector {
         //
         JSONObject jsonObjectIOInfo = new JSONObject();
         Properties props = PerformanceStatisticUtil.read(PerformanceStatisticUtil.getRecordingFile(),false);
-        jsonObjectIOInfo.put(PerformanceStatisticUtil.StatisticKeys.STARTUP_AVERAGE.get(), props.getProperty(PerformanceStatisticUtil.StatisticKeys.STARTUP_AVERAGE.get()) + " s");
-        jsonObjectIOInfo.put(PerformanceStatisticUtil.StatisticKeys.STARTUP_MAX.get(), props.getProperty(PerformanceStatisticUtil.StatisticKeys.STARTUP_MAX.get()) + " s");
-        jsonObjectIOInfo.put(PerformanceStatisticUtil.StatisticKeys.IO_R_AVERAGE_MB_SEC.get(), props.getProperty(PerformanceStatisticUtil.StatisticKeys.IO_R_AVERAGE_MB_SEC.get()) + " MB/s");
-        jsonObjectIOInfo.put(PerformanceStatisticUtil.StatisticKeys.IO_W_AVERAGE_MB_SEC.get(), props.getProperty(PerformanceStatisticUtil.StatisticKeys.IO_W_AVERAGE_MB_SEC.get()) + " MB/s");
+        jsonObjectIOInfo.put(StatisticKeys.STARTUP_AVERAGE.get(), props.getProperty(StatisticKeys.STARTUP_AVERAGE.get()));
+        jsonObjectIOInfo.put(StatisticKeys.STARTUP_MAX.get(), props.getProperty(StatisticKeys.STARTUP_MAX.get()) + " s");
+        jsonObjectIOInfo.put(StatisticKeys.IO_R_MB_SEC.get(), props.getProperty(StatisticKeys.IO_R_MB_SEC.get()));
+        jsonObjectIOInfo.put(StatisticKeys.IO_R_AVERAGE_MB_SEC.get(), props.getProperty(StatisticKeys.IO_R_AVERAGE_MB_SEC.get()));
+        jsonObjectIOInfo.put(StatisticKeys.IO_W_MB_SEC.get(), props.getProperty(StatisticKeys.IO_W_MB_SEC.get()));
+        jsonObjectIOInfo.put(StatisticKeys.IO_W_AVERAGE_MB_SEC.get(), props.getProperty(StatisticKeys.IO_W_AVERAGE_MB_SEC.get()));
         tokenStudioObject.put("performance", jsonObjectIOInfo);
         
         return tokenStudioObject;
