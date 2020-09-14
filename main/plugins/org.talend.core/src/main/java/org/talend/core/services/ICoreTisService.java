@@ -26,6 +26,7 @@ import org.talend.commons.exception.SystemException;
 import org.talend.core.IService;
 import org.talend.core.model.general.Project;
 import org.talend.core.model.process.INode;
+import org.talend.core.model.properties.Property;
 import org.talend.core.runtime.maven.MavenArtifact;
 
 /**
@@ -78,4 +79,5 @@ public interface ICoreTisService extends IService {
 
     Set<String> getComponentBlackList();
     
+    public void signAfterImport (Property property) throws PersistenceException;  
 }
