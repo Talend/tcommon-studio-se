@@ -742,9 +742,9 @@ public class LocalLibraryManagerTest {
     @Test
     public void testCheckModuleStatus() throws URISyntaxException, IOException {
         // test a existing apach jar
-        String urlPath = "platform:/plugin/org.talend.libraries.apache.common/lib/commons-lang3-3.0.jar";
-        String mvnURI = "mvn:org.talend.libraries/commons-lang3-3.0/6.0.0/jar";
-        ModuleNeeded module = new ModuleNeeded("test", "commons-lang3-3.0.jar", "test", true, null, null, mvnURI);
+        String urlPath = "platform:/plugin/org.talend.libraries.apache.common/lib/commons-text-1.1.jar";
+        String mvnURI = "mvn:org.talend.libraries/commons-text-1.1/6.0.0/jar";
+        ModuleNeeded module = new ModuleNeeded("test", "commons-text-1.1.jar", "test", true, null, null, mvnURI);
         module.setModuleLocaion(urlPath);
         localLibraryManager.checkModuleStatus(module);
         Assert.assertEquals(module.getStatus(), ELibraryInstallStatus.INSTALLED);
