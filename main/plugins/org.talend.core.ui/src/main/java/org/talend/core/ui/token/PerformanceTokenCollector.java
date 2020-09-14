@@ -59,7 +59,7 @@ public class PerformanceTokenCollector extends AbstractTokenCollector {
         JSONObject jsonObjectIOInfo = new JSONObject();
         Properties props = PerformanceStatisticUtil.read(PerformanceStatisticUtil.getRecordingFile(),false);
         jsonObjectIOInfo.put(StatisticKeys.STARTUP_AVERAGE.get(), props.getProperty(StatisticKeys.STARTUP_AVERAGE.get()));
-        jsonObjectIOInfo.put(StatisticKeys.STARTUP_MAX.get(), props.getProperty(StatisticKeys.STARTUP_MAX.get()) + " s");
+        jsonObjectIOInfo.put(StatisticKeys.STARTUP_MAX.get(), props.getProperty(StatisticKeys.STARTUP_MAX.get()));
         jsonObjectIOInfo.put(StatisticKeys.IO_R_MB_SEC.get(), props.getProperty(StatisticKeys.IO_R_MB_SEC.get()));
         jsonObjectIOInfo.put(StatisticKeys.IO_R_AVERAGE_MB_SEC.get(), props.getProperty(StatisticKeys.IO_R_AVERAGE_MB_SEC.get()));
         jsonObjectIOInfo.put(StatisticKeys.IO_W_MB_SEC.get(), props.getProperty(StatisticKeys.IO_W_MB_SEC.get()));
