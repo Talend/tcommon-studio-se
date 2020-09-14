@@ -177,6 +177,14 @@ public class PerformanceStatisticUtil {
     }
 
     public static void measureIO() {
+        new Thread()  {
+            public void run() {
+                _measureIO();
+            }
+        }.start();
+    }
+
+    private static void _measureIO() {
         File file = getRecordingFile();
         Properties props = read(file, true);
 
