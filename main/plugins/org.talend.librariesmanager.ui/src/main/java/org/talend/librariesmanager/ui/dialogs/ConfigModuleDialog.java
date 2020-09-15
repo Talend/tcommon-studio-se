@@ -199,7 +199,7 @@ public class ConfigModuleDialog extends TitleAreaDialog implements IConfigModule
     protected Control createContents(Composite parent) {
         Control control = super.createContents(parent);
         setPlatformGroupEnabled(true);
-        validateInputForPlatform();
+        validateInputFields();
         setInstallNewGroupEnabled(false);
         setRepositoryGroupEnabled(false);
         return control;
@@ -263,7 +263,7 @@ public class ConfigModuleDialog extends TitleAreaDialog implements IConfigModule
                 setPlatformGroupEnabled(true);
                 setInstallNewGroupEnabled(false);
                 setRepositoryGroupEnabled(false);
-                if (validateInputForPlatform()) {
+                if (validateInputFields()) {
                     setupMavenURIforPlatform();
                 }
             }
@@ -296,9 +296,7 @@ public class ConfigModuleDialog extends TitleAreaDialog implements IConfigModule
 
             @Override
             public void modifyText(ModifyEvent e) {
-                if (validateInputForPlatform()) {
-                    setupMavenURIforPlatform();
-                }
+                setupMavenURIforPlatform();
             }
         });
 
@@ -308,9 +306,7 @@ public class ConfigModuleDialog extends TitleAreaDialog implements IConfigModule
         platfromRadioBtn.setSelection(enable);
         platformCombo.setEnabled(enable);
         if (enable) {
-            if (validateInputForPlatform()) {
-                setupMavenURIforPlatform();
-            }
+            setupMavenURIforPlatform();
             useCustomBtn.setEnabled(false);
             customUriText.setEnabled(false);
             setMessage(Messages.getString("ConfigModuleDialog.message", moduleName), IMessageProvider.INFORMATION);
@@ -400,7 +396,7 @@ public class ConfigModuleDialog extends TitleAreaDialog implements IConfigModule
 
             @Override
             public void modifyText(ModifyEvent e) {
-                validateInputForSearch();
+                validateInputFields();
             }
         });
 
@@ -438,13 +434,7 @@ public class ConfigModuleDialog extends TitleAreaDialog implements IConfigModule
 
             @Override
             public void modifyText(ModifyEvent e) {
-                if (validateInputForSearch()) {
-                    moduleName = searchResultCombo.getText();
-                    @SuppressWarnings("unchecked")
-                    Map<String, MavenArtifact> data = (Map<String, MavenArtifact>) searchResultCombo.getData();
-                    MavenArtifact art = data.get(moduleName);
-                    setupMavenURIByArtifact(art);
-                }
+                setupMavenURIforSearch();
             }
         });
 
@@ -455,12 +445,15 @@ public class ConfigModuleDialog extends TitleAreaDialog implements IConfigModule
         browseButton.setEnabled(enable);
         if (enable) {
             moduleName = new File(jarPathTxt.getText()).getName();
-            setupMavenURIByModuleName(moduleName);
+            try {
+                setupMavenURIforInstall();
+            } catch (Exception e) {
+                ExceptionHandler.process(e);
+            }
             useCustomBtn.setEnabled(true);
             if (useCustomBtn.getSelection()) {
                 customUriText.setEnabled(true);
             }
-            validateInputFields();
         }
     }
 
@@ -470,10 +463,9 @@ public class ConfigModuleDialog extends TitleAreaDialog implements IConfigModule
         searchRemoteBtn.setEnabled(enable);
         searchResultCombo.setEnabled(enable);
         if (enable) {
-            moduleName = nameTxt.getText().trim();
+            setupMavenURIforSearch();
             useCustomBtn.setEnabled(false);
             customUriText.setEnabled(false);
-            validateInputFields();
         }
     }
 
@@ -519,7 +511,7 @@ public class ConfigModuleDialog extends TitleAreaDialog implements IConfigModule
                 } else {
                     customUriText.setEnabled(false);
                 }
-                validateInputForInstall();
+                validateInputFields();
             }
         });
 
@@ -546,6 +538,7 @@ public class ConfigModuleDialog extends TitleAreaDialog implements IConfigModule
     }
 
     private void handleButtonPressed() {
+        useCustomBtn.setSelection(false);
         FileDialog dialog = new FileDialog(getShell());
         dialog.setText(Messages.getString("ConfigModuleDialog.install.message", moduleName)); //$NON-NLS-1$
 
@@ -575,24 +568,7 @@ public class ConfigModuleDialog extends TitleAreaDialog implements IConfigModule
                     @Override
                     public void run() {
                         try {
-                            validateInputFields();
-                            MavenArtifact art = JarDetector.parse(file);
-                            if (art != null) {
-                                String mvnUrl = MavenUrlHelper.generateMvnUrl(art);
-                                defaultUriTxt.setText(mvnUrl);
-                            } else {
-                                defaultUriTxt.setText("");
-                            }
-                            if (StringUtils.isEmpty(defaultUriTxt.getText())) {
-                                // default uri is empty
-                                useCustomBtn.setSelection(true);
-                                customUriText.setEnabled(true);
-                                customUriText.setText(ModuleMavenURIUtils.MVNURI_TEMPLET);
-                            } else {
-                                useCustomBtn.setSelection(false);
-                                customUriText.setEnabled(false);
-                                customUriText.setText("");
-                            }
+                            setupMavenURIforInstall();
                         } catch (Exception e) {
                             ExceptionHandler.process(e);
                         }
@@ -902,46 +878,57 @@ public class ConfigModuleDialog extends TitleAreaDialog implements IConfigModule
         }
     }
 
-    private void setupMavenURIByModuleName(String moduleName) {
-        ModuleNeeded moduel = new ModuleNeeded("", moduleName, "", true);
-        if (StringUtils.isEmpty(moduel.getModuleName())) {
-            defaultUriTxt.setText("");
-            useCustomBtn.setSelection(false);
-            customUriText.setEnabled(false);
-            customUriText.setText("");
-            defaultURIValue = "";
-            cusormURIValue = "";
-            return;
+    private void setupMavenURIforSearch() {
+        if (validateInputFields()) {
+            @SuppressWarnings("unchecked")
+            Map<String, MavenArtifact> data = (Map<String, MavenArtifact>) searchResultCombo.getData();
+            if (data != null && data.get(moduleName) != null) {
+                MavenArtifact art = data.get(moduleName);
+                defaultURIValue = MavenUrlHelper.generateMvnUrl(art);
+                defaultUriTxt.setText(defaultURIValue);
+            }
         }
-        defaultURIValue = moduel.getDefaultMavenURI();
-        cusormURIValue = moduel.getCustomMavenUri();
-        if (cusormURIValue == null) {
-            cusormURIValue = "";
-        }
-        defaultUriTxt.setText(moduel.getDefaultMavenURI() == null ? "" : moduel.getDefaultMavenURI());
-        boolean useCustom = !StringUtils.isEmpty(cusormURIValue);
-        useCustomBtn.setSelection(useCustom);
-        // customUriText.setEnabled(useCustom);
-        customUriText.setText(cusormURIValue);
-    }
-
-    private void setupMavenURIByArtifact(MavenArtifact art) {
-        defaultURIValue = MavenUrlHelper.generateMvnUrl(art);
-        defaultUriTxt.setText(defaultURIValue);
         boolean useCustom = !StringUtils.isEmpty(cusormURIValue);
         useCustomBtn.setSelection(useCustom);
         customUriText.setText(cusormURIValue);
     }
 
     private void setupMavenURIforPlatform() {
-        Map<String, ModuleNeeded> data = (Map<String, ModuleNeeded>) platformCombo.getData();
-        if (data != null && data.get(moduleName) != null) {
-            ModuleNeeded mod = data.get(moduleName);
-            defaultUriTxt.setText(mod.getMavenUri());
+        if (validateInputFields()) {
+            @SuppressWarnings("unchecked")
+            Map<String, ModuleNeeded> data = (Map<String, ModuleNeeded>) platformCombo.getData();
+            if (data != null && data.get(moduleName) != null) {
+                ModuleNeeded mod = data.get(moduleName);
+                defaultUriTxt.setText(mod.getMavenUri());
+            }
         }
         boolean useCustom = !StringUtils.isEmpty(cusormURIValue);
         useCustomBtn.setSelection(useCustom);
         customUriText.setText(cusormURIValue);
+    }
+
+    private void setupMavenURIforInstall() throws Exception {
+        if (validateInputFields()) {
+            String filePath = jarPathTxt.getText().trim();
+            File file = new File(filePath);
+            MavenArtifact art = JarDetector.parse(file);
+            if (art != null) {
+                String mvnUrl = MavenUrlHelper.generateMvnUrl(art);
+                defaultUriTxt.setText(mvnUrl);
+            } else {
+                defaultUriTxt.setText("");
+            }
+            if (StringUtils.isEmpty(defaultUriTxt.getText())) {
+                // default uri is empty
+                useCustomBtn.setSelection(true);
+                customUriText.setEnabled(true);
+                customUriText.setText(ModuleMavenURIUtils.MVNURI_TEMPLET);
+            } else {
+                useCustomBtn.setSelection(false);
+                customUriText.setEnabled(false);
+                customUriText.setText("");
+            }
+        }
     }
 
 }
