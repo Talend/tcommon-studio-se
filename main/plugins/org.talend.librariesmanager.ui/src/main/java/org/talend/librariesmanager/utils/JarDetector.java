@@ -58,7 +58,6 @@ public class JarDetector {
                             InputSource is = new InputSource(reader);
                             is.setEncoding("UTF-8");
                             doc = docBuilder.parse(is);
-                            break;
                         }
                     }
                     if (StringUtils.contains(fname, "META-INF") && fname.endsWith("pom.properties")) {

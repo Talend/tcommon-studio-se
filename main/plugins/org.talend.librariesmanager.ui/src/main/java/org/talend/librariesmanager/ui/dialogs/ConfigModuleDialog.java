@@ -553,6 +553,9 @@ public class ConfigModuleDialog extends TitleAreaDialog implements IConfigModule
         }
 
         String result = dialog.open();
+        if (result == null) {
+            return;
+        }
         this.jarPathTxt.setText(result);
         File file = new File(result);
         moduleName = file.getName();
@@ -609,7 +612,11 @@ public class ConfigModuleDialog extends TitleAreaDialog implements IConfigModule
                             searchResultCombo.setData(data);
                             if (items.length > 0) {
                                 searchResultCombo.setItems(items);
+                                searchResultCombo.setText(searchResultCombo.getItem(0));
                                 resultField.setProposals(items);
+                            } else {
+                                setMessage(Messages.getString("ConfigModuleDialog.search.noModules", name),
+                                        IMessageProvider.ERROR);
                             }
                         } catch (Exception e) {
                             ExceptionHandler.process(e);
@@ -674,6 +681,18 @@ public class ConfigModuleDialog extends TitleAreaDialog implements IConfigModule
                 setMessage(errorMessage, IMessageProvider.ERROR);
                 return false;
             }
+        } else if (StringUtils.isEmpty(originalText)) {
+            return false;
+        }
+
+        setMessage(Messages.getString("InstallModuleDialog.message"), IMessageProvider.INFORMATION);
+        return true;
+    }
+
+    private boolean validateInputForInstallPre() {
+        if (!new File(jarPathTxt.getText()).exists()) {
+            setMessage(Messages.getString("InstallModuleDialog.error.jarPath"), IMessageProvider.ERROR);
+            return false;
         }
 
         setMessage(Messages.getString("InstallModuleDialog.message"), IMessageProvider.INFORMATION);
@@ -908,8 +927,8 @@ public class ConfigModuleDialog extends TitleAreaDialog implements IConfigModule
     }
 
     private void setupMavenURIforInstall() throws Exception {
-        if (validateInputFields()) {
-            String filePath = jarPathTxt.getText().trim();
+        if (validateInputForInstallPre()) {
+            String filePath = jarPathTxt.getText();
             File file = new File(filePath);
             MavenArtifact art = JarDetector.parse(file);
             if (art != null) {
@@ -928,6 +947,7 @@ public class ConfigModuleDialog extends TitleAreaDialog implements IConfigModule
                 customUriText.setEnabled(false);
                 customUriText.setText("");
             }
+            validateInputForInstall();
         }
     }
 

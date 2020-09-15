@@ -41,6 +41,9 @@ public class PomParser {
             XPath path = XPathFactory.newInstance().newXPath();
             try {
                 String name = path.evaluate("/project/groupId", this.doc);
+                if (StringUtils.isEmpty(name)) {
+                    name = path.evaluate("/project/parent/groupId", this.doc);
+                }
                 if (!StringUtils.isEmpty(name)) {
                     val = name;
                 }
@@ -73,6 +76,9 @@ public class PomParser {
             XPath path = XPathFactory.newInstance().newXPath();
             try {
                 String name = path.evaluate("/project/version", this.doc);
+                if (StringUtils.isEmpty(name)) {
+                    name = path.evaluate("/project/parent/version", this.doc);
+                }
                 if (!StringUtils.isEmpty(name)) {
                     val = name;
                 }
