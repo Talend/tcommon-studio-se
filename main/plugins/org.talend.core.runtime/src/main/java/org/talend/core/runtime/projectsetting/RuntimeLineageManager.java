@@ -12,7 +12,6 @@
 // ============================================================================
 package org.talend.core.runtime.projectsetting;
 
-import java.io.File;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
@@ -23,7 +22,6 @@ import org.eclipse.core.resources.IFolder;
 import org.eclipse.core.resources.IProject;
 import org.talend.commons.exception.PersistenceException;
 import org.talend.commons.ui.runtime.exception.ExceptionHandler;
-import org.talend.commons.utils.system.EnvironmentUtils;
 import org.talend.commons.utils.workbench.resources.ResourceUtils;
 import org.talend.repository.ProjectManager;
 import org.talend.repository.model.RepositoryConstants;
@@ -64,12 +62,7 @@ public class RuntimeLineageManager {
             prefManager = new ProjectPreferenceManager(RUNTIMELINEAGE_RESOURCES, true);
         }
         useRuntimeLineageAll = prefManager.getBoolean(RUNTIMELINEAGE_ALL);
-        String directory = prefManager.getValue(OUTPUT_PATH);
-        if (EnvironmentUtils.isWindowsSystem() && StringUtils.isNotBlank(directory) && directory.contains("\\")) {
-            outputPath = new File(directory).getAbsolutePath();
-        }else {
-            outputPath = directory;
-        }
+        outputPath = prefManager.getValue(OUTPUT_PATH);
     }
 
     public void load() {
