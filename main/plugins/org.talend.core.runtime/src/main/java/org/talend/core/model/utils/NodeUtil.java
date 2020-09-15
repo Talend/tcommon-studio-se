@@ -46,7 +46,11 @@ import org.talend.core.model.process.IElementParameter;
 import org.talend.core.model.process.INode;
 import org.talend.core.model.process.INodeConnector;
 import org.talend.core.model.process.IProcess;
+import org.talend.core.model.process.IProcess2;
+import org.talend.core.model.process.ProcessUtils;
+import org.talend.core.model.properties.Property;
 import org.talend.core.runtime.IAdditionalInfo;
+import org.talend.core.runtime.projectsetting.RuntimeLineageManager;
 import org.talend.designer.core.ICamelDesignerCoreService;
 
 /**
@@ -866,6 +870,170 @@ public class NodeUtil {
         }
         throw new IllegalArgumentException();
     }
+    
+    
+    public static String getRuntimeParameterValue(INode node, IElementParameter ep) {
+        if (EParameterFieldType.TABLE.equals(ep.getFieldType())) {
+            Map<String, IElementParameter> types = new HashMap<String, IElementParameter>();
+            Object[] itemsValue = ep.getListItemsValue();
+            if (itemsValue != null) {
+                for (Object o : itemsValue) {
+                    IElementParameter cep = (IElementParameter) o;
+                    if (cep.isShow(node.getElementParameters())) {
+                        types.put(cep.getName(), cep);
+                    }
+                }
+            }
+            List<Map<String, String>> lines = (List<Map<String, String>>) ElementParameterParser.getObjectValue(node,
+                    "__" + ep.getName() + "__");
+            StringBuilder value = new StringBuilder();
+            // implement List & Map toString(), different is the value of Map
+            Iterator<Map<String, String>> linesIter = lines.iterator();
+            if (!linesIter.hasNext()) {
+                return "\"[]\"";
+            }
+            value.append("new StringBuilder().append(\"[");
+            for (;;) {
+                Map<String, String> columns = linesIter.next();
+                Iterator<Entry<String, String>> columnsIter = columns.entrySet().iterator();
+
+                value.append("{");
+                Entry<String, String> column = null;
+                boolean printedColumnExist = false;
+                while (columnsIter.hasNext()) {
+                    column = columnsIter.next();
+                    if (types.get(column.getKey()) == null) {
+                        continue;
+                    }
+                    printedColumnExist = true;
+
+                    value.append(column.getKey());
+                    value.append("=\").append(");
+                    value.append(getRuntimeParameterValue(column.getValue(), types.get(column.getKey()), true));
+                    value.append(").append(\"");
+
+                    if (columnsIter.hasNext()) {
+                        value.append(", ");
+                    }
+                }
+                if (printedColumnExist && column != null && (types.get(column.getKey()) == null)) {
+                    value.setLength(value.length() - 2);
+                }
+                value.append("}");
+
+                if (!linesIter.hasNext()) {
+                    return value.append("]\").toString()").toString();
+                }
+                value.append(",").append(" ");
+            }
+        } else {
+            String value = ElementParameterParser.getValue(node, "__" + ep.getName() + "__");
+            if (EParameterFieldType.TABLE_BY_ROW.equals(ep.getFieldType())) {
+                value = ep.getValue().toString();
+            }
+            return getRuntimeParameterValue(value, ep, false);
+        }
+    }
+    
+    private static String getRuntimeParameterValue(String value, IElementParameter ep, boolean itemFromTable) {
+        if (value == null) {
+            value = "";
+        }
+        
+        value = value.trim();
+        
+        boolean isMemo = false;
+        
+        List<EParameterFieldType> needRemoveCRLFList = Arrays.asList(EParameterFieldType.MEMO, EParameterFieldType.MEMO_JAVA,
+                EParameterFieldType.MEMO_SQL, EParameterFieldType.MEMO_IMPORT, EParameterFieldType.MEMO_MESSAGE);
+        if (needRemoveCRLFList.contains(ep.getFieldType())) {
+            isMemo = true;
+            value = value.replaceAll("[\r\n]", " ");
+        }
+        
+        List<EParameterFieldType> needQuoteList = Arrays.asList(EParameterFieldType.CLOSED_LIST,
+                EParameterFieldType.COMPONENT_LIST, EParameterFieldType.COLUMN_LIST, EParameterFieldType.PREV_COLUMN_LIST,
+                EParameterFieldType.CONNECTION_LIST, EParameterFieldType.LOOKUP_COLUMN_LIST,
+                EParameterFieldType.CONTEXT_PARAM_NAME_LIST, EParameterFieldType.PROCESS_TYPE, EParameterFieldType.COLOR,
+                EParameterFieldType.TABLE_BY_ROW, EParameterFieldType.HADOOP_JARS_DIALOG, EParameterFieldType.UNIFIED_COMPONENTS);
+        List<EParameterFieldType> needQuoteListForItem = itemFromTable ? Arrays.asList(EParameterFieldType.SCHEMA_TYPE,
+                EParameterFieldType.SAP_SCHEMA_TYPE, EParameterFieldType.MODULE_LIST) : new ArrayList<EParameterFieldType>();
+        // TODO: add RAW attribute when SCHEMA_COLUMN generated by BASED_ON_SCHEMA
+        List<String> needQuoteListByName = Arrays.asList("SCHEMA_COLUMN");// SCHEMA_COLUMN for BASED_ON_SCHEMA="true"
+
+        if (needQuoteList.contains(ep.getFieldType()) || needQuoteListForItem.contains(ep.getFieldType())
+                || needQuoteListByName.contains(ep.getName()) || ep.isRaw()) {
+            value = value.replaceAll("\\\\", "\\\\\\\\");
+            value = value.replaceAll("\\\"", "\\\\\\\"");
+            return "\"" + value + "\"";
+        }
+
+        if (itemFromTable) {
+            if ("*".equals(value)) {
+                return "\"" + value + "\"";
+            }
+            if (value.endsWith(";")) {
+                value = value.substring(0, value.length() - 1);
+            }
+        }
+        
+        if("".equals(value) || "\"\"".equals(value)) {
+            return "\"\"";
+        } else if("null".equals(value)) {
+            return "(Object)null";
+        }
+        
+        // copied it from Log4jFileUtil.javajet but need more comment for this script
+        if ("\"\\n\"".equals(value) || "\"\\r\"".equals(value) || "\"\\r\\n\"".equals(value)) {
+            // for the value is "\n" "\r" "\r\n"
+            return value.replaceAll("\\\\", "\\\\\\\\");
+        } else if ("\"\"\"".equals(value)) {
+            return "\"" + "\\" + "\"" + "\"";
+        } else if ("\"\"\\r\\n\"\"".equals(value)) {
+            return "\"\\\\r\\\\n\"";
+        } else if ("\"\"\\r\"\"".equals(value)) {
+            return "\"\\\\r\"";
+        } else if ("\"\"\\n\"\"".equals(value)) {
+            return "\"\\\\n\"";
+        }
+        // ftom 20141008 - patch to fix javajet compilation errors due to hard-coded studio TableEditor mechanism
+        // linked to BUILDIN properties checks, this item is a boolean set to TRUE or FALSE
+        // fix is just transforming into true or false to make logging OK
+        else if ("BUILDIN".equals(ep.getName())) {
+            return value.toLowerCase();
+        }
+        
+        //suppose all memo fields are processed well already, no need to go though this with dangerous
+        if (!isMemo && !org.talend.core.model.utils.ContextParameterUtils.isDynamic(value)) {
+            if(value.length() > 1 && value.startsWith("\"") && value.endsWith("\"")) {
+                if(itemFromTable && "ARGS".equals(ep.getName())) {
+                    value = value.substring(1, value.length());
+                    value = value.substring(0, value.length() - 1);
+                    return "\"" + checkStringQuotationMarks(value) + "\"";
+                } else {
+                    //do nothing
+                    return value;
+                }
+            } else {
+            	return "\"" + checkStringQuotationMarks(value) + "\"";
+            }
+        }
+        
+        //TODO remove it
+        if (value.endsWith("*")) {
+            return value.substring(0, value.length() - 1) + "\"*\"";
+        }
+        
+        return value;
+    }
+    
+    private static String checkStringQuotationMarks(String str) {
+        String result = str;
+        if (result.contains("\"")) {
+            result = result.replace("\"", "\\\"");
+        }
+        return result;
+    }
 
     public static String getNormalizeParameterValue(INode node, IElementParameter ep) {
         if (EParameterFieldType.TABLE.equals(ep.getFieldType())) {
@@ -1189,7 +1357,7 @@ public class NodeUtil {
         } else if (ComponentCategory.CATEGORY_4_CAMEL.getName().equals(node.getComponent().getType())) {
             INodeConnector tmp = null;
             if (GlobalServiceRegister.getDefault().isServiceRegistered(ICamelDesignerCoreService.class)) {
-                ICamelDesignerCoreService camelService = (ICamelDesignerCoreService) GlobalServiceRegister.getDefault()
+                ICamelDesignerCoreService camelService = GlobalServiceRegister.getDefault()
                         .getService(ICamelDesignerCoreService.class);
                 tmp = node.getConnectorFromType(camelService.getTargetConnectionType(node));
             } else {
@@ -1231,5 +1399,38 @@ public class NodeUtil {
         }
 
         return true;
+    }
+
+    public static boolean isJobUsingRuntimeLineage(IProcess process) {
+        // Just support DI jobs now
+        boolean isSupport = isStandardJob(process) && !ProcessUtils.isTestContainer(process) && !isGuessSchemaJob(process);
+        if (!isSupport) {
+            return false;
+        }
+        RuntimeLineageManager runtimeLineageManager = new RuntimeLineageManager();
+        if (runtimeLineageManager.isUseRuntimeLineageAll()) {
+            return true;
+        }
+        if (runtimeLineageManager.getSelectedJobIds().isEmpty()) {
+            runtimeLineageManager.load();
+        }
+        return runtimeLineageManager.isRuntimeLineageSetting(process.getId());
+    }
+
+    public static boolean isStandardJob(IProcess process) {
+        if (process != null && process instanceof IProcess2) {
+            Property property = ((IProcess2) process).getProperty();
+            return property != null && property.getItem() != null
+                    && ComponentCategory.CATEGORY_4_DI.getName().equals(process.getComponentsType());
+        }
+        return false;
+    }
+
+    public static boolean isGuessSchemaJob(IProcess process) {
+        if (process != null && process instanceof IProcess2) {
+            Property property = ((IProcess2) process).getProperty();
+            return property != null && "ID".equals(property.getId()) && "Mock_job_for_Guess_schema".equals(property.getLabel()); //$NON-NLS-1$ //$NON-NLS-2$
+        }
+        return false;
     }
 }
