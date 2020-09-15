@@ -270,11 +270,13 @@ public class ConfigModuleDialog extends TitleAreaDialog implements IConfigModule
         });
 
         jarsAvailable = new HashSet<String>();
+        Map<String, ModuleNeeded> data = new HashMap<String, ModuleNeeded>();
         Set<ModuleNeeded> unUsedModules = ModulesNeededProvider.getAllManagedModules();
         for (ModuleNeeded module : unUsedModules) {
             if (module.getStatus() == ELibraryInstallStatus.INSTALLED) {
                 jarsAvailable.add(module.getModuleName());
             }
+            data.put(module.getModuleName(), module);
         }
         String[] moduleValueArray = jarsAvailable.toArray(new String[jarsAvailable.size()]);
         Comparator<String> comprarator = new Comparator<String>() {
@@ -286,6 +288,7 @@ public class ConfigModuleDialog extends TitleAreaDialog implements IConfigModule
         };
         Arrays.sort(moduleValueArray, comprarator);
         platformCombo.setItems(moduleValueArray);
+        platformCombo.setData(data);
 
         new AutoCompleteField(platformCombo, new ComboContentAdapter(), moduleValueArray);
 
@@ -293,9 +296,9 @@ public class ConfigModuleDialog extends TitleAreaDialog implements IConfigModule
 
             @Override
             public void modifyText(ModifyEvent e) {
-                moduleName = platformCombo.getText();
-                setupMavenURIByModuleName(moduleName);
-                validateInputForPlatform();
+                if (validateInputForPlatform()) {
+                    setupMavenURIforPlatform();
+                }
             }
         });
 
@@ -305,7 +308,7 @@ public class ConfigModuleDialog extends TitleAreaDialog implements IConfigModule
         platfromRadioBtn.setSelection(enable);
         platformCombo.setEnabled(enable);
         if (enable) {
-            setupMavenURIByModuleName(moduleName);
+            setupMavenURIforPlatform();
             useCustomBtn.setEnabled(false);
             customUriText.setEnabled(false);
             validateInputFields();
@@ -570,8 +573,12 @@ public class ConfigModuleDialog extends TitleAreaDialog implements IConfigModule
                     public void run() {
                         try {
                             MavenArtifact art = JarDetector.parse(file);
-                            String mvnUrl = MavenUrlHelper.generateMvnUrl(art);
-                            defaultUriTxt.setText(mvnUrl);
+                            if (art != null) {
+                                String mvnUrl = MavenUrlHelper.generateMvnUrl(art);
+                                defaultUriTxt.setText(mvnUrl);
+                            } else {
+                                defaultUriTxt.setText("");
+                            }
                             if (StringUtils.isEmpty(defaultUriTxt.getText())) {
                                 // default uri is empty
                                 useCustomBtn.setSelection(true);
@@ -918,6 +925,17 @@ public class ConfigModuleDialog extends TitleAreaDialog implements IConfigModule
     private void setupMavenURIByArtifact(MavenArtifact art) {
         defaultURIValue = MavenUrlHelper.generateMvnUrl(art);
         defaultUriTxt.setText(defaultURIValue);
+        boolean useCustom = !StringUtils.isEmpty(cusormURIValue);
+        useCustomBtn.setSelection(useCustom);
+        customUriText.setText(cusormURIValue);
+    }
+
+    private void setupMavenURIforPlatform() {
+        Map<String, ModuleNeeded> data = (Map<String, ModuleNeeded>) platformCombo.getData();
+        if (data != null && data.get(moduleName) != null) {
+            ModuleNeeded mod = data.get(moduleName);
+            defaultUriTxt.setText(mod.getMavenUri());
+        }
         boolean useCustom = !StringUtils.isEmpty(cusormURIValue);
         useCustomBtn.setSelection(useCustom);
         customUriText.setText(cusormURIValue);
