@@ -505,13 +505,15 @@ public class ConfigModuleDialog extends TitleAreaDialog implements IConfigModule
                     // show the warning if useCustomBtn select/deselect
                     layoutWarningComposite(false, defaultUriTxt.getText());
                     customUriText.setEnabled(true);
-                    if ("".equals(customUriText.getText())) {
-                        customUriText.setText(ModuleMavenURIUtils.MVNURI_TEMPLET);
+                    try {
+                        setupMavenURIforInstall();
+                    } catch (Exception e1) {
+                        ExceptionHandler.process(e1);
                     }
                 } else {
                     customUriText.setEnabled(false);
+                    validateInputFields();
                 }
-                validateInputFields();
             }
         });
 
@@ -941,13 +943,17 @@ public class ConfigModuleDialog extends TitleAreaDialog implements IConfigModule
                 // default uri is empty
                 useCustomBtn.setSelection(true);
                 customUriText.setEnabled(true);
-                customUriText.setText(ModuleMavenURIUtils.MVNURI_TEMPLET);
-            } else {
-                useCustomBtn.setSelection(false);
-                customUriText.setEnabled(false);
-                customUriText.setText("");
+                setupCustomMavenURIforInstall();
             }
-            validateInputForInstall();
+        }
+        validateInputFields();
+    }
+
+    private void setupCustomMavenURIforInstall() throws Exception {
+        if (validateInputForInstallPre()) {
+            String filePath = jarPathTxt.getText();
+            String mvnUri = ConfigModuleHelper.getCustomURI(filePath);
+            customUriText.setText(mvnUri);
         }
     }
 

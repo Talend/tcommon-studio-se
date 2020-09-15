@@ -32,6 +32,7 @@ import org.talend.core.nexus.IRepositoryArtifactHandler;
 import org.talend.core.nexus.RepositoryArtifactHandlerManager;
 import org.talend.core.nexus.TalendLibsServerManager;
 import org.talend.core.runtime.maven.MavenArtifact;
+import org.talend.core.runtime.maven.MavenConstants;
 import org.talend.core.runtime.maven.MavenUrlHelper;
 import org.talend.librariesmanager.maven.MavenArtifactsHandler;
 
@@ -237,5 +238,25 @@ public class ConfigModuleHelper {
                 art.setSha1(sha1);
             }
         }
+    }
+
+    public static String getCustomURI(String jarPath) {
+        if (StringUtils.isEmpty(jarPath)) {
+            return ModuleMavenURIUtils.MVNURI_TEMPLET;
+        }
+        String g = "org.talend.libraries";
+        String a = FilenameUtils.getBaseName(jarPath);
+        String v = "6.0.0-SNAPSHOT";
+        StringBuffer sb = new StringBuffer(MavenUrlHelper.MVN_PROTOCOL);
+        sb.append(g);
+        sb.append(MavenUrlHelper.SEPERATOR);
+        sb.append(a);
+        sb.append(MavenUrlHelper.SEPERATOR);
+        sb.append(v);
+        sb.append(MavenUrlHelper.SEPERATOR);
+        sb.append(MavenConstants.PACKAGING_JAR);
+
+        return sb.toString();
+
     }
 }
