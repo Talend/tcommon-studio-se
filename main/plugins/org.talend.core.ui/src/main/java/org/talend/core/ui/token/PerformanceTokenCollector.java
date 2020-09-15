@@ -14,6 +14,7 @@ package org.talend.core.ui.token;
 
 import java.util.Properties;
 
+import org.talend.commons.exception.CommonExceptionHandler;
 import org.talend.commons.utils.time.PerformanceStatisticUtil;
 import org.talend.commons.utils.time.PerformanceStatisticUtil.StatisticKeys;
 
@@ -36,6 +37,8 @@ public class PerformanceTokenCollector extends AbstractTokenCollector {
      */
     @Override
     public JSONObject collect() throws Exception {
+        checkAndWait();
+        
         JSONObject tokenStudioObject = new JSONObject();
         //
         JSONObject jsonObjectHDInfo = new JSONObject();
@@ -67,6 +70,14 @@ public class PerformanceTokenCollector extends AbstractTokenCollector {
         tokenStudioObject.put("performance", jsonObjectIOInfo);
         
         return tokenStudioObject;
+    }
+
+    private void checkAndWait() {
+        try {
+            PerformanceStatisticUtil.waitUntilFinish();
+        } catch (InterruptedException e) {
+            CommonExceptionHandler.log(e.getMessage());
+        }
     }
     
 }

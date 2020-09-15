@@ -21,6 +21,10 @@ import java.io.RandomAccessFile;
 import java.text.DecimalFormat;
 import java.util.Properties;
 import java.util.Random;
+import java.util.concurrent.TimeUnit;
+import java.util.concurrent.locks.Condition;
+import java.util.concurrent.locks.Lock;
+import java.util.concurrent.locks.ReentrantLock;
 
 import org.eclipse.core.resources.IWorkspaceRoot;
 import org.eclipse.core.resources.ResourcesPlugin;
@@ -176,10 +180,31 @@ public class PerformanceStatisticUtil {
         return exists;
     }
 
+    private static Lock lock = new ReentrantLock();
+    private static Condition condition = lock.newCondition();
+    private static boolean measureIOFinished = true;
+    
+    public static void waitUntilFinish() throws InterruptedException {
+        lock.lock();
+
+        try {
+            if(!measureIOFinished) {
+                condition.await(20, TimeUnit.SECONDS);
+            }
+        } finally {
+            lock.unlock();
+        }
+    }
+    
     public static void measureIO() {
         new Thread()  {
             public void run() {
-                _measureIO();
+                measureIOFinished = false;
+                try {
+                    _measureIO();
+                } finally {
+                    measureIOFinished = true;
+                }
             }
         }.start();
     }
