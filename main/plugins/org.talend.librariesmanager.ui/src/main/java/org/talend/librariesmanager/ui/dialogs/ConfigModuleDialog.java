@@ -263,9 +263,9 @@ public class ConfigModuleDialog extends TitleAreaDialog implements IConfigModule
                 setPlatformGroupEnabled(true);
                 setInstallNewGroupEnabled(false);
                 setRepositoryGroupEnabled(false);
-                moduleName = platformCombo.getText();
-                setupMavenURIByModuleName(moduleName);
-                validateInputForPlatform();
+                if (validateInputForPlatform()) {
+                    setupMavenURIforPlatform();
+                }
             }
         });
 
@@ -308,10 +308,11 @@ public class ConfigModuleDialog extends TitleAreaDialog implements IConfigModule
         platfromRadioBtn.setSelection(enable);
         platformCombo.setEnabled(enable);
         if (enable) {
-            setupMavenURIforPlatform();
+            if (validateInputForPlatform()) {
+                setupMavenURIforPlatform();
+            }
             useCustomBtn.setEnabled(false);
             customUriText.setEnabled(false);
-            validateInputFields();
             setMessage(Messages.getString("ConfigModuleDialog.message", moduleName), IMessageProvider.INFORMATION);
         }
     }
@@ -437,11 +438,13 @@ public class ConfigModuleDialog extends TitleAreaDialog implements IConfigModule
 
             @Override
             public void modifyText(ModifyEvent e) {
-                moduleName = searchResultCombo.getText();
-                @SuppressWarnings("unchecked")
-                Map<String, MavenArtifact> data = (Map<String, MavenArtifact>) searchResultCombo.getData();
-                MavenArtifact art = data.get(moduleName);
-                setupMavenURIByArtifact(art);
+                if (validateInputForSearch()) {
+                    moduleName = searchResultCombo.getText();
+                    @SuppressWarnings("unchecked")
+                    Map<String, MavenArtifact> data = (Map<String, MavenArtifact>) searchResultCombo.getData();
+                    MavenArtifact art = data.get(moduleName);
+                    setupMavenURIByArtifact(art);
+                }
             }
         });
 
@@ -572,6 +575,7 @@ public class ConfigModuleDialog extends TitleAreaDialog implements IConfigModule
                     @Override
                     public void run() {
                         try {
+                            validateInputFields();
                             MavenArtifact art = JarDetector.parse(file);
                             if (art != null) {
                                 String mvnUrl = MavenUrlHelper.generateMvnUrl(art);
@@ -589,7 +593,6 @@ public class ConfigModuleDialog extends TitleAreaDialog implements IConfigModule
                                 customUriText.setEnabled(false);
                                 customUriText.setText("");
                             }
-                            validateInputFields();
                         } catch (Exception e) {
                             ExceptionHandler.process(e);
                         }
