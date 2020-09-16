@@ -14,12 +14,16 @@ package org.talend.updates.runtime.service;
 
 import java.io.File;
 import java.util.LinkedHashSet;
+import java.util.List;
 import java.util.Set;
 
 import org.apache.commons.lang3.StringUtils;
 import org.apache.log4j.Logger;
+import org.codehaus.plexus.util.FileUtils;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.NullProgressMonitor;
+import org.eclipse.core.runtime.Platform;
+import org.talend.commons.utils.resource.FileExtensions;
 import org.talend.core.nexus.ArtifactRepositoryBean;
 import org.talend.core.service.IUpdateService;
 import org.talend.updates.runtime.engine.component.InstallComponentMessages;
@@ -30,12 +34,12 @@ import org.talend.updates.runtime.model.FeatureCategory;
 import org.talend.updates.runtime.nexus.component.ComponentIndexManager;
 import org.talend.updates.runtime.nexus.component.NexusServerManager;
 import org.talend.updates.runtime.utils.PathUtils;
+import org.talend.updates.runtime.utils.UpdateTools;
 import org.talend.utils.io.FilesUtils;
 
 public class UpdateService implements IUpdateService {
 
     private static Logger log = Logger.getLogger(UpdateService.class);
-
     @Override
     public boolean checkComponentNexusUpdate() {
         IProgressMonitor monitor = new NullProgressMonitor();
@@ -99,4 +103,39 @@ public class UpdateService implements IUpdateService {
         }
     }
 
+    @Override
+    public void syncSharedStudioLibraryInPatch(IProgressMonitor monitor) throws Exception {
+        if (isSharedStudioMode()) {
+            File studioPatch = SharedStudioPatchInfoProvider.getInstance().getNeedInstallStudioPatchFiles();
+            if (studioPatch != null && studioPatch.getName().endsWith(FileExtensions.ZIP_FILE_SUFFIX)) {
+                File tmpInstallFolder = File.createTempFile("StudioPatchInstaller", "");
+                FilesUtils.unzip(studioPatch.getAbsolutePath(), tmpInstallFolder.getAbsolutePath());
+                UpdateTools.syncLibraries(tmpInstallFolder);
+                UpdateTools.syncM2Repository(tmpInstallFolder);
+                UpdateTools.installCars(monitor, tmpInstallFolder, false);
+                SharedStudioPatchInfoProvider.getInstance().installedStudioPatch(studioPatch.getName());
+                tmpInstallFolder.delete();
+            }
+            List<File> carFiles = SharedStudioPatchInfoProvider.getInstance().getNeedInstallCarFiles();
+            if (carFiles.size() > 0) {
+                File tmpInstallFolder = File.createTempFile("CarPatchInstaller", "");
+                for (File carFile : carFiles) {
+                    FileUtils.copyFile(carFile, new File (tmpInstallFolder, carFile.getName()));
+                }
+                UpdateTools.installCars(monitor, tmpInstallFolder, false);
+                tmpInstallFolder.delete();
+            }          
+        }     
+    }
+    
+    public boolean isSharedStudioMode() {
+        File configFolder = new File (Platform.getConfigurationLocation().getURL().getFile());
+        File studioFolder = new File (Platform.getInstallLocation().getURL().getFile());
+        if (configFolder != null && studioFolder != null && configFolder.getParentFile() != null
+                && configFolder.getParentFile().getAbsolutePath().equals(studioFolder.getAbsolutePath())) {
+            return false;
+        }
+        return true;
+    }
 }
+
