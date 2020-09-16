@@ -46,6 +46,7 @@ import org.talend.commons.runtime.service.ComponentsInstallComponent;
 import org.talend.commons.runtime.service.PatchComponent;
 import org.talend.commons.ui.runtime.update.PreferenceKeys;
 import org.talend.commons.ui.swt.dialogs.ErrorDialogWidthDetailArea;
+import org.talend.commons.utils.SharedStudioUtils;
 import org.talend.commons.utils.network.NetworkUtil;
 import org.talend.commons.utils.network.TalendProxySelector;
 import org.talend.commons.utils.system.EclipseCommandLine;
@@ -59,6 +60,7 @@ import org.talend.core.services.ICoreTisService;
 import org.talend.core.ui.branding.IBrandingService;
 import org.talend.core.ui.workspace.ChooseWorkspaceData;
 import org.talend.core.ui.workspace.ChooseWorkspaceDialog;
+import org.talend.core.utils.ProductUtils;
 import org.talend.core.utils.StudioSSLContextProvider;
 import org.talend.rcp.i18n.Messages;
 import org.talend.registration.RegistrationPlugin;
@@ -92,7 +94,7 @@ public class Application implements IApplication {
     @SuppressWarnings("restriction")
     @Override
     public Object start(IApplicationContext context) throws Exception {
-        if (Boolean.getBoolean(EclipseCommandLine.PROP_TALEND_BUNDLES_DO_CLEAN)) {
+        if (SharedStudioUtils.updateExtraFeatureFile() || Boolean.getBoolean(EclipseCommandLine.PROP_TALEND_BUNDLES_DO_CLEAN)) {
             System.setProperty(EclipseCommandLine.PROP_TALEND_BUNDLES_DO_CLEAN, Boolean.FALSE.toString());
             EclipseCommandLine.updateOrCreateExitDataPropertyWithCommand(EclipseCommandLine.CLEAN, null, false);
             EclipseCommandLine.updateOrCreateExitDataPropertyWithCommand(EclipseCommandLine.ARG_TALEND_BUNDLES_CLEANED,
