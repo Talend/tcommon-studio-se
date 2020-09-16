@@ -34,7 +34,7 @@ import org.talend.core.nexus.TalendLibsServerManager;
 import org.talend.core.runtime.maven.MavenArtifact;
 import org.talend.core.runtime.maven.MavenConstants;
 import org.talend.core.runtime.maven.MavenUrlHelper;
-import org.talend.librariesmanager.maven.MavenArtifactsHandler;
+import org.talend.librariesmanager.ui.LibManagerUiPlugin;
 
 /*
  * Created by bhe on Sep 3, 2020
@@ -164,9 +164,7 @@ public class ConfigModuleHelper {
     }
     
     public static void install(File jarFile, String mvnUrl, boolean deploy) throws Exception {
-        MavenArtifactsHandler deployer =  new MavenArtifactsHandler();
-        final String jarPath = jarFile.getAbsolutePath();
-        deployer.install(mvnUrl, jarPath, null, deploy);
+        LibManagerUiPlugin.getDefault().getLibrariesService().deployLibrary(jarFile.toURL(), mvnUrl, true, deploy);
     }
     
     public static boolean canFind(Set<MavenArtifact> artifacts, File jarFile, String mvnUrl) {
