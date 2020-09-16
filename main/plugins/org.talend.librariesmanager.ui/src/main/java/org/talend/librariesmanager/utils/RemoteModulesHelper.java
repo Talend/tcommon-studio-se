@@ -34,9 +34,6 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
-import java.util.concurrent.ArrayBlockingQueue;
-import java.util.concurrent.ThreadPoolExecutor;
-import java.util.concurrent.TimeUnit;
 import java.util.regex.Pattern;
 
 import org.apache.commons.lang.StringUtils;
@@ -48,7 +45,6 @@ import org.eclipse.jface.operation.IRunnableWithProgress;
 import org.talend.commons.CommonsPlugin;
 import org.talend.commons.exception.ExceptionHandler;
 import org.talend.commons.utils.network.NetworkUtil;
-import org.talend.commons.utils.threading.TalendCustomThreadPoolExecutor;
 import org.talend.core.GlobalServiceRegister;
 import org.talend.core.ILibraryManagerService;
 import org.talend.core.model.general.ModuleNeeded;
@@ -100,8 +96,6 @@ public class RemoteModulesHelper {
          */
         private final Map<String, List<ModuleNeeded>> contextMap;
 
-        private TalendCustomThreadPoolExecutor threadPool = null;
-
         /**
          *
          * DOC wchen RemoteModulesFetchRunnable constructor comment.
@@ -116,17 +110,6 @@ public class RemoteModulesHelper {
             this.collectModulesWithJarName = collectModulesWithJarName;
             this.useLocalLicenseData = useLocalLicenseData;
             this.onlyUseLocalLicenseData = onlyUseLocalLicenseData;
-        }
-
-        public TalendCustomThreadPoolExecutor getThreadPool() {
-            if (threadPool != null) {
-                return threadPool;
-            }
-            synchronized (this) {
-                threadPool = new TalendCustomThreadPoolExecutor(50, 100, 0, TimeUnit.MILLISECONDS,
-                        new ArrayBlockingQueue<Runnable>(200), new ThreadPoolExecutor.CallerRunsPolicy());
-            }
-            return threadPool;
         }
 
         @Override
@@ -277,36 +260,24 @@ public class RemoteModulesHelper {
         }
 
         private void searchFromRemoteNexus(Set<String> mavenUristoSearch, IProgressMonitor monitor) {
-            try {
-                LibraryDataService service = LibraryDataService.getInstance();
-                List<MavenArtifact> artifactList = Collections.synchronizedList(new ArrayList<MavenArtifact>());
-                final Iterator<String> iterator = mavenUristoSearch.iterator();
-                while (iterator.hasNext()) {
-                    if (monitor.isCanceled()) {
-                        break;
-                    }
-                    Runnable runnable = new Runnable() {
-
-                        @Override
-                        public void run() {
-                            String uriToCheck = iterator.next();
-                            final MavenArtifact parseMvnUrl = MavenUrlHelper.parseMvnUrl(uriToCheck);
-                            if (parseMvnUrl != null) {
-                                service.fillLibraryDataByRemote(uriToCheck, parseMvnUrl);
-                                if (!MavenConstants.DOWNLOAD_MANUAL.equals(parseMvnUrl.getDistribution())) {
-                                    artifactList.add(parseMvnUrl);
-                                }
-                            }
-                        }
-                    };
-                    getThreadPool().execute(runnable);
+            LibraryDataService service = LibraryDataService.getInstance();
+            List<MavenArtifact> artifactList = new ArrayList<MavenArtifact>();
+            final Iterator<String> iterator = mavenUristoSearch.iterator();
+            while (iterator.hasNext()) {
+                if (monitor.isCanceled()) {
+                    break;
                 }
-                service.saveData();
-                addModulesToCache(mavenUristoSearch, artifactList, remoteCache);
-            } finally {
-                getThreadPool().clearThreads();
-                threadPool = null;
+                String uriToCheck = iterator.next();
+                final MavenArtifact parseMvnUrl = MavenUrlHelper.parseMvnUrl(uriToCheck);
+                if (parseMvnUrl != null) {
+                    service.fillLibraryDataByRemote(uriToCheck, parseMvnUrl);
+                    if (!MavenConstants.DOWNLOAD_MANUAL.equals(parseMvnUrl.getDistribution())) {
+                        artifactList.add(parseMvnUrl);
+                    }
+                }
             }
+            service.saveData();
+            addModulesToCache(mavenUristoSearch, artifactList, remoteCache);
         }
 
         private void addModulesToCache(Set<String> mavenUristoSearch, List<MavenArtifact> searchResults,
@@ -670,7 +641,7 @@ public class RemoteModulesHelper {
     public RemoteModulesFetchRunnable getNotInstalledModulesRunnable(List<ModuleNeeded> neededModules,
             List<ModuleToInstall> toInstall, boolean collectModulesWithJarName, boolean useLocalLicenseData, boolean onlyUseLocalLicenseData) {
         Map<String, List<ModuleNeeded>> contextMap = new HashMap<String, List<ModuleNeeded>>();
-        ILibraryManagerService librairesManagerService = GlobalServiceRegister.getDefault()
+        ILibraryManagerService librairesManagerService = (ILibraryManagerService) GlobalServiceRegister.getDefault()
                 .getService(ILibraryManagerService.class);
         // collect mvnuri and modules incase many modules have the same mvnuri
         final Iterator<ModuleNeeded> iterator = neededModules.iterator();
