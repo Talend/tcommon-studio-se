@@ -23,6 +23,7 @@ import org.eclipse.emf.common.util.URI;
 import org.osgi.service.prefs.BackingStoreException;
 import org.talend.commons.exception.PersistenceException;
 import org.talend.commons.exception.SystemException;
+import org.talend.core.GlobalServiceRegister;
 import org.talend.core.IService;
 import org.talend.core.model.general.Project;
 import org.talend.core.model.process.INode;
@@ -80,4 +81,19 @@ public interface ICoreTisService extends IService {
     Set<String> getComponentBlackList();
     
     public void afterImport (Property property) throws PersistenceException;  
+
+    boolean hasNewPatchInPatchesFolder();
+
+    boolean isDefaultLicenseAndProjectType();
+
+    void refreshPatchesFolderCache();
+
+    static ICoreTisService get() {
+        if (GlobalServiceRegister.getDefault().isServiceRegistered(ICoreTisService.class)) {
+            return GlobalServiceRegister.getDefault().getService(ICoreTisService.class);
+        }
+        return null;
+    }
+
+>>>>>>> refs/remotes/origin/maintenance/7.3
 }
