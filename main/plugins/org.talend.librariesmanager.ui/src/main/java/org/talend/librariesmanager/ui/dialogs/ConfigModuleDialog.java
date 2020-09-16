@@ -57,12 +57,16 @@ import org.talend.commons.ui.gmf.util.DisplayUtils;
 import org.talend.commons.ui.runtime.image.EImage;
 import org.talend.commons.ui.runtime.image.ImageProvider;
 import org.talend.commons.ui.swt.dialogs.IConfigModuleDialog;
+import org.talend.core.GlobalServiceRegister;
+import org.talend.core.ILibraryManagerService;
 import org.talend.core.model.general.ModuleNeeded;
 import org.talend.core.model.general.ModuleNeeded.ELibraryInstallStatus;
+import org.talend.core.model.general.ModuleStatusProvider;
 import org.talend.core.model.general.ModuleToInstall;
 import org.talend.core.runtime.maven.MavenArtifact;
 import org.talend.core.runtime.maven.MavenUrlHelper;
 import org.talend.librariesmanager.model.ModulesNeededProvider;
+import org.talend.librariesmanager.ui.LibManagerUiPlugin;
 import org.talend.librariesmanager.ui.i18n.Messages;
 import org.talend.librariesmanager.utils.ConfigModuleHelper;
 import org.talend.librariesmanager.utils.DownloadModuleRunnableWithLicenseDialog;
@@ -762,7 +766,7 @@ public class ConfigModuleDialog extends TitleAreaDialog implements IConfigModule
         if (installRadioBtn.getSelection()) {
             File jarFile = new File(jarPathTxt.getText().trim());
             MavenArtifact art = MavenUrlHelper.parseMvnUrl(urlToUse);
-            moduleName = art.getFileName(false);
+            moduleName = art.getFileName();
             String sha1New = ConfigModuleHelper.getSHA1(jarFile);
             art.setSha1(sha1New);
             // resolve jar locally
@@ -811,6 +815,7 @@ public class ConfigModuleDialog extends TitleAreaDialog implements IConfigModule
                                     }
 
                                     ConfigModuleHelper.install(jarFile, urlToUse, deploy);
+                                    updateIndex(urlToUse);
                                 } catch (Exception e) {
                                     ExceptionHandler.process(e);
                                 }
@@ -955,6 +960,29 @@ public class ConfigModuleDialog extends TitleAreaDialog implements IConfigModule
             String mvnUri = ConfigModuleHelper.getCustomURI(filePath);
             customUriText.setText(mvnUri);
         }
+    }
+
+    private void updateIndex(String urlToUse) {
+        Set<String> modulesNeededNames = ModulesNeededProvider.getAllManagedModuleNames();
+        boolean isCutomJar = !ModulesNeededProvider.getAllModuleNamesFromIndex().contains(moduleName);
+        boolean saveCustomMap = false;
+        if (isCutomJar && customURI == null) {
+            // key and value will be the same for custom jar if without custom uri
+            customURI = urlToUse;
+        }
+        if (!modulesNeededNames.contains(moduleName)) {
+            ModulesNeededProvider.addUnknownModules(moduleName, urlToUse, true);
+            saveCustomMap = true;
+        }
+
+        // change the custom uri
+        if (saveCustomMap) {
+            ILibraryManagerService libManagerService = (ILibraryManagerService) GlobalServiceRegister.getDefault()
+                    .getService(ILibraryManagerService.class);
+            libManagerService.saveCustomMavenURIMap();
+        }
+
+        LibManagerUiPlugin.getDefault().getLibrariesService().checkLibraries();
     }
 
 }
