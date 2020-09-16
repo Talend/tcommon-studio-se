@@ -442,7 +442,7 @@ public class MigrationToolService implements IMigrationToolService {
                                                 if (object != null) {
                                                     ICoreTisService service = GlobalServiceRegister.getDefault()
                                                             .getService(ICoreTisService.class);
-                                                    service.signAfterImport(object.getProperty());
+                                                    service.afterImport(object.getProperty());
                                                 }
                                             }
                                             if (object instanceof RepositoryObject) {

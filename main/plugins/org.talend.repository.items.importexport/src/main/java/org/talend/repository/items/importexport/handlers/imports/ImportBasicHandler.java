@@ -1323,7 +1323,7 @@ public class ImportBasicHandler extends AbstractImportExecutableHandler {
             }
             if (GlobalServiceRegister.getDefault().isServiceRegistered(ICoreTisService.class)) {
                 ICoreTisService service = GlobalServiceRegister.getDefault().getService(ICoreTisService.class);
-                service.signAfterImport(property);
+                service.afterImport(property);
             } 
             RelationshipItemBuilder.getInstance().addOrUpdateItem(property.getItem(), true);
             // importItem.setProperty(null);

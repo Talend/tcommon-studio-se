@@ -79,5 +79,5 @@ public interface ICoreTisService extends IService {
 
     Set<String> getComponentBlackList();
     
-    public void signAfterImport (Property property) throws PersistenceException;  
+    public void afterImport (Property property) throws PersistenceException;  
 }
