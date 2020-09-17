@@ -19,6 +19,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
@@ -56,6 +57,7 @@ import org.talend.core.context.Context;
 import org.talend.core.context.RepositoryContext;
 import org.talend.core.model.general.ILibrariesService;
 import org.talend.core.model.general.ModuleNeeded;
+import org.talend.core.model.general.Project;
 import org.talend.core.model.process.ProcessUtils;
 import org.talend.core.model.properties.Item;
 import org.talend.core.model.properties.ProjectReference;
@@ -170,24 +172,23 @@ public class AggregatorPomsHelper {
 
             @Override
             protected void run() {
-                updateCodeProject(monitor, ERepositoryObjectType.ROUTINES, forceBuild);
-                if (ProcessUtils.isRequiredBeans(null)) {
-                    updateCodeProject(monitor, ERepositoryObjectType.valueOf("BEANS"), forceBuild); //$NON-NLS-1$
+                Project currentProject = ProjectManager.getInstance().getCurrentProject();
+                for (ERepositoryObjectType codeType : ERepositoryObjectType.getAllTypesOfCodes()) {
+                    try {
+                        if (CodeM2CacheManager.needUpdateCodeProject(currentProject, codeType)) {
+                            ITalendProcessJavaProject codeProject = getCodesProject(codeType);
+                            updateCodeProjectPom(monitor, codeType, codeProject.getProjectPom());
+                            buildAndInstallCodesProject(monitor, codeType, true, forceBuild);
+                            CodeM2CacheManager.updateCodeProjectCache(currentProject, codeType);
+                        }
+                    } catch (Exception e) {
+                        ExceptionHandler.process(e);
+                    }
                 }
             }
         };
         workUnit.setAvoidUnloadResources(true);
         ProxyRepositoryFactory.getInstance().executeRepositoryWorkUnit(workUnit);
-    }
-
-    private void updateCodeProject(IProgressMonitor monitor, ERepositoryObjectType codeType, boolean forceBuild) {
-        try {
-            ITalendProcessJavaProject codeProject = getCodesProject(codeType);
-            updateCodeProjectPom(monitor, codeType, codeProject.getProjectPom());
-            buildAndInstallCodesProject(monitor, codeType, true, forceBuild);
-        } catch (Exception e) {
-            ExceptionHandler.process(e);
-        }
     }
 
     public void updateCodeProjectPom(IProgressMonitor monitor, ERepositoryObjectType type, IFile pomFile)
@@ -210,27 +211,15 @@ public class AggregatorPomsHelper {
     }
 
     public static void updateAllCodesProjectNeededModules(IProgressMonitor monitor) {
-        updateCodesProjectNeededModulesByType(ERepositoryObjectType.ROUTINES, monitor);
-        if (ProcessUtils.isRequiredBeans(null)) {
-            updateCodesProjectNeededModulesByType(ERepositoryObjectType.valueOf("BEANS"), monitor); //$NON-NLS-1$
-        }
-    }
-
-    private static void updateCodesProjectNeededModulesByType(ERepositoryObjectType codeType,
-            IProgressMonitor monitor) {
-        Set<ModuleNeeded> neededModules = null;
-        if (GlobalServiceRegister.getDefault().isServiceRegistered(ILibrariesService.class)) {
-            ILibrariesService librariesService =
-                    (ILibrariesService) GlobalServiceRegister.getDefault().getService(ILibrariesService.class);
-            neededModules = librariesService.getCodesModuleNeededs(codeType);
-        }
-        if (GlobalServiceRegister.getDefault().isServiceRegistered(ILibraryManagerService.class)) {
-            ILibraryManagerService repositoryBundleService =
-                    (ILibraryManagerService) GlobalServiceRegister.getDefault().getService(
-                            ILibraryManagerService.class);
-            if (neededModules != null && !neededModules.isEmpty()) {
-                repositoryBundleService.installModules(neededModules, monitor);
-            }
+        if (GlobalServiceRegister.getDefault().isServiceRegistered(ILibrariesService.class)
+                && GlobalServiceRegister.getDefault().isServiceRegistered(ILibraryManagerService.class)) {
+            Set<ModuleNeeded> neededModules = new HashSet<>();
+            ILibrariesService librariesService = GlobalServiceRegister.getDefault().getService(ILibrariesService.class);
+            ERepositoryObjectType.getAllTypesOfCodes()
+                    .forEach(c -> neededModules.addAll(librariesService.getCodesModuleNeededs(c)));
+            ILibraryManagerService repositoryBundleService = GlobalServiceRegister.getDefault()
+                    .getService(ILibraryManagerService.class);
+            repositoryBundleService.installModules(neededModules, monitor);
         }
     }
 
@@ -267,7 +256,7 @@ public class AggregatorPomsHelper {
         if (install) {
             Map<String, Object> argumentsMap = new HashMap<>();
             argumentsMap.put(TalendProcessArgumentConstant.ARG_GOAL, TalendMavenConstants.GOAL_INSTALL);
-            argumentsMap.put(TalendProcessArgumentConstant.ARG_PROGRAM_ARGUMENTS, "-Dmaven.main.skip=true"); //$NON-NLS-1$
+            argumentsMap.put(TalendProcessArgumentConstant.ARG_PROGRAM_ARGUMENTS, TalendMavenConstants.ARG_MAIN_SKIP);
             codeProject.buildModules(monitor, null, argumentsMap);
             BuildCacheManager.getInstance().updateCodeLastBuildDate(codeType);
         }
@@ -616,7 +605,10 @@ public class AggregatorPomsHelper {
         String jobFolderName = getJobProjectFolderName(property.getLabel(), version);
         ERepositoryObjectType type = ERepositoryObjectType.getItemType(property.getItem());
         IFolder jobFolder = helper.getProcessFolder(type).getFolder(itemRelativePath).getFolder(jobFolderName);
-        createFoldersIfNeeded(jobFolder);
+        List<ERepositoryObjectType> allTypesOfProcess2 = ERepositoryObjectType.getAllTypesOfProcess2();
+        if (allTypesOfProcess2.contains(type)) {
+            createFoldersIfNeeded(jobFolder);
+        }
         return jobFolder;
     }
 

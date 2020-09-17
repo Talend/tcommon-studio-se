@@ -46,6 +46,8 @@ public class CustomUriManager {
     private static final String CUSTOM_URI_MAP = "custom_uri_mapping.json";
 
     private static long lastModified = 0;
+    
+    private static boolean isNeedReload = false;
 
     private CustomUriManager() {
         try {
@@ -159,15 +161,19 @@ public class CustomUriManager {
         try {
             File file = new File(getResourcePath(), CUSTOM_URI_MAP);
             long modifyDate = file.lastModified();
-            if (modifyDate > lastModified) {
+            if (isNeedReload || modifyDate > lastModified) {
                 customURIObject.clear();
                 JSONObject loadResources = loadResources(getResourcePath(), CUSTOM_URI_MAP);
                 customURIObject.putAll(loadResources);
                 lastModified = modifyDate;
+                isNeedReload = false;
             }
         } catch (IOException e) {
             ExceptionHandler.process(e);
         }
     }
-
+    
+    public void setForeceReloadCustomUri() {
+    	isNeedReload = true;
+    }
 }
