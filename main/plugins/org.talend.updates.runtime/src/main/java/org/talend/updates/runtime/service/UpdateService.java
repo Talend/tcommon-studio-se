@@ -22,9 +22,9 @@ import org.apache.log4j.Logger;
 import org.codehaus.plexus.util.FileUtils;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.NullProgressMonitor;
-import org.eclipse.core.runtime.Platform;
 import org.talend.commons.utils.resource.FileExtensions;
 import org.talend.core.nexus.ArtifactRepositoryBean;
+import org.talend.core.runtime.util.SharedStudioUtils;
 import org.talend.core.service.IUpdateService;
 import org.talend.updates.runtime.engine.component.InstallComponentMessages;
 import org.talend.updates.runtime.engine.factory.ComponentsLocalNexusInstallFactory;
@@ -104,8 +104,9 @@ public class UpdateService implements IUpdateService {
     }
 
     @Override
-    public void syncSharedStudioLibraryInPatch(IProgressMonitor monitor) throws Exception {
-        if (isSharedStudioMode()) {
+    public boolean syncSharedStudioLibraryInPatch(IProgressMonitor monitor) throws Exception {
+        boolean isInstalled = false;
+        if (SharedStudioUtils.isSharedStudioMode()) {
             File studioPatch = SharedStudioPatchInfoProvider.getInstance().getNeedInstallStudioPatchFiles();
             if (studioPatch != null && studioPatch.getName().endsWith(FileExtensions.ZIP_FILE_SUFFIX)) {
                 File tmpInstallFolder = File.createTempFile("StudioPatchInstaller", "");
@@ -115,6 +116,7 @@ public class UpdateService implements IUpdateService {
                 UpdateTools.installCars(monitor, tmpInstallFolder, false);
                 SharedStudioPatchInfoProvider.getInstance().installedStudioPatch(studioPatch.getName());
                 tmpInstallFolder.delete();
+                isInstalled = true;
             }
             List<File> carFiles = SharedStudioPatchInfoProvider.getInstance().getNeedInstallCarFiles();
             if (carFiles.size() > 0) {
@@ -124,18 +126,10 @@ public class UpdateService implements IUpdateService {
                 }
                 UpdateTools.installCars(monitor, tmpInstallFolder, false);
                 tmpInstallFolder.delete();
+                isInstalled = true;
             }          
-        }     
-    }
-    
-    public boolean isSharedStudioMode() {
-        File configFolder = new File (Platform.getConfigurationLocation().getURL().getFile());
-        File studioFolder = new File (Platform.getInstallLocation().getURL().getFile());
-        if (configFolder != null && studioFolder != null && configFolder.getParentFile() != null
-                && configFolder.getParentFile().getAbsolutePath().equals(studioFolder.getAbsolutePath())) {
-            return false;
         }
-        return true;
+        return isInstalled;
     }
 }
 

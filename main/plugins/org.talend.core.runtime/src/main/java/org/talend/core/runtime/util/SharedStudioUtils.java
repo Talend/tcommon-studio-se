@@ -10,12 +10,16 @@
 // 9 rue Pages 92150 Suresnes, France
 //
 // ============================================================================
-package org.talend.commons.utils;
+package org.talend.core.runtime.util;
 
 import java.io.File;
 import java.io.IOException;
+
+import org.eclipse.core.runtime.NullProgressMonitor;
 import org.eclipse.core.runtime.Platform;
 import org.talend.commons.exception.ExceptionHandler;
+import org.talend.core.GlobalServiceRegister;
+import org.talend.core.service.IUpdateService;
 import org.talend.utils.io.FilesUtils;
 
 public class SharedStudioUtils {
@@ -54,6 +58,28 @@ public class SharedStudioUtils {
                     ExceptionHandler.process(ex);
                 }
                 return true;
+            }
+        }
+        return false;
+    }
+    
+    public static boolean isSharedStudioMode() {
+        File configFolder = new File (Platform.getConfigurationLocation().getURL().getFile());
+        File studioFolder = new File (Platform.getInstallLocation().getURL().getFile());
+        if (configFolder != null && studioFolder != null && configFolder.getParentFile() != null
+                && configFolder.getParentFile().getAbsolutePath().equals(studioFolder.getAbsolutePath())) {
+            return false;
+        }
+        return true;
+    }
+    
+    public static boolean installedPatch() {
+        if (GlobalServiceRegister.getDefault().isServiceRegistered(IUpdateService.class)) {
+            IUpdateService updateService = GlobalServiceRegister.getDefault().getService(IUpdateService.class);
+            try {
+                return updateService.syncSharedStudioLibraryInPatch(new NullProgressMonitor());
+            } catch (Exception e) {
+                ExceptionHandler.process(e);
             }
         }
         return false;

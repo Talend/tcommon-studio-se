@@ -21,8 +21,6 @@ public interface IUpdateService extends IService {
 
     void syncComponentM2Jars(IProgressMonitor monitor);
     
-    public void syncSharedStudioLibraryInPatch(IProgressMonitor monitor) throws Exception;
-    
-    public boolean isSharedStudioMode();
+    public boolean syncSharedStudioLibraryInPatch(IProgressMonitor monitor) throws Exception;
 
 }

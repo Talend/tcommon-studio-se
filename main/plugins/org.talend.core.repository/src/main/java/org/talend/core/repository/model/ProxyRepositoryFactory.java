@@ -2146,11 +2146,6 @@ public final class ProxyRepositoryFactory implements IProxyRepositoryFactory {
                 if (GlobalServiceRegister.getDefault().isServiceRegistered(IUpdateService.class)) {
                     IUpdateService updateService = GlobalServiceRegister.getDefault().getService(IUpdateService.class);
                     updateService.syncComponentM2Jars(currentMonitor);
-                    try {
-                        updateService.syncSharedStudioLibraryInPatch(currentMonitor);
-                    } catch (Exception e) {
-                        ExceptionHandler.process(e);
-                    }
                 }
 
                 // init sdk component

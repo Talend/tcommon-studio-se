@@ -40,14 +40,13 @@ import org.eclipse.ui.PlatformUI;
 import org.osgi.service.prefs.BackingStoreException;
 import org.osgi.service.prefs.Preferences;
 import org.talend.commons.exception.BusinessException;
-import org.talend.commons.runtime.helper.LocalComponentInstallHelper;
 import org.talend.commons.exception.ExceptionHandler;
+import org.talend.commons.runtime.helper.LocalComponentInstallHelper;
 import org.talend.commons.runtime.helper.PatchComponentHelper;
 import org.talend.commons.runtime.service.ComponentsInstallComponent;
 import org.talend.commons.runtime.service.PatchComponent;
 import org.talend.commons.ui.runtime.update.PreferenceKeys;
 import org.talend.commons.ui.swt.dialogs.ErrorDialogWidthDetailArea;
-import org.talend.commons.utils.SharedStudioUtils;
 import org.talend.commons.utils.network.NetworkUtil;
 import org.talend.commons.utils.network.TalendProxySelector;
 import org.talend.commons.utils.system.EclipseCommandLine;
@@ -58,11 +57,11 @@ import org.talend.core.model.migration.IMigrationToolService;
 import org.talend.core.model.utils.TalendPropertiesUtil;
 import org.talend.core.repository.CoreRepositoryPlugin;
 import org.talend.core.runtime.services.IMavenUIService;
+import org.talend.core.runtime.util.SharedStudioUtils;
 import org.talend.core.services.ICoreTisService;
 import org.talend.core.ui.branding.IBrandingService;
 import org.talend.core.ui.workspace.ChooseWorkspaceData;
 import org.talend.core.ui.workspace.ChooseWorkspaceDialog;
-import org.talend.core.utils.ProductUtils;
 import org.talend.core.utils.StudioSSLContextProvider;
 import org.talend.rcp.i18n.Messages;
 import org.talend.registration.RegistrationPlugin;
@@ -96,7 +95,7 @@ public class Application implements IApplication {
     @SuppressWarnings("restriction")
     @Override
     public Object start(IApplicationContext context) throws Exception {
-        if (SharedStudioUtils.updateExtraFeatureFile() || Boolean.getBoolean(EclipseCommandLine.PROP_TALEND_BUNDLES_DO_CLEAN)) {
+        if (SharedStudioUtils.installedPatch() || Boolean.getBoolean(EclipseCommandLine.PROP_TALEND_BUNDLES_DO_CLEAN)) {
             System.setProperty(EclipseCommandLine.PROP_TALEND_BUNDLES_DO_CLEAN, Boolean.FALSE.toString());
             EclipseCommandLine.updateOrCreateExitDataPropertyWithCommand(EclipseCommandLine.CLEAN, null, false);
             EclipseCommandLine.updateOrCreateExitDataPropertyWithCommand(EclipseCommandLine.ARG_TALEND_BUNDLES_CLEANED,
