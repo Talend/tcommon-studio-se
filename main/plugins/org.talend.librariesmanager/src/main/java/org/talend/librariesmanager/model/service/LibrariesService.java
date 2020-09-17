@@ -267,5 +267,9 @@ public class LibrariesService implements ILibrariesService {
     public void deployLibrary(URL source, String mavenUri, boolean refresh, boolean updateNexusJar) throws IOException {
         getLibrariesService().deployLibrary(source, mavenUri, refresh, updateNexusJar);
     }
+    
+    public void setForceReloadCustomUri() {
+    	CustomUriManager.getInstance().setForeceReloadCustomUri();
+    }
 
 }

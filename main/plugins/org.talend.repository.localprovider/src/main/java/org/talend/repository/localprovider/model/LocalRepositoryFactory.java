@@ -2512,6 +2512,11 @@ public class LocalRepositoryFactory extends AbstractEMFRepositoryFactory impleme
 
     @Override
     public void save(Project project, Item item) throws PersistenceException {
+    	save(project, item, false);
+    }
+
+    	@Override
+    public void save(Project project, Item item, boolean isMigrationTask) throws PersistenceException {
 
         ResourceSet resourceSet = null;
         Resource resource = item.eResource();
@@ -2674,7 +2679,9 @@ public class LocalRepositoryFactory extends AbstractEMFRepositoryFactory impleme
             }
             this.copyScreenshotFlag = false;
         }
-        saveContextLinkInfo(item);
+        if (!isMigrationTask) {
+        	saveContextLinkInfo(item);
+        }
     }
 
     private void saveContextLinkInfo(Item item) throws PersistenceException {
@@ -3078,8 +3085,8 @@ public class LocalRepositoryFactory extends AbstractEMFRepositoryFactory impleme
         xmiResourceManager.saveResource(screenshotsResource);
         xmiResourceManager.saveResource(itemResource);
         xmiResourceManager.saveResource(propertyResource);
-        saveContextLinkInfo(item);
         if (isImportItem.length == 0 || !isImportItem[0]) {
+            saveContextLinkInfo(item);
             saveProject(project);
         }
 
@@ -3160,7 +3167,7 @@ public class LocalRepositoryFactory extends AbstractEMFRepositoryFactory impleme
     public void createUser(Project project) throws PersistenceException {
         Resource projectResource = project.getEmfProject().eResource();
         projectResource.getContents().add(getRepositoryContext().getUser());
-        xmiResourceManager.saveResource(projectResource);
+        saveProject(project);
     }
 
     @Override

@@ -224,13 +224,13 @@ public class JobContextManager implements IContextManager {
             if (oldContextName != null) {
                 if (!oldContextName.equals(contextParameter.getName())) {
                     if (contextParameter.getName().equals(newContextName)
-                            || contextParameter.getName().toLowerCase().equals(newContextName.toLowerCase())) {
+                            || contextParameter.getName().equalsIgnoreCase(newContextName)) {
                         return false;
                     }
                 }
             } else {
                 if (contextParameter.getName().equals(newContextName)
-                        || contextParameter.getName().toLowerCase().equals(newContextName.toLowerCase())) {
+                        || contextParameter.getName().equalsIgnoreCase(newContextName)) {
                     return false;
                 }
             }

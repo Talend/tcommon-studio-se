@@ -13,6 +13,7 @@
 package org.talend.core.model.process;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
@@ -367,5 +368,39 @@ public class BigDataNode extends AbstractNode implements IBigDataNode {
     @Override
     public void processDatasetConditions(){
         // BigDataNode does not do anything related to Dataset, only anabled from SparkNode
+    }
+    
+    public List<? extends IConnection> getIncomingConnections(EConnectionType... connectionTypes) {
+        List<IConnection> conns = null;
+        List<EConnectionType> types = Arrays.asList(connectionTypes);
+        List<? extends IConnection> incomingConnections = this.getIncomingConnections();
+        if (incomingConnections != null) {
+            conns = new ArrayList<IConnection>();
+
+            for (int i = 0; i < incomingConnections.size(); i++) {
+                IConnection connection = incomingConnections.get(i);
+                if (types.contains(connection.getLineStyle())) {
+                    conns.add(connection);
+                }
+            }
+        }
+        return conns;
+    }
+    
+    public List<? extends IConnection> getOutgoingConnections(EConnectionType... connectionTypes) {
+        List<IConnection> conns = null;
+        List<EConnectionType> types = Arrays.asList(connectionTypes);
+        List<? extends IConnection> incomingConnections = this.getOutgoingConnections();
+        if (incomingConnections != null) {
+            conns = new ArrayList<IConnection>();
+
+            for (int i = 0; i < incomingConnections.size(); i++) {
+                IConnection connection = incomingConnections.get(i);
+                if (types.contains(connection.getLineStyle())) {
+                    conns.add(connection);
+                }
+            }
+        }
+        return conns;
     }
 }

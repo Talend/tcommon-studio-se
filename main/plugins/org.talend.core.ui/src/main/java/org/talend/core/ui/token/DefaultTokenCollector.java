@@ -81,7 +81,7 @@ public class DefaultTokenCollector extends AbstractTokenCollector {
         jsonObject.put("os.arch", System.getProperty("os.arch"));
         jsonObject.put("os.version", System.getProperty("os.version"));
         tokenStudioObject.put(OS.getKey(), jsonObject);
-
+        
         final IPreferenceStore preferenceStore = CoreUIPlugin.getDefault().getPreferenceStore();
         long syncNb = preferenceStore.getLong(COLLECTOR_SYNC_NB);
         tokenStudioObject.put(SYNC_NB.getKey(), syncNb);
@@ -91,6 +91,7 @@ public class DefaultTokenCollector extends AbstractTokenCollector {
         } else {
             tokenStudioObject.put(STOP_COLLECTOR.getKey(), "0"); //$NON-NLS-1$
         }
+        
         return tokenStudioObject;
     }
 }

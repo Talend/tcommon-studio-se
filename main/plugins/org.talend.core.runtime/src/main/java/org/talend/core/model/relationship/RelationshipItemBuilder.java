@@ -51,6 +51,7 @@ import org.talend.designer.core.model.utils.emf.talendfile.NodeType;
 import org.talend.designer.core.model.utils.emf.talendfile.ProcessType;
 import org.talend.repository.ProjectManager;
 import org.talend.repository.model.IProxyRepositoryFactory;
+import org.talend.repository.model.IRepositoryNode;
 
 /**
  * This class store all relationships between jobs/joblets and other items from the repository. Be sure to update the
@@ -223,9 +224,9 @@ public class RelationshipItemBuilder {
     }
 
     /**
-     * 
+     *
      * Current System Routines Map, key: routine id, value: routine name
-     * 
+     *
      * @return
      */
     public Map<String, String> getCurrentSystemRoutinesMap() {
@@ -929,7 +930,10 @@ public class RelationshipItemBuilder {
         }
     }
 
-    private void addRelationShip(Item baseItem, String relatedId, String relatedVersion, String type) {
+    public void addRelationShip(Item baseItem, String relatedId, String relatedVersion, String type) {
+        if (!loaded) {
+            loadRelations();
+        }
         Relation relation = new Relation();
         relation.setId(baseItem.getProperty().getId());
         relation.setType(getTypeFromItem(baseItem));
@@ -945,6 +949,30 @@ public class RelationshipItemBuilder {
             itemRelations.put(relation, new HashSet<Relation>());
         }
         itemRelations.get(relation).add(addedRelation);
+
+        autoSaveRelations();
+    }
+
+    public Set<Relation> getBeanRelations(Collection<Item> items) {
+        Set<Relation> relationships = new HashSet<Relation>();
+        for (Item item : items) {
+            Relation relation = new Relation();
+            relation.setId(item.getProperty().getId());
+            relation.setType(getTypeFromItem(item));
+            relation.setVersion(item.getProperty().getVersion());
+
+            Map<Relation, Set<Relation>> itemRelations = getRelatedRelations(item);
+
+            Set<Relation> repositoryNode = (Set<Relation>) itemRelations.get(relation);
+
+            for (Relation rel : repositoryNode) {
+                if (rel.getType().equals("Beans")) {
+                    relationships.add(rel);
+                }
+            }
+        }
+
+        return relationships;
     }
 
     private Map<Relation, Set<Relation>> getRelatedRelations(Item baseItem) {

@@ -230,10 +230,10 @@ public enum EDatabaseTypeName {
             return getTypeFromDispalyNameOriginal(dbType);
         }
         for (EDatabaseTypeName typename : EDatabaseTypeName.values()) {
-            if (typename.getXmlName().toUpperCase().equals(dbType.toUpperCase())) {
+            if (typename.getXmlName().equalsIgnoreCase(dbType)) {
                 return typename;
             }
-            if (typename.getProduct().toUpperCase().equals(dbType.toUpperCase())) {
+            if (typename.getProduct().equalsIgnoreCase(dbType)) {
                 return typename;
             }
         }
@@ -245,10 +245,10 @@ public enum EDatabaseTypeName {
             return getTypeFromDisplayNameOriginal(dbType, isDefault);
         }
         for (EDatabaseTypeName typename : EDatabaseTypeName.values()) {
-            if (typename.getXmlName().toUpperCase().equals(dbType.toUpperCase())) {
+            if (typename.getXmlName().equalsIgnoreCase(dbType)) {
                 return typename;
             }
-            if (typename.getProduct().toUpperCase().equals(dbType.toUpperCase())) {
+            if (typename.getProduct().equalsIgnoreCase(dbType)) {
                 return typename;
             }
         }
@@ -264,7 +264,7 @@ public enum EDatabaseTypeName {
             return MYSQL;
         }
         for (EDatabaseTypeName typename : EDatabaseTypeName.values()) {
-            if (typename.getDisplayName().toLowerCase().equals(displayName.toLowerCase())) {
+            if (typename.getDisplayName().equalsIgnoreCase(displayName)) {
                 return typename;
             }
         }
@@ -282,7 +282,7 @@ public enum EDatabaseTypeName {
             return null;
         }
         for (EDatabaseTypeName typename : EDatabaseTypeName.values()) {
-            if (typename.getDisplayName().toLowerCase().equals(displayName.toLowerCase())) {
+            if (typename.getDisplayName().equalsIgnoreCase(displayName)) {
                 return typename;
             }
         }

@@ -107,7 +107,7 @@ public class AddRepositoryContextGroupCommand extends Command {
                 if (name != null) {
                     if (contextNames.contains(name.toLowerCase())
                             || (!isJobContextExistInRepository(nameSet, item.getDefaultContext())
-                                    && name.toLowerCase().equals(defaultContext.getName().toLowerCase()))) {
+                                    && name.equalsIgnoreCase(defaultContext.getName()))) {
                         continue;
                     }
 
@@ -214,7 +214,7 @@ public class AddRepositoryContextGroupCommand extends Command {
         while (it.hasNext()) {
             String selectedName = it.next();
             if (selectedName != null && defaultContextName != null) {
-                if (selectedName.toLowerCase().equals(defaultContextName.toLowerCase())) {
+                if (selectedName.equalsIgnoreCase(defaultContextName)) {
                     return true;
                 }
             }

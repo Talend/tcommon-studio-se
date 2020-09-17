@@ -79,6 +79,7 @@ import org.talend.core.database.EDatabaseTypeName;
 import org.talend.core.language.ECodeLanguage;
 import org.talend.core.language.LanguageManager;
 import org.talend.core.model.metadata.IMetadataConnection;
+import org.talend.core.model.metadata.MappingTypeRetriever;
 import org.talend.core.model.metadata.MetadataTalendType;
 import org.talend.core.model.metadata.MetadataToolHelper;
 import org.talend.core.model.metadata.builder.connection.ConnectionFactory;
@@ -1151,7 +1152,7 @@ public class DatabaseTableForm extends AbstractForm {
                 }
 
                 tableEditorView.getMetadataEditor().removeAll();
-
+                MappingTypeRetriever mappingTypeRetriever = getMappingTypeRetriever();
                 List<MetadataColumn> metadataColumnsValid = new ArrayList<MetadataColumn>();
                 Iterator iterate = metadataColumns.iterator();
                 while (iterate.hasNext()) {
@@ -1159,10 +1160,15 @@ public class DatabaseTableForm extends AbstractForm {
                     if (metadataColumn.getTalendType().equals(JavaTypesManager.DATE.getId())
                             || metadataColumn.getTalendType().equals(PerlTypesManager.DATE)) {
                         if ("".equals(metadataColumn.getPattern())) { //$NON-NLS-1$
-                            metadataColumn.setPattern(TalendQuoteUtils.addQuotes("dd-MM-yyyy")); //$NON-NLS-1$
-                            if (EDatabaseTypeName.MSSQL.getDisplayName().equals(metadataconnection.getDbType())) {
-                                if ("TIME".equals(metadataColumn.getSourceType())) {
-                                    metadataColumn.setPattern(TalendQuoteUtils.addQuotes("HH:mm:ss")); //$NON-NLS-1$
+                            if (mappingTypeRetriever != null) {
+                                String pattern = getPatternFromMapping(mappingTypeRetriever, metadataColumn.getSourceType());
+                                metadataColumn.setPattern(pattern);// $NON-NLS-1$
+                            } else {
+                                metadataColumn.setPattern(TalendQuoteUtils.addQuotes("dd-MM-yyyy")); //$NON-NLS-1$
+                                if (EDatabaseTypeName.MSSQL.getDisplayName().equals(metadataconnection.getDbType())) {
+                                    if ("TIME".equals(metadataColumn.getSourceType())) {
+                                        metadataColumn.setPattern(TalendQuoteUtils.addQuotes("HH:mm:ss")); //$NON-NLS-1$
+                                    }
                                 }
                             }
                         }
@@ -1211,6 +1217,7 @@ public class DatabaseTableForm extends AbstractForm {
                 return;
             }
             boolean isHive = EDatabaseTypeName.HIVE.getDisplayName().equals(metadataconnection.getDbType());
+            MappingTypeRetriever mappingTypeRetriever = getMappingTypeRetriever();
             int numbOfColumn = schemaContent.get(0).length;
             for (int i = 1; i <= numbOfColumn; i++) {
                 MetadataColumn oneColum = columns.get(i - 1);
@@ -1242,6 +1249,16 @@ public class DatabaseTableForm extends AbstractForm {
                                 dbType = TypesManager.getDBTypeFromTalendType(mappingID, oneColum.getTalendType());
                             }
                             oneColum.setSourceType(dbType);
+                            if (mappingTypeRetriever != null) {
+                                if (StringUtils.isBlank(oneColum.getPattern())) {
+                                    if (JavaTypesManager.DATE.getId().equals(talendType)
+                                            || PerlTypesManager.DATE.equals(talendType)) {
+                                        String pattern1 = getPatternFromMapping(mappingTypeRetriever, dbType);
+                                        oneColum.setPattern(pattern1);// $NON-NLS-1$
+                                    }
+                                }
+                               
+                            }
                         }
                     }
                 }
@@ -1272,6 +1289,32 @@ public class DatabaseTableForm extends AbstractForm {
             ExceptionHandler.process(e);
         }
 
+    }
+
+    private MappingTypeRetriever getMappingTypeRetriever() {
+        String dbmsId = metadataconnection.getMapping();
+        MappingTypeRetriever mappingTypeRetriever = MetadataTalendType.getMappingTypeRetriever(dbmsId);
+        if (mappingTypeRetriever == null) {
+            @SuppressWarnings("null")
+            EDatabaseTypeName dbType = EDatabaseTypeName.getTypeFromDbType(metadataconnection.getDbType(), false);
+            if (dbType != null) {
+                mappingTypeRetriever = MetadataTalendType.getMappingTypeRetrieverByProduct(dbType.getProduct());
+            }
+        }
+        return mappingTypeRetriever;
+    }
+    
+    private String getPatternFromMapping(MappingTypeRetriever mappingTypeRetriever, String dbType) {
+        boolean isMssql = EDatabaseTypeName.MSSQL.getDisplayName().equals(metadataconnection.getDbType());
+        String pattern = mappingTypeRetriever.getDefaultPattern(metadataconnection.getMapping(), dbType);
+        if (isMssql) {
+            if ("TIME".equals(dbType)) {//$NON-NLS-1$
+                return StringUtils.isNotBlank(pattern) ? TalendQuoteUtils.addQuotes(pattern)
+                        : TalendQuoteUtils.addQuotes("HH:mm:ss");//$NON-NLS-1$
+            }
+        }
+        return StringUtils.isNotBlank(pattern) ? TalendQuoteUtils.addQuotes(pattern)
+                : TalendQuoteUtils.addQuotes("dd-MM-yyyy");//$NON-NLS-1$
     }
 
     /*

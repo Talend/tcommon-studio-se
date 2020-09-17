@@ -993,7 +993,7 @@ public class ModulesNeededProvider {
     public static List<ModuleNeeded> getModulesNeeded(String componentName) {
         List<ModuleNeeded> toReturn = new ArrayList<ModuleNeeded>();
         for (ModuleNeeded current : getModulesNeeded()) {
-            if (current.getContext().equals(componentName)) {
+            if (componentName.equals(current.getContext())) {
                 toReturn.add(current);
             }
         }
