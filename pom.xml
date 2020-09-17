@@ -112,13 +112,6 @@
 		<module>main/plugins/org.talend.libraries.jdbc.h2</module>
 		<module>main/plugins/org.talend.libraries.jdbc.hsql</module>
 		<module>main/plugins/org.talend.libraries.jdbc.mysql</module>
-<<<<<<< HEAD
-		<module>main/plugins/org.talend.libraries.jdbc.postgresql</module>
-=======
-		<module>main/plugins/org.talend.libraries.jdbc.paraccel</module>
-		<module>main/plugins/org.talend.libraries.jdbc.sqlite3</module>
-		<module>main/plugins/org.talend.libraries.jdbc.teradata</module>
->>>>>>> refs/remotes/origin/master
 		<module>main/plugins/org.talend.libraries.jexcel</module>
 		<module>main/plugins/org.talend.libraries.jexcel.jars</module>
 		<module>main/plugins/org.talend.libraries.jfreechart</module>
