@@ -41,6 +41,7 @@ import org.osgi.service.prefs.BackingStoreException;
 import org.osgi.service.prefs.Preferences;
 import org.talend.commons.exception.BusinessException;
 import org.talend.commons.runtime.helper.LocalComponentInstallHelper;
+import org.talend.commons.exception.ExceptionHandler;
 import org.talend.commons.runtime.helper.PatchComponentHelper;
 import org.talend.commons.runtime.service.ComponentsInstallComponent;
 import org.talend.commons.runtime.service.PatchComponent;
@@ -52,6 +53,7 @@ import org.talend.commons.utils.network.TalendProxySelector;
 import org.talend.commons.utils.system.EclipseCommandLine;
 import org.talend.core.BrandingChecker;
 import org.talend.core.GlobalServiceRegister;
+import org.talend.core.PluginChecker;
 import org.talend.core.model.migration.IMigrationToolService;
 import org.talend.core.model.utils.TalendPropertiesUtil;
 import org.talend.core.repository.CoreRepositoryPlugin;
@@ -162,49 +164,7 @@ public class Application implements IApplication {
             service.executeWorspaceTasks();
             // saveConnectionBean(email);
 
-            boolean needRelaunch = false;
-            final PatchComponent patchComponent = PatchComponentHelper.getPatchComponent();
-            if (patchComponent != null) {
-                final boolean installed = patchComponent.install();
-                if (installed) {
-                    final String installedMessages = patchComponent.getInstalledMessages();
-                    if (installedMessages != null) {
-                        log.log(Level.INFO, installedMessages);
-                        MessageDialog.openInformation(Display.getDefault().getActiveShell(), "Installing Patches",
-                                installedMessages);
-                    }
-                    if (patchComponent.needRelaunch()) {
-                        needRelaunch = true;
-                    }
-                }
-                if (StringUtils.isNotEmpty(patchComponent.getFailureMessage())) {
-                    log.log(Level.ERROR, patchComponent.getFailureMessage());
-                }
-            }
-
-            final ComponentsInstallComponent installComponent = LocalComponentInstallHelper.getComponent();
-            if (installComponent != null) {
-                try {
-                    // install component silently
-                    installComponent.setLogin(true);
-                    if (installComponent.install()) {
-                        final String installedMessages = installComponent.getInstalledMessages();
-                        if (installedMessages != null) {
-                            log.log(Level.INFO, installedMessages);
-                            MessageDialog.openInformation(Display.getDefault().getActiveShell(), "Installing Components",
-                                    installedMessages);
-                        }
-                        if (installComponent.needRelaunch()) {
-                            needRelaunch = true;
-                        }
-                    }
-                    if (StringUtils.isNotEmpty(installComponent.getFailureMessage())) {
-                        log.log(Level.ERROR, installComponent.getFailureMessage());
-                    }
-                } finally {
-                    installComponent.setLogin(false);
-                }
-            }
+            boolean needRelaunch = installLocalPatches();
             if (needRelaunch) {
                 setRelaunchData();
                 return IApplication.EXIT_RELAUNCH;
@@ -213,6 +173,9 @@ public class Application implements IApplication {
             boolean logUserOnProject = logUserOnProject(display.getActiveShell());
             if (LoginHelper.isRestart && LoginHelper.isAutoLogonFailed) {
                 setRelaunchData();
+                EclipseCommandLine.updateOrCreateExitDataPropertyWithCommand(EclipseCommandLine.CLEAN, null, true, true);
+                EclipseCommandLine.updateOrCreateExitDataPropertyWithCommand(EclipseCommandLine.TALEND_RELOAD_COMMAND,
+                        Boolean.TRUE.toString(), true);
                 EclipseCommandLine.updateOrCreateExitDataPropertyWithCommand(
                         EclipseCommandLine.TALEND_PROJECT_TYPE_COMMAND, null, true);
                 return IApplication.EXIT_RELAUNCH;
@@ -310,14 +273,99 @@ public class Application implements IApplication {
 
     }
 
+    private boolean installLocalPatches() {
+        try {
+            final boolean forceCheck = Boolean.getBoolean("talend.studio.localpatch.forcecheck");
+            if (!forceCheck) {
+                ICoreTisService tisService = ICoreTisService.get();
+                if (tisService != null) {
+                    if (tisService.hasNewPatchInPatchesFolder()) {
+                        if (!tisService.isDefaultLicenseAndProjectType()) {
+                            EclipseCommandLine.updateOrCreateExitDataPropertyWithCommand(
+                                    EclipseCommandLine.TALEND_PROJECT_TYPE_COMMAND, "", true);
+                            EclipseCommandLine.updateOrCreateExitDataPropertyWithCommand(
+                                    EclipseCommandLine.ARG_TALEND_LICENCE_PATH, "", true);
+                            return true;
+                        }
+                    } else {
+                        return false;
+                    }
+                } else if (PluginChecker.isTIS()) {
+                    ExceptionHandler.process(new Exception("Can't check patch in patches folder due to missing CoreTisService"));
+                    return false;
+                } else {
+                    // it's TOS here, just force to check it everytime.
+                }
+            }
+        } catch (Throwable e) {
+            log.error(e.getLocalizedMessage(), e);
+        }
+
+        boolean needRelaunch = false;
+        final PatchComponent patchComponent = PatchComponentHelper.getPatchComponent();
+        if (patchComponent != null) {
+            final boolean installed = patchComponent.install();
+            if (installed) {
+                final String installedMessages = patchComponent.getInstalledMessages();
+                if (installedMessages != null) {
+                    log.log(Level.INFO, installedMessages);
+                    MessageDialog.openInformation(Display.getDefault().getActiveShell(), "Installing Patches", installedMessages);
+                }
+                if (patchComponent.needRelaunch()) {
+                    needRelaunch = true;
+                }
+            }
+            if (StringUtils.isNotEmpty(patchComponent.getFailureMessage())) {
+                log.log(Level.ERROR, patchComponent.getFailureMessage());
+            }
+        }
+
+        final ComponentsInstallComponent installComponent = LocalComponentInstallHelper.getComponent();
+        if (installComponent != null) {
+            try {
+                // install component silently
+                installComponent.setLogin(true);
+                if (installComponent.install()) {
+                    final String installedMessages = installComponent.getInstalledMessages();
+                    if (installedMessages != null) {
+                        log.log(Level.INFO, installedMessages);
+                        MessageDialog.openInformation(Display.getDefault().getActiveShell(), "Installing Components",
+                                installedMessages);
+                    }
+                    if (installComponent.needRelaunch()) {
+                        needRelaunch = true;
+                    }
+                }
+                if (StringUtils.isNotEmpty(installComponent.getFailureMessage())) {
+                    log.log(Level.ERROR, installComponent.getFailureMessage());
+                }
+            } finally {
+                installComponent.setLogin(false);
+            }
+        }
+
+        try {
+            ICoreTisService tisService = ICoreTisService.get();
+            if (tisService != null) {
+                tisService.refreshPatchesFolderCache();
+            }
+        } catch (Throwable e) {
+            log.error(e.getLocalizedMessage(), e);
+        }
+        return needRelaunch;
+    }
+
     private void setRelaunchData() {
+        EclipseCommandLine.updateOrCreateExitDataPropertyWithCommand(EclipseCommandLine.CLEAN, null, false, true);
         EclipseCommandLine.updateOrCreateExitDataPropertyWithCommand(EclipseCommandLine.TALEND_RELOAD_COMMAND,
                 Boolean.TRUE.toString(), false);
         EclipseCommandLine.updateOrCreateExitDataPropertyWithCommand(EclipseCommandLine.ARG_TALEND_BUNDLES_CLEANED,
                 Boolean.FALSE.toString(), false);
+        EclipseCommandLine.updateOrCreateExitDataPropertyWithCommand(EclipseCommandLine.ARG_TALEND_BUNDLES_CLEANED,
+                Boolean.FALSE.toString(), true);
         // if relaunch, should delete the "disableLoginDialog" argument in eclipse data for bug TDI-19214
         EclipseCommandLine.updateOrCreateExitDataPropertyWithCommand(
-                EclipseCommandLine.TALEND_DISABLE_LOGINDIALOG_COMMAND, null, true);
+                EclipseCommandLine.TALEND_DISABLE_LOGINDIALOG_COMMAND, null, true, true);
     }
 
     /**
