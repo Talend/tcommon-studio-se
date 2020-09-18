@@ -101,7 +101,10 @@ public class JobStructureCatcherUtils {
 		RUNCOMPONENT,
 		FLOWINPUT,
 		FLOWOUTPUT,
-		PERFORMANCE
+		PERFORMANCE,
+		
+		RUNTIMEPARAMETER,
+		RUNTIMESCHEMA
 	}
 
 	java.util.List<JobStructureCatcherMessage> messages = java.util.Collections
@@ -117,6 +120,42 @@ public class JobStructureCatcherUtils {
 		this.job_name = jobName;
 		this.job_id = jobId;
 		this.job_version = jobVersion;
+	}
+	
+	public void addComponentParameterMessage(String component_id, String component_name, Map<String, String> component_parameters) {
+		JobStructureCatcherMessage scm = new JobStructureCatcherMessage();
+		scm.job_name = this.job_name;
+		scm.job_id = this.job_id;
+		scm.job_version = this.job_version;
+		
+		scm.component_id = component_id;
+		scm.component_name = component_name;
+		
+		scm.component_parameters = component_parameters;
+		
+		scm.log_type = LogType.RUNTIMEPARAMETER;
+		
+		messages.add(scm);
+	}
+	
+	public void addConnectionSchemaMessage(String source_component_id, String source_component_name, String target_component_id, String target_component_name, 
+			String current_connector, List<Map<String, String>> component_schema) {
+		JobStructureCatcherMessage scm = new JobStructureCatcherMessage();
+		scm.job_name = this.job_name;
+		scm.job_id = this.job_id;
+		scm.job_version = this.job_version;
+		
+		scm.current_connector = current_connector;
+		scm.sourceId = source_component_id;
+		scm.sourceComponentName = source_component_name;
+		scm.targetId = target_component_id;
+		scm.targetComponentName = target_component_name;
+		
+		scm.component_schema = component_schema;
+		
+		scm.log_type = LogType.RUNTIMESCHEMA;
+		
+		messages.add(scm);
 	}
 
 	public void addConnectionMessage(String component_id, String component_label, String component_name, boolean current_connector_as_input,

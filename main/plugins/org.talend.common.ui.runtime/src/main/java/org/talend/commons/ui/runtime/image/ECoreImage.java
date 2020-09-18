@@ -198,7 +198,7 @@ public enum ECoreImage implements IImage {
     TRIANGLE("/icons1/triangle.gif"), // triangle.gif //$NON-NLS-1$
     COMPARE("/icons1/compare.gif"), //$NON-NLS-1$
     EXCHNAGETAB("/icons/exchangeTab.jpg"), //$NON-NLS-1$
-    EXCHNAGEIMAGEMISSING("/icons/component_missing.gif"), //$NON-NLS-1$
+    EXCHNAGEIMAGEMISSING("/icons/component_missing.png"), //$NON-NLS-1$
     STATUS_OK("/icons/ok.png"), //$NON-NLS-1$
     MRGREEBAR("/icons1/mrGreeBar.gif"), //$NON-NLS-1$
     MRMAP("/icons1/map.gif"), //$NON-NLS-1$

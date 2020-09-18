@@ -318,4 +318,8 @@ public abstract class AbstractLibrariesService implements ILibrariesService {
             }
         }
     }
+
+	@Override
+	public void setForceReloadCustomUri() {		
+	}  
 }

@@ -128,7 +128,7 @@ public class GetJarsToRegister {
             line = line.replace(libStringFinder, replacement);
         } else if (line.toLowerCase().contains(libStringFinder2)) {
             line = line.toLowerCase().replace(libStringFinder2, replacement);
-        } else if (line.toLowerCase().equals(jarName)) {
+        } else if (line.equalsIgnoreCase(jarName)) {
             line = replacement;
         } else if (line.contains(":$ROOT_PATH/" + jarName + ":")) {
             line = line.replace(":$ROOT_PATH/" + jarName + ":", ":$ROOT_PATH/" + replacement + ":");

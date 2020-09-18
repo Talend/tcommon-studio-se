@@ -496,7 +496,7 @@ public class SelectRepositoryContextGroupDialog extends SelectionDialog {
             for (IContext context : manager.getListContext()) {
                 String contextName = context.getName();
                 if (contextName != null && repContextGrpName != null
-                        && contextName.toLowerCase().equals(repContextGrpName.toLowerCase())) {
+                        && contextName.equalsIgnoreCase(repContextGrpName)) {
                     return true;
                 }
             }

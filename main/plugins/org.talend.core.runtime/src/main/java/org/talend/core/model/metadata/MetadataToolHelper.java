@@ -779,7 +779,7 @@ public final class MetadataToolHelper {
         for (IMetadataColumn inputColumn : sourceColumns) {
             for (IMetadataColumn outputcolumn : target.getListColumns()) {
                 String outputColumnName = outputcolumn.getLabel();
-                if (inputColumn.getLabel().toLowerCase().equals(("" + outputColumnName).toLowerCase())) {
+                if (inputColumn.getLabel().equalsIgnoreCase("" + outputColumnName)) {
                     columnsToRemoveMap.put(inputColumn, outputColumnName);
                 }
                 if (outputcolumn.isReadOnly()) {

@@ -14,7 +14,6 @@ package org.talend.updates.runtime.engine.component;
 
 import java.io.File;
 import java.io.IOException;
-import java.net.URI;
 import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
@@ -29,11 +28,7 @@ import org.eclipse.ui.preferences.ScopedPreferenceStore;
 import org.talend.commons.CommonsPlugin;
 import org.talend.commons.exception.ExceptionHandler;
 import org.talend.commons.runtime.service.ComponentsInstallComponent;
-import org.talend.commons.utils.resource.UpdatesHelper;
 import org.talend.updates.runtime.i18n.Messages;
-import org.talend.updates.runtime.model.ExtraFeature;
-import org.talend.updates.runtime.nexus.component.ComponentIndexBean;
-import org.talend.updates.runtime.nexus.component.ComponentIndexManager;
 import org.talend.updates.runtime.service.ITaCoKitUpdateService;
 import org.talend.updates.runtime.service.ITaCoKitUpdateService.ICarInstallationResult;
 import org.talend.updates.runtime.utils.PathUtils;
@@ -149,51 +144,17 @@ public class LocalComponentsInstallComponent implements ComponentsInstallCompone
         return false;
     }
 
-    protected void installFromFolder(final File componentBaseFolder) {
+    protected void installFromFolder(final File componentBaseFolder) {//just keep install TaCokit car
         if (componentBaseFolder == null || !componentBaseFolder.exists() || !componentBaseFolder.isDirectory()) {
             return;
         }
-        final ComponentIndexManager indexManager = new ComponentIndexManager();
 
         final File[] updateFiles = componentBaseFolder.listFiles(); // no children folders recursively.
         if (updateFiles != null && updateFiles.length > 0) {
             List<File> carFiles = new LinkedList<>();
             for (File f : updateFiles) {
-                // must be file, and update site.
-                if (f.isFile()) {
-                    ExtraFeature feature = null;
-                    try {
-                        if (UpdatesHelper.isComponentUpdateSite(f)) {
-                            // get ComponentP2ExtraFeature from update site file
-                            ComponentIndexBean indexBean = indexManager.create(f);
-                            if (indexBean == null) {
-                                getFailedComponents().add(f);
-                                continue;
-                            }
-                            ComponentP2ExtraFeature componentfeature = createComponentFeature(f);
-                            componentfeature.setLogin(isLogin);
-                            feature = componentfeature;
-                        } else if (isTaCoKitCar(f)) {
-                            carFiles.add(f);
-                            continue;
-                        } else {
-                            continue;
-                        }
-                        NullProgressMonitor progressMonitor = new NullProgressMonitor();
-                        // boolean installedBefore = feature.isInstalled(progressMonitor);
-                        if (feature.canBeInstalled(progressMonitor)) {
-                            List<URI> repoUris = new ArrayList<>(1);
-                            repoUris.add(PathUtils.getP2RepURIFromCompFile(f));
-                            messages.analyzeStatus(feature.install(progressMonitor, repoUris));
-                            messages.setNeedRestart(feature.needRestart());
-                        }
-                    } catch (Exception e) { // sometime, if reinstall it, will got one exception also.
-                        // won't block others to install.
-                        if (!CommonsPlugin.isHeadless()) {
-                            ExceptionHandler.process(e);
-                        }
-                        getFailedComponents().add(f);
-                    }
+                if (f.isFile() && isTaCoKitCar(f)) {
+                    carFiles.add(f);
                 }
             }
             installTaCoKitCars(messages, carFiles, getFailedComponents());
