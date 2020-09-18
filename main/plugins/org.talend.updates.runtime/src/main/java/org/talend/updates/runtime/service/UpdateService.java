@@ -110,6 +110,10 @@ public class UpdateService implements IUpdateService {
             File studioPatch = SharedStudioPatchInfoProvider.getInstance().getNeedInstallStudioPatchFiles();
             if (studioPatch != null && studioPatch.getName().endsWith(FileExtensions.ZIP_FILE_SUFFIX)) {
                 File tmpInstallFolder = File.createTempFile("StudioPatchInstaller", "");
+                if (tmpInstallFolder.exists()) {
+                    tmpInstallFolder.delete();
+                }
+                tmpInstallFolder.mkdirs();
                 FilesUtils.unzip(studioPatch.getAbsolutePath(), tmpInstallFolder.getAbsolutePath());
                 UpdateTools.syncLibraries(tmpInstallFolder);
                 UpdateTools.syncM2Repository(tmpInstallFolder);

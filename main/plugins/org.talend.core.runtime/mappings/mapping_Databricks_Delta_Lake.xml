@@ -1,6 +1,6 @@
 <?xml version="1.0"?>
 <mapping>
-	<dbms product="DATABRICKS_DELTA_LAKE" id="databricks_delta_lake_id" label="Mapping Databricks Delta Lake" default="true">
+	<dbms product="DATABRICKS_DELTA_LAKE" id="databricks_delta_lake_id" label="Mapping Delta Lake" default="true">
 		<dbTypes>
 			<dbType type="SMALLINT" ignoreLen="true" ignorePre="true"/>
 			<dbType type="FLOAT" ignoreLen="true" ignorePre="true"/>

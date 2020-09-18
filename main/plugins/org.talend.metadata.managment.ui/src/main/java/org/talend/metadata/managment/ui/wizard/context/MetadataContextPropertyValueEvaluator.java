@@ -48,6 +48,7 @@ public class MetadataContextPropertyValueEvaluator extends AbstractPropertyValue
         if (Boolean.valueOf(String.valueOf(property.getTaggedValue(IComponentConstants.SUPPORT_CONTEXT)))) {
             isPropertySupportContext = true;
         }
+        Object currentStoredValue = storedValue;
         if (connection != null && connection.isContextMode() && isPropertySupportContext) {
             ContextType contextType = ConnectionContextHelper.context;
             if(contextType == null){
@@ -61,7 +62,7 @@ public class MetadataContextPropertyValueEvaluator extends AbstractPropertyValue
             }
 
         }
-        return getTypedValue(property, storedValue);
+        return getTypedValue(property, currentStoredValue, storedValue);
     }
 
 }

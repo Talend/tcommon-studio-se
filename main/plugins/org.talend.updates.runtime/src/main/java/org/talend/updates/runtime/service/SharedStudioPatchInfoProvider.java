@@ -21,11 +21,15 @@ import org.apache.commons.lang3.StringUtils;
 import org.apache.log4j.Logger;
 import org.eclipse.core.runtime.Platform;
 import org.talend.commons.exception.ExceptionHandler;
+import org.talend.commons.utils.resource.FileExtensions;
 import org.talend.core.GlobalServiceRegister;
+import org.talend.core.runtime.maven.MavenArtifact;
 import org.talend.core.ui.IInstalledPatchService;
 import org.talend.updates.runtime.utils.PathUtils;
 
+import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonInclude.Include;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
@@ -62,9 +66,9 @@ public class SharedStudioPatchInfoProvider {
         return instance;
     }
 
-    public boolean isInstall(String patchName, String patchType) {
+    public boolean isInstalled(String patchName, String patchType) {
         for (InstalledPatch patchInfo : installedPatchInfo.getInstalledPatchList()) {
-            if (StringUtils.equals(patchName, patchInfo.getName()) && StringUtils.equals(patchType, patchInfo.getType())) {
+            if (StringUtils.equals(patchName, patchInfo.getPatchVersion()) && StringUtils.equals(patchType, patchInfo.getType())) {
                 return true;
             }
         }
@@ -72,35 +76,48 @@ public class SharedStudioPatchInfoProvider {
     }
 
     public void installedStudioPatch(String patchName) {
-        installedPatch(patchName, PATCH_TYPE_STUDIO);
+        installedPatch(patchName, null, PATCH_TYPE_STUDIO);
     }
 
     public void installedCarPatch(String patchName) {
-        installedPatch(patchName, PATCH_TYPE_CAR);
+        installedPatch(patchName, null, PATCH_TYPE_CAR);
     }
 
-    private void installedPatch(String patchName, String patchType) {
-        InstalledPatch patch = new InstalledPatch();
-        patch.setName(patchName);
-        patch.setType(patchType);
-        installedPatchInfo.getInstalledPatchList().add(patch);
-        saveData();
+    private void installedPatch(String patchName, String patchVersion, String patchType) {
+        if (!isContains(patchName, patchType)) {
+            InstalledPatch patch = new InstalledPatch();
+            patch.setFileName(patchName);
+            patch.setPatchVersion(patchVersion);
+            patch.setType(patchType);
+            installedPatchInfo.getInstalledPatchList().add(patch);
+            saveData();  
+        }
+
+    }
+    
+    private boolean isContains(String patchName, String patchType) {
+        for (InstalledPatch p : installedPatchInfo.getInstalledPatchList()) {
+            if (StringUtils.equals(p.getFileName(), patchName) && StringUtils.equals(p.getType(), patchType)) {
+                return true;
+            }
+        }
+        return false;
     }
 
     public File getNeedInstallStudioPatchFiles() {
         File patchFolder = PathUtils.getPatchesFolder();
         String patchName = getStudioInstalledLatestPatch();
-        if (patchFolder.exists() && patchFolder.isDirectory() && patchName != null && !isInstall(patchName, PATCH_TYPE_STUDIO)) {
-            boolean isNeedInstall = false;
+        if (patchFolder.exists() && patchFolder.isDirectory() && patchName != null && !isInstalled(patchName, PATCH_TYPE_STUDIO)) {
+            boolean isNeedInstall = true;
             for (InstalledPatch patchInfo : installedPatchInfo.getInstalledPatchList()) {
-                if (StringUtils.equals(patchName, patchInfo.getName())) {
-                    isNeedInstall = true;
+                if (patchInfo.getFileName() != null && patchInfo.getFileName().startsWith(patchName)) {
+                    isNeedInstall = false;
                     break;
                 }
             }
             if (isNeedInstall) {
                 for (File file : patchFolder.listFiles()) {
-                    if (file.getName().startsWith(patchName)) {
+                    if (file.getName().startsWith(patchName) && file.getName().endsWith(FileExtensions.ZIP_FILE_SUFFIX)) {
                         return file;
                     }
                 }
@@ -114,7 +131,7 @@ public class SharedStudioPatchInfoProvider {
         File patchFolder = PathUtils.getComponentsInstalledFolder();
         if (patchFolder.exists() && patchFolder.isDirectory()) {
             for (File file : patchFolder.listFiles()) {
-                if (!isInstall(file.getName(), PATCH_TYPE_CAR)) {
+                if (!isInstalled(file.getName(), PATCH_TYPE_CAR)) {
                     files.add(file);
                 }
             }
@@ -126,7 +143,10 @@ public class SharedStudioPatchInfoProvider {
         if (GlobalServiceRegister.getDefault().isServiceRegistered(IInstalledPatchService.class)) {
             IInstalledPatchService installedPatchService = GlobalServiceRegister.getDefault()
                     .getService(IInstalledPatchService.class);
-            return installedPatchService.getLatestInstalledVersion(false);
+            MavenArtifact artifact = installedPatchService.getLastIntalledP2Patch();
+            if (artifact != null) {
+                return artifact.getArtifactId();
+            }
         }
         return null;
     }
@@ -178,21 +198,24 @@ class InstalledPatchInfo {
 
 class InstalledPatch {
 
-    @JsonProperty("name")
-    private String name;
+    @JsonInclude(Include.NON_DEFAULT)
+    @JsonProperty("patchVersion")
+    private String patchVersion;
 
+    @JsonInclude(Include.NON_DEFAULT)
     @JsonProperty("fileName")
     private String fileName;
 
+    @JsonInclude(Include.NON_DEFAULT)
     @JsonProperty("type")
     private String type;
 
-    public String getName() {
-        return name;
+    public String getPatchVersion() {
+        return patchVersion;
     }
 
-    public void setName(String name) {
-        this.name = name;
+    public void setPatchVersion(String patchVersion) {
+        this.patchVersion = patchVersion;
     }
 
     public String getFileName() {
