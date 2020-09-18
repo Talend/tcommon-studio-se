@@ -11,9 +11,9 @@
 	<packaging>pom</packaging>
 	<dependencies>
 		<dependency>
-    	<groupId>org.apache.cxf</groupId>
-  		<artifactId>cxf-core</artifactId>
-  		<version>3.3.6</version>
+	    	<groupId>org.apache.cxf</groupId>
+	  		<artifactId>cxf-core</artifactId>
+	  		<version>3.3.6</version>
 	    </dependency>
 	    <dependency>
 		  <groupId>org.apache.cxf</groupId>
@@ -75,6 +75,8 @@
 		  <artifactId>jaxws-api</artifactId>
 		  <version>2.3.1</version>
 		</dependency>
+		
+		
 		<dependency>
 		  <groupId>org.apache.neethi</groupId>
 		  <artifactId>neethi</artifactId>
@@ -85,16 +87,8 @@
 		  <artifactId>stax2-api</artifactId>
 		  <version>3.1.4</version>
 		</dependency>
-		<dependency>
-		  <groupId>org.codehaus.woodstox</groupId>
-		  <artifactId>woodstox-core-asl</artifactId>
-		  <version>4.4.1</version>
-		</dependency>
-		<dependency>
-		  <groupId>org.talend.libraries</groupId>
-		  <artifactId>javax.ws.rs-api-2.0-m10</artifactId>
-		  <version>6.0.0</version>
-		</dependency>
+
+
 		<dependency>
 		  <groupId>org.talend.libraries</groupId>
 		  <artifactId>woodstox-core-asl-4.2.0</artifactId>
