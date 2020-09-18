@@ -13,6 +13,7 @@
 package org.talend.core.model.metadata;
 
 import java.io.File;
+import java.io.FileInputStream;
 import java.io.IOException;
 import java.net.URL;
 import java.util.ArrayList;
@@ -31,8 +32,11 @@ import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
 
+import org.eclipse.core.resources.IFile;
+import org.eclipse.core.resources.IFolder;
 import org.eclipse.core.resources.IProject;
 import org.eclipse.core.resources.ProjectScope;
+import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.FileLocator;
 import org.eclipse.core.runtime.IPath;
 import org.eclipse.core.runtime.Path;
@@ -483,6 +487,42 @@ public final class MetadataTalendType {
                 }
             }
             return mappingFolder.toURL();
+        } catch (Exception e) {
+            throw new SystemException(e);
+        }
+    }
+
+    public static void syncNewMappingFileToProject() throws SystemException {
+        try {
+            File sysMappingFiles = new File(MetadataTalendType.getSystemForderURLOfMappingsFile().getPath());
+            IFolder projectMappingFolder = ResourceUtils.getProject(ProjectManager.getInstance().getCurrentProject())
+                    .getFolder(MetadataTalendType.PROJECT_MAPPING_FOLDER);
+            File projectMappingFiles = projectMappingFolder.getFullPath().toFile();
+            if (sysMappingFiles.list().length == new File(projectMappingFolder.getLocationURI()).list().length) {
+                return;
+            }
+
+            for (File sysMapping : sysMappingFiles.listFiles()) {
+                IFile projectMapping = projectMappingFolder.getFile(sysMapping.getName());
+                if (!projectMapping.exists()) {
+                    FileInputStream fis = null;
+                    try {
+                        fis = new FileInputStream(sysMapping);
+                        projectMapping.create(fis, true, null);
+                    } catch (CoreException coreExc) {
+                        throw new SystemException(coreExc);
+                    } finally {
+                        if (fis != null) {
+                            try {
+                                fis.close();
+                            } catch (IOException ioExc) {
+                                throw new SystemException(ioExc);
+                            }
+                        }
+                    }
+                }
+            }
+
         } catch (Exception e) {
             throw new SystemException(e);
         }
