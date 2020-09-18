@@ -33,7 +33,8 @@ Require-Bundle: org.apache.commons.lang,
  org.talend.core,
  org.apache.commons.io,
  org.apache.httpcomponents.httpcore,
- org.apache.httpcomponents.httpclient
+ org.apache.httpcomponents.httpclient,
+ org.slf4j.api
 Import-Package: org.eclipse.jdt.internal.ui.workingsets
 Export-Package: org.talend.core.ui,
  org.talend.core.ui.actions,
@@ -81,3 +82,7 @@ Bundle-Vendor: .Talend SA.
 Bundle-ActivationPolicy: lazy
 Bundle-Activator: org.talend.core.ui.CoreUIPlugin
 Bundle-Localization: plugin
+Bundle-ClassPath: lib/jna-platform.jar,
+ lib/jna.jar,
+ lib/oshi-core.jar,
+ .
