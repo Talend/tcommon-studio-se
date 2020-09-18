@@ -206,6 +206,15 @@ public class UpdateTools {
         }
         return true;
     }
+    
+    public static boolean deployCars(IProgressMonitor monitor, File installingPatchFolder, boolean cancellable)
+            throws Exception {
+        if (installingPatchFolder != null && installingPatchFolder.exists()) {
+            File carFolder = new File(installingPatchFolder, ITaCoKitUpdateService.FOLDER_CAR);
+            TaCoKitCarUtils.deployCars(carFolder, monitor, cancellable);
+        }
+        return true;
+    }
 
     public static void syncLibraries(File installingPatchFolder) throws IOException {
         // sync to product lib/java

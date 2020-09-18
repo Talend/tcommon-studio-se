@@ -270,14 +270,18 @@ public class DatabaseWizardPage extends WizardPage {
         }
         if(isTCOMDB(dbTypeForm.getDBType())){
             if(dynamicParentForm == null || dynamicParentForm.isDisposed()){
-                createDynamicForm();;
+                createDynamicForm();
             }
             dynamicParentForm.setVisible(true);
-            databaseForm.setVisible(false);
+            if (databaseForm != null && !databaseForm.isDisposed()) {
+                databaseForm.setVisible(false);
+            }
             setControl(dynamicForm);
             resetDynamicConnectionItem(connItem);
+
+            DatabaseConnection dbConnection = ((DatabaseConnection) connItem.getConnection());
             String product = dbTypeForm.getDBType();
-            ((DatabaseConnection)connItem.getConnection()).setProductId(product);
+            dbConnection.setProductId(product);
             String mapping = null;
             if (MetadataTalendType.getDefaultDbmsFromProduct(product) != null) {
                 mapping = MetadataTalendType.getDefaultDbmsFromProduct(product).getId();
@@ -285,7 +289,9 @@ public class DatabaseWizardPage extends WizardPage {
             if (mapping == null) {
                 mapping = "mysql_id"; // default value //$NON-NLS-1$
             }
-            ((DatabaseConnection)connItem.getConnection()).setDbmsId(mapping);
+            dbConnection.setDbmsId(mapping);
+            initJDBCDefaultConnection4SwitchType(dbConnection);
+
         }else{
             databaseForm.setVisible(true);
             if(dynamicParentForm != null && !dynamicParentForm.isDisposed()){
@@ -295,6 +301,20 @@ public class DatabaseWizardPage extends WizardPage {
             setControl(databaseForm);
         }
         parentContainer.layout();
+    }
+
+    private void initJDBCDefaultConnection4SwitchType(DatabaseConnection connection) {
+        String displayDBType = dbTypeForm.getDisplayDBType();
+        IGenericWizardService service = null;
+        GlobalServiceRegister register = GlobalServiceRegister.getDefault();
+        if (register.isServiceRegistered(IGenericWizardService.class)) {
+            service = register.getService(IGenericWizardService.class);
+        }
+        if (service == null) {
+            return;
+        }
+
+        service.initAdditonalJDBCConnectionValue(connection, dynamicForm, displayDBType, connectionItem.getProperty().getId());
     }
 
 

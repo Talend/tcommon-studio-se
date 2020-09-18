@@ -110,10 +110,15 @@ public class UpdateService implements IUpdateService {
             File studioPatch = SharedStudioPatchInfoProvider.getInstance().getNeedInstallStudioPatchFiles();
             if (studioPatch != null && studioPatch.getName().endsWith(FileExtensions.ZIP_FILE_SUFFIX)) {
                 File tmpInstallFolder = File.createTempFile("StudioPatchInstaller", "");
+                if (tmpInstallFolder.exists()) {
+                    tmpInstallFolder.delete();
+                }
+                tmpInstallFolder.mkdirs();
                 FilesUtils.unzip(studioPatch.getAbsolutePath(), tmpInstallFolder.getAbsolutePath());
                 UpdateTools.syncLibraries(tmpInstallFolder);
                 UpdateTools.syncM2Repository(tmpInstallFolder);
                 UpdateTools.installCars(monitor, tmpInstallFolder, false);
+                UpdateTools.deployCars(monitor, tmpInstallFolder, false);
                 SharedStudioPatchInfoProvider.getInstance().installedStudioPatch(studioPatch.getName());
                 tmpInstallFolder.delete();
                 isInstalled = true;
@@ -125,6 +130,7 @@ public class UpdateService implements IUpdateService {
                     FileUtils.copyFile(carFile, new File (tmpInstallFolder, carFile.getName()));
                 }
                 UpdateTools.installCars(monitor, tmpInstallFolder, false);
+                UpdateTools.deployCars(monitor, tmpInstallFolder, false);
                 tmpInstallFolder.delete();
                 isInstalled = true;
             }          
