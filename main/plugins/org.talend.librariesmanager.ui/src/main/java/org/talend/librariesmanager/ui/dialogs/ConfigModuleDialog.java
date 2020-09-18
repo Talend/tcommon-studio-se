@@ -903,7 +903,11 @@ public class ConfigModuleDialog extends TitleAreaDialog implements IConfigModule
     private void setupMavenURIforInstall() throws Exception {
         if (validateInputForInstallPre()) {
             String filePath = jarPathTxt.getText();
-            defaultUriTxt.setText(ConfigModuleHelper.getMavenURI(filePath));
+            String mvnUri = ConfigModuleHelper.getDetectURI(filePath);
+            if (StringUtils.isEmpty(mvnUri)) {
+                mvnUri = ConfigModuleHelper.getMavenURI(filePath);
+            }
+            defaultUriTxt.setText(mvnUri);
             if (StringUtils.isEmpty(defaultUriTxt.getText())) {
                 // default uri is empty
                 useCustomBtn.setSelection(true);
@@ -915,15 +919,7 @@ public class ConfigModuleDialog extends TitleAreaDialog implements IConfigModule
 
     private void setupCustomMavenURIforInstall() throws Exception {
         if (validateInputForInstallPre()) {
-            String filePath = jarPathTxt.getText();
-            String mvnUri = ConfigModuleHelper.getDetectURI(filePath);
-            if (StringUtils.isEmpty(mvnUri)) {
-                mvnUri = ModuleMavenURIUtils.MVNURI_TEMPLET;
-            } else {
-                this.useCustomBtn.setSelection(true);
-                customUriText.setEnabled(true);
-            }
-            customUriText.setText(mvnUri);
+            customUriText.setText(ModuleMavenURIUtils.MVNURI_TEMPLET);
         }
         validateInputFields();
     }
