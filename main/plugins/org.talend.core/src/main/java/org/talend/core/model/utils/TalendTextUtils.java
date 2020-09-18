@@ -463,7 +463,7 @@ public class TalendTextUtils {
     }
 
     public static String removeQuotesIfExist(String text) {
-        return TalendQuoteUtils.removeQuotesIfExist(text);
+        return org.talend.utils.string.TalendTextUtils.removeQuotesIfExist(text);
     }
 
     /**
@@ -474,7 +474,7 @@ public class TalendTextUtils {
      * @return
      */
     public static String removeQuotes(String text, String quotation) {
-        return TalendQuoteUtils.removeQuotes(text, quotation);
+        return org.talend.utils.string.TalendTextUtils.removeQuotes(text, quotation);
     }
 
     public static boolean isEnclosed(String text) {
