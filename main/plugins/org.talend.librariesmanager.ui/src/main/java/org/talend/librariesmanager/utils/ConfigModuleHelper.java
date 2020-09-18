@@ -25,15 +25,16 @@ import org.apache.commons.lang3.StringUtils;
 import org.eclipse.m2e.core.MavenPlugin;
 import org.talend.core.GlobalServiceRegister;
 import org.talend.core.ILibraryManagerService;
-import org.talend.core.model.general.ModuleStatusProvider;
+import org.talend.core.model.general.ModuleNeeded;
 import org.talend.core.model.general.ModuleNeeded.ELibraryInstallStatus;
+import org.talend.core.model.general.ModuleStatusProvider;
 import org.talend.core.nexus.ArtifactRepositoryBean;
 import org.talend.core.nexus.IRepositoryArtifactHandler;
 import org.talend.core.nexus.RepositoryArtifactHandlerManager;
 import org.talend.core.nexus.TalendLibsServerManager;
 import org.talend.core.runtime.maven.MavenArtifact;
-import org.talend.core.runtime.maven.MavenConstants;
 import org.talend.core.runtime.maven.MavenUrlHelper;
+import org.talend.librariesmanager.model.ModulesNeededProvider;
 import org.talend.librariesmanager.ui.LibManagerUiPlugin;
 
 /*
@@ -238,23 +239,28 @@ public class ConfigModuleHelper {
         }
     }
 
-    public static String getCustomURI(String jarPath) {
-        if (StringUtils.isEmpty(jarPath)) {
-            return ModuleMavenURIUtils.MVNURI_TEMPLET;
+    public static String getDetectURI(String jarPath) throws Exception {
+        File file = new File(jarPath);
+        MavenArtifact art = JarDetector.parse(file);
+        if (art != null) {
+            return MavenUrlHelper.generateMvnUrl(art);
         }
-        String g = "org.talend.libraries";
-        String a = FilenameUtils.getBaseName(jarPath);
-        String v = "6.0.0-SNAPSHOT";
-        StringBuffer sb = new StringBuffer(MavenUrlHelper.MVN_PROTOCOL);
-        sb.append(g);
-        sb.append(MavenUrlHelper.SEPERATOR);
-        sb.append(a);
-        sb.append(MavenUrlHelper.SEPERATOR);
-        sb.append(v);
-        sb.append(MavenUrlHelper.SEPERATOR);
-        sb.append(MavenConstants.PACKAGING_JAR);
+        return "";
+    }
 
-        return sb.toString();
+    public static String getMavenURI(String jarPath) throws Exception {
+        String jarName = FilenameUtils.getName(jarPath);
+        ModuleNeeded mod = null;
+        for (ModuleNeeded module : ModulesNeededProvider.getAllManagedModules()) {
+            if (jarName.equals(module.getModuleName())) {
+                mod = module;
+                break;
+            }
+        }
+        if (mod != null) {
+            return mod.getMavenUri() == null ? "" : mod.getMavenUri();
+        }
 
+        return "";
     }
 }
