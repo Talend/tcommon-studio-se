@@ -22,6 +22,31 @@
       		</dependency-resolution>
         </configuration>
       </plugin>
+      
+      <plugin>
+			<groupId>org.apache.maven.plugins</groupId>
+			<artifactId>maven-dependency-plugin</artifactId>
+			<version>2.8</version>
+			<executions>
+				<execution>
+					<id>copy-maven-repository</id>
+					<phase>generate-sources</phase>
+					<goals>
+						<goal>copy</goal>
+					</goals>
+					<configuration>
+						<outputDirectory>${project.basedir}/lib</outputDirectory>
+						<artifactItems>
+							<artifactItem>
+								  <groupId>org.talend.libraries</groupId>
+								  <artifactId>javax.ws.rs-api-2.0-m10</artifactId>
+								  <version>6.0.0</version>
+							</artifactItem>
+						</artifactItems>
+					</configuration>
+				</execution>
+			</executions>
+		</plugin>
     </plugins>
   </build>
 </project>
