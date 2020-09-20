@@ -83,13 +83,6 @@
               context="plugin:org.talend.libraries.apache.cxf"
               language="java"
               message="Needed for the cxf dependencies"
-              name="jakarta.ws.rs-api-2.1.5.jar" mvn_uri="mvn:jakarta.ws.rs/jakarta.ws.rs-api/2.1.5" 
-              required="true">
-        </libraryNeeded>
-        <libraryNeeded
-              context="plugin:org.talend.libraries.apache.cxf"
-              language="java"
-              message="Needed for the cxf dependencies"
               name="jakarta.xml.bind-api-2.3.2.jar" mvn_uri="mvn:jakarta.xml.bind/jakarta.xml.bind-api/2.3.2" 
               required="true">
         </libraryNeeded>
@@ -111,7 +104,7 @@
               context="plugin:org.talend.libraries.apache.cxf"
               language="java"
               message="Needed for the cxf dependencies"
-              name="jaxws-api-2.3.1.jar" mvn_uri="mvn:org.glassfish.jaxb/jaxws-api/2.3.1" 
+              name="jaxws-api-2.3.1.jar" mvn_uri="mvn:javax.xml.ws/jaxws-api/2.3.1" 
               required="true">
         </libraryNeeded>
         <libraryNeeded
