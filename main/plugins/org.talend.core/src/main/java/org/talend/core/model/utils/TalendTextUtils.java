@@ -463,7 +463,8 @@ public class TalendTextUtils {
     }
 
     public static String removeQuotesIfExist(String text) {
-        return org.talend.utils.string.TalendTextUtils.removeQuotesIfExist(text);
+        return org.talend.utils.string.TalendTextUtils.removeQuotesIfExist(text,
+                org.talend.utils.string.TalendTextUtils.QUOTATION_MARK);
     }
 
     /**
