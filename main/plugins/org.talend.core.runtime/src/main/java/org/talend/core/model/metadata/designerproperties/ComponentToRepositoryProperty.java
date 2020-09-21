@@ -18,6 +18,7 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
+import org.apache.commons.lang.StringUtils;
 import org.eclipse.emf.common.util.EList;
 import org.eclipse.jface.dialogs.MessageDialog;
 import org.eclipse.swt.widgets.Display;
@@ -71,6 +72,7 @@ import org.talend.core.model.utils.ContextParameterUtils;
 import org.talend.core.model.utils.IDragAndDropServiceHandler;
 import org.talend.core.runtime.i18n.Messages;
 import org.talend.core.runtime.services.IGenericDBService;
+import org.talend.core.runtime.services.IGenericWizardService;
 import org.talend.core.utils.TalendQuoteUtils;
 import org.talend.cwm.helper.ConnectionHelper;
 import org.talend.cwm.helper.PackageHelper;
@@ -366,6 +368,21 @@ public class ComponentToRepositoryProperty {
                 if (para.getRepositoryValue().endsWith(EDatabaseTypeName.GENERAL_JDBC.getProduct())) {
                     connection.setDatabaseType(EDatabaseTypeName.GENERAL_JDBC.getProduct());
                     connection.setProductId(EDatabaseTypeName.GENERAL_JDBC.getProduct());
+                    if (!node.getComponent().getDisplayName().equals(node.getComponent().getName())) {
+                        // additional JDBC e.g. Delta Lake
+                        if (GlobalServiceRegister.getDefault().isServiceRegistered(IGenericWizardService.class)) {
+                            IGenericWizardService service = GlobalServiceRegister.getDefault()
+                                    .getService(IGenericWizardService.class);
+                            if (service != null) {
+                                String database = service.getDatabseNameByNode(node);
+                                if (StringUtils.isNotBlank(database)) {
+                                    connection.setProductId(database);
+                                }
+                            }
+
+                        }
+                    }
+
                 }
                 // vertica output component have no TYPE ElementParameter .
                 if (para.getRepositoryValue().endsWith(EDatabaseTypeName.VERTICA.getProduct())) {
