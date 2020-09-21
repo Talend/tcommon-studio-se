@@ -77,8 +77,6 @@ public class MavenRepoSynchronizer {
 
         getAllPomFiles(allPomFiles, parentFolder);
 
-        Set<File> deployedPomFiles = getDeployedPomFiles(allPomFiles);
-
         for (File pomFile : allPomFiles) {
             try {
                 ExtendedMavenArtifact artifact = parseArtifact(pomFile);
@@ -106,9 +104,14 @@ public class MavenRepoSynchronizer {
                         } else {
                             pomPath = PomUtil.generatePomInFolder(tempFolder, artifact.getArtifact());
                         }
+                        
                         boolean deploy = deployToRemote;
-                        if (deployedPomFiles.contains(pomFile)) {
-                            deploy = false;
+                        if(deploy) {
+                            Set<File> deployedPomFiles = getDeployedPomFiles(allPomFiles);
+                            
+                            if (deployedPomFiles.contains(pomFile)) {
+                                deploy = false;
+                            }
                         }
                         deployer.install(artifact.getMvnUrl(), jarPath, pomPath, deploy);
                     } finally {

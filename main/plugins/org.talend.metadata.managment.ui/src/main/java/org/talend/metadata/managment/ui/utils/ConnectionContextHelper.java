@@ -1597,7 +1597,7 @@ public final class ConnectionContextHelper {
             ContextType contextType = null;
             List<ContextType> contextTypeList = contextItem.getContext();
             for (ContextType contye : contextTypeList) {
-                if (context.getName() != null && contye.getName().toLowerCase().equals(context.getName().toLowerCase())) {
+                if (context.getName() != null && contye.getName().equalsIgnoreCase(context.getName())) {
                     contextType = contye;
                     break;
                 }

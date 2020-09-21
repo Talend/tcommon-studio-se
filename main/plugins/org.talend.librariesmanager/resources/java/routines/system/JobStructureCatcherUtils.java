@@ -21,17 +21,19 @@
 // ============================================================================
 package routines.system;
 
+import java.io.UnsupportedEncodingException;
 import java.lang.management.ManagementFactory;
 import java.lang.management.RuntimeMXBean;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
+import java.util.UUID;
 
 //TODO split to several classes by the level when have a clear requirement or design : job, component, connection
 public class JobStructureCatcherUtils {
 
-	private static SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss.SSSZ");
+	private SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss.SSSZ");
 
 	// TODO split it as too big, even for storing the reference only which point
 	// null
@@ -59,8 +61,6 @@ public class JobStructureCatcherUtils {
 
 		public String job_version;
 
-		public Long systemPid = JobStructureCatcherUtils.getPid();
-
 		public boolean current_connector_as_input;
 
 		public String current_connector_type;
@@ -84,11 +84,17 @@ public class JobStructureCatcherUtils {
 
 		public long end_time;
 
-		public String moment = sdf.format(new Date());
+		public String moment;
 
 		public String status;
 		
 		public LogType log_type;
+		
+		//process uuid
+		public String pid = ProcessIdAndThreadId.getProcessId();
+				
+		//thread uuid
+		public String tid = ProcessIdAndThreadId.getThreadId();
 
 		public JobStructureCatcherMessage() {
 		}
@@ -101,7 +107,10 @@ public class JobStructureCatcherUtils {
 		RUNCOMPONENT,
 		FLOWINPUT,
 		FLOWOUTPUT,
-		PERFORMANCE
+		PERFORMANCE,
+		
+		RUNTIMEPARAMETER,
+		RUNTIMESCHEMA
 	}
 
 	java.util.List<JobStructureCatcherMessage> messages = java.util.Collections
@@ -117,6 +126,42 @@ public class JobStructureCatcherUtils {
 		this.job_name = jobName;
 		this.job_id = jobId;
 		this.job_version = jobVersion;
+	}
+	
+	public void addComponentParameterMessage(String component_id, String component_name, Map<String, String> component_parameters) {
+		JobStructureCatcherMessage scm = new JobStructureCatcherMessage();
+		scm.job_name = this.job_name;
+		scm.job_id = this.job_id;
+		scm.job_version = this.job_version;
+		
+		scm.component_id = component_id;
+		scm.component_name = component_name;
+		
+		scm.component_parameters = component_parameters;
+		
+		scm.log_type = LogType.RUNTIMEPARAMETER;
+		
+		messages.add(scm);
+	}
+	
+	public void addConnectionSchemaMessage(String source_component_id, String source_component_name, String target_component_id, String target_component_name, 
+			String current_connector, List<Map<String, String>> component_schema) {
+		JobStructureCatcherMessage scm = new JobStructureCatcherMessage();
+		scm.job_name = this.job_name;
+		scm.job_id = this.job_id;
+		scm.job_version = this.job_version;
+		
+		scm.current_connector = current_connector;
+		scm.sourceId = source_component_id;
+		scm.sourceComponentName = source_component_name;
+		scm.targetId = target_component_id;
+		scm.targetComponentName = target_component_name;
+		
+		scm.component_schema = component_schema;
+		
+		scm.log_type = LogType.RUNTIMESCHEMA;
+		
+		messages.add(scm);
 	}
 
 	public void addConnectionMessage(String component_id, String component_label, String component_name, boolean current_connector_as_input,
@@ -163,6 +208,8 @@ public class JobStructureCatcherUtils {
 
 	public void addJobStartMessage() {
 		JobStructureCatcherMessage scm = new JobStructureCatcherMessage();
+		scm.moment = sdf.format(new Date());
+		
 		scm.job_name = this.job_name;
 		scm.job_id = this.job_id;
 		scm.job_version = this.job_version;
@@ -174,6 +221,8 @@ public class JobStructureCatcherUtils {
 
 	public void addJobEndMessage(long start_time, long end_time, String status) {
 		JobStructureCatcherMessage scm = new JobStructureCatcherMessage();
+		scm.moment = sdf.format(new Date());
+		
 		scm.job_name = this.job_name;
 		scm.job_id = this.job_id;
 		scm.job_version = this.job_version;
@@ -196,16 +245,6 @@ public class JobStructureCatcherUtils {
 			messages.clear();
 		}
 		return messagesToSend;
-	}
-
-	public static long getPid() {
-		RuntimeMXBean mx = ManagementFactory.getRuntimeMXBean();
-		String[] mxNameTable = mx.getName().split("@");
-		if (mxNameTable.length == 2) {
-			return Long.parseLong(mxNameTable[0]);
-		} else {
-			return Thread.currentThread().getId();
-		}
 	}
 
 	public void addConnectionMessage4PerformanceMonitor(String current_connector, String sourceId, String sourceLabel,

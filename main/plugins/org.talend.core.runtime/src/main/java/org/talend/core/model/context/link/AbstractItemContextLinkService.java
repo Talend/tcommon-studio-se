@@ -18,15 +18,18 @@ import java.util.List;
 import java.util.Map;
 
 import org.apache.commons.lang3.StringUtils;
+import org.eclipse.emf.common.util.EList;
 import org.talend.commons.exception.ExceptionHandler;
 import org.talend.commons.exception.PersistenceException;
 import org.talend.core.GlobalServiceRegister;
 import org.talend.core.model.context.ContextUtils;
 import org.talend.core.model.properties.ContextItem;
 import org.talend.core.model.properties.Item;
+import org.talend.core.runtime.CoreRuntimePlugin;
 import org.talend.cwm.helper.ResourceHelper;
 import org.talend.designer.core.model.utils.emf.talendfile.ContextParameterType;
 import org.talend.designer.core.model.utils.emf.talendfile.ContextType;
+import org.talend.repository.ProjectManager;
 import org.talend.repository.model.IRepositoryService;
 
 
@@ -106,16 +109,26 @@ public abstract class AbstractItemContextLinkService implements IItemContextLink
         }
 
         Item contextItem = tempCache.get(repositoryContextId);
+        IRepositoryService repositoryService = GlobalServiceRegister.getDefault().getService(IRepositoryService.class);
         if (contextItem == null) {
             contextItem = ContextUtils.getRepositoryContextItemById(repositoryContextId);
             tempCache.put(repositoryContextId, contextItem);
+            if (contextItem != null && !(contextItem instanceof ContextItem)
+                    && ProjectManager.getInstance().isInCurrentMainProject(contextItem)
+                    && checkRepoItemContextParamInternalId(contextItem)) {
+                try {
+                    repositoryService.getProxyRepositoryFactory().save(contextItem, true); // This should only using for migration phase                                                         // case the internal id is null
+                } catch (Exception ex) {
+                    ExceptionHandler.process(ex);
+                }
+            }
         }
         if (contextItem != null) {
             ContextType contextType = ContextUtils.getContextTypeByName(contextItem, contextName);
             ContextParameterType repoContextParameterType = ContextUtils.getContextParameterTypeByName(contextType, paramName);
             if (repoContextParameterType != null && repoContextParameterType.eResource() == null) {
                 // processItem save before than contextItem, caused eResource null
-                IRepositoryService repositoryService = GlobalServiceRegister.getDefault().getService(IRepositoryService.class);
+
                 try {
                     repositoryService.getProxyRepositoryFactory().save(contextItem, false);
                 } catch (PersistenceException e) {
@@ -169,6 +182,30 @@ public abstract class AbstractItemContextLinkService implements IItemContextLink
             }
         }
         return null;
+    }
+    
+    protected boolean checkRepoItemContextParamInternalId(Item item) {
+        boolean isModified = false;
+        EList<?> contextTypeList = ContextUtils.getAllContextType(item);
+        if (contextTypeList != null) {
+            for (Object typeObj : contextTypeList) {
+                if (typeObj instanceof ContextType) {
+                    ContextType type = (ContextType) typeObj;
+                    for (Object obj : type.getContextParameter()) {
+                        if (obj instanceof ContextParameterType) {
+                            ContextParameterType contextParam = (ContextParameterType) obj;
+                            if (ContextUtils.isBuildInParameter(contextParam)
+                                    && StringUtils.isEmpty(contextParam.getInternalId())) {
+                                contextParam
+                                        .setInternalId(CoreRuntimePlugin.getInstance().getProxyRepositoryFactory().getNextId());
+                                isModified = true;
+                            }
+                        }
+                    }
+                }
+            }
+        }
+        return isModified;
     }
 }
 

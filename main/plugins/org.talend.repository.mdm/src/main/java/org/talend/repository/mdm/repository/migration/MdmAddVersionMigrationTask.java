@@ -42,14 +42,14 @@ public class MdmAddVersionMigrationTask extends AbstractItemMigrationTask {
                 MDMConnectionItem mdmItem = (MDMConnectionItem) item;
                 MDMConnection connection = (MDMConnection) mdmItem.getConnection();
                 if (connection.getVersion() == null) {
-                    connection.setVersion(MDMVersions.MDM_S56.getKey());
+                    connection.setVersion(MDMVersions.MDM_S60.getKey());
                     if (connection.getServerUrl() == null) {
                         if (connection.getServer() != null && connection.getPort() != null) {
                             connection.setServerUrl("http://" + connection.getServer() + ":" + connection.getPort()
-                                    + "/talend/TalendPort");
+                                    + "/talendmdm/services/soap");
                         } else {
                             // set default url
-                            connection.setServerUrl("http://localhost:8180/talend/TalendPort");
+                            connection.setServerUrl("http://localhost:8180/talendmdm/services/soap");
                         }
                     }
                     factory.save(item, true);

@@ -9,6 +9,7 @@ package org.talend.datatools.xml.utils;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.regex.Pattern;
 
 /**
  * This class is a Utility class which is used to help UI to populate the list of possible XPath Expressions.
@@ -89,7 +90,7 @@ final public class XPathPopulationUtil {
         }
         String tempRootPath = rootPath + UtilConstants.XPATH_SLASH;
         if (columnPath.startsWith(tempRootPath)) {
-            return columnPath.replaceFirst("\\Q" + rootPath + "\\E", "");
+            return columnPath.replaceFirst(Pattern.quote(rootPath), "");
         } else {
             return getXPathExpression(rootPath, columnPath);
         }
