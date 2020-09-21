@@ -6,7 +6,7 @@
               context="plugin:org.talend.libraries.apache.cxf"
               language="java"
               message="Needed for the cxf dependencies"
-              name="javax.ws.rs-api-2.0-m10-6.0.0.jar" mvn_uri="mvn:org.talend.libraries/javax.ws.rs-api-2.0-m10/6.0.0" 
+              name="javax.ws.rs-api-2.0-m10.jar" mvn_uri="mvn:org.talend.libraries/javax.ws.rs-api-2.0-m10/6.0.0" 
               required="true">
         </libraryNeeded>
         <libraryNeeded
