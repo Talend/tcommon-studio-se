@@ -23,10 +23,14 @@ public class TimeMeasurePerformance extends TimeMeasure{
     static private Logger logger;
     
     private static HashMap<String, TimeStack> timers;
+    
+    private static long startTime = -1L;
 
     private static int indent = 0;
     
     public static void begin(String idTimer) {
+        startTime = System.nanoTime();
+        
         init();
         if (timers.containsKey(idTimer)) {
             log(indent(indent) + "Warning (start): timer " + idTimer + " already exists"); //$NON-NLS-1$  //$NON-NLS-2$
@@ -102,5 +106,11 @@ public class TimeMeasurePerformance extends TimeMeasure{
         } catch (Exception e) {
             throw new RuntimeException("Error while initializing log properties.", e);
         }
+    }
+    
+    public static void afterStartup() {
+        double elapsedTimeInSeconds = (double)(System.nanoTime() - startTime)/1000000000;
+        PerformanceStatisticUtil.recordStartupEpapsedTime(elapsedTimeInSeconds);
+        PerformanceStatisticUtil.measureIO();
     }
 }
