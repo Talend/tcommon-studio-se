@@ -813,13 +813,7 @@ public class RepositoryToComponentProperty {
      * @return
      */
     private static Object getMDMValue(MDMConnection connection, String value, IMetadataTable table) {
-        if ("MDM_VERSION".equals(value)) {//$NON-NLS-1$
-            if (connection.getVersion() == null || "".equals(connection.getVersion())) {
-                return MDMVersions.MDM_S56.getKey();
-            } else {
-                return connection.getVersion();
-            }
-        } else if ("MDMURL".equals(value)) { //$NON-NLS-1$
+        if ("MDMURL".equals(value)) { //$NON-NLS-1$
             if (isContextMode(connection, connection.getServerUrl())) {
                 return connection.getServerUrl();
             } else {

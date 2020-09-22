@@ -18,6 +18,8 @@ import java.util.Map;
 import org.apache.log4j.Logger;
 import org.talend.commons.exception.ExceptionHandler;
 import org.talend.commons.exception.PersistenceException;
+import org.talend.core.GlobalServiceRegister;
+import org.talend.core.ITDQRepositoryService;
 import org.talend.core.database.EDatabaseTypeName;
 import org.talend.core.database.conn.DatabaseConnStrUtil;
 import org.talend.core.hadoop.IHadoopClusterService;
@@ -100,7 +102,8 @@ public class SwitchContextGroupNameImpl implements ISwitchContext {
                 newContextName = newContextType == null ? null : newContextType.getName();
             }
 
-            if (!isContextIsValid(newContextName, oldContextName, con)) {
+            if (!isContextIsValid(newContextName, oldContextName, connItem) && hasDependency(connItem)) {
+                // can not update connection when context is invalid(catalog or schema is null) and has dependecy
                 return false;
             }
             con.setContextName(newContextName);
@@ -108,7 +111,7 @@ public class SwitchContextGroupNameImpl implements ISwitchContext {
                 DatabaseConnection dbConn = (DatabaseConnection) connItem.getConnection();
                 String newURL = getChangedURL(dbConn, newContextName);
                 dbConn.setURL(newURL);
-
+                // do nothing when schema or catalog is null
                 updateConnectionForSidOrUiSchema(dbConn, oldContextName);
             }
 
@@ -123,14 +126,27 @@ public class SwitchContextGroupNameImpl implements ISwitchContext {
         return false;
     }
 
+    private boolean hasDependency(ConnectionItem connItem) {
+        // Added TDQ-18565
+        if (GlobalServiceRegister.getDefault().isServiceRegistered(ITDQRepositoryService.class)) {
+            ITDQRepositoryService tdqRepService =
+                    GlobalServiceRegister.getDefault().getService(ITDQRepositoryService.class);
+            if (tdqRepService.hasClientDependences(connItem)) {
+                return true;
+            }
+        }
+        return false;
+    }
+
     /**
      * DOC talend Comment method "checkContextIsValid".
      *
      * @param selectedContext
      * @paramconn
      */
-    private boolean isContextIsValid(String selectedContext, String oldContextName, Connection conn) {
+    private boolean isContextIsValid(String selectedContext, String oldContextName, ConnectionItem connItem) {
         boolean retCode = false;
+        Connection conn = connItem.getConnection();
         if (conn instanceof DatabaseConnection) {
             EDatabaseTypeName dbType = EDatabaseTypeName.getTypeFromDbType(((DatabaseConnection) conn).getDatabaseType());
 
@@ -138,32 +154,44 @@ public class SwitchContextGroupNameImpl implements ISwitchContext {
                 retCode = true;
             } else if (dbType == EDatabaseTypeName.GENERAL_JDBC) {
                 retCode = true;
-            } else {
-                DatabaseConnection dbConn = (DatabaseConnection) conn;
-                boolean hasCatalog = ConnectionHelper.hasCatalog(dbConn);
-                boolean hasSchema = ConnectionHelper.hasSchema(dbConn);
-                ContextType newContextType = ConnectionContextHelper.getContextTypeForContextMode(dbConn, selectedContext, false);
-                ContextType oldContextType = ConnectionContextHelper.getContextTypeForContextMode(dbConn, oldContextName, false);
-                String newSidOrDatabase = ConnectionContextHelper.getOriginalValue(newContextType, dbConn.getSID());
-                String newUiShema = ConnectionContextHelper.getOriginalValue(newContextType, dbConn.getUiSchema());
-                String oldSidOrDatabase = ConnectionContextHelper.getOriginalValue(oldContextType, dbConn.getSID());
-                String oldUiShema = ConnectionContextHelper.getOriginalValue(oldContextType, dbConn.getUiSchema());
-                if (hasCatalog) {// for example mysql
-                    retCode = !isEmptyString(oldSidOrDatabase) && !isEmptyString(newSidOrDatabase);
-                    if (hasSchema) {// for example mssql
-                        retCode &= !isEmptyString(oldUiShema) && !isEmptyString(newUiShema);
-                    }
-                } else if (hasSchema) {// for example oracle
-                    retCode = !isEmptyString(oldUiShema) && !isEmptyString(newUiShema);
-                }
-            }
+			} else {
+				DatabaseConnection dbConn = (DatabaseConnection) conn;
+				boolean hasCatalog = ConnectionHelper.hasCatalog(dbConn);
+				boolean hasSchema = ConnectionHelper.hasSchema(dbConn);
+				ContextType newContextType = ConnectionContextHelper.getContextTypeForContextMode(dbConn,
+						selectedContext, false);
+				ContextType oldContextType = ConnectionContextHelper.getContextTypeForContextMode(dbConn,
+						oldContextName, false);
+				String newSidOrDatabase = ConnectionContextHelper.getOriginalValue(newContextType, dbConn.getSID());
+				String newUiShema = ConnectionContextHelper.getOriginalValue(newContextType, dbConn.getUiSchema());
+				String oldSidOrDatabase = ConnectionContextHelper.getOriginalValue(oldContextType, dbConn.getSID());
+				String oldUiShema = ConnectionContextHelper.getOriginalValue(oldContextType, dbConn.getUiSchema());
+				if (hasCatalog) {// for example mysql
+					retCode = checkEmpty(newSidOrDatabase, oldSidOrDatabase);
+					if (hasSchema) {// for example mssql
+						retCode &= checkEmpty(newUiShema, oldUiShema);
+					}
+				} else if (hasSchema) {// for example oracle
+					retCode = checkEmpty(newUiShema, oldUiShema);
+				}else {//some db didnot have catelog and schema
+					retCode = true;
+				}
+
+			}
         } else if (conn instanceof FileConnection) {
             retCode = true;
         }
-
+        
         return retCode;
 
     }
+
+	private boolean checkEmpty(String newSidOrDatabase, String oldSidOrDatabase) {
+		if (isEmptyString(oldSidOrDatabase) && isEmptyString(newSidOrDatabase)) {
+			return true;
+		}
+		return !isEmptyString(oldSidOrDatabase) && !isEmptyString(newSidOrDatabase);
+	}
 
     /**
      *

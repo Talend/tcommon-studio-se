@@ -44,8 +44,6 @@ import org.talend.repository.mdm.i18n.Messages;
  */
 public class MDMForm extends AbstractForm {
 
-    private LabelledCombo versionComb;
-
     // control fields
     private LabelledText mdmUsernameText;
 
@@ -102,7 +100,6 @@ public class MDMForm extends AbstractForm {
     @Override
     protected void adaptFormToReadOnly() {
         readOnly = isReadOnly();
-        versionComb.setReadOnly(readOnly);
         mdmUsernameText.setReadOnly(readOnly);
         mdmPasswordText.setReadOnly(readOnly);
         serverURLText.setReadOnly(readOnly);
@@ -124,7 +121,6 @@ public class MDMForm extends AbstractForm {
         GridData gridData = new GridData(GridData.FILL_HORIZONTAL);
         mdmParameterGroup.setLayoutData(gridData);
 
-        versionComb = new LabelledCombo(mdmParameterGroup, "Version", "Version", MDMVersions.getVersions(), true);
         mdmUsernameText = new LabelledText(mdmParameterGroup, Messages.getString("MDMForm_userName"), true); //$NON-NLS-1$
         mdmPasswordText = new LabelledText(mdmParameterGroup, Messages.getString("MDMForm_pass"), 1, SWT.BORDER | SWT.PASSWORD); //$NON-NLS-1$
         serverURLText = new LabelledText(mdmParameterGroup, Messages.getString("MDMForm_server_url"), true); //$NON-NLS-1$
@@ -160,21 +156,6 @@ public class MDMForm extends AbstractForm {
      */
     @Override
     protected void addFieldsListeners() {
-        versionComb.addModifyListener(new ModifyListener() {
-
-            @Override
-            public void modifyText(ModifyEvent e) {
-                String key = MDMVersions.getKey(versionComb.getText());
-                getConnection().setVersion(key);
-                if (MDMVersions.MDM_S60.getKey().equals(key)) {
-                    serverURLText.setText(SERVER_RUL_S60);
-                } else {
-                    serverURLText.setText(SERVER_RUL_S56);
-                }
-                checkFieldsValue();
-            }
-        });
-
         mdmUsernameText.addModifyListener(new ModifyListener() {
 
             @Override
@@ -310,29 +291,12 @@ public class MDMForm extends AbstractForm {
         MDMConnection mdmConn = getConnection();
         if (isContextMode()) {
             adaptFormToEditable();
-            versionComb.setText(MDMVersions.getDispalyName(mdmConn.getVersion()));
             mdmUsernameText.setText(mdmConn.getUsername());
             mdmPasswordText.setText(mdmConn.getPassword());
             serverURLText.setText(mdmConn.getServerUrl());
         } else {
-            String version = mdmConn.getVersion();
-            String serverUrl = mdmConn.getServerUrl();
-            if (creation) {
-                mdmConn.setVersion(MDMVersions.MDM_S60.getKey());
-                mdmConn.setServerUrl(SERVER_RUL_S60);
-            } else {
-                if (version == null || "".equals(version)) {
-                    mdmConn.setVersion(MDMVersions.MDM_S56.getKey());
-                }
-                if (serverUrl == null || "".equals(serverUrl)) {
-                    if (MDMVersions.MDM_S60.getKey().equals(mdmConn.getVersion())) {
-                        mdmConn.setServerUrl(SERVER_RUL_S60);
-                    } else {
-                        mdmConn.setServerUrl(SERVER_RUL_S56);
-                    }
-                }
-            }
-            versionComb.setText(MDMVersions.getDispalyName(mdmConn.getVersion()));
+            mdmConn.setVersion(MDMVersions.MDM_S60.getKey());
+            mdmConn.setServerUrl(SERVER_RUL_S60);
             mdmUsernameText.setText(mdmConn.getUsername());
             mdmPasswordText.setText(mdmConn.getValue(mdmConn.getPassword(), false));
             serverURLText.setText(mdmConn.getServerUrl());

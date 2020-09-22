@@ -58,8 +58,16 @@ public class RunStat implements Runnable {
     
     private final JobStructureCatcherUtils jscu;
     
-    public RunStat(JobStructureCatcherUtils jscu) {
-    	this.jscu = jscu;
+    public RunStat(JobStructureCatcherUtils jscu, String interval) {
+        this.jscu = jscu;
+        
+        if(interval!=null) {
+            try {
+                this.interval = Long.valueOf(interval);
+            } catch(Exception e) {
+                //do nothing
+            }
+        }
     }
 
     private class StatBean {
@@ -342,7 +350,7 @@ public class RunStat implements Runnable {
 
     private Map<String, StatBean> processStats4Meter = new HashMap<String, StatBean>();
 
-    private final static long INTERVAL = 500;
+    private long interval = 500;
     
     private long lastLogUpdate = 0;
     
@@ -354,7 +362,7 @@ public class RunStat implements Runnable {
         StatBean stateBean = log(connectionId, mode, nbLine);
         
         long currentLogUpdate = System.currentTimeMillis();
-        if (lastLogUpdate == 0 || lastLogUpdate + INTERVAL < currentLogUpdate) {
+        if (lastLogUpdate == 0 || lastLogUpdate + interval < currentLogUpdate) {
             lastLogUpdate = currentLogUpdate;
             jscu.addConnectionMessage4PerformanceMonitor(
                 connectionId, sourceId, sourceLabel, sourceComponentName, targetId, targetLabel, targetComponentName, stateBean.nbLine, stateBean.startTime, currentLogUpdate);
