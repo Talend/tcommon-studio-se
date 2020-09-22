@@ -55,7 +55,7 @@
 	          context="plugin:org.talend.libraries.mdm"
 	          language="java"
 	          message="Needed for the cxf dependencies"
-	          name="cxf-rt-frontend-jaxws-3.3.6.jar" mvn_uri="mvn:org.apache.cxf/cxf-rt-frontend-simple/3.3.6" 
+	          name="cxf-rt-frontend-simple-3.3.6.jar" mvn_uri="mvn:org.apache.cxf/cxf-rt-frontend-simple/3.3.6" 
 	          required="true">
 	   </libraryNeeded>
 	   <libraryNeeded
