@@ -462,20 +462,25 @@ public class TalendTextUtils {
         return TalendQuoteUtils.removeQuotes(text);
     }
 
+    /**
+     * @Deprecated use org.talend.utils.string.StudioContextUtils.removeQuotesIfExist instead
+     */
+    @Deprecated
     public static String removeQuotesIfExist(String text) {
-        return org.talend.utils.string.TalendTextUtils.removeQuotesIfExist(text,
-                org.talend.utils.string.TalendTextUtils.QUOTATION_MARK);
+        return org.talend.utils.string.StudioContextUtils.removeQuotesIfExist(text,
+                org.talend.utils.string.StudioContextUtils.QUOTATION_MARK);
     }
 
     /**
-     * qzhang Comment method "removeQuotes".
+     * @Deprecated use org.talend.utils.string.StudioContextUtils.removeQuotes
      *
      * @param text
      * @param quotation_mark2
      * @return
      */
+    @Deprecated
     public static String removeQuotes(String text, String quotation) {
-        return org.talend.utils.string.TalendTextUtils.removeQuotes(text, quotation);
+        return org.talend.utils.string.StudioContextUtils.removeQuotes(text, quotation);
     }
 
     public static boolean isEnclosed(String text) {
@@ -490,8 +495,12 @@ public class TalendTextUtils {
         return TalendQuoteUtils.getStringDeclare();
     }
 
+    /**
+     * @Deprecated use org.talend.utils.string.StudioContextUtils.encodeValue instead
+     */
+    @Deprecated
     public static String trimParameter(String value) {
-        return org.talend.utils.string.TalendTextUtils.trimParameter(value);
+        return org.talend.utils.string.StudioContextUtils.encodeValue(value);
     }
 
     public static String getQuoteChar() {
