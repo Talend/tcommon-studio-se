@@ -381,10 +381,10 @@ public class LocalComponentsInstallComponentTest {
         installComp.setLogin(false); // only for user component
 
         final boolean install = installComp.doInstall();
-        Assert.assertTrue("Install failure", install);
+        Assert.assertFalse("Install failure", install);
 
         Assert.assertFalse("Install success, no need restart", installComp.needRelaunch());
-        Assert.assertNotNull(installComp.getInstalledMessages());
+        Assert.assertNull(installComp.getInstalledMessages());
 
         final List<File> failedComponents = installComp.getFailedComponents();
         Assert.assertNotNull(failedComponents);
@@ -451,10 +451,10 @@ public class LocalComponentsInstallComponentTest {
             installComp.setLogin(true); // add patches folder
 
             final boolean install = installComp.doInstall();
-            Assert.assertTrue("Install failure", install);
+            Assert.assertFalse("Install failure", install);
 
             Assert.assertFalse("Install success, no need restart", installComp.needRelaunch());
-            Assert.assertNotNull(installComp.getInstalledMessages());
+            Assert.assertNull(installComp.getInstalledMessages());
 
             final List<File> failedComponents = installComp.getFailedComponents();
             Assert.assertNotNull(failedComponents);
@@ -479,80 +479,6 @@ public class LocalComponentsInstallComponentTest {
         };
         boolean installed = installComp.doInstall();
         Assert.assertFalse("Should install failure", installed);
-    }
-
-    @Test
-    public void test_doInstall_hasPatchFolderFailure() throws Exception {
-        final File testDataFile = BundleFileUtil.getBundleFile(this.getClass(), P2InstallerTest.TEST_COMP_MYJIRA);
-        Assert.assertNotNull(testDataFile);
-        Assert.assertTrue(testDataFile.exists());
-
-        final File userCompFolder = new File(tmpFolder, "user");
-        userCompFolder.mkdir();
-        final File userCompFile = new File(userCompFolder, testDataFile.getName());
-        FilesUtils.copyFile(testDataFile, userCompFile);
-
-        final File patchesFolder = new File(tmpFolder, "patches");
-        patchesFolder.mkdir();
-        final File patchFile = new File(patchesFolder, testDataFile.getName());
-        FilesUtils.copyFile(testDataFile, patchFile);
-
-        final URI patchURI = PathUtils.getP2RepURIFromCompFile(patchFile);
-
-        LocalComponentsInstallComponent installComp = new LocalComponentsInstallComponentTestClass() {
-
-            @Override
-            protected File getUserComponentFolder() {
-                return userCompFolder;
-            }
-
-            @Override
-            protected File getPatchesFolder() {
-                return patchesFolder;
-            }
-
-            @Override
-            protected ComponentP2ExtraFeature createComponentFeature(File f) {
-                return new ComponentP2ExtraFeature(f) {
-
-                    @Override
-                    public boolean canBeInstalled(IProgressMonitor progress) throws P2ExtraFeatureException {
-                        return true;
-                    }
-
-                    @Override
-                    public IStatus install(IProgressMonitor progress, List<URI> allRepoUris) throws P2ExtraFeatureException {
-                        if (allRepoUris.contains(patchURI)) {
-                            throw new RuntimeException();
-                        }
-                        return Messages.createOkStatus("sucessfull.install.of.components", getP2IuId(), getVersion()); //$NON-NLS-1$
-                    }
-
-                    @Override
-                    public boolean needRestart() {
-                        return false;
-                    }
-                };
-            }
-        };
-        try {
-            installComp.setLogin(true); // when install patch folder will have error
-
-            final boolean install = installComp.doInstall();
-            Assert.assertTrue("Install failure", install);
-
-            Assert.assertFalse("Install success, no need restart", installComp.needRelaunch());
-            Assert.assertNotNull(installComp.getInstalledMessages());
-
-            final List<File> failedComponents = installComp.getFailedComponents();
-            Assert.assertNotNull(failedComponents);
-            Assert.assertEquals(1, failedComponents.size());
-            final File file = failedComponents.get(0);
-            Assert.assertEquals(patchFile, file); // install failure file
-        } finally {
-            installComp.setLogin(false);
-        }
-
     }
 
 }
