@@ -5,9 +5,9 @@
 	<modelVersion>4.0.0</modelVersion>
 	<parent>
 		<groupId>org.talend.studio</groupId>
-		<artifactId>studio-maven-repository</artifactId>
+		<artifactId>studio-maven-repository-tos</artifactId>
 		<version>7.4.1-SNAPSHOT</version>
-		<relativePath>../</relativePath>
+		<relativePath>../../</relativePath>
 	</parent>
 	<artifactId>studio-apache-dependencies-talend</artifactId>
 	<packaging>pom</packaging>
