@@ -105,7 +105,7 @@ public class UpdateService implements IUpdateService {
 
     @Override
     public boolean syncSharedStudioLibraryInPatch(IProgressMonitor monitor) throws Exception {
-        boolean isInstalled = false;
+        boolean isNeedRestart = false;
         if (SharedStudioUtils.isSharedStudioMode()) {
             File studioPatch = SharedStudioPatchInfoProvider.getInstance().getNeedInstallStudioPatchFiles();
             if (studioPatch != null && studioPatch.getName().endsWith(FileExtensions.ZIP_FILE_SUFFIX)) {
@@ -117,28 +117,31 @@ public class UpdateService implements IUpdateService {
                 FilesUtils.unzip(studioPatch.getAbsolutePath(), tmpInstallFolder.getAbsolutePath());
                 UpdateTools.syncLibraries(tmpInstallFolder);
                 UpdateTools.syncM2Repository(tmpInstallFolder);
-                UpdateTools.installCars(monitor, tmpInstallFolder, false);
-                UpdateTools.deployCars(monitor, tmpInstallFolder, false);
+                File carFolder = new File(tmpInstallFolder, ITaCoKitUpdateService.FOLDER_CAR);
+                UpdateTools.deployCars(monitor, carFolder, false);
                 SharedStudioPatchInfoProvider.getInstance().installedStudioPatch(studioPatch.getName());
                 tmpInstallFolder.delete();
-                isInstalled = true;
+                isNeedRestart = true;
             }
             List<File> carFiles = SharedStudioPatchInfoProvider.getInstance().getNeedInstallCarFiles();
             if (carFiles.size() > 0) {
                 File tmpInstallFolder = File.createTempFile("CarPatchInstaller", "");
+                if (tmpInstallFolder.exists()) {
+                    tmpInstallFolder.delete();
+                }
+                tmpInstallFolder.mkdirs();
                 for (File carFile : carFiles) {
                     FileUtils.copyFile(carFile, new File (tmpInstallFolder, carFile.getName()));
+                    SharedStudioPatchInfoProvider.getInstance().installedCarPatch(carFile.getName());
                 }
-                UpdateTools.installCars(monitor, tmpInstallFolder, false);
                 UpdateTools.deployCars(monitor, tmpInstallFolder, false);
                 tmpInstallFolder.delete();
-                isInstalled = true;
             }
-            if (isInstalled) {
+            if (isNeedRestart) {
                 SharedStudioUtils.updateExtraFeatureFile();
             }
         }
-        return isInstalled;
+        return isNeedRestart;
     }
 }
 

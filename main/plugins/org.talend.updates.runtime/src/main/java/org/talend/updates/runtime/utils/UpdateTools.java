@@ -207,10 +207,9 @@ public class UpdateTools {
         return true;
     }
     
-    public static boolean deployCars(IProgressMonitor monitor, File installingPatchFolder, boolean cancellable)
+    public static boolean deployCars(IProgressMonitor monitor, File carFolder, boolean cancellable)
             throws Exception {
-        if (installingPatchFolder != null && installingPatchFolder.exists()) {
-            File carFolder = new File(installingPatchFolder, ITaCoKitUpdateService.FOLDER_CAR);
+        if (carFolder != null && carFolder.exists()) {
             TaCoKitCarUtils.deployCars(carFolder, monitor, cancellable);
         }
         return true;

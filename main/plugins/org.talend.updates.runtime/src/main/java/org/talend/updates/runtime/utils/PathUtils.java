@@ -81,7 +81,8 @@ public class PathUtils {
     }
 
     public static File getComponentsFolder() throws IOException {
-        File componentsFolder = new File(Platform.getConfigurationLocation().getDataArea(FOLDER_COMPS).getPath());
+        File configurationFolder = new File(Platform.getInstallLocation().getURL().getPath(), "configuration"); //$NON-NLS-1$  
+        File componentsFolder = new File(configurationFolder, FOLDER_COMPS);
         if (!componentsFolder.exists()) {
             componentsFolder.mkdirs();
         }
