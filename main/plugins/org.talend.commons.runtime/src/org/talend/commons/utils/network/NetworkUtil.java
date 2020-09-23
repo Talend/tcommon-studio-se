@@ -92,6 +92,28 @@ public class NetworkUtil {
 
                 @Override
                 protected PasswordAuthentication getPasswordAuthentication() {
+                    String httpProxyHost = System.getProperty("http.proxyHost"); //$NON-NLS-1$
+                    String httpProxyPort = System.getProperty("http.proxyPort"); //$NON-NLS-1$
+                    String httpsProxyHost = System.getProperty("https.proxyHost"); //$NON-NLS-1$
+                    String httpsProxyPort = System.getProperty("https.proxyPort"); //$NON-NLS-1$
+                    String requestingHost = getRequestingHost();
+                    int requestingPort = getRequestingPort();
+                    String proxyHost = null;
+                    String proxyPort = null;
+                    boolean isHttp = false;
+                    if ("http".equalsIgnoreCase(getRequestingScheme())) {
+                        isHttp = true;
+                    }
+                    if (isHttp && StringUtils.isNotBlank(httpProxyHost)) {
+                        proxyHost = httpProxyHost;
+                        proxyPort = httpProxyPort;
+                    } else {
+                        proxyHost = httpsProxyHost;
+                        proxyPort = httpsProxyPort;
+                    }
+                    if (!StringUtils.equals(proxyHost, requestingHost) || !StringUtils.equals(proxyPort, "" + requestingPort)) {
+                        return null;
+                    }
                     String httpProxyUser = System.getProperty("http.proxyUser"); //$NON-NLS-1$
                     String httpProxyPassword = System.getProperty("http.proxyPassword"); //$NON-NLS-1$
                     String httpsProxyUser = System.getProperty("https.proxyUser"); //$NON-NLS-1$
@@ -109,7 +131,11 @@ public class NetworkUtil {
                             proxyPassword = httpsProxyPassword.toCharArray();
                         }
                     }
-                    return new PasswordAuthentication(proxyUser, proxyPassword);
+                    if (StringUtils.isBlank(proxyUser)) {
+                        return null;
+                    } else {
+                        return new PasswordAuthentication(proxyUser, proxyPassword);
+                    }
                 }
 
             });
