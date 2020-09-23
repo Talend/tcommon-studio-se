@@ -11,6 +11,13 @@
 	</parent>
 	<artifactId>studio-apache-dependencies-talend</artifactId>
 	<packaging>pom</packaging>
+	<repositories>
+		<repository>
+			<id>auto-test</id>
+			<url>https://artifacts-oss.talend.com/nexus/content/repositories/studio-auto-test-libs-releases/</url>
+		</repository>
+	</repositories>
+
 	<dependencies>
 		<dependency>
 			<groupId>org.talend.libraries</groupId>
@@ -53,7 +60,7 @@
 			<artifactId>commons-compress-1.6</artifactId>
 			<version>6.0.0</version>
 		</dependency>
-		
+
 		<dependency>
 			<groupId>org.talend.libraries</groupId>
 			<artifactId>commons-dbcp-1.2.1</artifactId>
@@ -74,13 +81,13 @@
 			<artifactId>commons-httpclient</artifactId>
 			<version>6.0.0</version>
 		</dependency>
-		
+
 		<dependency>
 			<groupId>org.talend.libraries</groupId>
 			<artifactId>commons-io-2.1</artifactId>
 			<version>6.0.0</version>
 		</dependency>
-		
+
 		<dependency>
 			<groupId>org.talend.libraries</groupId>
 			<artifactId>commons-logging-1.1</artifactId>
