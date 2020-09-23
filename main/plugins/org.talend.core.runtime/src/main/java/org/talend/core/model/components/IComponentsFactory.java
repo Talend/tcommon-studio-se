@@ -111,6 +111,4 @@ public interface IComponentsFactory {
     public Map<String, File> getComponentsProvidersFolder();
 
     public List<ComponentProviderInfo> getComponentsProvidersInfo();
-
-    public IComponent getComponentByDisplayName(String displayName, String paletteType);
 }
