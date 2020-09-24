@@ -35,8 +35,6 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 
 public class SharedStudioPatchInfoProvider {
 
-    private static Logger log = Logger.getLogger(SharedStudioPatchInfoProvider.class);
-
     private static final String INSTALLED_PATCH_RECORD_FILE = "installed_patch.json";
 
     private static final String PATCH_TYPE_STUDIO = "studio";
@@ -152,8 +150,6 @@ public class SharedStudioPatchInfoProvider {
             } catch (IOException e) {
                 ExceptionHandler.process(e);
             }
-        } else {
-            log.warn("Can't find license data file:" + dataFile.getAbsolutePath());
         }
         if (installedPatchInfo == null) {
             installedPatchInfo = new InstalledPatchInfo();
