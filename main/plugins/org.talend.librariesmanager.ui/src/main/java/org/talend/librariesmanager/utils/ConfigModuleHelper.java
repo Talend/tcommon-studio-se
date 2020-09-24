@@ -226,7 +226,7 @@ public class ConfigModuleHelper {
         ArtifactRepositoryBean customNexusServer = TalendLibsServerManager.getInstance().getCustomNexusServer();
         IRepositoryArtifactHandler customerRepHandler = RepositoryArtifactHandlerManager.getRepositoryHandler(customNexusServer);
         if ((art.getSha1() == null || art.getSha1().trim().isEmpty()) && customerRepHandler != null
-                && customNexusServer.getType() == ArtifactRepositoryBean.NexusType.NEXUS_2.name()) {
+                && customNexusServer.getType().equals(ArtifactRepositoryBean.NexusType.NEXUS_2.name())) {
             boolean fromSnapshot = false;
             if (art.getVersion() != null && art.getVersion().endsWith(MavenUrlHelper.VERSION_SNAPSHOT)) {
                 fromSnapshot = true;
@@ -263,4 +263,18 @@ public class ConfigModuleHelper {
 
         return "";
     }
+
+    public static boolean showRemoteSearch() {
+        ArtifactRepositoryBean customNexusServer = TalendLibsServerManager.getInstance().getCustomNexusServer();
+        if (customNexusServer != null) {
+            String repoType = customNexusServer.getType();
+            if (repoType.equals(ArtifactRepositoryBean.NexusType.NEXUS_2.name())
+                    || repoType.equals(ArtifactRepositoryBean.NexusType.NEXUS_3.name())
+                    || repoType.equals(ArtifactRepositoryBean.NexusType.ARTIFACTORY.name())) {
+                return true;
+            }
+        }
+        return false;
+    }
+
 }

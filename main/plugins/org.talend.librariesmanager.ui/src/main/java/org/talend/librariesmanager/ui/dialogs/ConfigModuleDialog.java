@@ -110,8 +110,6 @@ public class ConfigModuleDialog extends TitleAreaDialog implements IConfigModule
 
     private String moduleName = "";
 
-    private String cusormURIValue = "";
-
     private String defaultURIValue = "";
 
     private Set<String> jarsAvailable;
@@ -128,6 +126,8 @@ public class ConfigModuleDialog extends TitleAreaDialog implements IConfigModule
 
     private boolean isLocalSearch;
 
+    private String initValue;
+
     /**
      * DOC wchen InstallModuleDialog constructor comment.
      *
@@ -136,15 +136,7 @@ public class ConfigModuleDialog extends TitleAreaDialog implements IConfigModule
     public ConfigModuleDialog(Shell parentShell, String initValue) {
         super(parentShell);
         setShellStyle(SWT.CLOSE | SWT.MAX | SWT.TITLE | SWT.BORDER | SWT.APPLICATION_MODAL | SWT.RESIZE | getDefaultOrientation());
-        if (initValue != null && !"".equals(initValue)) {
-            moduleName = initValue;
-            ModuleNeeded testModuel = new ModuleNeeded("", initValue, "", true);
-            defaultURIValue = testModuel.getDefaultMavenURI();
-            String customMavenUri = testModuel.getCustomMavenUri();
-            if (customMavenUri != null) {
-                cusormURIValue = customMavenUri;
-            }
-        }
+        this.initValue = initValue;
     }
 
     @Override
@@ -195,6 +187,9 @@ public class ConfigModuleDialog extends TitleAreaDialog implements IConfigModule
     @Override
     protected Control createContents(Composite parent) {
         Control control = super.createContents(parent);
+        if (!StringUtils.isEmpty(this.initValue)) {
+            this.platformCombo.setText(this.initValue);
+        }
         setPlatformGroupEnabled(true);
         validateInputFields();
         setInstallNewGroupEnabled(false);
@@ -426,6 +421,7 @@ public class ConfigModuleDialog extends TitleAreaDialog implements IConfigModule
         nameTxt.setEnabled(enable);
         searchLocalBtn.setEnabled(enable);
         searchRemoteBtn.setEnabled(enable);
+        searchRemoteBtn.setVisible(ConfigModuleHelper.showRemoteSearch());
         searchResultCombo.setEnabled(enable);
         if (enable) {
             setupMavenURIforSearch();
@@ -451,16 +447,12 @@ public class ConfigModuleDialog extends TitleAreaDialog implements IConfigModule
         useCustomBtn = new Button(composite, SWT.CHECK);
         gdData = new GridData();
         useCustomBtn.setLayoutData(gdData);
-        useCustomBtn.setSelection(!ModuleMavenURIUtils.MVNURI_TEMPLET.equals(cusormURIValue));
         useCustomBtn.setText(Messages.getString("InstallModuleDialog.customUri"));
 
         customUriText = new Text(composite, SWT.BORDER);
         gdData = new GridData(GridData.FILL_HORIZONTAL | GridData.GRAB_HORIZONTAL);
         gdData.horizontalSpan = 2;
         customUriText.setLayoutData(gdData);
-        if (customUriText.isEnabled()) {
-            customUriText.setText(cusormURIValue);
-        }
 
         useCustomBtn.addSelectionListener(new SelectionAdapter() {
 
@@ -620,11 +612,11 @@ public class ConfigModuleDialog extends TitleAreaDialog implements IConfigModule
     private boolean validateInputFields() {
         boolean statusOK = true;
         if (installRadioBtn.getSelection()) {
-             statusOK = validateInputForInstall();
-         } else if (platfromRadioBtn.getSelection()) {
-             statusOK = validateInputForPlatform();
+            statusOK = validateInputForInstall();
+        } else if (platfromRadioBtn.getSelection()) {
+            statusOK = validateInputForPlatform();
         } else {
-             statusOK =  validateInputForSearch();
+            statusOK = validateInputForSearch();
         }
         if (!statusOK) {
             getButton(IDialogConstants.OK_ID).setEnabled(statusOK);
@@ -676,6 +668,7 @@ public class ConfigModuleDialog extends TitleAreaDialog implements IConfigModule
         boolean disable = nameTxt.getText().trim().isEmpty();
         searchLocalBtn.setEnabled(!disable);
         searchRemoteBtn.setEnabled(!disable);
+        searchRemoteBtn.setVisible(ConfigModuleHelper.showRemoteSearch());
         if (disable) {
             setMessage(Messages.getString("ConfigModuleDialog.error.missingName"), IMessageProvider.ERROR);
             return false;
@@ -881,9 +874,7 @@ public class ConfigModuleDialog extends TitleAreaDialog implements IConfigModule
                 defaultUriTxt.setText(defaultURIValue);
             }
         }
-        boolean useCustom = !StringUtils.isEmpty(cusormURIValue);
-        useCustomBtn.setSelection(useCustom);
-        customUriText.setText(cusormURIValue);
+        useCustomBtn.setSelection(false);
     }
 
     private void setupMavenURIforPlatform() {
@@ -895,17 +886,16 @@ public class ConfigModuleDialog extends TitleAreaDialog implements IConfigModule
                 defaultUriTxt.setText(mod.getMavenUri());
             }
         }
-        boolean useCustom = !StringUtils.isEmpty(cusormURIValue);
-        useCustomBtn.setSelection(useCustom);
-        customUriText.setText(cusormURIValue);
+        useCustomBtn.setSelection(false);
     }
 
     private void setupMavenURIforInstall() throws Exception {
         if (validateInputForInstallPre()) {
             String filePath = jarPathTxt.getText();
-            String mvnUri = ConfigModuleHelper.getDetectURI(filePath);
+            String mvnUri = ConfigModuleHelper.getMavenURI(filePath);
             if (StringUtils.isEmpty(mvnUri)) {
-                mvnUri = ConfigModuleHelper.getMavenURI(filePath);
+                mvnUri = ConfigModuleHelper.getDetectURI(filePath);
+                useCustom = true;
             }
             defaultUriTxt.setText(mvnUri);
             if (StringUtils.isEmpty(defaultUriTxt.getText())) {
