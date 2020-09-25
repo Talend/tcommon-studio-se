@@ -4,11 +4,14 @@ import org.eclipse.jface.dialogs.IDialogConstants;
 import org.eclipse.jface.dialogs.MessageDialog;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.widgets.Display;
+import org.talend.commons.CommonsPlugin;
 
 public class DialogUtils {
 
     public static void syncOpenWarningDialog(String title, String info) {
-
+        if (CommonsPlugin.isHeadless()) {
+            return;
+        }
         Display.getDefault().syncExec(new Runnable() {
 
             @Override
