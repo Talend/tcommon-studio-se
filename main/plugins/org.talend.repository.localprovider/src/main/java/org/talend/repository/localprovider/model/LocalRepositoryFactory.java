@@ -3365,9 +3365,8 @@ public class LocalRepositoryFactory extends AbstractEMFRepositoryFactory impleme
         }
 
         if (VersionUtils.productVersionIsNewer(localProject.getEmfProject().getProductVersion())) {
-            ProjectPreferenceManager prefManager = new ProjectPreferenceManager(localProject, PluginChecker.CORE_TIS_PLUGIN_ID,
-                    false);
-            DialogUtils.syncOpenWarningDialog("Login infomation", "Project is out of date, need make migration.");
+            DialogUtils.syncOpenWarningDialog(Messages.getString("LocalRepositoryFactory.logonWarningTitle"),
+                    Messages.getString("LocalRepositoryFactory.logonWarningInfo"));
         }
 
     }
