@@ -46,9 +46,7 @@ public class SharedStudioUtils {
             } else if (studioExtraSignFile.exists() && !userExtraSignFile.exists()) {
                 isNeedUpdate = true;
             } else if (studioExtraSignFile.exists() && userExtraSignFile.exists()) {
-                if (userExtraSignFile.lastModified() < studioExtraSignFile.lastModified()) {
-                    isNeedUpdate = true;
-                }
+                isNeedUpdate = true;
             }
             if (isNeedUpdate) {
                 try {
