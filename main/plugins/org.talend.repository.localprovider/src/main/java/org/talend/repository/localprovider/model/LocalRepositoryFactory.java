@@ -3368,29 +3368,6 @@ public class LocalRepositoryFactory extends AbstractEMFRepositoryFactory impleme
             ProjectPreferenceManager prefManager = new ProjectPreferenceManager(localProject, PluginChecker.CORE_TIS_PLUGIN_ID,
                     false);
             DialogUtils.syncOpenWarningDialog("Login infomation", "Project is out of date, need make migration.");
-            // boolean[] flag = new boolean[] { false };
-            //
-            // Display.getDefault().syncExec(new Runnable() {
-            //
-            // @Override
-            // public void run() {
-            //
-            // String[] dialogButtonLabels = new String[] { IDialogConstants.OK_LABEL };
-            // int open = MessageDialog.open(MessageDialog.WARNING, Display.getDefault().getActiveShell(),
-            // "Login infomation", //$NON-NLS-1$
-            // "Project is out of date, need make migration.", SWT.NONE, //$NON-NLS-1$
-            // dialogButtonLabels);
-            // if (open == 0) {
-            // flag[0] = true;
-            // }
-            // }
-            //
-            // });
-            // // click no => stop ; yes => continue. TODO
-            // if (!flag[0]) {
-            // // throw new InformException(Messages.getString("LocalRepositoryFactory.logonDenyMsg2"));
-            // }
-
         }
 
     }

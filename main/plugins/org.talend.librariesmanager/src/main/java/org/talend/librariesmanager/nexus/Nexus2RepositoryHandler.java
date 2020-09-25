@@ -63,6 +63,7 @@ public class Nexus2RepositoryHandler extends AbstractArtifactRepositoryHandler {
                     serverBean.getUserName(), serverBean.getPassword());
         }
         boolean result = (checkRelease ? releaseStatus : true) && (checkSnapshot ? snapshotStatus : true);
+        openWarningDialog(result);
         return result;
     }
 

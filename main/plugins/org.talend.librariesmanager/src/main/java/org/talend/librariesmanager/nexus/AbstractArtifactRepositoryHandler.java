@@ -27,7 +27,9 @@ import org.talend.core.nexus.NexusConstants;
 import org.talend.core.nexus.TalendMavenResolver;
 import org.talend.core.runtime.maven.MavenArtifact;
 import org.talend.core.runtime.maven.MavenUrlHelper;
+import org.talend.core.utils.DialogUtils;
 import org.talend.designer.maven.aether.RepositorySystemFactory;
+import org.talend.librariesmanager.i18n.Messages;
 import org.talend.utils.string.StringUtilities;
 
 /**
@@ -43,7 +45,6 @@ public abstract class AbstractArtifactRepositoryHandler implements IRepositoryAr
     protected ArtifactRepositoryBean serverBean;
 
     private String localRepositoryPath;
-
     /*
      * (non-Javadoc)
      *
@@ -222,6 +223,14 @@ public abstract class AbstractArtifactRepositoryHandler implements IRepositoryAr
     @Override
     public String resolveRemoteSha1(MavenArtifact artifact, boolean fromRelease) throws Exception {
         return artifact.getSha1();
+    }
+
+    @Override
+    public void openWarningDialog(boolean connectionResult) {
+        if (!connectionResult) {
+            DialogUtils.syncOpenWarningDialog(Messages.getString("AbstractArtifactRepositoryHandler.dialogTitle"), //$NON-NLS-1$
+                    Messages.getString("AbstractArtifactRepositoryHandler.dialogInfo"));//$NON-NLS-1$
+        }
     }
         
 }

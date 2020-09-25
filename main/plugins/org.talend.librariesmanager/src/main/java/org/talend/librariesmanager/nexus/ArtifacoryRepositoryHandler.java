@@ -83,6 +83,7 @@ public class ArtifacoryRepositoryHandler extends AbstractArtifactRepositoryHandl
             ExceptionHandler.process(e);
             connectionOk = false;
         }
+        openWarningDialog(connectionOk);
         return connectionOk;
     }
 

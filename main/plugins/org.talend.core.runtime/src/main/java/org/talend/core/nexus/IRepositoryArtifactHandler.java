@@ -36,6 +36,8 @@ public interface IRepositoryArtifactHandler {
 
     public boolean checkConnection(boolean checkRelease, boolean checkSnapshot);
 
+    public void openWarningDialog(boolean checkResult);
+
     /**
      *
      * DOC wchen Comment method "search".

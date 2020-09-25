@@ -36,7 +36,6 @@ import org.talend.core.nexus.IRepositoryArtifactHandler;
 import org.talend.core.nexus.NexusServerUtils;
 import org.talend.core.runtime.maven.MavenArtifact;
 import org.talend.core.runtime.maven.MavenUrlHelper;
-import org.talend.core.utils.DialogUtils;
 import org.talend.designer.maven.aether.RepositorySystemFactory;
 import org.talend.librariesmanager.i18n.Messages;
 import org.talend.librariesmanager.nexus.nexus3.handler.AbsNexus3SearchHandler;
@@ -96,9 +95,7 @@ public class Nexus3RepositoryHandler extends AbstractArtifactRepositoryHandler {
             ExceptionHandler.process(e);
             connectionOk = false;
         }
-        if (!connectionOk) {
-            DialogUtils.syncOpenWarningDialog("Login infomation", "Nexus check connection is fail.");
-        }
+        openWarningDialog(connectionOk);
         return connectionOk;
     }
 

@@ -2189,7 +2189,7 @@ public final class ProxyRepositoryFactory implements IProxyRepositoryFactory {
                 currentMonitor = subMonitor.newChild(1, SubMonitor.SUPPRESS_NONE);
                 currentMonitor.beginTask("Execute before logon migrations tasks", 1); //$NON-NLS-1$
                 ProjectManager.getInstance().getMigrationRecords().clear();
-                // executeMigrations(project, true, currentMonitor);
+                executeMigrations(project, true, currentMonitor);
                 ProjectManager.getInstance().getMigrationRecords().clear();
                 // monitorWrap.worked(1);
                 TimeMeasurePerformance.step("logOnProject", "executeMigrations(beforeLogonTasks)"); //$NON-NLS-1$ //$NON-NLS-2$

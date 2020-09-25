@@ -255,9 +255,9 @@ public class VersionUtils {
         if ((localSuffix.equals(nightly) || localSuffix.startsWith(milestone))
                 && (remoteSuffix.equals(nightly) || remoteSuffix.startsWith(milestone))) {
             // skip checking between nightly/milestone build.
-            // return false;
+            return false;
         }
-        return localProductVersion.compareTo(remoteProductVersion) >= 0;
+        return localProductVersion.compareTo(remoteProductVersion) > 0;
 
     }
     public static String getTalendVersion(String productVersion) {
