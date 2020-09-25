@@ -77,6 +77,7 @@ import org.osgi.service.event.Event;
 import org.osgi.service.event.EventAdmin;
 import org.talend.commons.exception.BusinessException;
 import org.talend.commons.exception.ExceptionHandler;
+import org.talend.commons.exception.InformException;
 import org.talend.commons.exception.LoginException;
 import org.talend.commons.exception.PersistenceException;
 import org.talend.commons.exception.ResourceNotFoundException;
@@ -90,6 +91,7 @@ import org.talend.commons.utils.data.container.RootContainer;
 import org.talend.commons.utils.io.FilesUtils;
 import org.talend.commons.utils.workbench.resources.ResourceUtils;
 import org.talend.core.GlobalServiceRegister;
+import org.talend.core.PluginChecker;
 import org.talend.core.context.RepositoryContext;
 import org.talend.core.model.context.link.ContextLinkService;
 import org.talend.core.model.general.Project;
@@ -168,9 +170,11 @@ import org.talend.core.repository.utils.RoutineUtils;
 import org.talend.core.repository.utils.TDQServiceRegister;
 import org.talend.core.repository.utils.URIHelper;
 import org.talend.core.repository.utils.XmiResourceManager;
+import org.talend.core.runtime.constants.UpdateConstants;
 import org.talend.core.runtime.maven.MavenConstants;
 import org.talend.core.runtime.projectsetting.ProjectPreferenceManager;
 import org.talend.core.ui.branding.IBrandingService;
+import org.talend.core.utils.DialogUtils;
 import org.talend.cwm.helper.ConnectionHelper;
 import org.talend.cwm.helper.ResourceHelper;
 import org.talend.cwm.helper.SubItemHelper;
@@ -3346,9 +3350,50 @@ public class LocalRepositoryFactory extends AbstractEMFRepositoryFactory impleme
             if (!version.equals(project.getEmfProject().getProductVersion())) {
                 updatePreferenceProjectVersion(project);
             }
+            Project localProject = getRepositoryContext().getProject();
+
+            checkProjectVersion(localProject);
         }
     }
 
+    protected void checkProjectVersion(Project localProject) throws PersistenceException {
+        if (VersionUtils.isInvalidProductVersion(localProject.getEmfProject().getProductVersion())) {
+            ProjectPreferenceManager prefManager = new ProjectPreferenceManager(localProject, PluginChecker.CORE_TIS_PLUGIN_ID,
+                    false);
+            String remoteLastPatchName = prefManager.getValue(UpdateConstants.KEY_PREF_LAST_PATCH);
+            throw new InformException(Messages.getString("LocalRepositoryFactory.logonDenyMsg", remoteLastPatchName)); //$NON-NLS-1$
+        }
+
+        if (VersionUtils.productVersionIsNewer(localProject.getEmfProject().getProductVersion())) {
+            ProjectPreferenceManager prefManager = new ProjectPreferenceManager(localProject, PluginChecker.CORE_TIS_PLUGIN_ID,
+                    false);
+            DialogUtils.syncOpenWarningDialog("Login infomation", "Project is out of date, need make migration.");
+            // boolean[] flag = new boolean[] { false };
+            //
+            // Display.getDefault().syncExec(new Runnable() {
+            //
+            // @Override
+            // public void run() {
+            //
+            // String[] dialogButtonLabels = new String[] { IDialogConstants.OK_LABEL };
+            // int open = MessageDialog.open(MessageDialog.WARNING, Display.getDefault().getActiveShell(),
+            // "Login infomation", //$NON-NLS-1$
+            // "Project is out of date, need make migration.", SWT.NONE, //$NON-NLS-1$
+            // dialogButtonLabels);
+            // if (open == 0) {
+            // flag[0] = true;
+            // }
+            // }
+            //
+            // });
+            // // click no => stop ; yes => continue. TODO
+            // if (!flag[0]) {
+            // // throw new InformException(Messages.getString("LocalRepositoryFactory.logonDenyMsg2"));
+            // }
+
+        }
+
+    }
     protected void updatePreferenceProjectVersion(Project project) {
         String oldProductVersion = project.getEmfProject().getProductVersion();
         if (StringUtils.isNotBlank(oldProductVersion)) {

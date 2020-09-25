@@ -238,6 +238,28 @@ public class VersionUtils {
         return getInternalVersion().compareTo(getProductVersionWithoutBranding(remoteFullProductVersion)) < 0;
     }
 
+    public static boolean productVersionIsNewer(String remoteFullProductVersion) {
+        if (remoteFullProductVersion == null) {
+            return false;
+        }
+
+        String localProductVersion = getInternalVersion();
+        String separator = "-"; //$NON-NLS-1$
+        String localSuffix = StringUtils.substringAfterLast(localProductVersion, separator);
+
+        String remoteProductVersion = getProductVersionWithoutBranding(remoteFullProductVersion);
+        String remoteSuffix = StringUtils.substringAfterLast(remoteProductVersion, separator);
+
+        String nightly = "SNAPSHOT"; //$NON-NLS-1$
+        String milestone = "M"; //$NON-NLS-1$
+        if ((localSuffix.equals(nightly) || localSuffix.startsWith(milestone))
+                && (remoteSuffix.equals(nightly) || remoteSuffix.startsWith(milestone))) {
+            // skip checking between nightly/milestone build.
+            // return false;
+        }
+        return localProductVersion.compareTo(remoteProductVersion) >= 0;
+
+    }
     public static String getTalendVersion(String productVersion) {
         try {
             org.osgi.framework.Version v = new org.osgi.framework.Version(productVersion);
