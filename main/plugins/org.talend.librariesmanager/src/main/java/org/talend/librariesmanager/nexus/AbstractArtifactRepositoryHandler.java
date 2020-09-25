@@ -229,8 +229,7 @@ public abstract class AbstractArtifactRepositoryHandler implements IRepositoryAr
     @Override
     public void openWarningDialog(boolean connectionResult) {
         if (!connectionResult) {
-            DialogUtils.syncOpenWarningDialog(Messages.getString("AbstractArtifactRepositoryHandler.dialogTitle"), //$NON-NLS-1$
-                    Messages.getString("AbstractArtifactRepositoryHandler.dialogInfo"));//$NON-NLS-1$
+            DialogUtils.addWarningInfo(Messages.getString("AbstractArtifactRepositoryHandler.dialogInfo"));//$NON-NLS-1$
         }
     }
         

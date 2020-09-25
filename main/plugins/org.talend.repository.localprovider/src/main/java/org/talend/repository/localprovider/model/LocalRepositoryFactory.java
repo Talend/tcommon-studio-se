@@ -3365,9 +3365,9 @@ public class LocalRepositoryFactory extends AbstractEMFRepositoryFactory impleme
         }
 
         if (VersionUtils.productVersionIsNewer(localProject.getEmfProject().getProductVersion())) {
-            DialogUtils.syncOpenWarningDialog(Messages.getString("LocalRepositoryFactory.logonWarningTitle"),
-                    Messages.getString("LocalRepositoryFactory.logonWarningInfo"));
+            DialogUtils.addWarningInfo(Messages.getString("LocalRepositoryFactory.logonWarningInfo"));//$NON-NLS-1$
         }
+        DialogUtils.syncOpenWarningDialog(Messages.getString("LocalRepositoryFactory.logonWarningTitle"));//$NON-NLS-1$
 
     }
 
