@@ -82,7 +82,7 @@ public class SharedStudioPatchInfoProvider {
     }
 
     private void installedPatch(String patchName, String patchType) {
-        if (!isContains(patchName, patchType)) {
+        if (!isInstalled(patchName, patchType)) {
             InstalledPatch patch = new InstalledPatch();
             patch.setFileName(patchName);
             patch.setType(patchType);
@@ -90,15 +90,6 @@ public class SharedStudioPatchInfoProvider {
             saveData();  
         }
 
-    }
-    
-    private boolean isContains(String patchName, String patchType) {
-        for (InstalledPatch p : installedPatchInfo.getInstalledPatchList()) {
-            if (StringUtils.equals(p.getFileName(), patchName) && StringUtils.equals(p.getType(), patchType)) {
-                return true;
-            }
-        }
-        return false;
     }
 
     public File getNeedInstallStudioPatchFiles() {

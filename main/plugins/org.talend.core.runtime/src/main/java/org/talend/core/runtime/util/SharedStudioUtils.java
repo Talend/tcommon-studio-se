@@ -43,11 +43,9 @@ public class SharedStudioUtils {
                     userExtraFile.delete();
                 }
                 return true;
-            } else if (studioExtraSignFile.exists() && !userExtraSignFile.exists()) {
+            } else if (studioExtraSignFile.exists()) {
                 isNeedUpdate = true;
-            } else if (studioExtraSignFile.exists() && userExtraSignFile.exists()) {
-                isNeedUpdate = true;
-            }
+            } 
             if (isNeedUpdate) {
                 try {
                     FilesUtils.copyFile(studioExtraFile, userExtraFile);
