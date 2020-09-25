@@ -3370,6 +3370,7 @@ public class LocalRepositoryFactory extends AbstractEMFRepositoryFactory impleme
         }
 
     }
+
     protected void updatePreferenceProjectVersion(Project project) {
         String oldProductVersion = project.getEmfProject().getProductVersion();
         if (StringUtils.isNotBlank(oldProductVersion)) {

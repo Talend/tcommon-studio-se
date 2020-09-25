@@ -45,6 +45,7 @@ public abstract class AbstractArtifactRepositoryHandler implements IRepositoryAr
     protected ArtifactRepositoryBean serverBean;
 
     private String localRepositoryPath;
+
     /*
      * (non-Javadoc)
      *

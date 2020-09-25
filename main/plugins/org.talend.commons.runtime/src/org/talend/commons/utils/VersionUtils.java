@@ -260,6 +260,7 @@ public class VersionUtils {
         return localProductVersion.compareTo(remoteProductVersion) > 0;
 
     }
+
     public static String getTalendVersion(String productVersion) {
         try {
             org.osgi.framework.Version v = new org.osgi.framework.Version(productVersion);
