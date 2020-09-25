@@ -115,7 +115,12 @@ public class PathUtils {
     }
 
     public static File getComponentsM2TempFolder() {
-        return createComponentFolder(FOLDER_M2TEMP);
+        File componentsFolder = new File(Platform.getConfigurationLocation().getURL().getFile(), FOLDER_COMPS);
+        File m2TempFolder = new File(componentsFolder, FOLDER_M2TEMP);
+        if (!m2TempFolder.exists()) {
+            m2TempFolder.mkdirs();
+        }
+        return m2TempFolder;
     }
 
     public static File getPatchesFolder() {
