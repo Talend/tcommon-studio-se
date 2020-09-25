@@ -5736,7 +5736,8 @@ public class DatabaseForm extends AbstractForm {
                             .getService(ILibraryManagerUIService.class);
                     IConfigModuleDialog dialog = libUiService.getConfigModuleDialog(getShell(), null);
                     if (dialog.open() == IDialogConstants.OK_ID) {
-                        String selecteModule = dialog.getModuleName();
+                        // TOS_DQ only
+                        String selecteModule = dialog.getMavenURI();
                         if (selecteModule != null && !asList.contains(selecteModule)) {
                             asList.add(selecteModule);
                         }

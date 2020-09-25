@@ -216,6 +216,9 @@ public class ModulesNeededProvider {
     }
 
     public static ModuleNeeded getModuleNeededById(String id) {
+        if (id.startsWith(MavenUrlHelper.MVN_PROTOCOL)) {
+            id = MavenUrlHelper.parseMvnUrl(id).getArtifactId();
+        }
         ModuleNeeded result = null;
 
         Set<ModuleNeeded> modulesNeeded = getModulesNeeded();

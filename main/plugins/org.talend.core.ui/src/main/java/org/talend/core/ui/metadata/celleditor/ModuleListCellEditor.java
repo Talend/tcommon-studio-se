@@ -20,7 +20,6 @@ import org.eclipse.gef.commands.Command;
 import org.eclipse.jface.dialogs.IDialogConstants;
 import org.eclipse.jface.viewers.DialogCellEditor;
 import org.eclipse.jface.viewers.TableViewer;
-import org.eclipse.jface.window.Window;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.FocusAdapter;
 import org.eclipse.swt.events.FocusEvent;
@@ -37,7 +36,6 @@ import org.talend.core.model.process.IElement;
 import org.talend.core.model.process.IElementParameter;
 import org.talend.core.model.process.INode;
 import org.talend.core.model.process.IProcess2;
-import org.talend.core.runtime.services.IGenericDBService;
 import org.talend.core.ui.CoreUIPlugin;
 import org.talend.core.ui.process.IGEFProcess;
 import org.talend.core.ui.services.IDesignerCoreUIService;
@@ -171,7 +169,7 @@ public class ModuleListCellEditor extends DialogCellEditor {
                    ILibraryManagerUIService.class);
             IConfigModuleDialog dialog = libUiService.getConfigModuleDialog(cellEditorWindow.getShell(), "\"newLine\"".equals(value) ? "" : value);
             if (dialog.open() == IDialogConstants.OK_ID) {
-                String selecteModule = dialog.getModuleName();
+                String selecteModule = dialog.getMavenURI();
                 if (selecteModule != null && (value == null || !value.equals(selecteModule))) {
                     setModuleValue(selecteModule, null, null);
                     return selecteModule;

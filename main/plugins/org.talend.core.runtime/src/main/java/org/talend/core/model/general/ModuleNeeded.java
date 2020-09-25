@@ -110,6 +110,14 @@ public class ModuleNeeded {
 
     }
 
+    public static ModuleNeeded newInstance(String context, String value, String informationMsg, boolean required) {
+        if (value.startsWith(MavenUrlHelper.MVN_PROTOCOL)) {
+            return new ModuleNeeded(context, informationMsg, required, value);
+        }
+        // won't do migration for old MODULE_LIST but still make it compatible
+        return new ModuleNeeded(context, value, informationMsg, required);
+    }
+
     /**
      * DOC smallet ModuleNeeded constructor comment.
      *
