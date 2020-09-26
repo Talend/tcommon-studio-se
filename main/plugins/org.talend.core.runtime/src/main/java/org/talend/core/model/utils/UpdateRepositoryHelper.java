@@ -15,6 +15,7 @@ package org.talend.core.model.utils;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.talend.core.GlobalServiceRegister;
 import org.talend.core.model.metadata.builder.connection.Connection;
 import org.talend.core.model.metadata.builder.connection.DatabaseConnection;
 import org.talend.core.model.metadata.designerproperties.RepositoryToComponentProperty;
@@ -23,6 +24,7 @@ import org.talend.core.model.properties.ContextItem;
 import org.talend.core.model.properties.Item;
 import org.talend.core.model.repository.ERepositoryObjectType;
 import org.talend.core.model.update.UpdatesConstants;
+import org.talend.core.runtime.services.IGenericWizardService;
 
 /**
  * ggu class global comment. Detailled comment
@@ -47,6 +49,14 @@ public final class UpdateRepositoryHelper {
                 if (connection instanceof DatabaseConnection) {
                     String currentDbType = (String) RepositoryToComponentProperty.getValue(connection, UpdatesConstants.TYPE,
                             null);
+                    String productId = ((DatabaseConnection) connection).getProductId();
+                    if (GlobalServiceRegister.getDefault().isServiceRegistered(IGenericWizardService.class)) {
+                        IGenericWizardService service = GlobalServiceRegister.getDefault()
+                                .getService(IGenericWizardService.class);
+                        if (service != null && service.getIfAdditionalJDBCDBType(productId)) {
+                            currentDbType = productId;
+                        }
+                    }
                     aliasName += " (" + currentDbType + ")"; //$NON-NLS-1$ //$NON-NLS-2$
                 }
                 if (repositoryObjectType.getType().equals("SERVICES")) {
