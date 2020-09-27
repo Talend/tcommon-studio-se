@@ -149,6 +149,7 @@ public class TalendProxySelector extends ProxySelector {
             break;
         }
 
+        NetworkUtil.checkProxyAuthSupport();
         initHostMap();
         initRedirectList();
     }
@@ -281,6 +282,7 @@ public class TalendProxySelector extends ProxySelector {
         if (printProxyLog) {
             ExceptionHandler.log("TalendProxySelector.select " + uri);
         }
+        NetworkUtil.checkProxyAuthSupport();
         if (uri == null) {
             return Collections.EMPTY_LIST;
         }

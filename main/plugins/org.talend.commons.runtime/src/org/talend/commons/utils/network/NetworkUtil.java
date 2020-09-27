@@ -53,6 +53,14 @@ public class NetworkUtil {
 
     public static final String ORG_TALEND_DESIGNER_CORE = "org.talend.designer.core"; //$NON-NLS-1$
 
+    private static final String PROP_DISABLEDSCHEMES_USE_DEFAULT = "talend.studio.jdk.http.auth.tunneling.disabledSchemes.useDefault";
+
+    private static final String PROP_JRE_DISABLEDSCHEMES = "jdk.http.auth.tunneling.disabledSchemes";
+
+    private static final String PROP_JRE_DISABLEDSCHEMES_DFAULT = "";
+
+    private static final String PROP_HTTP_PROXY_SET = "http.proxySet";
+
     public static boolean isNetworkValid() {
         return isNetworkValid(DEFAULT_TIMEOUT);
     }
@@ -173,6 +181,21 @@ public class NetworkUtil {
             });
         } else {
             Authenticator.setDefault(null);
+        }
+        checkProxyAuthSupport();
+    }
+
+    public static void checkProxyAuthSupport() {
+        if (!Boolean.getBoolean(PROP_DISABLEDSCHEMES_USE_DEFAULT)) {
+            if (Boolean.getBoolean(PROP_HTTP_PROXY_SET)) {
+                if (!System.getProperties().containsKey(PROP_JRE_DISABLEDSCHEMES)) {
+                    System.setProperty(PROP_JRE_DISABLEDSCHEMES, PROP_JRE_DISABLEDSCHEMES_DFAULT);
+                }
+            } else {
+                if (PROP_JRE_DISABLEDSCHEMES_DFAULT.equals(System.getProperty(PROP_JRE_DISABLEDSCHEMES))) {
+                    System.getProperties().remove(PROP_JRE_DISABLEDSCHEMES);
+                }
+            }
         }
     }
 

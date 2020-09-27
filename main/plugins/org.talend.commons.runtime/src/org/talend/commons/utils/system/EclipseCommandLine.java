@@ -24,6 +24,8 @@ package org.talend.commons.utils.system;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import org.eclipse.core.runtime.Platform;
+
 /**
  * Creates and updates properties for the eclipse commandline in case of relaunch <br/>
  *
@@ -89,6 +91,23 @@ public class EclipseCommandLine {
 
     static public void updateOrCreateExitDataPropertyWithCommand(String command, String value, boolean delete) {
         updateOrCreateExitDataPropertyWithCommand(command, value, delete, false);
+    }
+
+    public static String getEclipseArgument(String argName) {
+        if (argName == null || argName.trim().isEmpty()) {
+            return null;
+        }
+        String[] commandLineArgs = Platform.getCommandLineArgs();
+        if (commandLineArgs == null || commandLineArgs.length <= 0) {
+            return null;
+        }
+
+        for (int i = 0; i < commandLineArgs.length - 1; i++) {
+            if (argName.equals(commandLineArgs[i])) {
+                return commandLineArgs[i + 1];
+            }
+        }
+        return null;
     }
 
     /**
