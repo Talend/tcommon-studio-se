@@ -64,6 +64,7 @@ import org.talend.core.repository.model.ProxyRepositoryFactory;
 import org.talend.core.repository.utils.ProjectDataJsonProvider;
 import org.talend.core.repository.utils.RoutineUtils;
 import org.talend.core.repository.utils.URIHelper;
+import org.talend.core.services.ICoreTisService;
 import org.talend.designer.codegen.ICodeGeneratorService;
 import org.talend.designer.codegen.ITalendSynchronizer;
 import org.talend.migration.IMigrationTask;
@@ -417,7 +418,19 @@ public class MigrationToolService implements IMigrationToolService {
                                                     }
                                                 }
                                             }
-
+                                            if (GlobalServiceRegister.getDefault().isServiceRegistered(ICoreTisService.class)) {
+                                                if (object.getProperty().eResource() == null) { // In case some
+                                                                                                // migration task has
+                                                                                                // unloaded.
+                                                    object = repFactory.getSpecificVersion(object.getProperty().getId(),
+                                                            object.getProperty().getVersion(), true);
+                                                }
+                                                if (object != null) {
+                                                    ICoreTisService service = GlobalServiceRegister.getDefault()
+                                                            .getService(ICoreTisService.class);
+                                                    service.afterImport(object.getProperty());
+                                                }
+                                            }
                                             if (object instanceof RepositoryObject) {
                                                 ((RepositoryObject) object).unload();
                                             }
