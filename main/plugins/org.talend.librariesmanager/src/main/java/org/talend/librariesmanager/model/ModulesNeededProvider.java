@@ -216,16 +216,20 @@ public class ModulesNeededProvider {
     }
 
     public static ModuleNeeded getModuleNeededById(String id) {
-        if (id.startsWith(MavenUrlHelper.MVN_PROTOCOL)) {
-            id = MavenUrlHelper.parseMvnUrl(id).getArtifactId();
-        }
         ModuleNeeded result = null;
 
         Set<ModuleNeeded> modulesNeeded = getModulesNeeded();
         for (ModuleNeeded moduleNeeded : modulesNeeded) {
-            if (id.equals(moduleNeeded.getId())) {
-                result = moduleNeeded;
-                break;
+            if (id.startsWith(MavenUrlHelper.MVN_PROTOCOL)) {
+                if (id.equals(moduleNeeded.getMavenUri())) {
+                    result = moduleNeeded;
+                    break;
+                }
+            } else {
+                if (id.equals(moduleNeeded.getId())) {
+                    result = moduleNeeded;
+                    break;
+                }
             }
         }
 

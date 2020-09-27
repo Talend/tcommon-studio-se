@@ -21,6 +21,7 @@ import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Map.Entry;
 import java.util.Set;
 import java.util.concurrent.TimeoutException;
 
@@ -187,9 +188,7 @@ public class ConfigModuleDialog extends TitleAreaDialog implements IConfigModule
     @Override
     protected Control createContents(Composite parent) {
         Control control = super.createContents(parent);
-        if (!StringUtils.isEmpty(this.initValue)) {
-            this.platformCombo.setText(this.initValue);
-        }
+        setUI();
         setPlatformGroupEnabled(true);
         validateInputFields();
         setInstallNewGroupEnabled(false);
@@ -935,6 +934,24 @@ public class ConfigModuleDialog extends TitleAreaDialog implements IConfigModule
          */
 
         LibManagerUiPlugin.getDefault().getLibrariesService().checkLibraries();
+    }
+
+    private void setUI() {
+        if (!StringUtils.isEmpty(this.initValue)) {
+            if (this.initValue.startsWith(MavenUrlHelper.MVN_PROTOCOL)) {
+                Map<String, ModuleNeeded> data = (Map<String, ModuleNeeded>) this.platformCombo.getData();
+                if (data != null) {
+                    Set<Entry<String, ModuleNeeded>> entries = data.entrySet();
+                    for (Entry<String, ModuleNeeded> entry : entries) {
+                        if (this.initValue.equals(entry.getValue().getMavenUri())) {
+                            this.platformCombo.setText(entry.getKey());
+                        }
+                    }
+                }
+            } else {
+                this.platformCombo.setText(this.initValue);
+            }
+        }
     }
 
 }
