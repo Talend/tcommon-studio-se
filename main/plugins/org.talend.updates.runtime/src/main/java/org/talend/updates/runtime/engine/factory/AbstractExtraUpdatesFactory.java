@@ -165,5 +165,9 @@ public abstract class AbstractExtraUpdatesFactory implements IUpdatesFactory {
     public void setCheckUpdateOnLine(boolean isCheckUpdateOnLine) {
         this.isCheckUpdateOnLine = isCheckUpdateOnLine;
     }
+    
+    public boolean isSupportSharedMode() {
+        return false;
+    }
 
 }

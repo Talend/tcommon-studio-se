@@ -22,5 +22,7 @@ public interface IUpdateService extends IService {
     void syncComponentM2Jars(IProgressMonitor monitor);
     
     public boolean syncSharedStudioLibraryInPatch(IProgressMonitor monitor) throws Exception;
+    
+    public String getSharedStudioMissingPatchVersion();
 
 }

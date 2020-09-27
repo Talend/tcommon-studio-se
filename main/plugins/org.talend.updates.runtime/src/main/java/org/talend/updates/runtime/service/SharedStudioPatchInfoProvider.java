@@ -94,16 +94,18 @@ public class SharedStudioPatchInfoProvider {
 
     public File getNeedInstallStudioPatchFiles() {
         File patchFolder = PathUtils.getPatchesFolder();
-        String patchName = getStudioInstalledLatestPatch();
+        String patchName = getStudioInstalledLatestPatchFileName();
         if (patchFolder.exists() && patchFolder.isDirectory() && patchName != null) {
-            for (File file : patchFolder.listFiles()) {
-                if (file.getName().startsWith(patchName) && file.getName().endsWith(FileExtensions.ZIP_FILE_SUFFIX)
-                        && !isInstalled(file.getName(), PATCH_TYPE_STUDIO)) {
-                    return file;
-                }
+            File patchFile = new File (patchFolder, patchName);
+            if (patchFile.exists() && !isInstalled(patchFile.getName(), PATCH_TYPE_STUDIO)) {
+                return patchFile;
             }
         }
         return null;
+    }
+    
+    public String getNeedInstallStudioPatchVersion() {
+        return getStudioInstalledLatestPatchVersion();
     }
 
     public List<File> getNeedInstallCarFiles() {
@@ -119,14 +121,27 @@ public class SharedStudioPatchInfoProvider {
         return files;
     }
 
-    private String getStudioInstalledLatestPatch() {
+    public String getStudioInstalledLatestPatchFileName() {
         if (GlobalServiceRegister.getDefault().isServiceRegistered(IInstalledPatchService.class)) {
             IInstalledPatchService installedPatchService = GlobalServiceRegister.getDefault()
                     .getService(IInstalledPatchService.class);
             MavenArtifact artifact = installedPatchService.getLastIntalledP2Patch();
             if (artifact != null) {
-                return artifact.getArtifactId();
+                String fileName = artifact.getArtifactId();
+                if (!fileName.endsWith(FileExtensions.ZIP_EXTENSION)) {
+                    return fileName + FileExtensions.ZIP_EXTENSION;
+                }
+                return fileName;
             }
+        }
+        return null;
+    }
+    
+    private String getStudioInstalledLatestPatchVersion() {
+        if (GlobalServiceRegister.getDefault().isServiceRegistered(IInstalledPatchService.class)) {
+            IInstalledPatchService installedPatchService = GlobalServiceRegister.getDefault()
+                    .getService(IInstalledPatchService.class);
+            return installedPatchService.getLatestInstalledVersion(false);
         }
         return null;
     }
