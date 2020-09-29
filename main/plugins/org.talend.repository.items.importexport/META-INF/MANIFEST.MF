@@ -11,7 +11,8 @@ Require-Bundle: org.eclipse.core.runtime,
  org.talend.commons.runtime,
  org.talend.core.runtime,
  org.talend.core.repository,
- org.talend.designer.maven
+ org.talend.designer.maven,
+ org.talend.core
 Bundle-Localization: plugin
 Bundle-ActivationPolicy: lazy
 Eclipse-RegisterBuddy: org.talend.testutils
