@@ -3365,15 +3365,13 @@ public class LocalRepositoryFactory extends AbstractEMFRepositoryFactory impleme
             String[] contents = new String[] {
                     Messages.getString("LocalRepositoryFactory.productionLower", remoteLastPatchName, productVersion) };
             ELoginInfoCase.STUDIO_LOWER_THAN_PROJECT.setContents(contents);
-            DialogUtils.addWarningInfo(ELoginInfoCase.STUDIO_LOWER_THAN_PROJECT);
-
+            DialogUtils.setWarningInfo(ELoginInfoCase.STUDIO_LOWER_THAN_PROJECT);
         }
-
         if (VersionUtils.productVersionIsNewer(localProject.getEmfProject().getProductVersion())) {
             String[] contents = new String[] {
                     Messages.getString("LocalRepositoryFactory.productionNewer", remoteLastPatchName, productVersion) };
             ELoginInfoCase.STUDIO_HIGHER_THAN_PROJECT.setContents(contents);
-            DialogUtils.addWarningInfo(ELoginInfoCase.STUDIO_HIGHER_THAN_PROJECT);// $NON-NLS-1$
+            DialogUtils.setWarningInfo(ELoginInfoCase.STUDIO_HIGHER_THAN_PROJECT);// $NON-NLS-1$
         }
         DialogUtils.syncOpenWarningDialog(Messages.getString("LocalRepositoryFactory.logonWarningTitle"));//$NON-NLS-1$
 

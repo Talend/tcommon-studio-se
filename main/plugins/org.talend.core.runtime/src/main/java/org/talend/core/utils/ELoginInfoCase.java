@@ -3,10 +3,9 @@ package org.talend.core.utils;
 import org.eclipse.jface.dialogs.MessageDialog;
 
 public enum ELoginInfoCase {
-    ARTIFACT_UNCONNECTED(MessageDialog.WARNING),
-    ARTIFACT_UNCONNECTED_AND_STUDIO_LOWER(MessageDialog.ERROR),
-    ARTIFACT_UNCONNECTED_AND_STUDIO_HIGHER(MessageDialog.WARNING),
+
     STUDIO_LOWER_THAN_PROJECT(MessageDialog.ERROR),
+
     STUDIO_HIGHER_THAN_PROJECT(MessageDialog.WARNING);
 
     private int dialogType;

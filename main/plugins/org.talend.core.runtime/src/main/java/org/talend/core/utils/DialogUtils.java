@@ -1,6 +1,5 @@
 package org.talend.core.utils;
 
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
@@ -13,68 +12,18 @@ import org.talend.commons.CommonsPlugin;
 
 public class DialogUtils {
 
-    private static List<ELoginInfoCase> warningInforList = new ArrayList<>();
+    private static ELoginInfoCase finalCase;
 
-    public static void addWarningInfo(ELoginInfoCase warnningInfo) {
-        if (!warningInforList.contains(warnningInfo)) {
-            warningInforList.add(warnningInfo);
-        }
-
-    }
-
-    private static ELoginInfoCase getFinalCase() {
-
-        if (warningInforList.contains(ELoginInfoCase.ARTIFACT_UNCONNECTED)) {
-
-            String[] warningContents = ELoginInfoCase.ARTIFACT_UNCONNECTED.getContents();
-
-            if (warningInforList.contains(ELoginInfoCase.STUDIO_LOWER_THAN_PROJECT)) {
-
-                String[] errerContents = ELoginInfoCase.STUDIO_LOWER_THAN_PROJECT.getContents();
-
-                String[] contents = new String[] { warningContents[0], errerContents[0] };
-
-                ELoginInfoCase.ARTIFACT_UNCONNECTED_AND_STUDIO_LOWER.setContents(contents);
-
-                return ELoginInfoCase.ARTIFACT_UNCONNECTED_AND_STUDIO_LOWER;
-            }
-
-            if (warningInforList.contains(ELoginInfoCase.STUDIO_HIGHER_THAN_PROJECT)) {
-
-                String[] warnContents = ELoginInfoCase.STUDIO_HIGHER_THAN_PROJECT.getContents();
-
-                String[] contents = new String[] { warningContents[0], warnContents[0] };
-
-                ELoginInfoCase.ARTIFACT_UNCONNECTED_AND_STUDIO_HIGHER.setContents(contents);
-
-                return ELoginInfoCase.ARTIFACT_UNCONNECTED_AND_STUDIO_HIGHER;
-            }
-            return ELoginInfoCase.ARTIFACT_UNCONNECTED;
-        }
-        if (!warningInforList.contains(ELoginInfoCase.ARTIFACT_UNCONNECTED)) {
-            if (warningInforList.contains(ELoginInfoCase.STUDIO_LOWER_THAN_PROJECT)) {
-                String[] warnContents = ELoginInfoCase.STUDIO_LOWER_THAN_PROJECT.getContents();
-                ELoginInfoCase.STUDIO_LOWER_THAN_PROJECT.setContents(warnContents);
-                return ELoginInfoCase.STUDIO_LOWER_THAN_PROJECT;
-            }
-            if (warningInforList.contains(ELoginInfoCase.STUDIO_HIGHER_THAN_PROJECT)) {
-                String[] warnContents = ELoginInfoCase.STUDIO_HIGHER_THAN_PROJECT.getContents();
-                ELoginInfoCase.STUDIO_HIGHER_THAN_PROJECT.setContents(warnContents);
-                return ELoginInfoCase.STUDIO_HIGHER_THAN_PROJECT;
-            }
-            return null;
-        }
-        return null;
-
+    public static void setWarningInfo(ELoginInfoCase warnningInfo) {
+        finalCase = warnningInfo;
     }
 
     public static void syncOpenWarningDialog(String title) {
-        ELoginInfoCase finalInfoCase = getFinalCase();
-        if (CommonsPlugin.isHeadless() || finalInfoCase == null) {
+        if (CommonsPlugin.isHeadless() || DialogUtils.finalCase == null) {
             return;
         }
-        int dialogType = finalInfoCase.getDialogType();
-        String[] contents = finalInfoCase.getContents();
+        int dialogType = DialogUtils.finalCase.getDialogType();
+        String[] contents = DialogUtils.finalCase.getContents();
         List<String> asList = Arrays.asList(contents);
         StringBuffer sb = new StringBuffer();
         asList.forEach(w -> {
@@ -95,11 +44,12 @@ public class DialogUtils {
                 int open = MessageDialog.open(dialogType, Display.getDefault().getActiveShell(), title, sb.toString(), SWT.NONE,
                         dialogButtonLabels);
                 selectIndex[0] = open;
-                warningInforList.clear();
+
             }
 
 
         });
+        DialogUtils.finalCase = null;
         if (dialogType == MessageDialog.ERROR) {
             throw new OperationCanceledException(""); //$NON-NLS-1$
         }
