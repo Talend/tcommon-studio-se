@@ -77,7 +77,6 @@ import org.osgi.service.event.Event;
 import org.osgi.service.event.EventAdmin;
 import org.talend.commons.exception.BusinessException;
 import org.talend.commons.exception.ExceptionHandler;
-import org.talend.commons.exception.InformException;
 import org.talend.commons.exception.LoginException;
 import org.talend.commons.exception.PersistenceException;
 import org.talend.commons.exception.ResourceNotFoundException;
@@ -175,6 +174,7 @@ import org.talend.core.runtime.maven.MavenConstants;
 import org.talend.core.runtime.projectsetting.ProjectPreferenceManager;
 import org.talend.core.ui.branding.IBrandingService;
 import org.talend.core.utils.DialogUtils;
+import org.talend.core.utils.ELoginInfoCase;
 import org.talend.cwm.helper.ConnectionHelper;
 import org.talend.cwm.helper.ResourceHelper;
 import org.talend.cwm.helper.SubItemHelper;
@@ -3357,15 +3357,23 @@ public class LocalRepositoryFactory extends AbstractEMFRepositoryFactory impleme
     }
 
     protected void checkProjectVersion(Project localProject) throws PersistenceException {
+        ProjectPreferenceManager prefManager = new ProjectPreferenceManager(localProject, PluginChecker.CORE_TIS_PLUGIN_ID,
+                false);
+        String remoteLastPatchName = prefManager.getValue(UpdateConstants.KEY_PREF_LAST_PATCH);
+        String productVersion = VersionUtils.getInternalVersion();
         if (VersionUtils.isInvalidProductVersion(localProject.getEmfProject().getProductVersion())) {
-            ProjectPreferenceManager prefManager = new ProjectPreferenceManager(localProject, PluginChecker.CORE_TIS_PLUGIN_ID,
-                    false);
-            String remoteLastPatchName = prefManager.getValue(UpdateConstants.KEY_PREF_LAST_PATCH);
-            throw new InformException(Messages.getString("LocalRepositoryFactory.logonDenyMsg", remoteLastPatchName)); //$NON-NLS-1$
+            String[] contents = new String[] {
+                    Messages.getString("LocalRepositoryFactory.productionLower", remoteLastPatchName, productVersion) };
+            ELoginInfoCase.STUDIO_LOWER_THAN_PROJECT.setContents(contents);
+            DialogUtils.addWarningInfo(ELoginInfoCase.STUDIO_LOWER_THAN_PROJECT);
+
         }
 
         if (VersionUtils.productVersionIsNewer(localProject.getEmfProject().getProductVersion())) {
-            DialogUtils.addWarningInfo(Messages.getString("LocalRepositoryFactory.logonWarningInfo"));//$NON-NLS-1$
+            String[] contents = new String[] {
+                    Messages.getString("LocalRepositoryFactory.productionNewer", remoteLastPatchName, productVersion) };
+            ELoginInfoCase.STUDIO_HIGHER_THAN_PROJECT.setContents(contents);
+            DialogUtils.addWarningInfo(ELoginInfoCase.STUDIO_HIGHER_THAN_PROJECT);// $NON-NLS-1$
         }
         DialogUtils.syncOpenWarningDialog(Messages.getString("LocalRepositoryFactory.logonWarningTitle"));//$NON-NLS-1$
 

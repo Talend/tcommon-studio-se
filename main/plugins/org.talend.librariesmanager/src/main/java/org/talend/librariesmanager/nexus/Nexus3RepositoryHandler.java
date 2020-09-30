@@ -95,7 +95,6 @@ public class Nexus3RepositoryHandler extends AbstractArtifactRepositoryHandler {
             ExceptionHandler.process(e);
             connectionOk = false;
         }
-        openWarningDialog(connectionOk);
         return connectionOk;
     }
 
