@@ -13,6 +13,8 @@
 package org.talend.commons.utils;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertTrue;
 
 import java.io.File;
 import java.util.HashMap;
@@ -160,6 +162,16 @@ public class VersionUtilsTest {
         test = "Talend Cloud Real-Time Big Data Platform-7.3.1.20190919_1941-patch";
         result = VersionUtils.getProductVersionWithoutBranding(test);
         assertEquals(expect, result);
+    }
+
+    @Test
+    public void testProductVersionIsNewer() {
+        assertTrue(
+                VersionUtils.productVersionIsNewer("7.3.1.20200211_1941-M1", "Talend Cloud Big Data-7.3.1.20200209_1446-patch"));
+        assertTrue(VersionUtils.productVersionIsNewer("7.3.1.20200211_1941", "Talend Cloud Big Data-7.3.1.20200209_1446-patch"));
+        assertTrue(VersionUtils.productVersionIsNewer("7.3.1.20200211_1941-patch",
+                "Talend Cloud Big Data-7.3.1.20200209_1446-patch"));
+        assertFalse(VersionUtils.productVersionIsNewer("7.3.1.20200219_1941-patch", "Talend Cloud Big Data-7.3.1.20200221_1446"));
     }
 
     @After
