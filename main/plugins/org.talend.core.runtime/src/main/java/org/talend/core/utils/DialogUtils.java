@@ -80,7 +80,6 @@ public class DialogUtils {
         asList.forEach(w -> {
             sb.append(w);
             sb.append("\n");// $NON-NLS-1$
-            sb.append("\n");// $NON-NLS-1$
         });
         int[] selectIndex = new int[1];
         Display.getDefault().syncExec(new Runnable() {
@@ -88,7 +87,7 @@ public class DialogUtils {
             @Override
             public void run() {
 
-                String[] dialogButtonLabels = new String[] { IDialogConstants.CANCEL_LABEL, IDialogConstants.OK_LABEL };
+                String[] dialogButtonLabels = new String[] { IDialogConstants.OK_LABEL, IDialogConstants.CANCEL_LABEL, };
 
                 if (dialogType == MessageDialog.ERROR) {
                     dialogButtonLabels = new String[] { IDialogConstants.CANCEL_LABEL };
@@ -101,7 +100,10 @@ public class DialogUtils {
 
 
         });
-        if (0 == selectIndex[0]) {
+        if (dialogType == MessageDialog.ERROR) {
+            throw new OperationCanceledException(""); //$NON-NLS-1$
+        }
+        if (1 == selectIndex[0]) {
             throw new OperationCanceledException(""); //$NON-NLS-1$
         }
     }
