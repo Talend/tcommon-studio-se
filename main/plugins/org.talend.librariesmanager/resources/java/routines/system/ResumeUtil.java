@@ -100,9 +100,6 @@ public class ResumeUtil {
                         csvWriter.write("dynamicData");// dynamicData
                         csvWriter.endRecord();
                         csvWriter.flush();
-                        csvWriter.close();
-                        //To avoid use File.delete() as it cannot make sure file being deleted.
-                        this.csvWriter = new SimpleCsvWriter(new FileWriter(logFileName, true));
                     }
                 } else {
                     csvWriter = sharedWriter;
