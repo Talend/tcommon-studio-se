@@ -6,7 +6,7 @@
               context="plugin:org.talend.libraries.apache.cxf"
               language="java"
               message="Needed for the cxf dependencies"
-              name="javax.ws.rs-api-2.0-m10.jar" mvn_uri="mvn:org.talend.libraries/javax.ws.rs-api-2.0-m10/6.0.0" 
+              name="javax.ws.rs-api-2.0-m10-6.0.0.jar" mvn_uri="mvn:org.talend.libraries/javax.ws.rs-api-2.0-m10/6.0.0" 
               required="true">
         </libraryNeeded>
         <libraryNeeded
@@ -14,6 +14,118 @@
               language="java"
               message="Needed for the cxf dependencies"
               name="woodstox-core-asl-4.2.0.jar" mvn_uri="mvn:org.talend.libraries/woodstox-core-asl-4.2.0/6.0.0" 
+              required="true">
+        </libraryNeeded>
+        <libraryNeeded
+              context="plugin:org.talend.libraries.apache.cxf"
+              language="java"
+              message="Needed for the cxf dependencies"
+              name="cxf-core-3.3.6.jar" mvn_uri="mvn:org.apache.cxf/cxf-core/3.3.6" 
+              required="true">
+        </libraryNeeded>
+        <libraryNeeded
+              context="plugin:org.talend.libraries.apache.cxf"
+              language="java"
+              message="Needed for the cxf dependencies"
+              name="cxf-rt-bindings-xml-3.3.6.jar" mvn_uri="mvn:org.apache.cxf/cxf-rt-bindings-xml/3.3.6" 
+              required="true">
+        </libraryNeeded>
+        <libraryNeeded
+              context="plugin:org.talend.libraries.apache.cxf"
+              language="java"
+              message="Needed for the cxf dependencies"
+              name="cxf-rt-frontend-jaxrs-3.3.6.jar" mvn_uri="mvn:org.apache.cxf/cxf-rt-frontend-jaxrs/3.3.6" 
+              required="true">
+        </libraryNeeded>
+        <libraryNeeded
+              context="plugin:org.talend.libraries.apache.cxf"
+              language="java"
+              message="Needed for the cxf dependencies"
+              name="cxf-rt-rs-client-3.3.6.jar" mvn_uri="mvn:org.apache.cxf/cxf-rt-rs-client/3.3.6" 
+              required="true">
+        </libraryNeeded>
+        <libraryNeeded
+              context="plugin:org.talend.libraries.apache.cxf"
+              language="java"
+              message="Needed for the cxf dependencies"
+              name="cxf-rt-transports-http-3.3.6.jar" mvn_uri="mvn:org.apache.cxf/cxf-rt-transports-http/3.3.6" 
+              required="true">
+        </libraryNeeded>
+        <libraryNeeded
+              context="plugin:org.talend.libraries.apache.cxf"
+              language="java"
+              message="Needed for the cxf dependencies"
+              name="cxf-rt-wsdl-3.3.6.jar" mvn_uri="mvn:org.apache.cxf/cxf-rt-wsdl/3.3.6" 
+              required="true">
+        </libraryNeeded>
+        <libraryNeeded
+              context="plugin:org.talend.libraries.apache.cxf"
+              language="java"
+              message="Needed for the cxf dependencies"
+              name="jakarta.activation-1.2.1.jar" mvn_uri="mvn:com.sun.activation/jakarta.activation/1.2.1" 
+              required="true">
+        </libraryNeeded>
+        <libraryNeeded
+              context="plugin:org.talend.libraries.apache.cxf"
+              language="java"
+              message="Needed for the cxf dependencies"
+              name="jakarta.activation-api-1.2.1.jar" mvn_uri="mvn:jakarta.activation/jakarta.activation-api/1.2.1" 
+              required="true">
+        </libraryNeeded>
+        <libraryNeeded
+              context="plugin:org.talend.libraries.apache.cxf"
+              language="java"
+              message="Needed for the cxf dependencies"
+              name="jakarta.ws.rs-api-2.1.5.jar" mvn_uri="mvn:jakarta.ws.rs/jakarta.ws.rs-api/2.1.5" 
+              required="true">
+        </libraryNeeded>
+        <libraryNeeded
+              context="plugin:org.talend.libraries.apache.cxf"
+              language="java"
+              message="Needed for the cxf dependencies"
+              name="jakarta.xml.bind-api-2.3.2.jar" mvn_uri="mvn:jakarta.xml.bind/jakarta.xml.bind-api/2.3.2" 
+              required="true">
+        </libraryNeeded>
+        <libraryNeeded
+              context="plugin:org.talend.libraries.apache.cxf"
+              language="java"
+              message="Needed for the cxf dependencies"
+              name="javax.annotation-api-1.3.2.jar" mvn_uri="mvn:javax.annotation/javax.annotation-api/1.3.2" 
+              required="true">
+        </libraryNeeded>
+        <libraryNeeded
+              context="plugin:org.talend.libraries.apache.cxf"
+              language="java"
+              message="Needed for the cxf dependencies"
+              name="jaxb-runtime-2.3.2.jar" mvn_uri="mvn:org.glassfish.jaxb/jaxb-runtime/2.3.2" 
+              required="true">
+        </libraryNeeded>
+        <libraryNeeded
+              context="plugin:org.talend.libraries.apache.cxf"
+              language="java"
+              message="Needed for the cxf dependencies"
+              name="jaxws-api-2.3.1.jar" mvn_uri="mvn:javax.xml.ws/jaxws-api/2.3.1" 
+              required="true">
+        </libraryNeeded>
+        <libraryNeeded
+              context="plugin:org.talend.libraries.apache.cxf"
+              language="java"
+              message="Needed for the cxf dependencies"
+              name="neethi-3.1.1.jar" mvn_uri="mvn:org.apache.neethi/neethi/3.1.1" 
+              required="true">
+        </libraryNeeded>
+        <libraryNeeded
+              context="plugin:org.talend.libraries.apache.cxf"
+              language="java"
+              message="Needed for the cxf dependencies"
+              name="stax2-api-3.1.4.jar" mvn_uri="mvn:org.codehaus.woodstox/stax2-api/3.1.4" 
+              required="true">
+        </libraryNeeded>
+                <libraryNeeded
+              context="plugin:org.talend.libraries.apache.cxf"
+              language="java"
+              message="Needed for the cxf dependencies"
+              name="woodstox-core-asl-4.4.1.jar" mvn_uri="mvn:org.codehaus.woodstox/woodstox-core-asl/4.4.1" 
               required="true">
         </libraryNeeded>
     </extension>

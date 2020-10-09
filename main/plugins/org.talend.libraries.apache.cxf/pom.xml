@@ -9,6 +9,95 @@
   </parent>
   <artifactId>org.talend.libraries.apache.cxf</artifactId>
   <packaging>eclipse-plugin</packaging>
+  
+  <dependencies>
+    <dependency>
+    	<groupId>org.apache.cxf</groupId>
+  		<artifactId>cxf-core</artifactId>
+ 		<version>3.3.6</version>
+    </dependency>
+    <dependency>
+	  <groupId>org.apache.cxf</groupId>
+	  <artifactId>cxf-rt-bindings-xml</artifactId>
+	  <version>3.3.6</version>
+	</dependency>
+	<dependency>
+  		<groupId>org.apache.cxf</groupId>
+ 		<artifactId>cxf-rt-frontend-jaxrs</artifactId>
+  		<version>3.3.6</version>
+	</dependency>
+	<dependency>
+	  <groupId>org.apache.cxf</groupId>
+	  <artifactId>cxf-rt-rs-client</artifactId>
+	  <version>3.3.6</version>
+	</dependency>
+	<dependency>
+	  <groupId>org.apache.cxf</groupId>
+	  <artifactId>cxf-rt-transports-http</artifactId>
+	  <version>3.3.6</version>
+	</dependency>
+	<dependency>
+	  <groupId>org.apache.cxf</groupId>
+	  <artifactId>cxf-rt-wsdl</artifactId>
+	  <version>3.3.6</version>
+	</dependency>
+	<dependency>
+	  <groupId>com.sun.activation</groupId>
+	  <artifactId>jakarta.activation</artifactId>
+	  <version>1.2.1</version>
+	</dependency>
+	<dependency>
+	  <groupId>jakarta.activation</groupId>
+	  <artifactId>jakarta.activation-api</artifactId>
+	  <version>1.2.1</version>
+	</dependency>
+	<dependency>
+	  <groupId>jakarta.ws.rs</groupId>
+	  <artifactId>jakarta.ws.rs-api</artifactId>
+	  <version>2.1.5</version>
+	</dependency>
+	<dependency>
+	  <groupId>jakarta.xml.bind</groupId>
+	  <artifactId>jakarta.xml.bind-api</artifactId>
+	  <version>2.3.2</version>
+	</dependency>
+	<dependency>
+	  <groupId>javax.annotation</groupId>
+	  <artifactId>javax.annotation-api</artifactId>
+	  <version>1.3.2</version>
+	</dependency>
+	<dependency>
+	  <groupId>org.glassfish.jaxb</groupId>
+	  <artifactId>jaxb-runtime</artifactId>
+	  <version>2.3.2</version>
+	</dependency>
+	<dependency>
+	  <groupId>javax.xml.ws</groupId>
+	  <artifactId>jaxws-api</artifactId>
+	  <version>2.3.1</version>
+	</dependency>
+	<dependency>
+	  <groupId>org.apache.neethi</groupId>
+	  <artifactId>neethi</artifactId>
+	  <version>3.1.1</version>
+	</dependency>
+	<dependency>
+	  <groupId>org.codehaus.woodstox</groupId>
+	  <artifactId>stax2-api</artifactId>
+	  <version>3.1.4</version>
+	</dependency>
+	<dependency>
+	  <groupId>org.codehaus.woodstox</groupId>
+	  <artifactId>woodstox-core-asl</artifactId>
+	  <version>4.4.1</version>
+	</dependency>
+	<dependency>
+		  <groupId>org.talend.libraries</groupId>
+		  <artifactId>javax.ws.rs-api-2.0-m10</artifactId>
+		  <version>6.0.0</version>
+	</dependency>
+  </dependencies>
+  
   <build>
     <plugins>    
        <plugin>
@@ -20,7 +109,28 @@
         		<optionalDependencies>ignore</optionalDependencies>
       		</dependency-resolution>
         </configuration>
-      </plugin>     
+      </plugin>
+      
+      <plugin>
+			<groupId>org.apache.maven.plugins</groupId>
+			<artifactId>maven-dependency-plugin</artifactId>
+			<version>2.8</version>
+			<executions>
+				<execution>
+					<id>copy-dependencies</id>
+		            <phase>generate-sources</phase>
+		            <goals>
+		                <goal>copy-dependencies</goal>
+		            </goals>
+					<configuration>
+						<excludeTypes>pom</excludeTypes>
+						<excludeTransitive>true</excludeTransitive>
+						<outputDirectory>${project.basedir}/lib</outputDirectory>
+						<includeGroupIds>org.apache.cxf,com.sun.activation,jakarta.activation,jakarta.ws.rs,jakarta.xml.bind,javax.annotation,org.glassfish.jaxb,javax.xml.ws,org.apache.neethi,org.codehaus.woodstox,org.talend.libraries</includeGroupIds>
+					</configuration>
+				</execution>
+			</executions>
+		</plugin>
     </plugins>
   </build>
 </project>
