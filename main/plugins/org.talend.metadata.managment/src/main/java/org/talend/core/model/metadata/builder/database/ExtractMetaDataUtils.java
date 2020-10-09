@@ -76,6 +76,7 @@ import org.talend.core.model.metadata.connection.hive.HiveModeInfo;
 import org.talend.core.model.metadata.types.JavaTypesManager;
 import org.talend.core.prefs.SSLPreferenceConstants;
 import org.talend.core.runtime.CoreRuntimePlugin;
+import org.talend.core.runtime.maven.MavenUrlHelper;
 import org.talend.core.utils.TalendQuoteUtils;
 import org.talend.designer.core.IDesignerCoreService;
 import org.talend.metadata.managment.connection.manager.HiveConnectionManager;
@@ -1024,6 +1025,7 @@ public class ExtractMetaDataUtils {
                             }
                         }
                         librairesManagerService.retrieve(jarsToRetreive, getJavaLibPath(), new NullProgressMonitor());
+
                     } else {
                         Path path = new Path(driverJarPathArg);
                         File driverFile = new File(driverJarPathArg);
@@ -1045,30 +1047,39 @@ public class ExtractMetaDataUtils {
                             jarPathList.add(driverJarPathArg);
                         }
                     }
-                }else if(driverJarPathArg.contains("/")){
+
+                } else if (driverJarPathArg.contains("/")) {
                     if (driverJarPathArg.contains(";")) {
                         String jars[] = driverJarPathArg.split(";");
                         for (String jar : jars) {
-                            String jarName = librairesManagerService.getJarNameFromMavenuri(jar);
-                            // TDQ-16842 msjian:sometimes for the import jdbc connection, the jarName is null
-                            if (jarName == null) {
-                                jarName = jar.split("/")[1] + ".jar";
+                            if (driverJarPathArg.startsWith(MavenUrlHelper.MVN_PROTOCOL)) {
+                                setDriverPath(librairesManagerService, jarPathList, driverJarPathArg);
+                            } else {
+                                String jarName = librairesManagerService.getJarNameFromMavenuri(jar);
+                                // TDQ-16842 msjian:sometimes for the import jdbc connection, the jarName is null
+                                if (jarName == null) {
+                                    jarName = jar.split("/")[1] + ".jar";
+                                }
+                                // TDQ-16842~
+                                if (!new File(getJavaLibPath() + jarName).exists()) {
+                                    librairesManagerService.retrieve(jarName, getJavaLibPath(), new NullProgressMonitor());
+                                }
+                                jarPathList.add(getJavaLibPath() + jarName);
                             }
-                            // TDQ-16842~
+                        }
+                    } else {
+                        if (driverJarPathArg.startsWith(MavenUrlHelper.MVN_PROTOCOL)) {
+                            setDriverPath(librairesManagerService, jarPathList, driverJarPathArg);
+                        } else {
+                            String jarName = librairesManagerService.getJarNameFromMavenuri(driverJarPathArg);
+                            if (jarName == null) {
+                                jarName = driverJarPathArg.split("/")[1] + ".jar";
+                            }
                             if (!new File(getJavaLibPath() + jarName).exists()) {
                                 librairesManagerService.retrieve(jarName, getJavaLibPath(), new NullProgressMonitor());
                             }
                             jarPathList.add(getJavaLibPath() + jarName);
                         }
-                    }else{
-                        String jarName = librairesManagerService.getJarNameFromMavenuri(driverJarPathArg);
-                        if (jarName == null) {
-                            jarName = driverJarPathArg.split("/")[1] + ".jar";
-                        }
-                        if (!new File(getJavaLibPath() + jarName).exists()) {
-                            librairesManagerService.retrieve(jarName, getJavaLibPath(), new NullProgressMonitor());
-                        }
-                        jarPathList.add(getJavaLibPath() + jarName);
                     }
                 } else {
                     if (driverJarPathArg.contains(";")) {
@@ -1203,6 +1214,19 @@ public class ExtractMetaDataUtils {
         }
 
         return conList;
+    }
+
+    private void setDriverPath(ILibraryManagerService librairesManagerService, List<String> jarPathList, String mvnURI)
+            throws Exception {
+        File driveJarFile = librairesManagerService.resolveJar(null, mvnURI);
+        if (driveJarFile != null) {
+            File existJar = new File(getJavaLibPath() + driveJarFile.getName());
+            if (existJar.exists()) {
+                existJar.delete();
+            }
+            FilesUtils.copyFile(driveJarFile, existJar);
+            jarPathList.add(getJavaLibPath() + driveJarFile.getName());
+        }
     }
 
     /**

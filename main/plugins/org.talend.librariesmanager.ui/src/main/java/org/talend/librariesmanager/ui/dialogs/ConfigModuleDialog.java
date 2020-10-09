@@ -488,7 +488,9 @@ public class ConfigModuleDialog extends TitleAreaDialog implements IConfigModule
              */
             @Override
             public void widgetSelected(SelectionEvent e) {
-                ModuleMavenURIUtils.copyDefaultMavenURI(defaultUriTxt.getText());
+                if (!StringUtils.isEmpty(defaultUriTxt.getText())) {
+                    ModuleMavenURIUtils.copyDefaultMavenURI(defaultUriTxt.getText());
+                }
             }
         });
     }
