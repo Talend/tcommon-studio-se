@@ -147,10 +147,12 @@ public class UpdateService implements IUpdateService {
     @Override
     public String getSharedStudioMissingPatchVersion() {
         File patchFolder = PathUtils.getPatchesFolder();
-        String patchName = SharedStudioPatchInfoProvider.getInstance().getStudioInstalledLatestPatchFileName();
-        File studioPatch = new File (patchFolder, patchName);
-        if (studioPatch != null && !studioPatch.exists()) {
-            return SharedStudioPatchInfoProvider.getInstance().getNeedInstallStudioPatchVersion();
+        String patchFileName = SharedStudioPatchInfoProvider.getInstance().getStudioInstalledLatestPatchFileName();
+        if (!SharedStudioPatchInfoProvider.getInstance().isInstalled(patchFileName, SharedStudioPatchInfoProvider.PATCH_TYPE_STUDIO)) {
+            File studioPatchFile = new File (patchFolder, patchFileName);
+            if (studioPatchFile != null && !studioPatchFile.exists()) {
+                return patchFileName;
+            }
         }
         return null;
     }

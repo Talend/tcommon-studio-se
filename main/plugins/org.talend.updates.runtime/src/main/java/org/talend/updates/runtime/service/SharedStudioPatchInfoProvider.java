@@ -18,7 +18,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.apache.commons.lang3.StringUtils;
-import org.apache.log4j.Logger;
 import org.eclipse.core.runtime.Platform;
 import org.talend.commons.exception.ExceptionHandler;
 import org.talend.commons.utils.resource.FileExtensions;
@@ -28,8 +27,8 @@ import org.talend.core.ui.IInstalledPatchService;
 import org.talend.updates.runtime.utils.PathUtils;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
-import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonInclude.Include;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
@@ -37,7 +36,7 @@ public class SharedStudioPatchInfoProvider {
 
     private static final String INSTALLED_PATCH_RECORD_FILE = "installed_patch.json";
 
-    private static final String PATCH_TYPE_STUDIO = "studio";
+    static final String PATCH_TYPE_STUDIO = "studio";
 
     private static final String PATCH_TYPE_CAR = "car";
 
@@ -103,10 +102,6 @@ public class SharedStudioPatchInfoProvider {
         }
         return null;
     }
-    
-    public String getNeedInstallStudioPatchVersion() {
-        return getStudioInstalledLatestPatchVersion();
-    }
 
     public List<File> getNeedInstallCarFiles() {
         List<File> files = new ArrayList<File>();
@@ -127,21 +122,21 @@ public class SharedStudioPatchInfoProvider {
                     .getService(IInstalledPatchService.class);
             MavenArtifact artifact = installedPatchService.getLastIntalledP2Patch();
             if (artifact != null) {
-                String fileName = artifact.getArtifactId();
-                if (!fileName.endsWith(FileExtensions.ZIP_EXTENSION)) {
-                    return fileName + FileExtensions.ZIP_EXTENSION;
+                String artifactId = artifact.getArtifactId();
+                if (!artifactId.endsWith(FileExtensions.ZIP_EXTENSION)) {
+                    return artifactId + "." + FileExtensions.ZIP_EXTENSION;
                 }
-                return fileName;
+                return artifactId;
             }
         }
         return null;
     }
     
-    private String getStudioInstalledLatestPatchVersion() {
+    public String getStudioInstalledLatestPatchVersion() {
         if (GlobalServiceRegister.getDefault().isServiceRegistered(IInstalledPatchService.class)) {
             IInstalledPatchService installedPatchService = GlobalServiceRegister.getDefault()
                     .getService(IInstalledPatchService.class);
-            return installedPatchService.getLatestInstalledVersion(false);
+            return installedPatchService.getLatestInstalledVersion(true);
         }
         return null;
     }
