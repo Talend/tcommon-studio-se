@@ -736,9 +736,6 @@ public class ConfigModuleDialog extends TitleAreaDialog implements IConfigModule
                 // already installed with different jar
                 if (!sha1Local.equals(sha1New)) {
                     install = true;
-                } else {
-                    this.setErrorMessage(Messages.getString("InstallModuleDialog.error.jarexsit"));
-                    return;
                 }
             } else {
                 // just install
