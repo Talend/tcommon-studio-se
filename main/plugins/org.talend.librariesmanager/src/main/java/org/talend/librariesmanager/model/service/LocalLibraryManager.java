@@ -912,6 +912,15 @@ public class LocalLibraryManager implements ILibraryManagerService, IChangedLibr
                     fileToDeploy = null;
                     found = false;
                 }
+                boolean isCIMode = false;
+                if (GlobalServiceRegister.getDefault().isServiceRegistered(IRunProcessService.class)) {
+                    IRunProcessService runProcessService = GlobalServiceRegister.getDefault()
+                            .getService(IRunProcessService.class);
+                    isCIMode = runProcessService.isCIMode();
+                }
+                if (!found && !isCIMode) {
+                    ExceptionHandler.log("missing jar:" + module.getModuleName());
+                }
                 if (fileToDeploy != null) {
                     install(fileToDeploy, mavenUri, false, false, monitorWrap);
                 }
