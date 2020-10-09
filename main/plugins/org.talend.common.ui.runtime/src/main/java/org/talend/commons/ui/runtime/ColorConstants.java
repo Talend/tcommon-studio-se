@@ -24,11 +24,11 @@ public interface ColorConstants {
 
     static final Color GREY_COLOR = new Color(null, 215, 215, 215);
 
-    static final Color YELLOW_GREEN_COLOR = new Color(null, 138, 188, 0);// 143, 163, 35
+    static final Color YELLOW_GREEN_COLOR = new Color(null, 88,153,24);// 143, 163, 35
 
     static final Color YELLOW_COLOR = new Color(null, 255, 173, 37);// 254, 182, 84
 
-    static final Color RED_COLOR = new Color(null, new RGB(240, 0, 0));// 255
+    static final Color RED_COLOR = new Color(null, new RGB(204,87,89));// 255
 
     static final Color VERTICAL_SEPERATOR_LINE_COLOR = new Color(null, 162, 179, 195);
 
