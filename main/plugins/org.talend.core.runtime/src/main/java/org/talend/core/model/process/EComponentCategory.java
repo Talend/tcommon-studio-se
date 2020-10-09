@@ -44,6 +44,7 @@ public enum EComponentCategory {
     DYNAMICS_SETTINGS(Messages.getString("EComponentCategory_dynamicSetting"), 13), //$NON-NLS-1$
     SQL_PATTERN(Messages.getString("EComponentCategory_sqlTemplate"), 14), //$NON-NLS-1$
     BREAKPOINT(Messages.getString("EComponentCategory.breakpoint"), 15), //$NON-NLS-1$
+    BREAKPOINT_CAMEL(Messages.getString("EComponentCategory.breakpoint"), 16), //$NON-NLS-1$
     BASICRUN(Messages.getString("EComponentCategory.basicRun"), 1), //$NON-NLS-1$
     DEBUGRUN(Messages.getString("EComponentCategory.debugRun"), 2), //$NON-NLS-1$
     ADVANCESETTING(Messages.getString("EComponentCategory.advancedSettings"), 3), //$NON-NLS-1$
