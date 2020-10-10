@@ -16,6 +16,7 @@ import java.io.File;
 import java.lang.reflect.InvocationTargetException;
 import java.util.concurrent.TimeoutException;
 
+import org.apache.commons.lang3.StringUtils;
 import org.apache.oro.text.regex.MalformedPatternException;
 import org.apache.oro.text.regex.Pattern;
 import org.apache.oro.text.regex.PatternMatcherInput;
@@ -145,8 +146,10 @@ public class ModuleMavenURIUtils {
     }
 
     public static void copyDefaultMavenURI(String text) {
-        Clipboard clipBoard = new Clipboard(Display.getCurrent());
-        TextTransfer textTransfer = TextTransfer.getInstance();
-        clipBoard.setContents(new Object[] { text }, new Transfer[] { textTransfer });
+        if (!StringUtils.isEmpty(text)) {
+            Clipboard clipBoard = new Clipboard(Display.getCurrent());
+            TextTransfer textTransfer = TextTransfer.getInstance();
+            clipBoard.setContents(new Object[] { text }, new Transfer[] { textTransfer });
+        }
     }
 }
