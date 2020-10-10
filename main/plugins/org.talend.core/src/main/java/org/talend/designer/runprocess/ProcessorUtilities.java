@@ -167,6 +167,8 @@ public class ProcessorUtilities {
 
     private static boolean isDebug = false;
 
+    private static JobInfo mainJobInfo;
+
     public static void addOpenEditor(IEditorPart editor) {
         openedEditors.add(editor);
     }
@@ -435,6 +437,7 @@ public class ProcessorUtilities {
 
             isMainJob = true;
             codeModified = false;
+            mainJobInfo = jobInfo;
 
             // this cache only keep the last main job's generation, so clear it since we regenerate a new job.
             LastGenerationInfo.getInstance().getLastGeneratedjobs().clear();
@@ -956,6 +959,7 @@ public class ProcessorUtilities {
             if (jobInfo.getFatherJobInfo() == null) {
                 isMainJob = true;
                 codeModified = false;
+                mainJobInfo = jobInfo;
 
                 // this cache only keep the last main job's generation, so clear it since we regenerate a new job.
                 LastGenerationInfo.getInstance().getLastGeneratedjobs().clear();
@@ -1604,10 +1608,12 @@ public class ProcessorUtilities {
         jobList.clear();
         esbJobs.clear();
         hasLoopDependency = false;
+        mainJobInfo = null;
         JobInfo jobInfo = new JobInfo(processName, contextName, version);
         IProcessor process = generateCode(jobInfo, contextName, statistics, trace, true, GENERATE_ALL_CHILDS, monitor);
         jobList.clear();
         hasLoopDependency = false;
+        mainJobInfo = null;
         return process;
     }
 
@@ -1630,9 +1636,11 @@ public class ProcessorUtilities {
         jobList.clear();
         esbJobs.clear();
         hasLoopDependency = false;
+        mainJobInfo = null;
         IProcessor process = generateCode(jobInfo, contextName, statistics, trace, true, GENERATE_ALL_CHILDS, monitor);
         jobList.clear();
         hasLoopDependency = false;
+        mainJobInfo = null;
         return process;
     }
 
@@ -1650,9 +1658,11 @@ public class ProcessorUtilities {
         jobList.clear();
         esbJobs.clear();
         hasLoopDependency = false;
+        mainJobInfo = null;
         IProcessor result = generateCode(jobInfo, contextName, statistics, trace, true, GENERATE_ALL_CHILDS, monitor);
         jobList.clear();
         hasLoopDependency = false;
+        mainJobInfo = null;
         return result;
     }
 
@@ -1670,10 +1680,12 @@ public class ProcessorUtilities {
         jobList.clear();
         esbJobs.clear();
         hasLoopDependency = false;
+        mainJobInfo = null;
         IProcessor result =
                 generateCode(jobInfo, contextName, statistics, trace, needContext, GENERATE_ALL_CHILDS, monitor);
         jobList.clear();
         hasLoopDependency = false;
+        mainJobInfo = null;
         return result;
     }
 
@@ -1700,9 +1712,11 @@ public class ProcessorUtilities {
         jobList.clear();
         esbJobs.clear();
         hasLoopDependency = false;
+        mainJobInfo = null;
         IProcessor result = generateCode(jobInfo, contextName, statistics, trace, needContext, option, monitor);
         jobList.clear();
         hasLoopDependency = false;
+        mainJobInfo = null;
         return result;
     }
 
@@ -1723,9 +1737,11 @@ public class ProcessorUtilities {
             jobList.clear();
             esbJobs.clear();
             hasLoopDependency = false;
+            mainJobInfo = null;
             result = generateCode(jobInfo, contextName, statistics, trace, true, GENERATE_ALL_CHILDS, monitor);
             jobList.clear();
             hasLoopDependency = false;
+            mainJobInfo = null;
         }
         return result;
     }
@@ -1735,9 +1751,11 @@ public class ProcessorUtilities {
         jobList.clear();
         esbJobs.clear();
         hasLoopDependency = false;
+        mainJobInfo = null;
         IProcessor returnValue = generateCode(process, contextName, statistics, trace, false);
         jobList.clear();
         hasLoopDependency = false;
+        mainJobInfo = null;
         return returnValue;
     }
 
@@ -1769,10 +1787,12 @@ public class ProcessorUtilities {
         jobList.clear();
         esbJobs.clear();
         hasLoopDependency = false;
+        mainJobInfo = null;
         IProcessor genCode = generateCode(jobInfo, context.getName(), statistics, trace, contextProperties,
                 GENERATE_ALL_CHILDS, new NullProgressMonitor());
         jobList.clear();
         hasLoopDependency = false;
+        mainJobInfo = null;
         return genCode;
     }
 
@@ -1781,10 +1801,12 @@ public class ProcessorUtilities {
         jobList.clear();
         esbJobs.clear();
         hasLoopDependency = false;
+        mainJobInfo = null;
         IProcessor returnValue =
                 generateCode(process, context, statistics, trace, properties, new NullProgressMonitor());
         jobList.clear();
         hasLoopDependency = false;
+        mainJobInfo = null;
         return returnValue;
     }
 
@@ -1816,10 +1838,12 @@ public class ProcessorUtilities {
         jobList.clear();
         esbJobs.clear();
         hasLoopDependency = false;
+        mainJobInfo = null;
         IProcessor genCode = generateCode(jobInfo, context.getName(), statistics, trace, properties,
                 GENERATE_ALL_CHILDS, progressMonitor);
         jobList.clear();
         hasLoopDependency = false;
+        mainJobInfo = null;
         return genCode;
     }
 
@@ -1865,10 +1889,12 @@ public class ProcessorUtilities {
         jobList.clear();
         esbJobs.clear();
         hasLoopDependency = false;
+        mainJobInfo = null;
         IProcessor genCode = generateCode(processor, jobInfo, context.getName(), statistics, trace, properties,
                 GENERATE_ALL_CHILDS, progressMonitor);
         jobList.clear();
         hasLoopDependency = false;
+        mainJobInfo = null;
 
         TimeMeasure.end(timeMeasureGenerateCodesId);
         // if active before, not disable and active still.
@@ -1895,10 +1921,12 @@ public class ProcessorUtilities {
         jobList.clear();
         esbJobs.clear();
         hasLoopDependency = false;
+        mainJobInfo = null;
         IProcessor genCode = generateCode(jobInfo, context.getName(), statistics, trace, properties, option,
                 new NullProgressMonitor());
         jobList.clear();
         hasLoopDependency = false;
+        mainJobInfo = null;
         return genCode;
     }
 
@@ -2441,6 +2469,14 @@ public class ProcessorUtilities {
         return hasLoopDependency;
     }
 
+    /**
+     * Getter for mainJobInfo. <font color="red">Need to check null</font>
+     * 
+     * @return the mainJobInfo
+     */
+    public static JobInfo getMainJobInfo() {
+        return mainJobInfo;
+    }
     /**
      * The dynamic loading of the hadoop configuration library is supported in DI, MapReduce and Spark (batch and
      * streaming).

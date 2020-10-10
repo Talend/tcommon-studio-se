@@ -613,20 +613,20 @@ public class CreateMavenJobPom extends AbstractMavenProcessorPom {
     protected void updateDependencySet(IFile assemblyFile) {
         Map<String, Dependency> jobCoordinateMap = new HashMap<String, Dependency>();
         Set<JobInfo> childrenJobInfo = new HashSet<>();
+        childrenJobInfo = getJobProcessor().getBuildChildrenJobs();
         if (!hasLoopDependency()) {
-            childrenJobInfo = getJobProcessor().getBuildChildrenJobs();
+            // add children jobs
+            for (JobInfo jobInfo : childrenJobInfo) {
+                Property property = jobInfo.getProcessItem().getProperty();
+                String coordinate = getCoordinate(PomIdsHelper.getJobGroupId(property), PomIdsHelper.getJobArtifactId(jobInfo),
+                        MavenConstants.PACKAGING_JAR, PomIdsHelper.getJobVersion(property), null);
+                Dependency dependency = PomUtil.createDependency(PomIdsHelper.getJobGroupId(property),
+                        PomIdsHelper.getJobArtifactId(jobInfo), PomIdsHelper.getJobVersion(property),
+                        MavenConstants.PACKAGING_JAR);
+                jobCoordinateMap.put(coordinate, dependency);
+            }
         }
 
-        // add children jobs
-        for (JobInfo jobInfo : childrenJobInfo) {
-            Property property = jobInfo.getProcessItem().getProperty();
-            String coordinate =
-                    getCoordinate(PomIdsHelper.getJobGroupId(property), PomIdsHelper.getJobArtifactId(jobInfo),
-                            MavenConstants.PACKAGING_JAR, PomIdsHelper.getJobVersion(property), null);
-            Dependency dependency = PomUtil.createDependency(PomIdsHelper.getJobGroupId(property),
-                    PomIdsHelper.getJobArtifactId(jobInfo), PomIdsHelper.getJobVersion(property), MavenConstants.PACKAGING_JAR);
-            jobCoordinateMap.put(coordinate, dependency);
-        }
 
         // add parent job
         Property parentProperty = this.getJobProcessor().getProperty();
