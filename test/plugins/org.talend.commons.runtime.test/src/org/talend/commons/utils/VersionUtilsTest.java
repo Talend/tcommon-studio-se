@@ -165,6 +165,29 @@ public class VersionUtilsTest {
     }
 
     @Test
+    public void testIsInvalidProductVersion() {
+
+        assertTrue(VersionUtils.isInvalidProductVersion("7.3.1.20200201_1941-M1",
+                "Talend Cloud Big Data-7.3.1.20200209_1446-patch"));
+        assertTrue(
+                VersionUtils.isInvalidProductVersion("7.3.1.20200201_1941", "Talend Cloud Big Data-7.3.1.20200209_1446-patch"));
+        assertTrue(VersionUtils.isInvalidProductVersion("7.3.1.20200201_1941-patch",
+                "Talend Cloud Big Data-7.3.1.20200209_1446-patch"));
+        assertFalse(
+                VersionUtils.isInvalidProductVersion("7.3.1.20200209_1941-patch", "Talend Cloud Big Data-7.3.1.20200201_1446"));
+
+        // test nightly/milestone build
+        assertFalse(VersionUtils.isInvalidProductVersion("7.3.1.20200201_1941-SNAPSHOT",
+                "Talend Cloud Big Data-7.3.1.20200209_1446-SNAPSHOT"));
+        assertFalse(VersionUtils.isInvalidProductVersion("7.3.1.20200201_1941-M1",
+                "Talend Cloud Big Data-7.3.1.20200209_1446-SNAPSHOT"));
+        assertFalse(
+                VersionUtils.isInvalidProductVersion("7.3.1.20200201_1941-M1", "Talend Cloud Big Data-7.3.1.20200209_1446-M2"));
+        assertFalse(VersionUtils.isInvalidProductVersion("7.3.1.20200201_1941-SNAPSHOT",
+                "Talend Cloud Big Data-7.3.1.20200209_1446-M2"));
+    }
+
+    @Test
     public void testProductVersionIsNewer() {
         assertTrue(
                 VersionUtils.productVersionIsNewer("7.3.1.20200211_1941-M1", "Talend Cloud Big Data-7.3.1.20200209_1446-patch"));
@@ -172,6 +195,16 @@ public class VersionUtilsTest {
         assertTrue(VersionUtils.productVersionIsNewer("7.3.1.20200211_1941-patch",
                 "Talend Cloud Big Data-7.3.1.20200209_1446-patch"));
         assertFalse(VersionUtils.productVersionIsNewer("7.3.1.20200219_1941-patch", "Talend Cloud Big Data-7.3.1.20200221_1446"));
+
+        // test nightly/milestone build
+        assertFalse(VersionUtils.productVersionIsNewer("7.3.1.20200201_1941-SNAPSHOT",
+                "Talend Cloud Big Data-7.3.1.20200209_1446-SNAPSHOT"));
+        assertFalse(VersionUtils.productVersionIsNewer("7.3.1.20200201_1941-M1",
+                "Talend Cloud Big Data-7.3.1.20200209_1446-SNAPSHOT"));
+        assertFalse(
+                VersionUtils.productVersionIsNewer("7.3.1.20200201_1941-M1", "Talend Cloud Big Data-7.3.1.20200209_1446-M2"));
+        assertFalse(VersionUtils.productVersionIsNewer("7.3.1.20200201_1941-SNAPSHOT",
+                "Talend Cloud Big Data-7.3.1.20200209_1446-M2"));
     }
 
     @After

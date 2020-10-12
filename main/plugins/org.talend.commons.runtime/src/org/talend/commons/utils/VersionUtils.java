@@ -232,18 +232,36 @@ public class VersionUtils {
      * Check if studio version < other studio version record in remote project.
      */
     public static boolean isInvalidProductVersion(String remoteFullProductVersion) {
+        String localProductVersion = getInternalVersion();
+        return isInvalidProductVersion(localProductVersion, remoteFullProductVersion);
+    }
+
+    protected static boolean isInvalidProductVersion(String localProductVersion, String remoteFullProductVersion) {
         if (remoteFullProductVersion == null) {
             return false;
         }
-        return getInternalVersion().compareTo(getProductVersionWithoutBranding(remoteFullProductVersion)) < 0;
+        if (skipCheckingNightlyBuilds(localProductVersion, remoteFullProductVersion)) {
+            return false;
+        }
+        return localProductVersion.compareTo(getProductVersionWithoutBranding(remoteFullProductVersion)) < 0;
     }
 
     public static boolean productVersionIsNewer(String remoteFullProductVersion) {
+        String localProductVersion = getInternalVersion();
+        return productVersionIsNewer(localProductVersion, remoteFullProductVersion);
+    }
+
+    protected static boolean productVersionIsNewer(String localProductVersion, String remoteFullProductVersion) {
         if (remoteFullProductVersion == null) {
             return false;
         }
+        if (skipCheckingNightlyBuilds(localProductVersion, remoteFullProductVersion)) {
+            return false;
+        }
+        return localProductVersion.compareTo(getProductVersionWithoutBranding(remoteFullProductVersion)) > 0;
+    }
 
-        String localProductVersion = getInternalVersion();
+    private static boolean skipCheckingNightlyBuilds(String localProductVersion, String remoteFullProductVersion) {
         String separator = "-"; //$NON-NLS-1$
         String localSuffix = StringUtils.substringAfterLast(localProductVersion, separator);
 
@@ -255,10 +273,9 @@ public class VersionUtils {
         if ((localSuffix.equals(nightly) || localSuffix.startsWith(milestone))
                 && (remoteSuffix.equals(nightly) || remoteSuffix.startsWith(milestone))) {
             // skip checking between nightly/milestone build.
-            return false;
+            return true;
         }
-        return localProductVersion.compareTo(remoteProductVersion) > 0;
-
+        return false;
     }
 
     public static String getTalendVersion(String productVersion) {
