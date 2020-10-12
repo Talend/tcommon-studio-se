@@ -72,9 +72,6 @@ public class ResumeUtil {
                 if (sharedWriter == null) {
                     this.csvWriter = new SimpleCsvWriter(new FileWriter(logFileName, createNewFile));
 
-                    // shared
-                    sharedWriterMap.put(this.root_pid, this.csvWriter);
-
                     // output the header part
                     if (file.length() == 0) {
                         if (genDynamicPart) {
@@ -101,9 +98,11 @@ public class ResumeUtil {
                         csvWriter.endRecord();
                         csvWriter.flush();
                         csvWriter.close();
-                        //To avoid use File.delete() as it cannot make sure file being deleted.
+                        // To avoid use File.delete() as it cannot make sure file being deleted.
                         this.csvWriter = new SimpleCsvWriter(new FileWriter(logFileName, true));
                     }
+                    // shared
+                    sharedWriterMap.put(this.root_pid, this.csvWriter);
                 } else {
                     csvWriter = sharedWriter;
                 }
