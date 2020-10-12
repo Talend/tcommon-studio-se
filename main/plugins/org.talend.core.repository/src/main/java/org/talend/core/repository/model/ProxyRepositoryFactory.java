@@ -2281,6 +2281,8 @@ public final class ProxyRepositoryFactory implements IProxyRepositoryFactory {
                         // set the project mappings url
                         System.setProperty("talend.mappings.url", url.toString()); // $NON-NLS-1$
                     }
+                    // for new added mapping file, sync to project mapping folder
+                    MetadataTalendType.syncNewMappingFileToProject();
                 } catch (SystemException e) {
                     // ignore
                     ExceptionHandler.process(e);

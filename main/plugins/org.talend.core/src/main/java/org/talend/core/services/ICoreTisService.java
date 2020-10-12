@@ -27,6 +27,7 @@ import org.talend.core.GlobalServiceRegister;
 import org.talend.core.IService;
 import org.talend.core.model.general.Project;
 import org.talend.core.model.process.INode;
+import org.talend.core.model.properties.Property;
 import org.talend.core.runtime.maven.MavenArtifact;
 
 /**
@@ -78,6 +79,8 @@ public interface ICoreTisService extends IService {
     Map<String, String> getDropBundleInfo() throws IOException;
 
     Set<String> getComponentBlackList();
+    
+    public void afterImport (Property property) throws PersistenceException;  
 
     boolean hasNewPatchInPatchesFolder();
 
@@ -91,5 +94,4 @@ public interface ICoreTisService extends IService {
         }
         return null;
     }
-
 }

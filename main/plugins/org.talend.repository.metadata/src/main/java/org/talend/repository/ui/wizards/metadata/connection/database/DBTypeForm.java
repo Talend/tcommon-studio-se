@@ -13,11 +13,9 @@
 package org.talend.repository.ui.wizards.metadata.connection.database;
 
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.Iterator;
 import java.util.List;
 
-import org.apache.commons.lang.StringUtils;
 import org.eclipse.swt.events.ModifyEvent;
 import org.eclipse.swt.events.ModifyListener;
 import org.eclipse.swt.widgets.Composite;
@@ -25,23 +23,15 @@ import org.eclipse.ui.IWorkbenchPage;
 import org.eclipse.ui.IWorkbenchWindow;
 import org.eclipse.ui.PlatformUI;
 import org.talend.commons.ui.swt.formtools.LabelledCombo;
-import org.talend.commons.utils.VersionUtils;
 import org.talend.commons.utils.platform.PluginChecker;
 import org.talend.core.GlobalServiceRegister;
-import org.talend.core.context.Context;
-import org.talend.core.context.RepositoryContext;
 import org.talend.core.database.EDatabaseTypeName;
 import org.talend.core.database.conn.template.EDatabaseConnTemplate;
-import org.talend.core.model.metadata.builder.connection.Connection;
-import org.talend.core.model.metadata.builder.connection.ConnectionFactory;
 import org.talend.core.model.metadata.builder.connection.DatabaseConnection;
 import org.talend.core.model.metadata.builder.database.ExtractMetaDataFromDataBase;
 import org.talend.core.model.properties.ConnectionItem;
-import org.talend.core.model.properties.PropertiesFactory;
-import org.talend.core.model.properties.Property;
-import org.talend.core.repository.model.ProxyRepositoryFactory;
-import org.talend.core.runtime.CoreRuntimePlugin;
 import org.talend.core.runtime.services.IGenericDBService;
+import org.talend.core.runtime.services.IGenericWizardService;
 import org.talend.core.ui.branding.IBrandingConfiguration;
 import org.talend.metadata.managment.utils.MetadataConnectionUtils;
 import org.talend.repository.metadata.i18n.Messages;
@@ -81,10 +71,15 @@ public class DBTypeForm {
     public void initialize() {
         this.dbType = getConnectionDBType();
         addDBSelectCombo();
-        EDatabaseConnTemplate template = EDatabaseConnTemplate.indexOfTemplate(getConnectionDBType());
+        String displayConnectionDBType = getDisplayConnectionDBType();
+        EDatabaseConnTemplate template = EDatabaseConnTemplate.indexOfTemplate(displayConnectionDBType);
         if (template != null) {
             if (dbTypeCombo.getText().length() == 0 || !dbTypeCombo.getText().equals(template.getDbType().getDisplayName())) {
                 dbTypeCombo.setText(template.getDbType().getDisplayName());
+            }
+        } else if (isAdditionalJDBC(getDisplayConnectionDBType())) {
+            if (dbTypeCombo.getText().length() == 0 || !dbTypeCombo.getText().equals(displayConnectionDBType)) {
+                dbTypeCombo.setText(displayConnectionDBType);
             }
         }
         addListerner();
@@ -201,12 +196,17 @@ public class DBTypeForm {
             public void modifyText(final ModifyEvent e) {
                 wizardPage.setPageComplete(!isReadOnly);
                 wizardPage.setErrorMessage(null);
-                dbType = dbTypeCombo.getText();
-                String oldType = getConnectionDBType();
-                if(dbType.equals(oldType)){
+                String displayDBType = dbTypeCombo.getText();
+                dbType = displayDBType;
+                if (isAdditionalJDBC(displayDBType)) {
+                    dbType = "JDBC";
+                }
+                String oldType = getDisplayConnectionDBType();
+
+                if (displayDBType.equals(oldType)) {
                     return;
                 }
-                if(needDisposeOldForm(dbType, oldType)){
+                if (needDisposeOldForm(displayDBType, oldType)) {
                     reCreateConnection();
                     setConnectionDBType(dbType);
                     if(!wizardPage.isTCOMDB(dbType)){
@@ -225,14 +225,18 @@ public class DBTypeForm {
         });
     }
 
-    public boolean needDisposeOldForm(String newType, String oldType){
-        if(newType.equals(oldType)){
-            return false;
-        }
-        if(wizardPage.isTCOMDB(newType) != wizardPage.isTCOMDB(oldType)){
-            return true;
+    private boolean isAdditionalJDBC(String dbType) {
+        if (GlobalServiceRegister.getDefault().isServiceRegistered(IGenericWizardService.class)) {
+            IGenericWizardService service = GlobalServiceRegister.getDefault().getService(IGenericWizardService.class);
+            if (service != null) {
+                return service.getIfAdditionalJDBCDBType(dbType);
+            }
         }
         return false;
+    }
+
+    public boolean needDisposeOldForm(String newType, String oldType){
+        return !newType.equals(oldType);
     }
 
     private void reCreateConnection(){
@@ -266,5 +270,19 @@ public class DBTypeForm {
             connectionItem.setTypeName(type);
             ((DatabaseConnection)connectionItem.getConnection()).setDatabaseType(type);
         }
+    }
+
+    public String getDisplayConnectionDBType() {
+        DatabaseConnection connection = (DatabaseConnection) connectionItem.getConnection();
+        String databaseType = connection.getDatabaseType();
+        String productId = connection.getProductId();
+        if (wizardPage.isTCOMDB(databaseType) && !databaseType.equals(productId)) {
+            return productId;
+        }
+        return databaseType;
+    }
+
+    public String getDisplayDBType() {
+        return dbTypeCombo.getText();
     }
 }

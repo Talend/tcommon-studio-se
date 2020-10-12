@@ -32,7 +32,6 @@ import java.util.stream.Collectors;
 
 import org.apache.commons.lang.ArrayUtils;
 import org.apache.commons.lang.StringUtils;
-import org.apache.log4j.Logger;
 import org.apache.log4j.Priority;
 import org.eclipse.core.resources.IFile;
 import org.eclipse.core.resources.IFolder;
@@ -101,6 +100,7 @@ import org.talend.core.repository.utils.ProjectDataJsonProvider;
 import org.talend.core.runtime.CoreRuntimePlugin;
 import org.talend.core.runtime.services.IGenericDBService;
 import org.talend.core.runtime.services.IGenericWizardService;
+import org.talend.core.services.ICoreTisService;
 import org.talend.core.utils.WorkspaceUtils;
 import org.talend.designer.business.model.business.BusinessPackage;
 import org.talend.designer.business.model.business.BusinessProcess;
@@ -1325,6 +1325,10 @@ public class ImportBasicHandler extends AbstractImportExecutableHandler {
                 }
                 ContextUtils.doCreateContextLinkMigration(importItem.getRepositoryType(), property.getItem());
             }
+            if (GlobalServiceRegister.getDefault().isServiceRegistered(ICoreTisService.class)) {
+                ICoreTisService service = GlobalServiceRegister.getDefault().getService(ICoreTisService.class);
+                service.afterImport(property);
+            } 
             RelationshipItemBuilder.getInstance().addOrUpdateItem(property.getItem(), true);
             // importItem.setProperty(null);
             // factory.unloadResources(property);
@@ -1332,6 +1336,7 @@ public class ImportBasicHandler extends AbstractImportExecutableHandler {
             ExceptionHandler.process(e);
         }
     }
+ 
 
     protected IPath getReferenceItemPath(IPath importItemPath, ReferenceFileItem rfItem) {
         return HandlerUtil.getReferenceItemPath(importItemPath, rfItem.getExtension());

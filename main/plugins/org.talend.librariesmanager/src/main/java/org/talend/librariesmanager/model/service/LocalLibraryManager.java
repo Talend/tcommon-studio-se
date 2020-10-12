@@ -912,9 +912,6 @@ public class LocalLibraryManager implements ILibraryManagerService, IChangedLibr
                     fileToDeploy = null;
                     found = false;
                 }
-                if (!found) {
-                    ExceptionHandler.log("missing jar:" + module.getModuleName());
-                }
                 if (fileToDeploy != null) {
                     install(fileToDeploy, mavenUri, false, false, monitorWrap);
                 }

@@ -101,12 +101,11 @@ public class ProcessorDependenciesManager {
             Dependency dependency = PomUtil.createModuleDependency(mavenUri);
             if (dependency != null) {
                 ((SortableDependency) dependency).setAssemblyOptional(optional);
-                if (module.isExcludeDependencies()) {
-                    Exclusion exclusion = new Exclusion();
-                    exclusion.setGroupId("*"); //$NON-NLS-1$
-                    exclusion.setArtifactId("*"); //$NON-NLS-1$
-                    dependency.addExclusion(exclusion);
-                }
+                Exclusion exclusion = new Exclusion();
+                exclusion.setGroupId("*"); //$NON-NLS-1$
+                exclusion.setArtifactId("*"); //$NON-NLS-1$
+                dependency.addExclusion(exclusion);
+
                 neededDependencies.add(dependency);
             }
         }
