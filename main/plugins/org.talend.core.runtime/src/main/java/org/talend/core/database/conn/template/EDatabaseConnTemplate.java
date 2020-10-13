@@ -23,6 +23,7 @@ import org.talend.core.database.EDatabaseTypeName;
 import org.talend.core.database.conn.version.EDatabaseVersion4Drivers;
 import org.talend.core.model.repository.ERepositoryObjectType;
 import org.talend.core.runtime.services.IGenericDBService;
+import org.talend.core.runtime.services.IGenericWizardService;
 
 /**
  * cli class global comment. Detailled comment
@@ -324,6 +325,16 @@ public enum EDatabaseConnTemplate {
             String typeName = getDBTypeName(temp, display);
             if (typeName != null && !databaseType.contains(typeName)) {
                 databaseType.add(typeName);
+            }
+        }
+        // add additional jdbc (actually JDBC RepositoryObjectType)
+        if (GlobalServiceRegister.getDefault().isServiceRegistered(IGenericWizardService.class)) {
+            IGenericWizardService service = GlobalServiceRegister.getDefault().getService(IGenericWizardService.class);
+            if (service != null) {
+                List<String> allAdditionalJDBCTypes = service.getAllAdditionalJDBCTypes();
+                if (!allAdditionalJDBCTypes.isEmpty()) {
+                    databaseType.addAll(allAdditionalJDBCTypes);
+                }
             }
         }
         if (sort) {

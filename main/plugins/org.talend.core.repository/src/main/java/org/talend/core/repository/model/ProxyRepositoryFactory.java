@@ -132,6 +132,7 @@ import org.talend.core.repository.utils.RepositoryPathProvider;
 import org.talend.core.repository.utils.XmiResourceManager;
 import org.talend.core.runtime.CoreRuntimePlugin;
 import org.talend.core.runtime.repository.item.ItemProductKeys;
+import org.talend.core.runtime.services.IGenericWizardService;
 import org.talend.core.runtime.services.IMavenUIService;
 import org.talend.core.runtime.util.ItemDateParser;
 import org.talend.core.service.ICoreUIService;
@@ -2139,6 +2140,14 @@ public final class ProxyRepositoryFactory implements IProxyRepositoryFactory {
                 }
 
                 ProjectDataJsonProvider.checkAndRectifyRelationShipSetting(project.getEmfProject());
+
+                // load additional jdbc
+                if (GlobalServiceRegister.getDefault().isServiceRegistered(IGenericWizardService.class)) {
+                    IGenericWizardService service = GlobalServiceRegister.getDefault().getService(IGenericWizardService.class);
+                    if (service != null) {
+                        service.loadAdditionalJDBC();
+                    }
+                }
 
                 // init dynamic distirbution after `beforeLogon`, before loading libraries.
                 initDynamicDistribution(monitor);
