@@ -125,6 +125,8 @@ public class ConfigModuleDialog extends TitleAreaDialog implements IConfigModule
 
     private AutoCompleteField resultField;
 
+    private AutoCompleteField platformComboField;
+
     private boolean isLocalSearch;
 
     private String initValue;
@@ -213,6 +215,7 @@ public class ConfigModuleDialog extends TitleAreaDialog implements IConfigModule
 
         platformCombo = new Combo(composite, SWT.SINGLE | SWT.BORDER);
         platformCombo.setLayoutData(new GridData(GridData.FILL_BOTH | GridData.GRAB_HORIZONTAL));
+        platformComboField = new AutoCompleteField(platformCombo, new ComboContentAdapter(), new String[] {});
 
         platfromRadioBtn.addSelectionListener(new SelectionAdapter() {
 
@@ -227,28 +230,7 @@ public class ConfigModuleDialog extends TitleAreaDialog implements IConfigModule
             }
         });
 
-        jarsAvailable = new HashSet<String>();
-        Map<String, ModuleNeeded> data = new HashMap<String, ModuleNeeded>();
-        Set<ModuleNeeded> unUsedModules = ModulesNeededProvider.getAllManagedModules();
-        for (ModuleNeeded module : unUsedModules) {
-            if (module.getStatus() == ELibraryInstallStatus.INSTALLED) {
-                jarsAvailable.add(module.getModuleName());
-            }
-            data.put(module.getModuleName(), module);
-        }
-        String[] moduleValueArray = jarsAvailable.toArray(new String[jarsAvailable.size()]);
-        Comparator<String> comprarator = new Comparator<String>() {
-
-            @Override
-            public int compare(String o1, String o2) {
-                return o1.compareToIgnoreCase(o2);
-            }
-        };
-        Arrays.sort(moduleValueArray, comprarator);
-        platformCombo.setItems(moduleValueArray);
-        platformCombo.setData(data);
-
-        new AutoCompleteField(platformCombo, new ComboContentAdapter(), moduleValueArray);
+        setPlatformData();
 
         platformCombo.addModifyListener(new ModifyListener() {
 
@@ -892,15 +874,14 @@ public class ConfigModuleDialog extends TitleAreaDialog implements IConfigModule
                 } else {
                     defaultUri = detectUri;
                 }
-            } else {
-                customUriText.setText(ModuleMavenURIUtils.MVNURI_TEMPLET);
-                if (!org.apache.commons.lang3.StringUtils.isEmpty(detectUri)
-                        && !ConfigModuleHelper.isSameUri(defaultUri, detectUri)) {
-                    customUriText.setText(detectUri);
-                }
             }
             defaultUriTxt.setText(defaultUri);
-            customUriText.setEnabled(true);
+            customUriText.setText(ModuleMavenURIUtils.MVNURI_TEMPLET);
+            if (!org.apache.commons.lang3.StringUtils.isEmpty(detectUri)
+                    && !ConfigModuleHelper.isSameUri(defaultUri, detectUri)) {
+                customUriText.setText(detectUri);
+            }
+            customUriText.setEnabled(false);
         }
         validateInputFields();
     }
@@ -910,6 +891,9 @@ public class ConfigModuleDialog extends TitleAreaDialog implements IConfigModule
         Set<String> modulesNeededNames = ModulesNeededProvider.getAllManagedModuleNames();
         if (!modulesNeededNames.contains(moduleName)) {
             ModulesNeededProvider.addUnknownModules(moduleName, urlToUse, true);
+            ModuleNeeded mod = new ModuleNeeded(null, moduleName, null, true);
+            mod.setMavenUri(urlToUse);
+            mod.getStatus();
         }
 
         LibManagerUiPlugin.getDefault().getLibrariesService().checkLibraries();
@@ -917,20 +901,43 @@ public class ConfigModuleDialog extends TitleAreaDialog implements IConfigModule
 
     private void setUI() {
         if (!StringUtils.isEmpty(this.initValue)) {
+            String text = this.initValue;
             if (this.initValue.startsWith(MavenUrlHelper.MVN_PROTOCOL)) {
-                Map<String, ModuleNeeded> data = (Map<String, ModuleNeeded>) this.platformCombo.getData();
-                if (data != null) {
-                    Set<Entry<String, ModuleNeeded>> entries = data.entrySet();
-                    for (Entry<String, ModuleNeeded> entry : entries) {
-                        if (this.initValue.equals(entry.getValue().getMavenUri())) {
-                            this.platformCombo.setText(entry.getKey());
-                        }
-                    }
-                }
-            } else {
-                this.platformCombo.setText(this.initValue);
+                this.defaultURI = this.initValue;
+                ModulesNeededProvider.addUnknownModules(text, defaultURI, true);
+                setPlatformData();
+                MavenArtifact art = MavenUrlHelper.parseMvnUrl(this.initValue);
+                text = art.getFileName();
+            }
+            this.platformCombo.setText(text);
+            if (!StringUtils.isEmpty(defaultURI)) {
+                this.defaultUriTxt.setText(defaultURI);
             }
         }
+    }
+
+    private void setPlatformData() {
+        jarsAvailable = new HashSet<String>();
+        Map<String, ModuleNeeded> data = new HashMap<String, ModuleNeeded>();
+        Set<ModuleNeeded> unUsedModules = ModulesNeededProvider.getAllManagedModules();
+        for (ModuleNeeded module : unUsedModules) {
+            if (module.getStatus() == ELibraryInstallStatus.INSTALLED) {
+                jarsAvailable.add(module.getModuleName());
+                data.put(module.getModuleName(), module);
+            }
+        }
+        String[] moduleValueArray = jarsAvailable.toArray(new String[jarsAvailable.size()]);
+        Comparator<String> comprarator = new Comparator<String>() {
+
+            @Override
+            public int compare(String o1, String o2) {
+                return o1.compareToIgnoreCase(o2);
+            }
+        };
+        Arrays.sort(moduleValueArray, comprarator);
+        platformCombo.setItems(moduleValueArray);
+        platformCombo.setData(data);
+        platformComboField.setProposals(moduleValueArray);
     }
 
 }

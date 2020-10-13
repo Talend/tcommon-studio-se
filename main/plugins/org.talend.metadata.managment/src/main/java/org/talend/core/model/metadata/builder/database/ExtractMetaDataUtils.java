@@ -1053,7 +1053,7 @@ public class ExtractMetaDataUtils {
                         String jars[] = driverJarPathArg.split(";");
                         for (String jar : jars) {
                             if (driverJarPathArg.startsWith(MavenUrlHelper.MVN_PROTOCOL)) {
-                                setDriverPath(librairesManagerService, jarPathList, driverJarPathArg);
+                                setDriverPath(librairesManagerService, jarPathList, jar);
                             } else {
                                 String jarName = librairesManagerService.getJarNameFromMavenuri(jar);
                                 // TDQ-16842 msjian:sometimes for the import jdbc connection, the jarName is null

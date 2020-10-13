@@ -430,19 +430,19 @@ public class InstallModuleDialog extends TitleAreaDialog implements ICellEditorD
                 } else {
                     defaultUri = detectUri;
                 }
-            } else {
-                customUriText.setText(ModuleMavenURIUtils.MVNURI_TEMPLET);
-                if (!org.apache.commons.lang3.StringUtils.isEmpty(detectUri)
-                        && !ConfigModuleHelper.isSameUri(defaultUri, detectUri)) {
-                    customUriText.setText(detectUri);
-                    useCustomBtn.setSelection(true);
-                    layoutWarningComposite(false, defaultUriTxt.getText());
-                } else {
-                    useCustomBtn.setSelection(false);
-                }
             }
             defaultUriTxt.setText(defaultUri);
-            customUriText.setEnabled(true);
+            customUriText.setText(ModuleMavenURIUtils.MVNURI_TEMPLET);
+            if (!org.apache.commons.lang3.StringUtils.isEmpty(detectUri)
+                    && !ConfigModuleHelper.isSameUri(defaultUri, detectUri)) {
+                customUriText.setText(detectUri);
+                useCustomBtn.setSelection(true);
+                customUriText.setEnabled(true);
+                layoutWarningComposite(false, defaultUriTxt.getText());
+            } else {
+                useCustomBtn.setSelection(false);
+                customUriText.setEnabled(false);
+            }
         }
         checkFieldsError();
     }

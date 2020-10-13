@@ -33,7 +33,6 @@ import org.talend.core.nexus.IRepositoryArtifactHandler;
 import org.talend.core.nexus.RepositoryArtifactHandlerManager;
 import org.talend.core.nexus.TalendLibsServerManager;
 import org.talend.core.runtime.maven.MavenArtifact;
-import org.talend.core.runtime.maven.MavenConstants;
 import org.talend.core.runtime.maven.MavenUrlHelper;
 import org.talend.librariesmanager.model.ModulesNeededProvider;
 import org.talend.librariesmanager.ui.LibManagerUiPlugin;
@@ -240,19 +239,23 @@ public class ConfigModuleHelper {
         }
     }
 
-    public static String getDetectURI(String jarPath) throws Exception {
+    public static String getDetectURI(String jarPath) {
         String ext = FilenameUtils.getExtension(jarPath);
         if (ext.equalsIgnoreCase("jar")) {
             File file = new File(jarPath);
-            MavenArtifact art = JarDetector.parse(file);
-            if (art != null) {
-                return MavenUrlHelper.generateMvnUrl(art);
+            try {
+                MavenArtifact art = JarDetector.parse(file);
+                if (art != null) {
+                    return MavenUrlHelper.generateMvnUrl(art);
+                }
+            } catch (Exception e) {
+
             }
         }
         return "";
     }
 
-    public static String getMavenURI(String jarPath) throws Exception {
+    public static String getMavenURI(String jarPath) {
         String jarName = FilenameUtils.getName(jarPath);
         ModuleNeeded mod = null;
         for (ModuleNeeded module : ModulesNeededProvider.getAllManagedModules()) {
