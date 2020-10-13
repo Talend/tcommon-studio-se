@@ -422,19 +422,11 @@ public class InstallModuleDialog extends TitleAreaDialog implements ICellEditorD
     private void setupMavenURIforInstall() throws Exception {
         if (validateInputForInstallPre()) {
             String filePath = jarPathTxt.getText();
-            String defaultUri = ConfigModuleHelper.getMavenURI(filePath);
             String detectUri = ConfigModuleHelper.getDetectURI(filePath);
-            if (StringUtils.isEmpty(defaultUri)) {
-                if (StringUtils.isEmpty(detectUri)) {
-                    defaultUri = ConfigModuleHelper.getGeneratedDefaultURI(filePath);
-                } else {
-                    defaultUri = detectUri;
-                }
-            }
-            defaultUriTxt.setText(defaultUri);
+
             customUriText.setText(ModuleMavenURIUtils.MVNURI_TEMPLET);
             if (!org.apache.commons.lang3.StringUtils.isEmpty(detectUri)
-                    && !ConfigModuleHelper.isSameUri(defaultUri, detectUri)) {
+                    && !ConfigModuleHelper.isSameUri(this.defaultURIValue, detectUri)) {
                 customUriText.setText(detectUri);
                 useCustomBtn.setSelection(true);
                 customUriText.setEnabled(true);

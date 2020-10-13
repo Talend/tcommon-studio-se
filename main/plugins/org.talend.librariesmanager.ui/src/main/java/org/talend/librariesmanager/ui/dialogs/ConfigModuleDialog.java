@@ -190,8 +190,8 @@ public class ConfigModuleDialog extends TitleAreaDialog implements IConfigModule
     @Override
     protected Control createContents(Composite parent) {
         Control control = super.createContents(parent);
-        setUI();
         setPlatformGroupEnabled(true);
+        setUI();
         validateInputFields();
         setInstallNewGroupEnabled(false);
         setRepositoryGroupEnabled(false);
@@ -700,7 +700,6 @@ public class ConfigModuleDialog extends TitleAreaDialog implements IConfigModule
         if (installRadioBtn.getSelection()) {
             File jarFile = new File(jarPathTxt.getText().trim());
             MavenArtifact art = MavenUrlHelper.parseMvnUrl(urlToUse);
-            moduleName = art.getFileName();
             String sha1New = ConfigModuleHelper.getSHA1(jarFile);
             art.setSha1(sha1New);
             // resolve jar locally
@@ -904,10 +903,10 @@ public class ConfigModuleDialog extends TitleAreaDialog implements IConfigModule
             String text = this.initValue;
             if (this.initValue.startsWith(MavenUrlHelper.MVN_PROTOCOL)) {
                 this.defaultURI = this.initValue;
-                ModulesNeededProvider.addUnknownModules(text, defaultURI, true);
-                setPlatformData();
                 MavenArtifact art = MavenUrlHelper.parseMvnUrl(this.initValue);
                 text = art.getFileName();
+                ModulesNeededProvider.addUnknownModules(text, defaultURI, false);
+                setPlatformData();
             }
             this.platformCombo.setText(text);
             if (!StringUtils.isEmpty(defaultURI)) {
