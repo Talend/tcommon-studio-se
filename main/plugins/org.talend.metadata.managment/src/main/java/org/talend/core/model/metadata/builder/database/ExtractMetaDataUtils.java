@@ -67,6 +67,7 @@ import org.talend.core.database.conn.ConnParameterKeys;
 import org.talend.core.database.conn.HiveConfKeysForTalend;
 import org.talend.core.database.conn.version.EDatabaseVersion4Drivers;
 import org.talend.core.language.ECodeLanguage;
+import org.talend.core.model.general.ModuleNeeded;
 import org.talend.core.model.general.Project;
 import org.talend.core.model.metadata.IMetadataConnection;
 import org.talend.core.model.metadata.builder.ConvertionHelper;
@@ -76,6 +77,7 @@ import org.talend.core.model.metadata.connection.hive.HiveModeInfo;
 import org.talend.core.model.metadata.types.JavaTypesManager;
 import org.talend.core.prefs.SSLPreferenceConstants;
 import org.talend.core.runtime.CoreRuntimePlugin;
+import org.talend.core.runtime.maven.MavenArtifact;
 import org.talend.core.runtime.maven.MavenUrlHelper;
 import org.talend.core.utils.TalendQuoteUtils;
 import org.talend.designer.core.IDesignerCoreService;
@@ -1218,15 +1220,16 @@ public class ExtractMetaDataUtils {
 
     private void setDriverPath(ILibraryManagerService librairesManagerService, List<String> jarPathList, String mvnURI)
             throws Exception {
-        File driveJarFile = librairesManagerService.resolveJar(null, mvnURI);
-        if (driveJarFile != null) {
-            File existJar = new File(getJavaLibPath() + driveJarFile.getName());
-            if (existJar.exists()) {
-                existJar.delete();
+        if (mvnURI != null) {
+            MavenArtifact art = MavenUrlHelper.parseMvnUrl(mvnURI);
+            ModuleNeeded testModule = new ModuleNeeded("", art.getFileName(), "", true);
+            testModule.setMavenUri(mvnURI);
+            boolean retrived = librairesManagerService.retrieve(testModule, getJavaLibPath(), true, new NullProgressMonitor());
+            if (retrived) {
+                jarPathList.add(getJavaLibPath() + art.getFileName());
             }
-            FilesUtils.copyFile(driveJarFile, existJar);
-            jarPathList.add(getJavaLibPath() + driveJarFile.getName());
         }
+
     }
 
     /**
