@@ -749,6 +749,9 @@ public class DBConnectionFillerImpl extends MetadataFillerImpl<DatabaseConnectio
     protected boolean isNullUiSchema(Connection dbConn) {
         if (dbConn instanceof DatabaseConnection) {
             String databaseOnConnWizard = ((DatabaseConnection) dbConn).getUiSchema();
+            if (StringUtils.isEmpty(databaseOnConnWizard)) {
+                return true;
+            }
             String readableName = TalendCWMService.getReadableName(dbConn, databaseOnConnWizard);
             if (StringUtils.isEmpty(databaseOnConnWizard) || StringUtils.isEmpty(readableName)) {
                 return true;
