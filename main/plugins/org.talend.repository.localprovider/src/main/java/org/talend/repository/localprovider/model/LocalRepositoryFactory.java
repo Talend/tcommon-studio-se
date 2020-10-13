@@ -172,6 +172,7 @@ import org.talend.core.repository.utils.XmiResourceManager;
 import org.talend.core.runtime.constants.UpdateConstants;
 import org.talend.core.runtime.maven.MavenConstants;
 import org.talend.core.runtime.projectsetting.ProjectPreferenceManager;
+import org.talend.core.ui.IInstalledPatchService;
 import org.talend.core.ui.branding.IBrandingService;
 import org.talend.core.utils.DialogUtils;
 import org.talend.core.utils.ELoginInfoCase;
@@ -3362,12 +3363,26 @@ public class LocalRepositoryFactory extends AbstractEMFRepositoryFactory impleme
         String remoteLastPatchName = prefManager.getValue(UpdateConstants.KEY_PREF_LAST_PATCH);
         String toOpenProjectVersion;
         if (StringUtils.isEmpty(remoteLastPatchName)) {
+            if (localProject.getEmfProject().getProductVersion() == null) {
+                return;
+            }
             toOpenProjectVersion = VersionUtils
                     .getProductVersionWithoutBranding(localProject.getEmfProject().getProductVersion());
         } else {
             toOpenProjectVersion = remoteLastPatchName;
         }
         String productVersion = VersionUtils.getInternalVersion();
+        String productLastestPatchVersion = null;
+        if (GlobalServiceRegister.getDefault().isServiceRegistered(IInstalledPatchService.class)) {
+            IInstalledPatchService pachService = (IInstalledPatchService) GlobalServiceRegister.getDefault()
+                    .getService(IInstalledPatchService.class);
+            if (pachService != null) {
+                productLastestPatchVersion = pachService.getLatestInstalledVersion(true);
+            }
+        }
+        if (StringUtils.isNotEmpty(productLastestPatchVersion)) {
+            productVersion = productLastestPatchVersion;
+        }
         if (VersionUtils.isInvalidProductVersion(localProject.getEmfProject().getProductVersion())) {
             String[] contents;
             if (StringUtils.isEmpty(remoteLastPatchName)) {
