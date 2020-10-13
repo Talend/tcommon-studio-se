@@ -13,6 +13,7 @@
 package org.talend.core.ui;
 
 import org.talend.core.IService;
+import org.talend.core.runtime.maven.MavenArtifact;
 
 /**
  * @author hwang
@@ -21,5 +22,7 @@ import org.talend.core.IService;
 public interface IInstalledPatchService extends IService {
 
 	public String getLatestInstalledVersion(boolean isBar);
+	
+    public MavenArtifact getLastIntalledP2Patch();
 
 }
