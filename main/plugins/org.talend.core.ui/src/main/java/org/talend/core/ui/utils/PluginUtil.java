@@ -91,6 +91,10 @@ public class PluginUtil {
         return "org.talend.camel.testcontainer.ui.editor.CamelTestContainerMultiPageEditor".equals(getActiveEditorId()); //$NON-NLS-1$
     }
 
+    public static boolean isRouteletEditor() {
+        return "org.talend.repository.routelets.editor.RouteletMultiPageTalendEditor".equals(getActiveEditorId()); //$NON-NLS-1$
+    }
+
     /**
      * DOC yyan Get active editor ID.
      *

@@ -38,6 +38,8 @@ public interface ITaCoKitUpdateService extends IService {
 
     ICarInstallationResult installCars(Collection<File> files, boolean share, IProgressMonitor monitor) throws Exception;
 
+    ICarInstallationResult deployCars(Collection<File> files, boolean share, IProgressMonitor monitor) throws Exception;
+
     ICarInstallationResult installCarFeatures(Collection<ITaCoKitCarFeature> features, boolean share, IProgressMonitor monitor)
             throws Exception;
 

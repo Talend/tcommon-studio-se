@@ -25,6 +25,8 @@ public interface ITaCoKitCarFeature extends ExtraFeature {
     File getCarFile(IProgressMonitor progress) throws Exception;
 
     void setAutoReloadAfterInstalled(boolean autoReload);
+    
+    void setDeployCommand(boolean isDeployCommand);
 
     boolean isAutoReloadAfterInstalled();
 

@@ -20,5 +20,7 @@ public interface IUpdateService extends IService {
     boolean checkComponentNexusUpdate();
 
     void syncComponentM2Jars(IProgressMonitor monitor);
+    
+    public boolean syncSharedStudioLibraryInPatch(IProgressMonitor monitor) throws Exception;
 
 }
