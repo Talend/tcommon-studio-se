@@ -57,8 +57,8 @@ public class LinksToolbarItem extends ContributionItem {
     public static final String VIDEOS_URL = "<a href=\"https://www.talendforge.org/tutorials\">Videos</a>"; //$NON-NLS-1$
     public static final String VIDEOS_ORIG_URL = "https://www.talendforge.org/tutorials";
 
-    public static final String CLOUD_URL = "<a href=\"https://iam.integrationcloud.talend.com/idp/trial-registration?utm_medium=studio&utm_source=toolbar&utm_campaign=dynamic_acronym\">Cloud</a>"; //$NON-NLS-1$
-    public static final String CLOUD_ORIG_URL="https://iam.integrationcloud.talend.com/idp/trial-registration?utm_medium=studio&utm_source=toolbar&utm_campaign=dynamic_acronym";
+    public static final String CLOUD_URL = "<a href=\"https://www.talend.com/free-trial/?utm_campaign=tos_di&utm_medium=studio&utm_source=toolbar&utm_campaign=dynamic_acronym\">Cloud</a>"; //$NON-NLS-1$
+    public static final String CLOUD_ORIG_URL="https://www.talend.com/free-trial/?utm_campaign=tos_di&utm_medium=studio&utm_source=toolbar&utm_campaign=dynamic_acronym";
 
     protected static ImageRegistry registry = new ImageRegistry();
 

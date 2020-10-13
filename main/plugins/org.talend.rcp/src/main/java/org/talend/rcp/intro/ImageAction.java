@@ -19,8 +19,10 @@ import org.eclipse.swt.program.Program;
 import org.eclipse.ui.IWorkbenchWindow;
 import org.eclipse.ui.plugin.AbstractUIPlugin;
 import org.talend.core.GlobalServiceRegister;
+import org.talend.core.PluginChecker;
 import org.talend.core.service.IExchangeService;
 import org.talend.core.service.ITutorialsService;
+import org.talend.core.ui.branding.IBrandingService;
 import org.talend.rcp.Activator;
 import org.talend.rcp.intro.linksbar.LinksToolbarItem;
 
@@ -48,6 +50,12 @@ public class ImageAction extends Action {
                 ITutorialsService service = GlobalServiceRegister.getDefault().getService(ITutorialsService.class);
                 service.openTutorialsDialog();
             } else {
+                if (!PluginChecker.isTIS() && StringUtils.equals(LinksToolbarItem.CLOUD_ORIG_URL, url)
+                        && GlobalServiceRegister.getDefault().isServiceRegistered(IBrandingService.class)) {
+                    IBrandingService brandingService = GlobalServiceRegister.getDefault().getService(IBrandingService.class);
+                    String edition = brandingService.getAcronym();
+                    this.url = this.url.replace("dynamic_acronym", edition);//$NON-NLS-1$
+                }
                 openBrower(url);
             }
         }
