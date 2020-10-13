@@ -55,6 +55,7 @@ import org.talend.core.nexus.TalendLibsServerManager;
 import org.talend.core.runtime.maven.MavenUrlHelper;
 import org.talend.librariesmanager.ui.LibManagerUiPlugin;
 import org.talend.librariesmanager.ui.i18n.Messages;
+import org.talend.librariesmanager.utils.ConfigModuleHelper;
 import org.talend.librariesmanager.utils.ModuleMavenURIUtils;
 
 /**
@@ -399,8 +400,51 @@ public class InstallModuleDialog extends TitleAreaDialog implements ICellEditorD
         String result = dialog.open();
         if (result != null) {
             this.jarPathTxt.setText(result);
+            try {
+                setupMavenURIforInstall();
+            } catch (Exception e) {
+                ExceptionHandler.process(e);
+            }
         }
 
+    }
+
+    private boolean validateInputForInstallPre() {
+        if (!new File(jarPathTxt.getText()).exists()) {
+            setMessage(Messages.getString("InstallModuleDialog.error.jarPath"), IMessageProvider.ERROR);
+            return false;
+        }
+
+        setMessage(Messages.getString("InstallModuleDialog.message"), IMessageProvider.INFORMATION);
+        return true;
+    }
+
+    private void setupMavenURIforInstall() throws Exception {
+        if (validateInputForInstallPre()) {
+            String filePath = jarPathTxt.getText();
+            String defaultUri = ConfigModuleHelper.getMavenURI(filePath);
+            String detectUri = ConfigModuleHelper.getDetectURI(filePath);
+            if (StringUtils.isEmpty(defaultUri)) {
+                if (StringUtils.isEmpty(detectUri)) {
+                    defaultUri = ConfigModuleHelper.getGeneratedDefaultURI(filePath);
+                } else {
+                    defaultUri = detectUri;
+                }
+            } else {
+                customUriText.setText(ModuleMavenURIUtils.MVNURI_TEMPLET);
+                if (!org.apache.commons.lang3.StringUtils.isEmpty(detectUri)
+                        && !ConfigModuleHelper.isSameUri(defaultUri, detectUri)) {
+                    customUriText.setText(detectUri);
+                    useCustomBtn.setSelection(true);
+                    layoutWarningComposite(false, defaultUriTxt.getText());
+                } else {
+                    useCustomBtn.setSelection(false);
+                }
+            }
+            defaultUriTxt.setText(defaultUri);
+            customUriText.setEnabled(true);
+        }
+        checkFieldsError();
     }
 
     /*

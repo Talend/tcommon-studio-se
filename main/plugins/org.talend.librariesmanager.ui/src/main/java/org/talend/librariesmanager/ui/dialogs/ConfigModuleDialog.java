@@ -405,7 +405,6 @@ public class ConfigModuleDialog extends TitleAreaDialog implements IConfigModule
             moduleName = new File(jarPathTxt.getText()).getName();
             try {
                 setupMavenURIforInstall();
-                setupCustomMavenURIforInstall();
             } catch (Exception e) {
                 ExceptionHandler.process(e);
             }
@@ -459,15 +458,10 @@ public class ConfigModuleDialog extends TitleAreaDialog implements IConfigModule
             public void widgetSelected(SelectionEvent e) {
                 if (useCustomBtn.getSelection()) {
                     customUriText.setEnabled(true);
-                    try {
-                        setupCustomMavenURIforInstall();
-                    } catch (Exception e1) {
-                        ExceptionHandler.process(e1);
-                    }
                 } else {
                     customUriText.setEnabled(false);
-                    validateInputFields();
                 }
+                validateInputFields();
             }
         });
 
@@ -528,7 +522,6 @@ public class ConfigModuleDialog extends TitleAreaDialog implements IConfigModule
                     public void run() {
                         try {
                             setupMavenURIforInstall();
-                            setupCustomMavenURIforInstall();
                         } catch (Exception e) {
                             ExceptionHandler.process(e);
                         }
@@ -891,47 +884,33 @@ public class ConfigModuleDialog extends TitleAreaDialog implements IConfigModule
     private void setupMavenURIforInstall() throws Exception {
         if (validateInputForInstallPre()) {
             String filePath = jarPathTxt.getText();
-            String mvnUri = ConfigModuleHelper.getMavenURI(filePath);
-            if (StringUtils.isEmpty(mvnUri)) {
-                mvnUri = ConfigModuleHelper.getDetectURI(filePath);
-                useCustom = true;
+            String defaultUri = ConfigModuleHelper.getMavenURI(filePath);
+            String detectUri = ConfigModuleHelper.getDetectURI(filePath);
+            if (StringUtils.isEmpty(defaultUri)) {
+                if (StringUtils.isEmpty(detectUri)) {
+                    defaultUri = ConfigModuleHelper.getGeneratedDefaultURI(filePath);
+                } else {
+                    defaultUri = detectUri;
+                }
+            } else {
+                customUriText.setText(ModuleMavenURIUtils.MVNURI_TEMPLET);
+                if (!org.apache.commons.lang3.StringUtils.isEmpty(detectUri)
+                        && !ConfigModuleHelper.isSameUri(defaultUri, detectUri)) {
+                    customUriText.setText(detectUri);
+                }
             }
-            defaultUriTxt.setText(mvnUri);
-            if (StringUtils.isEmpty(defaultUriTxt.getText())) {
-                // default uri is empty
-                useCustomBtn.setSelection(true);
-                customUriText.setEnabled(true);
-            }
-        }
-        validateInputFields();
-    }
-
-    private void setupCustomMavenURIforInstall() throws Exception {
-        if (validateInputForInstallPre()) {
-            customUriText.setText(ModuleMavenURIUtils.MVNURI_TEMPLET);
+            defaultUriTxt.setText(defaultUri);
+            customUriText.setEnabled(true);
         }
         validateInputFields();
     }
 
     private void updateIndex(String urlToUse) {
 
-        /*
-         * Set<String> modulesNeededNames = ModulesNeededProvider.getAllManagedModuleNames(); boolean isCustomURI =
-         * this.useCustomBtn.getSelection(); boolean saveCustomMap = false; if (isCustomURI && customURI == null) { //
-         * key and value will be the same for custom jar if without custom uri customURI = urlToUse; } if
-         * (!modulesNeededNames.contains(moduleName)) { ModulesNeededProvider.addUnknownModules(moduleName, urlToUse,
-         * true); saveCustomMap = true; }
-         * 
-         * if (isCustomURI) { ModuleNeeded testModule = new ModuleNeeded("", "", true, defaultURI);
-         * testModule.setCustomMavenUri(customURI); String lastUri = defaultURI; for (ModuleNeeded mod :
-         * ModulesNeededProvider.getAllManagedModules()) { if (moduleName.equals(mod.getModuleName())) { if
-         * (lastUri.equals(mod.getMavenUri())) { continue; } lastUri = mod.getMavenUri(); testModule = new
-         * ModuleNeeded("", "", true, mod.getMavenUri()); testModule.setCustomMavenUri(customURI); } } }
-         * 
-         * // change the custom uri if (isCustomURI || saveCustomMap) { ILibraryManagerService libManagerService =
-         * (ILibraryManagerService) GlobalServiceRegister.getDefault() .getService(ILibraryManagerService.class);
-         * libManagerService.saveCustomMavenURIMap(); }
-         */
+        Set<String> modulesNeededNames = ModulesNeededProvider.getAllManagedModuleNames();
+        if (!modulesNeededNames.contains(moduleName)) {
+            ModulesNeededProvider.addUnknownModules(moduleName, urlToUse, true);
+        }
 
         LibManagerUiPlugin.getDefault().getLibrariesService().checkLibraries();
     }

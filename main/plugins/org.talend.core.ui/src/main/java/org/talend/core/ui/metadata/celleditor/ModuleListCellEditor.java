@@ -36,6 +36,8 @@ import org.talend.core.model.process.IElement;
 import org.talend.core.model.process.IElementParameter;
 import org.talend.core.model.process.INode;
 import org.talend.core.model.process.IProcess2;
+import org.talend.core.runtime.maven.MavenArtifact;
+import org.talend.core.runtime.maven.MavenUrlHelper;
 import org.talend.core.ui.CoreUIPlugin;
 import org.talend.core.ui.process.IGEFProcess;
 import org.talend.core.ui.services.IDesignerCoreUIService;
@@ -198,6 +200,15 @@ public class ModuleListCellEditor extends DialogCellEditor {
                 updateComponentsParam.setValue(Boolean.TRUE);
             }
         }
+
+        // cConfig
+        if (!isNotCConfig) {
+            if (newValue.startsWith(MavenUrlHelper.MVN_PROTOCOL)) {
+                MavenArtifact art = MavenUrlHelper.parseMvnUrl(newValue);
+                newValue = art.getFileName();
+            }
+        }
+
         //
         executeCommand(new ModelChangeCommand(tableParam, param.getName(), newValue, index));
 

@@ -33,6 +33,7 @@ import org.talend.core.nexus.IRepositoryArtifactHandler;
 import org.talend.core.nexus.RepositoryArtifactHandlerManager;
 import org.talend.core.nexus.TalendLibsServerManager;
 import org.talend.core.runtime.maven.MavenArtifact;
+import org.talend.core.runtime.maven.MavenConstants;
 import org.talend.core.runtime.maven.MavenUrlHelper;
 import org.talend.librariesmanager.model.ModulesNeededProvider;
 import org.talend.librariesmanager.ui.LibManagerUiPlugin;
@@ -240,10 +241,13 @@ public class ConfigModuleHelper {
     }
 
     public static String getDetectURI(String jarPath) throws Exception {
-        File file = new File(jarPath);
-        MavenArtifact art = JarDetector.parse(file);
-        if (art != null) {
-            return MavenUrlHelper.generateMvnUrl(art);
+        String ext = FilenameUtils.getExtension(jarPath);
+        if (ext.equalsIgnoreCase("jar")) {
+            File file = new File(jarPath);
+            MavenArtifact art = JarDetector.parse(file);
+            if (art != null) {
+                return MavenUrlHelper.generateMvnUrl(art);
+            }
         }
         return "";
     }
@@ -262,6 +266,16 @@ public class ConfigModuleHelper {
         }
 
         return "";
+    }
+
+    public static String getGeneratedDefaultURI(String jarPath) {
+        String jarName = FilenameUtils.getName(jarPath);
+        return MavenUrlHelper.generateMvnUrlForJarName(jarName);
+    }
+
+    public static boolean isSameUri(String defaultUri, String detectUri) {
+        detectUri = detectUri.substring(MavenUrlHelper.MVN_PROTOCOL.length());
+        return StringUtils.endsWith(defaultUri, detectUri);
     }
 
     public static boolean showRemoteSearch() {
