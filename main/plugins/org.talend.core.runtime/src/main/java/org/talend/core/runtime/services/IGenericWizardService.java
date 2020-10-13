@@ -20,6 +20,7 @@ import org.eclipse.swt.widgets.Composite;
 import org.talend.commons.ui.swt.actions.ITreeContextualAction;
 import org.talend.components.api.properties.ComponentProperties;
 import org.talend.core.IService;
+import org.talend.core.model.metadata.Dbms;
 import org.talend.core.model.metadata.IMetadataTable;
 import org.talend.core.model.metadata.builder.connection.Connection;
 import org.talend.core.model.metadata.builder.connection.DatabaseConnection;
@@ -149,13 +150,18 @@ public interface IGenericWizardService extends IService {
      */
     public ITreeContextualAction getDefaultAction(RepositoryNode node);
 
-    public void initAdditionalJDBCRepositoryObjType();
+    public void loadAdditionalJDBC();
+
+    public List<String> getAllAdditionalJDBCTypes();
 
     public boolean getIfAdditionalJDBCDBType(String dbType);
 
     public void initAdditonalJDBCConnectionValue(DatabaseConnection connection, Composite dynamicForm, String dbType,
             String propertyId);
 
+    public String getDefinitionName4AdditionalJDBC(IElement element);
+
     public String getDatabseNameByNode(IElement node);
 
+    public Dbms getDbms4AdditionalJDBC(String typeName);
 }
