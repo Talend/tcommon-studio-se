@@ -3360,16 +3360,36 @@ public class LocalRepositoryFactory extends AbstractEMFRepositoryFactory impleme
         ProjectPreferenceManager prefManager = new ProjectPreferenceManager(localProject, PluginChecker.CORE_TIS_PLUGIN_ID,
                 false);
         String remoteLastPatchName = prefManager.getValue(UpdateConstants.KEY_PREF_LAST_PATCH);
+        String toOpenProjectVersion;
+        if (StringUtils.isEmpty(remoteLastPatchName)) {
+            toOpenProjectVersion = VersionUtils
+                    .getProductVersionWithoutBranding(localProject.getEmfProject().getProductVersion());
+        } else {
+            toOpenProjectVersion = remoteLastPatchName;
+        }
         String productVersion = VersionUtils.getInternalVersion();
         if (VersionUtils.isInvalidProductVersion(localProject.getEmfProject().getProductVersion())) {
-            String[] contents = new String[] {
-                    Messages.getString("LocalRepositoryFactory.productionLower", remoteLastPatchName, productVersion) };
+            String[] contents;
+            if (StringUtils.isEmpty(remoteLastPatchName)) {
+                contents = new String[] {
+                        Messages.getString("LocalRepositoryFactory.productionLower01", toOpenProjectVersion, productVersion) };
+            } else {
+                contents = new String[] {
+                        Messages.getString("LocalRepositoryFactory.productionLower02", toOpenProjectVersion, productVersion) };
+            }
             ELoginInfoCase.STUDIO_LOWER_THAN_PROJECT.setContents(contents);
             DialogUtils.setWarningInfo(ELoginInfoCase.STUDIO_LOWER_THAN_PROJECT);
         }
         if (VersionUtils.productVersionIsNewer(localProject.getEmfProject().getProductVersion())) {
-            String[] contents = new String[] {
-                    Messages.getString("LocalRepositoryFactory.productionNewer", remoteLastPatchName, productVersion) };
+            String[] contents;
+            if (StringUtils.isEmpty(remoteLastPatchName)) {
+                contents = new String[] {
+                        Messages.getString("LocalRepositoryFactory.productionNewer01", toOpenProjectVersion, productVersion) };
+            } else {
+                contents = new String[] {
+                        Messages.getString("LocalRepositoryFactory.productionNewer02", toOpenProjectVersion, productVersion) };
+            }
+
             ELoginInfoCase.STUDIO_HIGHER_THAN_PROJECT.setContents(contents);
             DialogUtils.setWarningInfo(ELoginInfoCase.STUDIO_HIGHER_THAN_PROJECT);// $NON-NLS-1$
         }
