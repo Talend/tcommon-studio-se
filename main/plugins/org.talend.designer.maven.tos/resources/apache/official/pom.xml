@@ -11,6 +11,14 @@
 	</parent>
 	<artifactId>studio-apache-dependencies-official</artifactId>
 	<packaging>pom</packaging>
+	
+	<repositories>
+		<repository>
+			<id>talend-update</id>
+			<url>https://talend-update.talend.com/nexus/content/repositories/libraries/</url>
+		</repository>
+	</repositories>
+	
 	<dependencies>
 		<dependency>
 			<groupId>commons-cli</groupId>
