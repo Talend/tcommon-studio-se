@@ -350,4 +350,24 @@ public class VersionUtils {
         }
     }
 
+    public static String getSimplifiedPatchName(String projectPatchName) {
+
+        if (projectPatchName != null) {
+            String result = null;
+            if (projectPatchName.contains("_") && projectPatchName.split("_").length >= 3) {
+                result = projectPatchName.split("_")[2];
+                if (!result.startsWith("R")) {
+                    return null;
+                }
+            }
+            if (projectPatchName.contains("-")) {
+                String[] split = projectPatchName.split("-");
+                if (split != null && split.length > 0) {
+                    return result + "-" + split[split.length - 1];
+                }
+            }
+        }
+        return null;
+    }
+
 }

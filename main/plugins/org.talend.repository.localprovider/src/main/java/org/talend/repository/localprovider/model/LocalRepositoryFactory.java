@@ -3370,6 +3370,10 @@ public class LocalRepositoryFactory extends AbstractEMFRepositoryFactory impleme
                     .getProductVersionWithoutBranding(localProject.getEmfProject().getProductVersion());
         } else {
             toOpenProjectVersion = remoteLastPatchName;
+            String simplifiedPatchName = VersionUtils.getSimplifiedPatchName(remoteLastPatchName);
+            if (StringUtils.isNotEmpty(simplifiedPatchName)) {
+                toOpenProjectVersion = simplifiedPatchName;
+            }
         }
         String productVersion = VersionUtils.getInternalVersion();
         String productLastestPatchVersion = null;
