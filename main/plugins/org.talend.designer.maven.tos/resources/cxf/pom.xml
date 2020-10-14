@@ -9,6 +9,14 @@
 	</parent>
 	<artifactId>studio-cxf-dependencies</artifactId>
 	<packaging>pom</packaging>
+	
+	<repositories>
+		<repository>
+			<id>talend-update</id>
+			<url>https://talend-update.talend.com/nexus/content/repositories/libraries/</url>
+		</repository>
+	</repositories>
+	
 	<dependencies>
 		<dependency>
 	    	<groupId>org.apache.cxf</groupId>
