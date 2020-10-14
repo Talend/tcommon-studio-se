@@ -816,10 +816,7 @@ public class ConfigModuleDialog extends TitleAreaDialog implements IConfigModule
      */
     @Override
     public String getMavenURI() {
-        if (useCustom && customURI != null) {
-            return customURI;
-        }
-        return defaultURI;
+        return this.urlToUse;
     }
 
     /*
