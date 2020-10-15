@@ -44,14 +44,14 @@
 									<version>2.1</version>
 								</artifactItem>
 								<artifactItem>
-									<groupId>org.talend.libraries</groupId>
-									<artifactId>commons-math3-3.3</artifactId>
-									<version>6.0.0</version>
+								    <groupId>org.apache.commons</groupId>
+								    <artifactId>commons-math3</artifactId>
+								    <version>3.3</version>
 								</artifactItem>
 								<artifactItem>
-									<groupId>org.talend.libraries</groupId>
-									<artifactId>commons-validator-1.5.1</artifactId>
-									<version>6.0.0</version>
+									<groupId>commons-validator</groupId>
+									<artifactId>commons-validator</artifactId>
+									<version>1.5.1</version>
 								</artifactItem>
 								<artifactItem>
 									<groupId>org.apache.commons</groupId>
