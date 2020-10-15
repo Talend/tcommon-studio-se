@@ -22,6 +22,7 @@ import org.talend.core.model.metadata.builder.connection.Connection;
 import org.talend.core.model.utils.ContextParameterUtils;
 import org.talend.core.runtime.evaluator.AbstractPropertyValueEvaluator;
 import org.talend.core.runtime.maven.MavenUrlHelper;
+import org.talend.core.utils.TalendQuoteUtils;
 import org.talend.daikon.properties.property.Property;
 import org.talend.designer.core.model.utils.emf.talendfile.ContextType;
 import org.talend.metadata.managment.ui.utils.ConnectionContextHelper;
@@ -87,9 +88,12 @@ public class MetadataContextPropertyValueEvaluator extends AbstractPropertyValue
     }
 
     private static String getUri(String jarName) {
-        if (jarName != null && !jarName.startsWith(MavenUrlHelper.MVN_PROTOCOL)) {
-            ModuleNeeded mod = new ModuleNeeded(null, jarName, null, true);
-            return mod.getMavenUri();
+        if (jarName != null) {
+            jarName = TalendQuoteUtils.removeQuotes(jarName);
+            if (!jarName.startsWith(MavenUrlHelper.MVN_PROTOCOL)) {
+                ModuleNeeded mod = new ModuleNeeded(null, jarName, null, true);
+                return mod.getMavenUri();
+            }
         }
         return jarName;
     }

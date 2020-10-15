@@ -1054,7 +1054,7 @@ public class ExtractMetaDataUtils {
                     if (driverJarPathArg.contains(";")) {
                         String jars[] = driverJarPathArg.split(";");
                         for (String jar : jars) {
-                            if (driverJarPathArg.startsWith(MavenUrlHelper.MVN_PROTOCOL)) {
+                            if (jar.startsWith(MavenUrlHelper.MVN_PROTOCOL)) {
                                 setDriverPath(librairesManagerService, jarPathList, jar);
                             } else {
                                 String jarName = librairesManagerService.getJarNameFromMavenuri(jar);
