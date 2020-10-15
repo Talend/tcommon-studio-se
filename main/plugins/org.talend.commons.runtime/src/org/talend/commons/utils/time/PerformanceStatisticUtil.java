@@ -328,7 +328,7 @@ public class PerformanceStatisticUtil {
         props.setProperty(StatisticKeys.IO_COUNT.get(), "" + digital_ioCount);
     }
 
-    private static String format(double dvalue) {
+    public static String format(double dvalue) {
         return BigDecimal.valueOf(dvalue).setScale(2, RoundingMode.HALF_UP).toString();
     }
     
