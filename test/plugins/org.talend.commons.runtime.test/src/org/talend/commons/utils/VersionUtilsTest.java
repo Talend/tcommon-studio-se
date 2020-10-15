@@ -207,6 +207,16 @@ public class VersionUtilsTest {
                 "Talend Cloud Big Data-7.3.1.20200209_1446-M2"));
     }
 
+    @Test
+    public void testGetSimplifiedPatchName() {
+        String expect0 = "R2020-11-7.3.1";
+        assertEquals(expect0, VersionUtils.getSimplifiedPatchName("Patch_20201114_R2020-11_v1-7.3.1"));
+        String expect1 = "R2020-11-7.3.1";
+        assertEquals(expect1, VersionUtils.getSimplifiedPatchName("Patch_20201114_R2020-11_v2-7.3.1"));
+        String expect2 = "R2020-11-7.4.1";
+        assertEquals(expect2, VersionUtils.getSimplifiedPatchName("Patch_20201114_R2020-11_v1-7.4.1"));
+    }
+
     @After
     public void tearDown() throws Exception {
         if (mojo_properties != null && mojo_properties.exists()) {
