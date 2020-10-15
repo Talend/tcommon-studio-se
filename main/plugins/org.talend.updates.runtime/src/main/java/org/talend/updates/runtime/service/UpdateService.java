@@ -143,7 +143,7 @@ public class UpdateService implements IUpdateService {
         }
         return isNeedRestart;
     }
-    
+
     @Override
     public String getSharedStudioMissingPatchVersion() {
         File patchFolder = PathUtils.getPatchesFolder();
