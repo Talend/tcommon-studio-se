@@ -111,75 +111,73 @@ public class TalendLibsServerManager {
         }
         Date date = new Date();
         // avoid to connect to tac too many times
-        if (artifactServerBean != null && date.getTime() - artifactLastTimeInMillis < timeGap) {
-            return artifactServerBean;
-        }
-        try {
-            artifactLastTimeInMillis = date.getTime();
-            String nexus_url = System.getProperty(NEXUS_URL);
-            String nexus_user = System.getProperty(NEXUS_USER);
-            String nexus_pass = System.getProperty(NEXUS_PASSWORD);
-            String repositoryId = System.getProperty(NEXUS_LIB_REPO, DEFAULT_LIB_REPO);
-            String snapshotRepId = System.getProperty(NEXUS_LIB_SNAPSHOT_REPO, DEFAULT_LIB_SNAPSHOT_REPO);
-            String serverType = System.getProperty(NEXUS_LIB_SERVER_TYPE, "NEXUS_2");
+        if (artifactServerBean == null && date.getTime() - artifactLastTimeInMillis > timeGap) {
+            try {
+                artifactLastTimeInMillis = date.getTime();
+                String nexus_url = System.getProperty(NEXUS_URL);
+                String nexus_user = System.getProperty(NEXUS_USER);
+                String nexus_pass = System.getProperty(NEXUS_PASSWORD);
+                String repositoryId = System.getProperty(NEXUS_LIB_REPO, DEFAULT_LIB_REPO);
+                String snapshotRepId = System.getProperty(NEXUS_LIB_SNAPSHOT_REPO, DEFAULT_LIB_SNAPSHOT_REPO);
+                String serverType = System.getProperty(NEXUS_LIB_SERVER_TYPE, "NEXUS_2");
 
-            IProxyRepositoryFactory factory = CoreRuntimePlugin.getInstance().getProxyRepositoryFactory();
-            RepositoryContext repositoryContext = factory.getRepositoryContext();
-            if ((nexus_url == null && (factory.isLocalConnectionProvider() || repositoryContext.isOffline()))) {
-                return null;
-            }
-            if (repositoryContext != null && repositoryContext.getFields() != null && !factory.isLocalConnectionProvider()
-                    && !repositoryContext.isOffline()) {
-                String adminUrl = repositoryContext.getFields().get(RepositoryConstants.REPOSITORY_URL);
-                String userName = "";
-                String password = "";
-                User user = repositoryContext.getUser();
-                if (user != null) {
-                    userName = user.getLogin();
-                    password = repositoryContext.getClearPassword();
+                IProxyRepositoryFactory factory = CoreRuntimePlugin.getInstance().getProxyRepositoryFactory();
+                RepositoryContext repositoryContext = factory.getRepositoryContext();
+                if ((nexus_url == null && (factory.isLocalConnectionProvider() || repositoryContext.isOffline()))) {
+                    return null;
                 }
+                if (repositoryContext != null && repositoryContext.getFields() != null && !factory.isLocalConnectionProvider()
+                        && !repositoryContext.isOffline()) {
+                    String adminUrl = repositoryContext.getFields().get(RepositoryConstants.REPOSITORY_URL);
+                    String userName = "";
+                    String password = "";
+                    User user = repositoryContext.getUser();
+                    if (user != null) {
+                        userName = user.getLogin();
+                        password = repositoryContext.getClearPassword();
+                    }
 
-                if (adminUrl != null && !"".equals(adminUrl)
-                        && GlobalServiceRegister.getDefault().isServiceRegistered(IRemoteService.class)) {
-                    IRemoteService remoteService = (IRemoteService) GlobalServiceRegister.getDefault()
-                            .getService(IRemoteService.class);
-                    ArtifactRepositoryBean bean = remoteService.getLibNexusServer(userName, password, adminUrl);
-                    if (bean != null) {
-                        serverType = bean.getType();
-                        nexus_url = bean.getServer();
-                        nexus_user = bean.getUserName();
-                        nexus_pass = bean.getPassword();
-                        repositoryId = bean.getRepositoryId();
-                        snapshotRepId = bean.getSnapshotRepId();
-                        System.setProperty(NEXUS_URL, nexus_url);
-                        System.setProperty(NEXUS_USER, nexus_user);
-                        System.setProperty(NEXUS_PASSWORD, nexus_pass);
-                        System.setProperty(NEXUS_LIB_REPO, repositoryId);
-                        System.setProperty(NEXUS_LIB_SNAPSHOT_REPO, snapshotRepId);
+                    if (adminUrl != null && !"".equals(adminUrl)
+                            && GlobalServiceRegister.getDefault().isServiceRegistered(IRemoteService.class)) {
+                        IRemoteService remoteService = (IRemoteService) GlobalServiceRegister.getDefault()
+                                .getService(IRemoteService.class);
+                        ArtifactRepositoryBean bean = remoteService.getLibNexusServer(userName, password, adminUrl);
+                        if (bean != null) {
+                            serverType = bean.getType();
+                            nexus_url = bean.getServer();
+                            nexus_user = bean.getUserName();
+                            nexus_pass = bean.getPassword();
+                            repositoryId = bean.getRepositoryId();
+                            snapshotRepId = bean.getSnapshotRepId();
+                            System.setProperty(NEXUS_URL, nexus_url);
+                            System.setProperty(NEXUS_USER, nexus_user);
+                            System.setProperty(NEXUS_PASSWORD, nexus_pass);
+                            System.setProperty(NEXUS_LIB_REPO, repositoryId);
+                            System.setProperty(NEXUS_LIB_SNAPSHOT_REPO, snapshotRepId);
+                        }
                     }
                 }
-            }
-            if (nexus_url == null) {
-                return null;
-            }
-            ArtifactRepositoryBean serverBean = new ArtifactRepositoryBean();
-            serverBean.setServer(nexus_url);
-            serverBean.setUserName(nexus_user);
-            serverBean.setPassword(nexus_pass);
-            serverBean.setRepositoryId(repositoryId);
-            serverBean.setSnapshotRepId(snapshotRepId);
-            serverBean.setType(serverType);
+                if (nexus_url == null) {
+                    return null;
+                }
+                ArtifactRepositoryBean serverBean = new ArtifactRepositoryBean();
+                serverBean.setServer(nexus_url);
+                serverBean.setUserName(nexus_user);
+                serverBean.setPassword(nexus_pass);
+                serverBean.setRepositoryId(repositoryId);
+                serverBean.setSnapshotRepId(snapshotRepId);
+                serverBean.setType(serverType);
 
-            IRepositoryArtifactHandler repHander = RepositoryArtifactHandlerManager.getRepositoryHandler(serverBean);
-            if (repHander.checkConnection()) {
-                artifactServerBean = serverBean;
-            }
+                IRepositoryArtifactHandler repHander = RepositoryArtifactHandlerManager.getRepositoryHandler(serverBean);
+                if (repHander.checkConnection()) {
+                    artifactServerBean = serverBean;
+                }
 
-        } catch (Exception e) {
-            artifactServerBean = null;
-            ExceptionHandler.process(e);
+            } catch (Exception e) {
+                artifactServerBean = null;
+                ExceptionHandler.process(e);
+            }
         }
-
         return artifactServerBean;
 
     }
