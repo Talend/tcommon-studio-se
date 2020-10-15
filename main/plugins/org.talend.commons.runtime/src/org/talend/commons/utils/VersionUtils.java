@@ -232,10 +232,50 @@ public class VersionUtils {
      * Check if studio version < other studio version record in remote project.
      */
     public static boolean isInvalidProductVersion(String remoteFullProductVersion) {
+        String localProductVersion = getInternalVersion();
+        return isInvalidProductVersion(localProductVersion, remoteFullProductVersion);
+    }
+
+    protected static boolean isInvalidProductVersion(String localProductVersion, String remoteFullProductVersion) {
         if (remoteFullProductVersion == null) {
             return false;
         }
-        return getInternalVersion().compareTo(getProductVersionWithoutBranding(remoteFullProductVersion)) < 0;
+        if (skipCheckingNightlyBuilds(localProductVersion, remoteFullProductVersion)) {
+            return false;
+        }
+        return localProductVersion.compareTo(getProductVersionWithoutBranding(remoteFullProductVersion)) < 0;
+    }
+
+    public static boolean productVersionIsNewer(String remoteFullProductVersion) {
+        String localProductVersion = getInternalVersion();
+        return productVersionIsNewer(localProductVersion, remoteFullProductVersion);
+    }
+
+    protected static boolean productVersionIsNewer(String localProductVersion, String remoteFullProductVersion) {
+        if (remoteFullProductVersion == null) {
+            return false;
+        }
+        if (skipCheckingNightlyBuilds(localProductVersion, remoteFullProductVersion)) {
+            return false;
+        }
+        return localProductVersion.compareTo(getProductVersionWithoutBranding(remoteFullProductVersion)) > 0;
+    }
+
+    private static boolean skipCheckingNightlyBuilds(String localProductVersion, String remoteFullProductVersion) {
+        String separator = "-"; //$NON-NLS-1$
+        String localSuffix = StringUtils.substringAfterLast(localProductVersion, separator);
+
+        String remoteProductVersion = getProductVersionWithoutBranding(remoteFullProductVersion);
+        String remoteSuffix = StringUtils.substringAfterLast(remoteProductVersion, separator);
+
+        String nightly = "SNAPSHOT"; //$NON-NLS-1$
+        String milestone = "M"; //$NON-NLS-1$
+        if ((localSuffix.equals(nightly) || localSuffix.startsWith(milestone))
+                && (remoteSuffix.equals(nightly) || remoteSuffix.startsWith(milestone))) {
+            // skip checking between nightly/milestone build.
+            return true;
+        }
+        return false;
     }
 
     public static String getTalendVersion(String productVersion) {
@@ -308,6 +348,26 @@ public class VersionUtils {
             productVersion = null;
             talendVersion = null;
         }
+    }
+
+    public static String getSimplifiedPatchName(String projectPatchName) {
+
+        if (projectPatchName != null) {
+            String result = null;
+            if (projectPatchName.contains("_") && projectPatchName.split("_").length >= 3) {
+                result = projectPatchName.split("_")[2];
+                if (!result.startsWith("R")) {
+                    return null;
+                }
+            }
+            if (projectPatchName.contains("-")) {
+                String[] split = projectPatchName.split("-");
+                if (split != null && split.length > 0) {
+                    return result + "-" + split[split.length - 1];
+                }
+            }
+        }
+        return null;
     }
 
 }

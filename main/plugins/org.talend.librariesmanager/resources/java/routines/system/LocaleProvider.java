@@ -41,6 +41,7 @@ public class LocaleProvider {
 
     }
 
+    //though not thread safe here, but we syn in the client side, so ok
     public static Locale getLocale(String languageOrCountyCode) {
         if (cache == null) {
             initCache();
@@ -72,7 +73,11 @@ public class LocaleProvider {
                 key = language;
             }
             if (key != null) {
-                cache.put(key.toLowerCase(), locale);
+                String k = key.toLowerCase();
+                Locale old = cache.put(k, locale);
+                if(old != null && old.getCountry() !=null && old.getCountry().equalsIgnoreCase(old.getLanguage())) {
+                    cache.put(k, old);
+                }
             }
         }
     }

@@ -13,6 +13,8 @@
 package org.talend.commons.utils;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertTrue;
 
 import java.io.File;
 import java.util.HashMap;
@@ -160,6 +162,59 @@ public class VersionUtilsTest {
         test = "Talend Cloud Real-Time Big Data Platform-7.3.1.20190919_1941-patch";
         result = VersionUtils.getProductVersionWithoutBranding(test);
         assertEquals(expect, result);
+    }
+
+    @Test
+    public void testIsInvalidProductVersion() {
+
+        assertTrue(VersionUtils.isInvalidProductVersion("7.3.1.20200201_1941-M1",
+                "Talend Cloud Big Data-7.3.1.20200209_1446-patch"));
+        assertTrue(
+                VersionUtils.isInvalidProductVersion("7.3.1.20200201_1941", "Talend Cloud Big Data-7.3.1.20200209_1446-patch"));
+        assertTrue(VersionUtils.isInvalidProductVersion("7.3.1.20200201_1941-patch",
+                "Talend Cloud Big Data-7.3.1.20200209_1446-patch"));
+        assertFalse(
+                VersionUtils.isInvalidProductVersion("7.3.1.20200209_1941-patch", "Talend Cloud Big Data-7.3.1.20200201_1446"));
+
+        // test nightly/milestone build
+        assertFalse(VersionUtils.isInvalidProductVersion("7.3.1.20200201_1941-SNAPSHOT",
+                "Talend Cloud Big Data-7.3.1.20200209_1446-SNAPSHOT"));
+        assertFalse(VersionUtils.isInvalidProductVersion("7.3.1.20200201_1941-M1",
+                "Talend Cloud Big Data-7.3.1.20200209_1446-SNAPSHOT"));
+        assertFalse(
+                VersionUtils.isInvalidProductVersion("7.3.1.20200201_1941-M1", "Talend Cloud Big Data-7.3.1.20200209_1446-M2"));
+        assertFalse(VersionUtils.isInvalidProductVersion("7.3.1.20200201_1941-SNAPSHOT",
+                "Talend Cloud Big Data-7.3.1.20200209_1446-M2"));
+    }
+
+    @Test
+    public void testProductVersionIsNewer() {
+        assertTrue(
+                VersionUtils.productVersionIsNewer("7.3.1.20200211_1941-M1", "Talend Cloud Big Data-7.3.1.20200209_1446-patch"));
+        assertTrue(VersionUtils.productVersionIsNewer("7.3.1.20200211_1941", "Talend Cloud Big Data-7.3.1.20200209_1446-patch"));
+        assertTrue(VersionUtils.productVersionIsNewer("7.3.1.20200211_1941-patch",
+                "Talend Cloud Big Data-7.3.1.20200209_1446-patch"));
+        assertFalse(VersionUtils.productVersionIsNewer("7.3.1.20200219_1941-patch", "Talend Cloud Big Data-7.3.1.20200221_1446"));
+
+        // test nightly/milestone build
+        assertFalse(VersionUtils.productVersionIsNewer("7.3.1.20200201_1941-SNAPSHOT",
+                "Talend Cloud Big Data-7.3.1.20200209_1446-SNAPSHOT"));
+        assertFalse(VersionUtils.productVersionIsNewer("7.3.1.20200201_1941-M1",
+                "Talend Cloud Big Data-7.3.1.20200209_1446-SNAPSHOT"));
+        assertFalse(
+                VersionUtils.productVersionIsNewer("7.3.1.20200201_1941-M1", "Talend Cloud Big Data-7.3.1.20200209_1446-M2"));
+        assertFalse(VersionUtils.productVersionIsNewer("7.3.1.20200201_1941-SNAPSHOT",
+                "Talend Cloud Big Data-7.3.1.20200209_1446-M2"));
+    }
+
+    @Test
+    public void testGetSimplifiedPatchName() {
+        String expect0 = "R2020-11-7.3.1";
+        assertEquals(expect0, VersionUtils.getSimplifiedPatchName("Patch_20201114_R2020-11_v1-7.3.1"));
+        String expect1 = "R2020-11-7.3.1";
+        assertEquals(expect1, VersionUtils.getSimplifiedPatchName("Patch_20201114_R2020-11_v2-7.3.1"));
+        String expect2 = "R2020-11-7.4.1";
+        assertEquals(expect2, VersionUtils.getSimplifiedPatchName("Patch_20201114_R2020-11_v1-7.4.1"));
     }
 
     @After
