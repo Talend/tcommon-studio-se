@@ -17,9 +17,6 @@
         <module>tcompv1/pom.xml</module>
         <module>surefire/pom.xml</module>
         <module>zip/pom.xml</module>
-        <module>apache/talend/pom.xml</module>
-        <module>apache/official/pom.xml</module>
-        <module>cxf/pom.xml</module>
     </modules>
     <properties>
         <m2.fasterxml.jackson.version>2.10.1</m2.fasterxml.jackson.version>

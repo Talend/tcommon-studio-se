@@ -9,6 +9,14 @@
   </parent>
   <artifactId>org.talend.libraries.apache.common</artifactId>
   <packaging>eclipse-plugin</packaging>
+  
+  <repositories>
+		<repository>
+			<id>talend-update</id>
+			<url>https://talend-update.talend.com/nexus/content/repositories/libraries/</url>
+		</repository>
+	</repositories>
+	
   <build>
 		<plugins>
 			<plugin>
@@ -26,14 +34,29 @@
 							<outputDirectory>${project.basedir}/lib</outputDirectory>
 							<artifactItems>
 								<artifactItem>
-									<groupId>commons-beanutils</groupId>
-									<artifactId>commons-beanutils</artifactId>
-									<version>1.9.4</version>
-								</artifactItem>
-								<artifactItem>
 									<groupId>commons-codec</groupId>
 									<artifactId>commons-codec</artifactId>
 									<version>1.6</version>
+								</artifactItem>
+								<artifactItem>
+									<groupId>commons-digester</groupId>
+									<artifactId>commons-digester</artifactId>
+									<version>2.1</version>
+								</artifactItem>
+								<artifactItem>
+									<groupId>org.talend.libraries</groupId>
+									<artifactId>commons-math3-3.3</artifactId>
+									<version>6.0.0</version>
+								</artifactItem>
+								<artifactItem>
+									<groupId>org.talend.libraries</groupId>
+									<artifactId>commons-validator-1.5.1</artifactId>
+									<version>6.0.0</version>
+								</artifactItem>
+								<artifactItem>
+									<groupId>org.apache.commons</groupId>
+									<artifactId>commons-pool2</artifactId>
+									<version>2.4.2</version>
 								</artifactItem>
 							</artifactItems>
 						</configuration>
