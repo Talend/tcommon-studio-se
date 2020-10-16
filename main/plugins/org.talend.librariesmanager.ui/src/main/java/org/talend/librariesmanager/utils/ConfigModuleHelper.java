@@ -143,15 +143,12 @@ public class ConfigModuleHelper {
                 .getService(ILibraryManagerService.class);
         String jarPathFromMaven = libManagerService.getJarPathFromMaven(uri);
         if (jarPathFromMaven != null) {
-            return new File(jarPathFromMaven);
+            File retFile = new File(jarPathFromMaven);
+            if (retFile.exists()) {
+                return retFile;
+            }
         }
-        ArtifactRepositoryBean customNexusServer = TalendLibsServerManager.getInstance().getCustomNexusServer();
-        try {
-            File resolvedJar = libManagerService.resolveJar(customNexusServer, uri);
-            return resolvedJar;
-        } catch (Exception e) {
 
-        }
         ModuleStatusProvider.putStatus(uri, ELibraryInstallStatus.NOT_INSTALLED);
         return null;
     }
