@@ -55,6 +55,7 @@ import org.talend.core.nexus.TalendLibsServerManager;
 import org.talend.core.runtime.maven.MavenUrlHelper;
 import org.talend.librariesmanager.ui.LibManagerUiPlugin;
 import org.talend.librariesmanager.ui.i18n.Messages;
+import org.talend.librariesmanager.utils.ConfigModuleHelper;
 import org.talend.librariesmanager.utils.ModuleMavenURIUtils;
 
 /**
@@ -399,8 +400,43 @@ public class InstallModuleDialog extends TitleAreaDialog implements ICellEditorD
         String result = dialog.open();
         if (result != null) {
             this.jarPathTxt.setText(result);
+            try {
+                setupMavenURIforInstall();
+            } catch (Exception e) {
+                ExceptionHandler.process(e);
+            }
         }
 
+    }
+
+    private boolean validateInputForInstallPre() {
+        if (!new File(jarPathTxt.getText()).exists()) {
+            setMessage(Messages.getString("InstallModuleDialog.error.jarPath"), IMessageProvider.ERROR);
+            return false;
+        }
+
+        setMessage(Messages.getString("InstallModuleDialog.message"), IMessageProvider.INFORMATION);
+        return true;
+    }
+
+    private void setupMavenURIforInstall() throws Exception {
+        if (validateInputForInstallPre()) {
+            String filePath = jarPathTxt.getText();
+            String detectUri = ConfigModuleHelper.getDetectURI(filePath);
+
+            if (!org.apache.commons.lang3.StringUtils.isEmpty(detectUri)
+                    && !ConfigModuleHelper.isSameUri(this.defaultURIValue, detectUri)) {
+                customUriText.setText(detectUri);
+                useCustomBtn.setSelection(true);
+                customUriText.setEnabled(true);
+                layoutWarningComposite(false, defaultUriTxt.getText());
+                this.detectButton.setEnabled(true);
+            } else {
+                useCustomBtn.setSelection(false);
+                customUriText.setEnabled(false);
+                customUriText.setText("");
+            }
+        }
     }
 
     /*

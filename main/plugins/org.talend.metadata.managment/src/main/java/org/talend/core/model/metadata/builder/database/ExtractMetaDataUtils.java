@@ -67,6 +67,7 @@ import org.talend.core.database.conn.ConnParameterKeys;
 import org.talend.core.database.conn.HiveConfKeysForTalend;
 import org.talend.core.database.conn.version.EDatabaseVersion4Drivers;
 import org.talend.core.language.ECodeLanguage;
+import org.talend.core.model.general.ModuleNeeded;
 import org.talend.core.model.general.Project;
 import org.talend.core.model.metadata.IMetadataConnection;
 import org.talend.core.model.metadata.builder.ConvertionHelper;
@@ -76,6 +77,8 @@ import org.talend.core.model.metadata.connection.hive.HiveModeInfo;
 import org.talend.core.model.metadata.types.JavaTypesManager;
 import org.talend.core.prefs.SSLPreferenceConstants;
 import org.talend.core.runtime.CoreRuntimePlugin;
+import org.talend.core.runtime.maven.MavenArtifact;
+import org.talend.core.runtime.maven.MavenUrlHelper;
 import org.talend.core.utils.TalendQuoteUtils;
 import org.talend.designer.core.IDesignerCoreService;
 import org.talend.metadata.managment.connection.manager.HiveConnectionManager;
@@ -1024,6 +1027,7 @@ public class ExtractMetaDataUtils {
                             }
                         }
                         librairesManagerService.retrieve(jarsToRetreive, getJavaLibPath(), new NullProgressMonitor());
+
                     } else {
                         Path path = new Path(driverJarPathArg);
                         File driverFile = new File(driverJarPathArg);
@@ -1045,32 +1049,40 @@ public class ExtractMetaDataUtils {
                             jarPathList.add(driverJarPathArg);
                         }
                     }
-                }else if(driverJarPathArg.contains("/")){
+
+                } else if (driverJarPathArg.contains("/")) {
                     if (driverJarPathArg.contains(";")) {
                         String jars[] = driverJarPathArg.split(";");
                         List<String> jarNames = new ArrayList<>();
                         for (String jar : jars) {
-                            String jarName = librairesManagerService.getJarNameFromMavenuri(jar);
-                            // TDQ-16842 msjian:sometimes for the import jdbc connection, the jarName is null
-                            if (jarName == null) {
-                                jarName = jar.split("/")[1] + ".jar";
+                            if (jar.startsWith(MavenUrlHelper.MVN_PROTOCOL)) {
+                                setDriverPath(librairesManagerService, jarPathList, jar);
+                            } else {
+                                String jarName = librairesManagerService.getJarNameFromMavenuri(jar);
+                                // TDQ-16842 msjian:sometimes for the import jdbc connection, the jarName is null
+                                if (jarName == null) {
+                                    jarName = jar.split("/")[1] + ".jar";
+                                }
+                                // TDQ-16842~
+                                if (!new File(getJavaLibPath() + jarName).exists()) {
+                                    librairesManagerService.retrieve(jarName, getJavaLibPath(), new NullProgressMonitor());
+                                }
+                                jarPathList.add(getJavaLibPath() + jarName);
                             }
-                            // TDQ-16842~
+                        }
+                    } else {
+                        if (driverJarPathArg.startsWith(MavenUrlHelper.MVN_PROTOCOL)) {
+                            setDriverPath(librairesManagerService, jarPathList, driverJarPathArg);
+                        } else {
+                            String jarName = librairesManagerService.getJarNameFromMavenuri(driverJarPathArg);
+                            if (jarName == null) {
+                                jarName = driverJarPathArg.split("/")[1] + ".jar";
+                            }
                             if (!new File(getJavaLibPath() + jarName).exists()) {
-                                jarNames.add(jarName);
+                                librairesManagerService.retrieve(jarName, getJavaLibPath(), new NullProgressMonitor());
                             }
                             jarPathList.add(getJavaLibPath() + jarName);
                         }
-                        librairesManagerService.retrieve(jarNames, getJavaLibPath(), new NullProgressMonitor());
-                    }else{
-                        String jarName = librairesManagerService.getJarNameFromMavenuri(driverJarPathArg);
-                        if (jarName == null) {
-                            jarName = driverJarPathArg.split("/")[1] + ".jar";
-                        }
-                        if (!new File(getJavaLibPath() + jarName).exists()) {
-                            librairesManagerService.retrieve(jarName, getJavaLibPath(), new NullProgressMonitor());
-                        }
-                        jarPathList.add(getJavaLibPath() + jarName);
                     }
                 } else {
                     if (driverJarPathArg.contains(";")) {
@@ -1205,6 +1217,20 @@ public class ExtractMetaDataUtils {
         }
 
         return conList;
+    }
+
+    private void setDriverPath(ILibraryManagerService librairesManagerService, List<String> jarPathList, String mvnURI)
+            throws Exception {
+        if (mvnURI != null) {
+            MavenArtifact art = MavenUrlHelper.parseMvnUrl(mvnURI);
+            ModuleNeeded testModule = new ModuleNeeded("", art.getFileName(), "", true);
+            testModule.setMavenUri(mvnURI);
+            boolean retrived = librairesManagerService.retrieve(testModule, getJavaLibPath(), true, new NullProgressMonitor());
+            if (retrived) {
+                jarPathList.add(getJavaLibPath() + art.getFileName());
+            }
+        }
+
     }
 
     /**
