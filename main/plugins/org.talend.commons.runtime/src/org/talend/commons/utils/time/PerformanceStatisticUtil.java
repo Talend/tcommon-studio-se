@@ -18,7 +18,8 @@ import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.RandomAccessFile;
-import java.text.DecimalFormat;
+import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.util.Properties;
 import java.util.Random;
 import java.util.concurrent.TimeUnit;
@@ -35,8 +36,6 @@ import org.talend.commons.exception.CommonExceptionHandler;
  * DOC sbliu class global comment. Detailled comment
  */
 public class PerformanceStatisticUtil {
-
-    private static final DecimalFormat DF = new DecimalFormat("###.##");
 
     private static final int MEGABYTE = 1024 * 1024;// MB = 1024*1024 byte
 
@@ -250,8 +249,8 @@ public class PerformanceStatisticUtil {
         digital_ioWAverageMbSec = (digital_ioWAverageMbSec * digital_ioCount + bwMbSec) / (digital_ioCount + 1);
         digital_ioWMbSec = bwMbSec;
 
-        props.setProperty(StatisticKeys.IO_W_AVERAGE_MB_SEC.get(), "" + DF.format(digital_ioWAverageMbSec));
-        props.setProperty(StatisticKeys.IO_W_MB_SEC.get(), "" + DF.format(digital_ioWMbSec));
+        props.setProperty(StatisticKeys.IO_W_AVERAGE_MB_SEC.get(), format(digital_ioWAverageMbSec));
+        props.setProperty(StatisticKeys.IO_W_MB_SEC.get(), format(digital_ioWMbSec));
     }
 
     private static long writeIO(int numOfBlocks, BlockSequence blockSequence, int blockSize, File testFile) {
@@ -324,11 +323,15 @@ public class PerformanceStatisticUtil {
         digital_ioRMbSec = bwMbSec;
         digital_ioCount++;
 
-        props.setProperty(StatisticKeys.IO_R_AVERAGE_MB_SEC.get(), "" + DF.format(digital_ioRAverageMbSec));
-        props.setProperty(StatisticKeys.IO_R_MB_SEC.get(), "" + DF.format(digital_ioRMbSec));
+        props.setProperty(StatisticKeys.IO_R_AVERAGE_MB_SEC.get(), format(digital_ioRAverageMbSec));
+        props.setProperty(StatisticKeys.IO_R_MB_SEC.get(), format(digital_ioRMbSec));
         props.setProperty(StatisticKeys.IO_COUNT.get(), "" + digital_ioCount);
     }
 
+    public static String format(double dvalue) {
+        return BigDecimal.valueOf(dvalue).setScale(2, RoundingMode.HALF_UP).toString();
+    }
+    
     private static long readIO(int numOfBlocks, BlockSequence blockSequence, int blockSize, File testFile) {
         long totalBytesReadInMark = 0;
 
