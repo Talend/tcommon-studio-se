@@ -326,7 +326,7 @@ public class ConfigModuleDialog extends TitleAreaDialog implements IConfigModule
     private void createFindByName(Composite repGroupSubComp) {
 
         findByNameLabel = new Label(repGroupSubComp, SWT.NONE);
-        findByNameLabel.setText(Messages.getString("ConfigModuleDialog.findExistByNameBtn"));
+        findByNameLabel.setText(Messages.getString("ConfigModuleDialog.moduleName"));
 
         nameTxt = new Text(repGroupSubComp, SWT.BORDER);
         GridData data = new GridData(GridData.FILL_HORIZONTAL | GridData.GRAB_HORIZONTAL);
@@ -364,7 +364,7 @@ public class ConfigModuleDialog extends TitleAreaDialog implements IConfigModule
         data.horizontalSpan = 3;
 
         Label invisibleLabel = new Label(repGroupSubComp, SWT.NONE);
-        invisibleLabel.setText(Messages.getString("ConfigModuleDialog.findExistByNameBtn"));
+        invisibleLabel.setText(Messages.getString("ConfigModuleDialog.moduleName"));
         invisibleLabel.setVisible(false);
         searchResultCombo = new Combo(repGroupSubComp, SWT.BORDER);
         searchResultCombo.setLayoutData(data);
