@@ -145,9 +145,9 @@ public class ConfigModuleHelper {
         if (jarPathFromMaven != null) {
             return new File(jarPathFromMaven);
         }
-
+        ArtifactRepositoryBean customNexusServer = TalendLibsServerManager.getInstance().getCustomNexusServer();
         try {
-            File resolvedJar = libManagerService.resolveJar(null, uri);
+            File resolvedJar = libManagerService.resolveJar(customNexusServer, uri);
             return resolvedJar;
         } catch (Exception e) {
 
