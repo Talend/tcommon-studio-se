@@ -903,7 +903,7 @@ public class ConfigModuleDialog extends TitleAreaDialog implements IConfigModule
                 MavenArtifact art = MavenUrlHelper.parseMvnUrl(this.initValue);
                 text = art.getFileName();
             } else {
-                ModuleNeeded mod = new ModuleNeeded(null, text, true, null);
+                ModuleNeeded mod = new ModuleNeeded("", text, "", true);
                 this.defaultURI = mod.getDefaultMavenURI();
                 if (!StringUtils.isEmpty(mod.getCustomMavenUri())) {
                     this.customUriText.setText(mod.getCustomMavenUri());
