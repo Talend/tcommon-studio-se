@@ -25,6 +25,7 @@ import java.net.URISyntaxException;
 import java.security.AccessController;
 import java.security.PrivilegedAction;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.HashMap;
@@ -38,6 +39,8 @@ import java.util.Set;
 import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Priority;
 import org.eclipse.core.internal.net.ProxyManager;
+import org.eclipse.core.internal.net.ProxyType;
+import org.eclipse.core.net.proxy.IProxyChangeEvent;
 import org.eclipse.core.net.proxy.IProxyService;
 import org.talend.commons.CommonsPlugin;
 import org.talend.commons.exception.ExceptionHandler;
@@ -77,6 +80,14 @@ public class TalendProxySelector extends ProxySelector {
 
     private static final String PROP_DISABLE_DEFAULT_SELECTOR_PROVIDER = "talend.studio.proxy.disableDefaultSelectorProvider";
 
+    private static final String PROP_PROXY_EXCLUDE_LOOPBACK_ADDRESS_AUTOMATICALLY = "talend.studio.proxy.excludeLoopbackAutomatically";
+
+    private static final String PROP_PROXY_EXCLUDE_LOOPBACK_ADDRESS_AUTOMATICALLY_DEFAULT = "true";
+
+    private static final String PROP_PROXY_HTTP_NON_PROXYHOSTS = "http.nonProxyHosts";
+
+    private static final String PROP_PROXY_HTTPS_NON_PROXYHOSTS = "https.nonProxyHosts";
+
     /**
      * Example: update.talend.com,socket:http,https:http;nexus.talend.com,socket,http;,socket:http
      */
@@ -104,6 +115,8 @@ public class TalendProxySelector extends ProxySelector {
 
     private EProxySelector eProxySelector;
 
+    private IProxyService proxyManager;
+
     final private Map<Object, Collection<IProxySelectorProvider>> selectorProviders;
 
     private Map<String, Map<String, String>> hostMap;
@@ -126,6 +139,8 @@ public class TalendProxySelector extends ProxySelector {
 
     private boolean updateSystemPropertiesForJre = true;
 
+    private boolean excludeLoopbackAddressAutomatically = false;
+
     private TalendProxySelector(final ProxySelector eclipseDefaultSelector) {
         this.eclipseDefaultSelector = eclipseDefaultSelector;
         this.jreDefaultSelector = new DefaultProxySelector();
@@ -139,6 +154,8 @@ public class TalendProxySelector extends ProxySelector {
         executeConnectionFailed = Boolean.valueOf(System.getProperty(PROP_EXECUTE_CONNECTION_FAILED, Boolean.TRUE.toString()));
         updateSystemPropertiesForJre = Boolean
                 .valueOf(System.getProperty(PROP_UPDATE_SYSTEM_PROPERTIES_FOR_JRE, Boolean.TRUE.toString()));
+        excludeLoopbackAddressAutomatically = Boolean.valueOf(System.getProperty(
+                PROP_PROXY_EXCLUDE_LOOPBACK_ADDRESS_AUTOMATICALLY, PROP_PROXY_EXCLUDE_LOOPBACK_ADDRESS_AUTOMATICALLY_DEFAULT));
 
         switch (System.getProperty(PROP_PROXY_SELECTOR, PROP_PROXY_SELECTOR_DEFAULT).toLowerCase()) {
         case PROP_PROXY_SELECTOR_JRE:
@@ -148,9 +165,62 @@ public class TalendProxySelector extends ProxySelector {
             this.eProxySelector = EProxySelector.eclipse_default;
             break;
         }
+        proxyManager = ProxyManager.getProxyManager();
+        checkProxyManager(IProxyChangeEvent.PROXY_DATA_CHANGED);
+        proxyManager.addProxyChangeListener(event -> checkProxyManager(event.getChangeType()));
 
         initHostMap();
         initRedirectList();
+    }
+
+    private void checkProxyManager(int changeEvent) {
+        try {
+            if (IProxyChangeEvent.PROXY_DATA_CHANGED == changeEvent
+                    || IProxyChangeEvent.NONPROXIED_HOSTS_CHANGED == changeEvent) {
+                if (this.excludeLoopbackAddressAutomatically && proxyManager.isProxiesEnabled()) {
+                    List<String> localLoopbackAddresses = NetworkUtil.getLocalLoopbackAddresses(false);
+                    if (org.eclipse.core.internal.net.ProxySelector
+                            .canSetBypassHosts(org.eclipse.core.internal.net.ProxySelector.getDefaultProvider())) {
+                        List<String> configuredProxies = Arrays.asList(proxyManager.getNonProxiedHosts());
+                        if (!configuredProxies.containsAll(localLoopbackAddresses)) {
+                            Set<String> nonProxyHosts = new HashSet<>(localLoopbackAddresses);
+                            nonProxyHosts.addAll(configuredProxies);
+                            ExceptionHandler.log(this.getClass().getName() + ":" + "-D"
+                                    + PROP_PROXY_EXCLUDE_LOOPBACK_ADDRESS_AUTOMATICALLY
+                                    + "=true, adding missing loopback addresses into eclipse nonProxyHosts: " + nonProxyHosts);
+                            proxyManager.setNonProxiedHosts(nonProxyHosts.toArray(new String[0]));
+                        }
+                    } else {
+                        updateNonProxyHosts(localLoopbackAddresses, PROP_PROXY_HTTP_NON_PROXYHOSTS);
+                        updateNonProxyHosts(localLoopbackAddresses, PROP_PROXY_HTTPS_NON_PROXYHOSTS);
+                    }
+                }
+            }
+        } catch (Exception e) {
+            ExceptionHandler.process(e);
+        }
+    }
+
+    private void updateNonProxyHosts(List<String> localLoopbackAddresses, final String nonProxyProperty) {
+        if (localLoopbackAddresses != null && !localLoopbackAddresses.isEmpty()) {
+            Set<String> nonProxyHosts = new HashSet<>(localLoopbackAddresses);
+            String property = System.getProperty(nonProxyProperty);
+            boolean update = true;
+            if (StringUtils.isNotBlank(property)) {
+                List<String> configuredProxies = Arrays.asList(ProxyType.convertPropertyStringToHosts(property));
+                if (configuredProxies.containsAll(localLoopbackAddresses)) {
+                    update = false;
+                } else {
+                    nonProxyHosts.addAll(configuredProxies);
+                }
+            }
+            if (update) {
+                ExceptionHandler.log(this.getClass().getName() + ":" + "-D" + PROP_PROXY_EXCLUDE_LOOPBACK_ADDRESS_AUTOMATICALLY
+                        + "=true, adding missing loopback addresses into " + nonProxyProperty + ": " + nonProxyHosts);
+                System.setProperty(nonProxyProperty,
+                        ProxyType.convertHostsToPropertyString(nonProxyHosts.toArray(new String[0])));
+            }
+        }
     }
 
     private void initHostMap() {
