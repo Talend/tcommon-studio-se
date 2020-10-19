@@ -399,6 +399,14 @@ public class DatabaseForm extends AbstractForm {
 
     private LabelledText impalaPrincipalTxt;
 
+    private Button useKeyTabForImpala;
+
+    private Composite keyTabCompoisteForImpala;
+
+    private LabelledText principalForImpalaTxt;
+
+    private LabelledFileField keytabForImpalaTxt;
+
     private LabelledText hbaseMasterPrincipalTxt;
 
     private LabelledText hbaseRSPrincipalTxt;
@@ -1270,6 +1278,28 @@ public class DatabaseForm extends AbstractForm {
 
         impalaPrincipalTxt = new LabelledText(authenticationComForImpala, Messages.getString("DatabaseForm.impalaPrincipal"), 2); //$NON-NLS-1$
 
+        // keytab
+        useKeyTabForImpala = new Button(authenticationComForImpala, SWT.CHECK);
+        useKeyTabForImpala.setText(Messages.getString("DatabaseForm.hiveEmbedded.useKeyTab")); //$NON-NLS-1$
+        data = new GridData(GridData.FILL_HORIZONTAL);
+        data.horizontalSpan = 4;
+        useKeyTabForImpala.setLayoutData(data);
+
+        keyTabCompoisteForImpala = new Composite(authenticationComForImpala, SWT.NONE);
+        data = new GridData(GridData.FILL_BOTH);
+        data.horizontalSpan = 4;
+        data.exclude = true;
+        keyTabCompoisteForImpala.setLayoutData(data);
+        keyTabCompoisteForImpala.setVisible(false);
+        keyTabCompoisteForImpala.setLayout(new GridLayout(5, false));
+
+        principalForImpalaTxt = new LabelledText(keyTabCompoisteForImpala,
+                Messages.getString("DatabaseForm.hiveEmbedded.principal"), 1); //$NON-NLS-1$
+        String[] extensions = { "*.*" }; //$NON-NLS-1$
+        keytabForImpalaTxt = new LabelledFileField(keyTabCompoisteForImpala,
+                Messages.getString("DatabaseForm.hiveEmbedded.keytab"), //$NON-NLS-1$
+                extensions);
+
         addListenerForImpalaAuthentication();
         initForImpalaAuthentication();
     }
@@ -1930,14 +1960,14 @@ public class DatabaseForm extends AbstractForm {
                 }
                 return true;
             }
-        } else if (isOracleCustomDBConnSelected()) {
+        } else if (isOracleCustomDBConnSelected() || isImpalaDBConnSelected()) {
             return true;
         }
         return false;
     }
 
     private boolean isSupportSSLTrustStore() {
-        if (isHiveDBConnSelected()) {
+        if (isHiveDBConnSelected() || isImpalaDBConnSelected()) {
             // if (!useSSLEncryption.isVisible()) {
             // return false;
             // }
@@ -2070,6 +2100,45 @@ public class DatabaseForm extends AbstractForm {
                 adjustScrolledComHeight();
             }
 
+        });
+
+        useKeyTabForImpala.addSelectionListener(new SelectionAdapter() {
+
+            @Override
+            public void widgetSelected(SelectionEvent e) {
+                if (useKeyTabForImpala.getSelection()) {
+                    hideControl(keyTabCompoisteForImpala, false);
+                    getConnection().getParameters().put(ConnParameterKeys.CONN_PARA_KEY_USEKEYTAB, "true"); //$NON-NLS-1$
+                } else {
+                    hideControl(keyTabCompoisteForImpala, true);
+                    getConnection().getParameters().put(ConnParameterKeys.CONN_PARA_KEY_USEKEYTAB, "false"); //$NON-NLS-1$
+                }
+                authenticationComForImpala.layout();
+                authenticationComForImpala.getParent().layout();
+                authenticationGrpForImpala.layout();
+                authenticationGrpForImpala.getParent().layout();
+                adjustScrolledComHeight();
+            }
+
+        });
+        principalForImpalaTxt.getTextControl().addModifyListener(new ModifyListener() {
+
+            @Override
+            public void modifyText(ModifyEvent e) {
+                if (!isContextMode()) {
+                    getConnection().getParameters().put(ConnParameterKeys.CONN_PARA_KEY_KEYTAB_PRINCIPAL,
+                            principalForImpalaTxt.getText());
+                }
+            }
+        });
+        keytabForImpalaTxt.getTextControl().addModifyListener(new ModifyListener() {
+
+            @Override
+            public void modifyText(ModifyEvent e) {
+                if (!isContextMode()) {
+                    getConnection().getParameters().put(ConnParameterKeys.CONN_PARA_KEY_KEYTAB, keytabForImpalaTxt.getText());
+                }
+            }
         });
 
         impalaPrincipalTxt.getTextControl().addModifyListener(new ModifyListener() {
@@ -3329,6 +3398,14 @@ public class DatabaseForm extends AbstractForm {
     private void adaptImpalaHadoopPartEditable() {
         useKerberosForImpala.setEnabled(!isContextMode());
         impalaPrincipalTxt.setEditable(!isContextMode());
+
+        useKeyTabForImpala.setEnabled(!isContextMode());
+        keytabForImpalaTxt.setEditable(!isContextMode());
+        principalForImpalaTxt.setEditable(!isContextMode());
+
+        useSSLEncryption.setEnabled(!isContextMode());
+        trustStorePath.setEditable(!isContextMode());
+        trustStorePassword.setEditable(!isContextMode());
     }
 
     private void adaptOracleCustomPartEditable() {
@@ -3687,6 +3764,44 @@ public class DatabaseForm extends AbstractForm {
         } else {
             impalaDistributionCombo.select(0);
         }
+
+        boolean useSSL = Boolean.parseBoolean(connection.getParameters().get(ConnParameterKeys.CONN_PARA_KEY_USE_SSL));
+        String trustStorePathStr = connection.getParameters().get(ConnParameterKeys.CONN_PARA_KEY_SSL_TRUST_STORE_PATH);
+        String trustStorePasswordStr = connection.getParameters().get(ConnParameterKeys.CONN_PARA_KEY_SSL_TRUST_STORE_PASSWORD);
+        useSSLEncryption.setSelection(useSSL);
+        trustStorePath.setText(trustStorePathStr == null ? "" : trustStorePathStr);
+        if (trustStorePasswordStr == null) {
+            trustStorePasswordStr = "";
+        } else {
+            trustStorePasswordStr = connection.getValue(trustStorePasswordStr, false);
+        }
+        trustStorePassword.setText(trustStorePasswordStr);
+
+        String useKrbString = connection.getParameters().get(ConnParameterKeys.CONN_PARA_KEY_USE_KRB);
+        String useKeytabString = connection.getParameters().get(ConnParameterKeys.CONN_PARA_KEY_USEKEYTAB);
+        String keytabPrincipal = connection.getParameters().get(ConnParameterKeys.CONN_PARA_KEY_KEYTAB_PRINCIPAL);
+        String keytab = connection.getParameters().get(ConnParameterKeys.CONN_PARA_KEY_KEYTAB);
+        if (!connection.isContextMode() && ContextParameterUtils.isContainContextParam(keytabPrincipal)) {
+            keytabPrincipal = (String) metadataconnection.getParameter(ConnParameterKeys.CONN_PARA_KEY_KEYTAB_PRINCIPAL);
+        }
+        if (!connection.isContextMode() && ContextParameterUtils.isContainContextParam(keytab)) {
+            keytab = (String) metadataconnection.getParameter(ConnParameterKeys.CONN_PARA_KEY_KEYTAB);
+        }
+        String masterPrincipal = connection.getParameters().get(ConnParameterKeys.IMPALA_AUTHENTICATION_PRINCIPLA);
+        boolean useKrb = Boolean.valueOf(useKrbString);
+        boolean useKeytab = Boolean.valueOf(useKeytabString);
+        useKerberosForImpala.setSelection(useKrb);
+        if (useKrb) {
+            useKeyTabForImpala.setSelection(useKeytab);
+            if (useKeytab) {
+                principalForImpalaTxt.setText(StringUtils.trimToEmpty(keytabPrincipal));
+                keytabForImpalaTxt.setText(StringUtils.trimToEmpty(keytab));
+            }
+            impalaPrincipalTxt.setText(StringUtils.trimToEmpty(masterPrincipal));
+        }
+        hideControl(keyTabCompoisteForImpala, !useKeytab);
+        hideControl(authenticationComForImpala, !useKrb);
+        hideControl(authenticationGrpForImpala, false);
 
         authenticationGrpForImpala.setVisible(true);
         authenticationGrpForImpala.getParent().layout();
@@ -6763,6 +6878,14 @@ public class DatabaseForm extends AbstractForm {
             addContextParams(EDBParamName.ImpalaPrincipal, useKerberosForImpala.getSelection());
             addContextParams(EDBParamName.Password, true);
             addContextParams(EDBParamName.hiveAdditionalJDBCParameters, isSupportImpalaAdditionalSettings());
+
+            addContextParams(EDBParamName.ImpalaKeyTabPrincipal, useKeyTabForImpala.getSelection());
+            addContextParams(EDBParamName.ImpalaKeyTab, useKeyTabForImpala.getSelection());
+
+            boolean addSSLEncryptionContext = isSupportSSLEncryption() && isSupportSSLTrustStore();
+            addContextParams(EDBParamName.ImpalaSSLTrustStorePath, addSSLEncryptionContext);
+            addContextParams(EDBParamName.ImpalaSSLTrustStorePassword, addSSLEncryptionContext);
+
         }
     }
 
@@ -7151,6 +7274,9 @@ public class DatabaseForm extends AbstractForm {
         String additionalJDBCSettings = connection.getParameters()
                 .get(ConnParameterKeys.CONN_PARA_KEY_HIVE_ADDITIONAL_JDBC_SETTINGS);
         additionalJDBCSettingsText.setText(additionalJDBCSettings == null ? "" : additionalJDBCSettings);
+
+        showIfSupportEncryption();
+        updateSSLEncryptionDetailsDisplayStatus();
     }
 
     /**
