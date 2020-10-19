@@ -237,16 +237,10 @@ public class NetworkUtil {
         }
     }
 
-    public static List<String> getLocalAddresses() {
+    public static List<String> getLocalLoopbackAddresses(boolean wrapIpV6) {
         Set<String> addresses = new LinkedHashSet<>();
         try {
-            addresses.add(getIp(InetAddress.getLoopbackAddress()));
-        } catch (Exception e) {
-            ExceptionHandler.process(e);
-        }
-
-        try {
-            addresses.add(getIp(InetAddress.getLocalHost()));
+            addresses.add(getIp(InetAddress.getLoopbackAddress(), wrapIpV6));
         } catch (Exception e) {
             ExceptionHandler.process(e);
         }
@@ -258,9 +252,8 @@ public class NetworkUtil {
                 Enumeration<InetAddress> inetAddresses = networkInterface.getInetAddresses();
                 while (inetAddresses.hasMoreElements()) {
                     InetAddress inetAddress = inetAddresses.nextElement();
-                    if (inetAddress != null && (inetAddress.isLinkLocalAddress() || inetAddress.isLoopbackAddress()
-                            || inetAddress.isSiteLocalAddress())) {
-                        addresses.add(getIp(inetAddress));
+                    if (inetAddress != null && inetAddress.isLoopbackAddress()) {
+                        addresses.add(getIp(inetAddress, wrapIpV6));
                     }
                 }
             }
@@ -270,14 +263,18 @@ public class NetworkUtil {
 
         if (addresses.isEmpty()) {
             addresses.add("127.0.0.1");
-            addresses.add("localhost");
+            String ipv6Loopback = "::1";
+            if (wrapIpV6) {
+                ipv6Loopback = "[" + ipv6Loopback + "]";
+            }
+            addresses.add(ipv6Loopback);
         }
 
         return new ArrayList<>(addresses);
     }
 
-    private static String getIp(InetAddress inetAddress) {
-        if (Inet6Address.class.isInstance(inetAddress)) {
+    private static String getIp(InetAddress inetAddress, boolean wrapIpV6) {
+        if (wrapIpV6 && Inet6Address.class.isInstance(inetAddress)) {
             String addr = inetAddress.getHostAddress();
             if (!addr.startsWith("[") || !addr.endsWith("]")) {
                 addr = "[" + addr + "]";
