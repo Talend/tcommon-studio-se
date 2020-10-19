@@ -469,56 +469,6 @@ public class ConfigModuleDialog extends TitleAreaDialog implements IConfigModule
         });
     }
 
-<<<<<<< bhe/feat/TUP-25246
-    private void handleDetectPressed() {
-        if (installRadioBtn.getSelection()) {
-            handleDetectPressedForInstall();
-        } else {
-            handleDetectPressedForFindExsting();
-        }
-    }
-
-    private void handleDetectPressedForInstall() {
-        if (!useCustomBtn.getSelection()) {
-            String uri = defaultUriTxt.getText().trim();
-            if (StringUtils.isEmpty(uri)) {
-                setMessage(Messages.getString("InstallModuleDialog.error.invalidDefaultMvnURI"), IMessageProvider.ERROR);
-                return;
-            }
-        }     
-        boolean deployed = checkInstalledStatusInMaven();
-        if (deployed) {
-            setMessage(Messages.getString("InstallModuleDialog.error.jarexsit"), IMessageProvider.ERROR);
-        } else {
-            setMessage(Messages.getString("ConfigModuleDialog.install.message", moduleName), IMessageProvider.INFORMATION);
-        }
-    }
-
-    private void handleDetectPressedForFindExsting() {
-        boolean deployed = checkInstalledStatusInMaven();
-        if (deployed) {
-            setMessage(Messages.getString("ConfigModuleDialog.message", moduleName), IMessageProvider.INFORMATION);
-        } else {
-            setMessage(Messages.getString("ConfigModuleDialog.jarNotInstalled.error"), IMessageProvider.ERROR);
-        }
-    }
-
-    private boolean checkInstalledStatusInMaven() {
-        String uri = null;
-        if (useCustomBtn.getSelection()) {
-            uri = MavenUrlHelper.addTypeForMavenUri(customUriText.getText().trim(), moduleName);
-        } else {
-            uri = defaultUriTxt.getText().trim();
-        }
-        boolean validateMvnURI = ModuleMavenURIUtils.validateMvnURI(uri);
-        if (!validateMvnURI) {
-            return false;
-        }
-        return ModuleMavenURIUtils.checkInstalledStatus(uri);
-    }
-
-=======
->>>>>>> 3996d24 feat(TUP-25246): Automatically detect custom maven URI for external jars (#3636)
     private void handleButtonPressed() {
         useCustomBtn.setSelection(false);
         FileDialog dialog = new FileDialog(getShell());
@@ -894,21 +844,8 @@ public class ConfigModuleDialog extends TitleAreaDialog implements IConfigModule
                 defaultUriTxt.setText(defaultURIValue);
             }
         }
-<<<<<<< bhe/feat/TUP-25246
-        defaultURIValue = moduel.getDefaultMavenURI();
-        cusormURIValue = moduel.getCustomMavenUri();
-        if (cusormURIValue == null) {
-            cusormURIValue = "";
-        }
-        defaultUriTxt.setText(moduel.getDefaultMavenURI() == null ? "" : moduel.getDefaultMavenURI());
-        boolean useCustom = !StringUtils.isEmpty(cusormURIValue);
-        useCustomBtn.setSelection(useCustom);
-        // customUriText.setEnabled(useCustom);
-        customUriText.setText(cusormURIValue);
-=======
         useCustomBtn.setSelection(false);
     }
->>>>>>> 3996d24 feat(TUP-25246): Automatically detect custom maven URI for external jars (#3636)
 
     private void setupMavenURIforPlatform() {
         if (validateInputFields()) {
