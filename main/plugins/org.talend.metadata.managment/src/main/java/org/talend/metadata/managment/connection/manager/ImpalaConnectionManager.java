@@ -83,24 +83,23 @@ public class ImpalaConnectionManager extends DataBaseConnectionManager {
 
                     Map<String, Object> otherParametersMap = metadataConn.getOtherParameters();
                     if (otherParametersMap != null) {
-                        boolean useKerb = Boolean
-                                .valueOf((String) otherParametersMap.get(ConnParameterKeys.CONN_PARA_KEY_USE_KRB));
-                        if (useKerb) {
-                            Object conf = Class.forName("org.apache.hadoop.conf.Configuration", true, impalaClassLoader) //$NON-NLS-1$
-                                    .newInstance();
-                            EHadoopConfProperties.AUTHENTICATION.set(conf, "KERBEROS"); //$NON-NLS-1$
-                            ReflectionUtils.invokeStaticMethod("org.apache.hadoop.security.UserGroupInformation", //$NON-NLS-1$
-                                    impalaClassLoader, "setConfiguration", new Object[] { conf }); //$NON-NLS-1$
-                        }
-                        // addtional jdbc settings
-                        Object jdbcObj = otherParametersMap.get(ConnParameterKeys.CONN_PARA_KEY_HIVE_ADDITIONAL_JDBC_SETTINGS);
-                        if (jdbcObj != null) {
-                            String addJDBCSetting = String.valueOf(jdbcObj);
-                            if (!"".equals(addJDBCSetting.trim())) {
-                                if (!addJDBCSetting.startsWith(";")) {
-                                    addJDBCSetting = ";" + addJDBCSetting;
+                        if (Boolean.valueOf((String) otherParametersMap.get(ConnParameterKeys.CONN_PARA_KEY_USE_KRB))) {
+                            if (Boolean.valueOf((String) metadataConn.getParameter(ConnParameterKeys.CONN_PARA_KEY_USEKEYTAB))) {
+                                String principal = (String) metadataConn
+                                        .getParameter(ConnParameterKeys.CONN_PARA_KEY_KEYTAB_PRINCIPAL);
+                                String keytabPath = (String) metadataConn.getParameter(ConnParameterKeys.CONN_PARA_KEY_KEYTAB);
+                                try {
+                                    ReflectionUtils.invokeStaticMethod("org.apache.hadoop.security.UserGroupInformation", //$NON-NLS-1$
+                                            impalaClassLoader, "loginUserFromKeytab", new String[] { principal, keytabPath });
+                                } catch (Exception e) {
+                                    throw new SQLException(e);
                                 }
-                                connURL += addJDBCSetting;
+                            } else {
+                                Object conf = Class.forName("org.apache.hadoop.conf.Configuration", true, impalaClassLoader) //$NON-NLS-1$
+                                        .newInstance();
+                                EHadoopConfProperties.AUTHENTICATION.set(conf, "KERBEROS"); //$NON-NLS-1$
+                                ReflectionUtils.invokeStaticMethod("org.apache.hadoop.security.UserGroupInformation", //$NON-NLS-1$
+                                        impalaClassLoader, "setConfiguration", new Object[] { conf }); //$NON-NLS-1$
                             }
                         }
                         IHadoopDistributionService hadoopService = getHadoopDistributionService();
