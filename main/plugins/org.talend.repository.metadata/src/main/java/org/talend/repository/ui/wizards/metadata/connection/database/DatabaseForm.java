@@ -7134,7 +7134,9 @@ public class DatabaseForm extends AbstractForm {
             if (impalaDistribution != null) {
                 hdVersion = impalaDistribution.getHDVersion(impalaVersion, false);
             }
-            updateImpalaVersionPart(impalaDistribution);
+            if (!isCreation) {
+                updateImpalaVersionPart(impalaDistribution);
+            }
             updateImpalaDriverAndMakeSelection(impalaDistribution, hdVersion);
         }
         // addtional jdbc setting
