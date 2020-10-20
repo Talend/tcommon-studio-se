@@ -20,6 +20,7 @@ import org.eclipse.jface.preference.IPreferenceStore;
 import org.talend.commons.utils.VersionUtils;
 import org.talend.core.GlobalServiceRegister;
 import org.talend.core.IESBService;
+import org.talend.core.PluginChecker;
 import org.talend.core.model.general.Project;
 import org.talend.core.model.process.JobInfo;
 import org.talend.core.model.properties.Property;
@@ -346,7 +347,9 @@ public class PomIdsHelper {
             if (!preferenceManager.exist()
                     && StringUtils.isBlank(preferenceStore.getString(MavenConstants.EXCLUDE_DELETED_ITEMS))) {
                 // for new project, set EXCLUDE_DELETED_ITEMS=true as default
-                preferenceStore.setValue(MavenConstants.EXCLUDE_DELETED_ITEMS, true);
+                if (PluginChecker.isTIS()) {
+                    preferenceStore.setValue(MavenConstants.EXCLUDE_DELETED_ITEMS, true);
+                }
             }
             preferenceManager.save();
             preferenceManagers.put(projectTechName, preferenceManager);
