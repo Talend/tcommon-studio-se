@@ -248,6 +248,17 @@ public class PomIdsHelper {
         return version;
     }
 
+    public static String getCustomJobVersion(Property property) {
+        String version = null;
+        if (property != null) {
+            if (property.getAdditionalProperties() != null) {
+                version = (String) property.getAdditionalProperties().get(MavenConstants.NAME_USER_VERSION);
+            }
+        }
+        return version;
+    }
+    
+    
     public static String getJobVersion(JobInfo jobInfo) {
         if (jobInfo != null) {
             return jobInfo.getJobVersion();
