@@ -21,7 +21,6 @@ import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
-import java.util.Map.Entry;
 import java.util.Set;
 import java.util.concurrent.TimeoutException;
 
@@ -58,8 +57,6 @@ import org.talend.commons.ui.gmf.util.DisplayUtils;
 import org.talend.commons.ui.runtime.image.EImage;
 import org.talend.commons.ui.runtime.image.ImageProvider;
 import org.talend.commons.ui.swt.dialogs.IConfigModuleDialog;
-import org.talend.core.GlobalServiceRegister;
-import org.talend.core.ILibraryManagerService;
 import org.talend.core.model.general.ModuleNeeded;
 import org.talend.core.model.general.ModuleNeeded.ELibraryInstallStatus;
 import org.talend.core.model.general.ModuleToInstall;
@@ -102,8 +99,6 @@ public class ConfigModuleDialog extends TitleAreaDialog implements IConfigModule
     private Text customUriText;
 
     private Button useCustomBtn;
-
-    private boolean useCustom;
 
     private String urlToUse;
 
@@ -539,7 +534,7 @@ public class ConfigModuleDialog extends TitleAreaDialog implements IConfigModule
                             String[] items = ConfigModuleHelper.toArray(ret);
                             Map<String, MavenArtifact> data = new HashMap<String, MavenArtifact>();
                             for (MavenArtifact art : ret) {
-                                data.put(art.getFileName(false), art);
+                                data.put(art.getFileNameWithTimeStamp(), art);
                             }
                             searchResultCombo.setData(data);
                             if (items.length > 0) {
@@ -608,7 +603,6 @@ public class ConfigModuleDialog extends TitleAreaDialog implements IConfigModule
         }
         String originalText = defaultUriTxt.getText().trim();
         String customURIWithType = MavenUrlHelper.addTypeForMavenUri(customUriText.getText(), moduleName);
-        useCustom = useCustomBtn.getSelection();
         if (useCustomBtn.getSelection()) {
             // if use custom uri:validate custom uri + check deploy status
             String errorMessage = ModuleMavenURIUtils.validateCustomMvnURI(originalText, customURIWithType);
@@ -700,6 +694,7 @@ public class ConfigModuleDialog extends TitleAreaDialog implements IConfigModule
         if (installRadioBtn.getSelection()) {
             File jarFile = new File(jarPathTxt.getText().trim());
             MavenArtifact art = MavenUrlHelper.parseMvnUrl(urlToUse);
+            moduleName = art.getFileName();
             String sha1New = ConfigModuleHelper.getSHA1(jarFile);
             art.setSha1(sha1New);
             // resolve jar locally

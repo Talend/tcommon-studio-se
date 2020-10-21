@@ -16,6 +16,7 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.InputStream;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
@@ -35,6 +36,7 @@ import org.talend.core.nexus.TalendLibsServerManager;
 import org.talend.core.runtime.maven.MavenArtifact;
 import org.talend.core.runtime.maven.MavenUrlHelper;
 import org.talend.librariesmanager.model.ModulesNeededProvider;
+import org.talend.librariesmanager.nexus.utils.VersionUtil;
 import org.talend.librariesmanager.ui.LibManagerUiPlugin;
 
 /*
@@ -45,6 +47,15 @@ public class ConfigModuleHelper {
 
     private static final String LOCAL_M2 = MavenPlugin.getMaven().getLocalRepositoryPath();
 
+    private static final Set<String> IGNORED_FILE_EXTS = new HashSet<String>();
+    static {
+        IGNORED_FILE_EXTS.add("repositories");
+        IGNORED_FILE_EXTS.add("lastUpdated");
+        IGNORED_FILE_EXTS.add("sha1");
+        IGNORED_FILE_EXTS.add("md5");
+        IGNORED_FILE_EXTS.add("pom");
+    }
+
     private ConfigModuleHelper() {
 
     }
@@ -54,7 +65,8 @@ public class ConfigModuleHelper {
         IRepositoryArtifactHandler customerRepHandler = RepositoryArtifactHandlerManager.getRepositoryHandler(customNexusServer);
         if (customerRepHandler != null) {
             List<MavenArtifact> ret = customerRepHandler.search(name, true);
-            return ret;
+
+            return VersionUtil.filterSnapshotArtifacts(ret);
         }
         return new ArrayList<MavenArtifact>();
     }
@@ -87,11 +99,16 @@ public class ConfigModuleHelper {
             if (f.isDirectory()) {
                 search(name, f, ret);
             } else {
-                if (f.isFile() && f.getName().endsWith(".jar")
-                        && StringUtils.containsIgnoreCase(FilenameUtils.getBaseName(f.getName()), name)) {
+                if (f.isFile() && StringUtils.containsIgnoreCase(FilenameUtils.getName(f.getName()), name)) {
+
+                    String ext = FilenameUtils.getExtension(f.getName());
+                    if (IGNORED_FILE_EXTS.contains(ext)) {
+                        continue;
+                    }
+
                     String path = f.getPath().substring(LOCAL_M2.length() + 1, f.getPath().length());
 
-                    MavenArtifact art = parse(path);
+                    MavenArtifact art = parse(path, ext);
                     if (art != null) {
                         ret.add(art);
                     }
@@ -100,7 +117,7 @@ public class ConfigModuleHelper {
         }
     }
 
-    public static MavenArtifact parse(String path) {
+    public static MavenArtifact parse(String path, String ext) {
         MavenArtifact art = new MavenArtifact();
         if (path == null || StringUtils.isEmpty(path)) {
             return null;
@@ -127,7 +144,7 @@ public class ConfigModuleHelper {
         art.setGroupId(sb.toString());
         art.setArtifactId(a);
         art.setVersion(v);
-        art.setType("jar");
+        art.setType(ext);
 
         String baseName = FilenameUtils.getBaseName(fname);
         int endIndex = a.length() + v.length() + 1;

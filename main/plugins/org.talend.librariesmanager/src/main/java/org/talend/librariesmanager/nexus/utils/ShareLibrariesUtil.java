@@ -60,7 +60,7 @@ public class ShareLibrariesUtil {
         return false;
     }
 
-    private static MavenArtifact getLateUpdatedMavenArtifact(List<MavenArtifact> artifactList) {
+    public static MavenArtifact getLateUpdatedMavenArtifact(List<MavenArtifact> artifactList) {
         if (artifactList.size() == 1) {
             return artifactList.get(0);
         }

@@ -191,6 +191,26 @@ public class MavenArtifact implements Cloneable {
         return name.toString();
     }
 
+    public String getFileNameWithTimeStamp() {
+        StringBuilder name = new StringBuilder();
+
+        name.append(getArtifactId());
+        String v = getVersion();
+        v = MavenUrlHelper.getSNAPSHOTVersion(v);
+        name.append(ARTIFACT_SEPARATOR).append(v);
+
+        if (StringUtils.isNotEmpty(getClassifier())) {
+            name.append(ARTIFACT_SEPARATOR).append(getClassifier());
+        }
+        name.append(GROUP_SEPARATOR);
+        if (StringUtils.isNotEmpty(getType())) {
+            name.append(getType());
+        } else {
+            name.append(MavenConstants.TYPE_JAR);
+        }
+        return name.toString();
+    }
+
     public static int compareVersion(String v1, String v2) {
         if (v1 == null && v2 == null) {
             return 0;
