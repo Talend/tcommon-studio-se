@@ -1315,7 +1315,7 @@ public class ImportBasicHandler extends AbstractImportExecutableHandler {
         IRepositoryViewObject object;
         try {
             Property property = importItem.getProperty();
-            if (property == null) {
+            if (property == null || property.eResource() == null) {
                 object = factory.getSpecificVersion(importItem.getItemId(), importItem.getItemVersion(), true);
                 property = object.getProperty();
             }
