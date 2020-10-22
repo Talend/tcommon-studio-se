@@ -1746,7 +1746,11 @@ public class RepositoryToComponentProperty {
         if (value.equals("DBTYPE")) {
             String repositoryType = connection.getDatabaseType();
             EDatabaseTypeName typeFromDbType = EDatabaseTypeName.getTypeFromDbType(repositoryType);
-            return typeFromDbType.getXMLType();
+            String type = typeFromDbType.getXMLType();
+            if (databaseType.equals(EDatabaseTypeName.EXASOL.getDisplayName())) {
+                return type.toUpperCase(); // for component
+            }
+            return type;
         }
         if ("IMPALA_ADDITIONAL_JDBC".equals(value)) { //$NON-NLS-1$
             String additionJdbc = connection.getParameters().get(ConnParameterKeys.CONN_PARA_KEY_HIVE_ADDITIONAL_JDBC_SETTINGS);
