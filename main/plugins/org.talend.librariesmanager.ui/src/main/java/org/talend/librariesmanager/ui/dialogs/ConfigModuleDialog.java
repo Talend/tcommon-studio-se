@@ -532,15 +532,11 @@ public class ConfigModuleDialog extends TitleAreaDialog implements IConfigModule
                                 ret = ConfigModuleHelper.searchRemoteArtifacts(name);
                             }
                             String[] items = ConfigModuleHelper.toArray(ret);
-                            Map<String, MavenArtifact> data = new HashMap<String, MavenArtifact>();
-                            for (MavenArtifact art : ret) {
-                                data.put(art.getFileNameWithTimeStamp(), art);
-                            }
-                            searchResultCombo.setData(data);
+                            searchResultCombo.setData(ret);
                             if (items.length > 0) {
                                 searchResultCombo.setItems(items);
                                 searchResultCombo.setText(searchResultCombo.getItem(0));
-                                resultField.setProposals(items);
+                                resultField.setProposals(ConfigModuleHelper.toArrayUnique(items));
                             } else {
                                 searchResultCombo.setText("");
                                 searchResultCombo.setItems(new String[0]);
@@ -766,8 +762,8 @@ public class ConfigModuleDialog extends TitleAreaDialog implements IConfigModule
                     // check sha1
                     String sha1Local = ConfigModuleHelper.getSHA1(localFile);
                     @SuppressWarnings("unchecked")
-                    Map<String, MavenArtifact> data = (Map<String, MavenArtifact>) searchResultCombo.getData();
-                    MavenArtifact art = data.get(moduleName);
+                    List<MavenArtifact> data = (List<MavenArtifact>) searchResultCombo.getData();
+                    MavenArtifact art = data.get(this.searchResultCombo.getSelectionIndex());
                     try {
                         // for nexus2 only
                         ConfigModuleHelper.resolveSha1(art);
@@ -832,9 +828,19 @@ public class ConfigModuleDialog extends TitleAreaDialog implements IConfigModule
     private void setupMavenURIforSearch() {
         if (validateInputFields()) {
             @SuppressWarnings("unchecked")
-            Map<String, MavenArtifact> data = (Map<String, MavenArtifact>) searchResultCombo.getData();
-            if (data != null && data.get(moduleName) != null) {
-                MavenArtifact art = data.get(moduleName);
+            List<MavenArtifact> data = (List<MavenArtifact>) searchResultCombo.getData();
+            if (data != null && !data.isEmpty()) {
+                if (this.searchResultCombo.getSelectionIndex() < 0) {
+                    int i = 0;
+                    for (MavenArtifact temp : data) {
+                        if (temp.getFileName().equals(this.searchResultCombo.getText())) {
+                            this.searchResultCombo.select(i);
+                            break;
+                        }
+                        i++;
+                    }
+                }
+                MavenArtifact art = data.get(this.searchResultCombo.getSelectionIndex());
                 defaultURIValue = MavenUrlHelper.generateMvnUrl(art);
                 defaultUriTxt.setText(defaultURIValue);
             }

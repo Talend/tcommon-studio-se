@@ -54,6 +54,7 @@ public class ConfigModuleHelper {
         IGNORED_FILE_EXTS.add("sha1");
         IGNORED_FILE_EXTS.add("md5");
         IGNORED_FILE_EXTS.add("pom");
+        IGNORED_FILE_EXTS.add("xml");
     }
 
     private ConfigModuleHelper() {
@@ -78,7 +79,19 @@ public class ConfigModuleHelper {
 
         List<String> ret = new ArrayList<String>();
         for (MavenArtifact art : artifacts) {
-            ret.add(art.getFileName(false));
+            ret.add(art.getFileName());
+        }
+        return ret.toArray(new String[0]);
+    }
+
+    public static String[] toArrayUnique(String[] arr) {
+        if (arr == null) {
+            return new String[0];
+        }
+
+        Set<String> ret = new HashSet<String>();
+        for (String art : arr) {
+            ret.add(art);
         }
         return ret.toArray(new String[0]);
     }
