@@ -60,7 +60,7 @@ public class DynamicContentProvider extends IntroProvider {
 
     public static final String CLOUD_PAGE_URL = "https://www.talend.com/builtin_news/oss/"; //$NON-NLS-1$
 
-    public static final String TRY_CLOUD_URL = "https://iam.integrationcloud.talend.com/idp/trial-registration?utm_medium=studio&utm_source=banner&utm_campaign="; //$NON-NLS-1$
+    public static final String TRY_CLOUD_URL = "https://www.talend.com/free-trial/?utm_medium=studio&utm_source=banner&utm_campaign="; //$NON-NLS-1$
 
     private static final String LEVEL_SEPARATOR = "."; //$NON-NLS-1$
 

@@ -185,4 +185,17 @@ public class Nexus2RepositoryHandler extends AbstractArtifactRepositoryHandler {
                 artifact.getArtifactId(), artifact.getVersion(), artifact.getType());
     }
 
+    public List<MavenArtifact> search(String name, boolean fromSnapshot) throws Exception {
+        List<MavenArtifact> results = new ArrayList<MavenArtifact>();
+        if (serverBean.getRepositoryId() != null) {
+            results.addAll(NexusServerUtils.search(serverBean.getServer(), serverBean.getUserName(), serverBean.getPassword(),
+                    serverBean.getRepositoryId(), name));
+        }
+        if (fromSnapshot && serverBean.getSnapshotRepId() != null) {
+            results.addAll(NexusServerUtils.search(serverBean.getServer(), serverBean.getUserName(), serverBean.getPassword(),
+                    serverBean.getSnapshotRepId(), name));
+        }
+        return results;
+    }
+
 }

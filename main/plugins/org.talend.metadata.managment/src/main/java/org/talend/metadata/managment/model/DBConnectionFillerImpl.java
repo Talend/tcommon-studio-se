@@ -676,8 +676,14 @@ public class DBConnectionFillerImpl extends MetadataFillerImpl<DatabaseConnectio
         String catalogName = getDatabaseName(dbConn);
 
         if (StringUtils.isEmpty(catalogName)) {
+            String url = null;
+            if (metaConnection != null) {
+                url = metaConnection.getUrl();
+            } else {
+                url = dbConn.getURL();
+            }
             // TDQ-16020 msjian: should get the correct catalog name
-            catalogName = getPostgresqlCatalogFromUrl(metaConnection.getUrl(), dbConn.getUsername());
+            catalogName = getPostgresqlCatalogFromUrl(url, dbConn.getUsername());
         }
 
         if (StringUtils.isNotEmpty(catalogName)) {
@@ -743,6 +749,9 @@ public class DBConnectionFillerImpl extends MetadataFillerImpl<DatabaseConnectio
     protected boolean isNullUiSchema(Connection dbConn) {
         if (dbConn instanceof DatabaseConnection) {
             String databaseOnConnWizard = ((DatabaseConnection) dbConn).getUiSchema();
+            if (StringUtils.isEmpty(databaseOnConnWizard)) {
+                return true;
+            }
             String readableName = TalendCWMService.getReadableName(dbConn, databaseOnConnWizard);
             if (StringUtils.isEmpty(databaseOnConnWizard) || StringUtils.isEmpty(readableName)) {
                 return true;

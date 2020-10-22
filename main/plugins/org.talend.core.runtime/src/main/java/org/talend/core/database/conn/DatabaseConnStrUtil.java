@@ -130,7 +130,7 @@ public class DatabaseConnStrUtil {
                     s = getStringReplace(s, EDatabaseConnVar.PORT.getVariable(), port, supportContext);
                 }
                 if (EDatabaseConnTemplate.TERADATA.equals(connStr)) {
-                    if (StringUtils.isNotBlank(sid)) {
+                    if (StringUtils.isNotBlank(TalendQuoteUtils.removeQuotesIfExist(sid))) {
                         s = getStringReplace(s, EDatabaseConnVar.SID.getVariable(), DATABASE_STRING + sid, supportContext);
                     } else {
                         s = getStringReplace(s, EDatabaseConnVar.SID.getVariable() + ",", sid, supportContext); //$NON-NLS-1$

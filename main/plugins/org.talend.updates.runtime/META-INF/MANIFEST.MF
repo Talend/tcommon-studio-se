@@ -31,7 +31,8 @@ Require-Bundle: org.eclipse.core.runtime,
  org.eclipse.ui.forms,
  org.talend.core.repository,
  org.talend.core,
- org.talend.utils
+ org.talend.utils,
+ org.talend.libraries.jackson
 Bundle-ActivationPolicy: lazy
 Service-Component: OSGI-INF/components_install.xml
 Export-Package: org.talend.updates.runtime,

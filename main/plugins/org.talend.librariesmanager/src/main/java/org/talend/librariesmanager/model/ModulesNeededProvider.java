@@ -220,9 +220,16 @@ public class ModulesNeededProvider {
 
         Set<ModuleNeeded> modulesNeeded = getModulesNeeded();
         for (ModuleNeeded moduleNeeded : modulesNeeded) {
-            if (id.equals(moduleNeeded.getId())) {
-                result = moduleNeeded;
-                break;
+            if (id.startsWith(MavenUrlHelper.MVN_PROTOCOL)) {
+                if (id.equals(moduleNeeded.getMavenUri())) {
+                    result = moduleNeeded;
+                    break;
+                }
+            } else {
+                if (id.equals(moduleNeeded.getId())) {
+                    result = moduleNeeded;
+                    break;
+                }
             }
         }
 

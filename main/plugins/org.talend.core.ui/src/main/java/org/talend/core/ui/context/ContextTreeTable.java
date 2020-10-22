@@ -501,7 +501,11 @@ public class ContextTreeTable {
         int max = 0;
         String text = "";
         for (int i = 0; i < dataLayer.getPreferredRowCount(); i++) {
-            text = dataLayer.getDataValueByPosition(colPos, i).toString();
+            Object dataValueByPosition = dataLayer.getDataValueByPosition(colPos, i);
+            if (dataValueByPosition == null) {
+                continue;
+            }
+            text = dataValueByPosition.toString();
             Point size = gc.textExtent(text, SWT.DRAW_MNEMONIC);
             int temp = size.x;
             if (temp > max) {

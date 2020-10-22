@@ -28,6 +28,7 @@ import org.talend.core.runtime.CoreRuntimePlugin;
 import org.talend.core.runtime.maven.MavenArtifact;
 import org.talend.core.runtime.maven.MavenConstants;
 import org.talend.core.runtime.maven.MavenUrlHelper;
+import org.talend.core.utils.TalendQuoteUtils;
 
 /**
  * This bean is use to manage needed moduless (perl) and libraries (java).<br/>
@@ -108,6 +109,15 @@ public class ModuleNeeded {
         DEPLOYED,
         NOT_DEPLOYED;
 
+    }
+
+    public static ModuleNeeded newInstance(String context, String value, String informationMsg, boolean required) {
+        String val = TalendQuoteUtils.removeQuotesIfExist(value);
+        if (val.startsWith(MavenUrlHelper.MVN_PROTOCOL)) {
+            return new ModuleNeeded(context, informationMsg, required, val);
+        }
+        // won't do migration for old MODULE_LIST but still make it compatible
+        return new ModuleNeeded(context, val, informationMsg, required);
     }
 
     /**
