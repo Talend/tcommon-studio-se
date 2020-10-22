@@ -10,7 +10,6 @@
     <import feature="org.eclipse.babel.nls_eclipse_fr" version="0.0.0" match="greaterOrEqual"/>
     <import feature="org.eclipse.babel.nls_eclipse_it" version="0.0.0" match="greaterOrEqual"/>
     <import feature="org.eclipse.babel.nls_eclipse_ja" version="0.0.0" match="greaterOrEqual"/>
-    <import feature="org.eclipse.babel.nls_eclipse_pt_BR" version="0.0.0" match="greaterOrEqual"/>
     <import feature="org.eclipse.babel.nls_eclipse_ru" version="0.0.0" match="greaterOrEqual"/>
     <import feature="org.eclipse.babel.nls_eclipse_zh" version="0.0.0" match="greaterOrEqual"/>
   </requires> 
