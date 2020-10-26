@@ -95,7 +95,7 @@ public class Application implements IApplication {
     @SuppressWarnings("restriction")
     @Override
     public Object start(IApplicationContext context) throws Exception {
-        if (SharedStudioUtils.installedPatch() || Boolean.getBoolean(EclipseCommandLine.PROP_TALEND_BUNDLES_DO_CLEAN)) {
+        if (Boolean.getBoolean(EclipseCommandLine.PROP_TALEND_BUNDLES_DO_CLEAN)) {
             System.setProperty(EclipseCommandLine.PROP_TALEND_BUNDLES_DO_CLEAN, Boolean.FALSE.toString());
             EclipseCommandLine.updateOrCreateExitDataPropertyWithCommand(EclipseCommandLine.CLEAN, null, false);
             EclipseCommandLine.updateOrCreateExitDataPropertyWithCommand(EclipseCommandLine.ARG_TALEND_BUNDLES_CLEANED,
@@ -175,6 +175,11 @@ public class Application implements IApplication {
             // saveConnectionBean(email);
 
             boolean needRelaunch = installLocalPatches();
+            if (SharedStudioUtils.isSharedStudioMode()) {
+                boolean needRelaunchForSharedMode = SharedStudioUtils.installedPatch();
+                needRelaunch = needRelaunch || needRelaunchForSharedMode;
+            }
+
             if (needRelaunch) {
                 setRelaunchData();
                 return IApplication.EXIT_RELAUNCH;
