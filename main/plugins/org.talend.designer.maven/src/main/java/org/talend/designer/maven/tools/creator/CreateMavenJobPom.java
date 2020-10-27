@@ -880,7 +880,6 @@ public class CreateMavenJobPom extends AbstractMavenProcessorPom {
         IMaven maven = MavenPlugin.getMaven();
         ArtifactRepository repository = maven.getLocalRepository();
         boolean isDIJob = ERepositoryObjectType.getItemType(getJobProcessor().getProperty().getItem()) == ERepositoryObjectType.PROCESS;
-        RecordingUtil.startRecording("D:/Develop/Products/ReleaseStudioes/cibuild/LOCAL_PROJECT/dependency.txt");
         for (Dependency dependency : duplicateDependencies) {
             if (((SortableDependency) dependency).isAssemblyOptional()) {
                 continue;
@@ -913,7 +912,6 @@ public class CreateMavenJobPom extends AbstractMavenProcessorPom {
             fileNode.appendChild(destNameNode);
         }
 
-        RecordingUtil.end();
     }
 
     private boolean isLatestVersion(Map<String, Set<Dependency>> duplicateLibs, Dependency dependency) {
