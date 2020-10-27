@@ -28,7 +28,7 @@ public class TimeMeasurePerformance extends TimeMeasure{
 
     private static int indent = 0;
     
-    public static void begin(String idTimer) {
+    public static void begin(String idTimer, String description) {
         startTime = System.nanoTime();
         
         init();
@@ -38,7 +38,12 @@ public class TimeMeasurePerformance extends TimeMeasure{
             indent++;
             TimeStack times = new TimeStack();
             timers.put(idTimer, times);
-            log(indent(indent) + "Start '" + idTimer + "' ..."); //$NON-NLS-1$  //$NON-NLS-2$
+            
+            String message = "Start '" + idTimer + "' ...";
+            if (description != null) {
+                message = "Start '" + idTimer + "', " + description + " ...";
+            }
+            log(indent(indent) + message); //$NON-NLS-1$  //$NON-NLS-2$
         }
     }
     
