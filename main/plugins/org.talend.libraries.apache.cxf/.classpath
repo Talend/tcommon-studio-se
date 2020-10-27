@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <classpath>
+	<classpathentry kind="src" path="src"/>
 	<classpathentry exported="true" kind="lib" path="lib/jakarta.activation-1.2.2.jar"/>
 	<classpathentry exported="true" kind="lib" path="lib/cxf-rt-wsdl-3.3.6.jar"/>
 	<classpathentry exported="true" kind="lib" path="lib/jakarta.activation-api-1.2.2.jar"/>
@@ -33,7 +34,6 @@
 	<classpathentry exported="true" kind="lib" path="lib/jakarta.jws-api-2.1.0.jar"/>
 	<classpathentry exported="true" kind="lib" path="lib/istack-commons-runtime-3.0.11.jar"/>
 	<classpathentry exported="true" kind="lib" path="lib/jakarta.xml.soap-api-1.4.2.jar"/>
-
 	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
 	<classpathentry kind="con" path="org.eclipse.pde.core.requiredPlugins"/>
 	<classpathentry kind="output" path="bin"/>

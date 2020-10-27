@@ -24,7 +24,11 @@ import java.util.Map;
 
 import javax.xml.ws.BindingProvider;
 
+import org.eclipse.core.runtime.Platform;
+import org.osgi.framework.wiring.BundleWiring;
+import org.talend.commons.exception.ExceptionHandler;
 import org.talend.core.GlobalServiceRegister;
+import org.talend.core.PluginChecker;
 import org.talend.core.classloader.ClassLoaderFactory;
 import org.talend.core.classloader.DynamicClassLoader;
 import org.talend.core.model.metadata.builder.connection.MDMConnection;
@@ -64,8 +68,9 @@ public class S60MdmConnectionHelper extends AbsMdmConnectionHelper {
 
         ClassLoader oldContextClassLoader = Thread.currentThread().getContextClassLoader();
         try {
-            Class<?> tMDMService_ServiceClass = Class.forName("org.talend.mdm.webservice.TMDMService_Service", true, classLoader);
-            Thread.currentThread().setContextClassLoader(tMDMService_ServiceClass.getClassLoader());
+            ClassLoader cxfClassLoader = Platform.getBundle(PluginChecker.APACHE_CXF_PLUGIN_ID).adapt(BundleWiring.class)
+                    .getClassLoader();
+            Thread.currentThread().setContextClassLoader(cxfClassLoader);
             Object serviceService = ReflectionUtils.newInstance("org.talend.mdm.webservice.TMDMService_Service", classLoader,
                     new Object[] { new URL(newUrl) });
             Object invokeMethod = ReflectionUtils.invokeMethod(serviceService, "getTMDMPort", new Object[0]);
@@ -82,6 +87,8 @@ public class S60MdmConnectionHelper extends AbsMdmConnectionHelper {
                 Object wsping = ReflectionUtils.newInstance("org.talend.mdm.webservice.WSPing", classLoader, new Object[0]);
                 ReflectionUtils.invokeMethod(stub, "ping", new Object[] { wsping });
             }
+        } catch (Exception e) {
+            ExceptionHandler.process(e);
         } finally {
             Thread.currentThread().setContextClassLoader(oldContextClassLoader);
         }

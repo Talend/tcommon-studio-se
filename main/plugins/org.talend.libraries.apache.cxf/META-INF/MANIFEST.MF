@@ -8,7 +8,6 @@ Bundle-ClassPath: .,
  lib/neethi-3.1.1.jar,
  lib/stax2-api-4.2.1.jar,
  lib/javax.activation-1.2.0.jar,
- lib/jaxws-api-2.3.1.jar,
  lib/cxf-core-3.3.6.jar,
  lib/cxf-rt-bindings-xml-3.3.6.jar,
  lib/cxf-rt-frontend-jaxrs-3.3.6.jar,
@@ -154,6 +153,7 @@ Export-Package: com.sun.istack,
  org.apache.cxf.jaxrs.utils,
  org.apache.cxf.jaxrs.utils.multipart,
  org.apache.cxf.jaxrs.utils.schemas,
+ org.apache.cxf.jaxws,
  org.apache.cxf.jaxws.spi,
  org.apache.cxf.jaxws22.spi,
  org.apache.cxf.logging,
@@ -198,10 +198,12 @@ Export-Package: com.sun.istack,
  org.apache.cxf.wsdl.http,
  org.apache.cxf.wsdl.service.factory,
  org.apache.cxf.wsdl11,
- org.apache.log4j,
  org.apache.neethi,
  org.apache.neethi.builders
 Require-Bundle: javax.wsdl;bundle-version="1.6.2",
- org.apache.log4j
+ org.apache.log4j,
+ org.eclipse.core.runtime,
+ javax.xml.ws
 Eclipse-BundleShape: dir
+Bundle-Activator: org.talend.libraries.apache.cxf.ApacheCxfLibPlugin
 
