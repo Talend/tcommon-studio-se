@@ -1003,12 +1003,4 @@ public final class ProcessUtils {
         }
         return false;
     }
-    
-    public static boolean isChildRouteProcess(IProcess process) {
-        List n = process.getNodesOfType("tRouteInput");
-        if (n!=null && n.size()!=0) {
-            return true;
-        }
-        return false;
-    }
 }
