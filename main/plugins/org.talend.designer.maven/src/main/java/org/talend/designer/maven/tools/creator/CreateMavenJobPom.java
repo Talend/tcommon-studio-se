@@ -749,7 +749,7 @@ public class CreateMavenJobPom extends AbstractMavenProcessorPom {
             setupDependencySetNode(document, jobCoordinate, "${talend.job.name}",
                     "${artifact.build.finalName}.${artifact.extension}", true, false);
             // add duplicate dependencies if exists
-            setupFileNode(document, duplicateLibs.values().stream().flatMap(s -> s.stream()).collect(Collectors.toSet()));
+            setupFileNode(document, duplicateLibs);
 
             PomUtil.saveAssemblyFile(assemblyFile, document);
         } catch (Exception e) {
@@ -886,18 +886,22 @@ public class CreateMavenJobPom extends AbstractMavenProcessorPom {
 
     }
 
-    private void setupFileNode(Document document, Set<Dependency> duplicateDependencies) throws CoreException {
+    private void setupFileNode(Document document, Map<String, Set<Dependency>> duplicateLibs) throws CoreException {
         Node filesNode = document.getElementsByTagName("files").item(0);
         // TESB-27614:NPE while building a route
         if (filesNode == null) {
             return;
         }
+        
+        Set<Dependency> duplicateDependencies = duplicateLibs.values().stream().flatMap(s -> s.stream()).collect(Collectors.toSet());
         if (duplicateDependencies.isEmpty()) {
             return;
         }
+        
         IMaven maven = MavenPlugin.getMaven();
         ArtifactRepository repository = maven.getLocalRepository();
         boolean isDIJob = ERepositoryObjectType.getItemType(getJobProcessor().getProperty().getItem()) == ERepositoryObjectType.PROCESS;
+        RecordingUtil.startRecording("D:/Develop/Products/ReleaseStudioes/cibuild/LOCAL_PROJECT/dependency.txt");
         for (Dependency dependency : duplicateDependencies) {
             if (((SortableDependency) dependency).isAssemblyOptional()) {
                 continue;
@@ -906,10 +910,13 @@ public class CreateMavenJobPom extends AbstractMavenProcessorPom {
                     dependency.getVersion(), dependency.getType(), dependency.getClassifier());
             Path path = new File(repository.getBasedir()).toPath().resolve(sourceLocation);
             sourceLocation = path.toString();
-            if (isDIJob && !new File(sourceLocation).exists()) {
+            
+            boolean latestVersion = isLatestVersion(duplicateLibs, dependency);
+            if (isDIJob && !latestVersion && !new File(sourceLocation).exists()) {
                 CommonExceptionHandler.warn("Job dependency [" + sourceLocation + "] does not exist!");
                 continue;
             }
+            
             String destName = path.getFileName().toString();
             Node fileNode = document.createElement("file");
             filesNode.appendChild(fileNode);
@@ -926,8 +933,29 @@ public class CreateMavenJobPom extends AbstractMavenProcessorPom {
             destNameNode.setTextContent(destName);
             fileNode.appendChild(destNameNode);
         }
+
+        RecordingUtil.end();
     }
 
+    private boolean isLatestVersion(Map<String, Set<Dependency>> duplicateLibs, Dependency dependency) {
+        String coordinate = getCheckDupCoordinate(dependency);
+        Set<Dependency> dependencies = duplicateLibs.get(coordinate);
+        if(dependencies.size() == 1) {
+            return true;
+        }
+        
+        Iterator<Dependency> iterator = dependencies.iterator();
+        while(iterator.hasNext()) {
+            Dependency next = iterator.next();
+            int compareTo = new ComparableVersion(dependency.getVersion()).compareTo(new ComparableVersion(next.getVersion()));
+            if(compareTo < 0) {
+                return false;
+            }
+        }
+        
+        return true;
+    }
+    
     protected Plugin addSkipDockerMavenPlugin() {
         Plugin plugin = new Plugin();
 
