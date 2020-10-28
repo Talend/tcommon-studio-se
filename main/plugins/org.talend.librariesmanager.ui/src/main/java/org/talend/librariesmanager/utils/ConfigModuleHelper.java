@@ -103,7 +103,8 @@ public class ConfigModuleHelper {
             search(name, m2Dir, ret);
         }
 
-        return ret;
+        return VersionUtil.filterSnapshotArtifacts(ret);
+
     }
 
     private static void search(String name, File dir, List<MavenArtifact> ret) throws Exception {
@@ -160,11 +161,16 @@ public class ConfigModuleHelper {
         art.setType(ext);
 
         String baseName = FilenameUtils.getBaseName(fname);
+        if (!baseName.contains(v)) {
+            return null;
+        }
+
         int endIndex = a.length() + v.length() + 1;
         if (baseName.length() > endIndex + 1) {
             String classifier = baseName.substring(endIndex + 1, baseName.length());
             art.setClassifier(classifier);
         }
+
         return art;
     }
 
