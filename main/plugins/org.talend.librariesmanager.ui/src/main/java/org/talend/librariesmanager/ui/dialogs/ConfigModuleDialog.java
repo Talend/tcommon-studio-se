@@ -723,7 +723,7 @@ public class ConfigModuleDialog extends TitleAreaDialog implements IConfigModule
                                     List<MavenArtifact> remoteArtifacts = null;
                                     try {
                                         remoteArtifacts = ConfigModuleHelper.searchRemoteArtifacts(art.getGroupId(),
-                                                art.getArtifactId(), art.getVersion());
+                                                art.getArtifactId(), null);
                                     } catch (Exception e) {
                                         ExceptionHandler.process(e);
                                     }
@@ -787,6 +787,7 @@ public class ConfigModuleDialog extends TitleAreaDialog implements IConfigModule
                     DownloadModuleRunnableWithLicenseDialog downloadModuleRunnable = new DownloadModuleRunnableWithLicenseDialog(
                             toInstall, getShell());
                     runProgress(downloadModuleRunnable);
+                    this.updateIndex(defaultURI);
                 }
             }
         }

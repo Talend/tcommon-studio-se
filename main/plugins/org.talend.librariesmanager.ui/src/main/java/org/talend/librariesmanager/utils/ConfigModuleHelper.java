@@ -215,7 +215,6 @@ public class ConfigModuleHelper {
         for (MavenArtifact art : artifacts) {
             if (StringUtils.equals(art.getGroupId(), artifact.getGroupId())
                     && StringUtils.equals(art.getArtifactId(), artifact.getArtifactId())
-                    && StringUtils.equals(art.getVersion(), artifact.getVersion())
                     && StringUtils.equals(art.getClassifier(), artifact.getClassifier())
                     && StringUtils.equals(art.getType(), artifact.getType())
                     && StringUtils.equals(art.getSha1(), artifact.getSha1())) {
@@ -229,18 +228,20 @@ public class ConfigModuleHelper {
         ArtifactRepositoryBean customNexusServer = TalendLibsServerManager.getInstance().getCustomNexusServer();
         IRepositoryArtifactHandler customerRepHandler = RepositoryArtifactHandlerManager.getRepositoryHandler(customNexusServer);
         if (customerRepHandler != null) {
-            boolean fromSnapshot = false;
-            if (v != null && v.endsWith(MavenUrlHelper.VERSION_SNAPSHOT)) {
-                fromSnapshot = true;
-            }
-            List<MavenArtifact> ret = customerRepHandler.search(g, a, v, true, fromSnapshot);
+            List<MavenArtifact> ret = customerRepHandler.search(g, a, v, true, true);
 
             if (customNexusServer.getType() == ArtifactRepositoryBean.NexusType.NEXUS_2.name()) {
                 // resolve sha1
                 for (MavenArtifact art : ret) {
-                    String sha1 = customerRepHandler.resolveRemoteSha1(art, !fromSnapshot);
+                    String sha1 = customerRepHandler.resolveRemoteSha1(art, false);
                     if (sha1 != null) {
                         art.setSha1(sha1);
+                    }
+                    if (StringUtils.isEmpty(art.getSha1())) {
+                        sha1 = customerRepHandler.resolveRemoteSha1(art, true);
+                        if (sha1 != null) {
+                            art.setSha1(sha1);
+                        }
                     }
                 }
             }

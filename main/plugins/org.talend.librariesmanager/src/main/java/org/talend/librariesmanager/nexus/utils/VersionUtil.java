@@ -41,13 +41,20 @@ public class VersionUtil {
 
         for (MavenArtifact art : arts) {
             if (isSnapshot(art.getVersion())) {
-                String key = art.getGroupId() + "-" + art.getArtifactId();
+                String v = art.getVersion().split("-")[0];
+                String key = art.getGroupId() + ":" + art.getArtifactId() + ":" + v;
+                if (art.getType() != null) {
+                    key = key + ":" + art.getType();
+                }
+                if (art.getClassifier() != null) {
+                    key = key + ":" + art.getClassifier();
+                }
                 List<MavenArtifact> groupArts = null;
                 if (snapshotArtifacts.containsKey(key)) {
                     groupArts = snapshotArtifacts.get(key);
-                    groupArts.add(art);
                 } else {
                     groupArts = new ArrayList<MavenArtifact>();
+                    snapshotArtifacts.put(key, groupArts);
                 }
                 groupArts.add(art);
             } else {
@@ -57,9 +64,12 @@ public class VersionUtil {
         
         Set<Entry<String, List<MavenArtifact>>> entries = snapshotArtifacts.entrySet();
         for (Entry<String, List<MavenArtifact>> entry : entries) {
-            MavenArtifact art = ShareLibrariesUtil.getLateUpdatedMavenArtifact(entry.getValue());
-            if (art != null) {
-                ret.add(art);
+            if (!entry.getValue().isEmpty()) {
+                MavenArtifact art = entry.getValue().get(0);
+                if (art != null) {
+                    art.setVersion(MavenUrlHelper.getSNAPSHOTVersion(art.getVersion()));
+                    ret.add(art);
+                }
             }
         }
 
@@ -67,7 +77,7 @@ public class VersionUtil {
     }
 
     public static boolean isSnapshot(String v) {
-        if (v != null && v.toUpperCase().endsWith(MavenUrlHelper.VERSION_SNAPSHOT)) {
+        if (v != null && (v.contains("-") || v.toUpperCase().endsWith(MavenUrlHelper.VERSION_SNAPSHOT))) {
             return true;
         }
         return false;
