@@ -126,25 +126,46 @@ public abstract class AbsNexus3SearchHandler implements INexus3SearchHandler {
         if (resultArray != null) {
             for (int i = 0; i < resultArray.size(); i++) {
                 JSONObject jsonObject = resultArray.getJSONObject(i);
-                MavenArtifact artifact = new MavenArtifact();
-                artifact.setGroupId(jsonObject.getString("group")); //$NON-NLS-1$
-                artifact.setArtifactId(jsonObject.getString("name")); //$NON-NLS-1$
-                artifact.setVersion(jsonObject.getString("version")); //$NON-NLS-1$
-                JSONArray assertsArray = jsonObject.getJSONArray("assets"); //$NON-NLS-1$                
-                artifact.setType(getPackageType(assertsArray));
-                fillCheckSumData(assertsArray, artifact);
-                resultList.add(artifact);
+                String group = jsonObject.getString("group");//$NON-NLS-1$
+                String name = jsonObject.getString("name");//$NON-NLS-1$
+                String version = jsonObject.getString("version");//$NON-NLS-1$
+                JSONArray assertsArray = jsonObject.getJSONArray("assets");//$NON-NLS-1$
+                if (assertsArray != null) {
+                    for (int j = 0; j < assertsArray.size(); j++) {
+                        JSONObject assertsObject = assertsArray.getJSONObject(j);
+                        String packageType = getPackageType(assertsObject);
+                        if (packageType != null) {
+                            MavenArtifact artifact = new MavenArtifact();
+                            String path = assertsObject.getString("path"); //$NON-NLS-1$
+                            String classifier = null;
+                            String regex = name + "-" + version;
+                            String[] split = path.split(regex);
+
+                            if (split != null && split.length == 2) {
+                                if (split[1].length() - 1 > packageType.length()) {
+                                    classifier = split[1].substring(1, split[1].length() - packageType.length() - 1);
+                                }
+                            }
+                            artifact.setGroupId(group);
+                            artifact.setArtifactId(name);
+                            artifact.setVersion(version);
+                            artifact.setType(packageType);
+                            artifact.setClassifier(classifier);
+                            fillCheckSumData(assertsArray, artifact);
+                            resultList.add(artifact);
+                        }
+
+                    }
+                }
+
             }
         }
 
         return continuationToken;
     }
 
-    protected String getPackageType(JSONArray assertsArray) {
+    protected String getPackageType(JSONObject jsonObject) {
         String type = null;
-        if (assertsArray != null) {
-            for (int i = 0; i < assertsArray.size(); i++) {
-                JSONObject jsonObject = assertsArray.getJSONObject(i);
                 String path = jsonObject.getString("path"); //$NON-NLS-1$
                 if (path != null && path.endsWith(".exe")) { //$NON-NLS-1$
                     return "exe"; //$NON-NLS-1$
@@ -158,8 +179,10 @@ public abstract class AbsNexus3SearchHandler implements INexus3SearchHandler {
                 if (path != null && path.endsWith(".pom")) { //$NON-NLS-1$
                     type = "pom"; //$NON-NLS-1$
                 }
-            }
-        }
+                if (path != null && path.endsWith(".dll")) { //$NON-NLS-1$
+                    return "dll"; //$NON-NLS-1$
+                }
+
         return type;
     }
 
