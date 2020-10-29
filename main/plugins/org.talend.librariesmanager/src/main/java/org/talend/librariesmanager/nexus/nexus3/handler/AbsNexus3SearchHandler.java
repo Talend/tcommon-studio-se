@@ -31,6 +31,7 @@ import org.eclipse.core.runtime.IProgressMonitor;
 import org.talend.core.nexus.ArtifactRepositoryBean;
 import org.talend.core.nexus.HttpClientTransport;
 import org.talend.core.runtime.maven.MavenArtifact;
+import org.talend.core.runtime.maven.MavenUrlHelper;
 
 import net.sf.json.JSONArray;
 import net.sf.json.JSONObject;
@@ -126,31 +127,40 @@ public abstract class AbsNexus3SearchHandler implements INexus3SearchHandler {
         if (resultArray != null) {
             for (int i = 0; i < resultArray.size(); i++) {
                 JSONObject jsonObject = resultArray.getJSONObject(i);
+                String repository = jsonObject.getString("repository");//$NON-NLS-1$
                 String group = jsonObject.getString("group");//$NON-NLS-1$
                 String name = jsonObject.getString("name");//$NON-NLS-1$
                 String version = jsonObject.getString("version");//$NON-NLS-1$
                 JSONArray assertsArray = jsonObject.getJSONArray("assets");//$NON-NLS-1$
+
                 if (assertsArray != null) {
                     for (int j = 0; j < assertsArray.size(); j++) {
                         JSONObject assertsObject = assertsArray.getJSONObject(j);
                         String packageType = getPackageType(assertsObject);
                         if (packageType != null) {
                             MavenArtifact artifact = new MavenArtifact();
+                            boolean isSnapshot = false;
                             String path = assertsObject.getString("path"); //$NON-NLS-1$
+                            if (StringUtils.contains(path, MavenUrlHelper.VERSION_SNAPSHOT)) {// $NON-NLS-1$
+                                isSnapshot = true;
+                            }
                             String classifier = null;
                             String regex = name + "-" + version;
-                            String[] split = path.split(regex);
-
-                            if (split != null && split.length == 2) {
-                                if (split[1].length() - 1 > packageType.length()) {
-                                    classifier = split[1].substring(1, split[1].length() - packageType.length() - 1);
-                                }
+                            // javax/xml/bind/acxb-test/2.2.6/acxb-test-2.2.6-jdk10.dll
+                            path = StringUtils.removeEnd(path, "." + packageType);
+                            // javax/xml/bind/acxb-test/2.2.6/acxb-test-2.2.6-jdk10
+                            path = StringUtils.substringAfter(path, regex);// -jdk10
+                            path = StringUtils.stripStart(path, "-");// jdk10
+                            if (StringUtils.isNotBlank(path)) {
+                                classifier = path;
                             }
                             artifact.setGroupId(group);
                             artifact.setArtifactId(name);
                             artifact.setVersion(version);
                             artifact.setType(packageType);
-                            artifact.setClassifier(classifier);
+                            if (!isSnapshot) {
+                                artifact.setClassifier(classifier);
+                            }
                             fillCheckSumData(assertsArray, artifact);
                             resultList.add(artifact);
                         }
@@ -166,22 +176,22 @@ public abstract class AbsNexus3SearchHandler implements INexus3SearchHandler {
 
     protected String getPackageType(JSONObject jsonObject) {
         String type = null;
-                String path = jsonObject.getString("path"); //$NON-NLS-1$
-                if (path != null && path.endsWith(".exe")) { //$NON-NLS-1$
-                    return "exe"; //$NON-NLS-1$
-                }
-                if (path != null && path.endsWith(".zip")) { //$NON-NLS-1$
-                    return "zip"; //$NON-NLS-1$
-                }
-                if (path != null && path.endsWith(".jar")) { //$NON-NLS-1$
-                    return "jar"; //$NON-NLS-1$
-                }
-                if (path != null && path.endsWith(".pom")) { //$NON-NLS-1$
-                    type = "pom"; //$NON-NLS-1$
-                }
-                if (path != null && path.endsWith(".dll")) { //$NON-NLS-1$
-                    return "dll"; //$NON-NLS-1$
-                }
+        String path = jsonObject.getString("path"); //$NON-NLS-1$
+        if (path != null && path.endsWith(".exe")) { //$NON-NLS-1$
+            return "exe"; //$NON-NLS-1$
+        }
+        if (path != null && path.endsWith(".zip")) { //$NON-NLS-1$
+            return "zip"; //$NON-NLS-1$
+        }
+        if (path != null && path.endsWith(".jar")) { //$NON-NLS-1$
+            return "jar"; //$NON-NLS-1$
+        }
+        if (path != null && path.endsWith(".pom")) { //$NON-NLS-1$
+            type = "pom"; //$NON-NLS-1$
+        }
+        if (path != null && path.endsWith(".dll")) { //$NON-NLS-1$
+            return "dll"; //$NON-NLS-1$
+        }
 
         return type;
     }
