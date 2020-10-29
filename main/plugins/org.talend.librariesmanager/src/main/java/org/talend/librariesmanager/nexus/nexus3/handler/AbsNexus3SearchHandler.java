@@ -16,7 +16,9 @@ import java.net.URI;
 import java.net.URISyntaxException;
 import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 import org.apache.commons.codec.binary.Base64;
 import org.apache.commons.lang3.StringUtils;
@@ -39,6 +41,13 @@ import net.sf.json.JSONObject;
 public abstract class AbsNexus3SearchHandler implements INexus3SearchHandler {
     private static Logger log = Logger.getLogger(AbsNexus3SearchHandler.class);
     protected ArtifactRepositoryBean serverBean;
+
+    private static final Set<String> IGNORED_TYPES = new HashSet<String>();
+    static {
+        IGNORED_TYPES.add("pom");
+        IGNORED_TYPES.add("sha1");
+        IGNORED_TYPES.add("md5");
+    }
 
     /**
      * {@value}
@@ -161,12 +170,15 @@ public abstract class AbsNexus3SearchHandler implements INexus3SearchHandler {
                             if (!isSnapshot) {
                                 artifact.setClassifier(classifier);
                             }
-                            fillCheckSumData(assertsArray, artifact);
-                            resultList.add(artifact);
+                            if (artifact.getType() != null) {
+                                fillCheckSumData(assertsArray, artifact);
+                                resultList.add(artifact);
+                            }
                         }
 
                     }
                 }
+
 
             }
         }
@@ -176,24 +188,17 @@ public abstract class AbsNexus3SearchHandler implements INexus3SearchHandler {
 
     protected String getPackageType(JSONObject jsonObject) {
         String type = null;
+
         String path = jsonObject.getString("path"); //$NON-NLS-1$
-        if (path != null && path.endsWith(".exe")) { //$NON-NLS-1$
-            return "exe"; //$NON-NLS-1$
+        int idx = path.lastIndexOf('.');
+        if (idx > -1) {
+            type = path.substring(idx + 1);
         }
-        if (path != null && path.endsWith(".zip")) { //$NON-NLS-1$
-            return "zip"; //$NON-NLS-1$
-        }
-        if (path != null && path.endsWith(".jar")) { //$NON-NLS-1$
-            return "jar"; //$NON-NLS-1$
-        }
-        if (path != null && path.endsWith(".pom")) { //$NON-NLS-1$
-            type = "pom"; //$NON-NLS-1$
-        }
-        if (path != null && path.endsWith(".dll")) { //$NON-NLS-1$
-            return "dll"; //$NON-NLS-1$
+        if (!IGNORED_TYPES.contains(type)) {
+            return type;
         }
 
-        return type;
+        return null;
     }
 
     private void fillCheckSumData(JSONArray assertsArray, MavenArtifact artifact) {

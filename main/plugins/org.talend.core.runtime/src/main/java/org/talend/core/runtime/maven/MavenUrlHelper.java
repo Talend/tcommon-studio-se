@@ -380,4 +380,14 @@ public class MavenUrlHelper {
         }
         return buffer.toString();
     }
+
+    public static String getSNAPSHOTVersion(String rVersion) {
+        if (rVersion == null) {
+            return rVersion;
+        }
+        if (rVersion.contains("-")) {
+            return rVersion.substring(0, rVersion.indexOf("-") + 1) + MavenUrlHelper.VERSION_SNAPSHOT;
+        }
+        return rVersion;
+    }
 }
