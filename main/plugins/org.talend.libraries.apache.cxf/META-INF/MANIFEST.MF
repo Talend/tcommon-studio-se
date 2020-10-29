@@ -192,6 +192,7 @@ Export-Package: com.sun.istack,
  org.apache.cxf.wsdl11,
  org.apache.neethi,
  org.apache.neethi.builders,
+ javax.xml.ws,
  org.talend.libraries.apache.cxf
 Require-Bundle: javax.wsdl;bundle-version="1.6.2",
  org.apache.log4j,

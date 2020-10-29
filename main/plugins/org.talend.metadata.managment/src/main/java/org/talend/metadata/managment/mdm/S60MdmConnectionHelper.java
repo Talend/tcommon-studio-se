@@ -24,7 +24,6 @@ import java.util.Map;
 
 import javax.xml.ws.BindingProvider;
 
-import org.talend.commons.exception.ExceptionHandler;
 import org.talend.core.GlobalServiceRegister;
 import org.talend.core.classloader.ClassLoaderFactory;
 import org.talend.core.classloader.DynamicClassLoader;
@@ -84,8 +83,6 @@ public class S60MdmConnectionHelper extends AbsMdmConnectionHelper {
                 Object wsping = ReflectionUtils.newInstance("org.talend.mdm.webservice.WSPing", classLoader, new Object[0]);
                 ReflectionUtils.invokeMethod(stub, "ping", new Object[] { wsping });
             }
-        } catch (Exception e) {
-            ExceptionHandler.process(e);
         } finally {
             Thread.currentThread().setContextClassLoader(oldContextClassLoader);
         }
