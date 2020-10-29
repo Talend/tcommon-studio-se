@@ -24,17 +24,15 @@ import java.util.Map;
 
 import javax.xml.ws.BindingProvider;
 
-import org.eclipse.core.runtime.Platform;
-import org.osgi.framework.wiring.BundleWiring;
 import org.talend.commons.exception.ExceptionHandler;
 import org.talend.core.GlobalServiceRegister;
-import org.talend.core.PluginChecker;
 import org.talend.core.classloader.ClassLoaderFactory;
 import org.talend.core.classloader.DynamicClassLoader;
 import org.talend.core.model.metadata.builder.connection.MDMConnection;
 import org.talend.core.model.metadata.designerproperties.MDMVersions;
 import org.talend.core.service.IMDMWebServiceHook;
 import org.talend.core.utils.ReflectionUtils;
+import org.talend.libraries.apache.cxf.ApacheCxfLibPlugin;
 
 /**
  * created by wchen on Apr 15, 2015 Detailled comment
@@ -68,8 +66,7 @@ public class S60MdmConnectionHelper extends AbsMdmConnectionHelper {
 
         ClassLoader oldContextClassLoader = Thread.currentThread().getContextClassLoader();
         try {
-            ClassLoader cxfClassLoader = Platform.getBundle(PluginChecker.APACHE_CXF_PLUGIN_ID).adapt(BundleWiring.class)
-                    .getClassLoader();
+            ClassLoader cxfClassLoader = ApacheCxfLibPlugin.class.getClassLoader();
             Thread.currentThread().setContextClassLoader(cxfClassLoader);
             Object serviceService = ReflectionUtils.newInstance("org.talend.mdm.webservice.TMDMService_Service", classLoader,
                     new Object[] { new URL(newUrl) });
