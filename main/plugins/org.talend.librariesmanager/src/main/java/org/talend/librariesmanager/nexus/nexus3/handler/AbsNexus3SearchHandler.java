@@ -16,9 +16,7 @@ import java.net.URI;
 import java.net.URISyntaxException;
 import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
-import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
 
 import org.apache.commons.codec.binary.Base64;
 import org.apache.commons.lang3.StringUtils;
@@ -32,6 +30,7 @@ import org.apache.log4j.Logger;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.talend.core.nexus.ArtifactRepositoryBean;
 import org.talend.core.nexus.HttpClientTransport;
+import org.talend.core.nexus.NexusServerUtils;
 import org.talend.core.runtime.maven.MavenArtifact;
 import org.talend.core.runtime.maven.MavenUrlHelper;
 
@@ -42,12 +41,6 @@ public abstract class AbsNexus3SearchHandler implements INexus3SearchHandler {
     private static Logger log = Logger.getLogger(AbsNexus3SearchHandler.class);
     protected ArtifactRepositoryBean serverBean;
 
-    private static final Set<String> IGNORED_TYPES = new HashSet<String>();
-    static {
-        IGNORED_TYPES.add("pom");
-        IGNORED_TYPES.add("sha1");
-        IGNORED_TYPES.add("md5");
-    }
 
     /**
      * {@value}
@@ -194,7 +187,7 @@ public abstract class AbsNexus3SearchHandler implements INexus3SearchHandler {
         if (idx > -1) {
             type = path.substring(idx + 1);
         }
-        if (!IGNORED_TYPES.contains(type)) {
+        if (!NexusServerUtils.IGNORED_TYPES.contains(type)) {
             return type;
         }
 
