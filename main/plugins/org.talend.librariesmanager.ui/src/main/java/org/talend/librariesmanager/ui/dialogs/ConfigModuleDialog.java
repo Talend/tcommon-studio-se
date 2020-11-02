@@ -297,6 +297,13 @@ public class ConfigModuleDialog extends TitleAreaDialog implements IConfigModule
 
         jarPathTxt = new Text(repGroupSubComp, SWT.BORDER);
         jarPathTxt.setLayoutData(new GridData(GridData.FILL_HORIZONTAL | GridData.GRAB_HORIZONTAL));
+        jarPathTxt.addModifyListener(new ModifyListener() {
+
+            @Override
+            public void modifyText(ModifyEvent e) {
+                handJarPathChanged();
+            }
+        });
 
         browseButton = new Button(repGroupSubComp, SWT.PUSH);
         browseButton.setText("...");//$NON-NLS-1$
@@ -484,7 +491,10 @@ public class ConfigModuleDialog extends TitleAreaDialog implements IConfigModule
             return;
         }
         this.jarPathTxt.setText(result);
-        File file = new File(result);
+    }
+
+    private void handJarPathChanged() {
+        File file = new File(this.jarPathTxt.getText());
         moduleName = file.getName();
 
         final IRunnableWithProgress detectProgress = new IRunnableWithProgress() {
