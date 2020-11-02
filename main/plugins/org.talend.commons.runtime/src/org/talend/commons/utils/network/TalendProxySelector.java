@@ -179,6 +179,10 @@ public class TalendProxySelector extends ProxySelector {
                     || IProxyChangeEvent.NONPROXIED_HOSTS_CHANGED == changeEvent) {
                 if (this.excludeLoopbackAddressAutomatically && proxyManager.isProxiesEnabled()) {
                     List<String> localLoopbackAddresses = NetworkUtil.getLocalLoopbackAddresses(false);
+                    final String localhost = "localhost";
+                    if (!localLoopbackAddresses.contains(localhost)) {
+                        localLoopbackAddresses.add(localhost);
+                    }
                     if (org.eclipse.core.internal.net.ProxySelector
                             .canSetBypassHosts(org.eclipse.core.internal.net.ProxySelector.getDefaultProvider())) {
                         List<String> configuredProxies = Arrays.asList(proxyManager.getNonProxiedHosts());
