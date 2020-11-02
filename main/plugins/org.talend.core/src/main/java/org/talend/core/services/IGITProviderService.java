@@ -48,6 +48,8 @@ public interface IGITProviderService extends IService {
 
     void createOrUpdateGitIgnoreFile(IProject eclipseProject) throws CoreException;
 
+    String getDefaultBranch(Project project);
+
     public static IGITProviderService get() {
         GlobalServiceRegister register = GlobalServiceRegister.getDefault();
         if (!register.isServiceRegistered(IGITProviderService.class)) {
