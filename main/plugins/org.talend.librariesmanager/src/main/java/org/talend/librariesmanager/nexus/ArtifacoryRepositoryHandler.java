@@ -259,6 +259,17 @@ public class ArtifacoryRepositoryHandler extends AbstractArtifactRepositoryHandl
                             artifact.setVersion(v);
                             artifact.setType(type);
                             artifact.setLastUpdated(lastUpdated);
+                            String classifier = null;
+                            String regex = a + "-" + v;
+                            // javax/xml/bind/acxb-test/2.2.6/acxb-test-2.2.6-jdk10.dll
+                            artifactPath = StringUtils.removeEnd(artifactPath, "." + type);
+                            // javax/xml/bind/acxb-test/2.2.6/acxb-test-2.2.6-jdk10
+                            artifactPath = StringUtils.substringAfter(artifactPath, regex);// -jdk10
+                            artifactPath = StringUtils.stripStart(artifactPath, "-");// jdk10
+                            if (StringUtils.isNotBlank(artifactPath)) {
+                                classifier = artifactPath;
+                            }
+                            artifact.setClassifier(classifier);
                             fillChecksumData(jsonObject, artifact);
                             resultList.add(artifact);
                         }
