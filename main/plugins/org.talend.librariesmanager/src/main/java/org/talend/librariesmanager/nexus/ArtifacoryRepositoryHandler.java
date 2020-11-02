@@ -41,6 +41,7 @@ import org.talend.core.runtime.maven.MavenArtifact;
 import org.talend.core.runtime.maven.MavenUrlHelper;
 import org.talend.designer.maven.aether.RepositorySystemFactory;
 import org.talend.librariesmanager.i18n.Messages;
+import org.talend.librariesmanager.nexus.utils.ShareLibrariesUtil;
 import org.talend.utils.sugars.TypedReturnCode;
 
 import net.sf.json.JSONArray;
@@ -259,17 +260,11 @@ public class ArtifacoryRepositoryHandler extends AbstractArtifactRepositoryHandl
                             artifact.setVersion(v);
                             artifact.setType(type);
                             artifact.setLastUpdated(lastUpdated);
-                            String classifier = null;
-                            String regex = a + "-" + v;
-                            // javax/xml/bind/acxb-test/2.2.6/acxb-test-2.2.6-jdk10.dll
-                            artifactPath = StringUtils.removeEnd(artifactPath, "." + type);
-                            // javax/xml/bind/acxb-test/2.2.6/acxb-test-2.2.6-jdk10
-                            artifactPath = StringUtils.substringAfter(artifactPath, regex);// -jdk10
-                            artifactPath = StringUtils.stripStart(artifactPath, "-");// jdk10
-                            if (StringUtils.isNotBlank(artifactPath)) {
-                                classifier = artifactPath;
+                            if (!StringUtils.contains(artifactPath, MavenUrlHelper.VERSION_SNAPSHOT)) {// $NON-NLS-1$
+                                String regex = a + "-" + v;
+                                String classifier = ShareLibrariesUtil.getMavenClassifier(artifactPath, regex, type);
+                                artifact.setClassifier(classifier);
                             }
-                            artifact.setClassifier(classifier);
                             fillChecksumData(jsonObject, artifact);
                             resultList.add(artifact);
                         }

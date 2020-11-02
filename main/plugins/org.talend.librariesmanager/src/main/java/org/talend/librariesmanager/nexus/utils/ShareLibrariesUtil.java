@@ -123,4 +123,17 @@ public class ShareLibrariesUtil {
         }
         return sb.toString();
     }
+
+    public static String getMavenClassifier(String path, String regex, String packageType) {
+        String classifier = null;
+        // javax/xml/bind/acxb-test/2.2.6/acxb-test-2.2.6-jdk10.dll
+        path = StringUtils.removeEnd(path, "." + packageType);
+        // javax/xml/bind/acxb-test/2.2.6/acxb-test-2.2.6-jdk10
+        path = StringUtils.substringAfter(path, regex);// -jdk10
+        path = StringUtils.stripStart(path, "-");// jdk10
+        if (StringUtils.isNotBlank(path)) {
+            classifier = path;
+        }
+        return classifier;
+    }
 }

@@ -33,6 +33,7 @@ import org.talend.core.nexus.HttpClientTransport;
 import org.talend.core.nexus.NexusServerUtils;
 import org.talend.core.runtime.maven.MavenArtifact;
 import org.talend.core.runtime.maven.MavenUrlHelper;
+import org.talend.librariesmanager.nexus.utils.ShareLibrariesUtil;
 
 import net.sf.json.JSONArray;
 import net.sf.json.JSONObject;
@@ -146,16 +147,8 @@ public abstract class AbsNexus3SearchHandler implements INexus3SearchHandler {
                             if (StringUtils.contains(path, MavenUrlHelper.VERSION_SNAPSHOT)) {// $NON-NLS-1$
                                 isSnapshot = true;
                             }
-                            String classifier = null;
                             String regex = name + "-" + version;
-                            // javax/xml/bind/acxb-test/2.2.6/acxb-test-2.2.6-jdk10.dll
-                            path = StringUtils.removeEnd(path, "." + packageType);
-                            // javax/xml/bind/acxb-test/2.2.6/acxb-test-2.2.6-jdk10
-                            path = StringUtils.substringAfter(path, regex);// -jdk10
-                            path = StringUtils.stripStart(path, "-");// jdk10
-                            if (StringUtils.isNotBlank(path)) {
-                                classifier = path;
-                            }
+                            String classifier = ShareLibrariesUtil.getMavenClassifier(path, regex, packageType);
                             artifact.setGroupId(group);
                             artifact.setArtifactId(name);
                             artifact.setVersion(version);
