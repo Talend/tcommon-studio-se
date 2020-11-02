@@ -653,13 +653,17 @@ public class CreateMavenJobPom extends AbstractMavenProcessorPom {
         ERepositoryObjectType.getAllTypesOfCodes().forEach(t -> dependencies.addAll(PomUtil.getCodesDependencies(t)));
 
         // libraries of talend/3rd party
-        dependencies.addAll(processor.getNeededModules(TalendProcessOptionConstants.MODULES_EXCLUDE_SHADED).stream()
-                .filter(m -> !m.isExcluded()).map(m -> createDenpendency(m, false)).collect(Collectors.toSet()));
+        Set<Dependency> parentJobDependencies = processor.getNeededModules(TalendProcessOptionConstants.MODULES_EXCLUDE_SHADED).stream()
+                .filter(m -> !m.isExcluded()).map(m -> createDenpendency(m, false)).collect(Collectors.toSet());
+        dependencies.addAll(parentJobDependencies);
 
         // missing modules from the job generation of children
-        childrenJobInfo.forEach(j -> dependencies
-                .addAll(LastGenerationInfo.getInstance().getModulesNeededPerJob(j.getJobId(), j.getJobVersion()).stream()
-                        .filter(m -> !m.isExcluded()).map(m -> createDenpendency(m, false)).collect(Collectors.toSet())));
+        Map<String, Set<Dependency>> childjobDependencies = new HashMap<String, Set<Dependency>>();
+        childrenJobInfo.forEach(j -> {
+            Set<Dependency> collectDependency = LastGenerationInfo.getInstance().getModulesNeededPerJob(j.getJobId(), j.getJobVersion()).stream()
+                    .filter(m -> !m.isExcluded()).map(m -> createDenpendency(m, false)).collect(Collectors.toSet());
+            dependencies.addAll(collectDependency);
+            childjobDependencies.put(j.getJobId(), collectDependency);});
 
         Set<ModuleNeeded> modules = new HashSet<>();
         // testcase modules from current job (optional)
@@ -728,7 +732,7 @@ public class CreateMavenJobPom extends AbstractMavenProcessorPom {
             setupDependencySetNode(document, jobCoordinate, "${talend.job.name}",
                     "${artifact.build.finalName}.${artifact.extension}", true, false);
             // add duplicate dependencies if exists
-            setupFileNode(document, duplicateLibs);
+            setupFileNode(document, parentJobDependencies, childjobDependencies, duplicateLibs);
 
             PomUtil.saveAssemblyFile(assemblyFile, document);
         } catch (Exception e) {
@@ -865,7 +869,7 @@ public class CreateMavenJobPom extends AbstractMavenProcessorPom {
 
     }
 
-    private void setupFileNode(Document document, Map<String, Set<Dependency>> duplicateLibs) throws CoreException {
+    private void setupFileNode(Document document, Set<Dependency> parentJobDependencies, Map<String, Set<Dependency>> childJobDependencies, Map<String, Set<Dependency>> duplicateLibs) throws CoreException {
         Node filesNode = document.getElementsByTagName("files").item(0);
         // TESB-27614:NPE while building a route
         if (filesNode == null) {
@@ -889,7 +893,7 @@ public class CreateMavenJobPom extends AbstractMavenProcessorPom {
             Path path = new File(repository.getBasedir()).toPath().resolve(sourceLocation);
             sourceLocation = path.toString();
             
-            boolean latestVersion = isLatestVersion(duplicateLibs, dependency);
+            boolean latestVersion = isLatestVersionOrLowerVersionInChildJob(parentJobDependencies, childJobDependencies, duplicateLibs, dependency);
             if (isDIJob && !latestVersion && !new File(sourceLocation).exists()) {
                 CommonExceptionHandler.warn("Job dependency [" + sourceLocation + "] does not exist!");
                 continue;
@@ -914,23 +918,57 @@ public class CreateMavenJobPom extends AbstractMavenProcessorPom {
 
     }
 
-    private boolean isLatestVersion(Map<String, Set<Dependency>> duplicateLibs, Dependency dependency) {
+    private boolean isLatestVersionOrLowerVersionInChildJob(Set<Dependency> parentJobDependencies, Map<String, Set<Dependency>> childJobDependencies, Map<String, Set<Dependency>> duplicateLibs,  Dependency dependency) {
         String coordinate = getCheckDupCoordinate(dependency);
         Set<Dependency> dependencies = duplicateLibs.get(coordinate);
         if(dependencies.size() == 1) {
-            return true;
+            return true; //latest version
         }
         
-        Iterator<Dependency> iterator = dependencies.iterator();
-        while(iterator.hasNext()) {
-            Dependency next = iterator.next();
-            int compareTo = new ComparableVersion(dependency.getVersion()).compareTo(new ComparableVersion(next.getVersion()));
-            if(compareTo < 0) {
-                return false;
+        if(parentJobDependencies.contains(dependency)) {
+            // belongs to parent job
+            // 1. if not have child job, true to keep it if is the latest version
+            // 2. if have child job(one or more), parent may have more than one version, child job may have more than one version
+            //  true to keep it if is the latest version in all versions(for parent and child jobs)
+            //  false, means lower than another in parent, or lower than in child job, leave to handle next dependency of same coordinate or handle dependency in child job 
+            Iterator<Dependency> iterator = dependencies.iterator();
+            while(iterator.hasNext()) {
+                Dependency next = iterator.next();
+                if(compareVersion(dependency,next) < 0) {
+                    return false;
+                }
+            }
+        } else {// belongs to any one child job
+            Map<String, Set<Dependency>> parentJobDependencyCoordinate2versions = new HashMap<String, Set<Dependency>>();
+            parentJobDependencies.forEach(dep -> addToDuplicateLibs(parentJobDependencyCoordinate2versions, dep));
+            
+            //if lower than any one dependency(of same coordinate)'s version of parent job
+            if (parentJobDependencyCoordinate2versions.containsKey(coordinate)
+                    && parentJobDependencyCoordinate2versions.get(coordinate).stream().anyMatch(dep->compareVersion(dependency,dep) < 0)) {
+                return true; //  in child job, lower than a parent dependency version
+            }
+            
+            //found the latest version of same child job that 'dependency' belongs to
+            Optional<Set<Dependency>> findFirst = childJobDependencies.values().stream().filter(set->set.contains(dependency)).findFirst();
+            if(findFirst.isPresent()) {
+                Set<Dependency> hashSet = new HashSet<Dependency>(dependencies);
+                hashSet.retainAll(findFirst.get());
+                
+                Iterator<Dependency> iterator = hashSet.iterator();
+                while(iterator.hasNext()) {
+                    Dependency next = iterator.next();
+                    if(compareVersion(dependency,next) < 0) {
+                        return false;
+                    }
+                }
             }
         }
-        
-        return true;
+
+        return true;  //latest version
+    }
+
+    private int compareVersion(Dependency dependency, Dependency targetDependency) {
+        return new ComparableVersion(dependency.getVersion()).compareTo(new ComparableVersion(targetDependency.getVersion()));
     }
     
     protected Plugin addSkipDockerMavenPlugin() {
