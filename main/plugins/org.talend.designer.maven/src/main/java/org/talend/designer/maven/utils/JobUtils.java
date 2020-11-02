@@ -117,4 +117,10 @@ public class JobUtils {
         return false;
     }
     
+    public static boolean isRoute(Property p) {
+        if (p != null) {
+            return ERepositoryObjectType.getType(p).equals(ERepositoryObjectType.PROCESS_ROUTE);
+        }
+        return false;
+    }
 }
