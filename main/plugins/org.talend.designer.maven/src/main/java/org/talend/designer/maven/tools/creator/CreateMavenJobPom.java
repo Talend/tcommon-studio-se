@@ -893,8 +893,8 @@ public class CreateMavenJobPom extends AbstractMavenProcessorPom {
             Path path = new File(repository.getBasedir()).toPath().resolve(sourceLocation);
             sourceLocation = path.toString();
             
-            boolean latestVersion = isLatestVersionOrLowerVersionInChildJob(parentJobDependencies, childJobDependencies, duplicateLibs, dependency);
-            if (isDIJob && !latestVersion && !new File(sourceLocation).exists()) {
+            boolean latestVersionOrLowerVersionInChildJob = isLatestVersionOrLowerVersionInChildJob(parentJobDependencies, childJobDependencies, duplicateLibs, dependency);
+            if (isDIJob && !latestVersionOrLowerVersionInChildJob && !new File(sourceLocation).exists()) {
                 CommonExceptionHandler.warn("Job dependency [" + sourceLocation + "] does not exist!");
                 continue;
             }
@@ -925,29 +925,18 @@ public class CreateMavenJobPom extends AbstractMavenProcessorPom {
             return true; //latest version
         }
         
-        if(parentJobDependencies.contains(dependency)) {
-            // belongs to parent job
-            // 1. if not have child job, true to keep it if is the latest version
-            // 2. if have child job(one or more), parent may have more than one version, child job may have more than one version
-            //  true to keep it if is the latest version in all versions(for parent and child jobs)
-            //  false, means lower than another in parent, or lower than in child job, leave to handle next dependency of same coordinate or handle dependency in child job 
-            Iterator<Dependency> iterator = dependencies.iterator();
+        if(parentJobDependencies.contains(dependency)) {//keep if it's latest version in parent job
+            Set<Dependency> duplicateLibsInParentJob = new HashSet<Dependency>(dependencies);
+            duplicateLibsInParentJob.retainAll(parentJobDependencies);
+            
+            Iterator<Dependency> iterator = duplicateLibsInParentJob.iterator();
             while(iterator.hasNext()) {
                 Dependency next = iterator.next();
                 if(compareVersion(dependency,next) < 0) {
                     return false;
                 }
             }
-        } else {// belongs to any one child job
-            Map<String, Set<Dependency>> parentJobDependencyCoordinate2versions = new HashMap<String, Set<Dependency>>();
-            parentJobDependencies.forEach(dep -> addToDuplicateLibs(parentJobDependencyCoordinate2versions, dep));
-            
-            //if lower than any one dependency(of same coordinate)'s version of parent job
-            if (parentJobDependencyCoordinate2versions.containsKey(coordinate)
-                    && parentJobDependencyCoordinate2versions.get(coordinate).stream().anyMatch(dep->compareVersion(dependency,dep) < 0)) {
-                return true; //  in child job, lower than a parent dependency version
-            }
-            
+        } else {
             //found the latest version of same child job that 'dependency' belongs to
             Optional<Set<Dependency>> findFirst = childJobDependencies.values().stream().filter(set->set.contains(dependency)).findFirst();
             if(findFirst.isPresent()) {
