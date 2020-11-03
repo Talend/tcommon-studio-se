@@ -98,4 +98,8 @@ public class PluginOptionalMissingJarsExtraUpdatesFactory extends AbstractExtraU
             }
         }// else nothing to install so nothing to install ;)
     }
+    
+    public boolean isSupportSharedMode() {
+        return true;
+    }
 }
