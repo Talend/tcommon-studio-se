@@ -1,6 +1,6 @@
 <?xml version="1.0"?>
 <mapping>
-	<dbms product="MEMSQL" id="memsql_id" label="Mapping Memsql"
+	<dbms product="SINGLESTORE" id="singlestore_id" label="Mapping SingleStore"
 		default="true">
 		<dbTypes>
 			<dbType type="BOOL" ignoreLen="true" ignorePre="true" />
