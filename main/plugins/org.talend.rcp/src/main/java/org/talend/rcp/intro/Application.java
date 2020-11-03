@@ -174,17 +174,16 @@ public class Application implements IApplication {
             service.executeWorspaceTasks();
             // saveConnectionBean(email);
 
-            boolean needRelaunch = installLocalPatches();
-            if (SharedStudioUtils.isSharedStudioMode()) {
-                boolean needRelaunchForSharedMode = SharedStudioUtils.installedPatch();
-                needRelaunch = needRelaunch || needRelaunchForSharedMode;
+            boolean needRelaunch = false;
+            if (!SharedStudioUtils.isSharedStudioMode()) {
+                needRelaunch = installLocalPatches();
+            } else {
+                needRelaunch = SharedStudioUtils.installedPatch();
             }
-
             if (needRelaunch) {
                 setRelaunchData();
                 return IApplication.EXIT_RELAUNCH;
             }
-
             boolean logUserOnProject = logUserOnProject(display.getActiveShell());
             if (LoginHelper.isRestart && LoginHelper.isAutoLogonFailed) {
                 setRelaunchData();
