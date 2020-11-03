@@ -24,6 +24,8 @@ import org.talend.core.model.process.JobInfo;
 import org.talend.core.model.process.ProcessUtils;
 import org.talend.core.model.properties.Item;
 import org.talend.core.model.properties.ProcessItem;
+import org.talend.core.model.properties.Property;
+import org.talend.core.model.repository.ERepositoryObjectType;
 import org.talend.core.model.repository.IRepositoryViewObject;
 import org.talend.core.model.utils.JavaResourcesHelper;
 import org.talend.core.runtime.CoreRuntimePlugin;
@@ -96,6 +98,13 @@ public class JobUtils {
             clonedJobInfos.add(newJobInfo);
         }
         return clonedJobInfos;
+    }
+    
+    public static boolean isRoute(Property p) {
+        if (p != null) {
+            return ERepositoryObjectType.getType(p).equals(ERepositoryObjectType.PROCESS_ROUTE);
+        }
+        return false;
     }
 
 }
