@@ -260,11 +260,9 @@ public class ArtifacoryRepositoryHandler extends AbstractArtifactRepositoryHandl
                             artifact.setVersion(v);
                             artifact.setType(type);
                             artifact.setLastUpdated(lastUpdated);
-                            if (!StringUtils.contains(artifactPath, MavenUrlHelper.VERSION_SNAPSHOT)) {// $NON-NLS-1$
-                                String regex = a + "-" + v;
-                                String classifier = ShareLibrariesUtil.getMavenClassifier(artifactPath, regex, type);
-                                artifact.setClassifier(classifier);
-                            }
+                            String regex = a + "-" + v;
+                            String classifier = ShareLibrariesUtil.getMavenClassifier(artifactPath, regex, type);
+                            artifact.setClassifier(classifier);
                             fillChecksumData(jsonObject, artifact);
                             resultList.add(artifact);
                         }
@@ -359,6 +357,9 @@ public class ArtifacoryRepositoryHandler extends AbstractArtifactRepositoryHandl
                             artifact.setVersion(v);
                             artifact.setType(type);
                             artifact.setLastUpdated(lastUpdated);
+                            String regex = a + "-" + v;
+                            String classifier = ShareLibrariesUtil.getMavenClassifier(artifactPath, regex, type);
+                            artifact.setClassifier(classifier);
                             fillChecksumData(jsonObject, artifact);
                             resultList.add(artifact);
                         }

@@ -32,16 +32,16 @@ import org.talend.core.nexus.ArtifactRepositoryBean;
 import org.talend.core.nexus.HttpClientTransport;
 import org.talend.core.nexus.NexusServerUtils;
 import org.talend.core.runtime.maven.MavenArtifact;
-import org.talend.core.runtime.maven.MavenUrlHelper;
 import org.talend.librariesmanager.nexus.utils.ShareLibrariesUtil;
 
 import net.sf.json.JSONArray;
 import net.sf.json.JSONObject;
 
 public abstract class AbsNexus3SearchHandler implements INexus3SearchHandler {
-    private static Logger log = Logger.getLogger(AbsNexus3SearchHandler.class);
-    protected ArtifactRepositoryBean serverBean;
 
+    private static Logger log = Logger.getLogger(AbsNexus3SearchHandler.class);
+
+    protected ArtifactRepositoryBean serverBean;
 
     /**
      * {@value}
@@ -142,20 +142,14 @@ public abstract class AbsNexus3SearchHandler implements INexus3SearchHandler {
                         String packageType = getPackageType(assertsObject);
                         if (packageType != null) {
                             MavenArtifact artifact = new MavenArtifact();
-                            boolean isSnapshot = false;
                             String path = assertsObject.getString("path"); //$NON-NLS-1$
-                            if (StringUtils.contains(path, MavenUrlHelper.VERSION_SNAPSHOT)) {// $NON-NLS-1$
-                                isSnapshot = true;
-                            }
                             String regex = name + "-" + version;
                             String classifier = ShareLibrariesUtil.getMavenClassifier(path, regex, packageType);
                             artifact.setGroupId(group);
                             artifact.setArtifactId(name);
                             artifact.setVersion(version);
                             artifact.setType(packageType);
-                            if (!isSnapshot) {
-                                artifact.setClassifier(classifier);
-                            }
+                            artifact.setClassifier(classifier);
                             if (artifact.getType() != null) {
                                 fillCheckSumData(assertsArray, artifact);
                                 resultList.add(artifact);
@@ -164,7 +158,6 @@ public abstract class AbsNexus3SearchHandler implements INexus3SearchHandler {
 
                     }
                 }
-
 
             }
         }
