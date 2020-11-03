@@ -918,42 +918,40 @@ public class CreateMavenJobPom extends AbstractMavenProcessorPom {
 
     }
 
-    private boolean isLatestVersionOrLowerVersionInChildJob(Set<Dependency> parentJobDependencies, Map<String, Set<Dependency>> childJobDependencies, Map<String, Set<Dependency>> duplicateLibs,  Dependency dependency) {
+    protected boolean isLatestVersionOrLowerVersionInChildJob(Set<Dependency> parentJobDependencies,
+            Map<String, Set<Dependency>> childJobDependencies, Map<String, Set<Dependency>> duplicateLibs,
+            Dependency dependency) {
         String coordinate = getCheckDupCoordinate(dependency);
         Set<Dependency> dependencies = duplicateLibs.get(coordinate);
-        if(dependencies.size() == 1) {
-            return true; //latest version
+        if (dependencies.size() == 1) {
+            return true; // latest version
         }
         
-        if(parentJobDependencies.contains(dependency)) {//keep if it's latest version in parent job
-            Set<Dependency> duplicateLibsInParentJob = new HashSet<Dependency>(dependencies);
-            duplicateLibsInParentJob.retainAll(parentJobDependencies);
-            
-            Iterator<Dependency> iterator = duplicateLibsInParentJob.iterator();
-            while(iterator.hasNext()) {
-                Dependency next = iterator.next();
-                if(compareVersion(dependency,next) < 0) {
-                    return false;
-                }
+        boolean latest = false;
+        if (parentJobDependencies.contains(dependency)) {
+            // keep if it's latest version in parent job
+            latest = isTheLatest(dependency, coordinate, parentJobDependencies);
+            if(!latest) {//check if it's the latest in any child job
+                latest = isLatestInAnyChild(dependency, coordinate, childJobDependencies);
             }
-        } else {
-            //found the latest version of same child job that 'dependency' belongs to
-            Optional<Set<Dependency>> findFirst = childJobDependencies.values().stream().filter(set->set.contains(dependency)).findFirst();
-            if(findFirst.isPresent()) {
-                Set<Dependency> hashSet = new HashSet<Dependency>(dependencies);
-                hashSet.retainAll(findFirst.get());
-                
-                Iterator<Dependency> iterator = hashSet.iterator();
-                while(iterator.hasNext()) {
-                    Dependency next = iterator.next();
-                    if(compareVersion(dependency,next) < 0) {
-                        return false;
-                    }
-                }
-            }
+        } else {//only check if it's the latest in any child job
+            latest = isLatestInAnyChild(dependency, coordinate, childJobDependencies);
         }
+        
+        
+        return latest;
+    }
 
-        return true;  //latest version
+    private boolean isLatestInAnyChild(Dependency dependency, String coordinate,
+            Map<String, Set<Dependency>> childJobDependencies) {
+        return childJobDependencies.entrySet().stream().filter(entry -> entry.getValue().contains(dependency))
+                .anyMatch(entry -> isTheLatest(dependency, coordinate, entry.getValue()));
+    }
+
+    private boolean isTheLatest(Dependency dependency, String coordinate, Set<Dependency> targetSet) {
+        Optional<Dependency> latest = targetSet.stream().filter(d -> getCheckDupCoordinate(d).equals(coordinate))
+                .sorted((d1, d2) -> compareVersion(d2, d1)).findFirst();
+        return latest.isPresent() && dependency.equals(latest.get());
     }
 
     private int compareVersion(Dependency dependency, Dependency targetDependency) {
