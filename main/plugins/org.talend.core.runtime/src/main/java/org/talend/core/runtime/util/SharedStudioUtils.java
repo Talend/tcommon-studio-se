@@ -22,6 +22,7 @@ import org.eclipse.core.runtime.Platform;
 import org.talend.commons.exception.ExceptionHandler;
 import org.talend.core.GlobalServiceRegister;
 import org.talend.core.model.components.IComponentsFactory;
+import org.talend.core.runtime.CoreRuntimePlugin;
 import org.talend.core.service.IUpdateService;
 import org.talend.utils.io.FilesUtils;
 
@@ -30,7 +31,8 @@ public class SharedStudioUtils {
     public static final String FILE_EXTRA_FEATURE_INDEX = "extra_feature.index"; //$NON-NLS-1$
 
     public static final String SIGNATURE_FILE_NAME_SUFFIX = ".sig"; //$NON-NLS-1$
-
+    public static final String PROP_DEVMODE = "osgi.dev"; //$NON-NLS-1$
+    
     public static boolean updateExtraFeatureFile() {
         File userConfigFolder = new File(Platform.getConfigurationLocation().getURL().getPath());
         File studioConfigFolder = new File(Platform.getInstallLocation().getURL().getPath(), "configuration");//$NON-NLS-1$
@@ -63,6 +65,9 @@ public class SharedStudioUtils {
     }
     
     public static boolean isSharedStudioMode() {
+    	if (isDevEnvironment()) {
+    		return false;
+    	}
         File configFolder = new File (Platform.getConfigurationLocation().getURL().getFile());
         File studioFolder = new File (Platform.getInstallLocation().getURL().getFile());
         if (configFolder != null && studioFolder != null && configFolder.getParentFile() != null
@@ -70,6 +75,13 @@ public class SharedStudioUtils {
             return false;
         }
         return true;
+    }
+    
+    private static boolean isDevEnvironment() {
+    	if (CoreRuntimePlugin.getInstance().getBundle().getBundleContext().getProperty(PROP_DEVMODE) != null) {
+    		return true;
+    	}
+    	return false;
     }
     
     public static boolean installedPatch() {
