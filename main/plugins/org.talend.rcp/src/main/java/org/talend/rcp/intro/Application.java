@@ -163,10 +163,12 @@ public class Application implements IApplication {
             service.executeWorspaceTasks();
             // saveConnectionBean(email);
 
-            boolean needRelaunch = installLocalPatches();
-            if (needRelaunch) {
-                setRelaunchData();
-                return IApplication.EXIT_RELAUNCH;
+            if (!SharedStudioUtils.isSharedStudioMode()) {
+                boolean needRelaunch = installLocalPatches();
+                if (needRelaunch) {
+                    setRelaunchData();
+                    return IApplication.EXIT_RELAUNCH;
+                }
             }
 
             boolean logUserOnProject = logUserOnProject(display.getActiveShell());

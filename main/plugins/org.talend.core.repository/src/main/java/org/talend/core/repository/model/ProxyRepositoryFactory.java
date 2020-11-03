@@ -2090,7 +2090,7 @@ public final class ProxyRepositoryFactory implements IProxyRepositoryFactory {
      */
     public void logOnProject(Project project, IProgressMonitor monitor) throws LoginException, PersistenceException {
         try {
-            TimeMeasurePerformance.begin("logOnProject"); //$NON-NLS-1$
+            TimeMeasurePerformance.begin("logOnProject", "logon project name '" + project.getLabel()+"'"); //$NON-NLS-1$ //$NON-NLS-2$
             try {
                 /**
                  * init/check proxy selector, in case default proxy selector is not registed yet
