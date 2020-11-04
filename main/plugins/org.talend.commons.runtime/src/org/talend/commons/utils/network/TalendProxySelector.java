@@ -375,7 +375,9 @@ public class TalendProxySelector extends ProxySelector {
             ExceptionHandler.log("TalendProxySelector.select " + uri);
         }
         if (uri == null) {
-            return Collections.EMPTY_LIST;
+            List<Proxy> result = new ArrayList<>();
+            result.add(Proxy.NO_PROXY);
+            return result;
         }
         try {
             if (this.excludeLoopbackAddressAutomatically) {
@@ -386,7 +388,9 @@ public class TalendProxySelector extends ProxySelector {
                         if (printProxyLog) {
                             ExceptionHandler.log(uri + " is excluded from proxy");
                         }
-                        return Collections.EMPTY_LIST;
+                        List<Proxy> result = new ArrayList<>();
+                        result.add(Proxy.NO_PROXY);
+                        return result;
                     }
                 }
             }
@@ -440,6 +444,9 @@ public class TalendProxySelector extends ProxySelector {
             String proxys = results.toString();
             ExceptionHandler.log("Selected proxys for " + uri + ", " + proxys);
             ExceptionHandler.process(new Exception("Proxy call stacks"), Priority.INFO);
+        }
+        if (results.isEmpty()) {
+            results.add(Proxy.NO_PROXY);
         }
         return new LinkedList<Proxy>(results);
     }
