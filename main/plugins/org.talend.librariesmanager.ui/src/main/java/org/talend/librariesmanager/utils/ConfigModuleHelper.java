@@ -318,25 +318,19 @@ public class ConfigModuleHelper {
     }
 
     public static boolean showRemoteSearch() {
-        if (isRemoteProject()) {
-            ArtifactRepositoryBean customNexusServer = TalendLibsServerManager.getInstance().getCustomNexusServer();
-            if (customNexusServer != null) {
-                String repoType = customNexusServer.getType();
-                if (repoType.equals(ArtifactRepositoryBean.NexusType.NEXUS_2.name())
-                        || repoType.equals(ArtifactRepositoryBean.NexusType.NEXUS_3.name())
-                        || repoType.equals(ArtifactRepositoryBean.NexusType.ARTIFACTORY.name())) {
-                    return true;
-                }
+        ArtifactRepositoryBean customNexusServer = TalendLibsServerManager.getInstance().getCustomNexusServer();
+        if (customNexusServer != null) {
+            String repoType = customNexusServer.getType();
+            if (repoType.equals(ArtifactRepositoryBean.NexusType.NEXUS_2.name())
+                    || repoType.equals(ArtifactRepositoryBean.NexusType.NEXUS_3.name())
+                    || repoType.equals(ArtifactRepositoryBean.NexusType.ARTIFACTORY.name())) {
+                return true;
             }
         }
         return false;
     }
 
-    public static boolean isRemoteProject() {
-        return !ProjectManager.getInstance().getCurrentProject().isLocal();
-    }
-
-    public static boolean canConnectArtifactory() {
+    public static boolean notShowConnectionWarning() {
         try {
             ArtifactRepositoryBean customNexusServer = TalendLibsServerManager.getInstance().getCustomNexusServer();
             IRepositoryArtifactHandler customerRepHandler = RepositoryArtifactHandlerManager
@@ -348,7 +342,8 @@ public class ConfigModuleHelper {
 
         }
 
-        return false;
+        // ignore local
+        return true;
     }
 
 }

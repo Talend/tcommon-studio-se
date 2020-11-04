@@ -434,10 +434,8 @@ public class ConfigModuleDialog extends TitleAreaDialog implements IConfigModule
             if (useCustomBtn.getSelection()) {
                 customUriText.setEnabled(true);
             }
-            if (ConfigModuleHelper.isRemoteProject()) {
-                boolean canConnectRemoteArtifactory = ConfigModuleHelper.canConnectArtifactory();
-                layoutWarningComposite(canConnectRemoteArtifactory);
-            }
+            boolean canConnectRemoteArtifactory = ConfigModuleHelper.notShowConnectionWarning();
+            layoutWarningComposite(canConnectRemoteArtifactory);
         } else {
             layoutWarningComposite(true);
         }
