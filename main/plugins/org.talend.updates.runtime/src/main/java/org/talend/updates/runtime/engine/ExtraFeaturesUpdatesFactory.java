@@ -17,6 +17,7 @@ import java.util.Set;
 import org.eclipse.core.runtime.Assert;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.talend.commons.exception.ExceptionHandler;
+import org.talend.core.runtime.util.SharedStudioUtils;
 import org.talend.updates.runtime.engine.factory.AbstractExtraUpdatesFactory;
 import org.talend.updates.runtime.engine.factory.IComponentUpdatesFactory;
 import org.talend.updates.runtime.model.ExtraFeature;
@@ -55,6 +56,9 @@ public class ExtraFeaturesUpdatesFactory {
                     if (factory instanceof IComponentUpdatesFactory) {
                         continue;
                     }
+                }
+                if (SharedStudioUtils.isSharedStudioMode() && !factory.isSupportSharedMode()) {
+                    continue;
                 }
                 try {
                     factory.setCheckUpdateOnLine(isCheckUpdateOnLine);

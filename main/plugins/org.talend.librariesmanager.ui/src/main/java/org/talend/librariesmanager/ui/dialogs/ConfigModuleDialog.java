@@ -21,7 +21,6 @@ import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
-import java.util.Map.Entry;
 import java.util.Set;
 import java.util.concurrent.TimeoutException;
 
@@ -58,8 +57,6 @@ import org.talend.commons.ui.gmf.util.DisplayUtils;
 import org.talend.commons.ui.runtime.image.EImage;
 import org.talend.commons.ui.runtime.image.ImageProvider;
 import org.talend.commons.ui.swt.dialogs.IConfigModuleDialog;
-import org.talend.core.GlobalServiceRegister;
-import org.talend.core.ILibraryManagerService;
 import org.talend.core.model.general.ModuleNeeded;
 import org.talend.core.model.general.ModuleNeeded.ELibraryInstallStatus;
 import org.talend.core.model.general.ModuleToInstall;
@@ -102,8 +99,6 @@ public class ConfigModuleDialog extends TitleAreaDialog implements IConfigModule
     private Text customUriText;
 
     private Button useCustomBtn;
-
-    private boolean useCustom;
 
     private String urlToUse;
 
@@ -302,6 +297,13 @@ public class ConfigModuleDialog extends TitleAreaDialog implements IConfigModule
 
         jarPathTxt = new Text(repGroupSubComp, SWT.BORDER);
         jarPathTxt.setLayoutData(new GridData(GridData.FILL_HORIZONTAL | GridData.GRAB_HORIZONTAL));
+        jarPathTxt.addModifyListener(new ModifyListener() {
+
+            @Override
+            public void modifyText(ModifyEvent e) {
+                handJarPathChanged();
+            }
+        });
 
         browseButton = new Button(repGroupSubComp, SWT.PUSH);
         browseButton.setText("...");//$NON-NLS-1$
@@ -489,7 +491,10 @@ public class ConfigModuleDialog extends TitleAreaDialog implements IConfigModule
             return;
         }
         this.jarPathTxt.setText(result);
-        File file = new File(result);
+    }
+
+    private void handJarPathChanged() {
+        File file = new File(this.jarPathTxt.getText());
         moduleName = file.getName();
 
         final IRunnableWithProgress detectProgress = new IRunnableWithProgress() {
@@ -537,15 +542,11 @@ public class ConfigModuleDialog extends TitleAreaDialog implements IConfigModule
                                 ret = ConfigModuleHelper.searchRemoteArtifacts(name);
                             }
                             String[] items = ConfigModuleHelper.toArray(ret);
-                            Map<String, MavenArtifact> data = new HashMap<String, MavenArtifact>();
-                            for (MavenArtifact art : ret) {
-                                data.put(art.getFileName(false), art);
-                            }
-                            searchResultCombo.setData(data);
+                            searchResultCombo.setData(ret);
                             if (items.length > 0) {
                                 searchResultCombo.setItems(items);
                                 searchResultCombo.setText(searchResultCombo.getItem(0));
-                                resultField.setProposals(items);
+                                resultField.setProposals(ConfigModuleHelper.toArrayUnique(items));
                             } else {
                                 searchResultCombo.setText("");
                                 searchResultCombo.setItems(new String[0]);
@@ -608,7 +609,6 @@ public class ConfigModuleDialog extends TitleAreaDialog implements IConfigModule
         }
         String originalText = defaultUriTxt.getText().trim();
         String customURIWithType = MavenUrlHelper.addTypeForMavenUri(customUriText.getText(), moduleName);
-        useCustom = useCustomBtn.getSelection();
         if (useCustomBtn.getSelection()) {
             // if use custom uri:validate custom uri + check deploy status
             String errorMessage = ModuleMavenURIUtils.validateCustomMvnURI(originalText, customURIWithType);
@@ -700,6 +700,7 @@ public class ConfigModuleDialog extends TitleAreaDialog implements IConfigModule
         if (installRadioBtn.getSelection()) {
             File jarFile = new File(jarPathTxt.getText().trim());
             MavenArtifact art = MavenUrlHelper.parseMvnUrl(urlToUse);
+            moduleName = art.getFileName();
             String sha1New = ConfigModuleHelper.getSHA1(jarFile);
             art.setSha1(sha1New);
             // resolve jar locally
@@ -732,7 +733,7 @@ public class ConfigModuleDialog extends TitleAreaDialog implements IConfigModule
                                     List<MavenArtifact> remoteArtifacts = null;
                                     try {
                                         remoteArtifacts = ConfigModuleHelper.searchRemoteArtifacts(art.getGroupId(),
-                                                art.getArtifactId(), art.getVersion());
+                                                art.getArtifactId(), null);
                                     } catch (Exception e) {
                                         ExceptionHandler.process(e);
                                     }
@@ -771,8 +772,8 @@ public class ConfigModuleDialog extends TitleAreaDialog implements IConfigModule
                     // check sha1
                     String sha1Local = ConfigModuleHelper.getSHA1(localFile);
                     @SuppressWarnings("unchecked")
-                    Map<String, MavenArtifact> data = (Map<String, MavenArtifact>) searchResultCombo.getData();
-                    MavenArtifact art = data.get(moduleName);
+                    List<MavenArtifact> data = (List<MavenArtifact>) searchResultCombo.getData();
+                    MavenArtifact art = data.get(this.searchResultCombo.getSelectionIndex());
                     try {
                         // for nexus2 only
                         ConfigModuleHelper.resolveSha1(art);
@@ -796,6 +797,7 @@ public class ConfigModuleDialog extends TitleAreaDialog implements IConfigModule
                     DownloadModuleRunnableWithLicenseDialog downloadModuleRunnable = new DownloadModuleRunnableWithLicenseDialog(
                             toInstall, getShell());
                     runProgress(downloadModuleRunnable);
+                    this.updateIndex(defaultURI);
                 }
             }
         }
@@ -837,9 +839,19 @@ public class ConfigModuleDialog extends TitleAreaDialog implements IConfigModule
     private void setupMavenURIforSearch() {
         if (validateInputFields()) {
             @SuppressWarnings("unchecked")
-            Map<String, MavenArtifact> data = (Map<String, MavenArtifact>) searchResultCombo.getData();
-            if (data != null && data.get(moduleName) != null) {
-                MavenArtifact art = data.get(moduleName);
+            List<MavenArtifact> data = (List<MavenArtifact>) searchResultCombo.getData();
+            if (data != null && !data.isEmpty()) {
+                if (this.searchResultCombo.getSelectionIndex() < 0) {
+                    int i = 0;
+                    for (MavenArtifact temp : data) {
+                        if (temp.getFileName().equals(this.searchResultCombo.getText())) {
+                            this.searchResultCombo.select(i);
+                            break;
+                        }
+                        i++;
+                    }
+                }
+                MavenArtifact art = data.get(this.searchResultCombo.getSelectionIndex());
                 defaultURIValue = MavenUrlHelper.generateMvnUrl(art);
                 defaultUriTxt.setText(defaultURIValue);
             }

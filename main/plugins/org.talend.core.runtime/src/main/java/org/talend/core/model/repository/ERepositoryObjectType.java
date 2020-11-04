@@ -1414,12 +1414,8 @@ public class ERepositoryObjectType extends DynaEnum<ERepositoryObjectType> {
         return null;
     }
 
-    public static List<ERepositoryObjectType> getAllTypesOfProcess() {
+    public static List<ERepositoryObjectType> getAllTypesOfBigDataProcess() {
         List<ERepositoryObjectType> allTypes = new ArrayList<ERepositoryObjectType>();
-
-        if (ERepositoryObjectType.PROCESS != null) {
-            allTypes.add(ERepositoryObjectType.PROCESS);
-        }
         if (ERepositoryObjectType.PROCESS_MR != null) {
             allTypes.add(ERepositoryObjectType.PROCESS_MR);
         }
@@ -1431,6 +1427,17 @@ public class ERepositoryObjectType extends DynaEnum<ERepositoryObjectType> {
         }
         if (ERepositoryObjectType.PROCESS_SPARKSTREAMING != null) {
             allTypes.add(ERepositoryObjectType.PROCESS_SPARKSTREAMING);
+        }
+        return allTypes;
+    }
+
+    public static List<ERepositoryObjectType> getAllTypesOfProcess() {
+        List<ERepositoryObjectType> allTypes = new ArrayList<ERepositoryObjectType>();
+
+        allTypes.addAll(getAllTypesOfBigDataProcess());
+
+        if (ERepositoryObjectType.PROCESS != null) {
+            allTypes.add(ERepositoryObjectType.PROCESS);
         }
         if (ERepositoryObjectType.PROCESS_ROUTE != null) {
             allTypes.add(ERepositoryObjectType.PROCESS_ROUTE);
