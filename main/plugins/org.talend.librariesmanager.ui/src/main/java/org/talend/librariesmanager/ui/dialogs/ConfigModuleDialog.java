@@ -126,6 +126,12 @@ public class ConfigModuleDialog extends TitleAreaDialog implements IConfigModule
 
     private String initValue;
 
+    private Label warningLabel;
+
+    private GridData warningLayoutData;
+    
+    private Composite warningComposite;
+
     /**
      * DOC wchen InstallModuleDialog constructor comment.
      *
@@ -147,14 +153,16 @@ public class ConfigModuleDialog extends TitleAreaDialog implements IConfigModule
     protected Control createDialogArea(Composite parent) {
         Composite container = new Composite(parent, SWT.NONE);
         GridLayout layout = new GridLayout();
-        layout.marginTop = 10;
+        layout.marginTop = 20;
         layout.marginLeft = 20;
         layout.marginRight = 20;
-        layout.marginBottom = 40;
+        layout.marginBottom = 60;
         layout.marginHeight = 0;
         container.setLayout(layout);
         GridData data = new GridData(GridData.FILL_BOTH);
         container.setLayoutData(data);
+
+        createWarningLabel(container);
 
         Composite radioContainer = new Composite(container, SWT.NONE);
         layout = new GridLayout();
@@ -168,6 +176,36 @@ public class ConfigModuleDialog extends TitleAreaDialog implements IConfigModule
 
         createMavenURIGroup(container);
         return parent;
+    }
+
+    private void createWarningLabel(Composite container) {
+        warningComposite = new Composite(container, SWT.NONE);
+        warningComposite.setBackground(warningColor);
+        warningLayoutData = new GridData(GridData.FILL_HORIZONTAL | GridData.GRAB_HORIZONTAL);
+        warningLayoutData.horizontalSpan = ((GridLayout) container.getLayout()).numColumns;
+        warningComposite.setLayoutData(warningLayoutData);
+        GridLayout layout = new GridLayout();
+        layout.marginTop = 0;
+        layout.marginLeft = 0;
+        layout.marginRight = 0;
+        layout.numColumns = 2;
+        warningComposite.setLayout(layout);
+        Label imageLabel = new Label(warningComposite, SWT.NONE);
+        imageLabel.setImage(ImageProvider.getImage(EImage.WARNING_ICON));
+        imageLabel.setBackground(warningColor);
+
+        warningLabel = new Label(warningComposite, SWT.WRAP);
+        warningLabel.setLayoutData(new GridData(GridData.FILL_HORIZONTAL | GridData.GRAB_HORIZONTAL));
+        warningLabel.setBackground(warningColor);
+        warningLayoutData.exclude = true;
+    }
+
+    private void layoutWarningComposite(boolean exclude) {
+        warningComposite.setVisible(!exclude);
+        warningLayoutData.exclude = exclude;
+        warningLabel.setText(Messages.getString("ConfigModuleDialog.warn.artifactory"));
+        warningLabel.getParent().getParent().layout();
+        warningLabel.getParent().getParent().getParent().getParent().getParent().pack();
     }
 
     private void createMavenURIGroup(Composite parent) {
@@ -318,7 +356,7 @@ public class ConfigModuleDialog extends TitleAreaDialog implements IConfigModule
 
             @Override
             public void widgetSelected(SelectionEvent e) {
-                setInstallNewGroupEnabled(true);
+                setInstallNewGroupEnabled(installRadioBtn.getSelection());
                 setPlatformGroupEnabled(false);
                 setRepositoryGroupEnabled(false);
             }
@@ -396,6 +434,12 @@ public class ConfigModuleDialog extends TitleAreaDialog implements IConfigModule
             if (useCustomBtn.getSelection()) {
                 customUriText.setEnabled(true);
             }
+            if (ConfigModuleHelper.isRemoteProject()) {
+                boolean canConnectRemoteArtifactory = ConfigModuleHelper.canConnectArtifactory();
+                layoutWarningComposite(canConnectRemoteArtifactory);
+            }
+        } else {
+            layoutWarningComposite(true);
         }
     }
 

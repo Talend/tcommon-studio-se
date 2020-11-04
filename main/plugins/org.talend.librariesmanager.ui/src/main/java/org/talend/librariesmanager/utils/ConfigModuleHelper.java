@@ -38,6 +38,7 @@ import org.talend.core.runtime.maven.MavenUrlHelper;
 import org.talend.librariesmanager.model.ModulesNeededProvider;
 import org.talend.librariesmanager.nexus.utils.VersionUtil;
 import org.talend.librariesmanager.ui.LibManagerUiPlugin;
+import org.talend.repository.ProjectManager;
 
 /*
  * Created by bhe on Sep 3, 2020
@@ -316,15 +317,36 @@ public class ConfigModuleHelper {
     }
 
     public static boolean showRemoteSearch() {
-        ArtifactRepositoryBean customNexusServer = TalendLibsServerManager.getInstance().getCustomNexusServer();
-        if (customNexusServer != null) {
-            String repoType = customNexusServer.getType();
-            if (repoType.equals(ArtifactRepositoryBean.NexusType.NEXUS_2.name())
-                    || repoType.equals(ArtifactRepositoryBean.NexusType.NEXUS_3.name())
-                    || repoType.equals(ArtifactRepositoryBean.NexusType.ARTIFACTORY.name())) {
-                return true;
+        if (isRemoteProject()) {
+            ArtifactRepositoryBean customNexusServer = TalendLibsServerManager.getInstance().getCustomNexusServer();
+            if (customNexusServer != null) {
+                String repoType = customNexusServer.getType();
+                if (repoType.equals(ArtifactRepositoryBean.NexusType.NEXUS_2.name())
+                        || repoType.equals(ArtifactRepositoryBean.NexusType.NEXUS_3.name())
+                        || repoType.equals(ArtifactRepositoryBean.NexusType.ARTIFACTORY.name())) {
+                    return true;
+                }
             }
         }
+        return false;
+    }
+
+    public static boolean isRemoteProject() {
+        return !ProjectManager.getInstance().getCurrentProject().isLocal();
+    }
+
+    public static boolean canConnectArtifactory() {
+        try {
+            ArtifactRepositoryBean customNexusServer = TalendLibsServerManager.getInstance().getCustomNexusServer();
+            IRepositoryArtifactHandler customerRepHandler = RepositoryArtifactHandlerManager
+                    .getRepositoryHandler(customNexusServer);
+            if (customerRepHandler != null) {
+                return customerRepHandler.checkConnection();
+            }
+        } catch (Exception e) {
+
+        }
+
         return false;
     }
 
