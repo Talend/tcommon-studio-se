@@ -31,6 +31,7 @@ import org.talend.core.model.metadata.builder.connection.MDMConnection;
 import org.talend.core.model.metadata.designerproperties.MDMVersions;
 import org.talend.core.service.IMDMWebServiceHook;
 import org.talend.core.utils.ReflectionUtils;
+import org.talend.libraries.apache.cxf.ApacheCxfLibPlugin;
 
 /**
  * created by wchen on Apr 15, 2015 Detailled comment
@@ -64,8 +65,8 @@ public class S60MdmConnectionHelper extends AbsMdmConnectionHelper {
 
         ClassLoader oldContextClassLoader = Thread.currentThread().getContextClassLoader();
         try {
-            Class<?> tMDMService_ServiceClass = Class.forName("org.talend.mdm.webservice.TMDMService_Service", true, classLoader);
-            Thread.currentThread().setContextClassLoader(tMDMService_ServiceClass.getClassLoader());
+            ClassLoader cxfClassLoader = ApacheCxfLibPlugin.class.getClassLoader();
+            Thread.currentThread().setContextClassLoader(cxfClassLoader);
             Object serviceService = ReflectionUtils.newInstance("org.talend.mdm.webservice.TMDMService_Service", classLoader,
                     new Object[] { new URL(newUrl) });
             Object invokeMethod = ReflectionUtils.invokeMethod(serviceService, "getTMDMPort", new Object[0]);

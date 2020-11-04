@@ -21,14 +21,10 @@
 // ============================================================================
 package routines.system;
 
-import java.io.UnsupportedEncodingException;
-import java.lang.management.ManagementFactory;
-import java.lang.management.RuntimeMXBean;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
-import java.util.UUID;
 
 //TODO split to several classes by the level when have a clear requirement or design : job, component, connection
 public class JobStructureCatcherUtils {
@@ -193,6 +189,8 @@ public class JobStructureCatcherUtils {
 
 	public void addCM(String component_id, String component_label, String component_name) {
 		JobStructureCatcherMessage scm = new JobStructureCatcherMessage();
+		scm.moment = sdf.format(new Date());
+		
 		scm.job_name = this.job_name;
 		scm.job_id = this.job_id;
 		scm.job_version = this.job_version;

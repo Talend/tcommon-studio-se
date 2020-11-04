@@ -18,7 +18,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.apache.commons.lang3.StringUtils;
-import org.apache.log4j.Logger;
 import org.eclipse.core.runtime.Platform;
 import org.talend.commons.exception.ExceptionHandler;
 import org.talend.commons.utils.resource.FileExtensions;
@@ -28,8 +27,8 @@ import org.talend.core.ui.IInstalledPatchService;
 import org.talend.updates.runtime.utils.PathUtils;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
-import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonInclude.Include;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
@@ -37,7 +36,7 @@ public class SharedStudioPatchInfoProvider {
 
     private static final String INSTALLED_PATCH_RECORD_FILE = "installed_patch.json";
 
-    private static final String PATCH_TYPE_STUDIO = "studio";
+    static final String PATCH_TYPE_STUDIO = "studio";
 
     private static final String PATCH_TYPE_CAR = "car";
 
@@ -94,13 +93,11 @@ public class SharedStudioPatchInfoProvider {
 
     public File getNeedInstallStudioPatchFiles() {
         File patchFolder = PathUtils.getPatchesFolder();
-        String patchName = getStudioInstalledLatestPatch();
+        String patchName = getStudioInstalledLatestPatchFileName();
         if (patchFolder.exists() && patchFolder.isDirectory() && patchName != null) {
-            for (File file : patchFolder.listFiles()) {
-                if (file.getName().startsWith(patchName) && file.getName().endsWith(FileExtensions.ZIP_FILE_SUFFIX)
-                        && !isInstalled(file.getName(), PATCH_TYPE_STUDIO)) {
-                    return file;
-                }
+            File patchFile = new File (patchFolder, patchName);
+            if (patchFile.exists() && !isInstalled(patchFile.getName(), PATCH_TYPE_STUDIO)) {
+                return patchFile;
             }
         }
         return null;
@@ -119,13 +116,17 @@ public class SharedStudioPatchInfoProvider {
         return files;
     }
 
-    private String getStudioInstalledLatestPatch() {
+    public String getStudioInstalledLatestPatchFileName() {
         if (GlobalServiceRegister.getDefault().isServiceRegistered(IInstalledPatchService.class)) {
             IInstalledPatchService installedPatchService = GlobalServiceRegister.getDefault()
                     .getService(IInstalledPatchService.class);
             MavenArtifact artifact = installedPatchService.getLastIntalledP2Patch();
             if (artifact != null) {
-                return artifact.getArtifactId();
+                String artifactId = artifact.getArtifactId();
+                if (!artifactId.endsWith(FileExtensions.ZIP_EXTENSION)) {
+                    return artifactId + "." + FileExtensions.ZIP_EXTENSION;
+                }
+                return artifactId;
             }
         }
         return null;

@@ -10,16 +10,18 @@
 // 9 rue Pages 92150 Suresnes, France
 //
 // ============================================================================
-package org.talend.core.service;
+package org.talend.libraries.apache.cxf;
 
-import org.eclipse.core.runtime.IProgressMonitor;
-import org.talend.core.IService;
+import org.eclipse.core.runtime.Plugin;
 
-public interface IUpdateService extends IService {
 
-    boolean checkComponentNexusUpdate();
-    
-    public boolean syncSharedStudioLibraryInPatch(IProgressMonitor monitor) throws Exception;
-    
-    public String getSharedStudioMissingPatchVersion();
+/**
+ * DOC hzhao  class global comment. Detailled comment
+ */
+public class ApacheCxfLibPlugin extends Plugin {
+
+    /**
+     * Adding activator to trigger the loading of javax.xml.ws
+     */
+
 }

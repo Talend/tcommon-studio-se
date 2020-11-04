@@ -16,6 +16,7 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.InputStream;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
@@ -35,6 +36,7 @@ import org.talend.core.nexus.TalendLibsServerManager;
 import org.talend.core.runtime.maven.MavenArtifact;
 import org.talend.core.runtime.maven.MavenUrlHelper;
 import org.talend.librariesmanager.model.ModulesNeededProvider;
+import org.talend.librariesmanager.nexus.utils.VersionUtil;
 import org.talend.librariesmanager.ui.LibManagerUiPlugin;
 
 /*
@@ -45,6 +47,16 @@ public class ConfigModuleHelper {
 
     private static final String LOCAL_M2 = MavenPlugin.getMaven().getLocalRepositoryPath();
 
+    private static final Set<String> IGNORED_FILE_EXTS = new HashSet<String>();
+    static {
+        IGNORED_FILE_EXTS.add("repositories");
+        IGNORED_FILE_EXTS.add("lastUpdated");
+        IGNORED_FILE_EXTS.add("sha1");
+        IGNORED_FILE_EXTS.add("md5");
+        IGNORED_FILE_EXTS.add("pom");
+        IGNORED_FILE_EXTS.add("xml");
+    }
+
     private ConfigModuleHelper() {
 
     }
@@ -54,7 +66,8 @@ public class ConfigModuleHelper {
         IRepositoryArtifactHandler customerRepHandler = RepositoryArtifactHandlerManager.getRepositoryHandler(customNexusServer);
         if (customerRepHandler != null) {
             List<MavenArtifact> ret = customerRepHandler.search(name, true);
-            return ret;
+
+            return VersionUtil.filterSnapshotArtifacts(ret);
         }
         return new ArrayList<MavenArtifact>();
     }
@@ -66,7 +79,19 @@ public class ConfigModuleHelper {
 
         List<String> ret = new ArrayList<String>();
         for (MavenArtifact art : artifacts) {
-            ret.add(art.getFileName(false));
+            ret.add(art.getFileName());
+        }
+        return ret.toArray(new String[0]);
+    }
+
+    public static String[] toArrayUnique(String[] arr) {
+        if (arr == null) {
+            return new String[0];
+        }
+
+        Set<String> ret = new HashSet<String>();
+        for (String art : arr) {
+            ret.add(art);
         }
         return ret.toArray(new String[0]);
     }
@@ -78,7 +103,8 @@ public class ConfigModuleHelper {
             search(name, m2Dir, ret);
         }
 
-        return ret;
+        return VersionUtil.filterSnapshotArtifacts(ret);
+
     }
 
     private static void search(String name, File dir, List<MavenArtifact> ret) throws Exception {
@@ -87,11 +113,16 @@ public class ConfigModuleHelper {
             if (f.isDirectory()) {
                 search(name, f, ret);
             } else {
-                if (f.isFile() && f.getName().endsWith(".jar")
-                        && StringUtils.containsIgnoreCase(FilenameUtils.getBaseName(f.getName()), name)) {
+                if (f.isFile() && StringUtils.containsIgnoreCase(FilenameUtils.getName(f.getName()), name)) {
+
+                    String ext = FilenameUtils.getExtension(f.getName());
+                    if (IGNORED_FILE_EXTS.contains(ext)) {
+                        continue;
+                    }
+
                     String path = f.getPath().substring(LOCAL_M2.length() + 1, f.getPath().length());
 
-                    MavenArtifact art = parse(path);
+                    MavenArtifact art = parse(path, ext);
                     if (art != null) {
                         ret.add(art);
                     }
@@ -100,7 +131,7 @@ public class ConfigModuleHelper {
         }
     }
 
-    public static MavenArtifact parse(String path) {
+    public static MavenArtifact parse(String path, String ext) {
         MavenArtifact art = new MavenArtifact();
         if (path == null || StringUtils.isEmpty(path)) {
             return null;
@@ -127,14 +158,19 @@ public class ConfigModuleHelper {
         art.setGroupId(sb.toString());
         art.setArtifactId(a);
         art.setVersion(v);
-        art.setType("jar");
+        art.setType(ext);
 
         String baseName = FilenameUtils.getBaseName(fname);
+        if (!baseName.contains(v)) {
+            return null;
+        }
+
         int endIndex = a.length() + v.length() + 1;
         if (baseName.length() > endIndex + 1) {
             String classifier = baseName.substring(endIndex + 1, baseName.length());
             art.setClassifier(classifier);
         }
+
         return art;
     }
 
@@ -185,7 +221,6 @@ public class ConfigModuleHelper {
         for (MavenArtifact art : artifacts) {
             if (StringUtils.equals(art.getGroupId(), artifact.getGroupId())
                     && StringUtils.equals(art.getArtifactId(), artifact.getArtifactId())
-                    && StringUtils.equals(art.getVersion(), artifact.getVersion())
                     && StringUtils.equals(art.getClassifier(), artifact.getClassifier())
                     && StringUtils.equals(art.getType(), artifact.getType())
                     && StringUtils.equals(art.getSha1(), artifact.getSha1())) {
@@ -199,18 +234,20 @@ public class ConfigModuleHelper {
         ArtifactRepositoryBean customNexusServer = TalendLibsServerManager.getInstance().getCustomNexusServer();
         IRepositoryArtifactHandler customerRepHandler = RepositoryArtifactHandlerManager.getRepositoryHandler(customNexusServer);
         if (customerRepHandler != null) {
-            boolean fromSnapshot = false;
-            if (v != null && v.endsWith(MavenUrlHelper.VERSION_SNAPSHOT)) {
-                fromSnapshot = true;
-            }
-            List<MavenArtifact> ret = customerRepHandler.search(g, a, v, true, fromSnapshot);
+            List<MavenArtifact> ret = customerRepHandler.search(g, a, v, true, true);
 
             if (customNexusServer.getType() == ArtifactRepositoryBean.NexusType.NEXUS_2.name()) {
                 // resolve sha1
                 for (MavenArtifact art : ret) {
-                    String sha1 = customerRepHandler.resolveRemoteSha1(art, !fromSnapshot);
+                    String sha1 = customerRepHandler.resolveRemoteSha1(art, false);
                     if (sha1 != null) {
                         art.setSha1(sha1);
+                    }
+                    if (StringUtils.isEmpty(art.getSha1())) {
+                        sha1 = customerRepHandler.resolveRemoteSha1(art, true);
+                        if (sha1 != null) {
+                            art.setSha1(sha1);
+                        }
                     }
                 }
             }

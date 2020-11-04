@@ -1312,7 +1312,7 @@ public class ImportBasicHandler extends AbstractImportExecutableHandler {
         try {
             Property property = importItem.getProperty();
             boolean isReloaded = false;
-            if (property == null) {
+            if (property == null || property.eResource() == null) {
                 object = factory.getSpecificVersion(importItem.getItemId(), importItem.getItemVersion(), true);
                 property = object.getProperty();
                 isReloaded = true;

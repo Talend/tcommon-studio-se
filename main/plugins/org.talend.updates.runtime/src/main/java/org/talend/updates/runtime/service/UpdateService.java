@@ -33,6 +33,7 @@ import org.talend.updates.runtime.model.ExtraFeature;
 import org.talend.updates.runtime.model.FeatureCategory;
 import org.talend.updates.runtime.nexus.component.ComponentIndexManager;
 import org.talend.updates.runtime.nexus.component.NexusServerManager;
+import org.talend.updates.runtime.utils.PathUtils;
 import org.talend.updates.runtime.utils.UpdateTools;
 
 public class UpdateService implements IUpdateService {
@@ -126,6 +127,19 @@ public class UpdateService implements IUpdateService {
             }
         }
         return isNeedRestart;
+    }
+
+    @Override
+    public String getSharedStudioMissingPatchVersion() {
+        File patchFolder = PathUtils.getPatchesFolder();
+        String patchFileName = SharedStudioPatchInfoProvider.getInstance().getStudioInstalledLatestPatchFileName();
+        if (patchFileName != null && !SharedStudioPatchInfoProvider.getInstance().isInstalled(patchFileName, SharedStudioPatchInfoProvider.PATCH_TYPE_STUDIO)) {
+            File studioPatchFile = new File (patchFolder, patchFileName);
+            if (studioPatchFile != null && !studioPatchFile.exists()) {
+                return patchFileName;
+            }
+        }
+        return null;
     }
 }
 
