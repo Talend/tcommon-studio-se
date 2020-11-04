@@ -223,6 +223,7 @@ public class ConfigModuleHelper {
             if (StringUtils.equals(art.getGroupId(), artifact.getGroupId())
                     && StringUtils.equals(art.getArtifactId(), artifact.getArtifactId())
                     && StringUtils.equals(art.getClassifier(), artifact.getClassifier())
+                    && StringUtils.equals(art.getVersion(), artifact.getVersion())
                     && StringUtils.equals(art.getType(), artifact.getType())
                     && StringUtils.equals(art.getSha1(), artifact.getSha1())) {
                 return true;
@@ -252,7 +253,7 @@ public class ConfigModuleHelper {
                     }
                 }
             }
-            return ret;
+            return VersionUtil.filterSnapshotArtifacts(ret);
         }
         return new ArrayList<MavenArtifact>();
     }

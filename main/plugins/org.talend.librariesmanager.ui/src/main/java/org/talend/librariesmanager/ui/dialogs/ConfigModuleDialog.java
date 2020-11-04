@@ -786,9 +786,15 @@ public class ConfigModuleDialog extends TitleAreaDialog implements IConfigModule
                                         if (ConfigModuleHelper.canFind(new HashSet<MavenArtifact>(remoteArtifacts), art)) {
                                             deploy = false;
                                         } else {
-                                            // popup and ask, reinstall?
-                                            deploy = MessageDialog.open(MessageDialog.CONFIRM, getShell(), "",
-                                                    Messages.getString("ConfigModuleDialog.shareInfo"), SWT.NONE);
+                                            if (art.getVersion() != null
+                                                    && art.getVersion().endsWith(MavenUrlHelper.VERSION_SNAPSHOT)) {
+                                                // snapshot
+                                                deploy = true;
+                                            } else {
+                                                // popup and ask, reinstall?
+                                                deploy = MessageDialog.open(MessageDialog.CONFIRM, getShell(), "",
+                                                        Messages.getString("ConfigModuleDialog.shareInfo"), SWT.NONE);
+                                            }
                                         }
                                     }
 
