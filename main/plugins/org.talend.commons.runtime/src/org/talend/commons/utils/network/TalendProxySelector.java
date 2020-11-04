@@ -127,6 +127,10 @@ public class TalendProxySelector extends ProxySelector {
 
     private static Object instanceLock = new Object();
 
+    private List<String> localLoopbackAddresses;
+
+    private Object localLoopbackAddressesLock = new Object();
+
     private boolean printProxyLog = false;
 
     private boolean allowProxyRedirect = false;
@@ -178,25 +182,24 @@ public class TalendProxySelector extends ProxySelector {
             if (IProxyChangeEvent.PROXY_DATA_CHANGED == changeEvent
                     || IProxyChangeEvent.NONPROXIED_HOSTS_CHANGED == changeEvent) {
                 if (this.excludeLoopbackAddressAutomatically && proxyManager.isProxiesEnabled()) {
-                    List<String> localLoopbackAddresses = NetworkUtil.getLocalLoopbackAddresses(false);
-                    final String localhost = "localhost";
-                    if (!localLoopbackAddresses.contains(localhost)) {
-                        localLoopbackAddresses.add(localhost);
-                    }
-                    if (org.eclipse.core.internal.net.ProxySelector
-                            .canSetBypassHosts(org.eclipse.core.internal.net.ProxySelector.getDefaultProvider())) {
-                        List<String> configuredProxies = Arrays.asList(proxyManager.getNonProxiedHosts());
-                        if (!configuredProxies.containsAll(localLoopbackAddresses)) {
-                            Set<String> nonProxyHosts = new HashSet<>(localLoopbackAddresses);
-                            nonProxyHosts.addAll(configuredProxies);
-                            ExceptionHandler.log(this.getClass().getName() + ":" + "-D"
-                                    + PROP_PROXY_EXCLUDE_LOOPBACK_ADDRESS_AUTOMATICALLY
-                                    + "=true, adding missing loopback addresses into eclipse nonProxyHosts: " + nonProxyHosts);
-                            proxyManager.setNonProxiedHosts(nonProxyHosts.toArray(new String[0]));
+                    List<String> addresses = getLocalLoopbackAddresses();
+                    if (addresses != null && !addresses.isEmpty()) {
+                        if (org.eclipse.core.internal.net.ProxySelector
+                                .canSetBypassHosts(org.eclipse.core.internal.net.ProxySelector.getDefaultProvider())) {
+                            List<String> configuredProxies = Arrays.asList(proxyManager.getNonProxiedHosts());
+                            if (!configuredProxies.containsAll(addresses)) {
+                                Set<String> nonProxyHosts = new HashSet<>(addresses);
+                                nonProxyHosts.addAll(configuredProxies);
+                                ExceptionHandler.log(
+                                        this.getClass().getName() + ":" + "-D" + PROP_PROXY_EXCLUDE_LOOPBACK_ADDRESS_AUTOMATICALLY
+                                                + "=true, adding missing loopback addresses into eclipse nonProxyHosts: "
+                                                + nonProxyHosts);
+                                proxyManager.setNonProxiedHosts(nonProxyHosts.toArray(new String[0]));
+                            }
+                        } else {
+                            updateNonProxyHosts(addresses, PROP_PROXY_HTTP_NON_PROXYHOSTS);
+                            updateNonProxyHosts(addresses, PROP_PROXY_HTTPS_NON_PROXYHOSTS);
                         }
-                    } else {
-                        updateNonProxyHosts(localLoopbackAddresses, PROP_PROXY_HTTP_NON_PROXYHOSTS);
-                        updateNonProxyHosts(localLoopbackAddresses, PROP_PROXY_HTTPS_NON_PROXYHOSTS);
                     }
                 }
             }
@@ -225,6 +228,22 @@ public class TalendProxySelector extends ProxySelector {
                         ProxyType.convertHostsToPropertyString(nonProxyHosts.toArray(new String[0])));
             }
         }
+    }
+
+    private List<String> getLocalLoopbackAddresses() {
+        if (this.localLoopbackAddresses == null) {
+            synchronized (localLoopbackAddressesLock) {
+                if (this.localLoopbackAddresses == null) {
+                    List<String> addresses = NetworkUtil.getLocalLoopbackAddresses(false);
+                    final String localhost = "localhost";
+                    if (!addresses.contains(localhost)) {
+                        addresses.add(localhost);
+                    }
+                    this.localLoopbackAddresses = addresses;
+                }
+            }
+        }
+        return this.localLoopbackAddresses;
     }
 
     private void initHostMap() {
@@ -357,6 +376,22 @@ public class TalendProxySelector extends ProxySelector {
         }
         if (uri == null) {
             return Collections.EMPTY_LIST;
+        }
+        try {
+            if (this.excludeLoopbackAddressAutomatically) {
+                List<String> addresses = getLocalLoopbackAddresses();
+                if (addresses != null) {
+                    String host = uri.getHost();
+                    if (addresses.contains(host)) {
+                        if (printProxyLog) {
+                            ExceptionHandler.log(uri + " is excluded from proxy");
+                        }
+                        return Collections.EMPTY_LIST;
+                    }
+                }
+            }
+        } catch (Exception e) {
+            ExceptionHandler.process(e);
         }
         URI validatedUri = validateUri(uri);
         Set<Proxy> results = new LinkedHashSet<>();
