@@ -83,9 +83,6 @@ public class PasteAction extends AContextualAction {
                     String frameworkNewValue = null;
                     if (target.getContentType() == ERepositoryObjectType.PROCESS) {
                         jobTypeValue = ConvertJobsUtil.JobType.STANDARD.getDisplayName();
-                    } else if (target.getContentType() == ERepositoryObjectType.PROCESS_STORM) {
-                        jobTypeValue = ConvertJobsUtil.JobType.BIGDATASTREAMING.getDisplayName();
-                        frameworkNewValue = ConvertJobsUtil.JobStreamingFramework.SPARKSTREAMINGFRAMEWORK.getDisplayName();
                     } else if (target.getContentType() == ERepositoryObjectType.PROCESS_MR) {
                         jobTypeValue = ConvertJobsUtil.JobType.BIGDATABATCH.getDisplayName();
                         frameworkNewValue = ConvertJobsUtil.JobBatchFramework.MAPREDUCEFRAMEWORK.getDisplayName();

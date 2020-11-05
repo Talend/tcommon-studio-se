@@ -381,8 +381,6 @@ public class RepoViewCommonNavigator extends CommonNavigator implements IReposit
                         } else if (ENodeType.SYSTEM_FOLDER == node.getType()) {
                             if (node.getContentType() == ERepositoryObjectType.PROCESS) {
                                 item.setImage(ImageProvider.getImage(ECoreImage.PROCESS_STANDARD_GENERIC_CATEGORY_CLOSE_ICON));
-                            } else if (node.getContentType() == ERepositoryObjectType.PROCESS_STORM) {
-                                item.setImage(ImageProvider.getImage(ECoreImage.PROCESS_STREAMING_GENERIC_CATEGORY_CLOSE_ICON));
                             } else if (node.getContentType() == ERepositoryObjectType.PROCESS_MR) {
                                 item.setImage(ImageProvider.getImage(ECoreImage.PROCESS_BATCH_GENERIC_CATEGORY_CLOSE_ICON));
                             }
@@ -404,8 +402,6 @@ public class RepoViewCommonNavigator extends CommonNavigator implements IReposit
                             // also see ImportItemsViewerLabelProvider.java
                             if (node.getContentType() == ERepositoryObjectType.PROCESS) {
                                 item.setImage(ImageProvider.getImage(ECoreImage.PROCESS_STANDARD_GENERIC_CATEGORY_OPEN_ICON));
-                            } else if (node.getContentType() == ERepositoryObjectType.PROCESS_STORM) {
-                                item.setImage(ImageProvider.getImage(ECoreImage.PROCESS_STREAMING_GENERIC_CATEGORY_OPEN_ICON));
                             } else if (node.getContentType() == ERepositoryObjectType.PROCESS_MR) {
                                 item.setImage(ImageProvider.getImage(ECoreImage.PROCESS_BATCH_GENERIC_CATEGORY_OPEN_ICON));
                             }

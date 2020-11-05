@@ -96,7 +96,7 @@ public class DuplicateDialog extends CustomInputDialog {
             } else if (contentType == ERepositoryObjectType.PROCESS_MR || contentType == ERepositoryObjectType.SPARK_JOBLET) {
                 jobTypeValue = JobType.BIGDATABATCH.getDisplayName();
                 jobTypeCombo.setText(jobTypeValue);
-            } else if (contentType == ERepositoryObjectType.PROCESS_STORM || contentType == ERepositoryObjectType.SPARK_STREAMING_JOBLET) {
+            } else if (contentType == ERepositoryObjectType.SPARK_STREAMING_JOBLET) {
                 jobTypeValue = JobType.BIGDATASTREAMING.getDisplayName();
                 jobTypeCombo.setText(jobTypeValue);
             } else if (contentType == ERepositoryObjectType.PROCESS_ROUTE

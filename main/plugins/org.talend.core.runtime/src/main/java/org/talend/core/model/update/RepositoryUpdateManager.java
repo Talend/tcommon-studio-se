@@ -92,7 +92,6 @@ import org.talend.core.runtime.i18n.Messages;
 import org.talend.core.runtime.services.IGenericDBService;
 import org.talend.core.service.IMRProcessService;
 import org.talend.core.service.IMetadataManagmentService;
-import org.talend.core.service.IStormProcessService;
 import org.talend.core.ui.ISparkJobletProviderService;
 import org.talend.core.ui.ISparkStreamingJobletProviderService;
 import org.talend.cwm.helper.ConnectionHelper;
@@ -1162,22 +1161,6 @@ public abstract class RepositoryUpdateManager {
                 }
             }
         }
-        if (item != null && prefix.isEmpty()
-                && GlobalServiceRegister.getDefault().isServiceRegistered(IStormProcessService.class)) {
-            IStormProcessService stormProcessService = (IStormProcessService) GlobalServiceRegister.getDefault()
-                    .getService(IStormProcessService.class);
-            if (stormProcessService.isStormItem(item)) {
-                Object framework = BigDataBasicUtil.getFramework(item);
-                if (framework != null) {
-                    if (HadoopConstants.FRAMEWORK_SPARKSTREAMING.equals(framework)) {
-                        prefix = UpdatesConstants.SPARKSTREAMING;
-                    }
-                }
-                if (prefix == null || prefix.isEmpty()) {
-                    prefix = UpdatesConstants.STORM;
-                }
-            }
-        }
         if (prefix == null || prefix.isEmpty()) {
             prefix = UpdatesConstants.JOB;
         }
@@ -1243,7 +1226,6 @@ public abstract class RepositoryUpdateManager {
                 types.add(EUpdateItemType.JOB_PROPERTY_STATS_LOGS);
                 types.add(EUpdateItemType.JOB_PROPERTY_HEADERFOOTER);
                 types.add(EUpdateItemType.JOB_PROPERTY_MAPREDUCE);
-                types.add(EUpdateItemType.JOB_PROPERTY_STORM);
 
                 return types;
             }

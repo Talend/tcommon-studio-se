@@ -34,8 +34,6 @@ public class TalendJavaProjectConstants {
 
     public static final String DIR_PROCESS_MR = "process_mr"; //$NON-NLS-1$
 
-    public static final String DIR_PROCESS_STORM = "process_storm"; //$NON-NLS-1$
-
     public static final String DIR_PROCESS_ROUTES = "routes"; //$NON-NLS-1$
 
     public static final String DIR_PROCESS_SERVICES = "services"; //$NON-NLS-1$

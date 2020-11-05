@@ -31,10 +31,8 @@ import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Label;
-import org.eclipse.swt.widgets.Text;
 import org.talend.commons.exception.BusinessException;
 import org.talend.commons.exception.PersistenceException;
-import org.talend.commons.ui.runtime.exception.ExceptionHandler;
 import org.talend.commons.ui.runtime.image.IImage;
 import org.talend.commons.ui.runtime.image.ImageProvider;
 import org.talend.core.GlobalServiceRegister;
@@ -44,7 +42,6 @@ import org.talend.core.model.repository.ERepositoryObjectType;
 import org.talend.core.model.repository.IRepositoryViewObject;
 import org.talend.core.repository.utils.ConvertJobsUtil;
 import org.talend.core.repository.utils.ConvertJobsUtil.JobType;
-import org.talend.core.ui.branding.IBrandingService;
 import org.talend.core.utils.JobImageUtil;
 import org.talend.metadata.managment.ui.i18n.Messages;
 import org.talend.metadata.managment.ui.wizard.PropertiesWizard;
@@ -135,7 +132,7 @@ public class EditProcessPropertiesWizardPage extends PropertiesWizardPage {
 
     @Override
     protected void createFrameworkPart(Composite parent) {
-        if (!PluginChecker.isMapReducePluginLoader() && !PluginChecker.isStormPluginLoader()) {
+        if (!PluginChecker.isMapReducePluginLoader()) {
             return;
         }
      // Job type

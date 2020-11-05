@@ -52,16 +52,14 @@ public class ImportItemsViewerLabelProvider extends LabelProvider {
             } else if (element instanceof ItemImportNode) {
                 Item item = ((ItemImportNode) element).getItemRecord().getItem();
                 final ERepositoryObjectType itemType = ERepositoryObjectType.getItemType(item);
-                if (itemType == ERepositoryObjectType.PROCESS_MR || itemType == ERepositoryObjectType.PROCESS_STORM) {
+                if (itemType == ERepositoryObjectType.PROCESS_MR) {
                     return ImageProvider.getImage(CoreImageProvider.getIcon(item));
                 }
                 return getImageBasedOn(itemType);
             } else if (element instanceof TypeImportNode) {
                 ERepositoryObjectType repObjectType = ((TypeImportNode) element).getType();
                 // also see RepoViewCommonNavigator.java
-                if (repObjectType == ERepositoryObjectType.PROCESS_STORM) {
-                    return ImageProvider.getImage(ECoreImage.PROCESS_STREAMING_GENERIC_CATEGORY_OPEN_ICON);
-                } else if (repObjectType == ERepositoryObjectType.PROCESS_MR) {
+                if (repObjectType == ERepositoryObjectType.PROCESS_MR) {
                     return ImageProvider.getImage(ECoreImage.PROCESS_BATCH_GENERIC_CATEGORY_OPEN_ICON);
                 } else {
                     return getImageBasedOn(repObjectType);

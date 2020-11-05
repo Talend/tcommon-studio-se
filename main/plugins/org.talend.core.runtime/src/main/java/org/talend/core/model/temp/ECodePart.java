@@ -32,10 +32,6 @@ public enum ECodePart {
     MRCODE("mrcode"), //$NON-NLS-1$
     MRCONFIG("mrconfig"), //$NON-NLS-1$
     MRJOBFOOTER("mrjobfooter"), //$NON-NLS-1$
-    STORMCODE("stormcode"), //$NON-NLS-1$
-    STORMCONFIG("stormconfig"), //$NON-NLS-1$
-    STORMMONITOR("stormmonitor"), //$NON-NLS-1$
-    STORMJOBFOOTER("stormjobfooter"), //$NON-NLS-1$
     SPARKCODE("sparkcode"), //$NON-NLS-1$
     SPARKCONFIG("sparkconfig"), //$NON-NLS-1$
     SPARKJOBFOOTER("sparkjobfooter"), //$NON-NLS-1$

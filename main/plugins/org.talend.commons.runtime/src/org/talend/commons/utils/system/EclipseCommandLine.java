@@ -82,8 +82,7 @@ public class EclipseCommandLine {
     static public final String TALEND_SHOW_JOB_COMMAND = "--showJob"; //$NON-NLS-1$
 
     /**
-     * By default, the type is PROCESS, but can be other type of job, like MR, Storm, Joblet etc, will implement it
-     * later.
+     * By default, the type is PROCESS, but can be other type of job, like MR, Joblet etc, will implement it later.
      */
     static public final String TALEND_SHOW_JOB_TYPE_COMMAND = "--showJobType"; //$NON-NLS-1$
 

@@ -431,15 +431,10 @@ public class DuplicateAction extends AContextualAction {
         } else {
             ERepositoryObjectType repositoryType = node.getObjectType();
             if (repositoryType != null) {
-                if (repositoryType == ERepositoryObjectType.PROCESS || repositoryType == ERepositoryObjectType.PROCESS_STORM
-                        || repositoryType == ERepositoryObjectType.PROCESS_MR) {
+                if (repositoryType == ERepositoryObjectType.PROCESS || repositoryType == ERepositoryObjectType.PROCESS_MR) {
                     try {
                         List<IRepositoryViewObject> listExistingObjects = repositoryFactory.getAll(ERepositoryObjectType.PROCESS,
                                 true, false);
-                        if (PluginChecker.isStormPluginLoader()) {
-                            listExistingObjects
-                                    .addAll(repositoryFactory.getAll(ERepositoryObjectType.PROCESS_STORM, true, false));
-                        }
                         if (PluginChecker.isMapReducePluginLoader()) {
                             listExistingObjects.addAll(repositoryFactory.getAll(ERepositoryObjectType.PROCESS_MR, true, false));
                         }
@@ -458,9 +453,6 @@ public class DuplicateAction extends AContextualAction {
                     try {
                         List<IRepositoryViewObject> listExistingObjects = repositoryFactory.getAll(ERepositoryObjectType.JOBLET,
                                 true, false);
-                        if (PluginChecker.isStormPluginLoader()) {
-                            listExistingObjects.addAll(repositoryFactory.getAll(ERepositoryObjectType.SPARK_JOBLET, true, false));
-                        }
                         if (PluginChecker.isMapReducePluginLoader()) {
                             listExistingObjects.addAll(repositoryFactory.getAll(ERepositoryObjectType.SPARK_STREAMING_JOBLET,
                                     true, false));

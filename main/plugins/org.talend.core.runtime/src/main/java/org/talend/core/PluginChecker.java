@@ -96,8 +96,6 @@ public class PluginChecker {
 
     private static final String TESTCASE_PLUGIN_ID = "org.talend.testcontainer.core.ui"; //$NON-NLS-1$
 
-    private static final String STORM_PLUGIN_ID = "org.talend.repository.storm"; //$NON-NLS-1$
-
     private static final String GEF_MAP_PLUGIN_ID = "org.talend.designer.gefabstractmap";//$NON-NLS-1$
 
     private static final String PARALEL_PLUGIN_ID = "org.talend.designer.components.clusterprovider";//$NON-NLS-1$
@@ -332,10 +330,6 @@ public class PluginChecker {
      */
     public static boolean isMapReducePluginLoader() {
         return isPluginLoaded(MAPREDUCE_PLUGIN_ID);
-    }
-
-    public static boolean isStormPluginLoader() {
-        return isPluginLoaded(STORM_PLUGIN_ID);
     }
 
     public static boolean isGEFAbstractMapLoaded() {

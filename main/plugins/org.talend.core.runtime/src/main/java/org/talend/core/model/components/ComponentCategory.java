@@ -20,7 +20,6 @@ import org.talend.core.model.properties.Item;
 import org.talend.core.model.properties.JobletProcessItem;
 import org.talend.core.model.properties.ProcessItem;
 import org.talend.core.service.IMRProcessService;
-import org.talend.core.service.IStormProcessService;
 import org.talend.designer.core.ICamelDesignerCoreService;
 
 /**
@@ -32,7 +31,6 @@ public enum ComponentCategory {
 
     CATEGORY_4_DI("DI", ""), //$NON-NLS-1$ //$NON-NLS-2$
     CATEGORY_4_MAPREDUCE("MR", "Map/Reduce"), //$NON-NLS-1$ //$NON-NLS-2$
-    CATEGORY_4_STORM("STORM", "Storm"), //$NON-NLS-1$ //$NON-NLS-2$
     CATEGORY_4_SPARK("SPARK", "Spark"), //$NON-NLS-1$ //$NON-NLS-2$
     CATEGORY_4_SPARKSTREAMING("SPARKSTREAMING", "Spark Streaming"), //$NON-NLS-1$ //$NON-NLS-2$
     CATEGORY_4_CAMEL("CAMEL", "");//$NON-NLS-1$ //$NON-NLS-2$
@@ -98,16 +96,6 @@ public enum ComponentCategory {
             }
             if (mrService.isMapReduceItem(item)) {
                 return ComponentCategory.CATEGORY_4_MAPREDUCE;
-            }
-        }
-        if (GlobalServiceRegister.getDefault().isServiceRegistered(IStormProcessService.class)) {
-            IStormProcessService stormService = (IStormProcessService) GlobalServiceRegister.getDefault().getService(
-                    IStormProcessService.class);
-            if (stormService.isSparkStreaming(item)) {
-                return ComponentCategory.CATEGORY_4_SPARKSTREAMING;
-            }
-            if (stormService.isStormItem(item)) {
-                return ComponentCategory.CATEGORY_4_STORM;
             }
         }
         if (item instanceof ProcessItem || item instanceof JobletProcessItem) {

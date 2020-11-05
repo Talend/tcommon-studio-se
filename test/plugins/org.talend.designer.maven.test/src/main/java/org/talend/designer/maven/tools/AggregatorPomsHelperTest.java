@@ -209,9 +209,6 @@ public class AggregatorPomsHelperTest {
         IFolder processMRFolder = helper.getProcessFolder(ERepositoryObjectType.PROCESS_MR);
         assertEquals("/" + projectTechName + "/poms/jobs/process_mr", processMRFolder.getFullPath().toPortableString());
 
-        IFolder processStormFolder = helper.getProcessFolder(ERepositoryObjectType.PROCESS_STORM);
-        assertEquals("/" + projectTechName + "/poms/jobs/process_storm", processStormFolder.getFullPath().toPortableString());
-
         IFolder jobletFolder = helper.getProcessFolder(ERepositoryObjectType.JOBLET);
         assertEquals("/" + projectTechName + "/poms/jobs/joblets", jobletFolder.getFullPath().toPortableString());
 

@@ -17,7 +17,6 @@ import org.talend.commons.ui.runtime.image.IImage;
 import org.talend.core.GlobalServiceRegister;
 import org.talend.core.hadoop.HadoopConstants;
 import org.talend.core.service.IMRProcessService;
-import org.talend.core.service.IStormProcessService;
 
 /**
  * created by kongxiaohan on Sep 15, 2015 Detailled comment
@@ -26,13 +25,7 @@ import org.talend.core.service.IStormProcessService;
 public class JobImageUtil {
 
     public static IImage getWizardIcon(String jobType, String framework) {
-        if (HadoopConstants.JOBTYPEBDSTREAMING.equals(jobType)) {
-            if (GlobalServiceRegister.getDefault().isServiceRegistered(IStormProcessService.class)) {
-                IStormProcessService stormProcessService = (IStormProcessService) GlobalServiceRegister.getDefault().getService(
-                        IStormProcessService.class);
-                return stormProcessService.getStormWizardIcon(framework);
-            }
-        } else if (HadoopConstants.JOBTYPEBDBATCH.equals(jobType)) {
+        if (HadoopConstants.JOBTYPEBDBATCH.equals(jobType)) {
             if (GlobalServiceRegister.getDefault().isServiceRegistered(IMRProcessService.class)) {
                 IMRProcessService mrProcessService = (IMRProcessService) GlobalServiceRegister.getDefault().getService(
                         IMRProcessService.class);
