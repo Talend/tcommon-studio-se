@@ -1315,8 +1315,7 @@ public class LocalLibraryManager implements ILibraryManagerService, IChangedLibr
             String contributeID = providerInfo.getContributer();
             String id = providerInfo.getId();
             try {
-                if (!"org.talend.designer.components.model.UserComponentsProvider".equals(id)
-                        && !"org.talend.designer.components.exchange.ExchangeComponentsProvider".equals(id)) {
+                if (!isExtComponentProvider(id)) {
                     File file = new File(providerInfo.getLocation());
                     List<File> jarFiles = FilesUtils.getJarFilesFromFolder(file, null, "ext");
                     if (jarFiles.size() > 0) {
@@ -1348,6 +1347,16 @@ public class LocalLibraryManager implements ILibraryManagerService, IChangedLibr
             }
         }
     }
+    
+	private boolean isExtComponentProvider(String id) {
+		if ("org.talend.designer.components.model.UserComponentsProvider".equals(id)
+				|| "org.talend.designer.codegen.components.model.SharedStudioUserComponentProvider".equals(id)
+				|| "org.talend.designer.components.exchange.ExchangeComponentsProvider".equals(id)
+				|| "org.talend.designer.components.exchange.SharedStudioExchangeComponentsProvider".equals(id)) {
+			return true;
+		}
+		return false;
+	}
 
 	private void deployLibsFromCustomComponents(IComponentsService service, Map<String, String> platformURLMap) {
 		Set<File> needToDeploy = new HashSet<>();
@@ -1356,11 +1365,7 @@ public class LocalLibraryManager implements ILibraryManagerService, IChangedLibr
 			String id = providerInfo.getId();
 			try {
 				File file = new File(providerInfo.getLocation());
-				if ("org.talend.designer.components.model.UserComponentsProvider".equals(id)
-						|| "org.talend.designer.codegen.components.model.SharedStudioUserComponentProvider".equals(id)
-						|| "org.talend.designer.components.exchange.ExchangeComponentsProvider".equals(id)
-						|| "org.talend.designer.components.exchange.SharedStudioExchangeComponentsProvider"
-								.equals(id)) {
+				if (isExtComponentProvider(id)) {
 					if (file.isDirectory()) {
 						List<File> jarFiles = FilesUtils.getJarFilesFromFolder(file, null);
 						if (jarFiles.size() > 0) {
