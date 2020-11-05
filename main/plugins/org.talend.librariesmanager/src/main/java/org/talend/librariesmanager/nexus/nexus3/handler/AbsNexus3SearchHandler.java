@@ -16,9 +16,7 @@ import java.net.URI;
 import java.net.URISyntaxException;
 import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
-import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
 
 import org.apache.commons.codec.binary.Base64;
 import org.apache.commons.lang3.StringUtils;
@@ -32,21 +30,18 @@ import org.apache.log4j.Logger;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.talend.core.nexus.ArtifactRepositoryBean;
 import org.talend.core.nexus.HttpClientTransport;
+import org.talend.core.nexus.NexusServerUtils;
 import org.talend.core.runtime.maven.MavenArtifact;
+import org.talend.librariesmanager.nexus.utils.ShareLibrariesUtil;
 
 import net.sf.json.JSONArray;
 import net.sf.json.JSONObject;
 
 public abstract class AbsNexus3SearchHandler implements INexus3SearchHandler {
-    private static Logger log = Logger.getLogger(AbsNexus3SearchHandler.class);
-    protected ArtifactRepositoryBean serverBean;
 
-    private static final Set<String> IGNORED_TYPES = new HashSet<String>();
-    static {
-        IGNORED_TYPES.add("pom");
-        IGNORED_TYPES.add("sha1");
-        IGNORED_TYPES.add("md5");
-    }
+    private static Logger log = Logger.getLogger(AbsNexus3SearchHandler.class);
+
+    protected ArtifactRepositoryBean serverBean;
 
     /**
      * {@value}
@@ -135,37 +130,53 @@ public abstract class AbsNexus3SearchHandler implements INexus3SearchHandler {
         if (resultArray != null) {
             for (int i = 0; i < resultArray.size(); i++) {
                 JSONObject jsonObject = resultArray.getJSONObject(i);
-                MavenArtifact artifact = new MavenArtifact();
-                artifact.setGroupId(jsonObject.getString("group")); //$NON-NLS-1$
-                artifact.setArtifactId(jsonObject.getString("name")); //$NON-NLS-1$
-                artifact.setVersion(jsonObject.getString("version")); //$NON-NLS-1$
-                JSONArray assertsArray = jsonObject.getJSONArray("assets"); //$NON-NLS-1$                
-                artifact.setType(getPackageType(assertsArray));
-                if (artifact.getType() != null) {
-                    fillCheckSumData(assertsArray, artifact);
-                    resultList.add(artifact);
+                String repository = jsonObject.getString("repository");//$NON-NLS-1$
+                String group = jsonObject.getString("group");//$NON-NLS-1$
+                String name = jsonObject.getString("name");//$NON-NLS-1$
+                String version = jsonObject.getString("version");//$NON-NLS-1$
+                JSONArray assertsArray = jsonObject.getJSONArray("assets");//$NON-NLS-1$
+
+                if (assertsArray != null) {
+                    for (int j = 0; j < assertsArray.size(); j++) {
+                        JSONObject assertsObject = assertsArray.getJSONObject(j);
+                        String packageType = getPackageType(assertsObject);
+                        if (packageType != null) {
+                            MavenArtifact artifact = new MavenArtifact();
+                            String path = assertsObject.getString("path"); //$NON-NLS-1$
+                            String regex = name + "-" + version;
+                            String classifier = ShareLibrariesUtil.getMavenClassifier(path, regex, packageType);
+                            artifact.setGroupId(group);
+                            artifact.setArtifactId(name);
+                            artifact.setVersion(version);
+                            artifact.setType(packageType);
+                            artifact.setClassifier(classifier);
+                            if (artifact.getType() != null) {
+                                fillCheckSumData(assertsArray, artifact);
+                                resultList.add(artifact);
+                            }
+                        }
+
+                    }
                 }
+
             }
         }
 
         return continuationToken;
     }
 
-    protected String getPackageType(JSONArray assertsArray) {
+    protected String getPackageType(JSONObject jsonObject) {
         String type = null;
-        if (assertsArray != null) {
-            for (int i = 0; i < assertsArray.size(); i++) {
-                JSONObject jsonObject = assertsArray.getJSONObject(i);
-                String path = jsonObject.getString("path"); //$NON-NLS-1$
-                int idx = path.lastIndexOf('.');
-                if (idx > -1) {
-                    type = path.substring(idx + 1);
-                }
-                if (!IGNORED_TYPES.contains(type)) {
-                    return type;
-                }
-            }
+
+        String path = jsonObject.getString("path"); //$NON-NLS-1$
+        int idx = path.lastIndexOf('.');
+        if (idx > -1) {
+            type = path.substring(idx + 1);
         }
+        if (!NexusServerUtils.IGNORED_TYPES.contains(type)) {
+            return type;
+        }
+
         return null;
     }
 
