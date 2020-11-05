@@ -33,6 +33,7 @@ import org.talend.updates.runtime.model.ExtraFeature;
 import org.talend.updates.runtime.model.FeatureCategory;
 import org.talend.updates.runtime.nexus.component.ComponentIndexManager;
 import org.talend.updates.runtime.nexus.component.NexusServerManager;
+import org.talend.updates.runtime.utils.PathUtils;
 import org.talend.updates.runtime.utils.UpdateTools;
 
 public class UpdateService implements IUpdateService {
