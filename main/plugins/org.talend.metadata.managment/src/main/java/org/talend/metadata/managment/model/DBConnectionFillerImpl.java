@@ -675,8 +675,14 @@ public class DBConnectionFillerImpl extends MetadataFillerImpl<DatabaseConnectio
         String catalogName = getDatabaseName(dbConn);
 
         if (StringUtils.isEmpty(catalogName)) {
+            String url = null;
+            if (metaConnection != null) {
+                url = metaConnection.getUrl();
+            } else {
+                url = dbConn.getURL();
+            }
             // TDQ-16020 msjian: should get the correct catalog name
-            catalogName = getPostgresqlCatalogFromUrl(metaConnection.getUrl(), dbConn.getUsername());
+            catalogName = getPostgresqlCatalogFromUrl(url, dbConn.getUsername());
         }
 
         if (StringUtils.isNotEmpty(catalogName)) {
