@@ -80,6 +80,7 @@ public class ConvertJobsUtil {
 
     public static enum JobType {
         STANDARD("Standard", "_STANDARD_", ERepositoryObjectType.PROCESS), //$NON-NLS-1$ //$NON-NLS-2$
+        BIGDATASTREAMING("Big Data Streaming", "_BIG_DATA_STREAMING_", ERepositoryObjectType.valueOf("PROCESS_STORM")), //$NON-NLS-1$ //$NON-NLS-2$
         BIGDATABATCH("Big Data Batch", "_BIG_DATA_BATCH_", ERepositoryObjectType.PROCESS_MR); //$NON-NLS-1$ //$NON-NLS-2$
 
         private String displayName;
