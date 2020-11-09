@@ -963,7 +963,7 @@ public class RelationshipItemBuilder {
 	        
 	        Map<Relation, Set<Relation>> itemRelations = getRelatedRelations(item);
 	        
-	        Set<Relation> repositoryNode = (Set<Relation>) itemRelations.get(relation);
+	        Set<Relation> repositoryNode = (Set<Relation>) itemRelations.getOrDefault(relation,  new HashSet<Relation>());
 	        
 	        for (Relation rel : repositoryNode) {
 	        	if (rel.getType().equals("Beans")) {

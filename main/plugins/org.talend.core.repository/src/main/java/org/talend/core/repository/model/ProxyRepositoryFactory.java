@@ -2141,12 +2141,18 @@ public final class ProxyRepositoryFactory implements IProxyRepositoryFactory {
 
                 ProjectDataJsonProvider.checkAndRectifyRelationShipSetting(project.getEmfProject());
 
-                // load additional jdbc
-                if (GlobalServiceRegister.getDefault().isServiceRegistered(IGenericWizardService.class)) {
-                    IGenericWizardService service = GlobalServiceRegister.getDefault().getService(IGenericWizardService.class);
-                    if (service != null) {
-                        service.loadAdditionalJDBC();
+                try {
+                    // load additional jdbc
+                    if (GlobalServiceRegister.getDefault().isServiceRegistered(IGenericWizardService.class)) {
+                        IGenericWizardService service = GlobalServiceRegister.getDefault()
+                                .getService(IGenericWizardService.class);
+                        if (service != null) {
+                            service.loadAdditionalJDBC();
+                        }
                     }
+                } catch (Exception e) {
+                    // in case, to avoid block logon
+                    ExceptionHandler.process(e);
                 }
 
                 // init dynamic distirbution after `beforeLogon`, before loading libraries.

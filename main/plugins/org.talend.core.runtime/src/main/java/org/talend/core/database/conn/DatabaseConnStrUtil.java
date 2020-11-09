@@ -224,6 +224,7 @@ public class DatabaseConnStrUtil {
         if (template.startsWith(DbConnStrForHive.URL_HIVE_2_TEMPLATE)) {
             url = getImpalaURLString(false, server, port, sidOrDatabase, impalaPrincipal);
         }
+        url = attachAdditionalHiveParameters(url, dbConn, false);
         return url;
     }
 

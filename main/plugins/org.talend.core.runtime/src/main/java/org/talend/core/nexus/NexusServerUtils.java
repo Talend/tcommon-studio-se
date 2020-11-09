@@ -284,7 +284,6 @@ public class NexusServerUtils {
                 if (classifierElement != null) {
                     classifier = classifierElement.getText();
                 }
-
                 artifact.setType(extension);
                 artifact.setClassifier(classifier);
                 artifacts.add(artifact);
