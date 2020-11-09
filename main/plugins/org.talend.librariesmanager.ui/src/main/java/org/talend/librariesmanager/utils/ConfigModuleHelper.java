@@ -38,7 +38,6 @@ import org.talend.core.runtime.maven.MavenUrlHelper;
 import org.talend.librariesmanager.model.ModulesNeededProvider;
 import org.talend.librariesmanager.nexus.utils.VersionUtil;
 import org.talend.librariesmanager.ui.LibManagerUiPlugin;
-import org.talend.repository.ProjectManager;
 
 /*
  * Created by bhe on Sep 3, 2020
@@ -225,7 +224,6 @@ public class ConfigModuleHelper {
                     && StringUtils.equals(art.getClassifier(), artifact.getClassifier())
                     && StringUtils.equals(art.getVersion(), artifact.getVersion())
                     && StringUtils.equals(art.getType(), artifact.getType())
-                    && StringUtils.equals(art.getVersion(), artifact.getVersion())
                     && StringUtils.equals(art.getSha1(), artifact.getSha1())) {
                 return true;
             }
