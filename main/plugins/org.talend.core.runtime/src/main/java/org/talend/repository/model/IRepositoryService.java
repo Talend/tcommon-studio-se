@@ -125,7 +125,16 @@ public interface IRepositoryService extends IService {
 
     public void openProjectSettingDialog(final String pageId);
 
-    public List<String> getProjectBranch(Project project) throws JSONException;
+    /**
+     * 
+     * get branches of project
+     * 
+     * @param project
+     * @param onlyLocalIfPossible try to only get branches from local repository to improve performance
+     * @return
+     * @throws JSONException
+     */
+    public List<String> getProjectBranch(Project project, boolean onlyLocalIfPossible) throws JSONException;
 
     public boolean askRetryForNetworkIssue(Throwable ex);
 

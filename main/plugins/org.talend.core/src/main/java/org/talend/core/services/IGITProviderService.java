@@ -34,7 +34,14 @@ public interface IGITProviderService extends IService {
 
     public String getCurrentGITRevision(Object process);
 
-    public String[] getBranchList(Project project);
+    /**
+     * get project branches
+     * 
+     * @param project
+     * @param onlyLocalIfPossible try to only get branches from local repository to improve performance
+     * @return
+     */
+    public String[] getBranchList(Project project, boolean onlyLocalIfPossible);
 
     public boolean isGITProject(Project p) throws PersistenceException;
 
@@ -47,6 +54,8 @@ public interface IGITProviderService extends IService {
     public void clean();
 
     void createOrUpdateGitIgnoreFile(IProject eclipseProject) throws CoreException;
+
+    String getDefaultBranch(Project project);
 
     public static IGITProviderService get() {
         GlobalServiceRegister register = GlobalServiceRegister.getDefault();
