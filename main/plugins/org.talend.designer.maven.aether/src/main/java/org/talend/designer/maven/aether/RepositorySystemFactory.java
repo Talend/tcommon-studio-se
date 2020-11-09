@@ -17,6 +17,7 @@ import java.io.FileNotFoundException;
 import java.util.HashMap;
 import java.util.Map;
 
+import org.apache.commons.lang.StringUtils;
 import org.apache.maven.repository.internal.MavenRepositorySystemUtils;
 import org.codehaus.plexus.PlexusContainerException;
 import org.eclipse.aether.DefaultRepositorySystemSession;
@@ -86,7 +87,7 @@ public class RepositorySystemFactory {
                     + artifactId + "-" + version + strClassifier + "." + "pom";
             pomFile = new File(pomPath);
         }
-        if (pomFile.exists()) {
+        if (!StringUtils.equals("pom", extension) && pomFile.exists()) {
             Artifact pomArtifact = new SubArtifact(jarArtifact, "", "pom");
             pomArtifact = pomArtifact.setFile(pomFile);
             deployRequest.addArtifact(pomArtifact);
