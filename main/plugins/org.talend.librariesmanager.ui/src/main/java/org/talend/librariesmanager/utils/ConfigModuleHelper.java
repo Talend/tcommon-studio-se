@@ -223,6 +223,7 @@ public class ConfigModuleHelper {
                     && StringUtils.equals(art.getArtifactId(), artifact.getArtifactId())
                     && StringUtils.equals(art.getClassifier(), artifact.getClassifier())
                     && StringUtils.equals(art.getType(), artifact.getType())
+                    && StringUtils.equals(art.getVersion(), artifact.getVersion())
                     && StringUtils.equals(art.getSha1(), artifact.getSha1())) {
                 return true;
             }
