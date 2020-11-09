@@ -26,7 +26,7 @@ public class ShareLibrariesUtilTest {
 
         String path4 = "org/talend/libraries/acxb-test-2.2.6-jdk8/6.0.0-SNAPSHOT/acxb-test-2.2.6-jdk8-6.0.0-SNAPSHOT-jdk8.dll";
         String classifier4 = ShareLibrariesUtil.getMavenClassifier(path4, "acxb-test-2.2.6-jdk8-6.0.0-SNAPSHOT", "dll");
-        Assert.assertNull(classifier4, "jdk8");
+        Assert.assertEquals(classifier4, "jdk8");
     }
 
 }
