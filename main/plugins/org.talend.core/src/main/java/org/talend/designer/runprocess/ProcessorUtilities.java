@@ -2228,12 +2228,10 @@ public class ProcessorUtilities {
                         ProcessItem processItem = ItemCacheManager.getProcessItem(jobId, jobVersion);
                         if (processItem != null) {
                             JobInfo jobInfo = new JobInfo(processItem, jobContext);
-                            if (!jobInfos.contains(jobInfo)) {
-                                jobInfos.add(jobInfo);
-                                jobInfo.setFatherJobInfo(parentJobInfo);
-                                if (!firstChildOnly) {
-                                    getAllJobInfo(processItem.getProcess(), jobInfo, jobInfos, firstChildOnly);
-                                }
+                            jobInfos.add(jobInfo);
+                            jobInfo.setFatherJobInfo(parentJobInfo);
+                            if (!firstChildOnly) {
+                                getAllJobInfo(processItem.getProcess(), jobInfo, jobInfos, firstChildOnly);
                             }
                         }
                     }
@@ -2546,10 +2544,6 @@ public class ProcessorUtilities {
     }
 
     private static void addEsbJob(JobInfo jobInfo) {
-        if (esbJobs.contains(esbJobKey(jobInfo.getJobId(), jobInfo.getJobVersion()))) {
-            return;
-        }
-
         esbJobs.add(esbJobKey(jobInfo.getJobId(), jobInfo.getJobVersion()));
         if (jobInfo.getFatherJobInfo() != null) {
             addEsbJob(jobInfo.getFatherJobInfo());
