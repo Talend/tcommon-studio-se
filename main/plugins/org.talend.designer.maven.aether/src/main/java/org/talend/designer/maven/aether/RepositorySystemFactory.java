@@ -17,7 +17,7 @@ import java.io.FileNotFoundException;
 import java.util.HashMap;
 import java.util.Map;
 
-import org.apache.commons.lang.StringUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.apache.maven.repository.internal.MavenRepositorySystemUtils;
 import org.codehaus.plexus.PlexusContainerException;
 import org.eclipse.aether.DefaultRepositorySystemSession;
@@ -38,6 +38,10 @@ import org.eclipse.aether.util.listener.ChainedTransferListener;
 import org.eclipse.aether.util.repository.AuthenticationBuilder;
 import org.talend.commons.CommonsPlugin;
 import org.talend.commons.exception.ExceptionHandler;
+import org.talend.core.nexus.ArtifactRepositoryBean;
+import org.talend.core.nexus.IRepositoryArtifactHandler;
+import org.talend.core.nexus.RepositoryArtifactHandlerManager;
+import org.talend.core.nexus.TalendLibsServerManager;
 import org.talend.designer.maven.aether.util.MavenLibraryResolverProvider;
 import org.talend.designer.maven.aether.util.TalendAetherProxySelector;
 
@@ -87,7 +91,14 @@ public class RepositorySystemFactory {
                     + artifactId + "-" + version + strClassifier + "." + "pom";
             pomFile = new File(pomPath);
         }
-        if (!StringUtils.equals("pom", extension) && pomFile.exists()) {
+        ArtifactRepositoryBean customNexusServer = TalendLibsServerManager.getInstance().getCustomNexusServer();
+        IRepositoryArtifactHandler hander = RepositoryArtifactHandlerManager.getRepositoryHandler(customNexusServer);
+        String type = null;
+        if (hander != null) {
+            ArtifactRepositoryBean artifactServerBean = hander.getArtifactServerBean();
+            type = artifactServerBean.getType();
+        }
+        if (pomFile.exists() && (!StringUtils.equals("pom", extension) || StringUtils.equalsIgnoreCase("Artifactory", type))) {
             Artifact pomArtifact = new SubArtifact(jarArtifact, "", "pom");
             pomArtifact = pomArtifact.setFile(pomFile);
             deployRequest.addArtifact(pomArtifact);
