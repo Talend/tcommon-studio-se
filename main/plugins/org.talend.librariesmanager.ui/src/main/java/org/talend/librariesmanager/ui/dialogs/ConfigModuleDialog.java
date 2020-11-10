@@ -126,6 +126,12 @@ public class ConfigModuleDialog extends TitleAreaDialog implements IConfigModule
 
     private String initValue;
 
+    private Label warningLabel;
+
+    private GridData warningLayoutData;
+    
+    private Composite warningComposite;
+
     /**
      * DOC wchen InstallModuleDialog constructor comment.
      *
@@ -147,14 +153,16 @@ public class ConfigModuleDialog extends TitleAreaDialog implements IConfigModule
     protected Control createDialogArea(Composite parent) {
         Composite container = new Composite(parent, SWT.NONE);
         GridLayout layout = new GridLayout();
-        layout.marginTop = 10;
+        layout.marginTop = 20;
         layout.marginLeft = 20;
         layout.marginRight = 20;
-        layout.marginBottom = 40;
+        layout.marginBottom = 60;
         layout.marginHeight = 0;
         container.setLayout(layout);
         GridData data = new GridData(GridData.FILL_BOTH);
         container.setLayoutData(data);
+
+        createWarningLabel(container);
 
         Composite radioContainer = new Composite(container, SWT.NONE);
         layout = new GridLayout();
@@ -168,6 +176,36 @@ public class ConfigModuleDialog extends TitleAreaDialog implements IConfigModule
 
         createMavenURIGroup(container);
         return parent;
+    }
+
+    private void createWarningLabel(Composite container) {
+        warningComposite = new Composite(container, SWT.NONE);
+        warningComposite.setBackground(warningColor);
+        warningLayoutData = new GridData(GridData.FILL_HORIZONTAL | GridData.GRAB_HORIZONTAL);
+        warningLayoutData.horizontalSpan = ((GridLayout) container.getLayout()).numColumns;
+        warningComposite.setLayoutData(warningLayoutData);
+        GridLayout layout = new GridLayout();
+        layout.marginTop = 0;
+        layout.marginLeft = 0;
+        layout.marginRight = 0;
+        layout.numColumns = 2;
+        warningComposite.setLayout(layout);
+        Label imageLabel = new Label(warningComposite, SWT.NONE);
+        imageLabel.setImage(ImageProvider.getImage(EImage.WARNING_ICON));
+        imageLabel.setBackground(warningColor);
+
+        warningLabel = new Label(warningComposite, SWT.WRAP);
+        warningLabel.setLayoutData(new GridData(GridData.FILL_HORIZONTAL | GridData.GRAB_HORIZONTAL));
+        warningLabel.setBackground(warningColor);
+        warningLayoutData.exclude = true;
+    }
+
+    private void layoutWarningComposite(boolean exclude) {
+        warningComposite.setVisible(!exclude);
+        warningLayoutData.exclude = exclude;
+        warningLabel.setText(Messages.getString("ConfigModuleDialog.warn.artifactory"));
+        warningLabel.getParent().getParent().layout();
+        warningLabel.getParent().getParent().getParent().getParent().getParent().pack();
     }
 
     private void createMavenURIGroup(Composite parent) {
@@ -297,6 +335,13 @@ public class ConfigModuleDialog extends TitleAreaDialog implements IConfigModule
 
         jarPathTxt = new Text(repGroupSubComp, SWT.BORDER);
         jarPathTxt.setLayoutData(new GridData(GridData.FILL_HORIZONTAL | GridData.GRAB_HORIZONTAL));
+        jarPathTxt.addModifyListener(new ModifyListener() {
+
+            @Override
+            public void modifyText(ModifyEvent e) {
+                handJarPathChanged();
+            }
+        });
 
         browseButton = new Button(repGroupSubComp, SWT.PUSH);
         browseButton.setText("...");//$NON-NLS-1$
@@ -311,7 +356,7 @@ public class ConfigModuleDialog extends TitleAreaDialog implements IConfigModule
 
             @Override
             public void widgetSelected(SelectionEvent e) {
-                setInstallNewGroupEnabled(true);
+                setInstallNewGroupEnabled(installRadioBtn.getSelection());
                 setPlatformGroupEnabled(false);
                 setRepositoryGroupEnabled(false);
             }
@@ -389,6 +434,10 @@ public class ConfigModuleDialog extends TitleAreaDialog implements IConfigModule
             if (useCustomBtn.getSelection()) {
                 customUriText.setEnabled(true);
             }
+            boolean canConnectRemoteArtifactory = ConfigModuleHelper.notShowConnectionWarning();
+            layoutWarningComposite(canConnectRemoteArtifactory);
+        } else {
+            layoutWarningComposite(true);
         }
     }
 
@@ -484,7 +533,10 @@ public class ConfigModuleDialog extends TitleAreaDialog implements IConfigModule
             return;
         }
         this.jarPathTxt.setText(result);
-        File file = new File(result);
+    }
+
+    private void handJarPathChanged() {
+        File file = new File(this.jarPathTxt.getText());
         moduleName = file.getName();
 
         final IRunnableWithProgress detectProgress = new IRunnableWithProgress() {
@@ -732,9 +784,15 @@ public class ConfigModuleDialog extends TitleAreaDialog implements IConfigModule
                                         if (ConfigModuleHelper.canFind(new HashSet<MavenArtifact>(remoteArtifacts), art)) {
                                             deploy = false;
                                         } else {
-                                            // popup and ask, reinstall?
-                                            deploy = MessageDialog.open(MessageDialog.CONFIRM, getShell(), "",
-                                                    Messages.getString("ConfigModuleDialog.shareInfo"), SWT.NONE);
+                                            if (art.getVersion() != null
+                                                    && art.getVersion().endsWith(MavenUrlHelper.VERSION_SNAPSHOT)) {
+                                                // snapshot
+                                                deploy = true;
+                                            } else {
+                                                // popup and ask, reinstall?
+                                                deploy = MessageDialog.open(MessageDialog.CONFIRM, getShell(), "",
+                                                        Messages.getString("ConfigModuleDialog.shareInfo"), SWT.NONE);
+                                            }
                                         }
                                     }
 

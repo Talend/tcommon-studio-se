@@ -606,7 +606,8 @@ public final class ProjectManager {
            */
 
         if (!branchSelection.contains(NAME_TAGS) && !branchSelection.contains(NAME_BRANCHES)
-                && !branchSelection.contains(NAME_TRUNK) && !branchSelection.contains("master")) { //$NON-NLS-1$
+                && !branchSelection.contains(NAME_TRUNK) && !branchSelection.contains(SVNConstant.NAME_MASTER)
+                && !branchSelection.contains(SVNConstant.NAME_MAIN)) {
             branchSelection = NAME_BRANCHES + branchSelection;
         }
         return branchSelection;
@@ -649,7 +650,8 @@ public final class ProjectManager {
         if (!branchName.startsWith(SVNConstant.NAME_TAGS + SVNConstant.SEP_CHAR)
                 && !branchName.startsWith(SVNConstant.NAME_BRANCHES + SVNConstant.SEP_CHAR)
                 && !branchName.startsWith(SVNConstant.NAME_ORIGIN + SVNConstant.SEP_CHAR)
-                && !branchName.equals(SVNConstant.NAME_TRUNK) && !branchName.equals(SVNConstant.NAME_MASTER)) {
+                && !branchName.equals(SVNConstant.NAME_TRUNK) && !branchName.equals(SVNConstant.NAME_MASTER)
+                && !branchName.equals(SVNConstant.NAME_MAIN)) {
             formatedBranchName = SVNConstant.NAME_BRANCHES + SVNConstant.SEP_CHAR + branchName;
         }
         return formatedBranchName;
