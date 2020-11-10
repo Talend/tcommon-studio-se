@@ -47,6 +47,8 @@ public class RepositoryConstants {
 
     public static final String JOBLET_DOCUMENTATION_PATH = "documentations/generated/joblets"; //$NON-NLS-1$
 
+    public static final String PROJECT_SETTINGS_CUSTOM_URI_MAP = "custom_uri_mapping.json"; //$NON-NLS-1$
+
     public static final String SYSTEM_DIRECTORY = "system"; //$NON-NLS-1$
 
     public static final String USER_DEFINED = "UserDefined"; //$NON-NLS-1$
