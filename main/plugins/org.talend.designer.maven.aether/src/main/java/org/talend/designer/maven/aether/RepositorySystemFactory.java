@@ -37,10 +37,6 @@ import org.eclipse.aether.util.listener.ChainedTransferListener;
 import org.eclipse.aether.util.repository.AuthenticationBuilder;
 import org.talend.commons.CommonsPlugin;
 import org.talend.commons.exception.ExceptionHandler;
-import org.talend.core.nexus.ArtifactRepositoryBean;
-import org.talend.core.nexus.IRepositoryArtifactHandler;
-import org.talend.core.nexus.RepositoryArtifactHandlerManager;
-import org.talend.core.nexus.TalendLibsServerManager;
 import org.talend.designer.maven.aether.util.MavenLibraryResolverProvider;
 import org.talend.designer.maven.aether.util.TalendAetherProxySelector;
 
@@ -90,8 +86,6 @@ public class RepositorySystemFactory {
                     + artifactId + "-" + version + strClassifier + "." + "pom";
             pomFile = new File(pomPath);
         }
-        ArtifactRepositoryBean customNexusServer = TalendLibsServerManager.getInstance().getCustomNexusServer();
-        IRepositoryArtifactHandler hander = RepositoryArtifactHandlerManager.getRepositoryHandler(customNexusServer);
         if (pomFile.exists()) {
             Artifact pomArtifact = new SubArtifact(jarArtifact, "", "pom");
             pomArtifact = pomArtifact.setFile(pomFile);
