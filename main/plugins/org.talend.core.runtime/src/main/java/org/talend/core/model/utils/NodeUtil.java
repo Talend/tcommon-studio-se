@@ -35,7 +35,6 @@ import org.talend.core.model.metadata.IMetadataTable;
 import org.talend.core.model.metadata.MetadataTalendTypeFilter;
 import org.talend.core.model.metadata.MrMetadataTalendTypeFilter;
 import org.talend.core.model.metadata.SparkMetadataTalendTypeFilter;
-import org.talend.core.model.metadata.StormMetadataTalendTypeFilter;
 import org.talend.core.model.process.AbstractNode;
 import org.talend.core.model.process.EConnectionType;
 import org.talend.core.model.process.EParameterFieldType;
@@ -1315,7 +1314,7 @@ public class NodeUtil {
     public static boolean isBigDataFrameworkNode(INode node) {
         if (node != null && node.getComponent() != null && node.getComponent().getType() != null) {
             ComponentCategory cat = ComponentCategory.getComponentCategoryFromName(node.getComponent().getType());
-            return (ComponentCategory.CATEGORY_4_MAPREDUCE == cat || ComponentCategory.CATEGORY_4_STORM == cat
+            return (ComponentCategory.CATEGORY_4_MAPREDUCE == cat 
                     || ComponentCategory.CATEGORY_4_SPARK == cat || ComponentCategory.CATEGORY_4_SPARKSTREAMING == cat);
         }
 
@@ -1337,9 +1336,6 @@ public class NodeUtil {
             }
             if (ComponentCategory.CATEGORY_4_SPARK == cat || ComponentCategory.CATEGORY_4_SPARKSTREAMING == cat) {
                 return new SparkMetadataTalendTypeFilter(node.getComponent().getName());
-            }
-            if (ComponentCategory.CATEGORY_4_STORM == cat) {
-                return new StormMetadataTalendTypeFilter(node.getComponent().getName());
             }
         }
         return new DummyMetadataTalendTypeFilter();

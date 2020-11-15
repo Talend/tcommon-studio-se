@@ -112,7 +112,6 @@ public class ProcessConvertManager {
     public boolean CheckConvertProcess(RepositoryNode sourceNode, RepositoryNode targetNode) {
         boolean checkConvertProcess = false;
         if (sourceNode.getObject().getRepositoryObjectType() == ERepositoryObjectType.PROCESS
-                || sourceNode.getObject().getRepositoryObjectType() == ERepositoryObjectType.PROCESS_STORM
                 || sourceNode.getObject().getRepositoryObjectType() == ERepositoryObjectType.PROCESS_MR) {
             if (ENodeType.SYSTEM_FOLDER == targetNode.getType() || ENodeType.SIMPLE_FOLDER == targetNode.getType()) {
                 if (sourceNode.getObject().getRepositoryObjectType() == targetNode.getContentType()) {
@@ -120,7 +119,6 @@ public class ProcessConvertManager {
                     return false;
                 }
                 if (targetNode.getContentType() == ERepositoryObjectType.PROCESS
-                        || targetNode.getContentType() == ERepositoryObjectType.PROCESS_STORM
                         || targetNode.getContentType() == ERepositoryObjectType.PROCESS_MR) {
                     checkConvertProcess = true;
                 }
@@ -148,7 +146,7 @@ public class ProcessConvertManager {
             newFramework = ""; //$NON-NLS-1$
         }
 
-        if (oldType == ERepositoryObjectType.PROCESS_MR || oldType == ERepositoryObjectType.PROCESS_STORM) {
+        if (oldType == ERepositoryObjectType.PROCESS_MR) {
             if (!oldFramework.equals(newFramework)) {
                 return true;
             }
@@ -164,9 +162,6 @@ public class ProcessConvertManager {
         }
         if (ERepositoryObjectType.PROCESS_MR != null) {
             processes.add(ERepositoryObjectType.PROCESS_MR);
-        }
-        if (ERepositoryObjectType.PROCESS_STORM != null) {
-            processes.add(ERepositoryObjectType.PROCESS_STORM);
         }
         return processes;
     }

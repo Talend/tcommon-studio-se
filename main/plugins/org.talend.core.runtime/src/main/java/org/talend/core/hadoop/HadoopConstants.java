@@ -31,8 +31,6 @@ public class HadoopConstants {
 
     public static final String FRAMEWORK = "FRAMEWORK";
 
-    public static final String FRAMEWORK_STORM = "Storm";
-
     public static final String FRAMEWORK_SPARKSTREAMING = "Spark Streaming";
 
     public static final String FRAMEWORK_SPARK_STREAMING = "Spark_Streaming";
@@ -54,8 +52,6 @@ public class HadoopConstants {
     public static final String MAPREDUCE_TYPE = "MR";
 
     public static final String SPARK_TYPE = "SPARK";
-
-    public static final String STORM_TYPE = "STORM";
 
     public static final String IS_HADOOP_CUSTOM_CONFS = "IS_HADOOP_CUSTOM_CONFS";
 

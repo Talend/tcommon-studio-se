@@ -28,7 +28,6 @@ public abstract class AbstractBDJobMigrationTask extends AbstractJobMigrationTas
         toReturn.add(ERepositoryObjectType.PROCESS);
         toReturn.add(ERepositoryObjectType.PROCESS_MR);
         toReturn.add(ERepositoryObjectType.PROCESS_SPARK);
-        toReturn.add(ERepositoryObjectType.PROCESS_STORM);
         toReturn.add(ERepositoryObjectType.PROCESS_SPARKSTREAMING);
         toReturn.addAll(ERepositoryObjectType.getAllTypesOfJoblet());
         toReturn.addAll(ERepositoryObjectType.getAllTypesOfTestContainer());

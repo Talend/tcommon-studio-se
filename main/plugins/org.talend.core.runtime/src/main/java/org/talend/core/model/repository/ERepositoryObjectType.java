@@ -529,11 +529,6 @@ public class ERepositoryObjectType extends DynaEnum<ERepositoryObjectType> {
     /**
      * <font color="red">This value may be <b>null</b> in some licenses, <b>should add NPE check</b></font>
      */
-    public final static ERepositoryObjectType PROCESS_STORM = ERepositoryObjectType.valueOf("PROCESS_STORM");
-
-    /**
-     * <font color="red">This value may be <b>null</b> in some licenses, <b>should add NPE check</b></font>
-     */
     public final static ERepositoryObjectType PROCESS_ROUTE = ERepositoryObjectType.valueOf("ROUTE"); //$NON-NLS-1$
 
     /**
@@ -565,7 +560,6 @@ public class ERepositoryObjectType extends DynaEnum<ERepositoryObjectType> {
      * 1. This enum is <b>always null</b> since it is never configure the extention point
      * "org.talend.core.repository.repository_node_provider" in the plugin.xml used in
      * RepositoryNodeProviderRegistryReader.readElement(...) <br/>
-     * 2. both frameworks (storm / sparkstreaming) should use PROCESS_STORM in current code I think <br/>
      */
     public final static ERepositoryObjectType PROCESS_SPARKSTREAMING = ERepositoryObjectType.valueOf("PROCESS_SPARKSTREAMING");
 
@@ -1423,9 +1417,6 @@ public class ERepositoryObjectType extends DynaEnum<ERepositoryObjectType> {
         List<ERepositoryObjectType> allTypes = new ArrayList<ERepositoryObjectType>();
         if (ERepositoryObjectType.PROCESS_MR != null) {
             allTypes.add(ERepositoryObjectType.PROCESS_MR);
-        }
-        if (ERepositoryObjectType.PROCESS_STORM != null) {
-            allTypes.add(ERepositoryObjectType.PROCESS_STORM);
         }
         if (ERepositoryObjectType.PROCESS_SPARK != null) {
             allTypes.add(ERepositoryObjectType.PROCESS_SPARK);

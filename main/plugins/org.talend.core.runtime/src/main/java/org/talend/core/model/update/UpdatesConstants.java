@@ -68,8 +68,6 @@ public final class UpdatesConstants {
 
     public static final String MAPREDUCE = Messages.getString("UpdatesConstants.MR"); //$NON-NLS-1$
 
-    public static final String STORM = Messages.getString("UpdatesConstants.Storm"); //$NON-NLS-1$
-
     public static final String SPARK = Messages.getString("UpdatesConstants.Spark"); //$NON-NLS-1$
 
     public static final String SPARKSTREAMING = Messages.getString("UpdatesConstants.SparkStreaming"); //$NON-NLS-1$

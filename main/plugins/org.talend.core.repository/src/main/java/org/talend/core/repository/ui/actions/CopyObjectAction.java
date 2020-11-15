@@ -156,13 +156,8 @@ public class CopyObjectAction {
                 || targetNode.getType() == ENodeType.SYSTEM_FOLDER) {
             ERepositoryObjectType targetType = ((ERepositoryObjectType) targetNode.getProperties(EProperties.CONTENT_TYPE));
             ERepositoryObjectType sourceType = getSourceType(sourceNode);
-            if (sourceType.equals(ERepositoryObjectType.PROCESS_STORM)) {
-                return targetType.equals(ERepositoryObjectType.PROCESS) || targetType.equals(ERepositoryObjectType.PROCESS_STORM)
-                        || targetType.equals(ERepositoryObjectType.PROCESS_MR);
-            }
             if (sourceType.equals(ERepositoryObjectType.PROCESS_MR)) {
-                return targetType.equals(ERepositoryObjectType.PROCESS_STORM)
-                        || targetType.equals(ERepositoryObjectType.PROCESS_MR);
+                return targetType.equals(ERepositoryObjectType.PROCESS_MR);
             }
 
             return targetType.equals(sourceType);
@@ -436,8 +431,7 @@ public class CopyObjectAction {
             }
         }
         if (sourceNode.getObjectType() != ERepositoryObjectType.PROCESS
-                && sourceNode.getObjectType() != ERepositoryObjectType.PROCESS_MR
-                && sourceNode.getObjectType() != ERepositoryObjectType.PROCESS_STORM) {
+                && sourceNode.getObjectType() != ERepositoryObjectType.PROCESS_MR) {
             return false;
         }
         if (!(newItem instanceof ProcessItem)) {

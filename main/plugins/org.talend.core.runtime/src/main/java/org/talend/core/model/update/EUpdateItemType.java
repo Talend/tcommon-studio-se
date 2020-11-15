@@ -28,7 +28,6 @@ public enum EUpdateItemType implements IUpdateItemType {
     JOB_PROPERTY_STATS_LOGS(Messages.getString("EUpdateItemType.Property")), //$NON-NLS-1$
     JOB_PROPERTY_HEADERFOOTER(Messages.getString("EUpdateItemType.Property")), //$NON-NLS-1$
     JOB_PROPERTY_MAPREDUCE(Messages.getString("EUpdateItemType.Batch")), //$NON-NLS-1$
-    JOB_PROPERTY_STORM(Messages.getString("EUpdateItemType.Streaming")), //$NON-NLS-1$
     CONTEXT(Messages.getString("EUpdateItemType.Variable")), //$NON-NLS-1$
     CONTEXT_GROUP(Messages.getString("EUpdateItemType.ContextGroup")), //$NON-NLS-1$
     JOB_VERSION(Messages.getString("EUpdateItemType.JobVersion")), //$NON-NLS-1$

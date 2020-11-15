@@ -293,11 +293,6 @@ public class RepositoryUpdateManagerHelper {
             if (processMr != null) {
                 processRep.addAll(factory.getAll(processMr, true));
             }
-            ERepositoryObjectType processStrom = ERepositoryObjectType.PROCESS_STORM;
-            if (processStrom != null) {
-                processRep.addAll(factory.getAll(processStrom, true));
-            }
-
             ERepositoryObjectType sparkJoblet = ERepositoryObjectType.SPARK_JOBLET;
             if (sparkJoblet != null) {
                 processRep.addAll(factory.getAll(sparkJoblet, true));

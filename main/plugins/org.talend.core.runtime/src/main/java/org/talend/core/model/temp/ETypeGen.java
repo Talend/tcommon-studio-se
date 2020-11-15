@@ -31,7 +31,6 @@ public enum ETypeGen {
     ETL("etl"), //$NON-NLS-1$
     CAMEL("camel"), //$NON-NLS-1$
     MR("mr"), //$NON-NLS-1$
-    STORM("storm"), //$NON-NLS-1$
     SPARK("spark"); //$NON-NLS-1$
 
     private ETypeGen(String name) {

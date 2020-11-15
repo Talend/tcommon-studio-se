@@ -63,7 +63,6 @@ public enum ECoreImage implements IImage {
     PROCESS_STREAMING_GENERIC_CATEGORY_OPEN_ICON("/icons1/process_streaming_generic_category_open.png"), //$NON-NLS-1$
     PROCESS_BATCH_GENERIC_CATEGORY_CLOSE_ICON("/icons1/process_batch_generic_category_close.png"), //$NON-NLS-1$
     PROCESS_BATCH_GENERIC_CATEGORY_OPEN_ICON("/icons1/process_batch_generic_category_open.png"), //$NON-NLS-1$
-    PROCESS_STREAMING_STORM_ICON("/icons1/process_streaming_storm.png"), //$NON-NLS-1$
     PROCESS_STREAMING_SPARK_ICON("/icons1/process_streaming_spark.png"), //$NON-NLS-1$
     PROCESS_BATCH_MR_ICON("/icons1/process_batch_map_reduce.png"), //$NON-NLS-1$
     PROCESS_BATCH_SPARK_ICON("/icons1/process_batch_spark.png"), //$NON-NLS-1$

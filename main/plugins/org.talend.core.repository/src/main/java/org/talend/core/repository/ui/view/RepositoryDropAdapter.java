@@ -140,9 +140,6 @@ public class RepositoryDropAdapter extends PluginDropAdapter {
                     String frameworkNewValue = null;
                     if (targetNode.getContentType() == ERepositoryObjectType.PROCESS) {
                         jobTypeValue = ConvertJobsUtil.JobType.STANDARD.getDisplayName();
-                    } else if (targetNode.getContentType() == ERepositoryObjectType.PROCESS_STORM) {
-                        jobTypeValue = ConvertJobsUtil.JobType.BIGDATASTREAMING.getDisplayName();
-                        frameworkNewValue = ConvertJobsUtil.JobStreamingFramework.SPARKSTREAMINGFRAMEWORK.getDisplayName();
                     } else if (targetNode.getContentType() == ERepositoryObjectType.PROCESS_MR) {
                         jobTypeValue = ConvertJobsUtil.JobType.BIGDATABATCH.getDisplayName();
                         frameworkNewValue = ConvertJobsUtil.JobBatchFramework.MAPREDUCEFRAMEWORK.getDisplayName();
@@ -433,18 +430,7 @@ public class RepositoryDropAdapter extends PluginDropAdapter {
                     if (target instanceof RepositoryNode) {
                         RepositoryNode targetRN = (RepositoryNode) target;
                         if (ENodeType.SYSTEM_FOLDER == targetRN.getType() || ENodeType.SIMPLE_FOLDER == targetRN.getType()) {
-                            if (targetRN.getContentType() == ERepositoryObjectType.PROCESS
-                                    || targetRN.getContentType() == ERepositoryObjectType.PROCESS_STORM) {
-                                return isValid = true;
-                            }
-                        }
-                    }
-                } else if (object.getRepositoryObjectType() == ERepositoryObjectType.PROCESS_STORM) {
-                    if (target instanceof RepositoryNode) {
-                        RepositoryNode targetRN = (RepositoryNode) target;
-                        if (ENodeType.SYSTEM_FOLDER == targetRN.getType() || ENodeType.SIMPLE_FOLDER == targetRN.getType()) {
-                            if (targetRN.getContentType() == ERepositoryObjectType.PROCESS
-                                    || targetRN.getContentType() == ERepositoryObjectType.PROCESS_MR) {
+                            if (targetRN.getContentType() == ERepositoryObjectType.PROCESS) {
                                 return isValid = true;
                             }
                         }
@@ -453,8 +439,7 @@ public class RepositoryDropAdapter extends PluginDropAdapter {
                     if (target instanceof RepositoryNode) {
                         RepositoryNode targetRN = (RepositoryNode) target;
                         if (ENodeType.SYSTEM_FOLDER == targetRN.getType() || ENodeType.SIMPLE_FOLDER == targetRN.getType()) {
-                            if (targetRN.getContentType() == ERepositoryObjectType.PROCESS_MR
-                                    || targetRN.getContentType() == ERepositoryObjectType.PROCESS_STORM) {
+                            if (targetRN.getContentType() == ERepositoryObjectType.PROCESS_MR) {
                                 return isValid = true;
                             }
                         }
