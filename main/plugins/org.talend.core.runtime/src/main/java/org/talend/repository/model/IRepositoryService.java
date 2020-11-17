@@ -24,6 +24,7 @@ import org.eclipse.swt.widgets.Shell;
 import org.eclipse.ui.IEditorPart;
 import org.talend.core.IService;
 import org.talend.core.model.components.IComponentsFactory;
+import org.talend.core.model.general.ModuleNeeded;
 import org.talend.core.model.general.Project;
 import org.talend.core.model.metadata.builder.connection.DatabaseConnection;
 import org.talend.core.model.process.IContextManager;
@@ -143,5 +144,7 @@ public interface IRepositoryService extends IService {
     boolean isGIT();
 
     public void setShouldCheckRepoViewCommonNavigatorDirty(IRepositoryView repView, boolean shouldFlag);
+
+    List<ModuleNeeded> getLog4j2Modules();
 
 }

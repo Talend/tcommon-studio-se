@@ -25,6 +25,7 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.security.SecureRandom;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.HashMap;
@@ -76,6 +77,7 @@ import org.talend.commons.utils.io.FilesUtils;
 import org.talend.commons.utils.workbench.resources.ResourceUtils;
 import org.talend.core.GlobalServiceRegister;
 import org.talend.core.ILibraryManagerService;
+import org.talend.core.model.general.ModuleNeeded;
 import org.talend.core.model.general.Project;
 import org.talend.core.model.process.IProcess;
 import org.talend.core.model.process.JobInfo;
@@ -98,10 +100,12 @@ import org.talend.designer.maven.model.TalendJavaProjectConstants;
 import org.talend.designer.maven.model.TalendMavenConstants;
 import org.talend.designer.maven.template.MavenTemplateManager;
 import org.talend.designer.maven.tools.AggregatorPomsHelper;
+import org.talend.designer.maven.tools.CodeM2CacheManager;
 import org.talend.designer.maven.tools.ProcessorDependenciesManager;
 import org.talend.designer.runprocess.IProcessor;
 import org.talend.designer.runprocess.IRunProcessService;
 import org.talend.repository.ProjectManager;
+import org.talend.repository.model.IRepositoryService;
 import org.talend.utils.xml.XmlUtils;
 import org.w3c.dom.Attr;
 import org.w3c.dom.DOMImplementation;
@@ -1186,6 +1190,30 @@ public class PomUtil {
             }
         }
         return Collections.emptySet();
+    }
+
+    public static void checkExistingLog4j2Dependencies4RoutinePom(String projectTechName, IFile pomFile) {
+        String log4j2GroupId = "org.apache.logging.log4j"; //$NON-NLS-1$
+        List<String> log4j2ArtifactIds = Arrays.asList("log4j-api", "log4j-core", "log4j-slf4j-impl"); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+        try {
+            Model model = MODEL_MANAGER.readMavenModel(pomFile);
+            List<Dependency> existingLog4j2Dependencies = model.getDependencies().stream()
+                    .filter(d -> d.getGroupId().equals(log4j2GroupId) && log4j2ArtifactIds.contains(d.getArtifactId()))
+                    .collect(Collectors.toList());
+            if (GlobalServiceRegister.getDefault().isServiceRegistered(IRepositoryService.class)) {
+                IRepositoryService repositoryService = GlobalServiceRegister.getDefault().getService(IRepositoryService.class);
+                List<ModuleNeeded> currentLog4j2Dependencies = repositoryService.getLog4j2Modules();
+                if (!currentLog4j2Dependencies.isEmpty()) {
+                    String currentVersion = currentLog4j2Dependencies.get(0).getBundleVersion();
+                    if (existingLog4j2Dependencies.size() < 3
+                            || !existingLog4j2Dependencies.stream().allMatch(d -> d.getVersion().equals(currentVersion))) {
+                        CodeM2CacheManager.getCacheFile(projectTechName, ERepositoryObjectType.ROUTINES).delete();
+                    }
+                }
+            }
+        } catch (CoreException e) {
+            ExceptionHandler.process(e);
+        }
     }
 
 }

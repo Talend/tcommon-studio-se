@@ -101,7 +101,7 @@ public class CodeM2CacheManager {
         }
     }
 
-    private static File getCacheFile(String projectTechName, ERepositoryObjectType codeType) {
+    public static File getCacheFile(String projectTechName, ERepositoryObjectType codeType) {
         String cacheFileName = PomIdsHelper.getProjectGroupId(projectTechName) + "." + codeType.name().toLowerCase() + "-" //$NON-NLS-1$ //$NON-NLS-2$
                 + PomIdsHelper.getCodesVersion(projectTechName) + ".cache"; // $NON-NLS-1$
         return new File(MavenPlugin.getMaven().getLocalRepositoryPath(), cacheFileName);

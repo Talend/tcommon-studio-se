@@ -648,6 +648,13 @@ public class ModulesNeededProvider {
                             routinesName.add(routineName);
                         }
                     }
+                    if (routinesName.contains("BigDataUtil")) { //$NON-NLS-1$
+                        if (GlobalServiceRegister.getDefault().isServiceRegistered(IRepositoryService.class)) {
+                            IRepositoryService repositoryService = GlobalServiceRegister.getDefault()
+                                    .getService(IRepositoryService.class);
+                            systemModules.addAll(repositoryService.getLog4j2Modules());
+                        }
+                    }
                     Map<String, List<LibraryInfo>> routineAndJars = libUiService.getRoutineAndJars();
                     Iterator<Map.Entry<String, List<LibraryInfo>>> iter = routineAndJars.entrySet().iterator();
                     while (iter.hasNext()) {
