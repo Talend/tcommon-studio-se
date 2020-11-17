@@ -111,9 +111,9 @@ public class JobUtils {
         return false;
     }
     
-    public static boolean isJob(Property p) {
+    public static boolean isRoute(Property p) {
         if (p != null) {
-            return ERepositoryObjectType.getType(p).equals(ERepositoryObjectType.PROCESS);
+            return ERepositoryObjectType.getType(p).equals(ERepositoryObjectType.PROCESS_ROUTE);
         }
         return false;
     }
