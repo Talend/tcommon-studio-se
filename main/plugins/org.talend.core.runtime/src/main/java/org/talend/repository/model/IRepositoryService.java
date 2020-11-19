@@ -145,6 +145,8 @@ public interface IRepositoryService extends IService {
 
     public void setShouldCheckRepoViewCommonNavigatorDirty(IRepositoryView repView, boolean shouldFlag);
 
+    boolean isProjectLevelLog4j2();
+
     List<ModuleNeeded> getLog4j2Modules();
 
 }

@@ -12,16 +12,18 @@
 // ============================================================================
 package org.talend.designer.maven.tools.creator;
 
-import java.util.Collections;
+import java.util.HashSet;
 import java.util.Set;
 
 import org.apache.maven.model.Model;
 import org.eclipse.core.resources.IFile;
 import org.talend.core.GlobalServiceRegister;
+import org.talend.core.PluginChecker;
 import org.talend.core.model.general.ILibrariesService;
 import org.talend.core.model.general.ModuleNeeded;
 import org.talend.core.model.repository.ERepositoryObjectType;
 import org.talend.designer.maven.template.MavenTemplateManager;
+import org.talend.repository.model.IRepositoryService;
 
 /**
  * DOC ggu class global comment. Detailled comment
@@ -46,13 +48,18 @@ public class CreateMavenRoutinePom extends AbstractMavenCodesTemplatePom {
         // Set<ModuleNeeded> runningModules = routiensService.getRunningModules();
         // return runningModules;
         // }
+        Set<ModuleNeeded> runningModules = new HashSet<>();
         if (GlobalServiceRegister.getDefault().isServiceRegistered(ILibrariesService.class)) {
             ILibrariesService libService = (ILibrariesService) GlobalServiceRegister.getDefault().getService(
                     ILibrariesService.class);
-            Set<ModuleNeeded> runningModules = libService.getCodesModuleNeededs(ERepositoryObjectType.ROUTINES);
-            return runningModules;
+            runningModules.addAll(libService.getCodesModuleNeededs(ERepositoryObjectType.ROUTINES));
         }
-        return Collections.emptySet();
-
+        if (GlobalServiceRegister.getDefault().isServiceRegistered(IRepositoryService.class)) {
+            IRepositoryService repositoryService = GlobalServiceRegister.getDefault().getService(IRepositoryService.class);
+            if (PluginChecker.isBigdataRoutineLoaded() && repositoryService.isProjectLevelLog4j2()) {
+                runningModules.addAll(repositoryService.getLog4j2Modules());
+            }
+        }
+        return runningModules;
     }
 }

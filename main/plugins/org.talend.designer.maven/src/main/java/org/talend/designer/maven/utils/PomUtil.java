@@ -25,7 +25,6 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.security.SecureRandom;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.HashMap;
@@ -77,7 +76,7 @@ import org.talend.commons.utils.io.FilesUtils;
 import org.talend.commons.utils.workbench.resources.ResourceUtils;
 import org.talend.core.GlobalServiceRegister;
 import org.talend.core.ILibraryManagerService;
-import org.talend.core.model.general.ModuleNeeded;
+import org.talend.core.PluginChecker;
 import org.talend.core.model.general.Project;
 import org.talend.core.model.process.IProcess;
 import org.talend.core.model.process.JobInfo;
@@ -1193,21 +1192,42 @@ public class PomUtil {
     }
 
     public static void checkExistingLog4j2Dependencies4RoutinePom(String projectTechName, IFile pomFile) {
-        String log4j2GroupId = "org.apache.logging.log4j"; //$NON-NLS-1$
-        List<String> log4j2ArtifactIds = Arrays.asList("log4j-api", "log4j-core", "log4j-slf4j-impl"); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+        if (!PluginChecker.isBigdataRoutineLoaded()) {
+            return;
+        }
         try {
-            Model model = MODEL_MANAGER.readMavenModel(pomFile);
-            List<Dependency> existingLog4j2Dependencies = model.getDependencies().stream()
-                    .filter(d -> d.getGroupId().equals(log4j2GroupId) && log4j2ArtifactIds.contains(d.getArtifactId()))
-                    .collect(Collectors.toList());
             if (GlobalServiceRegister.getDefault().isServiceRegistered(IRepositoryService.class)) {
-                IRepositoryService repositoryService = GlobalServiceRegister.getDefault().getService(IRepositoryService.class);
-                List<ModuleNeeded> currentLog4j2Dependencies = repositoryService.getLog4j2Modules();
-                if (!currentLog4j2Dependencies.isEmpty()) {
-                    String currentVersion = currentLog4j2Dependencies.get(0).getBundleVersion();
-                    if (existingLog4j2Dependencies.size() < 3
-                            || !existingLog4j2Dependencies.stream().allMatch(d -> d.getVersion().equals(currentVersion))) {
-                        CodeM2CacheManager.getCacheFile(projectTechName, ERepositoryObjectType.ROUTINES).delete();
+                Model model = MODEL_MANAGER.readMavenModel(pomFile);
+                IRepositoryService service = GlobalServiceRegister.getDefault().getService(IRepositoryService.class);
+                boolean isLog4j2 = service.isProjectLevelLog4j2();
+                Map<String, MavenArtifact> GAVMap = service.getLog4j2Modules().stream()
+                        .map(m -> MavenUrlHelper.parseMvnUrl(m.getMavenUri()))
+                        .collect(Collectors.toMap(MavenArtifact::getArtifactId, MavenArtifact -> MavenArtifact));
+                long existingDependenciesSize = model.getDependencies().stream()
+                        .filter(d -> GAVMap.containsKey(d.getArtifactId())
+                                && GAVMap.get(d.getArtifactId()).getGroupId().equals(d.getGroupId())
+                                && GAVMap.get(d.getArtifactId()).getVersion().equals(d.getVersion()))
+                        .count();
+                boolean clean = false;
+                // CAUTION
+                // with this fix, project level log4j2 user can use log4j2 api in routine directly in BD project
+                // user should NEVER manually setup log4j2 in routine dependencies
+                // or else routine install cache could always be cleaned
+                if (isLog4j2 && existingDependenciesSize != GAVMap.size()) {
+                    // if project level log4j1 -> log4j2
+                    // if first time add log4j2 dependencies
+                    // if log4j2 upgrade version
+                    // then clean cache to add
+                    clean = true;
+                } else if (!isLog4j2 && existingDependenciesSize > 0) {
+                    // if project level log4j2 -> log4j1
+                    // then clean cache to remove
+                    clean = true;
+                }
+                if (clean) {
+                    File cacheFile = CodeM2CacheManager.getCacheFile(projectTechName, ERepositoryObjectType.ROUTINES);
+                    if (cacheFile.exists()) {
+                        cacheFile.delete();
                     }
                 }
             }
