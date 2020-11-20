@@ -121,8 +121,8 @@ public class GetTasksHelper {
                 try {
                     if (new Boolean(configurationElement.getAttribute("beforeLogon")) == beforeLogon) { //$NON-NLS-1$
                         String id = configurationElement.getAttribute("id"); //$NON-NLS-1$
-                        String version = configurationElement.getAttribute("version");
-                        String breaks = configurationElement.getAttribute("breaks");
+                        String version = configurationElement.getAttribute("version"); //$NON-NLS-1$
+                        String breaks = configurationElement.getAttribute("breaks"); //$NON-NLS-1$
                         return MigrationUtil.createMigrationTask(id, version, breaks, MigrationUtil.DEFAULT_STATUS);
                     }
                 } catch (Exception e) {
