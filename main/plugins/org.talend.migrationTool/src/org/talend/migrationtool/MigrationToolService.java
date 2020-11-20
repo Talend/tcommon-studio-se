@@ -769,13 +769,8 @@ public class MigrationToolService implements IMigrationToolService {
      */
     @Override
     public void initNewProjectTasks(Project project) {
-        List<IProjectMigrationTask> toExecute = GetTasksHelper.getProjectTasks(true);
-        toExecute.addAll(GetTasksHelper.getProjectTasks(false));
-        List<MigrationTask> done = new ArrayList<MigrationTask>();
-
-        for (IProjectMigrationTask task : toExecute) {
-            done.add(MigrationUtil.convertMigrationTask(task));
-        }
+        List<MigrationTask> done = GetTasksHelper.getMigrationTasks(true);
+        done.addAll(GetTasksHelper.getMigrationTasks(false));
 
         project.getEmfProject().setItemsRelationVersion(RelationshipItemBuilder.INDEX_VERSION);
         saveProjectMigrationTasksDone(project, done);
