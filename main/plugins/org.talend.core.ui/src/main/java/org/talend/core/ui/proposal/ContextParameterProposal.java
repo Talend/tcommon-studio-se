@@ -80,7 +80,7 @@ public class ContextParameterProposal implements IContentProposal {
         MessageFormat format = new MessageFormat(getDescriptionMessagePattern());
         if (contextParameter.getContext() != null) {
             Object[] replaceArgs = new Object[] { desc, contextParameter.getContext().getName(), contextParameter.getType(),
-                    contextParameter.getName() };
+                    contextParameter.getValue() };
             return format.format(replaceArgs);
         }
         return desc;
@@ -88,10 +88,10 @@ public class ContextParameterProposal implements IContentProposal {
     }
 
     private String getDescriptionMessagePattern() {
-        String message = Messages.getString("ContextParameterProposal.Description") + "\n\n"; //$NON-NLS-1$ //$NON-NLS-2$
-        message += Messages.getString("ContextParameterProposal.ContextVariable") + "\n\n"; //$NON-NLS-1$ //$NON-NLS-2$
-        message += Messages.getString("ContextParameterProposal.Type") + "\n"; //$NON-NLS-1$ //$NON-NLS-2$
-        message += Messages.getString("ContextParameterProposal.VariableName") + "\n"; //$NON-NLS-1$ //$NON-NLS-2$
+        String message = Messages.getString("ContextParameterProposal.Description.v1") + "\n\n"; //$NON-NLS-1$ //$NON-NLS-2$
+        message += Messages.getString("ContextParameterProposal.ContextVariable.v1") + "\n\n"; //$NON-NLS-1$ //$NON-NLS-2$
+        message += Messages.getString("ContextParameterProposal.Type.v1") + "\n"; //$NON-NLS-1$ //$NON-NLS-2$
+        message += Messages.getString("ContextParameterProposal.VariableName.v1") + "\n"; //$NON-NLS-1$ //$NON-NLS-2$
         return message;
     }
 
