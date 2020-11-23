@@ -76,6 +76,7 @@ import org.talend.commons.utils.io.FilesUtils;
 import org.talend.commons.utils.workbench.resources.ResourceUtils;
 import org.talend.core.GlobalServiceRegister;
 import org.talend.core.ILibraryManagerService;
+import org.talend.core.PluginChecker;
 import org.talend.core.model.general.Project;
 import org.talend.core.model.process.IProcess;
 import org.talend.core.model.process.JobInfo;
@@ -98,10 +99,12 @@ import org.talend.designer.maven.model.TalendJavaProjectConstants;
 import org.talend.designer.maven.model.TalendMavenConstants;
 import org.talend.designer.maven.template.MavenTemplateManager;
 import org.talend.designer.maven.tools.AggregatorPomsHelper;
+import org.talend.designer.maven.tools.CodeM2CacheManager;
 import org.talend.designer.maven.tools.ProcessorDependenciesManager;
 import org.talend.designer.runprocess.IProcessor;
 import org.talend.designer.runprocess.IRunProcessService;
 import org.talend.repository.ProjectManager;
+import org.talend.repository.model.IRepositoryService;
 import org.talend.utils.xml.XmlUtils;
 import org.w3c.dom.Attr;
 import org.w3c.dom.DOMImplementation;
@@ -1186,6 +1189,51 @@ public class PomUtil {
             }
         }
         return Collections.emptySet();
+    }
+
+    public static void checkExistingLog4j2Dependencies4RoutinePom(String projectTechName, IFile pomFile) {
+        if (!PluginChecker.isBigdataRoutineLoaded()) {
+            return;
+        }
+        try {
+            if (GlobalServiceRegister.getDefault().isServiceRegistered(IRepositoryService.class)) {
+                Model model = MODEL_MANAGER.readMavenModel(pomFile);
+                IRepositoryService service = GlobalServiceRegister.getDefault().getService(IRepositoryService.class);
+                boolean isLog4j2 = service.isProjectLevelLog4j2();
+                Map<String, MavenArtifact> GAVMap = service.getLog4j2Modules().stream()
+                        .map(m -> MavenUrlHelper.parseMvnUrl(m.getMavenUri()))
+                        .collect(Collectors.toMap(MavenArtifact::getArtifactId, MavenArtifact -> MavenArtifact));
+                long existingDependenciesSize = model.getDependencies().stream()
+                        .filter(d -> GAVMap.containsKey(d.getArtifactId())
+                                && GAVMap.get(d.getArtifactId()).getGroupId().equals(d.getGroupId())
+                                && GAVMap.get(d.getArtifactId()).getVersion().equals(d.getVersion()))
+                        .count();
+                boolean clean = false;
+                // CAUTION
+                // with this fix, project level log4j2 user can use log4j2 api in routine directly in BD project
+                // user should NEVER manually setup log4j2 in routine dependencies
+                // or else routine install cache could always be cleaned
+                if (isLog4j2 && existingDependenciesSize != GAVMap.size()) {
+                    // if project level log4j1 -> log4j2
+                    // if first time add log4j2 dependencies
+                    // if log4j2 upgrade version
+                    // then clean cache to add
+                    clean = true;
+                } else if (!isLog4j2 && existingDependenciesSize > 0) {
+                    // if project level log4j2 -> log4j1
+                    // then clean cache to remove
+                    clean = true;
+                }
+                if (clean) {
+                    File cacheFile = CodeM2CacheManager.getCacheFile(projectTechName, ERepositoryObjectType.ROUTINES);
+                    if (cacheFile.exists()) {
+                        cacheFile.delete();
+                    }
+                }
+            }
+        } catch (CoreException e) {
+            ExceptionHandler.process(e);
+        }
     }
 
 }
