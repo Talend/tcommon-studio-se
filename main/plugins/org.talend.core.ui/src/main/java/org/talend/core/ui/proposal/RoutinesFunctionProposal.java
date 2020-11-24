@@ -74,10 +74,10 @@ public class RoutinesFunctionProposal implements IContentProposal {
      */
     @Override
     public String getDescription() {
-        String message = Messages.getString("RoutinesFunctionProposal.Description");
-        message += Messages.getString("RoutinesFunctionProposal.CreatedBy");
-        message += Messages.getString("RoutinesFunctionProposal.ReturnType");
-        message += Messages.getString("RoutinesFunctionProposal.VariableName");
+        String message = Messages.getString("RoutinesFunctionProposal.Description.v1");
+        message += Messages.getString("RoutinesFunctionProposal.CreatedBy.v1");
+        message += Messages.getString("RoutinesFunctionProposal.ReturnType.v1");
+        message += Messages.getString("RoutinesFunctionProposal.VariableName.v1");
 
         MessageFormat format = new MessageFormat(message);
         Object[] args = new Object[] { function.getDescription(),
