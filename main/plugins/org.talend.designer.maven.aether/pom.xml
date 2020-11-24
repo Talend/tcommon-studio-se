@@ -54,11 +54,6 @@
       <groupId>org.apache.maven.wagon</groupId>
       <artifactId>wagon-http</artifactId>
       <version>${wagon.version}</version>
-    </dependency>
-    <dependency>
-      <groupId>org.apache.maven.wagon</groupId>
-      <artifactId>wagon-http-lightweight</artifactId>
-      <version>${wagon.version}</version>
       <exclusions>
       	<exclusion>
             <groupId>org.jsoup</groupId>
@@ -70,6 +65,11 @@
 	    <groupId>org.jsoup</groupId>
 	    <artifactId>jsoup</artifactId>
 	    <version>1.13.1</version>
+    </dependency>
+    <dependency>
+      <groupId>org.apache.maven.wagon</groupId>
+      <artifactId>wagon-http-lightweight</artifactId>
+      <version>${wagon.version}</version>
     </dependency>
     <dependency>
     <groupId>org.apache.maven.resolver</groupId>
