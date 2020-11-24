@@ -320,24 +320,28 @@ public class RepositoryUpdateManagerHelper {
 
         // all the jobs
         for (IRepositoryViewObject process : processRep) {
-            Item item = process.getProperty().getItem();
-            boolean found = false;
-            for (IProcess2 open : openedProcessList) {
-                if (open.getId().equals(item.getProperty().getId())) {
-                    found = true;
+            try {
+                Item item = process.getProperty().getItem();
+                boolean found = false;
+                for (IProcess2 open : openedProcessList) {
+                    if (open.getId().equals(item.getProperty().getId())) {
+                        found = true;
+                    }
                 }
-            }
-            if (found) {
-                continue;
-            }
-            checkMonitorCanceled(parentMonitor);
-            parentMonitor.subTask(RepositoryUpdateManager.getUpdateJobInfor(item.getProperty()));
+                if (found) {
+                    continue;
+                }
+                checkMonitorCanceled(parentMonitor);
+                parentMonitor.subTask(RepositoryUpdateManager.getUpdateJobInfor(item.getProperty()));
 
-            // List<UpdateResult> resultFromProcess = getResultFromProcess(process, types, onlySimpleShow);
+                // List<UpdateResult> resultFromProcess = getResultFromProcess(process, types, onlySimpleShow);
 
-            List<UpdateResult> resultFromProcess = getUpdatesNeededFromItems(parentMonitor, item, types);
-            if (resultFromProcess != null) {
-                resultList.addAll(resultFromProcess);
+                List<UpdateResult> resultFromProcess = getUpdatesNeededFromItems(parentMonitor, item, types);
+                if (resultFromProcess != null) {
+                    resultList.addAll(resultFromProcess);
+                }
+            } catch (Exception ex) {
+                ExceptionHandler.process(ex);
             }
             parentMonitor.worked(1);
         }

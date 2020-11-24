@@ -22,6 +22,7 @@ import java.util.Comparator;
 import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Optional;
 
 import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
@@ -769,13 +770,9 @@ public class MigrationToolService implements IMigrationToolService {
      */
     @Override
     public void initNewProjectTasks(Project project) {
-        List<IProjectMigrationTask> toExecute = GetTasksHelper.getProjectTasks(true);
-        toExecute.addAll(GetTasksHelper.getProjectTasks(false));
-        List<MigrationTask> done = new ArrayList<MigrationTask>();
-
-        for (IProjectMigrationTask task : toExecute) {
-            done.add(MigrationUtil.convertMigrationTask(task));
-        }
+        List<MigrationTask> done = new LinkedList<>();
+        Optional.ofNullable(GetTasksHelper.getMigrationTasks(true)).ifPresent(tasks -> done.addAll(tasks));
+        Optional.ofNullable(GetTasksHelper.getMigrationTasks(false)).ifPresent(tasks -> done.addAll(tasks));
 
         project.getEmfProject().setItemsRelationVersion(RelationshipItemBuilder.INDEX_VERSION);
         saveProjectMigrationTasksDone(project, done);

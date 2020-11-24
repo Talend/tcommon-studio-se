@@ -38,7 +38,6 @@ import org.talend.core.runtime.maven.MavenUrlHelper;
 import org.talend.librariesmanager.model.ModulesNeededProvider;
 import org.talend.librariesmanager.nexus.utils.VersionUtil;
 import org.talend.librariesmanager.ui.LibManagerUiPlugin;
-import org.talend.repository.ProjectManager;
 
 /*
  * Created by bhe on Sep 3, 2020

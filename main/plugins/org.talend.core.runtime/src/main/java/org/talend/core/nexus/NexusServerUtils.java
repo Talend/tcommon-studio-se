@@ -249,21 +249,8 @@ public class NexusServerUtils {
 
             List<Node> artLinks = arNode.selectNodes("artifactHits/artifactHit/artifactLinks/artifactLink");//$NON-NLS-1$
             for (Node link : artLinks) {
-                Node extensionElement = link.selectSingleNode("extension");//$NON-NLS-1$
-                String extension = null;
-                String classifier = null;
-                if (extensionElement != null) {
-                    if (IGNORED_TYPES.contains(extensionElement.getText())) {// $NON-NLS-1$
-                        continue;
-                    }
-                    extension = extensionElement.getText();
-                }
-                Node classifierElement = link.selectSingleNode("classifier");//$NON-NLS-1$
-                if (classifierElement != null) {
-                    classifier = classifierElement.getText();
-                }
                 MavenArtifact artifact = new MavenArtifact();
-                artifacts.add(artifact);
+
                 artifact.setGroupId(arNode.selectSingleNode("groupId").getText());//$NON-NLS-1$
                 artifact.setArtifactId(arNode.selectSingleNode("artifactId").getText());//$NON-NLS-1$
                 artifact.setVersion(arNode.selectSingleNode("version").getText());//$NON-NLS-1$
@@ -284,11 +271,25 @@ public class NexusServerUtils {
                 if (licenseUrlNode != null) {
                     artifact.setLicenseUrl(licenseUrlNode.getText());
                 }
+                Node extensionElement = link.selectSingleNode("extension");//$NON-NLS-1$
+                String extension = null;
+                String classifier = null;
+                if (extensionElement != null) {
+                    if (IGNORED_TYPES.contains(extensionElement.getText())) {// $NON-NLS-1$
+                        continue;
+                    }
+                    extension = extensionElement.getText();
+                }
+                Node classifierElement = link.selectSingleNode("classifier");//$NON-NLS-1$
+                if (classifierElement != null) {
+                    classifier = classifierElement.getText();
+                }
                 artifact.setType(extension);
                 artifact.setClassifier(classifier);
+                artifacts.add(artifact);
             }
         }
-        return artifacts.size();
+        return list.size();
     }
 
     public static String resolveSha1(String nexusUrl, final String userName, final String password, String repositoryId,

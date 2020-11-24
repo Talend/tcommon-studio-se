@@ -81,6 +81,11 @@ public final class ComponentUtilities {
 
     public static void setNodeValue(NodeType node, String name, String value) {
         ElementParameterType property = getNodeProperty(node, name);
+        
+        if (property == null) {
+            throw new IllegalArgumentException( "The component node "+node.getComponentName()+" doesn't have the property "+name );
+        }
+        
         property.setValue(value);
     }
 

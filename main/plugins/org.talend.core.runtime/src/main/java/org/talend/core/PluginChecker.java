@@ -126,6 +126,8 @@ public class PluginChecker {
 
     public static final String BDEE_PLUGIN_ID = "org.talend.designer.bigdata"; //$NON-NLS-1$
 
+    public static final String BD_ROUTINE_PLUGIN_ID = "org.talend.designer.routines.bigdata"; //$NON-NLS-1$
+
     public static final String DOCKER_PLUGIN_ID = "org.talend.designer.docker"; //$NON-NLS-1$
 
     public static final String HELP_DI_EE_PLUGIN_ID = "org.talend.help.dataprep"; //$NON-NLS-1$
@@ -362,6 +364,10 @@ public class PluginChecker {
 
     public static boolean isESBSELoaded() {
         return isPluginLoaded(ESBSE_PLUGIN_ID);
+    }
+
+    public static boolean isBigdataRoutineLoaded() {
+        return isPluginLoaded(BD_ROUTINE_PLUGIN_ID);
     }
 
     public static String getBundlePath(String bundleName) {
