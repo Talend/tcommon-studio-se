@@ -168,6 +168,10 @@ public class AggregatorPomsHelper {
     }
 
     public void updateCodeProjects(IProgressMonitor monitor, boolean forceBuild) {
+        updateCodeProjects(monitor, forceBuild, false);
+    }
+
+    public void updateCodeProjects(IProgressMonitor monitor, boolean forceBuild, boolean ignoreM2Cache) {
         RepositoryWorkUnit workUnit = new RepositoryWorkUnit<Object>("update code project") { //$NON-NLS-1$
 
             @Override
@@ -175,8 +179,11 @@ public class AggregatorPomsHelper {
                 Project currentProject = ProjectManager.getInstance().getCurrentProject();
                 for (ERepositoryObjectType codeType : ERepositoryObjectType.getAllTypesOfCodes()) {
                     try {
-                        if (CodeM2CacheManager.needUpdateCodeProject(currentProject, codeType)) {
-                            ITalendProcessJavaProject codeProject = getCodesProject(codeType);
+                        ITalendProcessJavaProject codeProject = getCodesProject(codeType);
+                        if (ERepositoryObjectType.ROUTINES == codeType) {
+                            PomUtil.checkExistingLog4j2Dependencies4RoutinePom(projectTechName, codeProject.getProjectPom());
+                        }
+                        if (ignoreM2Cache || CodeM2CacheManager.needUpdateCodeProject(currentProject, codeType)) {
                             updateCodeProjectPom(monitor, codeType, codeProject.getProjectPom());
                             buildAndInstallCodesProject(monitor, codeType, true, forceBuild);
                             CodeM2CacheManager.updateCodeProjectCache(currentProject, codeType);
@@ -860,7 +867,7 @@ public class AggregatorPomsHelper {
         }
         // codes pom
         monitor.subTask("Synchronize code poms"); //$NON-NLS-1$
-        updateCodeProjects(monitor, true);
+        updateCodeProjects(monitor, true, true);
         monitor.worked(1);
         if (monitor.isCanceled()) {
             return;
