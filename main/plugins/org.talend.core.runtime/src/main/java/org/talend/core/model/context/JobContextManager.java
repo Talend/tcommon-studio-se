@@ -383,7 +383,8 @@ public class JobContextManager implements IContextManager {
                 contextParam = new JobContextParameter();
                 contextParam.setContext(context);
                 contextParam.setName(contextParamType.getName());
-                contextParam.setPrompt(contextParamType.getPrompt());
+                contextParam.setPrompt(
+                        contextParamType.getPrompt() == null ? (contextParamType.getName() + "?") : contextParamType.getPrompt());
                 originalParamerters.add(contextParam.getName());
                 boolean exists = true;
                 try {
