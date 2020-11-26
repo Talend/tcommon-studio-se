@@ -15,7 +15,7 @@ Require-Bundle: org.apache.log4j;resolution:=optional,
  jackson-core-asl;bundle-version="1.9.13",
  jackson-mapper-asl;bundle-version="1.9.13",
  org.apache.xerces,
- org.apache.ant;visibility:=reexport
+ org.apache.ant
 Export-Package: 
  org.apache.james.mime4j,
  org.apache.james.mime4j.codec,
@@ -153,6 +153,11 @@ Export-Package:
  schemaorg_apache_xmlbeans.system.sXMLCONFIG,
  schemaorg_apache_xmlbeans.system.sXMLLANG,
  schemaorg_apache_xmlbeans.system.sXMLSCHEMA,
- schemaorg_apache_xmlbeans.system.sXMLTOOLS
+ schemaorg_apache_xmlbeans.system.sXMLTOOLS,
+ org.apache.tools.ant,
+ org.apache.tools.bzip2,
+ org.apache.tools.mail,
+ org.apache.tools.tar,
+ org.apache.tools.zip
 Bundle-ActivationPolicy: lazy
 Eclipse-BundleShape: dir
