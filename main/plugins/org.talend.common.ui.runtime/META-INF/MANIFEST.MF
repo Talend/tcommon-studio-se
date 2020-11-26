@@ -10,7 +10,8 @@ Require-Bundle: org.eclipse.core.runtime,
  org.apache.log4j,
  org.talend.libraries.apache,
  org.talend.commons.runtime,
- org.talend.libraries.ui
+ org.talend.libraries.ui,
+ org.apache.ant
 Export-Package: 
  org.talend.commons.ui.runtime,
  org.talend.commons.ui.runtime.exception,
