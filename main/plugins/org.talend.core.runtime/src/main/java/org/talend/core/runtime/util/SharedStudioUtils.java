@@ -108,4 +108,13 @@ public class SharedStudioUtils {
         File extchangeFolder = new File (componentFolder, path.toOSString());
 		return extchangeFolder;
 	}
+	
+	public static IPath getTempFolderPath() {
+		if (SharedStudioUtils.isSharedStudioMode()) {
+			Path wsPath = new Path(Platform.getInstanceLocation().getURL().getPath());
+			return wsPath.append("temp");
+		} else {
+			return new Path(System.getProperty("user.dir")).append("temp");
+		}
+	}
 }

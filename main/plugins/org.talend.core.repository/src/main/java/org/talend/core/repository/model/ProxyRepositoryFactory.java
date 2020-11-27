@@ -135,6 +135,7 @@ import org.talend.core.runtime.repository.item.ItemProductKeys;
 import org.talend.core.runtime.services.IGenericWizardService;
 import org.talend.core.runtime.services.IMavenUIService;
 import org.talend.core.runtime.util.ItemDateParser;
+import org.talend.core.runtime.util.SharedStudioUtils;
 import org.talend.core.service.ICoreUIService;
 import org.talend.cwm.helper.SubItemHelper;
 import org.talend.cwm.helper.TableHelper;
@@ -1798,9 +1799,12 @@ public final class ProxyRepositoryFactory implements IProxyRepositoryFactory {
      * @throws PersistenceException
      */
     private void emptyTempFolder(Project project) throws PersistenceException {
-        String str = (System.getProperty("eclipse.home.location") + "temp").substring(5);
-        FilesUtils.deleteFolder(new File(str), false);
-
+    	try {
+            String str = SharedStudioUtils.getTempFolderPath().toPortableString();
+            FilesUtils.deleteFolder(new File(str), false);
+    	}catch (Exception ex) {
+    		ExceptionHandler.process(ex);
+    	}
         long start = System.currentTimeMillis();
         IProject fsProject = ResourceUtils.getProject(project);
         IFolder folder = ResourceUtils.getFolder(fsProject, RepositoryConstants.TEMP_DIRECTORY, false);
