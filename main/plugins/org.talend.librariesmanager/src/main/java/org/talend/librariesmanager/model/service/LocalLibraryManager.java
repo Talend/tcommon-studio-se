@@ -1399,23 +1399,25 @@ public class LocalLibraryManager implements ILibraryManagerService, IChangedLibr
             ArtifactRepositoryBean customNexusServer = TalendLibsServerManager.getInstance().getCustomNexusServer();
             IRepositoryArtifactHandler customerRepHandler = RepositoryArtifactHandlerManager
                     .getRepositoryHandler(customNexusServer);
-            List<MavenArtifact> snapshotResult = new ArrayList<>();
-            List<MavenArtifact> releaseResult = new ArrayList<>();
-            try {
-                snapshotResult = customerRepHandler.search(MavenConstants.DEFAULT_LIB_GROUP_ID, null, null, false, true);
-                if (snapshotResult != null) {
-                    for (MavenArtifact result : snapshotResult) {
-                        ShareLibrariesUtil.putArtifactToMap(result, snapshotArtifactMap, true);
+            if (customerRepHandler != null) {
+                List<MavenArtifact> snapshotResult = new ArrayList<>();
+                List<MavenArtifact> releaseResult = new ArrayList<>();
+                try {
+                    snapshotResult = customerRepHandler.search(MavenConstants.DEFAULT_LIB_GROUP_ID, null, null, false, true);
+                    if (snapshotResult != null) {
+                        for (MavenArtifact result : snapshotResult) {
+                            ShareLibrariesUtil.putArtifactToMap(result, snapshotArtifactMap, true);
+                        }
                     }
-                }
-                releaseResult = customerRepHandler.search(MavenConstants.DEFAULT_LIB_GROUP_ID, null, null, true, false);
-                if (releaseResult != null) {
-                    for (MavenArtifact result : releaseResult) {
-                        ShareLibrariesUtil.putArtifactToMap(result, releaseArtifactMap, false);
+                    releaseResult = customerRepHandler.search(MavenConstants.DEFAULT_LIB_GROUP_ID, null, null, true, false);
+                    if (releaseResult != null) {
+                        for (MavenArtifact result : releaseResult) {
+                            ShareLibrariesUtil.putArtifactToMap(result, releaseArtifactMap, false);
+                        }
                     }
+                } catch (Exception e) {
+                    ExceptionHandler.process(e);
                 }
-            } catch (Exception e) {
-                ExceptionHandler.process(e);
             }
             for(File exsitFile:needToDeploy) {
                 if (customerRepHandler != null) {
