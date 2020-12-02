@@ -1315,7 +1315,7 @@ public class ImportBasicHandler extends AbstractImportExecutableHandler {
                 property = object.getProperty();
             }
             if (GlobalServiceRegister.getDefault().isServiceRegistered(ICoreTisService.class)) {
-                ICoreTisService service = GlobalServiceRegister.getDefault().getService(ICoreTisService.class);
+                ICoreTisService service = (ICoreTisService)GlobalServiceRegister.getDefault().getService(ICoreTisService.class);
                 service.afterImport(property);
             } 
             RelationshipItemBuilder.getInstance().addOrUpdateItem(property.getItem(), true);
