@@ -1310,12 +1310,12 @@ public class ImportBasicHandler extends AbstractImportExecutableHandler {
         IRepositoryViewObject object;
         try {
             Property property = importItem.getProperty();
-            if (property == null) {
+            if (property == null || property.eResource() == null) {
                 object = factory.getSpecificVersion(importItem.getItemId(), importItem.getItemVersion(), true);
                 property = object.getProperty();
             }
             if (GlobalServiceRegister.getDefault().isServiceRegistered(ICoreTisService.class)) {
-                ICoreTisService service = GlobalServiceRegister.getDefault().getService(ICoreTisService.class);
+                ICoreTisService service = (ICoreTisService)GlobalServiceRegister.getDefault().getService(ICoreTisService.class);
                 service.afterImport(property);
             } 
             RelationshipItemBuilder.getInstance().addOrUpdateItem(property.getItem(), true);
