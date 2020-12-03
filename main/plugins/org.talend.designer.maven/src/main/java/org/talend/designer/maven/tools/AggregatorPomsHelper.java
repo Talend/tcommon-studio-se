@@ -541,7 +541,7 @@ public class AggregatorPomsHelper {
             return codesFolder.getFolder(DIR_ROUTINES);
         }
 
-        if (codeType == ERepositoryObjectType.valueOf("BEANS")) { //$NON-NLS-1$
+        if (codeType == ERepositoryObjectType.BEANS) {
             return codesFolder.getFolder(DIR_BEANS);
         }
         return null;
@@ -928,8 +928,7 @@ public class AggregatorPomsHelper {
         if (service != null) {
             modules.add(getModulePath(service.getTalendCodeJavaProject(ERepositoryObjectType.ROUTINES).getProjectPom()));
             if (ProcessUtils.isRequiredBeans(null)) {
-                modules.add(getModulePath(service.getTalendCodeJavaProject(ERepositoryObjectType.valueOf("BEANS")) //$NON-NLS-1$
-                        .getProjectPom()));
+                modules.add(getModulePath(service.getTalendCodeJavaProject(ERepositoryObjectType.BEANS).getProjectPom()));
             }
         }
     }

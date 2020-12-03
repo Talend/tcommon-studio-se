@@ -108,6 +108,8 @@ public class RepositoryNodeUtilities {
         } else {
             if (/* !isMetadataLabel(label) && */node.getType() != ENodeType.REPOSITORY_ELEMENT) {
                 return getPath(node.getParent()).append(label);
+            } else if (ERepositoryObjectType.getAllTypesOfCodesJar().contains(node.getContentType())) {
+                return new Path(node.getObject().getLabel());
             } else {
                 return getPath(node.getParent());
             }

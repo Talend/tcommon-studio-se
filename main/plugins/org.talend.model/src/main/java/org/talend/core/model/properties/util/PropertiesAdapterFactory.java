@@ -457,6 +457,12 @@ public class PropertiesAdapterFactory extends AdapterFactoryImpl {
             public Object casePigudfItem(PigudfItem object) {
                 return createPigudfItemAdapter();
             }
+            public Object caseRoutinesJarType(RoutinesJarType object) {
+                return createRoutinesJarTypeAdapter();
+            }
+            public Object caseRoutinesJarItem(RoutinesJarItem object) {
+                return createRoutinesJarItemAdapter();
+            }
             public Object defaultCase(EObject object) {
                 return createEObjectAdapter();
             }
@@ -1725,6 +1731,34 @@ public class PropertiesAdapterFactory extends AdapterFactoryImpl {
      * @generated
      */
     public Adapter createPigudfItemAdapter() {
+        return null;
+    }
+
+    /**
+     * Creates a new adapter for an object of class '{@link org.talend.core.model.properties.RoutinesJarType <em>Routines Jar Type</em>}'.
+     * <!-- begin-user-doc -->
+     * This default implementation returns null so that we can easily ignore cases;
+     * it's useful to ignore a case when inheritance will catch all the cases anyway.
+     * <!-- end-user-doc -->
+     * @return the new adapter.
+     * @see org.talend.core.model.properties.RoutinesJarType
+     * @generated
+     */
+    public Adapter createRoutinesJarTypeAdapter() {
+        return null;
+    }
+
+    /**
+     * Creates a new adapter for an object of class '{@link org.talend.core.model.properties.RoutinesJarItem <em>Routines Jar Item</em>}'.
+     * <!-- begin-user-doc -->
+     * This default implementation returns null so that we can easily ignore cases;
+     * it's useful to ignore a case when inheritance will catch all the cases anyway.
+     * <!-- end-user-doc -->
+     * @return the new adapter.
+     * @see org.talend.core.model.properties.RoutinesJarItem
+     * @generated
+     */
+    public Adapter createRoutinesJarItemAdapter() {
         return null;
     }
 

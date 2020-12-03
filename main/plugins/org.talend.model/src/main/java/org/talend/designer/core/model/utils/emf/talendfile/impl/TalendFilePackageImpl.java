@@ -1518,6 +1518,15 @@ public class TalendFilePackageImpl extends EPackageImpl implements TalendFilePac
      * <!-- end-user-doc -->
      * @generated
      */
+    public EAttribute getRoutinesParameterType_Type() {
+        return (EAttribute)routinesParameterTypeEClass.getEStructuralFeatures().get(2);
+    }
+
+    /**
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     */
     public EClass getNodeContainerType() {
         return nodeContainerTypeEClass;
     }
@@ -1786,6 +1795,7 @@ public class TalendFilePackageImpl extends EPackageImpl implements TalendFilePac
         routinesParameterTypeEClass = createEClass(ROUTINES_PARAMETER_TYPE);
         createEAttribute(routinesParameterTypeEClass, ROUTINES_PARAMETER_TYPE__ID);
         createEAttribute(routinesParameterTypeEClass, ROUTINES_PARAMETER_TYPE__NAME);
+        createEAttribute(routinesParameterTypeEClass, ROUTINES_PARAMETER_TYPE__TYPE);
 
         nodeContainerTypeEClass = createEClass(NODE_CONTAINER_TYPE);
         createEReference(nodeContainerTypeEClass, NODE_CONTAINER_TYPE__ELEMENT_PARAMETER);
@@ -2002,6 +2012,7 @@ public class TalendFilePackageImpl extends EPackageImpl implements TalendFilePac
         initEClass(routinesParameterTypeEClass, RoutinesParameterType.class, "RoutinesParameterType", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
         initEAttribute(getRoutinesParameterType_Id(), ecorePackage.getEString(), "id", null, 0, 1, RoutinesParameterType.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
         initEAttribute(getRoutinesParameterType_Name(), ecorePackage.getEString(), "name", null, 0, 1, RoutinesParameterType.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+        initEAttribute(getRoutinesParameterType_Type(), ecorePackage.getEString(), "type", null, 0, 1, RoutinesParameterType.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
         initEClass(nodeContainerTypeEClass, NodeContainerType.class, "NodeContainerType", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
         initEReference(getNodeContainerType_ElementParameter(), this.getElementParameterType(), null, "elementParameter", null, 1, -1, NodeContainerType.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);

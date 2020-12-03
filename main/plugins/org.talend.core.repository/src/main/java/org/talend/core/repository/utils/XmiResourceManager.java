@@ -70,6 +70,7 @@ import org.talend.core.model.properties.TDQItem;
 import org.talend.core.model.properties.ValidationRulesConnectionItem;
 import org.talend.core.model.properties.helper.ByteArrayResource;
 import org.talend.core.model.repository.ERepositoryObjectType;
+import org.talend.core.model.routines.RoutinesUtil;
 import org.talend.core.repository.constants.FileConstants;
 import org.talend.core.repository.model.ProxyRepositoryFactory;
 import org.talend.core.repository.utils.ResourceFilenameHelper.FileName;
@@ -209,7 +210,7 @@ public class XmiResourceManager {
      * @return
      * @throws PersistenceException
      */
-    private IPath getFolderPath(IProject project, ERepositoryObjectType repositoryObjectType, IPath relativePath)
+    private IPath getFolderPath(IProject project, ERepositoryObjectType repositoryObjectType, IPath relativePath, Item item)
             throws PersistenceException {
         ERepositoryObjectType type = repositoryObjectType;
         if (ERepositoryObjectType.TDQ_SYSTEM_INDICATORS.equals(repositoryObjectType)
@@ -218,6 +219,10 @@ public class XmiResourceManager {
         } else if (ERepositoryObjectType.TDQ_PATTERN_REGEX.equals(repositoryObjectType)
                 || ERepositoryObjectType.TDQ_PATTERN_SQL.equals(repositoryObjectType)) {
             type = ERepositoryObjectType.TDQ_PATTERN_ELEMENT;
+        } else if (type == ERepositoryObjectType.ROUTINES && RoutinesUtil.isInnerCodes(item.getProperty())) {
+            type = ERepositoryObjectType.ROUTINESJAR;
+        } else if (type == ERepositoryObjectType.BEANS && RoutinesUtil.isInnerCodes(item.getProperty())) {
+            type = ERepositoryObjectType.BEANSJAR;
         }
         IFolder folder = project.getFolder(ERepositoryObjectType.getFolderName(type)).getFolder(relativePath);
         return folder.getFullPath();
@@ -704,7 +709,7 @@ public class XmiResourceManager {
     // MOD mzhao 2010-11-22, suppport TDQ item file extensions.(.ana, .rep, etc)
     private URI getItemResourceURI(IProject project, ERepositoryObjectType repositoryObjectType, IPath path, Item item)
             throws PersistenceException {
-        IPath folderPath = getFolderPath(project, repositoryObjectType, path);
+        IPath folderPath = getFolderPath(project, repositoryObjectType, path, item);
         FileName fileName = ResourceFilenameHelper.create(item.getProperty());
         IPath resourcePath = null;
         if (item.getFileExtension() == null) {
@@ -720,7 +725,7 @@ public class XmiResourceManager {
     @Deprecated
     private URI getItemResourceURI(IProject project, ERepositoryObjectType repositoryObjectType, IPath path, Item item,
             String fileExtension) throws PersistenceException {
-        IPath folderPath = getFolderPath(project, repositoryObjectType, path);
+        IPath folderPath = getFolderPath(project, repositoryObjectType, path, item);
         FileName fileName = ResourceFilenameHelper.create(item.getProperty());
         IPath resourcePath = ResourceFilenameHelper
                 .getExpectedFilePath(fileName, folderPath, fileExtension, item.isNeedVersion());
@@ -730,7 +735,7 @@ public class XmiResourceManager {
     // added by dlin 2011-7-14 to create the uri of file of .screenshot
     private URI getScreenshotResourceURI(IProject project, ERepositoryObjectType repositoryObjectType, IPath path, Item item,
             String... fileExtension) throws PersistenceException {
-        IPath folderPath = getFolderPath(project, repositoryObjectType, path);
+        IPath folderPath = getFolderPath(project, repositoryObjectType, path, item);
         FileName fileName = ResourceFilenameHelper.create(item.getProperty());
         IPath resourcePath = ResourceFilenameHelper.getExpectedFilePath(fileName, folderPath, FileConstants.SCREENSHOT_EXTENSION,
                 item.isNeedVersion());

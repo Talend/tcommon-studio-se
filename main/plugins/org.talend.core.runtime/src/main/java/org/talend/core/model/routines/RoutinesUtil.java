@@ -204,6 +204,7 @@ public final class RoutinesUtil {
     }
 
     private static RoutinesParameterType createItemInforType(RoutineItem routineItem) {
+        // no need to update
         Property property = routineItem.getProperty();
 
         RoutinesParameterType itemRecordType = TalendFileFactory.eINSTANCE.createRoutinesParameterType();
@@ -353,4 +354,15 @@ public final class RoutinesUtil {
             }
         }
     }
+
+    @SuppressWarnings("unchecked")
+    public static void setInnerCodes(Property property, Boolean isInner) {
+        property.getAdditionalProperties().put("INNER_DATA", isInner.toString()); //$NON-NLS-1$
+    }
+
+    public static boolean isInnerCodes(Property property) {
+        Object isInnerCodes = property.getAdditionalProperties().get("INNER_DATA"); //$NON-NLS-1$
+        return isInnerCodes != null && Boolean.valueOf(isInnerCodes.toString());
+    }
+
 }

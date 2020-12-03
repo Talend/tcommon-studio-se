@@ -23,12 +23,14 @@ import org.talend.core.IESBService;
 import org.talend.core.PluginChecker;
 import org.talend.core.model.general.Project;
 import org.talend.core.model.process.JobInfo;
+import org.talend.core.model.properties.Item;
 import org.talend.core.model.properties.Property;
 import org.talend.core.model.repository.ERepositoryObjectType;
 import org.talend.core.model.utils.JavaResourcesHelper;
 import org.talend.core.repository.utils.ItemResourceUtil;
 import org.talend.core.runtime.maven.MavenConstants;
 import org.talend.core.runtime.projectsetting.ProjectPreferenceManager;
+import org.talend.designer.core.ICamelDesignerCoreService;
 import org.talend.designer.maven.DesignerMavenPlugin;
 import org.talend.designer.maven.model.TalendMavenConstants;
 import org.talend.repository.ProjectManager;
@@ -124,6 +126,30 @@ public class PomIdsHelper {
             }
         }
         return getProjectVersion(projectTechName);
+    }
+
+    public static String getCodesJarGroupId(Item item) {
+        return getCodesJarGroupId(null, item);
+    }
+
+    public static String getCodesJarGroupId(String projectTechName, Item item) {
+        String baseName = TalendMavenConstants.DEFAULT_ROUTINESJAR;
+        if (GlobalServiceRegister.getDefault().isServiceRegistered(ICamelDesignerCoreService.class)) {
+            ICamelDesignerCoreService camelService = GlobalServiceRegister.getDefault()
+                    .getService(ICamelDesignerCoreService.class);
+            if (camelService.isInstanceofCamelBeansJar(item)) {
+                baseName = TalendMavenConstants.DEFAULT_BEANSJAR;
+            }
+        }
+        return getCodesGroupId(projectTechName, baseName);
+    }
+
+    public static String getCodesJarVersion() {
+        return getCodesVersion();
+    }
+
+    public static String getCodesJarVersion(String projectTechName) {
+        return getCodesVersion(projectTechName);
     }
 
     @Deprecated
