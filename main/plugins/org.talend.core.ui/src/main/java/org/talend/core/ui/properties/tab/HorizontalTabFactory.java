@@ -102,7 +102,9 @@ public class HorizontalTabFactory {
      * @param descriptors
      */
     public void setInput(List<TalendPropertyTabDescriptor> descriptors) {
-        tabbedPropertyViewer.setInput(descriptors);
+        if (tabbedPropertyViewer != null && tabbedPropertyViewer.getControl() != null && !tabbedPropertyViewer.getControl().isDisposed()) {
+            tabbedPropertyViewer.setInput(descriptors);
+        }
     }
 
     public List<TalendPropertyTabDescriptor> getInput() {

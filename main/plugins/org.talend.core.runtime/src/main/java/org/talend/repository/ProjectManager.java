@@ -20,6 +20,7 @@ import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 import java.util.Set;
+import java.util.WeakHashMap;
 
 import org.apache.commons.lang.StringUtils;
 import org.eclipse.core.resources.IFile;
@@ -93,6 +94,8 @@ public final class ProjectManager {
     private Set<Object> updatedRemoteHandlerRecords;
 
     private Set<Project> tempProjects;
+
+    private WeakHashMap<IRepositoryViewObject, Boolean> cachedObjects = new WeakHashMap<IRepositoryViewObject, Boolean>();
 
     private ProjectManager() {
         beforeLogonRecords = new HashSet<String>();
@@ -451,9 +454,15 @@ public final class ProjectManager {
                     if (object == null) {
                         return true;
                     }
+                    if (cachedObjects.containsKey(object)) {
+                        return cachedObjects.get(object);
+                    }
+
                     org.talend.core.model.properties.Project emfProject = getProject(object.getProperty().getItem());
                     org.talend.core.model.properties.Project curProject = curP.getEmfProject();
-                    return emfProject.equals(curProject);
+                    boolean ret = emfProject.equals(curProject);
+                    cachedObjects.put(object, ret);
+                    return ret;
 
                 } else {
                     IProjectRepositoryNode root = node.getRoot();
