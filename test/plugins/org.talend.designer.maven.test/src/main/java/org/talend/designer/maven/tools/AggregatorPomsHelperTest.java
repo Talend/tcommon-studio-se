@@ -246,7 +246,7 @@ public class AggregatorPomsHelperTest {
     public void testGetCodeProjectId() {
         String routinesId = AggregatorPomsHelper.getCodeProjectId(ERepositoryObjectType.ROUTINES, projectTechName);
         assertEquals(projectTechName + "|ROUTINES", routinesId);
-        String beansId = AggregatorPomsHelper.getCodeProjectId(ERepositoryObjectType.valueOf("BEANS"), projectTechName);
+        String beansId = AggregatorPomsHelper.getCodeProjectId(ERepositoryObjectType.BEANS, projectTechName);
         assertEquals(projectTechName + "|BEANS", beansId);
     }
 

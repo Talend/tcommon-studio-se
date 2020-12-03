@@ -12,12 +12,7 @@
 // ============================================================================
 package org.talend.metadata.managment.ui.wizard;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Comparator;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 import java.util.regex.Pattern;
 
 import org.eclipse.core.resources.IWorkspace;
@@ -47,7 +42,6 @@ import org.talend.commons.ui.runtime.exception.ExceptionHandler;
 import org.talend.commons.ui.runtime.exception.MessageBoxExceptionHandler;
 import org.talend.commons.ui.runtime.image.EImage;
 import org.talend.commons.ui.runtime.image.ImageProvider;
-import org.talend.commons.utils.VersionUtils;
 import org.talend.core.GlobalServiceRegister;
 import org.talend.core.ICoreService;
 import org.talend.core.IESBService;
@@ -120,7 +114,7 @@ public class PropertiesWizard extends Wizard {
                         if (useLastVersion) {
                             if (state != null && state.getPath() != null) {
                                 this.object = (IRepositoryObject) factory.getLastVersion(new Project(ProjectManager.getInstance()
-                                        .getProject(item)), property.getId(), state.getPath(), object.getRepositoryObjectType());
+                                        .getProject(item)), property.getId(), state.getPath(), getRepositoryObjectType());
                                 lastVersionFound = this.object.getVersion();
                             } else {
                                 this.object = (IRepositoryObject) factory.getLastVersion(new Project(ProjectManager.getInstance()
@@ -131,7 +125,7 @@ public class PropertiesWizard extends Wizard {
                             if (state != null && state.getPath() != null) {
                                 this.lastVersionFound = factory.getLastVersion(
                                         new Project(ProjectManager.getInstance().getProject(item)), property.getId(),
-                                        state.getPath(), object.getRepositoryObjectType()).getVersion();
+                                        state.getPath(), getRepositoryObjectType()).getVersion();
                             } else {
                                 this.lastVersionFound = factory.getLastVersion(
                                         new Project(ProjectManager.getInstance().getProject(item)), property.getId())
@@ -274,7 +268,7 @@ public class PropertiesWizard extends Wizard {
 
             @Override
             public ERepositoryObjectType getRepositoryObjectType() {
-                return object.getRepositoryObjectType();
+                return PropertiesWizard.this.getRepositoryObjectType();
             }
         };
         addPage(mainPage);
@@ -513,4 +507,9 @@ public class PropertiesWizard extends Wizard {
     public void setAlreadyEditedByUser(boolean alreadyEditedByUser) {
         this.alreadyEditedByUser = alreadyEditedByUser;
     }
+
+    public ERepositoryObjectType getRepositoryObjectType() {
+        return object.getRepositoryObjectType();
+    }
+
 }

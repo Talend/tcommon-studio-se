@@ -100,6 +100,8 @@ import org.talend.core.model.properties.ReferenceItem;
 import org.talend.core.model.properties.RegExFileConnectionItem;
 import org.talend.core.model.properties.RoleRight;
 import org.talend.core.model.properties.RoutineItem;
+import org.talend.core.model.properties.RoutinesJarItem;
+import org.talend.core.model.properties.RoutinesJarType;
 import org.talend.core.model.properties.RulesItem;
 import org.talend.core.model.properties.SAPConnectionItem;
 import org.talend.core.model.properties.SQLPatternItem;
@@ -138,6 +140,37 @@ import org.talend.designer.core.model.utils.emf.component.ComponentPackage;
 import org.talend.designer.core.model.utils.emf.talendfile.TalendFilePackage;
 
 import org.talend.designer.joblet.model.JobletPackage;
+import orgomg.cwm.analysis.businessnomenclature.BusinessnomenclaturePackage;
+import orgomg.cwm.analysis.datamining.DataminingPackage;
+import orgomg.cwm.analysis.informationvisualization.InformationvisualizationPackage;
+import orgomg.cwm.analysis.olap.OlapPackage;
+import orgomg.cwm.analysis.transformation.TransformationPackage;
+import orgomg.cwm.foundation.businessinformation.BusinessinformationPackage;
+import orgomg.cwm.foundation.datatypes.DatatypesPackage;
+import orgomg.cwm.foundation.expressions.ExpressionsPackage;
+import orgomg.cwm.foundation.keysindexes.KeysindexesPackage;
+import orgomg.cwm.foundation.softwaredeployment.SoftwaredeploymentPackage;
+import orgomg.cwm.foundation.typemapping.TypemappingPackage;
+import orgomg.cwm.management.warehouseoperation.WarehouseoperationPackage;
+import orgomg.cwm.management.warehouseprocess.WarehouseprocessPackage;
+import orgomg.cwm.objectmodel.behavioral.BehavioralPackage;
+import orgomg.cwm.objectmodel.core.CorePackage;
+import orgomg.cwm.objectmodel.instance.InstancePackage;
+import orgomg.cwm.objectmodel.relationships.RelationshipsPackage;
+import orgomg.cwm.resource.multidimensional.MultidimensionalPackage;
+import orgomg.cwm.resource.record.RecordPackage;
+import orgomg.cwm.resource.relational.RelationalPackage;
+import orgomg.cwm.resource.xml.XmlPackage;
+import orgomg.cwmmip.CwmmipPackage;
+import orgomg.cwmx.analysis.informationreporting.InformationreportingPackage;
+import orgomg.cwmx.analysis.informationset.InformationsetPackage;
+import orgomg.cwmx.foundation.er.ErPackage;
+import orgomg.cwmx.resource.coboldata.CoboldataPackage;
+import orgomg.cwmx.resource.dmsii.DmsiiPackage;
+import orgomg.cwmx.resource.essbase.EssbasePackage;
+import orgomg.cwmx.resource.express.ExpressPackage;
+import orgomg.cwmx.resource.imsdatabase.ImsdatabasePackage;
+import orgomg.mof.model.ModelPackage;
 
 /**
  * <!-- begin-user-doc -->
@@ -858,6 +891,20 @@ public class PropertiesPackageImpl extends EPackageImpl implements PropertiesPac
      * <!-- end-user-doc -->
      * @generated
      */
+    private EClass routinesJarTypeEClass = null;
+
+    /**
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     */
+    private EClass routinesJarItemEClass = null;
+
+    /**
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     */
     private EClass referenceFileItemEClass = null;
 
     /**
@@ -923,7 +970,7 @@ public class PropertiesPackageImpl extends EPackageImpl implements PropertiesPac
 
     /**
      * Creates, registers, and initializes the <b>Package</b> for this model, and for any others upon which it depends.
-     * 
+     *
      * <p>This method is used to initialize {@link PropertiesPackage#eINSTANCE} when that field is accessed.
      * Clients should not invoke it directly. Instead, they should simply access that field to obtain the package.
      * <!-- begin-user-doc -->
@@ -937,16 +984,50 @@ public class PropertiesPackageImpl extends EPackageImpl implements PropertiesPac
         if (isInited) return (PropertiesPackage)EPackage.Registry.INSTANCE.getEPackage(PropertiesPackage.eNS_URI);
 
         // Obtain or create and register package
-        PropertiesPackageImpl thePropertiesPackage = (PropertiesPackageImpl)(EPackage.Registry.INSTANCE.get(eNS_URI) instanceof PropertiesPackageImpl ? EPackage.Registry.INSTANCE.get(eNS_URI) : new PropertiesPackageImpl());
+        Object registeredPropertiesPackage = EPackage.Registry.INSTANCE.get(eNS_URI);
+        PropertiesPackageImpl thePropertiesPackage = registeredPropertiesPackage instanceof PropertiesPackageImpl ? (PropertiesPackageImpl)registeredPropertiesPackage : new PropertiesPackageImpl();
 
         isInited = true;
 
         // Initialize simple dependencies
         BusinessPackage.eINSTANCE.eClass();
         ComponentPackage.eINSTANCE.eClass();
+        CorePackage.eINSTANCE.eClass();
+        BehavioralPackage.eINSTANCE.eClass();
+        RelationshipsPackage.eINSTANCE.eClass();
+        InstancePackage.eINSTANCE.eClass();
+        BusinessinformationPackage.eINSTANCE.eClass();
+        DatatypesPackage.eINSTANCE.eClass();
+        ExpressionsPackage.eINSTANCE.eClass();
+        KeysindexesPackage.eINSTANCE.eClass();
+        SoftwaredeploymentPackage.eINSTANCE.eClass();
+        TypemappingPackage.eINSTANCE.eClass();
+        RelationalPackage.eINSTANCE.eClass();
+        RecordPackage.eINSTANCE.eClass();
+        MultidimensionalPackage.eINSTANCE.eClass();
+        XmlPackage.eINSTANCE.eClass();
+        TransformationPackage.eINSTANCE.eClass();
+        OlapPackage.eINSTANCE.eClass();
+        DataminingPackage.eINSTANCE.eClass();
+        InformationvisualizationPackage.eINSTANCE.eClass();
+        BusinessnomenclaturePackage.eINSTANCE.eClass();
+        WarehouseprocessPackage.eINSTANCE.eClass();
+        WarehouseoperationPackage.eINSTANCE.eClass();
+        ErPackage.eINSTANCE.eClass();
+        CoboldataPackage.eINSTANCE.eClass();
+        DmsiiPackage.eINSTANCE.eClass();
+        ImsdatabasePackage.eINSTANCE.eClass();
+        EssbasePackage.eINSTANCE.eClass();
+        ExpressPackage.eINSTANCE.eClass();
+        InformationsetPackage.eINSTANCE.eClass();
+        InformationreportingPackage.eINSTANCE.eClass();
+        CwmmipPackage.eINSTANCE.eClass();
+        ModelPackage.eINSTANCE.eClass();
+        EcorePackage.eINSTANCE.eClass();
         JobletPackage.eINSTANCE.eClass();
         ConnectionPackage.eINSTANCE.eClass();
         NotationPackage.eINSTANCE.eClass();
+        TalendFilePackage.eINSTANCE.eClass();
         XMLTypePackage.eINSTANCE.eClass();
 
         // Create package meta-data objects
@@ -958,7 +1039,6 @@ public class PropertiesPackageImpl extends EPackageImpl implements PropertiesPac
         // Mark meta-data to indicate it can't be changed
         thePropertiesPackage.freeze();
 
-  
         // Update the registry and return the package
         EPackage.Registry.INSTANCE.put(PropertiesPackage.eNS_URI, thePropertiesPackage);
         return thePropertiesPackage;
@@ -6117,6 +6197,51 @@ public class PropertiesPackageImpl extends EPackageImpl implements PropertiesPac
      * <!-- end-user-doc -->
      * @generated
      */
+    public EClass getRoutinesJarType() {
+        return routinesJarTypeEClass;
+    }
+
+    /**
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     */
+    public EAttribute getRoutinesJarType_MvnUrl() {
+        return (EAttribute)routinesJarTypeEClass.getEStructuralFeatures().get(0);
+    }
+
+    /**
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     */
+    public EReference getRoutinesJarType_Imports() {
+        return (EReference)routinesJarTypeEClass.getEStructuralFeatures().get(1);
+    }
+
+    /**
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     */
+    public EClass getRoutinesJarItem() {
+        return routinesJarItemEClass;
+    }
+
+    /**
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     */
+    public EReference getRoutinesJarItem_RoutinesJarType() {
+        return (EReference)routinesJarItemEClass.getEStructuralFeatures().get(0);
+    }
+
+    /**
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     */
     public EClass getReferenceFileItem() {
         return referenceFileItemEClass;
     }
@@ -6899,6 +7024,13 @@ public class PropertiesPackageImpl extends EPackageImpl implements PropertiesPac
 
         pigudfItemEClass = createEClass(PIGUDF_ITEM);
 
+        routinesJarTypeEClass = createEClass(ROUTINES_JAR_TYPE);
+        createEAttribute(routinesJarTypeEClass, ROUTINES_JAR_TYPE__MVN_URL);
+        createEReference(routinesJarTypeEClass, ROUTINES_JAR_TYPE__IMPORTS);
+
+        routinesJarItemEClass = createEClass(ROUTINES_JAR_ITEM);
+        createEReference(routinesJarItemEClass, ROUTINES_JAR_ITEM__ROUTINES_JAR_TYPE);
+
         // Create enums
         folderTypeEEnum = createEEnum(FOLDER_TYPE);
         userProjectAuthorizationTypeEEnum = createEEnum(USER_PROJECT_AUTHORIZATION_TYPE);
@@ -6990,6 +7122,7 @@ public class PropertiesPackageImpl extends EPackageImpl implements PropertiesPac
         edifactConnectionItemEClass.getESuperTypes().add(this.getConnectionItem());
         referenceFileItemEClass.getESuperTypes().add(this.getReferenceItem());
         pigudfItemEClass.getESuperTypes().add(this.getRoutineItem());
+        routinesJarItemEClass.getESuperTypes().add(this.getItem());
 
         // Initialize classes and features; add operations and parameters
         initEClass(projectEClass, Project.class, "Project", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
@@ -7231,7 +7364,7 @@ public class PropertiesPackageImpl extends EPackageImpl implements PropertiesPac
 
         initEClass(userModuleAuthorizationEClass, UserModuleAuthorization.class, "UserModuleAuthorization", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
         initEReference(getUserModuleAuthorization_User(), this.getUser(), this.getUser_ModuleAuthorization(), "user", null, 0, 1, UserModuleAuthorization.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_COMPOSITE, IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
-        initEAttribute(getUserModuleAuthorization_Type(), this.getUserModuleAuthorizationType(), "type", "Scheduler", 0, 1, UserModuleAuthorization.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, !IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+        initEAttribute(getUserModuleAuthorization_Type(), this.getUserModuleAuthorizationType(), "type", null, 0, 1, UserModuleAuthorization.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, !IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
         initEClass(ldapSchemaConnectionItemEClass, LDAPSchemaConnectionItem.class, "LDAPSchemaConnectionItem", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
 
@@ -7666,9 +7799,16 @@ public class PropertiesPackageImpl extends EPackageImpl implements PropertiesPac
         initEAttribute(getMigrationTask_Id(), ecorePackage.getEString(), "id", null, 1, 1, MigrationTask.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
         initEAttribute(getMigrationTask_Breaks(), ecorePackage.getEString(), "breaks", "5.1.9", 0, 1, MigrationTask.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
         initEAttribute(getMigrationTask_Version(), ecorePackage.getEString(), "version", null, 1, 1, MigrationTask.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
-        initEAttribute(getMigrationTask_Status(), this.getMigrationStatus(), "status", "0", 1, 1, MigrationTask.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+        initEAttribute(getMigrationTask_Status(), this.getMigrationStatus(), "status", null, 1, 1, MigrationTask.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
         initEClass(pigudfItemEClass, PigudfItem.class, "PigudfItem", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
+
+        initEClass(routinesJarTypeEClass, RoutinesJarType.class, "RoutinesJarType", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
+        initEAttribute(getRoutinesJarType_MvnUrl(), theEcorePackage.getEString(), "mvnUrl", null, 0, 1, RoutinesJarType.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+        initEReference(getRoutinesJarType_Imports(), theComponentPackage.getIMPORTType(), null, "imports", null, 0, -1, RoutinesJarType.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+
+        initEClass(routinesJarItemEClass, RoutinesJarItem.class, "RoutinesJarItem", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
+        initEReference(getRoutinesJarItem_RoutinesJarType(), this.getRoutinesJarType(), null, "routinesJarType", null, 0, 1, RoutinesJarItem.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_COMPOSITE, IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
         // Initialize enums and add enum literals
         initEEnum(folderTypeEEnum, FolderType.class, "FolderType");
@@ -7713,22 +7853,22 @@ public class PropertiesPackageImpl extends EPackageImpl implements PropertiesPac
      * @generated
      */
     protected void createExtendedMetaDataAnnotations() {
-        String source = "http:///org/eclipse/emf/ecore/util/ExtendedMetaData";	
+        String source = "http:///org/eclipse/emf/ecore/util/ExtendedMetaData";
         addAnnotation
-          (getStatAndLogsSettings_Parameters(), 
-           source, 
+          (getStatAndLogsSettings_Parameters(),
+           source,
            new String[] {
-             "kind", "element",
-             "name", "Parameters",
-             "namespace", "##targetNamespace"
-           });	
+               "kind", "element",
+               "name", "Parameters",
+               "namespace", "##targetNamespace"
+           });
         addAnnotation
-          (getImplicitContextSettings_Parameters(), 
-           source, 
+          (getImplicitContextSettings_Parameters(),
+           source,
            new String[] {
-             "kind", "element",
-             "name", "Parameters",
-             "namespace", "##targetNamespace"
+               "kind", "element",
+               "name", "Parameters",
+               "namespace", "##targetNamespace"
            });
     }
 
@@ -7739,10 +7879,10 @@ public class PropertiesPackageImpl extends EPackageImpl implements PropertiesPac
      * @generated
      */
     protected void createMapEntryAnnotations() {
-        String source = "MapEntry";	
+        String source = "MapEntry";
         addAnnotation
-          (additionalInfoMapEClass, 
-           source, 
+          (additionalInfoMapEClass,
+           source,
            new String[] {
            });
     }

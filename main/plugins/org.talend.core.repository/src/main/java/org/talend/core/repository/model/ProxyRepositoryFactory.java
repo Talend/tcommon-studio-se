@@ -25,6 +25,7 @@ import java.util.Hashtable;
 import java.util.List;
 import java.util.Map;
 import java.util.regex.Pattern;
+import java.util.stream.Collectors;
 
 import org.apache.log4j.Level;
 import org.apache.log4j.Logger;
@@ -106,6 +107,7 @@ import org.talend.core.model.properties.ProcessItem;
 import org.talend.core.model.properties.ProjectReference;
 import org.talend.core.model.properties.PropertiesPackage;
 import org.talend.core.model.properties.Property;
+import org.talend.core.model.properties.RoutineItem;
 import org.talend.core.model.properties.SpagoBiServer;
 import org.talend.core.model.properties.Status;
 import org.talend.core.model.properties.User;
@@ -1345,6 +1347,31 @@ public final class ProxyRepositoryFactory implements IProxyRepositoryFactory {
     public List<IRepositoryViewObject> getAll(ERepositoryObjectType type, boolean withDeleted, boolean allVersions)
             throws PersistenceException {
         return this.repositoryFactoryFromProvider.getAll(projectManager.getCurrentProject(), type, withDeleted, allVersions);
+    }
+
+    @Override
+    public List<IRepositoryViewObject> getAllCodesJars(ERepositoryObjectType type) throws PersistenceException {
+        return getAllCodesJars(projectManager.getCurrentProject(), type);
+    }
+
+    @Override
+    public List<IRepositoryViewObject> getAllCodesJars(Project project, ERepositoryObjectType type) throws PersistenceException {
+        return getAll(type).stream().filter(obj -> !(obj.getProperty().getItem() instanceof RoutineItem))
+                .collect(Collectors.toList());
+    }
+
+    @Override
+    public List<IRepositoryViewObject> getAllInnerCodes(ERepositoryObjectType codesJarType, Property jarProperty)
+            throws PersistenceException {
+        return getAllInnerCodes(projectManager.getCurrentProject(), codesJarType, jarProperty);
+    }
+
+    @Override
+    public List<IRepositoryViewObject> getAllInnerCodes(Project project, ERepositoryObjectType codesJarType, Property jarProperty)
+            throws PersistenceException {
+        IFolder folder = ResourceUtils.getFolder(ResourceUtils.getProject(project),
+                ERepositoryObjectType.getFolderName(codesJarType) + "/" + jarProperty.getLabel(), true);
+        return repositoryFactoryFromProvider.getAll(project, codesJarType, false, false, folder);
     }
 
     @Override
