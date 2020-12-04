@@ -92,6 +92,7 @@ import org.talend.core.repository.utils.ProjectDataJsonProvider;
 import org.talend.core.runtime.CoreRuntimePlugin;
 import org.talend.core.runtime.services.IGenericDBService;
 import org.talend.core.runtime.services.IGenericWizardService;
+import org.talend.core.services.ICoreTisService;
 import org.talend.core.utils.WorkspaceUtils;
 import org.talend.designer.business.model.business.BusinessPackage;
 import org.talend.designer.business.model.business.BusinessProcess;
@@ -1314,10 +1315,14 @@ public class ImportBasicHandler extends AbstractImportExecutableHandler {
         IRepositoryViewObject object;
         try {
             Property property = importItem.getProperty();
-            if (property == null) {
+            if (property == null || property.eResource() == null) {
                 object = factory.getSpecificVersion(importItem.getItemId(), importItem.getItemVersion(), true);
                 property = object.getProperty();
             }
+            if (GlobalServiceRegister.getDefault().isServiceRegistered(ICoreTisService.class)) {
+                ICoreTisService service = (ICoreTisService)GlobalServiceRegister.getDefault().getService(ICoreTisService.class);
+                service.afterImport(property);
+            } 
             RelationshipItemBuilder.getInstance().addOrUpdateItem(property.getItem(), true);
             // importItem.setProperty(null);
             // factory.unloadResources(property);
@@ -1326,6 +1331,7 @@ public class ImportBasicHandler extends AbstractImportExecutableHandler {
         }
 
     }
+ 
 
     protected IPath getReferenceItemPath(IPath importItemPath, ReferenceFileItem rfItem) {
         return HandlerUtil.getReferenceItemPath(importItemPath, rfItem.getExtension());
