@@ -21,7 +21,9 @@ import org.talend.commons.exception.SystemException;
 import org.talend.core.IService;
 import org.talend.core.model.general.Project;
 import org.talend.core.model.process.INode;
+import org.talend.core.model.properties.Property;
 import org.talend.core.updatesite.IUpdateSiteBean;
+
 
 /**
  * wchen class global comment. Detailled comment
@@ -57,4 +59,6 @@ public interface ICoreTisService extends IService {
     public boolean isTheSameType(String userName, String password, String adminUrl);
 
     public void clearCustomLicensePathArg();
+
+    public void afterImport (Property property) throws PersistenceException;  
 }
