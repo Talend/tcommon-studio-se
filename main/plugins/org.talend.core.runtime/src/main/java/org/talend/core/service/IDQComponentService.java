@@ -38,4 +38,12 @@ public interface IDQComponentService extends IService {
      * @param node The node which need to be modified
      */
     void correctlyCustomMatcherParameter(NodeType node);
+
+    /**
+     * Change the attribute of MatchingData and use Integer value instead of double value.
+     * 
+     * @param node The node which need to be modified
+     */
+    void covertConfindWeight2Int(NodeType node);
+
 }
