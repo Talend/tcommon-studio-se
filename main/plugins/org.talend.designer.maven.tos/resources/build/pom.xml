@@ -12,7 +12,7 @@
 	<modules>
 		<module>plugins/maven-bundle-plugin-2-3-7</module>
 		<module>plugins/maven-bundle-plugin-2-5-3</module>
-		<module>plugins/karaf-maven-plugin-4-2-4</module>
+		<module>plugins/karaf-maven-plugin-4-2-10</module>
 		<module>plugins/maven-install-plugin-2-5-1</module>
 		<module>plugins/talend-compiler-plugin</module>
 		<module>plugins/talend-ci-osgihelper-maven-plugin</module>

@@ -902,6 +902,7 @@ public class ConfigModuleDialog extends TitleAreaDialog implements IConfigModule
                 MavenArtifact art = data.get(this.searchResultCombo.getSelectionIndex());
                 defaultURIValue = MavenUrlHelper.generateMvnUrl(art);
                 defaultUriTxt.setText(defaultURIValue);
+                customUriText.setText(defaultURIValue);
             }
         }
         useCustomBtn.setSelection(false);
@@ -932,7 +933,7 @@ public class ConfigModuleDialog extends TitleAreaDialog implements IConfigModule
                 }
             }
             defaultUriTxt.setText(defaultUri);
-            customUriText.setText(ModuleMavenURIUtils.MVNURI_TEMPLET);
+            customUriText.setText(defaultUri);
             if (!org.apache.commons.lang3.StringUtils.isEmpty(detectUri)
                     && !ConfigModuleHelper.isSameUri(defaultUri, detectUri)) {
                 customUriText.setText(detectUri);

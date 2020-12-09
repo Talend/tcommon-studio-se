@@ -74,6 +74,16 @@
 	<build>
 		<plugins>
 			<plugin>
+		        <groupId>org.eclipse.tycho</groupId>
+		        <artifactId>target-platform-configuration</artifactId>
+		        <version>${tycho.version}</version>
+		        <configuration>
+		            <dependency-resolution>
+		                <optionalDependencies>ignore</optionalDependencies>
+		            </dependency-resolution>
+		        </configuration>
+	      	</plugin>
+			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-dependency-plugin</artifactId>
 				<version>3.0.2</version>
@@ -88,6 +98,7 @@
 							<excludeTypes>pom</excludeTypes>
 							<excludeTransitive>true</excludeTransitive>
 							<outputDirectory>${project.basedir}/lib</outputDirectory>
+							<includeGroupIds>log4j,org.slf4j,org.apache.logging.log4j</includeGroupIds>
 						</configuration>
 					</execution>
 				</executions>

@@ -135,6 +135,7 @@ import org.talend.core.runtime.repository.item.ItemProductKeys;
 import org.talend.core.runtime.services.IGenericWizardService;
 import org.talend.core.runtime.services.IMavenUIService;
 import org.talend.core.runtime.util.ItemDateParser;
+import org.talend.core.runtime.util.SharedStudioUtils;
 import org.talend.core.service.ICoreUIService;
 import org.talend.cwm.helper.SubItemHelper;
 import org.talend.cwm.helper.TableHelper;
@@ -1798,9 +1799,12 @@ public final class ProxyRepositoryFactory implements IProxyRepositoryFactory {
      * @throws PersistenceException
      */
     private void emptyTempFolder(Project project) throws PersistenceException {
-        String str = (System.getProperty("eclipse.home.location") + "temp").substring(5);
-        FilesUtils.deleteFolder(new File(str), false);
-
+    	try {
+            String str = SharedStudioUtils.getTempFolderPath().toPortableString();
+            FilesUtils.deleteFolder(new File(str), false);
+    	}catch (Exception ex) {
+    		ExceptionHandler.process(ex);
+    	}
         long start = System.currentTimeMillis();
         IProject fsProject = ResourceUtils.getProject(project);
         IFolder folder = ResourceUtils.getFolder(fsProject, RepositoryConstants.TEMP_DIRECTORY, false);
@@ -2195,6 +2199,14 @@ public final class ProxyRepositoryFactory implements IProxyRepositoryFactory {
                     TimeMeasurePerformance.step("logOnProject", "Sync components libraries"); //$NON-NLS-1$
                 }
 
+                try {
+                    // for new added mapping file, sync to project mapping folder
+                    MetadataTalendType.syncNewMappingFileToProject();
+                } catch (SystemException e) {
+                    // ignore
+                    ExceptionHandler.process(e);
+                }
+
                 currentMonitor = subMonitor.newChild(1, SubMonitor.SUPPRESS_NONE);
                 currentMonitor.beginTask("Execute before logon migrations tasks", 1); //$NON-NLS-1$
                 ProjectManager.getInstance().getMigrationRecords().clear();
@@ -2296,8 +2308,6 @@ public final class ProxyRepositoryFactory implements IProxyRepositoryFactory {
                         // set the project mappings url
                         System.setProperty("talend.mappings.url", url.toString()); // $NON-NLS-1$
                     }
-                    // for new added mapping file, sync to project mapping folder
-                    MetadataTalendType.syncNewMappingFileToProject();
                 } catch (SystemException e) {
                     // ignore
                     ExceptionHandler.process(e);

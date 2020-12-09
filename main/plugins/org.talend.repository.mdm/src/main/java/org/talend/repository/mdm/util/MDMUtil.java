@@ -32,6 +32,7 @@ import org.eclipse.xsd.impl.XSDSchemaImpl;
 import org.talend.core.model.metadata.builder.connection.Concept;
 import org.talend.core.model.metadata.builder.connection.MDMConnection;
 import org.talend.core.model.metadata.builder.connection.MetadataTable;
+import org.talend.core.runtime.util.SharedStudioUtils;
 import org.talend.metadata.managment.mdm.AbsMdmConnectionHelper;
 import org.talend.metadata.managment.mdm.S60MdmConnectionHelper;
 import org.talend.utils.xml.XmlUtils;
@@ -95,7 +96,7 @@ public class MDMUtil {
     }
 
     public static File getTempTemplateXSDFile() {
-        IPath tempPath = new Path(System.getProperty("user.dir")).append("temp"); //$NON-NLS-1$ //$NON-NLS-2$
+        IPath tempPath = SharedStudioUtils.getTempFolderPath();
         File tempFile = tempPath.toFile();
         if (!tempFile.exists()) {
             tempFile.mkdirs();

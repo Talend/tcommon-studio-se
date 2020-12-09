@@ -49,6 +49,7 @@ import org.talend.core.model.general.Project;
 import org.talend.core.model.metadata.MappingTypeRetriever;
 import org.talend.core.model.metadata.MetadataTalendType;
 import org.talend.core.model.metadata.types.JavaDataTypeHelper;
+import org.talend.core.runtime.util.SharedStudioUtils;
 import org.talend.datatools.xml.utils.ATreeNode;
 import org.talend.datatools.xml.utils.NodeCreationObserver;
 import org.talend.datatools.xml.utils.OdaException;
@@ -1075,7 +1076,7 @@ public class TreeUtil {
 
     private static String copyToTempFile(URL url, String fileName) {
         try {
-            IPath tempPath = new Path(System.getProperty("user.dir")).append("temp"); //$NON-NLS-1$ //$NON-NLS-2$
+            IPath tempPath = SharedStudioUtils.getTempFolderPath();
             File tempFile = tempPath.toFile();
             if (!tempFile.exists()) {
                 tempFile.mkdirs();
