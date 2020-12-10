@@ -12,7 +12,12 @@
 // ============================================================================
 package org.talend.commons.ui.swt.linking;
 
+import org.eclipse.swt.events.DisposeEvent;
+import org.eclipse.swt.events.DisposeListener;
+import org.eclipse.swt.events.PaintEvent;
+import org.eclipse.swt.events.PaintListener;
 import org.eclipse.swt.graphics.GC;
+import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.graphics.Point;
 import org.eclipse.swt.widgets.Composite;
 import org.talend.commons.ui.swt.drawing.background.IBgDrawableComposite;
@@ -28,6 +33,8 @@ public abstract class BgDrawableComposite implements IBgDrawableComposite {
     private Composite commonParent;
 
     private Point offsetPoint = new Point(0, 0);
+    
+    private Image backgroundImage;
 
     /**
      * DOC amaumont DrawableBackground constructor comment.
@@ -36,9 +43,36 @@ public abstract class BgDrawableComposite implements IBgDrawableComposite {
      */
     public BgDrawableComposite(Composite commonParent) {
         this.commonParent = commonParent;
+        this.commonParent.addPaintListener(new PaintListener() {
+
+            @Override
+            public void paintControl(PaintEvent arg0) {
+                if (backgroundImage != null) {
+                    arg0.gc.drawImage(backgroundImage, 0, 0);
+                }
+            }
+        });
+        this.commonParent.addDisposeListener(new DisposeListener() {
+
+            @Override
+            public void widgetDisposed(DisposeEvent arg0) {
+                if (backgroundImage != null && !backgroundImage.isDisposed()) {
+                    backgroundImage.dispose();
+                }
+            }
+        });
     }
 
-    /*
+    @Override
+    public void refreshBgDrawableCompsite(Image image) {
+        if (backgroundImage != null) {
+            backgroundImage.dispose();
+        }
+        backgroundImage = image;
+        this.commonParent.redraw();
+    }
+
+	/*
      * (non-Javadoc)
      *
      * @see org.talend.commons.ui.swt.drawing.background.IDrawableComposite#drawBackground(org.eclipse.swt.graphics.GC)

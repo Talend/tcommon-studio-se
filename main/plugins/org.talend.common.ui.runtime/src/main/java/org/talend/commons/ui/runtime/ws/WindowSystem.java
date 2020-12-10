@@ -16,6 +16,8 @@ import org.eclipse.core.internal.runtime.InternalPlatform;
 import org.eclipse.core.runtime.Platform;
 import org.osgi.framework.BundleContext;
 
+
+
 /**
  *
  * DOC root class global comment. Detailled comment <br/>
@@ -51,6 +53,10 @@ public class WindowSystem {
 
     public static boolean isOSX() {
         return Platform.WS_CARBON.equals(ws) || Platform.WS_COCOA.equals(ws);
+    }
+    
+    public static boolean isBigSurOrLater () {
+    	return isOSX() && ("10.16".compareTo(System.getProperty("os.version","0")) <= 0);
     }
 
 }
