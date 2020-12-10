@@ -102,10 +102,18 @@ public class HiveConnectionCreator extends AbstractHadoopDBConnectionCreator {
             }
             String metastoreurl = params.get(EHadoopConfProperties.HIVE_METASTORE_URIS.getName());
             if (StringUtils.isNotEmpty(metastoreurl)) {
+                paramsMap.put(ConnParameterKeys.CONN_PARA_KEY_HIVE_METASTORE_URIS, metastoreurl);
                 paramsMap.put(ConnParameterKeys.HIVE_AUTHENTICATION_METASTOREURL, metastoreurl);
                 try {
                     URI uri = new URI(metastoreurl);
                     String serverName = uri.getHost();
+                    int port = uri.getPort();
+                    if (StringUtils.isNotEmpty(serverName)) {
+                        paramsMap.put(ConnParameterKeys.CONN_PARA_KEY_HIVE_THRIFTHOST, serverName);
+                    }
+                    if (port != -1) {
+                        paramsMap.put(ConnParameterKeys.CONN_PARA_KEY_HIVE_THRIFTPORT, String.valueOf(port));
+                    }
                     if (StringUtils.isNotEmpty(serverName)) {
                         paramsMap.put(ConnParameterKeys.CONN_PARA_KEY_DB_SERVER, serverName);
                     }

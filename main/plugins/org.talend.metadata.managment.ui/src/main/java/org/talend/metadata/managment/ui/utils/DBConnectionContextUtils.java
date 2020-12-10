@@ -105,6 +105,7 @@ public final class DBConnectionContextUtils {
         HivePassword,
         HiveKeyTabPrincipal,
         HiveKeyTab,
+        HiveMetastoreHost,
         HiveMetastorePort,
         hiveAdditionalJDBCParameters,
         hiveEnableHa,
@@ -281,6 +282,10 @@ public final class DBConnectionContextUtils {
                 case HbaseKeyTab:
                 case MaprdbKeyTab:
                     value = conn.getParameters().get(ConnParameterKeys.CONN_PARA_KEY_KEYTAB);
+                    ConnectionContextHelper.createParameters(varList, paramName, value);
+                    break;
+                case HiveMetastoreHost:
+                    value = conn.getParameters().get(ConnParameterKeys.CONN_PARA_KEY_HIVE_THRIFTHOST);
                     ConnectionContextHelper.createParameters(varList, paramName, value);
                     break;
                 case HiveMetastorePort:
@@ -671,6 +676,10 @@ public final class DBConnectionContextUtils {
         case HbaseKeyTab:
         case MaprdbKeyTab:
             conn.getParameters().put(ConnParameterKeys.CONN_PARA_KEY_KEYTAB,
+                    ContextParameterUtils.getNewScriptCode(originalVariableName, LANGUAGE));
+            break;
+        case HiveMetastoreHost:
+            conn.getParameters().put(ConnParameterKeys.CONN_PARA_KEY_HIVE_THRIFTHOST,
                     ContextParameterUtils.getNewScriptCode(originalVariableName, LANGUAGE));
             break;
         case HiveMetastorePort:
@@ -1096,6 +1105,10 @@ public final class DBConnectionContextUtils {
             cloneConn.getParameters().put(ConnParameterKeys.CONN_PARA_KEY_HIVE_JDBC_PROPERTIES,
                     HadoopRepositoryUtil.getOriginalValueOfProperties(jdbcPropertiesString, contextType));
 
+            String hiveMetastoreHost = cloneConn.getParameters().get(ConnParameterKeys.CONN_PARA_KEY_HIVE_THRIFTHOST);
+            cloneConn.getParameters().put(ConnParameterKeys.CONN_PARA_KEY_HIVE_THRIFTHOST,
+                    getOriginalValue(hadoopClusterContextType, contextType, hiveMetastoreHost));
+
             String hiveMetastorePort = cloneConn.getParameters().get(ConnParameterKeys.CONN_PARA_KEY_HIVE_THRIFTPORT);
             cloneConn.getParameters().put(ConnParameterKeys.CONN_PARA_KEY_HIVE_THRIFTPORT,
                     getOriginalValue(hadoopClusterContextType, contextType, hiveMetastorePort));
@@ -1513,6 +1526,10 @@ public final class DBConnectionContextUtils {
             String hiveMetastoreUris = conn.getParameters().get(ConnParameterKeys.CONN_PARA_KEY_HIVE_METASTORE_URIS);
             conn.getParameters().put(ConnParameterKeys.CONN_PARA_KEY_HIVE_METASTORE_URIS,
                     ContextParameterUtils.getOriginalValue(contextType, hiveMetastoreUris));
+
+            String metastorehost = conn.getParameters().get(ConnParameterKeys.CONN_PARA_KEY_HIVE_THRIFTHOST);
+            conn.getParameters().put(ConnParameterKeys.CONN_PARA_KEY_HIVE_THRIFTHOST,
+                    ContextParameterUtils.getOriginalValue(contextType, metastorehost));
 
             String metastoreport = conn.getParameters().get(ConnParameterKeys.CONN_PARA_KEY_HIVE_THRIFTPORT);
             conn.getParameters().put(ConnParameterKeys.CONN_PARA_KEY_HIVE_THRIFTPORT,

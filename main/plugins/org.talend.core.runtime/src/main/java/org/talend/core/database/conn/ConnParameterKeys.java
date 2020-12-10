@@ -133,6 +133,8 @@ public class ConnParameterKeys {
 
     public static final String CONN_PARA_KEY_HIVE_ADDITIONAL_JDBC_SETTINGS = "CONN_PARA_KEY_HIVE_ADDITIONAL_JDBC_SETTINGS"; //$NON-NLS-1$
 
+    public static final String CONN_PARA_KEY_HIVE_THRIFTHOST = "CONN_PARA_KEY_HIVE_THRIFTHOST"; //$NON-NLS-1$
+
     public static final String CONN_PARA_KEY_HIVE_THRIFTPORT = "CONN_PARA_KEY_HIVE_THRIFTPORT"; //$NON-NLS-1$
 
     public static final String CONN_PARA_KEY_HIVE_ENABLE_HA = "CONN_PARA_KEY_HIVE_ENABLE_HA"; //$NON-NLS-1$

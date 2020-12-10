@@ -1483,7 +1483,10 @@ public class RepositoryToComponentProperty {
             return getAppropriateValue(connection,
                     connection.getParameters().get(ConnParameterKeys.CONN_PARA_KEY_HIVE_METASTORE_URIS));
         }
-
+        if (value.equals("THRIFTHOST") && EDatabaseTypeName.HIVE.getDisplayName().equals(databaseType)) {
+            return getAppropriateValue(connection,
+                    connection.getParameters().get(ConnParameterKeys.CONN_PARA_KEY_HIVE_THRIFTHOST));
+        }
         if (value.equals("THRIFTPORT") && EDatabaseTypeName.HIVE.getDisplayName().equals(databaseType)) {
             return getAppropriateValue(connection,
                     connection.getParameters().get(ConnParameterKeys.CONN_PARA_KEY_HIVE_THRIFTPORT));
