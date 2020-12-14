@@ -87,7 +87,7 @@ public class SharedStudioUtils {
     	}
     	return false;
     }
-
+    
     public static boolean isNeedCleanOnSharedMode() {
         if (SharedStudioUtils.isSharedStudioMode()) {
             boolean isNeedClean = installedPatch();
