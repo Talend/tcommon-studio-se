@@ -146,7 +146,7 @@ public abstract class AbstractItemMigrationTask extends AbstractMigrationTask im
      * this returns all type handled by this migration task even the extended type that could benefit from this
      * migrations
      * */
-    List<ERepositoryObjectType> getAllTypes() {
+    protected List<ERepositoryObjectType> getAllTypes() {
         List<ERepositoryObjectType> declaredTypes = getTypes();
         ArrayList<ERepositoryObjectType> allTypes = new ArrayList<ERepositoryObjectType>(declaredTypes.size());
         allTypes.addAll(declaredTypes);
@@ -162,7 +162,7 @@ public abstract class AbstractItemMigrationTask extends AbstractMigrationTask im
      *
      * @return
      */
-    Set<? extends ERepositoryObjectType> getExtendedTypes() {
+    protected Set<? extends ERepositoryObjectType> getExtendedTypes() {
         Set<ERepositoryObjectType> objectTypeExtensions = migrationTaskExtensionEPReader.getObjectTypeExtensions(getTypes());
         return objectTypeExtensions;
     }
