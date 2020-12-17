@@ -33,7 +33,10 @@ public class ShareLibrariesUtil {
     public static boolean isSameFileWithRemote(File localFile, List<MavenArtifact> artifactList,
             ArtifactRepositoryBean customNexusServer, IRepositoryArtifactHandler customerRepHandler, boolean isSnapshotVersion)
             throws Exception {
-        String localFileShaCode = DigestUtils.shaHex(new FileInputStream(localFile));
+        String localFileShaCode = "";
+        try (FileInputStream fi = new FileInputStream(localFile)) {
+            localFileShaCode = DigestUtils.shaHex(fi);
+        }
         String remoteSha1 = null;
         if (ArtifactRepositoryBean.NexusType.ARTIFACTORY.name().equalsIgnoreCase(customNexusServer.getType())) {
             MavenArtifact lastUpdatedArtifact = getLateUpdatedMavenArtifact(artifactList);

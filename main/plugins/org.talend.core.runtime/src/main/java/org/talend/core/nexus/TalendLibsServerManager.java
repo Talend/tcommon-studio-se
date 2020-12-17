@@ -231,7 +231,7 @@ public class TalendLibsServerManager {
         return canConnect;
     }
 
-    public ArtifactRepositoryBean getTalentArtifactServer() {
+    public ArtifactRepositoryBean getProxyArtifactServer() {
         ArtifactRepositoryBean serverBean = new ArtifactRepositoryBean();
         // get from ini file first
         String url = System.getProperty(NEXUS_PROXY_URL);
@@ -255,9 +255,17 @@ public class TalendLibsServerManager {
                 serverBean.setType(prefManager.getValue(TalendLibsServerManager.NEXUS_PROXY_TYPE));
             }
         }
-        hasProxySetting = StringUtils.isNotEmpty(serverBean.getServer());
+        if (StringUtils.isNotEmpty(serverBean.getServer())) {
+            return serverBean;
+        }
+        return null;
+    }
+
+    public ArtifactRepositoryBean getTalentArtifactServer() {
+        ArtifactRepositoryBean serverBean = getProxyArtifactServer();
         // use default
-        if (!hasProxySetting) {
+        if (serverBean == null) {
+            serverBean = new ArtifactRepositoryBean();
             serverBean.setServer(TALEND_LIB_SERVER);
             serverBean.setUserName(TALEND_LIB_USER);
             serverBean.setPassword(TALEND_LIB_PASSWORD);
