@@ -44,7 +44,6 @@
 							<includeScope>runtime</includeScope>
 							<outputDirectory>${basedir}/../tmp/repository</outputDirectory>
 							<useRepositoryLayout>true</useRepositoryLayout>
-							<copyPom>true</copyPom>
 						</configuration>
 					</execution>
 				</executions>
