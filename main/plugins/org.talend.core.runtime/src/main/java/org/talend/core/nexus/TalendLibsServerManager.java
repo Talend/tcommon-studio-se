@@ -231,6 +231,11 @@ public class TalendLibsServerManager {
         return canConnect;
     }
 
+    public boolean isProxyArtifactRepoConfigured() {
+        ArtifactRepositoryBean serverBean = getProxyArtifactServer();
+        return serverBean == null ? false : true;
+    }
+
     public ArtifactRepositoryBean getProxyArtifactServer() {
         ArtifactRepositoryBean serverBean = new ArtifactRepositoryBean();
         // get from ini file first
