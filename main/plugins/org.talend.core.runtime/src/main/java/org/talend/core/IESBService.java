@@ -94,4 +94,6 @@ public interface IESBService extends IService {
      * @return
      */
     public IProcessor createOSGIJavaProcessor(IProcess process, Property property, boolean filenameFromLabel);
+    
+    public boolean isSOAPServiceProvider(Item item);
 }

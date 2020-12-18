@@ -72,7 +72,7 @@ public class ContextUtils {
             "static", "void", "class", "finally", "long", "strictfp", "volatile", "const", "float", "native", "super", "while")); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$ //$NON-NLS-5$ //$NON-NLS-6$ //$NON-NLS-7$ //$NON-NLS-8$ //$NON-NLS-9$ //$NON-NLS-10$ //$NON-NLS-11$ //$NON-NLS-12$
 
     private static final Set<String> SECURE_SENSITIVE_CONTEXT_NAMES_EXP = new HashSet<String>(Arrays.asList("resource_flow_temp_folder", "resource_webhook_payload", "resource_file_[\\w]+", 
-           "resource_directory_[\\w]+", "connection_[a-zA-Z0-9]+_[\\w]"));
+           "resource_directory_[\\w]+", "connection_[a-zA-Z0-9]+_[\\w]+"));
     
 
     /**

@@ -13,6 +13,7 @@
 package org.talend.utils.files;
 
 import java.io.File;
+import java.io.IOException;
 import java.util.Arrays;
 import java.util.Comparator;
 
@@ -296,7 +297,7 @@ public class FileDirCleaner {
                             if (cleanDirectories && dirMatches) {
                                 if (checkFilter(fileDirJob)) {
                                     if (doAction) {
-                                        org.apache.commons.io.FileUtils.deleteDirectory(fileDirJob);
+                                        deleteDirectory(fileDirJob);
                                         if (log.isDebugEnabled()) {
                                             log.debug("Deleted directory: " + fileDirJob);
                                         }
@@ -379,5 +380,16 @@ public class FileDirCleaner {
         // log.info((isDirectory ? "Directory" : "File") + " accepted to be cleaned: " + fileDirJob.getPath());
         return true;
     }
+    
+    private void deleteDirectory(File fileDirJob) {
+        try {
+            org.apache.commons.io.FileUtils.cleanDirectory(fileDirJob);
+            org.apache.commons.io.FileUtils.deleteDirectory(fileDirJob);
+         } catch (IOException e) {
+            log.error("Exception while deleting directory " + fileDirJob.getAbsolutePath() + 
+                    ", " + e.getMessage());
+        }
+    }
+
 
 }

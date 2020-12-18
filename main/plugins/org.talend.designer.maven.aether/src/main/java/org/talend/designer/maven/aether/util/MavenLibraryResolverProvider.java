@@ -126,16 +126,16 @@ public class MavenLibraryResolverProvider {
 
     }
 
-    public ArtifactResult resolveArtifact(MavenArtifact aritfact, boolean is4Parent) throws Exception {
+    public ArtifactResult resolveArtifact(MavenArtifact artifact, boolean is4Parent) throws Exception {
         ArtifactRequest artifactRequest = new ArtifactRequest();
-        RemoteRepository remoteRepo = getRemoteRepositroy(aritfact);
+        RemoteRepository remoteRepo = getRemoteRepositroy(artifact);
         artifactRequest.addRepository(remoteRepo);
         if (is4Parent) {
             artifactRequest.addRepository(dynamicRemoteRepository);
         }
-        Artifact artifact = new DefaultArtifact(aritfact.getGroupId(), aritfact.getArtifactId(), aritfact.getClassifier(),
-                aritfact.getType(), aritfact.getVersion());
-        artifactRequest.setArtifact(artifact);
+        // Classifier must not be specified if type is pom
+        artifactRequest.setArtifact(new DefaultArtifact(artifact.getGroupId(), artifact.getArtifactId(), "pom".equals(artifact.getType()) ? "" : artifact.getClassifier(),
+                artifact.getType(), artifact.getVersion()));
         ArtifactResult result = null;
         if (is4Parent) {
             result = dynamicRepoSystem.resolveArtifact(dynamicRepoSystemSession, artifactRequest);
