@@ -9,4 +9,48 @@
   </parent>
   <artifactId>org.talend.libraries.apache.axis2</artifactId>
   <packaging>eclipse-plugin</packaging>
+  
+  <build>
+		<plugins>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-dependency-plugin</artifactId>
+				<version>3.0.2</version>
+				<executions>
+					<execution>
+						<id>copy</id>
+						<phase>generate-resources</phase>
+						<goals>
+							<goal>copy</goal>
+						</goals>
+						<configuration>
+							<outputDirectory>${project.basedir}/lib</outputDirectory>
+							<artifactItems>
+								<artifactItem>
+									<groupId>org.apache.axis2</groupId>
+								    <artifactId>axis2-kernel</artifactId>
+								    <version>1.7.9</version>
+								</artifactItem>
+								<artifactItem>
+									<groupId>org.apache.axis2</groupId>
+									<artifactId>axis2-adb</artifactId>
+									<version>1.7.9</version>
+								</artifactItem>
+								<artifactItem>
+									<groupId>org.apache.axis2</groupId>
+									<artifactId>axis2-transport-http</artifactId>
+									<version>1.7.9</version>
+								</artifactItem>
+								<artifactItem>
+									<groupId>org.apache.axis2</groupId>
+									<artifactId>axis2-transport-local</artifactId>
+									<version>1.7.9</version>
+								</artifactItem>
+							</artifactItems>
+						</configuration>
+					</execution>
+				</executions>
+			</plugin>
+		</plugins>
+	</build>
 </project>

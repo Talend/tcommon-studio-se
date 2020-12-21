@@ -63,7 +63,7 @@ public class PostgreQueryGeneratorTest {
         StringBuilder expectSql = new StringBuilder();
         expectSql
                 .append(TalendTextUtils.getQuoteChar())
-                .append("SELECT \n  \\\"talend\\\".\\\"myschema\\\".\\\"mytable\\\".\\\"newColumn\\\"\nFROM \\\"talend\\\".\\\"myschema\\\".\\\"mytable\\\"")
+                .append("SELECT \n  \\\"myschema\\\".\\\"mytable\\\".\\\"newColumn\\\"\nFROM \\\"myschema\\\".\\\"mytable\\\"")
                 .append(TalendTextUtils.getQuoteChar());
 
         assertNotNull(resultString);

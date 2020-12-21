@@ -52,6 +52,7 @@ import org.eclipse.swt.widgets.Display;
 import org.talend.commons.exception.ExceptionHandler;
 import org.talend.commons.exception.PersistenceException;
 import org.talend.core.GlobalServiceRegister;
+import org.talend.core.IESBService;
 import org.talend.core.ILibraryManagerService;
 import org.talend.core.context.Context;
 import org.talend.core.context.RepositoryContext;
@@ -168,6 +169,10 @@ public class AggregatorPomsHelper {
     }
 
     public void updateCodeProjects(IProgressMonitor monitor, boolean forceBuild) {
+        updateCodeProjects(monitor, forceBuild, false);
+    }
+
+    public void updateCodeProjects(IProgressMonitor monitor, boolean forceBuild, boolean ignoreM2Cache) {
         RepositoryWorkUnit workUnit = new RepositoryWorkUnit<Object>("update code project") { //$NON-NLS-1$
 
             @Override
@@ -175,8 +180,11 @@ public class AggregatorPomsHelper {
                 Project currentProject = ProjectManager.getInstance().getCurrentProject();
                 for (ERepositoryObjectType codeType : ERepositoryObjectType.getAllTypesOfCodes()) {
                     try {
-                        if (CodeM2CacheManager.needUpdateCodeProject(currentProject, codeType)) {
-                            ITalendProcessJavaProject codeProject = getCodesProject(codeType);
+                        ITalendProcessJavaProject codeProject = getCodesProject(codeType);
+                        if (ERepositoryObjectType.ROUTINES == codeType) {
+                            PomUtil.checkExistingLog4j2Dependencies4RoutinePom(projectTechName, codeProject.getProjectPom());
+                        }
+                        if (ignoreM2Cache || CodeM2CacheManager.needUpdateCodeProject(currentProject, codeType)) {
                             updateCodeProjectPom(monitor, codeType, codeProject.getProjectPom());
                             buildAndInstallCodesProject(monitor, codeType, true, forceBuild);
                             CodeM2CacheManager.updateCodeProjectCache(currentProject, codeType);
@@ -344,12 +352,8 @@ public class AggregatorPomsHelper {
     private static boolean checkIfCanAddToParentModules(Property property, boolean checkFilter) {
         // Check relation for ESB service job, should not be added into main pom
         if (property != null) {
-            List<Relation> relations = RelationshipItemBuilder.getInstance().getItemsRelatedTo(property.getId(),
-                    property.getVersion(), RelationshipItemBuilder.JOB_RELATION);
-            for (Relation relation : relations) {
-                if (RelationshipItemBuilder.SERVICES_RELATION.equals(relation.getType())) {
-                    return false;
-                }
+            if (isSOAPServiceProvider(property)) {
+                return false;
             }
 
             // for import won't add for exclude option
@@ -860,7 +864,7 @@ public class AggregatorPomsHelper {
         }
         // codes pom
         monitor.subTask("Synchronize code poms"); //$NON-NLS-1$
-        updateCodeProjects(monitor, true);
+        updateCodeProjects(monitor, true, true);
         monitor.worked(1);
         if (monitor.isCanceled()) {
             return;
@@ -896,7 +900,7 @@ public class AggregatorPomsHelper {
                     }
                     IFile pomFile = getItemPomFolder(item.getProperty()).getFile(TalendMavenConstants.POM_FILE_NAME);
                     // filter esb data service node
-                    if (!isDataServiceOperation(object.getProperty()) && pomFile.exists()) {
+                    if (!isSOAPServiceProvider(object.getProperty()) && pomFile.exists()) {
                         modules.add(getModulePath(pomFile));
                     }
                 }
@@ -937,13 +941,21 @@ public class AggregatorPomsHelper {
      * @param property
      * @return
      */
-    private boolean isDataServiceOperation(Property property) {
+    private static boolean isSOAPServiceProvider(Property property) {
         if (property != null) {
             List<Relation> relations = RelationshipItemBuilder.getInstance().getItemsRelatedTo(property.getId(),
                     property.getVersion(), RelationshipItemBuilder.JOB_RELATION);
             for (Relation relation : relations) {
                 if (RelationshipItemBuilder.SERVICES_RELATION.equals(relation.getType())) {
                     return true;
+                }
+            }
+            if (GlobalServiceRegister.getDefault().isServiceRegistered(IESBService.class)) {
+                IESBService service = GlobalServiceRegister.getDefault().getService(IESBService.class);
+                if (service != null) {
+                    if (service.isSOAPServiceProvider(property.getItem())) {
+                        return true;
+                    }
                 }
             }
         }

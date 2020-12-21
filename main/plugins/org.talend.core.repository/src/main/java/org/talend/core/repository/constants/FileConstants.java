@@ -108,5 +108,9 @@ public interface FileConstants {
     String BLUEPRINT_FOLDER_NAME = "OSGI-INF/blueprint"; //$NON-NLS-1$
 
     String SPRING_FOLDER_NAME = "META-INF/spring"; //$NON-NLS-1$
+    
+    String TALEND_FOLDER_NAME = "TALEND-INF"; //$NON-NLS-1$
+    
+    String MAVEN_FOLDER_NAME = "MAVEN-INF";
 
 }

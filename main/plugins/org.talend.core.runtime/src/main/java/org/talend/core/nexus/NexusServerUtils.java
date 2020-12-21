@@ -19,7 +19,9 @@ import java.io.InputStream;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 import org.apache.commons.lang.StringUtils;
 import org.apache.http.HttpEntity;
@@ -52,6 +54,14 @@ public class NexusServerUtils {
 
     // the max search result is 200 by defult from nexus
     private static final int MAX_SEARCH_COUNT = 200;
+
+    public static final Set<String> IGNORED_TYPES = new HashSet<String>();
+
+    static {
+        IGNORED_TYPES.add("pom");
+        IGNORED_TYPES.add("sha1");
+        IGNORED_TYPES.add("md5");
+    }
 
     /**
      *
@@ -236,36 +246,36 @@ public class NexusServerUtils {
     private static int readDocument(Document document, List<MavenArtifact> artifacts) throws Exception {
         List<Node> list = document.selectNodes("/searchNGResponse/data/artifact");//$NON-NLS-1$
         for (Node arNode : list) {
-            MavenArtifact artifact = new MavenArtifact();
-            artifacts.add(artifact);
-            artifact.setGroupId(arNode.selectSingleNode("groupId").getText());//$NON-NLS-1$
-            artifact.setArtifactId(arNode.selectSingleNode("artifactId").getText());//$NON-NLS-1$
-            artifact.setVersion(arNode.selectSingleNode("version").getText());//$NON-NLS-1$
-            Node descNode = arNode.selectSingleNode("description");//$NON-NLS-1$
-            if (descNode != null) {
-                artifact.setDescription(descNode.getText());
-            }
-            Node urlNode = arNode.selectSingleNode("url");//$NON-NLS-1$
-            if (urlNode != null) {
-                artifact.setUrl(urlNode.getText());
-            }
-            Node licenseNode = arNode.selectSingleNode("license");//$NON-NLS-1$
-            if (licenseNode != null) {
-                artifact.setLicense(licenseNode.getText());
-            }
-
-            Node licenseUrlNode = arNode.selectSingleNode("licenseUrl");//$NON-NLS-1$
-            if (licenseUrlNode != null) {
-                artifact.setLicenseUrl(licenseUrlNode.getText());
-            }
 
             List<Node> artLinks = arNode.selectNodes("artifactHits/artifactHit/artifactLinks/artifactLink");//$NON-NLS-1$
             for (Node link : artLinks) {
+                MavenArtifact artifact = new MavenArtifact();
+
+                artifact.setGroupId(arNode.selectSingleNode("groupId").getText());//$NON-NLS-1$
+                artifact.setArtifactId(arNode.selectSingleNode("artifactId").getText());//$NON-NLS-1$
+                artifact.setVersion(arNode.selectSingleNode("version").getText());//$NON-NLS-1$
+                Node descNode = arNode.selectSingleNode("description");//$NON-NLS-1$
+                if (descNode != null) {
+                    artifact.setDescription(descNode.getText());
+                }
+                Node urlNode = arNode.selectSingleNode("url");//$NON-NLS-1$
+                if (urlNode != null) {
+                    artifact.setUrl(urlNode.getText());
+                }
+                Node licenseNode = arNode.selectSingleNode("license");//$NON-NLS-1$
+                if (licenseNode != null) {
+                    artifact.setLicense(licenseNode.getText());
+                }
+
+                Node licenseUrlNode = arNode.selectSingleNode("licenseUrl");//$NON-NLS-1$
+                if (licenseUrlNode != null) {
+                    artifact.setLicenseUrl(licenseUrlNode.getText());
+                }
                 Node extensionElement = link.selectSingleNode("extension");//$NON-NLS-1$
                 String extension = null;
                 String classifier = null;
                 if (extensionElement != null) {
-                    if ("pom".equals(extensionElement.getText())) {//$NON-NLS-1$
+                    if (IGNORED_TYPES.contains(extensionElement.getText())) {// $NON-NLS-1$
                         continue;
                     }
                     extension = extensionElement.getText();
@@ -276,6 +286,7 @@ public class NexusServerUtils {
                 }
                 artifact.setType(extension);
                 artifact.setClassifier(classifier);
+                artifacts.add(artifact);
             }
         }
         return list.size();

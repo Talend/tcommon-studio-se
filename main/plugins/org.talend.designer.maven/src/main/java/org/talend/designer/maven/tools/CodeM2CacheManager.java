@@ -18,6 +18,7 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.OutputStream;
 import java.text.ParseException;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 import java.util.Properties;
@@ -39,6 +40,14 @@ public class CodeM2CacheManager {
 
     private static final String KEY_SEPERATOR = "|"; //$NON-NLS-1$
 
+    private static final String EMPTY_DATE;
+
+    static {
+        Calendar c = Calendar.getInstance();
+        c.setTimeInMillis(0);
+        EMPTY_DATE = ResourceHelper.dateFormat().format(c.getTime());
+    }
+
     public static boolean needUpdateCodeProject(Project project, ERepositoryObjectType codeType) {
         try {
             String projectTechName = project.getTechnicalLabel();
@@ -56,11 +65,11 @@ public class CodeM2CacheManager {
             // check M
             for (IRepositoryViewObject codeItem : allCodes) {
                 Property property = codeItem.getProperty();
-                String key = getCacheKey(projectTechName, property);
-                String cachedTimestamp = cache.getProperty(key);
-                if (cachedTimestamp != null) {
-                    Date currentDate = ResourceHelper.dateFormat().parse(getCacheDate(projectTechName, property));
-                    Date cachedDate = ResourceHelper.dateFormat().parse(cachedTimestamp);
+                String key = getKey(projectTechName, property);
+                String cacheValue = cache.getProperty(key);
+                if (cacheValue != null) {
+                    Date currentDate = ResourceHelper.dateFormat().parse(getModifiedDate(projectTechName, property));
+                    Date cachedDate = ResourceHelper.dateFormat().parse(cacheValue);
                     if (currentDate.compareTo(cachedDate) != 0) {
                         return true;
                     }
@@ -82,8 +91,8 @@ public class CodeM2CacheManager {
             Properties cache = new Properties();
             for (IRepositoryViewObject codeItem : allCodes) {
                 Property property = codeItem.getProperty();
-                String key = getCacheKey(projectTechName, property);
-                String value = getCacheDate(projectTechName, property);
+                String key = getKey(projectTechName, property);
+                String value = getModifiedDate(projectTechName, property);
                 cache.put(key, value);
             }
             cache.store(out, StringUtils.EMPTY);
@@ -92,18 +101,19 @@ public class CodeM2CacheManager {
         }
     }
 
-    private static File getCacheFile(String projectTechName, ERepositoryObjectType codeType) {
+    public static File getCacheFile(String projectTechName, ERepositoryObjectType codeType) {
         String cacheFileName = PomIdsHelper.getProjectGroupId(projectTechName) + "." + codeType.name().toLowerCase() + "-" //$NON-NLS-1$ //$NON-NLS-2$
                 + PomIdsHelper.getCodesVersion(projectTechName) + ".cache"; // $NON-NLS-1$
         return new File(MavenPlugin.getMaven().getLocalRepositoryPath(), cacheFileName);
     }
 
-    private static String getCacheKey(String projectTechName, Property property) {
+    private static String getKey(String projectTechName, Property property) {
         return projectTechName + KEY_SEPERATOR + property.getId() + KEY_SEPERATOR + property.getVersion(); // $NON-NLS-1$
     }
 
-    private static String getCacheDate(String projectTechName, Property property) {
-        return (String) property.getAdditionalProperties().get(ItemProductKeys.DATE.getModifiedKey());
+    private static String getModifiedDate(String projectTechName, Property property) {
+        String modifiedDate = (String) property.getAdditionalProperties().get(ItemProductKeys.DATE.getModifiedKey());
+        return StringUtils.isNotBlank(modifiedDate) ? modifiedDate : EMPTY_DATE;
     }
 
 }

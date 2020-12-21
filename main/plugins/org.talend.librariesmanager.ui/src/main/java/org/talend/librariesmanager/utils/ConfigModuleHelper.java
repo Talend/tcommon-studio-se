@@ -222,6 +222,7 @@ public class ConfigModuleHelper {
             if (StringUtils.equals(art.getGroupId(), artifact.getGroupId())
                     && StringUtils.equals(art.getArtifactId(), artifact.getArtifactId())
                     && StringUtils.equals(art.getClassifier(), artifact.getClassifier())
+                    && StringUtils.equals(art.getVersion(), artifact.getVersion())
                     && StringUtils.equals(art.getType(), artifact.getType())
                     && StringUtils.equals(art.getSha1(), artifact.getSha1())) {
                 return true;
@@ -251,7 +252,7 @@ public class ConfigModuleHelper {
                     }
                 }
             }
-            return ret;
+            return VersionUtil.filterSnapshotArtifacts(ret);
         }
         return new ArrayList<MavenArtifact>();
     }
@@ -326,6 +327,22 @@ public class ConfigModuleHelper {
             }
         }
         return false;
+    }
+
+    public static boolean notShowConnectionWarning() {
+        try {
+            ArtifactRepositoryBean customNexusServer = TalendLibsServerManager.getInstance().getCustomNexusServer();
+            IRepositoryArtifactHandler customerRepHandler = RepositoryArtifactHandlerManager
+                    .getRepositoryHandler(customNexusServer);
+            if (customerRepHandler != null) {
+                return customerRepHandler.checkConnection();
+            }
+        } catch (Exception e) {
+
+        }
+
+        // ignore local
+        return true;
     }
 
 }

@@ -4,7 +4,6 @@ Bundle-Name: Apache Plug-in
 Bundle-SymbolicName: org.talend.libraries.apache
 Bundle-Version: 7.4.1.qualifier
 Bundle-ClassPath: .,
- lib/ant.jar,
  lib/apache-mime4j-0.6.jar,
  lib/castor-1.0.3.jar,
  lib/jakarta-oro-2.0.8.jar,
@@ -41,11 +40,6 @@ Export-Package:
  org.apache.oro.text.perl,
  org.apache.oro.text.regex,
  org.apache.oro.util,
- org.apache.tools.ant,
- org.apache.tools.bzip2,
- org.apache.tools.mail,
- org.apache.tools.tar,
- org.apache.tools.zip,
  org.apache.xmlbeans,
  org.apache.xmlbeans.impl.common,
  org.apache.xmlbeans.impl.config,

@@ -112,34 +112,6 @@ public abstract class I18nPreferencePage extends FieldEditorPreferencePage imple
             // could be translated, but it's only in case of error when change UTF8 characters.
             russian = "Russian"; //$NON-NLS-1$
         }
-
-        String greek = "\u0395\u03bb\u03bb\u03b7\u03bd\u03b9\u03ba\u03ac"; //$NON-NLS-1$
-        try {
-            utf8Bytes = greek.getBytes("UTF8"); //$NON-NLS-1$
-            greek = new String(utf8Bytes, "UTF8"); //$NON-NLS-1$
-        } catch (UnsupportedEncodingException e1) {
-            // could be translated, but it's only in case of error when change UTF8 characters.
-            greek = "Greek"; //$NON-NLS-1$
-        }
-
-        String arabic = "\u0627\u0644\u0639\u0631\u0628\u064a\u0647"; //$NON-NLS-1$
-        try {
-            utf8Bytes = arabic.getBytes("UTF8"); //$NON-NLS-1$
-            arabic = new String(utf8Bytes, "UTF8"); //$NON-NLS-1$
-        } catch (UnsupportedEncodingException e1) {
-            // could be translated, but it's only in case of error when change UTF8 characters.
-            arabic = "Arabic"; //$NON-NLS-1$
-        }
-
-        String serbian = "\u0421\u0440\u043f\u0441\u043a\u0438"; //$NON-NLS-1$
-        try {
-            utf8Bytes = serbian.getBytes("UTF8"); //$NON-NLS-1$
-            serbian = new String(utf8Bytes, "UTF8"); //$NON-NLS-1$
-        } catch (UnsupportedEncodingException e1) {
-            // could be translated, but it's only in case of error when change UTF8 characters.
-            serbian = "Serbian"; //$NON-NLS-1$
-        }
-
         String slovak = "Sloven\u010dina";//$NON-NLS-1$
         try {
             utf8Bytes = slovak.getBytes("UTF8");//$NON-NLS-1$
@@ -147,19 +119,14 @@ public abstract class I18nPreferencePage extends FieldEditorPreferencePage imple
         } catch (UnsupportedEncodingException e2) {
             slovak = "Slovak";//$NON-NLS-1$
         }
-
         String[][] entryNamesAndValues = { { Locale.ENGLISH.getDisplayLanguage(Locale.ENGLISH), Locale.ENGLISH.getLanguage() },
                 { Locale.FRENCH.getDisplayLanguage(Locale.FRENCH) + " (French)", Locale.FRENCH.getLanguage() }, //$NON-NLS-1$
                 { Locale.CHINESE.getDisplayLanguage(Locale.CHINESE) + " (Chinese)", "zh_CN" }, //$NON-NLS-1$ //$NON-NLS-2$
                 { Locale.GERMAN.getDisplayLanguage(Locale.GERMAN) + " (German)", Locale.GERMAN.getLanguage() }, //$NON-NLS-1$
                 { Locale.JAPANESE.getDisplayLanguage(Locale.JAPANESE) + " (Japanese)", Locale.JAPANESE.getLanguage() }, //$NON-NLS-1$
                 { Locale.ITALIAN.getDisplayLanguage(Locale.ITALIAN) + " (Italian)", Locale.ITALIAN.getLanguage() }, //$NON-NLS-1$
-                { "Brasil (Brazilian)", "pt_BR" }, //$NON-NLS-1$ //$NON-NLS-2$
                 { spanish + " (Spanish)", "es" }, { russian + " (Russion)", "ru" }, //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$
-                { Locale.KOREA.getDisplayLanguage(Locale.KOREA) + " (Korean)", "kr" }, { "Turkish (Turkish)", "tr" }, //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$
-                { greek + " (Greek)", "el" }, { "Hrvatski (Croatian)", "hr" }, { arabic + " (Arabic)", "ar" }, //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$//$NON-NLS-5$ //$NON-NLS-6$
-                { serbian + " (Serbian)", "sr" }, { "Polski (Polish)", "pl" }, { "Romanian (Romanian)", "ro" }, //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$//$NON-NLS-5$ //$NON-NLS-6$
-                { "Netherlands (Netherlands)", "nl" }, { slovak + " (Slovak)", "sk" }, //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$
+                { slovak + " (Slovak)", "sk" }, //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$
                 { "Current OS Language", Locale.getDefault().getLanguage() } };//$NON-NLS-1$
         languageSelectionEditor = new OneLineComboFieldEditor(ITalendCorePrefConstants.LANGUAGE_SELECTOR,
                 Messages.getString("I18nPreferencePage.needRestart"), entryNamesAndValues, getFieldEditorParent()); //$NON-NLS-1$

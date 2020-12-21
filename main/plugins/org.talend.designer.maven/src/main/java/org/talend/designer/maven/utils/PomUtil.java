@@ -64,7 +64,6 @@ import org.eclipse.core.runtime.IPath;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.NullProgressMonitor;
 import org.eclipse.core.runtime.jobs.ISchedulingRule;
-import org.eclipse.core.runtime.jobs.Job;
 import org.eclipse.core.runtime.jobs.MultiRule;
 import org.eclipse.m2e.core.MavenPlugin;
 import org.eclipse.m2e.core.embedder.MavenModelManager;
@@ -73,9 +72,11 @@ import org.talend.commons.exception.PersistenceException;
 import org.talend.commons.runtime.utils.io.IOUtils;
 import org.talend.commons.utils.VersionUtils;
 import org.talend.commons.utils.generation.JavaUtils;
+import org.talend.commons.utils.io.FilesUtils;
 import org.talend.commons.utils.workbench.resources.ResourceUtils;
 import org.talend.core.GlobalServiceRegister;
 import org.talend.core.ILibraryManagerService;
+import org.talend.core.PluginChecker;
 import org.talend.core.model.general.Project;
 import org.talend.core.model.process.IProcess;
 import org.talend.core.model.process.JobInfo;
@@ -98,10 +99,12 @@ import org.talend.designer.maven.model.TalendJavaProjectConstants;
 import org.talend.designer.maven.model.TalendMavenConstants;
 import org.talend.designer.maven.template.MavenTemplateManager;
 import org.talend.designer.maven.tools.AggregatorPomsHelper;
+import org.talend.designer.maven.tools.CodeM2CacheManager;
 import org.talend.designer.maven.tools.ProcessorDependenciesManager;
 import org.talend.designer.runprocess.IProcessor;
 import org.talend.designer.runprocess.IRunProcessService;
 import org.talend.repository.ProjectManager;
+import org.talend.repository.model.IRepositoryService;
 import org.talend.utils.xml.XmlUtils;
 import org.w3c.dom.Attr;
 import org.w3c.dom.DOMImplementation;
@@ -583,7 +586,7 @@ public class PomUtil {
             IProject fsProject = ResourceUtils.getProject(project);
             IFolder tmpFolder = fsProject.getFolder("temp");
             if (!tmpFolder.exists()) {
-                executeFolderAction(monitor, fsProject, new IWorkspaceRunnable() {
+                FilesUtils.executeFolderAction(monitor, fsProject, new IWorkspaceRunnable() {
 
                     @Override
                     public void run(IProgressMonitor monitor) throws CoreException {
@@ -595,7 +598,7 @@ public class PomUtil {
             createTempFile.delete();
             String tmpFolderName = createTempFile.getName();
             IFolder folder = tmpFolder.getFolder(tmpFolderName);
-            executeFolderAction(monitor, tmpFolder, new IWorkspaceRunnable() {
+            FilesUtils.executeFolderAction(monitor, tmpFolder, new IWorkspaceRunnable() {
 
                 @Override
                 public void run(IProgressMonitor monitor) throws CoreException {
@@ -604,7 +607,7 @@ public class PomUtil {
             });
             IFile pomFile = folder.getFile(TalendMavenConstants.POM_FILE_NAME);
 
-            executeFolderAction(monitor, folder, new IWorkspaceRunnable() {
+            FilesUtils.executeFolderAction(monitor, folder, new IWorkspaceRunnable() {
 
                 @Override
                 public void run(IProgressMonitor monitor) throws CoreException {
@@ -620,35 +623,6 @@ public class PomUtil {
             ExceptionHandler.process(e);
         }
         return null;
-    }
-
-    private static void executeFolderAction(IProgressMonitor monitor, IResource parentFolder, IWorkspaceRunnable run)
-            throws CoreException {
-        if (Job.getJobManager().currentRule() == null) {
-            IWorkspace workspace = ResourcesPlugin.getWorkspace();
-            ISchedulingRule defaultRule = workspace.getRuleFactory().modifyRule(parentFolder);
-            ISchedulingRule noBlockRule = new ISchedulingRule() {
-
-                @Override
-                public boolean isConflicting(ISchedulingRule rule) {
-                    return this.contains(rule);
-                }
-
-                @Override
-                public boolean contains(ISchedulingRule rule) {
-                    if (this.equals(rule)) {
-                        return true;
-                    }
-                    if (defaultRule.contains(rule)) {
-                        return true;
-                    }
-                    return false;
-                }
-            };
-            workspace.run(run, noBlockRule, IWorkspace.AVOID_UPDATE, monitor);
-        } else {
-            run.run(monitor);
-        }
     }
 
     private static Model createModel(MavenArtifact artifact) {
@@ -1215,6 +1189,51 @@ public class PomUtil {
             }
         }
         return Collections.emptySet();
+    }
+
+    public static void checkExistingLog4j2Dependencies4RoutinePom(String projectTechName, IFile pomFile) {
+        if (!PluginChecker.isBigdataRoutineLoaded()) {
+            return;
+        }
+        try {
+            if (GlobalServiceRegister.getDefault().isServiceRegistered(IRepositoryService.class)) {
+                Model model = MODEL_MANAGER.readMavenModel(pomFile);
+                IRepositoryService service = GlobalServiceRegister.getDefault().getService(IRepositoryService.class);
+                boolean isLog4j2 = service.isProjectLevelLog4j2();
+                Map<String, MavenArtifact> GAVMap = service.getLog4j2Modules().stream()
+                        .map(m -> MavenUrlHelper.parseMvnUrl(m.getMavenUri()))
+                        .collect(Collectors.toMap(MavenArtifact::getArtifactId, MavenArtifact -> MavenArtifact));
+                long existingDependenciesSize = model.getDependencies().stream()
+                        .filter(d -> GAVMap.containsKey(d.getArtifactId())
+                                && GAVMap.get(d.getArtifactId()).getGroupId().equals(d.getGroupId())
+                                && GAVMap.get(d.getArtifactId()).getVersion().equals(d.getVersion()))
+                        .count();
+                boolean clean = false;
+                // CAUTION
+                // with this fix, project level log4j2 user can use log4j2 api in routine directly in BD project
+                // user should NEVER manually setup log4j2 in routine dependencies
+                // or else routine install cache could always be cleaned
+                if (isLog4j2 && existingDependenciesSize != GAVMap.size()) {
+                    // if project level log4j1 -> log4j2
+                    // if first time add log4j2 dependencies
+                    // if log4j2 upgrade version
+                    // then clean cache to add
+                    clean = true;
+                } else if (!isLog4j2 && existingDependenciesSize > 0) {
+                    // if project level log4j2 -> log4j1
+                    // then clean cache to remove
+                    clean = true;
+                }
+                if (clean) {
+                    File cacheFile = CodeM2CacheManager.getCacheFile(projectTechName, ERepositoryObjectType.ROUTINES);
+                    if (cacheFile.exists()) {
+                        cacheFile.delete();
+                    }
+                }
+            }
+        } catch (CoreException e) {
+            ExceptionHandler.process(e);
+        }
     }
 
 }

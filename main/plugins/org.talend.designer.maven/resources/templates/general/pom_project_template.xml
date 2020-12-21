@@ -82,6 +82,11 @@
 							<artifactId>plexus-utils</artifactId>
 							<version>3.0.24</version>
 						</dependency>
+						<dependency>
+			              	<groupId>commons-codec</groupId>
+							<artifactId>commons-codec</artifactId>
+							<version>1.15</version>
+			            </dependency>
 					</dependencies>
 				</plugin>
 				<plugin>
@@ -105,6 +110,11 @@
 							<groupId>org.codehaus.plexus</groupId>
 							<artifactId>plexus-utils</artifactId>
 							<version>3.0.24</version>
+						</dependency>
+						<dependency>
+							<groupId>commons-codec</groupId>
+							<artifactId>commons-codec</artifactId>
+							<version>1.15</version>
 						</dependency>
 					</dependencies>
 				</plugin>

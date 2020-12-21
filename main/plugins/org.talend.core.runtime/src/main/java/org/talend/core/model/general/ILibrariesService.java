@@ -20,6 +20,7 @@ import java.util.Set;
 
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.talend.commons.exception.BusinessException;
+import org.talend.core.GlobalServiceRegister;
 import org.talend.core.IService;
 import org.talend.core.model.general.ModuleNeeded.ELibraryInstallStatus;
 import org.talend.core.model.process.IElement;
@@ -131,6 +132,16 @@ public interface ILibrariesService extends IService {
     public interface IChangedLibrariesListener {
 
         public void afterChangingLibraries();
+    }
+
+    public static ILibrariesService get() {
+        GlobalServiceRegister gsr = GlobalServiceRegister.getDefault();
+        if (gsr != null) {
+            if (gsr.isServiceRegistered(ILibrariesService.class)) {
+                return gsr.getService(ILibrariesService.class);
+            }
+        }
+        return null;
     }
 
 }

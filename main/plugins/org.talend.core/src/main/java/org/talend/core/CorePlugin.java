@@ -12,6 +12,7 @@
 // ============================================================================
 package org.talend.core;
 
+import org.apache.logging.log4j.message.ThreadDumpMessage;
 import org.eclipse.core.runtime.Plugin;
 import org.eclipse.core.runtime.preferences.InstanceScope;
 import org.eclipse.jface.preference.IPreferenceStore;
@@ -206,6 +207,10 @@ public class CorePlugin extends Plugin {
 
     public ICreateXtextProcessService getCreateXtextProcessService() {
         return (ICreateXtextProcessService) GlobalServiceRegister.getDefault().getService(ICreateXtextProcessService.class);
+    }
+
+    public static String threadDump(String message) {
+        return new ThreadDumpMessage(message).toString();
     }
 
 }

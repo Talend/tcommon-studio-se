@@ -575,7 +575,7 @@ public class ContextUtils {
                 return false;
             }
             // need check the raw value, because in sourceParam, it's raw
-            if (!sourceParam.getValue().equals(targetParamType.getRawValue())) {
+            if (!StringUtils.equals(sourceParam.getValue(), targetParamType.getRawValue())) {
                 return false;
             }
 
@@ -1112,3 +1112,4 @@ public class ContextUtils {
         return list;
     }
 }
+
