@@ -47,7 +47,6 @@ import org.talend.commons.exception.ExceptionHandler;
 import org.talend.commons.utils.network.NetworkUtil;
 import org.talend.core.GlobalServiceRegister;
 import org.talend.core.ILibraryManagerService;
-import org.talend.core.hadoop.BigDataBasicUtil;
 import org.talend.core.model.general.ModuleNeeded;
 import org.talend.core.model.general.ModuleToInstall;
 import org.talend.core.nexus.ArtifactRepositoryBean;
@@ -274,8 +273,7 @@ public class RemoteModulesHelper {
                     String repositoryUrl = parseMvnUrl.getRepositoryUrl();
                     if (!LibraryDataService.getInstance().isBuildLibrariesData()) {
                         if (StringUtils.isNotEmpty(repositoryUrl)
-                                && parseMvnUrl.getGroupId().startsWith(MavenConstants.APACHE_GROUP_ID)
-                                && BigDataBasicUtil.isDynamicDistributionMavenUrl(uriToCheck)) {
+                                && parseMvnUrl.getGroupId().startsWith(MavenConstants.APACHE_GROUP_ID)) {
                             continue;
                         }
                     }

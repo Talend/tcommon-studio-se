@@ -132,16 +132,4 @@ public class BigDataBasicUtil {
         }
         return null;
     }
-
-    public static boolean isDynamicDistributionMavenUrl(String mvnUri) {
-        try {
-            IDynamicDistributionManager ddManager = getDynamicDistributionManager(new NullProgressMonitor());
-            if (ddManager != null) {
-                return ddManager.isDynamicDistributionMavenUrl(mvnUri);
-            }
-        } catch (Exception e) {
-            ExceptionHandler.process(e);
-        }
-        return false;
-    }
 }
