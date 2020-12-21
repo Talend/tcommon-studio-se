@@ -647,7 +647,8 @@ public class CreateMavenJobPom extends AbstractMavenProcessorPom {
 
         List<Dependency> dependencies = new ArrayList<>();
         // codes
-        addCodesDependencies(dependencies);
+        List<Dependency> codeDependencies = getCodesDependencies();
+        dependencies.addAll(codeDependencies);
 
         // codes dependencies (optional)
         ERepositoryObjectType.getAllTypesOfCodes().forEach(t -> dependencies.addAll(PomUtil.getCodesDependencies(t)));
@@ -684,7 +685,7 @@ public class CreateMavenJobPom extends AbstractMavenProcessorPom {
                     || _3rdLibCoordinate.contains(coordinate)) {
                 return;
             }
-            if (MavenConstants.DEFAULT_LIB_GROUP_ID.equals(groupId) || groupId.startsWith(projectGroupId)) {
+            if (MavenConstants.DEFAULT_LIB_GROUP_ID.equals(groupId) || codeDependencies.contains(d)) {
                 if (!optional) {
                     talendLibCoordinate.add(coordinate);
                 }
