@@ -65,10 +65,10 @@ public abstract class ShareLibrareisHelper {
             ArtifactRepositoryBean customNexusServer = TalendLibsServerManager.getInstance().getCustomNexusServer();
             IRepositoryArtifactHandler customerRepHandler = RepositoryArtifactHandlerManager
                     .getRepositoryHandler(customNexusServer);
-            ArtifactRepositoryBean proxyServer = TalendLibsServerManager.getInstance().getCustomNexusServer();
+            ArtifactRepositoryBean proxyServer = TalendLibsServerManager.getInstance().getProxyArtifactServer();
             IRepositoryArtifactHandler proxyArtifactHandler = RepositoryArtifactHandlerManager.getRepositoryHandler(proxyServer);
 
-            if (customNexusServer == null && proxyArtifactHandler == null) {
+            if (customerRepHandler == null && proxyArtifactHandler == null) {
                 return Status.CANCEL_STATUS;
             }
 
@@ -91,11 +91,11 @@ public abstract class ShareLibrareisHelper {
             }
             
             // search from custom artifact repositories if any
-            seachArtifacts(monitor, filesToShare, customerRepHandler, snapshotArtifactMap, releaseArtifactMap, snapshotGroupIdSet,
+            seachArtifacts(monitor, customerRepHandler, snapshotArtifactMap, releaseArtifactMap, snapshotGroupIdSet,
                     releaseGroupIdSet);
 
             // search from proxy artifact repository if any
-            seachArtifacts(monitor, filesToShare, proxyArtifactHandler, snapshotArtifactMap, releaseArtifactMap,
+            seachArtifacts(monitor, proxyArtifactHandler, snapshotArtifactMap, releaseArtifactMap,
                     snapshotGroupIdSet, releaseGroupIdSet);
 
             checkCancel(monitor);
@@ -172,7 +172,7 @@ public abstract class ShareLibrareisHelper {
      * Search artifacts based on given snapshotGroupIdSet and releaseGroupIdSet from remote artifact repositories
      * represented by artifactHandler, the search results are put to snapshotArtifactMap and releaseArtifactMap
      */
-    protected void seachArtifacts(IProgressMonitor monitor, Map<ModuleNeeded, File> filesToShare,
+    protected void seachArtifacts(IProgressMonitor monitor,
             IRepositoryArtifactHandler artifactHandler, Map<String, List<MavenArtifact>> snapshotArtifactMap,
             Map<String, List<MavenArtifact>> releaseArtifactMap, Set<String> snapshotGroupIdSet, Set<String> releaseGroupIdSet)
             throws Exception {

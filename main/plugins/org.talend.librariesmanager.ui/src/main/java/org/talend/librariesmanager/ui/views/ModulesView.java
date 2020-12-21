@@ -125,6 +125,9 @@ public class ModulesView extends ViewPart {
     }
 
     private void fillLocalToolBar(IToolBarManager manager) {
+        ShareLibsAction shareAction = new ShareLibsAction();
+        manager.add(shareAction);
+
         manager.add(checkAction);
         ImportCustomSettingsAction importSettingAction = new ImportCustomSettingsAction();
         manager.add(importSettingAction);
@@ -136,8 +139,6 @@ public class ModulesView extends ViewPart {
         manager.add(importAction);
         DownloadExternalJarAction downloadAcion = new DownloadExternalJarAction(this);
         manager.add(downloadAcion);
-        ShareLibsAction shareAction = new ShareLibsAction();
-        manager.add(shareAction);
         return;
     }
 
