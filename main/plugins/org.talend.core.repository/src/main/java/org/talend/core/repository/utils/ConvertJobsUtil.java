@@ -675,6 +675,16 @@ public class ConvertJobsUtil {
         final Path path = new Path(pathName.toString());
         return path;
     }
+    
+    public static String getTestCaseJobTypeByPath(String itemPath) {
+        if (itemPath.startsWith(JobType.BIGDATASTREAMING.repositoryObjectType.getFolder())) {
+            return ConvertJobsUtil.JobType.BIGDATASTREAMING.getDisplayName();
+        } else if (itemPath.startsWith(JobType.BIGDATABATCH.repositoryObjectType.getFolder())) {
+            return JobType.BIGDATABATCH.getDisplayName();
+        }
+        return ConvertJobsUtil.JobType.STANDARD.getDisplayName();
+    }
+
 
     /**
      * DOC nrousseau Comment method "getFrameworkItemsByJobType".
