@@ -697,6 +697,7 @@ public class ModulesNeededProvider {
         } else if (item instanceof RoutinesJarItem) {
             // TODO not to add routinesjar as modules here but have a special api for process to get all needed codesjar
             // dependencies
+            // should move it to createMavenJobPom
             RoutinesJarItem codesJar = (RoutinesJarItem) item;
             // String mvnUrl = codesJar.getRoutinesJarType().getMvnUrl();
             // context = PomIdsHelper.getCodesJarGroupId(item);

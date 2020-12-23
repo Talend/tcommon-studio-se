@@ -1527,14 +1527,8 @@ public class ERepositoryObjectType extends DynaEnum<ERepositoryObjectType> {
         if (ERepositoryObjectType.ROUTINES != null) {
             allTypes.add(ERepositoryObjectType.ROUTINES);
         }
-        if (ERepositoryObjectType.ROUTINESJAR != null) {
-            allTypes.add(ERepositoryObjectType.ROUTINESJAR);
-        }
         if (ERepositoryObjectType.BEANS != null) {
             allTypes.add(ERepositoryObjectType.BEANS);
-        }
-        if (ERepositoryObjectType.BEANSJAR != null) {
-            allTypes.add(ERepositoryObjectType.BEANSJAR);
         }
         return allTypes;
     }

@@ -214,6 +214,10 @@ public interface IRunProcessService extends IService {
 
     ITalendProcessJavaProject getTalendCodeJavaProject(ERepositoryObjectType type, String projectTechName);
 
+    ITalendProcessJavaProject getTalendCodesJarJavaProject(Property property);
+
+    ITalendProcessJavaProject getTalendCodesJarJavaProject(Property property, String projectTechName);
+
     ITalendProcessJavaProject getTalendJobJavaProject(Property property);
 
     IFolder getCodeSrcFolder(ERepositoryObjectType type, String projectTechName);

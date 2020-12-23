@@ -17,6 +17,7 @@ import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.OutputStream;
+import java.nio.file.Path;
 import java.text.ParseException;
 import java.util.Calendar;
 import java.util.Date;
@@ -68,7 +69,7 @@ public class CodeM2CacheManager {
                 String key = getKey(projectTechName, property);
                 String cacheValue = cache.getProperty(key);
                 if (cacheValue != null) {
-                    Date currentDate = ResourceHelper.dateFormat().parse(getModifiedDate(projectTechName, property));
+                    Date currentDate = ResourceHelper.dateFormat().parse(getModifiedDate(property));
                     Date cachedDate = ResourceHelper.dateFormat().parse(cacheValue);
                     if (currentDate.compareTo(cachedDate) != 0) {
                         return true;
@@ -92,7 +93,7 @@ public class CodeM2CacheManager {
             for (IRepositoryViewObject codeItem : allCodes) {
                 Property property = codeItem.getProperty();
                 String key = getKey(projectTechName, property);
-                String value = getModifiedDate(projectTechName, property);
+                String value = getModifiedDate(property);
                 cache.put(key, value);
             }
             cache.store(out, StringUtils.EMPTY);
@@ -102,16 +103,18 @@ public class CodeM2CacheManager {
     }
 
     public static File getCacheFile(String projectTechName, ERepositoryObjectType codeType) {
+        Path cacheRootPath = new File(MavenPlugin.getMaven().getLocalRepositoryPath()).toPath().resolve(".codecache")
+                .resolve("codes");
         String cacheFileName = PomIdsHelper.getProjectGroupId(projectTechName) + "." + codeType.name().toLowerCase() + "-" //$NON-NLS-1$ //$NON-NLS-2$
                 + PomIdsHelper.getCodesVersion(projectTechName) + ".cache"; // $NON-NLS-1$
-        return new File(MavenPlugin.getMaven().getLocalRepositoryPath(), cacheFileName);
+        return cacheRootPath.resolve(cacheFileName).toFile();
     }
 
     private static String getKey(String projectTechName, Property property) {
         return projectTechName + KEY_SEPERATOR + property.getId() + KEY_SEPERATOR + property.getVersion(); // $NON-NLS-1$
     }
 
-    private static String getModifiedDate(String projectTechName, Property property) {
+    private static String getModifiedDate(Property property) {
         String modifiedDate = (String) property.getAdditionalProperties().get(ItemProductKeys.DATE.getModifiedKey());
         return StringUtils.isNotBlank(modifiedDate) ? modifiedDate : EMPTY_DATE;
     }
