@@ -12,7 +12,7 @@
 // ============================================================================
 package org.talend.core.model.general;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.fail;
 
 import java.io.File;
 import java.io.IOException;
@@ -122,12 +122,12 @@ public class ModuleNeededTest {
     @Test
     public void testGetStatus1() throws URISyntaxException, IOException {
         // test jar installed in platform
-        String mavenURI = "mvn:org.talend.libraries/hadoop-core-1.0.0/6.0.0/jar";
-        String customURI = "mvn:org.talend.libraries/hadoop-core/6.0.0/jar";
-        String platformURL = "platform:/plugin/org.talend.libraries.hadoop/lib/hadoop-core-1.0.0.jar";
+        String mavenURI = "mvn:org.talend.libraries/hadoop-conf-kerberos/6.0.0/jar";
+        String customURI = "mvn:org.talend.libraries/hadoop-conf-kerberos-1.2.1/6.0.0/jar";
+        String platformURL = "platform:/plugin/org.talend.libraries.hadoop/lib/hadoop-conf-kerberos.jar";
         ILibraryManagerService libService = GlobalServiceRegister.getDefault().getService(
                 ILibraryManagerService.class);
-        ModuleNeeded module1 = new ModuleNeeded("", "hadoop-core-1.0.0.jar", "description", false, null, null,
+        ModuleNeeded module1 = new ModuleNeeded("", "hadoop-conf-kerberos.jar", "description", false, null, null,
                 mavenURI);
         module1.setModuleLocaion(platformURL);
         if (ELibraryInstallStatus.NOT_INSTALLED == module1.getStatus() || !libService.checkJarInstalledFromPlatform(platformURL)) {

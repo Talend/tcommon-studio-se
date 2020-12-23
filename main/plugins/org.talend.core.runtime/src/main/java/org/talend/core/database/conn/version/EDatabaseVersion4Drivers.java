@@ -58,7 +58,7 @@ public enum EDatabaseVersion4Drivers {
     HSQLDB_SERVER(new DbVersion4Drivers(EDatabaseTypeName.HSQLDB_SERVER, "hsqldb.jar")), //$NON-NLS-1$
     HSQLDB_WEBSERVER(new DbVersion4Drivers(EDatabaseTypeName.HSQLDB_WEBSERVER, "hsqldb.jar")), //$NON-NLS-1$
 
-    H2(new DbVersion4Drivers(EDatabaseTypeName.H2, "h2-1.3.160.jar")), //$NON-NLS-1$
+    H2(new DbVersion4Drivers(EDatabaseTypeName.H2, "h2-1.4.198.jar")), //$NON-NLS-1$
 
     //
     JAVADB_EMBEDED(new DbVersion4Drivers(EDatabaseTypeName.JAVADB_EMBEDED, "derby.jar")), //$NON-NLS-1$

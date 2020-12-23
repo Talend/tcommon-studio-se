@@ -18,13 +18,11 @@ import org.eclipse.ui.IEditorPart;
 import org.talend.commons.ui.runtime.image.IImage;
 import org.talend.core.IService;
 import org.talend.core.model.components.IComponentsHandler;
-import org.talend.core.model.general.Project;
 import org.talend.core.model.process.INode;
 import org.talend.core.model.process.IProcess2;
 import org.talend.core.model.properties.Item;
 import org.talend.core.model.properties.ProcessItem;
 import org.talend.core.model.repository.IRepositoryEditorInput;
-import org.talend.core.model.repository.IRepositoryViewObject;
 import org.talend.repository.model.IRepositoryNode;
 import org.talend.repository.model.nodes.IProjectRepositoryNode;
 
@@ -33,8 +31,6 @@ import org.talend.repository.model.nodes.IProjectRepositoryNode;
  */
 public interface IStormProcessService extends IService {
 
-    boolean needStormProcess();
-
     IRepositoryNode getRootNode(IProjectRepositoryNode projectNode);
 
     public boolean collectStandardProcessNode(List<String> filteredContents, Object node);
@@ -42,8 +38,6 @@ public interface IStormProcessService extends IService {
     public boolean isStormItem(Item item);
 
     public boolean isStormEditor(IEditorPart editorPart);
-
-    public List<IRepositoryViewObject> getStormProcesses(Project project);
 
     /**
      * This method is responsible for creating additional information which are going to be registered in the Process

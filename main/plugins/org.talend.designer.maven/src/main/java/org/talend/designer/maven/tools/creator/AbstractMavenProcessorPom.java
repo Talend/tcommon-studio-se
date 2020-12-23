@@ -12,6 +12,7 @@
 // ============================================================================
 package org.talend.designer.maven.tools.creator;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -46,7 +47,6 @@ import org.talend.core.runtime.maven.MavenArtifact;
 import org.talend.core.runtime.maven.MavenConstants;
 import org.talend.core.runtime.maven.MavenUrlHelper;
 import org.talend.core.runtime.process.LastGenerationInfo;
-import org.talend.core.runtime.process.TalendProcessArgumentConstant;
 import org.talend.core.runtime.projectsetting.IProjectSettingTemplateConstants;
 import org.talend.core.runtime.repository.build.IMavenPomCreator;
 import org.talend.core.ui.ITestContainerProviderService;
@@ -284,6 +284,11 @@ public abstract class AbstractMavenProcessorPom extends CreateMavenBundleTemplat
     }
 
     protected void addCodesDependencies(final List<Dependency> dependencies) {
+        dependencies.addAll(getCodesDependencies());
+    }
+
+    protected List<Dependency> getCodesDependencies() {
+        List<Dependency> dependencies = new ArrayList<Dependency>();
         String projectTechName = ProjectManager.getInstance().getProject(getJobProcessor().getProperty()).getTechnicalLabel();
         String codeVersion = PomIdsHelper.getCodesVersion(projectTechName);
 
@@ -300,6 +305,7 @@ public abstract class AbstractMavenProcessorPom extends CreateMavenBundleTemplat
             Dependency beansDependency = PomUtil.createDependency(beansGroupId, beansArtifactId, codeVersion, null);
             dependencies.add(beansDependency);
         }
+        return dependencies;
     }
 
     protected void addChildrenDependencies(final List<Dependency> dependencies) {

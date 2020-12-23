@@ -158,6 +158,7 @@ import org.talend.core.repository.model.FolderHelper;
 import org.talend.core.repository.model.ILocalRepositoryFactory;
 import org.talend.core.repository.model.ILockBean;
 import org.talend.core.repository.model.ProjectRepositoryNode;
+import org.talend.core.repository.model.PropertiesProjectResourceImpl;
 import org.talend.core.repository.model.ProxyRepositoryFactory;
 import org.talend.core.repository.model.VersionList;
 import org.talend.core.repository.recyclebin.RecycleBinManager;
@@ -2065,6 +2066,9 @@ public class LocalRepositoryFactory extends AbstractEMFRepositoryFactory impleme
         for (EObject object : find.keySet()) {
             Resource re = object.eResource();
             if (re == null) {
+                continue;
+            }
+            if (re instanceof PropertiesProjectResourceImpl) {
                 continue;
             }
             EcoreUtil.resolveAll(re);

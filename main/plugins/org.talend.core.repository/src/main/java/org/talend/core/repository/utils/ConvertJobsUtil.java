@@ -149,7 +149,6 @@ public class ConvertJobsUtil {
     }
 
     public static enum JobStreamingFramework {
-        STORMFRAMEWORK("Storm", "Storm (Deprecated)", "_STORM_STORM_FRAMEWORK_"), //$NON-NLS-1$ //$NON-NLS-2$
         SPARKSTREAMINGFRAMEWORK("Spark Streaming", "Spark Streaming", "_STORM_SPARKSTREAMING_FRAMEWORK_"); //$NON-NLS-1$ //$NON-NLS-2$
 
         private String name;
@@ -360,8 +359,7 @@ public class ConvertJobsUtil {
         if (JobBatchFramework.MAPREDUCEFRAMEWORK.getDisplayName().equals(frameworkObj)
                 || JobBatchFramework.SPARKFRAMEWORK.getDisplayName().equals(frameworkObj)) {
             return JobType.BIGDATABATCH.getDisplayName();
-        } else if (JobStreamingFramework.STORMFRAMEWORK.getName().equals(frameworkObj)
-                || JobStreamingFramework.SPARKSTREAMINGFRAMEWORK.getName().equals(frameworkObj)) {
+        } else if (JobStreamingFramework.SPARKSTREAMINGFRAMEWORK.getName().equals(frameworkObj)) {
             return JobType.BIGDATASTREAMING.getDisplayName();
         } else {
             return JobType.STANDARD.getDisplayName();
