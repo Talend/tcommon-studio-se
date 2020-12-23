@@ -141,5 +141,10 @@ public class UpdateService implements IUpdateService {
         }
         return null;
     }
+    
+    @Override
+    public boolean updateArtifactsFileSha256Hex(IProgressMonitor monitor, String studioArtifactsFileShaCodeHex) {
+        return SharedStudioPatchInfoProvider.getInstance().updateArtifactsFileSha256Hex(studioArtifactsFileShaCodeHex);
+    }
 }
 
