@@ -717,11 +717,8 @@ public class ModulesNeededProvider {
                         isRequired);
                 toAdd.setMavenUri(currentImport.getMVN());
                 if (!isRequired) {
-                    if ("BeanItem".equals(routine.eClass().getName())) {
+                    if ("BeanItem".equals(routine.eClass().getName()) || "RoutineItem".equals(routine.eClass().getName())) {
                         toAdd.getExtraAttributes().put("IS_OSGI_EXCLUDED", Boolean.TRUE);
-                    }
-                    if ("RoutineItem".equals(routine.eClass().getName())) {
-                        continue;
                     }
                 }
                 // toAdd.setStatus(ELibraryInstallStatus.INSTALLED);
