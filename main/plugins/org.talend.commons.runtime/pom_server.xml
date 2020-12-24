@@ -122,6 +122,13 @@
                 <artifactId>maven-bundle-plugin</artifactId>
                 <version>5.1.1</version>
                 <extensions>true</extensions>
+                <dependencies>
+                 <dependency>
+                  <groupId>com.google.guava</groupId>
+                  <artifactId>guava</artifactId>
+                  <version>30.0-jre</version>
+                 </dependency>
+                </dependencies>
                 <configuration>
                     <instructions>
                         <Bundle-SymbolicName>${project.artifactId}</Bundle-SymbolicName>
