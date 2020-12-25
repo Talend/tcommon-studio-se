@@ -258,7 +258,17 @@ public enum SupportDBUrlType {
             "dbname", //$NON-NLS-1$
             null,
             "com.vertica.jdbc.Driver", //$NON-NLS-1$
-            "", "Vertica Database");//$NON-NLS-1$ //$NON-NLS-2$
+            "", //$NON-NLS-1$
+            "Vertica Database"), //$NON-NLS-1$
+    SAPHANA(
+            "SAPHana", //$NON-NLS-1$
+            "localhost", //$NON-NLS-1$
+            "30015", //$NON-NLS-1$
+            "dbname", //$NON-NLS-1$
+            null,
+            "com.sap.db.jdbc.Driver", //$NON-NLS-1$
+            "?", //$NON-NLS-1$
+            "HDB");//$NON-NLS-1$
 
     private final String dbKey;
 

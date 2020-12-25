@@ -37,13 +37,13 @@ import org.talend.commons.exception.ExceptionHandler;
 import org.talend.commons.utils.data.list.ListUtils;
 import org.talend.commons.utils.database.AS400DatabaseMetaData;
 import org.talend.commons.utils.database.DB2ForZosDataBaseMetadata;
+import org.talend.commons.utils.database.SAPHanaDataBaseMetadata;
 import org.talend.commons.utils.database.Sybase16SADatabaseMetaData;
 import org.talend.commons.utils.database.SybaseDatabaseMetaData;
 import org.talend.commons.utils.database.TeradataDataBaseMetadata;
 import org.talend.core.ICoreService;
 import org.talend.core.database.EDatabase4DriverClassName;
 import org.talend.core.database.EDatabaseTypeName;
-import org.talend.core.database.conn.version.EDatabaseVersion4Drivers;
 import org.talend.core.model.metadata.IMetadataConnection;
 import org.talend.core.model.metadata.MappingTypeRetriever;
 import org.talend.core.model.metadata.MetadataTalendType;
@@ -1739,7 +1739,8 @@ public class DBConnectionFillerImpl extends MetadataFillerImpl<DatabaseConnectio
                             typeName = "TIMESTAMP"; //$NON-NLS-1$
                         }
                         typeName = MetadataToolHelper.validateValueForDBType(typeName);
-                        if (dbJDBCMetadata instanceof DB2ForZosDataBaseMetadata) {
+                        if (dbJDBCMetadata instanceof DB2ForZosDataBaseMetadata
+                                || dbJDBCMetadata instanceof SAPHanaDataBaseMetadata) {
                             // MOD klliu bug TDQ-1164 2011-09-26
                             dataType = Java2SqlType.getJavaTypeBySqlType(typeName);
                             decimalDigits = getIntFromResultSet(columns, GetColumn.DECIMAL_DIGITS.name());
