@@ -118,6 +118,8 @@ public abstract class AbstractMavenCodesTemplatePom extends AbstractMavenGeneral
                 }
                 if (isDeployed) {
                     dependency = PomUtil.createModuleDependency(module.getMavenUri());
+                    if (isOsgiExcluded(module))
+                        dependency.setScope("provided");
                 }
                 if (dependency != null) {
                     existedDependencies.add(dependency);
@@ -126,5 +128,18 @@ public abstract class AbstractMavenCodesTemplatePom extends AbstractMavenGeneral
         }
     }
 
+    private boolean isOsgiExcluded(ModuleNeeded module) {
+        Object value = module.getExtraAttributes().get("IS_OSGI_EXCLUDED");
+        if (value == null) {
+            return false;
+        }
+        if (value instanceof Boolean) {
+            return ((Boolean) value).booleanValue();
+        }
+        if (value instanceof String) {
+            return Boolean.parseBoolean((String) value);
+        }
+        return false;
+    }
     protected abstract Set<ModuleNeeded> getDependenciesModules();
 }
