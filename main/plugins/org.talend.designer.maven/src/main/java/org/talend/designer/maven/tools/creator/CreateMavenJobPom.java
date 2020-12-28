@@ -676,8 +676,7 @@ public class CreateMavenJobPom extends AbstractMavenProcessorPom {
 
         // libraries of talend/3rd party
         Set<Dependency> parentJobDependencies = processor.getNeededModules(TalendProcessOptionConstants.MODULES_EXCLUDE_SHADED).stream()
-                .filter(m -> !m.isExcluded() && !AbstractMavenCodesTemplatePom.isOsgiExcluded(m))
-                .map(m -> createDenpendency(m, false))
+                .filter(m -> !m.isExcluded()).map(m -> createDenpendency(m, false))
                 .collect(Collectors.toSet());
         dependencies.addAll(parentJobDependencies);
 
