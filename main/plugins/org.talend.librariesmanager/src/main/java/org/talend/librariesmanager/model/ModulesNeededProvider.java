@@ -714,9 +714,7 @@ public class ModulesNeededProvider {
                         isRequired);
                 toAdd.setMavenUri(currentImport.getMVN());
                 if (!isRequired) {
-                    if ("BeanItem".equals(routine.eClass().getName())) {
-                        toAdd.getExtraAttributes().put("IS_OSGI_EXCLUDED", Boolean.TRUE);
-                    }
+                    toAdd.getExtraAttributes().put("IS_OSGI_EXCLUDED", Boolean.TRUE);
                     if ("RoutineItem".equals(routine.eClass().getName())) {
                         toAdd.setExcluded(true);
                     }
