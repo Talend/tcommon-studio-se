@@ -22,4 +22,6 @@ public interface IUpdateService extends IService {
     public boolean syncSharedStudioLibraryInPatch(IProgressMonitor monitor) throws Exception;
     
     public String getSharedStudioMissingPatchVersion();
+    
+    public boolean updateArtifactsFileSha256Hex(IProgressMonitor monitor, String studioArtifactsFileShaCodeHex);
 }
