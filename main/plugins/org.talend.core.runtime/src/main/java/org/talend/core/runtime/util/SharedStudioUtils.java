@@ -13,7 +13,10 @@
 package org.talend.core.runtime.util;
 
 import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.io.InputStream;
 
 import org.eclipse.core.runtime.IPath;
 import org.eclipse.core.runtime.NullProgressMonitor;
@@ -25,6 +28,7 @@ import org.talend.core.model.components.IComponentsFactory;
 import org.talend.core.runtime.CoreRuntimePlugin;
 import org.talend.core.service.IUpdateService;
 import org.talend.utils.io.FilesUtils;
+import org.talend.utils.string.DigestUtil;
 
 public class SharedStudioUtils {
 
@@ -84,6 +88,29 @@ public class SharedStudioUtils {
     	return false;
     }
     
+    public static boolean isNeedCleanOnSharedMode() {
+        if (SharedStudioUtils.isSharedStudioMode()) {
+            boolean isNeedClean = installedPatch();
+            String studioArtifactsFileSha256Hex = getStudioArtifactsFileSha256Hex();
+            if (updateArtifactsFileSha256Hex(studioArtifactsFileSha256Hex)) {
+                isNeedClean = true;
+            }
+            return isNeedClean;
+        }
+        return false;
+    }
+    
+    public static boolean updateArtifactsFileSha256Hex(String studioArtifactsFileSha256Hex) {
+        if (GlobalServiceRegister.getDefault().isServiceRegistered(IUpdateService.class)) {
+            IUpdateService updateService = GlobalServiceRegister.getDefault().getService(IUpdateService.class);
+            try {
+                return updateService.updateArtifactsFileSha256Hex(new NullProgressMonitor(), studioArtifactsFileSha256Hex);
+            } catch (Exception e) {
+                ExceptionHandler.process(e);
+            }
+        }
+        return false;
+    }
     public static boolean installedPatch() {
         if (GlobalServiceRegister.getDefault().isServiceRegistered(IUpdateService.class)) {
             IUpdateService updateService = GlobalServiceRegister.getDefault().getService(IUpdateService.class);
@@ -117,4 +144,28 @@ public class SharedStudioUtils {
 			return new Path(System.getProperty("user.dir")).append("temp");
 		}
 	}
+	
+    public static String getStudioArtifactsFileSha256Hex() {
+        File studioArtifactsFile = new File(Platform.getInstallLocation().getURL().getPath(), "artifacts.xml");//$NON-NLS-1$
+        if (studioArtifactsFile.exists()) {
+            InputStream inputStream = null;
+            try {
+                inputStream = new FileInputStream(studioArtifactsFile);
+                return DigestUtil.sha256Hex(inputStream);
+            } catch (FileNotFoundException e) {
+                ExceptionHandler.process(e);
+            } catch (IOException e) {
+                ExceptionHandler.process(e);
+            } finally {
+                if (inputStream != null) {
+                    try {
+                        inputStream.close();
+                    } catch (IOException ex) {
+                        ExceptionHandler.process(ex);
+                    }
+                }
+            }
+        }
+        return "";
+    }
 }

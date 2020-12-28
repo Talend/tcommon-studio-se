@@ -131,6 +131,16 @@ public class SharedStudioPatchInfoProvider {
         }
         return null;
     }
+    
+    public boolean updateArtifactsFileSha256Hex(String artifactsFileSha256Hex) {
+        String savedCode = installedPatchInfo.getLastArtifactsFileSha256Hex();
+        if (!StringUtils.equals(savedCode, artifactsFileSha256Hex)) {
+            installedPatchInfo.setLastArtifactsFileSha256Hex(artifactsFileSha256Hex);
+            saveData();
+            return true;
+        }
+        return false;
+    }
 
     private void loadData() {
         TypeReference<InstalledPatchInfo> typeReference = new TypeReference<InstalledPatchInfo>() {
@@ -165,6 +175,10 @@ class InstalledPatchInfo {
 
     @JsonProperty("installedPatch")
     private List<InstalledPatch> installedPatchList = new ArrayList<InstalledPatch>();
+    
+    @JsonInclude(Include.NON_DEFAULT)
+    @JsonProperty("lastArtifactsFileSha256Hex")
+    private String lastArtifactsFileSha256Hex;
 
     public List<InstalledPatch> getInstalledPatchList() {
         return installedPatchList;
@@ -172,6 +186,14 @@ class InstalledPatchInfo {
 
     public void setInstalledPatchList(List<InstalledPatch> installedPatchList) {
         this.installedPatchList = installedPatchList;
+    }
+
+    public String getLastArtifactsFileSha256Hex() {
+        return lastArtifactsFileSha256Hex;
+    }
+
+    public void setLastArtifactsFileSha256Hex(String lastArtifactsFileSha256Hex) {
+        this.lastArtifactsFileSha256Hex = lastArtifactsFileSha256Hex;
     }
 }
 
