@@ -128,7 +128,7 @@ public abstract class AbstractMavenCodesTemplatePom extends AbstractMavenGeneral
         }
     }
 
-    private boolean isOsgiExcluded(ModuleNeeded module) {
+    public static boolean isOsgiExcluded(ModuleNeeded module) {
         Object value = module.getExtraAttributes().get("IS_OSGI_EXCLUDED");
         if (value == null) {
             return false;

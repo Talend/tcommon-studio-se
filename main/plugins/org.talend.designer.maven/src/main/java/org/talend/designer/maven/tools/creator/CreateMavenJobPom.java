@@ -676,7 +676,8 @@ public class CreateMavenJobPom extends AbstractMavenProcessorPom {
 
         // libraries of talend/3rd party
         Set<Dependency> parentJobDependencies = processor.getNeededModules(TalendProcessOptionConstants.MODULES_EXCLUDE_SHADED).stream()
-                .filter(m -> !m.isExcluded() && !isOsgiExcluded(m)).map(m -> createDenpendency(m, false))
+                .filter(m -> !m.isExcluded() && !AbstractMavenCodesTemplatePom.isOsgiExcluded(m))
+                .map(m -> createDenpendency(m, false))
                 .collect(Collectors.toSet());
         dependencies.addAll(parentJobDependencies);
 
@@ -763,19 +764,6 @@ public class CreateMavenJobPom extends AbstractMavenProcessorPom {
         }
     }
 
-    private boolean isOsgiExcluded(ModuleNeeded module) {
-        Object value = module.getExtraAttributes().get("IS_OSGI_EXCLUDED");
-        if (value == null) {
-            return false;
-        }
-        if (value instanceof Boolean) {
-            return ((Boolean) value).booleanValue();
-        }
-        if (value instanceof String) {
-            return Boolean.parseBoolean((String) value);
-        }
-        return false;
-    }
 
     // remove duplicate job dependencies and only keep the latest one
     // keep high priority dependencies if set by tLibraryLoad
