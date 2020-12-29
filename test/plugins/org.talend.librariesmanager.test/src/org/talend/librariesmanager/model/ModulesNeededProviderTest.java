@@ -86,7 +86,7 @@ public class ModulesNeededProviderTest {
         // change logic because of https://jira.talendforge.org/browse/TUP-29826
         Assert.assertEquals(ModulesNeededProvider.getModulesNeeded().size(), originalNeededSize + 3);
         // add one + change one in the all list
-        Assert.assertEquals(ModulesNeededProvider.getAllManagedModules().size(), originalAllSize + 1);
+        Assert.assertEquals(ModulesNeededProvider.getAllManagedModules().size(), originalAllSize + 2);
 
         List<ModuleNeeded> module1 = ModulesNeededProvider.getModulesNeededForName(jarName1);
         List<ModuleNeeded> module2 = ModulesNeededProvider.getModulesNeededForName(jarName2);
