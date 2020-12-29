@@ -1181,7 +1181,7 @@ public class PomUtil {
             IRunProcessService runProcessService = GlobalServiceRegister.getDefault().getService(IRunProcessService.class);
             try {
                 Model model = MODEL_MANAGER.readMavenModel(runProcessService.getTalendCodeJavaProject(codeType).getProjectPom());
-                return model.getDependencies().stream().map(
+                return model.getDependencies().stream().filter(d -> !"provided".equals(d.getScope())).map(
                         d -> createDependency(d.getGroupId(), d.getArtifactId(), d.getVersion(), d.getType(), d.getClassifier()))
                         .peek(d -> ((SortableDependency) d).setAssemblyOptional(true)).collect(Collectors.toSet());
             } catch (CoreException e) {
