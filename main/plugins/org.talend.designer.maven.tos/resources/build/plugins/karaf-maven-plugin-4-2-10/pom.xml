@@ -19,6 +19,10 @@
 					<groupId>commons-collections</groupId>
 					<artifactId>commons-collections</artifactId>
 				</exclusion>
+				<exclusion>
+	              <groupId>org.apache.maven.shared</groupId>
+	              <artifactId>maven-shared-utils</artifactId>
+	            </exclusion>
 			</exclusions>
 		</dependency>
 		<dependency>
