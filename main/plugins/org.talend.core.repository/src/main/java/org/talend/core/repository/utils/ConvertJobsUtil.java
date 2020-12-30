@@ -687,6 +687,7 @@ public class ConvertJobsUtil {
         return ConvertJobsUtil.JobType.STANDARD.getDisplayName();
     }
 
+
     /**
      * DOC nrousseau Comment method "getFrameworkItemsByJobType".
      *
