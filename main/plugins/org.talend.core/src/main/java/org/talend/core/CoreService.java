@@ -279,7 +279,9 @@ public class CoreService implements ICoreService {
         if (GlobalServiceRegister.getDefault().isServiceRegistered(ICodeGeneratorService.class)) {
             ICodeGeneratorService codeGenService = (ICodeGeneratorService) GlobalServiceRegister.getDefault().getService(
                     ICodeGeneratorService.class);
-            codeGenService.createRoutineSynchronizer().syncAllRoutinesForLogOn();
+            ITalendSynchronizer talendSynchronizer = codeGenService.createRoutineSynchronizer();
+            talendSynchronizer.syncAllRoutinesForLogOn();
+            talendSynchronizer.syncAllInnerCodesForLogOn();
         }
     }
 

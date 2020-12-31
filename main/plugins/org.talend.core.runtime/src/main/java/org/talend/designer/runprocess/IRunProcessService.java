@@ -200,6 +200,7 @@ public interface IRunProcessService extends IService {
 
     ProjectPreferenceManager getProjectPreferenceManager();
 
+    @Deprecated
     Set<String> getLibJarsForBD(IProcess process);
 
     void updateProjectPomWithTemplate();
@@ -215,8 +216,6 @@ public interface IRunProcessService extends IService {
     ITalendProcessJavaProject getTalendCodeJavaProject(ERepositoryObjectType type, String projectTechName);
 
     ITalendProcessJavaProject getTalendCodesJarJavaProject(Property property);
-
-    ITalendProcessJavaProject getTalendCodesJarJavaProject(Property property, String projectTechName);
 
     ITalendProcessJavaProject getTalendJobJavaProject(Property property);
 

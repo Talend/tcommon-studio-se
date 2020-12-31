@@ -17,7 +17,6 @@ import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.OutputStream;
-import java.nio.file.Path;
 import java.text.ParseException;
 import java.util.Calendar;
 import java.util.Date;
@@ -43,10 +42,17 @@ public class CodeM2CacheManager {
 
     private static final String EMPTY_DATE;
 
+    private static File cacheFolder;
+
     static {
         Calendar c = Calendar.getInstance();
         c.setTimeInMillis(0);
         EMPTY_DATE = ResourceHelper.dateFormat().format(c.getTime());
+        cacheFolder = new File(MavenPlugin.getMaven().getLocalRepositoryPath()).toPath().resolve(".codecache").resolve("codes")
+                .toFile();
+        if (!cacheFolder.exists()) {
+            cacheFolder.mkdirs();
+        }
     }
 
     public static boolean needUpdateCodeProject(Project project, ERepositoryObjectType codeType) {
@@ -103,11 +109,9 @@ public class CodeM2CacheManager {
     }
 
     public static File getCacheFile(String projectTechName, ERepositoryObjectType codeType) {
-        Path cacheRootPath = new File(MavenPlugin.getMaven().getLocalRepositoryPath()).toPath().resolve(".codecache")
-                .resolve("codes");
         String cacheFileName = PomIdsHelper.getProjectGroupId(projectTechName) + "." + codeType.name().toLowerCase() + "-" //$NON-NLS-1$ //$NON-NLS-2$
                 + PomIdsHelper.getCodesVersion(projectTechName) + ".cache"; // $NON-NLS-1$
-        return cacheRootPath.resolve(cacheFileName).toFile();
+        return new File(cacheFolder, cacheFileName);
     }
 
     private static String getKey(String projectTechName, Property property) {

@@ -53,4 +53,8 @@ public interface ITalendSynchronizer {
 
     void deleteRoutinefile(IRepositoryViewObject objToDelete);
 
+    void syncAllInnerCodes() throws SystemException;
+
+    void syncAllInnerCodesForLogOn() throws SystemException;
+
 }

@@ -13,6 +13,7 @@
 package org.talend.core.model.routines;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.Set;
 
@@ -20,14 +21,19 @@ import org.eclipse.core.resources.IFile;
 import org.eclipse.core.resources.IMarker;
 import org.eclipse.core.resources.IResource;
 import org.eclipse.core.runtime.CoreException;
+import org.eclipse.core.runtime.Path;
 import org.talend.commons.exception.ExceptionHandler;
 import org.talend.commons.exception.PersistenceException;
 import org.talend.commons.exception.SystemException;
 import org.talend.core.GlobalServiceRegister;
 import org.talend.core.model.general.Project;
+import org.talend.core.model.process.JobInfo;
 import org.talend.core.model.properties.Item;
+import org.talend.core.model.properties.JobletProcessItem;
+import org.talend.core.model.properties.ProcessItem;
 import org.talend.core.model.properties.Property;
 import org.talend.core.model.properties.RoutineItem;
+import org.talend.core.model.properties.RoutinesJarItem;
 import org.talend.core.model.repository.ERepositoryObjectType;
 import org.talend.core.model.repository.IRepositoryViewObject;
 import org.talend.core.prefs.ITalendCorePrefConstants;
@@ -40,6 +46,7 @@ import org.talend.designer.core.model.utils.emf.talendfile.RoutinesParameterType
 import org.talend.designer.core.model.utils.emf.talendfile.TalendFileFactory;
 import org.talend.repository.ProjectManager;
 import org.talend.repository.model.IProxyRepositoryFactory;
+import org.talend.repository.model.IProxyRepositoryService;
 
 /**
  * ggu class global comment. Detailled comment
@@ -356,13 +363,68 @@ public final class RoutinesUtil {
     }
 
     @SuppressWarnings("unchecked")
-    public static void setInnerCodes(Property property, Boolean isInner) {
-        property.getAdditionalProperties().put("INNER_DATA", isInner.toString()); //$NON-NLS-1$
+    public static void setInnerCodes(Property property, ERepositoryObjectType type) {
+        if (type == null) {
+            property.getAdditionalProperties().removeKey("JAR_TYPE");
+        } else {
+            property.getAdditionalProperties().put("JAR_TYPE", type.name()); //$NON-NLS-1$
+        }
+    }
+
+    public static ERepositoryObjectType getInnerCodeType(Property property) {
+        Object type = property.getAdditionalProperties().get("JAR_TYPE"); //$NON-NLS-1$
+        if (type != null) {
+            return ERepositoryObjectType.getAllTypesOfCodesJar().stream().filter(t -> t.name().equals(type)).findFirst().get();
+        }
+        return null;
     }
 
     public static boolean isInnerCodes(Property property) {
-        Object isInnerCodes = property.getAdditionalProperties().get("INNER_DATA"); //$NON-NLS-1$
-        return isInnerCodes != null && Boolean.valueOf(isInnerCodes.toString());
+        Object isInnerCodes = property.getAdditionalProperties().get("JAR_TYPE"); //$NON-NLS-1$
+        return isInnerCodes != null;
+    }
+
+    public static RoutinesJarItem getCodesJarItemByInnerCode(RoutineItem routineItem) throws PersistenceException {
+        if (GlobalServiceRegister.getDefault().isServiceRegistered(IProxyRepositoryService.class)) {
+            IProxyRepositoryService service = GlobalServiceRegister.getDefault().getService(IProxyRepositoryService.class);
+            IProxyRepositoryFactory factory = service.getProxyRepositoryFactory();
+            Project project = ProjectManager.getInstance()
+                    .getProjectFromProjectTechLabel(ProjectManager.getInstance().getProject(routineItem).getTechnicalLabel());
+            List<IRepositoryViewObject> allCodesJars = factory.getAllCodesJars(project,
+                    getInnerCodeType(routineItem.getProperty()));
+            String codesJarName = getCodesJarLabelByInnerCode(routineItem);
+            IRepositoryViewObject obj = allCodesJars.stream().filter(o -> o.getProperty().getLabel().equals(codesJarName))
+                    .findFirst().get();
+            return (RoutinesJarItem) obj.getProperty().getItem();
+        }
+        return null;
+    }
+
+    public static String getCodesJarLabelByInnerCode(Item innerCodeItem) {
+        return new Path(innerCodeItem.getState().getPath()).segment(0);
+    }
+
+    public static List<RoutinesParameterType> getRoutinesParametersFromJobInfo(JobInfo info) {
+        Item item = null;
+        if (info.getJobletProperty() != null) {
+            item = info.getJobletProperty().getItem();
+        } else if (info.getProcessItem() != null) {
+            item = info.getProcessItem();
+        }
+        return getRoutinesParametersFromItem(item);
+    }
+
+    public static List<RoutinesParameterType> getRoutinesParametersFromItem(Item item) {
+        List<RoutinesParameterType> routinesParameters = null;
+        if (item == null) {
+            routinesParameters = Collections.emptyList();
+        }
+        if (item instanceof JobletProcessItem) {
+            routinesParameters = ((JobletProcessItem) item).getJobletProcess().getParameters().getRoutinesParameter();
+        } else if (item instanceof ProcessItem) {
+            routinesParameters = ((ProcessItem) item).getProcess().getParameters().getRoutinesParameter();
+        }
+        return routinesParameters;
     }
 
 }

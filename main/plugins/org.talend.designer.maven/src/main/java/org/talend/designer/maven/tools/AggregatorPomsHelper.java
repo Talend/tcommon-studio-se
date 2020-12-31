@@ -67,6 +67,7 @@ import org.talend.core.model.relationship.Relation;
 import org.talend.core.model.relationship.RelationshipItemBuilder;
 import org.talend.core.model.repository.ERepositoryObjectType;
 import org.talend.core.model.repository.IRepositoryViewObject;
+import org.talend.core.model.routines.RoutinesUtil;
 import org.talend.core.repository.model.ProxyRepositoryFactory;
 import org.talend.core.repository.utils.ItemResourceUtil;
 import org.talend.core.runtime.CoreRuntimePlugin;
@@ -77,15 +78,14 @@ import org.talend.core.runtime.process.TalendProcessArgumentConstant;
 import org.talend.core.runtime.process.TalendProcessOptionConstants;
 import org.talend.core.runtime.services.IFilterService;
 import org.talend.core.ui.ITestContainerProviderService;
+import org.talend.core.utils.CodesJarResourceCache;
 import org.talend.designer.maven.launch.MavenPomCommandLauncher;
 import org.talend.designer.maven.model.MavenSystemFolders;
 import org.talend.designer.maven.model.TalendJavaProjectConstants;
 import org.talend.designer.maven.model.TalendMavenConstants;
 import org.talend.designer.maven.template.MavenTemplateManager;
 import org.talend.designer.maven.tools.creator.CreateMavenBeanPom;
-import org.talend.designer.maven.tools.creator.CreateMavenBeansJarPom;
 import org.talend.designer.maven.tools.creator.CreateMavenRoutinePom;
-import org.talend.designer.maven.tools.creator.CreateMavenRoutinesJarPom;
 import org.talend.designer.maven.utils.PomIdsHelper;
 import org.talend.designer.maven.utils.PomUtil;
 import org.talend.designer.runprocess.IRunProcessService;
@@ -178,7 +178,6 @@ public class AggregatorPomsHelper {
 
             @Override
             protected void run() {
-                ProxyRepositoryFactory factory = ProxyRepositoryFactory.getInstance();
                 Project currentProject = ProjectManager.getInstance().getCurrentProject();
                 try {
                     for (ERepositoryObjectType codeType : ERepositoryObjectType.getAllTypesOfCodes()) {
@@ -190,18 +189,6 @@ public class AggregatorPomsHelper {
                             updateCodeProjectPom(monitor, codeType, codeProject.getProjectPom());
                             buildAndInstallCodesProject(monitor, codeType, true, forceBuild);
                             CodeM2CacheManager.updateCodeProjectCache(currentProject, codeType);
-                        }
-                    }
-                    for (ERepositoryObjectType codeType : ERepositoryObjectType.getAllTypesOfCodesJar()) {
-                        for (IRepositoryViewObject codeJarObj : factory.getAllCodesJars(codeType)) {
-                            Property property = codeJarObj.getProperty();
-                            ITalendProcessJavaProject codesJarProject = getCodesJarProject(property);
-                            if (ignoreM2Cache || CodesJarM2CacheManager.needUpdateCodesJarProject(currentProject, property)) {
-                                updateCodesJarProjectPom(monitor, property, codesJarProject.getProjectPom());
-                                // TODO see how to build and install...
-                                // buildAndInstallCodesJarProject(monitor, property, true, forceBuild);
-                                CodesJarM2CacheManager.updateCodesJarProjectCache(currentProject, property);
-                            }
                         }
                     }
                 } catch (Exception e) {
@@ -224,18 +211,6 @@ public class AggregatorPomsHelper {
         }
     }
 
-    // TODO check callers of updateCodeProjectPom()
-    public void updateCodesJarProjectPom(IProgressMonitor monitor, Property property, IFile pomFile) throws Exception {
-        ERepositoryObjectType type = ERepositoryObjectType.getItemType(property.getItem());
-        if (type != null) {
-            if (ERepositoryObjectType.ROUTINESJAR == type) {
-                createRoutinesJarPom(property, pomFile, monitor);
-            } else if (ERepositoryObjectType.BEANSJAR != null && ERepositoryObjectType.BEANSJAR == type) {
-                createBeansJarPom(property, pomFile, monitor);
-            }
-        }
-    }
-
     public static void updateAllCodesProjectNeededModules(IProgressMonitor monitor) {
         if (GlobalServiceRegister.getDefault().isServiceRegistered(ILibrariesService.class)
                 && GlobalServiceRegister.getDefault().isServiceRegistered(ILibraryManagerService.class)) {
@@ -243,6 +218,8 @@ public class AggregatorPomsHelper {
             ILibrariesService librariesService = GlobalServiceRegister.getDefault().getService(ILibrariesService.class);
             ERepositoryObjectType.getAllTypesOfCodes()
                     .forEach(c -> neededModules.addAll(librariesService.getCodesModuleNeededs(c)));
+            neededModules.addAll(librariesService.getAllCodesJarModuleNeededs());
+
             ILibraryManagerService repositoryBundleService = GlobalServiceRegister.getDefault()
                     .getService(ILibraryManagerService.class);
             repositoryBundleService.installModules(neededModules, monitor);
@@ -257,18 +234,6 @@ public class AggregatorPomsHelper {
 
     public void createBeansPom(IFile pomFile, IProgressMonitor monitor) throws Exception {
         CreateMavenBeanPom createTemplatePom = new CreateMavenBeanPom(pomFile);
-        createTemplatePom.setProjectName(projectTechName);
-        createTemplatePom.create(monitor);
-    }
-
-    public void createRoutinesJarPom(Property property, IFile pomFile, IProgressMonitor monitor) throws Exception {
-        CreateMavenRoutinesJarPom createTemplatePom = new CreateMavenRoutinesJarPom(property, pomFile);
-        createTemplatePom.setProjectName(projectTechName);
-        createTemplatePom.create(monitor);
-    }
-
-    public void createBeansJarPom(Property property, IFile pomFile, IProgressMonitor monitor) throws Exception {
-        CreateMavenBeansJarPom createTemplatePom = new CreateMavenBeansJarPom(property, pomFile);
         createTemplatePom.setProjectName(projectTechName);
         createTemplatePom.create(monitor);
     }
@@ -570,15 +535,30 @@ public class AggregatorPomsHelper {
         if (codeType == ERepositoryObjectType.ROUTINES) {
             return codesFolder.getFolder(DIR_ROUTINES);
         }
-
         if (codeType == ERepositoryObjectType.BEANS) {
             return codesFolder.getFolder(DIR_BEANS);
+        }
+        if (codeType == ERepositoryObjectType.ROUTINESJAR) {
+            return codesFolder.getFolder(DIR_ROUTINESJAR);
+        }
+        if (codeType == ERepositoryObjectType.BEANSJAR) {
+            return codesFolder.getFolder(DIR_BEANSJAR);
         }
         return null;
     }
 
     public IFolder getCodeSrcFolder(ERepositoryObjectType codeType) {
         return getCodeFolder(codeType).getFolder(MavenSystemFolders.JAVA.getPath());
+    }
+
+    public IFolder getCodesJarFolder(Property property) {
+        String codesJarName = property.getLabel();
+        ERepositoryObjectType type = ERepositoryObjectType.getItemType(property.getItem());
+        if (RoutinesUtil.isInnerCodes(property)) {
+            type = RoutinesUtil.getInnerCodeType(property);
+            codesJarName = RoutinesUtil.getCodesJarLabelByInnerCode(property.getItem());
+        }
+        return getCodeFolder(type).getFolder(codesJarName.toLowerCase());
     }
 
     public IFolder getProcessFolder(ERepositoryObjectType type) {
@@ -660,10 +640,6 @@ public class AggregatorPomsHelper {
                 ExceptionHandler.process(e);
             }
         }
-    }
-
-    public static String getCodeProjectId(ERepositoryObjectType codeType, String projectTechName) {
-        return projectTechName + "|" + codeType.name(); //$NON-NLS-1$
     }
 
     public static void checkJobPomCreation(ITalendProcessJavaProject jobProject) throws CoreException {
@@ -894,6 +870,7 @@ public class AggregatorPomsHelper {
         // codes pom
         monitor.subTask("Synchronize code poms"); //$NON-NLS-1$
         updateCodeProjects(monitor, true, true);
+        CodesJarM2CacheManager.updateCodesJarProject(monitor, true);
         monitor.worked(1);
         if (monitor.isCanceled()) {
             return;
@@ -960,6 +937,8 @@ public class AggregatorPomsHelper {
             if (ProcessUtils.isRequiredBeans(null)) {
                 modules.add(getModulePath(service.getTalendCodeJavaProject(ERepositoryObjectType.BEANS).getProjectPom()));
             }
+            CodesJarResourceCache.getAllCodesJar()
+                    .forEach(p -> getModulePath(service.getTalendCodesJarJavaProject(p).getProjectPom()));
         }
     }
 
@@ -995,15 +974,6 @@ public class AggregatorPomsHelper {
             IRunProcessService runProcessService =
                     (IRunProcessService) GlobalServiceRegister.getDefault().getService(IRunProcessService.class);
             return runProcessService.getTalendCodeJavaProject(codeType);
-        }
-        return null;
-    }
-
-    private static ITalendProcessJavaProject getCodesJarProject(Property property) {
-        if (GlobalServiceRegister.getDefault().isServiceRegistered(IRunProcessService.class)) {
-            IRunProcessService runProcessService = (IRunProcessService) GlobalServiceRegister.getDefault()
-                    .getService(IRunProcessService.class);
-            return runProcessService.getTalendCodesJarJavaProject(property);
         }
         return null;
     }

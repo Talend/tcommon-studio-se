@@ -25,7 +25,10 @@ import org.talend.core.model.general.Project;
 import org.talend.core.model.process.JobInfo;
 import org.talend.core.model.properties.Item;
 import org.talend.core.model.properties.Property;
+import org.talend.core.model.properties.RoutineItem;
+import org.talend.core.model.properties.RoutinesJarItem;
 import org.talend.core.model.repository.ERepositoryObjectType;
+import org.talend.core.model.routines.RoutinesUtil;
 import org.talend.core.model.utils.JavaResourcesHelper;
 import org.talend.core.repository.utils.ItemResourceUtil;
 import org.talend.core.runtime.maven.MavenConstants;
@@ -133,6 +136,9 @@ public class PomIdsHelper {
     }
 
     public static String getCodesJarGroupId(String projectTechName, Item item) {
+        if (!(item instanceof RoutinesJarItem)) {
+            return null;
+        }
         String baseName = TalendMavenConstants.DEFAULT_ROUTINESJAR;
         if (GlobalServiceRegister.getDefault().isServiceRegistered(ICamelDesignerCoreService.class)) {
             ICamelDesignerCoreService camelService = GlobalServiceRegister.getDefault()
@@ -141,6 +147,22 @@ public class PomIdsHelper {
                 baseName = TalendMavenConstants.DEFAULT_BEANSJAR;
             }
         }
+        return getCodesJarGroupId(projectTechName, baseName);
+    }
+
+    public static String getCodesJarGroupIdByInnerCode(String projectTechName, Item item) {
+        if (!(item instanceof RoutineItem)) {
+            return null;
+        }
+        String baseName = TalendMavenConstants.DEFAULT_ROUTINESJAR;
+        if (ERepositoryObjectType.BEANSJAR != null
+                && ERepositoryObjectType.BEANSJAR == RoutinesUtil.getInnerCodeType(item.getProperty())) {
+            baseName = TalendMavenConstants.DEFAULT_BEANSJAR;
+        }
+        return getCodesJarGroupId(projectTechName, baseName);
+    }
+
+    public static String getCodesJarGroupId(String projectTechName, String baseName) {
         return getCodesGroupId(projectTechName, baseName);
     }
 
