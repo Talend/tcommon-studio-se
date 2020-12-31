@@ -21,7 +21,6 @@ import org.talend.core.GlobalServiceRegister;
 import org.talend.core.model.general.ILibrariesService;
 import org.talend.core.model.general.ModuleNeeded;
 import org.talend.core.model.properties.Property;
-import org.talend.core.model.repository.ERepositoryObjectType;
 import org.talend.designer.maven.template.MavenTemplateManager;
 
 public class CreateMavenRoutinesJarPom extends AbstractMavenCodesTemplatePom {
@@ -44,8 +43,14 @@ public class CreateMavenRoutinesJarPom extends AbstractMavenCodesTemplatePom {
         if (GlobalServiceRegister.getDefault().isServiceRegistered(ILibrariesService.class)) {
             ILibrariesService libService = (ILibrariesService) GlobalServiceRegister.getDefault().getService(
                     ILibrariesService.class);
-            runningModules.addAll(libService.getCodesModuleNeededs(ERepositoryObjectType.ROUTINESJAR));
+            runningModules.addAll(libService.getCodesJarModuleNeededs(property));
         }
         return runningModules;
     }
+
+    @Override
+    protected boolean ignoreModuleInstallationStatus() {
+        return true;
+    }
+
 }

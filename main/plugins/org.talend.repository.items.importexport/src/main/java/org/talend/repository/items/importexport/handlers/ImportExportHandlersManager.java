@@ -67,6 +67,7 @@ import org.talend.core.repository.model.ProxyRepositoryFactory;
 import org.talend.core.runtime.CoreRuntimePlugin;
 import org.talend.core.ui.IJobletProviderService;
 import org.talend.designer.maven.tools.AggregatorPomsHelper;
+import org.talend.designer.maven.tools.CodesJarM2CacheManager;
 import org.talend.repository.ProjectManager;
 import org.talend.repository.RepositoryWorkUnit;
 import org.talend.repository.documentation.ERepositoryActionName;
@@ -995,7 +996,9 @@ public class ImportExportHandlersManager {
             repositoryWorkUnit.setUnloadResourcesAfterRun(true);
             ProxyRepositoryFactory.getInstance().executeRepositoryWorkUnit(repositoryWorkUnit);
 
-            new AggregatorPomsHelper().updateCodeProjects(new NullProgressMonitor());
+            IProgressMonitor monitor = new NullProgressMonitor();
+            new AggregatorPomsHelper().updateCodeProjects(monitor);
+            CodesJarM2CacheManager.updateCodesJarProject(monitor);
             
             progressMonitor.done();
 

@@ -10,18 +10,13 @@
 // 9 rue Pages 92150 Suresnes, France
 //
 // ============================================================================
-package org.talend.core.model.routines;
-
-import java.util.Vector;
+package org.talend.core.runtime.services;
 
 import org.talend.core.IService;
+import org.talend.core.model.properties.RoutineItem;
 
-/**
- *
- * qli class global comment. Detailled comment
- */
-public interface IRoutinesService extends IService {
+public interface IDesignerMavenService extends IService {
 
-    public Vector getAccents();
+    String getCodesJarPackageByInnerCode(RoutineItem innerCodeItem);
 
 }
