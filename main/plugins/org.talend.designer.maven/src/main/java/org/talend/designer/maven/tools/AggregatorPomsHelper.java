@@ -559,7 +559,7 @@ public class AggregatorPomsHelper {
             type = RoutinesUtil.getInnerCodeType(property);
             codesJarName = RoutinesUtil.getCodesJarLabelByInnerCode(property.getItem());
         }
-        return getCodeFolder(type).getFolder(codesJarName.toLowerCase());
+        return getCodeFolder(type).getFolder(codesJarName);
     }
 
     public IFolder getProcessFolder(ERepositoryObjectType type) {
@@ -943,7 +943,7 @@ public class AggregatorPomsHelper {
             if (ProcessUtils.isRequiredBeans(null)) {
                 modules.add(getModulePath(service.getTalendCodeJavaProject(ERepositoryObjectType.BEANS).getProjectPom()));
             }
-            CodesJarResourceCache.getAllCodesJar()
+            CodesJarResourceCache.getAllCodesJars()
                     .forEach(p -> getModulePath(service.getTalendCodesJarJavaProject(p).getProjectPom()));
         }
     }

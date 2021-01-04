@@ -44,6 +44,7 @@ import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IPath;
 import org.eclipse.core.runtime.IProgressMonitor;
+import org.eclipse.core.runtime.NullProgressMonitor;
 import org.eclipse.core.runtime.Path;
 import org.eclipse.emf.common.util.EList;
 import org.eclipse.m2e.core.MavenPlugin;
@@ -248,8 +249,8 @@ public class CodesJarM2CacheManager {
             @Override
             protected void run() {
                 Set<Property> toUpdate = new HashSet<>();
-                CodesJarResourceCache.getAllCodesJar().forEach(p -> {
-                    ITalendProcessJavaProject codesJarProject = getCodesJarProject(p);
+                CodesJarResourceCache.getAllCodesJars().forEach(p -> {
+                    ITalendProcessJavaProject codesJarProject = getRunProcessService().getTalendCodesJarJavaProject(p);
                     if (forceBuild || needUpdateCodesJarProject(p)) {
                         if (regeneratePom) {
                             try {
@@ -276,9 +277,9 @@ public class CodesJarM2CacheManager {
                 // 2. build all others here, don't need build cache
                 // both solutions need to build those in threads, question is, can eclipse build projects in thread?
                 if (buildInMain) {
-                    CodesJarResourceCache.getAllCodesJar().stream()
+                    CodesJarResourceCache.getAllCodesJars().stream()
                             .filter(p -> !toUpdate.contains(p) && ProjectManager.getInstance().isInCurrentMainProject(p))
-                            .forEach(p -> getCodesJarProject(p).buildWholeCodeProject());
+                            .forEach(p -> getRunProcessService().getTalendCodesJarJavaProject(p).buildWholeCodeProject());
                 }
             }
         };
@@ -287,7 +288,7 @@ public class CodesJarM2CacheManager {
     }
 
     // TODO to build in parallel
-    private static void TODO(IProgressMonitor monitor, List<IProject> projects) throws CoreException {
+    private static void parallelBuild(IProgressMonitor monitor, List<IProject> projects) throws CoreException {
         Set<IBuildConfiguration> configs = new HashSet<>(3);
         for (IProject project : projects) {
             try {
@@ -304,9 +305,20 @@ public class CodesJarM2CacheManager {
         // workspace.getBuildManager().buildParallel(configs, requestedConfigs, trigger, buildJobGroup, monitor);
     }
 
+    public static void updateCodesJarProject(Property property) throws Exception {
+        IProgressMonitor monitor = new NullProgressMonitor();
+        ITalendProcessJavaProject codesJarProject = getRunProcessService().getTalendCodesJarJavaProject(property);
+        updateCodesJarProjectPom(monitor, property, codesJarProject.getProjectPom());
+        codesJarProject.buildWholeCodeProject();
+        Set<Property> set = new HashSet<>();
+        set.add(property);
+        install(set, monitor);
+    }
+
     private static void install(Set<Property> toUpdate, IProgressMonitor monitor) throws Exception {
         IFile pomFile = createBuildAggregatorPom(toUpdate);
-        Set<ITalendProcessJavaProject> projects = toUpdate.stream().map(p -> getCodesJarProject(p)).collect(Collectors.toSet());
+        Set<ITalendProcessJavaProject> projects = toUpdate.stream()
+                .map(p -> getRunProcessService().getTalendCodesJarJavaProject(p)).collect(Collectors.toSet());
         try {
             for (ITalendProcessJavaProject project : projects) {
                 Model model = MavenPlugin.getMavenModelManager().readMavenModel(project.getProjectPom());
@@ -379,11 +391,9 @@ public class CodesJarM2CacheManager {
         return StringUtils.isNotBlank(modifiedDate) ? modifiedDate : EMPTY_DATE;
     }
 
-    private static ITalendProcessJavaProject getCodesJarProject(Property property) {
+    private static IRunProcessService getRunProcessService() {
         if (GlobalServiceRegister.getDefault().isServiceRegistered(IRunProcessService.class)) {
-            IRunProcessService runProcessService = (IRunProcessService) GlobalServiceRegister.getDefault()
-                    .getService(IRunProcessService.class);
-            return runProcessService.getTalendCodesJarJavaProject(property);
+            return (IRunProcessService) GlobalServiceRegister.getDefault().getService(IRunProcessService.class);
         }
         return null;
     }
