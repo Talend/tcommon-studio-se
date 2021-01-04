@@ -103,6 +103,7 @@ public final class SupportDBUrlStore {
         supportDBUrlMap.put(SupportDBUrlType.REDSHIFT_SSO.getDBKey(), SupportDBUrlType.REDSHIFT_SSO);
         supportDBUrlMap.put(SupportDBUrlType.EXASOL.getDBKey(), SupportDBUrlType.EXASOL);
         supportDBUrlMap.put(SupportDBUrlType.AMAZONAURORA.getDBKey(), SupportDBUrlType.AMAZONAURORA);
+        supportDBUrlMap.put(SupportDBUrlType.SAPHANA.getDBKey(), SupportDBUrlType.SAPHANA);
 
         // MOD mzhao bug 12313, 2010-04-02 There is not dbType in prv files before 4.0 release, here use driver class
         // name
@@ -148,6 +149,7 @@ public final class SupportDBUrlStore {
         supportDiverNameDBUrlMap.put(SupportDBUrlType.VERTICA2.getDbDriver(), SupportDBUrlType.VERTICA2);
         supportDiverNameDBUrlMap.put(SupportDBUrlType.REDSHIFT.getDbDriver(), SupportDBUrlType.REDSHIFT);
         supportDiverNameDBUrlMap.put(SupportDBUrlType.EXASOL.getDbDriver(), SupportDBUrlType.EXASOL);
+        supportDiverNameDBUrlMap.put(SupportDBUrlType.SAPHANA.getDbDriver(), SupportDBUrlType.SAPHANA);
 
         // ~12313
     }

@@ -54,19 +54,13 @@
 		</dependency>
 		<dependency>
 			<groupId>org.talend.studio</groupId>
-			<artifactId>maven-bundle-plugin-2-3-7-tos</artifactId>
+			<artifactId>maven-bundle-plugin-5-1-1-tos</artifactId>
 			<version>${project.version}</version>
 			<type>pom</type>
 		</dependency>
 		<dependency>
 			<groupId>org.talend.studio</groupId>
-			<artifactId>maven-bundle-plugin-2-5-3-tos</artifactId>
-			<version>${project.version}</version>
-			<type>pom</type>
-		</dependency>
-		<dependency>
-			<groupId>org.talend.studio</groupId>
-			<artifactId>maven-install-plugin-2-5-1-tos</artifactId>
+			<artifactId>maven-install-plugin-2-5-2-tos</artifactId>
 			<version>${project.version}</version>
 			<type>pom</type>
 		</dependency>
@@ -82,12 +76,6 @@
             <version>${project.version}</version>
             <type>pom</type>
         </dependency>
-		<dependency>
-			<groupId>org.talend.studio</groupId>
-			<artifactId>karaf-maven-plugin-4-2-10-tos</artifactId>
-			<version>${project.version}</version>
-			<type>pom</type>
-		</dependency>
 		<dependency>
 			<groupId>org.talend.studio</groupId>
 			<artifactId>karaf-maven-plugin-4-2-10-tos</artifactId>
