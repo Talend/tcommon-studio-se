@@ -38,6 +38,7 @@ import org.talend.core.model.repository.ERepositoryObjectType;
 import org.talend.core.model.repository.IRepositoryViewObject;
 import org.talend.core.prefs.ITalendCorePrefConstants;
 import org.talend.core.runtime.CoreRuntimePlugin;
+import org.talend.core.utils.CodesJarResourceCache;
 import org.talend.designer.codegen.ICodeGeneratorService;
 import org.talend.designer.codegen.ITalendSynchronizer;
 import org.talend.designer.core.IDesignerCoreService;
@@ -46,7 +47,6 @@ import org.talend.designer.core.model.utils.emf.talendfile.RoutinesParameterType
 import org.talend.designer.core.model.utils.emf.talendfile.TalendFileFactory;
 import org.talend.repository.ProjectManager;
 import org.talend.repository.model.IProxyRepositoryFactory;
-import org.talend.repository.model.IProxyRepositoryService;
 
 /**
  * ggu class global comment. Detailled comment
@@ -385,19 +385,10 @@ public final class RoutinesUtil {
     }
 
     public static RoutinesJarItem getCodesJarItemByInnerCode(RoutineItem routineItem) throws PersistenceException {
-        if (GlobalServiceRegister.getDefault().isServiceRegistered(IProxyRepositoryService.class)) {
-            IProxyRepositoryService service = GlobalServiceRegister.getDefault().getService(IProxyRepositoryService.class);
-            IProxyRepositoryFactory factory = service.getProxyRepositoryFactory();
-            Project project = ProjectManager.getInstance()
-                    .getProjectFromProjectTechLabel(ProjectManager.getInstance().getProject(routineItem).getTechnicalLabel());
-            List<IRepositoryViewObject> allCodesJars = factory.getAllCodesJars(project,
-                    getInnerCodeType(routineItem.getProperty()));
-            String codesJarName = getCodesJarLabelByInnerCode(routineItem);
-            IRepositoryViewObject obj = allCodesJars.stream().filter(o -> o.getProperty().getLabel().equals(codesJarName))
-                    .findFirst().get();
-            return (RoutinesJarItem) obj.getProperty().getItem();
-        }
-        return null;
+        String codesJarName = getCodesJarLabelByInnerCode(routineItem);
+        Property property = CodesJarResourceCache.getAllCodesJars().stream().filter(p -> p.getLabel().equals(codesJarName))
+                .findFirst().get();
+        return (RoutinesJarItem) property.getItem();
     }
 
     public static String getCodesJarLabelByInnerCode(Item innerCodeItem) {

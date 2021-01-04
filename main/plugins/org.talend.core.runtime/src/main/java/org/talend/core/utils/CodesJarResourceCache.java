@@ -1,6 +1,5 @@
 package org.talend.core.utils;
 
-import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 import java.util.ArrayList;
 import java.util.HashSet;
@@ -13,19 +12,13 @@ import org.talend.commons.exception.ExceptionHandler;
 import org.talend.commons.exception.PersistenceException;
 import org.talend.core.GlobalServiceRegister;
 import org.talend.core.model.general.Project;
-import org.talend.core.model.properties.Item;
 import org.talend.core.model.properties.Property;
 import org.talend.core.model.repository.ERepositoryObjectType;
 import org.talend.core.model.repository.IRepositoryViewObject;
+import org.talend.designer.runprocess.IRunProcessService;
 import org.talend.repository.ProjectManager;
-import org.talend.repository.documentation.ERepositoryActionName;
 import org.talend.repository.model.IProxyRepositoryFactory;
 import org.talend.repository.model.IProxyRepositoryService;
-
-/**
- * !!!FIXME!!! Should maintain this cache for any case when A/D/M codesJars. check callers of
- * {@link ProxyRepositoryFactory} getAllCodeJars to replace
- */
 
 public class CodesJarResourceCache {
 
@@ -59,13 +52,7 @@ public class CodesJarResourceCache {
         }
     }
 
-    public static void addCodesJarCache(Property property) {
-        synchronized (LOCK) {
-            CACHE.add(property);
-        }
-    }
-
-    public static Set<Property> getAllCodesJar() {
+    public static Set<Property> getAllCodesJars() {
         synchronized (LOCK) {
             return new HashSet<>(CACHE);
         }
@@ -91,6 +78,48 @@ public class CodesJarResourceCache {
         }
     }
 
+    public static void addToCache(Property newProperty) {
+        synchronized (LOCK) {
+            Iterator<Property> iterator = CACHE.iterator();
+            while (iterator.hasNext()) {
+                Property oldProperty = iterator.next();
+                if (newProperty.getId().equals(oldProperty.getLabel()) && newProperty.getLabel().equals(oldProperty.getLabel())
+                        && newProperty.getVersion().equals(oldProperty.getVersion())) {
+                    iterator.remove();
+                }
+            }
+            CACHE.add(newProperty);
+        }
+    }
+
+    public static void updateCache(String oldId, String oldLabel, String oldVersion, Property newProperty) {
+        synchronized (LOCK) {
+            Iterator<Property> iterator = CACHE.iterator();
+            while (iterator.hasNext()) {
+                Property oldProperty = iterator.next();
+                if ((oldId == null || (oldId != null && oldId.equals(oldProperty.getId())))
+                        && oldLabel.equals(oldProperty.getLabel())
+                        && oldVersion.equals(oldProperty.getVersion())) {
+                    iterator.remove();
+                }
+            }
+            CACHE.add(newProperty);
+        }
+    }
+
+    public static void removeCache(Property property) {
+        synchronized (LOCK) {
+            Iterator<Property> iterator = CACHE.iterator();
+            while (iterator.hasNext()) {
+                Property oldProperty = iterator.next();
+                if (oldProperty.getId().equals(property.getId()) && oldProperty.getLabel().equals(property.getLabel())
+                        && oldProperty.getVersion().equals(property.getVersion())) {
+                    iterator.remove();
+                }
+            }
+        }
+    }
+
     private static IProxyRepositoryFactory getProxyRepositoryFactory() {
         if (GlobalServiceRegister.getDefault().isServiceRegistered(IProxyRepositoryService.class)) {
             return GlobalServiceRegister.getDefault().getService(IProxyRepositoryService.class).getProxyRepositoryFactory();
@@ -103,113 +132,12 @@ public class CodesJarResourceCache {
             synchronized (LOCK) {
                 if (!isListenerAdded) {
                     if (listener == null) {
-                        listener = new PropertyChangeListener() {
-
-                            @Override
-                            public void propertyChange(PropertyChangeEvent event) {
-                                String propertyName = event.getPropertyName();
-                                Object oldValue = event.getOldValue();
-                                Object newValue = event.getNewValue();
-                                if (propertyName.equals(ERepositoryActionName.PROPERTIES_CHANGE.getName())) {
-                                    casePropertiesChange(oldValue, newValue);
-                                } else if (propertyName.equals(ERepositoryActionName.DELETE_FOREVER.getName())
-                                        || propertyName.equals(ERepositoryActionName.DELETE_TO_RECYCLE_BIN.getName())) {
-                                    caseDelete(newValue);
-                                } else if (propertyName.equals(ERepositoryActionName.SAVE.getName())
-                                        || propertyName.equals(ERepositoryActionName.CREATE.getName())) {
-                                    caseCreateOrSave(newValue);
-                                } else if (propertyName.equals(ERepositoryActionName.IMPORT.getName())) {
-                                    caseImport(propertyName, newValue);
-                                } else if (propertyName.equals(ERepositoryActionName.RESTORE.getName())) {
-                                    caseRestore(newValue);
-                                }
-                            }
-
-                            private void casePropertiesChange(Object oldValue, Object newValue) {
-                                if (oldValue instanceof String[] && newValue instanceof Property) {
-                                    Property property = (Property) newValue;
-                                    if (!needUpdate(property.getItem())) {
-                                        return;
-                                    }
-                                    String[] oldFields = (String[]) oldValue;
-                                    String oldName = oldFields[0];
-                                    String oldVersion = oldFields[1];
-                                    Iterator<Property> iterator = getAllCodesJar().iterator();
-                                    while (iterator.hasNext()) {
-                                        Property oldProperty = iterator.next();
-                                        if (oldProperty.getLabel().equals(oldName)
-                                                && oldProperty.getVersion().equals(oldVersion)) {
-                                            iterator.remove();
-                                        }
-                                    }
-                                    getAllCodesJar().add(property);
-                                }
-                            }
-
-                            private void caseDelete(Object newValue) {
-                                if (newValue instanceof IRepositoryViewObject) {
-                                    Property property = ((IRepositoryViewObject) newValue).getProperty();
-                                    if (needUpdate(property.getItem())) {
-                                        Iterator<Property> iterator = getAllCodesJar().iterator();
-                                        while (iterator.hasNext()) {
-                                            Property oldProperty = iterator.next();
-                                            if (oldProperty.getId().equals(property.getId())
-                                                    && oldProperty.getLabel().equals(property.getLabel())
-                                                    && oldProperty.getVersion().equals(property.getVersion())) {
-                                                iterator.remove();
-                                            }
-                                        }
-                                    }
-                                }
-                            }
-
-                            private void caseCreateOrSave(Object newValue) {
-                                if (newValue instanceof Item) {
-                                    Item item = (Item) newValue;
-                                    updateCache(item.getProperty());
-                                }
-                            }
-
-                            private void caseImport(String propertyName, Object newValue) {
-                                if (newValue instanceof Set) {
-                                    Set<Item> importItems = (Set<Item>) newValue;
-                                    importItems.forEach(item -> updateCache(item.getProperty()));
-                                }
-                            }
-
-                            private void caseRestore(Object newValue) {
-                                if (newValue instanceof IRepositoryViewObject) {
-                                    IRepositoryViewObject object = (IRepositoryViewObject) newValue;
-                                    updateCache(object.getProperty());
-                                }
-                            }
-
-                            private void updateCache(Property property) {
-                                if (needUpdate(property.getItem())) {
-                                    Iterator<Property> iterator = getAllCodesJar().iterator();
-                                    while (iterator.hasNext()) {
-                                        Property oldProperty = iterator.next();
-                                        if (oldProperty.getId().equals(property.getId())
-                                                && oldProperty.getLabel().equals(property.getLabel())
-                                                && oldProperty.getVersion().equals(property.getVersion())) {
-                                            iterator.remove();
-                                        }
-                                    }
-                                    getAllCodesJar().add(property);
-                                }
-                            }
-
-                            private boolean needUpdate(Item item) {
-                                ERepositoryObjectType type = ERepositoryObjectType.getItemType(item);
-                                if (type != null) {
-                                    return ERepositoryObjectType.getAllTypesOfCodesJar().contains(type);
-                                }
-                                return false;
-                            }
-                        };
+                        if (GlobalServiceRegister.getDefault().isServiceRegistered(IRunProcessService.class)) {
+                            IRunProcessService service = GlobalServiceRegister.getDefault().getService(IRunProcessService.class);
+                            listener = service.addCodesJarChangeListener();
+                            isListenerAdded = true;
+                        }
                     }
-                    getProxyRepositoryFactory().addPropertyChangeListener(listener);
-                    isListenerAdded = true;
                 }
             }
         }

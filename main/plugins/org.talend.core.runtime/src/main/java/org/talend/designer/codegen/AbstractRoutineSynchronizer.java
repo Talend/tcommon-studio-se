@@ -54,6 +54,7 @@ import org.talend.core.runtime.repository.item.ItemProductKeys;
 import org.talend.core.runtime.services.IDesignerMavenService;
 import org.talend.core.runtime.util.ItemDateParser;
 import org.talend.core.ui.branding.IBrandingService;
+import org.talend.core.utils.CodesJarResourceCache;
 import org.talend.designer.core.ICamelDesignerCoreService;
 import org.talend.designer.runprocess.IRunProcessService;
 import org.talend.repository.ProjectManager;
@@ -266,19 +267,14 @@ public abstract class AbstractRoutineSynchronizer implements ITalendSynchronizer
 
     protected void syncInnerCodeItems(boolean forceUpdate) throws SystemException {
         IProxyRepositoryFactory factory = getRepositoryService().getProxyRepositoryFactory();
-        List<Project> allProjects = ProjectManager.getInstance().getAllReferencedProjects(true);
-        allProjects.add(ProjectManager.getInstance().getCurrentProject());
-        for (Project project : allProjects) {
-            for (ERepositoryObjectType codesJarType : ERepositoryObjectType.getAllTypesOfCodesJar()) {
-                List<IRepositoryViewObject> codesJarObjects = factory.getAllCodesJars(project, codesJarType);
-                for (IRepositoryViewObject codesJarObj : codesJarObjects) {
-                    List<IRepositoryViewObject> innerCodesObjects = factory.getAllInnerCodes(project, codesJarType,
-                            codesJarObj.getProperty());
-                    for (IRepositoryViewObject codesObj : innerCodesObjects) {
-                        RoutineItem codeItem = (RoutineItem) codesObj.getProperty().getItem();
-                        syncRoutine(codeItem, null, true, forceUpdate);
-                    }
-                }
+        for (Property property : CodesJarResourceCache.getAllCodesJars()) {
+            Project project = ProjectManager.getInstance()
+                    .getProjectFromProjectTechLabel(ProjectManager.getInstance().getProject(property).getTechnicalLabel());
+            ERepositoryObjectType codesJarType = ERepositoryObjectType.getItemType(property.getItem());
+            List<IRepositoryViewObject> innerCodesObjects = factory.getAllInnerCodes(project, codesJarType, property);
+            for (IRepositoryViewObject codesObj : innerCodesObjects) {
+                RoutineItem codeItem = (RoutineItem) codesObj.getProperty().getItem();
+                syncRoutine(codeItem, null, true, forceUpdate);
             }
         }
     }

@@ -12,6 +12,7 @@
 // ============================================================================
 package org.talend.designer.runprocess;
 
+import java.beans.PropertyChangeListener;
 import java.util.List;
 import java.util.Set;
 
@@ -218,6 +219,12 @@ public interface IRunProcessService extends IService {
     ITalendProcessJavaProject getTalendCodesJarJavaProject(Property property);
 
     ITalendProcessJavaProject getTalendJobJavaProject(Property property);
+
+    ITalendProcessJavaProject getExistingTalendJobProject(Property property);
+
+    ITalendProcessJavaProject getExistingTalendCodesJarProject(String codesJarProjectId);
+
+    PropertyChangeListener addCodesJarChangeListener();
 
     IFolder getCodeSrcFolder(ERepositoryObjectType type, String projectTechName);
 

@@ -42,11 +42,9 @@ import org.eclipse.m2e.core.project.ProjectImportConfiguration;
 import org.osgi.service.prefs.BackingStoreException;
 import org.talend.commons.exception.ExceptionHandler;
 import org.talend.commons.utils.generation.JavaUtils;
-import org.talend.core.GlobalServiceRegister;
 import org.talend.designer.maven.model.MavenSystemFolders;
 import org.talend.designer.maven.model.ProjectSystemFolder;
 import org.talend.designer.maven.model.TalendMavenConstants;
-import org.talend.designer.runprocess.IRunProcessService;
 
 /**
  * DOC zwxue class global comment. Detailled comment
@@ -94,12 +92,8 @@ public class MavenProjectUtils {
             return;
         }
         MavenPlugin.getProjectConfigurationManager().updateProjectConfiguration(project, monitor);
-        if (GlobalServiceRegister.getDefault().isServiceRegistered(IRunProcessService.class)) {
-            IRunProcessService service = (IRunProcessService) GlobalServiceRegister.getDefault().getDefault()
-                    .getService(IRunProcessService.class);
 
-            changeClasspath(monitor, project, MavenSystemFolders.ALL_DIRS_EXT);
-        }
+        changeClasspath(monitor, project, MavenSystemFolders.ALL_DIRS_EXT);
 
         // only need this when pom has no parent.
         // IJavaProject javaProject = JavaCore.create(project);

@@ -1080,7 +1080,7 @@ public class ModulesNeededProvider {
      */
     public static Set<ModuleNeeded> getAllCodesJarModuleNeededs() {
         Set<ModuleNeeded> modules = new HashSet<>();
-        CodesJarResourceCache.getAllCodesJar().forEach(p -> modules.addAll(createModuleNeededFromCodeItem(p.getItem())));
+        CodesJarResourceCache.getAllCodesJars().forEach(p -> modules.addAll(createModuleNeededFromCodeItem(p.getItem())));
         return modules;
     }
 
