@@ -14,7 +14,7 @@ package org.talend.commons.ui.runtime.swt.celleditor;
 
 import java.text.MessageFormat;
 
-import org.eclipse.jface.util.Assert;
+import org.eclipse.core.runtime.Assert;
 import org.eclipse.jface.viewers.CellEditor;
 import org.eclipse.jface.viewers.ComboBoxCellEditor;
 import org.eclipse.swt.SWT;
