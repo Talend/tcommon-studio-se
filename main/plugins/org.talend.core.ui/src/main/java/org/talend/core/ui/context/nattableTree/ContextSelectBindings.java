@@ -14,10 +14,10 @@ package org.talend.core.ui.context.nattableTree;
 
 import org.eclipse.nebula.widgets.nattable.NatTable;
 import org.eclipse.nebula.widgets.nattable.data.IDataProvider;
-import org.eclipse.nebula.widgets.nattable.edit.action.CellEditDragMode;
 import org.eclipse.nebula.widgets.nattable.edit.action.MouseEditAction;
 import org.eclipse.nebula.widgets.nattable.edit.config.DefaultEditBindings;
 import org.eclipse.nebula.widgets.nattable.layer.LabelStack;
+import org.eclipse.nebula.widgets.nattable.selection.action.CellSelectionDragMode;
 import org.eclipse.nebula.widgets.nattable.ui.binding.UiBindingRegistry;
 import org.eclipse.nebula.widgets.nattable.ui.matcher.CellEditorMouseEventMatcher;
 import org.eclipse.swt.events.MouseEvent;
@@ -53,6 +53,6 @@ public class ContextSelectBindings extends DefaultEditBindings {
 
         };
         pUiBindingRegistry.registerSingleClickBinding(mouseEventMatcher, new MouseEditAction());
-        pUiBindingRegistry.registerFirstMouseDragMode(mouseEventMatcher, new CellEditDragMode());
+        pUiBindingRegistry.registerFirstMouseDragMode(mouseEventMatcher, new CellSelectionDragMode());
     }
 }

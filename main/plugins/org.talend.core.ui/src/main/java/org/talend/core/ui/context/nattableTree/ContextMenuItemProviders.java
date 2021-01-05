@@ -37,7 +37,7 @@ import org.talend.core.ui.i18n.Messages;
  * created by ldong on Aug 14, 2014 Detailled comment
  *
  */
-public class ContextMenuItemProviders extends MenuItemProviders {
+public class ContextMenuItemProviders {
 
     // the item of change the context parameter's mode such as from repositroy to build-in
     public static IMenuItemProvider changeModeMenuItemProvider(final IDataProvider dataProvider,
@@ -122,7 +122,7 @@ public class ContextMenuItemProviders extends MenuItemProviders {
     }
 
     private static ContextTreeNode getTreeNodeByRightClickPostion(final IDataProvider dataProvider, SelectionEvent e) {
-        NatEventData natEventData = getNatEventData(e);
+        NatEventData natEventData = MenuItemProviders.getNatEventData(e);
         NatTable nt = natEventData.getNatTable();
         int rowPosition = natEventData.getRowPosition();
         int rowIndex = nt.getRowIndexByPosition(rowPosition);

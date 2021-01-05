@@ -15,13 +15,13 @@ package org.talend.core.ui.advanced.composite;
 import java.util.HashMap;
 import java.util.Map;
 
+import org.eclipse.core.text.StringMatcher;
 import org.eclipse.jface.viewers.AbstractTreeViewer;
 import org.eclipse.jface.viewers.ILabelProvider;
 import org.eclipse.jface.viewers.ITreeContentProvider;
 import org.eclipse.jface.viewers.StructuredViewer;
 import org.eclipse.jface.viewers.Viewer;
 import org.eclipse.jface.viewers.ViewerFilter;
-import org.eclipse.ui.internal.misc.StringMatcher;
 
 /**
  * DOC ggu class global comment. Detailled comment

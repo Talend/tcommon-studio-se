@@ -644,11 +644,6 @@ public class ContextTreeTable {
             super(treeList);
         }
 
-        @Override
-        public String formatDataForDepth(int depth, ContextTreeNode object) {
-            return object.getName();
-        }
-
     }
 
     private static class ContextExpansionModel implements TreeList.ExpansionModel<ContextTreeNode> {
