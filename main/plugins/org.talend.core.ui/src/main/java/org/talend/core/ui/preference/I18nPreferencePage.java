@@ -40,6 +40,7 @@ import org.eclipse.ui.IWorkbench;
 import org.eclipse.ui.IWorkbenchPreferencePage;
 import org.eclipse.ui.PlatformUI;
 import org.talend.commons.ui.runtime.exception.ExceptionHandler;
+import org.talend.commons.ui.runtime.update.PreferenceKeys;
 import org.talend.commons.ui.runtime.utils.ZipFileUtils;
 import org.talend.commons.ui.swt.advanced.dataeditor.LabelFieldEditor;
 import org.talend.commons.ui.utils.workbench.preferences.OneLineComboFieldEditor;
@@ -540,6 +541,7 @@ public abstract class I18nPreferencePage extends FieldEditorPreferencePage imple
         boolean ok = super.performOk();
         saveLanguageType();
         CorePlugin.getDefault().savePluginPreferences();
+        PlatformUI.getPreferenceStore().setValue(PreferenceKeys.NEED_OSGI_CLEAN, true);
         if (isBabiliButtonClicked) {
             refreshAll();
         }
@@ -557,6 +559,13 @@ public abstract class I18nPreferencePage extends FieldEditorPreferencePage imple
     protected void performApply() {
         saveLanguageType();
         CorePlugin.getDefault().savePluginPreferences();
+        PlatformUI.getPreferenceStore().setValue(PreferenceKeys.NEED_OSGI_CLEAN, true);
+    }
+
+    @Override
+    protected void performDefaults() {
+        super.performDefaults();
+        PlatformUI.getPreferenceStore().setValue(PreferenceKeys.NEED_OSGI_CLEAN, true);
     }
 
     /**

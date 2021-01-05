@@ -31,6 +31,7 @@ import org.talend.librariesmanager.ui.actions.DownloadExternalJarAction;
 import org.talend.librariesmanager.ui.actions.ExportCustomSettingsAction;
 import org.talend.librariesmanager.ui.actions.ImportCustomSettingsAction;
 import org.talend.librariesmanager.ui.actions.ImportExternalJarAction;
+import org.talend.librariesmanager.ui.actions.ShareLibsAction;
 
 /**
  * DOC nrousseau class global comment. Detailled comment <br/>
@@ -132,6 +133,12 @@ public class ModulesView extends ViewPart {
         manager.add(importAction);
         DownloadExternalJarAction downloadAcion = new DownloadExternalJarAction(this);
         manager.add(downloadAcion);
+
+        ShareLibsAction shareAction = new ShareLibsAction();
+        if (shareAction.show()) {
+            manager.add(shareAction);
+        }
+
         return;
     }
 
