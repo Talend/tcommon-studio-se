@@ -560,10 +560,10 @@ public class ContextUtils {
                 return false;
             }
             if (sourceParam.getPrompt() == null) {
-                sourceParam.setPrompt(""); //$NON-NLS-1$
+                sourceParam.setPrompt(sourceParam.getName() + "?"); //$NON-NLS-1$
             }
             if (targetParamType.getPrompt() == null) {
-                targetParamType.setPrompt(""); //$NON-NLS-1$
+                targetParamType.setPrompt(targetParamType.getName() + "?"); //$NON-NLS-1$
             }
             if (!sourceParam.getPrompt().equals(targetParamType.getPrompt())) {
                 return false;
