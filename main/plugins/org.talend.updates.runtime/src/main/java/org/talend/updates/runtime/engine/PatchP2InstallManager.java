@@ -101,7 +101,7 @@ public class PatchP2InstallManager {
         toInstall.stream().forEach(iu -> {
             if (installedBundles.contains(iu.getId()) || extraBundles.containsKey(iu.getId())) {
                 validInstall.add(iu);
-            } else {
+            } else if (!iu.getId().startsWith("PATCH.Patch_")){
                 invalidInstall.add(iu);
                 if (invalidBundleInfoList != null) {
                     invalidBundleInfoList.add(iu.toString());
