@@ -101,7 +101,7 @@ public class PatchP2InstallManager {
         toInstall.stream().forEach(iu -> {
             if (installedBundles.contains(iu.getId()) || extraBundles.containsKey(iu.getId())) {
                 validInstall.add(iu);
-            } else {
+            } else if (!iu.getId().startsWith("PATCH.Patch_")){
                 invalidInstall.add(iu);
                 if (invalidBundleInfoList != null) {
                     invalidBundleInfoList.add(iu.toString());
@@ -125,7 +125,7 @@ public class PatchP2InstallManager {
         }
         provisioningJob.setPhaseSet(talendPhaseSet);
         IStatus status = provisioningJob.run(monitor);
-        log.info("provisionning status is :" + status);
+        log.debug("provisionning status is :" + status);
         if (status != null) {
             switch (status.getSeverity()) {
             case IStatus.OK:
