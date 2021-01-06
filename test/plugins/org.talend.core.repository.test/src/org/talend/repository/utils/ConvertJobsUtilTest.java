@@ -62,4 +62,23 @@ public class ConvertJobsUtilTest {
         assertEquals("Spark", ConvertJobsUtil.getCleanFrameworkName("Spark (Deprecated)"));
         assertEquals("Spark", ConvertJobsUtil.getCleanFrameworkName("Spark"));
     }
+    
+    @Test
+    public void testgetTestCaseJobTypeByPath() {
+        // mock
+        Property property = PropertiesFactory.eINSTANCE.createProperty();
+        Item item = PropertiesFactory.eINSTANCE.createProcessItem();
+        String id = EcoreUtil.generateUUID();
+        property.setId(id);
+        item.setProperty(property);
+        item.getProperty();
+        IPath path1 =  ConvertJobsUtil.getTestCasePath(item, JobType.STANDARD.getDisplayName());
+        assertEquals(JobType.STANDARD.getDisplayName(), ConvertJobsUtil.getTestCaseJobTypeByPath(path1.toOSString()));
+        
+        path1 =  ConvertJobsUtil.getTestCasePath(item, JobType.BIGDATABATCH.getDisplayName());
+        assertEquals(JobType.BIGDATABATCH.getDisplayName(), ConvertJobsUtil.getTestCaseJobTypeByPath(path1.toOSString()));
+    
+        path1 =  ConvertJobsUtil.getTestCasePath(item, JobType.BIGDATASTREAMING.getDisplayName());
+        assertEquals(JobType.BIGDATASTREAMING.getDisplayName(), ConvertJobsUtil.getTestCaseJobTypeByPath(path1.toOSString()));
+    }
 }

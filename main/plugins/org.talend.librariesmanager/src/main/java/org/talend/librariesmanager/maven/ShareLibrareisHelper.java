@@ -54,114 +54,111 @@ public abstract class ShareLibrareisHelper {
         // deploy to maven if needed and share to custom nexus
         try {
             setJobName(job, Messages.getString("ShareLibsJob.message", TYPE_NEXUS));
+            filesToShare = getFilesToShare(monitor);
+            if (filesToShare == null) {
+                return Status.CANCEL_STATUS;
+            }
+
+            Map<String, List<MavenArtifact>> snapshotArtifactMap = new HashMap<String, List<MavenArtifact>>();
+            Map<String, List<MavenArtifact>> releaseArtifactMap = new HashMap<String, List<MavenArtifact>>();
+
             ArtifactRepositoryBean customNexusServer = TalendLibsServerManager.getInstance().getCustomNexusServer();
             IRepositoryArtifactHandler customerRepHandler = RepositoryArtifactHandlerManager
                     .getRepositoryHandler(customNexusServer);
-            if (customerRepHandler != null) {
-                filesToShare = getFilesToShare(monitor);
-                if (filesToShare == null) {
-                    return Status.CANCEL_STATUS;
-                }
 
-                // collect groupId to search
-                Set<String> groupIds = new HashSet<String>();
-                Map<String, List<MavenArtifact>> snapshotArtifactMap = new HashMap<String, List<MavenArtifact>>();
-                Map<String, List<MavenArtifact>> releaseArtifactMap = new HashMap<String, List<MavenArtifact>>();
-                Set<String> snapshotGroupIdSet = new HashSet<String>();
-                Set<String> releaseGroupIdSet = new HashSet<String>();
-                for (ModuleNeeded module : filesToShare.keySet()) {
-                    checkCancel(monitor);
-                    if (module.getMavenUri() != null) {
-                        MavenArtifact parseMvnUrl = MavenUrlHelper.parseMvnUrl(module.getMavenUri());
-                        if (parseMvnUrl != null) {
-                            groupIds.add(parseMvnUrl.getGroupId());
-                            if (isSnapshotVersion(parseMvnUrl.getVersion())) {
-                                snapshotGroupIdSet.add(parseMvnUrl.getGroupId());
-                            } else {
-                                releaseGroupIdSet.add(parseMvnUrl.getGroupId());
-                            }
+            ArtifactRepositoryBean proxyServer = TalendLibsServerManager.getInstance().getProxyArtifactServer();
+            IRepositoryArtifactHandler proxyArtifactHandler = RepositoryArtifactHandlerManager.getRepositoryHandler(proxyServer);
+
+            if (customerRepHandler == null && proxyArtifactHandler == null) {
+                return Status.CANCEL_STATUS;
+            }
+
+            // collect groupId to search
+            Set<String> snapshotGroupIdSet = new HashSet<String>();
+            Set<String> releaseGroupIdSet = new HashSet<String>();
+            checkCancel(monitor);
+            for (ModuleNeeded module : filesToShare.keySet()) {
+                checkCancel(monitor);
+                if (module.getMavenUri() != null) {
+                    MavenArtifact parseMvnUrl = MavenUrlHelper.parseMvnUrl(module.getMavenUri());
+                    if (parseMvnUrl != null) {
+                        if (isSnapshotVersion(parseMvnUrl.getVersion())) {
+                            snapshotGroupIdSet.add(parseMvnUrl.getGroupId());
+                        } else {
+                            releaseGroupIdSet.add(parseMvnUrl.getGroupId());
                         }
                     }
                 }
-                List<MavenArtifact> searchResults = new ArrayList<MavenArtifact>();
-                for (String groupId : groupIds) {
-                    checkCancel(monitor);
-                    if (releaseGroupIdSet.contains(groupId)) {
-                        searchResults = customerRepHandler.search(groupId, null, null, true, false);
-                        if (searchResults != null) {
-                            for (MavenArtifact result : searchResults) {
-                                checkCancel(monitor);
-                                ShareLibrariesUtil.putArtifactToMap(result, releaseArtifactMap, false);
-                            }
-                        }
-                    }
-                    checkCancel(monitor);
-                    if (snapshotGroupIdSet.contains(groupId)) {
-                        searchResults = customerRepHandler.search(groupId, null, null, false, true);
-                        if (searchResults != null) {
-                            for (MavenArtifact result : searchResults) {
-                                checkCancel(monitor);
-                                ShareLibrariesUtil.putArtifactToMap(result, snapshotArtifactMap, true);
-                            }
-                        }
+            }
+
+            // search from custom artifact repositories if any
+            seachArtifacts(monitor, customerRepHandler, snapshotArtifactMap, releaseArtifactMap, snapshotGroupIdSet,
+                    releaseGroupIdSet);
+
+            try {
+                // search from proxy artifact repository if any
+                seachArtifacts(monitor, proxyArtifactHandler, snapshotArtifactMap, releaseArtifactMap, snapshotGroupIdSet,
+                        releaseGroupIdSet);
+            } catch (Exception e) {
+                ExceptionHandler.process(e);
+            }
+            checkCancel(monitor);
+
+            Iterator<ModuleNeeded> iterator = filesToShare.keySet().iterator();
+            Map<File, MavenArtifact> shareFiles = new HashMap<>();
+            while (iterator.hasNext()) {
+                checkCancel(monitor);
+                ModuleNeeded next = iterator.next();
+                File file = filesToShare.get(next);
+                MavenArtifact artifact = MavenUrlHelper.parseMvnUrl(next.getMavenUri());
+                if (artifact == null) {
+                    continue;
+                }
+                // If from custom component definition file
+                if (LocalLibraryManager.isSystemCacheFile(file.getName())
+                        || (LocalLibraryManager.isComponentDefinitionFileType(file.getName())
+                                && isTalendLibraryGroupId(artifact))) {
+                    continue;
+                }
+                try {
+                    Integer.parseInt(artifact.getType());
+                    // FIXME unexpected type if it's an integer, should fix it in component module definition.
+                    continue;
+                } catch (NumberFormatException e) {
+                    //
+                }
+                boolean isSnapshotVersion = isSnapshotVersion(artifact.getVersion());
+                String key = ShareLibrariesUtil.getArtifactKey(artifact, isSnapshotVersion);
+                List<MavenArtifact> artifactList = null;
+                if (isSnapshotVersion) {
+                    artifactList = snapshotArtifactMap.get(key);
+                } else {
+                    artifactList = releaseArtifactMap.get(key);
+                    // skip checksum for release artifact.
+                    if (artifactList != null && artifactList.contains(artifact)
+                            && !Boolean.getBoolean("force_libs_release_update")) {
+                        continue;
                     }
                 }
-                Iterator<ModuleNeeded> iterator = filesToShare.keySet().iterator();
-                Map<File, MavenArtifact> shareFiles = new HashMap<>();
-                while (iterator.hasNext()) {
-                    checkCancel(monitor);
-                    ModuleNeeded next = iterator.next();
-                    File file = filesToShare.get(next);
-                    MavenArtifact artifact = MavenUrlHelper.parseMvnUrl(next.getMavenUri());
-                    if (artifact == null) {
+                if (artifactList != null && artifactList.size() > 0) {
+                    if (ShareLibrariesUtil.isSameFileWithRemote(file, artifactList, customNexusServer, customerRepHandler,
+                            isSnapshotVersion)) {
                         continue;
                     }
-                    // If from custom component definition file
-                    if (LocalLibraryManager.isSystemCacheFile(file.getName())
-                            || (LocalLibraryManager.isComponentDefinitionFileType(file.getName())
-                                    && isTalendLibraryGroupId(artifact))) {
-                        continue;
-                    }
-                    try {
-                        Integer.parseInt(artifact.getType());
-                        // FIXME unexpected type if it's an integer, should fix it in component module definition.
-                        continue;
-                    } catch (NumberFormatException e) {
-                        //
-                    }
-                    boolean isSnapshotVersion = isSnapshotVersion(artifact.getVersion());
-                    String key = ShareLibrariesUtil.getArtifactKey(artifact, isSnapshotVersion);
-                    List<MavenArtifact> artifactList = null;
-                    if (isSnapshotVersion) {
-                        artifactList = snapshotArtifactMap.get(key);
-                    } else {
-                        artifactList = releaseArtifactMap.get(key);
-                        // skip checksum for release artifact.
-                        if (artifactList != null && artifactList.contains(artifact)
-                                && !Boolean.getBoolean("force_libs_release_update")) {
-                            continue;
-                        }
-                    }
-                    if (artifactList != null && artifactList.size() > 0) {
-                        if (ShareLibrariesUtil.isSameFileWithRemote(file, artifactList, customNexusServer, customerRepHandler,
-                                isSnapshotVersion)) {
-                            continue;
-                        }
-                    }
-                    shareFiles.put(file, artifact);
                 }
-                SubMonitor mainSubMonitor = SubMonitor.convert(monitor, shareFiles.size());
-                for (Map.Entry<File, MavenArtifact> entry : shareFiles.entrySet()) {
-                    checkCancel(monitor);
-                    try {
-                        File k = entry.getKey();
-                        MavenArtifact v = entry.getValue();
-                        mainSubMonitor.setTaskName(Messages.getString("ShareLibsJob.sharingLibraries", k.getName()));
-                        shareToRepository(k, v);
-                        mainSubMonitor.worked(1);
-                    } catch (Exception e) {
-                        ExceptionHandler.process(e);
-                    }
+                shareFiles.put(file, artifact);
+            }
+            SubMonitor mainSubMonitor = SubMonitor.convert(monitor, shareFiles.size());
+            for (Map.Entry<File, MavenArtifact> entry : shareFiles.entrySet()) {
+                checkCancel(monitor);
+                try {
+                    File k = entry.getKey();
+                    MavenArtifact v = entry.getValue();
+                    mainSubMonitor.setTaskName(Messages.getString("ShareLibsJob.sharingLibraries", k.getName()));
+                    shareToRepository(k, v);
+                    mainSubMonitor.worked(1);
+                } catch (Exception e) {
+                    ExceptionHandler.process(e);
                 }
             }
         } catch (InterruptedException e) {
@@ -173,6 +170,38 @@ public abstract class ShareLibrareisHelper {
 
         return status;
 
+    }
+
+    /**
+     * Search artifacts based on given snapshotGroupIdSet and releaseGroupIdSet from remote artifact repositories
+     * represented by artifactHandler, the search results are put to snapshotArtifactMap and releaseArtifactMap
+     */
+    protected void seachArtifacts(IProgressMonitor monitor, IRepositoryArtifactHandler artifactHandler,
+            Map<String, List<MavenArtifact>> snapshotArtifactMap, Map<String, List<MavenArtifact>> releaseArtifactMap,
+            Set<String> snapshotGroupIdSet, Set<String> releaseGroupIdSet) throws Exception {
+        if (artifactHandler != null) {
+            checkCancel(monitor);
+            List<MavenArtifact> searchResults = new ArrayList<MavenArtifact>();
+            for (String groupId : releaseGroupIdSet) {
+                searchResults = artifactHandler.search(groupId, null, null, true, false);
+                if (searchResults != null) {
+                    for (MavenArtifact result : searchResults) {
+                        checkCancel(monitor);
+                        ShareLibrariesUtil.putArtifactToMap(result, releaseArtifactMap, false);
+                    }
+                }
+            }
+            checkCancel(monitor);
+            for (String groupId : snapshotGroupIdSet) {
+                searchResults = artifactHandler.search(groupId, null, null, false, true);
+                if (searchResults != null) {
+                    for (MavenArtifact result : searchResults) {
+                        checkCancel(monitor);
+                        ShareLibrariesUtil.putArtifactToMap(result, snapshotArtifactMap, true);
+                    }
+                }
+            }
+        }
     }
 
     private boolean isTalendLibraryGroupId(MavenArtifact artifact) {
