@@ -668,14 +668,16 @@ public class CreateMavenJobPom extends AbstractMavenProcessorPom {
 
         List<Dependency> dependencies = new ArrayList<>();
         // codes
-        addCodesDependencies(dependencies);
+        List<Dependency> codeDependencies = getCodesDependencies();
+        dependencies.addAll(codeDependencies);
 
         // codes dependencies (optional)
         ERepositoryObjectType.getAllTypesOfCodes().forEach(t -> dependencies.addAll(PomUtil.getCodesDependencies(t)));
 
         // libraries of talend/3rd party
         Set<Dependency> parentJobDependencies = processor.getNeededModules(TalendProcessOptionConstants.MODULES_EXCLUDE_SHADED).stream()
-                .filter(m -> !m.isExcluded()).map(m -> createDenpendency(m, false)).collect(Collectors.toSet());
+                .filter(m -> !m.isExcluded()).map(m -> createDenpendency(m, false))
+                .collect(Collectors.toSet());
         dependencies.addAll(parentJobDependencies);
 
         // missing modules from the job generation of children
@@ -705,7 +707,7 @@ public class CreateMavenJobPom extends AbstractMavenProcessorPom {
                     || _3rdLibCoordinate.contains(coordinate)) {
                 return;
             }
-            if (MavenConstants.DEFAULT_LIB_GROUP_ID.equals(groupId) || groupId.startsWith(projectGroupId)) {
+            if (MavenConstants.DEFAULT_LIB_GROUP_ID.equals(groupId) || codeDependencies.contains(d)) {
                 if (!optional) {
                     talendLibCoordinate.add(coordinate);
                 }
@@ -760,6 +762,7 @@ public class CreateMavenJobPom extends AbstractMavenProcessorPom {
             ExceptionHandler.process(e);
         }
     }
+
 
     // remove duplicate job dependencies and only keep the latest one
     // keep high priority dependencies if set by tLibraryLoad

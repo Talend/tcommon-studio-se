@@ -355,4 +355,16 @@ public class SAPHanaDataBaseMetadata extends FakeDatabaseMetaData {
         tableResultSet.setData(list);
         return tableResultSet;
     }
+
+    @Override
+    public String getDatabaseProductName() throws SQLException {
+        return this.connection.getMetaData().getDatabaseProductName();
+
+    }
+
+    @Override
+    public String getDatabaseProductVersion() throws SQLException {
+        return this.connection.getMetaData().getDatabaseProductVersion();
+    }
+
 }

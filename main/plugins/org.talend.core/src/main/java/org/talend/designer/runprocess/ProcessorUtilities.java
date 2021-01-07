@@ -30,6 +30,7 @@ import java.util.Map;
 import java.util.Set;
 import java.util.jar.JarEntry;
 import java.util.jar.JarOutputStream;
+import java.util.stream.Collectors;
 
 import org.apache.commons.lang.ArrayUtils;
 import org.apache.commons.lang.StringUtils;
@@ -59,6 +60,7 @@ import org.talend.commons.exception.CommonExceptionHandler;
 import org.talend.commons.exception.ExceptionHandler;
 import org.talend.commons.exception.PersistenceException;
 import org.talend.commons.runtime.model.repository.ERepositoryStatus;
+import org.talend.commons.runtime.utils.io.FileCopyUtils;
 import org.talend.commons.utils.PasswordEncryptUtil;
 import org.talend.commons.utils.generation.JavaUtils;
 import org.talend.commons.utils.time.TimeMeasure;
@@ -620,7 +622,7 @@ public class ProcessorUtilities {
          */
         generateBuildInfo(jobInfo, progressMonitor, isMainJob, currentProcess, currentJobName, processor, option);
 
-        copyDependenciedResources(currentProcess);
+        copyDependenciedResources(currentProcess, progressMonitor);
 
         return processor;
     }
@@ -1369,7 +1371,7 @@ public class ProcessorUtilities {
             generateBuildInfo(jobInfo, progressMonitor, isMainJob, currentProcess, currentJobName, processor, option);
             TimeMeasure.step(idTimer, "generateBuildInfo");
 
-            copyDependenciedResources(currentProcess);
+            copyDependenciedResources(currentProcess, progressMonitor);
 
             return processor;
         } finally {
@@ -1382,7 +1384,40 @@ public class ProcessorUtilities {
         }
     }
 
-    private static Set<ModuleNeeded> getAllJobTestcaseModules(ProcessItem selectedProcessItem) {
+    private static void syncContextResourcesForParentJob(IProcess currentProcess, IProgressMonitor progressMonitor) {
+        ITalendProcessJavaProject processJavaProject = mainJobInfo.getProcessor().getTalendJavaProject();
+
+        final IFolder mainResourcesFolder = processJavaProject.getExternalResourcesFolder();
+        final File targetFolder = mainResourcesFolder.getLocation().toFile();
+
+        final Set<JobInfo> dependenciesItems = mainJobInfo.getProcessor().getBuildChildrenJobs();
+
+        final IRunProcessService runProcessService = (IRunProcessService) GlobalServiceRegister.getDefault().getService(
+                IRunProcessService.class);
+
+        List<ProcessItem> dependenciesItemsFiltered = dependenciesItems.stream().filter(jobInfo -> !jobInfo.isJoblet())
+                .map(JobInfo::getProcessItem).collect(Collectors.toList());
+        
+        if (dependenciesItemsFiltered.size() > 0) {
+            dependenciesItemsFiltered.forEach(item -> {
+                ITalendProcessJavaProject childJavaProject = runProcessService.getTalendJobJavaProject(item.getProperty());
+                if (childJavaProject != null) {
+                    final IFolder childResourcesFolder = childJavaProject.getExternalResourcesFolder();
+                    if (childResourcesFolder.exists()) {
+                        FileCopyUtils.syncFolder(childResourcesFolder.getLocation().toFile(), targetFolder, false);
+                    }
+                }
+            });
+
+            try {
+                mainResourcesFolder.refreshLocal(IResource.DEPTH_INFINITE, progressMonitor);
+            } catch (CoreException e) {
+                ExceptionHandler.process(e);
+            }
+        }
+    }
+
+	private static Set<ModuleNeeded> getAllJobTestcaseModules(ProcessItem selectedProcessItem) {
         Set<ModuleNeeded> neededLibraries = new HashSet<>();
         if (GlobalServiceRegister.getDefault().isServiceRegistered(ITestContainerProviderService.class)) {
             ITestContainerProviderService testcontainerService =
@@ -1516,7 +1551,7 @@ public class ProcessorUtilities {
      *
      * @param currentProcess
      */
-    private static void copyDependenciedResources(IProcess currentProcess) {
+    private static void copyDependenciedResources(IProcess currentProcess, IProgressMonitor progressMonitor) {
         if (!(currentProcess instanceof IProcess2)) {
             return;
         }
@@ -1573,6 +1608,7 @@ public class ProcessorUtilities {
                 }
             }
         }
+        syncContextResourcesForParentJob(currentProcess, progressMonitor);
     }
 
     /**
