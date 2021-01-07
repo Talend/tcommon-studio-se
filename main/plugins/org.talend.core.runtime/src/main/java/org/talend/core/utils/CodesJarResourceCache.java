@@ -2,8 +2,8 @@ package org.talend.core.utils;
 
 import java.beans.PropertyChangeListener;
 import java.util.ArrayList;
-import java.util.HashSet;
 import java.util.Iterator;
+import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Optional;
 import java.util.Set;
@@ -22,7 +22,7 @@ import org.talend.repository.model.IProxyRepositoryService;
 
 public class CodesJarResourceCache {
 
-    private static final Set<Property> CACHE = new HashSet<>();
+    private static final Set<Property> CACHE = new LinkedHashSet<>();
 
     private static final Object LOCK = new Object();
 
@@ -54,7 +54,7 @@ public class CodesJarResourceCache {
 
     public static Set<Property> getAllCodesJars() {
         synchronized (LOCK) {
-            return new HashSet<>(CACHE);
+            return new LinkedHashSet<>(CACHE);
         }
     }
 
@@ -83,7 +83,7 @@ public class CodesJarResourceCache {
             Iterator<Property> iterator = CACHE.iterator();
             while (iterator.hasNext()) {
                 Property oldProperty = iterator.next();
-                if (newProperty.getId().equals(oldProperty.getLabel()) && newProperty.getLabel().equals(oldProperty.getLabel())
+                if (newProperty.getId().equals(oldProperty.getId()) && newProperty.getLabel().equals(oldProperty.getLabel())
                         && newProperty.getVersion().equals(oldProperty.getVersion())) {
                     iterator.remove();
                 }
