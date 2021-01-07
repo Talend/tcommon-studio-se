@@ -1357,7 +1357,7 @@ public final class ProxyRepositoryFactory implements IProxyRepositoryFactory {
 
     @Override
     public List<IRepositoryViewObject> getAllCodesJars(Project project, ERepositoryObjectType type) throws PersistenceException {
-        return getAll(type).stream().filter(obj -> !(obj.getProperty().getItem() instanceof RoutineItem))
+        return getAll(project, type).stream().filter(obj -> !(obj.getProperty().getItem() instanceof RoutineItem))
                 .collect(Collectors.toList());
     }
 

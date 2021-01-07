@@ -250,8 +250,8 @@ public class CodesJarM2CacheManager {
             protected void run() {
                 Set<Property> toUpdate = new HashSet<>();
                 CodesJarResourceCache.getAllCodesJars().forEach(p -> {
-                    ITalendProcessJavaProject codesJarProject = getRunProcessService().getTalendCodesJarJavaProject(p);
                     if (forceBuild || needUpdateCodesJarProject(p)) {
+                        ITalendProcessJavaProject codesJarProject = getRunProcessService().getTalendCodesJarJavaProject(p);
                         if (regeneratePom) {
                             try {
                                 updateCodesJarProjectPom(monitor, p, codesJarProject.getProjectPom());
