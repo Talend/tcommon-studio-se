@@ -1,6 +1,6 @@
 // ============================================================================
 //
-// Copyright (C) 2006-2019 Talend Inc. - www.talend.com
+// Copyright (C) 2006-2020 Talend Inc. - www.talend.com
 //
 // This source code is available under agreement available at
 // %InstallDIR%\features\org.talend.rcp.branding.%PRODUCTNAME%\%PRODUCTNAME%license.txt
@@ -16,31 +16,22 @@ import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.jobs.Job;
 
-/**
- * created by wchen on 2015年6月15日 Detailled comment
- *
- */
-public class ShareLibsJob extends Job {
+/*
+* Created by bhe on Dec 24, 2020
+*/
+public class ShareCILibsJob extends Job {
 
     /**
-     * DOC Talend ShareLibsJob constructor comment.
-     *
      * @param name
      */
-    public ShareLibsJob() {
+    public ShareCILibsJob() {
         super("");
-        // TODO Auto-generated constructor stub
     }
 
-    /*
-     * (non-Javadoc)
-     *
-     * @see org.eclipse.core.runtime.jobs.Job#run(org.eclipse.core.runtime.IProgressMonitor)
-     */
     @Override
     protected IStatus run(IProgressMonitor monitor) {
-        ShareMavenArtifactsOnStartup shareLib = new ShareMavenArtifactsOnStartup();
-        return shareLib.shareLibs(this, monitor);
+        ShareCIJarsOnStartup task = new ShareCIJarsOnStartup();
+        return task.shareLibs(this, monitor);
     }
 
 }

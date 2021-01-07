@@ -166,6 +166,7 @@ public enum ECoreImage implements IImage {
     RECYCLE_BIN_OVERLAY("/icons1/recycle_bin_overlay.gif"), //$NON-NLS-1$
     DELETED_OVERLAY("/icons1/deleted_overlay.gif"), //$NON-NLS-1$
     IMPORT_JAR("/icons1/importjar.gif"), //$NON-NLS-1$
+    SHARE_LIBS("/icons1/share.png"), //$NON-NLS-1$
     REFERENCED_ICON("/icons1/referenced.png"), //$NON-NLS-1$
 
     CDC_ADDED_OVERLAY("/icons1/cdc_added_overlay.png"), //$NON-NLS-1$
