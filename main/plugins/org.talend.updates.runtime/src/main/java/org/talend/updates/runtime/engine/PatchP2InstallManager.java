@@ -109,7 +109,7 @@ public class PatchP2InstallManager {
             }
         });
         if (!invalidInstall.isEmpty()) {
-            log.error("Some patches are not compatible with current product, then won't install them:\n       " + invalidInstall);
+            log.debug("Some patches are not compatible with current product, then won't install them:\n       " + invalidInstall);
         }
         // install
         InstallOperation installOperation = new InstallOperation(getProvisioningSession(), validInstall);
