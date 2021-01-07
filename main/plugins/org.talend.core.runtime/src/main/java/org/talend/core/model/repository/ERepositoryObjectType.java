@@ -1539,4 +1539,49 @@ public class ERepositoryObjectType extends DynaEnum<ERepositoryObjectType> {
         return allTypes;
     }
 
+    public enum CodeTypeEnum {
+        Routines("ROUTINESJAR", "ROUTINES"),
+        Beans("BEANSJAR", "BEANS");
+
+        private String codeJarType;
+
+        private String codeType;
+
+        private CodeTypeEnum(String codeJarType, String codeType) {
+            this.codeJarType = codeJarType;
+            this.codeType = codeType;
+        }
+
+        public static boolean isCodeRepositoryObjectTypeMatch(ERepositoryObjectType jarType, ERepositoryObjectType codeType) {
+            if (jarType == null || codeType == null) {
+                return false;
+            }
+            for (CodeTypeEnum cType : CodeTypeEnum.values()) {
+                if (cType.getCodeJarType().equals(jarType.getType())) {
+                    return cType.getCodeType().equals(codeType.getType());
+                }
+            }
+            return false;
+        }
+
+        /**
+         * Getter for codeJarType.
+         * 
+         * @return the codeJarType
+         */
+        public String getCodeJarType() {
+            return codeJarType;
+        }
+
+        /**
+         * Getter for codeType.
+         * 
+         * @return the codeType
+         */
+        public String getCodeType() {
+            return codeType;
+        }
+
+    }
+
 }
