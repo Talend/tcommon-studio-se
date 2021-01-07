@@ -45,6 +45,8 @@ import org.eclipse.jface.window.Window;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.custom.SashForm;
 import org.eclipse.swt.custom.ScrolledComposite;
+import org.eclipse.swt.events.ControlAdapter;
+import org.eclipse.swt.events.ControlEvent;
 import org.eclipse.swt.events.FocusEvent;
 import org.eclipse.swt.events.FocusListener;
 import org.eclipse.swt.events.KeyAdapter;
@@ -3507,6 +3509,9 @@ public class DatabaseForm extends AbstractForm {
         impalaSettingGroup.setVisible(!hide);
         hadoopData.exclude = hide;
         impalaDistributionCombo.setHideWidgets(hide);
+        if (!hide) {
+            adjustScrolledComHeight();
+        }
     }
 
     private void hideHCLinkSettings(boolean hide) {
