@@ -23,6 +23,7 @@ import org.eclipse.core.runtime.SubMonitor;
 import org.talend.commons.exception.ExceptionHandler;
 import org.talend.commons.utils.MojoType;
 import org.talend.commons.utils.VersionUtils;
+import org.talend.core.PluginChecker;
 import org.talend.core.model.general.ModuleNeeded;
 import org.talend.core.nexus.TalendMavenResolver;
 import org.talend.core.runtime.maven.MavenConstants;
@@ -41,6 +42,10 @@ public class ShareCIJarsOnStartup extends ShareMavenArtifactsOnStartup {
         SubMonitor mainSubMonitor = SubMonitor.convert(monitor, 1);
         mainSubMonitor.setTaskName(Messages.getString("ShareLibsJob.getFilesToShare")); //$NON-NLS-1$
         Map<ModuleNeeded, File> files = new HashMap<>();
+        // if tos
+        if (!PluginChecker.isTIS()) {
+            return files;
+        }
         // get plugin artifacts to share
         Stream.of(MojoType.values()).forEach(m -> {
             String mvnUrl = MavenUrlHelper.generateMvnUrl(TalendMavenConstants.DEFAULT_CI_GROUP_ID, m.getArtifactId(),
