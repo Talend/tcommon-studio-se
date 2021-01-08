@@ -714,6 +714,7 @@ public class DeleteAction extends AContextualAction {
             removeConnFromSQLExplorer(repositoryNode);
             List<IRepositoryViewObject> batchDeleteObjectList = new ArrayList<IRepositoryViewObject>();
             deleteTestCases(factory, deleteActionCache, repositoryNode, null, batchDeleteObjectList);
+            deleteCodeSubItem(factory, deleteActionCache, repositoryNode, null);
 
             return true;
         }
@@ -1460,6 +1461,7 @@ public class DeleteAction extends AContextualAction {
                             }
                             testService.deleteDataFiles(objToDelete);
                         }
+                        // TODO delete forever codejar to delete subitem
 
                         if (!ProjectManager.getInstance().getCurrentProject().isLocal()) {
                             // if remote,batch delete later
@@ -1482,12 +1484,29 @@ public class DeleteAction extends AContextualAction {
                 factory.deleteObjectLogical(objToDelete);
                 updateRelatedViews();
                 removeConnFromSQLExplorer(currentJobNode);
-                List<IRepositoryViewObject> deleteObjectList = new ArrayList<IRepositoryViewObject>();
                 deleteTestCases(factory, deleteActionCache, currentJobNode, confirm, null);
+                deleteCodeSubItem(factory, deleteActionCache, currentJobNode, confirm);
             }
         }
 
         return needReturn;
+    }
+
+    private void deleteCodeSubItem(IProxyRepositoryFactory factory, DeleteActionCache deleteActionCache,
+            final IRepositoryNode currentJobNode, Boolean confirm) throws PersistenceException, BusinessException {
+        if (!ERepositoryObjectType.getAllTypesOfCodesJar().contains(currentJobNode.getObjectType())) {
+            return;
+        }
+        if (!currentJobNode.getChildren().isEmpty()) {
+            List<IRepositoryViewObject> deleteObjectList = new ArrayList<IRepositoryViewObject>();
+            for (IRepositoryNode child : currentJobNode.getChildren()) {
+                deleteElements(factory, deleteActionCache, (RepositoryNode) child, confirm, deleteObjectList);
+            }
+            if (deleteObjectList != null && deleteObjectList.size() > 0) {
+                factory.batchDeleteObjectPhysical4Remote(ProjectManager.getInstance().getCurrentProject(), deleteObjectList);
+            }
+        }
+
     }
 
     private void deleteTestCases(IProxyRepositoryFactory factory, DeleteActionCache deleteActionCache,

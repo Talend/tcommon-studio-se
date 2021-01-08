@@ -20,6 +20,7 @@ import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 import java.util.Set;
 
 import org.apache.commons.collections.CollectionUtils;
@@ -677,6 +678,9 @@ public class ProjectRepositoryNode extends RepositoryNode implements IProjectRep
             }
         }
 
+        List<IRepositoryViewObject> codeObjectList = new ArrayList<IRepositoryViewObject>();
+        Map<String, List<RepositoryNode>> labelCodeJarMap = new HashMap<String, List<RepositoryNode>>();
+
         for (IRepositoryViewObject currentObject : elements) {
             RepositoryNode parent = getFolder(currentObject.getRepositoryObjectType(), currentObject.getPath(), rootNodes);
             RepositoryNode parentNode = parent;
@@ -684,18 +688,67 @@ public class ProjectRepositoryNode extends RepositoryNode implements IProjectRep
                 parentNode = rootNode;
             }
             if (currentObject.isDeleted()) {
+                boolean isCodeJarType = false;
+                ERepositoryObjectType repositoryObjectType = currentObject.getRepositoryObjectType();
+                if (ERepositoryObjectType.getAllTypesOfCodes().contains(repositoryObjectType)) {
+                    codeObjectList.add(currentObject);
+                    continue;
+                } else if (ERepositoryObjectType.getAllTypesOfCodesJar().contains(repositoryObjectType)) {
+                    isCodeJarType = true;
+                }
+
                 RepositoryNode repNode = new RepositoryNode(new RepositoryViewObject(currentObject.getProperty()), parentNode,
                         ENodeType.REPOSITORY_ELEMENT);
                 repNode.setProperties(EProperties.CONTENT_TYPE, currentObject.getRepositoryObjectType());
                 repNode.setProperties(EProperties.LABEL, currentObject.getLabel());
                 parentNode.getChildren().add(repNode);
                 repNode.setParent(parentNode);
+
+                if (isCodeJarType) {
+                    String label = currentObject.getProperty().getLabel();
+                    if (labelCodeJarMap.get(label) == null) {
+                        labelCodeJarMap.put(label, new ArrayList<RepositoryNode>());
+                    }
+                    labelCodeJarMap.get(label).add(repNode);
+                }
             } else {
                 addDeletedSubItems(currentObject.getProperty().getItem(), parentNode);
             }
         }
+        addDeletedCode(rootNode, codeObjectList, labelCodeJarMap);
         objects.removeAll(elements);
         addDeletedTestCases(rootNode, objects);
+    }
+
+    private void addDeletedCode(RepositoryNode rootNode, List<IRepositoryViewObject> codeObjectList, Map<String, List<RepositoryNode>> labelCodeJarMap) {
+        List<IRepositoryNode> rootNodes = rootNode.getChildren();
+        for (IRepositoryViewObject codeObject : codeObjectList) {
+            ERepositoryObjectType objectType = codeObject.getRepositoryObjectType();
+            RepositoryNode parent = getFolder(codeObject.getRepositoryObjectType(), codeObject.getPath(), rootNodes);
+            RepositoryNode parentNode = parent;
+            if (parentNode == null) {
+                parentNode = rootNode;
+            }
+
+            Item parentItem = (Item) codeObject.getProperty().getItem().getParent();
+            String folderItemLabel = parentItem.getProperty().getLabel();
+            if (labelCodeJarMap.get(folderItemLabel) != null) {
+                Optional node = labelCodeJarMap.get(folderItemLabel).stream()
+                        .filter(n -> ERepositoryObjectType.CodeTypeEnum.isCodeRepositoryObjectTypeMatch(n.getObjectType(),
+                                objectType))
+                        .findFirst();
+                if (node.isPresent()) {
+                    parentNode = (RepositoryNode) node.get();
+                }
+            }
+
+            RepositoryNode repNode = new RepositoryNode(new RepositoryViewObject(codeObject.getProperty()), parentNode,
+                    ENodeType.REPOSITORY_ELEMENT);
+            repNode.setProperties(EProperties.CONTENT_TYPE, objectType);
+            repNode.setProperties(EProperties.LABEL, codeObject.getLabel());
+            parentNode.getChildren().add(repNode);
+            repNode.setParent(parentNode);
+        }
     }
 
     /**
