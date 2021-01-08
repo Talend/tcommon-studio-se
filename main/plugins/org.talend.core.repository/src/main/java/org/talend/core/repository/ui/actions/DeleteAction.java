@@ -1494,7 +1494,7 @@ public class DeleteAction extends AContextualAction {
 
     private void deleteCodeSubItem(IProxyRepositoryFactory factory, DeleteActionCache deleteActionCache,
             final IRepositoryNode currentJobNode, Boolean confirm) throws PersistenceException, BusinessException {
-        if (!ERepositoryObjectType.ROUTINESJAR.equals(currentJobNode.getObjectType())) {
+        if (!ERepositoryObjectType.getAllTypesOfCodesJar().contains(currentJobNode.getObjectType())) {
             return;
         }
         if (!currentJobNode.getChildren().isEmpty()) {
