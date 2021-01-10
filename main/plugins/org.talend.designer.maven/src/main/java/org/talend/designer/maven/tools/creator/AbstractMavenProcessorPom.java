@@ -44,6 +44,7 @@ import org.talend.core.model.properties.Item;
 import org.talend.core.model.properties.Project;
 import org.talend.core.model.properties.Property;
 import org.talend.core.model.repository.ERepositoryObjectType;
+import org.talend.core.model.routines.CodesJarInfo;
 import org.talend.core.model.utils.JavaResourcesHelper;
 import org.talend.core.runtime.maven.MavenArtifact;
 import org.talend.core.runtime.maven.MavenConstants;
@@ -328,8 +329,9 @@ public abstract class AbstractMavenProcessorPom extends CreateMavenBundleTemplat
             return Collections.emptySet();
         }
         return routineParameters.stream().filter(r -> r.getType() != null).map(r -> {
-            Property codesJarProperty = CodesJarResourceCache.getCodesJarById(r.getId());
-            String projectTechName = ProjectManager.getInstance().getProject(codesJarProperty).getTechnicalLabel();
+            CodesJarInfo info = CodesJarResourceCache.getCodesJarById(r.getId());
+            Property codesJarProperty = info.getProperty();
+            String projectTechName = info.getProjectTechName();
             return PomUtil.createDependency(PomIdsHelper.getCodesJarGroupId(projectTechName, codesJarProperty.getItem()),
                     codesJarProperty.getLabel().toLowerCase(), PomIdsHelper.getCodesJarVersion(projectTechName), null);
         }).collect(Collectors.toSet());

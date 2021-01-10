@@ -78,6 +78,7 @@ import org.talend.core.model.properties.RoutineItem;
 import org.talend.core.model.properties.RoutinesJarItem;
 import org.talend.core.model.repository.ERepositoryObjectType;
 import org.talend.core.model.repository.IRepositoryViewObject;
+import org.talend.core.model.routines.CodesJarInfo;
 import org.talend.core.model.routines.IRoutinesProvider;
 import org.talend.core.runtime.maven.MavenArtifact;
 import org.talend.core.runtime.maven.MavenUrlHelper;
@@ -583,7 +584,7 @@ public class ModulesNeededProvider {
         }
         routinesParameterTypes.stream().filter(r -> r.getType() != null)
                 .map(r -> CodesJarResourceCache.getCodesJarById(r.getId()))
-                .forEach(p -> importNeedsList.addAll(createModuleNeededFromCodeItem(p.getItem())));
+                .forEach(info -> importNeedsList.addAll(createModuleNeededFromCodeItem(info.getProperty().getItem())));
 
         checkInstallStatus(importNeedsList);
 
@@ -1080,7 +1081,8 @@ public class ModulesNeededProvider {
      */
     public static Set<ModuleNeeded> getAllCodesJarModuleNeededs() {
         Set<ModuleNeeded> modules = new HashSet<>();
-        CodesJarResourceCache.getAllCodesJars().forEach(p -> modules.addAll(createModuleNeededFromCodeItem(p.getItem())));
+        CodesJarResourceCache.getAllCodesJars().stream().map(CodesJarInfo::getProperty)
+                .forEach(p -> modules.addAll(createModuleNeededFromCodeItem(p.getItem())));
         return modules;
     }
 

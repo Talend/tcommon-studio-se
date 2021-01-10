@@ -937,8 +937,10 @@ public class AggregatorPomsHelper {
             if (ProcessUtils.isRequiredBeans(null)) {
                 modules.add(getModulePath(service.getTalendCodeJavaProject(ERepositoryObjectType.BEANS).getProjectPom()));
             }
-            CodesJarResourceCache.getAllCodesJars()
-                    .forEach(p -> getModulePath(service.getTalendCodesJarJavaProject(p).getProjectPom()));
+            String currentProjectTechName = ProjectManager.getInstance().getCurrentProject().getTechnicalLabel();
+            CodesJarResourceCache.getAllCodesJars().stream()
+                    .filter(info -> info.getProjectTechName().equals(currentProjectTechName))
+                    .forEach(info -> getModulePath(service.getTalendCodesJarJavaProject(info).getProjectPom()));
         }
     }
 

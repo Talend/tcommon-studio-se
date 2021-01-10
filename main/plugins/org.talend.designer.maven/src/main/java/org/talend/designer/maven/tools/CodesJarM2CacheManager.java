@@ -56,6 +56,7 @@ import org.talend.core.model.properties.Property;
 import org.talend.core.model.properties.RoutinesJarItem;
 import org.talend.core.model.repository.ERepositoryObjectType;
 import org.talend.core.model.repository.IRepositoryViewObject;
+import org.talend.core.model.routines.CodesJarInfo;
 import org.talend.core.repository.model.ProxyRepositoryFactory;
 import org.talend.core.runtime.maven.MavenArtifact;
 import org.talend.core.runtime.process.ITalendProcessJavaProject;
@@ -105,10 +106,11 @@ public class CodesJarM2CacheManager {
     }
 
     @SuppressWarnings("unchecked")
-    public static boolean needUpdateCodesJarProject(Property property) {
+    public static boolean needUpdateCodesJarProject(CodesJarInfo info) {
         try {
+            Property property = info.getProperty();
+            String projectTechName = info.getProjectTechName();
             ERepositoryObjectType codeType = ERepositoryObjectType.getItemType(property.getItem());
-            String projectTechName = ProjectManager.getInstance().getProject(property).getTechnicalLabel();
             Project project = ProjectManager.getInstance().getProjectFromProjectTechLabel(projectTechName);
             File cacheFile = getCacheFile(projectTechName, property);
             if (!cacheFile.exists()) {
@@ -176,9 +178,10 @@ public class CodesJarM2CacheManager {
     }
 
     @SuppressWarnings("unchecked")
-    public static void updateCodesJarProjectCache(Property property) {
+    public static void updateCodesJarProjectCache(CodesJarInfo info) {
+        Property property = info.getProperty();
         ERepositoryObjectType codeType = ERepositoryObjectType.getItemType(property.getItem());
-        String projectTechName = ProjectManager.getInstance().getProject(property).getTechnicalLabel();
+        String projectTechName = info.getProjectTechName();
         Project project = ProjectManager.getInstance().getProjectFromProjectTechLabel(projectTechName);
         Properties cache = new Properties();
         File cacheFile = getCacheFile(projectTechName, property);
@@ -208,26 +211,26 @@ public class CodesJarM2CacheManager {
     }
 
     // TODO check callers of updateCodeProjectPom()
-    public static void updateCodesJarProjectPom(IProgressMonitor monitor, Property property, IFile pomFile) throws Exception {
-        ERepositoryObjectType type = ERepositoryObjectType.getItemType(property.getItem());
+    public static void updateCodesJarProjectPom(IProgressMonitor monitor, CodesJarInfo info, IFile pomFile) throws Exception {
+        ERepositoryObjectType type = ERepositoryObjectType.getItemType(info.getProperty().getItem());
         if (type != null) {
             if (ERepositoryObjectType.ROUTINESJAR == type) {
-                createRoutinesJarPom(property, pomFile, monitor);
+                createRoutinesJarPom(info, pomFile, monitor);
             } else if (ERepositoryObjectType.BEANSJAR != null && ERepositoryObjectType.BEANSJAR == type) {
-                createBeansJarPom(property, pomFile, monitor);
+                createBeansJarPom(info, pomFile, monitor);
             }
         }
     }
 
-    private static void createRoutinesJarPom(Property property, IFile pomFile, IProgressMonitor monitor) throws Exception {
-        CreateMavenRoutinesJarPom createTemplatePom = new CreateMavenRoutinesJarPom(property, pomFile);
-        createTemplatePom.setProjectName(ProjectManager.getInstance().getProject(property).getTechnicalLabel());
+    private static void createRoutinesJarPom(CodesJarInfo info, IFile pomFile, IProgressMonitor monitor) throws Exception {
+        CreateMavenRoutinesJarPom createTemplatePom = new CreateMavenRoutinesJarPom(info.getProperty(), pomFile);
+        createTemplatePom.setProjectName(info.getProjectTechName());
         createTemplatePom.create(monitor);
     }
 
-    private static void createBeansJarPom(Property property, IFile pomFile, IProgressMonitor monitor) throws Exception {
-        CreateMavenBeansJarPom createTemplatePom = new CreateMavenBeansJarPom(property, pomFile);
-        createTemplatePom.setProjectName(ProjectManager.getInstance().getProject(property).getTechnicalLabel());
+    private static void createBeansJarPom(CodesJarInfo info, IFile pomFile, IProgressMonitor monitor) throws Exception {
+        CreateMavenBeansJarPom createTemplatePom = new CreateMavenBeansJarPom(info.getProperty(), pomFile);
+        createTemplatePom.setProjectName(info.getProjectTechName());
         createTemplatePom.create(monitor);
     }
 
@@ -242,25 +245,27 @@ public class CodesJarM2CacheManager {
         updateCodesJarProject(monitor, regeneratePom, false, false);
     }
 
+    // TODO check all callers to make sure the update action is needed for all projects or just only main project
+    // if update all, should delete all ref projects after updated
     public static void updateCodesJarProject(IProgressMonitor monitor, boolean regeneratePom, boolean buildInMain,
             boolean forceBuild) {
-        RepositoryWorkUnit workUnit = new RepositoryWorkUnit<Object>("update codesjar project") { //$NON-NLS-1$
+        RepositoryWorkUnit<Object> workUnit = new RepositoryWorkUnit<Object>("update codesjar project") { //$NON-NLS-1$
 
             @Override
             protected void run() {
-                Set<Property> toUpdate = new HashSet<>();
-                CodesJarResourceCache.getAllCodesJars().forEach(p -> {
-                    if (forceBuild || needUpdateCodesJarProject(p)) {
-                        ITalendProcessJavaProject codesJarProject = getRunProcessService().getTalendCodesJarJavaProject(p);
+                Set<CodesJarInfo> toUpdate = new HashSet<>();
+                CodesJarResourceCache.getAllCodesJars().forEach(info -> {
+                    if (forceBuild || needUpdateCodesJarProject(info)) {
+                        ITalendProcessJavaProject codesJarProject = getRunProcessService().getTalendCodesJarJavaProject(info);
                         if (regeneratePom) {
                             try {
-                                updateCodesJarProjectPom(monitor, p, codesJarProject.getProjectPom());
+                                updateCodesJarProjectPom(monitor, info, codesJarProject.getProjectPom());
                             } catch (Exception e) {
                                 ExceptionHandler.process(e);
                             }
                         }
                         codesJarProject.buildWholeCodeProject();
-                        toUpdate.add(p);
+                        toUpdate.add(info);
                     }
                 });
                 try {
@@ -268,7 +273,7 @@ public class CodesJarM2CacheManager {
                 } catch (Exception e) {
                     ExceptionHandler.process(e);
                 }
-                toUpdate.forEach(p -> updateCodesJarProjectCache(p));
+                toUpdate.forEach(info -> updateCodesJarProjectCache(info));
                 // build other codesJar projects which are in main project
                 // FIXME might be quite slow if too many
                 // solutions:
@@ -278,8 +283,9 @@ public class CodesJarM2CacheManager {
                 // both solutions need to build those in threads, question is, can eclipse build projects in thread?
                 if (buildInMain) {
                     CodesJarResourceCache.getAllCodesJars().stream()
-                            .filter(p -> !toUpdate.contains(p) && ProjectManager.getInstance().isInCurrentMainProject(p))
-                            .forEach(p -> getRunProcessService().getTalendCodesJarJavaProject(p).buildWholeCodeProject());
+                            .filter(info -> !toUpdate.contains(info) && info.isInCurrentMainProject())
+                            .forEach(info -> getRunProcessService().getTalendCodesJarJavaProject(info)
+                                    .buildWholeCodeProject());
                 }
             }
         };
@@ -307,18 +313,20 @@ public class CodesJarM2CacheManager {
 
     public static void updateCodesJarProject(Property property) throws Exception {
         IProgressMonitor monitor = new NullProgressMonitor();
-        ITalendProcessJavaProject codesJarProject = getRunProcessService().getTalendCodesJarJavaProject(property);
-        updateCodesJarProjectPom(monitor, property, codesJarProject.getProjectPom());
+        ITalendProcessJavaProject codesJarProject = getRunProcessService()
+                .getTalendCodesJarJavaProject(CodesJarInfo.create(property));
+        CodesJarInfo info = CodesJarInfo.create(property);
+        updateCodesJarProjectPom(monitor, info, codesJarProject.getProjectPom());
         codesJarProject.buildWholeCodeProject();
-        Set<Property> set = new HashSet<>();
-        set.add(property);
+        Set<CodesJarInfo> set = new HashSet<>();
+        set.add(info);
         install(set, monitor);
     }
 
-    private static void install(Set<Property> toUpdate, IProgressMonitor monitor) throws Exception {
+    private static void install(Set<CodesJarInfo> toUpdate, IProgressMonitor monitor) throws Exception {
         IFile pomFile = createBuildAggregatorPom(toUpdate);
         Set<ITalendProcessJavaProject> projects = toUpdate.stream()
-                .map(p -> getRunProcessService().getTalendCodesJarJavaProject(p)).collect(Collectors.toSet());
+                .map(info -> getRunProcessService().getTalendCodesJarJavaProject(info)).collect(Collectors.toSet());
         try {
             for (ITalendProcessJavaProject project : projects) {
                 Model model = MavenPlugin.getMavenModelManager().readMavenModel(project.getProjectPom());
@@ -348,7 +356,7 @@ public class CodesJarM2CacheManager {
         }
     }
 
-    private static IFile createBuildAggregatorPom(Set<Property> toUpdate) throws Exception {
+    private static IFile createBuildAggregatorPom(Set<CodesJarInfo> toUpdate) throws Exception {
         IFile pomFile = new AggregatorPomsHelper().getProjectPomsFolder().getFile(new Path(BUILD_AGGREGATOR_POM_NAME));
         Model model = new Model();
         model.setModelVersion("4.0.0"); //$NON-NLS-1$
@@ -357,7 +365,7 @@ public class CodesJarM2CacheManager {
         model.setVersion("7.0.0"); //$NON-NLS-1$
         model.setPackaging(TalendMavenConstants.PACKAGING_POM);
         model.setModules(new ArrayList<String>());
-        toUpdate.stream().forEach(p -> model.getModules().add(getModulePath(p)));
+        toUpdate.stream().forEach(info -> model.getModules().add(getModulePath(info)));
         Parent parent = new Parent();
         parent.setGroupId(PomIdsHelper.getProjectGroupId());
         parent.setArtifactId(PomIdsHelper.getProjectArtifactId());
@@ -367,10 +375,10 @@ public class CodesJarM2CacheManager {
         return pomFile;
     }
 
-    private static String getModulePath(Property property) {
-        String projectTechName = ProjectManager.getInstance().getProject(property).getTechnicalLabel();
+    private static String getModulePath(CodesJarInfo info) {
+        String projectTechName = info.getProjectTechName();
         IPath basePath = new AggregatorPomsHelper().getProjectPomsFolder().getLocation();
-        IPath codeJarProjectPath = new AggregatorPomsHelper(projectTechName).getCodesJarFolder(property).getLocation();
+        IPath codeJarProjectPath = new AggregatorPomsHelper(projectTechName).getCodesJarFolder(info.getProperty()).getLocation();
         String modulePath = codeJarProjectPath.makeRelativeTo(basePath).toPortableString();
         return modulePath;
     }

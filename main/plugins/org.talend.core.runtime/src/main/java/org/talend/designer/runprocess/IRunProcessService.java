@@ -39,6 +39,7 @@ import org.talend.core.model.process.JobInfo;
 import org.talend.core.model.properties.Item;
 import org.talend.core.model.properties.Property;
 import org.talend.core.model.repository.ERepositoryObjectType;
+import org.talend.core.model.routines.CodesJarInfo;
 import org.talend.core.runtime.process.ITalendProcessJavaProject;
 import org.talend.core.runtime.projectsetting.ProjectPreferenceManager;
 
@@ -216,13 +217,13 @@ public interface IRunProcessService extends IService {
 
     ITalendProcessJavaProject getTalendCodeJavaProject(ERepositoryObjectType type, String projectTechName);
 
-    ITalendProcessJavaProject getTalendCodesJarJavaProject(Property property);
+    ITalendProcessJavaProject getTalendCodesJarJavaProject(CodesJarInfo info);
 
     ITalendProcessJavaProject getTalendJobJavaProject(Property property);
 
     ITalendProcessJavaProject getExistingTalendJobProject(Property property);
 
-    ITalendProcessJavaProject getExistingTalendCodesJarProject(String codesJarProjectId);
+    ITalendProcessJavaProject getExistingTalendCodesJarProject(CodesJarInfo info);
 
     PropertyChangeListener addCodesJarChangeListener();
 
