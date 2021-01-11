@@ -45,6 +45,7 @@ import org.talend.cwm.helper.ColumnSetHelper;
 import org.talend.cwm.helper.ConnectionHelper;
 import org.talend.cwm.helper.PackageHelper;
 import org.talend.cwm.helper.SchemaHelper;
+import org.talend.cwm.helper.TableHelper;
 import org.talend.cwm.helper.TaggedValueHelper;
 import org.talend.cwm.relational.TdColumn;
 import org.talend.cwm.relational.TdTable;
@@ -226,8 +227,69 @@ public final class DqRepositoryViewService {
         }
     }
 
+    public static List<TdTable> getCalculationViews(Connection dataProvider, Schema schema, String tablePattern,
+            boolean loadFromDB, boolean isPersist2Con) throws Exception {
+        TypedReturnCode<java.sql.Connection> trc =
+                MetadataConnectionUtils.createConnection((DatabaseConnection) dataProvider);
+        java.sql.Connection connection = trc.getObject();
+        try {
+            return getCalculationViews(connection, dataProvider, schema, tablePattern, loadFromDB, isPersist2Con);
+        } finally {
+            if (connection != null) {
+                ConnectionUtils.closeConnection(connection);
+            }
+        }
+    }
+
     /**
-     * get the tables belong to the schema.
+     * get the calculation views belong to the schema.
+     *
+     * @param sqlConnection the java.sql.Connection
+     * @param dataProvider the talend Connection
+     * @param schema the schema
+     * @param tablePattern calculation view pattern
+     * @param loadFromDB load form db or not
+     * @return
+     * @throws Exception
+     */
+    public static List<TdTable> getCalculationViews(java.sql.Connection sqlConnection, Connection dataProvider,
+            Schema schema, String tablePattern, boolean loadFromDB, boolean isPersist2Con) throws Exception {
+        if (loadFromDB && !(isComeFromRefrenceProject(dataProvider) && isPersist2Con)) {
+            final Catalog parentCatalog = CatalogHelper.getParentCatalog(schema);
+            return loadCalculationViews(sqlConnection, dataProvider, parentCatalog, schema, tablePattern,
+                    isPersist2Con);
+        } else {
+            return TableHelper.getCalculationView(schema.getOwnedElement());
+        }
+    }
+
+    /**
+     * get the calculation views belong to the schema.
+     *
+     * @param sqlConnection the java.sql.Connection
+     * @param dataProvider the talend Connection
+     * @param schema the schema
+     * @param tablePattern calculation view pattern
+     * @param loadFromDB load form db or not
+     * @return empty list if it is not come from schema
+     * @throws Exception
+     */
+    public static List<TdTable> getCalculationViews(java.sql.Connection sqlConnection, Connection dataProvider,
+            Package schema, String tablePattern, boolean loadFromDB, boolean isPersist2Con) throws Exception {
+        if (!(schema instanceof Schema)) {
+            return new ArrayList<>();
+        }
+        if (loadFromDB && !(isComeFromRefrenceProject(dataProvider) && isPersist2Con)) {
+            final Catalog parentCatalog = CatalogHelper.getParentCatalog(schema);
+            return loadCalculationViews(sqlConnection, dataProvider, parentCatalog, (Schema) schema, tablePattern,
+                    isPersist2Con);
+        } else {
+            return TableHelper.getCalculationView(schema.getOwnedElement());
+        }
+    }
+
+    /**
+     * get the calculation Views belong to the schema.
      *
      * @param sqlConnection the java.sql.Connection
      * @param dataProvider the talend Connection
@@ -540,6 +602,31 @@ public final class DqRepositoryViewService {
             // will not persistence to connection item
             dbInstance.setLinked(false);
             tables = dbInstance.fillTables(pack, dm, null, tablePattern, TABLE_TYPES);
+            dbInstance.setLinked(true);
+        }
+        return tables;
+    }
+
+    private static List<TdTable> loadCalculationViews(java.sql.Connection sqlConnection, Connection dataProvider,
+            Catalog catalog, Schema schema, String tablePattern, boolean isPersist2Con) throws Exception {
+        List<TdTable> tables = new ArrayList<>();
+        DatabaseMetaData dm = ExtractMetaDataUtils
+                .getInstance()
+                .getDatabaseMetaData(sqlConnection, (DatabaseConnection) dataProvider, false);
+        Package pack = schema == null ? catalog : schema;
+        MetadataFillFactory dbInstance = MetadataFillFactory.getDBInstance(dataProvider);
+
+        if (isPersist2Con) {
+            // will persistence to connection item
+            tables = dbInstance
+                    .fillTables(pack, dm, null, tablePattern,
+                            new String[] { ETableTypes.TABLETYPE_CALCULATION_VIEW.getName() });
+        } else {
+            // will not persistence to connection item
+            dbInstance.setLinked(false);
+            tables = dbInstance
+                    .fillTables(pack, dm, null, tablePattern,
+                            new String[] { ETableTypes.TABLETYPE_CALCULATION_VIEW.getName() });
             dbInstance.setLinked(true);
         }
         return tables;
