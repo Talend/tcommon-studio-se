@@ -1457,11 +1457,11 @@ public class DeleteAction extends AContextualAction {
                             ITestContainerProviderService testService = (ITestContainerProviderService) GlobalServiceRegister.getDefault()
                                     .getService(ITestContainerProviderService.class);
                             if(testService != null){
-
+                                testService.deleteDataFiles(objToDelete);
                             }
-                            testService.deleteDataFiles(objToDelete);
                         }
-                        // TODO delete forever codejar to delete subitem
+                        // delete codejar forever need to delete subitem also
+                        deleteCodeSubItem(factory, deleteActionCache, currentJobNode, confirm);
 
                         if (!ProjectManager.getInstance().getCurrentProject().isLocal()) {
                             // if remote,batch delete later
