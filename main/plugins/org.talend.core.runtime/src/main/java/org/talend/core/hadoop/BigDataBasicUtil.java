@@ -132,4 +132,17 @@ public class BigDataBasicUtil {
         }
         return null;
     }
+
+    public static String getDynamicDistributionPluginExtensionCacheVersion() {
+        try {
+            IDynamicDistributionManager ddManager = getDynamicDistributionManager(new NullProgressMonitor());
+            if (ddManager != null && ddManager.isLoaded()) {
+                return ddManager.getPluginExtensionCacheVersion();
+            }
+        } catch (Exception e) {
+            ExceptionHandler.process(e);
+        }
+        return null;
+    }
+
 }

@@ -83,7 +83,7 @@ public class ClassLoaderFactory {
     }
 
     public static DynamicClassLoader getClassLoader(String index, boolean showDownloadIfNotExist) {
-        DynamicClassLoader classLoader = getClassLoaderMap().get(index);
+        DynamicClassLoader classLoader = getClassLoaderMap(index).get(index);
         if (classLoader == null) {
             classLoader = findLoader(index, null, showDownloadIfNotExist);
         }
@@ -92,7 +92,7 @@ public class ClassLoaderFactory {
     }
 
     public static DynamicClassLoader getClassLoader(String index, ClassLoader parentClassLoader) {
-        DynamicClassLoader classLoader = getClassLoaderMap().get(index);
+        DynamicClassLoader classLoader = getClassLoaderMap(index).get(index);
         if (classLoader == null) {
             classLoader = findLoader(index, parentClassLoader, true);
         }
@@ -155,7 +155,7 @@ public class ClassLoaderFactory {
     private static DynamicClassLoader createCustomClassLoader(String index, Set<String> libraries) {
         DynamicClassLoader classLoader = new DynamicClassLoader();
         loadLibraries(classLoader, libraries.toArray(new String[0]), true);
-        getClassLoaderMap().put(index, classLoader);
+        getClassLoaderMap(index).put(index, classLoader);
 
         return classLoader;
     }
@@ -165,11 +165,7 @@ public class ClassLoaderFactory {
         if (tmpFolder.exists()) {
             FilesUtils.removeFolder(tmpFolder, true);
         }
-        if (classLoadersMap != null && StringUtils.isNotBlank(index)) {
-            classLoadersMap.remove(index);
-        } else {
-            classLoadersMap = new ConcurrentHashMap<String, DynamicClassLoader>();
-        }
+        classLoadersMap = new ConcurrentHashMap<String, DynamicClassLoader>();
     }
 
     public static IConfigurationElement findIndex(String index) {
@@ -230,7 +226,7 @@ public class ClassLoaderFactory {
             }
             if (putInCache) {
                 // if any libraries can't be retreived , do not put it in cache
-                getClassLoaderMap().put(index, classLoader);
+                getClassLoaderMap(index).put(index, classLoader);
             }
             return classLoader;
         }
@@ -408,14 +404,14 @@ public class ClassLoaderFactory {
                 }
             }
         }
-        if (!StringUtils.equals(cacheVersion, BigDataBasicUtil.getDynamicDistributionCacheVersion())) {
+        if (!StringUtils.equals(cacheVersion, BigDataBasicUtil.getDynamicDistributionPluginExtensionCacheVersion())) {
             isCacheChanged = true;
         }
         if (isCacheChanged) {
             init(index);
             IExtensionRegistry registry = Platform.getExtensionRegistry();
             configurationElements = registry.getConfigurationElementsFor(EXTENSION_POINT_ID);
-            cacheVersion = BigDataBasicUtil.getDynamicDistributionCacheVersion();
+            cacheVersion = BigDataBasicUtil.getDynamicDistributionPluginExtensionCacheVersion();
         } else {
             if (classLoadersMap == null) {
                 init(index);
@@ -427,8 +423,8 @@ public class ClassLoaderFactory {
         }
     }
 
-    private static Map<String, DynamicClassLoader> getClassLoaderMap() {
-        checkCache(null);
+    private static Map<String, DynamicClassLoader> getClassLoaderMap(String index) {
+        checkCache(index);
         return classLoadersMap;
     }
 }
