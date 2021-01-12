@@ -711,7 +711,7 @@ public class ModulesNeededProvider {
             ModuleNeeded toAdd = ModuleNeeded.newInstance(context, value, currentImport.getMESSAGE(), isRequired);
             if (!isRequired) {
                 toAdd.getExtraAttributes().put("IS_OSGI_EXCLUDED", Boolean.TRUE);
-                if ("RoutineItem".equals(item.eClass().getName())) {
+                if ("RoutineItem".equals(item.eClass().getName()) || "RoutinesJarItem".equals(item.eClass().getName())) {
                     toAdd.setExcluded(true);
                 }
             }
