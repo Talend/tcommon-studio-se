@@ -193,7 +193,8 @@ public class RestoreAction extends AContextualAction {
                             node = node.getParent();
                             if ((node.getObject().getProperty().getItem() instanceof FolderItem)) {
                                 node.getObject().getProperty().getItem().getState().setDeleted(false);
-                            } else if (isTestcase) {
+                            } else if (isTestcase
+                                    || ERepositoryObjectType.getAllTypesOfCodesJar().contains(node.getObjectType())) {
                                 restoreNode(node);
                             }
                         }

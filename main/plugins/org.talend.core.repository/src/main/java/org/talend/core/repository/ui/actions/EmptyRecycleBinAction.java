@@ -343,6 +343,7 @@ public class EmptyRecycleBinAction extends AContextualAction {
                             testService.deleteDataFiles(objToDelete);
                         }
                     }
+                    deleteCodeSubItem(factory, currentNode);
                     if (!ProjectManager.getInstance().getCurrentProject().isLocal()) {
                         // if remote, batch delete later
                         batchDeleteObjectList.add(objToDelete);
@@ -353,6 +354,23 @@ public class EmptyRecycleBinAction extends AContextualAction {
             }
 
         }
+    }
+
+    private void deleteCodeSubItem(IProxyRepositoryFactory factory, final IRepositoryNode currentNode)
+            throws PersistenceException, BusinessException {
+        if (!ERepositoryObjectType.getAllTypesOfCodesJar().contains(currentNode.getObjectType())) {
+            return;
+        }
+        if (!currentNode.getChildren().isEmpty()) {
+            List<IRepositoryViewObject> deleteObjectList = new ArrayList<IRepositoryViewObject>();
+            for (IRepositoryNode child : currentNode.getChildren()) {
+                deleteElements(factory, (RepositoryNode) child, deleteObjectList);
+            }
+            if (deleteObjectList != null && deleteObjectList.size() > 0) {
+                factory.batchDeleteObjectPhysical4Remote(ProjectManager.getInstance().getCurrentProject(), deleteObjectList);
+            }
+        }
+
     }
 
     protected boolean isRelation(IEditorInput editorInput, String repoNodeProjectLabel, String repoNodeId) {
