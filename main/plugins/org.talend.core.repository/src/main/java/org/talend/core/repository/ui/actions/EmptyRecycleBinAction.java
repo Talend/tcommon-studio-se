@@ -16,6 +16,7 @@ import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.eclipse.core.resources.IFolder;
 import org.eclipse.core.resources.IWorkspace;
 import org.eclipse.core.resources.IWorkspaceRunnable;
 import org.eclipse.core.resources.ResourcesPlugin;
@@ -45,6 +46,7 @@ import org.talend.commons.ui.runtime.exception.ExceptionHandler;
 import org.talend.commons.ui.runtime.exception.MessageBoxExceptionHandler;
 import org.talend.commons.ui.runtime.image.ECoreImage;
 import org.talend.commons.ui.runtime.image.ImageProvider;
+import org.talend.commons.utils.workbench.resources.ResourceUtils;
 import org.talend.core.GlobalServiceRegister;
 import org.talend.core.ITDQRepositoryService;
 import org.talend.core.model.properties.ConnectionItem;
@@ -368,6 +370,19 @@ public class EmptyRecycleBinAction extends AContextualAction {
             }
             if (deleteObjectList != null && deleteObjectList.size() > 0) {
                 factory.batchDeleteObjectPhysical4Remote(ProjectManager.getInstance().getCurrentProject(), deleteObjectList);
+            }
+
+            // delete forever to delete codeJar folder
+            IFolder folder = ResourceUtils
+                    .getFolder(ResourceUtils.getProject(ProjectManager.getInstance().getCurrentProject()),
+                            ERepositoryObjectType.getFolderName(currentNode.getObjectType()), true)
+                    .getFolder(currentNode.getObject().getProperty().getLabel());
+            if (folder != null) {
+                try {
+                    folder.delete(false, null);
+                } catch (CoreException e) {
+                    throw new PersistenceException(e);
+                }
             }
         }
 

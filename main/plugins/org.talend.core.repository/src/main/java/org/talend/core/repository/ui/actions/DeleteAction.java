@@ -1515,10 +1515,12 @@ public class DeleteAction extends AContextualAction {
                         .getFolder(ResourceUtils.getProject(ProjectManager.getInstance().getCurrentProject()),
                                 ERepositoryObjectType.getFolderName(currentJobNode.getObjectType()), true)
                         .getFolder(currentJobNode.getObject().getProperty().getLabel());
-                try {
-                    folder.delete(false, null);
-                } catch (CoreException e) {
-                    throw new PersistenceException(e);
+                if (folder != null) {
+                    try {
+                        folder.delete(false, null);
+                    } catch (CoreException e) {
+                        throw new PersistenceException(e);
+                    }
                 }
             }
         }
