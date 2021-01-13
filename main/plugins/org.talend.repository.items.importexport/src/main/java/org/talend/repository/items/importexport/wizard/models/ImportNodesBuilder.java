@@ -172,7 +172,9 @@ public class ImportNodesBuilder {
                 }
                 if (RoutinesUtil.isInnerCodes(childItem.getProperty())) {
                     String codeJarLabel = RoutinesUtil.getCodesJarLabelByInnerCode(childItem);
-                    if (item instanceof RoutinesJarItem && item.getProperty().getLabel().equals(codeJarLabel)) {
+                    if (item instanceof RoutinesJarItem && item.getProperty().getLabel().equals(codeJarLabel)
+                            && ERepositoryObjectType.CodeTypeEnum.isCodeRepositoryObjectTypeMatch(importItem.getType(),
+                                    child.getType())) {
                         children.add(child);
                     }
                 } else if (checkTestCase && testContainerService.isTestContainerItem(childItem)) {
