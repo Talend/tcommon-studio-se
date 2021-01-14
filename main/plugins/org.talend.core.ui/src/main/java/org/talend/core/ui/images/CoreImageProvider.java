@@ -68,15 +68,11 @@ public class CoreImageProvider {
                 return ECoreImage.PROCESS_BATCH_MR_ICON;
             } else if (HadoopConstants.FRAMEWORK_SPARKSTREAMING.equals(framework)) {
                 return ECoreImage.PROCESS_STREAMING_SPARK_ICON;
-            } else if (HadoopConstants.FRAMEWORK_STORM.equals(framework)) {
-                return ECoreImage.PROCESS_STREAMING_STORM_ICON;
             }
             // the following statements are for the items exported from old studio versions since they have no framework
             // properties
             else if (itemType == ERepositoryObjectType.PROCESS_MR) {
                 return ECoreImage.PROCESS_BATCH_MR_ICON;
-            } else if (itemType == ERepositoryObjectType.PROCESS_STORM) {
-                return ECoreImage.PROCESS_STREAMING_STORM_ICON;
             }
         }
         return getIcon(itemType);

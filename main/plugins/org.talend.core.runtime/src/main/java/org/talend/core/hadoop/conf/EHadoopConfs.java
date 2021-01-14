@@ -40,8 +40,6 @@ public enum EHadoopConfs {
 
     SQOOP("SQOOP", new String[] { "sqoop-site.xml" }), //$NON-NLS-1$ //$NON-NLS-2$
 
-    STORM("STORM", new String[] { "storm-site.xml" }), //$NON-NLS-1$ //$NON-NLS-2$
-
     TEZ("TEZ", new String[] { "tez-site.xml" }), //$NON-NLS-1$ //$NON-NLS-2$
 
     ZOOKEEPER("ZOOKEEPER", new String[0]), //$NON-NLS-1$

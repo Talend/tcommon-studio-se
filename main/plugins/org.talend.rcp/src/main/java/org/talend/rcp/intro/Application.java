@@ -178,7 +178,7 @@ public class Application implements IApplication {
             if (!SharedStudioUtils.isSharedStudioMode()) {
                 needRelaunch = installLocalPatches();
             } else {
-                needRelaunch = SharedStudioUtils.installedPatch();
+                needRelaunch = SharedStudioUtils.isNeedCleanOnSharedMode();
             }
             if (needRelaunch) {
                 setRelaunchData();

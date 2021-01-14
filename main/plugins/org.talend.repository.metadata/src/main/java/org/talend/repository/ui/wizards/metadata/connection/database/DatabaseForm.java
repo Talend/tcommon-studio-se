@@ -3507,6 +3507,9 @@ public class DatabaseForm extends AbstractForm {
         impalaSettingGroup.setVisible(!hide);
         hadoopData.exclude = hide;
         impalaDistributionCombo.setHideWidgets(hide);
+        if (!hide) {
+            adjustScrolledComHeight();
+        }
     }
 
     private void hideHCLinkSettings(boolean hide) {

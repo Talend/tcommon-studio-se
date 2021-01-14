@@ -21,6 +21,7 @@ import org.eclipse.emf.ecore.EObject;
 import org.talend.core.model.metadata.builder.connection.MetadataTable;
 import org.talend.cwm.relational.TdTable;
 import org.talend.cwm.relational.TdView;
+
 import orgomg.cwm.objectmodel.core.ModelElement;
 import orgomg.cwm.objectmodel.core.Namespace;
 import orgomg.cwm.objectmodel.core.Package;
@@ -45,6 +46,17 @@ public final class PackageHelper {
     public static List<TdTable> getTables(Package thePackage) {
         assert thePackage != null;
         return TableHelper.getTables(thePackage.getOwnedElement());
+    }
+
+    /**
+     * returns the table owned by this package and only this one
+     *
+     * @param thePackage a Catalog or Schema (must not be null)
+     * @return the Calculation views contained in the given element.
+     */
+    public static List<TdTable> getCalculationViews(Package thePackage) {
+        assert thePackage != null;
+        return TableHelper.getCalculationView(thePackage.getOwnedElement());
     }
 
     /**
@@ -110,6 +122,7 @@ public final class PackageHelper {
      * @return
      * @deprecated use addMatadataTable instead
      */
+    @Deprecated
     public static boolean addColumnSets(Collection<ColumnSet> columnSets, Package packageElement) {
         return packageElement.getOwnedElement().addAll(columnSets);
     }
@@ -122,6 +135,7 @@ public final class PackageHelper {
      * @return
      * @deprecated use addMatadataTable instead
      */
+    @Deprecated
     public static boolean addColumnSet(ColumnSet columnSet, Package packageElement) {
         return packageElement.getOwnedElement().add(columnSet);
     }

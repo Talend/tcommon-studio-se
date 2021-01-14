@@ -12,6 +12,8 @@
 // ============================================================================
 package org.talend.repository;
 
+import java.util.Set;
+
 import org.talend.commons.exception.LoginException;
 import org.talend.commons.exception.PersistenceException;
 import org.talend.core.model.general.Project;
@@ -44,6 +46,8 @@ public abstract class RepositoryWorkUnit<T> {
     private boolean avoidUpdateLocks;
 
     private boolean refreshRepository = true; // added for TDI-27085
+
+    private Set<String> specifiedCommitFiles;
 
     /**
      * Usefull for some save only actions, where we're sure everything is up to date.
@@ -194,6 +198,13 @@ public abstract class RepositoryWorkUnit<T> {
         this.refreshRepository = refreshRepository;
     }
 
+    public Set<String> getSpecifiedCommitFiles() {
+        return specifiedCommitFiles;
+    }
+
+    public void setSpecifiedCommitFiles(Set<String> specifiedCommitFiles) {
+        this.specifiedCommitFiles = specifiedCommitFiles;
+    }
 
     /**
      * Getter for avoidUpdateLocks.

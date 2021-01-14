@@ -146,6 +146,9 @@ public class ModulesNeededProvider {
         }
     }
 
+    private static volatile boolean installModuleForRountine = false;
+    private static Set<ModuleNeeded> modulesForRountine = new HashSet<ModuleNeeded>();
+
     public static Set<ModuleNeeded> getModulesNeeded() {
         if (componentImportNeedsList.isEmpty()) {
             componentImportNeedsList.addAll(getRunningModules());
@@ -714,11 +717,9 @@ public class ModulesNeededProvider {
                         isRequired);
                 toAdd.setMavenUri(currentImport.getMVN());
                 if (!isRequired) {
-                    if ("BeanItem".equals(routine.eClass().getName())) {
-                        toAdd.getExtraAttributes().put("IS_OSGI_EXCLUDED", Boolean.TRUE);
-                    }
+                    toAdd.getExtraAttributes().put("IS_OSGI_EXCLUDED", Boolean.TRUE);
                     if ("RoutineItem".equals(routine.eClass().getName())) {
-                        continue;
+                        toAdd.setExcluded(true);
                     }
                 }
                 // toAdd.setStatus(ELibraryInstallStatus.INSTALLED);
@@ -746,6 +747,14 @@ public class ModulesNeededProvider {
             } catch (PersistenceException e) {
                 CommonExceptionHandler.process(e);
             }
+        }
+        if (!importNeedsList.isEmpty()) {
+            for (ModuleNeeded mod : importNeedsList) {
+                if (ELibraryInstallStatus.INSTALLED != mod.getStatus()) {
+                    installModuleForRountine = true;
+                }
+            }
+            modulesForRountine.addAll(importNeedsList);
         }
         return importNeedsList;
     }
@@ -775,6 +784,11 @@ public class ModulesNeededProvider {
             importNeedsListForRoutes.add(getComponentModuleById("CAMEL", "spring-core"));
             if (System.getProperty("java.version") != null && System.getProperty("java.version").startsWith("11")) {
                 getModulesNeededForRoutesJava11();
+            }
+            for (ModuleNeeded mod : importNeedsListForRoutes) {
+                if (ELibraryInstallStatus.INSTALLED != mod.getStatus()) {
+                    installModuleForRountine = true;
+                }
             }
         }
         return importNeedsListForRoutes;
@@ -1137,5 +1151,21 @@ public class ModulesNeededProvider {
             }
         }
         return mvnPath;
+    }
+
+    public static boolean installModuleForRoutineOrBeans() {
+        return installModuleForRountine;
+    }
+
+    public static void setInstallModuleForRoutineOrBeans() {
+        boolean allSet = true;
+        for (ModuleNeeded mod : modulesForRountine) {
+            if (ELibraryInstallStatus.INSTALLED != mod.getStatus()) {
+                allSet = false;
+            }
+        }
+        if (allSet) {
+            installModuleForRountine = false;
+        }
     }
 }

@@ -118,6 +118,8 @@ public abstract class AbstractMavenCodesTemplatePom extends AbstractMavenGeneral
                 }
                 if (isDeployed) {
                     dependency = PomUtil.createModuleDependency(module.getMavenUri());
+                    if (module.isExcluded())
+                        dependency.setScope("provided");
                 }
                 if (dependency != null) {
                     existedDependencies.add(dependency);
