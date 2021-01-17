@@ -54,10 +54,6 @@ public abstract class ShareLibrareisHelper {
         // deploy to maven if needed and share to custom nexus
         try {
             setJobName(job, Messages.getString("ShareLibsJob.message", TYPE_NEXUS));
-            filesToShare = getFilesToShare(monitor);
-            if (filesToShare == null) {
-                return Status.CANCEL_STATUS;
-            }
 
             Map<String, List<MavenArtifact>> snapshotArtifactMap = new HashMap<String, List<MavenArtifact>>();
             Map<String, List<MavenArtifact>> releaseArtifactMap = new HashMap<String, List<MavenArtifact>>();
@@ -69,7 +65,12 @@ public abstract class ShareLibrareisHelper {
             ArtifactRepositoryBean proxyServer = TalendLibsServerManager.getInstance().getProxyArtifactServer();
             IRepositoryArtifactHandler proxyArtifactHandler = RepositoryArtifactHandlerManager.getRepositoryHandler(proxyServer);
 
-            if (customerRepHandler == null && proxyArtifactHandler == null) {
+            if (customerRepHandler == null) {
+                return Status.CANCEL_STATUS;
+            }
+
+            filesToShare = getFilesToShare(monitor);
+            if (filesToShare == null || filesToShare.isEmpty()) {
                 return Status.CANCEL_STATUS;
             }
 
