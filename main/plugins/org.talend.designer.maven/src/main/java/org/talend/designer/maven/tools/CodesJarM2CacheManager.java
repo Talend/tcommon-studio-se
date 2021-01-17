@@ -35,7 +35,6 @@ import java.util.stream.Collectors;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.maven.model.Model;
 import org.apache.maven.model.Parent;
-import org.eclipse.core.internal.resources.Workspace;
 import org.eclipse.core.resources.IBuildConfiguration;
 import org.eclipse.core.resources.IFile;
 import org.eclipse.core.resources.IProject;
@@ -211,14 +210,20 @@ public class CodesJarM2CacheManager {
     }
 
     // TODO check callers of updateCodeProjectPom()
-    public static void updateCodesJarProjectPom(IProgressMonitor monitor, CodesJarInfo info, IFile pomFile) throws Exception {
-        ERepositoryObjectType type = ERepositoryObjectType.getItemType(info.getProperty().getItem());
-        if (type != null) {
-            if (ERepositoryObjectType.ROUTINESJAR == type) {
-                createRoutinesJarPom(info, pomFile, monitor);
-            } else if (ERepositoryObjectType.BEANSJAR != null && ERepositoryObjectType.BEANSJAR == type) {
-                createBeansJarPom(info, pomFile, monitor);
+    public static void updateCodesJarProjectPom(IProgressMonitor monitor, CodesJarInfo info) {
+        try {
+            IFile pomFile = new AggregatorPomsHelper(info.getProjectTechName()).getCodesJarFolder(info.getProperty())
+                    .getFile(TalendMavenConstants.POM_FILE_NAME);
+            ERepositoryObjectType type = ERepositoryObjectType.getItemType(info.getProperty().getItem());
+            if (type != null) {
+                if (ERepositoryObjectType.ROUTINESJAR == type) {
+                    createRoutinesJarPom(info, pomFile, monitor);
+                } else if (ERepositoryObjectType.BEANSJAR != null && ERepositoryObjectType.BEANSJAR == type) {
+                    createBeansJarPom(info, pomFile, monitor);
+                }
             }
+        } catch (Exception e) {
+            ExceptionHandler.process(e);
         }
     }
 
@@ -234,58 +239,57 @@ public class CodesJarM2CacheManager {
         createTemplatePom.create(monitor);
     }
 
-    /**
-     * for logon project
-     */
     public static void updateCodesJarProject(IProgressMonitor monitor) {
-        updateCodesJarProject(monitor, true, true, false);
+        updateCodesJarProject(monitor, false, false, false);
     }
 
-    public static void updateCodesJarProject(IProgressMonitor monitor, boolean regeneratePom) {
-        updateCodesJarProject(monitor, regeneratePom, false, false);
-    }
-
-    // TODO check all callers to make sure the update action is needed for all projects or just only main project
-    // if update all, should delete all ref projects after updated
-    public static void updateCodesJarProject(IProgressMonitor monitor, boolean regeneratePom, boolean buildInMain,
-            boolean forceBuild) {
+    public static void updateCodesJarProject(IProgressMonitor monitor, boolean regeneratePom, boolean forceBuild,
+            boolean onlyCurrentProject) {
         RepositoryWorkUnit<Object> workUnit = new RepositoryWorkUnit<Object>("update codesjar project") { //$NON-NLS-1$
 
             @Override
             protected void run() {
-                Set<CodesJarInfo> toUpdate = new HashSet<>();
-                CodesJarResourceCache.getAllCodesJars().forEach(info -> {
-                    if (forceBuild || needUpdateCodesJarProject(info)) {
-                        ITalendProcessJavaProject codesJarProject = getRunProcessService().getTalendCodesJarJavaProject(info);
-                        if (regeneratePom) {
-                            try {
-                                updateCodesJarProjectPom(monitor, info, codesJarProject.getProjectPom());
-                            } catch (Exception e) {
-                                ExceptionHandler.process(e);
-                            }
-                        }
-                        codesJarProject.buildWholeCodeProject();
-                        toUpdate.add(info);
-                    }
-                });
                 try {
+                    Set<CodesJarInfo> toUpdate;
+                    if (onlyCurrentProject) {
+                        String currentProject = ProjectManager.getInstance().getCurrentProject().getTechnicalLabel();
+                        toUpdate = CodesJarResourceCache.getAllCodesJars().stream()
+                                .filter(info -> info.getProjectTechName().equals(currentProject)
+                                        && (forceBuild || needUpdateCodesJarProject(info)))
+                                .collect(Collectors.toSet());
+                    } else {
+                        toUpdate = CodesJarResourceCache.getAllCodesJars().stream()
+                                .filter(info -> forceBuild || needUpdateCodesJarProject(info)).collect(Collectors.toSet());
+                    }
+                    if (toUpdate.isEmpty()) {
+                        return;
+                    }
+                    Set<ITalendProcessJavaProject> existingProjects = toUpdate.stream()
+                            .filter(info -> getRunProcessService().getExistingTalendCodesJarProject(info) != null)
+                            .map(info -> getRunProcessService().getExistingTalendCodesJarProject(info))
+                            .collect(Collectors.toSet());
+
+                    if (regeneratePom) {
+                        toUpdate.forEach(info -> updateCodesJarProjectPom(monitor, info));
+                    }
+
+                    Set<IProject> projects = toUpdate.stream()
+                            .map(info -> getRunProcessService().getTalendCodesJarJavaProject(info).getProject())
+                            .collect(Collectors.toSet());
+                    parallelBuild(monitor, projects);
+
                     install(toUpdate, monitor);
+
+                    for (CodesJarInfo info : toUpdate) {
+                        updateCodesJarProjectCache(info);
+                        ITalendProcessJavaProject updatedProject = getRunProcessService().getExistingTalendCodesJarProject(info);
+                        if (updatedProject != null && !existingProjects.contains(updatedProject)) {
+                            updatedProject.getProject().delete(false, true, monitor);
+                            getRunProcessService().removeFromCodesJarJavaProjects(info);
+                        }
+                    }
                 } catch (Exception e) {
                     ExceptionHandler.process(e);
-                }
-                toUpdate.forEach(info -> updateCodesJarProjectCache(info));
-                // build other codesJar projects which are in main project
-                // FIXME might be quite slow if too many
-                // solutions:
-                // 1. use build cache, won't build others here but build when needed, problem is that need to maintain
-                // other build cache
-                // 2. build all others here, don't need build cache
-                // both solutions need to build those in threads, question is, can eclipse build projects in thread?
-                if (buildInMain) {
-                    CodesJarResourceCache.getAllCodesJars().stream()
-                            .filter(info -> !toUpdate.contains(info) && info.isInCurrentMainProject())
-                            .forEach(info -> getRunProcessService().getTalendCodesJarJavaProject(info)
-                                    .buildWholeCodeProject());
                 }
             }
         };
@@ -293,30 +297,30 @@ public class CodesJarM2CacheManager {
         ProxyRepositoryFactory.getInstance().executeRepositoryWorkUnit(workUnit);
     }
 
-    // TODO to build in parallel
-    private static void parallelBuild(IProgressMonitor monitor, List<IProject> projects) throws CoreException {
+    // TODO find a way to trigger parallel build
+    // not fully implemented, still build projects with build order
+    // but should be much faster than call ITalendProcessJavaProject.buildWholeCodeProject() one by one.
+    private static void parallelBuild(IProgressMonitor monitor, Set<IProject> projects) throws CoreException {
         Set<IBuildConfiguration> configs = new HashSet<>(3);
         for (IProject project : projects) {
             try {
                 configs.add(project.getActiveBuildConfig());
             } catch (Exception e) {
-                // Ignore project
+                ExceptionHandler.process(e);
             }
         }
-        // TODO find a way to trigger parallel build, check Workspace.interalBuild
         ResourcesPlugin.getWorkspace().build(configs.toArray(new IBuildConfiguration[configs.size()]),
                 IncrementalProjectBuilder.FULL_BUILD, false, monitor);
-        // or just call buildParallel directlly
-        org.eclipse.core.internal.resources.Workspace workspace = (Workspace) ResourcesPlugin.getWorkspace();
+        // or just call buildParallel directly
+        // org.eclipse.core.internal.resources.Workspace workspace = (Workspace) ResourcesPlugin.getWorkspace();
         // workspace.getBuildManager().buildParallel(configs, requestedConfigs, trigger, buildJobGroup, monitor);
     }
 
     public static void updateCodesJarProject(Property property) throws Exception {
         IProgressMonitor monitor = new NullProgressMonitor();
-        ITalendProcessJavaProject codesJarProject = getRunProcessService()
-                .getTalendCodesJarJavaProject(CodesJarInfo.create(property));
         CodesJarInfo info = CodesJarInfo.create(property);
-        updateCodesJarProjectPom(monitor, info, codesJarProject.getProjectPom());
+        ITalendProcessJavaProject codesJarProject = getRunProcessService().getTalendCodesJarJavaProject(info);
+        updateCodesJarProjectPom(monitor, info);
         codesJarProject.buildWholeCodeProject();
         Set<CodesJarInfo> set = new HashSet<>();
         set.add(info);
@@ -324,6 +328,9 @@ public class CodesJarM2CacheManager {
     }
 
     private static void install(Set<CodesJarInfo> toUpdate, IProgressMonitor monitor) throws Exception {
+        if (toUpdate.isEmpty()) {
+            return;
+        }
         IFile pomFile = createBuildAggregatorPom(toUpdate);
         Set<ITalendProcessJavaProject> projects = toUpdate.stream()
                 .map(info -> getRunProcessService().getTalendCodesJarJavaProject(info)).collect(Collectors.toSet());
