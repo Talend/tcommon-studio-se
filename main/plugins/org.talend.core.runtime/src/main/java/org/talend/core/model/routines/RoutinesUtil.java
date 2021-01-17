@@ -33,12 +33,10 @@ import org.talend.core.model.properties.JobletProcessItem;
 import org.talend.core.model.properties.ProcessItem;
 import org.talend.core.model.properties.Property;
 import org.talend.core.model.properties.RoutineItem;
-import org.talend.core.model.properties.RoutinesJarItem;
 import org.talend.core.model.repository.ERepositoryObjectType;
 import org.talend.core.model.repository.IRepositoryViewObject;
 import org.talend.core.prefs.ITalendCorePrefConstants;
 import org.talend.core.runtime.CoreRuntimePlugin;
-import org.talend.core.utils.CodesJarResourceCache;
 import org.talend.designer.codegen.ICodeGeneratorService;
 import org.talend.designer.codegen.ITalendSynchronizer;
 import org.talend.designer.core.IDesignerCoreService;
@@ -382,13 +380,6 @@ public final class RoutinesUtil {
     public static boolean isInnerCodes(Property property) {
         Object isInnerCodes = property.getAdditionalProperties().get("JAR_TYPE"); //$NON-NLS-1$
         return isInnerCodes != null;
-    }
-
-    public static RoutinesJarItem getCodesJarItemByInnerCode(RoutineItem routineItem) throws PersistenceException {
-        String codesJarName = getCodesJarLabelByInnerCode(routineItem);
-        Property property = CodesJarResourceCache.getAllCodesJars().stream().filter(p -> p.getLabel().equals(codesJarName))
-                .findFirst().get();
-        return (RoutinesJarItem) property.getItem();
     }
 
     public static String getCodesJarLabelByInnerCode(Item innerCodeItem) {

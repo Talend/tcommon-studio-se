@@ -47,6 +47,7 @@ import org.talend.core.model.properties.Property;
 import org.talend.core.model.properties.RoutineItem;
 import org.talend.core.model.repository.ERepositoryObjectType;
 import org.talend.core.model.repository.IRepositoryViewObject;
+import org.talend.core.model.routines.CodesJarInfo;
 import org.talend.core.model.routines.RoutinesUtil;
 import org.talend.core.model.utils.JavaResourcesHelper;
 import org.talend.core.runtime.process.ITalendProcessJavaProject;
@@ -159,7 +160,8 @@ public abstract class AbstractRoutineSynchronizer implements ITalendSynchronizer
     }
 
     protected IFile getInnerCodeFile(RoutineItem routineItem) throws SystemException {
-        ITalendProcessJavaProject talendProcessJavaProject = getRunProcessService().getTalendCodesJarJavaProject(routineItem.getProperty());
+        CodesJarInfo info = CodesJarResourceCache.getCodesJarByInnerCode(routineItem);
+        ITalendProcessJavaProject talendProcessJavaProject = getRunProcessService().getTalendCodesJarJavaProject(info);
         if (talendProcessJavaProject == null) {
             return null;
         }
@@ -267,8 +269,9 @@ public abstract class AbstractRoutineSynchronizer implements ITalendSynchronizer
 
     protected void syncInnerCodeItems(boolean forceUpdate) throws SystemException {
         IProxyRepositoryFactory factory = getRepositoryService().getProxyRepositoryFactory();
-        for (Property property : CodesJarResourceCache.getAllCodesJars()) {
-            String projectTechName = ProjectManager.getInstance().getProject(property).getTechnicalLabel();
+        for (CodesJarInfo info : CodesJarResourceCache.getAllCodesJars()) {
+            Property property = info.getProperty();
+            String projectTechName = info.getProjectTechName();
             Project project = ProjectManager.getInstance().getProjectFromProjectTechLabel(projectTechName);
             ERepositoryObjectType codesJarType = ERepositoryObjectType.getItemType(property.getItem());
             List<IRepositoryViewObject> innerCodesObjects = factory.getAllInnerCodes(project, codesJarType, property);

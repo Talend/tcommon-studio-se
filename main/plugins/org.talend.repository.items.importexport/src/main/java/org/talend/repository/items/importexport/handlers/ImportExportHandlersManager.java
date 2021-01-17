@@ -486,6 +486,12 @@ public class ImportExportHandlersManager {
                 } else if (ERepositoryObjectType.PROCESS_ROUTELET != null
                         && ERepositoryObjectType.PROCESS_ROUTELET.getType().equals(item.getRepositoryType().getType())) {
                     return 40;
+                } else if (ERepositoryObjectType.ROUTINESJAR != null
+                        && ERepositoryObjectType.ROUTINESJAR.equals(item.getRepositoryType())) {
+                    return 50;
+                } else if (ERepositoryObjectType.BEANSJAR != null
+                        && ERepositoryObjectType.BEANSJAR.equals(item.getRepositoryType())) {
+                    return 50;
                 }
                 return 100;
             }

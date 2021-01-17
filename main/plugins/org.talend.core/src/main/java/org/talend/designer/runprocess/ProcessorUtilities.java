@@ -132,6 +132,9 @@ public class ProcessorUtilities {
 
     public static final String PROP_MAPPINGS_URL = "talend.mappings.url"; //$NON-NLS-1$
 
+    /**
+     * For generating code in CI without param -pl
+     */
     public static final int GENERATE_MAIN_ONLY = TalendProcessOptionConstants.GENERATE_MAIN_ONLY;
 
     public static final int GENERATE_WITH_FIRST_CHILD = TalendProcessOptionConstants.GENERATE_WITH_FIRST_CHILD;
@@ -1253,23 +1256,32 @@ public class ProcessorUtilities {
             if (isCIMode && BitwiseOptionUtils.containOption(option, GENERATE_MAIN_ONLY)) {
                 options |= TalendProcessOptionConstants.MODULES_WITH_CHILDREN;
             }
-            Set<ModuleNeeded> neededLibraries = CorePlugin.getDefault().getDesignerCoreService()
+            Set<ModuleNeeded> neededLibraries = new HashSet<>();
+            Set<ModuleNeeded> processLibraries = CorePlugin.getDefault().getDesignerCoreService()
                     .getNeededLibrariesForProcess(currentProcess, options);
-            if (neededLibraries != null) {
+            if (processLibraries != null) {
+                neededLibraries.addAll(processLibraries);
                 LastGenerationInfo.getInstance().setModulesNeededWithSubjobPerJob(jobInfo.getJobId(),
                         jobInfo.getJobVersion(), neededLibraries);
                 LastGenerationInfo.getInstance().setModulesNeededPerJob(jobInfo.getJobId(), jobInfo.getJobVersion(),
                         neededLibraries);
 
                 // get all codesjars needed modules
-                Set<ModuleNeeded> codesJarModules = CorePlugin.getDefault().getDesignerCoreService()
-                        .getCodesJarNeededLibrariesForProcess(selectedProcessItem);
-                codesJarModules.addAll(processor.getCodesJarModulesNeededOfJoblets());
-                LastGenerationInfo.getInstance().setCodesJarModulesNeededWithSubjobPerJob(jobInfo.getJobId(), jobInfo.getJobVersion(),
-                        codesJarModules);
+                Set<ModuleNeeded> codesJarLibraries;
+                if (BitwiseOptionUtils.containOption(option, GENERATE_MAIN_ONLY)) {
+                    codesJarLibraries = CorePlugin.getDefault().getDesignerCoreService().getNeededLibrariesForProcess(
+                            currentProcess, option |= TalendProcessOptionConstants.MODULES_WITH_CODESJAR);
+                    codesJarLibraries.removeAll(processLibraries);
+                } else {
+                    codesJarLibraries = CorePlugin.getDefault().getDesignerCoreService()
+                            .getCodesJarNeededLibrariesForProcess(selectedProcessItem);
+                }
+                codesJarLibraries.addAll(processor.getCodesJarModulesNeededOfJoblets());
+                LastGenerationInfo.getInstance().setCodesJarModulesNeededWithSubjobPerJob(jobInfo.getJobId(),
+                        jobInfo.getJobVersion(), codesJarLibraries);
                 LastGenerationInfo.getInstance().setCodesJarModulesNeededPerJob(jobInfo.getJobId(), jobInfo.getJobVersion(),
-                        codesJarModules);
-                neededLibraries.addAll(codesJarModules);
+                        codesJarLibraries);
+                neededLibraries.addAll(codesJarLibraries);
 
                 // get all job testcases needed modules
                 Set<ModuleNeeded> testcaseModules = getAllJobTestcaseModules(selectedProcessItem);
