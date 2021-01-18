@@ -37,6 +37,7 @@ import org.talend.commons.utils.VersionUtils;
 import org.talend.commons.utils.encoding.CharsetToolkit;
 import org.talend.commons.utils.generation.JavaUtils;
 import org.talend.commons.utils.resource.FileExtensions;
+import org.talend.commons.utils.workbench.resources.ResourceUtils;
 import org.talend.core.GlobalServiceRegister;
 import org.talend.core.IService;
 import org.talend.core.model.general.Project;
@@ -288,8 +289,25 @@ public abstract class AbstractRoutineSynchronizer implements ITalendSynchronizer
             if (file == null) {
                 return;
             }
+            File itemFile = null;
             if (routineItem.eResource() == null) {
-                return;
+                if (!RoutinesUtil.isInnerCodes(routineItem.getProperty())) {
+                    return;
+                }
+                CodesJarInfo info = CodesJarResourceCache.getCodesJarByInnerCode(routineItem);
+                Property codesJarProperty = info.getProperty();
+                IFolder innerCodeFolder = ResourceUtils.getFolder(ResourceUtils.getProject(info.getProjectTechName()),
+                        ERepositoryObjectType.getFolderName(ERepositoryObjectType.getItemType(codesJarProperty.getItem())) + "/"
+                                + codesJarProperty.getLabel(),
+                        true);
+                IFile innerCodeFile = innerCodeFolder
+                        .getFile(routineItem.getProperty().getLabel() + "_" + routineItem.getProperty().getVersion() + ".item");
+                if (innerCodeFile.exists()) {
+                    itemFile = innerCodeFile.getLocation().toFile();
+                }
+                if (itemFile == null) {
+                    return;
+                }
             }
             Property property = routineItem.getProperty();
             Date modifiedDate = ItemDateParser.parseAdditionalDate(property, ItemProductKeys.DATE.getModifiedKey());
@@ -302,9 +320,11 @@ public abstract class AbstractRoutineSynchronizer implements ITalendSynchronizer
             }
 
             if (copyToTemp) {
-                String uri = routineItem.eResource().getURI().trimFileExtension()
-                        .appendFileExtension(FileExtensions.ITEM_EXTENSION).toPlatformString(false);
-                File itemFile = ResourcesPlugin.getWorkspace().getRoot().getLocation().append(uri).toFile();
+                if (itemFile == null) {
+                    String uri = routineItem.eResource().getURI().trimFileExtension()
+                            .appendFileExtension(FileExtensions.ITEM_EXTENSION).toPlatformString(false);
+                    itemFile = ResourcesPlugin.getWorkspace().getRoot().getLocation().append(uri).toFile();
+                }
                 byte[] buf = routineItem.getContent().getInnerContent();
                 String charset = null;
                 if (itemFile.exists()) {

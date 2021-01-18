@@ -240,11 +240,10 @@ public class CodesJarM2CacheManager {
     }
 
     public static void updateCodesJarProject(IProgressMonitor monitor) {
-        updateCodesJarProject(monitor, false, false, false);
+        updateCodesJarProject(monitor, false, false);
     }
 
-    public static void updateCodesJarProject(IProgressMonitor monitor, boolean regeneratePom, boolean forceBuild,
-            boolean onlyCurrentProject) {
+    public static void updateCodesJarProject(IProgressMonitor monitor, boolean forceBuild, boolean onlyCurrentProject) {
         RepositoryWorkUnit<Object> workUnit = new RepositoryWorkUnit<Object>("update codesjar project") { //$NON-NLS-1$
 
             @Override
@@ -269,9 +268,7 @@ public class CodesJarM2CacheManager {
                             .map(info -> getRunProcessService().getExistingTalendCodesJarProject(info))
                             .collect(Collectors.toSet());
 
-                    if (regeneratePom) {
-                        toUpdate.forEach(info -> updateCodesJarProjectPom(monitor, info));
-                    }
+                    toUpdate.forEach(info -> updateCodesJarProjectPom(monitor, info));
 
                     Set<IProject> projects = toUpdate.stream()
                             .map(info -> getRunProcessService().getTalendCodesJarJavaProject(info).getProject())
