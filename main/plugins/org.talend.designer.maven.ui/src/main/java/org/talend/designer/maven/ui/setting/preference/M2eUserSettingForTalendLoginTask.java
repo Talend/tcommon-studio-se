@@ -46,6 +46,7 @@ import org.talend.commons.exception.ExceptionHandler;
 import org.talend.commons.utils.VersionUtils;
 import org.talend.commons.utils.time.TimeMeasure;
 import org.talend.core.runtime.projectsetting.IProjectSettingTemplateConstants;
+import org.talend.core.services.ICoreTisService;
 import org.talend.designer.maven.DesignerMavenPlugin;
 import org.talend.designer.maven.repository.DefaultMavenRepositoryProvider;
 import org.talend.designer.maven.template.MavenTemplateManager;
@@ -224,6 +225,11 @@ public class M2eUserSettingForTalendLoginTask extends AbstractLoginTask {
                 if (outputStream != null) {
                     outputStream.close();
                 }
+            }
+
+            ICoreTisService tisService = ICoreTisService.get();
+            if (tisService != null) {
+                tisService.updateSignature();
             }
 
         } catch (Exception e) {

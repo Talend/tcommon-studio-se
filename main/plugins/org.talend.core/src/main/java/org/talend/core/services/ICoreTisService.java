@@ -19,6 +19,7 @@ import org.eclipse.emf.common.util.URI;
 import org.osgi.service.prefs.BackingStoreException;
 import org.talend.commons.exception.PersistenceException;
 import org.talend.commons.exception.SystemException;
+import org.talend.core.GlobalServiceRegister;
 import org.talend.core.IService;
 import org.talend.core.model.general.Project;
 import org.talend.core.model.process.INode;
@@ -66,5 +67,15 @@ public interface ICoreTisService extends IService {
     public String generateSignerSessionId();
 
     public void afterImport (Property property) throws PersistenceException;  
+
+    void updateSignature();
+
+    public static ICoreTisService get() {
+        GlobalServiceRegister register = GlobalServiceRegister.getDefault();
+        if (register.isServiceRegistered(ICoreTisService.class)) {
+            return (ICoreTisService) register.getService(ICoreTisService.class);
+        }
+        return null;
+    }
 
 }
