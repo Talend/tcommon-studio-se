@@ -227,14 +227,17 @@ public class M2eUserSettingForTalendLoginTask extends AbstractLoginTask {
                 }
             }
 
-            ICoreTisService tisService = ICoreTisService.get();
-            if (tisService != null) {
-                tisService.updateSignature();
-            }
-
         } catch (Exception e) {
             ExceptionHandler.process(e);
         } finally {
+            try {
+                ICoreTisService tisService = ICoreTisService.get();
+                if (tisService != null) {
+                    tisService.updateSignature();
+                }
+            } catch (Exception e) {
+                ExceptionHandler.process(e);
+            }
             TimeMeasure.end("M2eUserSettingForTalendLoginTask"); //$NON-NLS-1$
             TimeMeasure.display = false;
             TimeMeasure.displaySteps = false;
