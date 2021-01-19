@@ -204,4 +204,12 @@ public interface ILibraryManagerService extends IService {
 
     public void checkModuleStatus(ModuleNeeded module);
 
+    public static ILibraryManagerService get() {
+        GlobalServiceRegister register = GlobalServiceRegister.getDefault();
+        if (register.isServiceRegistered(ILibraryManagerService.class)) {
+            return (ILibraryManagerService) register.getService(ILibraryManagerService.class);
+        }
+        return null;
+    }
+
 }
