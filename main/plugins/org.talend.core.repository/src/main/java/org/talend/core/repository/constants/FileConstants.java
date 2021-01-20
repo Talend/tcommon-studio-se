@@ -109,4 +109,8 @@ public interface FileConstants {
 
     String SPRING_FOLDER_NAME = "META-INF/spring"; //$NON-NLS-1$
 
+    String TALEND_FOLDER_NAME = "TALEND-INF"; //$NON-NLS-1$
+
+    String MAVEN_FOLDER_NAME = "MAVEN-INF";
+
 }
