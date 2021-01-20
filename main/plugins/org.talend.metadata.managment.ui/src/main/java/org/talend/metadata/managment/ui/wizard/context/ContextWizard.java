@@ -276,26 +276,24 @@ public class ContextWizard extends CheckLastVersionRepositoryWizard implements I
                     contextItem.setDefaultContext(contextManager.getDefaultContext().getName());
                     if (contextManager instanceof JobContextManager) {
                         JobContextManager manager = (JobContextManager) contextManager;
-                        if (manager.isModified()) {
-                            // the function has moved to UpdateContextParameterCommand for update manager(bug 3993).
-                            // update the tRunJob reference
-                            // UpdateContextReferenceHelper.updateJobContextReference((JobContextManager)
-                            // contextManager,
-                            // contextItem);
-
-                            // update
-                            // TDQ-3901:Update the contextName property in the connection item file.
-                            Map<String, String> contextGroupRenamedMap = new HashMap<String, String>();
-                            Map<IContext, String> renameGroupContextMap = manager.getRenameGroupContext();
-                            for (IContext context : renameGroupContextMap.keySet()) {
-                                String oldContextGroupName = renameGroupContextMap.get(context);
-                                contextGroupRenamedMap.put(oldContextGroupName, context.getName());
-                            }
-                            RepositoryUpdateManager.updateContext((JobContextManager) contextManager, contextItem);
-                            if (!contextGroupRenamedMap.isEmpty()) {
-                                SwitchContextGroupNameImpl.getInstance().updateContextForConnectionItems(contextGroupRenamedMap,
-                                        contextItem);
-                            }
+                        // the function has moved to UpdateContextParameterCommand for update manager(bug 3993).
+                        // update the tRunJob reference
+                        // UpdateContextReferenceHelper.updateJobContextReference((JobContextManager)
+                        // contextManager,
+                        // contextItem);
+                        
+                        // update
+                        // TDQ-3901:Update the contextName property in the connection item file.
+                        Map<String, String> contextGroupRenamedMap = new HashMap<String, String>();
+                        Map<IContext, String> renameGroupContextMap = manager.getRenameGroupContext();
+                        for (IContext context : renameGroupContextMap.keySet()) {
+                            String oldContextGroupName = renameGroupContextMap.get(context);
+                            contextGroupRenamedMap.put(oldContextGroupName, context.getName());
+                        }
+                        RepositoryUpdateManager.updateContext((JobContextManager) contextManager, contextItem);
+                        if (!contextGroupRenamedMap.isEmpty()) {
+                            SwitchContextGroupNameImpl.getInstance().updateContextForConnectionItems(contextGroupRenamedMap,
+                                    contextItem);
                         }
                     }
                     // contextItem.setProperty(ProxyRepositoryFactory.getInstance().getUptodateProperty(contextItem.getProperty()));
