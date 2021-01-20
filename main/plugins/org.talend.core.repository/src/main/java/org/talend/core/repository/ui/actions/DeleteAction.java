@@ -1508,19 +1508,19 @@ public class DeleteAction extends AContextualAction {
             if (deleteObjectList != null && deleteObjectList.size() > 0) {
                 factory.batchDeleteObjectPhysical4Remote(ProjectManager.getInstance().getCurrentProject(), deleteObjectList);
             }
+        }
 
-            // delete forever to delete codeJar folder
-            if (!logicalDelete) {
-                IFolder folder = ResourceUtils
-                        .getFolder(ResourceUtils.getProject(ProjectManager.getInstance().getCurrentProject()),
-                                ERepositoryObjectType.getFolderName(currentJobNode.getObjectType()), true)
-                        .getFolder(currentJobNode.getObject().getProperty().getLabel());
-                if (folder != null) {
-                    try {
-                        folder.delete(false, null);
-                    } catch (CoreException e) {
-                        throw new PersistenceException(e);
-                    }
+        // delete forever to delete codeJar folder
+        if (!logicalDelete) {
+            IFolder folder = ResourceUtils
+                    .getFolder(ResourceUtils.getProject(ProjectManager.getInstance().getCurrentProject()),
+                            ERepositoryObjectType.getFolderName(currentJobNode.getObjectType()), true)
+                    .getFolder(currentJobNode.getObject().getProperty().getLabel());
+            if (folder != null) {
+                try {
+                    folder.delete(false, null);
+                } catch (CoreException e) {
+                    throw new PersistenceException(e);
                 }
             }
         }
