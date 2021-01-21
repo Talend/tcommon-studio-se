@@ -51,6 +51,8 @@ public interface TalendProcessArgumentConstant {
     static final String ARG_NEED_XMLMAPPINGS = "NEED_XMLMAPPINGS";
 
     static final String ARG_NEED_RULES = "NEED_RULES";
+    
+    static final String ARG_NEED_JETTY_SERVER = "NEED_JETTY_SERVER";
 
     static final String ARG_ENABLE_WATCH = "ENABLE_WATCH";
 
