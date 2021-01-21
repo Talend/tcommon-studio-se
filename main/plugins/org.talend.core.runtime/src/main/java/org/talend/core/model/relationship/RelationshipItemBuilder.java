@@ -103,6 +103,8 @@ public class RelationshipItemBuilder {
 
     public static final String ROUTINES_JAR_RELATION = "routinesJar"; //$NON-NLS-1$
 
+    public static final String BEANS_JAR_RELATION = "beansJar"; //$NON-NLS-1$
+
     public static final String MAPPER_RELATION = "mapper"; //$NON-NLS-1$
 
     public static final String SURVIVOR_RELATION = "survivorshipRuleRelation"; //$NON-NLS-1$

@@ -58,6 +58,10 @@ public class JobRoutinesItemRelationshipHandler extends AbstractJobItemRelations
                         && ERepositoryObjectType.ROUTINESJAR.getType().equals(itemInfor.getType())) {
                     addedRelation.setId(itemInfor.getId());
                     addedRelation.setType(RelationshipItemBuilder.ROUTINES_JAR_RELATION);
+                } else if (ERepositoryObjectType.BEANSJAR != null
+                        && ERepositoryObjectType.BEANSJAR.getType().equals(itemInfor.getType())) {
+                    addedRelation.setId(itemInfor.getId());
+                    addedRelation.setType(RelationshipItemBuilder.BEANS_JAR_RELATION);
                 } else {
                     addedRelation.setId(itemInfor.getName());
                     addedRelation.setType(RelationshipItemBuilder.ROUTINE_RELATION);
