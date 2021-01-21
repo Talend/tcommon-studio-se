@@ -86,6 +86,7 @@ import org.talend.designer.maven.model.TalendMavenConstants;
 import org.talend.designer.maven.template.MavenTemplateManager;
 import org.talend.designer.maven.tools.creator.CreateMavenBeanPom;
 import org.talend.designer.maven.tools.creator.CreateMavenRoutinePom;
+import org.talend.designer.maven.utils.MavenProjectUtils;
 import org.talend.designer.maven.utils.PomIdsHelper;
 import org.talend.designer.maven.utils.PomUtil;
 import org.talend.designer.runprocess.IRunProcessService;
@@ -187,6 +188,7 @@ public class AggregatorPomsHelper {
                         }
                         if (ignoreM2Cache || CodeM2CacheManager.needUpdateCodeProject(currentProject, codeType)) {
                             updateCodeProjectPom(monitor, codeType, codeProject.getProjectPom());
+                            MavenProjectUtils.updateMavenProject(monitor, codeProject.getProject());
                             buildAndInstallCodesProject(monitor, codeType, true, forceBuild);
                             CodeM2CacheManager.updateCodeProjectCache(currentProject, codeType);
                         }
@@ -940,8 +942,8 @@ public class AggregatorPomsHelper {
             String currentProjectTechName = ProjectManager.getInstance().getCurrentProject().getTechnicalLabel();
             CodesJarResourceCache.getAllCodesJars().stream()
                     .filter(info -> info.getProjectTechName().equals(currentProjectTechName))
-                    .forEach(info -> getModulePath(
-                            getCodesJarFolder(info.getProperty()).getFile(TalendMavenConstants.POM_FILE_NAME)));
+                    .forEach(info -> modules.add(
+                            getModulePath(getCodesJarFolder(info.getProperty()).getFile(TalendMavenConstants.POM_FILE_NAME))));
         }
     }
 
