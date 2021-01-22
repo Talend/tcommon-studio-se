@@ -280,7 +280,7 @@ public class ContextModeWizard extends CheckLastVersionRepositoryWizard implemen
                     contextItem.setDefaultContext(contextManager.getDefaultContext().getName());
                     if (contextManager instanceof JobContextManager) {
                         JobContextManager manager = (JobContextManager) contextManager;
-                        if(manager.isModified()) {
+                        if (manager.isModified()) {
                             // the function has moved to UpdateContextParameterCommand for update manager(bug 3993).
                             // update the tRunJob reference
                             // UpdateContextReferenceHelper.updateJobContextReference((JobContextManager)
