@@ -21,6 +21,7 @@ import org.talend.core.model.properties.Item;
 import org.talend.core.model.relationship.AbstractJobItemRelationshipHandler;
 import org.talend.core.model.relationship.Relation;
 import org.talend.core.model.relationship.RelationshipItemBuilder;
+import org.talend.core.model.repository.ERepositoryObjectType;
 import org.talend.designer.core.model.utils.emf.talendfile.ProcessType;
 import org.talend.designer.core.model.utils.emf.talendfile.RoutinesParameterType;
 
@@ -53,8 +54,18 @@ public class JobRoutinesItemRelationshipHandler extends AbstractJobItemRelations
                 }
 
                 Relation addedRelation = new Relation();
-                addedRelation.setId(itemInfor.getName());
-                addedRelation.setType(RelationshipItemBuilder.ROUTINE_RELATION);
+                if (ERepositoryObjectType.ROUTINESJAR != null
+                        && ERepositoryObjectType.ROUTINESJAR.getType().equals(itemInfor.getType())) {
+                    addedRelation.setId(itemInfor.getId());
+                    addedRelation.setType(RelationshipItemBuilder.ROUTINES_JAR_RELATION);
+                } else if (ERepositoryObjectType.BEANSJAR != null
+                        && ERepositoryObjectType.BEANSJAR.getType().equals(itemInfor.getType())) {
+                    addedRelation.setId(itemInfor.getId());
+                    addedRelation.setType(RelationshipItemBuilder.BEANS_JAR_RELATION);
+                } else {
+                    addedRelation.setId(itemInfor.getName());
+                    addedRelation.setType(RelationshipItemBuilder.ROUTINE_RELATION);
+                }
                 addedRelation.setVersion(RelationshipItemBuilder.LATEST_VERSION);
                 relationSet.add(addedRelation);
 

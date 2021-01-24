@@ -68,6 +68,7 @@ public class CodesJarResourceCache {
             if (optional.isPresent()) {
                 return optional.get();
             }
+            ExceptionHandler.process(new Exception("Codes jar id [" + id + "] is not found!")); //$NON-NLS-1$ //$NON-NLS-2$
             return null;
         }
     }
