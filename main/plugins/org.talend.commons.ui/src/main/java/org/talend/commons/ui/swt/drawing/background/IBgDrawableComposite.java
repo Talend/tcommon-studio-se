@@ -13,6 +13,7 @@
 package org.talend.commons.ui.swt.drawing.background;
 
 import org.eclipse.swt.graphics.GC;
+import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.graphics.Point;
 import org.eclipse.swt.widgets.Composite;
 
@@ -27,6 +28,8 @@ public interface IBgDrawableComposite {
     public abstract void drawBackground(GC gc);
 
     public Composite getBgDrawableComposite();
+
+    public void refreshBgDrawableCompsite(Image image);
 
     public void setOffset(Point offsetPoint);
 

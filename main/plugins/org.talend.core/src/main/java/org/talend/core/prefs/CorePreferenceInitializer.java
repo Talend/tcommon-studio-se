@@ -16,13 +16,13 @@ import java.io.File;
 import java.util.Locale;
 
 import org.eclipse.core.runtime.IPath;
-import org.eclipse.core.runtime.Path;
 import org.eclipse.core.runtime.Platform;
 import org.eclipse.core.runtime.preferences.AbstractPreferenceInitializer;
 import org.eclipse.core.runtime.preferences.DefaultScope;
 import org.eclipse.core.runtime.preferences.IEclipsePreferences;
 import org.talend.core.CorePlugin;
 import org.talend.core.prefs.GeneralParametersProvider.GeneralParameters;
+import org.talend.core.runtime.util.SharedStudioUtils;
 
 /**
  * Intializer of core preferences. <br/>
@@ -54,7 +54,7 @@ public class CorePreferenceInitializer extends AbstractPreferenceInitializer {
         IEclipsePreferences node = new DefaultScope().getNode(CorePlugin.getDefault().getBundle().getSymbolicName());
 
         // Building temporary files directory path
-        IPath tempPath = new Path(System.getProperty("user.dir")).append("temp"); // NON-NLS-1$// NON-NLS-2$ //$NON-NLS-1$ //$NON-NLS-2$
+        IPath tempPath = SharedStudioUtils.getTempFolderPath();
         File tempFile = tempPath.toFile();
         if (!tempFile.exists()) {
             tempFile.mkdirs();

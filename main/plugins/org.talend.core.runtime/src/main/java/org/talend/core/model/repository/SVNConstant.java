@@ -27,6 +27,8 @@ public interface SVNConstant {
 
     public static final String NAME_MASTER = "master"; //$NON-NLS-1$
 
+    public static final String NAME_MAIN = "main"; //$NON-NLS-1$
+
     public static final String NAME_ORIGIN = "origin"; //$NON-NLS-1$
 
     /*

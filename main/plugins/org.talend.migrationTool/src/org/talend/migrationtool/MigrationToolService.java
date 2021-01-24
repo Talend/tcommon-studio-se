@@ -22,6 +22,7 @@ import java.util.Comparator;
 import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Optional;
 
 import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
@@ -64,6 +65,7 @@ import org.talend.core.repository.model.ProxyRepositoryFactory;
 import org.talend.core.repository.utils.ProjectDataJsonProvider;
 import org.talend.core.repository.utils.RoutineUtils;
 import org.talend.core.repository.utils.URIHelper;
+import org.talend.core.services.ICoreTisService;
 import org.talend.designer.codegen.ICodeGeneratorService;
 import org.talend.designer.codegen.ITalendSynchronizer;
 import org.talend.migration.IMigrationTask;
@@ -312,13 +314,22 @@ public class MigrationToolService implements IMigrationToolService {
 
                                         @Override
                                         public int compare(ERepositoryObjectType arg0, ERepositoryObjectType arg1) {
-                                            if (arg0 == ERepositoryObjectType.PROCESS) {
-                                                return 1;
+                                            return getImportPriority(arg0) - getImportPriority(arg1);
+                                        }
+                                        
+                                        private int getImportPriority(ERepositoryObjectType objectType) {
+                                            if (ERepositoryObjectType.CONTEXT.getType().equals(objectType)) {
+                                                return 10;
+                                            } else if ("SERVICES".equals(objectType)) {
+                                                return 20;
+                                            } else if (ERepositoryObjectType.JOBLET != null
+                                                    && ERepositoryObjectType.JOBLET.getType().equals(objectType)) {
+                                                return 30;
+                                            } else if (ERepositoryObjectType.PROCESS_ROUTELET != null
+                                                    && ERepositoryObjectType.PROCESS_ROUTELET.getType().equals(objectType)) {
+                                                return 40;
                                             }
-                                            if (arg0 == ERepositoryObjectType.JOBLET) {
-                                                return 1;
-                                            }
-                                            return 0;
+                                            return 100;
                                         }
                                     });
 
@@ -422,7 +433,19 @@ public class MigrationToolService implements IMigrationToolService {
                                                     }
                                                 }
                                             }
-
+                                            if (GlobalServiceRegister.getDefault().isServiceRegistered(ICoreTisService.class)) {
+                                                if (object.getProperty().eResource() == null) { // In case some
+                                                                                                // migration task has
+                                                                                                // unloaded.
+                                                    object = repFactory.getSpecificVersion(object.getProperty().getId(),
+                                                            object.getProperty().getVersion(), true);
+                                                }
+                                                if (object != null) {
+                                                    ICoreTisService service = GlobalServiceRegister.getDefault()
+                                                            .getService(ICoreTisService.class);
+                                                    service.afterImport(object.getProperty());
+                                                }
+                                            }
                                             if (object instanceof RepositoryObject) {
                                                 ((RepositoryObject) object).unload();
                                             }
@@ -747,13 +770,9 @@ public class MigrationToolService implements IMigrationToolService {
      */
     @Override
     public void initNewProjectTasks(Project project) {
-        List<IProjectMigrationTask> toExecute = GetTasksHelper.getProjectTasks(true);
-        toExecute.addAll(GetTasksHelper.getProjectTasks(false));
-        List<MigrationTask> done = new ArrayList<MigrationTask>();
-
-        for (IProjectMigrationTask task : toExecute) {
-            done.add(MigrationUtil.convertMigrationTask(task));
-        }
+        List<MigrationTask> done = new LinkedList<>();
+        Optional.ofNullable(GetTasksHelper.getMigrationTasks(true)).ifPresent(tasks -> done.addAll(tasks));
+        Optional.ofNullable(GetTasksHelper.getMigrationTasks(false)).ifPresent(tasks -> done.addAll(tasks));
 
         project.getEmfProject().setItemsRelationVersion(RelationshipItemBuilder.INDEX_VERSION);
         saveProjectMigrationTasksDone(project, done);

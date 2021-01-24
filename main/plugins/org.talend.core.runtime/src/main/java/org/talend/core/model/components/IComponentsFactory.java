@@ -111,4 +111,6 @@ public interface IComponentsFactory {
     public Map<String, File> getComponentsProvidersFolder();
 
     public List<ComponentProviderInfo> getComponentsProvidersInfo();
+    
+    public String getCustomComponentBundlePath();
 }

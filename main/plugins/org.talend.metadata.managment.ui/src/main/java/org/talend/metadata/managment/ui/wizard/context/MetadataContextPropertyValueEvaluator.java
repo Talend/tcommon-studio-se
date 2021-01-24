@@ -12,13 +12,17 @@
 // ============================================================================
 package org.talend.metadata.managment.ui.wizard.context;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.apache.avro.Schema;
 import org.talend.commons.runtime.model.components.IComponentConstants;
+import org.talend.core.model.general.ModuleNeeded;
 import org.talend.core.model.metadata.builder.connection.Connection;
 import org.talend.core.model.utils.ContextParameterUtils;
 import org.talend.core.runtime.evaluator.AbstractPropertyValueEvaluator;
+import org.talend.core.runtime.maven.MavenUrlHelper;
+import org.talend.core.utils.TalendQuoteUtils;
 import org.talend.daikon.properties.property.Property;
 import org.talend.designer.core.model.utils.emf.talendfile.ContextType;
 import org.talend.metadata.managment.ui.utils.ConnectionContextHelper;
@@ -48,6 +52,7 @@ public class MetadataContextPropertyValueEvaluator extends AbstractPropertyValue
         if (Boolean.valueOf(String.valueOf(property.getTaggedValue(IComponentConstants.SUPPORT_CONTEXT)))) {
             isPropertySupportContext = true;
         }
+        Object currentStoredValue = storedValue;
         if (connection != null && connection.isContextMode() && isPropertySupportContext) {
             ContextType contextType = ConnectionContextHelper.context;
             if(contextType == null){
@@ -61,7 +66,36 @@ public class MetadataContextPropertyValueEvaluator extends AbstractPropertyValue
             }
 
         }
-        return getTypedValue(property, storedValue);
+
+        if (property.getName() != null && property.getName().equals("drivers")) {
+            // check driver jar path
+            if (storedValue instanceof List) {
+                List<String> vals = (List<String>) storedValue;
+                List<String> newVals = new ArrayList<String>();
+                for (String val : vals) {
+                    String uri = getUri(val);
+                    newVals.add(uri);
+                }
+                storedValue = newVals;
+
+            } else {
+                String val = String.valueOf(storedValue);
+                storedValue = getUri(val);
+            }
+
+        }
+        return getTypedValue(property, currentStoredValue, storedValue);
+    }
+
+    private static String getUri(String jarName) {
+        if (jarName != null) {
+            jarName = TalendQuoteUtils.removeQuotes(jarName);
+            if (!jarName.startsWith(MavenUrlHelper.MVN_PROTOCOL)) {
+                ModuleNeeded mod = new ModuleNeeded(null, jarName, null, true);
+                return mod.getMavenUri();
+            }
+        }
+        return jarName;
     }
 
 }

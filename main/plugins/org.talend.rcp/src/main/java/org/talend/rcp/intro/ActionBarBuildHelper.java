@@ -44,6 +44,7 @@ import org.talend.core.language.ECodeLanguage;
 import org.talend.core.language.LanguageManager;
 import org.talend.core.model.utils.TalendPropertiesUtil;
 import org.talend.core.repository.model.ProxyRepositoryFactory;
+import org.talend.core.runtime.util.SharedStudioUtils;
 import org.talend.core.ui.branding.IActionBarHelper;
 import org.talend.core.ui.branding.IBrandingService;
 import org.talend.core.ui.perspective.PerspectiveMenuManager;
@@ -432,6 +433,10 @@ public class ActionBarBuildHelper implements IActionBarHelper {
                 "org.eclipse.ui.cheatsheets.actions.CheatSheetHelpMenuAction", "subversive", "subversive.help", "org.eclipse.equinox.p2.ui.sdk.install" }; //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
         for (String id : removeIds) {
             helpMenu.remove(id);
+        }
+        // Remove unsupported action on shared mode
+        if (SharedStudioUtils.isSharedStudioMode()) {
+            helpMenu.remove("org.eclipse.equinox.p2.ui.sdk.install"); //$NON-NLS-1$ 
         }
     }
 

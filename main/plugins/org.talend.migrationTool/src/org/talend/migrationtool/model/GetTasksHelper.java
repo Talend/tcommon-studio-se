@@ -23,6 +23,8 @@ import org.talend.commons.ui.runtime.exception.ExceptionHandler;
 import org.talend.commons.utils.workbench.extensions.ExtensionImplementationProvider;
 import org.talend.commons.utils.workbench.extensions.ExtensionPointLimiterImpl;
 import org.talend.commons.utils.workbench.extensions.IExtensionPointLimiter;
+import org.talend.core.model.properties.MigrationTask;
+import org.talend.core.model.utils.MigrationUtil;
 import org.talend.migration.IProjectMigrationTask;
 import org.talend.migration.IWorkspaceMigrationTask;
 
@@ -104,6 +106,34 @@ public class GetTasksHelper {
             }
         }
         return migrationsInstances.get(taskId);
+    }
+
+    public static List<MigrationTask> getMigrationTasks(final boolean beforeLogon) {
+        IExtensionPointLimiter actionExtensionPoint = new ExtensionPointLimiterImpl("org.talend.core.migrationTask", //$NON-NLS-1$
+                "projecttask"); //$NON-NLS-1$
+
+        ExtensionImplementationProvider<MigrationTask> provider = new ExtensionImplementationProvider<MigrationTask>(
+                actionExtensionPoint) {
+
+            @Override
+            protected MigrationTask createImplementation(IExtension extension, IExtensionPointLimiter extensionPointLimiter,
+                    IConfigurationElement configurationElement) {
+                try {
+                    if (new Boolean(configurationElement.getAttribute("beforeLogon")) == beforeLogon) { //$NON-NLS-1$
+                        String id = configurationElement.getAttribute("id"); //$NON-NLS-1$
+                        String version = configurationElement.getAttribute("version"); //$NON-NLS-1$
+                        String breaks = configurationElement.getAttribute("breaks"); //$NON-NLS-1$
+                        return MigrationUtil.createMigrationTask(id, version, breaks, MigrationUtil.DEFAULT_STATUS);
+                    }
+                } catch (Exception e) {
+                    ExceptionHandler.process(e);
+                }
+                return null;
+            }
+
+        };
+
+        return provider.createInstances();
     }
 
     public static List<IProjectMigrationTask> getProjectTasks(final boolean beforeLogon) {

@@ -15,15 +15,17 @@ package org.talend.commons.utils;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
-import java.io.InputStream;
 import java.net.URISyntaxException;
 import java.net.URL;
+import java.util.Optional;
 import java.util.Properties;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+import java.util.stream.Stream;
 
 import org.apache.commons.lang3.StringUtils;
 import org.apache.log4j.Logger;
+import org.apache.maven.artifact.versioning.DefaultArtifactVersion;
 import org.eclipse.core.runtime.FileLocator;
 import org.eclipse.core.runtime.Path;
 import org.eclipse.core.runtime.Platform;
@@ -230,10 +232,50 @@ public class VersionUtils {
      * Check if studio version < other studio version record in remote project.
      */
     public static boolean isInvalidProductVersion(String remoteFullProductVersion) {
+        String localProductVersion = getInternalVersion();
+        return isInvalidProductVersion(localProductVersion, remoteFullProductVersion);
+    }
+
+    protected static boolean isInvalidProductVersion(String localProductVersion, String remoteFullProductVersion) {
         if (remoteFullProductVersion == null) {
             return false;
         }
-        return getInternalVersion().compareTo(getProductVersionWithoutBranding(remoteFullProductVersion)) < 0;
+        if (skipCheckingNightlyBuilds(localProductVersion, remoteFullProductVersion)) {
+            return false;
+        }
+        return localProductVersion.compareTo(getProductVersionWithoutBranding(remoteFullProductVersion)) < 0;
+    }
+
+    public static boolean productVersionIsNewer(String remoteFullProductVersion) {
+        String localProductVersion = getInternalVersion();
+        return productVersionIsNewer(localProductVersion, remoteFullProductVersion);
+    }
+
+    protected static boolean productVersionIsNewer(String localProductVersion, String remoteFullProductVersion) {
+        if (remoteFullProductVersion == null) {
+            return false;
+        }
+        if (skipCheckingNightlyBuilds(localProductVersion, remoteFullProductVersion)) {
+            return false;
+        }
+        return localProductVersion.compareTo(getProductVersionWithoutBranding(remoteFullProductVersion)) > 0;
+    }
+
+    private static boolean skipCheckingNightlyBuilds(String localProductVersion, String remoteFullProductVersion) {
+        String separator = "-"; //$NON-NLS-1$
+        String localSuffix = StringUtils.substringAfterLast(localProductVersion, separator);
+
+        String remoteProductVersion = getProductVersionWithoutBranding(remoteFullProductVersion);
+        String remoteSuffix = StringUtils.substringAfterLast(remoteProductVersion, separator);
+
+        String nightly = "SNAPSHOT"; //$NON-NLS-1$
+        String milestone = "M"; //$NON-NLS-1$
+        if ((localSuffix.equals(nightly) || localSuffix.startsWith(milestone))
+                && (remoteSuffix.equals(nightly) || remoteSuffix.startsWith(milestone))) {
+            // skip checking between nightly/milestone build.
+            return true;
+        }
+        return false;
     }
 
     public static String getTalendVersion(String productVersion) {
@@ -262,24 +304,28 @@ public class VersionUtils {
         return version;
     }
 
-    public static String getMojoVersion(String mojoKey) {
-        String version = null;
+    public static String getMojoVersion(MojoType mojoType) {
+        String mojoKey = mojoType.getVersionKey();
+        String version = System.getProperty(mojoKey);
+        if (StringUtils.isNotBlank(version)) {
+            return version;
+        }
         String talendVersion = getTalendVersion();
-        Properties properties = new Properties();
-        File file = new Path(Platform.getConfigurationLocation().getURL().getPath()).append("mojo_version.properties").toFile(); //$NON-NLS-1$
-        if (file.exists()) {
-            try (InputStream inStream = new FileInputStream(file)) {
-                properties.load(inStream);
-                version = properties.getProperty(mojoKey);
-            } catch (IOException e) {
-                ExceptionHandler.process(e);
+        String majorVersion = StringUtils.substringBeforeLast(talendVersion, "."); //$NON-NLS-1$
+        String artifactIdFolder = mojoType.getMojoArtifactIdFolder();
+        Optional<File> optional = Stream.of(new File(artifactIdFolder).listFiles())
+                .filter(f -> f.isDirectory() && f.getName().startsWith(majorVersion))
+                .sorted((f1, f2) -> new DefaultArtifactVersion(f2.getName()).compareTo(new DefaultArtifactVersion(f1.getName())))
+                .findFirst();
+        if (optional.isPresent()) {
+            File latestArtifact = optional.get();
+            String fileName = mojoType.getArtifactId() + "-" + latestArtifact.getName(); //$NON-NLS-1$
+            if (Stream.of(latestArtifact.listFiles())
+                    .filter(f -> f.getName().equals(fileName + ".jar") || f.getName().equals(fileName + ".pom")) //$NON-NLS-1$ //$NON-NLS-2$
+                    .count() != 2) {
+                ExceptionHandler.process(new Exception("Can't find plugin artifact " + mojoType.getMojoGAV())); //$NON-NLS-1$
             }
-            if (version != null && !version.startsWith(talendVersion)) {
-                ExceptionHandler
-                        .process(new Exception(
-                                "Incompatible Mojo version:" + mojoKey + "[" + version + "], use default version.")); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
-                version = null;
-            }
+            version = latestArtifact.getName();
         }
         // default version
         if (StringUtils.isBlank(version)) {
@@ -293,6 +339,7 @@ public class VersionUtils {
                 version += "-" + revision; //$NON-NLS-1$
             }
         }
+        System.setProperty(mojoKey, version);
         return version;
     }
 
@@ -302,4 +349,25 @@ public class VersionUtils {
             talendVersion = null;
         }
     }
+
+    public static String getSimplifiedPatchName(String projectPatchName) {
+
+        if (projectPatchName != null) {
+            String result = null;
+            if (projectPatchName.contains("_") && projectPatchName.split("_").length >= 3) {
+                result = projectPatchName.split("_")[2];
+                if (!result.startsWith("R")) {
+                    return null;
+                }
+            }
+            if (projectPatchName.contains("-")) {
+                String[] split = projectPatchName.split("-");
+                if (split != null && split.length > 0) {
+                    return result + "-" + split[split.length - 1];
+                }
+            }
+        }
+        return null;
+    }
+
 }

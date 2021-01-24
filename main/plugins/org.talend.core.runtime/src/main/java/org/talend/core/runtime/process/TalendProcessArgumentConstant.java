@@ -51,6 +51,8 @@ public interface TalendProcessArgumentConstant {
     static final String ARG_NEED_XMLMAPPINGS = "NEED_XMLMAPPINGS";
 
     static final String ARG_NEED_RULES = "NEED_RULES";
+    
+    static final String ARG_NEED_JETTY_SERVER = "NEED_JETTY_SERVER";
 
     static final String ARG_ENABLE_WATCH = "ENABLE_WATCH";
 
@@ -63,6 +65,8 @@ public interface TalendProcessArgumentConstant {
     static final String ARG_LAUNCHER_NAME = "LAUNCHER_NAME";
 
     static final String ARG_AVOID_BRANCH_NAME = "AVOID_BRANCH_NAME";
+
+    static final String ARG_CLEAR_PASSWORD_CONTEXT_PARAMETERS = "CLEAR_PASSWORD_CONTEXT_PARAMETERS";
 
     static final String CMD_ARG_STATS_PORT_PARAM = "stat_port";
 

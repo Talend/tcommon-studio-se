@@ -31,6 +31,7 @@ import org.talend.cwm.relational.TdColumn;
 import org.talend.cwm.relational.TdTable;
 import org.talend.cwm.xml.TdXmlSchema;
 import org.talend.utils.sql.metadata.constants.TableType;
+
 import orgomg.cwm.foundation.softwaredeployment.DataManager;
 import orgomg.cwm.objectmodel.core.ModelElement;
 import orgomg.cwm.objectmodel.core.Namespace;
@@ -66,10 +67,30 @@ public final class TableHelper extends SubItemHelper {
             TdTable table = SwitchHelpers.TABLE_SWITCH.doSwitch(elt);
             if (table != null) {
                 // TUP-1102 filter the synonym type, 20131009,yyin
-                if (StringUtils.equalsIgnoreCase(TableType.SYNONYM.name(), table.getTableType())) {
+                if (StringUtils.equalsIgnoreCase(TableType.SYNONYM.name(), table.getTableType())
+                        || StringUtils.equalsIgnoreCase(TableType.CALCULATION_VIEW.toString(), table.getTableType())) {
                     continue;
                 }// ~
                 tables.add(table);
+            }
+        }
+        return tables;
+    }
+
+    /**
+     * Method "getCalculationView" extracts the Calculation views from the list.
+     *
+     * @param elements any elements that could contain TdTables
+     * @return the list of TdTables found in the given list (never null, but can be empty).
+     */
+    public static List<TdTable> getCalculationView(Collection<? extends EObject> elements) {
+        List<TdTable> tables = new ArrayList<>();
+        for (EObject elt : elements) {
+            TdTable table = SwitchHelpers.TABLE_SWITCH.doSwitch(elt);
+            if (table != null) {
+                if (StringUtils.equalsIgnoreCase(TableType.CALCULATION_VIEW.toString(), table.getTableType())) {
+                    tables.add(table);
+                }
             }
         }
         return tables;

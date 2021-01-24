@@ -33,6 +33,7 @@ import java.util.Set;
 import java.util.concurrent.RejectedExecutionHandler;
 import java.util.concurrent.ThreadPoolExecutor;
 
+import org.apache.commons.lang.StringUtils;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.emf.common.util.EList;
@@ -82,6 +83,8 @@ import org.talend.commons.utils.threading.TalendCustomThreadPoolExecutor;
 import org.talend.core.database.EDatabaseTypeName;
 import org.talend.core.database.conn.ConnParameterKeys;
 import org.talend.core.model.metadata.IMetadataConnection;
+import org.talend.core.model.metadata.MappingTypeRetriever;
+import org.talend.core.model.metadata.MetadataTalendType;
 import org.talend.core.model.metadata.MetadataToolHelper;
 import org.talend.core.model.metadata.builder.connection.DatabaseConnection;
 import org.talend.core.model.metadata.builder.connection.MetadataColumn;
@@ -1580,7 +1583,15 @@ public class SelectorTableForm extends AbstractForm {
                     dbtable.setSourceName(tableString);
                     dbtable.setId(factory.getNextId());
                     dbtable.setTableType(tableNode.getItemType());
-
+                    String dbmsId = metadataconnection.getMapping();
+                    MappingTypeRetriever mappingTypeRetriever = MetadataTalendType.getMappingTypeRetriever(dbmsId);
+                    if (mappingTypeRetriever == null) {
+                        @SuppressWarnings("null")
+                        EDatabaseTypeName dbType = EDatabaseTypeName.getTypeFromDbType(metadataconnection.getDbType(), false);
+                        if (dbType != null) {
+                            mappingTypeRetriever = MetadataTalendType.getMappingTypeRetrieverByProduct(dbType.getProduct());
+                        }
+                    }
                     List<MetadataColumn> metadataColumnsValid = new ArrayList<MetadataColumn>();
                     Iterator iterate = metadataColumns.iterator();
                     while (iterate.hasNext()) {
@@ -1589,7 +1600,14 @@ public class SelectorTableForm extends AbstractForm {
                             if (metadataColumn.getTalendType().equals(JavaTypesManager.DATE.getId())
                                     || metadataColumn.getTalendType().equals(PerlTypesManager.DATE)) {
                                 if ("".equals(metadataColumn.getPattern())) { //$NON-NLS-1$
-                                    metadataColumn.setPattern(TalendQuoteUtils.addQuotes("dd-MM-yyyy")); //$NON-NLS-1$
+                                    if (mappingTypeRetriever != null) {
+                                        String pattern = mappingTypeRetriever.getDefaultPattern(dbmsId,
+                                                metadataColumn.getSourceType());
+                                        metadataColumn.setPattern(StringUtils.isNotBlank(pattern) ? TalendQuoteUtils.addQuotes(pattern)
+                                                : TalendQuoteUtils.addQuotes("dd-MM-yyyy"));//$NON-NLS-1$
+                                    } else {
+                                        metadataColumn.setPattern(TalendQuoteUtils.addQuotes("dd-MM-yyyy")); //$NON-NLS-1$
+                                    }
                                 }
                             }
                         }

@@ -14,6 +14,7 @@ package org.talend.core.repository.recyclebin;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Comparator;
 import java.util.Date;
 import java.util.HashMap;
@@ -24,6 +25,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
+import org.apache.commons.lang3.StringUtils;
 import org.eclipse.core.resources.IProject;
 import org.eclipse.core.runtime.IPath;
 import org.eclipse.emf.common.util.EList;
@@ -106,7 +108,8 @@ public class RecycleBinManager {
         List<IRepositoryViewObject> deletedObjects = new ArrayList<IRepositoryViewObject>();
         final EList<TalendItem> deletedItems = projectRecyclebins.get(project.getTechnicalLabel()).getDeletedItems();
         List<TalendItem> notDeletedItems = new ArrayList<TalendItem>();
-        for (TalendItem deletedItem : deletedItems) {
+        List<TalendItem> dup_deletedItems = new ArrayList<>(deletedItems);
+        for (TalendItem deletedItem : dup_deletedItems) {
             try {
                 final ERepositoryObjectType type = ERepositoryObjectType.getType(deletedItem.getType());
                 // ignore the generated doc in recycle bin
@@ -274,7 +277,40 @@ public class RecycleBinManager {
                 resource = createRecycleBinResource(project);
             }
             resource.getContents().clear();
-            recycleBin.setLastUpdate(new Date());
+            EList<String> deletedFolders = recycleBin.getDeletedFolders();
+            if (deletedFolders != null) {
+                List<String> folders = new LinkedList<>(deletedFolders);
+                Collections.sort(folders);
+                deletedFolders.clear();
+                deletedFolders.addAll(folders);
+            }
+            EList<TalendItem> deletedItems = recycleBin.getDeletedItems();
+            if (deletedItems != null) {
+                List<TalendItem> items = new LinkedList<>(deletedItems);
+                items.sort((l, r) -> {
+                    if (l == null && r == null) {
+                        return 0;
+                    } else if (l == null) {
+                        return -1;
+                    } else if (r == null) {
+                        return 1;
+                    }
+                    int result = StringUtils.compare(l.getType(), r.getType());
+                    if (result != 0) {
+                        return result;
+                    }
+                    result = StringUtils.compare(l.getPath(), r.getPath());
+                    if (result != 0) {
+                        return result;
+                    }
+                    return StringUtils.compare(l.getId(), r.getId());
+                });
+                deletedItems.clear();
+                deletedItems.addAll(items);
+            }
+
+            // set date to null to avoid timezone conflict
+            recycleBin.setLastUpdate(null);
             resource.getContents().add(recycleBin);
             EmfHelper.saveResource(resource);
             lastSavedRecycleBinMap.put(recycleBin, EcoreUtil.copy(recycleBin));

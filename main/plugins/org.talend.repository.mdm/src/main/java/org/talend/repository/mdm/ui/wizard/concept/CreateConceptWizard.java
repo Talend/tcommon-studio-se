@@ -49,6 +49,7 @@ import org.talend.datatools.xml.utils.ATreeNode;
 import org.talend.metadata.managment.ui.utils.ConnectionContextHelper;
 import org.talend.metadata.managment.ui.wizard.RepositoryWizard;
 import org.talend.repository.mdm.i18n.Messages;
+import org.talend.repository.mdm.util.MDMUtil;
 import org.talend.repository.model.IProxyRepositoryFactory;
 import org.talend.repository.model.IRepositoryService;
 import org.talend.repository.model.RepositoryNode;
@@ -243,9 +244,8 @@ public class CreateConceptWizard extends RepositoryWizard implements INewWizard 
                 success = true;
             }
 
-            IPath sasPath = new Path(System.getProperty("user.dir")).append("temp");//$NON-NLS-1$ //$NON-NLS-2$
-            File sasDir = sasPath.toFile();
-            if (sasDir.exists()) {
+            File sasDir = MDMUtil.getTempTemplateXSDFile().getParentFile();
+            if (sasDir != null && sasDir.exists()) {
                 delete(sasDir);
             }
         }

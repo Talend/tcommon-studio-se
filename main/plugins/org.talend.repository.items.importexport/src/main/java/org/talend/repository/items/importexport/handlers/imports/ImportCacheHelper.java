@@ -207,5 +207,4 @@ public final class ImportCacheHelper {
     public synchronized List<ImportItem> getImportedItemRecords() {
         return this.importedItemRecords;
     }
-
 }

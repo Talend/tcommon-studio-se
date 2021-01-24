@@ -24,12 +24,12 @@ import java.util.StringTokenizer;
 import org.eclipse.jface.preference.IPreferenceStore;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.ui.forms.widgets.FormToolkit;
+import org.eclipse.ui.internal.intro.impl.presentations.BrowserIntroPartImplementation;
 import org.eclipse.ui.intro.config.IIntroContentProviderSite;
 import org.talend.commons.exception.PersistenceException;
 import org.talend.commons.ui.html.TalendHtmlModelUtil;
 import org.talend.commons.ui.runtime.exception.ExceptionHandler;
 import org.talend.commons.utils.VersionUtils;
-import org.talend.commons.utils.network.NetworkUtil;
 import org.talend.core.CorePlugin;
 import org.talend.core.GlobalServiceRegister;
 import org.talend.core.PluginChecker;
@@ -63,6 +63,8 @@ public class DynamicContentProvider extends IntroProvider {
     public static final String TRY_CLOUD_URL = "https://iam.integrationcloud.talend.com/idp/trial-registration?utm_medium=studio&utm_source=banner&utm_campaign="; //$NON-NLS-1$
 
     private static final String LEVEL_SEPARATOR = "."; //$NON-NLS-1$
+
+    private IIntroContentProviderSite site;
 
     /*
      * (non-Javadoc)
@@ -203,27 +205,37 @@ public class DynamicContentProvider extends IntroProvider {
         createOnlinePage(dom, parent, CLOUD_PAGE_URL, null);
     }
 
+    private static Boolean accessible = null;
+
     protected void createOnlinePage(Document dom, Element parent, String onlinePageUrl, String title) {
-        if (!NetworkUtil.isNetworkValid()) {
-            setDIVStyle(dom, false);
-            return;
-        }
         HttpURLConnection urlConnection = null;
-        try {
-            URL url = new URL(getOnlinePageURL(onlinePageUrl));
-            urlConnection = (HttpURLConnection) url.openConnection();
-            urlConnection.setRequestMethod("GET"); //$NON-NLS-1$
-            urlConnection.setDoOutput(true);
-            urlConnection.setDoInput(true);
-            urlConnection.setUseCaches(false);
-            urlConnection.setReadTimeout(2000);
-            urlConnection.getInputStream();
+        String realOnlinePageURL = getOnlinePageURL(onlinePageUrl);
+        if (accessible == null) {
+            try {
+                URL url = new URL(realOnlinePageURL);
+                urlConnection = (HttpURLConnection) url.openConnection();
+                urlConnection.setRequestMethod("GET"); //$NON-NLS-1$
+                urlConnection.setDoOutput(true);
+                urlConnection.setDoInput(true);
+                urlConnection.setUseCaches(false);
+                urlConnection.setConnectTimeout(3000);
+                if (urlConnection.getResponseCode() == HttpURLConnection.HTTP_OK) {
+                    accessible = true;
+                }
+            } catch (Exception e) {
+
+            } finally {
+                if (accessible == null) {
+                    accessible = false;
+                }
+                urlConnection.disconnect();
+            }
+        }
+        if (accessible) {
             setDIVStyle(dom, true);
-        } catch (Exception e) {
+        } else {
             setDIVStyle(dom, false);
             return;
-        } finally {
-            urlConnection.disconnect();
         }
 
         // online content
@@ -245,12 +257,21 @@ public class DynamicContentProvider extends IntroProvider {
         }
 
         Element iFrame = dom.createElement("iframe"); //$NON-NLS-1$
-        iFrame.setAttribute("src", getOnlinePageURL(onlinePageUrl)); //$NON-NLS-1$
+        iFrame.setAttribute("src", realOnlinePageURL); //$NON-NLS-1$
         iFrame.setAttribute("frameborder", "0"); //$NON-NLS-1$ //$NON-NLS-2$
         iFrame.setAttribute("width", "240px"); //$NON-NLS-1$ //$NON-NLS-2$
         iFrame.setAttribute("height", "370px"); //$NON-NLS-1$ //$NON-NLS-2$
         iFrame.appendChild(dom.createTextNode(" ")); //$NON-NLS-1$
         div.appendChild(iFrame);
+
+        updateHistory(realOnlinePageURL);
+    }
+
+    // update history to avoid call createOnlinePage twice
+    private void updateHistory(String realOnlinePageURL) {
+        if (site instanceof BrowserIntroPartImplementation) {
+            ((BrowserIntroPartImplementation) site).updateHistory(realOnlinePageURL);
+        }
     }
 
     protected void createTopMessage(Document dom, Element parent) {
@@ -399,6 +420,7 @@ public class DynamicContentProvider extends IntroProvider {
      */
     @Override
     public void init(IIntroContentProviderSite site) {
+        this.site = site;
     }
 
 }

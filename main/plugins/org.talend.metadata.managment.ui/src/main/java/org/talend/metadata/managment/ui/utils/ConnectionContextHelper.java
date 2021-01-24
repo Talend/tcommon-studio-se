@@ -703,7 +703,7 @@ public final class ConnectionContextHelper {
                     Set<String> addedVars = tempVars;
 
                     if (addedVars != null && !addedVars.isEmpty()
-                            && (isGeneric || !isAddContextVar(contextItem, process.getContextManager(), neededVars))) {
+                            && (isGeneric || !isAddContextVar(contextItem, process.getContextManager(), neededVars, true))) {
                         AtomicBoolean added = new AtomicBoolean();
                         if (ignoreContextMode) {
                             addContextVarForJob(process, contextItem, addedVars);
@@ -1591,7 +1591,13 @@ public final class ConnectionContextHelper {
     }
 
     public static boolean isAddContextVar(ContextItem contextItem, IContextManager contextManager, Set<String> neededVars) {
+        return isAddContextVar(contextItem, contextManager, neededVars, false);
+    }
+
+    public static boolean isAddContextVar(ContextItem contextItem, IContextManager contextManager, Set<String> neededVars,
+            boolean checkByDefault) {
         boolean isAdd = true;
+        boolean foundGroup = false;
         Set<String> addedVars = new HashSet<String>();
         for (IContext context : contextManager.getListContext()) {
             ContextType contextType = null;
@@ -1599,6 +1605,7 @@ public final class ConnectionContextHelper {
             for (ContextType contye : contextTypeList) {
                 if (context.getName() != null && contye.getName().toLowerCase().equals(context.getName().toLowerCase())) {
                     contextType = contye;
+                    foundGroup = true;
                     break;
                 }
             }
@@ -1615,6 +1622,26 @@ public final class ConnectionContextHelper {
                 break;
             }
         }
+
+        // if not found might different groups, check from default context if duplicate var
+        if (checkByDefault && !foundGroup) {
+            IContext jobDefaultContext = contextManager.getDefaultContext();
+            String itemDefaultContextName = contextItem.getDefaultContext();
+            List<ContextType> contextTypeList = contextItem.getContext();
+            ContextType itemDefaultContext = ContextUtils.getContextTypeByName(contextTypeList, itemDefaultContextName);
+            if (itemDefaultContext != null) {
+                for (String var : neededVars) {
+                    if (jobDefaultContext.getContextParameter(var) != null) {
+                        continue;
+                    }
+                    ContextParameterType param = ContextUtils.getContextParameterTypeByName(itemDefaultContext, var);
+                    if (param != null) {
+                        addedVars.add(var);
+                    }
+                }
+            }
+        }
+
         if (addedVars != null && !addedVars.isEmpty()) {
             isAdd = false;
         }

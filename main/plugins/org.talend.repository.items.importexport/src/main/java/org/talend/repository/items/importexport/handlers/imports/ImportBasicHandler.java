@@ -61,6 +61,7 @@ import org.talend.commons.utils.workbench.resources.ResourceUtils;
 import org.talend.core.GlobalServiceRegister;
 import org.talend.core.context.Context;
 import org.talend.core.context.RepositoryContext;
+import org.talend.core.model.context.ContextUtils;
 import org.talend.core.model.context.link.ContextLinkService;
 import org.talend.core.model.metadata.builder.connection.Connection;
 import org.talend.core.model.metadata.builder.connection.ConnectionPackage;
@@ -99,6 +100,7 @@ import org.talend.core.repository.utils.ProjectDataJsonProvider;
 import org.talend.core.runtime.CoreRuntimePlugin;
 import org.talend.core.runtime.services.IGenericDBService;
 import org.talend.core.runtime.services.IGenericWizardService;
+import org.talend.core.services.ICoreTisService;
 import org.talend.core.utils.WorkspaceUtils;
 import org.talend.designer.business.model.business.BusinessPackage;
 import org.talend.designer.business.model.business.BusinessProcess;
@@ -120,7 +122,6 @@ import org.talend.repository.model.RepositoryConstants;
  * DOC ggu class global comment. Detailled comment
  */
 public class ImportBasicHandler extends AbstractImportExecutableHandler {
-
     /**
      * set by extension point, will be the base path which relative to import project.
      *
@@ -350,7 +351,7 @@ public class ImportBasicHandler extends AbstractImportExecutableHandler {
 
     /**
      *
-     * check the item is valid or not。
+     * check the item is valid or not銆�
      */
     public boolean checkItem(ResourcesManager resManager, ImportItem importItem, boolean overwrite) {
         try {
@@ -1306,18 +1307,32 @@ public class ImportBasicHandler extends AbstractImportExecutableHandler {
         IRepositoryViewObject object;
         try {
             Property property = importItem.getProperty();
-            if (property == null) {
+            boolean isReloaded = false;
+            if (property == null || property.eResource() == null) {
                 object = factory.getSpecificVersion(importItem.getItemId(), importItem.getItemVersion(), true);
                 property = object.getProperty();
+                isReloaded = true;
             }
+            if (factory.isFullLogonFinished() && importItem.isImported()
+                    && ContextUtils.getAllSupportContextLinkTypes().contains(importItem.getRepositoryType())) {
+                if (!isReloaded) {
+                    object = factory.getSpecificVersion(importItem.getItemId(), importItem.getItemVersion(), true);
+                    property = object.getProperty();
+                }
+                ContextUtils.doCreateContextLinkMigration(importItem.getRepositoryType(), property.getItem());
+            }
+            if (GlobalServiceRegister.getDefault().isServiceRegistered(ICoreTisService.class)) {
+                ICoreTisService service = GlobalServiceRegister.getDefault().getService(ICoreTisService.class);
+                service.afterImport(property);
+            } 
             RelationshipItemBuilder.getInstance().addOrUpdateItem(property.getItem(), true);
             // importItem.setProperty(null);
             // factory.unloadResources(property);
         } catch (PersistenceException e) {
             ExceptionHandler.process(e);
         }
-
     }
+ 
 
     protected IPath getReferenceItemPath(IPath importItemPath, ReferenceFileItem rfItem) {
         return HandlerUtil.getReferenceItemPath(importItemPath, rfItem.getExtension());

@@ -82,6 +82,7 @@ import org.talend.core.runtime.services.IMavenUIService;
 import org.talend.core.utils.TalendQuoteUtils;
 import org.talend.designer.maven.tools.BuildCacheManager;
 import org.talend.designer.maven.utils.PomUtil;
+import org.talend.designer.runprocess.IRunProcessService;
 import org.talend.librariesmanager.maven.MavenArtifactsHandler;
 import org.talend.librariesmanager.model.ExtensionModuleManager;
 import org.talend.librariesmanager.model.ModulesNeededProvider;
@@ -911,7 +912,13 @@ public class LocalLibraryManager implements ILibraryManagerService, IChangedLibr
                     fileToDeploy = null;
                     found = false;
                 }
-                if (!found) {
+                boolean isCIMode = false;
+                if (GlobalServiceRegister.getDefault().isServiceRegistered(IRunProcessService.class)) {
+                    IRunProcessService runProcessService = GlobalServiceRegister.getDefault()
+                            .getService(IRunProcessService.class);
+                    isCIMode = runProcessService.isCIMode();
+                }
+                if (!found && !isCIMode) {
                     ExceptionHandler.log("missing jar:" + module.getModuleName());
                 }
                 if (fileToDeploy != null) {
@@ -1054,7 +1061,13 @@ public class LocalLibraryManager implements ILibraryManagerService, IChangedLibr
             MavenArtifact ma = MavenUrlHelper.parseMvnUrl(mvnUri);
             if (ma != null) {
                 String repositoryUrl = ma.getRepositoryUrl();
-                if (repositoryUrl == null || repositoryUrl.trim().isEmpty()
+                boolean isCIMode = false;
+                if (GlobalServiceRegister.getDefault().isServiceRegistered(IRunProcessService.class)) {
+                    IRunProcessService runProcessService = GlobalServiceRegister.getDefault()
+                            .getService(IRunProcessService.class);
+                    isCIMode = runProcessService.isCIMode();
+                }
+                if (isCIMode || repositoryUrl == null || repositoryUrl.trim().isEmpty()
                         || MavenConstants.LOCAL_RESOLUTION_URL.equalsIgnoreCase(repositoryUrl)) {
                     return;
                 }
@@ -1302,8 +1315,7 @@ public class LocalLibraryManager implements ILibraryManagerService, IChangedLibr
             String contributeID = providerInfo.getContributer();
             String id = providerInfo.getId();
             try {
-                if (!"org.talend.designer.components.model.UserComponentsProvider".equals(id)
-                        && !"org.talend.designer.components.exchange.ExchangeComponentsProvider".equals(id)) {
+                if (!isExtComponentProvider(id)) {
                     File file = new File(providerInfo.getLocation());
                     List<File> jarFiles = FilesUtils.getJarFilesFromFolder(file, null, "ext");
                     if (jarFiles.size() > 0) {
@@ -1335,40 +1347,48 @@ public class LocalLibraryManager implements ILibraryManagerService, IChangedLibr
             }
         }
     }
+    
+	private boolean isExtComponentProvider(String id) {
+		if ("org.talend.designer.components.model.UserComponentsProvider".equals(id)
+				|| "org.talend.designer.codegen.components.model.SharedStudioUserComponentProvider".equals(id)
+				|| "org.talend.designer.components.exchange.ExchangeComponentsProvider".equals(id)
+				|| "org.talend.designer.components.exchange.SharedStudioExchangeComponentsProvider".equals(id)) {
+			return true;
+		}
+		return false;
+	}
 
-    private void deployLibsFromCustomComponents(IComponentsService service, Map<String, String> platformURLMap) {
-        Set<File> needToDeploy = new HashSet<>();
-        List<ComponentProviderInfo> componentsFolders = service.getComponentsFactory().getComponentsProvidersInfo();
-        for (ComponentProviderInfo providerInfo : componentsFolders) {
-            String id = providerInfo.getId();
-            try {
-                File file = new File(providerInfo.getLocation());
-                if ("org.talend.designer.components.model.UserComponentsProvider".equals(id)
-                        || "org.talend.designer.components.exchange.ExchangeComponentsProvider".equals(id)) {
-                    if (file.isDirectory()) {
-                        List<File> jarFiles = FilesUtils.getJarFilesFromFolder(file, null);
-                        if (jarFiles.size() > 0) {
-                            for (File jarFile : jarFiles) {
-                                String name = jarFile.getName();
-                                if (!canDeployFromCustomComponentFolder(name)
-                                        || platformURLMap.get(name) != null) {
-                                    continue;
-                                }
-                                needToDeploy.add(jarFile);
-                            }
-                        }
-                    } else {
-                        if (platformURLMap.get(file.getName()) != null) {
-                            continue;
-                        }
-                        needToDeploy.add(file);
-                    }
-                }
-            } catch (Exception e) {
-                ExceptionHandler.process(e);
-                continue;
-            }
-        }
+	private void deployLibsFromCustomComponents(IComponentsService service, Map<String, String> platformURLMap) {
+		Set<File> needToDeploy = new HashSet<>();
+		List<ComponentProviderInfo> componentsFolders = service.getComponentsFactory().getComponentsProvidersInfo();
+		for (ComponentProviderInfo providerInfo : componentsFolders) {
+			String id = providerInfo.getId();
+			try {
+				File file = new File(providerInfo.getLocation());
+				if (isExtComponentProvider(id)) {
+					if (file.isDirectory()) {
+						List<File> jarFiles = FilesUtils.getJarFilesFromFolder(file, null);
+						if (jarFiles.size() > 0) {
+							for (File jarFile : jarFiles) {
+								String name = jarFile.getName();
+								if (!canDeployFromCustomComponentFolder(name) || platformURLMap.get(name) != null) {
+									continue;
+								}
+								needToDeploy.add(jarFile);
+							}
+						}
+					} else {
+						if (platformURLMap.get(file.getName()) != null) {
+							continue;
+						}
+						needToDeploy.add(file);
+					}
+				}
+			} catch (Exception e) {
+				ExceptionHandler.process(e);
+				continue;
+			}
+		}
 
         // deploy needed jars for User and Exchange component providers
         Map<String, List<MavenArtifact>> snapshotArtifactMap = new HashMap<String, List<MavenArtifact>>();
@@ -1379,23 +1399,25 @@ public class LocalLibraryManager implements ILibraryManagerService, IChangedLibr
             ArtifactRepositoryBean customNexusServer = TalendLibsServerManager.getInstance().getCustomNexusServer();
             IRepositoryArtifactHandler customerRepHandler = RepositoryArtifactHandlerManager
                     .getRepositoryHandler(customNexusServer);
-            List<MavenArtifact> snapshotResult = new ArrayList<>();
-            List<MavenArtifact> releaseResult = new ArrayList<>();
-            try {
-                snapshotResult = customerRepHandler.search(MavenConstants.DEFAULT_LIB_GROUP_ID, null, null, false, true);
-                if (snapshotResult != null) {
-                    for (MavenArtifact result : snapshotResult) {
-                        ShareLibrariesUtil.putArtifactToMap(result, releaseArtifactMap, true);
+            if (customerRepHandler != null) {
+                List<MavenArtifact> snapshotResult = new ArrayList<>();
+                List<MavenArtifact> releaseResult = new ArrayList<>();
+                try {
+                    snapshotResult = customerRepHandler.search(MavenConstants.DEFAULT_LIB_GROUP_ID, null, null, false, true);
+                    if (snapshotResult != null) {
+                        for (MavenArtifact result : snapshotResult) {
+                            ShareLibrariesUtil.putArtifactToMap(result, snapshotArtifactMap, true);
+                        }
                     }
-                }
-                releaseResult = customerRepHandler.search(MavenConstants.DEFAULT_LIB_GROUP_ID, null, null, true, false);
-                if (releaseResult != null) {
-                    for (MavenArtifact result : releaseResult) {
-                        ShareLibrariesUtil.putArtifactToMap(result, releaseArtifactMap, false);
+                    releaseResult = customerRepHandler.search(MavenConstants.DEFAULT_LIB_GROUP_ID, null, null, true, false);
+                    if (releaseResult != null) {
+                        for (MavenArtifact result : releaseResult) {
+                            ShareLibrariesUtil.putArtifactToMap(result, releaseArtifactMap, false);
+                        }
                     }
+                } catch (Exception e) {
+                    ExceptionHandler.process(e);
                 }
-            } catch (Exception e) {
-                ExceptionHandler.process(e);
             }
             for(File exsitFile:needToDeploy) {
                 if (customerRepHandler != null) {

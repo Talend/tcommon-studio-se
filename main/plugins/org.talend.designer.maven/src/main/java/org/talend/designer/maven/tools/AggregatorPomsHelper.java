@@ -17,7 +17,9 @@ import static org.talend.designer.maven.model.TalendJavaProjectConstants.*;
 import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
@@ -50,11 +52,13 @@ import org.eclipse.swt.widgets.Display;
 import org.talend.commons.exception.ExceptionHandler;
 import org.talend.commons.exception.PersistenceException;
 import org.talend.core.GlobalServiceRegister;
+import org.talend.core.IESBService;
 import org.talend.core.ILibraryManagerService;
 import org.talend.core.context.Context;
 import org.talend.core.context.RepositoryContext;
 import org.talend.core.model.general.ILibrariesService;
 import org.talend.core.model.general.ModuleNeeded;
+import org.talend.core.model.general.Project;
 import org.talend.core.model.process.ProcessUtils;
 import org.talend.core.model.properties.Item;
 import org.talend.core.model.properties.ProjectReference;
@@ -165,28 +169,34 @@ public class AggregatorPomsHelper {
     }
 
     public void updateCodeProjects(IProgressMonitor monitor, boolean forceBuild) {
+        updateCodeProjects(monitor, forceBuild, false);
+    }
+
+    public void updateCodeProjects(IProgressMonitor monitor, boolean forceBuild, boolean ignoreM2Cache) {
         RepositoryWorkUnit workUnit = new RepositoryWorkUnit<Object>("update code project") { //$NON-NLS-1$
 
             @Override
             protected void run() {
-                updateCodeProject(monitor, ERepositoryObjectType.ROUTINES, forceBuild);
-                if (ProcessUtils.isRequiredBeans(null)) {
-                    updateCodeProject(monitor, ERepositoryObjectType.valueOf("BEANS"), forceBuild); //$NON-NLS-1$
+                Project currentProject = ProjectManager.getInstance().getCurrentProject();
+                for (ERepositoryObjectType codeType : ERepositoryObjectType.getAllTypesOfCodes()) {
+                    try {
+                        ITalendProcessJavaProject codeProject = getCodesProject(codeType);
+                        if (ERepositoryObjectType.ROUTINES == codeType) {
+                            PomUtil.checkExistingLog4j2Dependencies4RoutinePom(projectTechName, codeProject.getProjectPom());
+                        }
+                        if (ignoreM2Cache || CodeM2CacheManager.needUpdateCodeProject(currentProject, codeType)) {
+                            updateCodeProjectPom(monitor, codeType, codeProject.getProjectPom());
+                            buildAndInstallCodesProject(monitor, codeType, true, forceBuild);
+                            CodeM2CacheManager.updateCodeProjectCache(currentProject, codeType);
+                        }
+                    } catch (Exception e) {
+                        ExceptionHandler.process(e);
+                    }
                 }
             }
         };
         workUnit.setAvoidUnloadResources(true);
         ProxyRepositoryFactory.getInstance().executeRepositoryWorkUnit(workUnit);
-    }
-
-    private void updateCodeProject(IProgressMonitor monitor, ERepositoryObjectType codeType, boolean forceBuild) {
-        try {
-            ITalendProcessJavaProject codeProject = getCodesProject(codeType);
-            updateCodeProjectPom(monitor, codeType, codeProject.getProjectPom());
-            buildAndInstallCodesProject(monitor, codeType, true, forceBuild);
-        } catch (Exception e) {
-            ExceptionHandler.process(e);
-        }
     }
 
     public void updateCodeProjectPom(IProgressMonitor monitor, ERepositoryObjectType type, IFile pomFile)
@@ -209,27 +219,15 @@ public class AggregatorPomsHelper {
     }
 
     public static void updateAllCodesProjectNeededModules(IProgressMonitor monitor) {
-        updateCodesProjectNeededModulesByType(ERepositoryObjectType.ROUTINES, monitor);
-        if (ProcessUtils.isRequiredBeans(null)) {
-            updateCodesProjectNeededModulesByType(ERepositoryObjectType.valueOf("BEANS"), monitor); //$NON-NLS-1$
-        }
-    }
-
-    private static void updateCodesProjectNeededModulesByType(ERepositoryObjectType codeType,
-            IProgressMonitor monitor) {
-        Set<ModuleNeeded> neededModules = null;
-        if (GlobalServiceRegister.getDefault().isServiceRegistered(ILibrariesService.class)) {
-            ILibrariesService librariesService =
-                    (ILibrariesService) GlobalServiceRegister.getDefault().getService(ILibrariesService.class);
-            neededModules = librariesService.getCodesModuleNeededs(codeType);
-        }
-        if (GlobalServiceRegister.getDefault().isServiceRegistered(ILibraryManagerService.class)) {
-            ILibraryManagerService repositoryBundleService =
-                    (ILibraryManagerService) GlobalServiceRegister.getDefault().getService(
-                            ILibraryManagerService.class);
-            if (neededModules != null && !neededModules.isEmpty()) {
-                repositoryBundleService.installModules(neededModules, monitor);
-            }
+        if (GlobalServiceRegister.getDefault().isServiceRegistered(ILibrariesService.class)
+                && GlobalServiceRegister.getDefault().isServiceRegistered(ILibraryManagerService.class)) {
+            Set<ModuleNeeded> neededModules = new HashSet<>();
+            ILibrariesService librariesService = GlobalServiceRegister.getDefault().getService(ILibrariesService.class);
+            ERepositoryObjectType.getAllTypesOfCodes()
+                    .forEach(c -> neededModules.addAll(librariesService.getCodesModuleNeededs(c)));
+            ILibraryManagerService repositoryBundleService = GlobalServiceRegister.getDefault()
+                    .getService(ILibraryManagerService.class);
+            repositoryBundleService.installModules(neededModules, monitor);
         }
     }
 
@@ -266,7 +264,7 @@ public class AggregatorPomsHelper {
         if (install) {
             Map<String, Object> argumentsMap = new HashMap<>();
             argumentsMap.put(TalendProcessArgumentConstant.ARG_GOAL, TalendMavenConstants.GOAL_INSTALL);
-            argumentsMap.put(TalendProcessArgumentConstant.ARG_PROGRAM_ARGUMENTS, "-Dmaven.main.skip=true"); //$NON-NLS-1$
+            argumentsMap.put(TalendProcessArgumentConstant.ARG_PROGRAM_ARGUMENTS, TalendMavenConstants.ARG_MAIN_SKIP);
             codeProject.buildModules(monitor, null, argumentsMap);
             BuildCacheManager.getInstance().updateCodeLastBuildDate(codeType);
         }
@@ -328,26 +326,10 @@ public class AggregatorPomsHelper {
     }
 
     public static void addToParentModules(IFile pomFile, Property property, boolean checkFilter) throws Exception {
-        // Check relation for ESB service job, should not be added into main pom
-        if (property != null) {
-            List<Relation> relations = RelationshipItemBuilder.getInstance().getItemsRelatedTo(property.getId(),
-                    property.getVersion(), RelationshipItemBuilder.JOB_RELATION);
-            for (Relation relation : relations) {
-                if (RelationshipItemBuilder.SERVICES_RELATION.equals(relation.getType())) {
-                    return;
-                }
-            }
+        if (!checkIfCanAddToParentModules(property, checkFilter)) {
+            return;
         }
 
-        if (checkFilter) {
-            if (GlobalServiceRegister.getDefault().isServiceRegistered(IFilterService.class)) {
-                IFilterService filterService = (IFilterService) GlobalServiceRegister.getDefault()
-                        .getService(IFilterService.class);
-                if (property != null && !filterService.isFilterAccepted(property.getItem(), PomIdsHelper.getPomFilter())) {
-                    return;
-                }
-            }
-        }
         IFile parentPom = getParentModulePomFile(pomFile);
         if (parentPom != null) {
             if (!parentPom.isSynchronized(IResource.DEPTH_ZERO)) {
@@ -367,6 +349,31 @@ public class AggregatorPomsHelper {
         }
     }
 
+    private static boolean checkIfCanAddToParentModules(Property property, boolean checkFilter) {
+        // Check relation for ESB service job, should not be added into main pom
+        if (property != null) {
+            if (isSOAPServiceProvider(property)) {
+                return false;
+            }
+            // for import won't add for exclude option
+            if (property.getItem() != null && property.getItem().getState() != null && property.getItem().getState().isDeleted()
+                    && PomIdsHelper.getIfExcludeDeletedItems(property)) {
+                return false;
+            }
+        }
+
+        if (checkFilter) {
+            if (GlobalServiceRegister.getDefault().isServiceRegistered(IFilterService.class)) {
+                IFilterService filterService = (IFilterService) GlobalServiceRegister.getDefault()
+                        .getService(IFilterService.class);
+                if (property != null && !filterService.isFilterAccepted(property.getItem(), PomIdsHelper.getPomFilter())) {
+                    return false;
+                }
+            }
+        }
+        return true;
+    }
+
     public static void removeFromParentModules(IFile pomFile) throws Exception {
         IFile parentPom = getParentModulePomFile(pomFile);
         if (parentPom != null) {
@@ -382,6 +389,69 @@ public class AggregatorPomsHelper {
                 PomUtil.savePom(null, model, parentPom);
             }
         }
+    }
+
+    public static void removeAllVersionsFromParentModules(Property property) throws Exception {
+        IFile parentPom = getParentModulePomFile(
+                AggregatorPomsHelper.getItemPomFolder(property).getFile(TalendMavenConstants.POM_FILE_NAME));
+        if (parentPom == null) {
+            return;
+        }
+
+        List<String> relativePathList = new ArrayList<String>();
+        List<IRepositoryViewObject> allVersion = ProxyRepositoryFactory.getInstance().getAllVersion(property.getId());
+        for (IRepositoryViewObject object : allVersion) {
+            IFile pomFile = AggregatorPomsHelper.getItemPomFolder(object.getProperty())
+                    .getFile(TalendMavenConstants.POM_FILE_NAME);
+            String relativePath = pomFile.getParent().getLocation().makeRelativeTo(parentPom.getParent().getLocation())
+                    .toPortableString();
+            if (StringUtils.isNotBlank(relativePath)) {
+                relativePathList.add(relativePath);
+            }
+        }
+
+        Model model = MavenPlugin.getMaven().readModel(parentPom.getContents());
+        List<String> modules = model.getModules();
+        if (modules != null && modules.size() > 0) {
+            modules.removeAll(relativePathList);
+            PomUtil.savePom(null, model, parentPom);
+        }
+    }
+    
+    public static void restoreAllVersionsFromParentModules(Property property) throws Exception {
+        IFile parentPom = getParentModulePomFile(
+                AggregatorPomsHelper.getItemPomFolder(property).getFile(TalendMavenConstants.POM_FILE_NAME));
+        if (parentPom == null) {
+            return;
+        }
+        
+        List<String> relativePathList = new ArrayList<String>();
+        Model model = MavenPlugin.getMaven().readModel(parentPom.getContents());
+        List<String> modules = model.getModules();
+        if (modules == null) {
+            modules = new ArrayList<>();
+            model.setModules(modules);
+        }
+
+        List<IRepositoryViewObject> allVersion = ProxyRepositoryFactory.getInstance().getAllVersion(property.getId());
+        for (IRepositoryViewObject object : allVersion) {
+            Property itemProperty = object.getProperty();
+            if (!checkIfCanAddToParentModules(itemProperty, true)) {
+                continue;
+            }
+            IFile pomFile = AggregatorPomsHelper.getItemPomFolder(object.getProperty(), object.getVersion())
+                    .getFile(TalendMavenConstants.POM_FILE_NAME);
+
+            String relativePath = pomFile.getParent().getLocation().makeRelativeTo(parentPom.getParent().getLocation())
+                    .toPortableString();
+            if (StringUtils.isNoneBlank(relativePath) && !modules.contains(relativePath)) {
+                relativePathList.add(relativePath);
+            }
+        }
+        Collections.sort(relativePathList);
+        modules.addAll(relativePathList);
+        PomUtil.savePom(null, model, parentPom);
+
     }
 
     private static IFile getParentModulePomFile(IFile pomFile) {
@@ -538,7 +608,10 @@ public class AggregatorPomsHelper {
         String jobFolderName = getJobProjectFolderName(property.getLabel(), version);
         ERepositoryObjectType type = ERepositoryObjectType.getItemType(property.getItem());
         IFolder jobFolder = helper.getProcessFolder(type).getFolder(itemRelativePath).getFolder(jobFolderName);
-        createFoldersIfNeeded(jobFolder);
+        List<ERepositoryObjectType> allTypesOfProcess2 = ERepositoryObjectType.getAllTypesOfProcess2();
+        if (allTypesOfProcess2.contains(type)) {
+            createFoldersIfNeeded(jobFolder);
+        }
         return jobFolder;
     }
 
@@ -790,7 +863,7 @@ public class AggregatorPomsHelper {
         }
         // codes pom
         monitor.subTask("Synchronize code poms"); //$NON-NLS-1$
-        updateCodeProjects(monitor, true);
+        updateCodeProjects(monitor, true, true);
         monitor.worked(1);
         if (monitor.isCanceled()) {
             return;
@@ -810,6 +883,9 @@ public class AggregatorPomsHelper {
                 }
             }
             if (object.getProperty() != null && object.getProperty().getItem() != null) {
+                if (object.isDeleted() && PomIdsHelper.getIfExcludeDeletedItems()) {
+                    continue;
+                }
                 Item item = object.getProperty().getItem();
                 if (ProjectManager.getInstance().isInCurrentMainProject(item)) {
                     monitor.subTask("Synchronize job pom: " + item.getProperty().getLabel() //$NON-NLS-1$
@@ -823,7 +899,7 @@ public class AggregatorPomsHelper {
                     }
                     IFile pomFile = getItemPomFolder(item.getProperty()).getFile(TalendMavenConstants.POM_FILE_NAME);
                     // filter esb data service node
-                    if (!isDataServiceOperation(object.getProperty()) && pomFile.exists()) {
+                    if (!isSOAPServiceProvider(object.getProperty()) && pomFile.exists()) {
                         modules.add(getModulePath(pomFile));
                     }
                 }
@@ -864,13 +940,21 @@ public class AggregatorPomsHelper {
      * @param property
      * @return
      */
-    private boolean isDataServiceOperation(Property property) {
+    private static boolean isSOAPServiceProvider(Property property) {
         if (property != null) {
             List<Relation> relations = RelationshipItemBuilder.getInstance().getItemsRelatedTo(property.getId(),
                     property.getVersion(), RelationshipItemBuilder.JOB_RELATION);
             for (Relation relation : relations) {
                 if (RelationshipItemBuilder.SERVICES_RELATION.equals(relation.getType())) {
                     return true;
+                }
+            }
+            if (GlobalServiceRegister.getDefault().isServiceRegistered(IESBService.class)) {
+                IESBService service = GlobalServiceRegister.getDefault().getService(IESBService.class);
+                if (service != null) {
+                    if (service.isSOAPServiceProvider(property.getItem())) {
+                        return true;
+                    }
                 }
             }
         }

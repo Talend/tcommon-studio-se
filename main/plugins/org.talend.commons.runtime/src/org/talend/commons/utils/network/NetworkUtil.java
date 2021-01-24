@@ -15,6 +15,7 @@ package org.talend.commons.utils.network;
 import java.lang.reflect.Field;
 import java.net.Authenticator;
 import java.net.HttpURLConnection;
+import java.net.Inet6Address;
 import java.net.InetAddress;
 import java.net.NetworkInterface;
 import java.net.PasswordAuthentication;
@@ -22,10 +23,17 @@ import java.net.SocketException;
 import java.net.URI;
 import java.net.URL;
 import java.net.UnknownHostException;
+import java.util.ArrayList;
 import java.util.Enumeration;
+import java.util.LinkedHashSet;
+import java.util.List;
+import java.util.Set;
 import java.util.regex.Pattern;
 
 import org.apache.commons.lang.StringUtils;
+import org.eclipse.core.runtime.preferences.IEclipsePreferences;
+import org.eclipse.core.runtime.preferences.InstanceScope;
+import org.talend.commons.exception.ExceptionHandler;
 import org.talend.commons.runtime.utils.io.FileCopyUtils;
 
 /**
@@ -44,7 +52,17 @@ public class NetworkUtil {
 
     private static final String HTTP_NETWORK_URL = "https://talend-update.talend.com";
 
+    private static final int DEFAULT_TIMEOUT = 4000;
+
+    private static final int DEFAULT_NEXUS_TIMEOUT = 20000;// same as preference value
+
+    public static final String ORG_TALEND_DESIGNER_CORE = "org.talend.designer.core"; //$NON-NLS-1$
+
     public static boolean isNetworkValid() {
+        return isNetworkValid(DEFAULT_TIMEOUT);
+    }
+
+    public static boolean isNetworkValid(Integer timeout) {
         String disableInternet = System.getProperty(TALEND_DISABLE_INTERNET);
         if ("true".equals(disableInternet)) { //$NON-NLS-1$
             return false;
@@ -55,8 +73,9 @@ public class NetworkUtil {
             conn = (HttpURLConnection) url.openConnection();
             conn.setDefaultUseCaches(false);
             conn.setUseCaches(false);
-            conn.setConnectTimeout(4000);
-            conn.setReadTimeout(4000);
+            int conntimeout = timeout != null ? timeout.intValue() : DEFAULT_TIMEOUT;
+            conn.setConnectTimeout(conntimeout);
+            conn.setReadTimeout(conntimeout);
             conn.setRequestMethod("HEAD"); //$NON-NLS-1$
             String strMessage = conn.getResponseMessage();
             if (strMessage.compareTo("Not Found") == 0) { //$NON-NLS-1$
@@ -73,22 +92,23 @@ public class NetworkUtil {
         return true;
     }
 
-    public static boolean isNetworkValid(String url) {
+    public static boolean isNetworkValid(String url, Integer timeout) {
         if (url == null) {
-            return isNetworkValid();
+            return isNetworkValid(timeout);
         }
-        return checkValidWithHttp(url);
+        return checkValidWithHttp(url, timeout);
     }
 
-    private static boolean checkValidWithHttp(String urlString) {
+    private static boolean checkValidWithHttp(String urlString, Integer timeout) {
         HttpURLConnection conn = null;
         try {
             URL url = new URL(urlString);
             conn = (HttpURLConnection) url.openConnection();
             conn.setDefaultUseCaches(false);
             conn.setUseCaches(false);
-            conn.setConnectTimeout(4000);
-            conn.setReadTimeout(4000);
+            int conntimeout = timeout != null ? timeout.intValue() : DEFAULT_TIMEOUT;
+            conn.setConnectTimeout(conntimeout);
+            conn.setReadTimeout(conntimeout);
             conn.setRequestMethod("HEAD"); //$NON-NLS-1$
             conn.getResponseMessage();
         } catch (Exception e) {
@@ -99,6 +119,18 @@ public class NetworkUtil {
             conn.disconnect();
         }
         return true;
+    }
+
+    public static int getNexusTimeout() {
+        int timeout = DEFAULT_NEXUS_TIMEOUT;
+        try {
+            IEclipsePreferences node = InstanceScope.INSTANCE.getNode(ORG_TALEND_DESIGNER_CORE);
+            timeout = node.getInt(ITalendNexusPrefConstants.NEXUS_TIMEOUT, DEFAULT_NEXUS_TIMEOUT);
+        } catch (Throwable e) {
+            ExceptionHandler.process(e);
+        }
+
+        return timeout;
     }
 
     public static Authenticator getDefaultAuthenticator() {
@@ -123,6 +155,28 @@ public class NetworkUtil {
 
                 @Override
                 protected PasswordAuthentication getPasswordAuthentication() {
+                    String httpProxyHost = System.getProperty("http.proxyHost"); //$NON-NLS-1$
+                    String httpProxyPort = System.getProperty("http.proxyPort"); //$NON-NLS-1$
+                    String httpsProxyHost = System.getProperty("https.proxyHost"); //$NON-NLS-1$
+                    String httpsProxyPort = System.getProperty("https.proxyPort"); //$NON-NLS-1$
+                    String requestingHost = getRequestingHost();
+                    int requestingPort = getRequestingPort();
+                    String proxyHost = null;
+                    String proxyPort = null;
+                    boolean isHttp = false;
+                    if ("http".equalsIgnoreCase(getRequestingScheme())) {
+                        isHttp = true;
+                    }
+                    if (isHttp && StringUtils.isNotBlank(httpProxyHost)) {
+                        proxyHost = httpProxyHost;
+                        proxyPort = httpProxyPort;
+                    } else {
+                        proxyHost = httpsProxyHost;
+                        proxyPort = httpsProxyPort;
+                    }
+                    if (!StringUtils.equals(proxyHost, requestingHost) || !StringUtils.equals(proxyPort, "" + requestingPort)) {
+                        return null;
+                    }
                     String httpProxyUser = System.getProperty("http.proxyUser"); //$NON-NLS-1$
                     String httpProxyPassword = System.getProperty("http.proxyPassword"); //$NON-NLS-1$
                     String httpsProxyUser = System.getProperty("https.proxyUser"); //$NON-NLS-1$
@@ -140,7 +194,11 @@ public class NetworkUtil {
                             proxyPassword = httpsProxyPassword.toCharArray();
                         }
                     }
-                    return new PasswordAuthentication(proxyUser, proxyPassword);
+                    if (StringUtils.isBlank(proxyUser)) {
+                        return null;
+                    } else {
+                        return new PasswordAuthentication(proxyUser, proxyPassword);
+                    }
                 }
 
             });
@@ -176,6 +234,54 @@ public class NetworkUtil {
             return uri.toURL();
         } catch (Exception e) {
             throw e;
+        }
+    }
+
+    public static List<String> getLocalLoopbackAddresses(boolean wrapIpV6) {
+        Set<String> addresses = new LinkedHashSet<>();
+        try {
+            addresses.add(getIp(InetAddress.getLoopbackAddress(), wrapIpV6));
+        } catch (Exception e) {
+            ExceptionHandler.process(e);
+        }
+
+        try {
+            Enumeration<NetworkInterface> networkInterfaces = NetworkInterface.getNetworkInterfaces();
+            while (networkInterfaces.hasMoreElements()) {
+                NetworkInterface networkInterface = networkInterfaces.nextElement();
+                Enumeration<InetAddress> inetAddresses = networkInterface.getInetAddresses();
+                while (inetAddresses.hasMoreElements()) {
+                    InetAddress inetAddress = inetAddresses.nextElement();
+                    if (inetAddress != null && inetAddress.isLoopbackAddress()) {
+                        addresses.add(getIp(inetAddress, wrapIpV6));
+                    }
+                }
+            }
+        } catch (Exception e) {
+            ExceptionHandler.process(e);
+        }
+
+        if (addresses.isEmpty()) {
+            addresses.add("127.0.0.1");
+            String ipv6Loopback = "::1";
+            if (wrapIpV6) {
+                ipv6Loopback = "[" + ipv6Loopback + "]";
+            }
+            addresses.add(ipv6Loopback);
+        }
+
+        return new ArrayList<>(addresses);
+    }
+
+    private static String getIp(InetAddress inetAddress, boolean wrapIpV6) {
+        if (wrapIpV6 && Inet6Address.class.isInstance(inetAddress)) {
+            String addr = inetAddress.getHostAddress();
+            if (!addr.startsWith("[") || !addr.endsWith("]")) {
+                addr = "[" + addr + "]";
+            }
+            return addr;
+        } else {
+            return inetAddress.getHostAddress();
         }
     }
 

@@ -15,6 +15,7 @@ package org.talend.core.repository.model;
 import java.beans.PropertyChangeListener;
 import java.beans.PropertyChangeSupport;
 import java.io.File;
+import java.lang.reflect.InvocationTargetException;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.Date;
@@ -71,7 +72,7 @@ import org.talend.commons.ui.gmf.util.DisplayUtils;
 import org.talend.commons.ui.runtime.exception.MessageBoxExceptionHandler;
 import org.talend.commons.utils.data.container.RootContainer;
 import org.talend.commons.utils.network.TalendProxySelector;
-import org.talend.commons.utils.time.TimeMeasure;
+import org.talend.commons.utils.time.TimeMeasurePerformance;
 import org.talend.commons.utils.workbench.resources.ResourceUtils;
 import org.talend.core.AbstractDQModelService;
 import org.talend.core.GlobalServiceRegister;
@@ -84,6 +85,7 @@ import org.talend.core.context.Context;
 import org.talend.core.context.RepositoryContext;
 import org.talend.core.exception.TalendInternalPersistenceException;
 import org.talend.core.hadoop.BigDataBasicUtil;
+import org.talend.core.model.general.ILibrariesService;
 import org.talend.core.model.general.ModuleNeeded;
 import org.talend.core.model.general.Project;
 import org.talend.core.model.metadata.MetadataTalendType;
@@ -108,6 +110,7 @@ import org.talend.core.model.properties.SpagoBiServer;
 import org.talend.core.model.properties.Status;
 import org.talend.core.model.properties.User;
 import org.talend.core.model.properties.impl.FolderItemImpl;
+import org.talend.core.model.relationship.RelationshipItemBuilder;
 import org.talend.core.model.repository.ERepositoryObjectType;
 import org.talend.core.model.repository.Folder;
 import org.talend.core.model.repository.IRepositoryContentHandler;
@@ -123,17 +126,22 @@ import org.talend.core.repository.constants.Constant;
 import org.talend.core.repository.constants.FileConstants;
 import org.talend.core.repository.i18n.Messages;
 import org.talend.core.repository.recyclebin.RecycleBinManager;
+import org.talend.core.repository.utils.LoginTaskRegistryReader;
+import org.talend.core.repository.utils.ProjectDataJsonProvider;
 import org.talend.core.repository.utils.RepositoryPathProvider;
 import org.talend.core.repository.utils.XmiResourceManager;
 import org.talend.core.runtime.CoreRuntimePlugin;
 import org.talend.core.runtime.repository.item.ItemProductKeys;
+import org.talend.core.runtime.services.IGenericWizardService;
 import org.talend.core.runtime.services.IMavenUIService;
 import org.talend.core.runtime.util.ItemDateParser;
+import org.talend.core.runtime.util.SharedStudioUtils;
 import org.talend.core.service.ICoreUIService;
 import org.talend.core.service.IUpdateService;
 import org.talend.cwm.helper.SubItemHelper;
 import org.talend.cwm.helper.TableHelper;
 import org.talend.designer.runprocess.IRunProcessService;
+import org.talend.login.ILoginTask;
 import org.talend.repository.ProjectManager;
 import org.talend.repository.ReferenceProjectProblemManager;
 import org.talend.repository.ReferenceProjectProvider;
@@ -174,6 +182,8 @@ public final class ProxyRepositoryFactory implements IProxyRepositoryFactory {
     private Map<String, org.talend.core.model.properties.Project> emfProjectContentMap = new HashMap<>();
 
     private boolean isCancelled;
+
+    private static final LoginTaskRegistryReader LOGIN_TASK_REGISTRY_READER = new LoginTaskRegistryReader();
 
     @Override
     public synchronized void addPropertyChangeListener(PropertyChangeListener l) {
@@ -224,6 +234,13 @@ public final class ProxyRepositoryFactory implements IProxyRepositoryFactory {
         return null;
     }
 
+    private ILibrariesService getLibrariesService() {
+        if (GlobalServiceRegister.getDefault().isServiceRegistered(ILibrariesService.class)) {
+            return GlobalServiceRegister.getDefault().getService(ILibrariesService.class);
+        }
+        return null;
+    }
+    
     /*
      * (non-Javadoc)
      *
@@ -1211,6 +1228,28 @@ public final class ProxyRepositoryFactory implements IProxyRepositoryFactory {
         return this.repositoryFactoryFromProvider.getLastVersion(project, ProcessUtils.getPureItemId(id), folderPath, type);
     }
 
+
+    @Override
+    public IRepositoryViewObject getLastVersion(String id, ERepositoryObjectType type)
+            throws PersistenceException {
+        return getLastVersion(id , "", type);
+    }
+    
+    @Override
+    public IRepositoryViewObject getLastVersion(String id, List<ERepositoryObjectType> types) throws PersistenceException {
+        if (types != null) {
+            IRepositoryViewObject object = null;
+            for (ERepositoryObjectType type : types) {
+                object = getLastVersion(id, type);
+                if (object != null) {
+                    return object;
+                }
+            }
+        }
+        return null;
+    }
+
+    @Override
     public IRepositoryViewObject getLastVersion(String id, String folderPath, ERepositoryObjectType type)
             throws PersistenceException {
         String objId = id;
@@ -1222,7 +1261,25 @@ public final class ProxyRepositoryFactory implements IProxyRepositoryFactory {
                 return this.repositoryFactoryFromProvider.getLastVersion(project, objId, folderPath, type);
             }
         }
-        return this.repositoryFactoryFromProvider.getLastVersion(projectManager.getCurrentProject(), objId , folderPath, type);
+        return getLastRefVersion(projectManager.getCurrentProject(), objId , folderPath, type);
+    }
+    
+    @Override
+    public IRepositoryViewObject getLastRefVersion(Project project, String id, String folderPath, ERepositoryObjectType type) throws PersistenceException {
+        String projectLabel = ProcessUtils.getProjectLabelFromItemId(id);
+        IRepositoryViewObject lastVersion = getLastVersion(project, ProcessUtils.getPureItemId(id), folderPath, type);
+        if (lastVersion == null) {
+            for (Project p : projectManager.getReferencedProjects(project)) {
+                if (projectLabel != null && !projectLabel.equals(p.getTechnicalLabel())) {
+                    continue;
+                }
+                lastVersion = getLastRefVersion(p, id);
+                if (lastVersion != null) {
+                    break;
+                }
+            }
+        }
+        return lastVersion;
     }
 
     @Override
@@ -1544,14 +1601,15 @@ public final class ProxyRepositoryFactory implements IProxyRepositoryFactory {
 
     @Override
     public void save(Project project, Item item, boolean... isMigrationTask) throws PersistenceException {
-        this.repositoryFactoryFromProvider.save(project, item);
         if (isMigrationTask == null || isMigrationTask.length == 0 || !isMigrationTask[0]) {
+            this.repositoryFactoryFromProvider.save(project, item);
             boolean avoidGenerateProm = false;
             if (isMigrationTask != null && isMigrationTask.length == 2) {
                 avoidGenerateProm = isMigrationTask[1];
             }
             fireRepositoryPropertyChange(ERepositoryActionName.SAVE.getName(), avoidGenerateProm, item);
-
+        } else {
+            this.repositoryFactoryFromProvider.save(project, item, true);
         }
     }
 
@@ -1742,9 +1800,12 @@ public final class ProxyRepositoryFactory implements IProxyRepositoryFactory {
      * @throws PersistenceException
      */
     private void emptyTempFolder(Project project) throws PersistenceException {
-        String str = (System.getProperty("eclipse.home.location") + "temp").substring(5);
-        FilesUtils.deleteFolder(new File(str), false);
-
+    	try {
+            String str = SharedStudioUtils.getTempFolderPath().toPortableString();
+            FilesUtils.deleteFolder(new File(str), false);
+    	}catch (Exception ex) {
+    		ExceptionHandler.process(ex);
+    	}
         long start = System.currentTimeMillis();
         IProject fsProject = ResourceUtils.getProject(project);
         IFolder folder = ResourceUtils.getFolder(fsProject, RepositoryConstants.TEMP_DIRECTORY, false);
@@ -2033,11 +2094,7 @@ public final class ProxyRepositoryFactory implements IProxyRepositoryFactory {
      */
     public void logOnProject(Project project, IProgressMonitor monitor) throws LoginException, PersistenceException {
         try {
-            TimeMeasure.display = CommonsPlugin.isDebugMode();
-            TimeMeasure.displaySteps = CommonsPlugin.isDebugMode();
-            TimeMeasure.measureActive = CommonsPlugin.isDebugMode();
-
-            TimeMeasure.begin("logOnProject"); //$NON-NLS-1$
+            TimeMeasurePerformance.begin("logOnProject", "logon project name '" + project.getLabel()+"'"); //$NON-NLS-1$ //$NON-NLS-2$
             try {
                 /**
                  * init/check proxy selector, in case default proxy selector is not registed yet
@@ -2063,6 +2120,7 @@ public final class ProxyRepositoryFactory implements IProxyRepositoryFactory {
                 SubMonitor subMonitor = SubMonitor.convert(monitor, MAX_TASKS);
                 SubMonitor currentMonitor = subMonitor.newChild(1, SubMonitor.SUPPRESS_NONE);
                 currentMonitor.beginTask(Messages.getString("ProxyRepositoryFactory.logonInProgress"), 1); //$NON-NLS-1$
+
                 project.setReferenceProjectProvider(null);
                 getRepositoryContext().setProject(null);
                 initEmfProjectContent();
@@ -2080,9 +2138,34 @@ public final class ProxyRepositoryFactory implements IProxyRepositoryFactory {
                 this.repositoryFactoryFromProvider.beforeLogon(project);
                 ProjectManager.getInstance().getBeforeLogonRecords().clear();
                 ProjectManager.getInstance().getUpdatedRemoteHandlerRecords().clear();
+                ILibrariesService librariesService = getLibrariesService();
+                if (librariesService != null) {
+                	librariesService.setForceReloadCustomUri();
+                }
+
+                ProjectDataJsonProvider.checkAndRectifyRelationShipSetting(project.getEmfProject());
+
+                try {
+                    // load additional jdbc
+                    if (GlobalServiceRegister.getDefault().isServiceRegistered(IGenericWizardService.class)) {
+                        IGenericWizardService service = GlobalServiceRegister.getDefault()
+                                .getService(IGenericWizardService.class);
+                        if (service != null) {
+                            service.loadAdditionalJDBC();
+                        }
+                    }
+                } catch (Exception e) {
+                    // in case, to avoid block logon
+                    ExceptionHandler.process(e);
+                }
 
                 // init dynamic distirbution after `beforeLogon`, before loading libraries.
                 initDynamicDistribution(monitor);
+
+                if (GlobalServiceRegister.getDefault().isServiceRegistered(IUpdateService.class)) {
+                    IUpdateService updateService = GlobalServiceRegister.getDefault().getService(IUpdateService.class);
+                    updateService.syncComponentM2Jars(currentMonitor);
+                }
 
                 // init sdk component
                 try {
@@ -2101,7 +2184,7 @@ public final class ProxyRepositoryFactory implements IProxyRepositoryFactory {
                     throw new OperationCanceledException(""); //$NON-NLS-1$
                 }
                 // monitorWrap.worked(1);
-                TimeMeasure.step("logOnProject", "beforeLogon"); //$NON-NLS-1$ //$NON-NLS-2$
+                TimeMeasurePerformance.step("logOnProject", "beforeLogon"); //$NON-NLS-1$ //$NON-NLS-2$
 
                 // Check project compatibility
                 checkProjectCompatibility(project);
@@ -2119,7 +2202,15 @@ public final class ProxyRepositoryFactory implements IProxyRepositoryFactory {
                     currentMonitor = subMonitor.newChild(1, SubMonitor.SUPPRESS_NONE);
                     currentMonitor.beginTask(Messages.getString("ProxyRepositoryFactory.synchronizeLibraries"), 1); //$NON-NLS-1$
                     coreService.syncLibraries(currentMonitor);
-                    TimeMeasure.step("logOnProject", "Sync components libraries"); //$NON-NLS-1$
+                    TimeMeasurePerformance.step("logOnProject", "Sync components libraries"); //$NON-NLS-1$
+                }
+
+                try {
+                    // for new added mapping file, sync to project mapping folder
+                    MetadataTalendType.syncNewMappingFileToProject();
+                } catch (SystemException e) {
+                    // ignore
+                    ExceptionHandler.process(e);
                 }
 
                 currentMonitor = subMonitor.newChild(1, SubMonitor.SUPPRESS_NONE);
@@ -2128,7 +2219,7 @@ public final class ProxyRepositoryFactory implements IProxyRepositoryFactory {
                 executeMigrations(project, true, currentMonitor);
                 ProjectManager.getInstance().getMigrationRecords().clear();
                 // monitorWrap.worked(1);
-                TimeMeasure.step("logOnProject", "executeMigrations(beforeLogonTasks)"); //$NON-NLS-1$ //$NON-NLS-2$
+                TimeMeasurePerformance.step("logOnProject", "executeMigrations(beforeLogonTasks)"); //$NON-NLS-1$ //$NON-NLS-2$
 
                 currentMonitor = subMonitor.newChild(1, SubMonitor.SUPPRESS_NONE);
                 currentMonitor.beginTask(Messages.getString("ProxyRepositoryFactory.logonInProgress"), 1); //$NON-NLS-1$
@@ -2136,7 +2227,7 @@ public final class ProxyRepositoryFactory implements IProxyRepositoryFactory {
                 this.repositoryFactoryFromProvider.logOnProject(project);
                 ProjectManager.getInstance().getLogonRecords().clear();
                 // monitorWrap.worked(1);
-                TimeMeasure.step("logOnProject", "logOnProject"); //$NON-NLS-1$ //$NON-NLS-2$
+                TimeMeasurePerformance.step("logOnProject", "logOnProject"); //$NON-NLS-1$ //$NON-NLS-2$
 
                 emptyTempFolder(project);
 
@@ -2152,11 +2243,6 @@ public final class ProxyRepositoryFactory implements IProxyRepositoryFactory {
 
                 fireRepositoryPropertyChange(ERepositoryActionName.PROJECT_PREFERENCES_RELOAD.getName(), null, null);
 
-                if (GlobalServiceRegister.getDefault().isServiceRegistered(IUpdateService.class)) {
-                    IUpdateService updateService = GlobalServiceRegister.getDefault().getService(IUpdateService.class);
-                    updateService.syncComponentM2Jars(currentMonitor);
-                }
-
                 IRunProcessService runProcessService = getRunProcessService();
                 if (runProcessService != null) {
                     runProcessService.initMavenJavaProject(monitor, project);
@@ -2167,7 +2253,7 @@ public final class ProxyRepositoryFactory implements IProxyRepositoryFactory {
                 ProjectManager.getInstance().getMigrationRecords().clear();
                 executeMigrations(project, false, currentMonitor);
                 ProjectManager.getInstance().getMigrationRecords().clear();
-                TimeMeasure.step("logOnProject", "executeMigrations(afterLogonTasks)"); //$NON-NLS-1$ //$NON-NLS-2$
+                TimeMeasurePerformance.step("logOnProject", "executeMigrations(afterLogonTasks)"); //$NON-NLS-1$ //$NON-NLS-2$
                 if (monitor != null && monitor.isCanceled()) {
                     throw new OperationCanceledException(""); //$NON-NLS-1$
                 }
@@ -2183,12 +2269,12 @@ public final class ProxyRepositoryFactory implements IProxyRepositoryFactory {
                     // clean workspace
                     currentMonitor.beginTask(Messages.getString("ProxyRepositoryFactory.cleanWorkspace"), 1); //$NON-NLS-1$
 
-                    TimeMeasure.step("logOnProject", "clean Java project"); //$NON-NLS-1$ //$NON-NLS-2$
+                    TimeMeasurePerformance.step("logOnProject", "clean Java project"); //$NON-NLS-1$ //$NON-NLS-2$
 
                     if (workspace instanceof Workspace) {
                         ((Workspace) workspace).getFileSystemManager().getHistoryStore().clean(currentMonitor);
                     }
-                    TimeMeasure.step("logOnProject", "clean workspace history"); //$NON-NLS-1$ //$NON-NLS-2$
+                    TimeMeasurePerformance.step("logOnProject", "clean workspace history"); //$NON-NLS-1$ //$NON-NLS-2$
 
                     currentMonitor = subMonitor.newChild(1, SubMonitor.SUPPRESS_NONE);
                     currentMonitor.beginTask(Messages.getString("ProxyRepositoryFactory.synch.repo.items"), 1); //$NON-NLS-1$
@@ -2214,12 +2300,12 @@ public final class ProxyRepositoryFactory implements IProxyRepositoryFactory {
                 if (monitor != null && monitor.isCanceled()) {
                     throw new OperationCanceledException(""); //$NON-NLS-1$
                 }
-                TimeMeasure.step("logOnProject", "sync repository (routines/rules/beans)"); //$NON-NLS-1$ //$NON-NLS-2$
+                TimeMeasurePerformance.step("logOnProject", "sync repository (routines/rules/beans)"); //$NON-NLS-1$ //$NON-NLS-2$
 
                 // log4j prefs
                 if (coreUiService != null && coreService != null) {
                     coreService.syncLog4jSettings(null);
-                    TimeMeasure.step("logOnProject", "sync log4j"); //$NON-NLS-1$ //$NON-NLS-2$
+                    TimeMeasurePerformance.step("logOnProject", "sync log4j"); //$NON-NLS-1$ //$NON-NLS-2$
                 }
 
                 try {
@@ -2236,7 +2322,7 @@ public final class ProxyRepositoryFactory implements IProxyRepositoryFactory {
                 if (runProcessService != null && !isCommandLineLocalRefProject) {
                     runProcessService.initializeRootPoms(monitor);
 
-                    TimeMeasure.step("logOnProject", "install / setup root poms"); //$NON-NLS-1$ //$NON-NLS-2$
+                    TimeMeasurePerformance.step("logOnProject", "install / setup root poms"); //$NON-NLS-1$ //$NON-NLS-2$
                 }
                 if (GlobalServiceRegister.getDefault().isServiceRegistered(ITDQRepositoryService.class)) {
                     ITDQRepositoryService tdqRepositoryService = GlobalServiceRegister.getDefault()
@@ -2245,13 +2331,15 @@ public final class ProxyRepositoryFactory implements IProxyRepositoryFactory {
                         tdqRepositoryService.initProxyRepository();
                     }
                 }
+                // regenerate relationship index
+                if (project.getEmfProject().getItemsRelations().isEmpty()) {
+                    RelationshipItemBuilder.getInstance().buildAndSaveIndex();
+                }
+
                 fullLogonFinished = true;
                 this.repositoryFactoryFromProvider.afterLogon(monitor);
             } finally {
-                TimeMeasure.end("logOnProject"); //$NON-NLS-1$
-                TimeMeasure.display = false;
-                TimeMeasure.displaySteps = false;
-                TimeMeasure.measureActive = false;
+                TimeMeasurePerformance.end("logOnProject"); //$NON-NLS-1$
             }
             String str[] = new String[] { getRepositoryContext().getUser() + "", projectManager.getCurrentProject() + "" }; //$NON-NLS-1$ //$NON-NLS-2$
             log.info(Messages.getString("ProxyRepositoryFactory.log.loggedOn", str)); //$NON-NLS-1$
@@ -2651,5 +2739,14 @@ public final class ProxyRepositoryFactory implements IProxyRepositoryFactory {
 
     public RepositoryWorkUnit getWorkUnitInProgress() {
         return repositoryFactoryFromProvider.getWorkUnitInProgress();
+    }
+
+    public void executeRequiredLoginTasks(IProgressMonitor monitor) throws InvocationTargetException, InterruptedException {
+        ILoginTask[] allLoginTasks = LOGIN_TASK_REGISTRY_READER.getAllTaskListInstance();
+        for (ILoginTask task : allLoginTasks) {
+            if (task.isRequiredAlways()) {
+                task.run(monitor);
+            }
+        }
     }
 }

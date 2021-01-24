@@ -20,11 +20,14 @@ import org.eclipse.swt.widgets.Composite;
 import org.talend.commons.ui.swt.actions.ITreeContextualAction;
 import org.talend.components.api.properties.ComponentProperties;
 import org.talend.core.IService;
+import org.talend.core.model.metadata.Dbms;
 import org.talend.core.model.metadata.IMetadataTable;
 import org.talend.core.model.metadata.builder.connection.Connection;
+import org.talend.core.model.metadata.builder.connection.DatabaseConnection;
 import org.talend.core.model.metadata.builder.connection.MetadataTable;
 import org.talend.core.model.process.EComponentCategory;
 import org.talend.core.model.process.Element;
+import org.talend.core.model.process.IElement;
 import org.talend.core.model.process.INode;
 import org.talend.core.model.properties.Item;
 import org.talend.core.model.repository.ERepositoryObjectType;
@@ -146,4 +149,19 @@ public interface IGenericWizardService extends IService {
      * @return the default action which will be invoked when double click the node.
      */
     public ITreeContextualAction getDefaultAction(RepositoryNode node);
+
+    public void loadAdditionalJDBC();
+
+    public List<String> getAllAdditionalJDBCTypes();
+
+    public boolean getIfAdditionalJDBCDBType(String dbType);
+
+    public void initAdditonalJDBCConnectionValue(DatabaseConnection connection, Composite dynamicForm, String dbType,
+            String propertyId);
+
+    public String getDefinitionName4AdditionalJDBC(IElement element);
+
+    public String getDatabseNameByNode(IElement node);
+
+    public Dbms getDbms4AdditionalJDBC(String typeName);
 }

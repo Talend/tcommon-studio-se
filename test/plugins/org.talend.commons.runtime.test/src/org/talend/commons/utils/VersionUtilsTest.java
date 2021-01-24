@@ -13,12 +13,15 @@
 package org.talend.commons.utils;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertTrue;
 
 import java.io.File;
-import java.io.FileOutputStream;
-import java.io.OutputStream;
-import java.util.Properties;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.stream.Stream;
 
+import org.apache.commons.lang3.StringUtils;
 import org.eclipse.core.runtime.Path;
 import org.eclipse.core.runtime.Platform;
 import org.eclipse.core.runtime.URIUtil;
@@ -37,8 +40,13 @@ public class VersionUtilsTest {
 
     private File eclipseproductFile;
 
+    private Map<String, String> originalMojoVersions;
+
     @Before
     public void setUp() throws Exception {
+        originalMojoVersions = new HashMap<>();
+        Stream.of(MojoType.values()).map(MojoType::getVersionKey).filter(v -> System.getProperty(v) != null)
+                .forEach(v -> originalMojoVersions.put(v, System.getProperty(v)));
         mojo_properties = new Path(Platform.getConfigurationLocation().getURL().getPath()).append("mojo_version.properties") //$NON-NLS-1$
                 .toFile();
         backupEcilpseproductFile();
@@ -55,28 +63,30 @@ public class VersionUtilsTest {
     }
 
     @Test
-    public void testGetPluginVersion__Eclipseproduct() throws Exception {
-        String talendVersion = VersionUtils.getTalendVersion();
-        setPropertiesValue(eclipseproductFile, "version", talendVersion + ".20190500_1200-SNAPSHOT");
-        assertEquals(talendVersion + "-SNAPSHOT", VersionUtils.getMojoVersion("ci.builder.version"));
-
-        setPropertiesValue(eclipseproductFile, "version", talendVersion + ".20190500_1200-M5");
-        assertEquals(talendVersion + "-M5", VersionUtils.getMojoVersion("ci.builder.version"));
-
-        setPropertiesValue(eclipseproductFile, "version", talendVersion + ".20190500_1200");
-        assertEquals(talendVersion, VersionUtils.getMojoVersion("ci.builder.version"));
-
-        // for other revision, use release version as default.
-        setPropertiesValue(eclipseproductFile, "version", talendVersion + ".20190500_1200-RC1");
-        assertEquals(talendVersion, VersionUtils.getMojoVersion("ci.builder.version"));
+    public void testGetMojoVersion() throws Exception {
+        // testMojoVersion(MojoType.CI_BUILDER, "-SNAPSHOT");
+        // testMojoVersion(MojoType.CI_BUILDER, "-M3");
+        // only return latest version now
+        testMojoVersion(MojoType.CI_BUILDER, "");
     }
 
-    private void setPropertiesValue(File propertiesFile, String key, String value) throws Exception {
-        Properties properties = new Properties();
-        properties.setProperty(key, value);
-        try (OutputStream out = new FileOutputStream(propertiesFile)) {
-            properties.store(out, "From junit");
-        }
+    private void testMojoVersion(MojoType mojoType, String testVersion) throws Exception {
+        System.setProperty(mojoType.getVersionKey(), "");
+
+        String talendVersion = VersionUtils.getTalendVersion();
+        File artifactIdFolder = new File(mojoType.getMojoArtifactIdFolder());
+        String majorVersion = StringUtils.substringBeforeLast(talendVersion, ".");
+        String minorVersion = StringUtils.substringAfterLast(talendVersion, ".");
+        minorVersion = (Integer.valueOf(minorVersion) + 200) + "";
+        testVersion = majorVersion + "." + minorVersion + testVersion;
+        File versionFolder = new File(artifactIdFolder, testVersion);
+        versionFolder.mkdir();
+        new File(versionFolder, mojoType.getArtifactId() + "-" + testVersion + ".jar").createNewFile();
+        new File(versionFolder, mojoType.getArtifactId() + "-" + testVersion + ".pom").createNewFile();
+
+        assertEquals(testVersion, VersionUtils.getMojoVersion(mojoType));
+
+        FilesUtils.deleteFolder(versionFolder, true);
     }
 
     private void backupEcilpseproductFile() throws Exception {
@@ -154,11 +164,66 @@ public class VersionUtilsTest {
         assertEquals(expect, result);
     }
 
+    @Test
+    public void testIsInvalidProductVersion() {
+
+        assertTrue(VersionUtils.isInvalidProductVersion("7.3.1.20200201_1941-M1",
+                "Talend Cloud Big Data-7.3.1.20200209_1446-patch"));
+        assertTrue(
+                VersionUtils.isInvalidProductVersion("7.3.1.20200201_1941", "Talend Cloud Big Data-7.3.1.20200209_1446-patch"));
+        assertTrue(VersionUtils.isInvalidProductVersion("7.3.1.20200201_1941-patch",
+                "Talend Cloud Big Data-7.3.1.20200209_1446-patch"));
+        assertFalse(
+                VersionUtils.isInvalidProductVersion("7.3.1.20200209_1941-patch", "Talend Cloud Big Data-7.3.1.20200201_1446"));
+
+        // test nightly/milestone build
+        assertFalse(VersionUtils.isInvalidProductVersion("7.3.1.20200201_1941-SNAPSHOT",
+                "Talend Cloud Big Data-7.3.1.20200209_1446-SNAPSHOT"));
+        assertFalse(VersionUtils.isInvalidProductVersion("7.3.1.20200201_1941-M1",
+                "Talend Cloud Big Data-7.3.1.20200209_1446-SNAPSHOT"));
+        assertFalse(
+                VersionUtils.isInvalidProductVersion("7.3.1.20200201_1941-M1", "Talend Cloud Big Data-7.3.1.20200209_1446-M2"));
+        assertFalse(VersionUtils.isInvalidProductVersion("7.3.1.20200201_1941-SNAPSHOT",
+                "Talend Cloud Big Data-7.3.1.20200209_1446-M2"));
+    }
+
+    @Test
+    public void testProductVersionIsNewer() {
+        assertTrue(
+                VersionUtils.productVersionIsNewer("7.3.1.20200211_1941-M1", "Talend Cloud Big Data-7.3.1.20200209_1446-patch"));
+        assertTrue(VersionUtils.productVersionIsNewer("7.3.1.20200211_1941", "Talend Cloud Big Data-7.3.1.20200209_1446-patch"));
+        assertTrue(VersionUtils.productVersionIsNewer("7.3.1.20200211_1941-patch",
+                "Talend Cloud Big Data-7.3.1.20200209_1446-patch"));
+        assertFalse(VersionUtils.productVersionIsNewer("7.3.1.20200219_1941-patch", "Talend Cloud Big Data-7.3.1.20200221_1446"));
+
+        // test nightly/milestone build
+        assertFalse(VersionUtils.productVersionIsNewer("7.3.1.20200201_1941-SNAPSHOT",
+                "Talend Cloud Big Data-7.3.1.20200209_1446-SNAPSHOT"));
+        assertFalse(VersionUtils.productVersionIsNewer("7.3.1.20200201_1941-M1",
+                "Talend Cloud Big Data-7.3.1.20200209_1446-SNAPSHOT"));
+        assertFalse(
+                VersionUtils.productVersionIsNewer("7.3.1.20200201_1941-M1", "Talend Cloud Big Data-7.3.1.20200209_1446-M2"));
+        assertFalse(VersionUtils.productVersionIsNewer("7.3.1.20200201_1941-SNAPSHOT",
+                "Talend Cloud Big Data-7.3.1.20200209_1446-M2"));
+    }
+
+    @Test
+    public void testGetSimplifiedPatchName() {
+        String expect0 = "R2020-11-7.3.1";
+        assertEquals(expect0, VersionUtils.getSimplifiedPatchName("Patch_20201114_R2020-11_v1-7.3.1"));
+        String expect1 = "R2020-11-7.3.1";
+        assertEquals(expect1, VersionUtils.getSimplifiedPatchName("Patch_20201114_R2020-11_v2-7.3.1"));
+        String expect2 = "R2020-11-7.4.1";
+        assertEquals(expect2, VersionUtils.getSimplifiedPatchName("Patch_20201114_R2020-11_v1-7.4.1"));
+    }
+
     @After
     public void tearDown() throws Exception {
         if (mojo_properties != null && mojo_properties.exists()) {
             mojo_properties.delete();
         }
+        originalMojoVersions.forEach(System::setProperty);
+
         restoreEclipseproductFile();
     }
 

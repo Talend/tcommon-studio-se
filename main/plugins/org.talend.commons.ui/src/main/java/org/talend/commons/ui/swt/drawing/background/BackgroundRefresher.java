@@ -240,7 +240,11 @@ public class BackgroundRefresher implements IBackgroundRefresher {
 
             gc.dispose();
 
-            drawableComposite.getBgDrawableComposite().setBackgroundImage(newImage);
+            if (WindowSystem.isBigSurOrLater()) {
+                drawableComposite.refreshBgDrawableCompsite(newImage);
+            } else {
+                drawableComposite.getBgDrawableComposite().setBackgroundImage(newImage);
+            }
 
             clearImage(oldImage);
             oldImage = newImage;

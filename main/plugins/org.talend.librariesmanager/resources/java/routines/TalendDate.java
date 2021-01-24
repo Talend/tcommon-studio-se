@@ -263,26 +263,31 @@ public class TalendDate {
 
     /**
      * Tests string value as a date with right pattern using strict rules.
-     * This validation uses Java 8 time tools such {@link DateTimeFormatter#parse }
-     * and {@link DateTimeFormatter#format }
-     * </br>
-     * </br>
-     * Examples:
-     * </br>
-     * <code>isDateStrict("20110327 121711", "yyyyMMdd HHmmss")</code> return <code>true</code></br>
-     * <code>isDateStrict("01100327 121711", "yyyyMMdd HHmmss")</code> return <code>false</code></br>
-     * <code>isDateStrict("20180229 221711", "yyyyMMdd HHmmss")</code> return <code>false</code></br>
-     * <code>isDateStrict("2016-02-29 22:17:11", "yyyy-MM-dd HH:mm:ss")</code> return <code>true</code></br>
-     * <code>isDateStrict("2011/03/27 22:17:11+0100", "yyyy/MM/dd HH:mm:ssZ")</code> return <code>true</code></br>
-     * <code>isDateStrict("20110327 021711+1900", "yyyyMMdd HHmmssZ")</code> return <code>false</code></br>
-     * </br>
+     * This validation uses Java 8 time tools.
+     * 
      * The range of time-zone offsets is restricted to -18:00 to 18:00 inclusive.
-     *
-     * @param stringDate the date to judge
-     * @param pattern the specified pattern, like: "yyyy-MM-dd HH:mm:ss")
-     * @return whether the stringDate is a date string with a right pattern.
+     * 
+     * @param stringDate (The <code>String</code> of the date to judge)
+     * @param pattern (The <code>String</code> of a specified pattern, like: "yyyy-MM-dd HH:mm:ss")
+     * @return A boolean value that whether the stringDate is a date string with a right pattern.
      * @throws IllegalArgumentException if pattern is not defined.
-     *
+     * 
+     * {talendTypes} Boolean
+     * 
+     * {Category} TalendDate
+     * 
+     * {param} String(mydate) stringDate : the date to judge
+     * 
+     * {param} String("yyyy-MM-dd HH:mm:ss") pattern : the specified pattern
+     * 
+     * {examples}
+     * 
+     * ->> isDateStrict("20110327 121711", "yyyyMMdd HHmmss") return true
+     * ->> isDateStrict("01100327 121711", "yyyyMMdd HHmmss") return false
+     * ->> isDateStrict("20180229 221711", "yyyyMMdd HHmmss") return false
+     * ->> isDateStrict("2016-02-29 22:17:11", "yyyy-MM-dd HH:mm:ss") return true
+     * ->> isDateStrict("2011/03/27 22:17:11+0100", "yyyy/MM/dd HH:mm:ssZ") return true
+     * ->> isDateStrict("20110327 021711+1900", "yyyyMMdd HHmmssZ") return false
      */
     public static boolean isDateStrict(String stringDate, String pattern) {
         if (stringDate == null) {

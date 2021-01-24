@@ -174,7 +174,7 @@ public class MavenUrlHelper {
         if (jarName != null && jarName.length() > 0) {
             String artifactId = jarName;
             String type = null;
-            if (jarName.endsWith(MavenConstants.TYPE_JAR)) { // remove the extension .jar
+            if (jarName.endsWith("." + MavenConstants.TYPE_JAR)) { // remove the extension .jar
                 artifactId = jarName.substring(0, jarName.lastIndexOf(MavenConstants.TYPE_JAR) - 1);
                 if (withPackage) {
                     type = MavenConstants.TYPE_JAR;
@@ -379,5 +379,15 @@ public class MavenUrlHelper {
             buffer.append(".jar");
         }
         return buffer.toString();
+    }
+
+    public static String getSNAPSHOTVersion(String rVersion) {
+        if (rVersion == null) {
+            return rVersion;
+        }
+        if (rVersion.contains("-")) {
+            return rVersion.substring(0, rVersion.indexOf("-") + 1) + MavenUrlHelper.VERSION_SNAPSHOT;
+        }
+        return rVersion;
     }
 }

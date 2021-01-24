@@ -24,6 +24,12 @@
             id="org.talend.core.runtime.defaultProvider"
             name="default">
       </provider>
+      <provider
+            collector="org.talend.core.ui.token.PerformanceTokenCollector"
+            description="collect such as hardware info, I/O info, startup time"
+            id="org.talend.core.ui.token.PerformanceProvider"
+            name="performance">
+      </provider>
    </extension>
    
       <extension

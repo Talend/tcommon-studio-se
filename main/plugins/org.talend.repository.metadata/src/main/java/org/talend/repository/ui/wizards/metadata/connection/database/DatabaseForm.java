@@ -89,6 +89,7 @@ import org.talend.core.GlobalServiceRegister;
 import org.talend.core.ILibraryManagerService;
 import org.talend.core.ILibraryManagerUIService;
 import org.talend.core.database.EDatabaseTypeName;
+import org.talend.core.database.EImpalaDriver;
 import org.talend.core.database.conn.ConnParameterKeys;
 import org.talend.core.database.conn.DatabaseConnStrUtil;
 import org.talend.core.database.conn.EDatabaseConnVar;
@@ -213,6 +214,8 @@ public class DatabaseForm extends AbstractForm {
      * Let user select which hive server to use. Including HiveServer1, and HiveServer2 now.
      */
     private LabelledCombo hiveServerVersionCombo;
+
+    private LabelledCombo impalaDriverCombo;
 
     private LabelledText serverText;
 
@@ -395,6 +398,14 @@ public class DatabaseForm extends AbstractForm {
     private LabelledText maprTDurationForHiveTxt;
 
     private LabelledText impalaPrincipalTxt;
+
+    private Button useKeyTabForImpala;
+
+    private Composite keyTabCompoisteForImpala;
+
+    private LabelledText principalForImpalaTxt;
+
+    private LabelledFileField keytabForImpalaTxt;
 
     private LabelledText hbaseMasterPrincipalTxt;
 
@@ -980,6 +991,7 @@ public class DatabaseForm extends AbstractForm {
                 .getString("DatabaseForm.dbversion.tip"), new String[0], 2, true); //$NON-NLS-1$
 
         createHiveServerVersionField(typeDbCompositeParent);
+        createImpalaDriverField(typeDbCompositeParent);
 
         setHideVersionInfoWidgets(true);
 
@@ -1265,6 +1277,28 @@ public class DatabaseForm extends AbstractForm {
         authenticationComForImpala.setLayout(new GridLayout(3, false));
 
         impalaPrincipalTxt = new LabelledText(authenticationComForImpala, Messages.getString("DatabaseForm.impalaPrincipal"), 2); //$NON-NLS-1$
+
+        // keytab
+        useKeyTabForImpala = new Button(authenticationComForImpala, SWT.CHECK);
+        useKeyTabForImpala.setText(Messages.getString("DatabaseForm.hiveEmbedded.useKeyTab")); //$NON-NLS-1$
+        data = new GridData(GridData.FILL_HORIZONTAL);
+        data.horizontalSpan = 4;
+        useKeyTabForImpala.setLayoutData(data);
+
+        keyTabCompoisteForImpala = new Composite(authenticationComForImpala, SWT.NONE);
+        data = new GridData(GridData.FILL_BOTH);
+        data.horizontalSpan = 4;
+        data.exclude = true;
+        keyTabCompoisteForImpala.setLayoutData(data);
+        keyTabCompoisteForImpala.setVisible(false);
+        keyTabCompoisteForImpala.setLayout(new GridLayout(5, false));
+
+        principalForImpalaTxt = new LabelledText(keyTabCompoisteForImpala,
+                Messages.getString("DatabaseForm.hiveEmbedded.principal"), 1); //$NON-NLS-1$
+        String[] extensions = { "*.*" }; //$NON-NLS-1$
+        keytabForImpalaTxt = new LabelledFileField(keyTabCompoisteForImpala,
+                Messages.getString("DatabaseForm.hiveEmbedded.keytab"), //$NON-NLS-1$
+                extensions);
 
         addListenerForImpalaAuthentication();
         initForImpalaAuthentication();
@@ -1826,7 +1860,7 @@ public class DatabaseForm extends AbstractForm {
     }
 
     private void showIfAdditionalJDBCSettings() {
-        setHidAdditionalJDBCSettings(!isSupportHiveAdditionalSettings());
+        setHidAdditionalJDBCSettings(!isSupportHiveAdditionalSettings() && !isSupportImpalaAdditionalSettings());
     }
 
     private void showIfHiveMetastore() {
@@ -1865,6 +1899,20 @@ public class DatabaseForm extends AbstractForm {
                     return false;
                 }
                 return true;
+            }
+        }
+        return false;
+    }
+
+    private boolean isSupportImpalaAdditionalSettings() {
+        if (isImpalaDBConnSelected()) {
+            IHDistribution hiveDistribution = getCurrentImpalaDistribution(true);
+            String hiveVerson = getImpalaVersionCombo().getText();
+            if (hiveDistribution != null && hiveVerson != null) {
+                if (!EImpalaDriver.isSupport(hiveDistribution.getDisplayName(), hiveVerson, true, "useCloudLauncher")
+                        && HiveMetadataHelper.doSupportHive2(hiveDistribution.getDisplayName(), hiveVerson, true)) {
+                    return true;
+                }
             }
         }
         return false;
@@ -1912,14 +1960,14 @@ public class DatabaseForm extends AbstractForm {
                 }
                 return true;
             }
-        } else if (isOracleCustomDBConnSelected()) {
+        } else if (isOracleCustomDBConnSelected() || isImpalaDBConnSelected()) {
             return true;
         }
         return false;
     }
 
     private boolean isSupportSSLTrustStore() {
-        if (isHiveDBConnSelected()) {
+        if (isHiveDBConnSelected() || isImpalaDBConnSelected()) {
             // if (!useSSLEncryption.isVisible()) {
             // return false;
             // }
@@ -2052,6 +2100,45 @@ public class DatabaseForm extends AbstractForm {
                 adjustScrolledComHeight();
             }
 
+        });
+
+        useKeyTabForImpala.addSelectionListener(new SelectionAdapter() {
+
+            @Override
+            public void widgetSelected(SelectionEvent e) {
+                if (useKeyTabForImpala.getSelection()) {
+                    hideControl(keyTabCompoisteForImpala, false);
+                    getConnection().getParameters().put(ConnParameterKeys.CONN_PARA_KEY_USEKEYTAB, "true"); //$NON-NLS-1$
+                } else {
+                    hideControl(keyTabCompoisteForImpala, true);
+                    getConnection().getParameters().put(ConnParameterKeys.CONN_PARA_KEY_USEKEYTAB, "false"); //$NON-NLS-1$
+                }
+                authenticationComForImpala.layout();
+                authenticationComForImpala.getParent().layout();
+                authenticationGrpForImpala.layout();
+                authenticationGrpForImpala.getParent().layout();
+                adjustScrolledComHeight();
+            }
+
+        });
+        principalForImpalaTxt.getTextControl().addModifyListener(new ModifyListener() {
+
+            @Override
+            public void modifyText(ModifyEvent e) {
+                if (!isContextMode()) {
+                    getConnection().getParameters().put(ConnParameterKeys.CONN_PARA_KEY_KEYTAB_PRINCIPAL,
+                            principalForImpalaTxt.getText());
+                }
+            }
+        });
+        keytabForImpalaTxt.getTextControl().addModifyListener(new ModifyListener() {
+
+            @Override
+            public void modifyText(ModifyEvent e) {
+                if (!isContextMode()) {
+                    getConnection().getParameters().put(ConnParameterKeys.CONN_PARA_KEY_KEYTAB, keytabForImpalaTxt.getText());
+                }
+            }
         });
 
         impalaPrincipalTxt.getTextControl().addModifyListener(new ModifyListener() {
@@ -3209,6 +3296,7 @@ public class DatabaseForm extends AbstractForm {
         hcPropertyTypeCombo.setReadOnly(isContextMode());
         hiveModeCombo.setReadOnly(isContextMode());
         hiveServerVersionCombo.setReadOnly(isContextMode());
+        impalaDriverCombo.setReadOnly(isContextMode());
 
         useKerberos.setEnabled(!isContextMode());
         useKeyTab.setEnabled(!isContextMode());
@@ -3310,6 +3398,14 @@ public class DatabaseForm extends AbstractForm {
     private void adaptImpalaHadoopPartEditable() {
         useKerberosForImpala.setEnabled(!isContextMode());
         impalaPrincipalTxt.setEditable(!isContextMode());
+
+        useKeyTabForImpala.setEnabled(!isContextMode());
+        keytabForImpalaTxt.setEditable(!isContextMode());
+        principalForImpalaTxt.setEditable(!isContextMode());
+
+        useSSLEncryption.setEnabled(!isContextMode());
+        trustStorePath.setEditable(!isContextMode());
+        trustStorePassword.setEditable(!isContextMode());
     }
 
     private void adaptOracleCustomPartEditable() {
@@ -3669,6 +3765,44 @@ public class DatabaseForm extends AbstractForm {
             impalaDistributionCombo.select(0);
         }
 
+        boolean useSSL = Boolean.parseBoolean(connection.getParameters().get(ConnParameterKeys.CONN_PARA_KEY_USE_SSL));
+        String trustStorePathStr = connection.getParameters().get(ConnParameterKeys.CONN_PARA_KEY_SSL_TRUST_STORE_PATH);
+        String trustStorePasswordStr = connection.getParameters().get(ConnParameterKeys.CONN_PARA_KEY_SSL_TRUST_STORE_PASSWORD);
+        useSSLEncryption.setSelection(useSSL);
+        trustStorePath.setText(trustStorePathStr == null ? "" : trustStorePathStr);
+        if (trustStorePasswordStr == null) {
+            trustStorePasswordStr = "";
+        } else {
+            trustStorePasswordStr = connection.getValue(trustStorePasswordStr, false);
+        }
+        trustStorePassword.setText(trustStorePasswordStr);
+
+        String useKrbString = connection.getParameters().get(ConnParameterKeys.CONN_PARA_KEY_USE_KRB);
+        String useKeytabString = connection.getParameters().get(ConnParameterKeys.CONN_PARA_KEY_USEKEYTAB);
+        String keytabPrincipal = connection.getParameters().get(ConnParameterKeys.CONN_PARA_KEY_KEYTAB_PRINCIPAL);
+        String keytab = connection.getParameters().get(ConnParameterKeys.CONN_PARA_KEY_KEYTAB);
+        if (!connection.isContextMode() && ContextParameterUtils.isContainContextParam(keytabPrincipal)) {
+            keytabPrincipal = (String) metadataconnection.getParameter(ConnParameterKeys.CONN_PARA_KEY_KEYTAB_PRINCIPAL);
+        }
+        if (!connection.isContextMode() && ContextParameterUtils.isContainContextParam(keytab)) {
+            keytab = (String) metadataconnection.getParameter(ConnParameterKeys.CONN_PARA_KEY_KEYTAB);
+        }
+        String masterPrincipal = connection.getParameters().get(ConnParameterKeys.IMPALA_AUTHENTICATION_PRINCIPLA);
+        boolean useKrb = Boolean.valueOf(useKrbString);
+        boolean useKeytab = Boolean.valueOf(useKeytabString);
+        useKerberosForImpala.setSelection(useKrb);
+        if (useKrb) {
+            useKeyTabForImpala.setSelection(useKeytab);
+            if (useKeytab) {
+                principalForImpalaTxt.setText(StringUtils.trimToEmpty(keytabPrincipal));
+                keytabForImpalaTxt.setText(StringUtils.trimToEmpty(keytab));
+            }
+            impalaPrincipalTxt.setText(StringUtils.trimToEmpty(masterPrincipal));
+        }
+        hideControl(keyTabCompoisteForImpala, !useKeytab);
+        hideControl(authenticationComForImpala, !useKrb);
+        hideControl(authenticationGrpForImpala, false);
+
         authenticationGrpForImpala.setVisible(true);
         authenticationGrpForImpala.getParent().layout();
     }
@@ -3743,6 +3877,14 @@ public class DatabaseForm extends AbstractForm {
                 new String[] {}, 2, true);
 
         hiveServerVersionCombo.setHideWidgets(true);
+    }
+
+    private void createImpalaDriverField(Composite parent) {
+        impalaDriverCombo = new LabelledCombo(parent, Messages.getString("DatabaseForm.impala.driverVersion"), //$NON-NLS-1$
+                Messages.getString("DatabaseForm.impala.driverVersion.tip"), //$NON-NLS-1$
+                new String[] {}, 2, true);
+
+        impalaDriverCombo.setHideWidgets(true);
     }
 
     /**
@@ -5085,6 +5227,8 @@ public class DatabaseForm extends AbstractForm {
             }
             if (isImpalaDBConnSelected()) {
                 fillDefaultsWhenImpalaVersionChanged();
+            } else {
+                doImpalaNotSelected();
             }
         }
 
@@ -5551,7 +5695,9 @@ public class DatabaseForm extends AbstractForm {
                 handleHadoopCustomVersion(ECustomVersionType.HIVE);
             }
         });
+        regHiveRelatedWidgetImpalaDriverComboListener();
     }
+
 
     private void handleHadoopCustomVersion(final ECustomVersionType type) {
         HadoopCustomVersionDefineDialog customVersionDialog = new HadoopCustomVersionDefineDialog(getShell(),
@@ -5705,7 +5851,8 @@ public class DatabaseForm extends AbstractForm {
                             .getService(ILibraryManagerUIService.class);
                     IConfigModuleDialog dialog = libUiService.getConfigModuleDialog(getShell(), null);
                     if (dialog.open() == IDialogConstants.OK_ID) {
-                        String selecteModule = dialog.getModuleName();
+                        // TOS_DQ only
+                        String selecteModule = dialog.getMavenURI();
                         if (selecteModule != null && !asList.contains(selecteModule)) {
                             asList.add(selecteModule);
                         }
@@ -6525,7 +6672,8 @@ public class DatabaseForm extends AbstractForm {
                     passwordText.hide();
                 } else if (isImpala) {
                     // usernameText.hide();
-                    passwordText.hide();
+                    // passwordText.hide();
+                    impalaDriverCombo.setHideWidgets(false);
                 } else if (isHiveDBConnSelected()) {
                     if (isHiveEmbeddedMode()) {
                         // Need to revert if required, changed by Marvin Wang on Nov. 22, 2012.
@@ -6728,6 +6876,16 @@ public class DatabaseForm extends AbstractForm {
             addContextParams(EDBParamName.Port, true);
             addContextParams(EDBParamName.Database, true);
             addContextParams(EDBParamName.ImpalaPrincipal, useKerberosForImpala.getSelection());
+            addContextParams(EDBParamName.Password, true);
+            addContextParams(EDBParamName.hiveAdditionalJDBCParameters, isSupportImpalaAdditionalSettings());
+
+            addContextParams(EDBParamName.ImpalaKeyTabPrincipal, useKeyTabForImpala.getSelection());
+            addContextParams(EDBParamName.ImpalaKeyTab, useKeyTabForImpala.getSelection());
+
+            boolean addSSLEncryptionContext = isSupportSSLEncryption() && isSupportSSLTrustStore();
+            addContextParams(EDBParamName.ImpalaSSLTrustStorePath, addSSLEncryptionContext);
+            addContextParams(EDBParamName.ImpalaSSLTrustStorePassword, addSSLEncryptionContext);
+
         }
     }
 
@@ -7026,6 +7184,7 @@ public class DatabaseForm extends AbstractForm {
         if (isImpalaDBConnSelected()) {
             adaptImpalaHadoopPartEditable();
             updateHadoopProperties(!isContextMode());
+            additionalJDBCSettingsText.setEditable(!isContextMode());
         }
         if (isOracleCustomDBConnSelected()) {
             adaptOracleCustomPartEditable();
@@ -7085,7 +7244,6 @@ public class DatabaseForm extends AbstractForm {
 
         String useKrb = connection.getParameters().get(ConnParameterKeys.CONN_PARA_KEY_USE_KRB);
         String impalaPrincipla = connection.getParameters().get(ConnParameterKeys.IMPALA_AUTHENTICATION_PRINCIPLA);
-
         if (Boolean.valueOf(useKrb)) {
             useKerberosForImpala.setSelection(true);
             GridData hadoopData = (GridData) authenticationComForImpala.getLayoutData();
@@ -7097,7 +7255,28 @@ public class DatabaseForm extends AbstractForm {
             authenticationComForImpala.getParent().layout();
         }
         impalaPrincipalTxt.setText(impalaPrincipla == null ? "impala/_HOST@EXAMPLE.COM" : impalaPrincipla); //$NON-NLS-1$
+        String distributionObj = connection.getParameters().get(ConnParameterKeys.CONN_PARA_KEY_IMPALA_DISTRIBUTION);
+        String impalaVersion = connection.getParameters().get(ConnParameterKeys.CONN_PARA_KEY_IMPALA_VERSION);
+        IHadoopDistributionService hadoopService = getHadoopDistributionService();
+        if (hadoopService != null) {
+            IHDistribution impalaDistribution = hadoopService.getImpalaDistributionManager().getDistribution(distributionObj,
+                    false);
+            IHDistributionVersion hdVersion = null;
+            if (impalaDistribution != null) {
+                hdVersion = impalaDistribution.getHDVersion(impalaVersion, false);
+            }
+            if (!isCreation) {
+                updateImpalaVersionPart(impalaDistribution);
+            }
+            updateImpalaDriverAndMakeSelection(impalaDistribution, hdVersion);
+        }
+        // addtional jdbc setting
+        String additionalJDBCSettings = connection.getParameters()
+                .get(ConnParameterKeys.CONN_PARA_KEY_HIVE_ADDITIONAL_JDBC_SETTINGS);
+        additionalJDBCSettingsText.setText(additionalJDBCSettings == null ? "" : additionalJDBCSettings);
 
+        showIfSupportEncryption();
+        updateSSLEncryptionDetailsDisplayStatus();
     }
 
     /**
@@ -7479,6 +7658,16 @@ public class DatabaseForm extends AbstractForm {
                 showIfHiveMetastore();
                 showIfSupportEncryption();
                 showIfAuthentication();
+            }
+        });
+    }
+
+    private void regHiveRelatedWidgetImpalaDriverComboListener() {
+        impalaDriverCombo.getCombo().addSelectionListener(new SelectionAdapter() {
+
+            @Override
+            public void widgetSelected(SelectionEvent e) {
+                doImpalaDriverSelected();
             }
         });
     }
@@ -8068,6 +8257,14 @@ public class DatabaseForm extends AbstractForm {
         updateHiveServerAndMakeSelection(hiveDistribution, hiveVersion);
     }
 
+    protected void doImpalaDriverSelected() {
+        if (!isContextMode()) {
+            modifyFieldValue();
+            getConnection().getParameters().put(ConnParameterKeys.IMPALA_DRIVER,
+                    EImpalaDriver.getByDisplay(impalaDriverCombo.getText()).getName());
+        }
+    }
+
     protected void updateHiveDistributionAndMakeSelection(IHDistribution hiveDistribution) {
         hiveDistributionCombo.getCombo().setItems(HiveMetadataHelper.getDistributionsDisplay());
         if (hiveDistribution != null) {
@@ -8082,6 +8279,18 @@ public class DatabaseForm extends AbstractForm {
         IHadoopDistributionService hadoopService = getHadoopDistributionService();
         if (withDefault && hiveDistribution == null && hadoopService != null) {
             IHDistribution[] distributions = hadoopService.getHiveDistributionManager().getDistributions();
+            if (distributions.length > 0) {
+                hiveDistribution = distributions[0];
+            }
+        }
+        return hiveDistribution;
+    }
+
+    private IHDistribution getCurrentImpalaDistribution(boolean withDefault) {
+        IHDistribution hiveDistribution = HiveMetadataHelper.getDistribution(impalaDistributionCombo.getText(), true);
+        IHadoopDistributionService hadoopService = getHadoopDistributionService();
+        if (withDefault && hiveDistribution == null && hadoopService != null) {
+            IHDistribution[] distributions = hadoopService.getImpalaDistributionManager().getDistributions();
             if (distributions.length > 0) {
                 hiveDistribution = distributions[0];
             }
@@ -8171,6 +8380,43 @@ public class DatabaseForm extends AbstractForm {
         }
     }
 
+    protected void updateImpalaDriverAndMakeSelection(IHDistribution hiveDistribution,
+            IHDistributionVersion hiveVersion) {
+        if (hiveDistribution == null) {
+            hiveDistribution = getCurrentHiveDistribution(true);
+        }
+        IHadoopDistributionService hadoopDistributionService = getHadoopDistributionService();
+        if (hiveDistribution == null || hadoopDistributionService == null) {
+            return;
+        }
+        IHDistributionVersion[] hdVersions = hiveDistribution.getHDVersions();
+        if (hiveVersion == null && hdVersions.length > 0) {
+            hiveVersion = hdVersions[0];
+        }
+
+        DatabaseConnection conn = getConnection();
+        String[] impalaDriverDisplay = EImpalaDriver.getImpalaDriverDisplay(hiveDistribution.getName(),
+                hiveVersion == null ? null : hiveVersion.getVersion(), false);
+        if (impalaDriverDisplay != null && impalaDriverDisplay.length == 0) {
+            // hive2 by default
+            impalaDriverCombo.getCombo().setItems(EImpalaDriver.HIVE2.getDisplayName());
+        } else {
+            impalaDriverCombo.getCombo().setItems(impalaDriverDisplay);
+        }
+        String impalaDriver = conn.getParameters().get(ConnParameterKeys.IMPALA_DRIVER);
+        if (impalaDriver != null) {
+            EImpalaDriver driver = EImpalaDriver.getByName(impalaDriver);
+            if (driver != null) {
+                impalaDriverCombo.setText(driver.getDisplayName());
+            } else {
+                impalaDriverCombo.select(0);
+            }
+        } else {
+            impalaDriverCombo.select(0);
+        }
+        getConnection().getParameters().put(ConnParameterKeys.IMPALA_DRIVER,
+                EImpalaDriver.getByDisplay(impalaDriverCombo.getText()).getName());
+    }
     /**
      * It is invoked when the mode STANDALONE is selected. Added by Marvin Wang on Aug. 3, 2012.
      */
@@ -8304,6 +8550,9 @@ public class DatabaseForm extends AbstractForm {
         doHiveUIContentsLayout();
     }
 
+    protected void doImpalaNotSelected() {
+        impalaDriverCombo.setHideWidgets(true);
+    }
     /**
      * This method is used to handle the groups including version info, hadoop info and metastore info are hide or
      * visible. Added by Marvin Wang on Oct 16, 2012.
@@ -8644,6 +8893,10 @@ public class DatabaseForm extends AbstractForm {
 
     public LabelledCombo getHiveVersionCombo() {
         return this.hiveVersionCombo;
+    }
+
+    public LabelledCombo getImpalaVersionCombo() {
+        return this.impalaVersionCombo;
     }
 
     public ContextType getSelectedContextType() {

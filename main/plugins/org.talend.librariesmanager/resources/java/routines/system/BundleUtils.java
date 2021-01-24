@@ -13,6 +13,9 @@
 package routines.system;
 
 import java.lang.reflect.Method;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 public final class BundleUtils {
 
@@ -75,6 +78,31 @@ public final class BundleUtils {
             return null;
         }
     }
+    
+    public static <T> Map<String, T> getServices(List<?> serviceReferences, Class<T> serviceClass ) {
+    	
+    	Map<String, T> services = new HashMap<String, T>();
+    	
+        if (BUNDLE == null || SERVICE_REFERENCE_CLASS == null ) {
+            return services;
+        }
+
+        try {
+        	for (Object serviceRef : serviceReferences) {
+        		Object serviceId = serviceRef.getClass().getMethod("getProperty", 
+        				java.lang.String.class).invoke(serviceRef, "osgi.jndi.service.name");
+    	        Method getBundleContext = BUNDLE.getClass().getMethod("getBundleContext");
+    	        Object context = getBundleContext.invoke(BUNDLE);
+    	        Class<?> ctxClass = context.getClass();
+    	        Method getService = ctxClass.getMethod("getService", SERVICE_REFERENCE_CLASS);
+    	        services.put(serviceId.toString(), serviceClass.cast(getService.invoke(context, serviceRef)));
+        	}
+        	return services;
+        } catch (Exception e) {
+            return services;
+        }
+    }
+    
 
     public static boolean inOSGi() {
         return BUNDLE != null;

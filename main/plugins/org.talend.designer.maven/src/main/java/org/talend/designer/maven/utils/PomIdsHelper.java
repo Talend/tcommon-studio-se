@@ -20,6 +20,7 @@ import org.eclipse.jface.preference.IPreferenceStore;
 import org.talend.commons.utils.VersionUtils;
 import org.talend.core.GlobalServiceRegister;
 import org.talend.core.IESBService;
+import org.talend.core.PluginChecker;
 import org.talend.core.model.general.Project;
 import org.talend.core.model.process.JobInfo;
 import org.talend.core.model.properties.Property;
@@ -266,6 +267,18 @@ public class PomIdsHelper {
         return manager.getBoolean(MavenConstants.USE_PROFILE_MODULE);
     }
 
+    public static boolean getIfExcludeDeletedItems() {
+        String projectTechName = ProjectManager.getInstance().getCurrentProject().getTechnicalLabel();
+        ProjectPreferenceManager manager = getPreferenceManager(projectTechName);
+        return manager.getBoolean(MavenConstants.EXCLUDE_DELETED_ITEMS);
+    }
+
+    public static boolean getIfExcludeDeletedItems(Property property) {
+        String projectTechName = ProjectManager.getInstance().getProject(property).getTechnicalLabel();
+        ProjectPreferenceManager manager = getPreferenceManager(projectTechName);
+        return manager.getBoolean(MavenConstants.EXCLUDE_DELETED_ITEMS);
+    }
+
     private static String getGroupId(String projectTechName, String baseName, Property property) {
         if (projectTechName == null) {
             projectTechName = ProjectManager.getInstance().getCurrentProject().getTechnicalLabel();
@@ -329,6 +342,14 @@ public class PomIdsHelper {
             }
             if (preferenceStore.getString(MavenConstants.POM_FILTER) == null) {
                 preferenceStore.setValue(MavenConstants.POM_FILTER, "");
+            }
+
+            if (!preferenceManager.exist()
+                    && StringUtils.isBlank(preferenceStore.getString(MavenConstants.EXCLUDE_DELETED_ITEMS))) {
+                // for new project, set EXCLUDE_DELETED_ITEMS=true as default
+                if (PluginChecker.isTIS()) {
+                    preferenceStore.setValue(MavenConstants.EXCLUDE_DELETED_ITEMS, true);
+                }
             }
             preferenceManager.save();
             preferenceManagers.put(projectTechName, preferenceManager);

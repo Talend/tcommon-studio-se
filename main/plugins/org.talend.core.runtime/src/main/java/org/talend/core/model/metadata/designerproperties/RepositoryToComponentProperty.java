@@ -1490,21 +1490,24 @@ public class RepositoryToComponentProperty {
         }
 
         if (value.equals("USE_SSL") && (EDatabaseTypeName.HIVE.getDisplayName().equals(databaseType)
-                || EDatabaseTypeName.ORACLE_CUSTOM.getDisplayName().equals(databaseType))) {
+                || EDatabaseTypeName.ORACLE_CUSTOM.getDisplayName().equals(databaseType)
+                || EDatabaseTypeName.IMPALA.getDisplayName().equals(databaseType))) {
             String message = connection.getParameters().get(ConnParameterKeys.CONN_PARA_KEY_USE_SSL);
             return Boolean.parseBoolean(message);
         }
 
         if ((value.equals("SSL_TRUST_STORE") || value.equals("SSL_TRUSTSERVER_TRUSTSTORE"))
                 && (EDatabaseTypeName.HIVE.getDisplayName().equals(databaseType)
-                || EDatabaseTypeName.ORACLE_CUSTOM.getDisplayName().equals(databaseType))) {
+                        || EDatabaseTypeName.ORACLE_CUSTOM.getDisplayName().equals(databaseType)
+                        || EDatabaseTypeName.IMPALA.getDisplayName().equals(databaseType))) {
             return getAppropriateValue(connection,
                     connection.getParameters().get(ConnParameterKeys.CONN_PARA_KEY_SSL_TRUST_STORE_PATH));
         }
 
         if ((value.equals("SSL_TRUST_STORE_PASSWORD") || value.equals("SSL_TRUSTSERVER_PASSWORD"))
                 && (EDatabaseTypeName.HIVE.getDisplayName().equals(databaseType)
-                || EDatabaseTypeName.ORACLE_CUSTOM.getDisplayName().equals(databaseType))) {
+                        || EDatabaseTypeName.ORACLE_CUSTOM.getDisplayName().equals(databaseType)
+                        || EDatabaseTypeName.IMPALA.getDisplayName().equals(databaseType))) {
             return getAppropriateValue(connection, connection
                     .getValue(connection.getParameters().get(ConnParameterKeys.CONN_PARA_KEY_SSL_TRUST_STORE_PASSWORD), false));
         }
@@ -1755,8 +1758,18 @@ public class RepositoryToComponentProperty {
         if (StringUtils.equals("MAPPING", value)) {//$NON-NLS-1$
             return connection.getDbmsId();
         }
+        if ("IMPALA_ADDITIONAL_JDBC".equals(value)) { //$NON-NLS-1$
+            String additionJdbc = connection.getParameters().get(ConnParameterKeys.CONN_PARA_KEY_HIVE_ADDITIONAL_JDBC_SETTINGS);
+            if (isContextMode(connection, additionJdbc)) {
+                return additionJdbc;
+            } else {
+                return TalendQuoteUtils.addQuotes(additionJdbc);
+            }
+        }
+        if ("IMPALA_DRIVER".equals(value)) {
+            return connection.getParameters().get(ConnParameterKeys.IMPALA_DRIVER);
+        }
         return null;
-
     }
 
     private static String getAppropriateValue(Connection connection, String rawValue) {

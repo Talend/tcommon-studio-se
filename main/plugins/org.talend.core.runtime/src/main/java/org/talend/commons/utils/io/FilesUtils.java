@@ -42,6 +42,7 @@ import java.util.Enumeration;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 
@@ -50,11 +51,16 @@ import org.eclipse.core.resources.IContainer;
 import org.eclipse.core.resources.IFile;
 import org.eclipse.core.resources.IFolder;
 import org.eclipse.core.resources.IResource;
+import org.eclipse.core.resources.IWorkspace;
+import org.eclipse.core.resources.IWorkspaceRunnable;
+import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.FileLocator;
 import org.eclipse.core.runtime.IPath;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.OperationCanceledException;
+import org.eclipse.core.runtime.jobs.ISchedulingRule;
+import org.eclipse.core.runtime.jobs.Job;
 import org.osgi.framework.Bundle;
 import org.talend.commons.exception.CommonExceptionHandler;
 import org.talend.commons.exception.ExceptionHandler;
@@ -1170,6 +1176,35 @@ public class FilesUtils {
             }
         } catch (Exception e) {
             ExceptionHandler.process(e);
+        }
+    }
+
+    public static void executeFolderAction(IProgressMonitor monitor, IResource parentFolder, IWorkspaceRunnable run)
+            throws CoreException {
+        if (Job.getJobManager().currentRule() == null) {
+            IWorkspace workspace = ResourcesPlugin.getWorkspace();
+            ISchedulingRule defaultRule = workspace.getRuleFactory().modifyRule(parentFolder);
+            ISchedulingRule noBlockRule = new ISchedulingRule() {
+
+                @Override
+                public boolean isConflicting(ISchedulingRule rule) {
+                    return this.contains(rule);
+                }
+
+                @Override
+                public boolean contains(ISchedulingRule rule) {
+                    if (this.equals(rule)) {
+                        return true;
+                    }
+                    if (defaultRule.contains(rule)) {
+                        return true;
+                    }
+                    return false;
+                }
+            };
+            workspace.run(run, noBlockRule, IWorkspace.AVOID_UPDATE, monitor);
+        } else {
+            run.run(monitor);
         }
     }
 

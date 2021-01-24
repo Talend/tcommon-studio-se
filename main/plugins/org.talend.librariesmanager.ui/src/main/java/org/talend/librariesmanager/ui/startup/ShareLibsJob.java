@@ -22,10 +22,6 @@ import org.eclipse.core.runtime.jobs.Job;
  */
 public class ShareLibsJob extends Job {
 
-    private final String TYPE_NEXUS = "nexus";
-
-    private final String TYPE_SVN = "svn";
-
     /**
      * DOC Talend ShareLibsJob constructor comment.
      *

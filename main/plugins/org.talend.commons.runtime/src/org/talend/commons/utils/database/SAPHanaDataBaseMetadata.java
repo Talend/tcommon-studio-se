@@ -148,7 +148,7 @@ public class SAPHanaDataBaseMetadata extends FakeDatabaseMetaData {
         }
 
         // For Calculation View
-        if (ArrayUtils.contains(neededTypes, NEEDED_TYPES[3])) {
+        if (ArrayUtils.contains(neededTypes, NEEDED_TYPES[3]) && "_SYS_BIC".equalsIgnoreCase(schemaPattern)) { //$NON-NLS-1$
             // check if the type is contained is in the types needed.
             String sqlcv = "SELECT OBJECT_NAME,PACKAGE_ID FROM _SYS_REPO.ACTIVE_OBJECT WHERE OBJECT_SUFFIX = 'calculationview'"; //$NON-NLS-1$
             if (tableNamePattern != null && !tableNamePattern.equals("%")) { //$NON-NLS-1$
@@ -171,7 +171,7 @@ public class SAPHanaDataBaseMetadata extends FakeDatabaseMetaData {
                         packageId = packageId.trim();
                     }
                     String name = packageId + "/" + objectName; //$NON-NLS-1$
-                    String[] r = new String[] { "", "_SYS_BIC", name, NEEDED_TYPES[3], "", packageId }; //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+                    String[] r = new String[] { "", schemaPattern, name, NEEDED_TYPES[3], "", packageId }; //$NON-NLS-1$ //$NON-NLS-2$
                     listcv.add(r);
                 }
             } catch (SQLException e) {
@@ -355,4 +355,16 @@ public class SAPHanaDataBaseMetadata extends FakeDatabaseMetaData {
         tableResultSet.setData(list);
         return tableResultSet;
     }
+
+    @Override
+    public String getDatabaseProductName() throws SQLException {
+        return this.connection.getMetaData().getDatabaseProductName();
+
+    }
+
+    @Override
+    public String getDatabaseProductVersion() throws SQLException {
+        return this.connection.getMetaData().getDatabaseProductVersion();
+    }
+
 }

@@ -50,7 +50,8 @@ public class PluginOptionalMissingJarsExtraUpdatesFactory extends AbstractExtraU
     @Override
     public void retrieveUninstalledExtraFeatures(IProgressMonitor monitor, Set<ExtraFeature> uninstalledExtraFeatures)
             throws Exception {
-        if (!NetworkUtil.isNetworkValid(TalendLibsServerManager.getInstance().getTalentArtifactServer().getServer())) {
+        if (!NetworkUtil.isNetworkValid(TalendLibsServerManager.getInstance().getTalentArtifactServer().getServer(),
+                NetworkUtil.getNexusTimeout())) {
     		return;
     	}
     	
@@ -96,5 +97,9 @@ public class PluginOptionalMissingJarsExtraUpdatesFactory extends AbstractExtraU
                                 .getString("missing.optional.third.parties.libs.feature.description"), false/* mustInstall */)); //$NON-NLS-1$
             }
         }// else nothing to install so nothing to install ;)
+    }
+    
+    public boolean isSupportSharedMode() {
+        return true;
     }
 }

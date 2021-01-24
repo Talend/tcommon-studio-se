@@ -28,6 +28,7 @@ import java.util.Iterator;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Collectors;
 
@@ -89,6 +90,7 @@ import org.talend.commons.utils.data.container.RootContainer;
 import org.talend.commons.utils.io.FilesUtils;
 import org.talend.commons.utils.workbench.resources.ResourceUtils;
 import org.talend.core.GlobalServiceRegister;
+import org.talend.core.PluginChecker;
 import org.talend.core.context.RepositoryContext;
 import org.talend.core.model.context.link.ContextLinkService;
 import org.talend.core.model.general.Project;
@@ -156,6 +158,7 @@ import org.talend.core.repository.model.FolderHelper;
 import org.talend.core.repository.model.ILocalRepositoryFactory;
 import org.talend.core.repository.model.ILockBean;
 import org.talend.core.repository.model.ProjectRepositoryNode;
+import org.talend.core.repository.model.PropertiesProjectResourceImpl;
 import org.talend.core.repository.model.ProxyRepositoryFactory;
 import org.talend.core.repository.model.VersionList;
 import org.talend.core.repository.recyclebin.RecycleBinManager;
@@ -167,9 +170,13 @@ import org.talend.core.repository.utils.RoutineUtils;
 import org.talend.core.repository.utils.TDQServiceRegister;
 import org.talend.core.repository.utils.URIHelper;
 import org.talend.core.repository.utils.XmiResourceManager;
+import org.talend.core.runtime.constants.UpdateConstants;
 import org.talend.core.runtime.maven.MavenConstants;
 import org.talend.core.runtime.projectsetting.ProjectPreferenceManager;
+import org.talend.core.ui.IInstalledPatchService;
 import org.talend.core.ui.branding.IBrandingService;
+import org.talend.core.utils.DialogUtils;
+import org.talend.core.utils.ELoginInfoCase;
 import org.talend.cwm.helper.ConnectionHelper;
 import org.talend.cwm.helper.ResourceHelper;
 import org.talend.cwm.helper.SubItemHelper;
@@ -906,6 +913,14 @@ public class LocalRepositoryFactory extends AbstractEMFRepositoryFactory impleme
                 user.getProjectAuthorization().clear();
             }
         }
+
+        /**
+         * Avoid conflicts between different timezone
+         */
+        Optional.ofNullable(project).map(p -> p.getEmfProject()).ifPresent(p -> {
+            p.setCreationDate(null);
+            p.setDeleteDate(null);
+        });
 
         xmiResourceManager.saveResource(projectResource);
         project.getEmfProject().getMigrationTask().addAll(realMigrationTaskList);
@@ -2053,6 +2068,9 @@ public class LocalRepositoryFactory extends AbstractEMFRepositoryFactory impleme
             if (re == null) {
                 continue;
             }
+            if (re instanceof PropertiesProjectResourceImpl) {
+                continue;
+            }
             EcoreUtil.resolveAll(re);
             needSaves.add(re);
         }
@@ -2503,6 +2521,11 @@ public class LocalRepositoryFactory extends AbstractEMFRepositoryFactory impleme
 
     @Override
     public void save(Project project, Item item) throws PersistenceException {
+    	save(project, item, false);
+    }
+
+    	@Override
+    public void save(Project project, Item item, boolean isMigrationTask) throws PersistenceException {
 
         ResourceSet resourceSet = null;
         Resource resource = item.eResource();
@@ -2665,7 +2688,9 @@ public class LocalRepositoryFactory extends AbstractEMFRepositoryFactory impleme
             }
             this.copyScreenshotFlag = false;
         }
-        saveContextLinkInfo(item);
+        if (!isMigrationTask) {
+        	saveContextLinkInfo(item);
+        }
     }
 
     private void saveContextLinkInfo(Item item) throws PersistenceException {
@@ -3069,8 +3094,8 @@ public class LocalRepositoryFactory extends AbstractEMFRepositoryFactory impleme
         xmiResourceManager.saveResource(screenshotsResource);
         xmiResourceManager.saveResource(itemResource);
         xmiResourceManager.saveResource(propertyResource);
-        saveContextLinkInfo(item);
         if (isImportItem.length == 0 || !isImportItem[0]) {
+            saveContextLinkInfo(item);
             saveProject(project);
         }
 
@@ -3151,7 +3176,7 @@ public class LocalRepositoryFactory extends AbstractEMFRepositoryFactory impleme
     public void createUser(Project project) throws PersistenceException {
         Resource projectResource = project.getEmfProject().eResource();
         projectResource.getContents().add(getRepositoryContext().getUser());
-        xmiResourceManager.saveResource(projectResource);
+        saveProject(project);
     }
 
     @Override
@@ -3330,7 +3355,69 @@ public class LocalRepositoryFactory extends AbstractEMFRepositoryFactory impleme
             if (!version.equals(project.getEmfProject().getProductVersion())) {
                 updatePreferenceProjectVersion(project);
             }
+            Project localProject = getRepositoryContext().getProject();
+
+            checkProjectVersion(localProject);
         }
+    }
+
+    protected void checkProjectVersion(Project localProject) throws PersistenceException {
+        ProjectPreferenceManager prefManager = new ProjectPreferenceManager(localProject, PluginChecker.CORE_TIS_PLUGIN_ID,
+                false);
+        String remoteLastPatchName = prefManager.getValue(UpdateConstants.KEY_PREF_LAST_PATCH);
+        String toOpenProjectVersion;
+        if (StringUtils.isEmpty(remoteLastPatchName)) {
+            if (localProject.getEmfProject().getProductVersion() == null) {
+                return;
+            }
+            toOpenProjectVersion = VersionUtils
+                    .getProductVersionWithoutBranding(localProject.getEmfProject().getProductVersion());
+        } else {
+            toOpenProjectVersion = remoteLastPatchName;
+            String simplifiedPatchName = VersionUtils.getSimplifiedPatchName(remoteLastPatchName);
+            if (StringUtils.isNotEmpty(simplifiedPatchName)) {
+                toOpenProjectVersion = simplifiedPatchName;
+            }
+        }
+        String productVersion = VersionUtils.getInternalVersion();
+        String productLastestPatchVersion = null;
+        if (GlobalServiceRegister.getDefault().isServiceRegistered(IInstalledPatchService.class)) {
+            IInstalledPatchService pachService = (IInstalledPatchService) GlobalServiceRegister.getDefault()
+                    .getService(IInstalledPatchService.class);
+            if (pachService != null) {
+                productLastestPatchVersion = pachService.getLatestInstalledVersion(true);
+            }
+        }
+        if (StringUtils.isNotEmpty(productLastestPatchVersion)) {
+            productVersion = productLastestPatchVersion;
+        }
+        if (VersionUtils.isInvalidProductVersion(localProject.getEmfProject().getProductVersion())) {
+            String[] contents;
+            if (StringUtils.isEmpty(remoteLastPatchName)) {
+                contents = new String[] {
+                        Messages.getString("LocalRepositoryFactory.productionLower01", toOpenProjectVersion, productVersion) };
+            } else {
+                contents = new String[] {
+                        Messages.getString("LocalRepositoryFactory.productionLower02", toOpenProjectVersion, productVersion) };
+            }
+            ELoginInfoCase.STUDIO_LOWER_THAN_PROJECT.setContents(contents);
+            DialogUtils.setWarningInfo(ELoginInfoCase.STUDIO_LOWER_THAN_PROJECT);
+        }
+        if (VersionUtils.productVersionIsNewer(localProject.getEmfProject().getProductVersion())) {
+            String[] contents;
+            if (StringUtils.isEmpty(remoteLastPatchName)) {
+                contents = new String[] {
+                        Messages.getString("LocalRepositoryFactory.productionNewer01", toOpenProjectVersion, productVersion) };
+            } else {
+                contents = new String[] {
+                        Messages.getString("LocalRepositoryFactory.productionNewer02", toOpenProjectVersion, productVersion) };
+            }
+
+            ELoginInfoCase.STUDIO_HIGHER_THAN_PROJECT.setContents(contents);
+            DialogUtils.setWarningInfo(ELoginInfoCase.STUDIO_HIGHER_THAN_PROJECT);// $NON-NLS-1$
+        }
+        DialogUtils.syncOpenWarningDialog(Messages.getString("LocalRepositoryFactory.logonWarningTitle"));//$NON-NLS-1$
+
     }
 
     protected void updatePreferenceProjectVersion(Project project) {

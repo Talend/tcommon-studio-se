@@ -37,13 +37,13 @@ import org.talend.commons.exception.ExceptionHandler;
 import org.talend.commons.utils.data.list.ListUtils;
 import org.talend.commons.utils.database.AS400DatabaseMetaData;
 import org.talend.commons.utils.database.DB2ForZosDataBaseMetadata;
+import org.talend.commons.utils.database.SAPHanaDataBaseMetadata;
 import org.talend.commons.utils.database.Sybase16SADatabaseMetaData;
 import org.talend.commons.utils.database.SybaseDatabaseMetaData;
 import org.talend.commons.utils.database.TeradataDataBaseMetadata;
 import org.talend.core.ICoreService;
 import org.talend.core.database.EDatabase4DriverClassName;
 import org.talend.core.database.EDatabaseTypeName;
-import org.talend.core.database.conn.version.EDatabaseVersion4Drivers;
 import org.talend.core.model.metadata.IMetadataConnection;
 import org.talend.core.model.metadata.MappingTypeRetriever;
 import org.talend.core.model.metadata.MetadataTalendType;
@@ -60,6 +60,8 @@ import org.talend.core.model.metadata.builder.database.JavaSqlFactory;
 import org.talend.core.model.metadata.builder.database.PluginConstant;
 import org.talend.core.model.metadata.builder.database.TableInfoParameters;
 import org.talend.core.model.metadata.builder.database.manager.ExtractManager;
+import org.talend.core.model.metadata.types.JavaTypesManager;
+import org.talend.core.model.metadata.types.PerlTypesManager;
 import org.talend.core.runtime.CoreRuntimePlugin;
 import org.talend.core.service.TalendCWMService;
 import org.talend.core.utils.TalendQuoteUtils;
@@ -673,8 +675,14 @@ public class DBConnectionFillerImpl extends MetadataFillerImpl<DatabaseConnectio
         String catalogName = getDatabaseName(dbConn);
 
         if (StringUtils.isEmpty(catalogName)) {
+            String url = null;
+            if (metaConnection != null) {
+                url = metaConnection.getUrl();
+            } else {
+                url = dbConn.getURL();
+            }
             // TDQ-16020 msjian: should get the correct catalog name
-            catalogName = getPostgresqlCatalogFromUrl(metaConnection.getUrl(), dbConn.getUsername());
+            catalogName = getPostgresqlCatalogFromUrl(url, dbConn.getUsername());
         }
 
         if (StringUtils.isNotEmpty(catalogName)) {
@@ -1426,6 +1434,14 @@ public class DBConnectionFillerImpl extends MetadataFillerImpl<DatabaseConnectio
             valueOfInt = resultSet.getInt(nameOfInt);
         } catch (SQLException e) {
             log.error(e, e);
+        } catch (NumberFormatException e) {
+            try {
+                // SAPHanaDataBaseMetadata getcolumns will have two different type here string or int
+                String value = resultSet.getString(nameOfInt);
+                valueOfInt = Integer.parseInt(value == null ? "0" : value);
+            } catch (SQLException e1) {
+                log.error(e1, e1);
+            }
         }
         return valueOfInt;
     }
@@ -1613,6 +1629,15 @@ public class DBConnectionFillerImpl extends MetadataFillerImpl<DatabaseConnectio
                                     ExtractMetaDataUtils.getInstance().getIntMetaDataInfo(columns, "DECIMAL_DIGITS"));
                             column.setTalendType(talendType);
                             column.setSourceType(typeName);
+                            if (StringUtils.isBlank(column.getPattern())) {
+                                if (JavaTypesManager.DATE.getId().equals(talendType)
+                                        || PerlTypesManager.DATE.equals(talendType)) {
+                                    String pattern1 = mappingTypeRetriever.getDefaultPattern(dbmsId, typeName);
+                                    column.setPattern(
+                                            StringUtils.isNotBlank(pattern1) ? TalendQuoteUtils.addQuotes(pattern1)
+                                                    : TalendQuoteUtils.addQuotes("dd-MM-yyyy"));//$NON-NLS-1$
+                                }
+                            }
                         }
                     }
                     try {
@@ -1718,7 +1743,8 @@ public class DBConnectionFillerImpl extends MetadataFillerImpl<DatabaseConnectio
                             typeName = "TIMESTAMP"; //$NON-NLS-1$
                         }
                         typeName = MetadataToolHelper.validateValueForDBType(typeName);
-                        if (dbJDBCMetadata instanceof DB2ForZosDataBaseMetadata) {
+                        if (dbJDBCMetadata instanceof DB2ForZosDataBaseMetadata
+                                || dbJDBCMetadata instanceof SAPHanaDataBaseMetadata) {
                             // MOD klliu bug TDQ-1164 2011-09-26
                             dataType = Java2SqlType.getJavaTypeBySqlType(typeName);
                             decimalDigits = getIntFromResultSet(columns, GetColumn.DECIMAL_DIGITS.name());
@@ -1801,6 +1827,16 @@ public class DBConnectionFillerImpl extends MetadataFillerImpl<DatabaseConnectio
                         column.setTalendType(talendType);
                         String defaultSelectedDbType = mappingTypeRetriever.getDefaultSelectedDbType(talendType);
                         column.setSourceType(defaultSelectedDbType);
+                        if (StringUtils.isBlank(column.getPattern())) {
+                            if (JavaTypesManager.DATE.getId().equals(talendType)
+                                    || PerlTypesManager.DATE.equals(talendType)) {
+                                String pattern1 = mappingTypeRetriever.getDefaultPattern(dbmsId, defaultSelectedDbType);
+                                column.setPattern(
+                                        StringUtils.isNotBlank(pattern1) ? TalendQuoteUtils.addQuotes(pattern1)
+                                                : TalendQuoteUtils.addQuotes("dd-MM-yyyy"));//$NON-NLS-1$
+                            }
+                        }
+                       
                     }
 
                     // Comment

@@ -97,4 +97,7 @@ public class ExtendedTextCellEditorWithProposal extends ExtendedTextCellEditor i
         super.fireCancelEditor();
     }
 
+    public CommonTextCellEditorWithProposal getCommonTextEditor() {
+        return commonTextEditor;
+    }
 }

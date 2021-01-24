@@ -18,6 +18,7 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
+import org.apache.commons.lang.StringUtils;
 import org.eclipse.emf.common.util.EList;
 import org.eclipse.jface.dialogs.MessageDialog;
 import org.eclipse.swt.widgets.Display;
@@ -26,9 +27,11 @@ import org.talend.components.api.properties.ComponentProperties;
 import org.talend.core.GlobalServiceRegister;
 import org.talend.core.database.EDatabase4DriverClassName;
 import org.talend.core.database.EDatabaseTypeName;
+import org.talend.core.database.conn.ConnParameterKeys;
 import org.talend.core.database.conn.DatabaseConnStrUtil;
 import org.talend.core.database.conn.version.EDatabaseVersion4Drivers;
 import org.talend.core.model.components.EComponentType;
+import org.talend.core.model.metadata.Dbms;
 import org.talend.core.model.metadata.IMetadataTable;
 import org.talend.core.model.metadata.MetadataTalendType;
 import org.talend.core.model.metadata.builder.ConvertionHelper;
@@ -70,6 +73,7 @@ import org.talend.core.model.utils.ContextParameterUtils;
 import org.talend.core.model.utils.IDragAndDropServiceHandler;
 import org.talend.core.runtime.i18n.Messages;
 import org.talend.core.runtime.services.IGenericDBService;
+import org.talend.core.runtime.services.IGenericWizardService;
 import org.talend.core.utils.TalendQuoteUtils;
 import org.talend.cwm.helper.ConnectionHelper;
 import org.talend.cwm.helper.PackageHelper;
@@ -152,6 +156,17 @@ public class ComponentToRepositoryProperty {
                     conn.setDbmsId(mapping);
                 }
             }
+            // set default mapping for additional jdbc
+            if (GlobalServiceRegister.getDefault().isServiceRegistered(IGenericWizardService.class)) {
+                IGenericWizardService service = GlobalServiceRegister.getDefault().getService(IGenericWizardService.class);
+                if (service != null) {
+                    Dbms dbms4AdditionalJDBC = service.getDbms4AdditionalJDBC(conn.getProductId());
+                    if (dbms4AdditionalJDBC != null) {
+                        conn.setDbmsId(dbms4AdditionalJDBC.getId());
+                    }
+                }
+            }
+
         }
         for (IElementParameter param : node.getElementParameters()) {
             String repositoryValue = param.getRepositoryValue();
@@ -365,6 +380,20 @@ public class ComponentToRepositoryProperty {
                 if (para.getRepositoryValue().endsWith(EDatabaseTypeName.GENERAL_JDBC.getProduct())) {
                     connection.setDatabaseType(EDatabaseTypeName.GENERAL_JDBC.getProduct());
                     connection.setProductId(EDatabaseTypeName.GENERAL_JDBC.getProduct());
+
+                    // additional JDBC e.g. Delta Lake
+                    if (GlobalServiceRegister.getDefault().isServiceRegistered(IGenericWizardService.class)) {
+                        IGenericWizardService service = GlobalServiceRegister.getDefault()
+                                .getService(IGenericWizardService.class);
+                        if (service != null) {
+                            String database = service.getDatabseNameByNode(node);
+                            if (StringUtils.isNotBlank(database) && service.getIfAdditionalJDBCDBType(database)) {
+                                connection.setProductId(database);
+                            }
+                        }
+
+                    }
+
                 }
                 // vertica output component have no TYPE ElementParameter .
                 if (para.getRepositoryValue().endsWith(EDatabaseTypeName.VERTICA.getProduct())) {
@@ -665,6 +694,18 @@ public class ComponentToRepositoryProperty {
             String value = getParameterValue(connection, node, param);
             if (value != null) {
                 connection.setServerName(value);
+            }
+        }
+        if ("IMPALA_DRIVER".equals(param.getRepositoryValue())) {
+            String value = getParameterValue(connection, node, param);
+            if (value != null) {
+                connection.getParameters().put(ConnParameterKeys.IMPALA_DRIVER, value);
+            }
+        }
+        if ("IMPALA_ADDITIONAL_JDBC".equals(param.getRepositoryValue())) {
+            String value = getParameterValue(connection, node, param);
+            if (value != null) {
+                connection.getParameters().put(ConnParameterKeys.CONN_PARA_KEY_HIVE_ADDITIONAL_JDBC_SETTINGS, value);
             }
         }
 

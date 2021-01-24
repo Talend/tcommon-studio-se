@@ -240,6 +240,11 @@ public class ContextParameterJavaTypeManager {
         if (javaType == null) {
             return null;
         }
+        
+        if(javaType.equals(JavaTypesManager.PASSWORD)) {
+        	return "Password";
+        }
+        
         Class primitiveClass = javaType.getPrimitiveClass();
         Class nullableClass = javaType.getNullableClass();
         if (nullable) {

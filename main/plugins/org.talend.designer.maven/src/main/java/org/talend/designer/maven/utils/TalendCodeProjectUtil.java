@@ -96,10 +96,14 @@ public final class TalendCodeProjectUtil {
                 return true;
             }
 
-            // because some cases, the project is not opened.
-            if (!codeProject.isOpen()) {
-                // if not opened, will have exception when check nature or such
-                codeProject.open(monitor);
+            try {
+                // because some cases, the project is not opened.
+                if (!codeProject.isOpen()) {
+                    // if not opened, will have exception when check nature or such
+                    codeProject.open(monitor);
+                }
+            } catch (Exception e) {
+                return true;
             }
 
             codeProject.refreshLocal(IResource.DEPTH_ONE, monitor);

@@ -81,6 +81,11 @@ public final class ComponentUtilities {
 
     public static void setNodeValue(NodeType node, String name, String value) {
         ElementParameterType property = getNodeProperty(node, name);
+        
+        if (property == null) {
+            throw new IllegalArgumentException( "The component node "+node.getComponentName()+" doesn't have the property "+name );
+        }
+        
         property.setValue(value);
     }
 
@@ -113,6 +118,12 @@ public final class ComponentUtilities {
             if (value != null) {
                 String replaceAll = value.replaceAll(oldName2, newName);
                 t.setValue(replaceAll);
+                if (!"UNIQUE_NAME".equals(t.getName())) {
+                    if (replaceAll.contains(oldName)) {
+                        replaceAll = replaceAll.replaceAll(oldName, newName);
+                        t.setValue(replaceAll);
+                    }
+                }
             }
         }
     }

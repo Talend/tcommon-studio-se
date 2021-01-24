@@ -320,7 +320,8 @@ public class JobContextManager implements IContextManager {
                 contextParam = new JobContextParameter();
                 contextParam.setContext(context);
                 contextParam.setName(contextParamType.getName());
-                contextParam.setPrompt(contextParamType.getPrompt());
+                contextParam.setPrompt(
+                        contextParamType.getPrompt() == null ? (contextParamType.getName() + "?") : contextParamType.getPrompt());
                 contextParam.setInternalId(contextParamType.getInternalId());
                 originalParamerters.add(contextParam.getName());
                 boolean exists = true;
@@ -341,7 +342,8 @@ public class JobContextManager implements IContextManager {
 
                 String repositoryContextId = contextParamType.getRepositoryContextId();
                 String source = IContextParameter.BUILT_IN;
-                if (repositoryContextId != null && !"".equals(repositoryContextId)) { //$NON-NLS-1$
+                if (repositoryContextId != null && !"".equals(repositoryContextId) //$NON-NLS-1$
+                        && !IContextParameter.BUILT_IN.equals(repositoryContextId)) {
                     Item item = ContextUtils.getContextItemById(contextItemList, repositoryContextId);
                     if (item == null) {
                         item = ContextUtils.getRepositoryContextItemById(repositoryContextId);
@@ -585,15 +587,16 @@ public class JobContextManager implements IContextManager {
                                 contextParamType.setRepositoryContextId(contextId);
                             }
                         }
-                    } else if (useInternalId) {
+                    } else {
+                        contextParamType.setRepositoryContextId(contextParam.getSource());
+                    }
+                    if (useInternalId) {
                         String internalId = contextParam.getInternalId();
                         if (StringUtils.isEmpty(internalId)) {
                             internalId = EcoreUtil.generateUUID();
-                            contextParamType.setInternalId(internalId);
                             contextParam.setInternalId(internalId);
-                        } else {
-                            contextParamType.setInternalId(internalId);
                         }
+                        contextParamType.setInternalId(internalId);
                     }
                 }
                 contextTypeParamList.clear(); // remove old
