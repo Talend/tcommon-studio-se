@@ -23,6 +23,7 @@ import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
+import java.util.stream.Collectors;
 import java.util.zip.ZipException;
 
 import org.apache.commons.lang.StringUtils;
@@ -79,6 +80,7 @@ import org.talend.core.PluginChecker;
 import org.talend.core.model.properties.Item;
 import org.talend.core.model.repository.ERepositoryObjectType;
 import org.talend.core.model.repository.RepositoryViewObject;
+import org.talend.core.model.routines.CodesJarInfo;
 import org.talend.core.model.utils.TalendPropertiesUtil;
 import org.talend.core.repository.model.ProxyRepositoryFactory;
 import org.talend.core.service.IExchangeService;
@@ -1071,8 +1073,19 @@ public class ImportItemsWizardPage extends WizardPage {
 
                     MavenPomSynchronizer.addChangeLibrariesListener();
 
-                    new AggregatorPomsHelper().updateCodeProjects(monitor);
-                    CodesJarM2CacheManager.updateCodesJarProject(monitor);
+                    List<ImportItem> importedItems = ImportCacheHelper.getInstance().getImportedItemRecords();
+                    boolean needUpdateCode = importedItems.stream().anyMatch(item -> ERepositoryObjectType.getAllTypesOfCodes()
+                            .contains(ERepositoryObjectType.getItemType(item.getItem())));
+                    new AggregatorPomsHelper().updateCodeProjects(monitor, needUpdateCode, needUpdateCode);
+                    Set<CodesJarInfo> codesJarsToUpdate = importedItems.stream()
+                            .filter(item -> ERepositoryObjectType.getAllTypesOfCodesJar()
+                                    .contains(ERepositoryObjectType.getItemType(item.getItem())))
+                            .map(item -> CodesJarInfo.create(item.getProperty())).collect(Collectors.toSet());
+                    if (codesJarsToUpdate.isEmpty()) {
+                        CodesJarM2CacheManager.updateCodesJarProject(monitor, false, true);
+                    } else {
+                        CodesJarM2CacheManager.updateCodesJarProject(monitor, codesJarsToUpdate, true, true);
+                    }
                 }
             };
 

@@ -25,6 +25,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.regex.Pattern;
+import java.util.stream.Collectors;
 
 import org.apache.log4j.Priority;
 import org.eclipse.core.resources.IWorkspace;
@@ -63,6 +64,7 @@ import org.talend.core.model.relationship.RelationshipItemBuilder;
 import org.talend.core.model.repository.DynaEnum;
 import org.talend.core.model.repository.ERepositoryObjectType;
 import org.talend.core.model.repository.IRepositoryViewObject;
+import org.talend.core.model.routines.CodesJarInfo;
 import org.talend.core.repository.model.ProxyRepositoryFactory;
 import org.talend.core.runtime.CoreRuntimePlugin;
 import org.talend.core.ui.IJobletProviderService;
@@ -1002,9 +1004,20 @@ public class ImportExportHandlersManager {
             ProxyRepositoryFactory.getInstance().executeRepositoryWorkUnit(repositoryWorkUnit);
 
             IProgressMonitor monitor = new NullProgressMonitor();
-            new AggregatorPomsHelper().updateCodeProjects(monitor);
-            CodesJarM2CacheManager.updateCodesJarProject(monitor);
-            
+            List<ImportItem> importedItems = ImportCacheHelper.getInstance().getImportedItemRecords();
+            boolean needUpdateCode = importedItems.stream().anyMatch(item -> ERepositoryObjectType.getAllTypesOfCodes()
+                    .contains(ERepositoryObjectType.getItemType(item.getItem())));
+            new AggregatorPomsHelper().updateCodeProjects(monitor, needUpdateCode, needUpdateCode);
+            Set<CodesJarInfo> codesJarsToUpdate = importedItems.stream()
+                    .filter(item -> ERepositoryObjectType.getAllTypesOfCodesJar()
+                            .contains(ERepositoryObjectType.getItemType(item.getItem())))
+                    .map(item -> CodesJarInfo.create(item.getProperty())).collect(Collectors.toSet());
+            if (codesJarsToUpdate.isEmpty()) {
+                CodesJarM2CacheManager.updateCodesJarProject(monitor, false, true);
+            } else {
+                CodesJarM2CacheManager.updateCodesJarProject(monitor, codesJarsToUpdate, true, true);
+            }
+
             progressMonitor.done();
 
 
