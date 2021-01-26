@@ -28,6 +28,7 @@ public enum TableType {
     GLOBAL_TEMPORARY,
     LOCAL_TEMPORARY,
     ALIAS,
+    CALCULATION_VIEW,
     SYNONYM;
 
     @Override
@@ -39,6 +40,8 @@ public enum TableType {
             return "GLOBAL TEMPORARY";
         case LOCAL_TEMPORARY:
             return "LOCAL TEMPORARY";
+        case CALCULATION_VIEW:
+            return "CALCULATION VIEW";
         default:
             return this.name();
         }

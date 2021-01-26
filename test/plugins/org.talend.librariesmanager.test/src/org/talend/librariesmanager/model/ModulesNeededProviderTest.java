@@ -82,10 +82,11 @@ public class ModulesNeededProviderTest {
         int originalAllSize = ModulesNeededProvider.getAllManagedModules().size();
 
         ModulesNeededProvider.updateModulesNeededForRoutine(routineItem);
-        // add 3 modules to needed list, but one of them is require false
-        Assert.assertEquals(ModulesNeededProvider.getModulesNeeded().size(), originalNeededSize + 2);
+        // add 3 modules to needed list, even one of them is require false but still need to +3
+        // change logic because of https://jira.talendforge.org/browse/TUP-29826
+        Assert.assertEquals(ModulesNeededProvider.getModulesNeeded().size(), originalNeededSize + 3);
         // add one + change one in the all list
-        Assert.assertEquals(ModulesNeededProvider.getAllManagedModules().size(), originalAllSize + 1);
+        Assert.assertEquals(ModulesNeededProvider.getAllManagedModules().size(), originalAllSize + 2);
 
         List<ModuleNeeded> module1 = ModulesNeededProvider.getModulesNeededForName(jarName1);
         List<ModuleNeeded> module2 = ModulesNeededProvider.getModulesNeededForName(jarName2);

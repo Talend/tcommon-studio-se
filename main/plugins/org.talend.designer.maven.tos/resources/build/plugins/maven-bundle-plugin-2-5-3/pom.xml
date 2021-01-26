@@ -26,6 +26,10 @@
      		 <groupId>com.google.guava</groupId>
      		 <artifactId>guava</artifactId>
     		</exclusion>
+    		<exclusion>
+              <groupId>org.apache.maven.shared</groupId>
+              <artifactId>maven-shared-utils</artifactId>
+            </exclusion>
    			</exclusions>
 		</dependency>
 	</dependencies>

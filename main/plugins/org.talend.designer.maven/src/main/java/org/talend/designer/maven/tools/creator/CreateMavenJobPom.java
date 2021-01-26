@@ -655,7 +655,8 @@ public class CreateMavenJobPom extends AbstractMavenProcessorPom {
 
         // libraries of talend/3rd party
         Set<Dependency> parentJobDependencies = processor.getNeededModules(TalendProcessOptionConstants.MODULES_EXCLUDE_SHADED).stream()
-                .filter(m -> !m.isExcluded()).map(m -> createDenpendency(m, false)).collect(Collectors.toSet());
+                .filter(m -> !m.isExcluded()).map(m -> createDenpendency(m, false))
+                .collect(Collectors.toSet());
         dependencies.addAll(parentJobDependencies);
 
         // missing modules from the job generation of children
@@ -740,6 +741,7 @@ public class CreateMavenJobPom extends AbstractMavenProcessorPom {
             ExceptionHandler.process(e);
         }
     }
+
 
     // remove duplicate job dependencies and only keep the latest one
     // keep high priority dependencies if set by tLibraryLoad

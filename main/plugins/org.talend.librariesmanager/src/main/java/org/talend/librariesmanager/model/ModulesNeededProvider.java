@@ -717,8 +717,9 @@ public class ModulesNeededProvider {
                         isRequired);
                 toAdd.setMavenUri(currentImport.getMVN());
                 if (!isRequired) {
-                    if ("BeanItem".equals(routine.eClass().getName()) || "RoutineItem".equals(routine.eClass().getName())) {
-                        toAdd.getExtraAttributes().put("IS_OSGI_EXCLUDED", Boolean.TRUE);
+                    toAdd.getExtraAttributes().put("IS_OSGI_EXCLUDED", Boolean.TRUE);
+                    if ("RoutineItem".equals(routine.eClass().getName())) {
+                        toAdd.setExcluded(true);
                     }
                 }
                 // toAdd.setStatus(ELibraryInstallStatus.INSTALLED);
@@ -1159,11 +1160,6 @@ public class ModulesNeededProvider {
     public static void setInstallModuleForRoutineOrBeans() {
         boolean allSet = true;
         for (ModuleNeeded mod : modulesForRountine) {
-            if (ELibraryInstallStatus.INSTALLED != mod.getStatus()) {
-                allSet = false;
-            }
-        }
-        for (ModuleNeeded mod : getModulesNeededForBeans()) {
             if (ELibraryInstallStatus.INSTALLED != mod.getStatus()) {
                 allSet = false;
             }
