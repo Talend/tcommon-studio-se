@@ -93,7 +93,6 @@
 		<module>main/plugins/org.talend.help.external</module>		
 		<module>main/plugins/org.talend.libraries.apache</module>
 		<module>main/plugins/org.talend.libraries.apache.axis2</module>
-		<module>main/plugins/org.talend.libraries.apache.batik</module>
 		<module>main/plugins/org.talend.libraries.apache.cassandra</module>
 		<module>main/plugins/org.talend.libraries.apache.chemistry</module>
 		<module>main/plugins/org.talend.libraries.apache.common</module>
