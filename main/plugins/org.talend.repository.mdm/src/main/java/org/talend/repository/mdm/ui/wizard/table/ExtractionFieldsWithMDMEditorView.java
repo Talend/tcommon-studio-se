@@ -174,7 +174,7 @@ public class ExtractionFieldsWithMDMEditorView extends AbstractDataTableEditorVi
         column.setBeanPropertyAccessors(new IBeanPropertyAccessors<ConceptTarget, String>() {
 
             public String get(ConceptTarget bean) {
-                return bean.getRelativeLoopExpression();
+                return bean != null ? bean.getRelativeLoopExpression() : null;
             }
 
             public void set(ConceptTarget bean, String value) {
@@ -333,6 +333,7 @@ public class ExtractionFieldsWithMDMEditorView extends AbstractDataTableEditorVi
             if (conflictNames.contains(name)) {
                 getTable().getItem(i).setBackground(Display.getDefault().getSystemColor(SWT.COLOR_RED));
             } else {
+                getTable().getItem(i).getText(); // can not display content without it for Big Sur
                 getTable().getItem(i).setBackground(Display.getDefault().getSystemColor(SWT.COLOR_WHITE));
             }
         }

@@ -19,6 +19,7 @@ import java.util.List;
 import java.util.Map;
 
 import org.eclipse.core.runtime.IStatus;
+import org.eclipse.core.runtime.Platform;
 import org.eclipse.emf.common.util.EList;
 import org.eclipse.jface.action.IAction;
 import org.eclipse.jface.action.IMenuListener;
@@ -52,6 +53,7 @@ import org.eclipse.swt.widgets.Text;
 import org.eclipse.swt.widgets.Tree;
 import org.eclipse.swt.widgets.TreeColumn;
 import org.eclipse.swt.widgets.TreeItem;
+import org.talend.commons.ui.runtime.ws.WindowSystem;
 import org.talend.commons.ui.swt.drawing.link.IExtremityLink;
 import org.talend.commons.ui.swt.drawing.link.LinkDescriptor;
 import org.talend.commons.ui.swt.drawing.link.LinksManager;
@@ -194,6 +196,9 @@ public class MDMOutputSchemaForm extends AbstractMDMFileStepForm {
         addSchemaViewer(mainSashFormComposite, 300, 100);
         addXmlFileViewer(mainSashFormComposite, 400, 100);
         mainSashFormComposite.setWeights(new int[] { 40, 60 });
+        if (Platform.OS_MACOSX.equals(Platform.getOS())) {
+            mainSashFormComposite.setSashWidth((mainSashFormComposite.getShell().getBounds().width) / 6);
+        }
 
         linker = new MDMSchema2TreeLinker(mainSashFormComposite);
         linker.setForm(this);
@@ -457,6 +462,7 @@ public class MDMOutputSchemaForm extends AbstractMDMFileStepForm {
             table.setEnabled(false);
         }
         table.setHeaderVisible(true);
+        table.setLinesVisible(true);
         org.eclipse.swt.widgets.TableColumn column = new org.eclipse.swt.widgets.TableColumn(table, SWT.LEFT);
         column.setText(Messages.getString("MDMOutputSchemaForm_schema_list")); //$NON-NLS-1$
         column.setWidth(100);
@@ -500,6 +506,9 @@ public class MDMOutputSchemaForm extends AbstractMDMFileStepForm {
 
                     schemaViewer.setInput(columns);
                     schemaViewer.refresh();
+                    if (WindowSystem.isBigSurOrLater()) {
+                        schemaViewer.getTable().redraw();
+                    }
                     //
                     // EList columnList = ((MetadataTable) getConnection().getTables().get(0)).getColumns();
                     // columnList.clear();

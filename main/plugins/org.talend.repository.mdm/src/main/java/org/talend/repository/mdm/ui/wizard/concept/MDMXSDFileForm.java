@@ -30,6 +30,7 @@ import org.apache.commons.beanutils.BeanUtils;
 import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
 import org.eclipse.core.runtime.IStatus;
+import org.eclipse.core.runtime.Platform;
 import org.eclipse.emf.common.util.EList;
 import org.eclipse.jface.wizard.WizardPage;
 import org.eclipse.swt.SWT;
@@ -224,6 +225,9 @@ public class MDMXSDFileForm extends AbstractMDMFileStepForm {
         this.xmlToSchemaSash = new SashForm(mainComposite, SWT.HORIZONTAL | SWT.SMOOTH);
         xmlToSchemaSash.setLayoutData(new GridData(GridData.FILL_BOTH));
         xmlToSchemaSash.setBackgroundMode(SWT.INHERIT_FORCE);
+        if (Platform.OS_MACOSX.equals(Platform.getOS())) {
+            xmlToSchemaSash.setSashWidth((mainComposite.getShell().getBounds().width) / 6);
+        }
 
         addGroupXmlFileSettings(xmlToSchemaSash, 400, 110);
         addGroupSchemaTarget(xmlToSchemaSash, 300, 110);
