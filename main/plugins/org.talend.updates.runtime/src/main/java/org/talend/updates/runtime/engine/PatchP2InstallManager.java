@@ -125,7 +125,11 @@ public class PatchP2InstallManager {
         }
         provisioningJob.setPhaseSet(talendPhaseSet);
         IStatus status = provisioningJob.run(monitor);
-        log.debug("provisionning status is :" + status);
+        if (status != null && IStatus.ERROR == status.getSeverity()) {
+            log.info("provisionning status is :" + status);
+        } else {
+            log.debug("provisionning status is :" + status);
+        }
         if (status != null) {
             switch (status.getSeverity()) {
             case IStatus.OK:
