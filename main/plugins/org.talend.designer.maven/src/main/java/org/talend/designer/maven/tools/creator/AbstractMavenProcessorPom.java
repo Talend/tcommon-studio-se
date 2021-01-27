@@ -12,6 +12,7 @@
 // ============================================================================
 package org.talend.designer.maven.tools.creator;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -45,6 +46,7 @@ import org.talend.core.model.utils.JavaResourcesHelper;
 import org.talend.core.runtime.maven.MavenArtifact;
 import org.talend.core.runtime.maven.MavenConstants;
 import org.talend.core.runtime.maven.MavenUrlHelper;
+import org.talend.core.runtime.process.LastGenerationInfo;
 import org.talend.core.runtime.process.TalendProcessArgumentConstant;
 import org.talend.core.runtime.projectsetting.IProjectSettingTemplateConstants;
 import org.talend.core.runtime.repository.build.IMavenPomCreator;
@@ -52,6 +54,7 @@ import org.talend.core.ui.ITestContainerProviderService;
 import org.talend.designer.maven.model.TalendMavenConstants;
 import org.talend.designer.maven.template.ETalendMavenVariables;
 import org.talend.designer.maven.tools.ProcessorDependenciesManager;
+import org.talend.designer.maven.utils.JobUtils;
 import org.talend.designer.maven.utils.PomIdsHelper;
 import org.talend.designer.maven.utils.PomUtil;
 import org.talend.designer.runprocess.IBigDataProcessor;
@@ -134,9 +137,15 @@ public abstract class AbstractMavenProcessorPom extends CreateMavenBundleTemplat
 
         Map<ETalendMavenVariables, String> variablesValuesMap = new HashMap<ETalendMavenVariables, String>();
         // no need check property is null or not, because if null, will get default ids.
-        variablesValuesMap.put(ETalendMavenVariables.JobGroupId, PomIdsHelper.getJobGroupId(property));
-        variablesValuesMap.put(ETalendMavenVariables.JobArtifactId, PomIdsHelper.getJobArtifactId(property));
-        variablesValuesMap.put(ETalendMavenVariables.JobVersion, PomIdsHelper.getJobVersion(property));
+        JobInfo lastMainJob = LastGenerationInfo.getInstance().getLastMainJob(); 
+        if (JobUtils.isJob(property) && ProcessUtils.isChildRouteProcess(process) && lastMainJob != null) {
+            variablesValuesMap.put(ETalendMavenVariables.JobGroupId, PomIdsHelper.getJobGroupId(lastMainJob.getProcessor().getProperty()));
+            variablesValuesMap.put(ETalendMavenVariables.JobVersion, PomIdsHelper.getJobVersion(lastMainJob.getProcessor().getProperty()));	    	
+        }else {
+            variablesValuesMap.put(ETalendMavenVariables.JobGroupId, PomIdsHelper.getJobGroupId(property));
+            variablesValuesMap.put(ETalendMavenVariables.JobVersion, PomIdsHelper.getJobVersion(property));	    	
+        }
+        variablesValuesMap.put(ETalendMavenVariables.JobArtifactId, PomIdsHelper.getJobArtifactId(property));	 
         variablesValuesMap.put(ETalendMavenVariables.TalendJobVersion, property.getVersion());
         final String jobName = JavaResourcesHelper.escapeFileName(process.getName());
         variablesValuesMap.put(ETalendMavenVariables.JobName, jobName);
@@ -307,13 +316,20 @@ public abstract class AbstractMavenProcessorPom extends CreateMavenBundleTemplat
                 String type = null;
                 if (!jobInfo.isJoblet()) {
                     property = jobInfo.getProcessItem().getProperty();
-                    groupId = PomIdsHelper.getJobGroupId(property);
                     artifactId = PomIdsHelper.getJobArtifactId(jobInfo);
                     if ("OSGI".equals(property.getAdditionalProperties().get(TalendProcessArgumentConstant.ARG_BUILD_TYPE))) {
                         artifactId = artifactId + "-bundle";
                     }
+                    JobInfo lastMainJob = LastGenerationInfo.getInstance().getLastMainJob();
+                    if (lastMainJob != null && JobUtils.isJob(jobInfo) && JobUtils.isRoute(getJobProcessor().getProperty())) {
+                        groupId = PomIdsHelper.getJobGroupId(lastMainJob.getProcessor().getProperty());
+                        version =  PomIdsHelper.getJobVersion(lastMainJob.getProcessor().getProperty()); 
+                    } else {
+                        groupId = PomIdsHelper.getJobGroupId(property);	
+                        version = PomIdsHelper.getJobVersion(property);
+                    }
 
-                    version = PomIdsHelper.getJobVersion(property);
+                    
                     // try to get the pom version of children job and load from the pom file.
                     String childPomFileName = PomUtil.getPomFileName(jobInfo.getJobName(), jobInfo.getJobVersion());
                     IProject codeProject = getJobProcessor().getCodeProject();
