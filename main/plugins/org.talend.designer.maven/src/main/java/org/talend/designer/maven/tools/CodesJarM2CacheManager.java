@@ -354,7 +354,7 @@ public class CodesJarM2CacheManager {
             }
             Map<String, Object> argumentsMap = new HashMap<>();
             argumentsMap.put(TalendProcessArgumentConstant.ARG_PROGRAM_ARGUMENTS,
-                    "-fn -T 1C -f " + BUILD_AGGREGATOR_POM_NAME + " " + TalendMavenConstants.ARG_MAIN_SKIP); //$NON-NLS-1$ //$NON-NLS-2$
+                    "-fn -T 1 -f " + BUILD_AGGREGATOR_POM_NAME + " " + TalendMavenConstants.ARG_MAIN_SKIP); //$NON-NLS-1$ //$NON-NLS-2$
             MavenPomCommandLauncher mavenLauncher = new MavenPomCommandLauncher(pomFile, TalendMavenConstants.GOAL_INSTALL);
             mavenLauncher.setArgumentsMap(argumentsMap);
             mavenLauncher.setSkipTests(true);
