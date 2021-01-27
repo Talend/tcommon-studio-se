@@ -100,6 +100,13 @@ public class JobUtils {
         return clonedJobInfos;
     }
     
+    public static boolean isRoute(Property p) {
+        if (p != null) {
+            return ERepositoryObjectType.getType(p).equals(ERepositoryObjectType.PROCESS_ROUTE);
+        }
+        return false;
+    }
+
     public static boolean isJob(JobInfo job) {
         if (job != null && job.getProcessItem() != null) {
             Property p = job.getProcessItem().getProperty();
