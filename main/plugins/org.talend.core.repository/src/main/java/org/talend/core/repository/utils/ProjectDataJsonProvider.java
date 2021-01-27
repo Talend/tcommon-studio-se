@@ -81,6 +81,12 @@ public class ProjectDataJsonProvider {
         return strBuilder.toString();
     }
 
+    public static String getMigrationTaskIndexPath() {
+        StringBuilder strBuilder = new StringBuilder();
+        strBuilder.append(FileConstants.SETTINGS_FOLDER_NAME).append("/").append(FileConstants.MIGRATION_TASK_FILE_NAME); //$NON-NLS-1$
+        return strBuilder.toString();
+    }
+
     public static void saveProjectData(Project project) throws PersistenceException {
         saveProjectData(project, CONTENT_ALL);
     }
