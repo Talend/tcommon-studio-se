@@ -15,6 +15,7 @@ package org.talend.metadata.managment.ui.wizard;
 import java.util.List;
 import java.util.regex.Pattern;
 
+import org.eclipse.core.resources.IFolder;
 import org.eclipse.core.resources.IWorkspace;
 import org.eclipse.core.resources.IWorkspaceRunnable;
 import org.eclipse.core.resources.ResourcesPlugin;
@@ -22,6 +23,7 @@ import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IPath;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.IStatus;
+import org.eclipse.core.runtime.Path;
 import org.eclipse.core.runtime.Status;
 import org.eclipse.core.runtime.jobs.ISchedulingRule;
 import org.eclipse.draw2d.ColorConstants;
@@ -42,6 +44,7 @@ import org.talend.commons.ui.runtime.exception.ExceptionHandler;
 import org.talend.commons.ui.runtime.exception.MessageBoxExceptionHandler;
 import org.talend.commons.ui.runtime.image.EImage;
 import org.talend.commons.ui.runtime.image.ImageProvider;
+import org.talend.commons.utils.workbench.resources.ResourceUtils;
 import org.talend.core.GlobalServiceRegister;
 import org.talend.core.ICoreService;
 import org.talend.core.IESBService;
@@ -55,6 +58,7 @@ import org.talend.core.model.repository.ERepositoryObjectType;
 import org.talend.core.model.repository.IRepositoryObject;
 import org.talend.core.model.repository.IRepositoryViewObject;
 import org.talend.core.model.repository.RepositoryObject;
+import org.talend.core.repository.utils.RoutineUtils;
 import org.talend.core.runtime.CoreRuntimePlugin;
 import org.talend.core.ui.ITestContainerProviderService;
 import org.talend.expressionbuilder.ExpressionPersistance;
@@ -289,6 +293,8 @@ public class PropertiesWizard extends Wizard {
                     IProxyRepositoryFactory proxyRepositoryFactory = CoreRuntimePlugin.getInstance().getProxyRepositoryFactory();
                     // changed by hqzhang for TDI-19527, label=displayName
                     object.getProperty().setLabel(object.getProperty().getDisplayName());
+
+                    processBeforeItemSave(proxyRepositoryFactory);
                     proxyRepositoryFactory.save(object.getProperty(), originaleObjectLabel, originalVersion);
                     ExpressionPersistance.getInstance().jobNameChanged(originaleObjectLabel, object.getLabel());
 
@@ -322,6 +328,27 @@ public class PropertiesWizard extends Wizard {
         }
     }
     
+    private void processBeforeItemSave(IProxyRepositoryFactory proxyRepositoryFactory) throws PersistenceException {
+        ERepositoryObjectType objectRepType = object.getRepositoryObjectType();
+        if (!originaleObjectLabel.equals(object.getProperty().getLabel())
+                && ERepositoryObjectType.getAllTypesOfCodesJar().contains(objectRepType)) {
+            // for codejar to change innercode folder name
+            proxyRepositoryFactory.renameFolder(object.getRepositoryObjectType(), new Path(originaleObjectLabel),
+                    object.getProperty().getLabel());
+            Project currentProject = ProjectManager.getInstance().getCurrentProject();
+            IFolder innerCodeFolder = ResourceUtils.getFolder(ResourceUtils.getProject(currentProject),
+                    ERepositoryObjectType.getFolderName(objectRepType) + "/" + object.getProperty().getLabel(), true);
+            List<IRepositoryViewObject> innerCodesObjs = proxyRepositoryFactory.getAll(currentProject, objectRepType, false,
+                    false, innerCodeFolder);
+            if (innerCodesObjs != null && !innerCodesObjs.isEmpty()) {
+                innerCodesObjs.stream().forEach(repObj -> {
+                    RoutineUtils.changeInnerCodePackage(repObj.getProperty().getItem(), false);
+                });
+            }
+        }
+
+    }
+
     private void showTestCaseWarning() {
         if(object == null) {
             return;
