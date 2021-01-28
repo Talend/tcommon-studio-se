@@ -276,10 +276,10 @@ public class CodesJarM2CacheManager {
 
                     // toUpdate.forEach(info -> updateCodesJarProjectPom(monitor, info));
 
-                    Set<IProject> projects = toUpdate.stream()
-                            .map(info -> getRunProcessService().getTalendCodesJarJavaProject(info).getProject())
-                            .collect(Collectors.toSet());
-                    parallelBuild(monitor, projects);
+                    // Set<IProject> projects = toUpdate.stream()
+                    // .map(info -> getRunProcessService().getTalendCodesJarJavaProject(info).getProject())
+                    // .collect(Collectors.toSet());
+                    // parallelBuild(monitor, projects);
 
                     install(toUpdate, monitor);
 
@@ -354,7 +354,8 @@ public class CodesJarM2CacheManager {
             }
             Map<String, Object> argumentsMap = new HashMap<>();
             argumentsMap.put(TalendProcessArgumentConstant.ARG_PROGRAM_ARGUMENTS,
-                    "-fn -T 1 -f " + BUILD_AGGREGATOR_POM_NAME + " " + TalendMavenConstants.ARG_MAIN_SKIP); //$NON-NLS-1$ //$NON-NLS-2$
+                    "-fn -T 1 -f " + BUILD_AGGREGATOR_POM_NAME //$NON-NLS-1$
+                            + " -Dmaven.compiler.failOnError=false"/* + TalendMavenConstants.ARG_MAIN_SKIP */); //$NON-NLS-1$ //$NON-NLS-2$
             MavenPomCommandLauncher mavenLauncher = new MavenPomCommandLauncher(pomFile, TalendMavenConstants.GOAL_INSTALL);
             mavenLauncher.setArgumentsMap(argumentsMap);
             mavenLauncher.setSkipTests(true);
