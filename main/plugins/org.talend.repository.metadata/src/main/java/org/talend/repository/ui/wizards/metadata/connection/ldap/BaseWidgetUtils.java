@@ -27,6 +27,7 @@ import org.eclipse.swt.widgets.Group;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Link;
 import org.eclipse.swt.widgets.Text;
+import org.talend.commons.ui.runtime.ws.WindowSystem;
 
 /**
  * This class provides utility methods to create SWT widgets for LDAP.
@@ -156,7 +157,13 @@ public class BaseWidgetUtils {
      * @return the created text
      */
     public static Text createPasswordText(Composite parent, String text, int span) {
-        Text t = new Text(parent, SWT.NONE | SWT.BORDER | SWT.PASSWORD);
+        Text t;
+        if (WindowSystem.isBigSurOrLater()) {
+            t = new Text(parent, SWT.NONE | SWT.BORDER);
+            t.setEchoChar('*');
+        } else {
+            t = new Text(parent, SWT.NONE | SWT.BORDER | SWT.PASSWORD);
+        }
         GridData gd = new GridData(GridData.FILL_HORIZONTAL);
         gd.horizontalSpan = span;
         t.setLayoutData(gd);
