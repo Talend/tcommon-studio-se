@@ -30,6 +30,7 @@ import org.apache.log4j.Logger;
 import org.eclipse.core.resources.IProject;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IStatus;
+import org.eclipse.core.runtime.Platform;
 import org.eclipse.jface.viewers.TreeViewer;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.custom.CTabFolder;
@@ -266,6 +267,9 @@ public class XmlFileStep2Form extends AbstractXmlFileStepForm implements IRefres
         this.xmlToSchemaSash = new SashForm(mainComposite, SWT.HORIZONTAL | SWT.SMOOTH);
         xmlToSchemaSash.setLayoutData(new GridData(GridData.FILL_BOTH));
         xmlToSchemaSash.setBackgroundMode(SWT.INHERIT_FORCE);
+        if (Platform.OS_MACOSX.equals(Platform.getOS())) {
+            xmlToSchemaSash.setSashWidth((mainComposite.getShell().getBounds().width) / 6);
+        }
 
         addGroupXmlFileSettings(xmlToSchemaSash, 400, 110);
         addGroupSchemaTarget(xmlToSchemaSash, 300, 110);
