@@ -39,6 +39,7 @@ import org.eclipse.swt.widgets.TreeItem;
 import org.eclipse.swt.widgets.Widget;
 import org.talend.commons.ui.runtime.exception.ExceptionHandler;
 import org.talend.commons.ui.runtime.utils.TableUtils;
+import org.talend.commons.ui.runtime.ws.WindowSystem;
 import org.talend.commons.ui.swt.dialogs.EventLoopProgressMonitor;
 import org.talend.commons.ui.swt.dialogs.ProgressDialog;
 import org.talend.commons.ui.swt.drawing.link.ExtremityLink;
@@ -93,6 +94,11 @@ public class MDMSchema2TreeLinker extends TableToTreeLinker<Object, Object> {
         getSelectedRelativeStyleLink();
 
         initListeners();
+
+        if (WindowSystem.isBigSurOrLater()) {
+            getBackgroundRefresher().setBackgroundColor(getBgDrawableComposite().getBackground());
+            getBgDrawableComposite().setBackground(Display.getCurrent().getSystemColor(SWT.COLOR_TRANSPARENT));
+        }
     }
 
     public AbstractXmlStepForm getForm() {
