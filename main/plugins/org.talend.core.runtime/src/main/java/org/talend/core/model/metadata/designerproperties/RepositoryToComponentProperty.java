@@ -1769,6 +1769,38 @@ public class RepositoryToComponentProperty {
         if ("IMPALA_DRIVER".equals(value)) {
             return connection.getParameters().get(ConnParameterKeys.IMPALA_DRIVER);
         }
+
+        if (value.equals("GOOGLE_PROJECT_ID")) {
+            String projectId = connection.getParameters().get(ConnParameterKeys.CONN_PARA_KEY_HIVE_GOOGLE_PROJECT_ID);
+            return getAppropriateValue(connection, projectId);
+        }
+
+        if (value.equals("GOOGLE_CLUSTER_ID")) {
+            String clusterId = connection.getParameters().get(ConnParameterKeys.CONN_PARA_KEY_HIVE_GOOGLE_CLUSTER_ID);
+            return getAppropriateValue(connection, clusterId);
+        }
+
+        if (value.equals("GOOGLE_REGION")) {
+            String region = connection.getParameters().get(ConnParameterKeys.CONN_PARA_KEY_HIVE_GOOGLE_REGION);
+            return getAppropriateValue(connection, region);
+        }
+
+        if (value.equals("GOOGLE_JARS_BUCKET")) {
+            String jarsBucket = connection.getParameters().get(ConnParameterKeys.CONN_PARA_KEY_HIVE_GOOGLE_JARS_BUCKET);
+            return getAppropriateValue(connection, jarsBucket);
+        }
+
+        if (value.equals("DEFINE_PATH_TO_GOOGLE_CREDENTIALS")) {
+            String usePathToCredentials = connection.getParameters()
+                    .get(ConnParameterKeys.CONN_PARA_KEY_HIVE_AUTHENTICATION_DEFINE_PATH_TO_GOOGLE_CREDENTIALS);
+            return Boolean.parseBoolean(usePathToCredentials);
+        }
+
+        if (value.equals("PATH_TO_GOOGLE_CREDENTIALS")) {
+            String pathToCredentials = connection.getParameters()
+                    .get(ConnParameterKeys.CONN_PARA_KEY_HIVE_AUTHENTICATION_PATH_TO_GOOGLE_CREDENTIALS);
+            return getAppropriateValue(connection, pathToCredentials);
+        }
         return null;
     }
 
