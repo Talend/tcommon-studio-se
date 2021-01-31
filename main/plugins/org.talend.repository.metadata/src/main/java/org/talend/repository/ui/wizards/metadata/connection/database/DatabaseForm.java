@@ -553,6 +553,20 @@ public class DatabaseForm extends AbstractForm {
 
     private static final String DISTRIBUTION_QUBOLE = "Qubole";
 
+    private LabelledText dataprocProjectIdForHiveTxt;
+
+    private LabelledText dataprocClusterIdForHiveTxt;
+
+    private LabelledText dataprocRegionForHiveTxt;
+
+    private LabelledText dataprocJarsBucketForHiveTxt;
+
+    private Button useDataprocCredentialsForHive;
+
+    private Composite dataprocCredentialsForHiveComp;
+
+    private LabelledFileField dataprocPathToCredentialsForHiveTxt;
+
     /**
      * Constructor to use by a Wizard to create a new database connection.
      *
@@ -988,6 +1002,8 @@ public class DatabaseForm extends AbstractForm {
 
         setHideVersionInfoWidgets(true);
 
+        createHiveDataprocField(typeDbCompositeParent);
+
         // Field connectionString
         urlConnectionStringText = new LabelledText(typeDbCompositeParent, Messages.getString("DatabaseForm.stringConnection"), 2); //$NON-NLS-1$
         urlConnectionStringText.setEditable(false);
@@ -1037,6 +1053,67 @@ public class DatabaseForm extends AbstractForm {
         createExecutionFieldsForHive(typeDbCompositeParent);
         createHadoopPropertiesFields(typeDbCompositeParent);
         createHivePropertiesFields(typeDbCompositeParent);
+    }
+
+    private void createHiveDataprocField(Composite parent) {
+        dataprocProjectIdForHiveTxt = new LabelledText(parent, Messages.getString("DatabaseForm.dataproc.projectId"), 2);//$NON-NLS-1$
+        dataprocClusterIdForHiveTxt = new LabelledText(parent, Messages.getString("DatabaseForm.dataproc.clusterId"), 2); //$NON-NLS-1$
+        dataprocRegionForHiveTxt = new LabelledText(parent, Messages.getString("DatabaseForm.dataproc.region"), 2);//$NON-NLS-1$
+        dataprocJarsBucketForHiveTxt = new LabelledText(parent,
+                Messages.getString("DatabaseForm.dataproc.jarsBucket"), 2);//$NON-NLS-1$
+        addListenerForHiveDataproc();
+        initForHiveDataproc();
+    }
+
+    private void addListenerForHiveDataproc() {
+        dataprocProjectIdForHiveTxt.getTextControl().addModifyListener(new ModifyListener() {
+
+            @Override
+            public void modifyText(ModifyEvent e) {
+                if (!isContextMode()) {
+                    getConnection().getParameters().put(ConnParameterKeys.CONN_PARA_KEY_HIVE_GOOGLE_PROJECT_ID,
+                            dataprocProjectIdForHiveTxt.getText());
+                }
+            }
+        });
+        dataprocClusterIdForHiveTxt.getTextControl().addModifyListener(new ModifyListener() {
+
+            @Override
+            public void modifyText(ModifyEvent e) {
+                if (!isContextMode()) {
+                    getConnection().getParameters().put(ConnParameterKeys.CONN_PARA_KEY_HIVE_GOOGLE_CLUSTER_ID,
+                            dataprocClusterIdForHiveTxt.getText());
+                }
+            }
+        });
+        dataprocRegionForHiveTxt.getTextControl().addModifyListener(new ModifyListener() {
+
+            @Override
+            public void modifyText(ModifyEvent e) {
+                if (!isContextMode()) {
+                    getConnection().getParameters().put(ConnParameterKeys.CONN_PARA_KEY_HIVE_GOOGLE_REGION,
+                            dataprocRegionForHiveTxt.getText());
+                }
+            }
+        });
+
+        dataprocJarsBucketForHiveTxt.getTextControl().addModifyListener(new ModifyListener() {
+
+            @Override
+            public void modifyText(ModifyEvent e) {
+                if (!isContextMode()) {
+                    getConnection().getParameters().put(ConnParameterKeys.CONN_PARA_KEY_HIVE_GOOGLE_JARS_BUCKET,
+                            dataprocJarsBucketForHiveTxt.getText());
+                }
+            }
+        });
+    }
+
+    private void initForHiveDataproc() {
+        dataprocProjectIdForHiveTxt.hide();
+        dataprocClusterIdForHiveTxt.hide();
+        dataprocRegionForHiveTxt.hide();
+        dataprocJarsBucketForHiveTxt.hide();
     }
 
     private void createZnodeParent(Composite parent) {
@@ -1519,6 +1596,19 @@ public class DatabaseForm extends AbstractForm {
         maprTDurationForHiveTxt = new LabelledText(authenticationMaprTComForHive,
                 Messages.getString("DatabaseForm.hive.MaprTDurationTxt.label"), 2); //$NON-NLS-1$
 
+        useDataprocCredentialsForHive = new Button(authenticationGrp, SWT.CHECK);
+        useDataprocCredentialsForHive.setText(Messages.getString("DatabaseForm.dataproc.button.authentication.credentials")); //$NON-NLS-1$
+        data = new GridData(GridData.FILL_HORIZONTAL);
+        data.horizontalSpan = 4;
+        useDataprocCredentialsForHive.setLayoutData(data);
+
+        dataprocCredentialsForHiveComp = new Composite(authenticationGrp, SWT.NONE);
+        dataprocCredentialsForHiveComp.setLayout(new GridLayout(3, false));
+        dataprocCredentialsForHiveComp.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
+
+        dataprocPathToCredentialsForHiveTxt = new LabelledFileField(dataprocCredentialsForHiveComp,
+                Messages.getString("DatabaseForm.dataproc.text.authentication.credentials"), extensions); //$NON-NLS-1$
+
         addListenerForAuthentication();
         initForAuthentication();
     }
@@ -1850,10 +1940,36 @@ public class DatabaseForm extends AbstractForm {
         hideControl(useMaprTForHive, !doSupportTicket());
         hideControl(authenticationMaprTComForHive, !(useMaprTForHive.getSelection() && doSupportTicket()));
         hideControl(authenticationUserPassComForHive, doSupportKerb() && useKerberos.getSelection() && doSupportTicket());
+        hideControl(useDataprocCredentialsForHive, !doSupportHiveDataproc());
+        hideControl(dataprocCredentialsForHiveComp, !(useDataprocCredentialsForHive.getSelection() && doSupportHiveDataproc()));
     }
 
     private void showIfAdditionalJDBCSettings() {
         setHidAdditionalJDBCSettings(!isSupportHiveAdditionalSettings() && !isSupportImpalaAdditionalSettings());
+    }
+
+    private void showIfHiveDataprocSettings() {
+        setHideHiveDataprocSettings(!doSupportHiveDataproc());
+    }
+
+    private void setHideHiveDataprocSettings(boolean hide) {
+        if (hide) {
+            dataprocProjectIdForHiveTxt.hide();
+            dataprocClusterIdForHiveTxt.hide();
+            dataprocRegionForHiveTxt.hide();
+            dataprocJarsBucketForHiveTxt.hide();
+        } else {
+            urlConnectionStringText.hide();
+            usernameText.hide();
+            passwordText.hide();
+            serverText.hide();
+            portText.hide();
+            additionalJDBCSettingsText.hide();
+            dataprocProjectIdForHiveTxt.show();
+            dataprocClusterIdForHiveTxt.show();
+            dataprocRegionForHiveTxt.show();
+            dataprocJarsBucketForHiveTxt.show();
+        }
     }
 
     private void showIfHiveMetastore() {
@@ -2782,6 +2898,36 @@ public class DatabaseForm extends AbstractForm {
                 }
             }
         });
+
+        useDataprocCredentialsForHive.addSelectionListener(new SelectionAdapter() {
+
+            @Override
+            public void widgetSelected(SelectionEvent e) {
+                if (useDataprocCredentialsForHive.getSelection()) {
+                    hideControl(dataprocCredentialsForHiveComp, false);
+                    getConnection().getParameters()
+                            .put(ConnParameterKeys.CONN_PARA_KEY_HIVE_AUTHENTICATION_DEFINE_PATH_TO_GOOGLE_CREDENTIALS, "true"); //$NON-NLS-1$
+                } else {
+                    hideControl(dataprocCredentialsForHiveComp, true);
+                    getConnection().getParameters()
+                            .put(ConnParameterKeys.CONN_PARA_KEY_HIVE_AUTHENTICATION_DEFINE_PATH_TO_GOOGLE_CREDENTIALS, "false"); //$NON-NLS-1$
+                }
+                authenticationGrp.layout();
+                authenticationGrp.getParent().layout();
+            }
+        });
+
+        dataprocPathToCredentialsForHiveTxt.getTextControl().addModifyListener(new ModifyListener() {
+
+            @Override
+            public void modifyText(ModifyEvent e) {
+                if (!isContextMode()) {
+                    getConnection().getParameters().put(
+                            ConnParameterKeys.CONN_PARA_KEY_HIVE_AUTHENTICATION_PATH_TO_GOOGLE_CREDENTIALS,
+                            dataprocPathToCredentialsForHiveTxt.getText());
+                }
+            }
+        });
     }
 
     private void addListenersForEncryptionGroup() {
@@ -3321,6 +3467,13 @@ public class DatabaseForm extends AbstractForm {
         } else {
             maprTPasswordForHiveTxt.getTextControl().setEchoChar('*');
         }
+
+        dataprocProjectIdForHiveTxt.setEditable(!isContextMode());
+        dataprocClusterIdForHiveTxt.setEditable(!isContextMode());
+        dataprocRegionForHiveTxt.setEditable(!isContextMode());
+        dataprocJarsBucketForHiveTxt.setEditable(!isContextMode());
+        useDataprocCredentialsForHive.setEnabled(!isContextMode());
+        dataprocPathToCredentialsForHiveTxt.setEditable(!isContextMode());
     }
 
     private void adaptHiveDBHadoopPartEditable() {
@@ -6468,6 +6621,7 @@ public class DatabaseForm extends AbstractForm {
             hideImpalaSettings(!isImpala);
             updateHadoopPropertiesFieldsState();
             updateHiveJDBCPropertiesFieldsState();
+            showIfHiveDataprocSettings();
             showIfAdditionalJDBCSettings();
             showIfHiveMetastore();
             showIfSupportEncryption();
@@ -6761,6 +6915,7 @@ public class DatabaseForm extends AbstractForm {
                     hideMappingFileRelatedWidgets(true);
                 }
                 schemaText.hide();
+                showIfHiveDataprocSettings();
             }
         }
         doHiveUIContentsLayout();
@@ -6787,35 +6942,44 @@ public class DatabaseForm extends AbstractForm {
         // recollect context params for hive
         if (isHiveDBConnSelected()) {
             getConetxtParams().clear();
-            addContextParams(EDBParamName.Login, true);
-            addContextParams(EDBParamName.Server, true);
-            addContextParams(EDBParamName.Port, true);
             addContextParams(EDBParamName.Database, true);
-            addContextParams(EDBParamName.NameNode, useHadoopRepositoryParam());
-            addContextParams(EDBParamName.JobTrackerOrResourceManager, useHadoopRepositoryParam());
-            addContextParams(EDBParamName.Password, !isHiveEmbeddedMode());
-            boolean isHivePrincipal = isHiveDBConnSelected() && doSupportSecurity() && useKerberos.getSelection();
-            addContextParams(EDBParamName.HivePrincipal, isHivePrincipal);
-            boolean hasAuthentication = isHivePrincipal && isHiveEmbeddedMode();
-            addContextParams(EDBParamName.HiveMetastore, hasAuthentication);
-            addContextParams(EDBParamName.HiveDriverJar, hasAuthentication);
-            addContextParams(EDBParamName.HiveDriveClass, hasAuthentication);
-            addContextParams(EDBParamName.HiveUserName, hasAuthentication);
-            addContextParams(EDBParamName.HivePassword, hasAuthentication);
-            addContextParams(EDBParamName.HiveKeyTabPrincipal, isHivePrincipal && useKeyTab.getSelection());
-            addContextParams(EDBParamName.HiveKeyTab, isHivePrincipal && useKeyTab.getSelection());
-            addContextParams(EDBParamName.hiveAdditionalJDBCParameters, isSupportHiveAdditionalSettings());
-            boolean addSSLEncryptionContext = isSupportSSLEncryption() && isSupportSSLTrustStore();
-            addContextParams(EDBParamName.hiveSSLTrustStorePath, addSSLEncryptionContext);
-            addContextParams(EDBParamName.hiveSSLTrustStorePassword, addSSLEncryptionContext);
-            boolean isEnableHiveHa = hiveEnableHaBtn.getSelection();
-            addContextParams(EDBParamName.hiveMetastoreUris, isEnableHiveHa);
-            addContextParams(EDBParamName.HiveMetastorePort, !isEnableHiveHa);
+            boolean isHiveDataproc = doSupportHiveDataproc();
+            if (isHiveDataproc) {
+                addContextParams(EDBParamName.HiveDataprocProjectId, true);
+                addContextParams(EDBParamName.HiveDataprocClusterId, true);
+                addContextParams(EDBParamName.HiveDataprocRegion, true);
+                addContextParams(EDBParamName.HiveDataprocJarsBucket, true);
+                addContextParams(EDBParamName.HiveDataprocPathToCredentials, useDataprocCredentialsForHive.getSelection());
+            } else {
+                addContextParams(EDBParamName.Login, true);
+                addContextParams(EDBParamName.Server, true);
+                addContextParams(EDBParamName.Port, true);
+                addContextParams(EDBParamName.NameNode, useHadoopRepositoryParam());
+                addContextParams(EDBParamName.JobTrackerOrResourceManager, useHadoopRepositoryParam());
+                addContextParams(EDBParamName.Password, !isHiveEmbeddedMode());
+                boolean isHivePrincipal = isHiveDBConnSelected() && doSupportSecurity() && useKerberos.getSelection();
+                addContextParams(EDBParamName.HivePrincipal, isHivePrincipal);
+                boolean hasAuthentication = isHivePrincipal && isHiveEmbeddedMode();
+                addContextParams(EDBParamName.HiveMetastore, hasAuthentication);
+                addContextParams(EDBParamName.HiveDriverJar, hasAuthentication);
+                addContextParams(EDBParamName.HiveDriveClass, hasAuthentication);
+                addContextParams(EDBParamName.HiveUserName, hasAuthentication);
+                addContextParams(EDBParamName.HivePassword, hasAuthentication);
+                addContextParams(EDBParamName.HiveKeyTabPrincipal, isHivePrincipal && useKeyTab.getSelection());
+                addContextParams(EDBParamName.HiveKeyTab, isHivePrincipal && useKeyTab.getSelection());
+                addContextParams(EDBParamName.hiveAdditionalJDBCParameters, isSupportHiveAdditionalSettings());
+                boolean addSSLEncryptionContext = isSupportSSLEncryption() && isSupportSSLTrustStore();
+                addContextParams(EDBParamName.hiveSSLTrustStorePath, addSSLEncryptionContext);
+                addContextParams(EDBParamName.hiveSSLTrustStorePassword, addSSLEncryptionContext);
+                boolean isEnableHiveHa = hiveEnableHaBtn.getSelection();
+                addContextParams(EDBParamName.hiveMetastoreUris, isEnableHiveHa);
+                addContextParams(EDBParamName.HiveMetastorePort, !isEnableHiveHa);
 
-            addContextParams(EDBParamName.Username, !useKerberos.getSelection() && useMaprTForHive.getSelection());
-            addContextParams(EDBParamName.Maprticket_Password, !useKerberos.getSelection() && useMaprTForHive.getSelection());
-            addContextParams(EDBParamName.Maprticket_Cluster, useMaprTForHive.getSelection());
-            addContextParams(EDBParamName.Maprticket_Duration, useMaprTForHive.getSelection());
+                addContextParams(EDBParamName.Username, !useKerberos.getSelection() && useMaprTForHive.getSelection());
+                addContextParams(EDBParamName.Maprticket_Password, !useKerberos.getSelection() && useMaprTForHive.getSelection());
+                addContextParams(EDBParamName.Maprticket_Cluster, useMaprTForHive.getSelection());
+                addContextParams(EDBParamName.Maprticket_Duration, useMaprTForHive.getSelection());
+            }
         }
     }
 
@@ -7449,6 +7613,53 @@ public class DatabaseForm extends AbstractForm {
         hideControl(useMaprTForHive, !doSupportMapRTicket);
         hideControl(authenticationMaprTComForHive, !(checkMaprTForHive && doSupportMapRTicket));
         hideControl(authenticationUserPassComForHive, Boolean.valueOf(useKrb) && doSupportMapRTicket);
+
+        //
+        String dataprocProjectIdForHive = connection.getParameters()
+                .get(ConnParameterKeys.CONN_PARA_KEY_HIVE_GOOGLE_PROJECT_ID);
+        if (!connection.isContextMode() && ContextParameterUtils.isContainContextParam(dataprocProjectIdForHive)) {
+            dataprocProjectIdForHive = (String) metadataconnection
+                    .getParameter(ConnParameterKeys.CONN_PARA_KEY_HIVE_GOOGLE_PROJECT_ID);
+        }
+        dataprocProjectIdForHiveTxt.setText(dataprocProjectIdForHive == null ? "" : dataprocProjectIdForHive);
+        String dataprocClusterIdForHive = connection.getParameters()
+                .get(ConnParameterKeys.CONN_PARA_KEY_HIVE_GOOGLE_CLUSTER_ID);
+        if (!connection.isContextMode() && ContextParameterUtils.isContainContextParam(dataprocClusterIdForHive)) {
+            dataprocClusterIdForHive = (String) metadataconnection
+                    .getParameter(ConnParameterKeys.CONN_PARA_KEY_HIVE_GOOGLE_CLUSTER_ID);
+        }
+        dataprocClusterIdForHiveTxt.setText(dataprocClusterIdForHive == null ? "" : dataprocClusterIdForHive);
+        String dataprocRegionForHive = connection.getParameters()
+                .get(ConnParameterKeys.CONN_PARA_KEY_HIVE_GOOGLE_REGION);
+        if (!connection.isContextMode() && ContextParameterUtils.isContainContextParam(dataprocRegionForHive)) {
+            dataprocRegionForHive = (String) metadataconnection
+                    .getParameter(ConnParameterKeys.CONN_PARA_KEY_HIVE_GOOGLE_REGION);
+        }
+        dataprocRegionForHiveTxt.setText(dataprocRegionForHive == null ? "" : dataprocRegionForHive);
+        String dataprocJarsBucketForHive = connection.getParameters()
+                .get(ConnParameterKeys.CONN_PARA_KEY_HIVE_GOOGLE_JARS_BUCKET);
+        if (!connection.isContextMode() && ContextParameterUtils.isContainContextParam(dataprocJarsBucketForHive)) {
+            dataprocJarsBucketForHive = (String) metadataconnection
+                    .getParameter(ConnParameterKeys.CONN_PARA_KEY_HIVE_GOOGLE_JARS_BUCKET);
+        }
+        dataprocJarsBucketForHiveTxt.setText(dataprocJarsBucketForHive == null ? "" : dataprocJarsBucketForHive);
+        String useDataprocCredentialsForHiveString = connection.getParameters()
+                .get(ConnParameterKeys.CONN_PARA_KEY_HIVE_AUTHENTICATION_DEFINE_PATH_TO_GOOGLE_CREDENTIALS);
+        String dataprocPathToCredentialsForHive = connection.getParameters()
+                .get(ConnParameterKeys.CONN_PARA_KEY_HIVE_AUTHENTICATION_PATH_TO_GOOGLE_CREDENTIALS);
+        if (!connection.isContextMode() && ContextParameterUtils.isContainContextParam(dataprocPathToCredentialsForHive)) {
+            dataprocPathToCredentialsForHive = (String) metadataconnection
+                    .getParameter(ConnParameterKeys.CONN_PARA_KEY_HIVE_AUTHENTICATION_PATH_TO_GOOGLE_CREDENTIALS);
+        }
+        boolean checkDataprocCredentialsForHive = Boolean.valueOf(useDataprocCredentialsForHiveString);
+        useDataprocCredentialsForHive.setSelection(checkDataprocCredentialsForHive);
+        if (checkDataprocCredentialsForHive) {
+            dataprocPathToCredentialsForHiveTxt.setText(StringUtils.trimToEmpty(dataprocPathToCredentialsForHive));
+        }
+        showIfHiveDataprocSettings();
+        hideControl(useDataprocCredentialsForHive, !doSupportHiveDataproc());
+        hideControl(dataprocCredentialsForHiveComp, !(checkDataprocCredentialsForHive && doSupportHiveDataproc()));
+
         authenticationGrp.layout();
         authenticationGrp.getParent().layout();
 
@@ -7558,6 +7769,7 @@ public class DatabaseForm extends AbstractForm {
             @Override
             public void widgetSelected(SelectionEvent e) {
                 doHiveDistributionModify();
+                showIfHiveDataprocSettings();
                 showIfAdditionalJDBCSettings();
                 showIfHiveMetastore();
                 showIfSupportEncryption();
@@ -7578,6 +7790,7 @@ public class DatabaseForm extends AbstractForm {
             @Override
             public void widgetSelected(SelectionEvent e) {
                 doHiveVersionModify();
+                showIfHiveDataprocSettings();
                 showIfAdditionalJDBCSettings();
                 showIfHiveMetastore();
                 showIfSupportEncryption();
@@ -7607,6 +7820,7 @@ public class DatabaseForm extends AbstractForm {
             @Override
             public void widgetSelected(SelectionEvent e) {
                 doHiveModeModify();
+                showIfHiveDataprocSettings();
                 showIfAdditionalJDBCSettings();
                 showIfHiveMetastore();
                 showIfSupportEncryption();
@@ -7650,6 +7864,7 @@ public class DatabaseForm extends AbstractForm {
             @Override
             public void widgetSelected(SelectionEvent e) {
                 doHiveServerSelected();
+                showIfHiveDataprocSettings();
                 showIfAdditionalJDBCSettings();
                 showIfHiveMetastore();
                 showIfSupportEncryption();
@@ -7946,6 +8161,44 @@ public class DatabaseForm extends AbstractForm {
             EDatabaseConnTemplate template = EDatabaseConnTemplate.indexOfTemplate(getConnection().getDatabaseType());
             if (template != null) {
                 serverText.setText(template.getDefaultServer(null));
+            }
+            // default values for hive dataproc
+            String dataprocProjectId = getConnection().getParameters()
+                    .get(ConnParameterKeys.CONN_PARA_KEY_HIVE_GOOGLE_PROJECT_ID);
+            String defaultDataprocProjectId = hiveVersion.getDefaultConfig(distribution,
+                    EHadoopProperties.GOOGLE_PROJECT_ID.getName());
+            if (StringUtils.isNotEmpty(dataprocProjectId)) {
+                dataprocProjectIdForHiveTxt.setText(dataprocProjectId);
+            } else if (defaultDataprocProjectId != null) {
+                dataprocProjectIdForHiveTxt.setText(defaultDataprocProjectId);
+            }
+
+            String dataprocClusterId = getConnection().getParameters()
+                    .get(ConnParameterKeys.CONN_PARA_KEY_HIVE_GOOGLE_CLUSTER_ID);
+            String defaultDataprocClusterId = hiveVersion.getDefaultConfig(distribution,
+                    EHadoopProperties.GOOGLE_CLUSTER_ID.getName());
+            if (StringUtils.isNotEmpty(dataprocClusterId)) {
+                dataprocClusterIdForHiveTxt.setText(dataprocClusterId);
+            } else if (defaultDataprocClusterId != null) {
+                dataprocClusterIdForHiveTxt.setText(defaultDataprocClusterId);
+            }
+
+            String dataprocRegion = getConnection().getParameters().get(ConnParameterKeys.CONN_PARA_KEY_HIVE_GOOGLE_REGION);
+            String defaultDataprocRegion = hiveVersion.getDefaultConfig(distribution, EHadoopProperties.GOOGLE_REGION.getName());
+            if (StringUtils.isNotEmpty(dataprocRegion)) {
+                dataprocRegionForHiveTxt.setText(dataprocRegion);
+            } else if (defaultDataprocRegion != null) {
+                dataprocRegionForHiveTxt.setText(defaultDataprocRegion);
+            }
+
+            String dataprocJarsBucket = getConnection().getParameters()
+                    .get(ConnParameterKeys.CONN_PARA_KEY_HIVE_GOOGLE_JARS_BUCKET);
+            String defaultDataprocJarsBucket = hiveVersion.getDefaultConfig(distribution,
+                    EHadoopProperties.GOOGLE_JARS_BUCKET.getName());
+            if (StringUtils.isNotEmpty(dataprocJarsBucket)) {
+                dataprocJarsBucketForHiveTxt.setText(dataprocJarsBucket);
+            } else if (defaultDataprocJarsBucket != null) {
+                dataprocJarsBucketForHiveTxt.setText(defaultDataprocJarsBucket);
             }
         }
     }
@@ -8806,7 +9059,7 @@ public class DatabaseForm extends AbstractForm {
     }
 
     private boolean doSupportSecurity() {
-        return doSupportKerb() || doSupportTicket();
+        return doSupportKerb() || doSupportTicket() || doSupportHiveDataproc();
     }
 
     private boolean doSupportKerb() {
@@ -8846,6 +9099,10 @@ public class DatabaseForm extends AbstractForm {
             return HiveMetadataHelper.doSupportTez(hiveDistributionCombo.getText(), hiveVersionCombo.getText(), true);
         }
         return false;
+    }
+
+    private boolean doSupportHiveDataproc() {
+        return HiveMetadataHelper.isHiveWizardCheckEnabled(hiveDistributionCombo.getText(), hiveVersionCombo.getText(), true);
     }
 
     private boolean canLinkToHadoopCluster() {
