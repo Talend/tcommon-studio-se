@@ -1351,6 +1351,12 @@ public final class ProxyRepositoryFactory implements IProxyRepositoryFactory {
     }
 
     @Override
+    public List<IRepositoryViewObject> getAll(Project project, ERepositoryObjectType type, boolean withDeleted,
+            boolean allVersions, IFolder... folders) throws PersistenceException {
+        return this.repositoryFactoryFromProvider.getAll(project, type, withDeleted, allVersions, folders);
+    }
+
+    @Override
     public List<IRepositoryViewObject> getAllCodesJars(ERepositoryObjectType type) throws PersistenceException {
         return getAllCodesJars(projectManager.getCurrentProject(), type);
     }

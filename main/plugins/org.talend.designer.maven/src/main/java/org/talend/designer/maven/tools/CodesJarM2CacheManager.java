@@ -209,7 +209,9 @@ public class CodesJarM2CacheManager {
         }
     }
 
-    // TODO check callers of updateCodeProjectPom()
+    /**
+     * update code jar pom only when first time create project/dependencies changed
+     */
     public static void updateCodesJarProjectPom(IProgressMonitor monitor, CodesJarInfo info) {
         try {
             IFile pomFile = new AggregatorPomsHelper(info.getProjectTechName()).getCodesJarFolder(info.getProperty())
@@ -240,43 +242,44 @@ public class CodesJarM2CacheManager {
     }
 
     public static void updateCodesJarProject(IProgressMonitor monitor) {
-        updateCodesJarProject(monitor, false, false, false);
+        updateCodesJarProject(monitor, false, false);
     }
 
-    public static void updateCodesJarProject(IProgressMonitor monitor, boolean regeneratePom, boolean forceBuild,
+    public static void updateCodesJarProject(IProgressMonitor monitor, boolean forceBuild, boolean onlyCurrentProject) {
+        Set<CodesJarInfo> toUpdate;
+        if (onlyCurrentProject) {
+            String currentProject = ProjectManager.getInstance().getCurrentProject().getTechnicalLabel();
+            toUpdate = CodesJarResourceCache.getAllCodesJars().stream().filter(
+                    info -> info.getProjectTechName().equals(currentProject) && (forceBuild || needUpdateCodesJarProject(info)))
+                    .collect(Collectors.toSet());
+        } else {
+            toUpdate = CodesJarResourceCache.getAllCodesJars().stream()
+                    .filter(info -> forceBuild || needUpdateCodesJarProject(info)).collect(Collectors.toSet());
+        }
+        updateCodesJarProject(monitor, toUpdate, forceBuild, onlyCurrentProject);
+    }
+
+    public static void updateCodesJarProject(IProgressMonitor monitor, Set<CodesJarInfo> toUpdate, boolean forceBuild,
             boolean onlyCurrentProject) {
+        if (toUpdate.isEmpty()) {
+            return;
+        }
         RepositoryWorkUnit<Object> workUnit = new RepositoryWorkUnit<Object>("update codesjar project") { //$NON-NLS-1$
 
             @Override
             protected void run() {
                 try {
-                    Set<CodesJarInfo> toUpdate;
-                    if (onlyCurrentProject) {
-                        String currentProject = ProjectManager.getInstance().getCurrentProject().getTechnicalLabel();
-                        toUpdate = CodesJarResourceCache.getAllCodesJars().stream()
-                                .filter(info -> info.getProjectTechName().equals(currentProject)
-                                        && (forceBuild || needUpdateCodesJarProject(info)))
-                                .collect(Collectors.toSet());
-                    } else {
-                        toUpdate = CodesJarResourceCache.getAllCodesJars().stream()
-                                .filter(info -> forceBuild || needUpdateCodesJarProject(info)).collect(Collectors.toSet());
-                    }
-                    if (toUpdate.isEmpty()) {
-                        return;
-                    }
                     Set<ITalendProcessJavaProject> existingProjects = toUpdate.stream()
                             .filter(info -> getRunProcessService().getExistingTalendCodesJarProject(info) != null)
                             .map(info -> getRunProcessService().getExistingTalendCodesJarProject(info))
                             .collect(Collectors.toSet());
 
-                    if (regeneratePom) {
-                        toUpdate.forEach(info -> updateCodesJarProjectPom(monitor, info));
-                    }
+                    // toUpdate.forEach(info -> updateCodesJarProjectPom(monitor, info));
 
-                    Set<IProject> projects = toUpdate.stream()
-                            .map(info -> getRunProcessService().getTalendCodesJarJavaProject(info).getProject())
-                            .collect(Collectors.toSet());
-                    parallelBuild(monitor, projects);
+                    // Set<IProject> projects = toUpdate.stream()
+                    // .map(info -> getRunProcessService().getTalendCodesJarJavaProject(info).getProject())
+                    // .collect(Collectors.toSet());
+                    // parallelBuild(monitor, projects);
 
                     install(toUpdate, monitor);
 
@@ -320,7 +323,7 @@ public class CodesJarM2CacheManager {
         IProgressMonitor monitor = new NullProgressMonitor();
         CodesJarInfo info = CodesJarInfo.create(property);
         ITalendProcessJavaProject codesJarProject = getRunProcessService().getTalendCodesJarJavaProject(info);
-        updateCodesJarProjectPom(monitor, info);
+        // updateCodesJarProjectPom(monitor, info);
         codesJarProject.buildWholeCodeProject();
         Set<CodesJarInfo> set = new HashSet<>();
         set.add(info);
@@ -351,7 +354,8 @@ public class CodesJarM2CacheManager {
             }
             Map<String, Object> argumentsMap = new HashMap<>();
             argumentsMap.put(TalendProcessArgumentConstant.ARG_PROGRAM_ARGUMENTS,
-                    "-T 1C -f " + BUILD_AGGREGATOR_POM_NAME + " " + TalendMavenConstants.ARG_MAIN_SKIP); //$NON-NLS-1$ //$NON-NLS-2$
+                    "-fn -T 1 -f " + BUILD_AGGREGATOR_POM_NAME //$NON-NLS-1$
+                            + " -Dmaven.compiler.failOnError=false"/* + TalendMavenConstants.ARG_MAIN_SKIP */); //$NON-NLS-1$ //$NON-NLS-2$
             MavenPomCommandLauncher mavenLauncher = new MavenPomCommandLauncher(pomFile, TalendMavenConstants.GOAL_INSTALL);
             mavenLauncher.setArgumentsMap(argumentsMap);
             mavenLauncher.setSkipTests(true);

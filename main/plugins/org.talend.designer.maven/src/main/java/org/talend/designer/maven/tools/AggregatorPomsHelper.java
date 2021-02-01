@@ -58,6 +58,7 @@ import org.talend.core.context.Context;
 import org.talend.core.context.RepositoryContext;
 import org.talend.core.model.general.ILibrariesService;
 import org.talend.core.model.general.ModuleNeeded;
+import org.talend.core.model.general.ModuleNeeded.ELibraryInstallStatus;
 import org.talend.core.model.general.Project;
 import org.talend.core.model.process.ProcessUtils;
 import org.talend.core.model.properties.Item;
@@ -224,7 +225,12 @@ public class AggregatorPomsHelper {
 
             ILibraryManagerService repositoryBundleService = GlobalServiceRegister.getDefault()
                     .getService(ILibraryManagerService.class);
-            repositoryBundleService.installModules(neededModules, monitor);
+            repositoryBundleService.retrieve(neededModules, null, false);
+            Set<ModuleNeeded> toInstall = neededModules.stream()
+                    .filter(module -> module.getDeployStatus() != ELibraryInstallStatus.DEPLOYED).collect(Collectors.toSet());
+            if (!toInstall.isEmpty()) {
+                repositoryBundleService.installModules(neededModules, monitor);
+            }
         }
     }
 

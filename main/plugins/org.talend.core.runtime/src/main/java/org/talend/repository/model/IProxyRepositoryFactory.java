@@ -17,6 +17,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.eclipse.core.resources.IFolder;
 import org.eclipse.core.runtime.IPath;
 import org.talend.commons.exception.BusinessException;
 import org.talend.commons.exception.LoginException;
@@ -307,6 +308,9 @@ public interface IProxyRepositoryFactory {
 
     public abstract List<IRepositoryViewObject> getAll(Project project, ERepositoryObjectType type, boolean withDeleted,
             boolean allVersions) throws PersistenceException;
+
+    public abstract List<IRepositoryViewObject> getAll(Project project, ERepositoryObjectType type, boolean withDeleted,
+            boolean allVersions, IFolder... folders) throws PersistenceException;
 
     public abstract List<IRepositoryViewObject> getAllCodesJars(ERepositoryObjectType type) throws PersistenceException;
 
