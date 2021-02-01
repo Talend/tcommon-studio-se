@@ -18,6 +18,6 @@
 	
 %>
 
-INSERT INTO <%=__TABLE_NAME_TARGET__%>
-SELECT <%= operation %>, <%= StringUtils.list(__GROUPBY_INPUT_COLUMN__, ",") %> FROM <%= __TABLE_NAME__ %>
+INSERT INTO <%=__DATABASE_NAME__%>.<%=__TABLE_NAME_TARGET__%>
+SELECT <%= operation %>, <%= StringUtils.list(__GROUPBY_INPUT_COLUMN__, ",") %> FROM <%=__DATABASE_NAME__%>.<%= __TABLE_NAME__ %>
 GROUP BY <%=StringUtils.list(__GROUPBY_INPUT_COLUMN__, ",", "", "") %>;

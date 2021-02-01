@@ -11,5 +11,5 @@
 		fields = fields.substring(0,fields.length()-1);	
 	}
 %>
-INSERT INTO <%=__TABLE_NAME_TARGET__%> 
-SELECT <%= fields %> FROM <%= __TABLE_NAME__ %>;
+INSERT INTO <%=__DATABASE_NAME__%>.<%=__TABLE_NAME_TARGET__%> 
+SELECT <%= fields %> FROM <%=__DATABASE_NAME__%>.<%= __TABLE_NAME__ %>;

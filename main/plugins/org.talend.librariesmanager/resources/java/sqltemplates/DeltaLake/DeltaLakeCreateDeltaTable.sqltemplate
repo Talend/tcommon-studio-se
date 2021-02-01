@@ -23,7 +23,7 @@ for(int i=0; i < __SCHEMA__.length; i++){
 }
 %>
 
-CREATE TABLE <%=__DATABASE_NAME__%>.<%= __TABLE_NAME__ %>
+CREATE TABLE <%=__DATABASE_NAME__%>.<%= __TABLE_NAME__ %> USING DELTA
 (
 <%= fieldsCreated %>
 );
