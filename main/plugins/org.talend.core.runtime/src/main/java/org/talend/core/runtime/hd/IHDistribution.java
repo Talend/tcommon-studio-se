@@ -30,5 +30,7 @@ public interface IHDistribution {
     IHDistributionVersion getHDVersion(String v, boolean byDisplay);
 
     boolean useCustom();
+    
+    boolean isSparkLocal();
 
 }
