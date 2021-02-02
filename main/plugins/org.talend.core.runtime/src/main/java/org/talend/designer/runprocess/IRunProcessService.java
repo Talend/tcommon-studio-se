@@ -265,6 +265,8 @@ public interface IRunProcessService extends IService {
         return null;
     }
 
+    void removeFromCodesJavaProjects(ERepositoryObjectType codeType, String projectTechName);
+
     void removeFromCodesJarJavaProjects(CodesJarInfo info);
 
 }
