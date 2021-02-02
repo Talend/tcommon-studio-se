@@ -16,6 +16,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.eclipse.core.runtime.IStatus;
+import org.eclipse.core.runtime.Platform;
 import org.eclipse.draw2d.ColorConstants;
 import org.eclipse.emf.common.util.EList;
 import org.eclipse.jface.action.IAction;
@@ -180,6 +181,9 @@ public class XmlFileOutputStep2Form extends AbstractXmlFileStepForm {
         addSchemaViewer(mainSashFormComposite, 300, 100);
         addXmlFileViewer(mainSashFormComposite, 400, 100);
         mainSashFormComposite.setWeights(new int[] { 40, 60 });
+        if (Platform.OS_MACOSX.equals(Platform.getOS())) {
+            mainSashFormComposite.setSashWidth((mainSashFormComposite.getShell().getBounds().width) / 6);
+        }
 
         linker = new XmlFileSchema2TreeLinker(mainSashFormComposite);
         linker.setForm(this);
