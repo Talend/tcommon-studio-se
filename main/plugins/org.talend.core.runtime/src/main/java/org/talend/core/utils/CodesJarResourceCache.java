@@ -73,10 +73,11 @@ public class CodesJarResourceCache {
         }
     }
 
-    public static CodesJarInfo getCodesJarByLabel(String projectTechName, String label) {
+    public static CodesJarInfo getCodesJarByLabel(ERepositoryObjectType type, String projectTechName, String label) {
         synchronized (LOCK) {
             Optional<CodesJarInfo> optional = CACHE.stream().filter(
-                    info -> info.getProperty().getLabel().equals(label) && info.getProjectTechName().equals(projectTechName))
+                    info -> ERepositoryObjectType.getItemType(info.getProperty().getItem()) == type
+                            && info.getProperty().getLabel().equals(label) && info.getProjectTechName().equals(projectTechName))
                     .findFirst();
             if (optional.isPresent()) {
                 return optional.get();

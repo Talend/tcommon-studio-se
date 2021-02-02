@@ -23,7 +23,6 @@ import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
-import java.util.stream.Collectors;
 import java.util.zip.ZipException;
 
 import org.apache.commons.lang.StringUtils;
@@ -80,16 +79,12 @@ import org.talend.core.PluginChecker;
 import org.talend.core.model.properties.Item;
 import org.talend.core.model.repository.ERepositoryObjectType;
 import org.talend.core.model.repository.RepositoryViewObject;
-import org.talend.core.model.routines.CodesJarInfo;
 import org.talend.core.model.utils.TalendPropertiesUtil;
 import org.talend.core.repository.model.ProxyRepositoryFactory;
 import org.talend.core.service.IExchangeService;
 import org.talend.core.ui.advanced.composite.FilteredCheckboxTree;
 import org.talend.core.ui.component.ComponentPaletteUtilities;
 import org.talend.designer.core.IMultiPageTalendEditor;
-import org.talend.designer.maven.tools.AggregatorPomsHelper;
-import org.talend.designer.maven.tools.CodesJarM2CacheManager;
-import org.talend.designer.maven.tools.MavenPomSynchronizer;
 import org.talend.repository.items.importexport.handlers.ImportExportHandlersManager;
 import org.talend.repository.items.importexport.handlers.imports.ImportCacheHelper;
 import org.talend.repository.items.importexport.handlers.model.EmptyFolderImportItem;
@@ -1070,22 +1065,6 @@ public class ImportItemsWizardPage extends WizardPage {
                             }
                         }
                     });
-
-                    MavenPomSynchronizer.addChangeLibrariesListener();
-
-                    List<ImportItem> importedItems = ImportCacheHelper.getInstance().getImportedItemRecords();
-                    boolean needUpdateCode = importedItems.stream().anyMatch(item -> ERepositoryObjectType.getAllTypesOfCodes()
-                            .contains(ERepositoryObjectType.getItemType(item.getItem())));
-                    new AggregatorPomsHelper().updateCodeProjects(monitor, needUpdateCode, needUpdateCode);
-                    Set<CodesJarInfo> codesJarsToUpdate = importedItems.stream()
-                            .filter(item -> ERepositoryObjectType.getAllTypesOfCodesJar()
-                                    .contains(ERepositoryObjectType.getItemType(item.getItem())))
-                            .map(item -> CodesJarInfo.create(item.getProperty())).collect(Collectors.toSet());
-                    if (codesJarsToUpdate.isEmpty()) {
-                        CodesJarM2CacheManager.updateCodesJarProject(monitor, false, true);
-                    } else {
-                        CodesJarM2CacheManager.updateCodesJarProject(monitor, codesJarsToUpdate, true, true);
-                    }
                 }
             };
 

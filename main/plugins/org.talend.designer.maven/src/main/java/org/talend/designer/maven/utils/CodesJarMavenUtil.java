@@ -32,4 +32,9 @@ public class CodesJarMavenUtil {
                 + codesJarItem.getProperty().getLabel().toLowerCase();
     }
 
+    public static String getImportGAVPackageForCodesJar(String projectTechName, Item codesJarItem) {
+        return PomIdsHelper.getCodesJarGroupId(projectTechName, codesJarItem) + "."
+                + codesJarItem.getProperty().getLabel().toLowerCase() + ".*";
+    }
+
 }

@@ -155,7 +155,6 @@ public class ModulesNeededProvider {
 
     public static Set<ModuleNeeded> getModulesNeeded() {
         if (componentImportNeedsList.isEmpty()) {
-            // FIXME possible duplicate module version issue from codesjar's dependencies
             componentImportNeedsList.addAll(getRunningModules(true));
             componentImportNeedsList.addAll(getModulesNeededForApplication());
             if (PluginChecker.isMetadataPluginLoaded()) {
@@ -1067,15 +1066,15 @@ public class ModulesNeededProvider {
         Set<ModuleNeeded> runningModules = new HashSet<ModuleNeeded>();
         runningModules.addAll(getCodesModuleNeededs(ERepositoryObjectType.ROUTINES));
         runningModules.addAll(getCodesModuleNeededs(ERepositoryObjectType.BEANS));
+        // FIXME for now should not add custom jar modules to all list, later add unless make sure all safe
         if (includeCodesJar) {
-            runningModules.addAll(getCodesModuleNeededs(ERepositoryObjectType.ROUTINESJAR));
-            runningModules.addAll(getCodesModuleNeededs(ERepositoryObjectType.BEANSJAR));
+            // runningModules.addAll(getAllCodesJarModuleNeededs());
         }
         return runningModules;
     }
 
     public static Set<ModuleNeeded> getCodesModuleNeededs(ERepositoryObjectType type) {
-        if (type == null || ERepositoryObjectType.getAllTypesOfCodesJar().contains(type)) {
+        if (type == null) {
             return Collections.emptySet();
         }
         Set<ModuleNeeded> codesModules = new HashSet<>();

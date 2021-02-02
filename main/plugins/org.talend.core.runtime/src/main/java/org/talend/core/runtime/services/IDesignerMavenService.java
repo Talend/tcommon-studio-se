@@ -12,11 +12,25 @@
 // ============================================================================
 package org.talend.core.runtime.services;
 
+import org.talend.core.GlobalServiceRegister;
 import org.talend.core.IService;
+import org.talend.core.model.properties.Item;
+import org.talend.core.model.properties.Property;
 import org.talend.core.model.properties.RoutineItem;
 
 public interface IDesignerMavenService extends IService {
 
     String getCodesJarPackageByInnerCode(RoutineItem innerCodeItem);
+
+    String getImportGAVPackageForCodesJar(String projectTechName, Item codesJarItem);
+
+    void updateCodeJarMavenProject(Property codeJarProperty, boolean needReSync) throws Exception;
+
+    public static IDesignerMavenService get() {
+        if (GlobalServiceRegister.getDefault().isServiceRegistered(IDesignerMavenService.class)) {
+            return GlobalServiceRegister.getDefault().getService(IDesignerMavenService.class);
+        }
+        return null;
+    }
 
 }

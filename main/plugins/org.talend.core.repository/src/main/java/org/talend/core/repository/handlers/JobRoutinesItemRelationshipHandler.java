@@ -48,7 +48,7 @@ public class JobRoutinesItemRelationshipHandler extends AbstractJobItemRelations
             Map<String, String> currentSystemRoutinesMap = RelationshipItemBuilder.getInstance().getCurrentSystemRoutinesMap();
             for (Object o : processType.getParameters().getRoutinesParameter()) {
                 RoutinesParameterType itemInfor = (RoutinesParameterType) o;
-                if (currentSystemRoutinesMap.containsValue(itemInfor.getName())) {
+                if (itemInfor.getName() != null && currentSystemRoutinesMap.containsValue(itemInfor.getName())) {
                     // exclude system routines relation
                     continue;
                 }
