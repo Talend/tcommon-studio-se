@@ -1015,7 +1015,7 @@ public class ImportExportHandlersManager {
             if (codesJarsToUpdate.isEmpty()) {
                 CodesJarM2CacheManager.updateCodesJarProject(monitor, false, true);
             } else {
-                CodesJarM2CacheManager.updateCodesJarProject(monitor, codesJarsToUpdate);
+                CodesJarM2CacheManager.updateCodesJarProject(monitor, codesJarsToUpdate, true, true);
             }
 
             progressMonitor.done();

@@ -176,53 +176,22 @@ public class AggregatorPomsHelper {
     }
 
     public void updateCodeProjects(IProgressMonitor monitor, boolean forceBuild, boolean ignoreM2Cache) {
-        updateCodeProjects(monitor, forceBuild, ignoreM2Cache, true);
-    }
-
-    public void updateCodeProjects(IProgressMonitor monitor, boolean forceBuild, boolean ignoreM2Cache,
-            boolean onlyCurrentProject) {
         RepositoryWorkUnit workUnit = new RepositoryWorkUnit<Object>("update code project") { //$NON-NLS-1$
 
             @Override
             protected void run() {
-                List<Project> toUpdate = new ArrayList<>();
-                List<Project> toDelete = new ArrayList<>();
                 Project currentProject = ProjectManager.getInstance().getCurrentProject();
-                toUpdate.add(currentProject);
-                if (!onlyCurrentProject) {
-                    List<Project> refProjects = ProjectManager.getInstance().getAllReferencedProjects(true);
-                    toUpdate.addAll(refProjects);
-                    toDelete.addAll(refProjects);
-                }
                 try {
-                    for (Project project : toUpdate) {
-                        boolean isCurrentProject = currentProject.equals(project);
-                        for (ERepositoryObjectType codeType : ERepositoryObjectType.getAllTypesOfCodes()) {
-                            ITalendProcessJavaProject codeProject = IRunProcessService.get().getTalendCodeJavaProject(codeType,
-                                    project.getTechnicalLabel());
-                            if (isCurrentProject && ERepositoryObjectType.ROUTINES == codeType) {
-                                PomUtil.checkExistingLog4j2Dependencies4RoutinePom(projectTechName, codeProject.getProjectPom());
-                            }
-                            if (ignoreM2Cache || CodeM2CacheManager.needUpdateCodeProject(project, codeType)) {
-                                if (isCurrentProject) {
-                                    updateCodeProjectPom(monitor, codeType, codeProject.getProjectPom());
-                                    MavenProjectUtils.updateMavenProject(monitor, codeProject.getProject());
-                                    buildAndInstallCodesProject(monitor, codeType, true, forceBuild);
-                                } else {
-                                    Map<String, Object> argumentsMap = new HashMap<>();
-                                    argumentsMap.put(TalendProcessArgumentConstant.ARG_GOAL, TalendMavenConstants.GOAL_INSTALL);
-                                    codeProject.buildModules(monitor, null, argumentsMap);
-                                }
-                                CodeM2CacheManager.updateCodeProjectCache(project, codeType);
-                            }
+                    for (ERepositoryObjectType codeType : ERepositoryObjectType.getAllTypesOfCodes()) {
+                        ITalendProcessJavaProject codeProject = getCodesProject(codeType);
+                        if (ERepositoryObjectType.ROUTINES == codeType) {
+                            PomUtil.checkExistingLog4j2Dependencies4RoutinePom(projectTechName, codeProject.getProjectPom());
                         }
-                    }
-                    for (Project project : toDelete) {
-                        for (ERepositoryObjectType codeType : ERepositoryObjectType.getAllTypesOfCodes()) {
-                            ITalendProcessJavaProject codeProject = IRunProcessService.get().getTalendCodeJavaProject(codeType,
-                                    project.getTechnicalLabel());
-                            codeProject.getProject().delete(false, true, monitor);
-                            IRunProcessService.get().removeFromCodesJavaProjects(codeType, project.getTechnicalLabel());
+                        if (ignoreM2Cache || CodeM2CacheManager.needUpdateCodeProject(currentProject, codeType)) {
+                            updateCodeProjectPom(monitor, codeType, codeProject.getProjectPom());
+                            MavenProjectUtils.updateMavenProject(monitor, codeProject.getProject());
+                            buildAndInstallCodesProject(monitor, codeType, true, forceBuild);
+                            CodeM2CacheManager.updateCodeProjectCache(currentProject, codeType);
                         }
                     }
                 } catch (Exception e) {
