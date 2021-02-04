@@ -194,7 +194,7 @@ public interface ITalendCorePrefConstants {
 
     public static final String NEXUS_SHARE_LIBS = "NEXUS_SHARE_LIBS";
 
-    public static final boolean NEXUS_SHARE_LIBS_DEFAULT = false;
+    public static final boolean NEXUS_SHARE_LIBS_DEFAULT = true;
 
     /**
      * AutoMap algorithm weight

@@ -32,7 +32,9 @@ import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 import java.util.Set;
+import java.util.stream.Stream;
 
 import javax.xml.bind.DatatypeConverter;
 
@@ -1223,7 +1225,23 @@ public class LocalLibraryManager implements ILibraryManagerService, IChangedLibr
         }
     }
 
+    private static boolean isStartup() {
+        StackTraceElement[] stacks = Thread.currentThread().getStackTrace();
+        Optional result = Stream.of(stacks).filter(e -> {
+            if (e.getClassName().equals("org.eclipse.equinox.launcher.Main")) {
+                return true;
+            }
+            return false;
+        }).findAny();
+
+        return result.isPresent();
+    }
+
     private void deployLibsFromCustomComponents(IComponentsService service, Map<String, String> platformURLMap) {
+        if (isStartup() && !LibrariesManagerUtils.shareLibsAtStartup()) {
+            log.info("Skip deploying libs from custom components");
+            return;
+        }
         Set<File> needToDeploy = new HashSet<>();
         List<ComponentProviderInfo> componentsFolders = service.getComponentsFactory().getComponentsProvidersInfo();
         for (ComponentProviderInfo providerInfo : componentsFolders) {
