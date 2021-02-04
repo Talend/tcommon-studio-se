@@ -32,4 +32,8 @@ public class CodesJarMavenUtil {
                 + codesJarItem.getProperty().getLabel().toLowerCase();
     }
 
+    public static String getImportGAVPackageForCodesJar(Item codesJarItem) {
+        return PomIdsHelper.getCodesJarGroupId(codesJarItem) + "." + codesJarItem.getProperty().getLabel().toLowerCase() + ".*";
+    }
+
 }
