@@ -36,7 +36,7 @@ public class ShareLibsSynchronizer implements IStartup {
             ShareLibsJob job = new ShareLibsJob();
             job.schedule();
         } else {
-            LOGGER.info("Skip deploying libs from custom components");
+            LOGGER.info("Skip sharing libraries");
         }
     }
 }
