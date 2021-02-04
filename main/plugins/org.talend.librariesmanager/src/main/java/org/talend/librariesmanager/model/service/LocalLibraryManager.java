@@ -1225,22 +1225,11 @@ public class LocalLibraryManager implements ILibraryManagerService, IChangedLibr
         }
     }
 
-    private static boolean isStartup() {
-        StackTraceElement[] stacks = Thread.currentThread().getStackTrace();
-        Optional result = Stream.of(stacks).filter(e -> {
-            if (e.getClassName().equals("org.eclipse.equinox.launcher.Main")) {
-                return true;
-            }
-            return false;
-        }).findAny();
-
-        return result.isPresent();
-    }
-
     private void deployLibsFromCustomComponents(IComponentsService service, Map<String, String> platformURLMap) {
-        if (isStartup() && !LibrariesManagerUtils.shareLibsAtStartup()) {
+        boolean deployToRemote = true;
+        if (!LibrariesManagerUtils.shareLibsAtStartup()) {
             log.info("Skip deploying libs from custom components");
-            return;
+            deployToRemote = false;
         }
         Set<File> needToDeploy = new HashSet<>();
         List<ComponentProviderInfo> componentsFolders = service.getComponentsFactory().getComponentsProvidersInfo();
@@ -1272,6 +1261,19 @@ public class LocalLibraryManager implements ILibraryManagerService, IChangedLibr
             } catch (Exception e) {
                 ExceptionHandler.process(e);
                 continue;
+            }
+
+            if (!deployToRemote) {
+                needToDeploy.forEach(libFile -> {
+                    try {
+                        // install as release version if can't find mvn url from index
+                        install(libFile, null, false, true);
+                    } catch (Exception e) {
+                        ExceptionHandler.process(e);
+                    }
+                });
+
+                return;
             }
 
             // deploy needed jars for User and Exchange component providers
