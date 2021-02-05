@@ -37,6 +37,7 @@ import org.apache.maven.model.Model;
 import org.apache.maven.model.Parent;
 import org.eclipse.core.resources.IBuildConfiguration;
 import org.eclipse.core.resources.IFile;
+import org.eclipse.core.resources.IFolder;
 import org.eclipse.core.resources.IProject;
 import org.eclipse.core.resources.IncrementalProjectBuilder;
 import org.eclipse.core.resources.ResourcesPlugin;
@@ -52,6 +53,7 @@ import org.talend.commons.exception.PersistenceException;
 import org.talend.core.GlobalServiceRegister;
 import org.talend.core.model.general.Project;
 import org.talend.core.model.properties.Property;
+import org.talend.core.model.properties.RoutineItem;
 import org.talend.core.model.properties.RoutinesJarItem;
 import org.talend.core.model.repository.ERepositoryObjectType;
 import org.talend.core.model.repository.IRepositoryViewObject;
@@ -63,6 +65,8 @@ import org.talend.core.runtime.process.TalendProcessArgumentConstant;
 import org.talend.core.runtime.repository.item.ItemProductKeys;
 import org.talend.core.utils.CodesJarResourceCache;
 import org.talend.cwm.helper.ResourceHelper;
+import org.talend.designer.codegen.ICodeGeneratorService;
+import org.talend.designer.codegen.ITalendSynchronizer;
 import org.talend.designer.core.model.utils.emf.component.IMPORTType;
 import org.talend.designer.maven.launch.MavenPomCommandLauncher;
 import org.talend.designer.maven.model.TalendMavenConstants;
@@ -320,10 +324,39 @@ public class CodesJarM2CacheManager {
     }
 
     public static void updateCodesJarProject(Property property) throws Exception {
+        updateCodesJarProject(property, false);
+    }
+
+    public static void updateCodesJarProject(Property property, boolean needReSync) throws Exception {
         IProgressMonitor monitor = new NullProgressMonitor();
         CodesJarInfo info = CodesJarInfo.create(property);
         ITalendProcessJavaProject codesJarProject = getRunProcessService().getTalendCodesJarJavaProject(info);
         // updateCodesJarProjectPom(monitor, info);
+
+        if (needReSync) {
+            try {
+                IFolder innerCodesFolder = codesJarProject.getSrcFolder()
+                        .getFolder(new Path(StringUtils.replace(PomIdsHelper.getCodesJarGroupId(property.getItem()), ".", "/")));
+                if (innerCodesFolder.exists()) {
+                    innerCodesFolder.delete(true, false, null);
+                    if (GlobalServiceRegister.getDefault().isServiceRegistered(ICodeGeneratorService.class)) {
+                        ICodeGeneratorService codeGenService = (ICodeGeneratorService) GlobalServiceRegister.getDefault()
+                                .getService(ICodeGeneratorService.class);
+                        ITalendSynchronizer routineSynchronizer = codeGenService.createRoutineSynchronizer();
+                        ERepositoryObjectType codesJarType = ERepositoryObjectType.getItemType(property.getItem());
+                        List<IRepositoryViewObject> allInnerCodes = ProxyRepositoryFactory.getInstance()
+                                .getAllInnerCodes(codesJarType, property);
+                        for (IRepositoryViewObject codesObj : allInnerCodes) {
+                            RoutineItem codeItem = (RoutineItem) codesObj.getProperty().getItem();
+                            routineSynchronizer.syncRoutine(codeItem, true, true);
+                        }
+                    }
+                }
+            } catch (Exception e) {
+                ExceptionHandler.process(e);
+            }
+        }
+
         codesJarProject.buildWholeCodeProject();
         Set<CodesJarInfo> set = new HashSet<>();
         set.add(info);
