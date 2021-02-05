@@ -18,6 +18,7 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
+import org.eclipse.emf.common.util.EList;
 import org.talend.commons.exception.ExceptionHandler;
 import org.talend.commons.exception.PersistenceException;
 import org.talend.core.CorePlugin;
@@ -26,9 +27,17 @@ import org.talend.core.language.LanguageManager;
 import org.talend.core.model.general.ILibrariesService;
 import org.talend.core.model.general.Project;
 import org.talend.core.model.process.IProcess;
+import org.talend.core.model.process.IProcess2;
+import org.talend.core.model.properties.Item;
+import org.talend.core.model.properties.ProcessItem;
 import org.talend.core.model.properties.RoutineItem;
 import org.talend.core.model.repository.ERepositoryObjectType;
 import org.talend.core.model.repository.IRepositoryViewObject;
+import org.talend.core.model.routines.CodesJarInfo;
+import org.talend.core.runtime.services.IDesignerMavenService;
+import org.talend.core.utils.CodesJarResourceCache;
+import org.talend.designer.core.model.utils.emf.talendfile.ProcessType;
+import org.talend.designer.core.model.utils.emf.talendfile.RoutinesParameterType;
 import org.talend.repository.ProjectManager;
 import org.talend.repository.model.IProxyRepositoryFactory;
 
@@ -107,6 +116,28 @@ public final class CodeGeneratorRoutine {
             }
         }
         return new ArrayList<String>(neededRoutines);
+    }
+
+    public static List<String> getRequiredCodesJarName(IProcess process) {
+        IDesignerMavenService designerMavenService = IDesignerMavenService.get();
+        List<String> neededCodesJars = new ArrayList<>();
+        if (process instanceof IProcess2) {
+            Item item = ((IProcess2) process).getProperty().getItem();
+            if (item instanceof ProcessItem) {
+                ProcessType processType = ((ProcessItem) item).getProcess();
+                if (processType.getParameters() != null && processType.getParameters().getRoutinesParameter() != null) {
+                    EList<RoutinesParameterType> routineParameters = processType.getParameters().getRoutinesParameter();
+                    routineParameters.stream().filter(r -> r.getType() != null).forEach(r -> {
+                        CodesJarInfo info = CodesJarResourceCache.getCodesJarById(r.getId());
+                        if (info != null) {
+                            neededCodesJars
+                                    .add(designerMavenService.getImportGAVPackageForCodesJar(info.getProperty().getItem()));
+                        }
+                    });
+                }
+            }
+        }
+        return neededCodesJars;
     }
 
     /**

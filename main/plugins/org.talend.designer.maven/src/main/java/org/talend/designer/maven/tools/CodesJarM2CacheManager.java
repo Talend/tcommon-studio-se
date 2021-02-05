@@ -260,11 +260,10 @@ public class CodesJarM2CacheManager {
             toUpdate = CodesJarResourceCache.getAllCodesJars().stream()
                     .filter(info -> forceBuild || needUpdateCodesJarProject(info)).collect(Collectors.toSet());
         }
-        updateCodesJarProject(monitor, toUpdate, forceBuild, onlyCurrentProject);
+        updateCodesJarProject(monitor, toUpdate);
     }
 
-    public static void updateCodesJarProject(IProgressMonitor monitor, Set<CodesJarInfo> toUpdate, boolean forceBuild,
-            boolean onlyCurrentProject) {
+    public static void updateCodesJarProject(IProgressMonitor monitor, Set<CodesJarInfo> toUpdate) {
         if (toUpdate.isEmpty()) {
             return;
         }

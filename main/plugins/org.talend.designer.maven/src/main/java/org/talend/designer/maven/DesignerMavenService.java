@@ -12,6 +12,7 @@
 // ============================================================================
 package org.talend.designer.maven;
 
+import org.talend.core.model.properties.Item;
 import org.talend.core.model.properties.RoutineItem;
 import org.talend.core.runtime.services.IDesignerMavenService;
 import org.talend.designer.maven.utils.CodesJarMavenUtil;
@@ -21,6 +22,11 @@ public class DesignerMavenService implements IDesignerMavenService {
     @Override
     public String getCodesJarPackageByInnerCode(RoutineItem innerCodeItem) {
         return CodesJarMavenUtil.getCodesJarPackageByInnerCode(innerCodeItem);
+    }
+
+    @Override
+    public String getImportGAVPackageForCodesJar(Item codesJarItem) {
+        return CodesJarMavenUtil.getImportGAVPackageForCodesJar(codesJarItem);
     }
 
 }

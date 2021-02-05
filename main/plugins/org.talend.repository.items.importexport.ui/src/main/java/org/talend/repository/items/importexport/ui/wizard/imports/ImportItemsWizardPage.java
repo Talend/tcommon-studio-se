@@ -1084,7 +1084,7 @@ public class ImportItemsWizardPage extends WizardPage {
                     if (codesJarsToUpdate.isEmpty()) {
                         CodesJarM2CacheManager.updateCodesJarProject(monitor, false, true);
                     } else {
-                        CodesJarM2CacheManager.updateCodesJarProject(monitor, codesJarsToUpdate, true, true);
+                        CodesJarM2CacheManager.updateCodesJarProject(monitor, codesJarsToUpdate);
                     }
                 }
             };
