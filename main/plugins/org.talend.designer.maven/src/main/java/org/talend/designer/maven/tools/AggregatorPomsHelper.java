@@ -529,6 +529,12 @@ public class AggregatorPomsHelper {
      * Use Function to get the relativePath from property at realtime, since the property may be changed
      */
     public static IFolder getItemPomFolder(Property property, String realVersion, Function<Property, IPath> getItemRelativePath) {
+        return getItemPomFolder(property, ProjectManager.getInstance().getProject(property).getTechnicalLabel(), realVersion,
+                getItemRelativePath);
+    }
+
+    public static IFolder getItemPomFolder(Property property, String projectTechName, String realVersion,
+            Function<Property, IPath> getItemRelativePath) {
         if (GlobalServiceRegister.getDefault().isServiceRegistered(ITestContainerProviderService.class)) {
             ITestContainerProviderService testContainerService =
                     (ITestContainerProviderService) GlobalServiceRegister.getDefault().getService(
@@ -545,7 +551,6 @@ public class AggregatorPomsHelper {
             }
         }
 
-        String projectTechName = ProjectManager.getInstance().getProject(property).getTechnicalLabel();
         AggregatorPomsHelper helper = new AggregatorPomsHelper(projectTechName);
         IPath itemRelativePath = getItemRelativePath.apply(property);
         String version = realVersion == null ? property.getVersion() : realVersion;
