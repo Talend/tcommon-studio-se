@@ -2094,18 +2094,6 @@ public final class ProxyRepositoryFactory implements IProxyRepositoryFactory {
                         tdqRepositoryService.initProxyRepository();
                     }
                 }
-
-                /**
-                 * Execute TaCoKit migration before fullLogonFinished
-                 */
-                try {
-                    ITaCoKitService tacokitService = ITaCoKitService.getInstance();
-                    if (tacokitService != null) {
-                        tacokitService.checkMigration(monitor);
-                    }
-                } catch (Exception e) {
-                    ExceptionHandler.process(e);
-                }
                 fullLogonFinished = true;
                 this.repositoryFactoryFromProvider.afterLogon(monitor);
             } finally {

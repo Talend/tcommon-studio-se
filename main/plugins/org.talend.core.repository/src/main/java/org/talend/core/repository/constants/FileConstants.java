@@ -28,7 +28,7 @@ public interface FileConstants {
     String PROJECTSETTING_FILE_NAME = "project.settings"; //$NON-NLS-1$
 
     String RELATIONSHIP_FILE_NAME = "relationship.index"; //$NON-NLS-1$
-    
+
     String TALEND_RECYCLE_BIN_INDEX = "recycle_bin.index"; //$NON-NLS-1$
     
     String MIGRATION_TASK_FILE_NAME = "migration_task.index"; //$NON-NLS-1$

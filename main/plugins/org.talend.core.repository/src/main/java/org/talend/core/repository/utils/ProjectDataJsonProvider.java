@@ -119,8 +119,8 @@ public class ProjectDataJsonProvider {
             RecycleBinManager.getInstance().clearCache(project);
             RecycleBin recycleBin = RecycleBinManager.getInstance().getRecycleBin(project);
             project.getDeletedFolders().clear();
-            for (int i = 0; i < recycleBin.getDeletedFolders().size(); i++) {
-                project.getDeletedFolders().add(recycleBin.getDeletedFolders().get(i));
+            for (String element : recycleBin.getDeletedFolders()) {
+                project.getDeletedFolders().add(element);
             }
         }
         if ((loadContent & CONTENT_MIGRATIONTASK) > 0) {
@@ -238,8 +238,8 @@ public class ProjectDataJsonProvider {
             if (migrationTaskSetting != null) {
                 MigrationTask fakeTask = createFakeMigrationTask();
                 MigrationTask existingFakeTask = null;
-                for (int i = 0; i < project.getMigrationTask().size(); i++) {
-                    MigrationTask task = (MigrationTask) project.getMigrationTask().get(i);
+                for (Object element : project.getMigrationTask()) {
+                    MigrationTask task = (MigrationTask) element;
                     if (StringUtils.equals(fakeTask.getId(), task.getId())) {
                     	existingFakeTask = task;
                     	break;
@@ -392,8 +392,8 @@ public class ProjectDataJsonProvider {
     protected static List<StatusJson> getTechnicalStatusJson(List technicalStatus) {
         if (technicalStatus != null && technicalStatus.size() > 0) {
             List<StatusJson> list = new ArrayList<StatusJson>(technicalStatus.size());
-            for (int i = 0; i < technicalStatus.size(); i++) {
-                StatusJson json = new StatusJson((Status) technicalStatus.get(i));
+            for (Object technicalStatu : technicalStatus) {
+                StatusJson json = new StatusJson((Status) technicalStatu);
                 list.add(json);
             }
             return list;
@@ -413,8 +413,8 @@ public class ProjectDataJsonProvider {
     protected static List<StatusJson> getDocumentationJson(List documentationStatus) {
         if (documentationStatus != null && documentationStatus.size() > 0) {
             List<StatusJson> list = new ArrayList<StatusJson>(documentationStatus.size());
-            for (int i = 0; i < documentationStatus.size(); i++) {
-                StatusJson json = new StatusJson((Status) documentationStatus.get(i));
+            for (Object documentationStatu : documentationStatus) {
+                StatusJson json = new StatusJson((Status) documentationStatu);
                 list.add(json);
             }
             return list;
@@ -434,8 +434,8 @@ public class ProjectDataJsonProvider {
     protected static List<ItemRelationsJson> getItemRelationsJson(List itemsRelations) {
         if (itemsRelations.size() > 0) {
             List<ItemRelationsJson> list = new ArrayList<ItemRelationsJson>(itemsRelations.size());
-            for (int i = 0; i < itemsRelations.size(); i++) {
-                ItemRelations relations = (ItemRelations) itemsRelations.get(i);
+            for (Object itemsRelation : itemsRelations) {
+                ItemRelations relations = (ItemRelations) itemsRelation;
                 ItemRelationsJson json = new ItemRelationsJson(relations);
                 list.add(json);
             }
@@ -560,16 +560,16 @@ class ParametersTypeJson {
     public ParametersTypeJson(ParametersType parametersType) {
         if (parametersType.getElementParameter().size() > 0) {
             elementParameters = new ArrayList<ElementParameterTypeJson>();
-            for (int i = 0; i < parametersType.getElementParameter().size(); i++) {
-                ElementParameterType type = (ElementParameterType) parametersType.getElementParameter().get(i);
+            for (Object element : parametersType.getElementParameter()) {
+                ElementParameterType type = (ElementParameterType) element;
                 ElementParameterTypeJson typeJson = new ElementParameterTypeJson(type);
                 elementParameters.add(typeJson);
             }
         }
         if (parametersType.getRoutinesParameter().size() > 0) {
             routinesParameters = new ArrayList<RoutinesParameterTypeJson>();
-            for (int i = 0; i < parametersType.getRoutinesParameter().size(); i++) {
-                RoutinesParameterType type = (RoutinesParameterType) parametersType.getRoutinesParameter().get(i);
+            for (Object element : parametersType.getRoutinesParameter()) {
+                RoutinesParameterType type = (RoutinesParameterType) element;
                 RoutinesParameterTypeJson typeJson = new RoutinesParameterTypeJson(type);
                 routinesParameters.add(typeJson);
             }
@@ -643,8 +643,8 @@ class ElementParameterTypeJson {
         this.isShow = type.isShow();
         if (type.getElementValue().size() > 0) {
             elementValues = new ArrayList<ElementValueTypeJson>();
-            for (int i = 0; i < type.getElementValue().size(); i++) {
-                ElementValueType value = (ElementValueType) type.getElementValue().get(i);
+            for (Object element : type.getElementValue()) {
+                ElementValueType value = (ElementValueType) element;
                 ElementValueTypeJson valueJson = new ElementValueTypeJson(value);
                 elementValues.add(valueJson);
             }
@@ -874,8 +874,8 @@ class ItemRelationsJson {
         }
         if (relations.getRelatedItems().size() > 0) {
             relatedItems = new ArrayList<ItemRelationJson>(relations.getRelatedItems().size());
-            for (int i = 0; i < relations.getRelatedItems().size(); i++) {
-                relatedItems.add(new ItemRelationJson((ItemRelation) relations.getRelatedItems().get(i)));
+            for (Object element : relations.getRelatedItems()) {
+                relatedItems.add(new ItemRelationJson((ItemRelation) element));
             }
         }
     }
@@ -1022,8 +1022,8 @@ class MigrationTaskSetting {
         if (project != null) {
             if (project.getMigrationTask().size() > 0) {
                 migrationTaskList = new ArrayList<MigrationTaskJson>();
-                for (int i = 0; i < project.getMigrationTask().size(); i++) {
-                    MigrationTask task = (MigrationTask) project.getMigrationTask().get(i);
+                for (Object element : project.getMigrationTask()) {
+                    MigrationTask task = (MigrationTask) element;
                     migrationTaskList.add(new MigrationTaskJson(task));
                 }
                 migrationTaskList.sort(new Comparator<MigrationTaskJson>() {
@@ -1040,8 +1040,8 @@ class MigrationTaskSetting {
             }
             if (project.getMigrationTasks().size() > 0) {
                 migrationTasksList = new ArrayList<String>();
-                for (int i = 0; i < project.getMigrationTasks().size(); i++) {
-                    String task = (String) project.getMigrationTasks().get(i);
+                for (Object element : project.getMigrationTasks()) {
+                    String task = (String) element;
                     migrationTasksList.add(task);
                 }
             }
