@@ -32,7 +32,9 @@ import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 import java.util.Set;
+import java.util.stream.Stream;
 
 import javax.xml.bind.DatatypeConverter;
 
@@ -1331,6 +1333,11 @@ public class LocalLibraryManager implements ILibraryManagerService, IChangedLibr
     }
 
     private void deployLibsFromCustomComponents(IComponentsService service, Map<String, String> platformURLMap) {
+        boolean deployToRemote = true;
+        if (!LibrariesManagerUtils.shareLibsAtStartup()) {
+            log.info("Skip deploying libs from custom components");
+            deployToRemote = false;
+        }
         Set<File> needToDeploy = new HashSet<>();
         List<ComponentProviderInfo> componentsFolders = service.getComponentsFactory().getComponentsProvidersInfo();
         for (ComponentProviderInfo providerInfo : componentsFolders) {
@@ -1362,6 +1369,19 @@ public class LocalLibraryManager implements ILibraryManagerService, IChangedLibr
                 ExceptionHandler.process(e);
                 continue;
             }
+        }
+
+        if (!deployToRemote) {
+            needToDeploy.forEach(libFile -> {
+                try {
+                    // install as release version if can't find mvn url from index
+                    deploy(libFile.toURI(), null, false);
+                } catch (Exception e) {
+                    ExceptionHandler.process(e);
+                }
+            });
+
+            return;
         }
 
         // deploy needed jars for User and Exchange component providers
