@@ -192,6 +192,10 @@ public interface ITalendCorePrefConstants {
 
     public static final String NEXUS_REFRESH_FREQUENCY = "NEXUS_REFRESH_FREQUENCY"; //$NON-NLS-1$
 
+    public static final String NEXUS_SHARE_LIBS = "NEXUS_SHARE_LIBS";
+
+    public static final boolean NEXUS_SHARE_LIBS_DEFAULT = true;
+
     /**
      * AutoMap algorithm weight
      */

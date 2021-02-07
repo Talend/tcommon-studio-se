@@ -14,11 +14,16 @@ package org.talend.librariesmanager.ui.startup;
 
 import org.eclipse.ui.IStartup;
 
+import java.util.logging.Logger;
+import org.talend.librariesmanager.prefs.LibrariesManagerUtils;
+
 /**
  * created by wchen on 2015-6-15 Detailled comment
  *
  */
 public class ShareLibsSynchronizer implements IStartup {
+
+    private static final Logger LOGGER = Logger.getLogger(ShareLibsSynchronizer.class.getCanonicalName());
 
     /*
      * (non-Javadoc)
@@ -27,8 +32,11 @@ public class ShareLibsSynchronizer implements IStartup {
      */
     @Override
     public void earlyStartup() {
-        ShareLibsJob job = new ShareLibsJob();
-        job.schedule();
+        if (LibrariesManagerUtils.shareLibsAtStartup()) {
+            ShareLibsJob job = new ShareLibsJob();
+            job.schedule();
+        } else {
+            LOGGER.info("Skip sharing libraries");
+        }
     }
-
 }
