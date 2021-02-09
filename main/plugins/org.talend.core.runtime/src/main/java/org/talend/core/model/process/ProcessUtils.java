@@ -21,6 +21,7 @@ import java.util.List;
 import java.util.Map;
 
 import org.apache.commons.lang.StringUtils;
+import org.eclipse.emf.common.util.EList;
 import org.talend.commons.exception.ExceptionHandler;
 import org.talend.commons.exception.PersistenceException;
 import org.talend.commons.utils.VersionUtils;
@@ -53,6 +54,7 @@ import org.talend.core.utils.BitwiseOptionUtils;
 import org.talend.designer.core.IDesignerCoreService;
 import org.talend.designer.core.model.utils.emf.talendfile.ContextParameterType;
 import org.talend.designer.core.model.utils.emf.talendfile.ContextType;
+import org.talend.designer.core.model.utils.emf.talendfile.ElementParameterType;
 import org.talend.designer.core.model.utils.emf.talendfile.MetadataType;
 import org.talend.designer.core.model.utils.emf.talendfile.NodeType;
 import org.talend.designer.core.model.utils.emf.talendfile.ProcessType;
@@ -1016,4 +1018,33 @@ public final class ProcessUtils {
     public static String escapeJava(String input) {
         return StringEscapeUtils.escapeJava(input);
     }
+
+    public static boolean hasJettyEndpoint(ProcessType process) {
+
+        EList<NodeType> nodesList = process.getNode();
+
+        boolean hasJettyEndpoint = hasJettyEndpoint(nodesList);
+
+        return hasJettyEndpoint;
+    }
+
+    private static boolean hasJettyEndpoint(EList<NodeType> nodesList) {
+        for (NodeType node : nodesList) {
+            if ("cMessagingEndpoint".equals(node.getComponentName())) {
+                for (Object elementParameter : node.getElementParameter()) {
+                    ElementParameterType elementParameterType = (ElementParameterType)elementParameter;
+
+                    String name = elementParameterType.getName();
+                    String value = elementParameterType.getValue();
+
+                    if ("URI".equals(name) && (value != null && StringUtils.startsWith(value.trim(), "\"jetty:"))) {
+                        return true;
+                    }
+                }
+            }
+        }
+
+        return false;
+    }
+
 }
