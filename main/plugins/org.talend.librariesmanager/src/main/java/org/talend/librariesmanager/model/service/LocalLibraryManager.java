@@ -1359,7 +1359,13 @@ public class LocalLibraryManager implements ILibraryManagerService, IChangedLibr
 	}
 
 	private void deployLibsFromCustomComponents(IComponentsService service, Map<String, String> platformURLMap) {
-		Set<File> needToDeploy = new HashSet<>();
+        boolean deployToRemote = true;
+        if (!LibrariesManagerUtils.shareLibsAtStartup()) {
+            log.info("Skip deploying libs from custom components");
+            deployToRemote = false;
+        }
+
+        Set<File> needToDeploy = new HashSet<>();
 		List<ComponentProviderInfo> componentsFolders = service.getComponentsFactory().getComponentsProvidersInfo();
 		for (ComponentProviderInfo providerInfo : componentsFolders) {
 			String id = providerInfo.getId();
@@ -1389,6 +1395,19 @@ public class LocalLibraryManager implements ILibraryManagerService, IChangedLibr
 				continue;
 			}
 		}
+
+        if (!deployToRemote) {
+            needToDeploy.forEach(libFile -> {
+                try {
+                    // install as release version if can't find mvn url from index
+                    install(libFile, null, false, true);
+                } catch (Exception e) {
+                    ExceptionHandler.process(e);
+                }
+            });
+
+            return;
+        }
 
         // deploy needed jars for User and Exchange component providers
         Map<String, List<MavenArtifact>> snapshotArtifactMap = new HashMap<String, List<MavenArtifact>>();
