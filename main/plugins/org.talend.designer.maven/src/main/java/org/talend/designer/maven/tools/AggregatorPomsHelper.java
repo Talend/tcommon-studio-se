@@ -608,7 +608,7 @@ public class AggregatorPomsHelper {
         String jobFolderName = getJobProjectFolderName(property.getLabel(), version);
         ERepositoryObjectType type = ERepositoryObjectType.getItemType(property.getItem());
         IFolder jobFolder = null;
-        if (Boolean.getBoolean("compactProjectFolders")) {
+        if (PomIdsHelper.skipFolders()) {
             jobFolder = helper.getProcessFolder(type).getFolder(jobFolderName);
         } else {
             jobFolder = helper.getProcessFolder(type).getFolder(itemRelativePath).getFolder(jobFolderName);
