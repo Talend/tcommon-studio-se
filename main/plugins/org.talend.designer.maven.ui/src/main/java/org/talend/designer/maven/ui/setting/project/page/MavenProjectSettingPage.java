@@ -182,7 +182,7 @@ public class MavenProjectSettingPage extends AbstractProjectSettingPage {
             preferenceStore.setValue(MavenConstants.POM_FILTER, getRealVersionFilter(filter));
             preferenceStore.setValue(MavenConstants.USE_PROFILE_MODULE, useProfileModuleCheckbox.getSelection());
             preferenceStore.setValue(MavenConstants.EXCLUDE_DELETED_ITEMS, excludeDeletedItemsCheckbox.getSelection());
-            preferenceStore.setValue(MavenConstants.SKIP_FOLDERS, excludeDeletedItemsCheckbox.getSelection());
+            preferenceStore.setValue(MavenConstants.SKIP_FOLDERS, skipFoldersCheckbox.getSelection());
 		}
 		return ok;
 	}
