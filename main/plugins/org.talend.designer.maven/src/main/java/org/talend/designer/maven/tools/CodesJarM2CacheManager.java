@@ -249,6 +249,7 @@ public class CodesJarM2CacheManager {
         updateCodesJarProject(monitor, false, false);
     }
 
+    // TODO avoid to call this global update for some case like run/build job, only update related custom jar
     public static void updateCodesJarProject(IProgressMonitor monitor, boolean forceBuild, boolean onlyCurrentProject) {
         Set<CodesJarInfo> toUpdate;
         if (onlyCurrentProject) {

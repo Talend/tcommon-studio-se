@@ -25,8 +25,8 @@ public class DesignerMavenService implements IDesignerMavenService {
     }
 
     @Override
-    public String getImportGAVPackageForCodesJar(Item codesJarItem) {
-        return CodesJarMavenUtil.getImportGAVPackageForCodesJar(codesJarItem);
+    public String getImportGAVPackageForCodesJar(String projectTechName, Item codesJarItem) {
+        return CodesJarMavenUtil.getImportGAVPackageForCodesJar(projectTechName, codesJarItem);
     }
 
 }

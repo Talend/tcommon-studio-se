@@ -21,7 +21,7 @@ public interface IDesignerMavenService extends IService {
 
     String getCodesJarPackageByInnerCode(RoutineItem innerCodeItem);
 
-    String getImportGAVPackageForCodesJar(Item codesJarItem);
+    String getImportGAVPackageForCodesJar(String projectTechName, Item codesJarItem);
 
     public static IDesignerMavenService get() {
         if (GlobalServiceRegister.getDefault().isServiceRegistered(IDesignerMavenService.class)) {
