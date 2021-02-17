@@ -131,4 +131,6 @@ public interface IProcess extends IElement {
     public void checkStartNodes();
 
     public String getComponentsType();
+
+    public INode getNodeByUniqueName(String uniqueName);
 }

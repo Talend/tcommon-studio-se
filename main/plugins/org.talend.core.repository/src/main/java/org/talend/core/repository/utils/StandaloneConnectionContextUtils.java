@@ -205,6 +205,27 @@ public class StandaloneConnectionContextUtils {
             cloneConn.getParameters().put(ConnParameterKeys.CONN_PARA_KEY_HIVE_ADDITIONAL_JDBC_SETTINGS,
                     getOriginalValue(contextProperties, additionalJDBCSettings));
 
+            String dataprocProjectId = cloneConn.getParameters().get(ConnParameterKeys.CONN_PARA_KEY_HIVE_GOOGLE_PROJECT_ID);
+            cloneConn.getParameters().put(ConnParameterKeys.CONN_PARA_KEY_HIVE_GOOGLE_PROJECT_ID,
+                    getOriginalValue(contextProperties, dataprocProjectId));
+
+            String dataprocClusterId = cloneConn.getParameters().get(ConnParameterKeys.CONN_PARA_KEY_HIVE_GOOGLE_CLUSTER_ID);
+            cloneConn.getParameters().put(ConnParameterKeys.CONN_PARA_KEY_HIVE_GOOGLE_CLUSTER_ID,
+                    getOriginalValue(contextProperties, dataprocClusterId));
+
+            String dataprocRegion = cloneConn.getParameters().get(ConnParameterKeys.CONN_PARA_KEY_HIVE_GOOGLE_REGION);
+            cloneConn.getParameters().put(ConnParameterKeys.CONN_PARA_KEY_HIVE_GOOGLE_REGION,
+                    getOriginalValue(contextProperties, dataprocRegion));
+
+            String dataprocJarsBucket = cloneConn.getParameters().get(ConnParameterKeys.CONN_PARA_KEY_HIVE_GOOGLE_JARS_BUCKET);
+            cloneConn.getParameters().put(ConnParameterKeys.CONN_PARA_KEY_HIVE_GOOGLE_JARS_BUCKET,
+                    getOriginalValue(contextProperties, dataprocJarsBucket));
+
+            String dataprocPathToCredentials = cloneConn.getParameters()
+                    .get(ConnParameterKeys.CONN_PARA_KEY_HIVE_AUTHENTICATION_PATH_TO_GOOGLE_CREDENTIALS);
+            cloneConn.getParameters().put(ConnParameterKeys.CONN_PARA_KEY_HIVE_AUTHENTICATION_PATH_TO_GOOGLE_CREDENTIALS,
+                    getOriginalValue(contextProperties, dataprocPathToCredentials));
+
             String hiveEnableHa = cloneConn.getParameters().get(ConnParameterKeys.CONN_PARA_KEY_HIVE_ENABLE_HA);
             cloneConn.getParameters().put(ConnParameterKeys.CONN_PARA_KEY_HIVE_ENABLE_HA,
                     getOriginalValue(contextProperties, hiveEnableHa));
