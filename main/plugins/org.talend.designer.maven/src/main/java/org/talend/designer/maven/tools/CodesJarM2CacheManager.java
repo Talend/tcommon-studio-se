@@ -23,7 +23,6 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Calendar;
 import java.util.Collections;
-import java.util.Date;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
@@ -113,8 +112,6 @@ public class CodesJarM2CacheManager {
         try {
             Property property = info.getProperty();
             String projectTechName = info.getProjectTechName();
-            ERepositoryObjectType codeType = ERepositoryObjectType.getItemType(property.getItem());
-            Project project = ProjectManager.getInstance().getProjectFromProjectTechLabel(projectTechName);
             File cacheFile = getCacheFile(projectTechName, property);
             if (!cacheFile.exists()) {
                 return true;
@@ -149,30 +146,33 @@ public class CodesJarM2CacheManager {
                 return true;
             }
 
-            // check inner codes
-            List<IRepositoryViewObject> currentInnerCodes = ProxyRepositoryFactory.getInstance().getAllInnerCodes(project,
-                    codeType, property);
-            Map<Object, Object> cachedInnerCodes = cache.entrySet().stream()
-                    .filter(e -> e.getKey().toString().startsWith(KEY_INNERCODE_PREFIX))
-                    .collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue));
-            // check A/D
-            if (currentInnerCodes.size() != cachedInnerCodes.size()) {
-                return true;
-            }
-            // check M
-            for (IRepositoryViewObject codeItem : currentInnerCodes) {
-                Property innerCodeProperty = codeItem.getProperty();
-                String key = getInnerCodeKey(projectTechName, innerCodeProperty);
-                String cacheValue = (String) cachedInnerCodes.get(key);
-                if (cacheValue != null) {
-                    Date currentDate = ResourceHelper.dateFormat().parse(getModifiedDate(innerCodeProperty));
-                    Date cachedDate = ResourceHelper.dateFormat().parse(cacheValue);
-                    if (currentDate.compareTo(cachedDate) != 0) {
-                        return true;
-                    }
-                }
-            }
-        } catch (PersistenceException | IOException | ParseException e) {
+            // // check inner codes
+            // ERepositoryObjectType codeType = ERepositoryObjectType.getItemType(property.getItem());
+            // Project project = ProjectManager.getInstance().getProjectFromProjectTechLabel(projectTechName);
+            // List<IRepositoryViewObject> currentInnerCodes =
+            // ProxyRepositoryFactory.getInstance().getAllInnerCodes(project,
+            // codeType, property);
+            // Map<Object, Object> cachedInnerCodes = cache.entrySet().stream()
+            // .filter(e -> e.getKey().toString().startsWith(KEY_INNERCODE_PREFIX))
+            // .collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue));
+            // // check A/D
+            // if (currentInnerCodes.size() != cachedInnerCodes.size()) {
+            // return true;
+            // }
+            // // check M
+            // for (IRepositoryViewObject codeItem : currentInnerCodes) {
+            // Property innerCodeProperty = codeItem.getProperty();
+            // String key = getInnerCodeKey(projectTechName, innerCodeProperty);
+            // String cacheValue = (String) cachedInnerCodes.get(key);
+            // if (cacheValue != null) {
+            // Date currentDate = ResourceHelper.dateFormat().parse(getModifiedDate(innerCodeProperty));
+            // Date cachedDate = ResourceHelper.dateFormat().parse(cacheValue);
+            // if (currentDate.compareTo(cachedDate) != 0) {
+            // return true;
+            // }
+            // }
+            // }
+        } catch (IOException | ParseException e) {
             ExceptionHandler.process(e);
             // if any exception, still update in case breaking build job
             return true;
