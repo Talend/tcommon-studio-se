@@ -310,14 +310,10 @@ public class CodesJarM2CacheManager {
     private static void parallelBuild(IProgressMonitor monitor, Set<IProject> projects) throws CoreException {
         Set<IBuildConfiguration> configs = new HashSet<>(3);
         for (IProject project : projects) {
-            try {
-                configs.add(project.getActiveBuildConfig());
-            } catch (Exception e) {
-                ExceptionHandler.process(e);
-            }
+            configs.add(project.getActiveBuildConfig());
         }
         ResourcesPlugin.getWorkspace().build(configs.toArray(new IBuildConfiguration[configs.size()]),
-                IncrementalProjectBuilder.FULL_BUILD, false, monitor);
+                IncrementalProjectBuilder.INCREMENTAL_BUILD, false, monitor);
         // or just call buildParallel directly
         // org.eclipse.core.internal.resources.Workspace workspace = (Workspace) ResourcesPlugin.getWorkspace();
         // workspace.getBuildManager().buildParallel(configs, requestedConfigs, trigger, buildJobGroup, monitor);
