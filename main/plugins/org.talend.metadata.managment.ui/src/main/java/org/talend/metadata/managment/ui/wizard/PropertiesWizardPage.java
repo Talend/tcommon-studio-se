@@ -73,6 +73,7 @@ import org.talend.core.ui.branding.IBrandingService;
 import org.talend.core.utils.CodesJarResourceCache;
 import org.talend.designer.core.convert.IProcessConvertService;
 import org.talend.metadata.managment.ui.i18n.Messages;
+import org.talend.repository.ProjectManager;
 import org.talend.repository.model.IProxyRepositoryFactory;
 import org.talend.repository.model.IProxyRepositoryService;
 import org.talend.repository.model.IRepositoryService;
@@ -299,10 +300,12 @@ public abstract class PropertiesWizardPage extends AbstractNamedWizardPage {
 
             list = service.getProxyRepositoryFactory().getAll(type, true, false);
             if (ERepositoryObjectType.getAllTypesOfCodes().contains(type)) {
+                String currentProjectName = ProjectManager.getInstance().getCurrentProject().getTechnicalLabel();
                 for (CodesJarInfo info : CodesJarResourceCache.getAllCodesJars()) {
                     Property codeJarProperty = info.getProperty();
                     ERepositoryObjectType codesJarType = ERepositoryObjectType.getItemType(codeJarProperty.getItem());
-                    if (!ERepositoryObjectType.CodeTypeEnum.isCodeRepositoryObjectTypeMatch(codesJarType, type)) {
+                    if (!currentProjectName.equals(info.getProjectTechName())
+                            || !ERepositoryObjectType.CodeTypeEnum.isCodeRepositoryObjectTypeMatch(codesJarType, type)) {
                         continue;
                     }
                     List<IRepositoryViewObject> innerCodesObjects = service.getProxyRepositoryFactory()
