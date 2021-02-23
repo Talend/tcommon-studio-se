@@ -49,6 +49,7 @@ import orgomg.cwm.objectmodel.core.TaggedValue;
  */
 public final class MetadataToolAvroHelper {
 
+    private static final String TALEND_DB_COLUMN_NAME = "talend.field.dbColumnName";
     /**
      * @return An Avro schema with enriched properties from the incoming metadata table.
      */
@@ -574,7 +575,12 @@ public final class MetadataToolAvroHelper {
 
         // Set the defaults values to the name (the only information guaranteed to be available in every field).
         col.setId(field.name());
-        col.setLabel(field.name());
+        String dbColumnlable = null;
+        if (MetadataToolHelper.isAllowSpecificCharacters() && null != (dbColumnlable = field.getProp(TALEND_DB_COLUMN_NAME))) {
+            col.setLabel(dbColumnlable);
+        } else {
+            col.setLabel(field.name());
+        }
         col.setName(field.name());
         Schema nonnullable = AvroUtils.unwrapIfNullable(in);
         LogicalType logicalType = LogicalTypes.fromSchemaIgnoreInvalid(nonnullable);
