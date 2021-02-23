@@ -25,8 +25,10 @@ import org.apache.avro.SchemaBuilder.FieldAssembler;
 import org.apache.avro.SchemaBuilder.FieldBuilder;
 import org.apache.avro.SchemaBuilder.PropBuilder;
 import org.apache.avro.SchemaBuilder.RecordBuilder;
+import org.apache.avro.SchemaParseException;
 import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Level;
+import org.apache.log4j.Logger;
 import org.eclipse.emf.common.util.EList;
 import org.talend.commons.exception.ExceptionHandler;
 import org.talend.core.GlobalServiceRegister;
@@ -49,6 +51,10 @@ import orgomg.cwm.objectmodel.core.TaggedValue;
  */
 public final class MetadataToolAvroHelper {
 
+    private static Logger LOGGER = Logger.getLogger(MetadataToolAvroHelper.class);
+
+    private static final String COLUMN = "Column";
+
     /**
      * @return An Avro schema with enriched properties from the incoming metadata table.
      */
@@ -65,7 +71,7 @@ public final class MetadataToolAvroHelper {
                 dynamicPosition = i;
                 dynColumn = column;
             } else {
-                fa = convertToAvro(fa, column);
+                fa = convertToAvro(fa, column, i);
             }
             i++;
         }
@@ -84,6 +90,37 @@ public final class MetadataToolAvroHelper {
         return schema;
     }
 
+    public static org.apache.avro.Schema convertToAvroFromMigration(MetadataTable in) {
+        RecordBuilder<Schema> builder = SchemaBuilder.builder().record(in.getLabel());
+        copyTableProperties(builder, in);
+
+        FieldAssembler<Schema> fa = builder.fields();
+        int dynamicPosition = -1;
+        org.talend.core.model.metadata.builder.connection.MetadataColumn dynColumn = null;
+        int i = 0;
+        for (org.talend.core.model.metadata.builder.connection.MetadataColumn column : in.getColumns()) {
+            if ("id_Dynamic".equals(column.getTalendType())) { //$NON-NLS-1$
+                dynamicPosition = i;
+                dynColumn = column;
+            } else {
+                fa = convertToAvro(fa, column, i);
+            }
+            i++;
+        }
+
+        Schema schema = fa.endRecord();
+
+        if (dynColumn != null) {
+            // store all the dynamic column's properties
+            schema = copyDynamicColumnProperties(schema, dynColumn);
+            // store dynamic position
+            schema = AvroUtils.setProperty(schema, DiSchemaConstants.TALEND6_DYNAMIC_COLUMN_POSITION,
+                    String.valueOf(dynamicPosition));
+            // tag avro schema with include-all-columns
+            schema = AvroUtils.setIncludeAllFields(schema, true);
+        }
+        return schema;
+    }
     /**
      * Copy all of the information from the MetadataTable in the form of key/value properties into an Avro object.
      *
@@ -136,7 +173,7 @@ public final class MetadataToolAvroHelper {
      * Build a field into a schema using enriched properties from the incoming column.
      */
     private static FieldAssembler<Schema> convertToAvro(FieldAssembler<Schema> fa,
-            org.talend.core.model.metadata.builder.connection.MetadataColumn in) {
+            org.talend.core.model.metadata.builder.connection.MetadataColumn in, int i) {
         ICoreService coreService = (ICoreService) GlobalServiceRegister.getDefault().getService(ICoreService.class);
         String label = in.getLabel();
         if (label != null && coreService != null) {
@@ -164,22 +201,22 @@ public final class MetadataToolAvroHelper {
             // Numeric types.
             if (JavaTypesManager.LONG.getId().equals(tt)) {
                 type = AvroUtils._long();
-                defaultValue = StringUtils.isEmpty((String)defaultValue) ? null : Long.parseLong(defaultValue.toString());
+                defaultValue = StringUtils.isEmpty((String) defaultValue) ? null : Long.parseLong(defaultValue.toString());
             } else if (JavaTypesManager.INTEGER.getId().equals(tt)) {
                 type = AvroUtils._int();
-                defaultValue = StringUtils.isEmpty((String)defaultValue) ? null : Integer.parseInt(defaultValue.toString());
+                defaultValue = StringUtils.isEmpty((String) defaultValue) ? null : Integer.parseInt(defaultValue.toString());
             } else if (JavaTypesManager.SHORT.getId().equals(tt)) {
                 type = AvroUtils._short();
-                defaultValue = StringUtils.isEmpty((String)defaultValue) ? null : Integer.parseInt(defaultValue.toString());
+                defaultValue = StringUtils.isEmpty((String) defaultValue) ? null : Integer.parseInt(defaultValue.toString());
             } else if (JavaTypesManager.BYTE.getId().equals(tt)) {
                 type = AvroUtils._byte();
-                defaultValue = StringUtils.isEmpty((String)defaultValue) ? null : Integer.parseInt(defaultValue.toString());
+                defaultValue = StringUtils.isEmpty((String) defaultValue) ? null : Integer.parseInt(defaultValue.toString());
             } else if (JavaTypesManager.DOUBLE.getId().equals(tt)) {
                 type = AvroUtils._double();
-                defaultValue = StringUtils.isEmpty((String)defaultValue) ? null : Double.parseDouble(defaultValue.toString());
+                defaultValue = StringUtils.isEmpty((String) defaultValue) ? null : Double.parseDouble(defaultValue.toString());
             } else if (JavaTypesManager.FLOAT.getId().equals(tt)) {
                 type = AvroUtils._float();
-                defaultValue = StringUtils.isEmpty((String)defaultValue) ? null : Float.parseFloat(defaultValue.toString());
+                defaultValue = StringUtils.isEmpty((String) defaultValue) ? null : Float.parseFloat(defaultValue.toString());
             } else if (JavaTypesManager.BIGDECIMAL.getId().equals(tt)) {
                 // decimal(precision, scale) == column length and precision?
                 type = AvroUtils._decimal();
@@ -188,20 +225,20 @@ public final class MetadataToolAvroHelper {
             // Other primitive types that map directly to Avro.
             else if (JavaTypesManager.BOOLEAN.getId().equals(tt)) {
                 type = AvroUtils._boolean();
-                defaultValue = StringUtils.isEmpty((String)defaultValue) ? null : Boolean.parseBoolean(defaultValue.toString());
+                defaultValue = StringUtils.isEmpty((String) defaultValue) ? null : Boolean.parseBoolean(defaultValue.toString());
             } else if (JavaTypesManager.BYTE_ARRAY.getId().equals(tt)) {
                 type = AvroUtils._bytes();
             } else if (JavaTypesManager.DATE.getId().equals(tt)) {
-            	if (matchTag(in, DiSchemaConstants.TALEND6_COLUMN_DATE_DATE)) {
-            		type = AvroUtils._logicalDate();
-            	} else if (matchTag(in, DiSchemaConstants.TALEND6_COLUMN_DATE_TIME)) {
-            		type = AvroUtils._logicalTime();
-              } else if (matchTag(in, DiSchemaConstants.TALEND6_COLUMN_DATE_TIMESTAMP)) {
-                type = AvroUtils._logicalTimestamp();
-              }else {
-            		// FIXME - this one should go away
-            		type = AvroUtils._date();
-            	}
+                if (matchTag(in, DiSchemaConstants.TALEND6_COLUMN_DATE_DATE)) {
+                    type = AvroUtils._logicalDate();
+                } else if (matchTag(in, DiSchemaConstants.TALEND6_COLUMN_DATE_TIME)) {
+                    type = AvroUtils._logicalTime();
+                } else if (matchTag(in, DiSchemaConstants.TALEND6_COLUMN_DATE_TIMESTAMP)) {
+                    type = AvroUtils._logicalTimestamp();
+                } else {
+                    // FIXME - this one should go away
+                    type = AvroUtils._date();
+                }
             }
             // String-ish types.
             else if (JavaTypesManager.STRING.getId().equals(tt) || JavaTypesManager.FILE.getId().equals(tt)
@@ -209,9 +246,11 @@ public final class MetadataToolAvroHelper {
                     || JavaTypesManager.CHARACTER.getId().equals(tt) || JavaTypesManager.PASSWORD.getId().equals(tt)) {
                 type = AvroUtils._string();
             }
-        } catch(Exception e) {
-            //ignore it now as we can't process the complex expression for the default value, and the default value is not useful for runtime like the old javajet tjdbcxxx
-            //TODO support the expression calculate, not sure it's necessary and sometimes, more complex like globalMap.get(xxx) which only have meaning after running the job.
+        } catch (Exception e) {
+            // ignore it now as we can't process the complex expression for the default value, and the default value is
+            // not useful for runtime like the old javajet tjdbcxxx
+            // TODO support the expression calculate, not sure it's necessary and sometimes, more complex like
+            // globalMap.get(xxx) which only have meaning after running the job.
             ExceptionHandler.process(e, Level.WARN);
             defaultValue = null;
         }
@@ -236,7 +275,26 @@ public final class MetadataToolAvroHelper {
         }
 
         type = in.isNullable() ? AvroUtils.wrapAsNullable(type) : type;
-        return defaultValue == null ? fb.type(type).noDefault() : fb.type(type).withDefault(defaultValue);
+        FieldAssembler<Schema> returnResult = null;
+        try {
+            if (defaultValue == null) {
+                returnResult = fb.type(type).noDefault();
+            } else {
+                returnResult = fb.type(type).withDefault(defaultValue);
+            }
+        } catch (SchemaParseException e) {
+            String genColumn = COLUMN + i;
+            FieldBuilder<Schema> fbNew = fa.name(genColumn);
+            copyColumnProperties(fbNew, in);
+            if (defaultValue == null) {
+                returnResult = fbNew.type(type).noDefault();
+            } else {
+                returnResult = fbNew.type(type).withDefault(defaultValue);
+            }
+            LOGGER.info(e.getMessage() + ", use " + genColumn + " instead");
+        }
+        return returnResult;
+
     }
 
     private static Schema getLogicalTypeSchema(org.talend.core.model.metadata.builder.connection.MetadataColumn column) {
@@ -451,19 +509,16 @@ public final class MetadataToolAvroHelper {
             table.setTableType(prop);
         }
 
-        // Add the columns.
-        List<org.talend.core.model.metadata.builder.connection.MetadataColumn> columns = new ArrayList<>(in.getFields().size());
         for (Schema.Field f : in.getFields()) {
-            columns.add(convertFromAvro(f, table));
+            table.getColumns().add(convertFromAvro(f, table));
         }
         boolean isDynamic = AvroUtils.isIncludeAllFields(in);
         if (isDynamic) {
             org.talend.core.model.metadata.builder.connection.MetadataColumn col = convertFromAvroForDynamic(in);
             // get dynamic position
             int dynPosition = Integer.valueOf(in.getProp(DiSchemaConstants.TALEND6_DYNAMIC_COLUMN_POSITION));
-            columns.add(dynPosition, col);
+            table.getColumns().add(dynPosition, col);
         }
-        table.getColumns().addAll(columns);
         return table;
     }
 
