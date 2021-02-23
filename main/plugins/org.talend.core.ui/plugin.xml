@@ -30,6 +30,12 @@
             id="org.talend.core.ui.token.PerformanceProvider"
             name="performance">
       </provider>
+      <provider
+            collector="org.talend.core.ui.token.RepositroyActionsTokenCollector"
+            description="collect DI/DQ actions/numbers of action done, also collect perspective switch"
+            id="org.talend.core.ui.token.RepositroyActionsTokenCollector"
+            name="actions">
+      </provider>
    </extension>
    
       <extension
