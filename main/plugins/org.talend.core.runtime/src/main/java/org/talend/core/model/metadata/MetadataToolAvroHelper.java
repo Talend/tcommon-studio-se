@@ -90,37 +90,6 @@ public final class MetadataToolAvroHelper {
         return schema;
     }
 
-    public static org.apache.avro.Schema convertToAvroFromMigration(MetadataTable in) {
-        RecordBuilder<Schema> builder = SchemaBuilder.builder().record(in.getLabel());
-        copyTableProperties(builder, in);
-
-        FieldAssembler<Schema> fa = builder.fields();
-        int dynamicPosition = -1;
-        org.talend.core.model.metadata.builder.connection.MetadataColumn dynColumn = null;
-        int i = 0;
-        for (org.talend.core.model.metadata.builder.connection.MetadataColumn column : in.getColumns()) {
-            if ("id_Dynamic".equals(column.getTalendType())) { //$NON-NLS-1$
-                dynamicPosition = i;
-                dynColumn = column;
-            } else {
-                fa = convertToAvro(fa, column, i);
-            }
-            i++;
-        }
-
-        Schema schema = fa.endRecord();
-
-        if (dynColumn != null) {
-            // store all the dynamic column's properties
-            schema = copyDynamicColumnProperties(schema, dynColumn);
-            // store dynamic position
-            schema = AvroUtils.setProperty(schema, DiSchemaConstants.TALEND6_DYNAMIC_COLUMN_POSITION,
-                    String.valueOf(dynamicPosition));
-            // tag avro schema with include-all-columns
-            schema = AvroUtils.setIncludeAllFields(schema, true);
-        }
-        return schema;
-    }
     /**
      * Copy all of the information from the MetadataTable in the form of key/value properties into an Avro object.
      *
