@@ -112,6 +112,7 @@ import org.talend.rcp.intro.starting.StartingEditorInput;
 import org.talend.rcp.intro.starting.StartingHelper;
 import org.talend.rcp.util.ApplicationDeletionUtil;
 import org.talend.repository.RepositoryWorkUnit;
+import org.talend.repository.token.RepositoryActionLogger;
 import org.talend.repository.ui.login.connections.ConnectionUserPerReader;
 import org.talend.repository.ui.views.IRepositoryView;
 
@@ -472,7 +473,8 @@ public class ApplicationWorkbenchWindowAdvisor extends WorkbenchWindowAdvisor {
             public void perspectiveActivated(IWorkbenchPage page, IPerspectiveDescriptor perspective) {
                 // MOD xqliu 2010-10-14 bug 15756
                 String pId = perspective.getId();
-
+                RepositoryActionLogger.log(pId);
+                
                 if (IBrandingConfiguration.PERSPECTIVE_DI_ID.equals(pId)) {
                     IRepositoryView view = RepositoryManager.getRepositoryView();
                     if (view != null) {
@@ -524,7 +526,6 @@ public class ApplicationWorkbenchWindowAdvisor extends WorkbenchWindowAdvisor {
 
             @Override
             public boolean preShutdown(IWorkbench workbench, boolean forced) {
-                TokenCollectorFactory.getFactory().process();
                 return true;
             }
 
