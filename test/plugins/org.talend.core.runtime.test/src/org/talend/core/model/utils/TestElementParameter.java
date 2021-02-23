@@ -1165,4 +1165,10 @@ public class TestElementParameter implements IElementParameter {
     public void setSerialized(boolean isSerialized) {
         // TODO Auto-generated method stub
     }
+
+    @Override
+    public boolean isSelectedFromItemValue() {
+        // TODO Auto-generated method stub
+        return false;
+    }
 }
