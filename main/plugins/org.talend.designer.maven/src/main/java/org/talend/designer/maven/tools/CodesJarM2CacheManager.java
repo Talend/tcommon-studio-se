@@ -280,6 +280,10 @@ public class CodesJarM2CacheManager {
         updateCodesJarProject(new NullProgressMonitor(), toUpdate, false, needReSync);
     }
 
+    public static void updateCodesJarProject(IProgressMonitor monitor, Set<CodesJarInfo> toUpdate) {
+        updateCodesJarProject(monitor, toUpdate, false, false);
+    }
+
     public static void updateCodesJarProject(IProgressMonitor monitor, Set<CodesJarInfo> toUpdate, boolean generatePom,
             boolean syncCode) {
         if (toUpdate.isEmpty()) {
