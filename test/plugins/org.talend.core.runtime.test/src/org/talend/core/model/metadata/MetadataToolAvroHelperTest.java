@@ -12,8 +12,11 @@
 // ============================================================================
 package org.talend.core.model.metadata;
 
-import static org.hamcrest.CoreMatchers.*;
-import static org.junit.Assert.*;
+import static org.hamcrest.CoreMatchers.is;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertThat;
+import static org.junit.Assert.assertTrue;
 
 import java.util.ArrayList;
 import java.util.Iterator;
@@ -39,7 +42,6 @@ import org.talend.core.prefs.ITalendCorePrefConstants;
 import org.talend.cwm.helper.TaggedValueHelper;
 import org.talend.daikon.avro.AvroUtils;
 import org.talend.daikon.avro.SchemaConstants;
-import org.talend.repository.model.IProxyRepositoryFactory;
 
 import orgomg.cwm.objectmodel.core.TaggedValue;
 
@@ -340,6 +342,43 @@ public class MetadataToolAvroHelperTest {
                 break;
             }
         }
+    }
+
+    @Test
+    public void testConvertFromAvroJapanese() {
+        String schemaObj = "{\"type\":\"record\",\"name\":\"AccountContactRole\",\"fields\":[{\"name\":\"主鍵\",\"type\":\"string\",\"talend.field.length\":\"18\",\"talend.field.dbColumnName\":\"主鍵\"},"
+                + "{\"name\":\"名前\",\"type\":\"string\",\"talend.field.length\":\"18\",\"talend.field.dbColumnName\":\"名前\"}]}";
+
+        MetadataTable metadataTable = ConnectionFactory.eINSTANCE.createMetadataTable();
+        metadataTable.setId("123456789");
+        metadataTable.setName("table1");
+        metadataTable.setLabel("table1");
+        metadataTable.setSourceName("table1");
+        Schema avroSchema = new Schema.Parser().parse((String) schemaObj);
+
+        IEclipsePreferences coreUIPluginNode = new InstanceScope().getNode(ITalendCorePrefConstants.CoreUIPlugin_ID);
+        coreUIPluginNode.putBoolean(IRepositoryPrefConstants.ALLOW_SPECIFIC_CHARACTERS_FOR_SCHEMA_COLUMNS, true);
+        for (Schema.Field field : avroSchema.getFields()) {
+            MetadataColumn metadataColumn = MetadataToolAvroHelper.convertFromAvro(field, metadataTable);
+            metadataTable.getColumns().add(metadataColumn);
+        }
+
+        assertTrue(metadataTable.getColumns().get(0).getLabel().equals("主鍵"));
+        assertTrue(metadataTable.getColumns().get(1).getLabel().equals("名前"));
+
+        coreUIPluginNode.putBoolean(IRepositoryPrefConstants.ALLOW_SPECIFIC_CHARACTERS_FOR_SCHEMA_COLUMNS, false);
+        metadataTable = ConnectionFactory.eINSTANCE.createMetadataTable();
+        metadataTable.setId("123456789");
+        metadataTable.setName("table1");
+        metadataTable.setLabel("table1");
+        metadataTable.setSourceName("table1");
+        for (Schema.Field field : avroSchema.getFields()) {
+            MetadataColumn metadataColumn = MetadataToolAvroHelper.convertFromAvro(field, metadataTable);
+            metadataTable.getColumns().add(metadataColumn);
+        }
+
+        assertTrue(metadataTable.getColumns().get(0).getLabel().equals("Column0"));
+        assertTrue(metadataTable.getColumns().get(1).getLabel().equals("Column1"));
     }
 
     @Test
