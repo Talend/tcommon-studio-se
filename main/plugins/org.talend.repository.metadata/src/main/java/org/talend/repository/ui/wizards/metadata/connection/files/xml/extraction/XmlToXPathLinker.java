@@ -192,6 +192,11 @@ public class XmlToXPathLinker extends TreeToTablesLinker<Object, Object> {
 
         initListeners();
         createLinks();
+        if (WindowSystem.isBigSurOrLater()) {
+            getBackgroundRefresher().setBackgroundColor(getBgDrawableComposite().getBackground());
+            getBgDrawableComposite().setBackground(Display.getCurrent().getSystemColor(SWT.COLOR_TRANSPARENT));
+            this.getTree().setLinesVisible(true);
+        }
 
     }
 

@@ -16,6 +16,8 @@ import java.lang.reflect.Method;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.lang.String;
+import java.util.Dictionary;
 
 public final class BundleUtils {
 
@@ -56,6 +58,23 @@ public final class BundleUtils {
             Object serviceReference = getServiceReference.invoke(context, svcClass);
             Method getService = ctxClass.getMethod("getService", SERVICE_REFERENCE_CLASS);
             return svcClass.cast(getService.invoke(context, serviceReference));
+        } catch (Exception e) {
+            return null;
+        }
+    }
+
+    public static Object getService(String svcClass) {
+        if (BUNDLE == null) {
+            return null;
+        }
+        try {
+            Method getBundleContext = BUNDLE.getClass().getMethod("getBundleContext");
+            Object context = getBundleContext.invoke(BUNDLE);
+            Class<?> ctxClass = context.getClass();
+            Method getServiceReference = ctxClass.getMethod("getServiceReference", String.class);
+            Object serviceReference = getServiceReference.invoke(context, svcClass);
+            Method getService = ctxClass.getMethod("getService", SERVICE_REFERENCE_CLASS);
+            return (Object)getService.invoke(context, serviceReference);
         } catch (Exception e) {
             return null;
         }
@@ -102,7 +121,25 @@ public final class BundleUtils {
             return services;
         }
     }
-    
+
+    public static Dictionary<String, Object> getJobProperties(String jobName) {
+
+        try {
+            Object configAdminObject = getService("org.osgi.service.cm.ConfigurationAdmin");
+
+            Method getConfigurationMethod = configAdminObject.getClass().getMethod("getConfiguration", String.class);
+
+            Object configAdminJobConfiguration = getConfigurationMethod.invoke(configAdminObject, jobName);
+
+            Method getPropertiesMethod = configAdminJobConfiguration.getClass().getMethod("getProperties", null);
+
+            Dictionary<String, Object> jobProperties = (Dictionary<String, Object>)getPropertiesMethod.invoke(configAdminJobConfiguration, null);
+
+            return jobProperties;
+        } catch(Exception e) {
+            return null;
+        }
+    }
 
     public static boolean inOSGi() {
         return BUNDLE != null;

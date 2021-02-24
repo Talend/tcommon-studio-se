@@ -1,0 +1,29 @@
+<%
+EXTRACT(__SCHEMA__);
+String fieldsCreated = "";
+boolean flagCreated=false;
+
+for(int i=0; i < __SCHEMA__.length; i++){
+ if(flagCreated){
+	 fieldsCreated += ",";
+ }else{
+	 flagCreated=true;
+ }
+ if(__SCHEMA_DBTYPE__[i].contains("VARCHAR")) {
+	 __SCHEMA_DBTYPE__[i] = "STRING";
+ }
+ 	if( __SCHEMA_DBTYPE__[i].equals("DECIMAL")){
+ 		fieldsCreated += (__SCHEMA_NAME__[i] + " " + __SCHEMA_DBTYPE__[i] +" ("+ __SCHEMA_LENGTH__[i] +","+ __SCHEMA_PRECISION__[i] +") ");
+ 	} else {
+ 		fieldsCreated += (__SCHEMA_NAME__[i] + " " + __SCHEMA_DBTYPE__[i]);
+    }
+ 	if(__SCHEMA_NULLABLE__[i].equals("false")){
+ 		fieldsCreated += " NOT NULL";
+ 	}
+}
+%>
+
+CREATE TABLE <%=__DATABASE_NAME__%>.<%= __TABLE_NAME__ %>
+(
+<%= fieldsCreated %>
+);
