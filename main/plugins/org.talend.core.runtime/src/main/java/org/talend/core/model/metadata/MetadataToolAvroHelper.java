@@ -452,19 +452,16 @@ public final class MetadataToolAvroHelper {
             table.setTableType(prop);
         }
 
-        // Add the columns.
-        List<org.talend.core.model.metadata.builder.connection.MetadataColumn> columns = new ArrayList<>(in.getFields().size());
         for (Schema.Field f : in.getFields()) {
-            columns.add(convertFromAvro(f, table));
+            table.getColumns().add(convertFromAvro(f, table));
         }
         boolean isDynamic = AvroUtils.isIncludeAllFields(in);
         if (isDynamic) {
             org.talend.core.model.metadata.builder.connection.MetadataColumn col = convertFromAvroForDynamic(in);
             // get dynamic position
             int dynPosition = Integer.valueOf(in.getProp(DiSchemaConstants.TALEND6_DYNAMIC_COLUMN_POSITION));
-            columns.add(dynPosition, col);
+            table.getColumns().add(dynPosition, col);
         }
-        table.getColumns().addAll(columns);
         return table;
     }
 
