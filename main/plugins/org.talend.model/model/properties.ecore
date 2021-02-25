@@ -325,8 +325,7 @@
   <eClassifiers xsi:type="ecore:EClass" name="GenericSchemaConnectionItem" eSuperTypes="#//ConnectionItem"/>
   <eClassifiers xsi:type="ecore:EClass" name="UserModuleAuthorization">
     <eStructuralFeatures xsi:type="ecore:EReference" name="user" eType="#//User" eOpposite="#//User/moduleAuthorization"/>
-    <eStructuralFeatures xsi:type="ecore:EAttribute" name="type" unique="false" eType="#//UserModuleAuthorizationType"
-        defaultValueLiteral="Scheduler"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="type" unique="false" eType="#//UserModuleAuthorizationType"/>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EEnum" name="UserModuleAuthorizationType">
     <eLiterals name="JobConductor" value="1" literal="Job Conductor"/>
@@ -858,7 +857,7 @@
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="version" lowerBound="1"
         eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="status" lowerBound="1"
-        eType="#//MigrationStatus" defaultValueLiteral="0"/>
+        eType="#//MigrationStatus"/>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EEnum" name="MigrationStatus">
     <eLiterals name="default" literal="default"/>
@@ -867,4 +866,12 @@
     <eLiterals name="noimpact" value="3"/>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="PigudfItem" eSuperTypes="#//RoutineItem"/>
+  <eClassifiers xsi:type="ecore:EClass" name="RoutinesJarType">
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="mvnUrl" eType="ecore:EDataType platform:/plugin/org.eclipse.emf.ecore/model/Ecore.ecore#//EString"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="imports" upperBound="-1"
+        eType="ecore:EClass Component.ecore#//IMPORTType" containment="true"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="RoutinesJarItem" eSuperTypes="#//Item">
+    <eStructuralFeatures xsi:type="ecore:EReference" name="routinesJarType" eType="#//RoutinesJarType"/>
+  </eClassifiers>
 </ecore:EPackage>

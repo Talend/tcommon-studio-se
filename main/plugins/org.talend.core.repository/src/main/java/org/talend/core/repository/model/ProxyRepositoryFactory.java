@@ -25,6 +25,7 @@ import java.util.Hashtable;
 import java.util.List;
 import java.util.Map;
 import java.util.regex.Pattern;
+import java.util.stream.Collectors;
 
 import org.apache.log4j.Level;
 import org.apache.log4j.Logger;
@@ -106,6 +107,7 @@ import org.talend.core.model.properties.ProcessItem;
 import org.talend.core.model.properties.ProjectReference;
 import org.talend.core.model.properties.PropertiesPackage;
 import org.talend.core.model.properties.Property;
+import org.talend.core.model.properties.RoutineItem;
 import org.talend.core.model.properties.SpagoBiServer;
 import org.talend.core.model.properties.Status;
 import org.talend.core.model.properties.User;
@@ -137,6 +139,7 @@ import org.talend.core.runtime.services.IMavenUIService;
 import org.talend.core.runtime.util.ItemDateParser;
 import org.talend.core.runtime.util.SharedStudioUtils;
 import org.talend.core.service.ICoreUIService;
+import org.talend.core.utils.CodesJarResourceCache;
 import org.talend.cwm.helper.SubItemHelper;
 import org.talend.cwm.helper.TableHelper;
 import org.talend.designer.runprocess.IRunProcessService;
@@ -1348,6 +1351,37 @@ public final class ProxyRepositoryFactory implements IProxyRepositoryFactory {
     }
 
     @Override
+    public List<IRepositoryViewObject> getAll(Project project, ERepositoryObjectType type, boolean withDeleted,
+            boolean allVersions, IFolder... folders) throws PersistenceException {
+        return this.repositoryFactoryFromProvider.getAll(project, type, withDeleted, allVersions, folders);
+    }
+
+    @Override
+    public List<IRepositoryViewObject> getAllCodesJars(ERepositoryObjectType type) throws PersistenceException {
+        return getAllCodesJars(projectManager.getCurrentProject(), type);
+    }
+
+    @Override
+    public List<IRepositoryViewObject> getAllCodesJars(Project project, ERepositoryObjectType type) throws PersistenceException {
+        return getAll(project, type).stream().filter(obj -> !(obj.getProperty().getItem() instanceof RoutineItem))
+                .collect(Collectors.toList());
+    }
+
+    @Override
+    public List<IRepositoryViewObject> getAllInnerCodes(ERepositoryObjectType codesJarType, Property jarProperty)
+            throws PersistenceException {
+        return getAllInnerCodes(projectManager.getCurrentProject(), codesJarType, jarProperty);
+    }
+
+    @Override
+    public List<IRepositoryViewObject> getAllInnerCodes(Project project, ERepositoryObjectType codesJarType, Property jarProperty)
+            throws PersistenceException {
+        IFolder folder = ResourceUtils.getFolder(ResourceUtils.getProject(project),
+                ERepositoryObjectType.getFolderName(codesJarType) + "/" + jarProperty.getLabel(), true);
+        return repositoryFactoryFromProvider.getAll(project, codesJarType, false, false, folder);
+    }
+
+    @Override
     public List<String> getFolders(ERepositoryObjectType type) throws PersistenceException {
         return getFolders(projectManager.getCurrentProject(), type);
     }
@@ -2272,6 +2306,8 @@ public final class ProxyRepositoryFactory implements IProxyRepositoryFactory {
 
                     currentMonitor = subMonitor.newChild(1, SubMonitor.SUPPRESS_NONE);
                     currentMonitor.beginTask(Messages.getString("ProxyRepositoryFactory.synch.repo.items"), 1); //$NON-NLS-1$
+
+                    CodesJarResourceCache.initCodesJarCache();
 
                     if (!isCommandLineLocalRefProject) {
                         try {

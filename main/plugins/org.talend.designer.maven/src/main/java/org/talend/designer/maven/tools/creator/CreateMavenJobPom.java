@@ -29,6 +29,7 @@ import java.util.Properties;
 import java.util.Scanner;
 import java.util.Set;
 import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 import org.apache.commons.lang3.BooleanUtils;
 import org.apache.commons.lang3.StringUtils;
@@ -59,10 +60,12 @@ import org.talend.core.model.process.IProcess;
 import org.talend.core.model.process.IProcess2;
 import org.talend.core.model.process.JobInfo;
 import org.talend.core.model.process.ProcessUtils;
+import org.talend.core.model.properties.Item;
 import org.talend.core.model.properties.ProcessItem;
 import org.talend.core.model.properties.Project;
 import org.talend.core.model.properties.Property;
 import org.talend.core.model.repository.ERepositoryObjectType;
+import org.talend.core.model.routines.RoutinesUtil;
 import org.talend.core.model.utils.JavaResourcesHelper;
 import org.talend.core.repository.utils.ItemResourceUtil;
 import org.talend.core.runtime.maven.MavenConstants;
@@ -76,6 +79,7 @@ import org.talend.core.runtime.projectsetting.IProjectSettingTemplateConstants;
 import org.talend.core.runtime.projectsetting.ProjectPreferenceManager;
 import org.talend.core.ui.ITestContainerProviderService;
 import org.talend.core.utils.TemplateFileUtils;
+import org.talend.designer.core.model.utils.emf.talendfile.ProcessType;
 import org.talend.designer.maven.model.TalendMavenConstants;
 import org.talend.designer.maven.template.ETalendMavenVariables;
 import org.talend.designer.maven.template.MavenTemplateManager;
@@ -643,26 +647,37 @@ public class CreateMavenJobPom extends AbstractMavenProcessorPom {
         }
 
         // talend libraries and codes
-        String projectGroupId = PomIdsHelper.getProjectGroupId(ProjectManager.getInstance().getProject(currentJobProperty).getTechnicalLabel());
-
         List<Dependency> dependencies = new ArrayList<>();
         // codes
-        List<Dependency> codeDependencies = getCodesDependencies();
+        List<Dependency> codeDependencies = new ArrayList<>();
+        addCodesDependencies(codeDependencies);
+        // codesjar
+        codeDependencies.addAll(getCodesJarDependenciesFromChildren());
         dependencies.addAll(codeDependencies);
 
         // codes dependencies (optional)
         ERepositoryObjectType.getAllTypesOfCodes().forEach(t -> dependencies.addAll(PomUtil.getCodesDependencies(t)));
 
         // libraries of talend/3rd party
-        Set<Dependency> parentJobDependencies = processor.getNeededModules(TalendProcessOptionConstants.MODULES_EXCLUDE_SHADED).stream()
+        Set<Dependency> parentJobDependencies = processor
+                .getNeededModules(
+                        TalendProcessOptionConstants.MODULES_EXCLUDE_SHADED | TalendProcessOptionConstants.MODULES_WITH_CODESJAR)
+                .stream()
                 .filter(m -> !m.isExcluded()).map(m -> createDenpendency(m, false))
                 .collect(Collectors.toSet());
         dependencies.addAll(parentJobDependencies);
 
+        // get codesjar libraries from related joblets
+        dependencies.addAll(processor.getCodesJarModulesNeededOfJoblets().stream().map(m -> createDenpendency(m, false))
+                .collect(Collectors.toSet()));
+
         // missing modules from the job generation of children
         Map<String, Set<Dependency>> childjobDependencies = new HashMap<String, Set<Dependency>>();
         childrenJobInfo.forEach(j -> {
-            Set<Dependency> collectDependency = LastGenerationInfo.getInstance().getModulesNeededPerJob(j.getJobId(), j.getJobVersion()).stream()
+            Set<Dependency> collectDependency = Stream
+                    .concat(LastGenerationInfo.getInstance().getModulesNeededPerJob(j.getJobId(), j.getJobVersion()).stream(),
+                            LastGenerationInfo.getInstance().getCodesJarModulesNeededPerJob(j.getJobId(), j.getJobVersion())
+                                    .stream())
                     .filter(m -> !m.isExcluded()).map(m -> createDenpendency(m, false)).collect(Collectors.toSet());
             dependencies.addAll(collectDependency);
             childjobDependencies.put(j.getJobId(), collectDependency);});
@@ -742,6 +757,12 @@ public class CreateMavenJobPom extends AbstractMavenProcessorPom {
         }
     }
 
+    private List<Dependency> getCodesJarDependenciesFromChildren() {
+        List<Dependency> dependencies = new ArrayList<>();
+        getJobProcessor().getBuildChildrenJobsAndJoblets().stream().filter(info -> !info.isTestContainer()).forEach(
+                info -> dependencies.addAll(createCodesJarDependencies(RoutinesUtil.getRoutinesParametersFromJobInfo(info))));
+        return dependencies;
+    }
 
     // remove duplicate job dependencies and only keep the latest one
     // keep high priority dependencies if set by tLibraryLoad
@@ -1015,4 +1036,10 @@ public class CreateMavenJobPom extends AbstractMavenProcessorPom {
         return sb.toString();
     }
 
+    @Override
+    protected ProcessType getProcessType() {
+        Item item = this.getJobProcessor().getProperty().getItem();
+        return ((ProcessItem) item).getProcess();
+    }
+    
 }

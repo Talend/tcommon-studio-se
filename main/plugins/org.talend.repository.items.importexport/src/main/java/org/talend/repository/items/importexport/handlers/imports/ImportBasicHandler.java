@@ -101,6 +101,7 @@ import org.talend.core.runtime.CoreRuntimePlugin;
 import org.talend.core.runtime.services.IGenericDBService;
 import org.talend.core.runtime.services.IGenericWizardService;
 import org.talend.core.services.ICoreTisService;
+import org.talend.core.utils.CodesJarResourceCache;
 import org.talend.core.utils.WorkspaceUtils;
 import org.talend.designer.business.model.business.BusinessPackage;
 import org.talend.designer.business.model.business.BusinessProcess;
@@ -850,6 +851,9 @@ public class ImportBasicHandler extends AbstractImportExecutableHandler {
                         copyContextLinkFile(linkFile, tmpItem);
                     }
                     repObjectcache.addToCache(tmpItem);
+                    if (ERepositoryObjectType.getAllTypesOfCodesJar().contains(itemType)) {
+                        CodesJarResourceCache.addToCache(tmpItem.getProperty());
+                    }
                 }
 
                 if (tmpItem.getState() != null && itemType != null) {

@@ -15,6 +15,7 @@ package org.talend.core.repository.model;
 import java.util.List;
 
 import org.eclipse.core.resources.IFile;
+import org.eclipse.core.resources.IFolder;
 import org.eclipse.core.resources.IProject;
 import org.eclipse.core.runtime.IPath;
 import org.eclipse.core.runtime.IProgressMonitor;
@@ -186,7 +187,7 @@ public interface IRepositoryFactory {
      * @throws PersistenceException
      */
     public List<IRepositoryViewObject> getAll(Project project, ERepositoryObjectType type, boolean withDeleted,
-            boolean allVersions) throws PersistenceException;
+            boolean allVersions, IFolder... folders) throws PersistenceException;
 
     /**
      * Deletes logically the given object. <code>isDeleted</code> on this object will now returned <code>true</code>.

@@ -20,6 +20,7 @@ import java.util.Collections;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
@@ -36,6 +37,7 @@ import org.talend.commons.utils.VersionUtils;
 import org.talend.commons.utils.encoding.CharsetToolkit;
 import org.talend.commons.utils.generation.JavaUtils;
 import org.talend.commons.utils.resource.FileExtensions;
+import org.talend.commons.utils.workbench.resources.ResourceUtils;
 import org.talend.core.GlobalServiceRegister;
 import org.talend.core.IService;
 import org.talend.core.model.general.Project;
@@ -46,14 +48,19 @@ import org.talend.core.model.properties.Property;
 import org.talend.core.model.properties.RoutineItem;
 import org.talend.core.model.repository.ERepositoryObjectType;
 import org.talend.core.model.repository.IRepositoryViewObject;
+import org.talend.core.model.routines.CodesJarInfo;
+import org.talend.core.model.routines.RoutinesUtil;
 import org.talend.core.model.utils.JavaResourcesHelper;
 import org.talend.core.runtime.process.ITalendProcessJavaProject;
 import org.talend.core.runtime.repository.item.ItemProductKeys;
+import org.talend.core.runtime.services.IDesignerMavenService;
 import org.talend.core.runtime.util.ItemDateParser;
 import org.talend.core.ui.branding.IBrandingService;
+import org.talend.core.utils.CodesJarResourceCache;
 import org.talend.designer.core.ICamelDesignerCoreService;
 import org.talend.designer.runprocess.IRunProcessService;
 import org.talend.repository.ProjectManager;
+import org.talend.repository.model.IProxyRepositoryFactory;
 import org.talend.repository.model.IRepositoryService;
 import org.talend.repository.model.RepositoryNodeUtilities;
 
@@ -141,6 +148,9 @@ public abstract class AbstractRoutineSynchronizer implements ITalendSynchronizer
     }
 
     protected IFile getRoutineFile(RoutineItem routineItem, String projectTechName) throws SystemException {
+        if (RoutinesUtil.isInnerCodes(routineItem.getProperty())) {
+            return getInnerCodeFile(routineItem);
+        }
         ITalendProcessJavaProject talendProcessJavaProject = getRunProcessService()
                 .getTalendCodeJavaProject(ERepositoryObjectType.getItemType(routineItem), projectTechName);
         if (talendProcessJavaProject == null) {
@@ -148,6 +158,24 @@ public abstract class AbstractRoutineSynchronizer implements ITalendSynchronizer
         }
         IFolder routineFolder = talendProcessJavaProject.getSrcSubFolder(null, routineItem.getPackageType());
         return routineFolder.getFile(routineItem.getProperty().getLabel() + JavaUtils.JAVA_EXTENSION);
+    }
+
+    protected IFile getInnerCodeFile(RoutineItem routineItem) throws SystemException {
+        CodesJarInfo info = CodesJarResourceCache.getCodesJarByInnerCode(routineItem);
+        ITalendProcessJavaProject talendProcessJavaProject = getRunProcessService().getTalendCodesJarJavaProject(info);
+        if (talendProcessJavaProject == null) {
+            return null;
+        }
+        IFolder routineFolder = talendProcessJavaProject.getSrcSubFolder(null, getInnerCodePackage(routineItem));
+        return routineFolder.getFile(routineItem.getProperty().getLabel() + JavaUtils.JAVA_EXTENSION);
+    }
+
+    private String getInnerCodePackage(RoutineItem innerCodeItem) {
+        if (GlobalServiceRegister.getDefault().isServiceRegistered(IDesignerMavenService.class)) {
+            IDesignerMavenService service = GlobalServiceRegister.getDefault().getService(IDesignerMavenService.class);
+            return service.getCodesJarPackageByInnerCode(innerCodeItem);
+        }
+        return null;
     }
 
     private IFile getProcessFile(ProcessItem item) throws SystemException {
@@ -173,15 +201,23 @@ public abstract class AbstractRoutineSynchronizer implements ITalendSynchronizer
 
     @Override
     public IFile getRoutinesFile(Item item) throws SystemException {
+        // from talend project
         if (item instanceof RoutineItem) {
             final RoutineItem routineItem = (RoutineItem) item;
             final IProject project = ResourcesPlugin.getWorkspace().getRoot()
                     .getProject(ProjectManager.getInstance().getProject(routineItem).getTechnicalLabel());
-            IFolder folder = project
-                    .getFolder(ERepositoryObjectType.getFolderName(ERepositoryObjectType.getItemType(routineItem)));
+            ERepositoryObjectType type;
+            ERepositoryObjectType innerCodeType = RoutinesUtil.getInnerCodeType(item.getProperty());
+            if (innerCodeType != null) {
+                type = innerCodeType;
+            } else {
+                type = ERepositoryObjectType.getItemType(routineItem);
+            }
+            IFolder folder = project.getFolder(ERepositoryObjectType.getFolderName(type));
             IPath ipath = RepositoryNodeUtilities.getPath(routineItem.getProperty().getId());
-            if (ipath == null)
+            if (ipath == null) {
                 return null;
+            }
             final String folderPath = ipath.toString();
             if (folderPath != null && !folderPath.trim().isEmpty()) {
                 folder = folder.getFolder(folderPath);
@@ -232,14 +268,46 @@ public abstract class AbstractRoutineSynchronizer implements ITalendSynchronizer
         }
     }
 
+    protected void syncInnerCodeItems(boolean forceUpdate) throws SystemException {
+        IProxyRepositoryFactory factory = getRepositoryService().getProxyRepositoryFactory();
+        for (CodesJarInfo info : CodesJarResourceCache.getAllCodesJars()) {
+            Property property = info.getProperty();
+            String projectTechName = info.getProjectTechName();
+            Project project = ProjectManager.getInstance().getProjectFromProjectTechLabel(projectTechName);
+            ERepositoryObjectType codesJarType = ERepositoryObjectType.getItemType(property.getItem());
+            List<IRepositoryViewObject> innerCodesObjects = factory.getAllInnerCodes(project, codesJarType, property);
+            for (IRepositoryViewObject codesObj : innerCodesObjects) {
+                RoutineItem codeItem = (RoutineItem) codesObj.getProperty().getItem();
+                syncRoutine(codeItem, projectTechName, true, forceUpdate);
+            }
+        }
+    }
+
     private void doSyncRoutine(RoutineItem routineItem, String projectTechName, boolean copyToTemp) throws SystemException {
         try {
             IFile file = getRoutineFile(routineItem, projectTechName);
             if (file == null) {
                 return;
             }
+            File itemFile = null;
             if (routineItem.eResource() == null) {
-                return;
+                if (!RoutinesUtil.isInnerCodes(routineItem.getProperty())) {
+                    return;
+                }
+                CodesJarInfo info = CodesJarResourceCache.getCodesJarByInnerCode(routineItem);
+                Property codesJarProperty = info.getProperty();
+                IFolder innerCodeFolder = ResourceUtils.getFolder(ResourceUtils.getProject(info.getProjectTechName()),
+                        ERepositoryObjectType.getFolderName(ERepositoryObjectType.getItemType(codesJarProperty.getItem())) + "/"
+                                + codesJarProperty.getLabel(),
+                        true);
+                IFile innerCodeFile = innerCodeFolder
+                        .getFile(routineItem.getProperty().getLabel() + "_" + routineItem.getProperty().getVersion() + ".item");
+                if (innerCodeFile.exists()) {
+                    itemFile = innerCodeFile.getLocation().toFile();
+                }
+                if (itemFile == null) {
+                    return;
+                }
             }
             Property property = routineItem.getProperty();
             Date modifiedDate = ItemDateParser.parseAdditionalDate(property, ItemProductKeys.DATE.getModifiedKey());
@@ -252,9 +320,11 @@ public abstract class AbstractRoutineSynchronizer implements ITalendSynchronizer
             }
 
             if (copyToTemp) {
-                String uri = routineItem.eResource().getURI().trimFileExtension()
-                        .appendFileExtension(FileExtensions.ITEM_EXTENSION).toPlatformString(false);
-                File itemFile = ResourcesPlugin.getWorkspace().getRoot().getLocation().append(uri).toFile();
+                if (itemFile == null) {
+                    String uri = routineItem.eResource().getURI().trimFileExtension()
+                            .appendFileExtension(FileExtensions.ITEM_EXTENSION).toPlatformString(false);
+                    itemFile = ResourcesPlugin.getWorkspace().getRoot().getLocation().append(uri).toFile();
+                }
                 byte[] buf = routineItem.getContent().getInnerContent();
                 String charset = null;
                 if (itemFile.exists()) {
@@ -292,8 +362,13 @@ public abstract class AbstractRoutineSynchronizer implements ITalendSynchronizer
     @Override
     public void deleteRoutinefile(IRepositoryViewObject objToDelete) {
         Item item = objToDelete.getProperty().getItem();
+        if (RoutinesUtil.isInnerCodes(item.getProperty())) {
+            deleteInnerCodeFile(item);
+            return;
+        }
         try {
-            ITalendProcessJavaProject talendProcessJavaProject = getRunProcessService().getTalendCodeJavaProject(ERepositoryObjectType.getItemType(item));
+            ITalendProcessJavaProject talendProcessJavaProject = getRunProcessService()
+                    .getTalendCodeJavaProject(ERepositoryObjectType.getItemType(item));
             if (talendProcessJavaProject == null) {
                 return;
             }
@@ -302,6 +377,15 @@ public abstract class AbstractRoutineSynchronizer implements ITalendSynchronizer
                     + JavaUtils.JAVA_EXTENSION);
             file.delete(true, null);
         } catch (CoreException e) {
+            ExceptionHandler.process(e);
+        }
+    }
+
+    private void deleteInnerCodeFile(Item item) {
+        try {
+            IFile file = getInnerCodeFile((RoutineItem) item);
+            file.delete(true, null);
+        } catch (CoreException | SystemException e) {
             ExceptionHandler.process(e);
         }
     }

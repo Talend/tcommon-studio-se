@@ -1672,13 +1672,22 @@ public interface TalendFilePackage extends EPackage {
     int ROUTINES_PARAMETER_TYPE__NAME = 1;
 
     /**
+     * The feature id for the '<em><b>Type</b></em>' attribute.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     * @ordered
+     */
+    int ROUTINES_PARAMETER_TYPE__TYPE = 2;
+
+    /**
      * The number of structural features of the '<em>Routines Parameter Type</em>' class.
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
      * @generated
      * @ordered
      */
-    int ROUTINES_PARAMETER_TYPE_FEATURE_COUNT = 2;
+    int ROUTINES_PARAMETER_TYPE_FEATURE_COUNT = 3;
 
     /**
      * The meta object id for the '{@link org.talend.designer.core.model.utils.emf.talendfile.impl.NodeContainerTypeImpl <em>Node Container Type</em>}' class.
@@ -3466,6 +3475,17 @@ public interface TalendFilePackage extends EPackage {
     EAttribute getRoutinesParameterType_Name();
 
     /**
+     * Returns the meta object for the attribute '{@link org.talend.designer.core.model.utils.emf.talendfile.RoutinesParameterType#getType <em>Type</em>}'.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @return the meta object for the attribute '<em>Type</em>'.
+     * @see org.talend.designer.core.model.utils.emf.talendfile.RoutinesParameterType#getType()
+     * @see #getRoutinesParameterType()
+     * @generated
+     */
+    EAttribute getRoutinesParameterType_Type();
+
+    /**
      * Returns the meta object for class '{@link org.talend.designer.core.model.utils.emf.talendfile.NodeContainerType <em>Node Container Type</em>}'.
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
@@ -4861,6 +4881,14 @@ public interface TalendFilePackage extends EPackage {
          * @generated
          */
         EAttribute ROUTINES_PARAMETER_TYPE__NAME = eINSTANCE.getRoutinesParameterType_Name();
+
+        /**
+         * The meta object literal for the '<em><b>Type</b></em>' attribute feature.
+         * <!-- begin-user-doc -->
+         * <!-- end-user-doc -->
+         * @generated
+         */
+        EAttribute ROUTINES_PARAMETER_TYPE__TYPE = eINSTANCE.getRoutinesParameterType_Type();
 
         /**
          * The meta object literal for the '{@link org.talend.designer.core.model.utils.emf.talendfile.impl.NodeContainerTypeImpl <em>Node Container Type</em>}' class.

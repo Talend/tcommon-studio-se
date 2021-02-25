@@ -152,6 +152,8 @@ public class PropertiesFactoryImpl extends EFactoryImpl implements PropertiesFac
             case PropertiesPackage.ADDITIONAL_INFO_MAP: return (EObject)createAdditionalInfoMap();
             case PropertiesPackage.MIGRATION_TASK: return createMigrationTask();
             case PropertiesPackage.PIGUDF_ITEM: return createPigudfItem();
+            case PropertiesPackage.ROUTINES_JAR_TYPE: return createRoutinesJarType();
+            case PropertiesPackage.ROUTINES_JAR_ITEM: return createRoutinesJarItem();
             default:
                 throw new IllegalArgumentException("The class '" + eClass.getName() + "' is not a valid classifier");
         }
@@ -1087,6 +1089,26 @@ public class PropertiesFactoryImpl extends EFactoryImpl implements PropertiesFac
     public PigudfItem createPigudfItem() {
         PigudfItemImpl pigudfItem = new PigudfItemImpl();
         return pigudfItem;
+    }
+
+    /**
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     */
+    public RoutinesJarType createRoutinesJarType() {
+        RoutinesJarTypeImpl routinesJarType = new RoutinesJarTypeImpl();
+        return routinesJarType;
+    }
+
+    /**
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     */
+    public RoutinesJarItem createRoutinesJarItem() {
+        RoutinesJarItemImpl routinesJarItem = new RoutinesJarItemImpl();
+        return routinesJarItem;
     }
 
     /**
