@@ -57,9 +57,14 @@ import org.eclipse.core.runtime.IExtensionRegistry;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Platform;
+import org.eclipse.core.runtime.Status;
 import org.eclipse.core.runtime.jobs.Job;
+import org.eclipse.jface.dialogs.MessageDialogWithToggle;
 import org.eclipse.jface.preference.IPreferenceStore;
+import org.eclipse.swt.widgets.Shell;
+import org.eclipse.ui.PlatformUI;
 import org.eclipse.ui.preferences.ScopedPreferenceStore;
+import org.eclipse.ui.progress.UIJob;
 import org.talend.commons.exception.ExceptionHandler;
 import org.talend.commons.utils.network.NetworkUtil;
 import org.talend.commons.utils.network.TalendProxySelector;
@@ -129,23 +134,15 @@ public final class TokenCollectorFactory {
         return providers.values().toArray(new TokenInforProvider[0]);
     }
     
-    private Thread monitorThread = new Thread(new Runnable() {
-        private final int magic_mainthreadStackTraceNum = 28;
+    private final int magic_mainthreadStackTraceNum = 28;
+    private Thread monitorSendThread = new Thread(new Runnable() {
         public void run() {
             while (true) {
                 try {
-                    long millis = 24 * 60 * 60 * 1000L;//check every day
-                    final IPreferenceStore preferenceStore = CoreUIPlugin.getDefault().getPreferenceStore();
-                    if (preferenceStore.getBoolean(ITalendCorePrefConstants.DATA_COLLECTOR_ENABLED)) {
-                        Date lastDate = lastSendDate();
-                        
-                        int days = preferenceStore.getInt(ITalendCorePrefConstants.DATA_COLLECTOR_UPLOAD_PERIOD);
-                        Date curDate = new Date();
-                        Date expectedSendDate = curDate;
-                        if (days > 0 && lastDate != null) {
-                            expectedSendDate = TokenInforUtil.getDateAfter(lastDate, days);
-                        }
-                        if (expectedSendDate.compareTo(curDate) < 0) {//need send
+                    long millis = 12 * 60 * 60 * 1000L;//check every half day
+                    millis = Long.getLong("studio.token.send", millis);
+                    if (dataCollectorEnabled()) {
+                        if (isTimeToSend()) {//need send
                             if(studioInIdle()) {
                                 //if free, send in background
                                 send(true);
@@ -164,26 +161,91 @@ public final class TokenCollectorFactory {
             }
         }
 
-        private boolean studioInIdle() {
-            ProxyRepositoryFactory repoFactory = ProxyRepositoryFactory.getInstance();
-            boolean repositoryBusy = repoFactory.isRepositoryBusy();
-            
-            boolean threadIdle = false;
-            Map<Thread, StackTraceElement[]> allStackTraces = Thread.getAllStackTraces();
-            if (allStackTraces != null) {
-                Optional<Thread> mainThread = allStackTraces.keySet().stream()
-                        .filter(t -> t.isAlive() && !t.isDaemon() && t.getName().equalsIgnoreCase("main")).findFirst();
-                if (mainThread.isPresent()) {
-                    threadIdle = (magic_mainthreadStackTraceNum >= mainThread.get().getStackTrace().length);
-                }
-            }
-            return !repositoryBusy && threadIdle;
-        }
-
     });
     
+    private boolean studioInIdle() {
+        ProxyRepositoryFactory repoFactory = ProxyRepositoryFactory.getInstance();
+        boolean repositoryBusy = repoFactory.isRepositoryBusy();
+        
+        boolean threadIdle = false;
+        Map<Thread, StackTraceElement[]> allStackTraces = Thread.getAllStackTraces();
+        if (allStackTraces != null) {
+            Optional<Thread> mainThread = allStackTraces.keySet().stream()
+                    .filter(t -> t.isAlive() && !t.isDaemon() && t.getName().equalsIgnoreCase("main")).findFirst();
+            if (mainThread.isPresent()) {
+                threadIdle = (magic_mainthreadStackTraceNum >= mainThread.get().getStackTrace().length);
+            }
+        }
+        return !repositoryBusy && threadIdle;
+    }
+    
+    private boolean isTimeToSend() {
+        Date lastDate = lastSendDate();
+        final IPreferenceStore preferenceStore = CoreUIPlugin.getDefault().getPreferenceStore();
+        int days = preferenceStore.getInt(ITalendCorePrefConstants.DATA_COLLECTOR_UPLOAD_PERIOD);
+        Date curDate = new Date();
+        Date expectedSendDate = curDate;
+        if (days > 0 && lastDate != null) {
+            expectedSendDate = TokenInforUtil.getDateAfter(lastDate, days);
+        }
+        if (expectedSendDate.compareTo(curDate) < 0) {
+            return true;
+        }
+        
+        return false;
+    }
+    
+    private Job monitorInquireJob = new UIJob("") {
+        
+        @Override
+        public IStatus runInUIThread(IProgressMonitor monitor) {
+            long millis = 4 * 60 * 60 * 1000L;//check every 4 hours
+            millis = Long.getLong("studio.token.askpermission", millis);
+            final IPreferenceStore preferenceStore = CoreUIPlugin.getDefault().getPreferenceStore();
+            boolean showpop = preferenceStore.getBoolean(ITalendCorePrefConstants.DATA_COLLECTOR_SHOWPOP);
+            while (showpop) {
+                if (!dataCollectorEnabled() 
+                        && isTimeToSend() && NetworkUtil.isNetworkValid() && studioInIdle()
+                        ) {
+                    // show pops up dialog
+                    Shell activeShell = null;
+                    try {
+                        activeShell = PlatformUI.getWorkbench().getDisplay().getActiveShell();
+                    } catch (Exception e1) {
+                    }
+                    if (activeShell == null) {
+                        activeShell = new Shell(PlatformUI.getWorkbench().getDisplay());
+                    }
+
+                    MessageDialogWithToggle openOkCancelConfirm = MessageDialogWithToggle.openOkCancelConfirm(activeShell, "",
+                            "Usage Data Collector disabled, enable capture?", "Do not show this again", false, null,
+                            ITalendCorePrefConstants.DATA_COLLECTOR_SHOWPOP);
+                    boolean toggleState = openOkCancelConfirm.getToggleState();
+                    int returnCode = openOkCancelConfirm.getReturnCode();
+                    if (returnCode == 0) {
+                        preferenceStore.setValue(ITalendCorePrefConstants.DATA_COLLECTOR_ENABLED, true);
+                    }
+                    preferenceStore.setValue(ITalendCorePrefConstants.DATA_COLLECTOR_SHOWPOP, !toggleState);
+                    if (preferenceStore instanceof ScopedPreferenceStore) {
+                        try {
+                            ((ScopedPreferenceStore) preferenceStore).save();
+                        } catch (IOException e) {
+                            ExceptionHandler.process(e);
+                        }
+                    }
+
+                }
+                showpop = preferenceStore.getBoolean(ITalendCorePrefConstants.DATA_COLLECTOR_SHOWPOP);
+            }
+
+            return Status.OK_STATUS;
+        }
+    };
+    
     public void monitor() {
-        monitorThread.start();
+        monitorSendThread.start();
+        monitorInquireJob.setSystem(true);
+        monitorInquireJob.schedule();
     }
     
     public void priorCollect() throws Exception {
@@ -221,12 +283,12 @@ public final class TokenCollectorFactory {
     }
 
     private boolean isActiveAndValid(boolean timeExpired) {
-        final IPreferenceStore preferenceStore = CoreUIPlugin.getDefault().getPreferenceStore();
-        if (preferenceStore.getBoolean(ITalendCorePrefConstants.DATA_COLLECTOR_ENABLED)) {
+        if (dataCollectorEnabled()) {
             //
             if (timeExpired) {
                 Date lastDate = lastSendDate();
                 
+                final IPreferenceStore preferenceStore = CoreUIPlugin.getDefault().getPreferenceStore();
                 int days = preferenceStore.getInt(ITalendCorePrefConstants.DATA_COLLECTOR_UPLOAD_PERIOD);
                 long syncNb = preferenceStore.getLong(DefaultTokenCollector.COLLECTOR_SYNC_NB);
                 if (syncNb < 15) {
@@ -246,6 +308,11 @@ public final class TokenCollectorFactory {
         }
         return false;
 
+    }
+    
+    private boolean dataCollectorEnabled() {
+        final IPreferenceStore preferenceStore = CoreUIPlugin.getDefault().getPreferenceStore();
+        return preferenceStore.getBoolean(ITalendCorePrefConstants.DATA_COLLECTOR_ENABLED);
     }
     
     private Date lastSendDate() {
