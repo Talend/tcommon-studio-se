@@ -412,6 +412,9 @@ public class MavenUrlHelper {
             coordinate += separator + classifier;
         }
         if (StringUtils.isNotBlank(version)) {
+            if (version.endsWith("-SNAPSHOT")) {
+                version = version.substring(0, version.indexOf("-SNAPSHOT"));
+            }
             coordinate += separator + version;
         }
         return coordinate;
