@@ -122,7 +122,11 @@ public class PerformanceStatisticUtil {
                 }
             }
             
-            oldFile.deleteOnExit();
+            try {
+                Files.deleteIfExists(Paths.get(oldFile.toURI()));
+            } catch (IOException e) {
+                CommonExceptionHandler.log(e.getMessage());
+            }
         }
         
         return file;
@@ -134,7 +138,11 @@ public class PerformanceStatisticUtil {
     
     public static void reset() {
         File _recordingFile = getRecordingFile();
-        _recordingFile.deleteOnExit();
+        try {
+            Files.deleteIfExists(Paths.get(_recordingFile.toURI()));
+        } catch (IOException e) {
+            CommonExceptionHandler.log(e.getMessage());
+        }
     }
 
     private static Lock lock = new ReentrantLock();

@@ -80,5 +80,10 @@ public class PerformanceTokenCollector extends AbstractTokenCollector {
             CommonExceptionHandler.log(e.getMessage());
         }
     }
+
+    @Override
+    public void reset() {
+        PerformanceStatisticUtil.reset();
+    }
     
 }
