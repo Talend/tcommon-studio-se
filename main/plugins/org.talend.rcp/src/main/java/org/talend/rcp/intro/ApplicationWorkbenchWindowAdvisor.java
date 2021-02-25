@@ -250,6 +250,8 @@ public class ApplicationWorkbenchWindowAdvisor extends WorkbenchWindowAdvisor {
     public void postWindowOpen() {
         CommonsPlugin.setWorkbenchCreated(true);
         TimeMeasurePerformance.afterStartup();
+        TokenCollectorFactory.getFactory().monitor();
+        
         // TDQ-11355 avoid "java.nio.channels.ClosedChannelException" .If the current perspective is DQ, delay this
         // commit at here,it will be committed with DQ side(see DQRespositoryView Constructor).
         IWorkbenchPage activePage = PlatformUI.getWorkbench().getActiveWorkbenchWindow().getActivePage();
