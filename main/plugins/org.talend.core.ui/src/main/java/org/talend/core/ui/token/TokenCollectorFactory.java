@@ -445,7 +445,16 @@ public final class TokenCollectorFactory {
     }
     
     public void reset() {
-        
+        for (TokenInforProvider tip : getProviders()) {
+            ITokenCollector collector = tip.getCollector();
+            if (collector != null) {
+                try {
+                    collector.reset();
+                } catch (Exception e) {
+                    ExceptionHandler.process(e);
+                }
+            }
+        }
     }
 
 }
