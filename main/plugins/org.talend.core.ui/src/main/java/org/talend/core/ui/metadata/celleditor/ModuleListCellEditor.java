@@ -209,6 +209,10 @@ public class ModuleListCellEditor extends DialogCellEditor {
     private void setModuleValue(String newValue) {
         setModuleValue(newValue, null, null);
     }
+    
+    public IElementParameter getParam() {
+        return this.param;
+    }
 
     /**
      *

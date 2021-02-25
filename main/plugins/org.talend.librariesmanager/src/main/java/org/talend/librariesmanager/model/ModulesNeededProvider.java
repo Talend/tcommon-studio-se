@@ -81,6 +81,7 @@ import org.talend.core.runtime.maven.MavenUrlHelper;
 import org.talend.core.runtime.process.TalendProcessOptionConstants;
 import org.talend.core.utils.TalendCacheUtils;
 import org.talend.core.utils.TalendQuoteUtils;
+import org.talend.designer.core.model.utils.emf.component.ComponentFactory;
 import org.talend.designer.core.model.utils.emf.component.IMPORTType;
 import org.talend.designer.core.model.utils.emf.talendfile.RoutinesParameterType;
 import org.talend.librariesmanager.i18n.Messages;
@@ -776,6 +777,7 @@ public class ModulesNeededProvider {
 
     public static List<ModuleNeeded> getModulesNeededForRoutes() {
         if (importNeedsListForRoutes == null) {
+
             importNeedsListForRoutes = new ArrayList<ModuleNeeded>();
             importNeedsListForRoutes.add(getComponentModuleById("CAMEL", "camel-core"));
             importNeedsListForRoutes.add(getComponentModuleById("CAMEL", "camel-spring"));
@@ -795,16 +797,24 @@ public class ModulesNeededProvider {
     }
 
     private static void getModulesNeededForRoutesJava11() {
-        importNeedsListForRoutes.add(getModuleNeededForName("istack-commons-runtime-3.0.8.jar"));
-        importNeedsListForRoutes.add(getModuleNeededForName("jakarta.xml.bind-api-2.3.2.jar"));
-        importNeedsListForRoutes.add(getModuleNeededForName("jakarta.xml.soap-api-1.4.1.jar"));
-        importNeedsListForRoutes.add(getModuleNeededForName("javax.activation-1.2.0.jar"));
-        importNeedsListForRoutes.add(getModuleNeededForName("javax.annotation-api-1.3.jar"));
-        importNeedsListForRoutes.add(getModuleNeededForName("jaxb-runtime-2.3.2.jar"));
-        importNeedsListForRoutes.add(getModuleNeededForName("stax-ex-1.8.1.jar"));
-        importNeedsListForRoutes.add(getModuleNeededForName("txw2-2.3.2.jar"));
-        importNeedsListForRoutes.add(getModuleNeededForName("jakarta.jws-api-1.1.1.jar"));
-        importNeedsListForRoutes.add(getModuleNeededForName("org.apache.servicemix.specs.jaxws-api-2.2-2.9.0.jar"));
+        /**
+         * importNeedsListForRoutes.add(getModuleNeededForName("istack-commons-runtime-3.0.8.jar"));
+         * importNeedsListForRoutes.add(getModuleNeededForName("jakarta.xml.bind-api-2.3.2.jar"));
+         * importNeedsListForRoutes.add(getModuleNeededForName("jakarta.xml.soap-api-1.4.1.jar"));
+         * importNeedsListForRoutes.add(getModuleNeededForName("javax.activation-1.2.0.jar"));
+         * importNeedsListForRoutes.add(getModuleNeededForName("javax.annotation-api-1.3.jar"));
+         * importNeedsListForRoutes.add(getModuleNeededForName("jaxb-runtime-2.3.2.jar"));
+         * importNeedsListForRoutes.add(getModuleNeededForName("stax-ex-1.8.1.jar"));
+         * importNeedsListForRoutes.add(getModuleNeededForName("txw2-2.3.2.jar"));
+         * importNeedsListForRoutes.add(getModuleNeededForName("jakarta.jws-api-1.1.1.jar"));
+         * importNeedsListForRoutes.add(getModuleNeededForName("org.apache.servicemix.specs.jaxws-api-2.2-2.9.0.jar"));
+         **/
+
+        IMPORTType importType = ComponentFactory.eINSTANCE.createIMPORTType();
+        importType.setMODULEGROUP("esb-java-11-group");
+        importType.setREQUIRED(true);
+
+        collectModuleNeeded("tRESTClient", importType, importNeedsListForRoutes);
     }
 
     /**

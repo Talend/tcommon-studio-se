@@ -232,4 +232,6 @@ public interface IElementParameter {
     public boolean isSerialized();
 
     public void setSerialized(boolean isSerialized);
+
+    public boolean isSelectedFromItemValue();
 }
