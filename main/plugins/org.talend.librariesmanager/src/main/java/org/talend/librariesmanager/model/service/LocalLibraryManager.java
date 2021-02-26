@@ -175,7 +175,7 @@ public class LocalLibraryManager implements ILibraryManagerService, IChangedLibr
         if (file == null || !file.exists()) {
             return;
         }
-        install(file, mavenUri, updateNexusJar, monitorWrap);
+        install(file, mavenUri, updateNexusJar, false, monitorWrap);
     }
 
     /**
@@ -186,7 +186,8 @@ public class LocalLibraryManager implements ILibraryManagerService, IChangedLibr
      * @param mavenUri snaopshot mvn uri
      * @param monitorWrap
      */
-    private void install(File file, String mavenRUI, boolean updateRemoteJar, IProgressMonitor... monitorWrap) {
+    private void install(File file, String mavenRUI, boolean updateRemoteJar, boolean useReleaseVersion,
+            IProgressMonitor... monitorWrap) {
         try {
             if (file.isDirectory()) {
                 List<File> jarFiles = FilesUtils.getJarFilesFromFolder(file, null);
@@ -194,7 +195,7 @@ public class LocalLibraryManager implements ILibraryManagerService, IChangedLibr
                 if (!jarFiles.isEmpty()) {
                     for (File jarFile : jarFiles) {
                         if (mavenRUI == null) {
-                            guessMavenRUIFromIndex(jarFile, sourceAndMavenUri);
+                            guessMavenRUIFromIndex(jarFile, useReleaseVersion, sourceAndMavenUri);
                         } else {
                             sourceAndMavenUri.put(mavenRUI, jarFile.getAbsolutePath());
                         }
@@ -215,7 +216,7 @@ public class LocalLibraryManager implements ILibraryManagerService, IChangedLibr
             } else {
                 Map<String, String> sourceAndMavenUri = new HashMap<>();
                 if (mavenRUI == null) {
-                    guessMavenRUIFromIndex(file, sourceAndMavenUri);
+                    guessMavenRUIFromIndex(file, useReleaseVersion, sourceAndMavenUri);
                 } else {
                     sourceAndMavenUri.put(mavenRUI, file.getAbsolutePath());
                 }
@@ -241,6 +242,11 @@ public class LocalLibraryManager implements ILibraryManagerService, IChangedLibr
     }
 
     public void guessMavenRUIFromIndex(File jarFile, Map<String, String> sourceAndMavenUri) {
+        guessMavenRUIFromIndex(jarFile, false, sourceAndMavenUri);
+
+    }
+
+    public void guessMavenRUIFromIndex(File jarFile, boolean useReleaseVersion, Map<String, String> sourceAndMavenUri) {
         // TODO????? should deploy with all versions
         String urisFromIndex = LibrariesIndexManager.getInstance().getMavenLibIndex().getJarsToRelativePath()
                 .get(jarFile.getName());
@@ -265,7 +271,7 @@ public class LocalLibraryManager implements ILibraryManagerService, IChangedLibr
         // deploy as defaultMavenUri in case jar name is diffrent from artifactId in mvnuri from
         // index
         if (deployAsDefault) {
-            String defaultMavenUri = MavenUrlHelper.generateMvnUrlForJarName(jarFile.getName());
+            String defaultMavenUri = MavenUrlHelper.generateMvnUrlForJarName(jarFile.getName(), true, !useReleaseVersion);
             String customMavenURI = getCustomMavenURI(defaultMavenUri);
             if (customMavenURI != null) {
                 defaultMavenUri = customMavenURI;
@@ -891,7 +897,7 @@ public class LocalLibraryManager implements ILibraryManagerService, IChangedLibr
                     ExceptionHandler.log("missing jar:" + module.getModuleName());
                 }
                 if (fileToDeploy != null) {
-                    install(fileToDeploy, mavenUri, false, monitorWrap);
+                    install(fileToDeploy, mavenUri, false, false, monitorWrap);
                 }
             }
         }
@@ -1303,7 +1309,7 @@ public class LocalLibraryManager implements ILibraryManagerService, IChangedLibr
             needToDeploy.forEach(libFile -> {
                 try {
                     // install as release version if can't find mvn url from index
-                    deploy(libFile.toURI(), null, false);
+                    install(libFile, null, false, true);
                 } catch (Exception e) {
                     ExceptionHandler.process(e);
                 }
@@ -1391,7 +1397,7 @@ public class LocalLibraryManager implements ILibraryManagerService, IChangedLibr
             }
             for (File file : needToDeploy) {
                 try {
-                    deploy(file.toURI());
+                    install(file, null, true, true);
                 } catch (Exception e) {
                     ExceptionHandler.process(e);
                 }
