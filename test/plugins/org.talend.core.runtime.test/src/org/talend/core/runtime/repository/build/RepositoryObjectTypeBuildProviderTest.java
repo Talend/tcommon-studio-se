@@ -576,6 +576,12 @@ public class RepositoryObjectTypeBuildProviderTest {
 
         }
 
+        @Override
+        public INode getNodeByUniqueName(String uniqueName) {
+            // TODO Auto-generated method stub
+            return null;
+        }
+
     }
 
     @Before
