@@ -116,7 +116,7 @@ public abstract class AbstractMavenCodesTemplatePom extends AbstractMavenGeneral
                 } else {
                     isDeployed = true;
                 }
-                if (isDeployed) {
+                if (ignoreModuleInstallationStatus() || isDeployed) {
                     dependency = PomUtil.createModuleDependency(module.getMavenUri());
                     if (module.isExcluded())
                         dependency.setScope("provided");
@@ -129,4 +129,9 @@ public abstract class AbstractMavenCodesTemplatePom extends AbstractMavenGeneral
     }
 
     protected abstract Set<ModuleNeeded> getDependenciesModules();
+
+    protected boolean ignoreModuleInstallationStatus() {
+        return false;
+    }
+
 }

@@ -89,6 +89,10 @@ public final class JavaUtils {
     /** Java Routines Directory. */
     public static final String JAVA_ROUTINES_DIRECTORY = "routines"; //$NON-NLS-1$
 
+    // TODO check refrerences of JAVA_ROUTINES_DIRECTORY
+    /** Java Routines Jar Directory. */
+    public static final String JAVA_ROUTINESJAR_DIRECTORY = "routinesjar"; //$NON-NLS-1$
+
     /** Java Pig Directory. */
     public static final String JAVA_PIG_DIRECTORY = "pig"; //$NON-NLS-1$
 
@@ -97,6 +101,9 @@ public final class JavaUtils {
 
     /** Java Beans Directory. */
     public static final String JAVA_BEANS_DIRECTORY = "beans"; //$NON-NLS-1$
+
+    /** Java Beans Jar Directory. */
+    public static final String JAVA_BEANSJAR_DIRECTORY = "beansjar"; //$NON-NLS-1$
 
     /** Java SQLTemplate Directory. */
     public static final String JAVA_SQLPATTERNS_DIRECTORY = "sqltemplates"; //$NON-NLS-1$

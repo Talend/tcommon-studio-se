@@ -74,4 +74,10 @@ public interface TalendProcessOptionConstants {
 
     public static final int MODULES_EXCLUDE_SHADED = 1 << 5;
 
+    /**
+     * NOTE with this option, still won't get codesjar modules of related joblet TODO check all callers to find a way to
+     * include those
+     */
+    public static final int MODULES_WITH_CODESJAR = 1 << 6;
+
 }

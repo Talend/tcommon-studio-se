@@ -34,6 +34,7 @@ import org.eclipse.core.runtime.NullProgressMonitor;
 import org.eclipse.m2e.core.MavenPlugin;
 import org.talend.commons.exception.ExceptionHandler;
 import org.talend.commons.utils.generation.JavaUtils;
+import org.talend.core.model.properties.Property;
 import org.talend.core.runtime.projectsetting.IProjectSettingPreferenceConstants;
 import org.talend.core.runtime.projectsetting.IProjectSettingTemplateConstants;
 import org.talend.designer.maven.DesignerMavenPlugin;
@@ -291,12 +292,28 @@ public class MavenTemplateManager {
         return getCodesModelFromGeneralTemplate(defaultModel, projectTechName, "Routines", //$NON-NLS-1$
                 JavaUtils.JAVA_ROUTINES_DIRECTORY);
     }
+    
+    public static Model getRoutinesJarTempalteModel(Property property, String projectTechName) {
+        Model defaultModel = createDefaultCodesTempalteModel(
+                PomIdsHelper.getCodesGroupId(projectTechName, TalendMavenConstants.DEFAULT_ROUTINESJAR),
+                property.getLabel().toLowerCase(), PomIdsHelper.getCodesVersion(projectTechName));
+        return getCodesModelFromGeneralTemplate(defaultModel, projectTechName, property.getLabel().toLowerCase(),
+                JavaUtils.JAVA_ROUTINESJAR_DIRECTORY);
+    }
 
     public static Model getBeansTempalteModel(String projectTechName) {
         Model defaultModel = createDefaultCodesTempalteModel(
                 PomIdsHelper.getCodesGroupId(projectTechName, TalendMavenConstants.DEFAULT_BEAN),
                 TalendMavenConstants.DEFAULT_BEANS_ARTIFACT_ID, PomIdsHelper.getCodesVersion(projectTechName));
         return getCodesModelFromGeneralTemplate(defaultModel, projectTechName, "Beans", JavaUtils.JAVA_BEANS_DIRECTORY); //$NON-NLS-1$
+    }
+    
+    public static Model getBeansJarTempalteModel(Property property, String projectTechName) {
+        Model defaultModel = createDefaultCodesTempalteModel(
+                PomIdsHelper.getCodesGroupId(projectTechName, TalendMavenConstants.DEFAULT_BEANSJAR),
+                property.getLabel().toLowerCase(), PomIdsHelper.getCodesVersion(projectTechName));
+        return getCodesModelFromGeneralTemplate(defaultModel, projectTechName, property.getLabel().toLowerCase(),
+                JavaUtils.JAVA_BEANSJAR_DIRECTORY);
     }
 
     private static Model createDefaultCodesTempalteModel(String groupId, String artifactId, String version) {

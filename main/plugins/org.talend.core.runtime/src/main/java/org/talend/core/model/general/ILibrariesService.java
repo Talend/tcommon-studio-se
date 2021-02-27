@@ -27,6 +27,7 @@ import org.talend.core.model.process.IElement;
 import org.talend.core.model.process.INode;
 import org.talend.core.model.process.IProcess;
 import org.talend.core.model.process.Problem;
+import org.talend.core.model.properties.Property;
 import org.talend.core.model.repository.ERepositoryObjectType;
 import org.talend.designer.codegen.PigTemplate;
 
@@ -116,6 +117,10 @@ public interface ILibrariesService extends IService {
     void cleanLibs();
 
     Set<ModuleNeeded> getCodesModuleNeededs(ERepositoryObjectType type);
+
+    Set<ModuleNeeded> getAllCodesJarModuleNeededs();
+
+    Set<ModuleNeeded> getCodesJarModuleNeededs(Property property);
 
     List<ModuleNeeded> getModuleNeeded(String id, boolean isGroup);
 

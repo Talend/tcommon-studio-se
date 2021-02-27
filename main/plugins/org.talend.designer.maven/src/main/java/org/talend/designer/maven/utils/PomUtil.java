@@ -71,7 +71,6 @@ import org.talend.commons.exception.ExceptionHandler;
 import org.talend.commons.exception.PersistenceException;
 import org.talend.commons.runtime.utils.io.IOUtils;
 import org.talend.commons.utils.VersionUtils;
-import org.talend.commons.utils.generation.JavaUtils;
 import org.talend.commons.utils.io.FilesUtils;
 import org.talend.commons.utils.workbench.resources.ResourceUtils;
 import org.talend.core.GlobalServiceRegister;
@@ -766,18 +765,6 @@ public class PomUtil {
         }
 
         return codesModules;
-    }
-
-    public static List<String> getCodesExportJars(IProcess process) {
-        List<String> codesJars = new ArrayList<>();
-        // add routines always.
-        codesJars.add(JavaUtils.ROUTINES_JAR);
-
-        // Beans
-        if (ProcessUtils.isRequiredBeans(process)) {
-            codesJars.add(JavaUtils.BEANS_JAR);
-        }
-        return codesJars;
     }
 
     public static Map<String, Object> getTemplateParameters(IProcessor processor) {

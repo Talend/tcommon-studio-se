@@ -16,4 +16,6 @@ public interface RoutinesParameterTypeValidator {
 
     boolean validateId(String value);
     boolean validateName(String value);
+
+    boolean validateType(String value);
 }

@@ -29,7 +29,6 @@ import org.apache.commons.lang.StringUtils;
 import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.core.runtime.IPath;
 import org.eclipse.core.runtime.IProgressMonitor;
-import org.eclipse.core.runtime.NullProgressMonitor;
 import org.eclipse.core.runtime.Path;
 import org.eclipse.jface.dialogs.Dialog;
 import org.eclipse.jface.dialogs.MessageDialog;
@@ -86,8 +85,6 @@ import org.talend.core.service.IExchangeService;
 import org.talend.core.ui.advanced.composite.FilteredCheckboxTree;
 import org.talend.core.ui.component.ComponentPaletteUtilities;
 import org.talend.designer.core.IMultiPageTalendEditor;
-import org.talend.designer.maven.tools.AggregatorPomsHelper;
-import org.talend.designer.maven.tools.MavenPomSynchronizer;
 import org.talend.repository.items.importexport.handlers.ImportExportHandlersManager;
 import org.talend.repository.items.importexport.handlers.imports.ImportCacheHelper;
 import org.talend.repository.items.importexport.handlers.model.EmptyFolderImportItem;
@@ -1068,10 +1065,6 @@ public class ImportItemsWizardPage extends WizardPage {
                             }
                         }
                     });
-
-                    MavenPomSynchronizer.addChangeLibrariesListener();
-
-                    new AggregatorPomsHelper().updateCodeProjects(new NullProgressMonitor());
                 }
             };
 

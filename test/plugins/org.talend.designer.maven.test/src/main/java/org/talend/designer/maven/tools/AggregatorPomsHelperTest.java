@@ -243,14 +243,6 @@ public class AggregatorPomsHelperTest {
     }
 
     @Test
-    public void testGetCodeProjectId() {
-        String routinesId = AggregatorPomsHelper.getCodeProjectId(ERepositoryObjectType.ROUTINES, projectTechName);
-        assertEquals(projectTechName + "|ROUTINES", routinesId);
-        String beansId = AggregatorPomsHelper.getCodeProjectId(ERepositoryObjectType.valueOf("BEANS"), projectTechName);
-        assertEquals(projectTechName + "|BEANS", beansId);
-    }
-
-    @Test
     public void testUpdateRefProjectModules() throws Exception {
         needResetPom = true;
         List<ProjectReference> references = new ArrayList<>();
