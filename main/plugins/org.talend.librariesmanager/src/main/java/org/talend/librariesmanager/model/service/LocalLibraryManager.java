@@ -1257,6 +1257,10 @@ public class LocalLibraryManager implements ILibraryManagerService, IChangedLibr
                 warnDuplicated(modules, duplicateMavenUri, "Maven Uri:");
             }
         }
+        
+        if (service != null) {
+            calculateModulesIndexFromComponentFolder(service, platformURLMap);
+        }
 
         saveMavenIndex(mavenURIMap, monitorWrap);
         savePlatfromURLIndex(platformURLMap, monitorWrap);
@@ -1265,6 +1269,63 @@ public class LocalLibraryManager implements ILibraryManagerService, IChangedLibr
             deployLibsFromCustomComponents(service, platformURLMap);
         }
     }
+
+    /**
+    *
+    * The old components might use some jars in component folder and theres jars are not configured with platfrom URL
+    *
+    * @param service
+    * @param libsWithoutUri
+    * @param platformURLMap
+    */
+   private void calculateModulesIndexFromComponentFolder(IComponentsService service, Map<String, String> platformURLMap) {
+       List<ComponentProviderInfo> componentsFolders = service.getComponentsFactory().getComponentsProvidersInfo();
+       for (ComponentProviderInfo providerInfo : componentsFolders) {
+           String contributeID = providerInfo.getContributer();
+           String id = providerInfo.getId();
+           try {
+               if (!isExtComponentProvider(id)) {
+                   File file = new File(providerInfo.getLocation());
+                   List<File> jarFiles = FilesUtils.getJarFilesFromFolder(file, null, "ext");
+                   if (jarFiles.size() > 0) {
+                       for (File jarFile : jarFiles) {
+                           String name = jarFile.getName();
+                           String path = platformURLMap.get(name);
+                           int lengthBasePath = new Path(file.getParentFile().getAbsolutePath()).toPortableString().length();
+                           String relativePath = new Path(jarFile.getAbsolutePath()).toPortableString()
+                                   .substring(lengthBasePath);
+                           String moduleLocation = "platform:/plugin/" + contributeID + relativePath;
+                           if (path != null) {
+                               if (path.equals(moduleLocation)) {
+                                   continue;
+                               } else {
+                                   if (CommonsPlugin.isDebugMode()) {
+                                       CommonExceptionHandler
+                                               .warn(name + " is duplicated, locations:" + path + " and:" + moduleLocation);
+                                   }
+                                   continue;
+                               }
+                           }
+                           platformURLMap.put(name, moduleLocation);
+                       }
+                   }
+               }
+           } catch (Exception e) {
+               ExceptionHandler.process(e);
+               continue;
+           }
+       }
+   }
+   
+   private boolean isExtComponentProvider(String id) {
+       if ("org.talend.designer.components.model.UserComponentsProvider".equals(id)
+               || "org.talend.designer.codegen.components.model.SharedStudioUserComponentProvider".equals(id)
+               || "org.talend.designer.components.exchange.ExchangeComponentsProvider".equals(id)
+               || "org.talend.designer.components.exchange.SharedStudioExchangeComponentsProvider".equals(id)) {
+           return true;
+       }
+       return false;
+   }
 
     private void deployLibsFromCustomComponents(IComponentsService service, Map<String, String> platformURLMap) {
         boolean deployToRemote = true;
@@ -1278,8 +1339,7 @@ public class LocalLibraryManager implements ILibraryManagerService, IChangedLibr
             String id = providerInfo.getId();
             try {
                 File file = new File(providerInfo.getLocation());
-                if ("org.talend.designer.components.model.UserComponentsProvider".equals(id)
-                        || "org.talend.designer.components.exchange.ExchangeComponentsProvider".equals(id)) {
+                if (isExtComponentProvider(id)) {
                     if (file.isDirectory()) {
                         List<File> jarFiles = FilesUtils.getJarFilesFromFolder(file, null);
                         if (jarFiles.size() > 0) {
