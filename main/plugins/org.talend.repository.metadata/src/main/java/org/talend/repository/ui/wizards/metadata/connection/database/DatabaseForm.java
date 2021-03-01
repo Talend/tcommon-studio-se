@@ -6140,7 +6140,7 @@ public class DatabaseForm extends AbstractForm {
         // feature 17159
         if (CoreRuntimePlugin.getInstance().isDataProfilePerspectiveSelected()) {
             if (!isSupportByTDQ()) {
-                updateStatus(IStatus.WARNING, "some database types are not usable in the Data Profiler perspective."); //$NON-NLS-1$
+                updateStatus(IStatus.WARNING, Messages.getString("DatabaseForm.canNotUsableInDataProfiler")); //$NON-NLS-1$
                 return false;
             }
         }

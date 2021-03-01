@@ -21,6 +21,7 @@ import java.util.List;
 import java.util.Set;
 
 import org.apache.commons.collections.map.MultiKeyMap;
+import org.eclipse.core.resources.IFolder;
 import org.eclipse.core.resources.IWorkspace;
 import org.eclipse.core.resources.IWorkspaceRunnable;
 import org.eclipse.core.resources.ResourcesPlugin;
@@ -54,6 +55,7 @@ import org.talend.commons.ui.runtime.exception.MessageBoxExceptionHandler;
 import org.talend.commons.ui.runtime.image.EImage;
 import org.talend.commons.ui.runtime.image.ImageProvider;
 import org.talend.commons.utils.data.container.RootContainer;
+import org.talend.commons.utils.workbench.resources.ResourceUtils;
 import org.talend.core.GlobalServiceRegister;
 import org.talend.core.IESBService;
 import org.talend.core.ITDQRepositoryService;
@@ -714,6 +716,7 @@ public class DeleteAction extends AContextualAction {
             removeConnFromSQLExplorer(repositoryNode);
             List<IRepositoryViewObject> batchDeleteObjectList = new ArrayList<IRepositoryViewObject>();
             deleteTestCases(factory, deleteActionCache, repositoryNode, null, batchDeleteObjectList);
+            deleteCodeSubItem(factory, deleteActionCache, repositoryNode, null, true);
 
             return true;
         }
@@ -1456,10 +1459,11 @@ public class DeleteAction extends AContextualAction {
                             ITestContainerProviderService testService = (ITestContainerProviderService) GlobalServiceRegister.getDefault()
                                     .getService(ITestContainerProviderService.class);
                             if(testService != null){
-
+                                testService.deleteDataFiles(objToDelete);
                             }
-                            testService.deleteDataFiles(objToDelete);
                         }
+                        // delete codejar forever need to delete subitem also
+                        deleteCodeSubItem(factory, deleteActionCache, currentJobNode, confirm, false);
 
                         if (!ProjectManager.getInstance().getCurrentProject().isLocal()) {
                             // if remote,batch delete later
@@ -1482,12 +1486,45 @@ public class DeleteAction extends AContextualAction {
                 factory.deleteObjectLogical(objToDelete);
                 updateRelatedViews();
                 removeConnFromSQLExplorer(currentJobNode);
-                List<IRepositoryViewObject> deleteObjectList = new ArrayList<IRepositoryViewObject>();
                 deleteTestCases(factory, deleteActionCache, currentJobNode, confirm, null);
+                deleteCodeSubItem(factory, deleteActionCache, currentJobNode, confirm, true);
             }
         }
 
         return needReturn;
+    }
+
+    private void deleteCodeSubItem(IProxyRepositoryFactory factory, DeleteActionCache deleteActionCache,
+            final IRepositoryNode currentJobNode, Boolean confirm, boolean logicalDelete)
+            throws PersistenceException, BusinessException {
+        if (!ERepositoryObjectType.getAllTypesOfCodesJar().contains(currentJobNode.getObjectType())) {
+            return;
+        }
+        if (!currentJobNode.getChildren().isEmpty()) {
+            List<IRepositoryViewObject> deleteObjectList = new ArrayList<IRepositoryViewObject>();
+            for (IRepositoryNode child : currentJobNode.getChildren()) {
+                deleteElements(factory, deleteActionCache, (RepositoryNode) child, confirm, deleteObjectList);
+            }
+            if (deleteObjectList != null && deleteObjectList.size() > 0) {
+                factory.batchDeleteObjectPhysical4Remote(ProjectManager.getInstance().getCurrentProject(), deleteObjectList);
+            }
+        }
+
+        // delete forever to delete codeJar folder
+        if (!logicalDelete) {
+            IFolder folder = ResourceUtils
+                    .getFolder(ResourceUtils.getProject(ProjectManager.getInstance().getCurrentProject()),
+                            ERepositoryObjectType.getFolderName(currentJobNode.getObjectType()), true)
+                    .getFolder(currentJobNode.getObject().getProperty().getLabel());
+            if (folder != null) {
+                try {
+                    folder.delete(false, null);
+                } catch (CoreException e) {
+                    throw new PersistenceException(e);
+                }
+            }
+        }
+
     }
 
     private void deleteTestCases(IProxyRepositoryFactory factory, DeleteActionCache deleteActionCache,

@@ -12,6 +12,10 @@
 // ============================================================================
 package org.talend.core.repository.utils;
 
+import java.util.ArrayList;
+import java.util.List;
+
+import org.apache.commons.lang.StringUtils;
 import org.apache.oro.text.regex.MalformedPatternException;
 import org.apache.oro.text.regex.Pattern;
 import org.apache.oro.text.regex.PatternCompiler;
@@ -22,41 +26,63 @@ import org.apache.oro.text.regex.Util;
 import org.talend.commons.exception.PersistenceException;
 import org.talend.commons.ui.runtime.exception.ExceptionHandler;
 import org.talend.commons.utils.generation.JavaUtils;
+import org.talend.core.GlobalServiceRegister;
 import org.talend.core.model.properties.Item;
 import org.talend.core.model.properties.RoutineItem;
 import org.talend.core.model.repository.ERepositoryObjectType;
 import org.talend.core.repository.model.ProxyRepositoryFactory;
+import org.talend.core.runtime.services.IDesignerMavenService;
 
 /**
  * DOC nrousseau class global comment. Detailled comment
  */
 public final class RoutineUtils {
 
+    private static final String DEFAULT_PACKAGE_REGEX = "package(\\s)+" + JavaUtils.JAVA_ROUTINES_DIRECTORY //$NON-NLS-1$
+            + "\\.((\\w)+)(\\s)*;"; //$NON-NLS-1$
+
+    private static final String DEFAULT_PACKAGE_STRING = "package " + JavaUtils.JAVA_ROUTINES_DIRECTORY + ";"; //$NON-NLS-1$ //$NON-NLS-2$
+
+    private static final String INNER_ROUTINES_PACKAGE_REGEX = "package\\s+([^;]+);";
+
     public static void changeRoutinesPackage(Item item) {
+        List<ERepositoryObjectType> allowedTypes = new ArrayList<ERepositoryObjectType>();
+        allowedTypes.add(ERepositoryObjectType.ROUTINES);
+        doChangeRoutinesPackage(item, DEFAULT_PACKAGE_REGEX, DEFAULT_PACKAGE_STRING, allowedTypes, false);
+    }
+
+    public static void changeInnerCodePackage(Item item, boolean avoidSave) {
+        if (item instanceof RoutineItem
+                && GlobalServiceRegister.getDefault().isServiceRegistered(IDesignerMavenService.class)) {
+            IDesignerMavenService service = GlobalServiceRegister.getDefault().getService(IDesignerMavenService.class);
+            if (service != null) {
+                RoutineItem routineItem = (RoutineItem) item;
+                String codesJarPackageByInnerCode = service.getCodesJarPackageByInnerCode(routineItem);
+                if (StringUtils.isNotBlank(codesJarPackageByInnerCode)) {
+                    String newPackageString = "package " + StringUtils.replace(codesJarPackageByInnerCode, "/", ".") + ";";
+                    doChangeRoutinesPackage(item, INNER_ROUTINES_PACKAGE_REGEX, newPackageString,
+                            ERepositoryObjectType.getAllTypesOfCodes(), avoidSave);
+                }
+            }
+        }
+    }
+
+    public static void doChangeRoutinesPackage(Item item, String packageRegex, String newPackage,
+            List<ERepositoryObjectType> allowedTypes, boolean avoidSave) {
         if (item == null) {
             return;
         }
 
         ERepositoryObjectType itemType = ERepositoryObjectType.getItemType(item);
-        if (ERepositoryObjectType.ROUTINES.equals(itemType) && item instanceof RoutineItem) {
+        if (allowedTypes != null && allowedTypes.contains(itemType) && item instanceof RoutineItem) {
             RoutineItem rItem = (RoutineItem) item;
             if (!rItem.isBuiltIn()) {
-                //
                 String routineContent = new String(rItem.getContent().getInnerContent());
-                //
-                // String curProjectName =
-                // currentProject.getTechnicalLabel().toLowerCase();
-                String oldPackage = "package(\\s)+" + JavaUtils.JAVA_ROUTINES_DIRECTORY + "\\.((\\w)+)(\\s)*;"; //$NON-NLS-1$ //$NON-NLS-2$
-                // String newPackage = "package " +
-                // JavaUtils.JAVA_ROUTINES_DIRECTORY + "." + curProjectName +
-                // ";";
-
-                String newPackage = "package " + JavaUtils.JAVA_ROUTINES_DIRECTORY + ";"; //$NON-NLS-1$ //$NON-NLS-2$
                 try {
                     PatternCompiler compiler = new Perl5Compiler();
                     Perl5Matcher matcher = new Perl5Matcher();
                     matcher.setMultiline(true);
-                    Pattern pattern = compiler.compile(oldPackage);
+                    Pattern pattern = compiler.compile(packageRegex);
 
                     if (matcher.contains(routineContent, pattern)) {
                         // String group = matcher.getMatch().group(2);
@@ -67,7 +93,9 @@ public final class RoutineUtils {
                         rItem.getContent().setInnerContent(routineContent.getBytes());
                         ProxyRepositoryFactory repFactory = ProxyRepositoryFactory.getInstance();
 
-                        repFactory.save(rItem);
+                        if (!avoidSave) {
+                            repFactory.save(rItem);
+                        }
                         // }
                     }
                 } catch (MalformedPatternException e) {

@@ -1008,9 +1008,13 @@ public final class ProcessUtils {
     }
 
     public static boolean isChildRouteProcess(IProcess process) {
-        List n = process.getNodesOfType("tRouteInput");
-        if (n!=null && n.size()!=0) {
-            return true;
+        if (process != null)   {
+            for (INode node : process.getGraphicalNodes()) {
+                if ((node.getComponent().getName() != null) && 
+                        (node.getComponent().getName().compareTo("tRouteInput") == 0)) {
+                    return true;
+                }
+            }
         }
         return false;
     }

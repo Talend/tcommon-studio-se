@@ -66,11 +66,14 @@ import org.talend.core.model.properties.RoutineItem;
 import org.talend.core.model.repository.ERepositoryObjectType;
 import org.talend.core.model.repository.IRepositoryViewObject;
 import org.talend.core.model.repository.LockInfo;
+import org.talend.core.model.routines.CodesJarInfo;
 import org.talend.core.repository.model.ProxyRepositoryFactory;
 import org.talend.core.runtime.CoreRuntimePlugin;
 import org.talend.core.ui.branding.IBrandingService;
+import org.talend.core.utils.CodesJarResourceCache;
 import org.talend.designer.core.convert.IProcessConvertService;
 import org.talend.metadata.managment.ui.i18n.Messages;
+import org.talend.repository.ProjectManager;
 import org.talend.repository.model.IProxyRepositoryFactory;
 import org.talend.repository.model.IProxyRepositoryService;
 import org.talend.repository.model.IRepositoryService;
@@ -296,6 +299,20 @@ public abstract class PropertiesWizardPage extends AbstractNamedWizardPage {
                     IProxyRepositoryService.class);
 
             list = service.getProxyRepositoryFactory().getAll(type, true, false);
+            if (ERepositoryObjectType.getAllTypesOfCodes().contains(type)) {
+                String currentProjectName = ProjectManager.getInstance().getCurrentProject().getTechnicalLabel();
+                for (CodesJarInfo info : CodesJarResourceCache.getAllCodesJars()) {
+                    Property codeJarProperty = info.getProperty();
+                    ERepositoryObjectType codesJarType = ERepositoryObjectType.getItemType(codeJarProperty.getItem());
+                    if (!currentProjectName.equals(info.getProjectTechName())
+                            || !ERepositoryObjectType.CodeTypeEnum.isCodeRepositoryObjectTypeMatch(codesJarType, type)) {
+                        continue;
+                    }
+                    List<IRepositoryViewObject> innerCodesObjects = service.getProxyRepositoryFactory()
+                            .getAllInnerCodes(codesJarType, codeJarProperty);
+                    list.addAll(innerCodesObjects);
+                }
+            }
         }
         return list;
     }
