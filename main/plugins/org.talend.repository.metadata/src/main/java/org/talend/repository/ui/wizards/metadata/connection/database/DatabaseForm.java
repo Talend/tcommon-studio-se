@@ -30,12 +30,10 @@ import java.util.Set;
 import java.util.concurrent.Callable;
 import java.util.regex.Pattern;
 
-import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Priority;
 import org.eclipse.core.runtime.IPath;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.IStatus;
-import org.eclipse.core.runtime.Path;
 import org.eclipse.emf.common.util.EMap;
 import org.eclipse.jface.dialogs.IDialogConstants;
 import org.eclipse.jface.dialogs.MessageDialog;
@@ -57,17 +55,9 @@ import org.eclipse.swt.graphics.GC;
 import org.eclipse.swt.graphics.Point;
 import org.eclipse.swt.layout.FillLayout;
 import org.eclipse.swt.layout.FormAttachment;
-import org.eclipse.swt.layout.FormData;
 import org.eclipse.swt.layout.FormLayout;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
-import org.eclipse.swt.widgets.Button;
-import org.eclipse.swt.widgets.Composite;
-import org.eclipse.swt.widgets.Event;
-import org.eclipse.swt.widgets.Group;
-import org.eclipse.swt.widgets.Link;
-import org.eclipse.swt.widgets.Listener;
-import org.eclipse.swt.widgets.Text;
 import org.eclipse.ui.PlatformUI;
 import org.talend.commons.exception.CommonExceptionHandler;
 import org.talend.commons.exception.PersistenceException;
@@ -150,6 +140,10 @@ import org.talend.repository.metadata.preferences.IDatabasePrefConstants;
 import org.talend.repository.model.RepositoryNode;
 import org.talend.repository.ui.dialog.AProgressMonitorDialogWithCancel;
 import org.talend.utils.sql.ConnectionUtils;
+
+import jxl.biff.drawing.Button;
+import sun.awt.image.ImageWatched.Link;
+import us.monoid.web.FormData;
 
 /**
  * @author ocarbone
@@ -6140,7 +6134,7 @@ public class DatabaseForm extends AbstractForm {
         // feature 17159
         if (CoreRuntimePlugin.getInstance().isDataProfilePerspectiveSelected()) {
             if (!isSupportByTDQ()) {
-                updateStatus(IStatus.WARNING, "some database types are not usable in the Data Profiler perspective."); //$NON-NLS-1$
+                updateStatus(IStatus.WARNING, Messages.getString("DatabaseForm.canNotUsableInDataProfiler")); //$NON-NLS-1$
                 return false;
             }
         }
