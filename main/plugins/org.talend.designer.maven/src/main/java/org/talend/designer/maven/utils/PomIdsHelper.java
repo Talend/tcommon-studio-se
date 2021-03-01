@@ -304,6 +304,12 @@ public class PomIdsHelper {
         return PREFIX_DEFAULT_GROUPID + projectName.toLowerCase();
     }
 
+    public static boolean skipFolders() {
+        String projectTechName = ProjectManager.getInstance().getCurrentProject().getTechnicalLabel();
+        ProjectPreferenceManager manager = getPreferenceManager(projectTechName);
+        return manager.getBoolean(MavenConstants.SKIP_FOLDERS);
+    }
+
     public static boolean isValidGroupId(String text) {
         if (text != null && text.matches("[\\w\\.]+")) { //$NON-NLS-1$
             return true;
