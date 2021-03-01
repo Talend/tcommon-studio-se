@@ -26,6 +26,8 @@ public class RepositoryActionLogger {
     private static String recordingFileName = "actions";
 
     private static File recordingFile;
+    public static final String PREFIX_PERSPECITVE = "perspective.";
+    public static final String PREFIX_ACTION = "action.";
 
     public static File getRecordingFile() {
         if (recordingFile == null) {
@@ -35,13 +37,21 @@ public class RepositoryActionLogger {
         return recordingFile;
     }
 
-    public static void log(String action) {
+    private static void log(String action) {
         new Thread(() -> {
             Properties props = PropertiesFileUtil.read(getRecordingFile(), false);
             int count = Integer.parseInt(props.getProperty(action, "0"));
             props.put(action, count + 1 + "");
             PropertiesFileUtil.store(getRecordingFile(), props);
         }).start();
+    }
+    
+    public static void logPerspective(String perspective) {
+        log(PREFIX_PERSPECITVE + perspective);
+    }
+    
+    public static void logAction(String action) {
+        log(PREFIX_ACTION + action);
     }
     
 }

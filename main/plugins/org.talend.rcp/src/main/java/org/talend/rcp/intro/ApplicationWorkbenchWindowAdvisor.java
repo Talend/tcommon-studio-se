@@ -24,6 +24,7 @@ import java.util.List;
 import java.util.Set;
 
 import org.eclipse.core.commands.IHandler;
+import org.eclipse.core.runtime.IConfigurationElement;
 import org.eclipse.core.runtime.IPath;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.IStatus;
@@ -65,6 +66,7 @@ import org.eclipse.ui.handlers.IHandlerService;
 import org.eclipse.ui.internal.WorkbenchPlugin;
 import org.eclipse.ui.internal.ide.EditorAreaDropAdapter;
 import org.eclipse.ui.internal.ide.IDEWorkbenchPlugin;
+import org.eclipse.ui.internal.registry.PerspectiveDescriptor;
 import org.eclipse.ui.internal.util.PrefUtil;
 import org.eclipse.ui.preferences.ScopedPreferenceStore;
 import org.osgi.service.prefs.BackingStoreException;
@@ -475,7 +477,9 @@ public class ApplicationWorkbenchWindowAdvisor extends WorkbenchWindowAdvisor {
             public void perspectiveActivated(IWorkbenchPage page, IPerspectiveDescriptor perspective) {
                 // MOD xqliu 2010-10-14 bug 15756
                 String pId = perspective.getId();
-                RepositoryActionLogger.log(pId);
+                IConfigurationElement configElement = ((PerspectiveDescriptor)perspective).getConfigElement();
+                String name = configElement.getAttribute("name");                
+                RepositoryActionLogger.logPerspective(name);
                 
                 if (IBrandingConfiguration.PERSPECTIVE_DI_ID.equals(pId)) {
                     IRepositoryView view = RepositoryManager.getRepositoryView();

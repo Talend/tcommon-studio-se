@@ -56,14 +56,9 @@ import org.eclipse.core.runtime.IExtensionRegistry;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Platform;
-import org.eclipse.core.runtime.Status;
 import org.eclipse.core.runtime.jobs.Job;
-import org.eclipse.jface.dialogs.MessageDialogWithToggle;
 import org.eclipse.jface.preference.IPreferenceStore;
-import org.eclipse.swt.widgets.Shell;
-import org.eclipse.ui.PlatformUI;
 import org.eclipse.ui.preferences.ScopedPreferenceStore;
-import org.eclipse.ui.progress.UIJob;
 import org.talend.commons.exception.ExceptionHandler;
 import org.talend.commons.utils.network.NetworkUtil;
 import org.talend.commons.utils.network.TalendProxySelector;
@@ -194,57 +189,8 @@ public final class TokenCollectorFactory {
         return false;
     }
     
-    private Job monitorInquireJob = new UIJob("") {
-        
-        @Override
-        public IStatus runInUIThread(IProgressMonitor monitor) {
-            long millis = 4 * 60 * 60 * 1000L;//check every 4 hours
-            millis = Long.getLong("studio.token.askpermission", millis);
-            final IPreferenceStore preferenceStore = CoreUIPlugin.getDefault().getPreferenceStore();
-            boolean showpop = preferenceStore.getBoolean(ITalendCorePrefConstants.DATA_COLLECTOR_SHOWPOP);
-            while (showpop) {
-                if (!dataCollectorEnabled() 
-                        && isTimeToSend() && NetworkUtil.isNetworkValid() && studioInIdle()
-                        ) {
-                    // show pops up dialog
-                    Shell activeShell = null;
-                    try {
-                        activeShell = PlatformUI.getWorkbench().getDisplay().getActiveShell();
-                    } catch (Exception e1) {
-                    }
-                    if (activeShell == null) {
-                        activeShell = new Shell(PlatformUI.getWorkbench().getDisplay());
-                    }
-
-                    MessageDialogWithToggle openOkCancelConfirm = MessageDialogWithToggle.openOkCancelConfirm(activeShell, "",
-                            "Usage Data Collector disabled, enable capture?", "Do not show this again", false, null,
-                            ITalendCorePrefConstants.DATA_COLLECTOR_SHOWPOP);
-                    boolean toggleState = openOkCancelConfirm.getToggleState();
-                    int returnCode = openOkCancelConfirm.getReturnCode();
-                    if (returnCode == 0) {
-                        preferenceStore.setValue(ITalendCorePrefConstants.DATA_COLLECTOR_ENABLED, true);
-                    }
-                    preferenceStore.setValue(ITalendCorePrefConstants.DATA_COLLECTOR_SHOWPOP, !toggleState);
-                    if (preferenceStore instanceof ScopedPreferenceStore) {
-                        try {
-                            ((ScopedPreferenceStore) preferenceStore).save();
-                        } catch (IOException e) {
-                            ExceptionHandler.process(e);
-                        }
-                    }
-
-                }
-                showpop = preferenceStore.getBoolean(ITalendCorePrefConstants.DATA_COLLECTOR_SHOWPOP);
-            }
-
-            return Status.OK_STATUS;
-        }
-    };
-    
     public void monitor() {
         monitorSendThread.start();
-        monitorInquireJob.setSystem(true);
-        monitorInquireJob.schedule();
     }
     
     public void priorCollect() throws Exception {

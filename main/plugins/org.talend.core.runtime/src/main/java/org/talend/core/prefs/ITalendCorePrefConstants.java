@@ -115,8 +115,6 @@ public interface ITalendCorePrefConstants {
 
     public static final String DATA_COLLECTOR = "data_collector"; //$NON-NLS-1$
     
-    public static final String DATA_COLLECTOR_SHOWPOP = "data_collector_showpop"; //$NON-NLS-1$
-
     public static final String EXCHANGE_CHECK_TIS_VERSION = "exchange_check_tis_version"; //$NON-NLS-1$
 
     public static final String EXCHANGE_DOWNLOADED_CHECK_UPDATES = "exchange_downloaded_check_updates"; //$NON-NLS-1$

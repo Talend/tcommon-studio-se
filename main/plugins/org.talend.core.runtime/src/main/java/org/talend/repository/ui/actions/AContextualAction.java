@@ -639,7 +639,7 @@ public abstract class AContextualAction extends Action implements ITreeContextua
     @Override
     public void run() {
         String name = "User action : " + getText(); //$NON-NLS-1$
-        RepositoryActionLogger.log(getClass().getSimpleName());
+        RepositoryActionLogger.logAction(getClass().getName());
 
         oldItem = null;
         // if (node == null) {
