@@ -28,15 +28,24 @@ public class RepositroyActionsTokenCollector extends AbstractTokenCollector {
     public JSONObject collect() throws Exception {
         JSONObject tokenStudioObject = new JSONObject();
         //
-        JSONObject jsonObjectIOInfo = new JSONObject();
+        JSONObject jsonObjectActionInfo = new JSONObject();
+        JSONObject jsonObjectPerspectiveInfo = new JSONObject();
         Properties props = PropertiesFileUtil.read(RepositoryActionLogger.getRecordingFile(), false);
         if(!props.isEmpty()) {
             for(Entry<Object, Object> entry: props.entrySet()) {
-                jsonObjectIOInfo.put((String)entry.getKey(), entry.getValue());
+                String key = (String)entry.getKey();
+                if(key.startsWith(RepositoryActionLogger.PREFIX_ACTION)) {
+                    key = key.substring(RepositoryActionLogger.PREFIX_ACTION.length());
+                    jsonObjectActionInfo.put(key, entry.getValue());
+                } else if(key.startsWith(RepositoryActionLogger.PREFIX_PERSPECITVE)) {
+                    key = key.substring(RepositoryActionLogger.PREFIX_PERSPECITVE.length());
+                    jsonObjectPerspectiveInfo.put(key, entry.getValue());
+                }
             }
         }
         
-        tokenStudioObject.put("actions", jsonObjectIOInfo);
+        tokenStudioObject.put("actions", jsonObjectActionInfo);
+        tokenStudioObject.put("perspectives", jsonObjectPerspectiveInfo);
         
         return tokenStudioObject;
     }
