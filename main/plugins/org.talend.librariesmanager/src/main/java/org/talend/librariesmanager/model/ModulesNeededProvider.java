@@ -575,9 +575,14 @@ public class ModulesNeededProvider {
         }
         EList<RoutinesParameterType> routinesParameterTypes = null;
         if (item instanceof ProcessItem) {
-            routinesParameterTypes = ((ProcessItem) item).getProcess().getParameters().getRoutinesParameter();
+            if (((ProcessItem) item).getProcess() != null && ((ProcessItem) item).getProcess().getParameters() != null) {
+                routinesParameterTypes = ((ProcessItem) item).getProcess().getParameters().getRoutinesParameter();
+            }
         } else if (item instanceof JobletProcessItem) {
-            routinesParameterTypes = ((JobletProcessItem) item).getJobletProcess().getParameters().getRoutinesParameter();
+            if (((JobletProcessItem) item).getJobletProcess() != null
+                    && ((JobletProcessItem) item).getJobletProcess().getParameters() != null) {
+                routinesParameterTypes = ((JobletProcessItem) item).getJobletProcess().getParameters().getRoutinesParameter();
+            }
         }
         if (routinesParameterTypes == null) {
             return importNeedsList;

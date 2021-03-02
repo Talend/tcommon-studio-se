@@ -318,7 +318,7 @@ public abstract class AbstractMavenProcessorPom extends CreateMavenBundleTemplat
     @SuppressWarnings("unchecked")
     protected List<Dependency> getCodesJarDependencies() {
         Property property = getJobProcessor().getProperty();
-        if (property != null) {
+        if (property != null && getProcessType() != null && getProcessType().getParameters() != null) {
             return new ArrayList<>(createCodesJarDependencies(getProcessType().getParameters().getRoutinesParameter()));
         }
         return Collections.emptyList();

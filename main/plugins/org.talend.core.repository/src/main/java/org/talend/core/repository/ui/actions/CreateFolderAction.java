@@ -112,7 +112,7 @@ public class CreateFolderAction extends AContextualAction {
                         || ERepositoryObjectType.SQLPATTERNS.equals(property)
                         || ERepositoryObjectType.REFERENCED_PROJECTS.equals(property)
                         || ERepositoryObjectType.SVN_ROOT.equals(property) || ERepositoryObjectType.ROUTINESJAR.equals(property)
-                        || ERepositoryObjectType.BEANSJAR.equals(property)) {
+                        || property.equals(ERepositoryObjectType.BEANSJAR)) {
                     canWork = false;
                 } else if (property != null
                         && GlobalServiceRegister.getDefault().isServiceRegistered(ICamelDesignerCoreService.class)) {
