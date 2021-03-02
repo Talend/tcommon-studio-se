@@ -162,9 +162,10 @@ public enum EDatabaseVersion4Drivers {
 
     MAPRDB(new DbVersion4Drivers(EDatabaseTypeName.MAPRDB, new String[] {})),
 
-    REDSHIFT(new DbVersion4Drivers(EDatabaseTypeName.REDSHIFT,"redshift","REDSHIFT", "RedshiftJDBC42-no-awssdk-1.2.16.1027.jar")), //$NON-NLS-1$
+    REDSHIFT(new DbVersion4Drivers(EDatabaseTypeName.REDSHIFT, "redshift", "REDSHIFT", //$NON-NLS-1$
+            "redshiftJDBC42-no-awssdk-1.2.16.1027.jar")),
     REDSHIFT_SSO(new DbVersion4Drivers(EDatabaseTypeName.REDSHIFT_SSO,"redshift sso","REDSHIFT_SSO",
-            new String[] { "RedshiftJDBC42-no-awssdk-1.2.16.1027.jar", "aws-java-sdk-1.11.406.jar", "jackson-core-2.9.5.jar",
+            new String[] { "redshiftJDBC42-no-awssdk-1.2.16.1027.jar", "aws-java-sdk-1.11.406.jar", "jackson-core-2.9.5.jar",
                     "jackson-databind-2.9.5.jar", "jackson-annotations-2.9.0.jar", "httpcore-4.4.9.jar", "httpclient-4.5.5.jar",
                     "joda-time-2.8.1.jar", "commons-logging-1.1.3.jar" })),
 
