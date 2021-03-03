@@ -1014,9 +1014,9 @@ public class ImportExportHandlersManager {
                             .contains(ERepositoryObjectType.getItemType(item.getItem())))
                     .map(item -> CodesJarInfo.create(item.getProperty())).collect(Collectors.toSet());
             if (codesJarsToUpdate.isEmpty()) {
-                CodesJarM2CacheManager.updateCodesJarProject(monitor, false, true);
+                CodesJarM2CacheManager.updateCodesJarProject(monitor, false, true, false);
             } else {
-                CodesJarM2CacheManager.updateCodesJarProject(monitor, codesJarsToUpdate);
+                CodesJarM2CacheManager.updateCodesJarProject(monitor, codesJarsToUpdate, false, false, false);
             }
 
             progressMonitor.done();

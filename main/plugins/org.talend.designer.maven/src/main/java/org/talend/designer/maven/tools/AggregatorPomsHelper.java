@@ -167,15 +167,11 @@ public class AggregatorPomsHelper {
         return getProjectPomsFolder().getFolder(DIR_AGGREGATORS);
     }
 
-    public void updateCodeProjects(IProgressMonitor monitor) {
-        updateCodeProjects(monitor, false);
-    }
-
-    public void updateCodeProjects(IProgressMonitor monitor, boolean forceBuild) {
-        updateCodeProjects(monitor, forceBuild, false);
-    }
-
     public void updateCodeProjects(IProgressMonitor monitor, boolean forceBuild, boolean ignoreM2Cache) {
+        updateCodeProjects(monitor, forceBuild, ignoreM2Cache, false);
+    }
+
+    public void updateCodeProjects(IProgressMonitor monitor, boolean forceBuild, boolean ignoreM2Cache, boolean buildIfNoUpdate) {
         RepositoryWorkUnit workUnit = new RepositoryWorkUnit<Object>("update code project") { //$NON-NLS-1$
 
             @Override
@@ -192,6 +188,8 @@ public class AggregatorPomsHelper {
                             MavenProjectUtils.updateMavenProject(monitor, codeProject.getProject());
                             buildAndInstallCodesProject(monitor, codeType, true, forceBuild);
                             CodeM2CacheManager.updateCodeProjectCache(currentProject, codeType);
+                        } else if (buildIfNoUpdate) {
+                            buildAndInstallCodesProject(monitor, codeType, false, true);
                         }
                     }
                 } catch (Exception e) {
@@ -884,7 +882,7 @@ public class AggregatorPomsHelper {
         // codes pom
         monitor.subTask("Synchronize code poms"); //$NON-NLS-1$
         updateCodeProjects(monitor, true, true);
-        CodesJarM2CacheManager.updateCodesJarProject(monitor, true, true);
+        CodesJarM2CacheManager.updateCodesJarProject(monitor, true, true, true);
         monitor.worked(1);
         if (monitor.isCanceled()) {
             return;

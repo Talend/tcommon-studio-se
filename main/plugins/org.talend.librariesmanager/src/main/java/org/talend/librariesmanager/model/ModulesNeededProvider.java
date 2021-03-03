@@ -588,7 +588,7 @@ public class ModulesNeededProvider {
             return importNeedsList;
         }
         routinesParameterTypes.stream().filter(r -> r.getType() != null)
-                .map(r -> CodesJarResourceCache.getCodesJarById(r.getId()))
+                .map(r -> CodesJarResourceCache.getCodesJarById(r.getId())).filter(info -> info != null)
                 .forEach(info -> importNeedsList.addAll(createModuleNeededFromCodeItem(info.getProperty().getItem())));
 
         checkInstallStatus(importNeedsList);

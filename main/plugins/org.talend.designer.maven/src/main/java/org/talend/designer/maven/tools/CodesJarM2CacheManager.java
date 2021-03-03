@@ -70,12 +70,12 @@ import org.talend.designer.maven.launch.MavenPomCommandLauncher;
 import org.talend.designer.maven.model.TalendMavenConstants;
 import org.talend.designer.maven.tools.creator.CreateMavenBeansJarPom;
 import org.talend.designer.maven.tools.creator.CreateMavenRoutinesJarPom;
-import org.talend.designer.maven.utils.MavenProjectUtils;
 import org.talend.designer.maven.utils.PomIdsHelper;
 import org.talend.designer.maven.utils.PomUtil;
 import org.talend.designer.runprocess.IRunProcessService;
 import org.talend.repository.ProjectManager;
 import org.talend.repository.RepositoryWorkUnit;
+import org.talend.utils.io.FilesUtils;
 
 public class CodesJarM2CacheManager {
 
@@ -215,9 +215,28 @@ public class CodesJarM2CacheManager {
     }
 
     public static void deleteCodesJarProjectCache(CodesJarInfo info) {
-        File cacheFile = getCacheFile(info.getProjectTechName(), info.getProperty());
+        deleteCodesJarProjectCache(info.getProjectTechName(), ERepositoryObjectType.getItemType(info.getProperty().getItem()),
+                info.getProperty().getLabel());
+    }
+
+    public static void deleteCodesJarProjectCache(String projectTechName, ERepositoryObjectType type, String label) {
+        String baseName = ""; // $NON-NLS-1$
+        if (type == ERepositoryObjectType.ROUTINESJAR) {
+            baseName = TalendMavenConstants.DEFAULT_ROUTINESJAR;
+        } else if (type == ERepositoryObjectType.BEANSJAR) {
+            baseName = TalendMavenConstants.DEFAULT_BEANSJAR;
+        }
+        File cacheFile = getCacheFile(projectTechName, baseName, label);
         if (cacheFile.exists()) {
             cacheFile.delete();
+        }
+        MavenArtifact artifact = new MavenArtifact();
+        artifact.setGroupId(PomIdsHelper.getCodesJarGroupId(projectTechName, baseName));
+        artifact.setArtifactId(label.toLowerCase());
+        artifact.setVersion(PomIdsHelper.getCodesJarVersion(projectTechName));
+        File artifactFile = new File(PomUtil.getArtifactFullPath(artifact));
+        if (artifactFile.exists()) {
+            FilesUtils.deleteFolder(artifactFile.getParentFile().getParentFile(), true);
         }
     }
 
@@ -254,10 +273,11 @@ public class CodesJarM2CacheManager {
     }
 
     public static void updateCodesJarProject(IProgressMonitor monitor) {
-        updateCodesJarProject(monitor, false, false);
+        updateCodesJarProject(monitor, false, false, false);
     }
 
-    public static void updateCodesJarProject(IProgressMonitor monitor, boolean forceBuild, boolean onlyCurrentProject) {
+    public static void updateCodesJarProject(IProgressMonitor monitor, boolean forceBuild, boolean onlyCurrentProject,
+            boolean syncCode) {
         Set<CodesJarInfo> toUpdate;
         if (onlyCurrentProject) {
             String currentProject = ProjectManager.getInstance().getCurrentProject().getTechnicalLabel();
@@ -268,90 +288,62 @@ public class CodesJarM2CacheManager {
             toUpdate = CodesJarResourceCache.getAllCodesJars().stream()
                     .filter(info -> forceBuild || needUpdateCodesJarProject(info)).collect(Collectors.toSet());
         }
-        updateCodesJarProject(monitor, toUpdate, false, false);
-    }
-
-    public static void updateCodesJarProject(Property property) throws Exception {
-        updateCodesJarProject(property, false);
+        updateCodesJarProject(monitor, toUpdate, false, syncCode, false);
     }
 
     public static void updateCodesJarProject(Property property, boolean needReSync) throws Exception {
         Set<CodesJarInfo> toUpdate = new HashSet<>();
         toUpdate.add(CodesJarInfo.create(property));
-        updateCodesJarProject(new NullProgressMonitor(), toUpdate, false, needReSync);
-    }
-
-    public static void updateCodesJarProject(IProgressMonitor monitor, Set<CodesJarInfo> toUpdate) {
-        updateCodesJarProject(monitor, toUpdate, false, false);
+        updateCodesJarProject(new NullProgressMonitor(), toUpdate, false, needReSync, true);
     }
 
     public static void updateCodesJarProject(IProgressMonitor monitor, Set<CodesJarInfo> toUpdate, boolean generatePom,
-            boolean syncCode) {
+            boolean syncCode, boolean keepNonExistingProject) {
 
         RepositoryWorkUnit<Object> workUnit = new RepositoryWorkUnit<Object>("update codesjar project") { //$NON-NLS-1$
 
             @Override
             protected void run() {
-                internalUpdateCodesJarProject(monitor, toUpdate, generatePom, syncCode);
+                internalUpdateCodesJarProject(monitor, toUpdate, generatePom, syncCode, keepNonExistingProject);
             }
+
         };
         workUnit.setAvoidUnloadResources(true);
         ProxyRepositoryFactory.getInstance().executeRepositoryWorkUnit(workUnit);
     }
 
     public static void internalUpdateCodesJarProject(IProgressMonitor monitor, Set<CodesJarInfo> toUpdate, boolean generatePom,
-            boolean syncCode) {
+            boolean syncCode, boolean keepNonExistingProject) {
         if (toUpdate.isEmpty()) {
             return;
         }
         Set<ITalendProcessJavaProject> existingProjects = toUpdate.stream()
-                .filter(info -> getRunProcessService().getExistingTalendCodesJarProject(info) != null)
-                .map(info -> getRunProcessService().getExistingTalendCodesJarProject(info)).collect(Collectors.toSet());
+                .map(info -> IRunProcessService.get().getExistingTalendCodesJarProject(info)).filter(p -> p != null)
+                .collect(Collectors.toSet());
         try {
             if (generatePom) {
-                toUpdate.forEach(info -> {
-                    try {
-                        ITalendProcessJavaProject codesJarProject = getRunProcessService().getExistingTalendCodesJarProject(info);
-                        if (codesJarProject != null) {
-                            updateCodesJarProjectPom(monitor, info);
-                            MavenProjectUtils.updateMavenProject(monitor, codesJarProject.getProject());
-                        } else {
-                            codesJarProject = getRunProcessService().getTalendCodesJarJavaProject(info);
-                            if (ProjectManager.getInstance().getCurrentProject().getTechnicalLabel()
-                                    .equals(info.getProjectTechName())) {
-                                updateCodesJarProjectPom(monitor, info);
-                                MavenProjectUtils.updateMavenProject(monitor, codesJarProject.getProject());
-                            }
-                        }
-                    } catch (CoreException e) {
-                        ExceptionHandler.process(e);
-                    }
-                });
+                // only for git update
+                toUpdate.forEach(info -> updateCodesJarProjectPom(monitor, info));
             }
 
             if (syncCode) {
                 toUpdate.forEach(info -> syncSourceCode(info));
             }
 
-            // Set<IProject> projects = toUpdate.stream()
-            // .map(info -> getRunProcessService().getTalendCodesJarJavaProject(info).getProject())
-            // .collect(Collectors.toSet());
             // parallelBuild(monitor, projects);
 
             install(toUpdate, monitor);
+
             toUpdate.forEach(info -> updateCodesJarProjectCache(info));
         } catch (Exception e) {
             ExceptionHandler.process(e);
         } finally {
-            for (CodesJarInfo info : toUpdate) {
-                ITalendProcessJavaProject updatedProject = getRunProcessService().getExistingTalendCodesJarProject(info);
-                if (updatedProject != null && !existingProjects.contains(updatedProject)) {
-                    try {
-                        updatedProject.getProject().delete(false, true, monitor);
-                    } catch (CoreException e) {
-                        ExceptionHandler.process(e);
+            if (!keepNonExistingProject) {
+                for (CodesJarInfo info : toUpdate) {
+                    ITalendProcessJavaProject updatedProject = IRunProcessService.get().getExistingTalendCodesJarProject(info);
+                    if (updatedProject != null && !existingProjects.contains(updatedProject)) {
+                        IRunProcessService.get().deleteTalendCodesJarProject(info, false);
                     }
-                    getRunProcessService().removeFromCodesJarJavaProjects(info);
                 }
             }
         }
@@ -376,7 +368,7 @@ public class CodesJarM2CacheManager {
         try {
             Property property = info.getProperty();
             String projectTechName = info.getProjectTechName();
-            ITalendProcessJavaProject codesJarProject = getRunProcessService().getTalendCodesJarJavaProject(info);
+            ITalendProcessJavaProject codesJarProject = IRunProcessService.get().getTalendCodesJarJavaProject(info);
             IFolder innerCodesFolder = codesJarProject.getSrcFolder().getFolder(new Path(
                     StringUtils.replace(PomIdsHelper.getCodesJarGroupId(projectTechName, property.getItem()), ".", "/")));
             if (innerCodesFolder.exists()) {
@@ -406,7 +398,7 @@ public class CodesJarM2CacheManager {
         }
         IFile pomFile = createBuildAggregatorPom(toUpdate);
         Set<ITalendProcessJavaProject> projects = toUpdate.stream()
-                .map(info -> getRunProcessService().getTalendCodesJarJavaProject(info)).collect(Collectors.toSet());
+                .map(info -> IRunProcessService.get().getTalendCodesJarJavaProject(info)).collect(Collectors.toSet());
         try {
             for (ITalendProcessJavaProject project : projects) {
                 Model model = MavenPlugin.getMavenModelManager().readMavenModel(project.getProjectPom());
@@ -471,6 +463,13 @@ public class CodesJarM2CacheManager {
         return new File(cacheFolder, cacheFileName);
     }
 
+    private static File getCacheFile(String projectTechName, String baseName, String label) {
+        String cacheFileName = PomIdsHelper.getCodesJarGroupId(projectTechName, baseName) + "." //$NON-NLS-1$
+                + label.toLowerCase() + "-" //$NON-NLS-1$
+                + PomIdsHelper.getCodesVersion(projectTechName) + ".cache"; // $NON-NLS-1$
+        return new File(cacheFolder, cacheFileName);
+    }
+
     private static String getInnerCodeKey(String projectTechName, Property property) {
         return KEY_INNERCODE_PREFIX + KEY_SEPERATOR + property.getId() + KEY_SEPERATOR + property.getVersion();
     }
@@ -478,13 +477,6 @@ public class CodesJarM2CacheManager {
     private static String getModifiedDate(Property property) {
         String modifiedDate = (String) property.getAdditionalProperties().get(ItemProductKeys.DATE.getModifiedKey());
         return StringUtils.isNotBlank(modifiedDate) ? modifiedDate : EMPTY_DATE;
-    }
-
-    private static IRunProcessService getRunProcessService() {
-        if (GlobalServiceRegister.getDefault().isServiceRegistered(IRunProcessService.class)) {
-            return (IRunProcessService) GlobalServiceRegister.getDefault().getService(IRunProcessService.class);
-        }
-        return null;
     }
 
 }

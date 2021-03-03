@@ -22,6 +22,7 @@ import org.eclipse.core.resources.IResource;
 import org.eclipse.core.runtime.IPath;
 import org.eclipse.ui.IEditorPart;
 import org.talend.commons.exception.PersistenceException;
+import org.talend.core.GlobalServiceRegister;
 import org.talend.core.IService;
 import org.talend.core.model.components.IComponent;
 import org.talend.core.model.general.ModuleNeeded;
@@ -134,5 +135,12 @@ public interface ITestContainerProviderService extends IService {
     public void deleteDataFiles(Object deleteObj);
 
     public List<NodeType> getOriginalNodes(ProcessType process);
+
+    public static ITestContainerProviderService get() {
+        if (GlobalServiceRegister.getDefault().isServiceRegistered(ITestContainerProviderService.class)) {
+            return GlobalServiceRegister.getDefault().getService(ITestContainerProviderService.class);
+        }
+        return null;
+    }
 
 }

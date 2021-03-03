@@ -30,6 +30,8 @@ public interface ITalendProcessJavaProject {
 
     IJavaProject getJavaProject();
 
+    boolean exists();
+
     IProject getProject();
 
     Property getPropery();
