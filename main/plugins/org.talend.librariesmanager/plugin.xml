@@ -42,9 +42,16 @@
       </libraryNeeded>
       <libraryNeeded
               context="plugin:org.talend.librariesmanager"
-              id="crypto-utils-0.31.10.jar"
-              mvn_uri="mvn:org.talend.daikon/crypto-utils/0.31.10"
-              name="crypto-utils-0.31.10.jar"
+              id="crypto-utils-0.31.11.jar"
+              mvn_uri="mvn:org.talend.daikon/crypto-utils/0.31.11"
+              name="crypto-utils-0.31.11.jar"
+              required="true">
+      </libraryNeeded>
+        <libraryNeeded
+              context="plugin:org.talend.librariesmanager"
+              id="daikon-0.31.11.jar"
+              mvn_uri="mvn:org.talend.daikon/daikon/0.31.11"
+              name="daikon-0.31.11.jar"
               required="true">
       </libraryNeeded>
    </extension>
