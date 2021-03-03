@@ -1177,11 +1177,6 @@ public class ModulesNeededProvider {
                 allSet = false;
             }
         }
-        for (ModuleNeeded mod : getModulesNeededForBeans()) {
-            if (ELibraryInstallStatus.INSTALLED != mod.getStatus()) {
-                allSet = false;
-            }
-        }
         if (allSet) {
             installModuleForRountine = false;
         }

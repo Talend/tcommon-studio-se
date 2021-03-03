@@ -183,9 +183,7 @@ public class MavenPomSynchronizer {
                                 public void afterChangingLibraries() {
                                     try {
                                         // update the dependencies
-                                        IProgressMonitor monitor = new NullProgressMonitor();
-                                        new AggregatorPomsHelper().updateCodeProjects(monitor);
-                                        CodesJarM2CacheManager.updateCodesJarProject(monitor);
+                                        new AggregatorPomsHelper().updateCodeProjects(new NullProgressMonitor());
                                     } catch (Exception e) {
                                         ExceptionHandler.process(e);
                                     }

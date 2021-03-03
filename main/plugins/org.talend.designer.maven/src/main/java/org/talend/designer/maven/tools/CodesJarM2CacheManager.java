@@ -76,6 +76,7 @@ import org.talend.designer.maven.utils.PomUtil;
 import org.talend.designer.runprocess.IRunProcessService;
 import org.talend.repository.ProjectManager;
 import org.talend.repository.RepositoryWorkUnit;
+import org.talend.utils.io.FilesUtils;
 
 public class CodesJarM2CacheManager {
 
@@ -215,9 +216,28 @@ public class CodesJarM2CacheManager {
     }
 
     public static void deleteCodesJarProjectCache(CodesJarInfo info) {
-        File cacheFile = getCacheFile(info.getProjectTechName(), info.getProperty());
+        deleteCodesJarProjectCache(info.getProjectTechName(), ERepositoryObjectType.getItemType(info.getProperty().getItem()),
+                info.getProperty().getLabel());
+    }
+
+    public static void deleteCodesJarProjectCache(String projectTechName, ERepositoryObjectType type, String label) {
+        String baseName = ""; // $NON-NLS-1$
+        if (type == ERepositoryObjectType.ROUTINESJAR) {
+            baseName = TalendMavenConstants.DEFAULT_ROUTINESJAR;
+        } else if (type == ERepositoryObjectType.BEANSJAR) {
+            baseName = TalendMavenConstants.DEFAULT_BEANSJAR;
+        }
+        File cacheFile = getCacheFile(projectTechName, baseName, label);
         if (cacheFile.exists()) {
             cacheFile.delete();
+        }
+        MavenArtifact artifact = new MavenArtifact();
+        artifact.setGroupId(PomIdsHelper.getCodesJarGroupId(projectTechName, baseName));
+        artifact.setArtifactId(label.toLowerCase());
+        artifact.setVersion(PomIdsHelper.getCodesJarVersion(projectTechName));
+        File artifactFile = new File(PomUtil.getArtifactFullPath(artifact));
+        if (artifactFile.exists()) {
+            FilesUtils.deleteFolder(artifactFile.getParentFile().getParentFile(), true);
         }
     }
 
@@ -292,7 +312,7 @@ public class CodesJarM2CacheManager {
 
             @Override
             protected void run() {
-                internalUpdateCodesJarProject(monitor, toUpdate, generatePom, syncCode);
+                internalUpdateCodesJarProject(monitor, toUpdate, generatePom, true, syncCode, true);
             }
         };
         workUnit.setAvoidUnloadResources(true);
@@ -300,7 +320,7 @@ public class CodesJarM2CacheManager {
     }
 
     public static void internalUpdateCodesJarProject(IProgressMonitor monitor, Set<CodesJarInfo> toUpdate, boolean generatePom,
-            boolean syncCode) {
+            boolean updateMavenProject, boolean syncCode, boolean install) {
         if (toUpdate.isEmpty()) {
             return;
         }
@@ -310,21 +330,21 @@ public class CodesJarM2CacheManager {
         try {
             if (generatePom) {
                 toUpdate.forEach(info -> {
-                    try {
-                        ITalendProcessJavaProject codesJarProject = getRunProcessService().getExistingTalendCodesJarProject(info);
-                        if (codesJarProject != null) {
-                            updateCodesJarProjectPom(monitor, info);
-                            MavenProjectUtils.updateMavenProject(monitor, codesJarProject.getProject());
-                        } else {
-                            codesJarProject = getRunProcessService().getTalendCodesJarJavaProject(info);
-                            if (ProjectManager.getInstance().getCurrentProject().getTechnicalLabel()
-                                    .equals(info.getProjectTechName())) {
-                                updateCodesJarProjectPom(monitor, info);
+                    ITalendProcessJavaProject codesJarProject = getRunProcessService().getExistingTalendCodesJarProject(info);
+                    if (codesJarProject != null) {
+                        updateCodesJarProjectPom(monitor, info);
+                        if (updateMavenProject) {
+                            try {
                                 MavenProjectUtils.updateMavenProject(monitor, codesJarProject.getProject());
+                            } catch (CoreException e) {
+                                ExceptionHandler.process(e);
                             }
                         }
-                    } catch (CoreException e) {
-                        ExceptionHandler.process(e);
+                    } else {
+                        if (ProjectManager.getInstance().getCurrentProject().getTechnicalLabel()
+                                .equals(info.getProjectTechName())) {
+                            updateCodesJarProjectPom(monitor, info);
+                        }
                     }
                 });
             }
@@ -338,8 +358,10 @@ public class CodesJarM2CacheManager {
             // .collect(Collectors.toSet());
             // parallelBuild(monitor, projects);
 
-            install(toUpdate, monitor);
-            toUpdate.forEach(info -> updateCodesJarProjectCache(info));
+            if (install) {
+                install(toUpdate, monitor);
+                toUpdate.forEach(info -> updateCodesJarProjectCache(info));
+            }
         } catch (Exception e) {
             ExceptionHandler.process(e);
         } finally {
@@ -467,6 +489,13 @@ public class CodesJarM2CacheManager {
     public static File getCacheFile(String projectTechName, Property property) {
         String cacheFileName = PomIdsHelper.getCodesJarGroupId(projectTechName, property.getItem()) + "." //$NON-NLS-1$
                 + property.getLabel().toLowerCase() + "-" //$NON-NLS-1$
+                + PomIdsHelper.getCodesVersion(projectTechName) + ".cache"; // $NON-NLS-1$
+        return new File(cacheFolder, cacheFileName);
+    }
+
+    private static File getCacheFile(String projectTechName, String baseName, String label) {
+        String cacheFileName = PomIdsHelper.getCodesJarGroupId(projectTechName, baseName) + "." //$NON-NLS-1$
+                + label.toLowerCase() + "-" //$NON-NLS-1$
                 + PomIdsHelper.getCodesVersion(projectTechName) + ".cache"; // $NON-NLS-1$
         return new File(cacheFolder, cacheFileName);
     }
