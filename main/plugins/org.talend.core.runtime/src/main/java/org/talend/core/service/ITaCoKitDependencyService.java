@@ -17,9 +17,11 @@ import java.nio.file.Path;
 import java.util.Set;
 import java.util.stream.Stream;
 
+import org.eclipse.swt.graphics.Image;
 import org.talend.core.IService;
 import org.talend.core.model.components.IComponent;
 import org.talend.core.model.properties.Item;
+import org.talend.core.model.repository.ERepositoryObjectType;
 
 /**
  * For documentation, see implementation in org.talend.sdk.component.studio-integration plugin
@@ -33,4 +35,6 @@ public interface ITaCoKitDependencyService extends IService {
     Stream<IComponent> getJobComponents(Item item);
 
     Path findM2Path();
+
+    Image getTaCoKitImageByRepositoryType(ERepositoryObjectType repObjType);
 }

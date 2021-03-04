@@ -101,7 +101,7 @@ public class PatchP2InstallManager {
         toInstall.stream().forEach(iu -> {
             if (installedBundles.contains(iu.getId()) || extraBundles.containsKey(iu.getId())) {
                 validInstall.add(iu);
-            } else {
+            } else if (!iu.getId().startsWith("PATCH.Patch_")){
                 invalidInstall.add(iu);
                 if (invalidBundleInfoList != null) {
                     invalidBundleInfoList.add(iu.toString());
@@ -109,7 +109,7 @@ public class PatchP2InstallManager {
             }
         });
         if (!invalidInstall.isEmpty()) {
-            log.error("Some patches are not compatible with current product, then won't install them:\n       " + invalidInstall);
+            log.debug("Some patches are not compatible with current product, then won't install them:\n       " + invalidInstall);
         }
         // install
         InstallOperation installOperation = new InstallOperation(getProvisioningSession(), validInstall);
@@ -125,7 +125,11 @@ public class PatchP2InstallManager {
         }
         provisioningJob.setPhaseSet(talendPhaseSet);
         IStatus status = provisioningJob.run(monitor);
-        log.info("provisionning status is :" + status);
+        if (status != null && IStatus.ERROR == status.getSeverity()) {
+            log.info("provisionning status is :" + status);
+        } else {
+            log.debug("provisionning status is :" + status);
+        }
         if (status != null) {
             switch (status.getSeverity()) {
             case IStatus.OK:

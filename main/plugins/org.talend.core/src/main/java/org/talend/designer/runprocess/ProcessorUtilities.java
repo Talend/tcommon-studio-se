@@ -1012,7 +1012,8 @@ public class ProcessorUtilities {
                         checkedContext = checkCleanSecureContextParameterValue(checkedContext, jobInfo);
                         processor.setContext(checkedContext); // generate current context.
                     } else {
-                        processor.setContext(context);
+                        IContext checkedContext = checkCleanSecureContextParameterValue(context, jobInfo);
+                        processor.setContext(checkedContext);
                     }
                     LastGenerationInfo.getInstance().getContextPerJob(jobInfo.getJobId(), jobInfo.getJobVersion()).add(
                             context.getName());

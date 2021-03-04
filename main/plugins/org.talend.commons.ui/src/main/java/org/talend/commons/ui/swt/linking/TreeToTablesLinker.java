@@ -15,6 +15,7 @@ package org.talend.commons.ui.swt.linking;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Comparator;
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
@@ -76,6 +77,8 @@ public class TreeToTablesLinker<D1, D2> extends BgDrawableComposite implements I
     private LinkableTree linkableTree;
 
     private List<LinkableTable> linkableTableList;
+
+    private HashMap<Table, Point> tableToCommonPointMap = new HashMap<Table, Point>();
 
     /**
      * DOC amaumont TreeToTableLinker constructor comment.
@@ -258,8 +261,34 @@ public class TreeToTablesLinker<D1, D2> extends BgDrawableComposite implements I
 
             Point offset = getOffset();
 
-            gc.drawLine(pointStartStraight.x + offset.x, pointStartStraight.y + offset.y, pointEndStraight.x + offset.x,
-                    pointEndStraight.y + offset.y);
+            if (WindowSystem.isBigSurOrLater()) {
+                if (yStraight < tree.getBounds().y + treeItemHeight) {
+                    yStraight = tree.getBounds().y + treeItemHeight;
+                }
+                if (yStraight > tree.getBounds().height + tree.getBounds().y + treeItemHeight) {
+                    yStraight = tree.getBounds().height + tree.getBounds().y + treeItemHeight;
+                }
+                pointEndStraight = new Point(treeToCommonPoint.x + tree.getClientArea().width, yStraight);
+                if (tableToCommonPointMap.get(table) == null) {
+                    tableToCommonPointMap.put(table, display.map(table, getBgDrawableComposite(), new Point(0, 0)));
+                }
+                // scroll issue for table
+                if (tableToCommonPoint.y != tableToCommonPointMap.get(table).y) {
+                    pointEndCentralCurve.y = tableToCommonPoint.y + tableItemBounds.y 
+                            + table.getItemHeight() / 2;
+                }
+                if (pointEndCentralCurve.y < tableToCommonPointMap.get(table).y) {
+                    pointEndCentralCurve.y = tableToCommonPointMap.get(table).y;
+                }
+                if (pointEndCentralCurve.y > tableToCommonPointMap.get(table).y + tableBounds.height - table.getBorderWidth()
+                        - table.getHeaderHeight()) {
+                    pointEndCentralCurve.y = tableToCommonPointMap.get(table).y + tableBounds.height - table.getBorderWidth()
+                            - table.getHeaderHeight();
+                }
+            } else {
+                gc.drawLine(pointStartStraight.x + offset.x, pointStartStraight.y + offset.y, pointEndStraight.x + offset.x,
+                        pointEndStraight.y + offset.y);
+            }
 
             pointEndStraight.x += offset.x;
             pointEndStraight.y += offset.y;
