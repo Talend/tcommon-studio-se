@@ -26,6 +26,7 @@ import org.eclipse.swt.widgets.Event;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Listener;
 import org.eclipse.swt.widgets.Text;
+import org.talend.commons.ui.runtime.ws.WindowSystem;
 
 /**
  * Create a Label and a Text.
@@ -153,7 +154,14 @@ public class LabelledText {
         });
         GridDataFactory.swtDefaults().applyTo(label);
 
-        text = new Text(composite, styleField);
+        // For Big Sur, to avoid the password autofill dialog.
+        if (WindowSystem.isBigSurOrLater() && ((styleField & SWT.PASSWORD) != 0)) {
+            styleField ^= SWT.PASSWORD;
+            text = new Text(composite, styleField);
+            text.setEchoChar('*');
+        } else {
+            text = new Text(composite, styleField);
+        }
         text.selectAll(); // enable fast erase use
         int gridDataStyle = SWT.NONE;
         if (isFill) {
