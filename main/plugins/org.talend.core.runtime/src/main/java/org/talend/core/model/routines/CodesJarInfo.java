@@ -13,6 +13,7 @@
 package org.talend.core.model.routines;
 
 import org.talend.core.model.properties.Property;
+import org.talend.core.model.repository.ERepositoryObjectType;
 import org.talend.repository.ProjectManager;
 
 /**
@@ -26,6 +27,14 @@ public class CodesJarInfo {
 
     private String projectTechName;
 
+    private String id;
+
+    private String label;
+
+    private String version;
+
+    private ERepositoryObjectType type;
+
     private CodesJarInfo() {
 
     }
@@ -34,6 +43,10 @@ public class CodesJarInfo {
         CodesJarInfo info = new CodesJarInfo();
         info.property = property;
         info.projectTechName = ProjectManager.getInstance().getProject(property).getTechnicalLabel();
+        info.id = property.getId();
+        info.label = property.getLabel();
+        info.version = property.getVersion();
+        info.type = ERepositoryObjectType.getItemType(property.getItem());
         return info;
     }
 
@@ -43,6 +56,22 @@ public class CodesJarInfo {
 
     public String getProjectTechName() {
         return projectTechName;
+    }
+
+    public String getId() {
+        return id;
+    }
+
+    public String getLabel() {
+        return label;
+    }
+
+    public String getVersion() {
+        return version;
+    }
+
+    public ERepositoryObjectType getType() {
+        return type;
     }
 
     public boolean isInCurrentMainProject() {

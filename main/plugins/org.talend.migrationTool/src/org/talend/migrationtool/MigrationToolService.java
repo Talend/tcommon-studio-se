@@ -67,7 +67,6 @@ import org.talend.core.repository.model.ProxyRepositoryFactory;
 import org.talend.core.repository.utils.ProjectDataJsonProvider;
 import org.talend.core.repository.utils.RoutineUtils;
 import org.talend.core.repository.utils.URIHelper;
-import org.talend.core.runtime.process.ITalendProcessJavaProject;
 import org.talend.core.services.ICoreTisService;
 import org.talend.core.utils.CodesJarResourceCache;
 import org.talend.designer.codegen.ICodeGeneratorService;
@@ -192,10 +191,8 @@ public class MigrationToolService implements IMigrationToolService {
                 routineSynchronizer.getFile(routineItem);
                 if (RoutinesUtil.isInnerCodes(item.getProperty())) {
                     CodesJarInfo info = CodesJarResourceCache.getCodesJarByInnerCode(routineItem);
-                    ITalendProcessJavaProject existingProject = IRunProcessService.get().getExistingTalendCodesJarProject(info);
-                    if (existingProject != null) {
-                        existingProject.getProject().delete(false, true, monitor);
-                        IRunProcessService.get().removeFromCodesJarJavaProjects(info);
+                    if (IRunProcessService.get().getExistingTalendCodesJarProject(info) != null) {
+                        IRunProcessService.get().deleteTalendCodesJarProject(info, false);
                     }
                 }
             }

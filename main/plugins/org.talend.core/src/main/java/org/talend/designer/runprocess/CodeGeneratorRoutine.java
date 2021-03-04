@@ -36,8 +36,8 @@ import org.talend.core.model.properties.ProcessItem;
 import org.talend.core.model.properties.RoutineItem;
 import org.talend.core.model.repository.ERepositoryObjectType;
 import org.talend.core.model.repository.IRepositoryViewObject;
-import org.talend.core.model.routines.CodesJarInfo;
 import org.talend.core.runtime.services.IDesignerMavenService;
+import org.talend.core.ui.ITestContainerProviderService;
 import org.talend.core.utils.CodesJarResourceCache;
 import org.talend.designer.core.model.utils.emf.talendfile.RoutinesParameterType;
 import org.talend.repository.ProjectManager;
@@ -125,10 +125,18 @@ public final class CodeGeneratorRoutine {
         IDesignerMavenService designerMavenService = IDesignerMavenService.get();
         List<String> neededCodesJars = new ArrayList<>();
         if (process instanceof IProcess2) {
+            List<Item> all = new ArrayList<>();
             Item currentItem = ((IProcess2) process).getProperty().getItem();
+            all.add(currentItem);
             if (currentItem instanceof ProcessItem) {
-                List<Item> all = new ArrayList<>();
-                all.add(currentItem);
+                ITestContainerProviderService testContainerService = ITestContainerProviderService.get();
+                if (testContainerService != null && testContainerService.isTestContainerItem(currentItem)) {
+                    try {
+                        all.add(testContainerService.getParentJobItem(currentItem));
+                    } catch (PersistenceException e) {
+                        ExceptionHandler.process(e);
+                    }
+                }
                 all.addAll(ProcessorUtilities.getChildrenJobInfo(currentItem, false, true).stream().filter(JobInfo::isJoblet)
                         .map(info -> info.getJobletProperty().getItem()).collect(Collectors.toSet()));
                 all.forEach(item -> {
@@ -142,13 +150,10 @@ public final class CodeGeneratorRoutine {
                                 .getRoutinesParameter();
                     }
                     if (routinesParameterTypes != null) {
-                        routinesParameterTypes.stream().filter(r -> r.getType() != null).forEach(r -> {
-                            CodesJarInfo info = CodesJarResourceCache.getCodesJarById(r.getId());
-                            if (info != null) {
-                                neededCodesJars.add(designerMavenService.getImportGAVPackageForCodesJar(info.getProjectTechName(),
-                                        info.getProperty().getItem()));
-                            }
-                        });
+                        routinesParameterTypes.stream().filter(r -> r.getType() != null)
+                                .map(r -> CodesJarResourceCache.getCodesJarById(r.getId())).filter(info -> info != null)
+                                .forEach(info -> neededCodesJars.add(designerMavenService.getImportGAVPackageForCodesJar(
+                                        info.getProjectTechName(), info.getProperty().getItem())));
                     }
                 });
             }
