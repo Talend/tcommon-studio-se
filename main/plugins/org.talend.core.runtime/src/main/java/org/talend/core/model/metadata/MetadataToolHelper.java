@@ -280,7 +280,7 @@ public final class MetadataToolHelper {
         return isAllowSpecificCharacters() || Pattern.matches(RepositoryConstants.COLUMN_NAME_PATTERN, name);
     }
 
-    private static boolean isAllowSpecificCharacters() {
+    public static boolean isAllowSpecificCharacters() {
         IEclipsePreferences coreUIPluginNode = new InstanceScope().getNode(ITalendCorePrefConstants.CoreUIPlugin_ID);
         return coreUIPluginNode
                 .getBoolean(IRepositoryPrefConstants.ALLOW_SPECIFIC_CHARACTERS_FOR_SCHEMA_COLUMNS, false);
