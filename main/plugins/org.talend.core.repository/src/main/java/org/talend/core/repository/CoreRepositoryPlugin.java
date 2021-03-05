@@ -56,6 +56,7 @@ public class CoreRepositoryPlugin extends AbstractUIPlugin {
      */
     public void stop(BundleContext context) throws Exception {
         plugin = null;
+        System.out.println();
         super.stop(context);
     }
 
