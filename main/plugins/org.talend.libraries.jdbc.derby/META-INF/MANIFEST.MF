@@ -1,7 +1,0 @@
-Manifest-Version: 1.0
-Bundle-ManifestVersion: 2
-Bundle-Name: Derby
-Bundle-SymbolicName: org.talend.libraries.jdbc.derby
-Bundle-Version: 7.3.1.qualifier
-Bundle-ActivationPolicy: lazy
-Eclipse-BundleShape: dir
