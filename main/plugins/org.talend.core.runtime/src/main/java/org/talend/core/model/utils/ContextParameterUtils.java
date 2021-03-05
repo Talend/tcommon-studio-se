@@ -207,6 +207,10 @@ public final class ContextParameterUtils {
     }
 
     private static ScriptEngine engine = new ScriptEngineManager().getEngineByName("JavaScript");
+    
+    public static ScriptEngine getScriptEngine() {
+        return engine;
+    }
 
     public static String convertContext2Literal4AnyVar(final String code, final IContext context) {
         if (code == null) {
