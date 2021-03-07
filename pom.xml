@@ -108,7 +108,6 @@
 		<module>main/plugins/org.talend.libraries.javacsv</module>
 		<module>main/plugins/org.talend.libraries.javacsv.jars</module>
 		<module>main/plugins/org.talend.libraries.jdbc.as400</module>
-		<module>main/plugins/org.talend.libraries.jdbc.derby</module>
 		<module>main/plugins/org.talend.libraries.jdbc.exasol</module>
 		<module>main/plugins/org.talend.libraries.jdbc.h2</module>
 		<module>main/plugins/org.talend.libraries.jdbc.hsql</module>
