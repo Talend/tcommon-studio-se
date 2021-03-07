@@ -273,10 +273,11 @@ public class CodesJarM2CacheManager {
     }
 
     public static void updateCodesJarProject(IProgressMonitor monitor) {
-        updateCodesJarProject(monitor, false, false);
+        updateCodesJarProject(monitor, false, false, false);
     }
 
-    public static void updateCodesJarProject(IProgressMonitor monitor, boolean forceBuild, boolean onlyCurrentProject) {
+    public static void updateCodesJarProject(IProgressMonitor monitor, boolean forceBuild, boolean onlyCurrentProject,
+            boolean syncCode) {
         Set<CodesJarInfo> toUpdate;
         if (onlyCurrentProject) {
             String currentProject = ProjectManager.getInstance().getCurrentProject().getTechnicalLabel();
@@ -287,73 +288,61 @@ public class CodesJarM2CacheManager {
             toUpdate = CodesJarResourceCache.getAllCodesJars().stream()
                     .filter(info -> forceBuild || needUpdateCodesJarProject(info)).collect(Collectors.toSet());
         }
-        updateCodesJarProject(monitor, toUpdate, false, false);
-    }
-
-    public static void updateCodesJarProject(Property property) throws Exception {
-        updateCodesJarProject(property, false);
+        updateCodesJarProject(monitor, toUpdate, false, syncCode, false);
     }
 
     public static void updateCodesJarProject(Property property, boolean needReSync) throws Exception {
         Set<CodesJarInfo> toUpdate = new HashSet<>();
         toUpdate.add(CodesJarInfo.create(property));
-        updateCodesJarProject(new NullProgressMonitor(), toUpdate, needReSync, true);
+        updateCodesJarProject(new NullProgressMonitor(), toUpdate, false, needReSync, true);
     }
 
-    public static void updateCodesJarProject(IProgressMonitor monitor, Set<CodesJarInfo> toUpdate) {
-        updateCodesJarProject(monitor, toUpdate, false, false);
-    }
-
-    private static void updateCodesJarProject(IProgressMonitor monitor, Set<CodesJarInfo> toUpdate, boolean syncCode,
-            boolean keepNonExistingProject) {
+    public static void updateCodesJarProject(IProgressMonitor monitor, Set<CodesJarInfo> toUpdate, boolean generatePom,
+            boolean syncCode, boolean keepNonExistingProject) {
 
         RepositoryWorkUnit<Object> workUnit = new RepositoryWorkUnit<Object>("update codesjar project") { //$NON-NLS-1$
 
             @Override
             protected void run() {
-                internalUpdateCodesJarProject(monitor, toUpdate, false, syncCode, keepNonExistingProject);
+                if (toUpdate.isEmpty()) {
+                    return;
+                }
+                Set<ITalendProcessJavaProject> existingProjects = toUpdate.stream()
+                        .map(info -> IRunProcessService.get().getExistingTalendCodesJarProject(info)).filter(p -> p != null)
+                        .collect(Collectors.toSet());
+                try {
+                    if (generatePom) {
+                        // only for git update
+                        toUpdate.forEach(info -> updateCodesJarProjectPom(monitor, info));
+                    }
+
+                    if (syncCode) {
+                        toUpdate.forEach(info -> syncSourceCode(info));
+                    }
+
+                    // parallelBuild(monitor, projects);
+
+                    install(toUpdate, monitor);
+
+                    toUpdate.forEach(info -> updateCodesJarProjectCache(info));
+                } catch (Exception e) {
+                    ExceptionHandler.process(e);
+                } finally {
+                    if (!keepNonExistingProject) {
+                        for (CodesJarInfo info : toUpdate) {
+                            ITalendProcessJavaProject updatedProject = IRunProcessService.get()
+                                    .getExistingTalendCodesJarProject(info);
+                            if (updatedProject != null && !existingProjects.contains(updatedProject)) {
+                                IRunProcessService.get().deleteTalendCodesJarProject(info, false);
+                            }
+                        }
+                    }
+                }
             }
 
         };
         workUnit.setAvoidUnloadResources(true);
         ProxyRepositoryFactory.getInstance().executeRepositoryWorkUnit(workUnit);
-    }
-
-    public static void internalUpdateCodesJarProject(IProgressMonitor monitor, Set<CodesJarInfo> toUpdate, boolean generatePom,
-            boolean syncCode, boolean keepNonExistingProject) {
-        if (toUpdate.isEmpty()) {
-            return;
-        }
-        Set<ITalendProcessJavaProject> existingProjects = toUpdate.stream()
-                .map(info -> IRunProcessService.get().getExistingTalendCodesJarProject(info)).filter(p -> p != null)
-                .collect(Collectors.toSet());
-        try {
-            if (generatePom) {
-                // only for git update
-                toUpdate.forEach(info -> updateCodesJarProjectPom(monitor, info));
-            }
-
-            if (syncCode) {
-                toUpdate.forEach(info -> syncSourceCode(info));
-            }
-
-            // parallelBuild(monitor, projects);
-
-            install(toUpdate, monitor);
-
-            toUpdate.forEach(info -> updateCodesJarProjectCache(info));
-        } catch (Exception e) {
-            ExceptionHandler.process(e);
-        } finally {
-            if (!keepNonExistingProject) {
-                for (CodesJarInfo info : toUpdate) {
-                    ITalendProcessJavaProject updatedProject = IRunProcessService.get().getExistingTalendCodesJarProject(info);
-                    if (updatedProject != null && !existingProjects.contains(updatedProject)) {
-                        IRunProcessService.get().deleteTalendCodesJarProject(info, false);
-                    }
-                }
-            }
-        }
     }
 
     // TODO find a way to trigger parallel build
