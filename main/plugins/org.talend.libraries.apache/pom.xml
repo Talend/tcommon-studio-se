@@ -88,6 +88,7 @@
 							<excludeTypes>pom</excludeTypes>
 							<excludeTransitive>true</excludeTransitive>
 							<outputDirectory>${project.basedir}/lib</outputDirectory>
+							<includeGroupIds>log4j,org.slf4j,org.apache.logging.log4j</includeGroupIds>
 						</configuration>
 					</execution>
 				</executions>

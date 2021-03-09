@@ -12,7 +12,7 @@
     <import plugin="com.thoughtworks.paranamer" version="0.0.0" match="greaterOrEqual"/>
     <import plugin="jackson-core-asl" version="0.0.0" match="greaterOrEqual"/>
     <import plugin="jackson-mapper-asl" version="0.0.0" match="greaterOrEqual"/>
-    <import plugin="org.apache.commons.codec" version="0.0.0" match="greaterOrEqual"/>
+    <import plugin="org.apache.commons.codec" version="1.14.0" match="greaterOrEqual"/>
     <import plugin="org.apache.commons.compress" version="1.10.0" match="greaterOrEqual"/>
     <import plugin="org.apache.commons.lang" version="0.0.0" match="greaterOrEqual"/>
     <import plugin="org.apache.commons.lang3" version="0.0.0" match="greaterOrEqual"/>

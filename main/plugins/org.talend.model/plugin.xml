@@ -108,21 +108,6 @@
             class="org.talend.model.recyclebin.RecycleBinPackage"
             genModel="model/recyclebin.genmodel"/>
    </extension>
-   <extension
-        point="org.eclipse.emf.ecore.uri_mapping">
-     <mapping
-           source="http://www.talend.org"
-           target="dummy.uri">
-    </mapping>
-  </extension>
-   <extension point="org.eclipse.emf.ecore.generated_package">
-      <!-- @generated properties -->
-      <package
-            uri="http://www.talend.org/properties"
-            class="org.talend.core.model.properties.PropertiesPackage"
-            genModel="model/properties.genmodel"/>
-   </extension>
-
    <extension point="org.eclipse.emf.ecore.generated_package">
       <!-- @generated resources -->
       <package
@@ -137,4 +122,12 @@
             type="resources"
             class="org.talend.core.model.resources.util.ResourcesResourceFactoryImpl"/>
    </extension>
+   <extension point="org.eclipse.emf.ecore.generated_package">
+      <!-- @generated properties -->
+      <package
+            uri="http://www.talend.org/properties"
+            class="org.talend.core.model.properties.PropertiesPackage"
+            genModel="model/properties.genmodel"/>
+   </extension>
+
 </plugin>

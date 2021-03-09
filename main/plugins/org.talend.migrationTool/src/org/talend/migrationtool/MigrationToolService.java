@@ -60,14 +60,18 @@ import org.talend.core.model.relationship.RelationshipItemBuilder;
 import org.talend.core.model.repository.ERepositoryObjectType;
 import org.talend.core.model.repository.IRepositoryViewObject;
 import org.talend.core.model.repository.RepositoryObject;
+import org.talend.core.model.routines.CodesJarInfo;
+import org.talend.core.model.routines.RoutinesUtil;
 import org.talend.core.model.utils.MigrationUtil;
 import org.talend.core.repository.model.ProxyRepositoryFactory;
 import org.talend.core.repository.utils.ProjectDataJsonProvider;
 import org.talend.core.repository.utils.RoutineUtils;
 import org.talend.core.repository.utils.URIHelper;
 import org.talend.core.services.ICoreTisService;
+import org.talend.core.utils.CodesJarResourceCache;
 import org.talend.designer.codegen.ICodeGeneratorService;
 import org.talend.designer.codegen.ITalendSynchronizer;
+import org.talend.designer.runprocess.IRunProcessService;
 import org.talend.migration.IMigrationTask;
 import org.talend.migration.IMigrationTask.ExecutionResult;
 import org.talend.migration.IProjectMigrationTask;
@@ -185,6 +189,12 @@ public class MigrationToolService implements IMigrationToolService {
                 routineSynchronizer.forceSyncRoutine(routineItem);
                 routineSynchronizer.syncRoutine(routineItem, true);
                 routineSynchronizer.getFile(routineItem);
+                if (RoutinesUtil.isInnerCodes(item.getProperty())) {
+                    CodesJarInfo info = CodesJarResourceCache.getCodesJarByInnerCode(routineItem);
+                    if (IRunProcessService.get().getExistingTalendCodesJarProject(info) != null) {
+                        IRunProcessService.get().deleteTalendCodesJarProject(info, false);
+                    }
+                }
             }
         } catch (Exception e) {
             throw e;

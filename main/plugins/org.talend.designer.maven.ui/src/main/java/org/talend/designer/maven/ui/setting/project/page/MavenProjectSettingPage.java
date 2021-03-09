@@ -55,6 +55,8 @@ public class MavenProjectSettingPage extends AbstractProjectSettingPage {
 
     private Button excludeDeletedItemsCheckbox;
 
+    private Button skipFoldersCheckbox;
+
 	public MavenProjectSettingPage() {
 		noDefaultAndApplyButton();
 	}
@@ -104,6 +106,17 @@ public class MavenProjectSettingPage extends AbstractProjectSettingPage {
         excludeDeletedItemsCheckbox.setText(Messages.getString("MavenProjectSettingPage.excludeDeletedItems")); //$NON-NLS-1$
         excludeDeletedItemsCheckbox.setSelection(preferenceStore.getBoolean(MavenConstants.EXCLUDE_DELETED_ITEMS));
         excludeDeletedItemsCheckbox.addSelectionListener(new SelectionAdapter() {
+
+            @Override
+            public void widgetSelected(SelectionEvent e) {
+                addSyncWarning();
+            }
+        });
+
+        skipFoldersCheckbox = new Button(parent, SWT.CHECK);
+        skipFoldersCheckbox.setText(Messages.getString("MavenProjectSettingPage.skipFolders")); //$NON-NLS-1$
+        skipFoldersCheckbox.setSelection(preferenceStore.getBoolean(MavenConstants.SKIP_FOLDERS));
+        skipFoldersCheckbox.addSelectionListener(new SelectionAdapter() {
 
             @Override
             public void widgetSelected(SelectionEvent e) {
@@ -169,6 +182,7 @@ public class MavenProjectSettingPage extends AbstractProjectSettingPage {
             preferenceStore.setValue(MavenConstants.POM_FILTER, getRealVersionFilter(filter));
             preferenceStore.setValue(MavenConstants.USE_PROFILE_MODULE, useProfileModuleCheckbox.getSelection());
             preferenceStore.setValue(MavenConstants.EXCLUDE_DELETED_ITEMS, excludeDeletedItemsCheckbox.getSelection());
+            preferenceStore.setValue(MavenConstants.SKIP_FOLDERS, skipFoldersCheckbox.getSelection());
 		}
 		return ok;
 	}
