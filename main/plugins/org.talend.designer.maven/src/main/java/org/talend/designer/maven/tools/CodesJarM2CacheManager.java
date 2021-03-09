@@ -36,7 +36,6 @@ import org.apache.maven.model.Model;
 import org.apache.maven.model.Parent;
 import org.eclipse.core.resources.IBuildConfiguration;
 import org.eclipse.core.resources.IFile;
-import org.eclipse.core.resources.IFolder;
 import org.eclipse.core.resources.IProject;
 import org.eclipse.core.resources.IncrementalProjectBuilder;
 import org.eclipse.core.resources.ResourcesPlugin;
@@ -57,6 +56,7 @@ import org.talend.core.model.repository.ERepositoryObjectType;
 import org.talend.core.model.repository.IRepositoryViewObject;
 import org.talend.core.model.routines.CodesJarInfo;
 import org.talend.core.repository.model.ProxyRepositoryFactory;
+import org.talend.core.repository.utils.RoutineUtils;
 import org.talend.core.runtime.maven.MavenArtifact;
 import org.talend.core.runtime.process.ITalendProcessJavaProject;
 import org.talend.core.runtime.process.TalendProcessArgumentConstant;
@@ -369,11 +369,8 @@ public class CodesJarM2CacheManager {
             Property property = info.getProperty();
             String projectTechName = info.getProjectTechName();
             ITalendProcessJavaProject codesJarProject = IRunProcessService.get().getTalendCodesJarJavaProject(info);
-            IFolder innerCodesFolder = codesJarProject.getSrcFolder().getFolder(new Path(
-                    StringUtils.replace(PomIdsHelper.getCodesJarGroupId(projectTechName, property.getItem()), ".", "/")));
-            if (innerCodesFolder.exists()) {
-                innerCodesFolder.delete(true, false, null);
-            }
+            codesJarProject.cleanFolder(new NullProgressMonitor(), codesJarProject.getSrcFolder());
+
             if (GlobalServiceRegister.getDefault().isServiceRegistered(ICodeGeneratorService.class)) {
                 ICodeGeneratorService codeGenService = (ICodeGeneratorService) GlobalServiceRegister.getDefault()
                         .getService(ICodeGeneratorService.class);
@@ -384,6 +381,7 @@ public class CodesJarM2CacheManager {
                         codesJarType, property);
                 for (IRepositoryViewObject codesObj : allInnerCodes) {
                     RoutineItem codeItem = (RoutineItem) codesObj.getProperty().getItem();
+                    RoutineUtils.changeInnerCodePackage(codeItem, false);
                     routineSynchronizer.syncRoutine(codeItem, true, true);
                 }
             }
