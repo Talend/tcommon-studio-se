@@ -25,6 +25,7 @@ import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Text;
+import org.eclipse.ui.forms.IMessage;
 import org.talend.commons.exception.ExceptionHandler;
 import org.talend.core.GlobalServiceRegister;
 import org.talend.core.PluginChecker;
@@ -47,6 +48,8 @@ public class MavenProjectSettingPage extends AbstractProjectSettingPage {
 	private IPreferenceStore preferenceStore;
 
     private Button useProfileModuleCheckbox;
+
+    private Button skipFoldersCheckbox;
 
 	public MavenProjectSettingPage() {
 		noDefaultAndApplyButton();
@@ -84,6 +87,24 @@ public class MavenProjectSettingPage extends AbstractProjectSettingPage {
         useProfileModuleCheckbox = new Button(parent, SWT.CHECK);
         useProfileModuleCheckbox.setText(Messages.getString("MavenProjectSettingPage.refModuleText")); //$NON-NLS-1$
         useProfileModuleCheckbox.setSelection(preferenceStore.getBoolean(MavenConstants.USE_PROFILE_MODULE));
+        useProfileModuleCheckbox.addSelectionListener(new SelectionAdapter() {
+
+            @Override
+            public void widgetSelected(SelectionEvent e) {
+                addSyncWarning();
+            }
+        });
+
+        skipFoldersCheckbox = new Button(parent, SWT.CHECK);
+        skipFoldersCheckbox.setText(Messages.getString("MavenProjectSettingPage.skipFolders")); //$NON-NLS-1$
+        skipFoldersCheckbox.setSelection(preferenceStore.getBoolean(MavenConstants.SKIP_FOLDERS));
+        skipFoldersCheckbox.addSelectionListener(new SelectionAdapter() {
+
+            @Override
+            public void widgetSelected(SelectionEvent e) {
+                addSyncWarning();
+            }
+        });
 
         filterText.setText(filter);
 		filterText.addModifyListener(new ModifyListener() {
@@ -129,12 +150,17 @@ public class MavenProjectSettingPage extends AbstractProjectSettingPage {
 
 	}
 
+    private void addSyncWarning() {
+        setMessage(Messages.getString("MavenProjectSettingPage.syncAllPomsWarning"), IMessage.WARNING); //$NON-NLS-1$
+    }
+
 	@Override
 	public boolean performOk() {
 		boolean ok = super.performOk();
 		if (preferenceStore != null) {
 			preferenceStore.setValue(MavenConstants.POM_FILTER, filter);
 			preferenceStore.setValue(MavenConstants.USE_PROFILE_MODULE, useProfileModuleCheckbox.getSelection());
+            preferenceStore.setValue(MavenConstants.SKIP_FOLDERS, skipFoldersCheckbox.getSelection());
 		}
 		return ok;
 	}

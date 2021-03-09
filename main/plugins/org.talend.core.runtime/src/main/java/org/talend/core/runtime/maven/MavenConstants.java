@@ -69,4 +69,5 @@ public interface MavenConstants {
 
     static final String PACKAGING_POM = "pom";
 
+    static final String SKIP_FOLDERS = "SKIP_FOLDERS";
 }
