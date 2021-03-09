@@ -68,6 +68,7 @@ import org.talend.core.model.relationship.Relation;
 import org.talend.core.model.relationship.RelationshipItemBuilder;
 import org.talend.core.model.repository.ERepositoryObjectType;
 import org.talend.core.model.repository.IRepositoryViewObject;
+import org.talend.core.model.routines.CodesJarInfo;
 import org.talend.core.model.routines.RoutinesUtil;
 import org.talend.core.repository.model.ProxyRepositoryFactory;
 import org.talend.core.repository.utils.ItemResourceUtil;
@@ -269,6 +270,35 @@ public class AggregatorPomsHelper {
             codeProject.buildModules(monitor, null, argumentsMap);
             BuildCacheManager.getInstance().updateCodeLastBuildDate(codeType);
         }
+    }
+
+    // only compile for global/custom code projects
+    public static void buildCodesProject() {
+        IRunProcessService service = IRunProcessService.get();
+        if (service == null) {
+            return;
+        }
+        IProgressMonitor monitor = new NullProgressMonitor();
+        ERepositoryObjectType.getAllTypesOfCodes().forEach(type -> {
+            try {
+                buildAndInstallCodesProject(monitor, type, false, false);
+            } catch (Exception e) {
+                ExceptionHandler.process(e);
+            }
+        });
+        Set<CodesJarInfo> jarsToUpdate = CodesJarResourceCache.getAllCodesJars().stream()
+                .filter(info -> CodesJarM2CacheManager.needUpdateCodesJarProject(info)).collect(Collectors.toSet());
+        jarsToUpdate.stream().map(info -> service.getTalendCodesJarJavaProject(info)).forEach(p -> {
+            try {
+                p.buildModules(monitor, null, null);
+            } catch (Exception e) {
+                ExceptionHandler.process(e);
+            }
+        });
+        String currentProjectName = ProjectManager.getInstance().getCurrentProject().getTechnicalLabel();
+        jarsToUpdate.stream().filter(info -> !currentProjectName.equals(info.getProjectTechName()))
+                .forEach(info -> service.deleteTalendCodesJarProject(info, false));
+
     }
 
     public void updateRefProjectModules(List<ProjectReference> references, IProgressMonitor monitor) {
