@@ -682,5 +682,12 @@
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute properties.ecore#//MigrationTask/status"/>
     </genClasses>
     <genClasses ecoreClass="properties.ecore#//PigudfItem"/>
+    <genClasses ecoreClass="properties.ecore#//RoutinesJarType">
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute properties.ecore#//RoutinesJarType/mvnUrl"/>
+      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference properties.ecore#//RoutinesJarType/imports"/>
+    </genClasses>
+    <genClasses ecoreClass="properties.ecore#//RoutinesJarItem">
+      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference properties.ecore#//RoutinesJarItem/routinesJarType"/>
+    </genClasses>
   </genPackages>
 </genmodel:GenModel>

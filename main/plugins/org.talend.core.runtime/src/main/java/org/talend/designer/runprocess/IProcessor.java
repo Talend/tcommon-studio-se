@@ -299,12 +299,16 @@ public interface IProcessor {
     String[] getJVMArgs();
 
     Set<ModuleNeeded> getNeededModules(int options);
+
+    Set<ModuleNeeded> getCodesJarModulesNeededOfJoblets();
     
     public void updateModulesAfterSetLog4j(Collection<ModuleNeeded> modulesNeeded);
 
     Set<JobInfo> getBuildChildrenJobs();
 
     Set<JobInfo> getBuildFirstChildrenJobs();
+
+    Set<JobInfo> getBuildChildrenJobsAndJoblets();
 
     /**
      * used for old build job system. after maven build, can be removed.

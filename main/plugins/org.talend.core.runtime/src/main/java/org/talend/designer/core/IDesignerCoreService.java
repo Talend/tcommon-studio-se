@@ -157,7 +157,9 @@ public interface IDesignerCoreService extends IService {
 
     public void reloadParamFromProjectSettings(ParametersType processType, String paramName);
 
-    public Set<ModuleNeeded> getNeededLibrariesForProcess(IProcess process, boolean withChildrens);
+    public Set<ModuleNeeded> getNeededLibrariesForProcess(IProcess process, int options);
+
+    public Set<ModuleNeeded> getCodesJarNeededLibrariesForProcess(Item item);
 
     public Set<ModuleNeeded> getNeededModules(INode node, boolean withChildrens);
 

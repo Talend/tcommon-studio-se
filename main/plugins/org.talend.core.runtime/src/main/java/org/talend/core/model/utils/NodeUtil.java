@@ -27,6 +27,9 @@ import java.util.Set;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import javax.script.ScriptEngine;
+import javax.script.ScriptException;
+
 import org.talend.core.GlobalServiceRegister;
 import org.talend.core.model.components.ComponentCategory;
 import org.talend.core.model.components.IComponent;
@@ -1005,6 +1008,15 @@ public class NodeUtil {
         
         //suppose all memo fields are processed well already, no need to go though this with dangerous
         if (!isMemo && !org.talend.core.model.utils.ContextParameterUtils.isDynamic(value)) {
+            //https://jira.talendforge.org/browse/TDI-45563
+            //now can't get the var real value for "out1.A" in code generation time, so need to ignore it for runtime value log
+            //here consider the performance, only do it for some special case
+            if(itemFromTable && "VALUE".equals(ep.getName())) {
+                if(!isValidLiteralValue(value)) {
+                    return "\"\"";//return empty string as can't get the real runtime value
+                }
+            }
+            
             if(value.length() > 1 && value.startsWith("\"") && value.endsWith("\"")) {
                 if(itemFromTable && "ARGS".equals(ep.getName())) {
                     value = value.substring(1, value.length());
@@ -1015,7 +1027,7 @@ public class NodeUtil {
                     return value;
                 }
             } else {
-            	return "\"" + checkStringQuotationMarks(value) + "\"";
+                return "\"" + checkStringQuotationMarks(value) + "\"";
             }
         }
         
@@ -1025,6 +1037,17 @@ public class NodeUtil {
         }
         
         return value;
+    }
+    
+    private static boolean isValidLiteralValue(String value) {
+        ScriptEngine se = ContextParameterUtils.getScriptEngine();
+        if(se==null) return true;
+        try {
+            se.eval(value);
+            return true;
+        } catch (ScriptException e) {
+            return false;
+        }
     }
     
     private static String checkStringQuotationMarks(String str) {

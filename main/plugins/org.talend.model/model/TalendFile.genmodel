@@ -180,6 +180,7 @@
     <genClasses ecoreClass="TalendFile.ecore#//RoutinesParameterType">
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute TalendFile.ecore#//RoutinesParameterType/id"/>
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute TalendFile.ecore#//RoutinesParameterType/name"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute TalendFile.ecore#//RoutinesParameterType/type"/>
     </genClasses>
     <genClasses ecoreClass="TalendFile.ecore#//NodeContainerType">
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference TalendFile.ecore#//NodeContainerType/elementParameter"/>
