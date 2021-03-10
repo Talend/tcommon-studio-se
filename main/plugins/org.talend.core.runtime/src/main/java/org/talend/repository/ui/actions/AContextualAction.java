@@ -65,6 +65,7 @@ import org.talend.repository.model.IRepositoryNode.ENodeType;
 import org.talend.repository.model.IRepositoryNode.EProperties;
 import org.talend.repository.model.RepositoryConstants;
 import org.talend.repository.model.RepositoryNode;
+import org.talend.repository.token.RepositoryActionLogger;
 import org.talend.repository.ui.views.IJobSettingsView;
 import org.talend.repository.ui.views.IRepositoryView;
 
@@ -638,6 +639,7 @@ public abstract class AContextualAction extends Action implements ITreeContextua
     @Override
     public void run() {
         String name = "User action : " + getText(); //$NON-NLS-1$
+        RepositoryActionLogger.logAction(getClass().getName());
 
         oldItem = null;
         // if (node == null) {

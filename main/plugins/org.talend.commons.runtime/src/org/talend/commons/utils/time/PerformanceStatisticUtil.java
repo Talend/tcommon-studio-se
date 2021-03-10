@@ -13,13 +13,13 @@
 package org.talend.commons.utils.time;
 
 import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.RandomAccessFile;
 import java.math.BigDecimal;
 import java.math.RoundingMode;
+import java.nio.file.Files;
+import java.nio.file.Paths;
+import java.nio.file.StandardCopyOption;
 import java.util.Properties;
 import java.util.Random;
 import java.util.concurrent.TimeUnit;
@@ -82,7 +82,7 @@ public class PerformanceStatisticUtil {
     public static void recordStartupEpapsedTime(double elapsedTimeInSeconds) {
         File file = getRecordingFile();
 
-        Properties props = read(file, true);
+        Properties props = PropertiesFileUtil.read(file, true);
         String propCount = props.getProperty(StatisticKeys.STARTUP_COUNT.get(), "0");
         String propMax = props.getProperty(StatisticKeys.STARTUP_MAX.get(), "0");
         String propAverage = props.getProperty(StatisticKeys.STARTUP_AVERAGE.get(), "0");
@@ -99,7 +99,7 @@ public class PerformanceStatisticUtil {
         props.setProperty(StatisticKeys.STARTUP_MAX.get(), "" + iPropMax);
         props.setProperty(StatisticKeys.STARTUP_AVERAGE.get(), "" + iPropAverage);
 
-        store(file, props);
+        PropertiesFileUtil.store(file, props);
     }
 
     public static File getRecordingFile() {
@@ -108,75 +108,41 @@ public class PerformanceStatisticUtil {
         }
 
         String configurationLocation = Platform.getConfigurationLocation().getURL().getPath();
-        File file = new File(configurationLocation + "/" + recordingFileName);
+        File file = new File(configurationLocation + "/data_collector/" + recordingFileName);
+        File oldFile = new File(configurationLocation + "/" + recordingFileName);
+        if(oldFile.exists()) {
+            if(!file.exists()) {
+                if(!file.getParentFile().exists()) {
+                    file.getParentFile().mkdirs();
+                }
+                try {
+                    Files.move(Paths.get(oldFile.toURI()), Paths.get(file.toURI()), StandardCopyOption.ATOMIC_MOVE);
+                } catch (IOException e) {
+                    CommonExceptionHandler.log(e.getMessage());
+                }
+            }
+            
+            try {
+                Files.deleteIfExists(Paths.get(oldFile.toURI()));
+            } catch (IOException e) {
+                CommonExceptionHandler.log(e.getMessage());
+            }
+        }
+        
         return file;
     }
 
     public static void setRecordingFile(File _recordingFile) {
         recordingFile = _recordingFile;
     }
-
-    public static synchronized Properties read(File recordFile, boolean createIfNotExist) {
-        Properties props = new Properties();
-        if (recordFile != null && exist(recordFile, createIfNotExist)) {
-            FileInputStream inStream = null;
-            try {
-                inStream = new FileInputStream(recordFile);
-                props.load(inStream);
-            } catch (Exception e) {
-                CommonExceptionHandler.log(e.getMessage());
-            } finally {
-                if (inStream != null) {
-                    try {
-                        inStream.close();
-                    } catch (IOException e) {//
-                    }
-                }
-            }
+    
+    public static void reset() {
+        File _recordingFile = getRecordingFile();
+        try {
+            Files.deleteIfExists(Paths.get(_recordingFile.toURI()));
+        } catch (IOException e) {
+            CommonExceptionHandler.log(e.getMessage());
         }
-
-        return props;
-    }
-
-    public static synchronized void store(File recordFile, Properties props) {
-        if (props == null) {
-            return;
-        }
-
-        if (recordFile != null && exist(recordFile, true)) {
-            FileOutputStream outputStream = null;
-            try {
-                outputStream = new FileOutputStream(recordFile);
-                props.store(outputStream, "");
-            } catch (IOException e) {
-                CommonExceptionHandler.log(e.getMessage());
-            } finally {
-                if (outputStream != null) {
-                    try {
-                        outputStream.close();
-                    } catch (IOException e) {
-                        //
-                    }
-                }
-            }
-        }
-    }
-
-    private static boolean exist(File recordFile, boolean createIfNotExist) {
-        boolean exists = recordFile.exists();
-        if (!exists && createIfNotExist) {
-            try {
-                exists = recordFile.createNewFile();
-                if (!exists) {
-                    throw new FileNotFoundException(recordFile.getName());
-                }
-            } catch (Exception e) {
-                CommonExceptionHandler.log(e.getMessage());
-                return false;
-            }
-        }
-
-        return exists;
     }
 
     private static Lock lock = new ReentrantLock();
@@ -210,7 +176,7 @@ public class PerformanceStatisticUtil {
 
     private static void _measureIO() {
         File file = getRecordingFile();
-        Properties props = read(file, true);
+        Properties props = PropertiesFileUtil.read(file, true);
 
         IWorkspaceRoot root = ResourcesPlugin.getWorkspace().getRoot();
         File workspace = root.getLocation().makeAbsolute().toFile();
@@ -221,7 +187,7 @@ public class PerformanceStatisticUtil {
             measureWrite(props, testFile);
             measureRead(props, testFile);
 
-            store(file, props);
+            PropertiesFileUtil.store(file, props);
         }
     }
     

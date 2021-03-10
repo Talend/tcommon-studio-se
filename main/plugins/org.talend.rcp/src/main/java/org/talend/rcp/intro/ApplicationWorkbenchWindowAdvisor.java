@@ -24,6 +24,7 @@ import java.util.List;
 import java.util.Set;
 
 import org.eclipse.core.commands.IHandler;
+import org.eclipse.core.runtime.IConfigurationElement;
 import org.eclipse.core.runtime.IPath;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.IStatus;
@@ -65,6 +66,7 @@ import org.eclipse.ui.handlers.IHandlerService;
 import org.eclipse.ui.internal.WorkbenchPlugin;
 import org.eclipse.ui.internal.ide.EditorAreaDropAdapter;
 import org.eclipse.ui.internal.ide.IDEWorkbenchPlugin;
+import org.eclipse.ui.internal.registry.PerspectiveDescriptor;
 import org.eclipse.ui.internal.util.PrefUtil;
 import org.eclipse.ui.preferences.ScopedPreferenceStore;
 import org.osgi.service.prefs.BackingStoreException;
@@ -112,6 +114,7 @@ import org.talend.rcp.intro.starting.StartingEditorInput;
 import org.talend.rcp.intro.starting.StartingHelper;
 import org.talend.rcp.util.ApplicationDeletionUtil;
 import org.talend.repository.RepositoryWorkUnit;
+import org.talend.repository.token.RepositoryActionLogger;
 import org.talend.repository.ui.login.connections.ConnectionUserPerReader;
 import org.talend.repository.ui.views.IRepositoryView;
 
@@ -249,6 +252,8 @@ public class ApplicationWorkbenchWindowAdvisor extends WorkbenchWindowAdvisor {
     public void postWindowOpen() {
         CommonsPlugin.setWorkbenchCreated(true);
         TimeMeasurePerformance.afterStartup();
+        TokenCollectorFactory.getFactory().monitor();
+        
         // TDQ-11355 avoid "java.nio.channels.ClosedChannelException" .If the current perspective is DQ, delay this
         // commit at here,it will be committed with DQ side(see DQRespositoryView Constructor).
         IWorkbenchPage activePage = PlatformUI.getWorkbench().getActiveWorkbenchWindow().getActivePage();
@@ -472,7 +477,10 @@ public class ApplicationWorkbenchWindowAdvisor extends WorkbenchWindowAdvisor {
             public void perspectiveActivated(IWorkbenchPage page, IPerspectiveDescriptor perspective) {
                 // MOD xqliu 2010-10-14 bug 15756
                 String pId = perspective.getId();
-
+                IConfigurationElement configElement = ((PerspectiveDescriptor)perspective).getConfigElement();
+                String name = configElement.getAttribute("name");                
+                RepositoryActionLogger.logPerspective(name);
+                
                 if (IBrandingConfiguration.PERSPECTIVE_DI_ID.equals(pId)) {
                     IRepositoryView view = RepositoryManager.getRepositoryView();
                     if (view != null) {
@@ -524,7 +532,6 @@ public class ApplicationWorkbenchWindowAdvisor extends WorkbenchWindowAdvisor {
 
             @Override
             public boolean preShutdown(IWorkbench workbench, boolean forced) {
-                TokenCollectorFactory.getFactory().process();
                 return true;
             }
 
