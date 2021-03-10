@@ -40,7 +40,9 @@ public class CreateMavenTestPom extends CreateMavenJobPom {
     protected ProcessType getProcessType() {
         try {
             Item parentJobItem = ITestContainerProviderService.get().getParentJobItem(getJobProcessor().getProperty().getItem());
-            return ((ProcessItem) parentJobItem).getProcess();
+            if (parentJobItem != null) {
+                return ((ProcessItem) parentJobItem).getProcess();
+            }
         } catch (PersistenceException e) {
             ExceptionHandler.process(e);
         }
