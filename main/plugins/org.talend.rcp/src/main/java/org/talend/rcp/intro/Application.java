@@ -60,6 +60,7 @@ import org.talend.core.runtime.services.IMavenUIService;
 import org.talend.core.runtime.util.SharedStudioUtils;
 import org.talend.core.services.ICoreTisService;
 import org.talend.core.ui.branding.IBrandingService;
+import org.talend.core.ui.token.TokenCollectorFactory;
 import org.talend.core.ui.workspace.ChooseWorkspaceData;
 import org.talend.core.ui.workspace.ChooseWorkspaceDialog;
 import org.talend.core.utils.StudioSSLContextProvider;
@@ -315,6 +316,8 @@ public class Application implements IApplication {
                 if (patchComponent.needRelaunch()) {
                     needRelaunch = true;
                 }
+                
+                afterInstallPatch();
             }
             if (StringUtils.isNotEmpty(patchComponent.getFailureMessage())) {
                 log.log(Level.ERROR, patchComponent.getFailureMessage());
@@ -336,6 +339,8 @@ public class Application implements IApplication {
                     if (installComponent.needRelaunch()) {
                         needRelaunch = true;
                     }
+                    
+                    afterInstallPatch();
                 }
                 if (StringUtils.isNotEmpty(installComponent.getFailureMessage())) {
                     log.log(Level.ERROR, installComponent.getFailureMessage());
@@ -354,6 +359,10 @@ public class Application implements IApplication {
             log.error(e.getLocalizedMessage(), e);
         }
         return needRelaunch;
+    }
+    
+    private void afterInstallPatch() {
+        TokenCollectorFactory.getFactory().reset();
     }
 
     private void setRelaunchData() {
