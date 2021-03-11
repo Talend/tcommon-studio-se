@@ -761,6 +761,24 @@ public interface PropertiesFactory extends EFactory {
     PigudfItem createPigudfItem();
 
     /**
+     * Returns a new object of class '<em>Routines Jar Type</em>'.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @return a new object of class '<em>Routines Jar Type</em>'.
+     * @generated
+     */
+    RoutinesJarType createRoutinesJarType();
+
+    /**
+     * Returns a new object of class '<em>Routines Jar Item</em>'.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @return a new object of class '<em>Routines Jar Item</em>'.
+     * @generated
+     */
+    RoutinesJarItem createRoutinesJarItem();
+
+    /**
      * Returns a new object of class '<em>Reference File Item</em>'.
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->

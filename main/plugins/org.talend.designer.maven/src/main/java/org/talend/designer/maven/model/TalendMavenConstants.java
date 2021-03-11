@@ -156,6 +156,10 @@ public interface TalendMavenConstants {
 
     static final String DEFAULT_PIGUDF = "pigudf";
 
+    static final String DEFAULT_ROUTINESJAR = "routinesjar";
+
+    static final String DEFAULT_BEANSJAR = "beansjar";
+
     static final String DEFAULT_JOB = "job";
 
     static final String DEFAULT_JOBLET = "joblet";

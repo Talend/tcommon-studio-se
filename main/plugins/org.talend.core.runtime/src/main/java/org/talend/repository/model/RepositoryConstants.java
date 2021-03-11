@@ -128,7 +128,8 @@ public class RepositoryConstants {
                 || type == ERepositoryObjectType.JOB_SCRIPT) {
             return CODE_ITEM_PATTERN;
         } else if (type == ERepositoryObjectType.ROUTINES
-                || "BEANS".equals(type.getType())) {
+                || "BEANS".equals(type.getType()) || type == ERepositoryObjectType.ROUTINESJAR
+                || (type != null && type == ERepositoryObjectType.BEANSJAR)) {
             // for bug 10356
             return ROUTINES_ITEM_PATTERN;
         } else if (type == ERepositoryObjectType.TDQ_JRAXML_ELEMENT || type == ERepositoryObjectType.TDQ_DATA_PROFILING

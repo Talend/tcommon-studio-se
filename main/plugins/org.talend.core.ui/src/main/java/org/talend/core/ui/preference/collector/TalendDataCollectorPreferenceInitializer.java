@@ -31,8 +31,7 @@ public class TalendDataCollectorPreferenceInitializer extends AbstractPreference
     public void initializeDefaultPreferences() {
         IPreferenceStore preferenceStore = CoreUIPlugin.getDefault().getPreferenceStore();
         preferenceStore.setDefault(ITalendCorePrefConstants.DATA_COLLECTOR_ENABLED, true);
-        preferenceStore.setDefault(ITalendCorePrefConstants.DATA_COLLECTOR_UPLOAD_PERIOD, 10);
-
+        preferenceStore.setDefault(ITalendCorePrefConstants.DATA_COLLECTOR_UPLOAD_PERIOD, 5);
     }
 
 }
