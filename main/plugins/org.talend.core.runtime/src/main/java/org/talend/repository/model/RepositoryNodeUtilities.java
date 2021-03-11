@@ -1,6 +1,6 @@
 // ============================================================================
 //
-// Copyright (C) 2006-2019 Talend Inc. - www.talend.com
+// Copyright (C) 2006-2021 Talend Inc. - www.talend.com
 //
 // This source code is available under agreement available at
 // %InstallDIR%\features\org.talend.rcp.branding.%PRODUCTNAME%\%PRODUCTNAME%license.txt
@@ -46,6 +46,7 @@ import org.talend.core.model.repository.ERepositoryObjectType;
 import org.talend.core.model.repository.IRepositoryPrefConstants;
 import org.talend.core.model.repository.IRepositoryViewObject;
 import org.talend.core.model.repository.ISubRepositoryObject;
+import org.talend.core.model.routines.RoutinesUtil;
 import org.talend.core.model.utils.RepositoryManagerHelper;
 import org.talend.core.runtime.CoreRuntimePlugin;
 import org.talend.core.runtime.i18n.Messages;
@@ -108,6 +109,11 @@ public class RepositoryNodeUtilities {
         } else {
             if (/* !isMetadataLabel(label) && */node.getType() != ENodeType.REPOSITORY_ELEMENT) {
                 return getPath(node.getParent()).append(label);
+            } else if (ERepositoryObjectType.getAllTypesOfCodesJar().contains(node.getContentType())) {
+                if (RoutinesUtil.isInnerCodes(node.getObject().getProperty())) {
+                    return new Path(node.getObject().getProperty().getItem().getState().getPath());
+                }
+                return new Path(node.getObject().getLabel());
             } else {
                 return getPath(node.getParent());
             }

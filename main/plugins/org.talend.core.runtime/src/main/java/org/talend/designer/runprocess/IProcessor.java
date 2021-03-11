@@ -1,6 +1,6 @@
 // ============================================================================
 //
-// Copyright (C) 2006-2019 Talend Inc. - www.talend.com
+// Copyright (C) 2006-2021 Talend Inc. - www.talend.com
 //
 // This source code is available under agreement available at
 // %InstallDIR%\features\org.talend.rcp.branding.%PRODUCTNAME%\%PRODUCTNAME%license.txt
@@ -299,12 +299,16 @@ public interface IProcessor {
     String[] getJVMArgs();
 
     Set<ModuleNeeded> getNeededModules(int options);
+
+    Set<ModuleNeeded> getCodesJarModulesNeededOfJoblets();
     
     public void updateModulesAfterSetLog4j(Collection<ModuleNeeded> modulesNeeded);
 
     Set<JobInfo> getBuildChildrenJobs();
 
     Set<JobInfo> getBuildFirstChildrenJobs();
+
+    Set<JobInfo> getBuildChildrenJobsAndJoblets();
 
     /**
      * used for old build job system. after maven build, can be removed.

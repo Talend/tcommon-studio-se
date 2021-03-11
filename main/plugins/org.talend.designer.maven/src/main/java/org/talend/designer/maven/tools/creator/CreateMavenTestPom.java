@@ -1,6 +1,6 @@
 // ============================================================================
 //
-// Copyright (C) 2006-2019 Talend Inc. - www.talend.com
+// Copyright (C) 2006-2021 Talend Inc. - www.talend.com
 //
 // This source code is available under agreement available at
 // %InstallDIR%\features\org.talend.rcp.branding.%PRODUCTNAME%\%PRODUCTNAME%license.txt
@@ -13,6 +13,12 @@
 package org.talend.designer.maven.tools.creator;
 
 import org.eclipse.core.resources.IFile;
+import org.talend.commons.exception.ExceptionHandler;
+import org.talend.commons.exception.PersistenceException;
+import org.talend.core.model.properties.Item;
+import org.talend.core.model.properties.ProcessItem;
+import org.talend.core.ui.ITestContainerProviderService;
+import org.talend.designer.core.model.utils.emf.talendfile.ProcessType;
 import org.talend.designer.runprocess.IProcessor;
 
 /**
@@ -28,6 +34,19 @@ public class CreateMavenTestPom extends CreateMavenJobPom {
     @Deprecated
     public CreateMavenTestPom(IProcessor jobProcessor, IFile pomFile, String pomTestRouteTemplateFileName) {
         super(jobProcessor, pomFile);
+    }
+
+    @Override
+    protected ProcessType getProcessType() {
+        try {
+            Item parentJobItem = ITestContainerProviderService.get().getParentJobItem(getJobProcessor().getProperty().getItem());
+            if (parentJobItem != null) {
+                return ((ProcessItem) parentJobItem).getProcess();
+            }
+        } catch (PersistenceException e) {
+            ExceptionHandler.process(e);
+        }
+        return null;
     }
 
 }

@@ -1,6 +1,6 @@
 // ============================================================================
 //
-// Copyright (C) 2006-2019 Talend Inc. - www.talend.com
+// Copyright (C) 2006-2021 Talend Inc. - www.talend.com
 //
 // This source code is available under agreement available at
 // %InstallDIR%\features\org.talend.rcp.branding.%PRODUCTNAME%\%PRODUCTNAME%license.txt
@@ -120,8 +120,12 @@ public class RoutineLibraryMananger {
             initialized = true;
         }
     }
+    
+    public boolean needDeploy(URL fileUrl) throws IOException, Exception{
+        return needDeploy(fileUrl, null);
+    }
 
-    public boolean needDeploy(URL fileUrl) throws IOException, Exception {
+    public boolean needDeploy(URL fileUrl, String mvnUrl) throws IOException, Exception {
         File file = new File(fileUrl.getFile());
         ILibraryManagerService libManagerService = null;
         if (GlobalServiceRegister.getDefault().isServiceRegistered(ILibraryManagerService.class)) {
@@ -129,19 +133,21 @@ public class RoutineLibraryMananger {
                     .getService(ILibraryManagerService.class);
         }
         if (libManagerService != null) {
-            Map<String, String> sourceAndMavenUri = new HashMap<>();
-            libManagerService.guessMavenRUIFromIndex(file, sourceAndMavenUri);
-            String mavUri = null;
-            boolean isSnapshot = false;
-            for (String key : sourceAndMavenUri.keySet()) {
-                if (sourceAndMavenUri.get(key).equals(file.getPath())) {
-                    mavUri = key;
-                    break;
+            String mavUri = mvnUrl;
+            if (StringUtils.isBlank(mvnUrl)) {
+                Map<String, String> sourceAndMavenUri = new HashMap<>();
+                libManagerService.guessMavenRUIFromIndex(file, sourceAndMavenUri);
+                for (String key : sourceAndMavenUri.keySet()) {
+                    if (sourceAndMavenUri.get(key).equals(file.getPath())) {
+                        mavUri = key;
+                        break;
+                    }
+                }
+                if (mavUri == null) {
+                    return true;
                 }
             }
-            if (mavUri == null) {
-                return true;
-            }
+            boolean isSnapshot = false;
             final MavenArtifact parseMvnUrl = MavenUrlHelper.parseMvnUrl(mavUri);
             if (parseMvnUrl != null) {
                 if (parseMvnUrl.getVersion() != null && parseMvnUrl.getVersion().endsWith(MavenConstants.SNAPSHOT)) {

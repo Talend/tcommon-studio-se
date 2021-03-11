@@ -1,6 +1,6 @@
 // ============================================================================
 //
-// Copyright (C) 2006-2019 Talend Inc. - www.talend.com
+// Copyright (C) 2006-2021 Talend Inc. - www.talend.com
 //
 // This source code is available under agreement available at
 // %InstallDIR%\features\org.talend.rcp.branding.%PRODUCTNAME%\%PRODUCTNAME%license.txt
@@ -279,7 +279,9 @@ public class CoreService implements ICoreService {
         if (GlobalServiceRegister.getDefault().isServiceRegistered(ICodeGeneratorService.class)) {
             ICodeGeneratorService codeGenService = (ICodeGeneratorService) GlobalServiceRegister.getDefault().getService(
                     ICodeGeneratorService.class);
-            codeGenService.createRoutineSynchronizer().syncAllRoutinesForLogOn();
+            ITalendSynchronizer talendSynchronizer = codeGenService.createRoutineSynchronizer();
+            talendSynchronizer.syncAllRoutinesForLogOn();
+            talendSynchronizer.syncAllInnerCodesForLogOn();
         }
     }
 

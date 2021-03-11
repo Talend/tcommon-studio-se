@@ -1,6 +1,6 @@
 // ============================================================================
 //
-// Copyright (C) 2006-2019 Talend Inc. - www.talend.com
+// Copyright (C) 2006-2021 Talend Inc. - www.talend.com
 //
 // This source code is available under agreement available at
 // %InstallDIR%\features\org.talend.rcp.branding.%PRODUCTNAME%\%PRODUCTNAME%license.txt
@@ -116,7 +116,7 @@ public abstract class AbstractMavenCodesTemplatePom extends AbstractMavenGeneral
                 } else {
                     isDeployed = true;
                 }
-                if (isDeployed) {
+                if (ignoreModuleInstallationStatus() || isDeployed) {
                     dependency = PomUtil.createModuleDependency(module.getMavenUri());
                     if (module.isExcluded())
                         dependency.setScope("provided");
@@ -129,4 +129,9 @@ public abstract class AbstractMavenCodesTemplatePom extends AbstractMavenGeneral
     }
 
     protected abstract Set<ModuleNeeded> getDependenciesModules();
+
+    protected boolean ignoreModuleInstallationStatus() {
+        return false;
+    }
+
 }

@@ -1,6 +1,6 @@
 // ============================================================================
 //
-// Copyright (C) 2006-2019 Talend Inc. - www.talend.com
+// Copyright (C) 2006-2021 Talend Inc. - www.talend.com
 //
 // This source code is available under agreement available at
 // %InstallDIR%\features\org.talend.rcp.branding.%PRODUCTNAME%\%PRODUCTNAME%license.txt
@@ -114,7 +114,7 @@ public interface ITalendCorePrefConstants {
     public static final String DATA_COLLECTOR_PREVIEW = "data_collector_preview"; //$NON-NLS-1$
 
     public static final String DATA_COLLECTOR = "data_collector"; //$NON-NLS-1$
-
+    
     public static final String EXCHANGE_CHECK_TIS_VERSION = "exchange_check_tis_version"; //$NON-NLS-1$
 
     public static final String EXCHANGE_DOWNLOADED_CHECK_UPDATES = "exchange_downloaded_check_updates"; //$NON-NLS-1$

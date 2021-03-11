@@ -1,6 +1,6 @@
 // ============================================================================
 //
-// Copyright (C) 2006-2019 Talend Inc. - www.talend.com
+// Copyright (C) 2006-2021 Talend Inc. - www.talend.com
 //
 // This source code is available under agreement available at
 // %InstallDIR%\features\org.talend.rcp.branding.%PRODUCTNAME%\%PRODUCTNAME%license.txt
@@ -342,6 +342,43 @@ public class MetadataToolAvroHelperTest {
                 break;
             }
         }
+    }
+
+    @Test
+    public void testConvertFromAvroJapanese() {
+        String schemaObj = "{\"type\":\"record\",\"name\":\"AccountContactRole\",\"fields\":[{\"name\":\"主鍵\",\"type\":\"string\",\"talend.field.length\":\"18\",\"talend.field.dbColumnName\":\"主鍵\"},"
+                + "{\"name\":\"名前\",\"type\":\"string\",\"talend.field.length\":\"18\",\"talend.field.dbColumnName\":\"名前\"}]}";
+
+        MetadataTable metadataTable = ConnectionFactory.eINSTANCE.createMetadataTable();
+        metadataTable.setId("123456789");
+        metadataTable.setName("table1");
+        metadataTable.setLabel("table1");
+        metadataTable.setSourceName("table1");
+        Schema avroSchema = new Schema.Parser().parse((String) schemaObj);
+
+        IEclipsePreferences coreUIPluginNode = new InstanceScope().getNode(ITalendCorePrefConstants.CoreUIPlugin_ID);
+        coreUIPluginNode.putBoolean(IRepositoryPrefConstants.ALLOW_SPECIFIC_CHARACTERS_FOR_SCHEMA_COLUMNS, true);
+        for (Schema.Field field : avroSchema.getFields()) {
+            MetadataColumn metadataColumn = MetadataToolAvroHelper.convertFromAvro(field, metadataTable);
+            metadataTable.getColumns().add(metadataColumn);
+        }
+
+        assertTrue(metadataTable.getColumns().get(0).getLabel().equals("主鍵"));
+        assertTrue(metadataTable.getColumns().get(1).getLabel().equals("名前"));
+
+        coreUIPluginNode.putBoolean(IRepositoryPrefConstants.ALLOW_SPECIFIC_CHARACTERS_FOR_SCHEMA_COLUMNS, false);
+        metadataTable = ConnectionFactory.eINSTANCE.createMetadataTable();
+        metadataTable.setId("123456789");
+        metadataTable.setName("table1");
+        metadataTable.setLabel("table1");
+        metadataTable.setSourceName("table1");
+        for (Schema.Field field : avroSchema.getFields()) {
+            MetadataColumn metadataColumn = MetadataToolAvroHelper.convertFromAvro(field, metadataTable);
+            metadataTable.getColumns().add(metadataColumn);
+        }
+
+        assertTrue(metadataTable.getColumns().get(0).getLabel().equals("Column0"));
+        assertTrue(metadataTable.getColumns().get(1).getLabel().equals("Column1"));
     }
 
     @Test

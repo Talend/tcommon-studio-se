@@ -1,6 +1,6 @@
 // ============================================================================
 //
-// Copyright (C) 2006-2019 Talend Inc. - www.talend.com
+// Copyright (C) 2006-2021 Talend Inc. - www.talend.com
 //
 // This source code is available under agreement available at
 // %InstallDIR%\features\org.talend.rcp.branding.%PRODUCTNAME%\%PRODUCTNAME%license.txt
@@ -22,6 +22,7 @@ import org.talend.core.model.properties.ByteArray;
 import org.talend.core.model.properties.FileItem;
 import org.talend.core.model.properties.Item;
 import org.talend.core.model.properties.ProcessItem;
+import org.talend.core.model.properties.RoutinesJarItem;
 import org.talend.core.model.repository.AbstractRepositoryContentHandler;
 import org.talend.core.model.repository.ERepositoryObjectType;
 
@@ -66,6 +67,13 @@ public abstract class AbstractResourceRepositoryContentHandler extends AbstractR
         return itemResource;
     }
 
+    protected Resource save(RoutinesJarItem item) {
+        final Resource itemResource = getXmiResourceManager().getItemResource(item);
+        itemResource.getContents().clear();
+        itemResource.getContents().add(item.getRoutinesJarType());
+        return itemResource;
+    }
+
     protected Resource saveScreenShots(ProcessItem item) throws PersistenceException {
         Resource itemResource = getXmiResourceManager().getScreenshotResource(item, true, true);
         EMap screenshots = item.getProcess().getScreenshots();
@@ -76,7 +84,7 @@ public abstract class AbstractResourceRepositoryContentHandler extends AbstractR
         return itemResource;
     }
 
-    private XmiResourceManager getXmiResourceManager() {
+    protected XmiResourceManager getXmiResourceManager() {
         if (null == xmiResourceManager) {
             xmiResourceManager = new XmiResourceManager();
         }

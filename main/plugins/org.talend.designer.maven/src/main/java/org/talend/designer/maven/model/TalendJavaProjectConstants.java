@@ -1,6 +1,6 @@
 // ============================================================================
 //
-// Copyright (C) 2006-2019 Talend Inc. - www.talend.com
+// Copyright (C) 2006-2021 Talend Inc. - www.talend.com
 //
 // This source code is available under agreement available at
 // %InstallDIR%\features\org.talend.rcp.branding.%PRODUCTNAME%\%PRODUCTNAME%license.txt
@@ -26,7 +26,11 @@ public class TalendJavaProjectConstants {
 
     public static final String DIR_ROUTINES = "routines"; //$NON-NLS-1$
 
+    public static final String DIR_ROUTINESJAR = "routinesjar"; //$NON-NLS-1$
+
     public static final String DIR_BEANS = "beans"; //$NON-NLS-1$
+
+    public static final String DIR_BEANSJAR = "beansjar"; //$NON-NLS-1$
 
     public static final String DIR_JOBS = "jobs"; //$NON-NLS-1$
 

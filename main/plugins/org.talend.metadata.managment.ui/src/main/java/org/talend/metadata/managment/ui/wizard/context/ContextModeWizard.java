@@ -1,6 +1,6 @@
 // ============================================================================
 //
-// Copyright (C) 2006-2019 Talend Inc. - www.talend.com
+// Copyright (C) 2006-2021 Talend Inc. - www.talend.com
 //
 // This source code is available under agreement available at
 // %InstallDIR%\features\org.talend.rcp.branding.%PRODUCTNAME%\%PRODUCTNAME%license.txt
@@ -286,7 +286,7 @@ public class ContextModeWizard extends CheckLastVersionRepositoryWizard implemen
                             // UpdateContextReferenceHelper.updateJobContextReference((JobContextManager)
                             // contextManager,
                             // contextItem);
-
+                            
                             // update
                             // TDQ-3901:Update the contextName property in the connection item file.
                             Map<String, String> contextGroupRenamedMap = new HashMap<String, String>();

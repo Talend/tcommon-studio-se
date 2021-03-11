@@ -1,6 +1,6 @@
 // ============================================================================
 //
-// Copyright (C) 2006-2019 Talend Inc. - www.talend.com
+// Copyright (C) 2006-2021 Talend Inc. - www.talend.com
 //
 // This source code is available under agreement available at
 // %InstallDIR%\features\org.talend.rcp.branding.%PRODUCTNAME%\%PRODUCTNAME%license.txt
@@ -112,6 +112,11 @@ public final class DBConnectionContextUtils {
         hiveUseSSL,
         hiveSSLTrustStorePath,
         hiveSSLTrustStorePassword,
+        HiveDataprocProjectId,
+        HiveDataprocClusterId,
+        HiveDataprocRegion,
+        HiveDataprocJarsBucket,
+        HiveDataprocPathToCredentials,
 
         // hbase
         MasterPrincipal,
@@ -388,6 +393,27 @@ public final class DBConnectionContextUtils {
                     value = conn.getParameters().get(ConnParameterKeys.CONN_PARA_KEY_SSL_KEY_STORE_PASSWORD);
                     value = conn.getValue(value, false);
                     ConnectionContextHelper.createParameters(varList, paramName, value, JavaTypesManager.PASSWORD);
+                    break;
+                case HiveDataprocProjectId:
+                    value = conn.getParameters().get(ConnParameterKeys.CONN_PARA_KEY_HIVE_GOOGLE_PROJECT_ID);
+                    ConnectionContextHelper.createParameters(varList, paramName, value);
+                    break;
+                case HiveDataprocClusterId:
+                    value = conn.getParameters().get(ConnParameterKeys.CONN_PARA_KEY_HIVE_GOOGLE_CLUSTER_ID);
+                    ConnectionContextHelper.createParameters(varList, paramName, value);
+                    break;
+                case HiveDataprocRegion:
+                    value = conn.getParameters().get(ConnParameterKeys.CONN_PARA_KEY_HIVE_GOOGLE_REGION);
+                    ConnectionContextHelper.createParameters(varList, paramName, value);
+                    break;
+                case HiveDataprocJarsBucket:
+                    value = conn.getParameters().get(ConnParameterKeys.CONN_PARA_KEY_HIVE_GOOGLE_JARS_BUCKET);
+                    ConnectionContextHelper.createParameters(varList, paramName, value);
+                    break;
+                case HiveDataprocPathToCredentials:
+                    value = conn.getParameters()
+                            .get(ConnParameterKeys.CONN_PARA_KEY_HIVE_AUTHENTICATION_PATH_TO_GOOGLE_CREDENTIALS);
+                    ConnectionContextHelper.createParameters(varList, paramName, value);
                     break;
                 default:
                 }
@@ -770,6 +796,26 @@ public final class DBConnectionContextUtils {
             conn.getParameters().put(ConnParameterKeys.CONN_PARA_KEY_SSL_KEY_STORE_PASSWORD,
                     ContextParameterUtils.getNewScriptCode(originalVariableName, LANGUAGE));
             break;
+        case HiveDataprocProjectId:
+            conn.getParameters().put(ConnParameterKeys.CONN_PARA_KEY_HIVE_GOOGLE_PROJECT_ID,
+                    ContextParameterUtils.getNewScriptCode(originalVariableName, LANGUAGE));
+            break;
+        case HiveDataprocClusterId:
+            conn.getParameters().put(ConnParameterKeys.CONN_PARA_KEY_HIVE_GOOGLE_CLUSTER_ID,
+                    ContextParameterUtils.getNewScriptCode(originalVariableName, LANGUAGE));
+            break;
+        case HiveDataprocRegion:
+            conn.getParameters().put(ConnParameterKeys.CONN_PARA_KEY_HIVE_GOOGLE_REGION,
+                    ContextParameterUtils.getNewScriptCode(originalVariableName, LANGUAGE));
+            break;
+        case HiveDataprocJarsBucket:
+            conn.getParameters().put(ConnParameterKeys.CONN_PARA_KEY_HIVE_GOOGLE_JARS_BUCKET,
+                    ContextParameterUtils.getNewScriptCode(originalVariableName, LANGUAGE));
+            break;
+        case HiveDataprocPathToCredentials:
+            conn.getParameters().put(ConnParameterKeys.CONN_PARA_KEY_HIVE_AUTHENTICATION_PATH_TO_GOOGLE_CREDENTIALS,
+                    ContextParameterUtils.getNewScriptCode(originalVariableName, LANGUAGE));
+            break;
         default:
         }
     }
@@ -1104,6 +1150,27 @@ public final class DBConnectionContextUtils {
                     cloneConn.getParameters().get(ConnParameterKeys.CONN_PARA_KEY_HIVE_ADDITIONAL_JDBC_SETTINGS);
             cloneConn.getParameters().put(ConnParameterKeys.CONN_PARA_KEY_HIVE_ADDITIONAL_JDBC_SETTINGS,
                     getOriginalValue(hadoopClusterContextType, contextType, additionalJDBCSettings));
+
+            String dataprocProjectId = cloneConn.getParameters().get(ConnParameterKeys.CONN_PARA_KEY_HIVE_GOOGLE_PROJECT_ID);
+            cloneConn.getParameters().put(ConnParameterKeys.CONN_PARA_KEY_HIVE_GOOGLE_PROJECT_ID,
+                    getOriginalValue(hadoopClusterContextType, contextType, dataprocProjectId));
+
+            String dataprocClusterId = cloneConn.getParameters().get(ConnParameterKeys.CONN_PARA_KEY_HIVE_GOOGLE_CLUSTER_ID);
+            cloneConn.getParameters().put(ConnParameterKeys.CONN_PARA_KEY_HIVE_GOOGLE_CLUSTER_ID,
+                    getOriginalValue(hadoopClusterContextType, contextType, dataprocClusterId));
+
+            String dataprocRegion = cloneConn.getParameters().get(ConnParameterKeys.CONN_PARA_KEY_HIVE_GOOGLE_REGION);
+            cloneConn.getParameters().put(ConnParameterKeys.CONN_PARA_KEY_HIVE_GOOGLE_REGION,
+                    getOriginalValue(hadoopClusterContextType, contextType, dataprocRegion));
+
+            String dataprocJarsBucket = cloneConn.getParameters().get(ConnParameterKeys.CONN_PARA_KEY_HIVE_GOOGLE_JARS_BUCKET);
+            cloneConn.getParameters().put(ConnParameterKeys.CONN_PARA_KEY_HIVE_GOOGLE_JARS_BUCKET,
+                    getOriginalValue(hadoopClusterContextType, contextType, dataprocJarsBucket));
+
+            String dataprocPathToCredentials = cloneConn.getParameters()
+                    .get(ConnParameterKeys.CONN_PARA_KEY_HIVE_AUTHENTICATION_PATH_TO_GOOGLE_CREDENTIALS);
+            cloneConn.getParameters().put(ConnParameterKeys.CONN_PARA_KEY_HIVE_AUTHENTICATION_PATH_TO_GOOGLE_CREDENTIALS,
+                    getOriginalValue(hadoopClusterContextType, contextType, dataprocPathToCredentials));
 
             String hiveEnableHa = cloneConn.getParameters().get(ConnParameterKeys.CONN_PARA_KEY_HIVE_ENABLE_HA);
             cloneConn.getParameters().put(ConnParameterKeys.CONN_PARA_KEY_HIVE_ENABLE_HA,
@@ -1546,6 +1613,28 @@ public final class DBConnectionContextUtils {
                     conn.getParameters().get(ConnParameterKeys.CONN_PARA_KEY_HIVE_AUTHENTICATION_MAPRTICKET_DURATION);
             conn.getParameters().put(ConnParameterKeys.CONN_PARA_KEY_HIVE_AUTHENTICATION_MAPRTICKET_DURATION,
                     ContextParameterUtils.getOriginalValue(contextType, maprticket_Duration));
+
+            String dataprocProjectId = conn.getParameters().get(ConnParameterKeys.CONN_PARA_KEY_HIVE_GOOGLE_PROJECT_ID);
+            conn.getParameters().put(ConnParameterKeys.CONN_PARA_KEY_HIVE_GOOGLE_PROJECT_ID,
+                    ContextParameterUtils.getOriginalValue(contextType, dataprocProjectId));
+
+            String dataprocClusterId = conn.getParameters().get(ConnParameterKeys.CONN_PARA_KEY_HIVE_GOOGLE_CLUSTER_ID);
+            conn.getParameters().put(ConnParameterKeys.CONN_PARA_KEY_HIVE_GOOGLE_CLUSTER_ID,
+                    ContextParameterUtils.getOriginalValue(contextType, dataprocClusterId));
+
+            String dataprocRegion = conn.getParameters().get(ConnParameterKeys.CONN_PARA_KEY_HIVE_GOOGLE_REGION);
+            conn.getParameters().put(ConnParameterKeys.CONN_PARA_KEY_HIVE_GOOGLE_REGION,
+                    ContextParameterUtils.getOriginalValue(contextType, dataprocRegion));
+
+            String dataprocJarsBucket = conn.getParameters().get(ConnParameterKeys.CONN_PARA_KEY_HIVE_GOOGLE_JARS_BUCKET);
+            conn.getParameters().put(ConnParameterKeys.CONN_PARA_KEY_HIVE_GOOGLE_JARS_BUCKET,
+                    ContextParameterUtils.getOriginalValue(contextType, dataprocJarsBucket));
+
+            String dataprocPathToCredentials = conn.getParameters()
+                    .get(ConnParameterKeys.CONN_PARA_KEY_HIVE_AUTHENTICATION_PATH_TO_GOOGLE_CREDENTIALS);
+            conn.getParameters().put(ConnParameterKeys.CONN_PARA_KEY_HIVE_AUTHENTICATION_PATH_TO_GOOGLE_CREDENTIALS,
+                    ContextParameterUtils.getOriginalValue(contextType, dataprocPathToCredentials));
+
         }
         // for Hbase
         if (EDatabaseTypeName.HBASE.equals(EDatabaseTypeName.getTypeFromDbType(conn.getDatabaseType()))) {

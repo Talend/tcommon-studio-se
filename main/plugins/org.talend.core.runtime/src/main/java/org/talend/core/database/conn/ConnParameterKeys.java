@@ -1,6 +1,6 @@
 // ============================================================================
 //
-// Copyright (C) 2006-2019 Talend Inc. - www.talend.com
+// Copyright (C) 2006-2021 Talend Inc. - www.talend.com
 //
 // This source code is available under agreement available at
 // %InstallDIR%\features\org.talend.rcp.branding.%PRODUCTNAME%\%PRODUCTNAME%license.txt
@@ -162,6 +162,18 @@ public class ConnParameterKeys {
     public static final String CONN_PARA_KEY_HIVE_AUTHENTICATION_MAPRTICKET_CLUSTER = "CONN_PARA_KEY_HIVE_AUTHENTICATION_MAPRTICKET_CLUSTER";//$NON-NLS-1$
 
     public static final String CONN_PARA_KEY_HIVE_AUTHENTICATION_MAPRTICKET_DURATION = "CONN_PARA_KEY_HIVE_AUTHENTICATION_MAPRTICKET_DURATION";//$NON-NLS-1$
+
+    public static final String CONN_PARA_KEY_HIVE_GOOGLE_PROJECT_ID = "CONN_PARA_KEY_HIVE_GOOGLE_PROJECT_ID";//$NON-NLS-1$
+
+    public static final String CONN_PARA_KEY_HIVE_GOOGLE_CLUSTER_ID = "CONN_PARA_KEY_HIVE_GOOGLE_CLUSTER_ID";//$NON-NLS-1$
+
+    public static final String CONN_PARA_KEY_HIVE_GOOGLE_REGION = "CONN_PARA_KEY_HIVE_GOOGLE_REGION";//$NON-NLS-1$
+
+    public static final String CONN_PARA_KEY_HIVE_GOOGLE_JARS_BUCKET = "CONN_PARA_KEY_HIVE_GOOGLE_JARS_BUCKET";//$NON-NLS-1$
+
+    public static final String CONN_PARA_KEY_HIVE_AUTHENTICATION_DEFINE_PATH_TO_GOOGLE_CREDENTIALS = "CONN_PARA_KEY_HIVE_AUTHENTICATION_DEFINE_PATH_TO_GOOGLE_CREDENTIALS";//$NON-NLS-1$
+
+    public static final String CONN_PARA_KEY_HIVE_AUTHENTICATION_PATH_TO_GOOGLE_CREDENTIALS = "CONN_PARA_KEY_HIVE_AUTHENTICATION_PATH_TO_GOOGLE_CREDENTIALS";//$NON-NLS-1$
 
     /**
      * The key is for metastore server.

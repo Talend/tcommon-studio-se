@@ -1,6 +1,6 @@
 // ============================================================================
 //
-// Copyright (C) 2006-2019 Talend Inc. - www.talend.com
+// Copyright (C) 2006-2021 Talend Inc. - www.talend.com
 //
 // This source code is available under agreement available at
 // %InstallDIR%\features\org.talend.rcp.branding.%PRODUCTNAME%\%PRODUCTNAME%license.txt
@@ -21,6 +21,7 @@ import org.talend.core.model.properties.Item;
 import org.talend.core.model.relationship.AbstractJobItemRelationshipHandler;
 import org.talend.core.model.relationship.Relation;
 import org.talend.core.model.relationship.RelationshipItemBuilder;
+import org.talend.core.model.repository.ERepositoryObjectType;
 import org.talend.designer.core.model.utils.emf.talendfile.ProcessType;
 import org.talend.designer.core.model.utils.emf.talendfile.RoutinesParameterType;
 
@@ -47,14 +48,24 @@ public class JobRoutinesItemRelationshipHandler extends AbstractJobItemRelations
             Map<String, String> currentSystemRoutinesMap = RelationshipItemBuilder.getInstance().getCurrentSystemRoutinesMap();
             for (Object o : processType.getParameters().getRoutinesParameter()) {
                 RoutinesParameterType itemInfor = (RoutinesParameterType) o;
-                if (currentSystemRoutinesMap.containsValue(itemInfor.getName())) {
+                if (itemInfor.getName() != null && currentSystemRoutinesMap.containsValue(itemInfor.getName())) {
                     // exclude system routines relation
                     continue;
                 }
 
                 Relation addedRelation = new Relation();
-                addedRelation.setId(itemInfor.getName());
-                addedRelation.setType(RelationshipItemBuilder.ROUTINE_RELATION);
+                if (ERepositoryObjectType.ROUTINESJAR != null
+                        && ERepositoryObjectType.ROUTINESJAR.getType().equals(itemInfor.getType())) {
+                    addedRelation.setId(itemInfor.getId());
+                    addedRelation.setType(RelationshipItemBuilder.ROUTINES_JAR_RELATION);
+                } else if (ERepositoryObjectType.BEANSJAR != null
+                        && ERepositoryObjectType.BEANSJAR.getType().equals(itemInfor.getType())) {
+                    addedRelation.setId(itemInfor.getId());
+                    addedRelation.setType(RelationshipItemBuilder.BEANS_JAR_RELATION);
+                } else {
+                    addedRelation.setId(itemInfor.getName());
+                    addedRelation.setType(RelationshipItemBuilder.ROUTINE_RELATION);
+                }
                 addedRelation.setVersion(RelationshipItemBuilder.LATEST_VERSION);
                 relationSet.add(addedRelation);
 

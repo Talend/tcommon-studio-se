@@ -1,6 +1,6 @@
 // ============================================================================
 //
-// Copyright (C) 2006-2019 Talend Inc. - www.talend.com
+// Copyright (C) 2006-2021 Talend Inc. - www.talend.com
 //
 // This source code is available under agreement available at
 // %InstallDIR%\features\org.talend.rcp.branding.%PRODUCTNAME%\%PRODUCTNAME%license.txt
@@ -128,7 +128,8 @@ public class RepositoryConstants {
                 || type == ERepositoryObjectType.JOB_SCRIPT) {
             return CODE_ITEM_PATTERN;
         } else if (type == ERepositoryObjectType.ROUTINES
-                || "BEANS".equals(type.getType())) {
+                || "BEANS".equals(type.getType()) || type == ERepositoryObjectType.ROUTINESJAR
+                || (type != null && type == ERepositoryObjectType.BEANSJAR)) {
             // for bug 10356
             return ROUTINES_ITEM_PATTERN;
         } else if (type == ERepositoryObjectType.TDQ_JRAXML_ELEMENT || type == ERepositoryObjectType.TDQ_DATA_PROFILING

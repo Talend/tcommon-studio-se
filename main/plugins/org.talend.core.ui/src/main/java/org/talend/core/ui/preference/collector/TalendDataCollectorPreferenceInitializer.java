@@ -1,6 +1,6 @@
 // ============================================================================
 //
-// Copyright (C) 2006-2019 Talend Inc. - www.talend.com
+// Copyright (C) 2006-2021 Talend Inc. - www.talend.com
 //
 // This source code is available under agreement available at
 // %InstallDIR%\features\org.talend.rcp.branding.%PRODUCTNAME%\%PRODUCTNAME%license.txt
@@ -31,8 +31,7 @@ public class TalendDataCollectorPreferenceInitializer extends AbstractPreference
     public void initializeDefaultPreferences() {
         IPreferenceStore preferenceStore = CoreUIPlugin.getDefault().getPreferenceStore();
         preferenceStore.setDefault(ITalendCorePrefConstants.DATA_COLLECTOR_ENABLED, true);
-        preferenceStore.setDefault(ITalendCorePrefConstants.DATA_COLLECTOR_UPLOAD_PERIOD, 10);
-
+        preferenceStore.setDefault(ITalendCorePrefConstants.DATA_COLLECTOR_UPLOAD_PERIOD, 5);
     }
 
 }
