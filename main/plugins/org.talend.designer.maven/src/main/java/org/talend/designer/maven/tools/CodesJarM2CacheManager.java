@@ -381,7 +381,7 @@ public class CodesJarM2CacheManager {
                         codesJarType, property);
                 for (IRepositoryViewObject codesObj : allInnerCodes) {
                     RoutineItem codeItem = (RoutineItem) codesObj.getProperty().getItem();
-                    RoutineUtils.changeInnerCodePackage(codeItem, false);
+                    RoutineUtils.changeInnerCodePackage(codeItem, false, false);
                     routineSynchronizer.syncRoutine(codeItem, true, true);
                 }
             }

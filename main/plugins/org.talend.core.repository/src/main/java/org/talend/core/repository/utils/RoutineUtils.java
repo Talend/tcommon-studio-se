@@ -26,7 +26,6 @@ import org.apache.oro.text.regex.Util;
 import org.talend.commons.exception.PersistenceException;
 import org.talend.commons.ui.runtime.exception.ExceptionHandler;
 import org.talend.commons.utils.generation.JavaUtils;
-import org.talend.core.GlobalServiceRegister;
 import org.talend.core.model.properties.Item;
 import org.talend.core.model.properties.RoutineItem;
 import org.talend.core.model.repository.ERepositoryObjectType;
@@ -48,27 +47,34 @@ public final class RoutineUtils {
     public static void changeRoutinesPackage(Item item) {
         List<ERepositoryObjectType> allowedTypes = new ArrayList<ERepositoryObjectType>();
         allowedTypes.add(ERepositoryObjectType.ROUTINES);
-        doChangeRoutinesPackage(item, DEFAULT_PACKAGE_REGEX, DEFAULT_PACKAGE_STRING, allowedTypes, false);
+        doChangeRoutinesPackage(item, DEFAULT_PACKAGE_REGEX, DEFAULT_PACKAGE_STRING, allowedTypes, false, true);
     }
 
     public static void changeInnerCodePackage(Item item, boolean avoidSave) {
-        if (item instanceof RoutineItem
-                && GlobalServiceRegister.getDefault().isServiceRegistered(IDesignerMavenService.class)) {
-            IDesignerMavenService service = GlobalServiceRegister.getDefault().getService(IDesignerMavenService.class);
-            if (service != null) {
-                RoutineItem routineItem = (RoutineItem) item;
-                String codesJarPackageByInnerCode = service.getCodesJarPackageByInnerCode(routineItem);
-                if (StringUtils.isNotBlank(codesJarPackageByInnerCode)) {
-                    String newPackageString = "package " + StringUtils.replace(codesJarPackageByInnerCode, "/", ".") + ";";
-                    doChangeRoutinesPackage(item, INNER_ROUTINES_PACKAGE_REGEX, newPackageString,
-                            ERepositoryObjectType.getAllTypesOfCodes(), avoidSave);
+        changeInnerCodePackage(item, avoidSave, true);
+    }
+
+    public static void changeInnerCodePackage(Item item, boolean avoidSave, boolean commitMode) {
+        IDesignerMavenService service = IDesignerMavenService.get();
+        if (service != null && item instanceof RoutineItem) {
+            RoutineItem routineItem = (RoutineItem) item;
+            String codesJarPackageByInnerCode = service.getCodesJarPackageByInnerCode(routineItem);
+            if (StringUtils.isNotBlank(codesJarPackageByInnerCode)) {
+                String newPackageString = "package " + StringUtils.replace(codesJarPackageByInnerCode, "/", ".") + ";";
+                if (!routineItem.isBuiltIn()) {
+                    String routineContent = new String(routineItem.getContent().getInnerContent());
+                    if (routineContent != null && routineContent.contains(newPackageString)) {
+                        return;
+                    }
                 }
+                doChangeRoutinesPackage(item, INNER_ROUTINES_PACKAGE_REGEX, newPackageString,
+                        ERepositoryObjectType.getAllTypesOfCodes(), avoidSave, commitMode);
             }
         }
     }
 
     public static void doChangeRoutinesPackage(Item item, String packageRegex, String newPackage,
-            List<ERepositoryObjectType> allowedTypes, boolean avoidSave) {
+            List<ERepositoryObjectType> allowedTypes, boolean avoidSave, boolean commitMode) {
         if (item == null) {
             return;
         }
@@ -94,7 +100,12 @@ public final class RoutineUtils {
                         ProxyRepositoryFactory repFactory = ProxyRepositoryFactory.getInstance();
 
                         if (!avoidSave) {
-                            repFactory.save(rItem);
+                            if (commitMode) {
+                                repFactory.save(rItem);
+                            } else {
+                                // avoid deadlock in git pull event listener
+                                new XmiResourceManager().saveResource(rItem.eResource());
+                            }
                         }
                         // }
                     }
