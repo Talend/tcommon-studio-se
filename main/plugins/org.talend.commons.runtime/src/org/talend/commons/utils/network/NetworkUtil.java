@@ -44,6 +44,8 @@ public class NetworkUtil {
 
     private static final String HTTP_NETWORK_URL = "https://talend-update.talend.com";
 
+    public static final String ORG_TALEND_DESIGNER_CORE = "org.talend.designer.core"; //$NON-NLS-1$
+
     public static boolean isNetworkValid() {
         String disableInternet = System.getProperty(TALEND_DISABLE_INTERNET);
         if ("true".equals(disableInternet)) { //$NON-NLS-1$
