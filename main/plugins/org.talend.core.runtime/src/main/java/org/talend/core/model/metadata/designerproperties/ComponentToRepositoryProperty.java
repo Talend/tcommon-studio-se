@@ -607,6 +607,12 @@ public class ComponentToRepositoryProperty {
         }
         // SAX
         // can not find corresponding component. also not exist in EDatabaseType.java.
+
+        // impala
+        else if (EDatabaseTypeName.IMPALA.getProduct().equalsIgnoreCase((String) parameter.getValue())) {
+            connection.setDatabaseType(EDatabaseTypeName.IMPALA.getDisplayName());
+            connection.setProductId(EDatabaseTypeName.IMPALA.getProduct());
+        }
     }
 
     /**
@@ -706,6 +712,18 @@ public class ComponentToRepositoryProperty {
             String value = getParameterValue(connection, node, param);
             if (value != null) {
                 connection.getParameters().put(ConnParameterKeys.CONN_PARA_KEY_HIVE_ADDITIONAL_JDBC_SETTINGS, value);
+            }
+        }
+        if ("DISTRIBUTION".equals(param.getRepositoryValue())) {
+            String value = getParameterValue(connection, node, param);
+            if (value != null) {
+                connection.getParameters().put(ConnParameterKeys.CONN_PARA_KEY_IMPALA_DISTRIBUTION, value);
+            }
+        }
+        if ("IMPALA_VERSION".equals(param.getRepositoryValue())) {
+            String value = getParameterValue(connection, node, param);
+            if (value != null) {
+                connection.getParameters().put(ConnParameterKeys.CONN_PARA_KEY_IMPALA_VERSION, value);
             }
         }
 
