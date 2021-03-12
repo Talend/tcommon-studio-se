@@ -121,7 +121,7 @@ public class RoutineLibraryMananger {
         }
     }
 
-    private boolean needDeploy(URL fileUrl) throws IOException, Exception {
+    public boolean needDeploy(URL fileUrl) throws IOException, Exception {
         File file = new File(fileUrl.getFile());
         ILibraryManagerService libManagerService = null;
         if (GlobalServiceRegister.getDefault().isServiceRegistered(ILibraryManagerService.class)) {
