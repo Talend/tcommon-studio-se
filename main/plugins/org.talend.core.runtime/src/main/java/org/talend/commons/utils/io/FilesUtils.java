@@ -1207,5 +1207,9 @@ public class FilesUtils {
             run.run(monitor);
         }
     }
-
+    
+    public static void test() {
+    	System.out.println();
+    	
+    }
 }
