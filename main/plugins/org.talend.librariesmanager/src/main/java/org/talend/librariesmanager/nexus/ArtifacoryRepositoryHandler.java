@@ -100,16 +100,10 @@ public class ArtifacoryRepositoryHandler extends AbstractArtifactRepositoryHandl
         httpclient.getParams().setIntParameter(CoreConnectionPNames.CONNECTION_TIMEOUT, NexusServerUtils.getTimeout());
         httpclient.getParams().setIntParameter(CoreConnectionPNames.SO_TIMEOUT, NexusServerUtils.getTimeout());
         IProxySelectorProvider proxySelector = null;
-        HttpURLConnection con = null;
         try {
             try {
                 URI uri = new URI(repositoryUrl);
-                URL url = uri.toURL();
-                con = (HttpURLConnection) url.openConnection();
-                int responseCode = con.getResponseCode();
-                if (responseCode != 200) {
-                    return false;
-                }
+                uri.toURL();
                 proxySelector = HttpClientTransport.addProxy(httpclient, new URI(repositoryUrl));
             } catch (Exception e) {
                 ExceptionHandler.process(e);
@@ -123,9 +117,6 @@ public class ArtifacoryRepositoryHandler extends AbstractArtifactRepositoryHandl
         } finally {
             HttpClientTransport.removeProxy(proxySelector);
             httpclient.getConnectionManager().shutdown();
-            if (con != null) {
-                con.disconnect();
-            }
         }
     }
 
