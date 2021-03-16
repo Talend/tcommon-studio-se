@@ -14,7 +14,9 @@ package org.talend.librariesmanager.nexus;
 
 import java.io.File;
 import java.io.IOException;
+import java.net.HttpURLConnection;
 import java.net.URI;
+import java.net.URL;
 import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
@@ -98,11 +100,20 @@ public class ArtifacoryRepositoryHandler extends AbstractArtifactRepositoryHandl
         httpclient.getParams().setIntParameter(CoreConnectionPNames.CONNECTION_TIMEOUT, NexusServerUtils.getTimeout());
         httpclient.getParams().setIntParameter(CoreConnectionPNames.SO_TIMEOUT, NexusServerUtils.getTimeout());
         IProxySelectorProvider proxySelector = null;
+        HttpURLConnection con = null;
         try {
             try {
+                URI uri = new URI(repositoryUrl);
+                URL url = uri.toURL();
+                con = (HttpURLConnection) url.openConnection();
+                int responseCode = con.getResponseCode();
+                if (responseCode != 200) {
+                    return false;
+                }
                 proxySelector = HttpClientTransport.addProxy(httpclient, new URI(repositoryUrl));
             } catch (Exception e) {
                 ExceptionHandler.process(e);
+                return false;
             }
             HttpResponse response = httpclient.execute(get);
             if (response.getStatusLine().getStatusCode() == 200) {
@@ -112,6 +123,9 @@ public class ArtifacoryRepositoryHandler extends AbstractArtifactRepositoryHandl
         } finally {
             HttpClientTransport.removeProxy(proxySelector);
             httpclient.getConnectionManager().shutdown();
+            if (con != null) {
+                con.disconnect();
+            }
         }
     }
 
