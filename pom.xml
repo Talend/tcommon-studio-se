@@ -51,7 +51,6 @@
 		<module>i18n/plugins/org.talend.metadata.managment.ui.nl</module>
 		<module>i18n/plugins/org.talend.migrationTool.nl</module>
 		<module>i18n/plugins/org.talend.model.edit.nl</module>
-		<module>i18n/plugins/org.talend.model.migration.nl</module>
 		<module>i18n/plugins/org.talend.model.nl</module>
 		<module>i18n/plugins/org.talend.presentation.onboarding.nl</module>
 		<module>i18n/plugins/org.talend.rcp.nl</module>
