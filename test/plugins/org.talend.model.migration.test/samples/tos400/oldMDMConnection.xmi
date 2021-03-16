@@ -1,7 +1,0 @@
-<?xml version="1.0" encoding="ASCII"?>
-<TalendMetadata:MDMConnection xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:TalendMetadata="http://www.talend.org" xsi:schemaLocation="http://www.talend.org ../old_models/metadata.ecore" comment="ZeComment" Universe="ZeUniverse">
-  <tables>
-    <columns/>
-    <columns/>
-  </tables>
-</TalendMetadata:MDMConnection>

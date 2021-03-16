@@ -1,6 +1,0 @@
-Manifest-Version: 1.0
-Bundle-ManifestVersion: 2
-Bundle-Name: Nl
-Bundle-SymbolicName: org.talend.model.migration.nl
-Bundle-Version: 7.4.1.qualifier
-Fragment-Host: org.talend.model.migration
