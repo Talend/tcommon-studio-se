@@ -136,8 +136,9 @@ public class NexusDownloader implements IDownloadHelper {
                                 bos.flush();
                                 if (bytesDownloaded == contentLength) {
                                     MavenArtifactsHandler deployer = new MavenArtifactsHandler();
+                                    boolean canConnectUserLibrary = TalendLibsServerManager.getInstance().canConnectUserLibrary();
                                     // if proxy artifact repository was configured, then do not deploy
-                                    boolean deploy = !TalendLibsServerManager.getInstance().isProxyArtifactRepoConfigured();
+                                    boolean deploy =canConnectUserLibrary && !TalendLibsServerManager.getInstance().isProxyArtifactRepoConfigured();
                                     deployer.install(downloadedFile.getAbsolutePath(), mavenUri, deploy);
                                 }
                                 fireDownloadComplete();
