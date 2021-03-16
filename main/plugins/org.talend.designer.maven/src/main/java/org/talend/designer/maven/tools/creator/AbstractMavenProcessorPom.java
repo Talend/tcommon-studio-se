@@ -13,10 +13,12 @@
 package org.talend.designer.maven.tools.creator;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 import org.apache.maven.model.Dependency;
 import org.apache.maven.model.Model;
@@ -50,6 +52,9 @@ import org.talend.core.runtime.process.LastGenerationInfo;
 import org.talend.core.runtime.projectsetting.IProjectSettingTemplateConstants;
 import org.talend.core.runtime.repository.build.IMavenPomCreator;
 import org.talend.core.ui.ITestContainerProviderService;
+import org.talend.core.utils.CodesJarResourceCache;
+import org.talend.designer.core.model.utils.emf.talendfile.ProcessType;
+import org.talend.designer.core.model.utils.emf.talendfile.RoutinesParameterType;
 import org.talend.designer.maven.model.TalendMavenConstants;
 import org.talend.designer.maven.template.ETalendMavenVariables;
 import org.talend.designer.maven.tools.ProcessorDependenciesManager;
@@ -285,6 +290,7 @@ public abstract class AbstractMavenProcessorPom extends CreateMavenBundleTemplat
 
     protected void addCodesDependencies(final List<Dependency> dependencies) {
         dependencies.addAll(getCodesDependencies());
+        dependencies.addAll(getCodesJarDependencies());
     }
 
     protected List<Dependency> getCodesDependencies() {
@@ -307,6 +313,30 @@ public abstract class AbstractMavenProcessorPom extends CreateMavenBundleTemplat
         }
         return dependencies;
     }
+
+    @SuppressWarnings("unchecked")
+    protected List<Dependency> getCodesJarDependencies() {
+        Property property = getJobProcessor().getProperty();
+        if (property != null && getProcessType() != null && getProcessType().getParameters() != null) {
+            return new ArrayList<>(createCodesJarDependencies(getProcessType().getParameters().getRoutinesParameter()));
+        }
+        return Collections.emptyList();
+    }
+
+    protected Set<Dependency> createCodesJarDependencies(List<RoutinesParameterType> routineParameters) {
+        if (routineParameters == null) {
+            return Collections.emptySet();
+        }
+        return routineParameters.stream().filter(r -> r.getType() != null)
+                .map(r -> CodesJarResourceCache.getCodesJarById(r.getId())).filter(info -> info != null)
+                .map(info -> PomUtil.createDependency(
+                        PomIdsHelper.getCodesJarGroupId(info.getProjectTechName(), info.getProperty().getItem()),
+                        info.getProperty().getLabel().toLowerCase(), PomIdsHelper.getCodesJarVersion(info.getProjectTechName()),
+                        null))
+                .collect(Collectors.toSet());
+    }
+
+    abstract protected ProcessType getProcessType();
 
     protected void addChildrenDependencies(final List<Dependency> dependencies) {
         String parentId = getJobProcessor().getProperty().getId();

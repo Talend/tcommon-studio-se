@@ -66,7 +66,7 @@
       <systemRoutine
             name="PasswordEncryptUtil">
          <library
-               name="crypto-utils-0.31.10.jar">
+               name="crypto-utils-0.31.11.jar">
          </library>
       </systemRoutine>
    </extension>

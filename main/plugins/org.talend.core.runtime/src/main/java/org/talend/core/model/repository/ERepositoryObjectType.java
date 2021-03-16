@@ -61,6 +61,7 @@ import org.talend.core.model.properties.ProcessItem;
 import org.talend.core.model.properties.Property;
 import org.talend.core.model.properties.RegExFileConnectionItem;
 import org.talend.core.model.properties.RoutineItem;
+import org.talend.core.model.properties.RoutinesJarItem;
 import org.talend.core.model.properties.RulesItem;
 import org.talend.core.model.properties.SAPConnectionItem;
 import org.talend.core.model.properties.SQLPatternItem;
@@ -443,7 +444,18 @@ public class ERepositoryObjectType extends DynaEnum<ERepositoryObjectType> {
 
     public final static ERepositoryObjectType ROUTINES = ERepositoryObjectType.valueOf("ROUTINES"); //$NON-NLS-1$
 
+    public final static ERepositoryObjectType ROUTINESJAR = ERepositoryObjectType.valueOf("ROUTINESJAR"); //$NON-NLS-1$
+
+    /**
+     * <font color="red">This value may be <b>null</b> in some licenses, <b>should add NPE check</b></font>
+     */
     public final static ERepositoryObjectType BEANS = ERepositoryObjectType.valueOf("BEANS"); //$NON-NLS-1$
+
+    /**
+     * <font color="red">This value may be <b>null</b> in some licenses, <b>should add NPE check</b></font>
+     */
+    // TODO need and register it in extension or not?
+    public final static ERepositoryObjectType BEANSJAR = ERepositoryObjectType.valueOf("BEANSJAR"); //$NON-NLS-1$
 
     public final static ERepositoryObjectType METADATA_HEADER_FOOTER = ERepositoryObjectType.valueOf("METADATA_HEADER_FOOTER"); //$NON-NLS-1$
 
@@ -936,7 +948,7 @@ public class ERepositoryObjectType extends DynaEnum<ERepositoryObjectType> {
      * @return
      */
     public static ERepositoryObjectType getItemType(Item item) {
-
+        // FIXME update all inner codes related callers
         ERepositoryObjectType repObjType = getTDQRepObjType(item);
         if (repObjType != null) {
             return repObjType;
@@ -1002,6 +1014,11 @@ public class ERepositoryObjectType extends DynaEnum<ERepositoryObjectType> {
             // public Object caseBeanItem(BeanItem object) {
             // return BEANS;
             // }
+
+            @Override
+            public Object caseRoutinesJarItem(RoutinesJarItem object) {
+                return ROUTINESJAR;
+            }
 
             @Override
             public Object caseJobScriptItem(JobScriptItem object) {
@@ -1505,11 +1522,66 @@ public class ERepositoryObjectType extends DynaEnum<ERepositoryObjectType> {
         if (ERepositoryObjectType.ROUTINES != null) {
             allTypes.add(ERepositoryObjectType.ROUTINES);
         }
-        ERepositoryObjectType beansType = ERepositoryObjectType.valueOf("BEANS"); //$NON-NLS-1$
-        if (beansType != null) {
-            allTypes.add(beansType);
+        if (ERepositoryObjectType.BEANS != null) {
+            allTypes.add(ERepositoryObjectType.BEANS);
         }
         return allTypes;
+    }
+
+    public static List<ERepositoryObjectType> getAllTypesOfCodesJar() {
+        List<ERepositoryObjectType> allTypes = new ArrayList<ERepositoryObjectType>();
+        if (ERepositoryObjectType.ROUTINESJAR != null) {
+            allTypes.add(ERepositoryObjectType.ROUTINESJAR);
+        }
+        if (ERepositoryObjectType.BEANSJAR != null) {
+            allTypes.add(ERepositoryObjectType.BEANSJAR);
+        }
+        return allTypes;
+    }
+
+    public enum CodeTypeEnum {
+        Routines("ROUTINESJAR", "ROUTINES"),
+        Beans("BEANSJAR", "BEANS");
+
+        private String codeJarType;
+
+        private String codeType;
+
+        private CodeTypeEnum(String codeJarType, String codeType) {
+            this.codeJarType = codeJarType;
+            this.codeType = codeType;
+        }
+
+        public static boolean isCodeRepositoryObjectTypeMatch(ERepositoryObjectType jarType, ERepositoryObjectType codeType) {
+            if (jarType == null || codeType == null) {
+                return false;
+            }
+            for (CodeTypeEnum cType : CodeTypeEnum.values()) {
+                if (cType.getCodeJarType().equals(jarType.getType())) {
+                    return cType.getCodeType().equals(codeType.getType());
+                }
+            }
+            return false;
+        }
+
+        /**
+         * Getter for codeJarType.
+         * 
+         * @return the codeJarType
+         */
+        public String getCodeJarType() {
+            return codeJarType;
+        }
+
+        /**
+         * Getter for codeType.
+         * 
+         * @return the codeType
+         */
+        public String getCodeType() {
+            return codeType;
+        }
+
     }
 
 }

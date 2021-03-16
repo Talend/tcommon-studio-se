@@ -29,16 +29,10 @@ import org.eclipse.core.runtime.IPath;
 import org.talend.commons.exception.BusinessException;
 import org.talend.commons.exception.CommonExceptionHandler;
 import org.talend.commons.exception.ExceptionHandler;
-import org.talend.commons.exception.PersistenceException;
 import org.talend.commons.utils.generation.JavaUtils;
 import org.talend.commons.utils.io.FilesUtils;
 import org.talend.core.GlobalServiceRegister;
 import org.talend.core.ILibraryManagerService;
-import org.talend.core.ISVNProviderServiceInCoreRuntime;
-import org.talend.core.PluginChecker;
-import org.talend.core.context.Context;
-import org.talend.core.context.RepositoryContext;
-import org.talend.core.language.ECodeLanguage;
 import org.talend.core.model.general.ILibrariesService;
 import org.talend.core.model.general.ModuleNeeded;
 import org.talend.core.model.general.ModuleNeeded.ELibraryInstallStatus;
@@ -49,14 +43,13 @@ import org.talend.core.model.process.INode;
 import org.talend.core.model.process.IProcess;
 import org.talend.core.model.process.Problem;
 import org.talend.core.model.process.Problem.ProblemStatus;
+import org.talend.core.model.properties.Property;
 import org.talend.core.model.repository.ERepositoryObjectType;
-import org.talend.core.runtime.CoreRuntimePlugin;
 import org.talend.designer.runprocess.IRunProcessService;
 import org.talend.librariesmanager.model.ExtensionModuleManager;
 import org.talend.librariesmanager.model.ModulesNeededProvider;
 import org.talend.librariesmanager.prefs.LibrariesManagerUtils;
 import org.talend.repository.ProjectManager;
-import org.talend.repository.model.IProxyRepositoryFactory;
 
 /**
  * DOC smallet class global comment. Detailled comment <br/>
@@ -291,7 +284,17 @@ public abstract class AbstractLibrariesService implements ILibrariesService {
 
     @Override
     public Set<ModuleNeeded> getCodesModuleNeededs(ERepositoryObjectType type) {
-        return ModulesNeededProvider.getCodesModuleNeededs(type, false);
+        return ModulesNeededProvider.getCodesModuleNeededs(type);
+    }
+
+    @Override
+    public Set<ModuleNeeded> getAllCodesJarModuleNeededs() {
+        return ModulesNeededProvider.getAllCodesJarModuleNeededs();
+    }
+
+    @Override
+    public Set<ModuleNeeded> getCodesJarModuleNeededs(Property property) {
+        return ModulesNeededProvider.getCodesJarModuleNeededs(property);
     }
 
     @Override

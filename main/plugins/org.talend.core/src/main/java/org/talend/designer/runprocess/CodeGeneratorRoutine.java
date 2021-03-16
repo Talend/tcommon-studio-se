@@ -17,7 +17,9 @@ import java.util.Collections;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
+import java.util.stream.Collectors;
 
+import org.eclipse.emf.common.util.EList;
 import org.talend.commons.exception.ExceptionHandler;
 import org.talend.commons.exception.PersistenceException;
 import org.talend.core.CorePlugin;
@@ -26,9 +28,18 @@ import org.talend.core.language.LanguageManager;
 import org.talend.core.model.general.ILibrariesService;
 import org.talend.core.model.general.Project;
 import org.talend.core.model.process.IProcess;
+import org.talend.core.model.process.IProcess2;
+import org.talend.core.model.process.JobInfo;
+import org.talend.core.model.properties.Item;
+import org.talend.core.model.properties.JobletProcessItem;
+import org.talend.core.model.properties.ProcessItem;
 import org.talend.core.model.properties.RoutineItem;
 import org.talend.core.model.repository.ERepositoryObjectType;
 import org.talend.core.model.repository.IRepositoryViewObject;
+import org.talend.core.runtime.services.IDesignerMavenService;
+import org.talend.core.ui.ITestContainerProviderService;
+import org.talend.core.utils.CodesJarResourceCache;
+import org.talend.designer.core.model.utils.emf.talendfile.RoutinesParameterType;
 import org.talend.repository.ProjectManager;
 import org.talend.repository.model.IProxyRepositoryFactory;
 
@@ -107,6 +118,47 @@ public final class CodeGeneratorRoutine {
             }
         }
         return new ArrayList<String>(neededRoutines);
+    }
+
+    @SuppressWarnings("unchecked")
+    public static List<String> getRequiredCodesJarName(IProcess process) {
+        IDesignerMavenService designerMavenService = IDesignerMavenService.get();
+        List<String> neededCodesJars = new ArrayList<>();
+        if (process instanceof IProcess2) {
+            List<Item> all = new ArrayList<>();
+            Item currentItem = ((IProcess2) process).getProperty().getItem();
+            all.add(currentItem);
+            if (currentItem instanceof ProcessItem) {
+                ITestContainerProviderService testContainerService = ITestContainerProviderService.get();
+                if (testContainerService != null && testContainerService.isTestContainerItem(currentItem)) {
+                    try {
+                        all.add(testContainerService.getParentJobItem(currentItem));
+                    } catch (PersistenceException e) {
+                        ExceptionHandler.process(e);
+                    }
+                }
+                all.addAll(ProcessorUtilities.getChildrenJobInfo(currentItem, false, true).stream().filter(JobInfo::isJoblet)
+                        .map(info -> info.getJobletProperty().getItem()).collect(Collectors.toSet()));
+                all.forEach(item -> {
+                    EList<RoutinesParameterType> routinesParameterTypes = null;
+                    if (item instanceof ProcessItem && ((ProcessItem) item).getProcess() != null
+                            && ((ProcessItem) item).getProcess().getParameters() != null) {
+                        routinesParameterTypes = ((ProcessItem) item).getProcess().getParameters().getRoutinesParameter();
+                    } else if (item instanceof JobletProcessItem && ((JobletProcessItem) item).getJobletProcess() != null
+                            && ((JobletProcessItem) item).getJobletProcess().getParameters() != null) {
+                        routinesParameterTypes = ((JobletProcessItem) item).getJobletProcess().getParameters()
+                                .getRoutinesParameter();
+                    }
+                    if (routinesParameterTypes != null) {
+                        routinesParameterTypes.stream().filter(r -> r.getType() != null)
+                                .map(r -> CodesJarResourceCache.getCodesJarById(r.getId())).filter(info -> info != null)
+                                .forEach(info -> neededCodesJars.add(designerMavenService.getImportGAVPackageForCodesJar(
+                                        info.getProjectTechName(), info.getProperty().getItem())));
+                    }
+                });
+            }
+        }
+        return neededCodesJars;
     }
 
     /**
