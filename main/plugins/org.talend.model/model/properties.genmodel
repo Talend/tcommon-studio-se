@@ -67,6 +67,7 @@
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute properties.ecore#//Project/migrationTasks"/>
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference properties.ecore#//Project/migrationTask"/>
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute properties.ecore#//Project/bigData"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute properties.ecore#//Project/camelFamilyVersion"/>
     </genClasses>
     <genClasses ecoreClass="properties.ecore#//ProjectComponentAuthorisation">
       <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference properties.ecore#//ProjectComponentAuthorisation/project"/>
