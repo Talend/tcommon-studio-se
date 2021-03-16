@@ -66,8 +66,6 @@
   <plugin id="org.talend.model" download-size="0" install-size="0" version="0.0.0" unpack="false"/>
   <plugin id="org.talend.model.edit" download-size="0" install-size="0" version="0.0.0" unpack="false"/>
   <plugin id="org.talend.model.edit.nl" download-size="0" install-size="0" version="0.0.0" fragment="true" unpack="false"/>
-  <plugin id="org.talend.model.migration" download-size="0" install-size="0" version="0.0.0" unpack="false"/>
-  <plugin id="org.talend.model.migration.nl" download-size="0" install-size="0" version="0.0.0" fragment="true" unpack="false"/>
   <plugin id="org.talend.model.nl" download-size="0" install-size="0" version="0.0.0" fragment="true" unpack="false"/>
   <plugin id="org.talend.osgi.lib.loader" download-size="0" install-size="0" version="0.0.0" unpack="false" fragment="true"/>
   <plugin id="org.talend.resources" download-size="0" install-size="0" version="0.0.0"/>
