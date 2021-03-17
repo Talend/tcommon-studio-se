@@ -21,6 +21,7 @@ import java.util.List;
 import java.util.Map;
 
 import org.apache.commons.lang.StringUtils;
+import org.apache.commons.text.StringEscapeUtils;
 import org.eclipse.emf.common.util.EList;
 import org.talend.commons.exception.ExceptionHandler;
 import org.talend.commons.exception.PersistenceException;
@@ -62,7 +63,6 @@ import org.talend.designer.core.model.utils.emf.talendfile.RoutinesParameterType
 import org.talend.designer.runprocess.ItemCacheManager;
 import org.talend.repository.ProjectManager;
 import org.talend.repository.model.IProxyRepositoryFactory;
-import org.apache.commons.text.StringEscapeUtils;
 
 /**
  * DOC bqian class global comment. Detailled comment
@@ -1030,6 +1030,12 @@ public final class ProcessUtils {
         boolean hasJettyEndpoint = hasJettyEndpoint(nodesList);
 
         return hasJettyEndpoint;
+    }
+
+    public static boolean isCamel3(IProcess process) {
+        Project project = ProjectManager.getInstance().getCurrentProject();
+
+        return project.isCamel3();
     }
 
     private static boolean hasJettyEndpoint(EList<NodeType> nodesList) {
