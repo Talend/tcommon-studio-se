@@ -69,7 +69,6 @@ import org.talend.core.model.relationship.RelationshipItemBuilder;
 import org.talend.core.model.repository.ERepositoryObjectType;
 import org.talend.core.model.repository.IRepositoryViewObject;
 import org.talend.core.model.routines.CodesJarInfo;
-import org.talend.core.model.routines.RoutinesUtil;
 import org.talend.core.repository.model.ProxyRepositoryFactory;
 import org.talend.core.repository.utils.ItemResourceUtil;
 import org.talend.core.runtime.CoreRuntimePlugin;
@@ -587,14 +586,8 @@ public class AggregatorPomsHelper {
         return getCodeFolder(codeType).getFolder(MavenSystemFolders.JAVA.getPath());
     }
 
-    public IFolder getCodesJarFolder(Property property) {
-        String codesJarName = property.getLabel();
-        ERepositoryObjectType type = ERepositoryObjectType.getItemType(property.getItem());
-        if (RoutinesUtil.isInnerCodes(property)) {
-            type = RoutinesUtil.getInnerCodeType(property);
-            codesJarName = RoutinesUtil.getCodesJarLabelByInnerCode(property.getItem());
-        }
-        return getCodeFolder(type).getFolder(codesJarName);
+    public IFolder getCodesJarFolder(CodesJarInfo info) {
+        return getCodeFolder(info.getType()).getFolder(info.getLabel());
     }
 
     public IFolder getProcessFolder(ERepositoryObjectType type) {
@@ -983,11 +976,8 @@ public class AggregatorPomsHelper {
             if (ProcessUtils.isRequiredBeans(null)) {
                 modules.add(getModulePath(service.getTalendCodeJavaProject(ERepositoryObjectType.BEANS).getProjectPom()));
             }
-            String currentProjectTechName = ProjectManager.getInstance().getCurrentProject().getTechnicalLabel();
-            CodesJarResourceCache.getAllCodesJars().stream()
-                    .filter(info -> info.getProjectTechName().equals(currentProjectTechName))
-                    .forEach(info -> modules.add(
-                            getModulePath(getCodesJarFolder(info.getProperty()).getFile(TalendMavenConstants.POM_FILE_NAME))));
+            CodesJarResourceCache.getAllCodesJars().stream().filter(info -> info.isInCurrentMainProject()).forEach(
+                    info -> modules.add(getModulePath(getCodesJarFolder(info).getFile(TalendMavenConstants.POM_FILE_NAME))));
         }
     }
 

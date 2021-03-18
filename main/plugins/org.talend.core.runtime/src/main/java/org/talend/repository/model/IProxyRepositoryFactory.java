@@ -43,6 +43,7 @@ import org.talend.core.model.repository.Folder;
 import org.talend.core.model.repository.IRepositoryViewObject;
 import org.talend.core.model.repository.IRepositoryWorkUnitListener;
 import org.talend.core.model.repository.LockInfo;
+import org.talend.core.model.routines.CodesJarInfo;
 import org.talend.repository.RepositoryWorkUnit;
 
 /**
@@ -317,11 +318,7 @@ public interface IProxyRepositoryFactory {
     public abstract List<IRepositoryViewObject> getAllCodesJars(Project project, ERepositoryObjectType type)
             throws PersistenceException;
 
-    public abstract List<IRepositoryViewObject> getAllInnerCodes(ERepositoryObjectType codesJarType, Property jarProperty)
-            throws PersistenceException;
-
-    public abstract List<IRepositoryViewObject> getAllInnerCodes(Project project, ERepositoryObjectType codesJarType,
-            Property jarProperty) throws PersistenceException;
+    public abstract List<IRepositoryViewObject> getAllInnerCodes(CodesJarInfo info) throws PersistenceException;
 
     public abstract List<String> getFolders(ERepositoryObjectType type) throws PersistenceException;
 
