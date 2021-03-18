@@ -271,14 +271,10 @@ public abstract class AbstractRoutineSynchronizer implements ITalendSynchronizer
     protected void syncInnerCodeItems(boolean forceUpdate) throws SystemException {
         IProxyRepositoryFactory factory = getRepositoryService().getProxyRepositoryFactory();
         for (CodesJarInfo info : CodesJarResourceCache.getAllCodesJars()) {
-            Property property = info.getProperty();
-            String projectTechName = info.getProjectTechName();
-            Project project = ProjectManager.getInstance().getProjectFromProjectTechLabel(projectTechName);
-            ERepositoryObjectType codesJarType = ERepositoryObjectType.getItemType(property.getItem());
-            List<IRepositoryViewObject> innerCodesObjects = factory.getAllInnerCodes(project, codesJarType, property);
+            List<IRepositoryViewObject> innerCodesObjects = factory.getAllInnerCodes(info);
             for (IRepositoryViewObject codesObj : innerCodesObjects) {
                 RoutineItem codeItem = (RoutineItem) codesObj.getProperty().getItem();
-                syncRoutine(codeItem, projectTechName, true, forceUpdate);
+                syncRoutine(codeItem, info.getProjectTechName(), true, forceUpdate);
             }
         }
     }
@@ -295,11 +291,8 @@ public abstract class AbstractRoutineSynchronizer implements ITalendSynchronizer
                     return;
                 }
                 CodesJarInfo info = CodesJarResourceCache.getCodesJarByInnerCode(routineItem);
-                Property codesJarProperty = info.getProperty();
                 IFolder innerCodeFolder = ResourceUtils.getFolder(ResourceUtils.getProject(info.getProjectTechName()),
-                        ERepositoryObjectType.getFolderName(ERepositoryObjectType.getItemType(codesJarProperty.getItem())) + "/"
-                                + codesJarProperty.getLabel(),
-                        true);
+                        ERepositoryObjectType.getFolderName(info.getType()) + "/" + info.getLabel(), true);
                 IFile innerCodeFile = innerCodeFolder
                         .getFile(routineItem.getProperty().getLabel() + "_" + routineItem.getProperty().getVersion() + ".item");
                 if (innerCodeFile.exists()) {

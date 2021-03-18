@@ -123,6 +123,7 @@ import org.talend.core.model.repository.LockInfo;
 import org.talend.core.model.repository.RepositoryContentManager;
 import org.talend.core.model.repository.RepositoryObject;
 import org.talend.core.model.repository.RepositoryViewObject;
+import org.talend.core.model.routines.CodesJarInfo;
 import org.talend.core.repository.CoreRepositoryPlugin;
 import org.talend.core.repository.constants.Constant;
 import org.talend.core.repository.constants.FileConstants;
@@ -1368,21 +1369,15 @@ public final class ProxyRepositoryFactory implements IProxyRepositoryFactory {
     }
 
     @Override
-    public List<IRepositoryViewObject> getAllInnerCodes(ERepositoryObjectType codesJarType, Property jarProperty)
-            throws PersistenceException {
-        return getAllInnerCodes(projectManager.getCurrentProject(), codesJarType, jarProperty);
-    }
-
-    @Override
-    public List<IRepositoryViewObject> getAllInnerCodes(Project project, ERepositoryObjectType codesJarType, Property jarProperty)
-            throws PersistenceException {
+    public List<IRepositoryViewObject> getAllInnerCodes(CodesJarInfo info) throws PersistenceException {
+        Project project = ProjectManager.getInstance().getProjectFromProjectTechLabel(info.getProjectTechName());
         // empty folder won't be commit in git, create if not exist
-        IFolder folder = ResourceUtils.getProject(project).getFolder(ERepositoryObjectType.getFolderName(codesJarType))
-                .getFolder(jarProperty.getLabel());
+        IFolder folder = ResourceUtils.getProject(project).getFolder(ERepositoryObjectType.getFolderName(info.getType()))
+                .getFolder(info.getLabel());
         if (!folder.exists()) {
             ResourceUtils.createFolder(folder);
         }
-        return repositoryFactoryFromProvider.getAll(project, codesJarType, false, false, folder);
+        return repositoryFactoryFromProvider.getAll(project, info.getType(), false, false, folder);
     }
 
     @Override

@@ -12,9 +12,23 @@
 // ============================================================================
 package org.talend.core.model.routines;
 
+import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.List;
+
+import org.apache.commons.lang3.StringUtils;
+import org.eclipse.core.runtime.Assert;
+import org.talend.commons.exception.ExceptionHandler;
+import org.talend.commons.exception.PersistenceException;
 import org.talend.core.model.properties.Property;
+import org.talend.core.model.properties.RoutinesJarItem;
 import org.talend.core.model.repository.ERepositoryObjectType;
+import org.talend.core.model.repository.IRepositoryViewObject;
+import org.talend.core.runtime.repository.item.ItemProductKeys;
+import org.talend.cwm.helper.ResourceHelper;
+import org.talend.designer.core.model.utils.emf.component.IMPORTType;
 import org.talend.repository.ProjectManager;
+import org.talend.repository.model.IProxyRepositoryService;
 
 /**
  * Could get most of codesjar's attribute in EMF model but some are lost when model is unloaded. Store those attributes
@@ -23,7 +37,7 @@ import org.talend.repository.ProjectManager;
 
 public class CodesJarInfo {
 
-    private Property property;
+    private static final String EMPTY_DATE;
 
     private String projectTechName;
 
@@ -35,24 +49,45 @@ public class CodesJarInfo {
 
     private ERepositoryObjectType type;
 
-    private CodesJarInfo() {
+    private List<IMPORTType> imports;
 
+    private String modifiedDate;
+
+    static {
+        Calendar c = Calendar.getInstance();
+        c.setTimeInMillis(0);
+        EMPTY_DATE = ResourceHelper.dateFormat().format(c.getTime());
+    }
+
+    private CodesJarInfo() {
+        imports = new ArrayList<>();
     }
 
     public static CodesJarInfo create(Property property) {
+        Assert.isTrue(property.getItem() instanceof RoutinesJarItem);
         CodesJarInfo info = new CodesJarInfo();
-        info.property = property;
         info.projectTechName = ProjectManager.getInstance().getProject(property).getTechnicalLabel();
         info.id = property.getId();
         info.label = property.getLabel();
         info.version = property.getVersion();
         info.type = ERepositoryObjectType.getItemType(property.getItem());
+        info.imports.addAll(((RoutinesJarItem) property.getItem()).getRoutinesJarType().getImports());
+        String modifiedDate = (String) property.getAdditionalProperties().get(ItemProductKeys.DATE.getModifiedKey());
+        info.modifiedDate = StringUtils.isNotBlank(modifiedDate) ? modifiedDate : EMPTY_DATE;
         return info;
     }
 
     public Property getProperty() {
-        return property;
-    }
+        try {
+            IRepositoryViewObject obj = IProxyRepositoryService.get().getProxyRepositoryFactory().getLastVersion(id);
+            if (obj != null) {
+                return obj.getProperty();
+            }
+        } catch (PersistenceException e) {
+            ExceptionHandler.process(e);
+        }
+        return null;
+     }
 
     public String getProjectTechName() {
         return projectTechName;
@@ -74,6 +109,14 @@ public class CodesJarInfo {
         return type;
     }
 
+    public List<IMPORTType> getImports() {
+        return imports;
+    }
+
+    public String getModifiedDate() {
+        return modifiedDate;
+    }
+
     public boolean isInCurrentMainProject() {
         return projectTechName.equals(ProjectManager.getInstance().getCurrentProject().getTechnicalLabel());
     }
@@ -82,36 +125,42 @@ public class CodesJarInfo {
     public int hashCode() {
         final int prime = 31;
         int result = 1;
-        result = prime * result + ((projectTechName == null) ? 0 : projectTechName.hashCode());
-        result = prime * result + ((property == null) ? 0 : property.hashCode());
+        result = prime * result + ((id == null) ? 0 : id.hashCode());
+        result = prime * result + ((label == null) ? 0 : label.hashCode());
+        result = prime * result + ((type == null) ? 0 : type.hashCode());
+        result = prime * result + ((version == null) ? 0 : version.hashCode());
         return result;
     }
 
     @Override
     public boolean equals(Object obj) {
-        if (this == obj) {
+        if (this == obj)
             return true;
-        }
-        if (obj == null) {
+        if (obj == null)
             return false;
-        }
-        if (getClass() != obj.getClass()) {
+        if (getClass() != obj.getClass())
             return false;
-        }
         CodesJarInfo other = (CodesJarInfo) obj;
-        if (projectTechName == null && other.projectTechName != null) {
-            return false;
-        } else if (!projectTechName.equals(other.projectTechName)) {
-            return false;
-        }
-        if (property == null && other.property != null) {
-            return false;
-        } else if (property != null && other.property != null) {
-            if (!property.getId().equals(other.property.getId()) || !property.getLabel().equals(other.property.getLabel())
-                    || !property.getVersion().equals(other.property.getVersion())) {
+        if (id == null) {
+            if (other.id != null)
                 return false;
-            }
-        }
+        } else if (!id.equals(other.id))
+            return false;
+        if (label == null) {
+            if (other.label != null)
+                return false;
+        } else if (!label.equals(other.label))
+            return false;
+        if (type == null) {
+            if (other.type != null)
+                return false;
+        } else if (!type.equals(other.type))
+            return false;
+        if (version == null) {
+            if (other.version != null)
+                return false;
+        } else if (!version.equals(other.version))
+            return false;
         return true;
     }
 
