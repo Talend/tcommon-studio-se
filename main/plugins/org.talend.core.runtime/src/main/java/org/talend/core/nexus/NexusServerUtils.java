@@ -16,8 +16,10 @@ import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.InputStream;
+import java.net.HttpURLConnection;
 import java.net.URI;
 import java.net.URISyntaxException;
+import java.net.URL;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
@@ -142,6 +144,8 @@ public class NexusServerUtils {
         }
         final List<HttpResponse> httpResponse = new ArrayList<>();
         try {
+            URI uri = new URI(nexusURL);
+            uri.toURL();
             NullProgressMonitor monitor = new NullProgressMonitor();
             new HttpClientTransport(nexusURL, username, password) {
 
@@ -160,6 +164,7 @@ public class NexusServerUtils {
 
         } catch (Exception e) {
             ExceptionHandler.process(e);
+            return null;
         }
         return httpResponse.get(0);
     }

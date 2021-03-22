@@ -2245,6 +2245,8 @@ public final class ProxyRepositoryFactory implements IProxyRepositoryFactory {
                     ExceptionHandler.process(e);
                 }
 
+                CodesJarResourceCache.initCodesJarCache();
+
                 currentMonitor = subMonitor.newChild(1, SubMonitor.SUPPRESS_NONE);
                 currentMonitor.beginTask("Execute before logon migrations tasks", 1); //$NON-NLS-1$
                 ProjectManager.getInstance().getMigrationRecords().clear();
@@ -2310,8 +2312,6 @@ public final class ProxyRepositoryFactory implements IProxyRepositoryFactory {
 
                     currentMonitor = subMonitor.newChild(1, SubMonitor.SUPPRESS_NONE);
                     currentMonitor.beginTask(Messages.getString("ProxyRepositoryFactory.synch.repo.items"), 1); //$NON-NLS-1$
-
-                    CodesJarResourceCache.initCodesJarCache();
 
                     if (!isCommandLineLocalRefProject) {
                         try {
