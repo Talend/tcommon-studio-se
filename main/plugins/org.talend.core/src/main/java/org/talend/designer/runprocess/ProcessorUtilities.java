@@ -2573,6 +2573,9 @@ public class ProcessorUtilities {
                     jobInfo.setTestContainer(true);
                     jobInfos.add(jobInfo);
                     jobInfo.setFatherJobInfo(parentJobInfo);
+                    // if job contains testcase, we need to get joblets of testcase and add them to the job pom, we must
+                    // pass parentJobInfo instead of testProcess, otherwise joblet will be filtered out
+                    getSubjobInfo(testProcess.getNode(), testProcess, parentJobInfo, jobInfos, firstChildOnly, includeJoblet);
                 }
             }
         }
@@ -2649,38 +2652,38 @@ public class ProcessorUtilities {
                         IComponent jobletComponent = service.getJobletComponent(node, jobletPaletteType);
                         ProcessType jobletProcess = service.getJobletProcess(jobletComponent);
                         if (jobletComponent != null) {
-
-                            Project project = null;
-                            String componentName = node.getComponentName();
-                            String[] array = componentName.split(":"); //$NON-NLS-1$
-                            if (array.length == 2) {
-                                // from ref project
-                                String projectTechName = array[0];
-                                project = ProjectManager.getInstance().getProjectFromProjectTechLabel(projectTechName);
-                            } else {
-                                project = ProjectManager.getInstance().getCurrentProject();
+                            if (!firstChildOnly) {
+                                getAllJobInfo(jobletProcess, parentJobInfo, jobInfos, firstChildOnly, includeJoblet);
                             }
-                            Property property = service.getJobletComponentItem(jobletComponent);
-                            Project currentProject = ProjectManager.getInstance().getCurrentProject();
-                            if (project != null && !project.getTechnicalLabel().equals(currentProject.getTechnicalLabel())) {
-                                try {
-                                    property = ProxyRepositoryFactory.getInstance()
-                                            .getSpecificVersion(project, property.getId(), property.getVersion(), true)
-                                            .getProperty();
-                                } catch (PersistenceException e) {
-                                    ExceptionHandler.process(e);
+                            if (firstChildOnly || (!firstChildOnly && includeJoblet)) {
+                                Project project = null;
+                                String componentName = node.getComponentName();
+                                String[] array = componentName.split(":"); //$NON-NLS-1$
+                                if (array.length == 2) {
+                                    // from ref project
+                                    String projectTechName = array[0];
+                                    project = ProjectManager.getInstance().getProjectFromProjectTechLabel(projectTechName);
+                                } else {
+                                    project = ProjectManager.getInstance().getCurrentProject();
+                                }
+                                Property property = service.getJobletComponentItem(jobletComponent);
+                                Project currentProject = ProjectManager.getInstance().getCurrentProject();
+                                if (project != null && !project.getTechnicalLabel().equals(currentProject.getTechnicalLabel())) {
+                                    try {
+                                        property = ProxyRepositoryFactory.getInstance()
+                                                .getSpecificVersion(project, property.getId(), property.getVersion(), true)
+                                                .getProperty();
+                                    } catch (PersistenceException e) {
+                                        ExceptionHandler.process(e);
+                                    }
+                                }
+                                JobInfo jobInfo = new JobInfo(property, jobletProcess.getDefaultContext());
+                                if (!jobInfos.contains(jobInfo)) {
+                                    jobInfos.add(jobInfo);
+                                    jobInfo.setFatherJobInfo(parentJobInfo);
                                 }
                             }
-                            JobInfo jobInfo = new JobInfo(property, jobletProcess.getDefaultContext());
-                            if (!jobInfos.contains(jobInfo)) {
-                                jobInfos.add(jobInfo);
-                                jobInfo.setFatherJobInfo(parentJobInfo);
-                            }
                         }
-                        if (!isCIMode && (firstChildOnly || (!firstChildOnly && includeJoblet))) {
-                            return jobInfos;
-                        }
-                        getAllJobInfo(jobletProcess, parentJobInfo, jobInfos, firstChildOnly, includeJoblet);
                     }
                 }
             }
