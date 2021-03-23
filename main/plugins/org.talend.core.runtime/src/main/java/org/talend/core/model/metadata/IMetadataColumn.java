@@ -125,6 +125,10 @@ public interface IMetadataColumn {
 
     public void setCustom(boolean custom);
 
+    public boolean isIgnoreCustomSort();
+
+    public void setIgnoreCustomSort(boolean ignoreCustomSort);
+
     public void setCustomId(int customId); // only for custom columns to sort them
 
     public int getCustomId(); // only for custom columns to sort them

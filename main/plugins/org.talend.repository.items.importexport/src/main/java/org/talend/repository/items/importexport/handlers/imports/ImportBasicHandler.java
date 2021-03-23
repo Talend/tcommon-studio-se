@@ -883,7 +883,8 @@ public class ImportBasicHandler extends AbstractImportExecutableHandler {
                 }
 
             } catch (Exception e) {
-                selectedImportItem.addError(selectedImportItem.getItemName() + ";" + e.getMessage() + ";" + path);//$NON-NLS-1$
+                selectedImportItem.addError(selectedImportItem.getItemName() + ";" + e.getMessage() + ";" //$NON-NLS-1$
+                        + ("".equals(path.toFile().getPath()) ? null : path));
                 logError(e);
             }
         }
