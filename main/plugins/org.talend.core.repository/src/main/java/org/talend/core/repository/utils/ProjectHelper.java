@@ -76,7 +76,6 @@ public class ProjectHelper {
         newProject.setTechnicalLabel(Project.createTechnicalName(newProject.getLabel()));
         newProject.setLanguage(language);
         newProject.setDescription(projectDescription);
-        newProject.setCamel3(true);
 
         return newProject;
     }

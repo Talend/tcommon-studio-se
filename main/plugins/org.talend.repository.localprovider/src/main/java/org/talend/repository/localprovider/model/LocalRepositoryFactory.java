@@ -832,6 +832,7 @@ public class LocalRepositoryFactory extends AbstractEMFRepositoryFactory impleme
         project.setAuthor(projectInfor.getAuthor());
         project.setLocal(true);
         project.setTechnicalLabel(technicalLabel);
+        project.setCamel3(true);
 
         saveProject(prj, project);
 
