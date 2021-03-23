@@ -34,7 +34,7 @@
 						<dependency>
 							<groupId>org.eclipse.tycho</groupId>
 							<artifactId>tycho-compiler-jdt</artifactId>
-							<version>1.4.0</version>
+							<version>1.6.0</version>
 						</dependency>
 						<dependency>
 							<groupId>org.codehaus.plexus</groupId>
@@ -66,6 +66,11 @@
 							<version>3.0.24</version>
 						</dependency>
 					</dependencies>
+					<dependency>
+							<groupId>org.apache.commons</groupId>
+							<artifactId>commons-compress</artifactId>
+							<version>1.19</version>
+						</dependency>
 					<configuration>
 						<archive>
 							<addMavenDescriptor>false</addMavenDescriptor>
@@ -81,6 +86,11 @@
 							<groupId>org.codehaus.plexus</groupId>
 							<artifactId>plexus-utils</artifactId>
 							<version>3.0.24</version>
+						</dependency>
+						<dependency>
+							<groupId>org.apache.commons</groupId>
+							<artifactId>commons-compress</artifactId>
+							<version>1.19</version>
 						</dependency>
 					</dependencies>
 				</plugin>
