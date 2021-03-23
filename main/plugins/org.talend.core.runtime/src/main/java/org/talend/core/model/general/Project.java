@@ -65,6 +65,11 @@ public class Project {
     }
 
     public void setCamel3(boolean camel3) {
+
+        if (camel3) {
+            project.setCamelFamilyVersion("3");
+        }
+
         this.camel3 = camel3;
     }
 

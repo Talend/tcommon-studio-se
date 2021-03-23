@@ -174,13 +174,13 @@ public interface Project extends EObject {
 
     /**
      * Returns the value of the '<em><b>Camel Family Version</b></em>' attribute.
-     * The default value is <code>"3"</code>.
+     * The default value is <code>"2"</code>.
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
      * @return the value of the '<em>Camel Family Version</em>' attribute.
      * @see #setCamelFamilyVersion(String)
      * @see org.talend.core.model.properties.PropertiesPackage#getProject_CamelFamilyVersion()
-     * @model default="3"
+     * @model default="2"
      * @generated
      */
     String getCamelFamilyVersion();

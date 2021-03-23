@@ -611,7 +611,7 @@ public class ProjectImpl extends EObjectImpl implements Project {
      * @generated
      * @ordered
      */
-                protected static final String CAMEL_FAMILY_VERSION_EDEFAULT = "3";
+                protected static final String CAMEL_FAMILY_VERSION_EDEFAULT = "2";
 
                 /**
      * The cached value of the '{@link #getCamelFamilyVersion() <em>Camel Family Version</em>}' attribute.
