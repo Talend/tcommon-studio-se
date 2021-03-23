@@ -2571,11 +2571,15 @@ public class ProcessorUtilities {
                     }
                     JobInfo jobInfo = new JobInfo(testItem, testProcess.getDefaultContext());
                     jobInfo.setTestContainer(true);
-                    jobInfos.add(jobInfo);
                     jobInfo.setFatherJobInfo(parentJobInfo);
-                    // if job contains testcase, we need to get joblets of testcase and add them to the job pom, we must
-                    // pass parentJobInfo instead of testProcess, otherwise joblet will be filtered out
-                    getSubjobInfo(testProcess.getNode(), testProcess, parentJobInfo, jobInfos, firstChildOnly, includeJoblet);
+                    if (!jobInfos.contains(jobInfo)) {
+                        jobInfos.add(jobInfo);
+
+                        // if job contains testcase, we need to get joblets of testcase and add them to the job pom, we
+                        // must
+                        // pass parentJobInfo instead of testProcess, otherwise joblet will be filtered out
+                        getSubjobInfo(testProcess.getNode(), testProcess, parentJobInfo, jobInfos, firstChildOnly, includeJoblet);
+                    }
                 }
             }
         }
