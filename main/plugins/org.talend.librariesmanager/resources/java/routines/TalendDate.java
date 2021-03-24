@@ -144,11 +144,34 @@ public class TalendDate {
      *
      * {example} formatDate("yyyy-MM-dd", new Date()) #
      */
-
     public synchronized static String formatDateInUTC(String pattern, java.util.Date date) {
+        return formatDateInTimeZone(pattern, date, "UTC");
+    }
+
+    /**
+     * Formats a Date into a date/time string under the given timezone.
+     *
+     * @param pattern the pattern to format.
+     * @param date the date to be formatted into a date string.
+     * @param zoneId the timezone id in which formatting the date
+     * @return the formatted time string.
+     *
+     * {talendTypes} String
+     *
+     * {Category} TalendDate
+     *
+     * {param} string("yyyy-MM-dd HH:mm:ss") pattern : the pattern to format
+     *
+     * {param} date(myDate) date : the time value to be formatted into a time string
+     * 
+     * {param] string(zoneId) : id of timezone
+     *
+     * {example} formatDate("yyyy-MM-dd", new Date(), "Europe/Paris") #
+     */
+    public synchronized static String formatDateInTimeZone(String pattern, java.util.Date date, String zoneId) {
         DateFormat format = FastDateParser.getInstance(pattern);
         TimeZone originalTZ = format.getTimeZone();
-        format.setTimeZone(TimeZone.getTimeZone("UTC"));
+        format.setTimeZone(TimeZone.getTimeZone(zoneId));
         String dateStr = format.format(date);
         format.setTimeZone(originalTZ);
         return dateStr;
@@ -264,24 +287,24 @@ public class TalendDate {
     /**
      * Tests string value as a date with right pattern using strict rules.
      * This validation uses Java 8 time tools.
-     * 
+     *
      * The range of time-zone offsets is restricted to -18:00 to 18:00 inclusive.
-     * 
+     *
      * @param stringDate (The <code>String</code> of the date to judge)
      * @param pattern (The <code>String</code> of a specified pattern, like: "yyyy-MM-dd HH:mm:ss")
      * @return A boolean value that whether the stringDate is a date string with a right pattern.
      * @throws IllegalArgumentException if pattern is not defined.
-     * 
+     *
      * {talendTypes} Boolean
-     * 
+     *
      * {Category} TalendDate
-     * 
+     *
      * {param} String(mydate) stringDate : the date to judge
-     * 
+     *
      * {param} String("yyyy-MM-dd HH:mm:ss") pattern : the specified pattern
-     * 
+     *
      * {examples}
-     * 
+     *
      * ->> isDateStrict("20110327 121711", "yyyyMMdd HHmmss") return true
      * ->> isDateStrict("01100327 121711", "yyyyMMdd HHmmss") return false
      * ->> isDateStrict("20180229 221711", "yyyyMMdd HHmmss") return false
@@ -1166,7 +1189,7 @@ public class TalendDate {
      */
     public static void test_getRandomDate() {
         System.out
-                .println("getRandomDate: " + TalendDate.formatDate("yyyy-MM-dd HH:mm:ss", TalendDate.getRandomDate(null, null))); //$NON-NLS-1$
+        .println("getRandomDate: " + TalendDate.formatDate("yyyy-MM-dd HH:mm:ss", TalendDate.getRandomDate(null, null))); //$NON-NLS-1$
     }
 
     /**
@@ -1178,7 +1201,7 @@ public class TalendDate {
      */
     public static void test_compareDate() {
         System.out
-                .println("compareDate: " + Boolean.toString(TalendDate.compareDate(new Date(), new Date(System.currentTimeMillis() - 10000)) == 1)); //$NON-NLS-1$
+        .println("compareDate: " + Boolean.toString(TalendDate.compareDate(new Date(), new Date(System.currentTimeMillis() - 10000)) == 1)); //$NON-NLS-1$
     }
 
     /**
@@ -1321,100 +1344,100 @@ public class TalendDate {
         test4.start();
         test5.start();
     }
-    
+
     /**
-     * 
+     *
      * @param string Must be a string datatype. Passes the values that you want to convert.
      * @param format Enter a valid TO_DATE format string. The format string must match the parts of the string argument
      * 		  default formate is "MM/DD/yyyy HH:mm:ss.sss" if not specified.
-     * @return Date 
+     * @return Date
      * @throws ParseException
      * {example} TO_DATE("1464576463231", "J") #Mon May 30 10:47:43 CST 2016
      * {example} TO_DATE("2015-11-21 13:23:45","yyyy-MM-dd HH:mm:ss") #Sat Nov 21 13:23:45 CST 2015
-     * 
+     *
      */
     public static Date TO_DATE(String string, String format) throws ParseException {
-		String defaultFormat = "MM/dd/yyyy HH:mm:ss.SSS";
-		if (StringHandling.isVacant(string)) {
-			return null;
-		}
-		if (!StringHandling.isVacant(format)) {
-			if (format.equals("J")) {
-				return new Date(Long.parseLong(string));
-			}
-			SimpleDateFormat sdf = new SimpleDateFormat(dateFormatConvert(format));
-			return sdf.parse(string);
-		} else {
-			SimpleDateFormat sdf = new SimpleDateFormat(defaultFormat);
-			return sdf.parse(string);
-		}
+        String defaultFormat = "MM/dd/yyyy HH:mm:ss.SSS";
+        if (StringHandling.isVacant(string)) {
+            return null;
+        }
+        if (!StringHandling.isVacant(format)) {
+            if (format.equals("J")) {
+                return new Date(Long.parseLong(string));
+            }
+            SimpleDateFormat sdf = new SimpleDateFormat(dateFormatConvert(format));
+            return sdf.parse(string);
+        } else {
+            SimpleDateFormat sdf = new SimpleDateFormat(defaultFormat);
+            return sdf.parse(string);
+        }
 
-	}
+    }
 
-	public static Date TO_DATE(String string) throws ParseException {
-		return TO_DATE(string, null);
-	}
+    public static Date TO_DATE(String string) throws ParseException {
+        return TO_DATE(string, null);
+    }
 
-	private static String dateFormatConvert(String format) {
-		/**
-		 * we do not support the type list below: 
-		 * D : Day of week (1-7), where Sunday equals 1. 
-		 * NS: Nanoseconds (0-999999999). SSSSS: Seconds since midnight (00000 - 86399). 
-		 * US: Microseconds (0-999999). 
-		 * Q: Quarter of year (1-4), where January to March equals 1.
-		 */
-		format = format.replaceAll("Y", "y");
-		format = format.replaceAll("RR", "yy");
-		format = format.replaceAll("MONTH", "MMMM");
-		format = format.replaceAll("MON", "MMM");
-		format = format.replaceAll("WW", "w");// Week of year (01-53)
-		format = format.replaceAll("W", "F");// Week of month (1-5)
-		format = format.replaceAll("(AM|A.M.|PM|P.M.)", "a");
-		format = format.replaceAll("DY", "E");// Abbreviated three-character
-												// name for a day (for example,
-												// Wed).
-		format = format.replaceAll("DDD", "D");// Day of year (001-366,
-												// including leap years).
-		format = format.replaceAll("DD", "d");// Day of month (01-31).
-		format = format.replaceAll("HH24", "zx@i#o%l!");//protect HH24 from HH
-		format = format.replaceAll("(HH|HH12)", "hh");
-		format = format.replaceAll("zx@i#o%l!", "HH");
-		format = format.replaceAll("MS", "sss");
-		format = format.replaceAll("MI", "mm");
-		format = format.replaceAll("SS", "ss");
+    private static String dateFormatConvert(String format) {
+        /**
+         * we do not support the type list below:
+         * D : Day of week (1-7), where Sunday equals 1.
+         * NS: Nanoseconds (0-999999999). SSSSS: Seconds since midnight (00000 - 86399).
+         * US: Microseconds (0-999999).
+         * Q: Quarter of year (1-4), where January to March equals 1.
+         */
+        format = format.replaceAll("Y", "y");
+        format = format.replaceAll("RR", "yy");
+        format = format.replaceAll("MONTH", "MMMM");
+        format = format.replaceAll("MON", "MMM");
+        format = format.replaceAll("WW", "w");// Week of year (01-53)
+        format = format.replaceAll("W", "F");// Week of month (1-5)
+        format = format.replaceAll("(AM|A.M.|PM|P.M.)", "a");
+        format = format.replaceAll("DY", "E");// Abbreviated three-character
+        // name for a day (for example,
+        // Wed).
+        format = format.replaceAll("DDD", "D");// Day of year (001-366,
+        // including leap years).
+        format = format.replaceAll("DD", "d");// Day of month (01-31).
+        format = format.replaceAll("HH24", "zx@i#o%l!");//protect HH24 from HH
+        format = format.replaceAll("(HH|HH12)", "hh");
+        format = format.replaceAll("zx@i#o%l!", "HH");
+        format = format.replaceAll("MS", "sss");
+        format = format.replaceAll("MI", "mm");
+        format = format.replaceAll("SS", "ss");
 
-		return format;
-	}
-	
-	/**
-	 * 
-	 * @param date  Passes the values you want to change
-	 * @param format A format string specifying the portion of the date value you want to change.For example, 'mm'.
-	 * @param amount An integer value specifying the amount of years, months, days, hours, 
-	 * 				and so on by which you want to change the date value.
-	 * @return Date  NULL if a null value is passed as an argument to the function.
-	 * @throws ParseException
-	 * {example} ADD_TO_DATE(new Date(1464576463231l), "HH",2) #Mon May 30 12:47:43 CST 2016
-	 */
-	public static Date ADD_TO_DATE(Date date, String format, int amount) throws ParseException{
-		if (date == null || StringHandling.isVacant(format)) {
-			return null;
-		}
-		if (format != null) {
-			format = dateFormatADD_TO_DATE(format);
-		}
-		Long time = date.getTime();
-		Calendar calender = Calendar.getInstance();
-		calender.setTime(date);
-		switch (format) {
-		case "Y":
-			calender.add(Calendar.YEAR, amount);
-			time = calender.getTimeInMillis();
-			break;
-		case "MONTH":
-			calender.add(Calendar.MONTH, amount);
-			time = calender.getTimeInMillis();
-			break;
+        return format;
+    }
+
+    /**
+     *
+     * @param date  Passes the values you want to change
+     * @param format A format string specifying the portion of the date value you want to change.For example, 'mm'.
+     * @param amount An integer value specifying the amount of years, months, days, hours,
+     * 				and so on by which you want to change the date value.
+     * @return Date  NULL if a null value is passed as an argument to the function.
+     * @throws ParseException
+     * {example} ADD_TO_DATE(new Date(1464576463231l), "HH",2) #Mon May 30 12:47:43 CST 2016
+     */
+    public static Date ADD_TO_DATE(Date date, String format, int amount) throws ParseException{
+        if (date == null || StringHandling.isVacant(format)) {
+            return null;
+        }
+        if (format != null) {
+            format = dateFormatADD_TO_DATE(format);
+        }
+        Long time = date.getTime();
+        Calendar calender = Calendar.getInstance();
+        calender.setTime(date);
+        switch (format) {
+        case "Y":
+            calender.add(Calendar.YEAR, amount);
+            time = calender.getTimeInMillis();
+            break;
+        case "MONTH":
+            calender.add(Calendar.MONTH, amount);
+            time = calender.getTimeInMillis();
+            break;
         case "DAY":
             time += (long)amount * (long)86400000;
             break;
@@ -1427,47 +1450,47 @@ public class TalendDate {
         case "SS":
             time += (long)amount * (long)1000;
             break;
-		case "MS":
-			time += amount;
-			break;
-		case "US":
-			time += amount / 1000;
-			break;
-		case "NS":
-			time += amount / 1000000;
-			break;
-		default:
-			throw new ParseException("Please enter a vaild format.", 0);
-		}
-		return new Date(time);
+        case "MS":
+            time += amount;
+            break;
+        case "US":
+            time += amount / 1000;
+            break;
+        case "NS":
+            time += amount / 1000000;
+            break;
+        default:
+            throw new ParseException("Please enter a vaild format.", 0);
+        }
+        return new Date(time);
 
-	}
+    }
 
-	private static String dateFormatADD_TO_DATE(String format) {
-		if (format.equals("Y") || format.equals("YY") || format.equals("YYY") || format.equals("YYYY")) {
-			return "Y";
-		}
-		if (format.equals("MONTH") || format.equals("MM") || format.equals("MON")) {
-			return "MONTH";
-		}
-		if (format.equals("D") || format.equals("DD") || format.equals("DDD") || format.equals("DAY")
-				|| format.equals("DY")) {
-			return "DAY";
-		}
-		if (format.equals("HH") || format.equals("HH12") || format.equals("HH24")) {
-			return "HH";
-		}
-		return format;
+    private static String dateFormatADD_TO_DATE(String format) {
+        if (format.equals("Y") || format.equals("YY") || format.equals("YYY") || format.equals("YYYY")) {
+            return "Y";
+        }
+        if (format.equals("MONTH") || format.equals("MM") || format.equals("MON")) {
+            return "MONTH";
+        }
+        if (format.equals("D") || format.equals("DD") || format.equals("DDD") || format.equals("DAY")
+                || format.equals("DY")) {
+            return "DAY";
+        }
+        if (format.equals("HH") || format.equals("HH12") || format.equals("HH24")) {
+            return "HH";
+        }
+        return format;
 
-	}
-	
+    }
+
     /**
-     * 
+     *
      * @param date  Date/Time datatype. Passes the date values you want to convert to character strings.
      * @param format   Enter a valid TO_CHAR format string. The format string defines the format of the return value,
      * @return  String.   NULL if a value passed to the function is NULL.
      */
-    
+
     public static String TO_CHAR(Date date, String format) {
         if (date == null) {
             return null;

@@ -99,6 +99,8 @@ public class NexusServerUtils {
         }
         final boolean status[] = { false };
         try {
+            URI uri = new URI(nexusURL);
+            uri.toURL();
             NullProgressMonitor monitor = new NullProgressMonitor();
             new HttpClientTransport(nexusURL, username, password) {
 
