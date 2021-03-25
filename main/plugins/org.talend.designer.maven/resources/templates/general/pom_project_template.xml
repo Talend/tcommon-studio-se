@@ -65,12 +65,12 @@
 							<artifactId>plexus-utils</artifactId>
 							<version>3.0.24</version>
 						</dependency>
-					</dependencies>
-					<dependency>
+							<dependency>
 							<groupId>org.apache.commons</groupId>
 							<artifactId>commons-compress</artifactId>
 							<version>1.19</version>
 						</dependency>
+					</dependencies>
 					<configuration>
 						<archive>
 							<addMavenDescriptor>false</addMavenDescriptor>
