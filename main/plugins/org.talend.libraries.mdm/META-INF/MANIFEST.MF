@@ -11,5 +11,4 @@ Eclipse-BundleShape: dir
 Export-Package: org.talend.mdm.webservice
 Require-Bundle: org.eclipse.core.runtime,
  org.talend.libraries.apache.cxf;visibility:=reexport
-Bundle-ActivationPolicy: lazy
 Bundle-Activator: org.talend.libraries.mdm.MdmLibPlugin
