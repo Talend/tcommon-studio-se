@@ -71,7 +71,9 @@ public class CodesJarInfo {
         info.label = property.getLabel();
         info.version = property.getVersion();
         info.type = ERepositoryObjectType.getItemType(property.getItem());
-        info.imports.addAll(((RoutinesJarItem) property.getItem()).getRoutinesJarType().getImports());
+        if (((RoutinesJarItem) property.getItem()).getRoutinesJarType() != null) {
+            info.imports.addAll(((RoutinesJarItem) property.getItem()).getRoutinesJarType().getImports());
+        }
         String modifiedDate = (String) property.getAdditionalProperties().get(ItemProductKeys.DATE.getModifiedKey());
         info.modifiedDate = StringUtils.isNotBlank(modifiedDate) ? modifiedDate : EMPTY_DATE;
         return info;
