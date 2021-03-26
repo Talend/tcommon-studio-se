@@ -150,7 +150,7 @@ public class ClasspathsJarGenerator {
 
     private static String getJarLocation(Property property) {
         ITalendProcessJavaProject jobProject = getRunProcessService().getTalendJobJavaProject(property);
-        String jarLocation = jobProject.getTargetFolder().getFile(CLASSPATHS_JAR_NAME).getLocation().toPortableString();
+        String jarLocation = jobProject.getTempFolder().getFile(CLASSPATHS_JAR_NAME).getLocation().toPortableString();
         return jarLocation;
     }
 

@@ -3064,4 +3064,22 @@ public class ProcessorUtilities {
         return false;
     }
 
+    public static void setExportConfig(boolean export) {
+        setExportConfig(JavaUtils.JAVA_APP_NAME, null, null, export, new Date());
+    }
+
+    public static boolean isJobTest(String processId, String contextName, String version) {
+        for (JobInfo jobInfo : jobList) {
+            if (jobInfo.getJobId().equals(processId)) {
+                if (contextName != null && !contextName.equals("") && !jobInfo.getContextName().equals(contextName)) {
+                    continue;
+                }
+                if (version != null && !version.equals(jobInfo.getJobVersion())) {
+                    continue;
+                }
+                return jobInfo.isTestContainer();
+            }
+        }
+        return false;
+    }
 }
