@@ -22,7 +22,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
-import org.apache.commons.lang.StringUtils;
+import org.apache.commons.lang3.RegExUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.eclipse.core.runtime.IConfigurationElement;
 import org.eclipse.core.runtime.IContributor;
 import org.talend.commons.exception.ExceptionHandler;
@@ -32,8 +33,10 @@ import org.talend.commons.utils.workbench.extensions.IExtensionPointLimiter;
 import org.talend.core.GlobalServiceRegister;
 import org.talend.core.ILibraryManagerService;
 import org.talend.core.model.general.ModuleNeeded;
+import org.talend.core.model.general.Project;
 import org.talend.designer.core.model.utils.emf.component.IMPORTType;
 import org.talend.librariesmanager.i18n.Messages;
+import org.talend.repository.ProjectManager;
 
 /**
  *
@@ -158,6 +161,8 @@ public class ExtensionModuleManager {
         return clonedList;
     }
 
+    Project project = ProjectManager.getInstance().getCurrentProject();
+
     public List<ModuleNeeded> getModuleNeededForComponent(String context, IMPORTType importType) {
         List<ModuleNeeded> importNeedsList = new ArrayList<ModuleNeeded>();
         String id = null;
@@ -170,6 +175,12 @@ public class ExtensionModuleManager {
             id = moduleGroup;
             isGroup = true;
         }
+
+        if (project != null && project.isCamel3() && StringUtils.startsWith(context, "c")
+                && StringUtils.startsWith(id, "camel-")) {
+            id = RegExUtils.replaceFirst(id, "camel-", "camel3-");
+        }
+
         List<ModuleNeeded> modulesNeeded = getModuleNeeded(id, isGroup);
         for (ModuleNeeded moduleNeeded : modulesNeeded) {
             String msg = importType.getMESSAGE();

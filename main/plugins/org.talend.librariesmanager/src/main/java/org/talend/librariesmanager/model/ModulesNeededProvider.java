@@ -63,6 +63,7 @@ import org.talend.core.model.components.ComponentManager;
 import org.talend.core.model.components.IComponent;
 import org.talend.core.model.components.IComponentsFactory;
 import org.talend.core.model.components.IComponentsService;
+import org.talend.core.model.general.ILibrariesService;
 import org.talend.core.model.general.ILibrariesService.IChangedLibrariesListener;
 import org.talend.core.model.general.LibraryInfo;
 import org.talend.core.model.general.ModuleNeeded;
@@ -771,6 +772,12 @@ public class ModulesNeededProvider {
      * @return
      */
     private static List<ModuleNeeded> getModulesNeededForRoutes(ProcessItem processItem) {
+        ILibrariesService service = null;
+        if (!GlobalServiceRegister.getDefault().isServiceRegistered(ILibrariesService.class)) {
+            return null;
+        }
+        service = (ILibrariesService) GlobalServiceRegister.getDefault().getService(ILibrariesService.class);
+
         Project project = ProjectManager.getInstance().getCurrentProject();
 
         if (importNeedsListForRoutes == null) {
@@ -778,8 +785,8 @@ public class ModulesNeededProvider {
             importNeedsListForRoutes = new ArrayList<ModuleNeeded>();
 
             if (processItem != null && project.isCamel3()) {
-                importNeedsListForRoutes.add(getComponentModuleById("CAMEL", "camel3-core"));
-                importNeedsListForRoutes.add(getComponentModuleById("CAMEL", "camel3-spring"));
+                importNeedsListForRoutes.addAll(service.getModuleNeeded("camel3-core", true));
+                importNeedsListForRoutes.addAll(service.getModuleNeeded("camel3-spring", true));
             } else {
                 importNeedsListForRoutes.add(getComponentModuleById("CAMEL", "camel-core"));
                 importNeedsListForRoutes.add(getComponentModuleById("CAMEL", "camel-spring"));
