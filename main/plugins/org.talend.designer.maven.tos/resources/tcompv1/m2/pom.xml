@@ -1,7 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<project xmlns="http://maven.apache.org/POM/4.0.0"
-    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-    xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
     <parent>
         <groupId>org.talend.studio</groupId>
@@ -9,21 +7,8 @@
         <version>7.4.1-SNAPSHOT</version>
         <relativePath>../</relativePath>
     </parent>
-    <artifactId>studio-tck_sdk-dependencies</artifactId>
+    <artifactId>studio-tck_m2-dependencies</artifactId>
     <packaging>pom</packaging>
-
-    <properties>
-        <commons-lang3.version>3.11</commons-lang3.version>
-        <mockito.version>2.23.0</mockito.version>
-        <oro.version>2.0.8</oro.version>
-        <log4j.version>1.2.17</log4j.version>
-        <system-rules.version>1.16.0</system-rules.version>
-        <common-io.version>2.5</common-io.version>
-        <commons-lang.version>2.6</commons-lang.version>
-        <junit5.version>5.7.0</junit5.version>
-        <commons-cli.version>1.4</commons-cli.version>
-        <xbean.version>4.18</xbean.version>
-    </properties>
 
     <repositories>
         <repository>
@@ -67,74 +52,49 @@
             <url>https://oss.sonatype.org/content/repositories/snapshots/</url>
         </repository>
     </repositories>
-
+    
     <dependencyManagement>
         <dependencies>
             <dependency>
                 <groupId>org.talend.sdk.component</groupId>
-                <artifactId>component-studio</artifactId>
+                <artifactId>component-runtime</artifactId>
                 <version>${tcomp.version}</version>
                 <type>pom</type>
                 <scope>import</scope>
             </dependency>
         </dependencies>
     </dependencyManagement>
-
+    
     <dependencies>
         <dependency>
             <groupId>org.talend.sdk.component</groupId>
-            <artifactId>component-server-model</artifactId>
+            <artifactId>component-server</artifactId>
+            <version>${tcomp.version}</version>
         </dependency>
         <dependency>
             <groupId>org.talend.sdk.component</groupId>
-            <artifactId>component-form-core</artifactId>
-            <exclusions>
-                <exclusion>
-                    <groupId>org.talend.sdk.component</groupId>
-                    <artifactId>component-form-model</artifactId>
-                </exclusion>
-            </exclusions>
-        </dependency>
-
-        <dependency>
-            <groupId>org.asciidoctor</groupId>
-            <artifactId>asciidoctorj</artifactId>
-            <version>2.4.2</version>
-        </dependency>
-
-        <dependency>
-            <groupId>org.apache.commons</groupId>
-            <artifactId>commons-lang3</artifactId>
-            <version>${commons-lang3.version}</version>
-            <scope>provided</scope>
-        </dependency>
-
-        <dependency>
-            <groupId>oro</groupId>
-            <artifactId>oro</artifactId>
-            <version>${oro.version}</version>
-            <scope>provided</scope>
-        </dependency>
-
-        <dependency> <!-- needed by tomcat-websocket -->
-            <groupId>org.apache.tomcat</groupId>
-            <artifactId>tomcat-api</artifactId>
+            <artifactId>component-runtime-di</artifactId>
+            <version>${tcomp.version}</version>
         </dependency>
         <dependency>
-            <groupId>org.apache.tomcat</groupId>
-            <artifactId>tomcat-websocket</artifactId>
+            <groupId>org.talend.sdk.component</groupId>
+            <artifactId>component-api</artifactId>
+            <version>${tcomp.version}</version>
         </dependency>
         <dependency>
-            <groupId>org.apache.geronimo.specs</groupId>
-            <artifactId>geronimo-json_1.1_spec</artifactId>
+            <groupId>org.talend.sdk.component</groupId>
+            <artifactId>slf4j-standard</artifactId>
+            <version>${tcomp.version}</version>
         </dependency>
         <dependency>
-            <groupId>org.apache.geronimo.specs</groupId>
-            <artifactId>geronimo-jsonb_1.0_spec</artifactId>
+            <groupId>org.slf4j</groupId>
+            <artifactId>slf4j-jdk14</artifactId>
+            <version>${slf4j.version}</version>
         </dependency>
         <dependency>
-            <groupId>org.apache.johnzon</groupId>
-            <artifactId>johnzon-jsonb</artifactId>
+            <groupId>org.slf4j</groupId>
+            <artifactId>slf4j-log4j12</artifactId>
+            <version>${slf4j.version}</version>
         </dependency>
         <dependency>
             <groupId>org.slf4j</groupId>
@@ -142,7 +102,7 @@
             <version>${slf4j.version}</version>
         </dependency>
     </dependencies>
-
+    
     <build>
         <plugins>
             <plugin>
