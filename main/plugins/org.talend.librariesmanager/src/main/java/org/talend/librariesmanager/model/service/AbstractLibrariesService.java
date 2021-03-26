@@ -43,8 +43,8 @@ import org.talend.core.model.process.INode;
 import org.talend.core.model.process.IProcess;
 import org.talend.core.model.process.Problem;
 import org.talend.core.model.process.Problem.ProblemStatus;
-import org.talend.core.model.properties.Property;
 import org.talend.core.model.repository.ERepositoryObjectType;
+import org.talend.core.model.routines.CodesJarInfo;
 import org.talend.designer.runprocess.IRunProcessService;
 import org.talend.librariesmanager.model.ExtensionModuleManager;
 import org.talend.librariesmanager.model.ModulesNeededProvider;
@@ -293,8 +293,8 @@ public abstract class AbstractLibrariesService implements ILibrariesService {
     }
 
     @Override
-    public Set<ModuleNeeded> getCodesJarModuleNeededs(Property property) {
-        return ModulesNeededProvider.getCodesJarModuleNeededs(property);
+    public Set<ModuleNeeded> getCodesJarModuleNeededs(CodesJarInfo info) {
+        return ModulesNeededProvider.getCodesJarModuleNeededs(info);
     }
 
     @Override
