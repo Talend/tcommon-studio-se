@@ -32,7 +32,6 @@ import org.apache.commons.lang.StringUtils;
 import org.talend.commons.exception.ExceptionHandler;
 import org.talend.commons.exception.PersistenceException;
 import org.talend.core.i18n.Messages;
-import org.talend.core.model.context.ContextUtils;
 import org.talend.core.model.general.Project;
 import org.talend.core.model.process.IContextParameter;
 import org.talend.core.model.properties.Item;
@@ -79,9 +78,23 @@ public class ContextOrderProperties extends Properties {
     @Override
     public Object put(Object key, Object value) {
         keys.add(key);
-        return super.put(key, value);
+        return super.put(key, value == null ? getDefaultValue(value) : value);
     }
 
+    private Object getDefaultValue(Object value) {
+        if (value instanceof String) {
+            return "";
+        } else if (value instanceof Integer || value instanceof Byte || value instanceof Short || value instanceof Long) {
+            return 0;
+        } else if (value instanceof Double || value instanceof Float) {
+            return 0.0;
+        } else if (value instanceof Character) {
+            return Character.MIN_VALUE;
+        } else if (value instanceof Boolean) {
+            return false;
+        }
+        return value;
+    }
     @Override
     public synchronized Object remove(Object key) {
         keys.remove(key);
