@@ -1,6 +1,6 @@
 // ============================================================================
 //
-// Copyright (C) 2006-2019 Talend Inc. - www.talend.com
+// Copyright (C) 2006-2021 Talend Inc. - www.talend.com
 //
 // This source code is available under agreement available at
 // %InstallDIR%\features\org.talend.rcp.branding.%PRODUCTNAME%\%PRODUCTNAME%license.txt
@@ -207,6 +207,10 @@ public final class ContextParameterUtils {
     }
 
     private static ScriptEngine engine = new ScriptEngineManager().getEngineByName("JavaScript");
+    
+    public static ScriptEngine getScriptEngine() {
+        return engine;
+    }
 
     public static String convertContext2Literal4AnyVar(final String code, final IContext context) {
         if (code == null) {

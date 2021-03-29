@@ -1,6 +1,6 @@
 // ============================================================================
 //
-// Copyright (C) 2006-2019 Talend Inc. - www.talend.com
+// Copyright (C) 2006-2021 Talend Inc. - www.talend.com
 //
 // This source code is available under agreement available at
 // %InstallDIR%\features\org.talend.rcp.branding.%PRODUCTNAME%\%PRODUCTNAME%license.txt
@@ -101,6 +101,7 @@ import org.talend.core.runtime.CoreRuntimePlugin;
 import org.talend.core.runtime.services.IGenericDBService;
 import org.talend.core.runtime.services.IGenericWizardService;
 import org.talend.core.services.ICoreTisService;
+import org.talend.core.utils.CodesJarResourceCache;
 import org.talend.core.utils.WorkspaceUtils;
 import org.talend.designer.business.model.business.BusinessPackage;
 import org.talend.designer.business.model.business.BusinessProcess;
@@ -850,6 +851,9 @@ public class ImportBasicHandler extends AbstractImportExecutableHandler {
                         copyContextLinkFile(linkFile, tmpItem);
                     }
                     repObjectcache.addToCache(tmpItem);
+                    if (ERepositoryObjectType.getAllTypesOfCodesJar().contains(itemType)) {
+                        CodesJarResourceCache.addToCache(tmpItem.getProperty());
+                    }
                 }
 
                 if (tmpItem.getState() != null && itemType != null) {
@@ -879,7 +883,8 @@ public class ImportBasicHandler extends AbstractImportExecutableHandler {
                 }
 
             } catch (Exception e) {
-                selectedImportItem.addError(selectedImportItem.getItemName() + ";" + e.getMessage() + ";" + path);//$NON-NLS-1$
+                selectedImportItem.addError(selectedImportItem.getItemName() + ";" + e.getMessage() + ";" //$NON-NLS-1$
+                        + ("".equals(path.toFile().getPath()) ? null : path));
                 logError(e);
             }
         }

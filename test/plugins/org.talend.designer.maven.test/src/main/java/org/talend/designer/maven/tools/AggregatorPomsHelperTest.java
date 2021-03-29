@@ -1,6 +1,6 @@
 // ============================================================================
 //
-// Copyright (C) 2006-2019 Talend Inc. - www.talend.com
+// Copyright (C) 2006-2021 Talend Inc. - www.talend.com
 //
 // This source code is available under agreement available at
 // %InstallDIR%\features\org.talend.rcp.branding.%PRODUCTNAME%\%PRODUCTNAME%license.txt
@@ -240,14 +240,6 @@ public class AggregatorPomsHelperTest {
         assertEquals("/" + projectTechName + "/poms/jobs/process/testitemfolderjob_0.1", folder.getFullPath().toPortableString());
         folder = AggregatorPomsHelper.getItemPomFolder(property, "0.2");
         assertEquals("/" + projectTechName + "/poms/jobs/process/testitemfolderjob_0.2", folder.getFullPath().toPortableString());
-    }
-
-    @Test
-    public void testGetCodeProjectId() {
-        String routinesId = AggregatorPomsHelper.getCodeProjectId(ERepositoryObjectType.ROUTINES, projectTechName);
-        assertEquals(projectTechName + "|ROUTINES", routinesId);
-        String beansId = AggregatorPomsHelper.getCodeProjectId(ERepositoryObjectType.valueOf("BEANS"), projectTechName);
-        assertEquals(projectTechName + "|BEANS", beansId);
     }
 
     @Test

@@ -1,6 +1,6 @@
 // ============================================================================
 //
-// Copyright (C) 2006-2020 Talend Inc. - www.talend.com
+// Copyright (C) 2006-2021 Talend Inc. - www.talend.com
 //
 // This source code is available under agreement available at
 // %InstallDIR%\features\org.talend.rcp.branding.%PRODUCTNAME%\%PRODUCTNAME%license.txt
@@ -42,10 +42,17 @@ public class CodeM2CacheManager {
 
     private static final String EMPTY_DATE;
 
+    private static File cacheFolder;
+
     static {
         Calendar c = Calendar.getInstance();
         c.setTimeInMillis(0);
         EMPTY_DATE = ResourceHelper.dateFormat().format(c.getTime());
+        cacheFolder = new File(MavenPlugin.getMaven().getLocalRepositoryPath()).toPath().resolve(".codecache").resolve("codes")
+                .toFile();
+        if (!cacheFolder.exists()) {
+            cacheFolder.mkdirs();
+        }
     }
 
     public static boolean needUpdateCodeProject(Project project, ERepositoryObjectType codeType) {
@@ -68,7 +75,7 @@ public class CodeM2CacheManager {
                 String key = getKey(projectTechName, property);
                 String cacheValue = cache.getProperty(key);
                 if (cacheValue != null) {
-                    Date currentDate = ResourceHelper.dateFormat().parse(getModifiedDate(projectTechName, property));
+                    Date currentDate = ResourceHelper.dateFormat().parse(getModifiedDate(property));
                     Date cachedDate = ResourceHelper.dateFormat().parse(cacheValue);
                     if (currentDate.compareTo(cachedDate) != 0) {
                         return true;
@@ -92,7 +99,7 @@ public class CodeM2CacheManager {
             for (IRepositoryViewObject codeItem : allCodes) {
                 Property property = codeItem.getProperty();
                 String key = getKey(projectTechName, property);
-                String value = getModifiedDate(projectTechName, property);
+                String value = getModifiedDate(property);
                 cache.put(key, value);
             }
             cache.store(out, StringUtils.EMPTY);
@@ -104,14 +111,14 @@ public class CodeM2CacheManager {
     public static File getCacheFile(String projectTechName, ERepositoryObjectType codeType) {
         String cacheFileName = PomIdsHelper.getProjectGroupId(projectTechName) + "." + codeType.name().toLowerCase() + "-" //$NON-NLS-1$ //$NON-NLS-2$
                 + PomIdsHelper.getCodesVersion(projectTechName) + ".cache"; // $NON-NLS-1$
-        return new File(MavenPlugin.getMaven().getLocalRepositoryPath(), cacheFileName);
+        return new File(cacheFolder, cacheFileName);
     }
 
     private static String getKey(String projectTechName, Property property) {
         return projectTechName + KEY_SEPERATOR + property.getId() + KEY_SEPERATOR + property.getVersion(); // $NON-NLS-1$
     }
 
-    private static String getModifiedDate(String projectTechName, Property property) {
+    private static String getModifiedDate(Property property) {
         String modifiedDate = (String) property.getAdditionalProperties().get(ItemProductKeys.DATE.getModifiedKey());
         return StringUtils.isNotBlank(modifiedDate) ? modifiedDate : EMPTY_DATE;
     }

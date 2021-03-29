@@ -1,6 +1,6 @@
 // ============================================================================
 //
-// Copyright (C) 2006-2019 Talend Inc. - www.talend.com
+// Copyright (C) 2006-2021 Talend Inc. - www.talend.com
 //
 // This source code is available under agreement available at
 // %InstallDIR%\features\org.talend.rcp.branding.%PRODUCTNAME%\%PRODUCTNAME%license.txt
@@ -74,6 +74,7 @@ import org.talend.core.model.repository.ERepositoryObjectType;
 import org.talend.core.model.repository.IRepositoryContentHandler;
 import org.talend.core.model.repository.IRepositoryViewObject;
 import org.talend.core.model.repository.RepositoryContentManager;
+import org.talend.core.model.routines.RoutinesUtil;
 import org.talend.core.repository.i18n.Messages;
 import org.talend.core.repository.model.ProxyRepositoryFactory;
 import org.talend.core.repository.ui.dialog.DuplicateDialog;
@@ -145,8 +146,14 @@ public class DuplicateAction extends AContextualAction {
                 canWork = false;
             } else if (((StructuredSelection) selection).toArray().length == 1) {
                 Object obj = ((StructuredSelection) selection).toList().get(0);
+                RepositoryNode sourceNode = (RepositoryNode) obj;
+                // disable duplicate for codejar / innercode now
+                if (ERepositoryObjectType.getAllTypesOfCodesJar().contains(sourceNode.getObjectType())
+                        || sourceNode.getObject() != null && sourceNode.getObject().getProperty() != null
+                                && RoutinesUtil.isInnerCodes(sourceNode.getObject().getProperty())) {
+                    canWork = false;
+                }
                 if (canWork) {
-                    RepositoryNode sourceNode = (RepositoryNode) obj;
                     if (!CopyObjectAction.getInstance().validateAction(sourceNode, null)) {
                         canWork = false;
                     } else if (node.getProperties(EProperties.CONTENT_TYPE) == ERepositoryObjectType.JOB_DOC

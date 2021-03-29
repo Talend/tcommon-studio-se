@@ -1,6 +1,6 @@
 // ============================================================================
 //
-// Copyright (C) 2006-2019 Talend Inc. - www.talend.com
+// Copyright (C) 2006-2021 Talend Inc. - www.talend.com
 //
 // This source code is available under agreement available at
 // %InstallDIR%\features\org.talend.rcp.branding.%PRODUCTNAME%\%PRODUCTNAME%license.txt
@@ -133,6 +133,7 @@ import org.talend.core.model.properties.PropertiesPackage;
 import org.talend.core.model.properties.Property;
 import org.talend.core.model.properties.ReferenceFileItem;
 import org.talend.core.model.properties.RoutineItem;
+import org.talend.core.model.properties.RoutinesJarItem;
 import org.talend.core.model.properties.RulesItem;
 import org.talend.core.model.properties.SQLPatternItem;
 import org.talend.core.model.properties.SVGBusinessProcessItem;
@@ -556,16 +557,20 @@ public class LocalRepositoryFactory extends AbstractEMFRepositoryFactory impleme
 
     @Override
     public List<IRepositoryViewObject> getAll(Project project, ERepositoryObjectType type, boolean withDeleted,
-            boolean allVersions) throws PersistenceException {
+            boolean allVersions, IFolder... folders) throws PersistenceException {
         IFolder folder = null;
-        try {
-            if (type != null && type.hasFolder()) {
-                folder = LocalResourceModelUtils.getFolder(project, type);
-            } else {
+        if (folders != null && folders.length > 0) {
+            folder = folders[0];
+        } else {
+            try {
+                if (type != null && type.hasFolder()) {
+                    folder = LocalResourceModelUtils.getFolder(project, type);
+                } else {
+                    return Collections.emptyList();
+                }
+            } catch (ResourceNotFoundException e) {
                 return Collections.emptyList();
             }
-        } catch (ResourceNotFoundException e) {
-            return Collections.emptyList();
         }
         return convert(getSerializableFromFolder(project, folder, null, type, allVersions, true, withDeleted, false));
     }
@@ -2353,6 +2358,13 @@ public class LocalRepositoryFactory extends AbstractEMFRepositoryFactory impleme
         return itemResource;
     }
 
+    private Resource create(IProject project, RoutinesJarItem item, IPath path, ERepositoryObjectType type)
+            throws PersistenceException {
+        Resource itemResource = xmiResourceManager.createItemResource(project, item, path, type, false);
+        itemResource.getContents().add(item.getRoutinesJarType());
+        return itemResource;
+    }
+
     private Resource save(ResourceSet resourceSet, FileItem item) {
         Resource itemResource = xmiResourceManager.getItemResource(resourceSet, item);
 
@@ -2360,6 +2372,13 @@ public class LocalRepositoryFactory extends AbstractEMFRepositoryFactory impleme
         itemResource.getContents().clear();
         itemResource.getContents().add(content);
 
+        return itemResource;
+    }
+
+    protected Resource save(ResourceSet resourceSet, RoutinesJarItem item) {
+        final Resource itemResource = xmiResourceManager.getItemResource(resourceSet, item);
+        itemResource.getContents().clear();
+        itemResource.getContents().add(item.getRoutinesJarType());
         return itemResource;
     }
 
@@ -2589,6 +2608,9 @@ public class LocalRepositoryFactory extends AbstractEMFRepositoryFactory impleme
             case PropertiesPackage.JOB_SCRIPT_ITEM:
             case PropertiesPackage.SQL_PATTERN_ITEM:
                 itemResource = save(resourceSet, (FileItem) item);
+                break;
+            case PropertiesPackage.ROUTINES_JAR_ITEM:
+                itemResource = save(resourceSet, (RoutinesJarItem) item);
                 break;
             case PropertiesPackage.PROCESS_ITEM:
                 screenshotResource = saveScreenshots(resourceSet, item);
@@ -2982,7 +3004,14 @@ public class LocalRepositoryFactory extends AbstractEMFRepositoryFactory impleme
                 itemResource = create(project2, (JobletDocumentationItem) item, path, ERepositoryObjectType.JOBLET_DOC);
                 break;
             case PropertiesPackage.ROUTINE_ITEM:
-                itemResource = create(project2, (FileItem) item, path, ERepositoryObjectType.ROUTINES);
+                ERepositoryObjectType type = /*
+                                              * RoutinesUtil.isInnerCodes(item.getProperty()) ?
+                                              * ERepositoryObjectType.ROUTINESJAR :
+                                              */ERepositoryObjectType.ROUTINES;
+                itemResource = create(project2, (FileItem) item, path, type);
+                break;
+            case PropertiesPackage.ROUTINES_JAR_ITEM:
+                itemResource = create(project2, (RoutinesJarItem) item, path, ERepositoryObjectType.ROUTINESJAR);
                 break;
             case PropertiesPackage.JOB_SCRIPT_ITEM:
                 itemResource = create(project2, (FileItem) item, path, ERepositoryObjectType.JOB_SCRIPT);

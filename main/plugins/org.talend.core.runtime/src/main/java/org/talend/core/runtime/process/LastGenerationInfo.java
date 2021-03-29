@@ -1,6 +1,6 @@
 // ============================================================================
 //
-// Copyright (C) 2006-2019 Talend Inc. - www.talend.com
+// Copyright (C) 2006-2021 Talend Inc. - www.talend.com
 //
 // This source code is available under agreement available at
 // %InstallDIR%\features\org.talend.rcp.branding.%PRODUCTNAME%\%PRODUCTNAME%license.txt
@@ -28,17 +28,21 @@ public class LastGenerationInfo {
 
     private HashMap<String, Set<ModuleNeeded>> modulesNeededPerJob;
 
+    private HashMap<String, Set<ModuleNeeded>> modulesNeededWithSubjobPerJob;
+
     private HashMap<String, Set<String>> routinesNeededPerJob;
 
-    private HashMap<String, Set<ModuleNeeded>> modulesNeededWithSubjobPerJob;
+    private HashMap<String, Set<String>> routinesNeededWithSubjobPerJob;
+
+    private HashMap<String, Set<ModuleNeeded>> codesJarModulesNeededPerJob;
+
+    private HashMap<String, Set<ModuleNeeded>> codesJarModulesNeededWithSubjobPerJob;
 
     private HashMap<String, Set<ModuleNeeded>> highPriorityModuleNeededPerJob;
 
     private HashMap<String, Set<ModuleNeeded>> highPriorityModuleNeeded;
 
     private HashMap<String, Set<ModuleNeeded>> testcaseModuleNeeded;
-
-    private HashMap<String, Set<String>> routinesNeededWithSubjobPerJob;
 
     private HashMap<String, Set<String>> contextPerJob;
 
@@ -54,16 +58,18 @@ public class LastGenerationInfo {
 
     private LastGenerationInfo() {
         modulesNeededPerJob = new HashMap<String, Set<ModuleNeeded>>();
-        contextPerJob = new HashMap<String, Set<String>>();
-        modulesNeededWithSubjobPerJob = new HashMap<String, Set<ModuleNeeded>>();
+        contextPerJob = new HashMap<>();
+        modulesNeededWithSubjobPerJob = new HashMap<>();
         highPriorityModuleNeededPerJob = new HashMap<>();
         highPriorityModuleNeeded = new HashMap<>();
         testcaseModuleNeeded = new HashMap<>();
-        lastGeneratedjobs = new HashSet<JobInfo>();
-        routinesNeededPerJob = new HashMap<String, Set<String>>();
-        routinesNeededWithSubjobPerJob = new HashMap<String, Set<String>>();
-        useDynamic = new HashMap<String, Boolean>();
-        useRules = new HashMap<String, Boolean>();
+        lastGeneratedjobs = new HashSet<>();
+        routinesNeededPerJob = new HashMap<>();
+        routinesNeededWithSubjobPerJob = new HashMap<>();
+        codesJarModulesNeededPerJob = new HashMap<>();
+        codesJarModulesNeededWithSubjobPerJob = new HashMap<>();
+        useDynamic = new HashMap<>();
+        useRules = new HashMap<>();
     }
 
     public static LastGenerationInfo getInstance() {
@@ -74,15 +80,30 @@ public class LastGenerationInfo {
     }
 
     /**
-     *
      * @return the modulesNeededPerJob
      */
+    // TODO check callers to see if need to add operations for codejars
     public Set<ModuleNeeded> getModulesNeededWithSubjobPerJob(String jobId, String jobVersion) {
+
         String key = this.getProcessKey(jobId, jobVersion);
         if (!modulesNeededWithSubjobPerJob.containsKey(key)) {
             modulesNeededWithSubjobPerJob.put(key, new HashSet<ModuleNeeded>());
         }
         return modulesNeededWithSubjobPerJob.get(key);
+    }
+
+    /**
+     * Sets the modulesNeededWithSubjobPerJob.
+     *
+     * @param modulesNeededWithSubjobPerJob the modulesNeededWithSubjobPerJob to set
+     */
+    public void setModulesNeededWithSubjobPerJob(String jobId, String jobVersion, Set<ModuleNeeded> modulesNeeded) {
+        String key = this.getProcessKey(jobId, jobVersion);
+        if (modulesNeeded == null) {
+            modulesNeededWithSubjobPerJob.put(key, null);
+        } else {
+            modulesNeededWithSubjobPerJob.put(key, new HashSet<ModuleNeeded>(modulesNeeded));
+        }
     }
 
     /**
@@ -98,19 +119,6 @@ public class LastGenerationInfo {
     }
 
     /**
-     * Getter for contextPerJob.
-     *
-     * @return the contextPerJob
-     */
-    public Set<String> getContextPerJob(String jobId, String jobVersion) {
-        String key = this.getProcessKey(jobId, jobVersion);
-        if (!contextPerJob.containsKey(key)) {
-            contextPerJob.put(key, new HashSet<String>());
-        }
-        return contextPerJob.get(key);
-    }
-
-    /**
      * Sets the modulesNeededPerJob.
      *
      * @param modulesNeededPerJob the modulesNeededPerJob to set
@@ -121,17 +129,16 @@ public class LastGenerationInfo {
     }
 
     /**
-     * Sets the modulesNeededWithSubjobPerJob.
+     * Getter for contextPerJob.
      *
-     * @param modulesNeededWithSubjobPerJob the modulesNeededWithSubjobPerJob to set
+     * @return the contextPerJob
      */
-    public void setModulesNeededWithSubjobPerJob(String jobId, String jobVersion, Set<ModuleNeeded> modulesNeeded) {      
+    public Set<String> getContextPerJob(String jobId, String jobVersion) {
         String key = this.getProcessKey(jobId, jobVersion);
-        if (modulesNeeded == null) {
-            modulesNeededWithSubjobPerJob.put(key, null);
-        } else {
-            modulesNeededWithSubjobPerJob.put(key, new HashSet<ModuleNeeded>(modulesNeeded));
+        if (!contextPerJob.containsKey(key)) {
+            contextPerJob.put(key, new HashSet<String>());
         }
+        return contextPerJob.get(key);
     }
 
     /**
@@ -241,6 +248,64 @@ public class LastGenerationInfo {
         return routinesNeededPerJob.get(key);
     }
 
+    /**
+     * Sets the routinesNeededPerJob.
+     *
+     * @param modulesNeededPerJob the modulesNeededPerJob to set
+     */
+    public void setRoutinesNeededPerJob(String jobId, String jobVersion, Set<String> modulesNeeded) {
+        String key = this.getProcessKey(jobId, jobVersion);
+        routinesNeededPerJob.put(key, new HashSet<String>(modulesNeeded));
+    }
+
+    /**
+     *
+     * @return the modulesNeededPerJob
+     */
+    public Set<String> getRoutinesNeededWithSubjobPerJob(String jobId, String jobVersion) {
+        String key = this.getProcessKey(jobId, jobVersion);
+        if (!routinesNeededWithSubjobPerJob.containsKey(key)) {
+            routinesNeededWithSubjobPerJob.put(key, new HashSet<String>());
+        }
+        return routinesNeededWithSubjobPerJob.get(key);
+    }
+
+    /**
+     * Sets the routinesNeededPerJob.
+     *
+     * @param modulesNeededPerJob the modulesNeededPerJob to set
+     */
+    public void setRoutinesNeededWithSubjobPerJob(String jobId, String jobVersion, Set<String> modulesNeeded) {
+        String key = this.getProcessKey(jobId, jobVersion);
+        routinesNeededWithSubjobPerJob.put(key, new HashSet<String>(modulesNeeded));
+    }
+
+    public Set<ModuleNeeded> getCodesJarModulesNeededPerJob(String jobId, String jobVersion) {
+        String key = this.getProcessKey(jobId, jobVersion);
+        if (!codesJarModulesNeededPerJob.containsKey(key)) {
+            codesJarModulesNeededPerJob.put(key, new HashSet<>());
+        }
+        return codesJarModulesNeededPerJob.get(key);
+    }
+
+    public void setCodesJarModulesNeededPerJob(String jobId, String jobVersion, Set<ModuleNeeded> modulesNeeded) {
+        String key = this.getProcessKey(jobId, jobVersion);
+        codesJarModulesNeededPerJob.put(key, new HashSet<>(modulesNeeded));
+    }
+
+    public Set<ModuleNeeded> getCodesJarModulesNeededWithSubjobPerJob(String jobId, String jobVersion) {
+        String key = this.getProcessKey(jobId, jobVersion);
+        if (!codesJarModulesNeededWithSubjobPerJob.containsKey(key)) {
+            codesJarModulesNeededWithSubjobPerJob.put(key, new HashSet<>());
+        }
+        return codesJarModulesNeededWithSubjobPerJob.get(key);
+    }
+
+    public void setCodesJarModulesNeededWithSubjobPerJob(String jobId, String jobVersion, Set<ModuleNeeded> modulesNeeded) {
+        String key = this.getProcessKey(jobId, jobVersion);
+        codesJarModulesNeededWithSubjobPerJob.put(key, new HashSet<>(modulesNeeded));
+    }
+
     public Set<ModuleNeeded> getHighPriorityModuleNeededPerJob(String jobId, String jobVersion) {
         String key = getProcessKey(jobId, jobVersion);
         if (!highPriorityModuleNeededPerJob.containsKey(key)) {
@@ -293,38 +358,6 @@ public class LastGenerationInfo {
     private String getProcessKey(String jobId, String jobVersion) {
         String pureJobId = ProcessUtils.getPureItemId(jobId);
         return pureJobId + "_" + jobVersion; //$NON-NLS-1$
-    }
-
-    /**
-     * Sets the routinesNeededPerJob.
-     *
-     * @param modulesNeededPerJob the modulesNeededPerJob to set
-     */
-    public void setRoutinesNeededPerJob(String jobId, String jobVersion, Set<String> modulesNeeded) {
-        String key = this.getProcessKey(jobId, jobVersion);
-        routinesNeededPerJob.put(key, new HashSet<String>(modulesNeeded));
-    }
-
-    /**
-     *
-     * @return the modulesNeededPerJob
-     */
-    public Set<String> getRoutinesNeededWithSubjobPerJob(String jobId, String jobVersion) {
-        String key = this.getProcessKey(jobId, jobVersion);
-        if (!routinesNeededWithSubjobPerJob.containsKey(key)) {
-            routinesNeededWithSubjobPerJob.put(key, new HashSet<String>());
-        }
-        return routinesNeededWithSubjobPerJob.get(key);
-    }
-
-    /**
-     * Sets the routinesNeededPerJob.
-     *
-     * @param modulesNeededPerJob the modulesNeededPerJob to set
-     */
-    public void setRoutinesNeededWithSubjobPerJob(String jobId, String jobVersion, Set<String> modulesNeeded) {
-        String key = this.getProcessKey(jobId, jobVersion);
-        routinesNeededWithSubjobPerJob.put(key, new HashSet<String>(modulesNeeded));
     }
 
     public void clearCaches() {

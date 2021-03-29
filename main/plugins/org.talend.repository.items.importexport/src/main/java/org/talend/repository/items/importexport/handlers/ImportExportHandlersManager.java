@@ -1,6 +1,6 @@
 // ============================================================================
 //
-// Copyright (C) 2006-2019 Talend Inc. - www.talend.com
+// Copyright (C) 2006-2021 Talend Inc. - www.talend.com
 //
 // This source code is available under agreement available at
 // %InstallDIR%\features\org.talend.rcp.branding.%PRODUCTNAME%\%PRODUCTNAME%license.txt
@@ -25,6 +25,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.regex.Pattern;
+import java.util.stream.Collectors;
 
 import org.apache.log4j.Priority;
 import org.eclipse.core.resources.IWorkspace;
@@ -63,10 +64,12 @@ import org.talend.core.model.relationship.RelationshipItemBuilder;
 import org.talend.core.model.repository.DynaEnum;
 import org.talend.core.model.repository.ERepositoryObjectType;
 import org.talend.core.model.repository.IRepositoryViewObject;
+import org.talend.core.model.routines.CodesJarInfo;
 import org.talend.core.repository.model.ProxyRepositoryFactory;
 import org.talend.core.runtime.CoreRuntimePlugin;
 import org.talend.core.ui.IJobletProviderService;
 import org.talend.designer.maven.tools.AggregatorPomsHelper;
+import org.talend.designer.maven.tools.CodesJarM2CacheManager;
 import org.talend.repository.ProjectManager;
 import org.talend.repository.RepositoryWorkUnit;
 import org.talend.repository.documentation.ERepositoryActionName;
@@ -485,6 +488,12 @@ public class ImportExportHandlersManager {
                 } else if (ERepositoryObjectType.PROCESS_ROUTELET != null
                         && ERepositoryObjectType.PROCESS_ROUTELET.getType().equals(item.getRepositoryType().getType())) {
                     return 40;
+                } else if (ERepositoryObjectType.ROUTINESJAR != null
+                        && ERepositoryObjectType.ROUTINESJAR.equals(item.getRepositoryType())) {
+                    return 50;
+                } else if (ERepositoryObjectType.BEANSJAR != null
+                        && ERepositoryObjectType.BEANSJAR.equals(item.getRepositoryType())) {
+                    return 50;
                 }
                 return 100;
             }
@@ -995,8 +1004,21 @@ public class ImportExportHandlersManager {
             repositoryWorkUnit.setUnloadResourcesAfterRun(true);
             ProxyRepositoryFactory.getInstance().executeRepositoryWorkUnit(repositoryWorkUnit);
 
-            new AggregatorPomsHelper().updateCodeProjects(new NullProgressMonitor());
-            
+            IProgressMonitor monitor = new NullProgressMonitor();
+            List<ImportItem> importedItems = ImportCacheHelper.getInstance().getImportedItemRecords();
+            boolean needUpdateCode = importedItems.stream().anyMatch(item -> ERepositoryObjectType.getAllTypesOfCodes()
+                    .contains(ERepositoryObjectType.getItemType(item.getItem())));
+            new AggregatorPomsHelper().updateCodeProjects(monitor, needUpdateCode, needUpdateCode);
+            Set<CodesJarInfo> codesJarsToUpdate = importedItems.stream()
+                    .filter(item -> ERepositoryObjectType.getAllTypesOfCodesJar()
+                            .contains(ERepositoryObjectType.getItemType(item.getItem())))
+                    .map(item -> CodesJarInfo.create(item.getProperty())).collect(Collectors.toSet());
+            if (codesJarsToUpdate.isEmpty()) {
+                CodesJarM2CacheManager.updateCodesJarProject(monitor, false, true, false);
+            } else {
+                CodesJarM2CacheManager.updateCodesJarProject(monitor, codesJarsToUpdate, false, false, false);
+            }
+
             progressMonitor.done();
 
 

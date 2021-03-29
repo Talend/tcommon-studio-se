@@ -1,6 +1,6 @@
 // ============================================================================
 //
-// Copyright (C) 2006-2019 Talend Inc. - www.talend.com
+// Copyright (C) 2006-2021 Talend Inc. - www.talend.com
 //
 // This source code is available under agreement available at
 // %InstallDIR%\features\org.talend.rcp.branding.%PRODUCTNAME%\%PRODUCTNAME%license.txt
@@ -45,7 +45,7 @@ public class FormatterUtils {
         } else if(obj instanceof Date) {
             return TalendDate.formatDate(pattern == null ? Constant.dateDefaultPattern : pattern, (Date)obj);
         } else if(obj instanceof Boolean) {
-          return obj.toString();
+            return obj.toString();
         } else if(obj instanceof BigDecimal) {
             return ((BigDecimal)obj).toPlainString();
         } else if(obj instanceof Double) {
@@ -154,6 +154,23 @@ public class FormatterUtils {
     public static String format_DateInUTC(java.util.Date date, String pattern) {
         if (date != null) {
             return TalendDate.formatDateInUTC(pattern == null ? Constant.dateDefaultPattern : pattern, date);
+        } else {
+            return null;
+        }
+    }
+
+    /**
+     * Formats a Date into a date/time string under an user specified timezone.
+     *
+     * @param date the time value to be formatted into a time string.
+     * @param pattern the pattern to format.
+     * @param zoneId id of the timezone to consider
+     * @return the formatted time string.
+     *
+     */
+    public static String format_DateInTimeZone(java.util.Date date, String pattern, String zoneId) {
+        if (date != null) {
+            return TalendDate.formatDateInTimeZone(pattern == null ? Constant.dateDefaultPattern : pattern, date, zoneId);
         } else {
             return null;
         }

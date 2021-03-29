@@ -1,6 +1,6 @@
 // ============================================================================
 //
-// Copyright (C) 2006-2019 Talend Inc. - www.talend.com
+// Copyright (C) 2006-2021 Talend Inc. - www.talend.com
 //
 // This source code is available under agreement available at
 // %InstallDIR%\features\org.talend.rcp.branding.%PRODUCTNAME%\%PRODUCTNAME%license.txt
@@ -51,7 +51,6 @@ import org.talend.designer.core.model.utils.emf.talendfile.NodeType;
 import org.talend.designer.core.model.utils.emf.talendfile.ProcessType;
 import org.talend.repository.ProjectManager;
 import org.talend.repository.model.IProxyRepositoryFactory;
-import org.talend.repository.model.IRepositoryNode;
 
 /**
  * This class store all relationships between jobs/joblets and other items from the repository. Be sure to update the
@@ -101,6 +100,10 @@ public class RelationshipItemBuilder {
     public static final String SQLPATTERN_RELATION = "sqlPattern"; //$NON-NLS-1$
 
     public static final String ROUTINE_RELATION = "routine"; //$NON-NLS-1$
+
+    public static final String ROUTINES_JAR_RELATION = "routinesJar"; //$NON-NLS-1$
+
+    public static final String BEANS_JAR_RELATION = "beansJar"; //$NON-NLS-1$
 
     public static final String MAPPER_RELATION = "mapper"; //$NON-NLS-1$
 

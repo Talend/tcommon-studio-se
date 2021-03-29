@@ -173,7 +173,7 @@
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="FieldSeparatorValue" lowerBound="1"
         eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="RowSeparatorType" lowerBound="1"
-        eType="#//RowSeparator" defaultValueLiteral="Standart_EOL = 1"/>
+        eType="#//RowSeparator"/>
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="RowSeparatorValue" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="TextIdentifier" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"
         defaultValueLiteral=""/>

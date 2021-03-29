@@ -1,6 +1,6 @@
 // ============================================================================
 //
-// Copyright (C) 2006-2019 Talend Inc. - www.talend.com
+// Copyright (C) 2006-2021 Talend Inc. - www.talend.com
 //
 // This source code is available under agreement available at
 // %InstallDIR%\features\org.talend.rcp.branding.%PRODUCTNAME%\%PRODUCTNAME%license.txt
@@ -157,7 +157,9 @@ public interface IDesignerCoreService extends IService {
 
     public void reloadParamFromProjectSettings(ParametersType processType, String paramName);
 
-    public Set<ModuleNeeded> getNeededLibrariesForProcess(IProcess process, boolean withChildrens);
+    public Set<ModuleNeeded> getNeededLibrariesForProcess(IProcess process, int options);
+
+    public Set<ModuleNeeded> getCodesJarNeededLibrariesForProcess(Item item);
 
     public Set<ModuleNeeded> getNeededModules(INode node, boolean withChildrens);
 

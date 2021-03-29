@@ -1,6 +1,6 @@
 // ============================================================================
 //
-// Copyright (C) 2006-2019 Talend Inc. - www.talend.com
+// Copyright (C) 2006-2021 Talend Inc. - www.talend.com
 //
 // This source code is available under agreement available at
 // %InstallDIR%\features\org.talend.rcp.branding.%PRODUCTNAME%\%PRODUCTNAME%license.txt
@@ -390,4 +390,34 @@ public class MavenUrlHelper {
         }
         return rVersion;
     }
+
+    public static String getCoordinate(String mavenUri) {
+        if (!isMvnUrl(mavenUri)) {
+            mavenUri = generateMvnUrlForJarName(mavenUri);
+        }
+        MavenArtifact artifact = parseMvnUrl(mavenUri);
+
+        String groupId = artifact.getGroupId();
+        String artifactId = artifact.getArtifactId();
+        String type = artifact.getType();
+        String version = artifact.getVersion();
+        String classifier = artifact.getClassifier();
+
+        String separator = ":"; //$NON-NLS-1$
+        String coordinate = groupId + separator + artifactId;
+        if (StringUtils.isNotBlank(type)) {
+            coordinate += separator + type;
+        }
+        if (StringUtils.isNotBlank(classifier)) {
+            coordinate += separator + classifier;
+        }
+        if (StringUtils.isNotBlank(version)) {
+            if (version.endsWith("-SNAPSHOT")) {
+                version = version.substring(0, version.indexOf("-SNAPSHOT"));
+            }
+            coordinate += separator + version;
+        }
+        return coordinate;
+    }
+
 }

@@ -1,6 +1,6 @@
 // ============================================================================
 //
-// Copyright (C) 2006-2019 Talend Inc. - www.talend.com
+// Copyright (C) 2006-2021 Talend Inc. - www.talend.com
 //
 // This source code is available under agreement available at
 // %InstallDIR%\features\org.talend.rcp.branding.%PRODUCTNAME%\%PRODUCTNAME%license.txt
@@ -78,6 +78,12 @@ public class ProjectDataJsonProvider {
     public static String getRelationshipIndexPath() {
         StringBuilder strBuilder = new StringBuilder();
         strBuilder.append(FileConstants.SETTINGS_FOLDER_NAME).append("/").append(FileConstants.RELATIONSHIP_FILE_NAME); //$NON-NLS-1$
+        return strBuilder.toString();
+    }
+
+    public static String getMigrationTaskIndexPath() {
+        StringBuilder strBuilder = new StringBuilder();
+        strBuilder.append(FileConstants.SETTINGS_FOLDER_NAME).append("/").append(FileConstants.MIGRATION_TASK_FILE_NAME); //$NON-NLS-1$
         return strBuilder.toString();
     }
 

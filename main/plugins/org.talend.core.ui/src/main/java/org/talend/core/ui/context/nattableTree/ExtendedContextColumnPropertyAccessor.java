@@ -1,6 +1,6 @@
 // ============================================================================
 //
-// Copyright (C) 2006-2019 Talend Inc. - www.talend.com
+// Copyright (C) 2006-2021 Talend Inc. - www.talend.com
 //
 // This source code is available under agreement available at
 // %InstallDIR%\features\org.talend.rcp.branding.%PRODUCTNAME%\%PRODUCTNAME%license.txt
@@ -260,7 +260,6 @@ public class ExtendedContextColumnPropertyAccessor<R> implements IColumnProperty
                     return;
                 }
                 String newType = getRealType((String) newValue);
-                contextPara.setType(newType);
 
                 Command cmd = new SetContextTypeCommand(manager, contextPara, newType);
                 runCommand(cmd, manager);
@@ -460,6 +459,9 @@ public class ExtendedContextColumnPropertyAccessor<R> implements IColumnProperty
                 for (IContext context : modelManager.getContextManager().getListContext()) {
                     for (IContextParameter contextParameter : context.getContextParameterList()) {
                         if (param.getName().equals(contextParameter.getName())) {
+                            if(!param.getType().equals(newValue) ) {
+                                modified = true;
+                            }
                             oldValue = param.getType();
                             contextParameter.setType(newValue);
                         }

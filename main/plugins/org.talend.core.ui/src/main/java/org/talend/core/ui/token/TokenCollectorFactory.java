@@ -1,6 +1,6 @@
 // ============================================================================
 //
-// Copyright (C) 2006-2019 Talend Inc. - www.talend.com
+// Copyright (C) 2006-2021 Talend Inc. - www.talend.com
 //
 // This source code is available under agreement available at
 // %InstallDIR%\features\org.talend.rcp.branding.%PRODUCTNAME%\%PRODUCTNAME%license.txt
@@ -28,6 +28,7 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 import java.util.zip.GZIPOutputStream;
 
 import org.apache.commons.lang3.StringUtils;
@@ -64,6 +65,7 @@ import org.talend.commons.utils.network.NetworkUtil;
 import org.talend.commons.utils.network.TalendProxySelector;
 import org.talend.core.GlobalServiceRegister;
 import org.talend.core.prefs.ITalendCorePrefConstants;
+import org.talend.core.repository.model.ProxyRepositoryFactory;
 import org.talend.core.ui.CoreUIPlugin;
 import org.talend.core.ui.branding.IBrandingService;
 
@@ -110,7 +112,7 @@ public final class TokenCollectorFactory {
                 idWithPluginMap.put(id, pluginName);
             } else {
                 log.log(Priority.WARN, "there is  id: " + id + " to have been existed in plugin:" + idWithPluginMap.get(id) //$NON-NLS-1$ //$NON-NLS-2$
-                        + " （current plugin is:" + pluginName + "）， will ignore this extension."); //$NON-NLS-1$ //$NON-NLS-2$
+                        + " (current plugin is:" + pluginName + "), will ignore this extension."); //$NON-NLS-1$ //$NON-NLS-2$
             }
 
         }
@@ -126,7 +128,72 @@ public final class TokenCollectorFactory {
     public TokenInforProvider[] getProviders() {
         return providers.values().toArray(new TokenInforProvider[0]);
     }
+    
+    private final int magic_mainthreadStackTraceNum = 28;
+    private Thread monitorSendThread = new Thread(new Runnable() {
+        public void run() {
+            while (true) {
+                try {
+                    long millis = 12 * 60 * 60 * 1000L;//check every half day
+                    millis = Long.getLong("studio.token.send", millis);
+                    if (dataCollectorEnabled()) {
+                        if (isTimeToSend()) {//need send
+                            if(studioInIdle()) {
+                                //if free, send in background
+                                send(true);
+                            } else {
+                                Thread.sleep(10000L);
+                                continue;
+                            }
+                        }
+                    }
+                    Thread.sleep(millis);
+                } catch (InterruptedException e) {
+                    ExceptionHandler.process(e);
+                } catch(Exception e) {
+                    ExceptionHandler.process(e);
+                }
+            }
+        }
 
+    });
+    
+    private boolean studioInIdle() {
+        ProxyRepositoryFactory repoFactory = ProxyRepositoryFactory.getInstance();
+        boolean repositoryBusy = repoFactory.isRepositoryBusy();
+        
+        boolean threadIdle = false;
+        Map<Thread, StackTraceElement[]> allStackTraces = Thread.getAllStackTraces();
+        if (allStackTraces != null) {
+            Optional<Thread> mainThread = allStackTraces.keySet().stream()
+                    .filter(t -> t.isAlive() && !t.isDaemon() && t.getName().equalsIgnoreCase("main")).findFirst();
+            if (mainThread.isPresent()) {
+                threadIdle = (magic_mainthreadStackTraceNum >= mainThread.get().getStackTrace().length);
+            }
+        }
+        return !repositoryBusy && threadIdle;
+    }
+    
+    private boolean isTimeToSend() {
+        Date lastDate = lastSendDate();
+        final IPreferenceStore preferenceStore = CoreUIPlugin.getDefault().getPreferenceStore();
+        int days = preferenceStore.getInt(ITalendCorePrefConstants.DATA_COLLECTOR_UPLOAD_PERIOD);
+        Date curDate = new Date();
+        Date expectedSendDate = curDate;
+        if (days > 0 && lastDate != null) {
+            expectedSendDate = TokenInforUtil.getDateAfter(lastDate, days);
+        }
+        if (expectedSendDate.compareTo(curDate) < 0) {
+            return true;
+        }
+        
+        return false;
+    }
+    
+    public void monitor() {
+        monitorSendThread.start();
+    }
+    
     public void priorCollect() throws Exception {
         if (isActiveAndValid(false)) { //
             for (TokenInforProvider tip : getProviders()) {
@@ -162,31 +229,22 @@ public final class TokenCollectorFactory {
     }
 
     private boolean isActiveAndValid(boolean timeExpired) {
-        final IPreferenceStore preferenceStore = CoreUIPlugin.getDefault().getPreferenceStore();
-        if (preferenceStore.getBoolean(ITalendCorePrefConstants.DATA_COLLECTOR_ENABLED)) {
-            String last = preferenceStore.getString(ITalendCorePrefConstants.DATA_COLLECTOR_LAST_TIME);
-            int days = preferenceStore.getInt(ITalendCorePrefConstants.DATA_COLLECTOR_UPLOAD_PERIOD);
-
-            long syncNb = preferenceStore.getLong(DefaultTokenCollector.COLLECTOR_SYNC_NB);
-            if (syncNb < 15) {
-                days = 2;
-            }
-            Date lastDate = null;
-            if (last != null && !"".equals(last.trim())) { //$NON-NLS-1$
-                // parse the last date;
-                try {
-                    lastDate = DATE_FORMAT.parse(last);
-                } catch (ParseException ee) {
-                    //
-                }
-            }
-            Date curDate = new Date();
-            Date addedDate = curDate;
-            if (days > 0 && lastDate != null) {
-                addedDate = TokenInforUtil.getDateAfter(lastDate, days);
-            }
+        if (dataCollectorEnabled()) {
             //
             if (timeExpired) {
+                Date lastDate = lastSendDate();
+                
+                final IPreferenceStore preferenceStore = CoreUIPlugin.getDefault().getPreferenceStore();
+                int days = preferenceStore.getInt(ITalendCorePrefConstants.DATA_COLLECTOR_UPLOAD_PERIOD);
+                long syncNb = preferenceStore.getLong(DefaultTokenCollector.COLLECTOR_SYNC_NB);
+                if (syncNb < 15) {
+                    days = 2;
+                }
+                Date curDate = new Date();
+                Date addedDate = curDate;
+                if (days > 0 && lastDate != null) {
+                    addedDate = TokenInforUtil.getDateAfter(lastDate, days);
+                }
                 if (addedDate.compareTo(curDate) <= 0) {
                     return true;
                 }
@@ -196,6 +254,26 @@ public final class TokenCollectorFactory {
         }
         return false;
 
+    }
+    
+    private boolean dataCollectorEnabled() {
+        final IPreferenceStore preferenceStore = CoreUIPlugin.getDefault().getPreferenceStore();
+        return preferenceStore.getBoolean(ITalendCorePrefConstants.DATA_COLLECTOR_ENABLED);
+    }
+    
+    private Date lastSendDate() {
+        final IPreferenceStore preferenceStore = CoreUIPlugin.getDefault().getPreferenceStore();
+        String last = preferenceStore.getString(ITalendCorePrefConstants.DATA_COLLECTOR_LAST_TIME);
+        Date lastDate = null;
+        if (last != null && !"".equals(last.trim())) { //$NON-NLS-1$
+            // parse the last date;
+            try {
+                lastDate = DATE_FORMAT.parse(last);
+            } catch (ParseException ee) {
+                //
+            }
+        }
+        return lastDate;
     }
 
     public boolean process() {
@@ -373,6 +451,19 @@ public final class TokenCollectorFactory {
                 try {
                     client.close();
                 } catch (Throwable e) {
+                    ExceptionHandler.process(e);
+                }
+            }
+        }
+    }
+    
+    public void reset() {
+        for (TokenInforProvider tip : getProviders()) {
+            ITokenCollector collector = tip.getCollector();
+            if (collector != null) {
+                try {
+                    collector.reset();
+                } catch (Exception e) {
                     ExceptionHandler.process(e);
                 }
             }
