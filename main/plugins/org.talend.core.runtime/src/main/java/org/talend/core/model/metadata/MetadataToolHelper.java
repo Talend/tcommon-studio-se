@@ -614,6 +614,7 @@ public final class MetadataToolHelper {
                     target.getListColumns().remove(targetColumn);
                     newTargetColumn.setCustom(targetColumn.isCustom());
                     newTargetColumn.setCustomId(targetColumn.getCustomId());
+                    newTargetColumn.setIgnoreCustomSort(targetColumn.isIgnoreCustomSort());
                     columnsTAdd.add(newTargetColumn);
                 }
             }
@@ -773,6 +774,7 @@ public final class MetadataToolHelper {
                     target.getListColumns().remove(targetColumn);
                     newTargetColumn.setCustom(targetColumn.isCustom());
                     newTargetColumn.setCustomId(targetColumn.getCustomId());
+                    newTargetColumn.setIgnoreCustomSort(targetColumn.isIgnoreCustomSort());
                     columnsTAdd.add(newTargetColumn);
                 }
             }
