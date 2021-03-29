@@ -195,6 +195,8 @@ public class ProcessorUtilities {
 
     private static boolean isCIMode = false;
 
+    private static boolean isDynamicJobAndCITest = false;
+
     private static JobInfo mainJobInfo;
 
     public static void addOpenEditor(IEditorPart editor) {
@@ -3081,5 +3083,13 @@ public class ProcessorUtilities {
             }
         }
         return false;
+    }
+
+    public static void setDynamicJobAndCITest(boolean dynamicJobAndCITest) {
+        isDynamicJobAndCITest = dynamicJobAndCITest;
+    }
+
+    public static boolean isDynamicJobAndCITest() {
+        return isDynamicJobAndCITest;
     }
 }
