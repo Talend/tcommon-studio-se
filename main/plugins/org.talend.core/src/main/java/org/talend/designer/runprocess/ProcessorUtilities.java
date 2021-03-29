@@ -488,9 +488,26 @@ public class ProcessorUtilities {
                         break;
                     }
                 }
-                if (hasLoop) {
-                    break;
+            } else {
+                if (GlobalServiceRegister.getDefault().isServiceRegistered(IJobletProviderService.class)) {
+                    IJobletProviderService jobletService = GlobalServiceRegister.getDefault()
+                            .getService(IJobletProviderService.class);
+                    if (jobletService != null) {
+                        IProcess jobletProcess = jobletService.getJobletGEFProcessFromNode(node);
+                        if (jobletProcess != null) {
+                            String jobletId = jobletProcess.getId();
+                            IElementParameter projectTecNameParam = jobletProcess.getElementParameter("PROJECT_TECHNICAL_NAME");
+                            if (projectTecNameParam != null && StringUtils.isNotBlank((String) projectTecNameParam.getValue())) {
+                                jobletId = projectTecNameParam.getValue() + ":" + jobletId;
+                            }
+                            hasLoop = checkProcessLoopDependencies(jobletProcess, jobletId, jobletProcess.getVersion(), pathlink,
+                                    idToLatestVersion);
+                        }
+                    }
                 }
+            }
+            if (hasLoop) {
+                break;
             }
         }
 
@@ -573,9 +590,6 @@ public class ProcessorUtilities {
 
         if (jobInfo.getProcess() == null) {
             if (selectedProcessItem != null) {
-                // TODO : cleanup
-//                IDesignerCoreService service = CorePlugin.getDefault().getDesignerCoreService();
-//                currentProcess = service.getProcessFromProcessItem(selectedProcessItem);
                 currentProcess = getProcessFromCaches(jobInfo.getJobId(), jobInfo.getJobVersion());
                 jobInfo.setProcess(currentProcess);
                 if (currentProcess instanceof IProcess2) {
@@ -1079,8 +1093,7 @@ public class ProcessorUtilities {
 
             if (jobInfo.getProcess() == null) {
                 if (selectedProcessItem != null) {
-                    IDesignerCoreService service = CorePlugin.getDefault().getDesignerCoreService();
-                    currentProcess = service.getProcessFromProcessItem(selectedProcessItem);
+                    currentProcess = getProcessFromCaches(jobInfo.getJobId(), jobInfo.getJobVersion());
                     jobInfo.setProcess(currentProcess);
                     if (currentProcess instanceof IProcess2) {
                         ((IProcess2) currentProcess).setProperty(selectedProcessItem.getProperty());
