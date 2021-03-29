@@ -1068,10 +1068,11 @@ public class ImportItemsWizardPage extends WizardPage {
                             }
                         }
                     });
-
+                    // FIXME add back since it could avoid deadlock "luckily"
+                    // remove this part later since no use to update here
+                    // regression check must be done for TUP-25372 & TESB-27401
                     MavenPomSynchronizer.addChangeLibrariesListener();
-
-                    new AggregatorPomsHelper().updateCodeProjects(new NullProgressMonitor());
+                    new AggregatorPomsHelper().updateCodeProjects(new NullProgressMonitor(), false, false);
                 }
             };
 

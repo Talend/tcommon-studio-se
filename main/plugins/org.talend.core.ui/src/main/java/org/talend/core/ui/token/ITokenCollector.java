@@ -34,4 +34,9 @@ public interface ITokenCollector {
      * collect the values from different provider.
      */
     public JSONObject collect() throws Exception;
+    
+    /**
+     * reset cached collected data 
+     */
+    public default void reset() {}
 }

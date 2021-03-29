@@ -9707,6 +9707,125 @@ public interface PropertiesPackage extends EPackage {
     int PIGUDF_ITEM_FEATURE_COUNT = ROUTINE_ITEM_FEATURE_COUNT + 0;
 
     /**
+     * The meta object id for the '{@link org.talend.core.model.properties.impl.RoutinesJarTypeImpl <em>Routines Jar Type</em>}' class.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @see org.talend.core.model.properties.impl.RoutinesJarTypeImpl
+     * @see org.talend.core.model.properties.impl.PropertiesPackageImpl#getRoutinesJarType()
+     * @generated
+     */
+    int ROUTINES_JAR_TYPE = 102;
+
+    /**
+     * The feature id for the '<em><b>Mvn Url</b></em>' attribute.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     * @ordered
+     */
+    int ROUTINES_JAR_TYPE__MVN_URL = 0;
+
+    /**
+     * The feature id for the '<em><b>Imports</b></em>' containment reference list.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     * @ordered
+     */
+    int ROUTINES_JAR_TYPE__IMPORTS = 1;
+
+    /**
+     * The number of structural features of the '<em>Routines Jar Type</em>' class.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     * @ordered
+     */
+    int ROUTINES_JAR_TYPE_FEATURE_COUNT = 2;
+
+    /**
+     * The meta object id for the '{@link org.talend.core.model.properties.impl.RoutinesJarItemImpl <em>Routines Jar Item</em>}' class.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @see org.talend.core.model.properties.impl.RoutinesJarItemImpl
+     * @see org.talend.core.model.properties.impl.PropertiesPackageImpl#getRoutinesJarItem()
+     * @generated
+     */
+    int ROUTINES_JAR_ITEM = 103;
+
+    /**
+     * The feature id for the '<em><b>Property</b></em>' reference.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     * @ordered
+     */
+    int ROUTINES_JAR_ITEM__PROPERTY = ITEM__PROPERTY;
+
+    /**
+     * The feature id for the '<em><b>State</b></em>' reference.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     * @ordered
+     */
+    int ROUTINES_JAR_ITEM__STATE = ITEM__STATE;
+
+    /**
+     * The feature id for the '<em><b>Parent</b></em>' reference.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     * @ordered
+     */
+    int ROUTINES_JAR_ITEM__PARENT = ITEM__PARENT;
+
+    /**
+     * The feature id for the '<em><b>Reference Resources</b></em>' reference list.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     * @ordered
+     */
+    int ROUTINES_JAR_ITEM__REFERENCE_RESOURCES = ITEM__REFERENCE_RESOURCES;
+
+    /**
+     * The feature id for the '<em><b>File Extension</b></em>' attribute.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     * @ordered
+     */
+    int ROUTINES_JAR_ITEM__FILE_EXTENSION = ITEM__FILE_EXTENSION;
+
+    /**
+     * The feature id for the '<em><b>Need Version</b></em>' attribute.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     * @ordered
+     */
+    int ROUTINES_JAR_ITEM__NEED_VERSION = ITEM__NEED_VERSION;
+
+    /**
+     * The feature id for the '<em><b>Routines Jar Type</b></em>' reference.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     * @ordered
+     */
+    int ROUTINES_JAR_ITEM__ROUTINES_JAR_TYPE = ITEM_FEATURE_COUNT + 0;
+
+    /**
+     * The number of structural features of the '<em>Routines Jar Item</em>' class.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     * @ordered
+     */
+    int ROUTINES_JAR_ITEM_FEATURE_COUNT = ITEM_FEATURE_COUNT + 1;
+
+    /**
      * The meta object id for the '{@link org.talend.core.model.properties.FolderType <em>Folder Type</em>}' enum. <!--
      * begin-user-doc --> <!-- end-user-doc -->
      * 
@@ -9714,7 +9833,7 @@ public interface PropertiesPackage extends EPackage {
      * @see org.talend.core.model.properties.impl.PropertiesPackageImpl#getFolderType()
      * @generated
      */
-    int FOLDER_TYPE = 102;
+    int FOLDER_TYPE = 104;
 
     /**
      * The meta object id for the '{@link org.talend.core.model.properties.UserProjectAuthorizationType <em>User Project Authorization Type</em>}' enum.
@@ -9723,7 +9842,7 @@ public interface PropertiesPackage extends EPackage {
      * @see org.talend.core.model.properties.impl.PropertiesPackageImpl#getUserProjectAuthorizationType()
      * @generated
      */
-    int USER_PROJECT_AUTHORIZATION_TYPE = 103;
+    int USER_PROJECT_AUTHORIZATION_TYPE = 105;
 
     /**
      * The meta object id for the '{@link org.talend.core.model.properties.UserModuleAuthorizationType <em>User Module Authorization Type</em>}' enum.
@@ -9732,7 +9851,7 @@ public interface PropertiesPackage extends EPackage {
      * @see org.talend.core.model.properties.impl.PropertiesPackageImpl#getUserModuleAuthorizationType()
      * @generated
      */
-    int USER_MODULE_AUTHORIZATION_TYPE = 104;
+    int USER_MODULE_AUTHORIZATION_TYPE = 106;
 
     /**
      * The meta object id for the '{@link org.talend.core.model.properties.InformationLevel <em>Information Level</em>}' enum.
@@ -9741,7 +9860,7 @@ public interface PropertiesPackage extends EPackage {
      * @see org.talend.core.model.properties.impl.PropertiesPackageImpl#getInformationLevel()
      * @generated
      */
-    int INFORMATION_LEVEL = 105;
+    int INFORMATION_LEVEL = 107;
 
     /**
      * The meta object id for the '{@link org.talend.core.model.properties.MigrationStatus <em>Migration Status</em>}' enum.
@@ -9751,7 +9870,7 @@ public interface PropertiesPackage extends EPackage {
      * @see org.talend.core.model.properties.impl.PropertiesPackageImpl#getMigrationStatus()
      * @generated
      */
-    int MIGRATION_STATUS = 106;
+    int MIGRATION_STATUS = 108;
 
     /**
      * Returns the meta object for class '{@link org.talend.core.model.properties.Status <em>Status</em>}'. <!--
@@ -14676,6 +14795,7 @@ public interface PropertiesPackage extends EPackage {
      * @see java.util.Map.Entry
      * @model keyDataType="org.eclipse.emf.ecore.EString"
      *        valueDataType="org.eclipse.emf.ecore.EString"
+     *        annotation="MapEntry"
      * @generated
      */
     EClass getAdditionalInfoMap();
@@ -14765,6 +14885,59 @@ public interface PropertiesPackage extends EPackage {
      * @generated
      */
     EClass getPigudfItem();
+
+    /**
+     * Returns the meta object for class '{@link org.talend.core.model.properties.RoutinesJarType <em>Routines Jar Type</em>}'.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @return the meta object for class '<em>Routines Jar Type</em>'.
+     * @see org.talend.core.model.properties.RoutinesJarType
+     * @generated
+     */
+    EClass getRoutinesJarType();
+
+    /**
+     * Returns the meta object for the attribute '{@link org.talend.core.model.properties.RoutinesJarType#getMvnUrl <em>Mvn Url</em>}'.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @return the meta object for the attribute '<em>Mvn Url</em>'.
+     * @see org.talend.core.model.properties.RoutinesJarType#getMvnUrl()
+     * @see #getRoutinesJarType()
+     * @generated
+     */
+    EAttribute getRoutinesJarType_MvnUrl();
+
+    /**
+     * Returns the meta object for the containment reference list '{@link org.talend.core.model.properties.RoutinesJarType#getImports <em>Imports</em>}'.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @return the meta object for the containment reference list '<em>Imports</em>'.
+     * @see org.talend.core.model.properties.RoutinesJarType#getImports()
+     * @see #getRoutinesJarType()
+     * @generated
+     */
+    EReference getRoutinesJarType_Imports();
+
+    /**
+     * Returns the meta object for class '{@link org.talend.core.model.properties.RoutinesJarItem <em>Routines Jar Item</em>}'.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @return the meta object for class '<em>Routines Jar Item</em>'.
+     * @see org.talend.core.model.properties.RoutinesJarItem
+     * @generated
+     */
+    EClass getRoutinesJarItem();
+
+    /**
+     * Returns the meta object for the reference '{@link org.talend.core.model.properties.RoutinesJarItem#getRoutinesJarType <em>Routines Jar Type</em>}'.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @return the meta object for the reference '<em>Routines Jar Type</em>'.
+     * @see org.talend.core.model.properties.RoutinesJarItem#getRoutinesJarType()
+     * @see #getRoutinesJarItem()
+     * @generated
+     */
+    EReference getRoutinesJarItem_RoutinesJarType();
 
     /**
      * Returns the meta object for class '{@link org.talend.core.model.properties.ReferenceFileItem <em>Reference File Item</em>}'.
@@ -19811,6 +19984,50 @@ public interface PropertiesPackage extends EPackage {
          * @generated
          */
         EClass PIGUDF_ITEM = eINSTANCE.getPigudfItem();
+
+        /**
+         * The meta object literal for the '{@link org.talend.core.model.properties.impl.RoutinesJarTypeImpl <em>Routines Jar Type</em>}' class.
+         * <!-- begin-user-doc -->
+         * <!-- end-user-doc -->
+         * @see org.talend.core.model.properties.impl.RoutinesJarTypeImpl
+         * @see org.talend.core.model.properties.impl.PropertiesPackageImpl#getRoutinesJarType()
+         * @generated
+         */
+        EClass ROUTINES_JAR_TYPE = eINSTANCE.getRoutinesJarType();
+
+        /**
+         * The meta object literal for the '<em><b>Mvn Url</b></em>' attribute feature.
+         * <!-- begin-user-doc -->
+         * <!-- end-user-doc -->
+         * @generated
+         */
+        EAttribute ROUTINES_JAR_TYPE__MVN_URL = eINSTANCE.getRoutinesJarType_MvnUrl();
+
+        /**
+         * The meta object literal for the '<em><b>Imports</b></em>' containment reference list feature.
+         * <!-- begin-user-doc -->
+         * <!-- end-user-doc -->
+         * @generated
+         */
+        EReference ROUTINES_JAR_TYPE__IMPORTS = eINSTANCE.getRoutinesJarType_Imports();
+
+        /**
+         * The meta object literal for the '{@link org.talend.core.model.properties.impl.RoutinesJarItemImpl <em>Routines Jar Item</em>}' class.
+         * <!-- begin-user-doc -->
+         * <!-- end-user-doc -->
+         * @see org.talend.core.model.properties.impl.RoutinesJarItemImpl
+         * @see org.talend.core.model.properties.impl.PropertiesPackageImpl#getRoutinesJarItem()
+         * @generated
+         */
+        EClass ROUTINES_JAR_ITEM = eINSTANCE.getRoutinesJarItem();
+
+        /**
+         * The meta object literal for the '<em><b>Routines Jar Type</b></em>' reference feature.
+         * <!-- begin-user-doc -->
+         * <!-- end-user-doc -->
+         * @generated
+         */
+        EReference ROUTINES_JAR_ITEM__ROUTINES_JAR_TYPE = eINSTANCE.getRoutinesJarItem_RoutinesJarType();
 
         /**
          * The meta object literal for the '{@link org.talend.core.model.properties.impl.ReferenceFileItemImpl <em>Reference File Item</em>}' class.

@@ -90,7 +90,7 @@ public class ModulesNeededProviderTest {
 
         List<ModuleNeeded> module1 = ModulesNeededProvider.getModulesNeededForName(jarName1);
         List<ModuleNeeded> module2 = ModulesNeededProvider.getModulesNeededForName(jarName2);
-        Assert.assertEquals(module1.get(0).getContext(), "Routines " + routineItem.getProperty().getLabel());
-        Assert.assertEquals(module2.get(0).getContext(), "Routines " + routineItem.getProperty().getLabel());
+        Assert.assertEquals(module1.get(0).getContext(), "Global Routines " + routineItem.getProperty().getLabel());
+        Assert.assertEquals(module2.get(0).getContext(), "Global Routines " + routineItem.getProperty().getLabel());
     }
 }

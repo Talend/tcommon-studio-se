@@ -147,6 +147,9 @@ public class ProcessorUtilities {
 
     public static final String PROP_MAPPINGS_URL = "talend.mappings.url"; //$NON-NLS-1$
 
+    /**
+     * For generating code in CI without param -pl
+     */
     public static final int GENERATE_MAIN_ONLY = TalendProcessOptionConstants.GENERATE_MAIN_ONLY;
 
     public static final int GENERATE_WITH_FIRST_CHILD = TalendProcessOptionConstants.GENERATE_WITH_FIRST_CHILD;
@@ -562,13 +565,25 @@ public class ProcessorUtilities {
         }
         // TDI-26513:For the Dynamic schema,need to check the currentProcess(job or joblet)
         checkMetadataDynamic(currentProcess, jobInfo);
-        Set<ModuleNeeded> neededLibraries =
-                CorePlugin.getDefault().getDesignerCoreService().getNeededLibrariesForProcess(currentProcess, false);
+        Set<ModuleNeeded> neededLibraries = CorePlugin.getDefault().getDesignerCoreService()
+                .getNeededLibrariesForProcess(currentProcess, TalendProcessOptionConstants.MODULES_DEFAULT);
         if (neededLibraries != null) {
             LastGenerationInfo.getInstance().setModulesNeededWithSubjobPerJob(jobInfo.getJobId(),
                     jobInfo.getJobVersion(), neededLibraries);
             LastGenerationInfo.getInstance().setModulesNeededPerJob(jobInfo.getJobId(), jobInfo.getJobVersion(),
                     neededLibraries);
+
+            // get all codesjars needed modules
+            Set<ModuleNeeded> codesJarModules = CorePlugin.getDefault().getDesignerCoreService()
+                    .getCodesJarNeededLibrariesForProcess(selectedProcessItem);
+            // get codesjar libraries from related joblets
+            codesJarModules.addAll(processor.getCodesJarModulesNeededOfJoblets());
+
+            LastGenerationInfo.getInstance().setCodesJarModulesNeededWithSubjobPerJob(jobInfo.getJobId(), jobInfo.getJobVersion(),
+                    codesJarModules);
+            LastGenerationInfo.getInstance().setCodesJarModulesNeededPerJob(jobInfo.getJobId(), jobInfo.getJobVersion(),
+                    codesJarModules);
+            neededLibraries.addAll(codesJarModules);
 
             // get all job testcases needed modules
             Set<ModuleNeeded> testcaseModules = getAllJobTestcaseModules(selectedProcessItem);
@@ -920,16 +935,16 @@ public class ProcessorUtilities {
                 return true;
             }
             if (service != null && service.isSupportDynamicType(node)) {
-            	IElementParameter mappingParam = node.getElementParameterFromField(EParameterFieldType.MAPPING_TYPE);
-            	if (mappingParam != null) {
-	                for (IMetadataTable metadataTable : node.getMetadataList()) {
-	                    for (IMetadataColumn column : metadataTable.getListColumns()) {
-	                        if ("id_Dynamic".equals(column.getTalendType())) {
-	                            return true;
-	                        }
-	                    }
-	                }
-            	}
+                IElementParameter mappingParam = node.getElementParameterFromField(EParameterFieldType.MAPPING_TYPE);
+                if (mappingParam != null) {
+                    for (IMetadataTable metadataTable : node.getMetadataList()) {
+                        for (IMetadataColumn column : metadataTable.getListColumns()) {
+                            if ("id_Dynamic".equals(column.getTalendType())) {
+                                return true;
+                            }
+                        }
+                    }
+                }
             }
         }
         return hasDynamicMetadata;
@@ -1012,7 +1027,8 @@ public class ProcessorUtilities {
                         checkedContext = checkCleanSecureContextParameterValue(checkedContext, jobInfo);
                         processor.setContext(checkedContext); // generate current context.
                     } else {
-                        processor.setContext(context);
+                        IContext checkedContext = checkCleanSecureContextParameterValue(context, jobInfo);
+                        processor.setContext(checkedContext);
                     }
                     LastGenerationInfo.getInstance().getContextPerJob(jobInfo.getJobId(), jobInfo.getJobVersion()).add(
                             context.getName());
@@ -1082,20 +1098,20 @@ public class ProcessorUtilities {
         }
         return context;
     }
-	
+
     private static IContext checkCleanSecureContextParameterValue(IContext currentContext, JobInfo jobInfo) {
         
         JobInfo job = null;
         
         if (jobInfo.getFatherJobInfo() == null) {
-        	job = jobInfo;
+            job = jobInfo;
         } else {
-        	job = getRootJob(jobInfo);
-        	if (job.getProcess() == null || "route".equalsIgnoreCase(job.getProcess().getElementName())) {
-        		// cleanup context only for child jobs which are referenced
-        		// by tRunJob component or for Joblets (see TESB-29718 for details) 
-        		return currentContext;
-        	}
+            job = getRootJob(jobInfo);
+            if (job.getProcess() == null || "route".equalsIgnoreCase(job.getProcess().getElementName())) {
+                // cleanup context only for child jobs which are referenced
+                // by tRunJob component or for Joblets (see TESB-29718 for details)
+                return currentContext;
+            }
         }
         
         if (job.getArgumentsMap() == null
@@ -1118,9 +1134,9 @@ public class ProcessorUtilities {
     }
 
     private static JobInfo getRootJob(JobInfo jobInfo) {
-    	
-    	if (jobInfo  != null && jobInfo.getFatherJobInfo() != null)  {
-    		return getRootJob(jobInfo.getFatherJobInfo());
+
+        if (jobInfo != null && jobInfo.getFatherJobInfo() != null) {
+            return getRootJob(jobInfo.getFatherJobInfo());
         }
         
         return  jobInfo;
@@ -1295,14 +1311,36 @@ public class ProcessorUtilities {
             }
             checkMetadataDynamic(currentProcess, jobInfo);
 
-            Set<ModuleNeeded> neededLibraries =
-                    CorePlugin.getDefault().getDesignerCoreService().getNeededLibrariesForProcess(currentProcess,
-                            isCIMode && BitwiseOptionUtils.containOption(option, GENERATE_MAIN_ONLY));
-            if (neededLibraries != null) {
+            int options = TalendProcessOptionConstants.MODULES_DEFAULT;
+            if (isCIMode && BitwiseOptionUtils.containOption(option, GENERATE_MAIN_ONLY)) {
+                options |= TalendProcessOptionConstants.MODULES_WITH_CHILDREN;
+            }
+            Set<ModuleNeeded> neededLibraries = new HashSet<>();
+            Set<ModuleNeeded> processLibraries = CorePlugin.getDefault().getDesignerCoreService()
+                    .getNeededLibrariesForProcess(currentProcess, options);
+            if (processLibraries != null) {
+                neededLibraries.addAll(processLibraries);
                 LastGenerationInfo.getInstance().setModulesNeededWithSubjobPerJob(jobInfo.getJobId(),
                         jobInfo.getJobVersion(), neededLibraries);
                 LastGenerationInfo.getInstance().setModulesNeededPerJob(jobInfo.getJobId(), jobInfo.getJobVersion(),
                         neededLibraries);
+
+                // get all codesjars needed modules
+                Set<ModuleNeeded> codesJarLibraries;
+                if (BitwiseOptionUtils.containOption(option, GENERATE_MAIN_ONLY)) {
+                    codesJarLibraries = CorePlugin.getDefault().getDesignerCoreService().getNeededLibrariesForProcess(
+                            currentProcess, option |= TalendProcessOptionConstants.MODULES_WITH_CODESJAR);
+                    codesJarLibraries.removeAll(processLibraries);
+                } else {
+                    codesJarLibraries = CorePlugin.getDefault().getDesignerCoreService()
+                            .getCodesJarNeededLibrariesForProcess(selectedProcessItem);
+                }
+                codesJarLibraries.addAll(processor.getCodesJarModulesNeededOfJoblets());
+                LastGenerationInfo.getInstance().setCodesJarModulesNeededWithSubjobPerJob(jobInfo.getJobId(),
+                        jobInfo.getJobVersion(), codesJarLibraries);
+                LastGenerationInfo.getInstance().setCodesJarModulesNeededPerJob(jobInfo.getJobId(), jobInfo.getJobVersion(),
+                        codesJarLibraries);
+                neededLibraries.addAll(codesJarLibraries);
 
                 // get all job testcases needed modules
                 Set<ModuleNeeded> testcaseModules = getAllJobTestcaseModules(selectedProcessItem);
@@ -1417,7 +1455,7 @@ public class ProcessorUtilities {
         }
     }
 
-	private static Set<ModuleNeeded> getAllJobTestcaseModules(ProcessItem selectedProcessItem) {
+    private static Set<ModuleNeeded> getAllJobTestcaseModules(ProcessItem selectedProcessItem) {
         Set<ModuleNeeded> neededLibraries = new HashSet<>();
         if (GlobalServiceRegister.getDefault().isServiceRegistered(ITestContainerProviderService.class)) {
             ITestContainerProviderService testcontainerService =
@@ -1812,6 +1850,11 @@ public class ProcessorUtilities {
                 generationInfo.getModulesNeededWithSubjobPerJob(subJobInfo.getJobId(), subJobInfo.getJobVersion());
         generationInfo.getModulesNeededWithSubjobPerJob(jobInfo.getJobId(), jobInfo.getJobVersion()).addAll(
                 subjobModules);
+
+        Set<ModuleNeeded> subCodesJarModules = generationInfo.getCodesJarModulesNeededWithSubjobPerJob(subJobInfo.getJobId(),
+                subJobInfo.getJobVersion());
+        generationInfo.getCodesJarModulesNeededWithSubjobPerJob(jobInfo.getJobId(), jobInfo.getJobVersion())
+                .addAll(subCodesJarModules);
 
         Set<String> subjobRoutineModules =
                 generationInfo.getRoutinesNeededWithSubjobPerJob(subJobInfo.getJobId(), subJobInfo.getJobVersion());
@@ -2490,13 +2533,13 @@ public class ProcessorUtilities {
 
     // see bug 0004939: making tRunjobs work loop will cause a error of "out of memory" .
     private static Set<JobInfo> getAllJobInfo(ProcessType ptype, JobInfo parentJobInfo, Set<JobInfo> jobInfos,
-            boolean firstChildOnly) {
+            boolean firstChildOnly, boolean includeJoblet) {
         if (ptype == null) {
             return jobInfos;
         }
         // trunjob component
         EList<NodeType> nodes = ptype.getNode();
-        getSubjobInfo(nodes, ptype, parentJobInfo, jobInfos,firstChildOnly);
+        getSubjobInfo(nodes, ptype, parentJobInfo, jobInfos, firstChildOnly, includeJoblet);
 
         if (parentJobInfo.isTestContainer()
                 && GlobalServiceRegister.getDefault().isServiceRegistered(ITestContainerProviderService.class)) {
@@ -2504,7 +2547,8 @@ public class ProcessorUtilities {
                     GlobalServiceRegister.getDefault().getService(
                     ITestContainerProviderService.class);
             if (testContainerService != null) {
-            	getSubjobInfo(testContainerService.getOriginalNodes(ptype), ptype, parentJobInfo, jobInfos,firstChildOnly);
+                getSubjobInfo(testContainerService.getOriginalNodes(ptype), ptype, parentJobInfo, jobInfos, firstChildOnly,
+                        includeJoblet);
             }
         }
 
@@ -2536,7 +2580,7 @@ public class ProcessorUtilities {
     }
 
     private static Set<JobInfo> getSubjobInfo(List<NodeType> nodes, ProcessType ptype, JobInfo parentJobInfo, Set<JobInfo> jobInfos,
-            boolean firstChildOnly) {
+            boolean firstChildOnly, boolean includeJoblet) {
         String jobletPaletteType = null;
         String frameWork = ptype.getFramework();
         if (StringUtils.isBlank(frameWork)) {
@@ -2546,7 +2590,7 @@ public class ProcessorUtilities {
         } else if (frameWork.equals(HadoopConstants.FRAMEWORK_SPARK_STREAMING)) {
             jobletPaletteType = ComponentCategory.CATEGORY_4_SPARKSTREAMING.getName();
         }
-    	for (NodeType node : nodes) {
+        for (NodeType node : nodes) {
             boolean activate = true;
             // check if node is active at least.
             for (Object o : node.getElementParameter()) {
@@ -2589,7 +2633,7 @@ public class ProcessorUtilities {
                                 jobInfos.add(jobInfo);
                                 jobInfo.setFatherJobInfo(parentJobInfo);
                                 if (!firstChildOnly) {
-                                    getAllJobInfo(processItem.getProcess(), jobInfo, jobInfos, firstChildOnly);
+                                    getAllJobInfo(processItem.getProcess(), jobInfo, jobInfos, firstChildOnly, includeJoblet);
                                 }
                             }
                         }
@@ -2606,28 +2650,25 @@ public class ProcessorUtilities {
                         ProcessType jobletProcess = service.getJobletProcess(jobletComponent);
                         if (jobletComponent != null) {
                             if (!firstChildOnly) {
-                                getAllJobInfo(jobletProcess, parentJobInfo, jobInfos, firstChildOnly);
-                            } else {
+                                getAllJobInfo(jobletProcess, parentJobInfo, jobInfos, firstChildOnly, includeJoblet);
+                            }
+                            if (firstChildOnly || (!firstChildOnly && includeJoblet)) {
                                 Project project = null;
                                 String componentName = node.getComponentName();
                                 String[] array = componentName.split(":"); //$NON-NLS-1$
                                 if (array.length == 2) {
                                     // from ref project
                                     String projectTechName = array[0];
-                                    project = ProjectManager.getInstance().getProjectFromProjectTechLabel(
-                                            projectTechName);
+                                    project = ProjectManager.getInstance().getProjectFromProjectTechLabel(projectTechName);
                                 } else {
                                     project = ProjectManager.getInstance().getCurrentProject();
                                 }
                                 Property property = service.getJobletComponentItem(jobletComponent);
                                 Project currentProject = ProjectManager.getInstance().getCurrentProject();
-                                if (project != null
-                                        && !project.getTechnicalLabel().equals(currentProject.getTechnicalLabel())) {
+                                if (project != null && !project.getTechnicalLabel().equals(currentProject.getTechnicalLabel())) {
                                     try {
-                                        property = ProxyRepositoryFactory
-                                                .getInstance()
-                                                .getSpecificVersion(project, property.getId(), property.getVersion(),
-                                                        true)
+                                        property = ProxyRepositoryFactory.getInstance()
+                                                .getSpecificVersion(project, property.getId(), property.getVersion(), true)
                                                 .getProperty();
                                     } catch (PersistenceException e) {
                                         ExceptionHandler.process(e);
@@ -2644,7 +2685,7 @@ public class ProcessorUtilities {
                 }
             }
         }
-    	return jobInfos;
+        return jobInfos;
     }
 
     private static boolean isRouteletNode(NodeType node) {
@@ -2663,6 +2704,10 @@ public class ProcessorUtilities {
     }
 
     public static Set<JobInfo> getChildrenJobInfo(Item processItem, boolean firstChildOnly) {
+        return getChildrenJobInfo(processItem, firstChildOnly, false);
+    }
+
+    public static Set<JobInfo> getChildrenJobInfo(Item processItem, boolean firstChildOnly, boolean includeJoblet) {
         // delegate to the new method, prevent dead loop method call. see bug 0004939: making tRunjobs work loop will
         // cause a error of "out of memory" .
         JobInfo parentJobInfo = null;
@@ -2691,7 +2736,7 @@ public class ProcessorUtilities {
             }
         }
         if (parentJobInfo != null && processType != null) {
-            return getAllJobInfo(processType, parentJobInfo, new HashSet<JobInfo>(), firstChildOnly);
+            return getAllJobInfo(processType, parentJobInfo, new HashSet<JobInfo>(), firstChildOnly, includeJoblet);
         }
         return new HashSet<JobInfo>();
     }
@@ -2930,9 +2975,12 @@ public class ProcessorUtilities {
     public static void writeLog4j2ConfToFile(File configFile, Level rootLevel) throws IOException {
         ConfigurationBuilder<BuiltConfiguration> builder = ConfigurationBuilderFactory.newConfigurationBuilder();
         FileOutputStream configOs = new FileOutputStream(configFile);
-        final AppenderComponentBuilder appenderBuilder = builder.newAppender("Console", "Console").addAttribute("target", ConsoleAppender.Target.SYSTEM_OUT);
-        appenderBuilder.add(builder.newLayout("PatternLayout").addAttribute("pattern", "[%-5level] %d{HH:mm:ss} %logger{36}- %msg%n"));
-        final RootLoggerComponentBuilder rootLoggerBuilder = builder.newRootLogger(rootLevel).add(builder.newAppenderRef("Console"));
+        final AppenderComponentBuilder appenderBuilder = builder.newAppender("Console", "Console").addAttribute("target",
+                ConsoleAppender.Target.SYSTEM_OUT);
+        appenderBuilder
+                .add(builder.newLayout("PatternLayout").addAttribute("pattern", "[%-5level] %d{HH:mm:ss} %logger{36}- %msg%n"));
+        final RootLoggerComponentBuilder rootLoggerBuilder = builder.newRootLogger(rootLevel)
+                .add(builder.newAppenderRef("Console"));
         builder.add(appenderBuilder);
         builder.add(rootLoggerBuilder);
         builder.writeXmlConfiguration(configOs);
@@ -2952,7 +3000,7 @@ public class ProcessorUtilities {
         jarOs.closeEntry();
         jarOs.close();
     }
-    
+
     /**
      * Generate a jar containing a log4j2 config file
      * 

@@ -389,6 +389,14 @@ public class RepositoryLabelProvider extends LabelProvider implements IColorProv
         case STABLE_SYSTEM_FOLDER:
         case SYSTEM_FOLDER:
             ERepositoryObjectType contentType = node.getContentType();
+            if (contentType != null) {
+                // special setting for system codeJar node
+                if (contentType.equals(ERepositoryObjectType.ROUTINESJAR)) {
+                    nodeIcon = RepositoryImageProvider.getIcon(ERepositoryObjectType.ROUTINES);
+                } else if (contentType.equals(ERepositoryObjectType.BEANSJAR)) {
+                    nodeIcon = RepositoryImageProvider.getIcon(ERepositoryObjectType.BEANS);
+                }
+            }
             if (nodeIcon == null || EImage.DEFAULT_IMAGE.equals(nodeIcon)) {
                 Image image = getImageFromFramework(contentType);
                 if (image != null) {

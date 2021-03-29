@@ -5999,20 +5999,17 @@
           <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
             <details key="documentation" value="This subclass of Segment supports the full-function features that are limited to HDAM, HIDAM and HISAM databases: specifically logical children and secondary indexes."/>
           </eAnnotations>
-          <eStructuralFeatures xsi:type="ecore:EAttribute" name="deleteFlag" eType="#//cwmx/resource/imsdatabase/imstypes/FlagsType"
-              defaultValueLiteral="76">
+          <eStructuralFeatures xsi:type="ecore:EAttribute" name="deleteFlag" eType="#//cwmx/resource/imsdatabase/imstypes/FlagsType">
             <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
               <details key="documentation" value="This attribute holds the value used for the delete rule."/>
             </eAnnotations>
           </eStructuralFeatures>
-          <eStructuralFeatures xsi:type="ecore:EAttribute" name="insertFlag" eType="#//cwmx/resource/imsdatabase/imstypes/FlagsType"
-              defaultValueLiteral="76">
+          <eStructuralFeatures xsi:type="ecore:EAttribute" name="insertFlag" eType="#//cwmx/resource/imsdatabase/imstypes/FlagsType">
             <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
               <details key="documentation" value="This attribute holds the value used for the insert rule. bidirectional is not used for the insert flag."/>
             </eAnnotations>
           </eStructuralFeatures>
-          <eStructuralFeatures xsi:type="ecore:EAttribute" name="replaceFlag" eType="#//cwmx/resource/imsdatabase/imstypes/FlagsType"
-              defaultValueLiteral="76">
+          <eStructuralFeatures xsi:type="ecore:EAttribute" name="replaceFlag" eType="#//cwmx/resource/imsdatabase/imstypes/FlagsType">
             <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
               <details key="documentation" value="This attribute holds the value used for the replace rule. bidirectional is not used for the replace flag."/>
             </eAnnotations>

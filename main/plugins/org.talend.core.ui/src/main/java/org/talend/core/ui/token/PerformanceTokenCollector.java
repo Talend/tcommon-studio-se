@@ -17,6 +17,7 @@ import java.util.Properties;
 import org.talend.commons.exception.CommonExceptionHandler;
 import org.talend.commons.utils.time.PerformanceStatisticUtil;
 import org.talend.commons.utils.time.PerformanceStatisticUtil.StatisticKeys;
+import org.talend.commons.utils.time.PropertiesFileUtil;
 
 import oshi.SystemInfo;
 import oshi.hardware.Baseboard;
@@ -60,7 +61,7 @@ public class PerformanceTokenCollector extends AbstractTokenCollector {
         
         //
         JSONObject jsonObjectIOInfo = new JSONObject();
-        Properties props = PerformanceStatisticUtil.read(PerformanceStatisticUtil.getRecordingFile(),false);
+        Properties props = PropertiesFileUtil.read(PerformanceStatisticUtil.getRecordingFile(),false);
         jsonObjectIOInfo.put(StatisticKeys.STARTUP_AVERAGE.get(), props.getProperty(StatisticKeys.STARTUP_AVERAGE.get()));
         jsonObjectIOInfo.put(StatisticKeys.STARTUP_MAX.get(), props.getProperty(StatisticKeys.STARTUP_MAX.get()));
         jsonObjectIOInfo.put(StatisticKeys.IO_R_MB_SEC.get(), props.getProperty(StatisticKeys.IO_R_MB_SEC.get()));
@@ -78,6 +79,11 @@ public class PerformanceTokenCollector extends AbstractTokenCollector {
         } catch (InterruptedException e) {
             CommonExceptionHandler.log(e.getMessage());
         }
+    }
+
+    @Override
+    public void reset() {
+        PerformanceStatisticUtil.reset();
     }
     
 }

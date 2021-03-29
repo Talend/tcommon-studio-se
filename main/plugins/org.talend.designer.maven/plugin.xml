@@ -19,5 +19,12 @@
             priority="lowest">
       </loginTask>
    </extension>
+   <extension
+         point="org.talend.core.runtime.service">
+      <Service
+            class="org.talend.designer.maven.DesignerMavenService"
+            serviceId="IDesignerMavenService">
+      </Service>
+   </extension>
 
 </plugin>
