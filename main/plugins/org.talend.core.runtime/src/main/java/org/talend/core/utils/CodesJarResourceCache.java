@@ -39,10 +39,11 @@ public class CodesJarResourceCache {
             List<Project> allProjects = new ArrayList<>();
             allProjects.addAll(ProjectManager.getInstance().getAllReferencedProjects(true));
             allProjects.add(ProjectManager.getInstance().getCurrentProject());
+            IProxyRepositoryFactory factory = IProxyRepositoryService.get().getProxyRepositoryFactory();
             try {
                 for (Project project : allProjects) {
                     for (ERepositoryObjectType codesJarType : ERepositoryObjectType.getAllTypesOfCodesJar()) {
-                        List<IRepositoryViewObject> objects = getProxyRepositoryFactory().getAllCodesJars(project, codesJarType);
+                        List<IRepositoryViewObject> objects = factory.getAllCodesJars(project, codesJarType);
                         for (IRepositoryViewObject obj : objects) {
                             CACHE.add(CodesJarInfo.create(obj.getProperty()));
                         }
@@ -63,8 +64,7 @@ public class CodesJarResourceCache {
 
     public static CodesJarInfo getCodesJarById(String id) {
         synchronized (LOCK) {
-            Optional<CodesJarInfo> optional = CACHE.stream().filter(info -> info.getProperty().getId().equals(id))
-                    .findFirst();
+            Optional<CodesJarInfo> optional = CACHE.stream().filter(info -> info.getId().equals(id)).findFirst();
             if (optional.isPresent()) {
                 return optional.get();
             }
@@ -75,13 +75,12 @@ public class CodesJarResourceCache {
 
     public static CodesJarInfo getCodesJarByLabel(ERepositoryObjectType type, String projectTechName, String label) {
         synchronized (LOCK) {
-            Optional<CodesJarInfo> optional = CACHE.stream().filter(
-                    info -> ERepositoryObjectType.getItemType(info.getProperty().getItem()) == type
-                            && info.getProperty().getLabel().equals(label) && info.getProjectTechName().equals(projectTechName))
-                    .findFirst();
+            Optional<CodesJarInfo> optional = CACHE.stream().filter(info -> info.getType() == type
+                    && info.getLabel().equals(label) && info.getProjectTechName().equals(projectTechName)).findFirst();
             if (optional.isPresent()) {
                 return optional.get();
             }
+            ExceptionHandler.process(new Exception("Codes jar [" + label + "] is not found!")); //$NON-NLS-1$ //$NON-NLS-2$
             return null;
         }
     }
@@ -89,19 +88,23 @@ public class CodesJarResourceCache {
     public static CodesJarInfo getCodesJarByInnerCode(RoutineItem routineItem) throws PersistenceException {
         String codesJarName = RoutinesUtil.getCodesJarLabelByInnerCode(routineItem);
         String projectTechName = ProjectManager.getInstance().getProject(routineItem).getTechnicalLabel();
-        return getAllCodesJars().stream()
-                .filter(info -> info.getProperty().getLabel().equals(codesJarName)
-                        && info.getProjectTechName().equals(projectTechName))
-                .findFirst().get();
+        Optional<CodesJarInfo> optional = getAllCodesJars().stream()
+                .filter(info -> info.getLabel().equals(codesJarName) && info.getProjectTechName().equals(projectTechName))
+                .findFirst();
+        if (optional.isPresent()) {
+            return optional.get();
+        }
+        ExceptionHandler.process(new Exception("Codes jar [" + routineItem.getProperty().getLabel() + "] is not found!")); //$NON-NLS-1$ //$NON-NLS-2$
+        return null;
     }
 
     public static void addToCache(Property newProperty) {
         synchronized (LOCK) {
             Iterator<CodesJarInfo> iterator = CACHE.iterator();
             while (iterator.hasNext()) {
-                Property oldProperty = iterator.next().getProperty();
-                if (newProperty.getId().equals(oldProperty.getId()) && newProperty.getLabel().equals(oldProperty.getLabel())
-                        && newProperty.getVersion().equals(oldProperty.getVersion())) {
+                CodesJarInfo oldInfo = iterator.next();
+                if (newProperty.getId().equals(oldInfo.getId()) && newProperty.getLabel().equals(oldInfo.getLabel())
+                        && newProperty.getVersion().equals(oldInfo.getVersion())) {
                     iterator.remove();
                 }
             }
@@ -113,10 +116,9 @@ public class CodesJarResourceCache {
         synchronized (LOCK) {
             Iterator<CodesJarInfo> iterator = CACHE.iterator();
             while (iterator.hasNext()) {
-                Property oldProperty = iterator.next().getProperty();
-                if ((oldId == null || (oldId != null && oldId.equals(oldProperty.getId())))
-                        && oldLabel.equals(oldProperty.getLabel())
-                        && oldVersion.equals(oldProperty.getVersion())) {
+                CodesJarInfo oldInfo = iterator.next();
+                if ((oldId == null || (oldId != null && oldId.equals(oldInfo.getId()))) && oldLabel.equals(oldInfo.getLabel())
+                        && oldVersion.equals(oldInfo.getVersion())) {
                     iterator.remove();
                 }
             }
@@ -128,20 +130,13 @@ public class CodesJarResourceCache {
         synchronized (LOCK) {
             Iterator<CodesJarInfo> iterator = CACHE.iterator();
             while (iterator.hasNext()) {
-                Property oldProperty = iterator.next().getProperty();
-                if (oldProperty.getId().equals(property.getId()) && oldProperty.getLabel().equals(property.getLabel())
-                        && oldProperty.getVersion().equals(property.getVersion())) {
+                CodesJarInfo oldInfo = iterator.next();
+                if (oldInfo.getId().equals(property.getId()) && oldInfo.getLabel().equals(property.getLabel())
+                        && oldInfo.getVersion().equals(property.getVersion())) {
                     iterator.remove();
                 }
             }
         }
-    }
-
-    private static IProxyRepositoryFactory getProxyRepositoryFactory() {
-        if (GlobalServiceRegister.getDefault().isServiceRegistered(IProxyRepositoryService.class)) {
-            return GlobalServiceRegister.getDefault().getService(IProxyRepositoryService.class).getProxyRepositoryFactory();
-        }
-        return null;
     }
 
     public static void addCodesJarChangeListener() {

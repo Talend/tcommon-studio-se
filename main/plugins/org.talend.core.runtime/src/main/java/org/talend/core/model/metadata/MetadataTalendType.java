@@ -497,8 +497,9 @@ public final class MetadataTalendType {
             File sysMappingFiles = new File(MetadataTalendType.getSystemForderURLOfMappingsFile().getPath());
             IFolder projectMappingFolder = ResourceUtils.getProject(ProjectManager.getInstance().getCurrentProject())
                     .getFolder(MetadataTalendType.PROJECT_MAPPING_FOLDER);
-            File projectMappingFiles = projectMappingFolder.getFullPath().toFile();
-            if (sysMappingFiles.list().length == new File(projectMappingFolder.getLocationURI()).list().length) {
+            File projectMappingFiles = new File(projectMappingFolder.getLocationURI());
+            if (!sysMappingFiles.exists() || !projectMappingFiles.exists()
+                    || sysMappingFiles.list().length == projectMappingFiles.list().length) {
                 return;
             }
 

@@ -15,6 +15,7 @@ package org.talend.designer.maven.utils;
 import org.apache.commons.lang3.StringUtils;
 import org.talend.core.model.properties.Item;
 import org.talend.core.model.properties.RoutineItem;
+import org.talend.core.model.routines.CodesJarInfo;
 import org.talend.core.model.routines.RoutinesUtil;
 import org.talend.repository.ProjectManager;
 
@@ -28,13 +29,12 @@ public class CodesJarMavenUtil {
     }
 
     public static String getGAVPackageForCodesJar(Item codesJarItem) {
-        return StringUtils.replace(PomIdsHelper.getCodesJarGroupId(codesJarItem), ".", "/") + "/"
-                + codesJarItem.getProperty().getLabel().toLowerCase();
+        return StringUtils.replace(PomIdsHelper.getCodesJarGroupId(CodesJarInfo.create(codesJarItem.getProperty())), ".", "/")
+                + "/" + codesJarItem.getProperty().getLabel().toLowerCase();
     }
 
-    public static String getImportGAVPackageForCodesJar(String projectTechName, Item codesJarItem) {
-        return PomIdsHelper.getCodesJarGroupId(projectTechName, codesJarItem) + "."
-                + codesJarItem.getProperty().getLabel().toLowerCase() + ".*";
+    public static String getImportGAVPackageForCodesJar(CodesJarInfo info) {
+        return PomIdsHelper.getCodesJarGroupId(info) + "." + info.getLabel().toLowerCase() + ".*";
     }
 
 }

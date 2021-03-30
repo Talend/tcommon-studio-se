@@ -152,8 +152,7 @@ public final class CodeGeneratorRoutine {
                     if (routinesParameterTypes != null) {
                         routinesParameterTypes.stream().filter(r -> r.getType() != null)
                                 .map(r -> CodesJarResourceCache.getCodesJarById(r.getId())).filter(info -> info != null)
-                                .forEach(info -> neededCodesJars.add(designerMavenService.getImportGAVPackageForCodesJar(
-                                        info.getProjectTechName(), info.getProperty().getItem())));
+                                .forEach(info -> neededCodesJars.add(designerMavenService.getImportGAVPackageForCodesJar(info)));
                     }
                 });
             }
