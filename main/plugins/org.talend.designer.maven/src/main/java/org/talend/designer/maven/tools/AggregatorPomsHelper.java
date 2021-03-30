@@ -244,11 +244,6 @@ public class AggregatorPomsHelper {
         createTemplatePom.create(monitor);
     }
 
-    public static void buildAndInstallCodesProject(IProgressMonitor monitor, ERepositoryObjectType codeType)
-            throws Exception {
-        buildAndInstallCodesProject(monitor, codeType, true, false);
-    }
-
     public static void buildAndInstallCodesProject(IProgressMonitor monitor, ERepositoryObjectType codeType,
             boolean install, boolean forceBuild) throws Exception {
         if (forceBuild || !BuildCacheManager.getInstance().isCodesBuild(codeType)) {
@@ -271,33 +266,16 @@ public class AggregatorPomsHelper {
         }
     }
 
-    // only compile for global/custom code projects
     public static void buildCodesProject() {
-        IRunProcessService service = IRunProcessService.get();
-        if (service == null) {
-            return;
-        }
         IProgressMonitor monitor = new NullProgressMonitor();
         ERepositoryObjectType.getAllTypesOfCodes().forEach(type -> {
             try {
-                buildAndInstallCodesProject(monitor, type, false, false);
+                buildAndInstallCodesProject(monitor, type, true, false);
             } catch (Exception e) {
                 ExceptionHandler.process(e);
             }
         });
-        Set<CodesJarInfo> jarsToUpdate = CodesJarResourceCache.getAllCodesJars().stream()
-                .filter(info -> CodesJarM2CacheManager.needUpdateCodesJarProject(info)).collect(Collectors.toSet());
-        jarsToUpdate.stream().map(info -> service.getTalendCodesJarJavaProject(info)).forEach(p -> {
-            try {
-                p.buildModules(monitor, null, null);
-            } catch (Exception e) {
-                ExceptionHandler.process(e);
-            }
-        });
-        String currentProjectName = ProjectManager.getInstance().getCurrentProject().getTechnicalLabel();
-        jarsToUpdate.stream().filter(info -> !currentProjectName.equals(info.getProjectTechName()))
-                .forEach(info -> service.deleteTalendCodesJarProject(info, false));
-
+        CodesJarM2CacheManager.updateCodesJarProject(monitor);
     }
 
     public void updateRefProjectModules(List<ProjectReference> references, IProgressMonitor monitor) {
