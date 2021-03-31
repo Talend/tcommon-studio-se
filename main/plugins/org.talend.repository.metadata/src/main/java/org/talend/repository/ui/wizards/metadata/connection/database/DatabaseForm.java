@@ -7323,7 +7323,7 @@ public class DatabaseForm extends AbstractForm {
         portText.setEditable(!isContextMode());
         sidOrDatabaseText.setEditable(!isContextMode());
         schemaText.setEditable(!isContextMode());
-//        dbVersionCombo.setReadOnly(isContextMode());
+        dbVersionCombo.setReadOnly(isContextMode());
         datasourceText.setEditable(!isContextMode());
         additionParamText.setEditable(!isContextMode());
         fileField.setEditable(!isContextMode());
