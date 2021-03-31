@@ -329,10 +329,8 @@ public abstract class AbstractMavenProcessorPom extends CreateMavenBundleTemplat
         }
         return routineParameters.stream().filter(r -> r.getType() != null)
                 .map(r -> CodesJarResourceCache.getCodesJarById(r.getId())).filter(info -> info != null)
-                .map(info -> PomUtil.createDependency(
-                        PomIdsHelper.getCodesJarGroupId(info.getProjectTechName(), info.getProperty().getItem()),
-                        info.getProperty().getLabel().toLowerCase(), PomIdsHelper.getCodesJarVersion(info.getProjectTechName()),
-                        null))
+                .map(info -> PomUtil.createDependency(PomIdsHelper.getCodesJarGroupId(info), info.getLabel().toLowerCase(),
+                        PomIdsHelper.getCodesJarVersion(info.getProjectTechName()), null))
                 .collect(Collectors.toSet());
     }
 

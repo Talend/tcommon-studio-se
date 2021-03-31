@@ -14,17 +14,16 @@ package org.talend.core.runtime.services;
 
 import org.talend.core.GlobalServiceRegister;
 import org.talend.core.IService;
-import org.talend.core.model.properties.Item;
-import org.talend.core.model.properties.Property;
 import org.talend.core.model.properties.RoutineItem;
+import org.talend.core.model.routines.CodesJarInfo;
 
 public interface IDesignerMavenService extends IService {
 
     String getCodesJarPackageByInnerCode(RoutineItem innerCodeItem);
 
-    String getImportGAVPackageForCodesJar(String projectTechName, Item codesJarItem);
+    String getImportGAVPackageForCodesJar(CodesJarInfo info);
 
-    void updateCodeJarMavenProject(Property codeJarProperty, boolean needReSync) throws Exception;
+    void updateCodeJarMavenProject(CodesJarInfo info, boolean needReSync) throws Exception;
 
     public static IDesignerMavenService get() {
         if (GlobalServiceRegister.getDefault().isServiceRegistered(IDesignerMavenService.class)) {

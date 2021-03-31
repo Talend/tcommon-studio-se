@@ -523,10 +523,10 @@ public class CopyObjectAction {
 
                 if (isInnerCode) {
                     CodesJarInfo info = CodesJarResourceCache.getCodesJarByInnerCode(item);
-                    if (info.getProperty() != null) {
+                    if (info != null) {
                         IDesignerMavenService designerMavenService = IDesignerMavenService.get();
                         if (designerMavenService != null) {
-                            designerMavenService.updateCodeJarMavenProject(info.getProperty(), false);
+                            designerMavenService.updateCodeJarMavenProject(info, false);
                         }
                     }
                 }

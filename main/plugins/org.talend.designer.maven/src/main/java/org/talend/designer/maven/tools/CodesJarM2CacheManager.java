@@ -21,7 +21,6 @@ import java.text.DateFormat;
 import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Calendar;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -44,14 +43,11 @@ import org.eclipse.core.runtime.IPath;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.NullProgressMonitor;
 import org.eclipse.core.runtime.Path;
-import org.eclipse.emf.common.util.EList;
 import org.eclipse.m2e.core.MavenPlugin;
 import org.talend.commons.exception.ExceptionHandler;
 import org.talend.core.GlobalServiceRegister;
-import org.talend.core.model.general.Project;
 import org.talend.core.model.properties.Property;
 import org.talend.core.model.properties.RoutineItem;
-import org.talend.core.model.properties.RoutinesJarItem;
 import org.talend.core.model.repository.ERepositoryObjectType;
 import org.talend.core.model.repository.IRepositoryViewObject;
 import org.talend.core.model.routines.CodesJarInfo;
@@ -60,7 +56,6 @@ import org.talend.core.repository.utils.RoutineUtils;
 import org.talend.core.runtime.maven.MavenArtifact;
 import org.talend.core.runtime.process.ITalendProcessJavaProject;
 import org.talend.core.runtime.process.TalendProcessArgumentConstant;
-import org.talend.core.runtime.repository.item.ItemProductKeys;
 import org.talend.core.utils.CodesJarResourceCache;
 import org.talend.cwm.helper.ResourceHelper;
 import org.talend.designer.codegen.ICodeGeneratorService;
@@ -89,17 +84,11 @@ public class CodesJarM2CacheManager {
 
     private static final String DEP_SEPERATOR = ","; //$NON-NLS-1$
 
-    private static final String EMPTY_DATE;
-
     public final static String BUILD_AGGREGATOR_POM_NAME = "build-codesjar-aggregator.pom"; //$NON-NLS-1$
-
 
     private static File cacheFolder;
 
     static {
-        Calendar c = Calendar.getInstance();
-        c.setTimeInMillis(0);
-        EMPTY_DATE = ResourceHelper.dateFormat().format(c.getTime());
         cacheFolder = new File(MavenPlugin.getMaven().getLocalRepositoryPath()).toPath().resolve(".codecache").resolve("codesjar")
                 .toFile();
         if (!cacheFolder.exists()) {
@@ -107,19 +96,16 @@ public class CodesJarM2CacheManager {
         }
     }
 
-    @SuppressWarnings("unchecked")
     public static boolean needUpdateCodesJarProject(CodesJarInfo info) {
         try {
-            Property property = info.getProperty();
-            String projectTechName = info.getProjectTechName();
-            File cacheFile = getCacheFile(projectTechName, property);
+            File cacheFile = getCacheFile(info);
             if (!cacheFile.exists()) {
                 return true;
             }
             DateFormat format = ResourceHelper.dateFormat();
             Properties cache = new Properties();
             cache.load(new FileInputStream(cacheFile));
-            String currentTime = getModifiedDate(property);
+            String currentTime = info.getModifiedDate();
             String cachedTime = cache.getProperty(KEY_MODIFIED_DATE);
             // check codesjar modified date
             if (cachedTime == null) {
@@ -137,7 +123,7 @@ public class CodesJarM2CacheManager {
             } else {
                 cachedDepList = Arrays.asList(dependencies.split(DEP_SEPERATOR));
             }
-            EList<IMPORTType> imports = ((RoutinesJarItem) property.getItem()).getRoutinesJarType().getImports();
+            List<IMPORTType> imports = info.getImports();
             List<String> currentDepList = imports.stream().map(IMPORTType::getMVN).collect(Collectors.toList());
             if (cachedDepList.size() != currentDepList.size()) {
                 return true;
@@ -182,14 +168,12 @@ public class CodesJarM2CacheManager {
 
     @SuppressWarnings("unchecked")
     public static void updateCodesJarProjectCache(CodesJarInfo info) {
-        Property property = info.getProperty();
-        String projectTechName = info.getProjectTechName();
         Properties cache = new Properties();
-        File cacheFile = getCacheFile(projectTechName, property);
+        File cacheFile = getCacheFile(info);
         // update codesjar modified date
-        cache.setProperty(KEY_MODIFIED_DATE, getModifiedDate(property));
+        cache.setProperty(KEY_MODIFIED_DATE, info.getModifiedDate());
         // update dependencies
-        EList<IMPORTType> imports = ((RoutinesJarItem) property.getItem()).getRoutinesJarType().getImports();
+        List<IMPORTType> imports = info.getImports();
         StringBuilder builder = new StringBuilder();
         if (!imports.isEmpty()) {
             imports.forEach(i -> builder.append(i.getMVN()).append(DEP_SEPERATOR));
@@ -215,8 +199,7 @@ public class CodesJarM2CacheManager {
     }
 
     public static void deleteCodesJarProjectCache(CodesJarInfo info) {
-        deleteCodesJarProjectCache(info.getProjectTechName(), ERepositoryObjectType.getItemType(info.getProperty().getItem()),
-                info.getProperty().getLabel());
+        deleteCodesJarProjectCache(info.getProjectTechName(), info.getType(), info.getLabel());
     }
 
     public static void deleteCodesJarProjectCache(String projectTechName, ERepositoryObjectType type, String label) {
@@ -245,9 +228,9 @@ public class CodesJarM2CacheManager {
      */
     public static void updateCodesJarProjectPom(IProgressMonitor monitor, CodesJarInfo info) {
         try {
-            IFile pomFile = new AggregatorPomsHelper(info.getProjectTechName()).getCodesJarFolder(info.getProperty())
+            IFile pomFile = new AggregatorPomsHelper(info.getProjectTechName()).getCodesJarFolder(info)
                     .getFile(TalendMavenConstants.POM_FILE_NAME);
-            ERepositoryObjectType type = ERepositoryObjectType.getItemType(info.getProperty().getItem());
+            ERepositoryObjectType type = info.getType();
             if (type != null) {
                 if (ERepositoryObjectType.ROUTINESJAR == type) {
                     createRoutinesJarPom(info, pomFile, monitor);
@@ -261,13 +244,13 @@ public class CodesJarM2CacheManager {
     }
 
     private static void createRoutinesJarPom(CodesJarInfo info, IFile pomFile, IProgressMonitor monitor) throws Exception {
-        CreateMavenRoutinesJarPom createTemplatePom = new CreateMavenRoutinesJarPom(info.getProperty(), pomFile);
+        CreateMavenRoutinesJarPom createTemplatePom = new CreateMavenRoutinesJarPom(info, pomFile);
         createTemplatePom.setProjectName(info.getProjectTechName());
         createTemplatePom.create(monitor);
     }
 
     private static void createBeansJarPom(CodesJarInfo info, IFile pomFile, IProgressMonitor monitor) throws Exception {
-        CreateMavenBeansJarPom createTemplatePom = new CreateMavenBeansJarPom(info.getProperty(), pomFile);
+        CreateMavenBeansJarPom createTemplatePom = new CreateMavenBeansJarPom(info, pomFile);
         createTemplatePom.setProjectName(info.getProjectTechName());
         createTemplatePom.create(monitor);
     }
@@ -291,9 +274,9 @@ public class CodesJarM2CacheManager {
         updateCodesJarProject(monitor, toUpdate, false, syncCode, false);
     }
 
-    public static void updateCodesJarProject(Property property, boolean needReSync) throws Exception {
+    public static void updateCodesJarProject(CodesJarInfo info, boolean needReSync) throws Exception {
         Set<CodesJarInfo> toUpdate = new HashSet<>();
-        toUpdate.add(CodesJarInfo.create(property));
+        toUpdate.add(info);
         updateCodesJarProject(new NullProgressMonitor(), toUpdate, false, needReSync, true);
     }
 
@@ -366,19 +349,13 @@ public class CodesJarM2CacheManager {
 
     private static void syncSourceCode(CodesJarInfo info) {
         try {
-            Property property = info.getProperty();
-            String projectTechName = info.getProjectTechName();
             ITalendProcessJavaProject codesJarProject = IRunProcessService.get().getTalendCodesJarJavaProject(info);
             codesJarProject.cleanFolder(new NullProgressMonitor(), codesJarProject.getSrcFolder());
 
             if (GlobalServiceRegister.getDefault().isServiceRegistered(ICodeGeneratorService.class)) {
-                ICodeGeneratorService codeGenService = (ICodeGeneratorService) GlobalServiceRegister.getDefault()
-                        .getService(ICodeGeneratorService.class);
+                ICodeGeneratorService codeGenService = GlobalServiceRegister.getDefault().getService(ICodeGeneratorService.class);
                 ITalendSynchronizer routineSynchronizer = codeGenService.createRoutineSynchronizer();
-                Project project = ProjectManager.getInstance().getProjectFromProjectTechLabel(projectTechName);
-                ERepositoryObjectType codesJarType = ERepositoryObjectType.getItemType(property.getItem());
-                List<IRepositoryViewObject> allInnerCodes = ProxyRepositoryFactory.getInstance().getAllInnerCodes(project,
-                        codesJarType, property);
+                List<IRepositoryViewObject> allInnerCodes = ProxyRepositoryFactory.getInstance().getAllInnerCodes(info);
                 for (IRepositoryViewObject codesObj : allInnerCodes) {
                     RoutineItem codeItem = (RoutineItem) codesObj.getProperty().getItem();
                     RoutineUtils.changeInnerCodePackage(codeItem, false, false);
@@ -449,15 +426,15 @@ public class CodesJarM2CacheManager {
     private static String getModulePath(CodesJarInfo info) {
         String projectTechName = info.getProjectTechName();
         IPath basePath = new AggregatorPomsHelper().getProjectPomsFolder().getLocation();
-        IPath codeJarProjectPath = new AggregatorPomsHelper(projectTechName).getCodesJarFolder(info.getProperty()).getLocation();
+        IPath codeJarProjectPath = new AggregatorPomsHelper(projectTechName).getCodesJarFolder(info).getLocation();
         String modulePath = codeJarProjectPath.makeRelativeTo(basePath).toPortableString();
         return modulePath;
     }
 
-    public static File getCacheFile(String projectTechName, Property property) {
-        String cacheFileName = PomIdsHelper.getCodesJarGroupId(projectTechName, property.getItem()) + "." //$NON-NLS-1$
-                + property.getLabel().toLowerCase() + "-" //$NON-NLS-1$
-                + PomIdsHelper.getCodesVersion(projectTechName) + ".cache"; // $NON-NLS-1$
+    public static File getCacheFile(CodesJarInfo info) {
+        String cacheFileName = PomIdsHelper.getCodesJarGroupId(info) + "." //$NON-NLS-1$
+                + info.getLabel().toLowerCase() + "-" //$NON-NLS-1$
+                + PomIdsHelper.getCodesVersion(info.getProjectTechName()) + ".cache"; // $NON-NLS-1$
         return new File(cacheFolder, cacheFileName);
     }
 
@@ -470,11 +447,6 @@ public class CodesJarM2CacheManager {
 
     private static String getInnerCodeKey(String projectTechName, Property property) {
         return KEY_INNERCODE_PREFIX + KEY_SEPERATOR + property.getId() + KEY_SEPERATOR + property.getVersion();
-    }
-
-    private static String getModifiedDate(Property property) {
-        String modifiedDate = (String) property.getAdditionalProperties().get(ItemProductKeys.DATE.getModifiedKey());
-        return StringUtils.isNotBlank(modifiedDate) ? modifiedDate : EMPTY_DATE;
     }
 
 }

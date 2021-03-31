@@ -27,8 +27,8 @@ import org.talend.core.model.process.IElement;
 import org.talend.core.model.process.INode;
 import org.talend.core.model.process.IProcess;
 import org.talend.core.model.process.Problem;
-import org.talend.core.model.properties.Property;
 import org.talend.core.model.repository.ERepositoryObjectType;
+import org.talend.core.model.routines.CodesJarInfo;
 import org.talend.designer.codegen.PigTemplate;
 
 /**
@@ -245,8 +245,8 @@ public class LibrariesService implements ILibrariesService {
     }
 
     @Override
-    public Set<ModuleNeeded> getCodesJarModuleNeededs(Property property) {
-        return getLibrariesService().getCodesJarModuleNeededs(property);
+    public Set<ModuleNeeded> getCodesJarModuleNeededs(CodesJarInfo info) {
+        return getLibrariesService().getCodesJarModuleNeededs(info);
     }
 
     @Override
