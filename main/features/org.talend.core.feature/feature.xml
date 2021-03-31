@@ -33,6 +33,7 @@
       <import feature="org.eclipse.emf.validation" version="0.0.0" match="greaterOrEqual"/>
       <import feature="org.eclipse.emf.workspace" version="0.0.0" match="greaterOrEqual"/>
       <import feature="org.eclipse.gef" version="0.0.0" match="greaterOrEqual"/>
+      <import feature="org.eclipse.gmf.runtime.notation" version="0.0.0" match="greaterOrEqual"/>
       <import feature="org.talend.jdt.feature" version="0.0.0" match="greaterOrEqual"/>
       <import feature="org.talend.platform.feature" version="0.0.0" match="greaterOrEqual"/>
       <import feature="org.talend.tos.libraries.feature" version="0.0.0" match="greaterOrEqual"/>
@@ -49,6 +50,8 @@
       <import plugin="org.apache.commons.io" version="0.0.0" match="greaterOrEqual"/>
       <import plugin="org.apache.httpcomponents.httpclient" version="0.0.0" match="greaterOrEqual"/>
       <import plugin="org.apache.httpcomponents.httpcore" version="0.0.0" match="greaterOrEqual"/>
+      <import plugin="org.eclipse.compare" version="0.0.0" match="greaterOrEqual"/>
+      <import plugin="org.eclipse.compare.core" version="0.0.0" match="greaterOrEqual"/>
       <import plugin="org.ops4j.pax.url.mvn" version="0.0.0" match="greaterOrEqual"/>
    </requires>
 
