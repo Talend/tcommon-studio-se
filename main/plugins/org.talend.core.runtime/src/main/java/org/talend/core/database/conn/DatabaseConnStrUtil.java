@@ -114,6 +114,13 @@ public class DatabaseConnStrUtil {
                 && EDatabaseVersion4Drivers.SYBASEIQ_16_SA.getVersionValue().equals(dbVersion)) {
         	connStr = EDatabaseConnTemplate.SYBASEASE_16_SA;
         }
+        if (EDatabaseTypeName.GREENPLUM.getDisplayName().equals(dbType)) {
+            if (EDatabaseVersion4Drivers.GREENPLUM.getVersionValue().equals(dbVersion)) {
+                connStr = EDatabaseConnTemplate.GREENPLUM;
+            }else if(EDatabaseVersion4Drivers.GREENPLUM_PSQL.getVersionValue().equals(dbVersion)) {
+                connStr = EDatabaseConnTemplate.GREENPLUM_PSQL;
+            }
+        }
         EDatabaseVersion4Drivers version = EDatabaseVersion4Drivers.indexOfByVersion(dbVersion);
         if (connStr != null) {
             String s = connStr.getUrlTemplate(version);

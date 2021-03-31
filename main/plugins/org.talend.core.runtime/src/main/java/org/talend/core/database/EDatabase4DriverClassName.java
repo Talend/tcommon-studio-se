@@ -68,7 +68,7 @@ public enum EDatabase4DriverClassName {
     PSQL(EDatabaseTypeName.PSQL, "org.postgresql.Driver"), //$NON-NLS-1$
     PLUSPSQL(EDatabaseTypeName.PLUSPSQL, "org.postgresql.Driver"), //$NON-NLS-1$
     GREENPLUM(EDatabaseTypeName.GREENPLUM, "com.pivotal.jdbc.GreenplumDriver"), //$NON-NLS-1$
-
+    GREENPLUM_PSQL(EDatabaseTypeName.GREENPLUM, "org.postgresql.Driver"), //$NON-NLS-1$
     SAS(EDatabaseTypeName.SAS, "com.sas.rio.MVADriver"), //$NON-NLS-1$
     SAPHana(EDatabaseTypeName.SAPHana, "com.sap.db.jdbc.Driver"), //$NON-NLS-1$
     SQLITE(EDatabaseTypeName.SQLITE, "org.sqlite.JDBC"), //$NON-NLS-1$

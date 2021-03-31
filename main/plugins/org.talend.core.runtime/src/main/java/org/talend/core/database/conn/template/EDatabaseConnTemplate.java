@@ -56,6 +56,11 @@ public enum EDatabaseConnTemplate {
     GREENPLUM(new DbConnStr(EDatabaseTypeName.GREENPLUM, //
             "jdbc:pivotal:greenplum://<host>:<port>;;DatabaseName=<sid>;<property>", //$NON-NLS-1$
             "5432")), //$NON-NLS-1$
+    
+
+    GREENPLUM_PSQL(new DbConnStr(EDatabaseTypeName.GREENPLUM, //
+            "jdbc:postgresql://<host>:<port>/<sid>?<property>", //$NON-NLS-1$
+            "5432")), //$NON-NLS-1$
 
     ORACLEFORSID(new DbConnStr(EDatabaseTypeName.ORACLEFORSID, //
             "jdbc:oracle:thin:@<host>:<port>:<sid>", //$NON-NLS-1$
