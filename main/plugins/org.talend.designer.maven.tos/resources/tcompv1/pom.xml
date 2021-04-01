@@ -17,7 +17,7 @@
 
     <modules>
         <module>m2</module>
-        <!-- <module>studio_sdk</module> -->
+        <module>studio_sdk</module>
     </modules>	
 
     <repositories>
