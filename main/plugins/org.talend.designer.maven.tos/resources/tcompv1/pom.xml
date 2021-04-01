@@ -9,16 +9,12 @@
     </parent>
     <artifactId>studio-tcompv1-dependencies</artifactId>
     <packaging>pom</packaging>
-
+    
     <properties>
         <tcomp.version>1.31.0</tcomp.version>
         <slf4j.version>1.7.25</slf4j.version>
     </properties>
-
-    <modules>
-        <module>studio_sdk</module>
-    </modules>	
-
+    
     <repositories>
         <repository>
             <id>talend_open</id>

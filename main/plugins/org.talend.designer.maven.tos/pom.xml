@@ -30,12 +30,6 @@
         </dependency>
         <dependency>
             <groupId>org.talend.studio</groupId>
-            <artifactId>studio-tck_sdk-dependencies</artifactId>
-            <version>${project.version}</version>
-            <type>pom</type>
-        </dependency>
-        <dependency>
-            <groupId>org.talend.studio</groupId>
             <artifactId>studio-tacokit-dependencies</artifactId>
             <version>${project.version}</version>
             <type>pom</type>
