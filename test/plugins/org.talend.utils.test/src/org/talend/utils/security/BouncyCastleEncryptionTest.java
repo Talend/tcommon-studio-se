@@ -15,7 +15,7 @@ public class BouncyCastleEncryptionTest extends TestCase {
         String sampeText = "this is secret";
 
         String encrypted = BouncyCastleEncryption.getInstance().encrypt(sampeText);
-
+        
         assertNotEquals(sampeText, encrypted);
 
         String decrypted = BouncyCastleEncryption.getInstance().decrypt(encrypted);
