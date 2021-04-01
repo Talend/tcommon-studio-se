@@ -138,6 +138,8 @@ public class PluginChecker {
 
     public static final String HELP_PLUGIN_ID = "org.talend.help"; //$NON-NLS-1$
 
+    public static final String APACHE_CXF_PLUGIN_ID = "org.talend.libraries.apache.cxf"; //$NON-NLS-1$
+
     /**
      * Check if specific plug-in is loaded.
      *
