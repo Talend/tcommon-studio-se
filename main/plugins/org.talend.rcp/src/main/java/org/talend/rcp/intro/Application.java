@@ -316,6 +316,8 @@ public class Application implements IApplication {
                 if (patchComponent.needRelaunch()) {
                     needRelaunch = true;
                 }
+                
+                afterInstallPatch();
             }
             if (StringUtils.isNotEmpty(patchComponent.getFailureMessage())) {
                 log.log(Level.ERROR, patchComponent.getFailureMessage());
@@ -337,6 +339,8 @@ public class Application implements IApplication {
                     if (installComponent.needRelaunch()) {
                         needRelaunch = true;
                     }
+                    
+                    afterInstallPatch();
                 }
                 if (StringUtils.isNotEmpty(installComponent.getFailureMessage())) {
                     log.log(Level.ERROR, installComponent.getFailureMessage());
@@ -357,6 +361,10 @@ public class Application implements IApplication {
         return needRelaunch;
     }
     
+    private void afterInstallPatch() {
+        TokenCollectorFactory.getFactory().reset();
+    }
+
     private void setRelaunchData() {
         EclipseCommandLine.updateOrCreateExitDataPropertyWithCommand(EclipseCommandLine.CLEAN, null, false, true);
         EclipseCommandLine.updateOrCreateExitDataPropertyWithCommand(EclipseCommandLine.TALEND_RELOAD_COMMAND,
