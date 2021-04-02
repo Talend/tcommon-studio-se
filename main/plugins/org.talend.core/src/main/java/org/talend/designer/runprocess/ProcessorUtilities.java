@@ -195,6 +195,8 @@ public class ProcessorUtilities {
 
     private static boolean isCIMode = false;
 
+    private static boolean isDynamicJobAndCITest = false;
+
     private static JobInfo mainJobInfo;
 
     public static void addOpenEditor(IEditorPart editor) {
@@ -2571,8 +2573,15 @@ public class ProcessorUtilities {
                     }
                     JobInfo jobInfo = new JobInfo(testItem, testProcess.getDefaultContext());
                     jobInfo.setTestContainer(true);
-                    jobInfos.add(jobInfo);
                     jobInfo.setFatherJobInfo(parentJobInfo);
+                    if (!jobInfos.contains(jobInfo)) {
+                        jobInfos.add(jobInfo);
+
+                        // if job contains testcase, we need to get joblets of testcase and add them to the job pom, we
+                        // must
+                        // pass parentJobInfo instead of testProcess, otherwise joblet will be filtered out
+                        getSubjobInfo(testProcess.getNode(), testProcess, parentJobInfo, jobInfos, firstChildOnly, includeJoblet);
+                    }
                 }
             }
         }
@@ -3057,4 +3066,30 @@ public class ProcessorUtilities {
         return false;
     }
 
+    public static void setExportConfig(boolean export) {
+        setExportConfig(JavaUtils.JAVA_APP_NAME, null, null, export, new Date());
+    }
+
+    public static boolean isJobTest(String processId, String contextName, String version) {
+        for (JobInfo jobInfo : jobList) {
+            if (jobInfo.getJobId().equals(processId)) {
+                if (contextName != null && !contextName.equals("") && !jobInfo.getContextName().equals(contextName)) {
+                    continue;
+                }
+                if (version != null && !version.equals(jobInfo.getJobVersion())) {
+                    continue;
+                }
+                return jobInfo.isTestContainer();
+            }
+        }
+        return false;
+    }
+
+    public static void setDynamicJobAndCITest(boolean dynamicJobAndCITest) {
+        isDynamicJobAndCITest = dynamicJobAndCITest;
+    }
+
+    public static boolean isDynamicJobAndCITest() {
+        return isDynamicJobAndCITest;
+    }
 }

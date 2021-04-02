@@ -49,6 +49,11 @@ public class ClasspathsJarGenerator {
 
     public static String createJar(Property property, String classpath, String separator, boolean isRelativePath)
             throws Exception {
+        return createJar(property, classpath, separator, isRelativePath, false);
+    }
+
+    public static String createJar(Property property, String classpath, String separator, boolean isRelativePath,
+            boolean usingTempDir) throws Exception {
         String newClasspath = generateClasspathForManifest(classpath, separator, isRelativePath);
 
         Manifest manifest = new Manifest();
@@ -57,7 +62,7 @@ public class ClasspathsJarGenerator {
         a.put(Attributes.Name.IMPLEMENTATION_VENDOR, "Talend Open Studio"); //$NON-NLS-1$
         a.put(Attributes.Name.CLASS_PATH, newClasspath);
 
-        String jarLocation = getJarLocation(property);
+        String jarLocation = getJarLocation(property, usingTempDir);
         File jarFile = new File(jarLocation);
         if (!jarFile.exists()) {
             jarFile.createNewFile();
@@ -122,8 +127,8 @@ public class ClasspathsJarGenerator {
         return finalClasspath.toString().trim();
     }
 
-    public static String getClasspathFromManifest(Property property) throws Exception {
-        String jarLocation = getJarLocation(property);
+    public static String getClasspathFromManifest(Property property, boolean usingTempDir) throws Exception {
+        String jarLocation = getJarLocation(property, usingTempDir);
         JarInputStream stream = null;
         try {
             stream = new JarInputStream(new FileInputStream(jarLocation));
@@ -148,10 +153,13 @@ public class ClasspathsJarGenerator {
         return str;
     }
 
-    private static String getJarLocation(Property property) {
+    private static String getJarLocation(Property property, boolean usingTempDir) {
         ITalendProcessJavaProject jobProject = getRunProcessService().getTalendJobJavaProject(property);
-        String jarLocation = jobProject.getTargetFolder().getFile(CLASSPATHS_JAR_NAME).getLocation().toPortableString();
-        return jarLocation;
+        if (usingTempDir) {
+            return jobProject.getTempFolder().getFile(CLASSPATHS_JAR_NAME).getLocation().toPortableString();
+        } else {
+            return jobProject.getTargetFolder().getFile(CLASSPATHS_JAR_NAME).getLocation().toPortableString();
+        }
     }
 
     private static IRunProcessService getRunProcessService() {
