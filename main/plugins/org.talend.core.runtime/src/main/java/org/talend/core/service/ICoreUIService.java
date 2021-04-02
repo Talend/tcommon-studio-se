@@ -47,4 +47,6 @@ public interface ICoreUIService extends IService {
     String getPreferenceValue(String key);
 
     void loadComponentsFromProviders(ERepositoryObjectType type);
+    
+    void resetDataCollectorData();
 }
