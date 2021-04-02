@@ -28,6 +28,7 @@ import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 import java.util.Set;
 import java.util.jar.JarEntry;
 import java.util.jar.JarOutputStream;
@@ -186,7 +187,7 @@ public class ProcessorUtilities {
 
     private static final Set<ModuleNeeded> retrievedJarsForCurrentBuild = new HashSet<ModuleNeeded>();
 
-    private static final Set<String> esbJobs = new HashSet<String>();
+    private static final Map<String, Integer> esbJobs = new HashMap<String, Integer>();
 
     private static boolean isDebug = false;
 
@@ -438,7 +439,7 @@ public class ProcessorUtilities {
             jobinfoVersion = ItemCacheManager.LATEST_VERSION;
         }
         IProcess process = null;
-        String key = jobinfoId + "-" + jobinfoVersion;
+        String key = jobinfoId + "_" + jobinfoVersion;
         if (processBuildCaches.get(key) != null) {
             process = processBuildCaches.get(key);
         } else {
@@ -1647,11 +1648,14 @@ public class ProcessorUtilities {
                         }
                     }
                 }
-                if (isEsbComponentName(componentName)) {
-                    addEsbJob(jobInfo);
-                }
             }
         }
+    }
+
+    private static void recordESBIncludingFlag(JobInfo jobInfo, int esbIncludingOption) {
+        int includeESBFlag = jobInfo.getIncludeESBFlag();
+        includeESBFlag |= esbIncludingOption;
+        jobInfo.setIncludeESBFlag(includeESBFlag);
     }
 
     static void setGenerationInfoWithChildrenJob(INode node, JobInfo jobInfo, final JobInfo subJobInfo) {
@@ -2385,6 +2389,8 @@ public class ProcessorUtilities {
         } else if (frameWork.equals(HadoopConstants.FRAMEWORK_SPARK_STREAMING)) {
             jobletPaletteType = ComponentCategory.CATEGORY_4_SPARKSTREAMING.getName();
         }
+
+        boolean hasChildrenIncludeESB = false;
         for (NodeType node : nodes) {
             boolean activate = true;
             // check if node is active at least.
@@ -2399,8 +2405,8 @@ public class ProcessorUtilities {
                 continue;
             }
 
-            if (isEsbComponentName(node.getComponentName())) {
-                addEsbJob(parentJobInfo);
+            if (!firstChildOnly && isEsbComponentName(node.getComponentName())) {
+                recordESBIncludingFlag(parentJobInfo, TalendProcessOptionConstants.ISESB_CURRENT_INCLUDE);
             }
 
             boolean isCTalendJob = "cTalendJob".equalsIgnoreCase(node.getComponentName());
@@ -2429,6 +2435,18 @@ public class ProcessorUtilities {
                                 jobInfo.setFatherJobInfo(parentJobInfo);
                                 if (!firstChildOnly) {
                                     getAllJobInfo(processItem.getProcess(), jobInfo, jobInfos, firstChildOnly, includeJoblet);
+                                    if (jobInfo.getIncludeESBFlag() >= 2) {
+                                        hasChildrenIncludeESB = true;
+                                    }
+                                }
+                            } else {
+                                Optional<JobInfo> infoOptional = jobInfos.stream().filter(info -> info.equals(jobInfo))
+                                        .findFirst();
+                                if (infoOptional.isPresent()) {
+                                    JobInfo matchJobInfo = infoOptional.get();
+                                    if (matchJobInfo.getIncludeESBFlag() >= 2) {
+                                        hasChildrenIncludeESB = true;
+                                    }
                                 }
                             }
                         }
@@ -2480,6 +2498,16 @@ public class ProcessorUtilities {
                 }
             }
         }
+
+        // checked done set the esb including option
+        if (!firstChildOnly) {
+            recordESBIncludingFlag(parentJobInfo, TalendProcessOptionConstants.ISESB_CHECKED);
+            if (hasChildrenIncludeESB) {
+                recordESBIncludingFlag(parentJobInfo, TalendProcessOptionConstants.ISESB_CHILDREN_INCLUDE);
+            }
+            esbJobs.put(esbJobKey(parentJobInfo.getJobId(), parentJobInfo.getJobVersion()), parentJobInfo.getIncludeESBFlag());
+        }
+
         return jobInfos;
     }
 
@@ -2696,9 +2724,21 @@ public class ProcessorUtilities {
     }
 
     public static boolean isEsbJob(IProcess process, boolean checkCurrentProcess) {
+        // get includeESBFlag from cache
+        if (process instanceof IProcess2) {
+            Property property = ((IProcess2) process).getProperty();
+            String esbJobKey = esbJobKey(property.getId(), property.getVersion());
+            if (esbJobs.get(esbJobKey) != null) {
+                Integer esbOptions = esbJobs.get(esbJobKey);
+                if (BitwiseOptionUtils.containOption(esbOptions, TalendProcessOptionConstants.ISESB_CHECKED)) {
+                    return checkCurrentProcess
+                            ? BitwiseOptionUtils.containOption(esbOptions, TalendProcessOptionConstants.ISESB_CURRENT_INCLUDE)
+                            : esbOptions > 2;
+                }
+            }
+        }
 
         if (process instanceof IProcess2) {
-
             if (checkCurrentProcess) {
                 for (INode n : process.getGraphicalNodes()) {
                     if (isEsbComponentName(n.getComponent().getName())) {
@@ -2722,17 +2762,6 @@ public class ProcessorUtilities {
         }
 
         return false;
-    }
-
-    private static void addEsbJob(JobInfo jobInfo) {
-        if (esbJobs.contains(esbJobKey(jobInfo.getJobId(), jobInfo.getJobVersion()))) {
-            return;
-        }
-        
-        esbJobs.add(esbJobKey(jobInfo.getJobId(), jobInfo.getJobVersion()));
-        if (jobInfo.getFatherJobInfo() != null) {
-            addEsbJob(jobInfo.getFatherJobInfo());
-        }
     }
 
     private static String esbJobKey(String processId, String version) {
