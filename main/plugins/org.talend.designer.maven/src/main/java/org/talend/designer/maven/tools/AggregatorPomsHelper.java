@@ -278,6 +278,19 @@ public class AggregatorPomsHelper {
         CodesJarM2CacheManager.updateCodesJarProject(monitor);
     }
 
+    public static void buildCodesProject(IProgressMonitor monitor, Set<CodesJarInfo> toUpdate) {
+        ERepositoryObjectType.getAllTypesOfCodes().forEach(type -> {
+            try {
+                buildAndInstallCodesProject(monitor, type, true, false);
+            } catch (Exception e) {
+                ExceptionHandler.process(e);
+            }
+        });
+        CodesJarM2CacheManager.updateCodesJarProject(monitor, toUpdate.stream()
+                .filter(info -> CodesJarM2CacheManager.needUpdateCodesJarProject(info)).collect(Collectors.toSet()), false, false,
+                false);
+    }
+
     public void updateRefProjectModules(List<ProjectReference> references, IProgressMonitor monitor) {
         if (!needUpdateRefProjectModules()) {
             return;
