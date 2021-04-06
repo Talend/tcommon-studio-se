@@ -1381,6 +1381,7 @@ public class LocalLibraryManager implements ILibraryManagerService, IChangedLibr
 								}
 
                                 ModuleNeeded mod = ModuleNeeded.newInstance(null, jarFile.getName(), null, true);
+                                mod.setUseReleaseVersion(true);
                                 needToDeploy.put(mod, jarFile);
 							}
 						}
@@ -1423,7 +1424,7 @@ public class LocalLibraryManager implements ILibraryManagerService, IChangedLibr
             for (ModuleNeeded mod : needToDeploy.keySet()) {
                 MavenArtifact parseMvnUrl = MavenUrlHelper.parseMvnUrl(mod.getMavenUri());
                 if (parseMvnUrl != null) {
-                    if (isSnapshotVersion(parseMvnUrl.getVersion())) {
+                    if (ShareLibrariesUtil.isSnapshotVersion(parseMvnUrl.getVersion())) {
                         snapshotGroupIdSet.add(parseMvnUrl.getGroupId());
                     } else {
                         releaseGroupIdSet.add(parseMvnUrl.getGroupId());
@@ -1440,7 +1441,8 @@ public class LocalLibraryManager implements ILibraryManagerService, IChangedLibr
             if (customerRepHandler != null) {
 
                 try {
-                    seachArtifacts(customerRepHandler, snapshotArtifactMap, releaseArtifactMap, snapshotGroupIdSet,
+                    ShareLibrariesUtil.seachArtifacts(null, customerRepHandler, snapshotArtifactMap, releaseArtifactMap,
+                            snapshotGroupIdSet,
                             releaseGroupIdSet);
                 } catch (Exception e1) {
                     ExceptionHandler.process(e1);
@@ -1448,7 +1450,7 @@ public class LocalLibraryManager implements ILibraryManagerService, IChangedLibr
 
                 needToDeploy.forEach((k, v) -> {
                     MavenArtifact artifact = MavenUrlHelper.parseMvnUrl(k.getMavenUri());
-                    boolean isSnapshotVersion = isSnapshotVersion(artifact.getVersion());
+                    boolean isSnapshotVersion = ShareLibrariesUtil.isSnapshotVersion(artifact.getVersion());
                     String key = ShareLibrariesUtil.getArtifactKey(artifact, isSnapshotVersion);
 
                     List<MavenArtifact> artifactList = null;
@@ -1484,40 +1486,6 @@ public class LocalLibraryManager implements ILibraryManagerService, IChangedLibr
         }
     }
 
-    /**
-     * Search artifacts based on given snapshotGroupIdSet and releaseGroupIdSet from remote artifact repositories
-     * represented by artifactHandler, the search results are put to snapshotArtifactMap and releaseArtifactMap
-     */
-    protected void seachArtifacts(IRepositoryArtifactHandler artifactHandler,
-            Map<String, List<MavenArtifact>> snapshotArtifactMap, Map<String, List<MavenArtifact>> releaseArtifactMap,
-            Set<String> snapshotGroupIdSet, Set<String> releaseGroupIdSet) throws Exception {
-        if (artifactHandler != null) {
-            List<MavenArtifact> searchResults = new ArrayList<MavenArtifact>();
-            for (String groupId : releaseGroupIdSet) {
-                searchResults = artifactHandler.search(groupId, null, null, true, false);
-                if (searchResults != null) {
-                    for (MavenArtifact result : searchResults) {
-                        ShareLibrariesUtil.putArtifactToMap(result, releaseArtifactMap, false);
-                    }
-                }
-            }
-            for (String groupId : snapshotGroupIdSet) {
-                searchResults = artifactHandler.search(groupId, null, null, false, true);
-                if (searchResults != null) {
-                    for (MavenArtifact result : searchResults) {
-                        ShareLibrariesUtil.putArtifactToMap(result, snapshotArtifactMap, true);
-                    }
-                }
-            }
-        }
-    }
-
-    private boolean isSnapshotVersion(String version) {
-        if (version != null && version.toUpperCase().endsWith(MavenUrlHelper.VERSION_SNAPSHOT)) {
-            return true;
-        }
-        return false;
-    }
 
     private boolean canDeployFromCustomComponentFolder(String fileName) {
         if (isSystemCacheFile(fileName) || isComponentDefinitionFileType(fileName)) {
