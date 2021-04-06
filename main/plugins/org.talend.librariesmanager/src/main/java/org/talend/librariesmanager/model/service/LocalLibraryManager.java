@@ -29,7 +29,6 @@ import java.util.Collection;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.HashSet;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -1365,7 +1364,7 @@ public class LocalLibraryManager implements ILibraryManagerService, IChangedLibr
             deployToRemote = false;
         }
 
-        Set<File> needToDeploy = new HashSet<>();
+        Map<ModuleNeeded, File> needToDeploy = new HashMap<ModuleNeeded, File>();
 		List<ComponentProviderInfo> componentsFolders = service.getComponentsFactory().getComponentsProvidersInfo();
 		for (ComponentProviderInfo providerInfo : componentsFolders) {
 			String id = providerInfo.getId();
@@ -1380,14 +1379,18 @@ public class LocalLibraryManager implements ILibraryManagerService, IChangedLibr
 								if (!canDeployFromCustomComponentFolder(name) || platformURLMap.get(name) != null) {
 									continue;
 								}
-								needToDeploy.add(jarFile);
+
+                                ModuleNeeded mod = ModuleNeeded.newInstance(null, jarFile.getName(), null, true);
+                                needToDeploy.put(mod, jarFile);
 							}
 						}
 					} else {
-						if (platformURLMap.get(file.getName()) != null) {
+                        if (!canDeployFromCustomComponentFolder(file.getName()) || platformURLMap.get(file.getName()) != null) {
 							continue;
 						}
-						needToDeploy.add(file);
+                        ModuleNeeded mod = ModuleNeeded.newInstance(null, file.getName(), null, true);
+                        mod.setUseReleaseVersion(true);
+                        needToDeploy.put(mod, file);
 					}
 				}
 			} catch (Exception e) {
@@ -1397,10 +1400,10 @@ public class LocalLibraryManager implements ILibraryManagerService, IChangedLibr
 		}
 
         if (!deployToRemote) {
-            needToDeploy.forEach(libFile -> {
+            needToDeploy.forEach((k, v) -> {
                 try {
                     // install as release version if can't find mvn url from index
-                    install(libFile, null, false, true);
+                    install(v, null, false, true);
                 } catch (Exception e) {
                     ExceptionHandler.process(e);
                 }
@@ -1413,92 +1416,107 @@ public class LocalLibraryManager implements ILibraryManagerService, IChangedLibr
         Map<String, List<MavenArtifact>> snapshotArtifactMap = new HashMap<String, List<MavenArtifact>>();
         Map<String, List<MavenArtifact>> releaseArtifactMap = new HashMap<String, List<MavenArtifact>>();
         if (!needToDeploy.isEmpty()) {
+
+            // collect groupId to search
+            Set<String> snapshotGroupIdSet = new HashSet<String>();
+            Set<String> releaseGroupIdSet = new HashSet<String>();
+            for (ModuleNeeded mod : needToDeploy.keySet()) {
+                MavenArtifact parseMvnUrl = MavenUrlHelper.parseMvnUrl(mod.getMavenUri());
+                if (parseMvnUrl != null) {
+                    if (isSnapshotVersion(parseMvnUrl.getVersion())) {
+                        snapshotGroupIdSet.add(parseMvnUrl.getGroupId());
+                    } else {
+                        releaseGroupIdSet.add(parseMvnUrl.getGroupId());
+                    }
+                }
+            }
+
+
             // search on nexus to avoid deploy the jar many times
-            Set<File> existFiles = new HashSet<>();
+            Map<File, MavenArtifact> shareFiles = new HashMap<File, MavenArtifact>();
             ArtifactRepositoryBean customNexusServer = TalendLibsServerManager.getInstance().getCustomNexusServer();
             IRepositoryArtifactHandler customerRepHandler = RepositoryArtifactHandlerManager
                     .getRepositoryHandler(customNexusServer);
             if (customerRepHandler != null) {
-                List<MavenArtifact> snapshotResult = new ArrayList<>();
-                List<MavenArtifact> releaseResult = new ArrayList<>();
+
                 try {
-                    snapshotResult = customerRepHandler.search(MavenConstants.DEFAULT_LIB_GROUP_ID, null, null, false, true);
-                    if (snapshotResult != null) {
-                        for (MavenArtifact result : snapshotResult) {
-                            ShareLibrariesUtil.putArtifactToMap(result, snapshotArtifactMap, true);
-                        }
-                    }
-                    releaseResult = customerRepHandler.search(MavenConstants.DEFAULT_LIB_GROUP_ID, null, null, true, false);
-                    if (releaseResult != null) {
-                        for (MavenArtifact result : releaseResult) {
-                            ShareLibrariesUtil.putArtifactToMap(result, releaseArtifactMap, false);
-                        }
-                    }
-                } catch (Exception e) {
-                    ExceptionHandler.process(e);
+                    seachArtifacts(customerRepHandler, snapshotArtifactMap, releaseArtifactMap, snapshotGroupIdSet,
+                            releaseGroupIdSet);
+                } catch (Exception e1) {
+                    ExceptionHandler.process(e1);
                 }
-            }
-            for(File exsitFile:needToDeploy) {
-                if (customerRepHandler != null) {
-                  try {
-                        String name = exsitFile.getName();
-                        String mvnUrlSnapshot = MavenUrlHelper.generateMvnUrlForJarName(name, true, true);
-                        MavenArtifact artifactSnapshot = MavenUrlHelper.parseMvnUrl(mvnUrlSnapshot);
-                        String keySnapshot = ShareLibrariesUtil.getArtifactKey(artifactSnapshot, true);
-                        List<MavenArtifact> artifactListSnapshot = null;
-                        artifactListSnapshot = snapshotArtifactMap.get(keySnapshot);
-                        // snapshot
-                        if (artifactListSnapshot != null && artifactListSnapshot.size() > 0) {
-                            if (ShareLibrariesUtil.isSameFileWithRemote(exsitFile, artifactListSnapshot, customNexusServer,
-                                    customerRepHandler, false)) {
-                                existFiles.add(exsitFile);
+
+                needToDeploy.forEach((k, v) -> {
+                    MavenArtifact artifact = MavenUrlHelper.parseMvnUrl(k.getMavenUri());
+                    boolean isSnapshotVersion = isSnapshotVersion(artifact.getVersion());
+                    String key = ShareLibrariesUtil.getArtifactKey(artifact, isSnapshotVersion);
+
+                    List<MavenArtifact> artifactList = null;
+                    boolean toShare = true;
+                    if (isSnapshotVersion) {
+                        artifactList = snapshotArtifactMap.get(key);
+                        if (artifactList != null && artifactList.size() > 0) {
+                            try {
+                                if (ShareLibrariesUtil.isSameFileWithRemote(v, artifactList, customNexusServer,
+                                        customerRepHandler, isSnapshotVersion)) {
+                                    toShare = false;
+                                }
+                            } catch (Exception e) {
+                                ExceptionHandler.process(e);
                             }
                         }
-                        // release
-                        String mvnUrlRelease = MavenUrlHelper.generateMvnUrlForJarName(name, true, false);
-                        MavenArtifact artifactRelease = MavenUrlHelper.parseMvnUrl(mvnUrlRelease);
-                        String keyRelease = ShareLibrariesUtil.getArtifactKey(artifactRelease, false);
-                        List<MavenArtifact> artifactListRelease = null;
-                        artifactListRelease = releaseArtifactMap.get(keyRelease);
-                        if (artifactListRelease != null && artifactListRelease.size() > 0) {
-                            if (ShareLibrariesUtil.isSameFileWithRemote(exsitFile, artifactListRelease, customNexusServer,
-                                    customerRepHandler, false)) {
-                                existFiles.add(exsitFile);
-                            }
-                        }
-                  }catch(Exception e) {
-                      ExceptionHandler.process(e);
-                  }
-                }
-            }
-            needToDeploy.removeAll(existFiles);
-            // check sha code to avoid same jar in diff component depoly multi times
-            Map<String, File> shaMap = new HashMap<>();
-            Iterator<File> it = needToDeploy.iterator();
-            while (it.hasNext()) {
-                try {
-                    File dupFile = it.next();
-                    String localFileShaCode = DigestUtils.shaHex(new FileInputStream(dupFile));
-                    if (shaMap.get(localFileShaCode) == null) {
-                        shaMap.put(localFileShaCode, dupFile);
                     } else {
-                        it.remove();
+                        artifactList = releaseArtifactMap.get(key);
+                        // skip checksum for release artifact.
+                        if (artifactList != null && artifactList.contains(artifact)) {
+                            toShare = false;
+                        }
                     }
-                } catch (Exception e) {
-                    ExceptionHandler.process(e);
-                }
-            }
-            for (File file : needToDeploy) {
-                try {
-                    // deploy as release version if can't find mvn url from index
-                    install(file, null, true, true);
-                } catch (Exception e) {
-                    ExceptionHandler.process(e);
-                    continue;
-                }
+                    if (toShare) {
+                        shareFiles.put(v, artifact);
+                    }
+                });
             }
 
+            shareFiles.forEach((k, v) -> {
+                install(k, null, true, true);
+            });
         }
+    }
+
+    /**
+     * Search artifacts based on given snapshotGroupIdSet and releaseGroupIdSet from remote artifact repositories
+     * represented by artifactHandler, the search results are put to snapshotArtifactMap and releaseArtifactMap
+     */
+    protected void seachArtifacts(IRepositoryArtifactHandler artifactHandler,
+            Map<String, List<MavenArtifact>> snapshotArtifactMap, Map<String, List<MavenArtifact>> releaseArtifactMap,
+            Set<String> snapshotGroupIdSet, Set<String> releaseGroupIdSet) throws Exception {
+        if (artifactHandler != null) {
+            List<MavenArtifact> searchResults = new ArrayList<MavenArtifact>();
+            for (String groupId : releaseGroupIdSet) {
+                searchResults = artifactHandler.search(groupId, null, null, true, false);
+                if (searchResults != null) {
+                    for (MavenArtifact result : searchResults) {
+                        ShareLibrariesUtil.putArtifactToMap(result, releaseArtifactMap, false);
+                    }
+                }
+            }
+            for (String groupId : snapshotGroupIdSet) {
+                searchResults = artifactHandler.search(groupId, null, null, false, true);
+                if (searchResults != null) {
+                    for (MavenArtifact result : searchResults) {
+                        ShareLibrariesUtil.putArtifactToMap(result, snapshotArtifactMap, true);
+                    }
+                }
+            }
+        }
+    }
+
+    private boolean isSnapshotVersion(String version) {
+        if (version != null && version.toUpperCase().endsWith(MavenUrlHelper.VERSION_SNAPSHOT)) {
+            return true;
+        }
+        return false;
     }
 
     private boolean canDeployFromCustomComponentFolder(String fileName) {
