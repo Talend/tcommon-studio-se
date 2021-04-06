@@ -439,7 +439,7 @@ public class ProcessorUtilities {
             jobinfoVersion = ItemCacheManager.LATEST_VERSION;
         }
         IProcess process = null;
-        String key = jobinfoId + "_" + jobinfoVersion;
+        String key = jobinfoId + "-" + jobinfoVersion;
         if (processBuildCaches.get(key) != null) {
             process = processBuildCaches.get(key);
         } else {
