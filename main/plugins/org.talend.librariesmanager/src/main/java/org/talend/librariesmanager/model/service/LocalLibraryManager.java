@@ -1380,18 +1380,14 @@ public class LocalLibraryManager implements ILibraryManagerService, IChangedLibr
 									continue;
 								}
 
-                                ModuleNeeded mod = ModuleNeeded.newInstance(null, jarFile.getName(), null, true);
-                                mod.setUseReleaseVersion(true);
-                                needToDeploy.put(mod, jarFile);
+                                collectLibModules(jarFile, needToDeploy);
 							}
 						}
 					} else {
                         if (!canDeployFromCustomComponentFolder(file.getName()) || platformURLMap.get(file.getName()) != null) {
 							continue;
 						}
-                        ModuleNeeded mod = ModuleNeeded.newInstance(null, file.getName(), null, true);
-                        mod.setUseReleaseVersion(true);
-                        needToDeploy.put(mod, file);
+                        collectLibModules(file, needToDeploy);
 					}
 				}
 			} catch (Exception e) {
@@ -1486,6 +1482,11 @@ public class LocalLibraryManager implements ILibraryManagerService, IChangedLibr
         }
     }
 
+    private void collectLibModules(File jarFile, Map<ModuleNeeded, File> needToDeploy) {
+        ModuleNeeded mod = ModuleNeeded.newInstance(null, jarFile.getName(), null, true);
+        mod.setUseReleaseVersion(true);
+        needToDeploy.put(mod, jarFile);
+    }
 
     private boolean canDeployFromCustomComponentFolder(String fileName) {
         if (isSystemCacheFile(fileName) || isComponentDefinitionFileType(fileName)) {
