@@ -36,6 +36,18 @@
             id="org.talend.core.ui.token.RepositroyActionsTokenCollector"
             name="actions">
       </provider>
+      <provider
+            collector="org.talend.core.ui.token.AdditionalPackagesTokenCollector"
+            description="installed addtional package, old iems, amc"
+            id="org.talend.core.ui.token.AdditionalPackageTokenCollector"
+            name="addtional package">
+      </provider>
+      <provider
+            collector="org.talend.core.ui.token.RepositoryOldItemsTokenCollector"
+            description="record usage of old items"
+            id="org.talend.core.ui.token.RepositoryOldItemUsageTokenCollector"
+            name="olditem">
+      </provider>
    </extension>
    
       <extension
