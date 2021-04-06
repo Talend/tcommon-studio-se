@@ -252,18 +252,43 @@ public final class MetadataToolAvroHelper {
                 returnResult = fb.type(type).withDefault(defaultValue);
             }
         } catch (SchemaParseException e) {
-            String genColumn = COLUMN + i;
-            FieldBuilder<Schema> fbNew = fa.name(genColumn);
+            String validateName = getValidateName(label, i);
+            FieldBuilder<Schema> fbNew = fa.name(validateName);
             copyColumnProperties(fbNew, in);
             if (defaultValue == null) {
                 returnResult = fbNew.type(type).noDefault();
             } else {
                 returnResult = fbNew.type(type).withDefault(defaultValue);
             }
-            LOGGER.info(e.getMessage() + ", use " + genColumn + " instead");
+            LOGGER.info(e.getMessage() + ", use " + validateName + " instead");
         }
         return returnResult;
 
+    }
+
+    private static String getValidateName(String name, int y) {
+        if (name == null) {
+            return COLUMN + y;
+        }
+        int length = name.length();
+        if (length == 0)
+            return COLUMN + y;
+        char first = name.charAt(0);
+        StringBuilder result = new StringBuilder();
+        if (!(Character.isLetter(first) || first == '_')) {
+            result.append("_");
+        } else {
+            result.append(first);
+        }
+        for (int i = 1; i < length; i++) {
+            char c = name.charAt(i);
+            if (!(Character.isLetterOrDigit(c) || c == '_')) {
+                result.append("_");
+            } else {
+                result.append(c);
+            }
+        }
+        return result.toString();
     }
 
     private static Schema getLogicalTypeSchema(org.talend.core.model.metadata.builder.connection.MetadataColumn column) {
