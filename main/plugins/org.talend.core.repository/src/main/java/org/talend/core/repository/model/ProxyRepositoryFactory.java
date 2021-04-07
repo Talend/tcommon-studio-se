@@ -79,6 +79,7 @@ import org.talend.core.AbstractDQModelService;
 import org.talend.core.GlobalServiceRegister;
 import org.talend.core.ICoreService;
 import org.talend.core.IESBService;
+import org.talend.core.ILibraryManagerService;
 import org.talend.core.ITDQRepositoryService;
 import org.talend.core.PluginChecker;
 import org.talend.core.context.CommandLineContext;
@@ -2127,6 +2128,27 @@ public final class ProxyRepositoryFactory implements IProxyRepositoryFactory {
      */
     public void logOnProject(Project project, IProgressMonitor monitor) throws LoginException, PersistenceException {
         try {
+            Thread initilizeT = new Thread(new Runnable() {
+
+                @Override
+                public void run() {
+                    log.info("initilizeT stated ...");
+                    // IComponentsService service = null;
+                    // if (GlobalServiceRegister.getDefault().isServiceRegistered(IComponentsService.class)) {
+                    // service = GlobalServiceRegister.getDefault().getService(IComponentsService.class);
+                    // }
+                    // service.getComponentsFactory().readComponents();
+                    // log.info("readComponents done");
+                    ILibraryManagerService repositoryBundleService = (ILibraryManagerService) GlobalServiceRegister.getDefault()
+                            .getService(ILibraryManagerService.class);
+                    repositoryBundleService.createModulesIndexFromComponentAndExtension();
+                    log.info("createModulesIndexFromComponentAndExtension done");
+                    repositoryBundleService.setInitialized();
+                    log.info("setInitialized done");
+                }
+            });
+            initilizeT.setName("ILibraryManagerService");
+            initilizeT.start();
             TimeMeasurePerformance.begin("logOnProject", "logon project name '" + project.getLabel()+"'"); //$NON-NLS-1$ //$NON-NLS-2$
             try {
                 /**

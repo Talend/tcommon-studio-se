@@ -12,10 +12,18 @@
 // ============================================================================
 package org.talend.core.model.components;
 
+import java.io.File;
+import java.io.IOException;
+import java.util.HashMap;
+import java.util.Map;
+
 import org.eclipse.core.runtime.Path;
 import org.eclipse.core.runtime.Platform;
 import org.eclipse.emf.common.util.URI;
 import org.eclipse.emf.ecore.resource.Resource;
+import org.eclipse.emf.ecore.util.EcoreUtil;
+import org.eclipse.emf.ecore.xmi.XMLResource;
+import org.eclipse.emf.ecore.xmi.impl.XMLParserPoolImpl;
 import org.talend.commons.exception.ExceptionHandler;
 import org.talend.commons.exception.PersistenceException;
 import org.talend.commons.runtime.model.emf.EmfHelper;
@@ -23,16 +31,16 @@ import org.talend.core.GlobalServiceRegister;
 import org.talend.core.ILibraryManagerService;
 import org.talend.core.language.LanguageManager;
 import org.talend.core.model.component_cache.ComponentCacheFactory;
+import org.talend.core.model.component_cache.ComponentCachePackage;
 import org.talend.core.model.component_cache.ComponentsCache;
 import org.talend.core.model.component_cache.util.ComponentCacheResourceFactoryImpl;
-import org.talend.core.model.general.ILibrariesService;
 
 /**
  * DOC zwzhao class global comment. Detailled comment
  */
 public class ComponentManager {
 
-    private static ComponentsCache cache;
+    private static ComponentsCache cache = ComponentCacheFactory.eINSTANCE.createComponentsCache();
 
     private static final String TALEND_COMPONENT_CACHE = "ComponentsCache.";
 
@@ -41,9 +49,6 @@ public class ComponentManager {
     private static boolean modified = false;
 
     public static ComponentsCache getComponentCache() {
-        if (cache == null) {
-            cache = ComponentCacheFactory.eINSTANCE.createComponentsCache();
-        }
         return cache;
     }
 
@@ -56,16 +61,6 @@ public class ComponentManager {
                 EmfHelper.saveResource(cache.eResource());
             } catch (PersistenceException e1) {
                 ExceptionHandler.process(e1);
-            }
-            ILibraryManagerService repositoryBundleService = (ILibraryManagerService) GlobalServiceRegister.getDefault()
-                    .getService(ILibraryManagerService.class);
-            repositoryBundleService.clearCache();
-            if (GlobalServiceRegister.getDefault().isServiceRegistered(ILibrariesService.class)) {
-                ILibrariesService libService = (ILibrariesService) GlobalServiceRegister.getDefault().getService(
-                        ILibrariesService.class);
-                if (libService != null) {
-                    libService.syncLibraries();
-                }
             }
             setModified(false);
         }
@@ -97,4 +92,31 @@ public class ComponentManager {
         ComponentManager.modified = modified;
     }
 
+    /**
+     * DOC guanglong.du Comment method "loadComponentResource".
+     *
+     * @param eclipseProject
+     * @return
+     * @throws IOException
+     */
+    public static ComponentsCache loadComponentCacheFile(String installLocation) throws IOException {
+        String filePath = TALEND_COMPONENT_CACHE + LanguageManager.getCurrentLanguage().toString().toLowerCase()
+                + TALEND_FILE_NAME;
+        if (!new File(filePath).exists()) {
+            return null;
+        }
+        URI uri = URI.createFileURI(installLocation).appendSegment(filePath);
+        ComponentCacheResourceFactoryImpl compFact = new ComponentCacheResourceFactoryImpl();
+        Resource resource = compFact.createResource(uri);
+        Map optionMap = new HashMap();
+        optionMap.put(XMLResource.OPTION_DEFER_ATTACHMENT, Boolean.TRUE);
+        optionMap.put(XMLResource.OPTION_DEFER_IDREF_RESOLUTION, Boolean.TRUE);
+        optionMap.put(XMLResource.OPTION_USE_PARSER_POOL, new XMLParserPoolImpl());
+        optionMap.put(XMLResource.OPTION_USE_XML_NAME_TO_FEATURE_MAP, new HashMap());
+        optionMap.put(XMLResource.OPTION_USE_DEPRECATED_METHODS, Boolean.FALSE);
+        resource.load(optionMap);
+        ComponentsCache cache = (ComponentsCache) EcoreUtil.getObjectByType(resource.getContents(),
+                ComponentCachePackage.eINSTANCE.getComponentsCache());
+        return cache;
+    }
 }

@@ -55,6 +55,16 @@ public interface IComponentsFactory {
      */
     public Set<IComponent> getComponents();
 
+    public void removeComponents(Collection<IComponent> comps);
+
+    public void addComponents(Collection<IComponent> comps);
+
+    public void clearComponents();
+
+    public void addComponent(IComponent comp);
+
+    public boolean containComponent(IComponent comp);
+
     public boolean isInitialising();
 
     /**

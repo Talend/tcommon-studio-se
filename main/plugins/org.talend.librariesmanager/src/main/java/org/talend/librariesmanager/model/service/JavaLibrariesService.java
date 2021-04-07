@@ -199,12 +199,20 @@ public class JavaLibrariesService extends AbstractLibrariesService {
         }
         // Add a new system file, if exists, means all components libs are already setup, so no need to do again.
         // if clean the component cache, it will automatically recheck all libs still.
-        if (!repositoryBundleService.isInitialized()) {
-            // 2. Components libraries and libraries from extension
-            repositoryBundleService.createModulesIndexFromComponentAndExtension(monitorWrap);
-            repositoryBundleService.setInitialized();
-        }
+        // if (!repositoryBundleService.isInitialized()) {
+        // // 2. Components libraries and libraries from extension
+        // repositoryBundleService.createModulesIndexFromComponentAndExtension(monitorWrap);
+        // repositoryBundleService.setInitialized();
+        // }
 
+        while (!repositoryBundleService.isInitialized()) {
+            try {
+                Thread.sleep(2);
+            } catch (InterruptedException e) {
+                // TODO Auto-generated catch block
+                e.printStackTrace();
+            }
+        }
         repositoryBundleService.installModules(ModulesNeededProvider.getSystemRunningModules(), null);
 
         // clean the temp library of job needed in .java\lib

@@ -34,6 +34,7 @@ import org.talend.designer.core.model.utils.emf.component.IMPORTType;
  * <!-- end-user-doc -->
  * <p>
  * The following features are implemented:
+ * </p>
  * <ul>
  *   <li>{@link org.talend.core.model.component_cache.impl.ComponentInfoImpl#getOriginalFamilyName <em>Original Family Name</em>}</li>
  *   <li>{@link org.talend.core.model.component_cache.impl.ComponentInfoImpl#getPluginExtension <em>Plugin Extension</em>}</li>
@@ -51,8 +52,9 @@ import org.talend.designer.core.model.utils.emf.component.IMPORTType;
  *   <li>{@link org.talend.core.model.component_cache.impl.ComponentInfoImpl#getType <em>Type</em>}</li>
  *   <li>{@link org.talend.core.model.component_cache.impl.ComponentInfoImpl#getSha1 <em>Sha1</em>}</li>
  *   <li>{@link org.talend.core.model.component_cache.impl.ComponentInfoImpl#getLongName <em>Long Name</em>}</li>
+ *   <li>{@link org.talend.core.model.component_cache.impl.ComponentInfoImpl#getProviderClass <em>Provider Class</em>}</li>
+ *   <li>{@link org.talend.core.model.component_cache.impl.ComponentInfoImpl#getOwner <em>Owner</em>}</li>
  * </ul>
- * </p>
  *
  * @generated
  */
@@ -346,6 +348,46 @@ public class ComponentInfoImpl extends EObjectImpl implements ComponentInfo {
      * @ordered
      */
     protected String longName = LONG_NAME_EDEFAULT;
+
+    /**
+     * The default value of the '{@link #getProviderClass() <em>Provider Class</em>}' attribute.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @see #getProviderClass()
+     * @generated
+     * @ordered
+     */
+    protected static final String PROVIDER_CLASS_EDEFAULT = null;
+
+    /**
+     * The cached value of the '{@link #getProviderClass() <em>Provider Class</em>}' attribute.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @see #getProviderClass()
+     * @generated
+     * @ordered
+     */
+    protected String providerClass = PROVIDER_CLASS_EDEFAULT;
+
+    /**
+     * The default value of the '{@link #getOwner() <em>Owner</em>}' attribute.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @see #getOwner()
+     * @generated
+     * @ordered
+     */
+    protected static final int OWNER_EDEFAULT = 1;
+
+    /**
+     * The cached value of the '{@link #getOwner() <em>Owner</em>}' attribute.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @see #getOwner()
+     * @generated
+     * @ordered
+     */
+    protected int owner = OWNER_EDEFAULT;
 
     /**
      * <!-- begin-user-doc -->
@@ -680,6 +722,48 @@ public class ComponentInfoImpl extends EObjectImpl implements ComponentInfo {
      * <!-- end-user-doc -->
      * @generated
      */
+    public String getProviderClass() {
+        return providerClass;
+    }
+
+    /**
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     */
+    public void setProviderClass(String newProviderClass) {
+        String oldProviderClass = providerClass;
+        providerClass = newProviderClass;
+        if (eNotificationRequired())
+            eNotify(new ENotificationImpl(this, Notification.SET, ComponentCachePackage.COMPONENT_INFO__PROVIDER_CLASS, oldProviderClass, providerClass));
+    }
+
+    /**
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     */
+    public int getOwner() {
+        return owner;
+    }
+
+    /**
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     */
+    public void setOwner(int newOwner) {
+        int oldOwner = owner;
+        owner = newOwner;
+        if (eNotificationRequired())
+            eNotify(new ENotificationImpl(this, Notification.SET, ComponentCachePackage.COMPONENT_INFO__OWNER, oldOwner, owner));
+    }
+
+    /**
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     */
     @Override
     public NotificationChain eInverseRemove(InternalEObject otherEnd, int featureID, NotificationChain msgs) {
         switch (featureID) {
@@ -729,6 +813,10 @@ public class ComponentInfoImpl extends EObjectImpl implements ComponentInfo {
                 return getSha1();
             case ComponentCachePackage.COMPONENT_INFO__LONG_NAME:
                 return getLongName();
+            case ComponentCachePackage.COMPONENT_INFO__PROVIDER_CLASS:
+                return getProviderClass();
+            case ComponentCachePackage.COMPONENT_INFO__OWNER:
+                return getOwner();
         }
         return super.eGet(featureID, resolve, coreType);
     }
@@ -793,6 +881,12 @@ public class ComponentInfoImpl extends EObjectImpl implements ComponentInfo {
             case ComponentCachePackage.COMPONENT_INFO__LONG_NAME:
                 setLongName((String)newValue);
                 return;
+            case ComponentCachePackage.COMPONENT_INFO__PROVIDER_CLASS:
+                setProviderClass((String)newValue);
+                return;
+            case ComponentCachePackage.COMPONENT_INFO__OWNER:
+                setOwner((Integer)newValue);
+                return;
         }
         super.eSet(featureID, newValue);
     }
@@ -853,6 +947,12 @@ public class ComponentInfoImpl extends EObjectImpl implements ComponentInfo {
             case ComponentCachePackage.COMPONENT_INFO__LONG_NAME:
                 setLongName(LONG_NAME_EDEFAULT);
                 return;
+            case ComponentCachePackage.COMPONENT_INFO__PROVIDER_CLASS:
+                setProviderClass(PROVIDER_CLASS_EDEFAULT);
+                return;
+            case ComponentCachePackage.COMPONENT_INFO__OWNER:
+                setOwner(OWNER_EDEFAULT);
+                return;
         }
         super.eUnset(featureID);
     }
@@ -897,6 +997,10 @@ public class ComponentInfoImpl extends EObjectImpl implements ComponentInfo {
                 return SHA1_EDEFAULT == null ? sha1 != null : !SHA1_EDEFAULT.equals(sha1);
             case ComponentCachePackage.COMPONENT_INFO__LONG_NAME:
                 return LONG_NAME_EDEFAULT == null ? longName != null : !LONG_NAME_EDEFAULT.equals(longName);
+            case ComponentCachePackage.COMPONENT_INFO__PROVIDER_CLASS:
+                return PROVIDER_CLASS_EDEFAULT == null ? providerClass != null : !PROVIDER_CLASS_EDEFAULT.equals(providerClass);
+            case ComponentCachePackage.COMPONENT_INFO__OWNER:
+                return owner != OWNER_EDEFAULT;
         }
         return super.eIsSet(featureID);
     }
@@ -910,7 +1014,7 @@ public class ComponentInfoImpl extends EObjectImpl implements ComponentInfo {
     public String toString() {
         if (eIsProxy()) return super.toString();
 
-        StringBuffer result = new StringBuffer(super.toString());
+        StringBuilder result = new StringBuilder(super.toString());
         result.append(" (originalFamilyName: ");
         result.append(originalFamilyName);
         result.append(", pluginExtension: ");
@@ -941,6 +1045,10 @@ public class ComponentInfoImpl extends EObjectImpl implements ComponentInfo {
         result.append(sha1);
         result.append(", longName: ");
         result.append(longName);
+        result.append(", providerClass: ");
+        result.append(providerClass);
+        result.append(", owner: ");
+        result.append(owner);
         result.append(')');
         return result.toString();
     }

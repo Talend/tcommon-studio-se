@@ -19,6 +19,7 @@ import org.talend.designer.core.model.utils.emf.component.IMPORTType;
  *
  * <p>
  * The following features are supported:
+ * </p>
  * <ul>
  *   <li>{@link org.talend.core.model.component_cache.ComponentInfo#getOriginalFamilyName <em>Original Family Name</em>}</li>
  *   <li>{@link org.talend.core.model.component_cache.ComponentInfo#getPluginExtension <em>Plugin Extension</em>}</li>
@@ -36,8 +37,9 @@ import org.talend.designer.core.model.utils.emf.component.IMPORTType;
  *   <li>{@link org.talend.core.model.component_cache.ComponentInfo#getType <em>Type</em>}</li>
  *   <li>{@link org.talend.core.model.component_cache.ComponentInfo#getSha1 <em>Sha1</em>}</li>
  *   <li>{@link org.talend.core.model.component_cache.ComponentInfo#getLongName <em>Long Name</em>}</li>
+ *   <li>{@link org.talend.core.model.component_cache.ComponentInfo#getProviderClass <em>Provider Class</em>}</li>
+ *   <li>{@link org.talend.core.model.component_cache.ComponentInfo#getOwner <em>Owner</em>}</li>
  * </ul>
- * </p>
  *
  * @see org.talend.core.model.component_cache.ComponentCachePackage#getComponentInfo()
  * @model
@@ -432,5 +434,50 @@ public interface ComponentInfo extends EObject {
      * @generated
      */
     void setLongName(String value);
+
+    /**
+     * Returns the value of the '<em><b>Provider Class</b></em>' attribute.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @return the value of the '<em>Provider Class</em>' attribute.
+     * @see #setProviderClass(String)
+     * @see org.talend.core.model.component_cache.ComponentCachePackage#getComponentInfo_ProviderClass()
+     * @model
+     * @generated
+     */
+    String getProviderClass();
+
+    /**
+     * Sets the value of the '{@link org.talend.core.model.component_cache.ComponentInfo#getProviderClass <em>Provider Class</em>}' attribute.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @param value the new value of the '<em>Provider Class</em>' attribute.
+     * @see #getProviderClass()
+     * @generated
+     */
+    void setProviderClass(String value);
+
+    /**
+     * Returns the value of the '<em><b>Owner</b></em>' attribute.
+     * The default value is <code>"1"</code>.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @return the value of the '<em>Owner</em>' attribute.
+     * @see #setOwner(int)
+     * @see org.talend.core.model.component_cache.ComponentCachePackage#getComponentInfo_Owner()
+     * @model default="1"
+     * @generated
+     */
+    int getOwner();
+
+    /**
+     * Sets the value of the '{@link org.talend.core.model.component_cache.ComponentInfo#getOwner <em>Owner</em>}' attribute.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @param value the new value of the '<em>Owner</em>' attribute.
+     * @see #getOwner()
+     * @generated
+     */
+    void setOwner(int value);
 
 } // ComponentInfo

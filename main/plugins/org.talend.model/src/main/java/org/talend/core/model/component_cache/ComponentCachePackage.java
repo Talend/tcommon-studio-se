@@ -242,13 +242,31 @@ public interface ComponentCachePackage extends EPackage {
     int COMPONENT_INFO__LONG_NAME = 15;
 
     /**
+     * The feature id for the '<em><b>Provider Class</b></em>' attribute.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     * @ordered
+     */
+    int COMPONENT_INFO__PROVIDER_CLASS = 16;
+
+    /**
+     * The feature id for the '<em><b>Owner</b></em>' attribute.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     * @ordered
+     */
+    int COMPONENT_INFO__OWNER = 17;
+
+    /**
      * The number of structural features of the '<em>Component Info</em>' class.
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
      * @generated
      * @ordered
      */
-    int COMPONENT_INFO_FEATURE_COUNT = 16;
+    int COMPONENT_INFO_FEATURE_COUNT = 18;
 
     /**
      * The meta object id for the '{@link org.talend.core.model.component_cache.impl.ComponentEntryMapImpl <em>Component Entry Map</em>}' class.
@@ -496,6 +514,28 @@ public interface ComponentCachePackage extends EPackage {
     EAttribute getComponentInfo_LongName();
 
     /**
+     * Returns the meta object for the attribute '{@link org.talend.core.model.component_cache.ComponentInfo#getProviderClass <em>Provider Class</em>}'.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @return the meta object for the attribute '<em>Provider Class</em>'.
+     * @see org.talend.core.model.component_cache.ComponentInfo#getProviderClass()
+     * @see #getComponentInfo()
+     * @generated
+     */
+    EAttribute getComponentInfo_ProviderClass();
+
+    /**
+     * Returns the meta object for the attribute '{@link org.talend.core.model.component_cache.ComponentInfo#getOwner <em>Owner</em>}'.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @return the meta object for the attribute '<em>Owner</em>'.
+     * @see org.talend.core.model.component_cache.ComponentInfo#getOwner()
+     * @see #getComponentInfo()
+     * @generated
+     */
+    EAttribute getComponentInfo_Owner();
+
+    /**
      * Returns the meta object for class '{@link java.util.Map.Entry <em>Component Entry Map</em>}'.
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
@@ -503,6 +543,7 @@ public interface ComponentCachePackage extends EPackage {
      * @see java.util.Map.Entry
      * @model keyDataType="org.eclipse.emf.ecore.EString"
      *        valueType="org.talend.core.model.component_cache.ComponentInfo" valueContainment="true" valueMany="true"
+     *        annotation="MapEntry"
      * @generated
      */
     EClass getComponentEntryMap();
@@ -706,6 +747,22 @@ public interface ComponentCachePackage extends EPackage {
          * @generated
          */
         EAttribute COMPONENT_INFO__LONG_NAME = eINSTANCE.getComponentInfo_LongName();
+
+        /**
+         * The meta object literal for the '<em><b>Provider Class</b></em>' attribute feature.
+         * <!-- begin-user-doc -->
+         * <!-- end-user-doc -->
+         * @generated
+         */
+        EAttribute COMPONENT_INFO__PROVIDER_CLASS = eINSTANCE.getComponentInfo_ProviderClass();
+
+        /**
+         * The meta object literal for the '<em><b>Owner</b></em>' attribute feature.
+         * <!-- begin-user-doc -->
+         * <!-- end-user-doc -->
+         * @generated
+         */
+        EAttribute COMPONENT_INFO__OWNER = eINSTANCE.getComponentInfo_Owner();
 
         /**
          * The meta object literal for the '{@link org.talend.core.model.component_cache.impl.ComponentEntryMapImpl <em>Component Entry Map</em>}' class.
