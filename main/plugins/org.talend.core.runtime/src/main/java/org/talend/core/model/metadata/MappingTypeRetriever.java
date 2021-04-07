@@ -24,6 +24,7 @@ import org.apache.commons.collections.map.MultiValueMap;
 import org.apache.log4j.Logger;
 import org.eclipse.core.runtime.preferences.IEclipsePreferences;
 import org.eclipse.core.runtime.preferences.InstanceScope;
+import org.talend.core.database.EDatabaseTypeName;
 import org.talend.core.model.metadata.types.DBTypeUtil;
 import org.talend.core.model.metadata.types.JavaTypesManager;
 import org.talend.core.prefs.ITalendCorePrefConstants;
@@ -316,9 +317,13 @@ public class MappingTypeRetriever {
                 return MetadataTalendType.getDefaultTalendType();
             }
         }
+        
         IEclipsePreferences corePluginNode = new InstanceScope().getNode(ITalendCorePrefConstants.CoreUIPlugin_ID);
         if (!corePluginNode.getBoolean(ITalendCorePrefConstants.FORBIDDEN_MAPPING_LENGTH_PREC_LOGIC, false)) {
             TalendTypePreLenRetriever talendTypePre = new TalendTypePreLenRetriever(mappingTypeOrigin, length, precison);
+            if(dbms.getProduct() != null && EDatabaseTypeName.IMPALA.getProduct().equals(dbms.getProduct())) {
+            	talendTypePre.setMappingType(mappingTypeOrigin.getTalendType());
+            }
             String mappingType = talendTypePre.getMappingType();
             if (listMappingtype != null && listMappingtype.size() != 0) {
                 for (MappingType type : listMappingtype) {

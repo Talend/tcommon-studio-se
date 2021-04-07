@@ -68,4 +68,8 @@ public class TalendTypePreLenRetriever {
 
         return this.talendTypeNew;
     }
+    
+    public void setMappingType(String talendTypeNew ) {
+         this.talendTypeNew = talendTypeNew;
+    }
 }
