@@ -126,6 +126,7 @@ public class LocalLibraryManager implements ILibraryManagerService, IChangedLibr
             add("_java.xml");
             add(".properties");
             add(".txt");
+            add(".class");
         }
     };
 
@@ -1430,7 +1431,7 @@ public class LocalLibraryManager implements ILibraryManagerService, IChangedLibr
 
 
             // search on nexus to avoid deploy the jar many times
-            Map<File, MavenArtifact> shareFiles = new HashMap<File, MavenArtifact>();
+            Set<File> shareFiles = new HashSet<File>();
             ArtifactRepositoryBean customNexusServer = TalendLibsServerManager.getInstance().getCustomNexusServer();
             IRepositoryArtifactHandler customerRepHandler = RepositoryArtifactHandlerManager
                     .getRepositoryHandler(customNexusServer);
@@ -1471,14 +1472,17 @@ public class LocalLibraryManager implements ILibraryManagerService, IChangedLibr
                         }
                     }
                     if (toShare) {
-                        shareFiles.put(v, artifact);
+                        shareFiles.add(v);
                     }
                 });
+            } else {
+                // no artifact repository, install all
+                shareFiles.addAll(needToDeploy.values());
             }
 
-            shareFiles.forEach((k, v) -> {
-                install(k, null, true, true);
-            });
+            for (File f : shareFiles) {
+                install(f, null, true, true);
+            }
         }
     }
 
