@@ -53,6 +53,8 @@ public class MetadataColumn implements IMetadataColumn, Cloneable {
 
     private boolean custom = false;
 
+    private boolean ignoreCustomSort = false;
+
     private boolean readOnly = false;
 
     private int customId = 0;
@@ -572,6 +574,24 @@ public class MetadataColumn implements IMetadataColumn, Cloneable {
     @Override
     public void setCustom(boolean custom) {
         this.custom = custom;
+    }
+
+    /**
+     * Getter for ignoreCustomSort.
+     * 
+     * @return the ignoreCustomSort
+     */
+    public boolean isIgnoreCustomSort() {
+        return ignoreCustomSort;
+    }
+
+    /**
+     * Sets the ignoreCustomSort.
+     * 
+     * @param ignoreCustomSort the ignoreCustomSort to set
+     */
+    public void setIgnoreCustomSort(boolean ignoreCustomSort) {
+        this.ignoreCustomSort = ignoreCustomSort;
     }
 
     /**

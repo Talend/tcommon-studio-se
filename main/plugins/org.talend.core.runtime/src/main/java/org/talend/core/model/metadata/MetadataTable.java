@@ -365,7 +365,7 @@ public class MetadataTable implements IMetadataTable, Cloneable {
 
         for (int i = 0; i < listColumns.size(); i++) {
             IMetadataColumn column = listColumns.get(i);
-            if (column.isCustom()) {
+            if (column.isCustom() && !column.isIgnoreCustomSort()) {
                 customColumns.add(column);
             }
         }

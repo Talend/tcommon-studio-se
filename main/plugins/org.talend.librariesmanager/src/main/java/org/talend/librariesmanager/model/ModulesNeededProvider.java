@@ -589,7 +589,7 @@ public class ModulesNeededProvider {
         }
         routinesParameterTypes.stream().filter(r -> r.getType() != null)
                 .map(r -> CodesJarResourceCache.getCodesJarById(r.getId())).filter(info -> info != null)
-                .forEach(info -> importNeedsList.addAll(createModuleNeededFromCodeItem(info.getProperty().getItem())));
+                .forEach(info -> importNeedsList.addAll(createModuleNeededFromCodesJar(info)));
 
         checkInstallStatus(importNeedsList);
 
@@ -697,30 +697,41 @@ public class ModulesNeededProvider {
 
     @SuppressWarnings("unchecked")
     private static Set<ModuleNeeded> createModuleNeededFromCodeItem(Item item) {
-        String context = ""; //$NON-NLS-1$
-        List<IMPORTType> imports = new ArrayList<>();
         Set<ModuleNeeded> importNeedsList = new HashSet<ModuleNeeded>();
-        boolean isRoutineItem = item instanceof RoutineItem;
-        if (isRoutineItem) {
-            RoutineItem routine = (RoutineItem) item;
-            String label = ERepositoryObjectType.getItemType(routine).getLabel();
-            context = label + " " + routine.getProperty().getLabel();
-            imports.addAll(routine.getImports());
-        } else if (item instanceof RoutinesJarItem) {
-            RoutinesJarItem codesJar = (RoutinesJarItem) item;
-            imports.addAll(codesJar.getRoutinesJarType().getImports());
-        }
+        RoutineItem routine = (RoutineItem) item;
+        String label = ERepositoryObjectType.getItemType(routine).getLabel();
+        String context = label + " " + routine.getProperty().getLabel();
+        List<IMPORTType> imports = routine.getImports();
         for (IMPORTType currentImport : imports) {
             String value = currentImport.getMVN() != null ? currentImport.getMVN() : currentImport.getMODULE();
             boolean isRequired = currentImport.isREQUIRED();
             ModuleNeeded toAdd = ModuleNeeded.newInstance(context, value, currentImport.getMESSAGE(), isRequired);
             if (!isRequired) {
                 toAdd.getExtraAttributes().put("IS_OSGI_EXCLUDED", Boolean.TRUE);
-                if ("RoutineItem".equals(item.eClass().getName()) || "RoutinesJarItem".equals(item.eClass().getName())) {
+                if ("RoutineItem".equals(item.eClass().getName())) {
                     toAdd.setExcluded(true);
                 }
             }
             // toAdd.setStatus(ELibraryInstallStatus.INSTALLED);
+            importNeedsList.add(toAdd);
+        }
+        return importNeedsList;
+    }
+
+    private static Set<ModuleNeeded> createModuleNeededFromCodesJar(CodesJarInfo info) {
+        Set<ModuleNeeded> importNeedsList = new HashSet<ModuleNeeded>();
+        String context = info.getType().getLabel() + " " + info.getLabel();
+        List<IMPORTType> imports = info.getImports();
+        for (IMPORTType currentImport : imports) {
+            String value = currentImport.getMVN() != null ? currentImport.getMVN() : currentImport.getMODULE();
+            boolean isRequired = currentImport.isREQUIRED();
+            ModuleNeeded toAdd = ModuleNeeded.newInstance(context, value, currentImport.getMESSAGE(), isRequired);
+            if (!isRequired) {
+                toAdd.getExtraAttributes().put("IS_OSGI_EXCLUDED", Boolean.TRUE);
+                if (info.getType() == ERepositoryObjectType.ROUTINESJAR) {
+                    toAdd.setExcluded(true);
+                }
+            }
             importNeedsList.add(toAdd);
         }
         return importNeedsList;
@@ -1095,22 +1106,26 @@ public class ModulesNeededProvider {
      */
     public static Set<ModuleNeeded> getAllCodesJarModuleNeededs() {
         Set<ModuleNeeded> modules = new HashSet<>();
-        CodesJarResourceCache.getAllCodesJars().stream().map(CodesJarInfo::getProperty)
-                .forEach(p -> modules.addAll(createModuleNeededFromCodeItem(p.getItem())));
+        CodesJarResourceCache.getAllCodesJars().stream().forEach(info -> modules.addAll(createModuleNeededFromCodesJar(info)));
         return modules;
     }
 
     /**
      * get ModuleNeeded for target codesjar
      */
-    public static Set<ModuleNeeded> getCodesJarModuleNeededs(Property property) {
-        return createModuleNeededFromCodeItem(property.getItem());
+    public static Set<ModuleNeeded> getCodesJarModuleNeededs(CodesJarInfo info) {
+        return createModuleNeededFromCodesJar(info);
     }
 
     public static Set<ModuleNeeded> updateModulesNeededForRoutine(Item routineItem) {
         String label = ERepositoryObjectType.getItemType(routineItem).getLabel();
         String currentContext = label + " " + routineItem.getProperty().getLabel();
-        Set<ModuleNeeded> modulesNeeded = createModuleNeededFromCodeItem(routineItem);
+        Set<ModuleNeeded> modulesNeeded = new HashSet<>();
+        if (routineItem instanceof RoutineItem) {
+            modulesNeeded.addAll(createModuleNeededFromCodeItem(routineItem));
+        } else if (routineItem instanceof RoutinesJarItem) {
+            modulesNeeded.addAll(createModuleNeededFromCodesJar(CodesJarInfo.create(routineItem.getProperty())));
+        }
         Set<String> routinModuleNames = new HashSet<String>();
         for (ModuleNeeded module : modulesNeeded) {
             routinModuleNames.add(module.getModuleName());

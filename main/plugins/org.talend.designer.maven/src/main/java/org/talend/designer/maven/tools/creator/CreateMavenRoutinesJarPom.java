@@ -20,21 +20,21 @@ import org.eclipse.core.resources.IFile;
 import org.talend.core.GlobalServiceRegister;
 import org.talend.core.model.general.ILibrariesService;
 import org.talend.core.model.general.ModuleNeeded;
-import org.talend.core.model.properties.Property;
+import org.talend.core.model.routines.CodesJarInfo;
 import org.talend.designer.maven.template.MavenTemplateManager;
 
 public class CreateMavenRoutinesJarPom extends AbstractMavenCodesTemplatePom {
 
-    private Property property;
+    private CodesJarInfo info;
 
-    public CreateMavenRoutinesJarPom(Property property, IFile pomFile) {
+    public CreateMavenRoutinesJarPom(CodesJarInfo info, IFile pomFile) {
         super(pomFile);
-        this.property = property;
+        this.info = info;
     }
 
     @Override
     protected Model getTemplateModel() {
-        return MavenTemplateManager.getRoutinesJarTempalteModel(property, getProjectName());
+        return MavenTemplateManager.getRoutinesJarTempalteModel(info);
     }
 
     @Override
@@ -43,7 +43,7 @@ public class CreateMavenRoutinesJarPom extends AbstractMavenCodesTemplatePom {
         if (GlobalServiceRegister.getDefault().isServiceRegistered(ILibrariesService.class)) {
             ILibrariesService libService = (ILibrariesService) GlobalServiceRegister.getDefault().getService(
                     ILibrariesService.class);
-            runningModules.addAll(libService.getCodesJarModuleNeededs(property));
+            runningModules.addAll(libService.getCodesJarModuleNeededs(info));
         }
         return runningModules;
     }
