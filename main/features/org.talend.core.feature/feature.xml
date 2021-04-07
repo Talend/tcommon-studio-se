@@ -38,7 +38,6 @@
     <import plugin="org.apache.httpcomponents.httpcore" version="0.0.0" match="greaterOrEqual"/>
     <import plugin="org.eclipse.compare" version="0.0.0" match="greaterOrEqual"/>
     <import plugin="org.eclipse.compare.core" version="0.0.0" match="greaterOrEqual"/>
-    <import plugin="org.eclipse.m2m.atl.emftvm.trace" version="0.0.0" match="greaterOrEqual"/>
     <import plugin="org.ops4j.pax.url.mvn" version="0.0.0" match="greaterOrEqual"/>
   </requires>  
   <plugin id="org.talend.core" download-size="0" install-size="0" version="0.0.0" unpack="false"/>
