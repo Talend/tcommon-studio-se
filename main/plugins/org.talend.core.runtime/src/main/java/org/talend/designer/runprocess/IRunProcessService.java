@@ -192,7 +192,7 @@ public interface IRunProcessService extends IService {
     @Deprecated
     public void buildJavaProject();
 
-    public void buildCodesJavaProject(IProgressMonitor monitor);
+    public void buildCodesJavaProject(IProgressMonitor monitor, Set<CodesJarInfo> toUpdate);
 
     /**
      * @deprecated use {@link IRunProcessService#getTalendJobJavaProject(Property)} instead
