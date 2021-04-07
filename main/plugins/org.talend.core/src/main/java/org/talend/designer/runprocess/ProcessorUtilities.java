@@ -1110,6 +1110,7 @@ public class ProcessorUtilities {
                 progressMonitor);
     }
 
+    @SuppressWarnings("unchecked")
     private static IProcessor generateCode(JobInfo jobInfo, String selectedContextName, boolean statistics,
             boolean trace, boolean needContext, boolean isNeedLoadmodules, int option, IProgressMonitor progressMonitor)
             throws ProcessorException {
@@ -1332,6 +1333,15 @@ public class ProcessorUtilities {
                 }
                 processor.setArguments(argumentsMap);
             }
+            
+            // TESB-23502
+            if("ROUTE".equals(getBuildType(jobInfo))) {
+            	Property p = selectedProcessItem.getProperty();
+            	if (p != null && ERepositoryObjectType.PROCESS.equals(ERepositoryObjectType.getType(p))) {
+            		p.getAdditionalProperties().put(TalendProcessArgumentConstant.ARG_BUILD_TYPE, "ROUTE");
+            	}
+            }
+            
             setNeededResources(argumentsMap, jobInfo);
 
             processor.setArguments(argumentsMap);
@@ -1364,6 +1374,21 @@ public class ProcessorUtilities {
                 TimeMeasure.display = TimeMeasure.displaySteps = TimeMeasure.measureActive = false;
             }
         }
+    }
+    
+    private static Object getBuildType(JobInfo  jobInfo) {
+        if(jobInfo == null) {
+            return null;
+        }
+        JobInfo parentJobInfo = jobInfo.getFatherJobInfo(); 
+        if(parentJobInfo == null) {
+            if(jobInfo.getArgumentsMap() != null) {
+                return jobInfo.getArgumentsMap().get(TalendProcessArgumentConstant.ARG_BUILD_TYPE);
+            }else {
+                return null;
+            }
+        }
+        return getBuildType(parentJobInfo);
     }
 
     private static Set<ModuleNeeded> getAllJobTestcaseModules(ProcessItem selectedProcessItem) {
