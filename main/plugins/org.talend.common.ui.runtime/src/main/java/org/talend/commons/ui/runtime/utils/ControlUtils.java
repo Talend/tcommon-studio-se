@@ -37,7 +37,7 @@ public class ControlUtils {
      * @param control
      * @return
      */
-    public static String getText(Control control) {
+    public static String getText(Control control)  {
         // use reflection to copy with any StyledText that is not compatible with RAP
         Object result = invokeMethod(control, "getText"); //$NON-NLS-1$
         if (result instanceof String) {
