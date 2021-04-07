@@ -95,6 +95,8 @@ public class DatabaseTableWizard extends CheckLastVersionRepositoryWizard implem
     private static Map<String, String> originalTablesMap = new HashMap<String, String>();
 
     private final ConnectionUUIDHelper tableHelper;
+    
+
 
     /**
      * DOC ocarbone DatabaseTableWizard constructor comment.
@@ -114,13 +116,18 @@ public class DatabaseTableWizard extends CheckLastVersionRepositoryWizard implem
         this.managerConnection = managerConnection;
         this.metadataConnection = metadataConnection;
         setNeedsProgressMonitor(true);
-
+        TalendStactTraceInfoUtil.printConnectionIfo((ConnectionItem) object.getProperty().getItem(), "At beginning of DatabaseTableWizard()");
         // set the repositoryObject, lock and set isRepositoryObjectEditable
         setRepositoryObject(object);
         isRepositoryObjectEditable();
         initLockStrategy();
         this.selectedMetadataTable = metadataTable;
         this.connectionItem = (ConnectionItem) object.getProperty().getItem();
+        TalendStactTraceInfoUtil.printConnectionIfo(connectionItem, "After init connectionItem in DatabaseTableWizard()");
+        ConnectionItem reloadedConnectionItem = TalendStactTraceInfoUtil.checkConnectionItemResource(connectionItem, "After init connectionItem in DatabaseTableWizard()");
+        if (reloadedConnectionItem != null) {
+            connectionItem = reloadedConnectionItem;
+        }
         this.tableHelper = new ConnectionUUIDHelper((DatabaseConnection) this.connectionItem.getConnection());
         if (connectionItem != null) {
             this.tableHelper.recordConnection();
@@ -130,6 +137,11 @@ public class DatabaseTableWizard extends CheckLastVersionRepositoryWizard implem
         }
         originalColumnsMap.clear();
         originalTablesMap.clear();
+        TalendStactTraceInfoUtil.printConnectionIfo(connectionItem, "At End of DatabaseTableWizard()");
+        reloadedConnectionItem = TalendStactTraceInfoUtil.checkConnectionItemResource(connectionItem, "At End of DatabaseTableWizard()");
+        if (reloadedConnectionItem != null) {
+            connectionItem = reloadedConnectionItem;
+        }
     }
 
     /**
@@ -150,7 +162,11 @@ public class DatabaseTableWizard extends CheckLastVersionRepositoryWizard implem
         setDefaultPageImageDescriptor(ImageProvider.getImageDesc(ECoreImage.METADATA_TABLE_WIZ));
         TableInfoParameters tableInfoParameters = new TableInfoParameters();
         DatabaseConnection curDbConnection = (DatabaseConnection) connectionItem.getConnection();
-
+        TalendStactTraceInfoUtil.printConnectionIfo(connectionItem, "At beginning of addPages()");
+        ConnectionItem reloadedConnectionItem = TalendStactTraceInfoUtil.checkConnectionItemResource(connectionItem, "At beginning of addPages()");
+        if (reloadedConnectionItem != null) {
+            connectionItem = reloadedConnectionItem;
+        }
         tableWizardpage = new DatabaseTableWizardPage(selectedMetadataTable, managerConnection, connectionItem,
                 isRepositoryObjectEditable(), metadataConnection, curDbConnection);
         tableWizardpage.setWizard(this);
@@ -186,7 +202,7 @@ public class DatabaseTableWizard extends CheckLastVersionRepositoryWizard implem
             tableWizardpage.setPageComplete(false);
             addPage(tableWizardpage);
         }
-
+        TalendStactTraceInfoUtil.printConnectionIfo(connectionItem, "At end of addPages()");
     }
 
     /**
@@ -204,11 +220,11 @@ public class DatabaseTableWizard extends CheckLastVersionRepositoryWizard implem
                 public void run(IProgressMonitor monitor) throws CoreException {
                     // temConnection will be set to model when finish
                     DatabaseConnection connection = (DatabaseConnection) connectionItem.getConnection();
-
                     /*
                      * The first save,to make sure all the columns and tables in connection can has a eResource,or it
                      * can't set uuids
                      */
+                    TalendStactTraceInfoUtil.printConnectionIfo(connectionItem, "Before first saveMetaData()");
                     saveMetaData();
                     tableHelper.resetUUID(connection);
 
@@ -232,7 +248,7 @@ public class DatabaseTableWizard extends CheckLastVersionRepositoryWizard implem
                             }
                         }
                     }
-
+                    TalendStactTraceInfoUtil.printConnectionIfo(connectionItem, "Before second saveMetaData()");
                     saveMetaData();
 
                     // update related analysis for TDQ after saving connection.

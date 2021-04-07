@@ -229,6 +229,7 @@ public class DatabaseTableForm extends AbstractForm {
         this.temConnection = temConnection;
         this.metadataTable = metadataTable;
         this.metadataconnection = metadataconnection;
+        TalendStactTraceInfoUtil.printConnectionIfo(connectionItem, "At beginning of DatabaseTableForm()");
         final Set<MetadataTable> tables = ConnectionHelper.getTables(temConnection);
         for (MetadataTable t : tables) {
             if ((metadataTable != null && t.getLabel().equals(metadataTable.getLabel())) || metadataTable == null) {
@@ -243,6 +244,7 @@ public class DatabaseTableForm extends AbstractForm {
         }
         labelChanged = new HashMap<String, Map<String, String>>();
         setupForm();
+        TalendStactTraceInfoUtil.printConnectionIfo(connectionItem, "At end of DatabaseTableForm()");
     }
 
     public DatabaseTableForm(Composite parent, ConnectionItem connectionItem, MetadataTable metadataTable,
@@ -1049,6 +1051,7 @@ public class DatabaseTableForm extends AbstractForm {
      * @return
      */
     private boolean checkAllTablesIsCorrect() {
+        TalendStactTraceInfoUtil.printConnectionIfo(connectionItem, "At beginning of checkAllTablesIsCorrect()");
         Set<MetadataTable> tableset = ConnectionHelper.getTables(getConnection());
         MetadataTable[] tables = tableset.toArray(new MetadataTable[0]);
         for (MetadataTable table2 : tables) {
@@ -1078,6 +1081,7 @@ public class DatabaseTableForm extends AbstractForm {
             // return false;
             // }
         }
+        TalendStactTraceInfoUtil.printConnectionIfo(connectionItem, "At end of checkAllTablesIsCorrect()");
         return true;
     }
 
@@ -1115,12 +1119,12 @@ public class DatabaseTableForm extends AbstractForm {
             tableSettingsInfoLabel.setText(Messages.getString("DatabaseTableForm.retreiveButtonUse")); //$NON-NLS-1$
         }
     }
-
+ 
     /**
      * RetreiveShema connection width value of nameText, serverText, loginText, passwordText, tableCombo.
      */
     private void pressRetreiveSchemaButton() {
-
+        TalendStactTraceInfoUtil.printConnectionIfo(connectionItem, "At beginning of pressRetreiveSchemaButton()");
         boolean checkConnectionIsDone = managerConnection.check(getIMetadataConnection());
 
         if (!checkConnectionIsDone) {
@@ -1147,8 +1151,10 @@ public class DatabaseTableForm extends AbstractForm {
                 List<TdColumn> metadataColumns = new ArrayList<TdColumn>();
                 if (useProvider()) {
                     metadataColumns = provider.returnMetadataColumnsFromTable(tableString, metadataconnection);
+                    TalendStactTraceInfoUtil.printConnectionIfo(connectionItem, "After provider.returnMetadataColumnsFromTable()");
                 } else {
                     metadataColumns = ExtractMetaDataFromDataBase.returnMetadataColumnsFormTable(metadataconnection, tableString);
+                    TalendStactTraceInfoUtil.printConnectionIfo(connectionItem, "After ExtractMetaDataFromDataBase.returnMetadataColumnsFormTable()");
                 }
 
                 tableEditorView.getMetadataEditor().removeAll();
@@ -1187,6 +1193,7 @@ public class DatabaseTableForm extends AbstractForm {
 
         updateRetreiveSchemaButton();
         changeTableNavigatorStatus(checkFieldsValue());
+        TalendStactTraceInfoUtil.printConnectionIfo(connectionItem, "At end of pressRetreiveSchemaButton()");
     }
 
     // made by hyWang
