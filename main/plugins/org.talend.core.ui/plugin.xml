@@ -42,12 +42,6 @@
             id="org.talend.core.ui.token.AdditionalPackageTokenCollector"
             name="addtional package">
       </provider>
-      <provider
-            collector="org.talend.core.ui.token.RepositoryOldItemsTokenCollector"
-            description="record usage of old items"
-            id="org.talend.core.ui.token.RepositoryOldItemUsageTokenCollector"
-            name="olditem">
-      </provider>
    </extension>
    
       <extension
