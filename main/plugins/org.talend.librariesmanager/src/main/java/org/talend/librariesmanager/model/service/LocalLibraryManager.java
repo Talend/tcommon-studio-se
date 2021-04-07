@@ -123,10 +123,13 @@ public class LocalLibraryManager implements ILibraryManagerService, IChangedLibr
             add(".javajet");
             add(".png");
             add(".jpg");
-            add("_java.xml");
+            add(".xml");
             add(".properties");
             add(".txt");
             add(".class");
+            add(".mf");
+            add(".rsa");
+            add(".sf");
         }
     };
 
