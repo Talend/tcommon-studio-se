@@ -12,6 +12,7 @@ import java.io.File;
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.Iterator;
+import java.util.Map;
 import java.util.Vector;
 
 import org.apache.xerces.parsers.SAXParser;
@@ -176,21 +177,19 @@ public class SaxParser extends DefaultHandler implements Runnable {
         if (this.currentElementRecoder.get(parentPath + UtilConstants.XPATH_SLASH + elementName) == null) {
             this.currentElementRecoder.put(parentPath + UtilConstants.XPATH_SLASH + elementName, new Integer(1));
         } else {
-            this.currentElementRecoder.put(
-                    parentPath + UtilConstants.XPATH_SLASH + elementName,
-                    new Integer(((Integer) this.currentElementRecoder.get(parentPath + UtilConstants.XPATH_SLASH + elementName))
-                            .intValue() + 1));
+            this.currentElementRecoder.put(parentPath + UtilConstants.XPATH_SLASH + elementName, new Integer(
+                    ((Integer) this.currentElementRecoder.get(parentPath + UtilConstants.XPATH_SLASH + elementName)).intValue()
+                            + 1));
         }
         pathHolder.push(elementName + "["
                 + ((Integer) this.currentElementRecoder.get(parentPath + UtilConstants.XPATH_SLASH + elementName)).intValue()
                 + "]");
-        String prefix = null;
-        if (qName.contains(":")) {
-            prefix = qName.split(":")[0];
-        }
-        spConsumer.detectNewRow(pathHolder.getPath(), prefix, uri, true);
+
+        spConsumer.detectNewRow(pathHolder.getPath(), declaredNamespaceMappingInCurrentElement, true);
+        declaredNamespaceMappingInCurrentElement.clear();
+
         for (int i = 0; i < atts.getLength(); i++) {
-            spConsumer.detectNewRow(getAttributePath(atts, i), null, null, true);
+            spConsumer.detectNewRow(getAttributePath(atts, i), null, false);
             spConsumer.manipulateData(getAttributePath(atts, i), atts.getValue(i));
         }
     }
@@ -206,6 +205,13 @@ public class SaxParser extends DefaultHandler implements Runnable {
         return pathHolder.getPath() + "[@" + getElementName(atts.getURI(i), atts.getQName(i), atts.getLocalName(i)) + "]";
     }
 
+    Map<String, String> declaredNamespaceMappingInCurrentElement = new HashMap<String, String>();
+
+    @Override
+    public void startPrefixMapping(String prefix, String uri) throws SAXException {
+        declaredNamespaceMappingInCurrentElement.put(prefix, uri);
+    }
+
     /*
      * (non-Javadoc)
      * 
@@ -217,11 +223,9 @@ public class SaxParser extends DefaultHandler implements Runnable {
         // the heading and tailing junk spaces.
         spConsumer.manipulateData(pathHolder.getPath(), this.currentCacheValue.trim());
         this.currentCacheValue = "";
-        String prefix = null;
-        if (qName.contains(":")) {
-            prefix = qName.split(":")[0];
-        }
-        spConsumer.detectNewRow(pathHolder.getPath(), prefix, uri, false);
+
+        // TODO seems this code is not necessary, try to remove it
+        spConsumer.detectNewRow(pathHolder.getPath(), null, false);
         // this.currentElementRecoder.clear();
 
         String path = pathHolder.getPath();
@@ -349,6 +353,7 @@ public class SaxParser extends DefaultHandler implements Runnable {
     public boolean isInvalidFile() {
         return this.isInvalidFile;
     }
+
 }
 
 /**

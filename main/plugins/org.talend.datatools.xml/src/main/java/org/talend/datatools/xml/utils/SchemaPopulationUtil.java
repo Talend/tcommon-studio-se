@@ -105,8 +105,8 @@ public class SchemaPopulationUtil {
      * @throws URISyntaxException
      * @throws IOException
      */
-    public static ATreeNode getSchemaTree(XSModel xsModel, ATreeNode selectedNode, boolean includeAttribute) throws OdaException,
-            URISyntaxException, IOException {
+    public static ATreeNode getSchemaTree(XSModel xsModel, ATreeNode selectedNode, boolean includeAttribute)
+            throws OdaException, URISyntaxException, IOException {
         ATreeNode node = null;
         NodeCreationObserver.start();
         node = XSDFileSchemaTreePopulator.getSchemaTree(xsModel, selectedNode, includeAttribute);
@@ -114,8 +114,8 @@ public class SchemaPopulationUtil {
         return node;
     }
 
-    public static ATreeNode getSchemaTree(XSDSchema schema, ATreeNode selectedNode) throws OdaException, URISyntaxException,
-            IOException {
+    public static ATreeNode getSchemaTree(XSDSchema schema, ATreeNode selectedNode)
+            throws OdaException, URISyntaxException, IOException {
         return getSchemaTree(null, schema, selectedNode);
     }
 
@@ -169,8 +169,6 @@ final class XMLFileSchemaTreePopulator implements ISaxParserConsumer {
     private boolean includeAttribute = true;
 
     private final int numberOfElementsAccessiable;
-
-    private Map<String, String> prefixToNamespace = new HashMap<String, String>();
 
     private Map<String, ATreeNode> nodePathMap = new HashMap<String, ATreeNode>();
 
@@ -258,14 +256,15 @@ final class XMLFileSchemaTreePopulator implements ISaxParserConsumer {
      * (non-Javadoc)
      * 
      * @see org.eclipse.datatools.enablement.oda.xml.util.ISaxParserConsumer#detectNewRow(java.lang.String,
-     * java.lang.String, java.lang.String, boolean)
+     * java.uitl.Map<String, String>, boolean)
      */
     @Override
-    public void detectNewRow(String path, String prefix, String uri, boolean start) {
+    public void detectNewRow(String path, Map<String, String> declaredNamespace, boolean start) {
         String treamedPath = getTreamedPath(path);
-        this.insertNode(treamedPath, prefix, uri);
+        this.insertNode(treamedPath, declaredNamespace);
         // If not attribute
-        if (!isAttribute(path) && start) {
+
+        if (start) {
             rowCount++;
         }
 
@@ -339,7 +338,7 @@ final class XMLFileSchemaTreePopulator implements ISaxParserConsumer {
      * 
      * @param treatedPath
      */
-    private void insertNode(String treatedPath, String prefix, String uri) {
+    private void insertNode(String treatedPath, Map<String, String> declaredNamespace) {
         boolean isAttribute = isAttribute(treatedPath);
 
         // Remove the leading "/" then split the path.
@@ -396,30 +395,23 @@ final class XMLFileSchemaTreePopulator implements ISaxParserConsumer {
 
                 matchedNode.setValue(path[i]);
                 parentNode.addChild(matchedNode);
-                if (prefix != null) {
-                    if (!prefixToNamespace.containsKey(prefix)) {
-                        prefixToNamespace.put(prefix, uri);
+
+                if (declaredNamespace != null && !declaredNamespace.isEmpty()) {
+                    for (Map.Entry<String, String> namespace : declaredNamespace.entrySet()) {
                         ATreeNode namespaceNode = new ATreeNode();
                         try {
+                            String prefix = namespace.getKey();
                             namespaceNode.setDataType(prefix);
                         } catch (OdaException e) {
                             // nothing
                         }
                         namespaceNode.setType(ATreeNode.NAMESPACE_TYPE);
+                        String uri = namespace.getValue();
                         namespaceNode.setValue(uri);
-                        ((ATreeNode) root.getChildren()[0]).addAsFirstChild(namespaceNode);
+                        matchedNode.addChild(namespaceNode);
                     }
-                } else if (uri != null && !"".equals(uri)) {
-                    ATreeNode namespaceNode = new ATreeNode();
-                    try {
-                        namespaceNode.setDataType("");
-                    } catch (OdaException e) {
-                        // nothing
-                    }
-                    namespaceNode.setType(ATreeNode.NAMESPACE_TYPE);
-                    namespaceNode.setValue(uri);
-                    matchedNode.addChild(namespaceNode);
                 }
+
                 parentNode = matchedNode;
             }
         }
@@ -452,8 +444,8 @@ final class XSDFileSchemaTreePopulator {
                     Object[] os = ((ATreeNode) element).getChildren();
                     for (int k = 0; k < os.length; k++) {
                         if (os[k] instanceof ATreeNode) {
-                            if (!(((ATreeNode) os[k]).getDataType() != null && ((ATreeNode) os[k]).getDataType().equals(
-                                    ((ATreeNode) container.get(j)).getDataType()))) {
+                            if (!(((ATreeNode) os[k]).getDataType() != null
+                                    && ((ATreeNode) os[k]).getDataType().equals(((ATreeNode) container.get(j)).getDataType()))) {
                                 ((ATreeNode) container.get(j)).addChild(os[k]);
                             }
                         }
@@ -469,7 +461,8 @@ final class XSDFileSchemaTreePopulator {
         for (Object element : toBeIterated) {
             ATreeNode node = ((ATreeNode) element);
             Object nodeValue = node.getValue();
-            if (nodeValue != null && !nodeValue.equals(selectedNode.getValue()) && !nodeValue.equals(selectedNode.getDataType())) {
+            if (nodeValue != null && !nodeValue.equals(selectedNode.getValue())
+                    && !nodeValue.equals(selectedNode.getDataType())) {
                 continue;
             }
             Object value = node.getDataType();
@@ -480,8 +473,8 @@ final class XSDFileSchemaTreePopulator {
                     Object[] os = ((ATreeNode) element).getChildren();
                     for (int k = 0; k < os.length; k++) {
                         if (os[k] instanceof ATreeNode) {
-                            if (!(((ATreeNode) os[k]).getDataType() != null && ((ATreeNode) os[k]).getDataType().equals(
-                                    ((ATreeNode) container.get(j)).getDataType()))) {
+                            if (!(((ATreeNode) os[k]).getDataType() != null
+                                    && ((ATreeNode) os[k]).getDataType().equals(((ATreeNode) container.get(j)).getDataType()))) {
                                 ((ATreeNode) container.get(j)).addChild(os[k]);
                             }
                         }
@@ -553,8 +546,8 @@ final class XSDFileSchemaTreePopulator {
         XSModel xsModel = xsLoader.loadURI(uri.toString());
         if (xsModel == null) {
             try {
-                Grammar loadGrammar = xsLoader.loadGrammar(new XMLInputSource(null, uri.toString(), null, new FileInputStream(f),
-                        "ISO-8859-1"));
+                Grammar loadGrammar = xsLoader
+                        .loadGrammar(new XMLInputSource(null, uri.toString(), null, new FileInputStream(f), "ISO-8859-1"));
                 xsModel = ((XSGrammar) loadGrammar).toXSModel();
             } catch (XNIException e) {
                 e.printStackTrace();
@@ -658,8 +651,8 @@ final class XSDFileSchemaTreePopulator {
      * @throws MalformedURLException
      * @throws URISyntaxException
      */
-    public static ATreeNode getSchemaTree(String fileName, boolean incAttr) throws OdaException, MalformedURLException,
-            URISyntaxException {
+    public static ATreeNode getSchemaTree(String fileName, boolean incAttr)
+            throws OdaException, MalformedURLException, URISyntaxException {
         includeAttribute = incAttr;
         DocumentBuilderFactory factory = XmlUtils.getSecureDocumentBuilderFactory();
         factory.setNamespaceAware(true);
@@ -683,8 +676,8 @@ final class XSDFileSchemaTreePopulator {
         XSModel xsModel = xsLoader.loadURI(uri.toString());
         if (xsModel == null) {
             try {
-                Grammar loadGrammar = xsLoader.loadGrammar(new XMLInputSource(null, uri.toString(), null, new FileInputStream(f),
-                        "ISO-8859-1"));
+                Grammar loadGrammar = xsLoader
+                        .loadGrammar(new XMLInputSource(null, uri.toString(), null, new FileInputStream(f), "ISO-8859-1"));
                 xsModel = ((XSGrammar) loadGrammar).toXSModel();
             } catch (XNIException e) {
                 e.printStackTrace();
@@ -775,8 +768,8 @@ final class XSDFileSchemaTreePopulator {
      * @throws MalformedURLException
      * @throws URISyntaxException
      */
-    public static ATreeNode getSchemaTree(XSModel xsModel, ATreeNode selectedNode, boolean incAttr) throws OdaException,
-            MalformedURLException, URISyntaxException {
+    public static ATreeNode getSchemaTree(XSModel xsModel, ATreeNode selectedNode, boolean incAttr)
+            throws OdaException, MalformedURLException, URISyntaxException {
         includeAttribute = incAttr;
 
         ATreeNode complexTypesRoot = populateComplexTypeTree(xsModel, selectedNode);
@@ -837,7 +830,8 @@ final class XSDFileSchemaTreePopulator {
                     if (obj instanceof ATreeNode) {
                         ATreeNode treeNode = (ATreeNode) obj;
                         Object value = treeNode.getValue();
-                        if (value != null && (value.equals(selectedNode.getValue()) || value.equals(selectedNode.getDataType()))) {
+                        if (value != null
+                                && (value.equals(selectedNode.getValue()) || value.equals(selectedNode.getDataType()))) {
                             root.addChild(treeNode);
                             break;
                         }
@@ -874,8 +868,8 @@ final class XSDFileSchemaTreePopulator {
         XSModel xsModel = xsLoader.loadURI(uri.toString());
         if (xsModel == null) {
             try {
-                Grammar loadGrammar = xsLoader.loadGrammar(new XMLInputSource(null, uri.toString(), null, new FileInputStream(f),
-                        "ISO-8859-1"));
+                Grammar loadGrammar = xsLoader
+                        .loadGrammar(new XMLInputSource(null, uri.toString(), null, new FileInputStream(f), "ISO-8859-1"));
                 xsModel = ((XSGrammar) loadGrammar).toXSModel();
             } catch (XNIException e) {
                 e.printStackTrace();

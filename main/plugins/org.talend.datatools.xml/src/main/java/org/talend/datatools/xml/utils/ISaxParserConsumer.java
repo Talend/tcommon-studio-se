@@ -7,6 +7,8 @@
  *******************************************************************************/
 package org.talend.datatools.xml.utils;
 
+import java.util.Map;
+
 /**
  * This interface defined the methods that would be used by classes that use sax parser.
  */
@@ -30,8 +32,9 @@ public interface ISaxParserConsumer {
      * Indicate whether a new row should started according to the given xPath expression. A new row would only started
      * when the given xPath matches the root path of certain table.
      * 
-     * @param path
-     * @param start
+     * @param elementOrAttributePath
+     * @param declaredNamespaceInCurrentElement
+     * @param startElement
      */
-    public void detectNewRow(String path, String prefix, String uri, boolean start);
+    public void detectNewRow(String elementOrAttributePath, Map<String, String> declaredNamespaceInCurrentElement, boolean startElement);
 }
