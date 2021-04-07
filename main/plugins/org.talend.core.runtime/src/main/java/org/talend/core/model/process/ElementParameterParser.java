@@ -293,8 +293,7 @@ public final class ElementParameterParser {
 
         List<IElementParameter> params = (List<IElementParameter>) element.getElementParametersWithChildrens();
         if (params != null && !params.isEmpty()) {
-            for (int i = 0; i < params.size(); i++) {
-                IElementParameter param = params.get(i);
+            for (IElementParameter param : params) {
                 if (text.indexOf(param.getVariableName()) != -1
                         || (param.getVariableName() != null && param.getVariableName().contains(text))) {
                     if (param.getFieldType() == EParameterFieldType.TABLE) {
@@ -324,8 +323,8 @@ public final class ElementParameterParser {
         List<IElementParameter> params = (List<IElementParameter>) element.getElementParametersWithChildrens();
         if (params != null && !params.isEmpty()) {
             List<List<Map<String, String>>> multiObjectValues = new ArrayList<List<Map<String, String>>>();
-            for (int i = 0; i < params.size(); i++) {
-                param = params.get(i);
+            for (IElementParameter param2 : params) {
+                param = param2;
                 if (text.indexOf(param.getVariableName()) != -1
                         || (param.getVariableName() != null && param.getVariableName().contains(text))) {
                     List<?> paramValues = (List<?>) param.getValue();
@@ -656,7 +655,8 @@ public final class ElementParameterParser {
             return (String) value;
         }
         if (param.getFieldType() == EParameterFieldType.RADIO || param.getFieldType() == EParameterFieldType.CHECK
-                || param.getFieldType() == EParameterFieldType.AS400_CHECK) {
+                || param.getFieldType() == EParameterFieldType.AS400_CHECK
+                || "ACTIVE_DATABASE_DELIMITED_IDENTIFIERS".equals(param.getName())) { //$NON-NLS-1$
             if (value instanceof Boolean) {
                 return ((Boolean) param.getValue()).toString();
             } else {
