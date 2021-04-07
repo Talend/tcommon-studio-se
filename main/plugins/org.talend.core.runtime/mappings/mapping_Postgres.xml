@@ -194,7 +194,6 @@
 					<dbType type="CIRCLE" />						
 					<dbType type="INET" />			
 					<dbType type="MACADDR" />
-					<dbType type="MONEY" />			
 					<dbType type="OID" />
 					<dbType type="PATH" />
 					<dbType type="POLYGON" />			
@@ -257,6 +256,7 @@
 					<dbType type="BPCHAR" />
 					<dbType type="VARCHAR" default="true" />
 					<dbType type="TEXT" />				
+					<dbType type="MONEY" />			
 				</talendType>
 			</talendToDbTypes>
 			<dbToTalendTypes>
@@ -308,6 +308,9 @@
 				<dbType type="TEXT" >
 					<talendType type="id_String" default="true" />				
 				</dbType>				
+				<dbType type="MONEY" >
+					<talendType type="id_String" default="true" />				
+				</dbType>							
 				<dbType type="DATE" >
 					<talendType type="id_Date" default="true" />				
 				</dbType>				
@@ -356,9 +359,6 @@
 				<dbType type="MACADDR" >
 					<talendType type="id_Object" default="true" />				
 				</dbType>				
-				<dbType type="MONEY" >
-					<talendType type="id_Object" default="true" />				
-				</dbType>							
 				<dbType type="OID" >
 					<talendType type="id_Object" default="true" />				
 				</dbType>				
