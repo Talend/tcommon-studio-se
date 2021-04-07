@@ -677,6 +677,18 @@ public class ConvertJobsUtil {
         final Path path = new Path(pathName.toString());
         return path;
     }
+    
+    public static String getTestCaseJobTypeByPath(String itemPath) {
+        if (JobType.BIGDATASTREAMING.repositoryObjectType != null
+                && itemPath.startsWith(JobType.BIGDATASTREAMING.repositoryObjectType.getFolder())) {
+            return ConvertJobsUtil.JobType.BIGDATASTREAMING.getDisplayName();
+        } else if (JobType.BIGDATABATCH.repositoryObjectType != null
+                && itemPath.startsWith(JobType.BIGDATABATCH.repositoryObjectType.getFolder())) {
+            return JobType.BIGDATABATCH.getDisplayName();
+        }
+        return ConvertJobsUtil.JobType.STANDARD.getDisplayName();
+    }
+
 
     /**
      * DOC nrousseau Comment method "getFrameworkItemsByJobType".
