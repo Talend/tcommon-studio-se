@@ -68,7 +68,6 @@ import org.talend.designer.maven.tools.creator.CreateMavenRoutinesJarPom;
 import org.talend.designer.maven.utils.PomIdsHelper;
 import org.talend.designer.maven.utils.PomUtil;
 import org.talend.designer.runprocess.IRunProcessService;
-import org.talend.repository.ProjectManager;
 import org.talend.repository.RepositoryWorkUnit;
 import org.talend.utils.io.FilesUtils;
 
@@ -259,13 +258,23 @@ public class CodesJarM2CacheManager {
         updateCodesJarProject(monitor, false, false, false);
     }
 
+    public static void updateCodesJarProjectForLogon(IProgressMonitor monitor) {
+        Set<CodesJarInfo> allCodesJars = CodesJarResourceCache.getAllCodesJars();
+        Set<CodesJarInfo> toUpdate = allCodesJars.stream()
+                .filter(info -> info.isInCurrentMainProject() && needUpdateCodesJarProject(info)).collect(Collectors.toSet());
+        allCodesJars.removeAll(toUpdate);
+        // compile directly for the rest of jar projects
+        allCodesJars.stream().map(info -> IRunProcessService.get().getExistingTalendCodesJarProject(info)).filter(p -> p != null)
+                .forEach(p -> p.buildWholeCodeProject());
+        updateCodesJarProject(monitor, toUpdate, false, false, false);
+    }
+
     public static void updateCodesJarProject(IProgressMonitor monitor, boolean forceBuild, boolean onlyCurrentProject,
             boolean syncCode) {
         Set<CodesJarInfo> toUpdate;
         if (onlyCurrentProject) {
-            String currentProject = ProjectManager.getInstance().getCurrentProject().getTechnicalLabel();
-            toUpdate = CodesJarResourceCache.getAllCodesJars().stream().filter(
-                    info -> info.getProjectTechName().equals(currentProject) && (forceBuild || needUpdateCodesJarProject(info)))
+            toUpdate = CodesJarResourceCache.getAllCodesJars().stream()
+                    .filter(info -> info.isInCurrentMainProject() && (forceBuild || needUpdateCodesJarProject(info)))
                     .collect(Collectors.toSet());
         } else {
             toUpdate = CodesJarResourceCache.getAllCodesJars().stream()
