@@ -636,7 +636,7 @@ public class LockerByKeyTest {
     }
 
     @SuppressWarnings({ "unchecked", "rawtypes" })
-    @Test(timeout = 20000)
+    @Test(timeout = 30000)
     // @Test
     public void testThreadSafety_LockThenUnlock() throws Exception {
         final ILockerByKey locker = createLockerInstance();
