@@ -1656,6 +1656,7 @@ public class ProcessorUtilities {
                             String context = (String) node.getElementParameter("PROCESS_TYPE_CONTEXT").getValue(); //$NON-NLS-1$
                             String version = (String) node.getElementParameter("PROCESS_TYPE_VERSION").getValue(); //$NON-NLS-1$
                             final JobInfo subJobInfo = new JobInfo(jobId, context, version);
+                            subJobInfo.setArgumentsMap(jobInfo.getArgumentsMap());
                             subJobInfo.setNeedUnloadProcessor(needUnload);
                             // get processitem from job
                             final ProcessItem processItem = ItemCacheManager.getProcessItem(jobId, version);
