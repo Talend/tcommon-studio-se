@@ -56,6 +56,8 @@ public class MetadataTable implements IMetadataTable, Cloneable {
     private Map<String, String> additionalProperties = new HashMap<String, String>();
 
     private boolean isRepository = false;
+    
+    private boolean isNodeCheck = false;
 
     private String tableType;
 
@@ -153,7 +155,7 @@ public class MetadataTable implements IMetadataTable, Cloneable {
             List<IMetadataColumn> temp = new ArrayList<IMetadataColumn>();
             temp.addAll(this.listColumns);
             temp.addAll(this.unusedColumns);
-            if (originalColumns != null && isRepository) {
+            if (originalColumns != null && (isRepository || isNodeCheck)) {
                 Collections.sort(temp, new Comparator<IMetadataColumn>() {
 
                     @Override
@@ -520,4 +522,13 @@ public class MetadataTable implements IMetadataTable, Cloneable {
     public List<String> getOriginalColumns() {
         return this.originalColumns;
     }
+
+	public boolean isNodeCheck() {
+		return isNodeCheck;
+	}
+
+	public void setNodeCheck(boolean isNodeCheck) {
+		this.isNodeCheck = isNodeCheck;
+	}
+    
 }
