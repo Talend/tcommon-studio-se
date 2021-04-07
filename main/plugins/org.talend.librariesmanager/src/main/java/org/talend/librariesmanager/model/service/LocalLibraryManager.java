@@ -18,8 +18,10 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.io.InvalidClassException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
+import java.io.ObjectStreamClass;
 import java.net.MalformedURLException;
 import java.net.URI;
 import java.net.URL;
@@ -575,7 +577,18 @@ public class LocalLibraryManager implements ILibraryManagerService, IChangedLibr
                 ByteArrayInputStream bais = new ByteArrayInputStream(lastUpdateStream);
                 ObjectInputStream ois;
                 try {
-                    ois = new ObjectInputStream(bais);
+                    ois = new ObjectInputStream(bais) {
+                        @Override
+                        protected Class<?> resolveClass(ObjectStreamClass desc) throws IOException, ClassNotFoundException {
+                            // Make sure we can only deserialize what we are expecting
+                            if (!(desc.getName().startsWith("java.util")
+                                || String.class.getName().equals(desc.getName())
+                                || Date.class.getName().equals(desc.getName()))) {
+                                throw new InvalidClassException("Unauthorized deserialization attempt", desc.getName());
+                            }
+                            return super.resolveClass(desc);
+                        }
+                    };
                     lastResolveDate = (HashMap) ois.readObject();
                     ois.close();
                     bais.close();
