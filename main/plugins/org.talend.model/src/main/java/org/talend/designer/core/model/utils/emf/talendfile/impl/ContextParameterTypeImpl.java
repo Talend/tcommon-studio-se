@@ -365,12 +365,6 @@ public class ContextParameterTypeImpl extends EObjectImpl implements ContextPara
     }
 
     public String getRawValue() {
-        if (value != null && value.length() > 0 && PasswordEncryptUtil.isPasswordType(getType())) {
-            String decryptValue = StudioEncryption.getStudioEncryption(StudioEncryption.EncryptionKeyName.SYSTEM).decrypt(value);
-            if (decryptValue != null) {
-                return decryptValue;
-            }
-        }
         return value;
     }
 

@@ -297,19 +297,6 @@ public class ElementParameterTypeImpl extends EObjectImpl implements ElementPara
     }
 
     public String getRawValue() {
-        if (value != null && value.length() > 0 && PasswordEncryptUtil.isPasswordField(getField())) {
-            String decrypt = null;
-            if (StudioEncryption.hasEncryptionSymbol(value)) {
-                decrypt = StudioEncryption.getStudioEncryption(StudioEncryption.EncryptionKeyName.SYSTEM).decrypt(value);
-            } else {
-                // Some migration task: GenerateJobPomMigrationTask invokes this method
-                decrypt = CryptoMigrationUtil.decrypt(value);
-            }
-
-            if (decrypt != null) {
-                return decrypt;
-            }
-        }
         return value;
     }
 

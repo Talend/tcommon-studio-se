@@ -154,12 +154,6 @@ public class ElementValueTypeImpl extends EObjectImpl implements ElementValueTyp
     }
 
     public String getRawValue() {
-        if (value != null && value.length() > 0) {
-            String decrypt = StudioEncryption.getStudioEncryption(StudioEncryption.EncryptionKeyName.SYSTEM).decrypt(value);
-            if (decrypt != null) {
-                return decrypt;
-            }
-        }
         return value;
     }
 
