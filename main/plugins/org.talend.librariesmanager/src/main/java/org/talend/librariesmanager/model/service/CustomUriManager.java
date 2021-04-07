@@ -28,6 +28,7 @@ import org.eclipse.core.resources.IFolder;
 import org.eclipse.core.resources.IProject;
 import org.eclipse.core.resources.IResource;
 import org.eclipse.core.resources.IWorkspaceRunnable;
+import org.eclipse.core.runtime.Assert;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.NullProgressMonitor;
@@ -60,10 +61,25 @@ public class CustomUriManager {
     private final Object reloadingLock = new Object();
 
     private CustomUriManager() {
+        IFolder resourcePath = getResourcePath();
         try {
-            customURIObject = loadResources(getResourcePath(), RepositoryConstants.PROJECT_SETTINGS_CUSTOM_URI_MAP);
+            Assert.isNotNull(resourcePath);
+            customURIObject = loadResources(resourcePath, RepositoryConstants.PROJECT_SETTINGS_CUSTOM_URI_MAP);
         } catch (Exception e) {
             ExceptionHandler.process(e);
+            try {
+                if (resourcePath != null) {
+                    customURIObject = loadResources(resourcePath.getLocation().toPortableString(),
+                            RepositoryConstants.PROJECT_SETTINGS_CUSTOM_URI_MAP);
+                }
+            } catch (Exception e1) {
+                ExceptionHandler.process(e1);
+
+                /**
+                 * Seems dangrous to load an empty json here, because it may overwrite the existing one
+                 */
+//                customURIObject = new JSONObject();
+            }
         }
     }
 
@@ -263,10 +279,14 @@ public class CustomUriManager {
 
     public void reloadCustomMapping() {
         try {
-            if (isNeedReload) {
+            if (isNeedReload || customURIObject == null) {
                 synchronized (reloadingLock) {
-                    if (isNeedReload) {
-                        customURIObject.clear();
+                    if (isNeedReload || customURIObject == null) {
+                        if (customURIObject == null) {
+                            customURIObject = new JSONObject();
+                        } else {
+                            customURIObject.clear();
+                        }
                         JSONObject loadResources = loadResources(getResourcePath(),
                                 RepositoryConstants.PROJECT_SETTINGS_CUSTOM_URI_MAP);
                         customURIObject.putAll(loadResources);
