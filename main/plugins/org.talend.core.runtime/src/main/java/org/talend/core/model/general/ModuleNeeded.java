@@ -91,7 +91,7 @@ public class ModuleNeeded {
      * generate a release version with this flag=true .Need to improve it after release ,normally the studio should use
      * all jars with release version by default if maven url is not specified.
      */
-    private boolean useReleaseVersion = false;
+    private boolean useReleaseVersion = true;
 
     ILibraryManagerService libManagerService = (ILibraryManagerService) GlobalServiceRegister.getDefault()
             .getService(ILibraryManagerService.class);
