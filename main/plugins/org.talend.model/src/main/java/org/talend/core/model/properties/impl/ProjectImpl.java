@@ -42,6 +42,7 @@ import org.talend.core.model.properties.UserProjectAuthorization;
  * <!-- begin-user-doc --> An implementation of the model object '<em><b>Project</b></em>'. <!-- end-user-doc -->
  * <p>
  * The following features are implemented:
+ * </p>
  * <ul>
  *   <li>{@link org.talend.core.model.properties.impl.ProjectImpl#getTechnicalStatus <em>Technical Status</em>}</li>
  *   <li>{@link org.talend.core.model.properties.impl.ProjectImpl#getDocumentationStatus <em>Documentation Status</em>}</li>
@@ -79,7 +80,6 @@ import org.talend.core.model.properties.UserProjectAuthorization;
  *   <li>{@link org.talend.core.model.properties.impl.ProjectImpl#getMigrationTask <em>Migration Task</em>}</li>
  *   <li>{@link org.talend.core.model.properties.impl.ProjectImpl#isBigData <em>Big Data</em>}</li>
  * </ul>
- * </p>
  *
  * @generated
  */
@@ -463,7 +463,7 @@ public class ProjectImpl extends EObjectImpl implements Project {
     protected boolean hidePassword = HIDE_PASSWORD_EDEFAULT;
 
     /**
-	 * The cached value of the '{@link #getItemsRelations() <em>Items Relations</em>}' containment reference list.
+	 * The cached value of the '{@link #getItemsRelations() <em>Items Relations</em>}' reference list.
 	 * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
 	 * @see #getItemsRelations()
@@ -1037,7 +1037,7 @@ public class ProjectImpl extends EObjectImpl implements Project {
 	 */
     public EList getItemsRelations() {
 		if (itemsRelations == null) {
-			itemsRelations = new EObjectContainmentEList(ItemRelations.class, this, PropertiesPackage.PROJECT__ITEMS_RELATIONS);
+			itemsRelations = new EObjectResolvingEList(ItemRelations.class, this, PropertiesPackage.PROJECT__ITEMS_RELATIONS);
 		}
 		return itemsRelations;
 	}
@@ -1317,8 +1317,6 @@ public class ProjectImpl extends EObjectImpl implements Project {
 				return basicSetStatAndLogsSettings(null, msgs);
 			case PropertiesPackage.PROJECT__IMPLICIT_CONTEXT_SETTINGS:
 				return basicSetImplicitContextSettings(null, msgs);
-			case PropertiesPackage.PROJECT__ITEMS_RELATIONS:
-				return ((InternalEList)getItemsRelations()).basicRemove(otherEnd, msgs);
 			case PropertiesPackage.PROJECT__CUSTOM_COMPONENT_SETTINGS:
 				return ((InternalEList)getCustomComponentSettings()).basicRemove(otherEnd, msgs);
 			case PropertiesPackage.PROJECT__MIGRATION_TASK:

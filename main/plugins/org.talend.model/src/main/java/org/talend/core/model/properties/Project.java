@@ -18,6 +18,7 @@ import org.talend.designer.core.model.utils.emf.talendfile.ProcessType;
  *
  * <p>
  * The following features are supported:
+ * </p>
  * <ul>
  *   <li>{@link org.talend.core.model.properties.Project#getTechnicalStatus <em>Technical Status</em>}</li>
  *   <li>{@link org.talend.core.model.properties.Project#getDocumentationStatus <em>Documentation Status</em>}</li>
@@ -55,7 +56,6 @@ import org.talend.designer.core.model.utils.emf.talendfile.ProcessType;
  *   <li>{@link org.talend.core.model.properties.Project#getMigrationTask <em>Migration Task</em>}</li>
  *   <li>{@link org.talend.core.model.properties.Project#isBigData <em>Big Data</em>}</li>
  * </ul>
- * </p>
  *
  * @see org.talend.core.model.properties.PropertiesPackage#getProject()
  * @model
@@ -542,7 +542,7 @@ public interface Project extends EObject {
     void setHidePassword(boolean value);
 
     /**
-	 * Returns the value of the '<em><b>Items Relations</b></em>' containment reference list.
+	 * Returns the value of the '<em><b>Items Relations</b></em>' reference list.
 	 * The list contents are of type {@link org.talend.core.model.properties.ItemRelations}.
 	 * <!-- begin-user-doc -->
      * <p>
@@ -550,9 +550,9 @@ public interface Project extends EObject {
      * there really should be more of a description here...
      * </p>
      * <!-- end-user-doc -->
-	 * @return the value of the '<em>Items Relations</em>' containment reference list.
+	 * @return the value of the '<em>Items Relations</em>' reference list.
 	 * @see org.talend.core.model.properties.PropertiesPackage#getProject_ItemsRelations()
-	 * @model type="org.talend.core.model.properties.ItemRelations" containment="true"
+	 * @model type="org.talend.core.model.properties.ItemRelations"
 	 * @generated
 	 */
     EList getItemsRelations();

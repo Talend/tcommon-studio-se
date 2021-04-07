@@ -48,7 +48,7 @@
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="hidePassword" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EBoolean"
         defaultValueLiteral="true"/>
     <eStructuralFeatures xsi:type="ecore:EReference" name="ItemsRelations" upperBound="-1"
-        eType="#//ItemRelations" containment="true"/>
+        eType="#//ItemRelations"/>
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="reference" unique="false"
         lowerBound="1" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EBoolean"/>
     <eStructuralFeatures xsi:type="ecore:EReference" name="customComponentSettings"
