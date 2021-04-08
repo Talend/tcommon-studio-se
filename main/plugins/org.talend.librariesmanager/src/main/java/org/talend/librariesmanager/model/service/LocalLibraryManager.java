@@ -67,10 +67,8 @@ import org.talend.core.model.general.ModuleNeeded.ELibraryInstallStatus;
 import org.talend.core.model.general.ModuleStatusProvider;
 import org.talend.core.model.repository.ERepositoryObjectType;
 import org.talend.core.nexus.ArtifactRepositoryBean;
-import org.talend.core.nexus.IRepositoryArtifactHandler;
 import org.talend.core.nexus.NexusConstants;
 import org.talend.core.nexus.NexusServerUtils;
-import org.talend.core.nexus.RepositoryArtifactHandlerManager;
 import org.talend.core.nexus.TalendLibsServerManager;
 import org.talend.core.nexus.TalendMavenResolver;
 import org.talend.core.prefs.ITalendCorePrefConstants;
@@ -85,7 +83,6 @@ import org.talend.designer.runprocess.IRunProcessService;
 import org.talend.librariesmanager.maven.MavenArtifactsHandler;
 import org.talend.librariesmanager.model.ExtensionModuleManager;
 import org.talend.librariesmanager.model.ModulesNeededProvider;
-import org.talend.librariesmanager.nexus.utils.ShareLibrariesUtil;
 import org.talend.librariesmanager.prefs.LibrariesManagerUtils;
 import org.talend.osgi.hook.notification.JarMissingObservable;
 
@@ -1361,138 +1358,76 @@ public class LocalLibraryManager implements ILibraryManagerService, IChangedLibr
 		return false;
 	}
 
-	private void deployLibsFromCustomComponents(IComponentsService service, Map<String, String> platformURLMap) {
+    private void deployLibsFromCustomComponents(IComponentsService service, Map<String, String> platformURLMap) {
         boolean deployToRemote = true;
         if (!LibrariesManagerUtils.shareLibsAtStartup()) {
             log.info("Skip deploying libs from custom components");
             deployToRemote = false;
         }
 
-        Map<ModuleNeeded, File> needToDeploy = new HashMap<ModuleNeeded, File>();
-		List<ComponentProviderInfo> componentsFolders = service.getComponentsFactory().getComponentsProvidersInfo();
-		for (ComponentProviderInfo providerInfo : componentsFolders) {
-			String id = providerInfo.getId();
-			try {
-				File file = new File(providerInfo.getLocation());
-				if (isExtComponentProvider(id)) {
-					if (file.isDirectory()) {
-						List<File> jarFiles = FilesUtils.getJarFilesFromFolder(file, null);
-						if (jarFiles.size() > 0) {
-							for (File jarFile : jarFiles) {
-								String name = jarFile.getName();
-								if (!canDeployFromCustomComponentFolder(name) || platformURLMap.get(name) != null) {
-									continue;
-								}
+        Map<File, Set<MavenArtifact>> needToDeploy = new HashMap<File, Set<MavenArtifact>>();
+        List<ComponentProviderInfo> componentsFolders = service.getComponentsFactory().getComponentsProvidersInfo();
+        for (ComponentProviderInfo providerInfo : componentsFolders) {
+            String id = providerInfo.getId();
+            try {
+                File file = new File(providerInfo.getLocation());
+                if (isExtComponentProvider(id)) {
+                    if (file.isDirectory()) {
+                        List<File> jarFiles = FilesUtils.getJarFilesFromFolder(file, null);
+                        if (jarFiles.size() > 0) {
+                            for (File jarFile : jarFiles) {
+                                String name = jarFile.getName();
+                                if (!canDeployFromCustomComponentFolder(name) || platformURLMap.get(name) != null) {
+                                    continue;
+                                }
 
                                 collectLibModules(jarFile, needToDeploy);
-							}
-						}
-					} else {
-                        if (!canDeployFromCustomComponentFolder(file.getName()) || platformURLMap.get(file.getName()) != null) {
-							continue;
-						}
-                        collectLibModules(file, needToDeploy);
-					}
-				}
-			} catch (Exception e) {
-				ExceptionHandler.process(e);
-				continue;
-			}
-		}
-
-        if (!deployToRemote) {
-            needToDeploy.forEach((k, v) -> {
-                try {
-                    // install as release version if can't find mvn url from index
-                    install(v, null, false, true);
-                } catch (Exception e) {
-                    ExceptionHandler.process(e);
-                }
-            });
-
-            return;
-        }
-
-        // deploy needed jars for User and Exchange component providers
-        Map<String, List<MavenArtifact>> snapshotArtifactMap = new HashMap<String, List<MavenArtifact>>();
-        Map<String, List<MavenArtifact>> releaseArtifactMap = new HashMap<String, List<MavenArtifact>>();
-        if (!needToDeploy.isEmpty()) {
-
-            // collect groupId to search
-            Set<String> snapshotGroupIdSet = new HashSet<String>();
-            Set<String> releaseGroupIdSet = new HashSet<String>();
-            for (ModuleNeeded mod : needToDeploy.keySet()) {
-                MavenArtifact parseMvnUrl = MavenUrlHelper.parseMvnUrl(mod.getMavenUri());
-                if (parseMvnUrl != null) {
-                    if (ShareLibrariesUtil.isSnapshotVersion(parseMvnUrl.getVersion())) {
-                        snapshotGroupIdSet.add(parseMvnUrl.getGroupId());
-                    } else {
-                        releaseGroupIdSet.add(parseMvnUrl.getGroupId());
-                    }
-                }
-            }
-
-
-            // search on nexus to avoid deploy the jar many times
-            Set<File> shareFiles = new HashSet<File>();
-            ArtifactRepositoryBean customNexusServer = TalendLibsServerManager.getInstance().getCustomNexusServer();
-            IRepositoryArtifactHandler customerRepHandler = RepositoryArtifactHandlerManager
-                    .getRepositoryHandler(customNexusServer);
-            if (customerRepHandler != null) {
-
-                try {
-                    ShareLibrariesUtil.seachArtifacts(null, customerRepHandler, snapshotArtifactMap, releaseArtifactMap,
-                            snapshotGroupIdSet,
-                            releaseGroupIdSet);
-                } catch (Exception e1) {
-                    ExceptionHandler.process(e1);
-                }
-
-                needToDeploy.forEach((k, v) -> {
-                    MavenArtifact artifact = MavenUrlHelper.parseMvnUrl(k.getMavenUri());
-                    boolean isSnapshotVersion = ShareLibrariesUtil.isSnapshotVersion(artifact.getVersion());
-                    String key = ShareLibrariesUtil.getArtifactKey(artifact, isSnapshotVersion);
-
-                    List<MavenArtifact> artifactList = null;
-                    boolean toShare = true;
-                    if (isSnapshotVersion) {
-                        artifactList = snapshotArtifactMap.get(key);
-                        if (artifactList != null && artifactList.size() > 0) {
-                            try {
-                                if (ShareLibrariesUtil.isSameFileWithRemote(v, artifactList, customNexusServer,
-                                        customerRepHandler, isSnapshotVersion)) {
-                                    toShare = false;
-                                }
-                            } catch (Exception e) {
-                                ExceptionHandler.process(e);
                             }
                         }
                     } else {
-                        artifactList = releaseArtifactMap.get(key);
-                        // skip checksum for release artifact.
-                        if (artifactList != null && artifactList.contains(artifact)) {
-                            toShare = false;
+                        if (!canDeployFromCustomComponentFolder(file.getName()) || platformURLMap.get(file.getName()) != null) {
+                            continue;
                         }
+                        collectLibModules(file, needToDeploy);
                     }
-                    if (toShare) {
-                        shareFiles.add(v);
-                    }
-                });
-            } else {
-                // no artifact repository, install all
-                shareFiles.addAll(needToDeploy.values());
-            }
-
-            for (File f : shareFiles) {
-                install(f, null, true, true);
+                }
+            } catch (Exception e) {
+                ExceptionHandler.process(e);
+                continue;
             }
         }
+
+        // first install them locally
+        needToDeploy.forEach((k, v) -> {
+            try {
+                // install as release version if can't find mvn url from index
+                install(k, null, false, true);
+            } catch (Exception e) {
+                ExceptionHandler.process(e);
+            }
+        });
+
+        if (!deployToRemote) {
+            return;
+        }
+
+        ShareComponentsLibsJob shareJob = new ShareComponentsLibsJob("deploy libs for custom components", needToDeploy, deployer);
+        shareJob.schedule();
     }
 
-    private void collectLibModules(File jarFile, Map<ModuleNeeded, File> needToDeploy) {
-        ModuleNeeded mod = ModuleNeeded.newInstance(null, jarFile.getName(), null, true);
-        mod.setUseReleaseVersion(true);
-        needToDeploy.put(mod, jarFile);
+    private void collectLibModules(File jarFile, Map<File, Set<MavenArtifact>> needToDeploy) {
+        Map<String,String> mavenUris = new HashMap<String,String>();
+        guessMavenRUIFromIndex(jarFile, true, mavenUris);
+        
+        Set<MavenArtifact> artifacts = new HashSet<MavenArtifact>();
+        for(String uri: mavenUris.keySet()) {
+            MavenArtifact art = MavenUrlHelper.parseMvnUrl(uri);
+            if(art!=null) {
+                artifacts.add(art);
+            }
+        }
+        
+        needToDeploy.put(jarFile, artifacts);
     }
 
     private boolean canDeployFromCustomComponentFolder(String fileName) {
