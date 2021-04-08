@@ -1,7 +1,0 @@
-Manifest-Version: 1.0
-Bundle-ManifestVersion: 2
-Bundle-Name: Test fragment for model migration
-Bundle-SymbolicName: org.talend.model.migration.test
-Bundle-Version: 7.4.1.qualifier
-Fragment-Host: org.talend.model.migration;bundle-version="1.0.0"
-Require-Bundle: org.talend.testutils

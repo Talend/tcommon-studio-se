@@ -1,85 +1,25 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<feature
-      id="org.talend.commons.feature"
-      label="Commons Feature"
-      version="7.4.1.qualifier"
-      provider-name=".Talend SA.">
 
-   <description url="http://www.talend.com/online/featuresdescription.html#commons-feature">
-      Complete description about this feature at http://www.talend.com/online/featuresdescription.html#commons-feature
-   </description>
-
-   <copyright url="http://www.talend.com/online/copyright.txt">
-      Copyright Talend 2006, 2007
-   </copyright>
-
-   <license>
-      The licence are describe in branding feature
-   </license>
-
-   <url>
-      <discovery label="Talend web site" url="http://www.talend.com"/>
-   </url>
-
-   <requires>
-      <import plugin="org.bouncycastle.bcprov" version="0.0.0" match="greaterOrEqual"/>
-      <import plugin="com.fasterxml.jackson.core.jackson-databind" version="2.9.8" match="greaterOrEqual"/>
-      <import plugin="jackson-core-asl" version="0.0.0" match="greaterOrEqual"/>
-      <import plugin="jackson-mapper-asl" version="0.0.0" match="greaterOrEqual"/>
-      <import plugin="org.apache.xalan" version="0.0.0" match="greaterOrEqual"/>
-      <import plugin="org.apache.xerces" version="0.0.0" match="greaterOrEqual"/>
-   </requires>
-
-   <plugin
-         id="org.talend.common.ui.runtime"
-         download-size="0"
-         install-size="0"
-         version="0.0.0"
-         unpack="false"/>
-
-   <plugin
-         id="org.talend.common.ui.runtime.nl"
-         download-size="0"
-         install-size="0"
-         version="0.0.0"
-         fragment="true"
-         unpack="false"/>
-
-   <plugin
-         id="org.talend.commons.runtime"
-         download-size="0"
-         install-size="0"
-         version="0.0.0"
-         unpack="false"/>
-
-   <plugin
-         id="org.talend.commons.runtime.nl"
-         download-size="0"
-         install-size="0"
-         version="0.0.0"
-         fragment="true"
-         unpack="false"/>
-
-   <plugin
-         id="org.talend.commons.ui"
-         download-size="0"
-         install-size="0"
-         version="0.0.0"
-         unpack="false"/>
-
-   <plugin
-         id="org.talend.commons.ui.nl"
-         download-size="0"
-         install-size="0"
-         version="0.0.0"
-         fragment="true"
-         unpack="false"/>
-
-   <plugin
-         id="org.talend.libraries.ui"
-         download-size="0"
-         install-size="0"
-         version="0.0.0"
-         unpack="false"/>
-
+<feature id="org.talend.commons.feature" label="Commons Feature" version="7.4.1.qualifier" provider-name=".Talend SA."> 
+  <description url="http://www.talend.com/online/featuresdescription.html#commons-feature">Complete description about this feature at http://www.talend.com/online/featuresdescription.html#commons-feature</description>  
+  <copyright url="http://www.talend.com/online/copyright.txt">Copyright Talend 2006, 2007</copyright>  
+  <license>The licence are describe in branding feature</license>  
+  <url> 
+    <discovery label="Talend web site" url="http://www.talend.com"/> 
+  </url>  
+  <requires>
+    <import plugin="org.bouncycastle.bcprov" version="0.0.0" match="greaterOrEqual"/>
+    <import plugin="com.fasterxml.jackson.core.jackson-databind" version="2.9.8" match="greaterOrEqual"/>
+    <import plugin="jackson-core-asl" version="0.0.0" match="greaterOrEqual"/>
+    <import plugin="jackson-mapper-asl" version="0.0.0" match="greaterOrEqual"/>
+    <import plugin="org.apache.xalan" version="0.0.0" match="greaterOrEqual"/>
+    <import plugin="org.apache.xerces" version="0.0.0" match="greaterOrEqual"/>
+  </requires>  
+  <plugin id="org.talend.common.ui.runtime" download-size="0" install-size="0" version="0.0.0" unpack="false"/>
+  <plugin id="org.talend.common.ui.runtime.nl" download-size="0" install-size="0" version="0.0.0" fragment="true" unpack="false"/>
+  <plugin id="org.talend.commons.runtime" download-size="0" install-size="0" version="0.0.0" unpack="false"/>
+  <plugin id="org.talend.commons.runtime.nl" download-size="0" install-size="0" version="0.0.0" fragment="true" unpack="false"/>
+  <plugin id="org.talend.commons.ui" download-size="0" install-size="0" version="0.0.0" unpack="false"/>
+  <plugin id="org.talend.commons.ui.nl" download-size="0" install-size="0" version="0.0.0" fragment="true" unpack="false"/>
+  <plugin id="org.talend.libraries.ui" download-size="0" install-size="0" version="0.0.0" unpack="false"/>
 </feature>
