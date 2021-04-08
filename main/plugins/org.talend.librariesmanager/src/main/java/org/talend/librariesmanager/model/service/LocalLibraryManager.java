@@ -80,6 +80,7 @@ import org.talend.core.utils.TalendQuoteUtils;
 import org.talend.designer.maven.tools.BuildCacheManager;
 import org.talend.designer.maven.utils.PomUtil;
 import org.talend.designer.runprocess.IRunProcessService;
+import org.talend.librariesmanager.i18n.Messages;
 import org.talend.librariesmanager.maven.MavenArtifactsHandler;
 import org.talend.librariesmanager.model.ExtensionModuleManager;
 import org.talend.librariesmanager.model.ModulesNeededProvider;
@@ -1411,7 +1412,8 @@ public class LocalLibraryManager implements ILibraryManagerService, IChangedLibr
             return;
         }
 
-        ShareComponentsLibsJob shareJob = new ShareComponentsLibsJob("deploy libs for custom components", needToDeploy, deployer);
+        ShareComponentsLibsJob shareJob = new ShareComponentsLibsJob(
+                Messages.getString("LocalLibraryManager.shareLibsForCustomponents"), needToDeploy, deployer);
         shareJob.schedule();
     }
 

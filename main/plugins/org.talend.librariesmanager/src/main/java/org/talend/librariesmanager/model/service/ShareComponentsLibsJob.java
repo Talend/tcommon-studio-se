@@ -44,6 +44,9 @@ public class ShareComponentsLibsJob extends Job {
 
     public ShareComponentsLibsJob(String name, Map<File, Set<MavenArtifact>> needToDeploy, MavenArtifactsHandler deployer) {
         super(name);
+        if (needToDeploy == null || deployer == null) {
+            throw new IllegalArgumentException("needToDeploy or deployer is null!");
+        }
         this.deployer = deployer;
         this.needToDeploy = needToDeploy;
     }
