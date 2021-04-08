@@ -1,7 +1,0 @@
-<?xml version="1.0" encoding="ASCII"?>
-<TalendMetadata:SAPFunctionUnit xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:TalendMetadata="http://www.talend.org" xsi:schemaLocation="http://www.talend.org ../old_models/metadata.ecore" id="ZeId" comment="ZeComment" label="ZeLabel" Name="ZeName" OutputType="ZeOutputTableType" OutputTableName="ZeOutputTableName" Document="TheDocument">
-  <InputParameterTable label="ZeISFPLabel"/>
-  <MetadataTable label="ZeMLabel"/>
-  <tables xsi:type="TalendMetadata:SubscriberTable" label="ZeSLabel"/>
-  <TestInputParameterTable label="ZeSTIPTLabel"/>
-</TalendMetadata:SAPFunctionUnit>
