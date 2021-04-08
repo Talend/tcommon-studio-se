@@ -14,6 +14,12 @@
 			<groupId>org.apache.karaf.tooling</groupId>
 			<artifactId>karaf-maven-plugin</artifactId>
 			<version>4.2.7</version>
+			<exclusions>
+				<exclusion>
+					<groupId>org.apache.httpcomponents</groupId>
+					<artifactId>httpclient</artifactId>
+				</exclusion>
+			</exclusions>
 		</dependency>
 		<dependency>
 			<groupId>org.slf4j</groupId>
@@ -35,6 +41,11 @@
 			<groupId>org.tukaani</groupId>
 			<artifactId>xz</artifactId>
 			<version>1.6</version>
+		</dependency>
+		<dependency>
+			<groupId>org.apache.httpcomponents</groupId>
+			<artifactId>httpclient</artifactId>
+			<version>4.5.13</version>
 		</dependency>
 	</dependencies>
 	<build>
