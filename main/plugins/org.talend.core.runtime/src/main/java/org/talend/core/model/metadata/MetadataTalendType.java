@@ -33,6 +33,7 @@ import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
 
 import org.apache.commons.codec.digest.DigestUtils;
+import org.apache.commons.lang.StringUtils;
 import org.eclipse.core.resources.IFile;
 import org.eclipse.core.resources.IFolder;
 import org.eclipse.core.resources.IProject;
@@ -534,11 +535,11 @@ public final class MetadataTalendType {
             }
             for (File sysMapping : sysMappingFiles.listFiles()) {
                 IFile projectMapping = projectMappingFolder.getFile(sysMapping.getName());
-                if (projectMapping.exists() && sysMapping.getName().equals("mapping_Greenplum.xml")) {
+                if (projectMapping.exists() && StringUtils.equals(sysMapping.getName(), "mapping_Greenplum.xml")) {
 
                     String sha1OfFile = DigestUtils.shaHex(projectMapping.getContents());
                     String shalOfOldSystem = "8431f19215dacb3caa126778ae695954552cce2a";
-                    if (sha1OfFile.equals(shalOfOldSystem)) {
+                    if (StringUtils.equals(sha1OfFile, shalOfOldSystem)) {
                         copyFile(sysMapping, projectMapping);
                     }
                 }
