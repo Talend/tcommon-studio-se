@@ -100,7 +100,7 @@ public class MavenRepoSynchronizer {
                         // final String pomPath=pomFile.getAbsolutePath();
                         // TUP-17785, make sure generate new one always without any dependences, so null
                         String pomPath;
-                        if (artifact.isMavenPlugin()) {
+                        if (artifact.isMavenPlugin() || artifact.isPackagingPom()) {
                             // use original pom to keep dependencies for maven plugins
                             pomPath = pomFile.getAbsolutePath();
                         } else {
@@ -150,6 +150,7 @@ public class MavenRepoSynchronizer {
                 packaging = TalendMavenConstants.PACKAGING_JAR;
             }
             boolean isMavenPlugin = packaging.equals("maven-plugin"); //$NON-NLS-1$
+            boolean isPackagingPom = packaging.equals("pom"); //$NON-NLS-1$
             // use jar instead
             if (packaging.equals("bundle") || isMavenPlugin) { //$NON-NLS-1$
                 packaging = TalendMavenConstants.PACKAGING_JAR;
@@ -160,7 +161,7 @@ public class MavenRepoSynchronizer {
 
             final String mvnUrl = MavenUrlHelper.generateMvnUrl(groupId, artifactId, version, packaging, null);
             MavenArtifact artifact = MavenUrlHelper.parseMvnUrl(mvnUrl);
-            return new ExtendedMavenArtifact(mvnUrl, artifact, isMavenPlugin);
+            return new ExtendedMavenArtifact(mvnUrl, artifact, isMavenPlugin, isPackagingPom);
         } catch (Exception e) {
             ExceptionHandler.process(e);
         }
@@ -247,12 +248,15 @@ public class MavenRepoSynchronizer {
 
         private boolean isMavenPlugin;
 
+        private boolean isPackagingPom;
+
         private String mvnUrl;
 
-        public ExtendedMavenArtifact(String mvnUrl, MavenArtifact artifact, boolean isMavenPlugin) {
+        public ExtendedMavenArtifact(String mvnUrl, MavenArtifact artifact, boolean isMavenPlugin, boolean isPackagingPom) {
             this.artifact = artifact;
             this.isMavenPlugin = isMavenPlugin;
             this.mvnUrl = mvnUrl;
+            this.isPackagingPom = isPackagingPom;
         }
 
         public MavenArtifact getArtifact() {
@@ -267,5 +271,8 @@ public class MavenRepoSynchronizer {
             return mvnUrl;
         }
 
+        public boolean isPackagingPom() {
+            return isPackagingPom;
+        }
     }
 }
