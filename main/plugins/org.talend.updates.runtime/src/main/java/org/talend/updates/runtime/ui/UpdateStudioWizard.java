@@ -238,7 +238,14 @@ public class UpdateStudioWizard extends Wizard {
                                 jsonArray.put(extraFeature.getName());
                                 jso.put(category, jsonArray);
                             } else {
-                                jso.put(extraFeature.getName(), "");
+                                String name = extraFeature.getName();
+                                if (name.contains("(") && name.contains(")")) {
+                                    String suffix = name.substring(name.indexOf("(") + 1, name.lastIndexOf(")"));
+                                    if (suffix.matches("\\d*")) {
+                                        name = name.substring(0, name.indexOf("(")).trim();
+                                    }
+                                }
+                                jso.put(name, "");
                             }
                         }
                     }
