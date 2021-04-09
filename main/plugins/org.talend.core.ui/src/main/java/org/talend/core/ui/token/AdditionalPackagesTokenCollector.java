@@ -12,17 +12,11 @@
 // ============================================================================
 package org.talend.core.ui.token;
 
-import org.eclipse.jface.preference.IPreferenceStore;
-import org.talend.core.repository.CoreRepositoryPlugin;
+import org.talend.commons.utils.time.PropertiesCollectorUtil;
 
 import us.monoid.json.JSONObject;
 
 public class AdditionalPackagesTokenCollector extends AbstractTokenCollector {
-
-    // recorded in org.talend.updates.runtime/.../UpdateStudioWizard.java
-    private static final String ROOT_NODE = "additional_packages_records";
-
-    private static final String ADDITIONAL_PACKAGES = "AdditionalPackages";
 
     public AdditionalPackagesTokenCollector() {
         // TODO Auto-generated constructor stub
@@ -30,18 +24,17 @@ public class AdditionalPackagesTokenCollector extends AbstractTokenCollector {
 
     @Override
     public JSONObject collect() throws Exception {
-        final IPreferenceStore preferenceStore = CoreRepositoryPlugin.getDefault().getPreferenceStore();
-        String records = preferenceStore.getString(ROOT_NODE);
+        String records = PropertiesCollectorUtil.getAdditionalPackageRecording();
+
         JSONObject allRecords;
         try {
             allRecords = new JSONObject(records);
         } catch (Exception e) {
             // the value is not set, or is empty
             allRecords = new JSONObject();
-            allRecords.put(ADDITIONAL_PACKAGES, new JSONObject());
+            allRecords.put(PropertiesCollectorUtil.getAdditionalPackagePreferenceNode(), new JSONObject());
         }
 
         return allRecords;
     }
-
 }

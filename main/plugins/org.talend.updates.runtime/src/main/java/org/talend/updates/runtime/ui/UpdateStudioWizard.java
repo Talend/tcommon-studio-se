@@ -12,7 +12,6 @@
 // ============================================================================
 package org.talend.updates.runtime.ui;
 
-import java.io.IOException;
 import java.lang.reflect.InvocationTargetException;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -37,12 +36,11 @@ import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Shell;
 import org.eclipse.ui.PlatformUI;
-import org.eclipse.ui.preferences.ScopedPreferenceStore;
 import org.osgi.service.prefs.BackingStoreException;
 import org.talend.commons.exception.ExceptionHandler;
 import org.talend.commons.ui.runtime.update.PreferenceKeys;
 import org.talend.commons.utils.system.EclipseCommandLine;
-import org.talend.core.repository.CoreRepositoryPlugin;
+import org.talend.commons.utils.time.PropertiesCollectorUtil;
 import org.talend.updates.runtime.Constants;
 import org.talend.updates.runtime.InstallFeatureObserver;
 import org.talend.updates.runtime.engine.ExtraFeaturesUpdatesFactory;
@@ -170,7 +168,7 @@ public class UpdateStudioWizard extends Wizard {
                 String firstPartOfMessage = Messages.getString("UpdateStudioWizard.all.feautures.installed.successfully"); //$NON-NLS-1$
                 if (hasAnySuccess) {
                     recordSuccessInstallation();
-                    
+
                     if (hasAnyFailure) {
                         firstPartOfMessage = Messages.getString("UpdateStudioWizard.some.feautures.installed.sucessfully"); //$NON-NLS-1$
                     } // else only success to keep initial message
@@ -204,13 +202,14 @@ public class UpdateStudioWizard extends Wizard {
                         }
                     });
                 } // else only failure or canceled so do nothing cause error are reported by Eclipse
+
             }
 
             private void recordSuccessInstallation() {
-                final String rootnode = "additional_packages_records";
-                final String additionalPackages = "AdditionalPackages";
-                final IPreferenceStore preferenceStore = CoreRepositoryPlugin.getDefault().getPreferenceStore();
-                String records = preferenceStore.getString(rootnode);
+                final String additionalPackages = PropertiesCollectorUtil.getAdditionalPackagePreferenceNode();
+
+                String records = PropertiesCollectorUtil.getAdditionalPackageRecording();
+
                 JSONObject allRecords;
                 try {
                     allRecords = new JSONObject(records);
@@ -254,14 +253,7 @@ public class UpdateStudioWizard extends Wizard {
                     ExceptionHandler.log(e.getMessage());
                 }
 
-                preferenceStore.setValue(rootnode, allRecords.toString());
-                if (preferenceStore instanceof ScopedPreferenceStore) {
-                    try {
-                        ((ScopedPreferenceStore) preferenceStore).save();
-                    } catch (IOException e) {
-                        ExceptionHandler.process(e);
-                    }
-                }
+                PropertiesCollectorUtil.storeAdditionalPackageRecording(allRecords.toString());
             }
         });
         return true;
