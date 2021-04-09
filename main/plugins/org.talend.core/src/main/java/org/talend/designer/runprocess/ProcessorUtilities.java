@@ -107,6 +107,8 @@ import org.talend.core.model.repository.IRepositoryViewObject;
 import org.talend.core.model.repository.RepositoryManager;
 import org.talend.core.model.repository.job.JobResource;
 import org.talend.core.model.repository.job.JobResourceManager;
+import org.talend.core.model.routines.CodesJarInfo;
+import org.talend.core.model.routines.RoutinesUtil;
 import org.talend.core.model.utils.JavaResourcesHelper;
 import org.talend.core.repository.model.ProxyRepositoryFactory;
 import org.talend.core.runtime.CoreRuntimePlugin;
@@ -122,6 +124,7 @@ import org.talend.core.services.ISVNProviderService;
 import org.talend.core.ui.IJobletProviderService;
 import org.talend.core.ui.ITestContainerProviderService;
 import org.talend.core.utils.BitwiseOptionUtils;
+import org.talend.core.utils.CodesJarResourceCache;
 import org.talend.designer.core.IDesignerCoreService;
 import org.talend.designer.core.model.utils.emf.talendfile.ContextParameterType;
 import org.talend.designer.core.model.utils.emf.talendfile.ContextType;
@@ -192,6 +195,8 @@ public class ProcessorUtilities {
     private static boolean isDebug = false;
 
     private static boolean isCIMode = false;
+
+    private static boolean isDynamicJobAndCITest = false;
 
     private static JobInfo mainJobInfo;
 
@@ -1013,8 +1018,8 @@ public class ProcessorUtilities {
     private static IProcessor generateCode(JobInfo jobInfo, String selectedContextName, boolean statistics,
             boolean trace, boolean needContext, int option, IProgressMonitor progressMonitor)
             throws ProcessorException {
-        if (!BitwiseOptionUtils.containOption(option, GENERATE_WITHOUT_COMPILING)) {
-            CorePlugin.getDefault().getRunProcessService().buildCodesJavaProject(progressMonitor);
+        if (!BitwiseOptionUtils.containOption(option, GENERATE_WITHOUT_COMPILING) && jobInfo.getFatherJobInfo() == null) {
+            buildCodesJavaProject(progressMonitor, jobInfo);
         }
         return generateCode(jobInfo, selectedContextName, statistics, trace, needContext, true, option,
                 progressMonitor);
@@ -1991,8 +1996,6 @@ public class ProcessorUtilities {
             RepositoryManager.syncRoutineAndJoblet(ERepositoryObjectType.ROUTINES);
         }
 
-        CorePlugin.getDefault().getRunProcessService().buildCodesJavaProject(progressMonitor);
-
         // achen modify to fix 0006107
         ProcessItem pItem = null;
 
@@ -2010,6 +2013,9 @@ public class ProcessorUtilities {
         } else {
             jobInfo = new JobInfo(process, context);
         }
+
+        buildCodesJavaProject(progressMonitor, jobInfo);
+
         final boolean oldMeasureActived = TimeMeasure.measureActive;
         if (!oldMeasureActived) { // not active before.
             TimeMeasure.display = TimeMeasure.displaySteps = TimeMeasure.measureActive = CommonsPlugin.isDebugMode();
@@ -2066,6 +2072,16 @@ public class ProcessorUtilities {
         IProcessor result = generateCode(jobInfo, contextName, statistics, trace, true, option, monitor);
         resetBuildFlagsAndCaches();
         return result;
+    }
+
+    private static void buildCodesJavaProject(IProgressMonitor monitor, JobInfo jobInfo) {
+        Set<JobInfo> allJobInfo = getChildrenJobInfo(jobInfo.getProcessItem(), false, true);
+        allJobInfo.add(jobInfo);
+        Set<CodesJarInfo> toUpdate = allJobInfo.stream().filter(childInfo -> !childInfo.isTestContainer())
+                .flatMap(childInfo -> RoutinesUtil.getRoutinesParametersFromJobInfo(childInfo).stream())
+                .filter(r -> r.getType() != null).map(r -> CodesJarResourceCache.getCodesJarById(r.getId()))
+                .filter(info -> info != null).collect(Collectors.toSet());
+        IRunProcessService.get().buildCodesJavaProject(monitor, toUpdate);
     }
 
     /**
@@ -2370,8 +2386,15 @@ public class ProcessorUtilities {
                     }
                     JobInfo jobInfo = new JobInfo(testItem, testProcess.getDefaultContext());
                     jobInfo.setTestContainer(true);
-                    jobInfos.add(jobInfo);
                     jobInfo.setFatherJobInfo(parentJobInfo);
+                    if (!jobInfos.contains(jobInfo)) {
+                        jobInfos.add(jobInfo);
+
+                        // if job contains testcase, we need to get joblets of testcase and add them to the job pom, we
+                        // must
+                        // pass parentJobInfo instead of testProcess, otherwise joblet will be filtered out
+                        getSubjobInfo(testProcess.getNode(), testProcess, parentJobInfo, jobInfos, firstChildOnly, includeJoblet);
+                    }
                 }
             }
         }
@@ -2881,4 +2904,30 @@ public class ProcessorUtilities {
         return false;
     }
 
+    public static void setExportConfig(boolean export) {
+        setExportConfig(JavaUtils.JAVA_APP_NAME, null, null, export, new Date());
+    }
+
+    public static boolean isJobTest(String processId, String contextName, String version) {
+        for (JobInfo jobInfo : jobList) {
+            if (jobInfo.getJobId().equals(processId)) {
+                if (contextName != null && !contextName.equals("") && !jobInfo.getContextName().equals(contextName)) {
+                    continue;
+                }
+                if (version != null && !version.equals(jobInfo.getJobVersion())) {
+                    continue;
+                }
+                return jobInfo.isTestContainer();
+            }
+        }
+        return false;
+    }
+
+    public static void setDynamicJobAndCITest(boolean dynamicJobAndCITest) {
+        isDynamicJobAndCITest = dynamicJobAndCITest;
+    }
+
+    public static boolean isDynamicJobAndCITest() {
+        return isDynamicJobAndCITest;
+    }
 }

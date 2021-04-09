@@ -69,7 +69,6 @@ import org.talend.core.model.relationship.RelationshipItemBuilder;
 import org.talend.core.model.repository.ERepositoryObjectType;
 import org.talend.core.model.repository.IRepositoryViewObject;
 import org.talend.core.model.routines.CodesJarInfo;
-import org.talend.core.model.routines.RoutinesUtil;
 import org.talend.core.repository.model.ProxyRepositoryFactory;
 import org.talend.core.repository.utils.ItemResourceUtil;
 import org.talend.core.runtime.CoreRuntimePlugin;
@@ -245,11 +244,6 @@ public class AggregatorPomsHelper {
         createTemplatePom.create(monitor);
     }
 
-    public static void buildAndInstallCodesProject(IProgressMonitor monitor, ERepositoryObjectType codeType)
-            throws Exception {
-        buildAndInstallCodesProject(monitor, codeType, true, false);
-    }
-
     public static void buildAndInstallCodesProject(IProgressMonitor monitor, ERepositoryObjectType codeType,
             boolean install, boolean forceBuild) throws Exception {
         if (forceBuild || !BuildCacheManager.getInstance().isCodesBuild(codeType)) {
@@ -272,33 +266,29 @@ public class AggregatorPomsHelper {
         }
     }
 
-    // only compile for global/custom code projects
     public static void buildCodesProject() {
-        IRunProcessService service = IRunProcessService.get();
-        if (service == null) {
-            return;
-        }
         IProgressMonitor monitor = new NullProgressMonitor();
         ERepositoryObjectType.getAllTypesOfCodes().forEach(type -> {
             try {
-                buildAndInstallCodesProject(monitor, type, false, false);
+                buildAndInstallCodesProject(monitor, type, true, false);
             } catch (Exception e) {
                 ExceptionHandler.process(e);
             }
         });
-        Set<CodesJarInfo> jarsToUpdate = CodesJarResourceCache.getAllCodesJars().stream()
-                .filter(info -> CodesJarM2CacheManager.needUpdateCodesJarProject(info)).collect(Collectors.toSet());
-        jarsToUpdate.stream().map(info -> service.getTalendCodesJarJavaProject(info)).forEach(p -> {
-            try {
-                p.buildModules(monitor, null, null);
-            } catch (Exception e) {
-                ExceptionHandler.process(e);
-            }
-        });
-        String currentProjectName = ProjectManager.getInstance().getCurrentProject().getTechnicalLabel();
-        jarsToUpdate.stream().filter(info -> !currentProjectName.equals(info.getProjectTechName()))
-                .forEach(info -> service.deleteTalendCodesJarProject(info, false));
+        CodesJarM2CacheManager.updateCodesJarProject(monitor);
+    }
 
+    public static void buildCodesProject(IProgressMonitor monitor, Set<CodesJarInfo> toUpdate) {
+        ERepositoryObjectType.getAllTypesOfCodes().forEach(type -> {
+            try {
+                buildAndInstallCodesProject(monitor, type, true, false);
+            } catch (Exception e) {
+                ExceptionHandler.process(e);
+            }
+        });
+        CodesJarM2CacheManager.updateCodesJarProject(monitor, toUpdate.stream()
+                .filter(info -> CodesJarM2CacheManager.needUpdateCodesJarProject(info)).collect(Collectors.toSet()), false, false,
+                false);
     }
 
     public void updateRefProjectModules(List<ProjectReference> references, IProgressMonitor monitor) {
@@ -587,14 +577,8 @@ public class AggregatorPomsHelper {
         return getCodeFolder(codeType).getFolder(MavenSystemFolders.JAVA.getPath());
     }
 
-    public IFolder getCodesJarFolder(Property property) {
-        String codesJarName = property.getLabel();
-        ERepositoryObjectType type = ERepositoryObjectType.getItemType(property.getItem());
-        if (RoutinesUtil.isInnerCodes(property)) {
-            type = RoutinesUtil.getInnerCodeType(property);
-            codesJarName = RoutinesUtil.getCodesJarLabelByInnerCode(property.getItem());
-        }
-        return getCodeFolder(type).getFolder(codesJarName);
+    public IFolder getCodesJarFolder(CodesJarInfo info) {
+        return getCodeFolder(info.getType()).getFolder(info.getLabel());
     }
 
     public IFolder getProcessFolder(ERepositoryObjectType type) {
@@ -983,11 +967,8 @@ public class AggregatorPomsHelper {
             if (ProcessUtils.isRequiredBeans(null)) {
                 modules.add(getModulePath(service.getTalendCodeJavaProject(ERepositoryObjectType.BEANS).getProjectPom()));
             }
-            String currentProjectTechName = ProjectManager.getInstance().getCurrentProject().getTechnicalLabel();
-            CodesJarResourceCache.getAllCodesJars().stream()
-                    .filter(info -> info.getProjectTechName().equals(currentProjectTechName))
-                    .forEach(info -> modules.add(
-                            getModulePath(getCodesJarFolder(info.getProperty()).getFile(TalendMavenConstants.POM_FILE_NAME))));
+            CodesJarResourceCache.getAllCodesJars().stream().filter(info -> info.isInCurrentMainProject()).forEach(
+                    info -> modules.add(getModulePath(getCodesJarFolder(info).getFile(TalendMavenConstants.POM_FILE_NAME))));
         }
     }
 

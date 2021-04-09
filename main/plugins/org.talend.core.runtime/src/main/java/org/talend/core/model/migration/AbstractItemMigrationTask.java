@@ -146,7 +146,7 @@ public abstract class AbstractItemMigrationTask extends AbstractMigrationTask im
      * this returns all type handled by this migration task even the extended type that could benefit from this
      * migrations
      * */
-    List<ERepositoryObjectType> getAllTypes() {
+    protected List<ERepositoryObjectType> getAllTypes() {
         List<ERepositoryObjectType> declaredTypes = getTypes();
         ArrayList<ERepositoryObjectType> allTypes = new ArrayList<ERepositoryObjectType>(declaredTypes.size());
         allTypes.addAll(declaredTypes);

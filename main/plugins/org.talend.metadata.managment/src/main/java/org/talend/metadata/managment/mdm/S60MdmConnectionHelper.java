@@ -31,6 +31,7 @@ import org.talend.core.model.metadata.builder.connection.MDMConnection;
 import org.talend.core.model.metadata.designerproperties.MDMVersions;
 import org.talend.core.service.IMDMWebServiceHook;
 import org.talend.core.utils.ReflectionUtils;
+import org.talend.libraries.apache.cxf.ApacheCxfLibPlugin;
 
 /**
  * created by wchen on Apr 15, 2015 Detailled comment
@@ -61,22 +62,32 @@ public class S60MdmConnectionHelper extends AbsMdmConnectionHelper {
         if (!newUrl.trim().endsWith("?wsdl")) {
             newUrl = newUrl + "?wsdl";
         }
-        Object serviceService = ReflectionUtils.newInstance("org.talend.mdm.webservice.TMDMService_Service", classLoader,
-                new Object[] { new URL(newUrl) });
-        Object invokeMethod = ReflectionUtils.invokeMethod(serviceService, "getTMDMPort", new Object[0]);
-        if (invokeMethod instanceof BindingProvider) {
-            stub = (BindingProvider) invokeMethod;
-            Map<String, Object> requestContext = stub.getRequestContext();
-            requestContext.put(javax.xml.ws.BindingProvider.SESSION_MAINTAIN_PROPERTY, false);
-            requestContext.put(javax.xml.ws.BindingProvider.USERNAME_PROPERTY, userName);
-            requestContext.put(javax.xml.ws.BindingProvider.PASSWORD_PROPERTY, password);
-            IMDMWebServiceHook wsHook = getWebServiceHook();
-            if (wsHook != null) {
-                wsHook.preRequestSendingHook(requestContext, userName);
+
+        ClassLoader oldContextClassLoader = Thread.currentThread().getContextClassLoader();
+
+        try {
+            ClassLoader cxfClassLoader = ApacheCxfLibPlugin.class.getClassLoader();
+            Thread.currentThread().setContextClassLoader(cxfClassLoader);
+            Object serviceService = ReflectionUtils.newInstance("org.talend.mdm.webservice.TMDMService_Service", classLoader,
+                    new Object[] { new URL(newUrl) });
+            Object invokeMethod = ReflectionUtils.invokeMethod(serviceService, "getTMDMPort", new Object[0]);
+            if (invokeMethod instanceof BindingProvider) {
+                stub = (BindingProvider) invokeMethod;
+                Map<String, Object> requestContext = stub.getRequestContext();
+                requestContext.put(javax.xml.ws.BindingProvider.SESSION_MAINTAIN_PROPERTY, false);
+                requestContext.put(javax.xml.ws.BindingProvider.USERNAME_PROPERTY, userName);
+                requestContext.put(javax.xml.ws.BindingProvider.PASSWORD_PROPERTY, password);
+                IMDMWebServiceHook wsHook = getWebServiceHook();
+                if (wsHook != null) {
+                    wsHook.preRequestSendingHook(requestContext, userName);
+                }
+                Object wsping = ReflectionUtils.newInstance("org.talend.mdm.webservice.WSPing", classLoader, new Object[0]);
+                ReflectionUtils.invokeMethod(stub, "ping", new Object[] { wsping });
             }
-            Object wsping = ReflectionUtils.newInstance("org.talend.mdm.webservice.WSPing", classLoader, new Object[0]);
-            ReflectionUtils.invokeMethod(stub, "ping", new Object[] { wsping });
+        } finally {
+            Thread.currentThread().setContextClassLoader(oldContextClassLoader);
         }
+
         return stub;
     }
 

@@ -12,7 +12,7 @@
 	<modules>
 		<module>plugins/maven-bundle-plugin-2-3-7</module>
 		<module>plugins/maven-bundle-plugin-2-5-3</module>
-		<module>plugins/karaf-maven-plugin-4-2-4</module>
+		<module>plugins/karaf-maven-plugin-4-2-7</module>
 		<module>plugins/maven-install-plugin-2-5-1</module>
 		<module>plugins/talend-compiler-plugin</module>
 		<module>plugins/talend-ci-osgihelper-maven-plugin</module>
@@ -37,13 +37,24 @@
 		<dependency>
 			<groupId>org.apache.maven.plugins</groupId>
 			<artifactId>maven-jar-plugin</artifactId>
-			<version>3.0.2</version>
+			<version>3.2.0</version>
 		</dependency>
 		<dependency>
 			<groupId>org.apache.maven.plugins</groupId>
 			<artifactId>maven-assembly-plugin</artifactId>
 			<version>3.0.0</version>
+			<exclusions>
+				<exclusion>
+					<groupId>commons-codec</groupId>
+					<artifactId>commons-codec</artifactId>
+				</exclusion>
+			</exclusions>
 		</dependency>
+		<dependency>
+            <groupId>commons-codec</groupId>
+			<artifactId>commons-codec</artifactId>
+			<version>1.15</version>
+         </dependency>
 		<dependency>
 			<groupId>org.apache.maven.plugins</groupId>
 			<artifactId>maven-surefire-plugin</artifactId>
