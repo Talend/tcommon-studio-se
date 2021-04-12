@@ -15,6 +15,7 @@ package org.talend.commons.utils;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
+import java.net.URI;
 import java.net.URISyntaxException;
 import java.net.URL;
 import java.util.Optional;
@@ -350,6 +351,12 @@ public class VersionUtils {
             productVersion = null;
             talendVersion = null;
         }
+    }
+
+    public static File getStudioConfigFile() throws Exception {
+        URL configLocation = new URL("platform:/config/config.ini"); //$NON-NLS-1$
+        URL fileUrl = FileLocator.toFileURL(configLocation);
+        return URIUtil.toFile(new URI(fileUrl.getProtocol(), fileUrl.getPath(), fileUrl.getQuery()));
     }
 
     public static String getSimplifiedPatchName(String projectPatchName) {

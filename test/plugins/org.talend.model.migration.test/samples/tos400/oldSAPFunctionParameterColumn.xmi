@@ -1,2 +1,0 @@
-<?xml version="1.0" encoding="ASCII"?>
-<TalendMetadata:SAPFunctionParameterColumn xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:TalendMetadata="http://www.talend.org" xsi:schemaLocation="http://www.talend.org ../old_models/metadata.ecore" id="ZeId" comment="ZeComment" label="ZeLabel" Name="TheName" StructureOrTableName="TheStructureOrTableName" DataType="ZeDataType" Length="TheLength" Description="ZeDescription" Value="TheValue"/>

@@ -48,7 +48,7 @@
 								<artifactItem>
 									<groupId>org.slf4j</groupId>
 									<artifactId>slf4j-api</artifactId>
-									<version>1.7.25</version>
+									<version>1.7.25</version> <!-- Please sync the version with /org.talend.designer.maven.lite/resources/required/pom.xml -->
 									<overWrite>true</overWrite>
 								</artifactItem>
 							</artifactItems>

@@ -119,7 +119,7 @@ public final class RepositoryManager {
     }
 
     public static void syncUserComponents() {
-        if (PluginChecker.isSVNProviderPluginLoaded()) {
+        if (PluginChecker.isRemoteProviderPluginLoaded()) {
             IComponentsService codeGenService = (IComponentsService) GlobalServiceRegister.getDefault().getService(
                     IComponentsService.class);
             if (codeGenService != null) {

@@ -376,7 +376,7 @@ public class ApplicationWorkbenchWindowAdvisor extends WorkbenchWindowAdvisor {
         String hideUpdateSiteId = "org.talend.rcp.hideUpdatesite"; //$NON-NLS-1$
         Set<String> enabledActivities = new HashSet<String>();
         enabledActivities.addAll(activitySupport.getActivityManager().getEnabledActivityIds());
-        if (!PluginChecker.isSVNProviderPluginLoaded()) {
+        if (!PluginChecker.isRemoteProviderPluginLoaded()) {
             if (activitySupport.getActivityManager().getActivity(hideUpdateSiteId).isDefined()) {
                 enabledActivities.remove(hideUpdateSiteId);
             }

@@ -115,7 +115,7 @@ public class RemoteModulesHelper {
         @Override
         public void run(IProgressMonitor monitor) throws InvocationTargetException, InterruptedException {
             final Set<String> mavenUrisTofetch = new HashSet<String>(contextMap.keySet());
-            if (LibraryDataService.getInstance().isBuildLibrariesData()) {
+            if (LibraryDataService.isBuildLibrariesData()) {
                 LibraryDataService.getInstance().buildLibraryLicenseData(mavenUrisTofetch);
             }
             monitor.beginTask(Messages.getString("RemoteModulesHelper.fetch.module.info"), mavenUrisTofetch.size() * 10 + 10);//$NON-NLS-1$

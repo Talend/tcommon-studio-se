@@ -67,11 +67,17 @@ public class LibraryDataService {
 
     private static boolean buildLibraryIfFileMissing = true;
 
-    private boolean buildLibraryLicense = false;
+    /**
+     * make it as static to avoid call of getInstance, so that we can avoid dead lock in some cases
+     */
+    private static boolean buildLibraryLicense = Boolean
+            .valueOf(System.getProperty(KEY_LIBRARIES_BUILD_LICENSE, Boolean.FALSE.toString()));
 
-    private boolean buildLibraryIfLicenseMissing = false;
+    private static boolean buildLibraryIfLicenseMissing = Boolean
+            .valueOf(System.getProperty(KEY_BUILD_LIBRARY_IF_LICENSE_MISSING, Boolean.FALSE.toString()));
 
-    private boolean buildLibraryJarFile = false;
+    private static boolean buildLibraryJarFile = Boolean
+            .valueOf(System.getProperty(KEY_LIBRARIES_BUILD_JAR, Boolean.FALSE.toString()));
 
     private static final Map<String, Library> mvnToLibraryMap = new ConcurrentHashMap<String, Library>();
 
@@ -86,10 +92,6 @@ public class LibraryDataService {
     private LibraryLicense unknownLicense;;
 
     private LibraryDataService() {
-        buildLibraryLicense = Boolean.valueOf(System.getProperty(KEY_LIBRARIES_BUILD_LICENSE, Boolean.FALSE.toString()));
-        buildLibraryIfLicenseMissing = Boolean
-                .valueOf(System.getProperty(KEY_BUILD_LIBRARY_IF_LICENSE_MISSING, Boolean.FALSE.toString()));
-        buildLibraryJarFile = Boolean.valueOf(System.getProperty(KEY_LIBRARIES_BUILD_JAR, Boolean.FALSE.toString()));
         File studioLibraryDataFile = getStudioLibraryDataFile();
         if (buildLibraryLicense) {
             if (studioLibraryDataFile.exists()) {
@@ -329,7 +331,11 @@ public class LibraryDataService {
         return value.toString();
     }
 
-    public boolean isBuildLibrariesData() {
+    public static boolean isBuildLibrariesData() {
+        /**
+         * make the method as static to avoid call of getInstance, so that we can avoid dead lock in some cases
+         */
+
         if (buildLibraryLicense) {
             return true;
         }
@@ -348,7 +354,7 @@ public class LibraryDataService {
         return new File(Platform.getConfigurationLocation().getURL().getPath(), LIBRARIES_DATA_FILE_NAME);
     }
 
-    private File getStudioLibraryDataFile() {
+    private static File getStudioLibraryDataFile() {
         String folder = System.getProperty(KEY_LIBRARIES_DATA_FOLDER);
         if (folder == null) {
             folder = new File(Platform.getInstallLocation().getURL().getPath(), "configuration").getAbsolutePath(); //$NON-NLS-1$
