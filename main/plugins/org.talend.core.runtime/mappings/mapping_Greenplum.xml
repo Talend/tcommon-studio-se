@@ -12,17 +12,26 @@
 			<dbType type="BPCHAR" ignoreLen="true" ignorePre="true" />
 			<dbType type="BYTEA" ignoreLen="true" ignorePre="true" />	
 			<dbType type="CHAR" defaultLength="50" ignorePre="true"/>
+			<dbType type="CHARACTER" defaultLength="50" ignorePre="true"/>
 			<dbType type="CID" ignoreLen="true" ignorePre="true" />
 			<dbType type="CIDR" ignoreLen="true" ignorePre="true" />
 			<dbType type="CIRCLE" ignoreLen="true" ignorePre="true" />
 			<dbType type="DATE" ignoreLen="true" ignorePre="true" />
 			<dbType type="FLOAT4" ignoreLen="true" ignorePre="true" />
+			<dbType type="REAL" ignoreLen="true" ignorePre="true" />
 			<dbType type="FLOAT8" ignoreLen="true" ignorePre="true" />
+			<dbType type="DOUBLE PRECISION" ignoreLen="true" ignorePre="true" />
 			<dbType type="INET" ignoreLen="true" ignorePre="true" />
 			<dbType type="INT2" ignoreLen="true" ignorePre="true" />
+			<dbType type="SMALLINT" ignoreLen="true" ignorePre="true" />
 			<dbType type="INT2VECTOR" ignoreLen="true" ignorePre="true" />
 			<dbType type="INT4" ignoreLen="true" ignorePre="true" />
 			<dbType type="INT8" ignoreLen="true" ignorePre="true" />
+			<dbType type="INTEGER" ignoreLen="true" ignorePre="true" />
+			<dbType type="CHARACTER VARYING" ignoreLen="true" ignorePre="true" />
+			<dbType type="BOOLEAN" ignoreLen="true" ignorePre="true" />
+			<dbType type="BIGINT" ignoreLen="true" ignorePre="true" />
+			<dbType type="BIT VARYING" ignoreLen="true" ignorePre="true" />
 			<dbType type="INTERVAL" ignorePre="true" />
 			<dbType type="LINE" ignoreLen="true" ignorePre="true" />
 			<dbType type="LSEG" ignoreLen="true" ignorePre="true" />
@@ -30,6 +39,7 @@
 			<dbType type="MONEY" ignoreLen="true" ignorePre="true" />	
 			<dbType type="NAME" ignoreLen="true" ignorePre="true" />
 			<dbType type="NUMERIC" defaultLength="20" defaultPrecision="10"/>
+			<dbType type="DECIMAL" defaultLength="20" defaultPrecision="10"/>
 			<dbType type="OID" ignoreLen="true" ignorePre="true"  />
 			<dbType type="OIDVECTOR" ignoreLen="true" ignorePre="true" />
 			<dbType type="PATH" ignoreLen="true" ignorePre="true" />
@@ -110,16 +120,19 @@
 			<talendToDbTypes><!-- Adviced mappings  -->
 				<talendType type="id_List"/>
 				<talendType type="id_Boolean">	
-					<dbType type="BOOL" default="true" />				
+					<dbType type="BOOL" default="true" />
+					<dbType type="BOOLEAN" />					
 				</talendType>
 				<talendType type="id_Byte">		
 				</talendType>
 				<talendType type="id_byte[]">
 					<dbType type="BIT" default="true" />
-					<dbType type="VARBIT" />				
+					<dbType type="VARBIT" />
+					<dbType type="BIT VARYING" />				
 				</talendType>
 				<talendType type="id_Character">
 					<dbType type="CHAR" default="true" />
+					<dbType type="CHARACTER" />
 					<dbType type="BPCHAR" />
 					<dbType type="VARCHAR" />
 					<dbType type="TEXT" />							
@@ -136,33 +149,47 @@
 					<dbType type="RELTIME" />						
 				</talendType>
 				<talendType type="id_BigDecimal">
-					<dbType type="NUMERIC" default="true" />							
+					<dbType type="NUMERIC" default="true" />
+					<dbType type="DECIMAL" />							
 					<dbType type="FLOAT4" />
+					<dbType type="REAL" />
 					<dbType type="FLOAT8"/>
+					<dbType type="DOUBLE PRECISION"/>
 				</talendType>
 				<talendType type="id_Double">
 					<dbType type="FLOAT4" />
+					<dbType type="REAL" />
 					<dbType type="FLOAT8" default="true" />
-					<dbType type="NUMERIC" />							
+					<dbType type="NUMERIC" />
+					<dbType type="DECIMAL" />	
+					<dbType type="DOUBLE PRECISION"/>						
 				</talendType>
 				<talendType type="id_Float">
 					<dbType type="FLOAT4" default="true" />
 					<dbType type="FLOAT8" />
-					<dbType type="NUMERIC" />				
+					<dbType type="REAL" />
+					<dbType type="NUMERIC" />
+					<dbType type="DECIMAL" />
+					<dbType type="DOUBLE PRECISION"/>				
 				</talendType>
 				<talendType type="id_Integer">
 					<dbType type="INT2" />
+					<dbType type="SMALLINT" />
 					<dbType type="INT4" default="true" />
 					<dbType type="SERIAL" />
 					<dbType type="INT8" />
-					<dbType type="BIGSERIAL" />										
+					<dbType type="BIGINT" />
+					<dbType type="BIGSERIAL" />
+					<dbType type="INTEGER" />										
 				</talendType>
 				<talendType type="id_Long">
 					<dbType type="INT2" />
 					<dbType type="INT4" />
 					<dbType type="SERIAL" />
 					<dbType type="INT8"  default="true" />
-					<dbType type="BIGSERIAL" />							
+					<dbType type="BIGINT" />
+					<dbType type="BIGSERIAL" />	
+					<dbType type="SMALLINT" />						
 				</talendType>
 				<talendType type="id_Object">
 					<dbType type="_POINT" />
@@ -209,18 +236,26 @@
 					<dbType type="_ABSTIME" />
 					<dbType type="_ACLITEM" />
 					<dbType type="_INT8" />
+					<dbType type="BIGINT" />
+					<dbType type="BIT VARYING" />
 					<dbType type="_VARBIT" />
 					<dbType type="_BIT" />			
 					<dbType type="_BOOL" />
+					<dbType type="BOOLEAN" />
 					<dbType type="BOX" />
 					<dbType type="_BOX" />
 					<dbType type="_BYTEA" />
 					<dbType type="_VARCHAR" />
+					<dbType type="CHARACTER VARYING" />
+					<dbType type="CHARACTER" />
+					<dbType type="INTEGER" />
+					<dbType type="REAL" />
 					<dbType type="_BPCHAR" />
 					<dbType type="_CID" />
 					<dbType type="_CIDR" />
 					<dbType type="_CIRCLE" />
 					<dbType type="_DATE" />
+					<dbType type="DOUBLE PRECISION"/>
 					<dbType type="_FLOAT8" />
 					<dbType type="_INET" />
 					<dbType type="INT2VECTOR" />
@@ -236,6 +271,7 @@
 					<dbType type="NAME" />
 					<dbType type="_NAME" />
 					<dbType type="_NUMERIC" />
+					<dbType type="DECIMAL" />
 					<dbType type="_OID" />
 					<dbType type="OIDVECTOR" />
 					<dbType type="_OIDVECTOR" />
@@ -247,25 +283,43 @@
 					<dbType type="INT4" />
 					<dbType type="SERIAL" />
 					<dbType type="INT8" />
-					<dbType type="BIGSERIAL" />					
+					<dbType type="BIGINT" />
+					<dbType type="BIGSERIAL" />
+					<dbType type="SMALLINT" />					
 				</talendType>
 				<talendType type="id_String">
 					<dbType type="BPCHAR" />
 					<dbType type="VARCHAR" default="true" />
+					<dbType type="CHARACTER VARYING" />
 					<dbType type="TEXT" />				
 				</talendType>
 			</talendToDbTypes>
 			<dbToTalendTypes>
 				<dbType type="INT2" >
 					<talendType type="id_Short" default="true" />				
+				</dbType>
+				<dbType type="SMALLINT" >
+					<talendType type="id_Short" default="true" />				
 				</dbType>				
 				<dbType type="INT4" >
 					<talendType type="id_Integer" default="true" />
-				</dbType>				
+				</dbType>
+				<dbType type="INTEGER" >
+     				<talendType type="id_Integer" default="true" />
+    			</dbType>
+    			<dbType type="CHARACTER VARYING" >
+					<talendType type="id_String" default="true" />				
+				</dbType>
+				<dbType type="BOOLEAN" >
+					<talendType type="id_Boolean" default="true" />				
+				</dbType> 				
 				<dbType type="SERIAL" >
 					<talendType type="id_Integer" default="true" />				
 				</dbType>				
 				<dbType type="INT8" >
+					<talendType type="id_Long" default="true" />				
+				</dbType>
+				<dbType type="BIGINT" >
 					<talendType type="id_Long" default="true" />				
 				</dbType>				
 				<dbType type="BIGSERIAL" >
@@ -274,12 +328,24 @@
 				<dbType type="FLOAT4" >
 					<talendType type="id_Float" default="true" />				
 					<talendType type="id_BigDecimal"/>			
-				</dbType>				
+				</dbType>
+				<dbType type="REAL" >
+					<talendType type="id_Float" default="true" />				
+					<talendType type="id_BigDecimal"/>			
+				</dbType>			
 				<dbType type="FLOAT8" >
 					<talendType type="id_Double" default="true" />				
 					<talendType type="id_BigDecimal"/>			
 				</dbType>
+				<dbType type="DOUBLE PRECISION" >
+					<talendType type="id_Double" default="true" />				
+					<talendType type="id_BigDecimal"/>			
+				</dbType>
 				<dbType type="NUMERIC">
+					<talendType type="id_Double"/>
+					<talendType type="id_BigDecimal" default="true" />			
+				</dbType>
+				<dbType type="DECIMAL">
 					<talendType type="id_Double"/>
 					<talendType type="id_BigDecimal" default="true" />			
 				</dbType>				
@@ -291,8 +357,14 @@
 				</dbType>				
 				<dbType type="VARBIT" >
 					<talendType type="id_byte[]" default="true" />				
-				</dbType>							
+				</dbType>	
+				<dbType type="BIT VARYING" >
+					<talendType type="id_byte[]" default="true" />				
+				</dbType>						
 				<dbType type="CHAR" >
+					<talendType type="id_String" default="true" />				
+				</dbType>
+				<dbType type="CHARACTER" >
 					<talendType type="id_String" default="true" />				
 				</dbType>				
 				<dbType type="BPCHAR" >
