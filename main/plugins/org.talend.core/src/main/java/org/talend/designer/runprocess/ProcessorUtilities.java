@@ -1754,8 +1754,6 @@ public class ProcessorUtilities {
         }
     }
 
-    static Map<String, IProcess> processBuildCaches = new HashMap<String, IProcess>();
-
     static List<JobInfo> jobList = new ArrayList<JobInfo>();
 
     static boolean hasLoopDependency = false;
@@ -1765,7 +1763,6 @@ public class ProcessorUtilities {
         esbJobs.clear();
         hasLoopDependency = false;
         mainJobInfo = null;
-        processBuildCaches.clear();
     }
 
     /**
