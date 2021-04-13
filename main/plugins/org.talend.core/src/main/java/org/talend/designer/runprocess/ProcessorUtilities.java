@@ -439,23 +439,6 @@ public class ProcessorUtilities {
         return false;
     }
 
-    private static IProcess getProcessFromCaches(String jobinfoId, String jobinfoVersion) {
-        if (StringUtils.isBlank(jobinfoVersion)) {
-            jobinfoVersion = ItemCacheManager.LATEST_VERSION;
-        }
-        IProcess process = null;
-        String key = jobinfoId + "-" + jobinfoVersion;
-        if (processBuildCaches.get(key) != null) {
-            process = processBuildCaches.get(key);
-        } else {
-            ProcessItem processItem = ItemCacheManager.getProcessItem(jobinfoId, jobinfoVersion);
-            IDesignerCoreService service = CorePlugin.getDefault().getDesignerCoreService();
-            process = service.getProcessFromProcessItem(processItem);
-            processBuildCaches.put(key, process);
-        }
-        return process;
-    }
-
     public static boolean checkProcessLoopDependencies(IProcess mainProcess, String id, String version,
             LinkedList<String> pathlink, Map<String, String> idToLatestVersion) {
         if (ItemCacheManager.LATEST_VERSION.contains(version)) {
@@ -488,7 +471,9 @@ public class ProcessorUtilities {
                     if (StringUtils.isBlank(jobId)) {
                         continue;
                     }
-                    IProcess subProcess = getProcessFromCaches(jobId, subNodeversion);
+                    ProcessItem processItem = ItemCacheManager.getProcessItem(jobId, subNodeversion);
+                    IDesignerCoreService service = CorePlugin.getDefault().getDesignerCoreService();
+                    IProcess subProcess = service.getProcessFromProcessItem(processItem);
                     hasLoop = checkProcessLoopDependencies(subProcess, jobId, subNodeversion, pathlink, idToLatestVersion);
                     if (hasLoop) {
                         break;
@@ -596,7 +581,8 @@ public class ProcessorUtilities {
 
         if (jobInfo.getProcess() == null) {
             if (selectedProcessItem != null) {
-                currentProcess = getProcessFromCaches(jobInfo.getJobId(), jobInfo.getJobVersion());
+                IDesignerCoreService service = CorePlugin.getDefault().getDesignerCoreService();
+                currentProcess = service.getProcessFromProcessItem(selectedProcessItem);
                 jobInfo.setProcess(currentProcess);
                 if (currentProcess instanceof IProcess2) {
                     ((IProcess2) currentProcess).setProperty(selectedProcessItem.getProperty());
@@ -1099,7 +1085,8 @@ public class ProcessorUtilities {
 
             if (jobInfo.getProcess() == null) {
                 if (selectedProcessItem != null) {
-                    currentProcess = getProcessFromCaches(jobInfo.getJobId(), jobInfo.getJobVersion());
+                    IDesignerCoreService service = CorePlugin.getDefault().getDesignerCoreService();
+                    currentProcess = service.getProcessFromProcessItem(selectedProcessItem);
                     jobInfo.setProcess(currentProcess);
                     if (currentProcess instanceof IProcess2) {
                         ((IProcess2) currentProcess).setProperty(selectedProcessItem.getProperty());
