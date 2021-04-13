@@ -186,7 +186,7 @@ public final class ProjectManager {
             Set<String> resolvedProjectLabels, boolean force) {
         if (p != null) {
             String parentBranch = ProjectManager.getInstance().getMainProjectBranch(p);
-            if (parentBranch != null || force) {
+            if ((!p.isLocal() || parentBranch != null) || force) {
                 resolvedProjectLabels.add(p.getTechnicalLabel());
                 for (ProjectReference pr : new Project(p).getProjectReferenceList()) {
                     if (ProjectManager.validReferenceProject(p, pr)
