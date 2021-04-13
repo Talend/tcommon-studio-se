@@ -6,7 +6,7 @@ Bundle-Version: 7.4.1.qualifier
 Bundle-ActivationPolicy: lazy
 Eclipse-BundleShape: dir
 Bundle-ClassPath: ./,
- lib/httpclient-4.5.3.jar,
+ lib/httpclient-4.5.13.jar,
  lib/httpcore-4.4.6.jar,
  lib/fluent-hc-4.2.6.jar
 Export-Package: org.apache.http,

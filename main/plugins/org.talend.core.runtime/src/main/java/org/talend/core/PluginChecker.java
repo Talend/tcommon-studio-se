@@ -148,6 +148,8 @@ public class PluginChecker {
 
     public static final String APACHE_CXF_PLUGIN_ID = "org.talend.libraries.apache.cxf"; //$NON-NLS-1$
 
+    public static final String SWTBOT_PLUGIN_ID = "org.eclipse.swtbot.eclipse.core"; //$NON-NLS-1$
+
     private static Boolean isStudioLite;
 
     /**
@@ -401,6 +403,10 @@ public class PluginChecker {
 
     public static boolean isBigdataRoutineLoaded() {
         return isPluginLoaded(BD_ROUTINE_PLUGIN_ID);
+    }
+
+    public static boolean isSWTBotLoaded() {
+        return isPluginLoaded(SWTBOT_PLUGIN_ID);
     }
 
     public static String getBundlePath(String bundleName) {

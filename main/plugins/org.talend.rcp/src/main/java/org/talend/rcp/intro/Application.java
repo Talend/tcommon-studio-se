@@ -178,7 +178,6 @@ public class Application implements IApplication {
             boolean needRelaunch = false;
             if (!SharedStudioUtils.isSharedStudioMode()) {
                 needRelaunch = installLocalPatches();
-                TokenCollectorFactory.getFactory().reset();
             } else {
                 needRelaunch = SharedStudioUtils.isNeedCleanOnSharedMode();
             }
