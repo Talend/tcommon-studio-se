@@ -151,6 +151,9 @@ import org.talend.repository.model.RepositoryNode;
 import org.talend.repository.ui.dialog.AProgressMonitorDialogWithCancel;
 import org.talend.utils.sql.ConnectionUtils;
 
+import com.ca.directory.jxplorer.editor.booleaneditor;
+import com.fasterxml.jackson.databind.node.BooleanNode;
+
 /**
  * @author ocarbone
  *
@@ -4147,6 +4150,8 @@ public class DatabaseForm extends AbstractForm {
             return getMSSQLVersionDrivers(dbType);
         } else if (asSybaseVersionEnable()) {
             return getSybaseVersionDrivers(dbType);
+        }else if(asGreenplumVersionEnable()) {
+            return getGreenplumVersionDrivers(dbType);
         }
         List<String> result = new ArrayList<String>();
         List<EDatabaseVersion4Drivers> v4dList = EDatabaseVersion4Drivers.indexOfByDbType(dbType);
@@ -4174,6 +4179,12 @@ public class DatabaseForm extends AbstractForm {
         return result;
     }
 
+    private List<String> getGreenplumVersionDrivers(String dbType) {
+        List<String> result = new ArrayList<String>();
+        result.add(EDatabaseVersion4Drivers.GREENPLUM.getVersionDisplay());
+        result.add(EDatabaseVersion4Drivers.GREENPLUM_PSQL.getVersionDisplay());
+        return result;
+    }
     private void addFieldsForGeneralDB(Composite parent) {
 
         generalDbCompositeParent = new Composite(parent, SWT.NULL);
@@ -4674,6 +4685,8 @@ public class DatabaseForm extends AbstractForm {
                 || EDatabaseConnTemplate.MSSQL.getDBDisplayName().equals(getConnectionDBType())
                 || EDatabaseConnTemplate.SYBASEASE.getDBDisplayName().equals(getConnectionDBType())
                 || EDatabaseConnTemplate.SYBASEASE_16_SA.getDBDisplayName().equals(getConnectionDBType())
+                || EDatabaseConnTemplate.GREENPLUM.getDBDisplayName().equals(getConnectionDBType())
+                || EDatabaseConnTemplate.GREENPLUM_PSQL.getDBDisplayName().equals(getConnectionDBType())
                 || EDatabaseConnTemplate.IMPALA.getDBDisplayName().equals(getConnectionDBType());
     }
 
@@ -5558,6 +5571,7 @@ public class DatabaseForm extends AbstractForm {
         boolean isImpala = ImpalaVersionEnable();
         boolean isMsSQL = asMsSQLVersionEnable();
         boolean isSybase = asSybaseVersionEnable();
+        boolean isGreenplum = asGreenplumVersionEnable();
 
         String selectedVersion = getConnection().getDbVersionString();
         dbVersionCombo.removeAll();
@@ -5603,6 +5617,9 @@ public class DatabaseForm extends AbstractForm {
         }else if (dbType.equals(EDatabaseConnTemplate.SYBASEASE_16_SA.getDBDisplayName())) {
             dbVersionCombo.getCombo().setItems(versions);
             dbVersionCombo.setHideWidgets(!isSybase);
+        }else if (dbType.equals(EDatabaseConnTemplate.GREENPLUM.getDBDisplayName())) {
+            dbVersionCombo.getCombo().setItems(versions);
+            dbVersionCombo.setHideWidgets(!isGreenplum);
         }
         if (selectedVersion != null && !"".equals(selectedVersion)) { //$NON-NLS-1$
             EDatabaseVersion4Drivers version = EDatabaseVersion4Drivers.indexOfByVersion(selectedVersion);
@@ -6538,10 +6555,11 @@ public class DatabaseForm extends AbstractForm {
         boolean isHive = visible && hiveVersionEnable();
         boolean isMsSQL = visible && asMsSQLVersionEnable();
         boolean isSybase = visible && asSybaseVersionEnable();
+        boolean isGreenplum = visible && asGreenplumVersionEnable();
 
         dbVersionCombo
                 .setEnabled(!isReadOnly()
-                        && (isOracle || isAS400 || isMySQL || isVertica || isSAS || isImpala || isMsSQL || isSybase
+                        && (isOracle || isAS400 || isMySQL || isVertica || isSAS || isImpala || isMsSQL || isSybase||isGreenplum
                                 || EDatabaseConnTemplate.PSQL.getDBTypeName().equals(getConnectionDBType())
                                 || EDatabaseConnTemplate.PLUSPSQL.getDBTypeName().equals(getConnectionDBType())
                                 || EDatabaseConnTemplate.ACCESS.getDBTypeName().equals(getConnectionDBType()) || EDatabaseConnTemplate.MSSQL05_08
@@ -7180,6 +7198,15 @@ public class DatabaseForm extends AbstractForm {
         }
         EDatabaseConnTemplate template = EDatabaseConnTemplate.indexOfTemplate(getConnectionDBType());
         return template != null && template == EDatabaseConnTemplate.SYBASEASE
+                && LanguageManager.getCurrentLanguage().equals(ECodeLanguage.JAVA);
+    }
+    
+    private boolean asGreenplumVersionEnable() {
+        if (getConnectionDBType().length() <= 0) {
+            return false;
+        }
+        EDatabaseConnTemplate template = EDatabaseConnTemplate.indexOfTemplate(getConnectionDBType());
+        return template != null && template == EDatabaseConnTemplate.GREENPLUM
                 && LanguageManager.getCurrentLanguage().equals(ECodeLanguage.JAVA);
     }
 

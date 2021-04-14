@@ -99,8 +99,8 @@ public enum EDatabaseVersion4Drivers {
     VERTICA_3(new DbVersion4Drivers(EDatabaseTypeName.VERTICA, "VERTICA 3 (Deprecated)", "VERTICA_3", "vertica_3.0_jdk_5.jar")), //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
 
     // for bug 0017930
-
-    GREENPLUM(new DbVersion4Drivers(EDatabaseTypeName.GREENPLUM, "greenplum-5.1.4.000275.jar")), //$NON-NLS-1$
+    GREENPLUM_PSQL(new DbVersion4Drivers(EDatabaseTypeName.GREENPLUM,"PostgreSQL", "POSTGRESQL", "postgresql-8.4-703.jdbc4.jar")), //$NON-NLS-1$
+    GREENPLUM(new DbVersion4Drivers(EDatabaseTypeName.GREENPLUM,"Greenplum", "GREENPLUM", "greenplum-5.1.4.000275.jar")), //$NON-NLS-1$
 //    PSQL_V10(new DbVersion4Drivers(EDatabaseTypeName.PSQL, "v10", "V10", "postgresql-42.2.5.jar")),
     PSQL_V9_X(new DbVersion4Drivers(EDatabaseTypeName.PSQL, "v9 and later", "V9_X", "postgresql-42.2.14.jar")), //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
     PSQL_PRIOR_TO_V9(new DbVersion4Drivers(EDatabaseTypeName.PSQL, "Prior to v9", "PRIOR_TO_V9", "postgresql-8.4-703.jdbc4.jar")), //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$

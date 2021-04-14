@@ -19,9 +19,11 @@ import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
 
+import org.eclipse.core.resources.IFolder;
 import org.eclipse.emf.common.util.EList;
 import org.talend.commons.exception.ExceptionHandler;
 import org.talend.commons.exception.PersistenceException;
+import org.talend.commons.utils.workbench.resources.ResourceUtils;
 import org.talend.core.CorePlugin;
 import org.talend.core.language.ECodeLanguage;
 import org.talend.core.language.LanguageManager;
@@ -36,6 +38,7 @@ import org.talend.core.model.properties.ProcessItem;
 import org.talend.core.model.properties.RoutineItem;
 import org.talend.core.model.repository.ERepositoryObjectType;
 import org.talend.core.model.repository.IRepositoryViewObject;
+import org.talend.core.model.routines.CodesJarInfo;
 import org.talend.core.runtime.services.IDesignerMavenService;
 import org.talend.core.ui.ITestContainerProviderService;
 import org.talend.core.utils.CodesJarResourceCache;
@@ -151,13 +154,26 @@ public final class CodeGeneratorRoutine {
                     }
                     if (routinesParameterTypes != null) {
                         routinesParameterTypes.stream().filter(r -> r.getType() != null)
-                                .map(r -> CodesJarResourceCache.getCodesJarById(r.getId())).filter(info -> info != null)
+                                .map(r -> CodesJarResourceCache.getCodesJarById(r.getId()))
+                                .filter(info -> info != null && hasInnerCodes(info))
                                 .forEach(info -> neededCodesJars.add(designerMavenService.getImportGAVPackageForCodesJar(info)));
                     }
                 });
             }
         }
         return neededCodesJars;
+    }
+
+    private static boolean hasInnerCodes(CodesJarInfo info) {
+        try {
+            IFolder folder = ResourceUtils
+                    .getProject(ProjectManager.getInstance().getProjectFromProjectTechLabel(info.getProjectTechName()))
+                    .getFolder(ERepositoryObjectType.getFolderName(info.getType())).getFolder(info.getLabel());
+            return folder.exists() && folder.members().length > 0;
+        } catch (Exception e) {
+            ExceptionHandler.process(e);
+        }
+        return false;
     }
 
     /**

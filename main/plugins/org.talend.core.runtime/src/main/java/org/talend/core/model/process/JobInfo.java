@@ -67,6 +67,8 @@ public class JobInfo {
 
     private boolean needUnloadProcessor;
 
+    private int includeESBFlag = 0;
+
     public JobInfo(String jobId, String contextName, String version) {
         this.jobId = jobId;
         this.contextName = contextName;
@@ -572,4 +574,13 @@ public class JobInfo {
     public boolean isNeedUnloadProcessor() {
         return this.needUnloadProcessor;
     }
+
+    public int getIncludeESBFlag() {
+        return includeESBFlag;
+    }
+
+    public void setIncludeESBFlag(int includeESBFlag) {
+        this.includeESBFlag = includeESBFlag;
+    }
+
 }
