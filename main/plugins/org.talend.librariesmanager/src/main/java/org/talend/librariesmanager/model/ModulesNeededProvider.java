@@ -83,6 +83,7 @@ import org.talend.core.model.routines.IRoutinesProvider;
 import org.talend.core.runtime.maven.MavenArtifact;
 import org.talend.core.runtime.maven.MavenUrlHelper;
 import org.talend.core.runtime.process.TalendProcessOptionConstants;
+import org.talend.core.ui.ITestContainerProviderService;
 import org.talend.core.utils.CodesJarResourceCache;
 import org.talend.core.utils.TalendCacheUtils;
 import org.talend.core.utils.TalendQuoteUtils;
@@ -575,6 +576,14 @@ public class ModulesNeededProvider {
         }
         EList<RoutinesParameterType> routinesParameterTypes = null;
         if (item instanceof ProcessItem) {
+            ITestContainerProviderService testcaseService = ITestContainerProviderService.get();
+            if (testcaseService != null && testcaseService.isTestContainerItem(item)) {
+                try {
+                    item = testcaseService.getParentJobItem(item);
+                } catch (PersistenceException e) {
+                    ExceptionHandler.process(e);
+                }
+            }
             if (((ProcessItem) item).getProcess() != null && ((ProcessItem) item).getProcess().getParameters() != null) {
                 routinesParameterTypes = ((ProcessItem) item).getProcess().getParameters().getRoutinesParameter();
             }
