@@ -15,8 +15,8 @@ package org.talend.metadata.managment.connection.manager;
 import java.sql.Connection;
 import java.sql.DatabaseMetaData;
 import java.sql.Driver;
+import java.sql.PreparedStatement;
 import java.sql.SQLException;
-import java.sql.Statement;
 import java.util.List;
 import java.util.Map;
 import java.util.Properties;
@@ -24,8 +24,6 @@ import java.util.concurrent.Callable;
 import java.util.concurrent.FutureTask;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.TimeoutException;
-
-import metadata.managment.i18n.Messages;
 
 import org.apache.commons.lang.StringUtils;
 import org.eclipse.core.runtime.IProgressMonitor;
@@ -55,6 +53,8 @@ import org.talend.metadata.managment.hive.handler.HDP130Handler;
 import org.talend.metadata.managment.hive.handler.HDP200YarnHandler;
 import org.talend.metadata.managment.hive.handler.HiveConnectionHandler;
 import org.talend.metadata.managment.hive.handler.Mapr212Handler;
+
+import metadata.managment.i18n.Messages;
 
 /**
  * Created by Marvin Wang on Mar 13, 2013.
@@ -492,26 +492,18 @@ public class HiveConnectionManager extends DataBaseConnectionManager {
         }
         String jdbcPropertiesStr = String.valueOf(jdbcPropertiesObj);
         List<Map<String, Object>> jdbcProperties = HadoopRepositoryUtil.getHadoopPropertiesList(jdbcPropertiesStr);
-        Statement statement = null;
         try {
-            statement = dbConn.createStatement();
             for (Map<String, Object> propMap : jdbcProperties) {
                 String key = TalendQuoteUtils.removeQuotesIfExist(String.valueOf(propMap.get("PROPERTY"))); //$NON-NLS-1$
                 String value = TalendQuoteUtils.removeQuotesIfExist(String.valueOf(propMap.get("VALUE"))); //$NON-NLS-1$
                 if (StringUtils.isNotEmpty(key) && value != null) {
-                    statement.execute("SET " + key + "=" + value); //$NON-NLS-1$ //$NON-NLS-2$
+                    PreparedStatement ps = dbConn.prepareStatement("SET " + key + "=" + value);
+                    ps.execute(); // $NON-NLS-1$ //$NON-NLS-2$
+                    ps.close();
                 }
             }
         } catch (SQLException e) {
             ExceptionHandler.process(e);
-        } finally {
-            if (statement != null) {
-                try {
-                    statement.close();
-                } catch (SQLException e) {
-                    e.printStackTrace();
-                }
-            }
         }
     }
 

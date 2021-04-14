@@ -14,6 +14,7 @@ package org.talend.core.model.metadata.builder.database;
 
 import java.sql.Connection;
 import java.sql.DatabaseMetaData;
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
@@ -387,12 +388,12 @@ public class ExtractMetaDataFromDataBase {
     private static boolean checkSybaseDB(Connection connection, String database) {
         ExtractMetaDataUtils extractMeta = ExtractMetaDataUtils.getInstance();
         if (extractMeta != null) {
-            Statement stmt = null;
+            PreparedStatement stmt = null;
             ResultSet resultSet = null;
             try {
-                stmt = connection.createStatement();
+                stmt = connection.prepareStatement("sp_helpdb " + database);
                 extractMeta.setQueryStatementTimeout(stmt);
-                resultSet = stmt.executeQuery("sp_helpdb " + database);
+                resultSet = stmt.executeQuery();
                 return true;
             } catch (SQLException e) {
                 ExceptionHandler.process(e);
@@ -719,11 +720,11 @@ public class ExtractMetaDataFromDataBase {
 
     private static String executeGetCommentStatement(String queryStmt, Connection connection) {
         String comment = null;
-        Statement statement = null;
+        PreparedStatement statement = null;
         ResultSet resultSet = null;
         try {
-            statement = connection.createStatement();
-            statement.execute(queryStmt);
+            statement = connection.prepareStatement(queryStmt);
+            statement.execute();
 
             // get the results
             resultSet = statement.getResultSet();

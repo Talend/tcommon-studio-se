@@ -14,9 +14,9 @@ package org.talend.core.model.metadata.builder.database.manager.dbs;
 
 import java.sql.Connection;
 import java.sql.DatabaseMetaData;
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -68,15 +68,15 @@ public class IBMDB2ExtractManager extends ExtractManager {
 
     @Override
     public String getTableNameBySynonyms(Connection conn, String tableName) {
-        Statement sta = null;
+        PreparedStatement sta = null;
         ResultSet resultSet = null;
 
         try {
             if (conn != null && conn.getMetaData().getDatabaseProductName().startsWith(DATABASE_PRODUCT_NAME)) {
                 String sql = "SELECT NAME,BASE_NAME FROM SYSIBM.SYSTABLES where TYPE='A' and  name ='" + tableName + "'";
-                sta = conn.createStatement();
+                sta = conn.prepareStatement(sql);
                 ExtractMetaDataUtils.getInstance().setQueryStatementTimeout(sta);
-                resultSet = sta.executeQuery(sql);
+                resultSet = sta.executeQuery();
                 while (resultSet.next()) {
                     String baseName = resultSet.getString("base_name").trim();
                     return baseName;
@@ -119,9 +119,9 @@ public class IBMDB2ExtractManager extends ExtractManager {
                 synSQL += "AND b.CREATOR =\'" + metadataConnection.getSchema() + "\'";
             }
             synSQL += "ORDER BY a.COLNO";
-            Statement sta = extractMeta.getConn().createStatement();
+            PreparedStatement sta = extractMeta.getConn().prepareStatement(synSQL);
             extractMeta.setQueryStatementTimeout(sta);
-            ResultSet columns = sta.executeQuery(synSQL);
+            ResultSet columns = sta.executeQuery();
             String typeName = null;
             int index = 0;
             List<String> columnLabels = new ArrayList<String>();

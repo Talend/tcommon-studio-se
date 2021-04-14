@@ -15,10 +15,10 @@ package org.talend.metadata.managment.utils;
 import java.io.UnsupportedEncodingException;
 import java.sql.DatabaseMetaData;
 import java.sql.Driver;
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.ResultSetMetaData;
 import java.sql.SQLException;
-import java.sql.Statement;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
@@ -1340,10 +1340,10 @@ public class MetadataConnectionUtils {
      */
     public static String getColumnTypeName(java.sql.Connection connection, String tableName, int colIndex) {
         String columnTypeName = null;
-        Statement statement = null;
+        PreparedStatement statement = null;
         try {
-            statement = connection.createStatement();
-            ResultSet resultSet = statement.executeQuery("SELECT FIRST 1 * FROM " + tableName + ";"); //$NON-NLS-1$ //$NON-NLS-2$
+            statement = connection.prepareStatement("SELECT FIRST 1 * FROM " + tableName + ";");
+            ResultSet resultSet = statement.executeQuery(); // $NON-NLS-1$ //$NON-NLS-2$
             ResultSetMetaData rsMetaData = resultSet.getMetaData();
             columnTypeName = rsMetaData.getColumnTypeName(colIndex);
         } catch (Exception e) {

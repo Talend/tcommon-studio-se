@@ -17,7 +17,6 @@ import java.sql.DatabaseMetaData;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
@@ -72,20 +71,22 @@ public class OracleExtractManager extends ExtractManager {
     protected List<String> getTablesToFilter(IMetadataConnection metadataConnection) {
 
         List<String> tablesToFilter = new ArrayList<String>();
-        Statement stmt;
+        PreparedStatement stmt = null;
         ExtractMetaDataUtils extractMeta = ExtractMetaDataUtils.getInstance();
         try {
-            stmt = extractMeta.getConn().createStatement();
-            extractMeta.setQueryStatementTimeout(stmt);
             if (EDatabaseTypeName.ORACLEFORSID.getDisplayName().equals(metadataConnection.getDbType())
                     || EDatabaseTypeName.ORACLESN.getDisplayName().equals(metadataConnection.getDbType())
                     || EDatabaseTypeName.ORACLE_CUSTOM.getDisplayName().equals(metadataConnection.getDbType())
                     || EDatabaseTypeName.ORACLE_OCI.getDisplayName().equals(metadataConnection.getDbType())) {
-                ResultSet rsTables = stmt.executeQuery(ORACLE_10G_RECBIN_SQL);
+                stmt = extractMeta.getConn().prepareStatement(ORACLE_10G_RECBIN_SQL);
+                extractMeta.setQueryStatementTimeout(stmt);
+                ResultSet rsTables = stmt.executeQuery();
                 tablesToFilter = ExtractMetaDataFromDataBase.getTableNamesFromQuery(rsTables, extractMeta.getConn());
                 rsTables.close();
             }
-            stmt.close();
+            if (stmt != null) {
+                stmt.close();
+            }
         } catch (SQLException e) {
             ExceptionHandler.process(e);
         }
@@ -104,11 +105,12 @@ public class OracleExtractManager extends ExtractManager {
             List<String> tablesToFilter = getTablesToFilter(metadataConnection);
 
             try {
-                Statement stmt = extractMeta.getConn().createStatement();
+                PreparedStatement stmt = extractMeta.getConn().prepareStatement(GET_ALL_SYNONYMS);
                 extractMeta.setQueryStatementTimeout(stmt);
-                ResultSet rsTables = stmt.executeQuery(GET_ALL_SYNONYMS);
+                ResultSet rsTables = stmt.executeQuery();
                 getMetadataTables(medataTables, rsTables, dbMetaData.supportsSchemasInTableDefinitions(), tablesToFilter, limit);
                 rsTables.close();
+                stmt.close();
             } catch (SQLException e) {
                 ExceptionHandler.process(e);
                 log.error(e.toString());
@@ -127,7 +129,7 @@ public class OracleExtractManager extends ExtractManager {
     @Override
     public String getTableNameBySynonyms(Connection conn, String tableName) {
         // bug TDI-19382
-        Statement sta = null;
+        PreparedStatement sta = null;
         ResultSet resultSet = null;
 
         try {
@@ -136,9 +138,9 @@ public class OracleExtractManager extends ExtractManager {
                 // String sql = "select * from all_tab_columns where upper(table_name)='" + name +
                 // "' order by column_id";
                 // Statement sta;
-                sta = conn.createStatement();
+                sta = conn.prepareStatement(sql);
                 ExtractMetaDataUtils.getInstance().setQueryStatementTimeout(sta);
-                resultSet = sta.executeQuery(sql);
+                resultSet = sta.executeQuery();
                 while (resultSet.next()) {
                     return resultSet.getString("TABLE_NAME"); //$NON-NLS-1$
                 }
@@ -183,9 +185,9 @@ public class OracleExtractManager extends ExtractManager {
                 synSQL += "and all_synonyms.OWNER =\'" + schema.getName() + "\'";
             }
             synSQL += " ORDER BY all_tab_columns.COLUMN_NAME"; //$NON-NLS-1$
-            Statement sta = extractMeta.getConn().createStatement();
+            PreparedStatement sta = extractMeta.getConn().prepareStatement(synSQL);
             extractMeta.setQueryStatementTimeout(sta);
-            ResultSet columns = sta.executeQuery(synSQL);
+            ResultSet columns = sta.executeQuery();
             String typeName = null;
             int index = 0;
             List<String> columnLabels = new ArrayList<String>();
@@ -248,9 +250,9 @@ public class OracleExtractManager extends ExtractManager {
         ExtractMetaDataUtils extractMeta = ExtractMetaDataUtils.getInstance();
         if (extractMeta.isUseAllSynonyms()) {
             String sql = "select * from all_tab_columns where table_name='" + tableName + "' ORDER BY all_tab_columns.COLUMN_NAME"; //$NON-NLS-1$ //$NON-NLS-2$
-            Statement stmt = extractMeta.getConn().createStatement();
+            PreparedStatement stmt = extractMeta.getConn().prepareStatement(sql);
             extractMeta.setQueryStatementTimeout(stmt);
-            return stmt.executeQuery(sql);
+            return stmt.executeQuery();
         } else {
             return super.getColumnsResultSet(dbMetaData, catalogName, schemaName, tableName);
         }
@@ -260,7 +262,7 @@ public class OracleExtractManager extends ExtractManager {
     public void synchroViewStructure(String catalogName, String schemaName, String tableName) throws SQLException {
         ExtractMetaDataUtils extractMeta = ExtractMetaDataUtils.getInstance();
         ResultSet results = null;
-        Statement stmt = null;
+        PreparedStatement stmt = null;
         String sql = null;
         if (extractMeta.isUseAllSynonyms()) {
             sql = "select * from all_tab_columns where table_name='" + tableName + "'"; //$NON-NLS-1$
@@ -274,9 +276,9 @@ public class OracleExtractManager extends ExtractManager {
             sql = sqlBuffer.toString();
         }
         try {
-            stmt = extractMeta.getConn().createStatement();
+            stmt = extractMeta.getConn().prepareStatement(sql);
             extractMeta.setQueryStatementTimeout(stmt);
-            results = stmt.executeQuery(sql);
+            results = stmt.executeQuery();
         } finally {
             if (results != null) {
                 results.close();
@@ -337,9 +339,9 @@ public class OracleExtractManager extends ExtractManager {
                 && !metadataConnection.getDbVersionString().equals(EDatabaseVersion4Drivers.ORACLE_8.getVersionValue())) {
             ExtractMetaDataUtils extractMeta = ExtractMetaDataUtils.getInstance();
             try {
-                Statement stmt = extractMeta.getConn().createStatement();
+                PreparedStatement stmt = extractMeta.getConn().prepareStatement(TableInfoParameters.ORACLE_10G_RECBIN_SQL);
                 extractMeta.setQueryStatementTimeout(stmt);
-                ResultSet rsTables = stmt.executeQuery(TableInfoParameters.ORACLE_10G_RECBIN_SQL);
+                ResultSet rsTables = stmt.executeQuery();
                 itemTablesName.removeAll(ExtractMetaDataFromDataBase.getTableNamesFromQuery(rsTables, extractMeta.getConn()));
                 rsTables.close();
                 stmt.close();
@@ -359,8 +361,6 @@ public class OracleExtractManager extends ExtractManager {
         if (con != null && con.toString().contains("oracle.jdbc.driver") //$NON-NLS-1$
                 && extractMeta.isUseAllSynonyms()) {
             Set<String> nameFiters = tableInfoParameters.getNameFilters();
-            Statement stmt = con.createStatement();
-            extractMeta.setQueryStatementTimeout(stmt);
 
             StringBuffer filters = new StringBuffer();
             if (!nameFiters.isEmpty()) {
@@ -379,7 +379,9 @@ public class OracleExtractManager extends ExtractManager {
                 }
                 filters.append(')');
             }
-            ResultSet rsTables = stmt.executeQuery(GET_ALL_SYNONYMS + filters.toString());
+            PreparedStatement stmt = con.prepareStatement(GET_ALL_SYNONYMS + filters.toString());
+            extractMeta.setQueryStatementTimeout(stmt);
+            ResultSet rsTables = stmt.executeQuery();
             itemTablesName = ExtractMetaDataFromDataBase.getTableNamesFromQuery(rsTables, extractMeta.getConn());
             rsTables.close();
             stmt.close();
