@@ -138,6 +138,13 @@ public abstract class ShareLibrareisHelper {
                     }
                 }
 
+                if (artifactList != null && artifactList.size() > 0) {
+                    if (ShareLibrariesUtil.isSameFileWithRemote(file, artifactList, customNexusServer, customerRepHandler,
+                            isSnapshotVersion)) {
+                        continue;
+                    }
+                }
+
                 shareFiles.put(file, artifact);
             }
             SubMonitor mainSubMonitor = SubMonitor.convert(monitor, shareFiles.size());
