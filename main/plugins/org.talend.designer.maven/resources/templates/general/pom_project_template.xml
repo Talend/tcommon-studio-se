@@ -108,7 +108,12 @@
 							<groupId>org.codehaus.plexus</groupId>
 							<artifactId>plexus-utils</artifactId>
 							<version>3.0.24</version>
-						</dependency>
+                        </dependency>
+                        <dependency>
+                            <groupId>junit</groupId>
+                            <artifactId>junit</artifactId>
+                            <version>4.13.2</version>
+                        </dependency>
 					</dependencies>
 				</plugin>
 				<plugin>
