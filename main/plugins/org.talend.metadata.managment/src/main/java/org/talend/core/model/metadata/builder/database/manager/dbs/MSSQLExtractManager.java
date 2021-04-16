@@ -57,9 +57,9 @@ public class MSSQLExtractManager extends ExtractManager {
 
         try {
             if (conn != null && conn.getMetaData().getDatabaseProductName().equals(EDatabaseTypeName.MSSQL.getDisplayName())) {
-                String sql = "SELECT object_id ,parent_object_id as parentid, name AS object_name ,   base_object_name as base_name from sys.synonyms where  name ='"
-                        + tableName + "'";
+                String sql = "SELECT object_id ,parent_object_id as parentid, name AS object_name ,   base_object_name as base_name from sys.synonyms where  name =?";
                 sta = conn.prepareStatement(sql);
+                sta.setString(1, tableName);
                 ExtractMetaDataUtils.getInstance().setQueryStatementTimeout(sta);
                 resultSet = sta.executeQuery();
                 while (resultSet.next()) {
@@ -123,14 +123,21 @@ public class MSSQLExtractManager extends ExtractManager {
                 }
             }
             // need to retrieve columns of synonym by useing sql rather than get them from jdbc metadata
-            String synSQL = "select * from INFORMATION_SCHEMA.COLUMNS where  TABLE_NAME =\'" + TABLE_NAME + "\'";
+            String synSQL = "select * from INFORMATION_SCHEMA.COLUMNS where  TABLE_NAME =?";
             if (null != TABLE_SCHEMA) {
-                synSQL += "\nand TABLE_SCHEMA =\'" + TABLE_SCHEMA + "\'";
+                synSQL += "\nand TABLE_SCHEMA =?";
             }
             if (!("").equals(metadataConnection.getDatabase())) {
-                synSQL += "\nand TABLE_CATALOG =\'" + metadataConnection.getDatabase() + "\'";
+                synSQL += "\nand TABLE_CATALOG =?";
             }
             PreparedStatement sta = extractMeta.getConn().prepareStatement(synSQL);
+            sta.setString(1, TABLE_NAME);
+            if (null != TABLE_SCHEMA) {
+                sta.setString(2, TABLE_SCHEMA);
+            }
+            if (!("").equals(metadataConnection.getDatabase())) {
+                sta.setString(3, metadataConnection.getDatabase());
+            }
             extractMeta.setQueryStatementTimeout(sta);
             ResultSet columns = sta.executeQuery();
             String typeName = null;

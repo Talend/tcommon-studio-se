@@ -249,8 +249,9 @@ public class OracleExtractManager extends ExtractManager {
             throws SQLException {
         ExtractMetaDataUtils extractMeta = ExtractMetaDataUtils.getInstance();
         if (extractMeta.isUseAllSynonyms()) {
-            String sql = "select * from all_tab_columns where table_name='" + tableName + "' ORDER BY all_tab_columns.COLUMN_NAME"; //$NON-NLS-1$ //$NON-NLS-2$
+            String sql = "select * from all_tab_columns where table_name=? ORDER BY all_tab_columns.COLUMN_NAME"; //$NON-NLS-1$ //$NON-NLS-2$
             PreparedStatement stmt = extractMeta.getConn().prepareStatement(sql);
+            stmt.setString(1, tableName);
             extractMeta.setQueryStatementTimeout(stmt);
             return stmt.executeQuery();
         } else {
@@ -265,7 +266,7 @@ public class OracleExtractManager extends ExtractManager {
         PreparedStatement stmt = null;
         String sql = null;
         if (extractMeta.isUseAllSynonyms()) {
-            sql = "select * from all_tab_columns where table_name='" + tableName + "'"; //$NON-NLS-1$
+            sql = "select * from all_tab_columns where table_name=?"; //$NON-NLS-1$
         } else {
             StringBuffer sqlBuffer = new StringBuffer();
             sqlBuffer.append("SELECT * FROM ");
@@ -277,6 +278,9 @@ public class OracleExtractManager extends ExtractManager {
         }
         try {
             stmt = extractMeta.getConn().prepareStatement(sql);
+            if (extractMeta.isUseAllSynonyms()) {
+                stmt.setString(1, tableName);
+            }
             extractMeta.setQueryStatementTimeout(stmt);
             results = stmt.executeQuery();
         } finally {
@@ -304,8 +308,8 @@ public class OracleExtractManager extends ExtractManager {
         PreparedStatement statement = null;
         ExtractMetaDataUtils extractMeta = ExtractMetaDataUtils.getInstance();
         try {
-            statement = extractMeta.getConn().prepareStatement("SELECT COMMENTS FROM USER_COL_COMMENTS WHERE TABLE_NAME='" //$NON-NLS-1$
-                    + tableName + "'"); //$NON-NLS-1$
+            statement = extractMeta.getConn().prepareStatement("SELECT COMMENTS FROM USER_COL_COMMENTS WHERE TABLE_NAME=?"); //$NON-NLS-1$
+            statement.setString(1, tableName);
             extractMeta.setQueryStatementTimeout(statement);
             if (statement.execute()) {
                 keys = statement.getResultSet();
@@ -365,7 +369,7 @@ public class OracleExtractManager extends ExtractManager {
             StringBuffer filters = new StringBuffer();
             if (!nameFiters.isEmpty()) {
                 filters.append(" and ("); //$NON-NLS-1$
-                final String tStr = " all_synonyms.synonym_name like '"; //$NON-NLS-1$
+                final String tStr = " all_synonyms.synonym_name like "; //$NON-NLS-1$
                 int i = 0;
                 for (String s : nameFiters) {
                     if (i != 0) {
@@ -373,13 +377,17 @@ public class OracleExtractManager extends ExtractManager {
                     }
                     filters.append(tStr);
                     filters.append(s);
-                    filters.append('\'');
                     i++;
 
                 }
                 filters.append(')');
             }
             PreparedStatement stmt = con.prepareStatement(GET_ALL_SYNONYMS + filters.toString());
+            int i = 1;
+            for (String s : nameFiters) {
+                stmt.setString(i, s);
+                i++;
+            }
             extractMeta.setQueryStatementTimeout(stmt);
             ResultSet rsTables = stmt.executeQuery();
             itemTablesName = ExtractMetaDataFromDataBase.getTableNamesFromQuery(rsTables, extractMeta.getConn());

@@ -73,8 +73,10 @@ public class IBMDB2ExtractManager extends ExtractManager {
 
         try {
             if (conn != null && conn.getMetaData().getDatabaseProductName().startsWith(DATABASE_PRODUCT_NAME)) {
-                String sql = "SELECT NAME,BASE_NAME FROM SYSIBM.SYSTABLES where TYPE='A' and  name ='" + tableName + "'";
+                String sql = "SELECT NAME,BASE_NAME FROM SYSIBM.SYSTABLES where TYPE='A' and  name =?";
                 sta = conn.prepareStatement(sql);
+                sta.setString(1, tableName);
+
                 ExtractMetaDataUtils.getInstance().setQueryStatementTimeout(sta);
                 resultSet = sta.executeQuery();
                 while (resultSet.next()) {
@@ -113,13 +115,14 @@ public class IBMDB2ExtractManager extends ExtractManager {
             ExtractMetaDataUtils extractMeta = ExtractMetaDataUtils.getInstance();
             // need to retrieve columns of synonym by useing sql rather than get them from jdbc metadata
             String synSQL = "SELECT a.*\n" + "FROM SYSCAT.COLUMNS a\n" + "LEFT OUTER JOIN SYSIBM.SYSTABLES b\n"
-                    + "ON a.TABNAME = b.NAME\n" + "AND a.TABSCHEMA = b.CREATOR\n" + "where a.TABNAME =" + "\'" + tableName
-                    + "\'\n";
+                    + "ON a.TABNAME = b.NAME\n" + "AND a.TABSCHEMA = b.CREATOR\n" + "where a.TABNAME =?\n";
             if (!("").equals(metadataConnection.getSchema())) {
                 synSQL += "AND b.CREATOR =\'" + metadataConnection.getSchema() + "\'";
             }
             synSQL += "ORDER BY a.COLNO";
             PreparedStatement sta = extractMeta.getConn().prepareStatement(synSQL);
+            sta.setString(1, tableName);
+
             extractMeta.setQueryStatementTimeout(sta);
             ResultSet columns = sta.executeQuery();
             String typeName = null;
