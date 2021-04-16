@@ -17,8 +17,8 @@
 
 	<properties>
 		<talend.codes.package>@CodesPackage@</talend.codes.package>
-        <allow.codes.compile.error>true</allow.codes.compile.error>
-        <maven.compiler.failOnError>${allow.codes.compile.error}</maven.compiler.failOnError>
+        <codes.compile.failOnError>true</codes.compile.failOnError>
+        <maven.compiler.failOnError>${codes.compile.failOnError}</maven.compiler.failOnError>
 	</properties>
 
 	<dependencies>
