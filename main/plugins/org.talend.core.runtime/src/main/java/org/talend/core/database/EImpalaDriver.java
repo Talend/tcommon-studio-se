@@ -23,7 +23,7 @@ import org.talend.core.runtime.hd.hive.HiveMetadataHelper;
 public enum EImpalaDriver {
 
     HIVE2("HIVE2", "HIVE2", "org.apache.hive.jdbc.HiveDriver"),
-    IMPALA4("IMPALA", "IMPALA", "com.cloudera.impala.jdbc.Driver");
+    IMPALA("IMPALA", "IMPALA", "com.cloudera.impala.jdbc.Driver");
 
     EImpalaDriver(String displayName, String name, String driver) {
         this.displayName = displayName;

@@ -131,8 +131,8 @@ public class ImpalaConnectionManager extends DataBaseConnectionManager {
                                     if (EImpalaDriver.HIVE2.getDisplayName().equalsIgnoreCase(driverType)) {
                                         driverClass = EImpalaDriver.HIVE2.getDriver();
                                     }
-                                    if (EImpalaDriver.IMPALA4.getDisplayName().equalsIgnoreCase(driverType)) {
-                                        driverClass = EImpalaDriver.IMPALA4.getDriver();
+                                    if (EImpalaDriver.IMPALA.getDisplayName().equalsIgnoreCase(driverType)) {
+                                        driverClass = EImpalaDriver.IMPALA.getDriver();
                                     }
                                 } else {
                                     throw new IllegalArgumentException("impala can not work with Hive1");
