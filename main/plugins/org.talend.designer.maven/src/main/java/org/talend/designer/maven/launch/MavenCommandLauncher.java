@@ -332,7 +332,7 @@ public abstract class MavenCommandLauncher {
                 TalendDebugHandler.debug("\n------------------ Talend Maven Launcher log END -----------------------\n");
             }
             for (String line : log.split("\n")) { //$NON-NLS-1$
-                if (line.startsWith("[ERROR]")) { //$NON-NLS-1$
+                if (line.contains("Tests run:") || line.startsWith("[ERROR]")) { //$NON-NLS-1$
                     errors.append(line + "\n"); //$NON-NLS-1$
                 }
             }
