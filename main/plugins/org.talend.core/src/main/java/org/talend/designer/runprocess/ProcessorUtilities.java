@@ -3042,6 +3042,8 @@ public class ProcessorUtilities {
     }
 
     public static boolean isCIMode() {
+        // if it's CI mode , then the system property of maven.local.repository will store the value of studio
+        // m2 path,otherwise it's null
         return System.getProperty("maven.local.repository") != null;
     }
 
