@@ -57,6 +57,21 @@
 									<artifactId>commons-pool2</artifactId>
 									<version>2.4.2</version>
 								</artifactItem>
+								<artifactItem>
+									<groupId>org.apache.commons</groupId>
+									<artifactId>commons-compress</artifactId>
+									<version>1.19</version>
+								</artifactItem>
+								<artifactItem>
+									<groupId>org.apache.commons</groupId>
+									<artifactId>commons-collections</artifactId>
+									<version>3.2.2</version>
+								</artifactItem>
+								<artifactItem>
+									<groupId>commons-io</groupId>
+									<artifactId>commons-io</artifactId>
+									<version>2.7</version>
+								</artifactItem>
 							</artifactItems>
 						</configuration>
 					</execution>
