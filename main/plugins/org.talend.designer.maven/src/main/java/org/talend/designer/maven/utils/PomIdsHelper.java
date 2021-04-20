@@ -355,8 +355,9 @@ public class PomIdsHelper {
 
     public static boolean skipFolders() {
         String projectTechName = ProjectManager.getInstance().getCurrentProject().getTechnicalLabel();
-        ProjectPreferenceManager manager = getPreferenceManager(projectTechName);
-        return manager.getBoolean(MavenConstants.SKIP_FOLDERS);
+        Project project = ProjectManager.getInstance().getProjectFromProjectTechLabel(projectTechName);
+        ProjectPreferenceManager preferenceManager = new ProjectPreferenceManager(project, DesignerMavenPlugin.PLUGIN_ID, false);
+        return preferenceManager.getBoolean(MavenConstants.SKIP_FOLDERS);
     }
 
     public static boolean isValidGroupId(String text) {
