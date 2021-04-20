@@ -913,9 +913,12 @@ public class LocalLibraryManager implements ILibraryManagerService, IChangedLibr
                     fileToDeploy = null;
                     found = false;
                 }
-                // if it's CI mode , then the system property of maven.local.repository will store the value of studio
-                // m2 path,otherwise it's null
-                boolean isCIMode = System.getProperty("maven.local.repository") != null;
+                boolean isCIMode = false;
+                if (GlobalServiceRegister.getDefault().isServiceRegistered(IRunProcessService.class)) {
+                    IRunProcessService runProcessService = GlobalServiceRegister.getDefault()
+                            .getService(IRunProcessService.class);
+                    isCIMode = runProcessService.isCIMode();
+                }
                 if (!found && !isCIMode) {
                     ExceptionHandler.log("missing jar:" + module.getModuleName());
                 }
