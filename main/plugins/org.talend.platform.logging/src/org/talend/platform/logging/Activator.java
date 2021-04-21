@@ -75,12 +75,10 @@ public class Activator extends AbstractUIPlugin {
         String version = null;
         try {
             Bundle b = Platform.getBundle("org.talend.commons.runtime");
-            version = b.getHeaders().get(org.osgi.framework.Constants.BUNDLE_VERSION);
-        } catch (Exception e) {
-            //
-        }
+            if (b != null) {
+                version = b.getHeaders().get(org.osgi.framework.Constants.BUNDLE_VERSION);
+            }
 
-        if (StringUtils.isEmpty(version)) {
             File file = null;
             try {
                 file = new File(Platform.getInstallLocation().getDataArea(".eclipseproduct").getPath());
@@ -95,7 +93,12 @@ public class Activator extends AbstractUIPlugin {
                     //
                 }
             }
-            version = prop.getProperty("version");
+            String _version = prop.getProperty("version");
+            if (StringUtils.isEmpty(_version)) {
+                version = _version;
+            }
+        } catch (Exception e) {
+            //
         }
 
         if (StringUtils.isEmpty(version)) {
