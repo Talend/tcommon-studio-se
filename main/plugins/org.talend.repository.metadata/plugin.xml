@@ -85,6 +85,14 @@
             name="AccessMigrationTask"
             version="6.0.0">
       </projecttask>
+      <projecttask
+            beforeLogon="false"
+            breaks="7.4.0"
+            class="org.talend.repository.metadata.migration.RemoveDeprecateSASItemMigrationTask"
+            id="org.talend.repository.metadata.migration.RemoveDeprecateSASItemMigrationTask"
+            name="RemoveDeprecateSASItemMigrationTask"
+            version="7.4.1">
+      </projecttask>
    </extension>
    <extension
          point="org.talend.core.repositoryContextualsActions">
