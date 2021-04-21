@@ -126,6 +126,10 @@ public abstract class AbstractPropertyValueEvaluator implements PropertyValueEva
         }
 
         if (GenericTypeUtils.isStringType(property)) {
+            // UserPasswordProperties password
+            if ("password".equals(property.getName())) {
+                return TalendQuoteUtils.removeQuotes(stringValue);
+            }
             return TalendQuoteUtils.removeQuotes(StringEscapeUtils.unescapeJava(stringValue));
         }
         return rawValue;
