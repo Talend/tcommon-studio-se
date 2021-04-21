@@ -25,8 +25,10 @@ import org.apache.avro.SchemaBuilder.FieldAssembler;
 import org.apache.avro.SchemaBuilder.FieldBuilder;
 import org.apache.avro.SchemaBuilder.PropBuilder;
 import org.apache.avro.SchemaBuilder.RecordBuilder;
+import org.apache.avro.SchemaParseException;
 import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Level;
+import org.apache.log4j.Logger;
 import org.eclipse.emf.common.util.EList;
 import org.talend.commons.exception.ExceptionHandler;
 import org.talend.core.GlobalServiceRegister;
@@ -49,6 +51,10 @@ import orgomg.cwm.objectmodel.core.TaggedValue;
  */
 public final class MetadataToolAvroHelper {
 
+    private static Logger LOGGER = Logger.getLogger(MetadataToolAvroHelper.class);
+
+    private static final String COLUMN = "Column";
+
     private static final String TALEND_DB_COLUMN_NAME = "talend.field.dbColumnName";
     /**
      * @return An Avro schema with enriched properties from the incoming metadata table.
@@ -66,7 +72,7 @@ public final class MetadataToolAvroHelper {
                 dynamicPosition = i;
                 dynColumn = column;
             } else {
-                fa = convertToAvro(fa, column);
+                fa = convertToAvro(fa, column, i);
             }
             i++;
         }
@@ -137,7 +143,7 @@ public final class MetadataToolAvroHelper {
      * Build a field into a schema using enriched properties from the incoming column.
      */
     private static FieldAssembler<Schema> convertToAvro(FieldAssembler<Schema> fa,
-            org.talend.core.model.metadata.builder.connection.MetadataColumn in) {
+            org.talend.core.model.metadata.builder.connection.MetadataColumn in, int i) {
         ICoreService coreService = (ICoreService) GlobalServiceRegister.getDefault().getService(ICoreService.class);
         String label = in.getLabel();
         if (label != null && coreService != null) {
@@ -237,7 +243,27 @@ public final class MetadataToolAvroHelper {
         }
 
         type = in.isNullable() ? AvroUtils.wrapAsNullable(type) : type;
-        return defaultValue == null ? fb.type(type).noDefault() : fb.type(type).withDefault(defaultValue);
+        FieldAssembler<Schema> returnResult = null;
+        try {
+            if (defaultValue == null) {
+                returnResult = fb.type(type).noDefault();
+            } else {
+                returnResult = fb.type(type).withDefault(defaultValue);
+            }
+        } catch (SchemaParseException e) {
+            // if validation not pass from avro ,then generate a new name like Column0 to pass the validation, but
+            // actually the display name of schema and the column name is using TALEND_DB_COLUMN_NAME
+            String genColumn = COLUMN + i;
+            FieldBuilder<Schema> fbNew = fa.name(genColumn);
+            copyColumnProperties(fbNew, in);
+            if (defaultValue == null) {
+                returnResult = fbNew.type(type).noDefault();
+            } else {
+                returnResult = fbNew.type(type).withDefault(defaultValue);
+            }
+            LOGGER.info(e.getMessage() + ", use " + genColumn + " instead");
+        }
+        return returnResult;
     }
 
     private static Schema getLogicalTypeSchema(org.talend.core.model.metadata.builder.connection.MetadataColumn column) {

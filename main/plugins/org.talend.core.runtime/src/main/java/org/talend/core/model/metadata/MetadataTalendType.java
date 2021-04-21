@@ -32,6 +32,8 @@ import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
 
+import org.apache.commons.codec.digest.DigestUtils;
+import org.apache.commons.lang.StringUtils;
 import org.eclipse.core.resources.IFile;
 import org.eclipse.core.resources.IFolder;
 import org.eclipse.core.resources.IProject;
@@ -492,19 +494,55 @@ public final class MetadataTalendType {
         }
     }
 
+    private static String getSha1OfFile(File file) {
+        String sha1 = null;
+        FileInputStream fileInputStream = null;
+        try {
+            fileInputStream = new FileInputStream(file);
+            sha1 = DigestUtils.shaHex(fileInputStream);
+        } catch (Exception e) {
+            ExceptionHandler.process(e);
+        } finally {
+            if (fileInputStream != null) {
+                try {
+                    fileInputStream.close();
+                } catch (IOException e) {
+                    e.printStackTrace(); // Just print the exception for debug.
+                }
+            }
+        }
+        return sha1;
+    }
+    
+    public static void copyFile(File in, IFile out) throws CoreException, IOException {
+        FileInputStream fis = new FileInputStream(in);
+        if (out.exists()) {
+            out.setContents(fis, true, false, null);
+        } else {
+            out.create(fis, true, null);
+        }
+        fis.close();
+    }
+
     public static void syncNewMappingFileToProject() throws SystemException {
         try {
             File sysMappingFiles = new File(MetadataTalendType.getSystemForderURLOfMappingsFile().getPath());
             IFolder projectMappingFolder = ResourceUtils.getProject(ProjectManager.getInstance().getCurrentProject())
                     .getFolder(MetadataTalendType.PROJECT_MAPPING_FOLDER);
             File projectMappingFiles = new File(projectMappingFolder.getLocationURI());
-            if (!sysMappingFiles.exists() || !projectMappingFiles.exists()
-                    || sysMappingFiles.list().length == projectMappingFiles.list().length) {
+            if (!sysMappingFiles.exists() || !projectMappingFiles.exists()) {
                 return;
             }
-
             for (File sysMapping : sysMappingFiles.listFiles()) {
                 IFile projectMapping = projectMappingFolder.getFile(sysMapping.getName());
+                if (projectMapping.exists() && StringUtils.equals(sysMapping.getName(), "mapping_Greenplum.xml")) {
+
+                    String sha1OfFile = DigestUtils.shaHex(projectMapping.getContents());
+                    String shalOfOldSystem = "8431f19215dacb3caa126778ae695954552cce2a";
+                    if (StringUtils.equals(sha1OfFile, shalOfOldSystem)) {
+                        copyFile(sysMapping, projectMapping);
+                    }
+                }
                 if (!projectMapping.exists()) {
                     FileInputStream fis = null;
                     try {
