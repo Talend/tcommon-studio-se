@@ -23,6 +23,7 @@
    </url>
 
    <requires>
+      <import plugin="org.talend.rcp" version="0.0.0" match="greaterOrEqual"/>
       <import feature="org.eclipse.rcp" version="0.0.0" match="greaterOrEqual"/>
       <import plugin="net.jeeeyul.eclipse.themes" version="0.0.0" match="greaterOrEqual"/>
       <import plugin="net.jeeeyul.swtend" version="0.0.0" match="greaterOrEqual"/>
@@ -34,17 +35,10 @@
    </requires>
 
    <plugin
-         id="org.talend.rcp"
-         download-size="0"
-         install-size="0"
-         version="0.0.0"/>
-
-   <plugin
          id="org.talend.rcp.nl"
          download-size="0"
          install-size="0"
          version="0.0.0"
-         fragment="true"
-         unpack="false"/>
+         fragment="true"/>
 
 </feature>
