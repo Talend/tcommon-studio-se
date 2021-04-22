@@ -108,10 +108,8 @@ public class Activator extends AbstractUIPlugin {
                 //
             }
 
-            if (StringUtils.isEmpty(version)) {
-                if (version == null || "".equals(version.trim())) { //$NON-NLS-1$
-                    version = (String) getDefault().getBundle().getHeaders().get(org.osgi.framework.Constants.BUNDLE_VERSION);
-                }
+            if (version == null || "".equals(version.trim())) { //$NON-NLS-1$
+                version = (String) getDefault().getBundle().getHeaders().get(org.osgi.framework.Constants.BUNDLE_VERSION);
             }
         }
 
