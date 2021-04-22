@@ -43,6 +43,12 @@
 			<groupId>org.apache.maven.plugins</groupId>
 			<artifactId>maven-jar-plugin</artifactId>
 			<version>3.2.0</version>
+			<exclusions>
+    <exclusion>
+     <groupId>org.apache.maven.shared</groupId>
+     <artifactId>maven-shared-utils</artifactId>
+    </exclusion>
+   </exclusions>
 		</dependency>
 		<dependency>
 			<groupId>org.apache.maven.plugins</groupId>
