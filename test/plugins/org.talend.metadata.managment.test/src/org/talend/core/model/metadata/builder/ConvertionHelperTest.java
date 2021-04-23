@@ -317,8 +317,7 @@ public class ConvertionHelperTest {
         newColumn.getAdditionalField().put("AVRO_TECHNICAL_KEY", "TEST1");
         source.getListColumns().add(newColumn);
 
-        IEclipsePreferences coreUIPluginNode = new InstanceScope().getNode(ITalendCorePrefConstants.CoreUIPlugin_ID);
-        coreUIPluginNode.putBoolean(IRepositoryPrefConstants.ALLOW_SPECIFIC_CHARACTERS_FOR_SCHEMA_COLUMNS, true);
+        CoreRuntimePlugin.getInstance().getProjectPreferenceManager().setAllowSpecificCharacters(true);
         org.talend.core.model.metadata.builder.connection.MetadataTable metadataTable = ConvertionHelper.convert(source);
         assertTrue(metadataTable.getColumns().get(0).getLabel().equals("_long"));
         assertTrue(metadataTable.getColumns().get(0).getName().equals("long"));
@@ -466,8 +465,7 @@ public class ConvertionHelperTest {
         creatMetadataColumn.getTaggedValue().add(tv);
         inputTable.getColumns().add(creatMetadataColumn);
 
-        IEclipsePreferences coreUIPluginNode = new InstanceScope().getNode(ITalendCorePrefConstants.CoreUIPlugin_ID);
-        coreUIPluginNode.putBoolean(IRepositoryPrefConstants.ALLOW_SPECIFIC_CHARACTERS_FOR_SCHEMA_COLUMNS, true);
+        CoreRuntimePlugin.getInstance().getProjectPreferenceManager().setAllowSpecificCharacters(true);
         IMetadataTable targetTable = MetadataToolHelper.convert(inputTable);
         assertTrue(targetTable.getListColumns().get(0).getLabel().equals("_long"));
         assertTrue(targetTable.getListColumns().get(0).getOriginalDbColumnName().equals("long"));
