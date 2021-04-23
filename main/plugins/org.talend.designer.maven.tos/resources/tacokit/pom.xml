@@ -57,6 +57,12 @@
 			<groupId>org.talend.components</groupId>
 			<artifactId>cosmosDB</artifactId>
 			<version>${tacokit.components.version}</version>
+			<exclusions>
+				<exclusion>
+					<groupId>org.apache.httpcomponents</groupId>
+					<artifactId>httpclient</artifactId>
+				</exclusion>
+			</exclusions>
 		</dependency>
         <dependency>
             <groupId>org.slf4j</groupId>
