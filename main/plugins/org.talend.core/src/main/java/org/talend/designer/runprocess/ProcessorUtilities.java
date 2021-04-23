@@ -67,9 +67,6 @@ import org.talend.core.language.LanguageManager;
 import org.talend.core.model.components.ComponentCategory;
 import org.talend.core.model.components.EComponentType;
 import org.talend.core.model.components.IComponent;
-import org.talend.core.model.components.IComponentsFactory;
-import org.talend.core.model.components.IComponentsService;
-import org.talend.core.model.context.ContextUtils;
 import org.talend.core.model.general.ModuleNeeded;
 import org.talend.core.model.general.Project;
 import org.talend.core.model.metadata.IMetadataColumn;
@@ -182,8 +179,6 @@ public class ProcessorUtilities {
     private static final Map<String, Integer> esbJobs = new HashMap<String, Integer>();
 
     private static boolean isDebug = false;
-
-    private static boolean isCIMode = false;
 
     private static boolean isDynamicJobAndCITest = false;
 
@@ -1099,7 +1094,7 @@ public class ProcessorUtilities {
             checkMetadataDynamic(currentProcess, jobInfo);
 
             int options = TalendProcessOptionConstants.MODULES_DEFAULT;
-            if (isCIMode && BitwiseOptionUtils.containOption(option, GENERATE_MAIN_ONLY)) {
+            if (isCIMode() && BitwiseOptionUtils.containOption(option, GENERATE_MAIN_ONLY)) {
                 options |= TalendProcessOptionConstants.MODULES_WITH_CHILDREN;
             }
             Set<ModuleNeeded> neededLibraries = new HashSet<>();
@@ -2697,12 +2692,11 @@ public class ProcessorUtilities {
     }
     
     public static boolean isCIMode() {
-        return isCIMode;
+        // if it's CI mode , then the system property of maven.local.repository will store the value of studio
+        // m2 path,otherwise it's null
+        return System.getProperty("maven.local.repository") != null;
     }
 
-    public static void setCIMode(boolean isCIMode) {
-        ProcessorUtilities.isCIMode = isCIMode;
-    }
 
     public static void setExportConfig(boolean export) {
         setExportConfig(JavaUtils.JAVA_APP_NAME, null, null, export, new Date());
