@@ -6441,14 +6441,12 @@ public class DatabaseForm extends AbstractForm {
                 String template = DbConnStrForHive.URL_HIVE_2_TEMPLATE;
                 ;
                 String text = impalaDriverCombo.getText();
-                String text2 = conn.getParameters().get(ConnParameterKeys.IMPALA_DRIVER);
                 if (EDatabaseTypeName.IMPALA.getDisplayName().equals(text)) {
                     template = DbConnStrForHive.URL_IMPALA_TEMPLATE;
                 }
-                s = DatabaseConnStrUtil.getImpalaString(getConnection(), getConnection().getServerName(), getConnection()
-                        .getPort(), getConnection().getSID(), template);
-                getConnection().setUiSchema(getConnection().getSID());
-                conn.setURL(s);
+                s = DatabaseConnStrUtil.getImpalaString(conn, conn.getServerName(), conn.getPort(), conn.getSID(), template);
+                conn.setUiSchema(getConnection().getSID());
+                // conn.setURL(s);
             } else {
                 EDatabaseVersion4Drivers version = EDatabaseVersion4Drivers.indexOfByVersionDisplay(versionStr);
                 if (version != null) {
