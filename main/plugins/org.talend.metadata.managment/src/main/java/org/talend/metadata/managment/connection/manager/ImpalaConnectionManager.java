@@ -131,11 +131,8 @@ public class ImpalaConnectionManager extends DataBaseConnectionManager {
                                     if (EImpalaDriver.HIVE2.getDisplayName().equalsIgnoreCase(driverType)) {
                                         driverClass = EImpalaDriver.HIVE2.getDriver();
                                     }
-                                    if (EImpalaDriver.IMPALA40.getDisplayName().equalsIgnoreCase(driverType)) {
-                                        driverClass = EImpalaDriver.IMPALA40.getDriver();
-                                    }
-                                    if (EImpalaDriver.IMPALA41.getDisplayName().equalsIgnoreCase(driverType)) {
-                                        driverClass = EImpalaDriver.IMPALA41.getDriver();
+                                    if (EImpalaDriver.IMPALA.getDisplayName().equalsIgnoreCase(driverType)) {
+                                        driverClass = EImpalaDriver.IMPALA.getDriver();
                                     }
                                 } else {
                                     throw new IllegalArgumentException("impala can not work with Hive1");
@@ -167,6 +164,9 @@ public class ImpalaConnectionManager extends DataBaseConnectionManager {
         Connection conn = null;
         try {
             conn = futureTask.get(getDBConnectionTimeout(), TimeUnit.SECONDS);
+            if (conn == null) {
+                throw new SQLException();
+            }
         } catch (TimeoutException e) {
             threadGroup.interrupt();
             addBackgroundJob(futureTask, newThread);
