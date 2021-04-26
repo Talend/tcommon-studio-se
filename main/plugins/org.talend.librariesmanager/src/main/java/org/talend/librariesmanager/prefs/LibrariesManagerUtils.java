@@ -18,11 +18,16 @@ import java.util.List;
 import java.util.Set;
 
 import org.eclipse.core.runtime.Platform;
+import org.eclipse.core.runtime.preferences.IEclipsePreferences;
+import org.eclipse.core.runtime.preferences.InstanceScope;
+import org.talend.commons.exception.ExceptionHandler;
+import org.talend.commons.utils.network.NetworkUtil;
 import org.talend.core.GlobalServiceRegister;
 import org.talend.core.language.ECodeLanguage;
 import org.talend.core.model.general.ModuleNeeded;
 import org.talend.core.model.general.ModuleNeeded.ELibraryInstallStatus;
 import org.talend.core.model.process.INode;
+import org.talend.core.prefs.ITalendCorePrefConstants;
 import org.talend.designer.core.IDesignerCoreService;
 import org.talend.librariesmanager.model.ModulesNeededProvider;
 
@@ -121,5 +126,16 @@ public class LibrariesManagerUtils {
             }
         }
         return false;
+    }
+
+    public static boolean shareLibsAtStartup() {
+        boolean ret = ITalendCorePrefConstants.NEXUS_SHARE_LIBS_DEFAULT;
+        try {
+            IEclipsePreferences node = InstanceScope.INSTANCE.getNode(NetworkUtil.ORG_TALEND_DESIGNER_CORE);
+            ret = node.getBoolean(ITalendCorePrefConstants.NEXUS_SHARE_LIBS, ITalendCorePrefConstants.NEXUS_SHARE_LIBS_DEFAULT);
+        } catch (Throwable e) {
+            ExceptionHandler.process(e);
+        }
+        return ret;
     }
 }

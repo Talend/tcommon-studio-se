@@ -61,6 +61,7 @@ import org.talend.commons.utils.workbench.resources.ResourceUtils;
 import org.talend.core.GlobalServiceRegister;
 import org.talend.core.context.Context;
 import org.talend.core.context.RepositoryContext;
+import org.talend.core.database.EDatabaseTypeName;
 import org.talend.core.model.context.ContextUtils;
 import org.talend.core.model.context.link.ContextLinkService;
 import org.talend.core.model.metadata.builder.connection.Connection;
@@ -70,6 +71,7 @@ import org.talend.core.model.properties.BusinessProcessItem;
 import org.talend.core.model.properties.ByteArray;
 import org.talend.core.model.properties.ConnectionItem;
 import org.talend.core.model.properties.ContextItem;
+import org.talend.core.model.properties.DatabaseConnectionItem;
 import org.talend.core.model.properties.FileItem;
 import org.talend.core.model.properties.FolderItem;
 import org.talend.core.model.properties.FolderType;
@@ -365,6 +367,14 @@ public class ImportBasicHandler extends AbstractImportExecutableHandler {
             if (item.getState() == null) {
                 importItem.addError(Messages.getString("AbstractImportHandler_unsupportItem"));//$NON-NLS-1$
                 return false;
+            }
+
+            if (ERepositoryObjectType.METADATA_CONNECTIONS.equals(itemType) && (item instanceof DatabaseConnectionItem)) {
+                DatabaseConnectionItem connItem = (DatabaseConnectionItem) item;
+                if (EDatabaseTypeName.isDeprecateDbType(connItem.getTypeName())) {
+                    importItem.addError(Messages.getString("AbstractImportHandler_deprecateItem"));
+                    return false;
+                }
             }
 
             final RepositoryObjectCache repObjectcache = ImportCacheHelper.getInstance().getRepObjectcache();

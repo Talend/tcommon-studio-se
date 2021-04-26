@@ -36,6 +36,8 @@ public interface MavenConstants {
 
     static final String DEFAULT_GROUP_ID = "org.talend";
 
+    static final String APACHE_GROUP_ID = "org.apache";
+
     static final String DEFAULT_VERSION = "6.0.0";
 
     static final String SNAPSHOT = "-SNAPSHOT";

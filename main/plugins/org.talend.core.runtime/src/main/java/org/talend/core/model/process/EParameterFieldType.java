@@ -124,6 +124,7 @@ public enum EParameterFieldType {
     TACOKIT_BUTTON,
     TACOKIT_SUGGESTABLE_TABLE,
     TACOKIT_VALUE_SELECTION,
+    TACOKIT_TABLE,
     TACOKIT_TEXT_AREA_SELECTION;
 
     public String getName() {

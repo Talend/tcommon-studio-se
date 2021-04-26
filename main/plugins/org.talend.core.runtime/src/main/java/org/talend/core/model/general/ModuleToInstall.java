@@ -191,6 +191,23 @@ public class ModuleToInstall {
         }
     }
 
+    @Override
+    public ModuleToInstall clone() {
+        ModuleToInstall module = new ModuleToInstall();
+        module.setName(this.name);
+        module.setRequired(this.required);
+        module.setContext(this.context);
+        module.setDescription(this.description);
+        module.setDistribution(this.distribution);
+        module.setFromCustomNexus(this.fromCustomNexus);
+        module.setLicenseType(this.licenseType);
+        module.setLicenseUrl(this.licenseUrl);
+        module.setMavenUri(this.mavenUri);
+        module.setUrl_description(this.url_description);
+        module.setUrl_download(this.url_download);
+        return module;
+    }
+
     public static String removeAuthenrizationInfo(String mavenUri) throws Exception {
         MavenArtifact ma = MavenUrlHelper.parseMvnUrl(mavenUri);
         ma.setUsername(""); //$NON-NLS-1$

@@ -53,7 +53,7 @@ public class BigDataBasicUtil {
 
     private static IDynamicDistributionManager getDynamicDistributionManager(IProgressMonitor monitor) throws Exception {
         if (GlobalServiceRegister.getDefault().isServiceRegistered(IHadoopDistributionService.class)) {
-            IHadoopDistributionService hdService = (IHadoopDistributionService) GlobalServiceRegister.getDefault()
+            IHadoopDistributionService hdService = GlobalServiceRegister.getDefault()
                     .getService(IHadoopDistributionService.class);
             if (hdService != null) {
                 return hdService.getDynamicDistributionManager();
