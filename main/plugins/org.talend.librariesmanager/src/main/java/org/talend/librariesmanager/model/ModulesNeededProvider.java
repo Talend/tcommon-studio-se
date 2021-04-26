@@ -804,17 +804,16 @@ public class ModulesNeededProvider {
 
             importNeedsListForRoutes = new ArrayList<ModuleNeeded>();
 
-            if (processItem != null && project.isCamel3()) {
+            if (project.isCamel3()) {
                 importNeedsListForRoutes.addAll(service.getModuleNeeded("camel3-core", true));
                 importNeedsListForRoutes.addAll(service.getModuleNeeded("camel3-spring", true));
             } else {
                 importNeedsListForRoutes.add(getComponentModuleById("CAMEL", "camel-core"));
                 importNeedsListForRoutes.add(getComponentModuleById("CAMEL", "camel-spring"));
+                importNeedsListForRoutes.add(getComponentModuleById("CAMEL", "spring-context"));
+                importNeedsListForRoutes.add(getComponentModuleById("CAMEL", "spring-beans"));
+                importNeedsListForRoutes.add(getComponentModuleById("CAMEL", "spring-core"));
             }
-
-            importNeedsListForRoutes.add(getComponentModuleById("CAMEL", "spring-context"));
-            importNeedsListForRoutes.add(getComponentModuleById("CAMEL", "spring-beans"));
-            importNeedsListForRoutes.add(getComponentModuleById("CAMEL", "spring-core"));
             if (System.getProperty("java.version") != null && System.getProperty("java.version").startsWith("11")) {
                 getModulesNeededForRoutesJava11();
             }
