@@ -198,9 +198,6 @@ public final class TaggedValueHelper {
 
     public static final String IS_SQL_ENGIN_BEFORE_CHECK = "false"; //$NON-NLS-1$
 
-    // TDQ-19030 compare null values in Redundancy Analysis
-    public static final String IS_IGNORE_NULL = "Ignore Null"; //$NON-NLS-1$
-
     private TaggedValueHelper() {
     }
 
