@@ -17,6 +17,8 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.net.URL;
+import java.net.URLEncoder;
+import java.nio.charset.StandardCharsets;
 import java.util.Collections;
 import java.util.Iterator;
 import java.util.Map;
@@ -113,7 +115,7 @@ public final class HandlerUtil {
                 return;
             }
             // for migration task ,there is not .screeenshot file in preceding version - begin
-            os = new FileOutputStream(fileURL.getFile());
+            os = new FileOutputStream(URLEncoder.encode(fileURL.getFile(),StandardCharsets.UTF_8.toString()));
             manager.getPaths().iterator().next();
             is = manager.getStream(screenshotNeeded, itemRecord);
             FileCopyUtils.copyStreams(is, os);
