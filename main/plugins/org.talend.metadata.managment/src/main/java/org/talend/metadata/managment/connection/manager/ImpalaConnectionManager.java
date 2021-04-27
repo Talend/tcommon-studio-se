@@ -162,17 +162,18 @@ public class ImpalaConnectionManager extends DataBaseConnectionManager {
         newThread.start();
 
         Connection conn = null;
+        String connectionInfo = new StringBuilder().append("JDBC Uri: ").append(metadataConn.getUrl()).append("  ").toString();
         try {
             conn = futureTask.get(getDBConnectionTimeout(), TimeUnit.SECONDS);
             if (conn == null) {
-                throw new SQLException();
+                throw new SQLException(connectionInfo);
             }
         } catch (TimeoutException e) {
             threadGroup.interrupt();
             addBackgroundJob(futureTask, newThread);
-            throw new SQLException(Messages.getString("ImpalaConnectionManager.getConnection.timeout"), e); //$NON-NLS-1$
+            throw new SQLException(connectionInfo + Messages.getString("ImpalaConnectionManager.getConnection.timeout"), e); //$NON-NLS-1$
         } catch (Throwable e1) {
-            throw new SQLException(e1);
+            throw new SQLException(connectionInfo, e1);
         }
         return conn;
     }
