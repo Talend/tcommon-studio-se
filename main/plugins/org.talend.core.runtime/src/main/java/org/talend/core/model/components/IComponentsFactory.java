@@ -113,4 +113,7 @@ public interface IComponentsFactory {
     public List<ComponentProviderInfo> getComponentsProvidersInfo();
     
     public String getCustomComponentBundlePath();
+
+    public Set<IComponent> getComponentsForInit();
+
 }

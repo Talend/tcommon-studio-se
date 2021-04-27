@@ -2364,8 +2364,10 @@ public final class ProxyRepositoryFactory implements IProxyRepositoryFactory {
                         tdqRepositoryService.initProxyRepository();
                     }
                 }
-                // regenerate relationship index
-                if (project.getEmfProject().getItemsRelations().isEmpty()) {
+                // regenerate relationship index if error index found
+                try {
+                    ProjectDataJsonProvider.checkRelationShipSetting(project.getEmfProject());
+                } catch (Exception e) {
                     RelationshipItemBuilder.getInstance().buildAndSaveIndex();
                 }
 

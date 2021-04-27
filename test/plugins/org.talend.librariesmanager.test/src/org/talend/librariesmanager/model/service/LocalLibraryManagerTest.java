@@ -150,8 +150,7 @@ public class LocalLibraryManagerTest {
                     FilesUtils.copyFile(file, target);
                 }
             } else {
-                LibrariesIndex index = LibrariesIndexManager.getInstance().getStudioLibIndex();
-                EMap<String, String> jarsToRelativePath = index.getJarsToRelativePath();
+                Map<String, String> jarsToRelativePath = LibrariesIndexManager.getInstance().getAllStudioLibsFromIndex();
                 List<File> jarFiles = FilesUtils.getJarFilesFromFolder(file, null);
                 boolean modified = false;
                 if (jarFiles.size() > 0) {
@@ -163,7 +162,7 @@ public class LocalLibraryManagerTest {
                             fullPath = new Path(fullPath).toPortableString();
                             String relativePath = fullPath.substring(fullPath.indexOf(contributeID));
                             if (!jarsToRelativePath.keySet().contains(name)) {
-                                jarsToRelativePath.put(name, relativePath);
+                                LibrariesIndexManager.getInstance().AddStudioLibs(name, relativePath);
                                 modified = true;
                             }
                         }
@@ -202,7 +201,7 @@ public class LocalLibraryManagerTest {
         // retrieve jar from the index.xml if not find in lib/java
         else {
             ModuleNeeded module = new ModuleNeeded("", jarNeeded, "", true);
-            EMap<String, String> jarsToRelative = LibrariesIndexManager.getInstance().getStudioLibIndex().getJarsToRelativePath();
+            Map<String, String> jarsToRelative = LibrariesIndexManager.getInstance().getAllMavenLibsFromIndex();
             String relativePath = jarsToRelative.get(module.getMavenUri());
             if (relativePath == null) {
                 return;

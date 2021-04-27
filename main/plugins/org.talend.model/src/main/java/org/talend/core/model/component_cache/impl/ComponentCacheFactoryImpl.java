@@ -34,7 +34,7 @@ public class ComponentCacheFactoryImpl extends EFactoryImpl implements Component
      */
     public static ComponentCacheFactory init() {
         try {
-            ComponentCacheFactory theComponentCacheFactory = (ComponentCacheFactory)EPackage.Registry.INSTANCE.getEFactory("http://www.talend.org/component_cache"); 
+            ComponentCacheFactory theComponentCacheFactory = (ComponentCacheFactory)EPackage.Registry.INSTANCE.getEFactory(ComponentCachePackage.eNS_URI);
             if (theComponentCacheFactory != null) {
                 return theComponentCacheFactory;
             }

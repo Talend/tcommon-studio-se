@@ -78,7 +78,7 @@ public class ComponentCachePackageImpl extends EPackageImpl implements Component
 
     /**
      * Creates, registers, and initializes the <b>Package</b> for this model, and for any others upon which it depends.
-     * 
+     *
      * <p>This method is used to initialize {@link ComponentCachePackage#eINSTANCE} when that field is accessed.
      * Clients should not invoke it directly. Instead, they should simply access that field to obtain the package.
      * <!-- begin-user-doc -->
@@ -92,7 +92,8 @@ public class ComponentCachePackageImpl extends EPackageImpl implements Component
         if (isInited) return (ComponentCachePackage)EPackage.Registry.INSTANCE.getEPackage(ComponentCachePackage.eNS_URI);
 
         // Obtain or create and register package
-        ComponentCachePackageImpl theComponentCachePackage = (ComponentCachePackageImpl)(EPackage.Registry.INSTANCE.get(eNS_URI) instanceof ComponentCachePackageImpl ? EPackage.Registry.INSTANCE.get(eNS_URI) : new ComponentCachePackageImpl());
+        Object registeredComponentCachePackage = EPackage.Registry.INSTANCE.get(eNS_URI);
+        ComponentCachePackageImpl theComponentCachePackage = registeredComponentCachePackage instanceof ComponentCachePackageImpl ? (ComponentCachePackageImpl)registeredComponentCachePackage : new ComponentCachePackageImpl();
 
         isInited = true;
 
@@ -108,7 +109,6 @@ public class ComponentCachePackageImpl extends EPackageImpl implements Component
         // Mark meta-data to indicate it can't be changed
         theComponentCachePackage.freeze();
 
-  
         // Update the registry and return the package
         EPackage.Registry.INSTANCE.put(ComponentCachePackage.eNS_URI, theComponentCachePackage);
         return theComponentCachePackage;
@@ -290,6 +290,15 @@ public class ComponentCachePackageImpl extends EPackageImpl implements Component
      * <!-- end-user-doc -->
      * @generated
      */
+    public EAttribute getComponentInfo_ProviderClass() {
+        return (EAttribute)componentInfoEClass.getEStructuralFeatures().get(16);
+    }
+
+    /**
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     */
     public EClass getComponentEntryMap() {
         return componentEntryMapEClass;
     }
@@ -360,6 +369,7 @@ public class ComponentCachePackageImpl extends EPackageImpl implements Component
         createEAttribute(componentInfoEClass, COMPONENT_INFO__TYPE);
         createEAttribute(componentInfoEClass, COMPONENT_INFO__SHA1);
         createEAttribute(componentInfoEClass, COMPONENT_INFO__LONG_NAME);
+        createEAttribute(componentInfoEClass, COMPONENT_INFO__PROVIDER_CLASS);
 
         componentEntryMapEClass = createEClass(COMPONENT_ENTRY_MAP);
         createEAttribute(componentEntryMapEClass, COMPONENT_ENTRY_MAP__KEY);
@@ -419,6 +429,7 @@ public class ComponentCachePackageImpl extends EPackageImpl implements Component
         initEAttribute(getComponentInfo_Type(), ecorePackage.getEString(), "type", null, 0, 1, ComponentInfo.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
         initEAttribute(getComponentInfo_Sha1(), ecorePackage.getEString(), "sha1", null, 0, 1, ComponentInfo.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
         initEAttribute(getComponentInfo_LongName(), ecorePackage.getEString(), "longName", null, 0, 1, ComponentInfo.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+        initEAttribute(getComponentInfo_ProviderClass(), ecorePackage.getEString(), "providerClass", null, 0, 1, ComponentInfo.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
         initEClass(componentEntryMapEClass, Map.Entry.class, "ComponentEntryMap", !IS_ABSTRACT, !IS_INTERFACE, !IS_GENERATED_INSTANCE_CLASS);
         initEAttribute(getComponentEntryMap_Key(), ecorePackage.getEString(), "key", null, 0, 1, Map.Entry.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
@@ -439,10 +450,10 @@ public class ComponentCachePackageImpl extends EPackageImpl implements Component
      * @generated
      */
     protected void createMapEntryAnnotations() {
-        String source = "MapEntry";		
+        String source = "MapEntry";
         addAnnotation
-          (componentEntryMapEClass, 
-           source, 
+          (componentEntryMapEClass,
+           source,
            new String[] {
            });
     }
