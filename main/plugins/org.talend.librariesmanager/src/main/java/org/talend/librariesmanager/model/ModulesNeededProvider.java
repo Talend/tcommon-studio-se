@@ -262,8 +262,8 @@ public class ModulesNeededProvider {
 
     public static Set<String> getAllModuleNamesFromIndex() {
         Set<String> moduleNames = new HashSet<String>();
-        moduleNames.addAll(LibrariesIndexManager.getInstance().getMavenLibIndex().getJarsToRelativePath().keySet());
-        moduleNames.addAll(LibrariesIndexManager.getInstance().getStudioLibIndex().getJarsToRelativePath().keySet());
+        moduleNames.addAll(LibrariesIndexManager.getInstance().getAllMavenLibsFromIndex().keySet());
+        moduleNames.addAll(LibrariesIndexManager.getInstance().getAllStudioLibsFromIndex().keySet());
         return moduleNames;
     }
 

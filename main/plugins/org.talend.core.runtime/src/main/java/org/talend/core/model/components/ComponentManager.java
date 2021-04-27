@@ -60,13 +60,6 @@ public class ComponentManager {
             ILibraryManagerService repositoryBundleService = (ILibraryManagerService) GlobalServiceRegister.getDefault()
                     .getService(ILibraryManagerService.class);
             repositoryBundleService.clearCache();
-            if (GlobalServiceRegister.getDefault().isServiceRegistered(ILibrariesService.class)) {
-                ILibrariesService libService = (ILibrariesService) GlobalServiceRegister.getDefault().getService(
-                        ILibrariesService.class);
-                if (libService != null) {
-                    libService.syncLibraries();
-                }
-            }
             setModified(false);
         }
     }
