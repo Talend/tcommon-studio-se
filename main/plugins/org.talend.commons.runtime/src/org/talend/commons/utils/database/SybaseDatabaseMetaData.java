@@ -13,9 +13,9 @@
 package org.talend.commons.utils.database;
 
 import java.sql.Connection;
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -54,10 +54,12 @@ public class SybaseDatabaseMetaData extends PackageFakeDatabaseMetadata {
         for (String catalogName : catList) {
             String sql = createSqlByLoginAndCatalog(login, catalogName);
             ResultSet rs = null;
-            Statement stmt = null;
+            PreparedStatement stmt = null;
             try {
-                stmt = connection.createStatement();
-                rs = stmt.executeQuery(sql);
+                stmt = connection.prepareStatement(sql);
+                stmt.setString(1, login);
+
+                rs = stmt.executeQuery();
 
                 while (rs.next()) {
                     int temp = rs.getInt(1);
@@ -92,11 +94,11 @@ public class SybaseDatabaseMetaData extends PackageFakeDatabaseMetadata {
     public ResultSet getSchemas(String catalog, String schemaPattern) throws SQLException {
         String sql = "SELECT DISTINCT name FROM " + catalog + ".dbo.sysusers where suid > 0"; //$NON-NLS-1$ //$NON-NLS-2$
         ResultSet rs = null;
-        Statement stmt = null;
+        PreparedStatement stmt = null;
         List<String[]> list = new ArrayList<String[]>();
         try {
-            stmt = connection.createStatement();
-            rs = stmt.executeQuery(sql);
+            stmt = connection.prepareStatement(sql);
+            rs = stmt.executeQuery();
 
             while (rs.next()) {
                 String name = rs.getString("name"); //$NON-NLS-1$

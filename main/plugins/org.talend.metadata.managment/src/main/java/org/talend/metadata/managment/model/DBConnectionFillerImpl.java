@@ -1149,8 +1149,10 @@ public class DBConnectionFillerImpl extends MetadataFillerImpl<DatabaseConnectio
                     && dbJDBCMetadata.getDatabaseProductName().startsWith("DB2/")) { //$NON-NLS-1$
                 for (String element : tableType) {
                     if (element.equals("SYNONYM")) { //$NON-NLS-1$
-                        String sql = "SELECT NAME FROM SYSIBM.SYSTABLES where TYPE='A' and BASE_SCHEMA = '" + schemaPattern + "'"; //$NON-NLS-1$ //$NON-NLS-2$
+                        String sql = "SELECT NAME FROM SYSIBM.SYSTABLES where TYPE='A' and BASE_SCHEMA = ?"; //$NON-NLS-1$ //$NON-NLS-2$
                         PreparedStatement stmt = extractMeta.getConn().prepareStatement(sql);
+                        stmt.setString(1, schemaPattern);
+
                         extractMeta.setQueryStatementTimeout(stmt);
                         ResultSet rsTables = stmt.executeQuery();
                         while (rsTables.next()) {

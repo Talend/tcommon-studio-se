@@ -706,24 +706,22 @@ public class ExtractMetaDataFromDataBase {
             tableComment = tablesSet.getString(GetTable.REMARKS.name());
         }
         if (StringUtils.isBlank(tableComment)) {
-            String selectRemarkOnTable = getSelectRemarkOnTable(tableName);
-            if (selectRemarkOnTable != null && connection != null) {
-                tableComment = executeGetCommentStatement(selectRemarkOnTable, connection);
+            if (connection != null) {
+                tableComment = executeGetCommentStatement(connection, tableName);
             }
         }
         return tableComment;
     }
 
-    private static String getSelectRemarkOnTable(String tableName) {
-        return "SELECT TABLE_COMMENT FROM information_schema.TABLES WHERE TABLE_NAME='" + tableName + "'"; //$NON-NLS-1$ //$NON-NLS-2$
-    }
+    private static String executeGetCommentStatement(Connection connection, String tableName) {
+        String sql = "SELECT TABLE_COMMENT FROM information_schema.TABLES WHERE TABLE_NAME=?";
 
-    private static String executeGetCommentStatement(String queryStmt, Connection connection) {
         String comment = null;
         PreparedStatement statement = null;
         ResultSet resultSet = null;
         try {
-            statement = connection.prepareStatement(queryStmt);
+            statement = connection.prepareStatement(sql);
+            statement.setString(1, tableName);
             statement.execute();
 
             // get the results

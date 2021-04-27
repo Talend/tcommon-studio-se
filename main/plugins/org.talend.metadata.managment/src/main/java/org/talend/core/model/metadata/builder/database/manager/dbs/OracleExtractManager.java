@@ -134,11 +134,13 @@ public class OracleExtractManager extends ExtractManager {
 
         try {
             if (conn != null && conn.getMetaData().getDatabaseProductName().equals(DATABASE_PRODUCT_NAME)) {
-                String sql = "select TABLE_NAME from ALL_SYNONYMS where SYNONYM_NAME = '" + tableName + "'"; //$NON-NLS-1$ //$NON-NLS-2$
+                String sql = "select TABLE_NAME from ALL_SYNONYMS where SYNONYM_NAME = ?"; //$NON-NLS-1$ //$NON-NLS-2$
                 // String sql = "select * from all_tab_columns where upper(table_name)='" + name +
                 // "' order by column_id";
                 // Statement sta;
                 sta = conn.prepareStatement(sql);
+                sta.setString(1, tableName);
+
                 ExtractMetaDataUtils.getInstance().setQueryStatementTimeout(sta);
                 resultSet = sta.executeQuery();
                 while (resultSet.next()) {
@@ -175,17 +177,22 @@ public class OracleExtractManager extends ExtractManager {
             // need to retrieve columns of synonym by useing sql rather than get them from jdbc metadata
             String synSQL = "SELECT all_tab_columns.*\n" + "FROM all_tab_columns\n" + "LEFT OUTER JOIN all_synonyms\n"
                     + "ON all_tab_columns.TABLE_NAME = all_synonyms.TABLE_NAME\n"
-                    + "AND ALL_SYNONYMS.TABLE_OWNER = all_tab_columns.OWNER\n" + "WHERE all_synonyms.SYNONYM_NAME  =" + "\'"
-                    + synonymName + "\'\n";
+                    + "AND ALL_SYNONYMS.TABLE_OWNER = all_tab_columns.OWNER\n" + "WHERE all_synonyms.SYNONYM_NAME  =?\n";
             // bug TDI-19382
             if (!("").equals(metadataConnection.getSchema())) {
-                synSQL += "and all_synonyms.OWNER =\'" + metadataConnection.getSchema() + "\'";
+                synSQL += "and all_synonyms.OWNER =?";
             } else if (table.eContainer() instanceof Schema) {
-                Schema schema = (Schema) table.eContainer();
-                synSQL += "and all_synonyms.OWNER =\'" + schema.getName() + "\'";
+                synSQL += "and all_synonyms.OWNER =?";
             }
             synSQL += " ORDER BY all_tab_columns.COLUMN_NAME"; //$NON-NLS-1$
             PreparedStatement sta = extractMeta.getConn().prepareStatement(synSQL);
+            sta.setString(1, synonymName);
+            if (!("").equals(metadataConnection.getSchema())) {
+                sta.setString(2, metadataConnection.getSchema());
+            } else if (table.eContainer() instanceof Schema) {
+                Schema schema = (Schema) table.eContainer();
+                sta.setString(2, schema.getName());
+            }
             extractMeta.setQueryStatementTimeout(sta);
             ResultSet columns = sta.executeQuery();
             String typeName = null;
