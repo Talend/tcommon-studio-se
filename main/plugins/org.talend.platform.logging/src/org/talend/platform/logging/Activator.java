@@ -1,7 +1,15 @@
 package org.talend.platform.logging;
 
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.IOException;
+import java.util.Properties;
+
+import org.apache.commons.lang3.StringUtils;
 import org.apache.log4j.Logger;
+import org.eclipse.core.runtime.Platform;
 import org.eclipse.ui.plugin.AbstractUIPlugin;
+import org.osgi.framework.Bundle;
 import org.osgi.framework.BundleContext;
 import org.talend.utils.format.PresentableBox;
 
@@ -18,6 +26,8 @@ public class Activator extends AbstractUIPlugin {
     // The shared instance
     private static Activator plugin;
 
+    private static String version = null;// studio version
+
     /**
      * The constructor
      */
@@ -33,6 +43,7 @@ public class Activator extends AbstractUIPlugin {
     public void start(BundleContext context) throws Exception {
         super.start(context);
         plugin = this;
+        version = null;
         if (log.isInfoEnabled()) {
             Object version = getVersion();
             String mess = "Starting Talend's platform log system."; //$NON-NLS-1$
@@ -51,6 +62,7 @@ public class Activator extends AbstractUIPlugin {
      */
     public void stop(BundleContext context) throws Exception {
         plugin = null;
+        version = null;
         super.stop(context);
     }
 
@@ -64,10 +76,43 @@ public class Activator extends AbstractUIPlugin {
     }
 
     public static String getVersion() {
-        String version = System.getProperty("talend.studio.version"); //$NON-NLS-1$
-        if (version == null || "".equals(version.trim())) { //$NON-NLS-1$
-            version = (String) getDefault().getBundle().getHeaders().get(org.osgi.framework.Constants.BUNDLE_VERSION);
+        if (version == null) {
+            try {
+                File file = null;
+                try {
+                    file = new File(Platform.getInstallLocation().getDataArea(".eclipseproduct").getPath());
+                } catch (IOException e1) {
+                    //
+                }
+                Properties prop = new Properties();
+                if (file != null && file.exists()) {
+                    try (FileInputStream fis = new FileInputStream(file)) {
+                        prop.load(fis);
+                    } catch (Exception e) {
+                        //
+                    }
+                }
+                version = prop.getProperty("version");
+
+                if (StringUtils.isEmpty(version)) {
+                    version = System.getProperty("talend.studio.version"); //$NON-NLS-1$
+                }
+
+                if (StringUtils.isEmpty(version)) {
+                    Bundle b = Platform.getBundle("org.talend.commons.runtime");
+                    if (b != null) {
+                        version = b.getHeaders().get(org.osgi.framework.Constants.BUNDLE_VERSION);
+                    }
+                }
+            } catch (Exception e) {
+                //
+            }
+
+            if (version == null || "".equals(version.trim())) { //$NON-NLS-1$
+                version = (String) getDefault().getBundle().getHeaders().get(org.osgi.framework.Constants.BUNDLE_VERSION);
+            }
         }
+
         return version;
     }
 }
