@@ -24,7 +24,11 @@ public class SparkMetadataTalendTypeFilter extends MetadataTalendTypeFilter {
 
     private final static String ROWGENERATOR_COMPONENT_NAME = "tRowGenerator"; //$NON-NLS-1$
 
-    protected final static String INPUTPARQUET_COMPONENT_NAME = "tFileInputParquet", INPUTSTREAMPARQUET_COMPONENT_NAME = "tFileStreamInputParquet", OUTPUTPARQUET_COMPONENT_NAME = "tFileOutputParquet"; //$NON-NLS-1$; //$NON-NLS-2$ //$NON-NLS-3$
+    protected final static String INPUTPARQUET_COMPONENT_NAME = "tFileInputParquet"; //$NON-NLS-1$
+
+    protected final static String INPUTSTREAMPARQUET_COMPONENT_NAME = "tFileStreamInputParquet"; //$NON-NLS-1$
+
+    protected final static String OUTPUTPARQUET_COMPONENT_NAME = "tFileOutputParquet"; // ; //$NON-NLS-1$
 
     private final static String INPUTCASSANDRA_COMPONENT_NAME = "tCassandraInput"; //$NON-NLS-1$
 
@@ -36,7 +40,14 @@ public class SparkMetadataTalendTypeFilter extends MetadataTalendTypeFilter {
 
     private final static String OUTPUTKUDU_COMPONENT_NAME = "tKuduOutput"; //$NON-NLS-1$
 
+    private final static String INPUTJDBC_COMPONENT_NAME = "tJDBCInput"; //$NON-NLS-1$
+
+    private final static String OUTPUTJDBC_COMPONENT_NAME = "tJDBCOutput"; //$NON-NLS-1$
+
     protected final static Map<String, List<String>> COMPONENT_UNSUPPORTED_TYPES = new HashMap<>();
+
+    // Contains types only supported for specific components
+    protected final static Map<String, List<String>> COMPONENT_SUPPORTED_TYPES = new HashMap<>();
 
     protected final String mComponentName;
 
@@ -46,11 +57,19 @@ public class SparkMetadataTalendTypeFilter extends MetadataTalendTypeFilter {
         COMPONENT_UNSUPPORTED_TYPES.put(OUTPUTPARQUET_COMPONENT_NAME, Arrays.asList(new String[] { "Object", "List", "Vector" })); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
         COMPONENT_UNSUPPORTED_TYPES.put(INPUTSTREAMPARQUET_COMPONENT_NAME,
                 Arrays.asList(new String[] { "Object", "List", "Vector" })); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
-        COMPONENT_UNSUPPORTED_TYPES.put(INPUTCASSANDRA_COMPONENT_NAME, Arrays.asList(new String[] { "Object", "List", "Vector" })); //$NON-NLS-1$ //$NON-NLS-2$
-        COMPONENT_UNSUPPORTED_TYPES.put(LOOKUPINPUTCASSANDRA_COMPONENT_NAME, Arrays.asList(new String[] { "Object", "List", "Vector" })); //$NON-NLS-1$ //$NON-NLS-2$
-        COMPONENT_UNSUPPORTED_TYPES.put(OUTPUTCASSANDRA_COMPONENT_NAME, Arrays.asList(new String[] { "Object", "List", "Vector" })); //$NON-NLS-1$ //$NON-NLS-2$
-        COMPONENT_UNSUPPORTED_TYPES.put(INPUTKUDU_COMPONENT_NAME, Arrays.asList(new String[] { "Object", "List", "Vector", "byte[]", "BigDecimal" })); //$NON-NLS-1$ //$NON-NLS-2$
-        COMPONENT_UNSUPPORTED_TYPES.put(OUTPUTKUDU_COMPONENT_NAME, Arrays.asList(new String[] { "Object", "List", "Vector", "byte[]", "BigDecimal" })); //$NON-NLS-1$ //$NON-NLS-2$
+        COMPONENT_UNSUPPORTED_TYPES.put(INPUTCASSANDRA_COMPONENT_NAME,
+                Arrays.asList(new String[] { "Object", "List", "Vector" })); //$NON-NLS-1$ //$NON-NLS-2$
+        COMPONENT_UNSUPPORTED_TYPES.put(LOOKUPINPUTCASSANDRA_COMPONENT_NAME,
+                Arrays.asList(new String[] { "Object", "List", "Vector" })); //$NON-NLS-1$ //$NON-NLS-2$
+        COMPONENT_UNSUPPORTED_TYPES.put(OUTPUTCASSANDRA_COMPONENT_NAME,
+                Arrays.asList(new String[] { "Object", "List", "Vector" })); //$NON-NLS-1$ //$NON-NLS-2$
+        COMPONENT_UNSUPPORTED_TYPES.put(INPUTKUDU_COMPONENT_NAME,
+                Arrays.asList(new String[] { "Object", "List", "Vector", "byte[]", "BigDecimal" })); //$NON-NLS-1$ //$NON-NLS-2$
+        COMPONENT_UNSUPPORTED_TYPES.put(OUTPUTKUDU_COMPONENT_NAME,
+                Arrays.asList(new String[] { "Object", "List", "Vector", "byte[]", "BigDecimal" })); //$NON-NLS-1$ //$NON-NLS-2$
+
+        COMPONENT_SUPPORTED_TYPES.put(INPUTJDBC_COMPONENT_NAME, Arrays.asList("Dynamic")); //$NON-NLS-1$
+        COMPONENT_SUPPORTED_TYPES.put(OUTPUTJDBC_COMPONENT_NAME, Arrays.asList("Dynamic")); //$NON-NLS-1$
     }
 
     public SparkMetadataTalendTypeFilter(String componentName) {
@@ -59,15 +78,21 @@ public class SparkMetadataTalendTypeFilter extends MetadataTalendTypeFilter {
 
     @Override
     protected List<String> getUnsupportedTypes() {
+        List<String> unsupportedTypes = new ArrayList<String>(UNSUPPORTED_TYPES);
+
+        // Add component specific unsupported types
         List<String> currentComponentUnsupportedType = COMPONENT_UNSUPPORTED_TYPES.get(this.mComponentName);
         if (currentComponentUnsupportedType != null) {
-            List<String> unionList = new ArrayList<>();
-            unionList.addAll(currentComponentUnsupportedType);
-            unionList.addAll(UNSUPPORTED_TYPES);
-            return unionList;
-        } else {
-            return UNSUPPORTED_TYPES;
+            unsupportedTypes.addAll(currentComponentUnsupportedType);
         }
+
+        // Remove component specific supported types
+        List<String> currentComponentSupportedType = COMPONENT_SUPPORTED_TYPES.get(this.mComponentName);
+        if (currentComponentSupportedType != null) {
+            unsupportedTypes.removeIf(item -> currentComponentSupportedType.contains(item));
+        }
+
+        return unsupportedTypes;
     }
 
 }
