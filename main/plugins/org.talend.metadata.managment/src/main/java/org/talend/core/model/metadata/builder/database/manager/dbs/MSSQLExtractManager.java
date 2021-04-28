@@ -132,11 +132,13 @@ public class MSSQLExtractManager extends ExtractManager {
             }
             PreparedStatement sta = extractMeta.getConn().prepareStatement(synSQL);
             sta.setString(1, TABLE_NAME);
+            int idx = 2;
             if (null != TABLE_SCHEMA) {
-                sta.setString(2, TABLE_SCHEMA);
+                sta.setString(idx, TABLE_SCHEMA);
+                idx++;
             }
             if (!("").equals(metadataConnection.getDatabase())) {
-                sta.setString(3, metadataConnection.getDatabase());
+                sta.setString(idx, metadataConnection.getDatabase());
             }
             extractMeta.setQueryStatementTimeout(sta);
             ResultSet columns = sta.executeQuery();

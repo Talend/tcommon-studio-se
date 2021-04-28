@@ -187,11 +187,12 @@ public class OracleExtractManager extends ExtractManager {
             synSQL += " ORDER BY all_tab_columns.COLUMN_NAME"; //$NON-NLS-1$
             PreparedStatement sta = extractMeta.getConn().prepareStatement(synSQL);
             sta.setString(1, synonymName);
+            int idx = 2;
             if (!("").equals(metadataConnection.getSchema())) {
-                sta.setString(2, metadataConnection.getSchema());
+                sta.setString(idx, metadataConnection.getSchema());
             } else if (table.eContainer() instanceof Schema) {
                 Schema schema = (Schema) table.eContainer();
-                sta.setString(2, schema.getName());
+                sta.setString(idx, schema.getName());
             }
             extractMeta.setQueryStatementTimeout(sta);
             ResultSet columns = sta.executeQuery();
