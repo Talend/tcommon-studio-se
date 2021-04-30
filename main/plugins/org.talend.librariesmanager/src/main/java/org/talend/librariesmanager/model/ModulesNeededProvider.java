@@ -544,9 +544,9 @@ public class ModulesNeededProvider {
                             Property property = findRoutinesPropery(infor.getId(), infor.getName(), routines, type);
                             if (property != null) {
                                 if (((RoutineItem) property.getItem()).isBuiltIn()) {
-                                    systemRoutines.add(infor.getId());
+                                    systemRoutines.add(property.getId());
                                 } else {
-                                    userRoutines.add(infor.getId());
+                                    userRoutines.add(property.getId());
                                 }
                             }
 
