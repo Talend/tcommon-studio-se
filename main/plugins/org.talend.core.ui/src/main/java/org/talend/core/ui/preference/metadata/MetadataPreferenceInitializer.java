@@ -14,7 +14,6 @@ package org.talend.core.ui.preference.metadata;
 
 import org.eclipse.core.runtime.preferences.AbstractPreferenceInitializer;
 import org.eclipse.jface.preference.IPreferenceStore;
-import org.talend.core.model.repository.IRepositoryPrefConstants;
 import org.talend.core.prefs.ITalendCorePrefConstants;
 import org.talend.core.ui.CoreUIPlugin;
 
@@ -27,8 +26,6 @@ public class MetadataPreferenceInitializer extends AbstractPreferenceInitializer
     public void initializeDefaultPreferences() {
         IPreferenceStore store = CoreUIPlugin.getDefault().getPreferenceStore();
         store.setDefault(ITalendCorePrefConstants.MAXIMUM_AMOUNT_OF_COLUMNS_FOR_XML, 500);
-        store.setDefault(IRepositoryPrefConstants.ALLOW_SPECIFIC_CHARACTERS_FOR_SCHEMA_COLUMNS, false);
-
     }
 
 }

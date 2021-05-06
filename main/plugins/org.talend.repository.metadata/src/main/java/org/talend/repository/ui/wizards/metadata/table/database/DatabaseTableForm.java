@@ -422,9 +422,8 @@ public class DatabaseTableForm extends AbstractForm {
 
         metadataEditor.setMetadataTable(metadataTable);
 
-        Boolean flag = CoreUIPlugin.getDefault().getPreferenceStore()
-                .getBoolean(IRepositoryPrefConstants.ALLOW_SPECIFIC_CHARACTERS_FOR_SCHEMA_COLUMNS);
-        if (!flag.booleanValue()) {
+        boolean flag = CoreRuntimePlugin.getInstance().getProjectPreferenceManager().isAllowSpecificCharacters();
+        if (!flag) {
             List<MetadataColumn> list = metadataEditor.getMetadataColumnList();
             for (MetadataColumn column : list) {
                 if (!isCnorEn(column.getLabel())) {

@@ -281,9 +281,7 @@ public final class MetadataToolHelper {
     }
 
     public static boolean isAllowSpecificCharacters() {
-        IEclipsePreferences coreUIPluginNode = new InstanceScope().getNode(ITalendCorePrefConstants.CoreUIPlugin_ID);
-        return coreUIPluginNode
-                .getBoolean(IRepositoryPrefConstants.ALLOW_SPECIFIC_CHARACTERS_FOR_SCHEMA_COLUMNS, false);
+        return CoreRuntimePlugin.getInstance().getProjectPreferenceManager().isAllowSpecificCharacters();
     }
 
     /**
