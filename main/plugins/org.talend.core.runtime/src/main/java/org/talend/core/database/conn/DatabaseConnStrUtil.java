@@ -114,6 +114,13 @@ public class DatabaseConnStrUtil {
                 && EDatabaseVersion4Drivers.SYBASEIQ_16_SA.getVersionValue().equals(dbVersion)) {
         	connStr = EDatabaseConnTemplate.SYBASEASE_16_SA;
         }
+        if (EDatabaseTypeName.GREENPLUM.getDisplayName().equals(dbType)) {
+            if (EDatabaseVersion4Drivers.GREENPLUM.getVersionValue().equals(dbVersion)) {
+                connStr = EDatabaseConnTemplate.GREENPLUM;
+            }else if(EDatabaseVersion4Drivers.GREENPLUM_PSQL.getVersionValue().equals(dbVersion)) {
+                connStr = EDatabaseConnTemplate.GREENPLUM_PSQL;
+            }
+        }
         EDatabaseVersion4Drivers version = EDatabaseVersion4Drivers.indexOfByVersion(dbVersion);
         if (connStr != null) {
             String s = connStr.getUrlTemplate(version);
@@ -221,8 +228,10 @@ public class DatabaseConnStrUtil {
                     .get(ConnParameterKeys.IMPALA_AUTHENTICATION_PRINCIPLA));
         }
         String url = null;
-        if (template.startsWith(DbConnStrForHive.URL_HIVE_2_TEMPLATE)) {
-            url = getImpalaURLString(false, server, port, sidOrDatabase, impalaPrincipal);
+        String driver = dbConn.getParameters().get(ConnParameterKeys.IMPALA_DRIVER);
+        if (template.startsWith(DbConnStrForHive.URL_HIVE_2_TEMPLATE)
+                || template.startsWith(DbConnStrForHive.URL_IMPALA_TEMPLATE)) {
+            url = getImpalaURLString(false, server, port, sidOrDatabase, impalaPrincipal, driver);
         }
         url = attachAdditionalHiveParameters(url, dbConn, false);
         return url;
@@ -369,9 +378,13 @@ public class DatabaseConnStrUtil {
         return s;
     }
 
-    private static String getImpalaURLString(boolean supportContext, String server, String port, String sid, String Principal) {
-        String s = EDatabaseConnTemplate.IMPALA.getUrlTemplate(null);
-        String standardURlString = getImpalaURlString(s, supportContext, server, port, sid);
+    private static String getImpalaURLString(boolean supportContext, String server, String port, String sid, String Principal,
+            String driver) {
+        String template = EDatabaseConnTemplate.IMPALA.getUrlTemplate(null);
+        if (EDatabaseTypeName.IMPALA.getDbType().equals(driver)) {
+            template = EDatabaseConnTemplate.IMPALA_IMPALA_DRIVER.getUrlTemplate(null);
+        }
+        String standardURlString = getImpalaURlString(template, supportContext, server, port, sid);
         String principalSuffix = "principal="; //$NON-NLS-1$
         boolean hasPrinc = false;
         String[] urlArray = standardURlString.split(SEMICOLON);

@@ -194,8 +194,6 @@ public class ProcessorUtilities {
 
     private static boolean isDebug = false;
 
-    private static boolean isCIMode = false;
-
     private static boolean isDynamicJobAndCITest = false;
 
     private static JobInfo mainJobInfo;
@@ -1155,7 +1153,7 @@ public class ProcessorUtilities {
             checkMetadataDynamic(currentProcess, jobInfo);
 
             int options = TalendProcessOptionConstants.MODULES_DEFAULT;
-            if (isCIMode && BitwiseOptionUtils.containOption(option, GENERATE_MAIN_ONLY)) {
+            if (isCIMode() && BitwiseOptionUtils.containOption(option, GENERATE_MAIN_ONLY)) {
                 options |= TalendProcessOptionConstants.MODULES_WITH_CHILDREN;
             }
             Set<ModuleNeeded> neededLibraries = new HashSet<>();
@@ -2852,13 +2850,11 @@ public class ProcessorUtilities {
     }
 
     public static boolean isCIMode() {
-        return isCIMode;
+        // if it's CI mode , then the system property of maven.local.repository will store the value of studio
+        // m2 path,otherwise it's null
+        return System.getProperty("maven.local.repository") != null;
     }
 
-    public static void setCIMode(boolean isCIMode) {
-        ProcessorUtilities.isCIMode = isCIMode;
-    }
-    
     public static boolean hasRoutelet(ProcessItem prItem, String routelet) {
         EList<NodeType> nodeList = prItem.getProcess().getNode();
 

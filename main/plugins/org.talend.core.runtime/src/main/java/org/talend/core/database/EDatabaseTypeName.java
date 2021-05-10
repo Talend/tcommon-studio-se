@@ -114,7 +114,10 @@ public enum EDatabaseTypeName {
             "ParAccel", "ParAccel", Boolean.TRUE, "PARACCEL", "PARACCEL", EDatabaseSchemaOrCatalogMapping.Sid, EDatabaseSchemaOrCatalogMapping.Schema), //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$
     NETEZZA(
             "Netezza", "Netezza", Boolean.FALSE, "NETEZZA", EDatabaseSchemaOrCatalogMapping.Sid, EDatabaseSchemaOrCatalogMapping.None), //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
-    SAS("SAS", "SAS", Boolean.TRUE, "SAS", EDatabaseSchemaOrCatalogMapping.None, EDatabaseSchemaOrCatalogMapping.Schema), //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+    /**
+     * @deprecated 
+     */
+    SAS("SAS", "SAS (Deprecated)", Boolean.TRUE, "SAS", EDatabaseSchemaOrCatalogMapping.None, EDatabaseSchemaOrCatalogMapping.Schema), //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
     // General JDBC not support schema defalut
     GENERAL_JDBC(
             "General JDBC", "General JDBC", Boolean.FALSE, "JDBC", EDatabaseSchemaOrCatalogMapping.Sid, EDatabaseSchemaOrCatalogMapping.None), //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$

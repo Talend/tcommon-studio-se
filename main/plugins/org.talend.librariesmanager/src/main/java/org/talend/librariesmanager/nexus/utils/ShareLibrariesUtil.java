@@ -19,14 +19,18 @@ import java.util.Comparator;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 import org.apache.commons.codec.digest.DigestUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.codehaus.jackson.map.util.ISO8601Utils;
+import org.eclipse.core.runtime.IProgressMonitor;
 import org.talend.commons.exception.ExceptionHandler;
 import org.talend.core.nexus.ArtifactRepositoryBean;
 import org.talend.core.nexus.IRepositoryArtifactHandler;
 import org.talend.core.runtime.maven.MavenArtifact;
+import org.talend.core.runtime.maven.MavenUrlHelper;
+import org.talend.librariesmanager.i18n.Messages;
 
 public class ShareLibrariesUtil {
 
@@ -138,5 +142,57 @@ public class ShareLibrariesUtil {
             classifier = path;
         }
         return classifier;
+    }
+
+    /**
+     * Search artifacts based on given snapshotGroupIdSet and releaseGroupIdSet from remote artifact repositories
+     * represented by artifactHandler, the search results are put to snapshotArtifactMap and releaseArtifactMap
+     */
+    public static void seachArtifacts(IProgressMonitor monitor, IRepositoryArtifactHandler artifactHandler,
+            Map<String, List<MavenArtifact>> snapshotArtifactMap, Map<String, List<MavenArtifact>> releaseArtifactMap,
+            Set<String> snapshotGroupIdSet, Set<String> releaseGroupIdSet) throws Exception {
+        if (artifactHandler != null) {
+            checkCancel(monitor);
+            List<MavenArtifact> searchResults = new ArrayList<MavenArtifact>();
+            for (String groupId : releaseGroupIdSet) {
+                searchResults = artifactHandler.search(groupId, null, null, true, false);
+                if (searchResults != null) {
+                    for (MavenArtifact result : searchResults) {
+                        checkCancel(monitor);
+                        ShareLibrariesUtil.putArtifactToMap(result, releaseArtifactMap, false);
+                    }
+                }
+            }
+            checkCancel(monitor);
+            for (String groupId : snapshotGroupIdSet) {
+                searchResults = artifactHandler.search(groupId, null, null, false, true);
+                if (searchResults != null) {
+                    for (MavenArtifact result : searchResults) {
+                        checkCancel(monitor);
+                        ShareLibrariesUtil.putArtifactToMap(result, snapshotArtifactMap, true);
+                    }
+                }
+            }
+        }
+    }
+
+    public static boolean isTalendLibraryGroupId(MavenArtifact artifact) {
+        if ("org.talend.libraries".equalsIgnoreCase(artifact.getGroupId())) {
+            return true;
+        }
+        return false;
+    }
+
+    public static boolean isSnapshotVersion(String version) {
+        if (version != null && version.toUpperCase().endsWith(MavenUrlHelper.VERSION_SNAPSHOT)) {
+            return true;
+        }
+        return false;
+    }
+
+    public static void checkCancel(IProgressMonitor monitor) throws InterruptedException {
+        if (monitor != null && monitor.isCanceled()) {
+            throw new InterruptedException(Messages.getString("ShareLibsJob.monitor.cancelled"));
+        }
     }
 }

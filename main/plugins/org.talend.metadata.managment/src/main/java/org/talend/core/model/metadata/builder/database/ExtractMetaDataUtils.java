@@ -995,6 +995,12 @@ public class ExtractMetaDataUtils {
                     }else if(EDatabaseTypeName.SYBASEASE.getDisplayName().equals(dbType)
                             && EDatabaseVersion4Drivers.SYBASEIQ_16_SA.getVersionValue().equals(dbVersion)){
                         driverClassName = EDatabase4DriverClassName.SYBASEIQ_16_SA.getDriverClass();
+                    }else if(EDatabaseTypeName.GREENPLUM.getDisplayName().equals(dbType)
+                            && EDatabaseVersion4Drivers.GREENPLUM_PSQL.getVersionValue().equals(dbVersion)){
+                        driverClassName = EDatabase4DriverClassName.GREENPLUM_PSQL.getDriverClass();
+                    }else if(EDatabaseTypeName.GREENPLUM.getDisplayName().equals(dbType)
+                            && EDatabaseVersion4Drivers.GREENPLUM.getVersionValue().equals(dbVersion)){
+                        driverClassName = EDatabase4DriverClassName.GREENPLUM.getDriverClass();
                     }
                 }
             } else {

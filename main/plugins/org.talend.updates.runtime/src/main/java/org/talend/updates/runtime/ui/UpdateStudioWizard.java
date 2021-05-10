@@ -13,7 +13,10 @@
 package org.talend.updates.runtime.ui;
 
 import java.lang.reflect.InvocationTargetException;
+import java.util.HashMap;
 import java.util.HashSet;
+import java.util.List;
+import java.util.Map;
 import java.util.Set;
 
 import org.apache.log4j.Logger;
@@ -37,6 +40,7 @@ import org.osgi.service.prefs.BackingStoreException;
 import org.talend.commons.exception.ExceptionHandler;
 import org.talend.commons.ui.runtime.update.PreferenceKeys;
 import org.talend.commons.utils.system.EclipseCommandLine;
+import org.talend.commons.utils.time.PropertiesCollectorUtil;
 import org.talend.updates.runtime.Constants;
 import org.talend.updates.runtime.InstallFeatureObserver;
 import org.talend.updates.runtime.engine.ExtraFeaturesUpdatesFactory;
@@ -44,6 +48,11 @@ import org.talend.updates.runtime.engine.InstallNewFeatureJob;
 import org.talend.updates.runtime.engine.component.ComponentNexusP2ExtraFeature;
 import org.talend.updates.runtime.i18n.Messages;
 import org.talend.updates.runtime.model.ExtraFeature;
+import org.talend.updates.runtime.model.FeatureCategory;
+
+import us.monoid.json.JSONArray;
+import us.monoid.json.JSONException;
+import us.monoid.json.JSONObject;
 
 /**
  * created by sgandon on 25 févr. 2013 Detailled comment
@@ -123,7 +132,8 @@ public class UpdateStudioWizard extends Wizard {
         storeDoNotShowAgainPref();
         InstallNewFeatureJob installNewFeatureJob = new InstallNewFeatureJob(
                 new HashSet<ExtraFeature>(updateWizardModel.selectedExtraFeatures), updateWizardModel.getFeatureRepositories());
-        for (ExtraFeature feature : updateWizardModel.getSelectedExtraFeatures()) {
+        Set<ExtraFeature> selectedExtraFeatures = updateWizardModel.getSelectedExtraFeatures();
+        for (ExtraFeature feature : selectedExtraFeatures) {
             InstallFeatureObserver.getInstance().updateInstallFeatureStatus(feature.getName(),
                     InstallFeatureObserver.FEATURE_STATUS_TO_INSTALL);
         }
@@ -157,6 +167,8 @@ public class UpdateStudioWizard extends Wizard {
                 // display message in case of any success
                 String firstPartOfMessage = Messages.getString("UpdateStudioWizard.all.feautures.installed.successfully"); //$NON-NLS-1$
                 if (hasAnySuccess) {
+                    recordSuccessInstallation();
+
                     if (hasAnyFailure) {
                         firstPartOfMessage = Messages.getString("UpdateStudioWizard.some.feautures.installed.sucessfully"); //$NON-NLS-1$
                     } // else only success to keep initial message
@@ -191,6 +203,57 @@ public class UpdateStudioWizard extends Wizard {
                     });
                 } // else only failure or canceled so do nothing cause error are reported by Eclipse
 
+            }
+
+            private void recordSuccessInstallation() {
+                final String additionalPackages = PropertiesCollectorUtil.getAdditionalPackagePreferenceNode();
+
+                String records = PropertiesCollectorUtil.getAdditionalPackageRecording();
+
+                JSONObject allRecords;
+                try {
+                    allRecords = new JSONObject(records);
+                } catch (Exception e) {
+                    // the value is not set, or is empty
+                    allRecords = new JSONObject();
+                }
+
+                Map<String, ExtraFeature> featureMap = new HashMap<String, ExtraFeature>();
+                selectedExtraFeatures.stream().filter(feat -> !(feat instanceof FeatureCategory))
+                        .forEach(feat -> featureMap.put(feat.getName(), feat));
+                List<String> installedFeatures = InstallFeatureObserver.getInstance().getInstalledFeatures();
+
+                try {
+                    JSONObject jso = allRecords.has(additionalPackages) ? (JSONObject) allRecords.get(additionalPackages)
+                            : new JSONObject();
+
+                    for (int i = 0; i < installedFeatures.size(); i++) {
+                        ExtraFeature extraFeature = featureMap.get(installedFeatures.get(i));
+                        if (extraFeature != null) {
+                            if (extraFeature.getParentCategory() != null) {
+                                String category = extraFeature.getParentCategory().getName();
+                                JSONArray jsonArray = jso.has(category) ? (JSONArray) jso.get(category) : new JSONArray();
+                                jsonArray.put(extraFeature.getName());
+                                jso.put(category, jsonArray);
+                            } else {
+                                String name = extraFeature.getName();
+                                if (name.contains("(") && name.contains(")")) {
+                                    String suffix = name.substring(name.indexOf("(") + 1, name.lastIndexOf(")"));
+                                    if (suffix.matches("\\d*")) {
+                                        name = name.substring(0, name.indexOf("(")).trim();
+                                    }
+                                }
+                                jso.put(name, "");
+                            }
+                        }
+                    }
+
+                    allRecords.put(additionalPackages, jso);
+                } catch (JSONException e) {
+                    ExceptionHandler.log(e.getMessage());
+                }
+
+                PropertiesCollectorUtil.storeAdditionalPackageRecording(allRecords.toString());
             }
         });
         return true;

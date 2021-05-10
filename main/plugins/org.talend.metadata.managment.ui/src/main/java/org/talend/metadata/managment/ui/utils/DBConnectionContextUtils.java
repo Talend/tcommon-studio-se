@@ -25,6 +25,7 @@ import org.eclipse.core.runtime.Path;
 import org.eclipse.emf.common.util.EMap;
 import org.talend.commons.ui.utils.PathUtils;
 import org.talend.core.database.EDatabaseTypeName;
+import org.talend.core.database.EImpalaDriver;
 import org.talend.core.database.conn.ConnParameterKeys;
 import org.talend.core.database.conn.DatabaseConnStrUtil;
 import org.talend.core.database.conn.template.DbConnStrForHive;
@@ -1418,8 +1419,12 @@ public final class DBConnectionContextUtils {
         // Added 20130311 TDQ-7000, when it is context mode and not general jdbc, reset the url.
         String newURL = null;
         if (EDatabaseTypeName.IMPALA.equals(EDatabaseTypeName.getTypeFromDbType(dbConn.getDatabaseType()))) {
+            String template = DbConnStrForHive.URL_HIVE_2_TEMPLATE;
+            if (EImpalaDriver.IMPALA.getName().equals(cloneConn.getParameters().get(ConnParameterKeys.IMPALA_DRIVER))) {
+                template = DbConnStrForHive.URL_IMPALA_TEMPLATE;
+            }
             newURL = DatabaseConnStrUtil.getImpalaString(cloneConn, cloneConn.getServerName(), cloneConn.getPort(),
-                    cloneConn.getSID(), DbConnStrForHive.URL_HIVE_2_TEMPLATE);
+                    cloneConn.getSID(), template);
         } else {
             newURL = DatabaseConnStrUtil.getURLString(cloneConn.getDatabaseType(), dbConn.getDbVersionString(), server, username,
                     password, port, sidOrDatabase, filePath.toLowerCase(), datasource, dbRootPath, additionParam);

@@ -241,8 +241,7 @@ public class MetadataToolHelperTest {
      */
     @Test
     public void testValidateColumnName() {
-        IEclipsePreferences preferences = new InstanceScope().getNode(ITalendCorePrefConstants.CoreUIPlugin_ID);
-        preferences.putBoolean(IRepositoryPrefConstants.ALLOW_SPECIFIC_CHARACTERS_FOR_SCHEMA_COLUMNS, false);
+        CoreRuntimePlugin.getInstance().getProjectPreferenceManager().setAllowSpecificCharacters(false);
 
         String columnName = MetadataToolHelper.validateColumnName("public", 0);
         assertEquals(columnName, "Column0");
@@ -274,7 +273,7 @@ public class MetadataToolHelperTest {
         columnName = MetadataToolHelper.validateColumnName("你好", 0);
         assertEquals("Column0", columnName);
 
-        preferences.putBoolean(IRepositoryPrefConstants.ALLOW_SPECIFIC_CHARACTERS_FOR_SCHEMA_COLUMNS, true);
+        CoreRuntimePlugin.getInstance().getProjectPreferenceManager().setAllowSpecificCharacters(true);
 
         columnName = MetadataToolHelper.validateColumnName("你好", 0);
         assertEquals("你好", columnName);
@@ -288,8 +287,7 @@ public class MetadataToolHelperTest {
      */
     @Test
     public void testValidateTableName() {
-        IEclipsePreferences preferences = new InstanceScope().getNode(ITalendCorePrefConstants.CoreUIPlugin_ID);
-        preferences.putBoolean(IRepositoryPrefConstants.ALLOW_SPECIFIC_CHARACTERS_FOR_SCHEMA_COLUMNS, false);
+        CoreRuntimePlugin.getInstance().getProjectPreferenceManager().setAllowSpecificCharacters(false);
 
         String tableName = "public";
         tableName = MetadataToolHelper.validateTableName(tableName);
@@ -323,7 +321,7 @@ public class MetadataToolHelperTest {
         tableName = MetadataToolHelper.validateTableName(tableName);
         assertEquals(tableName, "t_ht01______2017");
 
-        preferences.putBoolean(IRepositoryPrefConstants.ALLOW_SPECIFIC_CHARACTERS_FOR_SCHEMA_COLUMNS, true);
+        CoreRuntimePlugin.getInstance().getProjectPreferenceManager().setAllowSpecificCharacters(true);
 
         tableName = "t_ht01_处理日期_2017";
         tableName = MetadataToolHelper.validateTableName(tableName);
@@ -647,8 +645,7 @@ public class MetadataToolHelperTest {
         creatMetadataColumn.getTaggedValue().add(tv);
         inputTable.getColumns().add(creatMetadataColumn);
 
-        IEclipsePreferences coreUIPluginNode = new InstanceScope().getNode(ITalendCorePrefConstants.CoreUIPlugin_ID);
-        coreUIPluginNode.putBoolean(IRepositoryPrefConstants.ALLOW_SPECIFIC_CHARACTERS_FOR_SCHEMA_COLUMNS, true);
+        CoreRuntimePlugin.getInstance().getProjectPreferenceManager().setAllowSpecificCharacters(true);
         IMetadataTable targetTable = MetadataToolHelper.convert(inputTable);
         assertTrue(targetTable.getListColumns().get(0).getLabel().equals("_long"));
         assertTrue(targetTable.getListColumns().get(0).getOriginalDbColumnName().equals("long"));
