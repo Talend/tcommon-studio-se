@@ -1218,8 +1218,8 @@ public class DatabaseTableForm extends AbstractForm {
             MappingTypeRetriever mappingTypeRetriever = getMappingTypeRetriever();
             int numbOfColumn = schemaContent.get(0).length;
             List<TdColumn> metadataColumns = new ArrayList<TdColumn>();
-
-            if (EDatabaseTypeName.INFORMIX.getDisplayName().equals(metadataconnection.getDbType())) {
+            boolean isInformix = StringUtils.equals(EDatabaseTypeName.INFORMIX.getDisplayName(), metadataconnection.getDbType());
+            if (StringUtils.isNotEmpty(tableName) && isInformix) {
                 metadataColumns = ExtractMetaDataFromDataBase.returnMetadataColumnsFormTable(metadataconnection, tableName);
             }
             for (int i = 1; i <= numbOfColumn; i++) {
@@ -1239,11 +1239,12 @@ public class DatabaseTableForm extends AbstractForm {
                 if (!"".equals(schemaContent.get(3)[i - 1])) { //$NON-NLS-1$
                     oneColum.setLength(Integer.parseInt(schemaContent.get(3)[i - 1]));
                 }
-                if (EDatabaseTypeName.INFORMIX.getDisplayName().equals(metadataconnection.getDbType())) {
+                if (isInformix) {
                     for (TdColumn td : metadataColumns) {
                         if (StringUtils.equals(oneColum.getLabel(), td.getName())) {
                             oneColum.setPrecision(td.getPrecision());
                             oneColum.setLength(td.getLength());
+                            break;
                         }
                     }
                 }
