@@ -1,6 +1,6 @@
 // ============================================================================
 //
-// Copyright (C) 2006-2019 Talend Inc. - www.talend.com
+// Copyright (C) 2006-2021 Talend Inc. - www.talend.com
 //
 // This source code is available under agreement available at
 // %InstallDIR%\features\org.talend.rcp.branding.%PRODUCTNAME%\%PRODUCTNAME%license.txt
@@ -34,6 +34,7 @@ import org.eclipse.core.runtime.NullProgressMonitor;
 import org.eclipse.m2e.core.MavenPlugin;
 import org.talend.commons.exception.ExceptionHandler;
 import org.talend.commons.utils.generation.JavaUtils;
+import org.talend.core.model.routines.CodesJarInfo;
 import org.talend.core.runtime.projectsetting.IProjectSettingPreferenceConstants;
 import org.talend.core.runtime.projectsetting.IProjectSettingTemplateConstants;
 import org.talend.designer.maven.DesignerMavenPlugin;
@@ -291,12 +292,30 @@ public class MavenTemplateManager {
         return getCodesModelFromGeneralTemplate(defaultModel, projectTechName, "Routines", //$NON-NLS-1$
                 JavaUtils.JAVA_ROUTINES_DIRECTORY);
     }
+    
+    public static Model getRoutinesJarTempalteModel(CodesJarInfo info) {
+        String projectTechName = info.getProjectTechName();
+        String label = info.getLabel();
+        Model defaultModel = createDefaultCodesTempalteModel(PomIdsHelper.getCodesJarGroupId(info), label.toLowerCase(),
+                PomIdsHelper.getCodesJarVersion(projectTechName));
+        return getCodesModelFromGeneralTemplate(defaultModel, projectTechName, label.toLowerCase(),
+                JavaUtils.JAVA_ROUTINESJAR_DIRECTORY);
+    }
 
     public static Model getBeansTempalteModel(String projectTechName) {
         Model defaultModel = createDefaultCodesTempalteModel(
                 PomIdsHelper.getCodesGroupId(projectTechName, TalendMavenConstants.DEFAULT_BEAN),
                 TalendMavenConstants.DEFAULT_BEANS_ARTIFACT_ID, PomIdsHelper.getCodesVersion(projectTechName));
         return getCodesModelFromGeneralTemplate(defaultModel, projectTechName, "Beans", JavaUtils.JAVA_BEANS_DIRECTORY); //$NON-NLS-1$
+    }
+    
+    public static Model getBeansJarTempalteModel(CodesJarInfo info) {
+        String projectTechName = info.getProjectTechName();
+        String label = info.getLabel();
+        Model defaultModel = createDefaultCodesTempalteModel(PomIdsHelper.getCodesJarGroupId(info), label.toLowerCase(),
+                PomIdsHelper.getCodesJarVersion(projectTechName));
+        return getCodesModelFromGeneralTemplate(defaultModel, projectTechName, label.toLowerCase(),
+                JavaUtils.JAVA_BEANSJAR_DIRECTORY);
     }
 
     private static Model createDefaultCodesTempalteModel(String groupId, String artifactId, String version) {

@@ -51,7 +51,6 @@
 		<module>i18n/plugins/org.talend.metadata.managment.ui.nl</module>
 		<module>i18n/plugins/org.talend.migrationTool.nl</module>
 		<module>i18n/plugins/org.talend.model.edit.nl</module>
-		<module>i18n/plugins/org.talend.model.migration.nl</module>
 		<module>i18n/plugins/org.talend.model.nl</module>
 		<module>i18n/plugins/org.talend.presentation.onboarding.nl</module>
 		<module>i18n/plugins/org.talend.rcp.nl</module>
@@ -68,7 +67,6 @@
         <module>main/features/org.talend.fragment.jars.common.feature</module>
 		<module>main/features/org.talend.help.feature</module>
 		<module>main/features/org.talend.libraries.jdbc.feature</module>
-		<module>main/features/org.talend.model.migration.feature</module>
 		<module>main/features/org.talend.rcp.feature</module>
 		<module>main/features/org.talend.update.p2.feature</module>
 		<module>main/features/org.talend.updates.feature</module>
@@ -93,7 +91,6 @@
 		<module>main/plugins/org.talend.help.external</module>		
 		<module>main/plugins/org.talend.libraries.apache</module>
 		<module>main/plugins/org.talend.libraries.apache.axis2</module>
-		<module>main/plugins/org.talend.libraries.apache.batik</module>
 		<module>main/plugins/org.talend.libraries.apache.cassandra</module>
 		<module>main/plugins/org.talend.libraries.apache.chemistry</module>
 		<module>main/plugins/org.talend.libraries.apache.common</module>
@@ -128,7 +125,6 @@
 		<module>main/plugins/org.talend.migrationTool</module>
 		<module>main/plugins/org.talend.model</module>
 		<module>main/plugins/org.talend.model.edit</module>
-		<module>main/plugins/org.talend.model.migration</module>
 		<module>main/plugins/org.talend.osgi.lib.loader</module>
 		<module>main/plugins/org.talend.maven.resolver</module>
 		<module>main/plugins/org.talend.platform.logging</module>
@@ -166,7 +162,6 @@
 		<module>test/plugins/org.talend.metadata.managment.test</module>
 		<module>test/plugins/org.talend.metadata.managment.ui.test</module>
 		<module>test/plugins/org.talend.migrationTool.test</module>
-		<module>test/plugins/org.talend.model.migration.test</module>
 		<module>test/plugins/org.talend.model.test</module>
 		<module>test/plugins/org.talend.repository.items.importexport.test</module>
 		<module>test/plugins/org.talend.repository.items.importexport.ui.test</module>

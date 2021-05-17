@@ -1,6 +1,6 @@
 // ============================================================================
 //
-// Copyright (C) 2006-2019 Talend Inc. - www.talend.com
+// Copyright (C) 2006-2021 Talend Inc. - www.talend.com
 //
 // This source code is available under agreement available at
 // %InstallDIR%\features\org.talend.rcp.branding.%PRODUCTNAME%\%PRODUCTNAME%license.txt
@@ -90,7 +90,7 @@ public class ModulesNeededProviderTest {
 
         List<ModuleNeeded> module1 = ModulesNeededProvider.getModulesNeededForName(jarName1);
         List<ModuleNeeded> module2 = ModulesNeededProvider.getModulesNeededForName(jarName2);
-        Assert.assertEquals(module1.get(0).getContext(), "Routines " + routineItem.getProperty().getLabel());
-        Assert.assertEquals(module2.get(0).getContext(), "Routines " + routineItem.getProperty().getLabel());
+        Assert.assertEquals(module1.get(0).getContext(), "Global Routines " + routineItem.getProperty().getLabel());
+        Assert.assertEquals(module2.get(0).getContext(), "Global Routines " + routineItem.getProperty().getLabel());
     }
 }

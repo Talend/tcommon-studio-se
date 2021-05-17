@@ -1,6 +1,6 @@
 // ============================================================================
 //
-// Copyright (C) 2006-2019 Talend Inc. - www.talend.com
+// Copyright (C) 2006-2021 Talend Inc. - www.talend.com
 //
 // This source code is available under agreement available at
 // %InstallDIR%\features\org.talend.rcp.branding.%PRODUCTNAME%\%PRODUCTNAME%license.txt
@@ -36,6 +36,8 @@ public interface MavenConstants {
 
     static final String DEFAULT_GROUP_ID = "org.talend";
 
+    static final String APACHE_GROUP_ID = "org.apache";
+
     static final String DEFAULT_VERSION = "6.0.0";
 
     static final String SNAPSHOT = "-SNAPSHOT";
@@ -45,6 +47,8 @@ public interface MavenConstants {
     static final String USE_PROFILE_MODULE = "USE_PROFILE_MODULE";
 
     static final String EXCLUDE_DELETED_ITEMS = "EXCLUDE_DELETED_ITEMS";
+
+    static final String SKIP_FOLDERS = "SKIP_FOLDERS";
 
     /*
      * for lib

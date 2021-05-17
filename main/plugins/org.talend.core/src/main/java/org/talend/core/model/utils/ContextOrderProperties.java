@@ -1,6 +1,6 @@
 // ============================================================================
 //
-// Copyright (C) 2006-2019 Talend Inc. - www.talend.com
+// Copyright (C) 2006-2021 Talend Inc. - www.talend.com
 //
 // This source code is available under agreement available at
 // %InstallDIR%\features\org.talend.rcp.branding.%PRODUCTNAME%\%PRODUCTNAME%license.txt
@@ -32,7 +32,6 @@ import org.apache.commons.lang.StringUtils;
 import org.talend.commons.exception.ExceptionHandler;
 import org.talend.commons.exception.PersistenceException;
 import org.talend.core.i18n.Messages;
-import org.talend.core.model.context.ContextUtils;
 import org.talend.core.model.general.Project;
 import org.talend.core.model.process.IContextParameter;
 import org.talend.core.model.properties.Item;
@@ -79,6 +78,9 @@ public class ContextOrderProperties extends Properties {
     @Override
     public Object put(Object key, Object value) {
         keys.add(key);
+        if (value == null) {
+            return super.remove(key);
+        }
         return super.put(key, value);
     }
 

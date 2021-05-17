@@ -1,6 +1,6 @@
 // ============================================================================
 //
-// Copyright (C) 2006-2019 Talend Inc. - www.talend.com
+// Copyright (C) 2006-2021 Talend Inc. - www.talend.com
 //
 // This source code is available under agreement available at
 // %InstallDIR%\features\org.talend.rcp.branding.%PRODUCTNAME%\%PRODUCTNAME%license.txt
@@ -23,11 +23,13 @@ import org.eclipse.core.resources.IFile;
 import org.talend.commons.exception.ExceptionHandler;
 import org.talend.core.model.process.IProcess;
 import org.talend.core.model.properties.Item;
+import org.talend.core.model.properties.JobletProcessItem;
 import org.talend.core.model.properties.Project;
 import org.talend.core.model.properties.Property;
 import org.talend.core.model.repository.ERepositoryObjectType;
 import org.talend.core.model.utils.JavaResourcesHelper;
 import org.talend.core.runtime.projectsetting.IProjectSettingTemplateConstants;
+import org.talend.designer.core.model.utils.emf.talendfile.ProcessType;
 import org.talend.designer.maven.template.ETalendMavenVariables;
 import org.talend.designer.maven.template.MavenTemplateManager;
 import org.talend.designer.maven.utils.PomIdsHelper;
@@ -126,10 +128,17 @@ public class CreateMavenJobletPom extends AbstractMavenProcessorPom {
             if (ERepositoryObjectType.JOBLET == ERepositoryObjectType.getType(getJobProcessor().getProperty())) {
                 getProcessorDependenciesManager().updateDependencies(null, model);
             }
+            model.getDependencies().addAll(getCodesJarDependencies());
             addChildrenDependencies(model.getDependencies());
         } catch (ProcessorException e) {
             ExceptionHandler.process(e);
         }
+    }
+
+    @Override
+    protected ProcessType getProcessType() {
+        Item item = getJobProcessor().getProperty().getItem();
+        return ((JobletProcessItem) item).getJobletProcess();
     }
 
 }

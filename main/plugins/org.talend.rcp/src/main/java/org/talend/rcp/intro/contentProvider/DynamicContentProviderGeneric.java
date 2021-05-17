@@ -1,6 +1,6 @@
 // ============================================================================
 //
-// Copyright (C) 2006-2019 Talend Inc. - www.talend.com
+// Copyright (C) 2006-2021 Talend Inc. - www.talend.com
 //
 // This source code is available under agreement available at
 // %InstallDIR%\features\org.talend.rcp.branding.%PRODUCTNAME%\%PRODUCTNAME%license.txt
@@ -18,6 +18,7 @@ import java.util.List;
 
 import org.eclipse.jface.preference.IPreferenceStore;
 import org.talend.core.CorePlugin;
+import org.talend.core.PluginChecker;
 import org.talend.core.model.repository.ERepositoryObjectType;
 import org.talend.core.model.repository.IRepositoryViewObject;
 import org.talend.core.prefs.ITalendCorePrefConstants;
@@ -37,9 +38,14 @@ public class DynamicContentProviderGeneric extends DynamicContentProvider {
     @Override
     public void createContent(String id, Element parent) {
         String dBranding = "default";
-        String branding = System.getProperty("talend.license.branding");
-        if (branding == null || "".equals(branding)) {
-            branding = dBranding;
+        String branding = null;
+        if (PluginChecker.isStudioLite()) {
+            branding = "LITE";
+        } else {
+            System.getProperty("talend.license.branding");
+            if (branding == null || "".equals(branding)) {
+                branding = dBranding;
+            }
         }
         Document dom = parent.getOwnerDocument();
 

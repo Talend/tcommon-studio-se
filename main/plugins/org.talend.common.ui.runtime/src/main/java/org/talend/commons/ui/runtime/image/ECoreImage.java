@@ -1,6 +1,6 @@
 // ============================================================================
 //
-// Copyright (C) 2006-2019 Talend Inc. - www.talend.com
+// Copyright (C) 2006-2021 Talend Inc. - www.talend.com
 //
 // This source code is available under agreement available at
 // %InstallDIR%\features\org.talend.rcp.branding.%PRODUCTNAME%\%PRODUCTNAME%license.txt
@@ -77,6 +77,7 @@ public enum ECoreImage implements IImage {
     ROUTES_ICON("/icons1/routes_icon.png"), //$NON-NLS-1$
     ROUTINE_ICON("/icons1/routine.png"), //$NON-NLS-1$
     ROUTINE_EDITOR_ICON("/icons1/routine_editor.png"), //$NON-NLS-1$
+    ROUTINESJAR_ICON("/icons1/routinesjar.png"), //$NON-NLS-1$
     JOB_SCRIPTS_ICON("/icons1/job_scripts.png"), //$NON-NLS-1$
     JOB_SCRIPTS_TOOLBAR_ICON("/icons1/job_script_toolbar.png"), //$NON-NLS-1$
     FTP_ICON("/icons1/ftp.png"), //$NON-NLS-1$

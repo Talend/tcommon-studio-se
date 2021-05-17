@@ -1,6 +1,6 @@
 // ============================================================================
 //
-// Copyright (C) 2006-2019 Talend Inc. - www.talend.com
+// Copyright (C) 2006-2021 Talend Inc. - www.talend.com
 //
 // This source code is available under agreement available at
 // %InstallDIR%\features\org.talend.rcp.branding.%PRODUCTNAME%\%PRODUCTNAME%license.txt
@@ -422,9 +422,8 @@ public class DatabaseTableForm extends AbstractForm {
 
         metadataEditor.setMetadataTable(metadataTable);
 
-        Boolean flag = CoreUIPlugin.getDefault().getPreferenceStore()
-                .getBoolean(IRepositoryPrefConstants.ALLOW_SPECIFIC_CHARACTERS_FOR_SCHEMA_COLUMNS);
-        if (!flag.booleanValue()) {
+        boolean flag = CoreRuntimePlugin.getInstance().getProjectPreferenceManager().isAllowSpecificCharacters();
+        if (!flag) {
             List<MetadataColumn> list = metadataEditor.getMetadataColumnList();
             for (MetadataColumn column : list) {
                 if (!isCnorEn(column.getLabel())) {

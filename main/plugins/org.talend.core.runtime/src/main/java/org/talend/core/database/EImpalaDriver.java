@@ -1,6 +1,6 @@
 // ============================================================================
 //
-// Copyright (C) 2006-2020 Talend Inc. - www.talend.com
+// Copyright (C) 2006-2021 Talend Inc. - www.talend.com
 //
 // This source code is available under agreement available at
 // %InstallDIR%\features\org.talend.rcp.branding.%PRODUCTNAME%\%PRODUCTNAME%license.txt
@@ -22,14 +22,14 @@ import org.talend.core.runtime.hd.hive.HiveMetadataHelper;
  */
 public enum EImpalaDriver {
 
-    HIVE2("HIVE2", "HIVE2", "org.apache.hive.jdbc.HiveDriver"),
-    IMPALA40("IMPALA40", "IMPALA40", "com.cloudera.impala.jdbc4.Driver"),
-    IMPALA41("IMPALA41", "IMPALA41", "com.cloudera.impala.jdbc41.Driver");
+    HIVE2("HIVE2", "HIVE2", "org.apache.hive.jdbc.HiveDriver", "doSupportHive2"),
+    IMPALA("IMPALA", "IMPALA", "com.cloudera.impala.jdbc.Driver", "doSupportImpalaConnector");
 
-    EImpalaDriver(String displayName, String name, String driver) {
+    EImpalaDriver(String displayName, String name, String driver, String supportDriverMethodName) {
         this.displayName = displayName;
         this.name = name;
         this.driver = driver;
+        this.supportDriverMethodName = supportDriverMethodName;
     }
 
     private String displayName;
@@ -37,6 +37,8 @@ public enum EImpalaDriver {
     private String name;
 
     private String driver;
+
+    private String supportDriverMethodName;
 
     public String getDisplayName() {
         return displayName;
@@ -50,6 +52,10 @@ public enum EImpalaDriver {
         return driver;
     }
 
+    public String getSupportDriverMethodName() {
+        return supportDriverMethodName;
+    }
+
     public static boolean isSupport(String distribution, String version, boolean byDisplay, String supportMethodName) {
         return HiveMetadataHelper.doSupportMethod(distribution, version, byDisplay, supportMethodName);
     }
@@ -57,7 +63,7 @@ public enum EImpalaDriver {
     public static String[] getImpalaDriverDisplay(String distribution, String version, boolean byDisplay) {
         List<String> list = new ArrayList<>(0);
         for (EImpalaDriver driver : EImpalaDriver.values()) {
-            if (isSupport(distribution, version, byDisplay, "doSupportImpalaConnector")) {
+            if (isSupport(distribution, version, byDisplay, driver.getSupportDriverMethodName())) {
                 list.add(driver.getDisplayName());
             }
         }

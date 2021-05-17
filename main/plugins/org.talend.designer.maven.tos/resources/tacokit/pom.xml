@@ -10,7 +10,7 @@
 	<artifactId>studio-tacokit-dependencies</artifactId>
 	<packaging>pom</packaging>
 	<properties>
-		<tacokit.components.version>1.19.0-SNAPSHOT</tacokit.components.version>
+		<tacokit.components.version>1.22.0-SNAPSHOT</tacokit.components.version>
 	</properties>
 	<repositories>
 		<repository>
@@ -57,6 +57,12 @@
 			<groupId>org.talend.components</groupId>
 			<artifactId>cosmosDB</artifactId>
 			<version>${tacokit.components.version}</version>
+			<exclusions>
+				<exclusion>
+					<groupId>org.apache.httpcomponents</groupId>
+					<artifactId>httpclient</artifactId>
+				</exclusion>
+			</exclusions>
 		</dependency>
         <dependency>
             <groupId>org.slf4j</groupId>

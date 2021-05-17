@@ -1,6 +1,6 @@
 // ============================================================================
 //
-// Copyright (C) 2006-2019 Talend Inc. - www.talend.com
+// Copyright (C) 2006-2021 Talend Inc. - www.talend.com
 //
 // This source code is available under agreement available at
 // %InstallDIR%\features\org.talend.rcp.branding.%PRODUCTNAME%\%PRODUCTNAME%license.txt
@@ -280,10 +280,8 @@ public final class MetadataToolHelper {
         return isAllowSpecificCharacters() || Pattern.matches(RepositoryConstants.COLUMN_NAME_PATTERN, name);
     }
 
-    private static boolean isAllowSpecificCharacters() {
-        IEclipsePreferences coreUIPluginNode = new InstanceScope().getNode(ITalendCorePrefConstants.CoreUIPlugin_ID);
-        return coreUIPluginNode
-                .getBoolean(IRepositoryPrefConstants.ALLOW_SPECIFIC_CHARACTERS_FOR_SCHEMA_COLUMNS, false);
+    public static boolean isAllowSpecificCharacters() {
+        return CoreRuntimePlugin.getInstance().getProjectPreferenceManager().isAllowSpecificCharacters();
     }
 
     /**
@@ -647,6 +645,7 @@ public final class MetadataToolHelper {
                     target.getListColumns().remove(targetColumn);
                     newTargetColumn.setCustom(targetColumn.isCustom());
                     newTargetColumn.setCustomId(targetColumn.getCustomId());
+                    newTargetColumn.setIgnoreCustomSort(targetColumn.isIgnoreCustomSort());
                     columnsTAdd.add(newTargetColumn);
                 }
             }
@@ -806,6 +805,7 @@ public final class MetadataToolHelper {
                     target.getListColumns().remove(targetColumn);
                     newTargetColumn.setCustom(targetColumn.isCustom());
                     newTargetColumn.setCustomId(targetColumn.getCustomId());
+                    newTargetColumn.setIgnoreCustomSort(targetColumn.isIgnoreCustomSort());
                     columnsTAdd.add(newTargetColumn);
                 }
             }

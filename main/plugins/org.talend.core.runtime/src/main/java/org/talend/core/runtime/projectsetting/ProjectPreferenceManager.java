@@ -1,6 +1,6 @@
 // ============================================================================
 //
-// Copyright (C) 2006-2019 Talend Inc. - www.talend.com
+// Copyright (C) 2006-2021 Talend Inc. - www.talend.com
 //
 // This source code is available under agreement available at
 // %InstallDIR%\features\org.talend.rcp.branding.%PRODUCTNAME%\%PRODUCTNAME%license.txt
@@ -15,6 +15,7 @@ package org.talend.core.runtime.projectsetting;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 
+import org.apache.commons.lang3.StringUtils;
 import org.eclipse.core.resources.IProject;
 import org.eclipse.core.resources.ProjectScope;
 import org.eclipse.core.runtime.Assert;
@@ -27,6 +28,7 @@ import org.talend.commons.exception.PersistenceException;
 import org.talend.commons.utils.workbench.resources.ResourceUtils;
 import org.talend.core.GlobalServiceRegister;
 import org.talend.core.model.general.Project;
+import org.talend.core.model.repository.IRepositoryPrefConstants;
 import org.talend.designer.runprocess.IRunProcessService;
 import org.talend.repository.ProjectManager;
 import org.talend.repository.documentation.ERepositoryActionName;
@@ -195,7 +197,19 @@ public class ProjectPreferenceManager {
         // return qulifierPreference.getBoolean(key, false);
         return getPreferenceStore().getBoolean(key);
     }
-
+    
+    public boolean isAllowSpecificCharacters() {
+        String value = getValue(IRepositoryPrefConstants.ALLOW_SPECIFIC_CHARACTERS_FOR_SCHEMA_COLUMNS);
+        if (StringUtils.isNotEmpty(value)) {
+            return Boolean.valueOf(value);
+        }       
+        return false; // Default value
+    }
+    
+    public void setAllowSpecificCharacters(boolean isAllow) {
+       setValue(IRepositoryPrefConstants.ALLOW_SPECIFIC_CHARACTERS_FOR_SCHEMA_COLUMNS, isAllow);
+    }
+    
     /**
      * Save the configurations.
      */

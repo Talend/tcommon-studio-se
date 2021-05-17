@@ -1,6 +1,6 @@
 // ============================================================================
 //
-// Copyright (C) 2006-2019 Talend Inc. - www.talend.com
+// Copyright (C) 2006-2021 Talend Inc. - www.talend.com
 //
 // This source code is available under agreement available at
 // %InstallDIR%\features\org.talend.rcp.branding.%PRODUCTNAME%\%PRODUCTNAME%license.txt
@@ -28,6 +28,7 @@ import org.talend.core.model.process.INode;
 import org.talend.core.model.process.IProcess;
 import org.talend.core.model.process.Problem;
 import org.talend.core.model.repository.ERepositoryObjectType;
+import org.talend.core.model.routines.CodesJarInfo;
 import org.talend.designer.codegen.PigTemplate;
 
 /**
@@ -236,6 +237,16 @@ public class LibrariesService implements ILibrariesService {
     @Override
     public Set<ModuleNeeded> getCodesModuleNeededs(ERepositoryObjectType type) {
         return getLibrariesService().getCodesModuleNeededs(type);
+    }
+
+    @Override
+    public Set<ModuleNeeded> getAllCodesJarModuleNeededs() {
+        return getLibrariesService().getAllCodesJarModuleNeededs();
+    }
+
+    @Override
+    public Set<ModuleNeeded> getCodesJarModuleNeededs(CodesJarInfo info) {
+        return getLibrariesService().getCodesJarModuleNeededs(info);
     }
 
     @Override

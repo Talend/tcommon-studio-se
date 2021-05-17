@@ -1,6 +1,6 @@
 // ============================================================================
 //
-// Copyright (C) 2006-2019 Talend Inc. - www.talend.com
+// Copyright (C) 2006-2021 Talend Inc. - www.talend.com
 //
 // This source code is available under agreement available at
 // %InstallDIR%\features\org.talend.rcp.branding.%PRODUCTNAME%\%PRODUCTNAME%license.txt
@@ -12,11 +12,9 @@
 // ============================================================================
 package org.talend.core.model.routines;
 
-import java.util.Set;
 import java.util.Vector;
 
 import org.talend.core.IService;
-import org.talend.core.model.general.ModuleNeeded;
 
 /**
  *
@@ -26,5 +24,4 @@ public interface IRoutinesService extends IService {
 
     public Vector getAccents();
 
-    Set<ModuleNeeded> getRunningModules();
 }

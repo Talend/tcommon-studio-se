@@ -1,6 +1,6 @@
 // ============================================================================
 //
-// Copyright (C) 2006-2019 Talend Inc. - www.talend.com
+// Copyright (C) 2006-2021 Talend Inc. - www.talend.com
 //
 // This source code is available under agreement available at
 // %InstallDIR%\features\org.talend.rcp.branding.%PRODUCTNAME%\%PRODUCTNAME%license.txt
@@ -39,6 +39,7 @@ import org.talend.core.model.metadata.builder.connection.MetadataTable;
 import org.talend.core.model.metadata.types.JavaTypesManager;
 import org.talend.core.model.repository.IRepositoryPrefConstants;
 import org.talend.core.prefs.ITalendCorePrefConstants;
+import org.talend.core.runtime.CoreRuntimePlugin;
 import org.talend.cwm.helper.TaggedValueHelper;
 import org.talend.daikon.avro.AvroUtils;
 import org.talend.daikon.avro.SchemaConstants;
@@ -237,8 +238,7 @@ public class MetadataToolAvroHelperTest {
         metadataTable.setSourceName("table1");
         Schema avroSchema = new Schema.Parser().parse((String) schemaObj);
 
-        IEclipsePreferences coreUIPluginNode = new InstanceScope().getNode(ITalendCorePrefConstants.CoreUIPlugin_ID);
-        coreUIPluginNode.putBoolean(IRepositoryPrefConstants.ALLOW_SPECIFIC_CHARACTERS_FOR_SCHEMA_COLUMNS, true);
+        CoreRuntimePlugin.getInstance().getProjectPreferenceManager().setAllowSpecificCharacters(true);
         for (Schema.Field field : avroSchema.getFields()) {
             MetadataColumn metadataColumn = MetadataToolAvroHelper.convertFromAvro(field, metadataTable);
             metadataTable.getColumns().add(metadataColumn);
@@ -321,7 +321,7 @@ public class MetadataToolAvroHelperTest {
             }
         }
 
-        coreUIPluginNode.putBoolean(IRepositoryPrefConstants.ALLOW_SPECIFIC_CHARACTERS_FOR_SCHEMA_COLUMNS, false);
+        CoreRuntimePlugin.getInstance().getProjectPreferenceManager().setAllowSpecificCharacters(false);
         metadataTable = ConnectionFactory.eINSTANCE.createMetadataTable();
         metadataTable.setId("123456789");
         metadataTable.setName("table1");
@@ -342,6 +342,42 @@ public class MetadataToolAvroHelperTest {
                 break;
             }
         }
+    }
+
+    @Test
+    public void testConvertFromAvroJapanese() {
+        String schemaObj = "{\"type\":\"record\",\"name\":\"AccountContactRole\",\"fields\":[{\"name\":\"主鍵\",\"type\":\"string\",\"talend.field.length\":\"18\",\"talend.field.dbColumnName\":\"主鍵\"},"
+                + "{\"name\":\"名前\",\"type\":\"string\",\"talend.field.length\":\"18\",\"talend.field.dbColumnName\":\"名前\"}]}";
+
+        MetadataTable metadataTable = ConnectionFactory.eINSTANCE.createMetadataTable();
+        metadataTable.setId("123456789");
+        metadataTable.setName("table1");
+        metadataTable.setLabel("table1");
+        metadataTable.setSourceName("table1");
+        Schema avroSchema = new Schema.Parser().parse((String) schemaObj);
+
+        CoreRuntimePlugin.getInstance().getProjectPreferenceManager().setAllowSpecificCharacters(true);
+        for (Schema.Field field : avroSchema.getFields()) {
+            MetadataColumn metadataColumn = MetadataToolAvroHelper.convertFromAvro(field, metadataTable);
+            metadataTable.getColumns().add(metadataColumn);
+        }
+
+        assertTrue(metadataTable.getColumns().get(0).getLabel().equals("主鍵"));
+        assertTrue(metadataTable.getColumns().get(1).getLabel().equals("名前"));
+
+        CoreRuntimePlugin.getInstance().getProjectPreferenceManager().setAllowSpecificCharacters(false);
+        metadataTable = ConnectionFactory.eINSTANCE.createMetadataTable();
+        metadataTable.setId("123456789");
+        metadataTable.setName("table1");
+        metadataTable.setLabel("table1");
+        metadataTable.setSourceName("table1");
+        for (Schema.Field field : avroSchema.getFields()) {
+            MetadataColumn metadataColumn = MetadataToolAvroHelper.convertFromAvro(field, metadataTable);
+            metadataTable.getColumns().add(metadataColumn);
+        }
+
+        assertTrue(metadataTable.getColumns().get(0).getLabel().equals("Column0"));
+        assertTrue(metadataTable.getColumns().get(1).getLabel().equals("Column1"));
     }
 
     @Test
@@ -416,8 +452,7 @@ public class MetadataToolAvroHelperTest {
         creatMetadataColumn.setTalendType("id_String");
         metadataTable.getColumns().add(creatMetadataColumn);
 
-        IEclipsePreferences coreUIPluginNode = new InstanceScope().getNode(ITalendCorePrefConstants.CoreUIPlugin_ID);
-        coreUIPluginNode.putBoolean(IRepositoryPrefConstants.ALLOW_SPECIFIC_CHARACTERS_FOR_SCHEMA_COLUMNS, true);
+        CoreRuntimePlugin.getInstance().getProjectPreferenceManager().setAllowSpecificCharacters(true);
         org.apache.avro.Schema schema =MetadataToolAvroHelper.convertToAvro(metadataTable);
         String s = "{\"type\":\"record\",\"name\":\"table1\",\"fields\":["
                 + "{\"name\":\"_long\",\"type\":[\"string\",\"null\"],\"AVRO_TECHNICAL_KEY\":\"long\",\"di.column.talendType\":\"id_String\",\"talend.field.pattern\":\"\",\"di.table.label\":\"_long\",\"talend.field.precision\":\"0\",\"di.table.comment\":\"\",\"di.column.id\":\"111111\",\"talend.field.dbColumnName\":\"long\",\"di.column.isNullable\":\"true\",\"talend.field.length\":\"0\",\"di.column.relationshipType\":\"\",\"di.column.originalLength\":\"0\",\"di.column.relatedEntity\":\"\"},"
@@ -430,7 +465,7 @@ public class MetadataToolAvroHelperTest {
                 + "\"di.table.comment\":\"\",\"di.table.name\":\"table1\",\"di.table.label\":\"table1\"}";
         assertTrue(schema.toString().equals(s));
 
-        coreUIPluginNode.putBoolean(IRepositoryPrefConstants.ALLOW_SPECIFIC_CHARACTERS_FOR_SCHEMA_COLUMNS, false);
+        CoreRuntimePlugin.getInstance().getProjectPreferenceManager().setAllowSpecificCharacters(false);
         schema =MetadataToolAvroHelper.convertToAvro(metadataTable);
         s = "{\"type\":\"record\",\"name\":\"table1\",\"fields\":["
            + "{\"name\":\"_long\",\"type\":[\"string\",\"null\"],\"AVRO_TECHNICAL_KEY\":\"long\",\"di.column.talendType\":\"id_String\",\"talend.field.pattern\":\"\",\"di.table.label\":\"_long\",\"talend.field.precision\":\"0\",\"di.table.comment\":\"\",\"di.column.id\":\"111111\",\"talend.field.dbColumnName\":\"long\",\"di.column.isNullable\":\"true\",\"talend.field.length\":\"0\",\"di.column.relationshipType\":\"\",\"di.column.originalLength\":\"0\",\"di.column.relatedEntity\":\"\"},"

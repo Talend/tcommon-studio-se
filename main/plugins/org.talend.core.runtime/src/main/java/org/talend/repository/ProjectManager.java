@@ -1,6 +1,6 @@
 // ============================================================================
 //
-// Copyright (C) 2006-2019 Talend Inc. - www.talend.com
+// Copyright (C) 2006-2021 Talend Inc. - www.talend.com
 //
 // This source code is available under agreement available at
 // %InstallDIR%\features\org.talend.rcp.branding.%PRODUCTNAME%\%PRODUCTNAME%license.txt
@@ -186,7 +186,7 @@ public final class ProjectManager {
             Set<String> resolvedProjectLabels, boolean force) {
         if (p != null) {
             String parentBranch = ProjectManager.getInstance().getMainProjectBranch(p);
-            if (parentBranch != null || force) {
+            if ((!p.isLocal() || parentBranch != null) || force) {
                 resolvedProjectLabels.add(p.getTechnicalLabel());
                 for (ProjectReference pr : new Project(p).getProjectReferenceList()) {
                     if (ProjectManager.validReferenceProject(p, pr)
@@ -425,6 +425,18 @@ public final class ProjectManager {
      */
     public boolean isInCurrentMainProject(EObject object) {
         return isInMainProject(getCurrentProject(), object);
+    }
+
+    /**
+     * could get the right comparing result if resource is unloaded
+     */
+    public boolean isResourceInCurrentMainProject(EObject object) {
+        org.talend.core.model.properties.Project project = getProject(object);
+        Project mainProject = getCurrentProject();
+        if (project != null && mainProject != null) {
+            return project.getTechnicalLabel().equals(mainProject.getEmfProject().getTechnicalLabel());
+        }
+        return false;
     }
 
     public boolean isInMainProject(Project mainProject, EObject object) {

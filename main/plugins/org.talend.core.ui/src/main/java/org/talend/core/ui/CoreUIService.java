@@ -1,6 +1,6 @@
 // ============================================================================
 //
-// Copyright (C) 2006-2019 Talend Inc. - www.talend.com
+// Copyright (C) 2006-2021 Talend Inc. - www.talend.com
 //
 // This source code is available under agreement available at
 // %InstallDIR%\features\org.talend.rcp.branding.%PRODUCTNAME%\%PRODUCTNAME%license.txt
@@ -27,6 +27,7 @@ import org.talend.core.ui.component.ComponentPaletteUtilities;
 import org.talend.core.ui.component.ComponentsFactoryProvider;
 import org.talend.core.ui.services.IDesignerCoreUIService;
 import org.talend.core.ui.services.IRulesProviderService;
+import org.talend.core.ui.token.TokenCollectorFactory;
 
 /**
  * DOC ggu class global comment. Detailled comment
@@ -106,5 +107,10 @@ public class CoreUIService implements ICoreUIService {
         if (designerCoreUIService != null) {
             designerCoreUIService.loadComponentsFromProviders(type);
         }
+    }
+    
+    @Override
+    public void resetDataCollectorData() {
+        TokenCollectorFactory.getFactory().reset();
     }
 }

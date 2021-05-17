@@ -1,6 +1,6 @@
 // ============================================================================
 //
-// Copyright (C) 2006-2019 Talend Inc. - www.talend.com
+// Copyright (C) 2006-2021 Talend Inc. - www.talend.com
 //
 // This source code is available under agreement available at
 // %InstallDIR%\features\org.talend.rcp.branding.%PRODUCTNAME%\%PRODUCTNAME%license.txt
@@ -14,6 +14,7 @@ package org.talend.core.model.repository;
 
 import java.util.List;
 
+import org.talend.commons.exception.ExceptionHandler;
 import org.talend.commons.exception.IllegalPluginConfigurationException;
 import org.talend.commons.utils.workbench.extensions.ExtensionImplementationProvider;
 import org.talend.core.model.process.IExternalNode;
@@ -35,7 +36,8 @@ public class ExternalNodesFactory {
         try {
             listComponents = ExtensionImplementationProvider.getInstance(ExtensionPointFactory.EXTERNAL_COMPONENT, extensionId);
         } catch (IllegalPluginConfigurationException e) {
-            throw new RuntimeException("plugin:" + extensionId + " not found", e); //$NON-NLS-1$ //$NON-NLS-2$
+            ExceptionHandler.process(new Exception("plugin:" + extensionId + " not found", e)); //$NON-NLS-1$ //$NON-NLS-2$
+        	return null; //temporary
         }
         return listComponents.get(0);
     }

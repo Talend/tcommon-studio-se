@@ -1,36 +1,55 @@
 <?xml version="1.0" encoding="UTF-8"?>
+<feature
+      id="org.talend.jdt.feature"
+      label="Feature"
+      version="7.4.1.qualifier">
 
-<feature id="org.talend.jdt.feature" label="Feature" version="7.4.1.qualifier"> 
-  <description url="http://www.example.com/description">[Enter Feature Description here.]</description>  
-  <copyright url="http://www.example.com/copyright">[Enter Copyright Description here.]</copyright>  
-  <license url="http://www.example.com/license">[Enter License Description here.]</license>  
-  <requires>
-    <!-- bonita requires org.codehaus.groovy version 2.4.16.xx-201903290056-e1812-RELEASE -->
-    <import plugin="org.codehaus.groovy" version="2.4.16.xx-201903290056-e1812-RELEASE" match="perfect"/>
-    <import plugin="org.eclipse.ant.launching" version="0.0.0" match="greaterOrEqual"/>
-    <import plugin="org.eclipse.ant.ui" version="0.0.0" match="greaterOrEqual"/>
-    <import plugin="org.eclipse.jdt" version="0.0.0" match="greaterOrEqual"/>
-    <import plugin="org.eclipse.jdt.annotation" version="0.0.0" match="greaterOrEqual"/>
-    <import plugin="org.eclipse.jdt.apt.core" version="0.0.0" match="greaterOrEqual"/>
-    <import plugin="org.eclipse.jdt.apt.pluggable.core" version="0.0.0" match="greaterOrEqual"/>
-    <import plugin="org.eclipse.jdt.apt.ui" version="0.0.0" match="greaterOrEqual"/>
-    <import plugin="org.eclipse.jdt.compiler.apt" version="0.0.0" match="greaterOrEqual"/>
-    <import plugin="org.eclipse.jdt.compiler.tool" version="0.0.0" match="greaterOrEqual"/>
-    <import plugin="org.eclipse.jdt.core" version="3.16.0.xx-201903290056-e1812-RELEASE" match="greaterOrEqual"/>
-    <import plugin="org.eclipse.jdt.core.manipulation" version="0.0.0" match="greaterOrEqual"/>
-    <import plugin="org.eclipse.jdt.debug" version="0.0.0" match="greaterOrEqual"/>
-    <import plugin="org.eclipse.jdt.debug.ui" version="0.0.0" match="greaterOrEqual"/>
-    <import plugin="org.eclipse.jdt.doc.user" version="0.0.0" match="greaterOrEqual"/>
-    <import plugin="org.eclipse.jdt.groovy.core" version="0.0.0" match="greaterOrEqual"/>
-    <import plugin="org.eclipse.jdt.junit" version="0.0.0" match="greaterOrEqual"/>
-    <import plugin="org.eclipse.jdt.junit.core" version="0.0.0" match="greaterOrEqual"/>
-    <import plugin="org.eclipse.jdt.junit.runtime" version="0.0.0" match="greaterOrEqual"/>
-    <import plugin="org.eclipse.jdt.junit4.runtime" version="0.0.0" match="greaterOrEqual"/>
-    <import plugin="org.eclipse.jdt.launching" version="0.0.0" match="greaterOrEqual"/>
-    <import plugin="org.eclipse.jdt.ui" version="0.0.0" match="greaterOrEqual"/>
-    <import plugin="org.hamcrest.core" version="0.0.0" match="greaterOrEqual"/>
-    <import plugin="org.junit" version="0.0.0" match="greaterOrEqual"/>
-  </requires>
-  <plugin id="org.eclipse.jdt.launching.macosx" os="macosx" download-size="0" install-size="0" version="0.0.0" unpack="false"/>
-  <plugin id="org.eclipse.jdt.launching.ui.macosx" os="macosx" download-size="0" install-size="0" version="0.0.0" unpack="false"/>
+   <description url="http://www.example.com/description">
+      [Enter Feature Description here.]
+   </description>
+
+   <copyright url="http://www.example.com/copyright">
+      [Enter Copyright Description here.]
+   </copyright>
+
+   <license url="http://www.example.com/license">
+      [Enter License Description here.]
+   </license>
+
+   <requires>
+      <import plugin="org.eclipse.jdt" version="0.0.0" match="greaterOrEqual"/>
+      <import plugin="org.eclipse.jdt.annotation" version="0.0.0" match="greaterOrEqual"/>
+      <import plugin="org.eclipse.jdt.apt.core" version="0.0.0" match="greaterOrEqual"/>
+      <import plugin="org.eclipse.jdt.apt.pluggable.core" version="0.0.0" match="greaterOrEqual"/>
+      <import plugin="org.eclipse.jdt.apt.ui" version="0.0.0" match="greaterOrEqual"/>
+      <import plugin="org.eclipse.jdt.compiler.apt" version="0.0.0" match="greaterOrEqual"/>
+      <import plugin="org.eclipse.jdt.compiler.tool" version="0.0.0" match="greaterOrEqual"/>
+      <import plugin="org.eclipse.jdt.core" version="3.16.0.xx-201903290056-e1812-RELEASE" match="greaterOrEqual"/>
+      <import plugin="org.eclipse.jdt.core.manipulation" version="0.0.0" match="greaterOrEqual"/>
+      <import plugin="org.eclipse.jdt.debug" version="0.0.0" match="greaterOrEqual"/>
+      <import plugin="org.eclipse.jdt.debug.ui" version="0.0.0" match="greaterOrEqual"/>
+      <import plugin="org.eclipse.jdt.launching" version="0.0.0" match="greaterOrEqual"/>
+      <import plugin="org.eclipse.jdt.ui" version="0.0.0" match="greaterOrEqual"/>
+      <import plugin="org.hamcrest.core" version="0.0.0" match="greaterOrEqual"/>
+      <import plugin="org.junit" version="4.13.2" match="greaterOrEqual"/>
+      <import plugin="org.eclipse.jdt.groovy.core" version="0.0.0" match="greaterOrEqual"/>
+      <import plugin="org.codehaus.groovy" version="2.4.16" match="equivalent"/>
+   </requires>
+
+   <plugin
+         id="org.eclipse.jdt.launching.macosx"
+         os="macosx"
+         download-size="0"
+         install-size="0"
+         version="0.0.0"
+         unpack="false"/>
+
+   <plugin
+         id="org.eclipse.jdt.launching.ui.macosx"
+         os="macosx"
+         download-size="0"
+         install-size="0"
+         version="0.0.0"
+         unpack="false"/>
+
 </feature>

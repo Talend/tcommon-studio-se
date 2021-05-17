@@ -1,6 +1,6 @@
 // ============================================================================
 //
-// Copyright (C) 2006-2019 Talend Inc. - www.talend.com
+// Copyright (C) 2006-2021 Talend Inc. - www.talend.com
 //
 // This source code is available under agreement available at
 // %InstallDIR%\features\org.talend.rcp.branding.%PRODUCTNAME%\%PRODUCTNAME%license.txt
@@ -1067,7 +1067,10 @@ public class RepositoryToComponentProperty {
                 return dbVersionString;
             } else if (EDatabaseTypeName.SYBASEASE.getDisplayName().equals(databaseType)) {
                 return dbVersionString;
-            } else {
+            } else if (EDatabaseTypeName.GREENPLUM.getDisplayName().equals(databaseType)) {
+                return dbVersionString;
+                
+            }else {
                 String driverValue = EDatabaseVersion4Drivers.getDriversStr(databaseType, dbVersionString);
                 if (EDatabaseConnTemplate.ORACLE_OCI.getDBDisplayName().equals(databaseType)
                         || EDatabaseConnTemplate.ORACLE_CUSTOM.getDBDisplayName().equals(databaseType)

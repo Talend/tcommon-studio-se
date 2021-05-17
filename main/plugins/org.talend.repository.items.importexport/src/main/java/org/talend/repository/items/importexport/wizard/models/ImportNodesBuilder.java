@@ -1,6 +1,6 @@
 // ============================================================================
 //
-// Copyright (C) 2006-2019 Talend Inc. - www.talend.com
+// Copyright (C) 2006-2021 Talend Inc. - www.talend.com
 //
 // This source code is available under agreement available at
 // %InstallDIR%\features\org.talend.rcp.branding.%PRODUCTNAME%\%PRODUCTNAME%license.txt
@@ -31,7 +31,9 @@ import org.talend.core.hadoop.repository.HadoopRepositoryUtil;
 import org.talend.core.model.properties.Item;
 import org.talend.core.model.properties.ItemState;
 import org.talend.core.model.properties.Project;
+import org.talend.core.model.properties.RoutinesJarItem;
 import org.talend.core.model.repository.ERepositoryObjectType;
+import org.talend.core.model.routines.RoutinesUtil;
 import org.talend.core.ui.ITestContainerProviderService;
 import org.talend.repository.items.importexport.handlers.model.EmptyFolderImportItem;
 import org.talend.repository.items.importexport.handlers.model.ImportItem;
@@ -86,97 +88,107 @@ public class ImportNodesBuilder {
     }
 
     public void addItems(List<ImportItem> items) {
-        if (items != null) {
-            if (GlobalServiceRegister.getDefault().isServiceRegistered(ITestContainerProviderService.class)) {
-                Map<ImportItem, List<ImportItem>> itemMap = getTestCaseItemMap(items);
-                for (ImportItem ir : itemMap.keySet()) {
-                    List<ImportItem> children = itemMap.get(ir);
-                    addItem(ir, children);
-                }
-            } else {
-                for (ImportItem ir : items) {
-                    addItem(ir);
-                }
-            }
+        if (items == null) {
+            return;
+        }
+        Map<ImportItem, List<ImportItem>> itemMap = getItemWithChildrenItemMap(items);
+        for (ImportItem ir : itemMap.keySet()) {
+            List<ImportItem> children = itemMap.get(ir);
+            addItem(ir, children);
         }
     }
 
-    private Map<ImportItem, List<ImportItem>> getTestCaseItemMap(List<ImportItem> items) {
+    private Map<ImportItem, List<ImportItem>> getItemWithChildrenItemMap(List<ImportItem> items) {
         Map<ImportItem, List<ImportItem>> map = new HashMap<ImportItem, List<ImportItem>>();
+        if (items == null) {
+            return map;
+        }
+
+        boolean checkTestCase = false;
         ITestContainerProviderService testContainerService = null;
         if (GlobalServiceRegister.getDefault().isServiceRegistered(ITestContainerProviderService.class)) {
             testContainerService = (ITestContainerProviderService) GlobalServiceRegister.getDefault().getService(
                     ITestContainerProviderService.class);
-        }
-        if (items != null && testContainerService != null) {
-            Map<String, List<ImportItem>> itemMap = new HashMap<String, List<ImportItem>>();
-            for (ImportItem ir : items) {
-                if (ir.getItem() != null && !testContainerService.isTestContainerItem(ir.getItem())) {
-                    String id = ir.getProperty().getId();
-                    // may have different versions
-                    List<ImportItem> itemList = itemMap.get(id);
-                    if (itemList == null) {
-                        itemList = new LinkedList<ImportItem>();
-                        itemMap.put(id, itemList);
-                    }
-                    if (!itemList.contains(ir)) {
-                        itemList.add(ir);
-                    }
-                    map.put(ir, new ArrayList<ImportItem>());
-                }
+            if (testContainerService != null) {
+                checkTestCase = true;
             }
-            Set<String> keys = itemMap.keySet();
-            for (String key : keys) {
-                // 1. get the last version
-                List<ImportItem> itemList = itemMap.get(key);
-                ImportItem importItem = null;
-                Item item = null;
-                String version = ""; //$NON-NLS-1$
-                /**
-                 * should keep same with conflict view order
-                 */
-                boolean useLastVersion = true;
-                Iterator<ImportItem> iter = itemList.iterator();
-                while (iter.hasNext()) {
-                    ImportItem curImportItem = iter.next();
-                    Item curItem = curImportItem.getItem();
-                    String curVersion = curItem.getProperty().getVersion();
-                    if (item == null) {
+        }
+
+        Map<String, List<ImportItem>> itemMap = new HashMap<String, List<ImportItem>>();
+        for (ImportItem ir : items) {
+            if (ir.getItem() == null || checkTestCase && testContainerService.isTestContainerItem(ir.getItem())
+                    || RoutinesUtil.isInnerCodes(ir.getItem().getProperty())) {
+                continue;
+            }
+            String id = ir.getProperty().getId();
+            // may have different versions
+            List<ImportItem> itemList = itemMap.get(id);
+            if (itemList == null) {
+                itemList = new LinkedList<ImportItem>();
+                itemMap.put(id, itemList);
+            }
+            if (!itemList.contains(ir)) {
+                itemList.add(ir);
+            }
+            map.put(ir, new ArrayList<ImportItem>());
+        }
+        Set<String> keys = itemMap.keySet();
+        for (String key : keys) {
+            // 1. get the last version
+            List<ImportItem> itemList = itemMap.get(key);
+            ImportItem importItem = null;
+            Item item = null;
+            String version = ""; //$NON-NLS-1$
+            /**
+             * should keep same with conflict view order
+             */
+            boolean useLastVersion = true;
+            Iterator<ImportItem> iter = itemList.iterator();
+            while (iter.hasNext()) {
+                ImportItem curImportItem = iter.next();
+                Item curItem = curImportItem.getItem();
+                String curVersion = curItem.getProperty().getVersion();
+                if (item == null) {
+                    item = curItem;
+                    version = curVersion;
+                    importItem = curImportItem;
+                } else {
+                    if (curVersion != null && 0 < (curVersion.compareTo(version) * (useLastVersion ? 1 : -1))) {
                         item = curItem;
                         version = curVersion;
                         importItem = curImportItem;
-                    } else {
-                        if (curVersion != null && 0 < (curVersion.compareTo(version) * (useLastVersion ? 1 : -1))) {
-                            item = curItem;
-                            version = curVersion;
-                            importItem = curImportItem;
-                        }
                     }
                 }
+            }
 
-                if (item == null) {
+            if (item == null) {
+                continue;
+            }
+            List<ImportItem> children = new ArrayList<ImportItem>();
+            for (ImportItem child : items) {
+                Item childItem = child.getItem();
+                if (childItem == null) {
                     continue;
                 }
-                List<ImportItem> children = new ArrayList<ImportItem>();
-                for (ImportItem child : items) {
-                    Item childItem = child.getItem();
-                    if (childItem == null) {
-                        continue;
+                if (RoutinesUtil.isInnerCodes(childItem.getProperty())) {
+                    String codeJarLabel = RoutinesUtil.getCodesJarLabelByInnerCode(childItem);
+                    if (item instanceof RoutinesJarItem && item.getProperty().getLabel().equals(codeJarLabel)
+                            && ERepositoryObjectType.CodeTypeEnum.isCodeRepositoryObjectTypeMatch(importItem.getType(),
+                                    child.getType())) {
+                        children.add(child);
                     }
-                    boolean isTestContainer = testContainerService.isTestContainerItem(childItem);
-                    if (isTestContainer) {
-                        String path = childItem.getState().getPath();
-                        if (path != null && path.contains("/")) {
-                            int index = path.indexOf("/");
-                            path = path.substring(index + 1);
-                            if (path.equals(item.getProperty().getId())) {
-                                children.add(child);
-                            }
+                } else if (checkTestCase && testContainerService.isTestContainerItem(childItem)) {
+                    String path = childItem.getState().getPath();
+                    if (path != null && path.contains("/")) {
+                        int index = path.indexOf("/");
+                        path = path.substring(index + 1);
+                        if (path.equals(item.getProperty().getId())) {
+                            children.add(child);
                         }
                     }
                 }
-                map.put(importItem, children);
             }
+            map.put(importItem, children);
         }
         return map;
     }

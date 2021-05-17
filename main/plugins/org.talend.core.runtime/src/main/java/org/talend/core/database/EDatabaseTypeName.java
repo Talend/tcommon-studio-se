@@ -1,6 +1,6 @@
 // ============================================================================
 //
-// Copyright (C) 2006-2019 Talend Inc. - www.talend.com
+// Copyright (C) 2006-2021 Talend Inc. - www.talend.com
 //
 // This source code is available under agreement available at
 // %InstallDIR%\features\org.talend.rcp.branding.%PRODUCTNAME%\%PRODUCTNAME%license.txt
@@ -336,9 +336,18 @@ public enum EDatabaseTypeName {
                             .getProjectPreferenceManager()
                             .getBoolean(IProjectSettingPreferenceConstants.METADATA_DBCONNECTION_ODBC_ENABLE);
             isSupport = isSupportODBC;
+        } else if (EDatabaseTypeName.SAS == this) {
+            isSupport = false;
         }
 
         return isSupport;
+    }
+    
+    public static boolean isDeprecateDbType(String dbType) {
+    	if (EDatabaseTypeName.SAS.getXmlName().equals(dbType)) {
+            return true;
+        }
+    	return false;
     }
 
     /**

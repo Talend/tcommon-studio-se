@@ -1,6 +1,6 @@
 // ============================================================================
 //
-// Copyright (C) 2006-2019 Talend Inc. - www.talend.com
+// Copyright (C) 2006-2021 Talend Inc. - www.talend.com
 //
 // This source code is available under agreement available at
 // %InstallDIR%\features\org.talend.rcp.branding.%PRODUCTNAME%\%PRODUCTNAME%license.txt
@@ -12,13 +12,19 @@
 // ============================================================================
 package org.talend.core;
 
+import java.io.BufferedReader;
+import java.io.File;
 import java.io.IOException;
 import java.net.URL;
+import java.nio.file.Files;
+import java.util.Properties;
 
 import org.apache.log4j.Logger;
 import org.eclipse.core.runtime.FileLocator;
 import org.eclipse.core.runtime.Platform;
 import org.osgi.framework.Bundle;
+import org.talend.commons.exception.ExceptionHandler;
+import org.talend.commons.utils.VersionUtils;
 
 /**
  * This class can check whether some specific plugins are loaded or not. <br/>
@@ -61,6 +67,8 @@ public class PluginChecker {
     private static final String SURVIVORSHIP_PLUGIN_ID = "org.talend.survivorship.designer"; //$NON-NLS-1$
 
     private static final String PREVIEW_PLUGIN_ID = "org.talend.designer.component.preview"; //$NON-NLS-1$
+
+    private static final String REMOTE_PROVIDER_PLUGIN_ID = "org.talend.repository.remoteprovider"; //$NON-NLS-1$
 
     private static final String SVN_PROVIDER_PLUGIN_ID = "org.talend.repository.svnprovider"; //$NON-NLS-1$
 
@@ -140,6 +148,10 @@ public class PluginChecker {
 
     public static final String APACHE_CXF_PLUGIN_ID = "org.talend.libraries.apache.cxf"; //$NON-NLS-1$
 
+    public static final String SWTBOT_PLUGIN_ID = "org.eclipse.swtbot.eclipse.core"; //$NON-NLS-1$
+
+    private static Boolean isStudioLite;
+
     /**
      * Check if specific plug-in is loaded.
      *
@@ -156,6 +168,23 @@ public class PluginChecker {
 
     public static boolean isTIS() {
         return isJobLetPluginLoaded();
+    }
+
+    public static boolean isStudioLite() {
+        if (isStudioLite == null) {
+            try {
+                File studioConfigFile = VersionUtils.getStudioConfigFile();
+                Properties props = new Properties();
+                try (BufferedReader reader = Files.newBufferedReader(studioConfigFile.toPath())) {
+                    props.load(reader);
+                }
+                isStudioLite = Boolean.valueOf(props.getProperty("talend.studio.lite"));
+            } catch (Exception e) {
+                isStudioLite = false;
+                ExceptionHandler.process(e);
+            }
+        }
+        return isStudioLite;
     }
 
     public static boolean isRefProjectLoaded() {
@@ -257,6 +286,10 @@ public class PluginChecker {
 
     public static boolean isPreviewPluginLoaded() {
         return isPluginLoaded(PREVIEW_PLUGIN_ID);
+    }
+
+    public static boolean isRemoteProviderPluginLoaded() {
+        return isPluginLoaded(REMOTE_PROVIDER_PLUGIN_ID);
     }
 
     public static boolean isSVNProviderPluginLoaded() {
@@ -370,6 +403,10 @@ public class PluginChecker {
 
     public static boolean isBigdataRoutineLoaded() {
         return isPluginLoaded(BD_ROUTINE_PLUGIN_ID);
+    }
+
+    public static boolean isSWTBotLoaded() {
+        return isPluginLoaded(SWTBOT_PLUGIN_ID);
     }
 
     public static String getBundlePath(String bundleName) {

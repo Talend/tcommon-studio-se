@@ -1,6 +1,6 @@
 // ============================================================================
 //
-// Copyright (C) 2006-2019 Talend Inc. - www.talend.com
+// Copyright (C) 2006-2021 Talend Inc. - www.talend.com
 //
 // This source code is available under agreement available at
 // %InstallDIR%\features\org.talend.rcp.branding.%PRODUCTNAME%\%PRODUCTNAME%license.txt
@@ -66,9 +66,11 @@ import org.talend.core.model.properties.RoutineItem;
 import org.talend.core.model.repository.ERepositoryObjectType;
 import org.talend.core.model.repository.IRepositoryViewObject;
 import org.talend.core.model.repository.LockInfo;
+import org.talend.core.model.routines.CodesJarInfo;
 import org.talend.core.repository.model.ProxyRepositoryFactory;
 import org.talend.core.runtime.CoreRuntimePlugin;
 import org.talend.core.ui.branding.IBrandingService;
+import org.talend.core.utils.CodesJarResourceCache;
 import org.talend.designer.core.convert.IProcessConvertService;
 import org.talend.metadata.managment.ui.i18n.Messages;
 import org.talend.repository.model.IProxyRepositoryFactory;
@@ -291,11 +293,17 @@ public abstract class PropertiesWizardPage extends AbstractNamedWizardPage {
     private List<IRepositoryViewObject> loadRepViewObjectWithSameType() throws PersistenceException {
         List<IRepositoryViewObject> list = new ArrayList<IRepositoryViewObject>();
         ERepositoryObjectType type = ERepositoryObjectType.getItemType(property.getItem());
-        if (GlobalServiceRegister.getDefault().isServiceRegistered(IProxyRepositoryService.class)) {
-            IProxyRepositoryService service = (IProxyRepositoryService) GlobalServiceRegister.getDefault().getService(
-                    IProxyRepositoryService.class);
-
-            list = service.getProxyRepositoryFactory().getAll(type, true, false);
+        if (IProxyRepositoryService.get() != null) {
+            IProxyRepositoryFactory factory = IProxyRepositoryService.get().getProxyRepositoryFactory();
+            list = factory.getAll(type, true, false);
+            if (ERepositoryObjectType.getAllTypesOfCodes().contains(type)) {
+                for (CodesJarInfo info : CodesJarResourceCache.getAllCodesJars()) {
+                    if (info.isInCurrentMainProject()
+                            && ERepositoryObjectType.CodeTypeEnum.isCodeRepositoryObjectTypeMatch(info.getType(), type)) {
+                        list.addAll(factory.getAllInnerCodes(info));
+                    }
+                }
+            }
         }
         return list;
     }

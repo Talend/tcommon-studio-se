@@ -1,6 +1,6 @@
 // ============================================================================
 //
-// Copyright (C) 2006-2019 Talend Inc. - www.talend.com
+// Copyright (C) 2006-2021 Talend Inc. - www.talend.com
 //
 // This source code is available under agreement available at
 // %InstallDIR%\features\org.talend.rcp.branding.%PRODUCTNAME%\%PRODUCTNAME%license.txt
@@ -14,7 +14,9 @@ package org.talend.librariesmanager.nexus;
 
 import java.io.File;
 import java.io.IOException;
+import java.net.HttpURLConnection;
 import java.net.URI;
+import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.ConcurrentHashMap;
@@ -109,9 +111,12 @@ public class Nexus3RepositoryHandler extends AbstractArtifactRepositoryHandler {
         IProxySelectorProvider proxySelector = null;
         try {
             try {
+                URI uri = new URI(repositoryUrl);
+                uri.toURL();
                 proxySelector = HttpClientTransport.addProxy(httpclient, new URI(repositoryUrl));
             } catch (Exception e) {
                 ExceptionHandler.process(e);
+                return false;
             }
             HttpResponse response = httpclient.execute(get);
             if (response.getStatusLine().getStatusCode() == 200) {

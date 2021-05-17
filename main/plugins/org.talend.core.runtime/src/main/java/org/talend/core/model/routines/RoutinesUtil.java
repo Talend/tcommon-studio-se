@@ -1,6 +1,6 @@
 // ============================================================================
 //
-// Copyright (C) 2006-2019 Talend Inc. - www.talend.com
+// Copyright (C) 2006-2021 Talend Inc. - www.talend.com
 //
 // This source code is available under agreement available at
 // %InstallDIR%\features\org.talend.rcp.branding.%PRODUCTNAME%\%PRODUCTNAME%license.txt
@@ -13,6 +13,7 @@
 package org.talend.core.model.routines;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.Set;
 
@@ -20,12 +21,16 @@ import org.eclipse.core.resources.IFile;
 import org.eclipse.core.resources.IMarker;
 import org.eclipse.core.resources.IResource;
 import org.eclipse.core.runtime.CoreException;
+import org.eclipse.core.runtime.Path;
 import org.talend.commons.exception.ExceptionHandler;
 import org.talend.commons.exception.PersistenceException;
 import org.talend.commons.exception.SystemException;
 import org.talend.core.GlobalServiceRegister;
 import org.talend.core.model.general.Project;
+import org.talend.core.model.process.JobInfo;
 import org.talend.core.model.properties.Item;
+import org.talend.core.model.properties.JobletProcessItem;
+import org.talend.core.model.properties.ProcessItem;
 import org.talend.core.model.properties.Property;
 import org.talend.core.model.properties.RoutineItem;
 import org.talend.core.model.repository.ERepositoryObjectType;
@@ -204,6 +209,7 @@ public final class RoutinesUtil {
     }
 
     private static RoutinesParameterType createItemInforType(RoutineItem routineItem) {
+        // no need to update
         Property property = routineItem.getProperty();
 
         RoutinesParameterType itemRecordType = TalendFileFactory.eINSTANCE.createRoutinesParameterType();
@@ -353,4 +359,54 @@ public final class RoutinesUtil {
             }
         }
     }
+
+    @SuppressWarnings("unchecked")
+    public static void setInnerCodes(Property property, ERepositoryObjectType type) {
+        if (type == null) {
+            property.getAdditionalProperties().removeKey("JAR_TYPE");
+        } else {
+            property.getAdditionalProperties().put("JAR_TYPE", type.name()); //$NON-NLS-1$
+        }
+    }
+
+    public static ERepositoryObjectType getInnerCodeType(Property property) {
+        Object type = property.getAdditionalProperties().get("JAR_TYPE"); //$NON-NLS-1$
+        if (type != null) {
+            return ERepositoryObjectType.getAllTypesOfCodesJar().stream().filter(t -> t.name().equals(type)).findFirst().get();
+        }
+        return null;
+    }
+
+    public static boolean isInnerCodes(Property property) {
+        Object isInnerCodes = property.getAdditionalProperties().get("JAR_TYPE"); //$NON-NLS-1$
+        return isInnerCodes != null;
+    }
+
+    public static String getCodesJarLabelByInnerCode(Item innerCodeItem) {
+        return new Path(innerCodeItem.getState().getPath()).segment(0);
+    }
+
+    public static List<RoutinesParameterType> getRoutinesParametersFromJobInfo(JobInfo info) {
+        Item item = null;
+        if (info.getJobletProperty() != null) {
+            item = info.getJobletProperty().getItem();
+        } else if (info.getProcessItem() != null) {
+            item = info.getProcessItem();
+        }
+        return getRoutinesParametersFromItem(item);
+    }
+
+    public static List<RoutinesParameterType> getRoutinesParametersFromItem(Item item) {
+        List<RoutinesParameterType> routinesParameters = null;
+        if (item == null) {
+            routinesParameters = Collections.emptyList();
+        }
+        if (item instanceof JobletProcessItem) {
+            routinesParameters = ((JobletProcessItem) item).getJobletProcess().getParameters().getRoutinesParameter();
+        } else if (item instanceof ProcessItem) {
+            routinesParameters = ((ProcessItem) item).getProcess().getParameters().getRoutinesParameter();
+        }
+        return routinesParameters;
+    }
+
 }

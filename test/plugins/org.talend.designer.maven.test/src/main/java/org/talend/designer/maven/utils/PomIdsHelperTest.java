@@ -1,6 +1,6 @@
 // ============================================================================
 //
-// Copyright (C) 2006-2019 Talend Inc. - www.talend.com
+// Copyright (C) 2006-2021 Talend Inc. - www.talend.com
 //
 // This source code is available under agreement available at
 // %InstallDIR%\features\org.talend.rcp.branding.%PRODUCTNAME%\%PRODUCTNAME%license.txt
@@ -27,11 +27,17 @@ import org.junit.Test;
 import org.talend.commons.utils.VersionUtils;
 import org.talend.core.model.general.Project;
 import org.talend.core.model.process.JobInfo;
+import org.talend.core.model.properties.ItemState;
 import org.talend.core.model.properties.JobletProcessItem;
 import org.talend.core.model.properties.ProcessItem;
 import org.talend.core.model.properties.PropertiesFactory;
 import org.talend.core.model.properties.Property;
+import org.talend.core.model.properties.RoutineItem;
+import org.talend.core.model.properties.RoutinesJarItem;
+import org.talend.core.model.properties.RoutinesJarType;
 import org.talend.core.model.repository.IRepositoryViewObject;
+import org.talend.core.model.repository.RepositoryObject;
+import org.talend.core.model.routines.CodesJarInfo;
 import org.talend.core.repository.model.ProxyRepositoryFactory;
 import org.talend.core.runtime.maven.MavenConstants;
 import org.talend.core.runtime.projectsetting.ProjectPreferenceManager;
@@ -364,6 +370,58 @@ public class PomIdsHelperTest {
         }
 
         return property;
+    }
+
+    @Test
+    public void testGetCodesJarGroupId() throws Exception {
+        RoutinesJarItem jarItem = PropertiesFactory.eINSTANCE.createRoutinesJarItem();
+        Property jarProperty = PropertiesFactory.eINSTANCE.createProperty();
+        jarProperty.setId(ProxyRepositoryFactory.getInstance().getNextId());
+        jarProperty.setLabel("PomIdsHelperTest_testGetJarGroupId");
+        jarProperty.setVersion("1.0");
+        jarProperty.setItem(jarItem);
+        String groupId = PomIdsHelper.getCodesJarGroupId(CodesJarInfo.create(jarProperty));
+        assertEquals(groupId, PomIdsHelper.getProjectGroupId() + ".routinesjar");
+    }
+
+    @Test
+    public void testGetCodesJarVersion() throws Exception {
+        assertEquals(PomIdsHelper.getCodesJarVersion(), PomIdsHelper.getCodesVersion());
+    }
+
+    @Test
+    public void testGetCodesJarGroupIdByInnerCode() throws Exception {
+        RoutinesJarItem jarItem = PropertiesFactory.eINSTANCE.createRoutinesJarItem();
+        RoutineItem innerRoutineItem = PropertiesFactory.eINSTANCE.createRoutineItem();
+        try {
+            {
+                // create routine jar
+                RoutinesJarType jarType = PropertiesFactory.eINSTANCE.createRoutinesJarType();
+                jarItem.setRoutinesJarType(jarType);
+                ItemState state = PropertiesFactory.eINSTANCE.createItemState();
+                state.setPath("");
+                jarItem.setState(state);
+                Property jarProperty = PropertiesFactory.eINSTANCE.createProperty();
+                jarProperty.setId(ProxyRepositoryFactory.getInstance().getNextId());
+                jarProperty.setLabel("PomIdsHelperTest_testGetCodesJarGroupIdByInnerCode_routinejar1");
+                jarProperty.setVersion("1.0");
+                jarProperty.setItem(jarItem);
+                ProxyRepositoryFactory.getInstance().create(jarItem, new Path(""));
+            }
+            {
+                // create inner routine
+                Property jarProperty = PropertiesFactory.eINSTANCE.createProperty();
+                jarProperty.setId(ProxyRepositoryFactory.getInstance().getNextId());
+                jarProperty.setLabel("PomIdsHelperTest_testGetCodesJarGroupIdByInnerCode_innerRoutine1");
+                jarProperty.setVersion("1.0");
+                jarProperty.setItem(innerRoutineItem);
+            }
+            assertEquals(PomIdsHelper.getCodesJarGroupId(CodesJarInfo.create(jarItem.getProperty())),
+                    PomIdsHelper.getCodesJarGroupIdByInnerCode(
+                            ProjectManager.getInstance().getCurrentProject().getTechnicalLabel(), innerRoutineItem));
+        } finally {
+            ProxyRepositoryFactory.getInstance().deleteObjectPhysical(new RepositoryObject(jarItem.getProperty()));
+        }
     }
 
     @After

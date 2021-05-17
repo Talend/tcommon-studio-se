@@ -1,6 +1,6 @@
 // ============================================================================
 //
-// Copyright (C) 2006-2019 Talend Inc. - www.talend.com
+// Copyright (C) 2006-2021 Talend Inc. - www.talend.com
 //
 // This source code is available under agreement available at
 // %InstallDIR%\features\org.talend.rcp.branding.%PRODUCTNAME%\%PRODUCTNAME%license.txt
@@ -12,17 +12,17 @@
 // ============================================================================
 package org.talend.core.ui.preference;
 
-import org.eclipse.jface.preference.BooleanFieldEditor;
 import org.eclipse.jface.preference.FieldEditorPreferencePage;
 import org.eclipse.ui.IWorkbench;
 import org.eclipse.ui.IWorkbenchPreferencePage;
-import org.talend.core.model.repository.IRepositoryPrefConstants;
 import org.talend.core.ui.CoreUIPlugin;
 
 public class SpecificSettingPreferencePage extends FieldEditorPreferencePage implements IWorkbenchPreferencePage {
 
     public SpecificSettingPreferencePage() {
         setPreferenceStore(CoreUIPlugin.getDefault().getPreferenceStore());
+        setDescription("Specific settings"); 
+        noDefaultAndApplyButton();
     }
 
     /*
@@ -32,8 +32,6 @@ public class SpecificSettingPreferencePage extends FieldEditorPreferencePage imp
      */
     @Override
     protected void createFieldEditors() {
-        addField(new BooleanFieldEditor(IRepositoryPrefConstants.ALLOW_SPECIFIC_CHARACTERS_FOR_SCHEMA_COLUMNS,
-                "Allow specific characters (UTF8,...) for columns of schemas", getFieldEditorParent()));
 
     }
 

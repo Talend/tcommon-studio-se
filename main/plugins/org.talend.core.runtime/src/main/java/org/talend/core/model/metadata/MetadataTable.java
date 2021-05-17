@@ -1,6 +1,6 @@
 // ============================================================================
 //
-// Copyright (C) 2006-2019 Talend Inc. - www.talend.com
+// Copyright (C) 2006-2021 Talend Inc. - www.talend.com
 //
 // This source code is available under agreement available at
 // %InstallDIR%\features\org.talend.rcp.branding.%PRODUCTNAME%\%PRODUCTNAME%license.txt
@@ -365,7 +365,7 @@ public class MetadataTable implements IMetadataTable, Cloneable {
 
         for (int i = 0; i < listColumns.size(); i++) {
             IMetadataColumn column = listColumns.get(i);
-            if (column.isCustom()) {
+            if (column.isCustom() && !column.isIgnoreCustomSort()) {
                 customColumns.add(column);
             }
         }

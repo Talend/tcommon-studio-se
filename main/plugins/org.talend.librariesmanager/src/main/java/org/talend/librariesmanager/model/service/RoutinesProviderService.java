@@ -1,11 +1,8 @@
 package org.talend.librariesmanager.model.service;
 
-import java.util.Set;
 import java.util.Vector;
 
-import org.talend.core.model.general.ModuleNeeded;
 import org.talend.core.model.routines.IRoutinesService;
-import org.talend.librariesmanager.model.ModulesNeededProvider;
 
 import routines.TalendString;
 
@@ -19,7 +16,4 @@ public class RoutinesProviderService implements IRoutinesService {
         return new Vector(TalendString.getMap());
     }
 
-    public Set<ModuleNeeded> getRunningModules() {
-        return ModulesNeededProvider.getRunningModules();
-    }
 }

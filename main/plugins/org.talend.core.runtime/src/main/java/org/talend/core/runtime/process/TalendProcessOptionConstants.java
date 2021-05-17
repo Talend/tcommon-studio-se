@@ -1,6 +1,6 @@
 // ============================================================================
 //
-// Copyright (C) 2006-2019 Talend Inc. - www.talend.com
+// Copyright (C) 2006-2021 Talend Inc. - www.talend.com
 //
 // This source code is available under agreement available at
 // %InstallDIR%\features\org.talend.rcp.branding.%PRODUCTNAME%\%PRODUCTNAME%license.txt
@@ -73,5 +73,20 @@ public interface TalendProcessOptionConstants {
     public static final int MODULES_FOR_MR = 1 << 4;
 
     public static final int MODULES_EXCLUDE_SHADED = 1 << 5;
+
+    /**
+     * NOTE with this option, still won't get codesjar modules of related joblet TODO check all callers to find a way to
+     * include those
+     */
+    public static final int MODULES_WITH_CODESJAR = 1 << 6;
+
+    /**
+     * flag for check if is ESB job
+     */
+    public static final int ISESB_CHECKED = 1;
+
+    public static final int ISESB_CHILDREN_INCLUDE = 1 << 1;
+
+    public static final int ISESB_CURRENT_INCLUDE = 1 << 2;
 
 }

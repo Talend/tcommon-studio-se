@@ -1,6 +1,6 @@
 // ============================================================================
 //
-// Copyright (C) 2006-2019 Talend Inc. - www.talend.com
+// Copyright (C) 2006-2021 Talend Inc. - www.talend.com
 //
 // This source code is available under agreement available at
 // %InstallDIR%\features\org.talend.rcp.branding.%PRODUCTNAME%\%PRODUCTNAME%license.txt
@@ -36,7 +36,6 @@ import org.eclipse.swt.widgets.Display;
 import org.talend.commons.exception.BusinessException;
 import org.talend.commons.exception.LoginException;
 import org.talend.commons.exception.PersistenceException;
-import org.talend.commons.exception.SystemException;
 import org.talend.commons.runtime.model.repository.ERepositoryStatus;
 import org.talend.commons.ui.runtime.exception.ExceptionHandler;
 import org.talend.core.GlobalServiceRegister;
@@ -54,11 +53,16 @@ import org.talend.core.model.properties.SQLPatternItem;
 import org.talend.core.model.relationship.RelationshipItemBuilder;
 import org.talend.core.model.repository.ERepositoryObjectType;
 import org.talend.core.model.repository.IRepositoryViewObject;
+import org.talend.core.model.routines.CodesJarInfo;
+import org.talend.core.model.routines.RoutinesUtil;
 import org.talend.core.repository.model.ProxyRepositoryFactory;
 import org.talend.core.repository.ui.dialog.PastSelectorDialog;
+import org.talend.core.repository.utils.RoutineUtils;
+import org.talend.core.runtime.services.IDesignerMavenService;
 import org.talend.core.runtime.services.IGenericDBService;
 import org.talend.core.ui.ICDCProviderService;
 import org.talend.core.ui.ITestContainerProviderService;
+import org.talend.core.utils.CodesJarResourceCache;
 import org.talend.designer.codegen.ICodeGeneratorService;
 import org.talend.repository.RepositoryWorkUnit;
 import org.talend.repository.model.IProxyRepositoryFactory;
@@ -124,6 +128,44 @@ public class CopyObjectAction {
         // ExceptionHandler.process(e);
         // return false;
         // }
+
+        // disable copy for codejar
+        ERepositoryObjectType sourceObjectType = objectToCopy.getRepositoryObjectType();
+        if (ERepositoryObjectType.getAllTypesOfCodesJar().contains(sourceObjectType)) {
+            return false;
+        }
+
+        // disable paste between global code and custom code
+        if (ERepositoryObjectType.getAllTypesOfCodes().contains(sourceObjectType) && targetNode != null) {
+            IRepositoryViewObject targetObject = targetNode.getObject();
+            boolean isInnerCodeSourceNode = RoutinesUtil.isInnerCodes(objectToCopy.getProperty());
+            if (targetObject != null) {
+                if (sourceObjectType.equals(targetObject.getRepositoryObjectType())) {
+                    return isInnerCodeSourceNode && RoutinesUtil.isInnerCodes(targetObject.getProperty());
+                }
+
+                if (isInnerCodeSourceNode
+                        && !ERepositoryObjectType.getAllTypesOfCodesJar().contains(targetObject.getRepositoryObjectType())) {
+                    return false;
+                }
+                if (!isInnerCodeSourceNode
+                        && ERepositoryObjectType.getAllTypesOfCodesJar().contains(targetObject.getRepositoryObjectType())) {
+                    return false;
+                }
+            } else {
+                // system folder node
+                if (isInnerCodeSourceNode) {
+                    return false;
+                } else {
+                    ERepositoryObjectType targetType = ((ERepositoryObjectType) targetNode
+                            .getProperties(EProperties.CONTENT_TYPE));
+                    if (ERepositoryObjectType.getAllTypesOfCodesJar().contains(targetType)) {
+                        return false;
+                    }
+                }
+
+            }
+        }
 
         // Cannot copy system routines:
         if (objectToCopy.getRepositoryObjectType() == ERepositoryObjectType.ROUTINES) {
@@ -193,7 +235,8 @@ public class CopyObjectAction {
         }
 
         // for bug 0005454: Copy paste with keyboard in the repository view doesn't work.
-        if (targetNode.getType() == ENodeType.REPOSITORY_ELEMENT) {
+        if (targetNode.getType() == ENodeType.REPOSITORY_ELEMENT
+                && !ERepositoryObjectType.getAllTypesOfCodesJar().contains(targetNode.getObjectType())) {
             targetNode = targetNode.getParent();
         }
 
@@ -471,9 +514,23 @@ public class CopyObjectAction {
                 ICodeGeneratorService.class);
         if (codeGenService != null) {
             codeGenService.createRoutineSynchronizer().renameRoutineClass(item);
+            boolean isInnerCode = RoutinesUtil.isInnerCodes(item.getProperty());
+            if (isInnerCode) {
+                RoutineUtils.changeInnerCodePackage(item, true);
+            }
             try {
                 codeGenService.createRoutineSynchronizer().syncRoutine(item, true);
-            } catch (SystemException e) {
+
+                if (isInnerCode) {
+                    CodesJarInfo info = CodesJarResourceCache.getCodesJarByInnerCode(item);
+                    if (info != null) {
+                        IDesignerMavenService designerMavenService = IDesignerMavenService.get();
+                        if (designerMavenService != null) {
+                            designerMavenService.updateCodeJarMavenProject(info, false);
+                        }
+                    }
+                }
+            } catch (Exception e) {
                 ExceptionHandler.process(e);
             }
         }

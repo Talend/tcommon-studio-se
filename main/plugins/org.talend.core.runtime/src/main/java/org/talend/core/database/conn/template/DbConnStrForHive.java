@@ -1,6 +1,6 @@
 // ============================================================================
 //
-// Copyright (C) 2006-2019 Talend Inc. - www.talend.com
+// Copyright (C) 2006-2021 Talend Inc. - www.talend.com
 //
 // This source code is available under agreement available at
 // %InstallDIR%\features\org.talend.rcp.branding.%PRODUCTNAME%\%PRODUCTNAME%license.txt
@@ -29,6 +29,8 @@ public class DbConnStrForHive extends DbConnStr {
     private static final String URL_HIVE_2_STANDALONE = "jdbc:hive2://<host>:<port>/<sid>";//$NON-NLS-1$
 
     public static final String URL_HIVE_2_TEMPLATE = "jdbc:hive2://";//$NON-NLS-1$
+
+    public static final String URL_IMPALA_TEMPLATE = "jdbc:impala://";//$NON-NLS-1$
 
     /**
      * DOC Marvin DbConnStrForHive constructor comment.

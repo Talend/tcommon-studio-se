@@ -1,6 +1,6 @@
 // ============================================================================
 //
-// Copyright (C) 2006-2019 Talend Inc. - www.talend.com
+// Copyright (C) 2006-2021 Talend Inc. - www.talend.com
 //
 // This source code is available under agreement available at
 // %InstallDIR%\features\org.talend.rcp.branding.%PRODUCTNAME%\%PRODUCTNAME%license.txt
@@ -52,6 +52,8 @@ public class MetadataColumn implements IMetadataColumn, Cloneable {
     private String pattern = ""; //$NON-NLS-1$
 
     private boolean custom = false;
+
+    private boolean ignoreCustomSort = false;
 
     private boolean readOnly = false;
 
@@ -572,6 +574,24 @@ public class MetadataColumn implements IMetadataColumn, Cloneable {
     @Override
     public void setCustom(boolean custom) {
         this.custom = custom;
+    }
+
+    /**
+     * Getter for ignoreCustomSort.
+     * 
+     * @return the ignoreCustomSort
+     */
+    public boolean isIgnoreCustomSort() {
+        return ignoreCustomSort;
+    }
+
+    /**
+     * Sets the ignoreCustomSort.
+     * 
+     * @param ignoreCustomSort the ignoreCustomSort to set
+     */
+    public void setIgnoreCustomSort(boolean ignoreCustomSort) {
+        this.ignoreCustomSort = ignoreCustomSort;
     }
 
     /**

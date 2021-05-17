@@ -1,6 +1,6 @@
 // ============================================================================
 //
-// Copyright (C) 2006-2019 Talend Inc. - www.talend.com
+// Copyright (C) 2006-2021 Talend Inc. - www.talend.com
 //
 // This source code is available under agreement available at
 // %InstallDIR%\features\org.talend.rcp.branding.%PRODUCTNAME%\%PRODUCTNAME%license.txt
@@ -13,7 +13,6 @@
 package org.talend.librariesmanager.ui.startup;
 
 import java.io.File;
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
@@ -21,22 +20,16 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
-import java.util.stream.Stream;
 
 import org.apache.commons.lang.StringUtils;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.SubMonitor;
-import org.talend.commons.exception.ExceptionHandler;
-import org.talend.commons.utils.MojoType;
-import org.talend.commons.utils.VersionUtils;
 import org.talend.core.GlobalServiceRegister;
 import org.talend.core.ILibraryManagerService;
 import org.talend.core.model.general.ModuleNeeded;
-import org.talend.core.nexus.TalendMavenResolver;
 import org.talend.core.runtime.maven.MavenArtifact;
 import org.talend.core.runtime.maven.MavenConstants;
 import org.talend.core.runtime.maven.MavenUrlHelper;
-import org.talend.designer.maven.model.TalendMavenConstants;
 import org.talend.designer.maven.utils.PomUtil;
 import org.talend.librariesmanager.maven.ShareLibrareisHelper;
 import org.talend.librariesmanager.model.ModulesNeededProvider;
@@ -56,6 +49,10 @@ public class ShareMavenArtifactsOnStartup extends ShareLibrareisHelper {
         SubMonitor mainSubMonitor = SubMonitor.convert(monitor, 1);
         mainSubMonitor.setTaskName(Messages.getString("ShareLibsJob.getFilesToShare")); //$NON-NLS-1$
         final List<ModuleNeeded> modulesNeeded = new ArrayList<>(ModulesNeededProvider.getModulesNeeded());
+        // FIXME if later include all custom jar modules in ModulesNeededProvider.getModulesNeeded(), remove this
+        // line
+        modulesNeeded.addAll(ModulesNeededProvider.getAllCodesJarModuleNeededs());
+
         ILibraryManagerService librariesService = GlobalServiceRegister.getDefault().getService(
                 ILibraryManagerService.class);
         Set<String> filePaths = new HashSet<>();

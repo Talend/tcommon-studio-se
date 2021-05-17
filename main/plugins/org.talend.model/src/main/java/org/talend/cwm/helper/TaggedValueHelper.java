@@ -1,6 +1,6 @@
 // ============================================================================
 //
-// Copyright (C) 2006-2019 Talend Inc. - www.talend.com
+// Copyright (C) 2006-2021 Talend Inc. - www.talend.com
 //
 // This source code is available under agreement available at
 // %InstallDIR%\features\org.talend.rcp.branding.%PRODUCTNAME%\%PRODUCTNAME%license.txt
@@ -197,6 +197,9 @@ public final class TaggedValueHelper {
     public static final String IS_USE_SAMPLE_DATA = "Is Use Sample Data"; //$NON-NLS-1$
 
     public static final String IS_SQL_ENGIN_BEFORE_CHECK = "false"; //$NON-NLS-1$
+
+    // TDQ-19030 compare null values in Redundancy Analysis
+    public static final String IS_IGNORE_NULL = "Ignore Null"; //$NON-NLS-1$
 
     private TaggedValueHelper() {
     }

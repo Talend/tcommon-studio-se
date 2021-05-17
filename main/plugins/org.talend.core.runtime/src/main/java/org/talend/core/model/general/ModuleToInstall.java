@@ -1,6 +1,6 @@
 // ============================================================================
 //
-// Copyright (C) 2006-2019 Talend Inc. - www.talend.com
+// Copyright (C) 2006-2021 Talend Inc. - www.talend.com
 //
 // This source code is available under agreement available at
 // %InstallDIR%\features\org.talend.rcp.branding.%PRODUCTNAME%\%PRODUCTNAME%license.txt
@@ -189,6 +189,23 @@ public class ModuleToInstall {
             toString = toString.substring(0, toString.length() - 1);
             return toString;
         }
+    }
+
+    @Override
+    public ModuleToInstall clone() {
+        ModuleToInstall module = new ModuleToInstall();
+        module.setName(this.name);
+        module.setRequired(this.required);
+        module.setContext(this.context);
+        module.setDescription(this.description);
+        module.setDistribution(this.distribution);
+        module.setFromCustomNexus(this.fromCustomNexus);
+        module.setLicenseType(this.licenseType);
+        module.setLicenseUrl(this.licenseUrl);
+        module.setMavenUri(this.mavenUri);
+        module.setUrl_description(this.url_description);
+        module.setUrl_download(this.url_download);
+        return module;
     }
 
     public static String removeAuthenrizationInfo(String mavenUri) throws Exception {

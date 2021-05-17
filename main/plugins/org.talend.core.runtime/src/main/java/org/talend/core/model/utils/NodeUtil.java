@@ -1,6 +1,6 @@
 // ============================================================================
 //
-// Copyright (C) 2006-2019 Talend Inc. - www.talend.com
+// Copyright (C) 2006-2021 Talend Inc. - www.talend.com
 //
 // This source code is available under agreement available at
 // %InstallDIR%\features\org.talend.rcp.branding.%PRODUCTNAME%\%PRODUCTNAME%license.txt
@@ -26,6 +26,9 @@ import java.util.Map.Entry;
 import java.util.Set;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+
+import javax.script.ScriptEngine;
+import javax.script.ScriptException;
 
 import org.talend.core.GlobalServiceRegister;
 import org.talend.core.model.components.ComponentCategory;
@@ -409,6 +412,52 @@ public class NodeUtil {
                 if (!uniqueNamesDone.contains(nextNode.getUniqueName())) {
                     uniqueNamesDone.add(nextNode.getUniqueName());
                     conns.addAll(getAllInLineJobConnections(nextNode, uniqueNamesDone)); // follow this way
+                }
+            }
+        }
+        return conns;
+    }
+
+    /**
+     * DOC
+     * <p>
+     * The method searches for the incoming node connections of type
+     * on a processing path and returns the first ones only
+     * </p>
+     *
+     * @param node
+     * @param type - node type to look for
+     * @return
+     */
+    public static List<? extends IConnection> getFirstIncomingLineConnectionsOfType(INode node, String type) {
+        if (type == null)
+            return new ArrayList<IConnection>();
+
+        Set<String> uniqueNamesDone = new HashSet<String>();
+        List<? extends IConnection> allIncomingConnections = getFirstIncomingLineConnectionsOfType(node, uniqueNamesDone, type);
+
+        return allIncomingConnections;
+    }
+
+    private static List<? extends IConnection> getFirstIncomingLineConnectionsOfType(INode node, Set<String> uniqueNamesDone, String type) {
+        List<IConnection> conns = new ArrayList<IConnection>();
+
+        List<? extends IConnection> incomingConnections = node.getIncomingConnections();
+        if (incomingConnections != null) {
+
+            for (int i = 0; i < incomingConnections.size(); i++) {
+
+                IConnection connection = incomingConnections.get(i);
+                INode nextNode = connection.getSource();
+
+                if (!uniqueNamesDone.contains(nextNode.getUniqueName())) {
+                    uniqueNamesDone.add(nextNode.getUniqueName());
+
+                    if (type.equals((String)nextNode.getElementParameter("COMPONENT_NAME").getValue())) {
+                        conns.add(connection);
+                    } else {
+                        conns.addAll(getFirstIncomingLineConnectionsOfType(nextNode, uniqueNamesDone, type)); // follow this way
+                    }
                 }
             }
         }
@@ -1005,6 +1054,15 @@ public class NodeUtil {
         
         //suppose all memo fields are processed well already, no need to go though this with dangerous
         if (!isMemo && !org.talend.core.model.utils.ContextParameterUtils.isDynamic(value)) {
+            //https://jira.talendforge.org/browse/TDI-45563
+            //now can't get the var real value for "out1.A" in code generation time, so need to ignore it for runtime value log
+            //here consider the performance, only do it for some special case
+            if(itemFromTable && "VALUE".equals(ep.getName())) {
+                if(!isValidLiteralValue(value)) {
+                    return "\"\"";//return empty string as can't get the real runtime value
+                }
+            }
+            
             if(value.length() > 1 && value.startsWith("\"") && value.endsWith("\"")) {
                 if(itemFromTable && "ARGS".equals(ep.getName())) {
                     value = value.substring(1, value.length());
@@ -1015,7 +1073,7 @@ public class NodeUtil {
                     return value;
                 }
             } else {
-            	return "\"" + checkStringQuotationMarks(value) + "\"";
+                return "\"" + checkStringQuotationMarks(value) + "\"";
             }
         }
         
@@ -1025,6 +1083,17 @@ public class NodeUtil {
         }
         
         return value;
+    }
+    
+    private static boolean isValidLiteralValue(String value) {
+        ScriptEngine se = ContextParameterUtils.getScriptEngine();
+        if(se==null) return true;
+        try {
+            se.eval(value);
+            return true;
+        } catch (ScriptException e) {
+            return false;
+        }
     }
     
     private static String checkStringQuotationMarks(String str) {

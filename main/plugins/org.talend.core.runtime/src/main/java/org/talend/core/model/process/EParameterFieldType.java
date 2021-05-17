@@ -1,6 +1,6 @@
 // ============================================================================
 //
-// Copyright (C) 2006-2019 Talend Inc. - www.talend.com
+// Copyright (C) 2006-2021 Talend Inc. - www.talend.com
 //
 // This source code is available under agreement available at
 // %InstallDIR%\features\org.talend.rcp.branding.%PRODUCTNAME%\%PRODUCTNAME%license.txt
@@ -124,6 +124,7 @@ public enum EParameterFieldType {
     TACOKIT_BUTTON,
     TACOKIT_SUGGESTABLE_TABLE,
     TACOKIT_VALUE_SELECTION,
+    TACOKIT_TABLE,
     TACOKIT_TEXT_AREA_SELECTION;
 
     public String getName() {

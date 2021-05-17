@@ -85,6 +85,12 @@
 			<groupId>org.talend.components</groupId>
 			<artifactId>components-salesforce-runtime</artifactId>
 			<version>${components.version}</version>
+			<exclusions>
+				<exclusion>
+					<groupId>org.apache.httpcomponents</groupId>
+					<artifactId>httpclient</artifactId>
+				</exclusion>
+			</exclusions>
 		</dependency>
 		<dependency>
 			<groupId>org.talend.components</groupId>
@@ -192,12 +198,12 @@
 		<dependency>
 			<groupId>org.codehaus.jackson</groupId>
 			<artifactId>jackson-core-asl</artifactId>
-			<version>1.9.14-TALEND</version>
+			<version>${jackson-codehaus.version}</version>
 		</dependency>
 		<dependency>
 			<groupId>org.codehaus.jackson</groupId>
 			<artifactId>jackson-mapper-asl</artifactId>
-			<version>1.9.14-TALEND</version>
+			<version>${jackson-codehaus.version}</version>
 		</dependency>
 	</dependencies>
 	<build>

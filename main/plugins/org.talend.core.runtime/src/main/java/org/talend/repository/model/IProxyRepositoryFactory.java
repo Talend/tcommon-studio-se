@@ -1,6 +1,6 @@
 // ============================================================================
 //
-// Copyright (C) 2006-2019 Talend Inc. - www.talend.com
+// Copyright (C) 2006-2021 Talend Inc. - www.talend.com
 //
 // This source code is available under agreement available at
 // %InstallDIR%\features\org.talend.rcp.branding.%PRODUCTNAME%\%PRODUCTNAME%license.txt
@@ -17,6 +17,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.eclipse.core.resources.IFolder;
 import org.eclipse.core.runtime.IPath;
 import org.talend.commons.exception.BusinessException;
 import org.talend.commons.exception.LoginException;
@@ -42,6 +43,7 @@ import org.talend.core.model.repository.Folder;
 import org.talend.core.model.repository.IRepositoryViewObject;
 import org.talend.core.model.repository.IRepositoryWorkUnitListener;
 import org.talend.core.model.repository.LockInfo;
+import org.talend.core.model.routines.CodesJarInfo;
 import org.talend.repository.RepositoryWorkUnit;
 
 /**
@@ -206,6 +208,8 @@ public interface IProxyRepositoryFactory {
      */
     public abstract void deleteObjectLogical(IRepositoryViewObject objToDelete) throws PersistenceException, BusinessException;
 
+    // TODO need to remove codesjar and related routine node to bin, or just show codesjar node?
+    // if delete inner routine, show node itself only
     public abstract void deleteObjectLogical(Project project, IRepositoryViewObject objToDelete) throws PersistenceException,
             BusinessException;
 
@@ -213,6 +217,7 @@ public interface IProxyRepositoryFactory {
             throws PersistenceException, BusinessException;
 
     public abstract void deleteObjectPhysical(IRepositoryViewObject objToDelete) throws PersistenceException;
+    // TODO if delete codesjar item should delete all related routines
 
     public abstract void deleteObjectPhysical(IRepositoryViewObject objToDelete, String version) throws PersistenceException;
 
@@ -304,6 +309,16 @@ public interface IProxyRepositoryFactory {
 
     public abstract List<IRepositoryViewObject> getAll(Project project, ERepositoryObjectType type, boolean withDeleted,
             boolean allVersions) throws PersistenceException;
+
+    public abstract List<IRepositoryViewObject> getAll(Project project, ERepositoryObjectType type, boolean withDeleted,
+            boolean allVersions, IFolder... folders) throws PersistenceException;
+
+    public abstract List<IRepositoryViewObject> getAllCodesJars(ERepositoryObjectType type) throws PersistenceException;
+
+    public abstract List<IRepositoryViewObject> getAllCodesJars(Project project, ERepositoryObjectType type)
+            throws PersistenceException;
+
+    public abstract List<IRepositoryViewObject> getAllInnerCodes(CodesJarInfo info) throws PersistenceException;
 
     public abstract List<String> getFolders(ERepositoryObjectType type) throws PersistenceException;
 

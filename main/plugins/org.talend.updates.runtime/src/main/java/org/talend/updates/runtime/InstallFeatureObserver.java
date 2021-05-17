@@ -1,6 +1,6 @@
 // ============================================================================
 //
-// Copyright (C) 2006-2019 Talend Inc. - www.talend.com
+// Copyright (C) 2006-2021 Talend Inc. - www.talend.com
 //
 // This source code is available under agreement available at
 // %InstallDIR%\features\org.talend.rcp.branding.%PRODUCTNAME%\%PRODUCTNAME%license.txt
@@ -13,7 +13,9 @@
 package org.talend.updates.runtime;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 public class InstallFeatureObserver {
 
@@ -58,5 +60,13 @@ public class InstallFeatureObserver {
             }
         }
         return true;
+    }
+
+    public List<String> getInstalledFeatures() {
+        List<String> featureNames = toInstallFeatureStatus.entrySet().stream()
+                .filter(entry -> FEATURE_STATUS_INSTALLED_SUCESSFULLY == entry.getValue())
+                .map(entry -> entry.getKey()).collect(Collectors.toList());
+
+        return featureNames;
     }
 }

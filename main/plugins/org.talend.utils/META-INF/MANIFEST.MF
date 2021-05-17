@@ -5,41 +5,27 @@ Bundle-SymbolicName: org.talend.utils
 Bundle-Version: 7.4.1.qualifier
 Bundle-Vendor: .Talend SA.
 Export-Package: 
- org.talend.commons.utils,
- org.talend.commons.utils.threading.lockerbykey,
  org.talend.utils,
  org.talend.utils.cache,
- org.talend.utils.collections,
  org.talend.utils.color,
  org.talend.utils.database,
  org.talend.utils.dates;uses:="org.apache.log4j",
  org.talend.utils.exceptions,
- org.talend.utils.files,
- org.talend.utils.format,
- org.talend.utils.io,
  org.talend.utils.jobconductor,
- org.talend.utils.json,
  org.talend.utils.migration,
- org.talend.utils.network,
  org.talend.utils.properties,
- org.talend.utils.security,
  org.talend.utils.sql;uses:="org.talend.utils.sugars",
  org.talend.utils.sql.metadata.constants,
  org.talend.utils.ssl;uses:="javax.net.ssl",
- org.talend.utils.string,
- org.talend.utils.sugars,
- org.talend.utils.thread,
- org.talend.utils.time,
  org.talend.utils.wsdl,
  org.talend.utils.xml
-Bundle-ClassPath: .,
- lib/studio-utils.jar
+Bundle-ClassPath: .
 Require-Bundle: org.apache.commons.lang,
  org.talend.libraries.apache;visibility:=reexport,
  org.apache.commons.io,
  org.talend.daikon;visibility:=reexport,
  org.talend.daikon.crypto.utils;visibility:=reexport,
- org.bouncycastle.bcprov,
- org.slf4j.api
+ org.slf4j.api,
+ org.talend.studio.studio-utils;visibility:=reexport
 Eclipse-BuddyPolicy: registered
 Eclipse-RegisterBuddy: org.apache.log4j, org.talend.testutils

@@ -1,6 +1,6 @@
 // ============================================================================
 //
-// Copyright (C) 2006-2019 Talend Inc. - www.talend.com
+// Copyright (C) 2006-2021 Talend Inc. - www.talend.com
 //
 // This source code is available under agreement available at
 // %InstallDIR%\features\org.talend.rcp.branding.%PRODUCTNAME%\%PRODUCTNAME%license.txt
@@ -526,6 +526,14 @@ public class DatabaseWizard extends CheckLastVersionRepositoryWizard implements 
                 else if (EDatabaseTypeName.SYBASEASE.equals(dbType)
                         && EDatabaseVersion4Drivers.SYBASEIQ_16_SA.getVersionValue().equals(dbVersion)) {
                     driverClass = EDatabase4DriverClassName.SYBASEIQ_16_SA.getDriverClass();
+                }
+                else if (EDatabaseTypeName.GREENPLUM.equals(dbType)
+                        && EDatabaseVersion4Drivers.GREENPLUM_PSQL.getVersionValue().equals(dbVersion)) {
+                    driverClass = EDatabase4DriverClassName.GREENPLUM_PSQL.getDriverClass();
+                }
+                else if (EDatabaseTypeName.GREENPLUM.equals(dbType)
+                        && EDatabaseVersion4Drivers.GREENPLUM.getVersionValue().equals(dbVersion)) {
+                    driverClass = EDatabase4DriverClassName.GREENPLUM.getDriverClass();
                 }
                 dbConnection.setDriverClass(driverClass);
             }

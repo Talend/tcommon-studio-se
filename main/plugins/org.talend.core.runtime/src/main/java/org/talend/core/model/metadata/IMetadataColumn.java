@@ -1,6 +1,6 @@
 // ============================================================================
 //
-// Copyright (C) 2006-2019 Talend Inc. - www.talend.com
+// Copyright (C) 2006-2021 Talend Inc. - www.talend.com
 //
 // This source code is available under agreement available at
 // %InstallDIR%\features\org.talend.rcp.branding.%PRODUCTNAME%\%PRODUCTNAME%license.txt
@@ -124,6 +124,10 @@ public interface IMetadataColumn {
     public boolean isCustom();
 
     public void setCustom(boolean custom);
+
+    public boolean isIgnoreCustomSort();
+
+    public void setIgnoreCustomSort(boolean ignoreCustomSort);
 
     public void setCustomId(int customId); // only for custom columns to sort them
 

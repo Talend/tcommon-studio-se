@@ -1,6 +1,6 @@
 // ============================================================================
 //
-// Copyright (C) 2006-2019 Talend Inc. - www.talend.com
+// Copyright (C) 2006-2021 Talend Inc. - www.talend.com
 //
 // This source code is available under agreement available at
 // %InstallDIR%\features\org.talend.rcp.branding.%PRODUCTNAME%\%PRODUCTNAME%license.txt
@@ -25,6 +25,7 @@ import java.util.Hashtable;
 import java.util.List;
 import java.util.Map;
 import java.util.regex.Pattern;
+import java.util.stream.Collectors;
 
 import org.apache.log4j.Level;
 import org.apache.log4j.Logger;
@@ -106,6 +107,7 @@ import org.talend.core.model.properties.ProcessItem;
 import org.talend.core.model.properties.ProjectReference;
 import org.talend.core.model.properties.PropertiesPackage;
 import org.talend.core.model.properties.Property;
+import org.talend.core.model.properties.RoutineItem;
 import org.talend.core.model.properties.SpagoBiServer;
 import org.talend.core.model.properties.Status;
 import org.talend.core.model.properties.User;
@@ -121,6 +123,7 @@ import org.talend.core.model.repository.LockInfo;
 import org.talend.core.model.repository.RepositoryContentManager;
 import org.talend.core.model.repository.RepositoryObject;
 import org.talend.core.model.repository.RepositoryViewObject;
+import org.talend.core.model.routines.CodesJarInfo;
 import org.talend.core.repository.CoreRepositoryPlugin;
 import org.talend.core.repository.constants.Constant;
 import org.talend.core.repository.constants.FileConstants;
@@ -137,6 +140,7 @@ import org.talend.core.runtime.services.IMavenUIService;
 import org.talend.core.runtime.util.ItemDateParser;
 import org.talend.core.runtime.util.SharedStudioUtils;
 import org.talend.core.service.ICoreUIService;
+import org.talend.core.utils.CodesJarResourceCache;
 import org.talend.cwm.helper.SubItemHelper;
 import org.talend.cwm.helper.TableHelper;
 import org.talend.designer.runprocess.IRunProcessService;
@@ -1348,6 +1352,35 @@ public final class ProxyRepositoryFactory implements IProxyRepositoryFactory {
     }
 
     @Override
+    public List<IRepositoryViewObject> getAll(Project project, ERepositoryObjectType type, boolean withDeleted,
+            boolean allVersions, IFolder... folders) throws PersistenceException {
+        return this.repositoryFactoryFromProvider.getAll(project, type, withDeleted, allVersions, folders);
+    }
+
+    @Override
+    public List<IRepositoryViewObject> getAllCodesJars(ERepositoryObjectType type) throws PersistenceException {
+        return getAllCodesJars(projectManager.getCurrentProject(), type);
+    }
+
+    @Override
+    public List<IRepositoryViewObject> getAllCodesJars(Project project, ERepositoryObjectType type) throws PersistenceException {
+        return getAll(project, type).stream().filter(obj -> !(obj.getProperty().getItem() instanceof RoutineItem))
+                .collect(Collectors.toList());
+    }
+
+    @Override
+    public List<IRepositoryViewObject> getAllInnerCodes(CodesJarInfo info) throws PersistenceException {
+        Project project = ProjectManager.getInstance().getProjectFromProjectTechLabel(info.getProjectTechName());
+        // empty folder won't be commit in git, create if not exist
+        IFolder folder = ResourceUtils.getProject(project).getFolder(ERepositoryObjectType.getFolderName(info.getType()))
+                .getFolder(info.getLabel());
+        if (!folder.exists()) {
+            ResourceUtils.createFolder(folder);
+        }
+        return repositoryFactoryFromProvider.getAll(project, info.getType(), false, false, folder);
+    }
+
+    @Override
     public List<String> getFolders(ERepositoryObjectType type) throws PersistenceException {
         return getFolders(projectManager.getCurrentProject(), type);
     }
@@ -2206,6 +2239,8 @@ public final class ProxyRepositoryFactory implements IProxyRepositoryFactory {
                     // ignore
                     ExceptionHandler.process(e);
                 }
+
+                CodesJarResourceCache.initCodesJarCache();
 
                 currentMonitor = subMonitor.newChild(1, SubMonitor.SUPPRESS_NONE);
                 currentMonitor.beginTask("Execute before logon migrations tasks", 1); //$NON-NLS-1$

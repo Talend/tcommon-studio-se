@@ -1,6 +1,6 @@
 // ============================================================================
 //
-// Copyright (C) 2006-2019 Talend Inc. - www.talend.com
+// Copyright (C) 2006-2021 Talend Inc. - www.talend.com
 //
 // This source code is available under agreement available at
 // %InstallDIR%\features\org.talend.rcp.branding.%PRODUCTNAME%\%PRODUCTNAME%license.txt
@@ -53,7 +53,7 @@ public class BigDataBasicUtil {
 
     private static IDynamicDistributionManager getDynamicDistributionManager(IProgressMonitor monitor) throws Exception {
         if (GlobalServiceRegister.getDefault().isServiceRegistered(IHadoopDistributionService.class)) {
-            IHadoopDistributionService hdService = (IHadoopDistributionService) GlobalServiceRegister.getDefault()
+            IHadoopDistributionService hdService = GlobalServiceRegister.getDefault()
                     .getService(IHadoopDistributionService.class);
             if (hdService != null) {
                 return hdService.getDynamicDistributionManager();

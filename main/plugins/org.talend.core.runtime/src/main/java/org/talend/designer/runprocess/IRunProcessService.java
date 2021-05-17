@@ -1,6 +1,6 @@
 // ============================================================================
 //
-// Copyright (C) 2006-2019 Talend Inc. - www.talend.com
+// Copyright (C) 2006-2021 Talend Inc. - www.talend.com
 //
 // This source code is available under agreement available at
 // %InstallDIR%\features\org.talend.rcp.branding.%PRODUCTNAME%\%PRODUCTNAME%license.txt
@@ -12,6 +12,7 @@
 // ============================================================================
 package org.talend.designer.runprocess;
 
+import java.beans.PropertyChangeListener;
 import java.util.List;
 import java.util.Set;
 
@@ -37,8 +38,8 @@ import org.talend.core.model.process.IProcess2;
 import org.talend.core.model.process.JobInfo;
 import org.talend.core.model.properties.Item;
 import org.talend.core.model.properties.Property;
-import org.talend.core.model.properties.RoutineItem;
 import org.talend.core.model.repository.ERepositoryObjectType;
+import org.talend.core.model.routines.CodesJarInfo;
 import org.talend.core.runtime.process.ITalendProcessJavaProject;
 import org.talend.core.runtime.projectsetting.ProjectPreferenceManager;
 
@@ -131,7 +132,7 @@ public interface IRunProcessService extends IService {
     public void updateLibraries(Set<ModuleNeeded> jobModuleList, IProcess process, Set<ModuleNeeded> alreadyRetrievedModules)
             throws ProcessorException;
 
-    public void updateLibraries(RoutineItem routineItem);
+    public void updateLibraries(Item routineItem);
 
     public void refreshView();
 
@@ -191,7 +192,7 @@ public interface IRunProcessService extends IService {
     @Deprecated
     public void buildJavaProject();
 
-    public void buildCodesJavaProject(IProgressMonitor monitor);
+    public void buildCodesJavaProject(IProgressMonitor monitor, Set<CodesJarInfo> toUpdate);
 
     /**
      * @deprecated use {@link IRunProcessService#getTalendJobJavaProject(Property)} instead
@@ -201,6 +202,7 @@ public interface IRunProcessService extends IService {
 
     ProjectPreferenceManager getProjectPreferenceManager();
 
+    @Deprecated
     Set<String> getLibJarsForBD(IProcess process);
 
     void updateProjectPomWithTemplate();
@@ -215,7 +217,15 @@ public interface IRunProcessService extends IService {
 
     ITalendProcessJavaProject getTalendCodeJavaProject(ERepositoryObjectType type, String projectTechName);
 
+    ITalendProcessJavaProject getTalendCodesJarJavaProject(CodesJarInfo info);
+
     ITalendProcessJavaProject getTalendJobJavaProject(Property property);
+
+    ITalendProcessJavaProject getExistingTalendJobProject(Property property);
+
+    ITalendProcessJavaProject getExistingTalendCodesJarProject(CodesJarInfo info);
+
+    PropertyChangeListener addCodesJarChangeListener();
 
     IFolder getCodeSrcFolder(ERepositoryObjectType type, String projectTechName);
 
@@ -254,5 +264,10 @@ public interface IRunProcessService extends IService {
         }
         return null;
     }
+
+    void deleteTalendCodesJarProject(CodesJarInfo info, boolean deleteContent);
+    
+    void deleteTalendCodesJarProject(ERepositoryObjectType type, String projectTechName, String codesJarName,
+            boolean deleteContent);
 
 }

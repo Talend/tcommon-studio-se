@@ -1,6 +1,6 @@
 // ============================================================================
 //
-// Copyright (C) 2006-2019 Talend Inc. - www.talend.com
+// Copyright (C) 2006-2021 Talend Inc. - www.talend.com
 //
 // This source code is available under agreement available at
 // %InstallDIR%\features\org.talend.rcp.branding.%PRODUCTNAME%\%PRODUCTNAME%license.txt
@@ -12,6 +12,7 @@
 // ============================================================================
 package org.talend.repository.model;
 
+import org.talend.core.GlobalServiceRegister;
 import org.talend.core.IService;
 
 /**
@@ -20,4 +21,11 @@ import org.talend.core.IService;
 public interface IProxyRepositoryService extends IService {
 
     public IProxyRepositoryFactory getProxyRepositoryFactory();
+
+    public static IProxyRepositoryService get() {
+        if (GlobalServiceRegister.getDefault().isServiceRegistered(IProxyRepositoryService.class)) {
+            return GlobalServiceRegister.getDefault().getService(IProxyRepositoryService.class);
+        }
+        return null;
+    }
 }
