@@ -138,14 +138,6 @@ public class PluginChecker {
 
     public static final String DOCKER_PLUGIN_ID = "org.talend.designer.docker"; //$NON-NLS-1$
 
-    public static final String HELP_DI_EE_PLUGIN_ID = "org.talend.help.dataprep"; //$NON-NLS-1$
-
-    public static final String HELP_BD_PLUGIN_ID = "org.talend.help.marklogic"; //$NON-NLS-1$
-
-    public static final String HELP_ESB_PLUGIN_ID = "org.talend.esb.help"; //$NON-NLS-1$
-
-    public static final String HELP_PLUGIN_ID = "org.talend.help"; //$NON-NLS-1$
-
     public static final String APACHE_CXF_PLUGIN_ID = "org.talend.libraries.apache.cxf"; //$NON-NLS-1$
 
     public static final String SWTBOT_PLUGIN_ID = "org.eclipse.swtbot.eclipse.core"; //$NON-NLS-1$
