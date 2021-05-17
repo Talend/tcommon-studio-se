@@ -106,4 +106,6 @@ public interface ISAPConstant {
     public static final String PROP_DB_USERNAME = "db.username";//$NON-NLS-1$
 
     public static final String PROP_DB_PASSWORD = "db.password";//$NON-NLS-1$
+
+    public static final String PROP_DB_PARAMETERS = "db.parameters";//$NON-NLS-1$
 }
