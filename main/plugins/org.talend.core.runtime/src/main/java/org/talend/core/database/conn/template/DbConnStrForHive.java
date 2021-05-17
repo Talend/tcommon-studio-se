@@ -30,6 +30,8 @@ public class DbConnStrForHive extends DbConnStr {
 
     public static final String URL_HIVE_2_TEMPLATE = "jdbc:hive2://";//$NON-NLS-1$
 
+    public static final String URL_IMPALA_TEMPLATE = "jdbc:impala://";//$NON-NLS-1$
+
     /**
      * DOC Marvin DbConnStrForHive constructor comment.
      *

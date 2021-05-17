@@ -32,6 +32,7 @@ import org.talend.core.model.process.IContext;
 import org.talend.core.model.process.IContextParameter;
 import org.talend.core.model.repository.IRepositoryPrefConstants;
 import org.talend.core.prefs.ITalendCorePrefConstants;
+import org.talend.core.runtime.CoreRuntimePlugin;
 import org.talend.designer.core.model.utils.emf.talendfile.ContextParameterType;
 import org.talend.designer.core.model.utils.emf.talendfile.ContextType;
 import org.talend.designer.core.model.utils.emf.talendfile.TalendFileFactory;
@@ -104,8 +105,7 @@ public class ContextParameterUtilsTest {
 
     @Test
     public void testGetVariableFromCode4String() {
-        IEclipsePreferences coreUIPluginNode = new InstanceScope().getNode(ITalendCorePrefConstants.CoreUIPlugin_ID);
-        coreUIPluginNode.putBoolean(IRepositoryPrefConstants.ALLOW_SPECIFIC_CHARACTERS_FOR_SCHEMA_COLUMNS, true);
+        CoreRuntimePlugin.getInstance().getProjectPreferenceManager().setAllowSpecificCharacters(true);
         Assert.assertNull(ContextParameterUtils.getVariableFromCode(""));
         Assert.assertNull(ContextParameterUtils.getVariableFromCode("abc"));
         Assert.assertNull(ContextParameterUtils.getVariableFromCode("123"));
@@ -126,7 +126,7 @@ public class ContextParameterUtilsTest {
         Assert.assertEquals("Română", ContextParameterUtils.getVariableFromCode("context.Română"));
         Assert.assertEquals("русский", ContextParameterUtils.getVariableFromCode("context.русский"));
 
-        coreUIPluginNode.putBoolean(IRepositoryPrefConstants.ALLOW_SPECIFIC_CHARACTERS_FOR_SCHEMA_COLUMNS, false);
+        CoreRuntimePlugin.getInstance().getProjectPreferenceManager().setAllowSpecificCharacters(false);
         Assert.assertNull(ContextParameterUtils.getVariableFromCode("context.汉语"));
         Assert.assertNull(ContextParameterUtils.getVariableFromCode("context.日本語"));
         Assert.assertNull(ContextParameterUtils.getVariableFromCode("context.Ελληνική"));
@@ -138,8 +138,7 @@ public class ContextParameterUtilsTest {
 
     @Test
     public void testGetVariableFromCode4Context() {
-        IEclipsePreferences coreUIPluginNode = new InstanceScope().getNode(ITalendCorePrefConstants.CoreUIPlugin_ID);
-        coreUIPluginNode.putBoolean(IRepositoryPrefConstants.ALLOW_SPECIFIC_CHARACTERS_FOR_SCHEMA_COLUMNS, true);
+        CoreRuntimePlugin.getInstance().getProjectPreferenceManager().setAllowSpecificCharacters(true);
         String var = ContextParameterUtils.getVariableFromCode("context.abc");
         Assert.assertEquals("abc", var);
 
@@ -275,7 +274,7 @@ public class ContextParameterUtilsTest {
         var = ContextParameterUtils.getVariableFromCode("context.русский-123");
         Assert.assertEquals("русский", var);
 
-        coreUIPluginNode.putBoolean(IRepositoryPrefConstants.ALLOW_SPECIFIC_CHARACTERS_FOR_SCHEMA_COLUMNS, false);
+        CoreRuntimePlugin.getInstance().getProjectPreferenceManager().setAllowSpecificCharacters(false);
         Assert.assertNull(ContextParameterUtils.getVariableFromCode("context.マイSQL"));
         Assert.assertNull(ContextParameterUtils.getVariableFromCode("context.汉语"));
         Assert.assertNull(ContextParameterUtils.getVariableFromCode("context.Ελληνική"));
@@ -311,8 +310,7 @@ public class ContextParameterUtilsTest {
 
     @Test
     public void testIsValidParameterName() {
-        IEclipsePreferences coreUIPluginNode = new InstanceScope().getNode(ITalendCorePrefConstants.CoreUIPlugin_ID);
-        coreUIPluginNode.putBoolean(IRepositoryPrefConstants.ALLOW_SPECIFIC_CHARACTERS_FOR_SCHEMA_COLUMNS, true);
+        CoreRuntimePlugin.getInstance().getProjectPreferenceManager().setAllowSpecificCharacters(true);
         assertTrue(ContextParameterUtils.isValidParameterName("abc"));
         assertTrue(ContextParameterUtils.isValidParameterName("abc123"));
         assertTrue(ContextParameterUtils.isValidParameterName("abc_123"));
@@ -330,7 +328,7 @@ public class ContextParameterUtilsTest {
         assertTrue(ContextParameterUtils.isValidParameterName("Română"));
         assertTrue(ContextParameterUtils.isValidParameterName("русский"));
 
-        coreUIPluginNode.putBoolean(IRepositoryPrefConstants.ALLOW_SPECIFIC_CHARACTERS_FOR_SCHEMA_COLUMNS, false);
+        CoreRuntimePlugin.getInstance().getProjectPreferenceManager().setAllowSpecificCharacters(false);
         assertFalse(ContextParameterUtils.isValidParameterName("中文"));
         assertFalse(ContextParameterUtils.isValidParameterName("日本語"));
         assertFalse(ContextParameterUtils.isValidParameterName("Ελληνική"));

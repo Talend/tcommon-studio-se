@@ -151,9 +151,6 @@ import org.talend.repository.model.RepositoryNode;
 import org.talend.repository.ui.dialog.AProgressMonitorDialogWithCancel;
 import org.talend.utils.sql.ConnectionUtils;
 
-import com.ca.directory.jxplorer.editor.booleaneditor;
-import com.fasterxml.jackson.databind.node.BooleanNode;
-
 /**
  * @author ocarbone
  *
@@ -6436,10 +6433,16 @@ public class DatabaseForm extends AbstractForm {
                     s = template;
                 }
             } else if (isImpalaDBConnSelected()) {
+                DatabaseConnection conn = getConnection();
                 String template = DbConnStrForHive.URL_HIVE_2_TEMPLATE;
-                s = DatabaseConnStrUtil.getImpalaString(getConnection(), getConnection().getServerName(), getConnection()
-                        .getPort(), getConnection().getSID(), template);
-                getConnection().setUiSchema(getConnection().getSID());
+                ;
+                String text = impalaDriverCombo.getText();
+                if (EDatabaseTypeName.IMPALA.getDisplayName().equals(text)) {
+                    template = DbConnStrForHive.URL_IMPALA_TEMPLATE;
+                }
+                s = DatabaseConnStrUtil.getImpalaString(conn, conn.getServerName(), conn.getPort(), conn.getSID(), template);
+                conn.setUiSchema(getConnection().getSID());
+                // conn.setURL(s);
             } else {
                 EDatabaseVersion4Drivers version = EDatabaseVersion4Drivers.indexOfByVersionDisplay(versionStr);
                 if (version != null) {
@@ -8387,12 +8390,12 @@ public class DatabaseForm extends AbstractForm {
     }
 
     private void fillDefaultsWhenImpalaVersionChanged() {
+        String distribution = getConnection().getParameters().get(ConnParameterKeys.CONN_PARA_KEY_IMPALA_DISTRIBUTION);
+        if (distribution == null) {
+            return;
+        }
+        String version = getConnection().getParameters().get(ConnParameterKeys.CONN_PARA_KEY_IMPALA_VERSION);
         if (isCreation && isNeedFillDefaults()) {
-            String distribution = getConnection().getParameters().get(ConnParameterKeys.CONN_PARA_KEY_IMPALA_DISTRIBUTION);
-            String version = getConnection().getParameters().get(ConnParameterKeys.CONN_PARA_KEY_IMPALA_VERSION);
-            if (distribution == null) {
-                return;
-            }
             EDatabaseConnTemplate template = EDatabaseConnTemplate.indexOfTemplate(getConnection().getDatabaseType());
             if (template != null) {
                 portText.setText(template.getDefaultPort());
@@ -8400,6 +8403,19 @@ public class DatabaseForm extends AbstractForm {
                 sidOrDatabaseText.setText(template.getDefaultDB(null));
             }
             initImpalaInfo();
+        } else {
+            // when edit,change distribution will update impala driver
+            IHadoopDistributionService hadoopService = getHadoopDistributionService();
+            if (hadoopService != null) {
+                IHDistribution impalaDistribution = hadoopService.getImpalaDistributionManager().getDistribution(distribution,
+                        false);
+                IHDistributionVersion hdVersion = null;
+                if (impalaDistribution != null) {
+                    hdVersion = impalaDistribution.getHDVersion(version, false);
+                }
+                // updateImpalaVersionPart(impalaDistribution);
+                updateImpalaDriverAndMakeSelection(impalaDistribution, hdVersion);
+            }
         }
     }
 
@@ -8535,9 +8551,9 @@ public class DatabaseForm extends AbstractForm {
 
     protected void doImpalaDriverSelected() {
         if (!isContextMode()) {
-            modifyFieldValue();
             getConnection().getParameters().put(ConnParameterKeys.IMPALA_DRIVER,
                     EImpalaDriver.getByDisplay(impalaDriverCombo.getText()).getName());
+            modifyFieldValue();
         }
     }
 
@@ -8682,7 +8698,7 @@ public class DatabaseForm extends AbstractForm {
         String impalaDriver = conn.getParameters().get(ConnParameterKeys.IMPALA_DRIVER);
         if (impalaDriver != null) {
             EImpalaDriver driver = EImpalaDriver.getByName(impalaDriver);
-            if (driver != null) {
+            if (driver != null && Arrays.asList(impalaDriverDisplay).contains(impalaDriver)) {
                 impalaDriverCombo.setText(driver.getDisplayName());
             } else {
                 impalaDriverCombo.select(0);

@@ -131,11 +131,8 @@ public class ImpalaConnectionManager extends DataBaseConnectionManager {
                                     if (EImpalaDriver.HIVE2.getDisplayName().equalsIgnoreCase(driverType)) {
                                         driverClass = EImpalaDriver.HIVE2.getDriver();
                                     }
-                                    if (EImpalaDriver.IMPALA40.getDisplayName().equalsIgnoreCase(driverType)) {
-                                        driverClass = EImpalaDriver.IMPALA40.getDriver();
-                                    }
-                                    if (EImpalaDriver.IMPALA41.getDisplayName().equalsIgnoreCase(driverType)) {
-                                        driverClass = EImpalaDriver.IMPALA41.getDriver();
+                                    if (EImpalaDriver.IMPALA.getDisplayName().equalsIgnoreCase(driverType)) {
+                                        driverClass = EImpalaDriver.IMPALA.getDriver();
                                     }
                                 } else {
                                     throw new IllegalArgumentException("impala can not work with Hive1");
@@ -165,14 +162,18 @@ public class ImpalaConnectionManager extends DataBaseConnectionManager {
         newThread.start();
 
         Connection conn = null;
+        String connectionInfo = new StringBuilder().append("JDBC Uri: ").append(metadataConn.getUrl()).append("  ").toString();
         try {
             conn = futureTask.get(getDBConnectionTimeout(), TimeUnit.SECONDS);
+            if (conn == null) {
+                throw new SQLException(connectionInfo);
+            }
         } catch (TimeoutException e) {
             threadGroup.interrupt();
             addBackgroundJob(futureTask, newThread);
-            throw new SQLException(Messages.getString("ImpalaConnectionManager.getConnection.timeout"), e); //$NON-NLS-1$
+            throw new SQLException(connectionInfo + Messages.getString("ImpalaConnectionManager.getConnection.timeout"), e); //$NON-NLS-1$
         } catch (Throwable e1) {
-            throw new SQLException(e1);
+            throw new SQLException(connectionInfo, e1);
         }
         return conn;
     }

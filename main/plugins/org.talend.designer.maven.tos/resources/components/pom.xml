@@ -85,6 +85,12 @@
 			<groupId>org.talend.components</groupId>
 			<artifactId>components-salesforce-runtime</artifactId>
 			<version>${components.version}</version>
+			<exclusions>
+				<exclusion>
+					<groupId>org.apache.httpcomponents</groupId>
+					<artifactId>httpclient</artifactId>
+				</exclusion>
+			</exclusions>
 		</dependency>
 		<dependency>
 			<groupId>org.talend.components</groupId>
