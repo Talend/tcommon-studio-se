@@ -444,7 +444,7 @@ public class RepositoryToComponentProperty {
                 return TalendQuoteUtils.addQuotes(connection.getValue(dbPassword, false));
             }
         } else if ("SAPHANA_PROPERTIES_STRING".equals(value)) { //$NON-NLS-1$
-            String dbParameters = TaggedValueHelper.getValueString(ISAPConstant.PROP_DB_PARAMETERS, connection);
+            String dbParameters = TaggedValueHelper.getValueString(ISAPConstant.PROP_DB_ADDITIONAL_PROPERTIES, connection);
             if (isContextMode(connection, dbParameters)) {
                 return dbParameters;
             } else {

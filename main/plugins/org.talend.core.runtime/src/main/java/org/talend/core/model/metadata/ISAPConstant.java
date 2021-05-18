@@ -107,5 +107,5 @@ public interface ISAPConstant {
 
     public static final String PROP_DB_PASSWORD = "db.password";//$NON-NLS-1$
 
-    public static final String PROP_DB_PARAMETERS = "db.parameters";//$NON-NLS-1$
+    public static final String PROP_DB_ADDITIONAL_PROPERTIES = "db.additionalProperties";//$NON-NLS-1$
 }
