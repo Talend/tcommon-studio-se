@@ -614,7 +614,7 @@ public final class OtherConnectionContextUtils {
                     break;
                 case DbParameters:
                     ConnectionContextHelper.createParameters(varList, paramName,
-                            TaggedValueHelper.getValueString(ISAPConstant.PROP_DB_PARAMETERS, conn));
+                            TaggedValueHelper.getValueString(ISAPConstant.PROP_DB_ADDITIONAL_PROPERTIES, conn));
                     break;
                 default:
                 }
@@ -728,7 +728,7 @@ public final class OtherConnectionContextUtils {
                     ContextParameterUtils.getNewScriptCode(sapBasicVarName, LANGUAGE));
             break;
         case DbParameters:
-            TaggedValueHelper.setTaggedValue(sapConn, ISAPConstant.PROP_DB_PARAMETERS,
+            TaggedValueHelper.setTaggedValue(sapConn, ISAPConstant.PROP_DB_ADDITIONAL_PROPERTIES,
                     ContextParameterUtils.getNewScriptCode(sapBasicVarName, LANGUAGE));
             break;
         default:
@@ -778,13 +778,13 @@ public final class OtherConnectionContextUtils {
         String dbPassword = TalendQuoteUtils.removeQuotes(ConnectionContextHelper.getOriginalValue(contextType,
                 conn.getValue(TaggedValueHelper.getValueString(ISAPConstant.PROP_DB_PASSWORD, conn), false)));
         String dbParameters = TalendQuoteUtils.removeQuotes(ConnectionContextHelper.getOriginalValue(contextType,
-                TaggedValueHelper.getValueString(ISAPConstant.PROP_DB_PARAMETERS, conn)));
+                TaggedValueHelper.getValueString(ISAPConstant.PROP_DB_ADDITIONAL_PROPERTIES, conn)));
         TaggedValueHelper.setTaggedValue(conn, ISAPConstant.PROP_DB_HOST, dbHost);
         TaggedValueHelper.setTaggedValue(conn, ISAPConstant.PROP_DB_PORT, dbPort);
         TaggedValueHelper.setTaggedValue(conn, ISAPConstant.PROP_DB_SCHEMA, dbSchema);
         TaggedValueHelper.setTaggedValue(conn, ISAPConstant.PROP_DB_USERNAME, dbUsername);
         TaggedValueHelper.setTaggedValue(conn, ISAPConstant.PROP_DB_PASSWORD, conn.getValue(dbPassword, true));
-        TaggedValueHelper.setTaggedValue(conn, ISAPConstant.PROP_DB_PARAMETERS, dbParameters);
+        TaggedValueHelper.setTaggedValue(conn, ISAPConstant.PROP_DB_ADDITIONAL_PROPERTIES, dbParameters);
     }
 
     public static SAPConnection cloneOriginalValueSAPConnection(SAPConnection fileConn, ContextType contextType) {
@@ -826,13 +826,13 @@ public final class OtherConnectionContextUtils {
         String dbPassword = ConnectionContextHelper.getOriginalValue(contextType,
                 fileConn.getValue(TaggedValueHelper.getValueString(ISAPConstant.PROP_DB_PASSWORD, fileConn), false));
         String dbParameters = ConnectionContextHelper.getOriginalValue(contextType,
-                TaggedValueHelper.getValueString(ISAPConstant.PROP_DB_PARAMETERS, fileConn));
+                TaggedValueHelper.getValueString(ISAPConstant.PROP_DB_ADDITIONAL_PROPERTIES, fileConn));
         TaggedValueHelper.setTaggedValue(cloneConn, ISAPConstant.PROP_DB_HOST, dbHost);
         TaggedValueHelper.setTaggedValue(cloneConn, ISAPConstant.PROP_DB_PORT, dbPort);
         TaggedValueHelper.setTaggedValue(cloneConn, ISAPConstant.PROP_DB_SCHEMA, dbSchema);
         TaggedValueHelper.setTaggedValue(cloneConn, ISAPConstant.PROP_DB_USERNAME, dbUsername);
         TaggedValueHelper.setTaggedValue(cloneConn, ISAPConstant.PROP_DB_PASSWORD, dbPassword);
-        TaggedValueHelper.setTaggedValue(cloneConn, ISAPConstant.PROP_DB_PARAMETERS, dbParameters);
+        TaggedValueHelper.setTaggedValue(cloneConn, ISAPConstant.PROP_DB_ADDITIONAL_PROPERTIES, dbParameters);
 
         ConnectionContextHelper.cloneConnectionProperties(fileConn, cloneConn);
 
