@@ -315,6 +315,12 @@ public class PomIdsHelper {
         return manager.getBoolean(MavenConstants.EXCLUDE_DELETED_ITEMS);
     }
 
+    public static boolean getMavenPrefOptionStatus(String prefName) {
+        String projectTechName = ProjectManager.getInstance().getCurrentProject().getTechnicalLabel();
+        ProjectPreferenceManager manager = getPreferenceManager(projectTechName);
+        return manager.getBoolean(prefName);
+    }
+
     private static String getGroupId(String projectTechName, String baseName, Property property) {
         if (projectTechName == null) {
             projectTechName = ProjectManager.getInstance().getCurrentProject().getTechnicalLabel();
@@ -393,6 +399,7 @@ public class PomIdsHelper {
                 if (PluginChecker.isTIS()) {
                     preferenceStore.setValue(MavenConstants.EXCLUDE_DELETED_ITEMS, true);
                 }
+                preferenceStore.setValue(MavenConstants.SKIP_LOOP_DEPENDENCY_CHECK, true);
             }
             preferenceManager.save();
             preferenceManagers.put(projectTechName, preferenceManager);
