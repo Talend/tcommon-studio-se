@@ -603,7 +603,7 @@ public class ProcessorUtilities {
             cleanSourceFolder(progressMonitor, currentProcess, processor);
         }
 
-        // processor.cleanBeforeGenerate(TalendProcessO ptionConstants.CLEAN_JAVA_CODES |
+        // processor.cleanBeforeGenerate(TalendProcessOptionConstants.CLEAN_JAVA_CODES |
         // TalendProcessOptionConstants.CLEAN_CONTEXTS
         // | TalendProcessOptionConstants.CLEAN_DATA_SETS);
 
