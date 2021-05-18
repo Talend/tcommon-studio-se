@@ -176,7 +176,13 @@ public class ExtensionModuleManager {
             isGroup = true;
         }
 
-        if (project != null && project.isCamel3() && StringUtils.startsWith(context, "c")
+        if (project != null && project.isCamel3()
+                && (StringUtils.startsWith(context, "c") || 
+                           StringUtils.startsWith(context, "tRouteInput")
+                        || StringUtils.startsWith(context, "tRouteOutput") 
+                        || StringUtils.startsWith(context, "tRouteFault")
+                        || StringUtils.startsWith(context, "tRouteIn")
+                        || StringUtils.startsWith(context, "tRouteLoop"))
                 && StringUtils.startsWith(id, "camel-")) {
             id = RegExUtils.replaceFirst(id, "camel-", "camel3-");
         }
