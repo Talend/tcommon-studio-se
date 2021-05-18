@@ -115,7 +115,7 @@ public final class HandlerUtil {
                 return;
             }
             // for migration task ,there is not .screeenshot file in preceding version - begin
-            os = new FileOutputStream(URLEncoder.encode(fileURL.getFile(),StandardCharsets.UTF_8.toString()));
+            os = new FileOutputStream(fileURL.getFile());
             manager.getPaths().iterator().next();
             is = manager.getStream(screenshotNeeded, itemRecord);
             FileCopyUtils.copyStreams(is, os);

@@ -418,6 +418,52 @@ public class NodeUtil {
         return conns;
     }
 
+    /**
+     * DOC
+     * <p>
+     * The method searches for the incoming node connections of type
+     * on a processing path and returns the first ones only
+     * </p>
+     *
+     * @param node
+     * @param type - node type to look for
+     * @return
+     */
+    public static List<? extends IConnection> getFirstIncomingLineConnectionsOfType(INode node, String type) {
+        if (type == null)
+            return new ArrayList<IConnection>();
+
+        Set<String> uniqueNamesDone = new HashSet<String>();
+        List<? extends IConnection> allIncomingConnections = getFirstIncomingLineConnectionsOfType(node, uniqueNamesDone, type);
+
+        return allIncomingConnections;
+    }
+
+    private static List<? extends IConnection> getFirstIncomingLineConnectionsOfType(INode node, Set<String> uniqueNamesDone, String type) {
+        List<IConnection> conns = new ArrayList<IConnection>();
+
+        List<? extends IConnection> incomingConnections = node.getIncomingConnections();
+        if (incomingConnections != null) {
+
+            for (int i = 0; i < incomingConnections.size(); i++) {
+
+                IConnection connection = incomingConnections.get(i);
+                INode nextNode = connection.getSource();
+
+                if (!uniqueNamesDone.contains(nextNode.getUniqueName())) {
+                    uniqueNamesDone.add(nextNode.getUniqueName());
+
+                    if (type.equals((String)nextNode.getElementParameter("COMPONENT_NAME").getValue())) {
+                        conns.add(connection);
+                    } else {
+                        conns.addAll(getFirstIncomingLineConnectionsOfType(nextNode, uniqueNamesDone, type)); // follow this way
+                    }
+                }
+            }
+        }
+        return conns;
+    }
+
     public static INode getFirstMergeNode(INode node) {
         INode mergeNode = null;
         for (IConnection connection : node.getOutgoingConnections()) {

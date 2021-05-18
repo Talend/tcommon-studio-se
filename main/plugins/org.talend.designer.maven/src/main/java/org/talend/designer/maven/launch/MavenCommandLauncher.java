@@ -97,7 +97,7 @@ public abstract class MavenCommandLauncher {
 
     private Map<String, Object> argumentsMap;
 
-    private static final String REGEX_TEST_CASE_FAILURES_STR = "\\[ERROR\\] Tests run:.*\\[ERROR\\] There are test\\p{Print}+\n";
+    private static final String REGEX_TEST_CASE_FAILURES_STR = "\\[ERROR\\] There are test failures.*\n";
 
     private static final Pattern REGEX_TEST_CASE_FAILURES = Pattern.compile(REGEX_TEST_CASE_FAILURES_STR, Pattern.DOTALL);
 
