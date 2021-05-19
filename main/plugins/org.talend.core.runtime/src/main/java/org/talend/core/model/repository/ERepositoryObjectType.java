@@ -413,11 +413,6 @@ public class ERepositoryObjectType extends DynaEnum<ERepositoryObjectType> {
 
     private List<ERepositoryObjectType> childrenTypes = new ArrayList<ERepositoryObjectType>();
 
-    static {
-        // init
-        RepositoryNodeProviderRegistryReader.getInstance().init();
-    }
-
     public final static ERepositoryObjectType BUSINESS_PROCESS = ERepositoryObjectType.valueOf("BUSINESS_PROCESS"); //$NON-NLS-1$
 
     public final static ERepositoryObjectType PROCESS = ERepositoryObjectType.valueOf("PROCESS"); //$NON-NLS-1$

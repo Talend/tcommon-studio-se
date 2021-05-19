@@ -91,7 +91,7 @@ public class RepositoryNodeProviderRegistryReader extends RegistryReader {
         super("org.talend.core.repository", "repository_node_provider"); //$NON-NLS-1$  //$NON-NLS-2$
     }
 
-    void init() {
+    public void init() {
         if (this.allDynamicRepositoryNodes == null) {
             synchronized (RepositoryNodeProviderRegistryReader.class) {
 
