@@ -152,11 +152,6 @@ public class LocalLibraryManager implements ILibraryManagerService, IChangedLibr
     }
 
     @Override
-    public void setInitialized() {
-        LibrariesIndexManager.getInstance().setInitialized(true);
-    }
-
-    @Override
     public void deploy(URI jarFileUri, IProgressMonitor... monitorWrap) {
         deploy(jarFileUri, null, monitorWrap);
     }

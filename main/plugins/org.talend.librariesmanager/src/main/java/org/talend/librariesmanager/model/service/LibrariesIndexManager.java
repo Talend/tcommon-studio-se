@@ -17,14 +17,11 @@ import java.io.IOException;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.Map.Entry;
-import java.util.Set;
 import java.util.concurrent.locks.ReentrantReadWriteLock;
 
 import org.apache.log4j.Logger;
 import org.eclipse.core.runtime.Path;
 import org.eclipse.core.runtime.Platform;
-import org.eclipse.emf.common.util.EMap;
 import org.eclipse.emf.common.util.URI;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.resource.Resource;
@@ -115,6 +112,7 @@ public class LibrariesIndexManager {
     public void saveStudioIndexResource() {
         try {
             studioLibLock.writeLock().lock();
+            studioLibIndex.setInitialized(true);
             saveResource(studioLibIndex, LIBRARIES_INDEX);
         } finally {
             studioLibLock.writeLock().unlock();
@@ -139,6 +137,7 @@ public class LibrariesIndexManager {
     public void saveMavenIndexResource() {
         try {
             mavenLibLock.writeLock().lock();
+            mavenLibIndex.setInitialized(true);
             saveResource(mavenLibIndex, MAVEN_INDEX);
         } finally {
             mavenLibLock.writeLock().unlock();

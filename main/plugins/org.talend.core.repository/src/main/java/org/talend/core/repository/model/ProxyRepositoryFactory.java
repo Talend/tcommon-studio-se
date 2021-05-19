@@ -88,6 +88,7 @@ import org.talend.core.context.Context;
 import org.talend.core.context.RepositoryContext;
 import org.talend.core.exception.TalendInternalPersistenceException;
 import org.talend.core.hadoop.BigDataBasicUtil;
+import org.talend.core.model.components.IComponentsService;
 import org.talend.core.model.general.ILibrariesService;
 import org.talend.core.model.general.ModuleNeeded;
 import org.talend.core.model.general.Project;
@@ -2227,6 +2228,11 @@ public final class ProxyRepositoryFactory implements IProxyRepositoryFactory {
                     }
                 }
 
+                currentMonitor = subMonitor.newChild(1, SubMonitor.SUPPRESS_NONE);
+                currentMonitor.beginTask(Messages.getString("ProxyRepositoryFactory.load.componnents"), 1); //$NON-NLS-1$
+                IComponentsService.get().getComponentsFactory().getComponents();
+                TimeMeasurePerformance.step("logOnProject", "Initialize components"); //$NON-NLS-1$
+
                 ICoreService coreService = getCoreService();
                 if (coreService != null) {
                     currentMonitor = subMonitor.newChild(1, SubMonitor.SUPPRESS_NONE);
@@ -2263,14 +2269,9 @@ public final class ProxyRepositoryFactory implements IProxyRepositoryFactory {
 
                 emptyTempFolder(project);
 
-                currentMonitor = subMonitor.newChild(1, SubMonitor.SUPPRESS_NONE);
-                currentMonitor.beginTask(Messages.getString("ProxyRepositoryFactory.load.componnents"), 1); //$NON-NLS-1$
                 ICoreUIService coreUiService = null;
                 if (GlobalServiceRegister.getDefault().isServiceRegistered(ICoreUIService.class)) {
                     coreUiService = GlobalServiceRegister.getDefault().getService(ICoreUIService.class);
-                }
-                if (coreUiService != null) {
-                    coreUiService.componentsReset();
                 }
 
                 fireRepositoryPropertyChange(ERepositoryActionName.PROJECT_PREFERENCES_RELOAD.getName(), null, null);

@@ -12,6 +12,7 @@
 // ============================================================================
 package org.talend.core.model.components;
 
+import org.talend.core.GlobalServiceRegister;
 import org.talend.core.IService;
 
 /**
@@ -25,5 +26,12 @@ public interface IComponentsService extends IService {
     public IComponentsFactory getComponentsFactory();
 
     public IComponentFileNaming getComponentFileNaming();
+
+    public static IComponentsService get() {
+        if (GlobalServiceRegister.getDefault().isServiceRegistered(IComponentsService.class)) {
+            return GlobalServiceRegister.getDefault().getService(IComponentsService.class);
+        }
+        return null;
+    }
 
 }

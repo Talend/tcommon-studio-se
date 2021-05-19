@@ -13,7 +13,6 @@
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute component_cache.ecore#//ComponentInfo/originalFamilyName"/>
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute component_cache.ecore#//ComponentInfo/pluginExtension"/>
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute component_cache.ecore#//ComponentInfo/version"/>
-      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute component_cache.ecore#//ComponentInfo/translatedFamilyName"/>
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute component_cache.ecore#//ComponentInfo/isTechnical"/>
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute component_cache.ecore#//ComponentInfo/PluginDependencies"/>
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute component_cache.ecore#//ComponentInfo/componentNames"/>
@@ -24,9 +23,7 @@
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute component_cache.ecore#//ComponentInfo/repositoryType"/>
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute component_cache.ecore#//ComponentInfo/sourceBundleName"/>
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute component_cache.ecore#//ComponentInfo/type"/>
-      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute component_cache.ecore#//ComponentInfo/sha1"/>
-      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute component_cache.ecore#//ComponentInfo/longName"/>
-      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute component_cache.ecore#//ComponentInfo/providerClass"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute component_cache.ecore#//ComponentInfo/providerId"/>
     </genClasses>
     <genClasses ecoreClass="component_cache.ecore#//ComponentEntryMap">
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute component_cache.ecore#//ComponentEntryMap/key"/>

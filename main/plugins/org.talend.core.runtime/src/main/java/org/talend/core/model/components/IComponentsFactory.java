@@ -55,7 +55,7 @@ public interface IComponentsFactory {
      */
     public Set<IComponent> getComponents();
 
-    public boolean isInitialising();
+    public boolean isInitializing();
 
     /**
      * Get a readonly components collection to avoid ConcurrentModificationException caused by multiple thread
@@ -115,5 +115,7 @@ public interface IComponentsFactory {
     public String getCustomComponentBundlePath();
 
     public Set<IComponent> getComponentsForInit();
+
+    public Set<File> getProviderInstallationFolders();
 
 }

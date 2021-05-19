@@ -130,4 +130,18 @@
             genModel="model/properties.genmodel"/>
    </extension>
 
+   <extension point="org.eclipse.emf.ecore.generated_package">
+      <!-- @generated component_cache -->
+      <package
+            uri="http://www.talend.org/component_cache"
+            class="org.talend.core.model.component_cache.ComponentCachePackage"
+            genModel="model/component_cache.genmodel"/>
+   </extension>
+
+   <extension point="org.eclipse.emf.ecore.extension_parser">
+      <!-- @generated component_cache -->
+      <parser
+            type="componentcache"
+            class="org.talend.core.model.component_cache.util.ComponentCacheResourceFactoryImpl"/>
+   </extension>
 </plugin>
