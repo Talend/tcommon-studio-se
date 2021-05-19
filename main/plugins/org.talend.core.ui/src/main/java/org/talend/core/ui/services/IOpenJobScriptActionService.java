@@ -16,7 +16,9 @@ import org.eclipse.core.resources.IFile;
 import org.eclipse.core.resources.IProject;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.jface.action.Action;
+import org.eclipse.ui.IEditorPart;
 import org.eclipse.ui.IWorkbenchWindow;
+import org.talend.core.GlobalServiceRegister;
 import org.talend.core.IService;
 import org.talend.core.model.properties.Item;
 
@@ -28,4 +30,22 @@ public interface IOpenJobScriptActionService extends IService {
     public Action getOpenJobScriptAction(IWorkbenchWindow window);
 
     public IFile createWorkspaceLink(IProject fsProject, Item item) throws CoreException;
+
+    /**
+     * If it's a jobscript editor, set readonly parameter
+     * 
+     * @param editorPart
+     * @param readonly
+     * @return true: set readonly parameter successfully
+     */
+    public boolean setEditorReadonly(IEditorPart editorPart, boolean readonly);
+
+    public static IOpenJobScriptActionService get() {
+        GlobalServiceRegister gsr = GlobalServiceRegister.getDefault();
+        if (gsr.isServiceRegistered(IOpenJobScriptActionService.class)) {
+            return gsr.getService(IOpenJobScriptActionService.class);
+        }
+        return null;
+    }
+
 }
