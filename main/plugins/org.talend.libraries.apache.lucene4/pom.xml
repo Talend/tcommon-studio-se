@@ -16,6 +16,36 @@
     <artifactId>lucene-queries</artifactId>
     <version>5.5.5</version>
   </dependency>
+  <dependency>
+   <groupId>org.apache.lucene</groupId>
+    <artifactId>lucene-analyzers-common</artifactId>
+    <version>5.5.5</version>
+  </dependency>
+  <dependency>
+   <groupId>org.apache.lucene</groupId>
+    <artifactId>lucene-core</artifactId>
+    <version>5.5.5</version>
+  </dependency>
+  <dependency>
+   <groupId>org.apache.lucene</groupId>
+    <artifactId>lucene-suggest</artifactId>
+    <version>5.5.5</version>
+  </dependency>
+  <dependency>
+   <groupId>org.apache.lucene</groupId>
+    <artifactId>lucene-misc</artifactId>
+    <version>5.5.5</version>
+  </dependency>
+  <dependency>
+   <groupId>org.apache.lucene</groupId>
+    <artifactId>lucene-queryparser</artifactId>
+    <version>5.5.5</version>
+  </dependency>
+  <dependency>
+   <groupId>org.apache.lucene</groupId>
+    <artifactId>lucene-sandbox</artifactId>
+    <version>5.5.5</version>
+  </dependency>
   </dependencies>
   <build>
   <plugins>
