@@ -428,7 +428,7 @@ public class NodeUtil {
      * @param node
      * @param type - node type to look for
      * @return
-             */
+     */
     public static List<? extends IConnection> getFirstIncomingLineConnectionsOfType(INode node, String type) {
         if (type == null)
             return new ArrayList<IConnection>();
@@ -449,11 +449,11 @@ public class NodeUtil {
 
                 IConnection connection = incomingConnections.get(i);
                 INode nextNode = connection.getSource();
-                
+
                 if (!uniqueNamesDone.contains(nextNode.getUniqueName())) {
-                	uniqueNamesDone.add(nextNode.getUniqueName());
-                	
-                	if (type.equals((String)nextNode.getElementParameter("COMPONENT_NAME").getValue())) {
+                    uniqueNamesDone.add(nextNode.getUniqueName());
+
+                    if (type.equals((String)nextNode.getElementParameter("COMPONENT_NAME").getValue())) {
                         conns.add(connection);
                     } else {
                         conns.addAll(getFirstIncomingLineConnectionsOfType(nextNode, uniqueNamesDone, type)); // follow this way
