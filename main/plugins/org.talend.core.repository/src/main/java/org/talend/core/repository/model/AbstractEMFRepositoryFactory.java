@@ -12,11 +12,14 @@
 // ============================================================================
 package org.talend.core.repository.model;
 
+import java.io.BufferedReader;
+import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.net.URL;
+import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -83,6 +86,8 @@ import org.talend.repository.model.RepositoryConstants;
  *
  */
 public abstract class AbstractEMFRepositoryFactory extends AbstractRepositoryFactory implements IRepositoryFactory {
+    
+    private static boolean forceUpdateBuiltInItem = Boolean.parseBoolean(System.getProperty("talend.force.update.builtin.item"));
 
     protected ICoreService coreSerivce = (ICoreService) GlobalServiceRegister.getDefault().getService(ICoreService.class);
 
@@ -623,8 +628,7 @@ public abstract class AbstractEMFRepositoryFactory extends AbstractRepositoryFac
             stream.close();
 
             byte[] currentContent = item.getContent().getInnerContent();
-
-            if (!Arrays.equals(innerContent, currentContent)) {
+            if (!isSameStringContent(innerContent, currentContent)) {
                 item.getContent().setInnerContent(innerContent);
                 Project project = getRepositoryContext().getProject();
                 save(project, item);
@@ -640,6 +644,44 @@ public abstract class AbstractEMFRepositoryFactory extends AbstractRepositoryFac
             }
             throw new PersistenceException(ioe);
         }
+    }
+    
+    protected boolean isSameStringContent(byte[] data1, byte[] data2) throws IOException {
+        boolean isSame = true;
+        BufferedReader br1 = null, br2 = null;
+        try {
+            br1 = new BufferedReader(new InputStreamReader(new ByteArrayInputStream(data1), StandardCharsets.UTF_8.toString()));
+            br2 = new BufferedReader(new InputStreamReader(new ByteArrayInputStream(data2), StandardCharsets.UTF_8.toString()));
+            String line1 = null, line2 = null;
+            while (isSame) {
+                line1 = br1.readLine();
+                line2 = br2.readLine();
+                if ((line1 == null && line2 == null)) {
+                    break;
+                }
+                if (!StringUtils.equals(line1, line2)) {
+                    isSame = false;
+                    break;
+                }
+            }
+        } finally {
+            if (br1 != null) {
+                try {
+                    br1.close();
+                } catch (IOException e) {
+                    ExceptionHandler.process(e);
+                }
+            }
+            if (br2 != null) {
+                try {
+                    br2.close();
+                } catch (IOException e) {
+                    ExceptionHandler.process(e);
+                }
+            }
+        }
+
+        return isSame;
     }
 
     private void createSQLPattern(URL url, String sqlPatternLabel, String categoryName) throws PersistenceException {
@@ -693,8 +735,7 @@ public abstract class AbstractEMFRepositoryFactory extends AbstractRepositoryFac
             stream.close();
 
             byte[] currentContent = item.getContent().getInnerContent();
-
-            if (!Arrays.equals(innerContent, currentContent)) {
+            if (!isSameStringContent(innerContent, currentContent)) {
                 item.getContent().setInnerContent(innerContent);
                 Project project = getRepositoryContext().getProject();
                 save(project, item);
