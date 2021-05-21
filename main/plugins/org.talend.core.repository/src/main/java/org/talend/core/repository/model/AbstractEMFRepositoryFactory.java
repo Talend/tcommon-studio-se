@@ -86,8 +86,6 @@ import org.talend.repository.model.RepositoryConstants;
  *
  */
 public abstract class AbstractEMFRepositoryFactory extends AbstractRepositoryFactory implements IRepositoryFactory {
-    
-    private static boolean forceUpdateBuiltInItem = Boolean.parseBoolean(System.getProperty("talend.force.update.builtin.item"));
 
     protected ICoreService coreSerivce = (ICoreService) GlobalServiceRegister.getDefault().getService(ICoreService.class);
 
