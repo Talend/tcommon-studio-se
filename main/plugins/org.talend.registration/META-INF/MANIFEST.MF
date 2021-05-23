@@ -4,8 +4,7 @@ Bundle-Name: Registration Plug-in
 Bundle-SymbolicName: org.talend.registration;singleton:=true
 Bundle-Version: 7.3.1.qualifier
 Bundle-Vendor: .Talend SA.
-Require-Bundle: org.apache.axis,
- javax.xml.rpc,
+Require-Bundle: javax.xml.rpc,
  org.eclipse.ui,
  org.talend.core.runtime,
  org.talend.core.ui,
@@ -15,7 +14,8 @@ Require-Bundle: org.apache.axis,
  org.talend.metadata.managment,
  org.talend.common.ui.runtime,
  org.eclipse.ui.intro,
- org.talend.commons.ui
+ org.talend.commons.ui,
+ org.talend.libraries.apache.axis2
 Export-Package: org.talend.registration,
  org.talend.registration.license,
  org.talend.registration.register,
