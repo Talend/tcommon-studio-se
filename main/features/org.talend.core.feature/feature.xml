@@ -62,6 +62,7 @@
   <plugin id="org.talend.metadata.managment.ui" download-size="0" install-size="0" version="0.0.0" unpack="false"/>
   <plugin id="org.talend.metadata.managment.ui.nl" download-size="0" install-size="0" version="0.0.0" fragment="true" unpack="false"/>
   <plugin id="org.talend.migrationTool" download-size="0" install-size="0" version="0.0.0" unpack="false"/>
+  <plugin id="org.talend.migrationTool.nl" download-size="0" install-size="0" version="0.0.0" fragment="true" unpack="false"/>
   <plugin id="org.talend.model" download-size="0" install-size="0" version="0.0.0" unpack="false"/>
   <plugin id="org.talend.model.edit" download-size="0" install-size="0" version="0.0.0" unpack="false"/>
   <plugin id="org.talend.model.edit.nl" download-size="0" install-size="0" version="0.0.0" fragment="true" unpack="false"/>
