@@ -7,7 +7,7 @@
 
 package org.talend.registration.register.proxy;
 
-public interface RegisterUser extends javax.xml.rpc.Service {
+public interface RegisterUser {
     public java.lang.String getRegisterUserPortAddress();
 
     public org.talend.registration.register.proxy.RegisterUserPortType getRegisterUserPort() throws javax.xml.rpc.ServiceException;
