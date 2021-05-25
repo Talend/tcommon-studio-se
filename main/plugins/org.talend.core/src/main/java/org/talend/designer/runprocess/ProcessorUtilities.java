@@ -112,6 +112,7 @@ import org.talend.core.model.routines.RoutinesUtil;
 import org.talend.core.model.utils.JavaResourcesHelper;
 import org.talend.core.repository.model.ProxyRepositoryFactory;
 import org.talend.core.runtime.CoreRuntimePlugin;
+import org.talend.core.runtime.maven.MavenConstants;
 import org.talend.core.runtime.process.ITalendProcessJavaProject;
 import org.talend.core.runtime.process.LastGenerationInfo;
 import org.talend.core.runtime.process.TalendProcessArgumentConstant;
@@ -611,10 +612,12 @@ public class ProcessorUtilities {
         jobInfo.setProcessor(processor);
 
         if (isMainJob && selectedProcessItem != null) {
-            Property property = selectedProcessItem.getProperty();
-            String jobId = ProjectManager.getInstance().getCurrentProject().getTechnicalLabel() + ":" + property.getId();
-            hasLoopDependency = checkProcessLoopDependencies(currentProcess, jobId, property.getVersion(),
-                    new LinkedList<String>(), new HashMap<String, String>());
+            if (!IRunProcessService.get().getMavenPrefOptionStatus(MavenConstants.SKIP_LOOP_DEPENDENCY_CHECK)) {
+                Property property = selectedProcessItem.getProperty();
+                String jobId = ProjectManager.getInstance().getCurrentProject().getTechnicalLabel() + ":" + property.getId();
+                hasLoopDependency = checkProcessLoopDependencies(currentProcess, jobId, property.getVersion(),
+                        new LinkedList<String>(), new HashMap<String, String>());
+            }
             // clean the previous code in case it has deleted subjob
             cleanSourceFolder(progressMonitor, currentProcess, processor);
         }
@@ -1110,9 +1113,11 @@ public class ProcessorUtilities {
             }
 
             if (isMainJob && selectedProcessItem != null) {
-                Property property = selectedProcessItem.getProperty();
-                hasLoopDependency = checkProcessLoopDependencies(currentProcess, property.getId(), property.getVersion(),
-                        new LinkedList<String>(), new HashMap<String, String>());
+                if (!IRunProcessService.get().getMavenPrefOptionStatus(MavenConstants.SKIP_LOOP_DEPENDENCY_CHECK)) {
+                    Property property = selectedProcessItem.getProperty();
+                    hasLoopDependency = checkProcessLoopDependencies(currentProcess, property.getId(), property.getVersion(),
+                            new LinkedList<String>(), new HashMap<String, String>());
+                }
                 // clean the previous code in case it has deleted subjob
                 cleanSourceFolder(progressMonitor, currentProcess, processor);
             }
