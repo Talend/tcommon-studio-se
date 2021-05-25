@@ -472,9 +472,14 @@ public class ProcessorUtilities {
                         continue;
                     }
                     ProcessItem processItem = ItemCacheManager.getProcessItem(jobId, subNodeversion);
-                    IDesignerCoreService service = CorePlugin.getDefault().getDesignerCoreService();
-                    IProcess subProcess = service.getProcessFromProcessItem(processItem);
-                    hasLoop = checkProcessLoopDependencies(subProcess, jobId, subNodeversion, pathlink, idToLatestVersion);
+                    if (processItem != null) {
+                        IDesignerCoreService service = CorePlugin.getDefault().getDesignerCoreService();
+                        IProcess subProcess = service.getProcessFromProcessItem(processItem);
+                        if (subProcess != null) {
+                            hasLoop = checkProcessLoopDependencies(subProcess, jobId, subNodeversion, pathlink,
+                                    idToLatestVersion);
+                        }
+                    }
                     if (hasLoop) {
                         break;
                     }
