@@ -48,6 +48,8 @@ public interface MavenConstants {
 
     static final String EXCLUDE_DELETED_ITEMS = "EXCLUDE_DELETED_ITEMS";
 
+    static final String SKIP_LOOP_DEPENDENCY_CHECK = "SKIP_LOOP_DEPENDENCY_CHECK";
+
     static final String SKIP_FOLDERS = "SKIP_FOLDERS";
 
     /*

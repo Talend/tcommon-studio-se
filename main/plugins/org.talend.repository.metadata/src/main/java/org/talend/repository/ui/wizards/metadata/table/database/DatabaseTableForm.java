@@ -93,7 +93,6 @@ import org.talend.core.model.metadata.types.JavaTypesManager;
 import org.talend.core.model.metadata.types.PerlTypesManager;
 import org.talend.core.model.metadata.types.TypesManager;
 import org.talend.core.model.properties.ConnectionItem;
-import org.talend.core.model.repository.IRepositoryPrefConstants;
 import org.talend.core.repository.model.ProxyRepositoryFactory;
 import org.talend.core.runtime.CoreRuntimePlugin;
 import org.talend.core.ui.CoreUIPlugin;
@@ -1218,6 +1217,11 @@ public class DatabaseTableForm extends AbstractForm {
             boolean isHive = EDatabaseTypeName.HIVE.getDisplayName().equals(metadataconnection.getDbType());
             MappingTypeRetriever mappingTypeRetriever = getMappingTypeRetriever();
             int numbOfColumn = schemaContent.get(0).length;
+            List<TdColumn> metadataColumns = new ArrayList<TdColumn>();
+            boolean isInformix = StringUtils.equals(EDatabaseTypeName.INFORMIX.getDisplayName(), metadataconnection.getDbType());
+            if (StringUtils.isNotEmpty(tableName) && isInformix) {
+                metadataColumns = ExtractMetaDataFromDataBase.returnMetadataColumnsFormTable(metadataconnection, tableName);
+            }
             for (int i = 1; i <= numbOfColumn; i++) {
                 MetadataColumn oneColum = columns.get(i - 1);
                 // get the column name from the temp file genenrated by GuessSchemaProcess.java
@@ -1235,6 +1239,16 @@ public class DatabaseTableForm extends AbstractForm {
                 if (!"".equals(schemaContent.get(3)[i - 1])) { //$NON-NLS-1$
                     oneColum.setLength(Integer.parseInt(schemaContent.get(3)[i - 1]));
                 }
+                if (isInformix) {
+                    for (TdColumn td : metadataColumns) {
+                        if (StringUtils.equals(oneColum.getLabel(), td.getName())) {
+                            oneColum.setPrecision(td.getPrecision());
+                            oneColum.setLength(td.getLength());
+                            break;
+                        }
+                    }
+                }
+
                 if (!"".equals(schemaContent.get(4)[i - 1])) { //$NON-NLS-1$
                     oneColum.setSourceType(schemaContent.get(4)[i - 1]);
                     String talendType = MetadataTalendType.getMappingTypeRetriever(tableEditorView.getCurrentDbms())

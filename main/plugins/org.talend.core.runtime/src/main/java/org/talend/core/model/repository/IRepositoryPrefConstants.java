@@ -52,4 +52,6 @@ public interface IRepositoryPrefConstants {
     public static final String ALLOW_SPECIFIC_CHARACTERS_FOR_SCHEMA_COLUMNS = "allow_specific_characters_for_schema_columns";
 
     public static final String REF_PROJECT_BRANCH_SETTING = "ref_project_branch_setting";
+    
+    public static final String ITEM_EXPORT_DEPENDENCIES = "item_export_dependencies";
 }
