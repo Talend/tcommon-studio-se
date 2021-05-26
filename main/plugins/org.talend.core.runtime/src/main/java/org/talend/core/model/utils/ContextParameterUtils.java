@@ -37,8 +37,6 @@ import org.apache.oro.text.regex.Perl5Matcher;
 import org.apache.oro.text.regex.Perl5Substitution;
 import org.apache.oro.text.regex.Util;
 import org.eclipse.core.runtime.Platform;
-import org.eclipse.core.runtime.preferences.IEclipsePreferences;
-import org.eclipse.core.runtime.preferences.InstanceScope;
 import org.talend.commons.utils.PasswordEncryptUtil;
 import org.talend.core.GlobalServiceRegister;
 import org.talend.core.language.ECodeLanguage;
@@ -51,8 +49,6 @@ import org.talend.core.model.metadata.types.JavaTypesManager;
 import org.talend.core.model.process.IContext;
 import org.talend.core.model.process.IContextManager;
 import org.talend.core.model.process.IContextParameter;
-import org.talend.core.model.repository.IRepositoryPrefConstants;
-import org.talend.core.prefs.ITalendCorePrefConstants;
 import org.talend.core.runtime.CoreRuntimePlugin;
 import org.talend.core.runtime.services.IGenericDBService;
 import org.talend.core.utils.TalendQuoteUtils;
@@ -298,7 +294,7 @@ public final class ContextParameterUtils {
         List<String> mvnValues = new ArrayList<>();
         IGenericDBService dbService = null;
         if (GlobalServiceRegister.getDefault().isServiceRegistered(IGenericDBService.class)) {
-            dbService = (IGenericDBService) GlobalServiceRegister.getDefault().getService(IGenericDBService.class);
+            dbService = GlobalServiceRegister.getDefault().getService(IGenericDBService.class);
         }
         for (String value : values) {
             try {
@@ -622,8 +618,7 @@ public final class ContextParameterUtils {
         if (Platform.isRunning()) {
             return CoreRuntimePlugin.getInstance().getProjectPreferenceManager().isAllowSpecificCharacters();
         } else {
-            IEclipsePreferences coreUIPluginNode = new InstanceScope().getNode(ITalendCorePrefConstants.CoreUIPlugin_ID);
-            return coreUIPluginNode.getBoolean(IRepositoryPrefConstants.ALLOW_SPECIFIC_CHARACTERS_FOR_SCHEMA_COLUMNS, false);
+            return false;
         }
     }
 
