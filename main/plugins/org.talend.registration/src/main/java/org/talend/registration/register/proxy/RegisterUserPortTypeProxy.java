@@ -18,14 +18,6 @@ public class RegisterUserPortTypeProxy implements org.talend.registration.regist
     private void _initRegisterUserPortTypeProxy() {
         try {
             registerUserPortType = (new org.talend.registration.register.proxy.RegisterUserLocator()).getRegisterUserPort();
-            if (registerUserPortType != null) {
-                if (_endpoint != null)
-                    ((javax.xml.rpc.Stub) registerUserPortType)._setProperty("javax.xml.rpc.service.endpoint.address", _endpoint);
-                else
-                    _endpoint = (String) ((javax.xml.rpc.Stub) registerUserPortType)
-                            ._getProperty("javax.xml.rpc.service.endpoint.address");
-            }
-
         } catch (javax.xml.rpc.ServiceException serviceException) {
         }
     }
@@ -36,9 +28,6 @@ public class RegisterUserPortTypeProxy implements org.talend.registration.regist
 
     public void setEndpoint(String endpoint) {
         _endpoint = endpoint;
-        if (registerUserPortType != null)
-            ((javax.xml.rpc.Stub) registerUserPortType)._setProperty("javax.xml.rpc.service.endpoint.address", _endpoint);
-
     }
 
     public org.talend.registration.register.proxy.RegisterUserPortType getRegisterUserPortType() {
