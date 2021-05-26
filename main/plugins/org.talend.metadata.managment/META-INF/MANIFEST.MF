@@ -16,8 +16,7 @@ Require-Bundle: org.eclipse.ui,
  org.apache.log4j,
  javax.xml.rpc,
  org.eclipse.xsd,
- javax.xml.ws,
- org.talend.libraries.apache.axis2
+ javax.xml.ws
 Bundle-ActivationPolicy: lazy
 Eclipse-RegisterBuddy: org.talend.testutils
 Export-Package: metadata.managment.i18n,
