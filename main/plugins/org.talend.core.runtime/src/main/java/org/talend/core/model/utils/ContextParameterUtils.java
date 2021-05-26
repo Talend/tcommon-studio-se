@@ -36,6 +36,7 @@ import org.apache.oro.text.regex.Perl5Compiler;
 import org.apache.oro.text.regex.Perl5Matcher;
 import org.apache.oro.text.regex.Perl5Substitution;
 import org.apache.oro.text.regex.Util;
+import org.eclipse.core.runtime.Platform;
 import org.talend.commons.utils.PasswordEncryptUtil;
 import org.talend.core.GlobalServiceRegister;
 import org.talend.core.language.ECodeLanguage;
@@ -614,7 +615,12 @@ public final class ContextParameterUtils {
     }
 
     private static boolean isAllowSpecificCharacters() {
-        return CoreRuntimePlugin.getInstance().getProjectPreferenceManager().isAllowSpecificCharacters();
+        if (Platform.isRunning()) {
+            return CoreRuntimePlugin.getInstance().getProjectPreferenceManager().isAllowSpecificCharacters();
+        } else {
+            // Can not get the value if current code is not working in studio
+            return false;
+        }
     }
 
     public static boolean isEmptyParameter(String source) {
