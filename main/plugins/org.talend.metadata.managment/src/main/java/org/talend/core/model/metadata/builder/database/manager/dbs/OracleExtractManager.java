@@ -377,16 +377,12 @@ public class OracleExtractManager extends ExtractManager {
             StringBuffer filters = new StringBuffer();
             if (!nameFiters.isEmpty()) {
                 filters.append(" and ("); //$NON-NLS-1$
-                final String tStr = " all_synonyms.synonym_name like "; //$NON-NLS-1$
-                int i = 0;
-                for (String s : nameFiters) {
+                final String tStr = " all_synonyms.synonym_name like ?"; //$NON-NLS-1$
+                for (int i = 0; i < nameFiters.size(); i++) {
                     if (i != 0) {
                         filters.append(" or "); //$NON-NLS-1$
                     }
                     filters.append(tStr);
-                    filters.append(s);
-                    i++;
-
                 }
                 filters.append(')');
             }

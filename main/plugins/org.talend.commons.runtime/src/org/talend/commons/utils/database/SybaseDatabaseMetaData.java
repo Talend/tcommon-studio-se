@@ -58,6 +58,7 @@ public class SybaseDatabaseMetaData extends PackageFakeDatabaseMetadata {
             try {
                 stmt = connection.prepareStatement(sql);
                 stmt.setString(1, login);
+                stmt.setString(2, login);
 
                 rs = stmt.executeQuery();
 
@@ -138,9 +139,9 @@ public class SybaseDatabaseMetaData extends PackageFakeDatabaseMetadata {
      */
     protected String createSqlByLoginAndCatalog(String loginName, String catalogName) {
         return "select count(*) from " + catalogName //$NON-NLS-1$
-                + ".dbo.sysusers where suid in (select suid from master.dbo.syslogins where name = '" + loginName //$NON-NLS-1$
-                + "') or suid in (select altsuid from " + catalogName //$NON-NLS-1$
-                + ".dbo.sysalternates a, master.dbo.syslogins b where b.name = '" + loginName + "' and a.suid = b.suid)"; //$NON-NLS-1$ //$NON-NLS-2$
+                + ".dbo.sysusers where suid in (select suid from master.dbo.syslogins where name = ?"
+                + ") or suid in (select altsuid from " + catalogName //$NON-NLS-1$
+                + ".dbo.sysalternates a, master.dbo.syslogins b where b.name = ? and a.suid = b.suid)"; //$NON-NLS-1$ //$NON-NLS-2$
     }
 
     @Override
