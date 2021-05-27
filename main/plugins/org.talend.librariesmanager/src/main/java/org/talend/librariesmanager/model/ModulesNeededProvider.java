@@ -69,6 +69,7 @@ import org.talend.core.model.general.ModuleNeeded;
 import org.talend.core.model.general.ModuleNeeded.ELibraryInstallStatus;
 import org.talend.core.model.general.Project;
 import org.talend.core.model.process.IProcess;
+import org.talend.core.model.process.ProcessUtils;
 import org.talend.core.model.properties.Item;
 import org.talend.core.model.properties.JobletProcessItem;
 import org.talend.core.model.properties.ProcessItem;
@@ -519,8 +520,11 @@ public class ModulesNeededProvider {
         }
         if (ComponentCategory.CATEGORY_4_CAMEL.getName().equals(process.getComponentsType())) {
             // route do not save any relationship with beans , so add all for now
-            modulesNeeded.addAll(getCodesModuleNeededs(ERepositoryObjectType.BEANS));
-            modulesNeeded.addAll(getModulesNeededForRoutes());
+            boolean needBeanDependencies = ProcessUtils.areBeanDependenciesNeededForProcess(process);
+            if (needBeanDependencies) {
+                modulesNeeded.addAll(getCodesModuleNeededs(ERepositoryObjectType.BEANS));
+                modulesNeeded.addAll(getModulesNeededForRoutes());
+            }
         }
         return modulesNeeded;
     }

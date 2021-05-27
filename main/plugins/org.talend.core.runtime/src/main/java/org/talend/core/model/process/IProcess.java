@@ -12,6 +12,7 @@
 // ============================================================================
 package org.talend.core.model.process;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
 
@@ -133,4 +134,8 @@ public interface IProcess extends IElement {
     public String getComponentsType();
 
     public INode getNodeByUniqueName(String uniqueName);
+
+    default List<? extends INode> getProcessNodes() {
+        return new ArrayList<INode>();
+    }
 }
