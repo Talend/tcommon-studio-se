@@ -67,6 +67,11 @@
 									<version>1.7.9</version>
 								</artifactItem>
 								<artifactItem>
+									<groupId>org.apache.ws.xmlschema</groupId>
+									<artifactId>xmlschema-core</artifactId>
+									<version>2.2.1</version>
+								</artifactItem>
+								<artifactItem>
 							</artifactItems>
 						</configuration>
 					</execution>
