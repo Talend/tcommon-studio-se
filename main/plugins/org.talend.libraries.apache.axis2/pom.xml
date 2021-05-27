@@ -32,6 +32,17 @@
 			<artifactId>axis2-java2wsdl</artifactId>
 			<version>${axis2.version}</version>
 		</dependency>
+		<dependency>
+			<groupId>org.apache.axis2</groupId>
+			<artifactId>axis2-adb-codegen</artifactId>
+			<version>${axis2.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>org.apache.ws.commons.schema</groupId>
+			<artifactId>XmlSchema</artifactId>
+			<version>1.4.7</version>
+		</dependency>
+		
 	</dependencies>
 
 	<build>
