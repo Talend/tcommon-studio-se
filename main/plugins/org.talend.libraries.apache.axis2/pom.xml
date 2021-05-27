@@ -61,6 +61,12 @@
 									<artifactId>axis2-java2wsdl</artifactId>
 									<version>1.7.9</version>
 								</artifactItem>
+								<artifactItem>
+									<groupId>org.apache.axis2</groupId>
+									<artifactId>axis2-adb-codegen</artifactId>
+									<version>1.7.9</version>
+								</artifactItem>
+								<artifactItem>
 							</artifactItems>
 						</configuration>
 					</execution>
