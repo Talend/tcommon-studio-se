@@ -26,11 +26,6 @@ public enum ECustomVersionGroup {
 
     MAPRDB,
 
-    PIG,
-
-    PIG_HBASE,
-    PIG_HCATALOG,
-
     MAP_REDUCE,
 
     SPARK,

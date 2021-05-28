@@ -32,9 +32,7 @@ import org.talend.core.database.EDatabaseTypeName;
 import org.talend.core.database.conn.ConnParameterKeys;
 import org.talend.core.database.conn.template.EDatabaseConnTemplate;
 import org.talend.core.database.conn.version.EDatabaseVersion4Drivers;
-import org.talend.core.hadoop.IHadoopClusterService;
 import org.talend.core.hadoop.repository.HadoopRepositoryUtil;
-import org.talend.core.hadoop.version.custom.ECustomVersionGroup;
 import org.talend.core.language.ECodeLanguage;
 import org.talend.core.language.LanguageManager;
 import org.talend.core.model.metadata.EMetadataEncoding;
@@ -442,6 +440,13 @@ public class RepositoryToComponentProperty {
                 return dbPassword;
             } else {
                 return TalendQuoteUtils.addQuotes(connection.getValue(dbPassword, false));
+            }
+        } else if ("SAPHANA_PROPERTIES_STRING".equals(value)) { //$NON-NLS-1$
+            String dbParameters = TaggedValueHelper.getValueString(ISAPConstant.PROP_DB_ADDITIONAL_PROPERTIES, connection);
+            if (isContextMode(connection, dbParameters)) {
+                return dbParameters;
+            } else {
+                return TalendQuoteUtils.addQuotes(dbParameters);
             }
         }
         return null;
@@ -1536,22 +1541,6 @@ public class RepositoryToComponentProperty {
         }
 
         if (value.equals("HADOOP_CUSTOM_JARS")) {
-            if (targetComponent != null && targetComponent.startsWith("tPig")) {
-                // for pig component
-                String clusterID = connection.getParameters().get(ConnParameterKeys.CONN_PARA_KEY_HADOOP_CLUSTER_ID);
-                if (clusterID != null) {
-                    if (GlobalServiceRegister.getDefault().isServiceRegistered(IHadoopClusterService.class)) {
-                        IHadoopClusterService hadoopClusterService = GlobalServiceRegister.getDefault()
-                                .getService(IHadoopClusterService.class);
-                        Map<String, String> hadoopCustomLibraries = hadoopClusterService.getHadoopCustomLibraries(clusterID);
-
-                        if (EDatabaseTypeName.HBASE.getDisplayName().equals(connection.getDatabaseType())) {
-                            return hadoopCustomLibraries.get(ECustomVersionGroup.PIG_HBASE.getName()) == null ? ""
-                                    : hadoopCustomLibraries.get(ECustomVersionGroup.PIG_HBASE.getName());
-                        }
-                    }
-                }
-            }
             return connection.getParameters().get(ConnParameterKeys.CONN_PARA_KEY_HADOOP_CUSTOM_JARS);
         }
 

@@ -147,4 +147,6 @@ public interface IJobletProviderService extends IService {
 
     public void updateJobleModifiedRelated(Item item, String oldName, String newName);
 
+    public IProcess getJobletGEFProcessFromNode(INode node);
+
 }
