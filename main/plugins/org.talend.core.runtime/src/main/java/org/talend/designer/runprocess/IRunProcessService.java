@@ -258,6 +258,8 @@ public interface IRunProcessService extends IService {
 
     public boolean isExcludeDeletedItems(Property property);
 
+    public boolean getMavenPrefOptionStatus(String prefName);
+
     public static IRunProcessService get() {
         if (GlobalServiceRegister.getDefault().isServiceRegistered(IRunProcessService.class)) {
             return GlobalServiceRegister.getDefault().getService(IRunProcessService.class);

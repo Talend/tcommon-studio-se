@@ -30,6 +30,7 @@ import org.talend.core.model.properties.Property;
 import org.talend.core.runtime.projectsetting.IProjectSettingTemplateConstants;
 import org.talend.designer.maven.template.MavenTemplateManager;
 import org.talend.designer.maven.utils.PomUtil;
+import org.talend.designer.runprocess.IRunProcessService;
 
 /**
  * DOC ggu class global comment. Detailled comment
@@ -116,7 +117,13 @@ public abstract class AbstractMavenCodesTemplatePom extends AbstractMavenGeneral
                 } else {
                     isDeployed = true;
                 }
-                if (ignoreModuleInstallationStatus() || isDeployed) {
+                boolean isCIMode = false;
+                if (GlobalServiceRegister.getDefault().isServiceRegistered(IRunProcessService.class)) {
+                    IRunProcessService runProcessService = GlobalServiceRegister.getDefault()
+                            .getService(IRunProcessService.class);
+                    isCIMode = runProcessService.isCIMode();
+                }
+                if (isCIMode || ignoreModuleInstallationStatus() || isDeployed) {
                     dependency = PomUtil.createModuleDependency(module.getMavenUri());
                     if (module.isExcluded())
                         dependency.setScope("provided");
