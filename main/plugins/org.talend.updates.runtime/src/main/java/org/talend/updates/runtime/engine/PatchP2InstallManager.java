@@ -26,6 +26,7 @@ import java.util.stream.Collectors;
 import org.apache.log4j.Logger;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.IStatus;
+import org.eclipse.core.runtime.SubMonitor;
 import org.eclipse.equinox.p2.core.IProvisioningAgent;
 import org.eclipse.equinox.p2.core.ProvisionException;
 import org.eclipse.equinox.p2.engine.IPhaseSet;
@@ -78,12 +79,18 @@ public class PatchP2InstallManager {
     public String installP2(IProgressMonitor monitor, Logger log, File installingPatchFolder,
             List<String> invalidBundleInfoList) throws Exception {
         String newProductVersion = ""; //$NON-NLS-1$
-        Set<IInstallableUnit> toInstall = queryFromP2Repository(monitor, QueryUtil.createIUAnyQuery(),
+        SubMonitor submonitor = SubMonitor.convert(monitor, 100);
+        SubMonitor queryMonitor = submonitor.split(20);
+        queryMonitor.subTask("Query installable unit");
+        Set<IInstallableUnit> toInstall = queryFromP2Repository(queryMonitor, QueryUtil.createIUAnyQuery(),
                 Arrays.asList(installingPatchFolder.toURI()));
         // show the installation unit
         log.debug("ius to be installed:" + toInstall);
         UpdateTools.setIuSingletonToFalse(toInstall);
+        SubMonitor findInstaledMonitor = submonitor.split(10);
+        findInstaledMonitor.subTask("Find installed units");
         Set<IInstallableUnit> installed = UpdateTools.makeInstalledIuSingletonFrom(toInstall, agent);
+        findInstaledMonitor.subTask("");
         File featureIndexFile = new File(installingPatchFolder, UpdateTools.FILE_EXTRA_FEATURE_INDEX);
         Map<String, String> extraBundles = new HashMap<>();
         if (GlobalServiceRegister.getDefault().isServiceRegistered(ICoreTisService.class)) {
@@ -113,18 +120,24 @@ public class PatchP2InstallManager {
         }
         // install
         InstallOperation installOperation = new InstallOperation(getProvisioningSession(), validInstall);
-        IStatus installResolvedStatus = installOperation.resolveModal(monitor);
+        SubMonitor resolveModalMonitor = submonitor.split(30);
+        IStatus installResolvedStatus = installOperation.resolveModal(resolveModalMonitor);
         if (installResolvedStatus.getSeverity() == IStatus.ERROR) {
             log.error("error installing new plugins :" + installOperation.getResolutionDetails());
             throw new ProvisionException(installResolvedStatus);
         }
-        ProfileModificationJob provisioningJob = (ProfileModificationJob) installOperation.getProvisioningJob(monitor);
+
+        SubMonitor provisionjobMonitor = submonitor.split(5);
+        provisionjobMonitor.subTask("Get provisioning job");
+        ProfileModificationJob provisioningJob = (ProfileModificationJob) installOperation
+                .getProvisioningJob(provisionjobMonitor);
         if (provisioningJob == null) {
             log.error("error installing new plugins :" + installOperation.getResolutionDetails());
             throw new ProvisionException(installResolvedStatus);
         }
         provisioningJob.setPhaseSet(talendPhaseSet);
-        IStatus status = provisioningJob.run(monitor);
+        SubMonitor split = submonitor.split(10);
+        IStatus status = provisioningJob.run(split);
         if (status != null && IStatus.ERROR == status.getSeverity()) {
             log.info("provisionning status is :" + status);
         } else {
@@ -136,15 +149,24 @@ public class PatchP2InstallManager {
             case IStatus.INFO:
             case IStatus.WARNING:
                 newProductVersion = UpdateTools.readProductVersionFromPatch(installingPatchFolder);
+                submonitor.split(5).subTask("syncExtraFeatureIndex");
+
                 UpdateTools.syncExtraFeatureIndex(installingPatchFolder);
                 P2Manager.getInstance().clearOsgiCache();
+                submonitor.split(5).subTask("sync libraries");
+
                 UpdateTools.syncLibraries(installingPatchFolder);
+                submonitor.split(5).subTask("sync m2 repository");
+
                 UpdateTools.syncM2Repository(installingPatchFolder);
-                UpdateTools.installCars(monitor, installingPatchFolder, false);
+                SubMonitor carMonitor = submonitor.split(5);
+                carMonitor.subTask("install cars");
+                UpdateTools.installCars(carMonitor, installingPatchFolder, false);
                 if (GlobalServiceRegister.getDefault().isServiceRegistered(ICoreTisService.class)) {
                     ICoreTisService coreTisService = GlobalServiceRegister.getDefault().getService(ICoreTisService.class);
                     UpdateTools.collectDropBundles(validInstall, extraBundles, coreTisService.getDropBundleInfo());
                 }
+                submonitor.split(5).subTask("");
                 break;
             }
         }
