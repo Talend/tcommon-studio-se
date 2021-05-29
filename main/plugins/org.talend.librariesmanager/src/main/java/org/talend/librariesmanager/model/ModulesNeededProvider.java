@@ -1048,7 +1048,7 @@ public class ModulesNeededProvider {
         List<ModuleNeeded> modulesNeeded = new ArrayList<ModuleNeeded>(getModulesNeeded());
         List<ModuleNeeded> uninstalledModules = new ArrayList<ModuleNeeded>(modulesNeeded.size());
         for (ModuleNeeded module : modulesNeeded) {
-            if (module.getStatus() == ELibraryInstallStatus.NOT_INSTALLED) {
+            if (module.getStatus() == ELibraryInstallStatus.NOT_INSTALLED && !module.usedByDynamicDistribution()) {
                 uninstalledModules.add(module);
             } // else installed or unknow state so ignor.
         }
