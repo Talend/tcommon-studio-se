@@ -14,12 +14,14 @@ package org.talend.core.model.general;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
 import org.apache.commons.lang.StringUtils;
 import org.eclipse.core.runtime.Path;
 import org.osgi.framework.Version;
+import org.talend.commons.exception.ExceptionHandler;
 import org.talend.core.GlobalServiceRegister;
 import org.talend.core.ILibraryManagerService;
 import org.talend.core.database.conn.version.DatabaseDriversCache;
@@ -29,6 +31,9 @@ import org.talend.core.runtime.maven.MavenArtifact;
 import org.talend.core.runtime.maven.MavenConstants;
 import org.talend.core.runtime.maven.MavenUrlHelper;
 import org.talend.core.utils.TalendQuoteUtils;
+import org.talend.utils.json.JSONException;
+import org.talend.utils.json.JSONObject;
+import org.talend.utils.json.JSONTokener;
 
 /**
  * This bean is use to manage needed moduless (perl) and libraries (java).<br/>
@@ -37,6 +42,8 @@ import org.talend.core.utils.TalendQuoteUtils;
  *
  */
 public class ModuleNeeded {
+
+    public static final String ATTR_USED_BY_DYNAMIC_DISTRIBUTION = "dynamicDistribution";
 
     private String id;
 
@@ -93,6 +100,8 @@ public class ModuleNeeded {
      * all jars with release version by default if maven url is not specified.
      */
     private boolean useReleaseVersion = false;
+
+    private Map<String, String> attributes;
 
     ILibraryManagerService libManagerService = (ILibraryManagerService) GlobalServiceRegister.getDefault()
             .getService(ILibraryManagerService.class);
@@ -162,6 +171,10 @@ public class ModuleNeeded {
         this.required = required;
         this.installURL = installURL;
         this.requiredIf = requiredIf;
+        this.attributes = analyseMessage(informationMsg);
+        if (!this.attributes.isEmpty()) {
+            this.informationMsg = "";
+        }
         String name = moduleName;
         String uri = mavenUrl;
         if (moduleName != null) {
@@ -182,6 +195,32 @@ public class ModuleNeeded {
         }
         setModuleName(name);
         setMavenUri(uri);
+    }
+
+    private Map<String, String> analyseMessage(String msg) {
+        Map<String, String> attrMap = new HashMap<>();
+        if (StringUtils.isBlank(msg) || !msg.startsWith("{") || !msg.endsWith("}")) {
+            return attrMap;
+        }
+        try {
+            JSONObject jo = new JSONObject(new JSONTokener(msg));
+            Iterator<String> keys = jo.keys();
+            keys.forEachRemaining(key -> {
+                try {
+                    Object object = jo.get(key);
+                    if (object != null) {
+                        attrMap.put(key, object.toString());
+                    }
+                } catch (JSONException e) {
+                    ExceptionHandler.process(e);
+                }
+            });
+        } catch (Exception e) {
+            if (Boolean.getBoolean("talend.studio.moduleNeeded.init.debug")) {
+                ExceptionHandler.process(e);
+            }
+        }
+        return attrMap;
     }
 
     @Override
@@ -212,6 +251,7 @@ public class ModuleNeeded {
         cloned.requiredIf = requiredIf;
         cloned.status = status;
         cloned.useReleaseVersion = useReleaseVersion;
+        cloned.attributes = attributes;
 
         return cloned;
     }
@@ -669,6 +709,10 @@ public class ModuleNeeded {
         if (!StringUtils.isEmpty(mavenUriFromConfiguration)) {
             this.mavenUri = mavenUriFromConfiguration;
         }
+    }
+
+    public boolean usedByDynamicDistribution() {
+        return Boolean.valueOf(attributes.get(ATTR_USED_BY_DYNAMIC_DISTRIBUTION));
     }
 
     public boolean isDynamic() {

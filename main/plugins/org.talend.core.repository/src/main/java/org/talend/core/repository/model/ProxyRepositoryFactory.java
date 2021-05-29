@@ -88,6 +88,7 @@ import org.talend.core.context.Context;
 import org.talend.core.context.RepositoryContext;
 import org.talend.core.exception.TalendInternalPersistenceException;
 import org.talend.core.hadoop.BigDataBasicUtil;
+import org.talend.core.hadoop.IHadoopDistributionService;
 import org.talend.core.model.components.IComponentsService;
 import org.talend.core.model.general.ILibrariesService;
 import org.talend.core.model.general.ModuleNeeded;
@@ -137,6 +138,7 @@ import org.talend.core.repository.utils.ProjectDataJsonProvider;
 import org.talend.core.repository.utils.RepositoryPathProvider;
 import org.talend.core.repository.utils.XmiResourceManager;
 import org.talend.core.runtime.CoreRuntimePlugin;
+import org.talend.core.runtime.hd.IDynamicDistributionManager;
 import org.talend.core.runtime.repository.item.ItemProductKeys;
 import org.talend.core.runtime.services.IGenericWizardService;
 import org.talend.core.runtime.services.IMavenUIService;
@@ -2195,9 +2197,6 @@ public final class ProxyRepositoryFactory implements IProxyRepositoryFactory {
                     ExceptionHandler.process(e);
                 }
 
-                // init dynamic distirbution after `beforeLogon`, before loading libraries.
-                initDynamicDistribution(monitor);
-
                 // init sdk component
                 try {
                     currentMonitor = subMonitor.newChild(1, SubMonitor.SUPPRESS_NONE);
@@ -2484,6 +2483,23 @@ public final class ProxyRepositoryFactory implements IProxyRepositoryFactory {
         if (runProcessService != null) {
             runProcessService.clearProjectRelatedSettings();
         }
+
+        if (GlobalServiceRegister.getDefault().isServiceRegistered(ICoreUIService.class)) {
+            ICoreUIService coreUiService = GlobalServiceRegister.getDefault().getService(ICoreUIService.class);
+            if (coreUiService != null) {
+                coreUiService.componentsReset();
+            }
+        }
+        
+        if (GlobalServiceRegister.getDefault().isServiceRegistered(IHadoopDistributionService.class)) {
+            IHadoopDistributionService hdService = GlobalServiceRegister.getDefault()
+                    .getService(IHadoopDistributionService.class);
+            if (hdService != null) {
+                IDynamicDistributionManager dynamicDistrManager = hdService.getDynamicDistributionManager();
+                dynamicDistrManager.reset(null);
+            }
+        }
+
         ReferenceProjectProvider.clearTacReferenceList();
         ReferenceProjectProblemManager.getInstance().clearAll();
         fullLogonFinished = false;
