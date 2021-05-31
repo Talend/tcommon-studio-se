@@ -985,9 +985,6 @@ public class NodeUtil {
     }
     
     private static String getRuntimeParameterValue(String value, IElementParameter ep, boolean itemFromTable) {
-        if (itemFromTable == true) {
-            System.out.println(value);
-        }
         if (value == null) {
             value = "";
         }
