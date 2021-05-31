@@ -79,6 +79,7 @@ public class PatchP2InstallManager {
     public String installP2(IProgressMonitor monitor, Logger log, File installingPatchFolder,
             List<String> invalidBundleInfoList) throws Exception {
         String newProductVersion = ""; //$NON-NLS-1$
+        monitor.setTaskName("Installing patches...");
         SubMonitor submonitor = SubMonitor.convert(monitor, 100);
         SubMonitor queryMonitor = submonitor.split(20);
         queryMonitor.subTask("Query installable unit");
@@ -121,6 +122,7 @@ public class PatchP2InstallManager {
         // install
         InstallOperation installOperation = new InstallOperation(getProvisioningSession(), validInstall);
         SubMonitor resolveModalMonitor = submonitor.split(30);
+        submonitor.subTask("installing...");
         IStatus installResolvedStatus = installOperation.resolveModal(resolveModalMonitor);
         if (installResolvedStatus.getSeverity() == IStatus.ERROR) {
             log.error("error installing new plugins :" + installOperation.getResolutionDetails());
