@@ -27,9 +27,6 @@ import java.util.Set;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import javax.script.ScriptEngine;
-import javax.script.ScriptException;
-
 import org.talend.core.GlobalServiceRegister;
 import org.talend.core.model.components.ComponentCategory;
 import org.talend.core.model.components.IComponent;
@@ -55,6 +52,9 @@ import org.talend.core.model.properties.Property;
 import org.talend.core.runtime.IAdditionalInfo;
 import org.talend.core.runtime.projectsetting.RuntimeLineageManager;
 import org.talend.designer.core.ICamelDesignerCoreService;
+
+import delight.rhinosandox.RhinoSandbox;
+import delight.rhinosandox.RhinoSandboxes;
 
 /**
  * DOC xtan class global comment. Detailled comment <br/>
@@ -985,6 +985,9 @@ public class NodeUtil {
     }
     
     private static String getRuntimeParameterValue(String value, IElementParameter ep, boolean itemFromTable) {
+        if (itemFromTable == true) {
+            System.out.println(value);
+        }
         if (value == null) {
             value = "";
         }
@@ -1086,14 +1089,22 @@ public class NodeUtil {
     }
     
     private static boolean isValidLiteralValue(String value) {
-        ScriptEngine se = ContextParameterUtils.getScriptEngine();
-        if(se==null) return true;
-        try {
-            se.eval(value);
+        // ScriptEngine se = ContextParameterUtils.getScriptEngine();
+        final RhinoSandbox sandbox = RhinoSandboxes.create();
+        Object eval = sandbox.eval(null, value);
+        if (eval != null) {
             return true;
-        } catch (ScriptException e) {
+        } else {
             return false;
         }
+
+        // if(se==null) return true;
+        // try {
+        // se.eval(value);
+        // return true;
+        // } catch (ScriptException e) {
+        // return false;
+        // }
     }
     
     private static String checkStringQuotationMarks(String str) {
