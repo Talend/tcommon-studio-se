@@ -112,20 +112,22 @@ public class LibrariesIndexManager {
     public void saveStudioIndexResource() {
         try {
             studioLibLock.writeLock().lock();
-            studioLibIndex.setInitialized(true);
             saveResource(studioLibIndex, LIBRARIES_INDEX);
         } finally {
             studioLibLock.writeLock().unlock();
         }
     }
 
-    public void setInitialized(boolean init) {
+    public void setStudioIndexInitialized(boolean init) {
         studioLibLock.writeLock().lock();
         try {
             studioLibIndex.setInitialized(init);
         } finally {
             studioLibLock.writeLock().unlock();
         }
+    }
+
+    public void setMavenIndexInitialized(boolean init) {
         mavenLibLock.writeLock().lock();
         try {
             mavenLibIndex.setInitialized(true);
@@ -137,7 +139,6 @@ public class LibrariesIndexManager {
     public void saveMavenIndexResource() {
         try {
             mavenLibLock.writeLock().lock();
-            mavenLibIndex.setInitialized(true);
             saveResource(mavenLibIndex, MAVEN_INDEX);
         } finally {
             mavenLibLock.writeLock().unlock();

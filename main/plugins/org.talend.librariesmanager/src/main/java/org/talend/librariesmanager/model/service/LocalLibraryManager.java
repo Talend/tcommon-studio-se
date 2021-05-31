@@ -1533,6 +1533,7 @@ public class LocalLibraryManager implements ILibraryManagerService, IChangedLibr
             }
         }
         if (modified) {
+            LibrariesIndexManager.getInstance().setStudioIndexInitialized(true);
             LibrariesIndexManager.getInstance().saveStudioIndexResource();
         }
     }
@@ -1578,6 +1579,7 @@ public class LocalLibraryManager implements ILibraryManagerService, IChangedLibr
             }
         }
         if (modified) {
+            LibrariesIndexManager.getInstance().setMavenIndexInitialized(true);
             LibrariesIndexManager.getInstance().saveMavenIndexResource();
         }
     }
