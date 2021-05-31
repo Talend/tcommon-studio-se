@@ -523,8 +523,8 @@ public class ModulesNeededProvider {
             boolean needBeanDependencies = ProcessUtils.areBeanDependenciesNeededForProcess(process);
             if (needBeanDependencies) {
                 modulesNeeded.addAll(getCodesModuleNeededs(ERepositoryObjectType.BEANS));
-                modulesNeeded.addAll(getModulesNeededForRoutes());
             }
+            modulesNeeded.addAll(getModulesNeededForRoutes());
         }
         return modulesNeeded;
     }
