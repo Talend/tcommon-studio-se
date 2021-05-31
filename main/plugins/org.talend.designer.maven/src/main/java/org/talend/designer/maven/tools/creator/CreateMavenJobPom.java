@@ -670,16 +670,12 @@ public class CreateMavenJobPom extends AbstractMavenProcessorPom {
                 .getProjectGroupId(ProjectManager.getInstance().getProject(currentJobProperty).getTechnicalLabel());
 
         List<Dependency> dependencies = new ArrayList<>();
-        List<Dependency> codeDependencies = new ArrayList<>();
-        addRoutinesDependencies(dependencies);
-        // codes dependencies (optional)
-        if (ProcessUtils.areBeanDependenciesNeededForProcess(processor.getProcess())) {
-            // codes
-            addCodesDependencies(codeDependencies);
+        // codes
+        addCodesDependencies(dependencies);
 
-            ERepositoryObjectType.getAllTypesOfCodes().forEach(t -> codeDependencies.addAll(PomUtil.getCodesDependencies(t)));
-        }
-        dependencies.addAll(codeDependencies);
+        // codes dependencies (optional)
+        ERepositoryObjectType.getAllTypesOfCodes().forEach(t -> dependencies.addAll(PomUtil.getCodesDependencies(t)));
+
         // libraries of talend/3rd party
         dependencies.addAll(processor.getNeededModules(TalendProcessOptionConstants.MODULES_EXCLUDE_SHADED).stream()
                 .filter(m -> !m.isExcluded()).map(m -> createDenpendency(m, false)).collect(Collectors.toSet()));
