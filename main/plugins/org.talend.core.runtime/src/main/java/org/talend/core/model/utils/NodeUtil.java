@@ -1086,7 +1086,6 @@ public class NodeUtil {
     }
     
     private static boolean isValidLiteralValue(String value) {
-        // ScriptEngine se = ContextParameterUtils.getScriptEngine();
         final RhinoSandbox sandbox = RhinoSandboxes.create();
         Object eval = sandbox.eval(null, value);
         if (eval != null) {
@@ -1095,13 +1094,6 @@ public class NodeUtil {
             return false;
         }
 
-        // if(se==null) return true;
-        // try {
-        // se.eval(value);
-        // return true;
-        // } catch (ScriptException e) {
-        // return false;
-        // }
     }
     
     private static String checkStringQuotationMarks(String str) {
