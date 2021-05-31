@@ -292,10 +292,6 @@ public abstract class AbstractMavenProcessorPom extends CreateMavenBundleTemplat
         dependencies.addAll(getCodesDependencies());
         dependencies.addAll(getCodesJarDependencies());
     }
-    
-    protected void addRoutinesDependencies(final List<Dependency> dependencies) {
-        dependencies.addAll(getRoutinesDependencies());
-    }
 
     protected List<Dependency> getCodesDependencies() {
         List<Dependency> dependencies = new ArrayList<Dependency>();
@@ -316,20 +312,6 @@ public abstract class AbstractMavenProcessorPom extends CreateMavenBundleTemplat
             Dependency beansDependency = PomUtil.createDependency(beansGroupId, beansArtifactId, codeVersion, null);
             dependencies.add(beansDependency);
         }
-        return dependencies;
-    }
-
-    protected List<Dependency> getRoutinesDependencies() {
-        List<Dependency> dependencies = new ArrayList<Dependency>();
-        String projectTechName = ProjectManager.getInstance().getProject(getJobProcessor().getProperty()).getTechnicalLabel();
-        String codeVersion = PomIdsHelper.getCodesVersion(projectTechName);
-
-        // routines
-        String routinesGroupId = PomIdsHelper.getCodesGroupId(projectTechName, TalendMavenConstants.DEFAULT_CODE);
-        String routinesArtifactId = TalendMavenConstants.DEFAULT_ROUTINES_ARTIFACT_ID;
-        Dependency routinesDependency = PomUtil.createDependency(routinesGroupId, routinesArtifactId, codeVersion, null);
-        dependencies.add(routinesDependency);
-
         return dependencies;
     }
 
