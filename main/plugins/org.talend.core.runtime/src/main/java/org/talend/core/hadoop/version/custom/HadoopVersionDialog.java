@@ -425,7 +425,7 @@ public class HadoopVersionDialog extends TitleAreaDialog {
         if (isFromExistVersion) {
             IHadoopService hadoopService = null;
             if (GlobalServiceRegister.getDefault().isServiceRegistered(IHadoopService.class)) {
-                hadoopService = (IHadoopService) GlobalServiceRegister.getDefault().getService(IHadoopService.class);
+                hadoopService = GlobalServiceRegister.getDefault().getService(IHadoopService.class);
             }
             if (hadoopService != null) {
                 for (ECustomVersionGroup group : existVersionSelectionMap.keySet()) {
@@ -437,10 +437,7 @@ public class HadoopVersionDialog extends TitleAreaDialog {
                             for (ECustomVersionType type : types) {
                                 if (type.getGroup() == group) {
                                     Set<String> hadoopLibraries = new HashSet<String>();
-                                    if (ECustomVersionType.PIG == type || ECustomVersionType.PIG_HBASE == type
-                                            || ECustomVersionType.PIG_HCATALOG == type) {
-                                        hadoopLibraries = getLibrariesForPig(type);
-                                    } else if (ECustomVersionType.MAP_REDUCE == type) {
+                                    if (ECustomVersionType.MAP_REDUCE == type) {
                                         hadoopLibraries = getLibrariesForMapReduce(type);
                                     } else if (ECustomVersionType.SPARK == type || ECustomVersionType.SPARK_STREAMING == type) {
                                         hadoopLibraries = getLibrariesForSpark(type);
@@ -532,42 +529,6 @@ public class HadoopVersionDialog extends TitleAreaDialog {
 
         elementParameter = node.getElementParameter("SPARK_MODE");//$NON-NLS-1$
         elementParameter.setValue(sparkMode);
-
-        List<ModuleNeeded> modulesNeeded = node.getModulesNeeded();
-        for (ModuleNeeded module : modulesNeeded) {
-            if (module.isRequired(node.getElementParameters())) {
-                neededLibraries.add(module.getModuleName());
-            }
-        }
-        return neededLibraries;
-    }
-
-    private Set<String> getLibrariesForPig(ECustomVersionType type) {
-        Set<String> neededLibraries = new HashSet<String>();
-        INode node = CoreRuntimePlugin.getInstance().getDesignerCoreService().getRefrenceNode("tPigLoad");//$NON-NLS-1$
-
-        IElementParameter elementParameter = node.getElementParameter("MAPREDUCE");//$NON-NLS-1$
-        if (elementParameter != null) {
-            elementParameter.setValue(true);
-        }
-        elementParameter = node.getElementParameter("DISTRIBUTION");//$NON-NLS-1$
-        if (elementParameter != null) {
-            elementParameter.setValue(distribution);
-        }
-
-        elementParameter = node.getElementParameter("PIG_VERSION");//$NON-NLS-1$
-        if (elementParameter != null) {
-            elementParameter.setValue(version);
-        }
-
-        elementParameter = node.getElementParameter("LOAD");//$NON-NLS-1$
-        if (elementParameter != null) {
-            if (ECustomVersionType.PIG_HBASE == type) {
-                elementParameter.setValue("HBASESTORAGE");//$NON-NLS-1$
-            } else if (ECustomVersionType.PIG_HCATALOG == type) {
-                elementParameter.setValue("HCATLOADER");//$NON-NLS-1$
-            }
-        }
 
         List<ModuleNeeded> modulesNeeded = node.getModulesNeeded();
         for (ModuleNeeded module : modulesNeeded) {
