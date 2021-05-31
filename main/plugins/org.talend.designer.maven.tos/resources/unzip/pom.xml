@@ -15,6 +15,13 @@
             <url>https://artifacts-oss.talend.com/nexus/content/repositories/TalendOpenSourceRelease/</url>
         </repository>
     </repositories>
+    <dependencies>
+		<dependency>
+			<groupId>org.talend.daikon</groupId>
+			<artifactId>crypto-utils</artifactId>
+			<version>${org.talend.daikon.crypto-utils.version}</version>
+		</dependency>
+    </dependencies>
     <build>
         <plugins>
             <plugin>
@@ -42,6 +49,20 @@
                             </artifactItems>
                         </configuration>
                     </execution>
+                    <execution>
+						<id>copy-dependencies</id>
+						<phase>package</phase>
+						<goals>
+							<goal>copy-dependencies</goal>
+						</goals>
+						<configuration>
+							<addParentPoms>true</addParentPoms>
+							<copyPom>true</copyPom>
+							<includeScope>compile</includeScope>
+							<outputDirectory>${basedir}/../tmp/repository</outputDirectory>
+							<useRepositoryLayout>true</useRepositoryLayout>
+						</configuration>
+					</execution>
                 </executions>
             </plugin>
             <plugin>
