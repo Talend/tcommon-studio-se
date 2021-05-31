@@ -305,7 +305,8 @@ public abstract class AbstractMavenProcessorPom extends CreateMavenBundleTemplat
         dependencies.add(routinesDependency);
 
         // beans
-        if (ProcessUtils.isRequiredBeans(jobProcessor.getProcess())) {
+        if (ProcessUtils.isRequiredBeans(jobProcessor.getProcess())
+                && ProcessUtils.areBeanDependenciesNeededForProcess(jobProcessor.getProcess())) {
             String beansGroupId = PomIdsHelper.getCodesGroupId(projectTechName, TalendMavenConstants.DEFAULT_BEAN);
             String beansArtifactId = TalendMavenConstants.DEFAULT_BEANS_ARTIFACT_ID;
             Dependency beansDependency = PomUtil.createDependency(beansGroupId, beansArtifactId, codeVersion, null);
