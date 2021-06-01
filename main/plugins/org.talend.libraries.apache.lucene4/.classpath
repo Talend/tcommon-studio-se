@@ -11,7 +11,7 @@
 	<classpathentry exported="true" kind="lib" path="lib/lucene-memory-4.10.4.jar"/>
 	<classpathentry exported="true" kind="lib" path="lib/lucene-misc-4.10.4.jar"/>
 	<classpathentry exported="true" kind="lib" path="lib/lucene-queries-4.10.4.jar"/>
-	<classpathentry exported="true" kind="lib" path="lib/lucene-queryparser-4.10.4.jar"/>
+	<classpathentry exported="true" kind="lib" path="lib/lucene-queryparser-5.5.5.jar"/>
 	<classpathentry exported="true" kind="lib" path="lib/lucene-sandbox-4.10.4.jar"/>
 	<classpathentry exported="true" kind="lib" path="lib/lucene-spatial-4.10.4.jar"/>
 	<classpathentry exported="true" kind="lib" path="lib/lucene-suggest-4.10.4.jar"/>
