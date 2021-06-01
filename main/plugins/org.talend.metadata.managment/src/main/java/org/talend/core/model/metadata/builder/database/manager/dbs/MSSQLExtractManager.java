@@ -17,7 +17,6 @@ import java.sql.DatabaseMetaData;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -53,16 +52,16 @@ public class MSSQLExtractManager extends ExtractManager {
     @Override
     public String getTableNameBySynonyms(Connection conn, String tableName) {
 
-        Statement sta = null;
+        PreparedStatement sta = null;
         ResultSet resultSet = null;
 
         try {
             if (conn != null && conn.getMetaData().getDatabaseProductName().equals(EDatabaseTypeName.MSSQL.getDisplayName())) {
-                String sql = "SELECT object_id ,parent_object_id as parentid, name AS object_name ,   base_object_name as base_name from sys.synonyms where  name ='"
-                        + tableName + "'";
-                sta = conn.createStatement();
+                String sql = "SELECT object_id ,parent_object_id as parentid, name AS object_name ,   base_object_name as base_name from sys.synonyms where  name =?";
+                sta = conn.prepareStatement(sql);
+                sta.setString(1, tableName);
                 ExtractMetaDataUtils.getInstance().setQueryStatementTimeout(sta);
-                resultSet = sta.executeQuery(sql);
+                resultSet = sta.executeQuery();
                 while (resultSet.next()) {
                     String baseName = resultSet.getString("base_name").trim();
                     if (baseName.contains(".") && baseName.length() > 2) {
@@ -124,16 +123,25 @@ public class MSSQLExtractManager extends ExtractManager {
                 }
             }
             // need to retrieve columns of synonym by useing sql rather than get them from jdbc metadata
-            String synSQL = "select * from INFORMATION_SCHEMA.COLUMNS where  TABLE_NAME =\'" + TABLE_NAME + "\'";
+            String synSQL = "select * from INFORMATION_SCHEMA.COLUMNS where  TABLE_NAME =?";
             if (null != TABLE_SCHEMA) {
-                synSQL += "\nand TABLE_SCHEMA =\'" + TABLE_SCHEMA + "\'";
+                synSQL += "\nand TABLE_SCHEMA =?";
             }
             if (!("").equals(metadataConnection.getDatabase())) {
-                synSQL += "\nand TABLE_CATALOG =\'" + metadataConnection.getDatabase() + "\'";
+                synSQL += "\nand TABLE_CATALOG =?";
             }
-            Statement sta = extractMeta.getConn().createStatement();
+            PreparedStatement sta = extractMeta.getConn().prepareStatement(synSQL);
+            sta.setString(1, TABLE_NAME);
+            int idx = 2;
+            if (null != TABLE_SCHEMA) {
+                sta.setString(idx, TABLE_SCHEMA);
+                idx++;
+            }
+            if (!("").equals(metadataConnection.getDatabase())) {
+                sta.setString(idx, metadataConnection.getDatabase());
+            }
             extractMeta.setQueryStatementTimeout(sta);
-            ResultSet columns = sta.executeQuery(synSQL);
+            ResultSet columns = sta.executeQuery();
             String typeName = null;
             int index = 0;
             List<String> columnLabels = new ArrayList<String>();

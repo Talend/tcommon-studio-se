@@ -13,9 +13,9 @@
 package org.talend.commons.utils.database;
 
 import java.sql.Connection;
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -52,10 +52,12 @@ public class Sybase16SADatabaseMetaData extends SybaseDatabaseMetaData {
         for (String catalogName : catList) {
             String sql = createSqlByLoginAndCatalog(login, catalogName);
             ResultSet rs = null;
-            Statement stmt = null;
+            PreparedStatement stmt = null;
             try {
-                stmt = connection.createStatement();
-                rs = stmt.executeQuery(sql);
+                stmt = connection.prepareStatement(sql);
+                stmt.setString(1, login);
+
+                rs = stmt.executeQuery();
 
                 while (rs.next()) {
                     int temp = rs.getInt(1);
@@ -113,8 +115,7 @@ public class Sybase16SADatabaseMetaData extends SybaseDatabaseMetaData {
      */
     protected String createSqlByLoginAndCatalog(String loginName, String catalogName) {
         String sql = "select count(*) from " + catalogName
-                + ".dbo.sysusers where suid in (select suid from "+catalogName+".dbo.syslogins where name = '" + loginName
-                + "')";
+                + ".dbo.sysusers where suid in (select suid from " + catalogName + ".dbo.syslogins where name = ? )";
         return sql;
     }
 
