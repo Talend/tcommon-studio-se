@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<classpath>
+	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
+	<classpathentry kind="con" path="org.eclipse.pde.core.requiredPlugins"/>
+	<classpathentry exported="true" kind="lib" path="lib/lucene-analyzers-common-4.10.4.jar"/>
+	<classpathentry exported="true" kind="lib" path="lib/lucene-core-4.10.4.jar"/>
+	<classpathentry exported="true" kind="lib" path="lib/lucene-expressions-4.10.4.jar"/>
+	<classpathentry exported="true" kind="lib" path="lib/lucene-grouping-4.10.4.jar"/>
+	<classpathentry exported="true" kind="lib" path="lib/lucene-highlighter-4.10.4.jar"/>
+	<classpathentry exported="true" kind="lib" path="lib/lucene-join-4.10.4.jar"/>
+	<classpathentry exported="true" kind="lib" path="lib/lucene-memory-4.10.4.jar"/>
+	<classpathentry exported="true" kind="lib" path="lib/lucene-misc-4.10.4.jar"/>
+	<classpathentry exported="true" kind="lib" path="lib/lucene-queries-4.10.4.jar"/>
+	<classpathentry exported="true" kind="lib" path="lib/lucene-queryparser-4.10.4.jar"/>
+	<classpathentry exported="true" kind="lib" path="lib/lucene-sandbox-4.10.4.jar"/>
+	<classpathentry exported="true" kind="lib" path="lib/lucene-spatial-4.10.4.jar"/>
+	<classpathentry exported="true" kind="lib" path="lib/lucene-suggest-4.10.4.jar"/>
+	<classpathentry kind="output" path="bin"/>
+</classpath>
