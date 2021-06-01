@@ -40,10 +40,12 @@ import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IPath;
 import org.eclipse.core.runtime.IProgressMonitor;
+import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.NullProgressMonitor;
 import org.eclipse.core.runtime.OperationCanceledException;
 import org.eclipse.core.runtime.Path;
 import org.eclipse.core.runtime.SubMonitor;
+import org.eclipse.core.runtime.jobs.Job;
 import org.eclipse.emf.common.util.URI;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.resource.Resource;
@@ -87,7 +89,6 @@ import org.talend.core.context.CommandLineContext;
 import org.talend.core.context.Context;
 import org.talend.core.context.RepositoryContext;
 import org.talend.core.exception.TalendInternalPersistenceException;
-import org.talend.core.hadoop.BigDataBasicUtil;
 import org.talend.core.hadoop.IHadoopDistributionService;
 import org.talend.core.model.components.IComponentsService;
 import org.talend.core.model.general.ILibrariesService;
@@ -146,7 +147,6 @@ import org.talend.core.runtime.util.ItemDateParser;
 import org.talend.core.runtime.util.JavaHomeUtil;
 import org.talend.core.runtime.util.SharedStudioUtils;
 import org.talend.core.service.ICoreUIService;
-import org.talend.core.utils.CodesJarResourceCache;
 import org.talend.cwm.helper.SubItemHelper;
 import org.talend.cwm.helper.TableHelper;
 import org.talend.designer.runprocess.IRunProcessService;
@@ -2227,10 +2227,13 @@ public final class ProxyRepositoryFactory implements IProxyRepositoryFactory {
                     }
                 }
 
-                currentMonitor = subMonitor.newChild(1, SubMonitor.SUPPRESS_NONE);
-                currentMonitor.beginTask(Messages.getString("ProxyRepositoryFactory.load.componnents"), 1); //$NON-NLS-1$
-                IComponentsService.get().getComponentsFactory().getComponents();
-                TimeMeasurePerformance.step("logOnProject", "Initialize components"); //$NON-NLS-1$
+                if (CommonsPlugin.isJUnitTest() || PluginChecker.isSWTBotLoaded()) {
+                    // component init for cmdline is done in another place
+                    currentMonitor = subMonitor.newChild(1, SubMonitor.SUPPRESS_NONE);
+                    currentMonitor.beginTask(Messages.getString("ProxyRepositoryFactory.load.componnents"), 1); //$NON-NLS-1$
+                    IComponentsService.get().getComponentsFactory().getComponents();
+                    TimeMeasurePerformance.step("logOnProject", "Initialize components"); //$NON-NLS-1$
+                }
 
                 ICoreService coreService = getCoreService();
                 if (coreService != null) {
@@ -2247,8 +2250,6 @@ public final class ProxyRepositoryFactory implements IProxyRepositoryFactory {
                     // ignore
                     ExceptionHandler.process(e);
                 }
-
-                CodesJarResourceCache.initCodesJarCache();
 
                 currentMonitor = subMonitor.newChild(1, SubMonitor.SUPPRESS_NONE);
                 currentMonitor.beginTask("Execute before logon migrations tasks", 1); //$NON-NLS-1$
@@ -2313,27 +2314,13 @@ public final class ProxyRepositoryFactory implements IProxyRepositoryFactory {
                     currentMonitor.beginTask(Messages.getString("ProxyRepositoryFactory.synch.repo.items"), 1); //$NON-NLS-1$
 
                     if (!isCommandLineLocalRefProject) {
-                        try {
-                            coreService.syncAllRoutines();
-                            // PTODO need refactor later, this is not good, I think
-                            coreService.syncAllBeans();
-                        } catch (SystemException e1) {
-                            //
-                            ExceptionHandler.process(e1);
-                        }
+                        syncAndInstallCodes(currentMonitor);
                     }
                 }
+
                 if (monitor != null && monitor.isCanceled()) {
                     throw new OperationCanceledException(""); //$NON-NLS-1$
                 }
-                // rules
-                if (coreUiService != null && PluginChecker.isRulesPluginLoaded()) {
-                    coreUiService.syncAllRules();
-                }
-                if (monitor != null && monitor.isCanceled()) {
-                    throw new OperationCanceledException(""); //$NON-NLS-1$
-                }
-                TimeMeasurePerformance.step("logOnProject", "sync repository (routines/rules/beans)"); //$NON-NLS-1$ //$NON-NLS-2$
 
                 // log4j prefs
                 if (coreUiService != null && coreService != null) {
@@ -2352,11 +2339,6 @@ public final class ProxyRepositoryFactory implements IProxyRepositoryFactory {
                     ExceptionHandler.process(e);
                 }
 
-                if (runProcessService != null && !isCommandLineLocalRefProject) {
-                    runProcessService.initializeRootPoms(monitor);
-
-                    TimeMeasurePerformance.step("logOnProject", "install / setup root poms"); //$NON-NLS-1$ //$NON-NLS-2$
-                }
                 if (GlobalServiceRegister.getDefault().isServiceRegistered(ITDQRepositoryService.class)) {
                     ITDQRepositoryService tdqRepositoryService = GlobalServiceRegister.getDefault()
                             .getService(ITDQRepositoryService.class);
@@ -2414,15 +2396,44 @@ public final class ProxyRepositoryFactory implements IProxyRepositoryFactory {
         JavaUtils.updateProjectJavaVersion(newVersion);
     }
 
-    private void initDynamicDistribution(IProgressMonitor monitor) {
-        try {
-            if (BigDataBasicUtil.isDynamicDistributionLoaded(monitor)) {
-                BigDataBasicUtil.reloadAllDynamicDistributions(monitor);
-            } else {
-                BigDataBasicUtil.loadDynamicDistribution(monitor);
+    private void syncAndInstallCodes(IProgressMonitor monitor) {
+        if (CommonsPlugin.isHeadless() || CommonsPlugin.isJUnitTest() || PluginChecker.isSWTBotLoaded()) {
+            try {
+                doSyncAndInstallCodes(monitor);
+            } catch (SystemException e) {
+                ExceptionHandler.process(e);
             }
-        } catch (Exception e) {
-            ExceptionHandler.process(e);
+        } else {
+            Job job = new Job("Synchronize and install codes") {
+
+                @Override
+                protected IStatus run(IProgressMonitor monitor) {
+                    try {
+                        doSyncAndInstallCodes(monitor);
+                        return org.eclipse.core.runtime.Status.OK_STATUS;
+                    } catch (Exception e) {
+                        return new org.eclipse.core.runtime.Status(IStatus.ERROR, CoreRepositoryPlugin.PLUGIN_ID, 1,
+                                e.getMessage(), e);
+                    }
+                }
+
+            };
+            job.setUser(false);
+            job.setPriority(Job.LONG);
+            job.schedule();
+        }
+    }
+
+    private void doSyncAndInstallCodes(IProgressMonitor monitor) throws SystemException {
+        ICoreService coreService = getCoreService();
+        if (coreService != null) {
+            coreService.syncAllRoutines();
+            coreService.syncAllBeans();
+            TimeMeasurePerformance.step("logOnProject", "sync repository (routines/beans)"); //$NON-NLS-1$ //$NON-NLS-2$
+        }
+        if (IRunProcessService.get() != null) {
+            IRunProcessService.get().initializeRootPoms(monitor);
+            TimeMeasurePerformance.step("logOnProject", "install / setup root poms"); //$NON-NLS-1$ //$NON-NLS-2$
         }
     }
 
