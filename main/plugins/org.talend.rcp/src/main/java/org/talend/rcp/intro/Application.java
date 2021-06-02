@@ -333,7 +333,7 @@ public class Application implements IApplication {
 
                 @Override
                 public void run(IProgressMonitor monitor) throws InvocationTargetException, InterruptedException {
-                    monitor.beginTask("Installing patch...", IProgressMonitor.UNKNOWN);
+                    monitor.beginTask("Installing patches...", IProgressMonitor.UNKNOWN);
                     installed = patchComponent.install(monitor);
                 }
             };
