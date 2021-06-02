@@ -225,7 +225,7 @@ public final class ContextParameterUtils {
             for (Entry<String, Object> entry : entries) {
                 String val = entry.getValue().toString();
                 if (entry.getValue() instanceof String) {
-                    val = "\"" + val + "\"";
+                    val = "\"" + val.replace("\"", "\\\"") + "\"";
                 }
 
                 newCode = newCode.replace(JAVA_NEW_CONTEXT_PREFIX + entry.getKey(), val);

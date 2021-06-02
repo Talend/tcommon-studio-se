@@ -453,14 +453,14 @@ public class ContextParameterUtilsTest {
         contextParam = new JobContextParameter();
         contextParam.setName("new2");
         contextParam.setType(JavaTypesManager.getDefaultJavaType().getId());
-        contextParam.setValue("\"abc");
+        contextParam.setValue("\"ab\"c\"");
 
         jc.getContextParameterList().add(contextParam);
 
+        value = "context.new1";
+
         // invoke this to set context variables
         ContextParameterUtils.convertContext2Literal4AnyVar(value, jc);
-
-        value = "context.new1";
 
         assertTrue(ContextParameterUtils.isValidLiteralValue(value));
 
