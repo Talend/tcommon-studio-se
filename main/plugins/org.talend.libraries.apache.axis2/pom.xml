@@ -71,7 +71,6 @@
 									<artifactId>xmlschema-core</artifactId>
 									<version>2.2.1</version>
 								</artifactItem>
-								<artifactItem>
 							</artifactItems>
 						</configuration>
 					</execution>
