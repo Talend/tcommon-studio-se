@@ -14,9 +14,9 @@ package org.talend.core.model.metadata.builder.database.manager.dbs;
 
 import java.sql.Connection;
 import java.sql.DatabaseMetaData;
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashSet;
@@ -93,8 +93,8 @@ public class ImpalaExtractManager extends ExtractManager {
             DatabaseMetaData metaData = conn.getMetaData();
             if (!tableInfoParameters.isUsedName()) {
                 if (tableInfoParameters.getSqlFiter() != null && !"".equals(tableInfoParameters.getSqlFiter())) { //$NON-NLS-1$
-                    Statement stmt = conn.createStatement();
-                    ResultSet rsTables = stmt.executeQuery(tableInfoParameters.getSqlFiter());
+                    PreparedStatement stmt = conn.prepareStatement(tableInfoParameters.getSqlFiter());
+                    ResultSet rsTables = stmt.executeQuery();
                     itemTablesName = ExtractMetaDataFromDataBase.getTableNamesFromQuery(rsTables, conn);
                     rsTables.close();
                     stmt.close();

@@ -16,9 +16,9 @@ import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.sql.DatabaseMetaData;
 import java.sql.Driver;
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
@@ -148,7 +148,7 @@ public class DBConnectionFillerImpl extends MetadataFillerImpl<DatabaseConnectio
             }
         }
         java.sql.Connection sqlConnection = null;
-        Statement stmt = null;
+        PreparedStatement stmt = null;
         ResultSet rs = null;
         try {
             // MetadataConnectionUtils.setMetadataCon(metadataBean);
@@ -176,8 +176,8 @@ public class DBConnectionFillerImpl extends MetadataFillerImpl<DatabaseConnectio
                 String databaseType = dbconn.getDatabaseType();
                 // TDQ-16331 Azure Mysql must use 'select version()' to get correct version
                 if (EDatabaseTypeName.MYSQL.getDisplayName().equals(databaseType)) {
-                    stmt = sqlConnection.createStatement();
-                    rs = stmt.executeQuery("select version()"); //$NON-NLS-1$
+                    stmt = sqlConnection.prepareStatement("select version()");
+                    rs = stmt.executeQuery(); // $NON-NLS-1$
                     while (rs.next()) {
                         productVersion = rs.getString(1);
                     }
@@ -1017,12 +1017,12 @@ public class DBConnectionFillerImpl extends MetadataFillerImpl<DatabaseConnectio
                 isOracle = MetadataConnectionUtils.isOracle(c);
                 isOracleJdbc = MetadataConnectionUtils.isOracleJDBC(c);
                 if ((isOracleJdbc || isOracle) && !isOracle8i) {// oracle and not oracle8
-                    Statement stmt;
+                    PreparedStatement stmt;
                     try {
                         // MOD qiongli TDQ-4732 use the common method to create statement both DI and DQ,avoid Exception
                         // for top.
-                        stmt = dbJDBCMetadata.getConnection().createStatement();
-                        ResultSet rsTables = stmt.executeQuery(TableInfoParameters.ORACLE_10G_RECBIN_SQL);
+                        stmt = dbJDBCMetadata.getConnection().prepareStatement(TableInfoParameters.ORACLE_10G_RECBIN_SQL);
+                        ResultSet rsTables = stmt.executeQuery();
                         tablesToFilter = ExtractMetaDataFromDataBase.getTableNamesFromQuery(rsTables,
                                 dbJDBCMetadata.getConnection());
                         rsTables.close();
@@ -1120,14 +1120,15 @@ public class DBConnectionFillerImpl extends MetadataFillerImpl<DatabaseConnectio
                     && dbJDBCMetadata.getDatabaseProductName().equals("Microsoft SQL Server")) { //$NON-NLS-1$
                 for (String element : tableType) {
                     if (element.equals("SYNONYM")) { //$NON-NLS-1$
-                        Statement stmt = extractMeta.getConn().createStatement();
-                        extractMeta.setQueryStatementTimeout(stmt);
                         String schemaname = schemaPattern + ".sysobjects"; //$NON-NLS-1$
                         String sql = "select name from " + schemaname + " where xtype='SN'"; //$NON-NLS-1$//$NON-NLS-2$
                         if ("dbo".equalsIgnoreCase(schemaPattern)) { //$NON-NLS-1$
+                            PreparedStatement stmt = extractMeta.getConn().prepareStatement(sql);
+                            extractMeta.setQueryStatementTimeout(stmt);
+
                             // SELECT name AS object_name ,SCHEMA_NAME(schema_id) AS schema_name FROM sys.objects where
                             // type='SN'
-                            ResultSet rsTables = stmt.executeQuery(sql);
+                            ResultSet rsTables = stmt.executeQuery();
                             while (rsTables.next()) {
                                 String nameKey = rsTables.getString("name").trim(); //$NON-NLS-1$
 
@@ -1139,6 +1140,8 @@ public class DBConnectionFillerImpl extends MetadataFillerImpl<DatabaseConnectio
                                 metadatatable.setLabel(metadatatable.getName());
                                 list.add(metadatatable);
                             }
+                            rsTables.close();
+                            stmt.close();
                         }
                     }
                 }
@@ -1146,10 +1149,12 @@ public class DBConnectionFillerImpl extends MetadataFillerImpl<DatabaseConnectio
                     && dbJDBCMetadata.getDatabaseProductName().startsWith("DB2/")) { //$NON-NLS-1$
                 for (String element : tableType) {
                     if (element.equals("SYNONYM")) { //$NON-NLS-1$
-                        Statement stmt = extractMeta.getConn().createStatement();
+                        String sql = "SELECT NAME FROM SYSIBM.SYSTABLES where TYPE='A' and BASE_SCHEMA = ?"; //$NON-NLS-1$ //$NON-NLS-2$
+                        PreparedStatement stmt = extractMeta.getConn().prepareStatement(sql);
+                        stmt.setString(1, schemaPattern);
+
                         extractMeta.setQueryStatementTimeout(stmt);
-                        String sql = "SELECT NAME FROM SYSIBM.SYSTABLES where TYPE='A' and BASE_SCHEMA = '" + schemaPattern + "'"; //$NON-NLS-1$ //$NON-NLS-2$
-                        ResultSet rsTables = stmt.executeQuery(sql);
+                        ResultSet rsTables = stmt.executeQuery();
                         while (rsTables.next()) {
                             String nameKey = rsTables.getString("NAME").trim(); //$NON-NLS-1$
 
@@ -1161,6 +1166,8 @@ public class DBConnectionFillerImpl extends MetadataFillerImpl<DatabaseConnectio
                             metadatatable.setLabel(metadatatable.getName());
                             list.add(metadatatable);
                         }
+                        rsTables.close();
+                        stmt.close();
                     }
                 }
             }
@@ -1273,12 +1280,12 @@ public class DBConnectionFillerImpl extends MetadataFillerImpl<DatabaseConnectio
                 boolean isOracleJdbc = MetadataConnectionUtils.isOracleJDBC(c);
                 // MetadataConnectionUtils.isOracle8i(connection)
                 if ((isOracle || isOracleJdbc) && !flag) {// oracle and not oracle8
-                    Statement stmt;
                     try {
                         // MOD qiongli TDQ-4732 use the common method to create statement both DI and DQ,avoid Exception
                         // for top.
-                        stmt = dbJDBCMetadata.getConnection().createStatement();
-                        ResultSet rsTables = stmt.executeQuery(TableInfoParameters.ORACLE_10G_RECBIN_SQL);
+                        PreparedStatement stmt = dbJDBCMetadata.getConnection()
+                                .prepareStatement(TableInfoParameters.ORACLE_10G_RECBIN_SQL);
+                        ResultSet rsTables = stmt.executeQuery();
                         tablesToFilter = ExtractMetaDataFromDataBase.getTableNamesFromQuery(rsTables,
                                 dbJDBCMetadata.getConnection());
                         rsTables.close();
@@ -1878,11 +1885,11 @@ public class DBConnectionFillerImpl extends MetadataFillerImpl<DatabaseConnectio
      */
     private String executeGetCommentStatement(String queryStmt, java.sql.Connection connection) {
         String comment = null;
-        Statement statement = null;
+        PreparedStatement statement = null;
         ResultSet resultSet = null;
         try {
-            statement = connection.createStatement();
-            statement.execute(queryStmt);
+            statement = connection.prepareStatement(queryStmt);
+            statement.execute();
 
             // get the results
             resultSet = statement.getResultSet();

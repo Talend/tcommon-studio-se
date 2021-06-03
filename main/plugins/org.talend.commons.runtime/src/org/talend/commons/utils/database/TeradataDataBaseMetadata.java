@@ -13,9 +13,9 @@
 package org.talend.commons.utils.database;
 
 import java.sql.Connection;
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -97,13 +97,12 @@ public class TeradataDataBaseMetadata extends FakeDatabaseMetaData {
         int dbMajorVersion = connection.getMetaData().getDatabaseMajorVersion();
         String sql = "HELP COLUMN \"" + schema + "\".\"" + table + "\".* ";//$NON-NLS-1$//$NON-NLS-2$//$NON-NLS-3$
         ResultSet rs = null;
-        Statement stmt = null;
+        PreparedStatement stmt = null;
         String columnName = null;
         List<String[]> list = new ArrayList<String[]>();
         try {
             if (dbMajorVersion > 12) {
-                sql = "SELECT * from DBC.INDICESV WHERE UPPER(databasename) = UPPER('" + schema //$NON-NLS-1$
-                        + "') AND UPPER(tablename) = UPPER('" + table + "') AND UPPER(UniqueFlag) = UPPER('Y')"; //$NON-NLS-1$//$NON-NLS-2$
+                sql = "SELECT * from DBC.INDICESV WHERE UPPER(databasename) = UPPER(?) AND UPPER(tablename) = UPPER(?) AND UPPER(UniqueFlag) = UPPER('Y')"; //$NON-NLS-1$ //$NON-NLS-2$
                 rs = getResultSet(catalog, schema, table, sql);
                 while (rs.next()) {
                     columnName = rs.getString("ColumnName").trim(); //$NON-NLS-1$
@@ -112,8 +111,11 @@ public class TeradataDataBaseMetadata extends FakeDatabaseMetaData {
                     list.add(r);
                 }
             } else {
-                stmt = connection.createStatement();
-                rs = stmt.executeQuery(sql);
+                stmt = connection.prepareStatement(sql);
+                stmt.setString(1, schema);
+                stmt.setString(2, table);
+
+                rs = stmt.executeQuery();
                 while (rs.next()) {
                     columnName = rs.getString("Column Name").trim(); //$NON-NLS-1$
                     String pk = rs.getString("Primary?");//$NON-NLS-1$
@@ -138,10 +140,10 @@ public class TeradataDataBaseMetadata extends FakeDatabaseMetaData {
 
     public ResultSet getResultSet(String catalog, String schema, String table, String sql) throws SQLException {
         ResultSet rs = null;
-        Statement stmt = null;
+        PreparedStatement stmt = null;
         try {
-            stmt = connection.createStatement();
-            rs = stmt.executeQuery(sql);
+            stmt = connection.prepareStatement(sql);
+            rs = stmt.executeQuery();
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
@@ -203,17 +205,15 @@ public class TeradataDataBaseMetadata extends FakeDatabaseMetaData {
             sysTable = "DBC.TABLESV";//$NON-NLS-1$
         }
         if (types != null && types.length > 0) {
-            sql = "SELECT * from " + sysTable + " WHERE UPPER(databasename) = UPPER('" + database //$NON-NLS-1$//$NON-NLS-2$
-                    + "') AND tablekind " + addTypesToSql(types); //$NON-NLS-1$
+            sql = "SELECT * from " + sysTable + " WHERE UPPER(databasename) = UPPER(?) AND tablekind " + addTypesToSql(types); //$NON-NLS-1$
         } else {
             // When the types is empty, all the tables and views will be retrieved.
-            sql = "SELECT * from " + sysTable + " WHERE UPPER(databasename) = UPPER('" + database //$NON-NLS-1$//$NON-NLS-2$
-                    + "') AND (tablekind = 'T' or tablekind = 'V')"; //$NON-NLS-1$
+            sql = "SELECT * from " + sysTable + " WHERE UPPER(databasename) = UPPER(?) AND (tablekind = 'T' or tablekind = 'V')"; //$NON-NLS-1$
         }
 
         // add the filter for table/views
         if (!StringUtils.isEmpty(tableNamePattern)) {
-            sql = sql + " AND tablename LIKE '" + tableNamePattern + "'";//$NON-NLS-1$//$NON-NLS-2$
+            sql = sql + " AND tablename LIKE ?";//$NON-NLS-1$ //$NON-NLS-2$
         }
 
         if (types != null && types.length > 0) {
@@ -223,11 +223,18 @@ public class TeradataDataBaseMetadata extends FakeDatabaseMetaData {
         }
 
         ResultSet rs = null;
-        Statement stmt = null;
+        PreparedStatement stmt = null;
         List<String[]> list = new ArrayList<String[]>();
         try {
-            stmt = connection.createStatement();
-            rs = stmt.executeQuery(sql);
+            stmt = connection.prepareStatement(sql);
+            stmt.setString(1, database);
+
+            // add the filter for table/views
+            if (!StringUtils.isEmpty(tableNamePattern)) {
+                stmt.setString(2, tableNamePattern);
+            }
+
+            rs = stmt.executeQuery();
 
             while (rs.next()) {
                 String name = rs.getString("TableName").trim(); //$NON-NLS-1$
@@ -326,21 +333,33 @@ public class TeradataDataBaseMetadata extends FakeDatabaseMetaData {
         if (!StringUtils.isEmpty(database)) {
             sql = "HELP COLUMN \"" + database + "\".\"" + tableNamePattern + "\".* ";//$NON-NLS-1$//$NON-NLS-2$//$NON-NLS-3$
             if (dbMajorVersion > 12) {
-                sql = "SELECT * from DBC.COLUMNSV WHERE UPPER(databasename) = UPPER('" + database //$NON-NLS-1$
-                        + "') AND UPPER(tablename) = UPPER('" + tableNamePattern + "')" + " Order by tablename "; //$NON-NLS-1$//$NON-NLS-2$//$NON-NLS-3$
+                sql = "SELECT * from DBC.COLUMNSV WHERE UPPER(databasename) = UPPER(?) AND UPPER(tablename) = UPPER(?)" //$NON-NLS-1$
+                        + " Order by tablename "; //$NON-NLS-1$ //$NON-NLS-3$
             }
         } else {
             sql = "HELP COLUMN \"" + tableNamePattern + "\".* ";//$NON-NLS-1$//$NON-NLS-2$
             if (dbMajorVersion > 12) {
-                sql = "SELECT * from DBC.COLUMNSV WHERE UPPER(tablename) = UPPER('" + tableNamePattern + "')" + " Order by tablename "; //$NON-NLS-1$//$NON-NLS-2$//$NON-NLS-3$
+                sql = "SELECT * from DBC.COLUMNSV WHERE UPPER(tablename) = UPPER(?)" + " Order by tablename "; //$NON-NLS-1$//$NON-NLS-2$
+                                                                                                               // //$NON-NLS-3$
             }
         }
         ResultSet rs = null;
-        Statement stmt = null;
+        PreparedStatement stmt = null;
         List<String[]> list = new ArrayList<String[]>();
         try {
-            stmt = connection.createStatement();
-            rs = stmt.executeQuery(sql);
+            stmt = connection.prepareStatement(sql);
+            if (!StringUtils.isEmpty(database)) {
+                if (dbMajorVersion > 12) {
+                    stmt.setString(1, database);
+                    stmt.setString(2, tableNamePattern);
+                }
+            } else {
+                if (dbMajorVersion > 12) {
+                    stmt.setString(1, tableNamePattern);
+                }
+            }
+
+            rs = stmt.executeQuery();
             while (rs.next()) {
                 String tableName = tableNamePattern;
                 String columnName = null;

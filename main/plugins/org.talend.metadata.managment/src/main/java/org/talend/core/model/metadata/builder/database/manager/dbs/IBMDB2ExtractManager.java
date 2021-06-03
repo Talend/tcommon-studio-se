@@ -14,9 +14,9 @@ package org.talend.core.model.metadata.builder.database.manager.dbs;
 
 import java.sql.Connection;
 import java.sql.DatabaseMetaData;
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -68,15 +68,17 @@ public class IBMDB2ExtractManager extends ExtractManager {
 
     @Override
     public String getTableNameBySynonyms(Connection conn, String tableName) {
-        Statement sta = null;
+        PreparedStatement sta = null;
         ResultSet resultSet = null;
 
         try {
             if (conn != null && conn.getMetaData().getDatabaseProductName().startsWith(DATABASE_PRODUCT_NAME)) {
-                String sql = "SELECT NAME,BASE_NAME FROM SYSIBM.SYSTABLES where TYPE='A' and  name ='" + tableName + "'";
-                sta = conn.createStatement();
+                String sql = "SELECT NAME,BASE_NAME FROM SYSIBM.SYSTABLES where TYPE='A' and  name =?";
+                sta = conn.prepareStatement(sql);
+                sta.setString(1, tableName);
+
                 ExtractMetaDataUtils.getInstance().setQueryStatementTimeout(sta);
-                resultSet = sta.executeQuery(sql);
+                resultSet = sta.executeQuery();
                 while (resultSet.next()) {
                     String baseName = resultSet.getString("base_name").trim();
                     return baseName;
@@ -113,15 +115,16 @@ public class IBMDB2ExtractManager extends ExtractManager {
             ExtractMetaDataUtils extractMeta = ExtractMetaDataUtils.getInstance();
             // need to retrieve columns of synonym by useing sql rather than get them from jdbc metadata
             String synSQL = "SELECT a.*\n" + "FROM SYSCAT.COLUMNS a\n" + "LEFT OUTER JOIN SYSIBM.SYSTABLES b\n"
-                    + "ON a.TABNAME = b.NAME\n" + "AND a.TABSCHEMA = b.CREATOR\n" + "where a.TABNAME =" + "\'" + tableName
-                    + "\'\n";
+                    + "ON a.TABNAME = b.NAME\n" + "AND a.TABSCHEMA = b.CREATOR\n" + "where a.TABNAME =?\n";
             if (!("").equals(metadataConnection.getSchema())) {
                 synSQL += "AND b.CREATOR =\'" + metadataConnection.getSchema() + "\'";
             }
             synSQL += "ORDER BY a.COLNO";
-            Statement sta = extractMeta.getConn().createStatement();
+            PreparedStatement sta = extractMeta.getConn().prepareStatement(synSQL);
+            sta.setString(1, tableName);
+
             extractMeta.setQueryStatementTimeout(sta);
-            ResultSet columns = sta.executeQuery(synSQL);
+            ResultSet columns = sta.executeQuery();
             String typeName = null;
             int index = 0;
             List<String> columnLabels = new ArrayList<String>();

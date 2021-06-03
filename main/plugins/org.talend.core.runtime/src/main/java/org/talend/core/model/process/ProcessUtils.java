@@ -889,63 +889,6 @@ public final class ProcessUtils {
         return isRequiredBeans(process, ProjectManager.getInstance().getCurrentProject());
     }
 
-    public static boolean areBeanDependenciesNeededForProcess(IProcess process) {
-        if (process == null)
-            return false;
-
-        boolean needBeanDependencies = false;
-        List<? extends INode> cBeanRegisterNodes = process.getNodesOfType("cBeanRegister");
-        List<? extends INode> cBeanNodes = process.getNodesOfType("cBean");
-        if (cBeanNodes.size() > 0) {
-            for (int i = 0; i < cBeanNodes.size(); i++) {
-                INode node = cBeanNodes.get(i);
-                if ((boolean) node.getElementParameter("FROM_REGISTRY").getValue()) {
-                    String value = (String)node.getElementParameter("REF_ID").getValue();
-                    if (StringUtils.isNotBlank(value) && !"\"\"".equals(value)) {
-                        needBeanDependencies = true;
-                        break;
-                    }
-                }
-
-                if ((boolean)node.getElementParameter("FROM_CLASS").getValue()) {
-                    if (StringUtils.isNotBlank((String)node.getElementParameter("BEAN").getValue())) {
-                        needBeanDependencies = true;
-                        break;
-                    }
-                }
-            }
-        }
-
-        if (needBeanDependencies == false && cBeanRegisterNodes.size() > 0) {
-            for (int i = 0; i < cBeanRegisterNodes.size(); i++) {
-                INode node = cBeanRegisterNodes.get(i);
-
-                if ((boolean) node.getElementParameter("CONFIG_BY_CODE").getValue()) {
-                    String nodeText = (String) node.getElementParameter("CODE").getValue();
-                    boolean hasBeans = nodeText.contains("new beans.");
-                    boolean hasComment = nodeText.contains("//");
-                    int commentIndex = nodeText.indexOf("//");
-                    int newBeansIndex = nodeText.indexOf("new beans.");
-
-                    if (nodeText != null && (hasBeans && hasComment && commentIndex > newBeansIndex)) {
-                        needBeanDependencies = true;
-                        break;
-                    }
-                }
-
-                if ((boolean) node.getElementParameter("SIMPLE_CONFIG").getValue()) {
-                    String nodeText = (String) node.getElementParameter("CLASS_QUALIFIED_NAME").getValue();
-                    if (StringUtils.isNotBlank(nodeText)) {
-                        needBeanDependencies = true;
-                        break;
-                    }
-                }
-            }
-        }
-
-        return needBeanDependencies;
-    }
-
     public static boolean isRequiredBeans(IProcess process, Project project) {
         boolean needBeans = false;
         if (process == null) {
