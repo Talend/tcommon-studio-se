@@ -38,8 +38,6 @@ import org.talend.repository.ui.wizards.metadata.connection.files.excel.ExcelFil
 import org.talend.repository.ui.wizards.metadata.connection.files.ldif.LdifFileStep3Form;
 import org.talend.repository.ui.wizards.metadata.connection.files.positional.FileStep3Form;
 import org.talend.repository.ui.wizards.metadata.connection.files.regexp.RegexpFileStep3Form;
-import org.talend.repository.ui.wizards.metadata.connection.files.salesforce.SalesforceModuleParseAPI;
-import org.talend.repository.ui.wizards.metadata.connection.files.salesforce.SalesforceStep3Form;
 import org.talend.repository.ui.wizards.metadata.connection.files.xml.XmlFileOutputStep3Form;
 import org.talend.repository.ui.wizards.metadata.connection.files.xml.XmlFileStep3Form;
 import org.talend.repository.ui.wizards.metadata.connection.genericshema.GenericSchemaStep2Form;
@@ -192,15 +190,6 @@ public class FileTableWizardPage extends WizardPage {
                 ldapSchemaStep4Form.setReadOnly(!isRepositoryObjectEditable);
                 ldapSchemaStep4Form.setListener(listener);
                 return ldapSchemaStep4Form;
-            }
-
-            @Override
-            public Object caseSalesforceSchemaConnection(final SalesforceSchemaConnection object) {
-                SalesforceStep3Form salesforceStep3From = new SalesforceStep3Form(parent, connectionItem, metadataTable,
-                        TableHelper.getTableNames(object, metadataTable.getLabel()), new SalesforceModuleParseAPI());
-                salesforceStep3From.setReadOnly(!isRepositoryObjectEditable);
-                salesforceStep3From.setListener(listener);
-                return salesforceStep3From;
             }
 
             /*

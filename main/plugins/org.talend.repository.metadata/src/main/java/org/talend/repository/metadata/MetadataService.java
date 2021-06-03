@@ -55,7 +55,6 @@ import org.talend.repository.ui.wizards.metadata.connection.files.excel.ExcelFil
 import org.talend.repository.ui.wizards.metadata.connection.files.ldif.LdifFileWizard;
 import org.talend.repository.ui.wizards.metadata.connection.files.positional.FilePositionalWizard;
 import org.talend.repository.ui.wizards.metadata.connection.files.regexp.RegexpFileWizard;
-import org.talend.repository.ui.wizards.metadata.connection.files.salesforce.SalesforceSchemaWizard;
 import org.talend.repository.ui.wizards.metadata.connection.files.xml.XmlFileWizard;
 import org.talend.repository.ui.wizards.metadata.connection.genericshema.GenericSchemaWizard;
 import org.talend.repository.ui.wizards.metadata.connection.ldap.LDAPSchemaWizard;
@@ -150,8 +149,6 @@ public class MetadataService implements IMetadataService {
                 relatedWizard = new LDAPSchemaWizard(PlatformUI.getWorkbench(), creation, realNode, null, false);
             } else if (objectType.equals(ERepositoryObjectType.METADATA_FILE_EXCEL)) {
                 relatedWizard = new ExcelFileWizard(PlatformUI.getWorkbench(), creation, realNode, null);
-            } else if (objectType.equals(ERepositoryObjectType.METADATA_SALESFORCE_SCHEMA)) {
-                relatedWizard = new SalesforceSchemaWizard(PlatformUI.getWorkbench(), creation, realNode, null, false);
             } else if (objectType.equals(ERepositoryObjectType.METADATA_FILE_EBCDIC)) {
                 if (PluginChecker.isEBCDICPluginLoaded()) {
                     IProviderService iebcdicService = GlobalServiceRegister.getDefault().findService("IEBCDICProviderService");

@@ -6,18 +6,10 @@
 
 package org.talend.registration.register.proxy;
 
-public class RegisterUserLocator extends org.apache.axis.client.Service implements
+public class RegisterUserLocator implements
         org.talend.registration.register.proxy.RegisterUser {
 
     public RegisterUserLocator() {
-    }
-
-    public RegisterUserLocator(org.apache.axis.EngineConfiguration config) {
-        super(config);
-    }
-
-    public RegisterUserLocator(java.lang.String wsdlLoc, javax.xml.namespace.QName sName) throws javax.xml.rpc.ServiceException {
-        super(wsdlLoc, sName);
     }
 
     // Use to get a proxy class for RegisterUserPort
@@ -53,10 +45,9 @@ public class RegisterUserLocator extends org.apache.axis.client.Service implemen
             throws javax.xml.rpc.ServiceException {
         try {
             org.talend.registration.register.proxy.RegisterUserBindingStub _stub = new org.talend.registration.register.proxy.RegisterUserBindingStub(
-                    portAddress, this);
-            _stub.setPortName(getRegisterUserPortWSDDServiceName());
+                    portAddress.toString());
             return _stub;
-        } catch (org.apache.axis.AxisFault e) {
+        } catch (org.apache.axis2.AxisFault e) {
             return null;
         }
     }
@@ -73,8 +64,7 @@ public class RegisterUserLocator extends org.apache.axis.client.Service implemen
         try {
             if (org.talend.registration.register.proxy.RegisterUserPortType.class.isAssignableFrom(serviceEndpointInterface)) {
                 org.talend.registration.register.proxy.RegisterUserBindingStub _stub = new org.talend.registration.register.proxy.RegisterUserBindingStub(
-                        new java.net.URL(RegisterUserPort_address), this);
-                _stub.setPortName(getRegisterUserPortWSDDServiceName());
+                        RegisterUserPort_address);
                 return _stub;
             }
         } catch (java.lang.Throwable t) {
@@ -98,7 +88,6 @@ public class RegisterUserLocator extends org.apache.axis.client.Service implemen
             return getRegisterUserPort();
         } else {
             java.rmi.Remote _stub = getPort(serviceEndpointInterface);
-            ((org.apache.axis.client.Stub) _stub).setPortName(portName);
             return _stub;
         }
     }

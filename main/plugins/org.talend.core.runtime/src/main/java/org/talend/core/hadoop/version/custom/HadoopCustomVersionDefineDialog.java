@@ -483,7 +483,7 @@ public class HadoopCustomVersionDefineDialog extends TitleAreaDialog {
 
     private boolean isSupportHadoop() {
         if (GlobalServiceRegister.getDefault().isServiceRegistered(IHadoopService.class)) {
-            hadoopService = (IHadoopService) GlobalServiceRegister.getDefault().getService(IHadoopService.class);
+            hadoopService = GlobalServiceRegister.getDefault().getService(IHadoopService.class);
         }
 
         return hadoopService != null;
@@ -503,11 +503,7 @@ public class HadoopCustomVersionDefineDialog extends TitleAreaDialog {
     private ECustomVersionType[] filterTypes(Object[] types) {
         Object[] filteredTypes = ArrayUtils.removeElement(types, ECustomVersionType.ALL);
         IDesignerCoreService designerCoreService = CoreRuntimePlugin.getInstance().getDesignerCoreService();
-        INode node = designerCoreService.getRefrenceNode("tPigLoad"); //$NON-NLS-1$
-        if (node == null) {
-            filteredTypes = ArrayUtils.removeElement(filteredTypes, ECustomVersionType.PIG);
-        }
-        node = designerCoreService.getRefrenceNode("tMRConfiguration", ComponentCategory.CATEGORY_4_MAPREDUCE.getName());//$NON-NLS-1$
+        INode node = designerCoreService.getRefrenceNode("tMRConfiguration", ComponentCategory.CATEGORY_4_MAPREDUCE.getName());//$NON-NLS-1$
         if (node == null) {
             filteredTypes = ArrayUtils.removeElement(filteredTypes, ECustomVersionType.MAP_REDUCE);
         }

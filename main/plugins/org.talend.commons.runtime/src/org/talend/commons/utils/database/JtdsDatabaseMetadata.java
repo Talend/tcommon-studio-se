@@ -25,7 +25,6 @@ public class JtdsDatabaseMetadata extends PackageFakeDatabaseMetadata {
 
     @Override
     public ResultSet getSchemas() throws SQLException {
-        java.sql.Statement statement = connection.createStatement();
         String sql;
         if (((PackageFakeDatabaseMetadata) connection).getDatabaseMajorVersion() >= 9) {
             sql = JDBC3 ? "SELECT name AS TABLE_SCHEM, NULL as TABLE_CATALOG FROM " + connection.getCatalog() + ".sys.schemas"
@@ -36,6 +35,7 @@ public class JtdsDatabaseMetadata extends PackageFakeDatabaseMetadata {
         }
 
         sql += " ORDER BY TABLE_SCHEM";
-        return statement.executeQuery(sql);
+        java.sql.PreparedStatement statement = connection.prepareStatement(sql);
+        return statement.executeQuery();
     }
 }

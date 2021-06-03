@@ -13,9 +13,9 @@
 package org.talend.commons.utils.database;
 
 import java.sql.Connection;
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -54,10 +54,13 @@ public class SybaseDatabaseMetaData extends PackageFakeDatabaseMetadata {
         for (String catalogName : catList) {
             String sql = createSqlByLoginAndCatalog(login, catalogName);
             ResultSet rs = null;
-            Statement stmt = null;
+            PreparedStatement stmt = null;
             try {
-                stmt = connection.createStatement();
-                rs = stmt.executeQuery(sql);
+                stmt = connection.prepareStatement(sql);
+                stmt.setString(1, login);
+                stmt.setString(2, login);
+
+                rs = stmt.executeQuery();
 
                 while (rs.next()) {
                     int temp = rs.getInt(1);
@@ -92,11 +95,11 @@ public class SybaseDatabaseMetaData extends PackageFakeDatabaseMetadata {
     public ResultSet getSchemas(String catalog, String schemaPattern) throws SQLException {
         String sql = "SELECT DISTINCT name FROM " + catalog + ".dbo.sysusers where suid > 0"; //$NON-NLS-1$ //$NON-NLS-2$
         ResultSet rs = null;
-        Statement stmt = null;
+        PreparedStatement stmt = null;
         List<String[]> list = new ArrayList<String[]>();
         try {
-            stmt = connection.createStatement();
-            rs = stmt.executeQuery(sql);
+            stmt = connection.prepareStatement(sql);
+            rs = stmt.executeQuery();
 
             while (rs.next()) {
                 String name = rs.getString("name"); //$NON-NLS-1$
@@ -136,9 +139,9 @@ public class SybaseDatabaseMetaData extends PackageFakeDatabaseMetadata {
      */
     protected String createSqlByLoginAndCatalog(String loginName, String catalogName) {
         return "select count(*) from " + catalogName //$NON-NLS-1$
-                + ".dbo.sysusers where suid in (select suid from master.dbo.syslogins where name = '" + loginName //$NON-NLS-1$
-                + "') or suid in (select altsuid from " + catalogName //$NON-NLS-1$
-                + ".dbo.sysalternates a, master.dbo.syslogins b where b.name = '" + loginName + "' and a.suid = b.suid)"; //$NON-NLS-1$ //$NON-NLS-2$
+                + ".dbo.sysusers where suid in (select suid from master.dbo.syslogins where name = ?"
+                + ") or suid in (select altsuid from " + catalogName //$NON-NLS-1$
+                + ".dbo.sysalternates a, master.dbo.syslogins b where b.name = ? and a.suid = b.suid)"; //$NON-NLS-1$ //$NON-NLS-2$
     }
 
     @Override
