@@ -19,6 +19,8 @@ package org.talend.commons.exception;
  */
 public class LoginException extends BusinessException {
 
+    public static final String RESTART = "restart";
+
     public LoginException(String message) {
         super(message);
     }
