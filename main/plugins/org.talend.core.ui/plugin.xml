@@ -42,6 +42,10 @@
             id="org.talend.core.ui.token.AdditionalPackageTokenCollector"
             name="addtional package">
       </provider>
+      <provider
+            collector="org.talend.core.ui.token.AMCUsageTokenCollector"
+            id="AMCUsageTokenCollector">
+      </provider>
    </extension>
    
       <extension
