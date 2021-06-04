@@ -27,9 +27,6 @@ import java.util.Set;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import javax.script.ScriptEngine;
-import javax.script.ScriptException;
-
 import org.talend.core.GlobalServiceRegister;
 import org.talend.core.model.components.ComponentCategory;
 import org.talend.core.model.components.IComponent;
@@ -1086,14 +1083,7 @@ public class NodeUtil {
     }
     
     private static boolean isValidLiteralValue(String value) {
-        ScriptEngine se = ContextParameterUtils.getScriptEngine();
-        if(se==null) return true;
-        try {
-            se.eval(value);
-            return true;
-        } catch (ScriptException e) {
-            return false;
-        }
+        return ContextParameterUtils.isValidLiteralValue(value);
     }
     
     private static String checkStringQuotationMarks(String str) {
