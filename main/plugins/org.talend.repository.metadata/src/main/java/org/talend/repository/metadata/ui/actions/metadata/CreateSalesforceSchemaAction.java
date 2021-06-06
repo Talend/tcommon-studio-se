@@ -13,22 +13,23 @@
 package org.talend.repository.metadata.ui.actions.metadata;
 
 import org.eclipse.jface.resource.ImageDescriptor;
-import org.eclipse.jface.wizard.WizardDialog;
-import org.eclipse.swt.widgets.Display;
-import org.eclipse.ui.PlatformUI;
+import org.eclipse.jface.viewers.StructuredSelection;
 import org.talend.commons.ui.runtime.image.ECoreImage;
 import org.talend.commons.ui.runtime.image.ImageProvider;
 import org.talend.commons.ui.runtime.image.OverlayImageProvider;
+import org.talend.commons.ui.swt.actions.ITreeContextualAction;
+import org.talend.core.GlobalServiceRegister;
 import org.talend.core.model.properties.SalesforceSchemaConnectionItem;
 import org.talend.core.model.repository.ERepositoryObjectType;
 import org.talend.core.repository.model.ProxyRepositoryFactory;
 import org.talend.core.repository.ui.actions.metadata.AbstractCreateAction;
+import org.talend.core.runtime.services.IGenericWizardService;
 import org.talend.repository.ProjectManager;
 import org.talend.repository.metadata.i18n.Messages;
 import org.talend.repository.model.IProxyRepositoryFactory;
+import org.talend.repository.model.IRepositoryNode.ENodeType;
 import org.talend.repository.model.IRepositoryNode.EProperties;
 import org.talend.repository.model.RepositoryNode;
-import org.talend.repository.ui.wizards.metadata.connection.files.salesforce.SalesforceSchemaWizard;
 
 /**
  * DOC yexiaowei class global comment. Detailled comment
@@ -38,20 +39,12 @@ public class CreateSalesforceSchemaAction extends AbstractCreateAction {
 
     private static final String CREATE_LABEL = Messages.getString("CreateSalesforceSchemaAction.createConnection"); //$NON-NLS-1$
 
-    private static final String EDIT_LABEL = Messages.getString("CreateSalesforceSchemaAction.editConnection"); //$NON-NLS-1$
-
-    private static final String OPEN_LABEL = Messages.getString("CreateSalesforceSchemaAction.editConnection"); //$NON-NLS-1$
-
-    protected static final int WIZARD_WIDTH = 800;
-
-    protected static final int WIZARD_HEIGHT = 520;
-
-    private boolean creation = false;
-
     ImageDescriptor defaultImage = ImageProvider.getImageDesc(ECoreImage.METADATA_SALESFORCE_SCHEMA_ICON);
 
     ImageDescriptor createImage = OverlayImageProvider.getImageWithNew(ImageProvider
             .getImage(ECoreImage.METADATA_SALESFORCE_SCHEMA_ICON));
+
+    private AbstractCreateAction createAction;
 
     public CreateSalesforceSchemaAction() {
         super();
@@ -72,45 +65,47 @@ public class CreateSalesforceSchemaAction extends AbstractCreateAction {
 
     @Override
     protected void doRun() {
-
         if (repositoryNode == null) {
             repositoryNode = getCurrentRepositoryNode();
         }
 
         if (isToolbar()) {
-            if (repositoryNode != null && repositoryNode.getContentType() != ERepositoryObjectType.METADATA_SALESFORCE_SCHEMA) {
+            ERepositoryObjectType salesforceType = ERepositoryObjectType.getType("salesforce");
+            if (repositoryNode != null && repositoryNode.getContentType() != salesforceType) {
                 repositoryNode = null;
             }
-            if (repositoryNode == null) {
-                repositoryNode = getRepositoryNodeForDefault(ERepositoryObjectType.METADATA_SALESFORCE_SCHEMA);
+            if (repositoryNode == null || (repositoryNode.getType() != ENodeType.SIMPLE_FOLDER
+                    && repositoryNode.getType() != ENodeType.SYSTEM_FOLDER)) {
+                repositoryNode = getRepositoryNodeForDefault(salesforceType);
+            }
+
+            init(repositoryNode);
+
+            ITreeContextualAction defaultAction = getGenericAction(repositoryNode);
+            if (defaultAction instanceof AbstractCreateAction) {
+                createAction = (AbstractCreateAction) defaultAction;
+                createAction.setCurrentRepositoryNode(repositoryNode);
+                createAction.init(null, new StructuredSelection(repositoryNode));
+                createAction.run();
             }
         }
+    }
 
-        WizardDialog wizardDialog = null;
-        if (isToolbar()) {
-            init(repositoryNode);
-            SalesforceSchemaWizard salesForceSchemaWizard = new SalesforceSchemaWizard(PlatformUI.getWorkbench(), creation,
-                    repositoryNode, getExistingNames(), false);
-            salesForceSchemaWizard.setToolbar(true);
-            wizardDialog = new WizardDialog(Display.getCurrent().getActiveShell(), salesForceSchemaWizard);// TODO send
-        } else {
-            wizardDialog = new WizardDialog(Display.getCurrent().getActiveShell(), new SalesforceSchemaWizard(
-                    PlatformUI.getWorkbench(), creation, repositoryNode, getExistingNames(), false));
+    private ITreeContextualAction getGenericAction(RepositoryNode repositoryNode) {
+        IGenericWizardService wizardService = null;
+        if (GlobalServiceRegister.getDefault().isServiceRegistered(IGenericWizardService.class)) {
+            wizardService = (IGenericWizardService) GlobalServiceRegister.getDefault().getService(IGenericWizardService.class);
         }
-
-        wizardDialog.setPageSize(WIZARD_WIDTH, WIZARD_HEIGHT);
-        wizardDialog.create();
-        wizardDialog.open();
-
+        ITreeContextualAction defaultAction = null;
+        if (wizardService != null) {
+            ERepositoryObjectType repObjType = (ERepositoryObjectType) repositoryNode.getProperties(EProperties.CONTENT_TYPE);
+            defaultAction = wizardService.getGenericAction(repObjType.getType(), null);
+        }
+        return defaultAction;
     }
 
     @Override
     protected void init(RepositoryNode node) {
-        ERepositoryObjectType nodeType = (ERepositoryObjectType) node.getProperties(EProperties.CONTENT_TYPE);
-        if (!ERepositoryObjectType.METADATA_SALESFORCE_SCHEMA.equals(nodeType)) {
-            return;
-        }
-
         IProxyRepositoryFactory factory = ProxyRepositoryFactory.getInstance();
         switch (node.getType()) {
         case SIMPLE_FOLDER:
@@ -125,20 +120,7 @@ public class CreateSalesforceSchemaAction extends AbstractCreateAction {
             }
             this.setText(CREATE_LABEL);
             collectChildNames(node);
-            creation = true;
             this.setImageDescriptor(createImage);
-            break;
-        case REPOSITORY_ELEMENT:
-            if (factory.isPotentiallyEditable(node.getObject())) {
-                this.setText(EDIT_LABEL);
-                this.setImageDescriptor(defaultImage);
-                collectSiblingNames(node);
-            } else {
-                this.setText(OPEN_LABEL);
-                this.setImageDescriptor(defaultImage);
-            }
-            collectSiblingNames(node);
-            creation = false;
             break;
         default:
             return;

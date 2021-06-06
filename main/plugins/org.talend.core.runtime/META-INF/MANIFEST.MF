@@ -129,5 +129,7 @@ Bundle-Activator: org.talend.core.runtime.CoreRuntimePlugin
 Bundle-ActivationPolicy: lazy
 Bundle-ClassPath: .,
  lib/resty-0.3.2.jar,
- lib/json_simple-1.1.jar
+ lib/json_simple-1.1.jar,
+ lib/delight-rhino-sandbox-0.0.15.jar,
+ lib/rhino-1.7.13.jar
 Eclipse-RegisterBuddy: org.talend.testutils

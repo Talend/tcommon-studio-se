@@ -13,9 +13,9 @@
 package org.talend.commons.utils.database;
 
 import java.sql.Connection;
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -62,11 +62,11 @@ public class SASDataBaseMetadata extends FakeDatabaseMetaData {
         // see the feature 5827
         String sql = "SELECT DISTINCT LIBNAME FROM SASHELP.VTABLE"; //$NON-NLS-1$
         ResultSet rs = null;
-        Statement stmt = null;
+        PreparedStatement stmt = null;
         List<String[]> list = new ArrayList<String[]>();
         try {
-            stmt = connection.createStatement();
-            rs = stmt.executeQuery(sql);
+            stmt = connection.prepareStatement(sql);
+            rs = stmt.executeQuery();
 
             while (rs.next()) {
                 String creator = rs.getString("LIBNAME"); //$NON-NLS-1$
@@ -147,17 +147,21 @@ public class SASDataBaseMetadata extends FakeDatabaseMetaData {
     public ResultSet getTables(String catalog, String schema, String tableNamePattern, String[] types) throws SQLException {
         String sql;
         if (schema != null) {
-            sql = "SELECT * FROM SASHELP.VTABLE where LIBNAME = '" + schema + "'"; //$NON-NLS-1$ //$NON-NLS-2$
+            sql = "SELECT * FROM SASHELP.VTABLE where LIBNAME = ?"; //$NON-NLS-1$ //$NON-NLS-2$
 
         } else {
             sql = "SELECT * FROM SASHELP.VTABLE"; //$NON-NLS-1$
         }
         ResultSet rs = null;
-        Statement stmt = null;
+        PreparedStatement stmt = null;
         List<String[]> list = new ArrayList<String[]>();
         try {
-            stmt = connection.createStatement();
-            rs = stmt.executeQuery(sql);
+            stmt = connection.prepareStatement(sql);
+            if (schema != null) {
+                stmt.setString(1, schema);
+            }
+
+            rs = stmt.executeQuery();
 
             while (rs.next()) {
                 String name = rs.getString("MEMNAME"); //$NON-NLS-1$
@@ -229,18 +233,20 @@ public class SASDataBaseMetadata extends FakeDatabaseMetaData {
     public ResultSet getColumns(String catalog, String schemaPattern, String tableNamePattern, String columnNamePattern)
             throws SQLException {
         // for real
-        String sql = "SELECT * FROM SASHELP.VCOLUMN where MEMNAME='" + tableNamePattern + "' AND  LIBNAME = '" //$NON-NLS-1$ //$NON-NLS-2$
-                + schemaPattern + "' ORDER BY LIBNAME, MEMNAME, VARNUM"; //$NON-NLS-1$
+        String sql = "SELECT * FROM SASHELP.VCOLUMN where MEMNAME=? AND  LIBNAME = ? ORDER BY LIBNAME, MEMNAME, VARNUM"; //$NON-NLS-1$
 
         // for test
         // String sql = "SELECT * FROM SYSIBM.SYSCOLUMNS where NAME='NAME'";
 
         ResultSet rs = null;
-        Statement stmt = null;
+        PreparedStatement stmt = null;
         List<String[]> list = new ArrayList<String[]>();
         try {
-            stmt = connection.createStatement();
-            rs = stmt.executeQuery(sql);
+            stmt = connection.prepareStatement(sql);
+            stmt.setString(1, tableNamePattern);
+            stmt.setString(2, schemaPattern);
+
+            rs = stmt.executeQuery();
             while (rs.next()) {
                 String tableName = rs.getString("MEMNAME"); //$NON-NLS-1$
                 if (tableName != null) {

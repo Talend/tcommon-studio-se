@@ -520,10 +520,7 @@ public class ModulesNeededProvider {
         }
         if (ComponentCategory.CATEGORY_4_CAMEL.getName().equals(process.getComponentsType())) {
             // route do not save any relationship with beans , so add all for now
-            boolean needBeanDependencies = ProcessUtils.areBeanDependenciesNeededForProcess(process);
-            if (needBeanDependencies) {
-                modulesNeeded.addAll(getCodesModuleNeededs(ERepositoryObjectType.BEANS));
-            }
+            modulesNeeded.addAll(getCodesModuleNeededs(ERepositoryObjectType.BEANS));
             modulesNeeded.addAll(getModulesNeededForRoutes());
         }
         return modulesNeeded;

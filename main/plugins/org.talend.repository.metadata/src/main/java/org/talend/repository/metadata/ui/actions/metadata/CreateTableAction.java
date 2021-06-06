@@ -166,8 +166,6 @@ public class CreateTableAction extends AbstractCreateTableAction {
             createLDAPSchemaWizard(node, false);
         } else if (ERepositoryObjectType.METADATA_WSDL_SCHEMA.equals(nodeType)) {
             createWSDLSchemaWizard(node, false);
-        } else if (ERepositoryObjectType.METADATA_SALESFORCE_SCHEMA.equals(nodeType)) {
-            createSalesforceSchemaWizard(node, false);
         } else if (ERepositoryObjectType.METADATA_SAPCONNECTIONS != null
                 && ERepositoryObjectType.METADATA_SAPCONNECTIONS.equals(nodeType)) {
             createSAPSchemaWizard(node, false);

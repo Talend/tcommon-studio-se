@@ -157,13 +157,6 @@
             isReadAction="true"
             level="10"
             name="Metadata/Create file Excel"/>
-      	<Action
-            class="org.talend.repository.metadata.ui.actions.metadata.CreateSalesforceSchemaAction"
-            id="org.talend.repository.actions.createsalesforceschema"
-            isEditAction="true"
-            isReadAction="true"
-            level="10"
-            name="Metadata/Create Salesforce"/>
  		
   		<Action
              class="org.talend.repository.metadata.ui.actions.metadata.CreateGenericSchemaAction"
@@ -189,20 +182,6 @@
              level="10"
              name="Metadata/Create WSDL schemas">
        </Action>
-        <Action
-            class="org.talend.repository.metadata.ui.actions.metadata.CreateSalesforceModulesAction"
-            id="org.talend.repository.actions.createSalesforceModulesAction"
-            isEditAction="true"
-            isReadAction="true"
-            level="10"
-            name="Metadata/Create Salesforce Modules"/>
-      <Action
-            class="org.talend.repository.metadata.ui.actions.metadata.CreateSalesforceSchemasAction"
-            id="org.talend.repository.actions.CreateSalesforceSchemasAction"
-            isEditAction="true"
-            isReadAction="true"
-            level="10"
-            name="Metadata/Create Salesforce Schemas"/>
      <Action
            class="org.talend.repository.metadata.ui.actions.metadata.ImportSchemaFileAction"
            id="org.talend.repository.actions.ImportSchemaFileAction"

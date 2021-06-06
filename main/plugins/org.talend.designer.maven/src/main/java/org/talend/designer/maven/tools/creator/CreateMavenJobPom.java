@@ -659,7 +659,7 @@ public class CreateMavenJobPom extends AbstractMavenProcessorPom {
         // current job
         Property currentJobProperty = processor.getProperty();
         jobCoordinate.add(getJobCoordinate(currentJobProperty));
-        
+
         // children jobs without test cases
         Set<JobInfo> childrenJobInfo = processor.getBuildChildrenJobs().stream().filter(j -> !j.isTestContainer())
                 .collect(Collectors.toSet());
@@ -670,17 +670,13 @@ public class CreateMavenJobPom extends AbstractMavenProcessorPom {
         // talend libraries and codes
         List<Dependency> dependencies = new ArrayList<>();
         List<Dependency> codeDependencies = new ArrayList<>();
-        // routines
-        addRoutinesDependencies(codeDependencies);
         // codes
-        if (ProcessUtils.areBeanDependenciesNeededForProcess(processor.getProcess())) {
-            addCodesDependencies(codeDependencies);
-            // codesjar
-            codeDependencies.addAll(getCodesJarDependenciesFromChildren());
+        addCodesDependencies(codeDependencies);
+        // codesjar
+        codeDependencies.addAll(getCodesJarDependenciesFromChildren());
 
-            // codes dependencies (optional)
-            ERepositoryObjectType.getAllTypesOfCodes().forEach(t -> dependencies.addAll(PomUtil.getCodesDependencies(t)));
-        }
+        // codes dependencies (optional)
+        ERepositoryObjectType.getAllTypesOfCodes().forEach(t -> dependencies.addAll(PomUtil.getCodesDependencies(t)));
         dependencies.addAll(codeDependencies);
         // libraries of talend/3rd party
         Set<Dependency> parentJobDependencies = processor

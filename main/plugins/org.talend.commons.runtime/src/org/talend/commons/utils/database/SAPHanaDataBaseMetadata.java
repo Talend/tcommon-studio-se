@@ -13,9 +13,9 @@
 package org.talend.commons.utils.database;
 
 import java.sql.Connection;
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -152,15 +152,19 @@ public class SAPHanaDataBaseMetadata extends FakeDatabaseMetaData {
             // check if the type is contained is in the types needed.
             String sqlcv = "SELECT OBJECT_NAME,PACKAGE_ID FROM _SYS_REPO.ACTIVE_OBJECT WHERE OBJECT_SUFFIX = 'calculationview'"; //$NON-NLS-1$
             if (tableNamePattern != null && !tableNamePattern.equals("%")) { //$NON-NLS-1$
-                sqlcv += " AND (OBJECT_NAME LIKE '" + tableNamePattern + "'"; //$NON-NLS-1$ //$NON-NLS-2$
-                sqlcv += " OR PACKAGE_ID LIKE '" + tableNamePattern + "')"; //$NON-NLS-1$ //$NON-NLS-2$
+                sqlcv += " AND (OBJECT_NAME LIKE ?"; //$NON-NLS-1$ //$NON-NLS-2$
+                sqlcv += " OR PACKAGE_ID LIKE ? )"; //$NON-NLS-1$ //$NON-NLS-2$
             }
             ResultSet rscv = null;
-            Statement stmtcv = null;
+            PreparedStatement stmtcv = null;
             List<String[]> listcv = new ArrayList<String[]>();
             try {
-                stmtcv = connection.createStatement();
-                rscv = stmtcv.executeQuery(sqlcv);
+                stmtcv = connection.prepareStatement(sqlcv);
+                if (tableNamePattern != null && !tableNamePattern.equals("%")) {
+                    stmtcv.setString(1, tableNamePattern);
+                    stmtcv.setString(2, tableNamePattern);
+                }
+                rscv = stmtcv.executeQuery();
                 while (rscv.next()) {
                     String objectName = rscv.getString("OBJECT_NAME"); //$NON-NLS-1$
                     if (objectName != null) {
@@ -303,11 +307,11 @@ public class SAPHanaDataBaseMetadata extends FakeDatabaseMetaData {
         if (!load) {
             String sqlcv = "SELECT * from \"" + schemaPattern + "\".\"" + tableNamePattern + "\""; //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
             ResultSet rscv = null;
-            Statement stmtcv = null;
+            PreparedStatement stmtcv = null;
             List<String[]> listcv = new ArrayList<String[]>();
             try {
-                stmtcv = connection.createStatement();
-                rscv = stmtcv.executeQuery(sqlcv);
+                stmtcv = connection.prepareStatement(sqlcv);
+                rscv = stmtcv.executeQuery();
                 int i = 1;
                 while (rscv.next()) {
                     String tableName = tableNamePattern;

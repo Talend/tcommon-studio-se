@@ -14,6 +14,7 @@ package org.talend.core.model.metadata.builder.database;
 
 import java.sql.Connection;
 import java.sql.DatabaseMetaData;
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
@@ -387,12 +388,12 @@ public class ExtractMetaDataFromDataBase {
     private static boolean checkSybaseDB(Connection connection, String database) {
         ExtractMetaDataUtils extractMeta = ExtractMetaDataUtils.getInstance();
         if (extractMeta != null) {
-            Statement stmt = null;
+            PreparedStatement stmt = null;
             ResultSet resultSet = null;
             try {
-                stmt = connection.createStatement();
+                stmt = connection.prepareStatement("sp_helpdb " + database);
                 extractMeta.setQueryStatementTimeout(stmt);
-                resultSet = stmt.executeQuery("sp_helpdb " + database);
+                resultSet = stmt.executeQuery();
                 return true;
             } catch (SQLException e) {
                 ExceptionHandler.process(e);
@@ -705,25 +706,23 @@ public class ExtractMetaDataFromDataBase {
             tableComment = tablesSet.getString(GetTable.REMARKS.name());
         }
         if (StringUtils.isBlank(tableComment)) {
-            String selectRemarkOnTable = getSelectRemarkOnTable(tableName);
-            if (selectRemarkOnTable != null && connection != null) {
-                tableComment = executeGetCommentStatement(selectRemarkOnTable, connection);
+            if (connection != null) {
+                tableComment = executeGetCommentStatement(connection, tableName);
             }
         }
         return tableComment;
     }
 
-    private static String getSelectRemarkOnTable(String tableName) {
-        return "SELECT TABLE_COMMENT FROM information_schema.TABLES WHERE TABLE_NAME='" + tableName + "'"; //$NON-NLS-1$ //$NON-NLS-2$
-    }
+    private static String executeGetCommentStatement(Connection connection, String tableName) {
+        String sql = "SELECT TABLE_COMMENT FROM information_schema.TABLES WHERE TABLE_NAME=?";
 
-    private static String executeGetCommentStatement(String queryStmt, Connection connection) {
         String comment = null;
-        Statement statement = null;
+        PreparedStatement statement = null;
         ResultSet resultSet = null;
         try {
-            statement = connection.createStatement();
-            statement.execute(queryStmt);
+            statement = connection.prepareStatement(sql);
+            statement.setString(1, tableName);
+            statement.execute();
 
             // get the results
             resultSet = statement.getResultSet();

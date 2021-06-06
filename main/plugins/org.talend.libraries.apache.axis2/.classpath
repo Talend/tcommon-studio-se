@@ -1,5 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <classpath>
+	<classpathentry exported="true" kind="lib" path="lib/axis2-adb-codegen-1.6.2.jar"/>
+	<classpathentry exported="true" kind="lib" path="lib/XmlSchema-1.4.7.jar"/>
+	<classpathentry exported="true" kind="lib" path="lib/axis2-metadata-1.6.2.jar"/>
+	<classpathentry exported="true" kind="lib" path="lib/axis2-java2wsdl-1.6.2.jar"/>
+	<classpathentry exported="true" kind="lib" path="lib/axis2-codegen-1.6.2.jar"/>
 	<classpathentry exported="true" kind="lib" path="lib/woden-api-1.0M9.jar"/>
 	<classpathentry exported="true" kind="lib" path="lib/axiom-api-1.2.13.jar"/>
 	<classpathentry exported="true" kind="lib" path="lib/axiom-impl-1.2.13.jar"/>
@@ -11,7 +16,6 @@
 	<classpathentry exported="true" kind="lib" path="lib/httpcore-4.0.1.jar"/>
 	<classpathentry exported="true" kind="lib" path="lib/neethi-3.0.1.jar"/>
 	<classpathentry exported="true" kind="lib" path="lib/wstx-asl-3.2.9.jar"/>
-	<classpathentry exported="true" kind="lib" path="lib/xmlschema-core-2.0.1.jar"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
 	<classpathentry kind="con" path="org.eclipse.pde.core.requiredPlugins"/>
 	<classpathentry kind="output" path="class"/>

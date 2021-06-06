@@ -20,7 +20,8 @@ import java.io.StringReader;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.apache.axis.client.Stub;
+import org.apache.axis2.client.Options;
+import org.apache.axis2.client.Stub;
 import org.talend.core.classloader.ClassLoaderFactory;
 import org.talend.core.classloader.DynamicClassLoader;
 import org.talend.core.model.metadata.builder.connection.MDMConnection;
@@ -53,11 +54,11 @@ public class S56MdmConnectionHelper extends AbsMdmConnectionHelper {
         if (invokeMethod instanceof Stub) {
             stub = (Stub) invokeMethod;
             if (universe == null || universe.trim().length() == 0) {
-                stub.setUsername(userName);
+                stub._getServiceClient().getOptions().setUserName(userName);
             } else {
-                stub.setUsername(universe + "/" + userName); //$NON-NLS-1$
+                stub._getServiceClient().getOptions().setUserName(universe + "/" + userName); //$NON-NLS-1$
             }
-            stub.setPassword(password);
+            stub._getServiceClient().getOptions().setPassword(password);
             Object wsping = ReflectionUtils.newInstance("org.talend.mdm.webservice.WSPing", classLoader, new Object[0]);
             ReflectionUtils.invokeMethod(stub, "ping", new Object[] { wsping });
         }
@@ -108,18 +109,18 @@ public class S56MdmConnectionHelper extends AbsMdmConnectionHelper {
         if (stub == null) {
             return;
         }
-        stub.setUsername(userName);
-        stub.setPassword(password);
+        stub._getServiceClient().getOptions().setUserName(userName);
+        stub._getServiceClient().getOptions().setPassword(password);
 
         Object wsping = ReflectionUtils.newInstance("org.talend.mdm.webservice.WSPing", classLoader, new Object[0]);
         ReflectionUtils.invokeMethod(stub, "ping", new Object[] { wsping });
 
         if (universe != null && !"".equals(universe)) { //$NON-NLS-1$
-            stub.setUsername(universe + "/" + userName); //$NON-NLS-1$
-            stub.setPassword(password);
+            stub._getServiceClient().getOptions().setUserName(universe + "/" + userName); //$NON-NLS-1$
+            stub._getServiceClient().getOptions().setPassword(password);
         } else {
-            stub.setUsername(userName);
-            stub.setPassword(password);
+            stub._getServiceClient().getOptions().setUserName(userName);
+            stub._getServiceClient().getOptions().setPassword(password);
         }
 
         // find data model pk
@@ -205,7 +206,8 @@ public class S56MdmConnectionHelper extends AbsMdmConnectionHelper {
     public void resetUniverseUser(Object stub, String universeUser) {
         if (stub instanceof Stub) {
             Stub stub2 = (Stub) stub;
-            stub2.setUsername(universeUser + stub2.getUsername());
+            Options options = stub2._getServiceClient().getOptions();
+            options.setUserName(universeUser + options.getUserName());
         }
     }
 }
