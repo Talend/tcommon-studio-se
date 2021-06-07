@@ -20,8 +20,6 @@ import static org.junit.Assert.assertTrue;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.eclipse.core.runtime.preferences.IEclipsePreferences;
-import org.eclipse.core.runtime.preferences.InstanceScope;
 import org.junit.Assert;
 import org.junit.Test;
 import org.talend.core.model.context.JobContext;
@@ -30,8 +28,6 @@ import org.talend.core.model.context.JobContextParameter;
 import org.talend.core.model.metadata.types.JavaTypesManager;
 import org.talend.core.model.process.IContext;
 import org.talend.core.model.process.IContextParameter;
-import org.talend.core.model.repository.IRepositoryPrefConstants;
-import org.talend.core.prefs.ITalendCorePrefConstants;
 import org.talend.core.runtime.CoreRuntimePlugin;
 import org.talend.designer.core.model.utils.emf.talendfile.ContextParameterType;
 import org.talend.designer.core.model.utils.emf.talendfile.ContextType;
@@ -429,6 +425,53 @@ public class ContextParameterUtilsTest {
     	assertTrue(ContextParameterUtils.isDynamic("((String)globalMap.get(\"key\"))"));
     	assertTrue(ContextParameterUtils.isDynamic("\"const\" + ((String)globalMap.get(\"key\")) + \"const\""));
     	assertTrue(ContextParameterUtils.isDynamic("\"const\"+((String)globalMap.get(\"key\"))+\"const\""));
+    }
+
+    @Test
+    public void testIsValidLiteralValue() {
+        String value = "context.var1";
+
+        assertFalse(ContextParameterUtils.isValidLiteralValue(value));
+
+        value = "var1";
+
+        assertFalse(ContextParameterUtils.isValidLiteralValue(value));
+
+        value = "\"var1\"";
+
+        assertTrue(ContextParameterUtils.isValidLiteralValue(value));
+
+        JobContext jc = new JobContext("Default");
+
+        IContextParameter contextParam = new JobContextParameter();
+        contextParam.setName("new1");
+        contextParam.setType(JavaTypesManager.getDefaultJavaType().getId());
+        contextParam.setValue("ab\"c");
+
+        jc.getContextParameterList().add(contextParam);
+
+        contextParam = new JobContextParameter();
+        contextParam.setName("new2");
+        contextParam.setType(JavaTypesManager.getDefaultJavaType().getId());
+        contextParam.setValue("\"ab\"c\"");
+
+        jc.getContextParameterList().add(contextParam);
+
+        value = "context.new1";
+
+        // invoke this to set context variables
+        ContextParameterUtils.convertContext2Literal4AnyVar(value, jc);
+
+        assertTrue(ContextParameterUtils.isValidLiteralValue(value));
+
+        value = "context.new2";
+
+        assertTrue(ContextParameterUtils.isValidLiteralValue(value));
+
+        value = "context.new3";
+
+        assertFalse(ContextParameterUtils.isValidLiteralValue(value));
+
     }
 
 }

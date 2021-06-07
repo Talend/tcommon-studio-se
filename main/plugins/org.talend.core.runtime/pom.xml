@@ -9,19 +9,61 @@
   </parent>
   <artifactId>org.talend.core.runtime</artifactId>
   <packaging>eclipse-plugin</packaging>
+  <dependencies>
+	<!-- https://mvnrepository.com/artifact/org.javadelight/delight-rhino-sandbox -->
+	<dependency>
+		<groupId>org.javadelight</groupId>
+		<artifactId>delight-rhino-sandbox</artifactId>
+		<version>0.0.15</version>
+	</dependency>
+	<!-- https://mvnrepository.com/artifact/org.mozilla/rhino -->
+	<dependency>
+		<groupId>org.mozilla</groupId>
+		<artifactId>rhino</artifactId>
+		<version>1.7.13</version>
+	</dependency>
+  </dependencies>
   <build>
 	<plugins>
-	  <plugin>
-        <groupId>org.apache.maven.plugins</groupId>
-        <artifactId>maven-deploy-plugin</artifactId>
-		<version>2.8.2</version>
-        <executions>
-          <execution>
-            <id>default-deploy</id>
-            <phase>deploy</phase>
-          </execution>
-        </executions>
-      </plugin>
-	</plugins>
+		<plugin>
+			<groupId>org.apache.maven.plugins</groupId>
+			<artifactId>maven-dependency-plugin</artifactId>
+			<executions>
+				<execution>
+					<id>copy-dependencies</id>
+					<phase>generate-sources</phase>
+					<goals>
+						<goal>copy</goal>
+					</goals>
+					<configuration>
+						<outputDirectory>${project.basedir}/lib</outputDirectory>
+						<artifactItems>
+							<artifactItem>
+								<groupId>org.javadelight</groupId>
+								<artifactId>delight-rhino-sandbox</artifactId>
+								<version>0.0.15</version>
+							</artifactItem>
+							<artifactItem>
+								<groupId>org.mozilla</groupId>
+								<artifactId>rhino</artifactId>
+								<version>1.7.13</version>
+							</artifactItem>
+						</artifactItems>
+					</configuration>
+				</execution>
+			</executions>
+		</plugin>
+		<plugin>
+			<groupId>org.apache.maven.plugins</groupId>
+			<artifactId>maven-deploy-plugin</artifactId>
+			<version>2.8.2</version>
+			<executions>
+				<execution>
+					<id>default-deploy</id>
+					<phase>deploy</phase>
+				</execution>
+			</executions>
+		</plugin>
+    </plugins>
   </build>
 </project>

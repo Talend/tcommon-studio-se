@@ -21,13 +21,12 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Map.Entry;
+import java.util.Set;
+import java.util.concurrent.locks.ReadWriteLock;
+import java.util.concurrent.locks.ReentrantReadWriteLock;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
-
-import javax.script.Bindings;
-import javax.script.ScriptContext;
-import javax.script.ScriptEngine;
-import javax.script.ScriptEngineManager;
 
 import org.apache.commons.lang.StringUtils;
 import org.apache.oro.text.regex.MalformedPatternException;
@@ -56,6 +55,9 @@ import org.talend.designer.core.model.utils.emf.talendfile.ContextParameterType;
 import org.talend.designer.core.model.utils.emf.talendfile.ContextType;
 import org.talend.repository.model.RepositoryConstants;
 
+import delight.rhinosandox.RhinoSandbox;
+import delight.rhinosandox.RhinoSandboxes;
+
 /**
  * Utilities to work with IContextParamet objects. <br/>
  *
@@ -81,6 +83,12 @@ public final class ContextParameterUtils {
     private static final List<String> EMPTY_LIST = new ArrayList<String>();
 
     private static final String NON_CONTEXT_PATTERN = "[^a-zA-Z0-9_]"; //$NON-NLS-1$
+
+    private static final RhinoSandbox SANDBOX = RhinoSandboxes.create();
+
+    private static final Map<String, Object> CTX_VARS_LAST = new HashMap<String, Object>();
+
+    private static ReadWriteLock CTX_VARS_LOCK = new ReentrantReadWriteLock();
 
     /**
      * Constructs a new ContextParameterUtils.
@@ -204,10 +212,37 @@ public final class ContextParameterUtils {
         }
     }
 
-    private static ScriptEngine engine = new ScriptEngineManager().getEngineByName("JavaScript");
-    
-    public static ScriptEngine getScriptEngine() {
-        return engine;
+    private static String preProcessScript(String script) {
+        String newCode = script;
+        CTX_VARS_LOCK.readLock().lock();
+        try {
+            Set<Entry<String, Object>> entries = CTX_VARS_LAST.entrySet();
+
+            for (Entry<String, Object> entry : entries) {
+                String val = entry.getValue().toString();
+                if (entry.getValue() instanceof String) {
+                    val = "\"" + val.replace("\"", "\\\"") + "\"";
+                }
+
+                newCode = newCode.replace(JAVA_NEW_CONTEXT_PREFIX + entry.getKey(), val);
+            }
+        } finally {
+            CTX_VARS_LOCK.readLock().unlock();
+        }
+
+        return newCode;
+    }
+
+    public static boolean isValidLiteralValue(String value) {
+        String newCode = preProcessScript(value);
+        try {
+            SANDBOX.eval(null, newCode);
+            return true;
+        } catch (Exception e) {
+            // ignore
+        }
+
+        return false;
     }
 
     public static String convertContext2Literal4AnyVar(final String code, final IContext context) {
@@ -221,23 +256,22 @@ public final class ContextParameterUtils {
 
         Object result = code;
 
-        if (engine == null) {
-            engine = new ScriptEngineManager().getEngineByName("JavaScript");
+        Map<String, Object> varMap = getVarMapForScriptEngine(context);
+
+        CTX_VARS_LOCK.writeLock().lock();
+        try {
+            CTX_VARS_LAST.clear();
+            CTX_VARS_LAST.putAll(varMap);
+        } finally {
+            CTX_VARS_LOCK.writeLock().unlock();
         }
 
-        if (engine == null) {
-            throw new RuntimeException("can't find the script engine");
-        }
+        String newCode = preProcessScript(code);
 
-        Bindings binding = engine.getBindings(ScriptContext.ENGINE_SCOPE);
-        if (binding != null) {
-            binding.clear();
-            Map<String, Object> varMap = getVarMapForScriptEngine(context);
-            binding.put("context", varMap);
-        }
         try {
             String replacement = " ";
-            result = engine.eval(code.replace("\r\n", replacement).replace("\n", replacement).replace("\r", replacement));
+            result = SANDBOX.eval(null,
+                    newCode.replace("\r\n", replacement).replace("\n", replacement).replace("\r", replacement));
         } catch (Exception e) {
             // ignore the exception
         }
