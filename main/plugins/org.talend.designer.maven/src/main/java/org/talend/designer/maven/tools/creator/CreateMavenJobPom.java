@@ -534,12 +534,22 @@ public class CreateMavenJobPom extends AbstractMavenProcessorPom {
         final Map<String, Object> templateParameters = PomUtil.getTemplateParameters(property);
         String batContent = MavenTemplateManager.getProjectSettingValue(IProjectSettingPreferenceConstants.TEMPLATE_BAT,
                 templateParameters);
+        
+        String libJarsAdapted = "";
+        if (this.getWindowsScriptAddition() != null) {
+        	//we write -libjars argument to a text file to lighten the command
+        	MavenTemplateManager.saveContent(codeProject.getExternalResourcesFolder().getFile(property.getLabel() + ".txt"), this.getWindowsScriptAddition().replaceAll("-libjars ", ""), overwrite);
+        	libJarsAdapted = windowsScriptAdditionValue.toString().replaceAll(this.getWindowsScriptAddition().replaceAll("-libjars ", ""), "./" + property.getLabel() + ".txt");
+        } else {
+        	//-libjars can be null, for DI job for example
+        	libJarsAdapted = windowsScriptAdditionValue.toString();
+        }
         batContent = StringUtils
                 .replaceEach(batContent,
                         new String[] { "${talend.job.jvmargs}", "${talend.job.bat.classpath}", "${talend.job.class}",
                                 "${talend.job.bat.addition}" },
                         new String[] { jvmArgsStr.toString().trim(), getWindowsClasspath(), jobClass,
-                                windowsScriptAdditionValue.toString() });
+                        		libJarsAdapted });
         batContent = normalizeSpaces(batContent);
 
         String shContent = MavenTemplateManager.getProjectSettingValue(IProjectSettingPreferenceConstants.TEMPLATE_SH,
