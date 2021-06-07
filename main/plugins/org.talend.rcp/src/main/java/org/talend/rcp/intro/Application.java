@@ -333,7 +333,7 @@ public class Application implements IApplication {
 
                 @Override
                 public void run(IProgressMonitor monitor) throws InvocationTargetException, InterruptedException {
-                    monitor.beginTask("Installing patches...", IProgressMonitor.UNKNOWN);
+                    monitor.beginTask(Messages.getString("Application.InstallingPatchesTaskName"), IProgressMonitor.UNKNOWN); //$NON-NLS-1$
                     installed = patchComponent.install(monitor);
                 }
             };
@@ -341,7 +341,7 @@ public class Application implements IApplication {
             try {
                 dialog.run(true, false, runnable);
             } catch (InvocationTargetException | InterruptedException e) {
-                e.printStackTrace();
+                log.log(Level.ERROR, e.getMessage());
             }
 
 
