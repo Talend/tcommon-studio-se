@@ -19,6 +19,7 @@ import org.eclipse.core.resources.IFolder;
 import org.eclipse.core.resources.IProject;
 import org.eclipse.core.runtime.IPath;
 import org.eclipse.core.runtime.IProgressMonitor;
+import org.eclipse.core.runtime.NullProgressMonitor;
 import org.eclipse.core.runtime.SubMonitor;
 import org.talend.commons.exception.BusinessException;
 import org.talend.commons.exception.LoginException;
@@ -84,7 +85,15 @@ public interface IRepositoryFactory {
 
     public void initialize() throws PersistenceException;
 
-    public void logOnProject(Project project) throws LoginException, PersistenceException;
+    /**
+     * use {@link IRepositoryFactory#logOnProject(IProgressMonitor, Project)}
+     */
+    @Deprecated
+    default public void logOnProject(Project project) throws LoginException, PersistenceException {
+        logOnProject(new NullProgressMonitor(), project);
+    }
+
+    public void logOnProject(IProgressMonitor monitor, Project project) throws LoginException, PersistenceException;
 
     public String getNextId();
 
@@ -331,7 +340,15 @@ public interface IRepositoryFactory {
 
     public void initProjectRepository(Project project, String branchForMainProject) throws PersistenceException;
 
-    public void beforeLogon(Project project) throws PersistenceException, LoginException;
+    /**
+     * use {@link IRepositoryFactory#logOnProject(IProgressMonitor, Project)}
+     */
+    @Deprecated
+    default public void beforeLogon(Project project) throws PersistenceException, LoginException {
+        beforeLogon(new NullProgressMonitor(), project);
+    }
+
+    public void beforeLogon(IProgressMonitor monitor, Project project) throws PersistenceException, LoginException;
 
     public boolean isUserReadOnlyOnCurrentProject();
 

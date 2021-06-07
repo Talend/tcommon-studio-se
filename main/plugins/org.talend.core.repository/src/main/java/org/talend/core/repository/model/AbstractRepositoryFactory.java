@@ -16,6 +16,7 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
+import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.emf.ecore.util.EcoreUtil;
 import org.talend.commons.exception.BusinessException;
 import org.talend.commons.exception.LoginException;
@@ -219,7 +220,7 @@ public abstract class AbstractRepositoryFactory implements IRepositoryFactory {
     }
 
     @Override
-    public void beforeLogon(Project project) throws PersistenceException, LoginException {
+    public void beforeLogon(IProgressMonitor monitor, Project project) throws PersistenceException, LoginException {
         // do nothing by default
     }
 

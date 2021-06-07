@@ -16,6 +16,7 @@ import java.net.URI;
 import java.util.List;
 
 import org.eclipse.core.runtime.IProgressMonitor;
+import org.talend.commons.CommonsPlugin;
 import org.talend.core.GlobalServiceRegister;
 import org.talend.core.IService;
 import org.talend.core.model.general.Project;
@@ -27,22 +28,72 @@ public interface IStudioLiteP2Service extends IService {
 
     public static final String PROP_USE_NEW_UPDATE_SYSTEM = "talend.studio.update.useNewUpdateSystem";
 
+    public static final int RESULT_SKIP = 0;
+
+    public static final int RESULT_DONE = 1;
+
+    /**
+     * cancel current action
+     */
+    public static final int RESULT_CANCEL = 2;
+
     /**
      * Preload to improve performance
      */
     void preload();
 
+    String getSettingsFilePath();
+
+    UpdateSiteConfig getUpdateSiteConfig();
+
     CheckUpdateHook checkForUpdate(IProgressMonitor monitor) throws Exception;
 
     ValidateRequiredFeaturesHook validateRequiredFeatures(IProgressMonitor monitor, Project proj) throws Exception;
 
-    UpdateSiteConfig getUpdateSiteConfig();
+    /**
+     * show required features, and choose what to do
+     * 
+     * @return {@link IStudioLiteP2Service#RESULT_DONE}<br/>
+     * {@link IStudioLiteP2Service#RESULT_SKIP}<br/>
+     * {@link IStudioLiteP2Service#RESULT_CANCEL}<br/>
+     */
+    int showInstallRequiredFeaturesWizard(ValidateRequiredFeaturesHook hook, Project proj);
+
+    ValidatePotentialFeaturesHook validatePotentialFeatures(IProgressMonitor monitor, Project proj) throws Exception;
+
+    /**
+     * selected features will be write into the required feature list of project
+     * 
+     * @param hook
+     * @param proj
+     * @return {@link IStudioLiteP2Service#RESULT_UPDATED}<br/>
+     * {@link IStudioLiteP2Service#RESULT_SKIP}<br/>
+     * {@link IStudioLiteP2Service#RESULT_CANCEL}<br/>
+     */
+    int showUpdateProjectRequiredFeaturesWizard(ValidatePotentialFeaturesHook hook, Project proj);
 
     public static IStudioLiteP2Service get() {
+        boolean forceLoad = Boolean.getBoolean("talend.studio.studiolite.p2.enable");
+        if (!forceLoad) {
+            if (CommonsPlugin.isHeadless() || CommonsPlugin.isJUnitTest() || CommonsPlugin.isTUJTest()
+                    || CommonsPlugin.isScriptCmdlineMode()) {
+                return null;
+            }
+        }
         if (GlobalServiceRegister.getDefault().isServiceRegistered(IStudioLiteP2Service.class)) {
             return GlobalServiceRegister.getDefault().getService(IStudioLiteP2Service.class);
         }
         return null;
+    }
+
+    public static interface IInstallableUnitInfo {
+
+        String getName();
+
+        String getId();
+
+        List<String> getRequired();
+
     }
 
     public static interface CheckUpdateHook {
@@ -53,13 +104,19 @@ public interface IStudioLiteP2Service extends IService {
 
     }
 
+    public static interface ValidatePotentialFeaturesHook {
+
+        boolean hasPotentialFeatures();
+
+        List<IInstallableUnitInfo> getPotentialFeatures();
+
+    }
+
     public static interface ValidateRequiredFeaturesHook {
 
         boolean isMissingRequiredFeatures();
 
-        List<String> getMissingRequiredFeatures();
-
-        boolean installMissingRequiredFeatures(IProgressMonitor monitor) throws Exception;
+        List<IInstallableUnitInfo> getMissingRequiredFeatures();
 
     }
 

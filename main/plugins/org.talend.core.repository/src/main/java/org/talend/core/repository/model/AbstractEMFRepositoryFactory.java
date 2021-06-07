@@ -752,7 +752,7 @@ public abstract class AbstractEMFRepositoryFactory extends AbstractRepositoryFac
     }
 
     @Override
-    public void logOnProject(Project project) throws LoginException, PersistenceException {
+    public void logOnProject(IProgressMonitor monitor, Project project) throws LoginException, PersistenceException {
         setLoggedOnProject(false);
 
         // TODO: review the prefs
