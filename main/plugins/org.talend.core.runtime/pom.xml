@@ -33,10 +33,22 @@
 					<id>copy-dependencies</id>
 					<phase>generate-sources</phase>
 					<goals>
-						<goal>copy-dependencies</goal>
+						<goal>copy</goal>
 					</goals>
 					<configuration>
 						<outputDirectory>${project.basedir}/lib</outputDirectory>
+						<artifactItems>
+							<artifactItem>
+								<groupId>org.javadelight</groupId>
+								<artifactId>delight-rhino-sandbox</artifactId>
+								<version>0.0.15</version>
+							</artifactItem>
+							<artifactItem>
+								<groupId>org.mozilla</groupId>
+								<artifactId>rhino</artifactId>
+								<version>1.7.13</version>
+							</artifactItem>
+						</artifactItems>
 					</configuration>
 				</execution>
 			</executions>
