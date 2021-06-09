@@ -88,7 +88,7 @@ public class AetherNexusDownloadProvider implements TransferListener {
     public static String getChecksumPolicy() {
         return RepositoryPolicy.CHECKSUM_POLICY_FAIL;
     }
-    
+
     public static String getUpdatePolicy() {
         return RepositoryPolicy.UPDATE_POLICY_ALWAYS;
     }
@@ -118,6 +118,7 @@ public class AetherNexusDownloadProvider implements TransferListener {
     @Override
     public void transferCorrupted(TransferEvent event) throws TransferCancelledException {
         if (event != null) {
+            deleteTransferedData(event);
             for (DownloadListener listener : downloadListeners) {
                 listener.downloadFailed(event.getException());
             }
@@ -136,9 +137,17 @@ public class AetherNexusDownloadProvider implements TransferListener {
     @Override
     public void transferFailed(TransferEvent event) {
         if (event != null) {
+            deleteTransferedData(event);
             for (DownloadListener listener : downloadListeners) {
                 listener.downloadFailed(event.getException());
             }
+        }
+    }
+
+    private void deleteTransferedData(TransferEvent event) {
+        if (event != null && event.getResource() != null && event.getResource().getFile() != null
+                && event.getResource().getFile().exists()) {
+            event.getResource().getFile().delete();
         }
     }
 
@@ -148,6 +157,5 @@ public class AetherNexusDownloadProvider implements TransferListener {
 
     public void removeDownloadListener(DownloadListener listener) {
         this.downloadListeners.remove(listener);
-
     }
 }

@@ -149,8 +149,8 @@ public class NexusDownloadManager implements DownloadListener {
     @Override
     public void downloadProgress(IDownloadHelper downloader, int bytesDownloaded) {
         if (downloader != null && downloader.getDownloadingURL() != null) {
-            progressMonitor.subTask(bytesDownloaded + "/" + downloader.getContentLength() + " : "
-                    + downloader.getDownloadingURL().toExternalForm());
+            progressMonitor.subTask(
+                    bytesDownloaded + "/" + downloader.getContentLength() + " : " + downloader.getDownloadingURL().getFile());
         }
     }
 
@@ -241,8 +241,11 @@ abstract class AbsDownLoaderRunnable implements Runnable {
 }
 
 class NexusDownloaderRunnable extends AbsDownLoaderRunnable {
+
     private ArtifactRepositoryBean serverBean;
-    NexusDownloaderRunnable(ModuleToInstall module, String url, NexusDownloadManager downloadManager, ArtifactRepositoryBean serverBean) {
+
+    NexusDownloaderRunnable(ModuleToInstall module, String url, NexusDownloadManager downloadManager,
+            ArtifactRepositoryBean serverBean) {
         super(module, url, downloadManager);
         this.serverBean = serverBean;
     }
@@ -263,9 +266,9 @@ class NexusDownloadThreadFactory implements ThreadFactory {
     public Thread newThread(Runnable r) {
         String name = "";
         if (r instanceof IDownloadHelper) {
-            URL url = ((IDownloadHelper) r).getDownloadingURL();
-            if (url != null) {
-                name = url.toExternalForm();
+            IDownloadHelper downloadHelper = (IDownloadHelper) r;
+            if (downloadHelper.getDownloadingURL() != null) {
+                name = downloadHelper.getDownloadingURL().getFile();
             }
         }
         String threadName = "Downloading " + name + " task";

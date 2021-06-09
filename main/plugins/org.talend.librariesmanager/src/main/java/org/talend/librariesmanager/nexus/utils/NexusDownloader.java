@@ -32,15 +32,12 @@ import org.eclipse.core.resources.IProject;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.NullProgressMonitor;
 import org.talend.commons.utils.workbench.resources.ResourceUtils;
-import org.talend.core.context.Context;
-import org.talend.core.context.RepositoryContext;
 import org.talend.core.download.DownloadListener;
 import org.talend.core.download.IDownloadHelper;
 import org.talend.core.model.general.Project;
 import org.talend.core.nexus.ArtifactRepositoryBean;
 import org.talend.core.nexus.HttpClientTransport;
 import org.talend.core.nexus.TalendLibsServerManager;
-import org.talend.core.runtime.CoreRuntimePlugin;
 import org.talend.core.runtime.maven.MavenArtifact;
 import org.talend.core.runtime.maven.MavenConstants;
 import org.talend.core.runtime.maven.MavenUrlHelper;
@@ -61,9 +58,9 @@ public class NexusDownloader implements IDownloadHelper {
     private static final int BUFFER_SIZE = 8192;
 
     private ArtifactRepositoryBean nexusServer;
-    
+
     private URL downloadingURL = null;
-    
+
     private long contentLength = -1l;
 
     /*
@@ -76,7 +73,7 @@ public class NexusDownloader implements IDownloadHelper {
         this.downloadingURL = url;
         String mavenUri = url.toExternalForm();
         MavenArtifact parseMvnUrl = MavenUrlHelper.parseMvnUrl(mavenUri);
-        
+
         if (parseMvnUrl != null) {
             String tempPath = getTmpFolderPath();
             File createTempFile = File.createTempFile("talend_official", "");
@@ -142,9 +139,11 @@ public class NexusDownloader implements IDownloadHelper {
                                 bos.flush();
                                 if (bytesDownloaded == contentLength) {
                                     MavenArtifactsHandler deployer = new MavenArtifactsHandler();
-                                    boolean canGetNexusServer = TalendLibsServerManager.getInstance().getCustomNexusServer()!=null;
+                                    boolean canGetNexusServer = TalendLibsServerManager.getInstance()
+                                            .getCustomNexusServer() != null;
                                     // if proxy artifact repository was configured, then do not deploy
-                                    boolean deploy =canGetNexusServer && !TalendLibsServerManager.getInstance().isProxyArtifactRepoConfigured();
+                                    boolean deploy = canGetNexusServer
+                                            && !TalendLibsServerManager.getInstance().isProxyArtifactRepoConfigured();
                                     deployer.install(downloadedFile.getAbsolutePath(), mavenUri, deploy);
                                 }
                                 fireDownloadComplete();

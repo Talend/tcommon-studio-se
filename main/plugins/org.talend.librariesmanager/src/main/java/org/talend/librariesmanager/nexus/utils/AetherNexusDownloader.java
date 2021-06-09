@@ -19,6 +19,8 @@ import java.util.List;
 
 import org.talend.core.download.DownloadListener;
 import org.talend.core.download.IDownloadHelper;
+import org.talend.core.model.general.ModuleStatusProvider;
+import org.talend.core.model.general.ModuleNeeded.ELibraryInstallStatus;
 import org.talend.core.nexus.ArtifactRepositoryBean;
 import org.talend.core.nexus.TalendLibsServerManager;
 import org.talend.core.runtime.maven.MavenArtifact;
@@ -26,7 +28,7 @@ import org.talend.core.runtime.maven.MavenUrlHelper;
 import org.talend.designer.maven.aether.util.AetherNexusDownloadProvider;
 import org.talend.librariesmanager.maven.MavenArtifactsHandler;
 
-public class AetherNexusDownloader implements IDownloadHelper,DownloadListener {
+public class AetherNexusDownloader implements IDownloadHelper, DownloadListener {
 
     private List<DownloadListener> fListeners = new ArrayList<DownloadListener>();
 
@@ -37,6 +39,8 @@ public class AetherNexusDownloader implements IDownloadHelper,DownloadListener {
     private URL downloadingURL = null;
 
     private long contentLength = -1l;
+
+    private File resolvedFile = null;
 
     /*
      * (non-Javadoc)
@@ -52,16 +56,25 @@ public class AetherNexusDownloader implements IDownloadHelper,DownloadListener {
             ArtifactRepositoryBean nServer = getNexusServer();
             AetherNexusDownloadProvider resolver = new AetherNexusDownloadProvider();
             resolver.addDownloadListener(this);
-            File downloadedFile = resolver.resolveArtifact(parseMvnUrl, nServer);
-            MavenArtifactsHandler deployer = new MavenArtifactsHandler();
-            boolean canGetNexusServer = TalendLibsServerManager.getInstance().getCustomNexusServer() != null;
-            // if proxy artifact repository was configured, then do not deploy
-            boolean deploy = canGetNexusServer && !TalendLibsServerManager.getInstance().isProxyArtifactRepoConfigured();
+            try {
+                resolvedFile = resolver.resolveArtifact(parseMvnUrl, nServer);
+            } catch (Exception ex) {
+                deleteResolvedFileIfExist();
+                throw ex;
+            }
+            resolver.removeDownloadListener(this);
+            ModuleStatusProvider.putDeployStatus(mavenUri, ELibraryInstallStatus.DEPLOYED);
+            ModuleStatusProvider.putStatus(mavenUri, ELibraryInstallStatus.INSTALLED);
+
             if (this.isCancel()) {
                 return;
             }
+            boolean canGetNexusServer = TalendLibsServerManager.getInstance().getCustomNexusServer() != null;
+            // if proxy artifact repository was configured, then do not deploy
+            boolean deploy = canGetNexusServer && !TalendLibsServerManager.getInstance().isProxyArtifactRepoConfigured();
             if (deploy) {
-                deployer.deploy(downloadedFile, parseMvnUrl);
+                MavenArtifactsHandler deployer = new MavenArtifactsHandler();
+                deployer.deploy(resolvedFile, parseMvnUrl);
             }
         }
     }
@@ -124,27 +137,34 @@ public class AetherNexusDownloader implements IDownloadHelper,DownloadListener {
         this.contentLength = totalSize;
         for (DownloadListener listener : fListeners) {
             listener.downloadStart(totalSize);
-        } 
+        }
     }
 
     @Override
     public void downloadProgress(IDownloadHelper downloader, int bytesDownloaded) {
         for (DownloadListener listener : fListeners) {
             listener.downloadProgress(this, bytesDownloaded);
-        }      
+        }
     }
 
     @Override
     public void downloadComplete() {
         for (DownloadListener listener : fListeners) {
             listener.downloadComplete();
-        }      
+        }
     }
 
     @Override
     public void downloadFailed(Exception ex) {
+        deleteResolvedFileIfExist();
         for (DownloadListener listener : fListeners) {
-            listener.downloadComplete();
-        }  
+            listener.downloadFailed(ex);
+        }
+    }
+
+    private void deleteResolvedFileIfExist() {
+        if (resolvedFile != null && resolvedFile.exists()) {
+            resolvedFile.delete();
+        }
     }
 }

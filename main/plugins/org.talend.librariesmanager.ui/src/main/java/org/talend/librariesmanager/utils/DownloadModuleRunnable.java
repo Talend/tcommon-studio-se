@@ -115,11 +115,12 @@ abstract public class DownloadModuleRunnable implements IRunnableWithProgress {
         for (ModuleToInstall module : finishedList) {
             installedModules.add(module.getName());
         }
-        Map<ModuleToInstall,Exception> failedMap = downloadManager.getDownloadFailedMap();
+        Map<ModuleToInstall, Exception> failedMap = downloadManager.getDownloadFailedMap();
         for (ModuleToInstall module : failedMap.keySet()) {
             downloadFailed.add(module.getName());
             LibraryDataService.getInstance().setJarMissing(module.getMavenUri());
-            Exception ex = new Exception("Download " + module.getName() + " : " + module.getMavenUri() + " failed!", failedMap.get(module));
+            Exception ex = new Exception("Download " + module.getName() + " : " + module.getMavenUri() + " failed!",
+                    failedMap.get(module));
             ExceptionHandler.process(ex);
         }
         if (showErrorInDialog && !downloadFailed.isEmpty()) {
