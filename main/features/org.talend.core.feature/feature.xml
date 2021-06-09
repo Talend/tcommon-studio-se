@@ -39,6 +39,7 @@
     <import plugin="org.eclipse.compare" version="0.0.0" match="greaterOrEqual"/>
     <import plugin="org.eclipse.compare.core" version="0.0.0" match="greaterOrEqual"/>
     <import plugin="org.ops4j.pax.url.mvn" version="0.0.0" match="greaterOrEqual"/>
+    <import plugin="org.eclipse.collections" version="0.0.0" match="greaterOrEqual"/>
   </requires>  
   <plugin id="org.talend.core" download-size="0" install-size="0" version="0.0.0" unpack="false"/>
   <plugin id="org.talend.core.nl" download-size="0" install-size="0" version="0.0.0" fragment="true" unpack="false"/>
