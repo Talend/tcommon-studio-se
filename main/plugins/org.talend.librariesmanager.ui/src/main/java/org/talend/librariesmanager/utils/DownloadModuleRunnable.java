@@ -13,9 +13,11 @@
 package org.talend.librariesmanager.utils;
 
 import java.net.URL;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 import java.util.concurrent.atomic.AtomicBoolean;
 
@@ -38,6 +40,7 @@ import org.talend.librariesmanager.ui.LibManagerUiPlugin;
 import org.talend.librariesmanager.ui.i18n.Messages;
 import org.talend.librariesmanager.ui.wizards.AcceptModuleLicensesWizard;
 import org.talend.librariesmanager.ui.wizards.AcceptModuleLicensesWizardDialog;
+import org.talend.librariesmanager.utils.nexus.NexusDownloadManager;
 import org.talend.librariesmanager.utils.nexus.NexusDownloadHelperWithProgress;
 
 abstract public class DownloadModuleRunnable implements IRunnableWithProgress {
@@ -93,56 +96,32 @@ abstract public class DownloadModuleRunnable implements IRunnableWithProgress {
     }
 
     private void downLoad(final IProgressMonitor monitor) {
-        SubMonitor subMonitor = SubMonitor.convert(monitor,
-                Messages.getString("ExternalModulesInstallDialog.downloading2") + " (" + toDownload.size() + ")", //$NON-NLS-1$
-                toDownload.size());
-
+        List<ModuleToInstall> canBeDownloadList = new ArrayList<ModuleToInstall>();
         for (final ModuleToInstall module : toDownload) {
-            if (!monitor.isCanceled()) {
-                monitor.subTask(module.getName());
-                boolean canDownload;
-                try {
-                    // check license
-                    boolean isLicenseAccepted = module.isFromCustomNexus()
-                            || (LibManagerUiPlugin.getDefault().getPreferenceStore().contains(module.getLicenseType())
-                                    && LibManagerUiPlugin.getDefault().getPreferenceStore().getBoolean(module.getLicenseType())
-                                    || disableLicenseAcceptFlag);
-
-                    canDownload = isLicenseAccepted;
-                    if (!canDownload) {
-                        subMonitor.worked(1);
-                        continue;
-                    }
-                    NexusDownloadHelperWithProgress downloader = new NexusDownloadHelperWithProgress(module);
-                    if (!module.getMavenUris().isEmpty()) {
-                        for (String mvnUri : module.getMavenUris()) {
-                            if (ELibraryInstallStatus.INSTALLED == ModuleStatusProvider.getStatus(mvnUri)) {
-                                continue;
-                            }
-                            downloader.download(new URL(null, mvnUri, new Handler()), null, subMonitor.newChild(1));
-
-                        }
-                    } else {
-                        if (ELibraryInstallStatus.INSTALLED == ModuleStatusProvider.getStatus(module.getMavenUri())) {
-                            continue;
-                        }
-                        downloader.download(new URL(null, module.getMavenUri(), new Handler()), null, subMonitor.newChild(1));
-                    }
-
-                    installedModules.add(module.getName());
-                } catch (Exception e) {
-                    downloadFailed.add(module.getName());
-                    LibraryDataService.getInstance().setJarMissing(module.getMavenUri());
-                    Exception ex = new Exception("Download " + module.getName() + " : " + module.getMavenUri() + " failed!", e);
-                    ExceptionHandler.process(ex);
-                    continue;
-                }
-                canDownload = false;
-            } else {
-                downloadFailed.add(module.getName());
+            boolean isLicenseAccepted = module.isFromCustomNexus()
+                    || (LibManagerUiPlugin.getDefault().getPreferenceStore().contains(module.getLicenseType())
+                            && LibManagerUiPlugin.getDefault().getPreferenceStore().getBoolean(module.getLicenseType())
+                            || disableLicenseAcceptFlag);
+            if (isLicenseAccepted) {
+                canBeDownloadList.add(module);
             }
         }
-
+        if (monitor != null && monitor.isCanceled()) {
+            return;
+        }
+        NexusDownloadManager downloadManager = new NexusDownloadManager(canBeDownloadList, monitor);
+        downloadManager.start();
+        List<ModuleToInstall> finishedList = downloadManager.getDownloadFinishedList();
+        for (ModuleToInstall module : finishedList) {
+            installedModules.add(module.getName());
+        }
+        Map<ModuleToInstall,Exception> failedMap = downloadManager.getDownloadFailedMap();
+        for (ModuleToInstall module : failedMap.keySet()) {
+            downloadFailed.add(module.getName());
+            LibraryDataService.getInstance().setJarMissing(module.getMavenUri());
+            Exception ex = new Exception("Download " + module.getName() + " : " + module.getMavenUri() + " failed!", failedMap.get(module));
+            ExceptionHandler.process(ex);
+        }
         if (showErrorInDialog && !downloadFailed.isEmpty()) {
             Exception ex = new Exception(Messages.getString("DownloadModuleRunnable.jar.download.failed",
                     Arrays.toString(downloadFailed.toArray(new String[downloadFailed.size()]))));

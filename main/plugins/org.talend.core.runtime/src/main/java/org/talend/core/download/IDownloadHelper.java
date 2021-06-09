@@ -24,5 +24,13 @@ public interface IDownloadHelper {
     public void setCancel(boolean cancel);
 
     public void download(URL componentUrl, File destination) throws Exception;
+ 
+    default URL getDownloadingURL() {
+        return null;
+    }
+    
+    default long getContentLength() {
+        return -1l;
+    }
 
 }

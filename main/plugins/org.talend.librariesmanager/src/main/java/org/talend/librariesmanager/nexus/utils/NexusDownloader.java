@@ -61,6 +61,10 @@ public class NexusDownloader implements IDownloadHelper {
     private static final int BUFFER_SIZE = 8192;
 
     private ArtifactRepositoryBean nexusServer;
+    
+    private URL downloadingURL = null;
+    
+    private long contentLength = -1l;
 
     /*
      * (non-Javadoc)
@@ -69,8 +73,10 @@ public class NexusDownloader implements IDownloadHelper {
      */
     @Override
     public void download(URL url, File desc) throws Exception {
+        this.downloadingURL = url;
         String mavenUri = url.toExternalForm();
         MavenArtifact parseMvnUrl = MavenUrlHelper.parseMvnUrl(mavenUri);
+        
         if (parseMvnUrl != null) {
             String tempPath = getTmpFolderPath();
             File createTempFile = File.createTempFile("talend_official", "");
@@ -107,7 +113,7 @@ public class NexusDownloader implements IDownloadHelper {
                             try {
                                 bis = new BufferedInputStream(inputStream);
                                 bos = new BufferedOutputStream(new FileOutputStream(downloadedFile));
-                                long contentLength = entity.getContentLength();
+                                contentLength = entity.getContentLength();
                                 fireDownloadStart(new Long(contentLength).intValue());
 
                                 long refreshInterval = 1000;
@@ -163,11 +169,6 @@ public class NexusDownloader implements IDownloadHelper {
             }
         }
 
-    }
-
-    private RepositoryContext getRepositoryContext() {
-        Context ctx = CoreRuntimePlugin.getInstance().getContext();
-        return (RepositoryContext) ctx.getProperty(Context.REPOSITORY_CONTEXT_KEY);
     }
 
     private String getTmpFolderPath() {
@@ -253,5 +254,15 @@ public class NexusDownloader implements IDownloadHelper {
 
     public void setTalendlibServer(ArtifactRepositoryBean talendlibServer) {
         this.nexusServer = talendlibServer;
+    }
+
+    @Override
+    public URL getDownloadingURL() {
+        return downloadingURL;
+    }
+
+    @Override
+    public long getContentLength() {
+        return contentLength;
     }
 }
