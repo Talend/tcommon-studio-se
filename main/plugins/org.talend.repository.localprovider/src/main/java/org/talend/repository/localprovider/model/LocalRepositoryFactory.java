@@ -191,6 +191,7 @@ import org.talend.repository.localprovider.exceptions.IncorrectFileException;
 import org.talend.repository.localprovider.i18n.Messages;
 import org.talend.repository.model.IProxyRepositoryFactory;
 import org.talend.repository.model.RepositoryConstants;
+import org.talend.repository.ui.utils.GitProviderUtil;
 
 import orgomg.cwm.foundation.businessinformation.BusinessinformationPackage;
 
@@ -2562,6 +2563,7 @@ public class LocalRepositoryFactory extends AbstractEMFRepositoryFactory impleme
         Resource screenshotResource = null;
         EClass eClass = item.eClass();
         boolean screenshotFlag = false;
+        boolean disableScreenShot = GitProviderUtil.isDisableScreenShot();
         if (eClass.eContainer() == PropertiesPackage.eINSTANCE) {
             switch (eClass.getClassifierID()) {
 
@@ -2613,14 +2615,18 @@ public class LocalRepositoryFactory extends AbstractEMFRepositoryFactory impleme
                 itemResource = save(resourceSet, (RoutinesJarItem) item);
                 break;
             case PropertiesPackage.PROCESS_ITEM:
-                screenshotResource = saveScreenshots(resourceSet, item);
                 itemResource = save(resourceSet, (ProcessItem) item);
-                screenshotFlag = true;
+                if (!disableScreenShot) {
+                    screenshotResource = saveScreenshots(resourceSet, item);
+                    screenshotFlag = true;
+                }
                 break;
             case PropertiesPackage.JOBLET_PROCESS_ITEM:
-                screenshotResource = saveScreenshots(resourceSet, item);
                 itemResource = save(resourceSet, (JobletProcessItem) item);
-                screenshotFlag = true;
+                if (!disableScreenShot) {
+                    screenshotResource = saveScreenshots(resourceSet, item);
+                    screenshotFlag = true;
+                }
                 break;
             case PropertiesPackage.CONTEXT_ITEM:
                 itemResource = save(resourceSet, (ContextItem) item);
@@ -2679,11 +2685,13 @@ public class LocalRepositoryFactory extends AbstractEMFRepositoryFactory impleme
                 itemResource = save(resourceSet, (TDQItem) item);
             } else {
                 for (IRepositoryContentHandler handler : RepositoryContentManager.getHandlers()) {
-                    screenshotResource = handler.saveScreenShots(item);
                     itemResource = handler.save(item);
                     if (itemResource != null) {
-                        if (screenshotResource != null) {
-                            screenshotFlag = true;
+                        if (!disableScreenShot) {
+                            screenshotResource = handler.saveScreenShots(item);
+                            if (screenshotResource != null) {
+                                screenshotFlag = true;
+                            }
                         }
                         break;
                     }
@@ -2927,6 +2935,9 @@ public class LocalRepositoryFactory extends AbstractEMFRepositoryFactory impleme
         Resource itemResource = null;
         Resource screenshotsResource = null;
         EClass eClass = item.eClass();
+
+        boolean disableScreenShot = GitProviderUtil.isDisableScreenShot();
+
         if (eClass.eContainer() == PropertiesPackage.eINSTANCE) {
             switch (eClass.getClassifierID()) {
 
@@ -3021,11 +3032,15 @@ public class LocalRepositoryFactory extends AbstractEMFRepositoryFactory impleme
                 break;
             case PropertiesPackage.PROCESS_ITEM:
                 itemResource = create(project2, (ProcessItem) item, path, ERepositoryObjectType.PROCESS);
-                screenshotsResource = createScreenshotResource(project2, item, path, ERepositoryObjectType.PROCESS);
+                if (!disableScreenShot) {
+                    screenshotsResource = createScreenshotResource(project2, item, path, ERepositoryObjectType.PROCESS);
+                }
                 break;
             case PropertiesPackage.JOBLET_PROCESS_ITEM:
                 itemResource = create(project2, (JobletProcessItem) item, path, ERepositoryObjectType.JOBLET);
-                screenshotsResource = createScreenshotResource(project2, item, path, ERepositoryObjectType.JOBLET);
+                if (!disableScreenShot) {
+                    screenshotsResource = createScreenshotResource(project2, item, path, ERepositoryObjectType.JOBLET);
+                }
                 break;
             case PropertiesPackage.CONTEXT_ITEM:
                 itemResource = create(project2, (ContextItem) item, path);
@@ -3084,7 +3099,9 @@ public class LocalRepositoryFactory extends AbstractEMFRepositoryFactory impleme
                 for (IRepositoryContentHandler handler : RepositoryContentManager.getHandlers()) {
                     itemResource = handler.create(project2, item, classifierID, path);
                     if (itemResource != null) {
-                        screenshotsResource = handler.createScreenShotResource(project2, item, classifierID, path);
+                        if (!disableScreenShot) {
+                            screenshotsResource = handler.createScreenShotResource(project2, item, classifierID, path);
+                        }
                         break;
                     }
                 }
@@ -3120,7 +3137,9 @@ public class LocalRepositoryFactory extends AbstractEMFRepositoryFactory impleme
         for (Resource referenceFileResource : referenceFileReources) {
             xmiResourceManager.saveResource(referenceFileResource);
         }
-        xmiResourceManager.saveResource(screenshotsResource);
+        if (!disableScreenShot) {
+            xmiResourceManager.saveResource(screenshotsResource);
+        }
         xmiResourceManager.saveResource(itemResource);
         xmiResourceManager.saveResource(propertyResource);
         if (isImportItem.length == 0 || !isImportItem[0]) {
