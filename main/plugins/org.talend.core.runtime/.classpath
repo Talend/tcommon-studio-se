@@ -1,7 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <classpath>
 	<classpathentry kind="src" path="src/main/java"/>
-	<classpathentry exported="true" kind="lib" path="lib/resty-0.3.2.jar" />
+	<classpathentry exported="true" kind="lib" path="lib/delight-rhino-sandbox-0.0.15.jar"/>
+	<classpathentry exported="true" kind="lib" path="lib/rhino-1.7.13.jar"/>
+	<classpathentry exported="true" kind="lib" path="lib/resty-0.3.2.jar"/>
 	<classpathentry exported="true" kind="lib" path="lib/json_simple-1.1.jar"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
 	<classpathentry kind="con" path="org.eclipse.pde.core.requiredPlugins"/>

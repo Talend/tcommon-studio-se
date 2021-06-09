@@ -26,6 +26,8 @@ import java.util.stream.Collectors;
 import org.apache.log4j.Logger;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.IStatus;
+import org.eclipse.core.runtime.NullProgressMonitor;
+import org.eclipse.core.runtime.SubMonitor;
 import org.eclipse.equinox.p2.core.IProvisioningAgent;
 import org.eclipse.equinox.p2.core.ProvisionException;
 import org.eclipse.equinox.p2.engine.IPhaseSet;
@@ -44,6 +46,7 @@ import org.eclipse.equinox.p2.repository.metadata.IMetadataRepositoryManager;
 import org.talend.core.GlobalServiceRegister;
 import org.talend.core.services.ICoreTisService;
 import org.talend.updates.runtime.UpdatesRuntimePlugin;
+import org.talend.updates.runtime.i18n.Messages;
 import org.talend.updates.runtime.utils.UpdateTools;
 
 public class PatchP2InstallManager {
@@ -78,12 +81,20 @@ public class PatchP2InstallManager {
     public String installP2(IProgressMonitor monitor, Logger log, File installingPatchFolder,
             List<String> invalidBundleInfoList) throws Exception {
         String newProductVersion = ""; //$NON-NLS-1$
-        Set<IInstallableUnit> toInstall = queryFromP2Repository(monitor, QueryUtil.createIUAnyQuery(),
+        monitor.setTaskName(Messages.getString("PatchP2InstallManager.InstallingPatch")); //$NON-NLS-1$
+        monitor.subTask("");
+        SubMonitor submonitor = SubMonitor.convert(monitor, 100);
+        SubMonitor queryMonitor = submonitor.split(10);
+        queryMonitor.subTask(Messages.getString("PatchP2InstallManager.QueryInstallableUnits")); //$NON-NLS-1$
+        Set<IInstallableUnit> toInstall = queryFromP2Repository(queryMonitor, QueryUtil.createIUAnyQuery(),
                 Arrays.asList(installingPatchFolder.toURI()));
         // show the installation unit
         log.debug("ius to be installed:" + toInstall);
         UpdateTools.setIuSingletonToFalse(toInstall);
+        SubMonitor findInstaledMonitor = submonitor.split(10);
+        findInstaledMonitor.subTask(Messages.getString("PatchP2InstallManager.FindingInstalledUnits")); //$NON-NLS-1$
         Set<IInstallableUnit> installed = UpdateTools.makeInstalledIuSingletonFrom(toInstall, agent);
+        findInstaledMonitor.subTask("");
         File featureIndexFile = new File(installingPatchFolder, UpdateTools.FILE_EXTRA_FEATURE_INDEX);
         Map<String, String> extraBundles = new HashMap<>();
         if (GlobalServiceRegister.getDefault().isServiceRegistered(ICoreTisService.class)) {
@@ -113,18 +124,27 @@ public class PatchP2InstallManager {
         }
         // install
         InstallOperation installOperation = new InstallOperation(getProvisioningSession(), validInstall);
-        IStatus installResolvedStatus = installOperation.resolveModal(monitor);
+        SubMonitor resolveModalMonitor = submonitor.split(20);
+        submonitor.subTask(Messages.getString("PatchP2InstallManager.Installing")); //$NON-NLS-1$
+        IStatus installResolvedStatus = installOperation.resolveModal(resolveModalMonitor);
         if (installResolvedStatus.getSeverity() == IStatus.ERROR) {
             log.error("error installing new plugins :" + installOperation.getResolutionDetails());
             throw new ProvisionException(installResolvedStatus);
         }
-        ProfileModificationJob provisioningJob = (ProfileModificationJob) installOperation.getProvisioningJob(monitor);
+
+        SubMonitor provisionjobMonitor = submonitor.split(5);
+        provisionjobMonitor.subTask(Messages.getString("PatchP2InstallManager.GettingProvisioningJob")); //$NON-NLS-1$
+        ProfileModificationJob provisioningJob = (ProfileModificationJob) installOperation
+                .getProvisioningJob(provisionjobMonitor);
         if (provisioningJob == null) {
             log.error("error installing new plugins :" + installOperation.getResolutionDetails());
             throw new ProvisionException(installResolvedStatus);
         }
         provisioningJob.setPhaseSet(talendPhaseSet);
-        IStatus status = provisioningJob.run(monitor);
+        provisioningJob.setAdditionalProgressMonitor(new NullProgressMonitor());
+        SubMonitor split = submonitor.split(30);
+        split.subTask(Messages.getString("PatchP2InstallManager.ProvisioningJobExecuting")); //$NON-NLS-1$
+        IStatus status = provisioningJob.run(null);
         if (status != null && IStatus.ERROR == status.getSeverity()) {
             log.info("provisionning status is :" + status);
         } else {
@@ -136,15 +156,24 @@ public class PatchP2InstallManager {
             case IStatus.INFO:
             case IStatus.WARNING:
                 newProductVersion = UpdateTools.readProductVersionFromPatch(installingPatchFolder);
+
+                submonitor.split(5).subTask(Messages.getString("PatchP2InstallManager.SyncExtraFeatureIndex")); //$NON-NLS-1$
                 UpdateTools.syncExtraFeatureIndex(installingPatchFolder);
                 P2Manager.getInstance().clearOsgiCache();
+                submonitor.split(5).subTask(Messages.getString("PatchP2InstallManager.SyncLibraries")); //$NON-NLS-1$
+
                 UpdateTools.syncLibraries(installingPatchFolder);
+                submonitor.split(5).subTask(Messages.getString("PatchP2InstallManager.SyncM2Repository")); //$NON-NLS-1$
+
                 UpdateTools.syncM2Repository(installingPatchFolder);
-                UpdateTools.installCars(monitor, installingPatchFolder, false);
+                SubMonitor carMonitor = submonitor.split(5);
+                carMonitor.setTaskName(Messages.getString("PatchP2InstallManager.InstallingCars")); //$NON-NLS-1$
+                UpdateTools.installCars(carMonitor, installingPatchFolder, false);
                 if (GlobalServiceRegister.getDefault().isServiceRegistered(ICoreTisService.class)) {
                     ICoreTisService coreTisService = GlobalServiceRegister.getDefault().getService(ICoreTisService.class);
                     UpdateTools.collectDropBundles(validInstall, extraBundles, coreTisService.getDropBundleInfo());
                 }
+                submonitor.split(5).subTask("");
                 break;
             }
         }

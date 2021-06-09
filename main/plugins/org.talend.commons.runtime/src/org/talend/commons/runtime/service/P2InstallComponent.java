@@ -12,12 +12,18 @@
 // ============================================================================
 package org.talend.commons.runtime.service;
 
+import org.eclipse.core.runtime.IProgressMonitor;
+
 /**
  * DOC ggu class global comment. Detailled comment
  */
 public interface P2InstallComponent {
 
     boolean install();
+
+    default boolean install(IProgressMonitor monitor) {
+        return false;
+    }
 
     boolean needRelaunch();
 

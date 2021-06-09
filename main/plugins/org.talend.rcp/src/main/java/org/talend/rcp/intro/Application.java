@@ -14,6 +14,7 @@ package org.talend.rcp.intro;
 
 import java.io.File;
 import java.io.IOException;
+import java.lang.reflect.InvocationTargetException;
 import java.net.MalformedURLException;
 import java.net.URL;
 
@@ -21,6 +22,7 @@ import org.apache.commons.lang.ArrayUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.log4j.Level;
 import org.apache.log4j.Logger;
+import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.NullProgressMonitor;
 import org.eclipse.core.runtime.Platform;
 import org.eclipse.core.runtime.adaptor.EclipseStarter;
@@ -28,6 +30,8 @@ import org.eclipse.core.runtime.preferences.ConfigurationScope;
 import org.eclipse.equinox.app.IApplication;
 import org.eclipse.equinox.app.IApplicationContext;
 import org.eclipse.jface.dialogs.MessageDialog;
+import org.eclipse.jface.dialogs.ProgressMonitorDialog;
+import org.eclipse.jface.operation.IRunnableWithProgress;
 import org.eclipse.jface.preference.IPreferenceStore;
 import org.eclipse.jface.wizard.WizardDialog;
 import org.eclipse.osgi.service.datalocation.Location;
@@ -288,6 +292,7 @@ public class Application implements IApplication {
 
     }
 
+    private boolean installed = false;
     private boolean installLocalPatches() {
         try {
             final boolean forceCheck = Boolean.getBoolean("talend.studio.localpatch.forcecheck");
@@ -319,7 +324,27 @@ public class Application implements IApplication {
         boolean needRelaunch = false;
         final PatchComponent patchComponent = PatchComponentHelper.getPatchComponent();
         if (patchComponent != null) {
-            final boolean installed = patchComponent.install();
+            Shell shell = Display.getDefault().getActiveShell();
+            if (shell == null) {
+                shell = new Shell();
+            }
+            ProgressMonitorDialog dialog = new ProgressMonitorDialog(shell);
+            IRunnableWithProgress runnable = new IRunnableWithProgress() {
+
+                @Override
+                public void run(IProgressMonitor monitor) throws InvocationTargetException, InterruptedException {
+                    monitor.beginTask(Messages.getString("Application.InstallingPatchesTaskName"), IProgressMonitor.UNKNOWN); //$NON-NLS-1$
+                    installed = patchComponent.install(monitor);
+                }
+            };
+
+            try {
+                dialog.run(true, false, runnable);
+            } catch (InvocationTargetException | InterruptedException e) {
+                log.log(Level.ERROR, e.getMessage());
+            }
+
+
             if (installed) {
                 final String installedMessages = patchComponent.getInstalledMessages();
                 if (installedMessages != null) {
@@ -335,6 +360,7 @@ public class Application implements IApplication {
             if (StringUtils.isNotEmpty(patchComponent.getFailureMessage())) {
                 log.log(Level.ERROR, patchComponent.getFailureMessage());
             }
+            installed = false;
         }
 
         final ComponentsInstallComponent installComponent = LocalComponentInstallHelper.getComponent();
