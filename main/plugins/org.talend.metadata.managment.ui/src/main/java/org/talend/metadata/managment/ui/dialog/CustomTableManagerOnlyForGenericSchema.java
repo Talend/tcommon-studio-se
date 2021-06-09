@@ -179,6 +179,14 @@ public class CustomTableManagerOnlyForGenericSchema {
             if (resetDBTypesButton != null) {
                 resetDBTypesButton.getButton().setEnabled(false);
             }
+            CasePushButton caseButton = tableEditorView.getExtendedToolbar().getCaseButton();
+            if (caseButton != null) {
+                caseButton.getButton().setEnabled(false);
+            }
+            QuotePushButton quoteButton = tableEditorView.getExtendedToolbar().getQuoteButton();
+            if (quoteButton != null) {
+                quoteButton.getButton().setEnabled(false);
+            }
         }
         if (linkedTable != null) {
             if (linkedTable.isReadOnly()) {
