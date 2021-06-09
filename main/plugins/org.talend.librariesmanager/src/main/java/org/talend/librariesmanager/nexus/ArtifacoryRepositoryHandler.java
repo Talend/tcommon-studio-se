@@ -15,6 +15,8 @@ package org.talend.librariesmanager.nexus;
 import java.io.File;
 import java.io.IOException;
 import java.net.URI;
+import java.net.URISyntaxException;
+import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
@@ -22,7 +24,9 @@ import java.util.List;
 import org.apache.commons.codec.binary.Base64;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.http.Header;
+import org.apache.http.HttpHeaders;
 import org.apache.http.HttpResponse;
+import org.apache.http.HttpStatus;
 import org.apache.http.client.ClientProtocolException;
 import org.apache.http.client.fluent.Request;
 import org.apache.http.client.methods.HttpGet;
@@ -30,6 +34,7 @@ import org.apache.http.impl.client.DefaultHttpClient;
 import org.apache.http.message.BasicHeader;
 import org.apache.http.params.CoreConnectionPNames;
 import org.apache.http.util.EntityUtils;
+import org.eclipse.core.runtime.IProgressMonitor;
 import org.talend.commons.CommonsPlugin;
 import org.talend.commons.exception.ExceptionHandler;
 import org.talend.commons.utils.network.IProxySelectorProvider;
@@ -203,7 +208,7 @@ public class ArtifacoryRepositoryHandler extends AbstractArtifactRepositoryHandl
         Header resultDetailHeader = new BasicHeader("X-Result-Detail", "info"); //$NON-NLS-1$ //$NON-NLS-2$
         request.addHeader(resultDetailHeader);
         List<MavenArtifact> resultList = new ArrayList<MavenArtifact>();
-
+        doRequest(searchUrl);//
         HttpResponse response = request.execute().returnResponse();
         String content = EntityUtils.toString(response.getEntity());
         if (content.isEmpty()) {
@@ -312,7 +317,7 @@ public class ArtifacoryRepositoryHandler extends AbstractArtifactRepositoryHandl
         Header resultDetailHeader = new BasicHeader("X-Result-Detail", "info"); //$NON-NLS-1$ //$NON-NLS-2$
         request.addHeader(resultDetailHeader);
         List<MavenArtifact> resultList = new ArrayList<MavenArtifact>();
-
+        doRequest(searchUrl);//
         HttpResponse response = request.execute().returnResponse();
         String content = EntityUtils.toString(response.getEntity());
         if (content.isEmpty()) {
@@ -493,4 +498,31 @@ public class ArtifacoryRepositoryHandler extends AbstractArtifactRepositoryHandl
         return doSearch(query, SEARCH_NAME, true, fromSnapshot);
     }
 
+    public String doRequest(final String url) throws URISyntaxException, Exception {
+        final StringBuffer sb = new StringBuffer();
+        new HttpClientTransport(url, serverBean.getUserName(), serverBean.getPassword()) {
+
+            @Override
+            protected HttpResponse execute(IProgressMonitor monitor, DefaultHttpClient httpClient, URI targetURI)
+                    throws Exception {
+                HttpGet httpGet = new HttpGet(targetURI);
+                String userName = serverBean.getUserName();
+                if (StringUtils.isNotBlank(userName) && !Boolean.getBoolean("talend.studio.search.nexus3.disableBasicAuth")) {
+                    String auth = userName + ":" + serverBean.getPassword();
+                    String authHeader = "Basic " + new String(Base64.encodeBase64(auth.getBytes(StandardCharsets.UTF_8)));
+                    httpGet.setHeader(HttpHeaders.AUTHORIZATION, authHeader);
+                    httpClient.setCredentialsProvider(null);
+                }
+                HttpResponse response = httpClient.execute(httpGet);
+                if (response.getStatusLine().getStatusCode() == HttpStatus.SC_OK) {
+                    sb.append(EntityUtils.toString(response.getEntity()));
+                } else {
+                    throw new Exception(response.toString());
+                }
+                return response;
+            }
+
+        }.doRequest(null, new URI(url));
+        return sb.toString();
+    }
 }
