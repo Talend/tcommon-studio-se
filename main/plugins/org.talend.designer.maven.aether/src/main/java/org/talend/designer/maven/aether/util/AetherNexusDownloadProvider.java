@@ -88,7 +88,7 @@ public class AetherNexusDownloadProvider implements TransferListener {
     public static String getChecksumPolicy() {
         return RepositoryPolicy.CHECKSUM_POLICY_FAIL;
     }
-    
+
     public static String getUpdatePolicy() {
         return RepositoryPolicy.UPDATE_POLICY_ALWAYS;
     }
@@ -148,6 +148,5 @@ public class AetherNexusDownloadProvider implements TransferListener {
 
     public void removeDownloadListener(DownloadListener listener) {
         this.downloadListeners.remove(listener);
-
     }
 }

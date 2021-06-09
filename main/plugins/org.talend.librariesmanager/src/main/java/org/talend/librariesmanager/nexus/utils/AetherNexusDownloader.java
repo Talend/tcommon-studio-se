@@ -26,7 +26,7 @@ import org.talend.core.runtime.maven.MavenUrlHelper;
 import org.talend.designer.maven.aether.util.AetherNexusDownloadProvider;
 import org.talend.librariesmanager.maven.MavenArtifactsHandler;
 
-public class AetherNexusDownloader implements IDownloadHelper,DownloadListener {
+public class AetherNexusDownloader implements IDownloadHelper, DownloadListener {
 
     private List<DownloadListener> fListeners = new ArrayList<DownloadListener>();
 
@@ -53,6 +53,7 @@ public class AetherNexusDownloader implements IDownloadHelper,DownloadListener {
             AetherNexusDownloadProvider resolver = new AetherNexusDownloadProvider();
             resolver.addDownloadListener(this);
             File downloadedFile = resolver.resolveArtifact(parseMvnUrl, nServer);
+            resolver.removeDownloadListener(this);
             MavenArtifactsHandler deployer = new MavenArtifactsHandler();
             boolean canGetNexusServer = TalendLibsServerManager.getInstance().getCustomNexusServer() != null;
             // if proxy artifact repository was configured, then do not deploy
@@ -124,27 +125,27 @@ public class AetherNexusDownloader implements IDownloadHelper,DownloadListener {
         this.contentLength = totalSize;
         for (DownloadListener listener : fListeners) {
             listener.downloadStart(totalSize);
-        } 
+        }
     }
 
     @Override
     public void downloadProgress(IDownloadHelper downloader, int bytesDownloaded) {
         for (DownloadListener listener : fListeners) {
             listener.downloadProgress(this, bytesDownloaded);
-        }      
+        }
     }
 
     @Override
     public void downloadComplete() {
         for (DownloadListener listener : fListeners) {
             listener.downloadComplete();
-        }      
+        }
     }
 
     @Override
     public void downloadFailed(Exception ex) {
         for (DownloadListener listener : fListeners) {
             listener.downloadComplete();
-        }  
+        }
     }
 }
